@@ -34,13 +34,13 @@
       bound, read-only</td>
     <td style="WIDTH: 20%"><asp:label id=ReadOnlyFirstNameFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>
   <tr>
-    <td></td>
+    <td><remotion:SmartLabel ID="UnboundFirstNameFieldLabel" runat="server" ForControl="UnboundFirstNameField" Text="First Name"/></td>
     <td><remotion:boctextvalue id=UnboundFirstNameField runat="server"></remotion:boctextvalue></td>
     <td>
       unbound, value not set, list-box, required=false</td>
     <td style="WIDTH: 20%"><asp:label id=UnboundFirstNameFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>
   <tr>
-    <td></td>
+    <td><remotion:SmartLabel ID="UnboundReadOnlyFirstNameFieldLabel" runat="server" ForControl="UnboundReadOnlyFirstNameField" Text="First Name"/></td>
     <td><remotion:boctextvalue id=UnboundReadOnlyFirstNameField runat="server" ReadOnly="True"></remotion:boctextvalue></td>
     <td>
       unbound, value set, read only</td>
@@ -85,14 +85,14 @@
       disabled, bound, read-only</td>
     <td style="WIDTH: 20%"><asp:label id=DisabledReadOnlyFirstNameFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>
   <tr>
-    <td></td>
+    <td><remotion:SmartLabel ID="DisabledUnboundFirstNameFieldLabel" runat="server" ForControl="DisabledUnboundFirstNameField" Text="First Name"/></td>
     <td><remotion:boctextvalue id=DisabledUnboundFirstNameField runat="server" enabled="false"></remotion:boctextvalue></td>
     <td>
       <p>disabled, unbound, value set, list-box, 
       required=false</p></td>
     <td style="WIDTH: 20%"><asp:label id=DisabledUnboundFirstNameFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>
   <tr>
-    <td></td>
+    <td><remotion:SmartLabel ID="DisabledUnboundReadOnlyFirstNameFieldLabel" runat="server" ForControl="DisabledUnboundReadOnlyFirstNameField" Text="First Name"/></td>
     <td><remotion:boctextvalue id=DisabledUnboundReadOnlyFirstNameField runat="server" ReadOnly="True" enabled="false"></remotion:boctextvalue></td>
     <td>
       disabled, unbound, value set, read only</td>

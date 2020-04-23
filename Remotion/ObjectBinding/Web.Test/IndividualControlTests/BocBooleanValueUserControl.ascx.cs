@@ -78,13 +78,9 @@ public class BocBooleanValueUserControl : BaseUserControl
 
     Person person = (Person) CurrentObject.BusinessObject;
 
-    UnboundDeceasedField.Property = (IBusinessObjectBooleanProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Deceased");
     //UnboundDeceasedField.LoadUnboundValue (person.Deceased, IsPostBack);
-    UnboundReadOnlyDeceasedField.Property = (IBusinessObjectBooleanProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Deceased");
     UnboundReadOnlyDeceasedField.LoadUnboundValue (person.Deceased, IsPostBack);
-    DisabledUnboundDeceasedField.Property = (IBusinessObjectBooleanProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Deceased");
     DisabledUnboundDeceasedField.LoadUnboundValue (person.Deceased, IsPostBack);
-    DisabledUnboundReadOnlyDeceasedField.Property = (IBusinessObjectBooleanProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Deceased");
     DisabledUnboundReadOnlyDeceasedField.LoadUnboundValue (person.Deceased, IsPostBack);
 
     if (!IsPostBack)

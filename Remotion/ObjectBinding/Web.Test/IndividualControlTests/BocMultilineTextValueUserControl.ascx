@@ -43,7 +43,7 @@
             bound, read-only</td>
           <td style="WIDTH: 20%"><asp:label id=ReadOnlyCVFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>
         <tr>
-          <td></td>
+          <td><remotion:SmartLabel ID="UnboundCVFieldLabel" runat="server" ForControl="UnboundCVField" Text="CV"/></td>
           <td><remotion:bocmultilinetextvalue id=UnboundCVField runat="server" >
 <textboxstyle rows="3" textmode="MultiLine">
 </TextBoxStyle></remotion:bocmultilinetextvalue></td>
@@ -52,7 +52,7 @@
               required=false</p></td>
           <td style="WIDTH: 20%"><asp:label id=UnboundCVFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>
         <tr>
-          <td></td>
+          <td><remotion:SmartLabel ID="UnboundReadOnlyCVFieldLabel" runat="server" ForControl="UnboundReadOnlyCVField" Text="CV"/></td>
           <td><remotion:bocmultilinetextvalue id=UnboundReadOnlyCVField runat="server" ReadOnly="True" >
               <textboxstyle rows="5" textmode="MultiLine">
               </textboxstyle></remotion:bocmultilinetextvalue></td>
@@ -78,7 +78,7 @@
             disabled, bound, read-only</td>
           <td style="WIDTH: 20%"><asp:label id=DisabledReadOnlyCVFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>
         <tr>
-          <td></td>
+          <td><remotion:SmartLabel ID="DisabledUnboundCVFieldLabel" runat="server" ForControl="DisabledUnboundCVField" Text="CV"/></td>
           <td><remotion:bocmultilinetextvalue id=DisabledUnboundCVField runat="server"  enabled=false>
 <textboxstyle rows="3" textmode="MultiLine">
 </TextBoxStyle></remotion:bocmultilinetextvalue></td>
@@ -87,7 +87,7 @@
               required=false</p></td>
           <td style="WIDTH: 20%"><asp:label id=DisabledUnboundCVFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>
         <tr>
-          <td></td>
+          <td><remotion:SmartLabel ID="DisabledUnboundReadOnlyCVFieldLabel" runat="server" ForControl="DisabledUnboundReadOnlyCVField" Text="CV"/></td>
           <td><remotion:bocmultilinetextvalue id=DisabledUnboundReadOnlyCVField runat="server" ReadOnly="True"  enabled=false>
               <textboxstyle rows="5" textmode="MultiLine">
               </textboxstyle></remotion:bocmultilinetextvalue></td>

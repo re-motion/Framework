@@ -31,7 +31,7 @@
             bound</td>
           <td style="WIDTH: 20%"><asp:label id=CVFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>
         <tr>
-          <td></td>
+          <td><remotion:SmartLabel ID="UnboundCVFieldLabel" runat="server" ForControl="UnboundCVField" Text="CV"/></td>
           <td><remotion:BocLiteral id=UnboundCVField runat="server" /></td>
           <td>
             unbound, value not set</td>

@@ -43,5 +43,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           IValidatableControl,
           IEditableControl
   {
+    /// <summary>
+    /// Gets a flag if the business object control should generate validators that go beyond the validation of the .NET data type itself.
+    /// </summary>
+    bool AreOptionalValidatorsEnabled { get; }
   }
 }

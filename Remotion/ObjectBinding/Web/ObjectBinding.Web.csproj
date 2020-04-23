@@ -287,6 +287,7 @@
     <Compile Include="UI\Controls\CompoundBusinessObjectReferenceDataSourceControlValidatorFactory.cs" />
     <Compile Include="UI\Controls\CompoundUserControlBindingValidatorFactory.cs" />
     <Compile Include="UI\Controls\CompoundValidatorFactory.cs" />
+    <Compile Include="UI\Controls\Validation\DefaultBusinessObjectBoundEditableWebControlValidatorConfiguration.cs" />
     <Compile Include="UI\Controls\Factories\BocBooleanValueResourceSetFactory.cs" />
     <Compile Include="UI\Controls\BocBooleanValueImplementation\Rendering\IBocBooleanValueResourceSetFactory.cs" />
     <Compile Include="UI\Controls\BocCheckBox.cs">
@@ -452,6 +453,7 @@
     <Compile Include="UI\Controls\BocListImplementation\Rendering\BocListCssClassDefinition.cs" />
     <Compile Include="UI\Controls\BocListImplementation\BocListCustomColumnTuple.cs" />
     <Compile Include="UI\Controls\IUserControlBindingValidatorFactory.cs" />
+    <Compile Include="UI\Controls\Validation\IBusinessObjectBoundEditableWebControlValidatorConfiguration.cs" />
     <Compile Include="UI\Controls\PropertyPathBinding.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -701,6 +703,7 @@
     <None Include="Res\Themes\NovaGray\Image\SortAscending.gif" />
     <None Include="Res\Themes\NovaGray\Image\SortDescending.gif" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildProjectDirectory)\..\..\Build\NuSpec\Web.Build.targets" />
   <PropertyGroup>

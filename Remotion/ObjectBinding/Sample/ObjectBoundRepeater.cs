@@ -358,6 +358,22 @@ namespace Remotion.ObjectBinding.Sample
       get { return _repeaterInternal.IsRequired; }
     }
 
+    /// <summary> Gets or sets a flag that specifies whether the control's validation goes beyond the .NET data type requirements. </summary>
+    /// <remarks> Set this property to <see langword="null"/> in order to use the default value (see <see cref="AreOptionalValidatorsEnabled"/>). </remarks>
+    [Description ("Explicitly specifies whether the control automatically validates more than .NET data type requirements.")]
+    [Category ("Behavior")]
+    [DefaultValue (typeof (bool?), "")]
+    public bool? EnableOptionalValidators
+    {
+      get { return _repeaterInternal.EnableOptionalValidators; }
+      set { _repeaterInternal.EnableOptionalValidators = value; }
+    }
+
+    [Browsable (false)]
+    public bool AreOptionalValidatorsEnabled
+    {
+      get { return _repeaterInternal.AreOptionalValidatorsEnabled; }
+    }
 
     public virtual IEnumerable<BaseValidator> CreateValidators ()
     {

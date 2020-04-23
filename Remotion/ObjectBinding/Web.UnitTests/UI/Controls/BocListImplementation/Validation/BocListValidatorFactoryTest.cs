@@ -69,6 +69,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       editModeControllerMock.Expect (c => c.IsRowEditModeActive).Return (isRowEditModeActive);
       editModeControllerMock.Expect (c => c.EnableEditModeValidator).Return (enableEditModeValidator);
       controlMock.Expect (c => c.EditModeController).Return (editModeControllerMock);
+      controlMock.Expect (c => c.AreOptionalValidatorsEnabled).Return (true);
 
       var resourceManagerMock = MockRepository.GenerateMock<IResourceManager>();
       resourceManagerMock.Expect (r => r.TryGetString (Arg<string>.Is.Anything, out Arg<string>.Out ("MockValue").Dummy))

@@ -112,13 +112,9 @@ public class BocTextValueUserControl : BaseUserControl
 
     Person person = (Person) CurrentObject.BusinessObject;
 
-    UnboundFirstNameField.Property = (IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("FirstName");
     //UnboundFirstNameField.LoadUnboundValue (person.FirstName, IsPostBack);
-    UnboundReadOnlyFirstNameField.Property = (IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("FirstName");
     UnboundReadOnlyFirstNameField.LoadUnboundValue (person.FirstName, IsPostBack);
-    DisabledUnboundFirstNameField.Property = (IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("FirstName");
     DisabledUnboundFirstNameField.LoadUnboundValue (person.FirstName, IsPostBack);
-    DisabledUnboundReadOnlyFirstNameField.Property = (IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("FirstName");
     DisabledUnboundReadOnlyFirstNameField.LoadUnboundValue (person.FirstName, IsPostBack);
     PasswordNoRender.LoadUnboundValue ("Password", IsPostBack);
     PasswordRenderMasked.LoadUnboundValue ("Password", IsPostBack);

@@ -126,6 +126,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
             control.DataSource = _dataSource;
             IBusinessObjectPropertyPath propertyPath = simpleColumn.GetPropertyPath ();
             control.Property = propertyPath.Properties[0];
+            if (control is BusinessObjectBoundEditableWebControl editableWebControl && !editableWebControl.EnableOptionalValidators.HasValue)
+              editableWebControl.EnableOptionalValidators = _editModeHost.EnableOptionalValidators;
+
             SetEditControl (idxColumns, control);
 
             _rowEditModeControls[idxColumns] = control;

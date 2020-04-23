@@ -229,6 +229,8 @@
     <Compile Include="UI\Controls\StubInfrastructureResourceUrlFactory.cs" />
     <Compile Include="UI\Controls\UserControlBindingTest.cs" />
     <Compile Include="UI\Controls\UserControlBindingValidatorFactoryTest.cs" />
+    <Compile Include="UI\Controls\Validation\DefaultBusinessObjectBoundEditableWebControlValidatorConfigurationTest.cs" />
+    <Compile Include="UI\Controls\Validation\IBusinessObjectBoundEditableWebControlValidatorConfigurationTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\remotion.snk">

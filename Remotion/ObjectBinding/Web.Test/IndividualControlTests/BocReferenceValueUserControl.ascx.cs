@@ -197,13 +197,9 @@ public class BocReferenceValueUserControl : BaseUserControl
       DisabledUnboundPartnerField.SetBusinessObjectList (objects);
     }
 
-    UnboundPartnerField.Property = (IBusinessObjectReferenceProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Partner");
     //UnboundPartnerField.LoadUnboundValue (person.Partner, IsPostBack);
-    UnboundReadOnlyPartnerField.Property = (IBusinessObjectReferenceProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Partner");
     UnboundReadOnlyPartnerField.LoadUnboundValue ((IBusinessObjectWithIdentity)person.Partner, IsPostBack);
-    DisabledUnboundPartnerField.Property = (IBusinessObjectReferenceProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Partner");
     DisabledUnboundPartnerField.LoadUnboundValue ((IBusinessObjectWithIdentity) person.Partner, IsPostBack);
-    DisabledUnboundReadOnlyPartnerField.Property = (IBusinessObjectReferenceProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Partner");
     DisabledUnboundReadOnlyPartnerField.LoadUnboundValue ((IBusinessObjectWithIdentity) person.Partner, IsPostBack);
   
     if (!IsPostBack)

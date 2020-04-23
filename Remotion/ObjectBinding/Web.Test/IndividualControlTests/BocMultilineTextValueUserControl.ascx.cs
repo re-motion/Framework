@@ -80,13 +80,9 @@ public class BocMultilineTextValueUserControl : BaseUserControl
 
     Person person = (Person) CurrentObject.BusinessObject;
 
-    UnboundCVField.Property = (IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("CV");
     //UnboundCVField.LoadUnboundValue (person.CV, IsPostBack);
-    UnboundReadOnlyCVField.Property = (IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("CV");
     UnboundReadOnlyCVField.LoadUnboundValue (person.CV, IsPostBack);
-    DisabledUnboundCVField.Property = (IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("CV");
     DisabledUnboundCVField.LoadUnboundValue (person.CV, IsPostBack);
-    DisabledUnboundReadOnlyCVField.Property = (IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("CV");
     DisabledUnboundReadOnlyCVField.LoadUnboundValue (person.CV, IsPostBack);
     
     if (!IsPostBack)

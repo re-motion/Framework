@@ -51,7 +51,7 @@
       bound, drop-down, AutoPostBack, required=false</td>
     <td style="WIDTH: 20%"><asp:label id=MarriageStatusFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>
   <tr>
-    <td></td>
+    <td><remotion:SmartLabel ID="UnboundMarriageStatusFieldLabel" runat="server" ForControl="UnboundMarriageStatusField" Text="Marriage Status"/></td>
     <td><remotion:bocenumvalue id=UnboundMarriageStatusField runat="server" >
 <listcontrolstyle listboxrows="2" controltype="ListBox"  AutoPostBack="true" >
 </ListControlStyle>
@@ -61,7 +61,7 @@
     required=true</p></td>
     <td style="WIDTH: 20%"><asp:label id=UnboundMarriageStatusFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>
   <tr>
-    <td></td>
+    <td><remotion:SmartLabel ID="UnboundReadOnlyMarriageStatusFieldLabel" runat="server" ForControl="UnboundReadOnlyMarriageStatusField" Text="Marriage Status"/></td>
     <td><remotion:bocenumvalue id=UnboundReadOnlyMarriageStatusField runat="server" ReadOnly="True">
               <listcontrolstyle radionbuttonlistrepeatlayout="Table" controltype="ListBox"></listcontrolstyle>
             </remotion:bocenumvalue></td>
@@ -102,7 +102,7 @@
       disabled, bound, drop-down, required=false</td>
     <td style="WIDTH: 20%"><asp:label id=DisabledMarriageStatusFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>
   <tr>
-    <td></td>
+    <td><remotion:SmartLabel ID="DisabledUnboundMarriageStatusFieldLabel" runat="server" ForControl="DisabledUnboundMarriageStatusField" Text="Marriage Status"/></td>
     <td><remotion:bocenumvalue id=DisabledUnboundMarriageStatusField runat="server" enabled=false>
               <listcontrolstyle radiobuttonlisttextalign="Right" listboxrows="2" radionbuttonlistrepeatlayout="Table"
                 controltype="ListBox" radiobuttonlistrepeatdirection="Vertical"></listcontrolstyle>
@@ -112,7 +112,7 @@
     required=true</p></td>
     <td style="WIDTH: 20%"><asp:label id=DisabledUnboundMarriageStatusFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>
   <tr>
-    <td></td>
+    <td><remotion:SmartLabel ID="DisabledUnboundReadOnlyMarriageStatusFieldLabel" runat="server" ForControl="DisabledUnboundReadOnlyMarriageStatusField" Text="Marriage Status"/></td>
     <td><remotion:bocenumvalue id=DisabledUnboundReadOnlyMarriageStatusField runat="server" ReadOnly="True" enabled=false>
               <listcontrolstyle radionbuttonlistrepeatlayout="Table" controltype="ListBox"></listcontrolstyle>
             </remotion:bocenumvalue></td>

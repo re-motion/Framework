@@ -34,19 +34,19 @@
             bound, read-only</td>
           <td style="WIDTH: 20%"><asp:label id=ReadOnlyBirthdayFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>
         <tr>
-          <td></td>
+          <td><remotion:SmartLabel ID="UnboundBirthdayFieldLabel" runat="server" ForControl="UnboundBirthdayField" Text="Birthday"/></td>
           <td><remotion:bocdatetimevalue id=UnboundBirthdayField runat="server" readonly="False" required="False" ShowSeconds="true"></remotion:bocdatetimevalue></td>
           <td>
             unbound, value not set, not required, with seconds</td>
           <td style="WIDTH: 20%"><asp:label id=UnboundBirthdayFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>
         <tr>
-          <td></td>
+          <td><remotion:SmartLabel ID="UnboundRequiredBirthdayFieldLabel" runat="server" ForControl="UnboundRequiredBirthdayField" Text="Birthday"/></td>
           <td><remotion:bocdatetimevalue id="UnboundRequiredBirthdayField" runat="server" required="True"></remotion:bocdatetimevalue></td>
           <td>
             unbound, value not set</td>
-          <td style="WIDTH: 20%"><asp:label id="UnboundRequiredBirthdayFieldLabel" runat="server" enableviewstate="False">#</asp:label></td></tr>
+          <td style="WIDTH: 20%"><asp:label id="UnboundRequiredBirthdayFieldValueLabel" runat="server" enableviewstate="False">#</asp:label></td></tr>
         <tr>
-          <td></td>
+          <td><remotion:SmartLabel ID="UnboundReadOnlyBirthdayFieldLabel" runat="server" ForControl="UnboundReadOnlyBirthdayField" Text="Birthday"/></td>
           <td><remotion:bocdatetimevalue id=UnboundReadOnlyBirthdayField runat="server" readonly="True"></remotion:bocdatetimevalue></td>
           <td>
             unbound, value set, read only</td>
@@ -64,13 +64,13 @@
             bound, read-only</td>
           <td style="WIDTH: 20%"><asp:label id=ReadOnlyDateOfDeathFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>
         <tr>
-          <td></td>
+          <td><remotion:SmartLabel ID="UnboundDateOfDeathFieldLabel" runat="server" ForControl="UnboundDateOfDeathField" Text="Birthday"/></td>
           <td><remotion:bocdatetimevalue id=UnboundDateOfDeathField runat="server" readonly="False" required="False"></remotion:bocdatetimevalue></td>
           <td>
             unbound, value not set, not required</td>
           <td style="WIDTH: 20%"><asp:label id=UnboundDateOfDeathFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>
         <tr>
-          <td></td>
+          <td><remotion:SmartLabel ID="UnboundReadOnlyDateOfDeathFieldLabel" runat="server" ForControl="UnboundReadOnlyDateOfDeathField" Text="Birthday"/></td>
           <td><remotion:bocdatetimevalue id=UnboundReadOnlyDateOfDeathField runat="server" readonly="True"></remotion:bocdatetimevalue></td>
           <td>
             unbound, value set, read only</td>
@@ -100,13 +100,13 @@
             disabled, bound, read-only</td>
           <td style="WIDTH: 20%"><asp:label id=DisabledReadOnlyBirthdayFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>
         <tr>
-          <td></td>
+          <td><remotion:SmartLabel ID="DisabledUnboundBirthdayFieldLabel" runat="server" ForControl="DisabledUnboundBirthdayField" Text="Birthday"/></td>
           <td><remotion:bocdatetimevalue id=DisabledUnboundBirthdayField runat="server" readonly="False" required="False" enabled=false></remotion:bocdatetimevalue></td>
           <td>
              disabled, unbound, value set, not required</td>
           <td style="WIDTH: 20%"><asp:label id=DisabledUnboundBirthdayFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>
         <tr>
-          <td></td>
+          <td><remotion:SmartLabel ID="DisabledUnboundReadOnlyBirthdayFieldLabel" runat="server" ForControl="DisabledUnboundReadOnlyBirthdayField" Text="Birthday"/></td>
           <td><remotion:bocdatetimevalue id=DisabledUnboundReadOnlyBirthdayField runat="server" readonly="True" enabled=false></remotion:bocdatetimevalue></td>
           <td>
             disabled, unbound, value set, read only</td>

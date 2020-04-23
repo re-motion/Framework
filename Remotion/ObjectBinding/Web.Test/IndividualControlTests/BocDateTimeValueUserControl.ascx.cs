@@ -39,7 +39,7 @@ public class BocDateTimeValueUserControl : BaseUserControl
   protected BocDateTimeValue UnboundBirthdayField;
   protected Label UnboundBirthdayFieldValueLabel;
   protected BocDateTimeValue UnboundRequiredBirthdayField;
-  protected Label UnboundRequiredBirthdayFieldLabel;
+  protected Label UnboundRequiredBirthdayFieldValueLabel;
   protected BocDateTimeValue UnboundReadOnlyBirthdayField;
   protected Label UnboundReadOnlyBirthdayFieldValueLabel;
   protected BocDateTimeValue DateOfDeathField;
@@ -92,19 +92,13 @@ public class BocDateTimeValueUserControl : BaseUserControl
 
     Person person = (Person) CurrentObject.BusinessObject;
 
-    UnboundBirthdayField.Property = (IBusinessObjectDateTimeProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("DateOfBirth");
     //UnboundBirthdayField.LoadUnboundValue (person.DateOFBirth, IsPostBack);
-    UnboundReadOnlyBirthdayField.Property = (IBusinessObjectDateTimeProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("DateOfBirth");
     UnboundReadOnlyBirthdayField.LoadUnboundValue (person.DateOfBirth, IsPostBack);
 
-    UnboundDateOfDeathField.Property = (IBusinessObjectDateTimeProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("DateOfDeath");
     UnboundDateOfDeathField.LoadUnboundValue (person.DateOfDeath, IsPostBack);
-    //UnboundReadOnlyDateOfDeathField.Property = (Remotion.ObjectBinding.IBusinessObjectDateProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("DateOfDeath");
     UnboundReadOnlyDateOfDeathField.LoadUnboundValue (person.DateOfDeath, IsPostBack);
 
-    DisabledUnboundBirthdayField.Property = (IBusinessObjectDateTimeProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("DateOfBirth");
     DisabledUnboundBirthdayField.LoadUnboundValue (person.DateOfBirth, IsPostBack);
-    DisabledUnboundReadOnlyBirthdayField.Property = (IBusinessObjectDateTimeProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("DateOfBirth");
     DisabledUnboundReadOnlyBirthdayField.LoadUnboundValue (person.DateOfBirth, IsPostBack);
 
     DirectlySetBocDateTimeValueField.LoadUnboundValue (DateTime.Now, IsPostBack);
