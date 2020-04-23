@@ -16,6 +16,7 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
+using System.Threading;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
@@ -70,6 +71,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Subs
     [Test]
     public void EvaluatesTrue_WithIsEnabledTrue_WithBeginDateSameAsCurrentDate ()
     {
+      // Guard midnight
+      if (DateTime.Now.AddSeconds (10).Date != DateTime.Now.Date)
+        Thread.Sleep (TimeSpan.FromSeconds (10));
+
       _substitution.BeginDate = DateTime.Today;
       TestHelper.Transaction.CreateSubTransaction().EnterDiscardingScope();
 
@@ -79,6 +84,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Subs
     [Test]
     public void EvaluatesTrue_WithIsEnabledTrue_WithBeginDateSameAsCurrentDateButGreaterTime ()
     {
+      // Guard midnight
+      if (DateTime.Now.AddMinutes (1).Date != DateTime.Now.Date)
+        Thread.Sleep (TimeSpan.FromMinutes (2));
+
       _substitution.BeginDate = DateTime.Now.AddMinutes (1);
       TestHelper.Transaction.CreateSubTransaction().EnterDiscardingScope();
 
@@ -97,6 +106,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Subs
     [Test]
     public void EvaluatesTrue_WithIsEnabledTrue_WithEndDateSameAsCurrentDate ()
     {
+      // Guard midnight
+      if (DateTime.Now.AddSeconds (10).Date != DateTime.Now.Date)
+        Thread.Sleep (TimeSpan.FromSeconds (10));
+
       _substitution.EndDate = DateTime.Today;
       TestHelper.Transaction.CreateSubTransaction().EnterDiscardingScope();
 
@@ -106,6 +119,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Subs
     [Test]
     public void EvaluatesTrue_WithIsEnabledTrue_WithEndDateSameAsCurrentDateButLessTime()
     {
+      // Guard midnight
+      if (DateTime.Now.AddMinutes (-1).Date != DateTime.Now.Date)
+        Thread.Sleep (TimeSpan.FromMinutes (2));
+
       _substitution.EndDate = DateTime.Now.AddMinutes (-1);
       TestHelper.Transaction.CreateSubTransaction().EnterDiscardingScope();
 
