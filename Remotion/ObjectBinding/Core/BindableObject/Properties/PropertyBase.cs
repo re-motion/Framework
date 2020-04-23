@@ -16,8 +16,10 @@
 // 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Threading;
 using JetBrains.Annotations;
+using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.Reflection;
 using Remotion.Utilities;
 
@@ -58,6 +60,9 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
       [NotNull]
       public readonly BindableObjectGlobalizationService BindableObjectGlobalizationService;
 
+      [NotNull]
+      public readonly IBusinessObjectPropertyConstraintProvider BusinessObjectPropertyConstraintProvider;
+
       public Parameters (
           [NotNull] BindableObjectProvider businessObjectProvider,
           [NotNull] IPropertyInformation propertyInfo,
@@ -69,7 +74,8 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
           [NotNull] IDefaultValueStrategy defaultValueStrategy,
           [NotNull] IBindablePropertyReadAccessStrategy bindablePropertyReadAccessStrategy,
           [NotNull] IBindablePropertyWriteAccessStrategy bindablePropertyWriteAccessStrategy,
-          [NotNull] BindableObjectGlobalizationService bindableObjectGlobalizationService)
+          [NotNull] BindableObjectGlobalizationService bindableObjectGlobalizationService,
+          [NotNull]IBusinessObjectPropertyConstraintProvider businessObjectPropertyConstraintProvider)
       {
         ArgumentUtility.CheckNotNull ("businessObjectProvider", businessObjectProvider);
         ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
@@ -79,6 +85,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
         ArgumentUtility.CheckNotNull ("bindablePropertyReadAccessStrategy", bindablePropertyReadAccessStrategy);
         ArgumentUtility.CheckNotNull ("bindablePropertyWriteAccessStrategy", bindablePropertyWriteAccessStrategy);
         ArgumentUtility.CheckNotNull ("bindableObjectGlobalizationService", bindableObjectGlobalizationService);
+        ArgumentUtility.CheckNotNull ("businessObjectPropertyConstraintProvider", businessObjectPropertyConstraintProvider);
 
         BusinessObjectProvider = businessObjectProvider;
         PropertyInfo = propertyInfo;
@@ -105,6 +112,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
         BindablePropertyReadAccessStrategy = bindablePropertyReadAccessStrategy;
         BindablePropertyWriteAccessStrategy = bindablePropertyWriteAccessStrategy;
         BindableObjectGlobalizationService = bindableObjectGlobalizationService;
+        BusinessObjectPropertyConstraintProvider = businessObjectPropertyConstraintProvider;
       }
     }
 
@@ -122,6 +130,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     private readonly IBindablePropertyReadAccessStrategy _bindablePropertyReadAccessStrategy;
     private readonly IBindablePropertyWriteAccessStrategy _bindablePropertyWriteAccessStrategy;
     private readonly BindableObjectGlobalizationService _bindableObjectGlobalizationService;
+    private readonly IBusinessObjectPropertyConstraintProvider _businessObjectPropertyConstraintProvider;
 
     protected PropertyBase (Parameters parameters)
     {
@@ -140,6 +149,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
       _bindablePropertyReadAccessStrategy = parameters.BindablePropertyReadAccessStrategy;
       _bindablePropertyWriteAccessStrategy = parameters.BindablePropertyWriteAccessStrategy;
       _bindableObjectGlobalizationService = parameters.BindableObjectGlobalizationService;
+      _businessObjectPropertyConstraintProvider = parameters.BusinessObjectPropertyConstraintProvider;
       _isNullable = GetNullability();
       _valueGetter = _propertyInfo.GetGetMethod (true)?.GetFastInvoker<Func<object, object>>();
       _valueSetter = _propertyInfo.GetSetMethod (true)?.GetFastInvoker<Action<object, object>>();
@@ -289,6 +299,13 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
         return true;
 
       return !_bindablePropertyWriteAccessStrategy.CanWrite (obj, this);
+    }
+
+    public IEnumerable<IBusinessObjectPropertyConstraint> GetConstraints (IBusinessObject obj)
+    {
+      // obj can be null
+
+      return _businessObjectPropertyConstraintProvider.GetPropertyConstraints (ReflectedClass, this, obj);
     }
 
     /// <summary> Gets the <see cref="BindableObjectProvider"/> for this property. </summary>

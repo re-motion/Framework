@@ -27,6 +27,7 @@ using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
 using Remotion.FunctionalProgramming;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BindableObject.Properties;
+using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation;
@@ -77,7 +78,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
                   new BindableObjectDefaultValueStrategy(),
                   MockRepository.GenerateStub<IBindablePropertyReadAccessStrategy>(),
                   MockRepository.GenerateStub<IBindablePropertyWriteAccessStrategy>(),
-                  SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>()));
+                  SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>(),
+                  MockRepository.GenerateStub<IBusinessObjectPropertyConstraintProvider>()));
 
       _enumValue.Property = property;
       _enumValue.Stub (stub => stub.ClientID).Return (c_clientID);

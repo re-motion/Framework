@@ -24,6 +24,7 @@ using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.BindableObject;
+using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UnitTests.Domain;
@@ -91,6 +92,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
       {
         return Enumerable.Empty<BaseValidator>();
+      }
+
+      protected override IBusinessObjectConstraintVisitor CreateBusinessObjectConstraintVisitor ()
+      {
+        return NullBusinessObjectConstraintVisitor.Instance;
       }
 
       public new bool IsDesignMode

@@ -22,6 +22,7 @@ using System.Drawing.Design;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.ObjectBinding.Design;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Design;
@@ -148,6 +149,10 @@ namespace Remotion.ObjectBinding.Sample
         return isList;
       }
 
+      protected override IBusinessObjectConstraintVisitor CreateBusinessObjectConstraintVisitor ()
+      {
+        return NullBusinessObjectConstraintVisitor.Instance;
+      }
 
       protected override void Render (HtmlTextWriter writer)
       {

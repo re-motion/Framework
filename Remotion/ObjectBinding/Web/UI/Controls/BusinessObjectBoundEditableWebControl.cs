@@ -20,6 +20,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using JetBrains.Annotations;
+using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
@@ -41,6 +43,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private bool _isDirty;
     private bool _hasBeenRenderedInPreviousLifecycle;
     private bool _isRenderedInCurrentLifecycle;
+
+    [NotNull]
+    protected abstract IBusinessObjectConstraintVisitor CreateBusinessObjectConstraintVisitor ();
 
     /// <summary>
     /// Overrides the base method to call <see cref="ISmartPage.RegisterControlForDirtyStateTracking"/>
@@ -352,7 +357,25 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override void OnPreRender (EventArgs e)
     {
       base.OnPreRender (e);
+      ApplyConstraints();
       _isRenderedInCurrentLifecycle = true;
+    }
+
+    private void ApplyConstraints ()
+    {
+      if (IsDesignMode)
+        return;
+
+      if (DataSource == null)
+        return;
+
+      if (Property == null)
+        return;
+
+      var visitor = CreateBusinessObjectConstraintVisitor();
+      var constraints = Property.GetConstraints (DataSource.BusinessObject);
+      foreach (var constraint in constraints)
+        constraint.Accept (visitor);
     }
 
     /// <summary>

@@ -21,6 +21,7 @@ using Remotion.Globalization.ExtensibleEnums;
 using Remotion.Mixins;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BindableObject.Properties;
+using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.ObjectBinding.UnitTests.TestDomain;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
@@ -355,7 +356,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               new BindableObjectDefaultValueStrategy (),
               MockRepository.GenerateStub<IBindablePropertyReadAccessStrategy>(),
               MockRepository.GenerateStub<IBindablePropertyWriteAccessStrategy>(),
-              SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>()));
+              SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>(),
+              MockRepository.GenerateStub<IBusinessObjectPropertyConstraintProvider>()));
     }
   }
 }

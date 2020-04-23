@@ -24,6 +24,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using JetBrains.Annotations;
 using Remotion.Globalization;
+using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 // ReSharper disable once RedundantUsingDirective
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation;
@@ -283,6 +284,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       var validator = _validators.GetValidator<T>();
       if (validator != null)
         validator.ErrorMessage = errorMessage;
+    }
+
+    protected override IBusinessObjectConstraintVisitor CreateBusinessObjectConstraintVisitor ()
+    {
+      return new BocReferenceValueConstraintVisitor (this);
     }
 
     protected override void Render (HtmlTextWriter writer)

@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using Remotion.Validation.Results;
 
 namespace Remotion.Validation.Rules
@@ -28,8 +29,15 @@ namespace Remotion.Validation.Rules
     /// <summary>
     /// Performs validation using a validation context and returns a collection of Validation Failures.
     /// </summary>
-    /// <param name="context">Validation Context</param>
+    /// <param name="context">Validation Context. Must not be <see langword="null" />.</param>
     /// <returns>A collection of validation failures</returns>
-    IEnumerable<ValidationFailure> Validate (ValidationContext context);
+    IEnumerable<ValidationFailure> Validate ([NotNull] ValidationContext context);
+
+    /// <summary>
+    /// Evaluates if the validation rule is active for the specified <paramref name="context"/>.
+    /// </summary>
+    /// <param name="context">Validation Context. Must not be <see langword="null" />.</param>
+    /// <returns><see langword="true" /> if the <see cref="IValidationRule"/> is active.</returns>
+    bool IsActive ([NotNull] ValidationContext context);
   }
 }

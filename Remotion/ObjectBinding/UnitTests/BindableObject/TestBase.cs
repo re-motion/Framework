@@ -22,6 +22,7 @@ using Remotion.Development.UnitTesting;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BindableObject.Properties;
+using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Rhino.Mocks;
@@ -96,7 +97,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
         BindableObjectProvider provider,
         IBindablePropertyReadAccessStrategy bindablePropertyReadAccessStrategy = null,
         IBindablePropertyWriteAccessStrategy bindablePropertyWriteAccessStrategy = null,
-        BindableObjectGlobalizationService bindableObjectGlobalizationService = null)
+        BindableObjectGlobalizationService bindableObjectGlobalizationService = null,
+        IBusinessObjectPropertyConstraintProvider businessObjectPropertyConstraintProvider = null)
     {
       var reflector = new PropertyReflector (
           property,
@@ -104,7 +106,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
           MockRepository.GenerateStub<IDefaultValueStrategy>(),
           bindablePropertyReadAccessStrategy ?? SafeServiceLocator.Current.GetInstance<IBindablePropertyReadAccessStrategy>(),
           bindablePropertyWriteAccessStrategy ?? SafeServiceLocator.Current.GetInstance<IBindablePropertyWriteAccessStrategy>(),
-          bindableObjectGlobalizationService ?? SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>());
+          bindableObjectGlobalizationService ?? SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>(),
+          businessObjectPropertyConstraintProvider ?? SafeServiceLocator.Current.GetInstance<IBusinessObjectPropertyConstraintProvider>());
 
       return (PropertyBase.Parameters) PrivateInvoke.InvokeNonPublicMethod (
           reflector,
@@ -128,7 +131,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
         bool isReadOnly,
         IBindablePropertyReadAccessStrategy bindablePropertyReadAccessStrategy = null,
         IBindablePropertyWriteAccessStrategy bindablePropertyWriteAccessStrategy = null,
-        BindableObjectGlobalizationService bindableObjectGlobalizationService = null)
+        BindableObjectGlobalizationService bindableObjectGlobalizationService = null,
+        IBusinessObjectPropertyConstraintProvider businessObjectPropertyConstraintProvider = null)
     {
       return new PropertyBase.Parameters (
           businessObjectProvider,
@@ -141,7 +145,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
           new BindableObjectDefaultValueStrategy(),
           bindablePropertyReadAccessStrategy ?? SafeServiceLocator.Current.GetInstance<IBindablePropertyReadAccessStrategy>(),
           bindablePropertyWriteAccessStrategy ?? SafeServiceLocator.Current.GetInstance<IBindablePropertyWriteAccessStrategy>(),
-          bindableObjectGlobalizationService ?? SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>());
+          bindableObjectGlobalizationService ?? SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>(),
+          businessObjectPropertyConstraintProvider ?? SafeServiceLocator.Current.GetInstance<IBusinessObjectPropertyConstraintProvider>());
     }
   }
 }

@@ -133,6 +133,10 @@
     <Compile Include="BindableObject\IntergrationTests\OverriddenProperties\TestDomain\TargetClass.cs" />
     <Compile Include="BindableObject\IntergrationTests\OverriddenProperties\TestDomain\TestPropertyAttribute.cs" />
     <Compile Include="BusinessObjectPropertyAccessExceptionTest.cs" />
+    <Compile Include="BusinessObjectPropertyConstraints\BusinessObjectPropertyValueRequiredConstraintTest.cs" />
+    <Compile Include="BusinessObjectPropertyConstraints\BusinessObjectPropertyValueLengthConstraintTest.cs" />
+    <Compile Include="BusinessObjectPropertyConstraints\CompoundBusinessObjectPropertyConstraintProviderTest.cs" />
+    <Compile Include="BusinessObjectPropertyConstraints\IBusinessObjectPropertyConstraintProviderTest.cs" />
     <Compile Include="BusinessObjectPropertyPaths\BusinessObjectPropertyPathBaseTests\CascadedListPropertyPath_BusinessObjectPropertyPathBaseTest.cs" />
     <Compile Include="BusinessObjectPropertyPaths\BusinessObjectPropertyPathBaseTests\SingleValuePropertyPath_BusinessObjectPropertyPathBaseTest.cs" />
     <Compile Include="BusinessObjectPropertyPaths\BusinessObjectPropertyPathBaseTests\BusinessObjectPropertyPathTestHelper.cs" />

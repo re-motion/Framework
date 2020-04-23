@@ -22,6 +22,7 @@ using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.ObjectMothers;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BindableObject.Properties;
+using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.ObjectBinding.Security.BindableObject;
 using Remotion.ObjectBinding.Security.UnitTests.TestDomain;
 using Remotion.Reflection;
@@ -212,7 +213,8 @@ namespace Remotion.ObjectBinding.Security.UnitTests.BindableObject
           MockRepository.GenerateStub<IDefaultValueStrategy>(),
           MockRepository.GenerateStub<IBindablePropertyReadAccessStrategy>(),
           MockRepository.GenerateStub<IBindablePropertyWriteAccessStrategy>(),
-          SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>());
+          SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>(),
+          MockRepository.GenerateStub<IBusinessObjectPropertyConstraintProvider>());
     }
 
     private void ExpectHasAccessOnObjectSecurityStrategy (bool expectedResult, Enum accessType)

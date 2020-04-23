@@ -16,7 +16,9 @@
 // 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using JetBrains.Annotations;
+using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 
 namespace Remotion.ObjectBinding
 {
@@ -78,6 +80,8 @@ namespace Remotion.ObjectBinding
     /// <returns> <see langword="true"/> if the user can set this property. </returns>
     /// <remarks> The result may depend on the user's authorization and/or the object. </remarks>
     bool IsReadOnly ([CanBeNull] IBusinessObject obj);
+
+    IEnumerable<IBusinessObjectPropertyConstraint> GetConstraints ([CanBeNull] IBusinessObject obj);
 
     /// <summary>Gets the <see cref="IBusinessObjectClass"/> that was used to retrieve this property.</summary>
     /// <value>An instance of the <see cref="IBusinessObjectClass"/> type.</value>

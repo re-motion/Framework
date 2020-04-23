@@ -120,14 +120,14 @@ namespace OBWTest.Validation
       if (CurrentObject.SaveValues (false))
       {
         var person = (Person) CurrentObject.BusinessObject;
-        var validationResult = ValidationBuilder.BuildValidator (typeof (Person)).Validate (person);
+        var validationResult = ValidationBuilder.GetValidator (typeof (Person)).Validate (person);
         ValidationResult validationResultPartner = new ValidationResult();
         
         if (person.Partner != null)
-          validationResultPartner = ValidationBuilder.BuildValidator (typeof (Person)).Validate (person.Partner);
-        var validationResultFather = ValidationBuilder.BuildValidator (typeof (Person)).Validate (person.Father);
+          validationResultPartner = ValidationBuilder.GetValidator (typeof (Person)).Validate (person.Partner);
+        var validationResultFather = ValidationBuilder.GetValidator (typeof (Person)).Validate (person.Father);
 
-        var jobValidator = ValidationBuilder.BuildValidator (typeof (Job));
+        var jobValidator = ValidationBuilder.GetValidator (typeof (Job));
         List<ValidationFailure> jobFailures = new List<ValidationFailure>();
         foreach (var job in person.Jobs)
         {
@@ -165,11 +165,11 @@ namespace OBWTest.Validation
       return (FormGridRowInfoCollection) _listOfFormGridRowInfos[table];
     }
 
-    public IValidatorBuilder ValidationBuilder
+    public IValidatorProvider ValidationBuilder
     {
       get
       {
-        return SafeServiceLocator.Current.GetInstance<IValidatorBuilder>();
+        return SafeServiceLocator.Current.GetInstance<IValidatorProvider>();
       }
     }
   }

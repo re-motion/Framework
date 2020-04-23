@@ -24,6 +24,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using JetBrains.Annotations;
 using Remotion.Globalization;
+using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering;
@@ -254,6 +255,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       var virtualServicePath = VirtualPathUtility.GetVirtualPath (this, ControlServicePath);
       return WebServiceFactory.CreateJsonService<IBocAutoCompleteReferenceValueWebService> (virtualServicePath);
+    }
+
+    protected override IBusinessObjectConstraintVisitor CreateBusinessObjectConstraintVisitor ()
+    {
+      return new BocAutoCompleteReferenceValueConstraintVisitor (this);
     }
 
     protected override void Render (HtmlTextWriter writer)

@@ -58,5 +58,13 @@ namespace Remotion.Validation.Rules
       var propertyValidatorContext = new ObjectValidatorContext (context);
       return validator.Validate (propertyValidatorContext);
     }
+
+    bool IValidationRule.IsActive (ValidationContext context)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+
+      var instanceToValidate = (TValidatedType) context.InstanceToValidate;
+      return Condition (instanceToValidate);
+    }
   }
 }

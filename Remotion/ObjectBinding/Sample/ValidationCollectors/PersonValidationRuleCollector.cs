@@ -27,6 +27,9 @@ namespace Remotion.ObjectBinding.Sample.ValidationCollectors
       AddRule (p => p.LastName).Length (0, 25);
       AddRule (p => p.LastName).NotEmpty();
 
+      AddRule (p => p.FirstName).Length (0, 10);
+      AddRule (p => p.FirstName).NotEmpty();
+
       AddRule (p => p.Partner).NotNull();
     }
   }
