@@ -72,6 +72,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               typeof (SimpleReferenceType),
               typeof (SimpleReferenceType),
               null,
+              true,
               false,
               false));
     }

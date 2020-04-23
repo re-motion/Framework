@@ -46,7 +46,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     /// </remarks>
     public bool? GetDefaultValue (IBusinessObjectClass objectClass)
     {
-      if (IsNullable)
+      if (IsNullableDotNetType)
         return null;
       return false;
     }

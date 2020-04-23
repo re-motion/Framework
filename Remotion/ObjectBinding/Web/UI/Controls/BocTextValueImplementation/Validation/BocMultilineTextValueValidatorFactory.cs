@@ -58,7 +58,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
     private RequiredFieldValidator CreateRequiredFieldValidator (IBocMultilineTextValue control, IResourceManager resourceManager)
     {
       var areOptionalValidatorsEnabled = control.AreOptionalValidatorsEnabled;
-      var isPropertyTypeRequired = !areOptionalValidatorsEnabled && control.DataSource?.BusinessObject != null && (control.Property?.IsRequired ?? false);
+      var isPropertyTypeRequired = !areOptionalValidatorsEnabled && control.DataSource?.BusinessObject != null && control.Property?.IsNullable == false;
       var isControlRequired = areOptionalValidatorsEnabled && control.IsRequired;
 
       if (isPropertyTypeRequired || isControlRequired)

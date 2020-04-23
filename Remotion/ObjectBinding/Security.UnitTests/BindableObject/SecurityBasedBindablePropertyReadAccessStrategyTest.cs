@@ -209,6 +209,7 @@ namespace Remotion.ObjectBinding.Security.UnitTests.BindableObject
           typeof (IBusinessObject),
           new Lazy<Type> (() => typeof (IBusinessObject)),
           null,
+          true,
           false,
           false,
           MockRepository.GenerateStub<IDefaultValueStrategy>(),

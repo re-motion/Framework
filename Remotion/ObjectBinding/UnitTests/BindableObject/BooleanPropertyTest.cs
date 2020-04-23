@@ -80,6 +80,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               typeof (bool),
               typeof (bool),
               new ListInfo (typeof (bool[]), typeof (bool)),
+              true,
               false,
               false));
 
@@ -96,6 +97,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               typeof (bool),
               typeof (bool),
               new ListInfo (typeof (bool?[]), typeof (bool?)),
+              false,
               false,
               false));
 

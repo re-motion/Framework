@@ -168,7 +168,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
                 typeof (UndefinedEnumValueAttribute)));
       }
 
-      if (IsNullable)
+      if (IsNullableDotNetType)
       {
         throw new InvalidOperationException (
             string.Format (

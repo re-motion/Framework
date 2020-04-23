@@ -188,11 +188,17 @@ namespace Remotion.ObjectBinding.BindableObject
 
     protected virtual bool GetIsRequired ()
     {
+      return !GetIsNullable();
+    }
+
+    protected bool GetIsNullable ()
+    {
+      // TODO RM-5906: Unify with PropertyBase.IsNullableDotNetType
       if (_propertyInfo.PropertyType.IsEnum && AttributeUtility.IsDefined<UndefinedEnumValueAttribute> (_propertyInfo.PropertyType, false))
-        return false;
-      if (_propertyInfo.PropertyType.IsValueType && Nullable.GetUnderlyingType (_propertyInfo.PropertyType) == null)
         return true;
-      return false;
+      if (_propertyInfo.PropertyType.IsValueType && Nullable.GetUnderlyingType (_propertyInfo.PropertyType) == null)
+        return false;
+      return true;
     }
 
     protected virtual bool GetIsReadOnly ()
@@ -241,6 +247,7 @@ namespace Remotion.ObjectBinding.BindableObject
           underlyingType,
           GetConcreteType (underlyingType),
           GetListInfo(),
+          GetIsNullable(),
           GetIsRequired(),
           GetIsReadOnly(),
           GetDefaultValueStrategy(),

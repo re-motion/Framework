@@ -72,6 +72,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
                   typeof (TestEnum),
                   new Lazy<Type> (() => typeof (TestEnum)),
                   null,
+                  false,
                   true,
                   false,
                   new BindableObjectDefaultValueStrategy(),

@@ -65,6 +65,7 @@ namespace OBWTest.UI
               propertyInfo.PropertyType,
               new Lazy<Type> (() => propertyInfo.PropertyType),
               null,
+              true,
               false,
               false,
               new BindableObjectDefaultValueStrategy(),

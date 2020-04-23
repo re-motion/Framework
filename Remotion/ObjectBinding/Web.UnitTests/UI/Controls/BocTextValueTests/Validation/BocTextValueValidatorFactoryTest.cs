@@ -222,7 +222,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests.Val
     {
       var dataSourceStub = MockRepository.GenerateStub<IBusinessObjectDataSource>();
       var propertyStub = (IBusinessObjectProperty) MockRepository.GenerateStub (propertyType);
-      propertyStub.Stub (p => p.IsRequired).Throw (new InvalidOperationException ("Property is not relevant with optional validators enabled."));
+      propertyStub.Stub (p => p.IsNullable).Throw (new InvalidOperationException ("Property.IsNullable is not relevant with optional validators enabled."));
+      propertyStub.Stub (p => p.IsRequired).Throw (new InvalidOperationException ("Property.IsRequired is not relevant."));
 
       var controlMock = MockRepository.GenerateMock<IBocTextValue>();
       controlMock.Expect (c => c.ActualValueType).Return (valueType);
@@ -247,7 +248,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests.Val
       var dataSourceStub = MockRepository.GenerateStub<IBusinessObjectDataSource>();
       dataSourceStub.BusinessObject = hasBusinessObject ? MockRepository.GenerateStub<IBusinessObject>() : null;
       var propertyStub = (IBusinessObjectProperty) MockRepository.GenerateStub (propertyType);
-      propertyStub.Stub (p => p.IsRequired).Return (isRequired);
+      propertyStub.Stub (p => p.IsNullable).Return (!isRequired);
+      propertyStub.Stub (p => p.IsRequired).Throw (new InvalidOperationException ("Property.IsRequired is not relevant."));
 
       var controlMock = MockRepository.GenerateMock<IBocTextValue>();
       controlMock.Expect (c => c.ActualValueType).Return (valueType);

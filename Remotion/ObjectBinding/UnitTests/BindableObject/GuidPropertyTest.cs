@@ -46,6 +46,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               typeof (Guid),
               typeof (Guid),
               null,
+              false,
               true,
               false));
 
@@ -126,6 +127,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               typeof (Guid),
               typeof (Guid),
               null,
+              false,
               true,
               false));
     }
@@ -140,6 +142,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               typeof (Guid),
               new ListInfo (typeof (Guid[]), typeof (Guid)),
               false,
+              false,
               false));
     }
 
@@ -152,6 +155,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               typeof (Guid),
               typeof (Guid),
               new ListInfo (typeof (Guid?[]), typeof (Guid?)),
+              true,
               false,
               false));
     }

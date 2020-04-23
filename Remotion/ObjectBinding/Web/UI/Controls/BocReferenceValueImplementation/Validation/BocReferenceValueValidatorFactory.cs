@@ -52,7 +52,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     private RequiredFieldValidator CreateRequiredFieldValidator (IBocReferenceValue control, IResourceManager resourceManage)
     {
       var areOptionalValidatorsEnabled = control.AreOptionalValidatorsEnabled;
-      var isPropertyTypeRequired = !areOptionalValidatorsEnabled && control.DataSource?.BusinessObject != null && (control.Property?.IsRequired ?? false);
+      var isPropertyTypeRequired = !areOptionalValidatorsEnabled && control.DataSource?.BusinessObject != null && control.Property?.IsNullable == false;
       var isControlRequired = areOptionalValidatorsEnabled && control.IsRequired;
 
       if (isPropertyTypeRequired || isControlRequired)

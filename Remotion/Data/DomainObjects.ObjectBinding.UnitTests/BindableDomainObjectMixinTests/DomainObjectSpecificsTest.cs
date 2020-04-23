@@ -86,6 +86,27 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     }
 
     [Test]
+    public void Nullability ()
+    {
+      Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("RequiredPropertyNotInMapping").IsNullable, Is.False);
+      Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("RequiredStringProperty").IsNullable, Is.True);
+      Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("RequiredValueProperty").IsNullable, Is.False);
+      Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("RequiredEnumProperty").IsNullable, Is.False);
+      Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("RequiredRelatedObjectProperty").IsNullable, Is.True);
+      Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("RequiredBidirectionalRelatedObjectProperty").IsNullable, Is.True);
+      Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("RequiredBidirectionalRelatedObjectsProperty").IsNullable, Is.True);
+
+      Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("NonRequiredPropertyNotInMapping").IsNullable, Is.True);
+      Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("NonRequiredStringProperty").IsNullable, Is.True);
+      Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("NonRequiredValueProperty").IsNullable, Is.True);
+      Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("NonRequiredEnumProperty").IsNullable, Is.True);
+      Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("NonRequiredUndefinedEnumProperty").IsNullable, Is.True);
+      Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("NonRequiredRelatedObjectProperty").IsNullable, Is.True);
+      Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("NonRequiredBidirectionalRelatedObjectProperty").IsNullable, Is.True);
+      Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("NonRequiredBidirectionalRelatedObjectsProperty").IsNullable, Is.True);
+    }
+
+    [Test]
     public void Requiredness ()
     {
       Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("RequiredPropertyNotInMapping").IsRequired, Is.True);
@@ -138,21 +159,27 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
 
       var notNullableBooleanProperty = businessObjectClass.GetPropertyDefinition ("NotNullableBooleanProperty");
       Assert.That (notNullableBooleanProperty.IsRequired, Is.True);
+      Assert.That (notNullableBooleanProperty.IsNullable, Is.False);
 
       var notNullableStringProperty = businessObjectClass.GetPropertyDefinition ("NotNullableStringPropertyWithLengthConstraint");
       Assert.That (notNullableStringProperty.IsRequired, Is.True);
+      Assert.That (notNullableStringProperty.IsNullable, Is.True);
 
       var notNullableRelationProperty = businessObjectClass.GetPropertyDefinition ("MandatoryUnidirectionalRelation");
       Assert.That (notNullableRelationProperty.IsRequired, Is.True);
+      Assert.That (notNullableRelationProperty.IsNullable, Is.True);
 
       var nullableBooleanProperty = businessObjectClass.GetPropertyDefinition ("NullableBooleanProperty");
       Assert.That (nullableBooleanProperty.IsRequired, Is.False);
+      Assert.That (nullableBooleanProperty.IsNullable, Is.True);
 
       var nullableStringProperty = businessObjectClass.GetPropertyDefinition ("NullableStringPropertyWithoutLengthConstraint");
       Assert.That (nullableStringProperty.IsRequired, Is.False);
+      Assert.That (nullableStringProperty.IsNullable, Is.True);
 
       var nullableRelationProperty = businessObjectClass.GetPropertyDefinition ("NotMandatoryUnidirectionalRelation");
       Assert.That (nullableRelationProperty.IsRequired, Is.False);
+      Assert.That (nullableRelationProperty.IsNullable, Is.True);
     }
 
     [Test]

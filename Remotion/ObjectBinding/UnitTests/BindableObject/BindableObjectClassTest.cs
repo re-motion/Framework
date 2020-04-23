@@ -351,6 +351,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               typeof (SimpleReferenceType),
               new Lazy<Type> (() => typeof (SimpleReferenceType)),
               null,
+              true,
               false,
               false,
               new BindableObjectDefaultValueStrategy (),
