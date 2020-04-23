@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests
               conn.Open();
             }
 
-            using (var conn = new SqlConnection (SetUpFixture.MasterConnectionString))
+            using (var conn = new SqlConnection (SetUpFixture.TestDomainConnectionString))
             {
               conn.Open();
             }
