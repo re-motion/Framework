@@ -19,8 +19,8 @@ using System;
 namespace Remotion.Security
 {
   /// <summary>
-  /// Objects implementing the <see cref="ISecurityContextFactory"/> interface are typically used by the <see cref="ISecurityStrategy"/> 
-  /// to create an <see cref="ISecurityContext"/> for a buiness object.
+  /// Objects implementing the <see cref="ISecurityContextFactory"/> interface are typically used by the <see cref="IObjectSecurityStrategy"/> 
+  /// to create an <see cref="ISecurityContext"/> for a business object.
   /// </summary>
   /// <remarks>
   /// <note type="inotes">

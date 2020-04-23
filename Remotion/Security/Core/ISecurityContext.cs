@@ -24,13 +24,13 @@ namespace Remotion.Security
   /// </summary>
   /// <remarks>
   /// Use the the <see cref="ISecurityContextFactory"/> to create an instance of an object implementing <see cref="ISecurityContext"/>. This factory 
-  /// is typically used by the <see cref="ISecurityStrategy"/>'s <see cref="ISecurityStrategy.HasAccess"/> method to create a
+  /// is typically used by the <see cref="IObjectSecurityStrategy"/>'s <see cref="IObjectSecurityStrategy.HasAccess"/> method to create a
   /// security context for a security query.
   /// </remarks>
   public interface ISecurityContext
   {
     /// <summary>
-    /// Gets the type name of the <see cref="ISecurableObject"/> for which the permissions are to be evaluated by the <see cref="ISecurityStrategy"/>.
+    /// Gets the type name of the <see cref="ISecurableObject"/> for which the permissions are to be evaluated by the <see cref="IObjectSecurityStrategy"/>.
     /// </summary>
     /// <value>
     /// A <see cref="string"/> that uniquely identifies the type of the <see cref="ISecurableObject"/> to the <see cref="IServiceProvider"/>.

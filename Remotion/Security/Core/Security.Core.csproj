@@ -118,7 +118,6 @@
     <Compile Include="ISecurityPrincipal.cs" />
     <Compile Include="ISecurityPrincipalRole.cs" />
     <Compile Include="ISecurityProvider.cs" />
-    <Compile Include="ISecurityStrategy.cs" />
     <Compile Include="Metadata\MemberAffiliation.cs" />
     <Compile Include="Metadata\IMemberResolver.cs" />
     <Compile Include="Metadata\NullMemberResolver.cs" />
