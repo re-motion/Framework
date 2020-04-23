@@ -30,7 +30,7 @@
   <tr>
     <td></td>
     <td>
-      <remotion:BocTextValue ID="NameField" runat="server" DataSourceControl="CurrentObject"
+      <remotion:BocTextValue ID="NameField" runat="server" DataSourceControl="CurrentObject" EnableOptionalValidators="true"
         PropertyIdentifier="Name">
       </remotion:BocTextValue>
     </td>
@@ -38,7 +38,7 @@
   <tr>
     <td></td>
     <td>
-      <remotion:BocList ID="PositionsList" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Positions" Selection="Multiple" ShowEmptyListMessage="True" ShowEmptyListReadOnlyMode="True">
+      <remotion:BocList ID="PositionsList" runat="server" DataSourceControl="CurrentObject" EnableOptionalValidators="true" PropertyIdentifier="Positions" Selection="Multiple" ShowEmptyListMessage="True" ShowEmptyListReadOnlyMode="True">
         <FixedColumns>
           <remotion:BocSimpleColumnDefinition ItemID="Position" PropertyPathIdentifier="Position">
             <PersistedCommand>

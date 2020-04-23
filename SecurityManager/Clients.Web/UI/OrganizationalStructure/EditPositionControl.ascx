@@ -30,7 +30,7 @@
   <tr>
     <td></td>
     <td>
-      <remotion:BocTextValue ID="NameField" runat="server" DataSourceControl="CurrentObject"
+      <remotion:BocTextValue ID="NameField" runat="server" DataSourceControl="CurrentObject" EnableOptionalValidators="true"
         PropertyIdentifier="Name">
       </remotion:BocTextValue>
     </td>
@@ -38,13 +38,13 @@
   <tr>
     <td></td>
     <td>
-      <remotion:BocBooleanValue runat="server" ID="DelegableField" DataSourceControl="CurrentObject" PropertyIdentifier="Delegable" />
+      <remotion:BocBooleanValue runat="server" ID="DelegableField" DataSourceControl="CurrentObject" EnableOptionalValidators="true" PropertyIdentifier="Delegable" />
     </td>
   </tr>
   <tr>
     <td></td>
     <td>
-      <remotion:BocList ID="GroupTypesList" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="GroupTypes" Selection="Multiple" ShowEmptyListMessage="True" ShowEmptyListReadOnlyMode="True">
+      <remotion:BocList ID="GroupTypesList" runat="server" DataSourceControl="CurrentObject" EnableOptionalValidators="true" PropertyIdentifier="GroupTypes" Selection="Multiple" ShowEmptyListMessage="True" ShowEmptyListReadOnlyMode="True">
         <FixedColumns>
           <remotion:BocSimpleColumnDefinition ItemID="GroupType" PropertyPathIdentifier="GroupType">
             <PersistedCommand>

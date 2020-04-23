@@ -30,7 +30,7 @@
   <tr>
     <td></td>
     <td>
-      <remotion:BocTextValue ID="NameField" runat="server" DataSourceControl="CurrentObject"
+      <remotion:BocTextValue ID="NameField" runat="server" DataSourceControl="CurrentObject" EnableOptionalValidators="true"
         PropertyIdentifier="Name">
       </remotion:BocTextValue>
     </td>
@@ -38,13 +38,13 @@
   <tr>
     <td></td>
     <td>
-      <remotion:BocBooleanValue ID="IsAbstractField" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="IsAbstract" />
+      <remotion:BocBooleanValue ID="IsAbstractField" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="IsAbstract" EnableOptionalValidators="true" />
     </td>
   </tr>
   <tr>
     <td></td>
     <td>
-      <remotion:BocAutoCompleteReferenceValue ID="ParentField" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Parent">
+      <remotion:BocAutoCompleteReferenceValue ID="ParentField" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Parent" EnableOptionalValidators="true">
         <PersistedCommand>
           <remotion:BocCommand />
         </PersistedCommand>
@@ -55,7 +55,7 @@
   <tr>
     <td></td>
     <td>
-      <remotion:BocList ID="ChildrenList" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Children" Selection="Disabled" ReadOnly="True" ShowEmptyListMessage="true" ShowEmptyListReadOnlyMode="true">
+      <remotion:BocList ID="ChildrenList" runat="server" DataSourceControl="CurrentObject" EnableOptionalValidators="true" PropertyIdentifier="Children" Selection="Disabled" ReadOnly="True" ShowEmptyListMessage="true" ShowEmptyListReadOnlyMode="true">
         <FixedColumns>
           <remotion:BocSimpleColumnDefinition ItemID="DisplayName" PropertyPathIdentifier="DisplayName">
             <PersistedCommand>
