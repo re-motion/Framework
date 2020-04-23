@@ -18,6 +18,7 @@ using System;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation.Factories;
 using Remotion.ServiceLocation;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
@@ -41,8 +42,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       Assert.That (instance, Is.InstanceOf<CompoundValidatorFactory<UserControlBinding>>());
 
       var factories = ((CompoundValidatorFactory<UserControlBinding>) instance).VlidatorFactories;
-      Assert.That (factories.Select (f => f.GetType()), Has.Member (typeof (UserControlBindingValidatorFactory)));
-      Assert.That (factories.Count, Is.EqualTo (1));
+      Assert.That (
+          factories.Select (f => f.GetType()),
+          Is.EqualTo (new[] { typeof (UserControlBindingValidatorFactory), typeof (ValidationUserControlBindingValidatorFactory)}));
     }
 
     [Test]

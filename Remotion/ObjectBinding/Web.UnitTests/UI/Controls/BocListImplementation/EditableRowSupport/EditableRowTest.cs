@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.CodeDom;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -22,6 +23,8 @@ using NUnit.Framework;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation.Factories;
 using Remotion.ObjectBinding.Web.UnitTests.Domain;
 using Remotion.Web.UI.Controls;
 
@@ -286,14 +289,24 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Assert.That (_editableRow.HasValidators (6), Is.True);
 
       ControlCollection validators0 = _editableRow.GetValidators (0);
-      Assert.That (validators0, Is.Not.Null);
-      Assert.That (validators0.Count, Is.EqualTo (1));
+      Assert.That (validators0.Cast<BaseValidator>().Select (v => v.GetType()),
+          Is.EqualTo (
+              new[]
+              {
+                  typeof (ControlCharactersCharactersValidator),
+                  typeof (BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator)
+              }));
 
       ControlCollection validators6 = _editableRow.GetValidators (6);
-      Assert.That (validators6, Is.Not.Null);
-      Assert.That (validators6.Count, Is.EqualTo (2));
-      Assert.That (validators6[0] is RequiredFieldValidator, Is.True);
-      Assert.That (validators6[1] is NumericValidator, Is.True);
+      Assert.That (
+          validators6.Cast<BaseValidator>().Select (v => v.GetType()),
+          Is.EqualTo (
+              new[]
+              {
+                  typeof (RequiredFieldValidator),
+                  typeof (NumericValidator),
+                  typeof (BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator)
+              }));
     }
 
     [Test]
@@ -334,13 +347,19 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       ControlCollection validators0 = _editableRow.GetValidators (0);
       Assert.That (validators0, Is.Not.Null);
-      Assert.That (validators0.Count, Is.EqualTo (1));
+      Assert.That (
+          validators0.Cast<BaseValidator>().Select (v => v.GetType()),
+          Is.EqualTo (new[] { typeof (ControlCharactersCharactersValidator), typeof (BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator) }));
 
       ControlCollection validators6 = _editableRow.GetValidators (6);
-      Assert.That (validators6, Is.Not.Null);
-      Assert.That (validators6.Count, Is.EqualTo (2));
-      Assert.That (validators6[0] is RequiredFieldValidator, Is.True);
-      Assert.That (validators6[1] is NumericValidator, Is.True);
+      Assert.That (validators6.Cast<BaseValidator>().Select (v => v.GetType()),
+          Is.EqualTo (
+              new[]
+              {
+                  typeof (RequiredFieldValidator),
+                  typeof (NumericValidator),
+                  typeof (BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator)
+              }));
     }
 
     [Test]
@@ -677,10 +696,14 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Assert.That (_editableRow.HasValidators (1), Is.False);
 
       ControlCollection validators = _editableRow.GetValidators (0);
-      Assert.That (validators, Is.Not.Null);
-      Assert.That (validators.Count, Is.EqualTo (2));
-      Assert.That (validators[0] is RequiredFieldValidator, Is.True);
-      Assert.That (validators[1] is NumericValidator, Is.True);
+      Assert.That (validators.Cast<BaseValidator>().Select (v => v.GetType()),
+          Is.EqualTo (
+              new[]
+              {
+                  typeof (RequiredFieldValidator),
+                  typeof (NumericValidator),
+                  typeof (BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator)
+              }));
 
       Assert.That (_editableRow.GetValidators (1), Is.Null);
     }
@@ -707,10 +730,14 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Assert.That (_editableRow.HasValidators (1), Is.False);
 
       ControlCollection validators = _editableRow.GetValidators (0);
-      Assert.That (validators, Is.Not.Null);
-      Assert.That (validators.Count, Is.EqualTo (2));
-      Assert.That (validators[0] is RequiredFieldValidator, Is.True);
-      Assert.That (validators[1] is NumericValidator, Is.True);
+      Assert.That (validators.Cast<BaseValidator>().Select (v => v.GetType()),
+          Is.EqualTo (
+              new[]
+              {
+                  typeof (RequiredFieldValidator),
+                  typeof (NumericValidator),
+                  typeof (BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator)
+              }));
 
       Assert.That (_editableRow.GetValidators (1), Is.Null);
     }

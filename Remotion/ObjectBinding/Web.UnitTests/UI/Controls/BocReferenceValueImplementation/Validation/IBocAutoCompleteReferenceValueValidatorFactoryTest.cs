@@ -4,6 +4,7 @@ using NUnit.Framework;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Validation;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation.Factories;
 using Remotion.ServiceLocation;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImplementation.Validation
@@ -27,8 +28,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       Assert.That (instance, Is.InstanceOf<CompoundValidatorFactory<IBocAutoCompleteReferenceValue>>());
 
       var factories = ((CompoundValidatorFactory<IBocAutoCompleteReferenceValue>) instance).VlidatorFactories;
-      Assert.That (factories.Select (f => f.GetType()), Has.Member (typeof (BocAutoCompleteReferenceValueValidatorFactory)));
-      Assert.That (factories.Count, Is.EqualTo (1));
+      Assert.That (
+          factories.Select (f => f.GetType()),
+          Is.EqualTo (new[] { typeof (BocAutoCompleteReferenceValueValidatorFactory), typeof (ValidationBusinessObjectBoundEditableWebControlValidatorFactory) }));
     }
 
     [Test]

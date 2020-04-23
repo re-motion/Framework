@@ -4,6 +4,7 @@ using NUnit.Framework;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Validation;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation.Factories;
 using Remotion.ServiceLocation;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplementation.Validation
@@ -27,8 +28,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       Assert.That (instance, Is.InstanceOf<CompoundValidatorFactory<IBocEnumValue>>());
 
       var factories = ((CompoundValidatorFactory<IBocEnumValue>) instance).VlidatorFactories;
-      Assert.That (factories.Select (f => f.GetType()), Has.Member (typeof (BocEnumValueValidatorFactory)));
-      Assert.That (factories.Count, Is.EqualTo (1));
+      Assert.That (
+          factories.Select (f => f.GetType()),
+          Is.EqualTo (new[] { typeof (BocEnumValueValidatorFactory), typeof (ValidationBusinessObjectBoundEditableWebControlValidatorFactory) }));
     }
 
     [Test]
