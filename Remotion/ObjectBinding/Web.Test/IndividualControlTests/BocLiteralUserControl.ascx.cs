@@ -18,6 +18,7 @@ using System;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 
 namespace OBWTest.IndividualControlTests
 {
@@ -37,13 +38,17 @@ namespace OBWTest.IndividualControlTests
       get { return CurrentObject; }
     }
 
+    public override BindableObjectDataSourceControlValidationResultDispatchingValidator DataSourceValidationResultDispatchingValidator
+    {
+      get { return CurrentObjectValidationResultDispatchingValidator; }
+    }
+
     override protected void OnLoad (EventArgs e)
     {
       base.OnLoad (e);
 
       Person person = (Person) CurrentObject.BusinessObject;
 
-      UnboundCVField.Property = (IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("CVStringLiteral");
       UnboundCVField.LoadUnboundValue (person.CVStringLiteral, IsPostBack);
     }
 

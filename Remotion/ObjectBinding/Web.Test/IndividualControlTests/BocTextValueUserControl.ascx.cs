@@ -20,6 +20,7 @@ using System.Web.UI.WebControls;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 
@@ -63,6 +64,7 @@ public class BocTextValueUserControl : BaseUserControl
   protected WebButton ReadOnlyFirstNameTestSetNewValueButton;
   protected HtmlTable FormGrid;
   protected BindableObjectDataSourceControl CurrentObject;
+  protected BindableObjectDataSourceControlValidationResultDispatchingValidator CurrentObjectValidationResultDispatchingValidator;
   protected BocTextValue PasswordRenderMasked;
   protected BocTextValue PasswordNoRender;
   protected BocTextValue PasswordRenderMaskedReadOnly;
@@ -86,7 +88,12 @@ public class BocTextValueUserControl : BaseUserControl
     get { return CurrentObject; }
   }
 
-	#region Web Form Designer generated code
+  public override BindableObjectDataSourceControlValidationResultDispatchingValidator DataSourceValidationResultDispatchingValidator
+  {
+    get { return CurrentObjectValidationResultDispatchingValidator; }
+  }
+
+  #region Web Form Designer generated code
 	override protected void OnInit(EventArgs e)
 	{
 		//
@@ -112,13 +119,9 @@ public class BocTextValueUserControl : BaseUserControl
 
     Person person = (Person) CurrentObject.BusinessObject;
 
-    UnboundFirstNameField.Property = (IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("FirstName");
     //UnboundFirstNameField.LoadUnboundValue (person.FirstName, IsPostBack);
-    UnboundReadOnlyFirstNameField.Property = (IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("FirstName");
     UnboundReadOnlyFirstNameField.LoadUnboundValue (person.FirstName, IsPostBack);
-    DisabledUnboundFirstNameField.Property = (IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("FirstName");
     DisabledUnboundFirstNameField.LoadUnboundValue (person.FirstName, IsPostBack);
-    DisabledUnboundReadOnlyFirstNameField.Property = (IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("FirstName");
     DisabledUnboundReadOnlyFirstNameField.LoadUnboundValue (person.FirstName, IsPostBack);
     PasswordNoRender.LoadUnboundValue ("Password", IsPostBack);
     PasswordRenderMasked.LoadUnboundValue ("Password", IsPostBack);

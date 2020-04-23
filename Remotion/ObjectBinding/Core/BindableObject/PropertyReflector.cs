@@ -21,6 +21,7 @@ using System.Collections.ObjectModel;
 using Remotion.ExtensibleEnums;
 using Remotion.Mixins;
 using Remotion.ObjectBinding.BindableObject.Properties;
+using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
@@ -46,6 +47,7 @@ namespace Remotion.ObjectBinding.BindableObject
     private readonly IBindablePropertyReadAccessStrategy _bindablePropertyReadAccessStrategy;
     private readonly IBindablePropertyWriteAccessStrategy _bindablePropertyWriteAccessStrategy;
     private readonly BindableObjectGlobalizationService _bindableObjectGlobalizationService;
+    private readonly IBusinessObjectPropertyConstraintProvider _businessObjectPropertyConstraintProvider;
 
     protected PropertyReflector (
         IPropertyInformation propertyInfo,
@@ -56,7 +58,8 @@ namespace Remotion.ObjectBinding.BindableObject
             new BindableObjectDefaultValueStrategy(),
             SafeServiceLocator.Current.GetInstance<IBindablePropertyReadAccessStrategy>(),
             SafeServiceLocator.Current.GetInstance<IBindablePropertyWriteAccessStrategy>(),
-            SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>())
+            SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>(),
+            SafeServiceLocator.Current.GetInstance<IBusinessObjectPropertyConstraintProvider>())
     {
     }
 
@@ -66,7 +69,8 @@ namespace Remotion.ObjectBinding.BindableObject
         IDefaultValueStrategy defaultValueStrategy,
         IBindablePropertyReadAccessStrategy bindablePropertyReadAccessStrategy,
         IBindablePropertyWriteAccessStrategy bindablePropertyWriteAccessStrategy,
-        BindableObjectGlobalizationService bindableObjectGlobalizationService)
+        BindableObjectGlobalizationService bindableObjectGlobalizationService,
+        IBusinessObjectPropertyConstraintProvider businessObjectPropertyConstraintProvider)
     {
       ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
       ArgumentUtility.CheckNotNull ("businessObjectProvider", businessObjectProvider);
@@ -74,12 +78,14 @@ namespace Remotion.ObjectBinding.BindableObject
       ArgumentUtility.CheckNotNull ("bindablePropertyReadAccessStrategy", bindablePropertyReadAccessStrategy);
       ArgumentUtility.CheckNotNull ("bindablePropertyWriteAccessStrategy", bindablePropertyWriteAccessStrategy);
       ArgumentUtility.CheckNotNull ("bindableObjectGlobalizationService", bindableObjectGlobalizationService);
+      ArgumentUtility.CheckNotNull ("businessObjectPropertyConstraintProvider", businessObjectPropertyConstraintProvider);
 
       _propertyInfo = propertyInfo;
       _businessObjectProvider = businessObjectProvider;
       _bindablePropertyReadAccessStrategy = bindablePropertyReadAccessStrategy;
       _bindablePropertyWriteAccessStrategy = bindablePropertyWriteAccessStrategy;
       _bindableObjectGlobalizationService = bindableObjectGlobalizationService;
+      _businessObjectPropertyConstraintProvider = businessObjectPropertyConstraintProvider;
       _defaultValueStrategy = defaultValueStrategy;
     }
 
@@ -182,11 +188,17 @@ namespace Remotion.ObjectBinding.BindableObject
 
     protected virtual bool GetIsRequired ()
     {
+      return !GetIsNullable();
+    }
+
+    protected bool GetIsNullable ()
+    {
+      // TODO RM-5906: Unify with PropertyBase.IsNullableDotNetType
       if (_propertyInfo.PropertyType.IsEnum && AttributeUtility.IsDefined<UndefinedEnumValueAttribute> (_propertyInfo.PropertyType, false))
-        return false;
-      if (_propertyInfo.PropertyType.IsValueType && Nullable.GetUnderlyingType (_propertyInfo.PropertyType) == null)
         return true;
-      return false;
+      if (_propertyInfo.PropertyType.IsValueType && Nullable.GetUnderlyingType (_propertyInfo.PropertyType) == null)
+        return false;
+      return true;
     }
 
     protected virtual bool GetIsReadOnly ()
@@ -235,12 +247,14 @@ namespace Remotion.ObjectBinding.BindableObject
           underlyingType,
           GetConcreteType (underlyingType),
           GetListInfo(),
+          GetIsNullable(),
           GetIsRequired(),
           GetIsReadOnly(),
           GetDefaultValueStrategy(),
           _bindablePropertyReadAccessStrategy,
           _bindablePropertyWriteAccessStrategy,
-          _bindableObjectGlobalizationService);
+          _bindableObjectGlobalizationService,
+          _businessObjectPropertyConstraintProvider);
     }
 
     private Type GetItemTypeFromAttribute ()

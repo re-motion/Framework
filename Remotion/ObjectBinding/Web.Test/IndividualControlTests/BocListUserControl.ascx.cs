@@ -21,6 +21,7 @@ using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Globalization;
 
@@ -52,6 +53,7 @@ public class BocListUserControl : BaseUserControl
   protected BocList AllColumnsList;
   protected HtmlGenericControl NonVisualControls;
   protected BindableObjectDataSourceControl CurrentObject;
+  protected BindableObjectDataSourceControlValidationResultDispatchingValidator CurrentObjectValidationResultDispatchingValidator;
 
   protected override void RegisterEventHandlers ()
   {
@@ -80,6 +82,11 @@ public class BocListUserControl : BaseUserControl
   public override IBusinessObjectDataSourceControl DataSource
   {
     get { return CurrentObject; }
+  }
+
+  public override BindableObjectDataSourceControlValidationResultDispatchingValidator DataSourceValidationResultDispatchingValidator
+  {
+    get { return CurrentObjectValidationResultDispatchingValidator; }
   }
 
   override protected void OnInit(EventArgs e)

@@ -41,7 +41,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation
     string GetTimeValueName ();
     string GetDatePickerText ();
     IDateTimeFormatter DateTimeFormatter { get; }
-    
+
     /// <summary>
     /// Gets the list of validation errors for the date value of this control.
     /// </summary>

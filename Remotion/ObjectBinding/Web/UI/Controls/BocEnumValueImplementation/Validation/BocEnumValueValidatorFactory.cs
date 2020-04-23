@@ -40,20 +40,34 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Vali
     {
       ArgumentUtility.CheckNotNull ("control", control);
 
-      if (isReadOnly || !control.IsRequired)
+      if (isReadOnly)
         yield break;
 
       var resourceManager = control.GetResourceManager();
-      yield return CreateRequiredFieldValidator (control, resourceManager);
+
+      var requiredFieldValidator = CreateRequiredFieldValidator (control, resourceManager);
+      if (requiredFieldValidator != null)
+        yield return requiredFieldValidator;
     }
 
     private RequiredFieldValidator CreateRequiredFieldValidator (IBocEnumValue control, IResourceManager resourceManager)
     {
-      var requiredValidator = new RequiredFieldValidator ();
-      requiredValidator.ID = control.ID + "_ValidatorRequried";
-      requiredValidator.ControlToValidate = control.TargetControl.ID;
-      requiredValidator.ErrorMessage = resourceManager.GetString (BocEnumValue.ResourceIdentifier.NullItemValidationMessage);
-      return requiredValidator;
+      var areOptionalValidatorsEnabled = control.AreOptionalValidatorsEnabled;
+      var isPropertyTypeRequired = !areOptionalValidatorsEnabled && control.DataSource?.BusinessObject != null && control.Property?.IsNullable == false;
+      var isControlRequired = areOptionalValidatorsEnabled && control.IsRequired;
+
+      if (isPropertyTypeRequired || isControlRequired)
+      {
+        var requiredValidator = new RequiredFieldValidator();
+        requiredValidator.ID = control.ID + "_ValidatorRequried";
+        requiredValidator.ControlToValidate = control.TargetControl.ID;
+        requiredValidator.ErrorMessage = resourceManager.GetString (BocEnumValue.ResourceIdentifier.NullItemValidationMessage);
+        return requiredValidator;
+      }
+      else
+      {
+        return null;
+      }
     }
   }
 }

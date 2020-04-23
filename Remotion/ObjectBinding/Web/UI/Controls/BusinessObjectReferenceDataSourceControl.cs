@@ -22,6 +22,7 @@ using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
+using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.ObjectBinding.Web.UI.Design;
 using Remotion.ServiceLocation;
 using Remotion.Web.UI.Controls;
@@ -365,6 +366,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       var validatorFactory = ServiceLocator.GetInstance<IBusinessObjectReferenceDataSourceControlValidatorFactory>();
       _validators = validatorFactory.CreateValidators (this, isReadOnly).ToList().AsReadOnly();
       return _validators;
+    }
+
+    protected override IBusinessObjectConstraintVisitor CreateBusinessObjectConstraintVisitor ()
+    {
+      return NullBusinessObjectConstraintVisitor.Instance;
     }
 
     /// <summary>

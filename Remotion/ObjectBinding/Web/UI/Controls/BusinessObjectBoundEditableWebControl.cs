@@ -20,6 +20,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using JetBrains.Annotations;
+using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UI;
@@ -35,10 +38,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   {
     private bool? _required;
     private bool? _readOnly;
+    private bool? _enableOptionalValidators;
     private HashSet<BaseValidator> _validators;
     private bool _isDirty;
     private bool _hasBeenRenderedInPreviousLifecycle;
     private bool _isRenderedInCurrentLifecycle;
+
+    [NotNull]
+    protected abstract IBusinessObjectConstraintVisitor CreateBusinessObjectConstraintVisitor ();
 
     /// <summary>
     /// Overrides the base method to call <see cref="ISmartPage.RegisterControlForDirtyStateTracking"/>
@@ -208,10 +215,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary>
     ///   Gets a flag that determines whether the control is to be treated as a required value.
     /// </summary>
-    /// <remarks>
-    ///     The value of this property is used to decide whether <see cref="CreateValidators"/> should 
-    ///     include a <see cref="RequiredFieldValidator"/> for this control.
-    /// </remarks>
     /// <value>
     ///   The following rules are used to determine the value of this property:
     ///   <list type="bullet">
@@ -239,6 +242,45 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         if (Property != null)
           return Property.IsRequired;
         return false;
+      }
+    }
+
+    /// <summary> Gets or sets a flag that specifies whether the control's validation goes beyond the .NET data type requirements. </summary>
+    /// <remarks> Set this property to <see langword="null"/> in order to use the default value (see <see cref="AreOptionalValidatorsEnabled"/>). </remarks>
+    [Description ("Explicitly specifies whether the control automatically validates more than .NET data type requirements.")]
+    [Category ("Behavior")]
+    [DefaultValue (typeof (bool?), "")]
+    public bool? EnableOptionalValidators
+    {
+      get { return _enableOptionalValidators; }
+      set { _enableOptionalValidators = value; }
+    }
+
+    /// <summary>
+    ///   Gets a flag that determines whether the control should validate more than .NET data type requirements.
+    /// </summary>
+    /// <value>
+    ///   The following rules are used to determine the value of this property:
+    ///   <list type="bullet">
+    ///     <item>
+    ///       If the <see cref="EnableOptionalValidators"/> property is not <see langword="null"/>, 
+    ///       the value of <see cref="EnableOptionalValidators"/> is returned.
+    ///     </item>
+    ///     <item>
+    /// 
+    ///     </item>
+    ///     <item>Otherwise, <see langword="false"/> is returned.</item>
+    ///   </list>
+    /// </value>
+    [Browsable (false)]
+    public bool AreOptionalValidatorsEnabled
+    {
+      get
+      {
+        if (EnableOptionalValidators.HasValue)
+          return EnableOptionalValidators.Value;
+
+        return ValidatorConfiguration.AreOptionalValidatorsEnabled (this);
       }
     }
 
@@ -315,7 +357,25 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override void OnPreRender (EventArgs e)
     {
       base.OnPreRender (e);
+      ApplyConstraints();
       _isRenderedInCurrentLifecycle = true;
+    }
+
+    private void ApplyConstraints ()
+    {
+      if (IsDesignMode)
+        return;
+
+      if (DataSource == null)
+        return;
+
+      if (Property == null)
+        return;
+
+      var visitor = CreateBusinessObjectConstraintVisitor();
+      var constraints = Property.GetConstraints (DataSource.BusinessObject);
+      foreach (var constraint in constraints)
+        constraint.Accept (visitor);
     }
 
     /// <summary>
@@ -416,6 +476,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
         return property.IsReadOnly (dataSource.BusinessObject);
       }
+    }
+
+    protected IBusinessObjectBoundEditableWebControlValidatorConfiguration ValidatorConfiguration
+    {
+      get { return ServiceLocator.GetInstance<IBusinessObjectBoundEditableWebControlValidatorConfiguration>(); }
     }
   }
 }

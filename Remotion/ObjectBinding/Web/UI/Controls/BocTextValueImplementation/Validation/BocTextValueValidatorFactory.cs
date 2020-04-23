@@ -47,12 +47,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
         yield break;
 
       IResourceManager resourceManager = control.GetResourceManager();
-      if (control.IsRequired)
-        yield return CreateRequiredFieldValidator (control, resourceManager);
 
+      var requiredFieldValidator = CreateRequiredFieldValidator (control, resourceManager);
+      if (requiredFieldValidator != null)
+        yield return requiredFieldValidator;
 
-      if (control.TextBoxStyle.MaxLength.HasValue)
-        yield return CreateLengthValidator (control, resourceManager);
+      var lengthValidator = CreateLengthValidator (control, resourceManager);
+      if (lengthValidator != null)
+        yield return lengthValidator;
 
       var typeValidator = CreateTypeValidator (control, resourceManager);
       if (typeValidator != null)
@@ -61,26 +63,44 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
 
     private RequiredFieldValidator CreateRequiredFieldValidator (IBocTextValue control, IResourceManager resourceManager)
     {
-      RequiredFieldValidator requiredValidator = new RequiredFieldValidator();
-      requiredValidator.ID = control.ID + "_ValidatorRequired";
-      requiredValidator.ControlToValidate = control.TargetControl.ID;
-      requiredValidator.ErrorMessage = resourceManager.GetString (BocTextValue.ResourceIdentifier.RequiredErrorMessage);
-      return requiredValidator;
+      var areOptionalValidatorsEnabled = control.AreOptionalValidatorsEnabled;
+      var isPropertyTypeRequired = !areOptionalValidatorsEnabled && control.DataSource?.BusinessObject != null && control.Property?.IsNullable == false;
+      var isControlRequired = areOptionalValidatorsEnabled && control.IsRequired;
+
+      if (isPropertyTypeRequired || isControlRequired)
+      {
+        RequiredFieldValidator requiredValidator = new RequiredFieldValidator ();
+        requiredValidator.ID = control.ID + "_ValidatorRequired";
+        requiredValidator.ControlToValidate = control.TargetControl.ID;
+        requiredValidator.ErrorMessage = resourceManager.GetString (BocTextValue.ResourceIdentifier.RequiredErrorMessage);
+        return requiredValidator;
+      }
+      else
+      {
+        return null;
+      }
     }
 
     private LengthValidator CreateLengthValidator (IBocTextValue control, IResourceManager resourceManager)
     {
       var maxLength = control.TextBoxStyle.MaxLength;
-      Assertion.IsTrue (maxLength.HasValue);
+      var hasControlMaxLength = control.AreOptionalValidatorsEnabled && maxLength.HasValue;
 
-      LengthValidator lengthValidator = new LengthValidator();
-      lengthValidator.ID = control.ID + "_ValidatorMaxLength";
-      lengthValidator.ControlToValidate = control.TargetControl.ID;
-      lengthValidator.MaximumLength = maxLength.Value;
-      lengthValidator.ErrorMessage = string.Format (
-          resourceManager.GetString (BocTextValue.ResourceIdentifier.MaxLengthValidationMessage),
-          maxLength.Value);
-      return lengthValidator;
+      if (hasControlMaxLength)
+      {
+        LengthValidator lengthValidator = new LengthValidator();
+        lengthValidator.ID = control.ID + "_ValidatorMaxLength";
+        lengthValidator.ControlToValidate = control.TargetControl.ID;
+        lengthValidator.MaximumLength = maxLength.Value;
+        lengthValidator.ErrorMessage = string.Format (
+            resourceManager.GetString (BocTextValue.ResourceIdentifier.MaxLengthValidationMessage),
+            maxLength.Value);
+        return lengthValidator;
+      }
+      else
+      {
+        return null;
+      }
     }
 
     [CanBeNull]

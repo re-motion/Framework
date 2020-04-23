@@ -442,7 +442,7 @@
                              ListControlStyle-ControlType="RadioButtonList"
                              ReadOnly="false"
                              Required="true"
-        
+                             EnableOptionalValidators="true"
                              runat="server"/>
     </td>
     <td>(RadioButtonList, required without selected value)</td>

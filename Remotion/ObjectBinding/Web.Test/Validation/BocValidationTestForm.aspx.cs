@@ -20,13 +20,12 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using OBWTest.ValidatorFactoryDecorators;
 using Remotion.Collections;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.ObjectBinding.Web.Validation.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Validation;
@@ -95,7 +94,6 @@ namespace OBWTest.Validation
       //
       InitializeComponent();
       base.OnInit (e);
-      SwitchingValidatorFactoryState.Instance.UseFluentValidatorFactory = true;
     }
 
     #region Web Form Designer generated code
@@ -120,14 +118,14 @@ namespace OBWTest.Validation
       if (CurrentObject.SaveValues (false))
       {
         var person = (Person) CurrentObject.BusinessObject;
-        var validationResult = ValidationBuilder.BuildValidator (typeof (Person)).Validate (person);
+        var validationResult = ValidatorProvider.GetValidator (typeof (Person)).Validate (person);
         ValidationResult validationResultPartner = new ValidationResult();
         
         if (person.Partner != null)
-          validationResultPartner = ValidationBuilder.BuildValidator (typeof (Person)).Validate (person.Partner);
-        var validationResultFather = ValidationBuilder.BuildValidator (typeof (Person)).Validate (person.Father);
+          validationResultPartner = ValidatorProvider.GetValidator (typeof (Person)).Validate (person.Partner);
+        var validationResultFather = ValidatorProvider.GetValidator (typeof (Person)).Validate (person.Father);
 
-        var jobValidator = ValidationBuilder.BuildValidator (typeof (Job));
+        var jobValidator = ValidatorProvider.GetValidator (typeof (Job));
         List<ValidationFailure> jobFailures = new List<ValidationFailure>();
         foreach (var job in person.Jobs)
         {
@@ -165,12 +163,9 @@ namespace OBWTest.Validation
       return (FormGridRowInfoCollection) _listOfFormGridRowInfos[table];
     }
 
-    public IValidatorBuilder ValidationBuilder
+    public IValidatorProvider ValidatorProvider
     {
-      get
-      {
-        return SafeServiceLocator.Current.GetInstance<IValidatorBuilder>();
-      }
+      get { return SafeServiceLocator.Current.GetInstance<IValidatorProvider>(); }
     }
   }
 }

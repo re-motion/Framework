@@ -57,6 +57,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
       Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Scalar"));
       Assert.That (businessObjectProperty.PropertyType, Is.SameAs (typeof (SimpleValueType)));
       Assert.That (businessObjectProperty.IsList, Is.False);
+      Assert.That (businessObjectProperty.IsNullable, Is.False);
       Assert.That (businessObjectProperty.IsRequired, Is.True);
       Assert.That (businessObjectProperty.IsReadOnly (null), Is.False);
     }
@@ -76,6 +77,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
       Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("NullableScalar"));
       Assert.That (businessObjectProperty.PropertyType, Is.SameAs (typeof (SimpleValueType?)));
       Assert.That (businessObjectProperty.IsList, Is.False);
+      Assert.That (businessObjectProperty.IsNullable, Is.True);
       Assert.That (businessObjectProperty.IsRequired, Is.False);
       Assert.That (businessObjectProperty.IsReadOnly (null), Is.False);
     }
@@ -95,6 +97,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
       Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Scalar"));
       Assert.That (businessObjectProperty.PropertyType, Is.SameAs (typeof (EnumWithUndefinedValue)));
       Assert.That (businessObjectProperty.IsList, Is.False);
+      Assert.That (businessObjectProperty.IsNullable, Is.True);
       Assert.That (businessObjectProperty.IsRequired, Is.False);
       Assert.That (businessObjectProperty.IsReadOnly (null), Is.False);
     }
@@ -114,6 +117,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
       Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("ReadOnlyScalar"));
       Assert.That (businessObjectProperty.PropertyType, Is.SameAs (typeof (SimpleValueType)));
       Assert.That (businessObjectProperty.IsList, Is.False);
+      Assert.That (businessObjectProperty.IsNullable, Is.False);
       Assert.That (businessObjectProperty.IsRequired, Is.True);
       Assert.That (businessObjectProperty.IsReadOnly (null), Is.True);
     }
@@ -133,6 +137,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
       Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("ReadOnlyNonPublicSetterScalar"));
       Assert.That (businessObjectProperty.PropertyType, Is.SameAs (typeof (SimpleValueType)));
       Assert.That (businessObjectProperty.IsList, Is.False);
+      Assert.That (businessObjectProperty.IsNullable, Is.False);
       Assert.That (businessObjectProperty.IsRequired, Is.True);
       Assert.That (businessObjectProperty.IsReadOnly (null), Is.True);
     }
@@ -152,6 +157,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
       Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("ReadOnlyAttributeScalar"));
       Assert.That (businessObjectProperty.PropertyType, Is.SameAs (typeof (SimpleValueType)));
       Assert.That (businessObjectProperty.IsList, Is.False);
+      Assert.That (businessObjectProperty.IsNullable, Is.False);
       Assert.That (businessObjectProperty.IsRequired, Is.True);
       Assert.That (businessObjectProperty.IsReadOnly (null), Is.True);
     }
@@ -173,6 +179,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
       Assert.That (businessObjectProperty.IsList, Is.True);
       Assert.That (businessObjectProperty.ListInfo, Is.Not.Null);
       Assert.That (businessObjectProperty.ListInfo.ItemType, Is.SameAs (typeof (SimpleValueType)));
+      Assert.That (businessObjectProperty.IsNullable, Is.True);
       Assert.That (businessObjectProperty.IsRequired, Is.False);
       Assert.That (businessObjectProperty.IsReadOnly (null), Is.False);
     }
@@ -194,6 +201,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
       Assert.That (businessObjectProperty.IsList, Is.True);
       Assert.That (businessObjectProperty.ListInfo, Is.Not.Null);
       Assert.That (businessObjectProperty.ListInfo.ItemType, Is.SameAs (typeof (SimpleValueType?)));
+      Assert.That (businessObjectProperty.IsNullable, Is.True);
       Assert.That (businessObjectProperty.IsRequired, Is.False);
       Assert.That (businessObjectProperty.IsReadOnly (null), Is.False);
     }

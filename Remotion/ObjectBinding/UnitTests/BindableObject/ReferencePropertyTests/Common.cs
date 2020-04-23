@@ -43,6 +43,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
           typeof (SimpleBusinessObjectClass),
           typeof (ClassWithAllDataTypes),
           null,
+          true,
           false,
           false);
       var referenceProperty = new ReferenceProperty (parameters);
@@ -63,6 +64,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
           typeof (SimpleBusinessObjectClass),
           typeof (SimpleBusinessObjectClass),
           null,
+          true,
           false,
           false);
       var referenceProperty = new ReferenceProperty (parameters);

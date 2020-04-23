@@ -16,7 +16,9 @@
 // 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using JetBrains.Annotations;
+using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 
 namespace Remotion.ObjectBinding
 {
@@ -62,6 +64,11 @@ namespace Remotion.ObjectBinding
     /// <remarks> The value of this property may depend on the current culture. </remarks>
     string DisplayName { get; }
 
+    /// <summary> Gets a flag indicating whether this property's .NET type is nullable. </summary>
+    /// <value> <see langword="true"/> if this property supports being assigned <see langword="null" />. </value>
+    /// <remarks> Setting required not-nullable properties to <see langword="null"/> will result in an error. </remarks>
+    bool IsNullable { get; }
+
     /// <summary> Gets a flag indicating whether this property is required. </summary>
     /// <value> <see langword="true"/> if this property is required. </value>
     /// <remarks> Setting required properties to <see langword="null"/> may result in an error. </remarks>
@@ -78,6 +85,8 @@ namespace Remotion.ObjectBinding
     /// <returns> <see langword="true"/> if the user can set this property. </returns>
     /// <remarks> The result may depend on the user's authorization and/or the object. </remarks>
     bool IsReadOnly ([CanBeNull] IBusinessObject obj);
+
+    IEnumerable<IBusinessObjectPropertyConstraint> GetConstraints ([CanBeNull] IBusinessObject obj);
 
     /// <summary>Gets the <see cref="IBusinessObjectClass"/> that was used to retrieve this property.</summary>
     /// <value>An instance of the <see cref="IBusinessObjectClass"/> type.</value>

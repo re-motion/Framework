@@ -24,6 +24,7 @@ using Remotion.Globalization.ExtensibleEnums;
 using Remotion.Mixins;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BindableObject.Properties;
+using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.ObjectBinding.UnitTests.TestDomain;
 using Remotion.Reflection;
 using Remotion.TypePipe;
@@ -428,6 +429,47 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     }
 
     [Test]
+    public void GetConstraints_WithBusinessObject_ReturnsValueFromProvider ()
+    {
+      var businessObject = MockRepository.GenerateStub<IBusinessObject>();
+        var propertyInfo = GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Scalar");
+        var constraintProviderStub = MockRepository.GenerateStub<IBusinessObjectPropertyConstraintProvider>();
+        PropertyBase propertyBase =
+            new StubPropertyBase (
+                CreateParameters (
+                    propertyInfo: propertyInfo,
+                    underlyingType: propertyInfo.PropertyType,
+                    concreteType: propertyInfo.PropertyType,
+                    businessObjectPropertyConstraintProvider: constraintProviderStub));
+        propertyBase.SetReflectedClass (_bindableObjectClass);
+
+        var result = new[] { MockRepository.GenerateStub<IBusinessObjectPropertyConstraint>() };
+        constraintProviderStub.Stub (_ => _.GetPropertyConstraints (_bindableObjectClass, propertyBase, businessObject)).Return (result);
+
+        Assert.That (propertyBase.GetConstraints (businessObject), Is.SameAs (result));
+    }
+
+    [Test]
+    public void GetConstraints_WithoutBusinessObject_ReturnsValueFromProvider ()
+    {
+      var propertyInfo = GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Scalar");
+      var constraintProviderStub = MockRepository.GenerateStub<IBusinessObjectPropertyConstraintProvider>();
+      PropertyBase propertyBase =
+          new StubPropertyBase (
+              CreateParameters (
+                  propertyInfo: propertyInfo,
+                  underlyingType: propertyInfo.PropertyType,
+                  concreteType: propertyInfo.PropertyType,
+                  businessObjectPropertyConstraintProvider: constraintProviderStub));
+      propertyBase.SetReflectedClass (_bindableObjectClass);
+
+      var result = new[] { MockRepository.GenerateStub<IBusinessObjectPropertyConstraint>() };
+      constraintProviderStub.Stub (_ => _.GetPropertyConstraints (_bindableObjectClass, propertyBase, null)).Return (result);
+
+      Assert.That (propertyBase.GetConstraints (null), Is.SameAs (result));
+    }
+
+    [Test]
     public void GetDefaultValueStrategy ()
     {
       var businessObject = MockRepository.GenerateStub<IBusinessObject>();
@@ -662,11 +704,13 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
         Type underlyingType = null,
         Type concreteType = null,
         IListInfo listInfo = null,
+        bool isNullable = true,
         bool isRequired = false,
         bool isReadOnly = false,
         IBindablePropertyReadAccessStrategy bindablePropertyReadAccessStrategy = null,
         IBindablePropertyWriteAccessStrategy bindablePropertyWriteAccessStrategy = null,
-        BindableObjectGlobalizationService bindableObjectGlobalizationService = null)
+        BindableObjectGlobalizationService bindableObjectGlobalizationService = null,
+        IBusinessObjectPropertyConstraintProvider businessObjectPropertyConstraintProvider = null)
     {
       return base.CreateParameters (
           businessObjectProvider ?? _bindableObjectProvider,
@@ -674,11 +718,13 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
           underlyingType,
           concreteType,
           listInfo,
+          isNullable,
           isRequired,
           isReadOnly,
           bindablePropertyReadAccessStrategy,
           bindablePropertyWriteAccessStrategy,
-          bindableObjectGlobalizationService);
+          bindableObjectGlobalizationService,
+          businessObjectPropertyConstraintProvider);
     }
 
   }

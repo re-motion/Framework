@@ -740,37 +740,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
-    public void CreateValidatorsReadOnly ()
-    {
-      _control.NullItemErrorMessage = "RequiredFieldErrorMessage";
-      _control.ReadOnly = true;
-      _control.Required = true;
-      BaseValidator[] validators = _control.CreateValidators().ToArray();
-      Assert.That (validators.Length, Is.EqualTo (0));
-    }
-
-    [Test]
-    public void CreateValidatorsNotRequired ()
-    {
-      _control.ReadOnly = false;
-      _control.Required = false;
-      BaseValidator[] validators = _control.CreateValidators().ToArray();
-      Assert.That (validators.Length, Is.EqualTo (1));
-      Assert.That (validators[0] is BocAutoCompleteReferenceValueInvalidDisplayNameValidator);
-    }
-
-    [Test]
-    public void CreateValidatorsEditableRequired ()
-    {
-      _control.ReadOnly = false;
-      _control.Required = true;
-      BaseValidator[] validators = _control.CreateValidators().ToArray();
-      Assert.That (validators.Length, Is.EqualTo (2));
-      Assert.That (validators[0] is RequiredFieldValidator);
-      Assert.That (validators[1] is BocAutoCompleteReferenceValueInvalidDisplayNameValidator);
-    }
-
-    [Test]
     public void RaisePostDataChangedEvent ()
     {
       bool eventHandlerCalled = false;

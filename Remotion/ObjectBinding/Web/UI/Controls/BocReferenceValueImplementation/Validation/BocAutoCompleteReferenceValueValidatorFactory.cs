@@ -44,19 +44,31 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
       var resourceManager = control.GetResourceManager();
 
-      if (control.IsRequired)
-        yield return CreateRequiredFieldValidator (control, resourceManager);
+      var requiredFieldValidator = CreateRequiredFieldValidator (control, resourceManager);
+      if (requiredFieldValidator != null)
+        yield return requiredFieldValidator;
 
       yield return CreateInvalidDisplayNameValidator (control, resourceManager);
     }
 
     private RequiredFieldValidator CreateRequiredFieldValidator (IBocAutoCompleteReferenceValue control, IResourceManager resourceManage)
     {
-      var requiredFieldValidator = new RequiredFieldValidator ();
-      requiredFieldValidator.ID = control.ID + "_ValidatorNotNullItem";
-      requiredFieldValidator.ControlToValidate = control.ID;
-      requiredFieldValidator.ErrorMessage = resourceManage.GetString (BocAutoCompleteReferenceValue.ResourceIdentifier.NullItemErrorMessage);
-      return requiredFieldValidator;
+      var areOptionalValidatorsEnabled = control.AreOptionalValidatorsEnabled;
+      var isPropertyTypeRequired = !areOptionalValidatorsEnabled && control.DataSource?.BusinessObject != null && control.Property?.IsNullable == false;
+      var isControlRequired = areOptionalValidatorsEnabled && control.IsRequired;
+
+      if (isPropertyTypeRequired || isControlRequired)
+      {
+        var requiredFieldValidator = new RequiredFieldValidator();
+        requiredFieldValidator.ID = control.ID + "_ValidatorNotNullItem";
+        requiredFieldValidator.ControlToValidate = control.ID;
+        requiredFieldValidator.ErrorMessage = resourceManage.GetString (BocAutoCompleteReferenceValue.ResourceIdentifier.NullItemErrorMessage);
+        return requiredFieldValidator;
+      }
+      else
+      {
+        return null;
+      }
     }
 
     private BocAutoCompleteReferenceValueInvalidDisplayNameValidator CreateInvalidDisplayNameValidator (IBocAutoCompleteReferenceValue control, IResourceManager resourceManage)

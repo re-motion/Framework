@@ -20,10 +20,15 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using OBWTest.IndividualControlTests;
 using Remotion.ObjectBinding;
+using Remotion.ObjectBinding.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.ServiceLocation;
 using Remotion.Text;
+using Remotion.Validation;
+using Remotion.Validation.Results;
 using Remotion.Web;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
@@ -198,13 +203,6 @@ public class TestTabbedForm : TestWxeBasePage
     postBackButton.Style["margin-right"] = "10pt";
     MultiView.BottomControls.Add (postBackButton);
 
-    WebButton validateButton = new WebButton();
-    validateButton.ID = "ValidateButton";
-    validateButton.Text = "&Validate";
-    validateButton.Style["margin-right"] = "10pt";
-    validateButton.Click += new EventHandler(ValidateButton_Click);
-    MultiView.BottomControls.Add (validateButton);
-
     _wxeControlsPlaceHolder = new PlaceHolder();
     MultiView.BottomControls.Add (_wxeControlsPlaceHolder);
 		
@@ -280,22 +278,40 @@ public class TestTabbedForm : TestWxeBasePage
     foreach (IDataEditControl control in _dataEditControls)
       control.DataSource.SaveValues (false);
 
+    if (!PerformDomainValidation())
+      return;
+
     ExecuteNextStep();
   }
 
-  private void ValidateButton_Click(object sender, EventArgs e)
+  private bool PerformDomainValidation ()
   {
-    MultiView.EnsureAllLazyLoadedViews();
+    var businessObject = Function.Object;
+    var validator = ValidatorProvider.GetValidator (businessObject.GetType());
+    var validationResult = validator.Validate (businessObject);
 
-    foreach (UserControl control in _dataEditControls)
+    var combinedValidationResult = new ValidationResult (validationResult.Errors);
+
+    if (!combinedValidationResult.IsValid)
     {
-      FormGridManager formGridManager = control.FindControl("FormGridManager") as FormGridManager;
-      if (formGridManager != null)
+      var businessObjectValidationResult = BusinessObjectValidationResult.Create (combinedValidationResult);
+      foreach (var control in _dataEditControls)
       {
-        formGridManager.PrepareValidation();
-        formGridManager.Validate();
+
+        BindableObjectDataSourceControlValidationResultDispatchingValidator dataEditControlDispatchingValidator;
+        if (control is TestTabbedPersonDetailsUserControl detailsUserControl)
+          dataEditControlDispatchingValidator = detailsUserControl.DataSourceValidationResultDispatchingValidator;
+        else if (control is TestTabbedPersonJobsUserControl jobsUserControl)
+          dataEditControlDispatchingValidator = jobsUserControl.DataSourceValidationResultDispatchingValidator;
+        else
+          dataEditControlDispatchingValidator = null;
+
+        dataEditControlDispatchingValidator?.DispatchValidationFailures (businessObjectValidationResult);
+        dataEditControlDispatchingValidator?.Validate();
       }
     }
+
+    return combinedValidationResult.IsValid;
   }
 
   private void MultiView_ActiveViewChanged(object sender, EventArgs e)
@@ -306,6 +322,10 @@ public class TestTabbedForm : TestWxeBasePage
   protected override ControlCollection WxeControls
   {
     get { return _wxeControlsPlaceHolder.Controls; }
+  }
+  private IValidatorProvider ValidatorProvider
+  {
+    get { return SafeServiceLocator.Current.GetInstance<IValidatorProvider>(); }
   }
 }
 

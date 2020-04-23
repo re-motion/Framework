@@ -15,6 +15,13 @@ namespace Remotion.Validation.UnitTests.Rules
 
     [Test]
     [Ignore ("TODO RM-5906")]
+    public void IsActive ()
+    {
+      // consider better name than "IsActive"
+    }
+
+    [Test]
+    [Ignore ("TODO RM-5906")]
     public void ToString_Overridden ()
     {
       PropertyValidationRule<Customer, string> validationRule = null;

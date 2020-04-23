@@ -301,6 +301,7 @@
                                 PropertyIdentifier="Partner"
                                 
                                 Required="true"
+                                EnableOptionalValidators="true"
                                 runat="server">
     </remotion:BocReferenceValue>
   </td>

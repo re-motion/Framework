@@ -23,6 +23,7 @@ using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
+using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.Validation;
@@ -265,6 +266,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       _datePickerButton.TargetControlID = GetDateValueName();
 
       EvaluateWaiConformity();
+    }
+
+    protected override IBusinessObjectConstraintVisitor CreateBusinessObjectConstraintVisitor ()
+    {
+      return new BocDateTimeValueConstraintVisitor (this);
     }
 
     protected override void Render (HtmlTextWriter writer)

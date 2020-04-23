@@ -15,8 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.ComponentModel;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.ServiceLocation;
 using Remotion.Web.UI.Globalization;
 
@@ -27,6 +29,9 @@ namespace OBWTest.IndividualControlTests
           DataEditUserControl,
           IObjectWithResources //  Provides the UserControl's ResourceManager via GetResourceManager() 
   {
+    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    public abstract BindableObjectDataSourceControlValidationResultDispatchingValidator DataSourceValidationResultDispatchingValidator { get; }
+
     protected virtual void RegisterEventHandlers ()
     {
     }

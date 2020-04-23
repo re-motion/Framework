@@ -33,13 +33,13 @@
     <td style="WIDTH: 20%"><asp:label id="ReadOnlyDeceasedFieldValueLabel" runat="server" enableviewstate="False">#</asp:label></td>
   </tr>
   <tr>
-    <td></td>
+    <td><remotion:SmartLabel ID="UnboundDeceasedFieldLabel" runat="server" ForControl="UnboundDeceasedField" Text="Deceased"/></td>
     <td><remotion:bocbooleanvalue id=UnboundDeceasedField runat="server"  required="False" ></remotion:bocbooleanvalue></td>
     <td>unbound, value not set, required= false</td>
     <td style="WIDTH: 20%"><asp:label id="UnboundDeceasedFieldValueLabel" runat="server" enableviewstate="False">#</asp:label></td>
   </tr>
   <tr>
-    <td></td>
+    <td><remotion:SmartLabel ID="UnboundReadOnlyDeceasedFieldLabel" runat="server" ForControl="UnboundReadOnlyDeceasedField" Text="Deceased"/></td>
     <td><remotion:bocbooleanvalue id=UnboundReadOnlyDeceasedField runat="server"  ReadOnly="True"></remotion:bocbooleanvalue></td>
     <td>unbound, value set, read only</td>
     <td style="WIDTH: 20%"><asp:label id="UnboundReadOnlyDeceasedFieldValueLabel" runat="server" enableviewstate="False">#</asp:label></td>
@@ -57,13 +57,13 @@
     <td style="WIDTH: 20%"><asp:label id="DisabledReadOnlyDeceasedFieldValueLabel" runat="server" enableviewstate="False">#</asp:label></td>
   </tr>
   <tr>
-    <td></td>
+    <td><remotion:SmartLabel ID="DisabledUnboundDeceasedFieldLabel" runat="server" ForControl="DisabledUnboundDeceasedField" Text="Deceased"/></td>
     <td><remotion:bocbooleanvalue id=DisabledUnboundDeceasedField runat="server"  required="False" enabled=false></remotion:bocbooleanvalue></td>
     <td> disabled, unbound, value set, required= false</td>
     <td style="WIDTH: 20%"><asp:label id="DisabledUnboundDeceasedFieldValueLabel" runat="server" enableviewstate="False">#</asp:label></td>
   </tr>
   <tr>
-    <td></td>
+    <td><remotion:SmartLabel ID="DisabledUnboundReadOnlyDeceasedFieldLabel" runat="server" ForControl="DisabledUnboundReadOnlyDeceasedField" Text="Deceased"/></td>
     <td><remotion:bocbooleanvalue id=DisabledUnboundReadOnlyDeceasedField runat="server"  ReadOnly="True" enabled=false></remotion:bocbooleanvalue></td>
     <td>disabled, unbound, value set, read only</td>
     <td style="WIDTH: 20%"><asp:label id="DisabledUnboundReadOnlyDeceasedFieldValueLabel" runat="server" enableviewstate="False">#</asp:label></td>
@@ -72,4 +72,7 @@
 <p><remotion:webbutton id="DeceasedTestSetNullButton" runat="server" UseLegacyButton="true" Text="Deceased Set Null" width="220px"/><remotion:webbutton id="DeceasedTestToggleValueButton" runat="server" Text="Deceased Toggle Value" width="220px"/></p>
 <p><remotion:webbutton id="ReadOnlyDeceasedTestSetNullButton" runat="server" Text="Read Only Deceased Set Null" width="220px"/><remotion:webbutton id="ReadOnlyDeceasedTestToggleValueButton" runat="server" Text="Read Only Deceased Toggle Value" width="220px"/></p>
 <div style="BORDER-RIGHT: black thin solid; BORDER-TOP: black thin solid; BORDER-LEFT: black thin solid; BORDER-BOTTOM: black thin solid; BACKGROUND-COLOR: #ffff99" runat="server" visible="false" ID="NonVisualControls">
-<remotion:formgridmanager id=FormGridManager runat="server"/><remotion:BindableObjectDataSourceControl id=CurrentObject runat="server" Type="Remotion.ObjectBinding.Sample::Person"/></div>
+    <remotion:formgridmanager id=FormGridManager runat="server"/>
+    <remotion:BindableObjectDataSourceControl id=CurrentObject runat="server" Type="Remotion.ObjectBinding.Sample::Person"/>
+    <remotion:BindableObjectDataSourceControlValidationResultDispatchingValidator ID="CurrentObjectValidationResultDispatchingValidator" ControlToValidate="CurrentObject" runat="server" />
+</div>

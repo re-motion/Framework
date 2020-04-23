@@ -61,6 +61,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       _editModeHost.RowIDProvider = new FakeRowIDProvider();
       _editModeHost.EditModeControlFactory = EditableRowControlFactory.CreateEditableRowControlFactory();
       _editModeHost.EditModeDataSourceFactory = new EditableRowDataSourceFactory();
+      _editModeHost.EnableOptionalValidators = null;
 
       _editableRow = new EditableRow (_editModeHost);
       _editableRow.ID = "Row";
@@ -179,11 +180,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Assert.That (textBoxFirstValue is BocTextValue, Is.True);
       Assert.That (textBoxFirstValue.DataSource, Is.SameAs (dataSource));
       Assert.That (textBoxFirstValue.Property, Is.SameAs (_typeWithAllDataTypesStringValuePath.Properties.Last()));
+      Assert.That (((BocTextValue) textBoxFirstValue).EnableOptionalValidators, Is.Null);
 
       IBusinessObjectBoundEditableWebControl textBoxSecondValue = _editableRow.GetEditControl (6);
       Assert.That (textBoxSecondValue is BocTextValue, Is.True);
       Assert.That (textBoxSecondValue.DataSource, Is.SameAs (dataSource));
       Assert.That (textBoxSecondValue.Property, Is.SameAs (_typeWithAllDataTypesInt32ValuePath.Properties.Last()));
+      Assert.That (((BocTextValue) textBoxSecondValue).EnableOptionalValidators, Is.Null);
     }
 
     [Test]
@@ -206,6 +209,48 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           () => _editableRow.CreateControls (_value01, new BocColumnDefinition[0]),
           Throws.InvalidOperationException
               .With.Message.EqualTo ("BocList 'BocList': ControlFactory has not been set prior to invoking CreateControls()."));
+    }
+
+    [Test]
+    public void CreateControlsWithEnableOptionalValidatorsTrue ()
+    {
+      Invoker.InitRecursive();
+
+      _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
+      _editableRow.ControlFactory = EditableRowControlFactory.CreateEditableRowControlFactory();
+      _editModeHost.EnableOptionalValidators = true;
+
+      BocColumnDefinition[] columns = new BocColumnDefinition[1];
+      columns[0] = _typeWithAllDataTypesStringValueSimpleColumn;
+
+      _editableRow.CreateControls (_value01, columns);
+
+      Assert.That (_editableRow.HasEditControl (0), Is.True);
+
+      IBusinessObjectBoundEditableWebControl textBoxFirstValue = _editableRow.GetEditControl (0);
+      Assert.That (textBoxFirstValue is BocTextValue, Is.True);
+      Assert.That (((BocTextValue) textBoxFirstValue).EnableOptionalValidators, Is.True);
+    }
+
+    [Test]
+    public void CreateControlsWithEnableOptionalValidatorsFalse ()
+    {
+      Invoker.InitRecursive();
+
+      _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
+      _editableRow.ControlFactory = EditableRowControlFactory.CreateEditableRowControlFactory();
+      _editModeHost.EnableOptionalValidators = false;
+
+      BocColumnDefinition[] columns = new BocColumnDefinition[1];
+      columns[0] = _typeWithAllDataTypesStringValueSimpleColumn;
+
+      _editableRow.CreateControls (_value01, columns);
+
+      Assert.That (_editableRow.HasEditControl (0), Is.True);
+
+      IBusinessObjectBoundEditableWebControl textBoxFirstValue = _editableRow.GetEditControl (0);
+      Assert.That (textBoxFirstValue is BocTextValue, Is.True);
+      Assert.That (((BocTextValue) textBoxFirstValue).EnableOptionalValidators, Is.False);
     }
 
     [Test]

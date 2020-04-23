@@ -168,6 +168,7 @@
             TextBoxStyle-AutoPostBack="true"
             ValueType="String"
             Required="true"
+            EnableOptionalValidators="true"
             runat="server"/>
       </td>
       <td>(normal, required)</td>

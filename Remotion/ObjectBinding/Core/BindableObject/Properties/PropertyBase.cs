@@ -16,8 +16,10 @@
 // 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Threading;
 using JetBrains.Annotations;
+using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.Reflection;
 using Remotion.Utilities;
 
@@ -42,6 +44,8 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
       [CanBeNull]
       public readonly IListInfo ListInfo;
 
+      public readonly bool IsNullable;
+
       public readonly bool IsRequired;
 
       public readonly bool IsReadOnly;
@@ -58,18 +62,23 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
       [NotNull]
       public readonly BindableObjectGlobalizationService BindableObjectGlobalizationService;
 
+      [NotNull]
+      public readonly IBusinessObjectPropertyConstraintProvider BusinessObjectPropertyConstraintProvider;
+
       public Parameters (
           [NotNull] BindableObjectProvider businessObjectProvider,
           [NotNull] IPropertyInformation propertyInfo,
           [NotNull] Type underlyingType,
           [NotNull] Lazy<Type> concreteType,
           [CanBeNull] IListInfo listInfo,
+          bool isNullable,
           bool isRequired,
           bool isReadOnly,
           [NotNull] IDefaultValueStrategy defaultValueStrategy,
           [NotNull] IBindablePropertyReadAccessStrategy bindablePropertyReadAccessStrategy,
           [NotNull] IBindablePropertyWriteAccessStrategy bindablePropertyWriteAccessStrategy,
-          [NotNull] BindableObjectGlobalizationService bindableObjectGlobalizationService)
+          [NotNull] BindableObjectGlobalizationService bindableObjectGlobalizationService,
+          [NotNull]IBusinessObjectPropertyConstraintProvider businessObjectPropertyConstraintProvider)
       {
         ArgumentUtility.CheckNotNull ("businessObjectProvider", businessObjectProvider);
         ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
@@ -79,6 +88,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
         ArgumentUtility.CheckNotNull ("bindablePropertyReadAccessStrategy", bindablePropertyReadAccessStrategy);
         ArgumentUtility.CheckNotNull ("bindablePropertyWriteAccessStrategy", bindablePropertyWriteAccessStrategy);
         ArgumentUtility.CheckNotNull ("bindableObjectGlobalizationService", bindableObjectGlobalizationService);
+        ArgumentUtility.CheckNotNull ("businessObjectPropertyConstraintProvider", businessObjectPropertyConstraintProvider);
 
         BusinessObjectProvider = businessObjectProvider;
         PropertyInfo = propertyInfo;
@@ -99,22 +109,25 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
             },
             LazyThreadSafetyMode.ExecutionAndPublication);
         ListInfo = listInfo;
+        IsNullable = isNullable;
         IsRequired = isRequired;
         IsReadOnly = isReadOnly;
         DefaultValueStrategy = defaultValueStrategy;
         BindablePropertyReadAccessStrategy = bindablePropertyReadAccessStrategy;
         BindablePropertyWriteAccessStrategy = bindablePropertyWriteAccessStrategy;
         BindableObjectGlobalizationService = bindableObjectGlobalizationService;
+        BusinessObjectPropertyConstraintProvider = businessObjectPropertyConstraintProvider;
       }
     }
 
     private readonly BindableObjectProvider _businessObjectProvider;
     private readonly IPropertyInformation _propertyInfo;
     private readonly IListInfo _listInfo;
+    private readonly bool _isNullable;
     private readonly bool _isRequired;
     private readonly Type _underlyingType;
     private readonly bool _isReadOnly;
-    private readonly bool _isNullable;
+    private readonly bool _isNullableDotNetType;
     private BindableObjectClass _reflectedClass;
     private readonly IDefaultValueStrategy _defaultValueStrategy;
     private readonly Func<object, object> _valueGetter;
@@ -122,6 +135,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     private readonly IBindablePropertyReadAccessStrategy _bindablePropertyReadAccessStrategy;
     private readonly IBindablePropertyWriteAccessStrategy _bindablePropertyWriteAccessStrategy;
     private readonly BindableObjectGlobalizationService _bindableObjectGlobalizationService;
+    private readonly IBusinessObjectPropertyConstraintProvider _businessObjectPropertyConstraintProvider;
 
     protected PropertyBase (Parameters parameters)
     {
@@ -134,13 +148,15 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
       _propertyInfo = parameters.PropertyInfo;
       _underlyingType = parameters.UnderlyingType;
       _listInfo = parameters.ListInfo;
+      _isNullable = parameters.IsNullable;
       _isRequired = parameters.IsRequired;
       _isReadOnly = parameters.IsReadOnly;
       _defaultValueStrategy = parameters.DefaultValueStrategy;
       _bindablePropertyReadAccessStrategy = parameters.BindablePropertyReadAccessStrategy;
       _bindablePropertyWriteAccessStrategy = parameters.BindablePropertyWriteAccessStrategy;
       _bindableObjectGlobalizationService = parameters.BindableObjectGlobalizationService;
-      _isNullable = GetNullability();
+      _businessObjectPropertyConstraintProvider = parameters.BusinessObjectPropertyConstraintProvider;
+      _isNullableDotNetType = GetNullabilityForDotNetType();
       _valueGetter = _propertyInfo.GetGetMethod (true)?.GetFastInvoker<Func<object, object>>();
       _valueSetter = _propertyInfo.GetSetMethod (true)?.GetFastInvoker<Action<object, object>>();
     }
@@ -209,6 +225,14 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
 
         return _bindableObjectGlobalizationService.GetPropertyDisplayName (_propertyInfo, TypeAdapter.Create(_reflectedClass.TargetType));
       }
+    }
+
+    /// <summary> Gets a flag indicating whether this property's .NET type is nullable. </summary>
+    /// <value> <see langword="true"/> if this property supports being assigned <see langword="null" />. </value>
+    /// <remarks> Setting required not-nullable properties to <see langword="null"/> will result in an error. </remarks>
+    public bool IsNullable
+    {
+      get { return _isNullable; }
     }
 
     /// <summary> Gets a flag indicating whether this property is required. </summary>
@@ -289,6 +313,13 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
         return true;
 
       return !_bindablePropertyWriteAccessStrategy.CanWrite (obj, this);
+    }
+
+    public IEnumerable<IBusinessObjectPropertyConstraint> GetConstraints (IBusinessObject obj)
+    {
+      // obj can be null
+
+      return _businessObjectPropertyConstraintProvider.GetPropertyConstraints (ReflectedClass, this, obj);
     }
 
     /// <summary> Gets the <see cref="BindableObjectProvider"/> for this property. </summary>
@@ -375,9 +406,9 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
       get { return _underlyingType; }
     }
 
-    protected bool IsNullable
+    protected bool IsNullableDotNetType
     {
-      get { return _isNullable; }
+      get { return _isNullableDotNetType; }
     }
 
     protected BindableObjectGlobalizationService BindableObjectGlobalizationService
@@ -385,7 +416,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
       get { return _bindableObjectGlobalizationService; }
     }
 
-    private bool GetNullability ()
+    private bool GetNullabilityForDotNetType ()
     {
       return Nullable.GetUnderlyingType (IsList ? ListInfo.ItemType : PropertyType) != null;
     }

@@ -19,6 +19,7 @@ using System.Web.UI.WebControls;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.Web.UI.Controls;
 
 namespace OBWTest.IndividualControlTests
@@ -27,6 +28,7 @@ namespace OBWTest.IndividualControlTests
   public partial class BocDropDownMenuUserControl : BaseUserControl
   {
     protected BindableObjectDataSourceControl CurrentObject;
+    protected BindableObjectDataSourceControlValidationResultDispatchingValidator CurrentObjectValidationResultDispatchingValidator;
     protected BocDropDownMenu PartnerField;
     protected BocDropDownMenu UnboundField;
     protected Label MenuItemClickEventArgsLabel;
@@ -143,6 +145,11 @@ namespace OBWTest.IndividualControlTests
     public override IBusinessObjectDataSourceControl DataSource
     {
       get { return CurrentObject; }
+    }
+
+    public override BindableObjectDataSourceControlValidationResultDispatchingValidator DataSourceValidationResultDispatchingValidator
+    {
+      get { return CurrentObjectValidationResultDispatchingValidator; }
     }
 
     override protected void OnLoad (EventArgs e)

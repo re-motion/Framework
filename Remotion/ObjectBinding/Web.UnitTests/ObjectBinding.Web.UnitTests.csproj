@@ -229,6 +229,13 @@
     <Compile Include="UI\Controls\StubInfrastructureResourceUrlFactory.cs" />
     <Compile Include="UI\Controls\UserControlBindingTest.cs" />
     <Compile Include="UI\Controls\UserControlBindingValidatorFactoryTest.cs" />
+    <Compile Include="UI\Controls\Validation\BusinessObjectValidationResultExtensionsTest.cs" />
+    <Compile Include="UI\Controls\Validation\DefaultBusinessObjectBoundEditableWebControlValidatorConfigurationTest.cs" />
+    <Compile Include="UI\Controls\Validation\Factories\ValidationBocListValidatorFactoryTest.cs" />
+    <Compile Include="UI\Controls\Validation\Factories\ValidationBocReferenceDataSourceValidatorFactoryTest.cs" />
+    <Compile Include="UI\Controls\Validation\Factories\ValidationBusinessObjectBoundEditableWebControlValidatorFactoryTest.cs" />
+    <Compile Include="UI\Controls\Validation\Factories\ValidationUserControlBindingValidatorFactoryTest.cs" />
+    <Compile Include="UI\Controls\Validation\IBusinessObjectBoundEditableWebControlValidatorConfigurationTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\remotion.snk">

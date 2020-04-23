@@ -10,5 +10,12 @@ namespace Remotion.Validation.UnitTests.Rules
     public void Validate ()
     {
     }
+
+    [Test]
+    [Ignore ("TODO RM-5906")]
+    public void IsActive ()
+    {
+      // consider better name than "IsActive"
+    }
   }
 }

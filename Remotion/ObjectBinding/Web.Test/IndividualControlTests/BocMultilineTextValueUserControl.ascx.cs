@@ -22,6 +22,7 @@ using System.Web.UI.WebControls;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 
@@ -57,6 +58,7 @@ public class BocMultilineTextValueUserControl : BaseUserControl
   protected WebButton ReadOnlyCVTestSetNewValueButton;
   protected HtmlTable FormGrid;
   protected BindableObjectDataSourceControl CurrentObject;
+  protected BindableObjectDataSourceControlValidationResultDispatchingValidator CurrentObjectValidationResultDispatchingValidator;
 
   protected override void RegisterEventHandlers ()
   {
@@ -74,19 +76,20 @@ public class BocMultilineTextValueUserControl : BaseUserControl
     get { return CurrentObject; }
   }
 
+  public override BindableObjectDataSourceControlValidationResultDispatchingValidator DataSourceValidationResultDispatchingValidator
+  {
+    get { return CurrentObjectValidationResultDispatchingValidator; }
+  }
+
   override protected void OnLoad (EventArgs e)
   {
     base.OnLoad (e);
 
     Person person = (Person) CurrentObject.BusinessObject;
 
-    UnboundCVField.Property = (IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("CV");
     //UnboundCVField.LoadUnboundValue (person.CV, IsPostBack);
-    UnboundReadOnlyCVField.Property = (IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("CV");
     UnboundReadOnlyCVField.LoadUnboundValue (person.CV, IsPostBack);
-    DisabledUnboundCVField.Property = (IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("CV");
     DisabledUnboundCVField.LoadUnboundValue (person.CV, IsPostBack);
-    DisabledUnboundReadOnlyCVField.Property = (IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("CV");
     DisabledUnboundReadOnlyCVField.LoadUnboundValue (person.CV, IsPostBack);
     
     if (!IsPostBack)

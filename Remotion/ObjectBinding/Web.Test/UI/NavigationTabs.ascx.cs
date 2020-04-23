@@ -20,6 +20,7 @@ using System.Web.UI;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BindableObject.Properties;
+using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
@@ -64,12 +65,14 @@ namespace OBWTest.UI
               propertyInfo.PropertyType,
               new Lazy<Type> (() => propertyInfo.PropertyType),
               null,
+              true,
               false,
               false,
               new BindableObjectDefaultValueStrategy(),
               SafeServiceLocator.Current.GetInstance<IBindablePropertyReadAccessStrategy>(),
               SafeServiceLocator.Current.GetInstance<IBindablePropertyWriteAccessStrategy>(),
-              SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>()));
+              SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>(),
+              SafeServiceLocator.Current.GetInstance<IBusinessObjectPropertyConstraintProvider>()));
 
       WaiConformanceLevelField.Property = property;
       WaiConformanceLevelField.LoadUnboundValue (ConformanceLevel, IsPostBack);

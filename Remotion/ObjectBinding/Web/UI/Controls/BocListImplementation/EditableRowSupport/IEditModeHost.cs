@@ -37,6 +37,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     bool EnableEditModeValidator { get; }
     bool IsAutoFocusOnSwitchToEditModeEnabled { get; }
     IRowIDProvider RowIDProvider { get; }
+    bool? EnableOptionalValidators { get; }
     BocListRow[] AddRows (IBusinessObject[] businessObjects);
     BocListRow[] RemoveRows (IBusinessObject[] bocListRows);
     void EndRowEditModeCleanUp (int value);

@@ -31,34 +31,34 @@
       <TABLE id="SearchFormGrid" cellSpacing="0" cellPadding="0" width="300" border="0" runat="server">
         <TR>
           <TD></TD>
-          <TD><remotion:boctextvalue id="StringPropertyValue" runat="server" DataSourceControl="CurrentSearchObject"
+          <TD><remotion:boctextvalue id="StringPropertyValue" runat="server" EnableOptionalValidators="true" DataSourceControl="CurrentSearchObject"
               PropertyIdentifier="StringProperty">
               <TextBoxStyle TextMode="SingleLine"></TextBoxStyle>
             </remotion:boctextvalue></TD>
         </TR>
         <TR>
           <TD></TD>
-          <TD><remotion:boctextvalue id="BytePropertyFromTextBox" runat="server" DataSourceControl="CurrentSearchObject"
+          <TD><remotion:boctextvalue id="BytePropertyFromTextBox" runat="server" EnableOptionalValidators="true" DataSourceControl="CurrentSearchObject"
               PropertyIdentifier="BytePropertyFrom">
               <TextBoxStyle TextMode="SingleLine"></TextBoxStyle>
             </remotion:boctextvalue></TD>
         </TR>
         <TR>
           <TD></TD>
-          <TD><remotion:boctextvalue id="BytePropertyToTextBox" runat="server" DataSourceControl="CurrentSearchObject"
+          <TD><remotion:boctextvalue id="BytePropertyToTextBox" runat="server" EnableOptionalValidators="true" DataSourceControl="CurrentSearchObject"
               PropertyIdentifier="BytePropertyTo">
               <TextBoxStyle TextMode="SingleLine"></TextBoxStyle>
             </remotion:boctextvalue></TD>
         </TR>
         <TR>
           <TD></TD>
-          <TD><remotion:bocenumvalue id="EnumPropertyValue" runat="server" DataSourceControl="CurrentSearchObject" PropertyIdentifier="EnumProperty">
+          <TD><remotion:bocenumvalue id="EnumPropertyValue" runat="server" EnableOptionalValidators="true" DataSourceControl="CurrentSearchObject" PropertyIdentifier="EnumProperty">
               <ListControlStyle></ListControlStyle>
             </remotion:bocenumvalue></TD>
         </TR>
         <TR>
           <TD></TD>
-          <TD><remotion:bocenumvalue id="ExtensibleEnumPropertyValue" runat="server" DataSourceControl="CurrentSearchObject" PropertyIdentifier="ExtensibleEnumProperty">
+          <TD><remotion:bocenumvalue id="ExtensibleEnumPropertyValue" runat="server" EnableOptionalValidators="true" DataSourceControl="CurrentSearchObject" PropertyIdentifier="ExtensibleEnumProperty">
               <ListControlStyle></ListControlStyle>
             </remotion:bocenumvalue></TD>
         </TR>
@@ -66,25 +66,25 @@
           <TD></TD>
           <TD>
             <remotion:BocDateTimeValue id="DatePropertyFromValue" runat="server" PropertyIdentifier="DatePropertyFrom"
-              DataSourceControl="CurrentSearchObject"></remotion:BocDateTimeValue></TD>
+                                       EnableOptionalValidators="true" DataSourceControl="CurrentSearchObject"></remotion:BocDateTimeValue></TD>
         </TR>
         <TR>
           <TD></TD>
           <TD>
-            <remotion:BocDateTimeValue id="DatePropertyToValue" runat="server" PropertyIdentifier="DatePropertyTo" DataSourceControl="CurrentSearchObject"></remotion:BocDateTimeValue></TD>
+            <remotion:BocDateTimeValue id="DatePropertyToValue" runat="server" PropertyIdentifier="DatePropertyTo" EnableOptionalValidators="true" DataSourceControl="CurrentSearchObject"></remotion:BocDateTimeValue></TD>
         </TR>
         <TR>
           <TD></TD>
           <TD>
-            <remotion:BocDateTimeValue id="DateTimeFromValue" runat="server" DataSourceControl="CurrentSearchObject" PropertyIdentifier="DateTimePropertyFrom"></remotion:BocDateTimeValue></TD>
+            <remotion:BocDateTimeValue id="DateTimeFromValue" runat="server" EnableOptionalValidators="true" DataSourceControl="CurrentSearchObject" PropertyIdentifier="DateTimePropertyFrom"></remotion:BocDateTimeValue></TD>
         </TR>
         <TR>
           <TD></TD>
           <TD>
-            <remotion:BocDateTimeValue id="BocDateTimeValue2" runat="server" PropertyIdentifier="DateTimePropertyTo" DataSourceControl="CurrentSearchObject"></remotion:BocDateTimeValue></TD>
+            <remotion:BocDateTimeValue id="BocDateTimeValue2" runat="server" PropertyIdentifier="DateTimePropertyTo" EnableOptionalValidators="true" DataSourceControl="CurrentSearchObject"></remotion:BocDateTimeValue></TD>
         </TR>
       </TABLE>
-      <asp:button id="SearchButton" runat="server" Text="Suchen"></asp:button><remotion:boclist id="ResultList" runat="server" DataSourceControl="FoundObjects">
+      <asp:button id="SearchButton" runat="server" Text="Suchen"></asp:button><remotion:boclist id="ResultList" runat="server" EnableOptionalValidators="true" DataSourceControl="FoundObjects">
 <FixedColumns>
 <remotion:BocRowEditModeColumnDefinition SaveText="Speichern" CancelText="Abbrechen" EditText="Bearbeiten" ColumnTitle="Aktion"></remotion:BocRowEditModeColumnDefinition>
 <remotion:BocSimpleColumnDefinition PropertyPathIdentifier="StringProperty">

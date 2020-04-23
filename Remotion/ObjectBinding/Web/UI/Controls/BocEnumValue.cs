@@ -24,6 +24,7 @@ using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
+using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Validation;
@@ -102,6 +103,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       var renderer = CreateRenderer();
       renderer.RegisterHtmlHeadContents (htmlHeadAppender);
+    }
+
+    protected override IBusinessObjectConstraintVisitor CreateBusinessObjectConstraintVisitor ()
+    {
+      return new BocEnumValueConstraintVisitor (this);
     }
 
     protected override void Render (HtmlTextWriter writer)

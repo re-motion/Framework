@@ -32,6 +32,7 @@ using System.Web.UI.WebControls;
 using JetBrains.Annotations;
 using Remotion.Globalization;
 using Remotion.Logging;
+using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
@@ -1099,6 +1100,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       if (_currentPageIndex != oldPageIndex)
         OnDisplayedRowsChanged();
+    }
+
+    protected override IBusinessObjectConstraintVisitor CreateBusinessObjectConstraintVisitor ()
+    {
+      return new BocListConstraintVisitor (this);
     }
 
     protected override void Render (HtmlTextWriter writer)

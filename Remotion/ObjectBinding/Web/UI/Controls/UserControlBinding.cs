@@ -22,6 +22,7 @@ using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
+using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.ServiceLocation;
 using Remotion.Web.UI.Controls;
 
@@ -148,6 +149,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public override bool UseLabel
     {
       get { return false; }
+    }
+
+    protected override IBusinessObjectConstraintVisitor CreateBusinessObjectConstraintVisitor ()
+    {
+      return NullBusinessObjectConstraintVisitor.Instance;
     }
 
     protected override void Render (HtmlTextWriter writer)

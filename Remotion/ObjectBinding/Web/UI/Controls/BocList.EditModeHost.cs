@@ -56,6 +56,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         set { _bocList.IsDirty = value; }
       }
 
+
+      public bool? EnableOptionalValidators
+      {
+        get { return _bocList.EnableOptionalValidators; }
+      }
+
       public EditableRowDataSourceFactory EditModeDataSourceFactory
       {
         get { return _bocList.EditModeDataSourceFactory; }

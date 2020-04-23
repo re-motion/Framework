@@ -63,23 +63,6 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
-    <Compile Include="BusinessObjectValidationResultExtensionsTest.cs" />
-    <Compile Include="Factories\ValidationBocListValidatorFactoryTest.cs" />
-    <Compile Include="Factories\ValidationBusinessObjectBoundEditableWebControlValidatorFactoryTest.cs" />
-    <Compile Include="Factories\ValidationBocReferenceDataSourceValidatorFactoryTest.cs" />
-    <Compile Include="Factories\Filtering\FilteringBocAutoCompleteReferenceValueValidatorFactoryDecoratorTest.cs" />
-    <Compile Include="Factories\Filtering\FilteringBocBooleanValueValidatorFactoryDecoratorTest.cs" />
-    <Compile Include="Factories\Filtering\FilteringBocCheckBoxValidatorFactoryDecoratorTest.cs" />
-    <Compile Include="Factories\Filtering\FilteringBocDateTimeValueValidatorFactoryDecoratorTest.cs" />
-    <Compile Include="Factories\Filtering\FilteringBocEnumValueValidatorFactoryDecoratorTest.cs" />
-    <Compile Include="Factories\Filtering\FilteringBocListValidatorFactoryDecoratorTest.cs" />
-    <Compile Include="Factories\Filtering\FilteringBocMultilineTextValueValidatorFactoryDecoratorTest.cs" />
-    <Compile Include="Factories\Filtering\FilteringBocReferenceValueValidatorFactoryDecoratorTest.cs" />
-    <Compile Include="Factories\Filtering\FilteringBocTextValueValidatorFactoryDecoratorTest.cs" />
-    <Compile Include="Factories\Filtering\FilteringBusinessObjectReferenceDataSourceControlValidatorFactoryDecoratorTest.cs" />
-    <Compile Include="Factories\Filtering\FilteringUserControlBindingValidatorFactoryDecoratorTest.cs" />
-    <Compile Include="Factories\Filtering\FilteringValidatorFactoryDecoraterBaseTest.cs" />
-    <Compile Include="Factories\ValidationUserControlBindingValidatorFactoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

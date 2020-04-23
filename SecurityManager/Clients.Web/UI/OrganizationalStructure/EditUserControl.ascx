@@ -31,13 +31,13 @@
   <tr>
     <td></td>
     <td>
-      <remotion:BocTextValue runat="server" ID="UserNameField" DataSourceControl="CurrentObject" PropertyIdentifier="UserName"></remotion:BocTextValue>    
+      <remotion:BocTextValue runat="server" ID="UserNameField" DataSourceControl="CurrentObject" EnableOptionalValidators="true" PropertyIdentifier="UserName"></remotion:BocTextValue>    
     </td>
   </tr>
   <tr>
     <td></td>
     <td>
-      <remotion:BocTextValue ID="TitleField" runat="server" DataSourceControl="CurrentObject"
+      <remotion:BocTextValue ID="TitleField" runat="server" DataSourceControl="CurrentObject" EnableOptionalValidators="true"
         PropertyIdentifier="Title">
       </remotion:BocTextValue>
     </td>
@@ -45,7 +45,7 @@
   <tr>
     <td></td>
     <td>
-      <remotion:BocTextValue ID="FirstNameField" runat="server" DataSourceControl="CurrentObject"
+      <remotion:BocTextValue ID="FirstNameField" runat="server" DataSourceControl="CurrentObject" EnableOptionalValidators="true"
         PropertyIdentifier="FirstName">
       </remotion:BocTextValue>
     </td>
@@ -53,7 +53,7 @@
   <tr>
     <td></td>
     <td>
-      <remotion:BocTextValue ID="LastNameField" runat="server" DataSourceControl="CurrentObject"
+      <remotion:BocTextValue ID="LastNameField" runat="server" DataSourceControl="CurrentObject" EnableOptionalValidators="true"
         PropertyIdentifier="LastName">
       </remotion:BocTextValue>
     </td>
@@ -61,7 +61,7 @@
   <tr>
     <td></td>
     <td>
-      <remotion:BocAutoCompleteReferenceValue ID="OwningGroupField" runat="server" DataSourceControl="CurrentObject"
+      <remotion:BocAutoCompleteReferenceValue ID="OwningGroupField" runat="server" DataSourceControl="CurrentObject" EnableOptionalValidators="true"
         PropertyIdentifier="OwningGroup">
         <PersistedCommand>
           <remotion:BocCommand />
@@ -72,7 +72,7 @@
   <tr>
     <td></td>
     <td>
-      <remotion:BocList ID="RolesList" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Roles" Selection="Multiple" ShowEmptyListMessage="True" ShowEmptyListReadOnlyMode="True">
+      <remotion:BocList ID="RolesList" runat="server" DataSourceControl="CurrentObject" EnableOptionalValidators="true" PropertyIdentifier="Roles" Selection="Multiple" ShowEmptyListMessage="True" ShowEmptyListReadOnlyMode="True">
         <FixedColumns>
           <remotion:BocSimpleColumnDefinition ItemID="Group" PropertyPathIdentifier="Group" />
           <remotion:BocSimpleColumnDefinition ItemID="Position" PropertyPathIdentifier="Position" />
@@ -83,7 +83,7 @@
   <tr>
     <td></td>
     <td>
-      <remotion:BocList ID="SubstitutedByList" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="SubstitutedBy" Selection="Multiple" ShowEmptyListMessage="True" ShowEmptyListReadOnlyMode="True">
+      <remotion:BocList ID="SubstitutedByList" runat="server" DataSourceControl="CurrentObject" EnableOptionalValidators="true" PropertyIdentifier="SubstitutedBy" Selection="Multiple" ShowEmptyListMessage="True" ShowEmptyListReadOnlyMode="True">
         <FixedColumns>
           <remotion:BocSimpleColumnDefinition ItemID="SubstitutingUser" PropertyPathIdentifier="SubstitutingUser" Width="30%" />
           <remotion:BocSimpleColumnDefinition ItemID="SubstitutedRole" PropertyPathIdentifier="SubstitutedRole" Width="30%" />

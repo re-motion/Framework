@@ -94,6 +94,7 @@
                                         ReadOnly="false"
                                         TextBoxStyle-AutoPostBack="true"
                                         Required="true"
+                                        EnableOptionalValidators="true"
 
                                         runat="server"/>
       </td>

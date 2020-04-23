@@ -20,6 +20,7 @@ using Remotion.Development.UnitTesting;
 using Remotion.Mixins;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BindableObject.Properties;
+using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests.TestDomain;
 using Remotion.ObjectBinding.UnitTests.TestDomain;
 using Remotion.ServiceLocation;
@@ -56,12 +57,14 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
               typeof (ClassWithIdentity),
               new Lazy<Type> (() => TypeFactory.GetConcreteType (typeof (ClassWithIdentity))),
               null,
+              true,
               false,
               false,
               new BindableObjectDefaultValueStrategy(),
               MockRepository.GenerateStub<IBindablePropertyReadAccessStrategy>(),
               MockRepository.GenerateStub<IBindablePropertyWriteAccessStrategy>(),
-              SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>()));
+              SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>(),
+              MockRepository.GenerateStub<IBusinessObjectPropertyConstraintProvider>()));
 
       Assert.That (property.ReferenceClass, Is.SameAs (BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (ClassWithIdentity))));
       Assert.That (
@@ -83,12 +86,14 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
               typeof (ClassDerivedFromBindableObjectBase),
               new Lazy<Type> (() => typeof (ClassDerivedFromBindableObjectBase)),
               null,
+              true,
               false,
               false,
               new BindableObjectDefaultValueStrategy (),
               MockRepository.GenerateStub<IBindablePropertyReadAccessStrategy>(),
               MockRepository.GenerateStub<IBindablePropertyWriteAccessStrategy>(),
-              SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>()));
+              SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>(),
+              MockRepository.GenerateStub<IBusinessObjectPropertyConstraintProvider>()));
 
       Assert.That (property.ReferenceClass, Is.SameAs (BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (ClassDerivedFromBindableObjectBase))));
       Assert.That (

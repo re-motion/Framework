@@ -40,20 +40,34 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.V
     {
       ArgumentUtility.CheckNotNull ("control", control);
 
-      if (isReadOnly || !control.IsRequired)
+      if (isReadOnly)
         yield break;
 
       var resourceManager = control.GetResourceManager();
-      yield return CreateRequiredFieldValidator (control, resourceManager);
+
+      var requiredFieldValidator = CreateRequiredFieldValidator (control, resourceManager);
+      if (requiredFieldValidator != null)
+        yield return requiredFieldValidator;
     }
 
     private RequiredFieldValidator CreateRequiredFieldValidator (IBocBooleanValue control, IResourceManager resourceManager)
     {
-      var requiredFieldValidator = new RequiredFieldValidator ();
-      requiredFieldValidator.ID = control.ID + "_ValidatorNotNullItem";
-      requiredFieldValidator.ControlToValidate = control.ID;
-      requiredFieldValidator.ErrorMessage = resourceManager.GetString (BocBooleanValue.ResourceIdentifier.NullItemValidationMessage);
-      return requiredFieldValidator;
+      var areOptionalValidatorsEnabled = control.AreOptionalValidatorsEnabled;
+      var isPropertyTypeRequired = !areOptionalValidatorsEnabled && control.DataSource?.BusinessObject != null && control.Property?.IsNullable == false;
+      var isControlRequired = areOptionalValidatorsEnabled && control.IsRequired;
+
+      if (isPropertyTypeRequired || isControlRequired)
+      {
+        var requiredFieldValidator = new RequiredFieldValidator();
+        requiredFieldValidator.ID = control.ID + "_ValidatorNotNullItem";
+        requiredFieldValidator.ControlToValidate = control.ID;
+        requiredFieldValidator.ErrorMessage = resourceManager.GetString (BocBooleanValue.ResourceIdentifier.NullItemValidationMessage);
+        return requiredFieldValidator;
+      }
+      else
+      {
+        return null;
+      }
     }
   }
 }

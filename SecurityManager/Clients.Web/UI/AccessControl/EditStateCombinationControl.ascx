@@ -22,7 +22,7 @@
 <remotion:BindableObjectDataSourceControl ID="CurrentObject" runat="server" Type="Remotion.SecurityManager.Domain.AccessControl.StateCombination, Remotion.SecurityManager" />
 <remotion:BindableObjectDataSourceControl ID="StateDefinitionDataSource" runat="server" Type="Remotion.SecurityManager.Domain.Metadata.StateDefinition, Remotion.SecurityManager" />
 <div id="StateDefinitionContainer" runat="server" style="white-space:nowrap;">
-<remotion:BocReferenceValue id="StateDefinitionField" runat="server" DataSourceControl="StateDefinitionDataSource" Required="True" Width="10em" />
+<remotion:BocReferenceValue id="StateDefinitionField" runat="server" DataSourceControl="StateDefinitionDataSource" Required="True" Width="10em" EnableOptionalValidators="true"/>
 <remotion:WebButton ID="DeleteStateDefinitionButton" runat="server" OnClick="DeleteStateDefinitionButton_Click" CssClass="imageButton" />
 </div>
 <asp:CustomValidator ID="RequiredStateCombinationValidator" runat="server" ErrorMessage="###" OnServerValidate="RequiredStateCombinationValidator_ServerValidate" style="display:block"/>

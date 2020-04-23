@@ -48,6 +48,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     public string ID { get; set; }
     public bool IsReadOnly { get; set; }
     public bool IsDirty { get; set; }
+    public bool? EnableOptionalValidators { get; set; }
     public EditableRowDataSourceFactory EditModeDataSourceFactory { get; set; }
     public EditableRowControlFactory EditModeControlFactory { get; set; }
     public string ErrorMessage { get; set; }

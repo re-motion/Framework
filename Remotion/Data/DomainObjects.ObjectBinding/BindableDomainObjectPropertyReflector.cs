@@ -19,6 +19,7 @@ using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurati
 using Remotion.Mixins;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
+using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -57,7 +58,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
             defaultValueStrategy,
             SafeServiceLocator.Current.GetInstance<IBindablePropertyReadAccessStrategy>(),
             SafeServiceLocator.Current.GetInstance<IBindablePropertyWriteAccessStrategy>(),
-            SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>())
+            SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>(),
+            SafeServiceLocator.Current.GetInstance<IBusinessObjectPropertyConstraintProvider>())
     {
     }
 
@@ -68,14 +70,16 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
         IDefaultValueStrategy defaultValueStrategy,
         IBindablePropertyReadAccessStrategy bindablePropertyReadAccessStrategy,
         IBindablePropertyWriteAccessStrategy bindablePropertyWriteAccessStrategy,
-        BindableObjectGlobalizationService bindableObjectGlobalizationService)
+        BindableObjectGlobalizationService bindableObjectGlobalizationService,
+        IBusinessObjectPropertyConstraintProvider businessObjectPropertyConstraintProvider)
         : base (
             propertyInfo,
             businessObjectProvider,
             defaultValueStrategy,
             bindablePropertyReadAccessStrategy,
             bindablePropertyWriteAccessStrategy,
-            bindableObjectGlobalizationService)
+            bindableObjectGlobalizationService,
+            businessObjectPropertyConstraintProvider)
     {
       ArgumentUtility.CheckNotNull ("businessObjectProvider", businessObjectProvider);
       ArgumentUtility.CheckNotNull ("domainModelConstraintProvider", domainModelConstraintProvider);

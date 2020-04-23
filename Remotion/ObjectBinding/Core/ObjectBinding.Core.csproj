@@ -207,6 +207,13 @@
     <Compile Include="BindableObject\Properties\EnumValueFilterProvider.cs" />
     <Compile Include="BindableObject\Properties\ExtensibleEnumerationProperty.cs" />
     <Compile Include="BusinessObjectExtensions.cs" />
+    <Compile Include="BusinessObjectPropertyConstraints\BusinessObjectPropertyValueLengthConstraint.cs" />
+    <Compile Include="BusinessObjectPropertyConstraints\BusinessObjectPropertyValueRequiredConstraint.cs" />
+    <Compile Include="BusinessObjectPropertyConstraints\CompoundBusinessObjectPropertyConstraintProvider.cs" />
+    <Compile Include="BusinessObjectPropertyConstraints\IBusinessObjectPropertyConstraintProvider.cs" />
+    <Compile Include="BusinessObjectPropertyConstraints\IBusinessObjectConstraintVisitor.cs" />
+    <Compile Include="BusinessObjectPropertyConstraints\IBusinessObjectConstraintVisitor1.cs" />
+    <Compile Include="BusinessObjectPropertyConstraints\NullBusinessObjectConstraintVisitor.cs" />
     <Compile Include="BusinessObjectPropertyExtensions.cs" />
     <Compile Include="BusinessObjectPropertyPaths\BusinessObjectPropertyPathBase.cs" />
     <Compile Include="BusinessObjectPropertyPaths\Enumerators\BusinessObjectPropertyPathPropertyEnumeratorBase.cs" />
@@ -224,6 +231,7 @@
     <Compile Include="IBusinessObjectEnumerationProperty.cs" />
     <Compile Include="IBusinessObjectNumericProperty.cs" />
     <Compile Include="IBusinessObjectProperty.cs" />
+    <Compile Include="BusinessObjectPropertyConstraints\IBusinessObjectPropertyConstraint.cs" />
     <Compile Include="IBusinessObjectPropertyPath.cs" />
     <Compile Include="IBusinessObjectProvider.cs" />
     <Compile Include="IBusinessObjectProviderWithIdentity.cs" />
@@ -399,6 +407,7 @@
   <ItemGroup>
     <None Include="FacetManifest.xml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

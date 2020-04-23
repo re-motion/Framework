@@ -57,7 +57,10 @@
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
     <Compile Include="BusinessObjectValidationResult.cs" />
+    <Compile Include="IPropertyValidatorToBusinessObjectPropertyConstraintConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PropertyValidatorToBusinessObjectPropertyConstraintConverter.cs" />
+    <Compile Include="ValidationBusinessObjectPropertyConstraintProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\remotion.snk">
