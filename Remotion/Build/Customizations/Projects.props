@@ -195,6 +195,7 @@
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Security\ObjectBinding.Security.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Validation\ObjectBinding.Validation.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web\ObjectBinding.Web.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Compatibility\ObjectBinding.Web.Compatibility.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Contracts.DiagnosticMetadata\ObjectBinding.Web.Contracts.DiagnosticMetadata.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Development.WebTesting\ObjectBinding.Web.Development.WebTesting.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Preview\ObjectBinding.Web.Preview.csproj"/>
@@ -209,6 +210,9 @@
       <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.UnitTests\ObjectBinding.Web.UnitTests.csproj">
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
+    </UnitTestProjectFiles>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Compatibility.UnitTests\ObjectBinding.Web.Compatibility.UnitTests.csproj">
       <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Validation.UnitTests\ObjectBinding.Web.Validation.UnitTests.csproj">
