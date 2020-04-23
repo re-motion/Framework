@@ -20,6 +20,7 @@
 <remotion:formgridmanager id=FormGridManager runat="server"/>
 <remotion:BindableObjectDataSourceControl id=CurrentObject runat="server" Type="Remotion.ObjectBinding.Sample::Person"/>
 <remotion:BindableObjectDataSourceControl id=EnumObject runat="server" Type="Remotion.ObjectBinding.Sample::ClassWithEnums"/></div>
+<remotion:BindableObjectDataSourceControlValidationResultDispatchingValidator ID="CurrentObjectValidationResultDispatchingValidator" ControlToValidate="CurrentObject" runat="server" />
 <table id=FormGrid runat="server">
   <tr>
     <td colSpan=4><remotion:boctextvalue id=FirstNameField runat="server" PropertyIdentifier="FirstName" datasourcecontrol="CurrentObject" readonly="True"></remotion:boctextvalue>&nbsp;<remotion:boctextvalue id=LastNameField runat="server" PropertyIdentifier="LastName" datasourcecontrol="CurrentObject" readonly="True"></remotion:boctextvalue></td></tr>

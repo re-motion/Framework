@@ -42,6 +42,15 @@ namespace OBWTest.IndividualControlTests
     protected global::Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
 
     /// <summary>
+    /// CurrentObjectValidationResultDispatchingValidator control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::Remotion.ObjectBinding.Web.Validation.UI.Controls.BindableObjectDataSourceControlValidationResultDispatchingValidator CurrentObjectValidationResultDispatchingValidator;
+
+    /// <summary>
     /// FormGrid control.
     /// </summary>
     /// <remarks>

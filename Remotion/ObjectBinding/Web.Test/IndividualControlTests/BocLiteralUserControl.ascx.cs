@@ -18,6 +18,7 @@ using System;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.Validation.UI.Controls;
 
 namespace OBWTest.IndividualControlTests
 {
@@ -35,6 +36,11 @@ namespace OBWTest.IndividualControlTests
     public override IBusinessObjectDataSourceControl DataSource
     {
       get { return CurrentObject; }
+    }
+
+    public override BindableObjectDataSourceControlValidationResultDispatchingValidator DataSourceValidationResultDispatchingValidator
+    {
+      get { return CurrentObjectValidationResultDispatchingValidator; }
     }
 
     override protected void OnLoad (EventArgs e)

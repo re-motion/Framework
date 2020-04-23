@@ -20,7 +20,6 @@ using System.Text;
 using System.Threading;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using OBWTest.ValidatorFactoryDecorators;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Web.ExecutionEngine;
@@ -65,7 +64,6 @@ public class TestWxeBasePage:
 
     ShowAbortConfirmation = ShowAbortConfirmation.Always;
     EnableAbort = false;
-    SwitchingValidatorFactoryState.Instance.UseFluentValidatorFactory = false;
     base.OnInit (e);
     RegisterEventHandlers();
   }

@@ -20,7 +20,6 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using OBWTest.ValidatorFactoryDecorators;
 using Remotion.Collections;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
@@ -95,7 +94,6 @@ namespace OBWTest.Validation
       //
       InitializeComponent();
       base.OnInit (e);
-      SwitchingValidatorFactoryState.Instance.UseFluentValidatorFactory = true;
     }
 
     #region Web Form Designer generated code
@@ -120,14 +118,14 @@ namespace OBWTest.Validation
       if (CurrentObject.SaveValues (false))
       {
         var person = (Person) CurrentObject.BusinessObject;
-        var validationResult = ValidationBuilder.GetValidator (typeof (Person)).Validate (person);
+        var validationResult = ValidatorProvider.GetValidator (typeof (Person)).Validate (person);
         ValidationResult validationResultPartner = new ValidationResult();
         
         if (person.Partner != null)
-          validationResultPartner = ValidationBuilder.GetValidator (typeof (Person)).Validate (person.Partner);
-        var validationResultFather = ValidationBuilder.GetValidator (typeof (Person)).Validate (person.Father);
+          validationResultPartner = ValidatorProvider.GetValidator (typeof (Person)).Validate (person.Partner);
+        var validationResultFather = ValidatorProvider.GetValidator (typeof (Person)).Validate (person.Father);
 
-        var jobValidator = ValidationBuilder.GetValidator (typeof (Job));
+        var jobValidator = ValidatorProvider.GetValidator (typeof (Job));
         List<ValidationFailure> jobFailures = new List<ValidationFailure>();
         foreach (var job in person.Jobs)
         {
@@ -165,12 +163,9 @@ namespace OBWTest.Validation
       return (FormGridRowInfoCollection) _listOfFormGridRowInfos[table];
     }
 
-    public IValidatorProvider ValidationBuilder
+    public IValidatorProvider ValidatorProvider
     {
-      get
-      {
-        return SafeServiceLocator.Current.GetInstance<IValidatorProvider>();
-      }
+      get { return SafeServiceLocator.Current.GetInstance<IValidatorProvider>(); }
     }
   }
 }

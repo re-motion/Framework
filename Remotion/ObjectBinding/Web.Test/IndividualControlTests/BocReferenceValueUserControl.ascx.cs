@@ -20,6 +20,7 @@ using System.Web.UI.WebControls;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.Validation.UI.Controls;
 using Remotion.Utilities;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
@@ -60,6 +61,7 @@ public class BocReferenceValueUserControl : BaseUserControl
   protected HtmlTable FormGrid;
   protected Label PartnerCommandClickLabel;
   protected BindableObjectDataSourceControl CurrentObject;
+  protected BindableObjectDataSourceControlValidationResultDispatchingValidator CurrentObjectValidationResultDispatchingValidator;
 
   protected override void RegisterEventHandlers ()
   {
@@ -82,6 +84,11 @@ public class BocReferenceValueUserControl : BaseUserControl
   public override IBusinessObjectDataSourceControl DataSource
   {
     get { return CurrentObject; }
+  }
+
+  public override BindableObjectDataSourceControlValidationResultDispatchingValidator DataSourceValidationResultDispatchingValidator
+  {
+    get { return CurrentObjectValidationResultDispatchingValidator; }
   }
 
   override protected void OnInit(EventArgs e)

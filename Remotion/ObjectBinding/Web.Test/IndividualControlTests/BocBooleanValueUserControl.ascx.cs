@@ -20,6 +20,7 @@ using System.Web.UI.WebControls;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.Validation.UI.Controls;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 
@@ -55,6 +56,7 @@ public class BocBooleanValueUserControl : BaseUserControl
   protected BocBooleanValue DisabledUnboundReadOnlyDeceasedField;
   protected HtmlTable FormGrid;
   protected BindableObjectDataSourceControl CurrentObject;
+  protected BindableObjectDataSourceControlValidationResultDispatchingValidator CurrentObjectValidationResultDispatchingValidator;
 
   protected override void RegisterEventHandlers ()
   {
@@ -70,6 +72,11 @@ public class BocBooleanValueUserControl : BaseUserControl
   public override IBusinessObjectDataSourceControl DataSource
   {
     get { return CurrentObject; }
+  }
+
+  public override BindableObjectDataSourceControlValidationResultDispatchingValidator DataSourceValidationResultDispatchingValidator
+  {
+    get { return CurrentObjectValidationResultDispatchingValidator; }
   }
 
   override protected void OnLoad (EventArgs e)

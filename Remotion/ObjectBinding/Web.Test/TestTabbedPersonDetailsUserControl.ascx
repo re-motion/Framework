@@ -69,4 +69,8 @@
 </table>
 <remotion:WebButton runat="server" ID="ShowExtraFormGridButton" OnClick="ShowExtraFormGridButton_Click" Text="Create FormGrid"/>
 <asp:PlaceHolder runat="server" ID="ExtraFormGridPlaceHolder"></asp:PlaceHolder>
-<p><remotion:formgridmanager id="FormGridManager" runat="server" visible="true"></remotion:formgridmanager><remotion:BindableObjectDataSourceControl id="CurrentObject" runat="server" Type="Remotion.ObjectBinding.Sample::Person" /></p>
+<div>
+    <remotion:formgridmanager id="FormGridManager" runat="server" visible="true"/>
+    <remotion:BindableObjectDataSourceControl id="CurrentObject" runat="server" Type="Remotion.ObjectBinding.Sample::Person" />
+    <remotion:BindableObjectDataSourceControlValidationResultDispatchingValidator ID="CurrentObjectValidationResultDispatchingValidator" ControlToValidate="CurrentObject" runat="server" />
+</div>

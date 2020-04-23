@@ -15,10 +15,17 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Web.UI;
 using Remotion.ObjectBinding;
+using Remotion.ObjectBinding.Sample;
+using Remotion.ObjectBinding.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ServiceLocation;
+using Remotion.Validation;
+using Remotion.Validation.Results;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Globalization;
@@ -36,7 +43,6 @@ namespace OBWTest.IndividualControlTests
       base.RegisterEventHandlers();
 
       PostBackButton.Click += new EventHandler (PostBackButton_Click);
-      ValidateButton.Click += new EventHandler (ValidateButton_Click);
       SaveButton.Click += new EventHandler (SaveButton_Click);
       SaveAndRestartButton.Click += new EventHandler (SaveAndRestartButton_Click);
       CancelButton.Click += new EventHandler (CancelButton_Click);
@@ -87,16 +93,12 @@ namespace OBWTest.IndividualControlTests
     {
     }
 
-    private void ValidateButton_Click (object sender, EventArgs e)
-    {
-      ValidateDataSources();
-    }
-
     private void SaveButton_Click (object sender, EventArgs e)
     {
       PrepareValidation();
       _isCurrentObjectSaved = SaveValues (false);
     }
+
 
     private void SaveAndRestartButton_Click (object sender, EventArgs e)
     {
@@ -142,17 +144,36 @@ namespace OBWTest.IndividualControlTests
       if (_dataEditControl != null)
         hasSaved &= _dataEditControl.SaveValues (interim);
       hasSaved &= CurrentObject.SaveValues (interim);
+
+      if (hasSaved)
+        hasSaved = PerformDomainValidation();
+
       return hasSaved;
     }
 
-    private bool ValidateDataSources ()
+    private bool PerformDomainValidation ()
     {
-      PrepareValidation();
+      var businessObject = _dataEditControl.BusinessObject;
+      var validator = ValidatorProvider.GetValidator (businessObject.GetType());
+      var validationResult = validator.Validate (businessObject);
 
-      bool isValid = _dataEditControl.Validate();
-      isValid &= CurrentObject.Validate();
+      var combinedValidationResult = new ValidationResult (validationResult.Errors);
 
-      return isValid;
+      if (!combinedValidationResult.IsValid)
+      {
+        var businessObjectValidationResult = BusinessObjectValidationResult.Create (combinedValidationResult);
+
+        var dataEditControlDispatchingValidator = (_dataEditControl as BaseUserControl)?.DataSourceValidationResultDispatchingValidator;
+        dataEditControlDispatchingValidator?.DispatchValidationFailures (businessObjectValidationResult);
+        dataEditControlDispatchingValidator?.Validate();
+      }
+
+      return combinedValidationResult.IsValid;
+    }
+
+    private IValidatorProvider ValidatorProvider
+    {
+      get { return SafeServiceLocator.Current.GetInstance<IValidatorProvider>(); }
     }
   }
 }

@@ -20,6 +20,7 @@ using System.Web.UI.WebControls;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.Validation.UI.Controls;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 
@@ -31,6 +32,7 @@ public class BocEnumValueUserControl : BaseUserControl
   protected HtmlGenericControl NonVisualControls;
   protected FormGridManager FormGridManager;
   protected BindableObjectDataSourceControl CurrentObject;
+  protected BindableObjectDataSourceControlValidationResultDispatchingValidator CurrentObjectValidationResultDispatchingValidator;
   protected BindableObjectDataSourceControl EnumObject;
   protected BocTextValue FirstNameField;
   protected BocTextValue LastNameField;
@@ -89,6 +91,11 @@ public class BocEnumValueUserControl : BaseUserControl
   public override IBusinessObjectDataSourceControl DataSource
   {
     get { return CurrentObject; }
+  }
+
+  public override BindableObjectDataSourceControlValidationResultDispatchingValidator DataSourceValidationResultDispatchingValidator
+  {
+    get { return CurrentObjectValidationResultDispatchingValidator; }
   }
 
   override protected void OnLoad (EventArgs e)
