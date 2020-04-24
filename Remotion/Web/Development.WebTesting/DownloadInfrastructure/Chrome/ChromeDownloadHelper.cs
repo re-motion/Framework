@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using JetBrains.Annotations;
 using log4net;
 using Remotion.Utilities;
@@ -175,7 +176,8 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Chrome
 
         try
         {
-          //We don't wait for the file to be deleted, as we expect it to be deleted in time
+          WaitUntilTrueOrTimeout (() => !IsFileLocked (fullFilePath), TimeSpan.FromMinutes (5), TimeSpan.FromSeconds (1));
+
           File.Delete (fullFilePath);
         }
         catch (IOException ex)
@@ -187,6 +189,38 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Chrome
               ex);
         }
       }
+    }
+
+    private void WaitUntilTrueOrTimeout (Func<bool> func, TimeSpan timeout, TimeSpan interval)
+    {
+      for (var elapsed = 0d; elapsed < timeout.TotalMilliseconds; elapsed += interval.TotalMilliseconds)
+      {
+        if (func.Invoke())
+          return;
+
+        Thread.Sleep (interval);
+      }
+    }
+
+    private bool IsFileLocked (string filePath)
+    {
+      try
+      {
+        using (var stream = File.Open (filePath, FileMode.Open, FileAccess.Read, FileShare.None))
+        {
+          stream.Close();
+        }
+      }
+      catch (FileNotFoundException)
+      {
+        return false;
+      }
+      catch (IOException)
+      {
+        return true;
+      }
+
+      return false;
     }
   }
 }
