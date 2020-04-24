@@ -50,6 +50,7 @@
       <HintPath>..\..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="WebDriver, Version=2.48.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -82,6 +83,11 @@
     <Compile Include="GenericTestPageParameters\TextContentGenericTestPageParameter.cs" />
     <Compile Include="GenericTestPageParameters\TitleGenericTestPageParameter.cs" />
     <Compile Include="GenericTestParameterConverter.cs" />
+    <Compile Include="HostingStrategies\DockerHostingStrategy.cs" />
+    <Compile Include="HostingStrategies\DockerHosting\DockerCommandLineClient.cs" />
+    <Compile Include="HostingStrategies\DockerHosting\IDockerClient.cs" />
+    <Compile Include="HostingStrategies\DockerHosting\IisDockerContainerConfigurationParameters.cs" />
+    <Compile Include="HostingStrategies\IisDockerContainerWrapper.cs" />
     <Compile Include="SearchTimeout.cs" />
     <Compile Include="TestCaseFactories\TextContentControlSelectorTestCaseFactory.cs" />
     <Compile Include="IGenericTestPageParameter.cs" />
