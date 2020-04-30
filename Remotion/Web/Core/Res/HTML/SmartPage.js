@@ -313,6 +313,14 @@ function SmartPage_Context(
       return;
 
     var currentTarget = GetSubmitTarget (e.target);
+    if (currentTarget == null)
+    {
+      if (window.console)
+        window.console.log ("A click on a submit-target was aborted because the submit target is no longer available while handling the mouse-up event. No action will be taken.");
+
+      return;
+    }
+
     var executeClick = false;
     if (TypeUtility.IsDefined (currentTarget.id) && TypeUtility.IsDefined (lastTarget.id) && !StringUtility.IsNullOrEmpty (lastTarget.id))
     {
