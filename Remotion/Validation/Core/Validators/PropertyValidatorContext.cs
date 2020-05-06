@@ -27,6 +27,9 @@ namespace Remotion.Validation.Validators
     public ValidationContext ParentContext { get; }
 
     [NotNull]
+    public object Instance { get; }
+
+    [NotNull]
     public IPropertyInformation Property { get; }
 
     [CanBeNull]
@@ -34,18 +37,20 @@ namespace Remotion.Validation.Validators
 
     public PropertyValidatorContext (
         [NotNull] ValidationContext parentContext,
+        [NotNull] object instance,
         [NotNull] IPropertyInformation property,
         [CanBeNull] object propertyValue)
     {
       ArgumentUtility.CheckNotNull ("parentContext", parentContext);
+      ArgumentUtility.CheckNotNull ("instance", instance);
       ArgumentUtility.CheckNotNull ("property", property);
+      if (parentContext.InstanceToValidate != instance)
+        throw new ArgumentException ("parentContext.Instance does not match instance parameter.", "instance");
 
       ParentContext = parentContext;
+      Instance = instance;
       Property = property;
       PropertyValue = propertyValue;
     }
-
-    [NotNull]
-    public object Instance => ParentContext.InstanceToValidate;
   }
 }

@@ -27,8 +27,10 @@ namespace Remotion.Validation.UnitTests.Validators
     {
       var propertyStub = MockRepository.GenerateStub<IPropertyInformation>();
 
+      var instanceToValidate = new object();
       return new PropertyValidatorContext (
-          new ValidationContext (new object()),
+          new ValidationContext (instanceToValidate),
+          instanceToValidate,
           propertyStub,
           value);
     }

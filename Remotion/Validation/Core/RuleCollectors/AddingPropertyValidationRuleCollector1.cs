@@ -18,8 +18,6 @@ namespace Remotion.Validation.RuleCollectors
   /// </summary>
   public sealed class AddingPropertyValidationRuleCollector<TValidatedType, TProperty> : IAddingPropertyValidationRuleCollector
   {
-    private static readonly Func<TValidatedType, bool> s_trueCondition = _ => true;
-
     [NotNull]
     public Type CollectorType { get; }
 
@@ -80,7 +78,7 @@ namespace Remotion.Validation.RuleCollectors
 
       _uninitializedValidationMessages.Clear();
 
-      return new PropertyValidationRule<TValidatedType, TProperty> (Property, PropertyFunc, Condition ?? s_trueCondition, _validators.ToArray());
+      return new PropertyValidationRule<TValidatedType, TProperty> (Property, PropertyFunc, Condition, _validators.ToArray());
     }
 
     public IEnumerable<IPropertyValidator> Validators

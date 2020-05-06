@@ -135,13 +135,7 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
 
     [Test]
     [Ignore ("TODO RM-5906")]
-    public void CreateValidationRule_WithCondition_UsesConditionForCreatedPropertyValidationRule ()
-    {
-    }
-
-    [Test]
-    [Ignore ("TODO RM-5906")]
-    public void CreateValidationRule_WithoutCondition_UsesAlwaysTrueConditionForCreatedPropertyValidationRule ()
+    public void CreateValidationRule_WithConditionNotNull_InitializesConditionForCreatedPropertyValidationRule ()
     {
     }
 

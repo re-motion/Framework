@@ -16,19 +16,16 @@
 // 
 using System;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.Validation
 {
   public class ValidationContext
   {
-    [NotNull]
+    [CanBeNull]
     public object InstanceToValidate { get; }
 
-    public ValidationContext ([NotNull] object instanceToValidate)
+    public ValidationContext ([CanBeNull] object instanceToValidate)
     {
-      ArgumentUtility.CheckNotNull ("instanceToValidate", instanceToValidate);
-
       InstanceToValidate = instanceToValidate;
     }
   }

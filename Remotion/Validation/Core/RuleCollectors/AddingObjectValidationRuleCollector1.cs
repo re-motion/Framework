@@ -33,8 +33,6 @@ namespace Remotion.Validation.RuleCollectors
   /// </summary>
   public sealed class AddingObjectValidationRuleCollector<TValidatedType> : IAddingObjectValidationRuleCollector
   {
-    private static readonly Func<TValidatedType, bool> s_trueCondition = _ => true;
-
     [NotNull]
     public Type CollectorType { get; }
 
@@ -81,7 +79,7 @@ namespace Remotion.Validation.RuleCollectors
 
       _uninitializedValidationMessages.Clear();
 
-      return new ObjectValidationRule<TValidatedType> (Condition ?? s_trueCondition, _validators.ToArray());
+      return new ObjectValidationRule<TValidatedType> (Condition, _validators.ToArray());
     }
 
     public IEnumerable<IObjectValidator> Validators

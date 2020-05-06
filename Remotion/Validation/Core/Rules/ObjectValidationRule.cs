@@ -26,14 +26,14 @@ namespace Remotion.Validation.Rules
 {
   public class ObjectValidationRule<TValidatedType> : IObjectValidationRule
   {
-    [NotNull]
+    [CanBeNull]
     public Func<TValidatedType, bool> Condition { get; }
 
     [NotNull]
     public IReadOnlyCollection<IObjectValidator> Validators { get; }
 
     public ObjectValidationRule (
-        [NotNull] Func<TValidatedType, bool> condition,
+        [CanBeNull] Func<TValidatedType, bool> condition,
         [NotNull] IReadOnlyCollection<IObjectValidator> validators)
     {
       ArgumentUtility.CheckNotNull ("validators", validators);
@@ -47,23 +47,28 @@ namespace Remotion.Validation.Rules
       ArgumentUtility.CheckNotNull ("context", context);
 
       var instanceToValidate = (TValidatedType) context.InstanceToValidate;
-      if (!Condition (instanceToValidate))
+      if (instanceToValidate == null)
         return Enumerable.Empty<ValidationFailure>();
 
-      return Validators.SelectMany (validator => ValidateObjectValidator (context, validator));
+      if (Condition != null && !Condition (instanceToValidate))
+        return Enumerable.Empty<ValidationFailure>();
+
+      var objectValidatorContext = new ObjectValidatorContext (context, instanceToValidate);
+
+      return Validators.SelectMany (validator => validator.Validate (objectValidatorContext));
     }
 
-    private IEnumerable<ObjectValidationFailure> ValidateObjectValidator (ValidationContext context, IObjectValidator validator)
-    {
-      var propertyValidatorContext = new ObjectValidatorContext (context);
-      return validator.Validate (propertyValidatorContext);
-    }
-
-    bool IValidationRule.IsActive (ValidationContext context)
+    public bool IsActive (ValidationContext context)
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
+      if (Condition == null)
+        return true;
+
       var instanceToValidate = (TValidatedType) context.InstanceToValidate;
+      if (instanceToValidate == null)
+        return false;
+
       return Condition (instanceToValidate);
     }
   }

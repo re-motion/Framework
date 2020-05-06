@@ -46,7 +46,7 @@ namespace Remotion.ObjectBinding.Validation
 
       var validator = ValidatorProvider.GetValidator (businessObjectType);
       var descriptor = validator.CreateDescriptor();
-      var validationContext = obj == null ? null : new ValidationContext (obj);
+      var validationContext = new ValidationContext (obj);
 
       // TODO RM-5906: Unify property matching with implementation from BusinessObjectValidationResult
 
@@ -64,7 +64,7 @@ namespace Remotion.ObjectBinding.Validation
 
       bool IsActive (IPropertyValidationRule rule)
       {
-        return validationContext == null || rule.IsActive (validationContext);
+        return rule.IsActive (validationContext);
       }
     }
   }

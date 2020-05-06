@@ -33,7 +33,7 @@ namespace Remotion.Validation.Rules
     [NotNull]
     public Func<object, object> PropertyFunc { get; }
 
-    [NotNull]
+    [CanBeNull]
     public Func<TValidatedType, bool> Condition { get; }
 
     [NotNull]
@@ -46,7 +46,6 @@ namespace Remotion.Validation.Rules
         [NotNull] IReadOnlyCollection<IPropertyValidator> validators)
     {
       ArgumentUtility.CheckNotNull ("property", property);
-      ArgumentUtility.CheckNotNull ("condition", condition);
       ArgumentUtility.CheckNotNull ("propertyFunc", propertyFunc);
       ArgumentUtility.CheckNotNull ("validators", validators);
 
@@ -60,28 +59,30 @@ namespace Remotion.Validation.Rules
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
-      var instanceToValidate = (TValidatedType)context.InstanceToValidate;
-      if (!Condition (instanceToValidate))
+      var instanceToValidate = (TValidatedType) context.InstanceToValidate;
+      if (instanceToValidate == null)
+        return Enumerable.Empty<ValidationFailure>();
+
+      if (Condition != null && !Condition (instanceToValidate))
         return Enumerable.Empty<ValidationFailure>();
 
       var propertyValue = PropertyFunc (instanceToValidate);
-      return Validators.SelectMany (validator => ValidatePropertyValidator (context, propertyValue, validator));
+      var propertyValidatorContext = new PropertyValidatorContext (context, instanceToValidate, Property, propertyValue);
+
+      return Validators.SelectMany (validator => validator.Validate (propertyValidatorContext));
     }
 
-    private IEnumerable<PropertyValidationFailure> ValidatePropertyValidator (
-        ValidationContext context,
-        object propertyValue,
-        IPropertyValidator validator)
-    {
-      var propertyValidatorContext = new PropertyValidatorContext (context, Property, propertyValue);
-      return validator.Validate (propertyValidatorContext);
-    }
-
-    bool IValidationRule.IsActive (ValidationContext context)
+    public bool IsActive (ValidationContext context)
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
+      if (Condition == null)
+        return true;
+
       var instanceToValidate = (TValidatedType) context.InstanceToValidate;
+      if (instanceToValidate == null)
+        return false;
+
       return Condition (instanceToValidate);
     }
   }

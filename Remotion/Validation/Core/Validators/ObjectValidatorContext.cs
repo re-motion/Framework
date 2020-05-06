@@ -25,14 +25,18 @@ namespace Remotion.Validation.Validators
     [NotNull]
     public ValidationContext ParentContext { get; }
 
-    public ObjectValidatorContext ([NotNull] ValidationContext parentContext)
+    [NotNull]
+    public object Instance { get; }
+
+    public ObjectValidatorContext ([NotNull] ValidationContext parentContext, [NotNull] object instance)
     {
       ArgumentUtility.CheckNotNull ("parentContext", parentContext);
+      ArgumentUtility.CheckNotNull ("instance", instance);
+      if (parentContext.InstanceToValidate != instance)
+        throw new ArgumentException ("parentContext.Instance does not match instance parameter.", "instance");
 
       ParentContext = parentContext;
+      Instance = instance;
     }
-
-    [NotNull]
-    public object Instance => ParentContext.InstanceToValidate;
   }
 }
