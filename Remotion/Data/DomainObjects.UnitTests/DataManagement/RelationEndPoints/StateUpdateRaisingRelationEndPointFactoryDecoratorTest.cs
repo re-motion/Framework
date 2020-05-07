@@ -75,6 +75,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
+    [Ignore ("RM-7294")]
+    public void CreateCollectionEndPoint ()
+    {
+    }
+
+    [Test]
     public void CreateDomainObjectCollectionEndPoint ()
     {
       var endPointID = RelationEndPointID.Create (DomainObjectIDs.Order1, typeof (Order), "OrderItems");
@@ -85,9 +91,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
           fakeResult,
           result => Assert.That (
               result, 
-              Is.TypeOf<StateUpdateRaisingCollectionEndPointDecorator>()
-                .With.Property<StateUpdateRaisingCollectionEndPointDecorator> (d => d.Listener).SameAs (_listenerStub)
-                .And.Property<StateUpdateRaisingCollectionEndPointDecorator> (d => d.InnerEndPoint).SameAs (fakeResult)));
+              Is.TypeOf<StateUpdateRaisingDomainObjectCollectionEndPointDecorator>()
+                .With.Property<StateUpdateRaisingDomainObjectCollectionEndPointDecorator> (d => d.Listener).SameAs (_listenerStub)
+                .And.Property<StateUpdateRaisingDomainObjectCollectionEndPointDecorator> (d => d.InnerEndPoint).SameAs (fakeResult)));
     }
 
     [Test]

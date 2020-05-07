@@ -36,8 +36,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull ("endPointDefinition", endPointDefinition);
 
-      if (endPointDefinition.Cardinality == CardinalityType.Many)
-        return new NullCollectionEndPoint (clientTransaction, endPointDefinition);
+      if (endPointDefinition.Cardinality == CardinalityType.Many) /* if (endPointID.Definition is VirtualRelationEndPointDefinition) */ // TODO RM-7294
+        return new NullDomainObjectCollectionEndPoint (clientTransaction, endPointDefinition);
       else if (endPointDefinition.IsVirtual)
         return new NullVirtualObjectEndPoint (clientTransaction, endPointDefinition);
       else

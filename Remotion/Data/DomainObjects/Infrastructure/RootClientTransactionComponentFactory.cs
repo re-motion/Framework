@@ -101,8 +101,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       ArgumentUtility.CheckNotNull ("lazyLoader", lazyLoader);
       ArgumentUtility.CheckNotNull ("eventSink", eventSink);
 
-      var endPointChangeDetectionStrategy = new RootCollectionEndPointChangeDetectionStrategy();
-      var collectionEndPointDataManagerFactory = new CollectionEndPointDataManagerFactory (endPointChangeDetectionStrategy);
+      var domainObjectCollectionEndPointChangeDetectionStrategy = new RootDomainObjectCollectionEndPointChangeDetectionStrategy();
+      var domainObjectCollectionEndPointDataManagerFactory = new DomainObjectCollectionEndPointDataManagerFactory (domainObjectCollectionEndPointChangeDetectionStrategy);
       var virtualObjectEndPointDataManagerFactory = new VirtualObjectEndPointDataManagerFactory();
 
       var relationEndPointFactory = CreateRelationEndPointFactory (
@@ -111,7 +111,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
           lazyLoader,
           eventSink,
           virtualObjectEndPointDataManagerFactory,
-          collectionEndPointDataManagerFactory);
+          domainObjectCollectionEndPointDataManagerFactory);
       var virtualEndPointStateUpdateListener = new VirtualEndPointStateUpdateListener (eventSink);
       var stateUpdateRaisingRelationEndPointFactory = new StateUpdateRaisingRelationEndPointFactoryDecorator (
           relationEndPointFactory, 
@@ -128,26 +128,26 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         ILazyLoader lazyLoader,
         IClientTransactionEventSink eventSink,
         IVirtualObjectEndPointDataManagerFactory virtualObjectEndPointDataManagerFactory,
-        ICollectionEndPointDataManagerFactory collectionEndPointDataManagerFactory)
+        IDomainObjectCollectionEndPointDataManagerFactory domainObjectCollectionEndPointDataManagerFactory)
     {
       ArgumentUtility.CheckNotNull ("constructedTransaction", constructedTransaction);
       ArgumentUtility.CheckNotNull ("endPointProvider", endPointProvider);
       ArgumentUtility.CheckNotNull ("lazyLoader", lazyLoader);
       ArgumentUtility.CheckNotNull ("eventSink", eventSink);
       ArgumentUtility.CheckNotNull ("virtualObjectEndPointDataManagerFactory", virtualObjectEndPointDataManagerFactory);
-      ArgumentUtility.CheckNotNull ("collectionEndPointDataManagerFactory", collectionEndPointDataManagerFactory);
+      ArgumentUtility.CheckNotNull ("domainObjectCollectionEndPointDataManagerFactory", domainObjectCollectionEndPointDataManagerFactory);
 
-      var associatedCollectionDataStrategyFactory = new AssociatedCollectionDataStrategyFactory (endPointProvider);
-      var collectionEndPointCollectionProvider = new CollectionEndPointCollectionProvider (associatedCollectionDataStrategyFactory);
+      var associatedDomainObjectCollectionDataStrategyFactory = new AssociatedDomainObjectCollectionDataStrategyFactory (endPointProvider);
+      var domainObjectCollectionEndPointCollectionProvider = new DomainObjectCollectionEndPointCollectionProvider (associatedDomainObjectCollectionDataStrategyFactory);
       return new RelationEndPointFactory (
           constructedTransaction,
           endPointProvider,
           lazyLoader,
           eventSink,
           virtualObjectEndPointDataManagerFactory,
-          collectionEndPointDataManagerFactory, 
-          collectionEndPointCollectionProvider,
-          associatedCollectionDataStrategyFactory);
+          domainObjectCollectionEndPointDataManagerFactory, 
+          domainObjectCollectionEndPointCollectionProvider,
+          associatedDomainObjectCollectionDataStrategyFactory);
     }
 
     protected override IObjectLoader CreateObjectLoader (

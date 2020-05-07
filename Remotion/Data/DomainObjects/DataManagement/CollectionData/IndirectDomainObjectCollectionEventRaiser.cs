@@ -21,7 +21,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
   /// <summary>
   /// Implements the <see cref="IDomainObjectCollectionEventRaiser"/> interface by delegating to another implementation of 
   /// <see cref="IDomainObjectCollectionEventRaiser"/>. This is useful when the event raiser needs to be changed after e.g. the 
-  /// <see cref="EventRaisingCollectionDataDecorator"/> has been created.
+  /// <see cref="EventRaisingDomainObjectCollectionDataDecorator"/> has been created.
   /// </summary>
   [Serializable]
   public class IndirectDomainObjectCollectionEventRaiser : IDomainObjectCollectionEventRaiser

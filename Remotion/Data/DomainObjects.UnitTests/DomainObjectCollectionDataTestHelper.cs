@@ -66,11 +66,11 @@ namespace Remotion.Data.DomainObjects.UnitTests
         Type expectedRequiredItemType, 
         RelationEndPointID expectedEndPointID)
     {
-      Assert.That (domainObjectCollectionData, Is.TypeOf<ModificationCheckingCollectionDataDecorator> ());
-      var checkingDecorator = (ModificationCheckingCollectionDataDecorator) domainObjectCollectionData;
+      Assert.That (domainObjectCollectionData, Is.TypeOf<ModificationCheckingDomainObjectCollectionDataDecorator> ());
+      var checkingDecorator = (ModificationCheckingDomainObjectCollectionDataDecorator) domainObjectCollectionData;
       Assert.That (checkingDecorator.RequiredItemType, Is.SameAs (expectedRequiredItemType));
 
-      var delegator = GetWrappedDataAndCheckType<EndPointDelegatingCollectionData> (checkingDecorator);
+      var delegator = GetWrappedDataAndCheckType<EndPointDelegatingDomainObjectCollectionData> (checkingDecorator);
       Assert.That (delegator.AssociatedEndPointID, Is.EqualTo (expectedEndPointID));
     }
 
@@ -78,10 +78,10 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       // collection => checking decorator => event decorator => actual data store
 
-      var checkingDecorator = GetDataStrategyAndCheckType<ModificationCheckingCollectionDataDecorator> (collection);
+      var checkingDecorator = GetDataStrategyAndCheckType<ModificationCheckingDomainObjectCollectionDataDecorator> (collection);
       Assert.That (checkingDecorator.RequiredItemType, Is.SameAs (expectedRequiredItemType));
 
-      var eventRaisingDecorator = GetWrappedDataAndCheckType<EventRaisingCollectionDataDecorator> (checkingDecorator);
+      var eventRaisingDecorator = GetWrappedDataAndCheckType<EventRaisingDomainObjectCollectionDataDecorator> (checkingDecorator);
       var eventRaiserAsIndirectRaiser = eventRaisingDecorator.EventRaiser as IndirectDomainObjectCollectionEventRaiser;
 
       if (eventRaiserAsIndirectRaiser == null)
@@ -97,10 +97,10 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       // collection => checking decorator => event decorator => actual data store
 
-      var checkingDecorator = GetDataStrategyAndCheckType<ModificationCheckingCollectionDataDecorator> (collection);
+      var checkingDecorator = GetDataStrategyAndCheckType<ModificationCheckingDomainObjectCollectionDataDecorator> (collection);
       Assert.That (checkingDecorator.RequiredItemType, Is.SameAs (expectedRequiredItemType));
 
-      var eventRaisingDecorator = GetWrappedDataAndCheckType<EventRaisingCollectionDataDecorator> (checkingDecorator);
+      var eventRaisingDecorator = GetWrappedDataAndCheckType<EventRaisingDomainObjectCollectionDataDecorator> (checkingDecorator);
       var eventRaiserAsIndirectRaiser = eventRaisingDecorator.EventRaiser as IndirectDomainObjectCollectionEventRaiser;
       
       if (eventRaiserAsIndirectRaiser == null)
@@ -115,19 +115,19 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       // collection => read-only decorator => actual data store
 
-      var readOnlyDecorator = GetDataStrategyAndCheckType<ReadOnlyCollectionDataDecorator> (collection);
+      var readOnlyDecorator = GetDataStrategyAndCheckType<ReadOnlyDomainObjectCollectionDataDecorator> (collection);
       GetWrappedDataAndCheckType<DomainObjectCollectionData> (readOnlyDecorator);
     }
 
     public static void MakeCollectionReadOnly (DomainObjectCollection collection)
     {
       // strip off all decorators
-      var checkingDecorator = GetDataStrategyAndCheckType<ModificationCheckingCollectionDataDecorator> (collection);
+      var checkingDecorator = GetDataStrategyAndCheckType<ModificationCheckingDomainObjectCollectionDataDecorator> (collection);
       var originalStrategy = GetWrappedData (checkingDecorator);
-      if (originalStrategy is EventRaisingCollectionDataDecorator)
-        originalStrategy = GetWrappedData ((EventRaisingCollectionDataDecorator) originalStrategy);
+      if (originalStrategy is EventRaisingDomainObjectCollectionDataDecorator)
+        originalStrategy = GetWrappedData ((EventRaisingDomainObjectCollectionDataDecorator) originalStrategy);
 
-      var newStrategy = new ReadOnlyCollectionDataDecorator (originalStrategy);
+      var newStrategy = new ReadOnlyDomainObjectCollectionDataDecorator (originalStrategy);
       SetDataStrategy (collection, newStrategy);
     }
 
@@ -137,8 +137,8 @@ namespace Remotion.Data.DomainObjects.UnitTests
       if (collection.AssociatedEndPointID == null)
         return null;
 
-      var checkingDecorator = GetDataStrategyAndCheckType<ModificationCheckingCollectionDataDecorator> (collection);
-      var delegatingStrategy = GetWrappedDataAndCheckType<EndPointDelegatingCollectionData> (checkingDecorator);
+      var checkingDecorator = GetDataStrategyAndCheckType<ModificationCheckingDomainObjectCollectionDataDecorator> (collection);
+      var delegatingStrategy = GetWrappedDataAndCheckType<EndPointDelegatingDomainObjectCollectionData> (checkingDecorator);
       return delegatingStrategy.GetAssociatedEndPoint();
     }
   }

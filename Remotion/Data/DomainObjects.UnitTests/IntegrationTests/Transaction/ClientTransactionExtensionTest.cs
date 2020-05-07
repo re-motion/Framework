@@ -842,7 +842,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       DomainObjectCollection originalOrderItems;
       using (_transaction.EnterNonDiscardingScope())
       {
-        originalOrderItems = _order1.GetOriginalRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
+        originalOrderItems = _order1.GetOriginalRelatedObjectsAsDomainObjectCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
       }
       _mockRepository.BackToRecord (_extensionMock);
 
@@ -864,7 +864,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       using (_transaction.EnterNonDiscardingScope())
       {
-        Dev.Null = _order1.GetOriginalRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
+        Dev.Null = _order1.GetOriginalRelatedObjectsAsDomainObjectCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
       }
 
       _mockRepository.VerifyAll();
@@ -991,7 +991,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       using (_transaction.EnterNonDiscardingScope())
       {
-        Dev.Null = _order1.GetOriginalRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
+        Dev.Null = _order1.GetOriginalRelatedObjectsAsDomainObjectCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
       }
       _mockRepository.VerifyAll();
     }

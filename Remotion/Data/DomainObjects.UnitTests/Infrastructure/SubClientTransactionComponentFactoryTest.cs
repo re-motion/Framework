@@ -193,17 +193,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       Assert.That (endPointFactory.EndPointProvider, Is.SameAs (endPointProvider));
       Assert.That (endPointFactory.TransactionEventSink, Is.SameAs (eventSink));
       
-      Assert.That (endPointFactory.CollectionEndPointDataManagerFactory, Is.TypeOf (typeof (CollectionEndPointDataManagerFactory)));
-      var collectionEndPointDataManagerFactory = ((CollectionEndPointDataManagerFactory) endPointFactory.CollectionEndPointDataManagerFactory);
-      Assert.That (collectionEndPointDataManagerFactory.ChangeDetectionStrategy, Is.TypeOf<SubCollectionEndPointChangeDetectionStrategy> ());
+      Assert.That (endPointFactory.DomainObjectCollectionEndPointDataManagerFactory, Is.TypeOf (typeof (DomainObjectCollectionEndPointDataManagerFactory)));
+      var domainObjectCollectionEndPointDataManagerFactory = ((DomainObjectCollectionEndPointDataManagerFactory) endPointFactory.DomainObjectCollectionEndPointDataManagerFactory);
+      Assert.That (domainObjectCollectionEndPointDataManagerFactory.ChangeDetectionStrategy, Is.TypeOf<SubDomainObjectCollectionEndPointChangeDetectionStrategy> ());
       Assert.That (endPointFactory.VirtualObjectEndPointDataManagerFactory, Is.TypeOf<VirtualObjectEndPointDataManagerFactory> ());
 
-      Assert.That (endPointFactory.CollectionEndPointCollectionProvider, Is.TypeOf<CollectionEndPointCollectionProvider> ());
-      var collectionEndPointCollectionProvider = (CollectionEndPointCollectionProvider) endPointFactory.CollectionEndPointCollectionProvider;
+      Assert.That (endPointFactory.DomainObjectCollectionEndPointCollectionProvider, Is.TypeOf<DomainObjectCollectionEndPointCollectionProvider> ());
+      var domainObjectCollectionEndPointCollectionProvider = (DomainObjectCollectionEndPointCollectionProvider) endPointFactory.DomainObjectCollectionEndPointCollectionProvider;
       Assert.That (
-          collectionEndPointCollectionProvider.DataStrategyFactory,
-          Is.TypeOf<AssociatedCollectionDataStrategyFactory> ()
-              .With.Property ((AssociatedCollectionDataStrategyFactory f) => f.VirtualEndPointProvider).SameAs (endPointProvider));
+          domainObjectCollectionEndPointCollectionProvider.DataStrategyFactory,
+          Is.TypeOf<AssociatedDomainObjectCollectionDataStrategyFactory> ()
+              .With.Property ((AssociatedDomainObjectCollectionDataStrategyFactory f) => f.VirtualEndPointProvider).SameAs (endPointProvider));
     }
 
     [Test]

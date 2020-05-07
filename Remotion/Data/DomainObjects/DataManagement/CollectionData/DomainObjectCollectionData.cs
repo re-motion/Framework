@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
   /// Provides an an encapsulation of the data stored inside a <see cref="DomainObjectCollection"/>, implementing the 
   /// <see cref="IDomainObjectCollectionData"/> interface. The data is stored by means of two collections, an ordered <see cref="List{T}"/> of 
   /// <see cref="ObjectID"/>s and a <see cref="Dictionary{TKey,TValue}"/> mapping the IDs to <see cref="DomainObject"/> instances.
-  /// This class does not perform any fancy argument checking, use <see cref="ModificationCheckingCollectionDataDecorator"/> for that. It does, however,
+  /// This class does not perform any fancy argument checking, use <see cref="ModificationCheckingDomainObjectCollectionDataDecorator"/> for that. It does, however,
   /// ensure that no inconsistent state can be created, even when calling its members with invalid arguments.
   /// </summary>
   [Serializable]

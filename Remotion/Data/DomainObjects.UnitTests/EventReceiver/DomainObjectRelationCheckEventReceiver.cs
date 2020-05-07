@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
       }
       else
       {
-        DomainObjectCollection relatedDomainObjectCollection = domainObject.GetRelatedObjects (changedProperty);
+        DomainObjectCollection relatedDomainObjectCollection = domainObject.GetRelatedObjectsAsDomainObjectCollection (changedProperty);
         _changingRelatedObjects.Add (changedProperty, relatedDomainObjectCollection.Clone (true));
       }
 
@@ -96,7 +96,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
       }
       else
       {
-        DomainObjectCollection relatedDomainObjectCollection = domainObject.GetRelatedObjects (changedProperty);
+        DomainObjectCollection relatedDomainObjectCollection = domainObject.GetRelatedObjectsAsDomainObjectCollection (changedProperty);
         _changedRelatedObjects.Add (changedProperty, relatedDomainObjectCollection.Clone (true));
       }
 

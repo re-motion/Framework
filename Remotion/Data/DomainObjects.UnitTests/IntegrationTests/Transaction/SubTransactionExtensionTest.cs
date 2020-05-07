@@ -915,7 +915,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     public void GetOriginalRelatedObjects ()
     {
       DomainObjectCollection originalOrderItems =
-          _order1.GetOriginalRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
+          _order1.GetOriginalRelatedObjectsAsDomainObjectCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
 
       _mockRepository.BackToRecord (_extensionMock);
 
@@ -935,7 +935,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       _mockRepository.ReplayAll();
 
-      Dev.Null = _order1.GetOriginalRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
+      Dev.Null = _order1.GetOriginalRelatedObjectsAsDomainObjectCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
 
       _mockRepository.VerifyAll();
     }
@@ -1084,7 +1084,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       }
       _mockRepository.ReplayAll();
 
-      Dev.Null = _order1.GetOriginalRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
+      Dev.Null = _order1.GetOriginalRelatedObjectsAsDomainObjectCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
 
       _mockRepository.VerifyAll();
     }

@@ -22,10 +22,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   /// <summary>
   /// Represents an <see cref="IRelationEndPoint"/> holding a collection of <see cref="DomainObject"/> instances, i.e. the "many" side of a relation.
   /// </summary>
-  public interface ICollectionEndPoint : IVirtualEndPoint<ReadOnlyCollectionDataDecorator>
+  public interface ICollectionEndPoint : IVirtualEndPoint<ReadOnlyDomainObjectCollectionDataDecorator>
   {
-    IDomainObjectCollectionEventRaiser GetCollectionEventRaiser ();
-
     void MarkDataComplete (DomainObject[] items);
 
     IDataManagementCommand CreateAddCommand (DomainObject addedRelatedObject);

@@ -25,6 +25,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
   [TestFixture]
   public class RelationEndPointExtensionsTest : ClientTransactionBaseTest
   {
+    [Ignore ("RM-7294")]
+    [Test]
+    public void SeparateTestFixtureForDomainObjectCollectionAndQueryCollection ()
+    {
+    }
+
     [Test]
     public void GetEndPointWithOppositeDefinition_Object ()
     {
@@ -46,7 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var oppositeEndPoint = endPoint.GetEndPointWithOppositeDefinition<ICollectionEndPoint> ((DomainObject) null);
 
-      Assert.That (oppositeEndPoint, Is.InstanceOf (typeof (NullCollectionEndPoint)));
+      Assert.That (oppositeEndPoint, Is.InstanceOf (typeof (NullDomainObjectCollectionEndPoint)));
       var expectedID = RelationEndPointID.Create(null, endPoint.Definition.GetOppositeEndPointDefinition ());
       Assert.That (oppositeEndPoint.ID, Is.EqualTo (expectedID));
     }
@@ -72,7 +78,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var oppositeEndPoint = endPoint.GetEndPointWithOppositeDefinition<ICollectionEndPoint> ((ObjectID) null);
 
-      Assert.That (oppositeEndPoint, Is.InstanceOf (typeof (NullCollectionEndPoint)));
+      Assert.That (oppositeEndPoint, Is.InstanceOf (typeof (NullDomainObjectCollectionEndPoint)));
       var expectedID = RelationEndPointID.Create(null, endPoint.Definition.GetOppositeEndPointDefinition ());
       Assert.That (oppositeEndPoint.ID, Is.EqualTo (expectedID));
     }
@@ -87,7 +93,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
           Throws.InvalidOperationException
               .With.Message.EqualTo (
                   "The opposite end point 'null/Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' is of type "
-                  + "'Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.NullCollectionEndPoint', not of type 'Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.IObjectEndPoint'."));
+                  + "'Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.NullDomainObjectCollectionEndPoint', not of type 'Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.IObjectEndPoint'."));
     }
   }
 }

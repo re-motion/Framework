@@ -108,7 +108,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     {
       _newOrder.Delete ();
       Assert.That (
-          () => _newOrder.GetRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"),
+          () => _newOrder.GetRelatedObjectsAsDomainObjectCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"),
           Throws.InstanceOf<ObjectInvalidException>());
     }
 
@@ -126,7 +126,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     {
       _newOrder.Delete ();
       Assert.That (
-          () => _newOrder.GetOriginalRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"),
+          () => _newOrder.GetOriginalRelatedObjectsAsDomainObjectCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"),
           Throws.InstanceOf<ObjectInvalidException>());
     }
 

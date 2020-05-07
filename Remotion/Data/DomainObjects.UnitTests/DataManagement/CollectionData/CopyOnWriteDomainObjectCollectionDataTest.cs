@@ -30,8 +30,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     private Order _domainObject2;
     private Order _domainObject3;
 
-    private ObservableCollectionDataDecorator _copiedData;
-    private CopyOnWriteDomainObjectCollectionData _copyOnWriteData;
+    private ObservableDomainObjectCollectionDataDecorator _copiedData;
+    private CopyOnWriteDomainObjectDomainObjectCollectionData _copyOnWriteData;
     private DomainObjectCollectionData _underlyingCopiedData;
 
     [SetUp]
@@ -44,8 +44,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
       _domainObject3 = DomainObjectMother.CreateFakeObject<Order> ();
 
       _underlyingCopiedData = new DomainObjectCollectionData (new[] { _domainObject1, _domainObject2 });
-      _copiedData = new ObservableCollectionDataDecorator (_underlyingCopiedData);
-      _copyOnWriteData = new CopyOnWriteDomainObjectCollectionData (_copiedData);
+      _copiedData = new ObservableDomainObjectCollectionDataDecorator (_underlyingCopiedData);
+      _copyOnWriteData = new CopyOnWriteDomainObjectDomainObjectCollectionData (_copiedData);
     }
 
     [Test]

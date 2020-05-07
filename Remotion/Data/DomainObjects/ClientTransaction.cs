@@ -979,10 +979,10 @@ public class ClientTransaction
   /// <summary>
   /// Gets the related objects of a given <see cref="RelationEndPointID"/>.
   /// </summary>
-  /// <param name="relationEndPointID">The <see cref="RelationEndPointID"/> to evaluate. It must refer to a <see cref="CollectionEndPoint"/>. Must not be <see langword="null"/>.</param>
+  /// <param name="relationEndPointID">The <see cref="RelationEndPointID"/> to evaluate. It must refer to a <see cref="DomainObjectCollectionEndPoint"/>. Must not be <see langword="null"/>.</param>
   /// <returns>A <see cref="DomainObjectCollection"/> containing the current related objects.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="relationEndPointID"/> is <see langword="null"/>.</exception>
-  /// <exception cref="System.ArgumentException"><paramref name="relationEndPointID"/> does not refer to a <see cref="CollectionEndPoint"/></exception>
+  /// <exception cref="System.ArgumentException"><paramref name="relationEndPointID"/> does not refer to a <see cref="DomainObjectCollectionEndPoint"/></exception>
   protected internal virtual DomainObjectCollection GetRelatedObjects (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
@@ -996,6 +996,7 @@ public class ClientTransaction
 
     var collectionEndPoint = (IDomainObjectCollectionEndPoint) _dataManager.GetRelationEndPointWithLazyLoad (relationEndPointID); // TODO RM-7294
     var relatedObjects = collectionEndPoint.Collection;
+    // Use ReadOnlyCollection<DomainObject> or IReadOnlyCollection<DomainObject> for RaiseRelationReadEvent, Change ReadOnlyDomainObjectCollectionAdapter<T> to implement IReadOnlyList<T> instead of IList<T>
     var readOnlyRelatedObjects = new ReadOnlyDomainObjectCollectionAdapter<DomainObject> (relatedObjects);
 
     _eventBroker.RaiseRelationReadEvent (domainObject, relationEndPointID.Definition, readOnlyRelatedObjects, ValueAccess.Current);
@@ -1007,10 +1008,10 @@ public class ClientTransaction
   /// <summary>
   /// Gets the original related objects of a given <see cref="RelationEndPointID"/> at the point of instantiation, loading, commit or rollback.
   /// </summary>
-  /// <param name="relationEndPointID">The <see cref="RelationEndPointID"/> to evaluate. It must refer to a <see cref="CollectionEndPoint"/>. Must not be <see langword="null"/>.</param>
+  /// <param name="relationEndPointID">The <see cref="RelationEndPointID"/> to evaluate. It must refer to a <see cref="DomainObjectCollectionEndPoint"/>. Must not be <see langword="null"/>.</param>
   /// <returns>A <see cref="DomainObjectCollection"/> containing the original related objects.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="relationEndPointID"/> is <see langword="null"/>.</exception>
-  /// <exception cref="System.ArgumentException"><paramref name="relationEndPointID"/> does not refer to a <see cref="CollectionEndPoint"/></exception>
+  /// <exception cref="System.ArgumentException"><paramref name="relationEndPointID"/> does not refer to a <see cref="DomainObjectCollectionEndPoint"/></exception>
   protected internal virtual DomainObjectCollection GetOriginalRelatedObjects (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
@@ -1024,6 +1025,7 @@ public class ClientTransaction
 
     var collectionEndPoint = (IDomainObjectCollectionEndPoint) _dataManager.GetRelationEndPointWithLazyLoad (relationEndPointID); // TODO RM-7294
     var relatedObjects = collectionEndPoint.GetCollectionWithOriginalData();
+    // Use ReadOnlyCollection<DomainObject> or IReadOnlyCollection<DomainObject> for RaiseRelationReadEvent, Change ReadOnlyDomainObjectCollectionAdapter<T> to implement IReadOnlyList<T> instead of IList<T>
     var readOnlyRelatedObjects = new ReadOnlyDomainObjectCollectionAdapter<DomainObject> (relatedObjects);
 
     _eventBroker.RaiseRelationReadEvent (domainObject, relationEndPointID.Definition, readOnlyRelatedObjects, ValueAccess.Original);

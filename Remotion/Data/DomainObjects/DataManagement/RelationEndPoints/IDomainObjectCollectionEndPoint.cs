@@ -36,6 +36,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     void SortCurrentData (Comparison<DomainObject> comparison);
 
+    IDomainObjectCollectionEventRaiser GetCollectionEventRaiser ();
+
     bool? HasChangedFast { get; }
   }
 }

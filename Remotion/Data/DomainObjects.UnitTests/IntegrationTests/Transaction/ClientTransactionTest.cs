@@ -145,7 +145,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       customer.Orders.Add (DomainObjectIDs.Order3.GetObject<Order> ());
       TestableClientTransaction.Commit ();
 
-      DomainObjectCollection originalOrders = customer.GetOriginalRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders");
+      DomainObjectCollection originalOrders = customer.GetOriginalRelatedObjectsAsDomainObjectCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders");
       Assert.That (originalOrders.GetType(), Is.EqualTo (typeof (OrderCollection)));
       Assert.That (originalOrders.IsReadOnly, Is.True);
 
@@ -161,7 +161,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       DomainObjectCollectionDataTestHelper.MakeCollectionReadOnly (customer.Orders);
       TestableClientTransaction.Rollback ();
 
-      Assert.That (customer.GetOriginalRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders").IsReadOnly, Is.True);
+      Assert.That (customer.GetOriginalRelatedObjectsAsDomainObjectCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders").IsReadOnly, Is.True);
       Assert.That (customer.Orders.IsReadOnly, Is.True);
     }
 

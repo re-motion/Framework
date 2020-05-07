@@ -53,6 +53,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       }
       else
       {
+        //TODO: RM-7294: possibly do not handle IVirtualCollectionEndPoint here since it's graceful
         var collectionEndPoint = (ICollectionEndPoint) endPoint;
         if (collectionEndPoint.GetData ().Count == 0 && collectionEndPoint.GetOriginalData ().Count == 0)
           return null;

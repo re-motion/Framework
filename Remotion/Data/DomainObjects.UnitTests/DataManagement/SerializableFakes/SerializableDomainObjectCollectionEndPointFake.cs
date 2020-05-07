@@ -154,12 +154,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
       set { throw new NotImplementedException(); }
     }
 
-    public ReadOnlyCollectionDataDecorator GetData ()
+    public ReadOnlyDomainObjectCollectionDataDecorator GetData ()
     {
       throw new NotImplementedException();
     }
 
-    public ReadOnlyCollectionDataDecorator GetOriginalData ()
+    public ReadOnlyDomainObjectCollectionDataDecorator GetOriginalData ()
     {
       throw new NotImplementedException();
     }
