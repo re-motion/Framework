@@ -67,11 +67,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
       _addedObjects = newOppositeObjects.Where (newObject => !ModifiedCollectionData.ContainsObjectID (newObject.ID)).ToArray ();
     }
 
-    public new ICollectionEndPoint ModifiedEndPoint
-    {
-      get { return (ICollectionEndPoint) base.ModifiedEndPoint; }
-    }
-
     public DomainObjectCollection NewCollection
     {
       get { return _newCollection; }
@@ -139,7 +134,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     /// </remarks>
     public override ExpandedCommand ExpandToAllRelatedObjects ()
     {
-      var domainObjectOfCollectionEndPoint = base.ModifiedEndPoint.GetDomainObject ();
+      var domainObjectOfCollectionEndPoint = ModifiedEndPoint.GetDomainObject ();
 
       var commandsForRemoved = from oldObject in RemovedObjects
                                let endPoint = ModifiedEndPoint.GetEndPointWithOppositeDefinition<IRealObjectEndPoint> (oldObject)

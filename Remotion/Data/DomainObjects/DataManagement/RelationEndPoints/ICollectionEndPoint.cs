@@ -24,22 +24,24 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   /// </summary>
   public interface ICollectionEndPoint : IVirtualEndPoint<ReadOnlyCollectionDataDecorator>
   {
-    bool? HasChangedFast { get; }
+    bool? HasChangedFast { get; } //Keep for new query collection endpoint
 
-    DomainObjectCollection Collection { get; }
+    DomainObjectCollection Collection { get; } // move to DomainObjectCollection-specific
+
+    [Obsolete ("Use GetCollectionWithOriginalData() instead.", true)]
     DomainObjectCollection OriginalCollection { get; }
 
     IDomainObjectCollectionEventRaiser GetCollectionEventRaiser ();
 
-    DomainObjectCollection GetCollectionWithOriginalData ();
+    DomainObjectCollection GetCollectionWithOriginalData (); // move to DomainObjectCollection-specific
 
-    void MarkDataComplete (DomainObject[] items);
+    void MarkDataComplete (DomainObject[] items); //Keep for new query collection endpoint
 
-    IDataManagementCommand CreateSetCollectionCommand (DomainObjectCollection newCollection);
-    IDataManagementCommand CreateInsertCommand (DomainObject insertedRelatedObject, int index);
-    IDataManagementCommand CreateAddCommand (DomainObject addedRelatedObject);
-    IDataManagementCommand CreateReplaceCommand (int index, DomainObject replacementObject);
+    IDataManagementCommand CreateSetCollectionCommand (DomainObjectCollection newCollection); // move to DomainObjectCollection-specifc
+    IDataManagementCommand CreateInsertCommand (DomainObject insertedRelatedObject, int index);// move to DomainObjectCollection-specifc
+    IDataManagementCommand CreateAddCommand (DomainObject addedRelatedObject); //Keep for new query collection endpoint
+    IDataManagementCommand CreateReplaceCommand (int index, DomainObject replacementObject);// move to DomainObjectCollection-specifc
 
-    void SortCurrentData (Comparison<DomainObject> comparison);
+    void SortCurrentData (Comparison<DomainObject> comparison);//Keep for new query collection endpoint
   }
 }

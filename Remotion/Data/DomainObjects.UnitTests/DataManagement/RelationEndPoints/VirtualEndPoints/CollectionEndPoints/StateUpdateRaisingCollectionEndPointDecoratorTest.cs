@@ -224,7 +224,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _decoratorTestHelper.CheckDelegation (ep => ep.GetData (), readOnlyCollectionDataDecorator);
       _decoratorTestHelper.CheckDelegation (ep => ep.GetOriginalData (), readOnlyCollectionDataDecorator);
       _decoratorTestHelper.CheckDelegation (ep => ep.Collection, domainObjectCollection);
-      _decoratorTestHelper.CheckDelegation (ep => ep.OriginalCollection, domainObjectCollection);
       _decoratorTestHelper.CheckDelegation (ep => ep.GetCollectionEventRaiser (), eventRaiser);
       _decoratorTestHelper.CheckDelegation (ep => ep.GetCollectionWithOriginalData (), domainObjectCollection);
       _decoratorTestHelper.CheckDelegation (ep => ep.MarkDataComplete (new[] { orderItem }));

@@ -146,6 +146,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       get { return _collectionManager.GetCurrentCollectionReference (); }
     }
 
+    [Obsolete ("Use GetCollectionWithOriginalData() instead.", true)]
     public DomainObjectCollection OriginalCollection
     {
       get { return _collectionManager.GetOriginalCollectionReference (); }

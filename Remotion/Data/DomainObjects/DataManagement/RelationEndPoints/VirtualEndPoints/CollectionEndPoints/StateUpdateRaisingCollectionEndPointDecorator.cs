@@ -543,6 +543,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
+    [Obsolete ("Use GetCollectionWithOriginalData() instead.", true)]
     public DomainObjectCollection OriginalCollection
     {
       get

@@ -153,6 +153,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
+    [Obsolete ("Remove")]
     public void OriginalCollection ()
     {
       _collectionManagerMock.Stub (stub => stub.GetOriginalCollectionReference ()).Return (_fakeCollection);

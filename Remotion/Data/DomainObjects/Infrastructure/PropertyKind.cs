@@ -34,6 +34,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <summary>
     /// The property is a collection of related domain objects.
     /// </summary>
-    RelatedObjectCollection
+    RelatedObjectCollection // Rename to DomainObjectCollection or something similar
+    // new value, name must be different from RelatedObjectCollection
   }
 }

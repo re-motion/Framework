@@ -183,7 +183,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       SetCollectionAndNotify (_customerEndPoint, newOpposites);
 
       Assert.That (_customerEndPoint.Collection, Is.SameAs (newOpposites));
-      Assert.That (_customerEndPoint.OriginalCollection, Is.SameAs (oldOpposites));
+      Assert.That (_customerEndPoint.GetCollectionWithOriginalData(), Is.EqualTo (oldOpposites));
     }
 
     [Test]
@@ -196,7 +196,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       SetCollectionAndNotify (_customerEndPoint, newOpposites);
 
       Assert.That (_customerEndPoint.Collection, Is.SameAs (newOpposites));
-      Assert.That (_customerEndPoint.OriginalCollection, Is.SameAs (oldOpposites));
+      Assert.That (_customerEndPoint.GetCollectionWithOriginalData(), Is.EqualTo (oldOpposites));
     }
 
     [Test]
@@ -235,7 +235,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       SetCollectionAndNotify (_customerEndPoint, newOpposites);
 
       Assert.That (_customerEndPoint.GetCollectionWithOriginalData(), Is.EqualTo (oldOriginalOpposites));
-      Assert.That (_customerEndPoint.OriginalCollection, Is.SameAs (oldOpposites));
     }
 
     [Test]
@@ -263,14 +262,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    public void OriginalCollection_Get_DoesNotLoadData ()
+    public void GetCollectionWithOriginalData_LoadsData ()
     {
       _customerEndPoint.MarkDataIncomplete ();
       Assert.That (_customerEndPoint.IsDataComplete, Is.False);
 
-      Dev.Null = _customerEndPoint.OriginalCollection;
+      Dev.Null = _customerEndPoint.GetCollectionWithOriginalData();
 
-      Assert.That (_customerEndPoint.IsDataComplete, Is.False);
+      Assert.That (_customerEndPoint.IsDataComplete, Is.True);
     }
 
     [Test]
@@ -345,7 +344,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       Assert.That (_customerEndPoint.Collection, Is.EqualTo (new[] { _order1, _order2 }));
       Assert.That (_customerEndPoint.GetCollectionWithOriginalData(), Is.EqualTo (new[] { _order1, _order2 }));
-      Assert.That (_customerEndPoint.OriginalCollection, Is.SameAs (_customerEndPoint.Collection));
+      Assert.That (_customerEndPoint.GetCollectionWithOriginalData(), Is.EqualTo (_customerEndPoint.Collection));
       Assert.That (_customerEndPoint.Collection.IsReadOnly, Is.True);
     }
 
@@ -409,7 +408,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       Assert.That (_customerEndPoint.Collection, Is.EqualTo (new[] { _order1, _order2, _order3 }));
       Assert.That (_customerEndPoint.GetCollectionWithOriginalData(), Is.EqualTo (new[] { _order1, _order2, _order3 }));
-      Assert.That (_customerEndPoint.OriginalCollection, Is.SameAs (_customerEndPoint.Collection));
+      Assert.That (_customerEndPoint.GetCollectionWithOriginalData(), Is.EqualTo (_customerEndPoint.Collection));
       Assert.That (_customerEndPoint.Collection.IsReadOnly, Is.True);
     }
 

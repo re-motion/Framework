@@ -996,6 +996,7 @@ public class ClientTransaction
 
     var collectionEndPoint = (ICollectionEndPoint) _dataManager.GetRelationEndPointWithLazyLoad (relationEndPointID);
     var relatedObjects = collectionEndPoint.Collection;
+    // Use ReadOnlyCollection<DomainObject> or IReadOnlyCollection<DomainObject> for RaiseRelationReadEvent, Change ReadOnlyDomainObjectCollectionAdapter<T> to implement IReadOnlyList<T> instead of IList<T>
     var readOnlyRelatedObjects = new ReadOnlyDomainObjectCollectionAdapter<DomainObject> (relatedObjects);
 
     _eventBroker.RaiseRelationReadEvent (domainObject, relationEndPointID.Definition, readOnlyRelatedObjects, ValueAccess.Current);
@@ -1023,6 +1024,7 @@ public class ClientTransaction
 
     var collectionEndPoint = (ICollectionEndPoint) _dataManager.GetRelationEndPointWithLazyLoad (relationEndPointID);
     var relatedObjects = collectionEndPoint.GetCollectionWithOriginalData();
+    // Use ReadOnlyCollection<DomainObject> or IReadOnlyCollection<DomainObject> for RaiseRelationReadEvent, Change ReadOnlyDomainObjectCollectionAdapter<T> to implement IReadOnlyList<T> instead of IList<T>
     var readOnlyRelatedObjects = new ReadOnlyDomainObjectCollectionAdapter<DomainObject> (relatedObjects);
 
     _eventBroker.RaiseRelationReadEvent (domainObject, relationEndPointID.Definition, readOnlyRelatedObjects, ValueAccess.Original);
