@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
   [TestFixture]
   public class ReadOnlyDomainObjectCollectionAdapterTest : ClientTransactionBaseTest
   {
-    private ReadOnlyDomainObjectCollectionAdapter<DomainObject> _readOnlyAdapter;
+    private IReadOnlyCollectionData<DomainObject> _readOnlyAdapter;
     private IReadOnlyList<DomainObject> _readOnlyAdapterAsIList;
     private DomainObjectCollection _wrappedData;
 
@@ -65,12 +65,6 @@ namespace Remotion.Data.DomainObjects.UnitTests
       Assert.That (enumerator.MoveNext(), Is.True);
       Assert.That (enumerator.Current, Is.SameAs (_order3));
       Assert.That (enumerator.MoveNext(), Is.False);
-    }
-
-    [Test]
-    public void RequiredItemType ()
-    {
-      Assert.That (_readOnlyAdapter.RequiredItemType, Is.SameAs (typeof (Order)));
     }
 
     [Test]
@@ -113,15 +107,6 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    public void ContainsObject ()
-    {
-      StubInnerData (_order1, _order2, _order3);
-
-      Assert.That (_readOnlyAdapter.ContainsObject (_order1), Is.True);
-      Assert.That (_readOnlyAdapter.ContainsObject (_order4), Is.False);
-    }
-
-    [Test]
     public void Item_ByIndex ()
     {
       StubInnerData (_order1, _order2, _order3);
@@ -130,27 +115,11 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    public void Item_ByID ()
+    public void GetObject ()
     {
       StubInnerData (_order1, _order2, _order3);
 
-      Assert.That (_readOnlyAdapter[_order2.ID], Is.SameAs (_order2));
-    }
-
-    [Test]
-    public void IndexOf_ID ()
-    {
-      StubInnerData (_order1, _order2, _order3);
-
-      Assert.That (_readOnlyAdapter.IndexOf (_order2.ID), Is.EqualTo (1));
-    }
-
-    [Test]
-    public void IndexOf_Object ()
-    {
-      StubInnerData (_order1, _order2, _order3);
-
-      Assert.That (_readOnlyAdapter.IndexOf (_order2), Is.EqualTo (1));
+      Assert.That (_readOnlyAdapter.GetObject (_order2.ID), Is.SameAs (_order2));
     }
 
     [Test]

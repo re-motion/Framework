@@ -219,7 +219,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         _extensionMock.RelationReading (null, null, null, ValueAccess.Current);
         LastCall.Constraints (Mocks_Is.Same (_subTransaction), Mocks_Is.Anything(), Mocks_Is.Anything(), Mocks_Is.Anything());
 
-        _extensionMock.RelationRead (null, null, null, (ReadOnlyDomainObjectCollectionAdapter<DomainObject>) null, ValueAccess.Current);
+        _extensionMock.RelationRead (null, null, null, (IReadOnlyCollectionData<DomainObject>) null, ValueAccess.Current);
         LastCall.Constraints (Mocks_Is.Same (_subTransaction), Mocks_Is.Anything (), Mocks_Is.Anything (), Mocks_Is.Anything (), Mocks_Is.Anything ());
 
         if (expectLoadEventsForRelatedObjects)
@@ -242,7 +242,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         LastCall.Constraints (Mocks_Is.Same (_subTransaction), Mocks_Is.Anything(), Mocks_Is.Anything(), Mocks_Is.Anything());
 
 
-        _extensionMock.RelationRead (_subTransaction, null, null, (ReadOnlyDomainObjectCollectionAdapter<DomainObject>) null, ValueAccess.Current);
+        _extensionMock.RelationRead (_subTransaction, null, null, (IReadOnlyCollectionData<DomainObject>) null, ValueAccess.Current);
         LastCall.Constraints (Mocks_Is.Same (_subTransaction), Mocks_Is.Anything(), Mocks_Is.Anything(), Mocks_Is.Anything(), Mocks_Is.Anything());
       }
 
@@ -895,7 +895,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       {
         _extensionMock.RelationReading (
             _subTransaction, _order1, GetEndPointDefinition (typeof (Order), "OrderItems"), ValueAccess.Current);
-        _extensionMock.RelationRead (null, null, null, (ReadOnlyDomainObjectCollectionAdapter<DomainObject>) null, ValueAccess.Current);
+        _extensionMock.RelationRead (null, null, null, (IReadOnlyCollectionData<DomainObject>) null, ValueAccess.Current);
         LastCall.Constraints (
             Mocks_Is.Same (_subTransaction),
             Mocks_Is.Same (_order1),
@@ -923,7 +923,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       {
         _extensionMock.RelationReading (
             _subTransaction, _order1, GetEndPointDefinition (typeof (Order), "OrderItems"), ValueAccess.Original);
-        _extensionMock.RelationRead (null, null, null, (ReadOnlyDomainObjectCollectionAdapter<DomainObject>) null, ValueAccess.Original);
+        _extensionMock.RelationRead (null, null, null, (IReadOnlyCollectionData<DomainObject>) null, ValueAccess.Original);
 
         LastCall.Constraints (
             Mocks_Is.Same (_subTransaction),
@@ -991,7 +991,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
             GetEndPointDefinition (typeof (Order), "OrderItems"),
             ValueAccess.Current);
 
-        _extensionMock.RelationRead (null, null, null, (ReadOnlyDomainObjectCollectionAdapter<DomainObject>) null, ValueAccess.Current);
+        _extensionMock.RelationRead (null, null, null, (IReadOnlyCollectionData<DomainObject>) null, ValueAccess.Current);
         LastCall.Constraints (
             Mocks_Is.Same (_subTransaction),
             Mocks_Is.Same (_order1),
@@ -1074,7 +1074,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
         _extensionMock.ObjectsLoaded (null, null);
         LastCall.Constraints (Mocks_Is.Same (_subTransaction), Property.Value ("Count", 2));
-        _extensionMock.RelationRead (null, null, null, (ReadOnlyDomainObjectCollectionAdapter<DomainObject>) null, ValueAccess.Original);
+        _extensionMock.RelationRead (null, null, null, (IReadOnlyCollectionData<DomainObject>) null, ValueAccess.Original);
         LastCall.Constraints (
             Mocks_Is.Same (_subTransaction),
             Mocks_Is.Same (_order1),
