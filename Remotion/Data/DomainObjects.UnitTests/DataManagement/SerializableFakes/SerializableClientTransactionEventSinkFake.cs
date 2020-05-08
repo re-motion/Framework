@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
@@ -51,12 +50,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
 
     }
 
-    public void RaiseObjectsUnloadingEvent (ReadOnlyCollection<DomainObject> unloadedDomainObjects)
+    public void RaiseObjectsUnloadingEvent (IReadOnlyList<DomainObject> unloadedDomainObjects)
     {
 
     }
 
-    public void RaiseObjectsUnloadedEvent (ReadOnlyCollection<DomainObject> unloadedDomainObjects)
+    public void RaiseObjectsUnloadedEvent (IReadOnlyList<DomainObject> unloadedDomainObjects)
     {
 
     }
@@ -146,42 +145,42 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
 
     }
 
-    public void RaiseObjectsLoadingEvent (ReadOnlyCollection<ObjectID> objectIDs)
+    public void RaiseObjectsLoadingEvent (IReadOnlyList<ObjectID> objectIDs)
     {
 
     }
 
-    public void RaiseObjectsLoadedEvent (ReadOnlyCollection<DomainObject> domainObjects)
+    public void RaiseObjectsLoadedEvent (IReadOnlyList<DomainObject> domainObjects)
     {
 
     }
 
-    public void RaiseObjectsNotFoundEvent (ReadOnlyCollection<ObjectID> objectIDs)
+    public void RaiseObjectsNotFoundEvent (IReadOnlyList<ObjectID> objectIDs)
     {
 
     }
 
-    public void RaiseTransactionCommittingEvent (ReadOnlyCollection<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
+    public void RaiseTransactionCommittingEvent (IReadOnlyList<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
     {
 
     }
 
-    public void RaiseTransactionCommitValidateEvent (ReadOnlyCollection<PersistableData> committedData)
+    public void RaiseTransactionCommitValidateEvent (IReadOnlyList<PersistableData> committedData)
     {
 
     }
 
-    public void RaiseTransactionCommittedEvent (ReadOnlyCollection<DomainObject> domainObjects)
+    public void RaiseTransactionCommittedEvent (IReadOnlyList<DomainObject> domainObjects)
     {
 
     }
 
-    public void RaiseTransactionRollingBackEvent (ReadOnlyCollection<DomainObject> domainObjects)
+    public void RaiseTransactionRollingBackEvent (IReadOnlyList<DomainObject> domainObjects)
     {
 
     }
 
-    public void RaiseTransactionRolledBackEvent (ReadOnlyCollection<DomainObject> domainObjects)
+    public void RaiseTransactionRolledBackEvent (IReadOnlyList<DomainObject> domainObjects)
     {
 
     }

@@ -18,25 +18,19 @@ using System;
 using System.Collections.Generic;
 using Remotion.Utilities;
 
-namespace Remotion.Data.DomainObjects
+// ReSharper disable once CheckNamespace
+namespace Remotion.Collections
 {
   /// <summary>
-  /// Provides contextual data for the <see cref="ClientTransaction.Committing"/> event.
+  /// Provides useful extension methods for the <see cref="IReadOnlyCollection{T}"/> interface.
   /// </summary>
-  public class ClientTransactionCommittingEventArgs : ClientTransactionEventArgs
+  static class CollectionExtensions
   {
-    private readonly ICommittingEventRegistrar _eventRegistrar;
-
-    public ClientTransactionCommittingEventArgs (IReadOnlyList<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
-        : base(domainObjects)
+    public static ReadOnlyCollectionWrapper<T> AsReadOnly<T> (this IReadOnlyCollection<T> collection)
     {
-      ArgumentUtility.CheckNotNull ("eventRegistrar", eventRegistrar);
-      _eventRegistrar = eventRegistrar;
-    }
+      ArgumentUtility.CheckNotNull ("collection", collection);
 
-    public ICommittingEventRegistrar EventRegistrar
-    {
-      get { return _eventRegistrar; }
+      return new ReadOnlyCollectionWrapper<T> (collection);
     }
   }
 }

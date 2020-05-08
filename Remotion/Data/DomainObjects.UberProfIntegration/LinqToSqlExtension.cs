@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Data;
 using System.Text;
 using Remotion.Data.DomainObjects.DataManagement;
@@ -54,19 +53,19 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
     {
     }
 
-    public void ObjectsLoading (ClientTransaction clientTransaction, ReadOnlyCollection<ObjectID> objectIDs)
+    public void ObjectsLoading (ClientTransaction clientTransaction, IReadOnlyList<ObjectID> objectIDs)
     {
     }
 
-    public void ObjectsLoaded (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects)
+    public void ObjectsLoaded (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
     {
     }
 
-    public void ObjectsUnloading (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> unloadedDomainObjects)
+    public void ObjectsUnloading (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects)
     {
     }
 
-    public void ObjectsUnloaded (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> unloadedDomainObjects)
+    public void ObjectsUnloaded (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects)
     {
     }
 
@@ -119,23 +118,23 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
       return queryResult;
     }
 
-    public void Committing (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
+    public void Committing (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
     {
     }
 
-    public void CommitValidate (ClientTransaction clientTransaction, ReadOnlyCollection<PersistableData> committedData)
+    public void CommitValidate (ClientTransaction clientTransaction, IReadOnlyList<PersistableData> committedData)
     {
     }
 
-    public void Committed (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects)
+    public void Committed (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
     {
     }
 
-    public void RollingBack (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects)
+    public void RollingBack (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
     {
     }
 
-    public void RolledBack (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects)
+    public void RolledBack (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
     {
     }
 

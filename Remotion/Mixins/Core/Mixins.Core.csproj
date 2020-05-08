@@ -54,6 +54,12 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\SharedSource\Core\Collections\CollectionExtensions.cs">
+      <Link>SharedSource\Collections\CollectionExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\Collections\ReadOnlyCollectionWrapper.cs">
+      <Link>SharedSource\Collections\ReadOnlyCollectionWrapper.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\AssertionConditionAttribute.cs">
       <Link>SharedSource\ReSharperAnnotations\AssertionConditionAttribute.cs</Link>
     </Compile>
@@ -319,6 +325,7 @@
     <Compile Include="Utilities\MixinGenericArgumentFinder.cs" />
     <Compile Include="Utilities\MixinReflector.cs" />
     <Compile Include="Utilities\MixinTypeCloser.cs" />
+    <Compile Include="Utilities\ReadOnlyCollectionWrapper.cs" />
     <Compile Include="Utilities\ReflectionUtility.cs" />
     <Compile Include="Validation\DefaultValidationLog.cs" />
     <Compile Include="Validation\DelegateRuleDescriptionAttribute.cs" />
