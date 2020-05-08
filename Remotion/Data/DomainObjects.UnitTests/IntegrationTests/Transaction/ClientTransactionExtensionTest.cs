@@ -817,7 +817,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       {
         _extensionMock.RelationReading (
             _transaction, _order1, GetEndPointDefinition (typeof(Order), "OrderItems"), ValueAccess.Current);
-        _extensionMock.RelationRead (null, null, null, (ReadOnlyDomainObjectCollectionAdapter<DomainObject>) null, ValueAccess.Current);
+        _extensionMock.RelationRead (null, null, null, (IReadOnlyCollectionData<DomainObject>) null, ValueAccess.Current);
         LastCall.Constraints (
             Rhino_Is.Same (_transaction),
             Rhino_Is.Same (_order1),
@@ -850,7 +850,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       {
         _extensionMock.RelationReading (
             _transaction, _order1, GetEndPointDefinition (typeof (Order), "OrderItems"), ValueAccess.Original);
-        _extensionMock.RelationRead (null, null, null, (ReadOnlyDomainObjectCollectionAdapter<DomainObject>) null, ValueAccess.Original);
+        _extensionMock.RelationRead (null, null, null, (IReadOnlyCollectionData<DomainObject>) null, ValueAccess.Original);
 
         LastCall.Constraints (
             Rhino_Is.Same (_transaction),
@@ -909,7 +909,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       {
         _extensionMock.RelationReading (
             _transaction, _order1, GetEndPointDefinition (typeof(Order), "OrderItems"), ValueAccess.Current);
-        _extensionMock.RelationRead (null, null, null, (ReadOnlyDomainObjectCollectionAdapter<DomainObject>) null, ValueAccess.Current);
+        _extensionMock.RelationRead (null, null, null, (IReadOnlyCollectionData<DomainObject>) null, ValueAccess.Current);
         LastCall.Constraints (
             Rhino_Is.Same (_transaction),
             Rhino_Is.Same (_order1),
@@ -979,7 +979,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
         _extensionMock.ObjectsLoaded (null, null);
         LastCall.Constraints (Rhino_Is.Same (_transaction), Property.Value ("Count", 2));
-        _extensionMock.RelationRead (null, null, null, (ReadOnlyDomainObjectCollectionAdapter<DomainObject>) null, ValueAccess.Current);
+        _extensionMock.RelationRead (null, null, null, (IReadOnlyCollectionData<DomainObject>) null, ValueAccess.Current);
         LastCall.Constraints (
             Rhino_Is.Same (_transaction),
             Rhino_Is.Same (_order1),
@@ -1413,7 +1413,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         _extensionMock.RelationReading (null, null, null, ValueAccess.Current);
         LastCall.IgnoreArguments ();
 
-        _extensionMock.RelationRead (_transaction, null, null, (ReadOnlyDomainObjectCollectionAdapter<DomainObject>) null, ValueAccess.Current);
+        _extensionMock.RelationRead (_transaction, null, null, (IReadOnlyCollectionData<DomainObject>) null, ValueAccess.Current);
         LastCall.IgnoreArguments ();
 
         if (expectLoadEventsForRelatedObjects)
@@ -1430,7 +1430,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         _extensionMock.RelationReading (_transaction, null, null, ValueAccess.Current);
         LastCall.IgnoreArguments ();
 
-        _extensionMock.RelationRead (_transaction, null, null, (ReadOnlyDomainObjectCollectionAdapter<DomainObject>) null, ValueAccess.Current);
+        _extensionMock.RelationRead (_transaction, null, null, (IReadOnlyCollectionData<DomainObject>) null, ValueAccess.Current);
         LastCall.IgnoreArguments ();
       }
 

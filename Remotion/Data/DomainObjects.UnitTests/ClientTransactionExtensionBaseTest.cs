@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       CheckNopEvent (e => e.PropertyValueChanged (null, null, null, null, null));
       CheckNopEvent (e => e.RelationReading (null, null, null, ValueAccess.Current));
       CheckNopEvent (e => e.RelationRead (null, null, null, (DomainObject) null, ValueAccess.Current));
-      CheckNopEvent (e => e.RelationRead (null, null, null, (ReadOnlyDomainObjectCollectionAdapter<DomainObject>) null, ValueAccess.Current));
+      CheckNopEvent (e => e.RelationRead (null, null, null, (IReadOnlyCollectionData<DomainObject>) null, ValueAccess.Current));
       CheckNopEvent (e => e.RelationChanging (null, null, null, null, null));
       CheckNopEvent (e => e.RelationChanged (null, null, null, null, null));
 

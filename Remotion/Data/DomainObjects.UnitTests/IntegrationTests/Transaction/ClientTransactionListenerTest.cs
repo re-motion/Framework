@@ -267,7 +267,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
                 Arg.Is (TestableClientTransaction), 
                 Arg.Is (order), 
                 Arg.Is (orderItemsEndPointDefinition),
-                Arg<ReadOnlyDomainObjectCollectionAdapter<DomainObject>>.Matches (domainObjects => domainObjects.SequenceEqual (orderItems.Cast<DomainObject> ())),
+                Arg<IReadOnlyCollectionData<DomainObject>>.Matches (domainObjects => domainObjects.SequenceEqual (orderItems.Cast<DomainObject> ())),
                 Arg.Is (ValueAccess.Current)));
       }
 

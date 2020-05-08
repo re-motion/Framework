@@ -129,7 +129,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
                 Arg.Is (clientTransaction),
                 Arg.Is (domainObject),
                 Arg.Is (endPointDefinition),
-                Arg<ReadOnlyDomainObjectCollectionAdapter<DomainObject>>.List.Equivalent (relatedDomainObjects),
+                Arg<IReadOnlyCollectionData<DomainObject>>.List.Equivalent (relatedDomainObjects),
                 Arg.Is (ValueAccess.Current)));
       }
 
@@ -141,7 +141,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
                 Arg.Is (clientTransaction),
                 Arg.Is (domainObject),
                 Arg.Is (endPointDefinition),
-                Arg<ReadOnlyDomainObjectCollectionAdapter<DomainObject>>.List.Equivalent (relatedDomainObjects),
+                Arg<IReadOnlyCollectionData<DomainObject>>.List.Equivalent (relatedDomainObjects),
                 Arg.Is (ValueAccess.Current)));
       }
     }
@@ -166,7 +166,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
               Arg.Is (clientTransaction),
               Arg<DomainObject>.Is.Anything,
               Arg<IRelationEndPointDefinition>.Is.Anything,
-              Arg<ReadOnlyDomainObjectCollectionAdapter<DomainObject>>.Is.Anything,
+              Arg<IReadOnlyCollectionData<DomainObject>>.Is.Anything,
               Arg<ValueAccess>.Is.Anything));
 
       ExtensionStrictMock.AssertWasNotCalled (
@@ -187,7 +187,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
               Arg.Is (clientTransaction),
               Arg<DomainObject>.Is.Anything,
               Arg<IRelationEndPointDefinition>.Is.Anything,
-              Arg<ReadOnlyDomainObjectCollectionAdapter<DomainObject>>.Is.Anything,
+              Arg<IReadOnlyCollectionData<DomainObject>>.Is.Anything,
               Arg<ValueAccess>.Is.Anything));
     }
   }

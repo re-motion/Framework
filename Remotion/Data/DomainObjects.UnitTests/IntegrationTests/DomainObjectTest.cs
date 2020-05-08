@@ -244,7 +244,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
                 Arg.Is (ClientTransactionScope.CurrentTransaction),
                 Arg.Is (newCustomer1),
                 Arg.Is (GetEndPointDefinition (typeof (Customer), "Orders")),
-                Arg<ReadOnlyDomainObjectCollectionAdapter<DomainObject>>.Matches (data => data.Count == 0),
+                Arg<IReadOnlyCollectionData<DomainObject>>.Matches (data => data.Count == 0),
                 Arg.Is (ValueAccess.Current)));
 
         extension.RelationChanging (
@@ -294,7 +294,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
                 Arg.Is (ClientTransactionScope.CurrentTransaction),
                 Arg.Is (newCustomer1),
                 Arg.Is (GetEndPointDefinition (typeof (Customer), "Orders")),
-                Arg<ReadOnlyDomainObjectCollectionAdapter<DomainObject>>.Matches (data => data.Count == 1 && data.ContainsObject (newOrder1)),
+                Arg<IReadOnlyCollectionData<DomainObject>>.Matches (data => data.Count == 1 && data.GetObject (newOrder1.ID) == newOrder1),
                 Arg.Is (ValueAccess.Current)));
 
         extension.RelationChanging (
@@ -344,8 +344,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
                 Arg.Is (ClientTransactionScope.CurrentTransaction),
                 Arg.Is (newCustomer1),
                 Arg.Is (GetEndPointDefinition (typeof (Customer), "Orders")),
-                Arg<ReadOnlyDomainObjectCollectionAdapter<DomainObject>>.Matches (
-                    data => data.Count == 2 && data.ContainsObject (newOrder1) && data.ContainsObject (newOrder2)),
+                Arg<IReadOnlyCollectionData<DomainObject>>.Matches (
+                    data => data.Count == 2 && data.GetObject (newOrder1.ID) == newOrder1 && data.GetObject (newOrder2.ID) == newOrder2),
                 Arg.Is (ValueAccess.Current)));
 
         extension.RelationChanging (

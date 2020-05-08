@@ -154,6 +154,14 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
+    public void GetObject ()
+    {
+      StubInnerData (_order1, _order2, _order3);
+
+      Assert.That (_readOnlyAdapter.GetObject (_order2.ID), Is.SameAs (_order2));
+    }
+
+    [Test]
     public void Serializable ()
     {
       StubInnerData (_order1, _order2, _order3);

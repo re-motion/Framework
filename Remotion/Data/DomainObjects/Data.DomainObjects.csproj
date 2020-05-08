@@ -186,6 +186,7 @@
     <Compile Include="DataManagement\DataContainerState.cs" />
     <Compile Include="DomainObjectState.cs" />
     <Compile Include="IDomainObject.cs" />
+    <Compile Include="IReadOnlyCollectionData.cs" />
     <Compile Include="Linq\FluentFetchRequest.cs" />
     <Compile Include="Mapping\DefaultStorageClass.cs" />
     <Compile Include="Mapping\Validation\Logical\CheckForClassIDIsValidValidationRule.cs" />

@@ -141,7 +141,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
         ClientTransaction clientTransaction,
         DomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        ReadOnlyDomainObjectCollectionAdapter<DomainObject> relatedObjects,
+        IReadOnlyCollectionData<DomainObject> relatedObjects,
         ValueAccess valueAccess)
     {
       // Handled by Begin event

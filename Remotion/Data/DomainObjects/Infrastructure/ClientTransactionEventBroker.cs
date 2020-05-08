@@ -277,7 +277,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     public void RaiseRelationReadEvent (
         DomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        ReadOnlyDomainObjectCollectionAdapter<DomainObject> relatedObjects,
+        IReadOnlyCollectionData<DomainObject> relatedObjects,
         ValueAccess valueAccess)
     {
       ArgumentUtility.CheckNotNull ("domainObject", domainObject);

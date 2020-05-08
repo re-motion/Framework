@@ -207,7 +207,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         ClientTransaction clientTransaction,
         DomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        ReadOnlyDomainObjectCollectionAdapter<DomainObject> relatedObjects,
+        IReadOnlyCollectionData<DomainObject> relatedObjects,
         ValueAccess valueAccess)
     {
       if (s_log.IsDebugEnabled())
