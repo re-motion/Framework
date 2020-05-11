@@ -835,9 +835,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       Assert.That (parentOrdersEndPoint.Collection[0].State.IsChanged, Is.True);
 
       var subTransaction = TestableClientTransaction.CreateSubTransaction ();
-      var subOrdersEndPoint = (ICollectionEndPoint) ClientTransactionTestHelper.GetDataManager (subTransaction).GetRelationEndPointWithLazyLoad (
-          parentOrdersEndPoint.ID);
-      EnsureEndPointLoadedAndComplete (ClientTransactionTestHelper.GetDataManager (subTransaction), subOrdersEndPoint.ID);
+      var subTransactionDataManager = ClientTransactionTestHelper.GetDataManager (subTransaction);
+      var subOrdersEndPoint = (IDomainObjectCollectionEndPoint) subTransactionDataManager.GetRelationEndPointWithLazyLoad (parentOrdersEndPoint.ID);
+      EnsureEndPointLoadedAndComplete (subTransactionDataManager, subOrdersEndPoint.ID);
 
       Assert.That (subOrdersEndPoint.Collection[0].TransactionContext[subTransaction].State.IsUnchanged, Is.True);
 

@@ -37,5 +37,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
     {
       throw new NotImplementedException();
     }
+
+    public IDomainObjectCollectionEndPoint CreateDomainObjectCollectionEndPoint (RelationEndPointID endPointID)
+    {
+      throw new NotImplementedException();
+    }
   }
 }

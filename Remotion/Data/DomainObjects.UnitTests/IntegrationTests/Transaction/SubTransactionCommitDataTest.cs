@@ -648,7 +648,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     }
 
     [Test]
-    public void CollectionEndPoint_HasChangedHandling_WithNestedSubTransactions ()
+    public void DomainObjectCollectionEndPoint_HasChangedHandling_WithNestedSubTransactions ()
     {
       SetDatabaseModifyable ();
 
@@ -663,49 +663,49 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         order.OrderItems.Add (newItem);
 
         Assert.That (GetDataManager (ClientTransaction.Current).GetRelationEndPointWithoutLoading (propertyID).HasChanged, Is.True);
-        Assert.That (((ICollectionEndPoint) GetDataManager (ClientTransaction.Current).GetRelationEndPointWithoutLoading (propertyID)).GetCollectionWithOriginalData().ContainsObject (newItem), Is.False);
-        Assert.That (((ICollectionEndPoint) GetDataManager (ClientTransaction.Current).GetRelationEndPointWithoutLoading (propertyID)).GetCollectionWithOriginalData().ContainsObject (firstItem), Is.True);
+        Assert.That (((IDomainObjectCollectionEndPoint) GetDataManager (ClientTransaction.Current).GetRelationEndPointWithoutLoading (propertyID)).GetCollectionWithOriginalData().ContainsObject (newItem), Is.False);
+        Assert.That (((IDomainObjectCollectionEndPoint) GetDataManager (ClientTransaction.Current).GetRelationEndPointWithoutLoading (propertyID)).GetCollectionWithOriginalData().ContainsObject (firstItem), Is.True);
 
         using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
         {
           Assert.That (order.OrderItems.ContainsObject (newItem), Is.True);
 
           Assert.That (GetDataManager (ClientTransaction.Current).GetRelationEndPointWithoutLoading (propertyID).HasChanged, Is.False);
-          Assert.That (((ICollectionEndPoint) GetDataManager (ClientTransaction.Current).GetRelationEndPointWithoutLoading (propertyID)).GetCollectionWithOriginalData().ContainsObject (newItem), Is.True);
-          Assert.That (((ICollectionEndPoint) GetDataManager (ClientTransaction.Current).GetRelationEndPointWithoutLoading (propertyID)).GetCollectionWithOriginalData().ContainsObject (firstItem), Is.True);
+          Assert.That (((IDomainObjectCollectionEndPoint) GetDataManager (ClientTransaction.Current).GetRelationEndPointWithoutLoading (propertyID)).GetCollectionWithOriginalData().ContainsObject (newItem), Is.True);
+          Assert.That (((IDomainObjectCollectionEndPoint) GetDataManager (ClientTransaction.Current).GetRelationEndPointWithoutLoading (propertyID)).GetCollectionWithOriginalData().ContainsObject (firstItem), Is.True);
 
           order.OrderItems[0].Delete ();
           Assert.That (order.OrderItems.ContainsObject (newItem), Is.True);
 
           Assert.That (GetDataManager (ClientTransaction.Current).GetRelationEndPointWithoutLoading (propertyID).HasChanged, Is.True);
-          Assert.That (((ICollectionEndPoint) GetDataManager (ClientTransaction.Current).GetRelationEndPointWithoutLoading (propertyID)).GetCollectionWithOriginalData().ContainsObject (newItem), Is.True);
-          Assert.That (((ICollectionEndPoint) GetDataManager (ClientTransaction.Current).GetRelationEndPointWithoutLoading (propertyID)).GetCollectionWithOriginalData().ContainsObject (firstItem), Is.True);
+          Assert.That (((IDomainObjectCollectionEndPoint) GetDataManager (ClientTransaction.Current).GetRelationEndPointWithoutLoading (propertyID)).GetCollectionWithOriginalData().ContainsObject (newItem), Is.True);
+          Assert.That (((IDomainObjectCollectionEndPoint) GetDataManager (ClientTransaction.Current).GetRelationEndPointWithoutLoading (propertyID)).GetCollectionWithOriginalData().ContainsObject (firstItem), Is.True);
 
           ClientTransaction.Current.Commit ();
 
           Assert.That (GetDataManager (ClientTransaction.Current).GetRelationEndPointWithoutLoading (propertyID).HasChanged, Is.False);
-          Assert.That (((ICollectionEndPoint) GetDataManager (ClientTransaction.Current).GetRelationEndPointWithoutLoading (propertyID)).GetCollectionWithOriginalData().ContainsObject (newItem), Is.True);
-          Assert.That (((ICollectionEndPoint) GetDataManager (ClientTransaction.Current).GetRelationEndPointWithoutLoading (propertyID)).GetCollectionWithOriginalData().ContainsObject (firstItem), Is.False);
+          Assert.That (((IDomainObjectCollectionEndPoint) GetDataManager (ClientTransaction.Current).GetRelationEndPointWithoutLoading (propertyID)).GetCollectionWithOriginalData().ContainsObject (newItem), Is.True);
+          Assert.That (((IDomainObjectCollectionEndPoint) GetDataManager (ClientTransaction.Current).GetRelationEndPointWithoutLoading (propertyID)).GetCollectionWithOriginalData().ContainsObject (firstItem), Is.False);
         }
 
         Assert.That (GetDataManager (ClientTransaction.Current).GetRelationEndPointWithoutLoading (propertyID).HasChanged, Is.True);
-        Assert.That (((ICollectionEndPoint) GetDataManager (ClientTransaction.Current).GetRelationEndPointWithoutLoading (propertyID)).GetCollectionWithOriginalData().ContainsObject (newItem), Is.False);
-        Assert.That (((ICollectionEndPoint) GetDataManager (ClientTransaction.Current).GetRelationEndPointWithoutLoading (propertyID)).GetCollectionWithOriginalData().ContainsObject (firstItem), Is.True);
+        Assert.That (((IDomainObjectCollectionEndPoint) GetDataManager (ClientTransaction.Current).GetRelationEndPointWithoutLoading (propertyID)).GetCollectionWithOriginalData().ContainsObject (newItem), Is.False);
+        Assert.That (((IDomainObjectCollectionEndPoint) GetDataManager (ClientTransaction.Current).GetRelationEndPointWithoutLoading (propertyID)).GetCollectionWithOriginalData().ContainsObject (firstItem), Is.True);
 
         ClientTransaction.Current.Commit ();
         Assert.That (GetDataManager (ClientTransaction.Current).GetRelationEndPointWithoutLoading (propertyID).HasChanged, Is.False);
-        Assert.That (((ICollectionEndPoint) GetDataManager (ClientTransaction.Current).GetRelationEndPointWithoutLoading (propertyID)).GetCollectionWithOriginalData().ContainsObject (newItem), Is.True);
-        Assert.That (((ICollectionEndPoint) GetDataManager (ClientTransaction.Current).GetRelationEndPointWithoutLoading (propertyID)).GetCollectionWithOriginalData().ContainsObject (firstItem), Is.False);
+        Assert.That (((IDomainObjectCollectionEndPoint) GetDataManager (ClientTransaction.Current).GetRelationEndPointWithoutLoading (propertyID)).GetCollectionWithOriginalData().ContainsObject (newItem), Is.True);
+        Assert.That (((IDomainObjectCollectionEndPoint) GetDataManager (ClientTransaction.Current).GetRelationEndPointWithoutLoading (propertyID)).GetCollectionWithOriginalData().ContainsObject (firstItem), Is.False);
       }
       Assert.That (GetDataManager (ClientTransaction.Current).GetRelationEndPointWithoutLoading (propertyID).HasChanged, Is.True);
-      Assert.That (((ICollectionEndPoint) GetDataManager (ClientTransaction.Current).GetRelationEndPointWithoutLoading (propertyID)).GetCollectionWithOriginalData().ContainsObject (newItem), Is.False);
-      Assert.That (((ICollectionEndPoint) GetDataManager (ClientTransaction.Current).GetRelationEndPointWithoutLoading (propertyID)).GetCollectionWithOriginalData().ContainsObject (firstItem), Is.True);
+      Assert.That (((IDomainObjectCollectionEndPoint) GetDataManager (ClientTransaction.Current).GetRelationEndPointWithoutLoading (propertyID)).GetCollectionWithOriginalData().ContainsObject (newItem), Is.False);
+      Assert.That (((IDomainObjectCollectionEndPoint) GetDataManager (ClientTransaction.Current).GetRelationEndPointWithoutLoading (propertyID)).GetCollectionWithOriginalData().ContainsObject (firstItem), Is.True);
 
       ClientTransaction.Current.Commit ();
 
       Assert.That (GetDataManager (ClientTransaction.Current).GetRelationEndPointWithoutLoading (propertyID).HasChanged, Is.False);
-      Assert.That (((ICollectionEndPoint) GetDataManager (ClientTransaction.Current).GetRelationEndPointWithoutLoading (propertyID)).GetCollectionWithOriginalData().ContainsObject (newItem), Is.True);
-      Assert.That (((ICollectionEndPoint) GetDataManager (ClientTransaction.Current).GetRelationEndPointWithoutLoading (propertyID)).GetCollectionWithOriginalData().ContainsObject (firstItem), Is.False);
+      Assert.That (((IDomainObjectCollectionEndPoint) GetDataManager (ClientTransaction.Current).GetRelationEndPointWithoutLoading (propertyID)).GetCollectionWithOriginalData().ContainsObject (newItem), Is.True);
+      Assert.That (((IDomainObjectCollectionEndPoint) GetDataManager (ClientTransaction.Current).GetRelationEndPointWithoutLoading (propertyID)).GetCollectionWithOriginalData().ContainsObject (firstItem), Is.False);
     }
 
     [Test]

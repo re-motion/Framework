@@ -80,7 +80,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     }
 
     public IDataManagementCommand CreateSetCollectionCommand (
-        ICollectionEndPoint collectionEndPoint, 
+        IDomainObjectCollectionEndPoint collectionEndPoint, 
         DomainObjectCollection newCollection, 
         ICollectionEndPointCollectionManager collectionEndPointCollectionManager)
     {
@@ -108,7 +108,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       return completeState.CreateDeleteCommand (collectionEndPoint);
     }
 
-    public IDataManagementCommand CreateInsertCommand (ICollectionEndPoint collectionEndPoint, DomainObject insertedRelatedObject, int index)
+    public IDataManagementCommand CreateInsertCommand (IDomainObjectCollectionEndPoint collectionEndPoint, DomainObject insertedRelatedObject, int index)
     {
       ArgumentUtility.CheckNotNull ("collectionEndPoint", collectionEndPoint);
       ArgumentUtility.CheckNotNull ("insertedRelatedObject", insertedRelatedObject);
@@ -126,7 +126,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       return completeState.CreateAddCommand (collectionEndPoint, addedRelatedObject);
     }
 
-    public IDataManagementCommand CreateReplaceCommand (ICollectionEndPoint collectionEndPoint, int index, DomainObject replacementObject)
+    public IDataManagementCommand CreateReplaceCommand (IDomainObjectCollectionEndPoint collectionEndPoint, int index, DomainObject replacementObject)
     {
       ArgumentUtility.CheckNotNull ("collectionEndPoint", collectionEndPoint);
       ArgumentUtility.CheckNotNull ("replacementObject", replacementObject);

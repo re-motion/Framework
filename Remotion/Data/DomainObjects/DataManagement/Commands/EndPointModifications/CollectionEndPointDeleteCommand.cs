@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
   public class CollectionEndPointDeleteCommand : RelationEndPointModificationCommand
   {
     private readonly IDomainObjectCollectionData _modifiedCollectionData;
-    private readonly DomainObjectCollection _modifiedCollection;
+    private readonly IDomainObjectCollectionEventRaiser _modifiedCollectionEventRaiser;
 
     public CollectionEndPointDeleteCommand (
         ICollectionEndPoint modifiedEndPoint,
@@ -44,12 +44,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
         throw new ArgumentException ("Modified end point is null, a NullEndPointModificationCommand is needed.", "modifiedEndPoint");
 
       _modifiedCollectionData = collectionData;
-      _modifiedCollection = modifiedEndPoint.Collection;
+      _modifiedCollectionEventRaiser = modifiedEndPoint.GetCollectionEventRaiser();
     }
 
-    public DomainObjectCollection ModifiedCollection
+    public IDomainObjectCollectionEventRaiser ModifiedCollectionEventRaiser
     {
-      get { return _modifiedCollection; }
+      get { return _modifiedCollectionEventRaiser; }
     }
 
     public IDomainObjectCollectionData ModifiedCollectionData
@@ -63,7 +63,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
 
       using (EnterTransactionScope())
       {
-        ((IDomainObjectCollectionEventRaiser) ModifiedCollection).BeginDelete();
+        ModifiedCollectionEventRaiser.BeginDelete();
       }
     }
 
@@ -79,7 +79,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
 
       using (EnterTransactionScope())
       {
-        ((IDomainObjectCollectionEventRaiser) ModifiedCollection).EndDelete();
+        ModifiedCollectionEventRaiser.EndDelete();
       }
     }
 

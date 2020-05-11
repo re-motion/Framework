@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       Assert.That (_command.OldRelatedObject, Is.Null);
       Assert.That (_command.NewRelatedObject, Is.SameAs (_insertedRelatedObject));
       Assert.That (_command.Index, Is.EqualTo (12));
-      Assert.That (_command.ModifiedCollection, Is.SameAs (CollectionEndPoint.Collection));
+      Assert.That (_command.ModifiedCollectionEventRaiser, Is.SameAs (CollectionEndPoint.GetCollectionEventRaiser()));
       Assert.That (_command.ModifiedCollectionData, Is.SameAs (CollectionDataMock));
     }
 

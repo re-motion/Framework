@@ -33,13 +33,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     void SortCurrentData (ICollectionEndPoint collectionEndPoint, Comparison<DomainObject> comparison);
 
     IDataManagementCommand CreateSetCollectionCommand (
-        ICollectionEndPoint collectionEndPoint,
+        IDomainObjectCollectionEndPoint collectionEndPoint,
         DomainObjectCollection newCollection,
         ICollectionEndPointCollectionManager collectionEndPointCollectionManager);
     IDataManagementCommand CreateRemoveCommand (ICollectionEndPoint collectionEndPoint, DomainObject removedRelatedObject);
     IDataManagementCommand CreateDeleteCommand (ICollectionEndPoint collectionEndPoint);
-    IDataManagementCommand CreateInsertCommand (ICollectionEndPoint collectionEndPoint, DomainObject insertedRelatedObject, int index);
+    IDataManagementCommand CreateInsertCommand (IDomainObjectCollectionEndPoint collectionEndPoint, DomainObject insertedRelatedObject, int index);
     IDataManagementCommand CreateAddCommand (ICollectionEndPoint collectionEndPoint, DomainObject addedRelatedObject);
-    IDataManagementCommand CreateReplaceCommand (ICollectionEndPoint collectionEndPoint, int index, DomainObject replacementObject);
+    IDataManagementCommand CreateReplaceCommand (IDomainObjectCollectionEndPoint collectionEndPoint, int index, DomainObject replacementObject);
   }
 }

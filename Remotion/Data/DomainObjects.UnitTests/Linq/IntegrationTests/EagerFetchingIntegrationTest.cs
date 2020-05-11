@@ -53,9 +53,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
       CheckQueryResult (query, DomainObjectIDs.Customer1, DomainObjectIDs.Customer2);
 
       CheckDataContainersRegistered (DomainObjectIDs.Order1, DomainObjectIDs.Order2, DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2, DomainObjectIDs.OrderItem6);
-      CheckCollectionRelationRegistered (DomainObjectIDs.Customer1, "Orders", true, DomainObjectIDs.Order1, DomainObjectIDs.Order2);
-      CheckCollectionRelationRegistered (DomainObjectIDs.Order1, "OrderItems", false, DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2);
-      CheckCollectionRelationRegistered (DomainObjectIDs.Order2, "OrderItems", false, DomainObjectIDs.OrderItem6);
+      CheckDomainObjectCollectionRelationRegistered (DomainObjectIDs.Customer1, "Orders", true, DomainObjectIDs.Order1, DomainObjectIDs.Order2);
+      CheckDomainObjectCollectionRelationRegistered (DomainObjectIDs.Order1, "OrderItems", false, DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2);
+      CheckDomainObjectCollectionRelationRegistered (DomainObjectIDs.Order2, "OrderItems", false, DomainObjectIDs.OrderItem6);
     }
 
     [Test]
@@ -68,9 +68,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
 
       CheckQueryResult (query, DomainObjectIDs.Customer1, DomainObjectIDs.Customer2);
       CheckDataContainersRegistered (DomainObjectIDs.Order1, DomainObjectIDs.Order2, DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2, DomainObjectIDs.OrderItem6);
-      CheckCollectionRelationRegistered (DomainObjectIDs.Customer1, "Orders", true, DomainObjectIDs.Order1, DomainObjectIDs.Order2);
-      CheckCollectionRelationRegistered (DomainObjectIDs.Order1, "OrderItems", false, DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2);
-      CheckCollectionRelationRegistered (DomainObjectIDs.Order2, "OrderItems", false, DomainObjectIDs.OrderItem6);
+      CheckDomainObjectCollectionRelationRegistered (DomainObjectIDs.Customer1, "Orders", true, DomainObjectIDs.Order1, DomainObjectIDs.Order2);
+      CheckDomainObjectCollectionRelationRegistered (DomainObjectIDs.Order1, "OrderItems", false, DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2);
+      CheckDomainObjectCollectionRelationRegistered (DomainObjectIDs.Order2, "OrderItems", false, DomainObjectIDs.OrderItem6);
     }
 
     [Test]
@@ -94,11 +94,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
           DomainObjectIDs.OrderItem5,
           DomainObjectIDs.OrderItem6);
 
-      CheckCollectionRelationRegistered (DomainObjectIDs.Order1, "OrderItems", false, DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2);
-      CheckCollectionRelationRegistered (DomainObjectIDs.Order3, "OrderItems", false, DomainObjectIDs.OrderItem3);
-      CheckCollectionRelationRegistered (DomainObjectIDs.Order4, "OrderItems", false, DomainObjectIDs.OrderItem4);
-      CheckCollectionRelationRegistered (DomainObjectIDs.Order5, "OrderItems", false, DomainObjectIDs.OrderItem5);
-      CheckCollectionRelationRegistered (DomainObjectIDs.Order2, "OrderItems", false, DomainObjectIDs.OrderItem6);
+      CheckDomainObjectCollectionRelationRegistered (DomainObjectIDs.Order1, "OrderItems", false, DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2);
+      CheckDomainObjectCollectionRelationRegistered (DomainObjectIDs.Order3, "OrderItems", false, DomainObjectIDs.OrderItem3);
+      CheckDomainObjectCollectionRelationRegistered (DomainObjectIDs.Order4, "OrderItems", false, DomainObjectIDs.OrderItem4);
+      CheckDomainObjectCollectionRelationRegistered (DomainObjectIDs.Order5, "OrderItems", false, DomainObjectIDs.OrderItem5);
+      CheckDomainObjectCollectionRelationRegistered (DomainObjectIDs.Order2, "OrderItems", false, DomainObjectIDs.OrderItem6);
     }
 
     [Test]
@@ -129,8 +129,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
           DomainObjectIDs.Order1, DomainObjectIDs.Order2,
           DomainObjectIDs.OrderTicket1, DomainObjectIDs.OrderTicket2);
 
-      CheckCollectionRelationRegistered (DomainObjectIDs.Customer1, "Orders", false, DomainObjectIDs.Order1, DomainObjectIDs.Order2);
-      CheckCollectionRelationRegistered (DomainObjectIDs.Customer2, "Orders", false);
+      CheckDomainObjectCollectionRelationRegistered (DomainObjectIDs.Customer1, "Orders", false, DomainObjectIDs.Order1, DomainObjectIDs.Order2);
+      CheckDomainObjectCollectionRelationRegistered (DomainObjectIDs.Customer2, "Orders", false);
       CheckObjectRelationRegistered (DomainObjectIDs.Order1, "OrderTicket", DomainObjectIDs.OrderTicket1);
       CheckObjectRelationRegistered (DomainObjectIDs.Order2, "OrderTicket", DomainObjectIDs.OrderTicket2);
     }
@@ -154,9 +154,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
           DomainObjectIDs.Order1, DomainObjectIDs.Order2, // their customer's orders
           DomainObjectIDs.Customer1, // their customer's orders' customers
           DomainObjectIDs.Ceo3); // their customer's orders' customers' ceos
-      CheckCollectionRelationRegistered (DomainObjectIDs.Order1, "OrderItems", false, DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2);
+      CheckDomainObjectCollectionRelationRegistered (DomainObjectIDs.Order1, "OrderItems", false, DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2);
       CheckObjectRelationRegistered (DomainObjectIDs.Order1, "Customer", DomainObjectIDs.Customer1);
-      CheckCollectionRelationRegistered (DomainObjectIDs.Customer1, "Orders", true, DomainObjectIDs.Order1, DomainObjectIDs.Order2);
+      CheckDomainObjectCollectionRelationRegistered (DomainObjectIDs.Customer1, "Orders", true, DomainObjectIDs.Order1, DomainObjectIDs.Order2);
       CheckObjectRelationRegistered (DomainObjectIDs.Customer1, typeof (Company), "Ceo", DomainObjectIDs.Ceo3);
     }
 
@@ -183,17 +183,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
           );
       
       CheckObjectRelationRegistered (DomainObjectIDs.Order1, "Customer", DomainObjectIDs.Customer1);
-      CheckCollectionRelationRegistered (DomainObjectIDs.Customer1, "Orders", true, DomainObjectIDs.Order1, DomainObjectIDs.Order2);
+      CheckDomainObjectCollectionRelationRegistered (DomainObjectIDs.Customer1, "Orders", true, DomainObjectIDs.Order1, DomainObjectIDs.Order2);
 
       CheckObjectRelationRegistered (DomainObjectIDs.Order1, "OrderTicket", DomainObjectIDs.OrderTicket1);
       CheckObjectRelationRegistered (DomainObjectIDs.OrderTicket1, "Order", DomainObjectIDs.Order1);
       CheckObjectRelationRegistered (DomainObjectIDs.Order2, "OrderTicket", DomainObjectIDs.OrderTicket2);
       CheckObjectRelationRegistered (DomainObjectIDs.OrderTicket2, "Order", DomainObjectIDs.Order2);
 
-      CheckCollectionRelationRegistered (DomainObjectIDs.Order1, "OrderItems", false, DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2);
+      CheckDomainObjectCollectionRelationRegistered (DomainObjectIDs.Order1, "OrderItems", false, DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2);
       CheckObjectRelationRegistered (DomainObjectIDs.OrderItem1, "Order", DomainObjectIDs.Order1);
       CheckObjectRelationRegistered (DomainObjectIDs.OrderItem2, "Order", DomainObjectIDs.Order1);
-      CheckCollectionRelationRegistered (DomainObjectIDs.Order2, "OrderItems", false, DomainObjectIDs.OrderItem6);
+      CheckDomainObjectCollectionRelationRegistered (DomainObjectIDs.Order2, "OrderItems", false, DomainObjectIDs.OrderItem6);
     }
 
     [Test]
@@ -206,7 +206,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
                    .FetchMany (o => o.OrderItems);
 
       CheckQueryResult (query, DomainObjectIDs.Order1);
-      CheckCollectionRelationRegistered (DomainObjectIDs.Order1, "OrderItems", false, DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2);
+      CheckDomainObjectCollectionRelationRegistered (DomainObjectIDs.Order1, "OrderItems", false, DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2);
     }
 
     [Test]
@@ -257,7 +257,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
                    .FetchMany (o => o.OrderItems);
 
       CheckQueryResult (query, DomainObjectIDs.Order1);
-      CheckCollectionRelationRegistered (DomainObjectIDs.Order1, "OrderItems", false, DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2);
+      CheckDomainObjectCollectionRelationRegistered (DomainObjectIDs.Order1, "OrderItems", false, DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2);
     }
 
     [Test]
@@ -296,7 +296,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
       CheckQueryResult (query, DomainObjectIDs.Customer1);
 
       CheckDataContainersRegistered (DomainObjectIDs.Customer1, DomainObjectIDs.Order1, DomainObjectIDs.Order2);
-      CheckCollectionRelationRegistered (DomainObjectIDs.Customer1, "Orders", false, DomainObjectIDs.Order1, DomainObjectIDs.Order2);
+      CheckDomainObjectCollectionRelationRegistered (DomainObjectIDs.Customer1, "Orders", false, DomainObjectIDs.Order1, DomainObjectIDs.Order2);
     }
 
     [Test]
@@ -309,7 +309,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
       CheckQueryResult (query, DomainObjectIDs.Customer2);
 
       CheckDataContainersRegistered (DomainObjectIDs.Customer2);
-      CheckCollectionRelationRegistered (DomainObjectIDs.Customer2, "Orders", false);
+      CheckDomainObjectCollectionRelationRegistered (DomainObjectIDs.Customer2, "Orders", false);
     }
 
     [Test]
@@ -334,7 +334,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
       CheckQueryResult (query, DomainObjectIDs.Order1);
 
       CheckDataContainersRegistered (DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2);
-      CheckCollectionRelationRegistered (DomainObjectIDs.Order1, "OrderItems", false, DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2);
+      CheckDomainObjectCollectionRelationRegistered (DomainObjectIDs.Order1, "OrderItems", false, DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2);
     }
 
     [Test]
@@ -348,7 +348,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
 
       CheckQueryResult (query, DomainObjectIDs.EagerFetching_BaseClass, DomainObjectIDs.EagerFetching_DerivedClass1_WithCollectionVirtualEndPoint);
       CheckDataContainersRegistered (DomainObjectIDs.EagerFetching_RelationTarget_WithCollectionRealEndPoint1, DomainObjectIDs.EagerFetching_RelationTarget_WithCollectionRealEndPoint2);
-      CheckCollectionRelationRegistered (DomainObjectIDs.EagerFetching_DerivedClass1_WithCollectionVirtualEndPoint, "CollectionPropertyManySide", false, DomainObjectIDs.EagerFetching_RelationTarget_WithCollectionRealEndPoint1, DomainObjectIDs.EagerFetching_RelationTarget_WithCollectionRealEndPoint2);
+      CheckDomainObjectCollectionRelationRegistered (DomainObjectIDs.EagerFetching_DerivedClass1_WithCollectionVirtualEndPoint, "CollectionPropertyManySide", false, DomainObjectIDs.EagerFetching_RelationTarget_WithCollectionRealEndPoint1, DomainObjectIDs.EagerFetching_RelationTarget_WithCollectionRealEndPoint2);
     }
 
     [Test]
@@ -457,7 +457,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
       CheckQueryResult (query, DomainObjectIDs.RelationTargetForPersistentMixin4);
 
       CheckDataContainersRegistered (DomainObjectIDs.RelationTargetForPersistentMixin4);
-      CheckCollectionRelationRegistered (
+      CheckDomainObjectCollectionRelationRegistered (
           DomainObjectIDs.RelationTargetForPersistentMixin4,
           typeof (RelationTargetForPersistentMixin),
           "RelationProperty4",
@@ -501,7 +501,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     private void CheckFetchedCollectionProperty1SideForTargetClass2 ()
     {
       CheckDataContainersRegistered (DomainObjectIDs.RelationTargetForPersistentMixin3);
-      CheckCollectionRelationRegistered (
+      CheckDomainObjectCollectionRelationRegistered (
           DomainObjectIDs.TargetClassForPersistentMixins2,
           typeof (MixinAddingPersistentProperties),
           "CollectionProperty1Side",

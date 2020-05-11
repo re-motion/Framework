@@ -20,14 +20,22 @@ using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 {
   /// <summary>
-  /// Represents an <see cref="IRelationEndPoint"/> holding a collection of <see cref="DomainObject"/> instances, i.e. the "many" side of a relation.
+  /// Represents an <see cref="ICollectionEndPoint"/> holding a <see cref="DomainObjectCollection"/>.
   /// </summary>
-  public interface ICollectionEndPoint : IVirtualEndPoint<ReadOnlyCollectionDataDecorator>
+  public interface IDomainObjectCollectionEndPoint : ICollectionEndPoint
   {
-    IDomainObjectCollectionEventRaiser GetCollectionEventRaiser ();
+    DomainObjectCollection Collection { get; }
 
-    void MarkDataComplete (DomainObject[] items);
+    DomainObjectCollection OriginalCollection { get; }
 
-    IDataManagementCommand CreateAddCommand (DomainObject addedRelatedObject);
+    DomainObjectCollection GetCollectionWithOriginalData ();
+
+    IDataManagementCommand CreateSetCollectionCommand (DomainObjectCollection newCollection);
+    IDataManagementCommand CreateInsertCommand (DomainObject insertedRelatedObject, int index);
+    IDataManagementCommand CreateReplaceCommand (int index, DomainObject replacementObject);
+
+    void SortCurrentData (Comparison<DomainObject> comparison);
+
+    bool? HasChangedFast { get; }
   }
 }

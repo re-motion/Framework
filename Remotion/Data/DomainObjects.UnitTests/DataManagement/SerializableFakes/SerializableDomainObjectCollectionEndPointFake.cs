@@ -24,13 +24,13 @@ using Remotion.Data.DomainObjects.Mapping;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
 {
-  public class SerializableCollectionEndPointFake : ICollectionEndPoint
+  public class SerializableDomainObjectCollectionEndPointFake : IDomainObjectCollectionEndPoint
   {
-    public SerializableCollectionEndPointFake ()
+    public SerializableDomainObjectCollectionEndPointFake ()
     {
     }
 
-    public SerializableCollectionEndPointFake (FlattenedDeserializationInfo info)
+    public SerializableDomainObjectCollectionEndPointFake (FlattenedDeserializationInfo info)
     {
     }
 

@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
   {
     private readonly int _index;
     private readonly IDomainObjectCollectionData _modifiedCollectionData;
-    private readonly DomainObjectCollection _modifiedCollection;
+    private readonly IDomainObjectCollectionEventRaiser _modifiedCollectionEventRaiser;
 
     public CollectionEndPointReplaceCommand (
         ICollectionEndPoint modifiedEndPoint, 
@@ -49,12 +49,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
 
       _index = index;
       _modifiedCollectionData = collectionData;
-      _modifiedCollection = modifiedEndPoint.Collection;
+      _modifiedCollectionEventRaiser = modifiedEndPoint.GetCollectionEventRaiser();
     }
 
-    public DomainObjectCollection ModifiedCollection
+    public IDomainObjectCollectionEventRaiser ModifiedCollectionEventRaiser
     {
-      get { return _modifiedCollection; }
+      get { return _modifiedCollectionEventRaiser; }
     }
 
     public IDomainObjectCollectionData ModifiedCollectionData
@@ -66,8 +66,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     {
       using (EnterTransactionScope())
       {
-        ((IDomainObjectCollectionEventRaiser) ModifiedCollection).BeginRemove (_index, OldRelatedObject);
-        ((IDomainObjectCollectionEventRaiser) ModifiedCollection).BeginAdd (_index, NewRelatedObject);
+        ModifiedCollectionEventRaiser.BeginRemove (_index, OldRelatedObject);
+        ModifiedCollectionEventRaiser.BeginAdd (_index, NewRelatedObject);
       }
 
       base.Begin ();
@@ -85,8 +85,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
 
       using (EnterTransactionScope())
       {
-        ((IDomainObjectCollectionEventRaiser) ModifiedCollection).EndAdd (_index, NewRelatedObject);
-        ((IDomainObjectCollectionEventRaiser) ModifiedCollection).EndRemove (_index, OldRelatedObject);
+        ModifiedCollectionEventRaiser.EndAdd (_index, NewRelatedObject);
+        ModifiedCollectionEventRaiser.EndRemove (_index, OldRelatedObject);
       }
     }
 

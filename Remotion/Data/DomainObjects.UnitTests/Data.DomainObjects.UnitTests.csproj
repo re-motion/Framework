@@ -632,7 +632,7 @@
     <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\IncompleteCollectionEndPointLoadStateTest.cs" />
     <Compile Include="DataManagement\SerializableFakes\SerializableCollectionEndPointChangeDetectionStrategyFake.cs" />
     <Compile Include="DataManagement\SerializableFakes\SerializableCollectionEndPointDataManagerFake.cs" />
-    <Compile Include="DataManagement\SerializableFakes\SerializableCollectionEndPointFake.cs" />
+    <Compile Include="DataManagement\SerializableFakes\SerializableDomainObjectCollectionEndPointFake.cs" />
     <Compile Include="DataManagement\SerializableFakes\SerializableCollectionEndPointDataManagerFactoryFake.cs" />
     <Compile Include="DataManagement\SerializableFakes\SerializableRelationEndPointProviderFake.cs" />
     <Compile Include="DataManagement\SerializableFakes\SerializableRealObjectEndPointFake.cs" />

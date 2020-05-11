@@ -111,7 +111,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     }
 
     public IDataManagementCommand CreateSetCollectionCommand (
-        ICollectionEndPoint collectionEndPoint,
+        IDomainObjectCollectionEndPoint collectionEndPoint,
         DomainObjectCollection newCollection,
         ICollectionEndPointCollectionManager collectionEndPointCollectionManager)
     {
@@ -192,23 +192,34 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       return new CollectionEndPointDeleteCommand (collectionEndPoint, DataManager.CollectionData, TransactionEventSink);
     }
 
-    public IDataManagementCommand CreateInsertCommand (ICollectionEndPoint collectionEndPoint, DomainObject insertedRelatedObject, int index)
+    public IDataManagementCommand CreateInsertCommand (IDomainObjectCollectionEndPoint collectionEndPoint, DomainObject insertedRelatedObject, int index)
     {
       ArgumentUtility.CheckNotNull ("collectionEndPoint", collectionEndPoint);
       ArgumentUtility.CheckNotNull ("insertedRelatedObject", insertedRelatedObject);
 
-      CheckAddedObject (insertedRelatedObject);
-      return new CollectionEndPointInsertCommand (
-          collectionEndPoint, index, insertedRelatedObject, DataManager.CollectionData, EndPointProvider, TransactionEventSink);
+      return CreateInsertCommand ((ICollectionEndPoint) collectionEndPoint, insertedRelatedObject, index);
     }
 
     public IDataManagementCommand CreateAddCommand (ICollectionEndPoint collectionEndPoint, DomainObject addedRelatedObject)
     {
       ArgumentUtility.CheckNotNull ("collectionEndPoint", collectionEndPoint);
+
       return CreateInsertCommand (collectionEndPoint, addedRelatedObject, DataManager.CollectionData.Count);
     }
 
-    public IDataManagementCommand CreateReplaceCommand (ICollectionEndPoint collectionEndPoint, int index, DomainObject replacementObject)
+    private IDataManagementCommand CreateInsertCommand (ICollectionEndPoint collectionEndPoint, DomainObject insertedRelatedObject, int index)
+    {
+      CheckAddedObject (insertedRelatedObject);
+      return new CollectionEndPointInsertCommand (
+          collectionEndPoint,
+          index,
+          insertedRelatedObject,
+          DataManager.CollectionData,
+          EndPointProvider,
+          TransactionEventSink);
+    }
+
+    public IDataManagementCommand CreateReplaceCommand (IDomainObjectCollectionEndPoint collectionEndPoint, int index, DomainObject replacementObject)
     {
       ArgumentUtility.CheckNotNull ("collectionEndPoint", collectionEndPoint);
       ArgumentUtility.CheckNotNull ("replacementObject", replacementObject);

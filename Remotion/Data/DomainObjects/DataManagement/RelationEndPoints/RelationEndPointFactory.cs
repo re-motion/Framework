@@ -132,6 +132,23 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     {
       ArgumentUtility.CheckNotNull ("endPointID", endPointID);
 
+      // TODO RM-7294 Test
+
+      var collectionEndPoint = new CollectionEndPoint (
+          _clientTransaction,
+          endPointID,
+          new CollectionEndPointCollectionManager (endPointID, _collectionEndPointCollectionProvider, _associatedCollectionDataStrategyFactory),
+          _lazyLoader,
+          _endPointProvider,
+          _transactionEventSink,
+          _collectionEndPointDataManagerFactory);
+      return collectionEndPoint;
+    }
+
+    public IDomainObjectCollectionEndPoint CreateDomainObjectCollectionEndPoint (RelationEndPointID endPointID)
+    {
+      ArgumentUtility.CheckNotNull ("endPointID", endPointID);
+
       var collectionEndPoint = new CollectionEndPoint (
           _clientTransaction,
           endPointID,
