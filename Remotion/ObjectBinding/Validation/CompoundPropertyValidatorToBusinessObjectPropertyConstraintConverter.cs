@@ -16,7 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
-using JetBrains.Annotations;
+using System.Linq;
 using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -24,27 +24,25 @@ using Remotion.Validation.Validators;
 
 namespace Remotion.ObjectBinding.Validation
 {
-  [ImplementationFor (typeof (IPropertyValidatorToBusinessObjectPropertyConstraintConverter), Position = Position, RegistrationType = RegistrationType.Multiple, Lifetime = LifetimeKind.Singleton)]
-  public class PropertyValidatorToBusinessObjectPropertyConstraintConverter : IPropertyValidatorToBusinessObjectPropertyConstraintConverter
+  [ImplementationFor (typeof (IPropertyValidatorToBusinessObjectPropertyConstraintConverter), RegistrationType = RegistrationType.Compound, Lifetime = LifetimeKind.Singleton)]
+  public class CompoundPropertyValidatorToBusinessObjectPropertyConstraintConverter : IPropertyValidatorToBusinessObjectPropertyConstraintConverter
   {
-    public const int Position = 0;
+    public IReadOnlyCollection<IPropertyValidatorToBusinessObjectPropertyConstraintConverter> Converters { get; }
 
-    public PropertyValidatorToBusinessObjectPropertyConstraintConverter ()
+    public CompoundPropertyValidatorToBusinessObjectPropertyConstraintConverter (
+        IEnumerable<IPropertyValidatorToBusinessObjectPropertyConstraintConverter> converters)
     {
+      ArgumentUtility.CheckNotNull ("converters", converters);
+
+      Converters = converters.ToList().AsReadOnly();
     }
+
 
     public IEnumerable<IBusinessObjectPropertyConstraint> Convert (IPropertyValidator propertyValidator)
     {
       ArgumentUtility.CheckNotNull ("propertyValidator", propertyValidator);
 
-      if (propertyValidator is ILengthValidator lengthValidator && lengthValidator.Max.HasValue)
-        yield return new BusinessObjectPropertyValueLengthConstraint (lengthValidator.Max.Value);
-
-      if (propertyValidator is INotNullValidator)
-        yield return new BusinessObjectPropertyValueRequiredConstraint();
-
-      if (propertyValidator is INotEmptyValidator)
-        yield return new BusinessObjectPropertyValueRequiredConstraint();
+      return Converters.SelectMany (c => c.Convert (propertyValidator));
     }
   }
 }

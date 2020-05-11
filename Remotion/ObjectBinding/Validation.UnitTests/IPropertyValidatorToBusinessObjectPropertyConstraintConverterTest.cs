@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using NUnit.Framework;
 using Remotion.ServiceLocation;
 
@@ -36,7 +37,13 @@ namespace Remotion.ObjectBinding.Validation.UnitTests
     {
       var instance = _serviceLocator.GetInstance<IPropertyValidatorToBusinessObjectPropertyConstraintConverter>();
 
-      Assert.That (instance, Is.InstanceOf<PropertyValidatorToBusinessObjectPropertyConstraintConverter>());
+      Assert.That (instance, Is.InstanceOf<CompoundPropertyValidatorToBusinessObjectPropertyConstraintConverter>());
+
+      var compound = (CompoundPropertyValidatorToBusinessObjectPropertyConstraintConverter) instance;
+      Assert.That (
+          compound.Converters.Select (c => c.GetType()),
+          Is.EquivalentTo (new[] { typeof (PropertyValidatorToBusinessObjectPropertyConstraintConverter) }));
+
     }
 
     [Test]
@@ -45,7 +52,7 @@ namespace Remotion.ObjectBinding.Validation.UnitTests
       var instance1 = _serviceLocator.GetInstance<IPropertyValidatorToBusinessObjectPropertyConstraintConverter>();
       var instance2 = _serviceLocator.GetInstance<IPropertyValidatorToBusinessObjectPropertyConstraintConverter>();
 
-      Assert.That (instance1, Is.InstanceOf<PropertyValidatorToBusinessObjectPropertyConstraintConverter>());
+      Assert.That (instance1, Is.InstanceOf<CompoundPropertyValidatorToBusinessObjectPropertyConstraintConverter>());
       Assert.That (instance1, Is.SameAs (instance2));
     }
   }

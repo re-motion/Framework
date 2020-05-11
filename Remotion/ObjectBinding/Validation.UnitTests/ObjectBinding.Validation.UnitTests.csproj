@@ -60,6 +60,7 @@
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
     <Compile Include="BusinessObjectValidationResultTest.cs" />
+    <Compile Include="CompoundPropertyValidatorToBusinessObjectPropertyConstraintConverterTest.cs" />
     <Compile Include="IPropertyValidatorToBusinessObjectPropertyConstraintConverterTest.cs" />
     <Compile Include="IBusinessObjectPropertyConstraintProviderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
