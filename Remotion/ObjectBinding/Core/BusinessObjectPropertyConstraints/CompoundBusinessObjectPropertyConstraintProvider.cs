@@ -29,6 +29,8 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyConstraints
 
     public CompoundBusinessObjectPropertyConstraintProvider (IEnumerable<IBusinessObjectPropertyConstraintProvider>businessObjectConstraintProviders)
     {
+      ArgumentUtility.CheckNotNull ("businessObjectConstraintProviders", businessObjectConstraintProviders);
+
       BusinessObjectConstraintProviders = businessObjectConstraintProviders.ToList().AsReadOnly();
     }
 
