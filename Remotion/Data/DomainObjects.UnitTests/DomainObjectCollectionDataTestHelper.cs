@@ -131,8 +131,9 @@ namespace Remotion.Data.DomainObjects.UnitTests
       SetDataStrategy (collection, newStrategy);
     }
 
-    public static ICollectionEndPoint GetAssociatedEndPoint (DomainObjectCollection collection)
+    public static IDomainObjectCollectionEndPoint GetAssociatedEndPoint (DomainObjectCollection collection)
     {
+      // TODO RM-7294: Add separate tests for DomainObjectCollection and QueryCollection endpoints
       if (collection.AssociatedEndPointID == null)
         return null;
 

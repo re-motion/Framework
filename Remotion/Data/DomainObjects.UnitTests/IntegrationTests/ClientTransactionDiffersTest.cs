@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
   public class ClientTransactionDiffersTest : ClientTransactionBaseTest
   {
     [Test]
-    public void PerformCollectionAddWithOtherClientTransaction ()
+    public void PerformDomainObjectCollectionAddWithOtherClientTransaction ()
     {
       var order1 = DomainObjectIDs.Order1.GetObject<Order> ();
       var orderItem3 = DomainObjectMother.GetObjectInOtherTransaction<OrderItem> (DomainObjectIDs.OrderItem3);
@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     }
 
     [Test]
-    public void PerformCollectionInsertWithOtherClientTransaction ()
+    public void PerformDomainObjectCollectionInsertWithOtherClientTransaction ()
     {
       var order1 = DomainObjectIDs.Order1.GetObject<Order> ();
       var orderItem3 = DomainObjectMother.GetObjectInOtherTransaction<OrderItem> (DomainObjectIDs.OrderItem3);
@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     }
 
     [Test]
-    public void PerformCollectionRemoveWithOtherClientTransaction ()
+    public void PerformDomainObjectCollectionRemoveWithOtherClientTransaction ()
     {
       var order1 = DomainObjectIDs.Order1.GetObject<Order> ();
       var orderItem1 = DomainObjectMother.GetObjectInOtherTransaction<OrderItem> (DomainObjectIDs.OrderItem1);
@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     }
 
     [Test]
-    public void PerformCollectionReplaceWithOtherClientTransaction ()
+    public void PerformDomainObjectCollectionReplaceWithOtherClientTransaction ()
     {
       var order1 = DomainObjectIDs.Order1.GetObject<Order> ();
       var orderItem3 = DomainObjectMother.GetObjectInOtherTransaction<OrderItem> (DomainObjectIDs.OrderItem3);

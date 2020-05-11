@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
   public class IncompleteCollectionEndPointLoadStateTest : StandardMappingTest
   {
     private RelationEndPointID _endPointID;
-    private ICollectionEndPoint _collectionEndPointMock;
+    private IDomainObjectCollectionEndPoint _collectionEndPointMock;
 
     private IncompleteCollectionEndPointLoadState.IEndPointLoader _endPointLoaderMock;
     private ICollectionEndPointDataManagerFactory _dataManagerFactoryStub;
@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       base.SetUp();
 
       _endPointID = RelationEndPointID.Create (DomainObjectIDs.Customer1, typeof (Customer), "Orders");
-      _collectionEndPointMock = MockRepository.GenerateStrictMock<ICollectionEndPoint> ();
+      _collectionEndPointMock = MockRepository.GenerateStrictMock<IDomainObjectCollectionEndPoint> ();
     
       _endPointLoaderMock = MockRepository.GenerateStrictMock<IncompleteCollectionEndPointLoadState.IEndPointLoader> ();
       _dataManagerFactoryStub = MockRepository.GenerateStub<ICollectionEndPointDataManagerFactory> ();

@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
   [TestFixture]
   public class CompleteCollectionEndPointLoadStateTest : StandardMappingTest
   {
-    private ICollectionEndPoint _collectionEndPointMock;
+    private IDomainObjectCollectionEndPoint _collectionEndPointMock;
     private ICollectionEndPointDataManager _dataManagerMock;
     private IRelationEndPointProvider _endPointProviderStub;
     private IClientTransactionEventSink _transactionEventSinkStub;
@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _definition = Configuration.GetTypeDefinition (typeof (Customer)).GetRelationEndPointDefinition (typeof (Customer).FullName + ".Orders");
 
-      _collectionEndPointMock = MockRepository.GenerateStrictMock<ICollectionEndPoint>();
+      _collectionEndPointMock = MockRepository.GenerateStrictMock<IDomainObjectCollectionEndPoint>();
       _dataManagerMock = MockRepository.GenerateStrictMock<ICollectionEndPointDataManager>();
       _dataManagerMock.Stub (stub => stub.EndPointID).Return (RelationEndPointID.Create (DomainObjectIDs.Customer1, _definition));
       _endPointProviderStub = MockRepository.GenerateStub<IRelationEndPointProvider> ();
@@ -287,10 +287,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _dataManagerMock.Stub (stub => stub.CollectionData).Return (fakeCollectionData);
       _dataManagerMock.Stub (stub => stub.ContainsOriginalItemWithoutEndPoint (_relatedObject)).Return (false);
 
-      var fakeCollection = new DomainObjectCollection ();
+      var fakeEventRaiser = MockRepository.GenerateStub<IDomainObjectCollectionEventRaiser> ();
       _collectionEndPointMock.Stub (mock => mock.IsNull).Return (false);
-      _collectionEndPointMock.Stub (mock => mock.Collection).Return (fakeCollection);
+      _collectionEndPointMock.Stub (mock => mock.GetCollectionEventRaiser ()).Return (fakeEventRaiser);
       _collectionEndPointMock.Stub (mock => mock.GetDomainObject ()).Return (_owningObject);
+      _collectionEndPointMock.Stub (mock => mock.GetData ()).Return (new ReadOnlyCollectionDataDecorator (fakeCollectionData));
 
       var command = (RelationEndPointModificationCommand) _loadState.CreateRemoveCommand (_collectionEndPointMock, _relatedObject);
       Assert.That (command, Is.InstanceOf (typeof (CollectionEndPointRemoveCommand)));
@@ -299,7 +300,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (command.OldRelatedObject, Is.SameAs (_relatedObject));
       Assert.That (command.TransactionEventSink, Is.SameAs (_transactionEventSinkStub));
 
-      Assert.That (((CollectionEndPointRemoveCommand) command).ModifiedCollection, Is.SameAs (fakeCollection));
+      Assert.That (((CollectionEndPointRemoveCommand) command).ModifiedCollectionEventRaiser, Is.SameAs (fakeEventRaiser));
       Assert.That (((CollectionEndPointRemoveCommand) command).ModifiedCollectionData, Is.SameAs (fakeCollectionData));
       Assert.That (((CollectionEndPointRemoveCommand) command).EndPointProvider, Is.SameAs (_endPointProviderStub));
     }
@@ -341,9 +342,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _dataManagerMock.Stub (stub => stub.CollectionData).Return (fakeCollectionData);
       _dataManagerMock.Stub (stub => stub.OriginalItemsWithoutEndPoints).Return (new DomainObject[0]);
 
-      var fakeCollection = new DomainObjectCollection ();
+      var fakeEventRaiser = MockRepository.GenerateStub<IDomainObjectCollectionEventRaiser> ();
       _collectionEndPointMock.Stub (mock => mock.IsNull).Return (false);
-      _collectionEndPointMock.Stub (mock => mock.Collection).Return (fakeCollection);
+      _collectionEndPointMock.Stub (mock => mock.GetCollectionEventRaiser ()).Return (fakeEventRaiser);
       _collectionEndPointMock.Stub (mock => mock.GetDomainObject ()).Return (_owningObject);
 
       var command = (RelationEndPointModificationCommand) _loadState.CreateDeleteCommand (_collectionEndPointMock);
@@ -352,7 +353,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (command.TransactionEventSink, Is.SameAs (_transactionEventSinkStub));
 
       Assert.That (((CollectionEndPointDeleteCommand) command).ModifiedCollectionData, Is.SameAs (fakeCollectionData));
-      Assert.That (((CollectionEndPointDeleteCommand) command).ModifiedCollection, Is.SameAs (fakeCollection));
+      Assert.That (((CollectionEndPointDeleteCommand) command).ModifiedCollectionEventRaiser, Is.SameAs (fakeEventRaiser));
     }
 
     [Test]
@@ -392,9 +393,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _dataManagerMock.Stub (stub => stub.CollectionData).Return (fakeCollectionData);
       _dataManagerMock.Stub (stub => stub.ContainsOriginalItemWithoutEndPoint (_relatedObject)).Return (false);
 
-      var fakeCollection = new DomainObjectCollection ();
+      var fakeEventRaiser = MockRepository.GenerateStub<IDomainObjectCollectionEventRaiser> ();
       _collectionEndPointMock.Stub (mock => mock.IsNull).Return (false);
-      _collectionEndPointMock.Stub (mock => mock.Collection).Return (fakeCollection);
+      _collectionEndPointMock.Stub (mock => mock.GetCollectionEventRaiser ()).Return (fakeEventRaiser);
       _collectionEndPointMock.Stub (mock => mock.GetDomainObject ()).Return (_owningObject);
 
       var command = (RelationEndPointModificationCommand) _loadState.CreateInsertCommand (_collectionEndPointMock, _relatedObject, 12);
@@ -406,7 +407,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       Assert.That (((CollectionEndPointInsertCommand) command).Index, Is.EqualTo (12));
       Assert.That (((CollectionEndPointInsertCommand) command).ModifiedCollectionData, Is.SameAs (fakeCollectionData));
-      Assert.That (((CollectionEndPointInsertCommand) command).ModifiedCollection, Is.SameAs (fakeCollection));
+      Assert.That (((CollectionEndPointInsertCommand) command).ModifiedCollectionEventRaiser, Is.SameAs (fakeEventRaiser));
       Assert.That (((CollectionEndPointInsertCommand) command).EndPointProvider, Is.SameAs (_endPointProviderStub));
     }
 
@@ -448,9 +449,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _dataManagerMock.Stub (stub => stub.CollectionData).Return (fakeCollectionData);
       _dataManagerMock.Stub (stub => stub.ContainsOriginalItemWithoutEndPoint (_relatedObject)).Return (false);
 
-      var fakeCollection = new DomainObjectCollection ();
+      var fakeEventRaiser = MockRepository.GenerateStub<IDomainObjectCollectionEventRaiser> ();
       _collectionEndPointMock.Stub (mock => mock.IsNull).Return (false);
-      _collectionEndPointMock.Stub (mock => mock.Collection).Return (fakeCollection);
+      _collectionEndPointMock.Stub (mock => mock.GetCollectionEventRaiser ()).Return (fakeEventRaiser);
       _collectionEndPointMock.Stub (mock => mock.GetDomainObject ()).Return (_owningObject);
 
       var command = (RelationEndPointModificationCommand) _loadState.CreateAddCommand (_collectionEndPointMock, _relatedObject);
@@ -460,7 +461,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (((CollectionEndPointInsertCommand) command).Index, Is.EqualTo (2));
 
       Assert.That (((CollectionEndPointInsertCommand) command).ModifiedCollectionData, Is.SameAs (fakeCollectionData));
-      Assert.That (((CollectionEndPointInsertCommand) command).ModifiedCollection, Is.SameAs (fakeCollection));
+      Assert.That (((CollectionEndPointInsertCommand) command).ModifiedCollectionEventRaiser, Is.SameAs (fakeEventRaiser));
       Assert.That (((CollectionEndPointInsertCommand) command).EndPointProvider, Is.SameAs (_endPointProviderStub));
     }
 
@@ -506,9 +507,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _dataManagerMock.Stub (stub => stub.ContainsOriginalItemWithoutEndPoint (_relatedObject)).Return (false);
       _dataManagerMock.Stub (stub => stub.ContainsOriginalItemWithoutEndPoint (oldRelatedObject)).Return (false);
 
-      var fakeCollection = new DomainObjectCollection ();
+      var fakeEventRaiser = MockRepository.GenerateStub<IDomainObjectCollectionEventRaiser> ();
       _collectionEndPointMock.Stub (mock => mock.IsNull).Return (false);
-      _collectionEndPointMock.Stub (mock => mock.Collection).Return (fakeCollection);
+      _collectionEndPointMock.Stub (mock => mock.GetCollectionEventRaiser ()).Return (fakeEventRaiser);
       _collectionEndPointMock.Stub (mock => mock.GetDomainObject ()).Return (_owningObject);
 
       var command = (RelationEndPointModificationCommand) _loadState.CreateReplaceCommand (_collectionEndPointMock, 0, _relatedObject);
@@ -519,7 +520,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (command.TransactionEventSink, Is.SameAs (_transactionEventSinkStub));
 
       Assert.That (((CollectionEndPointReplaceCommand) command).ModifiedCollectionData, Is.SameAs (fakeCollectionData));
-      Assert.That (((CollectionEndPointReplaceCommand) command).ModifiedCollection, Is.SameAs (fakeCollection));
+      Assert.That (((CollectionEndPointReplaceCommand) command).ModifiedCollectionEventRaiser, Is.SameAs (fakeEventRaiser));
     }
 
     [Test]

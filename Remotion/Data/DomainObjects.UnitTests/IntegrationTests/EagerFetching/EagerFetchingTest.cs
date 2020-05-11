@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.EagerFetching
   public class EagerFetchingTest : ClientTransactionBaseTest
   {
     [Test]
-    public void EagerFetching_WithCollection ()
+    public void EagerFetching_WithDomainObjectCollection ()
     {
       var ordersQuery = CreateOrdersQuery ("OrderNo IN (1, 3)");
       AddOrderItemsFetchQuery  (ordersQuery, "o.OrderNo IN (1, 3)");
@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.EagerFetching
       var result = TestableClientTransaction.QueryManager.GetCollection (ordersQuery);
       Assert.That (result.ToArray (), Is.EquivalentTo (new[] { DomainObjectIDs.Order1.GetObject<Order> (), DomainObjectIDs.Order3.GetObject<Order> () }));
 
-      var orderItemsEndPoint1 = (ICollectionEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (id1);
+      var orderItemsEndPoint1 = (IDomainObjectCollectionEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (id1);
       Assert.That (orderItemsEndPoint1, Is.Not.Null);
       Assert.That (orderItemsEndPoint1.IsSynchronized, Is.True);
       Assert.That (orderItemsEndPoint1.Collection,
@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.EagerFetching
       Assert.That (orderEndPoint.IsSynchronized, Is.True);
       Assert.That (orderEndPoint.OppositeObjectID, Is.EqualTo (DomainObjectIDs.Order1));
 
-      var orderItemsEndPoint2 = (ICollectionEndPoint)TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (id2);
+      var orderItemsEndPoint2 = (IDomainObjectCollectionEndPoint)TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (id2);
       Assert.That (orderItemsEndPoint2, Is.Not.Null);
       Assert.That (orderItemsEndPoint2.IsSynchronized, Is.True);
       Assert.That (orderItemsEndPoint2.Collection, Is.EquivalentTo (new[] { DomainObjectIDs.OrderItem3.GetObject<OrderItem>() }));

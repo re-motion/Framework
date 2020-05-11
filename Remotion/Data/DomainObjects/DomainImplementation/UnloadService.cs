@@ -307,7 +307,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
 
       ObjectID[] unloadedObjectIDs;
       if (endPoint.Definition.Cardinality == CardinalityType.Many)
-        unloadedObjectIDs = ((ICollectionEndPoint) endPoint).Collection.Cast<DomainObject> ().Select (obj => obj.ID).ToArray ();
+        unloadedObjectIDs = ((ICollectionEndPoint) endPoint).GetData().Select (data => data.ID).ToArray ();
       else
       {
         var oppositeObjectID = ((IVirtualObjectEndPoint) endPoint).OppositeObjectID;

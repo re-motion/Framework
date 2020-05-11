@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     private Order _owningOrder;
     private RelationEndPointID _endPointID;
 
-    private ICollectionEndPoint _collectionEndPointMock;
+    private IDomainObjectCollectionEndPoint _collectionEndPointMock;
     private IVirtualEndPointProvider _virtualEndPointProviderStub;
 
     private IDomainObjectCollectionData _endPointDataStub;
@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _owningOrder = DomainObjectIDs.Order1.GetObject<Order> ();
       _endPointID = RelationEndPointID.Resolve (_owningOrder, o => o.OrderItems);
 
-      _collectionEndPointMock = MockRepository.GenerateStrictMock<ICollectionEndPoint>();
+      _collectionEndPointMock = MockRepository.GenerateStrictMock<IDomainObjectCollectionEndPoint>();
       StubCollectionEndPoint (_collectionEndPointMock, TestableClientTransaction, _owningOrder);
       _virtualEndPointProviderStub = MockRepository.GenerateStub<IVirtualEndPointProvider> ();
       _virtualEndPointProviderStub
@@ -413,9 +413,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (deserializedInstance.VirtualEndPointProvider, Is.Not.Null);
     }
 
-    private ICollectionEndPoint CreateCollectionEndPointStub (ClientTransaction clientTransaction, Order owningOrder)
+    private IDomainObjectCollectionEndPoint CreateDomainObjectCollectionEndPointStub (ClientTransaction clientTransaction, Order owningOrder)
     {
-      var endPointStub = MockRepository.GenerateStub<ICollectionEndPoint>();
+      var endPointStub = MockRepository.GenerateStub<IDomainObjectCollectionEndPoint>();
       StubCollectionEndPoint (endPointStub, clientTransaction, owningOrder);
       return endPointStub;
     }
@@ -472,7 +472,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
         deletedOwningObject = DomainObjectIDs.Order5.GetObject<Order> ();
       }
 
-      var endPointStub = CreateCollectionEndPointStub (TestableClientTransaction, deletedOwningObject);
+      var endPointStub = CreateDomainObjectCollectionEndPointStub (TestableClientTransaction, deletedOwningObject);
       var virtualEndPointProviderStub = MockRepository.GenerateStub<IVirtualEndPointProvider> ();
       virtualEndPointProviderStub.Stub (stub => stub.GetOrCreateVirtualEndPoint (_endPointID)).Return (endPointStub);
       var data = new EndPointDelegatingCollectionData (_endPointID, virtualEndPointProviderStub);

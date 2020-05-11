@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.EagerFetching
   public class SubTransactionEagerFetchingTest : ClientTransactionBaseTest
   {
     [Test]
-    public void EagerFetching ()
+    public void EagerFetching_WithDomainObjectCollection ()
     {
       var ordersQuery = QueryFactory.CreateCollectionQuery (
           "test",
@@ -69,10 +69,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.EagerFetching
       Assert.That (TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (id2), Is.Not.Null);
 
       Assert.That (
-          ((ICollectionEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (id1)).Collection,
+          ((IDomainObjectCollectionEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (id1)).Collection,
           Is.EquivalentTo (new[] { DomainObjectIDs.OrderItem1.GetObject<OrderItem>(), DomainObjectIDs.OrderItem2.GetObject<OrderItem>() }));
       Assert.That (
-          ((ICollectionEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (id2)).Collection,
+          ((IDomainObjectCollectionEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (id2)).Collection,
           Is.EquivalentTo (new[] { DomainObjectIDs.OrderItem3.GetObject<OrderItem>() }));
     }
 

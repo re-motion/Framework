@@ -25,7 +25,7 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints
 {
   /// <summary>
-  /// Decorates another <see cref="ICollectionEndPoint"/>, raising <see cref="IVirtualEndPointStateUpdateListener"/> events whenever the 
+  /// Decorates another <see cref="IDomainObjectCollectionEndPoint"/>, raising <see cref="IVirtualEndPointStateUpdateListener"/> events whenever the 
   /// return value of the <see cref="HasChanged"/> property has possibly changed.
   /// </summary>
   /// <remarks>
@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   /// new state is available via the <see cref="ICollectionEndPoint.HasChangedFast"/> property, the new state is passed to the 
   /// <see cref="IVirtualEndPointStateUpdateListener.VirtualEndPointStateUpdated"/> method as a parameter.
   /// </remarks>
-  public class StateUpdateRaisingCollectionEndPointDecorator : ICollectionEndPoint
+  public class StateUpdateRaisingCollectionEndPointDecorator : IDomainObjectCollectionEndPoint
   {
     /// <summary>
     /// Using an instance of this class around a code block asserts that the change state before and after after the block is the same.
@@ -43,9 +43,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     private struct ConstantChangeStateAsserter : IDisposable
     {
       private readonly bool? _changeStateBefore;
-      private readonly ICollectionEndPoint _innerEndPoint;
+      private readonly IDomainObjectCollectionEndPoint _innerEndPoint;
 
-      public ConstantChangeStateAsserter (ICollectionEndPoint innerEndPoint)
+      public ConstantChangeStateAsserter (IDomainObjectCollectionEndPoint innerEndPoint)
       {
         _changeStateBefore = innerEndPoint.HasChangedFast;
         _innerEndPoint = innerEndPoint;
@@ -57,10 +57,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    private readonly ICollectionEndPoint _innerEndPoint;
+    private readonly IDomainObjectCollectionEndPoint _innerEndPoint;
     private readonly IVirtualEndPointStateUpdateListener _listener;
 
-    public StateUpdateRaisingCollectionEndPointDecorator (ICollectionEndPoint innerEndPoint, IVirtualEndPointStateUpdateListener listener)
+    public StateUpdateRaisingCollectionEndPointDecorator (IDomainObjectCollectionEndPoint innerEndPoint, IVirtualEndPointStateUpdateListener listener)
     {
       ArgumentUtility.CheckNotNull ("innerEndPoint", innerEndPoint);
       ArgumentUtility.CheckNotNull ("listener", listener);
@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       get { return _listener; }
     }
 
-    public ICollectionEndPoint InnerEndPoint
+    public IDomainObjectCollectionEndPoint InnerEndPoint
     {
       get { return _innerEndPoint; }
     }
@@ -616,7 +616,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public StateUpdateRaisingCollectionEndPointDecorator (FlattenedDeserializationInfo info)
     {
-      _innerEndPoint = info.GetValue<ICollectionEndPoint>();
+      _innerEndPoint = info.GetValue<IDomainObjectCollectionEndPoint>();
       _listener = info.GetValueForHandle<IVirtualEndPointStateUpdateListener>();
     }
 

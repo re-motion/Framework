@@ -994,13 +994,14 @@ public class ClientTransaction
 
     _eventBroker.RaiseRelationReadingEvent (domainObject, relationEndPointID.Definition, ValueAccess.Current);
 
-    var collectionEndPoint = (ICollectionEndPoint) _dataManager.GetRelationEndPointWithLazyLoad (relationEndPointID);
+    var collectionEndPoint = (IDomainObjectCollectionEndPoint) _dataManager.GetRelationEndPointWithLazyLoad (relationEndPointID); // TODO RM-7294
     var relatedObjects = collectionEndPoint.Collection;
     // Use ReadOnlyCollection<DomainObject> or IReadOnlyCollection<DomainObject> for RaiseRelationReadEvent, Change ReadOnlyDomainObjectCollectionAdapter<T> to implement IReadOnlyList<T> instead of IList<T>
     var readOnlyRelatedObjects = new ReadOnlyDomainObjectCollectionAdapter<DomainObject> (relatedObjects);
 
     _eventBroker.RaiseRelationReadEvent (domainObject, relationEndPointID.Definition, readOnlyRelatedObjects, ValueAccess.Current);
 
+    // TODO RM-7294: Change return type to either object of IReadOnlyCollection<DomainObject>
     return relatedObjects;
   }
 
@@ -1022,13 +1023,14 @@ public class ClientTransaction
 
     _eventBroker.RaiseRelationReadingEvent (domainObject, relationEndPointID.Definition, ValueAccess.Original);
 
-    var collectionEndPoint = (ICollectionEndPoint) _dataManager.GetRelationEndPointWithLazyLoad (relationEndPointID);
+    var collectionEndPoint = (IDomainObjectCollectionEndPoint) _dataManager.GetRelationEndPointWithLazyLoad (relationEndPointID); // TODO RM-7294
     var relatedObjects = collectionEndPoint.GetCollectionWithOriginalData();
     // Use ReadOnlyCollection<DomainObject> or IReadOnlyCollection<DomainObject> for RaiseRelationReadEvent, Change ReadOnlyDomainObjectCollectionAdapter<T> to implement IReadOnlyList<T> instead of IList<T>
     var readOnlyRelatedObjects = new ReadOnlyDomainObjectCollectionAdapter<DomainObject> (relatedObjects);
 
     _eventBroker.RaiseRelationReadEvent (domainObject, relationEndPointID.Definition, readOnlyRelatedObjects, ValueAccess.Original);
 
+    // TODO RM-7294: Change return type to either object of IReadOnlyCollection<DomainObject>
     return relatedObjects;
   }  
 

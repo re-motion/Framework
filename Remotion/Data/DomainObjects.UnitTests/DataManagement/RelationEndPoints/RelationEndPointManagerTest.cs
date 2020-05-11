@@ -170,14 +170,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    public void RegisterEndPointsForDataContainer_New_RegistersCollectionEndPoints ()
+    public void RegisterEndPointsForDataContainer_New_RegistersDomainObjectCollectionEndPoints ()
     {
       var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Order1, "OrderItems");
       var dataContainer = RelationEndPointTestHelper.CreateNewDataContainer (endPointID);
 
       _relationEndPointManager.RegisterEndPointsForDataContainer (dataContainer);
 
-      var collectionEndPoint = (ICollectionEndPoint) _relationEndPointManager.RelationEndPoints[endPointID];
+      var collectionEndPoint = (IDomainObjectCollectionEndPoint) _relationEndPointManager.RelationEndPoints[endPointID];
       Assert.That (collectionEndPoint, Is.Not.Null);
       Assert.That (collectionEndPoint.IsDataComplete, Is.True);
       Assert.That (collectionEndPoint.Collection, Is.Empty);

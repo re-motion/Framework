@@ -72,14 +72,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
         Assert.That (TestableClientTransaction.DataManager.DataContainers[id], Is.Not.Null);
     }
 
-    protected void CheckCollectionRelationRegistered (
+    protected void CheckDomainObjectCollectionRelationRegistered (
         ObjectID originatingObjectID, string shortPropertyName, bool checkOrdering, params ObjectID[] expectedRelatedObjectIDs)
     {
       var declaringType = originatingObjectID.ClassDefinition.ClassType;
-      CheckCollectionRelationRegistered(originatingObjectID, declaringType, shortPropertyName, checkOrdering, expectedRelatedObjectIDs);
+      CheckDomainObjectCollectionRelationRegistered(originatingObjectID, declaringType, shortPropertyName, checkOrdering, expectedRelatedObjectIDs);
     }
 
-    protected void CheckCollectionRelationRegistered (
+    protected void CheckDomainObjectCollectionRelationRegistered (
         ObjectID originatingObjectID, Type declaringType, string shortPropertyName, bool checkOrdering, params ObjectID[] expectedRelatedObjectIDs)
     {
       var relationEndPointDefinition =
@@ -87,7 +87,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
               declaringType.FullName + "." + shortPropertyName);
 
       var endPointID = RelationEndPointID.Create (originatingObjectID, relationEndPointDefinition);
-      var collectionEndPoint = (ICollectionEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (endPointID);
+      var collectionEndPoint = (IDomainObjectCollectionEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (endPointID);
       Assert.That (collectionEndPoint, Is.Not.Null);
 
       var expectedRelatedObjects = expectedRelatedObjectIDs.Select (id => LifetimeService.GetObject (TestableClientTransaction, id, false)).ToArray();

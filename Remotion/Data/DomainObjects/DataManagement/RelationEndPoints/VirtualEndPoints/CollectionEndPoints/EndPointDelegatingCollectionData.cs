@@ -90,9 +90,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       get { return _endPointID; }
     }
 
-    public ICollectionEndPoint GetAssociatedEndPoint ()
+    public IDomainObjectCollectionEndPoint GetAssociatedEndPoint ()
     {
-      return (ICollectionEndPoint) _virtualEndPointProvider.GetOrCreateVirtualEndPoint (_endPointID);
+      return (IDomainObjectCollectionEndPoint) _virtualEndPointProvider.GetOrCreateVirtualEndPoint (_endPointID);
     }
 
     public bool IsDataComplete

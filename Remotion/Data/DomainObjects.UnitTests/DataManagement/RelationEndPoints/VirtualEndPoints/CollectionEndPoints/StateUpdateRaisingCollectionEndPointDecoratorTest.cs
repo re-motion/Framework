@@ -35,10 +35,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
   {
     private RelationEndPointID _endPointID;
     private IVirtualEndPointStateUpdateListener _listenerMock;
-    private ICollectionEndPoint _innerEndPointMock;
+    private IDomainObjectCollectionEndPoint _innerEndPointMock;
 
     private StateUpdateRaisingCollectionEndPointDecorator _decorator;
-    private DecoratorTestHelper<ICollectionEndPoint> _decoratorTestHelper;
+    private DecoratorTestHelper<IDomainObjectCollectionEndPoint> _decoratorTestHelper;
 
     public override void SetUp ()
     {
@@ -46,18 +46,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _endPointID = RelationEndPointID.Create (DomainObjectIDs.Order1, typeof (Order), "OrderItems");
       _listenerMock = MockRepository.GenerateStrictMock<IVirtualEndPointStateUpdateListener> ();
-      _innerEndPointMock = MockRepository.GenerateStrictMock<ICollectionEndPoint>();
+      _innerEndPointMock = MockRepository.GenerateStrictMock<IDomainObjectCollectionEndPoint>();
       _innerEndPointMock.Stub (stub => stub.HasChangedFast).Return (false);
       _innerEndPointMock.Stub (stub => stub.ID).Return (_endPointID);
 
       _decorator = new StateUpdateRaisingCollectionEndPointDecorator (_innerEndPointMock, _listenerMock);
-      _decoratorTestHelper = new DecoratorTestHelper<ICollectionEndPoint> (_decorator, _innerEndPointMock);
+      _decoratorTestHelper = new DecoratorTestHelper<IDomainObjectCollectionEndPoint> (_decorator, _innerEndPointMock);
     }
 
     [Test]
     public void SetDataFromSubTransaction_UnwrapsSourceEndPoint ()
     {
-      var sourceInnerEndPoint = MockRepository.GenerateStub<ICollectionEndPoint> ();
+      var sourceInnerEndPoint = MockRepository.GenerateStub<IDomainObjectCollectionEndPoint> ();
       var sourceEndPoint = new StateUpdateRaisingCollectionEndPointDecorator (sourceInnerEndPoint, _listenerMock);
 
       _listenerMock.Expect (mock => mock.VirtualEndPointStateUpdated (_endPointID, null));
@@ -80,7 +80,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void SetDataFromSubTransaction_WithException ()
     {
-      var sourceInnerEndPoint = MockRepository.GenerateStub<ICollectionEndPoint> ();
+      var sourceInnerEndPoint = MockRepository.GenerateStub<IDomainObjectCollectionEndPoint> ();
       var sourceEndPoint = new StateUpdateRaisingCollectionEndPointDecorator (sourceInnerEndPoint, _listenerMock);
 
       _listenerMock.Expect (mock => mock.VirtualEndPointStateUpdated (_endPointID, null));
@@ -244,7 +244,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void Serialization ()
     {
-      var innerEndPoint = new SerializableCollectionEndPointFake ();
+      var innerEndPoint = new SerializableDomainObjectCollectionEndPointFake ();
       var listener = new SerializableVirtualEndPointStateUpdateListenerFake();
       var instance = new StateUpdateRaisingCollectionEndPointDecorator (innerEndPoint, listener);
 
@@ -321,7 +321,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _listenerMock.VerifyAllExpectations();
     }
     
-    private void CheckCreateStateUpdateRaisingCommand (Func<ICollectionEndPoint, IDataManagementCommand> action)
+    private void CheckCreateStateUpdateRaisingCommand (Func<IDomainObjectCollectionEndPoint, IDataManagementCommand> action)
     {
       var fakeCommand = MockRepository.GenerateStub<IDataManagementCommand> ();
       _decoratorTestHelper.CheckDelegation (

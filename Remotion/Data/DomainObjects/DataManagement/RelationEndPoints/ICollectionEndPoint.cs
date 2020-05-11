@@ -26,22 +26,26 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   {
     bool? HasChangedFast { get; } //Keep for new query collection endpoint
 
+    IDomainObjectCollectionEventRaiser GetCollectionEventRaiser ();
+
+    void MarkDataComplete (DomainObject[] items); //Keep for new query collection endpoint
+
+    IDataManagementCommand CreateAddCommand (DomainObject addedRelatedObject); //Keep for new query collection endpoint
+
+    void SortCurrentData (Comparison<DomainObject> comparison);//Keep for new query collection endpoint
+  }
+
+  public interface IDomainObjectCollectionEndPoint : ICollectionEndPoint
+  {
     DomainObjectCollection Collection { get; } // move to DomainObjectCollection-specific
 
     [Obsolete ("Use GetCollectionWithOriginalData() instead.", true)]
     DomainObjectCollection OriginalCollection { get; }
 
-    IDomainObjectCollectionEventRaiser GetCollectionEventRaiser ();
-
     DomainObjectCollection GetCollectionWithOriginalData (); // move to DomainObjectCollection-specific
-
-    void MarkDataComplete (DomainObject[] items); //Keep for new query collection endpoint
 
     IDataManagementCommand CreateSetCollectionCommand (DomainObjectCollection newCollection); // move to DomainObjectCollection-specifc
     IDataManagementCommand CreateInsertCommand (DomainObject insertedRelatedObject, int index);// move to DomainObjectCollection-specifc
-    IDataManagementCommand CreateAddCommand (DomainObject addedRelatedObject); //Keep for new query collection endpoint
     IDataManagementCommand CreateReplaceCommand (int index, DomainObject replacementObject);// move to DomainObjectCollection-specifc
-
-    void SortCurrentData (Comparison<DomainObject> comparison);//Keep for new query collection endpoint
   }
 }

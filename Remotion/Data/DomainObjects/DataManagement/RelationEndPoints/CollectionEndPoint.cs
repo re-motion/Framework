@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   /// <summary>
   /// Represents a collection-valued relation end-point in the <see cref="RelationEndPointManager"/>.
   /// </summary>
-  public class CollectionEndPoint : RelationEndPoint, ICollectionEndPoint
+  public class CollectionEndPoint : RelationEndPoint, IDomainObjectCollectionEndPoint
   {
     [Serializable]
     public class EndPointLoader : IncompleteCollectionEndPointLoadState.IEndPointLoader

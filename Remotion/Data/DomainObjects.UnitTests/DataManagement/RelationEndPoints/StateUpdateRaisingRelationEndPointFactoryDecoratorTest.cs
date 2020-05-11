@@ -75,13 +75,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    public void CreateCollectionEndPoint ()
+    public void CreateDomainObjectCollectionEndPoint ()
     {
       var endPointID = RelationEndPointID.Create (DomainObjectIDs.Order1, typeof (Order), "OrderItems");
 
-      var fakeResult = MockRepository.GenerateStub<ICollectionEndPoint> ();
+      var fakeResult = MockRepository.GenerateStub<IDomainObjectCollectionEndPoint> ();
       _decoratorTestHelper.CheckDelegation (
-          f => f.CreateCollectionEndPoint (endPointID), 
+          f => f.CreateDomainObjectCollectionEndPoint (endPointID), 
           fakeResult,
           result => Assert.That (
               result, 

@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     private readonly IDomainObjectCollectionData _modifiedCollectionData;
     private readonly IRelationEndPointProvider _endPointProvider;
 
-    private readonly DomainObjectCollection _modifiedCollection;
+    private readonly IDomainObjectCollectionEventRaiser _modifiedCollectionEventRaiser;
 
     public CollectionEndPointInsertCommand (
         ICollectionEndPoint modifiedEndPoint,
@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
       _index = index;
       _modifiedCollectionData = collectionData;
       _endPointProvider = endPointProvider;
-      _modifiedCollection = modifiedEndPoint.Collection;
+      _modifiedCollectionEventRaiser = modifiedEndPoint.GetCollectionEventRaiser();
     }
 
     public int Index
@@ -63,9 +63,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
       get { return _index; }
     }
 
-    public DomainObjectCollection ModifiedCollection
+    public IDomainObjectCollectionEventRaiser ModifiedCollectionEventRaiser
     {
-      get { return _modifiedCollection; }
+      get { return _modifiedCollectionEventRaiser; }
     }
 
     public IDomainObjectCollectionData ModifiedCollectionData
@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     {
       using (EnterTransactionScope())
       {
-        ((IDomainObjectCollectionEventRaiser) ModifiedCollection).BeginAdd (Index, NewRelatedObject);
+        ModifiedCollectionEventRaiser.BeginAdd (Index, NewRelatedObject);
       }
       base.Begin ();
     }
@@ -98,7 +98,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
       base.End ();
       using (EnterTransactionScope())
       {
-        ((IDomainObjectCollectionEventRaiser) ModifiedCollection).EndAdd (Index, NewRelatedObject);
+        ModifiedCollectionEventRaiser.EndAdd (Index, NewRelatedObject);
       }
     }
 

@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       Assert.That (_command.ModifiedEndPoint, Is.SameAs (CollectionEndPoint));
       Assert.That (_command.OldRelatedObject, Is.SameAs (_removedRelatedObject));
       Assert.That (_command.NewRelatedObject, Is.Null);
-      Assert.That (_command.ModifiedCollection, Is.SameAs (CollectionEndPoint.Collection));
+      Assert.That (_command.ModifiedCollectionEventRaiser, Is.SameAs (CollectionEndPoint.Collection));
       Assert.That (_command.ModifiedCollectionData, Is.SameAs (CollectionDataMock));
     }
 
