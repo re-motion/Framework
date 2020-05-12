@@ -16,17 +16,17 @@
 // 
 using System;
 using JetBrains.Annotations;
-using OpenQA.Selenium.Chrome;
+using Microsoft.Edge.SeleniumTools;
 
 namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
 {
   /// <summary>
-  /// Extends <see cref="ChromeOptions"/> provided by Selenium with additional data used by the web testing infrastructure.
+  /// Extends <see cref="EdgeOptions"/> provided by Selenium with additional data used by the web testing infrastructure.
   /// </summary>
-  public class ExtendedEdgeOptions : ChromeOptions
+  public class ExtendedEdgeOptions : EdgeOptions
   {
     /// <summary>
-    /// The user directory of this <see cref="ChromeOptions"/>.
+    /// The user directory of this <see cref="EdgeOptions"/>.
     /// </summary>
     [CanBeNull]
     public string UserDirectory { get; set; }
