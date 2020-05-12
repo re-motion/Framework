@@ -19,7 +19,7 @@ using System.IO;
 using Coypu;
 using Coypu.Drivers;
 using JetBrains.Annotations;
-using OpenQA.Selenium.Chrome;
+using Microsoft.Edge.SeleniumTools;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.BrowserSession.Edge;
@@ -85,23 +85,23 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Edge
              };
     }
 
-    private ChromeDriver CreateEdgeDriver (out int driverProcessID, TimeSpan commandTimeout)
+    private EdgeDriver CreateEdgeDriver (out int driverProcessID, TimeSpan commandTimeout)
     {
       var driverService = CreateEdgeDriverService();
-      var driver = new ChromeDriver (driverService, _extendedEdgeOptions, commandTimeout);
+      var driver = new EdgeDriver (driverService, _extendedEdgeOptions, commandTimeout);
       driverProcessID = driverService.ProcessId;
 
       return driver;
     }
 
-    private ChromeDriverService CreateEdgeDriverService ()
+    private EdgeDriverService CreateEdgeDriverService ()
     {
       var driverDirectory = Path.GetDirectoryName (_edgeConfiguration.DriverBinaryPath);
       var driverExecutable = Path.GetFileName (_edgeConfiguration.DriverBinaryPath);
 
-      var driverService = ChromeDriverService.CreateDefaultService (driverDirectory, driverExecutable);
+      var driverService = EdgeDriverService.CreateChromiumService (driverDirectory, driverExecutable);
 
-      driverService.EnableVerboseLogging = false;
+      driverService.UseVerboseLogging = false;
       driverService.LogPath = WebDriverLogUtility.CreateLogFile (_edgeConfiguration.LogsDirectory, _edgeConfiguration.BrowserName);
 
       return driverService;

@@ -55,6 +55,10 @@
       <HintPath>..\..\..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Edge.SeleniumTools, Version=3.141.1.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\packages\Microsoft.Edge.SeleniumTools.3.141.1\lib\net45\Microsoft.Edge.SeleniumTools.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Remotion.WindowFinder, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Remotion.WindowFinder.2.0.0\lib\net45\Remotion.WindowFinder.dll</HintPath>
       <Private>True</Private>

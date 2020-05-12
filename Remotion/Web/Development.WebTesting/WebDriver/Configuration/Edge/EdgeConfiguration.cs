@@ -21,7 +21,6 @@ using System.Reflection;
 using System.Threading;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
@@ -51,15 +50,6 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
           var knownCapabilityNamesField = typeof (DriverOptions).GetField ("knownCapabilityNames", BindingFlags.Instance | BindingFlags.NonPublic);
           Assertion.IsNotNull (knownCapabilityNamesField, "Selenium has changed, please update s_knownCapabilityNamesField field.");
           return knownCapabilityNamesField;
-        },
-        LazyThreadSafetyMode.ExecutionAndPublication);
-
-    private static readonly Lazy<MethodInfo> s_browserNameSetter = new Lazy<MethodInfo> (
-        () =>
-        {
-          var browserNameProperty = typeof (DriverOptions).GetProperty ("BrowserName");
-          Assertion.IsNotNull (browserNameProperty, "Selenium has changed, please update s_browserNameSetter field.");
-          return browserNameProperty.GetSetMethod (true);
         },
         LazyThreadSafetyMode.ExecutionAndPublication);
 
@@ -112,12 +102,12 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
       var userDirectory = CreateUnusedUserDirectoryPath();
       var edgeOptions = new ExtendedEdgeOptions
                           {
+                              UseChromium = true,
                               BinaryLocation = BrowserBinaryPath,
                               UserDirectory = userDirectory
                           };
 
       DisableSpecCompliance (edgeOptions);
-      AdjustBrowserNameCapability (edgeOptions);
 
       edgeOptions.AddArgument ($"user-data-dir={userDirectory}");
 
@@ -136,16 +126,6 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
       knownCapabilityNames.Remove ("w3c");
 
       edgeOptions.AddAdditionalCapability ("w3c", false);
-    }
-
-    /// <summary>
-    /// Starting with Edge version 79, msedgedriver no longer supports the default <see cref="DriverOptions.BrowserName"/> value of
-    /// "chrome" set in <see cref="ChromeOptions"/>, instead "MicrosoftEdge" must be specified. This should be obsolete when RM-7275
-    /// is resolved.
-    /// </summary>
-    private void AdjustBrowserNameCapability (ExtendedEdgeOptions edgeOptions)
-    {
-      s_browserNameSetter.Value.Invoke (edgeOptions, new object[] { "MicrosoftEdge" });
     }
 
     private string CreateUnusedUserDirectoryPath ()
