@@ -62,7 +62,7 @@
     <PropertyGroup>
       <Platforms>x86+x64</Platforms>
       <ExecutionRuntimes>Win_NET472+Win_NET48</ExecutionRuntimes>
-      <DatabaseSystems>SqlServer2012+SqlServer2014+SqlServer2016+SqlServer2017</DatabaseSystems>
+      <DatabaseSystems>SqlServer2012+SqlServer2014+SqlServer2016+SqlServer2017+SqlServer2019</DatabaseSystems>
       <Browsers>NoBrowser</Browsers>
       <TargetRuntimes>NET48+NET472</TargetRuntimes>
       <TestCategoriesToExclude></TestCategoriesToExclude>
