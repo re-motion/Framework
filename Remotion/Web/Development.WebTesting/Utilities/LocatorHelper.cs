@@ -78,7 +78,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
         [NotNull] T target,
         CoordinateSystem coordinateSystem)
     {
-      ArgumentUtility.CheckNotNull ("resolver", target);
+      ArgumentUtility.CheckNotNull ("resolver", resolver);
       ArgumentUtility.CheckNotNull ("target", target);
 
       switch (coordinateSystem)

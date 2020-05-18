@@ -81,7 +81,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     [StringFormatMethod ("message")]
     public static WebTestException CreateExpectationException ([NotNull] string message, params object[] args)
     {
-      ArgumentUtility.CheckNotEmpty ("message", message);
+      ArgumentUtility.CheckNotNullOrEmpty ("message", message);
 
       return new WebTestException (string.Format (message, args));
     }

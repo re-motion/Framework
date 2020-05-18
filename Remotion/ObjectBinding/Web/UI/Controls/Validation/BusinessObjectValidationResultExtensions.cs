@@ -30,7 +30,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
         [NotNull] IBusinessObjectBoundEditableWebControl control,
         bool markAsHandled = true)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
+      ArgumentUtility.CheckNotNull ("validationResult", validationResult);
       ArgumentUtility.CheckNotNull ("control", control);
 
       if (!control.HasValidBinding)

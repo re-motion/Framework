@@ -50,6 +50,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static FluentScreenshotElement<ElementScope> GetLabel (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocTreeViewNodeControlObject> fluentBocTreeView)
     {
+      ArgumentUtility.CheckNotNull ("fluentBocTreeView", fluentBocTreeView);
+
       var result = fluentBocTreeView.Target.BocTreeViewNode.Scope.FindCss ("span > span", Options.NoWait);
       result.EnsureExistence();
 
@@ -62,6 +64,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static FluentScreenshotElement<ElementScope> GetChildren (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocTreeViewNodeControlObject> fluentBocTreeView)
     {
+      ArgumentUtility.CheckNotNull ("fluentBocTreeView", fluentBocTreeView);
+
       var result = fluentBocTreeView.Target.BocTreeViewNode.Scope.FindCss ("ul", Options.NoWait);
       result.EnsureExistence();
 
