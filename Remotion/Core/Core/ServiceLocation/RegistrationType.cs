@@ -31,8 +31,8 @@ namespace Remotion.ServiceLocation
   public enum RegistrationType
   {
     /// <summary>
-    /// Instances registered as <see cref="Single"/> indicate that there is only one instance registered and the <see cref="Multiple"/> registration type is not allowed.
-    /// <see cref="Single"/> instance can be decorated by instances registered with the <see cref="Decorator"/> registration type.
+    /// Instances registered as <see cref="Single"/> indicate that there is only one instance registered and the <see cref="Multiple"/> or <see cref="Compound"/> registration types are not allowed.
+    /// The <see cref="Single"/> instance can be decorated by instances registered with the <see cref="Decorator"/> registration type.
     /// </summary>
     Single,
     /// <summary>
@@ -44,6 +44,7 @@ namespace Remotion.ServiceLocation
     /// <summary>
     /// Instances registered as <see cref="Compound"/> will contain all <see cref="Multiple"/> registrations via a constructor parameter of type <see cref="IEnumerable{T}"/>.
     /// Note that the <see cref="LifetimeKind"/> of the compound type will override the lifetime of the injected types, same as all other service compositions.
+    /// The <see cref="Single"/> registration type is not allowed when using a <see cref="Compound"/> registration.
     /// </summary>
     Compound,
     /// <summary>
