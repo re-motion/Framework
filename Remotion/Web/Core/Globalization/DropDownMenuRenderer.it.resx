@@ -121,6 +121,6 @@
     <value>Impossibile visualizzare il menu.</value>
   </data>
   <data name="Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering.DropDownMenuRenderer.LoadingStatusMessage" xml:space="preserve">
-    <value>Caricamento in corso.</value>
+    <value>Caricamento in corso</value>
   </data>
 </root>

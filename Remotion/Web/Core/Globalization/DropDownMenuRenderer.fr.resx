@@ -121,6 +121,6 @@
     <value>Impossible d'afficher le menu.</value>
   </data>
   <data name="Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering.DropDownMenuRenderer.LoadingStatusMessage" xml:space="preserve">
-    <value>Charger.</value>
+    <value>Charger</value>
   </data>
 </root>
