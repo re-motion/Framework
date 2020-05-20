@@ -102,7 +102,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       ArgumentUtility.CheckNotNull ("eventSink", eventSink);
 
       var endPointChangeDetectionStrategy = new RootCollectionEndPointChangeDetectionStrategy();
-      var collectionEndPointDataManagerFactory = new CollectionEndPointDataManagerFactory (endPointChangeDetectionStrategy);
+      var collectionEndPointDataManagerFactory = new DomainObjectCollectionEndPointDataManagerFactory (endPointChangeDetectionStrategy);
       var virtualObjectEndPointDataManagerFactory = new VirtualObjectEndPointDataManagerFactory();
 
       var relationEndPointFactory = CreateRelationEndPointFactory (
@@ -128,24 +128,24 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         ILazyLoader lazyLoader,
         IClientTransactionEventSink eventSink,
         IVirtualObjectEndPointDataManagerFactory virtualObjectEndPointDataManagerFactory,
-        ICollectionEndPointDataManagerFactory collectionEndPointDataManagerFactory)
+        IDomainObjectCollectionEndPointDataManagerFactory domainObjectCollectionEndPointDataManagerFactory)
     {
       ArgumentUtility.CheckNotNull ("constructedTransaction", constructedTransaction);
       ArgumentUtility.CheckNotNull ("endPointProvider", endPointProvider);
       ArgumentUtility.CheckNotNull ("lazyLoader", lazyLoader);
       ArgumentUtility.CheckNotNull ("eventSink", eventSink);
       ArgumentUtility.CheckNotNull ("virtualObjectEndPointDataManagerFactory", virtualObjectEndPointDataManagerFactory);
-      ArgumentUtility.CheckNotNull ("collectionEndPointDataManagerFactory", collectionEndPointDataManagerFactory);
+      ArgumentUtility.CheckNotNull ("domainObjectCollectionEndPointDataManagerFactory", domainObjectCollectionEndPointDataManagerFactory);
 
-      var associatedCollectionDataStrategyFactory = new AssociatedCollectionDataStrategyFactory (endPointProvider);
-      var collectionEndPointCollectionProvider = new CollectionEndPointCollectionProvider (associatedCollectionDataStrategyFactory);
+      var associatedCollectionDataStrategyFactory = new AssociatedDomainObjectCollectionDataStrategyFactory (endPointProvider);
+      var collectionEndPointCollectionProvider = new DomainObjectCollectionEndPointCollectionProvider (associatedCollectionDataStrategyFactory);
       return new RelationEndPointFactory (
           constructedTransaction,
           endPointProvider,
           lazyLoader,
           eventSink,
           virtualObjectEndPointDataManagerFactory,
-          collectionEndPointDataManagerFactory, 
+          domainObjectCollectionEndPointDataManagerFactory, 
           collectionEndPointCollectionProvider,
           associatedCollectionDataStrategyFactory);
     }

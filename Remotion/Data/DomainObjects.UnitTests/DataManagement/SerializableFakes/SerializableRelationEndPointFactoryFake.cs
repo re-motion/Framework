@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
       throw new NotImplementedException();
     }
 
-    public ICollectionEndPoint CreateCollectionEndPoint (RelationEndPointID endPointID)
+    public IVirtualCollectionEndPoint CreateVirtualCollectionEndPoint (RelationEndPointID endPointID)
     {
       throw new NotImplementedException();
     }

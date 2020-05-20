@@ -192,7 +192,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var oppositeEndPointID = RelationEndPointID.CreateOpposite (endPointMock.Definition, null);
       _endPointProviderMock
           .Expect (mock => mock.GetOrCreateVirtualEndPoint (oppositeEndPointID))
-          .Return (new NullCollectionEndPoint (ClientTransaction.CreateRootTransaction(), oppositeEndPointID.Definition));
+          .Return (new NullDomainObjectCollectionEndPoint (ClientTransaction.CreateRootTransaction(), oppositeEndPointID.Definition));
       _endPointProviderMock.Replay ();
 
       _agent.UnregisterEndPoint (endPointMock, _map);

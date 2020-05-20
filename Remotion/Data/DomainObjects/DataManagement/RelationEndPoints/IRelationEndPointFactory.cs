@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   {
     IRealObjectEndPoint CreateRealObjectEndPoint (RelationEndPointID endPointID, DataContainer dataContainer);
     IVirtualObjectEndPoint CreateVirtualObjectEndPoint (RelationEndPointID endPointID);
-    ICollectionEndPoint CreateCollectionEndPoint (RelationEndPointID endPointID);
+    IVirtualCollectionEndPoint CreateVirtualCollectionEndPoint (RelationEndPointID endPointID);
     IDomainObjectCollectionEndPoint CreateDomainObjectCollectionEndPoint (RelationEndPointID endPointID);
   }
 }

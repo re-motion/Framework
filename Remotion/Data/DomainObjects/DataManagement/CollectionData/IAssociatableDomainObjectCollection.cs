@@ -22,7 +22,7 @@ using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoi
 namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 {
   /// <summary>
-  /// Defines APIs used by <see cref="CollectionEndPoint"/> when it needs to transform a stand-alone <see cref="DomainObjectCollection"/> to
+  /// Defines APIs used by <see cref="DomainObjectCollectionEndPoint"/> when it needs to transform a stand-alone <see cref="DomainObjectCollection"/> to
   /// an associated collection.
   /// </summary>
   public interface IAssociatableDomainObjectCollection
@@ -31,19 +31,19 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     /// Transforms the collection to an associated collection. The collection will represent the data stored by the <see cref="ICollectionEndPoint"/>
     /// represented by <paramref name="endPointID"/>, and all modifications will be performed on that <see cref="ICollectionEndPoint"/>.
     /// After this operation, the collection's data will be that of the <see cref="RelationEndPointID"/>.
-    /// This interface is used by <see cref="CollectionEndPointSetCollectionCommand"/> and should usually not be called by framework
+    /// This interface is used by <see cref="DomainObjectCollectionEndPointSetCollectionCommand"/> and should usually not be called by framework
     /// users.
     /// </summary>
     /// <param name="endPointID">The <see cref="RelationEndPointID"/> of the <see cref="ICollectionEndPoint"/> to associate with.</param>
-    /// <param name="associatedCollectionDataStrategyFactory">The <see cref="IAssociatedCollectionDataStrategyFactory"/> to get the new data strategy from.</param>
+    /// <param name="associatedDomainObjectCollectionDataStrategyFactory">The <see cref="IAssociatedDomainObjectCollectionDataStrategyFactory"/> to get the new data strategy from.</param>
     /// <returns>The <see cref="IDomainObjectCollectionData"/> strategy used by the <see cref="DomainObjectCollection"/> before it was associated.</returns>
     IDomainObjectCollectionData TransformToAssociated (
-        RelationEndPointID endPointID, IAssociatedCollectionDataStrategyFactory associatedCollectionDataStrategyFactory);
+        RelationEndPointID endPointID, IAssociatedDomainObjectCollectionDataStrategyFactory associatedDomainObjectCollectionDataStrategyFactory);
 
     /// <summary>
     /// Transforms the collection to a stand-alone collection. The collection will get its own data store (with a fresh copy of the data that was held 
     /// by the collection) and will not be associated with an <see cref="ICollectionEndPoint"/> any longer.
-    /// This interface is used by  <see cref="CollectionEndPointSetCollectionCommand"/> and should usually not be required by framework 
+    /// This interface is used by  <see cref="DomainObjectCollectionEndPointSetCollectionCommand"/> and should usually not be required by framework 
     /// users.
     /// </summary>
     /// <returns>The <see cref="IDomainObjectCollectionData"/> strategy used by the <see cref="DomainObjectCollection"/> before it was made stand-alone.</returns>

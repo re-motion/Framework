@@ -21,7 +21,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 {
   /// <summary>
   /// Provides an interface for classes determining whether a collection end point has changed. This is used by 
-  /// <see cref="CollectionEndPoint.HasChanged"/>,
+  /// <see cref="DomainObjectCollectionEndPoint.HasChanged"/>,
   /// and its concrete implementation is installed by <see cref="ClientTransaction"/>.
   /// </summary>
   public interface ICollectionEndPointChangeDetectionStrategy

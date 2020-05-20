@@ -83,7 +83,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       var deserializedEndPoint = deserializedTransaction.DataManager.GetRelationEndPointWithoutLoading (endPointID);
       Assert.That (DomainObjectCollectionDataTestHelper.GetAssociatedEndPoint (deserializedCollection), Is.SameAs (deserializedEndPoint));
 
-      var deserializedData = DomainObjectCollectionDataTestHelper.GetDataStrategyAndCheckType<ModificationCheckingCollectionDataDecorator> (deserializedCollection);
+      var deserializedData = DomainObjectCollectionDataTestHelper.GetDataStrategyAndCheckType<ModificationCheckingDomainObjectCollectionDataDecorator> (deserializedCollection);
       DomainObjectCollectionDataTestHelper.GetWrappedDataAndCheckType<EndPointDelegatingCollectionData> (deserializedData);
 
       Assert.That (collection.Select (obj => obj.ID).ToArray (), Is.EqualTo (relatedIDs));

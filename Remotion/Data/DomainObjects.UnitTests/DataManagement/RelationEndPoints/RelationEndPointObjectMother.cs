@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 {
   public static class RelationEndPointObjectMother
   {
-    public static CollectionEndPoint CreateCollectionEndPoint (
+    public static DomainObjectCollectionEndPoint CreateDomainObjectCollectionEndPoint (
         RelationEndPointID endPointID,
         IEnumerable<DomainObject> initialContents,
         ClientTransaction clientTransaction = null)
@@ -42,18 +42,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       clientTransaction = clientTransaction ?? ClientTransactionScope.CurrentTransaction;
       var dataManager = ClientTransactionTestHelper.GetDataManager (clientTransaction);
       var changeDetectionStrategy = new RootCollectionEndPointChangeDetectionStrategy();
-      var dataStrategyFactory = new AssociatedCollectionDataStrategyFactory (dataManager);
-      var collectionEndPoint = new CollectionEndPoint (
+      var dataStrategyFactory = new AssociatedDomainObjectCollectionDataStrategyFactory (dataManager);
+      var collectionEndPoint = new DomainObjectCollectionEndPoint (
           clientTransaction,
           endPointID,
-          new CollectionEndPointCollectionManager (endPointID, new CollectionEndPointCollectionProvider (dataStrategyFactory), dataStrategyFactory),
+          new DomainObjectCollectionEndPointCollectionManager (endPointID, new DomainObjectCollectionEndPointCollectionProvider (dataStrategyFactory), dataStrategyFactory),
           dataManager,
           dataManager,
           ClientTransactionTestHelper.GetEventBroker (clientTransaction),
-          new CollectionEndPointDataManagerFactory (changeDetectionStrategy));
+          new DomainObjectCollectionEndPointDataManagerFactory (changeDetectionStrategy));
       
       if (initialContents != null)
-        CollectionEndPointTestHelper.FillCollectionEndPointWithInitialContents (collectionEndPoint, initialContents);
+        DomainObjectCollectionEndPointTestHelper.FillCollectionEndPointWithInitialContents (collectionEndPoint, initialContents);
 
       return collectionEndPoint;
     }
@@ -129,10 +129,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       return propertyAccessorData.RelationEndPointDefinition;
     }
 
-    public static CollectionEndPoint CreateCollectionEndPoint_Customer1_Orders (params Order[] initialContents)
+    public static DomainObjectCollectionEndPoint CreateCollectionEndPoint_Customer1_Orders (params Order[] initialContents)
     {
       var customerEndPointID = CreateRelationEndPointID (new DomainObjectIDs (MappingConfiguration.Current).Customer1, "Orders");
-      return CreateCollectionEndPoint (customerEndPointID, initialContents);
+      return CreateDomainObjectCollectionEndPoint (customerEndPointID, initialContents);
     }
 
     public static IRelationEndPoint CreateStub (RelationEndPointID endPointID = null)

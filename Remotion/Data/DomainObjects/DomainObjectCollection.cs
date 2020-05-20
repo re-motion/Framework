@@ -147,7 +147,7 @@ namespace Remotion.Data.DomainObjects
       ArgumentUtility.CheckNotNull ("dataStore", dataStore);
       ArgumentUtility.CheckNotNull ("eventRaiser", eventRaiser);
 
-      return new ModificationCheckingCollectionDataDecorator (requiredItemType, new EventRaisingCollectionDataDecorator (eventRaiser, dataStore));
+      return new ModificationCheckingDomainObjectCollectionDataDecorator (requiredItemType, new EventRaisingDomainObjectCollectionDataDecorator (eventRaiser, dataStore));
     }
 
     /// <summary>
@@ -563,8 +563,8 @@ namespace Remotion.Data.DomainObjects
     // TODO 4526: Remove
     /// <summary>
     /// Sorts this collection using the specified <see cref="Comparison{T}"/> without triggering bidirectional changes or raising any modification
-    /// events apart from <see cref="OnReplaceData"/>. The operation causes the associated <see cref="CollectionEndPoint"/> to become touched, and it 
-    /// might affect the change state of the <see cref="CollectionEndPoint"/> and the owning object.
+    /// events apart from <see cref="OnReplaceData"/>. The operation causes the associated <see cref="DomainObjectCollectionEndPoint"/> to become touched, and it 
+    /// might affect the change state of the <see cref="DomainObjectCollectionEndPoint"/> and the owning object.
     /// </summary>
     /// <param name="comparison">The comparison.</param>
     [Obsolete ("This member is meant exclusively for the implementation of indexed DomainObjectCollections. It will be removed when re-store " 
@@ -742,12 +742,12 @@ namespace Remotion.Data.DomainObjects
     }
 
     IDomainObjectCollectionData IAssociatableDomainObjectCollection.TransformToAssociated (
-        RelationEndPointID endPointID, IAssociatedCollectionDataStrategyFactory associatedCollectionDataStrategyFactory)
+        RelationEndPointID endPointID, IAssociatedDomainObjectCollectionDataStrategyFactory associatedDomainObjectCollectionDataStrategyFactory)
     {
       ArgumentUtility.CheckNotNull ("endPointID", endPointID);
 
       var originalDataStrategy = _dataStrategy;
-      _dataStrategy = associatedCollectionDataStrategyFactory.CreateDataStrategyForEndPoint (endPointID);
+      _dataStrategy = associatedDomainObjectCollectionDataStrategyFactory.CreateDataStrategyForEndPoint (endPointID);
       return originalDataStrategy;
     }
 

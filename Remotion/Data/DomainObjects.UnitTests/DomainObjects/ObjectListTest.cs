@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void Initialization_WithData ()
     {
-      var givenData = new ModificationCheckingCollectionDataDecorator (typeof (Customer), new DomainObjectCollectionData ());
+      var givenData = new ModificationCheckingDomainObjectCollectionDataDecorator (typeof (Customer), new DomainObjectCollectionData ());
       var collection = new ObjectList<Customer> (givenData);
 
       var actualData = DomainObjectCollectionDataTestHelper.GetDataStrategy (collection);
