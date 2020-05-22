@@ -175,7 +175,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
     {
       return new RelationDefinitionValidator (
           new RdbmsRelationEndPointCombinationIsSupportedValidationRule(),
-          new SortExpressionIsSupportedForCardianlityOfRelationPropertyValidationRule(),
+          new SortExpressionIsSupportedForCardinalityOfRelationPropertyValidationRule(),
           new VirtualRelationEndPointCardinalityMatchesPropertyTypeValidationRule(),
           new VirtualRelationEndPointPropertyTypeIsSupportedValidationRule(),
           new ForeignKeyIsSupportedForCardinalityOfRelationPropertyValidationRule(),

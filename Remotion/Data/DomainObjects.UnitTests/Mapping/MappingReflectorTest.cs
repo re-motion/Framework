@@ -156,7 +156,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       Assert.That (validator.ValidationRules.Count, Is.EqualTo (10));
       Assert.That (validator.ValidationRules[0], Is.TypeOf (typeof (RdbmsRelationEndPointCombinationIsSupportedValidationRule)));
-      Assert.That (validator.ValidationRules[1], Is.TypeOf (typeof (SortExpressionIsSupportedForCardianlityOfRelationPropertyValidationRule)));
+      Assert.That (validator.ValidationRules[1], Is.TypeOf (typeof (SortExpressionIsSupportedForCardinalityOfRelationPropertyValidationRule)));
       Assert.That (validator.ValidationRules[2], Is.TypeOf (typeof (VirtualRelationEndPointCardinalityMatchesPropertyTypeValidationRule)));
       Assert.That (validator.ValidationRules[3], Is.TypeOf (typeof (VirtualRelationEndPointPropertyTypeIsSupportedValidationRule)));
       Assert.That (validator.ValidationRules[4], Is.TypeOf (typeof (ForeignKeyIsSupportedForCardinalityOfRelationPropertyValidationRule)));

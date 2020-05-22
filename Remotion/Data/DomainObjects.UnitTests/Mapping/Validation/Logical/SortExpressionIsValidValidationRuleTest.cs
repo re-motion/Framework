@@ -38,13 +38,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     }
 
     [Test]
-    public void ValidSortExpressionWithSortingDirection ()
+    public void ValidSortExpressionWithSortingDirection_WithDomainObjectCollectionRelationEndPointDefinition ()
     {
-      var endPointDefinition = new VirtualRelationEndPointDefinition (
+      var endPointDefinition = new DomainObjectCollectionRelationEndPointDefinition (
           _classDefinition,
           "Orders",
           false,
-          CardinalityType.Many,
           "OrderNumber desc",
           MockRepository.GenerateStub<IPropertyInformation>());
       var relationDefinition = new RelationDefinition ("Test", endPointDefinition, endPointDefinition);
@@ -56,10 +55,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     }
 
     [Test]
-    public void ValidSortExpressionWithoutSortingDirection ()
+    [Ignore ("RM-7294")]
+    public void ValidSortExpressionWithSortingDirection_WithQueryCollectionRelationEndPointDefinition ()
     {
-      var endPointDefinition = new VirtualRelationEndPointDefinition (
-          _classDefinition, "Orders", false, CardinalityType.Many, "OrderNumber", MockRepository.GenerateStub<IPropertyInformation>());
+    }
+
+    [Test]
+    public void ValidSortExpressionWithoutSortingDirection_WithDomainObjectCollectionRelationEndPointDefinition ()
+    {
+      var endPointDefinition = new DomainObjectCollectionRelationEndPointDefinition (
+          _classDefinition, "Orders", false, "OrderNumber", MockRepository.GenerateStub<IPropertyInformation>());
       var relationDefinition = new RelationDefinition ("Test", endPointDefinition, endPointDefinition);
       endPointDefinition.SetRelationDefinition (relationDefinition);
 
@@ -69,13 +74,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     }
 
     [Test]
-    public void InvalidSortExpression ()
+    [Ignore ("RM-7294")]
+    public void ValidSortExpressionWithoutSortingDirection_WithQueryCollectionRelationEndPointDefinition ()
     {
-      var endPointDefinition = new VirtualRelationEndPointDefinition (
+    }
+
+    [Test]
+    public void InvalidSortExpression_WithDomainObjectCollectionRelationEndPointDefinition ()
+    {
+      var endPointDefinition = new DomainObjectCollectionRelationEndPointDefinition (
           _classDefinition,
           "Orders",
           false,
-          CardinalityType.Many,
           "Test",
           PropertyInfoAdapter.Create(typeof (Customer).GetProperty ("Orders")));
       var relationDefinition = new RelationDefinition ("Test", endPointDefinition, endPointDefinition);
@@ -89,6 +99,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
           + "or a derived class of 'Order', the full unique re-store property identifier can be specified.\r\n\r\n"
           + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Customer\r\nProperty: Orders";
       AssertMappingValidationResult (validationResult, false, expectedMessage);
+    }
+
+    [Test]
+    [Ignore ("RM-7294")]
+    public void InvalidSortExpression_WithQueryCollectionRelationEndPointDefinition ()
+    {
     }
   }
 }

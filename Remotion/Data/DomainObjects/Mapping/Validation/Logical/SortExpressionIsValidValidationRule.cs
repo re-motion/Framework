@@ -45,18 +45,21 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
 
     private MappingValidationResult Validate (IRelationEndPointDefinition relationEndPointDefinition)
     {
-      var relationEndPointDefinitionAsVirtualRelationEndPointDefinition = relationEndPointDefinition as VirtualRelationEndPointDefinition;
-      if (relationEndPointDefinitionAsVirtualRelationEndPointDefinition != null)
+      if (relationEndPointDefinition is DomainObjectCollectionRelationEndPointDefinition domainObjectCollectionRelationEndPointDefinition)
       {
         try
         {
-          relationEndPointDefinitionAsVirtualRelationEndPointDefinition.GetSortExpression ();
+          domainObjectCollectionRelationEndPointDefinition.GetSortExpression ();
         }
         catch (MappingException ex)
         {
           return MappingValidationResult.CreateInvalidResult(ex.Message);
         }
       }
+      // else if (relationEndPointDefinition is QueryCollectionRelationEndPointDefinition queryCollectionRelationEndPointDefinition)
+      // {
+      //  TODO: RM-7294
+      // }
       return MappingValidationResult.CreateValidResult();
     }
 

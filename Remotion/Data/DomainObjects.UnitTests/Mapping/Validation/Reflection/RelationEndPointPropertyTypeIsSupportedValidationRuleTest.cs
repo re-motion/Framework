@@ -28,12 +28,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
   {
     private RelationEndPointPropertyTypeIsSupportedValidationRule _validationRule;
     private ClassDefinition _classDefinition;
-    
+    private IRelationEndPointDefinition _validEndPointDefinition;
+
     [SetUp]
     public void SetUp ()
     {
       _validationRule = new RelationEndPointPropertyTypeIsSupportedValidationRule();
       _classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins (typeof (RelationEndPointPropertyClass));
+    
+      _validEndPointDefinition = new VirtualObjectRelationEndPointDefinition (
+          _classDefinition,
+          "DomainObjectPropertyWithBidirectionalAttribute",
+          false,
+          PropertyInfoAdapter.Create(typeof (RelationEndPointPropertyClass).GetProperty ("DomainObjectPropertyWithBidirectionalAttribute")));
     }
 
     [Test]
@@ -48,16 +55,34 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     }
 
     [Test]
-    public void NoBidirectionalRelation_PropertyTypeNoDomainObject ()
+    public void NoBidirectionalRelation_LeftPropertyTypeNoDomainObject ()
     {
-      var endPointDefinition = new VirtualRelationEndPointDefinition (
+      var endPointDefinition = new VirtualObjectRelationEndPointDefinition (
           _classDefinition,
           "PropertyWithoutBidirectionalAttribute",
           false,
-          CardinalityType.One,
-          null,
           PropertyInfoAdapter.Create(typeof (RelationEndPointPropertyClass).GetProperty ("PropertyWithoutBidirectionalAttribute")));
-      var relationDefinition = new RelationDefinition ("Test", endPointDefinition, endPointDefinition);
+      var relationDefinition = new RelationDefinition ("Test", endPointDefinition, _validEndPointDefinition);
+
+      var validationResult = _validationRule.Validate (relationDefinition);
+
+      var expectedMessage =
+          "The property type of an uni-directional relation property must be assignable to 'DomainObject'.\r\n\r\n"
+          + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection."
+          + "RelationEndPointPropertyTypeIsSupportedValidationRule.RelationEndPointPropertyClass\r\n"
+          + "Property: PropertyWithoutBidirectionalAttribute";
+      AssertMappingValidationResult (validationResult, false, expectedMessage);
+    }
+
+    [Test]
+    public void NoBidirectionalRelation_RightPropertyTypeNoDomainObject ()
+    {
+      var endPointDefinition = new VirtualObjectRelationEndPointDefinition (
+          _classDefinition,
+          "PropertyWithoutBidirectionalAttribute",
+          false,
+          PropertyInfoAdapter.Create(typeof (RelationEndPointPropertyClass).GetProperty ("PropertyWithoutBidirectionalAttribute")));
+      var relationDefinition = new RelationDefinition ("Test", _validEndPointDefinition, endPointDefinition);
 
       var validationResult = _validationRule.Validate (relationDefinition);
 
@@ -72,12 +97,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Test]
     public void NoBidirectionalRelation_PropertyTypeDomainObject ()
     {
-      var endPointDefinition = new VirtualRelationEndPointDefinition (
+      var endPointDefinition = new VirtualObjectRelationEndPointDefinition (
           _classDefinition,
           "DomainObjectPropertyWithoutBidirectionalAttribute",
           false,
-          CardinalityType.One,
-          null,
           PropertyInfoAdapter.Create(typeof (RelationEndPointPropertyClass).GetProperty ("DomainObjectPropertyWithoutBidirectionalAttribute")));
       var relationDefinition = new RelationDefinition ("Test", endPointDefinition, endPointDefinition);
       
@@ -89,12 +112,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Test]
     public void BidirectionalRelation_PropertyTypeDomainObject ()
     {
-      var endPointDefinition = new VirtualRelationEndPointDefinition (
+      var endPointDefinition = new VirtualObjectRelationEndPointDefinition (
           _classDefinition,
           "DomainObjectPropertyWithBidirectionalAttribute",
           false,
-          CardinalityType.One,
-          null,
           PropertyInfoAdapter.Create(typeof (RelationEndPointPropertyClass).GetProperty ("DomainObjectPropertyWithBidirectionalAttribute")));
       var relationDefinition = new RelationDefinition ("Test", endPointDefinition, endPointDefinition);
 
@@ -106,12 +127,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Test]
     public void BidirectionalRelation_PropertyTypeNoDomainObject ()
     {
-      var endPointDefinition = new VirtualRelationEndPointDefinition (
+      var endPointDefinition = new VirtualObjectRelationEndPointDefinition (
           _classDefinition,
           "PropertyWithBidirectionalAttribute",
           false,
-          CardinalityType.One,
-          null,
           PropertyInfoAdapter.Create(typeof (RelationEndPointPropertyClass).GetProperty ("PropertyWithBidirectionalAttribute")));
       var relationDefinition = new RelationDefinition ("Test", endPointDefinition, endPointDefinition);
 

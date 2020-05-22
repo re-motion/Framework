@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     {
       var propertyType = typeof (ObjectList<BaseOfBaseValidationDomainObjectClass>);
       var endPointDefinition = 
-          VirtualRelationEndPointDefinitionFactory.Create (_classDefinition, "Property", false, CardinalityType.Many, propertyType);
+          DomainObjectCollectionRelationEndPointDefinitionFactory.Create (_classDefinition, "Property", false, propertyType);
       var relationDefinition = new RelationDefinition ("Test", endPointDefinition, endPointDefinition);
       
       var validationResult = _validationRule.Validate (relationDefinition);
@@ -69,7 +69,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     {
       var propertyType = typeof (DerivedObjectList<BaseOfBaseValidationDomainObjectClass>);
       var endPointDefinition = 
-          VirtualRelationEndPointDefinitionFactory.Create (_classDefinition, "Property", false, CardinalityType.Many, propertyType);
+          DomainObjectCollectionRelationEndPointDefinitionFactory.Create (_classDefinition, "Property", false, propertyType);
       var relationDefinition = new RelationDefinition ("Test", endPointDefinition, endPointDefinition);
 
       var validationResult = _validationRule.Validate (relationDefinition);
@@ -78,11 +78,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     }
 
     [Test]
+    [Ignore ("RM-7294")]
+    public void PropertyTypIsQueryCollection ()
+    {
+    }
+
+    [Test]
     public void PropertyTypeIsDomainObject ()
     {
       var propertyType = typeof (DomainObject);
       var endPointDefinition = 
-          VirtualRelationEndPointDefinitionFactory.Create (_classDefinition, "Property", false, CardinalityType.One, propertyType);
+          VirtualObjectRelationEndPointDefinitionFactory.Create (_classDefinition, "Property", false, propertyType);
       var relationDefinition = new RelationDefinition ("Test", endPointDefinition, endPointDefinition);
 
       var validationResult = _validationRule.Validate (relationDefinition);
@@ -95,7 +101,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     {
       var propertyType = typeof (BaseOfBaseValidationDomainObjectClass);
       var endPointDefinition = 
-          VirtualRelationEndPointDefinitionFactory.Create (_classDefinition, "Property", false, CardinalityType.One, propertyType);
+          VirtualObjectRelationEndPointDefinitionFactory.Create (_classDefinition, "Property", false, propertyType);
       var relationDefinition = new RelationDefinition ("Test", endPointDefinition, endPointDefinition);
       
       var validationResult = _validationRule.Validate (relationDefinition);
@@ -107,9 +113,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     public void LeftEndpointPropertyType_NotAssignableToObjectListOrDomainObject ()
     {
       var leftEndPointDefinition = 
-          VirtualRelationEndPointDefinitionFactory.Create (_classDefinition, "Left", false, CardinalityType.One, typeof (string));
+          VirtualObjectRelationEndPointDefinitionFactory.Create (_classDefinition, "Left", false, typeof (string));
       var rightEndPointDefinition = 
-          VirtualRelationEndPointDefinitionFactory.Create (_classDefinition, "Right", false, CardinalityType.One, typeof (DomainObject));
+          VirtualObjectRelationEndPointDefinitionFactory.Create (_classDefinition, "Right", false, typeof (DomainObject));
       var relationDefinition = new RelationDefinition ("Test", leftEndPointDefinition, rightEndPointDefinition);
       
       var validationResult = _validationRule.Validate (relationDefinition);
@@ -125,9 +131,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     public void RightEndpointPropertyType_NotAssignableToObjectListOrDomainObject ()
     {
       var leftEndPointDefinition = 
-          VirtualRelationEndPointDefinitionFactory.Create (_classDefinition, "Left", false, CardinalityType.Many, typeof (ObjectList<>));
+          DomainObjectCollectionRelationEndPointDefinitionFactory.Create (_classDefinition, "Left", false, typeof (ObjectList<>));
       var rightEndPointDefinition = 
-          VirtualRelationEndPointDefinitionFactory.Create (_classDefinition, "Right", false, CardinalityType.One, typeof (string));
+          VirtualObjectRelationEndPointDefinitionFactory.Create (_classDefinition, "Right", false, typeof (string));
       var relationDefinition = new RelationDefinition ("Test", leftEndPointDefinition, rightEndPointDefinition);
 
       var validationResult = _validationRule.Validate (relationDefinition);

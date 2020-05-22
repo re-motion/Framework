@@ -251,11 +251,13 @@ namespace Remotion.Data.DomainObjects.Linq
 
     private SortExpressionDefinition GetSortExpressionForRelation (IRelationEndPointDefinition relationEndPointDefinition)
     {
-      var virtualEndPointDefinition = relationEndPointDefinition as VirtualRelationEndPointDefinition;
-      if (virtualEndPointDefinition != null)
-        return virtualEndPointDefinition.GetSortExpression();
-      else
-        return null;
+      switch (relationEndPointDefinition)
+      {
+        case DomainObjectCollectionRelationEndPointDefinition domainObjectCollectionRelationEndPointDefinition:
+          return domainObjectCollectionRelationEndPointDefinition.GetSortExpression();
+        default:
+          return null;
+      }
     }
 
     private IRelationEndPointDefinition GetEagerFetchRelationEndPointDefinition (FetchRequestBase fetchRequest, ClassDefinition classDefinition)

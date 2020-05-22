@@ -16,38 +16,42 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Development.UnitTesting;
 using Remotion.Reflection;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 {
-  public static class VirtualRelationEndPointDefinitionFactory
+  public static class VirtualObjectRelationEndPointDefinitionFactory
   {
-    public static VirtualRelationEndPointDefinition Create (
+    public static VirtualObjectRelationEndPointDefinition Create (
         ClassDefinition classDefinition,
         string propertyName,
         bool isMandatory,
-        CardinalityType cardinality,
-        Type propertyType,
-        string sortExpressionString)
+        Type propertyType)
     {
       var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
       propertyInformationStub.Stub (stub => stub.Name).Return (propertyName);
       propertyInformationStub.Stub (stub => stub.PropertyType).Return (propertyType);
       propertyInformationStub.Stub (stub => stub.DeclaringType).Return (TypeAdapter.Create (classDefinition.ClassType));
 
-      return new VirtualRelationEndPointDefinition (
-          classDefinition, propertyName, isMandatory, cardinality, sortExpressionString, propertyInformationStub);
+      return new VirtualObjectRelationEndPointDefinition (
+          classDefinition, propertyName, isMandatory, propertyInformationStub);
     }
 
-    public static VirtualRelationEndPointDefinition Create (
+    public static VirtualObjectRelationEndPointDefinition Create (
         ClassDefinition classDefinition,
         string propertyName,
         bool isMandatory,
-        CardinalityType cardinality,
-        Type propertyType)
+        Type propertyType,
+        string sortExpression)
     {
-      return Create (classDefinition, propertyName, isMandatory, cardinality, propertyType, null);
+      var relationEndPointDefinition = Create (classDefinition, propertyName, isMandatory, propertyType);
+      if (sortExpression != null)
+        PrivateInvoke.InvokeNonPublicMethod (relationEndPointDefinition, "SetHasSortExpressionFlag");
+
+      return relationEndPointDefinition;
     }
+
   }
 }

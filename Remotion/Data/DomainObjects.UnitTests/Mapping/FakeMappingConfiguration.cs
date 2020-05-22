@@ -1008,11 +1008,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var customer = _typeDefinitions[typeof (Customer)];
 
       var endPoint1 =
-          VirtualRelationEndPointDefinitionFactory.Create (
+          DomainObjectCollectionRelationEndPointDefinitionFactory.Create (
               customer,
               "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Customer.Orders",
               false,
-              CardinalityType.Many,
               typeof (OrderCollection),
               "OrderNumber asc");
 
@@ -1031,9 +1030,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     private RelationDefinition CreateOrderToOrderTicketRelationDefinition ()
     {
       ClassDefinition orderClass = _typeDefinitions[typeof (Order)];
-      VirtualRelationEndPointDefinition endPoint1 =
-          VirtualRelationEndPointDefinitionFactory.Create (
-              orderClass, "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order.OrderTicket", true, CardinalityType.One, typeof (OrderTicket));
+      VirtualObjectRelationEndPointDefinition endPoint1 =
+          VirtualObjectRelationEndPointDefinitionFactory.Create (
+              orderClass, "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order.OrderTicket", true, typeof (OrderTicket));
 
       ClassDefinition orderTicketClass = _typeDefinitions[typeof (OrderTicket)];
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
@@ -1050,12 +1049,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     private RelationDefinition CreateOrderToOrderItemRelationDefinition ()
     {
       ClassDefinition orderClass = _typeDefinitions[typeof (Order)];
-      VirtualRelationEndPointDefinition endPoint1 =
-          VirtualRelationEndPointDefinitionFactory.Create (
+      DomainObjectCollectionRelationEndPointDefinition endPoint1 =
+          DomainObjectCollectionRelationEndPointDefinitionFactory.Create (
               orderClass,
               "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order.OrderItems",
               true,
-              CardinalityType.Many,
               typeof (ObjectList<OrderItem>));
 
       ClassDefinition orderItemClass = _typeDefinitions[typeof (OrderItem)];
@@ -1073,11 +1071,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       var officialClass = _typeDefinitions[typeof (Official)];
 
-      var endPoint1 = VirtualRelationEndPointDefinitionFactory.Create (
+      var endPoint1 = DomainObjectCollectionRelationEndPointDefinitionFactory.Create (
               officialClass,
               "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Official.Orders",
               false,
-              CardinalityType.Many,
               typeof (ObjectList<Order>));
 
       var orderClass = _typeDefinitions[typeof (Order)];
@@ -1113,9 +1110,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       ClassDefinition companyClass = _typeDefinitions[typeof (Company)];
 
-      VirtualRelationEndPointDefinition endPoint1 =
-          VirtualRelationEndPointDefinitionFactory.Create (
-              companyClass, "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Company.Ceo", true, CardinalityType.One, typeof (Ceo));
+      VirtualObjectRelationEndPointDefinition endPoint1 =
+          VirtualObjectRelationEndPointDefinitionFactory.Create (
+              companyClass, "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Company.Ceo", true, typeof (Ceo));
 
       ClassDefinition ceoClass = _typeDefinitions[typeof (Ceo)];
 
@@ -1136,12 +1133,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           partnerClass["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Partner.ContactPerson"], true);
 
       ClassDefinition personClass = _typeDefinitions[typeof (Person)];
-      VirtualRelationEndPointDefinition endPoint2 =
-          VirtualRelationEndPointDefinitionFactory.Create (
+      VirtualObjectRelationEndPointDefinition endPoint2 =
+          VirtualObjectRelationEndPointDefinitionFactory.Create (
               personClass,
               "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Person.AssociatedPartnerCompany",
               false,
-              CardinalityType.One,
               typeof (Partner));
       
       RelationDefinition relation =
@@ -1189,12 +1185,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           fileSystemItemClass["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.FileSystemItem.ParentFolder"], false);
 
       ClassDefinition folderClass = _typeDefinitions[typeof (Folder)];
-      VirtualRelationEndPointDefinition endPoint2 =
-          VirtualRelationEndPointDefinitionFactory.Create (
+      DomainObjectCollectionRelationEndPointDefinition endPoint2 =
+          DomainObjectCollectionRelationEndPointDefinitionFactory.Create (
               folderClass,
               "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Folder.FileSystemItems",
               false,
-              CardinalityType.Many,
               typeof (ObjectList<FileSystemItem>));
 
       RelationDefinition relation =
@@ -1231,12 +1226,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     private RelationDefinition CreateClassWithGuidKeyToClassWithValidRelationsOptional ()
     {
       ClassDefinition classWithGuidKey = _typeDefinitions[typeof (ClassWithGuidKey)];
-      VirtualRelationEndPointDefinition endPoint1 =
-          VirtualRelationEndPointDefinitionFactory.Create (
+      VirtualObjectRelationEndPointDefinition endPoint1 =
+          VirtualObjectRelationEndPointDefinitionFactory.Create (
               classWithGuidKey,
               "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ClassWithGuidKey.ClassWithValidRelationsOptional",
               false,
-              CardinalityType.One,
               typeof (ClassWithValidRelations));
 
       ClassDefinition classWithValidRelations = _typeDefinitions[typeof (ClassWithValidRelations)];
@@ -1257,12 +1251,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     private RelationDefinition CreateClassWithGuidKeyToClassWithValidRelationsNonOptional ()
     {
       ClassDefinition classWithGuidKey = _typeDefinitions[typeof (ClassWithGuidKey)];
-      VirtualRelationEndPointDefinition endPoint1 =
-          VirtualRelationEndPointDefinitionFactory.Create (
+      VirtualObjectRelationEndPointDefinition endPoint1 =
+          VirtualObjectRelationEndPointDefinitionFactory.Create (
               classWithGuidKey,
               "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ClassWithGuidKey.ClassWithValidRelationsNonOptional",
               true,
-              CardinalityType.One,
               typeof (ClassWithValidRelations));
 
       ClassDefinition classWithValidRelations = _typeDefinitions[typeof (ClassWithValidRelations)];
@@ -1283,12 +1276,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     private RelationDefinition CreateClassWithGuidKeyToClassWithInvalidRelation ()
     {
       ClassDefinition classWithGuidKey = _typeDefinitions[typeof (ClassWithGuidKey)];
-      VirtualRelationEndPointDefinition endPoint1 =
-          VirtualRelationEndPointDefinitionFactory.Create (
+      VirtualObjectRelationEndPointDefinition endPoint1 =
+          VirtualObjectRelationEndPointDefinitionFactory.Create (
               classWithGuidKey,
               "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ClassWithGuidKey.ClassWithInvalidRelation",
               false,
-              CardinalityType.One,
               typeof (ClassWithInvalidRelation));
 
       ClassDefinition classWithInvalidRelation = _typeDefinitions[typeof (ClassWithInvalidRelation)];
@@ -1309,12 +1301,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     private RelationDefinition CreateClassWithGuidKeyToClassWithRelatedClassIDColumnAndNoInheritanceRelation ()
     {
       ClassDefinition classWithGuidKey = _typeDefinitions[typeof (ClassWithGuidKey)];
-      VirtualRelationEndPointDefinition endPoint1 =
-          VirtualRelationEndPointDefinitionFactory.Create (
+      VirtualObjectRelationEndPointDefinition endPoint1 =
+          VirtualObjectRelationEndPointDefinitionFactory.Create (
               classWithGuidKey,
               "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ClassWithGuidKey.ClassWithRelatedClassIDColumnAndNoInheritance",
               false,
-              CardinalityType.One,
               typeof (ClassWithRelatedClassIDColumnAndNoInheritance));
 
       ClassDefinition classWithRelatedClassIDColumnAndNoInheritance = _typeDefinitions[typeof (ClassWithRelatedClassIDColumnAndNoInheritance)];
@@ -1338,12 +1329,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       ClassDefinition industrialSectorClass = _typeDefinitions[typeof (IndustrialSector)];
 
-      VirtualRelationEndPointDefinition endPoint1 =
-          VirtualRelationEndPointDefinitionFactory.Create (
+      DomainObjectCollectionRelationEndPointDefinition endPoint1 =
+          DomainObjectCollectionRelationEndPointDefinitionFactory.Create (
               industrialSectorClass,
               "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.IndustrialSector.Companies",
               true,
-              CardinalityType.Many,
               typeof (ObjectList<Company>));
 
       ClassDefinition companyClass = _typeDefinitions[typeof (Company)];
@@ -1364,12 +1354,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       ClassDefinition employeeClass = _typeDefinitions[typeof (Employee)];
 
-      VirtualRelationEndPointDefinition endPoint1 =
-          VirtualRelationEndPointDefinitionFactory.Create (
+      DomainObjectCollectionRelationEndPointDefinition endPoint1 =
+          DomainObjectCollectionRelationEndPointDefinitionFactory.Create (
               employeeClass,
               "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Employee.Subordinates",
               false,
-              CardinalityType.Many,
               typeof (ObjectList<Employee>));
 
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
@@ -1387,9 +1376,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       ClassDefinition employeeClass = _typeDefinitions[typeof (Employee)];
 
-      VirtualRelationEndPointDefinition endPoint1 =
-          VirtualRelationEndPointDefinitionFactory.Create (
-              employeeClass, "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Employee.Computer", false, CardinalityType.One, typeof (Computer));
+      VirtualObjectRelationEndPointDefinition endPoint1 =
+          VirtualObjectRelationEndPointDefinitionFactory.Create (
+              employeeClass, "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Employee.Computer", false, typeof (Computer));
 
       ClassDefinition computerClass = _typeDefinitions[typeof (Computer)];
 
@@ -1435,11 +1424,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       ClassDefinition relatedClass = _typeDefinitions[typeof (RelationTargetForPersistentMixin)];
 
-      var endPoint2 = VirtualRelationEndPointDefinitionFactory.Create (
+      var endPoint2 = VirtualObjectRelationEndPointDefinitionFactory.Create (
           relatedClass,
           "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.MixedMapping.RelationTargetForPersistentMixin.RelationProperty1",
           false,
-          CardinalityType.One,
           typeof (TargetClassForPersistentMixin));
 
       RelationDefinition relation = CreateExpectedRelationDefinition (
@@ -1456,11 +1444,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       ClassDefinition mixedClass = _typeDefinitions[typeof (TargetClassForPersistentMixin)];
 
-      var endPoint1 = VirtualRelationEndPointDefinitionFactory.Create (
+      var endPoint1 = VirtualObjectRelationEndPointDefinitionFactory.Create (
           mixedClass,
           "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.MixedMapping.MixinAddingPersistentProperties.VirtualRelationProperty",
           false,
-          CardinalityType.One,
           typeof (RelationTargetForPersistentMixin));
 
       ClassDefinition relatedClass = _typeDefinitions[typeof (RelationTargetForPersistentMixin)];
@@ -1483,11 +1470,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       ClassDefinition mixedClass = _typeDefinitions[typeof (TargetClassForPersistentMixin)];
 
-      var endPoint1 = VirtualRelationEndPointDefinitionFactory.Create (
+      var endPoint1 = DomainObjectCollectionRelationEndPointDefinitionFactory.Create (
           mixedClass,
           "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.MixedMapping.MixinAddingPersistentProperties.CollectionProperty1Side",
           false,
-          CardinalityType.Many,
           typeof (ObjectList<RelationTargetForPersistentMixin>));
 
       ClassDefinition relatedClass = _typeDefinitions[typeof (RelationTargetForPersistentMixin)];
@@ -1516,11 +1502,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       ClassDefinition relatedClass = _typeDefinitions[typeof (RelationTargetForPersistentMixin)];
 
-      var endPoint2 = VirtualRelationEndPointDefinitionFactory.Create (
+      var endPoint2 = DomainObjectCollectionRelationEndPointDefinitionFactory.Create (
           relatedClass,
           "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.MixedMapping.RelationTargetForPersistentMixin.RelationProperty4",
           false,
-          CardinalityType.Many,
           typeof (ObjectList<TargetClassForPersistentMixin>));
 
       RelationDefinition relation = CreateExpectedRelationDefinition (

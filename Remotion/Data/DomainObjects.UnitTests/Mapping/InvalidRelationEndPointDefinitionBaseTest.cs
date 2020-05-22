@@ -25,6 +25,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
   [TestFixture]
   public class InvalidRelationEndPointDefinitionBaseTest
   {
+    private class TestableInvalidRelationEndPointDefinitionBase : InvalidRelationEndPointDefinitionBase
+    {
+      public TestableInvalidRelationEndPointDefinitionBase (ClassDefinition classDefinition, string propertyName, Type propertyType)
+          : base(classDefinition, propertyName, propertyType)
+      {
+      }
+    }
+
     private InvalidRelationEndPointDefinitionBase _invalidEndPointDefinition;
     private ClassDefinition _classDefinition;
 
@@ -32,7 +40,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void SetUp ()
     {
       _classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins (typeof (Order));
-      _invalidEndPointDefinition = new InvalidRelationEndPointDefinitionBase (_classDefinition, "TestProperty", typeof(string));
+      _invalidEndPointDefinition = new TestableInvalidRelationEndPointDefinitionBase (_classDefinition, "TestProperty", typeof(string));
     }
 
     [Test]

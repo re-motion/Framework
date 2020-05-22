@@ -20,19 +20,20 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.Validation.Logical;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation;
+using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
 {
   [TestFixture]
-  public class SortExpressionIsSupportedForCardianlityOfRelationPropertyValidationRuleTest : ValidationRuleTestBase
+  public class SortExpressionIsSupportedForCardinalityOfRelationPropertyValidationRuleTest : ValidationRuleTestBase
   {
-    private SortExpressionIsSupportedForCardianlityOfRelationPropertyValidationRule _validationRule;
+    private SortExpressionIsSupportedForCardinalityOfRelationPropertyValidationRule _validationRule;
     private ClassDefinition _classDefinition;
 
     [SetUp]
     public void SetUp ()
     {
-      _validationRule = new SortExpressionIsSupportedForCardianlityOfRelationPropertyValidationRule();
+      _validationRule = new SortExpressionIsSupportedForCardinalityOfRelationPropertyValidationRule();
       _classDefinition = FakeMappingConfiguration.Current.TypeDefinitions[typeof (Order)];
     }
 
@@ -50,8 +51,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     [Test]
     public void CardinalityIsMany ()
     {
-      var endPointDefinition = VirtualRelationEndPointDefinitionFactory.Create (
-          _classDefinition, "PropertyName", false, CardinalityType.Many, typeof (DomainObjectCollection), null);
+      var endPointDefinition = DomainObjectCollectionRelationEndPointDefinitionFactory.Create (
+          _classDefinition, "PropertyName", false, typeof (DomainObjectCollection), null);
       var relationDefinition = new RelationDefinition ("Test", endPointDefinition, endPointDefinition);
       
       var validationResult = _validationRule.Validate (relationDefinition);
@@ -62,8 +63,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     [Test]
     public void CardinalityIsOne_And_EndPointDefinitionHasNoSortExpression ()
     {
-      var endPointDefinition = VirtualRelationEndPointDefinitionFactory.Create (
-        _classDefinition, "PropertyName", false, CardinalityType.One, typeof (DerivedValidationDomainObjectClass), null);
+      var endPointDefinition = VirtualObjectRelationEndPointDefinitionFactory.Create (
+        _classDefinition, "PropertyName", false, typeof (DerivedValidationDomainObjectClass));
       var relationDefinition = new RelationDefinition ("Test", endPointDefinition, endPointDefinition);
       
       var validationResult = _validationRule.Validate (relationDefinition);
@@ -74,10 +75,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     [Test]
     public void CardinalityOne_And_EndPointDefinitionsHaveSortExpression ()
     {
-      var leftEndPointDefinition = VirtualRelationEndPointDefinitionFactory.Create (
-          _classDefinition, "PropertyName", false, CardinalityType.Many, typeof (DerivedValidationDomainObjectClass), null);
-      var rightEndPointDefinition = VirtualRelationEndPointDefinitionFactory.Create (
-          _classDefinition, "PropertyName", false, CardinalityType.One, typeof (DomainObject), "SortExpression1");
+      var leftEndPointDefinition = DomainObjectCollectionRelationEndPointDefinitionFactory.Create (
+          _classDefinition, "PropertyName", false, typeof (DerivedValidationDomainObjectClass), null);
+
+      var rightEndPointDefinition = VirtualObjectRelationEndPointDefinitionFactory.Create (
+          _classDefinition, "PropertyName", false, typeof (DomainObject), "SortExpression");
+
       var relationDefinition = new RelationDefinition ("Test", leftEndPointDefinition, rightEndPointDefinition);
       
       var validationResult = _validationRule.Validate (relationDefinition);

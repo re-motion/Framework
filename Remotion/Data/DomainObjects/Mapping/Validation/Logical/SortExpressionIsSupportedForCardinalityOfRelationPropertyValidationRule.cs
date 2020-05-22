@@ -20,11 +20,11 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
 {
   /// <summary>
-  /// Validates that a relation end point defintion with cardinality one must not specify a sort expression.
+  /// Validates that a relation end point definition with cardinality one must not specify a sort expression.
   /// </summary>
-  public class SortExpressionIsSupportedForCardianlityOfRelationPropertyValidationRule : IRelationDefinitionValidatorRule
+  public class SortExpressionIsSupportedForCardinalityOfRelationPropertyValidationRule : IRelationDefinitionValidatorRule
   {
-    public SortExpressionIsSupportedForCardianlityOfRelationPropertyValidationRule ()
+    public SortExpressionIsSupportedForCardinalityOfRelationPropertyValidationRule ()
     {
       
     }
@@ -47,16 +47,14 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
     {
       ArgumentUtility.CheckNotNull ("relationEndPointDefinition", relationEndPointDefinition);
 
-      var relationEndPointDefinitionAsVirtualRelationEndPointDefintion = relationEndPointDefinition as VirtualRelationEndPointDefinition;
-      if (relationEndPointDefinitionAsVirtualRelationEndPointDefintion != null && 
-          relationEndPointDefinitionAsVirtualRelationEndPointDefintion.Cardinality == CardinalityType.One && 
-          relationEndPointDefinitionAsVirtualRelationEndPointDefintion.SortExpressionText != null)
+      if (relationEndPointDefinition is VirtualObjectRelationEndPointDefinition virtualObjectRelationEndPointDefinition
+          && virtualObjectRelationEndPointDefinition.HasSortExpression)
       {
         return MappingValidationResult.CreateInvalidResultForProperty (
-            relationEndPointDefinitionAsVirtualRelationEndPointDefintion.PropertyInfo,
+            virtualObjectRelationEndPointDefinition.PropertyInfo,
             "Property '{0}' of class '{1}' must not specify a SortExpression, because cardinality is equal to 'one'.",
-            relationEndPointDefinitionAsVirtualRelationEndPointDefintion.PropertyInfo.Name,
-            relationEndPointDefinitionAsVirtualRelationEndPointDefintion.ClassDefinition.ClassType.Name);
+            virtualObjectRelationEndPointDefinition.PropertyInfo.Name,
+            virtualObjectRelationEndPointDefinition.ClassDefinition.ClassType.Name);
       }
       return MappingValidationResult.CreateValidResult();
     }

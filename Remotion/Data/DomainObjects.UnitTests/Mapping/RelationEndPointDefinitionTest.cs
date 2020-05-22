@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
   [TestFixture]
   public class RelationEndPointDefinitionTest : MappingReflectionTestBase
   {
-    private VirtualRelationEndPointDefinition _customerEndPoint;
+    private DomainObjectCollectionRelationEndPointDefinition _customerEndPoint;
     private RelationEndPointDefinition _orderEndPoint;
 
     public override void SetUp ()
@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
         + "Integration.Order.Customer->Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain."
         + "Integration.Customer.Orders"];
 
-      _customerEndPoint = (VirtualRelationEndPointDefinition) customerToOrder.GetEndPointDefinition (
+      _customerEndPoint = (DomainObjectCollectionRelationEndPointDefinition) customerToOrder.GetEndPointDefinition (
           "Customer", "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Customer.Orders");
 
       _orderEndPoint = (RelationEndPointDefinition) customerToOrder.GetEndPointDefinition (

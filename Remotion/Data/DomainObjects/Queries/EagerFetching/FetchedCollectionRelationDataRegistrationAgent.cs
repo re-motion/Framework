@@ -58,8 +58,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
       if (relationEndPointDefinition.Cardinality != CardinalityType.Many || relationEndPointDefinition.IsAnonymous)
         throw new ArgumentException ("Only collection-valued relations can be handled by this registration agent.", "relationEndPointDefinition");
 
-      var virtualRelationEndPointDefinition = (VirtualRelationEndPointDefinition) relationEndPointDefinition;
-      var groupedRelatedObjects = CorrelateRelatedObjects (relatedObjects, virtualRelationEndPointDefinition);
+      var groupedRelatedObjects = CorrelateRelatedObjects (relatedObjects, relationEndPointDefinition);
 
       CheckOriginatingObjects (relationEndPointDefinition, originatingObjects);
 
@@ -68,7 +67,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
 
     private ILookup<ObjectID, ILoadedObjectData> CorrelateRelatedObjects (
         IEnumerable<LoadedObjectDataWithDataSourceData> relatedObjects, 
-        VirtualRelationEndPointDefinition relationEndPointDefinition)
+       IRelationEndPointDefinition relationEndPointDefinition)
     {
       var relatedObjectsWithForeignKey = GetForeignKeysForVirtualEndPointDefinition (relatedObjects, relationEndPointDefinition);
       return relatedObjectsWithForeignKey.ToLookup (k => k.Item1, k => k.Item2.LoadedObjectData);
