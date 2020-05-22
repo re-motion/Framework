@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     [Test]
     public void RelationDefinitionWithPropertyNotFoundRelationEndPointDefinition ()
     {
-      var endPoint = new PropertyNotFoundRelationEndPointDefinition (_classDefinition, "TestProperty");
+      var endPoint = new PropertyNotFoundRelationEndPointDefinition (_classDefinition, "TestProperty", typeof (object));
       var relationDefinition = new RelationDefinition ("Test", endPoint, endPoint);
 
       var validationResult = _validationRule.Validate (relationDefinition);

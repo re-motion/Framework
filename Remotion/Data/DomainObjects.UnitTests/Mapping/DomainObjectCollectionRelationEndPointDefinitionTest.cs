@@ -24,10 +24,10 @@ using Remotion.Reflection;
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 {
   [TestFixture]
-  public class VirtualRelationEndPointDefinitionTest : MappingReflectionTestBase
+  public class DomainObjectCollectionRelationEndPointDefinitionTest : MappingReflectionTestBase
   {
     private ClassDefinition _customerClassDefinition;
-    private VirtualRelationEndPointDefinition _customerOrdersEndPoint;
+    private DomainObjectCollectionRelationEndPointDefinition _customerOrdersEndPoint;
 
     private ClassDefinition _orderClassDefinition;
 
@@ -36,11 +36,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       base.SetUp ();
 
       _customerClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (Customer));
-      _customerOrdersEndPoint = VirtualRelationEndPointDefinitionFactory.Create (
+      _customerOrdersEndPoint = DomainObjectCollectionRelationEndPointDefinitionFactory.Create (
           _customerClassDefinition,
           "Orders",
           false,
-          CardinalityType.Many,
           typeof (OrderCollection),
           "OrderNumber desc");
 
@@ -50,25 +49,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void InitializeWithPropertyType ()
     {
-      var endPoint = VirtualRelationEndPointDefinitionFactory.Create(
+      var endPoint = DomainObjectCollectionRelationEndPointDefinitionFactory.Create(
           _orderClassDefinition,
           "VirtualEndPoint",
           true,
-          CardinalityType.One,
-          typeof(OrderItem),
+          typeof (OrderCollection),
           null);
 
-      Assert.That (endPoint.PropertyInfo.PropertyType, Is.SameAs (typeof (OrderItem)));
+      Assert.That (endPoint.PropertyInfo.PropertyType, Is.SameAs (typeof (OrderCollection)));
     }
 
     [Test]
     public void InitializeWithSortExpression ()
     {
-      var endPointDefinition = VirtualRelationEndPointDefinitionFactory.Create (
+      var endPointDefinition = DomainObjectCollectionRelationEndPointDefinitionFactory.Create (
           _customerClassDefinition,
           "Orders",
           false,
-          CardinalityType.Many,
           typeof (OrderCollection),
           "OrderNumber desc");
 
@@ -97,11 +94,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetSortExpression_Null ()
     {
-      var endPoint = VirtualRelationEndPointDefinitionFactory.Create (
+      var endPoint = DomainObjectCollectionRelationEndPointDefinitionFactory.Create (
           _orderClassDefinition,
           "OrderItems",
           false,
-          CardinalityType.Many,
           typeof (ObjectList<OrderItem>),
           null);
       Assert.That (endPoint.SortExpressionText, Is.Null);
@@ -135,19 +131,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void PropertyInfo ()
     {
-      ClassDefinition employeeClassDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (Employee));
-      VirtualRelationEndPointDefinition relationEndPointDefinition =
-          (VirtualRelationEndPointDefinition) employeeClassDefinition.GetRelationEndPointDefinition (typeof (Employee) + ".Computer");
-      Assert.That (relationEndPointDefinition.PropertyInfo, Is.EqualTo (PropertyInfoAdapter.Create(typeof (Employee).GetProperty ("Computer"))));
+      ClassDefinition orderClassDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (Order));
+      DomainObjectCollectionRelationEndPointDefinition relationEndPointDefinition =
+          (DomainObjectCollectionRelationEndPointDefinition) orderClassDefinition.GetRelationEndPointDefinition (typeof (Order) + ".OrderItems");
+      Assert.That (relationEndPointDefinition.PropertyInfo, Is.EqualTo (PropertyInfoAdapter.Create(typeof (Order).GetProperty ("OrderItems"))));
     }
 
-    private VirtualRelationEndPointDefinition CreateFullVirtualEndPointAndClassDefinition_WithProductProperty (string sortExpressionString)
+    private DomainObjectCollectionRelationEndPointDefinition CreateFullVirtualEndPointAndClassDefinition_WithProductProperty (string sortExpressionString)
     {
-      var endPoint = VirtualRelationEndPointDefinitionFactory.Create (
+      var endPoint = DomainObjectCollectionRelationEndPointDefinitionFactory.Create (
           _orderClassDefinition,
           "OrderItems",
           false,
-          CardinalityType.Many,
           typeof (ObjectList<OrderItem>),
           sortExpressionString);
       var orderItemClassDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins (typeof (OrderItem));

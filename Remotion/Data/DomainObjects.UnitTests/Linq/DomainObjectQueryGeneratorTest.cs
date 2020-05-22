@@ -276,6 +276,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     }
 
     [Test]
+    [Ignore ("TODO RM-7294: implement test for VirtualCollection")]
+    public void CreateSequenceQuery_EntityQuery_WithFetchRequestDoesNotSupportExpression ()
+    {
+    }
+
+    [Test]
     public void CreateSequenceQuery_EntityQuery_WithFetchRequestWithSortExpression ()
     {
       var fakeSqlQuery = CreateSqlQueryGeneratorResult (selectedEntityType: typeof (Customer));
@@ -297,7 +303,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
 
             Assert.That (actualQueryModel.BodyClauses, Has.Some.TypeOf<OrderByClause> ());
             var orderByClause = (OrderByClause) actualQueryModel.BodyClauses.Single ();
-            var endPointDefinition = ((VirtualRelationEndPointDefinition) GetEndPointDefinition (typeof (Customer), "Orders"));
+            var endPointDefinition = ((DomainObjectCollectionRelationEndPointDefinition) GetEndPointDefinition (typeof (Customer), "Orders"));
             Assert.That (endPointDefinition.SortExpressionText, Is.EqualTo ("OrderNumber asc"));
             var orderNumberMember = NormalizingMemberInfoFromExpressionUtility.GetProperty ((Order o) => o.OrderNumber);
             Assert.That (((MemberExpression) orderByClause.Orderings[0].Expression).Member, Is.SameAs (orderNumberMember));
@@ -332,7 +338,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
 
             Assert.That (actualQueryModel.BodyClauses, Has.Some.TypeOf<OrderByClause> ());
             var orderByClause = (OrderByClause) actualQueryModel.BodyClauses.Single ();
-            var endPointDefinition = ((VirtualRelationEndPointDefinition) GetEndPointDefinition (typeof (RelationTargetForPersistentMixin), "RelationProperty4"));
+            var endPointDefinition = ((DomainObjectCollectionRelationEndPointDefinition) GetEndPointDefinition (typeof (RelationTargetForPersistentMixin), "RelationProperty4"));
             Assert.That (endPointDefinition.SortExpressionText, 
                 Is.EqualTo ("Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain.MixinAddingPersistentProperties.PersistentProperty ASC"));
             var sortedByMember = NormalizingMemberInfoFromExpressionUtility.GetProperty ((IMixinAddingPersistentProperties o) => o.PersistentProperty);
@@ -404,7 +410,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
 
             Assert.That (actualQueryModel.BodyClauses, Has.Some.TypeOf<OrderByClause> ());
             var orderByClause = (OrderByClause) actualQueryModel.BodyClauses.Single ();
-            var endPointDefinition = ((VirtualRelationEndPointDefinition) GetEndPointDefinition (typeof (RelationTargetManySide), "CollectionProperty"));
+            var endPointDefinition = ((DomainObjectCollectionRelationEndPointDefinition) GetEndPointDefinition (typeof (RelationTargetManySide), "CollectionProperty"));
             Assert.That (endPointDefinition.SortExpressionText, 
                 Is.EqualTo ("Remotion.Data.DomainObjects.UnitTests.Linq.TestDomain.Success.SortExpressionForPropertyOnDerivedType.DerivedRelationTargetOneSide.SortProperty ASC"));
             var sortedByMember = NormalizingMemberInfoFromExpressionUtility.GetProperty ((DerivedRelationTargetOneSide o) => o.SortProperty);

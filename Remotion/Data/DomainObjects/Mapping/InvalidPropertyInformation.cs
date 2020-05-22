@@ -35,6 +35,7 @@ namespace Remotion.Data.DomainObjects.Mapping
     {
       ArgumentUtility.CheckNotNull ("declaringType", declaringType);
       ArgumentUtility.CheckNotNullOrEmpty ("name", name);
+      ArgumentUtility.CheckNotNull ("propertyType", propertyType);
 
       _declaringType = declaringType;
       _name = name;

@@ -189,7 +189,7 @@ namespace Remotion.Data.DomainObjects
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
-      return IsDomainObject (type) || IsObjectList (type);
+      return IsDomainObject (type) || IsObjectList (type); //TODO RM-7294
     }
 
     /// <remarks>Only temporary solution until type resulition is refactored.</remarks>

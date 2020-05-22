@@ -53,12 +53,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
           "Test",
           typeof (ClassOutOfInheritanceHierarchy),
           PropertyInfoAdapter.Create(typeof (DerivedValidationDomainObjectClass).GetProperty ("Property")));
-      var endPoint = new VirtualRelationEndPointDefinition (
+      var endPoint = new VirtualObjectRelationEndPointDefinition (
           classDefinition,
           "RelationProperty",
           false,
-          CardinalityType.One,
-          null,
           PropertyInfoAdapter.Create(typeof (DerivedValidationDomainObjectClass).GetProperty ("Property")));
       var relationDefinition = new RelationDefinition ("ID", endPoint, endPoint);
 

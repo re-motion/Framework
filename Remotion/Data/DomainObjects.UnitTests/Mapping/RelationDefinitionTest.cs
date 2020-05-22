@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
   public class RelationDefinitionTest : MappingReflectionTestBase
   {
     private ClassDefinition _customerClass;
-    private VirtualRelationEndPointDefinition _customerEndPoint;
+    private DomainObjectCollectionRelationEndPointDefinition _customerEndPoint;
     private RelationEndPointDefinition _orderEndPoint;
     private RelationDefinition _customerToOrder;
 
@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
               "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order:Remotion.Data.DomainObjects.UnitTests.Mapping."
               + "TestDomain.Integration.Order.Customer->Remotion.Data.DomainObjects.UnitTests.Mapping."
               + "TestDomain.Integration.Customer.Orders"];
-      _customerEndPoint = (VirtualRelationEndPointDefinition) _customerToOrder.EndPointDefinitions[0];
+      _customerEndPoint = (DomainObjectCollectionRelationEndPointDefinition) _customerToOrder.EndPointDefinitions[0];
       _orderEndPoint = (RelationEndPointDefinition) _customerToOrder.EndPointDefinitions[1];
     }
 
@@ -201,7 +201,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       Assert.That (relationDefinition.RelationKind, Is.EqualTo (RelationKindType.Unidirectional));
     }
 
-    private IRelationEndPointDefinition CreateEquivalentEndPointDefinitionFake (VirtualRelationEndPointDefinition sourceEndPoint)
+    private IRelationEndPointDefinition CreateEquivalentEndPointDefinitionFake (DomainObjectCollectionRelationEndPointDefinition sourceEndPoint)
     {
       var invalidEndPoint = MockRepository.GenerateStub<IRelationEndPointDefinition> ();
       invalidEndPoint.Stub (stub => stub.ClassDefinition).Return (sourceEndPoint.ClassDefinition);

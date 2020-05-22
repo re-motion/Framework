@@ -330,6 +330,10 @@
     <Compile Include="Mapping\Validation\Logical\CheckForClassIDIsValidValidationRuleTest.cs" />
     <Compile Include="Mapping\Validation\Logical\MandatoryNetEnumTypeHasValuesDefinedValidationRuleTest.cs" />
     <Compile Include="Mapping\Validation\Logical\MandatoryExtensibleEnumTypeHasValuesDefinedValidationRuleTest.cs" />
+    <Compile Include="Mapping\VirtualObjectRelationEndPointDefinitionTest.cs" />
+    <Compile Include="Mapping\DomainObjectCollectionRelationEndPointDefinitionTest.cs" />
+    <Compile Include="Mapping\VirtualObjectRelationEndPointDefinitionFactory.cs" />
+    <Compile Include="Mapping\DomainObjectCollectionRelationEndPointDefinitionFactory.cs" />
     <Compile Include="Persistence\NonPersistent\Model\Validation\RelationPropertyStorageClassMatchesReferencedClassDefinitionStorageClassValidationRuleTest.cs" />
     <Compile Include="Persistence\ConcurrencyViolationExceptionTest.cs" />
     <Compile Include="Persistence\NonPersistent\Model\NonPersistentPersistenceModelLoaderTestDomain\BaseClass.cs" />
@@ -920,7 +924,6 @@
     <Compile Include="Mapping\ClassDefinitionTest.cs" />
     <Compile Include="Mapping\PropertyDefinitionObjectMother.cs" />
     <Compile Include="Mapping\ReflectionBasedPropertyResolverTest.cs" />
-    <Compile Include="Mapping\VirtualRelationEndPointDefinitionFactory.cs" />
     <Compile Include="Mapping\RelationDefinitionChecker.cs" />
     <Compile Include="Mapping\RelationDefinitionTest.cs" />
     <Compile Include="Mapping\RelationDefinitionWithAnonymousRelationEndPointTest.cs" />
@@ -1183,7 +1186,7 @@
     <Compile Include="Persistence\Rdbms\Model\Validation\OnlyOneTablePerHierarchyValidationRuleTest.cs" />
     <Compile Include="Persistence\Rdbms\Model\Validation\TableNamesAreDistinctWithinConcreteTableInheritanceHierarchyValidationRuleTest.cs" />
     <Compile Include="Persistence\Rdbms\Model\Validation\ClassAboveTableIsAbstractValidationRuleTest.cs" />
-    <Compile Include="Mapping\Validation\Logical\SortExpressionIsSupportedForCardianlityOfRelationPropertyValidationRuleTest.cs" />
+    <Compile Include="Mapping\Validation\Logical\SortExpressionIsSupportedForCardinalityOfRelationPropertyValidationRuleTest.cs" />
     <Compile Include="Persistence\Rdbms\Model\Validation\ColumnNamesAreUniqueWithinInheritanceTreeValidationRuleTest.cs" />
     <Compile Include="Mapping\Validation\PropertyDefinitionValidatorTest.cs" />
     <Compile Include="Mapping\Validation\ClassDefinitionWithUnresolvedClassType.cs" />
@@ -1197,7 +1200,6 @@
     <Compile Include="Mapping\Validation\RelationDefinitionValidatorTest.cs" />
     <Compile Include="Mapping\Validation\SortExpressionValidatorTest.cs" />
     <Compile Include="Mapping\Validation\ValidationRuleTestBase.cs" />
-    <Compile Include="Mapping\VirtualRelationEndPointDefinitionTest.cs" />
     <Compile Include="Persistence\Rdbms\Model\FilterViewDefinitionTest.cs" />
     <Compile Include="Persistence\Rdbms\Model\Building\RdbmsPersistenceModelLoaderTest.cs" />
     <Compile Include="Persistence\Rdbms\SchemaGenerationTestBase.cs" />

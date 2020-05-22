@@ -167,7 +167,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
           () => ValidateMapping ("NotSupportedRelations.Bidirectional_RelationEndPointDefinitionsDoNotMatch"),
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo (
-                  "Opposite relation property 'RelationProperty1' declared on type 'InvalidRelationClass2' defines a 'DBBidirectionalRelationAttribute' whose "
+                  "The property type of an uni-directional relation property must be assignable to 'DomainObject'.\r\n\r\n"
+                  + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
+                  + "Bidirectional_RelationEndPointDefinitionsDoNotMatch.InvalidRelationClass1\r\n"
+                  + "Property: RelationProperty2\r\n"
+                  + "----------\r\n"
+                  + "Opposite relation property 'RelationProperty1' declared on type 'InvalidRelationClass2' defines a 'DBBidirectionalRelationAttribute' whose "
                   + "opposite property does not match.\r\n\r\n"
                   + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
                   + "Bidirectional_RelationEndPointDefinitionsDoNotMatch.InvalidRelationClass1\r\n"

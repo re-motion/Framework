@@ -104,17 +104,35 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
 
     protected IEnumerable<Tuple<ObjectID, LoadedObjectDataWithDataSourceData>> GetForeignKeysForVirtualEndPointDefinition (
         IEnumerable<LoadedObjectDataWithDataSourceData> loadedObjectData, 
-        VirtualRelationEndPointDefinition virtualEndPointDefinition)
+        IRelationEndPointDefinition relationEndPointDefinition)
     {
       ArgumentUtility.CheckNotNull ("loadedObjectData", loadedObjectData);
-      ArgumentUtility.CheckNotNull ("virtualEndPointDefinition", virtualEndPointDefinition);
+      ArgumentUtility.CheckNotNull ("relationEndPointDefinition", relationEndPointDefinition);
+      if (!relationEndPointDefinition.IsVirtual)
+      {
+        throw new ArgumentException (
+            string.Format (
+                "RelationEndPointDefinition for property '{0}' of RelationDefinition '{1}' must be virtual.",
+                relationEndPointDefinition.PropertyName,
+                relationEndPointDefinition.RelationDefinition.ID),
+            "relationEndPointDefinition");
+      }
 
-      var oppositeEndPointDefinition = (RelationEndPointDefinition) virtualEndPointDefinition.GetOppositeEndPointDefinition ();
+      if (relationEndPointDefinition.IsAnonymous)
+      {
+        throw new ArgumentException (
+            string.Format (
+                "RelationEndPointDefinition for RelationDefinition '{0}' must not be anonymous.",
+                relationEndPointDefinition.RelationDefinition.ID),
+            "relationEndPointDefinition");
+      }
+
+      var oppositeEndPointDefinition = (RelationEndPointDefinition) relationEndPointDefinition.GetOppositeEndPointDefinition ();
       return from data in loadedObjectData
              where !data.IsNull
              let dataContainer = CheckRelatedObjectAndGetDataContainer (
                  data,
-                 virtualEndPointDefinition,
+                 relationEndPointDefinition,
                  oppositeEndPointDefinition)
              let originatingObjectID = (ObjectID) dataContainer.GetValueWithoutEvents (oppositeEndPointDefinition.PropertyDefinition, ValueAccess.Current)
              select Tuple.Create (originatingObjectID, data);

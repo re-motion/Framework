@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
 
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
 
-      Assert.IsInstanceOf (typeof (VirtualRelationEndPointDefinition), actual);
+      Assert.IsInstanceOf (typeof (DomainObjectCollectionRelationEndPointDefinition), actual);
       Assert.That (actual.PropertyName, Is.EqualTo ("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithVirtualRelationEndPoints.NoAttribute"));
       Assert.That (actual.IsMandatory, Is.False);
       DomainModelConstraintProviderStub.VerifyAllExpectations();
@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
 
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
 
-      Assert.IsInstanceOf (typeof (VirtualRelationEndPointDefinition), actual);
+      Assert.IsInstanceOf (typeof (DomainObjectCollectionRelationEndPointDefinition), actual);
       Assert.That (actual.PropertyName, Is.EqualTo ("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithVirtualRelationEndPoints.NotNullable"));
       Assert.That (actual.IsMandatory, Is.True);
       DomainModelConstraintProviderStub.VerifyAllExpectations();
@@ -80,8 +80,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
 
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
 
-      Assert.IsInstanceOf (typeof (VirtualRelationEndPointDefinition), actual);
-      VirtualRelationEndPointDefinition relationEndPointDefinition = (VirtualRelationEndPointDefinition) actual;
+      Assert.IsInstanceOf (typeof (VirtualObjectRelationEndPointDefinition), actual);
+      VirtualObjectRelationEndPointDefinition relationEndPointDefinition = (VirtualObjectRelationEndPointDefinition) actual;
       Assert.That (relationEndPointDefinition.ClassDefinition, Is.SameAs (_classDefinition));
       Assert.That (relationEndPointDefinition.PropertyName, Is.EqualTo ("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithVirtualRelationEndPoints.BidirectionalOneToOne"));
       Assert.That (relationEndPointDefinition.PropertyInfo.PropertyType, Is.SameAs (typeof (ClassWithRealRelationEndPoints)));
@@ -100,8 +100,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
 
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
 
-      Assert.IsInstanceOf (typeof (VirtualRelationEndPointDefinition), actual);
-      VirtualRelationEndPointDefinition relationEndPointDefinition = (VirtualRelationEndPointDefinition) actual;
+      Assert.IsInstanceOf (typeof (DomainObjectCollectionRelationEndPointDefinition), actual);
+      DomainObjectCollectionRelationEndPointDefinition relationEndPointDefinition = (DomainObjectCollectionRelationEndPointDefinition) actual;
       Assert.That (relationEndPointDefinition.ClassDefinition, Is.SameAs (_classDefinition));
       Assert.That (relationEndPointDefinition.PropertyName, Is.EqualTo ("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithVirtualRelationEndPoints.BidirectionalOneToMany"));
       Assert.That (relationEndPointDefinition.PropertyInfo.PropertyType, Is.SameAs (typeof (ObjectList<ClassWithRealRelationEndPoints>)));

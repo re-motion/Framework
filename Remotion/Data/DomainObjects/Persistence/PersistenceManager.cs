@@ -21,6 +21,7 @@ using Remotion.Collections;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Mapping.SortExpressions;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.FunctionalProgramming;
@@ -167,21 +168,21 @@ namespace Remotion.Data.DomainObjects.Persistence
             relationEndPointID.Definition.PropertyName);
       }
 
-      var virtualEndPointDefinition = (VirtualRelationEndPointDefinition) relationEndPointID.Definition;
-      if (virtualEndPointDefinition.Cardinality == CardinalityType.One)
+      var relationEndPointDefinition = relationEndPointID.Definition;
+      if (relationEndPointDefinition.Cardinality == CardinalityType.One)
       {
         throw CreatePersistenceException (
             "Cannot load multiple related data containers for one-to-one relation '{0}'.",
-            virtualEndPointDefinition.RelationDefinition.ID);
+            relationEndPointDefinition.RelationDefinition.ID);
       }
 
-      var oppositeDataContainers = LoadOppositeDataContainers (relationEndPointID, virtualEndPointDefinition);
+      var oppositeDataContainers = LoadOppositeDataContainers (relationEndPointID);
 
-      if (virtualEndPointDefinition.IsMandatory && oppositeDataContainers.Count == 0)
+      if (relationEndPointDefinition.IsMandatory && oppositeDataContainers.Count == 0)
       {
         throw CreatePersistenceException (
             "Collection for mandatory relation property '{0}' on object '{1}' contains no items.",
-            virtualEndPointDefinition.PropertyName,
+            relationEndPointDefinition.PropertyName,
             relationEndPointID.ObjectID);
       }
 
@@ -277,30 +278,30 @@ namespace Remotion.Data.DomainObjects.Persistence
 
     private DataContainer GetOppositeDataContainerForVirtualEndPoint (RelationEndPointID relationEndPointID)
     {
-      var virtualEndPointDefinition = (VirtualRelationEndPointDefinition) relationEndPointID.Definition;
-      if (virtualEndPointDefinition.Cardinality == CardinalityType.Many)
+      var relationEndPointDefinition = relationEndPointID.Definition;
+      if (relationEndPointDefinition.Cardinality == CardinalityType.Many)
       {
         throw CreatePersistenceException (
             "Cannot load a single related data container for one-to-many relation '{0}'.",
-            virtualEndPointDefinition.RelationDefinition.ID);
+            relationEndPointDefinition.RelationDefinition.ID);
       }
 
-      var oppositeDataContainers = LoadOppositeDataContainers (relationEndPointID, virtualEndPointDefinition);
+      var oppositeDataContainers = LoadOppositeDataContainers (relationEndPointID);
       if (oppositeDataContainers.Count > 1)
       {
         throw CreatePersistenceException (
             "Multiple related DataContainers where found for property '{0}' of DataContainer '{1}'.",
-            virtualEndPointDefinition.PropertyName,
+            relationEndPointDefinition.PropertyName,
             relationEndPointID.ObjectID);
       }
 
       if (oppositeDataContainers.Count == 0)
       {
-        if (relationEndPointID.Definition.IsMandatory)
+        if (relationEndPointDefinition.IsMandatory)
         {
           throw CreatePersistenceException (
             "Mandatory relation property '{0}' on object '{1}' contains no item.",
-            virtualEndPointDefinition.PropertyName,
+            relationEndPointDefinition.PropertyName,
             relationEndPointID.ObjectID);
         }
 
@@ -310,16 +311,25 @@ namespace Remotion.Data.DomainObjects.Persistence
       return oppositeDataContainers[0];
     }
 
-    private DataContainerCollection LoadOppositeDataContainers (
-        RelationEndPointID relationEndPointID, VirtualRelationEndPointDefinition virtualEndPointDefinition)
+    private DataContainerCollection LoadOppositeDataContainers (RelationEndPointID relationEndPointID)
     {
-      var oppositeEndPointDefinition = virtualEndPointDefinition.GetOppositeEndPointDefinition();
+      var relationEndPointDefinition = relationEndPointID.Definition;
+      Assertion.IsTrue (relationEndPointDefinition.IsVirtual, "RelationEndPointDefinition for '{0}' is not virtual.", relationEndPointID);
+      Assertion.IsFalse (relationEndPointDefinition.IsAnonymous, "RelationEndPointDefinition for '{0}' is anonymous.", relationEndPointID);
+
+      var oppositeEndPointDefinition = relationEndPointDefinition.GetOppositeEndPointDefinition();
       var oppositeProvider =
           _storageProviderManager.GetMandatory (oppositeEndPointDefinition.ClassDefinition.StorageEntityDefinition.StorageProviderDefinition.Name);
 
+      SortExpressionDefinition sortExpression;
+      if (relationEndPointDefinition is DomainObjectCollectionRelationEndPointDefinition domainObjectCollectionRelationEndPointDefinition)
+        sortExpression = domainObjectCollectionRelationEndPointDefinition.GetSortExpression();
+      else
+        sortExpression = null;
+
       var oppositeDataContainers = oppositeProvider.LoadDataContainersByRelatedID (
           (RelationEndPointDefinition) oppositeEndPointDefinition,
-          virtualEndPointDefinition.GetSortExpression(),
+          sortExpression,
           relationEndPointID.ObjectID);
 
       var oppositeDataContainerCollection = new DataContainerCollection();

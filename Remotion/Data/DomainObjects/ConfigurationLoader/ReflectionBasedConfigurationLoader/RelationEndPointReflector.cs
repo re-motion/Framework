@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
     {
       if (!IsBidirectionalRelation)
         return false;
-      return ReflectionUtility.IsObjectList (PropertyInfo.PropertyType);
+      return ReflectionUtility.IsObjectList (PropertyInfo.PropertyType); //TODO: RM-7294
     }
 
     private IRelationEndPointDefinition CreateRelationEndPointDefinition (ClassDefinition classDefinition)
@@ -82,23 +82,43 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
 
     private IRelationEndPointDefinition CreateVirtualRelationEndPointDefinition (ClassDefinition classDefinition)
     {
-      return new VirtualRelationEndPointDefinition (
-          classDefinition,
-          GetPropertyName(),
-          IsMandatory(),
-          GetCardinality(),
-          GetSortExpression(),
-          PropertyInfo);
+      if (ReflectionUtility.IsDomainObject (PropertyInfo.PropertyType))
+      {
+        var virtualObjectRelationEndPointDefinition = new VirtualObjectRelationEndPointDefinition (
+            classDefinition,
+            GetPropertyName(),
+            IsMandatory(),
+            PropertyInfo);
+
+        if (GetSortExpression() != null)
+          virtualObjectRelationEndPointDefinition.SetHasSortExpressionFlag();
+
+        return virtualObjectRelationEndPointDefinition;
+      }
+      else if (ReflectionUtility.IsObjectList (PropertyInfo.PropertyType))
+      {
+        return new DomainObjectCollectionRelationEndPointDefinition (
+            classDefinition,
+            GetPropertyName(),
+            IsMandatory(),
+            GetSortExpression(),
+            PropertyInfo);
+      }
+      //else if (ReflectionUtility.IsObjectQuery (PropertyInfo.PropertyType)) 
+      //{
+      //  TODO: RM-7294
+      //}
+      else
+      {
+        // TODO: RM-7294
+        //return new TypeNotVirtualRelationEndPointDefinition (classDefinition, propertyName, propertyDefinition.PropertyInfo.PropertyType);
+        throw new NotImplementedException();
+      }
     }
 
     private bool IsMandatory ()
     {
       return !_domainModelConstraintProvider.IsNullable (PropertyInfo);
-    }
-
-    private CardinalityType GetCardinality ()
-    {
-      return ReflectionUtility.IsObjectList (PropertyInfo.PropertyType) ? CardinalityType.Many : CardinalityType.One;
     }
 
     private string GetSortExpression ()

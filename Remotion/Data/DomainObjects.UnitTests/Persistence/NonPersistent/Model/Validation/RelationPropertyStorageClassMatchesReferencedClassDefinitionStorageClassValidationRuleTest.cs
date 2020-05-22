@@ -107,14 +107,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
     }
 
     [Test]
-    public void RelationEndPointHasStorageClassTransaction_AndVirtualRelationEndPointWithCardinalityOneHasPersistentClassDefinition ()
+    public void RelationEndPointHasStorageClassTransaction_AndVirtualObjectRelationEndPointHasPersistentClassDefinition ()
     {
       var leftEndPointDefinition = new RelationEndPointDefinition (_transactionPropertyDefinitionOnPersistentClassDefinition, false);
-      var rightEndPointDefinition = VirtualRelationEndPointDefinitionFactory.Create (
+      var rightEndPointDefinition = VirtualObjectRelationEndPointDefinitionFactory.Create (
           _persistentClassDefinition,
           "Right",
           false,
-          CardinalityType.One,
           typeof (DomainObject));
       var relationDefinition = new RelationDefinition ("Test", leftEndPointDefinition, rightEndPointDefinition);
       leftEndPointDefinition.SetRelationDefinition (relationDefinition);
@@ -130,14 +129,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
     }
 
     [Test]
-    public void RelationEndPointHasStorageClassTransaction_AndVirtualRelationEndPointWithCardinalityManyHasPersistentClassDefinition ()
+    public void RelationEndPointHasStorageClassTransaction_AndDomainObjectCollectionRelationEndPointDefinitionHasPersistentClassDefinition ()
     {
       var leftEndPointDefinition = new RelationEndPointDefinition (_transactionPropertyDefinitionOnPersistentClassDefinition, false);
-      var rightEndPointDefinition = VirtualRelationEndPointDefinitionFactory.Create (
+      var rightEndPointDefinition = DomainObjectCollectionRelationEndPointDefinitionFactory.Create (
           _persistentClassDefinition,
           "Right",
           false,
-          CardinalityType.Many,
           typeof (ObjectList<DomainObject>));
       var relationDefinition = new RelationDefinition ("Test", leftEndPointDefinition, rightEndPointDefinition);
       leftEndPointDefinition.SetRelationDefinition (relationDefinition);
@@ -150,6 +148,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
       var validationResult = _validationRule.Validate (_persistentClassDefinition);
 
       AssertMappingValidationResult (validationResult, true, null);
+    }
+
+    [Test]
+    [Ignore ("RM-7294")]
+    public void RelationEndPointHasStorageClassTransaction_AndQueryCollectionRelationEndPointDefinitionHasPersistentClassDefinition ()
+    {
     }
 
     [Test]
@@ -173,14 +177,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
     }
 
     [Test]
-    public void RelationEndPointHasStorageClassTransaction_AndVirtualRelationEndPointWithCardinalityOneHasNonPersistentClassDefinition ()
+    public void RelationEndPointHasStorageClassTransaction_AndVirtualObjectRelationEndPointHasNonPersistentClassDefinition ()
     {
       var leftEndPointDefinition = new RelationEndPointDefinition (_transactionPropertyDefinitionOnPersistentClassDefinition, false);
-      var rightEndPointDefinition = VirtualRelationEndPointDefinitionFactory.Create (
+      var rightEndPointDefinition = VirtualObjectRelationEndPointDefinitionFactory.Create (
           _nonPersistentClassDefinition,
           "Right",
           false,
-          CardinalityType.One,
           typeof (DomainObject));
       var relationDefinition = new RelationDefinition ("Test", leftEndPointDefinition, rightEndPointDefinition);
       leftEndPointDefinition.SetRelationDefinition (relationDefinition);
@@ -198,14 +201,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
     }
 
     [Test]
-    public void RelationEndPointHasStorageClassTransaction_AndVirtualRelationEndPointWithCardinalityManyHasNonPersistentClassDefinition ()
+    public void RelationEndPointHasStorageClassTransaction_AndDomainObjectCollectionRelationEndPointDefinitionHasNonPersistentClassDefinition ()
     {
       var leftEndPointDefinition = new RelationEndPointDefinition (_transactionPropertyDefinitionOnPersistentClassDefinition, false);
-      var rightEndPointDefinition = VirtualRelationEndPointDefinitionFactory.Create (
+      var rightEndPointDefinition = DomainObjectCollectionRelationEndPointDefinitionFactory.Create (
           _nonPersistentClassDefinition,
           "Right",
           false,
-          CardinalityType.Many,
           typeof (ObjectList<DomainObject>));
       var relationDefinition = new RelationDefinition ("Test", leftEndPointDefinition, rightEndPointDefinition);
       leftEndPointDefinition.SetRelationDefinition (relationDefinition);
@@ -220,6 +222,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
       var validationResult = _validationRule.Validate (_persistentClassDefinition);
 
       AssertMappingValidationResult (validationResult, true, null);
+    }
+
+    [Test]
+    [Ignore ("RM-7294")]
+    public void RelationEndPointHasStorageClassTransaction_AndQueryCollectionRelationEndPointDefinitionHasNonPersistentClassDefinition ()
+    {
     }
 
     [Test]
@@ -240,14 +248,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
     }
 
     [Test]
-    public void RelationEndPointHasStorageClassPersistent_AndVirtualRelationEndPointWithCardinalityOneHasPersistentClassDefinition ()
+    public void RelationEndPointHasStorageClassPersistent_AndVirtualObjectRelationEndPointHasPersistentClassDefinition ()
     {
       var leftEndPointDefinition = new RelationEndPointDefinition (_persistentPropertyDefinition, false);
-      var rightEndPointDefinition = VirtualRelationEndPointDefinitionFactory.Create (
+      var rightEndPointDefinition = VirtualObjectRelationEndPointDefinitionFactory.Create (
           _persistentClassDefinition,
           "Right",
           false,
-          CardinalityType.One,
           typeof (DomainObject));
       var relationDefinition = new RelationDefinition ("Test", leftEndPointDefinition, rightEndPointDefinition);
       leftEndPointDefinition.SetRelationDefinition (relationDefinition);
@@ -263,14 +270,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
     }
 
     [Test]
-    public void RelationEndPointHasStorageClassPersistent_AndVirtualRelationEndPointWithCardinalityManyHasPersistentClassDefinition ()
+    public void RelationEndPointHasStorageClassPersistent_AndDomainObjectCollectionRelationEndPointDefinitionHasPersistentClassDefinition ()
     {
       var leftEndPointDefinition = new RelationEndPointDefinition (_persistentPropertyDefinition, false);
-      var rightEndPointDefinition = VirtualRelationEndPointDefinitionFactory.Create (
+      var rightEndPointDefinition = DomainObjectCollectionRelationEndPointDefinitionFactory.Create (
           _persistentClassDefinition,
           "Right",
           false,
-          CardinalityType.Many,
           typeof (ObjectList<DomainObject>));
       var relationDefinition = new RelationDefinition ("Test", leftEndPointDefinition, rightEndPointDefinition);
       leftEndPointDefinition.SetRelationDefinition (relationDefinition);
@@ -283,6 +289,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
       var validationResult = _validationRule.Validate (_persistentClassDefinition);
 
       AssertMappingValidationResult (validationResult, true, null);
+    }
+
+    [Test]
+    [Ignore ("RM-7294")]
+    public void RelationEndPointHasStorageClassPersistent_AndQueryCollectionRelationEndPointDefinitionHasPersistentClassDefinition ()
+    {
     }
 
     [Test]
@@ -312,14 +324,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
     }
 
     [Test]
-    public void RelationEndPointHasStorageClassPersistent_AndVirtualRelationEndPointWithCardinalityOneHasNonPersistentClassDefinition ()
+    public void RelationEndPointHasStorageClassPersistent_AndVirtualObjectRelationEndPointHasNonPersistentClassDefinition ()
     {
       var leftEndPointDefinition = new RelationEndPointDefinition (_persistentPropertyDefinition, false);
-      var rightEndPointDefinition = VirtualRelationEndPointDefinitionFactory.Create (
+      var rightEndPointDefinition = VirtualObjectRelationEndPointDefinitionFactory.Create (
           _nonPersistentClassDefinition,
           "Right",
           false,
-          CardinalityType.One,
           typeof (DomainObject));
       var relationDefinition = new RelationDefinition ("Test", leftEndPointDefinition, rightEndPointDefinition);
       leftEndPointDefinition.SetRelationDefinition (relationDefinition);
@@ -343,14 +354,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
     }
 
     [Test]
-    public void RelationEndPointHasStorageClassPersistent_AndVirtualRelationEndPointWithCardinalityManyHasNonPersistentClassDefinition ()
+    public void RelationEndPointHasStorageClassPersistent_AndDomainObjectCollectionRelationEndPointDefinitionHasNonPersistentClassDefinition ()
     {
       var leftEndPointDefinition = new RelationEndPointDefinition (_persistentPropertyDefinition, false);
-      var rightEndPointDefinition = VirtualRelationEndPointDefinitionFactory.Create (
+      var rightEndPointDefinition = DomainObjectCollectionRelationEndPointDefinitionFactory.Create (
           _nonPersistentClassDefinition,
           "Right",
           false,
-          CardinalityType.Many,
           typeof (ObjectList<DomainObject>));
       var relationDefinition = new RelationDefinition ("Test", leftEndPointDefinition, rightEndPointDefinition);
       leftEndPointDefinition.SetRelationDefinition (relationDefinition);
@@ -371,6 +381,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
           + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order\r\n"
           + "Property: PersistentProperty1FakeProperty";
       AssertMappingValidationResult (validationResult, false, expectedMessage);
+    }
+
+    [Test]
+    [Ignore ("RM-7294")]
+    public void RelationEndPointHasStorageClassPersistent_AndQueryCollectionRelationEndPointDefinitionHasNonPersistentClassDefinition ()
+    {
     }
 
     [Test]

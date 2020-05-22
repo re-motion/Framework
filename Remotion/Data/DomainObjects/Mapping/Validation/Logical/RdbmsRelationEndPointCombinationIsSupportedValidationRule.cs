@@ -42,18 +42,18 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
 
       if (endPointDefinition1.IsVirtual && endPointDefinition2.IsVirtual)
       {
-        var endPointDefinition1AsVirtualRelationEndPointDefinition = endPointDefinition1 as VirtualRelationEndPointDefinition;
-        var endPointDefinition2AsVirtualRelationEndPointDefinition = endPointDefinition2 as VirtualRelationEndPointDefinition;
-        if (endPointDefinition1AsVirtualRelationEndPointDefinition != null && endPointDefinition2AsVirtualRelationEndPointDefinition != null)
+        var property1 = endPointDefinition1.PropertyInfo;
+        var property2 = endPointDefinition2.PropertyInfo;
+        if (property1 != null && property2 != null)
         {
           return MappingValidationResult.CreateInvalidResultForRelation (
               relationDefinition.ID,
               endPointDefinition1.PropertyInfo,
               "The relation between property '{0}', declared on type '{1}', and property '{2}' declared on type '{3}', contains two virtual end points. "
               + "One of the two properties must set 'ContainsForeignKey' to 'true' on the '{4}'.",
-              endPointDefinition1.PropertyInfo.Name,
+              property1.Name,
               endPointDefinition1.ClassDefinition.ClassType.Name,
-              endPointDefinition2.PropertyInfo.Name,
+              property2.Name,
               endPointDefinition2.ClassDefinition.ClassType.Name,
               typeof (DBBidirectionalRelationAttribute).Name);
         }

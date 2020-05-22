@@ -64,8 +64,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
             "relationEndPointDefinition");
       }
 
-      var virtualRelationEndPointDefinition = (VirtualRelationEndPointDefinition) relationEndPointDefinition;
-      var groupedRelatedObjects = CorrelateRelatedObjects (relatedObjects, virtualRelationEndPointDefinition);
+      var groupedRelatedObjects = CorrelateRelatedObjects (relatedObjects, relationEndPointDefinition);
 
       CheckOriginatingObjects (relationEndPointDefinition, originatingObjects);
 
@@ -74,7 +73,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
 
     private IDictionary<ObjectID, ILoadedObjectData> CorrelateRelatedObjects (
         IEnumerable<LoadedObjectDataWithDataSourceData> relatedObjects,
-        VirtualRelationEndPointDefinition relationEndPointDefinition)
+        IRelationEndPointDefinition relationEndPointDefinition)
     {
       var relatedObjectsWithForeignKey = GetForeignKeysForVirtualEndPointDefinition (relatedObjects, relationEndPointDefinition);
       var dictionary = new Dictionary<ObjectID, ILoadedObjectData>();

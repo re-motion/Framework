@@ -46,27 +46,30 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
     {
       ArgumentUtility.CheckNotNull ("relationEndPointDefinition", relationEndPointDefinition);
 
-      var endPointDefinitionAsVirtualRelationEndPointDefinition = relationEndPointDefinition as VirtualRelationEndPointDefinition;
-      if (endPointDefinitionAsVirtualRelationEndPointDefinition != null)
+      if (relationEndPointDefinition is VirtualObjectRelationEndPointDefinition virtualObjectRelationEndPointDefinition
+          && !ReflectionUtility.IsDomainObject (virtualObjectRelationEndPointDefinition.PropertyInfo.PropertyType))
       {
-        if (endPointDefinitionAsVirtualRelationEndPointDefinition.Cardinality == CardinalityType.One &&
-            !ReflectionUtility.IsDomainObject (endPointDefinitionAsVirtualRelationEndPointDefinition.PropertyInfo.PropertyType))
-        {
-          return MappingValidationResult.CreateInvalidResultForProperty (
-              endPointDefinitionAsVirtualRelationEndPointDefinition.PropertyInfo,
-              "The property type of a virtual end point of a one-to-one relation must be assignable to '{0}'.", 
-              typeof (DomainObject).Name);
-        }
-
-        if (endPointDefinitionAsVirtualRelationEndPointDefinition.Cardinality == CardinalityType.Many &&
-           !ReflectionUtility.IsObjectList (endPointDefinitionAsVirtualRelationEndPointDefinition.PropertyInfo.PropertyType))
-        {
-          return MappingValidationResult.CreateInvalidResultForProperty (
-              endPointDefinitionAsVirtualRelationEndPointDefinition.PropertyInfo,
-              "The property type of a virtual end point of a one-to-many relation must be assignable to '{0}'.", 
-              typeof (ObjectList<>).Name);
-        }
+        return MappingValidationResult.CreateInvalidResultForProperty (
+            virtualObjectRelationEndPointDefinition.PropertyInfo,
+            "The property type of a virtual end point of a one-to-one relation must be assignable to '{0}'.",
+            typeof (DomainObject).Name);
       }
+
+      if (relationEndPointDefinition is DomainObjectCollectionRelationEndPointDefinition domainObjectCollectionRelationEndPointDefinition
+          && !ReflectionUtility.IsObjectList (domainObjectCollectionRelationEndPointDefinition.PropertyInfo.PropertyType))
+      {
+        return MappingValidationResult.CreateInvalidResultForProperty (
+            domainObjectCollectionRelationEndPointDefinition.PropertyInfo,
+            "The property type of a virtual end point of a one-to-many relation must be assignable to '{0}'.",
+            typeof (ObjectList<>).Name);
+      }
+
+      // TODO: RM-7294
+      //if (relationEndPointDefinition is QueryCollectionRelationEndPointDefinition queryCollectionRelationEndPointDefinition
+      //    && !ReflectionUtility.IsQueryCollection (queryCollectionRelationEndPointDefinition.PropertyInfo.PropertyType))
+      //{
+      //}
+
       return MappingValidationResult.CreateValidResult();
     }
   }

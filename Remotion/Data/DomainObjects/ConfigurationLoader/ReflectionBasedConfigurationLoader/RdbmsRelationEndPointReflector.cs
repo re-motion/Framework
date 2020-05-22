@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       if (BidirectionalRelationAttribute.ContainsForeignKey)
         return true;
 
-      if (ReflectionUtility.IsObjectList (PropertyInfo.PropertyType))
+      if (ReflectionUtility.IsObjectList (PropertyInfo.PropertyType))  //TODO: RM-7294
         return false;
 
       var oppositePropertyInfo = GetOppositePropertyInfo();
