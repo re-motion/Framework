@@ -75,7 +75,7 @@ Implementation of im-memeory sorting strategy:
 
 TestDomain
 * Product { 1-n ProductReview, name, price }
-* ProductReview { n-1 Product, 1-n Person, comment }
+* ProductReview { n-1 Product, 1-n Person, comment, date }
 
 RelationEndPointDefinition
 * new type: CalculatedRelationEndPointDefinition

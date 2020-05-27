@@ -15,17 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections;
 
-namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Errors
+namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 {
-  public abstract class ClassWithInvalidUnidirectionalRelation: DomainObject
+  public interface IVirtualCollectionEndPoint : ICollectionEndPoint
   {
-    protected ClassWithInvalidUnidirectionalRelation ()
-    {
-    }
+    IObjectList Collection { get; }
 
-    public abstract ObjectList<ClassWithInvalidUnidirectionalRelation> LeftSideForDomainObjectCollection { get; }
-
-    public abstract IObjectList<ClassWithInvalidUnidirectionalRelation> LeftSideForVirtualCollection { get; }
+    IObjectList GetCollectionWithOriginalData ();
   }
 }

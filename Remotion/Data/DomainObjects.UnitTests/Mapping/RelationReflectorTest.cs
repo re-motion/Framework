@@ -203,17 +203,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     [Test]
-    public void GetMetadata_WithRealRelationEndPoint_BidirectionalOneToMany_CheckEndPoint0 ()
+    public void GetMetadata_WithRealRelationEndPoint_BidirectionalOneToManyForDomainObjectCollection_CheckEndPoint0 ()
     {
       EnsurePropertyDefinitionExisitsOnClassDefinition (
-          _classWithRealRelationEndPoints, typeof (ClassWithRealRelationEndPoints), "BidirectionalOneToMany");
+          _classWithRealRelationEndPoints, typeof (ClassWithRealRelationEndPoints), "BidirectionalOneToManyForDomainObjectCollection");
       EnsurePropertyDefinitionExisitsOnClassDefinition (
-          _classWithVirtualRelationEndPoints, typeof (ClassWithVirtualRelationEndPoints), "BidirectionalOneToMany");
+          _classWithVirtualRelationEndPoints, typeof (ClassWithVirtualRelationEndPoints), "BidirectionalOneToManyForDomainObjectCollection");
 
       var relationReflector = CreateRelationReflector (
           _classWithRealRelationEndPoints,
           typeof (ClassWithRealRelationEndPoints),
-          "BidirectionalOneToMany");
+          "BidirectionalOneToManyForDomainObjectCollection");
 
       RelationDefinition actualRelationDefinition = relationReflector.GetMetadata (_classDefinitions);
       Assert.That (actualRelationDefinition.EndPointDefinitions[0], Is.InstanceOf (typeof (RelationEndPointDefinition)));
@@ -225,17 +225,39 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     [Test]
-    public void GetMetadata_WithRealRelationEndPoint_BidirectionalOneToMany_CheckEndPoint1 ()
+    public void GetMetadata_WithRealRelationEndPoint_BidirectionalOneToManyForVirtualCollection_CheckEndPoint0 ()
     {
       EnsurePropertyDefinitionExisitsOnClassDefinition (
-          _classWithRealRelationEndPoints, typeof (ClassWithRealRelationEndPoints), "BidirectionalOneToMany");
+          _classWithRealRelationEndPoints, typeof (ClassWithRealRelationEndPoints), "BidirectionalOneToManyForVirtualCollection");
       EnsurePropertyDefinitionExisitsOnClassDefinition (
-          _classWithVirtualRelationEndPoints, typeof (ClassWithVirtualRelationEndPoints), "BidirectionalOneToMany");
+          _classWithVirtualRelationEndPoints, typeof (ClassWithVirtualRelationEndPoints), "BidirectionalOneToManyForVirtualCollection");
 
       var relationReflector = CreateRelationReflector (
           _classWithRealRelationEndPoints,
           typeof (ClassWithRealRelationEndPoints),
-          "BidirectionalOneToMany");
+          "BidirectionalOneToManyForVirtualCollection");
+
+      RelationDefinition actualRelationDefinition = relationReflector.GetMetadata (_classDefinitions);
+      Assert.That (actualRelationDefinition.EndPointDefinitions[0], Is.InstanceOf (typeof (RelationEndPointDefinition)));
+
+      var endPointDefinition = (RelationEndPointDefinition) actualRelationDefinition.EndPointDefinitions[0];
+
+      Assert.That (endPointDefinition.PropertyDefinition, Is.EqualTo (_classWithRealRelationEndPoints.MyPropertyDefinitions[0]));
+      Assert.That (endPointDefinition.ClassDefinition, Is.SameAs (_classWithRealRelationEndPoints));
+    }
+
+    [Test]
+    public void GetMetadata_WithRealRelationEndPoint_BidirectionalOneToManyForDomainObjectCollection_CheckEndPoint1 ()
+    {
+      EnsurePropertyDefinitionExisitsOnClassDefinition (
+          _classWithRealRelationEndPoints, typeof (ClassWithRealRelationEndPoints), "BidirectionalOneToManyForDomainObjectCollection");
+      EnsurePropertyDefinitionExisitsOnClassDefinition (
+          _classWithVirtualRelationEndPoints, typeof (ClassWithVirtualRelationEndPoints), "BidirectionalOneToManyForDomainObjectCollection");
+
+      var relationReflector = CreateRelationReflector (
+          _classWithRealRelationEndPoints,
+          typeof (ClassWithRealRelationEndPoints),
+          "BidirectionalOneToManyForDomainObjectCollection");
 
       RelationDefinition actualRelationDefinition = relationReflector.GetMetadata (_classDefinitions);
       Assert.That (actualRelationDefinition.EndPointDefinitions[1], Is.InstanceOf (typeof (DomainObjectCollectionRelationEndPointDefinition)));
@@ -244,18 +266,42 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       Assert.That (
           oppositeEndPointDefinition.PropertyName,
           Is.EqualTo (
-              "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithVirtualRelationEndPoints.BidirectionalOneToMany"));
+              "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithVirtualRelationEndPoints.BidirectionalOneToManyForDomainObjectCollection"));
       Assert.That (oppositeEndPointDefinition.PropertyInfo.PropertyType, Is.SameAs (typeof (ObjectList<ClassWithRealRelationEndPoints>)));
     }
 
     [Test]
-    public void GetMetadata_WithVirtualRelationEndPoint_BidirectionalOneToMany_CheckEndPoint0 ()
+    public void GetMetadata_WithRealRelationEndPoint_BidirectionalOneToManyForVirtualCollection_CheckEndPoint1 ()
     {
       EnsurePropertyDefinitionExisitsOnClassDefinition (
-          _classWithRealRelationEndPoints, typeof (ClassWithRealRelationEndPoints), "BidirectionalOneToMany");
+          _classWithRealRelationEndPoints, typeof (ClassWithRealRelationEndPoints), "BidirectionalOneToManyForVirtualCollection");
       EnsurePropertyDefinitionExisitsOnClassDefinition (
-          _classWithVirtualRelationEndPoints, typeof (ClassWithVirtualRelationEndPoints), "BidirectionalOneToMany");
-      var propertyInfo = PropertyInfoAdapter.Create (typeof (ClassWithVirtualRelationEndPoints).GetProperty ("BidirectionalOneToMany"));
+          _classWithVirtualRelationEndPoints, typeof (ClassWithVirtualRelationEndPoints), "BidirectionalOneToManyForVirtualCollection");
+
+      var relationReflector = CreateRelationReflector (
+          _classWithRealRelationEndPoints,
+          typeof (ClassWithRealRelationEndPoints),
+          "BidirectionalOneToManyForVirtualCollection");
+
+      RelationDefinition actualRelationDefinition = relationReflector.GetMetadata (_classDefinitions);
+      Assert.That (actualRelationDefinition.EndPointDefinitions[1], Is.InstanceOf (typeof (VirtualCollectionRelationEndPointDefinition)));
+      var oppositeEndPointDefinition = (VirtualCollectionRelationEndPointDefinition) actualRelationDefinition.EndPointDefinitions[1];
+      Assert.That (oppositeEndPointDefinition.ClassDefinition, Is.SameAs (_classWithVirtualRelationEndPoints));
+      Assert.That (
+          oppositeEndPointDefinition.PropertyName,
+          Is.EqualTo (
+              "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithVirtualRelationEndPoints.BidirectionalOneToManyForVirtualCollection"));
+      Assert.That (oppositeEndPointDefinition.PropertyInfo.PropertyType, Is.SameAs (typeof (IObjectList<ClassWithRealRelationEndPoints>)));
+    }
+
+    [Test]
+    public void GetMetadata_WithVirtualRelationEndPoint_BidirectionalOneToManyForDomainObjectCollection_CheckEndPoint0 ()
+    {
+      EnsurePropertyDefinitionExisitsOnClassDefinition (
+          _classWithRealRelationEndPoints, typeof (ClassWithRealRelationEndPoints), "BidirectionalOneToManyForDomainObjectCollection");
+      EnsurePropertyDefinitionExisitsOnClassDefinition (
+          _classWithVirtualRelationEndPoints, typeof (ClassWithVirtualRelationEndPoints), "BidirectionalOneToManyForDomainObjectCollection");
+      var propertyInfo = PropertyInfoAdapter.Create (typeof (ClassWithVirtualRelationEndPoints).GetProperty ("BidirectionalOneToManyForDomainObjectCollection"));
       var relationReflector = CreateRelationReflector (_classWithVirtualRelationEndPoints, propertyInfo);
 
       RelationDefinition actualRelationDefinition = relationReflector.GetMetadata (_classDefinitions);
@@ -265,18 +311,58 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       Assert.That (
           oppositeEndPointDefinition.PropertyName,
           Is.EqualTo (
-              "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithVirtualRelationEndPoints.BidirectionalOneToMany"));
+              "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithVirtualRelationEndPoints.BidirectionalOneToManyForDomainObjectCollection"));
       Assert.That (oppositeEndPointDefinition.PropertyInfo.PropertyType, Is.SameAs (typeof (ObjectList<ClassWithRealRelationEndPoints>)));
     }
 
     [Test]
-    public void GetMetadata_WithVirtualRelationEndPoint_BidirectionalOneToMany_CheckEndPoint1 ()
+    public void GetMetadata_WithVirtualRelationEndPoint_BidirectionalOneToManyForVirtualCollection_CheckEndPoint0 ()
     {
       EnsurePropertyDefinitionExisitsOnClassDefinition (
-          _classWithRealRelationEndPoints, typeof (ClassWithRealRelationEndPoints), "BidirectionalOneToMany");
+          _classWithRealRelationEndPoints, typeof (ClassWithRealRelationEndPoints), "BidirectionalOneToManyForVirtualCollection");
       EnsurePropertyDefinitionExisitsOnClassDefinition (
-          _classWithVirtualRelationEndPoints, typeof (ClassWithVirtualRelationEndPoints), "BidirectionalOneToMany");
-      var propertyInfo = PropertyInfoAdapter.Create (typeof (ClassWithVirtualRelationEndPoints).GetProperty ("BidirectionalOneToMany"));
+          _classWithVirtualRelationEndPoints, typeof (ClassWithVirtualRelationEndPoints), "BidirectionalOneToManyForVirtualCollection");
+      var propertyInfo = PropertyInfoAdapter.Create (typeof (ClassWithVirtualRelationEndPoints).GetProperty ("BidirectionalOneToManyForVirtualCollection"));
+      var relationReflector = CreateRelationReflector (_classWithVirtualRelationEndPoints, propertyInfo);
+
+      RelationDefinition actualRelationDefinition = relationReflector.GetMetadata (_classDefinitions);
+      Assert.That (actualRelationDefinition.EndPointDefinitions[0], Is.InstanceOf (typeof (VirtualCollectionRelationEndPointDefinition)));
+      var oppositeEndPointDefinition = (VirtualCollectionRelationEndPointDefinition) actualRelationDefinition.EndPointDefinitions[0];
+      Assert.That (oppositeEndPointDefinition.ClassDefinition, Is.SameAs (_classWithVirtualRelationEndPoints));
+      Assert.That (
+          oppositeEndPointDefinition.PropertyName,
+          Is.EqualTo (
+              "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithVirtualRelationEndPoints.BidirectionalOneToManyForVirtualCollection"));
+      Assert.That (oppositeEndPointDefinition.PropertyInfo.PropertyType, Is.SameAs (typeof (IObjectList<ClassWithRealRelationEndPoints>)));
+    }
+
+    [Test]
+    public void GetMetadata_WithVirtualRelationEndPoint_BidirectionalOneToManyForDomainObjectCollection_CheckEndPoint1 ()
+    {
+      EnsurePropertyDefinitionExisitsOnClassDefinition (
+          _classWithRealRelationEndPoints, typeof (ClassWithRealRelationEndPoints), "BidirectionalOneToManyForDomainObjectCollection");
+      EnsurePropertyDefinitionExisitsOnClassDefinition (
+          _classWithVirtualRelationEndPoints, typeof (ClassWithVirtualRelationEndPoints), "BidirectionalOneToManyForDomainObjectCollection");
+      var propertyInfo = PropertyInfoAdapter.Create (typeof (ClassWithVirtualRelationEndPoints).GetProperty ("BidirectionalOneToManyForDomainObjectCollection"));
+      var relationReflector = CreateRelationReflector (_classWithVirtualRelationEndPoints, propertyInfo);
+
+      RelationDefinition actualRelationDefinition = relationReflector.GetMetadata (_classDefinitions);
+      Assert.That (actualRelationDefinition.EndPointDefinitions[1], Is.InstanceOf (typeof (RelationEndPointDefinition)));
+
+      var endPointDefinition = (RelationEndPointDefinition) actualRelationDefinition.EndPointDefinitions[1];
+
+      Assert.That (endPointDefinition.PropertyDefinition, Is.EqualTo (_classWithRealRelationEndPoints.MyPropertyDefinitions[0]));
+      Assert.That (endPointDefinition.ClassDefinition, Is.SameAs (_classWithRealRelationEndPoints));
+    }
+
+    [Test]
+    public void GetMetadata_WithVirtualRelationEndPoint_BidirectionalOneToManyForVirtualCollection_CheckEndPoint1 ()
+    {
+      EnsurePropertyDefinitionExisitsOnClassDefinition (
+          _classWithRealRelationEndPoints, typeof (ClassWithRealRelationEndPoints), "BidirectionalOneToManyForVirtualCollection");
+      EnsurePropertyDefinitionExisitsOnClassDefinition (
+          _classWithVirtualRelationEndPoints, typeof (ClassWithVirtualRelationEndPoints), "BidirectionalOneToManyForVirtualCollection");
+      var propertyInfo = PropertyInfoAdapter.Create (typeof (ClassWithVirtualRelationEndPoints).GetProperty ("BidirectionalOneToManyForVirtualCollection"));
       var relationReflector = CreateRelationReflector (_classWithVirtualRelationEndPoints, propertyInfo);
 
       RelationDefinition actualRelationDefinition = relationReflector.GetMetadata (_classDefinitions);

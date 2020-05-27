@@ -33,5 +33,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
 
     [DBBidirectionalRelation ("ContactPerson")]
     public abstract Partner AssociatedPartnerCompany { get; set; }
+
+    [DBBidirectionalRelation ("Reviewer")]
+    public abstract IObjectList<ProductReview> ProductReviews { get; set; }
   }
 }

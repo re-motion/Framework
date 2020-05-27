@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
     public void CreateRelationEndPointReflector ()
     {
       var type = typeof (ClassWithVirtualRelationEndPoints);
-      var propertyInfo = PropertyInfoAdapter.Create (type.GetProperty ("NoAttribute"));
+      var propertyInfo = PropertyInfoAdapter.Create (type.GetProperty ("NoAttributeForVirtualCollection"));
       Assert.IsInstanceOf (
           typeof (RdbmsRelationEndPointReflector),
           RelationEndPointReflector.CreateRelationEndPointReflector (
@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
     public void IsVirtualEndRelationEndpoint_WithoutAttribute ()
     {
       var type = typeof (ClassWithRealRelationEndPoints);
-      var propertyInfo = PropertyInfoAdapter.Create (type.GetProperty ("NoAttribute"));
+      var propertyInfo = PropertyInfoAdapter.Create (type.GetProperty ("NoAttributeForDomainObjectCollection"));
       var relationEndPointReflector = RelationEndPointReflector.CreateRelationEndPointReflector (
           ClassDefinitionObjectMother.CreateClassDefinition (classType: type),
           propertyInfo,
@@ -59,10 +59,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
     }
 
     [Test]
-    public void IsVirtualEndRelationEndpoint_WithCollectionPropertyAndWithoutAttribute ()
+    public void IsVirtualEndRelationEndpoint_WithDomainObjectCollectionPropertyAndWithoutAttribute ()
     {
       var type = typeof (ClassWithInvalidUnidirectionalRelation);
-      var propertyInfo = PropertyInfoAdapter.Create (type.GetProperty ("LeftSide"));
+      var propertyInfo = PropertyInfoAdapter.Create (type.GetProperty ("LeftSideForDomainObjectCollection"));
+      var relationEndPointReflector = RelationEndPointReflector.CreateRelationEndPointReflector (
+          ClassDefinitionObjectMother.CreateClassDefinition (classType: type),
+          propertyInfo,
+          Configuration.NameResolver,
+          PropertyMetadataProvider,
+          DomainModelConstraintProviderStub);
+
+      Assert.That (relationEndPointReflector.IsVirtualEndRelationEndpoint(), Is.False);
+    }
+
+    [Test]
+    public void IsVirtualEndRelationEndpoint_WithVirtualCollectionPropertyAndWithoutAttribute ()
+    {
+      var type = typeof (ClassWithInvalidUnidirectionalRelation);
+      var propertyInfo = PropertyInfoAdapter.Create (type.GetProperty ("LeftSideForVirtualCollection"));
       var relationEndPointReflector = RelationEndPointReflector.CreateRelationEndPointReflector (
           ClassDefinitionObjectMother.CreateClassDefinition (classType: type),
           propertyInfo,

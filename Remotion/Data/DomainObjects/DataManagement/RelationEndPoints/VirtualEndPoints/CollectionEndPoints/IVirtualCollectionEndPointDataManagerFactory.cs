@@ -16,16 +16,13 @@
 // 
 using System;
 
-namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Errors
+namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints
 {
-  public abstract class ClassWithInvalidUnidirectionalRelation: DomainObject
+  /// <summary>
+  /// 	Defines the API for factories creating instances implementing <see cref="IVirtualCollectionEndPointDataManager"/>.
+  /// </summary>
+  public interface IVirtualCollectionEndPointDataManagerFactory
   {
-    protected ClassWithInvalidUnidirectionalRelation ()
-    {
-    }
-
-    public abstract ObjectList<ClassWithInvalidUnidirectionalRelation> LeftSideForDomainObjectCollection { get; }
-
-    public abstract IObjectList<ClassWithInvalidUnidirectionalRelation> LeftSideForVirtualCollection { get; }
+    IVirtualCollectionEndPointDataManager CreateEndPointDataManager (RelationEndPointID endPointID);
   }
 }

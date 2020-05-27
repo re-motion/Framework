@@ -104,10 +104,15 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
             GetSortExpression(),
             PropertyInfo);
       }
-      //else if (ReflectionUtility.IsObjectQuery (PropertyInfo.PropertyType)) 
-      //{
-      //  TODO: RM-7294
-      //}
+      else if (ReflectionUtility.IsIObjectList (PropertyInfo.PropertyType))
+      {
+        return new VirtualCollectionRelationEndPointDefinition (
+            classDefinition,
+            GetPropertyName(),
+            IsMandatory(),
+            GetSortExpression(),
+            PropertyInfo);
+      }
       else
       {
         // TODO: RM-7294

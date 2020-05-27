@@ -51,7 +51,9 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
         return MappingValidationResult.CreateValidResult();
 
       var relationAttribute = propertyInfo.GetCustomAttribute<DBBidirectionalRelationAttribute> (true);
-      if (relationAttribute != null && relationAttribute.ContainsForeignKey && ReflectionUtility.IsObjectList (propertyInfo.PropertyType))
+      if (relationAttribute != null 
+          && relationAttribute.ContainsForeignKey 
+          && (ReflectionUtility.IsObjectList (propertyInfo.PropertyType) || ReflectionUtility.IsIObjectList (propertyInfo.PropertyType))) // TODO: RM-7294 Test IObjectList<T>
       {
         return MappingValidationResult.CreateInvalidResultForProperty (
             propertyInfo,

@@ -293,6 +293,11 @@
     <Compile Include="Linq\TestDomain\Error\SortExpressionForPropertyWithoutInterface\RelationMixin.cs" />
     <Compile Include="Linq\TestDomain\Error\SortExpressionForPropertyWithoutInterface\RelationTarget.cs" />
     <Compile Include="Mapping\DBStorageGroupAttributeTest.cs" />
+    <Compile Include="Mapping\RelationEndPointReflectorTests\ManySideRelationPropertyForVirtualCollection.cs" />
+    <Compile Include="Mapping\TestDomain\Integration\Product.cs" />
+    <Compile Include="Mapping\TestDomain\Integration\ProductReview.cs" />
+    <Compile Include="Mapping\VirtualCollectionRelationEndPointDefinitionFactory.cs" />
+    <Compile Include="Mapping\VirtualCollectionRelationEndPointDefinitionTest.cs" />
     <Compile Include="Mapping\MappingReflectionIntegrationTests\IgnoredTypes\OnlyBaseClassNotInMapping\BaseClassOfExcludedClass.cs" />
     <Compile Include="Mapping\MappingReflectionIntegrationTests\IgnoredTypes\OnlyBaseClassNotInMapping\ClassExcludedFromMapping.cs" />
     <Compile Include="Mapping\MappingReflectionIntegrationTests\IgnoredTypes\OnlyBaseClassNotInMapping\ClassDerivedFromExcludedClass.cs" />
@@ -403,6 +408,8 @@
     <Compile Include="TestDomain\ExtensibleEnumNotDefiningAnyValues.cs" />
     <Compile Include="TestDomain\NonPersistentTestDomainAttribute.cs" />
     <Compile Include="TestDomain\OrderViewModel.cs" />
+    <Compile Include="TestDomain\Product.cs" />
+    <Compile Include="TestDomain\ProductReview.cs" />
     <Compile Include="TestDomain\SpecialCustomer.cs" />
     <Compile Include="Tracing\CompoundPersistenceExtensionFactoryTest.cs" />
     <Compile Include="Tracing\IPersistenceExtensionFactoryTest.cs" />
@@ -933,7 +940,7 @@
     <Compile Include="Mapping\RelationEndPointReflectorTests\BaseOneSideRelationProperty.cs" />
     <Compile Include="Mapping\RelationEndPointReflectorTests\Common.cs" />
     <Compile Include="Mapping\RelationEndPointReflectorTests\GenericManySideRelationProperty.cs" />
-    <Compile Include="Mapping\RelationEndPointReflectorTests\ManySideRelationProperty.cs" />
+    <Compile Include="Mapping\RelationEndPointReflectorTests\ManySideRelationPropertyForDomainObjectCollection.cs" />
     <Compile Include="Mapping\RelationEndPointReflectorTests\OneSideRelationProperty.cs" />
     <Compile Include="Mapping\RelationReflectorTest.cs" />
     <Compile Include="Mapping\RelationReflectorWithMixinsTest.cs" />

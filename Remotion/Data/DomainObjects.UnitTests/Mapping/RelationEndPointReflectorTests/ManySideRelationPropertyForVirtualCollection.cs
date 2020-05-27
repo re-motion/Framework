@@ -26,32 +26,64 @@ using Rhino.Mocks;
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflectorTests
 {
   [TestFixture]
-  public class BaseManySideRelationProperty : MappingReflectionTestBase
+  public class ManySideRelationPropertyForVirtualCollection : MappingReflectionTestBase
   {
     private ClassDefinition _classDefinition;
+    private Type _classType;
 
     public override void SetUp ()
     {
       base.SetUp();
 
-      _classDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (ClassWithRealRelationEndPoints));
+      _classType = typeof (ClassWithRealRelationEndPoints);
+      _classDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: _classType);
+    }
+
+    [Test]
+    public void GetMetadata_ForOptional ()
+    {
+      DomainModelConstraintProviderStub
+        .Stub (stub => stub.IsNullable (Arg<IPropertyInformation>.Matches (pi => pi.Name == "NoAttributeForVirtualCollection")))
+        .Return (true);
+
+      RdbmsRelationEndPointReflector relationEndPointReflector = CreateRelationEndPointReflector ("NoAttributeForVirtualCollection");
+
+      IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
+
+      Assert.IsInstanceOf (typeof (RelationEndPointDefinition), actual);
+      Assert.That (actual.IsMandatory, Is.False);
+    }
+
+    [Test]
+    public void GetMetadata_ForMandatory ()
+    {
+      DomainModelConstraintProviderStub
+        .Stub (stub => stub.IsNullable (Arg<IPropertyInformation>.Matches (pi => pi.Name == "NotNullableForVirtualCollection")))
+        .Return (false);
+
+      RdbmsRelationEndPointReflector relationEndPointReflector = CreateRelationEndPointReflector ("NotNullableForVirtualCollection");
+
+      IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
+
+      Assert.IsInstanceOf (typeof (RelationEndPointDefinition), actual);
+      Assert.That (actual.IsMandatory, Is.True);
     }
 
     [Test]
     public void GetMetadata_Unidirectional ()
     {
       DomainModelConstraintProviderStub
-        .Stub (stub => stub.IsNullable (Arg<IPropertyInformation>.Matches (pi => pi.Name == "BaseUnidirectional")))
+        .Stub (stub => stub.IsNullable (Arg<IPropertyInformation>.Matches (pi => pi.Name == "Unidirectional")))
         .Return (true);
-      
-      RdbmsRelationEndPointReflector relationEndPointReflector = CreateRelationEndPointReflector ("BaseUnidirectional");
+
+      RdbmsRelationEndPointReflector relationEndPointReflector = CreateRelationEndPointReflector ("Unidirectional");
 
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
 
       Assert.IsInstanceOf (typeof (RelationEndPointDefinition), actual);
       RelationEndPointDefinition relationEndPointDefinition = (RelationEndPointDefinition) actual;
       Assert.That (relationEndPointDefinition.ClassDefinition, Is.SameAs (_classDefinition));
-      Assert.That (relationEndPointDefinition.PropertyDefinition, Is.SameAs (GetPropertyDefinition ("BaseUnidirectional")));
+      Assert.That (relationEndPointDefinition.PropertyDefinition, Is.SameAs (GetPropertyDefinition ("Unidirectional")));
       Assert.That (relationEndPointDefinition.RelationDefinition, Is.Null);
     }
 
@@ -59,60 +91,42 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
     public void GetMetadata_BidirectionalOneToOne ()
     {
       DomainModelConstraintProviderStub
-        .Stub (stub => stub.IsNullable (Arg<IPropertyInformation>.Matches (pi => pi.Name == "BaseBidirectionalOneToOne")))
+        .Stub (stub => stub.IsNullable (Arg<IPropertyInformation>.Matches (pi => pi.Name == "BidirectionalOneToOne")))
         .Return (true);
 
-      RdbmsRelationEndPointReflector relationEndPointReflector = CreateRelationEndPointReflector ("BaseBidirectionalOneToOne");
+      RdbmsRelationEndPointReflector relationEndPointReflector = CreateRelationEndPointReflector ("BidirectionalOneToOne");
 
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
 
       Assert.IsInstanceOf (typeof (RelationEndPointDefinition), actual);
       RelationEndPointDefinition relationEndPointDefinition = (RelationEndPointDefinition) actual;
       Assert.That (relationEndPointDefinition.ClassDefinition, Is.SameAs (_classDefinition));
-      Assert.That (relationEndPointDefinition.PropertyDefinition, Is.SameAs (GetPropertyDefinition ("BaseBidirectionalOneToOne")));
+      Assert.That (relationEndPointDefinition.PropertyDefinition, Is.SameAs (GetPropertyDefinition ("BidirectionalOneToOne")));
       Assert.That (relationEndPointDefinition.RelationDefinition, Is.Null);
     }
 
     [Test]
-    public void GetMetadata_BidirectionalOneToManyForDomainObjectCollection ()
+    public void GetMetadata_BidirectionalOneToMany ()
     {
       DomainModelConstraintProviderStub
-        .Stub (stub => stub.IsNullable (Arg<IPropertyInformation>.Matches (pi => pi.Name == "BaseBidirectionalOneToManyForDomainObjectCollection")))
+        .Stub (stub => stub.IsNullable (Arg<IPropertyInformation>.Matches (pi => pi.Name == "BidirectionalOneToManyForVirtualCollection")))
         .Return (true);
 
-      RdbmsRelationEndPointReflector relationEndPointReflector = CreateRelationEndPointReflector ("BaseBidirectionalOneToManyForDomainObjectCollection");
+      RdbmsRelationEndPointReflector relationEndPointReflector = CreateRelationEndPointReflector ("BidirectionalOneToManyForVirtualCollection");
 
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
 
       Assert.IsInstanceOf (typeof (RelationEndPointDefinition), actual);
       RelationEndPointDefinition relationEndPointDefinition = (RelationEndPointDefinition) actual;
       Assert.That (relationEndPointDefinition.ClassDefinition, Is.SameAs (_classDefinition));
-      Assert.That (relationEndPointDefinition.PropertyDefinition, Is.SameAs (GetPropertyDefinition ("BaseBidirectionalOneToManyForDomainObjectCollection")));
+      Assert.That (relationEndPointDefinition.PropertyDefinition, Is.SameAs (GetPropertyDefinition ("BidirectionalOneToManyForVirtualCollection")));
       Assert.That (relationEndPointDefinition.RelationDefinition, Is.Null);
     }
 
-    [Test]
-    public void GetMetadata_BidirectionalOneToManyForVirtualCollection ()
-    {
-      DomainModelConstraintProviderStub
-          .Stub (stub => stub.IsNullable (Arg<IPropertyInformation>.Matches (pi => pi.Name == "BaseBidirectionalOneToManyForVirtualCollection")))
-          .Return (true);
-
-      RdbmsRelationEndPointReflector relationEndPointReflector = CreateRelationEndPointReflector ("BaseBidirectionalOneToManyForVirtualCollection");
-
-      IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
-
-      Assert.IsInstanceOf (typeof (RelationEndPointDefinition), actual);
-      RelationEndPointDefinition relationEndPointDefinition = (RelationEndPointDefinition) actual;
-      Assert.That (relationEndPointDefinition.ClassDefinition, Is.SameAs (_classDefinition));
-      Assert.That (relationEndPointDefinition.PropertyDefinition, Is.SameAs (GetPropertyDefinition ("BaseBidirectionalOneToManyForVirtualCollection")));
-      Assert.That (relationEndPointDefinition.RelationDefinition, Is.Null);
-    }
-    
     [Test]
     public void IsVirtualEndRelationEndpoint_Unidirectional ()
     {
-      RdbmsRelationEndPointReflector relationEndPointReflector = CreateRelationEndPointReflector ("BaseUnidirectional");
+      RdbmsRelationEndPointReflector relationEndPointReflector = CreateRelationEndPointReflector ("Unidirectional");
 
       Assert.That (relationEndPointReflector.IsVirtualEndRelationEndpoint(), Is.False);
     }
@@ -120,23 +134,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
     [Test]
     public void IsVirtualEndRelationEndpoint_BidirectionalOneToOne ()
     {
-      RdbmsRelationEndPointReflector relationEndPointReflector = CreateRelationEndPointReflector ("BaseBidirectionalOneToOne");
+      RdbmsRelationEndPointReflector relationEndPointReflector = CreateRelationEndPointReflector ("BidirectionalOneToOne");
 
       Assert.That (relationEndPointReflector.IsVirtualEndRelationEndpoint(), Is.False);
     }
 
     [Test]
-    public void IsVirtualEndRelationEndpoint_BidirectionalOneToManyForDomainObjectCollection ()
+    public void IsVirtualEndRelationEndpoint_BidirectionalOneToMany ()
     {
-      RdbmsRelationEndPointReflector relationEndPointReflector = CreateRelationEndPointReflector ("BaseBidirectionalOneToManyForDomainObjectCollection");
-
-      Assert.That (relationEndPointReflector.IsVirtualEndRelationEndpoint(), Is.False);
-    }
-
-    [Test]
-    public void IsVirtualEndRelationEndpoint_BidirectionalOneToManyForVirtualCollection ()
-    {
-      RdbmsRelationEndPointReflector relationEndPointReflector = CreateRelationEndPointReflector ("BaseBidirectionalOneToManyForVirtualCollection");
+      RdbmsRelationEndPointReflector relationEndPointReflector = CreateRelationEndPointReflector ("BidirectionalOneToManyForVirtualCollection");
 
       Assert.That (relationEndPointReflector.IsVirtualEndRelationEndpoint(), Is.False);
     }
@@ -157,9 +163,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
 
     private PropertyReflector CreatePropertyReflector (string property)
     {
-      var type = typeof (ClassWithRealRelationEndPointsNotInMapping);
       var propertyInfo =
-          PropertyInfoAdapter.Create (type.GetProperty (property, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic));
+          PropertyInfoAdapter.Create (_classType.GetProperty (property, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic));
 
       return new PropertyReflector (
           _classDefinition,
@@ -171,8 +176,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
 
     private PropertyDefinition GetPropertyDefinition (string propertyName)
     {
-      return _classDefinition.MyPropertyDefinitions[
-          string.Format ("{0}.{1}", typeof (ClassWithRealRelationEndPointsNotInMapping).FullName, propertyName)];
+      return _classDefinition.MyPropertyDefinitions[string.Format ("{0}.{1}", _classType.FullName, propertyName)];
     }
   }
 }

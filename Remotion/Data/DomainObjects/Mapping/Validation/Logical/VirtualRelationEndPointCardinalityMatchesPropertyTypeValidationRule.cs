@@ -64,11 +64,15 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
             typeof (ObjectList<>).Name);
       }
 
-      // TODO: RM-7294
-      //if (relationEndPointDefinition is QueryCollectionRelationEndPointDefinition queryCollectionRelationEndPointDefinition
-      //    && !ReflectionUtility.IsQueryCollection (queryCollectionRelationEndPointDefinition.PropertyInfo.PropertyType))
-      //{
-      //}
+      // TODO: RM-7294 Test
+      if (relationEndPointDefinition is VirtualCollectionRelationEndPointDefinition virtualCollectionRelationEndPointDefinition
+          && !ReflectionUtility.IsIObjectList (virtualCollectionRelationEndPointDefinition.PropertyInfo.PropertyType))
+      {
+        return MappingValidationResult.CreateInvalidResultForProperty (
+            virtualCollectionRelationEndPointDefinition.PropertyInfo,
+            "The property type of a virtual end point of a one-to-many relation must be assignable to '{0}'.",
+            typeof (IObjectList<>).Name);
+      }
 
       return MappingValidationResult.CreateValidResult();
     }

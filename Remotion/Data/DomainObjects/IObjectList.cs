@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -15,17 +15,22 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
+using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 
-namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Errors
+namespace Remotion.Data.DomainObjects
 {
-  public abstract class ClassWithInvalidUnidirectionalRelation: DomainObject
+  public interface IObjectList<T> : IObjectList, IReadOnlyList<T> // RM-7294 IList via runtime casting ICollection<T> via runtime casting
+      where T : DomainObject
   {
-    protected ClassWithInvalidUnidirectionalRelation ()
-    {
-    }
+  }
 
-    public abstract ObjectList<ClassWithInvalidUnidirectionalRelation> LeftSideForDomainObjectCollection { get; }
-
-    public abstract IObjectList<ClassWithInvalidUnidirectionalRelation> LeftSideForVirtualCollection { get; }
+  public interface IObjectList
+  {
+    /// <summary>
+    /// Gets the <see cref="IVirtualCollectionEndPoint"/> associated with this <see cref="IObjectList"/>.
+    /// </summary>
+    /// <value>The associated end point.</value>
+    RelationEndPointID AssociatedEndPointID { get; }
   }
 }
