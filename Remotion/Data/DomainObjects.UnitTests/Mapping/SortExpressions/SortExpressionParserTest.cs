@@ -193,7 +193,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
           () => _parser.Parse (sortExpression),
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo (
-                  "SortExpression 'Product asc asc' cannot be parsed: Expected one or two parts (a property name and an optional identifier), found 3 parts "
+                  "SortExpression 'Product asc asc' cannot be parsed: Expected 1 or 2 parts (a property name and an optional identifier), found 3 parts "
                   + "instead."));
     }
 

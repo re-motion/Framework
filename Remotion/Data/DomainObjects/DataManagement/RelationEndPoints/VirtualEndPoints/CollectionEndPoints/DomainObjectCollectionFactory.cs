@@ -27,6 +27,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   /// Creates <see cref="DomainObjectCollection"/> instances via reflection for use with the data management classes (mostly 
   /// <see cref="DomainObjectCollectionEndPoint"/>).
   /// </summary>
+  /// <seealso cref="ObjectListFactory"/>
   public class DomainObjectCollectionFactory
   {
     public static readonly DomainObjectCollectionFactory Instance = new DomainObjectCollectionFactory ();

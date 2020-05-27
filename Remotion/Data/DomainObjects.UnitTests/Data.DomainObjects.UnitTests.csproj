@@ -212,12 +212,34 @@
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
     <Compile Include="ClientTransactionTestHelperWithMocks.cs" />
+    <Compile Include="DataManagement\CollectionData\VirtualCollectionDataTest.cs" />
+    <Compile Include="DataManagement\Commands\EndPointModifications\VirtualCollectionEndPointAddCommandTest.cs" />
+    <Compile Include="DataManagement\Commands\EndPointModifications\VirtualCollectionEndPointDeleteCommandTest.cs" />
+    <Compile Include="DataManagement\Commands\EndPointModifications\VirtualCollectionEndPointRemoveCommandTest.cs" />
     <Compile Include="DataManagement\DataContainerStateTest.cs" />
+    <Compile Include="DataManagement\DelegatingDataContainerMapTest.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\NullDataContainerMapReadOnlyViewTest.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\NullVirtualCollectionEndPointTest.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\RelationEndPointExtensionsTests\IVirtualCollectionEndPoint_REPET.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualCollectionEndPointIntegrationTest.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\StateUpdateRaisingVirtualCollectionEndPointDecoratorTest.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\VirtualCollectionEndPointCollectionProviderTest.cs" />
     <Compile Include="DataManagement\SerializableFakes\SerializableClientTransactionHierarchyFake.cs" />
+    <Compile Include="DataManagement\SerializableFakes\SerializableVirtualCollectionEndPointChangeDetectionStrategyFake.cs" />
     <Compile Include="DataManagement\SerializableFakes\SerializableFetchEnabledPersistenceStrategyFake.cs" />
     <Compile Include="DataManagement\SerializableFakes\SerializableLoadedObjectDataProviderFake.cs" />
     <Compile Include="DataManagement\SerializableFakes\SerializableLoadedObjectDataRegistrationAgentFake.cs" />
+    <Compile Include="DataManagement\SerializableFakes\SerializableVirtualCollectionEndPointCollectionProviderFake.cs" />
+    <Compile Include="DataManagement\SerializableFakes\SerializableVirtualCollectionEndPointDataManagerFactoryFake.cs" />
+    <Compile Include="DataManagement\SerializableFakes\SerializableVirtualCollectionEndPointFake.cs" />
+    <None Include="DataManagement\SerializableFakes\SerializableIncompleteVirtualCollectionEndPointLoaderFake.cs" />
     <Compile Include="DomainObjectStateTest.cs" />
+    <Compile Include="DomainObjects\AddToOneToManyRelationWithLazyLoadOfVirtualCollectionTest.cs" />
+    <Compile Include="DomainObjects\AddToOneToManyRelationWithVirtualCollectionTest.cs" />
+    <Compile Include="DomainObjects\OneToManyRelationChangeWithLazyLoadOfVirtualCollectionTest.cs" />
+    <Compile Include="DomainObjects\OneToManyRelationChangeWithVirtualCollectionTest.cs" />
+    <Compile Include="DomainObjects\RemoveFromOneToManyRelationWithLazyLoadOfVirtualCollectionTest.cs" />
+    <Compile Include="DomainObjects\RemoveFromOneToManyRelationWithVirtualCollectionTest.cs" />
     <Compile Include="IClientTransactionExtensionFactoryTest.cs" />
     <Compile Include="IDomainModelConstraintProviderTest.cs" />
     <Compile Include="Infrastructure\CompoundClientTransactionExtensionFactoryTest.cs" />
@@ -229,6 +251,11 @@
     <Compile Include="Infrastructure\ObjectPersistence\LoadedObjectDataPendingRegistrationCollectorTest.cs" />
     <Compile Include="Infrastructure\TypePipe\IInterceptedPropertyFinderTest.cs" />
     <Compile Include="Infrastructure\TypePipe\ITypeDefinitionProviderTest.cs" />
+    <Compile Include="IntegrationTests\Delete\CascadedDeleteForVirtualCollectionTest.cs" />
+    <Compile Include="IntegrationTests\Delete\DeleteDomainObjectWithManyToOneRelationWithLazyLoadOfVirtualCollectionTest.cs" />
+    <Compile Include="IntegrationTests\Delete\DeleteDomainObjectWithManyToOneRelationWithVirtualCollectionTest.cs" />
+    <Compile Include="IntegrationTests\Delete\DeleteDomainObjectWithOneToManyRelationWithLazyLoadOfVirtualCollectionTest.cs" />
+    <Compile Include="IntegrationTests\Delete\DeleteDomainObjectWithOneToManyRelationWithVirtualCollectionTest.cs" />
     <Compile Include="IntegrationTests\DomainObjectAssociatedTransactionHierarchyTest.cs" />
     <Compile Include="IntegrationTests\EagerFetching\EagerFetchingWithInvalidMandatoryRelationsTest.cs" />
     <Compile Include="IntegrationTests\Loading\CanceledLoadOperationTest.cs" />
@@ -243,6 +270,7 @@
     <Compile Include="IntegrationTests\NewObject\RecursiveNewObjectCallTest.cs" />
     <Compile Include="IntegrationTests\HierarchyBoundObjects\OperationsInRootTransactionTest.cs" />
     <Compile Include="IntegrationTests\Relations\LoadingRelationsWithInvalidMandatoryRelationsTest.cs" />
+    <Compile Include="IntegrationTests\Relations\VirtualCollectionRelationLoadingTest.cs" />
     <Compile Include="IntegrationTests\ServiceLocation\ParticipantRegistrationTest.cs" />
     <Compile Include="IntegrationTests\Transaction\ReadOnlyTransactions\AllowedOperations\CollectionQueryTest.cs" />
     <Compile Include="IntegrationTests\Transaction\ReadOnlyTransactions\AllowedOperations\CustomQueryTest.cs" />
@@ -293,6 +321,11 @@
     <Compile Include="Linq\TestDomain\Error\SortExpressionForPropertyWithoutInterface\RelationMixin.cs" />
     <Compile Include="Linq\TestDomain\Error\SortExpressionForPropertyWithoutInterface\RelationTarget.cs" />
     <Compile Include="Mapping\DBStorageGroupAttributeTest.cs" />
+    <Compile Include="Mapping\RelationEndPointReflectorTests\ManySideRelationPropertyForVirtualCollection.cs" />
+    <Compile Include="Mapping\TestDomain\Integration\Product.cs" />
+    <Compile Include="Mapping\TestDomain\Integration\ProductReview.cs" />
+    <Compile Include="Mapping\VirtualCollectionRelationEndPointDefinitionFactory.cs" />
+    <Compile Include="Mapping\VirtualCollectionRelationEndPointDefinitionTest.cs" />
     <Compile Include="Mapping\MappingReflectionIntegrationTests\IgnoredTypes\OnlyBaseClassNotInMapping\BaseClassOfExcludedClass.cs" />
     <Compile Include="Mapping\MappingReflectionIntegrationTests\IgnoredTypes\OnlyBaseClassNotInMapping\ClassExcludedFromMapping.cs" />
     <Compile Include="Mapping\MappingReflectionIntegrationTests\IgnoredTypes\OnlyBaseClassNotInMapping\ClassDerivedFromExcludedClass.cs" />
@@ -375,6 +408,7 @@
     <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\EnablingClassIDsInAllForeignKeys\ReleationEndPointTestHelper.cs" />
     <Compile Include="Persistence\Rdbms\SqlServer\Model\Building\SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecoratorTest.cs" />
     <Compile Include="Persistence\Rdbms\SqlServer\Model\SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecoratorTest.cs" />
+    <Compile Include="Serialization\DelegatingDataContainerMapTest.cs" />
     <Compile Include="Serialization\FlattenedSerializableWithoutCtorStub.cs" />
     <Compile Include="DomainObjectHandleConverterTest.cs" />
     <Compile Include="Infrastructure\TypePipe\ImplementingAccessorInterceptorBaseTest.cs" />
@@ -399,10 +433,14 @@
     <Compile Include="Infrastructure\TypePipe\DomainObjectParticipantTest.cs" />
     <Compile Include="Infrastructure\TypePipe\MutableTypeObjectMother.cs" />
     <Compile Include="IntegrationTests\RegisterForCommitTest.cs" />
+    <Compile Include="Serialization\NullDataContainerMapReadOnlyViewTest.cs" />
     <Compile Include="TestDomain\ClassWithPropertyTypeImplementingIStructuralEquatable.cs" />
     <Compile Include="TestDomain\ExtensibleEnumNotDefiningAnyValues.cs" />
+    <Compile Include="TestDomain\IDerivedObjectList.cs" />
     <Compile Include="TestDomain\NonPersistentTestDomainAttribute.cs" />
     <Compile Include="TestDomain\OrderViewModel.cs" />
+    <Compile Include="TestDomain\Product.cs" />
+    <Compile Include="TestDomain\ProductReview.cs" />
     <Compile Include="TestDomain\SpecialCustomer.cs" />
     <Compile Include="Tracing\CompoundPersistenceExtensionFactoryTest.cs" />
     <Compile Include="Tracing\IPersistenceExtensionFactoryTest.cs" />
@@ -933,7 +971,7 @@
     <Compile Include="Mapping\RelationEndPointReflectorTests\BaseOneSideRelationProperty.cs" />
     <Compile Include="Mapping\RelationEndPointReflectorTests\Common.cs" />
     <Compile Include="Mapping\RelationEndPointReflectorTests\GenericManySideRelationProperty.cs" />
-    <Compile Include="Mapping\RelationEndPointReflectorTests\ManySideRelationProperty.cs" />
+    <Compile Include="Mapping\RelationEndPointReflectorTests\ManySideRelationPropertyForDomainObjectCollection.cs" />
     <Compile Include="Mapping\RelationEndPointReflectorTests\OneSideRelationProperty.cs" />
     <Compile Include="Mapping\RelationReflectorTest.cs" />
     <Compile Include="Mapping\RelationReflectorWithMixinsTest.cs" />
@@ -1293,7 +1331,7 @@
     <Compile Include="DataManagement\Commands\EndPointModifications\ObjectEndPointSetUnidirectionalCommandTest.cs" />
     <Compile Include="DataManagement\RelationEndPoints\NullDomainObjectCollectionEndPointTest.cs" />
     <Compile Include="DataManagement\RelationEndPoints\NullObjectEndPointTest.cs" />
-    <Compile Include="DataManagement\RelationEndPoints\RelationEndPointExtensionsTest.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\RelationEndPointExtensionsTests\IDomainObjectCollectionEndPoint_REPET.cs" />
     <Compile Include="DataManagement\RelationEndPoints\RealObjectEndPointTest.cs" />
     <Compile Include="DataManagement\RelationEndPoints\RelationEndPointObjectMother.cs" />
     <Compile Include="DataManagement\TestDomain\CollectionWithProtectedCtor.cs" />
@@ -1343,7 +1381,7 @@
     <Compile Include="Queries\Configuration\QueryFileElementTest.cs" />
     <Compile Include="Persistence\Configuration\StorageProviderDefinitionTest.cs" />
     <Compile Include="DomainImplementation\Cloning\DomainObjectClonerTest.cs" />
-    <Compile Include="IntegrationTests\Relations\CollectionSetterTest.cs" />
+    <Compile Include="IntegrationTests\Relations\DomainObjectCollectionSetterTest.cs" />
     <Compile Include="IntegrationTests\StorageClassTransactionTest.cs" />
     <Compile Include="Linq\ExtensionMethodsTest.cs" />
     <Compile Include="MixedDomains\TestDomain\BaseForMixinAddingPersistentProperties.cs" />
@@ -1995,6 +2033,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DomainObjects\DomainObjectCollection.IListTest.cs" />
+    <Compile Include="VirtualCollectionDataTestHelper.cs" />
     <None Include="..\..\Remotion LGPL.licenseheader">
       <Link>Remotion LGPL.licenseheader</Link>
     </None>

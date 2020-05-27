@@ -18,6 +18,7 @@ using System;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.VirtualObjectEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
@@ -25,7 +26,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   /// <summary>
   /// Creates <see cref="IRelationEndPoint"/> instances.
   /// </summary>
-  [Serializable]
   public class RelationEndPointFactory : IRelationEndPointFactory
   {
     private readonly ClientTransaction _clientTransaction;
@@ -36,6 +36,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     private readonly IDomainObjectCollectionEndPointDataManagerFactory _domainObjectCollectionEndPointDataManagerFactory;
     private readonly IDomainObjectCollectionEndPointCollectionProvider _domainObjectCollectionEndPointCollectionProvider;
     private readonly IAssociatedDomainObjectCollectionDataStrategyFactory _associatedDomainObjectCollectionDataStrategyFactory;
+    private readonly IVirtualCollectionEndPointCollectionProvider _virtualCollectionEndPointCollectionProvider;
+    private readonly IVirtualCollectionEndPointDataManagerFactory _virtualCollectionEndPointDataManagerFactory;
 
     public RelationEndPointFactory (
         ClientTransaction clientTransaction,
@@ -45,7 +47,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         IVirtualObjectEndPointDataManagerFactory virtualObjectEndPointDataManagerFactory,
         IDomainObjectCollectionEndPointDataManagerFactory domainObjectCollectionEndPointDataManagerFactory, 
         IDomainObjectCollectionEndPointCollectionProvider domainObjectCollectionEndPointCollectionProvider, 
-        IAssociatedDomainObjectCollectionDataStrategyFactory associatedDomainObjectCollectionDataStrategyFactory)
+        IAssociatedDomainObjectCollectionDataStrategyFactory associatedDomainObjectCollectionDataStrategyFactory,
+        IVirtualCollectionEndPointCollectionProvider virtualCollectionEndPointCollectionProvider,
+        IVirtualCollectionEndPointDataManagerFactory virtualCollectionEndPointDataManagerFactory)
     {
       ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull ("endPointProvider", endPointProvider);
@@ -55,6 +59,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       ArgumentUtility.CheckNotNull ("domainObjectCollectionEndPointDataManagerFactory", domainObjectCollectionEndPointDataManagerFactory);
       ArgumentUtility.CheckNotNull ("domainObjectCollectionEndPointCollectionProvider", domainObjectCollectionEndPointCollectionProvider);
       ArgumentUtility.CheckNotNull ("associatedDomainObjectCollectionDataStrategyFactory", associatedDomainObjectCollectionDataStrategyFactory);
+      ArgumentUtility.CheckNotNull ("virtualCollectionEndPointCollectionProvider", virtualCollectionEndPointCollectionProvider);
+      ArgumentUtility.CheckNotNull ("virtualObjectEndPointDataManagerFactory", virtualObjectEndPointDataManagerFactory);
 
       _clientTransaction = clientTransaction;
       _endPointProvider = endPointProvider;
@@ -64,6 +70,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       _domainObjectCollectionEndPointDataManagerFactory = domainObjectCollectionEndPointDataManagerFactory;
       _domainObjectCollectionEndPointCollectionProvider = domainObjectCollectionEndPointCollectionProvider;
       _associatedDomainObjectCollectionDataStrategyFactory = associatedDomainObjectCollectionDataStrategyFactory;
+      _virtualCollectionEndPointCollectionProvider = virtualCollectionEndPointCollectionProvider;
+      _virtualCollectionEndPointDataManagerFactory = virtualCollectionEndPointDataManagerFactory;
     }
 
     public ClientTransaction ClientTransaction
@@ -106,6 +114,16 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       get { return _associatedDomainObjectCollectionDataStrategyFactory; }
     }
 
+    public IVirtualCollectionEndPointCollectionProvider VirtualCollectionEndPointCollectionProvider
+    {
+      get { return _virtualCollectionEndPointCollectionProvider; }
+    }
+
+    public IVirtualCollectionEndPointDataManagerFactory VirtualCollectionEndPointDataManagerFactory
+    {
+      get { return _virtualCollectionEndPointDataManagerFactory; }
+    }
+
     public IRealObjectEndPoint CreateRealObjectEndPoint (RelationEndPointID endPointID, DataContainer dataContainer)
     {
       ArgumentUtility.CheckNotNull ("endPointID", endPointID);
@@ -128,22 +146,19 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       return virtualObjectEndPoint;
     }
 
-    public ICollectionEndPoint CreateVirtualCollectionEndPoint (RelationEndPointID endPointID)
+    public IVirtualCollectionEndPoint CreateVirtualCollectionEndPoint (RelationEndPointID endPointID)
     {
       ArgumentUtility.CheckNotNull ("endPointID", endPointID);
 
-      // TODO RM-7294
-      throw new NotImplementedException ("Implement RelationEndPointFactory for DomainObjectCollection and QueryCollection separately");
-
-      //var collectionEndPoint = new QueryCollectionEndPoint (
-      //    _clientTransaction,
-      //    endPointID,
-      //    new CollectionEndPointCollectionManager (endPointID, _collectionEndPointCollectionProvider, _associatedCollectionDataStrategyFactory),
-      //    _lazyLoader,
-      //    _endPointProvider,
-      //    _transactionEventSink,
-      //    _collectionEndPointDataManagerFactory);
-      //return collectionEndPoint;
+      var collectionEndPoint = new VirtualCollectionEndPoint (
+          _clientTransaction,
+          endPointID,
+          new VirtualCollectionEndPointCollectionManager (endPointID, _virtualCollectionEndPointCollectionProvider),
+          _lazyLoader,
+          _endPointProvider,
+          _transactionEventSink,
+          _virtualCollectionEndPointDataManagerFactory);
+      return collectionEndPoint;
     }
 
     public IDomainObjectCollectionEndPoint CreateDomainObjectCollectionEndPoint (RelationEndPointID endPointID)
@@ -160,5 +175,37 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
           _domainObjectCollectionEndPointDataManagerFactory);
       return collectionEndPoint;
     }
+
+    #region Serialization
+
+    private RelationEndPointFactory (FlattenedDeserializationInfo info)
+    {
+     _clientTransaction = info.GetValueForHandle<ClientTransaction>();
+     _endPointProvider = info.GetValueForHandle<IRelationEndPointProvider>();
+     _lazyLoader = info.GetValueForHandle<ILazyLoader>();
+     _transactionEventSink = info.GetValueForHandle<IClientTransactionEventSink>();
+     _virtualObjectEndPointDataManagerFactory = info.GetValueForHandle<IVirtualObjectEndPointDataManagerFactory>();
+     _domainObjectCollectionEndPointDataManagerFactory = info.GetValueForHandle<IDomainObjectCollectionEndPointDataManagerFactory>();
+     _domainObjectCollectionEndPointCollectionProvider = info.GetValueForHandle<IDomainObjectCollectionEndPointCollectionProvider>();
+     _associatedDomainObjectCollectionDataStrategyFactory = info.GetValueForHandle<IAssociatedDomainObjectCollectionDataStrategyFactory>();
+     _virtualCollectionEndPointCollectionProvider = info.GetValueForHandle<IVirtualCollectionEndPointCollectionProvider>();
+     _virtualCollectionEndPointDataManagerFactory = info.GetValueForHandle<IVirtualCollectionEndPointDataManagerFactory>();
+    }
+
+    void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
+    {
+      info.AddHandle (_clientTransaction);
+      info.AddHandle (_endPointProvider);
+      info.AddHandle (_lazyLoader);
+      info.AddHandle (_transactionEventSink);
+      info.AddHandle (_virtualObjectEndPointDataManagerFactory );
+      info.AddHandle (_domainObjectCollectionEndPointDataManagerFactory );
+      info.AddHandle (_domainObjectCollectionEndPointCollectionProvider);
+      info.AddHandle (_associatedDomainObjectCollectionDataStrategyFactory);
+      info.AddHandle (_virtualCollectionEndPointCollectionProvider);
+      info.AddHandle (_virtualCollectionEndPointDataManagerFactory);
+    }
+
+    #endregion
   }
 }

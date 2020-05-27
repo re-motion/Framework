@@ -17,6 +17,7 @@
 using System;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.VirtualObjectEndPoints;
+using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
@@ -25,7 +26,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   /// Decorates <see cref="IRelationEndPointFactory"/> instances by wrapping the created <see cref="IVirtualEndPoint"/> instances into decorators
   /// that cause <see cref="IVirtualEndPointStateUpdateListener"/> events to be raised.
   /// </summary>
-  [Serializable]
   public class StateUpdateRaisingRelationEndPointFactoryDecorator : IRelationEndPointFactory
   {
     private readonly IRelationEndPointFactory _innerFactory;
@@ -61,19 +61,32 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       return new StateUpdateRaisingVirtualObjectEndPointDecorator (endPoint, _listener);
     }
 
-    public ICollectionEndPoint CreateVirtualCollectionEndPoint (RelationEndPointID endPointID)
+    public IVirtualCollectionEndPoint CreateVirtualCollectionEndPoint (RelationEndPointID endPointID)
     {
-      // TODO RM-7294 Test
-      throw new NotImplementedException ("Implement StateUpdateRaisingCollectionEndPointDecorator for DomainObjectCollection and QueryCollection separately");
-      //var endPoint = _innerFactory.CreateCollectionEndPoint (endPointID);
-      //return new StateUpdateRaisingCollectionEndPointDecorator (endPoint, _listener);
+      var endPoint = _innerFactory.CreateVirtualCollectionEndPoint (endPointID);
+      return new StateUpdateRaisingVirtualCollectionEndPointDecorator (endPoint, _listener);
     }
 
     public IDomainObjectCollectionEndPoint CreateDomainObjectCollectionEndPoint (RelationEndPointID endPointID)
     {
-      // TODO RM-7294 Test
       var endPoint = _innerFactory.CreateDomainObjectCollectionEndPoint (endPointID);
       return new StateUpdateRaisingDomainObjectCollectionEndPointDecorator (endPoint, _listener);
     }
+
+    #region Serialization
+
+    private StateUpdateRaisingRelationEndPointFactoryDecorator (FlattenedDeserializationInfo info)
+    {
+      _innerFactory = info.GetValueForHandle<IRelationEndPointFactory>();
+      _listener = info.GetValueForHandle<IVirtualEndPointStateUpdateListener>();
+    }
+
+    void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
+    {
+      info.AddHandle (_innerFactory);
+      info.AddHandle (_listener);
+    }
+
+    #endregion
   }
 }

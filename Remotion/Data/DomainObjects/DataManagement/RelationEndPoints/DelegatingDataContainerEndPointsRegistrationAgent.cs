@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
@@ -23,7 +24,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   /// Delegates to <see cref="ExistingDataContainerEndPointsRegistrationAgent"/> and <see cref="NonExistingDataContainerEndPointsRegistrationAgent"/>,
   /// depending on the state of the given <see cref="DataContainer"/>.
   /// </summary>
-  [Serializable]
   public class DelegatingDataContainerEndPointsRegistrationAgent : IDataContainerEndPointsRegistrationAgent
   {
     private readonly ExistingDataContainerEndPointsRegistrationAgent _existingDataContainerRegistrationAgent;
@@ -72,6 +72,5 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       else
         throw new NotSupportedException ("DataContainer '" + dataContainer.ID + "' has an unsupported state: " + dataContainerState);
     }
-
   }
 }

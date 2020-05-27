@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
@@ -309,8 +310,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
               yield return value;
             break;
           case PropertyKind.RelatedObjectCollection:
-            var values = (DomainObjectCollection) property.GetValueWithoutTypeCheck ();
-            foreach (var relatedObject in values)
+            var values = (IEnumerable) property.GetValueWithoutTypeCheck ();
+            foreach (DomainObject relatedObject in values)
               yield return relatedObject;
             break;
         }

@@ -22,10 +22,10 @@ using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 namespace Remotion.Data.DomainObjects
 {
   /// <summary>
-  /// This class acts as a read-only representation of the  <see cref="IDomainObjectCollectionData"/> interface.
+  /// This class acts as a read-only representation of the <see cref="IDomainObjectCollectionData"/> and <see cref="IVirtualCollectionData"/> interfaces.
   /// </summary>
   public interface IReadOnlyCollectionData<out T> : IReadOnlyList<T>
-      where T : DomainObject
+      where T : IDomainObject
   {
     RelationEndPointID AssociatedEndPointID { get; }
     bool IsDataComplete { get; }

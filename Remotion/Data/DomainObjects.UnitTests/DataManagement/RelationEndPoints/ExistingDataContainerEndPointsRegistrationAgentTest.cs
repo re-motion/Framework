@@ -157,18 +157,5 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       Assert.That (result, Is.Null);
     }
-
-    [Test]
-    public void Serialization ()
-    {
-      var agent = new ExistingDataContainerEndPointsRegistrationAgent (
-          new SerializableRelationEndPointFactoryFake(), 
-          new SerializableRelationEndPointRegistrationAgentFake());
-
-      var deserializedAgent = Serializer.SerializeAndDeserialize (agent);
-
-      Assert.That (deserializedAgent.EndPointFactory, Is.Not.Null);
-      Assert.That (deserializedAgent.RegistrationAgent, Is.Not.Null);
-    }
   }
 }

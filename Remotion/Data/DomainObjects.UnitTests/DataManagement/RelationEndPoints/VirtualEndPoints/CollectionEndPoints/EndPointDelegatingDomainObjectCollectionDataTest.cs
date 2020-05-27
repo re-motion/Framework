@@ -420,7 +420,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       return endPointStub;
     }
 
-    private void StubCollectionEndPoint (ICollectionEndPoint endPointStub, ClientTransaction clientTransaction, Order owningOrder)
+    private void StubCollectionEndPoint (ICollectionEndPoint<ReadOnlyDomainObjectCollectionDataDecorator> endPointStub, ClientTransaction clientTransaction, Order owningOrder)
     {
       endPointStub.Stub (stub => stub.ClientTransaction).Return (clientTransaction);
       var relationEndPointDefinition = owningOrder.ID.ClassDefinition.GetMandatoryRelationEndPointDefinition (typeof (Order).FullName + ".OrderItems");

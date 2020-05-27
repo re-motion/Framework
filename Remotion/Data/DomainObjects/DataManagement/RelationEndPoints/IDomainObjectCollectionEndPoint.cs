@@ -20,9 +20,9 @@ using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 {
   /// <summary>
-  /// Represents an <see cref="ICollectionEndPoint"/> holding a <see cref="DomainObjectCollection"/>.
+  /// Represents an <see cref="ICollectionEndPoint{TData}"/> holding a <see cref="DomainObjectCollection"/>.
   /// </summary>
-  public interface IDomainObjectCollectionEndPoint : ICollectionEndPoint
+  public interface IDomainObjectCollectionEndPoint : ICollectionEndPoint<ReadOnlyDomainObjectCollectionDataDecorator>
   {
     DomainObjectCollection Collection { get; }
 

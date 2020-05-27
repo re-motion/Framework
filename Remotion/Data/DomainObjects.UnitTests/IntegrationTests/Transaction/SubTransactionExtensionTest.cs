@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using NUnit.Framework;
@@ -49,6 +50,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     private Order _order1;
     private DataManager _parentTransactionDataManager;
     private DataManager _subTransactionDataManager;
+    private Product _product1;
 
     public override void OneTimeSetUp ()
     {
@@ -67,6 +69,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       _subTransactionScope = _subTransaction.EnterDiscardingScope();
 
       _order1 = DomainObjectIDs.Order1.GetObject<Order> ();
+      _product1 = DomainObjectIDs.Product1.GetObject<Product> ();
 
       _extensionMock.Stub (stub => stub.Key).Return ("TestExtension");
       _extensionMock.Replay();
@@ -912,7 +915,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     }
 
     [Test]
-    public void GetOriginalRelatedObjects ()
+    public void GetOriginalRelatedObjects_ForDomainObjectCollection ()
     {
       DomainObjectCollection originalOrderItems =
           _order1.GetOriginalRelatedObjectsAsDomainObjectCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
@@ -923,19 +926,45 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       {
         _extensionMock.RelationReading (
             _subTransaction, _order1, GetEndPointDefinition (typeof (Order), "OrderItems"), ValueAccess.Original);
-        _extensionMock.RelationRead (null, null, null, (IReadOnlyCollectionData<DomainObject>) null, ValueAccess.Original);
-
-        LastCall.Constraints (
-            Mocks_Is.Same (_subTransaction),
-            Mocks_Is.Same (_order1),
-            Mocks_Is.Equal (GetEndPointDefinition (typeof (Order), "OrderItems")),
-            Property.Value ("Count", 2) & Mocks_List.IsIn (originalOrderItems[0]) & Mocks_List.IsIn (originalOrderItems[1]),
-            Mocks_Is.Equal (ValueAccess.Original));
+        _extensionMock.RelationRead (
+            Arg.Is (_subTransaction),
+            Arg.Is (_order1),
+            Arg.Is (GetEndPointDefinition (typeof (Order), "OrderItems")),
+            Arg<IReadOnlyCollectionData<DomainObject>>.Matches (Property.Value ("Count", 2) & Mocks_List.ContainsAll (originalOrderItems)),
+            Arg.Is (ValueAccess.Original));
       }
 
       _mockRepository.ReplayAll();
 
       Dev.Null = _order1.GetOriginalRelatedObjectsAsDomainObjectCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
+
+      _mockRepository.VerifyAll();
+    }
+
+    [Test]
+
+    public void GetOriginalRelatedObjects_ForVirtualCollection ()
+    {
+      var originalProductReviews =
+          _product1.GetOriginalRelatedObjectsAsVirtualCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews");
+
+      _mockRepository.BackToRecord (_extensionMock);
+
+      using (_mockRepository.Ordered())
+      {
+        _extensionMock.RelationReading (
+            _subTransaction, _product1, GetEndPointDefinition (typeof (Product), "Reviews"), ValueAccess.Original);
+        _extensionMock.RelationRead (
+            Arg.Is (_subTransaction),
+            Arg.Is (_product1),
+            Arg.Is (GetEndPointDefinition (typeof (Product), "Reviews")),
+            Arg<IReadOnlyCollectionData<DomainObject>>.Matches (Property.Value ("Count", 3) & Mocks_List.ContainsAll (originalProductReviews)),
+            Arg.Is (ValueAccess.Original));
+      }
+
+      _mockRepository.ReplayAll();
+
+      Dev.Null = _product1.GetOriginalRelatedObjectsAsVirtualCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews");
 
       _mockRepository.VerifyAll();
     }
@@ -1054,7 +1083,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     }
 
     [Test]
-    public void GetOriginalRelatedObjectsWithLazyLoad ()
+    public void GetOriginalRelatedObjectsWithLazyLoad_ForDomainObjectCollection ()
     {
       using (_mockRepository.Ordered())
       {
@@ -1065,26 +1094,66 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
             Arg.Is (_subTransaction.ParentTransaction),
             Arg<ReadOnlyCollection<ObjectID>>.Matches (list => list.Count == 2)));
         
-        _extensionMock.ObjectsLoaded (null, null);
-        LastCall.Constraints (Mocks_Is.Same (_subTransaction.ParentTransaction), Property.Value ("Count", 2));
+        _extensionMock.Expect (mock => mock.ObjectsLoaded (
+            Arg.Is (_subTransaction.ParentTransaction),
+            Arg<IReadOnlyList<DomainObject>>.Matches (list => list.Count == 2)));
 
         _extensionMock.Expect (mock => mock.ObjectsLoading (
             Arg.Is (_subTransaction),
             Arg<ReadOnlyCollection<ObjectID>>.Matches (list => list.Count == 2)));
 
-        _extensionMock.ObjectsLoaded (null, null);
-        LastCall.Constraints (Mocks_Is.Same (_subTransaction), Property.Value ("Count", 2));
-        _extensionMock.RelationRead (null, null, null, (IReadOnlyCollectionData<DomainObject>) null, ValueAccess.Original);
-        LastCall.Constraints (
-            Mocks_Is.Same (_subTransaction),
-            Mocks_Is.Same (_order1),
-            Mocks_Is.Equal (GetEndPointDefinition (typeof (Order), "OrderItems")),
-            Mocks_Is.NotNull(),
-            Mocks_Is.Equal (ValueAccess.Original));
+        _extensionMock.Expect (mock => mock.ObjectsLoaded (
+            Arg.Is (_subTransaction),
+            Arg<IReadOnlyList<DomainObject>>.Matches (list => list.Count == 2)));
+
+        _extensionMock.RelationRead (
+            Arg.Is (_subTransaction),
+            Arg.Is (_order1),
+            Arg.Is (GetEndPointDefinition (typeof (Order), "OrderItems")),
+            Arg<IReadOnlyCollectionData<DomainObject>>.Is.NotNull,
+            Arg.Is (ValueAccess.Original));
       }
       _mockRepository.ReplayAll();
 
       Dev.Null = _order1.GetOriginalRelatedObjectsAsDomainObjectCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
+
+      _mockRepository.VerifyAll();
+    }
+
+    [Test]
+    public void GetOriginalRelatedObjectsWithLazyLoad_ForVirtualCollection ()
+    {
+      using (_mockRepository.Ordered())
+      {
+        _extensionMock.RelationReading (
+            _subTransaction, _product1, GetEndPointDefinition (typeof (Product), "Reviews"), ValueAccess.Original);
+
+        _extensionMock.Expect (mock => mock.ObjectsLoading (
+            Arg.Is (_subTransaction.ParentTransaction),
+            Arg<ReadOnlyCollection<ObjectID>>.Matches (list => list.Count == 3)));
+        
+        _extensionMock.Expect (mock => mock.ObjectsLoaded (
+            Arg.Is (_subTransaction.ParentTransaction),
+            Arg<IReadOnlyList<DomainObject>>.Matches (list => list.Count == 3)));
+
+        _extensionMock.Expect (mock => mock.ObjectsLoading (
+            Arg.Is (_subTransaction),
+            Arg<ReadOnlyCollection<ObjectID>>.Matches (list => list.Count == 3)));
+
+        _extensionMock.Expect (mock => mock.ObjectsLoaded (
+            Arg.Is (_subTransaction),
+            Arg<IReadOnlyList<DomainObject>>.Matches (list => list.Count == 3)));
+
+        _extensionMock.RelationRead (
+            Arg.Is (_subTransaction),
+            Arg.Is (_product1),
+            Arg.Is (GetEndPointDefinition (typeof (Product), "Reviews")),
+            Arg<IReadOnlyCollectionData<DomainObject>>.Is.NotNull,
+            Arg.Is (ValueAccess.Original));
+      }
+      _mockRepository.ReplayAll();
+
+      Dev.Null = _product1.GetOriginalRelatedObjectsAsVirtualCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews");
 
       _mockRepository.VerifyAll();
     }

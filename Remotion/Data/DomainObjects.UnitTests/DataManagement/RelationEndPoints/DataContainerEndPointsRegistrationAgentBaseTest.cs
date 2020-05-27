@@ -169,18 +169,5 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
           ((ExceptionCommand) result).Exception.Message, Is.EqualTo (
             "The relations of object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be unloaded.\r\nOh no!"));
     }
-
-    [Test]
-    public void Serialization ()
-    {
-      var agent = new TestableDataContainerEndPointsRegistrationAgentBase (
-          new SerializableRelationEndPointFactoryFake(), 
-          new SerializableRelationEndPointRegistrationAgentFake());
-
-      var deserializedAgent = Serializer.SerializeAndDeserialize (agent);
-
-      Assert.That (deserializedAgent.EndPointFactory, Is.Not.Null);
-      Assert.That (deserializedAgent.RegistrationAgent, Is.Not.Null);
-    }
   }
 }

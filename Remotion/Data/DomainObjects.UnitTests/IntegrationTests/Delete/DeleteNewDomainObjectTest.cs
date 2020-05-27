@@ -20,7 +20,6 @@ using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
 {
@@ -104,11 +103,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     }
 
     [Test]
-    public void DomainObjectGetRelatedObjects ()
+    public void DomainObjectGetRelatedObjectsForDomainObjectCollection ()
     {
       _newOrder.Delete ();
       Assert.That (
           () => _newOrder.GetRelatedObjectsAsDomainObjectCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"),
+          Throws.InstanceOf<ObjectInvalidException>());
+    }
+
+    [Test]
+    public void DomainObjectGetRelatedObjectsForVirtualCollection ()
+    {
+      var product = Product.NewObject ();
+      var productReview = ProductReview.NewObject ();
+      productReview.Product = product;
+
+      product.Delete ();
+      Assert.That (
+          () => product.GetRelatedObjectsAsVirtualCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews"),
           Throws.InstanceOf<ObjectInvalidException>());
     }
 
@@ -122,11 +134,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     }
 
     [Test]
-    public void DomainObjectGetOriginalRelatedObjects ()
+    public void DomainObjectGetOriginalRelatedObjectsForDomainObjectCollection  ()
     {
       _newOrder.Delete ();
       Assert.That (
           () => _newOrder.GetOriginalRelatedObjectsAsDomainObjectCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"),
+          Throws.InstanceOf<ObjectInvalidException>());
+    }
+
+    [Test]
+
+    public void DomainObjectGetOriginalRelatedObjectsForVirtualCollection ()
+    {
+      var product = Product.NewObject();
+      var productReview = ProductReview.NewObject();
+      productReview.Product = product;
+
+      product.Delete ();
+      Assert.That (
+          () => product.GetOriginalRelatedObjectsAsVirtualCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews"),
           Throws.InstanceOf<ObjectInvalidException>());
     }
 
@@ -323,7 +349,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     }
 
     [Test]
-    public void DeleteFromManyToOneRelation ()
+    public void DeleteFromManyToOneRelationForDomainObjectCollection ()
     {
       Customer newCustomer = Customer.NewObject ();
 
@@ -337,7 +363,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     }
 
     [Test]
-    public void DeleteFromOneToManyRelation ()
+    public void DeleteFromManyToOneRelationForVirtualCollection ()
+    {
+      var product = Product.NewObject ();
+      var productReview = ProductReview.NewObject ();
+      productReview.Product = product;
+
+      var productReviewID = productReview.ID;
+
+      productReview.Delete ();
+
+      Assert.That (product.Reviews.Contains (productReviewID), Is.False);
+    }
+
+    [Test]
+    public void DeleteFromOneToManyRelationForDomainObjectCollection ()
     {
       Customer newCustomer = Customer.NewObject ();
 
@@ -348,6 +388,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
       newCustomer.Delete ();
 
       Assert.That (_newOrder.Customer, Is.Null);
+    }
+
+    [Test]
+    public void DeleteFromOneToManyRelationForVirtualCollection ()
+    {
+      var product = Product.NewObject ();
+      var productReview = ProductReview.NewObject ();
+      productReview.Product = product;
+
+      product.Delete ();
+
+      Assert.That (productReview.Product, Is.Null);
     }
 
     [Test]

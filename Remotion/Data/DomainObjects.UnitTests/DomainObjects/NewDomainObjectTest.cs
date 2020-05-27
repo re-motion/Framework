@@ -179,7 +179,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    public void GetOriginalRelatedObjects ()
+    public void GetOriginalRelatedObjects_ForDomainObjectCollection ()
     {
       Order order = Order.NewObject ();
       OrderItem orderItem = OrderItem.NewObject ();
@@ -191,6 +191,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That (originalOrderItems, Is.Not.Null);
       Assert.That (originalOrderItems.Count, Is.EqualTo (0));
       Assert.That (orderItem.GetOriginalRelatedObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order"), Is.Null);
+    }
+
+    [Test]
+    public void GetOriginalRelatedObjects_ForVirtualCollection ()
+    {
+      Product product = Product.NewObject();
+      product.Name = "The Product";
+      product.Price = 1;
+
+      var productReview = ProductReview.NewObject();
+      productReview.Product = product;
+      productReview.Reviewer = DomainObjectIDs.Person3.GetObject<Person>();
+      productReview.Comment = "Test";
+      productReview.CreatedAt = DateTime.Now;
+      var originalProductReviews = product.GetOriginalRelatedObjectsAsVirtualCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews");
+
+      Assert.That (originalProductReviews, Is.Not.Null);
+      Assert.That (originalProductReviews.Count, Is.EqualTo (0));
+      Assert.That (productReview.GetOriginalRelatedObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.ProductReview.Product"), Is.Null);
     }
 
     [Test]
@@ -393,7 +412,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    public void OneToManyRelationHasChangedAfterCommit ()
+    public void OneToManyRelationHasChangedAfterCommit_ForDomainObjectCollection ()
     {
       Employee supervisor = Employee.NewObject ();
       Employee subordinate = Employee.NewObject ();
@@ -411,6 +430,31 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That (originalSubordinates.Count, Is.EqualTo (1));
       Assert.That (originalSubordinates[subordinate.ID], Is.SameAs (subordinate));
       Assert.That (subordinate.GetOriginalRelatedObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor"), Is.SameAs (supervisor));
+    }
+
+    [Test]
+
+    public void OneToManyRelationHasChangedAfterCommit_ForVirtualCollection ()
+    {
+      Product product = Product.NewObject();
+      product.Name = "The Product";
+      product.Price = 1;
+
+      var productReview = ProductReview.NewObject();
+      productReview.Product = product;
+      productReview.Reviewer = DomainObjectIDs.Person3.GetObject<Person>();
+      productReview.Comment = "Test";
+      productReview.CreatedAt = DateTime.Now;
+
+      Assert.That (product.GetOriginalRelatedObjectsAsVirtualCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews").Count, Is.EqualTo (0));
+      Assert.That (productReview.GetOriginalRelatedObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.ProductReview.Product"), Is.Null);
+
+      TestableClientTransaction.Commit ();
+
+      var originalProductReviews = product.GetOriginalRelatedObjectsAsVirtualCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews");
+      Assert.That (originalProductReviews.Count, Is.EqualTo (1));
+      Assert.That (originalProductReviews[0], Is.SameAs (productReview));
+      Assert.That (productReview.GetOriginalRelatedObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.ProductReview.Product"), Is.SameAs (product));
     }
   }
 }

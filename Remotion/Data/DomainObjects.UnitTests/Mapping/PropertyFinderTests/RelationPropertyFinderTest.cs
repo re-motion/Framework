@@ -82,13 +82,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyFinderTests
               new[]
               {
                   GetProperty (typeof (ClassWithOneSideRelationPropertiesNotInMapping), "BaseBidirectionalOneToOne"),
-                  GetProperty (typeof (ClassWithOneSideRelationPropertiesNotInMapping), "BaseBidirectionalOneToMany"),
+                  GetProperty (typeof (ClassWithOneSideRelationPropertiesNotInMapping), "BaseBidirectionalOneToManyForDomainObjectCollection"),
+                  GetProperty (typeof (ClassWithOneSideRelationPropertiesNotInMapping), "BaseBidirectionalOneToManyForVirtualCollection"),
                   GetProperty (typeof (ClassWithOneSideRelationPropertiesNotInMapping), "BasePrivateBidirectionalOneToOne"),
-                  GetProperty (typeof (ClassWithOneSideRelationPropertiesNotInMapping), "BasePrivateBidirectionalOneToMany"),
-                  GetProperty (typeof (ClassWithVirtualRelationEndPoints), "NoAttribute"),
-                  GetProperty (typeof (ClassWithVirtualRelationEndPoints), "NotNullable"),
+                  GetProperty (typeof (ClassWithOneSideRelationPropertiesNotInMapping), "BasePrivateBidirectionalOneToManyForDomainObjectCollection"),
+                  GetProperty (typeof (ClassWithOneSideRelationPropertiesNotInMapping), "BasePrivateBidirectionalOneToManyForVirtualCollection"),
+                  GetProperty (typeof (ClassWithVirtualRelationEndPoints), "NoAttributeForDomainObjectCollection"),
+                  GetProperty (typeof (ClassWithVirtualRelationEndPoints), "NoAttributeForVirtualCollection"),
+                  GetProperty (typeof (ClassWithVirtualRelationEndPoints), "NotNullableForDomainObjectCollection"),
+                  GetProperty (typeof (ClassWithVirtualRelationEndPoints), "NotNullableForVirtualCollection"),
                   GetProperty (typeof (ClassWithVirtualRelationEndPoints), "BidirectionalOneToOne"),
-                  GetProperty (typeof (ClassWithVirtualRelationEndPoints), "BidirectionalOneToMany")
+                  GetProperty (typeof (ClassWithVirtualRelationEndPoints), "BidirectionalOneToManyForDomainObjectCollection"),
+                  GetProperty (typeof (ClassWithVirtualRelationEndPoints), "BidirectionalOneToManyForVirtualCollection")
               }));
     }
   }

@@ -37,31 +37,26 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
 
     public override bool IsVirtualEndRelationEndpoint ()
     {
-      if (base.IsVirtualEndRelationEndpoint())
+      if (!IsBidirectionalRelation)
+        return false;
+
+      if (ReflectionUtility.IsObjectList (PropertyInfo.PropertyType))
         return true;
 
-      return !ContainsKey();
-    }
-
-    private bool ContainsKey ()
-    {
-      if (!IsBidirectionalRelation)
+      if (ReflectionUtility.IsIObjectList (PropertyInfo.PropertyType))
         return true;
 
       if (BidirectionalRelationAttribute.ContainsForeignKey)
-        return true;
-
-      if (ReflectionUtility.IsObjectList (PropertyInfo.PropertyType))  //TODO: RM-7294
         return false;
 
       var oppositePropertyInfo = GetOppositePropertyInfo();
       if (oppositePropertyInfo == null)
-        return true;
-
-      if (ReflectionUtility.IsDomainObject (oppositePropertyInfo.PropertyType))
         return false;
 
-      return true;
+      if (ReflectionUtility.IsDomainObject (oppositePropertyInfo.PropertyType))
+        return true;
+
+      return false;
     }
   }
 }

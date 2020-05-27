@@ -25,7 +25,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   /// Provices typical implementations of <see cref="RegisterEndPoints"/> and <see cref="CreateUnregisterEndPointsCommand"/> with template methods,
   /// <see cref="GetOwnedEndPointIDs"/> and <see cref="GetUnregisterProblem"/>, to be implemented by concrete implementations.
   /// </summary>
-  [Serializable]
   public abstract class DataContainerEndPointsRegistrationAgentBase : IDataContainerEndPointsRegistrationAgent
   {
     private readonly IRelationEndPointFactory _endPointFactory;

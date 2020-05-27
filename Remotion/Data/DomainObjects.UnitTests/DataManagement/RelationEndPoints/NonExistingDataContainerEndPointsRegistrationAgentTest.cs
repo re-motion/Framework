@@ -111,10 +111,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    public void GetUnregisterProblem_CollectionEndPoint_CurrentReferencesNonNull ()
+    public void GetUnregisterProblem_DomainObjectCollectionEndPoint_CurrentReferencesNonNull ()
     {
       var item = DomainObjectMother.CreateFakeObject<Customer>();
-      var endPointStub = MockRepository.GenerateStub<ICollectionEndPoint> ();
+      var endPointStub = MockRepository.GenerateStub<IDomainObjectCollectionEndPoint>();
       endPointStub.Stub (stub => stub.GetData ()).Return (new ReadOnlyDomainObjectCollectionDataDecorator (new DomainObjectCollectionData (new[] { item })));
       endPointStub.Stub (stub => stub.GetOriginalData ()).Return (new ReadOnlyDomainObjectCollectionDataDecorator (new DomainObjectCollectionData ()));
       endPointStub.Stub (stub => stub.ID).Return (RelationEndPointID.Create (DomainObjectIDs.Order1, typeof (Order), "Customer"));
@@ -127,10 +127,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    public void GetUnregisterProblem_CollectionEndPoint_OriginalReferencesNonNull ()
+    public void GetUnregisterProblem_DomainObjectCollectionEndPoint_OriginalReferencesNonNull ()
     {
       var item = DomainObjectMother.CreateFakeObject<Customer> ();
-      var endPointStub = MockRepository.GenerateStub<ICollectionEndPoint> ();
+      var endPointStub = MockRepository.GenerateStub<IDomainObjectCollectionEndPoint>();
       endPointStub.Stub (stub => stub.GetData ()).Return (new ReadOnlyDomainObjectCollectionDataDecorator (new DomainObjectCollectionData ()));
       endPointStub.Stub (stub => stub.GetOriginalData ()).Return (new ReadOnlyDomainObjectCollectionDataDecorator (new DomainObjectCollectionData (new[] { item })));
       endPointStub.Stub (stub => stub.ID).Return (RelationEndPointID.Create (DomainObjectIDs.Order1, typeof (Order), "Customer"));
@@ -143,9 +143,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    public void GetUnregisterProblem_CollectionEndPoint_NonDangling ()
+    public void GetUnregisterProblem_DomainObjectCollectionEndPoint_NonDangling ()
     {
-      var endPointStub = MockRepository.GenerateStub<ICollectionEndPoint> ();
+      var endPointStub = MockRepository.GenerateStub<IDomainObjectCollectionEndPoint>();
       endPointStub.Stub (stub => stub.GetData ()).Return (new ReadOnlyDomainObjectCollectionDataDecorator (new DomainObjectCollectionData ()));
       endPointStub.Stub (stub => stub.GetOriginalData ()).Return (new ReadOnlyDomainObjectCollectionDataDecorator (new DomainObjectCollectionData ()));
       endPointStub.Stub (stub => stub.ID).Return (RelationEndPointID.Create (DomainObjectIDs.Order1, typeof (Order), "Customer"));
@@ -156,16 +156,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    public void Serialization ()
+    public void GetUnregisterProblem_VirtualCollectionEndPoint ()
     {
-      var agent = new NonExistingDataContainerEndPointsRegistrationAgent (
-          new SerializableRelationEndPointFactoryFake (),
-          new SerializableRelationEndPointRegistrationAgentFake ());
+      var endPointStub = MockRepository.GenerateStub<IVirtualCollectionEndPoint> ();
+      endPointStub.Stub (stub => stub.GetData ()).Throw (new AssertionException ("GetData() should not be called."));
+      endPointStub.Stub (stub => stub.GetOriginalData ()).Throw (new AssertionException ("GetOriginalData() should not be called."));
 
-      var deserializedAgent = Serializer.SerializeAndDeserialize (agent);
+      var result = (string) PrivateInvoke.InvokeNonPublicMethod (_agent, "GetUnregisterProblem", endPointStub, _map);
 
-      Assert.That (deserializedAgent.EndPointFactory, Is.Not.Null);
-      Assert.That (deserializedAgent.RegistrationAgent, Is.Not.Null);
+      Assert.That (result, Is.Null);
     }
   }
 }

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement;
@@ -980,10 +981,10 @@ public class ClientTransaction
   /// Gets the related objects of a given <see cref="RelationEndPointID"/>.
   /// </summary>
   /// <param name="relationEndPointID">The <see cref="RelationEndPointID"/> to evaluate. It must refer to a <see cref="DomainObjectCollectionEndPoint"/>. Must not be <see langword="null"/>.</param>
-  /// <returns>A <see cref="DomainObjectCollection"/> containing the current related objects.</returns>
+  /// <returns>An <see cref="IObjectList{IDomainObject}"/> or a <see cref="DomainObjectCollection"/> containing the current related objects.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="relationEndPointID"/> is <see langword="null"/>.</exception>
   /// <exception cref="System.ArgumentException"><paramref name="relationEndPointID"/> does not refer to a <see cref="DomainObjectCollectionEndPoint"/></exception>
-  protected internal virtual DomainObjectCollection GetRelatedObjects (RelationEndPointID relationEndPointID)
+  protected internal virtual IReadOnlyList<IDomainObject> GetRelatedObjects (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
 
@@ -994,25 +995,35 @@ public class ClientTransaction
 
     _eventBroker.RaiseRelationReadingEvent (domainObject, relationEndPointID.Definition, ValueAccess.Current);
 
-    var collectionEndPoint = (IDomainObjectCollectionEndPoint) _dataManager.GetRelationEndPointWithLazyLoad (relationEndPointID); // TODO RM-7294
-    var relatedObjects = collectionEndPoint.Collection;
-    // Use ReadOnlyCollection<DomainObject> or IReadOnlyCollection<DomainObject> for RaiseRelationReadEvent, Change ReadOnlyDomainObjectCollectionAdapter<T> to implement IReadOnlyList<T> instead of IList<T>
-    var readOnlyRelatedObjects = new ReadOnlyDomainObjectCollectionAdapter<DomainObject> (relatedObjects);
+    IReadOnlyCollectionData<DomainObject> readOnlyRelatedObjects;
+    IReadOnlyList<IDomainObject> relatedObjects;
+    var collectionEndPoint = _dataManager.GetRelationEndPointWithLazyLoad (relationEndPointID);
+    if (collectionEndPoint is IDomainObjectCollectionEndPoint domainObjectCollectionEndPoint)
+    {
+      var domainObjectCollection = domainObjectCollectionEndPoint.Collection;
+      relatedObjects = (IReadOnlyList<IDomainObject>) domainObjectCollection;
+      readOnlyRelatedObjects = new ReadOnlyDomainObjectCollectionAdapter<DomainObject> (domainObjectCollection);
+    }
+    else
+    {
+      var virtualCollectionEndPoint = (IVirtualCollectionEndPoint) collectionEndPoint;
+      relatedObjects = virtualCollectionEndPoint.Collection;
+      readOnlyRelatedObjects = (IReadOnlyCollectionData<DomainObject>) relatedObjects;
+    }
 
     _eventBroker.RaiseRelationReadEvent (domainObject, relationEndPointID.Definition, readOnlyRelatedObjects, ValueAccess.Current);
 
-    // TODO RM-7294: Change return type to either object of IReadOnlyCollection<DomainObject>
     return relatedObjects;
   }
 
-  /// <summary>
-  /// Gets the original related objects of a given <see cref="RelationEndPointID"/> at the point of instantiation, loading, commit or rollback.
-  /// </summary>
-  /// <param name="relationEndPointID">The <see cref="RelationEndPointID"/> to evaluate. It must refer to a <see cref="DomainObjectCollectionEndPoint"/>. Must not be <see langword="null"/>.</param>
-  /// <returns>A <see cref="DomainObjectCollection"/> containing the original related objects.</returns>
-  /// <exception cref="System.ArgumentNullException"><paramref name="relationEndPointID"/> is <see langword="null"/>.</exception>
-  /// <exception cref="System.ArgumentException"><paramref name="relationEndPointID"/> does not refer to a <see cref="DomainObjectCollectionEndPoint"/></exception>
-  protected internal virtual DomainObjectCollection GetOriginalRelatedObjects (RelationEndPointID relationEndPointID)
+    /// <summary>
+    /// Gets the original related objects of a given <see cref="RelationEndPointID"/> at the point of instantiation, loading, commit or rollback.
+    /// </summary>
+    /// <param name="relationEndPointID">The <see cref="RelationEndPointID"/> to evaluate. It must refer to a <see cref="DomainObjectCollectionEndPoint"/>. Must not be <see langword="null"/>.</param>
+    /// <returns>An <see cref="IObjectList{IDomainObject}"/> or a <see cref="DomainObjectCollection"/> containing the original related objects.</returns>
+    /// <exception cref="System.ArgumentNullException"><paramref name="relationEndPointID"/> is <see langword="null"/>.</exception>
+    /// <exception cref="System.ArgumentException"><paramref name="relationEndPointID"/> does not refer to a <see cref="DomainObjectCollectionEndPoint"/></exception>
+    protected internal virtual IReadOnlyList<IDomainObject> GetOriginalRelatedObjects (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
 
@@ -1023,14 +1034,24 @@ public class ClientTransaction
 
     _eventBroker.RaiseRelationReadingEvent (domainObject, relationEndPointID.Definition, ValueAccess.Original);
 
-    var collectionEndPoint = (IDomainObjectCollectionEndPoint) _dataManager.GetRelationEndPointWithLazyLoad (relationEndPointID); // TODO RM-7294
-    var relatedObjects = collectionEndPoint.GetCollectionWithOriginalData();
-    // Use ReadOnlyCollection<DomainObject> or IReadOnlyCollection<DomainObject> for RaiseRelationReadEvent, Change ReadOnlyDomainObjectCollectionAdapter<T> to implement IReadOnlyList<T> instead of IList<T>
-    var readOnlyRelatedObjects = new ReadOnlyDomainObjectCollectionAdapter<DomainObject> (relatedObjects);
+    IReadOnlyCollectionData<DomainObject> readOnlyRelatedObjects;
+    IReadOnlyList<IDomainObject> relatedObjects;
+    var collectionEndPoint = _dataManager.GetRelationEndPointWithLazyLoad (relationEndPointID);
+    if (collectionEndPoint is IDomainObjectCollectionEndPoint domainObjectCollectionEndPoint)
+    {
+      var domainObjectCollection = domainObjectCollectionEndPoint.GetCollectionWithOriginalData();
+      relatedObjects = (IReadOnlyList<IDomainObject>) domainObjectCollection;
+      readOnlyRelatedObjects = new ReadOnlyDomainObjectCollectionAdapter<DomainObject> (domainObjectCollection);
+    }
+    else
+    {
+      var virtualCollectionEndPoint = (IVirtualCollectionEndPoint) collectionEndPoint;
+      relatedObjects = virtualCollectionEndPoint.GetCollectionWithOriginalData();
+      readOnlyRelatedObjects = (IReadOnlyCollectionData<DomainObject>) relatedObjects;
+    }
 
     _eventBroker.RaiseRelationReadEvent (domainObject, relationEndPointID.Definition, readOnlyRelatedObjects, ValueAccess.Original);
 
-    // TODO RM-7294: Change return type to either object of IReadOnlyCollection<DomainObject>
     return relatedObjects;
   }  
 

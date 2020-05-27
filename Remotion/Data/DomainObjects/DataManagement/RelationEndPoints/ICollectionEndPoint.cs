@@ -15,14 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 {
   /// <summary>
   /// Represents an <see cref="IRelationEndPoint"/> holding a collection of <see cref="DomainObject"/> instances, i.e. the "many" side of a relation.
   /// </summary>
-  public interface ICollectionEndPoint : IVirtualEndPoint<ReadOnlyDomainObjectCollectionDataDecorator>
+  public interface ICollectionEndPoint<out TData> : IVirtualEndPoint<TData>
+      where TData : ICollectionEndPointData
   {
     void MarkDataComplete (DomainObject[] items);
 

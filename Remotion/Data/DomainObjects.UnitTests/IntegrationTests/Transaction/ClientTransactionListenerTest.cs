@@ -655,7 +655,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     }
 
     [Test]
-    public void RelationEndPointUnload ()
+    public void RelationEndPointUnload_ForDomainObjectCollection ()
     {
       var order1 = DomainObjectIDs.Order1.GetObject<Order> ();
       var orderItemsEndPoint = DomainObjectCollectionDataTestHelper.GetAssociatedEndPoint (order1.OrderItems);
@@ -673,6 +673,30 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       _mockRepository.ReplayAll ();
 
       UnloadService.UnloadVirtualEndPoint (TestableClientTransaction, orderItemsEndPoint.ID);
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void RelationEndPointUnload_ForVirtualCollection ()
+    {
+      var product1 = DomainObjectIDs.Product1.GetObject<Product> ();
+      var productReviewsEndPoint = VirtualCollectionDataTestHelper.GetAssociatedEndPoint (product1.Reviews);
+      productReviewsEndPoint.EnsureDataComplete();
+
+      Dev.Null = productReviewsEndPoint.HasChanged; // warm up has changed cache
+
+      TestableClientTransaction.AddListener (_strictListenerMock);
+
+      using (_mockRepository.Ordered ())
+      {
+        _strictListenerMock.Expect (mock => mock.RelationEndPointBecomingIncomplete (TestableClientTransaction, productReviewsEndPoint.ID));
+        _strictListenerMock.Expect (mock => mock.RelationEndPointMapUnregistering (TestableClientTransaction, productReviewsEndPoint.ID));
+      }
+
+      _mockRepository.ReplayAll ();
+
+      UnloadService.UnloadVirtualEndPoint (TestableClientTransaction, productReviewsEndPoint.ID);
 
       _mockRepository.VerifyAll ();
     }

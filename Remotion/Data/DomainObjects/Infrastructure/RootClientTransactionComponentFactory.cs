@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
@@ -26,7 +25,6 @@ using Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement;
 using Remotion.Data.DomainObjects.Infrastructure.InvalidObjects;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.Queries.EagerFetching;
-using Remotion.Data.DomainObjects.Validation;
 using Remotion.FunctionalProgramming;
 using Remotion.Mixins;
 using Remotion.TypePipe;
@@ -94,15 +92,18 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         ClientTransaction constructedTransaction,
         IRelationEndPointProvider endPointProvider,
         ILazyLoader lazyLoader,
-        IClientTransactionEventSink eventSink)
+        IClientTransactionEventSink eventSink,
+        IDataContainerMapReadOnlyView dataContainerMap)
     {
       ArgumentUtility.CheckNotNull ("constructedTransaction", constructedTransaction);
       ArgumentUtility.CheckNotNull ("endPointProvider", endPointProvider);
       ArgumentUtility.CheckNotNull ("lazyLoader", lazyLoader);
       ArgumentUtility.CheckNotNull ("eventSink", eventSink);
+      ArgumentUtility.CheckNotNull ("dataContainerMap", dataContainerMap);
 
       var domainObjectCollectionEndPointChangeDetectionStrategy = new RootDomainObjectCollectionEndPointChangeDetectionStrategy();
       var domainObjectCollectionEndPointDataManagerFactory = new DomainObjectCollectionEndPointDataManagerFactory (domainObjectCollectionEndPointChangeDetectionStrategy);
+      var virtualCollectionEndPointDataManagerFactory = new VirtualCollectionEndPointDataManagerFactory (dataContainerMap);
       var virtualObjectEndPointDataManagerFactory = new VirtualObjectEndPointDataManagerFactory();
 
       var relationEndPointFactory = CreateRelationEndPointFactory (
@@ -111,7 +112,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
           lazyLoader,
           eventSink,
           virtualObjectEndPointDataManagerFactory,
-          domainObjectCollectionEndPointDataManagerFactory);
+          domainObjectCollectionEndPointDataManagerFactory,
+          virtualCollectionEndPointDataManagerFactory);
       var virtualEndPointStateUpdateListener = new VirtualEndPointStateUpdateListener (eventSink);
       var stateUpdateRaisingRelationEndPointFactory = new StateUpdateRaisingRelationEndPointFactoryDecorator (
           relationEndPointFactory, 
@@ -128,7 +130,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         ILazyLoader lazyLoader,
         IClientTransactionEventSink eventSink,
         IVirtualObjectEndPointDataManagerFactory virtualObjectEndPointDataManagerFactory,
-        IDomainObjectCollectionEndPointDataManagerFactory domainObjectCollectionEndPointDataManagerFactory)
+        IDomainObjectCollectionEndPointDataManagerFactory domainObjectCollectionEndPointDataManagerFactory,
+        IVirtualCollectionEndPointDataManagerFactory virtualCollectionEndPointDataManagerFactory)
     {
       ArgumentUtility.CheckNotNull ("constructedTransaction", constructedTransaction);
       ArgumentUtility.CheckNotNull ("endPointProvider", endPointProvider);
@@ -139,6 +142,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
       var associatedDomainObjectCollectionDataStrategyFactory = new AssociatedDomainObjectCollectionDataStrategyFactory (endPointProvider);
       var domainObjectCollectionEndPointCollectionProvider = new DomainObjectCollectionEndPointCollectionProvider (associatedDomainObjectCollectionDataStrategyFactory);
+      var virtualCollectionEndPointCollectionProvider = new VirtualCollectionEndPointCollectionProvider (endPointProvider);
+
       return new RelationEndPointFactory (
           constructedTransaction,
           endPointProvider,
@@ -147,7 +152,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure
           virtualObjectEndPointDataManagerFactory,
           domainObjectCollectionEndPointDataManagerFactory, 
           domainObjectCollectionEndPointCollectionProvider,
-          associatedDomainObjectCollectionDataStrategyFactory);
+          associatedDomainObjectCollectionDataStrategyFactory,
+          virtualCollectionEndPointCollectionProvider,
+          virtualCollectionEndPointDataManagerFactory);
     }
 
     protected override IObjectLoader CreateObjectLoader (

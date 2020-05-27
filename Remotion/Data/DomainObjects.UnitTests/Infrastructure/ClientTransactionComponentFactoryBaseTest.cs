@@ -93,6 +93,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       DelegatingDataManager endPointProviderDataManager = null;
       DelegatingDataManager lazyLoaderDataManager = null;
       DelegatingDataManager objectLoaderDataManager = null;
+      DelegatingDataContainerMap relationEndPointManagerDataContainerMap = null;
 
       var factoryPartialMock = MockRepository.GeneratePartialMock<TestableClientTransactionComponentFactoryBase>();
       factoryPartialMock
@@ -108,8 +109,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
           .WhenCalled (mi => lazyLoaderDataManager = (DelegatingDataManager) mi.Arguments[0]);
       factoryPartialMock
           .Expect (
-              mock => mock.CallCreateRelationEndPointManager (_fakeConstructedTransaction, fakeEndPointProvider, fakeLazyLoader, fakeEventSink))
-          .Return (fakeRelationEndPointManager);
+              mock => mock.CallCreateRelationEndPointManager (
+                  Arg.Is (_fakeConstructedTransaction),
+                  Arg.Is (fakeEndPointProvider),
+                  Arg.Is (fakeLazyLoader),
+                  Arg.Is (fakeEventSink),
+                  Arg<DelegatingDataContainerMap>.Is.TypeOf))
+          .Return (fakeRelationEndPointManager)
+          .WhenCalled (mi => relationEndPointManagerDataContainerMap = (DelegatingDataContainerMap) mi.Arguments[4]);
       factoryPartialMock
           .Expect (
               mock => mock.CallCreateObjectLoader (
@@ -134,6 +141,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       Assert.That (endPointProviderDataManager.InnerDataManager, Is.SameAs (dataManager));
       Assert.That (lazyLoaderDataManager.InnerDataManager, Is.SameAs (dataManager));
       Assert.That (objectLoaderDataManager.InnerDataManager, Is.SameAs (dataManager));
+      Assert.That (relationEndPointManagerDataContainerMap.InnerDataContainerMap, Is.SameAs (dataManager.DataContainers));
 
       Assert.That (dataManager.ClientTransaction, Is.SameAs (_fakeConstructedTransaction));
       Assert.That (dataManager.TransactionEventSink, Is.SameAs (fakeEventSink));

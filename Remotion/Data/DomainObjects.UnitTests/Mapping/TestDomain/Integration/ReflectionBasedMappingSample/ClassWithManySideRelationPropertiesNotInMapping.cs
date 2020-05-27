@@ -29,8 +29,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.R
     [DBBidirectionalRelation ("BaseBidirectionalOneToOne", ContainsForeignKey = true)]
     public abstract ClassWithVirtualRelationEndPoints BaseBidirectionalOneToOne { get; set; }
 
-    [DBBidirectionalRelation ("BaseBidirectionalOneToMany")]
-    public abstract ClassWithVirtualRelationEndPoints BaseBidirectionalOneToMany { get; set; }
+    [DBBidirectionalRelation ("BaseBidirectionalOneToManyForDomainObjectCollection")]
+    public abstract ClassWithVirtualRelationEndPoints BaseBidirectionalOneToManyForDomainObjectCollection { get; set; }
+
+    [DBBidirectionalRelation ("BaseBidirectionalOneToManyForVirtualCollection")]
+    public abstract ClassWithVirtualRelationEndPoints BaseBidirectionalOneToManyForVirtualCollection { get; set; }
 
     private ClassWithVirtualRelationEndPoints BasePrivateUnidirectional
     {
@@ -45,8 +48,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.R
       set { throw new NotImplementedException(); }
     }
 
-    [DBBidirectionalRelation ("BasePrivateBidirectionalOneToMany")]
-    private ClassWithVirtualRelationEndPoints BasePrivateBidirectionalOneToMany
+    [DBBidirectionalRelation ("BasePrivateBidirectionalOneToManyForDomainObjectCollection")]
+    private ClassWithVirtualRelationEndPoints BasePrivateBidirectionalOneToManyForDomainObjectCollection
+    {
+      get { throw new NotImplementedException (); }
+      set { throw new NotImplementedException (); }
+    }
+
+    [DBBidirectionalRelation ("BasePrivateBidirectionalOneToManyForVirtualCollection")]
+    private ClassWithVirtualRelationEndPoints BasePrivateBidirectionalOneToManyForVirtualCollection
     {
       get { throw new NotImplementedException (); }
       set { throw new NotImplementedException (); }

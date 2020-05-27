@@ -54,19 +54,14 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       _domainModelConstraintProvider = domainModelConstraintProvider;
     }
 
+    public abstract bool IsVirtualEndRelationEndpoint ();
+
     public IRelationEndPointDefinition GetMetadata ()
     {
       if (IsVirtualEndRelationEndpoint())
         return CreateVirtualRelationEndPointDefinition (ClassDefinition);
       else
         return CreateRelationEndPointDefinition (ClassDefinition);
-    }
-
-    public virtual bool IsVirtualEndRelationEndpoint ()
-    {
-      if (!IsBidirectionalRelation)
-        return false;
-      return ReflectionUtility.IsObjectList (PropertyInfo.PropertyType); //TODO: RM-7294
     }
 
     private IRelationEndPointDefinition CreateRelationEndPointDefinition (ClassDefinition classDefinition)
@@ -104,15 +99,18 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
             GetSortExpression(),
             PropertyInfo);
       }
-      //else if (ReflectionUtility.IsObjectQuery (PropertyInfo.PropertyType)) 
-      //{
-      //  TODO: RM-7294
-      //}
+      else if (ReflectionUtility.IsIObjectList (PropertyInfo.PropertyType))
+      {
+        return new VirtualCollectionRelationEndPointDefinition (
+            classDefinition,
+            GetPropertyName(),
+            IsMandatory(),
+            GetSortExpression(),
+            PropertyInfo);
+      }
       else
       {
-        // TODO: RM-7294
-        //return new TypeNotVirtualRelationEndPointDefinition (classDefinition, propertyName, propertyDefinition.PropertyInfo.PropertyType);
-        throw new NotImplementedException();
+        return new TypeNotCompatibleWithVirtualRelationEndPointDefinition (classDefinition, GetPropertyName(), PropertyInfo.PropertyType);
       }
     }
 

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -27,7 +28,9 @@ using Remotion.Development.UnitTesting;
 using Remotion.Reflection;
 using Remotion.Utilities;
 using Rhino.Mocks;
+using Rhino.Mocks.Constraints;
 using File = System.IO.File;
+using Is = NUnit.Framework.Is;
 
 namespace Remotion.Data.DomainObjects.UnitTests
 {
@@ -229,6 +232,279 @@ namespace Remotion.Data.DomainObjects.UnitTests
       var result = ReflectionUtility.IsMixedProperty (property, _classDefinitionWithMixedProperty);
 
       Assert.That (result, Is.True);
+    }
+
+    [Test]
+    public void IsRelationType_IObjectList_ReturnsTrue ()
+    {
+      Assert.That (ReflectionUtility.IsRelationType (typeof (IObjectList<DomainObject>)), Is.True);
+    }
+
+    [Test]
+    public void IsRelationType_ObjectList_ReturnsTrue ()
+    {
+      Assert.That (ReflectionUtility.IsRelationType (typeof (ObjectList<DomainObject>)), Is.True);
+    }
+
+    [Test]
+    public void IsRelationType_DomainObject_ReturnsTrue ()
+    {
+      Assert.That (ReflectionUtility.IsRelationType (typeof (DomainObject)), Is.True);
+    }
+
+    [Test]
+    public void IsIObjectList_IObjectListClosedWithDomainObject_ReturnsTrue ()
+    {
+      Assert.That (ReflectionUtility.IsIObjectList (typeof (IObjectList<DomainObject>)), Is.True);
+    }
+
+    [Test]
+    public void IsIObjectList_IObjectListClosedWithIDomainObject_ReturnsTrue ()
+    {
+      Assert.That (ReflectionUtility.IsIObjectList (typeof (IObjectList<IDomainObject>)), Is.True);
+    }
+
+    [Test]
+    public void IsIObjectList_IObjectListOpen_ReturnsTrue ()
+    {
+      Assert.That (ReflectionUtility.IsIObjectList (typeof (IObjectList<>)), Is.True);
+    }
+
+    [Test]
+    public void IsIObjectList_ObjectList_ReturnsFalse ()
+    {
+      Assert.That (ReflectionUtility.IsIObjectList (typeof (ObjectList<DomainObject>)), Is.False);
+    }
+
+    [Test]
+    public void IsIObjectList_DerivedFromIObjectList_ReturnsFalse ()
+    {
+      Assert.That (ReflectionUtility.IsIObjectList (typeof (IDerivedObjectList<DomainObject>)), Is.False);
+    }
+
+    [Test]
+    public void IsIObjectList_DomainObject_ReturnsFalse ()
+    {
+      Assert.That (ReflectionUtility.IsIObjectList (typeof (DomainObject)), Is.False);
+    }
+
+    [Test]
+    public void IsObjectList_ObjectListClosedWithDomainObject_ReturnsTrue ()
+    {
+      Assert.That (ReflectionUtility.IsObjectList (typeof (ObjectList<DomainObject>)), Is.True);
+    }
+
+    [Test]
+    public void IsObjectList_DerivedFromObjectList_ReturnsTrue ()
+    {
+      Assert.That (ReflectionUtility.IsObjectList (typeof (OrderCollection)), Is.True);
+    }
+
+    [Test]
+    public void IsObjectList_ObjectListOpen_ReturnsTrue ()
+    {
+      Assert.That (ReflectionUtility.IsObjectList (typeof (ObjectList<>)), Is.True);
+    }
+
+    [Test]
+    public void IsObjectList_DomainObjectCollection_ReturnsFalse ()
+    {
+      Assert.That (ReflectionUtility.IsObjectList (typeof (DomainObjectCollection)), Is.False);
+    }
+
+    [Test]
+    public void IsObjectList_IObjectList_ReturnsFalse ()
+    {
+      Assert.That (ReflectionUtility.IsObjectList (typeof (IObjectList<DomainObject>)), Is.False);
+    }
+
+    [Test]
+    public void IsObjectList_DomainObject_ReturnsFalse ()
+    {
+      Assert.That (ReflectionUtility.IsObjectList (typeof (DomainObject)), Is.False);
+    }
+
+    [Test]
+    public void IsDomainObject_DomainObject_ReturnsTrue ()
+    {
+      Assert.That (ReflectionUtility.IsDomainObject (typeof (DomainObject)), Is.True);
+    }
+
+    [Test]
+    public void IsDomainObject_DerivedFromDomainObject_ReturnsTrue ()
+    {
+      Assert.That (ReflectionUtility.IsDomainObject (typeof (Order)), Is.True);
+    }
+
+    [Test]
+    public void IsDomainObject_IDomainObject_ReturnsFalse ()
+    {
+      Assert.That (ReflectionUtility.IsDomainObject (typeof (IDomainObject)), Is.False);
+    }
+
+    [Test]
+    public void IsDomainObject_ObjectList_ReturnsFalse ()
+    {
+      Assert.That (ReflectionUtility.IsDomainObject (typeof (ObjectList<DomainObject>)), Is.False);
+    }
+
+    [Test]
+    public void IsDomainObject_Object_ReturnsFalse ()
+    {
+      Assert.That (ReflectionUtility.IsDomainObject (typeof (object)), Is.False);
+    }
+
+    [Test]
+    public void GetRelatedObjectTypeFromRelationProperty_ObjectList_ReturnsTypeParameterValue ()
+    {
+      var propertyInfoStub = MockRepository.GenerateStub<IPropertyInformation>();
+      propertyInfoStub.Stub (_ => _.PropertyType).Return (typeof (ObjectList<Order>));
+
+      Assert.That (ReflectionUtility.GetRelatedObjectTypeFromRelationProperty (propertyInfoStub), Is.EqualTo (typeof (Order)));
+    }
+
+    [Test]
+    public void GetRelatedObjectTypeFromRelationProperty_IObjectList_ReturnsTypeParameterValue ()
+    {
+      var propertyInfoStub = MockRepository.GenerateStub<IPropertyInformation>();
+      propertyInfoStub.Stub (_ => _.PropertyType).Return (typeof (IObjectList<Order>));
+
+      Assert.That (ReflectionUtility.GetRelatedObjectTypeFromRelationProperty (propertyInfoStub), Is.EqualTo (typeof (Order)));
+    }
+
+    [Test]
+    public void GetRelatedObjectTypeFromRelationProperty_IDomainObject_ReturnsTypeParameterValue ()
+    {
+      var propertyInfoStub = MockRepository.GenerateStub<IPropertyInformation>();
+      propertyInfoStub.Stub (_ => _.PropertyType).Return (typeof (IDomainObject));
+
+      Assert.That (ReflectionUtility.GetRelatedObjectTypeFromRelationProperty (propertyInfoStub), Is.EqualTo (typeof (IDomainObject)));
+    }
+
+    [Test]
+    public void GetRelatedObjectTypeFromRelationProperty_DomainObject_ReturnsTypeParameterValue ()
+    {
+      var propertyInfoStub = MockRepository.GenerateStub<IPropertyInformation>();
+      propertyInfoStub.Stub (_ => _.PropertyType).Return (typeof (DomainObject));
+
+      Assert.That (ReflectionUtility.GetRelatedObjectTypeFromRelationProperty (propertyInfoStub), Is.EqualTo (typeof (DomainObject)));
+    }
+
+    [Test]
+    public void GetRelatedObjectTypeFromRelationProperty_Object_ReturnsTypeParameterValue ()
+    {
+      var propertyInfoStub = MockRepository.GenerateStub<IPropertyInformation>();
+      propertyInfoStub.Stub (_ => _.PropertyType).Return (typeof (object));
+
+      Assert.That (ReflectionUtility.GetRelatedObjectTypeFromRelationProperty (propertyInfoStub), Is.EqualTo (typeof (object)));
+    }
+
+    [Test]
+    public void GetObjectListTypeParameter_ObjectList_ReturnsTypeParameterValue ()
+    {
+      Assert.That (ReflectionUtility.GetObjectListTypeParameter (typeof (ObjectList<Person>)), Is.EqualTo (typeof (Person)));
+    }
+
+    [Test]
+    public void GetObjectListTypeParameter_DerivedObjectList_ReturnsTypeParameterValue ()
+    {
+      Assert.That (ReflectionUtility.GetObjectListTypeParameter (typeof (OrderCollection)), Is.EqualTo (typeof (Order)));
+    }
+
+    [Test]
+    public void GetObjectListTypeParameter_OpenGeneric_ReturnsNull ()
+    {
+      Assert.That (ReflectionUtility.GetObjectListTypeParameter (typeof (ObjectList<>)), Is.Null);
+    }
+
+    [Test]
+    public void GetObjectListTypeParameter_IObjectList_ThrowsArgumentException ()
+    {
+      Assert.That (
+          () => ReflectionUtility.GetObjectListTypeParameter (typeof (IObjectList<>)),
+          Throws.ArgumentException.With.Message.StartWith (
+              "Parameter 'type' has type 'Remotion.Data.DomainObjects.IObjectList`1[TDomainObject]' when type 'Remotion.Data.DomainObjects.ObjectList`1[T]' was expected."));
+    }
+
+    [Test]
+    public void GetObjectListTypeParameter_DomainObjectCollection_ThrowsArgumentException ()
+    {
+      Assert.That (
+          () => ReflectionUtility.GetObjectListTypeParameter (typeof (DomainObjectCollection)),
+          Throws.ArgumentException.With.Message.StartWith (
+              "Parameter 'type' has type 'Remotion.Data.DomainObjects.DomainObjectCollection' when type 'Remotion.Data.DomainObjects.ObjectList`1[T]' was expected."));
+    }
+
+    [Test]
+    public void GetObjectListTypeParameter_DomainObject_ThrowsArgumentException ()
+    {
+      Assert.That (
+          () => ReflectionUtility.GetObjectListTypeParameter (typeof (DomainObject)),
+          Throws.ArgumentException.With.Message.StartWith (
+              "Parameter 'type' has type 'Remotion.Data.DomainObjects.DomainObject' when type 'Remotion.Data.DomainObjects.ObjectList`1[T]' was expected."));
+    }
+
+    [Test]
+    public void GetObjectListTypeParameter_IListOfDomainObject_ThrowsArgumentException ()
+    {
+      Assert.That (
+          () => ReflectionUtility.GetObjectListTypeParameter (typeof (List<DomainObject>)),
+          Throws.ArgumentException.With.Message.StartWith (
+              "Parameter 'type' has type 'System.Collections.Generic.List`1[Remotion.Data.DomainObjects.DomainObject]' when type 'Remotion.Data.DomainObjects.ObjectList`1[T]' was expected."));
+    }
+
+    [Test]
+    public void GetIObjectListTypeParameter_ObjectList_ReturnsTypeParameterValue ()
+    {
+      Assert.That (ReflectionUtility.GetIObjectListTypeParameter (typeof (IObjectList<Person>)), Is.EqualTo (typeof (Person)));
+    }
+
+    [Test]
+    public void GetIObjectListTypeParameter_DerivedObjectList_ReturnsTypeParameterValue ()
+    {
+      Assert.That (ReflectionUtility.GetIObjectListTypeParameter (typeof (IDerivedObjectList<Order>)), Is.EqualTo (typeof (Order)));
+    }
+
+    [Test]
+    public void GetIObjectListTypeParameter_OpenGeneric_ReturnsTypeParameter ()
+    {
+      Assert.That (ReflectionUtility.GetIObjectListTypeParameter (typeof (IObjectList<>)), Is.Null);
+    }
+
+    [Test]
+    public void GetIObjectListTypeParameter_ObjectList_ThrowsArgumentException ()
+    {
+      Assert.That (
+          () => ReflectionUtility.GetIObjectListTypeParameter (typeof (ObjectList<>)),
+          Throws.ArgumentException.With.Message.StartWith (
+              "Parameter 'type' has type 'Remotion.Data.DomainObjects.ObjectList`1[T]' when type 'Remotion.Data.DomainObjects.IObjectList`1[TDomainObject]' was expected."));
+    }
+
+    [Test]
+    public void GetIObjectListTypeParameter_DomainObjectCollection_ThrowsArgumentException ()
+    {
+      Assert.That (
+          () => ReflectionUtility.GetIObjectListTypeParameter (typeof (DomainObjectCollection)),
+          Throws.ArgumentException.With.Message.StartWith (
+              "Parameter 'type' has type 'Remotion.Data.DomainObjects.DomainObjectCollection' when type 'Remotion.Data.DomainObjects.IObjectList`1[TDomainObject]' was expected."));
+    }
+
+    [Test]
+    public void GetIObjectListTypeParameter_DomainObject_ThrowsArgumentException ()
+    {
+      Assert.That (
+          () => ReflectionUtility.GetIObjectListTypeParameter (typeof (DomainObject)),
+          Throws.ArgumentException.With.Message.StartWith (
+              "Parameter 'type' has type 'Remotion.Data.DomainObjects.DomainObject' when type 'Remotion.Data.DomainObjects.IObjectList`1[TDomainObject]' was expected."));
+    }
+
+    [Test]
+    public void GetIObjectListTypeParameter_IListOfDomainObject_ThrowsArgumentException ()
+    {
+      Assert.That (
+          () => ReflectionUtility.GetIObjectListTypeParameter (typeof (IList<DomainObject>)),
+          Throws.ArgumentException.With.Message.StartWith (
+              "Parameter 'type' has type 'System.Collections.Generic.IList`1[Remotion.Data.DomainObjects.DomainObject]' when type 'Remotion.Data.DomainObjects.IObjectList`1[TDomainObject]' was expected."));
     }
   }
 }

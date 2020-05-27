@@ -76,7 +76,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       Assert.That (deserializedManager.RelationEndPoints.Count, Is.EqualTo (7));
 
       var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, ReflectionMappingHelper.GetPropertyName (typeof (Order), "OrderItems"));
-      var endPoint = (ICollectionEndPoint) deserializedManager.GetRelationEndPointWithoutLoading (endPointID);
+      var endPoint = (ICollectionEndPoint<ICollectionEndPointData>) deserializedManager.GetRelationEndPointWithoutLoading (endPointID);
 
       Assert.That (endPoint.ClientTransaction, Is.SameAs (deserializedManager.ClientTransaction));
     }

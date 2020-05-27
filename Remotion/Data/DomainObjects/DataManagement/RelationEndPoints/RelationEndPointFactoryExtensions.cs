@@ -39,20 +39,20 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
           virtualObjectEndPoint.MarkDataComplete (null);
         return virtualObjectEndPoint;
       }
-      else /* if (endPointID.Definition is VirtualRelationEndPointDefinition) */ // TODO RM-7294
+      else if (endPointID.Definition is DomainObjectCollectionRelationEndPointDefinition)
       {
         var collectionEndPoint = endPointFactory.CreateDomainObjectCollectionEndPoint (endPointID);
         if (markDataComplete)
           collectionEndPoint.MarkDataComplete (new DomainObject[0]);
         return collectionEndPoint;
       }
-      /*else // TODO RM-7294
+      else
       {
-        var collectionEndPoint = endPointFactory.CreateCollectionEndPoint (endPointID);
+        var collectionEndPoint = endPointFactory.CreateVirtualCollectionEndPoint (endPointID);
         if (markDataComplete)
           collectionEndPoint.MarkDataComplete (new DomainObject[0]);
         return collectionEndPoint;
-      }*/
+      }
     }
   }
 }

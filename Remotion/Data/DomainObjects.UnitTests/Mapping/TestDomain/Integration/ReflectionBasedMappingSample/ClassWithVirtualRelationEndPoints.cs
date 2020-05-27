@@ -27,17 +27,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.R
     {
     }
 
-    [DBBidirectionalRelation ("NoAttribute")]
-    public abstract ObjectList<ClassWithRealRelationEndPoints> NoAttribute { get; set; }
+    [DBBidirectionalRelation ("NoAttributeForDomainObjectCollection")]
+    public abstract ObjectList<ClassWithRealRelationEndPoints> NoAttributeForDomainObjectCollection { get; set; }
 
-    [DBBidirectionalRelation ("NotNullable")]
+    [DBBidirectionalRelation ("NoAttributeForVirtualCollection")]
+    public abstract IObjectList<ClassWithRealRelationEndPoints> NoAttributeForVirtualCollection { get; set; }
+
+    [DBBidirectionalRelation ("NotNullableForDomainObjectCollection")]
     [Mandatory]
-    public abstract ObjectList<ClassWithRealRelationEndPoints> NotNullable { get; set; }
+    public abstract ObjectList<ClassWithRealRelationEndPoints> NotNullableForDomainObjectCollection { get; set; }
+
+    [DBBidirectionalRelation ("NotNullableForVirtualCollection")]
+    [Mandatory]
+    public abstract IObjectList<ClassWithRealRelationEndPoints> NotNullableForVirtualCollection { get; set; }
 
     [DBBidirectionalRelation ("BidirectionalOneToOne")]
     public abstract ClassWithRealRelationEndPoints BidirectionalOneToOne { get; set; }
 
-    [DBBidirectionalRelation ("BidirectionalOneToMany", SortExpression = "NoAttribute")]
-    public abstract ObjectList<ClassWithRealRelationEndPoints> BidirectionalOneToMany { get; }
+    [DBBidirectionalRelation ("BidirectionalOneToManyForDomainObjectCollection", SortExpression = "NoAttributeForDomainObjectCollection")]
+    public abstract ObjectList<ClassWithRealRelationEndPoints> BidirectionalOneToManyForDomainObjectCollection { get; }
+
+    [DBBidirectionalRelation ("BidirectionalOneToManyForVirtualCollection", SortExpression = "NoAttributeForVirtualCollection")]
+    public abstract IObjectList<ClassWithRealRelationEndPoints> BidirectionalOneToManyForVirtualCollection { get; }
   }
 }

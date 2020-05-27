@@ -36,12 +36,21 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull ("endPointDefinition", endPointDefinition);
 
-      if (endPointDefinition.Cardinality == CardinalityType.Many) /* if (endPointID.Definition is VirtualRelationEndPointDefinition) */ // TODO RM-7294
+      if (endPointDefinition.Cardinality == CardinalityType.Many && endPointDefinition is DomainObjectCollectionRelationEndPointDefinition)
         return new NullDomainObjectCollectionEndPoint (clientTransaction, endPointDefinition);
-      else if (endPointDefinition.IsVirtual)
+
+      if (endPointDefinition.Cardinality == CardinalityType.Many)
+        return new NullVirtualCollectionEndPoint (clientTransaction, endPointDefinition);
+
+      if (endPointDefinition.Cardinality == CardinalityType.One && endPointDefinition.IsVirtual)
         return new NullVirtualObjectEndPoint (clientTransaction, endPointDefinition);
-      else
-        return new NullRealObjectEndPoint (clientTransaction, endPointDefinition);
+
+      Assertion.IsTrue (
+          endPointDefinition.Cardinality == CardinalityType.One && !endPointDefinition.IsVirtual,
+          "The end point definition of type '{0}' cannot be mapped to a null object.",
+          endPointDefinition.GetType().FullName);
+
+      return new NullRealObjectEndPoint (clientTransaction, endPointDefinition);
     }
 
     private readonly ClientTransaction _clientTransaction;
