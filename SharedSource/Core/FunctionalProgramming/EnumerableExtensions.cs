@@ -161,7 +161,7 @@ namespace Remotion.FunctionalProgramming
 
     /// <summary>
     /// Generates a sequence of elements from the <paramref name="source"/> element by applying the specified next-element function, 
-    /// adding elements to the sequence while the current element satisfies the specified condition.
+    /// adding elements to the sequence while the current element satisfies the specified condition or the current element is not <see langword="null" />.
     /// </summary>
     /// <typeparam name="TSource">The type of the <paramref name="source"/> element.</typeparam>
     /// <param name="source">The object to be transformed into a sequence.</param>
@@ -171,11 +171,12 @@ namespace Remotion.FunctionalProgramming
     /// A collection of elements containing the <paramref name="source"/> and all subsequent elements where each element satisfies a specified condition.
     /// </returns>
     public static IEnumerable<TSource> CreateSequence<TSource> (this TSource source, Func<TSource, TSource> nextElementSelector, Func<TSource, bool> predicate)
+        where TSource : class
     {
       ArgumentUtility.CheckNotNull ("nextElementSelector", nextElementSelector);
       ArgumentUtility.CheckNotNull ("predicate", predicate);
 
-      for (TSource current = source; predicate (current); current = nextElementSelector (current))
+      for (TSource current = source; current != null && predicate (current); current = nextElementSelector (current))
         yield return current;
     }
 
@@ -195,7 +196,7 @@ namespace Remotion.FunctionalProgramming
     {
       ArgumentUtility.CheckNotNull ("nextElementSelector", nextElementSelector);
 
-      return CreateSequence (source, nextElementSelector, e => e != null);
+      return CreateSequence (source, nextElementSelector, e => true);
     }
 
     /// <summary>
@@ -222,12 +223,13 @@ namespace Remotion.FunctionalProgramming
         where TSource : class
         where TException : Exception
     {
-      return CreateSequenceWithCycleCheck (source, nextElementSelector, e => e != null, EqualityComparer<TSource>.Default, createCycleFoundException);
+      return CreateSequenceWithCycleCheck (source, nextElementSelector, e => true, EqualityComparer<TSource>.Default, createCycleFoundException);
     }
 
     /// <summary>
     /// Generates a sequence of elements from the <paramref name="source"/> element by applying the specified next-element function, 
-    /// adding elements to the sequence while the current element satisfies the specified condition. If a cycle is detected, an exception is thrown.
+    /// adding elements to the sequence while the current element satisfies the specified condition or the current element is not <see langword="null" />.
+    /// If a cycle is detected, an exception is thrown.
     /// </summary>
     /// <typeparam name="TSource">The type of the <paramref name="source"/> element.</typeparam>
     /// <typeparam name="TException">Type type of the exception returned by <paramref name="createCycleFoundException"/>.</typeparam>
@@ -251,6 +253,7 @@ namespace Remotion.FunctionalProgramming
         Func<TSource, bool> predicate,
         [CanBeNull] IEqualityComparer<TSource> equalityComparer,
         Func<TSource, TException> createCycleFoundException)
+        where TSource : class
         where TException : Exception
     {
       ArgumentUtility.CheckNotNull ("nextElementSelector", nextElementSelector);

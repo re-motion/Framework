@@ -203,10 +203,15 @@ namespace Remotion.UnitTests.FunctionalProgramming
     }
 
     [Test]
-    public void CreateSequence_WhilePredicateEvaluatesTrue_WithValueType ()
+    public void CreateSequence_WhilePredicateEvaluatesTrue_StopsOnNull ()
     {
-      IEnumerable<int> actual = 4.CreateSequence (e => e - 1, e => e > 0);
-      Assert.That (actual.ToArray(), Is.EqualTo (new[] { 4, 3, 2, 1 }));
+      IEnumerable<string> actual = "ABCD".CreateSequence (e =>
+      {
+        var nextElement = e.Substring (0, e.Length - 1);
+        return nextElement.Length == 0 ? null : nextElement;
+      }, e => true);
+
+      Assert.That (actual.ToArray(), Is.EqualTo (new[] { "ABCD", "ABC", "AB", "A" }));
     }
 
     [Test]
@@ -250,10 +255,15 @@ namespace Remotion.UnitTests.FunctionalProgramming
     }
 
     [Test]
-    public void CreateSequenceWithCycleCheck_WhilePredicateEvaluatesTrue_WithValueType ()
+    public void CreateSequenceWithCycleCheck_WhilePredicateEvaluatesTrue_StopsOnNull ()
     {
-      IEnumerable<int> actual = 4.CreateSequenceWithCycleCheck (e => e - 1, e => e > 0, null, e => new Exception());
-      Assert.That (actual.ToArray(), Is.EqualTo (new[] { 4, 3, 2, 1 }));
+      IEnumerable<string> actual = "ABCD".CreateSequenceWithCycleCheck (e =>
+      {
+        var nextElement = e.Substring (0, e.Length - 1);
+        return nextElement.Length == 0 ? null : nextElement;
+      }, e => true, null, e => new Exception());
+
+      Assert.That (actual.ToArray(), Is.EqualTo (new[] { "ABCD", "ABC", "AB", "A" }));
     }
 
     [Test]
