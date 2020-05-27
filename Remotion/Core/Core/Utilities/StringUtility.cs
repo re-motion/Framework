@@ -275,9 +275,12 @@ namespace Remotion.Utilities
 
     public static string ConcatWithSeparator (IList list, string separator)
     {
+#pragma warning disable 618
       return ConcatWithSeparator (list, separator, null, null);
+#pragma warning restore 618
     }
 
+    [Obsolete ("Use ConcatWithSeperator (IList, string) instead. Parameter 'format' is no longer used. (Version 1.21.8)")]
     public static string ConcatWithSeparator (IList list, string separator, string format, IFormatProvider formatProvider)
     {
       if (list == null)
@@ -343,7 +346,9 @@ namespace Remotion.Utilities
       string format = null;
       if (elementType == typeof (float) || elementType == typeof (double))
         format = "R";
+#pragma warning disable 618
       return ConcatWithSeparator ((IList) value, ",", format, formatProvider);
+#pragma warning restore 618
     }
 
     private static string FormatScalarValue (object value, IFormatProvider formatProvider)
