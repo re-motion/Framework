@@ -31,7 +31,7 @@ using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium;
 namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome
 {
   /// <summary>
-  /// Responsible for creating a new Chrome browser, configured based on <see cref="IChromeConfiguration"/> and <see cref="ITestInfrastructureConfiguration"/>.
+  /// Responsible for creating a new Chrome browser, configured based on <see cref="IChromeConfiguration"/> and <see cref="DriverConfiguration"/>.
   /// </summary>
   public class ChromeBrowserFactory : IBrowserFactory
   {

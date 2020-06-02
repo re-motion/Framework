@@ -31,7 +31,7 @@ using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge;
 namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Edge
 {
   /// <summary>
-  /// Responsible for creating a new Edge browser, configured based on <see cref="IEdgeConfiguration"/>.
+  /// Responsible for creating a new Edge browser, configured based on <see cref="IEdgeConfiguration"/> and <see cref="DriverConfiguration"/>.
   /// </summary>
   public class EdgeBrowserFactory : IBrowserFactory
   {
