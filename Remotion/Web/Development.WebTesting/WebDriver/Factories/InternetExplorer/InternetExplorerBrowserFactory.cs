@@ -28,7 +28,7 @@ using Remotion.Web.Development.WebTesting.WebDriver.Configuration.InternetExplor
 namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.InternetExplorer
 {
   /// <summary>
-  /// Responsible for creating a new InternetExplorer browser, configured based on <see cref="IInternetExplorerConfiguration"/> and <see cref="ITestInfrastructureConfiguration"/>.
+  /// Responsible for creating a new InternetExplorer browser, configured based on <see cref="IInternetExplorerConfiguration"/> and <see cref="DriverConfiguration"/>.
   /// </summary>
   public class InternetExplorerBrowserFactory : IBrowserFactory
   {
