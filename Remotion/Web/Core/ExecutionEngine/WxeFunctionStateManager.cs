@@ -33,8 +33,8 @@ namespace Remotion.Web.ExecutionEngine
     [Serializable]
     public class WxeFunctionStateMetaData : Tuple<string, int, DateTime>
     {
-      public WxeFunctionStateMetaData (string functionToken, int lifetime, DateTime lastAccessUtc)
-          : base (functionToken, lifetime, lastAccessUtc)
+      public WxeFunctionStateMetaData (string functionToken, int lifetimeInMinutes, DateTime lastAccessUtc)
+          : base (functionToken, lifetimeInMinutes, lastAccessUtc)
       {
       }
 
@@ -43,6 +43,12 @@ namespace Remotion.Web.ExecutionEngine
         get { return Item1; }
       }
 
+      public int LifetimeInMinutes
+      {
+        get { return Item2; }
+      }
+
+      [Obsolete ("Use LifetimeInMinutes instead. (Version 1.21.8)", false)]
       public int Lifetime
       {
         get { return Item2; }
@@ -216,7 +222,7 @@ namespace Remotion.Web.ExecutionEngine
       {
         WxeFunctionStateMetaData functionStateMetaData;
         if (_functionStates.TryGetValue (functionToken, out functionStateMetaData))
-          return functionStateMetaData.LastAccessUtc.AddMinutes (functionStateMetaData.Lifetime) < DateTime.UtcNow;
+          return functionStateMetaData.LastAccessUtc.AddMinutes (functionStateMetaData.LifetimeInMinutes) < DateTime.UtcNow;
 
         return true;
       }
@@ -242,7 +248,7 @@ namespace Remotion.Web.ExecutionEngine
 
         s_log.Debug (string.Format ("Refreshing WxeFunctionState {0}.", functionToken));
         WxeFunctionStateMetaData old = _functionStates[functionToken];
-        _functionStates[functionToken] = new WxeFunctionStateMetaData (old.FunctionToken, old.Lifetime, DateTime.UtcNow);
+        _functionStates[functionToken] = new WxeFunctionStateMetaData (old.FunctionToken, old.LifetimeInMinutes, DateTime.UtcNow);
       }
     }
 
