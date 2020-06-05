@@ -239,13 +239,13 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     [Test]
     public void RetrieveExistingFunctionState ()
     {
-      DateTime timeBeforeRefresh = DateTime.Now;
+      DateTime timeBeforeRefresh = DateTime.UtcNow;
       Thread.Sleep (20);
 
       WxeFunctionState functionState = _wxeHandler.ResumeExistingFunctionState (CurrentHttpContext, c_functionTokenForFunctionStateWithEnabledCleanUp);
 
       Assert.That (functionState, Is.SameAs (_functionStateWithEnabledCleanUp));
-      Assert.That (WxeFunctionStateManager.Current.GetLastAccess (c_functionTokenForFunctionStateWithEnabledCleanUp) > timeBeforeRefresh, Is.True);
+      Assert.That (WxeFunctionStateManager.Current.GetLastAccessUtc (c_functionTokenForFunctionStateWithEnabledCleanUp) > timeBeforeRefresh, Is.True);
       Assert.That (functionState.IsAborted, Is.False);
       Assert.That (WxeFunctionStateManager.Current.IsExpired (c_functionTokenForFunctionStateWithEnabledCleanUp), Is.False);
 
@@ -392,13 +392,13 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
       queryString.Set (WxeHandler.Parameters.WxeAction, WxeHandler.Actions.Refresh);
       HttpContextHelper.SetQueryString (CurrentHttpContext, queryString);
 
-      DateTime timeBeforeRefresh = DateTime.Now;
+      DateTime timeBeforeRefresh = DateTime.UtcNow;
       Thread.Sleep (20);
 
       WxeFunctionState functionState = _wxeHandler.ResumeExistingFunctionState (CurrentHttpContext, c_functionTokenForFunctionStateWithEnabledCleanUp);
 
       Assert.That (functionState, Is.Null);
-      Assert.That (WxeFunctionStateManager.Current.GetLastAccess (c_functionTokenForFunctionStateWithEnabledCleanUp) > timeBeforeRefresh, Is.True);
+      Assert.That (WxeFunctionStateManager.Current.GetLastAccessUtc (c_functionTokenForFunctionStateWithEnabledCleanUp) > timeBeforeRefresh, Is.True);
       Assert.That (_functionStateWithEnabledCleanUp.IsAborted, Is.False);
       Assert.That (WxeFunctionStateManager.Current.IsExpired (c_functionTokenForFunctionStateWithEnabledCleanUp), Is.False);
 
@@ -412,14 +412,14 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
       queryString.Set (WxeHandler.Parameters.WxeAction, WxeHandler.Actions.Refresh);
       HttpContextHelper.SetQueryString (CurrentHttpContext, queryString);
 
-      DateTime timeBeforeRefresh = DateTime.Now;
+      DateTime timeBeforeRefresh = DateTime.UtcNow;
       Thread.Sleep (20);
 
       WxeFunctionState functionState =
           _wxeHandler.ResumeExistingFunctionState (CurrentHttpContext, c_functionTokenForFunctionStateWithMissingFunction);
 
       Assert.That (functionState, Is.Null);
-      Assert.That (WxeFunctionStateManager.Current.GetLastAccess (c_functionTokenForFunctionStateWithMissingFunction) > timeBeforeRefresh, Is.True);
+      Assert.That (WxeFunctionStateManager.Current.GetLastAccessUtc (c_functionTokenForFunctionStateWithMissingFunction) > timeBeforeRefresh, Is.True);
       Assert.That (_functionStateWithMissingFunction.IsAborted, Is.False);
       Assert.That (WxeFunctionStateManager.Current.IsExpired (c_functionTokenForFunctionStateWithMissingFunction), Is.False);
 
