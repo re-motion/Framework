@@ -93,7 +93,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var result = _loadState.GetData (_collectionEndPointMock);
 
-      Assert.That (result, Is.TypeOf (typeof (ReadOnlyCollectionDataDecorator)));
+      Assert.That (result, Is.TypeOf (typeof (ReadOnlyDomainObjectCollectionDataDecorator)));
       var wrappedData = DomainObjectCollectionDataTestHelper.GetWrappedData (result);
       Assert.That (wrappedData, Is.SameAs (collectionDataStub));
     }
@@ -101,7 +101,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void GetCollectionData ()
     {
-      var collectionDataStub = new ReadOnlyCollectionDataDecorator (MockRepository.GenerateStub<IDomainObjectCollectionData> ());
+      var collectionDataStub = new ReadOnlyDomainObjectCollectionDataDecorator (MockRepository.GenerateStub<IDomainObjectCollectionData> ());
       _dataManagerMock.Stub (stub => stub.OriginalCollectionData).Return (collectionDataStub);
 
       var result = _loadState.GetOriginalData (_collectionEndPointMock);
@@ -291,7 +291,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _collectionEndPointMock.Stub (mock => mock.IsNull).Return (false);
       _collectionEndPointMock.Stub (mock => mock.GetCollectionEventRaiser ()).Return (fakeEventRaiser);
       _collectionEndPointMock.Stub (mock => mock.GetDomainObject ()).Return (_owningObject);
-      _collectionEndPointMock.Stub (mock => mock.GetData ()).Return (new ReadOnlyCollectionDataDecorator (fakeCollectionData));
+      _collectionEndPointMock.Stub (mock => mock.GetData ()).Return (new ReadOnlyDomainObjectCollectionDataDecorator (fakeCollectionData));
 
       var command = (RelationEndPointModificationCommand) _loadState.CreateRemoveCommand (_collectionEndPointMock, _relatedObject);
       Assert.That (command, Is.InstanceOf (typeof (DomainObjectCollectionEndPointRemoveCommand)));

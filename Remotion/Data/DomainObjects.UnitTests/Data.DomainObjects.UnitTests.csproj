@@ -812,7 +812,7 @@
     <Compile Include="DataManagement\CollectionData\TestDomainObjectCollectionDecorator.cs" />
     <Compile Include="DataManagement\RelationEndPoints\DerivedOrderCollection.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\DomainObjectCollectionEndPointDataManagerTest.cs" />
-    <Compile Include="DataManagement\CollectionData\ReadOnlyCollectionDataDecoratorTest.cs" />
+    <Compile Include="DataManagement\CollectionData\ReadOnlyDomainObjectCollectionDataDecoratorTest.cs" />
     <Compile Include="DataManagement\RelationEndPoints\DomainObjectCollectionEndPointIntegrationTest.cs" />
     <Compile Include="Infrastructure\InvalidObjects\InvalidDomainObjectManagerTest.cs" />
     <Compile Include="DataManagement\RelationEndPoints\RelationEndPointTest.cs" />
@@ -820,7 +820,7 @@
     <Compile Include="DataManagement\RelationEndPoints\VirtualObjectEndPointTest.cs" />
     <Compile Include="DataManagement\RelationEndPoints\DomainObjectCollectionFactoryTest.cs" />
     <Compile Include="DataManagement\CollectionData\ModificationCheckingDomainObjectCollectionDataDecoratorTest.cs" />
-    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\EndPointDelegatingCollectionDataTest.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\EndPointDelegatingDomainObjectCollectionDataTest.cs" />
     <Compile Include="DataManagement\CollectionData\DomainObjectCollectionDataTest.cs" />
     <Compile Include="DataManagement\CollectionData\SerializableDomainObjectCollectionEventRaiserFake.cs" />
     <Compile Include="DataManagement\CollectionData\EventRaisingDomainObjectCollectionDataDecoratorTest.cs" />

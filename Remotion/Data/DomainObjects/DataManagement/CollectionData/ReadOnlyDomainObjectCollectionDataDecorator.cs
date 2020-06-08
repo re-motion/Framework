@@ -15,19 +15,20 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 
 namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 {
   /// <summary>
   /// This class acts as a read-only decorator for another <see cref="IDomainObjectCollectionData"/> object. Every modifying method 
   /// of the <see cref="IDomainObjectCollectionData"/> interface will throw an <see cref="InvalidOperationException"/> when invoked on this class.
-  /// Modifications are still possible via the <see cref="IDomainObjectCollectionData"/> passed into the <see cref="ReadOnlyCollectionDataDecorator"/>'s
+  /// Modifications are still possible via the <see cref="IDomainObjectCollectionData"/> passed into the <see cref="ReadOnlyDomainObjectCollectionDataDecorator"/>'s
   /// constructor.
   /// </summary>
   [Serializable]
-  public class ReadOnlyCollectionDataDecorator : DomainObjectCollectionDataDecoratorBase
+  public class ReadOnlyDomainObjectCollectionDataDecorator : DomainObjectCollectionDataDecoratorBase, ICollectionEndPointData
   {
-    public ReadOnlyCollectionDataDecorator (IDomainObjectCollectionData wrappedData)
+    public ReadOnlyDomainObjectCollectionDataDecorator (IDomainObjectCollectionData wrappedData)
         : base (wrappedData)
     {
     }

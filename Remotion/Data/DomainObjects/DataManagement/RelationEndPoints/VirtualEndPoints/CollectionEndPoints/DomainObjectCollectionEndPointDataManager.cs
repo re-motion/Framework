@@ -25,7 +25,7 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints
 {
   /// <summary>
-  /// Keeps the data of a <see cref="ICollectionEndPoint"/>.
+  /// Keeps the data of a <see cref="IDomainObjectCollectionEndPoint"/>.
   /// </summary>
   public class DomainObjectCollectionEndPointDataManager : IDomainObjectCollectionEndPointDataManager
   {
@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       get { return _changeCachingDomainObjectCollectionData; }
     }
 
-    public ReadOnlyCollectionDataDecorator OriginalCollectionData
+    public ReadOnlyDomainObjectCollectionDataDecorator OriginalCollectionData
     {
       get { return _changeCachingDomainObjectCollectionData.OriginalData; }
     }

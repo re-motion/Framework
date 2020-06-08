@@ -28,13 +28,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
   public interface IAssociatableDomainObjectCollection
   {
     /// <summary>
-    /// Transforms the collection to an associated collection. The collection will represent the data stored by the <see cref="ICollectionEndPoint"/>
-    /// represented by <paramref name="endPointID"/>, and all modifications will be performed on that <see cref="ICollectionEndPoint"/>.
+    /// Transforms the collection to an associated collection. The collection will represent the data stored by the <see cref="IDomainObjectCollectionEndPoint"/>
+    /// represented by <paramref name="endPointID"/>, and all modifications will be performed on that <see cref="IDomainObjectCollectionEndPoint"/>.
     /// After this operation, the collection's data will be that of the <see cref="RelationEndPointID"/>.
     /// This interface is used by <see cref="DomainObjectCollectionEndPointSetCollectionCommand"/> and should usually not be called by framework
     /// users.
     /// </summary>
-    /// <param name="endPointID">The <see cref="RelationEndPointID"/> of the <see cref="ICollectionEndPoint"/> to associate with.</param>
+    /// <param name="endPointID">The <see cref="RelationEndPointID"/> of the <see cref="IDomainObjectCollectionEndPoint"/> to associate with.</param>
     /// <param name="associatedDomainObjectCollectionDataStrategyFactory">The <see cref="IAssociatedDomainObjectCollectionDataStrategyFactory"/> to get the new data strategy from.</param>
     /// <returns>The <see cref="IDomainObjectCollectionData"/> strategy used by the <see cref="DomainObjectCollection"/> before it was associated.</returns>
     IDomainObjectCollectionData TransformToAssociated (
@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     /// <summary>
     /// Transforms the collection to a stand-alone collection. The collection will get its own data store (with a fresh copy of the data that was held 
-    /// by the collection) and will not be associated with an <see cref="ICollectionEndPoint"/> any longer.
+    /// by the collection) and will not be associated with an <see cref="IDomainObjectCollectionEndPoint"/> any longer.
     /// This interface is used by  <see cref="DomainObjectCollectionEndPointSetCollectionCommand"/> and should usually not be required by framework 
     /// users.
     /// </summary>
@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     IDomainObjectCollectionData TransformToStandAlone ();
 
     /// <summary>
-    /// Gets the <see cref="ICollectionEndPoint"/> associated with this <see cref="DomainObjectCollection"/>, or <see langword="null" /> if
+    /// Gets the <see cref="IDomainObjectCollectionEndPoint"/> associated with this <see cref="DomainObjectCollection"/>, or <see langword="null" /> if
     /// this is a stand-alone collection.
     /// </summary>
     /// <value>The associated end point.</value>

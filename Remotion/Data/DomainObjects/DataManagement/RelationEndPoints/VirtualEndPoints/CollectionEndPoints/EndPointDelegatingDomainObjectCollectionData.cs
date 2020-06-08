@@ -29,15 +29,15 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 {
   /// <summary>
   /// Implements the <see cref="IDomainObjectCollectionData"/> by forwarding all requests to an implementation of 
-  /// <see cref="ICollectionEndPoint"/>.
+  /// <see cref="IDomainObjectCollectionEndPoint"/>.
   /// </summary>
   [Serializable]
-  public class EndPointDelegatingCollectionData : IDomainObjectCollectionData
+  public class EndPointDelegatingDomainObjectCollectionData : IDomainObjectCollectionData
   {
     private readonly RelationEndPointID _endPointID;
     private readonly IVirtualEndPointProvider _virtualEndPointProvider;
 
-    public EndPointDelegatingCollectionData (RelationEndPointID endPointID, IVirtualEndPointProvider virtualEndPointProvider)
+    public EndPointDelegatingDomainObjectCollectionData (RelationEndPointID endPointID, IVirtualEndPointProvider virtualEndPointProvider)
     {
       ArgumentUtility.CheckNotNull ("endPointID", endPointID);
       ArgumentUtility.CheckNotNull ("virtualEndPointProvider", virtualEndPointProvider);

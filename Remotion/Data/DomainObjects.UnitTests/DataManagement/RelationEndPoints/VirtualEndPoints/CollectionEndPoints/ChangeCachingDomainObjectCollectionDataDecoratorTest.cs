@@ -62,7 +62,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void OriginalData_IsReadOnly ()
     {
       Assert.That (_decoratorWithRealData.OriginalData.IsReadOnly, Is.True);
-      Assert.That (_decoratorWithRealData.OriginalData, Is.TypeOf (typeof (ReadOnlyCollectionDataDecorator)));
+      Assert.That (_decoratorWithRealData.OriginalData, Is.TypeOf (typeof (ReadOnlyDomainObjectCollectionDataDecorator)));
     }
 
     [Test]
@@ -726,9 +726,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     private void CheckOriginalDataMatches (IDomainObjectCollectionData expected, IDomainObjectCollectionData actual)
     {
       var expectedInner = DomainObjectCollectionDataTestHelper.GetWrappedDataAndCheckType<CopyOnWriteDomainObjectDomainObjectCollectionData> (
-          (ReadOnlyCollectionDataDecorator) expected);
+          (ReadOnlyDomainObjectCollectionDataDecorator) expected);
       var actualInner = DomainObjectCollectionDataTestHelper.GetWrappedDataAndCheckType<CopyOnWriteDomainObjectDomainObjectCollectionData> (
-          (ReadOnlyCollectionDataDecorator) actual);
+          (ReadOnlyDomainObjectCollectionDataDecorator) actual);
       Assert.That (actualInner, Is.SameAs (expectedInner));
     }
 

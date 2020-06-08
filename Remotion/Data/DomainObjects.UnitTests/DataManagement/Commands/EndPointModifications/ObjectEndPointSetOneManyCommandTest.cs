@@ -171,10 +171,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       // Scenario: orderItem.Order = newOrder;
 
       var oldRelatedEndPointID = RelationEndPointID.Resolve (_oldRelatedObject, o => o.OrderItems);
-      var oldRelatedEndPointMock = MockRepository.GenerateStrictMock<ICollectionEndPoint>();
+      var oldRelatedEndPointMock = MockRepository.GenerateStrictMock<ICollectionEndPoint<ICollectionEndPointData>>();
 
       var newRelatedEndPointID = RelationEndPointID.Resolve (_newRelatedObject, o => o.OrderItems);
-      var newRelatedEndPointMock = MockRepository.GenerateStrictMock<ICollectionEndPoint>();
+      var newRelatedEndPointMock = MockRepository.GenerateStrictMock<ICollectionEndPoint<ICollectionEndPointData>>();
 
       EndPointProviderStub.Stub (stub => stub.GetRelationEndPointWithLazyLoad (oldRelatedEndPointID)).Return (oldRelatedEndPointMock);
       EndPointProviderStub.Stub (stub => stub.GetRelationEndPointWithLazyLoad (newRelatedEndPointID)).Return (newRelatedEndPointMock);

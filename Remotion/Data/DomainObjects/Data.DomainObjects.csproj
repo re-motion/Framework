@@ -186,6 +186,7 @@
     <Compile Include="DataManagement\Commands\EndPointModifications\VirtualCollectionEndPointDeleteCommand.cs" />
     <Compile Include="DataManagement\Commands\EndPointModifications\VirtualCollectionEndPointAddCommand.cs" />
     <Compile Include="DataManagement\Commands\EndPointModifications\VirtualCollectionEndPointRemoveCommand.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\ICollectionEndPointData.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualCollectionEndPoint.cs" />
     <Compile Include="DataManagement\RelationEndPoints\IDomainObjectCollectionEndPoint.cs" />
     <Compile Include="DataManagement\RelationEndPoints\IVirtualCollectionEndPoint.cs" />
@@ -629,10 +630,10 @@
     <Compile Include="DomainObjectCollection.IList.cs" />
     <Compile Include="DataManagement\CollectionData\DomainObjectCollectionDataExtensions.cs" />
     <Compile Include="DataManagement\CollectionData\IndirectDomainObjectCollectionEventRaiser.cs" />
-    <Compile Include="DataManagement\CollectionData\ReadOnlyCollectionDataDecorator.cs" />
+    <Compile Include="DataManagement\CollectionData\ReadOnlyDomainObjectCollectionDataDecorator.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\DomainObjectCollectionFactory.cs" />
     <Compile Include="DataManagement\CollectionData\ModificationCheckingDomainObjectCollectionDataDecorator.cs" />
-    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\EndPointDelegatingCollectionData.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\EndPointDelegatingDomainObjectCollectionData.cs" />
     <Compile Include="DataManagement\CollectionData\DomainObjectCollectionData.cs" />
     <Compile Include="DataManagement\CollectionData\EventRaisingDomainObjectCollectionDataDecorator.cs" />
     <Compile Include="DataManagement\CollectionData\IDomainObjectCollectionData.cs" />

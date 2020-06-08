@@ -15,24 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Data.DomainObjects.DataManagement.CollectionData;
+using System.Collections.Generic;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 {
-  /// <summary>
-  /// Represents an <see cref="IRelationEndPoint"/> holding a collection of <see cref="DomainObject"/> instances, i.e. the "many" side of a relation.
-  /// </summary>
-  public interface ICollectionEndPoint<out TData> : IVirtualEndPoint<TData>
-      where TData : ICollectionEndPointData
+  public interface ICollectionEndPointData : IReadOnlyCollection<DomainObject>
   {
-    bool? HasChangedFast { get; } //Keep for new query collection endpoint
-
-    IDomainObjectCollectionEventRaiser GetCollectionEventRaiser ();
-
-    void MarkDataComplete (DomainObject[] items); //Keep for new query collection endpoint
-
-    IDataManagementCommand CreateAddCommand (DomainObject addedRelatedObject); //Keep for new query collection endpoint
-
-    void SortCurrentData (Comparison<DomainObject> comparison); //Keep for new query collection endpoint
   }
 }

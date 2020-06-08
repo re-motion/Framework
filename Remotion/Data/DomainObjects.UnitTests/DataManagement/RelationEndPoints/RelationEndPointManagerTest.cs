@@ -197,7 +197,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       RelationEndPointManagerTestHelper.AddEndPoint (_relationEndPointManager, virtualObjectEndPointStub);
 
       var collectionEndPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Order1, "OrderTicket");
-      var collectionEndPointStub = MockRepository.GenerateStub<ICollectionEndPoint> ();
+      var collectionEndPointStub = MockRepository.GenerateStub<ICollectionEndPoint<ICollectionEndPointData>> ();
       collectionEndPointStub.Stub (stub => stub.ID).Return (collectionEndPointID);
       RelationEndPointManagerTestHelper.AddEndPoint (_relationEndPointManager, collectionEndPointStub);
 
@@ -689,7 +689,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var result = _relationEndPointManager.GetOrCreateVirtualEndPoint (endPointID);
 
-      Assert.That (result, Is.Not.Null.And.AssignableTo<ICollectionEndPoint>());
+      Assert.That (result, Is.Not.Null.And.AssignableTo<ICollectionEndPoint<ICollectionEndPointData>>());
       Assert.That (_relationEndPointManager.RelationEndPoints[endPointID], Is.SameAs (result));
       Assert.That (result.IsDataComplete, Is.False);
     }

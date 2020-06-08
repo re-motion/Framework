@@ -162,12 +162,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       return CreateCollection (_loadState.GetOriginalData (this));
     }
 
-    public ReadOnlyCollectionDataDecorator GetData ()
+    public ReadOnlyDomainObjectCollectionDataDecorator GetData ()
     {
       return _loadState.GetData (this);
     }
 
-    public ReadOnlyCollectionDataDecorator GetOriginalData ()
+    public ReadOnlyDomainObjectCollectionDataDecorator GetOriginalData ()
     {
       return _loadState.GetOriginalData (this);
     }

@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   /// loaded, or it has been unloaded).
   /// </summary>
   public class IncompleteDomainObjectCollectionEndPointLoadState 
-      : IncompleteVirtualEndPointLoadStateBase<IDomainObjectCollectionEndPoint, ReadOnlyCollectionDataDecorator, IDomainObjectCollectionEndPointDataManager, IDomainObjectCollectionEndPointLoadState>,
+      : IncompleteVirtualEndPointLoadStateBase<IDomainObjectCollectionEndPoint, ReadOnlyDomainObjectCollectionDataDecorator, IDomainObjectCollectionEndPointDataManager, IDomainObjectCollectionEndPointLoadState>,
         IDomainObjectCollectionEndPointLoadState
   {
     private readonly IDomainObjectCollectionEndPointDataManagerFactory _dataManagerFactory;

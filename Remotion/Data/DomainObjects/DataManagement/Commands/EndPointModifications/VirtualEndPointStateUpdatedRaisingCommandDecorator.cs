@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
   /// Decorates a <see cref="IDataManagementCommand"/>, calling the <see cref="IVirtualEndPointStateUpdateListener.VirtualEndPointStateUpdated"/> notification method 
   /// immediately after the decorated <see cref="IDataManagementCommand"/>'s <see cref="IDataManagementCommand.Perform"/> method is called. This is
   /// used by <see cref="StateUpdateRaisingDomainObjectCollectionEndPointDecorator"/> to ensure <see cref="IVirtualEndPointStateUpdateListener"/> implementations
-  /// are informed when a command changes the state of a <see cref="ICollectionEndPoint"/>.
+  /// are informed when a command changes the state of a <see cref="ICollectionEndPoint{T}"/>.
   /// </summary>
   public class VirtualEndPointStateUpdatedRaisingCommandDecorator : DataManagementCommandDecoratorBase
   {

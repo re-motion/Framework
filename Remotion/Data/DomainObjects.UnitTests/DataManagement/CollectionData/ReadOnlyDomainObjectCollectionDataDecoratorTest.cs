@@ -27,9 +27,9 @@ using Rhino.Mocks;
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
 {
   [TestFixture]
-  public class ReadOnlyCollectionDataDecoratorTest : ClientTransactionBaseTest
+  public class ReadOnlyDomainObjectCollectionDataDecoratorTest : ClientTransactionBaseTest
   {
-    private ReadOnlyCollectionDataDecorator _readOnlyDecorator;
+    private ReadOnlyDomainObjectCollectionDataDecorator _readOnlyDecorator;
     private IDomainObjectCollectionData _wrappedDataStub;
 
     private Order _order1;
@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     {
       base.SetUp();
       _wrappedDataStub = MockRepository.GenerateStub<IDomainObjectCollectionData>();
-      _readOnlyDecorator = new ReadOnlyCollectionDataDecorator (_wrappedDataStub);
+      _readOnlyDecorator = new ReadOnlyDomainObjectCollectionDataDecorator (_wrappedDataStub);
 
       _order1 = DomainObjectIDs.Order1.GetObject<Order> ();
       _order3 = DomainObjectIDs.Order3.GetObject<Order> ();
@@ -190,7 +190,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     [Test]
     public void Serializable ()
     {
-      var decorator = new ReadOnlyCollectionDataDecorator (new DomainObjectCollectionData (new[] { _order1, _order3, _order4 }));
+      var decorator = new ReadOnlyDomainObjectCollectionDataDecorator (new DomainObjectCollectionData (new[] { _order1, _order3, _order4 }));
       var result = Serializer.SerializeAndDeserialize (decorator);
       Assert.That (result.Count, Is.EqualTo (3));
     }

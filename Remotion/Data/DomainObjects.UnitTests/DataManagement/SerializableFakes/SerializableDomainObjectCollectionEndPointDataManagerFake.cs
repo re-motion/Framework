@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
       get { throw new NotImplementedException(); }
     }
 
-    public ReadOnlyCollectionDataDecorator OriginalCollectionData
+    public ReadOnlyDomainObjectCollectionDataDecorator OriginalCollectionData
     {
       get { throw new NotImplementedException(); }
     }

@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   /// Represents the lazy-loading state of a <see cref="DomainObjectCollectionEndPoint"/> and implements accessor methods for that end-point.
   /// </summary>
   public interface IDomainObjectCollectionEndPointLoadState : 
-      IVirtualEndPointLoadState<IDomainObjectCollectionEndPoint, ReadOnlyCollectionDataDecorator, IDomainObjectCollectionEndPointDataManager>
+      IVirtualEndPointLoadState<IDomainObjectCollectionEndPoint, ReadOnlyDomainObjectCollectionDataDecorator, IDomainObjectCollectionEndPointDataManager>
   {
     bool? HasChangedFast ();
 

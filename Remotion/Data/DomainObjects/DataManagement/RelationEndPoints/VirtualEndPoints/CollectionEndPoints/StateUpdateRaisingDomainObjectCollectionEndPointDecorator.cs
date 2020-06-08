@@ -29,10 +29,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   /// return value of the <see cref="HasChanged"/> property has possibly changed.
   /// </summary>
   /// <remarks>
-  /// Because the <see cref="HasChanged"/> property of <see cref="ICollectionEndPoint"/> implementations can be expensive to determine, the 
+  /// Because the <see cref="HasChanged"/> property of <see cref="IDomainObjectCollectionEndPoint"/> implementations can be expensive to determine, the 
   /// <see cref="StateUpdateRaisingDomainObjectCollectionEndPointDecorator"/> doesn't actually check the property.
   /// Therefore, events may also be raised even the the <see cref="HasChanged"/> property still returns the same value as before. If the end-point's
-  /// new state is available via the <see cref="ICollectionEndPoint.HasChangedFast"/> property, the new state is passed to the 
+  /// new state is available via the <see cref="ICollectionEndPoint{T}.HasChangedFast"/> property, the new state is passed to the 
   /// <see cref="IVirtualEndPointStateUpdateListener.VirtualEndPointStateUpdated"/> method as a parameter.
   /// </remarks>
   public class StateUpdateRaisingDomainObjectCollectionEndPointDecorator : IDomainObjectCollectionEndPoint
@@ -510,7 +510,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public ReadOnlyCollectionDataDecorator GetData ()
+    public ReadOnlyDomainObjectCollectionDataDecorator GetData ()
     {
 #if DEBUG
       using (new ConstantChangeStateAsserter (_innerEndPoint))
@@ -520,7 +520,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public ReadOnlyCollectionDataDecorator GetOriginalData ()
+    public ReadOnlyDomainObjectCollectionDataDecorator GetOriginalData ()
     {
 #if DEBUG
       using (new ConstantChangeStateAsserter (_innerEndPoint))

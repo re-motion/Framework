@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   /// Represents the state of a <see cref="DomainObjectCollectionEndPoint"/> where all of its data is available (ie., the end-point has been (lazily) loaded).
   /// </summary>
   public class CompleteDomainObjectCollectionEndPointLoadState
-      : CompleteVirtualEndPointLoadStateBase<IDomainObjectCollectionEndPoint, ReadOnlyCollectionDataDecorator, IDomainObjectCollectionEndPointDataManager>,
+      : CompleteVirtualEndPointLoadStateBase<IDomainObjectCollectionEndPoint, ReadOnlyDomainObjectCollectionDataDecorator, IDomainObjectCollectionEndPointDataManager>,
         IDomainObjectCollectionEndPointLoadState
   {
     public CompleteDomainObjectCollectionEndPointLoadState (
@@ -41,19 +41,19 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     {
     }
 
-    public override ReadOnlyCollectionDataDecorator GetData (IDomainObjectCollectionEndPoint collectionEndPoint)
+    public override ReadOnlyDomainObjectCollectionDataDecorator GetData (IDomainObjectCollectionEndPoint collectionEndPoint)
     {
       ArgumentUtility.CheckNotNull ("collectionEndPoint", collectionEndPoint);
-      return new ReadOnlyCollectionDataDecorator(DataManager.CollectionData);
+      return new ReadOnlyDomainObjectCollectionDataDecorator(DataManager.CollectionData);
     }
 
-    public override ReadOnlyCollectionDataDecorator GetOriginalData (IDomainObjectCollectionEndPoint collectionEndPoint)
+    public override ReadOnlyDomainObjectCollectionDataDecorator GetOriginalData (IDomainObjectCollectionEndPoint collectionEndPoint)
     {
       ArgumentUtility.CheckNotNull ("collectionEndPoint", collectionEndPoint);
       return DataManager.OriginalCollectionData;
     }
 
-    public override void SetDataFromSubTransaction (IDomainObjectCollectionEndPoint collectionEndPoint, IVirtualEndPointLoadState<IDomainObjectCollectionEndPoint, ReadOnlyCollectionDataDecorator, IDomainObjectCollectionEndPointDataManager> sourceLoadState)
+    public override void SetDataFromSubTransaction (IDomainObjectCollectionEndPoint collectionEndPoint, IVirtualEndPointLoadState<IDomainObjectCollectionEndPoint, ReadOnlyDomainObjectCollectionDataDecorator, IDomainObjectCollectionEndPointDataManager> sourceLoadState)
     {
       ArgumentUtility.CheckNotNull ("collectionEndPoint", collectionEndPoint);
       var sourceCompleteLoadState = ArgumentUtility.CheckNotNullAndType<CompleteDomainObjectCollectionEndPointLoadState> ("sourceLoadState", sourceLoadState);

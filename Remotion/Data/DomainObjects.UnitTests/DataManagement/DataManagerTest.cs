@@ -934,7 +934,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var loadedObjectDataStub = MockRepository.GenerateStub<ILoadedObjectData>();
       loadedObjectDataStub.Stub (stub => stub.GetDomainObjectReference()).Return (fakeOrderItem);
 
-      var endPointMock = MockRepository.GenerateStrictMock<ICollectionEndPoint>();
+      var endPointMock = MockRepository.GenerateStrictMock<ICollectionEndPoint<ICollectionEndPointData>>();
       endPointMock.Stub (stub => stub.ID).Return (endPointID);
       endPointMock.Stub (stub => stub.Definition).Return (endPointID.Definition);
       endPointMock.Stub(stub => stub.IsDataComplete).Return(false);
@@ -983,7 +983,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     public void LoadLazyCollectionEndPoint_AlreadyLoaded ()
     {
       var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Order1, "OrderItems");
-      var endPointStub = MockRepository.GenerateStub<ICollectionEndPoint>();
+      var endPointStub = MockRepository.GenerateStub<ICollectionEndPoint<ICollectionEndPointData>>();
       endPointStub.Stub (stub => stub.ID).Return (endPointID);
       endPointStub.Stub (stub => stub.IsDataComplete).Return (true);
 
@@ -1071,7 +1071,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     public void LoadLazyVirtualObjectEndPoint_NotIVirtualObjectEndPoint ()
     {
       var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Order1, "OrderItems");
-      var endPointStub = MockRepository.GenerateStub<ICollectionEndPoint> ();
+      var endPointStub = MockRepository.GenerateStub<ICollectionEndPoint<ICollectionEndPointData>> ();
       _endPointManagerMock.Stub (stub => stub.GetRelationEndPointWithoutLoading (endPointID)).Return (endPointStub);
       Assert.That (
           () => _dataManagerWithMocks.LoadLazyVirtualObjectEndPoint (endPointID),

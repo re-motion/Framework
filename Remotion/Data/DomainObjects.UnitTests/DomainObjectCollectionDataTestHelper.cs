@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       var checkingDecorator = (ModificationCheckingDomainObjectCollectionDataDecorator) domainObjectCollectionData;
       Assert.That (checkingDecorator.RequiredItemType, Is.SameAs (expectedRequiredItemType));
 
-      var delegator = GetWrappedDataAndCheckType<EndPointDelegatingCollectionData> (checkingDecorator);
+      var delegator = GetWrappedDataAndCheckType<EndPointDelegatingDomainObjectCollectionData> (checkingDecorator);
       Assert.That (delegator.AssociatedEndPointID, Is.EqualTo (expectedEndPointID));
     }
 
@@ -115,7 +115,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       // collection => read-only decorator => actual data store
 
-      var readOnlyDecorator = GetDataStrategyAndCheckType<ReadOnlyCollectionDataDecorator> (collection);
+      var readOnlyDecorator = GetDataStrategyAndCheckType<ReadOnlyDomainObjectCollectionDataDecorator> (collection);
       GetWrappedDataAndCheckType<DomainObjectCollectionData> (readOnlyDecorator);
     }
 
@@ -127,7 +127,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       if (originalStrategy is EventRaisingDomainObjectCollectionDataDecorator)
         originalStrategy = GetWrappedData ((EventRaisingDomainObjectCollectionDataDecorator) originalStrategy);
 
-      var newStrategy = new ReadOnlyCollectionDataDecorator (originalStrategy);
+      var newStrategy = new ReadOnlyDomainObjectCollectionDataDecorator (originalStrategy);
       SetDataStrategy (collection, newStrategy);
     }
 
@@ -138,7 +138,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
         return null;
 
       var checkingDecorator = GetDataStrategyAndCheckType<ModificationCheckingDomainObjectCollectionDataDecorator> (collection);
-      var delegatingStrategy = GetWrappedDataAndCheckType<EndPointDelegatingCollectionData> (checkingDecorator);
+      var delegatingStrategy = GetWrappedDataAndCheckType<EndPointDelegatingDomainObjectCollectionData> (checkingDecorator);
       return delegatingStrategy.GetAssociatedEndPoint();
     }
   }

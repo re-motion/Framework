@@ -30,7 +30,7 @@ using Rhino.Mocks;
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints
 {
   [TestFixture]
-  public class EndPointDelegatingCollectionDataTest : ClientTransactionBaseTest
+  public class EndPointDelegatingDomainObjectCollectionDataTest : ClientTransactionBaseTest
   {
     private Order _owningOrder;
     private RelationEndPointID _endPointID;
@@ -39,12 +39,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     private IVirtualEndPointProvider _virtualEndPointProviderStub;
 
     private IDomainObjectCollectionData _endPointDataStub;
-    private ReadOnlyCollectionDataDecorator _endPointDataDecorator;
+    private ReadOnlyDomainObjectCollectionDataDecorator _endPointDataDecorator;
     private IDataManagementCommand _nestedCommandMock;
     private ExpandedCommand _expandedCommandFake;
     private IDataManagementCommand _commandStub;
 
-    private EndPointDelegatingCollectionData _delegatingData;
+    private EndPointDelegatingDomainObjectCollectionData _delegatingData;
 
     private OrderItem _orderItem1;
     private OrderItem _orderItem2;
@@ -64,14 +64,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
           .Return (_collectionEndPointMock);
 
       _endPointDataStub = MockRepository.GenerateStub<IDomainObjectCollectionData>();
-      _endPointDataDecorator = new ReadOnlyCollectionDataDecorator (_endPointDataStub);
+      _endPointDataDecorator = new ReadOnlyDomainObjectCollectionDataDecorator (_endPointDataStub);
 
       _commandStub = MockRepository.GenerateStub<IDataManagementCommand>();
       _nestedCommandMock = MockRepository.GenerateMock<IDataManagementCommand> ();
       _nestedCommandMock.Stub (stub => stub.GetAllExceptions ()).Return (new Exception[0]);
       _expandedCommandFake = new ExpandedCommand (_nestedCommandMock);
 
-      _delegatingData = new EndPointDelegatingCollectionData (_endPointID, _virtualEndPointProviderStub);
+      _delegatingData = new EndPointDelegatingDomainObjectCollectionData (_endPointID, _virtualEndPointProviderStub);
 
       _orderItem1 = DomainObjectIDs.OrderItem1.GetObject<OrderItem>();
       _orderItem2 = DomainObjectIDs.OrderItem2.GetObject<OrderItem>();
@@ -89,7 +89,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void Initialization_ChecksEndPointIDCardinality ()
     {
       Assert.That (
-          () => new EndPointDelegatingCollectionData (RelationEndPointID.Resolve (_owningOrder, o => o.Customer), _virtualEndPointProviderStub),
+          () => new EndPointDelegatingDomainObjectCollectionData (RelationEndPointID.Resolve (_owningOrder, o => o.Customer), _virtualEndPointProviderStub),
           Throws.ArgumentException
               .With.Message.EqualTo ("Associated end-point must be a CollectionEndPoint.\r\nParameter name: endPointID"));
     }
@@ -405,7 +405,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void Serializable ()
     {
-      var data = new EndPointDelegatingCollectionData (_endPointID, new SerializableRelationEndPointProviderFake());
+      var data = new EndPointDelegatingDomainObjectCollectionData (_endPointID, new SerializableRelationEndPointProviderFake());
 
       var deserializedInstance = Serializer.SerializeAndDeserialize (data);
 
@@ -420,7 +420,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       return endPointStub;
     }
 
-    private void StubCollectionEndPoint (ICollectionEndPoint endPointStub, ClientTransaction clientTransaction, Order owningOrder)
+    private void StubCollectionEndPoint (ICollectionEndPoint<ReadOnlyDomainObjectCollectionDataDecorator> endPointStub, ClientTransaction clientTransaction, Order owningOrder)
     {
       endPointStub.Stub (stub => stub.ClientTransaction).Return (clientTransaction);
       var relationEndPointDefinition = owningOrder.ID.ClassDefinition.GetMandatoryRelationEndPointDefinition (typeof (Order).FullName + ".OrderItems");
@@ -430,7 +430,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       endPointStub.Stub (mock => mock.GetDomainObjectReference ()).Return (owningOrder);
     }
 
-    private void CheckClientTransactionDiffersException (Action<EndPointDelegatingCollectionData, DomainObject> action)
+    private void CheckClientTransactionDiffersException (Action<EndPointDelegatingDomainObjectCollectionData, DomainObject> action)
     {
       var orderItemInOtherTransaction = DomainObjectMother.CreateObjectInTransaction<OrderItem> (ClientTransaction.CreateRootTransaction());
       try
@@ -444,7 +444,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       }
     }
 
-    private void CheckObjectDeletedException (Action<EndPointDelegatingCollectionData, DomainObject> action)
+    private void CheckObjectDeletedException (Action<EndPointDelegatingDomainObjectCollectionData, DomainObject> action)
     {
       OrderItem deletedObject;
       using (_delegatingData.GetAssociatedEndPoint().ClientTransaction.EnterNonDiscardingScope())
@@ -464,7 +464,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       }
     }
 
-    private void CheckOwningObjectDeletedException (Action<EndPointDelegatingCollectionData, DomainObject> action)
+    private void CheckOwningObjectDeletedException (Action<EndPointDelegatingDomainObjectCollectionData, DomainObject> action)
     {
       Order deletedOwningObject;
       using (_delegatingData.GetAssociatedEndPoint().ClientTransaction.EnterNonDiscardingScope())
@@ -475,7 +475,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var endPointStub = CreateDomainObjectCollectionEndPointStub (TestableClientTransaction, deletedOwningObject);
       var virtualEndPointProviderStub = MockRepository.GenerateStub<IVirtualEndPointProvider> ();
       virtualEndPointProviderStub.Stub (stub => stub.GetOrCreateVirtualEndPoint (_endPointID)).Return (endPointStub);
-      var data = new EndPointDelegatingCollectionData (_endPointID, virtualEndPointProviderStub);
+      var data = new EndPointDelegatingDomainObjectCollectionData (_endPointID, virtualEndPointProviderStub);
 
       using (_delegatingData.GetAssociatedEndPoint().ClientTransaction.EnterNonDiscardingScope())
       {

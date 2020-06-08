@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var checkingDecorator = (ModificationCheckingDomainObjectCollectionDataDecorator) result;
       Assert.That (checkingDecorator.RequiredItemType, Is.SameAs (typeof (Order)));
 
-      var delegator = DomainObjectCollectionDataTestHelper.GetWrappedDataAndCheckType<EndPointDelegatingCollectionData> (checkingDecorator);
+      var delegator = DomainObjectCollectionDataTestHelper.GetWrappedDataAndCheckType<EndPointDelegatingDomainObjectCollectionData> (checkingDecorator);
       Assert.That (delegator.AssociatedEndPointID, Is.EqualTo (ordersEndPointID));
       Assert.That (delegator.VirtualEndPointProvider, Is.SameAs (_virtualEndPointProviderStub));
     } 

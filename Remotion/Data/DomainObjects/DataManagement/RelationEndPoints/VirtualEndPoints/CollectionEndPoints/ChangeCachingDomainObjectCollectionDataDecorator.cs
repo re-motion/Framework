@@ -63,9 +63,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       _cachedHasChangedFlag = false;
     }
 
-    public ReadOnlyCollectionDataDecorator OriginalData
+    public ReadOnlyDomainObjectCollectionDataDecorator OriginalData
     {
-      get { return new ReadOnlyCollectionDataDecorator (_originalData); }
+      get { return new ReadOnlyDomainObjectCollectionDataDecorator (_originalData); }
     }
 
     public bool IsCacheUpToDate

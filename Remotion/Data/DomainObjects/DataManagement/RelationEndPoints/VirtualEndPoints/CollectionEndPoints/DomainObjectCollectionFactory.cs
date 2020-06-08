@@ -114,7 +114,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     /// <summary>
     /// Creates a stand-alone read-only collection of the given <paramref name="collectionType"/> via reflection. Read-onlyness is enforced by a
-    /// <see cref="ReadOnlyCollectionDataDecorator"/>. The collection is initialized to have the given initial <paramref name="content"/>.
+    /// <see cref="ReadOnlyDomainObjectCollectionDataDecorator"/>. The collection is initialized to have the given initial <paramref name="content"/>.
     /// The collection must provide a constructor that takes a single parameter of type <see cref="IDomainObjectCollectionData"/>.
     /// </summary>
     /// <param name="collectionType">The type of the collection to create.</param>
@@ -128,7 +128,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ArgumentUtility.CheckNotNull ("collectionType", collectionType);
       ArgumentUtility.CheckNotNull ("content", content);
 
-      var dataStrategy = new ReadOnlyCollectionDataDecorator (new DomainObjectCollectionData (content));
+      var dataStrategy = new ReadOnlyDomainObjectCollectionDataDecorator (new DomainObjectCollectionData (content));
       return CreateCollection (collectionType, dataStrategy);
     }
 

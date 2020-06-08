@@ -272,7 +272,7 @@ namespace Remotion.Data.DomainObjects
     }
 
     /// <summary>
-    /// Gets the <see cref="ICollectionEndPoint"/> associated with this <see cref="DomainObjectCollection"/>, or <see langword="null" /> if
+    /// Gets the <see cref="IDomainObjectCollectionEndPoint"/> associated with this <see cref="DomainObjectCollection"/>, or <see langword="null" /> if
     /// this is a stand-alone collection.
     /// </summary>
     /// <value>The associated end point.</value>

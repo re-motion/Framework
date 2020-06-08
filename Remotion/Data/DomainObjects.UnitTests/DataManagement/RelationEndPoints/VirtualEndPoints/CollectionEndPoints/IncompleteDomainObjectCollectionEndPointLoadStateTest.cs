@@ -277,7 +277,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var endPointLoader = new SerializableVirtualEndPointLoaderFake<
           IDomainObjectCollectionEndPoint, 
-          ReadOnlyCollectionDataDecorator, 
+          ReadOnlyDomainObjectCollectionDataDecorator, 
           IDomainObjectCollectionEndPointDataManager, 
           IDomainObjectCollectionEndPointLoadState> ();
       var dataManagerFactory = new SerializableDomainObjectCollectionEndPointDataManagerFactoryFake();

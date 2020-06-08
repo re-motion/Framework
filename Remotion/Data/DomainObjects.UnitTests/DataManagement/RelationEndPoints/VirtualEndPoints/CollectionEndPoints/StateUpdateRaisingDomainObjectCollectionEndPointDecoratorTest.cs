@@ -184,7 +184,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var endPointID = RelationEndPointID.Create (DomainObjectIDs.Order1, typeof (Order), "OrderItems");
       var endPoint = MockRepository.GenerateStub<IRealObjectEndPoint>();
-      var readOnlyCollectionDataDecorator = new ReadOnlyCollectionDataDecorator (new DomainObjectCollectionData ());
+      var readOnlyCollectionDataDecorator = new ReadOnlyDomainObjectCollectionDataDecorator (new DomainObjectCollectionData ());
       var domainObjectCollection = new DomainObjectCollection ();
       var eventRaiser = MockRepository.GenerateStub<IDomainObjectCollectionEventRaiser>();
       var orderItem = DomainObjectMother.CreateFakeObject<OrderItem> ();
@@ -254,7 +254,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (deserializedInstance.Listener, Is.Not.Null);
     }
 
-    private void CheckDelegationWithStateUpdate (Action<ICollectionEndPoint> action)
+    private void CheckDelegationWithStateUpdate (Action<ICollectionEndPoint<ReadOnlyDomainObjectCollectionDataDecorator>> action)
     {
       // Check with HasChangedFast returning the same value before and after the operation - no state update should be raised then
 

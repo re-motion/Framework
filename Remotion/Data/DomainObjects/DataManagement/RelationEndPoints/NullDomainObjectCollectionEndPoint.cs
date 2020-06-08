@@ -140,12 +140,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       get { throw new InvalidOperationException ("It is not possible to get the OriginalCollection from a NullCollectionEndPoint."); }
     }
 
-    public ReadOnlyCollectionDataDecorator GetData ()
+    public ReadOnlyDomainObjectCollectionDataDecorator GetData ()
     {
       throw new InvalidOperationException ("It is not possible to call GetData on a NullCollectionEndPoint.");
     }
 
-    public ReadOnlyCollectionDataDecorator GetOriginalData ()
+    public ReadOnlyDomainObjectCollectionDataDecorator GetOriginalData ()
     {
       throw new InvalidOperationException ("It is not possible to call GetOriginalData on a NullCollectionEndPoint.");
     }

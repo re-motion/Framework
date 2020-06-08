@@ -22,7 +22,7 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints
 {
   /// <summary>
-  /// Implements <see cref="IAssociatedDomainObjectCollectionDataStrategyFactory"/> by creating instances of <see cref="EndPointDelegatingCollectionData"/>.
+  /// Implements <see cref="IAssociatedDomainObjectCollectionDataStrategyFactory"/> by creating instances of <see cref="EndPointDelegatingDomainObjectCollectionData"/>.
   /// </summary>
   [Serializable]
   public class AssociatedDomainObjectCollectionDataStrategyFactory : IAssociatedDomainObjectCollectionDataStrategyFactory
@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
       var requiredItemType = endPointID.Definition.GetOppositeEndPointDefinition ().ClassDefinition.ClassType;
       return new ModificationCheckingDomainObjectCollectionDataDecorator (
-          requiredItemType, new EndPointDelegatingCollectionData (endPointID, _virtualEndPointProvider));
+          requiredItemType, new EndPointDelegatingDomainObjectCollectionData (endPointID, _virtualEndPointProvider));
     }
   }
 }

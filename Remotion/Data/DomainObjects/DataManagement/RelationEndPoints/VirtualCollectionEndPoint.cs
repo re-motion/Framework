@@ -156,12 +156,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       return CreateCollection ((IVirtualCollectionData)_loadState.GetOriginalData (this)); // TODO RM-7294 invalid cast
     }
 
-    public ReadOnlyCollectionDataDecorator GetData ()
+    public ReadOnlyDomainObjectCollectionDataDecorator GetData ()
     {
       return _loadState.GetData (this);
     }
 
-    public ReadOnlyCollectionDataDecorator GetOriginalData ()
+    public ReadOnlyDomainObjectCollectionDataDecorator GetOriginalData ()
     {
       return _loadState.GetOriginalData (this);
     }

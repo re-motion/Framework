@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var endPoint = RelationEndPointObjectMother.CreateObjectEndPoint (id, null);
 
       var customer = DomainObjectIDs.Customer1.GetObject<Customer> ();
-      var oppositeEndPoint = endPoint.GetEndPointWithOppositeDefinition<ICollectionEndPoint> (customer);
+      var oppositeEndPoint = endPoint.GetEndPointWithOppositeDefinition<ICollectionEndPoint<ICollectionEndPointData>> (customer);
 
       var oppositeID = RelationEndPointID.Create(customer.ID, endPoint.Definition.GetOppositeEndPointDefinition());
       Assert.That (oppositeEndPoint, Is.SameAs (TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (oppositeID)));
@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var id = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order).FullName + ".Customer");
       var endPoint = RelationEndPointObjectMother.CreateObjectEndPoint (id, null);
 
-      var oppositeEndPoint = endPoint.GetEndPointWithOppositeDefinition<ICollectionEndPoint> ((DomainObject) null);
+      var oppositeEndPoint = endPoint.GetEndPointWithOppositeDefinition<ICollectionEndPoint<ICollectionEndPointData>> ((DomainObject) null);
 
       Assert.That (oppositeEndPoint, Is.InstanceOf (typeof (NullDomainObjectCollectionEndPoint)));
       var expectedID = RelationEndPointID.Create(null, endPoint.Definition.GetOppositeEndPointDefinition ());
@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var endPoint = RelationEndPointObjectMother.CreateObjectEndPoint (id, null);
 
       var customer = DomainObjectIDs.Customer1.GetObject<Customer> ();
-      var oppositeEndPoint = endPoint.GetEndPointWithOppositeDefinition<ICollectionEndPoint> (customer.ID);
+      var oppositeEndPoint = endPoint.GetEndPointWithOppositeDefinition<ICollectionEndPoint<ICollectionEndPointData>> (customer.ID);
 
       var oppositeID = RelationEndPointID.Create(customer.ID, endPoint.Definition.GetOppositeEndPointDefinition ());
       Assert.That (oppositeEndPoint, Is.SameAs (TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (oppositeID)));
@@ -76,7 +76,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var id = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order).FullName + ".Customer");
       var endPoint = RelationEndPointObjectMother.CreateObjectEndPoint (id, null);
 
-      var oppositeEndPoint = endPoint.GetEndPointWithOppositeDefinition<ICollectionEndPoint> ((ObjectID) null);
+      var oppositeEndPoint = endPoint.GetEndPointWithOppositeDefinition<ICollectionEndPoint<ICollectionEndPointData>> ((ObjectID) null);
 
       Assert.That (oppositeEndPoint, Is.InstanceOf (typeof (NullDomainObjectCollectionEndPoint)));
       var expectedID = RelationEndPointID.Create(null, endPoint.Definition.GetOppositeEndPointDefinition ());

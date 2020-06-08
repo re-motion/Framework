@@ -15,10 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 {
-  public interface IDomainObjectCollectionEndPoint : ICollectionEndPoint
+  public interface IDomainObjectCollectionEndPoint : ICollectionEndPoint<ReadOnlyDomainObjectCollectionDataDecorator>
   {
     DomainObjectCollection Collection { get; }
 

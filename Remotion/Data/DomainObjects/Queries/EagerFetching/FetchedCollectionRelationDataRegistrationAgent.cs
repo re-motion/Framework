@@ -104,7 +104,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
 
     private bool TrySetCollectionEndPointData (RelationEndPointID endPointID, DomainObject[] items)
     {
-      var endPoint = (ICollectionEndPoint) _virtualEndPointProvider.GetOrCreateVirtualEndPoint (endPointID);
+      var endPoint = (ICollectionEndPoint<ICollectionEndPointData>) _virtualEndPointProvider.GetOrCreateVirtualEndPoint (endPointID);
       if (endPoint.IsDataComplete)
         return false;
 
