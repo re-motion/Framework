@@ -21,7 +21,7 @@ namespace Remotion.ExtensibleEnums.UnitTests.TestDomain
   [Sample]
   public static class ColorExtensions
   {
-    public static ExtensibleEnumDefinition<Color> LastCallArgument;
+    public static ExtensibleEnumDefinition<Color>? LastCallArgument;
 
     public static Color Red (this ExtensibleEnumDefinition<Color> definition)
     {

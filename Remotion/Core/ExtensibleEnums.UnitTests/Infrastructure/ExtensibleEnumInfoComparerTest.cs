@@ -25,8 +25,8 @@ namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
   [TestFixture]
   public class ExtensibleEnumInfoComparerTest
   {
-    private MethodInfo _fakeMethod;
-    private ExtensibleEnumInfoComparer<ExtensibleEnumInfo<Planet>> _comparer;
+    private MethodInfo _fakeMethod = default!;
+    private ExtensibleEnumInfoComparer<ExtensibleEnumInfo<Planet>> _comparer = default!;
 
     [SetUp]
     public void SetUp ()

@@ -23,6 +23,7 @@
     <NoWarn>1591;0419</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DocumentationFile>bin\Debug\Remotion.ExtensibleEnums.XML</DocumentationFile>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -34,6 +35,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn>1591;0419</NoWarn>
     <DocumentationFile>bin\Release\Remotion.ExtensibleEnums.XML</DocumentationFile>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>

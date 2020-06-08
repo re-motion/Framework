@@ -42,7 +42,7 @@ namespace Remotion.ExtensibleEnums
     /// of the value. Can be <see langword="null" />.
     /// </summary>
     /// <value>The declaration space of this value, or <see langword="null" /> if the value does not define a declaration space.</value>
-    string DeclarationSpace { get; }
+    string? DeclarationSpace { get; }
 
     /// <summary>
     /// Gets name of this value. This is a part of the <see cref="ID"/> of this extensible enum value.

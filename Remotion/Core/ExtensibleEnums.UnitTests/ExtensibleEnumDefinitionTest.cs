@@ -29,10 +29,10 @@ namespace Remotion.ExtensibleEnums.UnitTests
   [TestFixture]
   public class ExtensibleEnumDefinitionTest
   {
-    private Color _red;
-    private Color _green;
-    private Color _blue;
-    private MethodInfo _fakeMethod;
+    private Color _red = default!;
+    private Color _green = default!;
+    private Color _blue = default!;
+    private MethodInfo _fakeMethod = default!;
 
     [SetUp]
     public void SetUp ()

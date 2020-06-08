@@ -27,7 +27,7 @@ namespace Remotion.ExtensibleEnums.UnitTests
   [TestFixture]
   public class ExtensibleEnumTest
   {
-    private ExtensibleEnumDefinitionCache _extensibleEnumDefinitionCache;
+    private ExtensibleEnumDefinitionCache _extensibleEnumDefinitionCache = default!;
 
     [SetUp]
     public void SetUp ()
@@ -90,7 +90,7 @@ namespace Remotion.ExtensibleEnums.UnitTests
     [Test]
     public void EquatableEqualsTrue ()
     {
-      IEquatable<Color> value1 = new Color ("ID");
+      IEquatable<Color?> value1 = new Color ("ID");
       var value2 = new Color ("ID");
 
       Assert.That (value1.Equals (value2), Is.True);
@@ -99,7 +99,7 @@ namespace Remotion.ExtensibleEnums.UnitTests
     [Test]
     public void EquatableEqualsFalse_DifferentIDs ()
     {
-      IEquatable<Color> value1 = new Color ("ID1");
+      IEquatable<Color?> value1 = new Color ("ID1");
       var value2 = new Color ("ID2");
 
       Assert.That (value1.Equals (value2), Is.False);
@@ -108,7 +108,7 @@ namespace Remotion.ExtensibleEnums.UnitTests
     [Test]
     public void EquatableEqualsFalse_DifferentTypes ()
     {
-      IEquatable<Color> value1 = new Color ("ID");
+      IEquatable<Color?> value1 = new Color ("ID");
       var value2 = new MetallicColor ("ID");
 
       Assert.That (value1.Equals (value2), Is.False);
@@ -117,7 +117,7 @@ namespace Remotion.ExtensibleEnums.UnitTests
     [Test]
     public void EquatableEqualsFalse_Null ()
     {
-      IEquatable<Color> value = new Color ("ID");
+      IEquatable<Color?> value = new Color ("ID");
 
       Assert.That (value.Equals (null), Is.False);
     }
@@ -152,9 +152,9 @@ namespace Remotion.ExtensibleEnums.UnitTests
     [Test]
     public void Equals_False_Null ()
     {
-      var value = new Color ("ID");
+      Color value = new Color ("ID");
 
-      Assert.That (value.Equals ((object) null), Is.False);
+      Assert.That (value.Equals ((object?) null), Is.False);
     }
 
     [Test]
@@ -179,8 +179,8 @@ namespace Remotion.ExtensibleEnums.UnitTests
     [Test]
     public void EqualsOperator_True_Nulls ()
     {
-      Color value1 = null;
-      Color value2 = null;
+      Color? value1 = null;
+      Color? value2 = null;
 
       Assert.That (value1 == value2, Is.True);
       Assert.That (value1 != value2, Is.False);
@@ -209,7 +209,7 @@ namespace Remotion.ExtensibleEnums.UnitTests
     [Test]
     public void EqualsOperator_False_Null ()
     {
-      var value = new Color ("ID");
+      Color value = new Color ("ID");
 
       Assert.That (value == null, Is.False);
       Assert.That (value != null, Is.True);
