@@ -30,12 +30,12 @@ namespace Remotion.Tools.UnitTests
   [Serializable]
   public class AppDomainAssemblyResolverTest
   {
-    private string _testDllPath;
-    private string _testExePath;
-    private string _testInvalidDllPath;
+    private string _testDllPath = default!;
+    private string _testExePath = default!;
+    private string _testInvalidDllPath = default!;
 
-    private string _domainBase;
-    private AppDomain _appDomain;
+    private string _domainBase = default!;
+    private AppDomain _appDomain = default!;
 
     [OneTimeSetUp]
     public void OneTimeSetUp ()

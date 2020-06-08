@@ -71,7 +71,7 @@ namespace Remotion.Tools.Console.ConsoleApplication
 
     public ConsoleApplication () : this (System.Console.Error, System.Console.Out, 80, new ConsoleKeypressWaiter()) {}
 
-    public TApplicationSettings Settings { get; set; }
+    public TApplicationSettings Settings { get; set; } = null!;
 
 
     public int Main (string[] args)

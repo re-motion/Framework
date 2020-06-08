@@ -192,8 +192,8 @@ public class CommandLineParser
       string arg = args[i];
       if (arg.StartsWith (_argumentDeclarationPrefix))
       {
-        string name = null;
-        string value = null;
+        string? name = null;
+        string? value = null;
 
         arg = arg.Substring (1);
         int pos = arg.IndexOf (_separator);
@@ -220,7 +220,7 @@ public class CommandLineParser
       }
       else
       {
-        CommandLineArgument argument = GetPositionalArgument (nextPositionalArgument);
+        CommandLineArgument? argument = GetPositionalArgument (nextPositionalArgument);
         if (argument == null)
           throw new InvalidNumberOfCommandLineArgumentsException (arg, nextPositionalArgument);
         ++ nextPositionalArgument;
@@ -236,7 +236,7 @@ public class CommandLineParser
     }
   }
 
-  private CommandLineArgument GetPositionalArgument (int position)
+  private CommandLineArgument? GetPositionalArgument (int position)
   {
     int currentPosition = 0;
     foreach (CommandLineArgument argument in this.Arguments)
@@ -256,11 +256,11 @@ public class CommandLineParser
   {
     if (_incrementalNameValidation)
     {
-      CommandLineArgument foundArgument = null;
+      CommandLineArgument? foundArgument = null;
       bool found2ndArgument = false;
       foreach (CommandLineArgument argument in this.Arguments)
       {
-        string argumentName = argument.Name;
+        string? argumentName = argument.Name;
         if (argumentName == null)
           continue;
 
@@ -313,7 +313,7 @@ public class CommandLineParser
     for (int i = 0; i < Arguments.Count; ++i)
     {
       CommandLineArgument argument = Arguments[i];
-      CommandLineArgument nextArgument = ((i + 1) < Arguments.Count) ? Arguments[i+1] : null;
+      CommandLineArgument? nextArgument = ((i + 1) < Arguments.Count) ? Arguments[i+1] : null;
 
       if (! (argument is ICommandLinePartArgument))
       {
@@ -358,7 +358,7 @@ public class CommandLineParser
     {
       if (! (argument is CommandLineGroupArgument))
       {
-        string name = argument.Placeholder;
+        string? name = argument.Placeholder;
         if (argument.Name != null)
           name = _argumentDeclarationPrefix + argument.Name;
 

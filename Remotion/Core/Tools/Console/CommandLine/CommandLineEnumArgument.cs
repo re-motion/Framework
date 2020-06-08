@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Reflection;
 using System.Text;
@@ -26,33 +27,33 @@ public class CommandLineEnumArgument: CommandLineValueArgument
 {
   // fields
 
-  private Type _enumType;
+  private Type? _enumType;
   private bool _hasValue = false;
-  private Enum _value;
+  private Enum? _value;
   private bool _isCaseSensitive = false;
 
   // construction and disposal
 
-  public CommandLineEnumArgument (string name, bool isOptional, Type enumType)
+  public CommandLineEnumArgument (string? name, bool isOptional, Type? enumType)
     : base (name, isOptional)
   {
     EnumType = enumType;
   }
 
-  public CommandLineEnumArgument (bool isOptional, Type enumType)
+  public CommandLineEnumArgument (bool isOptional, Type? enumType)
     : this (null, isOptional, enumType)
   {
   }
 
   // properties and methods
 
-  public Type EnumType
+  public Type? EnumType
   {
     get { return _enumType; }
     set 
     { 
       if (value != null && ! value.IsEnum) throw new ArgumentOutOfRangeException ("enumType", value, "Argument must be an enumeration type.");
-      _enumType = value; 
+      _enumType = value!;
     }
   }
 
@@ -64,7 +65,7 @@ public class CommandLineEnumArgument: CommandLineValueArgument
       bool foundExact = false;
       bool foundIncremental = false;
       bool found2ndIncremental = false;
-      foreach (FieldInfo enumValue in _enumType.GetFields (BindingFlags.Public | BindingFlags.Static))
+      foreach (FieldInfo enumValue in _enumType!.GetFields (BindingFlags.Public | BindingFlags.Static))
       {
         string enumName = enumValue.Name;
         if (string.Compare (enumName, value, !_isCaseSensitive, CultureInfo.InvariantCulture) == 0)
@@ -122,14 +123,14 @@ public class CommandLineEnumArgument: CommandLineValueArgument
   {
     if (! IsPositional)
     {
-      sb.Append (Parser.ArgumentDeclarationPrefix);
+      sb.Append (Parser!.ArgumentDeclarationPrefix);
       sb.Append (Name);
       sb.Append (Parser.Separator);
     }
     sb.Append (this.Placeholder);
     sb.Append ("{");
     bool first = true;
-    foreach (FieldInfo enumValue in _enumType.GetFields (BindingFlags.Public | BindingFlags.Static))
+    foreach (FieldInfo enumValue in _enumType!.GetFields (BindingFlags.Public | BindingFlags.Static))
     {
       if (first)
         first = false;
@@ -140,9 +141,9 @@ public class CommandLineEnumArgument: CommandLineValueArgument
     sb.Append ("}");
   }
 
-  protected internal override void AttachParser(CommandLineParser parser)
+  protected internal override void AttachParser(CommandLineParser? parser)
   {
-    _isCaseSensitive = parser.IsCaseSensitive;
+    _isCaseSensitive = parser!.IsCaseSensitive;
     base.AttachParser (parser);
   }
 
@@ -151,7 +152,7 @@ public class CommandLineEnumArgument: CommandLineValueArgument
     get { return _hasValue; }
   }
 
-  public override object ValueObject
+  public override object? ValueObject
   {
     get 
     {
@@ -162,7 +163,7 @@ public class CommandLineEnumArgument: CommandLineValueArgument
     }
   }
 
-  public Enum Value
+  public Enum? Value
   {
     get 
     { 

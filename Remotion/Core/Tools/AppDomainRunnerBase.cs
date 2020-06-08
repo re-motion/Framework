@@ -44,7 +44,7 @@ namespace Remotion.Tools
 
     public void Run ()
     {
-      AppDomain appDomain = null;
+      AppDomain? appDomain = null;
 
       try
       {

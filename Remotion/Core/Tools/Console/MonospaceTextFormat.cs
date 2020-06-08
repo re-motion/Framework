@@ -33,7 +33,7 @@ public sealed class MonospaceTextFormat
   /// <param name="sb">The StringBuilder object the text is written to.</param>
   /// <param name="lineWidth">The line width of the output.</param>
   /// <param name="text">The text that is to be formatted.</param>
-  public static void AppendWrappedText (StringBuilder sb, int lineWidth, string text)
+  public static void AppendWrappedText (StringBuilder sb, int lineWidth, string? text)
   {
     string line;
     while (text != null)
@@ -53,7 +53,7 @@ public sealed class MonospaceTextFormat
   /// that preceed each following line.</param>
   /// <param name="lineWidth">The line width of the output.</param>
   /// <param name="text">The text that is to be formatted.</param>
-  public static void AppendIndentedText (StringBuilder sb, int indent, int lineWidth, string text)
+  public static void AppendIndentedText (StringBuilder sb, int indent, int lineWidth, string? text)
   {
     string line;
     while (text != null)
@@ -77,7 +77,7 @@ public sealed class MonospaceTextFormat
   /// <param name="afterSplit">Returns the part of the string after the split, or a null reference if the complete string was returned in <c>beforeSplit</c>.</param>
   /// <param name="splitAt">Specifies the position to split at. No more than <c>splitAt</c> characters will be returned in <c>beforeSplit</c>.</param>
   /// <param name="separators">Valid separator characters.</param>
-  public static void SplitTextOnSeparator (string text, out string beforeSplit, out string afterSplit, int splitAt, char[] separators)
+  public static void SplitTextOnSeparator (string text, out string beforeSplit, out string? afterSplit, int splitAt, char[] separators)
   {
     if (text == null) throw new ArgumentNullException ("text");
     if (splitAt < 0) throw new ArgumentOutOfRangeException ("splitAt", splitAt, "Argument must not be less than zero.");
