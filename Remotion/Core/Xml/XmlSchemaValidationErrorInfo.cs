@@ -30,7 +30,7 @@ namespace Remotion.Xml
     private bool _hasLineInfo;
     private XmlSeverityType _severity;
 
-    public XmlSchemaValidationErrorInfo (string errorMessage, string context, IXmlLineInfo lineInfo, XmlSeverityType severity)
+    public XmlSchemaValidationErrorInfo (string errorMessage, string context, IXmlLineInfo? lineInfo, XmlSeverityType severity)
     {
       _errorMessage = errorMessage;
       _context = context;
