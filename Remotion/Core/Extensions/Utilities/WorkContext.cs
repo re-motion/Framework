@@ -34,12 +34,12 @@ public class WorkContext: IDisposable
   {
     /// <summary> ArrayList &lt;WorkContext&gt; </summary>
     private ArrayList _stack = new ArrayList();
-    private WorkContext _lastLeft = null;
+    private WorkContext? _lastLeft = null;
 
     /// <summary>
     ///   The last WorkContext on the stack that was left by calling <see cref="Leave"/>.
     /// </summary>
-    public WorkContext LastLeft
+    public WorkContext? LastLeft
     {
       get { return _lastLeft; }
     }
@@ -120,7 +120,7 @@ public class WorkContext: IDisposable
 
   /// <summary> Stack&lt;WorkContext&gt; </summary>
   [ThreadStatic]
-  private static ContextStack s_stack; // defaults to null for each new thread
+  private static ContextStack? s_stack; // defaults to null for each new thread
   private static bool s_enableTracingFlagInitialized = false;
   private static bool s_enableTracing = false;
   private static object s_syncRoot = new object();
@@ -168,7 +168,7 @@ public class WorkContext: IDisposable
   {
     get 
     {
-      ContextStack stack = s_stack;
+      ContextStack? stack = s_stack;
       if (stack == null)
       {
         stack = new ContextStack();
@@ -201,7 +201,7 @@ public class WorkContext: IDisposable
 
   // member fields
 
-  private string _text;
+  private string? _text;
   private bool _entered = false;
 
   // construction and disposal
@@ -366,7 +366,7 @@ public class WorkContext: IDisposable
   /// <summary>
   /// The description of the context.
   /// </summary>
-  public string Text
+  public string? Text
   {
     get { return _text; }
     set { _text = value; }

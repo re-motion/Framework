@@ -316,7 +316,7 @@ namespace Remotion.Extensions.UnitTests.Diagnostics
     [Test]
     public void VisitorNestedForTest ()
     {
-      String[,] rectangularArray = new string[,] { { null, null, null }, { null, null, null } };
+      var rectangularArray = new string?[,] { { null, null, null }, { null, null, null } };
       var outerProduct = new OuterProductIndexGenerator (rectangularArray);
       var processor = new OuterProductProcessorOneLineString (rectangularArray);
       outerProduct.ProcessOuterProduct (processor);
@@ -330,7 +330,7 @@ namespace Remotion.Extensions.UnitTests.Diagnostics
     {
       var dimensionArray = new int[] { 2, 3, 2 };
       var outerProduct = new OuterProductIndexGenerator (dimensionArray);
-      var processor = new OuterProductProcessorOneLineString (null);
+      var processor = new OuterProductProcessorOneLineString (null!);
       outerProduct.ProcessOuterProduct (processor);
       string s = processor.GetResult();
       Assert.That (s, Is.EqualTo ("{{(0,0,0),(0,0,1)},{(0,1,0),(0,1,1)},{(0,2,0),(0,2,1)}},{{(1,0,0),(1,0,1)},{(1,1,0),(1,1,1)},{(1,2,0),(1,2,1)}}"));
@@ -340,7 +340,7 @@ namespace Remotion.Extensions.UnitTests.Diagnostics
     [Test]
     public void VisitorNestedForTest2 ()
     {
-      var rectangularArray = new string[,,] { { { null, null }, { null, null }, { null, null } }, { { null, null }, { null, null }, { null, null } } };
+      var rectangularArray = new string?[,,] { { { null, null }, { null, null }, { null, null } }, { { null, null }, { null, null }, { null, null } } };
       var outerProduct = new OuterProductIndexGenerator (rectangularArray);
       var processor = new OuterProductProcessorOneLineString (rectangularArray);
       outerProduct.ProcessOuterProduct (processor);
@@ -351,7 +351,7 @@ namespace Remotion.Extensions.UnitTests.Diagnostics
     [Test]
     public void VisitorNestedForOuterProductProcessorPrettyPrinterTest ()
     {
-      var rectangularArray = new string[,,] { { { null, null }, { null, null }, { null, null } }, { { null, null }, { null, null }, { null, null } } };
+      var rectangularArray = new string?[,,] { { { null, null }, { null, null }, { null, null } }, { { null, null }, { null, null }, { null, null } } };
       var outerProduct = new OuterProductIndexGenerator (rectangularArray);
       var processor = new OuterProductProcessorPrettyPrinter (rectangularArray);
       outerProduct.ProcessOuterProduct (processor);
@@ -489,7 +489,7 @@ namespace Remotion.Extensions.UnitTests.Diagnostics
     {
       String[,] rectangularArray = new string[,] { { "A1", "A2", "A3" }, { "B1", "B2", "B3" }, { "C1", "C2", "C3" }, { "D1", "D2", "D3" } };
       var outerProduct = new OuterProductIndexGenerator (rectangularArray);
-      OuterProductProcessorArrayPrinter processor = null;
+      OuterProductProcessorArrayPrinter? processor = null;
       int i = 0;
       for (; i < 3; ++i)
       {
@@ -497,7 +497,7 @@ namespace Remotion.Extensions.UnitTests.Diagnostics
         outerProduct.ProcessOuterProduct (processor);
       }
       Assert.That (i, Is.EqualTo (3));
-      string result = processor.GetResult();
+      string result = processor!.GetResult();
       Assert.That (result, Is.EqualTo ("{A1,A2,A3},{B1,B2,B3},{C1,C2,C3},{D1,D2,D3}"));
     }
 

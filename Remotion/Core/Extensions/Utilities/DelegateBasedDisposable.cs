@@ -23,7 +23,7 @@ namespace Remotion.Utilities
   /// </summary>
   public class DelegateBasedDisposable : IDisposable
   {
-    private Action _disposeAction;
+    private Action? _disposeAction;
 
     public DelegateBasedDisposable (Action disposeAction)
     {

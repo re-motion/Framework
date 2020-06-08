@@ -25,14 +25,14 @@ namespace Remotion.Reflection
   public partial struct FuncInvokerWrapper<TResult> : IFuncInvoker<TResult>
   {
     private readonly IFuncInvoker<TResult> _invoker;
-    private readonly Func<TResult, TResult> _afterAction;
+    private readonly Func<TResult, TResult>? _afterAction;
 
     public FuncInvokerWrapper (IFuncInvoker<TResult> invoker)
         : this (invoker, null)
     {
     }
 
-    public FuncInvokerWrapper (IFuncInvoker<TResult> invoker, Func<TResult, TResult> afterAction)
+    public FuncInvokerWrapper (IFuncInvoker<TResult> invoker, Func<TResult, TResult>? afterAction)
     {
       _invoker = invoker;
       _afterAction = afterAction;

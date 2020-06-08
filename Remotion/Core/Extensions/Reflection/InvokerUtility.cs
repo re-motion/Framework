@@ -21,7 +21,7 @@ namespace Remotion.Reflection
 {
   internal static class InvokerUtility
   {
-    public static void CheckInvokeArguments (Type[] valueTypes, object[] values)
+    public static void CheckInvokeArguments (Type[] valueTypes, object?[] values)
     {
       ArgumentUtility.CheckNotNull ("valueTypes", valueTypes);
       ArgumentUtility.CheckNotNull ("values", values);
@@ -32,19 +32,19 @@ namespace Remotion.Reflection
       for (int i = 0; i < values.Length; ++i)
       {
         Assertion.IsTrue(
-            values[i] == null || valueTypes[i].IsAssignableFrom (values[i].GetType()), "Incompatible types at array index " + i + ".");
+            values[i] == null || valueTypes[i].IsAssignableFrom (values[i]!.GetType()), "Incompatible types at array index " + i + ".");
       }
 #endif
     }
 
-    public static Type[] GetValueTypes (object[] values)
+    public static Type[] GetValueTypes (object?[] values)
     {
       ArgumentUtility.CheckNotNull ("values", values);
 
       Type[] valueTypes = new Type[values.Length];
       for (int i = 0; i < values.Length; ++i)
       {
-        object value = values[i];
+        object? value = values[i];
         valueTypes[i] = (value != null) ? value.GetType() : typeof (object);
       }
 

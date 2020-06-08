@@ -66,7 +66,7 @@ namespace Remotion.Reflection
       return CreateConvertedDelegate (delegateType, constructorCall);
     }
 
-    private Delegate CreateConvertedDelegate (Type delegateType, NewExpression constructorCall, ParameterExpression[] parameters = null)
+    private Delegate CreateConvertedDelegate (Type delegateType, NewExpression constructorCall, ParameterExpression[]? parameters = null)
     {
       var returnType = GetSignature (delegateType).Item2;
       var boxedConstructorCall = Expression.Convert (constructorCall, returnType);

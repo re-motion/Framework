@@ -26,9 +26,9 @@ namespace Remotion.Reflection
 
     private readonly string _memberName;
     private readonly BindingFlags _bindingFlags;
-    private readonly Binder _binder;
+    private readonly Binder? _binder;
     private readonly CallingConventions _callingConvention;
-    private readonly ParameterModifier[] _parameterModifiers;
+    private readonly ParameterModifier[]? _parameterModifiers;
 
     public MemberLookupInfo (string memberName, BindingFlags bindingFlags)
         : this (memberName, bindingFlags, null, CallingConventions.Any, null)
@@ -41,7 +41,7 @@ namespace Remotion.Reflection
     }
 
     public MemberLookupInfo (
-        string memberName, BindingFlags bindingFlags, Binder binder, CallingConventions callingConvention, ParameterModifier[] parameterModifiers)
+        string memberName, BindingFlags bindingFlags, Binder? binder, CallingConventions callingConvention, ParameterModifier[]? parameterModifiers)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("memberName", memberName);
 
@@ -62,7 +62,7 @@ namespace Remotion.Reflection
       get { return _bindingFlags; }
     }
 
-    public Binder Binder
+    public Binder? Binder
     {
       get { return _binder; }
     }
@@ -72,7 +72,7 @@ namespace Remotion.Reflection
       get { return _callingConvention; }
     }
 
-    public ParameterModifier[] ParameterModifiers
+    public ParameterModifier[]? ParameterModifiers
     {
       get { return _parameterModifiers; }
     }

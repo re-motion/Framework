@@ -33,8 +33,8 @@ namespace Remotion.Collections
   {
     public delegate object CreateMethod ();
 
-    private readonly Type _valueType;
-    private readonly CreateMethod _createMethod;
+    private readonly Type? _valueType;
+    private readonly CreateMethod? _createMethod;
 
     public AutoInitHashtable (Type valueType)
     {

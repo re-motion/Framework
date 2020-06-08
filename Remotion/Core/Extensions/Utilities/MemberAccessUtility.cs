@@ -21,9 +21,9 @@ namespace Remotion.Utilities
 {
   public static class MemberAccessUtility
   {
-    public delegate bool CompareValues (object propertyOrFieldValue, object compareToValue);
+    public delegate bool CompareValues (object? propertyOrFieldValue, object? compareToValue);
 
-    public static object GetAttributeArrayMemberValue (
+    public static object? GetAttributeArrayMemberValue (
         MemberInfo reflectionObject,
         Type attributeType,
         bool inherit,
@@ -44,7 +44,7 @@ namespace Remotion.Utilities
     }
 
 
-    public static object GetAttributeMemberValue (MemberInfo reflectionObject, Type attributeType, bool inherit, MemberInfo fieldOrProperty)
+    public static object? GetAttributeMemberValue (MemberInfo reflectionObject, Type attributeType, bool inherit, MemberInfo fieldOrProperty)
     {
       object[] attributes = reflectionObject.GetCustomAttributes (attributeType, inherit);
       if (attributes == null || attributes.Length == 0)
@@ -54,7 +54,7 @@ namespace Remotion.Utilities
       return GetFieldOrPropertyValue (attributes[0], fieldOrProperty);
     }
 
-    public static MemberInfo GetFieldOrProperty (Type type, string fieldOrPropertyName, BindingFlags bindingFlags, bool throwExceptionIfNotFound)
+    public static MemberInfo? GetFieldOrProperty (Type type, string fieldOrPropertyName, BindingFlags bindingFlags, bool throwExceptionIfNotFound)
     {
       MemberInfo member = type.GetField (fieldOrPropertyName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
       if (member != null)
@@ -70,19 +70,19 @@ namespace Remotion.Utilities
     }
 
 
-    public static object GetFieldOrPropertyValue (object obj, string fieldOrPropertyName)
+    public static object? GetFieldOrPropertyValue (object obj, string fieldOrPropertyName)
     {
       return GetFieldOrPropertyValue (obj, fieldOrPropertyName, BindingFlags.Public);
     }
 
-    public static object GetFieldOrPropertyValue (object obj, string fieldOrPropertyName, BindingFlags bindingFlags)
+    public static object? GetFieldOrPropertyValue (object obj, string fieldOrPropertyName, BindingFlags bindingFlags)
     {
       ArgumentUtility.CheckNotNull ("obj", obj);
-      MemberInfo fieldOrProperty = GetFieldOrProperty (obj.GetType (), fieldOrPropertyName, bindingFlags, true);
+      MemberInfo fieldOrProperty = GetFieldOrProperty (obj.GetType (), fieldOrPropertyName, bindingFlags, true)!;
       return GetFieldOrPropertyValue (obj, fieldOrProperty);
     }
 
-    public static object GetFieldOrPropertyValue (object obj, MemberInfo fieldOrProperty)
+    public static object? GetFieldOrPropertyValue (object obj, MemberInfo fieldOrProperty)
     {
       if (obj == null)
         throw new ArgumentNullException ("obj");
@@ -103,14 +103,14 @@ namespace Remotion.Utilities
       SetFieldOrPropertyValue (obj, fieldOrPropertyName, BindingFlags.Public, value);
     }
 
-    public static void SetFieldOrPropertyValue (object obj, string fieldOrPropertyName, BindingFlags bindingFlags, object value)
+    public static void SetFieldOrPropertyValue (object obj, string fieldOrPropertyName, BindingFlags bindingFlags, object? value)
     {
       ArgumentUtility.CheckNotNull ("obj", obj);
-      MemberInfo fieldOrProperty = GetFieldOrProperty (obj.GetType (), fieldOrPropertyName, bindingFlags, true);
+      MemberInfo fieldOrProperty = GetFieldOrProperty (obj.GetType (), fieldOrPropertyName, bindingFlags, true)!;
       SetFieldOrPropertyValue (obj, fieldOrProperty, value);
     }
 
-    public static void SetFieldOrPropertyValue (object obj, MemberInfo fieldOrProperty, object value)
+    public static void SetFieldOrPropertyValue (object obj, MemberInfo fieldOrProperty, object? value)
     {
       if (obj == null)
         throw new ArgumentNullException ("obj");

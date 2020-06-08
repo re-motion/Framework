@@ -33,12 +33,12 @@ namespace Remotion.Extensions.UnitTests.Reflection.TestDomain
     
     public readonly Type InvocationType;
 
-    public TestClass (Base @base)
+    public TestClass (Base? @base)
     {
       InvocationType = typeof (Base);
     }
 
-    public TestClass (Derived derived)
+    public TestClass (Derived? derived)
     {
       InvocationType = typeof (Derived);
     }

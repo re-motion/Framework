@@ -39,7 +39,7 @@ namespace Remotion.Reflection
     }
 
     public ConstructorLookupInfo (
-        Type definingType, BindingFlags bindingFlags, Binder binder, CallingConventions callingConvention, ParameterModifier[] parameterModifiers)
+        Type definingType, BindingFlags bindingFlags, Binder? binder, CallingConventions callingConvention, ParameterModifier[]? parameterModifiers)
         : base (".ctor", bindingFlags, binder, callingConvention, parameterModifiers)
     {
       ArgumentUtility.CheckNotNull ("definingType", definingType);
