@@ -20,6 +20,7 @@ using System.Collections;
 using NUnit.Framework;
 using Remotion.Utilities;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.UnitTests.Utilities
 {
@@ -57,9 +58,9 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void GetRotatedHashCode_Nulls ()
     {
-      var array1 = new object[] { 1, null, 2 };
-      var array2 = new object[] { 1, null, 2 };
-      var array3 = new object[] { 1, null, null, 2 };
+      var array1 = new object?[] { 1, null, 2 };
+      var array2 = new object?[] { 1, null, 2 };
+      var array3 = new object?[] { 1, null, null, 2 };
 
       Assert.That (EqualityUtility.GetRotatedHashCode (array1), Is.EqualTo (EqualityUtility.GetRotatedHashCode (array2)));
       Assert.That (EqualityUtility.GetRotatedHashCode (array1), Is.Not.EqualTo (EqualityUtility.GetRotatedHashCode (array3)));

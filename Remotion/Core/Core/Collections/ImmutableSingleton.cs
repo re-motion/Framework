@@ -80,7 +80,7 @@ namespace Remotion.Collections
         }
       }
 
-      object IEnumerator.Current
+      object? IEnumerator.Current
       {
         get { return Current; }
       }

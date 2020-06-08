@@ -16,6 +16,7 @@
 // 
 using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
 namespace Remotion.Utilities
@@ -50,21 +51,22 @@ namespace Remotion.Utilities
       get { return _isNullableType; }
     }
 
-    public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)
+    public override bool CanConvertFrom (ITypeDescriptorContext? context, Type sourceType)
     {
       ArgumentUtility.CheckNotNull ("sourceType", sourceType);
 
       return _type == sourceType || _underlyingType == sourceType;
     }
 
-    public override bool CanConvertTo (ITypeDescriptorContext context, Type destinationType)
+    public override bool CanConvertTo (ITypeDescriptorContext? context, Type destinationType)
     {
       ArgumentUtility.CheckNotNull ("destinationType", destinationType);
 
       return destinationType == _type || Nullable.GetUnderlyingType (destinationType) == _type;
     }
 
-    public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object value)
+    [return: NotNullIfNotNull ("value")]
+    public override object? ConvertFrom (ITypeDescriptorContext? context, CultureInfo? culture, object? value)
     {
       // ReSharper disable ConditionIsAlwaysTrueOrFalse
       // ReSharper disable HeuristicUnreachableCode
@@ -85,7 +87,8 @@ namespace Remotion.Utilities
       }
     }
 
-    public override object ConvertTo (ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+    [return: NotNullIfNotNull ("value")]
+    public override object? ConvertTo (ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
     {
       ArgumentUtility.CheckNotNull ("destinationType", destinationType);
 
@@ -101,7 +104,7 @@ namespace Remotion.Utilities
       return value;
     }
 
-    public override bool IsValid (ITypeDescriptorContext context, object value)
+    public override bool IsValid (ITypeDescriptorContext? context, object? value)
     {
       // ReSharper disable ConditionIsAlwaysTrueOrFalse
       // ReSharper disable HeuristicUnreachableCode

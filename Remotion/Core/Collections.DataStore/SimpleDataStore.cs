@@ -17,8 +17,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using JetBrains.Annotations;
 using Remotion.Utilities;
 
 namespace Remotion.Collections.DataStore
@@ -31,6 +31,7 @@ namespace Remotion.Collections.DataStore
   /// <typeparam name="TValue">The type of the values.</typeparam>
   [Serializable]
   public sealed class SimpleDataStore<TKey, TValue> : IDataStore<TKey, TValue>, IEnumerable<KeyValuePair<TKey, TValue>>
+      where TKey : notnull
   {
     private sealed class Enumerator : IEnumerator<KeyValuePair<TKey, TValue>>
     {
@@ -97,7 +98,7 @@ namespace Remotion.Collections.DataStore
       _innerDictionary = new Dictionary<TKey, Data> ();
     }
 
-    public SimpleDataStore ([NotNull] IEqualityComparer<TKey> comparer)
+    public SimpleDataStore ([JetBrains.Annotations.NotNull] IEqualityComparer<TKey> comparer)
     {
       ArgumentUtility.CheckNotNull ("comparer", comparer);
 
@@ -175,6 +176,7 @@ namespace Remotion.Collections.DataStore
     }
 
     /// <inheritdoc />
+    [return: MaybeNull]
     public TValue GetValueOrDefault (TKey key)
     {
       ArgumentUtility.DebugCheckNotNull ("key", key);
@@ -184,7 +186,7 @@ namespace Remotion.Collections.DataStore
     }
 
     /// <inheritdoc />
-    public bool TryGetValue (TKey key, out TValue value)
+    public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen (false)] out TValue value)
     {
       ArgumentUtility.DebugCheckNotNull ("key", key);
 
@@ -235,7 +237,7 @@ namespace Remotion.Collections.DataStore
     }
 
     [MethodImpl (MethodImplOptions.AggressiveInlining)]
-    private bool TryGetValueInternal (TKey key, out TValue value)
+    private bool TryGetValueInternal (TKey key, [AllowNull, MaybeNullWhen (false)] out TValue value)
     {
       Data data;
       var hasData = _innerDictionary.TryGetValue (key, out data);

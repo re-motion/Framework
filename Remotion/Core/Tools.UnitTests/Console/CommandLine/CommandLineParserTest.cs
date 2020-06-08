@@ -226,11 +226,11 @@ public class CommandLineParserTest
     
     enumArg = new CommandLineEnumArgument (false, typeof (TestOption));
     PrivateInvoke.InvokeNonPublicMethod (enumArg, "SetStringValue", "yes");
-    Assert.That ((TestOption) enumArg.Value, Is.EqualTo (TestOption.yes));
+    Assert.That ((TestOption) enumArg.Value!, Is.EqualTo (TestOption.yes));
 
     enumArg = new CommandLineEnumArgument (false, typeof (IncrementalTestOptions));
     PrivateInvoke.InvokeNonPublicMethod (enumArg, "SetStringValue", "no");
-    Assert.That ((IncrementalTestOptions) enumArg.Value, Is.EqualTo (IncrementalTestOptions.no));
+    Assert.That ((IncrementalTestOptions) enumArg.Value!, Is.EqualTo (IncrementalTestOptions.no));
   }
 
   [Test]

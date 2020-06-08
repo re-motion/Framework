@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 using Remotion.Utilities;
@@ -35,6 +36,7 @@ namespace Remotion.Collections.Caching
   /// <threadsafety static="true" instance="false" />
   [Serializable]
   public sealed class Cache<TKey, TValue> : ICache<TKey, TValue> 
+      where TKey: notnull
   {
     private sealed class Enumerator : IEnumerator<KeyValuePair<TKey, TValue>>
     {
@@ -101,7 +103,7 @@ namespace Remotion.Collections.Caching
       _innerDictionary = new Dictionary<TKey, Data>();
     }
 
-    public Cache ([NotNull] IEqualityComparer<TKey> comparer)
+    public Cache ([JetBrains.Annotations.NotNull] IEqualityComparer<TKey> comparer)
     {
       ArgumentUtility.CheckNotNull ("comparer", comparer);
 
@@ -113,7 +115,7 @@ namespace Remotion.Collections.Caching
       get { return _innerDictionary.Comparer; }
     }
 
-    public bool TryGetValue (TKey key, out TValue value)
+    public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen (false)] out TValue value)
     {
       ArgumentUtility.DebugCheckNotNull ("key", key);
       
@@ -174,7 +176,7 @@ namespace Remotion.Collections.Caching
     }
 
     [MethodImpl (MethodImplOptions.AggressiveInlining)]
-    private bool TryGetValueInternal (TKey key, out TValue value)
+    private bool TryGetValueInternal (TKey key, [AllowNull, MaybeNullWhen (false)] out TValue value)
     {
       Data data;
       var hasData = _innerDictionary.TryGetValue (key, out data);

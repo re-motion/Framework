@@ -21,6 +21,7 @@ using NUnit.Framework;
 using Remotion.Development.RhinoMocks.UnitTesting;
 using Rhino.Mocks;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.UnitTests.Development.RhinoMocks.UnitTesting
 {

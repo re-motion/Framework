@@ -105,7 +105,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     [Test]
     public void GetInstance_ImplementationIsRegisteredAsFactoryWithInstancePerDependencyLifetime_DecoratedFactoryIsUsed ()
     {
-      TestImplementation1 expectedInstance = null;
+      TestImplementation1? expectedInstance = null;
       var implementation = ServiceImplementationInfo.CreateSingle (() => expectedInstance = new TestImplementation1(), LifetimeKind.InstancePerDependency);
       var decorator = new ServiceImplementationInfo (typeof (TestDecorator1), LifetimeKind.InstancePerDependency, RegistrationType.Decorator);
       var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestType), implementation, decorator);
@@ -126,7 +126,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     [Test]
     public void GetInstance_ImplementationIsRegisteredAsFactoryWithSingletonLifetime_DecoratedFactoryIsUsed ()
     {
-      TestImplementation1 expectedInstance = null;
+      TestImplementation1? expectedInstance = null;
       var implementation = ServiceImplementationInfo.CreateSingle (() => expectedInstance = new TestImplementation1(), LifetimeKind.Singleton);
       var decorator = new ServiceImplementationInfo (typeof (TestDecorator1), LifetimeKind.InstancePerDependency, RegistrationType.Decorator);
       var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestType), implementation, decorator);

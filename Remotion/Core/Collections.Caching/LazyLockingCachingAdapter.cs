@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using Remotion.Utilities;
@@ -38,7 +39,9 @@ namespace Remotion.Collections.Caching
   /// </remarks>
   [Obsolete ("This type is only used in conjunction by obsolete factory method CacheFactory.CreateWithLazyLocking(...). (Version: 1.19.3)")]
   [Serializable]
-  public class LazyLockingCachingAdapter<TKey, TValue> : ICache<TKey, TValue> where TValue : class 
+  public class LazyLockingCachingAdapter<TKey, TValue> : ICache<TKey, TValue> 
+      where TKey : notnull
+      where TValue : class? 
   {
     public class Wrapper
     {
@@ -69,9 +72,8 @@ namespace Remotion.Collections.Caching
       ArgumentUtility.DebugCheckNotNull ("key", key);
       ArgumentUtility.DebugCheckNotNull ("valueFactory", valueFactory);
 
-      Lazy<Wrapper> value;
       Wrapper wrapper;
-      if (_innerCache.TryGetValue (key, out value))
+      if (_innerCache.TryGetValue (key, out var value))
         wrapper = value.Value;
       else
         wrapper = GetOrCreateValueWithClosure (key, valueFactory); // Split to prevent closure being created during the TryGetValue-operation
@@ -88,19 +90,16 @@ namespace Remotion.Collections.Caching
       return result.Value;
     }
 
-    public bool TryGetValue (TKey key, out TValue value)
+    public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen (false)] out TValue value)
     {
       ArgumentUtility.DebugCheckNotNull ("key", key);
 
-      Lazy<Wrapper> result;
-
-      if (_innerCache.TryGetValue (key, out result))
+      if (_innerCache.TryGetValue (key, out var result))
       {
         value = result.Value.Value;
         return true;
       }
-
-      value = null;
+      value = null!;
       return false;
     }
 

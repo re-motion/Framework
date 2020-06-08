@@ -24,12 +24,12 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
   {
     private static int s_typeCount;
 
-    private CustomClassEmitter _classEmitter;
-    private IMethodEmitter _methodEmitter;
-    private Type _builtType;
-    private object _builtInstance;
-    private Type _unsavedBuiltType;
-    private CustomClassEmitter _unsavedClassEmitter;
+    private CustomClassEmitter? _classEmitter;
+    private IMethodEmitter? _methodEmitter;
+    private Type? _builtType;
+    private object? _builtInstance;
+    private Type? _unsavedBuiltType;
+    private CustomClassEmitter? _unsavedClassEmitter;
 
     public override void SetUp ()
     {

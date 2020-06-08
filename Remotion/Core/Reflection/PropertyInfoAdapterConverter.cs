@@ -16,6 +16,7 @@
 // 
 using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Reflection;
 using Remotion.Utilities;
@@ -37,7 +38,7 @@ namespace Remotion.Reflection
     /// <returns>
     /// <see langword="true" /> if this converter can perform the conversion; otherwise, <see langword="false" />.
     /// </returns>
-    public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)
+    public override bool CanConvertFrom (ITypeDescriptorContext? context, Type sourceType)
     {
       ArgumentUtility.CheckNotNull ("sourceType", sourceType);
       return sourceType == typeof (PropertyInfo);
@@ -53,7 +54,7 @@ namespace Remotion.Reflection
     /// <returns>
     /// <see langword="true" /> if this converter can perform the conversion; otherwise, <see langword="false" />.
     /// </returns>
-    public override bool CanConvertTo (ITypeDescriptorContext context, Type destinationType)
+    public override bool CanConvertTo (ITypeDescriptorContext? context, Type destinationType)
     {
       ArgumentUtility.CheckNotNull ("destinationType", destinationType);
       return destinationType == typeof (PropertyInfo);
@@ -72,7 +73,8 @@ namespace Remotion.Reflection
     /// <exception cref="System.NotSupportedException">
     /// The conversion cannot be performed.
     /// </exception>
-    public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object value)
+    [return: NotNullIfNotNull ("value")]
+    public override object? ConvertFrom (ITypeDescriptorContext? context, CultureInfo? culture, object? value)
     {
       if (value == null)
         return null;
@@ -106,7 +108,8 @@ namespace Remotion.Reflection
     /// <exception cref="T:System.NotSupportedException">
     /// The conversion cannot be performed.
     /// </exception>
-    public override object ConvertTo (ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+    [return: NotNullIfNotNull ("value")]
+    public override object? ConvertTo (ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
     {
       ArgumentUtility.CheckNotNull ("destinationType", destinationType);
 

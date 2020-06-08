@@ -22,15 +22,20 @@ using NUnit.Framework;
 using Remotion.FunctionalProgramming;
 using Remotion.UnitTests.FunctionalProgramming.TestDomain;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.UnitTests.FunctionalProgramming
 {
   [TestFixture]
   public class EnumerableExtensionsTest
   {
-    private IEnumerable<string> _enumerableWithoutValues;
-    private IEnumerable<string> _enumerableWithOneValue;
-    private IEnumerable<string> _enumerableWithThreeValues;
+    private IEnumerable<string> _enumerableWithoutValues = default!;
+    private IEnumerable<string> _enumerableWithOneValue = default!;
+    private IEnumerable<string> _enumerableWithThreeValues = default!;
+
+    private IEnumerable<string?> _enumerableWithOneNullableReferenceValue = default!;
+    private IEnumerable<int?> _enumerableWithOneNullableValueTypeValue = default!;
+    private IEnumerable<int> _enumerableWithOneValueTypeValue = default!;
 
     [SetUp]
     public void SetUp ()
@@ -38,6 +43,10 @@ namespace Remotion.UnitTests.FunctionalProgramming
       _enumerableWithoutValues = new string[0];
       _enumerableWithOneValue = new[] { "test" };
       _enumerableWithThreeValues = new[] { "test1", "test2", "test3" };
+
+      _enumerableWithOneNullableReferenceValue = new string?[] { null };
+      _enumerableWithOneNullableValueTypeValue = new int?[] { null };
+      _enumerableWithOneValueTypeValue = new[] { 1 };
     }
 
     [Test]
@@ -127,6 +136,27 @@ namespace Remotion.UnitTests.FunctionalProgramming
     }
 
     [Test]
+    public void Single_WithOneNullableReferenceType ()
+    {
+      string? actual = _enumerableWithOneNullableReferenceValue.Single (() => new ApplicationException ("ExpectedText"));
+      Assert.That (actual, Is.Null);
+    }
+
+    [Test]
+    public void Single_WithOneNullableValueType ()
+    {
+      int? actual = _enumerableWithOneNullableValueTypeValue.Single (() => new ApplicationException ("ExpectedText"));
+      Assert.That (actual, Is.Null);
+    }
+
+    [Test]
+    public void Single_WithOneValueType ()
+    {
+      int? actual = _enumerableWithOneValueTypeValue.Single (() => new ApplicationException ("ExpectedText"));
+      Assert.That (actual, Is.EqualTo (1));
+    }
+
+    [Test]
     public void Single_WithPredicate_ThrowCustomException_WithThreeValuesAndSingleMatch ()
     {
       string actual = _enumerableWithThreeValues.Single (s => s == "test2", () => new ApplicationException ("ExpectedText"));
@@ -189,7 +219,7 @@ namespace Remotion.UnitTests.FunctionalProgramming
     [Test]
     public void CreateSequence_WhilePredicateEvaluatesTrue_WithNull ()
     {
-      IEnumerable<Element> actual = ((Element)null).CreateSequence (e => e.Parent, e => e != null);
+      IEnumerable<Element> actual = ((Element?)null).CreateSequence (e => e.Parent, e => e != null);
       Assert.That (actual.ToArray (), Is.Empty);
     }
 
@@ -241,7 +271,7 @@ namespace Remotion.UnitTests.FunctionalProgramming
     [Test]
     public void CreateSequenceWithCycleCheck_WhilePredicateEvaluatesTrue_WithNull ()
     {
-      IEnumerable<Element> actual = ((Element)null).CreateSequenceWithCycleCheck (e => e.Parent, e => e != null, null, e => new Exception());
+      IEnumerable<Element> actual = ((Element?)null).CreateSequenceWithCycleCheck (e => e.Parent, e => e != null, null, e => new Exception());
       Assert.That (actual.ToArray (), Is.Empty);
     }
 
@@ -472,7 +502,7 @@ namespace Remotion.UnitTests.FunctionalProgramming
     [Test]
     public void Concat_WithSingleElement_NullItem ()
     {
-      var result = new[] { "test" }.Concat ((string) null);
+      var result = new[] { "test" }.Concat ((string?) null);
       Assert.That (result, Is.EqualTo (new[] { "test", null }));
     }
 

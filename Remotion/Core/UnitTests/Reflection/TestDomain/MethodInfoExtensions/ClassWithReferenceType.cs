@@ -21,27 +21,27 @@ namespace Remotion.UnitTests.Reflection.TestDomain.MethodInfoExtensions
   public class ClassWithReferenceType<T> : IInterfaceWithReferenceType<T>
       where T: class
   {
-    public static T StaticScalar { get; set; }
+    public static T? StaticScalar { get; set; }
 
-    private T _explicitInterfaceScalar;
+    private T? _explicitInterfaceScalar;
     
     public ClassWithReferenceType ()
     {
     }
 
-    public T Scalar { get; set; }
+    public T? Scalar { get; set; }
 
-    T IInterfaceWithReferenceType<T>.ExplicitInterfaceScalar
+    T? IInterfaceWithReferenceType<T>.ExplicitInterfaceScalar
     {
       get { return _explicitInterfaceScalar; }
       set { _explicitInterfaceScalar = value; }
     }
 
-    public virtual T ImplicitInterfaceScalar { get; set; }
+    public virtual T? ImplicitInterfaceScalar { get; set; }
 
-    public T ReadOnlyNonPublicSetterScalar { get; protected set; }
+    public T? ReadOnlyNonPublicSetterScalar { get; protected set; }
 
-    private T PrivateProperty { get; set; } 
+    private T? PrivateProperty { get; set; } 
     
   }
 }

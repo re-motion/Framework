@@ -21,6 +21,6 @@ namespace Remotion.ExtensibleEnums.UnitTests.TestDomain
   [AttributeUsage (AttributeTargets.Class, Inherited = false, AllowMultiple = true)]
   public class SampleAttribute : Attribute, ISampleAttribute
   {
-    public string Value { get; set; }
+    public string? Value { get; set; }
   }
 }

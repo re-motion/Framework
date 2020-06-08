@@ -23,7 +23,7 @@ namespace Remotion.UnitTests.Context
   [TestFixture]
   public class CallContextStorageProviderTest
   {
-    private CallContextStorageProvider _provider;
+    private CallContextStorageProvider _provider = default!;
 
     [SetUp]
     public void SetUp ()

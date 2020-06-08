@@ -19,6 +19,7 @@ using System;
 using System.Linq;
 using Remotion.Utilities;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.Development.UnitTesting.PEVerifyPathSources
 {
@@ -32,7 +33,7 @@ namespace Remotion.Development.UnitTesting.PEVerifyPathSources
       _sources = sources;
     }
 
-    public string GetPEVerifyPath (PEVerifyVersion version)
+    public string? GetPEVerifyPath (PEVerifyVersion version)
     {
       return _sources.Select (source => source.GetPEVerifyPath (version)).FirstOrDefault (path => path != null);
     }

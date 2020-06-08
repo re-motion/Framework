@@ -20,13 +20,13 @@ namespace Remotion.UnitTests.Utilities.CustomAttributeUtilityTestDomain
 {
   public class ComplexAttribute : Attribute
   {
-    public Type T;
-    public object[] Os;
-    public Type[] Ts;
-    public int[] Is;
-    public DayOfWeek[] Es;
+    public Type? T;
+    public object[]? Os;
+    public Type[]? Ts;
+    public int[]? Is;
+    public DayOfWeek[]? Es;
 
-    private string s;
+    private string? s;
 
     public ComplexAttribute ()
     {
@@ -64,7 +64,7 @@ namespace Remotion.UnitTests.Utilities.CustomAttributeUtilityTestDomain
       Es = es;
     }
 
-    public string S
+    public string? S
     {
       get { return s; }
       set { s = value; }

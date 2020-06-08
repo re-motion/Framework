@@ -42,7 +42,7 @@ namespace Remotion.Logging
     {
       if (log.IsEnabled (logLevel))
       {
-        log.Log (logLevel, (int?) null, messageCreator (value), (Exception) null);
+        log.Log (logLevel, (int?) null, messageCreator (value), (Exception?) null);
       }
       return value;
     }
@@ -84,7 +84,7 @@ namespace Remotion.Logging
     public static void Log (this ILog log, LogLevel logLevel, int eventID, object message)
     {
       ArgumentUtility.CheckNotNull ("log", log);
-      log.Log (logLevel, eventID, message, (Exception) null);
+      log.Log (logLevel, eventID, message, (Exception?) null);
     }
 
     /// <summary>
@@ -105,7 +105,7 @@ namespace Remotion.Logging
     public static void Log (this ILog log, LogLevel logLevel, object message)
     {
       ArgumentUtility.CheckNotNull ("log", log);
-      log.Log (logLevel, (int?) null, message, (Exception) null);
+      log.Log (logLevel, (int?) null, message, (Exception?) null);
     }
 
     /// <overloads>Log a formatted string with the specified <paramref name="logLevel"/>.</overloads>
@@ -119,7 +119,7 @@ namespace Remotion.Logging
     public static void LogFormat (this ILog log, LogLevel logLevel, int eventID, string format, params object[] args)
     {
       ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (logLevel, eventID, (Exception) null, format, args);
+      log.LogFormat (logLevel, eventID, (Exception?) null, format, args);
     }
 
     /// <summary>
@@ -131,7 +131,7 @@ namespace Remotion.Logging
     public static void LogFormat (this ILog log, LogLevel logLevel, string format, params object[] args)
     {
       ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (logLevel, (int?) null, (Exception) null, format, args);
+      log.LogFormat (logLevel, (int?) null, (Exception?) null, format, args);
     }
 
     /// <summary>
@@ -167,7 +167,7 @@ namespace Remotion.Logging
     public static void Debug (this ILog log, int eventID, object message)
     {
       ArgumentUtility.CheckNotNull ("log", log);
-      log.Log (LogLevel.Debug, eventID, message, (Exception)  null);
+      log.Log (LogLevel.Debug, eventID, message, (Exception?)  null);
     }
     
     /// <summary>
@@ -188,7 +188,7 @@ namespace Remotion.Logging
     public static void Debug (this ILog log, object message)
     {
       ArgumentUtility.CheckNotNull ("log", log);
-      log.Log (LogLevel.Debug, (int?) null, message, (Exception) null);
+      log.Log (LogLevel.Debug, (int?) null, message, (Exception?) null);
     }
 
     /// <overloads>Log a formatted string with the <see cref="LogLevel.Debug"/> level.</overloads>
@@ -216,7 +216,7 @@ namespace Remotion.Logging
     public static void DebugFormat (this ILog log, int eventID, string format, params object[] args)
     {
       ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (LogLevel.Debug, eventID, (Exception) null, format, args);
+      log.LogFormat (LogLevel.Debug, eventID, (Exception?) null, format, args);
     }
         /// <summary>
     /// Log a formatted string with the <see cref="LogLevel.Debug"/> level.
@@ -227,7 +227,7 @@ namespace Remotion.Logging
     public static void DebugFormat (this ILog log, string format, params object[] args)
     {
       ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (LogLevel.Debug, (int?) null, (Exception) null, format, args);
+      log.LogFormat (LogLevel.Debug, (int?) null, (Exception?) null, format, args);
     }
 
     /// <summary>
@@ -264,7 +264,7 @@ namespace Remotion.Logging
     public static void Info (this ILog log, int eventID, object message)
     {
       ArgumentUtility.CheckNotNull ("log", log);
-      log.Log (LogLevel.Info, eventID, message, (Exception) null);
+      log.Log (LogLevel.Info, eventID, message, (Exception?) null);
     }
     
     /// <summary>
@@ -285,7 +285,7 @@ namespace Remotion.Logging
     public static void Info (this ILog log, object message)
     {
       ArgumentUtility.CheckNotNull ("log", log);
-      log.Log (LogLevel.Info, (int?) null, message, (Exception) null);
+      log.Log (LogLevel.Info, (int?) null, message, (Exception?) null);
     }
 
     /// <overloads>Log a formatted string with the <see cref="LogLevel.Info"/> level.</overloads>
@@ -313,7 +313,7 @@ namespace Remotion.Logging
     public static void InfoFormat (this ILog log, int eventID, string format, params object[] args)
     {
       ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (LogLevel.Info, eventID, (Exception) null, format, args);
+      log.LogFormat (LogLevel.Info, eventID, (Exception?) null, format, args);
     }
     
     /// <summary>
@@ -325,7 +325,7 @@ namespace Remotion.Logging
     public static void InfoFormat (this ILog log, string format, params object[] args)
     {
       ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (LogLevel.Info, (int?) null, (Exception) null, format, args);
+      log.LogFormat (LogLevel.Info, (int?) null, (Exception?) null, format, args);
     }
 
     /// <summary>
@@ -362,7 +362,7 @@ namespace Remotion.Logging
     public static void Warn (this ILog log, int eventID, object message)
     {
       ArgumentUtility.CheckNotNull ("log", log);
-      log.Log (LogLevel.Warn, eventID, message, (Exception) null);
+      log.Log (LogLevel.Warn, eventID, message, (Exception?) null);
     }
 
     /// <summary>
@@ -383,7 +383,7 @@ namespace Remotion.Logging
     public static void Warn (this ILog log, object message)
     {
       ArgumentUtility.CheckNotNull ("log", log);
-      log.Log (LogLevel.Warn, (int?) null, message, (Exception) null);
+      log.Log (LogLevel.Warn, (int?) null, message, (Exception?) null);
     }
 
     /// <overloads>Log a formatted string with the <see cref="LogLevel.Warn"/> level.</overloads>
@@ -411,7 +411,7 @@ namespace Remotion.Logging
     public static void WarnFormat (this ILog log, int eventID, string format, params object[] args)
     {
       ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (LogLevel.Warn, eventID, (Exception) null, format, args);
+      log.LogFormat (LogLevel.Warn, eventID, (Exception?) null, format, args);
     }
 
     /// <summary>
@@ -423,7 +423,7 @@ namespace Remotion.Logging
     public static void WarnFormat (this ILog log, string format, params object[] args)
     {
       ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (LogLevel.Warn, (int?) null, (Exception) null, format, args);
+      log.LogFormat (LogLevel.Warn, (int?) null, (Exception?) null, format, args);
     }
 
     /// <summary>
@@ -460,7 +460,7 @@ namespace Remotion.Logging
     public static void Error (this ILog log, int eventID, object message)
     {
       ArgumentUtility.CheckNotNull ("log", log);
-      log.Log (LogLevel.Error, eventID, message, (Exception) null);
+      log.Log (LogLevel.Error, eventID, message, (Exception?) null);
     }
 
     /// <summary>
@@ -481,7 +481,7 @@ namespace Remotion.Logging
     public static void Error (this ILog log, object message)
     {
       ArgumentUtility.CheckNotNull ("log", log);
-      log.Log (LogLevel.Error, (int?) null, message, (Exception) null);
+      log.Log (LogLevel.Error, (int?) null, message, (Exception?) null);
     }
 
     /// <overloads>Log a formatted string with the <see cref="LogLevel.Error"/> level.</overloads>
@@ -509,7 +509,7 @@ namespace Remotion.Logging
     public static void ErrorFormat (this ILog log, int eventID, string format, params object[] args)
     {
       ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (LogLevel.Error, eventID, (Exception) null, format, args);
+      log.LogFormat (LogLevel.Error, eventID, (Exception?) null, format, args);
     }
     
     /// <summary>
@@ -521,7 +521,7 @@ namespace Remotion.Logging
     public static void ErrorFormat (this ILog log, string format, params object[] args)
     {
       ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (LogLevel.Error, (int?) null, (Exception) null, format, args);
+      log.LogFormat (LogLevel.Error, (int?) null, (Exception?) null, format, args);
     }
 
     /// <summary>
@@ -558,7 +558,7 @@ namespace Remotion.Logging
     public static void Fatal (this ILog log, int eventID, object message)
     {
       ArgumentUtility.CheckNotNull ("log", log);
-      log.Log (LogLevel.Fatal, eventID, message, (Exception) null);
+      log.Log (LogLevel.Fatal, eventID, message, (Exception?) null);
     }
     
     /// <summary>
@@ -579,7 +579,7 @@ namespace Remotion.Logging
     public static void Fatal (this ILog log, object message)
     {
       ArgumentUtility.CheckNotNull ("log", log);
-      log.Log (LogLevel.Fatal, (int?) null, message, (Exception) null);
+      log.Log (LogLevel.Fatal, (int?) null, message, (Exception?) null);
     }
 
     /// <overloads>Log a formatted string with the <see cref="LogLevel.Fatal"/> level.</overloads>
@@ -607,7 +607,7 @@ namespace Remotion.Logging
     public static void FatalFormat (this ILog log, int eventID, string format, params object[] args)
     {
       ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (LogLevel.Fatal, eventID, (Exception) null, format, args);
+      log.LogFormat (LogLevel.Fatal, eventID, (Exception?) null, format, args);
     }
 
     /// <summary>
@@ -619,7 +619,7 @@ namespace Remotion.Logging
     public static void FatalFormat (this ILog log, string format, params object[] args)
     {
       ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (LogLevel.Fatal, (int?) null, (Exception) null, format, args);
+      log.LogFormat (LogLevel.Fatal, (int?) null, (Exception?) null, format, args);
     }
 
     /// <summary>

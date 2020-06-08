@@ -29,9 +29,9 @@ namespace Remotion.Diagnostics
   public class OuterProductIndexGenerator 
   {
     private int _numberElementsProcessed;
-    private int[] _numberElementsPerDimension;
+    private int[] _numberElementsPerDimension = null!;
     private int _numberElementsOverall;
-    private int[] _currentDimensionIndices;
+    private int[] _currentDimensionIndices = null!;
 
 
     ///<overloads>

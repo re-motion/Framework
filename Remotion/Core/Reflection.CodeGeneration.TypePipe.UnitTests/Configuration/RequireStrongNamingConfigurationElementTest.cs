@@ -24,7 +24,7 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.UnitTests.Configuration
   [TestFixture]
   public class RequireStrongNamingConfigurationElementTest
   {
-    private ForceStrongNamingConfigurationElement _element;
+    private ForceStrongNamingConfigurationElement _element = default!;
 
     [SetUp]
     public void SetUp ()

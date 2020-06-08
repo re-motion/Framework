@@ -19,6 +19,7 @@ using System;
 using System.Threading;
 using Remotion.Utilities;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.Development.UnitTesting
 {
@@ -67,7 +68,7 @@ namespace Remotion.Development.UnitTesting
 
     public bool Run ()
     {
-      Exception lastException = null;
+      Exception? lastException = null;
 
       // Use anonymous delegate to catch and store exceptions from the thread in the current scope.
       Thread otherThread = 

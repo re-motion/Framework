@@ -25,7 +25,7 @@ namespace Remotion.Collections.Caching.UnitTests
   [TestFixture]
   public class NullCacheTest
   {
-    private ICache<string, object> _cache;
+    private ICache<string, object> _cache = default!;
 
     [SetUp]
     public void SetUp ()
@@ -36,8 +36,7 @@ namespace Remotion.Collections.Caching.UnitTests
     [Test]
     public void TryGetValue ()
     {
-      object actual;
-      Assert.That (_cache.TryGetValue ("anyKey", out actual), Is.False);
+      Assert.That (_cache.TryGetValue ("anyKey", out var actual), Is.False);
     }
 
     [Test]
@@ -51,8 +50,7 @@ namespace Remotion.Collections.Caching.UnitTests
     public void Add_TryGetValue ()
     {
       _cache.GetOrCreateValue ("key1", delegate { return new object(); });
-      object actual;
-      Assert.That (_cache.TryGetValue ("key1", out actual), Is.False);
+      Assert.That (_cache.TryGetValue ("key1", out var actual), Is.False);
       Assert.That (actual, Is.Null);
     }
 

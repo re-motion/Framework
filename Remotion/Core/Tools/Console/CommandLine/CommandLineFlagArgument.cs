@@ -74,7 +74,7 @@ public class CommandLineFlagArgument: CommandLineArgument
   }
 
 
-  public override object ValueObject
+  public override object? ValueObject
   {
     get { return Value; }
   }
@@ -88,18 +88,18 @@ public class CommandLineFlagArgument: CommandLineArgument
   {
     if (IsOptional && _defaultValue == false)
     {
-      sb.Append (Parser.ArgumentDeclarationPrefix);
+      sb.Append (Parser!.ArgumentDeclarationPrefix);
       sb.Append (Name);
     }
     else if (IsOptional && _defaultValue == true)
     {
-      sb.Append (Parser.ArgumentDeclarationPrefix);
+      sb.Append (Parser!.ArgumentDeclarationPrefix);
       sb.Append (Name);
       sb.Append ("-");
     }
     else
     {
-      sb.Append (Parser.ArgumentDeclarationPrefix);
+      sb.Append (Parser!.ArgumentDeclarationPrefix);
       sb.Append (Name);
       sb.Append ("+ | /");
       sb.Append (Name);

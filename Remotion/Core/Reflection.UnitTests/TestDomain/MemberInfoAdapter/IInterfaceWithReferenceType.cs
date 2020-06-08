@@ -21,16 +21,16 @@ namespace Remotion.Reflection.UnitTests.TestDomain.MemberInfoAdapter
   public interface IInterfaceWithReferenceType<T>
       where T : class
   {
-    T ExplicitInterfaceScalar { get; set; }
-    T ExplicitInterfaceReadOnlyScalar { get; }
-    T ExplicitInterfaceWriteOnlyScalar { set; }
-    T ImplicitInterfaceScalar { get; set; }
-    T ImplicitInterfaceReadOnlyScalar { get; }
-    T ImplicitInterfaceWriteOnlyScalar { set; }
-    T this[int i] { get; set; }
-    T this[int i, DateTime j] { get; set; }
-    T this[int i, DateTime j, string k] { get; set; }
-    T ExplicitInterfaceMethod (); 
-    T ImplicitInterfaceMethod ();
+    T? ExplicitInterfaceScalar { get; set; }
+    T? ExplicitInterfaceReadOnlyScalar { get; }
+    T? ExplicitInterfaceWriteOnlyScalar { set; }
+    T? ImplicitInterfaceScalar { get; set; }
+    T? ImplicitInterfaceReadOnlyScalar { get; }
+    T? ImplicitInterfaceWriteOnlyScalar { set; }
+    T? this[int i] { get; set; }
+    T? this[int i, DateTime j] { get; set; }
+    T? this[int i, DateTime j, string k] { get; set; }
+    T? ExplicitInterfaceMethod (); 
+    T? ImplicitInterfaceMethod ();
   }
 }

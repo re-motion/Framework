@@ -21,6 +21,7 @@ using System.Reflection;
 using Remotion.Development.UnitTesting.PEVerifyPathSources;
 using Remotion.Utilities;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.Development.UnitTesting
 {
@@ -48,7 +49,7 @@ namespace Remotion.Development.UnitTesting
 
     public string GetVerifierPath (PEVerifyVersion version)
     {
-      string verifierPath = _pathSource.GetPEVerifyPath (version);
+      string? verifierPath = _pathSource.GetPEVerifyPath (version);
       if (verifierPath == null)
       {
         var message = string.Format (

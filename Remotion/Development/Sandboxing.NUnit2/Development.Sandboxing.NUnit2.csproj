@@ -94,6 +94,9 @@
     <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\UsedImplicitlyAttribute.cs">
       <Link>SharedSource\ReSharperAnnotations\UsedImplicitlyAttribute.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\RoslynAnnotations\NullableAnnotations.cs">
+      <Link>SharedSource\RoslynAnnotations\NullableAnnotations.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\SharedSource\Core\Utilities\ArgumentUtility.cs">
       <Link>SharedSource\Utilities\ArgumentUtility.cs</Link>
     </Compile>

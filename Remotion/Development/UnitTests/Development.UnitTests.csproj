@@ -167,6 +167,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\SharedSource\Core\RoslynAnnotations\NullableAnnotations.cs">
+      <Link>SharedSource\RoslynAnnotations\NullableAnnotations.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\SharedSource\UnitTests\Development\Core\UnitTesting\DevNullTest.cs">
       <Link>SharedSource\Core\UnitTesting\DevNullTest.cs</Link>
     </Compile>

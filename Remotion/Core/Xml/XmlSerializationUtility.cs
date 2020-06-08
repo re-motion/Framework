@@ -47,7 +47,7 @@ namespace Remotion.Xml
       catch (InvalidOperationException e)
       {
         // unwrap an inner XmlSchemaValidationException 
-        XmlSchemaValidationException schemaException = e.InnerException as XmlSchemaValidationException;
+        XmlSchemaValidationException? schemaException = e.InnerException as XmlSchemaValidationException;
         if (schemaException != null)
           throw schemaException;
 
@@ -109,8 +109,8 @@ namespace Remotion.Xml
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
-      XmlTypeAttribute xmlType = (XmlTypeAttribute) Attribute.GetCustomAttribute (type, typeof (XmlTypeAttribute), true);
-      XmlRootAttribute xmlRoot = (XmlRootAttribute) Attribute.GetCustomAttribute (type, typeof (XmlRootAttribute), true);
+      XmlTypeAttribute? xmlType = (XmlTypeAttribute?) Attribute.GetCustomAttribute (type, typeof (XmlTypeAttribute), true);
+      XmlRootAttribute? xmlRoot = (XmlRootAttribute?) Attribute.GetCustomAttribute (type, typeof (XmlRootAttribute), true);
       bool hasXmlType = xmlType != null;
       bool hasXmlRoot = xmlRoot != null;
       if (!hasXmlType && !hasXmlRoot)
@@ -122,8 +122,8 @@ namespace Remotion.Xml
             "type");
       }
 
-      bool hasXmlTypeNamespace = hasXmlType ? (! String.IsNullOrEmpty (xmlType.Namespace)) : false;
-      bool hasXmlRootNamespace = hasXmlRoot ? (! String.IsNullOrEmpty (xmlRoot.Namespace)) : false;
+      bool hasXmlTypeNamespace = hasXmlType ? (! String.IsNullOrEmpty (xmlType!.Namespace)) : false;
+      bool hasXmlRootNamespace = hasXmlRoot ? (! String.IsNullOrEmpty (xmlRoot!.Namespace)) : false;
       if (! hasXmlTypeNamespace && ! hasXmlRootNamespace)
       {
         throw new ArgumentException (
@@ -134,9 +134,9 @@ namespace Remotion.Xml
       }
 
       if (hasXmlRootNamespace)
-        return xmlRoot.Namespace;
+        return xmlRoot!.Namespace;
       else
-        return xmlType.Namespace;
+        return xmlType!.Namespace;
     }
   }
 }

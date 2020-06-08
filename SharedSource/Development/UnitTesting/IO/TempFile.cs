@@ -19,6 +19,7 @@ using System;
 using System.IO;
 using Remotion.Utilities;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.Development.UnitTesting.IO
 {
@@ -27,7 +28,7 @@ namespace Remotion.Development.UnitTesting.IO
   /// </summary>
   partial class TempFile : IDisposable
   {
-    private string _fileName;
+    private string? _fileName;
 
     public TempFile ()
     {

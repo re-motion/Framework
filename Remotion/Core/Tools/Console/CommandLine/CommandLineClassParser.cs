@@ -38,7 +38,7 @@ namespace Remotion.Tools.Console.CommandLine
       {
         if (member.MemberType == MemberTypes.Field || member.MemberType == MemberTypes.Property)
         {
-          CommandLineArgumentAttribute argumentAttribute = (CommandLineArgumentAttribute) AttributeUtility.GetCustomAttribute (
+          CommandLineArgumentAttribute? argumentAttribute = (CommandLineArgumentAttribute?) AttributeUtility.GetCustomAttribute (
               member, typeof (CommandLineArgumentAttribute), false);
           if (argumentAttribute != null)
           {
@@ -64,7 +64,7 @@ namespace Remotion.Tools.Console.CommandLine
         CommandLineArgument argument = (CommandLineArgument) entry.Key;
         MemberInfo fieldOrProperty = (MemberInfo) entry.Value;
         Type memberType = CommandLineReflectionUtility.GetFieldOrPropertyType (fieldOrProperty);
-        object value = argument.ValueObject;
+        object? value = argument.ValueObject;
         if (argument is ICommandLinePartArgument)
           value = ((ICommandLinePartArgument)argument).Group.ValueObject;
 

@@ -25,7 +25,7 @@ namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
   [TestFixture]
   public class ExtensibleEnumTypeConverterFactoryTest
   {
-    private ITypeConverterFactory _factory;
+    private ITypeConverterFactory _factory = default!;
 
     [SetUp]
     public void SetUp ()
@@ -36,7 +36,7 @@ namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
     [Test]
     public void CreateTypeConverterOrDefault_WithExtensibleEnum_ReturnsExtensibleEnumConverter ()
     {
-      var typeConverter = _factory.CreateTypeConverterOrDefault (typeof (Color));
+      var typeConverter = _factory.CreateTypeConverterOrDefault (typeof (Color))!;
       Assert.That (typeConverter, Is.TypeOf<ExtensibleEnumConverter>());
       Assert.That (((ExtensibleEnumConverter) typeConverter).ExtensibleEnumType, Is.EqualTo (typeof (Color)));
     }

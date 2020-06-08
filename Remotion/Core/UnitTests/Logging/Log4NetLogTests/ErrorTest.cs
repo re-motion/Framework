@@ -49,7 +49,7 @@ namespace Remotion.UnitTests.Logging.Log4NetLogTests
     public void Logger_Log ()
     {
       SetLoggingThreshold (Level.Error);
-      Log.Log (LogLevel.Error, (int?) null, "The message.", (Exception) null);
+      Log.Log (LogLevel.Error, (int?) null, "The message.", (Exception?) null);
 
       LoggingEvent[] events = GetLoggingEvents ();
       Assert.That (events.Length, Is.EqualTo (1));

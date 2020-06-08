@@ -60,23 +60,23 @@ for (int j = 0; j <= fixedArgCount; j++)
 <# } #>
     }
 
-    private object[] GetValues (object[] values)
+    private object?[] GetValues (object?[] values)
     {
 <# if (hasFixedArgs) { #>
-      object[] fixedArgs = new object[] { <#= fixedArguments #> };
+      object?[] fixedArgs = new object?[] { <#= fixedArguments #> };
       return ArrayUtility.Combine (fixedArgs, values);
 <# } else { #>
       return values;
 <# } #>
     }
 
-    public TResult Invoke (Type[] valueTypes, object[] values)
+    public TResult Invoke (Type[] valueTypes, object?[] values)
     {
       InvokerUtility.CheckInvokeArguments (valueTypes, values);
       return (TResult) GetDelegate (GetValueTypes (valueTypes)).DynamicInvoke (GetValues (values));
     }
 
-    public TResult Invoke (object[] values)
+    public TResult Invoke (object?[] values)
     {
       Type[] valueTypes = InvokerUtility.GetValueTypes (values);
       return (TResult) GetDelegate (GetValueTypes (valueTypes)).DynamicInvoke (GetValues (values));

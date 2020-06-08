@@ -20,14 +20,15 @@ using System;
 using NUnit.Framework;
 using Remotion.Utilities;
 
+#nullable enable
 namespace Remotion.UnitTests.Utilities
 {
   [TestFixture]
   public class ReferenceEqualityComparerTest
   {
-    private ReferenceEqualityComparer<object> _comparer;
-    private object _obj1;
-    private object _obj2;
+    private ReferenceEqualityComparer<object> _comparer = default!;
+    private object _obj1 = default!;
+    private object _obj2 = default!;
 
     [SetUp]
     public void SetUp ()

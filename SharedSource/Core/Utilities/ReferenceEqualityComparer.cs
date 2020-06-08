@@ -18,8 +18,9 @@
 //
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.Utilities
 {
@@ -28,7 +29,7 @@ namespace Remotion.Utilities
   /// and not just equal for reference checking purposes.      
   /// </summary>      
   /// <typeparam name="T">the type of object to check</typeparam>  
-  partial class ReferenceEqualityComparer<T> : IEqualityComparer<T>
+  partial class ReferenceEqualityComparer<T> : IEqualityComparer<T> where T : class
   {
     public static readonly ReferenceEqualityComparer<T> Instance = new ReferenceEqualityComparer<T>();
 
@@ -36,7 +37,7 @@ namespace Remotion.Utilities
     {
     }
 
-    public bool Equals (T x, T y)
+    public bool Equals (T? x, T? y)
     {
       return object.ReferenceEquals (x, y);
     }

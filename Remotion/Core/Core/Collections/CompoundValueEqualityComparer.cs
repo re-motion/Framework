@@ -52,7 +52,7 @@ namespace Remotion.Collections
     /// Standard conforming <see cref="object.Equals(object)"/> implementation comparing <typeparamref name="T"/> with an <see cref="object"/>,
     /// using <see cref="Equals(T,T)"/>
     /// </summary>
-    public bool Equals (T x, Object obj)
+    public bool Equals (T x, Object? obj)
     {
       var y = obj as T;
       if (Object.ReferenceEquals (y, null))

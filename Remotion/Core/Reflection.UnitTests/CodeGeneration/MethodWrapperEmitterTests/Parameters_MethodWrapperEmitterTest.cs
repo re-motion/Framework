@@ -195,7 +195,7 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
       var method = GetWrapperMethodFromEmitter (MethodInfo.GetCurrentMethod(), parameterTypes, returnType, methodInfo);
 
       var value = new SimpleReferenceType();
-      BuildTypeAndInvokeMethod (method, new object[] { null, value });
+      BuildTypeAndInvokeMethod (method, new object?[] { null, value });
 
       Assert.That (ClassWithMethods.StaticReferenceTypeValue, Is.SameAs (value));
     }

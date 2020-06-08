@@ -20,6 +20,7 @@ using System.Linq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting.Enumerables;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.Development.UnitTests.Core.UnitTesting.Enumerables
 {

@@ -18,6 +18,7 @@
 using System;
 using Remotion.Utilities;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.Development.UnitTesting.PEVerifyPathSources
 {

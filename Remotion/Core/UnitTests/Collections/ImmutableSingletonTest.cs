@@ -106,7 +106,7 @@ namespace Remotion.UnitTests.Collections
     [Test]
     public void InitializeWithNull ()
     {
-      IReadOnlyList<object> list = ImmutableSingleton.Create<object> (null);
+      IReadOnlyList<object?> list = ImmutableSingleton.Create<object?> (null);
       Assert.That (list.Count, Is.EqualTo (1));
       Assert.That (list[0], Is.Null);
     }

@@ -38,8 +38,8 @@ namespace Remotion.Reflection.CodeGeneration
     private readonly PropertyKind _propertyKind;
     private readonly Type[] _indexParameters;
 
-    private IMethodEmitter _getMethod;
-    private IMethodEmitter _setMethod;
+    private IMethodEmitter? _getMethod;
+    private IMethodEmitter? _setMethod;
 
     public CustomPropertyEmitter (CustomClassEmitter declaringType, string name, PropertyKind propertyKind, Type propertyType, Type[] indexParameters, PropertyAttributes attributes)
     {
@@ -70,7 +70,7 @@ namespace Remotion.Reflection.CodeGeneration
       get { return _indexParameters; }
     }
 
-    public IMethodEmitter GetMethod
+    public IMethodEmitter? GetMethod
     {
       get { return _getMethod; }
       set
@@ -85,7 +85,7 @@ namespace Remotion.Reflection.CodeGeneration
       }
     }
 
-    public IMethodEmitter SetMethod
+    public IMethodEmitter? SetMethod
     {
       get { return _setMethod; }
       set

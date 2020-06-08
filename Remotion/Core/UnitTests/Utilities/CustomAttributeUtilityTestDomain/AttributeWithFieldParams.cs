@@ -20,18 +20,18 @@ namespace Remotion.UnitTests.Utilities.CustomAttributeUtilityTestDomain
 {
   public class AttributeWithFieldParams : Attribute
   {
-    public AttributeWithFieldParams (int i, string s, object o, Type t, int[] iArray, string[] sArray, object[] oArray, Type[] tArray)
+    public AttributeWithFieldParams (int i, string? s, object? o, Type? t, int[] iArray, string?[] sArray, object?[] oArray, Type?[] tArray)
     {
     }
 
     public int INamedF;
-    public string SNamedF;
-    public object ONamedF;
-    public Type TNamedF;
+    public string? SNamedF;
+    public object? ONamedF;
+    public Type? TNamedF;
 
-    public int[] INamedArrayF;
-    public string[] SNamedArrayF;
-    public object[] ONamedArrayF;
-    public Type[] TNamedArrayF;
+    public int[]? INamedArrayF;
+    public string?[]? SNamedArrayF;
+    public object?[]? ONamedArrayF;
+    public Type?[]? TNamedArrayF;
   }
 }

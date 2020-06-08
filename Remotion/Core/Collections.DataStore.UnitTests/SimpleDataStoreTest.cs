@@ -27,7 +27,7 @@ namespace Remotion.Collections.DataStore.UnitTests
   [TestFixture]
   public class SimpleDataStoreTest
   {
-    private SimpleDataStore<string, int?> _store;
+    private SimpleDataStore<string, int?> _store = default!;
       
     [SetUp]
     public void SetUp ()
@@ -365,7 +365,7 @@ namespace Remotion.Collections.DataStore.UnitTests
     public void GetOrCreateValue_WithNestedEnumeration_SkipsNewItem()
     {
       int expected = 15;
-      KeyValuePair<string, int?>[] nestedItems = null;
+      KeyValuePair<string, int?>[]? nestedItems = null;
 
       var actualValue = _store.GetOrCreateValue (
           "key1",
@@ -435,7 +435,7 @@ namespace Remotion.Collections.DataStore.UnitTests
           Throws.Exception.SameAs (exception));
 
       int? expected = 14;
-      object actual = _store.GetOrCreateValue ("key1", key => expected);
+      object? actual = _store.GetOrCreateValue ("key1", key => expected);
       Assert.That (actual, Is.EqualTo (expected));
     }
 
@@ -541,7 +541,7 @@ namespace Remotion.Collections.DataStore.UnitTests
     {
       var store = new SimpleDataStore<string, object>();
       store.GetOrCreateValue ("key", k => "value");
-      object value;
+      object? value;
       store.TryGetValue ("key", out value);
 
       var stopwatch = new Stopwatch();

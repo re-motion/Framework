@@ -19,6 +19,7 @@ using System;
 using System.IO;
 using Microsoft.Win32;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.Development.UnitTesting.PEVerifyPathSources
 {
@@ -35,7 +36,7 @@ namespace Remotion.Development.UnitTesting.PEVerifyPathSources
         return string.Format (".NET SDK 2.0: Registry: HKEY_LOCAL_MACHINE\\{0}\\{1}\\bin\\PEVerify.exe", SdkRegistryKey, SdkRegistryValue);
     }
 
-    protected override string GetPotentialPEVerifyPath (PEVerifyVersion version)
+    protected override string? GetPotentialPEVerifyPath (PEVerifyVersion version)
     {
       if (version != PEVerifyVersion.DotNet2)
         return null;

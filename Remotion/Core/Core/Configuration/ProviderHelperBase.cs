@@ -41,10 +41,10 @@ namespace Remotion.Configuration
   public abstract class ProviderHelperBase<TProvider> : ProviderHelperBase where TProvider: class
   {
     private readonly ExtendedConfigurationSection _configurationSection;
-    private readonly DoubleCheckedLockingContainer<TProvider> _provider;
+    private readonly DoubleCheckedLockingContainer<TProvider?> _provider;
     private readonly DoubleCheckedLockingContainer<ProviderCollection<TProvider>> _providers;
-    private ConfigurationProperty _providerSettingsProperty;
-    private ConfigurationProperty _defaultProviderNameProperty;
+    private ConfigurationProperty _providerSettingsProperty = default!;
+    private ConfigurationProperty _defaultProviderNameProperty = default!;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ProviderHelperBase{TProvider}"/> class. 
@@ -58,7 +58,7 @@ namespace Remotion.Configuration
       ArgumentUtility.CheckNotNull ("configurationSection", configurationSection);
 
       _configurationSection = configurationSection;
-      _provider = new DoubleCheckedLockingContainer<TProvider> (GetProviderFromConfiguration);
+      _provider = new DoubleCheckedLockingContainer<TProvider?> (GetProviderFromConfiguration);
       _providers = new DoubleCheckedLockingContainer<ProviderCollection<TProvider>> (GetProvidersFromConfiguration);
     }
 
@@ -69,6 +69,7 @@ namespace Remotion.Configuration
     /// <summary>Initializes properties and adds them to the given <see cref="ConfigurationPropertyCollection"/>.</summary>
     public override void InitializeProperties (ConfigurationPropertyCollection properties)
     {
+      //TODO RM-7434: Mark with MemberNotNull once supported by msbuild
       ArgumentUtility.CheckNotNull ("properties", properties);
 
       _providerSettingsProperty = CreateProviderSettingsProperty();
@@ -83,7 +84,7 @@ namespace Remotion.Configuration
     }
 
     /// <summary>Get and set the provider.</summary>
-    public TProvider Provider
+    public TProvider? Provider
     {
       get { return _provider.Value; }
       set { _provider.Value = value; }
@@ -115,7 +116,7 @@ namespace Remotion.Configuration
       get { return _defaultProviderNameProperty; }
     }
 
-    protected ConfigurationProperty CreateDefaultProviderNameProperty (string name, string defaultValue)
+    protected ConfigurationProperty CreateDefaultProviderNameProperty (string name, string? defaultValue)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("name", name);
       return new ConfigurationProperty (name, typeof (string), defaultValue, null, new StringValidator (1), ConfigurationPropertyOptions.None);
@@ -178,7 +179,7 @@ namespace Remotion.Configuration
             assemblyName.FullName);
       }
 
-      return TypeUtility.GetType (Assembly.CreateQualifiedName (assemblyName.FullName, typeName), true);
+      return TypeUtility.GetType (Assembly.CreateQualifiedName (assemblyName.FullName, typeName), throwOnError: true)!;
     }
 
     /// <summary>Initializes a collection of providers of the given type using the supplied settings.</summary>
@@ -263,7 +264,7 @@ namespace Remotion.Configuration
       if (string.IsNullOrEmpty (providerSettings.Type))
         throw new ArgumentException ("Type name must be specified for this provider.");
 
-      Type actualType = TypeUtility.GetType (providerSettings.Type, true);
+      Type actualType = TypeUtility.GetType (providerSettings.Type, throwOnError: true)!;
 
       if (!providerType.IsAssignableFrom (actualType))
         throw new ArgumentException (string.Format ("Provider must implement the class '{0}'.", providerType.FullName));
@@ -277,7 +278,7 @@ namespace Remotion.Configuration
       return (ExtendedProviderBase) Activator.CreateInstance (actualType, new object[] {name, collection});
     }
 
-    private TProvider GetProviderFromConfiguration ()
+    private TProvider? GetProviderFromConfiguration ()
     {
       if (DefaultProviderName == null)
         return null;
@@ -306,7 +307,7 @@ namespace Remotion.Configuration
     }
 
     private ConfigurationErrorsException CreateConfigurationErrorsException (
-        FileNotFoundException e, PropertyInformation propertyInformation, string message, params object[] args)
+        FileNotFoundException? e, PropertyInformation propertyInformation, string message, params object[] args)
     {
       return new ConfigurationErrorsException (string.Format (message, args), e, propertyInformation.Source, propertyInformation.LineNumber);
     }

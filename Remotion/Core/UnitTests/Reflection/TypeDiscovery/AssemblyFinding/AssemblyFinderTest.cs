@@ -29,9 +29,9 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
   [TestFixture]
   public class AssemblyFinderTest
   {
-    private Assembly _assembly1;
-    private Assembly _assembly2;
-    private Assembly _assembly3;
+    private Assembly _assembly1 = default!;
+    private Assembly _assembly2 = default!;
+    private Assembly _assembly3 = default!;
 
     [SetUp]
     public void SetUp ()

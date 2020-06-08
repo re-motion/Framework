@@ -20,6 +20,7 @@ using System.Collections;
 using NUnit.Framework;
 using Remotion.Utilities;
 
+#nullable disable
 // ReSharper disable once CheckNamespace
 namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
 {

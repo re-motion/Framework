@@ -18,11 +18,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Remotion.Development.UnitTesting;
 using Remotion.FunctionalProgramming;
 using Rhino.Mocks.Constraints;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.Development.RhinoMocks.UnitTesting
 {
@@ -34,6 +36,7 @@ namespace Remotion.Development.RhinoMocks.UnitTesting
     /// <summary>
     /// Similiar to <see cref="ListArg{T}.Equal"/> but without considering the order of the elements in the collection.
     /// </summary>
+    [return: MaybeNull]
     public static T Equivalent<T> (this ListArg<T> arg, IEnumerable collection) where T : IEnumerable
     {
       var items = collection.Cast<object>().ToArray();
@@ -41,15 +44,16 @@ namespace Remotion.Development.RhinoMocks.UnitTesting
       var message = "equivalent to collection [" + string.Join (", ", (IEnumerable<object>) items) + "]";
       var constraint = new PredicateConstraintWithMessage<T> (c => c.Cast<object>().SetEquals (items), message);
       PrivateInvoke.InvokeNonPublicStaticMethod (type, "AddInArgument", constraint);
-      return default (T);
+      return default (T)!;
     }
 
     /// <summary>
     /// Similiar to <see cref="ListArg{T}.Equal"/> but without considering the order of the elements in the collection.
     /// </summary>
+    [return: MaybeNull]
     public static T Equivalent<T> (this ListArg<T> arg, params object[] items) where T : IEnumerable
     {
-      return Equivalent (arg, (IEnumerable) items);
+      return Equivalent (arg, (IEnumerable) items)!;
     }
 
     /// <summary>

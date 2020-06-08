@@ -26,8 +26,8 @@ namespace Remotion.Collections.DataStore.UnitTests
   [TestFixture]
   public class ExpiringDataStoreFactoryTest
   {
-    private StringComparer _comparer;
-    private IExpirationPolicy<object, DateTime, DateTime> _expirationPolicy;
+    private StringComparer _comparer = default!;
+    private IExpirationPolicy<object, DateTime, DateTime> _expirationPolicy = default!;
 
     [SetUp]
     public void SetUp ()

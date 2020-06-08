@@ -64,11 +64,11 @@ namespace Remotion.Reflection
                 typeInformation.GetType()));
       }
 
-      return (Type) s_typeConversionProvider.Convert (typeInformation.GetType(), typeof (Type), typeInformation);
+      return (Type) s_typeConversionProvider.Convert (typeInformation.GetType(), typeof (Type), typeInformation)!;
     }
 
     [CanBeNull]
-    public static Type AsRuntimeType (this ITypeInformation typeInformation)
+    public static Type? AsRuntimeType (this ITypeInformation typeInformation)
     {
       ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
 
@@ -97,7 +97,7 @@ namespace Remotion.Reflection
     }
 
     [CanBeNull]
-    public static PropertyInfo AsRuntimePropertyInfo (this IPropertyInformation propertyInformation)
+    public static PropertyInfo? AsRuntimePropertyInfo (this IPropertyInformation propertyInformation)
     {
       ArgumentUtility.CheckNotNull ("propertyInformation", propertyInformation);
 

@@ -22,6 +22,7 @@ using System.Reflection;
 using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.Development.UnitTesting.Reflection
 {
@@ -141,7 +142,7 @@ namespace Remotion.Development.UnitTesting.Reflection
       return GetPropertyInfoFromMemberExpression (typeof (TSourceObject), expression.Body);
     }
 
-    private static MemberInfo GetMemberInfoFromExpression (Type sourceObjectType, Expression expression)
+    private static MemberInfo GetMemberInfoFromExpression (Type? sourceObjectType, Expression expression)
     {
       if (expression is MemberExpression)
         if (((MemberExpression) expression).Member is PropertyInfo)
@@ -179,7 +180,7 @@ namespace Remotion.Development.UnitTesting.Reflection
       return GetTypedMemberInfoFromMemberExpression<FieldInfo> (expression, "field");
     }
 
-    private static PropertyInfo GetPropertyInfoFromMemberExpression (Type sourceObjectType, Expression expression)
+    private static PropertyInfo GetPropertyInfoFromMemberExpression (Type? sourceObjectType, Expression expression)
     {
       // For redeclared properties (overridden in C#) the MemberExpression contains the root definition.
       var property = GetTypedMemberInfoFromMemberExpression<PropertyInfo> (expression, "property");
@@ -215,7 +216,7 @@ namespace Remotion.Development.UnitTesting.Reflection
       return newExpression.Constructor;
     }
 
-    private static MethodInfo GetMethodInfoFromMethodCallExpression (Type sourceObjectType, Expression expression)
+    private static MethodInfo GetMethodInfoFromMethodCallExpression (Type? sourceObjectType, Expression expression)
     {
       var methodCallExpression = expression as MethodCallExpression;
       if (methodCallExpression == null)
@@ -227,7 +228,7 @@ namespace Remotion.Development.UnitTesting.Reflection
       if (sourceObjectType == null)
         return method;
 
-      Type[] genericMethodArguments = null;
+      Type[]? genericMethodArguments = null;
       if (method.IsGenericMethod && !method.IsGenericMethodDefinition)
       {
         genericMethodArguments = method.GetGenericArguments();
@@ -244,7 +245,7 @@ namespace Remotion.Development.UnitTesting.Reflection
       return methodOnSourceType;
     }
 
-    private static MethodInfo GetGenericMethodDefinition (Type sourceObjectType, Expression expression)
+    private static MethodInfo GetGenericMethodDefinition (Type? sourceObjectType, Expression expression)
     {
       var methodInfo = GetMethodInfoFromMethodCallExpression (sourceObjectType, expression);
       if (!methodInfo.IsGenericMethod)

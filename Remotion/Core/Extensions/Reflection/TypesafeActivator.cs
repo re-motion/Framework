@@ -81,7 +81,7 @@ namespace Remotion.Reflection
     }
 
     public static FuncInvoker<TMinimal> CreateInstance<TMinimal> (
-        Type type, BindingFlags bindingFlags, Binder binder, CallingConventions callingConvention, ParameterModifier[] parameterModifiers)
+        Type type, BindingFlags bindingFlags, Binder? binder, CallingConventions callingConvention, ParameterModifier[]? parameterModifiers)
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("type", type, typeof (TMinimal));
       return new FuncInvoker<TMinimal> (new ConstructorLookupInfo (type, bindingFlags, binder, callingConvention, parameterModifiers).GetDelegate);

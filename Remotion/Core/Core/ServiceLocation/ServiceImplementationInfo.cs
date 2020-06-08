@@ -50,7 +50,7 @@ namespace Remotion.ServiceLocation
       return new ServiceImplementationInfo (typeof(T), lifetime, RegistrationType.Multiple, factory);
     }
 
-    private readonly Func<object> _factory;
+    private readonly Func<object>? _factory;
     private readonly Type _implementationType;
     private readonly LifetimeKind _lifetime;
     private readonly RegistrationType _registrationType;
@@ -66,7 +66,7 @@ namespace Remotion.ServiceLocation
     {
     }
 
-    private ServiceImplementationInfo (Type implementationType, LifetimeKind lifetime, RegistrationType registrationType, Func<object> factory)
+    private ServiceImplementationInfo (Type implementationType, LifetimeKind lifetime, RegistrationType registrationType, Func<object>? factory)
     {
       if (registrationType == RegistrationType.Decorator && lifetime != LifetimeKind.InstancePerDependency)
         throw new ArgumentException ("For implementations of type 'Decorator', the lifetime can only be specified as 'InstancePerDependency'.", "lifetime");
@@ -98,7 +98,7 @@ namespace Remotion.ServiceLocation
     /// <summary>
     /// The factory delegate that creates an instance of the service implementation.
     /// </summary>
-    public Func<object> Factory
+    public Func<object>? Factory
     {
       get { return _factory; }
     }

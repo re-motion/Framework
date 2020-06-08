@@ -23,6 +23,7 @@ using System.Reflection;
 using System.Text;
 using Remotion.Utilities;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.Development.UnitTesting.Reflection
 {
@@ -391,7 +392,7 @@ namespace Remotion.Development.UnitTesting.Reflection
       return @event;
     }
 
-    public static object GetDefaultValue (Type type)
+    public static object? GetDefaultValue (Type type)
     {
       return type.IsValueType ? Activator.CreateInstance (type) : null;
     }
@@ -450,7 +451,7 @@ namespace Remotion.Development.UnitTesting.Reflection
       protected void ProtectedMethod () { }
 
 #pragma warning disable 67
-      public static event Action StaticEvent;
+      public static event Action? StaticEvent;
 #pragma warning restore 67
     }
   }

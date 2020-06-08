@@ -218,10 +218,10 @@ namespace Remotion.Logging
         string source,
         TraceEventType eventType,
         int id,
-        string formatOrMessage,
-        object[] args,
-        object data1,
-        object[] data)
+        string? formatOrMessage,
+        object[]? args,
+        object? data1,
+        object[]? data)
     {
       return ((Filter == null) || Filter.ShouldTrace (cache, source, eventType, id, formatOrMessage, args, data1, data));
     }

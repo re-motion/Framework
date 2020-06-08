@@ -31,9 +31,9 @@ namespace Remotion.Collections.Caching.UnitTests
   [TestFixture]
   public class LockingCacheDecoratorTest
   {
-    private LockingCacheDecorator<string, int> _decorator;
+    private LockingCacheDecorator<string, int> _decorator = default!;
 
-    private LockingDecoratorTestHelper<ICache<string, int>> _helper;
+    private LockingDecoratorTestHelper<ICache<string, int>> _helper = default!;
 
     [SetUp]
     public void SetUp ()
@@ -108,8 +108,7 @@ namespace Remotion.Collections.Caching.UnitTests
 
       Assert.That (actualValue, Is.EqualTo (expected));
 
-      object actualValue2;
-      Assert.That (cache.TryGetValue ("key1", out actualValue2), Is.True);
+      Assert.That (cache.TryGetValue ("key1", out var actualValue2), Is.True);
       Assert.That (actualValue2, Is.SameAs (expected));
     }
 
@@ -195,8 +194,7 @@ namespace Remotion.Collections.Caching.UnitTests
           arg =>
           {
             cache.GetOrCreateValue ("key", k => "value");
-            object value;
-            cache.TryGetValue ("key", out value);
+            cache.TryGetValue ("key", out var value);
 
             var stopwatch = (Stopwatch) arg;
             stopwatch.Start();

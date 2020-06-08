@@ -33,7 +33,7 @@ internal abstract class FormatArgument
     if (argument is CommandLineGroupArgument)
       return string.Format (c_messageGroupArgument, argument.Placeholder);
     else if (argument.Name != null)
-      return string.Format (c_messageByName, argument.Parser.ArgumentDeclarationPrefix + argument.Name);
+      return string.Format (c_messageByName, argument.Parser!.ArgumentDeclarationPrefix + argument.Name);
     else if (argument.Placeholder != null)
       return string.Format (c_messageByPlaceholder, argument.Placeholder);
     else if (argument.Parser != null)

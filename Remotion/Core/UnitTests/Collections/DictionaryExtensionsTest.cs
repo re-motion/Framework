@@ -26,7 +26,7 @@ namespace Remotion.UnitTests.Collections
   [TestFixture]
   public class DictionaryExtensionsTest
   {
-    private Dictionary<string, string> _dictionary;
+    private Dictionary<string, string> _dictionary = default!;
 
     [SetUp]
     public void SetUp ()
@@ -82,7 +82,7 @@ namespace Remotion.UnitTests.Collections
     [Test]
     public void GetValueOrDefault_WithIReadOnlyDictionary_NullKey ()
     {
-      var dictionaryStub = MockRepository.GenerateStub<IReadOnlyDictionary<string, string>>();
+      var dictionaryStub = MockRepository.GenerateStub<IReadOnlyDictionary<string?, string>>();
       dictionaryStub.Stub (stub => stub.TryGetValue (Arg<string>.Is.Null, out Arg<string>.Out ("out").Dummy)).Return (true);
 
       var foundValue = dictionaryStub.GetValueOrDefault (null);
@@ -92,7 +92,7 @@ namespace Remotion.UnitTests.Collections
     [Test]
     public void GetValueOrDefault_WithIDictionary_NullKey ()
     {
-      var dictionaryStub = MockRepository.GenerateStub<IDictionary<string, string>>();
+      var dictionaryStub = MockRepository.GenerateStub<IDictionary<string?, string>>();
       dictionaryStub.Stub (stub => stub.TryGetValue (Arg<string>.Is.Null, out Arg<string>.Out ("out").Dummy)).Return (true);
 
       var foundValue = dictionaryStub.GetValueOrDefault (null);
@@ -187,7 +187,7 @@ namespace Remotion.UnitTests.Collections
     [Test]
     public void GetOrCreateValue_WithNullKey ()
     {
-      var dictionaryStub = MockRepository.GenerateStub<IDictionary<string, string>>();
+      var dictionaryStub = MockRepository.GenerateStub<IDictionary<string?, string>>();
       dictionaryStub.Stub (stub => stub.TryGetValue (Arg<string>.Is.Null, out Arg<string>.Out ("out").Dummy)).Return (true);
 
       var foundValue = dictionaryStub.GetOrCreateValue (null, key => throw new InvalidOperationException());

@@ -27,7 +27,7 @@ namespace Remotion.ExtensibleEnums.UnitTests.TestDomain
     {
     }
 
-    public EnumWithDifferentCtors (string declarationSpace, string valueName)
+    public EnumWithDifferentCtors (string? declarationSpace, string valueName)
         : base (declarationSpace, valueName)
     {
     }

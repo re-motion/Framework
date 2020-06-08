@@ -22,9 +22,9 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
   public class ClassWithMethods
   {
     // ReSharper disable UnusedMember.Global
-    public static SimpleReferenceType StaticReferenceTypeValue { get; set; }
+    public static SimpleReferenceType? StaticReferenceTypeValue { get; set; }
 
-    public static SimpleReferenceType StaticMethodWithReferenceTypeReturnValue ()
+    public static SimpleReferenceType? StaticMethodWithReferenceTypeReturnValue ()
     {
       return StaticReferenceTypeValue;
     }
@@ -34,11 +34,11 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
       StaticReferenceTypeValue = value;
     }
 
-    public SimpleReferenceType InstanceReferenceTypeValue { get; set; }
+    public SimpleReferenceType? InstanceReferenceTypeValue { get; set; }
     public int InstanceValueTypeValue { get; set; }
     public int? InstanceNullableValueTypeValue { get; set; }
 
-    public virtual SimpleReferenceType InstanceMethodWithReferenceTypeReturnValue ()
+    public virtual SimpleReferenceType? InstanceMethodWithReferenceTypeReturnValue ()
     {
       return InstanceReferenceTypeValue;
     }
@@ -77,12 +77,12 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
       StaticReferenceTypeValue = staticReferenceTypeValue;
     }
 
-    public void InstanceMethodWithOutParameter (out SimpleReferenceType value)
+    public void InstanceMethodWithOutParameter (out SimpleReferenceType? value)
     {
       value = InstanceReferenceTypeValue;
     }
 
-    public void InstanceMethodWithByRefParameter (ref SimpleReferenceType value)
+    public void InstanceMethodWithByRefParameter (ref SimpleReferenceType? value)
     {
       value = InstanceReferenceTypeValue;
     }

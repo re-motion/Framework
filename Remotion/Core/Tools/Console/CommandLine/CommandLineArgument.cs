@@ -26,13 +26,13 @@ public abstract class CommandLineArgument
 {
   // fields 
 
-  private string _name = null;
-  private string _placeholder = null;
-  private string _description = null;
+  private string? _name = null;
+  private string? _placeholder = null;
+  private string? _description = null;
   private bool _isOptional;
-  private CommandLineParser _parser = null;
+  private CommandLineParser? _parser = null;
 
-  private string _stringValue = null;
+  private string? _stringValue = null;
 
   // construction and disposal
 
@@ -47,7 +47,7 @@ public abstract class CommandLineArgument
   /// <summary>
   /// Creates a named command line argument.
   /// </summary>
-  protected CommandLineArgument (string name, bool isOptional)
+  protected CommandLineArgument (string? name, bool isOptional)
   {
     _name = name;
     _isOptional = isOptional;
@@ -55,19 +55,19 @@ public abstract class CommandLineArgument
 
   // methods and properties
 
-  public string Name
+  public string? Name
   {
     get { return _name; }
     set { _name = (value != null && value.Length == 0) ? null : value; }
   }
 
-  public virtual string Placeholder
+  public virtual string? Placeholder
   {
     get { return _placeholder; }
     set { _placeholder = value; }
   }
 
-  public string Description
+  public string? Description
   {
     get { return _description; }
     set { _description = value; }
@@ -91,7 +91,7 @@ public abstract class CommandLineArgument
     _stringValue = value;
   }
 
-  public string StringValue
+  public string? StringValue
   {
     get { return _stringValue; }
   }
@@ -110,12 +110,12 @@ public abstract class CommandLineArgument
     return sb.ToString();
   }
 
-  public CommandLineParser Parser
+  public CommandLineParser? Parser
   {
     get { return _parser; }
   }
 
-  internal protected virtual void AttachParser (CommandLineParser parser)
+  internal protected virtual void AttachParser (CommandLineParser? parser)
   {
     _parser = parser;
   }
@@ -130,7 +130,7 @@ public abstract class CommandLineArgument
     }
   }
 
-  public abstract object ValueObject { get; }
+  public abstract object? ValueObject { get; }
 }
 
 }

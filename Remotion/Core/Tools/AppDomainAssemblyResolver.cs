@@ -73,7 +73,7 @@ namespace Remotion.Tools
       appDomain.AssemblyResolve += ResolveAssembly;
     }
 
-    public Assembly ResolveAssembly (object sender, ResolveEventArgs args)
+    public Assembly? ResolveAssembly (object sender, ResolveEventArgs args)
     {
       ArgumentUtility.CheckNotNull ("sender", sender);
       ArgumentUtility.CheckNotNull ("args", args);
@@ -91,7 +91,7 @@ namespace Remotion.Tools
       return Assembly.LoadFile (assemblyLocation);
     }
 
-    private string GetAssemblyLocation (AssemblyName assemblyName)
+    private string? GetAssemblyLocation (AssemblyName assemblyName)
     {
       var dllLocation = Path.Combine (_assemblyDirectory, assemblyName.Name + ".dll");
       if (File.Exists (dllLocation))

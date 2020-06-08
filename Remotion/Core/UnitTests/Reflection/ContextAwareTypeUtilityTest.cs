@@ -32,10 +32,10 @@ namespace Remotion.UnitTests.Reflection
   [TestFixture]
   public class ContextAwareTypeUtilityTest
   {
-    private ITypeDiscoveryService _oldTypeDiscoveryService;
-    private TypeDiscoveryConfiguration _oldTypeDiscoveryConfiguration;
-    private ITypeResolutionService _oldTypeResolutionService;
-    private TypeResolutionConfiguration _oldTypeResolutionConfiguration;
+    private ITypeDiscoveryService _oldTypeDiscoveryService = default!;
+    private TypeDiscoveryConfiguration _oldTypeDiscoveryConfiguration = default!;
+    private ITypeResolutionService _oldTypeResolutionService = default!;
+    private TypeResolutionConfiguration _oldTypeResolutionConfiguration = default!;
 
     [SetUp]
     public void SetUp ()

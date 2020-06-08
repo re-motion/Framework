@@ -30,8 +30,8 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery
   [TestFixture]
   public class AssemblyFinderTypeDiscoveryServiceTest
   {
-    private MockRepository _mockRepository;
-    private IAssemblyFinder _finderMock;
+    private MockRepository _mockRepository = default!;
+    private IAssemblyFinder _finderMock = default!;
 
     private readonly Assembly _testAssembly = typeof (AssemblyFinderTypeDiscoveryServiceTest).Assembly;
     private readonly Assembly _coreAssembly = typeof (AssemblyFinder).Assembly;

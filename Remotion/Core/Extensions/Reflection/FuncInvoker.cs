@@ -36,18 +36,18 @@ namespace Remotion.Reflection
       return valueTypes;
     }
 
-    private object[] GetValues (object[] values)
+    private object?[] GetValues (object?[] values)
     {
       return values;
     }
 
-    public TResult Invoke (Type[] valueTypes, object[] values)
+    public TResult Invoke (Type[] valueTypes, object?[] values)
     {
       InvokerUtility.CheckInvokeArguments (valueTypes, values);
       return (TResult) GetDelegate (GetValueTypes (valueTypes)).DynamicInvoke (GetValues (values));
     }
 
-    public TResult Invoke (object[] values)
+    public TResult Invoke (object?[] values)
     {
       Type[] valueTypes = InvokerUtility.GetValueTypes (values);
       return (TResult) GetDelegate (GetValueTypes (valueTypes)).DynamicInvoke (GetValues (values));
@@ -267,19 +267,19 @@ namespace Remotion.Reflection
       return ArrayUtility.Combine (fixedArgTypes, valueTypes);
     }
 
-    private object[] GetValues (object[] values)
+    private object?[] GetValues (object?[] values)
     {
-      object[] fixedArgs = new object[] { _fixedArg1 };
+      object?[] fixedArgs = new object?[] { _fixedArg1 };
       return ArrayUtility.Combine (fixedArgs, values);
     }
 
-    public TResult Invoke (Type[] valueTypes, object[] values)
+    public TResult Invoke (Type[] valueTypes, object?[] values)
     {
       InvokerUtility.CheckInvokeArguments (valueTypes, values);
       return (TResult) GetDelegate (GetValueTypes (valueTypes)).DynamicInvoke (GetValues (values));
     }
 
-    public TResult Invoke (object[] values)
+    public TResult Invoke (object?[] values)
     {
       Type[] valueTypes = InvokerUtility.GetValueTypes (values);
       return (TResult) GetDelegate (GetValueTypes (valueTypes)).DynamicInvoke (GetValues (values));
@@ -501,19 +501,19 @@ namespace Remotion.Reflection
       return ArrayUtility.Combine (fixedArgTypes, valueTypes);
     }
 
-    private object[] GetValues (object[] values)
+    private object?[] GetValues (object?[] values)
     {
-      object[] fixedArgs = new object[] { _fixedArg1, _fixedArg2 };
+      object?[] fixedArgs = new object?[] { _fixedArg1, _fixedArg2 };
       return ArrayUtility.Combine (fixedArgs, values);
     }
 
-    public TResult Invoke (Type[] valueTypes, object[] values)
+    public TResult Invoke (Type[] valueTypes, object?[] values)
     {
       InvokerUtility.CheckInvokeArguments (valueTypes, values);
       return (TResult) GetDelegate (GetValueTypes (valueTypes)).DynamicInvoke (GetValues (values));
     }
 
-    public TResult Invoke (object[] values)
+    public TResult Invoke (object?[] values)
     {
       Type[] valueTypes = InvokerUtility.GetValueTypes (values);
       return (TResult) GetDelegate (GetValueTypes (valueTypes)).DynamicInvoke (GetValues (values));
@@ -737,19 +737,19 @@ namespace Remotion.Reflection
       return ArrayUtility.Combine (fixedArgTypes, valueTypes);
     }
 
-    private object[] GetValues (object[] values)
+    private object?[] GetValues (object?[] values)
     {
-      object[] fixedArgs = new object[] { _fixedArg1, _fixedArg2, _fixedArg3 };
+      object?[] fixedArgs = new object?[] { _fixedArg1, _fixedArg2, _fixedArg3 };
       return ArrayUtility.Combine (fixedArgs, values);
     }
 
-    public TResult Invoke (Type[] valueTypes, object[] values)
+    public TResult Invoke (Type[] valueTypes, object?[] values)
     {
       InvokerUtility.CheckInvokeArguments (valueTypes, values);
       return (TResult) GetDelegate (GetValueTypes (valueTypes)).DynamicInvoke (GetValues (values));
     }
 
-    public TResult Invoke (object[] values)
+    public TResult Invoke (object?[] values)
     {
       Type[] valueTypes = InvokerUtility.GetValueTypes (values);
       return (TResult) GetDelegate (GetValueTypes (valueTypes)).DynamicInvoke (GetValues (values));

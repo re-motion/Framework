@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Utilities;
 
 namespace Remotion.Collections.DataStore
@@ -34,6 +35,7 @@ namespace Remotion.Collections.DataStore
   [Obsolete ("Use ConcurrentDataStore<TKey, TValue> instead. (Version: 1.19.3)")]
   [Serializable]
   public class LockingDataStoreDecorator<TKey, TValue> : IDataStore<TKey, TValue>
+      where TKey : notnull
   {
     private readonly IDataStore<TKey, TValue> _innerStore;
     private readonly object _lock = new object();
@@ -151,6 +153,7 @@ namespace Remotion.Collections.DataStore
     /// <returns>
     /// The value of the element, or the default value if no such element exists.
     /// </returns>
+    [return: MaybeNull]
     public TValue GetValueOrDefault (TKey key)
     {
       ArgumentUtility.DebugCheckNotNull ("key", key);
@@ -170,7 +173,7 @@ namespace Remotion.Collections.DataStore
     /// <returns>
     /// true if an element with the specified key was found; otherwise, false.
     /// </returns>
-    public bool TryGetValue (TKey key, out TValue value)
+    public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen (false)] out TValue value)
     {
       ArgumentUtility.DebugCheckNotNull ("key", key);
 

@@ -65,6 +65,7 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.PerformanceTests
     }
 
     private static void TimeThis<T> (string testName, Func<T> func)
+        where T : notnull
     {
       // Warmup and cache population.
       func();

@@ -190,14 +190,14 @@ namespace Remotion.ServiceLocation
     /// <returns>The requested service instance, or <see langword="null" /> if no instance could be found.</returns>
     /// <exception cref="T:Microsoft.Practices.ServiceLocation.ActivationException">There was an error resolving the service instance: The concrete 
     /// implementation could not be instantiated. Inspect the <see cref="Exception.InnerException"/> property for the reason of the exception.</exception>
-    object IServiceProvider.GetService (Type serviceType)
+    object? IServiceProvider.GetService (Type serviceType)
     {
       ArgumentUtility.CheckNotNull ("serviceType", serviceType);
 
       return GetInstanceOrNull (serviceType);
     }
 
-    private object GetInstanceOrNull (Type serviceType)
+    private object? GetInstanceOrNull (Type serviceType)
     {
       var registration = GetOrCreateRegistrationWithActivationException (serviceType);
 

@@ -30,7 +30,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
     /// <param name="filePath">The file path to load the assembly from.</param>
     /// <returns>The loaded assembly, or <see langword="null"/> if the assembly can't be loaded.</returns>
     /// <exception cref="AssemblyLoaderException">Thrown when the file cannot be found or an unexpected exception occurs while loading it.</exception>
-    Assembly TryLoadAssembly (string filePath);
+    Assembly? TryLoadAssembly (string filePath);
 
     /// <summary>
     /// Tries the load an assembly from the given <paramref name="assemblyName"/>, returning <see langword="null"/> if the file exists but is no 
@@ -41,6 +41,6 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
     /// exception occurs while loading it.</param>
     /// <returns>The loaded assembly, or <see langword="null"/> if the assembly can't be loaded.</returns>
     /// <exception cref="AssemblyLoaderException">Thrown when the assembly cannot be found or an unexpected exception occurs while loading it.</exception>
-    Assembly TryLoadAssembly (AssemblyName assemblyName, string context);
+    Assembly? TryLoadAssembly (AssemblyName assemblyName, string context);
   }
 }

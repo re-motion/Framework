@@ -73,6 +73,7 @@
     <CodeAnalysisRules>
     </CodeAnalysisRules>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -97,6 +98,7 @@
     <DebugType>pdbonly</DebugType>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
@@ -173,6 +175,9 @@
     </Compile>
     <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\UsedImplicitlyAttribute.cs">
       <Link>SharedSource\ReSharperAnnotations\UsedImplicitlyAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\RoslynAnnotations\NullableAnnotations.cs">
+      <Link>SharedSource\RoslynAnnotations\NullableAnnotations.cs</Link>
     </Compile>
     <Compile Include="..\..\..\SharedSource\Core\Utilities\ArgumentUtility.cs">
       <Link>SharedSource\Utilities\ArgumentUtility.cs</Link>
@@ -356,6 +361,7 @@
     <Compile Include="Utilities\NullValueConverter.cs" />
     <Compile Include="Utilities\AttributeRetrieval\PropertyCustomAttributeRetriever.cs" />
     <Compile Include="Utilities\ReSharperAnnotations\ReflectionAPIAttribute.cs" />
+    <Compile Include="Utilities\RoslynAnnotations\NullableAnnotations.cs" />
     <Compile Include="Utilities\StopwatchScope.cs" />
     <Compile Include="Utilities\TypeConverterResult.cs" />
     <Compile Include="Utilities\TypeConverterType.cs" />

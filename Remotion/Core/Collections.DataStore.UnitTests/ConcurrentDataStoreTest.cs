@@ -12,12 +12,12 @@ namespace Remotion.Collections.DataStore.UnitTests
   [TestFixture]
   public class ConcurrentDataStoreTest
   {
-    private ConcurrentDataStore<string, object> _store;
+    private ConcurrentDataStore<string, object?> _store = default!;
 
     [SetUp]
     public void SetUp ()
     {
-      _store = new ConcurrentDataStore<string, object>();
+      _store = new ConcurrentDataStore<string, object?>();
       _store.Add ("a", "1");
       _store.Add ("b", "2");
     }
@@ -158,8 +158,7 @@ namespace Remotion.Collections.DataStore.UnitTests
     [Test]
     public void TryGetValue_WithReferenceType_WithResultNotInDataStore ()
     {
-      object actual;
-      Assert.That (_store.TryGetValue ("key1", out actual), Is.False);
+      Assert.That (_store.TryGetValue ("key1", out var actual), Is.False);
       Assert.That (actual, Is.Null);
     }
 
@@ -175,16 +174,14 @@ namespace Remotion.Collections.DataStore.UnitTests
     [Test]
     public void TryGetValue_True ()
     {
-      object value;
-      Assert.That (_store.TryGetValue ("a", out value));
+      Assert.That (_store.TryGetValue ("a", out var value));
       Assert.That (value, Is.EqualTo ("1"));
     }
 
     [Test]
     public void TryGetValue_False ()
     {
-      object value;
-      Assert.That (_store.TryGetValue ("c", out value), Is.False);
+      Assert.That (_store.TryGetValue ("c", out var value), Is.False);
       Assert.That (value, Is.Null);
     }
 
@@ -238,8 +235,7 @@ namespace Remotion.Collections.DataStore.UnitTests
           });
       Assert.That (actualValue, Is.EqualTo (expected));
 
-      object actualValue2;
-      Assert.That (_store.TryGetValue ("key1", out actualValue2), Is.True);
+      Assert.That (_store.TryGetValue ("key1", out var actualValue2), Is.True);
       Assert.That (actualValue2, Is.EqualTo (expected));
     }
 
@@ -260,8 +256,7 @@ namespace Remotion.Collections.DataStore.UnitTests
           });
       Assert.That (actualValue, Is.EqualTo (expected));
 
-      object actualValue2;
-      Assert.That (_store.TryGetValue ("key1", out actualValue2), Is.True);
+      Assert.That (_store.TryGetValue ("key1", out var actualValue2), Is.True);
       Assert.That (actualValue2, Is.EqualTo (expected));
     }
 
@@ -284,8 +279,7 @@ namespace Remotion.Collections.DataStore.UnitTests
 
       Assert.That (actualValue, Is.EqualTo (expected));
 
-      object actualValue2;
-      Assert.That (_store.TryGetValue ("key1", out actualValue2), Is.True);
+      Assert.That (_store.TryGetValue ("key1", out var actualValue2), Is.True);
       Assert.That (actualValue2, Is.EqualTo (expected));
     }
 
@@ -306,8 +300,7 @@ namespace Remotion.Collections.DataStore.UnitTests
           });
       Assert.That (actualValue, Is.EqualTo (expected));
 
-      object actualValue2;
-      Assert.That (_store.TryGetValue ("key1", out actualValue2), Is.True);
+      Assert.That (_store.TryGetValue ("key1", out var actualValue2), Is.True);
       Assert.That (actualValue2, Is.EqualTo (expected));
     }
 
@@ -328,8 +321,7 @@ namespace Remotion.Collections.DataStore.UnitTests
           });
       Assert.That (actualValue, Is.EqualTo (expected));
 
-      object actualValue2;
-      Assert.That (_store.TryGetValue ("key1", out actualValue2), Is.True);
+      Assert.That (_store.TryGetValue ("key1", out var actualValue2), Is.True);
       Assert.That (actualValue2, Is.EqualTo (expected));
     }
 
@@ -350,8 +342,7 @@ namespace Remotion.Collections.DataStore.UnitTests
           });
       Assert.That (actualValue, Is.EqualTo (expected));
 
-      object actualValue2;
-      Assert.That (_store.TryGetValue ("key1", out actualValue2), Is.True);
+      Assert.That (_store.TryGetValue ("key1", out var actualValue2), Is.True);
       Assert.That (actualValue2, Is.EqualTo (expected));
     }
 
@@ -369,8 +360,7 @@ namespace Remotion.Collections.DataStore.UnitTests
           });
       Assert.That (actualValue, Is.EqualTo (expected));
 
-      object actualValue2;
-      Assert.That (_store.TryGetValue ("key1", out actualValue2), Is.False);
+      Assert.That (_store.TryGetValue ("key1", out var actualValue2), Is.False);
       Assert.That (actualValue2, Is.Null);
     }
 
@@ -378,7 +368,7 @@ namespace Remotion.Collections.DataStore.UnitTests
     public void GetOrCreateValue_WithNestedEnumeration_SkipsNewItem()
     {
       object expected = "15";
-      KeyValuePair<string, object>[] nestedItems = null;
+      KeyValuePair<string, object?>[]? nestedItems = null;
 
       var actualValue = _store.GetOrCreateValue (
           "key1",
@@ -398,8 +388,7 @@ namespace Remotion.Collections.DataStore.UnitTests
                   new KeyValuePair<string, object> ("b", "2")
               }));
 
-      object actualValue2;
-      Assert.That (_store.TryGetValue ("key1", out actualValue2), Is.True);
+      Assert.That (_store.TryGetValue ("key1", out var actualValue2), Is.True);
       Assert.That (actualValue2, Is.EqualTo (expected));
     }
 
@@ -434,8 +423,7 @@ namespace Remotion.Collections.DataStore.UnitTests
           () => _store.GetOrCreateValue ("key1", key => throw exception),
           Throws.Exception.SameAs (exception));
 
-      object actual;
-      Assert.That (_store.TryGetValue ("key1", out actual), Is.False);
+      Assert.That (_store.TryGetValue ("key1", out var actual), Is.False);
       Assert.That (actual, Is.Null);
     }
 
@@ -448,7 +436,7 @@ namespace Remotion.Collections.DataStore.UnitTests
           Throws.Exception.SameAs (exception));
 
       object expected = "14";
-      object actual = _store.GetOrCreateValue ("key1", key => expected);
+      object? actual = _store.GetOrCreateValue ("key1", key => expected);
       Assert.That (actual, Is.EqualTo (expected));
     }
 
@@ -475,7 +463,7 @@ namespace Remotion.Collections.DataStore.UnitTests
     {
       var expectedThread1 = new object();
       var expectedThread2 = new object();
-      object resultThread2 = null;
+      object? resultThread2 = null;
       var waitHandleThread1a = new ManualResetEvent (false);
       var waitHandleThread1b = new ManualResetEvent (false);
       var waitHandleThread2 = new ManualResetEvent (false);
@@ -512,7 +500,7 @@ namespace Remotion.Collections.DataStore.UnitTests
     public void GetOrCreateValue_WithParallelThreadsInsertingSameKey_SecondFactoryCallWillNotBeExecuted ()
     {
       var expectedThread1 = "T1";
-      object resultThread2 = null;
+      object? resultThread2 = null;
       var waitHandleThread2 = new ManualResetEvent (false);
 
       var thread2 = Task.Run (
@@ -537,7 +525,7 @@ namespace Remotion.Collections.DataStore.UnitTests
     [Test]
     public void GetOrCreateValue_WithParallelThreadsInsertingSameKeyWithNullValue_SecondFactoryCallWillNotBeExecuted ()
     {
-      object resultThread2 = null;
+      object? resultThread2 = null;
       var waitHandleThread2 = new ManualResetEvent (false);
 
       var thread2 = Task.Run (
@@ -563,7 +551,7 @@ namespace Remotion.Collections.DataStore.UnitTests
     public void GetOrCreateValue_TryGetValue_WithParallelThreadsUsingSameKey_TryGetValueDuringFactoryCallWillBlock ()
     {
       var expectedThread1 = "T1";
-      object resultThread2 = null;
+      object? resultThread2 = null;
       var waitHandleThread2 = new ManualResetEvent (false);
 
       var thread2 = Task.Run (
@@ -641,8 +629,7 @@ namespace Remotion.Collections.DataStore.UnitTests
           arg =>
           {
             _store.GetOrCreateValue ("key", k => "value");
-            object value;
-            _store.TryGetValue ("key", out value);
+            _store.TryGetValue ("key", out var value);
 
             var stopwatch = (Stopwatch) arg;
             stopwatch.Start();

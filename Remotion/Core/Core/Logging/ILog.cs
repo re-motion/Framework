@@ -43,7 +43,7 @@ namespace Remotion.Logging
     /// <param name="eventID">The numeric identifier for the event.</param>
     /// <param name="message">The message object to log.</param>
     /// <param name="exceptionObject">The <see cref="Exception"/> to log, including its stack trace. Pass <see langword="null"/> to not log an exception.</param>
-    void Log (LogLevel logLevel, int? eventID, object message, Exception exceptionObject);
+    void Log (LogLevel logLevel, int? eventID, object message, Exception? exceptionObject);
 
     /// <summary>
     /// Log a formatted string with the specified <paramref name="logLevel"/> and <paramref name="eventID"/>,
@@ -55,7 +55,7 @@ namespace Remotion.Logging
     /// <param name="args">An Object array containing zero or more objects to format.</param>
     /// <param name="exceptionObject">The <see cref="Exception"/> to log, including its stack trace. Pass <see langword="null"/> to not log an exception.</param>
     [StringFormatMethod ("format")]
-    void LogFormat (LogLevel logLevel, int? eventID, Exception exceptionObject, string format, params object[] args);
+    void LogFormat (LogLevel logLevel, int? eventID, Exception? exceptionObject, string format, params object[] args);
 
     /// <summary>
     /// Checks if this logger is enabled for the given <see cref="LogLevel"/>.

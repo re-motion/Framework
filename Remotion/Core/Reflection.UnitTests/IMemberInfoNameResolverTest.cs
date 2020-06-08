@@ -23,7 +23,7 @@ namespace Remotion.Reflection.UnitTests
   [TestFixture]
   public class IMemberInfoNameResolverTest
   {
-    private DefaultServiceLocator _serviceLocator;
+    private DefaultServiceLocator _serviceLocator = default!;
 
     [SetUp]
     public void SetUp ()

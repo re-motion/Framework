@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
 
 namespace Remotion.Collections.DataStore
@@ -37,6 +38,7 @@ namespace Remotion.Collections.DataStore
   /// </para>
   /// </remarks>
   public interface IDataStore<TKey, TValue> : INullObject
+      where TKey : notnull
   {
     /// <summary>
     /// Determines whether the store contains an element with the specified <paramref name="key"/>.
@@ -47,7 +49,7 @@ namespace Remotion.Collections.DataStore
     /// </returns>
     /// <exception cref="ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
     /// <exception cref="InvalidOperationException">An attempt is made to call <see cref="GetOrCreateValue"/> from inside the factory using the <paramref name="key"/>.</exception>
-    bool ContainsKey ([NotNull] TKey key);
+    bool ContainsKey ([JetBrains.Annotations.NotNull] TKey key);
 
     /// <summary>
     /// Adds a new element to the store.
@@ -57,7 +59,7 @@ namespace Remotion.Collections.DataStore
     /// <exception cref="ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
     /// <exception cref="ArgumentException">An item with an equal key already exists in the store.</exception>
     /// <exception cref="InvalidOperationException">An attempt is made to call <see cref="Add"/> from inside the <see cref="GetOrCreateValue"/> factory method using the <paramref name="key"/>.</exception>
-    void Add ([NotNull] TKey key, [CanBeNull] TValue value);
+    void Add ([JetBrains.Annotations.NotNull] TKey key, [CanBeNull] TValue value);
 
     /// <summary>
     /// Removes the element with the specified key from the store, if any.
@@ -66,7 +68,7 @@ namespace Remotion.Collections.DataStore
     /// <returns><see langword="true" /> if the item was found in the store; otherwise, <see langword="false" />.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
     /// <exception cref="InvalidOperationException">An attempt is made to call <see cref="Remove"/> from inside the <see cref="GetOrCreateValue"/> factory method using the <paramref name="key"/>.</exception>
-    bool Remove ([NotNull] TKey key);
+    bool Remove ([JetBrains.Annotations.NotNull] TKey key);
 
     /// <summary>
     /// Removes all elements from the store.
@@ -80,7 +82,7 @@ namespace Remotion.Collections.DataStore
     /// <exception cref="ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
     /// <exception cref="KeyNotFoundException">The element whose value should be retrieved could not be found.</exception>
     /// <exception cref="InvalidOperationException">An attempt is made to call <see cref="this"/> from inside the <see cref="GetOrCreateValue"/> factory method using the <paramref name="key"/>.</exception>
-    TValue this [[NotNull] TKey key] { get; set; }
+    TValue this [[JetBrains.Annotations.NotNull] TKey key] { get; set; }
 
     /// <summary>
     /// Gets the value of the element with the specified key, or <typeparamref name="TValue"/>'s default value if no such element exists.
@@ -89,7 +91,8 @@ namespace Remotion.Collections.DataStore
     /// <returns>The value of the element, or the default value if no such element exists.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
     /// <exception cref="InvalidOperationException">An attempt is made to call <see cref="GetValueOrDefault"/> from inside the <see cref="GetOrCreateValue"/> factory method using the <paramref name="key"/>.</exception>
-    TValue GetValueOrDefault ([NotNull] TKey key);
+    [return: MaybeNull]
+    TValue GetValueOrDefault ([JetBrains.Annotations.NotNull] TKey key);
 
     /// <summary>
     /// Tries to get the value of the element with the specified key.
@@ -102,7 +105,7 @@ namespace Remotion.Collections.DataStore
     /// <returns><see langword="true" /> if an element with the specified key was found; otherwise, <see langword="false" />.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
     /// <exception cref="InvalidOperationException">An attempt is made to call <see cref="TryGetValue"/> from inside the <see cref="GetOrCreateValue"/> factory method using the <paramref name="key"/>.</exception>
-    bool TryGetValue ([NotNull] TKey key, [CanBeNull] out TValue value);
+    bool TryGetValue ([JetBrains.Annotations.NotNull] TKey key, [CanBeNull, AllowNull, MaybeNullWhen (false)] out TValue value);
 
     /// <summary>
     /// Gets the value of the element with the specified key, creating a new one if none exists.
@@ -112,6 +115,6 @@ namespace Remotion.Collections.DataStore
     /// <returns>The value of the element that was found or created.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
     /// <exception cref="InvalidOperationException">An attempt is made to call <see cref="GetOrCreateValue"/> from inside the factory using the <paramref name="key"/>.</exception>
-    TValue GetOrCreateValue ([NotNull] TKey key, [NotNull] Func<TKey, TValue> valueFactory);
+    TValue GetOrCreateValue ([JetBrains.Annotations.NotNull] TKey key, [JetBrains.Annotations.NotNull] Func<TKey, TValue> valueFactory);
   }
 }

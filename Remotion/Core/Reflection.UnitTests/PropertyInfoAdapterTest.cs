@@ -30,14 +30,14 @@ namespace Remotion.Reflection.UnitTests
   [TestFixture]
   public class PropertyInfoAdapterTest
   {
-    private PropertyInfo _property;
-    private PropertyInfo _explicitInterfaceImplementationProperty;
-    private PropertyInfo _implicitInterfaceImplementationProperty;
+    private PropertyInfo _property = default!;
+    private PropertyInfo _explicitInterfaceImplementationProperty = default!;
+    private PropertyInfo _implicitInterfaceImplementationProperty = default!;
 
-    private PropertyInfoAdapter _adapter;
+    private PropertyInfoAdapter _adapter = default!;
 
-    private PropertyInfoAdapter _explicitInterfaceAdapter;
-    private PropertyInfoAdapter _implicitInterfaceAdapter;
+    private PropertyInfoAdapter _explicitInterfaceAdapter = default!;
+    private PropertyInfoAdapter _implicitInterfaceAdapter = default!;
 
     [SetUp]
     public void SetUp ()
@@ -525,7 +525,7 @@ namespace Remotion.Reflection.UnitTests
       var implementation = adapter.FindInterfaceImplementation (typeof (ClassWithReferenceType<object>));
 
       var expectedPropertyInfo = typeof (ClassWithReferenceType<object>).GetProperty ("ImplicitInterfaceScalar");
-      CheckPropertyInfo (expectedPropertyInfo, (PropertyInfoAdapter) implementation);
+      CheckPropertyInfo (expectedPropertyInfo, (PropertyInfoAdapter) implementation!);
     }
 
     [Test]
@@ -537,7 +537,7 @@ namespace Remotion.Reflection.UnitTests
       var expectedPropertyInfo = typeof (ClassWithReferenceType<object>).GetProperty (
           "Remotion.Reflection.UnitTests.TestDomain.MemberInfoAdapter.IInterfaceWithReferenceType<T>.ExplicitInterfaceScalar",
           BindingFlags.Instance | BindingFlags.NonPublic);
-      CheckPropertyInfo (expectedPropertyInfo, (PropertyInfoAdapter) implementation);
+      CheckPropertyInfo (expectedPropertyInfo, (PropertyInfoAdapter) implementation!);
     }
 
     [Test]
@@ -549,7 +549,7 @@ namespace Remotion.Reflection.UnitTests
       var expectedPropertyInfo = typeof (ClassWithReferenceType<object>).GetProperty (
           "Remotion.Reflection.UnitTests.TestDomain.MemberInfoAdapter.IInterfaceWithReferenceType<T>.ExplicitInterfaceScalar",
           BindingFlags.Instance | BindingFlags.NonPublic);
-      CheckPropertyInfo (expectedPropertyInfo, (PropertyInfoAdapter) implementation);
+      CheckPropertyInfo (expectedPropertyInfo, (PropertyInfoAdapter) implementation!);
     }
 
     [Test]
@@ -561,7 +561,7 @@ namespace Remotion.Reflection.UnitTests
       var expectedPropertyInfo = typeof (ClassWithReferenceType<object>).GetProperty (
           "Remotion.Reflection.UnitTests.TestDomain.MemberInfoAdapter.IInterfaceWithReferenceType<T>.ExplicitInterfaceReadOnlyScalar",
           BindingFlags.Instance | BindingFlags.NonPublic);
-      CheckPropertyInfo (expectedPropertyInfo, (PropertyInfoAdapter) implementation);
+      CheckPropertyInfo (expectedPropertyInfo, (PropertyInfoAdapter) implementation!);
     }
 
     [Test]
@@ -573,7 +573,7 @@ namespace Remotion.Reflection.UnitTests
       var expectedPropertyInfo = typeof (ClassWithReferenceType<object>).GetProperty (
           "Remotion.Reflection.UnitTests.TestDomain.MemberInfoAdapter.IInterfaceWithReferenceType<T>.ExplicitInterfaceWriteOnlyScalar",
           BindingFlags.Instance | BindingFlags.NonPublic);
-      CheckPropertyInfo (expectedPropertyInfo, (PropertyInfoAdapter) implementation);
+      CheckPropertyInfo (expectedPropertyInfo, (PropertyInfoAdapter) implementation!);
     }
 
     [Test]
@@ -583,7 +583,7 @@ namespace Remotion.Reflection.UnitTests
       var implementation = adapter.FindInterfaceImplementation (typeof (DerivedClassWithReferenceType<object>));
 
       var expectedPropertyInfo = typeof (ClassWithReferenceType<object>).GetProperty ("ImplicitInterfaceReadOnlyScalar");
-      CheckPropertyInfo (expectedPropertyInfo, (PropertyInfoAdapter) implementation);
+      CheckPropertyInfo (expectedPropertyInfo, (PropertyInfoAdapter) implementation!);
     }
 
     [Test]
@@ -593,7 +593,7 @@ namespace Remotion.Reflection.UnitTests
       var implementation = adapter.FindInterfaceImplementation (typeof (DerivedClassWithReferenceType<object>));
 
       var expectedPropertyInfo = typeof (DerivedClassWithReferenceType<object>).GetProperty ("ImplicitInterfaceScalar");
-      CheckPropertyInfo (expectedPropertyInfo, (PropertyInfoAdapter) implementation);
+      CheckPropertyInfo (expectedPropertyInfo, (PropertyInfoAdapter) implementation!);
     }
 
     [Test]
@@ -828,7 +828,7 @@ namespace Remotion.Reflection.UnitTests
     public void Equals ()
     {
       Assert.That (_adapter.Equals (null), Is.False);
-      Assert.That (_adapter.Equals ("test"), Is.False);
+      Assert.That (_adapter!.Equals ("test"), Is.False);
       Assert.That (_implicitInterfaceAdapter.Equals (PropertyInfoAdapter.Create(_explicitInterfaceImplementationProperty)), Is.False);
 
       Assert.That (_implicitInterfaceAdapter.Equals (PropertyInfoAdapter.Create(_implicitInterfaceImplementationProperty)), Is.True);

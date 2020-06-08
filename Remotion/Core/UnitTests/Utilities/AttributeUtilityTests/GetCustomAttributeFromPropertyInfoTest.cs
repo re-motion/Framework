@@ -26,10 +26,10 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
   [TestFixture]
   public class GetCustomAttributeFromPropertyInfoTest
   {
-    private PropertyInfo _basePropertyWithSingleAttribute;
-    private PropertyInfo _derivedPropertyWithSingleAttribute;
-    private PropertyInfo _derivedPropertyWithMultipleAttribute;
-    private PropertyInfo _derivedProtectedProperty;
+    private PropertyInfo _basePropertyWithSingleAttribute = default!;
+    private PropertyInfo _derivedPropertyWithSingleAttribute = default!;
+    private PropertyInfo _derivedPropertyWithMultipleAttribute = default!;
+    private PropertyInfo _derivedProtectedProperty = default!;
 
     [SetUp]
     public void SetUp ()
@@ -44,15 +44,15 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     [Test]
     public void Test_FromBaseWithAttribute ()
     {
-      InheritedAttribute attribute =
-          (InheritedAttribute) AttributeUtility.GetCustomAttribute (_basePropertyWithSingleAttribute, typeof (InheritedAttribute), true);
+      InheritedAttribute? attribute =
+          (InheritedAttribute?) AttributeUtility.GetCustomAttribute (_basePropertyWithSingleAttribute, typeof (InheritedAttribute), true);
       Assert.That (attribute, Is.Not.Null);
     }
 
     [Test]
     public void TestGeneric_FromBaseWithAttribute ()
     {
-      InheritedAttribute attribute = AttributeUtility.GetCustomAttribute<InheritedAttribute> (_basePropertyWithSingleAttribute, true);
+      InheritedAttribute? attribute = AttributeUtility.GetCustomAttribute<InheritedAttribute> (_basePropertyWithSingleAttribute, true);
       Assert.That (attribute, Is.Not.Null);
     }
 
@@ -69,15 +69,15 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     [Test]
     public void Test_FromBaseWithInterface ()
     {
-      ICustomAttribute attribute = 
-          (ICustomAttribute) AttributeUtility.GetCustomAttribute (_basePropertyWithSingleAttribute, typeof (ICustomAttribute), true);
+      ICustomAttribute? attribute = 
+          (ICustomAttribute?) AttributeUtility.GetCustomAttribute (_basePropertyWithSingleAttribute, typeof (ICustomAttribute), true);
       Assert.That (attribute, Is.Not.Null);
     }
 
     [Test]
     public void TestGeneric_FromBaseWithInterface ()
     {
-      ICustomAttribute attribute = AttributeUtility.GetCustomAttribute<ICustomAttribute> (_basePropertyWithSingleAttribute, true);
+      ICustomAttribute? attribute = AttributeUtility.GetCustomAttribute<ICustomAttribute> (_basePropertyWithSingleAttribute, true);
       Assert.That (attribute, Is.Not.Null);
     }
 
@@ -143,28 +143,28 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     [Test]
     public void Test_FromBaseClass_InheritedFalse ()
     {
-      object attribute = AttributeUtility.GetCustomAttribute (typeof (BaseClassWithAttribute), typeof (InheritedNotMultipleAttribute), false);
+      object? attribute = AttributeUtility.GetCustomAttribute (typeof (BaseClassWithAttribute), typeof (InheritedNotMultipleAttribute), false);
       Assert.That (attribute, Is.EqualTo(new InheritedNotMultipleAttribute ("BaseClass")));
     }
 
     [Test]
     public void Test_FromBaseClass_InheritedTrue ()
     {
-      object attribute = AttributeUtility.GetCustomAttribute (typeof (BaseClassWithAttribute), typeof (InheritedNotMultipleAttribute), true);
+      object? attribute = AttributeUtility.GetCustomAttribute (typeof (BaseClassWithAttribute), typeof (InheritedNotMultipleAttribute), true);
       Assert.That (attribute, Is.EqualTo (new InheritedNotMultipleAttribute ("BaseClass")));
     }
 
     [Test]
     public void Test_FromDerivedClass_InheritedFalse ()
     {
-      object attribute = AttributeUtility.GetCustomAttribute (typeof (DerivedClassWithAttribute), typeof (InheritedNotMultipleAttribute), false);
+      object? attribute = AttributeUtility.GetCustomAttribute (typeof (DerivedClassWithAttribute), typeof (InheritedNotMultipleAttribute), false);
       Assert.That (attribute, Is.EqualTo (new InheritedNotMultipleAttribute ("DerivedClass")));
     }
 
     [Test]
     public void Test_FromDerivedClass_InheritedTrue ()
     {
-      object attribute = AttributeUtility.GetCustomAttribute (typeof (DerivedClassWithAttribute), typeof (InheritedNotMultipleAttribute), true);
+      object? attribute = AttributeUtility.GetCustomAttribute (typeof (DerivedClassWithAttribute), typeof (InheritedNotMultipleAttribute), true);
       Assert.That (attribute, Is.EqualTo (new InheritedNotMultipleAttribute ("DerivedClass")));
     }
     

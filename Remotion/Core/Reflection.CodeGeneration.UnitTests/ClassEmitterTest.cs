@@ -837,7 +837,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
       Type type = classEmitter.BuildType ();
       MethodInfo publicWrapper = type.GetMethod ("__wrap__GetSecret");
 
-      var attribute = AttributeUtility.GetCustomAttribute<GeneratedMethodWrapperAttribute> (publicWrapper, false);
+      var attribute = AttributeUtility.GetCustomAttribute<GeneratedMethodWrapperAttribute> (publicWrapper, false)!;
       Assert.That (attribute.DeclaringType, Is.EqualTo (typeof (ClassWithProtectedMethod)));
       Assert.That (attribute.MethodName, Is.EqualTo ("GetSecret"));
       Assert.That (attribute.MethodSignature, Is.EqualTo (methodToBeWrapped.ToString()));

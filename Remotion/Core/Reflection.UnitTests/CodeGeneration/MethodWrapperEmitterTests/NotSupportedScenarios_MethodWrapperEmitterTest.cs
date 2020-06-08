@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -27,7 +27,7 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
   [TestFixture]
   public class NotSupportedScenarios_MethodWrapperEmitterTest : MethodWrapperEmitterTestBase
   {
-    private ILGenerator _fakeILGenerator;
+    private ILGenerator _fakeILGenerator = default!;
 
     public override void SetUp ()
     {

@@ -23,7 +23,7 @@ namespace Remotion.Tools.Console.CommandLine
 
 public abstract class CommandLineValueArgument: CommandLineArgument
 {
-  public CommandLineValueArgument (string name, bool isOptional)
+  public CommandLineValueArgument (string? name, bool isOptional)
     : base (name, isOptional)
   {
   }
@@ -37,7 +37,7 @@ public abstract class CommandLineValueArgument: CommandLineArgument
   {
     if (! IsPositional)
     {
-      sb.Append (Parser.ArgumentDeclarationPrefix);
+      sb.Append (Parser!.ArgumentDeclarationPrefix);
       sb.Append (Name);
       if (Placeholder != null)
         sb.Append (Parser.Separator);
@@ -58,12 +58,12 @@ public class CommandLineStringArgument: CommandLineValueArgument
   {
   }
 
-  public override object ValueObject
+  public override object? ValueObject
   {
     get { return Value; }
   }
   
-  public string Value
+  public string? Value
   {
     get { return StringValue; }
   }
@@ -83,7 +83,7 @@ public class CommandLineInt32Argument: CommandLineValueArgument
   {
   }
 
-  public override object ValueObject
+  public override object? ValueObject
   {
     get { return Value; }
   }

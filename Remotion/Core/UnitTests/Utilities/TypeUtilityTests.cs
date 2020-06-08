@@ -121,21 +121,21 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void TestGetType ()
     {
-      Type t = TypeUtility.GetType ("Remotion.UnitTests::Utilities.TypeUtilityTests", true);
+      Type t = TypeUtility.GetType ("Remotion.UnitTests::Utilities.TypeUtilityTests", true)!;
       Assert.That (t, Is.EqualTo (typeof (TypeUtilityTests)));
     }
 
     [Test]
     public void TestGetType_WithNestedNestedType ()
     {
-      Type t = TypeUtility.GetType ("Remotion.UnitTests::Utilities.TypeUtilityTests+NestedType+NestedNestedType", true);
+      Type t = TypeUtility.GetType ("Remotion.UnitTests::Utilities.TypeUtilityTests+NestedType+NestedNestedType", true)!;
       Assert.That (t, Is.EqualTo (typeof (NestedType.NestedNestedType)));
     }
 
     [Test]
     public void TestGetType_WithRootNestedType ()
     {
-      Type t = TypeUtility.GetType ("RootType+RootNestedType, Remotion.UnitTests", true);
+      Type t = TypeUtility.GetType ("RootType+RootNestedType, Remotion.UnitTests", true)!;
       Assert.That (t, Is.EqualTo (typeof (RootType.RootNestedType)));
     }
 
@@ -144,21 +144,21 @@ namespace Remotion.UnitTests.Utilities
     {
       Type t = TypeUtility.GetType (
           "Remotion.UnitTests::Utilities.TypeUtilityTests+NestedGenericType`1[Remotion.UnitTests::Utilities.TypeUtilityTests+NestedGenericType`1[[System.Int32, mscorlib]]]",
-          true);
+          true)!;
       Assert.That (t, Is.EqualTo (typeof (NestedGenericType<NestedGenericType<int>>)));
     }
 
     [Test]
     public void TestGetType_WithNestedGenericNestedType ()
     {
-      Type t = TypeUtility.GetType ("Remotion.UnitTests::Utilities.TypeUtilityTests+NestedGenericType`1+NestedGenericNestedType", true);
+      Type t = TypeUtility.GetType ("Remotion.UnitTests::Utilities.TypeUtilityTests+NestedGenericType`1+NestedGenericNestedType", true)!;
       Assert.That (t, Is.EqualTo (typeof (NestedGenericType<>.NestedGenericNestedType)));
     }
 
     [Test]
     public void TestGetType_WithNestedGenericNestedGenericType ()
     {
-      Type t = TypeUtility.GetType("Remotion.UnitTests::Utilities.TypeUtilityTests+NestedGenericType`1+NestedGenericNestedGenericType`1", true);
+      Type t = TypeUtility.GetType("Remotion.UnitTests::Utilities.TypeUtilityTests+NestedGenericType`1+NestedGenericNestedGenericType`1", true)!;
       Assert.That (t, Is.EqualTo (typeof (NestedGenericType<>.NestedGenericNestedGenericType<>)));
     }
 
@@ -167,7 +167,7 @@ namespace Remotion.UnitTests.Utilities
     {
       Type t = TypeUtility.GetType (
           "Remotion.UnitTests::Utilities.TypeUtilityTests+NestedGenericType`1+NestedGenericNestedGenericType`1[[System.Int32, mscorlib], [System.Double, mscorlib]]",
-          true);
+          true)!;
       Assert.That (t, Is.EqualTo (typeof (NestedGenericType<int>.NestedGenericNestedGenericType<double>)));
     }
 
@@ -357,7 +357,7 @@ namespace Remotion.UnitTests.Utilities
 
     private void AssertTransformation(string abbreviatedName, string fullName)
     {
-      string result = TypeUtility.ParseAbbreviatedTypeName (abbreviatedName);
+      string? result = TypeUtility.ParseAbbreviatedTypeName (abbreviatedName);
       Assert.That (result, Is.EqualTo (fullName));
     }
   }

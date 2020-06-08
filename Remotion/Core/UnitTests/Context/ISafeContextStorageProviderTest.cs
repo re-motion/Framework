@@ -24,7 +24,7 @@ namespace Remotion.UnitTests.Context
   [TestFixture]
   public class ISafeContextStorageProviderTest
   {
-    private DefaultServiceLocator _serviceLocator;
+    private DefaultServiceLocator _serviceLocator = default!;
 
     [SetUp]
     public void SetUp ()

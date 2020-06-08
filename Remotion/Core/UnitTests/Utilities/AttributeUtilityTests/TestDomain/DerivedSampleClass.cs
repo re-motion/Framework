@@ -22,77 +22,77 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests.TestDomain
 {
   public class DerivedSampleClass : SampleClass
   {
-    public override string PropertyWithSingleAttribute
+    public override string? PropertyWithSingleAttribute
     {
       get { return null; }
     }
 
-    protected override string ProtectedPropertyWithAttribute
+    protected override string? ProtectedPropertyWithAttribute
     {
       get { return null; }
     }
 
     [Multiple]
-    public override string PropertyWithMultipleAttribute
+    public override string? PropertyWithMultipleAttribute
     {
       get { return null; }
     }
 
-    public override string this[int i]
+    public override string? this[int i]
     {
       get { return null; }
     }
 
-    public override string PropertyWithoutGetter
+    public override string? PropertyWithoutGetter
     {
       set { Dev.Null = value; }
     }
 
-    public override string PropertyWithNotInheritedAttribute
+    public override string? PropertyWithNotInheritedAttribute
     {
       get { return null; }
     }
 
     [InheritedNotMultiple ("Derived")]
-    public override string PropertyWithInheritedNotMultipleAttribute
+    public override string? PropertyWithInheritedNotMultipleAttribute
     {
       get { return null; }
     }
 
-    public override event System.EventHandler EventWithSingleAttribute;
-    protected override event System.EventHandler ProtectedEventWithAttribute;
+    public override event System.EventHandler? EventWithSingleAttribute;
+    protected override event System.EventHandler? ProtectedEventWithAttribute;
     [Multiple]
-    public override event System.EventHandler EventWithMultipleAttribute;
-    public override event System.EventHandler EventWithNotInheritedAttribute;
+    public override event System.EventHandler? EventWithMultipleAttribute;
+    public override event System.EventHandler? EventWithNotInheritedAttribute;
     [InheritedNotMultiple ("Derived")]
-    public override event System.EventHandler EventWithInheritedNotMultipleAttribute;
+    public override event System.EventHandler? EventWithInheritedNotMultipleAttribute;
 
     [UsedImplicitly]
-    public override string MethodWithSingleAttribute ()
+    public override string? MethodWithSingleAttribute ()
     {
       return base.MethodWithSingleAttribute ();
     }
 
     [UsedImplicitly]
-    protected override string ProtectedMethodWithAttribute ()
+    protected override string? ProtectedMethodWithAttribute ()
     {
       return base.ProtectedMethodWithAttribute ();
     }
 
     [Multiple]
-    public override string MethodWithMultipleAttribute ()
+    public override string? MethodWithMultipleAttribute ()
     {
       return base.MethodWithMultipleAttribute ();
     }
 
     [UsedImplicitly]
-    public override string MethodWithNotInheritedAttribute ()
+    public override string? MethodWithNotInheritedAttribute ()
     {
       return base.MethodWithNotInheritedAttribute ();
     }
 
     [InheritedNotMultiple ("Derived")]
-    public override string MethodWithInheritedNotMultipleAttribute ()
+    public override string? MethodWithInheritedNotMultipleAttribute ()
     {
       return base.MethodWithInheritedNotMultipleAttribute ();
     }

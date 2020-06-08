@@ -28,7 +28,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
     [Test]
     public void TestWithObjectNull ()
     {
-      object o = null;
+      object? o = null;
       Assert.That (
           () => TypesafeActivator.CreateInstance<TestClass>().With (o),
           Throws.InstanceOf<MissingMethodException>());
@@ -37,7 +37,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
     [Test]
     public void TestWithANull ()
     {
-      Base a = null;
+      Base? a = null;
       TestClass testObject = TypesafeActivator.CreateInstance<TestClass> ().With (a);
       Assert.That (testObject.InvocationType, Is.EqualTo (typeof (Base)));
     }
@@ -45,7 +45,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
     [Test]
     public void TestWithBNull ()
     {
-      Derived b = null;
+      Derived? b = null;
       TestClass testObject = TypesafeActivator.CreateInstance<TestClass> ().With (b);
       Assert.That (testObject.InvocationType, Is.EqualTo (typeof (Derived)));
     }
@@ -53,7 +53,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
     [Test]
     public void TestWithCNull ()
     {
-      DerivedDerived c = null;
+      DerivedDerived? c = null;
       TestClass testObject = TypesafeActivator.CreateInstance<TestClass> ().With (c);
       Assert.That (testObject.InvocationType, Is.EqualTo (typeof (Derived)));
     }
@@ -61,7 +61,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
     [Test]
     public void TestWithUntypedANull ()
     {
-      Base a = null;
+      Base? a = null;
       TestClass testObject = (TestClass) TypesafeActivator.CreateInstance (typeof (TestClass)).With (a);
       Assert.That (testObject.InvocationType, Is.EqualTo (typeof (Base)));
     }

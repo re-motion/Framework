@@ -20,6 +20,7 @@ using NUnit.Framework;
 using Remotion.Utilities;
 using Rhino.Mocks;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.Development.RhinoMocks.UnitTesting.Threading
 {
@@ -46,6 +47,7 @@ namespace Remotion.Development.RhinoMocks.UnitTesting.Threading
     }
 
     public void ExpectSynchronizedDelegation<TResult> (Func<T, TResult> action, TResult fakeResult)
+        where TResult : notnull
     {
       ArgumentUtility.CheckNotNull ("action", action);
       ArgumentUtility.CheckNotNull ("fakeResult", fakeResult);
@@ -53,12 +55,13 @@ namespace Remotion.Development.RhinoMocks.UnitTesting.Threading
       ExpectSynchronizedDelegation (action, fakeResult, r => Assert.That (r, Is.EqualTo (fakeResult)));
     }
 
-    public void ExpectSynchronizedDelegation<TResult> (Func<T, TResult> action, TResult fakeResult, Action<TResult> resultChecker)
+    public void ExpectSynchronizedDelegation<TResult> (Func<T, TResult> action, TResult fakeResult, Action<TResult> resultChecker) where TResult : notnull
     {
       ExpectSynchronizedDelegation (action, action, fakeResult, resultChecker);
     }
 
     public void ExpectSynchronizedDelegation<TResult> (Func<T, TResult> expectAction, Func<T, TResult> action, TResult fakeResult, Action<TResult> resultChecker)
+        where TResult : notnull
     {
       _innerMock.BackToRecord();
       _innerMock

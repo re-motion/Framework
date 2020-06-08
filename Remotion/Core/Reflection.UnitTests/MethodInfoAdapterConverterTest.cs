@@ -23,9 +23,9 @@ namespace Remotion.Reflection.UnitTests
   [TestFixture]
   public class MethodInfoAdapterConverterTest
   {
-    private MethodInfo _methodInfo;
-    private MethodInfoAdapter _methodInfoAdapter;
-    private MethodInfoAdapterConverter _converter;
+    private MethodInfo _methodInfo = default!;
+    private MethodInfoAdapter _methodInfoAdapter = default!;
+    private MethodInfoAdapterConverter _converter = default!;
 
     [SetUp]
     public void SetUp ()

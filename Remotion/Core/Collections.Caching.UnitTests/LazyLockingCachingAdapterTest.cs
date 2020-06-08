@@ -35,8 +35,8 @@ namespace Remotion.Collections.Caching.UnitTests
   [TestFixture]
   public class LazyLockingCachingAdapterTest
   {
-    private ICache<string, Lazy<Wrapper>> _innerCacheMock;
-    private LazyLockingCachingAdapter<string, object> _cachingAdapter;
+    private ICache<string, Lazy<Wrapper>> _innerCacheMock = default!;
+    private LazyLockingCachingAdapter<string, object> _cachingAdapter = default!;
 
     [SetUp]
     public void SetUp ()
@@ -58,7 +58,7 @@ namespace Remotion.Collections.Caching.UnitTests
       var doubleCheckedLockingContainer = CreateContainerThatChecksForNotProtected (value);
 
       _innerCacheMock
-          .Expect (mock => mock.TryGetValue (Arg.Is ("key"), out Arg<Lazy<Wrapper>>.Out (null).Dummy))
+          .Expect (mock => mock.TryGetValue (Arg.Is ("key"), out Arg<Lazy<Wrapper>?>.Out (null).Dummy))
           .Return (false)
           .WhenCalled (mi => CheckInnerCacheIsProtected ());
       _innerCacheMock
@@ -82,7 +82,7 @@ namespace Remotion.Collections.Caching.UnitTests
 
       _innerCacheMock
           .Expect (
-              mock => mock.TryGetValue (Arg.Is ("key"), out Arg<Lazy<Wrapper>>.Out (doubleCheckedLockingContainer).Dummy))
+              mock => mock.TryGetValue (Arg.Is ("key"), out Arg<Lazy<Wrapper>?>.Out (doubleCheckedLockingContainer).Dummy))
           .Return (true)
           .WhenCalled (mi => CheckInnerCacheIsProtected ());
 
@@ -105,7 +105,7 @@ namespace Remotion.Collections.Caching.UnitTests
           {
             Assert.That (wasCalled, Is.False);
             wasCalled = true;
-            return null;
+            return null!;
           });
       Assert.That (value, Is.Null);
 
@@ -154,8 +154,7 @@ namespace Remotion.Collections.Caching.UnitTests
 
       Assert.That (actualValue, Is.EqualTo (expected));
 
-      object actualValue2;
-      Assert.That (cache.TryGetValue ("key1", out actualValue2), Is.True);
+      Assert.That (cache.TryGetValue ("key1", out var actualValue2), Is.True);
       Assert.That (actualValue2, Is.SameAs (expected));
     }
 
@@ -167,12 +166,11 @@ namespace Remotion.Collections.Caching.UnitTests
 
       _innerCacheMock
           .Expect (
-              mock => mock.TryGetValue (Arg.Is ("key"), out Arg<Lazy<Wrapper>>.Out (doubleCheckedLockingContainer).Dummy))
+              mock => mock.TryGetValue (Arg.Is ("key"), out Arg<Lazy<Wrapper>?>.Out (doubleCheckedLockingContainer).Dummy))
           .Return (true)
           .WhenCalled (mi => CheckInnerCacheIsProtected ());
 
-      object result;
-      var actualResult = _cachingAdapter.TryGetValue ("key", out result);
+      var actualResult = _cachingAdapter.TryGetValue ("key", out var result);
 
       _innerCacheMock.VerifyAllExpectations ();
       Assert.That (actualResult, Is.EqualTo (true));
@@ -184,12 +182,11 @@ namespace Remotion.Collections.Caching.UnitTests
     public void TryGetValue_NoValueFound ()
     {
       _innerCacheMock
-          .Expect (mock => mock.TryGetValue (Arg.Is ("key"), out Arg<Lazy<Wrapper>>.Out (null).Dummy))
+          .Expect (mock => mock.TryGetValue (Arg.Is ("key"), out Arg<Lazy<Wrapper>?>.Out (null).Dummy))
           .Return (false)
           .WhenCalled (mi => CheckInnerCacheIsProtected ());
 
-      object result;
-      var actualResult = _cachingAdapter.TryGetValue ("key", out result);
+      var actualResult = _cachingAdapter.TryGetValue ("key", out var result);
 
       _innerCacheMock.VerifyAllExpectations ();
       Assert.That (actualResult, Is.EqualTo (false));
@@ -301,8 +298,7 @@ namespace Remotion.Collections.Caching.UnitTests
           arg =>
           {
             cache.GetOrCreateValue ("key", k => "value");
-            object value;
-            cache.TryGetValue ("key", out value);
+            cache.TryGetValue ("key", out var value);
 
             var stopwatch = (Stopwatch) arg;
             stopwatch.Start();

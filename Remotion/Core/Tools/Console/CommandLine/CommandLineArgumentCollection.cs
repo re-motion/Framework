@@ -27,7 +27,7 @@ public class CommandLineArgumentCollection: CollectionBase
 {
   private const string c_msgInvalidArgumentType = "Argument must be of type CommandLineArgument.";
   
-  private CommandLineParser _parser = null;
+  private CommandLineParser? _parser = null;
 
   public CommandLineArgumentCollection (CommandLineParser parser)
   {
@@ -73,7 +73,7 @@ public class CommandLineArgumentCollection: CollectionBase
   protected override void OnInsert (int index, object value)   
   {
     if (value == null) throw new ArgumentNullException ("value");
-    CommandLineArgument argument = value as CommandLineArgument;
+    CommandLineArgument? argument = value as CommandLineArgument;
     if (argument == null) throw new ArgumentException (c_msgInvalidArgumentType, "value") ;
 
     if (_parser != null)
@@ -83,7 +83,7 @@ public class CommandLineArgumentCollection: CollectionBase
   protected override void OnRemove (int index, object value)
   {
     if (value == null) throw new ArgumentNullException ("value");
-    CommandLineArgument argument = value as CommandLineArgument;
+    CommandLineArgument? argument = value as CommandLineArgument;
     if (argument == null) throw new ArgumentException (c_msgInvalidArgumentType, "value") ;
 
     if (argument.Parser == _parser)
@@ -93,7 +93,7 @@ public class CommandLineArgumentCollection: CollectionBase
   protected override void OnSet (int index, object oldValue, object newValue)   
   {
     if (newValue == null) throw new ArgumentNullException ("value");
-    CommandLineArgument newArgument = newValue as CommandLineArgument;
+    CommandLineArgument? newArgument = newValue as CommandLineArgument;
     if (newArgument == null) throw new ArgumentException (c_msgInvalidArgumentType, "newValue") ;
     CommandLineArgument oldArgument = (CommandLineArgument) oldValue;
 

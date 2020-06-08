@@ -31,8 +31,8 @@ public class NameValueCollectionUtilityTest
 
   // member fields
 
-  private NameValueCollection _collection;
-  private NameValueCollection _otherCollection;
+  private NameValueCollection _collection = default!;
+  private NameValueCollection _otherCollection = default!;
 
   // construction and disposing
 

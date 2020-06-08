@@ -122,7 +122,7 @@ public class WorkContextTest
                                                                                "? sub2.1"));
   }
 
-  private string PerformTest (ThrowLocation location, bool catchInInnerHandler)
+  private string? PerformTest (ThrowLocation location, bool catchInInnerHandler)
   {
     try
     {

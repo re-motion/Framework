@@ -80,15 +80,17 @@ namespace Remotion.Reflection
 
     private string GetPropertyNameInternal (IPropertyInformation propertyInformation)
     {
-      return GetTypeName (propertyInformation.GetOriginalDeclaringType()) + "." + propertyInformation.Name;
+      //TODO RM-7432: GetOriginalDeclaringType may return null
+      return GetTypeName (propertyInformation.GetOriginalDeclaringType()!) + "." + propertyInformation.Name;
     }
 
     private string GetTypeNameInternal (ITypeInformation typeInformation)
     {
+      //TODO RM-7432: FullName may return null
       if (typeInformation.IsGenericType && !typeInformation.IsGenericTypeDefinition)
         typeInformation = typeInformation.GetGenericTypeDefinition();
 
-      return typeInformation.FullName;
+      return typeInformation.FullName!;
     }
 
     private string GetEnumNameInternal (Enum enumValue)

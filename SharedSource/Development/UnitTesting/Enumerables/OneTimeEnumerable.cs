@@ -20,6 +20,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Remotion.Utilities;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.Development.UnitTesting.Enumerables
 {
@@ -44,7 +45,7 @@ namespace Remotion.Development.UnitTesting.Enumerables
         get { return _enumerator.Current; }
       }
 
-      object IEnumerator.Current
+      object? IEnumerator.Current
       {
         get { return Current; }
       }

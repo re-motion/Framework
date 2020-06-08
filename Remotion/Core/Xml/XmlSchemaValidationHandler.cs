@@ -33,8 +33,8 @@ namespace Remotion.Xml
     private int _warnings = 0;
     private int _errors = 0;
 
-    private XmlSchemaValidationErrorInfo _firstError = null;
-    private XmlSchemaException _firstException = null;
+    private XmlSchemaValidationErrorInfo? _firstError = null;
+    private XmlSchemaException? _firstException = null;
 
     public XmlSchemaValidationHandler (bool failOnError)
     {
@@ -71,7 +71,7 @@ namespace Remotion.Xml
         return;
       }
 
-      IXmlLineInfo lineInfo = sender as IXmlLineInfo;
+      IXmlLineInfo? lineInfo = sender as IXmlLineInfo;
       XmlSchemaValidationErrorInfo errorInfo = new XmlSchemaValidationErrorInfo (args.Message, reader.BaseURI, lineInfo, args.Severity);
       _messages.Add (errorInfo);
 
@@ -95,7 +95,7 @@ namespace Remotion.Xml
       }
     }
 
-    public XmlSchemaException FirstException
+    public XmlSchemaException? FirstException
     {
       get { return _firstException; }
     }
@@ -104,7 +104,7 @@ namespace Remotion.Xml
     {
       if (_errors > 0)
       {
-        throw _firstException;
+        throw _firstException!;
 
         //string lineInfoMessage = string.Empty;
         //if (_firstError.HasLineInfo())

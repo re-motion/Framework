@@ -23,7 +23,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests.TestDomain
   public class SerializableClass : ISerializable
   {
     private StreamingContext _Context;
-    private SerializationInfo _Info;
+    private SerializationInfo? _Info;
 
     public SerializableClass ()
     {
@@ -41,7 +41,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests.TestDomain
       Context = context;
     }
 
-    public SerializationInfo Info
+    public SerializationInfo? Info
     {
       get { return _Info; }
       set { _Info = value; }

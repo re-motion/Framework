@@ -62,7 +62,7 @@ namespace Remotion.Utilities.AttributeRetrieval
               return (Func<MethodInfo, MethodInfo>) lambdaExpression.Compile();
             });
 
-    protected abstract TCustomAttributeProvider GetBaseMember (TCustomAttributeProvider memberInfo);
+    protected abstract TCustomAttributeProvider? GetBaseMember (TCustomAttributeProvider memberInfo);
 
     public object[] GetCustomAttributes (TCustomAttributeProvider memberInfo, Type attributeType, bool inherit)
     {

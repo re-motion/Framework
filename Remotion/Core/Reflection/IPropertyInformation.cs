@@ -60,7 +60,7 @@ namespace Remotion.Reflection
     /// <exception cref="TargetInvocationException">The property's get method throw an exception, see the <see cref="Exception.InnerException"/>
     /// property.</exception>
     /// <exception cref="MethodAccessException">The accessor was private or protected and could not be executed.</exception>
-    object GetValue ([CanBeNull]object instance, [CanBeNull]object[] indexParameters);
+    object? GetValue ([CanBeNull]object? instance, [CanBeNull]object[]? indexParameters);
 
     /// <summary>
     /// Sets the value of the property for the given instance.
@@ -84,7 +84,7 @@ namespace Remotion.Reflection
     /// <exception cref="TargetInvocationException">The property's get method throw an exception, see the <see cref="Exception.InnerException"/>
     /// property.</exception>
     /// <exception cref="MethodAccessException">The accessor was private or protected and could not be executed.</exception>
-    void SetValue ([CanBeNull]object instance, [CanBeNull]object value, [CanBeNull]object[] indexParameters);
+    void SetValue ([CanBeNull]object? instance, [CanBeNull]object? value, [CanBeNull]object[]? indexParameters);
 
     /// <summary>
     /// Gets the <see cref="IMethodInformation"/> of the get method for the current <see cref="PropertyInfo"/>.
@@ -93,7 +93,7 @@ namespace Remotion.Reflection
     /// <returns>
     /// An instance of <see cref="IMethodInformation"/> for the get method.
     /// </returns>
-    [CanBeNull]IMethodInformation GetGetMethod (bool nonPublic);
+    [CanBeNull]IMethodInformation? GetGetMethod (bool nonPublic);
 
     /// <summary>
     /// Gets the <see cref="IMethodInformation"/> of the set method for the current <see cref="PropertyInfo"/>.
@@ -102,7 +102,7 @@ namespace Remotion.Reflection
     /// <returns>
     /// An instance of <see cref="IMethodInformation"/> for the set method.
     /// </returns>
-    [CanBeNull]IMethodInformation GetSetMethod (bool nonPublic);
+    [CanBeNull]IMethodInformation? GetSetMethod (bool nonPublic);
 
     /// <summary>
     /// Finds the implementation <see cref="IPropertyInformation"/> corresponding to this <see cref="IPropertyInformation"/> on the given 
@@ -114,7 +114,7 @@ namespace Remotion.Reflection
     /// <paramref name="implementationType"/> does not implement the interface.</returns>
     /// <exception cref="ArgumentException"><paramref name="implementationType"/> is itself an interface.</exception>
     /// <exception cref="InvalidOperationException">This <see cref="IPropertyInformation"/> does not describe an interface property.</exception>
-    [CanBeNull]IPropertyInformation FindInterfaceImplementation ([NotNull]Type implementationType);
+    [CanBeNull]IPropertyInformation? FindInterfaceImplementation ([NotNull]Type implementationType);
 
     /// <summary>
     /// Finds the interface declaration for this <see cref="IPropertyInformation"/>, returning <see langword="null" /> if this 

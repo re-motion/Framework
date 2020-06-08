@@ -31,7 +31,7 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
       _property = property;
     }
 
-    public PropertyReference(Reference owner, PropertyInfo property)
+    public PropertyReference(Reference? owner, PropertyInfo property)
         : base (owner, property.PropertyType)
     {
       _property = property;

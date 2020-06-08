@@ -21,15 +21,16 @@ using Remotion.Development.RhinoMocks.UnitTesting;
 using Rhino.Mocks;
 using Rhino.Mocks.Exceptions;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.UnitTests.Development.RhinoMocks.UnitTesting
 {
   [TestFixture]
   public class DecoratorTestHelperTest
   {
-    private DecoratorTestHelper<IMyInterface> _helperForDecorator;
-    private DecoratorTestHelper<IMyInterface> _helperForNonDelegatingDecorator;
-    private DecoratorTestHelper<IMyInterface> _helperForFaultyDecorator;
+    private DecoratorTestHelper<IMyInterface> _helperForDecorator = default!;
+    private DecoratorTestHelper<IMyInterface> _helperForNonDelegatingDecorator = default!;
+    private DecoratorTestHelper<IMyInterface> _helperForFaultyDecorator = default!;
 
     [SetUp]
     public void SetUp ()

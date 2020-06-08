@@ -76,7 +76,7 @@ namespace Remotion.Reflection.TypeDiscovery
     /// <returns>
     /// A collection of types that match the criteria specified by baseType and excludeGlobalTypes.
     /// </returns>
-    public ICollection GetTypes (Type baseType, bool excludeGlobalTypes)
+    public ICollection GetTypes (Type? baseType, bool excludeGlobalTypes)
     {
       var nonNullBaseType = baseType ?? typeof (object);
 
@@ -119,7 +119,7 @@ namespace Remotion.Reflection.TypeDiscovery
       }
     }
 
-    private IEnumerable<Type> GetTypesFromAllAssemblies (Type baseType, bool excludeGlobalTypes)
+    private IEnumerable<Type> GetTypesFromAllAssemblies (Type? baseType, bool excludeGlobalTypes)
     {
       return GetAssemblies (excludeGlobalTypes).AsParallel().SelectMany (a => GetTypesFromBaseType (a, baseType));
     }
@@ -130,7 +130,7 @@ namespace Remotion.Reflection.TypeDiscovery
       return assemblies.Where (assembly => !excludeGlobalTypes || !assembly.GlobalAssemblyCache);
     }
 
-    private IEnumerable<Type> GetTypesFromBaseType (_Assembly assembly, Type baseType)
+    private IEnumerable<Type> GetTypesFromBaseType (_Assembly assembly, Type? baseType)
     {
       ReadOnlyCollection<Type> allTypesInAssembly;
 

@@ -23,7 +23,7 @@ namespace Remotion.Reflection.UnitTests
   [TestFixture]
   public class NullMethodInformationTest
   {
-    private NullMethodInformation _nullMethodInformation;
+    private NullMethodInformation _nullMethodInformation = default!;
 
     [SetUp]
     public void SetUp ()
@@ -95,7 +95,7 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void GetFastInvoker_WithReferenceTypeReturnType ()
     {
-      var invoker = _nullMethodInformation.GetFastInvoker<Func<object, object, object>> ();
+      var invoker = _nullMethodInformation.GetFastInvoker<Func<object, object?, object>> ();
 
       Assert.That (invoker (new object(), null), Is.Null);
     }
@@ -103,7 +103,7 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void GetFastInvoker_WithValueTypeReturnType ()
     {
-      var invoker = _nullMethodInformation.GetFastInvoker<Func<object, object, int>> ();
+      var invoker = _nullMethodInformation.GetFastInvoker<Func<object, object?, int>> ();
 
       Assert.That (invoker (new object(), null), Is.EqualTo (0));
     }
@@ -111,7 +111,7 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void GetFastInvoker_WithoutReturnType ()
     {
-      var invoker = _nullMethodInformation.GetFastInvoker<Action<object, object>> ();
+      var invoker = _nullMethodInformation.GetFastInvoker<Action<object, object?>> ();
 
      invoker (new object(), null);
     }

@@ -37,7 +37,7 @@ public abstract class CommandLineGroupArgument: CommandLineArgument
   /// <summary> IList&lt;CommandLineArgument&gt;</summary>
   public abstract IList Parts { get; }
 
-  public override string Placeholder
+  public override string? Placeholder
   {
     get
     {
@@ -48,7 +48,7 @@ public abstract class CommandLineGroupArgument: CommandLineArgument
           sb.Append ('{');
         else
           sb.Append ('|');
-        sb.Append (Parser.ArgumentDeclarationPrefix);
+        sb.Append (Parser!.ArgumentDeclarationPrefix);
         sb.Append (part.Name);
       }
       sb.Append ('}');
@@ -74,10 +74,10 @@ public class CommandLineModeArgument: CommandLineGroupArgument
 {
   /// <summary> ArrayList&lt;CommandLineModeFlagArgument&gt;</summary>
   private ArrayList _flags = new ArrayList();
-  private CommandLineModeFlagArgument _value = null;
-  private Type _enumType = null;
+  private CommandLineModeFlagArgument? _value = null;
+  private Type? _enumType = null;
 
-  public CommandLineModeArgument (bool isOptional, Type enumType)
+  public CommandLineModeArgument (bool isOptional, Type? enumType)
     : base (isOptional)
   {
     _enumType = enumType;
@@ -91,7 +91,7 @@ public class CommandLineModeArgument: CommandLineGroupArgument
       _flags.Clear();
       foreach (FieldInfo field in _enumType.GetFields (BindingFlags.Public | BindingFlags.Static))
       {
-        CommandLineModeAttribute attribute = CommandLineModeAttribute.GetAttribute (field);
+        CommandLineModeAttribute? attribute = CommandLineModeAttribute.GetAttribute (field);
 
         string name = field.Name;
         if (attribute != null && attribute.Name != null)
@@ -116,7 +116,7 @@ public class CommandLineModeArgument: CommandLineGroupArgument
     get { return ArrayList.ReadOnly (_flags); }
   }
 
-  public override object ValueObject
+  public override object? ValueObject
   {
     get 
     { 
@@ -132,7 +132,7 @@ public class CommandLineModeArgument: CommandLineGroupArgument
     if (_value != null)
       throw new ConflictCommandLineParameterException (_value, value); 
     _value = value;
-    SetStringValue (value.Name);
+    SetStringValue (value.Name!);
   }
 
   public override void AppendSynopsis (StringBuilder sb)
@@ -140,7 +140,7 @@ public class CommandLineModeArgument: CommandLineGroupArgument
     sb.Append (Placeholder);
   }
 
-  public Type EnumType
+  public Type? EnumType
   {
     get { return _enumType; }
     set { _enumType = value; }

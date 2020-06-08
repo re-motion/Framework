@@ -34,9 +34,9 @@ namespace Remotion.Design
       _designerHost = designerHost;
     }
 
-    public abstract string GetProjectPath ();
+    public abstract string? GetProjectPath ();
 
-    public abstract System.Configuration.Configuration GetConfiguration ();
+    public abstract System.Configuration.Configuration? GetConfiguration ();
 
     public IDesignerHost DesignerHost
     {

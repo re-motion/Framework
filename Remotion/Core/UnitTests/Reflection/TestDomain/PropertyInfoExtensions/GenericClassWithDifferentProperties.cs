@@ -21,6 +21,6 @@ namespace Remotion.UnitTests.Reflection.TestDomain.PropertyInfoExtensions
   public abstract class GenericClassWithDifferentProperties<T>
   {
     public abstract T AbstractT { get; set; }
-    public virtual T VirtualT { get; set; }
+    public virtual T VirtualT { get; set; } = default!;
   }
 }

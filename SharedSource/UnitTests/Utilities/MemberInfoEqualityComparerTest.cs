@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Remotion.UnitTests.Utilities.MemberInfoEqualityComparerTestDomain;
 using Remotion.Utilities;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.UnitTests.Utilities
 {
@@ -368,7 +369,7 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void GetHashCode_NullMember ()
     {
-      Assert.That (() => MemberInfoEqualityComparer<MemberInfo>.Instance.GetHashCode (null), Throws.Exception.TypeOf<ArgumentNullException>());
+      Assert.That (() => MemberInfoEqualityComparer<MemberInfo>.Instance.GetHashCode (null!), Throws.Exception.TypeOf<ArgumentNullException>());
     }
   }
 }

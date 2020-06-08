@@ -17,7 +17,7 @@
 using System;
 using System.Globalization;
 using System.Threading;
-
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.Utilities
 {
@@ -36,8 +36,8 @@ namespace Remotion.Utilities
   /// ]]></code></example>
   partial struct CultureScope : IDisposable
   {
-    private readonly CultureInfo _backupCulture;
-    private readonly CultureInfo _backupUICulture;
+    private readonly CultureInfo? _backupCulture;
+    private readonly CultureInfo? _backupUICulture;
 
 
     /// <summary>
@@ -54,7 +54,7 @@ namespace Remotion.Utilities
     /// </summary>
     /// <param name="cultureName">Culture name string. <see langword="null" /> to not switch culture.</param>
     /// <param name="uiCultureName">User interface culture name string. <see langword="null" /> to not switch UI-culture.</param>
-    public CultureScope (string cultureName, string uiCultureName)
+    public CultureScope (string? cultureName, string? uiCultureName)
       : this (
       cultureName == null ? null : CultureInfo.GetCultureInfo (cultureName),
       uiCultureName == null ? null : CultureInfo.GetCultureInfo (uiCultureName))
@@ -66,7 +66,7 @@ namespace Remotion.Utilities
     /// Intialize both the culture and UI-culture with the same culture-name
     /// </summary>
     /// <param name="cultureAndUiCultureName">Culture and User interface culture name string.</param>
-    public CultureScope (string cultureAndUiCultureName) : this (cultureAndUiCultureName, cultureAndUiCultureName) { }
+    public CultureScope (string? cultureAndUiCultureName) : this (cultureAndUiCultureName, cultureAndUiCultureName) { }
 
 
     /// <summary>
@@ -74,7 +74,7 @@ namespace Remotion.Utilities
     /// </summary>
     /// <param name="cultureInfo">Culture to use. <see langword="null" /> to not switch culture.</param>
     /// <param name="uiCultureInfo">User interface culture to use. <see langword="null" /> to not switch UI-culture.</param>
-    public CultureScope (CultureInfo cultureInfo, CultureInfo uiCultureInfo)
+    public CultureScope (CultureInfo? cultureInfo, CultureInfo? uiCultureInfo)
     {
       _backupCulture = null;
       _backupUICulture = null;

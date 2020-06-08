@@ -42,7 +42,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
       var methodEmitter = GetUnsavedMethodEmitter (false, typeof (void), new Type[0]);
       var expressionReference = new ExpressionReference (typeof (string), new ConstReference ("bla").ToExpression (), methodEmitter);
       Assert.That (
-          () => expressionReference.StoreReference (null),
+          () => expressionReference.StoreReference (null!),
           Throws.InstanceOf<NotSupportedException>()
               .With.Message.EqualTo ("Expressions cannot be assigned to."));
     }

@@ -36,7 +36,7 @@ namespace Remotion.Reflection
     private static readonly ConcurrentDictionary<Tuple<Type, Type, Type>, bool> s_canDirectlyAscribeToGenericTypeInternalCache =
         new ConcurrentDictionary<Tuple<Type, Type, Type>, bool>();
 
-    private static Func<Tuple<Type, Type>, bool> s_canAscribeCacheValueFactory;
+    private static Func<Tuple<Type, Type>, bool>? s_canAscribeCacheValueFactory;
 
     /// <summary>
     /// Evaluates whether the <paramref name="type"/> can be ascribed to the <paramref name="ascribeeType"/>.
@@ -143,7 +143,7 @@ namespace Remotion.Reflection
 
       Type ascribeeGenericTypeDefinition = ascribeeType.GetGenericTypeDefinition ();
 
-      Type conreteSpecialization; // concrete specialization of ascribeeType implemented by type
+      Type? conreteSpecialization; // concrete specialization of ascribeeType implemented by type
       // is type itself a specialization of ascribeeType?
       if (type.IsInterface && CanDirectlyAscribeToGenericTypeInternalFromCache (type, ascribeeType, ascribeeGenericTypeDefinition))
         conreteSpecialization = type;

@@ -19,6 +19,7 @@ using System;
 using System.Diagnostics;
 using System.Reflection;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.Development.UnitTesting
 {

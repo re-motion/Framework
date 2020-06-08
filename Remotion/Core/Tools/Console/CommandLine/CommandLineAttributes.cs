@@ -69,7 +69,7 @@ namespace Remotion.Tools.Console.CommandLine
       _argument = argument;
     }
 
-    public string Name
+    public string? Name
     {
       get { return _argument.Name; }
       set { _argument.Name = value; }
@@ -81,13 +81,13 @@ namespace Remotion.Tools.Console.CommandLine
       set { _argument.IsOptional = value; }
     }
 
-    public string Placeholder
+    public string? Placeholder
     {
       get { return _argument.Placeholder; }
       set { _argument.Placeholder = value; }
     }
 
-    public string Description
+    public string? Description
     {
       get { return _argument.Description; }
       set { _argument.Description = value; }
@@ -216,7 +216,7 @@ namespace Remotion.Tools.Console.CommandLine
   [AttributeUsage (AttributeTargets.Field | AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
   public class CommandLineModeArgumentAttribute : CommandLineArgumentAttribute
   {
-    private Type _enumType;
+    private Type? _enumType;
 
     public CommandLineModeArgumentAttribute (bool isOptional)
         : base (new CommandLineModeArgument (isOptional, null))
@@ -259,13 +259,13 @@ namespace Remotion.Tools.Console.CommandLine
   [AttributeUsage (AttributeTargets.Field, Inherited = false, AllowMultiple = false)]
   public class CommandLineModeAttribute : Attribute
   {
-    public static CommandLineModeAttribute GetAttribute (FieldInfo field)
+    public static CommandLineModeAttribute? GetAttribute (FieldInfo field)
     {
-      return (CommandLineModeAttribute) AttributeUtility.GetCustomAttribute (field, typeof (CommandLineModeAttribute), false);
+      return (CommandLineModeAttribute?) AttributeUtility.GetCustomAttribute (field, typeof (CommandLineModeAttribute), false);
     }
 
     private string _name;
-    private string _description;
+    private string? _description;
 
     public CommandLineModeAttribute (string name)
     {
@@ -277,7 +277,7 @@ namespace Remotion.Tools.Console.CommandLine
       get { return _name; }
     }
 
-    public string Description
+    public string? Description
     {
       get { return _description; }
       set { _description = value; }

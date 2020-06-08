@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Remotion.Utilities
 {
@@ -25,17 +26,17 @@ namespace Remotion.Utilities
   /// </summary>
   public static class ArrayUtility
   {
-    public static bool Contains (Array array, object value)
+    public static bool Contains (Array array, object? value)
     {
       return Array.IndexOf (array, value) >= 0;
     }
 
-    public static bool IsNullOrEmpty (Array array)
+    public static bool IsNullOrEmpty ([NotNullWhen (false)] Array? array)
     {
       return (array == null) || (array.Length == 0);
     }
 
-    public static bool IsNullOrEmpty (ICollection collection)
+    public static bool IsNullOrEmpty ([NotNullWhen (false)] ICollection? collection)
     {
       return (collection == null) || (collection.Count == 0);
     }
@@ -80,7 +81,8 @@ namespace Remotion.Utilities
       return result;
     }
 
-    public static TResult[] Convert<TSource, TResult> (ICollection<TSource> collection)
+    [return: NotNullIfNotNull ("collection")]
+    public static TResult[]? Convert<TSource, TResult> (ICollection<TSource>? collection)
         where TResult: TSource
     {
       if (collection == null)
@@ -117,7 +119,8 @@ namespace Remotion.Utilities
       return result;
     }
 
-    public static T[] Convert<T> (ICollection<T> collection)
+    [return: NotNullIfNotNull ("collection")]
+    public static T[]? Convert<T> (ICollection<T> collection)
     {
       return Convert<T, T> (collection);
     }

@@ -23,9 +23,9 @@ namespace Remotion.Reflection.UnitTests
   [TestFixture]
   public class ReflectionBasedMemberInfoNameResolverTest
   {
-    private ReflectionBasedMemberInformationNameResolver _resolver;
-    private IPropertyInformation _propertyInformationStub;
-    private ITypeInformation _typeInformationStub;
+    private ReflectionBasedMemberInformationNameResolver _resolver = default!;
+    private IPropertyInformation _propertyInformationStub = default!;
+    private ITypeInformation _typeInformationStub = default!;
 
     [SetUp]
     public void SetUp ()

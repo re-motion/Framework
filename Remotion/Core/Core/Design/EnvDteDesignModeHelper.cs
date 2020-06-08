@@ -38,19 +38,19 @@ namespace Remotion.Design
     {
     }
 
-    public override string GetProjectPath()
+    public override string? GetProjectPath()
     {
-      string projectPath = (string) GetDesignTimePropertyValue ("ActiveFileSharePath");
+      string? projectPath = (string?) GetDesignTimePropertyValue ("ActiveFileSharePath");
 
       if (projectPath == null)
-        projectPath = (string) GetDesignTimePropertyValue ("FullPath");
+        projectPath = (string?) GetDesignTimePropertyValue ("FullPath");
 
       return projectPath;
     }
 
-    public override System.Configuration.Configuration GetConfiguration ()
+    public override System.Configuration.Configuration? GetConfiguration ()
     {
-      string projectPath = GetProjectPath();
+      string? projectPath = GetProjectPath();
       if (projectPath == null)
         return null;
 
@@ -66,14 +66,14 @@ namespace Remotion.Design
       }
     }
 
-    public object GetDesignTimePropertyValue (string propertyName)
+    public object? GetDesignTimePropertyValue (string propertyName)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
 
       try
       {
         //EnvDTE._DTE environment = (EnvDTE._DTE) ((IServiceProvider)site).GetService (typeof (EnvDTE._DTE));
-        Type _DTEType = TypeUtility.GetType ("EnvDTE._DTE, EnvDTE", true);
+        Type _DTEType = TypeUtility.GetType ("EnvDTE._DTE, EnvDTE", true)!;
         object environment = DesignerHost.GetService (_DTEType);
 
         if (environment != null)

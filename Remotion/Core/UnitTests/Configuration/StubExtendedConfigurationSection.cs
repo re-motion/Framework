@@ -38,7 +38,7 @@ namespace Remotion.UnitTests.Configuration
     public StubExtendedConfigurationSection (
         string wellKnownProviderID,
         string defaultProviderName,
-        string defaultProviderID,
+        string? defaultProviderID,
         string providerCollectionName
         )
     {

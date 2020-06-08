@@ -29,14 +29,14 @@ namespace Remotion.Context
     /// </summary>
     /// <param name="key">The key identifying the data item.</param>
     /// <returns>The data item identified by the given key, or <see langword="null"/> if no such item exists in the storage.</returns>
-    object GetData (string key);
+    object? GetData (string key);
 
     /// <summary>
     /// Sets a data item in the context storage, overwriting a previous value identified by the same key.
     /// </summary>
     /// <param name="key">The key identifying the data item.</param>
     /// <param name="value">The value to be stored in the context storage.</param>
-    void SetData (string key, object value);
+    void SetData (string key, object? value);
 
     /// <summary>
     /// Frees the resources used by a specific data item in the context storage.

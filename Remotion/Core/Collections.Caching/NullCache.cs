@@ -17,7 +17,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using JetBrains.Annotations;
 using Remotion.Utilities;
 
 namespace Remotion.Collections.Caching
@@ -30,14 +32,15 @@ namespace Remotion.Collections.Caching
   /// </remarks>
   [Serializable]
   public sealed class NullCache<TKey, TValue> : ICache<TKey, TValue>
+      where TKey: notnull
   {
     public NullCache ()
     {
     }
 
-    public bool TryGetValue (TKey key, out TValue value)
+    public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen (false)] out TValue value)
     {
-      value = default (TValue);
+      value = default (TValue)!;
       return false;
     }
 

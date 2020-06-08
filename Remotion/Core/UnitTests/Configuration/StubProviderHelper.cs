@@ -27,14 +27,14 @@ namespace Remotion.UnitTests.Configuration
   {
     private string _wellKnownProviderID;
     private string _defaultProviderName;
-    private string _defaultProviderID;
+    private string? _defaultProviderID;
     private string _providerCollectionName;
 
     public StubProviderHelper (
         ExtendedConfigurationSection configurationSection,
         string wellKnownProviderID,
         string defaultProviderName,
-        string defaultProviderID,
+        string? defaultProviderID,
         string providerCollectionName)
         : base (configurationSection)
     {

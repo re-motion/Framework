@@ -33,7 +33,7 @@ namespace Remotion.ExtensibleEnums.UnitTests.TestDomain
 
     public static EnumWithDifferentCtors NameAndNullDeclarationSpace (this ExtensibleEnumDefinition<EnumWithDifferentCtors> enumWithDifferentCtors)
     {
-      return new EnumWithDifferentCtors ((string) null, "ValueName");
+      return new EnumWithDifferentCtors ((string?) null, "ValueName");
     }
 
     public static EnumWithDifferentCtors NameAndEmptyDeclarationSpace (this ExtensibleEnumDefinition<EnumWithDifferentCtors> enumWithDifferentCtors)

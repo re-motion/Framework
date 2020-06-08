@@ -17,7 +17,9 @@
 
 using System;
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.Utilities
 {
@@ -133,7 +135,7 @@ namespace Remotion.Utilities
     }
 
     /// <inheritdoc cref="GetRotatedHashCode{A0,A1}" />
-    public static int GetRotatedHashCode (params object[] fields)
+    public static int GetRotatedHashCode (params object?[] fields)
     {
       int hc = 0;
       for (int i = 0; i < fields.Length; ++i)
@@ -192,24 +194,25 @@ namespace Remotion.Utilities
     /// Similar to <see cref="Equals{T}"/>, but without any boxing (better performance). 
     /// Equatable objects implement the <see cref="IEquatable{T}"/> interface. 
     /// </remarks>
-    public static bool EqualsEquatable<T> (T a, T b)
+    public static bool EqualsEquatable<T> ([AllowNull] T a, [AllowNull] T b)
       where T : IEquatable<T>
     {
       if (a == null)
         return (b == null);
       else
-        return a.Equals ((T) b);
+        return a.Equals ((T) b!);
     }
 
     /// <summary>
     /// Returns whether an equatable object equals another object.
     /// </summary>
-    public static bool EqualsEquatable<T> (T a, object b)
+    public static bool EqualsEquatable<T> (T? a, object? b)
       where T : class, IEquatable<T>
     {
-      T other = b as T;
+      //TODO RM-7432: bugfix 'a.Equals' can throw a NPE
+      T? other = b as T;
       if (other != null)
-        return a.Equals (other);
+        return a!.Equals (other);
       else
         return false;
     }
@@ -217,7 +220,7 @@ namespace Remotion.Utilities
     /// <summary>
     /// Returns whether an equatable value-type object equals another object.
     /// </summary>
-    public static bool EqualsEquatableValue<T> (T a, object b)
+    public static bool EqualsEquatableValue<T> (T a, object? b)
       where T : struct, IEquatable<T>
     {
       if (b is T) // ignore incorrect ReSharper warning
@@ -226,7 +229,7 @@ namespace Remotion.Utilities
         return false;
     }
 
-    public static bool NotNullAndSameType<T> (T a, T b)
+    public static bool NotNullAndSameType<T> (T a, T? b)
       where T: class, IEquatable<T>
     {
       ArgumentUtility.CheckNotNull ("a", a);
@@ -239,12 +242,12 @@ namespace Remotion.Utilities
     /// <remarks>
     /// Similar to <see cref="object.Equals(object,object)"/>, only with less boxing going on (better performance).
     /// </remarks>
-    public static bool Equals<T> (T a, T b)
+    public static bool Equals<T> ([AllowNull] T a, [AllowNull] T b)
     {
       if (a == null)
         return (b == null);
       else
-        return a.Equals ((object) b);
+        return a.Equals ((object?) b);
     }
    
   }
