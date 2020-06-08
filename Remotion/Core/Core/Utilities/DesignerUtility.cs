@@ -23,7 +23,7 @@ namespace Remotion.Utilities
   public static class DesignerUtility
   {
     private static bool s_isDesignMode;
-    private static IDesignModeHelper s_designModeHelper;
+    private static IDesignModeHelper? s_designModeHelper;
 
     public static void SetDesignMode (IDesignModeHelper designModeHelper)
     {
@@ -44,7 +44,7 @@ namespace Remotion.Utilities
       get
       {
         CheckDesignMode();
-        return s_designModeHelper;
+        return s_designModeHelper!;
       }
     }
 
@@ -55,6 +55,7 @@ namespace Remotion.Utilities
 
     private static void CheckDesignMode ()
     {
+      //TODO RM-7434: Mark with MemberNotNull once supported by msbuild
       if (!s_isDesignMode)
         throw new InvalidOperationException ("DesignModeHelper can only be accessed while DesignMode is active.");
     }

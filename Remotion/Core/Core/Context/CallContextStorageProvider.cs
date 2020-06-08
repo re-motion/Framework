@@ -33,7 +33,7 @@ namespace Remotion.Context
       return CallContext.GetData (key);
     }
 
-    public void SetData (string key, object value)
+    public void SetData (string key, object? value)
     {
       ArgumentUtility.CheckNotNull ("key", key);
       CallContext.SetData (key, value);

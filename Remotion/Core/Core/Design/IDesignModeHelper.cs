@@ -26,7 +26,7 @@ namespace Remotion.Design
   public interface IDesignModeHelper
   {
     IDesignerHost DesignerHost { get; }
-    string GetProjectPath();
-    System.Configuration.Configuration GetConfiguration();
+    string? GetProjectPath();
+    System.Configuration.Configuration? GetConfiguration();
   }
 }

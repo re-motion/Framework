@@ -27,7 +27,7 @@ namespace Remotion.Utilities.AttributeRetrieval
   /// </summary>
   public sealed class PropertyCustomAttributeRetriever : InheritanceAwareCustomAttributeRetriever<PropertyInfo>
   {
-    protected override PropertyInfo GetBaseMember (PropertyInfo memberInfo)
+    protected override PropertyInfo? GetBaseMember (PropertyInfo memberInfo)
     {
       var accessorMethod = memberInfo.GetGetMethod (true) ?? memberInfo.GetSetMethod (true);
       Assertion.DebugAssert (accessorMethod != null, "A property must have an accessor.");

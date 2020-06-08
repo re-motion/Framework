@@ -145,7 +145,7 @@ namespace Remotion.Collections
     /// <summary>
     /// Merges two collections. If a key occurs in both collections, the value of the second collection is taken.
     /// </summary>
-    public static NameObjectCollection Merge (NameObjectCollection first, NameObjectCollection second)
+    public static NameObjectCollection? Merge (NameObjectCollection first, NameObjectCollection second)
     {
       if (first == null && second == null)
         return null;

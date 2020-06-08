@@ -44,9 +44,9 @@ namespace Remotion.Configuration.ServiceLocation
     /// Sets the <see cref="Current"/> <see cref="IServiceLocationConfiguration"/> instance.
     /// </summary>
     /// <param name="configuration">The new configuration to set as the <see cref="Current"/> configuration.</param>
-    public static void SetCurrent (IServiceLocationConfiguration configuration)
+    public static void SetCurrent (IServiceLocationConfiguration? configuration)
     {
-      s_current.Value = configuration;
+      s_current.Value = configuration!;
     }
 
     private static ServiceLocationConfiguration GetServiceLocationConfiguration ()
@@ -84,7 +84,8 @@ namespace Remotion.Configuration.ServiceLocation
     /// <returns>An new <see cref="IServiceLocatorProvider"/> instance.</returns>
     public IServiceLocatorProvider CreateServiceLocatorProvider ()
     {
-      return ServiceLocatorProvider.CreateInstance();
+      // TODO RM-7432: CreateInstance should not be nullable
+      return ServiceLocatorProvider.CreateInstance()!;
     }
   }
 }

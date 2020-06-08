@@ -75,7 +75,7 @@ namespace Remotion.Utilities
     /// <param name="context"> An <see cref="ITypeDescriptorContext"/> that provides a format context. </param>
     /// <param name="sourceType"> The <see cref="Type"/> of the value to be converted into an <see cref="Enum"/> type. </param>
     /// <returns> <see langword="true"/> if the conversion is supported. </returns>
-    public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)
+    public override bool CanConvertFrom (ITypeDescriptorContext? context, Type sourceType)
     {
       ArgumentUtility.CheckNotNull ("sourceType", sourceType);
 
@@ -92,7 +92,7 @@ namespace Remotion.Utilities
     /// <param name="context"> An <see cref="ITypeDescriptorContext"/> that provides a format context. </param>
     /// <param name="destinationType"> The <see cref="Type"/> to convert an <see cref="Enum"/> value to. </param>
     /// <returns> <see langword="true"/> if the conversion is supported. </returns>
-    public override bool CanConvertTo (ITypeDescriptorContext context, Type destinationType)
+    public override bool CanConvertTo (ITypeDescriptorContext? context, Type destinationType)
     {
       ArgumentUtility.CheckNotNull ("destinationType", destinationType);
 
@@ -111,7 +111,7 @@ namespace Remotion.Utilities
     /// <param name="value"> The source value. </param>
     /// <returns> An <see cref="Enum"/> value.  </returns>
     /// <exception cref="NotSupportedException"> The conversion could not be performed. </exception>
-    public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object value)
+    public override object? ConvertFrom (ITypeDescriptorContext? context, CultureInfo? culture, object? value)
     {
       // ReSharper disable ConditionIsAlwaysTrueOrFalse
       if (_isNullable && (value == null || (value is string) && string.IsNullOrEmpty ((string) value)))
@@ -122,7 +122,7 @@ namespace Remotion.Utilities
         if (value != null && _underlyingType == value.GetType())
         {
           if (!EnumUtility.IsValidEnumValue(UnderlyingEnumType, value))
-            throw new ArgumentOutOfRangeException (string.Format ("The value {0} is not supported for enumeration '{1}'.", value, UnderlyingEnumType.FullName), (Exception) null);
+            throw new ArgumentOutOfRangeException (string.Format ("The value {0} is not supported for enumeration '{1}'.", value, UnderlyingEnumType.FullName), (Exception?) null);
 
           return Enum.ToObject (UnderlyingEnumType, value);
         }
@@ -139,7 +139,7 @@ namespace Remotion.Utilities
     /// <param name="destinationType"> The destination <see cref="Type"/>. Must not be <see langword="null"/>. </param>
     /// <returns> An <see cref="Object"/> that represents the converted value. </returns>
     /// <exception cref="NotSupportedException"> The conversion could not be performed. </exception>
-    public override object ConvertTo (ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+    public override object? ConvertTo (ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
     {
       ArgumentUtility.CheckNotNull ("destinationType", destinationType);
 

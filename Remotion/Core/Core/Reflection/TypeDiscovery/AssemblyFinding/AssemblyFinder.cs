@@ -106,8 +106,8 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
 
         // used to prevent analyzing an assembly twice 
         // and to prevent analysis of root-assemblies marked as do-not-follow references
-        var processedAssemblies = new ConcurrentDictionary<Assembly, object> (
-            rootAssemblies.Select (r=>r.Assembly).Distinct().Select (a => new KeyValuePair<Assembly, object> (a, null)));
+        var processedAssemblies = new ConcurrentDictionary<Assembly, object?> (
+            rootAssemblies.Select (r=>r.Assembly).Distinct().Select (a => new KeyValuePair<Assembly, object?> (a, null)));
 
         // used to avoid loading assemblies twice.
         var processedAssemblyNames = new HashSet<string> (processedAssemblies.Keys.Select (a => a.FullName));

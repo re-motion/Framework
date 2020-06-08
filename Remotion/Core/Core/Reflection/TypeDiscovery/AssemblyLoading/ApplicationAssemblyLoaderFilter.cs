@@ -52,9 +52,10 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
       return "^((" + string.Join (")|(", assemblyMatchStrings) + "))$";
     }
 
-    private List<string> _nonApplicationAssemblyNames;
+    //TODO RM-7434: Mark with MemberNotNull once supported by msbuild
+    private List<string> _nonApplicationAssemblyNames = default!;
 
-    private RegexAssemblyLoaderFilter _assemblyNameFilter;
+    private RegexAssemblyLoaderFilter? _assemblyNameFilter;
     private readonly object _assemblyNameFilterLock = new object();
 
     private ApplicationAssemblyLoaderFilter ()

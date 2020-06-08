@@ -47,7 +47,7 @@ namespace Remotion.Collections
     /// Compares the elements of the <see cref="ComponentwiseEqualsAndHashcodeWrapper{TElement}"/> for equality, if the passed <see cref="object"/> 
     /// is an <see cref="ComponentwiseEqualsAndHashcodeWrapper{TElement}"/> .
     /// </summary>
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
       if (ReferenceEquals (null, obj))
       {

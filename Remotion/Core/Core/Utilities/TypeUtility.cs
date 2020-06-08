@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.ComponentModel.Design;
+using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
 using Remotion.Reflection;
 
@@ -51,7 +52,8 @@ namespace Remotion.Utilities
     /// <returns> A standard type name as expected by <see cref="Type.GetType(string)"/>. </returns>
     [CanBeNull]
     [ContractAnnotation ("typeName:notnull => notnull;typeName:null => null")]
-    public static string ParseAbbreviatedTypeName ([CanBeNull]string typeName)
+    [return: NotNullIfNotNull ("typename")]
+    public static string? ParseAbbreviatedTypeName ([CanBeNull]string? typeName)
     {
       if (typeName == null)
         return null;
@@ -59,7 +61,7 @@ namespace Remotion.Utilities
       return s_fullTypeNames.GetOrAdd (typeName, s_parseAbbreviatedTypeNameWithoutCacheFunc);
     }
 
-    private static string ParseAbbreviatedTypeNameWithoutCache ([NotNull] string typeName)
+    private static string ParseAbbreviatedTypeNameWithoutCache ([JetBrains.Annotations.NotNull] string typeName)
     {
       // Optimization to prevent instantiating the AbbreviationParser unless necessary.
       if (!AbbreviationParser.IsAbbreviatedTypeName (typeName))
@@ -76,7 +78,7 @@ namespace Remotion.Utilities
     /// In the designer context, <see cref="IDesignerHost"/> is used for the lookup.
     /// </remarks>
     [CanBeNull]
-    public static Type GetType ([NotNull]string name)
+    public static Type? GetType ([JetBrains.Annotations.NotNull]string name)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("name", name);
 
@@ -99,7 +101,7 @@ namespace Remotion.Utilities
     /// </remarks>
     [CanBeNull]
     [ContractAnnotation ("throwOnError:true => notnull")]
-    public static Type GetType ([NotNull]string name, bool throwOnError)
+    public static Type? GetType ([JetBrains.Annotations.NotNull]string name, bool throwOnError)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("name", name);
 
@@ -109,8 +111,8 @@ namespace Remotion.Utilities
     /// <summary>
     /// Gets the type and assembly name without the version, culture, and public key token.
     /// </summary>
-    [NotNull]
-    public static string GetPartialAssemblyQualifiedName ([NotNull]Type type)
+    [JetBrains.Annotations.NotNull]
+    public static string GetPartialAssemblyQualifiedName ([JetBrains.Annotations.NotNull]Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
@@ -121,8 +123,8 @@ namespace Remotion.Utilities
     /// <summary>
     /// Gets the type name in abbreviated syntax (<see cref="ParseAbbreviatedTypeName"/>).
     /// </summary>
-    [NotNull]
-    public static string GetAbbreviatedTypeName ([NotNull]Type type, bool includeVersionAndCulture)
+    [JetBrains.Annotations.NotNull]
+    public static string GetAbbreviatedTypeName ([JetBrains.Annotations.NotNull]Type type, bool includeVersionAndCulture)
     {
       ArgumentUtility.CheckNotNull ("type", type);
       return s_abbreviationBuilder.BuildAbbreviatedTypeName (type, includeVersionAndCulture);

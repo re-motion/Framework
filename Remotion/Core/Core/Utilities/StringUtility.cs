@@ -18,12 +18,12 @@ using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
-using JetBrains.Annotations;
 
 namespace Remotion.Utilities
 {
@@ -50,7 +50,7 @@ namespace Remotion.Utilities
       public bool IsQuoted;
     }
 
-    private static readonly ConcurrentDictionary<Type, MethodInfo> s_parseMethods = new ConcurrentDictionary<Type, MethodInfo>();
+    private static readonly ConcurrentDictionary<Type, MethodInfo?> s_parseMethods = new ConcurrentDictionary<Type, MethodInfo?>();
 
 
     public static string GetFileNameTimestamp (DateTime dt)
@@ -217,8 +217,8 @@ namespace Remotion.Utilities
     /// Carriage-return is trimmed. Empty lines are returned as empty strings in the result
     /// </summary>
     /// <param name="value">The input string. Must not be <see langword="null" />.</param>
-    [NotNull]
-    public static IEnumerable<string> ParseNewLineSeparatedString ([NotNull] string value)
+    [JetBrains.Annotations.NotNull]
+    public static IEnumerable<string> ParseNewLineSeparatedString ([JetBrains.Annotations.NotNull] string value)
     {
       ArgumentUtility.CheckNotNull ("value", value);
 
@@ -243,26 +243,27 @@ namespace Remotion.Utilities
       return 0 == String.Compare (strA, strB, ignoreCase, CultureInfo.InvariantCulture);
     }
 
-    public static string NullToEmpty (string str)
+    public static string NullToEmpty (string? str)
     {
       if (str == null)
         return string.Empty;
       return str;
     }
 
-    public static string EmptyToNull (string str)
+    public static string? EmptyToNull (string str)
     {
       if (str != null && str.Length == 0)
         return null;
       return str;
     }
 
-    public static bool IsNullOrEmpty (string str)
+    public static bool IsNullOrEmpty (string? str)
     {
       return string.IsNullOrEmpty (str);
     }
 
-    public static string[] ListToStringArray (IList list)
+    [return: NotNullIfNotNull ("list")]
+    public static string[]? ListToStringArray (IList list)
     {
       if (list == null)
         return null;
@@ -281,7 +282,7 @@ namespace Remotion.Utilities
     }
 
     [Obsolete ("Use ConcatWithSeperator (IList, string) instead. Parameter 'format' is no longer used. (Version 1.21.8)")]
-    public static string ConcatWithSeparator (IList list, string separator, string format, IFormatProvider formatProvider)
+    public static string ConcatWithSeparator (IList list, string separator, string? format, IFormatProvider? formatProvider)
     {
       if (list == null)
         throw new ArgumentNullException ("list");
@@ -325,7 +326,7 @@ namespace Remotion.Utilities
     }
 
 
-    public static string Format (object value, IFormatProvider formatProvider)
+    public static string Format (object? value, IFormatProvider? formatProvider)
     {
       if (value == null)
         return string.Empty;
@@ -340,10 +341,10 @@ namespace Remotion.Utilities
       return Format (value, null);
     }
 
-    private static string FormatArrayValue (object value, IFormatProvider formatProvider)
+    private static string FormatArrayValue (object value, IFormatProvider? formatProvider)
     {
       Type elementType = value.GetType().GetElementType();
-      string format = null;
+      string? format = null;
       if (elementType == typeof (float) || elementType == typeof (double))
         format = "R";
 #pragma warning disable 618
@@ -351,14 +352,14 @@ namespace Remotion.Utilities
 #pragma warning restore 618
     }
 
-    private static string FormatScalarValue (object value, IFormatProvider formatProvider)
+    private static string FormatScalarValue (object value, IFormatProvider? formatProvider)
     {
       if (value is string)
         return (string) value;
-      IFormattable formattable = value as IFormattable;
+      IFormattable? formattable = value as IFormattable;
       if (formattable != null)
       {
-        string format = null;
+        string? format = null;
         if (value is float || value is double)
           format = "R";
         return formattable.ToString (format, formatProvider);
@@ -378,8 +379,9 @@ namespace Remotion.Utilities
     /// <param name="formatProvider"> The format provider to be passed to the type's <b>Parse</b> method (if present). </param>
     /// <returns> An instance of the specified type. </returns>
     /// <exception cref="ParseException"> The <b>Parse</b> method was not found, or failed. </exception>
-    public static object Parse (Type type, string value, IFormatProvider formatProvider)
+    public static object? Parse (Type type, string? value, IFormatProvider? formatProvider)
     {
+      //TODO RM-7432: ParseArrayValue will throw NPE if type is an arrayType and value is null
       ArgumentUtility.CheckNotNull ("type", type);
 
       Type underlyingType = Nullable.GetUnderlyingType (type) ?? type;
@@ -388,7 +390,7 @@ namespace Remotion.Utilities
       if (underlyingType == typeof (string))
         return value;
       if (underlyingType.IsArray)
-        return ParseArrayValue (type, value, formatProvider);
+        return ParseArrayValue (type, value!, formatProvider);
       if (underlyingType == typeof (DBNull))
         return DBNull.Value;
       if (isNullableType && string.IsNullOrEmpty (value))
@@ -401,7 +403,7 @@ namespace Remotion.Utilities
         return ParseScalarValue (underlyingType, value, formatProvider);
     }
 
-    private static object ParseArrayValue (Type type, string value, IFormatProvider formatProvider)
+    private static object ParseArrayValue (Type type, string value, IFormatProvider? formatProvider)
     {
       Type elementType = type.GetElementType();
       if (elementType.IsArray)
@@ -422,15 +424,15 @@ namespace Remotion.Utilities
       return results;
     }
 
-    private static object ParseScalarValue (Type type, string value, IFormatProvider formatProvider)
+    private static object ParseScalarValue (Type type, string? value, IFormatProvider? formatProvider)
     {
-      MethodInfo parseMethod = GetParseMethod (type, true);
+      MethodInfo parseMethod = GetParseMethod (type, throwIfNotFound: true)!;
 
-      object[] args;
+      object?[] args;
       if (parseMethod.GetParameters().Length == 2)
-        args = new object[] { value, formatProvider };
+        args = new object?[] { value, formatProvider };
       else
-        args = new object[] { value };
+        args = new object?[] { value };
 
       try
       {
@@ -442,7 +444,7 @@ namespace Remotion.Utilities
       }
     }
 
-    private static object ParseEnumValue (Type underlyingType, string value)
+    private static object ParseEnumValue (Type underlyingType, string? value)
     {
       try
       {
@@ -475,11 +477,11 @@ namespace Remotion.Utilities
           return false;
         return CanParse (elementType);
       }
-      MethodInfo parseMethod = GetParseMethod (type, false);
+      MethodInfo? parseMethod = GetParseMethod (type, throwIfNotFound: false);
       return parseMethod != null;
     }
 
-    private static MethodInfo GetParseMethod (Type type, bool throwIfNotFound)
+    private static MethodInfo? GetParseMethod (Type type, bool throwIfNotFound)
     {
       // C# compiler 7.2 already provides caching for anonymous method.
       var parseMethod = s_parseMethods.GetOrAdd (type, key => GetParseMethodWithFormatProviderFromType (key) ?? GetParseMethodFromType (key));
@@ -489,7 +491,7 @@ namespace Remotion.Utilities
       return parseMethod;
     }
 
-    private static MethodInfo GetParseMethodWithFormatProviderFromType (Type type)
+    private static MethodInfo? GetParseMethodWithFormatProviderFromType (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
       MethodInfo parseMethod = type.GetMethod (
@@ -505,7 +507,7 @@ namespace Remotion.Utilities
         return null;
     }
 
-    private static MethodInfo GetParseMethodFromType (Type type)
+    private static MethodInfo? GetParseMethodFromType (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
       MethodInfo parseMethod = type.GetMethod (

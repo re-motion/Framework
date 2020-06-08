@@ -55,7 +55,7 @@ public class BidirectionalStringConverter: TypeConverter
   /// <see cref="BidirectionalStringConverter"/>, however, only supports objects for which round-tripping is supported. This method therefore only
   /// returns <see langword="true"/> for types whose values can be converted both into and back from a string.
   /// </remarks>
-  public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)
+  public override bool CanConvertFrom (ITypeDescriptorContext? context, Type sourceType)
   {
     if (sourceType == null)
       return false;
@@ -67,7 +67,7 @@ public class BidirectionalStringConverter: TypeConverter
   /// <param name="context"> An <see cref="ITypeDescriptorContext"/> that provides a format context. </param>
   /// <param name="destinationType"> The <see cref="Type"/>  to convert a <see cref="String"/> value to. </param>
   /// <returns> <see langword="true"/> if the conversion is supported. </returns>
-  public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+  public override bool CanConvertTo(ITypeDescriptorContext? context, Type destinationType)
   {
     if (destinationType == null)
       return false;
@@ -83,7 +83,7 @@ public class BidirectionalStringConverter: TypeConverter
   /// <remarks>
   ///   Conversions from <see cref="Single"/> and <see cref="Double"/> are done using "R" as format string. 
   /// </remarks>
-  public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object value)
+  public override object ConvertFrom (ITypeDescriptorContext? context, CultureInfo? culture, object? value)
   {
     if (value == null)
       return string.Empty;
@@ -99,7 +99,7 @@ public class BidirectionalStringConverter: TypeConverter
   /// <param name="destinationType"> The destination <see cref="Type"/>. Must not be <see langword="null"/>. </param>
   /// <returns> An <see cref="Object"/> that represents the converted value. </returns>
   /// <exception cref="NotSupportedException"> The conversion could not be performed. </exception>
-  public override object ConvertTo (ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+  public override object? ConvertTo (ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
   {
     ArgumentUtility.CheckNotNull ("destinationType", destinationType);
 
@@ -117,7 +117,7 @@ public class BidirectionalStringConverter: TypeConverter
   /// </summary>
   /// <param name="context"> An <see cref="ITypeDescriptorContext"/> that provides a format context. </param>
   /// <returns> <see langword="false"/>. </returns>
-  public override bool GetStandardValuesExclusive (ITypeDescriptorContext context)
+  public override bool GetStandardValuesExclusive (ITypeDescriptorContext? context)
   {
     return false;
   }
@@ -125,7 +125,7 @@ public class BidirectionalStringConverter: TypeConverter
   /// <summary> Returns whether this object supports a standard set of values that can be picked from a list. </summary>
   /// <param name="context"> An ITypeDescriptorContext that provides a format context. </param>
   /// <returns> <see langword="false"/>. </returns>
-  public override bool GetStandardValuesSupported (ITypeDescriptorContext context)
+  public override bool GetStandardValuesSupported (ITypeDescriptorContext? context)
   {
     return false;
   }

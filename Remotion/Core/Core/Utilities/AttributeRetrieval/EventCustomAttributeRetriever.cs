@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -26,7 +26,7 @@ namespace Remotion.Utilities.AttributeRetrieval
   /// </summary>
   public sealed class EventCustomAttributeRetriever : InheritanceAwareCustomAttributeRetriever<EventInfo>
   {
-    protected override EventInfo GetBaseMember (EventInfo memberInfo)
+    protected override EventInfo? GetBaseMember (EventInfo memberInfo)
     {
       var accessorMethod = memberInfo.GetAddMethod (true);
       Assertion.DebugAssert (accessorMethod != null, "A Event must have an add accessor.");

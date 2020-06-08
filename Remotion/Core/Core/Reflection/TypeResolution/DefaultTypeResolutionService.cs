@@ -32,14 +32,14 @@ namespace Remotion.Reflection.TypeResolution
     {
     }
 
-    public Assembly GetAssembly (AssemblyName name)
+    public Assembly? GetAssembly (AssemblyName name)
     {
       ArgumentUtility.CheckNotNull ("name", name);
 
       return GetAssembly (name, false);
     }
 
-    public Assembly GetAssembly (AssemblyName name, bool throwOnError)
+    public Assembly? GetAssembly (AssemblyName name, bool throwOnError)
     {
       ArgumentUtility.CheckNotNull ("name", name);
 
@@ -82,7 +82,7 @@ namespace Remotion.Reflection.TypeResolution
       throw new NotSupportedException("The ReferenceAssembly method is not supported. See https://www.re-motion.org/jira/browse/RM-6412");
     }
 
-    public string GetPathOfAssembly (AssemblyName name)
+    public string? GetPathOfAssembly (AssemblyName name)
     {
       ArgumentUtility.CheckNotNull ("name", name);
 
