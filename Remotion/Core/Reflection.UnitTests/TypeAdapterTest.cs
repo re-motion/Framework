@@ -689,7 +689,7 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void IsSubclassOf_Null ()
     {
-      Assert.That (() => TypeAdapter.Create (typeof (object)).IsSubclassOf (null), Throws.TypeOf<ArgumentNullException>());
+      Assert.That (() => TypeAdapter.Create (typeof (object)).IsSubclassOf (null!), Throws.TypeOf<ArgumentNullException>());
     }
 
     [Test]
@@ -808,7 +808,7 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void CanAscribeTo_Null ()
     {
-      Assert.That (() => TypeAdapter.Create (typeof (object)).CanAscribeTo (null), Throws.TypeOf<ArgumentNullException> ());
+      Assert.That (() => TypeAdapter.Create (typeof (object)).CanAscribeTo (null!), Throws.TypeOf<ArgumentNullException> ());
     }
 
     [Test]
@@ -873,7 +873,7 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void GetAscribedGenericArgumentsFor_Null ()
     {
-      Assert.That (() => TypeAdapter.Create (typeof (object)).GetAscribedGenericArgumentsFor (null), Throws.TypeOf<ArgumentNullException> ());
+      Assert.That (() => TypeAdapter.Create (typeof (object)).GetAscribedGenericArgumentsFor (null!), Throws.TypeOf<ArgumentNullException> ());
     }
 
     [Test]
@@ -881,7 +881,7 @@ namespace Remotion.Reflection.UnitTests
     {
       var adapter = TypeAdapter.Create (typeof (ArrayList));
       Assert.That (adapter.Equals (null), Is.False);
-      Assert.That (adapter.Equals ("test"), Is.False);
+      Assert.That (adapter!.Equals ("test"), Is.False);
       Assert.That (TypeAdapter.Create (typeof (List<int>)).Equals (TypeAdapter.Create (typeof (List<string>))), Is.False);
       Assert.That (TypeAdapter.Create (typeof (List<>)).Equals (TypeAdapter.Create (typeof (List<int>))), Is.False);
 

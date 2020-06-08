@@ -171,7 +171,7 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
 
       ClassWithMethods.StaticReferenceTypeValue = new SimpleReferenceType();
 
-      Assert.That (BuildTypeAndInvokeMethod (method, new object[] { null }), Is.SameAs (ClassWithMethods.StaticReferenceTypeValue));
+      Assert.That (BuildTypeAndInvokeMethod (method, new object?[] { null }), Is.SameAs (ClassWithMethods.StaticReferenceTypeValue));
     }
   }
 }

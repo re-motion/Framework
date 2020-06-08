@@ -27,7 +27,7 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
     private static int s_counter;
 
     private bool _hasBeenBuilt;
-    private TypeBuilder _typeBuilder;
+    private TypeBuilder _typeBuilder = default!;
 
     [SetUp]
     public virtual void SetUp ()
@@ -60,7 +60,7 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
       return methodBuilder;
     }
 
-    protected object BuildTypeAndInvokeMethod (MethodBuilder methodBuilder, params object[] arguments)
+    protected object BuildTypeAndInvokeMethod (MethodBuilder methodBuilder, params object?[] arguments)
     {
       _hasBeenBuilt = true;
       Type builtType = _typeBuilder.CreateType();

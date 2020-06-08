@@ -25,7 +25,7 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
   {
     private readonly FieldInfo _field;
 
-    public FieldInfoReference (Reference owner, FieldInfo field)
+    public FieldInfoReference (Reference? owner, FieldInfo field)
         : base (owner, field.FieldType)
     {
       _field = field;

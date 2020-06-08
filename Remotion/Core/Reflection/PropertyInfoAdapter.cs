@@ -18,6 +18,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -46,7 +47,8 @@ namespace Remotion.Reflection
     }
 
     [ContractAnnotation ("null => null; notnull => notnull")]
-    public static PropertyInfoAdapter CreateOrNull (PropertyInfo propertyInfo)
+    [return: NotNullIfNotNull ("propertyInfo")]
+    public static PropertyInfoAdapter? CreateOrNull (PropertyInfo? propertyInfo)
     {
       if (propertyInfo == null)
         return null;
@@ -148,7 +150,7 @@ namespace Remotion.Reflection
       get { return _publicSetMethod.Value != null; }
     }
 
-    public T GetCustomAttribute<T> (bool inherited) where T: class
+    public T? GetCustomAttribute<T> (bool inherited) where T: class
     {
       return AttributeUtility.GetCustomAttribute<T> (_propertyInfo, inherited);
     }
@@ -163,16 +165,18 @@ namespace Remotion.Reflection
       return AttributeUtility.IsDefined<T> (_propertyInfo, inherited);
     }
 
-    public object GetValue (object instance, object[] indexParameters)
+    public object GetValue (object? instance, object[]? indexParameters)
     {
-      ArgumentUtility.CheckNotNull ("instance", instance);
+      //TODO RM-7432: Remove null check, parameter should be nullable
+      ArgumentUtility.CheckNotNull ("instance", instance!);
 
       return _propertyInfo.GetValue (instance, indexParameters);
     }
 
-    public void SetValue (object instance, object value, object[] indexParameters)
+    public void SetValue (object? instance, object? value, object[]? indexParameters)
     {
-      ArgumentUtility.CheckNotNull ("instance", instance);
+      //TODO RM-7432: Remove null check, parameter should be nullable
+      ArgumentUtility.CheckNotNull ("instance", instance!);
 
       _propertyInfo.SetValue (instance, value, indexParameters);
     }
@@ -206,7 +210,7 @@ namespace Remotion.Reflection
         return _publicAccessors.Value.ToArray();
     }
 
-    public IPropertyInformation FindInterfaceImplementation (Type implementationType)
+    public IPropertyInformation? FindInterfaceImplementation (Type implementationType)
     {
       ArgumentUtility.CheckNotNull ("implementationType", implementationType);
 
@@ -239,10 +243,11 @@ namespace Remotion.Reflection
 
       var accessorMethod = _publicOrNonPublicAccessors.Value.First();
       var interfaceAccessorMethods = accessorMethod.FindInterfaceDeclarations();
-      return interfaceAccessorMethods.Select (m => m.FindDeclaringProperty()).ToArray();
+      //TODO RM-7432: Implementation does not match nullability of interface
+      return interfaceAccessorMethods.Select (m => m.FindDeclaringProperty()!).ToArray();
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
       return ReferenceEquals (this, obj);
     }

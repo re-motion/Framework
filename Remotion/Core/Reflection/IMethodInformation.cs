@@ -38,7 +38,7 @@ namespace Remotion.Reflection
     /// <param name="instance">The instance on which to invoke the method. If the method is static this argument is ignored.</param>
     /// <param name="parameters">An argument list for the invoked method. If there are no parameters, this should be <see langword="null" />.</param>
     /// <returns>An object containing the return value of the invoked method.</returns>
-    [CanBeNull]object Invoke ([CanBeNull]object instance, [CanBeNull]object[] parameters);
+    [CanBeNull]object? Invoke ([CanBeNull]object? instance, [CanBeNull]object?[]? parameters);
 
     /// <summary>
     /// Finds the implementation <see cref="IMethodInformation"/> corresponding to this <see cref="IMethodInformation"/> on the given 
@@ -50,14 +50,14 @@ namespace Remotion.Reflection
     /// <paramref name="implementationType"/> does not implement the interface.</returns>
     /// <exception cref="ArgumentException">The <paramref name="implementationType"/> is itself an interface.</exception>
     /// <exception cref="InvalidOperationException">This <see cref="IMethodInformation"/> does not describe an interface method.</exception>
-    [CanBeNull]IMethodInformation FindInterfaceImplementation (Type implementationType);
+    [CanBeNull]IMethodInformation? FindInterfaceImplementation (Type implementationType);
 
     /// <summary>
     /// Finds the property declaration corresponding to this <see cref="IMethodInformation"/> on the given <see cref="Type"/> and it's base types.
     /// </summary>
     /// <returns>Returns the <see cref="IPropertyInformation"/> of the declared property, or <see langword="null" /> if no corresponding property was 
     /// found.</returns>
-    [CanBeNull]IPropertyInformation FindDeclaringProperty ();
+    [CanBeNull]IPropertyInformation? FindDeclaringProperty ();
 
     /// <summary>
     /// Finds the interface declaration for this <see cref="IMethodInformation"/>, returning <see langword="null" /> if this 

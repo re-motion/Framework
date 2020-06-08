@@ -333,13 +333,13 @@ namespace Remotion.Reflection.CodeGeneration
     }
 
     /// <inheritdoc />
-    public IClassEmitter CreateNestedClass (string typeName, Type baseType, Type[] interfaces)
+    public IClassEmitter CreateNestedClass (string typeName, Type? baseType, Type[] interfaces)
     {
       return new CustomClassEmitter (new NestedClassEmitter (InnerEmitter, typeName, baseType, interfaces));
     }
 
     /// <inheritdoc />
-    public IClassEmitter CreateNestedClass (string typeName, Type baseType, Type[] interfaces, TypeAttributes flags)
+    public IClassEmitter CreateNestedClass (string typeName, Type? baseType, Type[] interfaces, TypeAttributes flags)
     {
       return new CustomClassEmitter (new NestedClassEmitter (InnerEmitter, typeName, flags, baseType, interfaces));
     }

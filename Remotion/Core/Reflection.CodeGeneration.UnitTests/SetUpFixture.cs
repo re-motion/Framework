@@ -27,8 +27,8 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
   [SetUpFixture]
   public class SetUpFixture
   {
-    private static ModuleScope s_scope;
-    private static ModuleScope s_unsavedScope;
+    private static ModuleScope s_scope = default!;
+    private static ModuleScope s_unsavedScope = default!;
 
     public static ModuleScope Scope
     {
@@ -72,8 +72,8 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
       Console.WriteLine ("Tearing down code generation tests");
 #if !NO_PEVERIFY
       string[] paths = AssemblySaver.SaveAssemblies (s_scope);
-      s_scope = null;
-      s_unsavedScope = null;
+      s_scope = null!;
+      s_unsavedScope = null!;
 
       foreach (string path in paths)
       {

@@ -90,7 +90,7 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
       builder.SetGenericParameterAttributes (sourceParameter.GenericParameterAttributes);
 
       Type[] sourceConstraints = sourceParameter.GetGenericParameterConstraints();
-      Type baseConstraint = null;
+      Type? baseConstraint = null;
       List<Type> interfaceConstraints = new List<Type>();
 
       for (int i = 0; i < sourceConstraints.Length; ++i)

@@ -30,13 +30,13 @@ namespace Remotion.Reflection.UnitTests
   [TestFixture]
   public class MethodInfoAdapterTest
   {
-    private MethodInfo _method;
-    private MethodInfo _explicitInterfaceImplementationMethod;
-    private MethodInfo _implicitInterfaceImplementationMethod;
+    private MethodInfo _method = default!;
+    private MethodInfo _explicitInterfaceImplementationMethod = default!;
+    private MethodInfo _implicitInterfaceImplementationMethod = default!;
 
-    private MethodInfoAdapter _adapter;
-    private MethodInfoAdapter _explicitInterfaceAdapter;
-    private MethodInfoAdapter _implicitInterfaceAdapter;
+    private MethodInfoAdapter _adapter = default!;
+    private MethodInfoAdapter _explicitInterfaceAdapter = default!;
+    private MethodInfoAdapter _implicitInterfaceAdapter = default!;
     
     [SetUp]
     public void SetUp ()
@@ -171,7 +171,7 @@ namespace Remotion.Reflection.UnitTests
       var methodInfo = typeof (string).GetMethod ("Insert", new[] { typeof (int), typeof (string) });
       var adapter = MethodInfoAdapter.Create(methodInfo);
       Assert.That (
-          () => adapter.Invoke ("Test", new object[] { 5, null }),
+          () => adapter.Invoke ("Test", new object?[] { 5, null }),
           Throws.TargetInvocationException);
     }
 
@@ -196,7 +196,7 @@ namespace Remotion.Reflection.UnitTests
       var implementation = adapter.FindInterfaceImplementation (typeof (ClassWithReferenceType<object>));
 
       var expectedPropertyGetter = typeof (ClassWithReferenceType<object>).GetMethod ("get_ImplicitInterfaceScalar");
-      CheckMethodInfo(expectedPropertyGetter, (MethodInfoAdapter) implementation);
+      CheckMethodInfo(expectedPropertyGetter, (MethodInfoAdapter) implementation!);
     }
 
     [Test]
@@ -210,7 +210,7 @@ namespace Remotion.Reflection.UnitTests
       var expectedPropertyGetter = typeof (ClassWithReferenceType<object>).GetMethod (
           "Remotion.Reflection.UnitTests.TestDomain.MemberInfoAdapter.IInterfaceWithReferenceType<T>.get_ExplicitInterfaceScalar",
           BindingFlags.Instance | BindingFlags.NonPublic);
-      CheckMethodInfo(expectedPropertyGetter, (MethodInfoAdapter) implementation);
+      CheckMethodInfo(expectedPropertyGetter, (MethodInfoAdapter) implementation!);
     }
 
     [Test]
@@ -460,7 +460,7 @@ namespace Remotion.Reflection.UnitTests
     public void Equals ()
     {
       Assert.That (_adapter.Equals (null), Is.False);
-      Assert.That (_adapter.Equals ("test"), Is.False);
+      Assert.That (_adapter!.Equals ("test"), Is.False);
       Assert.That (_adapter.Equals (MethodInfoAdapter.Create(typeof (ClassWithOverridingMember).GetMethod ("BaseMethod"))), Is.False);
 
       Assert.That (_adapter.Equals (MethodInfoAdapter.Create(_method)), Is.True);

@@ -24,14 +24,14 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests.TestDomain
     {
       if (Event != null)
         Event ();
-      return t.ToString ();
+      return t!.ToString ();
     }
 
     public virtual T Property
     {
-      get { return default (T); }
+      get { return default (T)!; }
     }
 
-    public virtual event Func<T> Event;
+    public virtual event Func<T>? Event;
   }
 }

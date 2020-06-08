@@ -30,20 +30,27 @@ namespace Remotion.Reflection
   {
     public string Name
     {
-      get { return null; }
+      get 
+      {
+        //TODO RM-7432: Implementation does not match nullability of IMethodInformation
+        return null!;
+      }
     }
 
-    public ITypeInformation DeclaringType
+    public ITypeInformation? DeclaringType
     {
-      get { return null; }
+      get 
+      {
+        return null;
+      }
     }
 
-    public ITypeInformation GetOriginalDeclaringType ()
+    public ITypeInformation? GetOriginalDeclaringType ()
     {
       return null;
     }
 
-    public T GetCustomAttribute<T> (bool inherited) where T: class
+    public T? GetCustomAttribute<T> (bool inherited) where T: class
     {
       return null;
     }
@@ -60,10 +67,13 @@ namespace Remotion.Reflection
 
     public Type ReturnType
     {
-      get { return null; }
+      get { 
+        //TODO RM-7432: Implementation does not match nullability of IMethodInformation
+        return null!;
+      }
     }
 
-    public object Invoke (object instance, object[] parameters)
+    public object? Invoke (object? instance, object?[]? parameters)
     {
       return null;
     }
@@ -73,14 +83,15 @@ namespace Remotion.Reflection
       throw new InvalidOperationException();
     }
 
-    public IPropertyInformation FindDeclaringProperty ()
+    public IPropertyInformation? FindDeclaringProperty ()
     {
       return null;
     }
 
     public IEnumerable<IMethodInformation> FindInterfaceDeclarations ()
     {
-      return null;
+      //TODO RM-7432: Implementation does not match nullability of IMethodInformation
+      return null!;
     }
 
     public T GetFastInvoker<T> () where T: class
@@ -113,7 +124,7 @@ namespace Remotion.Reflection
       return this;
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
       if (obj == null)
         return false;
@@ -125,7 +136,7 @@ namespace Remotion.Reflection
       return 0;
     }
 
-    private static object GetNull ()
+    private static object? GetNull ()
     {
       return null;
     }

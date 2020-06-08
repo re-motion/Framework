@@ -26,7 +26,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
   [TestFixture]
   public class TypeReferenceWrapperTest
   {
-    private MockRepository _mockRepository;
+    private MockRepository _mockRepository = default!;
 
     [SetUp]
     public void SetUp ()

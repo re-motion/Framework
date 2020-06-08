@@ -27,7 +27,7 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
   [TestFixture]
   public class ArgumentChecks_MethodWrapperEmitterTest : MethodWrapperEmitterTestBase
   {
-    private ILGenerator _fakeILGenerator;
+    private ILGenerator _fakeILGenerator = default!;
 
     public override void SetUp ()
     {

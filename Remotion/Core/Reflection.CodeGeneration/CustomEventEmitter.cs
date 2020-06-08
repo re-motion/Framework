@@ -36,8 +36,8 @@ namespace Remotion.Reflection.CodeGeneration
     private readonly EventKind _eventKind;
     private readonly Type _eventType;
 
-    private IMethodEmitter _addMethod;
-    private IMethodEmitter _removeMethod;
+    private IMethodEmitter? _addMethod;
+    private IMethodEmitter? _removeMethod;
 
     public CustomEventEmitter (CustomClassEmitter declaringType, string name, EventKind eventKind, Type eventType, EventAttributes attributes)
     {
@@ -60,7 +60,7 @@ namespace Remotion.Reflection.CodeGeneration
         if (_addMethod == null)
           CreateAddMethod ();
 
-        return _addMethod;
+        return _addMethod!;
       }
       set
       {
@@ -82,7 +82,7 @@ namespace Remotion.Reflection.CodeGeneration
         if (_removeMethod == null)
           CreateRemoveMethod ();
 
-        return _removeMethod;
+        return _removeMethod!;
       }
       set
       {
@@ -124,6 +124,7 @@ namespace Remotion.Reflection.CodeGeneration
 
     private void CreateAddMethod ()
     {
+      //TODO RM-7434: MemberNotNull AddMethod
       Assertion.IsNull (_addMethod);
 
       MethodAttributes flags = MethodAttributes.Public | MethodAttributes.SpecialName;
@@ -135,6 +136,7 @@ namespace Remotion.Reflection.CodeGeneration
 
     private void CreateRemoveMethod ()
     {
+      //TODO RM-7434: MemberNotNull RemoveMethod
       Assertion.IsNull (_removeMethod);
 
       MethodAttributes flags = MethodAttributes.Public | MethodAttributes.SpecialName;
@@ -151,6 +153,7 @@ namespace Remotion.Reflection.CodeGeneration
 
     internal void EnsureValid ()
     {
+      //TODO RM-7434: MemberNotNull RemoveMethod AddMethod
       IMethodEmitter addMethod = AddMethod; // cause generation of default method if none has been assigned
       Assertion.IsNotNull (addMethod);
 

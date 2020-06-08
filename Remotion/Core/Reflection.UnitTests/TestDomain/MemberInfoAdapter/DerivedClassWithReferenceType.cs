@@ -21,7 +21,7 @@ namespace Remotion.Reflection.UnitTests.TestDomain.MemberInfoAdapter
   public class DerivedClassWithReferenceType<T> : ClassWithReferenceType<T>
       where T: class
   {
-    public override T ImplicitInterfaceScalar
+    public override T? ImplicitInterfaceScalar
     {
       get
       {

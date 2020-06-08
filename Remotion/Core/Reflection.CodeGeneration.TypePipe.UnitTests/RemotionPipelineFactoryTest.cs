@@ -24,7 +24,7 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.UnitTests
   [TestFixture]
   public class RemotionPipelineFactoryTest
   {
-    private RemotionPipelineFactory _factory;
+    private RemotionPipelineFactory _factory = default!;
 
     [SetUp]
     public void SetUp ()

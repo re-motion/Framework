@@ -76,7 +76,7 @@ namespace Remotion.Reflection.TypeDiscovery
     /// <returns>
     /// A collection of types that match the criteria specified by baseType and excludeGlobalTypes.
     /// </returns>
-    public ICollection GetTypes (Type baseType, bool excludeGlobalTypes)
+    public ICollection GetTypes (Type? baseType, bool excludeGlobalTypes)
     {
       var nonNullBaseType = baseType ?? typeof (object);
 

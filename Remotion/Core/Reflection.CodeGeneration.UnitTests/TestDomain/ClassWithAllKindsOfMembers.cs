@@ -45,6 +45,6 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests.TestDomain
       set { Dev.Null = value; }
     }
 
-    public virtual event EventHandler Event;
+    public virtual event EventHandler? Event;
   }
 }

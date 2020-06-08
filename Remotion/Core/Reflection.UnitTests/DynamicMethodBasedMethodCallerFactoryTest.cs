@@ -51,7 +51,7 @@ namespace Remotion.Reflection.UnitTests
 
     private class ClassWithMethods : IPublicInterfaceWithMethods, IPrivateInterfaceWithMethods, IProtectedInterfaceWithMethods, IInternalInterfaceWithMethods
     {
-      public static string StaticValue { get; set; }
+      public static string? StaticValue { get; set; }
 
       public static string PublicStaticMethod (string value)
       {
@@ -65,7 +65,7 @@ namespace Remotion.Reflection.UnitTests
         return value;
       }
 
-      public string InstanceValue { get; set; }
+      public string? InstanceValue { get; set; }
 
       public string PublicInstanceMethod (string value)
       {
@@ -227,7 +227,7 @@ namespace Remotion.Reflection.UnitTests
       Type declaringType = typeof (ClassWithMethods);
       var methodInfo = declaringType.GetMethod ("PublicStaticMethod", BindingFlags.Public | BindingFlags.Static);
 
-      var @delegate = (Func<ClassWithMethods, string, string>) DynamicMethodBasedMethodCallerFactory.CreateMethodCallerDelegate (
+      var @delegate = (Func<ClassWithMethods?, string, string>) DynamicMethodBasedMethodCallerFactory.CreateMethodCallerDelegate (
           methodInfo, typeof (Func<ClassWithMethods, string, string>));
 
       Assert.That (@delegate (null, "TheValue"), Is.EqualTo ("TheValue"));
@@ -240,7 +240,7 @@ namespace Remotion.Reflection.UnitTests
       Type declaringType = typeof (ClassWithMethods);
       var methodInfo = declaringType.GetMethod ("NonPublicStaticMethod", BindingFlags.NonPublic | BindingFlags.Static);
 
-      var @delegate = (Func<ClassWithMethods, string, string>) DynamicMethodBasedMethodCallerFactory.CreateMethodCallerDelegate (
+      var @delegate = (Func<ClassWithMethods?, string, string>) DynamicMethodBasedMethodCallerFactory.CreateMethodCallerDelegate (
           methodInfo, typeof (Func<ClassWithMethods, string, string>));
 
       Assert.That (@delegate (null, "TheValue"), Is.EqualTo ("TheValue"));

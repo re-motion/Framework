@@ -20,9 +20,9 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
 {
   public class DerivedClassWithMethods : ClassWithMethods
   {
-    public SimpleReferenceType DerivedInstanceReferenceTypeValue { get; set; }
+    public SimpleReferenceType? DerivedInstanceReferenceTypeValue { get; set; }
 
-    public override SimpleReferenceType InstanceMethodWithReferenceTypeReturnValue ()
+    public override SimpleReferenceType? InstanceMethodWithReferenceTypeReturnValue ()
     {
       return DerivedInstanceReferenceTypeValue;
     }

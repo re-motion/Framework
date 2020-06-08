@@ -27,8 +27,8 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
   [SetUpFixture]
   public class SetUpFixture
   {
-    private static ModuleBuilder s_moduleBuilder;
-    private static AssemblyBuilder s_assemblyBuilder;
+    private static ModuleBuilder s_moduleBuilder = default!;
+    private static AssemblyBuilder s_assemblyBuilder = default!;
 
     public static ModuleBuilder ModuleBuilder
     {
@@ -66,8 +66,8 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
       s_assemblyBuilder.Save (s_moduleBuilder.ScopeName);
       var path = s_moduleBuilder.FullyQualifiedName;
       
-      s_assemblyBuilder = null;
-      s_moduleBuilder = null;
+      s_assemblyBuilder = null!;
+      s_moduleBuilder = null!;
 
       PEVerifier.CreateDefault().VerifyPEFile (path);
       FileUtility.DeleteAndWaitForCompletion (path);

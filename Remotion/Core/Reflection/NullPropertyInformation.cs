@@ -27,20 +27,24 @@ namespace Remotion.Reflection
   {
     public string Name
     {
-      get { return null; }
+      get 
+      {
+        //TODO RM-7432: Implementation doesn’t match nullability of IMethodInformation
+        return null!;
+      }
     }
 
-    public ITypeInformation DeclaringType
+    public ITypeInformation? DeclaringType
     {
       get { return null; }
     }
 
-    public ITypeInformation GetOriginalDeclaringType ()
+    public ITypeInformation? GetOriginalDeclaringType ()
     {
       return null;
     }
 
-    public T GetCustomAttribute<T> (bool inherited) where T: class
+    public T? GetCustomAttribute<T> (bool inherited) where T: class
     {
       return null;
     }
@@ -65,12 +69,12 @@ namespace Remotion.Reflection
       get { return false; }
     }
 
-    public object GetValue (object instance, object[] indexParameters)
+    public object? GetValue (object? instance, object[]? indexParameters)
     {
       return null;
     }
 
-    public void SetValue (object instance, object value, object[] indexParameters)
+    public void SetValue (object? instance, object? value, object[]? indexParameters)
     {
     }
 
@@ -91,7 +95,8 @@ namespace Remotion.Reflection
 
     public IEnumerable<IPropertyInformation> FindInterfaceDeclarations ()
     {
-      return null;
+     //TODO RM-7432: Implementation doesn’t match nullability of IMethodInformation
+      return null!;
     }
 
     public ParameterInfo[] GetIndexParameters ()
@@ -109,7 +114,7 @@ namespace Remotion.Reflection
       return this;
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
       if (obj == null)
         return false;

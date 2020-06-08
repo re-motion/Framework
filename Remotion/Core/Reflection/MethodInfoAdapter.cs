@@ -18,6 +18,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -46,7 +47,8 @@ namespace Remotion.Reflection
     }
 
     [ContractAnnotation ("null => null; notnull => notnull")]
-    public static MethodInfoAdapter CreateOrNull (MethodInfo methodInfo)
+    [return: NotNullIfNotNull ("methodInfo")]
+    public static MethodInfoAdapter? CreateOrNull (MethodInfo? methodInfo)
     {
       if (methodInfo == null)
         return null;
@@ -107,7 +109,7 @@ namespace Remotion.Reflection
       return _cachedOriginalDeclaringType.Value;
     }
 
-    public T GetCustomAttribute<T> (bool inherited) where T: class
+    public T? GetCustomAttribute<T> (bool inherited) where T: class
     {
       return AttributeUtility.GetCustomAttribute<T> (_methodInfo, inherited);
     }
@@ -117,14 +119,15 @@ namespace Remotion.Reflection
       return AttributeUtility.GetCustomAttributes<T> (_methodInfo, inherited);
     }
 
-    public object Invoke (object instance, object[] parameters)
+    public object Invoke (object? instance, object?[]? parameters)
     {
-      ArgumentUtility.CheckNotNull ("instance", instance);
+      //TODO RM-7432: Remove null check, parameter should be nullable
+      ArgumentUtility.CheckNotNull ("instance", instance!);
 
       return _methodInfo.Invoke (instance, parameters);
     }
 
-    public IMethodInformation FindInterfaceImplementation (Type implementationType)
+    public IMethodInformation? FindInterfaceImplementation (Type implementationType)
     {
       ArgumentUtility.CheckNotNull ("implementationType", implementationType);
 
@@ -194,7 +197,7 @@ namespace Remotion.Reflection
       return AttributeUtility.IsDefined<T> (_methodInfo, inherited);
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
       return ReferenceEquals (this, obj);
     }

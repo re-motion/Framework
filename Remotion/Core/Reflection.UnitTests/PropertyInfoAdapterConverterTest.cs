@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -23,9 +23,9 @@ namespace Remotion.Reflection.UnitTests
   [TestFixture]
   public class PropertyInfoAdapterConverterTest
   {
-    private PropertyInfo _propertyInfo;
-    private PropertyInfoAdapter _propertyInfoAdapter;
-    private PropertyInfoAdapterConverter _converter;
+    private PropertyInfo _propertyInfo = default!;
+    private PropertyInfoAdapter _propertyInfoAdapter = default!;
+    private PropertyInfoAdapterConverter _converter = default!;
 
     [SetUp]
     public void SetUp ()

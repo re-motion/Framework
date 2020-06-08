@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -22,9 +22,9 @@ namespace Remotion.Reflection.UnitTests
   [TestFixture]
   public class TypeAdapterConverterTest
   {
-    private Type _type;
-    private TypeAdapter _typeAdapter;
-    private TypeAdapterConverter _converter;
+    private Type _type = default!;
+    private TypeAdapter _typeAdapter = default!;
+    private TypeAdapterConverter _converter = default!;
 
     [SetUp]
     public void SetUp ()

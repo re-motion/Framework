@@ -27,7 +27,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
   [TestFixture]
   public class EventEmitterTest : CodeGenerationTestBase
   {
-    private CustomClassEmitter _classEmitter;
+    private CustomClassEmitter _classEmitter = default!;
 
     public override void SetUp ()
     {
@@ -170,12 +170,12 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
       Assert.That (AddCalled (type), Is.False);
       Assert.That (RemoveCalled (type), Is.False);
 
-      AddEventMethod (type, eventEmitter, (Func<string>) delegate { return null; });
+      AddEventMethod (type, eventEmitter, (Func<string?>) delegate { return null; });
 
       Assert.That (AddCalled (type), Is.True);
       Assert.That (RemoveCalled (type), Is.False);
 
-      RemoveEventMethod (type, eventEmitter, (Func<string>) delegate { return null; });
+      RemoveEventMethod (type, eventEmitter, (Func<string?>) delegate { return null; });
 
       Assert.That (AddCalled (type), Is.True);
       Assert.That (RemoveCalled (type), Is.True);
@@ -245,7 +245,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     {
       CustomEventEmitter eventEmitter = _classEmitter.CreateEvent ("AddMethodCannotBeSetToNull", EventKind.Static, typeof (string));
       Assert.That (
-          () => eventEmitter.AddMethod = null,
+          () => eventEmitter.AddMethod = null!,
           Throws.InstanceOf<ArgumentNullException>()
               .With.Message.Contains ("Event accessors cannot be set to null."));
     }
@@ -255,7 +255,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     {
       CustomEventEmitter eventEmitter = _classEmitter.CreateEvent ("RemoveMethodCannotBeSetToNull", EventKind.Static, typeof (string));
       Assert.That (
-          () => eventEmitter.RemoveMethod = null,
+          () => eventEmitter.RemoveMethod = null!,
           Throws.InstanceOf<ArgumentNullException>()
               .With.Message.Contains ("Event accessors cannot be set to null."));
     }
