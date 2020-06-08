@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     bool? HasDataChangedFast ();
 
     IVirtualCollectionData CollectionData { get; }
-    ReadOnlyDomainObjectCollectionDataDecorator OriginalCollectionData { get; }
+    ReadOnlyVirtualCollectionData OriginalCollectionData { get; }
 
     IRealObjectEndPoint[] OriginalOppositeEndPoints { get; }
     DomainObject[] OriginalItemsWithoutEndPoints { get; }

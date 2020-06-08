@@ -75,9 +75,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    [Ignore ("RM-7294")]
-    public void CreateCollectionEndPoint ()
+    public void CreateVirtualCollectionEndPoint ()
     {
+      var endPointID = RelationEndPointID.Create (DomainObjectIDs.Product1, typeof (Product), "ProductReviews");
+
+      var fakeResult = MockRepository.GenerateStub<IVirtualCollectionEndPoint> ();
+      _decoratorTestHelper.CheckDelegation (
+          f => f.CreateVirtualCollectionEndPoint (endPointID), 
+          fakeResult,
+          result => Assert.That (
+              result, 
+              Is.TypeOf<StateUpdateRaisingVirtualCollectionEndPointDecorator>()
+                  .With.Property<StateUpdateRaisingVirtualCollectionEndPointDecorator> (d => d.Listener).SameAs (_listenerStub)
+                  .And.Property<StateUpdateRaisingVirtualCollectionEndPointDecorator> (d => d.InnerEndPoint).SameAs (fakeResult)));
     }
 
     [Test]

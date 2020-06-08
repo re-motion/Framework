@@ -15,15 +15,17 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections;
-using Remotion.Data.DomainObjects.DataManagement.CollectionData;
+using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
+using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
 
-namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
+namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
 {
-  public interface IVirtualCollectionEndPoint : ICollectionEndPoint<ReadOnlyVirtualCollectionData>
+  [Serializable]
+  public class SerializableVirtualCollectionEndPointCollectionProviderFake : IVirtualCollectionEndPointCollectionProvider
   {
-    IObjectList Collection { get; }
-
-    IObjectList GetCollectionWithOriginalData ();
+    public IObjectList GetCollection (RelationEndPointID endPointID)
+    {
+      throw new NotImplementedException();
+    }
   }
 }

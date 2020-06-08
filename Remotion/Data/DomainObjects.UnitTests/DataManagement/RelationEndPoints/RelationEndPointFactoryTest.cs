@@ -40,6 +40,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     private IDomainObjectCollectionEndPointDataManagerFactory _domainObjectCollectionEndPointDataManagerFactoryStub;
     private IDomainObjectCollectionEndPointCollectionProvider _domainObjectCollectionEndPointCollectionProviderStub;
     private IAssociatedDomainObjectCollectionDataStrategyFactory _associatedDomainObjectCollectionStrategyFactoryStub;
+    private IVirtualCollectionEndPointCollectionProvider _virtualCollectionEndPointCollectionProviderStub;
+    private IVirtualCollectionEndPointDataManagerFactory _virtualCollectionEndPointDataManagerFactoryStub;
 
     private RelationEndPointFactory _factory;
 
@@ -52,22 +54,31 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _lazyLoaderStub = MockRepository.GenerateStub<ILazyLoader> ();
       _transactionEventSinkStub = MockRepository.GenerateStub<IClientTransactionEventSink>();
 
-      var virtualObjectEndPointDataManager = MockRepository.GenerateStub<IVirtualObjectEndPointDataManager> ();
-      virtualObjectEndPointDataManager.Stub (stub => stub.OriginalOppositeEndPoint).Return (null);
+      var virtualObjectEndPointDataManagerStub = MockRepository.GenerateStub<IVirtualObjectEndPointDataManager> ();
+      virtualObjectEndPointDataManagerStub.Stub (stub => stub.OriginalOppositeEndPoint).Return (null);
       _virtualObjectEndPointDataManagerFactoryStub = MockRepository.GenerateStub<IVirtualObjectEndPointDataManagerFactory> ();
       _virtualObjectEndPointDataManagerFactoryStub
           .Stub (stub => stub.CreateEndPointDataManager (Arg<RelationEndPointID>.Is.Anything))
-          .Return (virtualObjectEndPointDataManager);
+          .Return (virtualObjectEndPointDataManagerStub);
 
-      var collectionEndPointDataManager = MockRepository.GenerateStub<IDomainObjectCollectionEndPointDataManager> ();
-      collectionEndPointDataManager.Stub (stub => stub.OriginalOppositeEndPoints).Return (new IRealObjectEndPoint[0]);
+      var domainObjectCollectionEndPointDataManagerStub = MockRepository.GenerateStub<IDomainObjectCollectionEndPointDataManager> ();
+      domainObjectCollectionEndPointDataManagerStub.Stub (stub => stub.OriginalOppositeEndPoints).Return (new IRealObjectEndPoint[0]);
       _domainObjectCollectionEndPointDataManagerFactoryStub = MockRepository.GenerateStub<IDomainObjectCollectionEndPointDataManagerFactory> ();
       _domainObjectCollectionEndPointDataManagerFactoryStub
           .Stub (stub => stub.CreateEndPointDataManager (Arg<RelationEndPointID>.Is.Anything))
-          .Return (collectionEndPointDataManager);
+          .Return (domainObjectCollectionEndPointDataManagerStub);
 
       _domainObjectCollectionEndPointCollectionProviderStub = MockRepository.GenerateStub<IDomainObjectCollectionEndPointCollectionProvider>();
       _associatedDomainObjectCollectionStrategyFactoryStub = MockRepository.GenerateStub<IAssociatedDomainObjectCollectionDataStrategyFactory>();
+
+      var virtualCollectionEndPointDataManagerStub= MockRepository.GenerateStub<IVirtualCollectionEndPointDataManager> ();
+      virtualCollectionEndPointDataManagerStub.Stub (stub => stub.OriginalOppositeEndPoints).Return (new IRealObjectEndPoint[0]);
+      _virtualCollectionEndPointDataManagerFactoryStub = MockRepository.GenerateStub<IVirtualCollectionEndPointDataManagerFactory>();
+      _virtualCollectionEndPointDataManagerFactoryStub
+          .Stub (stub => stub.CreateEndPointDataManager (Arg<RelationEndPointID>.Is.Anything))
+          .Return (virtualCollectionEndPointDataManagerStub);
+
+      _virtualCollectionEndPointCollectionProviderStub = MockRepository.GenerateStub<IVirtualCollectionEndPointCollectionProvider>();
 
       _factory = new RelationEndPointFactory (
           _clientTransaction,
@@ -77,7 +88,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
           _virtualObjectEndPointDataManagerFactoryStub,
           _domainObjectCollectionEndPointDataManagerFactoryStub, 
           _domainObjectCollectionEndPointCollectionProviderStub,
-          _associatedDomainObjectCollectionStrategyFactoryStub);
+          _associatedDomainObjectCollectionStrategyFactoryStub,
+          _virtualCollectionEndPointCollectionProviderStub,
+          _virtualCollectionEndPointDataManagerFactoryStub);
     }
 
     [Test]
@@ -145,48 +158,44 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    [Ignore ("RM-7294")]
-    public void CreateCollectionEndPoint ()
+    public void CreateVirtualCollectionEndPoint ()
     {
-      //var endPointID = RelationEndPointID.Create (DomainObjectIDs.Order1, typeof (Product), "ProductReviews");
+      var endPointID = RelationEndPointID.Create (DomainObjectIDs.Product1, typeof (Product), "ProductReviews");
 
-      //var endPoint = _factory.CreateCollectionEndPoint (endPointID);
+      var endPoint = _factory.CreateVirtualCollectionEndPoint (endPointID);
 
-      //Assert.That (endPoint, Is.TypeOf<QueryCollectionEndPoint> ());
-      //Assert.That (endPoint.ClientTransaction, Is.SameAs (_clientTransaction));
-      //Assert.That (endPoint.ID, Is.EqualTo (endPointID));
-      //Assert.That (
-      //    ((QueryCollectionEndPoint) endPoint).CollectionManager, 
-      //    Is.TypeOf<CollectionEndPointCollectionManager>()
-      //        .With.Property<CollectionEndPointCollectionManager> (p => p.CollectionProvider).SameAs (_collectionEndPointCollectionProviderStub)
-      //        .And.Property<CollectionEndPointCollectionManager> (p => p.DataStrategyFactory).SameAs (_associatedCollectionStrategyFactoryStub));
-      //Assert.That (((QueryCollectionEndPoint) endPoint).LazyLoader, Is.SameAs (_lazyLoaderStub));
-      //Assert.That (((QueryCollectionEndPoint) endPoint).EndPointProvider, Is.SameAs (_endPointProviderStub));
-      //Assert.That (((QueryCollectionEndPoint) endPoint).TransactionEventSink, Is.SameAs (_transactionEventSinkStub));
-      //Assert.That (((QueryCollectionEndPoint) endPoint).DataManagerFactory, Is.SameAs (_collectionEndPointDataManagerFactoryStub));
-      //Assert.That (endPoint.IsDataComplete, Is.False);
+      Assert.That (endPoint, Is.TypeOf<VirtualCollectionEndPoint> ());
+      Assert.That (endPoint.ClientTransaction, Is.SameAs (_clientTransaction));
+      Assert.That (endPoint.ID, Is.EqualTo (endPointID));
+      Assert.That (
+          ((VirtualCollectionEndPoint) endPoint).CollectionManager,
+          Is.TypeOf<VirtualCollectionEndPointCollectionManager> ()
+              .With.Property<VirtualCollectionEndPointCollectionManager> (p => p.CollectionProvider).SameAs (_virtualCollectionEndPointCollectionProviderStub));
+      Assert.That (((VirtualCollectionEndPoint) endPoint).LazyLoader, Is.SameAs (_lazyLoaderStub));
+      Assert.That (((VirtualCollectionEndPoint) endPoint).EndPointProvider, Is.SameAs (_endPointProviderStub));
+      Assert.That (((VirtualCollectionEndPoint) endPoint).TransactionEventSink, Is.SameAs (_transactionEventSinkStub));
+      Assert.That (((VirtualCollectionEndPoint) endPoint).DataManagerFactory, Is.SameAs (_virtualCollectionEndPointDataManagerFactoryStub));
+      Assert.That (endPoint.IsDataComplete, Is.False);
     }
 
     [Test]
-    [Ignore ("RM-7294")]
-    public void CreateCollectionEndPoint_NonCollectionEndPoint ()
+    public void CreateVirtualCollectionEndPoint_NonCollectionEndPoint ()
     {
-      //var endPointID = RelationEndPointID.Create (DomainObjectIDs.Order1, typeof (Order), "Customer");
+      var endPointID = RelationEndPointID.Create (DomainObjectIDs.Order1, typeof (Order), "Customer");
 
-      //Assert.That (
-      //    () => _factory.CreateCollectionEndPoint (endPointID),
-      //    Throws.ArgumentException.With.Message.EqualTo ("End point ID must refer to an end point with cardinality 'Many'.\r\nParameter name: id"));
+      Assert.That (
+          () => _factory.CreateVirtualCollectionEndPoint (endPointID),
+          Throws.ArgumentException.With.Message.EqualTo ("End point ID must refer to an end point with cardinality 'Many'.\r\nParameter name: id"));
     }
 
     [Test]
-    [Ignore ("RM-7294")]
-    public void CreateCollectionEndPoint_AnonymousEndPoint ()
+    public void CreateVirtualCollectionEndPoint_AnonymousEndPoint ()
     {
-      //var endPointID = RelationEndPointObjectMother.CreateAnonymousEndPointID();
+      var endPointID = RelationEndPointObjectMother.CreateAnonymousEndPointID ();
 
-      //Assert.That (
-      //    () => _factory.CreatCollectionEndPoint (endPointID),
-      //    Throws.ArgumentException.With.Message.EqualTo ("End point ID must not refer to an anonymous end point.\r\nParameter name: id"));
+      Assert.That (
+          () => _factory.CreateVirtualCollectionEndPoint (endPointID),
+          Throws.ArgumentException.With.Message.EqualTo ("End point ID must not refer to an anonymous end point.\r\nParameter name: id"));
     }
 
     [Test]
@@ -242,7 +251,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
           new SerializableVirtualObjectEndPointDataManagerFactoryFake(),
           new SerializableDomainObjectCollectionEndPointDataManagerFactoryFake(), 
           new SerializableDomainObjectCollectionEndPointCollectionProviderFake(),
-          new SerializableAssociatedDomainObjectCollectionDataStrategyFactoryFake());
+          new SerializableAssociatedDomainObjectCollectionDataStrategyFactoryFake(),
+          new SerializableVirtualCollectionEndPointCollectionProviderFake(),
+          new SerializableVirtualCollectionEndPointDataManagerFactoryFake());
 
       var deserializedInstance = Serializer.SerializeAndDeserialize (factory);
 
@@ -254,6 +265,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (deserializedInstance.DomainObjectCollectionEndPointDataManagerFactory, Is.Not.Null);
       Assert.That (deserializedInstance.DomainObjectCollectionEndPointCollectionProvider, Is.Not.Null);
       Assert.That (deserializedInstance.AssociatedDomainObjectCollectionDataStrategyFactory, Is.Not.Null);
+      Assert.That (deserializedInstance.VirtualCollectionEndPointCollectionProvider, Is.Not.Null);
+      Assert.That (deserializedInstance.VirtualCollectionEndPointDataManagerFactory, Is.Not.Null);
     }
   }
 }

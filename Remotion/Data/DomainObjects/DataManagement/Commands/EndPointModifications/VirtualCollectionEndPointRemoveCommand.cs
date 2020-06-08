@@ -34,10 +34,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     private readonly IRelationEndPointProvider _endPointProvider;
 
     public VirtualCollectionEndPointRemoveCommand (
-        IVirtualCollectionEndPoint modifiedEndPoint, 
-        DomainObject removedObject, 
+        IVirtualCollectionEndPoint modifiedEndPoint,
+        DomainObject removedObject,
         IVirtualCollectionData collectionData,
-        IRelationEndPointProvider endPointProvider, 
+        IRelationEndPointProvider endPointProvider,
         IClientTransactionEventSink transactionEventSink)
         : base (
             ArgumentUtility.CheckNotNull ("modifiedEndPoint", modifiedEndPoint),
@@ -78,18 +78,19 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
       {
         ModifiedCollectionEventRaiser.BeginRemove (_index, OldRelatedObject);
       }
-      base.Begin ();
+
+      base.Begin();
     }
 
     public override void Perform ()
     {
       ModifiedCollectionData.Remove (OldRelatedObject);
-      ModifiedEndPoint.Touch ();
+      ModifiedEndPoint.Touch();
     }
 
     public override void End ()
     {
-      base.End ();
+      base.End();
       using (EnterTransactionScope())
       {
         ModifiedCollectionEventRaiser.EndRemove (_index, OldRelatedObject);
@@ -110,7 +111,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     {
       var removedEndPoint = GetOppositeEndPoint (ModifiedEndPoint, OldRelatedObject, _endPointProvider);
       return new ExpandedCommand (
-          removedEndPoint.CreateRemoveCommand (ModifiedEndPoint.GetDomainObject ()), 
+          removedEndPoint.CreateRemoveCommand (ModifiedEndPoint.GetDomainObject()),
           this);
     }
   }

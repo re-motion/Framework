@@ -204,6 +204,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
           collectionEndPointCollectionProvider.DataStrategyFactory,
           Is.TypeOf<AssociatedDomainObjectCollectionDataStrategyFactory> ()
               .With.Property ((AssociatedDomainObjectCollectionDataStrategyFactory f) => f.VirtualEndPointProvider).SameAs (endPointProvider));
+
+      Assert.That (endPointFactory.VirtualCollectionEndPointDataManagerFactory, Is.TypeOf (typeof (VirtualCollectionEndPointDataManagerFactory)));
+      var virtualCollectionEndPointDataManagerFactory = (VirtualCollectionEndPointDataManagerFactory) endPointFactory.VirtualCollectionEndPointDataManagerFactory;
+      Assert.That (virtualCollectionEndPointDataManagerFactory.ChangeDetectionStrategy, Is.TypeOf<SubCollectionEndPointChangeDetectionStrategy> ());
+
+      Assert.That (endPointFactory.VirtualCollectionEndPointCollectionProvider, Is.TypeOf<VirtualCollectionEndPointCollectionProvider> ());
+      var virtualCollectionEndPointCollectionProvider = (VirtualCollectionEndPointCollectionProvider) endPointFactory.VirtualCollectionEndPointCollectionProvider;
+      Assert.That (virtualCollectionEndPointCollectionProvider.VirtualEndPointProvider, Is.SameAs (endPointProvider));
     }
 
     [Test]

@@ -56,6 +56,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       }
 
       #region Serialization
+
       public EndPointLoader (FlattenedDeserializationInfo info)
       {
         ArgumentUtility.CheckNotNull ("info", info);
@@ -69,6 +70,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
         info.AddHandle (_lazyLoader);
       }
+
       #endregion
     }
 
@@ -113,7 +115,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       _transactionEventSink = transactionEventSink;
       _dataManagerFactory = dataManagerFactory;
 
-      SetIncompleteLoadState ();
+      SetIncompleteLoadState();
     }
 
     public IVirtualCollectionEndPointCollectionManager CollectionManager
@@ -143,7 +145,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public IObjectList Collection
     {
-      get { return _collectionManager.GetCurrentCollectionReference (); }
+      get { return _collectionManager.GetCurrentCollectionReference(); }
     }
 
     public IDomainObjectCollectionEventRaiser GetCollectionEventRaiser ()
@@ -153,15 +155,15 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public IObjectList GetCollectionWithOriginalData ()
     {
-      return CreateCollection ((IVirtualCollectionData)_loadState.GetOriginalData (this)); // TODO RM-7294 invalid cast
+      return CreateCollection (_loadState.GetOriginalData (this));
     }
 
-    public ReadOnlyDomainObjectCollectionDataDecorator GetData ()
+    public ReadOnlyVirtualCollectionData GetData ()
     {
       return _loadState.GetData (this);
     }
 
-    public ReadOnlyDomainObjectCollectionDataDecorator GetOriginalData ()
+    public ReadOnlyVirtualCollectionData GetOriginalData ()
     {
       return _loadState.GetOriginalData (this);
     }
@@ -173,27 +175,22 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public bool CanBeCollected
     {
-      get { return !_collectionManager.HasCollectionReferenceChanged() && _loadState.CanEndPointBeCollected (this); }
+      get { return _loadState.CanEndPointBeCollected (this); }
     }
 
     public bool CanBeMarkedIncomplete
     {
-      get { return !_collectionManager.HasCollectionReferenceChanged() && _loadState.CanDataBeMarkedIncomplete (this); }
+      get { return _loadState.CanDataBeMarkedIncomplete (this); }
     }
 
     public override bool HasChanged
     {
-      get { return _collectionManager.HasCollectionReferenceChanged () || _loadState.HasChanged (); }
+      get { return _loadState.HasChanged(); }
     }
 
     public bool? HasChangedFast
     {
-      get
-      {
-        if (_collectionManager.HasCollectionReferenceChanged ())
-          return true;
-        return _loadState.HasChangedFast ();
-      }
+      get { return _loadState.HasChangedFast(); }
     }
 
     public override bool HasBeenTouched
@@ -203,7 +200,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public override void EnsureDataComplete ()
     {
-      _loadState.EnsureDataComplete(this);
+      _loadState.EnsureDataComplete (this);
     }
 
     public void MarkDataComplete (DomainObject[] items)
@@ -225,10 +222,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     public override void Commit ()
     {
       if (HasChanged)
-      {
-        _collectionManager.CommitCollectionReference ();
         _loadState.Commit (this);
-      }
 
       _hasBeenTouched = false;
     }
@@ -236,10 +230,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     public override void Rollback ()
     {
       if (HasChanged)
-      {
-        _collectionManager.RollbackCollectionReference ();
         _loadState.Rollback (this);
-      }
 
       _hasBeenTouched = false;
     }
@@ -249,10 +240,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       // In order to perform the mandatory check, we need to load data. It's up to the caller to decide whether an incomplete end-point should be 
       // checked. (DataManager will not check incomplete end-points, as it also ignores not-yet-loaded end-points.)
 
-      if (GetData ().Count == 0)
+      if (GetData().Count == 0)
       {
-        var objectReference = GetDomainObjectReference ();
-        var message = String.Format (
+        var objectReference = GetDomainObjectReference();
+        var message = string.Format (
             "Mandatory relation property '{0}' of domain object '{1}' contains no items.",
             Definition.PropertyName,
             ObjectID);
@@ -336,12 +327,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public override IEnumerable<RelationEndPointID> GetOppositeRelationEndPointIDs ()
     {
-      var oppositeEndPointDefinition = Definition.GetOppositeEndPointDefinition ();
+      var oppositeEndPointDefinition = Definition.GetOppositeEndPointDefinition();
 
       Assertion.IsFalse (oppositeEndPointDefinition.IsAnonymous);
 
       return from oppositeDomainObject in _loadState.GetData (this)
-             select RelationEndPointID.Create (oppositeDomainObject.ID, oppositeEndPointDefinition);
+          select RelationEndPointID.Create (oppositeDomainObject.ID, oppositeEndPointDefinition);
     }
 
     public override void SetDataFromSubTransaction (IRelationEndPoint source)
@@ -358,7 +349,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       _loadState.SetDataFromSubTransaction (this, sourceCollectionEndPoint._loadState);
 
       if (sourceCollectionEndPoint.HasBeenTouched || HasChanged)
-        Touch ();
+        Touch();
     }
 
     private void SetCompleteLoadState (IVirtualCollectionEndPointDataManager dataManager)
@@ -384,12 +375,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     {
       _collectionManager = info.GetValueForHandle<IVirtualCollectionEndPointCollectionManager>();
       _lazyLoader = info.GetValueForHandle<ILazyLoader>();
-      _endPointProvider = info.GetValueForHandle<IRelationEndPointProvider> ();
-      _transactionEventSink = info.GetValueForHandle<IClientTransactionEventSink> ();
-      _dataManagerFactory = info.GetValueForHandle<IVirtualCollectionEndPointDataManagerFactory> ();
+      _endPointProvider = info.GetValueForHandle<IRelationEndPointProvider>();
+      _transactionEventSink = info.GetValueForHandle<IClientTransactionEventSink>();
+      _dataManagerFactory = info.GetValueForHandle<IVirtualCollectionEndPointDataManagerFactory>();
 
       _loadState = info.GetValue<IVirtualCollectionEndPointLoadState>();
-      _hasBeenTouched = info.GetBoolValue ();
+      _hasBeenTouched = info.GetBoolValue();
     }
 
     protected override void SerializeIntoFlatStructure (FlattenedSerializationInfo info)

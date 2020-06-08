@@ -17,25 +17,27 @@
 using System;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
+using Remotion.Data.DomainObjects.DataManagement.Commands;
+using Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications;
 using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints
 {
   /// <summary>
-  /// Represents the state of a <see cref="DomainObjectCollectionEndPoint"/> where not all of its data is available (ie., the end-point has not been (lazily) 
+  /// Represents the state of a <see cref="VirtualCollectionEndPoint"/> where not all of its data is available (ie., the end-point has not been (lazily) 
   /// loaded, or it has been unloaded).
   /// </summary>
-  public class IncompleteVirtualCollectionEndPointLoadState 
+  public class IncompleteVirtualCollectionEndPointLoadState
       : IncompleteVirtualEndPointLoadStateBase<IVirtualCollectionEndPoint, ReadOnlyVirtualCollectionData, IVirtualCollectionEndPointDataManager, IVirtualCollectionEndPointLoadState>,
-        IVirtualCollectionEndPointLoadState
+          IVirtualCollectionEndPointLoadState
   {
     private readonly IVirtualCollectionEndPointDataManagerFactory _dataManagerFactory;
 
     public IncompleteVirtualCollectionEndPointLoadState (
-        IEndPointLoader endPointLoader, 
+        IEndPointLoader endPointLoader,
         IVirtualCollectionEndPointDataManagerFactory dataManagerFactory)
-      : base (endPointLoader)
+        : base (endPointLoader)
     {
       ArgumentUtility.CheckNotNull ("dataManagerFactory", dataManagerFactory);
       _dataManagerFactory = dataManagerFactory;
@@ -58,7 +60,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       EndPointLoader.LoadEndPointAndGetNewState (endPoint);
     }
 
-    public new void MarkDataComplete (IVirtualCollectionEndPoint collectionEndPoint, IEnumerable<DomainObject> items, Action<IVirtualCollectionEndPointDataManager> stateSetter)
+    public new void MarkDataComplete (
+        IVirtualCollectionEndPoint collectionEndPoint,
+        IEnumerable<DomainObject> items,
+        Action<IVirtualCollectionEndPointDataManager> stateSetter)
     {
       ArgumentUtility.CheckNotNull ("collectionEndPoint", collectionEndPoint);
       ArgumentUtility.CheckNotNull ("items", items);
@@ -75,6 +80,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ArgumentUtility.CheckNotNull ("collectionEndPoint", collectionEndPoint);
       ArgumentUtility.CheckNotNull ("comparison", comparison);
 
+      // TODO RM-7294: Remove SortCurrentData (...) ?
       var completeState = EndPointLoader.LoadEndPointAndGetNewState (collectionEndPoint);
       completeState.SortCurrentData (collectionEndPoint, comparison);
     }
@@ -84,25 +90,22 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ArgumentUtility.CheckNotNull ("collectionEndPoint", collectionEndPoint);
       ArgumentUtility.CheckNotNull ("removedRelatedObject", removedRelatedObject);
 
-      var completeState = EndPointLoader.LoadEndPointAndGetNewState (collectionEndPoint);
-      return completeState.CreateRemoveCommand (collectionEndPoint, removedRelatedObject);
+      return new NopCommand();
     }
 
     public IDataManagementCommand CreateDeleteCommand (IVirtualCollectionEndPoint collectionEndPoint)
     {
       ArgumentUtility.CheckNotNull ("collectionEndPoint", collectionEndPoint);
-      
-      var completeState = EndPointLoader.LoadEndPointAndGetNewState (collectionEndPoint);
-      return completeState.CreateDeleteCommand (collectionEndPoint);
+
+      return new NopCommand();
     }
 
     public IDataManagementCommand CreateAddCommand (IVirtualCollectionEndPoint collectionEndPoint, DomainObject addedRelatedObject)
     {
       ArgumentUtility.CheckNotNull ("collectionEndPoint", collectionEndPoint);
       ArgumentUtility.CheckNotNull ("addedRelatedObject", addedRelatedObject);
-      
-      var completeState = EndPointLoader.LoadEndPointAndGetNewState (collectionEndPoint);
-      return completeState.CreateAddCommand (collectionEndPoint, addedRelatedObject);
+
+      return new NopCommand();
     }
 
     protected override IVirtualCollectionEndPointDataManager CreateEndPointDataManager (IVirtualCollectionEndPoint endPoint)

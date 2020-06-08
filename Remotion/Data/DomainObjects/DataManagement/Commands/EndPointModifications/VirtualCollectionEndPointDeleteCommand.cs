@@ -23,7 +23,7 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications
 {
   /// <summary>
-  /// Represents the deletion of an object owning a <see cref="DomainObjectCollectionEndPoint"/> from the end-point's point of view.
+  /// Represents the deletion of an object owning a <see cref="VirtualCollectionEndPoint"/> from the end-point's point of view.
   /// </summary>
   public class VirtualCollectionEndPointDeleteCommand : RelationEndPointModificationCommand
   {
@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     public override void Perform ()
     {
       ModifiedCollectionData.Clear();
-      ModifiedEndPoint.Touch ();
+      ModifiedEndPoint.Touch();
     }
 
     public override void End ()

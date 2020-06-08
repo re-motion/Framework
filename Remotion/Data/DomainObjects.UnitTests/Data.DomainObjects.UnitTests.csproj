@@ -213,10 +213,17 @@
     </Compile>
     <Compile Include="ClientTransactionTestHelperWithMocks.cs" />
     <Compile Include="DataManagement\DataContainerStateTest.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\ChangeCachingVirtualCollectionDataDecoratorTest.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\IncompleteVirtualCollectionEndPointLoadStateTest.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\StateUpdateRaisingVirtualCollectionEndPointDecoratorTest.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\VirtualCollectionEndPointCollectionProviderTest.cs" />
     <Compile Include="DataManagement\SerializableFakes\SerializableClientTransactionHierarchyFake.cs" />
     <Compile Include="DataManagement\SerializableFakes\SerializableFetchEnabledPersistenceStrategyFake.cs" />
     <Compile Include="DataManagement\SerializableFakes\SerializableLoadedObjectDataProviderFake.cs" />
     <Compile Include="DataManagement\SerializableFakes\SerializableLoadedObjectDataRegistrationAgentFake.cs" />
+    <Compile Include="DataManagement\SerializableFakes\SerializableVirtualCollectionEndPointCollectionProviderFake.cs" />
+    <Compile Include="DataManagement\SerializableFakes\SerializableVirtualCollectionEndPointDataManagerFactoryFake.cs" />
+    <Compile Include="DataManagement\SerializableFakes\SerializableVirtualCollectionEndPointFake.cs" />
     <Compile Include="DomainObjectStateTest.cs" />
     <Compile Include="IClientTransactionExtensionFactoryTest.cs" />
     <Compile Include="IDomainModelConstraintProviderTest.cs" />
@@ -2002,6 +2009,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DomainObjects\DomainObjectCollection.IListTest.cs" />
+    <Compile Include="VirtualCollectionDataTestHelper.cs" />
     <None Include="..\..\Remotion LGPL.licenseheader">
       <Link>Remotion LGPL.licenseheader</Link>
     </None>

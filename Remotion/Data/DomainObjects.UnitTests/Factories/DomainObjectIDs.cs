@@ -499,6 +499,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
     }
 
     #endregion
+    
+    #region Product
+
+    //TODO: RM-7294
+    // OrderTicket: OrderTicket1
+    // OrderItems: OrderItem1, OrderItem2
+    // Customer: Customer1
+    // Official: Official1
+    // OrderNumber: 1
+    public ObjectID Product1
+    {
+      get { return CreateObjectID ("Product", new Guid ("{BA684594-CF77-4009-A010-B70B30396A01}")); }
+    }
+
+    #endregion
 
     #region Ceo
 

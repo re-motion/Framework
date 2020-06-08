@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -15,15 +15,21 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections;
+using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
+using Remotion.Development.UnitTesting;
+using Remotion.Reflection;
 
-namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
+namespace Remotion.Data.DomainObjects.UnitTests
 {
-  public interface IVirtualCollectionEndPoint : ICollectionEndPoint<ReadOnlyVirtualCollectionData>
+  public static class VirtualCollectionDataTestHelper
   {
-    IObjectList Collection { get; }
-
-    IObjectList GetCollectionWithOriginalData ();
+    public static IVirtualCollectionData GetDataStrategy (IObjectList collection)
+    {
+      if (collection.GetType().CanAscribeTo (typeof (VirtualObjectList<>)))
+        return (IVirtualCollectionData) PrivateInvoke.GetNonPublicField (collection, "_virtualCollectionData");
+      else
+        throw new NotSupportedException (string.Format ("Type '{0}' is not supported by GetDataStrategy().", collection.GetType()));
+    }
   }
 }

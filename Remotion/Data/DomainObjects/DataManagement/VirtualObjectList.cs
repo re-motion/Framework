@@ -19,19 +19,25 @@ using System.Collections;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement
 {
   public class VirtualObjectList<T> : IObjectList<T>
       where T : DomainObject
   {
+    private readonly IVirtualCollectionData _virtualCollectionData;
+
     public VirtualObjectList (IVirtualCollectionData virtualCollectionData)
     {
+      ArgumentUtility.CheckNotNull ("virtualCollectionData", virtualCollectionData);
+      
+      _virtualCollectionData = virtualCollectionData;
     }
 
     public RelationEndPointID AssociatedEndPointID
     {
-      get { throw new NotImplementedException(); }
+      get { return _virtualCollectionData.AssociatedEndPointID; }
     }
 
     public IEnumerator<T> GetEnumerator ()

@@ -183,6 +183,8 @@
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\IPropertyMetadataProvider.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\PropertyMetadataReflector.cs" />
     <Compile Include="DataManagement\CollectionData\IVirtualCollectionData.cs" />
+    <Compile Include="DataManagement\CollectionData\ReadOnlyVirtualCollectionData.cs" />
+    <Compile Include="DataManagement\CollectionData\VirtualCollectionData.cs" />
     <Compile Include="DataManagement\Commands\EndPointModifications\VirtualCollectionEndPointDeleteCommand.cs" />
     <Compile Include="DataManagement\Commands\EndPointModifications\VirtualCollectionEndPointAddCommand.cs" />
     <Compile Include="DataManagement\Commands\EndPointModifications\VirtualCollectionEndPointRemoveCommand.cs" />
@@ -190,7 +192,15 @@
     <Compile Include="DataManagement\RelationEndPoints\VirtualCollectionEndPoint.cs" />
     <Compile Include="DataManagement\RelationEndPoints\IDomainObjectCollectionEndPoint.cs" />
     <Compile Include="DataManagement\RelationEndPoints\IVirtualCollectionEndPoint.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\ChangeCachingVirtualCollectionDataDecorator.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\CompleteVirtualCollectionEndPointLoadState.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\EndPointDelegatingVirtualCollectionData.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\IDomainObjectCollectionEndPointCollectionProvider - Copy.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\StateUpdateRaisingVirtualCollectionEndPointDecorator.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\VirtualCollectionEndPointCollectionManager.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\VirtualCollectionEndPointCollectionProvider.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\VirtualCollectionEndPointDataManager.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\VirtualCollectionEndPointDataManagerFactory.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\IVirtualCollectionEndPointDataManager.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\IVirtualCollectionEndPointDataManagerFactory.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\IncompleteVirtualCollectionEndPointLoadState.cs" />

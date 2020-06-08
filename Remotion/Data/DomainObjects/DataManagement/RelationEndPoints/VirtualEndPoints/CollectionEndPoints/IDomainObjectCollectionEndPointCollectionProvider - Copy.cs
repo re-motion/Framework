@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -15,15 +15,15 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections;
-using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 
-namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
+namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints
 {
-  public interface IVirtualCollectionEndPoint : ICollectionEndPoint<ReadOnlyVirtualCollectionData>
+  /// <summary>
+  /// Provides an interface for classes keeping track of <see cref="IObjectList"/> references to be used by <see cref="VirtualCollectionEndPoint"/> 
+  /// instances. That way, a <see cref="IObjectList"/> can be reused even when the <see cref="VirtualCollectionEndPoint"/> is removed.
+  /// </summary>
+  public interface IVirtualCollectionEndPointCollectionProvider
   {
-    IObjectList Collection { get; }
-
-    IObjectList GetCollectionWithOriginalData ();
+    IObjectList GetCollection (RelationEndPointID endPointID);
   }
 }

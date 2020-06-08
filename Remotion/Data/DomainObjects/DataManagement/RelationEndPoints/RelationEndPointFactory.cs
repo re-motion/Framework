@@ -36,6 +36,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     private readonly IDomainObjectCollectionEndPointDataManagerFactory _domainObjectCollectionEndPointDataManagerFactory;
     private readonly IDomainObjectCollectionEndPointCollectionProvider _domainObjectCollectionEndPointCollectionProvider;
     private readonly IAssociatedDomainObjectCollectionDataStrategyFactory _associatedDomainObjectCollectionDataStrategyFactory;
+    private readonly IVirtualCollectionEndPointCollectionProvider _virtualCollectionEndPointCollectionProvider;
+    private readonly IVirtualCollectionEndPointDataManagerFactory _virtualCollectionEndPointDataManagerFactory;
 
     public RelationEndPointFactory (
         ClientTransaction clientTransaction,
@@ -45,7 +47,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         IVirtualObjectEndPointDataManagerFactory virtualObjectEndPointDataManagerFactory,
         IDomainObjectCollectionEndPointDataManagerFactory domainObjectCollectionEndPointDataManagerFactory, 
         IDomainObjectCollectionEndPointCollectionProvider domainObjectCollectionEndPointCollectionProvider, 
-        IAssociatedDomainObjectCollectionDataStrategyFactory associatedDomainObjectCollectionDataStrategyFactory)
+        IAssociatedDomainObjectCollectionDataStrategyFactory associatedDomainObjectCollectionDataStrategyFactory,
+        IVirtualCollectionEndPointCollectionProvider virtualCollectionEndPointCollectionProvider,
+        IVirtualCollectionEndPointDataManagerFactory virtualCollectionEndPointDataManagerFactory)
     {
       ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull ("endPointProvider", endPointProvider);
@@ -55,6 +59,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       ArgumentUtility.CheckNotNull ("domainObjectCollectionEndPointDataManagerFactory", domainObjectCollectionEndPointDataManagerFactory);
       ArgumentUtility.CheckNotNull ("domainObjectCollectionEndPointCollectionProvider", domainObjectCollectionEndPointCollectionProvider);
       ArgumentUtility.CheckNotNull ("associatedDomainObjectCollectionDataStrategyFactory", associatedDomainObjectCollectionDataStrategyFactory);
+      ArgumentUtility.CheckNotNull ("virtualCollectionEndPointCollectionProvider", virtualCollectionEndPointCollectionProvider);
+      ArgumentUtility.CheckNotNull ("virtualObjectEndPointDataManagerFactory", virtualObjectEndPointDataManagerFactory);
 
       _clientTransaction = clientTransaction;
       _endPointProvider = endPointProvider;
@@ -64,6 +70,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       _domainObjectCollectionEndPointDataManagerFactory = domainObjectCollectionEndPointDataManagerFactory;
       _domainObjectCollectionEndPointCollectionProvider = domainObjectCollectionEndPointCollectionProvider;
       _associatedDomainObjectCollectionDataStrategyFactory = associatedDomainObjectCollectionDataStrategyFactory;
+      _virtualCollectionEndPointCollectionProvider = virtualCollectionEndPointCollectionProvider;
+      _virtualCollectionEndPointDataManagerFactory = virtualCollectionEndPointDataManagerFactory;
     }
 
     public ClientTransaction ClientTransaction
@@ -106,6 +114,16 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       get { return _associatedDomainObjectCollectionDataStrategyFactory; }
     }
 
+    public IVirtualCollectionEndPointCollectionProvider VirtualCollectionEndPointCollectionProvider
+    {
+      get { return _virtualCollectionEndPointCollectionProvider; }
+    }
+
+    public IVirtualCollectionEndPointDataManagerFactory VirtualCollectionEndPointDataManagerFactory
+    {
+      get { return _virtualCollectionEndPointDataManagerFactory; }
+    }
+
     public IRealObjectEndPoint CreateRealObjectEndPoint (RelationEndPointID endPointID, DataContainer dataContainer)
     {
       ArgumentUtility.CheckNotNull ("endPointID", endPointID);
@@ -132,18 +150,15 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     {
       ArgumentUtility.CheckNotNull ("endPointID", endPointID);
 
-      // TODO RM-7294
-      throw new NotImplementedException ("Implement RelationEndPointFactory for DomainObjectCollection and QueryCollection separately");
-
-      //var collectionEndPoint = new QueryCollectionEndPoint (
-      //    _clientTransaction,
-      //    endPointID,
-      //    new CollectionEndPointCollectionManager (endPointID, _collectionEndPointCollectionProvider, _associatedCollectionDataStrategyFactory),
-      //    _lazyLoader,
-      //    _endPointProvider,
-      //    _transactionEventSink,
-      //    _collectionEndPointDataManagerFactory);
-      //return collectionEndPoint;
+      var collectionEndPoint = new VirtualCollectionEndPoint (
+          _clientTransaction,
+          endPointID,
+          new VirtualCollectionEndPointCollectionManager (endPointID, _virtualCollectionEndPointCollectionProvider),
+          _lazyLoader,
+          _endPointProvider,
+          _transactionEventSink,
+          _virtualCollectionEndPointDataManagerFactory);
+      return collectionEndPoint;
     }
 
     public IDomainObjectCollectionEndPoint CreateDomainObjectCollectionEndPoint (RelationEndPointID endPointID)

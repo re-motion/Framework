@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications;
 using Remotion.Data.DomainObjects.Infrastructure;
@@ -118,7 +117,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ArgumentUtility.CheckNotNull ("collectionEndPoint", collectionEndPoint);
       ArgumentUtility.CheckNotNull ("removedRelatedObject", removedRelatedObject);
 
-      CheckRemovedObject (removedRelatedObject);
+      //TODO RM-7294: Remove
+      //CheckRemovedObject (removedRelatedObject);
+
       return new VirtualCollectionEndPointRemoveCommand (
           collectionEndPoint, removedRelatedObject, DataManager.CollectionData, EndPointProvider, TransactionEventSink);
     }
@@ -127,31 +128,33 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     {
       ArgumentUtility.CheckNotNull ("collectionEndPoint", collectionEndPoint);
 
-      if (UnsynchronizedOppositeEndPoints.Count != 0)
-      {
-        var message = string.Format (
-            "The domain object '{0}' cannot be deleted because the opposite object property '{2}' of domain object '{3}' is out of sync with the "
-            + "collection property '{1}'. To make this change, synchronize the two properties by calling the "
-            + "'BidirectionalRelationSyncService.Synchronize' method on the '{2}' property.",
-            DataManager.EndPointID.ObjectID,
-            DataManager.EndPointID.Definition.PropertyName,
-            DataManager.EndPointID.Definition.GetOppositeEndPointDefinition().PropertyName,
-            UnsynchronizedOppositeEndPoints.First().ObjectID);
-        throw new InvalidOperationException (message);
-      }
+      //TODO RM-7294: Remove
+      //if (UnsynchronizedOppositeEndPoints.Count != 0)
+      //{
+      //  var message = string.Format (
+      //      "The domain object '{0}' cannot be deleted because the opposite object property '{2}' of domain object '{3}' is out of sync with the "
+      //      + "collection property '{1}'. To make this change, synchronize the two properties by calling the "
+      //      + "'BidirectionalRelationSyncService.Synchronize' method on the '{2}' property.",
+      //      DataManager.EndPointID.ObjectID,
+      //      DataManager.EndPointID.Definition.PropertyName,
+      //      DataManager.EndPointID.Definition.GetOppositeEndPointDefinition().PropertyName,
+      //      UnsynchronizedOppositeEndPoints.First().ObjectID);
+      //  throw new InvalidOperationException (message);
+      //}
 
-      if (!IsSynchronized (collectionEndPoint))
-      {
-        var message = string.Format (
-            "The domain object '{0}' cannot be deleted because its collection property '{1}' is out of sync with "
-            + "the opposite object property '{2}' of domain object '{3}'. To make this change, synchronize the two properties by calling the "
-            + "'BidirectionalRelationSyncService.Synchronize' method on the '{1}' property.",
-            DataManager.EndPointID.ObjectID,
-            DataManager.EndPointID.Definition.PropertyName,
-            DataManager.EndPointID.Definition.GetOppositeEndPointDefinition().PropertyName,
-            DataManager.OriginalItemsWithoutEndPoints.First().ID);
-        throw new InvalidOperationException (message);
-      }
+      //TODO RM-7294: Remove
+      //if (!IsSynchronized (collectionEndPoint))
+      //{
+      //  var message = string.Format (
+      //      "The domain object '{0}' cannot be deleted because its collection property '{1}' is out of sync with "
+      //      + "the opposite object property '{2}' of domain object '{3}'. To make this change, synchronize the two properties by calling the "
+      //      + "'BidirectionalRelationSyncService.Synchronize' method on the '{1}' property.",
+      //      DataManager.EndPointID.ObjectID,
+      //      DataManager.EndPointID.Definition.PropertyName,
+      //      DataManager.EndPointID.Definition.GetOppositeEndPointDefinition().PropertyName,
+      //      DataManager.OriginalItemsWithoutEndPoints.First().ID);
+      //  throw new InvalidOperationException (message);
+      //}
 
       return new VirtualCollectionEndPointDeleteCommand (collectionEndPoint, DataManager.CollectionData, TransactionEventSink);
     }
@@ -161,7 +164,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ArgumentUtility.CheckNotNull ("collectionEndPoint", collectionEndPoint);
       ArgumentUtility.CheckNotNull ("addedRelatedObject", addedRelatedObject);
 
-      CheckAddedObject (addedRelatedObject);
+      //TODO RM-7294: Remove
+      //CheckAddedObject (addedRelatedObject);
+
       return new VirtualCollectionEndPointAddCommand (
           collectionEndPoint,
           addedRelatedObject,

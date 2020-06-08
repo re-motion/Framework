@@ -63,15 +63,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public IVirtualCollectionEndPoint CreateVirtualCollectionEndPoint (RelationEndPointID endPointID)
     {
-      // TODO RM-7294 Test
-      throw new NotImplementedException ("Implement StateUpdateRaisingCollectionEndPointDecorator for DomainObjectCollection and QueryCollection separately");
-      //var endPoint = _innerFactory.CreateCollectionEndPoint (endPointID);
-      //return new StateUpdateRaisingCollectionEndPointDecorator (endPoint, _listener);
+      var endPoint = _innerFactory.CreateVirtualCollectionEndPoint (endPointID);
+      return new StateUpdateRaisingVirtualCollectionEndPointDecorator (endPoint, _listener);
     }
 
     public IDomainObjectCollectionEndPoint CreateDomainObjectCollectionEndPoint (RelationEndPointID endPointID)
     {
-      // TODO RM-7294 Test
       var endPoint = _innerFactory.CreateDomainObjectCollectionEndPoint (endPointID);
       return new StateUpdateRaisingDomainObjectCollectionEndPointDecorator (endPoint, _listener);
     }
