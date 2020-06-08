@@ -18,7 +18,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Threading;
-
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.Utilities
 {

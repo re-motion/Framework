@@ -18,6 +18,7 @@
 using System;
 using System.Collections.ObjectModel;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.UnitTests.FunctionalProgramming.TestDomain
 {

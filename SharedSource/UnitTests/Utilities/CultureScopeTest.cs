@@ -20,6 +20,7 @@ using System.Threading;
 using NUnit.Framework;
 using Remotion.Utilities;
 
+#nullable enable
 namespace Remotion.UnitTests.Utilities
 {
   [TestFixture]

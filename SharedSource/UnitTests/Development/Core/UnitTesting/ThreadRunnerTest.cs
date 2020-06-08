@@ -21,13 +21,14 @@ using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Rhino.Mocks;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.UnitTests.Development.Core.UnitTesting
 {
   [TestFixture]
   public class ThreadRunnerTest
   {
-    private MockRepository _mockRepository;
+    private MockRepository _mockRepository = default!;
 
     [SetUp]
     public void SetUp ()
@@ -75,7 +76,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting
     {
       using (var waitHandle = new ManualResetEvent (false))
       {
-        Thread threadRunnerThread = null;
+        Thread? threadRunnerThread = null;
         var threadMethod = (ThreadStart) delegate { threadRunnerThread = Thread.CurrentThread; waitHandle.Set (); };
 
         TimeSpan timeout = TimeSpan.MaxValue;

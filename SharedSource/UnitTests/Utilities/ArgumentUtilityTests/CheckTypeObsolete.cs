@@ -19,6 +19,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Utilities;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
 {
@@ -43,14 +44,14 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     [Test]
     public void Succeed_NullableValueTypeNull ()
     {
-      Assert.That (ArgumentUtility.CheckType ("arg", (object) null, typeof (int?)), Is.EqualTo (null));
+      Assert.That (ArgumentUtility.CheckType ("arg", (object?) null, typeof (int?)), Is.EqualTo (null));
     }
 
     [Test]
     public void Fail_ValueTypeNull ()
     {
       Assert.That (
-          () => ArgumentUtility.CheckType ("arg", (object) null, typeof (int)),
+          () => ArgumentUtility.CheckType ("arg", (object?) null, typeof (int)),
           Throws.ArgumentException
               .With.Message.EqualTo ("Parameter 'arg' has type '<null>' when type 'System.Int32' was expected.\r\nParameter name: arg"));
     }
@@ -67,7 +68,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     [Test]
     public void Succeed_ReferenceTypeNull ()
     {
-      Assert.That (ArgumentUtility.CheckType ("arg", (object) null, typeof (string)), Is.EqualTo (null));
+      Assert.That (ArgumentUtility.CheckType ("arg", (object?) null, typeof (string)), Is.EqualTo (null));
     }
 
     [Test]

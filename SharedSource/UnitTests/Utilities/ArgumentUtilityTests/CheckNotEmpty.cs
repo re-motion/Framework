@@ -20,6 +20,7 @@ using System.Collections;
 using NUnit.Framework;
 using Remotion.Utilities;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
 {
@@ -36,7 +37,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     [Test]
     public void Succeed_NullString ()
     {
-      const string s = null;
+      const string? s = null;
       var result = ArgumentUtility.CheckNotEmpty ("arg", s);
       Assert.That (result, Is.Null);
     }
@@ -61,7 +62,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     [Test]
     public void Succeed_NullCollection ()
     {
-      var result = ArgumentUtility.CheckNotEmpty ("arg", (IEnumerable) null);
+      var result = ArgumentUtility.CheckNotEmpty ("arg", (IEnumerable?) null);
       Assert.That (result, Is.Null);
     }
 

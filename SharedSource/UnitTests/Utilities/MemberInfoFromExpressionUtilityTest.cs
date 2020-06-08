@@ -16,11 +16,13 @@
 // 
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using NUnit.Framework;
 using Remotion.Utilities;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.UnitTests.Utilities
 {
@@ -210,7 +212,7 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void GetMethod_Static_VoidGeneric ()
     {
-      var member = MemberInfoFromExpressionUtility.GetMethod (() => DomainType.StaticVoidGenericMethod<SampleType> (null));
+      var member = MemberInfoFromExpressionUtility.GetMethod (() => DomainType.StaticVoidGenericMethod<SampleType?> (null));
 
       var expected = typeof (DomainType).GetMethod ("StaticVoidGenericMethod").MakeGenericMethod (typeof (SampleType));
       Assert.That (member, Is.EqualTo (expected));
@@ -219,7 +221,7 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void GetMethod_Static_Generic ()
     {
-      var member = MemberInfoFromExpressionUtility.GetMethod (() => DomainType.StaticGenericMethod<SampleType> (null));
+      var member = MemberInfoFromExpressionUtility.GetMethod (() => DomainType.StaticGenericMethod<SampleType?> (null));
 
       var expected = typeof (DomainType).GetMethod ("StaticGenericMethod").MakeGenericMethod (typeof (SampleType));
       Assert.That (member, Is.EqualTo (expected));
@@ -312,7 +314,7 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void GetMethod_Instance_VoidGenericMethod ()
     {
-      var member = MemberInfoFromExpressionUtility.GetMethod ((DomainType obj) => obj.InstanceVoidGenericMethod<SampleType> (null));
+      var member = MemberInfoFromExpressionUtility.GetMethod ((DomainType obj) => obj.InstanceVoidGenericMethod<SampleType?> (null));
 
       var expected = typeof (DomainType).GetMethod ("InstanceVoidGenericMethod").MakeGenericMethod (typeof (SampleType));
       Assert.That (member, Is.EqualTo (expected));
@@ -321,7 +323,7 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void GetMethod_Instance_GenericMethod ()
     {
-      var member = MemberInfoFromExpressionUtility.GetMethod ((DomainType obj) => obj.InstanceGenericMethod<SampleType> (null));
+      var member = MemberInfoFromExpressionUtility.GetMethod ((DomainType obj) => obj.InstanceGenericMethod<SampleType?> (null));
 
       var expected = typeof (DomainType).GetMethod ("InstanceGenericMethod").MakeGenericMethod (typeof (SampleType));
       Assert.That (member, Is.EqualTo (expected));
@@ -330,7 +332,7 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void GetMethod_Instance_OverridingVoidGenericMethod ()
     {
-      var member = MemberInfoFromExpressionUtility.GetMethod ((DomainType obj) => obj.OverridingVoidGenericMethod<SampleType> (null));
+      var member = MemberInfoFromExpressionUtility.GetMethod ((DomainType obj) => obj.OverridingVoidGenericMethod<SampleType?> (null));
 
       var expected = typeof (DomainTypeBase).GetMethod ("OverridingVoidGenericMethod").MakeGenericMethod (typeof (SampleType));
       Assert.That (member, Is.EqualTo (expected));
@@ -339,7 +341,7 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void GetMethod_Instance_OverridingGenericMethod ()
     {
-      var member = MemberInfoFromExpressionUtility.GetMethod ((DomainType obj) => obj.OverridingGenericMethod<SampleType> (null));
+      var member = MemberInfoFromExpressionUtility.GetMethod ((DomainType obj) => obj.OverridingGenericMethod<SampleType?> (null));
 
       var expected = typeof (DomainTypeBase).GetMethod ("OverridingGenericMethod").MakeGenericMethod (typeof (SampleType));
       Assert.That (member, Is.EqualTo (expected));
@@ -414,7 +416,7 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void GetGenericMethodDefinition_StaticVoid ()
     {
-      var member = MemberInfoFromExpressionUtility.GetGenericMethodDefinition (() => DomainType.StaticVoidGenericMethod<SampleType> (null));
+      var member = MemberInfoFromExpressionUtility.GetGenericMethodDefinition (() => DomainType.StaticVoidGenericMethod<SampleType?> (null));
 
       var expected = typeof (DomainType).GetMethod ("StaticVoidGenericMethod");
       Assert.That (member, Is.EqualTo (expected));
@@ -433,7 +435,7 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void GetGenericMethodDefinition_Static ()
     {
-      var member = MemberInfoFromExpressionUtility.GetGenericMethodDefinition (() => DomainType.StaticGenericMethod<SampleType> (null));
+      var member = MemberInfoFromExpressionUtility.GetGenericMethodDefinition (() => DomainType.StaticGenericMethod<SampleType?> (null));
 
       var expected = typeof (DomainType).GetMethod ("StaticGenericMethod");
       Assert.That (member, Is.EqualTo (expected));
@@ -462,7 +464,7 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void GetGenericMethodDefinition_Instance_Void ()
     {
-      var member = MemberInfoFromExpressionUtility.GetGenericMethodDefinition ((DomainType obj) => obj.InstanceVoidGenericMethod<SampleType> (null));
+      var member = MemberInfoFromExpressionUtility.GetGenericMethodDefinition ((DomainType obj) => obj.InstanceVoidGenericMethod<SampleType?> (null));
 
       var expected = typeof (DomainType).GetMethod ("InstanceVoidGenericMethod");
       Assert.That (member, Is.EqualTo (expected));
@@ -471,7 +473,7 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void GetGenericMethodDefinition_Instance ()
     {
-      var member = MemberInfoFromExpressionUtility.GetGenericMethodDefinition ((DomainType obj) => obj.InstanceGenericMethod<SampleType> (null));
+      var member = MemberInfoFromExpressionUtility.GetGenericMethodDefinition ((DomainType obj) => obj.InstanceGenericMethod<SampleType?> (null));
 
       var expected = typeof (DomainType).GetMethod ("InstanceGenericMethod");
       Assert.That (member, Is.EqualTo (expected));
@@ -480,7 +482,7 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void GetGenericMethodDefinition_Instance_OverridingVoidMethod ()
     {
-      var member = MemberInfoFromExpressionUtility.GetGenericMethodDefinition ((DomainType obj) => obj.OverridingVoidGenericMethod<SampleType> (null));
+      var member = MemberInfoFromExpressionUtility.GetGenericMethodDefinition ((DomainType obj) => obj.OverridingVoidGenericMethod<SampleType?> (null));
 
       var expected = typeof (DomainTypeBase).GetMethod ("OverridingVoidGenericMethod");
       Assert.That (member, Is.EqualTo (expected));
@@ -489,7 +491,7 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void GetGenericMethodDefinition_Instance_OverridingMethod ()
     {
-      var member = MemberInfoFromExpressionUtility.GetGenericMethodDefinition ((DomainType obj) => obj.OverridingGenericMethod<SampleType> (null));
+      var member = MemberInfoFromExpressionUtility.GetGenericMethodDefinition ((DomainType obj) => obj.OverridingGenericMethod<SampleType?> (null));
 
       var expected = typeof (DomainTypeBase).GetMethod ("OverridingGenericMethod");
       Assert.That (member, Is.EqualTo (expected));

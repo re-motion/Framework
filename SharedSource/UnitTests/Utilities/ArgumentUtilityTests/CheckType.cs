@@ -19,6 +19,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Utilities;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
 {
@@ -38,7 +39,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     public void Fail_ValueType ()
     {
       Assert.That (
-          () => ArgumentUtility.CheckType<int> ("arg", (object) null),
+          () => ArgumentUtility.CheckType<int> ("arg", (object?) null),
           Throws.InstanceOf<ArgumentNullException>());
     }
 

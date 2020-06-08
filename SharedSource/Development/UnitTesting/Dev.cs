@@ -16,6 +16,7 @@
 // 
 using System;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.Development.UnitTesting
 {
@@ -35,7 +36,7 @@ namespace Remotion.Development.UnitTesting
     /// Use this in unit tests where you need to assign a value to
     /// something (e.g., for syntactic reasons, or to remove unused variable warnings), but don't care about the result of the assignment.
     /// </summary>
-    public static object Null
+    public static object? Null
     {
       get { return null; }
       // ReSharper disable ValueParameterNotUsed
@@ -54,7 +55,7 @@ namespace Remotion.Development.UnitTesting
     /// Use this in unit tests where you need a ref or out parameter but but don't care about the result of the assignment.
     /// Never rely on the value of the <see cref="Dummy"/> field, it will be changed by other tests.
     /// </summary>
-    public static T Dummy;
+    public static T Dummy = default (T)!;
 
     /// <summary>
     /// Use this in unit tests where you need to assign a value to
@@ -62,7 +63,7 @@ namespace Remotion.Development.UnitTesting
     /// </summary>
     public static T Null
     {
-      get { return default (T); }
+      get { return default (T)!; }
       set { Dev.Null = value; }
     }
   }

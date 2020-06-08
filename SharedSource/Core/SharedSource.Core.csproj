@@ -76,6 +76,7 @@
     <Compile Include="ReSharperAnnotations\StringFormatMethodAttribute.cs" />
     <Compile Include="ReSharperAnnotations\UsedImplicitlyAttribute.cs" />
     <Compile Include="ReSharperAnnotations\ValueProviderAttribute.cs" />
+    <Compile Include="RoslynAnnotations\NullableAnnotations.cs" />
     <Compile Include="Utilities\ArgumentUtility.cs" />
     <Compile Include="Utilities\Assertion.cs" />
     <Compile Include="Utilities\AttributeUtility.cs" />

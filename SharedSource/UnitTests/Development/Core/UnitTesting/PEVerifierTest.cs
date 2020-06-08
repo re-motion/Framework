@@ -22,6 +22,7 @@ using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.PEVerifyPathSources;
 using Rhino.Mocks;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.Development.UnitTests.Core.UnitTesting
 {

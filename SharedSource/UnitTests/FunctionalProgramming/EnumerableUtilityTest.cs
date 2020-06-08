@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Remotion.FunctionalProgramming;
 using Remotion.UnitTests.FunctionalProgramming.TestDomain;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.UnitTests.FunctionalProgramming
 {
@@ -46,8 +47,8 @@ namespace Remotion.UnitTests.FunctionalProgramming
     [Test]
     public void Singleton_WithNull ()
     {
-      var actual = EnumerableUtility.Singleton (((object) null));
-      Assert.That (actual.ToArray (), Is.EqualTo (new object[] { null }));
+      var actual = EnumerableUtility.Singleton (((object?) null));
+      Assert.That (actual.ToArray (), Is.EqualTo (new object?[] { null }));
     }
 
     [Test]

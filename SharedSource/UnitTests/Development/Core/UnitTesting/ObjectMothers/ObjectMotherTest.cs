@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting.ObjectMothers;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.Development.UnitTests.Core.UnitTesting.ObjectMothers
 {

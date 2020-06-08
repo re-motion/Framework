@@ -19,6 +19,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Utilities;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.UnitTests.Utilities
 {
@@ -135,7 +136,7 @@ namespace Remotion.UnitTests.Utilities
     public void IsNotNull_False ()
     {
       Assert.That (
-          () => Assertion.IsNotNull<object> (null),
+          () => Assertion.IsNotNull<object?> (null),
           Throws.InvalidOperationException
               .With.Message.EqualTo (
                   "Assertion failed: Expression evaluates to a null reference."));
@@ -174,7 +175,7 @@ namespace Remotion.UnitTests.Utilities
     public void IsNotNull_Message_False ()
     {
       Assert.That (
-          () => Assertion.IsNotNull<object> (null, "a"),
+          () => Assertion.IsNotNull<object?> (null, "a"),
           Throws.InvalidOperationException
               .With.Message.EqualTo ("a"));
     }
@@ -197,7 +198,7 @@ namespace Remotion.UnitTests.Utilities
     public void DebugIsNotNull_Message_False ()
     {
       Assert.That (
-          () => Assertion.DebugIsNotNull<object> (null, "a"),
+          () => Assertion.DebugIsNotNull<object?> (null, "a"),
           Throws.InvalidOperationException
               .With.Message.EqualTo ("a"));
     }
@@ -216,7 +217,7 @@ namespace Remotion.UnitTests.Utilities
     public void IsNotNull_Message_Args_False ()
     {
       Assert.That (
-          () => Assertion.IsNotNull<object> (null, "a{0}b", 5),
+          () => Assertion.IsNotNull<object?> (null, "a{0}b", 5),
           Throws.InvalidOperationException
               .With.Message.EqualTo ("a5b"));
     }

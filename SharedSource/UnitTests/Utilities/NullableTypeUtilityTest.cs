@@ -19,6 +19,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Utilities;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.UnitTests.Utilities
 {
@@ -50,7 +51,7 @@ namespace Remotion.UnitTests.Utilities
     public void IsNullableType_WithNull_ThrowsArgumentNullException ()
     {
       Assert.That (
-          () => NullableTypeUtility.IsNullableType (null),
+          () => NullableTypeUtility.IsNullableType (null!),
           Throws.TypeOf<ArgumentNullException>().With.Message.EndsWith ("Parameter name: type"));
     }
 
@@ -76,7 +77,7 @@ namespace Remotion.UnitTests.Utilities
     public void GetNullableType_WithNull_ThrowsArgumentNullException ()
     {
       Assert.That (
-          () => NullableTypeUtility.GetNullableType (null),
+          () => NullableTypeUtility.GetNullableType (null!),
           Throws.TypeOf<ArgumentNullException>().With.Message.EndsWith ("Parameter name: type"));
     }
 
@@ -102,7 +103,7 @@ namespace Remotion.UnitTests.Utilities
     public void GetBasicType_WithNull_ThrowsArgumentNullException ()
     {
       Assert.That (
-          () => NullableTypeUtility.GetBasicType (null),
+          () => NullableTypeUtility.GetBasicType (null!),
           Throws.TypeOf<ArgumentNullException>().With.Message.EndsWith ("Parameter name: type"));
     }
   }
