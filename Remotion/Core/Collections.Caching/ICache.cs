@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
 
 namespace Remotion.Collections.Caching
@@ -31,6 +32,7 @@ namespace Remotion.Collections.Caching
   /// <see cref="IDictionary{TKey,TValue}"/> or <see cref="T:Remotion.Collections.DataStore.IDataStore{TKey,TValue}"/>.
   /// </remarks>
   public interface ICache<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>, INullObject
+      where TKey : notnull
   {
     /// <summary>
     /// Gets the value of the element with the specified key, creating a new one if none exists.
@@ -39,7 +41,7 @@ namespace Remotion.Collections.Caching
     /// <param name="valueFactory">A delegate used for creating a new element if none exists. Must not be <see langword="null" />.</param>
     /// <returns>The value of the element that was found or created.</returns>
     /// <exception cref="InvalidOperationException">An attempt is made to call <see cref="GetOrCreateValue"/> from inside the factory using the <paramref name="key"/>.</exception>
-    TValue GetOrCreateValue ([NotNull] TKey key, [NotNull] Func<TKey, TValue> valueFactory);
+    TValue GetOrCreateValue ([JetBrains.Annotations.NotNull] TKey key, [JetBrains.Annotations.NotNull] Func<TKey, TValue> valueFactory);
 
     /// <summary>
     /// Tries to get the value of the element with the specified key.
@@ -49,7 +51,7 @@ namespace Remotion.Collections.Caching
     /// The value of the element with the specified key, or <typeparamref name="TValue"/>'s default value if no such element exists.</param>
     /// <returns><see langword="true" /> if an element with the specified key was found; otherwise, <see langword="false" />.</returns>
     /// <exception cref="InvalidOperationException">An attempt is made to call <see cref="GetOrCreateValue"/> from inside the factory using the <paramref name="key"/>.</exception>
-    bool TryGetValue ([NotNull] TKey key, [CanBeNull] out TValue value);
+    bool TryGetValue ([JetBrains.Annotations.NotNull] TKey key, [CanBeNull, AllowNull, MaybeNullWhen (false)] out TValue value);
 
     /// <summary>
     /// Removes all elements from the store.

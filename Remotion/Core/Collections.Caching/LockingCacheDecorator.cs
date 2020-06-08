@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Remotion.Utilities;
 
@@ -37,6 +38,7 @@ namespace Remotion.Collections.Caching
   [Obsolete ("Use ConcurrentCache<TKey, TValue> instead. (Version: 1.19.3)")]
   [Serializable]
   public sealed class LockingCacheDecorator<TKey, TValue> : ICache<TKey, TValue>
+      where TKey: notnull
   {
     private readonly ICache<TKey, TValue> _innerCache;
     private readonly object _lock = new object ();
@@ -57,7 +59,7 @@ namespace Remotion.Collections.Caching
         return _innerCache.GetOrCreateValue (key, valueFactory);
     }
 
-    public bool TryGetValue (TKey key, out TValue value)
+    public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen (false)] out TValue value)
     {
       ArgumentUtility.DebugCheckNotNull ("key", key);
 

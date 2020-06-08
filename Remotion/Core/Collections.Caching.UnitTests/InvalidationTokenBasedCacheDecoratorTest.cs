@@ -51,8 +51,7 @@ namespace Remotion.Collections.Caching.UnitTests
 
       Assert.That (value, Is.EqualTo ("Value"));
 
-      string cachedValue;
-      cache.TryGetValue (key, out cachedValue);
+      cache.TryGetValue (key, out var cachedValue);
       Assert.That (cachedValue, Is.EqualTo ("Value"));
     }
 
@@ -70,8 +69,7 @@ namespace Remotion.Collections.Caching.UnitTests
 
       Assert.That (value, Is.EqualTo ("Value2"));
 
-      string cachedValue;
-      cache.TryGetValue (key, out cachedValue);
+      cache.TryGetValue (key, out var cachedValue);
       Assert.That (cachedValue, Is.EqualTo ("Value2"));
     }
 
@@ -95,9 +93,9 @@ namespace Remotion.Collections.Caching.UnitTests
     [Test]
     public void GetOrCreateValue_RetriesClearUntilInvalidationTokenIsCurrent ()
     {
-      var cacheStub = MockRepository.GenerateStub<ICache<object, string>>();
+      var cacheStub = MockRepository.GenerateStub<ICache<object, string?>>();
       var invalidationToken = InvalidationToken.Create();
-      var decorator = new InvalidationTokenBasedCacheDecorator<object, string> (cacheStub, invalidationToken);
+      var decorator = new InvalidationTokenBasedCacheDecorator<object, string?> (cacheStub, invalidationToken);
       var key = new object();
       var count = 0;
       cacheStub.Stub (_ => _.Clear()).WhenCalled (
@@ -124,8 +122,7 @@ namespace Remotion.Collections.Caching.UnitTests
       var key = new object();
       cache.GetOrCreateValue (key, o => "Value");
 
-      string value;
-      var result = decorator.TryGetValue (key, out value);
+      var result = decorator.TryGetValue (key, out var value);
 
       Assert.That (result, Is.True);
       Assert.That (value, Is.EqualTo ("Value"));
@@ -138,8 +135,7 @@ namespace Remotion.Collections.Caching.UnitTests
       var decorator = new InvalidationTokenBasedCacheDecorator<object, string> (cache, InvalidationToken.Create());
       var key = new object();
 
-      string value;
-      var result = decorator.TryGetValue (key, out value);
+      var result = decorator.TryGetValue (key, out var value);
 
       Assert.That (result, Is.False);
       Assert.That (value, Is.Null);
@@ -155,14 +151,12 @@ namespace Remotion.Collections.Caching.UnitTests
 
       decorator.InvalidationToken.Invalidate();
 
-      string value;
-      var result = decorator.TryGetValue (key, out value);
+      var result = decorator.TryGetValue (key, out var value);
 
       Assert.That (result, Is.False);
       Assert.That (value, Is.Null);
 
-      string cachedValue;
-      bool cachedResult = cache.TryGetValue (key, out cachedValue);
+      bool cachedResult = cache.TryGetValue (key, out var cachedValue);
       Assert.That (cachedResult, Is.False);
     }
 
@@ -176,14 +170,12 @@ namespace Remotion.Collections.Caching.UnitTests
       decorator.InvalidationToken.Invalidate();
 
       cache.GetOrCreateValue (key, o => "Value");
-      string valueOnFirstCall;
-      var resultOnFirstCall = decorator.TryGetValue (key, out valueOnFirstCall);
+      var resultOnFirstCall = decorator.TryGetValue (key, out var valueOnFirstCall);
       Assert.That (resultOnFirstCall, Is.False);
       Assert.That (valueOnFirstCall, Is.Null);
 
       cache.GetOrCreateValue (key, o => "Value2");
-      string valueOnSecondCall;
-      var resultOnSecondCall = decorator.TryGetValue (key, out valueOnSecondCall);
+      var resultOnSecondCall = decorator.TryGetValue (key, out var valueOnSecondCall);
       Assert.That (resultOnSecondCall, Is.True);
       Assert.That (valueOnSecondCall, Is.EqualTo ("Value2"));
     }
@@ -272,8 +264,7 @@ namespace Remotion.Collections.Caching.UnitTests
 
       ((ICache<object, string>) decorator).Clear();
 
-      string cachedValue;
-      bool cachedResult = cache.TryGetValue (key, out cachedValue);
+      bool cachedResult = cache.TryGetValue (key, out var cachedValue);
       Assert.That (cachedResult, Is.False);
     }
 
@@ -301,8 +292,7 @@ namespace Remotion.Collections.Caching.UnitTests
       var key = new object();
       cache.GetOrCreateValue (key, o => "Value");
 
-      string value;
-      var result = decorator.TryGetValue (key, out value);
+      var result = decorator.TryGetValue (key, out var value);
 
       Assert.That (result, Is.True);
       Assert.That (value, Is.EqualTo ("Value"));

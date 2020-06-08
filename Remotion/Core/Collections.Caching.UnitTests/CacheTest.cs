@@ -27,7 +27,7 @@ namespace Remotion.Collections.Caching.UnitTests
   [TestFixture]
   public class CacheTest
   {
-    private ICache<string, object> _cache;
+    private ICache<string, object> _cache = default!;
     
     [SetUp]
     public void SetUp ()
@@ -50,8 +50,7 @@ namespace Remotion.Collections.Caching.UnitTests
     [Test]
     public void TryGet_WithResultNotInCache ()
     {
-      object actual;
-      Assert.That (_cache.TryGetValue ("key1", out actual), Is.False);
+      Assert.That (_cache.TryGetValue ("key1", out var actual), Is.False);
       Assert.That (actual, Is.Null);
     }
 
@@ -103,9 +102,8 @@ namespace Remotion.Collections.Caching.UnitTests
       Assert.That (
           () => _cache.GetOrCreateValue ("key1", key => throw exception),
           Throws.Exception.SameAs (exception));
-
-      object actual;
-      Assert.That (_cache.TryGetValue ("key1", out actual), Is.False);
+      
+      Assert.That (_cache.TryGetValue ("key1", out var actual), Is.False);
       Assert.That (actual, Is.Null);
     }
 
@@ -146,8 +144,7 @@ namespace Remotion.Collections.Caching.UnitTests
       object expected = new object ();
 
       _cache.GetOrCreateValue ("key1", delegate (string key) { return expected; });
-      object actual;
-      Assert.That (_cache.TryGetValue ("key1", out actual), Is.True);
+      Assert.That (_cache.TryGetValue ("key1", out var actual), Is.True);
       Assert.That (actual, Is.SameAs (expected));
     }
 
@@ -168,8 +165,7 @@ namespace Remotion.Collections.Caching.UnitTests
       object expected = new object ();
 
       _cache.GetOrCreateValue ("key1", key => expected);
-      object actual;
-      Assert.That (_cache.TryGetValue ("key1", out actual), Is.True);
+      Assert.That (_cache.TryGetValue ("key1", out var actual), Is.True);
       Assert.That (actual, Is.SameAs (expected));
       _cache.Clear ();
       Assert.That (_cache.TryGetValue ("key1", out actual), Is.False);
@@ -193,9 +189,8 @@ namespace Remotion.Collections.Caching.UnitTests
             return expected;
           });
       Assert.That (actualValue, Is.EqualTo (expected));
-
-      object actualValue2;
-      Assert.That (_cache.TryGetValue ("key1", out actualValue2), Is.True);
+      
+      Assert.That (_cache.TryGetValue ("key1", out var actualValue2), Is.True);
       Assert.That (actualValue2, Is.SameAs (expected));
     }
 
@@ -218,8 +213,7 @@ namespace Remotion.Collections.Caching.UnitTests
 
       Assert.That (actualValue, Is.EqualTo (expected));
 
-      object actualValue2;
-      Assert.That (_cache.TryGetValue ("key1", out actualValue2), Is.True);
+      Assert.That (_cache.TryGetValue ("key1", out var actualValue2), Is.True);
       Assert.That (actualValue2, Is.SameAs (expected));
     }
 
@@ -237,8 +231,7 @@ namespace Remotion.Collections.Caching.UnitTests
           });
       Assert.That (actualValue, Is.EqualTo (expected));
 
-      object actualValue2;
-      Assert.That (_cache.TryGetValue ("key1", out actualValue2), Is.False);
+      Assert.That (_cache.TryGetValue ("key1", out var actualValue2), Is.False);
       Assert.That (actualValue2, Is.Null);
     }
 
@@ -250,7 +243,7 @@ namespace Remotion.Collections.Caching.UnitTests
       object expected3 = new object();
       _cache.GetOrCreateValue ("a", delegate { return expected1; });
       _cache.GetOrCreateValue ("b", delegate { return expected2; });
-      KeyValuePair<string, object>[] nestedItems = null;
+      KeyValuePair<string, object>[]? nestedItems = null;
 
       var actualValue = _cache.GetOrCreateValue (
           "key1",
@@ -270,8 +263,7 @@ namespace Remotion.Collections.Caching.UnitTests
                   new KeyValuePair<string, object> ("b", expected2)
               }));
 
-      object actualValue2;
-      Assert.That (_cache.TryGetValue ("key1", out actualValue2), Is.True);
+      Assert.That (_cache.TryGetValue ("key1", out var actualValue2), Is.True);
       Assert.That (actualValue2, Is.SameAs (expected3));
     }
 
@@ -345,8 +337,7 @@ namespace Remotion.Collections.Caching.UnitTests
       ICache<string, object> deserializedCache = Serializer.SerializeAndDeserialize (_cache);
       Assert.That (deserializedCache, Is.Not.Null);
 
-      object result;
-      Assert.That (deserializedCache.TryGetValue ("bla", out result), Is.False);
+      Assert.That (deserializedCache.TryGetValue ("bla", out var result), Is.False);
       deserializedCache.GetOrCreateValue ("bla", delegate { return "foo"; });
       Assert.That (deserializedCache.TryGetValue ("bla", out result), Is.True);
 
@@ -358,10 +349,9 @@ namespace Remotion.Collections.Caching.UnitTests
     [Test]
     public void SerializeNonEmptyCache ()
     {
-      object result;
 
       _cache.GetOrCreateValue ("bla", delegate { return "foo"; });
-      Assert.That (_cache.TryGetValue ("bla", out result), Is.True);
+      Assert.That (_cache.TryGetValue ("bla", out var result), Is.True);
 
       ICache<string, object> deserializedCache = Serializer.SerializeAndDeserialize (_cache);
       Assert.That (deserializedCache, Is.Not.Null);
@@ -382,8 +372,7 @@ namespace Remotion.Collections.Caching.UnitTests
       // Note that using a field would incur a 10% performance penalty in this particular test setup.
       var cache = new Cache<string, object>();
       cache.GetOrCreateValue ("key", k => "value");
-      object value;
-      cache.TryGetValue ("key", out value);
+      cache.TryGetValue ("key", out var value);
       
       var stopwatch = new Stopwatch();
       stopwatch.Start();

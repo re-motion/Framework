@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 
@@ -37,6 +38,7 @@ namespace Remotion.Collections.Caching
     /// A <see cref="Cache{TKey,TValue}"/> instance for storing keys and values.
     /// </returns>
     public static ICache<TKey, TValue> Create<TKey, TValue> ()
+        where TKey : notnull
     {
       return new Cache<TKey, TValue>();
     }
@@ -52,6 +54,7 @@ namespace Remotion.Collections.Caching
     /// A <see cref="Cache{TKey,TValue}"/> instance for storing keys and values.
     /// </returns>
     public static ICache<TKey, TValue> Create<TKey, TValue> ([NotNull] InvalidationToken invalidationToken)
+        where TKey : notnull
     {
       ArgumentUtility.CheckNotNull ("invalidationToken", invalidationToken);
 
@@ -69,6 +72,7 @@ namespace Remotion.Collections.Caching
     /// A <see cref="Cache{TKey,TValue}"/> instances for storing keys and values.
     /// </returns>
     public static ICache<TKey, TValue> Create<TKey, TValue> ([NotNull] IEqualityComparer<TKey> comparer)
+        where TKey : notnull
     {
       ArgumentUtility.CheckNotNull ("comparer", comparer);
 
@@ -89,6 +93,7 @@ namespace Remotion.Collections.Caching
     public static ICache<TKey, TValue> Create<TKey, TValue> (
         [NotNull] InvalidationToken invalidationToken,
         [NotNull] IEqualityComparer<TKey> comparer)
+        where TKey : notnull
     {
       ArgumentUtility.CheckNotNull ("invalidationToken", invalidationToken);
       ArgumentUtility.CheckNotNull ("comparer", comparer);
@@ -106,6 +111,7 @@ namespace Remotion.Collections.Caching
     /// A <see cref="ConcurrentCache{TKey,TValue}"/> instances for storing keys and values in a thread-safe way.
     /// </returns>
     public static ICache<TKey, TValue> CreateWithSynchronization<TKey, TValue> ()
+        where TKey : notnull
     {
       return new ConcurrentCache<TKey, TValue>();
     }
@@ -122,6 +128,7 @@ namespace Remotion.Collections.Caching
     /// </returns>
     public static ICache<TKey, TValue> CreateWithSynchronization<TKey, TValue> (
         [NotNull] LockingInvalidationToken invalidationToken)
+        where TKey : notnull
     {
       ArgumentUtility.CheckNotNull ("invalidationToken", invalidationToken);
 
@@ -139,6 +146,7 @@ namespace Remotion.Collections.Caching
     /// A <see cref="ConcurrentCache{TKey,TValue}"/> instances for storing keys and values in a thread-safe way.
     /// </returns>
     public static ICache<TKey, TValue> CreateWithSynchronization<TKey, TValue> ([NotNull] IEqualityComparer<TKey> comparer)
+        where TKey : notnull
     {
       ArgumentUtility.CheckNotNull ("comparer", comparer);
 
@@ -159,6 +167,7 @@ namespace Remotion.Collections.Caching
     public static ICache<TKey, TValue> CreateWithSynchronization<TKey, TValue> (
         [NotNull] LockingInvalidationToken invalidationToken,
         [NotNull] IEqualityComparer<TKey> comparer)
+        where TKey: notnull
     {
       ArgumentUtility.CheckNotNull ("invalidationToken", invalidationToken);
       ArgumentUtility.CheckNotNull ("comparer", comparer);
@@ -182,6 +191,7 @@ namespace Remotion.Collections.Caching
     /// </remarks>
     [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
     public static LockingCacheDecorator<TKey, TValue> CreateWithLocking<TKey, TValue> ()
+        where TKey : notnull
     {
       return new LockingCacheDecorator<TKey, TValue> (new Cache<TKey, TValue>());
     }
@@ -204,6 +214,7 @@ namespace Remotion.Collections.Caching
     [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
     public static ICache<TKey, TValue> CreateWithLocking<TKey, TValue> (
         [NotNull] LockingInvalidationToken invalidationToken)
+        where TKey : notnull
     {
       ArgumentUtility.CheckNotNull ("invalidationToken", invalidationToken);
 
@@ -227,7 +238,8 @@ namespace Remotion.Collections.Caching
     /// should therefor be replaced.
     /// </remarks>
     [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
-    public static ICache<TKey, TValue> CreateWithLocking<TKey, TValue> ([CanBeNull] IEqualityComparer<TKey> comparer)
+    public static ICache<TKey, TValue> CreateWithLocking<TKey, TValue> ([CanBeNull] IEqualityComparer<TKey>? comparer)
+        where TKey : notnull
     {
       return new LockingCacheDecorator<TKey, TValue> (new Cache<TKey, TValue> (comparer ?? EqualityComparer<TKey>.Default));
     }
@@ -251,7 +263,8 @@ namespace Remotion.Collections.Caching
     [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
     public static ICache<TKey, TValue> CreateWithLocking<TKey, TValue> (
         [NotNull] LockingInvalidationToken invalidationToken,
-        [CanBeNull] IEqualityComparer<TKey> comparer)
+        [CanBeNull] IEqualityComparer<TKey>? comparer)
+        where TKey : notnull
     {
       ArgumentUtility.CheckNotNull ("invalidationToken", invalidationToken);
 
@@ -276,7 +289,9 @@ namespace Remotion.Collections.Caching
     /// should therefor be replaced.
     /// </remarks>
     [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
-    public static ICache<TKey, TValue> CreateWithLazyLocking<TKey, TValue> () where TValue : class
+    public static ICache<TKey, TValue> CreateWithLazyLocking<TKey, TValue> ()
+        where TKey : notnull
+        where TValue : class?
     {
       return new LazyLockingCachingAdapter<TKey, TValue> (
           new Cache<TKey, Lazy<LazyLockingCachingAdapter<TKey, TValue>.Wrapper>>());
@@ -300,7 +315,8 @@ namespace Remotion.Collections.Caching
     [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
     public static ICache<TKey, TValue> CreateWithLazyLocking<TKey, TValue> (
         [NotNull] LockingInvalidationToken invalidationToken)
-        where TValue : class
+        where TKey : notnull
+        where TValue : class?
     {
       ArgumentUtility.CheckNotNull ("invalidationToken", invalidationToken);
 
@@ -326,8 +342,9 @@ namespace Remotion.Collections.Caching
     /// should therefor be replaced.
     /// </remarks>
     [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
-    public static ICache<TKey, TValue> CreateWithLazyLocking<TKey, TValue> ([CanBeNull] IEqualityComparer<TKey> comparer)
-        where TValue : class
+    public static ICache<TKey, TValue> CreateWithLazyLocking<TKey, TValue> ([CanBeNull] IEqualityComparer<TKey>? comparer)
+        where TKey : notnull
+        where TValue : class?
     {
       return new LazyLockingCachingAdapter<TKey, TValue> (
           new Cache<TKey, Lazy<LazyLockingCachingAdapter<TKey, TValue>.Wrapper>> (comparer ?? EqualityComparer<TKey>.Default));
@@ -352,8 +369,9 @@ namespace Remotion.Collections.Caching
     [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
     public static ICache<TKey, TValue> CreateWithLazyLocking<TKey, TValue> (
         [NotNull] LockingInvalidationToken invalidationToken,
-        [CanBeNull] IEqualityComparer<TKey> comparer)
-        where TValue : class
+        [CanBeNull] IEqualityComparer<TKey>? comparer)
+        where TKey : notnull
+        where TValue : class?
     {
       ArgumentUtility.CheckNotNull ("invalidationToken", invalidationToken);
 
