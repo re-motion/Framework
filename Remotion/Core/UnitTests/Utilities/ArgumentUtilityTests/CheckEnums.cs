@@ -77,7 +77,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
 		public void Fail_Null ()
 		{
 		  Assert.That (
-		      () => ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<TestEnum> ("arg", null),
+		      () => ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<TestEnum> ("arg", null!),
 		      Throws.InstanceOf<ArgumentNullException>());
 		}
     

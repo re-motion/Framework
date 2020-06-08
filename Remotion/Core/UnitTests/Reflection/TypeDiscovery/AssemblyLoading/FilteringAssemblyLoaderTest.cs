@@ -36,11 +36,11 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
   [Serializable]
   public class FilteringAssemblyLoaderTest
   {
-    private MockRepository _mockRepository;
-    private IAssemblyLoaderFilter _filterMock;
-    private FilteringAssemblyLoader _loader;
+    private MockRepository _mockRepository = default!;
+    private IAssemblyLoaderFilter _filterMock = default!;
+    private FilteringAssemblyLoader _loader = default!;
 
-    private MemoryAppender _memoryAppender;
+    private MemoryAppender _memoryAppender = default!;
 
     [SetUp]
     public void SetUp ()
@@ -70,7 +70,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
 
       Assembly referenceAssembly = typeof (FilteringAssemblyLoaderTest).Assembly;
       string path = new Uri (referenceAssembly.EscapedCodeBase).AbsolutePath;
-      Assembly loadedAssembly = _loader.TryLoadAssembly (path);
+      Assembly? loadedAssembly = _loader.TryLoadAssembly (path);
       Assert.That (loadedAssembly, Is.SameAs (referenceAssembly));
     }
 
@@ -80,15 +80,15 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
       Assembly referenceAssembly = typeof (FilteringAssemblyLoaderTest).Assembly;
       string path = new Uri (referenceAssembly.EscapedCodeBase).AbsolutePath;
 
-      Expect.Call (_filterMock.ShouldConsiderAssembly (null))
+      Expect.Call (_filterMock.ShouldConsiderAssembly (null!))
           .Constraints (Mocks_Property.Value ("FullName", referenceAssembly.FullName))
           .Return (true);
-      Expect.Call (_filterMock.ShouldIncludeAssembly (null))
+      Expect.Call (_filterMock.ShouldIncludeAssembly (null!))
           .Constraints (Mocks_Property.Value ("FullName", referenceAssembly.FullName))
           .Return (true);
 
       _mockRepository.ReplayAll();
-      Assembly loadedAssembly = _loader.TryLoadAssembly (path);
+      Assembly? loadedAssembly = _loader.TryLoadAssembly (path);
       Assert.That (loadedAssembly, Is.SameAs (referenceAssembly));
       _mockRepository.VerifyAll();
     }
@@ -99,15 +99,15 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
       Assembly referenceAssembly = typeof (FilteringAssemblyLoaderTest).Assembly;
       string path = new Uri (referenceAssembly.EscapedCodeBase).AbsolutePath;
 
-      Expect.Call (_filterMock.ShouldConsiderAssembly (null))
+      Expect.Call (_filterMock.ShouldConsiderAssembly (null!))
           .Constraints (Mocks_Property.Value ("FullName", referenceAssembly.FullName))
           .Return (true);
-      Expect.Call (_filterMock.ShouldIncludeAssembly (null))
+      Expect.Call (_filterMock.ShouldIncludeAssembly (null!))
           .Constraints (Mocks_Property.Value ("FullName", referenceAssembly.FullName))
           .Return (false);
 
       _mockRepository.ReplayAll();
-      Assembly loadedAssembly = _loader.TryLoadAssembly (path);
+      Assembly? loadedAssembly = _loader.TryLoadAssembly (path);
       Assert.That (loadedAssembly, Is.Null);
       _mockRepository.VerifyAll();
     }
@@ -118,12 +118,12 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
       Assembly referenceAssembly = typeof (FilteringAssemblyLoaderTest).Assembly;
       string path = new Uri (referenceAssembly.EscapedCodeBase).AbsolutePath;
 
-      Expect.Call (_filterMock.ShouldConsiderAssembly (null))
+      Expect.Call (_filterMock.ShouldConsiderAssembly (null!))
           .Constraints (Mocks_Property.Value ("FullName", referenceAssembly.FullName))
           .Return (false);
 
       _mockRepository.ReplayAll();
-      Assembly loadedAssembly = _loader.TryLoadAssembly (path);
+      Assembly? loadedAssembly = _loader.TryLoadAssembly (path);
       Assert.That (loadedAssembly, Is.Null);
       _mockRepository.VerifyAll();
     }
@@ -141,7 +141,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
 
       try
       {
-        Assembly loadedAssembly = _loader.TryLoadAssembly (path);
+        Assembly? loadedAssembly = _loader.TryLoadAssembly (path);
         Assert.That (loadedAssembly, Is.Null);
         
         CheckLog (
@@ -361,14 +361,14 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
 
     private void SetupFilterTrue ()
     {
-      SetupResult.For (_filterMock.ShouldConsiderAssembly (null)).IgnoreArguments().Return (true);
-      SetupResult.For (_filterMock.ShouldIncludeAssembly (null)).IgnoreArguments().Return (true);
+      SetupResult.For (_filterMock.ShouldConsiderAssembly (null!)).IgnoreArguments().Return (true);
+      SetupResult.For (_filterMock.ShouldIncludeAssembly (null!)).IgnoreArguments().Return (true);
 
       _mockRepository.ReplayAll();
     }
 
 
-    private string Compile (string sourceDirectory, string outputAssemblyName, bool generateExecutable, string compilerOptions)
+    private string Compile (string sourceDirectory, string outputAssemblyName, bool generateExecutable, string? compilerOptions)
     {
       Assertion.IsTrue (
           Path.GetDirectoryName (typeof (FilteringAssemblyLoader).Assembly.Location) == Path.GetDirectoryName (typeof (Remotion.Logging.LogManager).Assembly.Location));

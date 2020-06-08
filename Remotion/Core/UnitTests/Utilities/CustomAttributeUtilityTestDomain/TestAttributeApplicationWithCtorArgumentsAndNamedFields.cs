@@ -25,15 +25,15 @@ namespace Remotion.UnitTests.Utilities.CustomAttributeUtilityTestDomain
       typeof (object),
       new int[] { 2, 3 },
       new string[] { "2", "3" },
-      new object[] { null, "foo", typeof (object) }, new Type[] { typeof (string), typeof (int), typeof (double) },
+      new object?[] { null, "foo", typeof (object) }, new Type[] { typeof (string), typeof (int), typeof (double) },
       INamedF = 5,
       SNamedF = "5",
       ONamedF = "bla",
       TNamedF = typeof (float),
       INamedArrayF = new int[] { 1, 2, 3 },
-      SNamedArrayF = new string[] { "1", null, "2" },
-      ONamedArrayF = new object[] { 1, 2, null },
-      TNamedArrayF = new Type[] { typeof (Random), null }
+      SNamedArrayF = new string?[] { "1", null, "2" },
+      ONamedArrayF = new object?[] { 1, 2, null },
+      TNamedArrayF = new Type?[] { typeof (Random), null }
       )]
   public class TestAttributeApplicationWithCtorArgumentsAndNamedFields
   {

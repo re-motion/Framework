@@ -27,9 +27,9 @@ namespace Remotion.UnitTests.Logging
   [TestFixture]
   public class Log4NetLogManagerTest
   {
-    private TextWriter _originalConsoleOut;
-    private StringWriter _fakeConsoleOut;
-    private Log4NetLogManager _logManager;
+    private TextWriter _originalConsoleOut = default!;
+    private StringWriter _fakeConsoleOut = default!;
+    private Log4NetLogManager _logManager = default!;
 
     [SetUp]
     public void SetUp ()

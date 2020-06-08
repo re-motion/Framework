@@ -24,7 +24,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
 {
   public class TestBase
   {
-    protected DefaultServiceLocator CreateServiceLocator (IServiceConfigurationDiscoveryService serviceConfigurationDiscoveryService = null)
+    protected DefaultServiceLocator CreateServiceLocator (IServiceConfigurationDiscoveryService? serviceConfigurationDiscoveryService = null)
     {
       return new DefaultServiceLocator (
           serviceConfigurationDiscoveryService ?? MockRepository.GenerateStrictMock<IServiceConfigurationDiscoveryService>());

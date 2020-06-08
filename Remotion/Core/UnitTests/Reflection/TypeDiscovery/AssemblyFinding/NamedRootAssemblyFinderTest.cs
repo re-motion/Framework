@@ -27,15 +27,15 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
   [TestFixture]
   public class NamedRootAssemblyFinderTest
   {
-    private IAssemblyLoader _loaderMock;
+    private IAssemblyLoader _loaderMock = default!;
 
-    private Assembly _assembly1;
-    private Assembly _assembly2;
-    private Assembly _assembly3;
+    private Assembly _assembly1 = default!;
+    private Assembly _assembly2 = default!;
+    private Assembly _assembly3 = default!;
     
-    private AssemblyName _name1;
-    private AssemblyName _name2;
-    private AssemblyName _name3;
+    private AssemblyName _name1 = default!;
+    private AssemblyName _name2 = default!;
+    private AssemblyName _name3 = default!;
     
     private AssemblyNameSpecification _specification1;
     private AssemblyNameSpecification _specification2;

@@ -44,7 +44,7 @@ namespace Remotion.UnitTests.Context
     public void UsesSafeContext_WithGivenKey ()
     {
       object instance = new object();
-      SafeContextSingleton<object> singleton = new SafeContextSingleton<object> ("test", delegate { return null; });
+      SafeContextSingleton<object> singleton = new SafeContextSingleton<object> ("test", delegate { return null!; });
       singleton.SetCurrent (instance);
 
       Assert.That (SafeContext.Instance.GetData ("test"), Is.SameAs (instance));
@@ -53,7 +53,7 @@ namespace Remotion.UnitTests.Context
     [Test]
     public void SingleInstance_CreatedOnDemand ()
     {
-      object instance = null;
+      object? instance = null;
       SafeContextSingleton<object> singleton = new SafeContextSingleton<object> ("test", delegate { return (instance = new object ()); });
 
       Assert.That (instance, Is.Null);

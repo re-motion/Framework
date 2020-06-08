@@ -128,7 +128,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     [Test]
     public void GetAllInstances_ImplementationIsRegisteredAsFactoryWithInstanceLifetime ()
     {
-      TestImplementation1 expectedInstance = null;
+      TestImplementation1? expectedInstance = null;
       var serviceImplementation = ServiceImplementationInfo.CreateMultiple (
           () => expectedInstance = new TestImplementation1(),
           LifetimeKind.InstancePerDependency);
@@ -147,7 +147,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     [Test]
     public void GetAllInstances_ImplementationIsRegisteredAsFactoryWithSingletonLifetime_AndSingletonIsLazyInitialized ()
     {
-      TestImplementation1 expectedInstance = null;
+      TestImplementation1? expectedInstance = null;
       var serviceImplementation = ServiceImplementationInfo.CreateMultiple (
           () => expectedInstance = new TestImplementation1(),
           LifetimeKind.Singleton);
@@ -201,7 +201,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     [Test]
     public void GetAllInstances_ServiceTypeWithNullImplementation_ThrowsActivationException ()
     {
-      var implementation = ServiceImplementationInfo.CreateMultiple<ITestTypeWithErrors> (() => null);
+      var implementation = ServiceImplementationInfo.CreateMultiple<ITestTypeWithErrors> (() => null!);
       var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestTypeWithErrors), implementation);
 
       var serviceLocator = CreateServiceLocator();

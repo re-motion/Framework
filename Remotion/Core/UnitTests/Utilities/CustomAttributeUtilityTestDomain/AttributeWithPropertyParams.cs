@@ -20,7 +20,7 @@ namespace Remotion.UnitTests.Utilities.CustomAttributeUtilityTestDomain
 {
   public class AttributeWithPropertyParams : Attribute
   {
-    public AttributeWithPropertyParams (int i, string s, object o, Type t, int[] iArray, string[] sArray, object[] oArray, Type[] tArray)
+    public AttributeWithPropertyParams (int i, string? s, object? o, Type? t, int[] iArray, string?[] sArray, object?[] oArray, Type?[] tArray)
     {
     }
 
@@ -30,43 +30,43 @@ namespace Remotion.UnitTests.Utilities.CustomAttributeUtilityTestDomain
       set { }
     }
 
-    public string SNamed
+    public string? SNamed
     {
       get { return null; }
       set { }
     }
 
-    public object ONamed
+    public object? ONamed
     {
       get { return null; }
       set { }
     }
 
-    public Type TNamed
+    public Type? TNamed
     {
       get { return null; }
       set { }
     }
 
-    public int[] INamedArray
+    public int[]? INamedArray
     {
       get { return null; }
       set { }
     }
 
-    public string[] SNamedArray
+    public string?[]? SNamedArray
     {
       get { return null; }
       set { }
     }
 
-    public object[] ONamedArray
+    public object?[]? ONamedArray
     {
       get { return null; }
       set { }
     }
 
-    public Type[] TNamedArray
+    public Type?[]? TNamedArray
     {
       get { return null; }
       set { }

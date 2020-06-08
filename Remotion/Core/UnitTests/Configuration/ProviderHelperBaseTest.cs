@@ -27,9 +27,9 @@ namespace Remotion.UnitTests.Configuration
   [TestFixture]
   public class ProviderHelperBaseTest
   {
-    private StubProviderHelper _providerHelper;
-    private ConfigurationPropertyCollection _propertyCollection;
-    private StubExtendedConfigurationSection _stubConfigurationSection;
+    private StubProviderHelper _providerHelper = default!;
+    private ConfigurationPropertyCollection _propertyCollection = default!;
+    private StubExtendedConfigurationSection _stubConfigurationSection = default!;
 
     [SetUp]
     public void SetUp ()

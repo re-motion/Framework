@@ -53,7 +53,7 @@ namespace Remotion.UnitTests.ServiceLocation
 
     private class FakeRegistry : IServiceConfigurationRegistry
     {
-      public ServiceConfigurationEntry ServiceConfigurationEntry { get; private set; }
+      public ServiceConfigurationEntry ServiceConfigurationEntry { get; private set; } = default!;
 
       public void Register (ServiceConfigurationEntry serviceConfigurationEntry)
       {

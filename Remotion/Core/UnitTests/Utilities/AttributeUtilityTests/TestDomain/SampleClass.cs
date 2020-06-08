@@ -25,110 +25,110 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests.TestDomain
   {
     [Inherited]
     [UsedImplicitly]
-    public virtual string PropertyWithSingleAttribute
+    public virtual string? PropertyWithSingleAttribute
     {
       get { return null; }
     }
 
     [Inherited]
     [UsedImplicitly]
-    protected virtual string ProtectedPropertyWithAttribute
+    protected virtual string? ProtectedPropertyWithAttribute
     {
       get { return null; }
     }
 
     [Multiple]
     [UsedImplicitly]
-    public virtual string PropertyWithMultipleAttribute
+    public virtual string? PropertyWithMultipleAttribute
     {
       get { return null; }
     }
 
     [Inherited]
     [UsedImplicitly]
-    public virtual string this[int i]
+    public virtual string? this[int i]
     {
       get { return null; }
     }
 
     [UsedImplicitly]
-    public virtual string this[string s]
+    public virtual string? this[string s]
     {
       get { return null; }
     }
 
     [Inherited]
     [UsedImplicitly]
-    public virtual string PropertyWithoutGetter
+    public virtual string? PropertyWithoutGetter
     {
       set { Dev.Null = value; }
     }
 
     [NotInherited]
     [UsedImplicitly]
-    public virtual string PropertyWithNotInheritedAttribute
+    public virtual string? PropertyWithNotInheritedAttribute
     {
       get { return null; }
     }
 
     [InheritedNotMultiple ("Base")]
     [UsedImplicitly]
-    public virtual string PropertyWithInheritedNotMultipleAttribute
+    public virtual string? PropertyWithInheritedNotMultipleAttribute
     {
       get { return null; }
     }
 
     [Inherited]
     [UsedImplicitly]
-    public virtual event EventHandler EventWithSingleAttribute;
+    public virtual event EventHandler? EventWithSingleAttribute;
 
     [Inherited]
     [UsedImplicitly]
-    protected virtual event EventHandler ProtectedEventWithAttribute;
+    protected virtual event EventHandler? ProtectedEventWithAttribute;
 
     [Multiple]
     [UsedImplicitly]
-    public virtual event EventHandler EventWithMultipleAttribute;
+    public virtual event EventHandler? EventWithMultipleAttribute;
 
     [NotInherited]
     [UsedImplicitly]
-    public virtual event EventHandler EventWithNotInheritedAttribute;
+    public virtual event EventHandler? EventWithNotInheritedAttribute;
 
     [InheritedNotMultiple ("Base")]
     [UsedImplicitly]
-    public virtual event EventHandler EventWithInheritedNotMultipleAttribute;
+    public virtual event EventHandler? EventWithInheritedNotMultipleAttribute;
 
     [Inherited]
     [UsedImplicitly]
-    public virtual string MethodWithSingleAttribute ()
+    public virtual string? MethodWithSingleAttribute ()
     {
       return null;
     }
 
     [Inherited]
     [UsedImplicitly]
-    protected virtual string ProtectedMethodWithAttribute ()
+    protected virtual string? ProtectedMethodWithAttribute ()
     {
       return null;
     }
 
     [Multiple]
     [UsedImplicitly]
-    public virtual string MethodWithMultipleAttribute ()
+    public virtual string? MethodWithMultipleAttribute ()
     {
       return null;
     }
 
     [NotInherited]
     [UsedImplicitly]
-    public virtual string MethodWithNotInheritedAttribute ()
+    public virtual string? MethodWithNotInheritedAttribute ()
     {
       return null;
     }
 
     [InheritedNotMultiple ("Base")]
     [UsedImplicitly]
-    public virtual string MethodWithInheritedNotMultipleAttribute()
+    public virtual string? MethodWithInheritedNotMultipleAttribute()
     {
       return null;
     }

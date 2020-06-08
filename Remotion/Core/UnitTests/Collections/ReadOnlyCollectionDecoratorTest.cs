@@ -24,12 +24,12 @@ namespace Remotion.UnitTests.Collections
   [TestFixture]
   public class ReadOnlyCollectionDecoratorTest
   {
-    private ReadOnlyCollectionDecorator<string >_collection;
+    private ReadOnlyCollectionDecorator<string?>_collection = default!;
 
     [SetUp]
     public void SetUp ()
     {
-      _collection = new ReadOnlyCollectionDecorator<string> (new List<string>(new[]{"test1", "test2"}));
+      _collection = new ReadOnlyCollectionDecorator<string?> (new List<string?>(new[]{"test1", "test2"}));
     }
 
     [Test]

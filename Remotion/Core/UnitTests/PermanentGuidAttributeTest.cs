@@ -28,11 +28,11 @@ namespace Remotion.UnitTests
     {
 #pragma warning disable 169
       [PermanentGuid ("823BAC5E-2685-4535-8B12-F2C7BF943FDC")]
-      private object _field;
+      private object? _field;
 #pragma warning restore 169
 
       [PermanentGuid ("A9EC3641-CBEE-41D6-8867-F202CDF66660")]
-      public object Property { get; set; }
+      public object? Property { get; set; }
 
       [PermanentGuid ("C60DA8F6-F3C0-4B00-AFB5-298B4B929408")]
       public void Method ()

@@ -231,7 +231,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     {
       Func<ITestType> factory = () => new TestImplementation1();
       Func<object> factoryAsObject = factory;
-      var implementation = ServiceImplementationInfo.CreateSingle<ITestTypeWithErrors> (() => null);
+      var implementation = ServiceImplementationInfo.CreateSingle<ITestTypeWithErrors> (() => null!);
       PrivateInvoke.SetNonPublicField (implementation, "_factory", factoryAsObject);
       var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestTypeWithErrors), implementation);
 

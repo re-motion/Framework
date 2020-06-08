@@ -26,12 +26,12 @@ namespace Remotion.UnitTests.Utilities
   [TestFixture]
   public class DefaultConverterTest
   {
-    private DefaultConverter _converterForString;
-    private DefaultConverter _converterForObject;
-    private DefaultConverter _converterForInt;
-    private DefaultConverter _converterForNullableInt;
+    private DefaultConverter _converterForString = default!;
+    private DefaultConverter _converterForObject = default!;
+    private DefaultConverter _converterForInt = default!;
+    private DefaultConverter _converterForNullableInt = default!;
 
-    private ITypeDescriptorContext _typeDescriptorContext;
+    private ITypeDescriptorContext _typeDescriptorContext = default!;
 
     [SetUp]
     public void SetUp ()

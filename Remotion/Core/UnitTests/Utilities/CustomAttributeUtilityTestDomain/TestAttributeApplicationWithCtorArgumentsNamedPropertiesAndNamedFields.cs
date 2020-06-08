@@ -25,23 +25,23 @@ namespace Remotion.UnitTests.Utilities.CustomAttributeUtilityTestDomain
       typeof (object),
       new int[] { 2, 3 },
       new string[] { "2", "3" },
-      new object[] { null, "foo", typeof (object) }, new Type[] { typeof (string), typeof (int), typeof (double) },
+      new object?[] { null, "foo", typeof (object) }, new Type[] { typeof (string), typeof (int), typeof (double) },
       INamed = 5,
       SNamed = "P5",
       ONamed = "Pbla",
       TNamed = typeof (float),
       INamedArray = new int[] { 1, 2, 3 },
-      SNamedArray = new string[] { "P1", null, "P2" },
-      ONamedArray = new object[] { 1, 2, null },
-      TNamedArray = new Type[] { typeof (Random), null },
+      SNamedArray = new string?[] { "P1", null, "P2" },
+      ONamedArray = new object?[] { 1, 2, null },
+      TNamedArray = new Type?[] { typeof (Random), null },
       INamedF = 5,
       SNamedF = "5",
       ONamedF = "bla",
       TNamedF = typeof (float),
       INamedArrayF = new int[] { 1, 2, 3 },
-      SNamedArrayF = new string[] { "1", null, "2" },
-      ONamedArrayF = new object[] { 1, 2, null },
-      TNamedArrayF = new Type[] { typeof (Random), null }
+      SNamedArrayF = new string?[] { "1", null, "2" },
+      ONamedArrayF = new object?[] { 1, 2, null },
+      TNamedArrayF = new Type?[] { typeof (Random), null }
       )]
   public class TestAttributeApplicationWithCtorArgumentsNamedPropertiesAndNamedFields
   {

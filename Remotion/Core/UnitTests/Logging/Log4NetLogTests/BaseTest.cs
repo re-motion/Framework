@@ -26,9 +26,9 @@ namespace Remotion.UnitTests.Logging.Log4NetLogTests
 {
   public class BaseTest
   {
-    private ILogger _logger;
-    private ILog _log;
-    private MemoryAppender _memoryAppender;
+    private ILogger _logger = default!;
+    private ILog _log = default!;
+    private MemoryAppender _memoryAppender = default!;
 
     [SetUp]
     public virtual void SetUp ()

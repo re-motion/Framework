@@ -52,7 +52,7 @@ namespace Remotion.UnitTests.Logging
       logMock.Replay ();
 
       "test".LogAndReturnValue (logMock, LogLevel.Debug, value => string.Format ("x{0}y", value));
-      logMock.AssertWasCalled (mock => mock.Log (LogLevel.Debug, (int?) null, "xtesty", (Exception) null));
+      logMock.AssertWasCalled (mock => mock.Log (LogLevel.Debug, (int?) null, "xtesty", (Exception?) null));
     }
 
     [Test]

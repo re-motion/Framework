@@ -23,14 +23,14 @@ namespace Remotion.UnitTests.Utilities
   [TestFixture]
   public class DelegateBasedEqualityComparerTest
   {
-    private DelegateBasedEqualityComparer<object> _comparer;
-    private object _obj1;
-    private object _obj2;
+    private DelegateBasedEqualityComparer<object?> _comparer = default!;
+    private object _obj1 = default!;
+    private object _obj2 = default!;
 
     [SetUp]
     public void SetUp ()
     {
-      _comparer = new DelegateBasedEqualityComparer<object> ((o1, o2) => o1 == o2, o => o.GetHashCode ());
+      _comparer = new DelegateBasedEqualityComparer<object?> ((o1, o2) => o1 == o2, o => o?.GetHashCode() ?? 0);
       _obj1 = new Object ();
       _obj2 = new Object ();
     }

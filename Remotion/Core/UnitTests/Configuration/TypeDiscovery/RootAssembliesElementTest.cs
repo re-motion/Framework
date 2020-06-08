@@ -28,7 +28,7 @@ namespace Remotion.UnitTests.Configuration.TypeDiscovery
   [TestFixture]
   public class RootAssembliesElementTest
   {
-    private IAssemblyLoader _loaderStub;
+    private IAssemblyLoader _loaderStub = default!;
     private const string _emptyXmlFragment = @"<rootAssemblies />";
     private const string _xmlFragmentWithFilesAndNames = @"<rootAssemblies>
             <byName>

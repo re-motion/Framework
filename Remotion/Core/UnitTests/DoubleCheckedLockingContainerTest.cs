@@ -38,7 +38,7 @@ namespace Remotion.UnitTests
     {
     }
 
-    private MockRepository _mocks;
+    private MockRepository _mocks = default!;
 
     [SetUp]
     public void SetUp()
@@ -82,7 +82,7 @@ namespace Remotion.UnitTests
           new DoubleCheckedLockingContainer<SampleClass> (delegate { return mockFactory.Create (); });
       _mocks.ReplayAll ();
 
-      container.Value = null;
+      container.Value = null!;
 
       _mocks.VerifyAll ();
 
@@ -121,7 +121,7 @@ namespace Remotion.UnitTests
       Assert.That (container.HasValue, Is.True);
       _mocks.VerifyAll ();
 
-      container.Value = null;
+      container.Value = null!;
       Assert.That (container.HasValue, Is.False);
     }
   }

@@ -21,7 +21,7 @@ namespace Remotion.UnitTests.Reflection.TestDomain.MethodInfoExtensions
   public interface IInterfaceWithReferenceType<T>
       where T : class
   {
-    T ExplicitInterfaceScalar { get; set; }
-    T ImplicitInterfaceScalar { get; set; }
+    T? ExplicitInterfaceScalar { get; set; }
+    T? ImplicitInterfaceScalar { get; set; }
   }
 }

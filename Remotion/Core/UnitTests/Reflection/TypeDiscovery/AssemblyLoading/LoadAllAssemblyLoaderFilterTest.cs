@@ -23,7 +23,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
   [TestFixture]
   public class LoadAllAssemblyLoaderFilterTest
   {
-    private LoadAllAssemblyLoaderFilter _filter;
+    private LoadAllAssemblyLoaderFilter _filter = default!;
 
     [SetUp]
     public void SetUp ()

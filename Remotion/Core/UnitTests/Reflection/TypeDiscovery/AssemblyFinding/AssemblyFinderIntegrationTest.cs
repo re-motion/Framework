@@ -33,22 +33,22 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
   public class AssemblyFinderIntegrationTest
   {
     private const string c_testAssemblySourceDirectoryRoot = @"Reflection\TypeDiscovery\TestAssemblies";
-    private AssemblyCompilerBuildOutputManager _baseDirectoryBuildOutputManager;
-    private AssemblyCompilerBuildOutputManager _dynamicDirectoryBuildOutputManager;
-    private AssemblyCompilerBuildOutputManager _searchPathForDllsBuildOutputManager;
-    private AssemblyCompilerBuildOutputManager _searchPathForExesBuildOutputManager;
+    private AssemblyCompilerBuildOutputManager _baseDirectoryBuildOutputManager = default!;
+    private AssemblyCompilerBuildOutputManager _dynamicDirectoryBuildOutputManager = default!;
+    private AssemblyCompilerBuildOutputManager _searchPathForDllsBuildOutputManager = default!;
+    private AssemblyCompilerBuildOutputManager _searchPathForExesBuildOutputManager = default!;
 
-    private string _markedAssemblyPath;
-    private string _markedExeAssemblyPath;
-    private string _markedAssemblyWithDerivedAttributePath;
-    private string _markedReferencedAssemblyPath;
+    private string _markedAssemblyPath = default!;
+    private string _markedExeAssemblyPath = default!;
+    private string _markedAssemblyWithDerivedAttributePath = default!;
+    private string _markedReferencedAssemblyPath = default!;
 
-    private string _markedAssemblyInSearchPathPath;
-    private string _markedExeAssemblyInSearchPathPath;
-    private string _markedAssemblyInSearchPathWithNameMismatchPath;
+    private string _markedAssemblyInSearchPathPath = default!;
+    private string _markedExeAssemblyInSearchPathPath = default!;
+    private string _markedAssemblyInSearchPathWithNameMismatchPath = default!;
 
-    private string _markedAssemblyInDynamicDirectoryPath;
-    private string _markedExeAssemblyInDynamicDirectoryPath;
+    private string _markedAssemblyInDynamicDirectoryPath = default!;
+    private string _markedExeAssemblyInDynamicDirectoryPath = default!;
 
     [OneTimeSetUp]
     public void OneTimeSetUp ()
@@ -228,7 +228,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
 
     private void ExecuteInSeparateAppDomain (CrossAppDomainDelegate test)
     {
-      AppDomain appDomain = null;
+      AppDomain? appDomain = null;
 
       try
       {

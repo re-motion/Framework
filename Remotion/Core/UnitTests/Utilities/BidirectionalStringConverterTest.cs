@@ -26,8 +26,8 @@ namespace Remotion.UnitTests.Utilities
 [TestFixture]
 public class BidirectionalStringConverterTest
 {
-  private BidirectionalStringConverter _converter;
-  private CultureInfo _culture;
+  private BidirectionalStringConverter _converter = default!;
+  private CultureInfo _culture = default!;
 
   public enum ConversionTestEnum
   {

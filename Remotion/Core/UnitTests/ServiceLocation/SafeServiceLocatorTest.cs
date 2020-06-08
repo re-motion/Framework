@@ -28,8 +28,8 @@ namespace Remotion.UnitTests.ServiceLocation
   [TestFixture]
   public class SafeServiceLocatorTest
   {
-    private ServiceLocatorProvider _serviceLocatorProviderBackup;
-    private IServiceLocationConfiguration _previousConfiguration;
+    private ServiceLocatorProvider _serviceLocatorProviderBackup = default!;
+    private IServiceLocationConfiguration? _previousConfiguration;
 
     [OneTimeSetUp]
     public void OneTimeSetUp ()
@@ -197,7 +197,7 @@ namespace Remotion.UnitTests.ServiceLocation
       var fakeServiceLocator = MockRepository.GenerateStub<IServiceLocator> ();
       serviceLocatorProvider
           .Stub (stub => stub.GetServiceLocator (Arg<ReadOnlyCollection<ServiceConfigurationEntry>>.Is.Anything))
-          .Return (null)
+          .Return (null!)
           .WhenCalled (
               mi =>
               {
@@ -237,7 +237,7 @@ namespace Remotion.UnitTests.ServiceLocation
     {
       var defaultServiceLocatorContainer = 
           (DoubleCheckedLockingContainer<IServiceLocator>) PrivateInvoke.GetNonPublicStaticField (typeof (SafeServiceLocator), "s_defaultServiceLocator");
-      defaultServiceLocatorContainer.Value = null;
+      defaultServiceLocatorContainer.Value = null!;
     }
 
     interface IService1 { }

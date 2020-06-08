@@ -27,7 +27,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
   [TestFixture]
   public class SearchPathRootAssemblyFinderTest
   {
-    private IAssemblyLoader _loaderStub;
+    private IAssemblyLoader _loaderStub = default!;
 
     [SetUp]
     public void SetUp ()

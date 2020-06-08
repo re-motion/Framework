@@ -31,13 +31,13 @@ namespace Remotion.UnitTests.Logging
   [TestFixture]
   public class Log4NetTraceListenerTest
   {
-    private MemoryAppender _memoryAppender;
-    private Log4NetTraceListener _listener;
-    private Log4NetTraceListener _filterListener;
-    private ILoggerRepository _repository;
-    private TraceEventCache _traceEventCache;
-    private MockRepository _mocks;
-    private TraceFilter _mockFilter;
+    private MemoryAppender _memoryAppender = default!;
+    private Log4NetTraceListener _listener = default!;
+    private Log4NetTraceListener _filterListener = default!;
+    private ILoggerRepository _repository = default!;
+    private TraceEventCache _traceEventCache = default!;
+    private MockRepository _mocks = default!;
+    private TraceFilter _mockFilter = default!;
 
     [SetUp]
     public void SetUp ()
@@ -146,7 +146,7 @@ namespace Remotion.UnitTests.Logging
     [Test]
     public void Test_TraceEvent ()
     {
-      _listener.TraceEvent (null, "Test", TraceEventType.Information, 1);
+      _listener.TraceEvent (null!, "Test", TraceEventType.Information, 1);
 
       LoggingEvent[] events = _memoryAppender.GetEvents ();
       Assert.That (events.Length, Is.EqualTo (1));
@@ -157,7 +157,7 @@ namespace Remotion.UnitTests.Logging
     [Test]
     public void Test_TraceEvent_WithMessage ()
     {
-      _listener.TraceEvent (null, "Test", TraceEventType.Information, 1, "The message.");
+      _listener.TraceEvent (null!, "Test", TraceEventType.Information, 1, "The message.");
 
       LoggingEvent[] events = _memoryAppender.GetEvents ();
       Assert.That (events.Length, Is.EqualTo (1));
@@ -168,7 +168,7 @@ namespace Remotion.UnitTests.Logging
     [Test]
     public void Test_TraceEvent_WithFormat ()
     {
-      _listener.TraceEvent (null, "Test", TraceEventType.Information, 1, "{0} {1}", "The", "message.");
+      _listener.TraceEvent (null!, "Test", TraceEventType.Information, 1, "{0} {1}", "The", "message.");
 
       LoggingEvent[] events = _memoryAppender.GetEvents ();
       Assert.That (events.Length, Is.EqualTo (1));
@@ -212,7 +212,7 @@ namespace Remotion.UnitTests.Logging
     {
       Exception exception = new Exception ("An exception.");
 
-      _listener.TraceData (null, "Test", TraceEventType.Information, 1, exception);
+      _listener.TraceData (null!, "Test", TraceEventType.Information, 1, exception);
 
       LoggingEvent[] events = _memoryAppender.GetEvents ();
       Assert.That (events.Length, Is.EqualTo (1));
@@ -227,7 +227,7 @@ namespace Remotion.UnitTests.Logging
 
       Object[] data = new object[] { exception, "The message." };
 
-      _listener.TraceData (null, "Test", TraceEventType.Information, 1, data);
+      _listener.TraceData (null!, "Test", TraceEventType.Information, 1, data);
 
       LoggingEvent[] events = _memoryAppender.GetEvents ();
       Assert.That (events.Length, Is.EqualTo (1));
@@ -277,7 +277,7 @@ namespace Remotion.UnitTests.Logging
     {
       Guid relatedActivityId = new Guid ();
 
-      _listener.TraceTransfer (null, "Test", 1, "The message.", relatedActivityId);
+      _listener.TraceTransfer (null!, "Test", 1, "The message.", relatedActivityId);
 
       LoggingEvent[] events = _memoryAppender.GetEvents ();
       Assert.That (events.Length, Is.EqualTo (1));
@@ -292,7 +292,7 @@ namespace Remotion.UnitTests.Logging
     {
       Guid relatedActivityId = new Guid ();
 
-      _listener.TraceTransfer (null, "Test", 1, null, relatedActivityId);
+      _listener.TraceTransfer (null!, "Test", 1, null!, relatedActivityId);
 
       LoggingEvent[] events = _memoryAppender.GetEvents ();
       Assert.That (events.Length, Is.EqualTo (1));
