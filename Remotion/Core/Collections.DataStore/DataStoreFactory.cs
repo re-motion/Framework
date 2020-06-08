@@ -36,6 +36,7 @@ namespace Remotion.Collections.DataStore
     /// A <see cref="SimpleDataStore{TKey,TValue}"/> instances for storing keys and values.
     /// </returns>
     public static IDataStore<TKey, TValue> Create<TKey, TValue> ()
+        where TKey : notnull
     {
       return new SimpleDataStore<TKey, TValue>();
     }
@@ -51,6 +52,7 @@ namespace Remotion.Collections.DataStore
     /// A <see cref="SimpleDataStore{TKey,TValue}"/> instances for storing keys and values.
     /// </returns>
     public static IDataStore<TKey, TValue> Create<TKey, TValue> ([NotNull] IEqualityComparer<TKey> comparer)
+        where TKey : notnull
     {
       ArgumentUtility.CheckNotNull ("comparer", comparer);
 
@@ -67,6 +69,7 @@ namespace Remotion.Collections.DataStore
     /// A <see cref="ConcurrentDataStore{TKey,TValue}"/> instance for storing keys and values in a thread-safe way.
     /// </returns>
     public static IDataStore<TKey, TValue> CreateWithSynchronization<TKey, TValue> ()
+        where TKey : notnull
     {
       return new ConcurrentDataStore<TKey, TValue>();
     }
@@ -82,6 +85,7 @@ namespace Remotion.Collections.DataStore
     /// A <see cref="ConcurrentDataStore{TKey,TValue}"/> instance for storing keys and values in a thread-safe way.
     /// </returns>
     public static IDataStore<TKey, TValue> CreateWithSynchronization<TKey, TValue> ([NotNull] IEqualityComparer<TKey> comparer)
+        where TKey : notnull
     {
       ArgumentUtility.CheckNotNull ("comparer", comparer);
 
@@ -104,6 +108,7 @@ namespace Remotion.Collections.DataStore
     /// </remarks>
     [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
     public static IDataStore<TKey, TValue> CreateWithLocking<TKey, TValue> ()
+        where TKey : notnull
     {
       return new LockingDataStoreDecorator<TKey, TValue> (new SimpleDataStore<TKey, TValue>());
     }
@@ -124,7 +129,8 @@ namespace Remotion.Collections.DataStore
     /// should therefor be replaced.
     /// </remarks>
     [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
-    public static IDataStore<TKey, TValue> CreateWithLocking<TKey, TValue> ([CanBeNull] IEqualityComparer<TKey> comparer)
+    public static IDataStore<TKey, TValue> CreateWithLocking<TKey, TValue> ([CanBeNull] IEqualityComparer<TKey>? comparer)
+        where TKey : notnull
     {
       return new LockingDataStoreDecorator<TKey, TValue> (new SimpleDataStore<TKey, TValue> (comparer ?? EqualityComparer<TKey>.Default));
     }
@@ -144,7 +150,9 @@ namespace Remotion.Collections.DataStore
     /// should therefor be replaced.
     /// </remarks>
     [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
-    public static IDataStore<TKey, TValue> CreateWithLazyLocking<TKey, TValue> () where TValue: class
+    public static IDataStore<TKey, TValue> CreateWithLazyLocking<TKey, TValue> () 
+        where TKey : notnull
+        where TValue: class?
     {
       return new LazyLockingDataStoreAdapter<TKey, TValue> (
           new SimpleDataStore<TKey, Lazy<LazyLockingDataStoreAdapter<TKey, TValue>.Wrapper>>());
@@ -166,7 +174,9 @@ namespace Remotion.Collections.DataStore
     /// should therefor be replaced.
     /// </remarks>
     [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
-    public static IDataStore<TKey, TValue> CreateWithLazyLocking<TKey, TValue> ([CanBeNull] IEqualityComparer<TKey> comparer) where TValue: class
+    public static IDataStore<TKey, TValue> CreateWithLazyLocking<TKey, TValue> ([CanBeNull] IEqualityComparer<TKey>? comparer) 
+        where TKey : notnull
+        where TValue: class?
     {
       return new LazyLockingDataStoreAdapter<TKey, TValue> (
           new SimpleDataStore<TKey, Lazy<LazyLockingDataStoreAdapter<TKey, TValue>.Wrapper>> (comparer ?? EqualityComparer<TKey>.Default));

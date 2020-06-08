@@ -23,6 +23,7 @@ namespace Remotion.Collections.DataStore
   /// The <see cref="TimeSpanBasedExpirationPolicy{TValue}"/> handles values which can be expire based on <see cref="TimeSpan"/> periods.
   /// </summary>
   public class TimeSpanBasedExpirationPolicy<TValue> : IExpirationPolicy<TValue, DateTime, DateTime>
+      where TValue : notnull
   {
     private readonly TimeSpan _period;
     private readonly IUtcNowProvider _utcNowProvider;

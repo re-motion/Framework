@@ -26,9 +26,9 @@ namespace Remotion.Collections.DataStore.UnitTests
   [TestFixture]
   public class LockingDataStoreDecoratorTest
   {
-    private LockingDataStoreDecorator<string, int> _decorator;
+    private LockingDataStoreDecorator<string, int> _decorator = default!;
 
-    private LockingDecoratorTestHelper<IDataStore<string, int>> _helper;
+    private LockingDecoratorTestHelper<IDataStore<string, int>> _helper = default!;
 
     [SetUp]
     public void SetUp ()
@@ -86,7 +86,7 @@ namespace Remotion.Collections.DataStore.UnitTests
     [Test]
     public void GetValueOrDefault ()
     {
-      _helper.ExpectSynchronizedDelegation (store => store.GetValueOrDefault ("hugo"), 7);
+      _helper.ExpectSynchronizedDelegation (store => store.GetValueOrDefault ("hugo")!, 7);
     }
 
     [Test]

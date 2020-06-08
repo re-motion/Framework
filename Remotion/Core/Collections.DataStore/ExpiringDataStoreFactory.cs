@@ -43,6 +43,8 @@ namespace Remotion.Collections.DataStore
     public static ExpiringDataStore<TKey, TValue, TExpirationInfo, TScanInfo> Create<TKey, TValue, TExpirationInfo, TScanInfo> (
         [NotNull] IExpirationPolicy<TValue, TExpirationInfo, TScanInfo> policy,
         [NotNull] IEqualityComparer<TKey> comparer)
+        where TKey : notnull
+        where TValue : notnull
     {
       ArgumentUtility.CheckNotNull ("policy", policy);
       ArgumentUtility.CheckNotNull ("comparer", comparer);
@@ -73,6 +75,8 @@ namespace Remotion.Collections.DataStore
     public static LockingDataStoreDecorator<TKey, TValue> CreateWithLocking<TKey, TValue, TExpirationInfo, TScanInfo> (
         [NotNull] IExpirationPolicy<TValue, TExpirationInfo, TScanInfo> policy,
         [NotNull] IEqualityComparer<TKey> comparer)
+        where TKey : notnull
+        where TValue : notnull
     {
       ArgumentUtility.CheckNotNull ("policy", policy);
       ArgumentUtility.CheckNotNull ("comparer", comparer);
@@ -103,7 +107,8 @@ namespace Remotion.Collections.DataStore
     public static LazyLockingDataStoreAdapter<TKey, TValue> CreateWithLazyLocking<TKey, TValue, TExpirationInfo, TScanInfo> (
         [NotNull] IExpirationPolicy<Lazy<LazyLockingDataStoreAdapter<TKey, TValue>.Wrapper>, TExpirationInfo, TScanInfo> policy,
         [NotNull] IEqualityComparer<TKey> comparer) 
-        where TValue: class
+        where TKey : notnull
+        where TValue: class?
     {
       ArgumentUtility.CheckNotNull ("policy", policy);
       ArgumentUtility.CheckNotNull ("comparer", comparer);

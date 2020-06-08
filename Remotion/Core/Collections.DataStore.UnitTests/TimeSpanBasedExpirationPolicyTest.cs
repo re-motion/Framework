@@ -24,8 +24,8 @@ namespace Remotion.Collections.DataStore.UnitTests
   [TestFixture]
   public class TimeSpanBasedExpirationPolicyTest
   {
-    private IUtcNowProvider _utcProviderStub;
-    private TimeSpanBasedExpirationPolicy<string> _policy;
+    private IUtcNowProvider _utcProviderStub = default!;
+    private TimeSpanBasedExpirationPolicy<string> _policy = default!;
 
     [SetUp]
     public void SetUp ()
