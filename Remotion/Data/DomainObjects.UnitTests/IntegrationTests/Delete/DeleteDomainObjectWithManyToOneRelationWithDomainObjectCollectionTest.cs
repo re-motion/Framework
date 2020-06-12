@@ -23,7 +23,7 @@ using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
 {
   [TestFixture]
-  public class DeleteDomainObjectWithManyToOneRelationTest : ClientTransactionBaseTest
+  public class DeleteDomainObjectWithManyToOneRelationWithDomainObjectCollectionTest : ClientTransactionBaseTest
   {
     private OrderItem _orderItem;
     private Order _order;
@@ -156,7 +156,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     {
       _orderItem.Delete ();
 
-      DomainObjectCollection originalOrderItems = _order.GetOriginalRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
+      DomainObjectCollection originalOrderItems = _order.GetOriginalRelatedObjectsAsDomainObjectCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
 
       Assert.That (originalOrderItems, Is.Not.Null);
       Assert.That (originalOrderItems.Count, Is.EqualTo (2));

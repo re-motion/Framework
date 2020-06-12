@@ -125,7 +125,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
       return (DomainObject) Properties[propertyName].GetValueWithoutTypeCheck ();
     }
 
-    public DomainObjectCollection GetRelatedObjects (string propertyName)
+    public DomainObjectCollection GetRelatedObjectsAsDomainObjectCollection (string propertyName)
     {
       return (DomainObjectCollection) Properties[propertyName].GetValueWithoutTypeCheck ();
     }
@@ -135,7 +135,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
       return (DomainObject) Properties[propertyName].GetOriginalValueWithoutTypeCheck ();
     }
 
-    public DomainObjectCollection GetOriginalRelatedObjects (string propertyName)
+    public DomainObjectCollection GetOriginalRelatedObjectsAsDomainObjectCollection (string propertyName)
     {
       return (DomainObjectCollection) Properties[propertyName].GetOriginalValueWithoutTypeCheck ();
     }

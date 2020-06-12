@@ -25,17 +25,17 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   [Serializable]
   public class DomainObjectCollectionEndPointDataManagerFactory : IDomainObjectCollectionEndPointDataManagerFactory
   {
-    private readonly ICollectionEndPointChangeDetectionStrategy _changeDetectionStrategy;
+    private readonly IDomainObjectCollectionEndPointChangeDetectionStrategy _changeDetectionStrategy;
 
     public DomainObjectCollectionEndPointDataManagerFactory (
-        ICollectionEndPointChangeDetectionStrategy changeDetectionStrategy)
+        IDomainObjectCollectionEndPointChangeDetectionStrategy changeDetectionStrategy)
     {
       ArgumentUtility.CheckNotNull ("changeDetectionStrategy", changeDetectionStrategy);
 
       _changeDetectionStrategy = changeDetectionStrategy;
     }
 
-    public ICollectionEndPointChangeDetectionStrategy ChangeDetectionStrategy
+    public IDomainObjectCollectionEndPointChangeDetectionStrategy ChangeDetectionStrategy
     {
       get { return _changeDetectionStrategy; }
     }

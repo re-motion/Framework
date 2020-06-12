@@ -540,7 +540,7 @@
     <Compile Include="Infrastructure\ObjectPersistence\LoadedObjectDataWithDataSourceDataTest.cs" />
     <Compile Include="Infrastructure\ObjectPersistence\NullLoadedObjectDataTest.cs" />
     <Compile Include="Infrastructure\TestableClientTransactionComponentFactoryBase.cs" />
-    <Compile Include="IntegrationTests\Delete\CascadedDeleteTest.cs" />
+    <Compile Include="IntegrationTests\Delete\CascadedDeleteForDomainObjectCollectionTest.cs" />
     <Compile Include="IntegrationTests\EagerFetching\EagerFetchingTest.cs" />
     <Compile Include="IntegrationTests\PersistableDataObjectMother.cs" />
     <Compile Include="IntegrationTests\Relations\DomainObjectCollectionSortTest.cs" />
@@ -648,7 +648,7 @@
     <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\DomainObjectCollectionEndPointDataManagerFactoryTest.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\CompleteDomainObjectCollectionEndPointLoadStateTest.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\IncompleteDomainObjectCollectionEndPointLoadStateTest.cs" />
-    <Compile Include="DataManagement\SerializableFakes\SerializableCollectionEndPointChangeDetectionStrategyFake.cs" />
+    <Compile Include="DataManagement\SerializableFakes\SerializableDomainObjectCollectionEndPointChangeDetectionStrategyFake.cs" />
     <Compile Include="DataManagement\SerializableFakes\SerializableDomainObjectCollectionEndPointDataManagerFake.cs" />
     <Compile Include="DataManagement\SerializableFakes\SerializableDomainObjectCollectionEndPointFake.cs" />
     <Compile Include="DataManagement\SerializableFakes\SerializableDomainObjectCollectionEndPointDataManagerFactoryFake.cs" />
@@ -1330,7 +1330,7 @@
     <Compile Include="DomainObjectTest.cs" />
     <Compile Include="Infrastructure\ObjectPersistence\SubPersistenceStrategyTest.cs" />
     <Compile Include="Infrastructure\ObjectPersistence\RootPersistenceStrategyTest.cs" />
-    <Compile Include="Infrastructure\SubCollectionEndPointChangeDetectionStrategyTest.cs" />
+    <Compile Include="Infrastructure\SubDomainObjectCollectionEndPointChangeDetectionStrategyTest.cs" />
     <Compile Include="Infrastructure\CurrentPropertyManagerTest.cs" />
     <Compile Include="Infrastructure\DomainObjectTransactionContextIndexerTest.cs" />
     <Compile Include="Infrastructure\DomainObjectTransactionContextTest.cs" />
@@ -1339,7 +1339,7 @@
     <Compile Include="Infrastructure\ObjectIDStringSerialization\GuidObjectIDValueParserTest.cs" />
     <Compile Include="Infrastructure\ObjectIDStringSerialization\Int32ObjectIDValueParserTest.cs" />
     <Compile Include="Infrastructure\ObjectIDStringSerialization\ObjectIDStringSerializerTest.cs" />
-    <Compile Include="Infrastructure\RootCollectionEndPointChangeDetectionStrategyTest.cs" />
+    <Compile Include="Infrastructure\RootDomainObjectCollectionEndPointChangeDetectionStrategyTest.cs" />
     <Compile Include="IntegrationTests\ClientTransactionDiffersTest.cs" />
     <Compile Include="IntegrationTests\ConcurrencyViolationTest.cs" />
     <Compile Include="IntegrationTests\PropertyTest.cs" />
@@ -1553,10 +1553,10 @@
     <Compile Include="DataManagement\RelationEndPoints\RelationEndPointManagerTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DomainObjects\AddToOneToManyRelationTest.cs">
+    <Compile Include="DomainObjects\AddToOneToManyRelationWithDomainObjectCollectionTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DomainObjects\AddToOneToManyRelationWithLazyLoadTest.cs">
+    <Compile Include="DomainObjects\AddToOneToManyRelationWithLazyLoadOfDomainObjectCollectionTest.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DomainObjects\ChangeUnidirectionalRelationWithNullTest.cs">
@@ -1571,10 +1571,10 @@
     <Compile Include="IntegrationTests\Delete\DeleteDomainObjectWithLazyLoadTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IntegrationTests\Delete\DeleteDomainObjectWithManyToOneRelationTest.cs">
+    <Compile Include="IntegrationTests\Delete\DeleteDomainObjectWithManyToOneRelationWithDomainObjectCollectionTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IntegrationTests\Delete\DeleteDomainObjectWithOneToManyRelationTest.cs">
+    <Compile Include="IntegrationTests\Delete\DeleteDomainObjectWithOneToManyRelationWithDomainObjectCollectionTest.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="IntegrationTests\Delete\DeleteDomainObjectWithOneToOneRelationTest.cs">
@@ -1598,7 +1598,7 @@
     <Compile Include="DomainObjects\NewDomainObjectTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DomainObjects\OneToManyRelationChangeTest.cs">
+    <Compile Include="DomainObjects\OneToManyRelationChangeWithDomainObjectCollectionTest.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DomainObjects\OneToOneRelationChangeTest.cs">
@@ -1607,7 +1607,7 @@
     <Compile Include="DomainObjects\OneToOneRelationChangeWithNullTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DomainObjects\RemoveFromOneToManyRelationTest.cs">
+    <Compile Include="DomainObjects\RemoveFromOneToManyRelationWithDomainObjectCollectionTest.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DomainObjects\ReplaceInOneToManyRelationTest.cs">

@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
   public class DomainObjectCollectionEndPointDataManagerTest : StandardMappingTest
   {
     private RelationEndPointID _endPointID;
-    private ICollectionEndPointChangeDetectionStrategy _changeDetectionStrategyMock;
+    private IDomainObjectCollectionEndPointChangeDetectionStrategy _changeDetectionStrategyMock;
     
     private DomainObject _domainObject1;
     private DomainObject _domainObject2;
@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       base.SetUp ();
 
       _endPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Customer1, "Orders");
-      _changeDetectionStrategyMock = MockRepository.GenerateStrictMock<ICollectionEndPointChangeDetectionStrategy> ();
+      _changeDetectionStrategyMock = MockRepository.GenerateStrictMock<IDomainObjectCollectionEndPointChangeDetectionStrategy> ();
 
       _domainObject1 = DomainObjectMother.CreateFakeObject<Order> (DomainObjectIDs.Order1);
       _domainObject2 = DomainObjectMother.CreateFakeObject<Order> (DomainObjectIDs.Order3);
@@ -615,7 +615,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _dataManager.CollectionData.Add (_domainObject1);
       _dataManager.RegisterCurrentOppositeEndPoint (_domainObjectEndPoint1);
 
-      var sourceDataManager = new DomainObjectCollectionEndPointDataManager (_endPointID, MockRepository.GenerateStub<ICollectionEndPointChangeDetectionStrategy>());
+      var sourceDataManager = new DomainObjectCollectionEndPointDataManager (_endPointID, MockRepository.GenerateStub<IDomainObjectCollectionEndPointChangeDetectionStrategy>());
       sourceDataManager.CollectionData.Add (_domainObject2);
       sourceDataManager.RegisterCurrentOppositeEndPoint (sourceOppositeEndPointStub);
 
@@ -633,7 +633,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void FlattenedSerializable ()
     {
-      var changeDetectionStrategy = new SerializableCollectionEndPointChangeDetectionStrategyFake();
+      var changeDetectionStrategy = new SerializableDomainObjectCollectionEndPointChangeDetectionStrategyFake();
       var data = new DomainObjectCollectionEndPointDataManager (_endPointID, changeDetectionStrategy);
 
       var endPointFake = new SerializableRealObjectEndPointFake (null, _domainObject1);

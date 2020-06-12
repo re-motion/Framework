@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
   [TestFixture]
   public class DomainObjectCollectionEndPointDataManagerFactoryTest : StandardMappingTest
   {
-    private ICollectionEndPointChangeDetectionStrategy _changeDetectionStrategy;
+    private IDomainObjectCollectionEndPointChangeDetectionStrategy _changeDetectionStrategy;
 
     private DomainObjectCollectionEndPointDataManagerFactory _factory;
 
@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       base.SetUp();
 
-      _changeDetectionStrategy = MockRepository.GenerateStub<ICollectionEndPointChangeDetectionStrategy>();
+      _changeDetectionStrategy = MockRepository.GenerateStub<IDomainObjectCollectionEndPointChangeDetectionStrategy>();
 
       _factory = new DomainObjectCollectionEndPointDataManagerFactory (_changeDetectionStrategy);
     }
@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void Serializable ()
     {
-      var changeDetectionStrategy = new SerializableCollectionEndPointChangeDetectionStrategyFake();
+      var changeDetectionStrategy = new SerializableDomainObjectCollectionEndPointChangeDetectionStrategyFake();
       var factory = new DomainObjectCollectionEndPointDataManagerFactory (changeDetectionStrategy);
 
       var deserializedInstance = Serializer.SerializeAndDeserialize (factory);

@@ -113,7 +113,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Order order = DomainObjectIDs.Order1.GetObject<Order> ();
 
       OrderTicket oldOrderTicket = order.OrderTicket;
-      DomainObjectCollection oldOrderItems = order.GetOriginalRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
+      DomainObjectCollection oldOrderItems = order.GetOriginalRelatedObjectsAsDomainObjectCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
       Customer oldCustomer = order.Customer;
       Official oldOfficial = order.Official;
 

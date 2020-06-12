@@ -23,7 +23,7 @@ using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 {
   [TestFixture]
-  public class RemoveFromOneToManyRelationTest : ClientTransactionBaseTest
+  public class RemoveFromOneToManyRelationWithDomainObjectCollectionTest : ClientTransactionBaseTest
   {
     private Employee _supervisor;
     private Employee _subordinate;

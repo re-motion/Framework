@@ -21,7 +21,7 @@ using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
 {
   [Serializable]
-  public class SerializableCollectionEndPointChangeDetectionStrategyFake : ICollectionEndPointChangeDetectionStrategy
+  public class SerializableDomainObjectCollectionEndPointChangeDetectionStrategyFake : IDomainObjectCollectionEndPointChangeDetectionStrategy
   {
     public bool HasDataChanged (IDomainObjectCollectionData currentData, IDomainObjectCollectionData originalData)
     {

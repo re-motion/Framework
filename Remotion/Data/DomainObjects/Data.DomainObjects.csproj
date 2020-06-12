@@ -636,7 +636,7 @@
     <Compile Include="DataManagement\RelationEndPoints\RealObjectEndPoint.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualObjectEndPoint.cs" />
     <Compile Include="DomainObjectCollection.EventRaiser.cs" />
-    <Compile Include="DataManagement\RelationEndPoints\ICollectionEndPointChangeDetectionStrategy.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\IDomainObjectCollectionEndPointChangeDetectionStrategy.cs" />
     <Compile Include="DomainObjectCollection.IList.cs" />
     <Compile Include="DataManagement\CollectionData\DomainObjectCollectionDataExtensions.cs" />
     <Compile Include="DataManagement\CollectionData\IndirectDomainObjectCollectionEventRaiser.cs" />
@@ -747,13 +747,13 @@
     <Compile Include="DomainImplementation\UnloadService.cs" />
     <Compile Include="Infrastructure\Enlistment\IEnlistedDomainObjectManager.cs" />
     <Compile Include="Infrastructure\Enlistment\DictionaryBasedEnlistedDomainObjectManager.cs" />
-    <Compile Include="Infrastructure\SubCollectionEndPointChangeDetectionStrategy.cs" />
+    <Compile Include="Infrastructure\SubDomainObjectCollectionEndPointChangeDetectionStrategy.cs" />
     <Compile Include="Infrastructure\ObjectIDStringSerialization\ObjectIDStringSerializer.cs" />
     <Compile Include="Infrastructure\ObjectIDStringSerialization\StringObjectIDValueParser.cs" />
     <Compile Include="Infrastructure\ObjectIDStringSerialization\GuidObjectIDValueParser.cs" />
     <Compile Include="Infrastructure\ObjectIDStringSerialization\Int32ObjectIDValueParser.cs" />
     <Compile Include="Infrastructure\ObjectIDStringSerialization\IObjectIDValueParser.cs" />
-    <Compile Include="Infrastructure\RootCollectionEndPointChangeDetectionStrategy.cs" />
+    <Compile Include="Infrastructure\RootDomainObjectCollectionEndPointChangeDetectionStrategy.cs" />
     <Compile Include="Infrastructure\Serialization\FlattenedSerializationLogger.cs" />
     <Compile Include="InvalidEnumValueException.cs" />
     <Compile Include="DataManagement\Commands\CompositeCommand.cs" />

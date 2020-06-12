@@ -23,12 +23,12 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Infrastructure
 {
   /// <summary>
-  /// Implements <see cref="ICollectionEndPointChangeDetectionStrategy"/> for sub-transactions. In sub-transactions, a collection end point
+  /// Implements <see cref="IDomainObjectCollectionEndPointChangeDetectionStrategy"/> for sub-transactions. In sub-transactions, a collection end point
   /// is regarded to have changed when either the opposite collection reference has changed or the sequence of items has changed. The order of the 
   /// items is significant.
   /// </summary>
   [Serializable]
-  public class SubCollectionEndPointChangeDetectionStrategy : ICollectionEndPointChangeDetectionStrategy
+  public class SubDomainObjectCollectionEndPointChangeDetectionStrategy : IDomainObjectCollectionEndPointChangeDetectionStrategy
   {
     public bool HasDataChanged (IDomainObjectCollectionData currentData, IDomainObjectCollectionData originalData)
     {

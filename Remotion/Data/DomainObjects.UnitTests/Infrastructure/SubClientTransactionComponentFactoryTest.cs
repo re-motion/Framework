@@ -195,7 +195,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       
       Assert.That (endPointFactory.DomainObjectCollectionEndPointDataManagerFactory, Is.TypeOf (typeof (DomainObjectCollectionEndPointDataManagerFactory)));
       var collectionEndPointDataManagerFactory = ((DomainObjectCollectionEndPointDataManagerFactory) endPointFactory.DomainObjectCollectionEndPointDataManagerFactory);
-      Assert.That (collectionEndPointDataManagerFactory.ChangeDetectionStrategy, Is.TypeOf<SubCollectionEndPointChangeDetectionStrategy> ());
+      Assert.That (collectionEndPointDataManagerFactory.ChangeDetectionStrategy, Is.TypeOf<SubDomainObjectCollectionEndPointChangeDetectionStrategy> ());
       Assert.That (endPointFactory.VirtualObjectEndPointDataManagerFactory, Is.TypeOf<VirtualObjectEndPointDataManagerFactory> ());
 
       Assert.That (endPointFactory.DomainObjectCollectionEndPointCollectionProvider, Is.TypeOf<DomainObjectCollectionEndPointCollectionProvider> ());
@@ -207,7 +207,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 
       Assert.That (endPointFactory.VirtualCollectionEndPointDataManagerFactory, Is.TypeOf (typeof (VirtualCollectionEndPointDataManagerFactory)));
       var virtualCollectionEndPointDataManagerFactory = (VirtualCollectionEndPointDataManagerFactory) endPointFactory.VirtualCollectionEndPointDataManagerFactory;
-      Assert.That (virtualCollectionEndPointDataManagerFactory.ChangeDetectionStrategy, Is.TypeOf<SubCollectionEndPointChangeDetectionStrategy> ());
+      Assert.That (virtualCollectionEndPointDataManagerFactory.ChangeDetectionStrategy, Is.TypeOf<SubDomainObjectCollectionEndPointChangeDetectionStrategy> ());
 
       Assert.That (endPointFactory.VirtualCollectionEndPointCollectionProvider, Is.TypeOf<VirtualCollectionEndPointCollectionProvider> ());
       var virtualCollectionEndPointCollectionProvider = (VirtualCollectionEndPointCollectionProvider) endPointFactory.VirtualCollectionEndPointCollectionProvider;

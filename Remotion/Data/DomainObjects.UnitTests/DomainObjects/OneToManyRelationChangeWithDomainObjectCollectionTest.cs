@@ -23,7 +23,7 @@ using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 {
   [TestFixture]
-  public class OneToManyRelationChangeTest : RelationChangeBaseTest
+  public class OneToManyRelationChangeWithDomainObjectCollectionTest : RelationChangeBaseTest
   {
     private Customer _oldCustomer;
     private Customer _newCustomer;
@@ -411,7 +411,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       _newCustomer.Orders.Add (_order1);
 
-      DomainObjectCollection oldOrders = _newCustomer.GetOriginalRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders");
+      DomainObjectCollection oldOrders = _newCustomer.GetOriginalRelatedObjectsAsDomainObjectCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders");
       Assert.That (_newCustomer.Orders[_order1.ID], Is.SameAs (_order1));
       Assert.That (oldOrders[_order1.ID], Is.Null);
     }
@@ -420,7 +420,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     public void GetOriginalRelatedObjectsWithLazyLoad ()
     {
       Employee supervisor = DomainObjectIDs.Employee1.GetObject<Employee> ();
-      DomainObjectCollection subordinates = supervisor.GetOriginalRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Subordinates");
+      DomainObjectCollection subordinates = supervisor.GetOriginalRelatedObjectsAsDomainObjectCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Subordinates");
 
       Assert.That (subordinates.Count, Is.EqualTo (2));
     }

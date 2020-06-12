@@ -186,7 +186,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       order.OrderItems.Add (orderItem);
 
-      DomainObjectCollection originalOrderItems = order.GetOriginalRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
+      DomainObjectCollection originalOrderItems = order.GetOriginalRelatedObjectsAsDomainObjectCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
 
       Assert.That (originalOrderItems, Is.Not.Null);
       Assert.That (originalOrderItems.Count, Is.EqualTo (0));
@@ -402,12 +402,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       subordinate.Name = "Zarniwoop";
       supervisor.Subordinates.Add (subordinate);
 
-      Assert.That (supervisor.GetOriginalRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Subordinates").Count, Is.EqualTo (0));
+      Assert.That (supervisor.GetOriginalRelatedObjectsAsDomainObjectCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Subordinates").Count, Is.EqualTo (0));
       Assert.That (subordinate.GetOriginalRelatedObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor"), Is.Null);
 
       TestableClientTransaction.Commit ();
 
-      DomainObjectCollection originalSubordinates = supervisor.GetOriginalRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Subordinates");
+      DomainObjectCollection originalSubordinates = supervisor.GetOriginalRelatedObjectsAsDomainObjectCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Subordinates");
       Assert.That (originalSubordinates.Count, Is.EqualTo (1));
       Assert.That (originalSubordinates[subordinate.ID], Is.SameAs (subordinate));
       Assert.That (subordinate.GetOriginalRelatedObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor"), Is.SameAs (supervisor));

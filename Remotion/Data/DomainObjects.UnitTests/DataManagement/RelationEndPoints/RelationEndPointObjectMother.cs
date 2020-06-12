@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       clientTransaction = clientTransaction ?? ClientTransactionScope.CurrentTransaction;
       var dataManager = ClientTransactionTestHelper.GetDataManager (clientTransaction);
-      var changeDetectionStrategy = new RootCollectionEndPointChangeDetectionStrategy();
+      var changeDetectionStrategy = new RootDomainObjectCollectionEndPointChangeDetectionStrategy();
       var dataStrategyFactory = new AssociatedDomainObjectCollectionDataStrategyFactory (dataManager);
       var collectionEndPoint = new DomainObjectCollectionEndPoint (
           clientTransaction,

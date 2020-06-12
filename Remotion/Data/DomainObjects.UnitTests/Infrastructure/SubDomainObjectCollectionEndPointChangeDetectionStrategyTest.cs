@@ -24,13 +24,13 @@ using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 {
   [TestFixture]
-  public class RootCollectionEndPointChangeDetectionStrategyTest : ClientTransactionBaseTest
+  public class SubDomainObjectCollectionEndPointChangeDetectionStrategyTest : ClientTransactionBaseTest
   {
     private Order _order1;
     private Order _order3;
     private Order _order4;
 
-    private RootCollectionEndPointChangeDetectionStrategy _strategy;
+    private SubDomainObjectCollectionEndPointChangeDetectionStrategy _strategy;
     private IDomainObjectCollectionData _currentData;
 
     public override void SetUp ()
@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 
       _currentData = new DomainObjectCollectionData (new[] { _order1, _order3 });
 
-      _strategy = new RootCollectionEndPointChangeDetectionStrategy ();
+      _strategy = new SubDomainObjectCollectionEndPointChangeDetectionStrategy ();
     }
 
     [Test]
@@ -53,10 +53,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     }
 
     [Test]
-    public void HasDataChanged_False_OrderOnly ()
+    public void HasDataChanged_True_OrderOnly ()
     {
-      var originalData = new DomainObjectCollectionData (_currentData.Reverse());
-      Assert.That (_strategy.HasDataChanged (_currentData, originalData), Is.False);
+      var originalData = new DomainObjectCollectionData (_currentData.Reverse ());
+      Assert.That (_strategy.HasDataChanged (_currentData, originalData), Is.True);
     }
 
     [Test]
@@ -64,6 +64,5 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     {
       var originalData = new DomainObjectCollectionData (new[] { _order1, _order3, _order4 });
       Assert.That (_strategy.HasDataChanged (_currentData, originalData), Is.True);
-    }
-  }
+    }}
 }

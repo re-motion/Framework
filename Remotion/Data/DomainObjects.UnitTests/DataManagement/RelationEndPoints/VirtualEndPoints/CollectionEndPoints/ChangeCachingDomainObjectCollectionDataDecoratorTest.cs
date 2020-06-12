@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     private IDomainObjectCollectionData _wrappedData;
     private ChangeCachingDomainObjectCollectionDataDecorator _decoratorWithRealData;
     
-    private ICollectionEndPointChangeDetectionStrategy _strategyStrictMock;
+    private IDomainObjectCollectionEndPointChangeDetectionStrategy _strategyStrictMock;
 
     public override void SetUp ()
     {
@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _wrappedData = new DomainObjectCollectionData (new[] { _domainObject });
       _decoratorWithRealData = new ChangeCachingDomainObjectCollectionDataDecorator (_wrappedData);
 
-      _strategyStrictMock = new MockRepository().StrictMock<ICollectionEndPointChangeDetectionStrategy> ();
+      _strategyStrictMock = new MockRepository().StrictMock<IDomainObjectCollectionEndPointChangeDetectionStrategy> ();
     }
 
     [Test]

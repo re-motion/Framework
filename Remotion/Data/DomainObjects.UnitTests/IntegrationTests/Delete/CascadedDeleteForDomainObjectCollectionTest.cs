@@ -21,7 +21,7 @@ using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
 {
   [TestFixture]
-  public class CascadedDeleteTest : ClientTransactionBaseTest
+  public class CascadedDeleteForDomainObjectCollectionTest : ClientTransactionBaseTest
   {
     [Test]
     [Ignore ("TODO RM-6156: Define what re-store should do here - actually, it's not allowed to modify the relations within the Deleting handler, but the exception is quite unclear.")]

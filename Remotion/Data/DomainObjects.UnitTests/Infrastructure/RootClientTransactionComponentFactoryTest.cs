@@ -188,7 +188,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 
       Assert.That (endPointFactory.DomainObjectCollectionEndPointDataManagerFactory, Is.TypeOf (typeof (DomainObjectCollectionEndPointDataManagerFactory)));
       var domainObjectCollectionEndPointDataManagerFactory = ((DomainObjectCollectionEndPointDataManagerFactory) endPointFactory.DomainObjectCollectionEndPointDataManagerFactory);
-      Assert.That (domainObjectCollectionEndPointDataManagerFactory.ChangeDetectionStrategy, Is.TypeOf<RootCollectionEndPointChangeDetectionStrategy> ());
+      Assert.That (domainObjectCollectionEndPointDataManagerFactory.ChangeDetectionStrategy, Is.TypeOf<RootDomainObjectCollectionEndPointChangeDetectionStrategy> ());
       Assert.That (endPointFactory.VirtualObjectEndPointDataManagerFactory, Is.TypeOf<VirtualObjectEndPointDataManagerFactory> ());
 
       Assert.That (endPointFactory.DomainObjectCollectionEndPointCollectionProvider, Is.TypeOf<DomainObjectCollectionEndPointCollectionProvider> ());
@@ -200,7 +200,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 
       Assert.That (endPointFactory.VirtualCollectionEndPointDataManagerFactory, Is.TypeOf (typeof (VirtualCollectionEndPointDataManagerFactory)));
       var virtualCollectionEndPointDataManagerFactory = (VirtualCollectionEndPointDataManagerFactory) endPointFactory.VirtualCollectionEndPointDataManagerFactory;
-      Assert.That (virtualCollectionEndPointDataManagerFactory.ChangeDetectionStrategy, Is.TypeOf<RootCollectionEndPointChangeDetectionStrategy> ());
+      Assert.That (virtualCollectionEndPointDataManagerFactory.ChangeDetectionStrategy, Is.TypeOf<RootDomainObjectCollectionEndPointChangeDetectionStrategy> ());
 
       Assert.That (endPointFactory.VirtualCollectionEndPointCollectionProvider, Is.TypeOf<VirtualCollectionEndPointCollectionProvider> ());
       var virtualCollectionEndPointCollectionProvider = (VirtualCollectionEndPointCollectionProvider) endPointFactory.VirtualCollectionEndPointCollectionProvider;

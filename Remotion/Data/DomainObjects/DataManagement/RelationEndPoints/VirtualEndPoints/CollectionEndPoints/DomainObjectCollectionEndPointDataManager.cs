@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   public class DomainObjectCollectionEndPointDataManager : IDomainObjectCollectionEndPointDataManager
   {
     private readonly RelationEndPointID _endPointID;
-    private readonly ICollectionEndPointChangeDetectionStrategy _changeDetectionStrategy;
+    private readonly IDomainObjectCollectionEndPointChangeDetectionStrategy _changeDetectionStrategy;
 
     private readonly ChangeCachingDomainObjectCollectionDataDecorator _changeCachingDomainObjectCollectionData;
 
@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     private readonly HashSet<DomainObject> _originalItemsWithoutEndPoint;
     private Dictionary<ObjectID, IRealObjectEndPoint> _currentOppositeEndPoints;
 
-    public DomainObjectCollectionEndPointDataManager (RelationEndPointID endPointID, ICollectionEndPointChangeDetectionStrategy changeDetectionStrategy)
+    public DomainObjectCollectionEndPointDataManager (RelationEndPointID endPointID, IDomainObjectCollectionEndPointChangeDetectionStrategy changeDetectionStrategy)
     {
       ArgumentUtility.CheckNotNull ("endPointID", endPointID);
       ArgumentUtility.CheckNotNull ("changeDetectionStrategy", changeDetectionStrategy);
@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       get { return _endPointID; }
     }
 
-    public ICollectionEndPointChangeDetectionStrategy ChangeDetectionStrategy
+    public IDomainObjectCollectionEndPointChangeDetectionStrategy ChangeDetectionStrategy
     {
       get { return _changeDetectionStrategy; }
     }
@@ -264,7 +264,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ArgumentUtility.CheckNotNull ("info", info);
 
       _endPointID = info.GetValueForHandle<RelationEndPointID>();
-      _changeDetectionStrategy = info.GetValueForHandle<ICollectionEndPointChangeDetectionStrategy>();
+      _changeDetectionStrategy = info.GetValueForHandle<IDomainObjectCollectionEndPointChangeDetectionStrategy>();
 
       _changeCachingDomainObjectCollectionData = info.GetValue<ChangeCachingDomainObjectCollectionDataDecorator>();
 

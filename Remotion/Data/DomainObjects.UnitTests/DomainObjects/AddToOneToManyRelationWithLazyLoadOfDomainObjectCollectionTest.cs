@@ -21,22 +21,8 @@ using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 {
   [TestFixture]
-  public class AddToOneToManyRelationWithLazyLoadTest : ClientTransactionBaseTest
+  public class AddToOneToManyRelationWithLazyLoadOfDomainObjectCollectionTest : ClientTransactionBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    public AddToOneToManyRelationWithLazyLoadTest ()
-    {
-    }
-
-    // methods and properties
-
     [Test]
     public void Insert ()
     {

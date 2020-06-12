@@ -73,7 +73,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       get { return _isCacheUpToDate; }
     }
 
-    public bool HasChanged (ICollectionEndPointChangeDetectionStrategy strategy)
+    public bool HasChanged (IDomainObjectCollectionEndPointChangeDetectionStrategy strategy)
     {
       if (!_isCacheUpToDate)
       {
@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       return _cachedHasChangedFlag;
     }
 
-    private bool CalculateHasChangedFlag (ICollectionEndPointChangeDetectionStrategy strategy)
+    private bool CalculateHasChangedFlag (IDomainObjectCollectionEndPointChangeDetectionStrategy strategy)
     {
       // If the original data still points to this collection, we don't ask the strategy - we know we haven't changed.
       if (!_originalData.IsContentsCopied)

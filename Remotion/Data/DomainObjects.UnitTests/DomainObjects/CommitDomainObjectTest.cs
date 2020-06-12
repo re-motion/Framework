@@ -131,14 +131,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     public void OriginalDomainObjectCollection_IsNotSameAfterCommit ()
     {
       Order order = DomainObjectIDs.Order1.GetObject<Order> ();
-      DomainObjectCollection originalOrderItems = order.GetOriginalRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
+      DomainObjectCollection originalOrderItems = order.GetOriginalRelatedObjectsAsDomainObjectCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
       OrderItem.NewObject (order);
 
       TestableClientTransaction.Commit ();
 
-      Assert.That (order.GetOriginalRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"), Is.Not.SameAs (originalOrderItems));
-      Assert.That (order.GetOriginalRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"), Is.EqualTo (order.OrderItems));
-      Assert.That (order.GetOriginalRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems").IsReadOnly, Is.True);
+      Assert.That (order.GetOriginalRelatedObjectsAsDomainObjectCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"), Is.Not.SameAs (originalOrderItems));
+      Assert.That (order.GetOriginalRelatedObjectsAsDomainObjectCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"), Is.EqualTo (order.OrderItems));
+      Assert.That (order.GetOriginalRelatedObjectsAsDomainObjectCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems").IsReadOnly, Is.True);
     }
   }
 }

@@ -16,16 +16,25 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
+using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
+using Remotion.Utilities;
 
-namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
+namespace Remotion.Data.DomainObjects.Infrastructure
 {
   /// <summary>
-  /// Provides an interface for classes determining whether a collection end point has changed. This is used by 
-  /// <see cref="DomainObjectCollectionEndPoint.HasChanged"/>,
-  /// and its concrete implementation is installed by <see cref="ClientTransaction"/>.
+  /// Implements <see cref="IDomainObjectCollectionEndPointChangeDetectionStrategy"/> for root transactions. In root transactions, a collection end point
+  /// is regarded to have changed when either the opposite collection reference has changed or the set of items has changed. The order of the items
+  /// is ignored.
   /// </summary>
-  public interface ICollectionEndPointChangeDetectionStrategy
+  [Serializable]
+  public class RootDomainObjectCollectionEndPointChangeDetectionStrategy : IDomainObjectCollectionEndPointChangeDetectionStrategy
   {
-    bool HasDataChanged (IDomainObjectCollectionData currentData, IDomainObjectCollectionData originalData);
+    public bool HasDataChanged (IDomainObjectCollectionData currentData, IDomainObjectCollectionData originalData)
+    {
+      ArgumentUtility.CheckNotNull ("currentData", currentData);
+      ArgumentUtility.CheckNotNull ("originalData", originalData);
+
+      return !originalData.SetEquals (currentData);
+    }
   }
 }

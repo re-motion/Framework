@@ -99,9 +99,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       ArgumentUtility.CheckNotNull ("lazyLoader", lazyLoader);
       ArgumentUtility.CheckNotNull ("eventSink", eventSink);
 
-      var endPointChangeDetectionStrategy = new RootCollectionEndPointChangeDetectionStrategy();
-      var domainObjectCollectionEndPointDataManagerFactory = new DomainObjectCollectionEndPointDataManagerFactory (endPointChangeDetectionStrategy);
-      var virtualCollectionEndPointDataManagerFactory = new VirtualCollectionEndPointDataManagerFactory (endPointChangeDetectionStrategy);
+      var domainObjectCollectionEndPointChangeDetectionStrategy = new RootDomainObjectCollectionEndPointChangeDetectionStrategy();
+      var domainObjectCollectionEndPointDataManagerFactory = new DomainObjectCollectionEndPointDataManagerFactory (domainObjectCollectionEndPointChangeDetectionStrategy);
+      var virtualCollectionEndPointDataManagerFactory = new VirtualCollectionEndPointDataManagerFactory (domainObjectCollectionEndPointChangeDetectionStrategy);
       var virtualObjectEndPointDataManagerFactory = new VirtualObjectEndPointDataManagerFactory();
 
       var relationEndPointFactory = CreateRelationEndPointFactory (

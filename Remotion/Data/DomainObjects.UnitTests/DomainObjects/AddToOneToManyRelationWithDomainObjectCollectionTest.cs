@@ -22,7 +22,7 @@ using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 {
   [TestFixture]
-  public class AddToOneToManyRelationTest : ClientTransactionBaseTest
+  public class AddToOneToManyRelationWithDomainObjectCollectionTest : ClientTransactionBaseTest
   {
     private Employee _supervisor;
     private Employee _subordinate;
