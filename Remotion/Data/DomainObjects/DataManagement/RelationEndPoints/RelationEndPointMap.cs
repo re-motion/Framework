@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   /// <summary>
   /// Holds a set of <see cref="IRelationEndPoint"/> instances and provides access to them.
   /// </summary>
-  public class RelationEndPointMap : IRelationEndPointMapReadOnlyView, IFlattenedSerializable
+  public class RelationEndPointMap : IRelationEndPointMapReadOnlyView
   {
     private readonly IClientTransactionEventSink _transactionEventSink;
     private readonly Dictionary<RelationEndPointID, IRelationEndPoint> _relationEndPoints;

@@ -20,10 +20,10 @@ using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 {
-  public interface IVirtualCollectionEndPoint : ICollectionEndPoint<ReadOnlyVirtualCollectionData>
+  public interface IVirtualCollectionEndPoint : ICollectionEndPoint<ReadOnlyVirtualCollectionDataDecorator>
   {
-    IObjectList Collection { get; }
+    IObjectList<IDomainObject> Collection { get; }
 
-    IObjectList GetCollectionWithOriginalData ();
+    IObjectList<IDomainObject> GetCollectionWithOriginalData ();
   }
 }

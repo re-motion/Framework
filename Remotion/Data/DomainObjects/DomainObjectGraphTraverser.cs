@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.Data.DomainObjects.Infrastructure;
@@ -88,7 +89,7 @@ namespace Remotion.Data.DomainObjects
           case PropertyKind.RelatedObjectCollection:
             if (strategy.ShouldFollowLink (_rootObject, current, currentDepth, property))
             {
-              foreach (DomainObject relatedObject in (DomainObjectCollection) property.GetValueWithoutTypeCheck ())
+              foreach (DomainObject relatedObject in (IEnumerable) property.GetValueWithoutTypeCheck ())
               {
                 if (relatedObject != null)
                   yield return Tuple.Create (relatedObject, currentDepth + 1);

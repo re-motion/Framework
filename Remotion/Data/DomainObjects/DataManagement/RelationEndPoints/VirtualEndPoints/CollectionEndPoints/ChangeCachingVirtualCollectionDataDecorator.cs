@@ -17,65 +17,109 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
+using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints
 {
-  public class ChangeCachingVirtualCollectionDataDecorator : IVirtualCollectionData
+  public class ChangeCachingVirtualCollectionDataDecorator : IVirtualCollectionData, IFlattenedSerializable
   {
-    private readonly IVirtualCollectionData _virtualCollectionData;
+    private readonly VirtualCollectionData _virtualCollectionData;
+    private bool _isCacheUpToDate;
+    private bool _hasChanges;
 
-    public ChangeCachingVirtualCollectionDataDecorator (IVirtualCollectionData virtualCollectionData)
+    public ChangeCachingVirtualCollectionDataDecorator (VirtualCollectionData virtualCollectionData)
     {
       ArgumentUtility.CheckNotNull ("virtualCollectionData", virtualCollectionData);
 
       _virtualCollectionData = virtualCollectionData;
+      _isCacheUpToDate = true;
+      _hasChanges = false;
     }
 
     public bool IsCacheUpToDate
     {
-      get { throw new NotImplementedException(); }
+      get
+      {
+        // TODO: RM-7294
+        return _isCacheUpToDate;
+      }
     }
 
-    public bool HasChanged (ICollectionEndPointChangeDetectionStrategy changeDetectionStrategy)
+    public bool HasChanged (IVirtualCollectionEndPointChangeDetectionStrategy changeDetectionStrategy)
     {
-      throw new NotImplementedException();
+      // TODO: RM-7294 test, optimize, remove strategy parameter
+
+      if (!_isCacheUpToDate)
+      {
+        var currentData = _virtualCollectionData;
+        var originalData = OriginalData;
+        if (currentData.Count != originalData.Count)
+          _hasChanges = true;
+        else
+          _hasChanges = currentData.Select (obj => obj.ID).Except (originalData.Select (obj => obj.ID)).Any();
+
+        _isCacheUpToDate = true;
+      }
+
+      return _hasChanges;
     }
 
-    public ReadOnlyVirtualCollectionData OriginalData
+    private void ResetCache ()
     {
-      get { throw new NotImplementedException(); }
+      _isCacheUpToDate = false;
+    }
+
+    public ReadOnlyVirtualCollectionDataDecorator OriginalData
+    {
+      get
+      {
+        // TODO: RM-7294
+        var originalData = new VirtualCollectionData (
+            ((IVirtualCollectionData) _virtualCollectionData).AssociatedEndPointID,
+            _virtualCollectionData.DataContainerMap,
+            ValueAccess.Original);
+        return new ReadOnlyVirtualCollectionDataDecorator (originalData);
+      }
     }
 
     public void RegisterOriginalItem (DomainObject item)
     {
-      throw new NotImplementedException();
+      // TODO: RM-7294
+      _virtualCollectionData.Add (item);
     }
 
     public void UnregisterOriginalItem (ObjectID itemID)
     {
-      throw new NotImplementedException();
+      // TODO: RM-7294
+      // Only used from Synchronize
+      ResetCache();
     }
 
     public void SortOriginalAndCurrent (Comparison<DomainObject> comparison)
     {
-      throw new NotImplementedException();
+      //TODO: RM-7294: API is only implemented because of the interface. Can probably be dropped since there is no usage
+      throw new NotSupportedException();
     }
 
     public void Commit ()
     {
-      throw new NotImplementedException();
+      // TODO: RM-7294
+      ResetCache();
     }
 
     public void Rollback ()
     {
-      throw new NotImplementedException();
+      // TODO: RM-7294
+      ResetCache();
     }
 
     public void ReplaceContents (IVirtualCollectionData collectionData)
     {
-      throw new NotImplementedException();
+      // TODO: RM-7294
+      ResetCache();
     }
 
     IEnumerator<DomainObject> IEnumerable<DomainObject>.GetEnumerator ()
@@ -94,14 +138,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     bool IVirtualCollectionData.IsReadOnly => _virtualCollectionData.IsReadOnly;
 
-    RelationEndPointID IVirtualCollectionData.AssociatedEndPointID => _virtualCollectionData.AssociatedEndPointID;
+    RelationEndPointID IVirtualCollectionData.AssociatedEndPointID => ((IVirtualCollectionData) _virtualCollectionData).AssociatedEndPointID;
 
-    bool IVirtualCollectionData.IsDataComplete => _virtualCollectionData.IsDataComplete;
+    bool IVirtualCollectionData.IsDataComplete => ((IVirtualCollectionData) _virtualCollectionData).IsDataComplete;
 
 
     void IVirtualCollectionData.EnsureDataComplete ()
     {
-      _virtualCollectionData.EnsureDataComplete();
+      ((IVirtualCollectionData) _virtualCollectionData).EnsureDataComplete();
     }
 
     bool IVirtualCollectionData.ContainsObjectID (ObjectID objectID)
@@ -126,27 +170,48 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     void IVirtualCollectionData.Clear ()
     {
+      ResetCache();
       _virtualCollectionData.Clear();
     }
 
     void IVirtualCollectionData.Add (DomainObject domainObject)
     {
+      ResetCache();
       _virtualCollectionData.Add (domainObject);
     }
 
     bool IVirtualCollectionData.Remove (DomainObject domainObject)
     {
+      ResetCache();
       return _virtualCollectionData.Remove (domainObject);
     }
 
     bool IVirtualCollectionData.Remove (ObjectID objectID)
     {
-      return _virtualCollectionData.Remove (objectID);
+      //return _virtualCollectionData.Remove (objectID);
+      //TODO: RM-7294: API is only implemented because of the interface. Can probably be dropped since there is no usage
+      throw new NotSupportedException();
     }
 
     public void Sort (Comparison<DomainObject> comparison)
     {
-      _virtualCollectionData.Sort (comparison);
+      //_virtualCollectionData.Sort (comparison);
+      //TODO: RM-7294: API is only implemented because of the interface. Can probably be dropped since there is no usage
+      throw new NotSupportedException();
     }
+
+    #region Serialization
+
+    private ChangeCachingVirtualCollectionDataDecorator (FlattenedDeserializationInfo info)
+    {
+      _virtualCollectionData = info.GetValueForHandle<VirtualCollectionData>();
+    }
+
+    void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
+    {
+      info.AddHandle ((VirtualCollectionData) _virtualCollectionData);
+    }
+
+    #endregion
   }
 }

@@ -53,6 +53,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
 
       _index = modifiedEndPoint.GetData().IndexOf (addedObject.ID);
       _modifiedCollectionData = collectionData;
+      //TODO: RM-7294: API is only implemented because of the interface on VirtualObjectList. Can probably be dropped since VirtualObjectList has no usage for it.
       _modifiedCollectionEventRaiser = modifiedEndPoint.GetCollectionEventRaiser();
       _endPointProvider = endPointProvider;
     }
@@ -76,7 +77,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     {
       using (EnterTransactionScope())
       {
-        ModifiedCollectionEventRaiser.BeginAdd (ModifiedCollectionData.Count, NewRelatedObject);
+        ModifiedCollectionEventRaiser.BeginAdd (_index, NewRelatedObject);
       }
 
       base.Begin();
@@ -93,7 +94,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
       base.End();
       using (EnterTransactionScope())
       {
-        ModifiedCollectionEventRaiser.EndAdd (ModifiedCollectionData.Count, NewRelatedObject);
+        ModifiedCollectionEventRaiser.EndAdd (_index, NewRelatedObject);
       }
     }
 
@@ -110,12 +111,16 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     /// </remarks>
     public override ExpandedCommand ExpandToAllRelatedObjects ()
     {
+      //TODO: RM-7294: Do not allow setting an object that is still part of another collection;
+      //TBD: We're just updating a parent property. Requiring that we first set the parent property to null seems strange.
+      //     This concept should be dropped.
+
       // the end point that will be linked to the collection end point after the operation
       var addedObjectEndPoint = (IRealObjectEndPoint) GetOppositeEndPoint (ModifiedEndPoint, NewRelatedObject, _endPointProvider);
       // the object that was linked to the new related object before the operation
       var oldRelatedObjectOfAddedObject = addedObjectEndPoint.GetOppositeObject();
       // the end point that was linked to the new related object before the operation
-      var oldRelatedEndPointOfInsertedObject = GetOppositeEndPoint (addedObjectEndPoint, oldRelatedObjectOfAddedObject, _endPointProvider);
+      var oldRelatedEndPointOfAddedObject = GetOppositeEndPoint (addedObjectEndPoint, oldRelatedObjectOfAddedObject, _endPointProvider);
 
       return new ExpandedCommand (
           // addedOrder.Customer = customer (previously oldCustomer)
@@ -123,7 +128,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
           // customer.Orders.Add (addedOrder)
           this,
           // oldCustomer.Orders.Remove (addedOrder)
-          oldRelatedEndPointOfInsertedObject.CreateRemoveCommand (NewRelatedObject));
+          oldRelatedEndPointOfAddedObject.CreateRemoveCommand (NewRelatedObject));
     }
   }
 }

@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
   /// <summary>
   /// Stores the <see cref="DataContainer"/> instances held by a <see cref="ClientTransaction"/>.
   /// </summary>
-  public class DataContainerMap : IFlattenedSerializable, IDataContainerMapReadOnlyView
+  public class DataContainerMap : IDataContainerMapReadOnlyView
   {
     private readonly IClientTransactionEventSink _transactionEventSink;
     private readonly DataContainerCollection _dataContainers;

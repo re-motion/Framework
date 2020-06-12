@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
@@ -53,12 +55,12 @@ namespace Remotion.Data.DomainObjects.UnitTests
       return base.GetRelatedObject (relationEndPointID);
     }
 
-    public new DomainObjectCollection GetOriginalRelatedObjects (RelationEndPointID relationEndPointID)
+    public new IReadOnlyList<IDomainObject> GetOriginalRelatedObjects (RelationEndPointID relationEndPointID)
     {
       return base.GetOriginalRelatedObjects (relationEndPointID);
     }
 
-    public new DomainObjectCollection GetRelatedObjects (RelationEndPointID relationEndPointID)
+    public new IReadOnlyList<IDomainObject> GetRelatedObjects (RelationEndPointID relationEndPointID)
     {
       return base.GetRelatedObjects (relationEndPointID);
     }

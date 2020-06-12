@@ -152,12 +152,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
       throw new NotImplementedException();
     }
 
-    public ReadOnlyVirtualCollectionData GetData ()
+    public ReadOnlyVirtualCollectionDataDecorator GetData ()
     {
       throw new NotImplementedException();
     }
 
-    public ReadOnlyVirtualCollectionData GetOriginalData ()
+    public ReadOnlyVirtualCollectionDataDecorator GetOriginalData ()
     {
       throw new NotImplementedException();
     }
@@ -184,9 +184,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
       throw new NotImplementedException();
     }
 
-    public IObjectList Collection => throw new NotImplementedException();
+    public IObjectList<IDomainObject> Collection => throw new NotImplementedException();
 
-    public IObjectList GetCollectionWithOriginalData ()
+    public IObjectList<IDomainObject> GetCollectionWithOriginalData ()
     {
       throw new NotImplementedException();
     }

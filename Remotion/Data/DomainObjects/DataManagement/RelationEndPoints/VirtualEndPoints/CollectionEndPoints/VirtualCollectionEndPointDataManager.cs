@@ -29,8 +29,11 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   /// </summary>
   public class VirtualCollectionEndPointDataManager : IVirtualCollectionEndPointDataManager
   {
-    private readonly RelationEndPointID _endPointID;
-    private readonly ICollectionEndPointChangeDetectionStrategy _changeDetectionStrategy;
+    public RelationEndPointID EndPointID { get; }
+
+    public IVirtualCollectionEndPointChangeDetectionStrategy ChangeDetectionStrategy { get; }
+
+    public IDataContainerMapReadOnlyView DataContainerMap { get; }
 
     private readonly ChangeCachingVirtualCollectionDataDecorator _changeCachingVirtualCollectionData;
 
@@ -38,15 +41,20 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     private readonly HashSet<DomainObject> _originalItemsWithoutEndPoint;
     private Dictionary<ObjectID, IRealObjectEndPoint> _currentOppositeEndPoints;
 
-    public VirtualCollectionEndPointDataManager (RelationEndPointID endPointID, ICollectionEndPointChangeDetectionStrategy changeDetectionStrategy)
+    public VirtualCollectionEndPointDataManager (
+        RelationEndPointID endPointID,
+        IVirtualCollectionEndPointChangeDetectionStrategy changeDetectionStrategy,
+        IDataContainerMapReadOnlyView dataContainerMap)
     {
       ArgumentUtility.CheckNotNull ("endPointID", endPointID);
       ArgumentUtility.CheckNotNull ("changeDetectionStrategy", changeDetectionStrategy);
+      ArgumentUtility.CheckNotNull ("dataContainerMap", dataContainerMap);
 
-      _endPointID = endPointID;
-      _changeDetectionStrategy = changeDetectionStrategy;
+      EndPointID = endPointID;
+      ChangeDetectionStrategy = changeDetectionStrategy;
+      DataContainerMap = dataContainerMap;
 
-      var wrappedData = new VirtualCollectionData();
+      var wrappedData = new VirtualCollectionData (endPointID, dataContainerMap, ValueAccess.Current);
       _changeCachingVirtualCollectionData = new ChangeCachingVirtualCollectionDataDecorator (wrappedData);
 
       _originalOppositeEndPoints = new HashSet<IRealObjectEndPoint>();
@@ -54,27 +62,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       _currentOppositeEndPoints = new Dictionary<ObjectID, IRealObjectEndPoint>();
     }
 
-    public RelationEndPointID EndPointID
-    {
-      get { return _endPointID; }
-    }
-
-    public ICollectionEndPointChangeDetectionStrategy ChangeDetectionStrategy
-    {
-      get { return _changeDetectionStrategy; }
-    }
-
-    public bool? HasDataChangedFast ()
-    {
-      return _changeCachingVirtualCollectionData.IsCacheUpToDate ? _changeCachingVirtualCollectionData.HasChanged (_changeDetectionStrategy) : (bool?) null;
-    }
-
     public IVirtualCollectionData CollectionData
     {
       get { return _changeCachingVirtualCollectionData; }
     }
 
-    public ReadOnlyVirtualCollectionData OriginalCollectionData
+    public ReadOnlyVirtualCollectionDataDecorator OriginalCollectionData
     {
       get { return _changeCachingVirtualCollectionData.OriginalData; }
     }
@@ -130,17 +123,19 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public void UnregisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull ("oppositeEndPoint", oppositeEndPoint);
+      //TODO: RM-7294: API is only implemented because of the interface. Interface member probably be dropped since there is no usage
+      throw new NotSupportedException();
+      //ArgumentUtility.CheckNotNull ("oppositeEndPoint", oppositeEndPoint);
 
-      if (!ContainsOriginalOppositeEndPoint (oppositeEndPoint))
-        throw new InvalidOperationException ("The opposite end-point has not been registered.");
+      //if (!ContainsOriginalOppositeEndPoint (oppositeEndPoint))
+      //  throw new InvalidOperationException ("The opposite end-point has not been registered.");
 
-      var itemID = oppositeEndPoint.ObjectID;
-      _changeCachingVirtualCollectionData.UnregisterOriginalItem (itemID);
+      //var itemID = oppositeEndPoint.ObjectID;
+      //_changeCachingVirtualCollectionData.UnregisterOriginalItem (itemID);
 
-      // UnregisterOriginalItem removes item from both original and current collection, so we must remove end-points for both
-      _originalOppositeEndPoints.Remove (oppositeEndPoint);
-      _currentOppositeEndPoints.Remove (oppositeEndPoint.ObjectID);
+      //// UnregisterOriginalItem removes item from both original and current collection, so we must remove end-points for both
+      //_originalOppositeEndPoints.Remove (oppositeEndPoint);
+      //_currentOppositeEndPoints.Remove (oppositeEndPoint.ObjectID);
     }
 
     public bool ContainsCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
@@ -198,9 +193,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       _originalItemsWithoutEndPoint.Remove (domainObject);
     }
 
+    public bool? HasDataChangedFast ()
+    {
+      return _changeCachingVirtualCollectionData.IsCacheUpToDate ? _changeCachingVirtualCollectionData.HasChanged (ChangeDetectionStrategy) : (bool?) null;
+    }
+
     public bool HasDataChanged ()
     {
-      return _changeCachingVirtualCollectionData.HasChanged (_changeDetectionStrategy);
+      return _changeCachingVirtualCollectionData.HasChanged (ChangeDetectionStrategy);
     }
 
     public void SortCurrentData (Comparison<DomainObject> comparison)
@@ -263,10 +263,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     {
       ArgumentUtility.CheckNotNull ("info", info);
 
-      _endPointID = info.GetValueForHandle<RelationEndPointID>();
-      _changeDetectionStrategy = info.GetValueForHandle<ICollectionEndPointChangeDetectionStrategy>();
+      EndPointID = info.GetValueForHandle<RelationEndPointID>();
+      ChangeDetectionStrategy = info.GetValueForHandle<IVirtualCollectionEndPointChangeDetectionStrategy>();
 
-      _changeCachingVirtualCollectionData = info.GetValue<ChangeCachingVirtualCollectionDataDecorator>();
+      _changeCachingVirtualCollectionData = info.GetValueForHandle<ChangeCachingVirtualCollectionDataDecorator>();
 
       _originalOppositeEndPoints = new HashSet<IRealObjectEndPoint>();
       info.FillCollection (_originalOppositeEndPoints);
@@ -285,9 +285,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     {
       ArgumentUtility.CheckNotNull ("info", info);
 
-      info.AddHandle (_endPointID);
-      info.AddHandle (_changeDetectionStrategy);
-      info.AddValue (_changeCachingVirtualCollectionData);
+      info.AddHandle (EndPointID);
+      info.AddHandle (ChangeDetectionStrategy);
+      info.AddHandle (_changeCachingVirtualCollectionData);
 
       info.AddCollection (_originalOppositeEndPoints);
       info.AddCollection (_originalItemsWithoutEndPoint);

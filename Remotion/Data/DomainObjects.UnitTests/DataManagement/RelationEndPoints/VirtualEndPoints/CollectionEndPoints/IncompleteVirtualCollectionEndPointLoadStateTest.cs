@@ -16,8 +16,8 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
+using Remotion.Data.DomainObjects.DataManagement.Commands;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       base.SetUp();
 
-      _endPointID = RelationEndPointID.Create (DomainObjectIDs.Product1, typeof (Product), "ProductReviews");
+      _endPointID = RelationEndPointID.Create (DomainObjectIDs.Product1, typeof (Product), "Reviews");
       _collectionEndPointMock = MockRepository.GenerateStrictMock<IVirtualCollectionEndPoint>();
 
       _endPointLoaderMock = MockRepository.GenerateStrictMock<IncompleteVirtualCollectionEndPointLoadState.IEndPointLoader>();
@@ -218,6 +218,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
+    [Ignore ("TODO: RM-7294: Remove")]
     public void SortCurrentData ()
     {
       Comparison<DomainObject> comparison = (one, two) => 0;
@@ -228,25 +229,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void CreateRemoveCommand ()
     {
-      CheckOperationDelegatesToCompleteState (
-          s => s.CreateRemoveCommand (_collectionEndPointMock, _relatedObject),
-          MockRepository.GenerateStub<IDataManagementCommand>());
+      Assert.That (_loadState.CreateRemoveCommand (_collectionEndPointMock, _relatedObject), Is.TypeOf<NopCommand>());
     }
 
     [Test]
     public void CreateDeleteCommand ()
     {
-      CheckOperationDelegatesToCompleteState (
-          s => s.CreateDeleteCommand (_collectionEndPointMock),
-          MockRepository.GenerateStub<IDataManagementCommand>());
+      Assert.That (_loadState.CreateDeleteCommand (_collectionEndPointMock), Is.TypeOf<NopCommand>());
     }
 
     [Test]
     public void CreateAddCommand ()
     {
-      CheckOperationDelegatesToCompleteState (
-          s => s.CreateAddCommand (_collectionEndPointMock, _relatedObject),
-          MockRepository.GenerateStub<IDataManagementCommand>());
+      Assert.That (_loadState.CreateAddCommand (_collectionEndPointMock, _relatedObject), Is.TypeOf<NopCommand>());
     }
 
     [Test]
@@ -254,7 +249,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var endPointLoader = new SerializableVirtualEndPointLoaderFake<
           IVirtualCollectionEndPoint,
-          ReadOnlyVirtualCollectionData,
+          ReadOnlyVirtualCollectionDataDecorator,
           IVirtualCollectionEndPointDataManager,
           IVirtualCollectionEndPointLoadState>();
       var dataManagerFactory = new SerializableVirtualCollectionEndPointDataManagerFactoryFake();
@@ -271,26 +266,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (result.OriginalOppositeEndPoints, Is.Not.Empty);
       Assert.That (result.EndPointLoader, Is.Not.Null);
       Assert.That (result.DataManagerFactory, Is.Not.Null);
-    }
-
-    private void CheckOperationDelegatesToCompleteState<T> (Func<IVirtualCollectionEndPointLoadState, T> operation, T fakeResult)
-    {
-      var newStateMock = MockRepository.GenerateStrictMock<IVirtualCollectionEndPointLoadState>();
-      _endPointLoaderMock
-          .Expect (mock => mock.LoadEndPointAndGetNewState (_collectionEndPointMock))
-          .Return (newStateMock);
-      newStateMock
-          .Expect (mock => operation (mock))
-          .Return (fakeResult);
-
-      _endPointLoaderMock.Replay();
-      newStateMock.Replay();
-
-      var result = operation (_loadState);
-
-      _endPointLoaderMock.VerifyAllExpectations();
-      newStateMock.Replay();
-      Assert.That (result, Is.EqualTo (fakeResult));
     }
 
     private void CheckOperationDelegatesToCompleteState (Action<IVirtualCollectionEndPointLoadState> operation)

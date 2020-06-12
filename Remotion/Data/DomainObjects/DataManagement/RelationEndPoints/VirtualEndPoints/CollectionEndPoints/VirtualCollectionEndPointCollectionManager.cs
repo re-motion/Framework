@@ -20,7 +20,7 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints
 {
   /// <summary>
-  /// Implements <see cref="IVirtualCollectionEndPointCollectionManager"/>, storing the original and current <see cref="IObjectList"/> reference
+  /// Implements <see cref="IVirtualCollectionEndPointCollectionManager"/>, storing the original and current <see cref="IObjectList{IDomainObject}"/> reference
   /// for a <see cref="VirtualCollectionEndPoint"/>.
   /// </summary>
   [Serializable]
@@ -29,8 +29,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     private readonly RelationEndPointID _endPointID;
     private readonly IVirtualCollectionEndPointCollectionProvider _collectionProvider;
 
-    private IObjectList _originalCollectionReference;
-    private IObjectList _currentCollectionReference;
+    private IObjectList<IDomainObject> _originalCollectionReference;
+    private IObjectList<IDomainObject> _currentCollectionReference;
 
     public VirtualCollectionEndPointCollectionManager (
         RelationEndPointID endPointID,
@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       get { return _collectionProvider; }
     }
 
-    public IObjectList GetOriginalCollectionReference ()
+    public IObjectList<IDomainObject> GetOriginalCollectionReference ()
     {
       if (_originalCollectionReference == null)
         _originalCollectionReference = _collectionProvider.GetCollection (_endPointID);
@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       return _originalCollectionReference;
     }
 
-    public IObjectList GetCurrentCollectionReference ()
+    public IObjectList<IDomainObject> GetCurrentCollectionReference ()
     {
       if (_currentCollectionReference == null)
         _currentCollectionReference = GetOriginalCollectionReference();

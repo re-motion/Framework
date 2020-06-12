@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   /// Represents the state of a <see cref="VirtualCollectionEndPoint"/> where all of its data is available (ie., the end-point has been (lazily) loaded).
   /// </summary>
   public class CompleteVirtualCollectionEndPointLoadState
-      : CompleteVirtualEndPointLoadStateBase<IVirtualCollectionEndPoint, ReadOnlyVirtualCollectionData, IVirtualCollectionEndPointDataManager>,
+      : CompleteVirtualEndPointLoadStateBase<IVirtualCollectionEndPoint, ReadOnlyVirtualCollectionDataDecorator, IVirtualCollectionEndPointDataManager>,
         IVirtualCollectionEndPointLoadState
   {
     public CompleteVirtualCollectionEndPointLoadState (
@@ -40,13 +40,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     {
     }
 
-    public override ReadOnlyVirtualCollectionData GetData (IVirtualCollectionEndPoint collectionEndPoint)
+    public override ReadOnlyVirtualCollectionDataDecorator GetData (IVirtualCollectionEndPoint collectionEndPoint)
     {
       ArgumentUtility.CheckNotNull ("collectionEndPoint", collectionEndPoint);
-      return new ReadOnlyVirtualCollectionData();//( (IDomainObjectCollectionData)DataManager.CollectionData);  // TODO RM-7294 invalid cast
+      return new ReadOnlyVirtualCollectionDataDecorator (DataManager.CollectionData);
     }
 
-    public override ReadOnlyVirtualCollectionData GetOriginalData (IVirtualCollectionEndPoint collectionEndPoint)
+    public override ReadOnlyVirtualCollectionDataDecorator GetOriginalData (IVirtualCollectionEndPoint collectionEndPoint)
     {
       ArgumentUtility.CheckNotNull ("collectionEndPoint", collectionEndPoint);
       return DataManager.OriginalCollectionData;
@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public override void SetDataFromSubTransaction (
         IVirtualCollectionEndPoint collectionEndPoint,
-        IVirtualEndPointLoadState<IVirtualCollectionEndPoint, ReadOnlyVirtualCollectionData, IVirtualCollectionEndPointDataManager> sourceLoadState)
+        IVirtualEndPointLoadState<IVirtualCollectionEndPoint, ReadOnlyVirtualCollectionDataDecorator, IVirtualCollectionEndPointDataManager> sourceLoadState)
     {
       ArgumentUtility.CheckNotNull ("collectionEndPoint", collectionEndPoint);
       var sourceCompleteLoadState =

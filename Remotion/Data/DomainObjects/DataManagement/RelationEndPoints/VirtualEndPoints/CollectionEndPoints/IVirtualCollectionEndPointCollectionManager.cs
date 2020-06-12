@@ -19,12 +19,12 @@ using System;
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints
 {
   /// <summary>
-  /// Defines an interface for classes providing and keeping track of the <see cref="IObjectList"/> instances used by 
+  /// Defines an interface for classes providing and keeping track of the <see cref="IObjectList{IDomainObject}"/> instances used by 
   /// a <see cref="VirtualCollectionEndPoint"/>.
   /// </summary>
   public interface IVirtualCollectionEndPointCollectionManager
   {
-    IObjectList GetOriginalCollectionReference ();
-    IObjectList GetCurrentCollectionReference ();
+    IObjectList<IDomainObject> GetOriginalCollectionReference ();
+    IObjectList<IDomainObject> GetCurrentCollectionReference ();
   }
 }

@@ -143,7 +143,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       get { return _dataManagerFactory; }
     }
 
-    public IObjectList Collection
+    public IObjectList<IDomainObject> Collection
     {
       get { return _collectionManager.GetCurrentCollectionReference(); }
     }
@@ -153,17 +153,17 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       return (IDomainObjectCollectionEventRaiser) Collection; // TODO RM-7294 invalid cast
     }
 
-    public IObjectList GetCollectionWithOriginalData ()
+    public IObjectList<IDomainObject> GetCollectionWithOriginalData ()
     {
       return CreateCollection (_loadState.GetOriginalData (this));
     }
 
-    public ReadOnlyVirtualCollectionData GetData ()
+    public ReadOnlyVirtualCollectionDataDecorator GetData ()
     {
       return _loadState.GetData (this);
     }
 
-    public ReadOnlyVirtualCollectionData GetOriginalData ()
+    public ReadOnlyVirtualCollectionDataDecorator GetOriginalData ()
     {
       return _loadState.GetOriginalData (this);
     }
@@ -253,6 +253,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public void SortCurrentData (Comparison<DomainObject> comparison)
     {
+      //TODO: RM-7294: API is obsolete. DomainObjectCollection implemented it for Ordered Collections
+
       ArgumentUtility.CheckNotNull ("comparison", comparison);
 
       _loadState.SortCurrentData (this, comparison);
@@ -363,7 +365,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       _loadState = new IncompleteVirtualCollectionEndPointLoadState (loader, _dataManagerFactory);
     }
 
-    private IObjectList CreateCollection (IVirtualCollectionData dataStrategy)
+    private IObjectList<IDomainObject> CreateCollection (IVirtualCollectionData dataStrategy)
     {
       return ObjectListFactory.Create (dataStrategy);
     }

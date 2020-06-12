@@ -21,7 +21,7 @@ using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
 {
   [TestFixture]
-  public class CollectionSetterTest : ClientTransactionBaseTest
+  public class DomainObjectCollectionSetterTest : ClientTransactionBaseTest
   {
     private IndustrialSector _newIndustrialSector;
     private Company _newCompany1;

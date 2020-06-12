@@ -57,12 +57,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
         ClientTransaction constructedTransaction,
         IRelationEndPointProvider endPointProvider,
         ILazyLoader lazyLoader,
-        IClientTransactionEventSink eventSink)
+        IClientTransactionEventSink eventSink,
+        IDataContainerMapReadOnlyView dataContainerMap)
     {
       throw new NotImplementedException();
     }
 
-    protected override IObjectLoader CreateObjectLoader (ClientTransaction constructedTransaction, IClientTransactionEventSink eventSink, IPersistenceStrategy persistenceStrategy, IInvalidDomainObjectManager invalidDomainObjectManager, IDataManager dataManager, ITransactionHierarchyManager hierarchyManager)
+    protected override IObjectLoader CreateObjectLoader (
+        ClientTransaction constructedTransaction,
+        IClientTransactionEventSink eventSink,
+        IPersistenceStrategy persistenceStrategy,
+        IInvalidDomainObjectManager invalidDomainObjectManager,
+        IDataManager dataManager,
+        ITransactionHierarchyManager hierarchyManager)
     {
       throw new NotImplementedException();
     }
@@ -76,9 +83,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
         ClientTransaction constructedTransaction,
         IRelationEndPointProvider endPointProvider,
         ILazyLoader lazyLoader,
-        IClientTransactionEventSink eventSink)
+        IClientTransactionEventSink eventSink,
+        IDataContainerMapReadOnlyView dataContainerMap)
     {
-      return CreateRelationEndPointManager (constructedTransaction, endPointProvider, lazyLoader, eventSink);
+      return CreateRelationEndPointManager (constructedTransaction, endPointProvider, lazyLoader, eventSink, dataContainerMap);
     }
 
     public IObjectLoader CallCreateObjectLoader (

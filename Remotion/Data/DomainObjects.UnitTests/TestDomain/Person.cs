@@ -42,8 +42,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
     [DBBidirectionalRelation ("ContactPerson", ContainsForeignKey = true)]
     public abstract Customer AssociatedCustomerCompany { get; set; }
 
-    //TODO: RM-7294
-    //[DBBidirectionalRelation ("Reviewer")]
-    //public abstract IObjectList<ProductReview> ProductReviews { get; set; }
+    [DBBidirectionalRelation ("Reviewer")]
+    public abstract IObjectList<ProductReview> Reviews { get; set; }
   }
 }

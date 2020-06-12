@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _provider = new VirtualCollectionEndPointCollectionProvider (_virtualEndPointProviderMock);
 
-      _endPointID = RelationEndPointID.Create (DomainObjectIDs.Product1, typeof (Product), "ProductReviews");
+      _endPointID = RelationEndPointID.Create (DomainObjectIDs.Product1, typeof (Product), "Reviews");
     }
 
     [Test]

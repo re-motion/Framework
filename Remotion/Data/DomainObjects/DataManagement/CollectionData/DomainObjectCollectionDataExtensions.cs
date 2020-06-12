@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       ArgumentUtility.CheckNotNull ("data", data);
       ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
 
-      data.Clear ();
+      data.Clear();
       data.AddRange (domainObjects);
     }
 
@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       ArgumentUtility.CheckNotNull ("collection", collection);
       ArgumentUtility.CheckNotNull ("comparedSet", comparedSet);
 
-      var setOfComparedObjects = new HashSet<DomainObject> (); // this is used to get rid of all duplicates to get a correct result
+      var setOfComparedObjects = new HashSet<DomainObject>(); // this is used to get rid of all duplicates to get a correct result
       foreach (var domainObject in comparedSet)
       {
         if (collection.GetObject (domainObject.ID) != domainObject)

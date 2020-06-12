@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
   [Serializable]
   public class SerializableVirtualCollectionEndPointCollectionProviderFake : IVirtualCollectionEndPointCollectionProvider
   {
-    public IObjectList GetCollection (RelationEndPointID endPointID)
+    public IObjectList<IDomainObject> GetCollection (RelationEndPointID endPointID)
     {
       throw new NotImplementedException();
     }

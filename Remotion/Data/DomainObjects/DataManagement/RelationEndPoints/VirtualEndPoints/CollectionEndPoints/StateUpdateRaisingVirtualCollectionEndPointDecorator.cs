@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     {
       ArgumentUtility.CheckNotNull ("innerEndPoint", innerEndPoint);
       ArgumentUtility.CheckNotNull ("listener", listener);
-
+      //TODO: RM-7294: Identify usages
       _innerEndPoint = innerEndPoint;
       _listener = listener;
     }
@@ -477,7 +477,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public ReadOnlyVirtualCollectionData GetData ()
+    public ReadOnlyVirtualCollectionDataDecorator GetData ()
     {
 #if DEBUG
       using (new ConstantChangeStateAsserter (_innerEndPoint))
@@ -487,7 +487,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public ReadOnlyVirtualCollectionData GetOriginalData ()
+    public ReadOnlyVirtualCollectionDataDecorator GetOriginalData ()
     {
 #if DEBUG
       using (new ConstantChangeStateAsserter (_innerEndPoint))
@@ -497,7 +497,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public IObjectList Collection
+    public IObjectList<IDomainObject> Collection
     {
       get
       {
@@ -520,7 +520,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public IObjectList GetCollectionWithOriginalData ()
+    public IObjectList<IDomainObject> GetCollectionWithOriginalData ()
     {
 #if DEBUG
       using (new ConstantChangeStateAsserter (_innerEndPoint))

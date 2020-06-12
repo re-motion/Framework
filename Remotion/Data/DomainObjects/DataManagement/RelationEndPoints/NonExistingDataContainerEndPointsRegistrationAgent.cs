@@ -25,7 +25,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   /// own both virtual and non-virtual end-points, and when unloading, these end-points must not reference any related objects (because the 
   /// references cannot be reconstructed and the related end-points would therefore end up as dangling references).
   /// </summary>
-  [Serializable]
   public class NonExistingDataContainerEndPointsRegistrationAgent : DataContainerEndPointsRegistrationAgentBase
   {
     public NonExistingDataContainerEndPointsRegistrationAgent (IRelationEndPointFactory endPointFactory, IRelationEndPointRegistrationAgent registrationAgent)

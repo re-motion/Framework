@@ -17,47 +17,149 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement
 {
-  public class VirtualObjectList<T> : IObjectList<T>
+  [Serializable]
+  public class VirtualObjectList<T> : IObjectList<T>, IDomainObjectCollectionEventRaiser, IReadOnlyCollectionData<T>
       where T : DomainObject
   {
-    private readonly IVirtualCollectionData _virtualCollectionData;
+    private readonly IVirtualCollectionData _dataStrategy;
+    private readonly object _syncRoot = new object();
 
-    public VirtualObjectList (IVirtualCollectionData virtualCollectionData)
+    public VirtualObjectList (IVirtualCollectionData dataStrategy)
     {
-      ArgumentUtility.CheckNotNull ("virtualCollectionData", virtualCollectionData);
-      
-      _virtualCollectionData = virtualCollectionData;
+      ArgumentUtility.CheckNotNull ("dataStrategy", dataStrategy);
+
+      _dataStrategy = dataStrategy;
     }
 
-    public RelationEndPointID AssociatedEndPointID
+    public RelationEndPointID AssociatedEndPointID => _dataStrategy.AssociatedEndPointID;
+
+
+    public bool IsDataComplete => _dataStrategy.IsDataComplete;
+
+    public void EnsureDataComplete () => _dataStrategy.EnsureDataComplete();
+
+    public IEnumerator<T> GetEnumerator () => _dataStrategy.Cast<T>().GetEnumerator();
+
+    IEnumerator IEnumerable.GetEnumerator () => GetEnumerator();
+
+    public int Count => _dataStrategy.Count;
+
+    public T this [int index] => (T) _dataStrategy.GetObject (index);
+
+    public bool Contains (ObjectID objectID) => _dataStrategy.ContainsObjectID (objectID);
+
+    public T GetObject (ObjectID objectID) => (T) _dataStrategy.GetObject (objectID);
+
+    void IDomainObjectCollectionEventRaiser.BeginAdd (int index, DomainObject domainObject)
     {
-      get { return _virtualCollectionData.AssociatedEndPointID; }
+      //TODO: RM-7294: API is only implemented because of the interface. Can probably be dropped since there is no usage
     }
 
-    public IEnumerator<T> GetEnumerator ()
+    void IDomainObjectCollectionEventRaiser.EndAdd (int index, DomainObject domainObject)
     {
-      throw new NotImplementedException();
+      //TODO: RM-7294: API is only implemented because of the interface. Can probably be dropped since there is no usage
     }
 
-    IEnumerator IEnumerable.GetEnumerator ()
+    void IDomainObjectCollectionEventRaiser.BeginRemove (int index, DomainObject domainObject)
     {
-      return GetEnumerator();
+      //TODO: RM-7294: API is only implemented because of the interface. Can probably be dropped since there is no usage
     }
 
-    public int Count
+    void IDomainObjectCollectionEventRaiser.EndRemove (int index, DomainObject domainObject)
     {
-      get { throw new NotImplementedException(); }
+      //TODO: RM-7294: API is only implemented because of the interface. Can probably be dropped since there is no usage
     }
 
-    public T this [int index]
+    void IDomainObjectCollectionEventRaiser.BeginDelete ()
     {
-      get { throw new NotImplementedException(); }
+      //TODO: RM-7294
+    }
+
+    void IDomainObjectCollectionEventRaiser.EndDelete ()
+    {
+      //TODO: RM-7294
+    }
+
+    void IDomainObjectCollectionEventRaiser.WithinReplaceData ()
+    {
+      //TODO: RM-7294
+    }
+
+    bool IList.IsReadOnly => true;
+
+    bool IList.IsFixedSize => false;
+
+    object ICollection.SyncRoot => _syncRoot;
+
+    bool ICollection.IsSynchronized => false;
+
+    void ICollection.CopyTo (Array array, int index)
+    {
+      ArgumentUtility.CheckNotNull ("array", array);
+
+      _dataStrategy.ToArray().CopyTo (array, index);
+    }
+
+    bool IList.Contains (object value)
+    {
+      if (value is DomainObject domainObject)
+        return ReferenceEquals (domainObject, GetObject (domainObject.ID));
+      return false;
+    }
+
+    int IList.IndexOf (object value)
+    {
+      return _dataStrategy
+          .Select ((obj, index) => new KeyValuePair<DomainObject, int> (obj, index))
+          .Where (kvp => ReferenceEquals (kvp.Key, value))
+          .Select (kvp => (int?) kvp.Value).FirstOrDefault() ?? -1;
+    }
+
+    object IList.this [int index]
+    {
+      get { return this[index]; }
+      set
+      {
+        throw new NotSupportedException (
+            "The collection does not support updating the data explicitly. Instead, modify the opposite endpoint of this bidirectional relation.");
+      }
+    }
+
+    int IList.Add (object value)
+    {
+      throw new NotSupportedException (
+          "The collection does not support updating the data explicitly. Instead, modify the opposite endpoint of this bidirectional relation.");
+    }
+
+    void IList.Clear ()
+    {
+      throw new NotSupportedException (
+          "The collection does not support updating the data explicitly. Instead, modify the opposite endpoint of this bidirectional relation.");
+    }
+
+    void IList.Insert (int index, object value)
+    {
+      throw new NotSupportedException (
+          "The collection does not support updating the data explicitly. Instead, modify the opposite endpoint of this bidirectional relation.");
+    }
+
+    void IList.Remove (object value)
+    {
+      throw new NotSupportedException (
+          "The collection does not support updating the data explicitly. Instead, modify the opposite endpoint of this bidirectional relation.");
+    }
+
+    void IList.RemoveAt (int index)
+    {
+      throw new NotSupportedException (
+          "The collection does not support updating the data explicitly. Instead, modify the opposite endpoint of this bidirectional relation.");
     }
   }
 }

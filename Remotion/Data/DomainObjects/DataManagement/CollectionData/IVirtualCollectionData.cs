@@ -21,7 +21,7 @@ using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 {
   /// <summary>
-  /// Provides an interface for an encapsulation of the data stored inside an <see cref="IObjectList"/> implementation. A number of decorators
+  /// Provides an interface for an encapsulation of the data stored inside an <see cref="IObjectList{IDomainObject}"/> implementation. A number of decorators
   /// implements this interface in order to wrap the data store with additional functionality.
   /// </summary>
   public interface IVirtualCollectionData : IReadOnlyCollection<DomainObject>
@@ -45,6 +45,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     void Add (DomainObject domainObject);
     bool Remove (DomainObject domainObject); // this overload should be called from IObjectList.Remove (DomainObject)
     bool Remove (ObjectID objectID); // this overload should be called from IObjectList.Remove (ObjectID)
+
+    //TODO: RM-7294: API is obsolete. DomainObjectCollection implemented it for Ordered Collections
     void Sort (Comparison<DomainObject> comparison);
   }
 }

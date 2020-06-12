@@ -16,13 +16,14 @@
 // 
 using System;
 using System.Collections.Generic;
+using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 {
   /// <summary>
   /// Provides read-only access to a <see cref="RelationEndPointMap"/>.
   /// </summary>
-  public interface IRelationEndPointMapReadOnlyView : IEnumerable<IRelationEndPoint>
+  public interface IRelationEndPointMapReadOnlyView : IEnumerable<IRelationEndPoint>, IFlattenedSerializable
   {
     int Count { get; }
     IRelationEndPoint this[RelationEndPointID endPointID] { get; }

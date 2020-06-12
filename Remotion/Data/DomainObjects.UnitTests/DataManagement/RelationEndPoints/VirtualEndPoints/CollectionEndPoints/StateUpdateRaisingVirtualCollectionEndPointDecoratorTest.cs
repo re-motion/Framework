@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       base.SetUp();
 
-      _endPointID = RelationEndPointID.Create (DomainObjectIDs.Product1, typeof (Product), "ProductReviews");
+      _endPointID = RelationEndPointID.Create (DomainObjectIDs.Product1, typeof (Product), "Reviews");
       _listenerMock = MockRepository.GenerateStrictMock<IVirtualEndPointStateUpdateListener>();
       _innerEndPointMock = MockRepository.GenerateStrictMock<IVirtualCollectionEndPoint>();
       _innerEndPointMock.Stub (stub => stub.HasChangedFast).Return (false);
@@ -163,11 +163,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void DelegatedMembers ()
     {
-      var endPointID = RelationEndPointID.Create (DomainObjectIDs.Product1, typeof (Product), "ProductReviews");
-      var endPoint = MockRepository.GenerateStub<IRealObjectEndPoint>();
-      var readOnlyCollectionDataDecorator = new ReadOnlyVirtualCollectionData();
-      var objectList = MockRepository.GenerateStub<IObjectList<ProductReview>>();
-      var eventRaiser = MockRepository.GenerateStub<IDomainObjectCollectionEventRaiser>();
+      var endPointID = RelationEndPointID.Create (DomainObjectIDs.Product1, typeof (Product), "Reviews");
+      var endPointStub = MockRepository.GenerateStub<IRealObjectEndPoint>();
+      var dataContainerMapStub = MockRepository.GenerateStub<IDataContainerMapReadOnlyView>();
+      var readOnlyCollectionDataDecorator = new ReadOnlyVirtualCollectionDataDecorator (new VirtualCollectionData (endPointID, dataContainerMapStub, ValueAccess.Current));
+      var objectListStub = MockRepository.GenerateStub<IObjectList<ProductReview>>();
+      var eventRaiserStub = MockRepository.GenerateStub<IDomainObjectCollectionEventRaiser>();
       var productReview = DomainObjectMother.CreateFakeObject<ProductReview>();
 
       _listenerMock.Replay();
@@ -176,8 +177,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _decoratorTestHelper.CheckDelegation (ep => ep.IsNull, true);
       _decoratorTestHelper.CheckDelegation (ep => ep.ClientTransaction, ClientTransaction.CreateRootTransaction());
       _decoratorTestHelper.CheckDelegation (ep => ep.ObjectID, DomainObjectIDs.Product1);
-      _decoratorTestHelper.CheckDelegation (ep => ep.Definition, GetEndPointDefinition (typeof (Product), "ProductReviews"));
-      _decoratorTestHelper.CheckDelegation (ep => ep.RelationDefinition, GetRelationDefinition (typeof (Product), "ProductReviews"));
+      _decoratorTestHelper.CheckDelegation (ep => ep.Definition, GetEndPointDefinition (typeof (Product), "Reviews"));
+      _decoratorTestHelper.CheckDelegation (ep => ep.RelationDefinition, GetRelationDefinition (typeof (Product), "Reviews"));
       _decoratorTestHelper.CheckDelegation (ep => ep.HasChanged, false);
       _decoratorTestHelper.CheckDelegation (ep => ep.HasChanged, true);
       _decoratorTestHelper.CheckDelegation (ep => ep.HasBeenTouched, false);
@@ -198,15 +199,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _decoratorTestHelper.CheckDelegation (ep => ep.CanBeMarkedIncomplete, false);
       _decoratorTestHelper.CheckDelegation (ep => ep.CanBeMarkedIncomplete, true);
       _decoratorTestHelper.CheckDelegation (ep => ep.MarkDataIncomplete());
-      _decoratorTestHelper.CheckDelegation (ep => ep.RegisterOriginalOppositeEndPoint (endPoint));
-      _decoratorTestHelper.CheckDelegation (ep => ep.UnregisterOriginalOppositeEndPoint (endPoint));
-      _decoratorTestHelper.CheckDelegation (ep => ep.RegisterCurrentOppositeEndPoint (endPoint));
-      _decoratorTestHelper.CheckDelegation (ep => ep.UnregisterCurrentOppositeEndPoint (endPoint));
+      _decoratorTestHelper.CheckDelegation (ep => ep.RegisterOriginalOppositeEndPoint (endPointStub));
+      _decoratorTestHelper.CheckDelegation (ep => ep.UnregisterOriginalOppositeEndPoint (endPointStub));
+      _decoratorTestHelper.CheckDelegation (ep => ep.RegisterCurrentOppositeEndPoint (endPointStub));
+      _decoratorTestHelper.CheckDelegation (ep => ep.UnregisterCurrentOppositeEndPoint (endPointStub));
       _decoratorTestHelper.CheckDelegation (ep => ep.GetData(), readOnlyCollectionDataDecorator);
       _decoratorTestHelper.CheckDelegation (ep => ep.GetOriginalData(), readOnlyCollectionDataDecorator);
-      _decoratorTestHelper.CheckDelegation (ep => ep.Collection, objectList);
-      _decoratorTestHelper.CheckDelegation (ep => ep.GetCollectionEventRaiser(), eventRaiser);
-      _decoratorTestHelper.CheckDelegation (ep => ep.GetCollectionWithOriginalData(), objectList);
+      _decoratorTestHelper.CheckDelegation (ep => ep.Collection, objectListStub);
+      _decoratorTestHelper.CheckDelegation (ep => ep.GetCollectionEventRaiser(), eventRaiserStub);
+      _decoratorTestHelper.CheckDelegation (ep => ep.GetCollectionWithOriginalData(), objectListStub);
       _decoratorTestHelper.CheckDelegation (ep => ep.MarkDataComplete (new[] { productReview }));
 
       _innerEndPointMock.BackToRecord();
@@ -235,7 +236,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (deserializedInstance.Listener, Is.Not.Null);
     }
 
-    private void CheckDelegationWithStateUpdate (Action<ICollectionEndPoint<ReadOnlyVirtualCollectionData>> action)
+    private void CheckDelegationWithStateUpdate (Action<ICollectionEndPoint<ReadOnlyVirtualCollectionDataDecorator>> action)
     {
       // Check with HasChangedFast returning the same value before and after the operation - no state update should be raised then
 

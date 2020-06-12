@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
@@ -27,26 +28,32 @@ using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints
 {
+  [Ignore ("TODO: RM-7294")]
   [TestFixture]
   public class ChangeCachingVirtualCollectionDataDecoratorTest : StandardMappingTest
   {
     private ProductReview _domainObject;
+    private RelationEndPointID _endPointID;
 
-    private IVirtualCollectionData _wrappedData;
+    private VirtualCollectionData _wrappedData;
     private ChangeCachingVirtualCollectionDataDecorator _decoratorWithRealData;
 
-    private ICollectionEndPointChangeDetectionStrategy _strategyStrictMock;
+    private IVirtualCollectionEndPointChangeDetectionStrategy _strategyStrictMock;
+    private IDataContainerMapReadOnlyView _dataContainerMapStub;
 
     public override void SetUp ()
     {
       base.SetUp();
 
+      var parent = DomainObjectMother.CreateFakeObject<Product>();
       _domainObject = DomainObjectMother.CreateFakeObject<ProductReview>();
-
-      _wrappedData = new VirtualCollectionData (new[] { _domainObject });
+      _endPointID = RelationEndPointID.Resolve (parent, o => o.Reviews);
+      _dataContainerMapStub = MockRepository.GenerateStub<IDataContainerMapReadOnlyView>();
+      _wrappedData = new VirtualCollectionData (_endPointID, _dataContainerMapStub, ValueAccess.Current);
+      _wrappedData.Add (_domainObject);
       _decoratorWithRealData = new ChangeCachingVirtualCollectionDataDecorator (_wrappedData);
 
-      _strategyStrictMock = new MockRepository().StrictMock<ICollectionEndPointChangeDetectionStrategy>();
+      _strategyStrictMock = new MockRepository().StrictMock<IVirtualCollectionEndPointChangeDetectionStrategy>();
     }
 
     [Test]
@@ -62,7 +69,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void OriginalData_IsReadOnly ()
     {
       Assert.That (_decoratorWithRealData.OriginalData.IsReadOnly, Is.True);
-      Assert.That (_decoratorWithRealData.OriginalData, Is.TypeOf (typeof (ReadOnlyVirtualCollectionData)));
+      Assert.That (_decoratorWithRealData.OriginalData, Is.TypeOf (typeof (ReadOnlyVirtualCollectionDataDecorator)));
     }
 
     [Test]
@@ -108,7 +115,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _strategyStrictMock.Replay();
 
       // Make strategy call necessary because both collections have the same count, but different items.
-      ((IVirtualCollectionData) _decoratorWithRealData).Replace (0, DomainObjectMother.CreateFakeObject<ProductReview>());
+      ((IVirtualCollectionData) _decoratorWithRealData).Remove (_domainObject);
+      ((IVirtualCollectionData) _decoratorWithRealData).Add (DomainObjectMother.CreateFakeObject<ProductReview>());
       Assert.That (_decoratorWithRealData.Count, Is.EqualTo (_decoratorWithRealData.OriginalData.Count));
 
       var result = _decoratorWithRealData.HasChanged (_strategyStrictMock);
@@ -126,7 +134,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _strategyStrictMock.Replay();
 
       // Make strategy call necessary because both collections have the same count, but different items.
-      ((IVirtualCollectionData) _decoratorWithRealData).Replace (0, DomainObjectMother.CreateFakeObject<ProductReview>());
+      ((IVirtualCollectionData) _decoratorWithRealData).Remove (_domainObject);
+      ((IVirtualCollectionData) _decoratorWithRealData).Add (DomainObjectMother.CreateFakeObject<ProductReview>());
 
       Assert.That (_decoratorWithRealData.IsCacheUpToDate, Is.False);
 
@@ -166,7 +175,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _strategyStrictMock.Replay();
 
-      ((IVirtualCollectionData) _decoratorWithRealData).Replace (0, DomainObjectMother.CreateFakeObject<ProductReview>()); // make strategy necessary
+      // Make strategy call necessary because both collections have the same count, but different items.
+      ((IVirtualCollectionData) _decoratorWithRealData).Remove (_domainObject);
+      ((IVirtualCollectionData) _decoratorWithRealData).Add (DomainObjectMother.CreateFakeObject<ProductReview>());
 
       var result1 = _decoratorWithRealData.HasChanged (_strategyStrictMock);
       CallOnDataChangedOnWrappedData (_decoratorWithRealData);
@@ -207,26 +218,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void Clear_OriginalValuesCopied ()
     {
-      CheckOriginalValuesCopiedBeforeModification ((d, obj) => d.Clear());
-    }
-
-    [Test]
-    public void Insert_InvalidatesCache ()
-    {
-      WarmUpCache (_decoratorWithRealData, false);
-      Assert.That (_decoratorWithRealData.IsCacheUpToDate, Is.True);
-
-      var domainObject = DomainObjectMother.CreateFakeObject<ProductReview>();
-      ((IVirtualCollectionData) _decoratorWithRealData).Insert (0, domainObject);
-
-      Assert.That (_wrappedData.GetObject (0), Is.SameAs (domainObject));
-      Assert.That (_decoratorWithRealData.IsCacheUpToDate, Is.False);
-    }
-
-    [Test]
-    public void Insert_OriginalValuesCopied ()
-    {
-      CheckOriginalValuesCopiedBeforeModification ((d, obj) => d.Insert (0, _domainObject));
+      CheckOriginalValuesCopiedBeforeModification ((d, obj) => ((IVirtualCollectionData) d).Clear());
     }
 
     [Test]
@@ -257,7 +249,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void Remove_Object_OriginalValuesCopied ()
     {
-      CheckOriginalValuesCopiedBeforeModification ((d, obj) => d.Remove (obj));
+      CheckOriginalValuesCopiedBeforeModification ((d, obj) => ((IVirtualCollectionData) d).Remove (obj));
     }
 
     [Test]
@@ -288,32 +280,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void Remove_ID_OriginalValuesCopied ()
     {
-      CheckOriginalValuesCopiedBeforeModification ((d, obj) => d.Remove (obj.ID));
-    }
-
-    [Test]
-    public void Replace_InvalidatesCache ()
-    {
-      WarmUpCache (_decoratorWithRealData, false);
-      Assert.That (_decoratorWithRealData.IsCacheUpToDate, Is.True);
-
-      var domainObject = DomainObjectMother.CreateFakeObject<ProductReview>();
-      ((IVirtualCollectionData) _decoratorWithRealData).Replace (0, domainObject);
-
-      Assert.That (_wrappedData.GetObject (0), Is.SameAs (domainObject));
-      Assert.That (_decoratorWithRealData.IsCacheUpToDate, Is.False);
-    }
-
-    [Test]
-    public void Replace_OriginalValuesCopied ()
-    {
-      CheckOriginalValuesCopiedBeforeModification ((d, obj) => d.Replace (0, _domainObject));
+      CheckOriginalValuesCopiedBeforeModification ((d, obj) => ((IVirtualCollectionData) d).Remove (obj.ID));
     }
 
     [Test]
     public void Commit_RevertsOriginalObjects_ToCurrentObjects ()
     {
-      var wrappedData = new VirtualCollectionData (new List<DomainObject>());
+      var wrappedData = new VirtualCollectionData (_endPointID, _dataContainerMapStub, ValueAccess.Current);
       var decorator = new ChangeCachingVirtualCollectionDataDecorator (wrappedData);
       ((IVirtualCollectionData) decorator).Add (_domainObject);
       Assert.That (decorator.OriginalData.ToArray(), Is.Empty);
@@ -327,7 +300,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void Commit_SetsFlagUnchanged ()
     {
-      var wrappedData = new VirtualCollectionData (new List<DomainObject>());
+      var wrappedData = new VirtualCollectionData (_endPointID, _dataContainerMapStub, ValueAccess.Current);
       var decorator = new ChangeCachingVirtualCollectionDataDecorator (wrappedData);
       ((IVirtualCollectionData) decorator).Add (_domainObject);
       _strategyStrictMock.Replay();
@@ -342,9 +315,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void Rollback_RevertsCurrentObjects_ToOriginalObjects ()
     {
-      var wrappedData = new VirtualCollectionData (new List<DomainObject>());
+      var wrappedData = new VirtualCollectionData (_endPointID, _dataContainerMapStub, ValueAccess.Current);
       var decorator = new ChangeCachingVirtualCollectionDataDecorator (wrappedData);
-      decorator.Add (_domainObject);
+      ((IVirtualCollectionData) decorator).Add (_domainObject);
 
       Assert.That (decorator.ToArray(), Is.Not.Empty);
       Assert.That (decorator.OriginalData.ToArray(), Is.Empty);
@@ -359,7 +332,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void Rollback_SetsFlagUnchanged ()
     {
-      var wrappedData = new VirtualCollectionData (new List<DomainObject>());
+      var wrappedData = new VirtualCollectionData (_endPointID, _dataContainerMapStub, ValueAccess.Current);
       var decorator = new ChangeCachingVirtualCollectionDataDecorator (wrappedData);
       ((IVirtualCollectionData) decorator).Add (_domainObject);
       _strategyStrictMock.Replay();
@@ -374,8 +347,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void RegisterOriginalItem_ItemAlreadyExists_InOriginal ()
     {
-      var underlyingOriginalData = VirtualCollectionDataTestHelper.GetWrappedDataAndCheckType<CopyOnWriteDomainObjectVirtualCollectionData> (
-          _decoratorWithRealData.OriginalData);
+      IVirtualCollectionData underlyingOriginalData = null;
+      //var underlyingOriginalData = VirtualCollectionDataTestHelper.GetWrappedDataAndCheckType<CopyOnWriteDomainObjectVirtualCollectionData> (
+      //    _decoratorWithRealData.OriginalData);
 
       var domainObject = DomainObjectMother.CreateFakeObject<ProductReview>();
       underlyingOriginalData.Add (domainObject);
@@ -385,7 +359,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (
           () => _decoratorWithRealData.RegisterOriginalItem (domainObject),
           Throws.InvalidOperationException
-              .With.Message.Matches (@"The original collection already contains a domain object with ID 'Order\|.*'\."));
+              .With.Message.Matches (@"The original collection already contains a domain object with ID 'ProductReview\|.*'\."));
     }
 
     [Test]
@@ -601,8 +575,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var domainObject2 = DomainObjectMother.CreateFakeObject<OrderItem>();
       var domainObject3 = DomainObjectMother.CreateFakeObject<Customer>();
 
-      var decorator = new ChangeCachingVirtualCollectionDataDecorator (
-          new VirtualCollectionData (new DomainObject[] { domainObject1, domainObject2, domainObject3 }));
+      var virtualCollectionData = new VirtualCollectionData (_endPointID, _dataContainerMapStub, ValueAccess.Current);
+      virtualCollectionData.Add (domainObject1);
+      virtualCollectionData.Add (domainObject2);
+      virtualCollectionData.Add (domainObject3);
+      var decorator = new ChangeCachingVirtualCollectionDataDecorator (virtualCollectionData);
 
       decorator.SortOriginalAndCurrent (CompareTypeNames);
 
@@ -617,8 +594,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var domainObject2 = DomainObjectMother.CreateFakeObject<OrderItem>();
       var domainObject3 = DomainObjectMother.CreateFakeObject<Customer>();
 
-      var decorator = new ChangeCachingVirtualCollectionDataDecorator (
-          new VirtualCollectionData (new DomainObject[] { domainObject1, domainObject2, domainObject3 }));
+      var virtualCollectionData = new VirtualCollectionData (_endPointID, _dataContainerMapStub, ValueAccess.Current);
+      virtualCollectionData.Add (domainObject1);
+      virtualCollectionData.Add (domainObject2);
+      virtualCollectionData.Add (domainObject3);
+      var decorator = new ChangeCachingVirtualCollectionDataDecorator (virtualCollectionData);
 
       decorator.SortOriginalAndCurrent (CompareTypeNames);
 
@@ -632,8 +612,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var domainObject2 = DomainObjectMother.CreateFakeObject<OrderItem>();
       var domainObject3 = DomainObjectMother.CreateFakeObject<Customer>();
 
-      var decorator = new ChangeCachingVirtualCollectionDataDecorator (
-          new VirtualCollectionData (new DomainObject[] { domainObject1, domainObject2, domainObject3 }));
+      var virtualCollectionData = new VirtualCollectionData (_endPointID, _dataContainerMapStub, ValueAccess.Current);
+      virtualCollectionData.Add (domainObject1);
+      virtualCollectionData.Add (domainObject2);
+      virtualCollectionData.Add (domainObject3);
+      var decorator = new ChangeCachingVirtualCollectionDataDecorator (virtualCollectionData);
 
       PrepareCheckChangeFlagRetained (decorator, false);
 
@@ -649,8 +632,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var domainObject2 = DomainObjectMother.CreateFakeObject<OrderItem>();
       var domainObject3 = DomainObjectMother.CreateFakeObject<Customer>();
 
-      var decorator = new ChangeCachingVirtualCollectionDataDecorator (
-          new VirtualCollectionData (new DomainObject[] { domainObject1, domainObject2, domainObject3 }));
+      var virtualCollectionData = new VirtualCollectionData (_endPointID, _dataContainerMapStub, ValueAccess.Current);
+      virtualCollectionData.Add (domainObject1);
+      virtualCollectionData.Add (domainObject2);
+      virtualCollectionData.Add (domainObject3);
+      var decorator = new ChangeCachingVirtualCollectionDataDecorator (virtualCollectionData);
 
       ((IVirtualCollectionData) _decoratorWithRealData).Remove (domainObject2);
 
@@ -667,8 +653,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var domainObject2 = DomainObjectMother.CreateFakeObject<OrderItem>();
       var domainObject3 = DomainObjectMother.CreateFakeObject<Customer>();
 
-      var decorator = new ChangeCachingVirtualCollectionDataDecorator (
-          new VirtualCollectionData (new DomainObject[] { domainObject1, domainObject2, domainObject3 }));
+      var virtualCollectionData = new VirtualCollectionData (_endPointID, _dataContainerMapStub, ValueAccess.Current);
+      virtualCollectionData.Add (domainObject1);
+      virtualCollectionData.Add (domainObject2);
+      virtualCollectionData.Add (domainObject3);
+      var decorator = new ChangeCachingVirtualCollectionDataDecorator (virtualCollectionData);
 
       ((IVirtualCollectionData) _decoratorWithRealData).Remove (domainObject2);
 
@@ -682,7 +671,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void Serializable ()
     {
-      var wrappedData = new VirtualCollectionData (new[] { _domainObject });
+      var wrappedData = new VirtualCollectionData (_endPointID, _dataContainerMapStub, ValueAccess.Current);
+      wrappedData.Add (_domainObject);
       var decorator = new ChangeCachingVirtualCollectionDataDecorator (wrappedData);
 
       WarmUpCache (decorator, false);
@@ -709,13 +699,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
     private void CallOnDataChangedOnWrappedData (ChangeCachingVirtualCollectionDataDecorator decorator)
     {
-      var wrappedData = VirtualCollectionDataTestHelper.GetWrappedDataAndCheckType<ObservableVirtualCollectionDataDecorator> (decorator);
-      PrivateInvoke.InvokeNonPublicMethod (
-          wrappedData,
-          "OnDataChanged",
-          ObservableVirtualCollectionDataDecoratorBase.OperationKind.Remove,
-          _domainObject,
-          12);
+      throw new NotImplementedException();
+      //var wrappedData = VirtualCollectionDataTestHelper.GetWrappedDataAndCheckType<ObservableVirtualCollectionDataDecorator> (decorator);
+      //PrivateInvoke.InvokeNonPublicMethod (
+      //    wrappedData,
+      //    "OnDataChanged",
+      //    ObservableVirtualCollectionDataDecoratorBase.OperationKind.Remove,
+      //    _domainObject,
+      //    12);
     }
 
     private void CheckOriginalValuesCopiedBeforeModification (Action<ChangeCachingVirtualCollectionDataDecorator, DomainObject> action)
@@ -723,7 +714,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var domainObject1 = DomainObjectMother.CreateFakeObject<ProductReview>();
       var domainObject2 = DomainObjectMother.CreateFakeObject<ProductReview>();
 
-      var wrappedData = new VirtualCollectionData (new[] { domainObject1, domainObject2 });
+      var wrappedData = new VirtualCollectionData (_endPointID, _dataContainerMapStub, ValueAccess.Current);
+      wrappedData.Add (domainObject1);
+      wrappedData.Add (domainObject2);
       var decorator = new ChangeCachingVirtualCollectionDataDecorator (wrappedData);
 
       action (decorator, domainObject1);
@@ -733,11 +726,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
     private void CheckOriginalDataMatches (IVirtualCollectionData expected, IVirtualCollectionData actual)
     {
-      var expectedInner = VirtualCollectionDataTestHelper.GetWrappedDataAndCheckType<CopyOnWriteDomainObjectVirtualCollectionData> (
-          (ReadOnlyVirtualCollectionDataDecorator) expected);
-      var actualInner = VirtualCollectionDataTestHelper.GetWrappedDataAndCheckType<CopyOnWriteDomainObjectVirtualCollectionData> (
-          (ReadOnlyVirtualCollectionDataDecorator) actual);
-      Assert.That (actualInner, Is.SameAs (expectedInner));
+      throw new NotImplementedException();
+      //var expectedInner = VirtualCollectionDataTestHelper.GetWrappedDataAndCheckType<CopyOnWriteDomainObjectVirtualCollectionData> (
+      //    (ReadOnlyVirtualCollectionData) expected);
+      //var actualInner = VirtualCollectionDataTestHelper.GetWrappedDataAndCheckType<CopyOnWriteDomainObjectVirtualCollectionData> (
+      //    (ReadOnlyVirtualCollectionData) actual);
+      //Assert.That (actualInner, Is.SameAs (expectedInner));
     }
 
     private void PrepareCheckChangeFlagRetained (ChangeCachingVirtualCollectionDataDecorator decorator, bool hasChanged)
@@ -754,12 +748,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
     private void CheckOriginalDataNotCopied (ChangeCachingVirtualCollectionDataDecorator decorator)
     {
-      var originalData = VirtualCollectionDataTestHelper.GetWrappedDataAndCheckType<CopyOnWriteDomainObjectVirtualCollectionData> (
-          decorator.OriginalData);
+      throw new NotImplementedException();
+      //var originalData = VirtualCollectionDataTestHelper.GetWrappedDataAndCheckType<CopyOnWriteDomainObjectVirtualCollectionData> (
+      //    decorator.OriginalData);
 
-      var originalDataStore = VirtualCollectionDataTestHelper.GetWrappedData (originalData);
-      var observedWrappedData = PrivateInvoke.GetNonPublicField (decorator, "_observedWrappedData");
-      Assert.That (originalDataStore, Is.SameAs (observedWrappedData));
+      //var originalDataStore = VirtualCollectionDataTestHelper.GetWrappedData (originalData);
+      //var observedWrappedData = PrivateInvoke.GetNonPublicField (decorator, "_observedWrappedData");
+      //Assert.That (originalDataStore, Is.SameAs (observedWrappedData));
     }
 
     private void PrepareCheckChangeFlagInvalidated (ChangeCachingVirtualCollectionDataDecorator decorator, bool hasChanged)

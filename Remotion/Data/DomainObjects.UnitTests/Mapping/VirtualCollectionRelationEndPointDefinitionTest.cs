@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var classDefinition = CreateProductDefinition_WithEmptyMembers_AndDerivedClasses();
       var endPointDefinition = VirtualCollectionRelationEndPointDefinitionFactory.Create (
           classDefinition,
-          "ProductReviews",
+          "Reviews",
           false,
           typeof (IObjectList<ProductReview>),
           "CreatedAt desc");
@@ -56,21 +56,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void IsAnonymous ()
     {
-      var reviewsEndPointDefinition = CreateProductReviewsEndPointDefinition();
+      var reviewsEndPointDefinition = CreateReviewsEndPointDefinition();
       Assert.That (reviewsEndPointDefinition.IsAnonymous, Is.False);
     }
 
     [Test]
     public void RelationDefinition_Null ()
     {
-      var relationEndPointDefinition = CreateProductReviewsEndPointDefinition();
+      var relationEndPointDefinition = CreateReviewsEndPointDefinition();
       Assert.That (relationEndPointDefinition.RelationDefinition, Is.Null);
     }
 
     [Test]
     public void RelationDefinition_NonNull ()
     {
-      var relationEndPointDefinition = CreateProductReviewsEndPointDefinition();
+      var relationEndPointDefinition = CreateReviewsEndPointDefinition();
       relationEndPointDefinition.SetRelationDefinition (new RelationDefinition ("Test", relationEndPointDefinition, relationEndPointDefinition));
       Assert.That (relationEndPointDefinition.RelationDefinition, Is.Not.Null);
     }
@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var classDefinition = CreateProductDefinition_WithEmptyMembers_AndDerivedClasses();
       var endPoint = VirtualCollectionRelationEndPointDefinitionFactory.Create (
           classDefinition,
-          "ProductReviews",
+          "Reviews",
           false,
           typeof (IObjectList<ProductReview>),
           null);
@@ -110,7 +110,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo (
                   "SortExpression 'CreatedAt asc asc' cannot be parsed: Expected 1 or 2 parts (a property name and an optional identifier), found 3 parts instead.\r\n\r\n"+
-                  "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Product\r\nProperty: ProductReviews"));
+                  "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Product\r\nProperty: Reviews"));
     }
 
     [Test]
@@ -118,8 +118,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       var classDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (Product));
       var relationEndPointDefinition = 
-          (VirtualCollectionRelationEndPointDefinition) classDefinition.GetRelationEndPointDefinition (typeof (Product) + ".ProductReviews");
-      Assert.That (relationEndPointDefinition.PropertyInfo, Is.EqualTo (PropertyInfoAdapter.Create(typeof (Product).GetProperty ("ProductReviews"))));
+          (VirtualCollectionRelationEndPointDefinition) classDefinition.GetRelationEndPointDefinition (typeof (Product) + ".Reviews");
+      Assert.That (relationEndPointDefinition.PropertyInfo, Is.EqualTo (PropertyInfoAdapter.Create(typeof (Product).GetProperty ("Reviews"))));
     }
 
     private VirtualCollectionRelationEndPointDefinition CreateFullVirtualEndPointAndClassDefinition_WithProductProperty (string sortExpressionString)
@@ -127,7 +127,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var classDefinition = CreateProductDefinition_WithEmptyMembers_AndDerivedClasses();
       var endPoint = VirtualCollectionRelationEndPointDefinitionFactory.Create (
           classDefinition,
-          "ProductReviews",
+          "Reviews",
           false,
           typeof (IObjectList<ProductReview>),
           sortExpressionString);
@@ -148,12 +148,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       return ClassDefinitionObjectMother.CreateClassDefinition_WithEmptyMembers_AndDerivedClasses ("Product", classType: typeof (Product));
     }
 
-    private VirtualCollectionRelationEndPointDefinition CreateProductReviewsEndPointDefinition ()
+    private VirtualCollectionRelationEndPointDefinition CreateReviewsEndPointDefinition ()
     {
       var productClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (Product));
       return VirtualCollectionRelationEndPointDefinitionFactory.Create (
           productClassDefinition,
-          "ProductReviews",
+          "Reviews",
           false,
           typeof (IObjectList<ProductReview>),
           "CreatedAt desc");

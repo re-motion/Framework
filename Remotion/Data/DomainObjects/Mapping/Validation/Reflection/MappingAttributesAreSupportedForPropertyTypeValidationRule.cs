@@ -152,7 +152,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
     {
       return new AttributeConstraint (
           string.Format (
-              "The '{0}' may be only applied to properties assignable to types '{1}' or '{2}'.",
+              "The '{0}' may be only applied to properties assignable to types '{1}', '{2}', or '{3}'.",
               typeof (TAttribute).Name,
               typeof (DomainObject).Name,
               typeof (ObjectList<>).Name,

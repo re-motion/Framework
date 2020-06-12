@@ -13,11 +13,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
     }
 
     [StringProperty (IsNullable = false, MaximumLength = 100)]
-    public abstract string ProductName { get; set; }
+    public abstract string Name { get; set; }
 
-    public abstract decimal ProductPrice { get; set; }
+    public abstract decimal Price { get; set; }
 
-    [DBBidirectionalRelation ("Product")]
-    public abstract IObjectList<ProductReview> ProductReviews { get; set; }
+    [DBBidirectionalRelation ("Product", SortExpression = "CreatedAt DESC")]
+    public abstract IObjectList<ProductReview> Reviews { get; set; }
   }
 }

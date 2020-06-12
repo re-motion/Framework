@@ -213,11 +213,13 @@
     </Compile>
     <Compile Include="ClientTransactionTestHelperWithMocks.cs" />
     <Compile Include="DataManagement\DataContainerStateTest.cs" />
+    <Compile Include="DataManagement\DelegatingDataContainerMapTest.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\ChangeCachingVirtualCollectionDataDecoratorTest.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\IncompleteVirtualCollectionEndPointLoadStateTest.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\StateUpdateRaisingVirtualCollectionEndPointDecoratorTest.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\VirtualCollectionEndPointCollectionProviderTest.cs" />
     <Compile Include="DataManagement\SerializableFakes\SerializableClientTransactionHierarchyFake.cs" />
+    <Compile Include="DataManagement\SerializableFakes\SerializableVirtualCollectionEndPointChangeDetectionStrategyFake.cs" />
     <Compile Include="DataManagement\SerializableFakes\SerializableFetchEnabledPersistenceStrategyFake.cs" />
     <Compile Include="DataManagement\SerializableFakes\SerializableLoadedObjectDataProviderFake.cs" />
     <Compile Include="DataManagement\SerializableFakes\SerializableLoadedObjectDataRegistrationAgentFake.cs" />
@@ -225,6 +227,9 @@
     <Compile Include="DataManagement\SerializableFakes\SerializableVirtualCollectionEndPointDataManagerFactoryFake.cs" />
     <Compile Include="DataManagement\SerializableFakes\SerializableVirtualCollectionEndPointFake.cs" />
     <Compile Include="DomainObjectStateTest.cs" />
+    <Compile Include="DomainObjects\AddToOneToManyRelationWithVirtualCollectionTest.cs" />
+    <Compile Include="DomainObjects\OneToManyRelationChangeWithVirtualCollectionTest.cs" />
+    <Compile Include="DomainObjects\RemoveFromOneToManyRelationWithVirtualCollectionTest.cs" />
     <Compile Include="IClientTransactionExtensionFactoryTest.cs" />
     <Compile Include="IDomainModelConstraintProviderTest.cs" />
     <Compile Include="Infrastructure\CompoundClientTransactionExtensionFactoryTest.cs" />
@@ -250,6 +255,7 @@
     <Compile Include="IntegrationTests\NewObject\RecursiveNewObjectCallTest.cs" />
     <Compile Include="IntegrationTests\HierarchyBoundObjects\OperationsInRootTransactionTest.cs" />
     <Compile Include="IntegrationTests\Relations\LoadingRelationsWithInvalidMandatoryRelationsTest.cs" />
+    <Compile Include="IntegrationTests\Relations\VirtualCollectionRelationLoadingTest.cs" />
     <Compile Include="IntegrationTests\ServiceLocation\ParticipantRegistrationTest.cs" />
     <Compile Include="IntegrationTests\Transaction\ReadOnlyTransactions\AllowedOperations\CollectionQueryTest.cs" />
     <Compile Include="IntegrationTests\Transaction\ReadOnlyTransactions\AllowedOperations\CustomQueryTest.cs" />
@@ -387,6 +393,7 @@
     <Compile Include="Persistence\Rdbms\SqlServer\IntegrationTests\EnablingClassIDsInAllForeignKeys\ReleationEndPointTestHelper.cs" />
     <Compile Include="Persistence\Rdbms\SqlServer\Model\Building\SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecoratorTest.cs" />
     <Compile Include="Persistence\Rdbms\SqlServer\Model\SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecoratorTest.cs" />
+    <Compile Include="Serialization\DelegatingDataContainerMapTest.cs" />
     <Compile Include="Serialization\FlattenedSerializableWithoutCtorStub.cs" />
     <Compile Include="DomainObjectHandleConverterTest.cs" />
     <Compile Include="Infrastructure\TypePipe\ImplementingAccessorInterceptorBaseTest.cs" />
@@ -1357,7 +1364,7 @@
     <Compile Include="Queries\Configuration\QueryFileElementTest.cs" />
     <Compile Include="Persistence\Configuration\StorageProviderDefinitionTest.cs" />
     <Compile Include="DomainImplementation\Cloning\DomainObjectClonerTest.cs" />
-    <Compile Include="IntegrationTests\Relations\CollectionSetterTest.cs" />
+    <Compile Include="IntegrationTests\Relations\DomainObjectCollectionSetterTest.cs" />
     <Compile Include="IntegrationTests\StorageClassTransactionTest.cs" />
     <Compile Include="Linq\ExtensionMethodsTest.cs" />
     <Compile Include="MixedDomains\TestDomain\BaseForMixinAddingPersistentProperties.cs" />

@@ -17,6 +17,7 @@
 using System;
 using System.Diagnostics;
 using System.Threading;
+using JetBrains.Annotations;
 using Remotion.Data.DomainObjects.Mapping.SortExpressions;
 using Remotion.Data.DomainObjects.Mapping.Validation;
 using Remotion.Reflection;
@@ -108,6 +109,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       get { return _sortExpressionText; }
     }
 
+    [CanBeNull]
     public SortExpressionDefinition GetSortExpression ()
     {
       return _sortExpression.Value;

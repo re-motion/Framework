@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints
@@ -22,29 +23,45 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   /// <summary>
   /// The <see cref="VirtualCollectionEndPointDataManagerFactory"/> is responsible to create a new <see cref="IVirtualCollectionEndPointDataManager"/> instance.
   /// </summary>
-  [Serializable]
   public class VirtualCollectionEndPointDataManagerFactory : IVirtualCollectionEndPointDataManagerFactory
   {
-    private readonly ICollectionEndPointChangeDetectionStrategy _changeDetectionStrategy;
+    public IVirtualCollectionEndPointChangeDetectionStrategy ChangeDetectionStrategy { get; }
+
+    public IDataContainerMapReadOnlyView DataContainerMap { get; }
 
     public VirtualCollectionEndPointDataManagerFactory (
-        ICollectionEndPointChangeDetectionStrategy changeDetectionStrategy)
+        IVirtualCollectionEndPointChangeDetectionStrategy changeDetectionStrategy,
+        IDataContainerMapReadOnlyView dataContainerMap)
     {
       ArgumentUtility.CheckNotNull ("changeDetectionStrategy", changeDetectionStrategy);
+      ArgumentUtility.CheckNotNull ("dataContainerMap", dataContainerMap);
 
-      _changeDetectionStrategy = changeDetectionStrategy;
+      ChangeDetectionStrategy = changeDetectionStrategy;
+      DataContainerMap = dataContainerMap;
     }
 
-    public ICollectionEndPointChangeDetectionStrategy ChangeDetectionStrategy
-    {
-      get { return _changeDetectionStrategy; }
-    }
 
     public IVirtualCollectionEndPointDataManager CreateEndPointDataManager (RelationEndPointID endPointID)
     {
       ArgumentUtility.CheckNotNull ("endPointID", endPointID);
 
-      return new VirtualCollectionEndPointDataManager (endPointID, _changeDetectionStrategy);
+      return new VirtualCollectionEndPointDataManager (endPointID, ChangeDetectionStrategy, DataContainerMap);
     }
+
+    #region Serialization
+
+    private VirtualCollectionEndPointDataManagerFactory (FlattenedDeserializationInfo info)
+    {
+      ChangeDetectionStrategy = info.GetValueForHandle<IVirtualCollectionEndPointChangeDetectionStrategy>();
+      DataContainerMap = info.GetValueForHandle<IDataContainerMapReadOnlyView>();
+    }
+
+    void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
+    {
+      info.AddHandle (ChangeDetectionStrategy);
+      info.AddHandle (DataContainerMap);
+    }
+
+    #endregion
   }
 }

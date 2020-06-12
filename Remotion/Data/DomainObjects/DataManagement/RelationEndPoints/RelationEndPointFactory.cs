@@ -18,6 +18,7 @@ using System;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.VirtualObjectEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
@@ -25,7 +26,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   /// <summary>
   /// Creates <see cref="IRelationEndPoint"/> instances.
   /// </summary>
-  [Serializable]
   public class RelationEndPointFactory : IRelationEndPointFactory
   {
     private readonly ClientTransaction _clientTransaction;
@@ -175,5 +175,37 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
           _domainObjectCollectionEndPointDataManagerFactory);
       return collectionEndPoint;
     }
+
+    #region Serialization
+
+    private RelationEndPointFactory (FlattenedDeserializationInfo info)
+    {
+     _clientTransaction = info.GetValueForHandle<ClientTransaction>();
+     _endPointProvider = info.GetValueForHandle<IRelationEndPointProvider>();
+     _lazyLoader = info.GetValueForHandle<ILazyLoader>();
+     _transactionEventSink = info.GetValueForHandle<IClientTransactionEventSink>();
+     _virtualObjectEndPointDataManagerFactory = info.GetValueForHandle<IVirtualObjectEndPointDataManagerFactory>();
+     _domainObjectCollectionEndPointDataManagerFactory = info.GetValueForHandle<IDomainObjectCollectionEndPointDataManagerFactory>();
+     _domainObjectCollectionEndPointCollectionProvider = info.GetValueForHandle<IDomainObjectCollectionEndPointCollectionProvider>();
+     _associatedDomainObjectCollectionDataStrategyFactory = info.GetValueForHandle<IAssociatedDomainObjectCollectionDataStrategyFactory>();
+     _virtualCollectionEndPointCollectionProvider = info.GetValueForHandle<IVirtualCollectionEndPointCollectionProvider>();
+     _virtualCollectionEndPointDataManagerFactory = info.GetValueForHandle<IVirtualCollectionEndPointDataManagerFactory>();
+    }
+
+    void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
+    {
+      info.AddHandle (_clientTransaction);
+      info.AddHandle (_endPointProvider);
+      info.AddHandle (_lazyLoader);
+      info.AddHandle (_transactionEventSink);
+      info.AddHandle (_virtualObjectEndPointDataManagerFactory );
+      info.AddHandle (_domainObjectCollectionEndPointDataManagerFactory );
+      info.AddHandle (_domainObjectCollectionEndPointCollectionProvider);
+      info.AddHandle (_associatedDomainObjectCollectionDataStrategyFactory);
+      info.AddHandle (_virtualCollectionEndPointCollectionProvider);
+      info.AddHandle (_virtualCollectionEndPointDataManagerFactory);
+    }
+
+    #endregion
   }
 }

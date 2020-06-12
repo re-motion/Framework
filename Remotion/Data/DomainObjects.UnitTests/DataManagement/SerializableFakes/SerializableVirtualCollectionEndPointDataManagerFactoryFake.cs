@@ -17,15 +17,30 @@
 using System;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
+using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
 {
   [Serializable]
   public class SerializableVirtualCollectionEndPointDataManagerFactoryFake : IVirtualCollectionEndPointDataManagerFactory
   {
+    public SerializableVirtualCollectionEndPointDataManagerFactoryFake ()
+    {
+    }
+
     public IVirtualCollectionEndPointDataManager CreateEndPointDataManager (RelationEndPointID endPointID)
     {
       throw new NotImplementedException();
     }
+
+    #region Serialization
+    public SerializableVirtualCollectionEndPointDataManagerFactoryFake (FlattenedDeserializationInfo info)
+    {
+    }
+
+    void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
+    {
+    }
+    #endregion
   }
 }

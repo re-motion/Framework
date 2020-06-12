@@ -23,13 +23,13 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints
 {
   /// <summary>
-  /// Keeps track of <see cref="IObjectList"/> references to be used by <see cref="VirtualCollectionEndPoint"/> instances.
+  /// Keeps track of <see cref="IObjectList{IDomainObject}"/> references to be used by <see cref="VirtualCollectionEndPoint"/> instances.
   /// </summary>
   [Serializable]
   public class VirtualCollectionEndPointCollectionProvider : IVirtualCollectionEndPointCollectionProvider
   {
-    private readonly Dictionary<RelationEndPointID, IObjectList> _collections = new Dictionary<RelationEndPointID, IObjectList>();
-    private readonly Func<RelationEndPointID, IObjectList> _getCollectionWithoutCacheFunc;
+    private readonly Dictionary<RelationEndPointID, IObjectList<IDomainObject>> _collections = new Dictionary<RelationEndPointID, IObjectList<IDomainObject>>();
+    private readonly Func<RelationEndPointID, IObjectList<IDomainObject>> _getCollectionWithoutCacheFunc;
     private readonly IVirtualEndPointProvider _virtualEndPointProvider;
 
     public VirtualCollectionEndPointCollectionProvider (IVirtualEndPointProvider virtualEndPointProvider)
@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       get { return _virtualEndPointProvider; }
     }
 
-    public IObjectList GetCollection (RelationEndPointID endPointID)
+    public IObjectList<IDomainObject> GetCollection (RelationEndPointID endPointID)
     {
       ArgumentUtility.CheckNotNull ("endPointID", endPointID);
       var collection = _collections.GetOrCreateValue (endPointID, _getCollectionWithoutCacheFunc);
@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       return collection;
     }
 
-    private IObjectList GetCollectionWithoutCache (RelationEndPointID endPointID)
+    private IObjectList<IDomainObject> GetCollectionWithoutCache (RelationEndPointID endPointID)
     {
       var requiredItemType = endPointID.Definition.GetOppositeEndPointDefinition().ClassDefinition.ClassType;
       var dataStrategy = new EndPointDelegatingVirtualCollectionData (endPointID, requiredItemType, _virtualEndPointProvider);

@@ -22,9 +22,9 @@ using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoi
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.VirtualObjectEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
+using Remotion.Data.DomainObjects.UnitTests.Serialization;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.UnitTests.UnitTesting;
-using Remotion.Development.UnitTesting;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
@@ -160,7 +160,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void CreateVirtualCollectionEndPoint ()
     {
-      var endPointID = RelationEndPointID.Create (DomainObjectIDs.Product1, typeof (Product), "ProductReviews");
+      var endPointID = RelationEndPointID.Create (DomainObjectIDs.Product1, typeof (Product), "Reviews");
 
       var endPoint = _factory.CreateVirtualCollectionEndPoint (endPointID);
 
@@ -241,7 +241,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    public void Serialization ()
+    public void FlattenedSerializable ()
     {
       var factory = new RelationEndPointFactory (
           _clientTransaction,
@@ -255,7 +255,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
           new SerializableVirtualCollectionEndPointCollectionProviderFake(),
           new SerializableVirtualCollectionEndPointDataManagerFactoryFake());
 
-      var deserializedInstance = Serializer.SerializeAndDeserialize (factory);
+      var deserializedInstance = FlattenedSerializer.SerializeAndDeserialize (factory);
 
       Assert.That (deserializedInstance.ClientTransaction, Is.Not.Null);
       Assert.That (deserializedInstance.EndPointProvider, Is.Not.Null);

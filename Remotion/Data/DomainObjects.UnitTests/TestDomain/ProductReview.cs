@@ -18,11 +18,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
     }
 
     [Mandatory]
-    [DBBidirectionalRelation ("ProductReviews")]
+    [DBBidirectionalRelation ("Reviews")]
     public abstract Product Product { get; set; }
 
     [Mandatory]
-    //[DBBidirectionalRelation ("ProductReviews")] //TODO: RM-7294
+    [DBBidirectionalRelation ("Reviews")]
     public abstract Person Reviewer { get; set; }
 
     public abstract  DateTime CreatedAt { get; set; }

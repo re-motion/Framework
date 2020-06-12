@@ -17,12 +17,25 @@
 using System;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
+using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
 {
   [Serializable]
   public class SerializableRelationEndPointFactoryFake : IRelationEndPointFactory
   {
+    public SerializableRelationEndPointFactoryFake ()
+    {
+    }
+
+    public SerializableRelationEndPointFactoryFake (FlattenedDeserializationInfo info)
+    {
+    }
+
+    public void SerializeIntoFlatStructure (FlattenedSerializationInfo info)
+    {
+    }
+
     public IRealObjectEndPoint CreateRealObjectEndPoint (RelationEndPointID endPointID, DataContainer dataContainer)
     {
       throw new NotImplementedException();

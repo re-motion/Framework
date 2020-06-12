@@ -56,10 +56,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       _virtualEndPointProvider = virtualEndPointProvider;
     }
 
-    public IVirtualEndPointProvider VirtualEndPointProvider
-    {
-      get { return _virtualEndPointProvider; }
-    }
+    public IVirtualEndPointProvider VirtualEndPointProvider => _virtualEndPointProvider;
 
     public int Count
     {
@@ -70,10 +67,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public Type RequiredItemType
-    {
-      get { return _requiredItemType; }
-    }
+    public Type RequiredItemType => _requiredItemType;
 
     public bool IsReadOnly
     {
@@ -86,10 +80,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public RelationEndPointID AssociatedEndPointID
-    {
-      get { return _endPointID; }
-    }
+    public RelationEndPointID AssociatedEndPointID => _endPointID;
 
     public IVirtualCollectionEndPoint GetAssociatedEndPoint ()
     {

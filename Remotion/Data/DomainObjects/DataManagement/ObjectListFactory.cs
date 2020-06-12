@@ -27,13 +27,13 @@ namespace Remotion.Data.DomainObjects.DataManagement
     private static readonly ConcurrentDictionary<Type, ConstructorInfo> s_virtualObjectListConstructorInfos =
         new ConcurrentDictionary<Type, ConstructorInfo>();
 
-    public static IObjectList Create (IVirtualCollectionData virtualCollectionData)
+    public static IObjectList<IDomainObject> Create (IVirtualCollectionData virtualCollectionData)
     {
       ArgumentUtility.CheckNotNull ("virtualCollectionData", virtualCollectionData);
 
       var ctor = GetConstructorInfoForVirtualObjectListFromCache (virtualCollectionData.RequiredItemType);
 
-      return (IObjectList) ctor.Invoke (new object[] { virtualCollectionData });
+      return (IObjectList<IDomainObject>) ctor.Invoke (new object[] { virtualCollectionData });
     }
 
     private static ConstructorInfo GetConstructorInfoForVirtualObjectListFromCache (Type domainObjectType)

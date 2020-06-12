@@ -502,15 +502,50 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
     
     #region Product
 
-    //TODO: RM-7294
-    // OrderTicket: OrderTicket1
-    // OrderItems: OrderItem1, OrderItem2
-    // Customer: Customer1
-    // Official: Official1
-    // OrderNumber: 1
+    // Reviews: ProductReview1, ProductReview2, ProductReview3
+    // Name: Pen
     public ObjectID Product1
     {
       get { return CreateObjectID ("Product", new Guid ("{BA684594-CF77-4009-A010-B70B30396A01}")); }
+    }
+
+    // Reviews: ProductReview4
+    // Name: Paper
+    public ObjectID Product2
+    {
+      get { return CreateObjectID ("Product", new Guid ("{8DD65EF7-BDDA-433E-B081-725B4D53317D}")); }
+    }
+
+    #endregion
+
+    #region ProductReview
+
+    // Product: Product1
+    // Reviewer: Person1
+    public ObjectID ProductReview1
+    {
+      get { return CreateObjectID ("ProductReview", new Guid ("{877540A7-FBCF-4BF3-9007-355EA43E796F}")); }
+    }
+
+    // Product: Product1
+    // Reviewer: Person2
+    public ObjectID ProductReview2
+    {
+      get { return CreateObjectID ("ProductReview", new Guid ("{C3E4587D-626E-40D2-9D79-67CB148BE842}")); }
+    }
+
+    // Product: Product1
+    // Reviewer: Person3
+    public ObjectID ProductReview3
+    {
+      get { return CreateObjectID ("ProductReview", new Guid ("{793157CD-10FF-468F-994B-AEA83ADE183B}")); }
+    }
+
+    // Product: Product1
+    // Reviewer: Person1
+    public ObjectID ProductReview4
+    {
+      get { return CreateObjectID ("ProductReview", new Guid ("{B4F0052E-5F8B-4D1F-BEF9-5AA8595E78A7}")); }
     }
 
     #endregion

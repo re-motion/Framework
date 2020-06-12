@@ -15,22 +15,34 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 
 namespace Remotion.Data.DomainObjects
 {
-  public interface IObjectList<T> : IObjectList, IReadOnlyList<T> // RM-7294 IList via runtime casting ICollection<T> via runtime casting
-      where T : DomainObject
+  public interface IObjectList<out TDomainObject> : IReadOnlyList<TDomainObject>, IList // TODO: RM-7294 add support for IReadOnlyList<T> to BocList. Fallback: implement IList {IsReadOnly=true}
+      where TDomainObject : IDomainObject
   {
-  }
+    new int Count { get; } // TODO: RM07294: Tie-breaker for IReadOnlyList<T> and IList
 
-  public interface IObjectList
-  {
+    new TDomainObject this [int index] { get; } // TODO: RM07294: Tie-breaker for IReadOnlyList<T> and IList
+
     /// <summary>
-    /// Gets the <see cref="IVirtualCollectionEndPoint"/> associated with this <see cref="IObjectList"/>.
+    /// Gets the <see cref="IVirtualCollectionEndPoint"/> for the <see cref="IObjectList{TDomainObject}"/>.
     /// </summary>
     /// <value>The associated end point.</value>
     RelationEndPointID AssociatedEndPointID { get; }
+
+    bool IsDataComplete { get; }
+
+    /// <summary>
+    /// Ensures that the end point's data has been loaded, loading the data if necessary.
+    /// </summary>
+    void EnsureDataComplete ();
+
+    bool Contains (ObjectID objectID);
+
+    TDomainObject GetObject (ObjectID objectID);
   }
 }

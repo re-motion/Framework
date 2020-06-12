@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.DataManagement.Commands;
-using Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications;
 using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Utilities;
 
@@ -29,7 +28,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   /// loaded, or it has been unloaded).
   /// </summary>
   public class IncompleteVirtualCollectionEndPointLoadState
-      : IncompleteVirtualEndPointLoadStateBase<IVirtualCollectionEndPoint, ReadOnlyVirtualCollectionData, IVirtualCollectionEndPointDataManager, IVirtualCollectionEndPointLoadState>,
+      : IncompleteVirtualEndPointLoadStateBase<IVirtualCollectionEndPoint, ReadOnlyVirtualCollectionDataDecorator, IVirtualCollectionEndPointDataManager, IVirtualCollectionEndPointLoadState>,
           IVirtualCollectionEndPointLoadState
   {
     private readonly IVirtualCollectionEndPointDataManagerFactory _dataManagerFactory;
@@ -81,8 +80,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ArgumentUtility.CheckNotNull ("comparison", comparison);
 
       // TODO RM-7294: Remove SortCurrentData (...) ?
-      var completeState = EndPointLoader.LoadEndPointAndGetNewState (collectionEndPoint);
-      completeState.SortCurrentData (collectionEndPoint, comparison);
+      throw new NotSupportedException();
+      //var completeState = EndPointLoader.LoadEndPointAndGetNewState (collectionEndPoint);
+      //completeState.SortCurrentData (collectionEndPoint, comparison);
     }
 
     public IDataManagementCommand CreateRemoveCommand (IVirtualCollectionEndPoint collectionEndPoint, DomainObject removedRelatedObject)

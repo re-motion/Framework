@@ -139,7 +139,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     }
 
     [Test]
-    public void AccessingRelatedCollection_ReturnsCollectionWithIncompleteContents_AndAlsoLoadsOriginatingObject ()
+    public void AccessingRelatedDomainObjectCollection_ReturnsCollectionWithIncompleteContents_AndAlsoLoadsOriginatingObject ()
     {
       Assert.That (_order.State.IsNotLoadedYet, Is.True);
 
@@ -151,7 +151,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     }
 
     [Test]
-    public void AccessingRelatedCollection_ReturnsCollectionWithIncompleteContents_ContentsIsLoadedWhenNeeded ()
+    public void AccessingRelatedDomainObjectCollection_ReturnsCollectionWithIncompleteContents_ContentsIsLoadedWhenNeeded ()
     {
       Assert.That (_order.OrderItems.IsDataComplete, Is.False);
 
@@ -161,7 +161,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     }
 
     [Test]
-    public void AccessingRelatedCollection_CollectionWithIncompleteContents_CanBeUsedToRegisterEvents ()
+    public void AccessingRelatedDomainObjectCollection_CollectionWithIncompleteContents_CanBeUsedToRegisterEvents ()
     {
       bool itemAdded = false;
       _order.OrderItems.Added += delegate { itemAdded = true; };
@@ -179,7 +179,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     }
 
     [Test]
-    public void AccessingRelatedCollection_ExceptionOnLoading_IsTriggeredOnDemand ()
+    public void AccessingRelatedDomainObjectCollection_ExceptionOnLoading_IsTriggeredOnDemand ()
     {
       var orderWithoutOrderItems = DomainObjectIDs.OrderWithoutOrderItems.GetObject<Order>();
 
@@ -189,7 +189,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     }
 
     [Test]
-    public void AccessingRelatedCollection_ReturnsAlreadyLoadedCollection_IfAlreadyLoaded ()
+    public void AccessingRelatedDomainObjectCollection_ReturnsAlreadyLoadedCollection_IfAlreadyLoaded ()
     {
       TestableClientTransaction.EnsureDataComplete (RelationEndPointID.Resolve (_order, o => o.OrderItems));
 
@@ -197,7 +197,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     }
 
     [Test]
-    public void AccessingOriginalRelatedCollection_LoadsContentsForBothOriginalAndCurrentCollection ()
+    public void AccessingOriginalRelatedDomainObjectCollection_LoadsContentsForBothOriginalAndCurrentCollection ()
     {
       Assert.That (_order.Properties[typeof (Order), "OrderItems"].GetOriginalValue<ObjectList<OrderItem>>().IsDataComplete, Is.True);
       // Since the data had to be loaded for the original contents, it has also been loaded into the actual collection.

@@ -18,6 +18,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
+using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.SortExpressions;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
@@ -30,14 +31,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
   [TestFixture]
   public class SortedPropertyComparerTest : StandardMappingTest
   {
-    private IDataManager _dataManagerStub;
+    private IDataContainerMapReadOnlyView _dataContainerMapStub;
     private PropertyDefinition _orderNumberPropertyDefinition;
 
     public override void SetUp ()
     {
       base.SetUp ();
 
-      _dataManagerStub = MockRepository.GenerateStub<IDataManager> ();
+      _dataContainerMapStub = MockRepository.GenerateStub<IDataContainerMapReadOnlyView> ();
       _orderNumberPropertyDefinition = DomainObjectIDs.Order1.ClassDefinition.GetMandatoryPropertyDefinition (typeof (Order).FullName + ".OrderNumber");
     }
 
@@ -47,14 +48,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var specification1 = new SortedPropertySpecification (_orderNumberPropertyDefinition, SortOrder.Ascending);
       var specification2 = new SortedPropertySpecification (_orderNumberPropertyDefinition, SortOrder.Descending);
 
-      var compoundComparer = (CompoundComparer<DomainObject>) SortedPropertyComparer.CreateCompoundComparer (new[] { specification1, specification2 }, _dataManagerStub);
+      var compoundComparer = (CompoundComparer<DomainObject>) SortedPropertyComparer.CreateCompoundComparer (new[] { specification1, specification2 }, _dataContainerMapStub, ValueAccess.Current);
       Assert.That (compoundComparer.Comparers.Count, Is.EqualTo (2));
 
       Assert.That (((SortedPropertyComparer) compoundComparer.Comparers[0]).SortedPropertySpecification, Is.SameAs (specification1));
-      Assert.That (((SortedPropertyComparer) compoundComparer.Comparers[0]).DataManager, Is.SameAs (_dataManagerStub));
+      Assert.That (((SortedPropertyComparer) compoundComparer.Comparers[0]).DataContainerMap, Is.SameAs (_dataContainerMapStub));
 
       Assert.That (((SortedPropertyComparer) compoundComparer.Comparers[1]).SortedPropertySpecification, Is.SameAs (specification2));
-      Assert.That (((SortedPropertyComparer) compoundComparer.Comparers[1]).DataManager, Is.SameAs (_dataManagerStub));
+      Assert.That (((SortedPropertyComparer) compoundComparer.Comparers[1]).DataContainerMap, Is.SameAs (_dataContainerMapStub));
     }
 
     [Test]
@@ -63,11 +64,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var domainObject1 = DomainObjectMother.CreateFakeObject<Order> ();
       var domainObject2 = DomainObjectMother.CreateFakeObject<Order> ();
 
-      PrepareDataContainer (_dataManagerStub, domainObject1, 1);
-      PrepareDataContainer (_dataManagerStub, domainObject2, 2);
+      PrepareDataContainer (_dataContainerMapStub, domainObject1, 1);
+      PrepareDataContainer (_dataContainerMapStub, domainObject2, 2);
 
       var specification = new SortedPropertySpecification (_orderNumberPropertyDefinition, SortOrder.Ascending);
-      var comparer = new SortedPropertyComparer (specification, _dataManagerStub);
+      var comparer = new SortedPropertyComparer (specification, _dataContainerMapStub, ValueAccess.Current);
 
       Assert.That (comparer.Compare (domainObject1, domainObject1), Is.EqualTo (0));
       Assert.That (comparer.Compare (domainObject1, domainObject2), Is.EqualTo (-1));
@@ -81,11 +82,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var domainObject1 = DomainObjectMother.CreateFakeObject<Order> ();
       var domainObject2 = DomainObjectMother.CreateFakeObject<Order> ();
 
-      PrepareDataContainer (_dataManagerStub, domainObject1, 1);
-      PrepareDataContainer (_dataManagerStub, domainObject2, 2);
+      PrepareDataContainer (_dataContainerMapStub, domainObject1, 1);
+      PrepareDataContainer (_dataContainerMapStub, domainObject2, 2);
 
       var specification = new SortedPropertySpecification (_orderNumberPropertyDefinition, SortOrder.Descending);
-      var comparer = new SortedPropertyComparer (specification, _dataManagerStub);
+      var comparer = new SortedPropertyComparer (specification, _dataContainerMapStub, ValueAccess.Current);
 
       Assert.That (comparer.Compare (domainObject1, domainObject1), Is.EqualTo (0));
       Assert.That (comparer.Compare (domainObject1, domainObject2), Is.EqualTo (1));
@@ -99,8 +100,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var domainObject1 = DomainObjectMother.CreateFakeObject<Order> ();
       var domainObject2 = DomainObjectMother.CreateFakeObject<Order> ();
 
-      var dataContainer1 = PrepareDataContainer (_dataManagerStub, domainObject1, 1);
-      var dataContainer2 = PrepareDataContainer (_dataManagerStub, domainObject2, 2);
+      var dataContainer1 = PrepareDataContainer (_dataContainerMapStub, domainObject1, 1);
+      var dataContainer2 = PrepareDataContainer (_dataContainerMapStub, domainObject2, 2);
 
       var transaction = ClientTransaction.CreateRootTransaction ();
       ClientTransactionTestHelper.RegisterDataContainer (transaction, dataContainer1);
@@ -109,7 +110,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       ClientTransactionTestHelperWithMocks.EnsureTransactionThrowsOnEvents (transaction);
 
       var specification = new SortedPropertySpecification (_orderNumberPropertyDefinition, SortOrder.Descending);
-      var comparer = new SortedPropertyComparer (specification, _dataManagerStub);
+      var comparer = new SortedPropertyComparer (specification, _dataContainerMapStub, ValueAccess.Current);
 
       Assert.That (comparer.Compare (domainObject1, domainObject1), Is.EqualTo (0));
     }
@@ -120,11 +121,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var domainObject1 = DomainObjectMother.CreateFakeObject<Order> ();
       var domainObject2 = DomainObjectMother.CreateFakeObject<Customer> ();
 
-      PrepareDataContainer (_dataManagerStub, domainObject1, 1);
-      PrepareDataContainer (_dataManagerStub, domainObject2);
+      PrepareDataContainer (_dataContainerMapStub, domainObject1, 1);
+      PrepareDataContainer (_dataContainerMapStub, domainObject2);
 
       var specification = new SortedPropertySpecification (_orderNumberPropertyDefinition, SortOrder.Descending);
-      var comparer = new SortedPropertyComparer (specification, _dataManagerStub);
+      var comparer = new SortedPropertyComparer (specification, _dataContainerMapStub, ValueAccess.Current);
 
       Assert.That (comparer.Compare (domainObject1, domainObject1), Is.EqualTo (0));
       Assert.That (comparer.Compare (domainObject1, domainObject2), Is.EqualTo (-1));
@@ -132,17 +133,56 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (comparer.Compare (domainObject2, domainObject2), Is.EqualTo (0));
     }
 
-    private DataContainer PrepareDataContainer (IDataManager dataManagerStub, Order domainObject, int orderNumber)
+    [Test]
+    public void Compare_UnloadedObject ()
     {
-      var dataContainer = PrepareDataContainer(dataManagerStub, domainObject);
+      var domainObject = DomainObjectMother.CreateFakeObject<Order> ();
+      var unloadedDomainObject = DomainObjectMother.GetObjectReference<Order> (
+          ClientTransaction.CreateRootTransaction(),
+          new ObjectID (typeof (Order), Guid.NewGuid()));
+
+      PrepareDataContainer (_dataContainerMapStub, domainObject, 1);
+
+      var specification = new SortedPropertySpecification (_orderNumberPropertyDefinition, SortOrder.Descending);
+      var comparer = new SortedPropertyComparer (specification, _dataContainerMapStub, ValueAccess.Current);
+
+      Assert.That (comparer.Compare (domainObject, domainObject), Is.EqualTo (0));
+      Assert.That (comparer.Compare (domainObject, unloadedDomainObject), Is.EqualTo (-1));
+      Assert.That (comparer.Compare (unloadedDomainObject, domainObject), Is.EqualTo (1));
+      Assert.That (comparer.Compare (unloadedDomainObject, unloadedDomainObject), Is.EqualTo (0));
+    }
+
+    [Test]
+    public void Compare_OriginalValues ()
+    {
+      var domainObject1 = DomainObjectMother.CreateFakeObject<Order> ();
+      var domainObject2 = DomainObjectMother.CreateFakeObject<Order> ();
+
+      var dataContainer1 = PrepareDataContainer (_dataContainerMapStub, domainObject1, 1);
+      dataContainer1.CommitState();
+      SetOrderNumber (dataContainer1, 3);
+      PrepareDataContainer (_dataContainerMapStub, domainObject2, 2);
+
+      var specification = new SortedPropertySpecification (_orderNumberPropertyDefinition, SortOrder.Ascending);
+      var comparer = new SortedPropertyComparer (specification, _dataContainerMapStub, ValueAccess.Original);
+
+      Assert.That (comparer.Compare (domainObject1, domainObject1), Is.EqualTo (0));
+      Assert.That (comparer.Compare (domainObject1, domainObject2), Is.EqualTo (1));
+      Assert.That (comparer.Compare (domainObject2, domainObject1), Is.EqualTo (-1));
+      Assert.That (comparer.Compare (domainObject2, domainObject2), Is.EqualTo (0));
+    }
+
+    private DataContainer PrepareDataContainer (IDataContainerMapReadOnlyView dataContainerMapStub, Order domainObject, int orderNumber)
+    {
+      var dataContainer = PrepareDataContainer(dataContainerMapStub, domainObject);
       SetOrderNumber (dataContainer, orderNumber);
       return dataContainer;
     }
 
-    private DataContainer PrepareDataContainer (IDataManager dataManagerStub, DomainObject domainObject)
+    private DataContainer PrepareDataContainer (IDataContainerMapReadOnlyView dataContainerMapStub, DomainObject domainObject)
     {
       var dataContainer = DataContainer.CreateNew (domainObject.ID);
-      dataManagerStub.Stub (stub => stub.GetDataContainerWithLazyLoad (domainObject.ID, true)).Return (dataContainer);
+      dataContainerMapStub.Stub (stub => stub[domainObject.ID]).Return (dataContainer);
       return dataContainer;
     }
 

@@ -114,7 +114,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void CreateVirtualEndPoint_VirtualCollection_MarkDataCompleteFalse ()
     {
-      var endPointID = RelationEndPointID.Create (DomainObjectIDs.Product1, typeof (Product), "ProductReviews");
+      var endPointID = RelationEndPointID.Create (DomainObjectIDs.Product1, typeof (Product), "Reviews");
       var endPointStub = MockRepository.GenerateStub<IVirtualCollectionEndPoint> ();
 
       _endPointFactoryMock
@@ -133,7 +133,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void CreateVirtualEndPoint_VirtualCollection_MarkDataCompleteTrue ()
     {
-      var endPointID = RelationEndPointID.Create (DomainObjectIDs.Product1, typeof (Product), "ProductReviews");
+      var endPointID = RelationEndPointID.Create (DomainObjectIDs.Product1, typeof (Product), "Reviews");
       var endPointStub = MockRepository.GenerateStub<IVirtualCollectionEndPoint> ();
 
       _endPointFactoryMock
