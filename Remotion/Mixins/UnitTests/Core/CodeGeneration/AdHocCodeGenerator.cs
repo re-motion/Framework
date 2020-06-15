@@ -35,12 +35,12 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 
     private int _typeCounter;
 
-    public AdHocCodeGenerator (string assemblyName = "AdHocCodeGenerator")
+    public AdHocCodeGenerator (string assemblyDirectory, string assemblyName = "AdHocCodeGenerator")
     {
       ArgumentUtility.CheckNotNullOrEmpty ("assemblyName", assemblyName);
 
       _filename = assemblyName + ".dll";
-      _assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly (new AssemblyName (assemblyName), AssemblyBuilderAccess.RunAndSave);
+      _assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly (new AssemblyName (assemblyName), AssemblyBuilderAccess.RunAndSave, assemblyDirectory);
       _moduleBuilder = _assemblyBuilder.DefineDynamicModule (_filename);
     }
 

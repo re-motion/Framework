@@ -119,7 +119,8 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTy
 
     private IPipeline CreatePipeline ()
     {
-      return SafeServiceLocator.Current.GetInstance<IPipelineFactory>().Create (Pipeline.ParticipantConfigurationID, Pipeline.Participants.ToArray());
+      var settings = PipelineSettings.From (PipelineSettings.Defaults).SetAssemblyDirectory (TestContext.CurrentContext.TestDirectory).Build();
+      return SafeServiceLocator.Current.GetInstance<IPipelineFactory>().Create (Pipeline.ParticipantConfigurationID, settings, Pipeline.Participants.ToArray());
     }
 
     private Assembly FlushAndLoadAssemblyWithoutLocking ()

@@ -33,7 +33,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTy
     [OneTimeSetUp]
     public void OneTimeSetUp ()
     {
-      var generator = new AdHocCodeGenerator ("MixinTypeCodeGeneration.GeneratedTypeInConfigurationTest");
+      var generator = new AdHocCodeGenerator (TestContext.CurrentContext.TestDirectory, "MixinTypeCodeGeneration.GeneratedTypeInConfigurationTest");
       generator.AddCustomAttribute(typeof(NonApplicationAssemblyAttribute));
 
       var generatedMixinTypeBuilder = generator.CreateType("GeneratedMixinType", typeof (Mixin<object>));

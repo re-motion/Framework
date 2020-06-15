@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using Castle.DynamicProxy;
@@ -55,7 +56,9 @@ namespace Remotion.Scripting.UnitTests.StableBindingImplementation
           const string nameSigned = name + ".Signed";
           const string nameUnsigned = name + ".Unsigned";
           const string ext = ".dll";
-          _moduleScope = new ModuleScope (true, false, nameSigned, nameSigned + ext, nameUnsigned, nameUnsigned + ext);
+          var strongModulePath = Path.Combine (TestContext.CurrentContext.TestDirectory, nameSigned + ext);
+          var weakModulePath = Path.Combine (TestContext.CurrentContext.TestDirectory, nameUnsigned + ext);
+          _moduleScope = new ModuleScope (true, false, nameSigned, strongModulePath, nameUnsigned, weakModulePath);
         }
         return _moduleScope;
       }

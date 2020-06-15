@@ -72,7 +72,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     public void OneTimeSetUp ()
     {
       var assemblyTrackingPipelineFactory = new AssemblyTrackingPipelineFactory();
-      var settings = PipelineSettings.New().SetEnableSerializationWithoutAssemblySaving (true).Build();
+      var settings = PipelineSettings.New().SetEnableSerializationWithoutAssemblySaving (true).SetAssemblyDirectory (TestContext.CurrentContext.TestDirectory).Build();
       var participants = new IParticipant[]
                          {
                            new MixinParticipant (

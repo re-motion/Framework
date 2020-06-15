@@ -101,7 +101,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     {
       // This needs to generate code into a TypeBuilder as dynamic methods won't trigger the code gen bug with generic methods (see comment in 
       // ExpressionConcreteMixinTypeIdentifierSerializer.ConcreteMixinTypeIdentifier).
-      var adHocCodeGenerator = new AdHocCodeGenerator();
+      var adHocCodeGenerator = new AdHocCodeGenerator (TestContext.CurrentContext.TestDirectory);
       var lambda = Expression.Lambda<Func<ConcreteMixinTypeIdentifier>> (expressionToReturn);
 
       return adHocCodeGenerator.CreateMethodAndRun<ConcreteMixinTypeIdentifier> (action: lambda.CompileToMethod, saveOnError: true);

@@ -359,7 +359,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 
     private Type CreateTypeWithFakeWrappers ()
     {
-      TypeBuilder wrapperClassBuilder = new AdHocCodeGenerator().CreateType ("WrapperClass");
+      TypeBuilder wrapperClassBuilder = new AdHocCodeGenerator (TestContext.CurrentContext.TestDirectory).CreateType ("WrapperClass");
 
       wrapperClassBuilder.DefineMethod ("Wrapper1", MethodAttributes.Public).GetILGenerator ().Emit (OpCodes.Ret);
       wrapperClassBuilder.DefineMethod ("Wrapper2", MethodAttributes.Public).GetILGenerator ().Emit (OpCodes.Ret);

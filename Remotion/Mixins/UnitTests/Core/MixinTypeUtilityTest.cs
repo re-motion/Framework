@@ -560,7 +560,7 @@ namespace Remotion.Mixins.UnitTests.Core
 
     private Type GenerateDerivedType (Type baseType)
     {
-      var codeGenerator = new AdHocCodeGenerator();
+      var codeGenerator = new AdHocCodeGenerator (TestContext.CurrentContext.TestDirectory);
       var typeBuilder = codeGenerator.CreateType (baseType: baseType);
 
       return typeBuilder.CreateType();
