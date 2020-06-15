@@ -13,6 +13,7 @@
         DataSourceMsSql2014=$(DataSourceMsSql2014);
         DataSourceMsSql2016=$(DataSourceMsSql2016);
         DataSourceMsSql2017=$(DataSourceMsSql2017);
+		DataSourceMsSql2019=$(DataSourceMsSql2019);
       </BuildProperties>
 
       <BuildProperties>
@@ -21,6 +22,7 @@
         DatabaseDirectoryMsSql2014=$(DatabaseDirectoryMsSql2014);
         DatabaseDirectoryMsSql2016=$(DatabaseDirectoryMsSql2016);
         DatabaseDirectoryMsSql2017=$(DatabaseDirectoryMsSql2017);
+		DatabaseDirectoryMsSql2019=$(DatabaseDirectoryMsSql2019);
       </BuildProperties>
 
       <BuildProperties>
@@ -29,6 +31,7 @@
         IntegratedSecurityMsSql2014=$(IntegratedSecurityMsSql2014);
         IntegratedSecurityMsSql2016=$(IntegratedSecurityMsSql2016);
         IntegratedSecurityMsSql2017=$(IntegratedSecurityMsSql2017);
+		IntegratedSecurityMsSql2019=$(IntegratedSecurityMsSql2019);
       </BuildProperties>
 
       <BuildProperties>
@@ -37,6 +40,7 @@
         UsernameMsSql2014=$(UsernameMsSql2014);
         UsernameMsSql2016=$(UsernameMsSql2016);
         UsernameMsSql2017=$(UsernameMsSql2017);
+		UsernameMsSql2019=$(UsernameMsSql2019);
       </BuildProperties>
 
       <BuildProperties>
@@ -45,58 +49,26 @@
         PasswordMsSql2014=$(PasswordMsSql2014);
         PasswordMsSql2016=$(PasswordMsSql2016);
         PasswordMsSql2017=$(PasswordMsSql2017);
+		PasswordMsSql2019=$(PasswordMsSql2019);
       </BuildProperties>
     </PropertyGroup>
 
     <Message Text="Configured build properties: $(BuildProperties)" />
   </Target>
 
-  <Target Name="After_CreateTestConfigurations" AfterTargets="CreateTestConfigurations">
-    <ItemGroup>
-      <AllDatabaseSystems Remove="@(AllDatabaseSystems)" />
-
-      <AllDatabaseSystems Include="SqlServerDefault" Condition="'%(DatabaseSystemsList.Identity)' == 'SqlServerDefault'"/>
-      <AllDatabaseSystems Include="SqlServer2012" Condition="'%(DatabaseSystemsList.Identity)' == 'SqlServer2012'"/>
-      <AllDatabaseSystems Include="SqlServer2014" Condition="'%(DatabaseSystemsList.Identity)' == 'SqlServer2014'"/>
-      <AllDatabaseSystems Include="SqlServer2016" Condition="'%(DatabaseSystemsList.Identity)' == 'SqlServer2016'"/>
-      <AllDatabaseSystems Include="SqlServer2017" Condition="'%(DatabaseSystemsList.Identity)' == 'SqlServer2017'"/>
-    </ItemGroup>
-
-    <ItemGroup>
-      <AllBrowsers Remove="@(AllBrowsers)"/>
-
-      <AllBrowsers Include="Chrome" Condition="'%(BrowsersList.Identity)' == 'Chrome'" />
-      <AllBrowsers Include="Edge" Condition="'%(BrowsersList.Identity)' == 'Edge'" />
-      <AllBrowsers Include="Firefox" Condition="'%(BrowsersList.Identity)' == 'Firefox'" />
-      <AllBrowsers Include="InternetExplorer" Condition="'%(BrowsersList.Identity)' == 'InternetExplorer'" />
-    </ItemGroup>
+  <Target Name="Before_ProcessForDependDBInternal" BeforeTargets="ProcessForDependDBInternal">
+    <PropertyGroup>
+      <!-- Set TargetFramework for resolving the dependencies to the highest common framework name -->
+      <_preProcessorParameters>$(_preProcessorParameters) --target-framework="net461"</_preProcessorParameters>
+    </PropertyGroup>
   </Target>
 
-  <Target Name="After_BuildTestOutputFilesCrossProduct" AfterTargets="BuildTestOutputFilesCrossProduct">
-    <ItemGroup>
-      <_testOutputFilesWithWebTests Include="@(TestOutputFiles)" Condition="'%(IsWebTest)' == 'True'"/>
 
-      <_testOutputFilesWithInternetExplorer Include="@(_testOutputFiles)" Condition="'%(Browser)' == 'InternetExplorer'"/>
-      <_testOutputFilesWithFirefox Include="@(_testOutputFiles)" Condition="'%(Browser)' == 'Firefox'"/>
-      <_testOutputFilesWithChrome Include="@(_testOutputFiles)" Condition="'%(Browser)' == 'Chrome'"/>
-      <_testOutputFilesWithEdge Include="@(_testOutputFiles)" Condition="'%(Browser)' == 'Edge'"/>
-    </ItemGroup>
-
-    <ItemGroup Condition="'@(_testOutputFilesWithInternetExplorer->Count())' &gt; '@(_testOutputFilesWithWebTests->Count())'">
-      <_testOutputFiles Remove="@(_testOutputFiles)" Condition="'%(Browser)' == 'InternetExplorer' And ('%(Platform)' != 'x86' Or '$(ConfigurationID)' != 'Release')"/>
-    </ItemGroup>
-
-    <ItemGroup Condition="'@(_testOutputFilesWithFirefox->Count())' &gt; '@(_testOutputFilesWithWebTests->Count())'">
-      <_testOutputFiles Remove="@(_testOutputFiles)" Condition="'%(Browser)' == 'Firefox' And ('%(Platform)' != 'x64' Or '$(ConfigurationID)' != 'Debug')"/>
-    </ItemGroup>
-
-    <ItemGroup Condition="'@(_testOutputFilesWithChrome->Count())' &gt; '@(_testOutputFilesWithWebTests->Count())'">
-      <_testOutputFiles Remove="@(_testOutputFiles)" Condition="'%(Browser)' == 'Chrome' And ('%(Platform)' != 'x64' Or '$(ConfigurationID)' != 'Release')"/>
-    </ItemGroup>
-
-    <ItemGroup Condition="'@(_testOutputFilesWithEdge->Count())' &gt; '@(_testOutputFilesWithWebTests->Count())'">
-      <_testOutputFiles Remove="@(_testOutputFiles)" Condition="'%(Browser)' == 'Edge' And ('%(Platform)' != 'x86' Or '$(ConfigurationID)' != 'Debug')"/>
-    </ItemGroup>
-
+  <Target Name="Before_ProcessForDependDBInternal" BeforeTargets="ProcessForDependDBInternal">
+    <PropertyGroup>
+      <!-- Set TargetFramework for resolving the dependencies to the highest common framework name -->
+      <_preProcessorParameters>$(_preProcessorParameters) --target-framework="net461"</_preProcessorParameters>
+    </PropertyGroup>
   </Target>
+
 </Project>
