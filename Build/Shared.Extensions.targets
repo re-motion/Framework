@@ -13,7 +13,7 @@
         DataSourceMsSql2014=$(DataSourceMsSql2014);
         DataSourceMsSql2016=$(DataSourceMsSql2016);
         DataSourceMsSql2017=$(DataSourceMsSql2017);
-		DataSourceMsSql2019=$(DataSourceMsSql2019);
+        DataSourceMsSql2019=$(DataSourceMsSql2019);
       </BuildProperties>
 
       <BuildProperties>
@@ -22,7 +22,7 @@
         DatabaseDirectoryMsSql2014=$(DatabaseDirectoryMsSql2014);
         DatabaseDirectoryMsSql2016=$(DatabaseDirectoryMsSql2016);
         DatabaseDirectoryMsSql2017=$(DatabaseDirectoryMsSql2017);
-		DatabaseDirectoryMsSql2019=$(DatabaseDirectoryMsSql2019);
+        DatabaseDirectoryMsSql2019=$(DatabaseDirectoryMsSql2019);
       </BuildProperties>
 
       <BuildProperties>
@@ -31,7 +31,7 @@
         IntegratedSecurityMsSql2014=$(IntegratedSecurityMsSql2014);
         IntegratedSecurityMsSql2016=$(IntegratedSecurityMsSql2016);
         IntegratedSecurityMsSql2017=$(IntegratedSecurityMsSql2017);
-		IntegratedSecurityMsSql2019=$(IntegratedSecurityMsSql2019);
+        IntegratedSecurityMsSql2019=$(IntegratedSecurityMsSql2019);
       </BuildProperties>
 
       <BuildProperties>
@@ -40,7 +40,7 @@
         UsernameMsSql2014=$(UsernameMsSql2014);
         UsernameMsSql2016=$(UsernameMsSql2016);
         UsernameMsSql2017=$(UsernameMsSql2017);
-		UsernameMsSql2019=$(UsernameMsSql2019);
+        UsernameMsSql2019=$(UsernameMsSql2019);
       </BuildProperties>
 
       <BuildProperties>
@@ -49,7 +49,7 @@
         PasswordMsSql2014=$(PasswordMsSql2014);
         PasswordMsSql2016=$(PasswordMsSql2016);
         PasswordMsSql2017=$(PasswordMsSql2017);
-		PasswordMsSql2019=$(PasswordMsSql2019);
+        PasswordMsSql2019=$(PasswordMsSql2019);
       </BuildProperties>
     </PropertyGroup>
 
