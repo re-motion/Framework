@@ -192,6 +192,18 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
           restartBrowserTask.GetAwaiter().GetResult();
         }
       }
+      else
+      {
+        startDownloadLambda();
+
+        Assert.That (
+            () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithDetectedFileName (downloadStartedTimout, downloadUpdatedTimeout),
+            Throws.InstanceOf<DownloadResultNotFoundException>()
+                .With.Message.StartsWith (
+                    string.Format (
+                        "The download result file did not get updated for longer than the downloadUpdatedTimeout of '{0}'. The download appears to have failed.",
+                        downloadUpdatedTimeout)));
+      }
     }
 
     [Test]
@@ -264,6 +276,22 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
           restartBrowserTask.GetAwaiter().GetResult();
         }
       }
+      else
+      {
+        startDownloadLambda();
+
+        Assert.That (
+            () =>
+                Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (
+                    c_sampleTxtFileName,
+                    downloadStartedTimeout,
+                    downloadUpdatedTimeout),
+            Throws.InstanceOf<DownloadResultNotFoundException>()
+                .With.Message.StartsWith (
+                    string.Format (
+                        "The download result file did not get updated for longer than the downloadUpdatedTimeout of '{0}'. The download appears to have failed.",
+                        downloadUpdatedTimeout)));
+      }
     }
 
     [Test]
@@ -313,7 +341,7 @@ Unmatched files in the download directory (will be cleaned up by the infrastruct
               .With.Message.EqualTo (
                 "Could not start the download: Could not find download information bar or download manager."));
       }
-      else if (Helper.BrowserConfiguration.IsChrome ())
+      else
       {
         Assert.That (
           () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (
