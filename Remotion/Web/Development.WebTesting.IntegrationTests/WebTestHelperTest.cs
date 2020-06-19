@@ -31,6 +31,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class WebTestHelperTest
   {
     [Test]
+    [Retry (2)]
     public void WebTestHelper_OnTestFixtureTearDown_ClosesMainBrowserSessionProcesses ([Values (true, false)] bool testSuccess)
     {
       var webTestHelper = WebTestHelper.CreateFromConfiguration<CustomWebTestConfigurationFactory>();
