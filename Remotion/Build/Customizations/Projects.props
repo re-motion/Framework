@@ -8,10 +8,10 @@
 
   <PropertyGroup>
     <WebtestingTestConfiguration Condition="'$(WebtestingTestConfiguration)' == ''">
-      Chrome           + NET462 + Debug   + x86 + NoDB + EnforcedLocalMachine;<!-- Upgrade to NET48 once it is supported -->
-      Firefox          + NET462 + Release + x64 + NoDB + EnforcedLocalMachine;<!-- Upgrade to NET472 once all agents support it -->
-      InternetExplorer + NET462 + Release + x64 + NoDB + EnforcedLocalMachine;<!-- Upgrade to NET48 once it is supported -->
-      Edge             + NET462 + Release + x64 + NoDB + EnforcedLocalMachine;<!-- Upgrade to NET48 once it is supported -->
+      Chrome           + NET48  + Debug   + x86 + NoDB + Win_NET48  + EnforcedLocalMachine;
+      Firefox          + NET472 + Release + x64 + NoDB + Win_NET472 + EnforcedLocalMachine;
+      InternetExplorer + NET48  + Release + x64 + NoDB + Win_NET48  + EnforcedLocalMachine;
+      Edge             + NET48  + Release + x64 + NoDB + Win_NET48  + EnforcedLocalMachine;
     </WebtestingTestConfiguration>
     <DatabaseTestConfiguration Condition="'$(DatabaseTestConfiguration)' == ''">
       Win_NET48  + NET48  + NoBrowser + SqlServer2012 + Debug   + x86;
@@ -37,7 +37,7 @@
       <!-- Local-->
       LocalMachine  + NET48  + NoBrowser + SqlServerDefault + Debug + x86;
 
-      <!-- Compatibility Mode -->
+      <!-- Exercise compatibility between installed .NET version, target framework and SQL Server -->
       Win_NET48  + NET472 + NoBrowser + NoDB + Release + x64;
       Win_NET472 + NET472 + NoBrowser + NoDB + Release + x64;
     </NormalTestConfiguration>

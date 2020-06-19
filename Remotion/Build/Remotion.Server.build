@@ -53,7 +53,7 @@
       <DatabaseSystems>SqlServer2012+NoDB</DatabaseSystems>
       <Browsers>Chrome+NoBrowser</Browsers>
       <ExecutionRuntimes>Win_NET48+EnforcedLocalMachine</ExecutionRuntimes>
-      <TargetRuntimes>NET48+NET462</TargetRuntimes><!-- Remove NET462 once NET48 is installed on build agents -->
+      <TargetRuntimes>NET48</TargetRuntimes>
       <TestCategoriesToExclude></TestCategoriesToExclude>
     </PropertyGroup>
   </Target>
@@ -64,7 +64,7 @@
       <DatabaseSystems>SqlServer2012+SqlServer2014+SqlServer2016+SqlServer2017+SqlServer2019+NoDB</DatabaseSystems>
       <Browsers>Chrome+InternetExplorer+Firefox+Edge+NoBrowser</Browsers>
       <ExecutionRuntimes>Win_NET472+Win_NET48+EnforcedLocalMachine</ExecutionRuntimes>
-      <TargetRuntimes>NET48+NET472+NET462</TargetRuntimes><!-- Remove NET462 once NET48 is installed on build agents -->
+      <TargetRuntimes>NET48+NET472</TargetRuntimes>
       <TestCategoriesToExclude></TestCategoriesToExclude>
     </PropertyGroup>
   </Target>
