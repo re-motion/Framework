@@ -31,6 +31,10 @@
            feature="IronPython"
            layer="Core"/>
 
+  <package id="Microsoft.Edge.SeleniumTools"
+           feature="Remotion.Web.Testing"
+           layer="Core"/>
+
   <package id="Selenium.Support"
            feature="Remotion.Web.Testing"
            layer="Core"/>
