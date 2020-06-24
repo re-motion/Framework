@@ -169,6 +169,9 @@ namespace Remotion.ObjectBinding.BindableObject
       if (_propertyInfo.PropertyType.IsArray)
         return _propertyInfo.PropertyType.GetElementType();
 
+      if (TypeExtensions.CanAscribeTo (_propertyInfo.PropertyType, typeof (IReadOnlyCollection<>)))
+        return TypeExtensions.GetAscribedGenericArguments (_propertyInfo.PropertyType, typeof (IReadOnlyCollection<>))[0];
+
       if (TypeExtensions.CanAscribeTo (_propertyInfo.PropertyType, typeof (IList<>)))
         return TypeExtensions.GetAscribedGenericArguments (_propertyInfo.PropertyType, typeof (IList<>))[0];
 

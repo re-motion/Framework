@@ -34,10 +34,16 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
     public abstract BindableDomainObjectWithProperties OppositeNonRequiredRelatedObject { get; set; }
 
     [Mandatory]
-    [DBBidirectionalRelation ("RequiredBidirectionalRelatedObjectsProperty")]
-    public abstract BindableDomainObjectWithProperties OppositeRequiredRelatedObjects { get; set; }
-    [DBBidirectionalRelation ("NonRequiredBidirectionalRelatedObjectsProperty")]
-    public abstract BindableDomainObjectWithProperties OppositeNonRequiredRelatedObjects { get; set; }
+    [DBBidirectionalRelation ("RequiredBidirectionalRelatedObjectsPropertyForDomainObjectCollection")]
+    public abstract BindableDomainObjectWithProperties OppositeRequiredRelatedObjectsForDomainObjectCollection { get; set; }
+    [DBBidirectionalRelation ("NonRequiredBidirectionalRelatedObjectsPropertyForDomainObjectCollection")]
+    public abstract BindableDomainObjectWithProperties OppositeNonRequiredRelatedObjectsForDomainObjectCollection { get; set; }
+
+    [Mandatory]
+    [DBBidirectionalRelation ("RequiredBidirectionalRelatedObjectsPropertyForVirtualCollection")]
+    public abstract BindableDomainObjectWithProperties OppositeRequiredRelatedObjectsForVirtualCollection { get; set; }
+    [DBBidirectionalRelation ("NonRequiredBidirectionalRelatedObjectsPropertyForVirtualCollection")]
+    public abstract BindableDomainObjectWithProperties OppositeNonRequiredRelatedObjectsForVirtualCollection { get; set; }
 
     [DBBidirectionalRelation ("RelatedObjectProperty1", ContainsForeignKey = true)]
     public abstract SampleBindableDomainObject OppositeSampleObject { get; set; }
