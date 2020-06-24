@@ -94,11 +94,16 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
     public abstract OppositeBidirectionalBindableDomainObject NonRequiredBidirectionalRelatedObjectProperty { get; set; }
 
     [Mandatory]
-    [DBBidirectionalRelation ("OppositeRequiredRelatedObjects")]
-    public abstract ObjectList<OppositeBidirectionalBindableDomainObject> RequiredBidirectionalRelatedObjectsProperty { get; }
-    [DBBidirectionalRelation ("OppositeNonRequiredRelatedObjects")]
-    public abstract ObjectList<OppositeBidirectionalBindableDomainObject> NonRequiredBidirectionalRelatedObjectsProperty { get; }
+    [DBBidirectionalRelation ("OppositeRequiredRelatedObjectsForDomainObjectCollection")]
+    public abstract ObjectList<OppositeBidirectionalBindableDomainObject> RequiredBidirectionalRelatedObjectsPropertyForDomainObjectCollection { get; }
+    [DBBidirectionalRelation ("OppositeNonRequiredRelatedObjectsForDomainObjectCollection")]
+    public abstract ObjectList<OppositeBidirectionalBindableDomainObject> NonRequiredBidirectionalRelatedObjectsPropertyForDomainObjectCollection { get; }
 
+    [Mandatory]
+    [DBBidirectionalRelation ("OppositeRequiredRelatedObjectsForVirtualCollection")]
+    public abstract IObjectList<OppositeBidirectionalBindableDomainObject> RequiredBidirectionalRelatedObjectsPropertyForVirtualCollection { get; }
+    [DBBidirectionalRelation ("OppositeNonRequiredRelatedObjectsForVirtualCollection")]
+    public abstract IObjectList<OppositeBidirectionalBindableDomainObject> NonRequiredBidirectionalRelatedObjectsPropertyForVirtualCollection { get; }
 
 
 

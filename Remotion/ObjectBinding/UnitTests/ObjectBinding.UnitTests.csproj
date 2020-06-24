@@ -179,6 +179,8 @@
     </Compile>
     <Compile Include="TestDomain\ClassWithMixedPropertyAndResources.cs" />
     <Compile Include="TestDomain\ClassWithResources.cs" />
+    <Compile Include="TestDomain\IListAndIReadOnlyCollection.cs" />
+    <Compile Include="TestDomain\IListAndIReadOnlyList.cs" />
     <Compile Include="TestDomain\MixinAddingResources.cs" />
     <Compile Include="TestDomain\MixinAddingResources2.cs" />
     <Compile Include="BindableObject\BindableObjectBaseImplementationTest.cs" />

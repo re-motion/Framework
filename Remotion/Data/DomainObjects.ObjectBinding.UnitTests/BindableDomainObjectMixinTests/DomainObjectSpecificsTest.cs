@@ -94,7 +94,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
       Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("RequiredEnumProperty").IsNullable, Is.False);
       Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("RequiredRelatedObjectProperty").IsNullable, Is.True);
       Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("RequiredBidirectionalRelatedObjectProperty").IsNullable, Is.True);
-      Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("RequiredBidirectionalRelatedObjectsProperty").IsNullable, Is.True);
+      Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("RequiredBidirectionalRelatedObjectsPropertyForDomainObjectCollection").IsNullable, Is.True);
+      Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("RequiredBidirectionalRelatedObjectsPropertyForVirtualCollection").IsNullable, Is.True);
 
       Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("NonRequiredPropertyNotInMapping").IsNullable, Is.True);
       Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("NonRequiredStringProperty").IsNullable, Is.True);
@@ -103,7 +104,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
       Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("NonRequiredUndefinedEnumProperty").IsNullable, Is.True);
       Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("NonRequiredRelatedObjectProperty").IsNullable, Is.True);
       Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("NonRequiredBidirectionalRelatedObjectProperty").IsNullable, Is.True);
-      Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("NonRequiredBidirectionalRelatedObjectsProperty").IsNullable, Is.True);
+      Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("NonRequiredBidirectionalRelatedObjectsPropertyForDomainObjectCollection").IsNullable, Is.True);
+      Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("NonRequiredBidirectionalRelatedObjectsPropertyForVirtualCollection").IsNullable, Is.True);
     }
 
     [Test]
@@ -115,7 +117,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
       Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("RequiredEnumProperty").IsRequired, Is.True);
       Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("RequiredRelatedObjectProperty").IsRequired, Is.True);
       Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("RequiredBidirectionalRelatedObjectProperty").IsRequired, Is.True);
-      Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("RequiredBidirectionalRelatedObjectsProperty").IsRequired, Is.True);
+      Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("RequiredBidirectionalRelatedObjectsPropertyForDomainObjectCollection").IsRequired, Is.True);
+      Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("RequiredBidirectionalRelatedObjectsPropertyForVirtualCollection").IsRequired, Is.True);
 
       Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("NonRequiredPropertyNotInMapping").IsRequired, Is.False);
       Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("NonRequiredStringProperty").IsRequired, Is.False);
@@ -124,7 +127,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
       Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("NonRequiredUndefinedEnumProperty").IsRequired, Is.False);
       Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("NonRequiredRelatedObjectProperty").IsRequired, Is.False);
       Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("NonRequiredBidirectionalRelatedObjectProperty").IsRequired, Is.False);
-      Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("NonRequiredBidirectionalRelatedObjectsProperty").IsRequired, Is.False);
+      Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("NonRequiredBidirectionalRelatedObjectsPropertyForDomainObjectCollection").IsRequired, Is.False);
+      Assert.That (_businessObjectClassWithProperties.GetPropertyDefinition ("NonRequiredBidirectionalRelatedObjectsPropertyForVirtualCollection").IsRequired, Is.False);
     }
 
     [Test]

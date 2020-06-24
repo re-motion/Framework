@@ -134,6 +134,28 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     }
 
     [Test]
+    public void GetMetadata_WithIReadOnlyListOfT ()
+    {
+      IPropertyInformation IPropertyInformation = GetPropertyInfo (typeof (ClassWithListProperties), "IReadOnlyListOfT");
+      PropertyReflector propertyReflector = PropertyReflector.Create(IPropertyInformation, _businessObjectProvider);
+
+      Assert.That (GetUnderlyingType (propertyReflector), Is.SameAs (typeof (SimpleReferenceType)));
+
+      IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata ();
+
+      Assert.That (businessObjectProperty, Is.InstanceOf (typeof (NotSupportedProperty)));
+      Assert.That (((PropertyBase) businessObjectProperty).PropertyInfo, Is.SameAs (IPropertyInformation));
+      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("IReadOnlyListOfT"));
+      Assert.That (businessObjectProperty.PropertyType, Is.SameAs (typeof (IListAndIReadOnlyList<SimpleReferenceType>)));
+      Assert.That (businessObjectProperty.IsList, Is.True);
+      Assert.That (businessObjectProperty.ListInfo, Is.Not.Null);
+      Assert.That (businessObjectProperty.ListInfo.ItemType, Is.SameAs (typeof (SimpleReferenceType)));
+      Assert.That (businessObjectProperty.IsNullable, Is.True);
+      Assert.That (businessObjectProperty.IsRequired, Is.False);
+      Assert.That (businessObjectProperty.IsReadOnly (null), Is.False); // TODO: RM-7294: make this readonly when we support IReadOnlyList<T> without the IList interface
+    }
+
+    [Test]
     public void GetMetadata_WithReadOnlyCollectionOfT ()
     {
       IPropertyInformation IPropertyInformation = GetPropertyInfo (typeof (ClassWithListProperties), "ReadOnlyCollectionOfT");
@@ -153,6 +175,28 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
       Assert.That (businessObjectProperty.IsNullable, Is.True);
       Assert.That (businessObjectProperty.IsRequired, Is.False);
       Assert.That (businessObjectProperty.IsReadOnly (null), Is.True);
+    }
+
+    [Test]
+    public void GetMetadata_WithIReadOnlyCollectionOfT ()
+    {
+      IPropertyInformation IPropertyInformation = GetPropertyInfo (typeof (ClassWithListProperties), "IReadOnlyCollectionOfT");
+      PropertyReflector propertyReflector = PropertyReflector.Create(IPropertyInformation, _businessObjectProvider);
+
+      Assert.That (GetUnderlyingType (propertyReflector), Is.SameAs (typeof (SimpleReferenceType)));
+
+      IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata ();
+
+      Assert.That (businessObjectProperty, Is.InstanceOf (typeof (NotSupportedProperty)));
+      Assert.That (((PropertyBase) businessObjectProperty).PropertyInfo, Is.SameAs (IPropertyInformation));
+      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("IReadOnlyCollectionOfT"));
+      Assert.That (businessObjectProperty.PropertyType, Is.SameAs (typeof (IListAndIReadOnlyCollection<SimpleReferenceType>)));
+      Assert.That (businessObjectProperty.IsList, Is.True);
+      Assert.That (businessObjectProperty.ListInfo, Is.Not.Null);
+      Assert.That (businessObjectProperty.ListInfo.ItemType, Is.SameAs (typeof (SimpleReferenceType)));
+      Assert.That (businessObjectProperty.IsNullable, Is.True);
+      Assert.That (businessObjectProperty.IsRequired, Is.False);
+      Assert.That (businessObjectProperty.IsReadOnly (null), Is.False); // TODO: RM-7294: make this readonly when we support IReadOnlyList<T> without the IList interface
     }
 
     [Test]
