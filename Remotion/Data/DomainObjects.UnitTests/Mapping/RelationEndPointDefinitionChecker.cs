@@ -95,14 +95,30 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       if (expectedEndPointDefinition is DomainObjectCollectionRelationEndPointDefinition)
       {
-        var expectedDomainObjectCollectionRelationEndPointDefinition = (DomainObjectCollectionRelationEndPointDefinition) expectedEndPointDefinition;
-        var actualDomainObjectCollectionEndPointDefinition = (DomainObjectCollectionRelationEndPointDefinition) actualEndPointDefinition;
+        var expectedCollectionRelationEndPointDefinition = (DomainObjectCollectionRelationEndPointDefinition) expectedEndPointDefinition;
+        var actualCollectionEndPointDefinition = (DomainObjectCollectionRelationEndPointDefinition) actualEndPointDefinition;
 
+        var expectedSortExpressionDefinition = expectedCollectionRelationEndPointDefinition.GetSortExpression();
+        var actualSortExpressionDefinition = actualCollectionEndPointDefinition.GetSortExpression();
         Assert.AreEqual (
-            expectedDomainObjectCollectionRelationEndPointDefinition.SortExpressionText,
-            actualDomainObjectCollectionEndPointDefinition.SortExpressionText,
+            expectedSortExpressionDefinition?.ToString(),
+            actualSortExpressionDefinition?.ToString(),
             "SortExpression of end point definitions (property name: '{0}') does not match.",
-            expectedDomainObjectCollectionRelationEndPointDefinition.PropertyName);
+            expectedCollectionRelationEndPointDefinition.PropertyName);
+      }
+
+      if (expectedEndPointDefinition is VirtualCollectionRelationEndPointDefinition)
+      {
+        var expectedCollectionRelationEndPointDefinition = (VirtualCollectionRelationEndPointDefinition) expectedEndPointDefinition;
+        var actualCollectionEndPointDefinition = (VirtualCollectionRelationEndPointDefinition) actualEndPointDefinition;
+
+        var expectedSortExpressionDefinition = expectedCollectionRelationEndPointDefinition.GetSortExpression();
+        var actualSortExpressionDefinition = actualCollectionEndPointDefinition.GetSortExpression();
+        Assert.AreEqual (
+            expectedSortExpressionDefinition?.ToString(),
+            actualSortExpressionDefinition?.ToString(),
+            "SortExpression of end point definitions (property name: '{0}') does not match.",
+            expectedCollectionRelationEndPointDefinition.PropertyName);
       }
     }
   }

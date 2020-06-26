@@ -181,7 +181,9 @@
     <Compile Include="ClientTransactionExtensions.cs" />
     <Compile Include="ClientTransactionFactory.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\IPropertyMetadataProvider.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\ISortExpressionDefinitionProvider.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\PropertyMetadataReflector.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\SortExpressionDefinitionProvider.cs" />
     <Compile Include="DataManagement\CollectionData\IVirtualCollectionData.cs" />
     <Compile Include="DataManagement\CollectionData\ReadOnlyVirtualCollectionDataDecorator.cs" />
     <Compile Include="DataManagement\CollectionData\VirtualCollectionData.cs" />

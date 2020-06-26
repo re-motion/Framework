@@ -306,7 +306,9 @@
     <Compile Include="Linq\TestDomain\Error\SortExpressionForPropertyWithoutInterface\RelationMixin.cs" />
     <Compile Include="Linq\TestDomain\Error\SortExpressionForPropertyWithoutInterface\RelationTarget.cs" />
     <Compile Include="Mapping\DBStorageGroupAttributeTest.cs" />
+    <Compile Include="Mapping\ISortExpressionProviderTest.cs" />
     <Compile Include="Mapping\RelationEndPointReflectorTests\ManySideRelationPropertyForVirtualCollection.cs" />
+    <Compile Include="Mapping\SortExpressionDefinitionProviderTest.cs" />
     <Compile Include="Mapping\TestDomain\Integration\Product.cs" />
     <Compile Include="Mapping\TestDomain\Integration\ProductReview.cs" />
     <Compile Include="Mapping\VirtualCollectionRelationEndPointDefinitionFactory.cs" />

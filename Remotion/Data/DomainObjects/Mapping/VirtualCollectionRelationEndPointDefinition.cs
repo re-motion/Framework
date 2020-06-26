@@ -16,10 +16,8 @@
 // 
 using System;
 using System.Diagnostics;
-using System.Threading;
 using JetBrains.Annotations;
 using Remotion.Data.DomainObjects.Mapping.SortExpressions;
-using Remotion.Data.DomainObjects.Mapping.Validation;
 using Remotion.Reflection;
 using Remotion.Utilities;
 
@@ -35,26 +33,25 @@ namespace Remotion.Data.DomainObjects.Mapping
     private RelationDefinition _relationDefinition;
     private readonly ClassDefinition _classDefinition;
     private readonly bool _isMandatory;
-    private readonly string _sortExpressionText;
     private readonly Lazy<SortExpressionDefinition> _sortExpression;
     private readonly IPropertyInformation _propertyInfo;
 
     public VirtualCollectionRelationEndPointDefinition (
-        ClassDefinition classDefinition,
+        [NotNull] ClassDefinition classDefinition,
         string propertyName,
         bool isMandatory,
-        string sortExpressionText,
-        IPropertyInformation propertyInfo)
+        [CanBeNull] Lazy<SortExpressionDefinition> sortExpression,
+        [NotNull] IPropertyInformation propertyInfo)
     {
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
       ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+      ArgumentUtility.CheckNotNull ("sortExpression", sortExpression);
       ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
 
       _classDefinition = classDefinition;
       _isMandatory = isMandatory;
       _propertyName = propertyName;
-      _sortExpressionText = sortExpressionText;
-      _sortExpression = new Lazy<SortExpressionDefinition> (() => ParseSortExpression (_sortExpressionText), LazyThreadSafetyMode.ExecutionAndPublication);
+      _sortExpression = sortExpression;
       _propertyInfo = propertyInfo;
     }
 
@@ -104,32 +101,10 @@ namespace Remotion.Data.DomainObjects.Mapping
       get { return false; }
     }
 
-    public string SortExpressionText
-    {
-      get { return _sortExpressionText; }
-    }
-
     [CanBeNull]
     public SortExpressionDefinition GetSortExpression ()
     {
       return _sortExpression.Value;
-    }
-
-    private SortExpressionDefinition ParseSortExpression (string sortExpressionText)
-    {
-      if (sortExpressionText == null)
-        return null;
-
-      try
-      {
-        var parser = new SortExpressionParser (this.GetOppositeEndPointDefinition().ClassDefinition);
-        return parser.Parse (sortExpressionText);
-      }
-      catch (MappingException ex)
-      {
-        var result = MappingValidationResult.CreateInvalidResultForProperty (PropertyInfo, ex.Message);
-        throw new MappingException (result.Message, ex);
-      }
     }
   }
 }

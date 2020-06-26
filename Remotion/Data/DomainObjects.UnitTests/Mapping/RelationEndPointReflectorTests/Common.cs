@@ -40,7 +40,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
               propertyInfo,
               Configuration.NameResolver,
               PropertyMetadataProvider,
-              DomainModelConstraintProviderStub));
+              DomainModelConstraintProviderStub,
+              SortExpressionDefinitionProviderStub));
     }
 
     [Test]
@@ -53,7 +54,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
           propertyInfo,
           Configuration.NameResolver,
           PropertyMetadataProvider,
-          DomainModelConstraintProviderStub);
+          DomainModelConstraintProviderStub,
+          SortExpressionDefinitionProviderStub);
 
       Assert.That (relationEndPointReflector.IsVirtualEndRelationEndpoint(), Is.False);
     }
@@ -68,7 +70,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
           propertyInfo,
           Configuration.NameResolver,
           PropertyMetadataProvider,
-          DomainModelConstraintProviderStub);
+          DomainModelConstraintProviderStub,
+          SortExpressionDefinitionProviderStub);
 
       Assert.That (relationEndPointReflector.IsVirtualEndRelationEndpoint(), Is.False);
     }
@@ -83,7 +86,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
           propertyInfo,
           Configuration.NameResolver,
           PropertyMetadataProvider,
-          DomainModelConstraintProviderStub);
+          DomainModelConstraintProviderStub,
+          SortExpressionDefinitionProviderStub);
 
       Assert.That (relationEndPointReflector.IsVirtualEndRelationEndpoint(), Is.False);
     }
@@ -98,7 +102,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
           propertyInfo,
           Configuration.NameResolver,
           PropertyMetadataProvider,
-          DomainModelConstraintProviderStub);
+          DomainModelConstraintProviderStub,
+          SortExpressionDefinitionProviderStub);
 
       Assert.That (relationEndPointReflector.IsVirtualEndRelationEndpoint(), Is.False);
     }
@@ -119,7 +124,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
           propertyDefinition.PropertyInfo,
           mappingNameResolverMock,
           PropertyMetadataProvider,
-          DomainModelConstraintProviderStub);
+          DomainModelConstraintProviderStub,
+          SortExpressionDefinitionProviderStub);
 
       var result = relationEndPointReflector.GetMetadata();
 

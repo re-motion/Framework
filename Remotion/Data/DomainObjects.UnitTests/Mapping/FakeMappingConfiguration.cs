@@ -20,11 +20,13 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Mapping.SortExpressions;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
+using Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.MixedMapping;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model;
@@ -1006,6 +1008,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     private RelationDefinition CreateCustomerToOrderRelationDefinition ()
     {
       var customer = _typeDefinitions[typeof (Customer)];
+      var orderClass = _typeDefinitions[typeof (Order)];
+      var orderNumber = orderClass.GetPropertyDefinition (typeof (Order).FullName + ".OrderNumber");
+      var sortExpressionDefinition = new SortExpressionDefinition (new[] { SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending (orderNumber) });
 
       var endPoint1 =
           DomainObjectCollectionRelationEndPointDefinitionFactory.Create (
@@ -1013,9 +1018,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
               "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Customer.Orders",
               false,
               typeof (OrderCollection),
-              "OrderNumber asc");
-
-      var orderClass = _typeDefinitions[typeof (Order)];
+              new Lazy<SortExpressionDefinition> (() => sortExpressionDefinition));
 
       var endPoint2 = new RelationEndPointDefinition (
           orderClass["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order.Customer"], true);

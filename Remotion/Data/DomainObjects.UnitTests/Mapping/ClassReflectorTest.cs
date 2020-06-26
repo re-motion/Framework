@@ -20,7 +20,9 @@ using System.Reflection;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Mapping.SortExpressions;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.MixinTestDomain;
+using Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample;
 using Remotion.Reflection;
 using Rhino.Mocks;
@@ -168,6 +170,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           .Stub (stub => stub.IsNullable (Arg<IPropertyInformation>.Matches (pi => pi.Name == "BidirectionalOneToManyForVirtualCollection")))
           .Return (true);
 
+      var classDefinitionFake = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (ClassWithRealRelationEndPoints));
+
+      SortExpressionDefinitionProviderStub
+          .Stub (_ => _.GetSortExpression (Arg<IPropertyInformation>.Is.Anything, Arg<ClassDefinition>.Is.Anything, Arg<string>.Is.Null))
+          .Return (null);
+      SortExpressionDefinitionProviderStub
+          .Stub (_ => _.GetSortExpression (Arg<IPropertyInformation>.Is.Anything, Arg<ClassDefinition>.Is.Anything, Arg<string>.Is.NotNull))
+          .Return (null)
+          .WhenCalled (
+              mi =>
+              {
+                var propertyInformation = (IPropertyInformation) mi.Arguments[0];
+                var referencedClassDefinition = (ClassDefinition) mi.Arguments[1];
+                var sortExpressionText = (string) mi.Arguments[2];
+                var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo (
+                    referencedClassDefinition,
+                    sortExpressionText);
+                var sortExpressionDefinition = new SortExpressionDefinition (
+                    new[] { SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending (propertyDefinition) });
+                mi.ReturnValue = sortExpressionDefinition;
+              });
+
       ClassIDProviderStub.Stub(stub => stub.GetClassID (typeof (ClassWithVirtualRelationEndPoints))).Return ("ClassWithVirtualRelationEndPoints");
 
       var classReflector = CreateClassReflector (typeof (ClassWithVirtualRelationEndPoints));
@@ -176,6 +200,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       CreateEndPointDefinitionsForClassWithVirtualRelationEndPoints (expected);
 
       var actual = classReflector.GetMetadata (null);
+      foreach (var actualEndPoint in actual.MyRelationEndPointDefinitions)
+      {
+        var endPointStub = MockRepository.GenerateStub<IRelationEndPointDefinition>();
+        endPointStub.Stub (stub => stub.ClassDefinition).Return (classDefinitionFake);
+        actualEndPoint.SetRelationDefinition (new RelationDefinition ("fake: " + actualEndPoint.PropertyName, actualEndPoint, endPointStub));
+      }
 
       Assert.That (actual, Is.Not.Null);
       _classDefinitionChecker.Check (expected, actual);
@@ -300,6 +330,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           ClassIDProviderStub,
           PropertyMetadataProvider, 
           DomainModelConstraintProviderStub,
+          SortExpressionDefinitionProviderStub,
           DomainObjectCreatorStub);
     }
 
@@ -424,25 +455,33 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       endPoints.Add (
           CreateDomainObjectCollectionRelationEndPointDefinition (
-              classDefinition, typeof (ClassWithVirtualRelationEndPoints), "NoAttributeForDomainObjectCollection", false, null));
+              classDefinition, typeof (ClassWithVirtualRelationEndPoints), "NoAttributeForDomainObjectCollection", false, CreateEmptySortExpressionDefinition()));
       endPoints.Add (
           CreateVirtualCollectionRelationEndPointDefinition (
-              classDefinition, typeof (ClassWithVirtualRelationEndPoints), "NoAttributeForVirtualCollection", false, null));
+              classDefinition, typeof (ClassWithVirtualRelationEndPoints), "NoAttributeForVirtualCollection", false, CreateEmptySortExpressionDefinition()));
       endPoints.Add (
           CreateDomainObjectCollectionRelationEndPointDefinition (
-              classDefinition, typeof (ClassWithVirtualRelationEndPoints), "NotNullableForDomainObjectCollection", true, null));
+              classDefinition, typeof (ClassWithVirtualRelationEndPoints), "NotNullableForDomainObjectCollection", true, CreateEmptySortExpressionDefinition()));
       endPoints.Add (
           CreateVirtualCollectionRelationEndPointDefinition (
-              classDefinition, typeof (ClassWithVirtualRelationEndPoints), "NotNullableForVirtualCollection", true, null));
+              classDefinition, typeof (ClassWithVirtualRelationEndPoints), "NotNullableForVirtualCollection", true, CreateEmptySortExpressionDefinition()));
       endPoints.Add (
           CreateVirtualObjectRelationEndPointDefinition (
               classDefinition, typeof (ClassWithVirtualRelationEndPoints), "BidirectionalOneToOne", false));
       endPoints.Add (
           CreateDomainObjectCollectionRelationEndPointDefinition (
-              classDefinition, typeof (ClassWithVirtualRelationEndPoints), "BidirectionalOneToManyForDomainObjectCollection", false, "NoAttributeForDomainObjectCollection"));
+              classDefinition,
+              typeof (ClassWithVirtualRelationEndPoints),
+              "BidirectionalOneToManyForDomainObjectCollection",
+              false,
+              CreateSortExpressionDefinition ("NoAttributeForDomainObjectCollection")));
       endPoints.Add (
           CreateVirtualCollectionRelationEndPointDefinition (
-              classDefinition, typeof (ClassWithVirtualRelationEndPoints), "BidirectionalOneToManyForVirtualCollection", false, "NoAttributeForVirtualCollection"));
+              classDefinition,
+              typeof (ClassWithVirtualRelationEndPoints),
+              "BidirectionalOneToManyForVirtualCollection",
+              false,
+              CreateSortExpressionDefinition ("NoAttributeForVirtualCollection")));
 
       endPoints.Add (
           CreateVirtualObjectRelationEndPointDefinition (
@@ -453,14 +492,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
               typeof (ClassWithOneSideRelationPropertiesNotInMapping),
               "BaseBidirectionalOneToManyForDomainObjectCollection",
               false,
-              "NoAttributeForDomainObjectCollection"));
+              CreateSortExpressionDefinition ("NoAttributeForDomainObjectCollection")));
       endPoints.Add (
           CreateVirtualCollectionRelationEndPointDefinition (
               classDefinition,
               typeof (ClassWithOneSideRelationPropertiesNotInMapping),
               "BaseBidirectionalOneToManyForVirtualCollection",
               false,
-              "NoAttributeForVirtualCollection"));
+              CreateSortExpressionDefinition ("NoAttributeForVirtualCollection")));
       endPoints.Add (
           CreateVirtualObjectRelationEndPointDefinition (
               classDefinition,
@@ -473,14 +512,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
               typeof (ClassWithOneSideRelationPropertiesNotInMapping),
               "BasePrivateBidirectionalOneToManyForDomainObjectCollection",
               false,
-              "NoAttributeForDomainObjectCollection"));
+              CreateSortExpressionDefinition ("NoAttributeForDomainObjectCollection")));
       endPoints.Add (
           CreateVirtualCollectionRelationEndPointDefinition (
               classDefinition,
               typeof (ClassWithOneSideRelationPropertiesNotInMapping),
               "BasePrivateBidirectionalOneToManyForVirtualCollection",
               false,
-              "NoAttributeForVirtualCollection"));
+              CreateSortExpressionDefinition ("NoAttributeForVirtualCollection")));
+
+      var classDefinitionFake = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (ClassWithRealRelationEndPoints));
+      foreach (var endPoint in endPoints)
+      {
+        var endPointStub = MockRepository.GenerateStub<IRelationEndPointDefinition>();
+        endPointStub.Stub (stub => stub.ClassDefinition).Return (classDefinitionFake);
+        endPoint.SetRelationDefinition (new RelationDefinition ("fake: " + endPoint.PropertyName, endPoint, endPointStub));
+      }
 
       classDefinition.SetRelationEndPointDefinitions (new RelationEndPointDefinitionCollection (endPoints, true));
     }
@@ -521,7 +568,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
         Type declaringType,
         string shortPropertyName,
         bool isMandatory,
-        string sortExpressionText)
+        Lazy<SortExpressionDefinition> sortExpression)
     {
       var propertyInfo = GetPropertyInfo (declaringType, shortPropertyName);
 
@@ -529,7 +576,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           classDefinition,
           MappingConfiguration.Current.NameResolver.GetPropertyName (propertyInfo),
           isMandatory,
-          sortExpressionText,
+          sortExpression,
           propertyInfo);
     }
 
@@ -538,7 +585,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
         Type declaringType,
         string shortPropertyName,
         bool isMandatory,
-        string sortExpressionText)
+        Lazy<SortExpressionDefinition> sortExpression)
     {
       var propertyInfo = GetPropertyInfo (declaringType, shortPropertyName);
 
@@ -546,7 +593,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           classDefinition,
           MappingConfiguration.Current.NameResolver.GetPropertyName (propertyInfo),
           isMandatory,
-          sortExpressionText,
+          sortExpression,
           propertyInfo);
     }
 
@@ -589,6 +636,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           isNullable,
           maxLength,
           StorageClass.Persistent);
+    }
+
+    private Lazy<SortExpressionDefinition> CreateSortExpressionDefinition (string propertyName)
+    {
+      return new Lazy<SortExpressionDefinition> (
+          () => new SortExpressionDefinition (
+              new[]
+              {
+                  new SortedPropertySpecification (
+                      PropertyDefinitionObjectMother.CreateForFakePropertyInfo (propertyName, StorageClass.Persistent),
+                      SortOrder.Ascending)
+              }));
+    }
+
+    private Lazy<SortExpressionDefinition> CreateEmptySortExpressionDefinition ()
+    {
+      return new Lazy<SortExpressionDefinition> (() => null);
     }
   }
 }

@@ -38,7 +38,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyFinderTests
               new ReflectionBasedMemberInformationNameResolver(),
               classDefinition.PersistentMixinFinder,
               new PropertyMetadataReflector(),
-              new DomainModelConstraintProvider());
+              new DomainModelConstraintProvider(),
+              new SortExpressionDefinitionProvider());
 
       Assert.That (propertyFinder.Type, Is.SameAs (typeof (ClassWithDifferentProperties)));
       Assert.That (propertyFinder.IncludeBaseProperties, Is.True);
@@ -57,7 +58,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyFinderTests
               new ReflectionBasedMemberInformationNameResolver(),
               classDefinition.PersistentMixinFinder,
               new PropertyMetadataReflector(),
-              new DomainModelConstraintProvider());
+              new DomainModelConstraintProvider(),
+              new SortExpressionDefinitionProvider());
 
       Assert.That (
           propertyFinder.FindPropertyInfos(),
@@ -87,7 +89,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyFinderTests
               new ReflectionBasedMemberInformationNameResolver(),
               classDefinition.PersistentMixinFinder,
               new PropertyMetadataReflector(),
-              new DomainModelConstraintProvider());
+              new DomainModelConstraintProvider(),
+              new SortExpressionDefinitionProvider());
 
       Assert.That (propertyFinder.FindPropertyInfos(), Is.Empty);
     }

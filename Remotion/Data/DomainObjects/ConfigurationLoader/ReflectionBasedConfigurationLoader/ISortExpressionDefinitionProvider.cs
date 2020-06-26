@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -15,22 +15,24 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using JetBrains.Annotations;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.SortExpressions;
-using Remotion.Utilities;
+using Remotion.Reflection;
 
-namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
+namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
-  public static class SortExpressionDefinitionObjectMother
+  /// <summary>
+  /// Defines an API for building the <see cref="SortExpressionDefinition"/> for a specific <see cref="IPropertyInformation"/>.
+  /// </summary>
+  /// <threadsafety static="true" instance="true" />
+  /// <seealso cref="SortExpressionDefinitionProvider"/>
+  public interface ISortExpressionDefinitionProvider
   {
-    public static SortedPropertySpecification CreateSortedPropertyAscending (PropertyDefinition propertyDefinition)
-    {
-      return new SortedPropertySpecification (propertyDefinition, SortOrder.Ascending);
-    }
-
-    public static SortedPropertySpecification CreateSortedPropertyDescending (PropertyDefinition propertyDefinition)
-    {
-      return new SortedPropertySpecification (propertyDefinition, SortOrder.Descending);
-    }
+    [CanBeNull]
+    SortExpressionDefinition GetSortExpression (
+        [NotNull] IPropertyInformation propertyInfo,
+        [NotNull] ClassDefinition referencedClassDefinition,
+        [CanBeNull] string sortExpressionText);
   }
 }

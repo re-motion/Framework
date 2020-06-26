@@ -36,6 +36,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     protected IClassIDProvider ClassIDProviderStub { get; private set; }
     protected IDomainModelConstraintProvider DomainModelConstraintProviderStub { get; private set; }
+    protected ISortExpressionDefinitionProvider SortExpressionDefinitionProviderStub { get; private set; }
     protected ReflectionBasedMappingObjectFactory MappingObjectFactory { get; private set; }
     protected IDomainObjectCreator DomainObjectCreatorStub { get; private set; }
     protected IPropertyMetadataProvider PropertyMetadataProvider { get; private set; }
@@ -50,10 +51,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       ClassIDProviderStub = MockRepository.GenerateStub<IClassIDProvider>();
       DomainModelConstraintProviderStub = MockRepository.GenerateStub<IDomainModelConstraintProvider>();
       DomainObjectCreatorStub = MockRepository.GenerateStub<IDomainObjectCreator>();
+      SortExpressionDefinitionProviderStub = MockRepository.GenerateStub<ISortExpressionDefinitionProvider>();
       PropertyMetadataProvider = new PropertyMetadataReflector();
 
       MappingObjectFactory = new ReflectionBasedMappingObjectFactory (
-          Configuration.NameResolver, ClassIDProviderStub, PropertyMetadataProvider, DomainModelConstraintProviderStub, DomainObjectCreatorStub);
+          Configuration.NameResolver,
+          ClassIDProviderStub,
+          PropertyMetadataProvider,
+          DomainModelConstraintProviderStub,
+          SortExpressionDefinitionProviderStub,
+          DomainObjectCreatorStub);
     }
 
     [TearDown]

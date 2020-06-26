@@ -15,7 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Threading;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Mapping.SortExpressions;
 using Remotion.Reflection;
 using Remotion.Utilities;
 
@@ -29,9 +31,16 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         IPropertyInformation propertyInfo,
         IMemberInformationNameResolver nameResolver,
         IPropertyMetadataProvider propertyMetadataProvider,
-        IDomainModelConstraintProvider domainModelConstraintProvider)
+        IDomainModelConstraintProvider domainModelConstraintProvider,
+        ISortExpressionDefinitionProvider sortExpressionDefinitionProvider)
     {
-      return new RdbmsRelationEndPointReflector (classDefinition, propertyInfo, nameResolver, propertyMetadataProvider, domainModelConstraintProvider);
+      return new RdbmsRelationEndPointReflector (
+          classDefinition,
+          propertyInfo,
+          nameResolver,
+          propertyMetadataProvider,
+          domainModelConstraintProvider,
+          sortExpressionDefinitionProvider);
     }
   }
 
@@ -39,19 +48,28 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
   public abstract class RelationEndPointReflector<T> : RelationReflectorBase<T>
       where T: BidirectionalRelationAttribute
   {
+    private class DeferredRelationEndPointDefinition
+    {
+      public IRelationEndPointDefinition Value;
+    }
+
     private readonly IDomainModelConstraintProvider _domainModelConstraintProvider;
+    private readonly ISortExpressionDefinitionProvider _sortExpressionDefinitionProvider;
 
     protected RelationEndPointReflector (
         ClassDefinition classDefinition,
         IPropertyInformation propertyInfo,
         IMemberInformationNameResolver nameResolver,
         IPropertyMetadataProvider propertyMetadataProvider,
-        IDomainModelConstraintProvider domainModelConstraintProvider)
+        IDomainModelConstraintProvider domainModelConstraintProvider,
+        ISortExpressionDefinitionProvider sortExpressionDefinitionProvider)
         : base (classDefinition, propertyInfo, nameResolver, propertyMetadataProvider)
     {
       ArgumentUtility.CheckNotNull ("domainModelConstraintProvider", domainModelConstraintProvider);
+      ArgumentUtility.CheckNotNull ("sortExpressionDefinitionProvider", sortExpressionDefinitionProvider);
 
       _domainModelConstraintProvider = domainModelConstraintProvider;
+      _sortExpressionDefinitionProvider = sortExpressionDefinitionProvider;
     }
 
     public IRelationEndPointDefinition GetMetadata ()
@@ -84,34 +102,42 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
     {
       if (ReflectionUtility.IsDomainObject (PropertyInfo.PropertyType))
       {
-        var virtualObjectRelationEndPointDefinition = new VirtualObjectRelationEndPointDefinition (
+        var relationEndPointDefinition = new VirtualObjectRelationEndPointDefinition (
             classDefinition,
             GetPropertyName(),
             IsMandatory(),
             PropertyInfo);
 
-        if (GetSortExpression() != null)
-          virtualObjectRelationEndPointDefinition.SetHasSortExpressionFlag();
+        if (BidirectionalRelationAttribute.SortExpression != null)
+          relationEndPointDefinition.SetHasSortExpressionFlag();
 
-        return virtualObjectRelationEndPointDefinition;
+        return relationEndPointDefinition;
       }
       else if (ReflectionUtility.IsObjectList (PropertyInfo.PropertyType))
       {
-        return new DomainObjectCollectionRelationEndPointDefinition (
+        var deferredRelationEndPointDefinition = new DeferredRelationEndPointDefinition();
+        var relationEndPointDefinition = new DomainObjectCollectionRelationEndPointDefinition (
             classDefinition,
             GetPropertyName(),
             IsMandatory(),
-            GetSortExpression(),
+            GetSortExpressionDefinition (deferredRelationEndPointDefinition),
             PropertyInfo);
+        deferredRelationEndPointDefinition.Value = relationEndPointDefinition;
+
+        return relationEndPointDefinition;
       }
       else if (ReflectionUtility.IsIObjectList (PropertyInfo.PropertyType))
       {
-        return new VirtualCollectionRelationEndPointDefinition (
+        var deferredRelationEndPointDefinition = new DeferredRelationEndPointDefinition();
+        var relationEndPointDefinition = new VirtualCollectionRelationEndPointDefinition (
             classDefinition,
             GetPropertyName(),
             IsMandatory(),
-            GetSortExpression(),
+            GetSortExpressionDefinition (deferredRelationEndPointDefinition),
             PropertyInfo);
+        deferredRelationEndPointDefinition.Value = relationEndPointDefinition;
+
+        return relationEndPointDefinition;
       }
       else
       {
@@ -126,12 +152,22 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       return !_domainModelConstraintProvider.IsNullable (PropertyInfo);
     }
 
-    private string GetSortExpression ()
+    private Lazy<SortExpressionDefinition> GetSortExpressionDefinition (DeferredRelationEndPointDefinition deferredRelationEndPointDefinition)
     {
-      if (!IsBidirectionalRelation)
-        return null;
+      Assertion.IsTrue (IsBidirectionalRelation, "Cannot call {0}(...) with for unidirectional relations.", nameof (GetSortExpressionDefinition));
 
-      return BidirectionalRelationAttribute.SortExpression;
+      var propertyInfo = PropertyInfo;
+      var sortExpressionText = BidirectionalRelationAttribute.SortExpression;
+      var sortExpressionDefinitionProvider = _sortExpressionDefinitionProvider;
+
+      return new Lazy<SortExpressionDefinition> (
+          () =>
+          {
+            var relationEndPointDefinition = deferredRelationEndPointDefinition.Value;
+            Assertion.IsNotNull (relationEndPointDefinition, "RelationEndPointDefinition was not initialized.");
+            var oppositeClassDefinition = relationEndPointDefinition.GetOppositeEndPointDefinition().ClassDefinition;
+            return sortExpressionDefinitionProvider.GetSortExpression (propertyInfo, oppositeClassDefinition, sortExpressionText);
+          }, LazyThreadSafetyMode.ExecutionAndPublication);
     }
   }
 }
