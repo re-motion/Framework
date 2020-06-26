@@ -29,6 +29,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
   {
     private readonly ClassDefinition _classDefinition;
     private readonly IDomainModelConstraintProvider _domainModelConstraintProvider;
+    private readonly ISortExpressionDefinitionProvider _sortExpressionDefinitionProvider;
 
     public PropertyFinder (
         Type type,
@@ -38,13 +39,17 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         IMemberInformationNameResolver nameResolver,
         IPersistentMixinFinder persistentMixinFinder,
         IPropertyMetadataProvider propertyMetadataProvider,
-        IDomainModelConstraintProvider domainModelConstraintProvider)
+        IDomainModelConstraintProvider domainModelConstraintProvider,
+        ISortExpressionDefinitionProvider sortExpressionDefinitionProvider)
         : base (type, includeBaseProperties, includeMixinProperties, nameResolver, persistentMixinFinder, propertyMetadataProvider)
     {
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull ("domainModelConstraintProvider", domainModelConstraintProvider);
+      ArgumentUtility.CheckNotNull ("sortExpressionDefinitionProvider", sortExpressionDefinitionProvider);
 
       _classDefinition = classDefinition;
       _domainModelConstraintProvider = domainModelConstraintProvider;
+      _sortExpressionDefinitionProvider = sortExpressionDefinitionProvider;
     }
 
     protected override bool FindPropertiesFilter (IPropertyInformation propertyInfo)
@@ -76,7 +81,8 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
           nameResolver,
           persistentMixinFinder,
           propertyMetadataProvider,
-          _domainModelConstraintProvider);
+          _domainModelConstraintProvider,
+          _sortExpressionDefinitionProvider);
     }
 
     private bool IsVirtualRelationEndPoint (IPropertyInformation propertyInfo)
@@ -88,7 +94,8 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
           propertyInfo,
           NameResolver,
           PropertyMetadataProvider,
-          _domainModelConstraintProvider);
+          _domainModelConstraintProvider,
+          _sortExpressionDefinitionProvider);
       return relationEndPointReflector.IsVirtualEndRelationEndpoint();
     }
   }

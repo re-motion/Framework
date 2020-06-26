@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     public void CardinalityIsMany ()
     {
       var endPointDefinition = DomainObjectCollectionRelationEndPointDefinitionFactory.Create (
-          _classDefinition, "PropertyName", false, typeof (DomainObjectCollection), null);
+          _classDefinition, "PropertyName", false, typeof (DomainObjectCollection));
       var relationDefinition = new RelationDefinition ("Test", endPointDefinition, endPointDefinition);
       
       var validationResult = _validationRule.Validate (relationDefinition);
@@ -76,7 +76,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     public void CardinalityOne_And_EndPointDefinitionsHaveSortExpression ()
     {
       var leftEndPointDefinition = DomainObjectCollectionRelationEndPointDefinitionFactory.Create (
-          _classDefinition, "PropertyName", false, typeof (DerivedValidationDomainObjectClass), null);
+          _classDefinition, "PropertyName", false, typeof (DerivedValidationDomainObjectClass));
 
       var rightEndPointDefinition = VirtualObjectRelationEndPointDefinitionFactory.Create (
           _classDefinition, "PropertyName", false, typeof (DomainObject), "SortExpression");

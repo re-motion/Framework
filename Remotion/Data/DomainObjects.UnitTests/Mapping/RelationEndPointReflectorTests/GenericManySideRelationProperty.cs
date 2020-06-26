@@ -127,7 +127,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
           propertyReflector.PropertyInfo,
           Configuration.NameResolver,
           PropertyMetadataProvider,
-          DomainModelConstraintProviderStub);
+          DomainModelConstraintProviderStub,
+          SortExpressionDefinitionProviderStub);
     }
 
     private PropertyReflector CreatePropertyReflector (string property)
