@@ -26,12 +26,22 @@ using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
 using Remotion.Web.Development.WebTesting.Utilities;
+using Remotion.Web.Development.WebTesting.WebDriver;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 {
   [TestFixture]
   public class BocMultilineTextValueControlObjectTest : IntegrationTest
   {
+    [TestFixtureSetUp]
+    public void TestFixtureSetUp ()
+    {
+      if (Helper.BrowserConfiguration.IsInternetExplorer())
+      {
+        Assert.Ignore ("RM-7451 Internet Explorer hangs while performing BocMultilineTextValueControlObjectTest in Remotion version 1.20.");
+      }
+    }
+
     [Test]
     [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
     [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
@@ -88,6 +98,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
+
       var bocMultilineText = home.MultilineTextValues().GetByLocalID ("CVField_Normal");
       Assert.That (bocMultilineText.GetText(), Is.EqualTo ("<Test 1>" + Environment.NewLine + "Test 2" + Environment.NewLine + "Test 3"));
 
@@ -99,6 +110,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       bocMultilineText = home.MultilineTextValues().GetByLocalID ("CVField_NoAutoPostBack");
       Assert.That (bocMultilineText.GetText(), Is.EqualTo ("<Test 1>" + Environment.NewLine + "Test 2" + Environment.NewLine + "Test 3"));
+    }
+
+    [Test]
+    public void TestTest ()
+    {
+      Console.WriteLine(default(DateTime) );
     }
 
     [Test]
