@@ -33,15 +33,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   [TestFixture]
   public class BocMultilineTextValueControlObjectTest : IntegrationTest
   {
-    [TestFixtureSetUp]
-    public void TestFixtureSetUp ()
-    {
-      if (Helper.BrowserConfiguration.IsInternetExplorer())
-      {
-        Assert.Ignore ("RM-7451 Internet Explorer hangs while performing BocMultilineTextValueControlObjectTest in Remotion version 1.20.");
-      }
-    }
-
     [Test]
     [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
     [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
@@ -68,6 +59,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void TestIsDisabled_SetMethodsThrow ()
     {
+      if (Helper.BrowserConfiguration.IsInternetExplorer())
+        Assert.Ignore ("RM-7451 Internet Explorer hangs while performing BocMultilineTextValueControlObjectTest in Remotion version 1.20.");
+
       var home = Start();
 
       var control = home.MultilineTextValues().GetByLocalID ("CVField_Disabled");
@@ -82,6 +76,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void TestIsReadOnly_SetMethodsThrow ()
     {
+      if (Helper.BrowserConfiguration.IsInternetExplorer())
+        Assert.Ignore ("RM-7451 Internet Explorer hangs while performing BocMultilineTextValueControlObjectTest in Remotion version 1.20.");
+
       var home = Start();
 
       var control = home.MultilineTextValues().GetByLocalID ("CVField_ReadOnly");
@@ -96,6 +93,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void TestGetText ()
     {
+      if (Helper.BrowserConfiguration.IsInternetExplorer())
+        Assert.Ignore ("RM-7451 Internet Explorer hangs while performing BocMultilineTextValueControlObjectTest in Remotion version 1.20.");
+
       var home = Start();
 
 
@@ -115,12 +115,18 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void TestTest ()
     {
+      if (Helper.BrowserConfiguration.IsInternetExplorer())
+        Assert.Ignore ("RM-7451 Internet Explorer hangs while performing BocMultilineTextValueControlObjectTest in Remotion version 1.20.");
+
       Console.WriteLine(default(DateTime) );
     }
 
     [Test]
     public void TestFillWith ()
     {
+      if (Helper.BrowserConfiguration.IsInternetExplorer())
+        Assert.Ignore ("RM-7451 Internet Explorer hangs while performing BocMultilineTextValueControlObjectTest in Remotion version 1.20.");
+
       var home = Start();
 
       var bocMultilineText = home.MultilineTextValues().GetByLocalID ("CVField_Normal");
@@ -144,6 +150,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void TestFillWithLines ()
     {
+      if (Helper.BrowserConfiguration.IsInternetExplorer())
+        Assert.Ignore ("RM-7451 Internet Explorer hangs while performing BocMultilineTextValueControlObjectTest in Remotion version 1.20.");
+
       var home = Start();
 
       var bocMultilineText = home.MultilineTextValues().GetByLocalID ("CVField_Normal");
