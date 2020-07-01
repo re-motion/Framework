@@ -26,6 +26,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class FirefoxBinariesProviderTest
   {
     [Test]
+    [Retry (3)]
     public void GetInstalledExecutable ()
     {
       var provider = new FirefoxBinariesProvider();
