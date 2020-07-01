@@ -288,8 +288,7 @@ namespace Remotion.Web.ExecutionEngine
 
       _page.ClientScript.RegisterHiddenField (_page, WxeHandler.Parameters.WxeFunctionToken, wxeContext.FunctionToken);
       _page.ClientScript.RegisterHiddenField (_page, WxePageInfo.ReturningTokenID, null);
-      int nextPostBackID = wxeContext.PostBackID + 1;
-       _page.ClientScript.RegisterHiddenField (_page, WxePageInfo.PostBackSequenceNumberID, nextPostBackID.ToString ());
+      _page.ClientScript.RegisterHiddenField (_page, WxePageInfo.PostBackSequenceNumberID, wxeContext.PostBackID.ToString ());
 
       _page.ClientScript.RegisterClientScriptBlock (_page, typeof (WxePageInfo),  "wxeDoSubmit",
             "function wxeDoSubmit (button, pageToken) { \r\n"
@@ -368,16 +367,18 @@ namespace Remotion.Web.ExecutionEngine
       _page.CheckFormStateFunction = "WxePage_CheckFormState";
 
       string isCacheDetectionEnabled = _page.AreOutOfSequencePostBacksEnabled ? "false" : "true";
+      var nextPostBackID = wxeContext.PostBackID + 1;
 
       StringBuilder initScript = new StringBuilder (500);
 
       initScript.AppendLine ("WxePage_Context.SetInstance (new WxePage_Context (");
-      initScript.AppendLine ("    ").Append (isCacheDetectionEnabled).AppendLine (",");
-      initScript.AppendLine ("    ").Append (refreshInterval).AppendLine (",");
-      initScript.AppendLine ("    ").Append (refreshPath).AppendLine (",");
-      initScript.AppendLine ("    ").Append (abortPath).AppendLine (",");
-      initScript.AppendLine ("    ").Append (statusIsAbortingMessage).AppendLine (",");
-      initScript.AppendLine ("    ").Append (statusIsCachedMessage).AppendLine ("));");
+      initScript.Append ("    ").Append (isCacheDetectionEnabled).AppendLine (",");
+      initScript.Append ("    ").Append (refreshInterval).AppendLine (",");
+      initScript.Append ("    ").Append (refreshPath).AppendLine (",");
+      initScript.Append ("    ").Append (abortPath).AppendLine (",");
+      initScript.Append ("    ").Append (statusIsAbortingMessage).AppendLine (",");
+      initScript.Append ("    ").Append (statusIsCachedMessage).AppendLine (",");
+      initScript.Append ("    ").Append (nextPostBackID).AppendLine ("));");
 
       _page.ClientScript.RegisterClientScriptBlock (_page, typeof (WxePageInfo), "wxeInitialize", initScript.ToString ());
     }
