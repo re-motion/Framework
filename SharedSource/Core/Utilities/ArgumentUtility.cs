@@ -87,7 +87,9 @@ namespace Remotion.Utilities
         [InvokerParameterName] string argumentName,
         [AssertionCondition (AssertionConditionType.IS_NOT_NULL)] string actualValue)
     {
-      CheckNotNull (argumentName, actualValue);
+      if (actualValue == null)
+        throw new ArgumentNullException (argumentName);
+
       if (actualValue.Length == 0)
         throw CreateArgumentEmptyException (argumentName);
 
