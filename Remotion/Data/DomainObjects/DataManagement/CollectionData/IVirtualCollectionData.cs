@@ -44,9 +44,11 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     void Clear ();
     void Add (DomainObject domainObject);
     bool Remove (DomainObject domainObject); // this overload should be called from IObjectList.Remove (DomainObject)
+
+    [Obsolete ("RM-7294: API is only implemented because of the interface. Can probably be dropped since there is no usage.", false)]
     bool Remove (ObjectID objectID); // this overload should be called from IObjectList.Remove (ObjectID)
 
-    //TODO: RM-7294: API is obsolete. DomainObjectCollection implemented it for Ordered Collections
+    [Obsolete ("RM-7294: API is obsolete. DomainObjectCollection implemented it for Ordered Collections", false)]
     void Sort (Comparison<DomainObject> comparison);
   }
 }

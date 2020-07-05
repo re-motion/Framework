@@ -16,11 +16,13 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Logging;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints
@@ -28,31 +30,66 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   /// <summary>
   /// Represents the state of a <see cref="VirtualCollectionEndPoint"/> where all of its data is available (ie., the end-point has been (lazily) loaded).
   /// </summary>
-  public class CompleteVirtualCollectionEndPointLoadState
-      : CompleteVirtualEndPointLoadStateBase<IVirtualCollectionEndPoint, ReadOnlyVirtualCollectionDataDecorator, IVirtualCollectionEndPointDataManager>,
-        IVirtualCollectionEndPointLoadState
+  public class CompleteVirtualCollectionEndPointLoadState : IVirtualCollectionEndPointLoadState
   {
+    private static readonly ILog s_log = LogManager.GetLogger (typeof (CompleteVirtualCollectionEndPointLoadState));
+
+    private readonly IVirtualCollectionEndPointDataManager _dataManager;
+    private readonly IRelationEndPointProvider _endPointProvider;
+    private readonly IClientTransactionEventSink _transactionEventSink;
+
+    private readonly Dictionary<ObjectID, IRealObjectEndPoint> _unsynchronizedOppositeEndPoints;
+
+
     public CompleteVirtualCollectionEndPointLoadState (
         IVirtualCollectionEndPointDataManager dataManager,
         IRelationEndPointProvider endPointProvider,
         IClientTransactionEventSink transactionEventSink)
-        : base (dataManager, endPointProvider, transactionEventSink)
     {
+      ArgumentUtility.CheckNotNull ("dataManager", dataManager);
+      ArgumentUtility.CheckNotNull ("endPointProvider", endPointProvider);
+      ArgumentUtility.CheckNotNull ("transactionEventSink", transactionEventSink);
+
+      _dataManager = dataManager;
+      _endPointProvider = endPointProvider;
+      _transactionEventSink = transactionEventSink;
+
+      _unsynchronizedOppositeEndPoints = new Dictionary<ObjectID, IRealObjectEndPoint> ();
     }
 
-    public override ReadOnlyVirtualCollectionDataDecorator GetData (IVirtualCollectionEndPoint collectionEndPoint)
+    public IVirtualCollectionEndPointDataManager DataManager
+    {
+      get { return _dataManager; }
+    }
+
+    public IRelationEndPointProvider EndPointProvider
+    {
+      get { return _endPointProvider; }
+    }
+
+    public IClientTransactionEventSink TransactionEventSink
+    {
+      get { return _transactionEventSink; }
+    }
+
+    public ICollection<IRealObjectEndPoint> UnsynchronizedOppositeEndPoints
+    {
+      get { return _unsynchronizedOppositeEndPoints.Values; }
+    }
+
+    public ReadOnlyVirtualCollectionDataDecorator GetData (IVirtualCollectionEndPoint collectionEndPoint)
     {
       ArgumentUtility.CheckNotNull ("collectionEndPoint", collectionEndPoint);
       return new ReadOnlyVirtualCollectionDataDecorator (DataManager.CollectionData);
     }
 
-    public override ReadOnlyVirtualCollectionDataDecorator GetOriginalData (IVirtualCollectionEndPoint collectionEndPoint)
+    public ReadOnlyVirtualCollectionDataDecorator GetOriginalData (IVirtualCollectionEndPoint collectionEndPoint)
     {
       ArgumentUtility.CheckNotNull ("collectionEndPoint", collectionEndPoint);
       return DataManager.OriginalCollectionData;
     }
 
-    public override void SetDataFromSubTransaction (
+    public void SetDataFromSubTransaction (
         IVirtualCollectionEndPoint collectionEndPoint,
         IVirtualEndPointLoadState<IVirtualCollectionEndPoint, ReadOnlyVirtualCollectionDataDecorator, IVirtualCollectionEndPointDataManager> sourceLoadState)
     {
@@ -70,13 +107,50 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       return DataManager.HasDataChangedFast();
     }
 
-    public new void MarkDataComplete (IVirtualCollectionEndPoint collectionEndPoint, IEnumerable<DomainObject> items, Action<IVirtualCollectionEndPointDataManager> stateSetter)
+    public bool IsDataComplete ()
+    {
+      return true;
+    }
+
+    public void EnsureDataComplete (IVirtualCollectionEndPoint endPoint)
+    {
+      ArgumentUtility.CheckNotNull ("endPoint", endPoint);
+      // Data is already complete
+    }
+
+    public void MarkDataComplete (IVirtualCollectionEndPoint collectionEndPoint, IEnumerable<DomainObject> items, Action<IVirtualCollectionEndPointDataManager> stateSetter)
     {
       ArgumentUtility.CheckNotNull ("collectionEndPoint", collectionEndPoint);
       ArgumentUtility.CheckNotNull ("items", items);
       ArgumentUtility.CheckNotNull ("stateSetter", stateSetter);
 
-      base.MarkDataComplete (collectionEndPoint, items, stateSetter);
+      throw new InvalidOperationException ("The data is already complete.");
+    }
+
+    public bool CanDataBeMarkedIncomplete (IVirtualCollectionEndPoint endPoint)
+    {
+      ArgumentUtility.CheckNotNull ("endPoint", endPoint);
+      return !HasChanged();
+    }
+
+    public virtual void MarkDataIncomplete (IVirtualCollectionEndPoint endPoint, Action stateSetter)
+    {
+      ArgumentUtility.CheckNotNull ("endPoint", endPoint);
+      ArgumentUtility.CheckNotNull ("stateSetter", stateSetter);
+
+      if (HasChanged ())
+      {
+        var message = string.Format ("Cannot mark virtual end-point '{0}' incomplete because it has been changed.", endPoint.ID);
+        throw new InvalidOperationException (message);
+      }
+
+      _transactionEventSink.RaiseRelationEndPointBecomingIncompleteEvent (endPoint.ID);
+
+      stateSetter ();
+
+      var allOppositeEndPoints = UnsynchronizedOppositeEndPoints.Concat (GetOriginalOppositeEndPoints());
+      foreach (var oppositeEndPoint in allOppositeEndPoints)
+        endPoint.RegisterOriginalOppositeEndPoint (oppositeEndPoint);
     }
 
     public void SortCurrentData (IVirtualCollectionEndPoint collectionEndPoint, Comparison<DomainObject> comparison)
@@ -89,25 +163,53 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       RaiseReplaceDataEvent (collectionEndPoint);
     }
 
-    public override void Synchronize (IVirtualCollectionEndPoint endPoint)
+    public void Synchronize (IVirtualCollectionEndPoint endPoint)
     {
-      base.Synchronize (endPoint);
+      if (s_log.IsDebugEnabled())
+        s_log.DebugFormat ("End-point '{0}' is being synchronized.", endPoint.ID);
+
+      foreach (var item in GetOriginalItemsWithoutEndPoints ())
+        DataManager.UnregisterOriginalItemWithoutEndPoint (item);
 
       RaiseReplaceDataEvent (endPoint);
     }
 
-    public override void SynchronizeOppositeEndPoint (IVirtualCollectionEndPoint endPoint, IRealObjectEndPoint oppositeEndPoint)
+    public void SynchronizeOppositeEndPoint (IVirtualCollectionEndPoint endPoint, IRealObjectEndPoint oppositeEndPoint)
     {
-      base.SynchronizeOppositeEndPoint (endPoint, oppositeEndPoint);
+      if (s_log.IsDebugEnabled())
+        s_log.DebugFormat ("ObjectEndPoint '{0}' is being marked as synchronized.", oppositeEndPoint.ID);
+
+      if (!_unsynchronizedOppositeEndPoints.Remove (oppositeEndPoint.ObjectID))
+      {
+        var message = string.Format (
+            "Cannot synchronize opposite end-point '{0}' - the end-point is not in the list of unsynchronized end-points.",
+            oppositeEndPoint.ID);
+        throw new InvalidOperationException (message);
+      }
+
+      _dataManager.RegisterOriginalOppositeEndPoint (oppositeEndPoint);
+      oppositeEndPoint.MarkSynchronized ();
 
       RaiseReplaceDataEvent (endPoint);
     }
 
-    public override void Rollback (IVirtualCollectionEndPoint endPoint)
+    public bool HasChanged ()
+    {
+      return _dataManager.HasDataChanged ();
+    }
+
+    public void Commit (IVirtualCollectionEndPoint endPoint)
     {
       ArgumentUtility.CheckNotNull ("endPoint", endPoint);
-      
-      base.Rollback (endPoint);
+
+      _dataManager.Commit ();
+    }
+
+    public void Rollback (IVirtualCollectionEndPoint endPoint)
+    {
+      ArgumentUtility.CheckNotNull ("endPoint", endPoint);
+
+      _dataManager.Rollback();
 
       RaiseReplaceDataEvent (endPoint);
     }
@@ -175,12 +277,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
           TransactionEventSink);
     }
 
-    protected override IEnumerable<IRealObjectEndPoint> GetOriginalOppositeEndPoints ()
+    protected IEnumerable<IRealObjectEndPoint> GetOriginalOppositeEndPoints ()
     {
       return DataManager.OriginalOppositeEndPoints;
     }
 
-    protected override IEnumerable<DomainObject> GetOriginalItemsWithoutEndPoints ()
+    protected IEnumerable<DomainObject> GetOriginalItemsWithoutEndPoints ()
     {
       return DataManager.OriginalItemsWithoutEndPoints;
     }
@@ -253,14 +355,118 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       eventRaiser.WithinReplaceData ();
     }
 
+    public bool CanEndPointBeCollected (IVirtualCollectionEndPoint endPoint)
+    {
+      return false;
+    }
+
+    public void RegisterOriginalOppositeEndPoint (IVirtualCollectionEndPoint endPoint, IRealObjectEndPoint oppositeEndPoint)
+    {
+      ArgumentUtility.CheckNotNull ("endPoint", endPoint);
+      ArgumentUtility.CheckNotNull ("oppositeEndPoint", oppositeEndPoint);
+
+      if (_dataManager.ContainsOriginalObjectID (oppositeEndPoint.ObjectID))
+      {
+        // RealObjectEndPoint is registered for an already loaded virtual end-point. The query result contained the item, so the ObjectEndPoint is 
+        // marked as synchronzed.
+
+        _dataManager.RegisterOriginalOppositeEndPoint (oppositeEndPoint);
+        oppositeEndPoint.MarkSynchronized ();
+      }
+      else
+      {
+        // ObjectEndPoint is registered for an already loaded virtual end-point. The query result did not contain the item, so the ObjectEndPoint is 
+        // out-of-sync.
+
+        _unsynchronizedOppositeEndPoints.Add (oppositeEndPoint.ObjectID, oppositeEndPoint);
+        oppositeEndPoint.MarkUnsynchronized ();
+      }
+    }
+
+    public void UnregisterOriginalOppositeEndPoint (IVirtualCollectionEndPoint endPoint, IRealObjectEndPoint oppositeEndPoint)
+    {
+      ArgumentUtility.CheckNotNull ("endPoint", endPoint);
+      ArgumentUtility.CheckNotNull ("oppositeEndPoint", oppositeEndPoint);
+
+      if (_unsynchronizedOppositeEndPoints.ContainsKey (oppositeEndPoint.ObjectID))
+      {
+        if (s_log.IsDebugEnabled())
+        {
+          s_log.DebugFormat (
+              "Unsynchronized ObjectEndPoint '{0}' is unregistered from virtual end-point '{1}'.",
+              oppositeEndPoint.ID,
+              endPoint.ID);
+        }
+
+        _unsynchronizedOppositeEndPoints.Remove (oppositeEndPoint.ObjectID);
+      }
+      else
+      {
+        if (s_log.IsInfoEnabled())
+        {
+          s_log.InfoFormat (
+              "ObjectEndPoint '{0}' is unregistered from virtual end-point '{1}'. The virtual end-point is transitioned to incomplete state.",
+              oppositeEndPoint.ID,
+              endPoint.ID);
+        }
+
+        endPoint.MarkDataIncomplete ();
+        endPoint.UnregisterOriginalOppositeEndPoint (oppositeEndPoint);
+      }
+    }
+
+    public void RegisterCurrentOppositeEndPoint (IVirtualCollectionEndPoint endPoint, IRealObjectEndPoint oppositeEndPoint)
+    {
+      ArgumentUtility.CheckNotNull ("endPoint", endPoint);
+      ArgumentUtility.CheckNotNull ("oppositeEndPoint", oppositeEndPoint);
+
+      _dataManager.RegisterCurrentOppositeEndPoint (oppositeEndPoint);
+    }
+
+    public void UnregisterCurrentOppositeEndPoint (IVirtualCollectionEndPoint endPoint, IRealObjectEndPoint oppositeEndPoint)
+    {
+      ArgumentUtility.CheckNotNull ("endPoint", endPoint);
+      ArgumentUtility.CheckNotNull ("oppositeEndPoint", oppositeEndPoint);
+
+      _dataManager.UnregisterCurrentOppositeEndPoint (oppositeEndPoint);
+    }
+
+    public bool? IsSynchronized (IVirtualCollectionEndPoint endPoint)
+    {
+      ArgumentUtility.CheckNotNull ("endPoint", endPoint);
+
+      return !GetOriginalItemsWithoutEndPoints().Any();
+    }
+
+    private bool ContainsUnsynchronizedOppositeEndPoint (ObjectID objectID)
+    {
+      return _unsynchronizedOppositeEndPoints.ContainsKey (objectID);
+    }
 
     #region Serialization
 
     public CompleteVirtualCollectionEndPointLoadState (FlattenedDeserializationInfo info)
-        : base(info)
     {
+      ArgumentUtility.CheckNotNull ("info", info);
+
+      _dataManager = info.GetValueForHandle<IVirtualCollectionEndPointDataManager> ();
+      _endPointProvider = info.GetValueForHandle<IRelationEndPointProvider> ();
+      _transactionEventSink = info.GetValueForHandle<IClientTransactionEventSink> ();
+      var unsynchronizedOppositeEndPoints = new List<IRealObjectEndPoint> ();
+      info.FillCollection (unsynchronizedOppositeEndPoints);
+      _unsynchronizedOppositeEndPoints = unsynchronizedOppositeEndPoints.ToDictionary (ep => ep.ObjectID);
     }
 
+    void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
+    {
+      ArgumentUtility.CheckNotNull ("info", info);
+
+      info.AddHandle (_dataManager);
+      info.AddHandle (_endPointProvider);
+      info.AddHandle (_transactionEventSink);
+      info.AddCollection (_unsynchronizedOppositeEndPoints.Values);
+    }
+    
     #endregion
   }
 }

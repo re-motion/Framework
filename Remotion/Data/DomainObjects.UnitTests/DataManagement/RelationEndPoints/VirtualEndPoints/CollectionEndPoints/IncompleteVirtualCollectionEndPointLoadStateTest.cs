@@ -71,6 +71,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
+    [Ignore ("TODO: RM-7294: implement tests from IncompleteVirtualEndPointLoadStateBaseTest")]
+    public void IncompleteVirtualEndPointLoadStateBaseTest ()
+    {
+    }
+
+    [Test]
     public void HasChangedFast ()
     {
       Assert.That (_loadState.HasChangedFast(), Is.False);
@@ -247,11 +253,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void FlattenedSerializable ()
     {
-      var endPointLoader = new SerializableVirtualEndPointLoaderFake<
-          IVirtualCollectionEndPoint,
-          ReadOnlyVirtualCollectionDataDecorator,
-          IVirtualCollectionEndPointDataManager,
-          IVirtualCollectionEndPointLoadState>();
+      var endPointLoader = new SerializableIncompleteVirtualCollectionEndPointLoaderFake();
       var dataManagerFactory = new SerializableVirtualCollectionEndPointDataManagerFactoryFake();
 
       var state = new IncompleteVirtualCollectionEndPointLoadState (endPointLoader, dataManagerFactory);

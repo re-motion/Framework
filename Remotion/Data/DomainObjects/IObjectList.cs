@@ -21,7 +21,9 @@ using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 
 namespace Remotion.Data.DomainObjects
 {
-  public interface IObjectList<out TDomainObject> : IReadOnlyList<TDomainObject>, IList // TODO: RM-7294 add support for IReadOnlyList<T> to BocList. Fallback: implement IList {IsReadOnly=true}
+  public interface
+      IObjectList<out TDomainObject>
+      : IReadOnlyList<TDomainObject>, IList // TODO: RM-7294 add support for IReadOnlyList<T> to BocList. Fallback: implement IList {IsReadOnly=true}
       where TDomainObject : IDomainObject
   {
     new int Count { get; } // TODO: RM07294: Tie-breaker for IReadOnlyList<T> and IList
@@ -44,5 +46,20 @@ namespace Remotion.Data.DomainObjects
     bool Contains (ObjectID objectID);
 
     TDomainObject GetObject (ObjectID objectID);
+
+    [Obsolete ("IObjectList is readonly.", true)]
+    new int Add (object value);
+
+    [Obsolete ("IObjectList is readonly.", true)]
+    new void Clear ();
+
+    [Obsolete ("IObjectList is readonly.", true)]
+    new void Insert (int index, object value);
+
+    [Obsolete ("IObjectList is readonly.", true)]
+    new void Remove (object value);
+
+    [Obsolete ("IObjectList is readonly.", true)]
+    new void RemoveAt (int index);
   }
 }

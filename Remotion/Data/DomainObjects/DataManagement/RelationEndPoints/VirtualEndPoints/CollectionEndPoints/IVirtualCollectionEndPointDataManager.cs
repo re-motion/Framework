@@ -16,18 +16,19 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
+using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints
 {
   /// <summary>
   /// Defines an interface for classes storing the data for a <see cref="VirtualCollectionEndPoint"/>.
   /// </summary>
-  public interface IVirtualCollectionEndPointDataManager : IVirtualEndPointDataManager
+  public interface IVirtualCollectionEndPointDataManager : IFlattenedSerializable
   {
     bool? HasDataChangedFast ();
 
     IVirtualCollectionData CollectionData { get; }
-    ReadOnlyVirtualCollectionDataDecorator OriginalCollectionData { get; }
+    ReadOnlyVirtualCollectionDataDecorator GetOriginalCollectionData ();
 
     IRealObjectEndPoint[] OriginalOppositeEndPoints { get; }
     DomainObject[] OriginalItemsWithoutEndPoints { get; }
@@ -38,5 +39,22 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     void SortCurrentData (Comparison<DomainObject> comparison);
     void SortCurrentAndOriginalData (Comparison<DomainObject> comparison);
     void SetDataFromSubTransaction (IVirtualCollectionEndPointDataManager sourceDataManager, IRelationEndPointProvider endPointProvider);
+
+    RelationEndPointID EndPointID { get; }
+
+    bool ContainsOriginalObjectID (ObjectID objectID);
+
+    void RegisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint);
+    void UnregisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint);
+
+    void RegisterOriginalItemWithoutEndPoint (DomainObject domainObject);
+    void UnregisterOriginalItemWithoutEndPoint (DomainObject domainObject);
+
+    void RegisterCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint);
+    void UnregisterCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint);
+
+    bool HasDataChanged();
+    void Commit();
+    void Rollback();
   }
 }

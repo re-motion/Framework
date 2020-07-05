@@ -214,8 +214,9 @@
     <Compile Include="ClientTransactionTestHelperWithMocks.cs" />
     <Compile Include="DataManagement\DataContainerStateTest.cs" />
     <Compile Include="DataManagement\DelegatingDataContainerMapTest.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualCollectionEndPointIntegrationTest.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\ChangeCachingVirtualCollectionDataDecoratorTest.cs" />
-    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\IncompleteVirtualCollectionEndPointLoadStateTest.cs" />
+    <None Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\IncompleteVirtualCollectionEndPointLoadStateTest.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\StateUpdateRaisingVirtualCollectionEndPointDecoratorTest.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\VirtualCollectionEndPointCollectionProviderTest.cs" />
     <Compile Include="DataManagement\SerializableFakes\SerializableClientTransactionHierarchyFake.cs" />
@@ -226,9 +227,13 @@
     <Compile Include="DataManagement\SerializableFakes\SerializableVirtualCollectionEndPointCollectionProviderFake.cs" />
     <Compile Include="DataManagement\SerializableFakes\SerializableVirtualCollectionEndPointDataManagerFactoryFake.cs" />
     <Compile Include="DataManagement\SerializableFakes\SerializableVirtualCollectionEndPointFake.cs" />
+    <None Include="DataManagement\SerializableFakes\SerializableIncompleteVirtualCollectionEndPointLoaderFake.cs" />
     <Compile Include="DomainObjectStateTest.cs" />
+    <Compile Include="DomainObjects\AddToOneToManyRelationWithLazyLoadOfVirtualCollectionTest.cs" />
     <Compile Include="DomainObjects\AddToOneToManyRelationWithVirtualCollectionTest.cs" />
+    <Compile Include="DomainObjects\OneToManyRelationChangeWithLazyLoadOfVirtualCollectionTest.cs" />
     <Compile Include="DomainObjects\OneToManyRelationChangeWithVirtualCollectionTest.cs" />
+    <Compile Include="DomainObjects\RemoveFromOneToManyRelationWithLazyLoadOfVirtualCollectionTest.cs" />
     <Compile Include="DomainObjects\RemoveFromOneToManyRelationWithVirtualCollectionTest.cs" />
     <Compile Include="IClientTransactionExtensionFactoryTest.cs" />
     <Compile Include="IDomainModelConstraintProviderTest.cs" />
@@ -241,6 +246,11 @@
     <Compile Include="Infrastructure\ObjectPersistence\LoadedObjectDataPendingRegistrationCollectorTest.cs" />
     <Compile Include="Infrastructure\TypePipe\IInterceptedPropertyFinderTest.cs" />
     <Compile Include="Infrastructure\TypePipe\ITypeDefinitionProviderTest.cs" />
+    <Compile Include="IntegrationTests\Delete\CascadedDeleteForVirtualCollectionTest.cs" />
+    <Compile Include="IntegrationTests\Delete\DeleteDomainObjectWithManyToOneRelationWithLazyLoadOfVirtualCollectionTest.cs" />
+    <Compile Include="IntegrationTests\Delete\DeleteDomainObjectWithManyToOneRelationWithVirtualCollectionTest.cs" />
+    <Compile Include="IntegrationTests\Delete\DeleteDomainObjectWithOneToManyRelationWithLazyLoadOfVirtualCollectionTest.cs" />
+    <Compile Include="IntegrationTests\Delete\DeleteDomainObjectWithOneToManyRelationWithVirtualCollectionTest.cs" />
     <Compile Include="IntegrationTests\DomainObjectAssociatedTransactionHierarchyTest.cs" />
     <Compile Include="IntegrationTests\EagerFetching\EagerFetchingWithInvalidMandatoryRelationsTest.cs" />
     <Compile Include="IntegrationTests\Loading\CanceledLoadOperationTest.cs" />

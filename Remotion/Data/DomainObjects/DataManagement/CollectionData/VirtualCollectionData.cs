@@ -19,6 +19,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using Remotion.Collections;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure.Serialization;
@@ -35,7 +36,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     private readonly IDataContainerMapReadOnlyView _dataContainerMap;
     private readonly ValueAccess _valueAccess;
     [CanBeNull]
-    private IReadOnlyList<DomainObject> _cachedDomainObjects;
+    private IReadOnlyDictionary<ObjectID, DomainObject> _cachedDomainObjects;
 
     public VirtualCollectionData (
         RelationEndPointID associatedEndPointID,
@@ -55,7 +56,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public ValueAccess ValueAccess => _valueAccess;
 
-    public IEnumerator<DomainObject> GetEnumerator () => GetCachedDomainObjects().GetEnumerator();
+    public IEnumerator<DomainObject> GetEnumerator () => GetCachedDomainObjectsSorted().GetEnumerator();
 
     IEnumerator IEnumerable.GetEnumerator () => GetEnumerator();
 
@@ -79,21 +80,30 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       ArgumentUtility.CheckNotNull ("objectID", objectID);
 
       //TODO: RM-7294
-      return GetCachedDomainObjects().Any (obj => obj.ID == objectID);
+      return GetCachedDomainObjects().ContainsKey (objectID);
     }
 
     public DomainObject GetObject (int index)
     {
-      //TODO: RM-7294
-
-      var cachedDomainObjects = GetCachedDomainObjects();
-
       if (index < 0)
         throw new ArgumentOutOfRangeException ("index");
-      if (index >= cachedDomainObjects.Count)
+
+      if (index >= GetCachedDomainObjects().Count)
         throw new ArgumentOutOfRangeException ("index");
 
-      return cachedDomainObjects[index];
+      //TODO: RM-7294
+
+      var cachedDomainObjects = GetCachedDomainObjectsSorted();
+      int itemIndex = 0;
+      foreach (var domainObject in cachedDomainObjects)
+      {
+        if (itemIndex == index)
+          return domainObject;
+
+        itemIndex++;
+      }
+
+      throw new ArgumentOutOfRangeException ("index");
     }
 
     public DomainObject GetObject (ObjectID objectID)
@@ -101,7 +111,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       ArgumentUtility.CheckNotNull ("objectID", objectID);
 
       //TODO: RM-7294
-      return GetCachedDomainObjects().FirstOrDefault (obj => obj.ID == objectID);
+      return GetCachedDomainObjects().GetValueOrDefault (objectID);
     }
 
     public int IndexOf (ObjectID objectID)
@@ -109,55 +119,61 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       ArgumentUtility.CheckNotNull ("objectID", objectID);
 
       //TODO: RM-7294
-      var cachedDomainObjects = GetCachedDomainObjects();
-      int index = 0;
+      var cachedDomainObjects = GetCachedDomainObjectsSorted();
+      int itemIndex = 0;
       foreach (var domainObject in cachedDomainObjects)
       {
         if (domainObject.ID == objectID)
-          return index;
+          return itemIndex;
 
-        index++;
+        itemIndex++;
       }
 
       return -1;
     }
 
-    public void Clear ()
+    void IVirtualCollectionData.Clear ()
     {
       //TODO: RM-7294: API is only needed via ChangeCachingDataDecorator, which in turn is used from the EndPointDeleteCommand.
       //Possibly create dedicated interface when we only cache the data and need a cache-reset otherwise. 
-      ResetCachedDomainObjects();
+      //Or drop interface from VirtualCollectionData.
+      throw new NotSupportedException();
+      //ResetCachedDomainObjects();
     }
 
-    public void Add (DomainObject domainObject)
+    void IVirtualCollectionData.Add (DomainObject domainObject)
     {
       //TODO: RM-7294: API is only needed via ChangeCachingDataDecorator, which in turn is used from the EndPointAddCommand.
       //Possibly create dedicated interface when we only cache the data and need a cache-reset otherwise. 
-      ResetCachedDomainObjects();
+      //Or drop interface from VirtualCollectionData.
+      throw new NotSupportedException();
+      //ResetCachedDomainObjects();
     }
 
-    public bool Remove (DomainObject domainObject)
+    bool IVirtualCollectionData.Remove (DomainObject domainObject)
     {
       //TODO: RM-7294: API is only needed via ChangeCachingDataDecorator, which in turn is used from the EndPointRemoveCommand.
       //Possibly create dedicated interface when we only cache the data and need a cache-reset otherwise. 
-      ResetCachedDomainObjects ();
-      return true;
+      //Or drop interface from VirtualCollectionData.
+      throw new NotSupportedException();
+      //ResetCachedDomainObjects ();
+      //return true;
     }
 
-    public bool Remove (ObjectID objectID)
+    bool IVirtualCollectionData.Remove (ObjectID objectID)
     {
       //TODO: RM-7294: API is only implemented because of the interface. Can probably be dropped since there is no usage
       throw new NotSupportedException();
     }
 
-    public void Sort (Comparison<DomainObject> comparison)
+    void IVirtualCollectionData.Sort (Comparison<DomainObject> comparison)
     {
       //TODO: RM-7294: API is only implemented because of the interface. Can probably be dropped since there is no usage
       throw new NotSupportedException();
     }
 
     [NotNull]
-    private IReadOnlyList<DomainObject> GetCachedDomainObjects ()
+    private IReadOnlyDictionary<ObjectID, DomainObject> GetCachedDomainObjects ()
     {
       if (_cachedDomainObjects == null)
       {
@@ -166,7 +182,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
         var requiredClassDefinition = foreignKeyRelationEndPointDefinition.ClassDefinition;
         var requiredItemType = requiredClassDefinition.ClassType;
         var foreignKeyValue = _associatedEndPointID.ObjectID;
-        var comparer = GetDomainObjectComparer();
 
         _cachedDomainObjects = _dataContainerMap
             .Where (dc => !dc.State.IsDiscarded)
@@ -177,12 +192,17 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
             .Where (dc => requiredClassDefinition.IsSameOrBaseClassOf (dc.ClassDefinition))
 #endif
             .Where (dc => (ObjectID) dc.GetValueWithoutEvents (foreignKeyPropertyDefinition, _valueAccess) == foreignKeyValue)
-            .OrderBy (dc => dc.DomainObject, comparer)
-            .Select (dc => dc.DomainObject)
-            .ToList();
+            .ToDictionary (dc => dc.ID, dc => dc.DomainObject);
       }
 
       return _cachedDomainObjects;
+    }
+
+    [NotNull]
+    private IEnumerable<DomainObject> GetCachedDomainObjectsSorted ()
+    {
+      var comparer = GetDomainObjectComparer();
+      return GetCachedDomainObjects().Values.OrderBy (obj => obj, comparer);
     }
 
     private IComparer<DomainObject> GetDomainObjectComparer ()
@@ -200,7 +220,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       }
     }
 
-    private void ResetCachedDomainObjects ()
+    public void ResetCachedDomainObjects ()
     {
       _cachedDomainObjects = null;
     }
@@ -217,7 +237,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       {
         var cachedDomainObjects = new List<DomainObject>();
         info.FillCollection (cachedDomainObjects);
-        _cachedDomainObjects = cachedDomainObjects;
+        _cachedDomainObjects = cachedDomainObjects.ToDictionary (obj => obj.ID);
       }
     }
 
@@ -229,7 +249,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       var hasCachedDomainObjects = _cachedDomainObjects != null;
       info.AddBoolValue (hasCachedDomainObjects);
       if (hasCachedDomainObjects)
-        info.AddCollection ((ICollection<DomainObject>) _cachedDomainObjects);
+        info.AddCollection ((ICollection<DomainObject>) _cachedDomainObjects.Values);
     }
 
     #endregion

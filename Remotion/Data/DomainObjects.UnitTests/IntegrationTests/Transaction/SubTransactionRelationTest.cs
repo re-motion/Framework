@@ -63,7 +63,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     }
 
     [Test]
-    public void Parent_CanReloadRelatedObjectCollection_LoadedInSubTransaction_AndGetTheSameReferences ()
+    public void Parent_CanReloadRelatedObjectCollectionWithDomainObjectCollection_LoadedInSubTransaction_AndGetTheSameReferences ()
     {
       ClientTransaction subTransaction = TestableClientTransaction.CreateSubTransaction ();
       Order order;
@@ -76,7 +76,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       }
       Assert.That (DomainObjectIDs.Order1.GetObject<Order> (), Is.SameAs (order));
       Assert.That (orderItems.Contains (DomainObjectIDs.OrderItem1.GetObject<OrderItem>()), Is.True);
-      Assert.That (orderItems.Contains (DomainObjectIDs.OrderItem1.GetObject<OrderItem>()), Is.True);
+      Assert.That (orderItems.Contains (DomainObjectIDs.OrderItem2.GetObject<OrderItem>()), Is.True);
+    }
+
+    [Test]
+    public void Parent_CanReloadRelatedObjectCollectionWithVirtualCollection_LoadedInSubTransaction_AndGetTheSameReferences ()
+    {
+      ClientTransaction subTransaction = TestableClientTransaction.CreateSubTransaction ();
+      Product product;
+      var productReviews = new HashSet<ProductReview> ();
+      using (subTransaction.EnterDiscardingScope ())
+      {
+        product = DomainObjectIDs.Product1.GetObject<Product> ();
+        productReviews.Add (product.Reviews[0]);
+        productReviews.Add (product.Reviews[1]);
+      }
+      Assert.That (DomainObjectIDs.Product1.GetObject<Product> (), Is.SameAs (product));
+      Assert.That (productReviews.Contains (DomainObjectIDs.ProductReview1.GetObject<ProductReview>()), Is.True);
+      Assert.That (productReviews.Contains (DomainObjectIDs.ProductReview2.GetObject<ProductReview>()), Is.True);
     }
 
     [Test]
@@ -131,7 +148,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
 
     [Test]
-    public void LoadRelatedDataContainers_MakesParentWritableWhileGettingItsContainers ()
+    public void LoadRelatedDataContainersWithDomainObjectCollection_MakesParentWritableWhileGettingItsContainers ()
     {
       var order = DomainObjectIDs.Order1.GetObject<Order> ();
 
@@ -147,7 +164,30 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     }
 
     [Test]
-    public void SubTransactionHasRelatedObjectCollectionEqualToParent ()
+    public void LoadRelatedDataContainersWithVirtualCollection_MakesParentWritableWhileGettingItsContainers ()
+    {
+      var product = DomainObjectIDs.Product1.GetObject<Product> ();
+
+      // cause parent tx to require reload of data containers...
+      UnloadService.UnloadVirtualEndPointAndItemData (TestableClientTransaction, product.Reviews.AssociatedEndPointID);
+
+      using (TestableClientTransaction.CreateSubTransaction ().EnterDiscardingScope ())
+      {
+        var relatedObjects = product.Reviews.ToArray ();
+        Assert.That (
+            relatedObjects,
+            Is.EquivalentTo (
+                new[]
+                {
+                    DomainObjectIDs.ProductReview1.GetObject<ProductReview>(),
+                    DomainObjectIDs.ProductReview2.GetObject<ProductReview>(),
+                    DomainObjectIDs.ProductReview3.GetObject<ProductReview>()
+                }));
+      }
+    }
+
+    [Test]
+    public void SubTransactionHasRelatedObjectCollectionEqualToParent_WithDomainObjectCollection ()
     {
       Order loadedOrder = DomainObjectIDs.Order1.GetObject<Order> ();
       ObjectList<OrderItem> loadedItems = loadedOrder.OrderItems;
@@ -175,11 +215,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         Assert.That (DomainObjectIDs.Order1.GetObject<Order> (), Is.SameAs (loadedOrder));
         Assert.That (loadedOrder.OrderItems, Is.Not.SameAs (loadedItems));
 
-        Assert.That (loadedOrder.OrderItems.Count, Is.EqualTo (3));
-
-        Assert.That (loadedOrder.OrderItems[0], Is.SameAs (loadedItem2));
-        Assert.That (loadedOrder.OrderItems[1], Is.SameAs (newItem1));
-        Assert.That (loadedOrder.OrderItems[2], Is.SameAs (newItem2));
+        Assert.That (loadedOrder.OrderItems, Is.EqualTo (new[] { loadedItem2, newItem1, newItem2 }));
 
         Assert.That (loadedItem2.Order, Is.SameAs (loadedOrder));
         Assert.That (newItem1.Order, Is.SameAs (loadedOrder));
@@ -187,15 +223,63 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
         Assert.That (loadedOrder.OrderItems[2].Product, Is.EqualTo ("Baz, buy two get three for free"));
 
-        Assert.That (newOrder.OrderItems.Count, Is.EqualTo (1));
-        Assert.That (newOrder.OrderItems[0], Is.SameAs (newItem3));
+        Assert.That (newOrder.OrderItems, Is.EqualTo (new[] { newItem3 }));
         Assert.That (newOrder.OrderItems[0].Product, Is.EqualTo ("FooBar, the energy bar with extra Foo"));
         Assert.That (newItem3.Order, Is.SameAs (newOrder));
       }
     }
 
     [Test]
-    public void SortExpressionNotExecuted_WhenLoadingCollectionFromParent ()
+    public void SubTransactionHasRelatedObjectCollectionEqualToParent_WithVirtualCollection ()
+    {
+      Product loadedProduct = DomainObjectIDs.Product1.GetObject<Product> ();
+      IObjectList<ProductReview> loadedItems = loadedProduct.Reviews;
+
+      Assert.That (loadedProduct.Reviews, Is.SameAs (loadedItems));
+
+      Dev.Null = loadedProduct.Reviews[0];
+      ProductReview loadedItem2 = loadedProduct.Reviews[1];
+
+      ProductReview newItem1 = ProductReview.NewObject ();
+      newItem1.CreatedAt = loadedItem2.CreatedAt.AddDays (1);
+
+      ProductReview newItem2 = ProductReview.NewObject ();
+      newItem2.CreatedAt = newItem1.CreatedAt.AddDays (1);
+      newItem2.Comment = "Baz, buy two get three for free";
+
+      loadedProduct.Reviews.Last ().Product = null;
+      loadedProduct.Reviews.Last ().Product = null;
+      loadedProduct.Reviews.Last ().Product = null;
+      loadedItem2.Product = loadedProduct;
+      newItem1.Product = loadedProduct;
+      newItem2.Product = loadedProduct;
+
+      Product newProduct = Product.NewObject ();
+      ProductReview newItem3 = ProductReview.NewObject ();
+      newItem3.Comment = "FooBar, the energy bar with extra Foo";
+      newItem3.Product = newProduct;
+
+      using (TestableClientTransaction.CreateSubTransaction ().EnterDiscardingScope ())
+      {
+        Assert.That (DomainObjectIDs.Product1.GetObject<Product> (), Is.SameAs (loadedProduct));
+        Assert.That (loadedProduct.Reviews, Is.Not.SameAs (loadedItems));
+
+        Assert.That (loadedProduct.Reviews, Is.EqualTo (new[] { loadedItem2, newItem1, newItem2 }));
+
+        Assert.That (loadedItem2.Product, Is.SameAs (loadedProduct));
+        Assert.That (newItem1.Product, Is.SameAs (loadedProduct));
+        Assert.That (newItem2.Product, Is.SameAs (loadedProduct));
+
+        Assert.That (loadedProduct.Reviews[2].Comment, Is.EqualTo ("Baz, buy two get three for free"));
+
+        Assert.That (newProduct.Reviews, Is.EqualTo (new[] { newItem3 }));
+        Assert.That (newProduct.Reviews[0].Comment, Is.EqualTo ("FooBar, the energy bar with extra Foo"));
+        Assert.That (newItem3.Product, Is.SameAs (newProduct));
+      }
+    }
+
+    [Test]
+    public void SortExpressionNotExecuted_WhenLoadingDomainObjectCollectionFromParent ()
     {
       var customer1 = DomainObjectIDs.Customer1.GetObject<Customer> ();
       var orders = customer1.Orders.Reverse ().ToArray ();
@@ -209,30 +293,66 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       using (TestableClientTransaction.CreateSubTransaction ().EnterDiscardingScope ())
       {
-        Assert.That (customer1.Orders, Is.EqualTo (orders), "This would not be equal if the sort expression was executed.");
+        Assert.That (customer1.Orders.ToArray (), Is.EqualTo (orders), "This would not be equal if the sort expression was executed.");
         Assert.That (customer1.Properties[typeof (Customer).FullName + ".Orders"].HasChanged, Is.False);
       }
     }
 
     [Test]
-    public void SubTransactionCanGetRelatedObjectCollectionEvenWhenObjectsHaveBeenDiscarded ()
+    public void SortExpressionEvaluated_WhenLoadingVirtualCollectionFromParent ()
     {
-      Order loadedOrder = DomainObjectIDs.Order1.GetObject<Order> ();
+      var product = DomainObjectIDs.Product1.GetObject<Product> ();
+      var productReviews = product.Reviews.Reverse ().ToArray ();
+      productReviews[0].CreatedAt = productReviews[2].CreatedAt.AddDays (1);
+
+      Assert.That (product.Reviews, Is.EquivalentTo (productReviews));
+      Assert.That (product.Reviews, Is.Not.EqualTo (productReviews));
+
+      var sortExpression = ((VirtualCollectionRelationEndPointDefinition) product.Reviews.AssociatedEndPointID.Definition).GetSortExpression ();
+      Assert.That (sortExpression, Is.Not.Null);
+
       using (TestableClientTransaction.CreateSubTransaction ().EnterDiscardingScope ())
       {
-        OrderItem orderItem1 = DomainObjectIDs.OrderItem1.GetObject<OrderItem>();
-        orderItem1.Delete ();
-        ClientTransactionScope.CurrentTransaction.Commit ();
-        Assert.That (orderItem1.State.IsInvalid, Is.True);
-
-        ObjectList<OrderItem> orderItems = loadedOrder.OrderItems;
-        Assert.That (orderItems.Count, Is.EqualTo (1));
-        Assert.That (orderItems[0].ID, Is.EqualTo (DomainObjectIDs.OrderItem2));
+        Assert.That (product.Reviews, Is.EquivalentTo (productReviews));
+        Assert.That (product.Reviews, Is.Not.EqualTo (productReviews));
+        Assert.That (product.Properties[typeof (Product).FullName + ".Reviews"].HasChanged, Is.False);
       }
     }
 
     [Test]
-    public void RelatedObjectCollectionChangesAreNotPropagatedToParent ()
+    public void SubTransactionCanGetRelatedObjectCollectionEvenWhenObjectsHaveBeenDiscarded_WithDomainObjectCollection ()
+    {
+      Order loadedOrder = DomainObjectIDs.Order1.GetObject<Order> ();
+      using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
+      {
+        OrderItem orderItem1 = DomainObjectIDs.OrderItem1.GetObject<OrderItem>();
+        orderItem1.Delete();
+        ClientTransactionScope.CurrentTransaction.Commit();
+        Assert.That (orderItem1.State.IsInvalid, Is.True);
+
+        ObjectList<OrderItem> orderItems = loadedOrder.OrderItems;
+        Assert.That (orderItems.Select (o => o.ID), Is.EqualTo (new[] { DomainObjectIDs.OrderItem2 }));
+      }
+    }
+
+    [Test]
+    public void SubTransactionCanGetRelatedObjectCollectionEvenWhenObjectsHaveBeenDiscarded_WithVirtualCollection ()
+    {
+      Product loadedProduct = DomainObjectIDs.Product1.GetObject<Product> ();
+      using (TestableClientTransaction.CreateSubTransaction ().EnterDiscardingScope ())
+      {
+        ProductReview productReview1 = DomainObjectIDs.ProductReview1.GetObject<ProductReview>();
+        productReview1.Delete ();
+        ClientTransactionScope.CurrentTransaction.Commit ();
+        Assert.That (productReview1.State.IsInvalid, Is.True);
+
+        IObjectList<ProductReview> productReviews = loadedProduct.Reviews;
+        Assert.That (productReviews.Select (o => o.ID), Is.EqualTo (new[] { DomainObjectIDs.ProductReview2, DomainObjectIDs.ProductReview3 }));
+      }
+    }
+
+    [Test]
+    public void RelatedObjectCollectionChangesAreNotPropagatedToParent_WithDomainObjectCollection ()
     {
       Order loadedOrder = DomainObjectIDs.Order1.GetObject<Order> ();
 
@@ -253,6 +373,36 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
           Assert.That (loadedOrder.OrderItems[0], Is.SameAs (loadedItem1));
           Assert.That (loadedOrder.OrderItems[1], Is.SameAs (loadedItem2));
           Assert.That (newOrder.OrderItems.Count, Is.EqualTo (0));
+        }
+      }
+    }
+
+    [Test]
+    public void RelatedObjectCollectionChangesAreNotPropagatedToParent_WithVirtualCollection ()
+    {
+      Product loadedOrder = DomainObjectIDs.Product1.GetObject<Product> ();
+
+      Assert.That (loadedOrder.Reviews.Count, Is.EqualTo (3));
+      ProductReview loadedItem1 = loadedOrder.Reviews[0];
+      ProductReview loadedItem2 = loadedOrder.Reviews[1];
+      ProductReview loadedItem3 = loadedOrder.Reviews[2];
+
+      Product newProduct = Product.NewObject ();
+
+      using (TestableClientTransaction.CreateSubTransaction ().EnterDiscardingScope ())
+      {
+        loadedItem1.Product = null;
+        loadedItem2.Product = null;
+        loadedItem3.Product = null;
+        var newItem = ProductReview.NewObject();
+        newItem.Product = newProduct;
+
+        using (TestableClientTransaction.EnterNonDiscardingScope())
+        {
+          Assert.That (
+              loadedOrder.Reviews.Select (o => o.ID),
+              Is.EqualTo (new[] { DomainObjectIDs.ProductReview1, DomainObjectIDs.ProductReview2, DomainObjectIDs.ProductReview3 }));
+          Assert.That (newProduct.Reviews.Count, Is.EqualTo (0));
         }
       }
     }

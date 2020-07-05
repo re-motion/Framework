@@ -99,7 +99,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     }
 
     [Test]
-    public void CommitDeletedObject_DoesNotInfluencePreviouslyRelatedObjects_OneToMany ()
+    public void CommitDeletedObject_DoesNotInfluencePreviouslyRelatedObjects_OneToManyWithDomainObjectCollection ()
     {
       var originalOrder = DomainObjectIDs.Order3.GetObject<Order> ();
       Assert.That (originalOrder.OrderItems.Count, Is.EqualTo (1));
@@ -131,6 +131,64 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       Assert.That (originalTicket.Order, Is.Null);
       Assert.That (originalOfficial.Orders, Has.No.Member(originalOrder));
+    }
+
+    [Test]
+    public void CommitDeletedObject_DoesNotInfluencePreviouslyRelatedObjects_OneToManyWithVirtualCollection ()
+    {
+      var originalProduct = DomainObjectIDs.Product1.GetObject<Product> ();
+      Assert.That (originalProduct.Reviews.Count, Is.EqualTo (3));
+
+      var productReview = originalProduct.Reviews[0];
+
+      Product newProduct;
+      using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
+      {
+        newProduct = DomainObjectIDs.Product2.GetObject<Product> ();
+        newProduct.Reviews.EnsureDataComplete();
+        productReview.Product = newProduct;
+        originalProduct.Delete ();
+        ClientTransaction.Current.Commit ();
+
+        Assert.That (productReview.Product, Is.SameAs (newProduct));
+        Assert.That (productReview.Properties.Find ("Product").GetRelatedObjectID (), Is.EqualTo (newProduct.ID));
+      }
+      Assert.That (productReview.Product, Is.SameAs (newProduct));
+      Assert.That (productReview.Properties.Find ("Product").GetRelatedObjectID (), Is.EqualTo (newProduct.ID));
+
+      Assert.That (newProduct.Reviews.Contains (productReview.ID), Is.True);
+      Assert.That (originalProduct.State.IsDeleted, Is.True);
+      Assert.That (originalProduct.Reviews, Is.Empty);
+    }
+
+    [Test]
+    [Ignore ("RM-7294")]
+    public void CommitDeletedObject_DoesNotInfluencePreviouslyRelatedObjects_OneToManyWithLazyLoadedVirtualCollection ()
+    {
+      var originalProduct = DomainObjectIDs.Product1.GetObject<Product> ();
+
+      var productReview = DomainObjectIDs.ProductReview1.GetObject<ProductReview> ();
+      Assert.That (productReview.Product, Is.SameAs (originalProduct));
+      Assert.That (originalProduct.Reviews.IsDataComplete, Is.False);
+
+      Product newProduct;
+      using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
+      {
+        newProduct = DomainObjectIDs.Product2.GetObject<Product> ();
+        productReview.Product = newProduct;
+        originalProduct.Delete ();
+        Assert.That (newProduct.Reviews.IsDataComplete, Is.False);
+
+        ClientTransaction.Current.Commit ();
+        Assert.That (productReview.Product, Is.SameAs (newProduct));
+        Assert.That (productReview.Properties.Find ("Product").GetRelatedObjectID (), Is.EqualTo (newProduct.ID));
+      }
+      Assert.That (productReview.Product, Is.SameAs (newProduct));
+      Assert.That (productReview.Properties.Find ("Product").GetRelatedObjectID (), Is.EqualTo (newProduct.ID));
+
+      Assert.That (newProduct.Reviews.Contains (productReview.ID), Is.True);
+      Assert.That (originalProduct.State.IsDeleted, Is.True);
+      Assert.That (originalProduct.Reviews, Is.Empty);
     }
 
     [Test]

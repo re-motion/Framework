@@ -54,6 +54,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ChangeDetectionStrategy = changeDetectionStrategy;
       DataContainerMap = dataContainerMap;
 
+      //TODO: RM-7294: unify VirtualCollectionData and ChangeCachingVirtualCollectionDataDecorator
       var wrappedData = new VirtualCollectionData (endPointID, dataContainerMap, ValueAccess.Current);
       _changeCachingVirtualCollectionData = new ChangeCachingVirtualCollectionDataDecorator (wrappedData);
 
@@ -67,9 +68,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       get { return _changeCachingVirtualCollectionData; }
     }
 
-    public ReadOnlyVirtualCollectionDataDecorator OriginalCollectionData
+    public ReadOnlyVirtualCollectionDataDecorator GetOriginalCollectionData ()
     {
-      get { return _changeCachingVirtualCollectionData.OriginalData; }
+      return _changeCachingVirtualCollectionData.GetOriginalData();
     }
 
     public IRealObjectEndPoint[] OriginalOppositeEndPoints
@@ -91,7 +92,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
 
-      return OriginalCollectionData.ContainsObjectID (objectID);
+      return GetOriginalCollectionData().ContainsObjectID (objectID);
     }
 
     public bool ContainsOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
@@ -224,7 +225,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       _originalOppositeEndPoints.Clear();
       _originalItemsWithoutEndPoint.Clear();
 
-      foreach (var item in OriginalCollectionData)
+      var originalCollectionData = GetOriginalCollectionData();
+
+      foreach (var item in originalCollectionData)
       {
         var oppositeEndPoint = _currentOppositeEndPoints.GetValueOrDefault (item.ID);
         if (oppositeEndPoint != null)
@@ -233,7 +236,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
           _originalItemsWithoutEndPoint.Add (item);
       }
       
-      Assertion.IsTrue (OriginalCollectionData.Count == _originalOppositeEndPoints.Count + _originalItemsWithoutEndPoint.Count);
+      Assertion.IsTrue (originalCollectionData.Count == _originalOppositeEndPoints.Count + _originalItemsWithoutEndPoint.Count);
     }
 
     public void Rollback ()

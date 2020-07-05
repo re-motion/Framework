@@ -132,7 +132,19 @@ namespace Remotion.Data.DomainObjects.DataManagement
       }
     }
 
+    int IObjectList<T>.Add (object value)
+    {
+      throw new NotSupportedException (
+          "The collection does not support updating the data explicitly. Instead, modify the opposite endpoint of this bidirectional relation.");
+    }
+
     int IList.Add (object value)
+    {
+      throw new NotSupportedException (
+          "The collection does not support updating the data explicitly. Instead, modify the opposite endpoint of this bidirectional relation.");
+    }
+
+    void IObjectList<T>.Clear ()
     {
       throw new NotSupportedException (
           "The collection does not support updating the data explicitly. Instead, modify the opposite endpoint of this bidirectional relation.");
@@ -144,13 +156,31 @@ namespace Remotion.Data.DomainObjects.DataManagement
           "The collection does not support updating the data explicitly. Instead, modify the opposite endpoint of this bidirectional relation.");
     }
 
+    void IObjectList<T>.Insert (int index, object value)
+    {
+      throw new NotSupportedException (
+          "The collection does not support updating the data explicitly. Instead, modify the opposite endpoint of this bidirectional relation.");
+    }
+
     void IList.Insert (int index, object value)
     {
       throw new NotSupportedException (
           "The collection does not support updating the data explicitly. Instead, modify the opposite endpoint of this bidirectional relation.");
     }
 
+    void IObjectList<T>.Remove (object value)
+    {
+      throw new NotSupportedException (
+          "The collection does not support updating the data explicitly. Instead, modify the opposite endpoint of this bidirectional relation.");
+    }
+
     void IList.Remove (object value)
+    {
+      throw new NotSupportedException (
+          "The collection does not support updating the data explicitly. Instead, modify the opposite endpoint of this bidirectional relation.");
+    }
+
+    void IObjectList<T>.RemoveAt (int index)
     {
       throw new NotSupportedException (
           "The collection does not support updating the data explicitly. Instead, modify the opposite endpoint of this bidirectional relation.");

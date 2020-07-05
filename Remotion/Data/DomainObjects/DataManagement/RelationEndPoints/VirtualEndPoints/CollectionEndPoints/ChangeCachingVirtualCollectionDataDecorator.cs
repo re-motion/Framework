@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       if (!_isCacheUpToDate)
       {
         var currentData = _virtualCollectionData;
-        var originalData = OriginalData;
+        var originalData = GetOriginalData();
         if (currentData.Count != originalData.Count)
           _hasChanges = true;
         else
@@ -72,23 +72,21 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       _isCacheUpToDate = false;
     }
 
-    public ReadOnlyVirtualCollectionDataDecorator OriginalData
+    public ReadOnlyVirtualCollectionDataDecorator GetOriginalData ()
     {
-      get
-      {
-        // TODO: RM-7294
-        var originalData = new VirtualCollectionData (
-            ((IVirtualCollectionData) _virtualCollectionData).AssociatedEndPointID,
-            _virtualCollectionData.DataContainerMap,
-            ValueAccess.Original);
-        return new ReadOnlyVirtualCollectionDataDecorator (originalData);
-      }
+      // TODO: RM-7294
+      var originalData = new VirtualCollectionData (
+          ((IVirtualCollectionData) _virtualCollectionData).AssociatedEndPointID,
+          _virtualCollectionData.DataContainerMap,
+          ValueAccess.Original);
+      return new ReadOnlyVirtualCollectionDataDecorator (originalData);
     }
 
     public void RegisterOriginalItem (DomainObject item)
     {
-      // TODO: RM-7294
-      _virtualCollectionData.Add (item);
+      //TODO: RM-7294: ResetCachedDomainObjects() is equivalent to Add()
+      _virtualCollectionData.ResetCachedDomainObjects();
+      //_virtualCollectionData.Add (item);
     }
 
     public void UnregisterOriginalItem (ObjectID itemID)
@@ -114,12 +112,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     {
       // TODO: RM-7294
       ResetCache();
+      _virtualCollectionData.ResetCachedDomainObjects(); //TODO: RM-7294
     }
 
     public void ReplaceContents (IVirtualCollectionData collectionData)
     {
       // TODO: RM-7294
       ResetCache();
+      _virtualCollectionData.ResetCachedDomainObjects(); //TODO: RM-7294
     }
 
     IEnumerator<DomainObject> IEnumerable<DomainObject>.GetEnumerator ()
@@ -171,19 +171,28 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     void IVirtualCollectionData.Clear ()
     {
       ResetCache();
-      _virtualCollectionData.Clear();
+      //TODO: RM-7294: ResetCachedDomainObjects() is equivalent to Clear()
+      _virtualCollectionData.ResetCachedDomainObjects();
+      //_virtualCollectionData.Clear();
     }
 
     void IVirtualCollectionData.Add (DomainObject domainObject)
     {
       ResetCache();
-      _virtualCollectionData.Add (domainObject);
+
+      //TODO: RM-7294: ResetCachedDomainObjects() is equivalent to Add()
+      _virtualCollectionData.ResetCachedDomainObjects();
+      //_virtualCollectionData.Add (domainObject);
     }
 
     bool IVirtualCollectionData.Remove (DomainObject domainObject)
     {
       ResetCache();
-      return _virtualCollectionData.Remove (domainObject);
+
+      //TODO: RM-7294: ResetCachedDomainObjects() is equivalent to Remove()
+      _virtualCollectionData.ResetCachedDomainObjects();
+      //return _virtualCollectionData.Remove (domainObject);
+      return true;
     }
 
     bool IVirtualCollectionData.Remove (ObjectID objectID)

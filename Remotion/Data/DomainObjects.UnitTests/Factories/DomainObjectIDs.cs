@@ -541,7 +541,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
       get { return CreateObjectID ("ProductReview", new Guid ("{793157CD-10FF-468F-994B-AEA83ADE183B}")); }
     }
 
-    // Product: Product1
+    // Product: Product2
     // Reviewer: Person1
     public ObjectID ProductReview4
     {

@@ -103,6 +103,9 @@ namespace Remotion.Data.DomainObjects.Queries
       customNodeTypeRegistry.Register (
           new[] { MemberInfoFromExpressionUtility.GetProperty ((DomainObjectCollection obj) => obj.Count).GetGetMethod () },
           typeof (CountExpressionNode));
+      customNodeTypeRegistry.Register (
+          new[] { typeof (IObjectList<>).GetRuntimeMethod ("get_Count", new Type[0]) },
+          typeof (CountExpressionNode));
 
       customNodeTypeRegistry.Register (new[] { typeof (EagerFetchingExtensionMethods).GetMethod ("FetchOne") }, typeof (FetchOneExpressionNode));
       customNodeTypeRegistry.Register (new[] { typeof (EagerFetchingExtensionMethods).GetMethod ("FetchMany") }, typeof (FetchManyExpressionNode));

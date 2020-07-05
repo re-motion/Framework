@@ -19,6 +19,7 @@ using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Linq;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
 {
@@ -36,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     }
 
     [Test]
-    public void Query_WithImplictJoin_Collection ()
+    public void Query_WithImplicitJoin_DomainObjectCollection ()
     {
       var query =
           from o in QueryFactory.CreateLinqQuery<Order>()
@@ -51,6 +52,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
           DomainObjectIDs.OrderItem4,
           DomainObjectIDs.OrderItem5,
           DomainObjectIDs.OrderItem6);
+    }
+
+    [Test]
+    public void Query_WithImplicitJoin_VirtualCollection ()
+    {
+      var query =
+          from p in QueryFactory.CreateLinqQuery<Product>()
+          from r in p.Reviews
+          where r.CreatedAt > new DateTime (2006, 01, 01)
+          select r;
+
+      CheckQueryResult (
+          query,
+          DomainObjectIDs.ProductReview2,
+          DomainObjectIDs.ProductReview3,
+          DomainObjectIDs.ProductReview4);
     }
 
     [Test]
@@ -77,6 +94,43 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     }
 
     [Test]
+    [Ignore ("TODO: RM-7294")]
+    public void Query_WithVirtualCollection_ContainsObjectID ()
+    {
+      ProductReview review = DomainObjectIDs.ProductReview1.GetObject<ProductReview>();
+      var products =
+          from p in QueryFactory.CreateLinqQuery<Product>()
+          where p.Reviews.Contains (review.ID)
+          select p;
+
+      CheckQueryResult (products, DomainObjectIDs.Product1);
+    }
+
+    [Test]
+    public void Query_WithVirtualCollection_ICollectionContainsObject ()
+    {
+      ProductReview review = DomainObjectIDs.ProductReview1.GetObject<ProductReview>();
+      var products =
+          from p in QueryFactory.CreateLinqQuery<Product>()
+          where p.Reviews.Contains (review)
+          select p;
+
+      CheckQueryResult (products, DomainObjectIDs.Product1);
+    }
+
+    [Test]
+    public void Query_WithVirtualCollection_EnumerableContainsObject ()
+    {
+      ProductReview review = DomainObjectIDs.ProductReview1.GetObject<ProductReview>();
+      var products =
+          from p in QueryFactory.CreateLinqQuery<Product>()
+          where p.Reviews.Contains<ProductReview> (review)
+          select p;
+
+      CheckQueryResult (products, DomainObjectIDs.Product1);
+    }
+
+    [Test]
     public void Query_WithDomainObjectCollection_Count ()
     {
       var orders =
@@ -85,6 +139,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
           select o;
 
       CheckQueryResult (orders, DomainObjectIDs.Order1);
+    }
+
+    [Test]
+    public void Query_WithVirtualCollection_Count ()
+    {
+      var products =
+          from p in QueryFactory.CreateLinqQuery<Product>()
+          where p.Reviews.Count == 3
+          select p;
+
+      CheckQueryResult (products, DomainObjectIDs.Product1);
     }
 
     [Test]

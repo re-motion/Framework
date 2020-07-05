@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 {
@@ -24,5 +25,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 
     [DBBidirectionalRelation ("Product", SortExpression = "CreatedAt ASC")]
     public abstract IObjectList<ProductReview> Reviews { get; set; }
+
+    public void DeleteWithProductReviews ()
+    {
+      foreach (var productReview in Reviews.ToArray())
+        productReview.Delete();
+
+      this.Delete();
+    }
   }
 }

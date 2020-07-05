@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
       if (modifiedEndPoint.IsNull)
         throw new ArgumentException ("Modified end point is null, a NullEndPointModificationCommand is needed.", "modifiedEndPoint");
 
-      _index = modifiedEndPoint.GetData().IndexOf (removedObject.ID);
+      _index = collectionData.IsDataComplete ? collectionData.IndexOf (removedObject.ID) : 0;
       _modifiedCollectionData = collectionData;
       _modifiedCollectionEventRaiser = modifiedEndPoint.GetCollectionEventRaiser();
       _endPointProvider = endPointProvider;

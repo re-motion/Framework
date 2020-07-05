@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
       if (modifiedEndPoint.IsNull)
         throw new ArgumentException ("Modified end point is null, a NullEndPointModificationCommand is needed.", "modifiedEndPoint");
 
-      _index = modifiedEndPoint.GetData().IndexOf (addedObject.ID);
+      _index = collectionData.Count;
       _modifiedCollectionData = collectionData;
       //TODO: RM-7294: API is only implemented because of the interface on VirtualObjectList. Can probably be dropped since VirtualObjectList has no usage for it.
       _modifiedCollectionEventRaiser = modifiedEndPoint.GetCollectionEventRaiser();
