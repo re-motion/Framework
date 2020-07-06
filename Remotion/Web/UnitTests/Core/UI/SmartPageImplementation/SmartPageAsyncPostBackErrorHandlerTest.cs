@@ -45,7 +45,14 @@ namespace Remotion.Web.UnitTests.Core.UI.SmartPageImplementation
 
             <span><H1>"));
       Assert.That (message, Is.StringContaining ("[ApplicationException: The error]"));
-      Assert.That (message, Is.StringEnding (@"<br>
+
+      //The first value is the error page on a system without .NET 4.8 installed.
+      //The second value is the error page on a system with .NET 4.8 installed.
+      Assert.That (message, Is.StringEnding(@"<br>
+
+    ").Or.EndsWith(@"<br>
+
+            </font>
 
     "));
     }
