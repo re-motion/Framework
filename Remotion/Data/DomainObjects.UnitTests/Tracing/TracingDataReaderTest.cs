@@ -561,7 +561,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
             mock.QueryCompleted (
                 Arg<Guid>.Matches (p => p == _connectionID),
                 Arg<Guid>.Matches (p => p == _queryID),
-                Arg<TimeSpan>.Matches (p => p.Milliseconds > 0),
+                Arg<TimeSpan>.Matches (p => p > TimeSpan.Zero),
                 Arg<int>.Matches (p => p == 0)));
         _innerDataReader.Expect (mock => mock.Close());
         _innerDataReader.Expect (mock => mock.Dispose());
@@ -606,7 +606,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
             mock.QueryCompleted (
                 Arg<Guid>.Is.Equal (_connectionID),
                 Arg<Guid>.Matches (p => p == _queryID),
-                Arg<TimeSpan>.Matches (p => p.Milliseconds > 0),
+                Arg<TimeSpan>.Matches (p => p > TimeSpan.Zero),
                 Arg<int>.Matches (p => p == 1)));
       _innerDataReader.Expect (mock => mock.Close ());
       _mockRepository.ReplayAll ();
