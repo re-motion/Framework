@@ -44,7 +44,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
       var iPv4 = address.MapToIPv4();
       var uriBuilder = new UriBuilder (uri) { Host = iPv4.ToString() };
 
-      return uriBuilder.Uri;
+      var resolvedUri = uriBuilder.Uri;
+
+      if (resolvedUri.IsLoopback)
+        return uri;
+
+      return resolvedUri;
     }
   }
 }
