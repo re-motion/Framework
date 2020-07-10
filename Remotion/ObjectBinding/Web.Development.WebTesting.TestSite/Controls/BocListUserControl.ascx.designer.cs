@@ -146,5 +146,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls {
         /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CustomValidator AlwaysInvalidValidator;
+        
+        /// <summary>
+        /// JobList_Empty_VariableColumns control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls.TestBocListWithRowMenuItems JobList_Empty_VariableColumns;
     }
 }

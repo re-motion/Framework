@@ -370,4 +370,23 @@
     </td>
     <td>&nbsp; (always invalid)</td>
   </tr>
+  <tr>
+    <td></td>
+    <td>
+      <testsite:TestBocListWithRowMenuItems
+        ID="JobList_Empty_VariableColumns"
+        ReadOnly="False"
+        DataSourceControl="EmptyObject"
+        PropertyIdentifier="Jobs"
+
+        ShowAllProperties="False"
+        ShowEmptyListMessage="False"
+
+        Width="100%"
+        Height="10em"
+        runat="server">
+      </testsite:TestBocListWithRowMenuItems>
+    </td>
+    <td>&nbsp; (empty with variable columns)</td>
+  </tr>
 </table>

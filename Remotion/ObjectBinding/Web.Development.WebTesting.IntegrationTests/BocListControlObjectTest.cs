@@ -1698,6 +1698,20 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
               .With.Message.EqualTo ("Unable to change page number to the last page, as the list is already on the last page."));
     }
 
+    [Test]
+    public void GetColumnDefinitions_ShouldAlwaysFetchTheColumnsAnew ()
+    {
+      var home = Start();
+      var bocList = home.Lists().GetByLocalID ("JobList_Empty_VariableColumns");
+
+      var view1Columns = bocList.GetColumnDefinitions();
+      bocList.ChangeViewTo (2);
+      var view2Columns = bocList.GetColumnDefinitions();
+
+      Assert.That (view1Columns.Count, Is.EqualTo (2));
+      Assert.That (view2Columns.Count, Is.EqualTo (3));
+    }
+
     private WxePageObject Start ()
     {
       return Start ("BocList");
