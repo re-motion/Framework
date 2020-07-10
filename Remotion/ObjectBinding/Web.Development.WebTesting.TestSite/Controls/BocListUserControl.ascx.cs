@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Linq;
-using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Web.UI.Controls;
@@ -65,6 +64,19 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls
 
       AlwaysInvalidValidator.ServerValidate += (source, args) => args.IsValid = false;
       JobList_AlwaysInvalid.RegisterValidator (AlwaysInvalidValidator);
+
+      var variableColumnsColumnDefinitions = new[]
+                                             {
+                                                 new BocSimpleColumnDefinition { ColumnTitle = "Column 0" },
+                                                 new BocSimpleColumnDefinition { ColumnTitle = "Column 1" },
+                                                 new BocSimpleColumnDefinition { ColumnTitle = "Column 2" },
+                                             };
+      var variableColumnsViews = new[]
+                                 {
+                                     new BocListView ("View 1", variableColumnsColumnDefinitions.Take(2).ToArray()) { ItemID = "ViewCmd1" },
+                                     new BocListView ("View 2", variableColumnsColumnDefinitions.Take(3).ToArray()) { ItemID = "ViewCmd2" },
+                                 };
+      JobList_Empty_VariableColumns.AvailableViews.AddRange (variableColumnsViews);
     }
 
     protected override void OnPreRender (EventArgs e)

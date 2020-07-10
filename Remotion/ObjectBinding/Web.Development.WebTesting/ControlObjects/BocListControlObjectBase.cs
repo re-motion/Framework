@@ -90,7 +90,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     private readonly ILog _log;
     private readonly IBocListRowControlObjectHostAccessor _accessor;
     private readonly bool _hasFakeTableHead;
-    private readonly List<BocListColumnDefinition<TRowControlObject, TCellControlObject>> _columns;
 
     protected BocListControlObjectBase ([NotNull] ControlObjectContext context)
         : base (context)
@@ -101,16 +100,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       EnsureBocListHasBeenFullyInitialized();
 
       _hasFakeTableHead = Scope.FindCss ("div.bocListTableContainer")[DiagnosticMetadataAttributesForObjectBinding.BocListHasFakeTableHead] != null;
-      _columns = RetryUntilTimeout.Run (
-          () => Scope.FindAllCss (_hasFakeTableHead ? ".bocListFakeTableHead th" : ".bocListTableContainer th")
-              .Select (
-                  (s, i) =>
-                      new BocListColumnDefinition<TRowControlObject, TCellControlObject> (
-                          s[DiagnosticMetadataAttributes.ItemID],
-                          i + 1,
-                          s[DiagnosticMetadataAttributes.Content],
-                          ColumnHasDiagnosticMetadata (s)))
-              .ToList());
     }
 
     /// <summary>
@@ -240,7 +229,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public IReadOnlyList<BocListColumnDefinition<TRowControlObject, TCellControlObject>> GetColumnDefinitions ()
     {
-      return _columns;
+      return RetryUntilTimeout.Run (
+          () => Scope.FindAllCss (_hasFakeTableHead ? ".bocListFakeTableHead th" : ".bocListTableContainer th")
+              .Select (
+                  (s, i) =>
+                      new BocListColumnDefinition<TRowControlObject, TCellControlObject> (
+                          s[DiagnosticMetadataAttributes.ItemID],
+                          i + 1,
+                          s[DiagnosticMetadataAttributes.Content],
+                          ColumnHasDiagnosticMetadata (s)))
+              .ToList());
     }
 
     /// <summary>
@@ -386,7 +384,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     {
       ArgumentUtility.CheckNotNullOrEmpty ("columnItemID", columnItemID);
 
-      return _columns.Single (cd => cd.ItemID == columnItemID);
+      return GetColumnDefinitions().Single (cd => cd.ItemID == columnItemID);
     }
 
     /// <summary>
@@ -394,7 +392,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     protected BocListColumnDefinition<TRowControlObject, TCellControlObject> GetColumnByIndex (int oneBasedIndex)
     {
-      return _columns.Single (cd => cd.Index == oneBasedIndex);
+      return GetColumnDefinitions().Single (cd => cd.Index == oneBasedIndex);
     }
 
     /// <summary>
@@ -404,7 +402,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     {
       ArgumentUtility.CheckNotNullOrEmpty ("columnTitle", columnTitle);
 
-      return _columns.Single (cd => cd.Title == columnTitle);
+      return GetColumnDefinitions().Single (cd => cd.Title == columnTitle);
     }
 
     /// <summary>
@@ -414,7 +412,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     {
       ArgumentUtility.CheckNotNullOrEmpty ("columnTitleContains", columnTitleContains);
 
-      return _columns.Where (cd => cd.Title != null).Single (cd => cd.Title.Contains (columnTitleContains));
+      return GetColumnDefinitions().Where (cd => cd.Title != null).Single (cd => cd.Title.Contains (columnTitleContains));
     }
 
     public IReadOnlyList<string> GetValidationErrors ()
