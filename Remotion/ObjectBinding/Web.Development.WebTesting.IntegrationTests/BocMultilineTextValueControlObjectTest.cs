@@ -17,6 +17,7 @@
 using System;
 using Coypu;
 using NUnit.Framework;
+using OpenQA.Selenium;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.TestCaseFactories;
@@ -59,9 +60,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void TestIsDisabled_SetMethodsThrow ()
     {
-      if (Helper.BrowserConfiguration.IsInternetExplorer())
-        Assert.Ignore ("RM-7451 Internet Explorer hangs while performing BocMultilineTextValueControlObjectTest in Remotion version 1.20.");
-
       var home = Start();
 
       var control = home.MultilineTextValues().GetByLocalID ("CVField_Disabled");
@@ -76,9 +74,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void TestIsReadOnly_SetMethodsThrow ()
     {
-      if (Helper.BrowserConfiguration.IsInternetExplorer())
-        Assert.Ignore ("RM-7451 Internet Explorer hangs while performing BocMultilineTextValueControlObjectTest in Remotion version 1.20.");
-
       var home = Start();
 
       var control = home.MultilineTextValues().GetByLocalID ("CVField_ReadOnly");
@@ -93,9 +88,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void TestGetText ()
     {
-      if (Helper.BrowserConfiguration.IsInternetExplorer())
-        Assert.Ignore ("RM-7451 Internet Explorer hangs while performing BocMultilineTextValueControlObjectTest in Remotion version 1.20.");
-
       var home = Start();
 
 
@@ -115,18 +107,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void TestTest ()
     {
-      if (Helper.BrowserConfiguration.IsInternetExplorer())
-        Assert.Ignore ("RM-7451 Internet Explorer hangs while performing BocMultilineTextValueControlObjectTest in Remotion version 1.20.");
-
       Console.WriteLine(default(DateTime) );
     }
 
     [Test]
     public void TestFillWith ()
     {
-      if (Helper.BrowserConfiguration.IsInternetExplorer())
-        Assert.Ignore ("RM-7451 Internet Explorer hangs while performing BocMultilineTextValueControlObjectTest in Remotion version 1.20.");
-
       var home = Start();
 
       var bocMultilineText = home.MultilineTextValues().GetByLocalID ("CVField_Normal");
@@ -148,11 +134,37 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    public void TestFillWithLines ()
+    public void TestFillWithMixedKeysAndChars_NonIEBrowser_DoesNotThrow ()
     {
       if (Helper.BrowserConfiguration.IsInternetExplorer())
-        Assert.Ignore ("RM-7451 Internet Explorer hangs while performing BocMultilineTextValueControlObjectTest in Remotion version 1.20.");
+        Assert.Ignore ("This test is only for non IE browsers.");
 
+      var home = Start();
+
+      var bocMultilineText = home.MultilineTextValues().GetByLocalID ("CVField_Normal");
+      bocMultilineText.FillWith ("a" + Keys.Enter + "a");
+      Assert.That (home.Scope.FindIdEndingWith ("NormalCurrentValueLabel").Text, Is.EqualTo ("a NL a"));
+    }
+
+    [Test]
+    public void TestFillWithMixedKeysAndChars_IE_ThrowsException ()
+    {
+      if (!Helper.BrowserConfiguration.IsInternetExplorer())
+        Assert.Ignore ("This test is only for Internet Explorer.");
+
+      var home = Start();
+
+      var bocMultilineText = home.MultilineTextValues().GetByLocalID ("CVField_Normal");
+
+      Assert.That (
+          () => bocMultilineText.FillWith ("a" + Keys.Enter + "a"),
+          Throws.ArgumentException.With.Message.EqualTo (
+              $"Internet Explorer does not support filling in values that contain both text and keys at the same time.{Environment.NewLine}Parameter name: value"));
+    }
+
+    [Test]
+    public void TestFillWithLines ()
+    {
       var home = Start();
 
       var bocMultilineText = home.MultilineTextValues().GetByLocalID ("CVField_Normal");

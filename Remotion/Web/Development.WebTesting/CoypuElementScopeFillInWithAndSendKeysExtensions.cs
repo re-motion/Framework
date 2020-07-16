@@ -16,13 +16,13 @@
 // 
 using System;
 using System.Linq;
-using System.Windows.Forms;
+using System.Reflection;
+using System.Threading;
 using Coypu;
 using JetBrains.Annotations;
 using log4net;
 using OpenQA.Selenium;
 using Remotion.Utilities;
-using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver;
 using Keys = OpenQA.Selenium.Keys;
 
@@ -35,6 +35,12 @@ namespace Remotion.Web.Development.WebTesting
   public static class CoypuElementScopeFillInWithAndSendKeysExtensions
   {
     private static readonly ILog s_log = LogManager.GetLogger (typeof (CoypuElementScopeFillInWithAndSendKeysExtensions));
+
+    private static readonly Lazy<FieldInfo> s_driverFieldInfo = new Lazy<FieldInfo> (
+        () => Assertion.IsNotNull (
+            typeof (ElementScope).GetField ("_driver", BindingFlags.NonPublic | BindingFlags.Instance),
+            "Coypu has changed, please update CoypuElementScopeFillInWithAndSendKeysExtensions.GetDriver() method."),
+        LazyThreadSafetyMode.ExecutionAndPublication);
 
     /// <summary>
     /// ASP.NET WebForms-ready &amp; IE-compatible version for Coypu's <see cref="ElementScope.SendKeys"/> method.
@@ -86,8 +92,8 @@ namespace Remotion.Web.Development.WebTesting
       ArgumentUtility.CheckNotNull ("value", value);
       ArgumentUtility.CheckNotNull ("finishInputWithAction", finishInputWithAction);
 
-      if (scope.Browser.IsInternetExplorer())
-        scope.FillInWithFixedForInternetExplorer (value, clearValue);
+      if (scope.Browser.IsInternetExplorer() && ContainsNonEmptyText (value))
+        scope.FillInWithFixedForInternetExplorer (value);
       else
         scope.FillInWithFixedForNormalBrowsers (value, clearValue);
 
@@ -115,41 +121,85 @@ namespace Remotion.Web.Development.WebTesting
     /// Unfortunately, Selenium's Internet Explorer driver (with native events enabled) does not send required modifier keys when sending keyboard
     /// input (e.g. "@!" would result in "q1"). Therefore we must use <see cref="System.Windows.Forms.SendKeys.SendWait"/> instead.
     /// </summary>
-    private static void FillInWithFixedForInternetExplorer ([NotNull] this ElementScope scope, [NotNull] string value, bool clearValue)
+    private static void FillInWithFixedForInternetExplorer ([NotNull] this ElementScope scope, [NotNull] string value)
     {
-      var convertedValue = SeleniumSendKeysToWindowsFormsSendKeysTransformer.Convert (value);
+      ArgumentUtility.CheckNotNull ("scope", scope);
+      ArgumentUtility.CheckNotNull ("value", value);
 
-      if (clearValue)
-      {
-        const string clearTextBox = "^a{DEL}";
-        convertedValue = clearTextBox + convertedValue;
-      }
+      if (ContainsKeysAndChars (value))
+        throw new ArgumentException ("Internet Explorer does not support filling in values that contain both text and keys at the same time.", "value");
 
-      s_log.DebugFormat ("FillInWith for InternetExplorer: '{0}'.", convertedValue);
+      if (scope.Value == value)
+        return;
 
-      do
-      {
-        scope.Focus();
-        SendKeys.SendWait (convertedValue);
-      } while (!IsInputOkay (scope, value));
+      var driver = scope.GetDriver();
+      var id = scope.Id;
+      var valueWithoutLastCharacter = GetStringWithoutLastCharacter (value);
+      var lastCharacter = GetLastCharacter (value);
+
+      var command = GetFillInJavaScriptCommand (id);
+
+      s_log.DebugFormat ("FillInWith using JavaScript: '{0}'.", value);
+
+      driver.ExecuteScript (command, scope, valueWithoutLastCharacter);
+      scope.SendKeys (Keys.End);
+      scope.SendKeys (lastCharacter);
     }
 
-    /// <summary>
-    /// Unfortunately, Internet Explorer sometimes skips single characters of <see cref="SendKeys.SendWait"/> (we don't know if this is an IE issue
-    /// or a SendKeys issue). To keep flaky tests to a minimum, we try to check the input before continuing.
-    /// </summary>
-    private static bool IsInputOkay (ElementScope scope, string value)
+    private static bool ContainsNonEmptyText (string value)
     {
-      if (value.Any (c => c >= Keys.Null[0]))
-      {
-        s_log.DebugFormat ("FillInWith for InternetExplorer: value contains special characters, no retry-check possible.");
-        return true;
-      }
+      return ContainsChars (value) && value != "";
+    }
 
-      var isInputOkay = scope.Value == value;
-      if (!isInputOkay)
-        s_log.DebugFormat ("FillInWith for InternetExplorer: value is different: '{0}' != '{1}' - retrying...", scope.Value, value);
-      return isInputOkay;
+    private static string GetStringWithoutLastCharacter ([NotNull] string value)
+    {
+      if (SingleCharacterOrEmpty (value))
+        return "";
+
+      var lastCharacterIndex = value.Length - 1;
+      return value.Remove (lastCharacterIndex);
+    }
+
+    private static string GetFillInJavaScriptCommand ([NotNull] string id)
+    {
+      const string javascriptFormat = "document.getElementById('{0}').value = arguments[0]";
+      return string.Format (javascriptFormat, id);
+    }
+
+    private static string GetLastCharacter ([NotNull] string value)
+    {
+      if (SingleCharacterOrEmpty (value))
+        return value;
+
+      var lastCharacterIndex = value.Length - 1;
+      return value[lastCharacterIndex].ToString();
+    }
+
+    private static bool SingleCharacterOrEmpty (string value)
+    {
+      return value.Length < 2;
+    }
+
+    private static IDriver GetDriver ([NotNull] this ElementScope scope)
+    {
+      ArgumentUtility.CheckNotNull ("scope", scope);
+
+      return (IDriver) s_driverFieldInfo.Value.GetValue (scope);
+    }
+
+    private static bool ContainsKeysAndChars ([NotNull] string value)
+    {
+      return ContainsKeys (value) && ContainsChars (value);
+    }
+
+    private static bool ContainsKeys ([NotNull] string value)
+    {
+      return value.Any (c => c >= Keys.Null[0]);
+    }
+
+    private static bool ContainsChars ([NotNull] string value)
+    {
+      return value.Any (c => c < Keys.Null[0]);
     }
   }
 }
