@@ -135,11 +135,10 @@ namespace Remotion.Data.DomainObjects.Mapping
       return this;
     }
 
+    [Obsolete ("Contains (...) method was ambiguous between GetPropertyDefinitions() and MyPropertyDefinitions. Use GetPropertyDefinitions().Contains (...) instead. (Version: 3.0.0)", true)]
     public bool Contains (PropertyDefinition propertyDefinition)
     {
-      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
-
-      return MyPropertyDefinitions.Contains (propertyDefinition);
+      throw new NotSupportedException ("Use GetPropertyDefinitions().Contains (...) instead. (Version: 3.0.0)");
     }
 
     public PropertyDefinitionCollection GetPropertyDefinitions ()

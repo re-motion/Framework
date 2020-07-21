@@ -956,16 +956,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     [Test]
-    public void Contains ()
-    {
-      Assert.That (_orderClass.Contains (PropertyDefinitionObjectMother.CreateForFakePropertyInfo()), Is.False);
-      Assert.That (
-          _orderClass.Contains (
-              _orderClass["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order.OrderNumber"]),
-          Is.True);
-    }
-
-    [Test]
     public void GetInheritanceRootClass ()
     {
       ClassDefinition expected = FakeMappingConfiguration.Current.TypeDefinitions[typeof (Company)];
