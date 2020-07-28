@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     ReadOnlyVirtualCollectionDataDecorator GetOriginalCollectionData ();
 
     IRealObjectEndPoint[] OriginalOppositeEndPoints { get; }
-    DomainObject[] OriginalItemsWithoutEndPoints { get; }
+    //DomainObject[] OriginalItemsWithoutEndPoints { get; }
     IRealObjectEndPoint[] CurrentOppositeEndPoints { get; }
 
     //bool ContainsOriginalItemWithoutEndPoint (DomainObject domainObject);

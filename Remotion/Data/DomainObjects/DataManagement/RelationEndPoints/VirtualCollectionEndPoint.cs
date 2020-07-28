@@ -433,10 +433,11 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     {
       get
       {
-        if (_dataManager == null)
-          return null;
+        return true;
+        //if (_dataManager == null)
+        //  return null;
 
-        return !_dataManager.OriginalItemsWithoutEndPoints.Any();
+        //return !_dataManager.OriginalItemsWithoutEndPoints.Any();
       }
     }
 
@@ -448,8 +449,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       EnsureDataComplete ();
       Assertion.DebugIsNotNull (_dataManager, "EnsureDataComplete sets _dataManager.");
 
-      foreach (var item in _dataManager.OriginalItemsWithoutEndPoints)
-        _dataManager.UnregisterOriginalItemWithoutEndPoint (item);
+      //TODO: RM-7294: do we need to reset the CachedDomainObjects?
+      //foreach (var item in _dataManager.OriginalItemsWithoutEndPoints)
+      //  _dataManager.UnregisterOriginalItemWithoutEndPoint (item);
 
       RaiseReplaceDataEvent();
     }

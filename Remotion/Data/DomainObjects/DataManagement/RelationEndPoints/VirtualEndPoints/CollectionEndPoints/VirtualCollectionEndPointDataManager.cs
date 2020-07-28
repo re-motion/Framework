@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     private readonly ChangeCachingVirtualCollectionDataDecorator _changeCachingVirtualCollectionData;
 
     private readonly HashSet<IRealObjectEndPoint> _originalOppositeEndPoints;
-    private readonly HashSet<DomainObject> _originalItemsWithoutEndPoint;
+    //private readonly HashSet<DomainObject> _originalItemsWithoutEndPoint;
     private Dictionary<ObjectID, IRealObjectEndPoint> _currentOppositeEndPoints;
 
     public VirtualCollectionEndPointDataManager (
@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       _changeCachingVirtualCollectionData = new ChangeCachingVirtualCollectionDataDecorator (wrappedData);
 
       _originalOppositeEndPoints = new HashSet<IRealObjectEndPoint>();
-      _originalItemsWithoutEndPoint = new HashSet<DomainObject>();
+      //_originalItemsWithoutEndPoint = new HashSet<DomainObject>();
       _currentOppositeEndPoints = new Dictionary<ObjectID, IRealObjectEndPoint>();
     }
 
@@ -83,10 +83,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       get { return _currentOppositeEndPoints.Values.ToArray(); } // only used for copying during subtransaction commit
     }
 
-    public DomainObject[] OriginalItemsWithoutEndPoints // TODO: RM-7294: Only public usage of OriginalItemsOppositeEndPoints
-    {
-      get { return _originalItemsWithoutEndPoint.ToArray(); } // could return empty list, makes UnregisterOriginalItemWithoutEndPoint() obsolete
-    }
+    //public DomainObject[] OriginalItemsWithoutEndPoints // TODO: RM-7294: Only public usage of OriginalItemsOppositeEndPoints
+    //{
+    //  get { return _originalItemsWithoutEndPoint.ToArray(); } // could return empty list, makes UnregisterOriginalItemWithoutEndPoint() obsolete
+    //}
 
     public bool ContainsOriginalObjectID (ObjectID objectID)
     {
@@ -109,17 +109,17 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       if (_originalOppositeEndPoints.Contains (oppositeEndPoint))
         throw new InvalidOperationException ("The opposite end-point has already been registered.");
 
-      var item = oppositeEndPoint.GetDomainObjectReference();
+      //var item = oppositeEndPoint.GetDomainObjectReference();
 
-      if (_originalItemsWithoutEndPoint.Contains (item))
-      {
-        _originalItemsWithoutEndPoint.Remove (item);
-      }
-      else
-      {
+      //if (_originalItemsWithoutEndPoint.Contains (item))
+      //{
+      //  _originalItemsWithoutEndPoint.Remove (item);
+      //}
+      //else
+      //{
         _changeCachingVirtualCollectionData.ResetCachedDomainObjects();
         //_changeCachingVirtualCollectionData.RegisterOriginalItem (item);
-      }
+      //}
 
       // RegisterOriginalItem adds item to both original and current collection, so we must add end-points for both
       _originalOppositeEndPoints.Add (oppositeEndPoint);
@@ -182,22 +182,22 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
       _changeCachingVirtualCollectionData.ResetCachedDomainObjects();
       //_changeCachingVirtualCollectionData.RegisterOriginalItem (domainObject);
-      _originalItemsWithoutEndPoint.Add (domainObject);
+      //_originalItemsWithoutEndPoint.Add (domainObject);
     }
 
     public void UnregisterOriginalItemWithoutEndPoint (DomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
-      if (!_originalItemsWithoutEndPoint.Contains (domainObject))
-      {
-        var message = string.Format ("The domain object with ID '{0}' has not been registered as an item without end-point.", domainObject.ID);
-        throw new InvalidOperationException (message);
-      }
+      //if (!_originalItemsWithoutEndPoint.Contains (domainObject))
+      //{
+      //  var message = string.Format ("The domain object with ID '{0}' has not been registered as an item without end-point.", domainObject.ID);
+      //  throw new InvalidOperationException (message);
+      //}
 
       //_changeCachingVirtualCollectionData.UnregisterOriginalItem (domainObject.ID);
       _changeCachingVirtualCollectionData.ResetCachedHasChangedState();
-      _originalItemsWithoutEndPoint.Remove (domainObject);
+      //_originalItemsWithoutEndPoint.Remove (domainObject);
     }
 
     //bool? IVirtualCollectionEndPointDataManager.HasDataChangedFast ()
@@ -229,7 +229,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       _changeCachingVirtualCollectionData.Commit();
 
       _originalOppositeEndPoints.Clear();
-      _originalItemsWithoutEndPoint.Clear();
+      //_originalItemsWithoutEndPoint.Clear();
 
       var originalCollectionData = GetOriginalCollectionData();
 
@@ -238,11 +238,11 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
         var oppositeEndPoint = _currentOppositeEndPoints.GetValueOrDefault (item.ID);
         if (oppositeEndPoint != null)
           _originalOppositeEndPoints.Add (oppositeEndPoint);
-        else
-          _originalItemsWithoutEndPoint.Add (item);
+        //else
+        //  _originalItemsWithoutEndPoint.Add (item);
       }
       
-      Assertion.IsTrue (originalCollectionData.Count == _originalOppositeEndPoints.Count + _originalItemsWithoutEndPoint.Count);
+      //Assertion.IsTrue (originalCollectionData.Count == _originalOppositeEndPoints.Count + _originalItemsWithoutEndPoint.Count);
     }
 
     public void Rollback ()
@@ -280,8 +280,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       _originalOppositeEndPoints = new HashSet<IRealObjectEndPoint>();
       info.FillCollection (_originalOppositeEndPoints);
 
-      _originalItemsWithoutEndPoint = new HashSet<DomainObject>();
-      info.FillCollection (_originalItemsWithoutEndPoint);
+      //_originalItemsWithoutEndPoint = new HashSet<DomainObject>();
+      //info.FillCollection (_originalItemsWithoutEndPoint);
 
       var currentOppositeEndPoints = new List<IRealObjectEndPoint>();
       info.FillCollection (currentOppositeEndPoints);
@@ -299,7 +299,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       info.AddHandle (_changeCachingVirtualCollectionData);
 
       info.AddCollection (_originalOppositeEndPoints);
-      info.AddCollection (_originalItemsWithoutEndPoint);
+     // info.AddCollection (_originalItemsWithoutEndPoint);
 
       info.AddCollection (_currentOppositeEndPoints.Values);
     }
