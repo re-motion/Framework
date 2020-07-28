@@ -66,8 +66,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
 
       UnloadService.UnloadVirtualEndPoint (TestableClientTransaction, _virtualCollectionEndPointID);
 
-      Assert.That (TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (_virtualCollectionEndPointID), Is.Not.Null);
-      Assert.That (TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (_virtualCollectionEndPointID).IsDataComplete, Is.False);
+      Assert.That (TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (_virtualCollectionEndPointID), Is.Null);
     }
 
     [Test]
@@ -168,13 +167,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     {
       EnsureEndPointLoadedAndComplete (_virtualCollectionEndPointID);
       UnloadService.UnloadVirtualEndPoint (TestableClientTransaction, _virtualCollectionEndPointID);
-      Assert.That (TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (_virtualCollectionEndPointID), Is.Not.Null);
-      Assert.That (TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (_virtualCollectionEndPointID).IsDataComplete, Is.False);
+      Assert.That (TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (_virtualCollectionEndPointID), Is.Null);
 
       UnloadService.UnloadVirtualEndPoint (TestableClientTransaction, _virtualCollectionEndPointID);
 
-      Assert.That (TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (_virtualCollectionEndPointID), Is.Not.Null);
-      Assert.That (TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (_virtualCollectionEndPointID).IsDataComplete, Is.False);
+      Assert.That (TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (_virtualCollectionEndPointID), Is.Null);
     }
 
     [Test]
@@ -232,8 +229,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
 
       UnloadService.UnloadVirtualEndPoint (TestableClientTransaction, _virtualCollectionEndPointID);
 
-      Assert.That (TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (_virtualCollectionEndPointID), Is.Not.Null);
-      Assert.That (TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (_virtualCollectionEndPointID).IsDataComplete, Is.False);
+      Assert.That (TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (_virtualCollectionEndPointID), Is.Null);
     }
 
     [Test]

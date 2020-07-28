@@ -43,8 +43,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     private readonly IClientTransactionEventSink _transactionEventSink;
     private readonly IVirtualCollectionEndPointDataManagerFactory _dataManagerFactory;
 
-    private readonly Dictionary<ObjectID, IRealObjectEndPoint> _unsynchronizedOppositeEndPoints;
-    private readonly Dictionary<ObjectID, IRealObjectEndPoint> _originalOppositeEndPointsForIncompleteData;
+    //private readonly Dictionary<ObjectID, IRealObjectEndPoint> _unsynchronizedOppositeEndPoints;
+    //private readonly Dictionary<ObjectID, IRealObjectEndPoint> _originalOppositeEndPointsForIncompleteData;
     private readonly HashSet<ObjectID> _addedDomainObjects;
     private readonly HashSet<ObjectID> _removedDomainObjects;
 
@@ -83,8 +83,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       _transactionEventSink = transactionEventSink;
       _dataManagerFactory = dataManagerFactory;
 
-      _unsynchronizedOppositeEndPoints = new Dictionary<ObjectID, IRealObjectEndPoint>();
-      _originalOppositeEndPointsForIncompleteData = new Dictionary<ObjectID, IRealObjectEndPoint>();
+      //_unsynchronizedOppositeEndPoints = new Dictionary<ObjectID, IRealObjectEndPoint>();
+      //_originalOppositeEndPointsForIncompleteData = new Dictionary<ObjectID, IRealObjectEndPoint>();
       _addedDomainObjects = new HashSet<ObjectID>();
       _removedDomainObjects = new HashSet<ObjectID>();
     }
@@ -156,11 +156,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       {
         if (_dataManager != null)
         {
-          return false;
+          return true; //TODO: RM-7294: is this okay?
+          //return false;
         }
         else
         {
-          return _originalOppositeEndPointsForIncompleteData.Count == 0;
+          return true;
+          //return _originalOppositeEndPointsForIncompleteData.Count == 0;
         }
       }
     }
@@ -224,33 +226,33 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
       var dataManager = _dataManagerFactory.CreateEndPointDataManager (ID);
 
-      foreach (var item in items)
-      {
-        IRealObjectEndPoint oppositeEndPoint;
-        if (_originalOppositeEndPointsForIncompleteData.TryGetValue (item.ID, out oppositeEndPoint))
-        {
-          dataManager.RegisterOriginalOppositeEndPoint (oppositeEndPoint);
-          oppositeEndPoint.MarkSynchronized();
-          _originalOppositeEndPointsForIncompleteData.Remove (item.ID);
-        }
-        else
-        {
-          // Virtual end-point contains an item without an opposite end-point. The virtual end-point is out-of-sync. Note that this can temporarily 
-          // occur during eager fetching because the end-point contents are set before the related objects' DataContainers are registered.
-          // Apart from that case, this indicates that foreign keys in the database have changed between loading the foreign key side and the virtual
-          // side of a bidirectional relation.
-          dataManager.RegisterOriginalItemWithoutEndPoint (item);
-        }
-      }
+      //foreach (var item in items)
+      //{
+        //IRealObjectEndPoint oppositeEndPoint;
+        //if (_originalOppositeEndPointsForIncompleteData.TryGetValue (item.ID, out oppositeEndPoint))
+        //{
+        //  dataManager.RegisterOriginalOppositeEndPoint (oppositeEndPoint);
+        //  oppositeEndPoint.MarkSynchronized();
+        //  _originalOppositeEndPointsForIncompleteData.Remove (item.ID);
+        //}
+        //else
+        //{
+        //  // Virtual end-point contains an item without an opposite end-point. The virtual end-point is out-of-sync. Note that this can temporarily 
+        //  // occur during eager fetching because the end-point contents are set before the related objects' DataContainers are registered.
+        //  // Apart from that case, this indicates that foreign keys in the database have changed between loading the foreign key side and the virtual
+        //  // side of a bidirectional relation.
+        //  dataManager.RegisterOriginalItemWithoutEndPoint (item);
+        //}
+      //}
 
-      var originalOppositeEndPoints = _originalOppositeEndPointsForIncompleteData.Values.ToArray();
+      //var originalOppositeEndPoints = _originalOppositeEndPointsForIncompleteData.Values.ToArray();
 
       _dataManager = dataManager;
-      _originalOppositeEndPointsForIncompleteData.Clear();
-      Assertion.IsTrue (_unsynchronizedOppositeEndPoints.Count == 0);
+      //_originalOppositeEndPointsForIncompleteData.Clear();
+      //Assertion.IsTrue (_unsynchronizedOppositeEndPoints.Count == 0);
 
-      foreach (var oppositeEndPointWithoutItem in originalOppositeEndPoints)
-        RegisterOriginalOppositeEndPoint (oppositeEndPointWithoutItem);
+      //foreach (var oppositeEndPointWithoutItem in originalOppositeEndPoints)
+      //  RegisterOriginalOppositeEndPoint (oppositeEndPointWithoutItem);
 
       var eventRaiser = GetCollectionEventRaiser();
       eventRaiser.WithinReplaceData();
@@ -271,14 +273,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       _transactionEventSink.RaiseRelationEndPointBecomingIncompleteEvent (ID);
 
       Assertion.DebugIsNotNull (_dataManager, "_dataManager has already been checked.");
-      var allOppositeEndPoints = _unsynchronizedOppositeEndPoints.Values.Concat (_dataManager.OriginalOppositeEndPoints).ToArray();
+      //var allOppositeEndPoints = _unsynchronizedOppositeEndPoints.Values.Concat (_dataManager.OriginalOppositeEndPoints).ToArray();
 
       _dataManager = null;
-      _unsynchronizedOppositeEndPoints.Clear();
-      Assertion.IsTrue (_originalOppositeEndPointsForIncompleteData.Count == 0);
+      //_unsynchronizedOppositeEndPoints.Clear();
+      //Assertion.IsTrue (_originalOppositeEndPointsForIncompleteData.Count == 0);
 
-      foreach (var oppositeEndPoint in allOppositeEndPoints)
-        RegisterOriginalOppositeEndPoint (oppositeEndPoint);
+      //foreach (var oppositeEndPoint in allOppositeEndPoints)
+      //  RegisterOriginalOppositeEndPoint (oppositeEndPoint);
     }
 
     public override void Touch ()
@@ -346,69 +348,87 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
       if (_dataManager != null)
       {
-        if (_dataManager.ContainsOriginalObjectID (oppositeEndPoint.ObjectID))
-        {
-          // RealObjectEndPoint is registered for an already loaded virtual end-point. The query result contained the item, so the ObjectEndPoint is 
-          // marked as synchronzed.
-
-          _dataManager.RegisterOriginalOppositeEndPoint (oppositeEndPoint);
-          oppositeEndPoint.MarkSynchronized();
-        }
-        else
-        {
-          // ObjectEndPoint is registered for an already loaded virtual end-point. The query result did not contain the item, so the ObjectEndPoint is 
-          // out-of-sync.
-
-          _unsynchronizedOppositeEndPoints.Add (oppositeEndPoint.ObjectID, oppositeEndPoint);
-          oppositeEndPoint.MarkUnsynchronized();
-        }
+        //TODO: RM-7294: do we need to reset the CachedDomainObjects?
+        _dataManager.RegisterOriginalOppositeEndPoint (oppositeEndPoint); // performs cache reset
       }
-      else
-      {
-        _originalOppositeEndPointsForIncompleteData.Add (oppositeEndPoint.ObjectID, oppositeEndPoint);
-        oppositeEndPoint.ResetSyncState();
-      }
+
+      oppositeEndPoint.MarkSynchronized();
+
+      //if (_dataManager != null)
+      //{
+      //  if (_dataManager.ContainsOriginalObjectID (oppositeEndPoint.ObjectID))
+      //  {
+      //    // RealObjectEndPoint is registered for an already loaded virtual end-point. The query result contained the item, so the ObjectEndPoint is 
+      //    // marked as synchronzed.
+
+      //    _dataManager.RegisterOriginalOppositeEndPoint (oppositeEndPoint);
+      //    oppositeEndPoint.MarkSynchronized();
+      //  }
+      //  else
+      //  {
+      //    // ObjectEndPoint is registered for an already loaded virtual end-point. The query result did not contain the item, so the ObjectEndPoint is 
+      //    // out-of-sync.
+
+      //    _unsynchronizedOppositeEndPoints.Add (oppositeEndPoint.ObjectID, oppositeEndPoint);
+      //    oppositeEndPoint.MarkUnsynchronized();
+      //  }
+      //}
+      //else
+      //{
+      //  _originalOppositeEndPointsForIncompleteData.Add (oppositeEndPoint.ObjectID, oppositeEndPoint);
+      //  oppositeEndPoint.ResetSyncState();
+      //}
     }
 
     public void UnregisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
       ArgumentUtility.CheckNotNull ("oppositeEndPoint", oppositeEndPoint);
 
-      if (_dataManager != null)
+      if (s_log.IsInfoEnabled ())
       {
-        if (_unsynchronizedOppositeEndPoints.ContainsKey (oppositeEndPoint.ObjectID))
-        {
-          if (s_log.IsDebugEnabled())
-          {
-            s_log.DebugFormat (
-                "Unsynchronized ObjectEndPoint '{0}' is unregistered from virtual end-point '{1}'.",
-                oppositeEndPoint.ID,
-                ID);
-          }
-
-          _unsynchronizedOppositeEndPoints.Remove (oppositeEndPoint.ObjectID);
-        }
-        else
-        {
-          if (s_log.IsInfoEnabled())
-          {
-            s_log.InfoFormat (
-                "ObjectEndPoint '{0}' is unregistered from virtual end-point '{1}'. The virtual end-point is transitioned to incomplete state.",
-                oppositeEndPoint.ID,
-                ID);
-          }
-
-          MarkDataIncomplete();
-          UnregisterOriginalOppositeEndPoint (oppositeEndPoint);
-        }
+        s_log.InfoFormat (
+            "RealObjectEndPoint '{0}' is unregistered from VirtualCollectionEndPoint '{1}'. The VirtualCollectionEndPoint is transitioned to incomplete state.",
+            oppositeEndPoint.ID,
+            ID);
       }
-      else
-      {
-        if (!_originalOppositeEndPointsForIncompleteData.ContainsKey (oppositeEndPoint.ObjectID))
-          throw new InvalidOperationException ("The opposite end-point has not been registered.");
+      MarkDataIncomplete ();
 
-        _originalOppositeEndPointsForIncompleteData.Remove (oppositeEndPoint.ObjectID);
-      }
+      //if (_dataManager != null)
+      //{
+      //  if (_unsynchronizedOppositeEndPoints.ContainsKey (oppositeEndPoint.ObjectID))
+      //  {
+      //    if (s_log.IsDebugEnabled())
+      //    {
+      //      s_log.DebugFormat (
+      //          "Unsynchronized ObjectEndPoint '{0}' is unregistered from virtual end-point '{1}'.",
+      //          oppositeEndPoint.ID,
+      //          ID);
+      //    }
+
+      //    _unsynchronizedOppositeEndPoints.Remove (oppositeEndPoint.ObjectID);
+      //  }
+      //  else
+      //  {
+      //    if (s_log.IsInfoEnabled())
+      //    {
+      //      s_log.InfoFormat (
+      //          "ObjectEndPoint '{0}' is unregistered from virtual end-point '{1}'. The virtual end-point is transitioned to incomplete state.",
+      //          oppositeEndPoint.ID,
+      //          ID);
+      //    }
+
+      //    MarkDataIncomplete();
+      //    Assertion.DebugAssert (_dataManager == null, "MarkDataIncomplete clears _dataManager.");
+      //    UnregisterOriginalOppositeEndPoint (oppositeEndPoint);
+      //  }
+      //}
+      //else
+      //{
+      //  if (!_originalOppositeEndPointsForIncompleteData.ContainsKey (oppositeEndPoint.ObjectID))
+      //    throw new InvalidOperationException ("The opposite end-point has not been registered.");
+
+      //  _originalOppositeEndPointsForIncompleteData.Remove (oppositeEndPoint.ObjectID);
+      //}
     }
 
     public void RegisterCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
@@ -465,13 +485,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       if (s_log.IsDebugEnabled())
         s_log.DebugFormat ("ObjectEndPoint '{0}' is being marked as synchronized.", oppositeEndPoint.ID);
 
-      if (!_unsynchronizedOppositeEndPoints.Remove (oppositeEndPoint.ObjectID))
-      {
-        var message = string.Format (
-            "Cannot synchronize opposite end-point '{0}' - the end-point is not in the list of unsynchronized end-points.",
-            oppositeEndPoint.ID);
-        throw new InvalidOperationException (message);
-      }
+      //if (!_unsynchronizedOppositeEndPoints.Remove (oppositeEndPoint.ObjectID))
+      //{
+      //  var message = string.Format (
+      //      "Cannot synchronize opposite end-point '{0}' - the end-point is not in the list of unsynchronized end-points.",
+      //      oppositeEndPoint.ID);
+      //  throw new InvalidOperationException (message);
+      //}
 
       _dataManager.RegisterOriginalOppositeEndPoint (oppositeEndPoint);
       oppositeEndPoint.MarkSynchronized();
@@ -632,6 +652,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     private void RaiseReplaceDataEvent ()
     {
+      //TODO: RM-7294: unused on VirtualObjectList, can be removed
+
       var eventRaiser = GetCollectionEventRaiser();
       eventRaiser.WithinReplaceData();
     }
@@ -650,13 +672,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       _dataManager = info.GetValueForHandle<IVirtualCollectionEndPointDataManager>();
       _hasBeenTouched = info.GetBoolValue();
 
-      var unsynchronizedOppositeEndPoints = new List<IRealObjectEndPoint>();
-      info.FillCollection (unsynchronizedOppositeEndPoints);
-      _unsynchronizedOppositeEndPoints = unsynchronizedOppositeEndPoints.ToDictionary (ep => ep.ObjectID);
+      //var unsynchronizedOppositeEndPoints = new List<IRealObjectEndPoint>();
+      //info.FillCollection (unsynchronizedOppositeEndPoints);
+      //_unsynchronizedOppositeEndPoints = unsynchronizedOppositeEndPoints.ToDictionary (ep => ep.ObjectID);
 
-      var realObjectEndPoints = new List<IRealObjectEndPoint>();
-      info.FillCollection (realObjectEndPoints);
-      _originalOppositeEndPointsForIncompleteData = realObjectEndPoints.ToDictionary (ep => ep.ObjectID);
+      //var realObjectEndPoints = new List<IRealObjectEndPoint>();
+      //info.FillCollection (realObjectEndPoints);
+      //_originalOppositeEndPointsForIncompleteData = realObjectEndPoints.ToDictionary (ep => ep.ObjectID);
 
       _addedDomainObjects = new HashSet<ObjectID>();
       info.FillCollection (_addedDomainObjects);
@@ -676,8 +698,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       info.AddHandle (_dataManager);
       info.AddBoolValue (_hasBeenTouched);
 
-      info.AddCollection (_unsynchronizedOppositeEndPoints.Values);
-      info.AddCollection (_originalOppositeEndPointsForIncompleteData.Values);
+      //info.AddCollection (_unsynchronizedOppositeEndPoints.Values);
+      //info.AddCollection (_originalOppositeEndPointsForIncompleteData.Values);
       info.AddCollection (_addedDomainObjects);
       info.AddCollection (_removedDomainObjects);
     }

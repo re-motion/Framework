@@ -72,7 +72,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _associatedDomainObjectCollectionStrategyFactoryStub = MockRepository.GenerateStub<IAssociatedDomainObjectCollectionDataStrategyFactory>();
 
       var virtualCollectionEndPointDataManagerStub= MockRepository.GenerateStub<IVirtualCollectionEndPointDataManager> ();
-      virtualCollectionEndPointDataManagerStub.Stub (stub => stub.OriginalOppositeEndPoints).Return (new IRealObjectEndPoint[0]);
       _virtualCollectionEndPointDataManagerFactoryStub = MockRepository.GenerateStub<IVirtualCollectionEndPointDataManagerFactory>();
       _virtualCollectionEndPointDataManagerFactoryStub
           .Stub (stub => stub.CreateEndPointDataManager (Arg<RelationEndPointID>.Is.Anything))

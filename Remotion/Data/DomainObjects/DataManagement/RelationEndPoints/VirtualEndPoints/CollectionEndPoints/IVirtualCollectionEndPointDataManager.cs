@@ -30,9 +30,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     IVirtualCollectionData CollectionData { get; }
     ReadOnlyVirtualCollectionDataDecorator GetOriginalCollectionData ();
 
-    IRealObjectEndPoint[] OriginalOppositeEndPoints { get; }
+    //IRealObjectEndPoint[] OriginalOppositeEndPoints { get; }
     //DomainObject[] OriginalItemsWithoutEndPoints { get; }
-    IRealObjectEndPoint[] CurrentOppositeEndPoints { get; }
+    //IRealObjectEndPoint[] CurrentOppositeEndPoints { get; }
 
     //bool ContainsOriginalItemWithoutEndPoint (DomainObject domainObject);
 
@@ -42,12 +42,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     RelationEndPointID EndPointID { get; }
 
-    bool ContainsOriginalObjectID (ObjectID objectID);
+    //bool ContainsOriginalObjectID (ObjectID objectID);
 
     void RegisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint);
     //void UnregisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint);
 
-    void RegisterOriginalItemWithoutEndPoint (DomainObject domainObject);
+    //void RegisterOriginalItemWithoutEndPoint (DomainObject domainObject);
     //void UnregisterOriginalItemWithoutEndPoint (DomainObject domainObject);
 
     void RegisterCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint);
