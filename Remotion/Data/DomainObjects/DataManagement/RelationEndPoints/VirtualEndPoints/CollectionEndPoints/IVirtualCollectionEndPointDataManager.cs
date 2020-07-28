@@ -45,10 +45,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     bool ContainsOriginalObjectID (ObjectID objectID);
 
     void RegisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint);
-    void UnregisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint);
+    //void UnregisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint);
 
     void RegisterOriginalItemWithoutEndPoint (DomainObject domainObject);
-    void UnregisterOriginalItemWithoutEndPoint (DomainObject domainObject);
+    //void UnregisterOriginalItemWithoutEndPoint (DomainObject domainObject);
 
     void RegisterCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint);
     void UnregisterCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint);

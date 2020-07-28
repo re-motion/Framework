@@ -126,10 +126,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       _currentOppositeEndPoints.Add (oppositeEndPoint.ObjectID, oppositeEndPoint);
     }
 
-    public void UnregisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
-    {
-      //TODO: RM-7294: API is only implemented because of the interface. Interface member probably be dropped since there is no usage
-      throw new NotSupportedException();
+    //public void UnregisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
+    //{
+    //  //TODO: RM-7294: API is only implemented because of the interface. Interface member probably be dropped since there is no usage
+    //  throw new NotSupportedException();
       //ArgumentUtility.CheckNotNull ("oppositeEndPoint", oppositeEndPoint);
 
       //if (!ContainsOriginalOppositeEndPoint (oppositeEndPoint))
@@ -141,7 +141,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       //// UnregisterOriginalItem removes item from both original and current collection, so we must remove end-points for both
       //_originalOppositeEndPoints.Remove (oppositeEndPoint);
       //_currentOppositeEndPoints.Remove (oppositeEndPoint.ObjectID);
-    }
+    //}
 
     //public bool ContainsCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     //{
@@ -185,9 +185,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       //_originalItemsWithoutEndPoint.Add (domainObject);
     }
 
-    public void UnregisterOriginalItemWithoutEndPoint (DomainObject domainObject)
-    {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+    //public void UnregisterOriginalItemWithoutEndPoint (DomainObject domainObject)
+    //{
+    //  ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
       //if (!_originalItemsWithoutEndPoint.Contains (domainObject))
       //{
@@ -196,9 +196,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       //}
 
       //_changeCachingVirtualCollectionData.UnregisterOriginalItem (domainObject.ID);
-      _changeCachingVirtualCollectionData.ResetCachedHasChangedState();
+      //_changeCachingVirtualCollectionData.ResetCachedHasChangedState();
       //_originalItemsWithoutEndPoint.Remove (domainObject);
-    }
+    //}
 
     //bool? IVirtualCollectionEndPointDataManager.HasDataChangedFast ()
     //{
