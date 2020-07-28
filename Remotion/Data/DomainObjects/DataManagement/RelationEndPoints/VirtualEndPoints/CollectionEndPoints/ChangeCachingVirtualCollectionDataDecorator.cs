@@ -67,7 +67,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       return _hasChanges;
     }
 
-    private void ResetCache ()
+    public void ResetCachedHasChangedState ()
     {
       _isCacheUpToDate = false;
     }
@@ -82,19 +82,25 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       return new ReadOnlyVirtualCollectionDataDecorator (originalData);
     }
 
-    public void RegisterOriginalItem (DomainObject item)
+    public void ResetCachedDomainObjects ()
     {
-      //TODO: RM-7294: ResetCachedDomainObjects() is equivalent to Add()
       _virtualCollectionData.ResetCachedDomainObjects();
-      //_virtualCollectionData.Add (item);
+      //TODO: RM-7294: originally, this logic never cleared the _isCacheUpToDate-field. Should this be re-worked?
     }
 
-    public void UnregisterOriginalItem (ObjectID itemID)
-    {
-      // TODO: RM-7294
-      // Only used from Synchronize
-      ResetCache();
-    }
+    //public void RegisterOriginalItem (DomainObject item)
+    //{
+    //  //TODO: RM-7294: ResetCachedDomainObjects() is equivalent to Add()
+    //  _virtualCollectionData.ResetCachedDomainObjects();
+    //  //_virtualCollectionData.Add (item);
+    //}
+
+    //public void UnregisterOriginalItem (ObjectID itemID)
+    //{
+    //  // TODO: RM-7294
+    //  // Only used from Synchronize
+    //  ResetCachedHasChangedState();
+    //}
 
     public void SortOriginalAndCurrent (Comparison<DomainObject> comparison)
     {
@@ -105,20 +111,20 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     public void Commit ()
     {
       // TODO: RM-7294
-      ResetCache();
+      ResetCachedHasChangedState();
     }
 
     public void Rollback ()
     {
       // TODO: RM-7294
-      ResetCache();
+      ResetCachedHasChangedState();
       _virtualCollectionData.ResetCachedDomainObjects(); //TODO: RM-7294
     }
 
     public void ReplaceContents (IVirtualCollectionData collectionData)
     {
       // TODO: RM-7294
-      ResetCache();
+      ResetCachedHasChangedState();
       _virtualCollectionData.ResetCachedDomainObjects(); //TODO: RM-7294
     }
 
@@ -170,7 +176,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     void IVirtualCollectionData.Clear ()
     {
-      ResetCache();
+      ResetCachedHasChangedState();
       //TODO: RM-7294: ResetCachedDomainObjects() is equivalent to Clear()
       _virtualCollectionData.ResetCachedDomainObjects();
       //_virtualCollectionData.Clear();
@@ -178,7 +184,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     void IVirtualCollectionData.Add (DomainObject domainObject)
     {
-      ResetCache();
+      ResetCachedHasChangedState();
 
       //TODO: RM-7294: ResetCachedDomainObjects() is equivalent to Add()
       _virtualCollectionData.ResetCachedDomainObjects();
@@ -187,7 +193,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     bool IVirtualCollectionData.Remove (DomainObject domainObject)
     {
-      ResetCache();
+      ResetCachedHasChangedState();
 
       //TODO: RM-7294: ResetCachedDomainObjects() is equivalent to Remove()
       _virtualCollectionData.ResetCachedDomainObjects();

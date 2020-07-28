@@ -73,19 +73,19 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       return _changeCachingVirtualCollectionData.GetOriginalData();
     }
 
-    public IRealObjectEndPoint[] OriginalOppositeEndPoints
+    public IRealObjectEndPoint[] OriginalOppositeEndPoints // TODO: RM-7294: Only public usage of OriginalOppositeEndPoints
     {
       get { return _originalOppositeEndPoints.ToArray(); }
     }
 
-    public IRealObjectEndPoint[] CurrentOppositeEndPoints
+    public IRealObjectEndPoint[] CurrentOppositeEndPoints // TODO: RM-7294: Only public usage of CurrentOppositeEndPoints
     {
-      get { return _currentOppositeEndPoints.Values.ToArray(); }
+      get { return _currentOppositeEndPoints.Values.ToArray(); } // only used for copying during subtransaction commit
     }
 
-    public DomainObject[] OriginalItemsWithoutEndPoints
+    public DomainObject[] OriginalItemsWithoutEndPoints // TODO: RM-7294: Only public usage of OriginalItemsOppositeEndPoints
     {
-      get { return _originalItemsWithoutEndPoint.ToArray(); }
+      get { return _originalItemsWithoutEndPoint.ToArray(); } // could return empty list, makes UnregisterOriginalItemWithoutEndPoint() obsolete
     }
 
     public bool ContainsOriginalObjectID (ObjectID objectID)
@@ -95,31 +95,35 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       return GetOriginalCollectionData().ContainsObjectID (objectID);
     }
 
-    public bool ContainsOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
-    {
-      ArgumentUtility.CheckNotNull ("oppositeEndPoint", oppositeEndPoint);
+    //public bool ContainsOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
+    //{
+    //  ArgumentUtility.CheckNotNull ("oppositeEndPoint", oppositeEndPoint);
 
-      return _originalOppositeEndPoints.Contains (oppositeEndPoint);
-    }
+    //  return _originalOppositeEndPoints.Contains (oppositeEndPoint);
+    //}
 
     public void RegisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
       ArgumentUtility.CheckNotNull ("oppositeEndPoint", oppositeEndPoint);
 
-      if (ContainsOriginalOppositeEndPoint (oppositeEndPoint))
+      if (_originalOppositeEndPoints.Contains (oppositeEndPoint))
         throw new InvalidOperationException ("The opposite end-point has already been registered.");
 
       var item = oppositeEndPoint.GetDomainObjectReference();
 
       if (_originalItemsWithoutEndPoint.Contains (item))
+      {
         _originalItemsWithoutEndPoint.Remove (item);
+      }
       else
-        _changeCachingVirtualCollectionData.RegisterOriginalItem (item);
+      {
+        _changeCachingVirtualCollectionData.ResetCachedDomainObjects();
+        //_changeCachingVirtualCollectionData.RegisterOriginalItem (item);
+      }
 
       // RegisterOriginalItem adds item to both original and current collection, so we must add end-points for both
       _originalOppositeEndPoints.Add (oppositeEndPoint);
       _currentOppositeEndPoints.Add (oppositeEndPoint.ObjectID, oppositeEndPoint);
-
     }
 
     public void UnregisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
@@ -139,18 +143,18 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       //_currentOppositeEndPoints.Remove (oppositeEndPoint.ObjectID);
     }
 
-    public bool ContainsCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
-    {
-      ArgumentUtility.CheckNotNull ("oppositeEndPoint", oppositeEndPoint);
+    //public bool ContainsCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
+    //{
+    //  ArgumentUtility.CheckNotNull ("oppositeEndPoint", oppositeEndPoint);
 
-      return _currentOppositeEndPoints.ContainsKey (oppositeEndPoint.ObjectID);
-    }
+    //  return _currentOppositeEndPoints.ContainsKey (oppositeEndPoint.ObjectID);
+    //}
 
     public void RegisterCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
       ArgumentUtility.CheckNotNull ("oppositeEndPoint", oppositeEndPoint);
 
-      if (ContainsCurrentOppositeEndPoint (oppositeEndPoint))
+      if (_currentOppositeEndPoints.ContainsKey (oppositeEndPoint.ObjectID))
         throw new InvalidOperationException ("The opposite end-point has already been registered.");
 
       _currentOppositeEndPoints.Add (oppositeEndPoint.ObjectID, oppositeEndPoint);
@@ -160,23 +164,24 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     {
       ArgumentUtility.CheckNotNull ("oppositeEndPoint", oppositeEndPoint);
 
-      if (!ContainsCurrentOppositeEndPoint (oppositeEndPoint))
+      if (!_currentOppositeEndPoints.ContainsKey (oppositeEndPoint.ObjectID))
         throw new InvalidOperationException ("The opposite end-point has not been registered.");
 
       _currentOppositeEndPoints.Remove (oppositeEndPoint.ObjectID);
     }
 
-    public bool ContainsOriginalItemWithoutEndPoint (DomainObject domainObject)
-    {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-      return _originalItemsWithoutEndPoint.Contains (domainObject);
-    }
+    //bool IVirtualCollectionEndPointDataManager.ContainsOriginalItemWithoutEndPoint (DomainObject domainObject)
+    //{
+    //  ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+    //  return _originalItemsWithoutEndPoint.Contains (domainObject);
+    //}
 
     public void RegisterOriginalItemWithoutEndPoint (DomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
-      _changeCachingVirtualCollectionData.RegisterOriginalItem (domainObject);
+      _changeCachingVirtualCollectionData.ResetCachedDomainObjects();
+      //_changeCachingVirtualCollectionData.RegisterOriginalItem (domainObject);
       _originalItemsWithoutEndPoint.Add (domainObject);
     }
 
@@ -190,33 +195,34 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
         throw new InvalidOperationException (message);
       }
 
-      _changeCachingVirtualCollectionData.UnregisterOriginalItem (domainObject.ID);
+      //_changeCachingVirtualCollectionData.UnregisterOriginalItem (domainObject.ID);
+      _changeCachingVirtualCollectionData.ResetCachedHasChangedState();
       _originalItemsWithoutEndPoint.Remove (domainObject);
     }
 
-    public bool? HasDataChangedFast ()
-    {
-      return _changeCachingVirtualCollectionData.IsCacheUpToDate ? _changeCachingVirtualCollectionData.HasChanged (ChangeDetectionStrategy) : (bool?) null;
-    }
+    //bool? IVirtualCollectionEndPointDataManager.HasDataChangedFast ()
+    //{
+    //  return _changeCachingVirtualCollectionData.IsCacheUpToDate ? _changeCachingVirtualCollectionData.HasChanged (ChangeDetectionStrategy) : (bool?) null;
+    //}
 
-    public bool HasDataChanged ()
-    {
-      return _changeCachingVirtualCollectionData.HasChanged (ChangeDetectionStrategy);
-    }
+    //bool IVirtualCollectionEndPointDataManager.HasDataChanged ()
+    //{
+    //  return _changeCachingVirtualCollectionData.HasChanged (ChangeDetectionStrategy);
+    //}
 
-    public void SortCurrentData (Comparison<DomainObject> comparison)
-    {
-      ArgumentUtility.CheckNotNull ("comparison", comparison);
+    //void IVirtualCollectionEndPointDataManager.SortCurrentData (Comparison<DomainObject> comparison)
+    //{
+    //  ArgumentUtility.CheckNotNull ("comparison", comparison);
 
-      _changeCachingVirtualCollectionData.Sort (comparison);
-    }
+    //  _changeCachingVirtualCollectionData.Sort (comparison);
+    //}
 
-    public void SortCurrentAndOriginalData (Comparison<DomainObject> comparison)
-    {
-      ArgumentUtility.CheckNotNull ("comparison", comparison);
+    //void IVirtualCollectionEndPointDataManager.SortCurrentAndOriginalData (Comparison<DomainObject> comparison)
+    //{
+    //  ArgumentUtility.CheckNotNull ("comparison", comparison);
 
-      _changeCachingVirtualCollectionData.SortOriginalAndCurrent (comparison);
-    }
+    //  _changeCachingVirtualCollectionData.SortOriginalAndCurrent (comparison);
+    //}
 
     public void Commit ()
     {

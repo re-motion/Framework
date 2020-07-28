@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   /// </summary>
   public interface IVirtualCollectionEndPointDataManager : IFlattenedSerializable
   {
-    bool? HasDataChangedFast ();
+    //bool? HasDataChangedFast ();
 
     IVirtualCollectionData CollectionData { get; }
     ReadOnlyVirtualCollectionDataDecorator GetOriginalCollectionData ();
@@ -34,10 +34,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     DomainObject[] OriginalItemsWithoutEndPoints { get; }
     IRealObjectEndPoint[] CurrentOppositeEndPoints { get; }
 
-    bool ContainsOriginalItemWithoutEndPoint (DomainObject domainObject);
+    //bool ContainsOriginalItemWithoutEndPoint (DomainObject domainObject);
 
-    void SortCurrentData (Comparison<DomainObject> comparison);
-    void SortCurrentAndOriginalData (Comparison<DomainObject> comparison);
+    //void SortCurrentData (Comparison<DomainObject> comparison);
+    //void SortCurrentAndOriginalData (Comparison<DomainObject> comparison);
     void SetDataFromSubTransaction (IVirtualCollectionEndPointDataManager sourceDataManager, IRelationEndPointProvider endPointProvider);
 
     RelationEndPointID EndPointID { get; }
@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     void RegisterCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint);
     void UnregisterCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint);
 
-    bool HasDataChanged();
+    //bool HasDataChanged();
     void Commit();
     void Rollback();
   }

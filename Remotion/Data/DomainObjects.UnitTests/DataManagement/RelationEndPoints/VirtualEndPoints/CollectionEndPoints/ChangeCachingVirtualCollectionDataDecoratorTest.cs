@@ -360,8 +360,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (((IVirtualCollectionData) _decoratorWithRealData).GetObject (domainObject.ID), Is.Null);
       Assert.That (_decoratorWithRealData.GetOriginalData().GetObject (domainObject.ID), Is.Not.Null);
       Assert.That (
-          () => _decoratorWithRealData.RegisterOriginalItem (domainObject),
-          Throws.InvalidOperationException
+          //() => _decoratorWithRealData.RegisterOriginalItem (domainObject),
+          () => _decoratorWithRealData.ResetCachedDomainObjects(),
+      Throws.InvalidOperationException
               .With.Message.Matches (@"The original collection already contains a domain object with ID 'ProductReview\|.*'\."));
     }
 
@@ -369,7 +370,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void RegisterOriginalItem_CollectionUnchanged_ItemAddedToBothLists ()
     {
       var domainObject = DomainObjectMother.CreateFakeObject<ProductReview>();
-      _decoratorWithRealData.RegisterOriginalItem (domainObject);
+      //_decoratorWithRealData.RegisterOriginalItem (domainObject);
+      _decoratorWithRealData.ResetCachedDomainObjects();
 
       Assert.That (((IVirtualCollectionData) _decoratorWithRealData).GetObject (1), Is.SameAs (domainObject));
       Assert.That (_decoratorWithRealData.GetOriginalData().GetObject (1), Is.SameAs (domainObject));
@@ -381,7 +383,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       PrepareCheckChangeFlagRetained (_decoratorWithRealData, false);
 
       var domainObject = DomainObjectMother.CreateFakeObject<ProductReview>();
-      _decoratorWithRealData.RegisterOriginalItem (domainObject);
+      //_decoratorWithRealData.RegisterOriginalItem (domainObject);
+      _decoratorWithRealData.ResetCachedDomainObjects();
 
       CheckChangeFlagRetained (_decoratorWithRealData);
     }
@@ -390,7 +393,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void RegisterOriginalItem_CollectionUnchanged_OriginalCollectionNotCopied ()
     {
       var domainObject = DomainObjectMother.CreateFakeObject<ProductReview>();
-      _decoratorWithRealData.RegisterOriginalItem (domainObject);
+      //_decoratorWithRealData.RegisterOriginalItem (domainObject);
+      _decoratorWithRealData.ResetCachedDomainObjects();
 
       CheckOriginalDataNotCopied (_decoratorWithRealData);
     }
@@ -402,7 +406,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       ((IVirtualCollectionData) _decoratorWithRealData).Clear();
 
       var domainObject = DomainObjectMother.CreateFakeObject<ProductReview>();
-      _decoratorWithRealData.RegisterOriginalItem (domainObject);
+      //_decoratorWithRealData.RegisterOriginalItem (domainObject);
+      _decoratorWithRealData.ResetCachedDomainObjects();
 
       Assert.That (((IVirtualCollectionData) _decoratorWithRealData).GetObject (0), Is.SameAs (domainObject));
       Assert.That (_decoratorWithRealData.GetOriginalData().GetObject (1), Is.SameAs (domainObject));
@@ -417,7 +422,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       PrepareCheckChangeFlagRetained (_decoratorWithRealData, true);
 
       var domainObject = DomainObjectMother.CreateFakeObject<ProductReview>();
-      _decoratorWithRealData.RegisterOriginalItem (domainObject);
+      //_decoratorWithRealData.RegisterOriginalItem (domainObject);
+      _decoratorWithRealData.ResetCachedDomainObjects();
 
       CheckChangeFlagRetained (_decoratorWithRealData);
     }
@@ -430,7 +436,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       Assert.That (((IVirtualCollectionData) _decoratorWithRealData).GetObject (1), Is.SameAs (domainObject));
 
-      _decoratorWithRealData.RegisterOriginalItem (domainObject);
+      //_decoratorWithRealData.RegisterOriginalItem (domainObject);
+      _decoratorWithRealData.ResetCachedDomainObjects();
 
       Assert.That (((IVirtualCollectionData) _decoratorWithRealData).GetObject (1), Is.SameAs (domainObject));
       Assert.That (_decoratorWithRealData.GetOriginalData().GetObject (1), Is.SameAs (domainObject));
@@ -444,7 +451,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       PrepareCheckChangeFlagInvalidated (_decoratorWithRealData, true);
 
-      _decoratorWithRealData.RegisterOriginalItem (domainObject);
+      //_decoratorWithRealData.RegisterOriginalItem (domainObject);
+      _decoratorWithRealData.ResetCachedDomainObjects();
 
       CheckChangeFlagInvalidated (_decoratorWithRealData);
     }
@@ -458,7 +466,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (((IVirtualCollectionData) _decoratorWithRealData).GetObject (domainObject.ID), Is.Not.Null);
       Assert.That (_decoratorWithRealData.GetOriginalData().GetObject (domainObject.ID), Is.Null);
       Assert.That (
-          () => _decoratorWithRealData.UnregisterOriginalItem (domainObject.ID),
+          //() => _decoratorWithRealData.UnregisterOriginalItem (domainObject.ID),
+          () => _decoratorWithRealData.ResetCachedHasChangedState(),
           Throws.InvalidOperationException
               .With.Message.Matches (@"The original collection does not contain a domain object with ID 'Order\|.*'\."));
     }
@@ -469,7 +478,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (((IVirtualCollectionData) _decoratorWithRealData).ContainsObjectID (_domainObject.ID), Is.True);
       Assert.That (_decoratorWithRealData.GetOriginalData().ContainsObjectID (_domainObject.ID), Is.True);
 
-      _decoratorWithRealData.UnregisterOriginalItem (_domainObject.ID);
+      //_decoratorWithRealData.UnregisterOriginalItem (_domainObject.ID);
+      _decoratorWithRealData.ResetCachedHasChangedState();
 
       Assert.That (((IVirtualCollectionData) _decoratorWithRealData).ContainsObjectID (_domainObject.ID), Is.False);
       Assert.That (_decoratorWithRealData.GetOriginalData().ContainsObjectID (_domainObject.ID), Is.False);
@@ -480,7 +490,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       PrepareCheckChangeFlagRetained (_decoratorWithRealData, false);
 
-      _decoratorWithRealData.UnregisterOriginalItem (_domainObject.ID);
+      //_decoratorWithRealData.UnregisterOriginalItem (_domainObject.ID);
+      _decoratorWithRealData.ResetCachedHasChangedState();
 
       CheckChangeFlagRetained (_decoratorWithRealData);
     }
@@ -488,7 +499,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void UnregisterOriginalItem_CollectionUnchanged_OriginalCollectionNotCopied ()
     {
-      _decoratorWithRealData.UnregisterOriginalItem (_domainObject.ID);
+      //_decoratorWithRealData.UnregisterOriginalItem (_domainObject.ID);
+      //_decoratorWithRealData.ResetCachedHasChangedState();
 
       CheckOriginalDataNotCopied (_decoratorWithRealData);
     }
@@ -502,7 +514,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (((IVirtualCollectionData) _decoratorWithRealData).ContainsObjectID (_domainObject.ID), Is.True);
       Assert.That (_decoratorWithRealData.GetOriginalData().ContainsObjectID (_domainObject.ID), Is.True);
 
-      _decoratorWithRealData.UnregisterOriginalItem (_domainObject.ID);
+      //_decoratorWithRealData.UnregisterOriginalItem (_domainObject.ID);
+      _decoratorWithRealData.ResetCachedHasChangedState();
 
       Assert.That (((IVirtualCollectionData) _decoratorWithRealData).ContainsObjectID (_domainObject.ID), Is.False);
       Assert.That (_decoratorWithRealData.GetOriginalData().ContainsObjectID (_domainObject.ID), Is.False);
@@ -516,7 +529,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       PrepareCheckChangeFlagInvalidated (_decoratorWithRealData, true);
 
-      _decoratorWithRealData.UnregisterOriginalItem (_domainObject.ID);
+     // _decoratorWithRealData.UnregisterOriginalItem (_domainObject.ID);
+      _decoratorWithRealData.ResetCachedHasChangedState();
 
       CheckChangeFlagInvalidated (_decoratorWithRealData);
     }
@@ -531,7 +545,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (((IVirtualCollectionData) _decoratorWithRealData).ContainsObjectID (_domainObject.ID), Is.False);
       Assert.That (_decoratorWithRealData.GetOriginalData().ContainsObjectID (_domainObject.ID), Is.True);
 
-      _decoratorWithRealData.UnregisterOriginalItem (_domainObject.ID);
+      //_decoratorWithRealData.UnregisterOriginalItem (_domainObject.ID);
+      _decoratorWithRealData.ResetCachedHasChangedState();
 
       Assert.That (((IVirtualCollectionData) _decoratorWithRealData).ContainsObjectID (_domainObject.ID), Is.False);
       Assert.That (_decoratorWithRealData.GetOriginalData().ContainsObjectID (_domainObject.ID), Is.False);
@@ -546,7 +561,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       PrepareCheckChangeFlagInvalidated (_decoratorWithRealData, true);
 
-      _decoratorWithRealData.UnregisterOriginalItem (_domainObject.ID);
+      //_decoratorWithRealData.UnregisterOriginalItem (_domainObject.ID);
+      _decoratorWithRealData.ResetCachedHasChangedState();
 
       CheckChangeFlagInvalidated (_decoratorWithRealData);
     }
