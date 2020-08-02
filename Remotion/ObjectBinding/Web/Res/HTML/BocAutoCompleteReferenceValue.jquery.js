@@ -542,7 +542,10 @@
         };
 
         function updateResult(item) {
-            var out = { Value : null };
+            if ($input.length === 0)
+              return;
+
+            var out = { Value: null };
             $input.trigger("updateResult", [item, out]);
             state.previousValue = out.Value.DisplayName;
             isInvalidated = false;
