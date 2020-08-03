@@ -182,3 +182,10 @@ span.bocTimeInputWrapper input
   height: 1.2em;
   line-height: 1em;
 }
+
+.blink span.bocDateInputWrapper input,
+.blink span.bocTimeInputWrapper input
+{
+  padding-left: 1px;
+  padding-right: 1px;
+}

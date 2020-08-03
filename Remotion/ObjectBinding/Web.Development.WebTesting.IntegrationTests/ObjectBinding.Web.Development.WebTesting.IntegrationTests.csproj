@@ -160,6 +160,7 @@
     <EmbeddedResource Include="SavedTestScreenshots\BocDateTimeValueControlObjectTest\InternetExplorer.any.ScreenshotTest_DatePicker.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocDateTimeValueControlObjectTest\ScreenshotTest0.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocDateTimeValueControlObjectTest\ScreenshotTest1.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\BocDateTimeValueControlObjectTest\ScreenshotTest2.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\ScreenshotTest.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\ScreenshotTest_MenuBlock.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\ScreenshotTest_Navigator.png" />

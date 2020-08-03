@@ -79,3 +79,9 @@ span.bocTextValue input
   height: 1.2em;
   line-height: 1em;
 }
+
+.blink span.bocTextValue input
+{
+  padding-left: 1px;
+  padding-right: 1px;
+}

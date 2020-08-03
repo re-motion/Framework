@@ -142,3 +142,10 @@ img.Icon
   padding: 0 !important;
   margin: 0 !important;
 }
+
+.blink input[type=text],
+.blink input[type=password]
+{
+  padding-left: 1px;
+  padding-right: 1px;
+}
