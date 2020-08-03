@@ -134,7 +134,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
       return window.FindFirst (
           TreeScope.Subtree,
           new AndCondition (
-              new PropertyCondition (AutomationElement.ControlTypeProperty, ControlType.Document),
+              new PropertyCondition (AutomationElement.ControlTypeProperty, ControlType.Pane),
+              new PropertyCondition (AutomationElement.ClassNameProperty, "View"),
               new PropertyCondition (AutomationElement.FrameworkIdProperty, c_edgeFrameworkID)));
     }
 

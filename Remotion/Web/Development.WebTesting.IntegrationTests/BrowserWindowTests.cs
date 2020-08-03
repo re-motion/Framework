@@ -44,7 +44,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var size = new Size (600, 600);
       BrowserHelper.ResizeBrowserWindowTo (window, size);
 
-      Assert.That (BrowserHelper.GetWindowBounds (window).Size, Is.EqualTo (size), "Window size does not match the expected size.");
+      // RM-7465 On some setups Edge does not resize to the exact size given.
+      var edgeSize = size + new Size (2, 0);
+      Assert.That (BrowserHelper.GetWindowBounds (window).Size, Is.AnyOf (size, edgeSize), "Window size does not match the expected size.");
     }
 
     [Test]

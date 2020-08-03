@@ -119,6 +119,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var hoverElement = home.Scope.FindId (c_hoverDivID);
+      Thread.Sleep (250);
       Helper.BrowserConfiguration.MouseHelper.Hover (hoverElement);
       Thread.Sleep (250);
 

@@ -199,7 +199,6 @@
     <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\ElementCroppingWithPaddingTest.png" />
     <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\ElementTextAnnotations0.png" />
     <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\ElementTextAnnotations1.png" />
-    <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\Chrome.any.ResolveAbsolutePositionedElement.png" />
     <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\ResolveAbsolutePositionedElement.png" />
     <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\Chrome.any.ResolveBorderElementA.png" />
     <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\Edge.any.ResolveBorderElementA.png" />
