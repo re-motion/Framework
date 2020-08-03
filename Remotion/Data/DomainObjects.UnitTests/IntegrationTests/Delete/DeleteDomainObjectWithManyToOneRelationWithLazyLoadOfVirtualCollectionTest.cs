@@ -23,7 +23,6 @@ using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
 {
-  [Ignore ("TODO: RM-7294")]
   [TestFixture]
   public class DeleteDomainObjectWithManyToOneRelationWithLazyLoadOfVirtualCollectionTest : ClientTransactionBaseTest
   {

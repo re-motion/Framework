@@ -23,7 +23,6 @@ using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
 {
-  [Ignore ("TODO: RM-7294")]
   [TestFixture]
   public class DeleteDomainObjectWithOneToManyRelationWithLazyLoadOfVirtualCollectionTest : ClientTransactionBaseTest
   {
@@ -43,9 +42,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
       _productReview3 = DomainObjectIDs.ProductReview3.GetObject<ProductReview>();
 
       _eventReceiver = CreateEventReceiver();
-      Assert.That (_productReview1.Product.ID, Is.EqualTo (_product));
-      Assert.That (_productReview2.Product.ID, Is.EqualTo (_product));
-      Assert.That (_productReview3.Product.ID, Is.EqualTo (_product));
+      Assert.That (_productReview1.Product, Is.SameAs (_product));
+      Assert.That (_productReview2.Product, Is.SameAs (_product));
+      Assert.That (_productReview3.Product, Is.SameAs (_product));
       Assert.That (_product.Reviews.IsDataComplete, Is.False);
     }
 
@@ -101,6 +100,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     }
 
     [Test]
+    [Ignore ("RM-7294: delete related items even when relation is not loaded")]
     public void Relations ()
     {
       _product.Delete();
