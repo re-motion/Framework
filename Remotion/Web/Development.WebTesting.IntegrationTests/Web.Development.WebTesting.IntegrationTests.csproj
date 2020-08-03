@@ -269,10 +269,7 @@
     <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\TooltipTest.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="SavedTestScreenshots\DropDownMenuControlObjectTest\Chrome.any.DropDownMenu.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SavedTestScreenshots\DropDownMenuControlObjectTest\Edge.any.DropDownMenu.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\DropDownMenuControlObjectTest\DropDownMenu.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
