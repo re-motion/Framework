@@ -33,7 +33,7 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
   public abstract class BrowserSessionBase<T> : IBrowserSession
       where T : IBrowserConfiguration
   {
-    private TimeSpan _driverShutdownWaitTime = TimeSpan.FromMilliseconds (250);
+    private TimeSpan _driverShutdownWaitTime = TimeSpan.FromSeconds (60);
     private TimeSpan _browserShutdownWaitTime = TimeSpan.FromMilliseconds (500);
     private TimeSpan _browserSubProcessShutdownWaitTime = TimeSpan.FromMilliseconds (250);
 
@@ -119,30 +119,13 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
       if (driverProcess != null)
       {
         ProcessUtils.GracefulProcessShutdown (driverProcess, (int) _driverShutdownWaitTime.TotalMilliseconds);
-        driverProcess.WaitForExit (60000);
       }
 
       if (browserProcess != null)
       {
         ProcessUtils.GracefulProcessShutdown (browserProcess, (int) _browserShutdownWaitTime.TotalMilliseconds);
-        CheckForSubProcessesExited (browserSubProcesses, browserProcess);
+        browserSubProcesses.ForEach (p => ProcessUtils.GracefulProcessShutdown (p, (int) _browserSubProcessShutdownWaitTime.TotalMilliseconds));
       }
-    }
-
-    private void CheckForSubProcessesExited (List<Process> browserSubProcesses, Process browserProcess)
-    {
-      // Wait for every sub process of the browser process to be closed
-      for (int i = 0; i < 5; i++)
-      {
-        if (WaitForSubProcessExit (browserSubProcesses, _browserSubProcessShutdownWaitTime))
-          return;
-      }
-
-      throw new InvalidOperationException (
-          string.Format (
-            "The Subprocesses of the Process '{0}' (id: '{1}') did not exit in the expected amount of time.",
-            browserProcess.ProcessName,
-            browserProcess.Id));
     }
 
     /// <summary>
@@ -177,24 +160,6 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
       var processes = Process.GetProcesses();
 
       return processes.Where (p => p.ProcessName == _browserConfiguration.BrowserExecutableName && ProcessUtils.GetParentProcessID (p) == process.Id);
-    }
-
-    /// <summary>
-    /// WaitForExit for <paramref name="browserSubProcesses"/>.
-    /// Returns false if any process failed to exit in the specified <paramref name="timeout"/>.
-    /// </summary>
-    private bool WaitForSubProcessExit (IEnumerable<Process> browserSubProcesses, TimeSpan timeout)
-    {
-      foreach (var browserSubProcess in browserSubProcesses)
-      {
-        if (!browserSubProcess.WaitForExit ((int) timeout.TotalMilliseconds))
-        {
-          // There is still a minimum of 1 sub process running --> Try again
-          return false;
-        }
-      }
-
-      return true;
     }
   }
 }
