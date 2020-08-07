@@ -542,11 +542,15 @@
         };
 
         function updateResult(item) {
-            if ($input.length === 0)
-              return;
-
             var out = { Value: null };
             $input.trigger("updateResult", [item, out]);
+            if (out.Value === null) {
+              // When combining an auto-postback with a button click, it is possible that $input no longer points to a textfield that is still
+              // part of the page. In this event, the 'updateResult' operation is not wired up, resulting in a NOP and out.Value will not have
+              // been initialized.
+              return;
+            }
+
             state.previousValue = out.Value.DisplayName;
             isInvalidated = false;
           };
