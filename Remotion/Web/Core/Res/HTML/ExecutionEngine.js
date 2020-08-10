@@ -69,6 +69,8 @@ function WxePage_Context(
   {
     ArgumentUtility.CheckNotNullAndTypeIsBoolean('hasSubmitted', hasSubmitted);
     ArgumentUtility.CheckNotNullAndTypeIsBoolean('isCached', isCached);
+
+    document.getElementById('wxePostBackSequenceNumberField').setAttribute('value', _postBackSequenceNumber);
   };
 
   // Handles the page loaded event.
@@ -82,8 +84,6 @@ function WxePage_Context(
     {
       this.ShowStatusIsCachedMessage();
     }
-
-    document.getElementById('wxePostBackSequenceNumberField').setAttribute('value', _postBackSequenceNumber);
   };
 
   this.OnUnload = function()
