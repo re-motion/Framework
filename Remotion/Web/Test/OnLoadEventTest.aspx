@@ -6,9 +6,13 @@
 <head runat="server">
   <title></title>
   <script type="text/javascript">
-    function Page_OnLoad()
+    function Page_OnLoading()
     {
-      window.alert('On Load');
+      window.alert('On Loading');
+    }
+    function Page_OnLoaded()
+    {
+        window.alert('On Loaded');
     }
   </script>
 </head>

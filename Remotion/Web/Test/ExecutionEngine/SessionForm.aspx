@@ -99,7 +99,7 @@ Sample: <asp:HyperLink id="SampleFunctionPermaLink" runat="server"></asp:HyperLi
     {
     }
     
-    function Page_Load ()
+    function Page_Loaded ()
     { 
       /*
       // IE Only

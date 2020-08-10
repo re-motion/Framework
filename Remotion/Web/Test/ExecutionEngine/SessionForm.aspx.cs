@@ -66,7 +66,7 @@ namespace Remotion.Web.Test.ExecutionEngine
     {
       RegisterClientSidePageEventHandler (SmartPageEvents.OnPostBack, "Page_PostBack", "Page_PostBack");
       RegisterClientSidePageEventHandler (SmartPageEvents.OnPostBack, "Page_Abort", "Page_Abort");
-      RegisterClientSidePageEventHandler (SmartPageEvents.OnLoad, "Page_Load", "Page_Load");
+      RegisterClientSidePageEventHandler (SmartPageEvents.OnLoaded, "Page_Loaded", "Page_Loaded");
       RegisterClientSidePageEventHandler (SmartPageEvents.OnBeforeUnload, "Page_BeforeUnload", "Page_BeforeUnload");
       RegisterClientSidePageEventHandler (SmartPageEvents.OnUnload, "Page_Unload", "Page_Unload");
       FunctionTokenLabel.Text = "Token = " + WxeContext.Current.FunctionToken;
