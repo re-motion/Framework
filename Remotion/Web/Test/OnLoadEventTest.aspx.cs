@@ -23,7 +23,8 @@ namespace Remotion.Web.Test
   {
     protected override void OnPreRender (EventArgs e)
     {
-      RegisterClientSidePageEventHandler (SmartPageEvents.OnLoad, "OnLoad", "Page_OnLoad");
+      RegisterClientSidePageEventHandler (SmartPageEvents.OnLoading, "OnLoading", "Page_OnLoading");
+      RegisterClientSidePageEventHandler (SmartPageEvents.OnLoaded, "OnLoaded", "Page_OnLoaded");
       base.OnPreRender (e);
     }
   }

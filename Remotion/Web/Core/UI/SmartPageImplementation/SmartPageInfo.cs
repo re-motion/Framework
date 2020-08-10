@@ -105,6 +105,11 @@ namespace Remotion.Web.UI.SmartPageImplementation
             "RegisterClientSidePageEventHandler must not be called after the PreRenderComplete method of the System.Web.UI.Page has been invoked.");
       }
 
+#pragma warning disable 618
+      if (pageEvent == SmartPageEvents.OnLoad)
+        pageEvent = SmartPageEvents.OnLoaded;
+#pragma warning restore 618
+
       NameValueCollection eventHandlers = _clientSideEventHandlers[pageEvent];
       eventHandlers[key] = function;
     }

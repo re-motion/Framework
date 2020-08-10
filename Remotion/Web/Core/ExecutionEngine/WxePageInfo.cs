@@ -361,7 +361,8 @@ namespace Remotion.Web.ExecutionEngine
         statusIsCachedMessage = "'" + ScriptUtility.EscapeClientScript (temp) + "'";
       }
 
-      _page.RegisterClientSidePageEventHandler (SmartPageEvents.OnLoad, "WxePage_OnLoad", "WxePage_OnLoad");
+      _page.RegisterClientSidePageEventHandler (SmartPageEvents.OnLoading, "WxePage_OnLoading", "WxePage_OnLoading");
+      _page.RegisterClientSidePageEventHandler (SmartPageEvents.OnLoaded, "WxePage_OnLoaded", "WxePage_OnLoaded");
       _page.RegisterClientSidePageEventHandler (SmartPageEvents.OnAbort, "WxePage_OnAbort", "WxePage_OnAbort");
       _page.RegisterClientSidePageEventHandler (SmartPageEvents.OnUnload, "WxePage_OnUnload", "WxePage_OnUnload");
       _page.CheckFormStateFunction = "WxePage_CheckFormState";

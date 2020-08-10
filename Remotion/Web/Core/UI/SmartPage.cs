@@ -97,7 +97,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   /// <summary> 
   ///   Registers Java Script functions to be executed when the respective <paramref name="pageEvent"/> is raised.
   /// </summary>
-  /// <include file='..\doc\include\ExecutionEngine\WxePage.xml' path='WxePage/RegisterClientSidePageEventHandler/*' />
+  /// <include file='..\doc\include\UI\SmartPage.xml' path='SmartPage/RegisterClientSidePageEventHandler/*' />
   public void RegisterClientSidePageEventHandler (SmartPageEvents pageEvent, string key, string function)
   {
     _smartPageInfo.RegisterClientSidePageEventHandler (pageEvent, key, function);

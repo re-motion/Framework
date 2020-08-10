@@ -120,7 +120,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
           options.Target,
           options.Features ?? string.Empty);
       _page.ClientScript.RegisterClientScriptBlock (_page, typeof (WxeExecutor), "WxeExecuteFunction", openScript);
-      _page.RegisterClientSidePageEventHandler (SmartPageEvents.OnLoad, "WxeExecuteFunction", functionName);
+      _page.RegisterClientSidePageEventHandler (SmartPageEvents.OnLoaded, "WxeExecuteFunction", functionName);
 
       function.SetExecutionCompletedScript (GetClosingScriptForExternalFunction (functionToken, sender, options.ReturningPostback));
     }

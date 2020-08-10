@@ -395,6 +395,8 @@ function SmartPage_Context(
 
     this.Restore();
 
+    ExecuteEventHandlers (_eventHandlers['onloading'], _hasSubmitted, _isCached, isAsynchronous);
+
     var isSubmitting = false;
     if (this.IsSubmitting() && _submitState.NextSubmitState != null && _submitState.NextSubmitState.Submitter != null && !_abortQueuedSubmit)
     {
@@ -441,7 +443,7 @@ function SmartPage_Context(
       _isSubmittingBeforeUnload = false;
       this.HideStatusMessage();
 
-      ExecuteEventHandlers (_eventHandlers['onload'], _hasSubmitted, _isCached, isAsynchronous);
+      ExecuteEventHandlers (_eventHandlers['onloaded'], _hasSubmitted, _isCached, isAsynchronous);
     }
   };
 
