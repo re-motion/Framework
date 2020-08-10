@@ -21,6 +21,7 @@ using System.IO;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.WebDriver;
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
@@ -31,49 +32,42 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void WebTestHelper_OnTestFixtureTearDown_ClosesMainBrowserSessionProcesses ([Values (true, false)] bool testSuccess)
     {
-      RetryTest (
-          () =>
-          {
-            var webTestHelper = WebTestHelper.CreateFromConfiguration<CustomWebTestConfigurationFactory>();
+      var webTestHelper = WebTestHelper.CreateFromConfiguration<CustomWebTestConfigurationFactory>();
 
-            var configuration = webTestHelper.BrowserConfiguration;
+      var configuration = webTestHelper.BrowserConfiguration;
 
-            // Filter used when taking process snapshots
-            var filter = (Func<Process, bool>) (p => p.ProcessName == configuration.BrowserExecutableName
-                                                     || p.ProcessName == configuration.WebDriverExecutableName);
+      // Filter used when taking process snapshots
+      var filter = CreateFilterForConfiguration (configuration);
 
-            // Start and stop the web helper while taking process snapshots
-            var beforeStart = ProcessSnapshot.CreateWithFilter (filter);
-            SetupWebTestHelper (webTestHelper);
-            var afterStart = ProcessSnapshot.CreateWithFilter (filter);
-            ShutdownWebTestHelper (webTestHelper, testSuccess);
-            var afterExit = ProcessSnapshot.CreateWithFilter (filter);
+      // Start and stop the web helper while taking process snapshots
+      var beforeStart = ProcessSnapshot.CreateWithFilter (filter);
+      SetupWebTestHelper (webTestHelper);
+      var afterStart = ProcessSnapshot.CreateWithFilter (filter);
+      ShutdownWebTestHelper (webTestHelper, testSuccess);
+      var afterExit = ProcessSnapshot.CreateWithFilter (filter);
 
-            var startedDiff = beforeStart.Difference (afterStart);
-            var stoppedDiff = afterExit.Difference (afterStart);
+      var startedDiff = beforeStart.Difference (afterStart);
+      var stoppedDiff = afterExit.Difference (afterStart);
 
-            // Check if driver and browser are started
-            Assert.That (
-                startedDiff.GetProcessCount (configuration.WebDriverExecutableName),
-                Is.EqualTo (1),
-                "The web driver has not been started.");
-            Assert.That (
-                startedDiff.GetProcessCount (configuration.BrowserExecutableName),
-                Is.GreaterThan (0),
-                "The browser has not been started.");
+      // Check if driver and browser are started
+      Assert.That (
+          startedDiff.GetProcessCount (configuration.WebDriverExecutableName),
+          Is.EqualTo (1),
+          "The web driver has not been started.");
+      Assert.That (
+          startedDiff.GetProcessCount (configuration.BrowserExecutableName),
+          Is.GreaterThan (0),
+          "The browser has not been started.");
 
-            // Check if driver and browser are closed
-            Assert.That (
-                stoppedDiff.GetProcessCount (configuration.WebDriverExecutableName),
-                Is.EqualTo (1),
-                "The web driver has not been closed.");
-            Assert.That (
-                stoppedDiff.GetProcessCount (configuration.BrowserExecutableName),
-                Is.EqualTo (startedDiff.GetProcessCount (configuration.BrowserExecutableName)),
-                "The browser has not been closed.");
-          },
-          2
-          );
+      // Check if driver and browser are closed
+      Assert.That (
+          stoppedDiff.GetProcessCount (configuration.WebDriverExecutableName),
+          Is.EqualTo (1),
+          "The web driver has not been closed.");
+      Assert.That (
+          stoppedDiff.GetProcessCount (configuration.BrowserExecutableName),
+          Is.EqualTo (startedDiff.GetProcessCount (configuration.BrowserExecutableName)),
+          "The browser has not been closed.");
     }
 
     [Test]
@@ -85,8 +79,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var configuration = webTestHelper.BrowserConfiguration;
 
       // Filter used when taking process snapshots
-      var filter = (Func<Process, bool>) (p => p.ProcessName == configuration.BrowserExecutableName
-                                               || p.ProcessName == configuration.WebDriverExecutableName);
+      var filter = CreateFilterForConfiguration (configuration);
 
       // The amount of browser sessions to open
       const int browserSessions = 3;
@@ -162,6 +155,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       }
     }
 
+    private Func<Process, bool> CreateFilterForConfiguration (IBrowserConfiguration configuration) =>
+        p => (string.Equals (p.ProcessName, configuration.BrowserExecutableName, StringComparison.OrdinalIgnoreCase)
+              || string.Equals (p.ProcessName, configuration.WebDriverExecutableName, StringComparison.OrdinalIgnoreCase))
+             && !p.HasExited;
+
     /// <summary>
     /// Calls <see cref="WebTestHelper.OnFixtureSetUp"/> and <see cref="WebTestHelper.OnSetUp"/> on the specified <see cref="WebTestHelper"/>.
     /// </summary>
@@ -190,26 +188,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       }
 
       webTestHelper.OnFixtureTearDown();
-    }
-
-    private void RetryTest (Action action, int retries)
-    {
-      if (retries < 0)
-        throw new ArgumentOutOfRangeException ("retries", "Retries must be greater than or equal to zero.");
-
-      for (int i = 0; i <= retries; i++)
-      {
-        try
-        {
-          action();
-        }
-        catch (AssertionException) when (i < retries)
-        {
-          continue;
-        }
-
-        return;
-      }
     }
 
     /// <summary>
