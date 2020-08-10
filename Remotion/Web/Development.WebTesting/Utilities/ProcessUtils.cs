@@ -138,13 +138,32 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       // Try to gracefully close the process
       if (process.CloseMainWindow())
       {
+        // No exception is thrown when calling .WaitForExit(..) on an already exited process.
         if (process.WaitForExit (timeoutInMilliseconds))
           return;
       }
 
       // Force closing the process
-      process.Kill();
+      try
+      {
+        process.Kill();
+      }
+      catch (Win32Exception)
+      {
+        // Thrown if the .Kill() method is called while the process is currently terminating.
+        // https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.process.kill#remarks
+        // This exception can be swallowed safely, as the process that should be killed is already terminating.
+      }
+      catch (InvalidOperationException)
+      {
+        // Thrown if the process has already exited, or no process is associated with the Process object.
+        // https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.process.kill#System_Diagnostics_Process_Kill
+        // This exception can be swallowed safely, as we are sure that a process is associated and the process has
+        // already exited, therefore the method can return at this point.
+        return;
+      }
 
+      // No exception is thrown when calling .WaitForExit(..) on an already exited process.
       if (process.WaitForExit (timeoutInMilliseconds))
         return;
 
