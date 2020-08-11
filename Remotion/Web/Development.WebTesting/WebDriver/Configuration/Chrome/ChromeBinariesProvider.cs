@@ -133,6 +133,10 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
             + "This could mean that no corresponding ChromeDriver has been released for the version of Chrome you are using.",
             ex);
       }
+      catch (WebException ex)
+      {
+        throw new WebException ($"Could not fetch the latest ChromeDriver version from '{chromeDriverVersionUrl}': {ex.Message}", ex.Status);
+      }
     }
 
     private bool ChromeDriverExists (string chromeDriverVersion)
@@ -177,9 +181,16 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
       RemoveChromeDriverRootDirectoryIfExists();
       Directory.CreateDirectory (tempPath);
 
-      using (var webClient = new WebClient())
+      try
       {
-        webClient.DownloadFile (url, fullZipPath);
+        using (var webClient = new WebClient())
+        {
+          webClient.DownloadFile (url, fullZipPath);
+        }
+      }
+      catch (WebException ex)
+      {
+        throw new WebException ($"Could not download the ChromeDriver for Chrome v{chromeDriverVersion} from '{url}': {ex.Message}", ex.Status);
       }
 
       ZipFile.ExtractToDirectory (fullZipPath, tempPath);
