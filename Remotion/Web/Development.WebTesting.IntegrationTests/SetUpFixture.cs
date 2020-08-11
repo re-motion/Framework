@@ -17,6 +17,7 @@
 using System;
 using System.IO;
 using NUnit.Framework;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {

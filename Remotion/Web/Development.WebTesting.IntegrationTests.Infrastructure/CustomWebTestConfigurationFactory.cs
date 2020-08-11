@@ -23,7 +23,7 @@ using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox;
 
-namespace Remotion.Web.Development.WebTesting.IntegrationTests
+namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 {
   public class CustomWebTestConfigurationFactory : WebTestConfigurationFactory
   {
@@ -38,10 +38,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var versionedChromeFolder = $"Chrome_v{LatestTestedChromeVersion}";
       var customChromeDirectory = PrepareCustomBrowserDirectory (chromeVersionArchivePath, versionedChromeFolder);
 
-      var customBrowserBinary = GetBinaryPath (customChromeDirectory, "chrome");
+      var customChromeBinary = GetBinaryPath (customChromeDirectory, "chrome");
+      var customDriverBinary = GetBinaryPath (customChromeDirectory, "chromedriver");
       var customUserDirectoryPath = CustomUserDirectory.GetCustomUserDirectory();
 
-      var chromeExecutable = ChromeExecutable.CreateForCustomInstance (customBrowserBinary, customUserDirectoryPath);
+      var chromeExecutable = new ChromeExecutable (customChromeBinary, customDriverBinary, customUserDirectoryPath);
 
       return new ChromeConfiguration (configSettings, chromeExecutable, advancedChromeOptions);
     }

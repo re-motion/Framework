@@ -19,6 +19,7 @@ using System.IO;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests;
 using Remotion.Web.Development.WebTesting;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 
 namespace Remotion.ObjectBinding.Web.IntegrationTests
 {

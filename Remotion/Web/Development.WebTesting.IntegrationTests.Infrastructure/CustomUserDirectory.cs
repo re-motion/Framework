@@ -17,7 +17,7 @@
 using System;
 using System.IO;
 
-namespace Remotion.Web.Development.WebTesting.IntegrationTests
+namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 {
   public static class CustomUserDirectory
   {

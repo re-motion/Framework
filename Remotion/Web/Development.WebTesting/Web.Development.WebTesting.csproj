@@ -237,6 +237,7 @@
     <Compile Include="Utilities\ScreenshotRecorderPathUtility.cs" />
     <Compile Include="Utilities\ServerErrorException.cs" />
     <Compile Include="WebDriver\Configuration\Chrome\AdvancedChromeOptions.cs" />
+    <Compile Include="WebDriver\Configuration\Chrome\ChromeBinariesProvider.cs" />
     <Compile Include="WebDriver\Configuration\Chrome\ExtendedChromeOptions.cs" />
     <Compile Include="BrowserSession\Chrome\ChromeBrowserSession.cs" />
     <Compile Include="BrowserSession\IBrowserSession.cs" />
@@ -410,12 +411,6 @@
   <ItemGroup>
     <None Include="..\..\..\packages\WebDriver.IEDriverServer.win32.2.44\content\IEDriverServer.exe">
       <Link>IEDriverServer.exe</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\..\packages\WebDriver.ChromeDriver.win32.2.38.0\content\chromedriver.exe">
-      <Link>chromedriver.exe</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
