@@ -24,18 +24,26 @@ using Remotion.Validation.Results;
 
 namespace Remotion.ObjectBinding.Validation
 {
+  /// <summary>
+  /// Implementation of the <see cref="IBusinessObjectValidationResult"/> interface for <see cref="ValidationResult"/>.
+  /// </summary>
+  /// <threadsafety static="true" instance="false" />
   public class BusinessObjectValidationResult : IBusinessObjectValidationResult
   {
     public static BusinessObjectValidationResult Create ([NotNull] ValidationResult validationResult)
     {
       ArgumentUtility.CheckNotNull ("validationResult", validationResult);
 
-      var businessObjectValidationFailures = validationResult.Errors.Select (CreateBusinessObjectValidationFailure);
-      return new BusinessObjectValidationResult (businessObjectValidationFailures);
+      var validationFailures = validationResult.Errors.Select (e => (CreateBusinessObjectValidationFailure (e), e));
+      return new BusinessObjectValidationResult (validationFailures);
     }
 
     private static BusinessObjectValidationFailure CreateBusinessObjectValidationFailure (ValidationFailure validationFailure)
-    {
+    {      
+      // TODO: RM-6056: Implementation: Find a way to not requiring a soft-cast to BindableProperty to get to the IPropertyInformation.
+      // Instead, either support matching via visitor or some other good idea. Keep in mind to not clutter the
+      // IBusinessObjectProperty interface to accomplish this design goal.
+
       switch (validationFailure)
       {
         case PropertyValidationFailure propertyValidationFailure
@@ -71,39 +79,56 @@ namespace Remotion.ObjectBinding.Validation
       return businessObjectClass.GetPropertyDefinition (property.Name);
     }
 
-    private readonly IReadOnlyCollection<BusinessObjectValidationFailure> _businessObjectValidationFailures;
+    private readonly IReadOnlyCollection<(BusinessObjectValidationFailure BusinessObjectValidationFailure, ValidationFailure ValidationFailure)> _validationFailures;
 
-    public BusinessObjectValidationResult (IEnumerable<BusinessObjectValidationFailure> businessObjectValidationFailures)
+    private readonly HashSet<(BusinessObjectValidationFailure BusinessObjectValidationFailure, ValidationFailure ValidationFailure)> _unhandledValidationFailures;
+
+    private BusinessObjectValidationResult (IEnumerable<(BusinessObjectValidationFailure BusinessObjectValidationFailure, ValidationFailure ValidationFailure)> businessObjectValidationFailures)
     {
       ArgumentUtility.CheckNotNull ("businessObjectValidationFailures", businessObjectValidationFailures);
 
-      _businessObjectValidationFailures = businessObjectValidationFailures.ToArray();
+      _validationFailures = businessObjectValidationFailures.ToArray();
+      _unhandledValidationFailures = new HashSet<(BusinessObjectValidationFailure BusinessObjectValidationFailure, ValidationFailure ValidationFailure)> (_validationFailures);
     }
 
-    public IEnumerable<BusinessObjectValidationFailure> GetValidationFailures (
+    public IReadOnlyCollection<BusinessObjectValidationFailure> GetValidationFailures (
         IBusinessObject businessObject,
         IBusinessObjectProperty businessObjectProperty,
         bool markAsHandled)
     {
-      return _businessObjectValidationFailures.Where (
-          f => Equals (f.ValidatedObject, businessObject)
-               && (f.ValidatedProperty == null || f.ValidatedProperty.Identifier == businessObjectProperty.Identifier));
+      ArgumentUtility.CheckNotNull ("businessObject", businessObject);
+      ArgumentUtility.CheckNotNull ("businessObjectProperty", businessObjectProperty);
+
+      var validationFailures = _validationFailures
+          .Where (f => Equals (f.BusinessObjectValidationFailure.ValidatedObject, businessObject))
+          .Where (f => f.BusinessObjectValidationFailure.ValidatedProperty?.Identifier == businessObjectProperty.Identifier);
+
+      var result = new List<BusinessObjectValidationFailure>();
+      foreach (var validationFailure in validationFailures)
+      {
+        result.Add (validationFailure.BusinessObjectValidationFailure);
+
+        if (markAsHandled)
+          _unhandledValidationFailures.Remove (validationFailure);
+      }
+
+      return result;
     }
 
-    public IEnumerable<UnhandledBusinessObjectValidationFailure> GetUnhandledValidationFailures (IBusinessObject businessObject)
+    public IReadOnlyCollection<UnhandledBusinessObjectValidationFailure> GetUnhandledValidationFailures (IBusinessObject businessObject)
     {
-      return Enumerable.Empty<UnhandledBusinessObjectValidationFailure>();
+      ArgumentUtility.CheckNotNull ("businessObject", businessObject);
+
+      return _unhandledValidationFailures
+          .Where (f => Equals (f.BusinessObjectValidationFailure.ValidatedObject, businessObject))
+          .Select (f => f.BusinessObjectValidationFailure)
+          .Select (f => new UnhandledBusinessObjectValidationFailure (f.ErrorMessage, f.ValidatedProperty))
+          .ToArray();
     }
 
-    // Not part of IBusinessObjectValidationResult interface
-    public IEnumerable<ValidationFailure> GetUnhandledValidationFailures ()
+    public IReadOnlyCollection<ValidationFailure> GetUnhandledValidationFailures ()
     {
-      return Enumerable.Empty<ValidationFailure>();
+      return _unhandledValidationFailures.Select (f => f.ValidationFailure).ToArray();
     }
-
-    /* Implementation: Find a way to not requiring a soft-cast to BindableProperty to get to the IPropertyInformation.
-       Instead, either support matching via visitor or some other good idea. Keep in mind to not clutter the
-       IBusinessObjectProperty interface to accomplish this design goal.
-    */
   }
 }

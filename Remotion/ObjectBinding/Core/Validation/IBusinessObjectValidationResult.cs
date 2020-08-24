@@ -20,14 +20,15 @@ using JetBrains.Annotations;
 
 namespace Remotion.ObjectBinding.Validation
 {
+  /// <threadsafety static="true" instance="false" />
   public interface IBusinessObjectValidationResult
   {
-    IEnumerable<BusinessObjectValidationFailure> GetValidationFailures (
+    IReadOnlyCollection<BusinessObjectValidationFailure> GetValidationFailures (
         [NotNull] IBusinessObject businessObject,
         [NotNull] IBusinessObjectProperty businessObjectProperty,
         bool markAsHandled);
 
-    IEnumerable<UnhandledBusinessObjectValidationFailure> GetUnhandledValidationFailures (
+    IReadOnlyCollection<UnhandledBusinessObjectValidationFailure> GetUnhandledValidationFailures (
         [NotNull] IBusinessObject businessObject);
   }
 }
