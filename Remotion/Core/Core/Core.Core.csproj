@@ -361,7 +361,6 @@
     <Compile Include="Utilities\NullValueConverter.cs" />
     <Compile Include="Utilities\AttributeRetrieval\PropertyCustomAttributeRetriever.cs" />
     <Compile Include="Utilities\ReSharperAnnotations\ReflectionAPIAttribute.cs" />
-    <Compile Include="Utilities\RoslynAnnotations\NullableAnnotations.cs" />
     <Compile Include="Utilities\StopwatchScope.cs" />
     <Compile Include="Utilities\TypeConverterResult.cs" />
     <Compile Include="Utilities\TypeConverterType.cs" />
@@ -425,7 +424,6 @@
   <ItemGroup>
     <None Include="FacetManifest.xml" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

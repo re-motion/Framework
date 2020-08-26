@@ -49,6 +49,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\SharedSource\Core\RoslynAnnotations\NullableAnnotations.cs">
+      <Link>SharedSource\RoslynAnnotations\NullableAnnotations.cs</Link>
+    </Compile>
     <Compile Include="CustomClassEmitter.cs" />
     <Compile Include="CustomEventEmitter.cs" />
     <Compile Include="CustomMethodEmitter.cs" />

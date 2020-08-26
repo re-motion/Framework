@@ -64,6 +64,8 @@
 #define INTERNAL_NULLABLE_ATTRIBUTES
 
 #pragma warning disable MA0048 // File name must match type name
+
+// ReSharper disable once CheckNamespace
 namespace System.Diagnostics.CodeAnalysis
 {
   /// <summary>Specifies that null is allowed as an input even if the corresponding type disallows it.</summary>
