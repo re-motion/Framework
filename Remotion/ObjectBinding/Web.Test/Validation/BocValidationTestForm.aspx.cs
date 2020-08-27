@@ -137,7 +137,8 @@ namespace OBWTest.Validation
             validationResult.Errors
                 .Concat (validationResultPartner.Errors)
                 .Concat (jobFailures)
-                .Concat (validationResultFather.Errors));
+                .Concat (validationResultFather.Errors)
+                .ToArray());
 
         if (combinedValidationResult.IsValid)
         {

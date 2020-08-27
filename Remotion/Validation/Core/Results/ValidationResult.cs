@@ -16,8 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using Remotion.Utilities;
 
 namespace Remotion.Validation.Results
@@ -32,10 +30,11 @@ namespace Remotion.Validation.Results
       Errors = Array.Empty<ValidationFailure>();
     }
 
-    public ValidationResult (IEnumerable<ValidationFailure> failures)
+    public ValidationResult (IReadOnlyCollection<ValidationFailure> failures)
     {
-      var failureArray = ArgumentUtility.CheckNotNullOrItemsNull ("failures", failures).ToArray();
-      Errors = new ReadOnlyCollection<ValidationFailure> (failureArray);
+      ArgumentUtility.CheckNotNullOrItemsNull ("failures", failures);
+
+      Errors = failures;
     }
 
     public bool IsValid => Errors.Count == 0;

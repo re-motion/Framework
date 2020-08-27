@@ -55,7 +55,7 @@ namespace Remotion.Validation.Implementation
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
-      var failures = _validators.SelectMany (v => v.Validate (context).Errors);
+      var failures = _validators.SelectMany (v => v.Validate (context).Errors).ToArray();
       return new ValidationResult (failures);
     }
 

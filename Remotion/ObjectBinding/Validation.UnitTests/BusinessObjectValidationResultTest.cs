@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.ObjectBinding.BindableObject;
@@ -157,7 +156,8 @@ namespace Remotion.ObjectBinding.Validation.UnitTests
       var combinedValidationResult = new ValidationResult (
           validationResult1.Errors
               .Concat (validationResult2.Errors)
-              .Concat (new[] { new ObjectValidationFailure (person1, "Object Validation Error", "Localized Object Validation Error") }));
+              .Concat (new[] { new ObjectValidationFailure (person1, "Object Validation Error", "Localized Object Validation Error") })
+              .ToArray());
       var businessObjectValidationResult = BusinessObjectValidationResult.Create (combinedValidationResult);
 
       var firstNameValidationFailures =
@@ -245,7 +245,8 @@ namespace Remotion.ObjectBinding.Validation.UnitTests
       var combinedValidationResult = new ValidationResult (
           validationResult1.Errors
               .Concat (validationResult2.Errors)
-              .Concat (new[] { new ObjectValidationFailure (person1, "Object Validation Error", "Localized Object Validation Error") }));
+              .Concat (new[] { new ObjectValidationFailure (person1, "Object Validation Error", "Localized Object Validation Error") })
+              .ToArray());
       var businessObjectValidationResult = BusinessObjectValidationResult.Create (combinedValidationResult);
 
       var firstNameValidationFailures =

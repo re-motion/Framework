@@ -67,9 +67,11 @@ namespace Remotion.Validation.UnitTests.Implementation
 
       _validationRuleStub1
           .Stub (stub => stub.Validate (Arg<ValidationContext>.Is.NotNull))
+          .Repeat.Once()
           .Return (new[] { _validationFailure });
       _validationRuleStub2
           .Stub (stub => stub.Validate (Arg<ValidationContext>.Is.NotNull))
+          .Repeat.Once()
           .Return (new ValidationFailure[0]);
 
       var result = _validator.Validate (customer);

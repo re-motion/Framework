@@ -76,8 +76,8 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void Validate ()
     {
-      _validatorStub1.Stub (stub => stub.Validate (Arg<ValidationContext>.Is.NotNull)).Return (_validationResult1);
-      _validatorStub2.Stub (stub => stub.Validate (Arg<ValidationContext>.Is.NotNull)).Return (_validationResult2);
+      _validatorStub1.Stub (stub => stub.Validate (Arg<ValidationContext>.Is.NotNull)).Repeat.Once().Return (_validationResult1);
+      _validatorStub2.Stub (stub => stub.Validate (Arg<ValidationContext>.Is.NotNull)).Repeat.Once().Return (_validationResult2);
 
       var result = _compoundValidator.Validate (_validatedObject);
 
