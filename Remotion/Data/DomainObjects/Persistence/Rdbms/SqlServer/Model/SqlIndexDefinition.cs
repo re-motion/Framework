@@ -55,13 +55,20 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model
         : base (padIndex, fillFactor, sortInTempDb, statisticsNoReCompute, dropExisting, allowRowLocks, allowPageLocks, maxDop)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("indexName", indexName);
-      ArgumentUtility.CheckNotNullOrEmpty ("columns", columns);
-      ArgumentUtility.CheckNotEmpty ("includedColumns", includedColumns);
+      ArgumentUtility.CheckNotNull ("columns", columns);
+
+      var columnsReadOnlyCollection = columns.ToList().AsReadOnly();
+
+      ReadOnlyCollection<ColumnDefinition> includedColumnsReadOnlyCollection = null;
+      if (includedColumns != null)
+        includedColumnsReadOnlyCollection = includedColumns.ToList().AsReadOnly();
+
+      ArgumentUtility.CheckNotEmpty("columns", columnsReadOnlyCollection);
+      ArgumentUtility.CheckNotEmpty ("includedColumns", includedColumnsReadOnlyCollection);
 
       _indexName = indexName;
-      _columns = columns.ToList().AsReadOnly();
-      if (includedColumns != null)
-        _includedColumns = includedColumns.ToList().AsReadOnly();
+      _columns = columnsReadOnlyCollection;
+      _includedColumns = includedColumnsReadOnlyCollection;
       _isClustered = isClustered;
       _isUnique = isUnique;
       _ignoreDupKey = ignoreDupKey;

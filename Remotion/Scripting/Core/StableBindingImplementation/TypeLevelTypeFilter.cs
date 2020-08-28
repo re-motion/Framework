@@ -29,11 +29,11 @@ namespace Remotion.Scripting.StableBindingImplementation
     private readonly HashSet<Type> _validTypes;
 
     public TypeLevelTypeFilter (params Type[] validTypes)
-      : this ((IEnumerable<Type>) validTypes)
+      : this ((IReadOnlyCollection<Type>) validTypes)
     {
     }
 
-    public TypeLevelTypeFilter (IEnumerable<Type> validTypes)
+    public TypeLevelTypeFilter (IReadOnlyCollection<Type> validTypes)
     {
       ArgumentUtility.CheckNotNullOrItemsNull ("validTypes", validTypes);
       _validTypes = new HashSet<Type> (validTypes);

@@ -34,9 +34,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
 
     public UpdatedColumnsSpecification (IEnumerable<ColumnValue> columnValues)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("columnValues", columnValues);
+      ArgumentUtility.CheckNotNull ("columnValues", columnValues);
 
-      _columnValues = columnValues.ToArray();
+      var columnValuesArray = columnValues.ToArray();
+      ArgumentUtility.CheckNotEmpty ("columnValues", columnValuesArray);
+
+      _columnValues = columnValuesArray;
     }
 
     public ReadOnlyCollection<ColumnValue> ColumnValues

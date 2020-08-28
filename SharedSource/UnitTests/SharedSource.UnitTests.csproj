@@ -97,7 +97,6 @@
     <Compile Include="Utilities\ArgumentUtilityTests\CheckType2.cs" />
     <Compile Include="Utilities\ArgumentUtilityTests\CheckTypeIsAssignableFrom.cs" />
     <Compile Include="Utilities\ArgumentUtilityTests\CheckTypeObsolete.cs" />
-    <Compile Include="Utilities\ArgumentUtilityTests\NonDisposableEnumerable.cs" />
     <Compile Include="Utilities\AssertionTest.cs" />
     <Compile Include="Utilities\AttributeUtilityTests\AttributeUsageTest.cs" />
     <Compile Include="Utilities\CultureScopeTest.cs" />

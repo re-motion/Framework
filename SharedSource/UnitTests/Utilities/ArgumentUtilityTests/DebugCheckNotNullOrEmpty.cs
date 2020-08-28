@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using NUnit.Framework;
 using Remotion.Utilities;
 
@@ -70,21 +71,36 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     }
 
     [Test]
-    public void Fail_EmptyIEnumerable ()
+    public void Fail_EmptyICollectionOfT ()
     {
+      ICollection<object> value = new List<object>();
+
       Assert.That (
-          () => ArgumentUtility.DebugCheckNotNullOrEmpty ("arg", GetEmptyEnumerable()),
+          () => ArgumentUtility.DebugCheckNotNullOrEmpty ("arg", value),
           Throws.ArgumentException
               .With.Message.EqualTo (
                   "Parameter 'arg' cannot be empty.\r\nParameter name: arg"));
     }
 
     [Test]
-    public void Fail_NonDisposableEnumerable ()
+    public void Fail_EmptyIReadOnlyCollectionOfT ()
     {
-      IEnumerable enumerable = new NonDisposableEnumerable (false);
+      IReadOnlyCollection<object> value = new List<object>();
+
       Assert.That (
-          () => ArgumentUtility.DebugCheckNotNullOrEmpty ("arg", enumerable),
+          () => ArgumentUtility.DebugCheckNotNullOrEmpty ("arg", value),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Parameter 'arg' cannot be empty.\r\nParameter name: arg"));
+    }
+
+    [Test]
+    public void Fail_EmptyListOfT ()
+    {
+      IReadOnlyCollection<object> value = new List<object>();
+
+      Assert.That (
+          () => ArgumentUtility.DebugCheckNotNullOrEmpty ("arg", value),
           Throws.ArgumentException
               .With.Message.EqualTo (
                   "Parameter 'arg' cannot be empty.\r\nParameter name: arg"));
@@ -111,27 +127,24 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     }
 
     [Test]
-    public void Succeed_IEnumerable ()
+    public void Succeed_ICollectionOfT ()
     {
-      IEnumerable enumerable = GetEnumerableWithValue();
-      ArgumentUtility.DebugCheckNotNullOrEmpty ("arg", enumerable);
+      ICollection<string> value = new List<string> { "test" };
+      ArgumentUtility.DebugCheckNotNullOrEmpty ("arg", value);
     }
 
     [Test]
-    public void Succeed_NonDisposableEnumerable ()
+    public void Succeed_IReadOnlyCollectionOfT ()
     {
-      IEnumerable enumerable = new NonDisposableEnumerable (true);
-      ArgumentUtility.DebugCheckNotNullOrEmpty ("arg", enumerable);
+      IReadOnlyCollection<string> value = new List<string> { "test" };
+      ArgumentUtility.DebugCheckNotNullOrEmpty ("arg", value);
     }
 
-    private IEnumerable GetEnumerableWithValue ()
+    [Test]
+    public void Succeed_ListOfT ()
     {
-      yield return "test";
-    }
-
-    private IEnumerable GetEmptyEnumerable ()
-    {
-      yield break;
+      List<string> value = new List<string> { "test" };
+      ArgumentUtility.DebugCheckNotNullOrEmpty ("arg", value);
     }
   }
 }

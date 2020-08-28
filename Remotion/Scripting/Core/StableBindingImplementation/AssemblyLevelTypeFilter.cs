@@ -29,7 +29,7 @@ namespace Remotion.Scripting.StableBindingImplementation
   {
     private readonly HashSet<Assembly> _validAssemblies;
 
-    public AssemblyLevelTypeFilter (IEnumerable<Assembly> validAssemblies)
+    public AssemblyLevelTypeFilter (IReadOnlyCollection<Assembly> validAssemblies)
     {
       ArgumentUtility.CheckNotNullOrItemsNull ("validAssemblies", validAssemblies);
       _validAssemblies = new HashSet<Assembly> (validAssemblies);

@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
@@ -111,30 +112,89 @@ namespace Remotion.Utilities
     [AssertionMethod]
     public static T CheckNotNullOrEmpty<T> (
         [InvokerParameterName] string argumentName, 
-        [AssertionCondition (AssertionConditionType.IS_NOT_NULL)] T enumerable)
-        where T: IEnumerable
+        [AssertionCondition (AssertionConditionType.IS_NOT_NULL)] T collection)
+        where T: ICollection
     {
-      CheckNotNull (argumentName, enumerable);
-      CheckNotEmpty (argumentName, enumerable);
+      CheckNotNull (argumentName, collection);
+      CheckNotEmpty (argumentName, collection);
 
-      return enumerable;
+      return collection;
+    }
+
+    [AssertionMethod]
+    public static void CheckNotNullOrEmpty<T> (
+        [InvokerParameterName] string argumentName, 
+        [AssertionCondition (AssertionConditionType.IS_NOT_NULL)] ICollection<T> collection)
+    {
+      CheckNotNull (argumentName, collection);
+      CheckNotEmpty (argumentName, collection); 
+    }
+
+    [AssertionMethod]
+    public static void CheckNotNullOrEmpty<T> (
+        [InvokerParameterName] string argumentName, 
+        [AssertionCondition (AssertionConditionType.IS_NOT_NULL)] IReadOnlyCollection<T> collection)
+    {
+      CheckNotNull (argumentName, collection);
+      CheckNotEmpty (argumentName, collection); 
     }
 
     [Conditional ("DEBUG")]
     [AssertionMethod]
     public static void DebugCheckNotNullOrEmpty<T> (
         [InvokerParameterName] string argumentName, 
-        [AssertionCondition (AssertionConditionType.IS_NOT_NULL)] T enumerable)
-        where T: IEnumerable
+        [AssertionCondition (AssertionConditionType.IS_NOT_NULL)] T collection)
+        where T: ICollection
     {
-      CheckNotNullOrEmpty (argumentName, enumerable);
+      CheckNotNullOrEmpty (argumentName, collection);
+    }
+
+    [Conditional ("DEBUG")]
+    [AssertionMethod]
+    public static void DebugCheckNotNullOrEmpty<T> (
+        [InvokerParameterName] string argumentName, 
+        [AssertionCondition (AssertionConditionType.IS_NOT_NULL)] ICollection<T> collection)
+    {
+      CheckNotNullOrEmpty (argumentName, collection);
+    }
+
+    [Conditional ("DEBUG")]
+    [AssertionMethod]
+    public static void DebugCheckNotNullOrEmpty<T> (
+        [InvokerParameterName] string argumentName, 
+        [AssertionCondition (AssertionConditionType.IS_NOT_NULL)] IReadOnlyCollection<T> collection)
+    {
+      CheckNotNullOrEmpty (argumentName, collection);
     }
 
     [AssertionMethod]
     public static T CheckNotNullOrItemsNull<T> (
         [InvokerParameterName] string argumentName, 
-        [AssertionCondition (AssertionConditionType.IS_NOT_NULL)] T enumerable)
-        where T: IEnumerable
+        [AssertionCondition (AssertionConditionType.IS_NOT_NULL)] T collection)
+        where T: ICollection
+    {
+      CheckNotNullOrItemsNullImplementation(argumentName, collection);
+
+      return collection;
+    }
+
+    [AssertionMethod]
+    public static void CheckNotNullOrItemsNull<T> (
+        [InvokerParameterName] string argumentName, 
+        [AssertionCondition (AssertionConditionType.IS_NOT_NULL)] ICollection<T> collection)
+    {
+      CheckNotNullOrItemsNullImplementation (argumentName, collection);
+    }
+
+    [AssertionMethod]
+    public static void CheckNotNullOrItemsNull<T> (
+        [InvokerParameterName] string argumentName, 
+        [AssertionCondition (AssertionConditionType.IS_NOT_NULL)] IReadOnlyCollection<T> collection)
+    {
+      CheckNotNullOrItemsNullImplementation (argumentName, collection);
+    }
+
+    private static void CheckNotNullOrItemsNullImplementation (string argumentName, IEnumerable enumerable)
     {
       CheckNotNull (argumentName, enumerable);
 
@@ -145,27 +205,43 @@ namespace Remotion.Utilities
           throw CreateArgumentItemNullException (argumentName, i);
         ++i;
       }
-
-      return enumerable;
     }
 
     [AssertionMethod]
     public static T CheckNotNullOrEmptyOrItemsNull<T> (
         [InvokerParameterName] string argumentName, 
-        [AssertionCondition (AssertionConditionType.IS_NOT_NULL)] T enumerable)
-        where T: IEnumerable
+        [AssertionCondition (AssertionConditionType.IS_NOT_NULL)] T collection)
+        where T: ICollection
     {
-      CheckNotNullOrItemsNull (argumentName, enumerable);
-      CheckNotEmpty (argumentName, enumerable);
+      CheckNotNullOrItemsNull (argumentName, collection);
+      CheckNotEmpty (argumentName, collection);
 
-      return enumerable;
+      return collection;
+    }
+
+    [AssertionMethod]
+    public static void CheckNotNullOrEmptyOrItemsNull<T> (
+        [InvokerParameterName] string argumentName, 
+        [AssertionCondition (AssertionConditionType.IS_NOT_NULL)] ICollection<T> collection)
+    {
+      CheckNotNullOrItemsNull (argumentName, collection);
+      CheckNotEmpty (argumentName, collection);
+    }
+
+    [AssertionMethod]
+    public static void CheckNotNullOrEmptyOrItemsNull<T> (
+        [InvokerParameterName] string argumentName, 
+        [AssertionCondition (AssertionConditionType.IS_NOT_NULL)] IReadOnlyCollection<T> collection)
+    {
+      CheckNotNullOrItemsNull (argumentName, collection);
+      CheckNotEmpty (argumentName, collection);
     }
 
     [AssertionMethod]
 #if !DEBUG
     [MethodImpl (MethodImplOptions.AggressiveInlining)]
 #endif
-    [return: NotNullIfNotNull ("enumerable")]
+    [return: NotNullIfNotNull ("actualValue")]
     public static string? CheckNotEmpty ([InvokerParameterName] string argumentName, string? actualValue)
     {
       if (actualValue != null && actualValue.Length == 0)
@@ -175,33 +251,30 @@ namespace Remotion.Utilities
     }
 
     [AssertionMethod]
-    [return: NotNullIfNotNull ("enumerable")]
-    public static T CheckNotEmpty<T> ([InvokerParameterName] string argumentName, T enumerable)
-        where T: IEnumerable?
+    [return: NotNullIfNotNull ("collection")]
+    public static T CheckNotEmpty<T> ([InvokerParameterName] string argumentName, T collection)
+        where T: ICollection?
     {
-      // ReSharper disable CompareNonConstrainedGenericWithNull
-      if (enumerable != null)
-          // ReSharper restore CompareNonConstrainedGenericWithNull
-      {
-        var collection = enumerable as ICollection;
-        if (collection != null)
-        {
-          if (collection.Count == 0)
-            throw CreateArgumentEmptyException (argumentName);
-          else
-            return enumerable;
-        }
+      if (collection != null && collection.Count == 0)
+        throw CreateArgumentEmptyException (argumentName);
 
-        IEnumerator enumerator = enumerable.GetEnumerator();
-        var disposableEnumerator = enumerator as IDisposable;
-        using (disposableEnumerator) // using (null) is allowed in C#
-        {
-          if (!enumerator.MoveNext())
-            throw CreateArgumentEmptyException (argumentName);
-        }
-      }
+      return collection;
+    }
 
-      return enumerable;
+    [AssertionMethod]
+    [return: NotNullIfNotNull ("collection")]
+    public static void CheckNotEmpty<T> ([InvokerParameterName] string argumentName, ICollection<T>? collection)
+    {
+      if (collection != null && collection.Count == 0)
+        throw CreateArgumentEmptyException (argumentName);
+    }
+
+    [AssertionMethod]
+    [return: NotNullIfNotNull ("collection")]
+    public static void CheckNotEmpty<T> ([InvokerParameterName] string argumentName, IReadOnlyCollection<T>? collection)
+    {
+      if (collection != null && collection.Count == 0)
+        throw CreateArgumentEmptyException (argumentName);
     }
 
     [AssertionMethod]

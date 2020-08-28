@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using NUnit.Framework;
 using Remotion.Utilities;
 
@@ -55,22 +56,137 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     [Test]
     public void Succeed_NonEmptyCollection ()
     {
-      var result = ArgumentUtility.CheckNotEmpty ("arg", new[] { 1 });
-      Assert.That (result, Is.EqualTo (new[] { 1 }));
+      ICollection value = new[] { 1 };
+
+      var result = ArgumentUtility.CheckNotEmpty ("arg", value);
+
+      Assert.That (result, Is.SameAs (value));
+    }
+
+    [Test]
+    public void Succeed_NonEmptyICollectionOfT ()
+    {
+      ICollection<object> value = new List<object> { 1 };
+
+      ArgumentUtility.CheckNotEmpty ("arg", value);
+    }
+
+    [Test]
+    public void Succeed_NonEmptyIReadOnlyCollectionOfT ()
+    {
+      IReadOnlyCollection<object> value = new List<object> { 1 };
+
+      ArgumentUtility.CheckNotEmpty ("arg", value);
+    }
+
+    [Test]
+    public void Succeed_NonEmptyArray ()
+    {
+      object[] value = new object[] { 1 };
+
+      ArgumentUtility.CheckNotEmpty ("arg", value);
+    }
+
+    [Test]
+    public void Succeed_NonEmptyListOfT ()
+    {
+      List<object> value = new List<object> { 1 };
+
+      ArgumentUtility.CheckNotEmpty ("arg", value);
     }
 
     [Test]
     public void Succeed_NullCollection ()
     {
-      var result = ArgumentUtility.CheckNotEmpty ("arg", (IEnumerable?) null);
+      var result = ArgumentUtility.CheckNotEmpty ("arg", (ICollection?) null);
       Assert.That (result, Is.Null);
     }
 
     [Test]
-    public void Fail_EmptyCollection ()
+    public void Succeed_NullICollectionOfT ()
+    {
+      ICollection<object>? value = null;
+
+      ArgumentUtility.CheckNotEmpty ("arg", value);
+    }
+
+    [Test]
+    public void Succeed_NullIReadOnlyCollectionOfT ()
+    {
+      IReadOnlyCollection<object>? value = null;
+
+      ArgumentUtility.CheckNotEmpty ("arg", value);
+    }
+
+    [Test]
+    public void Succeed_NullArray ()
+    {
+      object[]? value = null;
+
+      ArgumentUtility.CheckNotEmpty ("arg", value);
+    }
+
+    [Test]
+    public void Succeed_NullListOfT ()
+    {
+      List<object>? value = null;
+
+      ArgumentUtility.CheckNotEmpty ("arg", value);
+    }
+
+    [Test]
+    public void Fail_EmptyICollection ()
     {
       Assert.That (
           () => ArgumentUtility.CheckNotEmpty ("arg", Type.EmptyTypes),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Parameter 'arg' cannot be empty.\r\nParameter name: arg"));
+    }
+
+    [Test]
+    public void Fail_EmptyICollectionOfT ()
+    {
+      ICollection<object> value = new List<object>();
+
+      Assert.That (
+          () => ArgumentUtility.CheckNotEmpty ("arg", value),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Parameter 'arg' cannot be empty.\r\nParameter name: arg"));
+    }
+
+    [Test]
+    public void Fail_EmptyIReadOnlyCollectionOfT ()
+    {
+      IReadOnlyCollection<object> value = new List<object>();
+
+      Assert.That (
+          () => ArgumentUtility.CheckNotEmpty ("arg", value),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Parameter 'arg' cannot be empty.\r\nParameter name: arg"));
+    }
+
+    [Test]
+    public void Fail_EmptyArray ()
+    {
+      object[] value = new object[0];
+
+      Assert.That (
+          () => ArgumentUtility.CheckNotEmpty ("arg", value),
+          Throws.ArgumentException
+              .With.Message.EqualTo (
+                  "Parameter 'arg' cannot be empty.\r\nParameter name: arg"));
+    }
+
+    [Test]
+    public void Fail_EmptyListOfT ()
+    {
+      List<object> value = new List<object>();
+
+      Assert.That (
+          () => ArgumentUtility.CheckNotEmpty ("arg", value),
           Throws.ArgumentException
               .With.Message.EqualTo (
                   "Parameter 'arg' cannot be empty.\r\nParameter name: arg"));
