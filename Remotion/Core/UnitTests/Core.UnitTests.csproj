@@ -202,9 +202,6 @@
     <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\ArgumentUtilityTests\CheckTypeObsolete.cs">
       <Link>SharedSource\Utilities\ArgumentUtilityTests\CheckTypeObsolete.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\ArgumentUtilityTests\NonDisposableEnumerable.cs">
-      <Link>SharedSource\Utilities\ArgumentUtilityTests\NonDisposableEnumerable.cs</Link>
-    </Compile>
     <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\AssertionTest.cs">
       <Link>SharedSource\Utilities\AssertionTest.cs</Link>
     </Compile>
