@@ -29,7 +29,7 @@
           <td colSpan=4><remotion:boctextvalue id=FirstNameField runat="server" ReadOnly="True" datasourcecontrol="CurrentObject" PropertyIdentifier="FirstName"></remotion:boctextvalue>&nbsp;<remotion:boctextvalue id=LastNameField runat="server" ReadOnly="True" datasourcecontrol="CurrentObject" PropertyIdentifier="LastName"></remotion:boctextvalue></td></tr>
         <tr>
           <td></td>
-          <td><remotion:bocmultilinetextvalue id=CVField runat="server" datasourcecontrol="CurrentObject" PropertyIdentifier="CV" ErrorMessage="Eingabe erforderlich"  required="True">
+          <td><remotion:bocmultilinetextvalue id=CVField runat="server" datasourcecontrol="CurrentObject" PropertyIdentifier="CV" ErrorMessage="Eingabe erforderlich">
 <textboxstyle rows="3" textmode="MultiLine" autopostback="True" maxlength="50">
 </TextBoxStyle>
             </remotion:bocmultilinetextvalue></td>

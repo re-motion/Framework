@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using FluentValidation;
 using Remotion.Validation;
 
 namespace Remotion.ObjectBinding.Sample.ValidationCollectors
@@ -29,6 +28,8 @@ namespace Remotion.ObjectBinding.Sample.ValidationCollectors
       AddRule (p => p.FirstName).NotNull().NotEmpty().Length (0, 10);
 
       AddRule (p => p.Partner).NotNull();
+
+      AddRule (p => p.CV).NotNull().NotEmpty().Length (0, 50);
     }
   }
 }
