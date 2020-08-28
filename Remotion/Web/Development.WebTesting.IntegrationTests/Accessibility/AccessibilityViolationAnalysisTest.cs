@@ -23,6 +23,7 @@ using OpenQA.Selenium.Remote;
 using Remotion.Web.Development.WebTesting.Accessibility;
 using Remotion.Web.Development.WebTesting.Accessibility.Implementation;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.InternetExplorer;
 using Remotion.Web.Development.WebTesting.PageObjects;
 using Remotion.Web.Development.WebTesting.WebDriver;
 

@@ -93,6 +93,12 @@
     <Compile Include="GenericTestPageParameters\TitleGenericTestPageParameter.cs" />
     <Compile Include="GenericTestParameterConverter.cs" />
     <Compile Include="HostnameResolveHelper.cs" />
+    <Compile Include="InternetExplorer\InternetExplorerBrowserContentLocator.cs" />
+    <Compile Include="InternetExplorer\InternetExplorerBrowserFactory.cs" />
+    <Compile Include="InternetExplorer\InternetExplorerBrowserSession.cs" />
+    <Compile Include="InternetExplorer\InternetExplorerConfiguration.cs" />
+    <Compile Include="InternetExplorer\InternetExplorerExtensions.cs" />
+    <Compile Include="InternetExplorer\NullDownloadHelper.cs" />
     <Compile Include="ScreenshotCreation\ScreenshotTesting.cs" />
     <Compile Include="ScreenshotCreation\ScreenshotTestingDelegate.cs" />
     <Compile Include="ScreenshotCreation\ScreenshotTestingExtensions.cs" />
@@ -130,7 +136,12 @@
       <Name>Web.Development.WebTesting</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="..\..\..\packages\WebDriver.IEDriverServer.win32.2.44\content\IEDriverServer.exe">
+      <Link>IEDriverServer.exe</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

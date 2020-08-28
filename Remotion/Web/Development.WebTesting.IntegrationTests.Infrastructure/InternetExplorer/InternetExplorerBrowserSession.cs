@@ -15,17 +15,27 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using JetBrains.Annotations;
-using OpenQA.Selenium.IE;
+using OpenQA.Selenium;
+using Remotion.Web.Development.WebTesting.BrowserSession;
 
-namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.InternetExplorer
+namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.InternetExplorer
 {
   /// <summary>
-  /// Provides configuration specific to initializing and shutting down Internet Explorer.
+  /// Implements <see cref="IBrowserSession"/> for the InternetExplorer browser.
   /// </summary>
-  /// <seealso cref="InternetExplorerConfiguration"/>
-  public interface IInternetExplorerConfiguration : IBrowserConfiguration
+  public class InternetExplorerBrowserSession : BrowserSessionBase<InternetExplorerConfiguration>
   {
-    [NotNull] InternetExplorerOptions CreateInternetExplorerOptions ();
+    public InternetExplorerBrowserSession ([NotNull] Coypu.BrowserSession value, InternetExplorerConfiguration configuration, int driverProcessId)
+        : base (value, configuration, driverProcessId)
+    {
+    }
+
+    /// <inheritdoc />
+    public override IReadOnlyCollection<BrowserLogEntry> GetBrowserLogs ()
+    {
+      return new[] { new BrowserLogEntry (LogLevel.Info, "Internet Explorer does not support getting browser logs.", DateTime.Now) };
+    }
   }
 }

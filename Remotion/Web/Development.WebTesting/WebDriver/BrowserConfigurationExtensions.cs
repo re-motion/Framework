@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.ComponentModel;
 using Coypu.Drivers;
 using JetBrains.Annotations;
 using Remotion.Utilities;
@@ -22,7 +23,6 @@ using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox;
-using Remotion.Web.Development.WebTesting.WebDriver.Configuration.InternetExplorer;
 
 namespace Remotion.Web.Development.WebTesting.WebDriver
 {
@@ -31,17 +31,6 @@ namespace Remotion.Web.Development.WebTesting.WebDriver
   /// </summary>
   public static class BrowserConfigurationExtensions
   {
-    /// <summary>
-    /// Gets a flag indicating if <paramref name="browserConfiguration"/> represents <b>Internet Explorer</b> by testing if the passed object 
-    /// implements <see cref="IInternetExplorerConfiguration"/>.
-    /// </summary>
-    public static bool IsInternetExplorer ([NotNull] this IBrowserConfiguration browserConfiguration)
-    {
-      ArgumentUtility.CheckNotNull ("browserConfiguration", browserConfiguration);
-
-      return browserConfiguration is IInternetExplorerConfiguration;
-    }
-
     /// <summary>
     /// Gets a flag indicating if <paramref name="browserConfiguration"/> represents <b>Chrome</b> by testing if the passed object 
     /// implements <see cref="IChromeConfiguration"/>.
@@ -90,6 +79,8 @@ namespace Remotion.Web.Development.WebTesting.WebDriver
     /// Gets a flag indicating if <paramref name="browser"/> represents <b>Internet Explorer</b> by testing if the passed instance 
     /// is <see cref="Browser.InternetExplorer"/>.
     /// </summary>
+    [Obsolete ("Support for Internet Explorer in web tests has been removed. (Version: 1.20.22, 1.21.7)")]
+    [EditorBrowsable (EditorBrowsableState.Never)]
     public static bool IsInternetExplorer ([NotNull] this Browser browser)
     {
       ArgumentUtility.CheckNotNull ("browser", browser);

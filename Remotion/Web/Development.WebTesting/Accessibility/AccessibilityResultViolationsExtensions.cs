@@ -21,7 +21,6 @@ using System.Text.RegularExpressions;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
-using Remotion.Web.Development.WebTesting.WebDriver.Configuration.InternetExplorer;
 
 namespace Remotion.Web.Development.WebTesting.Accessibility
 {
@@ -93,26 +92,6 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
           x => checkIDs.Except (x.Any.Select (a => a.ID)).Any()
                && checkIDs.Except (x.All.Select (a => a.ID)).Any()
                && checkIDs.Except (x.None.Select (a => a.ID)).Any());
-    }
-
-    /// <summary>
-    /// Removes elements where known workarounds cause violations.
-    /// </summary>
-    public static IEnumerable<AccessibilityRuleResult> IgnoreKnownWorkarounds (
-        [NotNull] this IEnumerable<AccessibilityRuleResult> violations,
-        [NotNull] IBrowserConfiguration browserConfiguration)
-    {
-      ArgumentUtility.CheckNotNullOrItemsNull ("violations", violations);
-      ArgumentUtility.CheckNotNull ("browserConfiguration", browserConfiguration);
-
-      if (browserConfiguration is InternetExplorerConfiguration)
-      {
-        var cssRegex = new Regex (@"(\.bocListTableBlock|\.hasMenuBlock|\.hasNavigator) > \.screenReaderText\[aria-label="".+""]\[aria-hidden=""true""]");
-
-        return violations.Where (ruleResult => !(ruleResult.Rule.ID == AccessibilityRuleID.AriaHiddenFocus && cssRegex.IsMatch (ruleResult.TargetPath.Last().CssSelector)));
-      }
-
-      return violations;
     }
 
     /// <summary>

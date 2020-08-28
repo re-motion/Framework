@@ -148,16 +148,6 @@
     <Compile Include="DownloadInfrastructure\IDownloadedFile.cs" />
     <Compile Include="DownloadInfrastructure\IDownloadFileFinderStrategy.cs" />
     <Compile Include="DownloadInfrastructure\IDownloadHelper.cs" />
-    <Compile Include="DownloadInfrastructure\InternetExplorer\WindowAutomation\AutomationElementWrapper\InternetExplorerDownloadListItemWrapper.cs" />
-    <Compile Include="DownloadInfrastructure\InternetExplorer\WindowAutomation\AutomationElementWrapper\InternetExplorerDownloadWindowWrapper.cs" />
-    <Compile Include="DownloadInfrastructure\InternetExplorer\WindowAutomation\InternetExplorerDownloadControlHandler.cs" />
-    <Compile Include="DownloadInfrastructure\InternetExplorer\WindowAutomation\AutomationElementWrapper\InternetExplorerDownloadNotificationBarWrapper.cs" />
-    <Compile Include="DownloadInfrastructure\InternetExplorer\InternetExplorerDownloadHelper.cs" />
-    <Compile Include="DownloadInfrastructure\InternetExplorer\WindowAutomation\AutomationElementWrapper\InternetExplorerDownloadManagerWrapper.cs" />
-    <Compile Include="DownloadInfrastructure\InternetExplorer\InternetExplorerUnknownFileNameFileFinderStrategy.cs" />
-    <Compile Include="DownloadInfrastructure\InternetExplorer\InternetExplorerExpectedFileNameFinderStrategy.cs" />
-    <Compile Include="DownloadInfrastructure\InternetExplorer\WindowAutomation\Win32WindowSupport\IWin32WindowsNativeMethodsExtended.cs" />
-    <Compile Include="DownloadInfrastructure\InternetExplorer\WindowAutomation\Win32WindowSupport\Win32WindowsNativeMethodsExtended.cs" />
     <Compile Include="DownloadInfrastructure\PartialFileState.cs" />
     <Compile Include="HostingStrategies\Configuration\ITestSiteLayoutConfiguration.cs" />
     <Compile Include="HostingStrategies\Configuration\ITestSiteResource.cs" />
@@ -236,13 +226,11 @@
     <Compile Include="Utilities\AssertionExceptionUtility.cs" />
     <Compile Include="Utilities\BrowserAnnotateHelper.cs" />
     <Compile Include="ScreenshotCreation\BrowserContentLocators\ChromeBrowserContentLocator.cs" />
-    <Compile Include="ScreenshotCreation\BrowserContentLocators\InternetExplorerBrowserContentLocator.cs" />
     <Compile Include="Utilities\DomSelectorUtility.cs" />
     <Compile Include="Utilities\DataContractJsonSerializationUtility.cs" />
     <Compile Include="Utilities\ElementScopeExtensions.cs" />
     <Compile Include="ScreenshotCreation\IBrowserContentLocator.cs" />
     <Compile Include="Utilities\BrowserHelper.cs" />
-    <Compile Include="Utilities\InternetExplorerProtectedModeExtensions.cs" />
     <Compile Include="Utilities\LocatorHelper.cs" />
     <Compile Include="Utilities\MouseHelper.cs" />
     <Compile Include="Utilities\JavaScriptExecutor.cs" />
@@ -262,7 +250,6 @@
     <Compile Include="WebDriver\Configuration\Chromium\ChromiumUserDirectoryCleanUpStrategy.cs" />
     <Compile Include="BrowserSession\Chrome\ChromeBrowserSession.cs" />
     <Compile Include="BrowserSession\IBrowserSession.cs" />
-    <Compile Include="BrowserSession\InternetExplorer\InternetExplorerBrowserSession.cs" />
     <Compile Include="WebDriver\Configuration\Chromium\ChromiumDisableSecurityWarningsBehavior.cs" />
     <Compile Include="WebDriver\Configuration\Edge\EdgeBinariesProvider.cs" />
     <Compile Include="WebDriver\Configuration\Edge\EdgeConfiguration.cs" />
@@ -280,10 +267,7 @@
     <Compile Include="HostingStrategies\Configuration\IHostingConfiguration.cs" />
     <Compile Include="WebDriver\BrowserConfigurationExtensions.cs" />
     <Compile Include="WebDriver\Factories\Edge\EdgeBrowserFactory.cs" />
-    <Compile Include="WebDriver\Configuration\InternetExplorer\IInternetExplorerConfiguration.cs" />
     <Compile Include="WebDriver\Factories\Firefox\FirefoxBrowserFactory.cs" />
-    <Compile Include="WebDriver\Factories\InternetExplorer\InternetExplorerBrowserFactory.cs" />
-    <Compile Include="WebDriver\Configuration\InternetExplorer\InternetExplorerConfiguration.cs" />
     <Compile Include="Configuration\ITestInfrastructureConfiguration.cs" />
     <Compile Include="WebDriver\Configuration\BrowserConfigurationBase.cs" />
     <Compile Include="Configuration\TestInfrastructureConfiguration.cs" />
@@ -429,12 +413,6 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <None Include="..\..\..\packages\WebDriver.IEDriverServer.win32.2.44\content\IEDriverServer.exe">
-      <Link>IEDriverServer.exe</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ScreenshotCreation\Resolvers\WebElementResolverScript.js" />
   </ItemGroup>

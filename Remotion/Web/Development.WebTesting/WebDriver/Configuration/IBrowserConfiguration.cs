@@ -22,7 +22,6 @@ using Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations;
 using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge;
-using Remotion.Web.Development.WebTesting.WebDriver.Configuration.InternetExplorer;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories;
 
 namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
@@ -32,7 +31,6 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
   /// </summary>
   /// <seealso cref="ChromeConfiguration"/>
   /// <seealso cref="EdgeConfiguration"/>
-  /// <seealso cref="InternetExplorerConfiguration"/>
   public interface IBrowserConfiguration
   {
     /// <summary>

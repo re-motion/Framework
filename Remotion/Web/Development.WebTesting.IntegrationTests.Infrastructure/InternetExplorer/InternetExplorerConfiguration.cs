@@ -19,31 +19,23 @@ using JetBrains.Annotations;
 using OpenQA.Selenium.IE;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
-using Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExplorer;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations;
-using Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentLocators;
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories;
-using Remotion.Web.Development.WebTesting.WebDriver.Factories.InternetExplorer;
 
-namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.InternetExplorer
+namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.InternetExplorer
 {
   /// <summary>
   /// Implements the <see cref="IBrowserConfiguration"/> interface for Internet Explorer.
   /// </summary>
-  public class InternetExplorerConfiguration : BrowserConfigurationBase, IInternetExplorerConfiguration
+  public class InternetExplorerConfiguration : BrowserConfigurationBase
   {
     private readonly IBrowserContentLocator _locator = new InternetExplorerBrowserContentLocator();
-
-    private readonly IDownloadHelper _downloadHelper;
 
     public InternetExplorerConfiguration ([NotNull] WebTestConfigurationSection webTestConfigurationSection)
         : base (webTestConfigurationSection)
     {
-      _downloadHelper = new InternetExplorerDownloadHelper (
-          webTestConfigurationSection.DownloadStartedTimeout,
-          webTestConfigurationSection.DownloadUpdatedTimeout,
-          webTestConfigurationSection.CleanUpUnmatchedDownloadedFiles);
     }
 
     public override string BrowserExecutableName
@@ -63,7 +55,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.InternetEx
 
     public override IDownloadHelper DownloadHelper
     {
-      get { return _downloadHelper; }
+      get { return new NullDownloadHelper(); }
     }
 
     public override IBrowserContentLocator Locator

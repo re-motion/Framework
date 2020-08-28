@@ -153,6 +153,21 @@
         <Value>$(_dockerHostName)</Value>
       </_appConfigAttributes>
     </ItemGroup>
+
+    <ItemGroup Condition="'$(Browser)' == 'InternetExplorer'">
+      <_appConfigAttributes Include="/configuration/rwt:remotion.webTesting">
+        <Key>searchTimeout</Key>
+        <Value>00:00:45</Value>
+      </_appConfigAttributes>
+      <_appConfigAttributes Include="/configuration/rwt:remotion.webTesting">
+        <Key>retryInterval</Key>
+        <Value>00:00:00.050</Value>
+      </_appConfigAttributes>
+      <_appConfigAttributes Include="/configuration/rwt:remotion.webTesting">
+        <Key>asyncJavaScriptTimeout</Key>
+        <Value>00:00:30</Value>
+      </_appConfigAttributes>
+    </ItemGroup>
     
     <MSBuild.ExtensionPack.Xml.XmlFile TaskAction="AddAttribute"
                                        File="$(AppConfigFile)"

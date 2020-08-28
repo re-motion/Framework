@@ -166,4 +166,9 @@
     <CallTarget Targets="$(AfterFullBuildTargets)"/>
   </Target>
 
+  <Target Name="TestBuild_InternetExplorer" DependsOnTargets="$(BeforeTestBuildTargets)">
+    <MSBuild Projects="@(ProjectsBuildServer)" Targets="TestBuild_InternetExplorer" Properties="$(BuildProperties)" BuildInParallel="false"/>
+    <CallTarget Targets="$(AfterTestBuildTargets)"/>
+  </Target>
+
 </Project>

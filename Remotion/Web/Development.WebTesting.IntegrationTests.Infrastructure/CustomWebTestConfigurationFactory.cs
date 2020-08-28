@@ -18,7 +18,10 @@ using System;
 using System.Configuration;
 using System.IO;
 using System.IO.Compression;
+using Coypu.Drivers;
 using Remotion.Web.Development.WebTesting.Configuration;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.InternetExplorer;
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox;
@@ -81,6 +84,16 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
       var firefoxExecutable = new FirefoxExecutable (customBrowserBinary, customDriverBinary);
 
       return new FirefoxConfiguration (configSettings, firefoxExecutable);
+    }
+
+    protected override IBrowserConfiguration CreateCustomBrowserConfiguration (WebTestConfigurationSection configSettings)
+    {
+      var configuredBrowser = Browser.Parse (configSettings.BrowserName);
+
+      if (configuredBrowser == Browser.InternetExplorer)
+        return new InternetExplorerConfiguration (configSettings);
+
+      return base.CreateCustomBrowserConfiguration (configSettings);
     }
 
     private string PrepareCustomBrowserDirectory (string browserVersionArchivePath, string versionedBrowserFolderName)

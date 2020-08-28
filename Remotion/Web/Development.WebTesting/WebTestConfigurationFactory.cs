@@ -27,7 +27,6 @@ using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox;
-using Remotion.Web.Development.WebTesting.WebDriver.Configuration.InternetExplorer;
 
 namespace Remotion.Web.Development.WebTesting
 {
@@ -64,8 +63,8 @@ namespace Remotion.Web.Development.WebTesting
     /// Creates a new <see cref="IBrowserConfiguration"/> from app.config.
     /// </summary>
     /// <remarks>
-    /// In order to customize how the respective WebDriver for Chrome/Internet Explorer/other browsers is instantiated, 
-    /// override the <see cref="CreateChromeConfiguration"/>, <see cref="CreateInternetExplorerConfiguration"/>,
+    /// In order to customize how the respective WebDriver for Chrome/other browsers is instantiated,
+    /// override the <see cref="CreateChromeConfiguration"/>,
     /// and <see cref="CreateCustomBrowserConfiguration"/> methods.
     /// </remarks>
     public IBrowserConfiguration CreateBrowserConfiguration ()
@@ -79,9 +78,6 @@ namespace Remotion.Web.Development.WebTesting
 
       if (configuredBrowser == Browser.Edge)
         return CreateEdgeConfiguration (configSettings);
-
-      if (configuredBrowser == Browser.InternetExplorer)
-        return CreateInternetExplorerConfiguration (configSettings);
 
       if (configuredBrowser == Browser.Firefox)
         return CreateFirefoxConfiguration (configSettings);
@@ -135,20 +131,6 @@ namespace Remotion.Web.Development.WebTesting
       ArgumentUtility.CheckNotNull ("configSettings", configSettings);
 
       throw new NotSupportedException (string.Format ("Browser '{0}' is not supported by the '{1}'.", configSettings.BrowserName, GetType().Name));
-    }
-
-    /// <summary>
-    /// Responsible for creating an Internet Explorer specific configuration object.
-    /// </summary>
-    /// <param name="configSettings">Receives app.config settings when called in <see cref="CreateBrowserConfiguration"/></param>
-    /// <remarks>
-    /// Override this method to customize the configuration settings.
-    /// </remarks>
-    protected virtual IInternetExplorerConfiguration CreateInternetExplorerConfiguration ([NotNull] WebTestConfigurationSection configSettings)
-    {
-      ArgumentUtility.CheckNotNull ("configSettings", configSettings);
-      
-      return new InternetExplorerConfiguration (configSettings);
     }
 
     /// <summary>

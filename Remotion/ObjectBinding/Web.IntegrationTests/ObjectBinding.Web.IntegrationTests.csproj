@@ -37,6 +37,7 @@
     <Reference Include="nunit.framework, Version=3.12.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\NUnit.3.12.0\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="WebDriver, Version=3.141.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\..\..\packages\Selenium.WebDriver.3.141.0\lib\net45\WebDriver.dll</HintPath>
@@ -55,6 +56,7 @@
     <Compile Include="BocReferenceValue\AccessibilityBocReferenceValueTest.cs" />
     <Compile Include="BocTextValue\AccessibilityBocTextValueTest.cs" />
     <Compile Include="BocTreeView\AccessibilityBocTreeViewTest.cs" />
+    <Compile Include="InternetExplorerExtensions.cs" />
     <Compile Include="PageObjectExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SetUpFixture.cs" />

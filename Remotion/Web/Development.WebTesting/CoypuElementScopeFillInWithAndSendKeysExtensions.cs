@@ -73,7 +73,9 @@ namespace Remotion.Web.Development.WebTesting
       if (ContainsKeysAndChars (value))
         throw new ArgumentException ("Value may not contain both text and keys at the same time.", "value");
 
+#pragma warning disable 618
       if (scope.Browser.IsInternetExplorer() && ContainsNonEmptyText (value))
+#pragma warning restore 618
         scope.SetValueUsingJavaScriptAndSendKeys (value);
       else
         scope.SetValueUsingSendKeys (value);

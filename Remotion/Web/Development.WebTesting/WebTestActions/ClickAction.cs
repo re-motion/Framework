@@ -43,7 +43,9 @@ namespace Remotion.Web.Development.WebTesting.WebTestActions
     {
       ArgumentUtility.CheckNotNull ("scope", scope);
 
+#pragma warning disable 618
       if (scope.Browser.IsInternetExplorer())
+#pragma warning restore 618
         scope.FocusClick();
       else
         scope.Click();

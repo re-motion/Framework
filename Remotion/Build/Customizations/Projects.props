@@ -239,7 +239,6 @@
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.WebTesting\Web.Development.WebTesting.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.WebTesting.ControlObjects\Web.Development.WebTesting.ControlObjects.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.WebTesting.ExecutionEngine\Web.Development.WebTesting.ExecutionEngine.csproj"/>
-    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.WebTesting.WebDriver\Web.Development.WebTesting.WebDriver.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.WebTesting.WebFormsControlObjects\Web.Development.WebTesting.WebFormsControlObjects.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\ExecutionEngine.CodeGenerator\Web.ExecutionEngine.CodeGenerator.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Security\Web.Security.csproj"/>

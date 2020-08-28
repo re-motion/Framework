@@ -332,8 +332,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{8C1706
 		packages\repositories.config = packages\repositories.config
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Development.WebTesting.WebDriver", "Remotion\Web\Development.WebTesting.WebDriver\Web.Development.WebTesting.WebDriver.csproj", "{8E332462-ED27-4D67-A9B4-36DB4CAD844D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Development.WebTesting.WebFormsControlObjects", "Remotion\Web\Development.WebTesting.WebFormsControlObjects\Web.Development.WebTesting.WebFormsControlObjects.csproj", "{D2835D55-18C5-427B-A574-3D348A2C1DCC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Development.WebTesting.ExecutionEngine", "Remotion\Web\Development.WebTesting.ExecutionEngine\Web.Development.WebTesting.ExecutionEngine.csproj", "{FEBE7C1A-2CD5-4543-B0F1-DE224D340F51}"
@@ -1240,14 +1238,6 @@ Global
 		{AE475361-8DD6-4DAF-8691-5BB8850093FD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AE475361-8DD6-4DAF-8691-5BB8850093FD}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{AE475361-8DD6-4DAF-8691-5BB8850093FD}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{8E332462-ED27-4D67-A9B4-36DB4CAD844D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8E332462-ED27-4D67-A9B4-36DB4CAD844D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8E332462-ED27-4D67-A9B4-36DB4CAD844D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{8E332462-ED27-4D67-A9B4-36DB4CAD844D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{8E332462-ED27-4D67-A9B4-36DB4CAD844D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8E332462-ED27-4D67-A9B4-36DB4CAD844D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8E332462-ED27-4D67-A9B4-36DB4CAD844D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{8E332462-ED27-4D67-A9B4-36DB4CAD844D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{D2835D55-18C5-427B-A574-3D348A2C1DCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D2835D55-18C5-427B-A574-3D348A2C1DCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2835D55-18C5-427B-A574-3D348A2C1DCC}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -1544,7 +1534,6 @@ Global
 		{AD7D0683-130E-4064-8EB7-D9981DCB22BC} = {72195525-BF6C-43D6-AC96-39E34D02EA34}
 		{6CBB099A-DE58-48A4-ADC7-D37725B0181C} = {5B3CB3F6-DE69-41D6-8BBC-EFF4932F0F7E}
 		{AE475361-8DD6-4DAF-8691-5BB8850093FD} = {E1B271E4-22E6-4936-80A5-F0340AAB20A8}
-		{8E332462-ED27-4D67-A9B4-36DB4CAD844D} = {2E32EB1E-B3AA-4ACF-BA20-EC6FD44CC05B}
 		{D2835D55-18C5-427B-A574-3D348A2C1DCC} = {2E32EB1E-B3AA-4ACF-BA20-EC6FD44CC05B}
 		{FEBE7C1A-2CD5-4543-B0F1-DE224D340F51} = {2E32EB1E-B3AA-4ACF-BA20-EC6FD44CC05B}
 		{712E5631-9BC0-44DE-BF20-FB3BFECAD9B2} = {2E32EB1E-B3AA-4ACF-BA20-EC6FD44CC05B}

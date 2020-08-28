@@ -59,7 +59,6 @@
     <xs:restriction base="xs:string">
       <xs:enumeration value="Chrome" />
       <xs:enumeration value="Edge" />
-      <xs:enumeration value="InternetExplorer" />
       <xs:enumeration value="Firefox" />
     </xs:restriction>
   </xs:simpleType>

@@ -20,7 +20,7 @@ using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests;
 using Remotion.Web.Development.WebTesting.Accessibility;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
-using Remotion.Web.Development.WebTesting.WebDriver;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.InternetExplorer;
 
 namespace Remotion.ObjectBinding.Web.IntegrationTests.BocTextValue
 {

@@ -20,6 +20,7 @@ using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.InternetExplorer;
 using Remotion.Web.Development.WebTesting.WebDriver;
 using Remotion.Web.Development.WebTesting.WebFormsControlObjects;
 
@@ -28,6 +29,13 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   [TestFixture]
   public class MultiWindowTest : IntegrationTest
   {
+    [SetUp]
+    public void SetUp ()
+    {
+      if (Helper.BrowserConfiguration.IsInternetExplorer())
+        Assert.Ignore ("RM-7457: Support for Internet Explorer in web tests has been removed.");
+    }
+
     [Test]
     public void TestMultiFrameActions ()
     {

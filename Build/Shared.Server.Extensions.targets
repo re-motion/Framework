@@ -41,6 +41,18 @@
     </PropertyGroup>
   </Target>
 
+  <Target Name="TestBuild_InternetExplorer_Configuration">
+    <PropertyGroup>
+      <Platforms>x64</Platforms>
+      <DatabaseSystems>NoDB</DatabaseSystems>
+      <Browsers>InternetExplorer</Browsers>
+      <ExecutionRuntimes>EnforcedLocalMachine</ExecutionRuntimes>
+      <TargetRuntimes>NET48</TargetRuntimes>
+      <SkipDocumentation>True</SkipDocumentation>
+      <TestCategoriesToExclude>LongRunning;ControlSelectorTest</TestCategoriesToExclude>
+    </PropertyGroup>
+  </Target>
+
   <Target Name="SetVersionFromDependentBuild" DependsOnTargets="CheckVersion">
     <Error Text="The property 'DependentVersion' is not set." Condition="'$(DependentVersion)' == ''" />
 
@@ -69,5 +81,7 @@
   <Target Name="Server_CIProductionBuild" DependsOnTargets="CheckProperties;SetVersionFromDependentBuild;CIProductionBuild" />
 
   <Target Name="Server_CIConfigurableBuild" DependsOnTargets="CheckProperties;SetVersionCiAndNightlyBuild;TestBuildDebugOnly"></Target>
+
+  <Target Name="TestBuild_InternetExplorer" DependsOnTargets="CheckProperties;SetVersionCiAndNightlyBuild;TestBuild_InternetExplorer_Configuration;CreateAdditionalBuildMetadata;BuildAll;" />
 
 </Project>

@@ -83,27 +83,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
               .EqualTo ("Object reference not set to an instance of an object."));
     }
 
-    [Test]
-    public void InternetExplorerDriver_DoesNotSupportBrowserLogs ()
-    {
-      if (!Helper.BrowserConfiguration.IsInternetExplorer())
-        Assert.Ignore ("Tests if IEDriver behaves as expected and hence, only concerns Internet Explorer");
-
-      var home = Start();
-
-      var selenium = (IWebDriver) home.Context.Browser.Driver.Native;
-
-      Assert.That (
-          () => selenium.Manage().Logs.GetLog (LogType.Browser),
-          Throws.InstanceOf<WebDriverException>()
-              .With.Message.Matches ("Unexpected error. Command not found: POST /session/[A-z0-9-]+/log"));
-
-      Assert.That (
-          home.Context.Browser.GetBrowserLogs()
-              .Count (l => l.Message.Contains ("Internet Explorer does not support getting browser logs.")),
-          Is.EqualTo (1));
-    }
-
     private void TestDriverSupportsBrowserLogs ()
     {
       var home = Start();

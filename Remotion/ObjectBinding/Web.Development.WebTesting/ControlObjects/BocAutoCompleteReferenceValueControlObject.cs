@@ -270,7 +270,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       if (IsReadOnly())
         return Scope.FindChild ("Command");
 
+#pragma warning disable 618
       if (Scope.Browser.IsInternetExplorer())
+#pragma warning restore 618
         return Scope.FindChild ("TextValue");
       else
         return Scope.FindChild ("TextValue").FindXPath ("..");

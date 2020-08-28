@@ -20,8 +20,9 @@ using System.Drawing;
 using System.Linq;
 using OpenQA.Selenium;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 
-namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentLocators
+namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.InternetExplorer
 {
   /// <summary>
   /// Locates the browser content area for InternetExplorer.

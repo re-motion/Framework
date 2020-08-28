@@ -21,6 +21,7 @@ using Remotion.Web.Development.WebTesting.Accessibility;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.InternetExplorer;
 using Remotion.Web.Development.WebTesting.WebDriver;
 
 namespace Remotion.Web.IntegrationTests.TabbedMultiView

@@ -21,20 +21,19 @@ using JetBrains.Annotations;
 using OpenQA.Selenium.IE;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
-using Remotion.Web.Development.WebTesting.BrowserSession.InternetExplorer;
 using Remotion.Web.Development.WebTesting.Configuration;
-using Remotion.Web.Development.WebTesting.WebDriver.Configuration.InternetExplorer;
-
-namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.InternetExplorer
+using Remotion.Web.Development.WebTesting.WebDriver;
+using Remotion.Web.Development.WebTesting.WebDriver.Factories;
+namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.InternetExplorer
 {
   /// <summary>
-  /// Responsible for creating a new InternetExplorer browser, configured based on <see cref="IInternetExplorerConfiguration"/> and <see cref="DriverConfiguration"/>.
+  /// Responsible for creating a new InternetExplorer browser, configured based on <see cref="DriverConfiguration"/> and <see cref="InternetExplorerConfiguration"/>.
   /// </summary>
   public class InternetExplorerBrowserFactory : IBrowserFactory
   {
-    private readonly IInternetExplorerConfiguration _internetExplorerConfiguration;
+    private readonly InternetExplorerConfiguration _internetExplorerConfiguration;
 
-    public InternetExplorerBrowserFactory ([NotNull] IInternetExplorerConfiguration internetExplorerConfiguration)
+    public InternetExplorerBrowserFactory ([NotNull] InternetExplorerConfiguration internetExplorerConfiguration)
     {
       ArgumentUtility.CheckNotNull ("internetExplorerConfiguration", internetExplorerConfiguration);
 
