@@ -29,7 +29,7 @@ namespace Remotion.ObjectBinding.Sample.ValidationCollectors
 
       AddRule (p => p.Partner).NotNull();
 
-      AddRule (p => p.CV).NotNull().NotEmpty().Length (0, 50);
+      AddRule (p => p.CV).NotNull().NotEmpty();//.Length (0, 50);
     }
   }
 }
