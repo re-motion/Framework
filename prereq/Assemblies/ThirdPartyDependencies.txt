@@ -1,4 +1,3 @@
 Component				License			Source                                             	Custom Build
 =============================================================================================================================================
-Rhino.Mocks-3.6				BSD-2			http://hibernatingrhinos.com/oss/rhino-mocks
 SharpZipLib-0.86			GPL, with exceptions	http://www.icsharpcode.net/OpenSource/SharpZipLib/
