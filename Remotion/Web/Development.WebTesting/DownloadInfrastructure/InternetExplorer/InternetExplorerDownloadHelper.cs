@@ -34,6 +34,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExp
   /// <summary>
   /// Implements the <see cref="IDownloadHelper"/> for Internet Explorer.
   /// </summary>
+  [Obsolete ("Support for Internet Explorer in web tests has been removed. (Version: 1.20.22)")]
   public class InternetExplorerDownloadHelper : DownloadHelperBase
   {
     private const string c_partialFileEnding = ".partial";

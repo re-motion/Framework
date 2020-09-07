@@ -92,7 +92,9 @@ namespace Remotion.Web.Development.WebTesting
       ArgumentUtility.CheckNotNull ("value", value);
       ArgumentUtility.CheckNotNull ("finishInputWithAction", finishInputWithAction);
 
+#pragma warning disable 618
       if (scope.Browser.IsInternetExplorer() && ContainsNonEmptyText (value))
+#pragma warning restore 618
         scope.FillInWithFixedForInternetExplorer (value);
       else
         scope.FillInWithFixedForNormalBrowsers (value, clearValue);

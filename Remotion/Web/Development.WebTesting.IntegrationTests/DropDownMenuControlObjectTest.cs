@@ -190,6 +190,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Category ("LongRunning")]
     public void TestDropDownMenuControlObject_OpenDropDownMenuWithDelayGreaterThanTimeout_FailsWithException ()
     {
+      if (Helper.BrowserConfiguration.IsInternetExplorer())
+        Assert.Ignore ("Support for Internet Explorer in web tests has been removed.");
+
       var home = Start();
 
       var dropDownMenu = home.DropDownMenus().GetByLocalID ("MyDropDownMenu_DelayedLongerThanTimeout");

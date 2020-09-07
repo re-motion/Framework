@@ -26,6 +26,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExp
   /// <summary>
   /// Implements the <see cref="IDownloadFileFinderStrategy"/> interface for performing a download with an unknown file with Internet Explorer.
   /// </summary>
+  [Obsolete ("Support for Internet Explorer in web tests has been removed. (Version: 1.20.22)")]
   public class InternetExplorerUnknownFileNameFileFinderStrategy : IDownloadFileFinderStrategy
   {
     private readonly string _partialFileEnding;

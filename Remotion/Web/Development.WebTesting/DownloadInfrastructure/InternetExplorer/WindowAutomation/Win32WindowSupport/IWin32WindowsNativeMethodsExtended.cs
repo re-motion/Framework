@@ -22,6 +22,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExp
   /// <summary>
   /// Declares the native methods used by the <see cref="InternetExplorerDownloadHelper"/>. See <see cref="Win32WindowsNativeMethodsExtended"/> for the implementation. 
   /// </summary>
+  [Obsolete ("Support for Internet Explorer in web tests has been removed. (Version: 1.20.22)")]
   public interface IWin32WindowsNativeMethodsExtended : IWin32WindowsNativeMethods
   {
     /// <summary>

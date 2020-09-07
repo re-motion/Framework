@@ -30,6 +30,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.InternetExplor
   /// <summary>
   /// Responsible for creating a new InternetExplorer browser, configured based on <see cref="IInternetExplorerConfiguration"/> and <see cref="DriverConfiguration"/>.
   /// </summary>
+  [Obsolete ("Support for Internet Explorer in web tests has been removed. (Version: 1.20.22)")]
   public class InternetExplorerBrowserFactory : IBrowserFactory
   {
     private readonly IInternetExplorerConfiguration _internetExplorerConfiguration;

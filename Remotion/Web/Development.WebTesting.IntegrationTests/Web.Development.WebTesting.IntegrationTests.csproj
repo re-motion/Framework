@@ -78,6 +78,7 @@
     <Compile Include="ChromeBinariesProviderTest.cs" />
     <Compile Include="EdgeBinariesProviderTest.cs" />
     <Compile Include="FirefoxBinariesProviderTest.cs" />
+    <Compile Include="InternetExplorerTestExtensions.cs" />
     <Compile Include="WxeCompletionDetectionHelpersTest.cs" />
     <Compile Include="AspNetRequestErrorDetectionStrategyTest.cs" />
     <Compile Include="CoypuElementScopeFindExtensionsTest.cs" />

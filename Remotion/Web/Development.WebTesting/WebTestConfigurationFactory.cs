@@ -80,7 +80,9 @@ namespace Remotion.Web.Development.WebTesting
         return CreateEdgeConfiguration (configSettings);
 
       if (configuredBrowser == Browser.InternetExplorer)
+#pragma warning disable 618
         return CreateInternetExplorerConfiguration (configSettings);
+#pragma warning restore 618
 
       if (configuredBrowser == Browser.Firefox)
         return CreateFirefoxConfiguration (configSettings);
@@ -143,6 +145,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <remarks>
     /// Override this method to customize the configuration settings.
     /// </remarks>
+    [Obsolete ("Support for Internet Explorer in web tests has been removed. (Version: 1.20.22)")]
     protected virtual IInternetExplorerConfiguration CreateInternetExplorerConfiguration ([NotNull] WebTestConfigurationSection configSettings)
     {
       ArgumentUtility.CheckNotNull ("configSettings", configSettings);

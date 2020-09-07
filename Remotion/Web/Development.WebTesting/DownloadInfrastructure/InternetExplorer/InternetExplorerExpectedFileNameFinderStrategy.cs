@@ -28,6 +28,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExp
   /// <summary>
   /// Implements the <see cref="IDownloadFileFinderStrategy"/> interface for performing a download based on an expected file name with Internet Explorer.
   /// </summary>
+  [Obsolete ("Support for Internet Explorer in web tests has been removed. (Version: 1.20.22)")]
   public class InternetExplorerExpectedFileNameFinderStrategy : IDownloadFileFinderStrategy
   {
     private readonly string _fileName;

@@ -25,6 +25,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
   /// <summary>
   /// Locates the browser content area for InternetExplorer.
   /// </summary>
+  [Obsolete ("Support for Internet Explorer in web tests has been removed. (Version: 1.20.22)")]
   public class InternetExplorerBrowserContentLocator : IBrowserContentLocator
   {
     private const string c_getWindowRectangleJs =

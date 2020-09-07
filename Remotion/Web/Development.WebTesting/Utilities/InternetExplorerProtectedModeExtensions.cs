@@ -182,6 +182,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// <see cref="IDisposable"/> which resets the protected mode settings when disposed.
     /// If the current browser is not IE, nothing happens and a NOP disposable will be returned.
     /// </summary>
+    [Obsolete ("Support for Internet Explorer in web tests has been removed. (Version: 1.20.22)")]
     public static IDisposable SetProtectedModeForAllZones ([NotNull] this WebTestHelper helper, bool protectedMode)
     {
       ArgumentUtility.CheckNotNull ("helper", helper);

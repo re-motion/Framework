@@ -29,6 +29,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExp
   /// <remarks>
   /// The <see cref="Items"/> contents are cached and can be refreshed by using <see cref="Refresh"/>.
   /// </remarks>
+  [Obsolete ("Support for Internet Explorer in web tests has been removed. (Version: 1.20.22)")]
   public class InternetExplorerDownloadManagerWrapper
   {
     /// <summary>

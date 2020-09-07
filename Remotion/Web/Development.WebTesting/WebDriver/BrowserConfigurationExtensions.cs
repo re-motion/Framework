@@ -35,6 +35,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver
     /// Gets a flag indicating if <paramref name="browserConfiguration"/> represents <b>Internet Explorer</b> by testing if the passed object 
     /// implements <see cref="IInternetExplorerConfiguration"/>.
     /// </summary>
+    [Obsolete ("Support for Internet Explorer in web tests has been removed. (Version: 1.20.22)")]
     public static bool IsInternetExplorer ([NotNull] this IBrowserConfiguration browserConfiguration)
     {
       ArgumentUtility.CheckNotNull ("browserConfiguration", browserConfiguration);
@@ -79,6 +80,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver
     /// Gets a flag indicating if <paramref name="browser"/> represents <b>Internet Explorer</b> by testing if the passed instance 
     /// is <see cref="Browser.InternetExplorer"/>.
     /// </summary>
+    [Obsolete ("Support for Internet Explorer in web tests has been removed. (Version: 1.20.22)")]
     public static bool IsInternetExplorer ([NotNull] this Browser browser)
     {
       ArgumentUtility.CheckNotNull ("browser", browser);

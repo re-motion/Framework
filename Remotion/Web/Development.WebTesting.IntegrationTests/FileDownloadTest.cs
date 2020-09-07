@@ -15,15 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
-using Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExplorer;
 using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver;
 
@@ -32,12 +27,16 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   [TestFixture]
   public class FileDownloadTest : IntegrationTest
   {
+    [SetUp]
+    public void SetUp ()
+    {
+      if (Helper.BrowserConfiguration.IsInternetExplorer())
+        Assert.Ignore ("Support for Internet Explorer in web tests has been removed. (Version: 1.20.22)");
+    }
+
     [Test]
     public void TestDownloadReplacesCurrentPage_WithExpectedFileName ()
     {
-      if (Helper.BrowserConfiguration.IsInternetExplorer())
-        Assert.Ignore ("File downloads which replace the current page are currently broken in IE. See https://github.com/SeleniumHQ/selenium/issues/1843 for more information.");
-
       const string fileName = "SampleFile.txt";
 
       var home = Start();
@@ -52,9 +51,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void TestDownloadReplacesCurrentPage_WithUnknownFileName ()
     {
-      if (Helper.BrowserConfiguration.IsInternetExplorer())
-        Assert.Ignore ("File downloads which replace the site are currently broken in IE. See https://github.com/SeleniumHQ/selenium/issues/1843 for more information.");
-
       var home = Start();
       var button = home.Scope.FindId ("body_DownloadTxtReplaceSiteButton");
       button.Click();
@@ -64,9 +60,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void TestDownloadReplacesCurrentPage_AnchorWithSelf ()
     {
-      if (Helper.BrowserConfiguration.IsInternetExplorer())
-        Assert.Ignore ("File downloads which replace the site are currently broken in IE. See https://github.com/SeleniumHQ/selenium/issues/1843 for more information.");
-
       var home = Start();
       var anchor = home.Scope.FindId ("body_TargetSelfAnchor");
       anchor.Click();
@@ -130,33 +123,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
             button.Click();
           });
 
-      if (Helper.BrowserConfiguration.IsInternetExplorer())
-      {
-        var downloadDirectory = ((InternetExplorerDownloadHelper) Helper.BrowserConfiguration.DownloadHelper).DownloadDirectory;
-        var filesInDownloadDirectoryBeforeDownload = Directory.GetFiles (downloadDirectory);
-
-        startDownloadLambda();
-
-        Assert.That (
-          () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithDetectedFileName (downloadStartedTimout, downloadUpdatedTimeout),
-          Throws.InstanceOf<DownloadResultNotFoundException>()
-              .With.Message.StartsWith (
-                string.Format (
-                  "The download result file did not get updated for longer than the downloadUpdatedTimeout of '{0}'. The download appears to have failed.",
-                  downloadUpdatedTimeout)));
-
-        //The browser continues writing in the download file, therefore we have to wait a little bit, so that it does not interfere with the next test.
-        Thread.Sleep (TimeSpan.FromSeconds (3));
-
-        //InternetExplorer sometimes opens a download information bar to inform us, that the downloaded file was deleted. 
-        //We close the bar (by sending the keys "alt + q") as it potentially interferes with future tests.
-        SendKeys.SendWait ("%q");
-
-        //InternetExplorer works in the default download directory of the user. If cleanUpUnmatchedDownloadedFiles is set to false in config, the unmatched file is not deleted by the WebTestFramework. 
-        //Therefore, we have to delete these files manually.
-        CleanupPartialSampleFiles (downloadDirectory, filesInDownloadDirectoryBeforeDownload);
-      }
-      else if (Helper.BrowserConfiguration.IsChrome())
+      if (Helper.BrowserConfiguration.IsChrome())
       {
         startDownloadLambda();
 
@@ -195,37 +162,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
             button.Click();
           });
 
-      if (Helper.BrowserConfiguration.IsInternetExplorer())
-      {
-        var downloadDirectory = ((InternetExplorerDownloadHelper) Helper.BrowserConfiguration.DownloadHelper).DownloadDirectory;
-        var filesInDownloadDirectoryBeforeDownload = Directory.GetFiles (downloadDirectory);
-
-        startDownloadLambda();
-
-        Assert.That (
-          () =>
-            Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (
-              fileName,
-              downloadStartedTimeout,
-              downloadUpdatedTimeout),
-          Throws.InstanceOf<DownloadResultNotFoundException>()
-              .With.Message.StartsWith (
-                string.Format (
-                  "The download result file did not get updated for longer than the downloadUpdatedTimeout of '{0}'. The download appears to have failed.",
-                  downloadUpdatedTimeout)));
-
-        //The browser continues writing in the download file, therefore we have to wait a little bit so that does not interfere with the next test.
-        Thread.Sleep (TimeSpan.FromSeconds (3));
-
-        //InternetExplorer sometimes opens a download information bar to inform us, that the downloaded file was deleted. 
-        //We close the bar (by sending the keys "alt + q") as it potentially interferes with future tests.
-        SendKeys.SendWait ("%q");
-
-        //InternetExplorer works in the default download directory of the user. If cleanUpUnmatchedDownloadedFiles is set to false in config, the unmatched file is not deleted by the WebTestFramework. 
-        //Therefore, we have to delete these files manually.
-        CleanupPartialSampleFiles (downloadDirectory, filesInDownloadDirectoryBeforeDownload);
-      }
-      else if (Helper.BrowserConfiguration.IsChrome())
+      if (Helper.BrowserConfiguration.IsChrome())
       {
         startDownloadLambda();
 
@@ -273,15 +210,6 @@ Unmatched files in the download directory (will be cleaned up by the infrastruct
  - {1}",
                 expectedFileName,
                 realFileName)));
-
-      //InternetExplorer works in the default download directory of the user. If cleanUpUnmatchedDownloadedFiles is set to false in config, the unmatched file is not deleted by the WebTestFramework. 
-      //Therefore, we have to delete these files manually.
-      if (Helper.BrowserConfiguration.IsInternetExplorer())
-      {
-        var downloadDirectory = ((InternetExplorerDownloadHelper) Helper.BrowserConfiguration.DownloadHelper).DownloadDirectory;
-        var fullFilePath = Path.Combine (downloadDirectory, realFileName);
-        File.Delete (fullFilePath);
-      }
     }
 
     [Test]
@@ -289,18 +217,7 @@ Unmatched files in the download directory (will be cleaned up by the infrastruct
     { 
       Start();
 
-      if (Helper.BrowserConfiguration.IsInternetExplorer())
-      {
-        Assert.That (
-          () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (
-            "SampleFile.txt",
-            TimeSpan.FromSeconds (1),
-            TimeSpan.FromSeconds (1)),
-          Throws.InstanceOf<DownloadResultNotFoundException>()
-              .With.Message.EqualTo (
-                "Could not start the download: Could not find download information bar or download manager."));
-      }
-      else if (Helper.BrowserConfiguration.IsChrome ())
+      if (Helper.BrowserConfiguration.IsChrome())
       {
         Assert.That (
           () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (
@@ -437,19 +354,6 @@ Unmatched files in the download directory (will be cleaned up by the infrastruct
     private WebFormsTestPageObject Start ()
     {
       return Start<WebFormsTestPageObject> ("FileDownloadTest.aspx");
-    }
-
-    private void CleanupPartialSampleFiles (string downloadDirectory, IEnumerable<string> filesInDownloadDirectoryBeforeDownload)
-    {
-      var newFilesInDownloadDirectoryAfterDownload = Directory.GetFiles (downloadDirectory).Except (filesInDownloadDirectoryBeforeDownload);
-
-      var filesToBeDeleted = newFilesInDownloadDirectoryAfterDownload.Select (e => new { FullPath = e, FileName = Path.GetFileName (e) })
-          .Where (x => x.FileName.StartsWith ("SampleFile.txt.") && x.FileName.EndsWith ("partial"));
-
-      foreach (var file in filesToBeDeleted)
-      {
-        File.Delete (file.FullPath);
-      }
     }
 
     private Task RestartBrowserToCancelDownloadsAfterDelayAsync (TimeSpan delay)

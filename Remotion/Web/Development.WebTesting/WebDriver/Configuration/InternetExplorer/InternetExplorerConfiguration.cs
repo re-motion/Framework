@@ -31,6 +31,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.InternetEx
   /// <summary>
   /// Implements the <see cref="IBrowserConfiguration"/> interface for Internet Explorer.
   /// </summary>
+  [Obsolete ("Support for Internet Explorer in web tests has been removed. (Version: 1.20.22)")]
   public class InternetExplorerConfiguration : BrowserConfigurationBase, IInternetExplorerConfiguration
   {
     private readonly IBrowserContentLocator _locator = new InternetExplorerBrowserContentLocator();

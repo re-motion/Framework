@@ -23,6 +23,7 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession.InternetExplorer
   /// <summary>
   /// Implements <see cref="IBrowserSession"/> for the InternetExplorer browser.
   /// </summary>
+  [Obsolete ("Support for Internet Explorer in web tests has been removed. (Version: 1.20.22)")]
   public class InternetExplorerBrowserSession : BrowserSessionBase<IInternetExplorerConfiguration>
   {
     public InternetExplorerBrowserSession ([NotNull] Coypu.BrowserSession value, IInternetExplorerConfiguration configuration, int driverProcessId)

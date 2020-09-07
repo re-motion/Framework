@@ -24,6 +24,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.InternetEx
   /// Provides configuration specific to initializing and shutting down Internet Explorer.
   /// </summary>
   /// <seealso cref="InternetExplorerConfiguration"/>
+  [Obsolete ("Support for Internet Explorer in web tests has been removed. (Version: 1.20.22)")]
   public interface IInternetExplorerConfiguration : IBrowserConfiguration
   {
     [NotNull] InternetExplorerOptions CreateInternetExplorerOptions ();

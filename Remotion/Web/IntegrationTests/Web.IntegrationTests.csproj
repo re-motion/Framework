@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="Command\AccessibilityCommandTest.cs" />
     <Compile Include="DropDownMenu\AccessibilityDropDownMenuTest.cs" />
+    <Compile Include="InternetExplorerTestExtensions.cs" />
     <Compile Include="Label\AccessibilityLabelTest.cs" />
     <Compile Include="ListMenu\AccessibilityListMenuTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

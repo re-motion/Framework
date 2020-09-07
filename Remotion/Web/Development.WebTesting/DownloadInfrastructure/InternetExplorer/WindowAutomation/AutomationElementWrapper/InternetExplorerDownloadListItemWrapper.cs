@@ -24,6 +24,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExp
   /// <summary>
   /// Wraps a single download list item in the Internet Explorer download manager window.
   /// </summary>
+  [Obsolete ("Support for Internet Explorer in web tests has been removed. (Version: 1.20.22)")]
   public class InternetExplorerDownloadListItemWrapper
   {
     /// <summary>

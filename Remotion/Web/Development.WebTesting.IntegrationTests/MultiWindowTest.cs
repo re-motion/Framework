@@ -28,6 +28,13 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   [TestFixture]
   public class MultiWindowTest : IntegrationTest
   {
+    [SetUp]
+    public void SetUp ()
+    {
+      if (Helper.BrowserConfiguration.IsInternetExplorer())
+        Assert.Ignore ("RM-7457: Support for Internet Explorer in web tests has been removed.");
+    }
+
     [Test]
     public void TestMultiFrameActions ()
     {

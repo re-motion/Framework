@@ -27,6 +27,7 @@ using Remotion.WindowFinder;
 
 namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.InternetExplorer.WindowAutomation
 {
+  [Obsolete ("Support for Internet Explorer in web tests has been removed. (Version: 1.20.22)")]
   public class InternetExplorerDownloadControlHandler
   {
     private const string c_classNameOfDownloadInformationBar = "Frame Notification Bar";

@@ -20,8 +20,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using JetBrains.Annotations;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.WebDriver;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
-using Remotion.Web.Development.WebTesting.WebDriver.Configuration.InternetExplorer;
 
 namespace Remotion.Web.Development.WebTesting.Accessibility
 {
@@ -105,7 +105,9 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
       ArgumentUtility.CheckNotNullOrItemsNull ("violations", violations);
       ArgumentUtility.CheckNotNull ("browserConfiguration", browserConfiguration);
 
-      if (browserConfiguration is InternetExplorerConfiguration)
+#pragma warning disable 618
+      if (browserConfiguration.IsInternetExplorer())
+#pragma warning restore 618
       {
         var cssRegex = new Regex (@"(\.bocListTableBlock|\.hasMenuBlock|\.hasNavigator) > \.screenReaderText\[aria-label="".+""]\[aria-hidden=""true""]");
 
