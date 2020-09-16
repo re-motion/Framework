@@ -39,6 +39,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void TestMultiFrameActions ()
     {
+      if (Helper.BrowserConfiguration.IsEdge())
+        Assert.Ignore ("RM-7473 - Flaky test");
+
       var home = Start();
 
       var mainLabel = home.Labels().GetByID ("MainLabel");
