@@ -35,6 +35,7 @@ using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Screen
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
+using Remotion.Web.Development.WebTesting.WebDriver;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 {
@@ -180,6 +181,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void ScreenshotTest_TableContainer ()
     {
+      if (Helper.BrowserConfiguration.IsEdge())
+        Assert.Ignore ("RM-7474 - Flaky screenshot test");
+
       var home = Start();
 
       var control = home.Lists().GetByLocalID ("JobList_Normal");
