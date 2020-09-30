@@ -227,11 +227,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var bocText = home.TextValues().GetByLocalID ("LastNameField_Normal");
       Assert.That (bocText.GetText(), Is.Not.Empty); // Make sure there is something to clear
-      var postBackCountBeforeFillWith = int.Parse (home.Context.Scope.FindId ("wxePostBackSequenceNumberField").Value);
+      var postBackCountBeforeFillWith = int.Parse (home.Context.Scope.FindId ("dmaWxePostBackSequenceNumberField").Value);
 
       bocText.FillWith ("Blubba");
 
-      var postBackCountAfterFillWith = int.Parse (home.Context.Scope.FindId ("wxePostBackSequenceNumberField").Value);
+      var postBackCountAfterFillWith = int.Parse (home.Context.Scope.FindId ("dmaWxePostBackSequenceNumberField").Value);
       Assert.That (postBackCountAfterFillWith, Is.EqualTo (postBackCountBeforeFillWith + 1));
     }
 

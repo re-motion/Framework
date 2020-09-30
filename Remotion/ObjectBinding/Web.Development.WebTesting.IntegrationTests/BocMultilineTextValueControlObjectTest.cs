@@ -228,11 +228,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var bocMultilineText = home.MultilineTextValues().GetByLocalID ("CVField_Normal");
       Assert.That (bocMultilineText.GetText(), Is.Not.Empty); // Make sure there is something to clear
-      var postBackCountBeforeFillWith = int.Parse (home.Context.Scope.FindId ("wxePostBackSequenceNumberField").Value);
+      var postBackCountBeforeFillWith = int.Parse (home.Context.Scope.FindId ("dmaWxePostBackSequenceNumberField").Value);
 
       bocMultilineText.FillWith ("Blubba");
 
-      var postBackCountAfterFillWith = int.Parse (home.Context.Scope.FindId ("wxePostBackSequenceNumberField").Value);
+      var postBackCountAfterFillWith = int.Parse (home.Context.Scope.FindId ("dmaWxePostBackSequenceNumberField").Value);
       Assert.That (postBackCountAfterFillWith, Is.EqualTo (postBackCountBeforeFillWith + 1));
     }
 

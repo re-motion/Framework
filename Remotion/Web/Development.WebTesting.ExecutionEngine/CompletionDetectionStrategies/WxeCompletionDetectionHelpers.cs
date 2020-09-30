@@ -28,7 +28,7 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
   internal static class WxeCompletionDetectionHelpers
   {
     private const string c_wxeFunctionToken = "WxeFunctionToken";
-    private const string c_wxePostBackSequenceNumberFieldId = "wxePostBackSequenceNumberField";
+    private const string c_dmaWxePostBackSequenceNumberFieldId = "dmaWxePostBackSequenceNumberField";
 
     /// <summary>
     /// Returns the current WXE postback sequence number in the given <paramref name="context"/>.
@@ -37,7 +37,7 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
-      return int.Parse (context.Scope.FindId (c_wxePostBackSequenceNumberFieldId).Value);
+      return int.Parse (context.Scope.FindId (c_dmaWxePostBackSequenceNumberFieldId).Value);
     }
 
     /// <summary>

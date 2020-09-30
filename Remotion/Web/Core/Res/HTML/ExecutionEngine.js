@@ -23,11 +23,16 @@
 // statusIsAbortingMessage: The message displayed when the user attempts to submit while an abort is in progress. 
 //    null to disable the message.
 // statusIsCachedMessage: The message displayed when the user returns to a cached page. null to disable the message.
+// wxePostBackSequenceNumberFieldID: The ID of the WXE postback sequence number.
+// dmaWxePostBackSequenceNumberFieldID: The ID of the DMA WXE postback sequence number. null to disable the updating of
+//    the field.
 function WxePage_Context(
       isCacheDetectionEnabled,
       refreshInterval, refreshUrl,
       abortUrl,
-      statusIsAbortingMessage, statusIsCachedMessage)
+      statusIsAbortingMessage, statusIsCachedMessage,
+      wxePostBackSequenceNumberFieldID,
+      dmaWxePostBackSequenceNumberFieldID)
 {
   ArgumentUtility.CheckNotNullAndTypeIsBoolean('isCacheDetectionEnabled', isCacheDetectionEnabled);
   ArgumentUtility.CheckNotNullAndTypeIsNumber('refreshInterval', refreshInterval);
@@ -35,6 +40,8 @@ function WxePage_Context(
   ArgumentUtility.CheckTypeIsString('abortUrl', abortUrl);
   ArgumentUtility.CheckTypeIsString('statusIsAbortingMessage', statusIsAbortingMessage);
   ArgumentUtility.CheckTypeIsString('statusIsCachedMessage', statusIsCachedMessage);
+  ArgumentUtility.CheckTypeIsString('wxePostBackSequenceNumberFieldID', wxePostBackSequenceNumberFieldID);
+  ArgumentUtility.CheckTypeIsString('dmaWxePostBackSequenceNumberFieldID', dmaWxePostBackSequenceNumberFieldID);
 
   // The URL used to post the refresh request to.
   var _refreshUrl = null;
@@ -59,11 +66,21 @@ function WxePage_Context(
 
   var _isCacheDetectionEnabled = isCacheDetectionEnabled;
 
+  var _wxePostBackSequenceNumberFieldID = wxePostBackSequenceNumberFieldID;
+  var _dmaWxePostBackSequenceNumberFieldID = dmaWxePostBackSequenceNumberFieldID;
+
   // Handles the page loading event.
   this.OnLoading = function(hasSubmitted, isCached)
   {
     ArgumentUtility.CheckNotNullAndTypeIsBoolean('hasSubmitted', hasSubmitted);
     ArgumentUtility.CheckNotNullAndTypeIsBoolean('isCached', isCached);
+
+    if (_dmaWxePostBackSequenceNumberFieldID != null)
+    {
+      var dmaWxePostBackSequenceNumberField = document.getElementById(_dmaWxePostBackSequenceNumberFieldID);
+      var postBackSequenceNumber = document.getElementById(_wxePostBackSequenceNumberFieldID).value;
+      dmaWxePostBackSequenceNumberField.value = postBackSequenceNumber;
+    }
   };
 
   // Handles the page loaded event.
