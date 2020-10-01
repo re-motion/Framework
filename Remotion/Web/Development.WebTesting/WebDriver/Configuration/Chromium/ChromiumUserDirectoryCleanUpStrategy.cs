@@ -57,13 +57,13 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium
         return;
 
       // The amount of times we try to delete the user data folder before giving up
-      const int maxTries = 5;
+      const int maxTries = 10;
 
       // Try to delete the user data folder.
       // One of the files in the folder is still used by a process even if the driver and browser are shutdown.
       // Therefore we retry maxTries times and increase the amount of time we wait between each tries.
 
-      var sleep = 50f;
+      var sleep = 100f;
       var tries = 0;
       do
       {
