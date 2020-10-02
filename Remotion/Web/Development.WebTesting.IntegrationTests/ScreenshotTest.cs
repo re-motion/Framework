@@ -406,7 +406,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       }
       else if (Helper.BrowserConfiguration.IsFirefox())
       {
-        padding = new WebPadding (2, 1, 2, 68);
+        padding = new WebPadding (6, 1, 2, 68);
       }
       else if (Helper.BrowserConfiguration.IsInternetExplorer())
       {

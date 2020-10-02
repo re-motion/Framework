@@ -114,6 +114,9 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     private static void SetValueUsingSendKeys ([NotNull] this ElementScope scope, [NotNull] string value)
     {
+      // GeckoDriver treats \r as its own newline character, which causes double newlines inserts. Since all browsers can deal with \n, we can simply remove \r.
+      value = value.Replace ("\r", "");
+
       var clearTextBoxWithoutTriggeringPostBack = Keys.Control + "a" + Keys.Control + Keys.Delete;
       value = clearTextBoxWithoutTriggeringPostBack + value;
 
