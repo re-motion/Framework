@@ -181,9 +181,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void ScreenshotTest_TableContainer ()
     {
-      if (Helper.BrowserConfiguration.IsEdge())
-        Assert.Ignore ("RM-7474 - Flaky screenshot test");
-
       var home = Start();
 
       var control = home.Lists().GetByLocalID ("JobList_Normal");
