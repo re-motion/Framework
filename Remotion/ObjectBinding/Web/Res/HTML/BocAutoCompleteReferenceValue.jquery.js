@@ -229,6 +229,7 @@
                 case KEY.ESC:
                     // re-motion: block event bubbling
                     event.stopPropagation();
+                    clearTimeout(timeout);
                     var wasVisible = select.visible();
                     state.mouseDownOnSelect = false;
 
@@ -359,8 +360,10 @@
                 } else {
                     clearTimeout(timeout);
                     var lastKeyPressCode = state.lastKeyPressCode;
-                    invalidateResult();
-                    acceptInput(lastKeyPressCode);
+                    timeout = setTimeout(function () {
+                        invalidateResult();
+                        acceptInput(lastKeyPressCode);
+                    }, 200);
                 }
             }
         }).click(function() {
