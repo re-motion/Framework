@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Loading
 
       _listenerDynamicMock
           .Expect (mock => mock.ObjectsLoading (Arg<ClientTransaction>.Is.Anything, Arg<ReadOnlyCollection<ObjectID>>.Is.Anything))
-          .Throw (exception);
+          .Throw (exception).Repeat.Once();
       
       var abortedDomainObject = DomainObjectIDs.ClassWithAllDataTypes1.GetObjectReference<ClassWithAllDataTypes> ();
       Assert.That (() => abortedDomainObject.EnsureDataAvailable(), Throws.Exception.SameAs (exception));

@@ -116,7 +116,7 @@ namespace Remotion.Reflection.UnitTests
           Throws.InvalidOperationException.And.Message.EqualTo (
               string.Format (
                   "The type 'TheName' cannot be converted to a runtime type because no conversion is registered for '{0}'.",
-                  typeInformation.GetType().Name)));
+                  typeInformation.GetType().FullName)));
     }
 
     [Test]

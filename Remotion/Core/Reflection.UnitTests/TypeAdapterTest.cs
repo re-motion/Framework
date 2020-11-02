@@ -866,7 +866,7 @@ namespace Remotion.Reflection.UnitTests
       Assert.That (
           () => TypeAdapter.Create (currentType).GetAscribedGenericArgumentsFor (otherType),
           Throws.ArgumentException.And.Message.EqualTo (
-              "Parameter 'c' has type '" + otherType.GetType().Name + "' when type 'Remotion.Reflection.TypeAdapter' was expected."
+              "Parameter 'c' has type '" + otherType.GetType().FullName + "' when type 'Remotion.Reflection.TypeAdapter' was expected."
               + "\r\nParameter name: c"));
     }
 
