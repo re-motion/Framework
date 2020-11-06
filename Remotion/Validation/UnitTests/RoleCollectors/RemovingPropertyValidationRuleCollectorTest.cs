@@ -89,11 +89,17 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
 
       Assert.That (_removingPropertyValidationRuleCollector.Validators.ElementAt (0).ValidatorType, Is.EqualTo (typeof (StubPropertyValidator)));
       Assert.That (_removingPropertyValidationRuleCollector.Validators.ElementAt (0).CollectorTypeToRemoveFrom, Is.Null);
+      Assert.That (
+          _removingPropertyValidationRuleCollector.Validators.ElementAt (0).RemovingPropertyValidationRuleCollector,
+          Is.SameAs (_removingPropertyValidationRuleCollector));
 
       Assert.That (_removingPropertyValidationRuleCollector.Validators.ElementAt (1).ValidatorType, Is.EqualTo (typeof (NotEmptyValidator)));
       Assert.That (
           _removingPropertyValidationRuleCollector.Validators.ElementAt (1).CollectorTypeToRemoveFrom,
           Is.EqualTo (typeof (CustomerValidationRuleCollector1)));
+      Assert.That (
+          _removingPropertyValidationRuleCollector.Validators.ElementAt (1).RemovingPropertyValidationRuleCollector,
+          Is.SameAs (_removingPropertyValidationRuleCollector));
     }
 
     [Test]

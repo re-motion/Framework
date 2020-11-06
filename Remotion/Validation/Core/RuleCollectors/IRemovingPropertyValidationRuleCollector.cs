@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using Remotion.Reflection;
+using Remotion.Validation.Implementation;
 
 namespace Remotion.Validation.RuleCollectors
 {
@@ -41,7 +42,7 @@ namespace Remotion.Validation.RuleCollectors
     /// <summary>
     /// Gets the validators registered for removal.
     /// </summary>
-    IEnumerable<RemovingValidatorRegistration> Validators { get; }
+    IEnumerable<RemovingPropertyValidatorRegistration> Validators { get; }
 
     /// <summary>
     /// Specifies that all validators of <paramref name="validatorType"/> should be removed.

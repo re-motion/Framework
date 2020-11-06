@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
+using Remotion.Validation.RuleCollectors;
 
 namespace Remotion.Validation.Merging
 {

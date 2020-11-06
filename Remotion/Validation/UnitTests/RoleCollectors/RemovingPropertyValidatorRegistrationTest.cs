@@ -16,13 +16,12 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Validation.Implementation;
 using Remotion.Validation.RuleCollectors;
 using Remotion.Validation.UnitTests.TestDomain.Collectors;
 using Remotion.Validation.Validators;
 using Rhino.Mocks;
 
-namespace Remotion.Validation.UnitTests.Implementation
+namespace Remotion.Validation.UnitTests.RoleCollectors
 {
   [TestFixture]
   public class RemovingPropertyValidatorRegistrationTest

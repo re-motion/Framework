@@ -140,7 +140,7 @@
     <Compile Include="Implementation\PropertyValidatorLogContextInfo.cs" />
     <Compile Include="Merging\NamespaceAwareDiagnosticOutputValidationRuleMergeDecorator.cs" />
     <Compile Include="Merging\PropertyValidatorExtractorFactory.cs" />
-    <Compile Include="Implementation\RemovingPropertyValidatorRegistration.cs" />
+    <Compile Include="RuleCollectors\RemovingPropertyValidatorRegistration.cs" />
     <Compile Include="Merging\ValidationCollectorMergeResult.cs" />
     <Compile Include="MetaValidation\DefaultSystemPropertyMetaValidationRuleProviderFactory.cs" />
     <Compile Include="MetaValidation\ISystemPropertyMetaValidationRuleProviderFactory.cs" />

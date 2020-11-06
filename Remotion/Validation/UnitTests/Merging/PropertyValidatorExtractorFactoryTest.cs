@@ -18,6 +18,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Merging;
+using Remotion.Validation.RuleCollectors;
 using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.Merging

@@ -123,7 +123,7 @@
     <Compile Include="Implementation\TestDomain\TypeWithTwoInterfacesHavingCommingBaseInterface.cs" />
     <Compile Include="Implementation\ValidationRuleCollectorInfoTest.cs" />
     <Compile Include="Implementation\AddingPropertyValidationRuleCollectorStub.cs" />
-    <Compile Include="Implementation\RemovingPropertyValidatorRegistrationTest.cs" />
+    <Compile Include="RoleCollectors\RemovingPropertyValidatorRegistrationTest.cs" />
     <Compile Include="MetaValidation\DefaultSystemPropertyMetaValidationRuleProviderFactoryTest.cs" />
     <Compile Include="MetaValidation\DefaultSystemPropertyMetaValidationRuleProviderTest.cs" />
     <Compile Include="MetaValidation\DelegateObjectMetaValidationRuleTest.cs" />
