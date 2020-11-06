@@ -41,11 +41,11 @@ namespace Remotion.Validation.UnitTests.Merging
     private RemovingValidatorRegistration _removingValidatorRegistration2A;
     private RemovingValidatorRegistration _removingValidatorRegistration2B;
     private RemovingValidatorRegistration _removingValidatorRegistration2C;
-    private ObjectValidatorRegistrationWithContext _registrationWithContext1;
-    private ObjectValidatorRegistrationWithContext _registrationWithContext2;
-    private ObjectValidatorRegistrationWithContext _registrationWithContext3;
-    private ObjectValidatorRegistrationWithContext _registrationWithContext4;
-    private ObjectValidatorRegistrationWithContext _registrationWithContext5;
+    private RemovingObjectValidatorRegistration _removingObjectValidatorRegistration1;
+    private RemovingObjectValidatorRegistration _removingObjectValidatorRegistration2;
+    private RemovingObjectValidatorRegistration _removingObjectValidatorRegistration3;
+    private RemovingObjectValidatorRegistration _removingObjectValidatorRegistration4;
+    private RemovingObjectValidatorRegistration _removingObjectValidatorRegistration5;
     private IRemovingObjectValidationRuleCollector _removingObjectValidationRuleCollectorStub1;
     private IRemovingObjectValidationRuleCollector _removingObjectValidationRuleCollectorStub2;
     private IRemovingObjectValidationRuleCollector _removingObjectValidationRuleCollectorStub3;
@@ -66,11 +66,11 @@ namespace Remotion.Validation.UnitTests.Merging
       _removingObjectValidationRuleCollectorStub3 = MockRepository.GenerateStub<IRemovingObjectValidationRuleCollector>();
       _removingObjectValidationRuleCollectorStub3.Stub (stub => stub.ValidatedType).Return (TypeAdapter.Create(typeof (Employee)));
 
-      _registrationWithContext1 = new ObjectValidatorRegistrationWithContext (_removingValidatorRegistration1A, _removingObjectValidationRuleCollectorStub1);
-      _registrationWithContext2 = new ObjectValidatorRegistrationWithContext (_removingValidatorRegistration2A, _removingObjectValidationRuleCollectorStub1);
-      _registrationWithContext3 = new ObjectValidatorRegistrationWithContext (_removingValidatorRegistration2B, _removingObjectValidationRuleCollectorStub2);
-      _registrationWithContext4 = new ObjectValidatorRegistrationWithContext (_removingValidatorRegistration1A, _removingObjectValidationRuleCollectorStub1);
-      _registrationWithContext5 = new ObjectValidatorRegistrationWithContext (_removingValidatorRegistration2C, _removingObjectValidationRuleCollectorStub3);
+      _removingObjectValidatorRegistration1 = new RemovingObjectValidatorRegistration (_removingValidatorRegistration1A, _removingObjectValidationRuleCollectorStub1);
+      _removingObjectValidatorRegistration2 = new RemovingObjectValidatorRegistration (_removingValidatorRegistration2A, _removingObjectValidationRuleCollectorStub1);
+      _removingObjectValidatorRegistration3 = new RemovingObjectValidatorRegistration (_removingValidatorRegistration2B, _removingObjectValidationRuleCollectorStub2);
+      _removingObjectValidatorRegistration4 = new RemovingObjectValidatorRegistration (_removingValidatorRegistration1A, _removingObjectValidationRuleCollectorStub1);
+      _removingObjectValidatorRegistration5 = new RemovingObjectValidatorRegistration (_removingValidatorRegistration2C, _removingObjectValidationRuleCollectorStub3);
 
       _stubObjectValidator1 = new FakeCustomerValidator(); //extracted
       _stubObjectValidator2 = new StubObjectValidator(); //extracted
@@ -81,8 +81,8 @@ namespace Remotion.Validation.UnitTests.Merging
       _extractor = new ObjectValidatorExtractor (
           new[]
           {
-              _registrationWithContext1, _registrationWithContext2, _registrationWithContext3, _registrationWithContext4, 
-              _registrationWithContext5
+              _removingObjectValidatorRegistration1, _removingObjectValidatorRegistration2, _removingObjectValidatorRegistration3, _removingObjectValidatorRegistration4, 
+              _removingObjectValidatorRegistration5
           },
           _logContextMock);
     }
@@ -100,13 +100,13 @@ namespace Remotion.Validation.UnitTests.Merging
           mock =>
               mock.ValidatorRemoved (
                   Arg<IObjectValidator>.Is.Same (_stubObjectValidator1),
-                  Arg<ObjectValidatorRegistrationWithContext[]>.List.Equal (new[] { _registrationWithContext1, _registrationWithContext4 }),
+                  Arg<RemovingObjectValidatorRegistration[]>.List.Equal (new[] { _removingObjectValidatorRegistration1, _removingObjectValidatorRegistration4 }),
                   Arg<IAddingObjectValidationRuleCollector>.Is.Same (addingObjectValidationRuleCollector))).Repeat.Once();
       _logContextMock.Expect (
           mock =>
               mock.ValidatorRemoved (
                   Arg<IObjectValidator>.Is.Same (_stubObjectValidator2),
-                  Arg<ObjectValidatorRegistrationWithContext[]>.List.Equal (new[] { _registrationWithContext2 }),
+                  Arg<RemovingObjectValidatorRegistration[]>.List.Equal (new[] { _removingObjectValidatorRegistration2 }),
                   Arg<IAddingObjectValidationRuleCollector>.Is.Same (addingObjectValidationRuleCollector))).Repeat.Once ();
 
       var result = _extractor.ExtractObjectValidatorsToRemove (addingObjectValidationRuleCollector).ToArray();

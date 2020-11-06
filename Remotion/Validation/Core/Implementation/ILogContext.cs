@@ -36,7 +36,7 @@ namespace Remotion.Validation.Implementation
 
     void ValidatorRemoved (
         IObjectValidator removedValidator,
-        ObjectValidatorRegistrationWithContext[] removingObjectValidatorRegistrationsWithContext,
+        RemovingObjectValidatorRegistration[] removingObjectValidatorRegistrations,
         IAddingObjectValidationRuleCollector addingObjectValidationRuleCollector);
 
     IEnumerable<ObjectValidatorLogContextInfo> GetLogContextInfos (IAddingObjectValidationRuleCollector addingObjectValidationRuleCollector);

@@ -58,14 +58,14 @@ namespace Remotion.Validation.Implementation
 
     public void ValidatorRemoved (
         IObjectValidator removedValidator,
-        ObjectValidatorRegistrationWithContext[] removingObjectValidatorRegistrationsWithContext,
+        RemovingObjectValidatorRegistration[] removingObjectValidatorRegistrations,
         IAddingObjectValidationRuleCollector addingObjectValidationRuleCollector)
     {
       ArgumentUtility.CheckNotNull ("addingObjectValidationRuleCollector", addingObjectValidationRuleCollector);
-      ArgumentUtility.CheckNotNull ("removingObjectValidatorRegistrationsWithContext", removingObjectValidatorRegistrationsWithContext);
+      ArgumentUtility.CheckNotNull ("removingObjectValidatorRegistrations", removingObjectValidatorRegistrations);
       ArgumentUtility.CheckNotNull ("addingObjectValidationRuleCollector", addingObjectValidationRuleCollector);
 
-      var logContextInfo = new ObjectValidatorLogContextInfo (removedValidator, removingObjectValidatorRegistrationsWithContext);
+      var logContextInfo = new ObjectValidatorLogContextInfo (removedValidator, removingObjectValidatorRegistrations);
       _removingLogEntriesForObjectValidators[addingObjectValidationRuleCollector].Add (logContextInfo);
     }
 

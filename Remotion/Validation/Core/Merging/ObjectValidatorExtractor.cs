@@ -29,15 +29,15 @@ namespace Remotion.Validation.Merging
   /// </summary>
   public class ObjectValidatorExtractor : IObjectValidatorExtractor
   {
-    private readonly ILookup<Type, ObjectValidatorRegistrationWithContext> _validatorTypesToRemove;
+    private readonly ILookup<Type, RemovingObjectValidatorRegistration> _validatorTypesToRemove;
     private readonly ILogContext _logContext;
 
-    public ObjectValidatorExtractor (IEnumerable<ObjectValidatorRegistrationWithContext> removedPropertyRuleRegistrations, ILogContext logContext)
+    public ObjectValidatorExtractor (IEnumerable<RemovingObjectValidatorRegistration> removingObjectValidatorRegistrations, ILogContext logContext)
     {
-      ArgumentUtility.CheckNotNull ("removedPropertyRuleRegistrations", removedPropertyRuleRegistrations);
+      ArgumentUtility.CheckNotNull ("removingObjectValidatorRegistrations", removingObjectValidatorRegistrations);
       ArgumentUtility.CheckNotNull ("logContext", logContext);
 
-      _validatorTypesToRemove = removedPropertyRuleRegistrations.ToLookup (r => r.RemovingValidatorRegistration.ValidatorType);
+      _validatorTypesToRemove = removingObjectValidatorRegistrations.ToLookup (r => r.RemovingValidatorRegistration.ValidatorType);
       _logContext = logContext;
     }
 
@@ -47,16 +47,16 @@ namespace Remotion.Validation.Merging
 
       foreach (var existingValidator in addingObjectValidationRuleCollector.Validators)
       {
-        var removingValidatorRegistrationsWithContext = GetRemovingObjectValidatorRegistrations (existingValidator, addingObjectValidationRuleCollector).ToArray();
-        if (removingValidatorRegistrationsWithContext.Any())
+        var removingObjectValidatorRegistrations = GetRemovingObjectValidatorRegistrations (existingValidator, addingObjectValidationRuleCollector).ToArray();
+        if (removingObjectValidatorRegistrations.Any())
         {
-          _logContext.ValidatorRemoved (existingValidator, removingValidatorRegistrationsWithContext, addingObjectValidationRuleCollector);
+          _logContext.ValidatorRemoved (existingValidator, removingObjectValidatorRegistrations, addingObjectValidationRuleCollector);
           yield return existingValidator;
         }
       }
     }
 
-    private IEnumerable<ObjectValidatorRegistrationWithContext> GetRemovingObjectValidatorRegistrations (
+    private IEnumerable<RemovingObjectValidatorRegistration> GetRemovingObjectValidatorRegistrations (
         IObjectValidator validator,
         IAddingObjectValidationRuleCollector addingObjectValidationRuleCollector)
     {

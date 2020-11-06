@@ -23,26 +23,26 @@ using Rhino.Mocks;
 namespace Remotion.Validation.UnitTests.Implementation
 {
   [TestFixture]
-  public class ObjectValidatorLogContextInfoTest
+  public class RemovingObjectValidatorRegistrationTest
   {
-    private IObjectValidator _ObjectValidatorStub1;
-    private ObjectValidatorRegistrationWithContext[] _ObjectValidatorRegistrationWithContext;
+    private IObjectValidator _objectValidatorStub1;
+    private RemovingObjectValidatorRegistration[] _removingObjectValidatorRegistrations;
     private ObjectValidatorLogContextInfo _logContextInfo;
 
     [SetUp]
     public void SetUp ()
     {
-      _ObjectValidatorStub1 = MockRepository.GenerateStub<IObjectValidator>();
-      _ObjectValidatorRegistrationWithContext = new ObjectValidatorRegistrationWithContext[0];
+      _objectValidatorStub1 = MockRepository.GenerateStub<IObjectValidator>();
+      _removingObjectValidatorRegistrations = new RemovingObjectValidatorRegistration[0];
 
-      _logContextInfo = new ObjectValidatorLogContextInfo (_ObjectValidatorStub1, _ObjectValidatorRegistrationWithContext);
+      _logContextInfo = new ObjectValidatorLogContextInfo (_objectValidatorStub1, _removingObjectValidatorRegistrations);
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_logContextInfo.RemovedValidator, Is.SameAs (_ObjectValidatorStub1));
-      Assert.That (_logContextInfo.RemovingObjectValidatorRegistrationsWithContext, Is.SameAs (_ObjectValidatorRegistrationWithContext));
+      Assert.That (_logContextInfo.RemovedValidator, Is.SameAs (_objectValidatorStub1));
+      Assert.That (_logContextInfo.RemovingObjectValidatorRegistrations, Is.SameAs (_removingObjectValidatorRegistrations));
     }
   }
 }

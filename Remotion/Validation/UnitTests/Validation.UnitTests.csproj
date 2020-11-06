@@ -91,7 +91,7 @@
     <Compile Include="Implementation\IValidationTypeFilterTest.cs" />
     <Compile Include="Implementation\IInvolvedTypeProviderTest.cs" />
     <Compile Include="Implementation\ObjectValidatorFactoryTest.cs" />
-    <Compile Include="Implementation\ObjectValidatorLogContextInfoTest.cs" />
+    <Compile Include="Implementation\RemovingObjectValidatorRegistrationTest.cs" />
     <Compile Include="Implementation\PropertyValidatorFactoryTest.cs" />
     <Compile Include="Implementation\TypedValidatorDecoratorTest.cs" />
     <Compile Include="Implementation\DefaultLogContextTest.cs" />

@@ -26,15 +26,15 @@ namespace Remotion.Validation.Implementation
   public sealed class ObjectValidatorLogContextInfo
   {
     private readonly IObjectValidator _removedValidator;
-    private readonly ObjectValidatorRegistrationWithContext[] _removingObjectValidatorRegistrationsWithContext;
+    private readonly RemovingObjectValidatorRegistration[] _removingObjectValidatorRegistrations;
 
-    public ObjectValidatorLogContextInfo (IObjectValidator removedValidator, ObjectValidatorRegistrationWithContext[] removingObjectValidatorRegistrationsWithContext)
+    public ObjectValidatorLogContextInfo (IObjectValidator removedValidator, RemovingObjectValidatorRegistration[] removingObjectValidatorRegistrations)
     {
       ArgumentUtility.CheckNotNull ("removedValidator", removedValidator);
-      ArgumentUtility.CheckNotNull ("removingObjectValidatorRegistrationsWithContext", removingObjectValidatorRegistrationsWithContext);
+      ArgumentUtility.CheckNotNull ("removingObjectValidatorRegistrations", removingObjectValidatorRegistrations);
 
       _removedValidator = removedValidator;
-      _removingObjectValidatorRegistrationsWithContext = removingObjectValidatorRegistrationsWithContext;
+      _removingObjectValidatorRegistrations = removingObjectValidatorRegistrations;
     }
 
     public IObjectValidator RemovedValidator
@@ -42,9 +42,9 @@ namespace Remotion.Validation.Implementation
       get { return _removedValidator; }
     }
 
-    public ObjectValidatorRegistrationWithContext[] RemovingObjectValidatorRegistrationsWithContext
+    public RemovingObjectValidatorRegistration[] RemovingObjectValidatorRegistrations
     {
-      get { return _removingObjectValidatorRegistrationsWithContext; }
+      get { return _removingObjectValidatorRegistrations; }
     }
   }
 }
