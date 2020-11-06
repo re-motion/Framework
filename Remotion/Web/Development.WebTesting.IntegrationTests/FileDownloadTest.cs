@@ -21,6 +21,7 @@ using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.InternetExplorer;
 using Remotion.Web.Development.WebTesting.Utilities;
+using Remotion.Web.Development.WebTesting.WebDriver;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -37,6 +38,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       if (Helper.BrowserConfiguration.IsInternetExplorer())
         Assert.Ignore ("RM-7457: Support for Internet Explorer in web tests has been removed.");
+
+      if (Helper.BrowserConfiguration.IsEdge())
+        Assert.Ignore ("RM-7525: File download tests are temporarily disabled in Edge.");
     }
 
     [Test]
