@@ -37,10 +37,6 @@ namespace Remotion.Validation.UnitTests.Merging
     private IObjectValidator _stubObjectValidator1;
     private IObjectValidator _stubObjectValidator2;
     private IObjectValidator _stubObjectValidator3;
-    private RemovingValidatorRegistration _removingValidatorRegistration1A;
-    private RemovingValidatorRegistration _removingValidatorRegistration2A;
-    private RemovingValidatorRegistration _removingValidatorRegistration2B;
-    private RemovingValidatorRegistration _removingValidatorRegistration2C;
     private RemovingObjectValidatorRegistration _removingObjectValidatorRegistration1;
     private RemovingObjectValidatorRegistration _removingObjectValidatorRegistration2;
     private RemovingObjectValidatorRegistration _removingObjectValidatorRegistration3;
@@ -54,10 +50,10 @@ namespace Remotion.Validation.UnitTests.Merging
     [SetUp]
     public void SetUp ()
     {
-      _removingValidatorRegistration1A = new RemovingValidatorRegistration (typeof (FakeCustomerValidator), null);
-      _removingValidatorRegistration2A = new RemovingValidatorRegistration (typeof (StubObjectValidator), typeof (CustomerValidationRuleCollector1));
-      _removingValidatorRegistration2B = new RemovingValidatorRegistration (typeof (StubObjectValidator), typeof (CustomerValidationRuleCollector2));
-      _removingValidatorRegistration2C = new RemovingValidatorRegistration (typeof (StubObjectValidator), null);
+      var registration1A = new {ValidatorType = typeof (FakeCustomerValidator), CollectorTypeToRemoveFrom = (Type) null };
+      var registration2A = new {ValidatorType = typeof (StubObjectValidator), CollectorTypeToRemoveFrom = typeof (CustomerValidationRuleCollector1) };
+      var registration2B = new {ValidatorType = typeof (StubObjectValidator), CollectorTypeToRemoveFrom = typeof (CustomerValidationRuleCollector2) };
+      var registration2C = new {ValidatorType = typeof (StubObjectValidator), CollectorTypeToRemoveFrom = (Type) null };
 
       _removingObjectValidationRuleCollectorStub1 = MockRepository.GenerateStub<IRemovingObjectValidationRuleCollector>();
       _removingObjectValidationRuleCollectorStub1.Stub (stub => stub.ValidatedType).Return (TypeAdapter.Create (typeof (Customer)));
@@ -66,11 +62,11 @@ namespace Remotion.Validation.UnitTests.Merging
       _removingObjectValidationRuleCollectorStub3 = MockRepository.GenerateStub<IRemovingObjectValidationRuleCollector>();
       _removingObjectValidationRuleCollectorStub3.Stub (stub => stub.ValidatedType).Return (TypeAdapter.Create(typeof (Employee)));
 
-      _removingObjectValidatorRegistration1 = new RemovingObjectValidatorRegistration (_removingValidatorRegistration1A, _removingObjectValidationRuleCollectorStub1);
-      _removingObjectValidatorRegistration2 = new RemovingObjectValidatorRegistration (_removingValidatorRegistration2A, _removingObjectValidationRuleCollectorStub1);
-      _removingObjectValidatorRegistration3 = new RemovingObjectValidatorRegistration (_removingValidatorRegistration2B, _removingObjectValidationRuleCollectorStub2);
-      _removingObjectValidatorRegistration4 = new RemovingObjectValidatorRegistration (_removingValidatorRegistration1A, _removingObjectValidationRuleCollectorStub1);
-      _removingObjectValidatorRegistration5 = new RemovingObjectValidatorRegistration (_removingValidatorRegistration2C, _removingObjectValidationRuleCollectorStub3);
+      _removingObjectValidatorRegistration1 = new RemovingObjectValidatorRegistration (registration1A.ValidatorType, registration1A.CollectorTypeToRemoveFrom, _removingObjectValidationRuleCollectorStub1);
+      _removingObjectValidatorRegistration2 = new RemovingObjectValidatorRegistration (registration2A.ValidatorType, registration2A.CollectorTypeToRemoveFrom, _removingObjectValidationRuleCollectorStub1);
+      _removingObjectValidatorRegistration3 = new RemovingObjectValidatorRegistration (registration2B.ValidatorType, registration2B.CollectorTypeToRemoveFrom, _removingObjectValidationRuleCollectorStub2);
+      _removingObjectValidatorRegistration4 = new RemovingObjectValidatorRegistration (registration1A.ValidatorType, registration1A.CollectorTypeToRemoveFrom, _removingObjectValidationRuleCollectorStub1);
+      _removingObjectValidatorRegistration5 = new RemovingObjectValidatorRegistration (registration2C.ValidatorType, registration2C.CollectorTypeToRemoveFrom, _removingObjectValidationRuleCollectorStub3);
 
       _stubObjectValidator1 = new FakeCustomerValidator(); //extracted
       _stubObjectValidator2 = new StubObjectValidator(); //extracted

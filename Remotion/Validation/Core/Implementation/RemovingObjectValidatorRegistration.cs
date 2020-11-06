@@ -15,38 +15,37 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Validation.RuleCollectors;
 
 namespace Remotion.Validation.Implementation
 {
   /// <summary>
-  /// Extends a <see cref="RemovingValidatorRegistration"/> with information about the property for which it applies.
+  /// Represents the information required to remove validators of type <see cref="ValidatorType"/> registered by collector type <see cref="CollectorTypeToRemoveFrom"/>.
   /// </summary>
   public class RemovingObjectValidatorRegistration
   {
-    private readonly RemovingValidatorRegistration _removingValidatorRegistration;
-    private readonly IRemovingObjectValidationRuleCollector _removingObjectValidationRuleCollector;
+    [NotNull]
+    public Type ValidatorType { get; }
+    
+    [CanBeNull]
+    public Type CollectorTypeToRemoveFrom { get; }
+
+    [NotNull]
+    public IRemovingObjectValidationRuleCollector RemovingObjectValidationRuleCollector { get; }
 
     public RemovingObjectValidatorRegistration (
-        RemovingValidatorRegistration removingValidatorRegistration,
-        IRemovingObjectValidationRuleCollector removingObjectValidationRuleCollector)
+        [NotNull] Type validatorType,
+        [CanBeNull] Type collectorTypeToRemoveFrom,
+        [NotNull] IRemovingObjectValidationRuleCollector removingObjectValidationRuleCollector)
     {
-      ArgumentUtility.CheckNotNull ("removingValidatorRegistration", removingValidatorRegistration);
+      ArgumentUtility.CheckNotNull ("validatorType", validatorType);
       ArgumentUtility.CheckNotNull ("removingObjectValidationRuleCollector", removingObjectValidationRuleCollector);
 
-      _removingValidatorRegistration = removingValidatorRegistration;
-      _removingObjectValidationRuleCollector = removingObjectValidationRuleCollector;
-    }
-
-    public RemovingValidatorRegistration RemovingValidatorRegistration
-    {
-      get { return _removingValidatorRegistration; }
-    }
-
-    public IRemovingObjectValidationRuleCollector RemovingObjectValidationRuleCollector
-    {
-      get { return _removingObjectValidationRuleCollector; }
+      ValidatorType = validatorType;
+      CollectorTypeToRemoveFrom = collectorTypeToRemoveFrom;
+      RemovingObjectValidationRuleCollector = removingObjectValidationRuleCollector;
     }
   }
 }

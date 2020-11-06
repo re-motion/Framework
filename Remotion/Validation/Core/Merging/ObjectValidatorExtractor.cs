@@ -37,7 +37,7 @@ namespace Remotion.Validation.Merging
       ArgumentUtility.CheckNotNull ("removingObjectValidatorRegistrations", removingObjectValidatorRegistrations);
       ArgumentUtility.CheckNotNull ("logContext", logContext);
 
-      _validatorTypesToRemove = removingObjectValidatorRegistrations.ToLookup (r => r.RemovingValidatorRegistration.ValidatorType);
+      _validatorTypesToRemove = removingObjectValidatorRegistrations.ToLookup (r => r.ValidatorType);
       _logContext = logContext;
     }
 
@@ -67,8 +67,8 @@ namespace Remotion.Validation.Merging
                   // ReSharper disable PossibleNullReferenceException
                   addingObjectValidationRuleCollector.ValidatedType.IsAssignableFrom (rwc.RemovingObjectValidationRuleCollector.ValidatedType)
                   // ReSharper restore PossibleNullReferenceException
-                  && (rwc.RemovingValidatorRegistration.CollectorTypeToRemoveFrom == null
-                      || rwc.RemovingValidatorRegistration.CollectorTypeToRemoveFrom == addingObjectValidationRuleCollector.CollectorType));
+                  && (rwc.CollectorTypeToRemoveFrom == null
+                      || rwc.CollectorTypeToRemoveFrom == addingObjectValidationRuleCollector.CollectorType));
     }
   }
 }
