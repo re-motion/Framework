@@ -269,5 +269,24 @@ namespace Remotion.Validation.IntegrationTests
       var result3 = validator.Validate (customer3);
       Assert.That (result3.IsValid, Is.True);
     }
+
+    [Test]
+    public void BuildSpecialPerson1Validator_ObjectValidatorRemoved ()
+    {
+      var person1 = new SpecialPerson1 { FirstName = null, LastName = "LastName" };
+      var person2 = new SpecialPerson1 { FirstName = "FirstName", LastName = null };
+      var person3 = new SpecialPerson1 { FirstName = "FirstName", LastName = "LastName" };
+
+      var validator = ValidationBuilder.BuildValidator<SpecialPerson1>();
+
+      var result1 = validator.Validate (person1);
+      Assert.That (result1.Errors.OfType<ObjectValidationFailure>(), Is.Empty);
+
+      var result2 = validator.Validate (person2);
+      Assert.That (result2.Errors.OfType<ObjectValidationFailure>(), Is.Empty);
+
+      var result3 = validator.Validate (person3);
+      Assert.That (result3.Errors.OfType<ObjectValidationFailure>(), Is.Empty);
+    }
   }
 }

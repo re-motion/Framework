@@ -33,23 +33,33 @@ namespace Remotion.Validation.UnitTests.Merging
   [TestFixture]
   public class ObjectValidatorExtractorTest
   {
-    private ObjectValidatorExtractor _extractor;
     private IObjectValidator _stubObjectValidator1;
     private IObjectValidator _stubObjectValidator2;
     private IObjectValidator _stubObjectValidator3;
+    private IObjectValidator _stubObjectValidator4;
+    private IObjectValidator _stubObjectValidator5;
     private RemovingObjectValidatorRegistration _removingObjectValidatorRegistration1;
     private RemovingObjectValidatorRegistration _removingObjectValidatorRegistration2;
     private RemovingObjectValidatorRegistration _removingObjectValidatorRegistration3;
     private RemovingObjectValidatorRegistration _removingObjectValidatorRegistration4;
     private RemovingObjectValidatorRegistration _removingObjectValidatorRegistration5;
+    private RemovingObjectValidatorRegistration _removingObjectValidatorRegistration6;
+    private RemovingObjectValidatorRegistration _removingObjectValidatorRegistration7;
     private IRemovingObjectValidationRuleCollector _removingObjectValidationRuleCollectorStub1;
     private IRemovingObjectValidationRuleCollector _removingObjectValidationRuleCollectorStub2;
     private IRemovingObjectValidationRuleCollector _removingObjectValidationRuleCollectorStub3;
+    private IRemovingObjectValidationRuleCollector _removingObjectValidationRuleCollectorStub4;
     private ILogContext _logContextMock;
 
     [SetUp]
     public void SetUp ()
     {
+      _stubObjectValidator1 = new FakeCustomerValidator(); //extracted
+      _stubObjectValidator2 = new StubObjectValidator(); //extracted
+      _stubObjectValidator3 = MockRepository.GenerateStub<IObjectValidator>(); //not extracted
+      _stubObjectValidator4 = MockRepository.GenerateStub<IObjectValidator>(); //extracted
+      _stubObjectValidator5 = MockRepository.GenerateStub<IObjectValidator>(); //extracted
+
       var registration1A = new {ValidatorType = typeof (FakeCustomerValidator), CollectorTypeToRemoveFrom = (Type) null };
       var registration2A = new {ValidatorType = typeof (StubObjectValidator), CollectorTypeToRemoveFrom = typeof (CustomerValidationRuleCollector1) };
       var registration2B = new {ValidatorType = typeof (StubObjectValidator), CollectorTypeToRemoveFrom = typeof (CustomerValidationRuleCollector2) };
@@ -61,26 +71,18 @@ namespace Remotion.Validation.UnitTests.Merging
       _removingObjectValidationRuleCollectorStub2.Stub (stub => stub.ValidatedType).Return (TypeAdapter.Create(typeof (Customer)));
       _removingObjectValidationRuleCollectorStub3 = MockRepository.GenerateStub<IRemovingObjectValidationRuleCollector>();
       _removingObjectValidationRuleCollectorStub3.Stub (stub => stub.ValidatedType).Return (TypeAdapter.Create(typeof (Employee)));
+      _removingObjectValidationRuleCollectorStub4 = MockRepository.GenerateStub<IRemovingObjectValidationRuleCollector>();
+      _removingObjectValidationRuleCollectorStub4.Stub (stub => stub.ValidatedType).Return (TypeAdapter.Create(typeof (SpecialCustomer1)));
 
-      _removingObjectValidatorRegistration1 = new RemovingObjectValidatorRegistration (registration1A.ValidatorType, registration1A.CollectorTypeToRemoveFrom, _removingObjectValidationRuleCollectorStub1);
-      _removingObjectValidatorRegistration2 = new RemovingObjectValidatorRegistration (registration2A.ValidatorType, registration2A.CollectorTypeToRemoveFrom, _removingObjectValidationRuleCollectorStub1);
-      _removingObjectValidatorRegistration3 = new RemovingObjectValidatorRegistration (registration2B.ValidatorType, registration2B.CollectorTypeToRemoveFrom, _removingObjectValidationRuleCollectorStub2);
-      _removingObjectValidatorRegistration4 = new RemovingObjectValidatorRegistration (registration1A.ValidatorType, registration1A.CollectorTypeToRemoveFrom, _removingObjectValidationRuleCollectorStub1);
-      _removingObjectValidatorRegistration5 = new RemovingObjectValidatorRegistration (registration2C.ValidatorType, registration2C.CollectorTypeToRemoveFrom, _removingObjectValidationRuleCollectorStub3);
-
-      _stubObjectValidator1 = new FakeCustomerValidator(); //extracted
-      _stubObjectValidator2 = new StubObjectValidator(); //extracted
-      _stubObjectValidator3 = MockRepository.GenerateStub<IObjectValidator>(); //not extracted
+      _removingObjectValidatorRegistration1 = new RemovingObjectValidatorRegistration (registration1A.ValidatorType, registration1A.CollectorTypeToRemoveFrom, null, _removingObjectValidationRuleCollectorStub1);
+      _removingObjectValidatorRegistration2 = new RemovingObjectValidatorRegistration (registration2A.ValidatorType, registration2A.CollectorTypeToRemoveFrom, null, _removingObjectValidationRuleCollectorStub1);
+      _removingObjectValidatorRegistration3 = new RemovingObjectValidatorRegistration (registration2B.ValidatorType, registration2B.CollectorTypeToRemoveFrom, null, _removingObjectValidationRuleCollectorStub2);
+      _removingObjectValidatorRegistration4 = new RemovingObjectValidatorRegistration (registration1A.ValidatorType, registration1A.CollectorTypeToRemoveFrom, null, _removingObjectValidationRuleCollectorStub1);
+      _removingObjectValidatorRegistration5 = new RemovingObjectValidatorRegistration (registration2C.ValidatorType, registration2C.CollectorTypeToRemoveFrom, null, _removingObjectValidationRuleCollectorStub3);
+      _removingObjectValidatorRegistration6 = new RemovingObjectValidatorRegistration (_stubObjectValidator4.GetType(), null, v => ReferenceEquals (v, _stubObjectValidator4), _removingObjectValidationRuleCollectorStub4);
+      _removingObjectValidatorRegistration7 = new RemovingObjectValidatorRegistration (_stubObjectValidator4.GetType(), null, v => ReferenceEquals (v, _stubObjectValidator5), _removingObjectValidationRuleCollectorStub1);
 
       _logContextMock = MockRepository.GenerateStrictMock<ILogContext>();
-
-      _extractor = new ObjectValidatorExtractor (
-          new[]
-          {
-              _removingObjectValidatorRegistration1, _removingObjectValidatorRegistration2, _removingObjectValidatorRegistration3, _removingObjectValidatorRegistration4, 
-              _removingObjectValidatorRegistration5
-          },
-          _logContextMock);
     }
 
     [Test]
@@ -88,7 +90,7 @@ namespace Remotion.Validation.UnitTests.Merging
     {
       var addingObjectValidationRuleCollector = MockRepository.GenerateStub<IAddingObjectValidationRuleCollector>();
       addingObjectValidationRuleCollector.Stub (stub => stub.Validators)
-          .Return (new[] { _stubObjectValidator1, _stubObjectValidator3, _stubObjectValidator2 });
+          .Return (new[] { _stubObjectValidator1, _stubObjectValidator3, _stubObjectValidator2, _stubObjectValidator4, _stubObjectValidator5 });
       addingObjectValidationRuleCollector.Stub (stub => stub.CollectorType).Return (typeof (CustomerValidationRuleCollector1));
       addingObjectValidationRuleCollector.Stub (stub => stub.ValidatedType).Return (TypeAdapter.Create(typeof (Customer)));
 
@@ -103,12 +105,32 @@ namespace Remotion.Validation.UnitTests.Merging
               mock.ValidatorRemoved (
                   Arg<IObjectValidator>.Is.Same (_stubObjectValidator2),
                   Arg<RemovingObjectValidatorRegistration[]>.List.Equal (new[] { _removingObjectValidatorRegistration2 }),
-                  Arg<IAddingObjectValidationRuleCollector>.Is.Same (addingObjectValidationRuleCollector))).Repeat.Once ();
+                  Arg<IAddingObjectValidationRuleCollector>.Is.Same (addingObjectValidationRuleCollector))).Repeat.Once();
+      _logContextMock.Expect (
+          mock =>
+              mock.ValidatorRemoved (
+                  Arg<IObjectValidator>.Is.Same (_stubObjectValidator4),
+                  Arg<RemovingObjectValidatorRegistration[]>.List.Equal (new[] { _removingObjectValidatorRegistration6 }),
+                  Arg<IAddingObjectValidationRuleCollector>.Is.Same (addingObjectValidationRuleCollector))).Repeat.Once();
+      _logContextMock.Expect (
+          mock =>
+              mock.ValidatorRemoved (
+                  Arg<IObjectValidator>.Is.Same (_stubObjectValidator5),
+                  Arg<RemovingObjectValidatorRegistration[]>.List.Equal (new[] { _removingObjectValidatorRegistration7 }),
+                  Arg<IAddingObjectValidationRuleCollector>.Is.Same (addingObjectValidationRuleCollector))).Repeat.Once();
 
-      var result = _extractor.ExtractObjectValidatorsToRemove (addingObjectValidationRuleCollector).ToArray();
+      var extractor = new ObjectValidatorExtractor (
+          new[]
+          {
+              _removingObjectValidatorRegistration1, _removingObjectValidatorRegistration2, _removingObjectValidatorRegistration3, _removingObjectValidatorRegistration4, 
+              _removingObjectValidatorRegistration5, _removingObjectValidatorRegistration6, _removingObjectValidatorRegistration7
+          },
+          _logContextMock);
+
+      var result = extractor.ExtractObjectValidatorsToRemove (addingObjectValidationRuleCollector).ToArray();
 
       _logContextMock.VerifyAllExpectations();
-      Assert.That (result, Is.EqualTo (new[] { _stubObjectValidator1, _stubObjectValidator2 }));
+      Assert.That (result, Is.EqualTo (new[] { _stubObjectValidator1, _stubObjectValidator2, _stubObjectValidator4, _stubObjectValidator5 }));
     }
   }
 }

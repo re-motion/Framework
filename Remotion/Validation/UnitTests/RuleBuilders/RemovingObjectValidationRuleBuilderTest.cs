@@ -16,40 +16,194 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.ObjectMothers;
+using Remotion.Validation.RuleBuilders;
+using Remotion.Validation.RuleCollectors;
+using Remotion.Validation.UnitTests.TestDomain;
+using Remotion.Validation.UnitTests.TestDomain.Collectors;
+using Remotion.Validation.UnitTests.TestDomain.Validators;
+using Remotion.Validation.UnitTests.TestHelpers;
+using Remotion.Validation.Validators;
+using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.RuleBuilders
 {
   [TestFixture]
   public class RemovingObjectValidationRuleBuilderTest
   {
+    private IRemovingObjectValidationRuleCollector _removingObjectValidationRuleCollectorMock;
+    private RemovingObjectValidationRuleBuilder<Customer> _addingObjectValidationBuilder;
+
+    [SetUp]
+    public void SetUp ()
+    {
+      _removingObjectValidationRuleCollectorMock = MockRepository.GenerateStrictMock<IRemovingObjectValidationRuleCollector>();
+      _addingObjectValidationBuilder = new RemovingObjectValidationRuleBuilder<Customer> (_removingObjectValidationRuleCollectorMock);
+    }
+
     [Test]
-    [Ignore ("TODO RM-5906")]
     public void Initialization ()
     {
+      Assert.That (_addingObjectValidationBuilder.RemovingObjectValidationRuleCollector, Is.SameAs (_removingObjectValidationRuleCollectorMock));
     }
 
     [Test]
-    [Ignore ("TODO RM-5906")]
-    public void RemoveValidator ()
+    public void RegisterValidator ()
     {
+      _removingObjectValidationRuleCollectorMock.Expect (mock => mock.RegisterValidator (typeof (StubObjectValidator), null, null));
+
+      _addingObjectValidationBuilder.Validator (typeof (StubObjectValidator), null, null);
+
+      _removingObjectValidationRuleCollectorMock.VerifyAllExpectations();
     }
 
     [Test]
-    [Ignore ("TODO RM-5906")]
-    public void RemoveValidator_Generic ()
+    public void RegisterValidator_WithGenericValidatorType ()
     {
+      _removingObjectValidationRuleCollectorMock.Expect (mock => mock.RegisterValidator (typeof (StubObjectValidator), null, null));
+
+      _addingObjectValidationBuilder.Validator<StubObjectValidator> (null);
+
+      _removingObjectValidationRuleCollectorMock.VerifyAllExpectations();
     }
 
     [Test]
-    [Ignore ("TODO RM-5906")]
-    public void RemoveValidator_CollectorTypeOverload ()
+    public void RegisterValidator_WithGenericValidatorType_WithPredicate ()
     {
+      var expectedValidator = new StubObjectValidator();
+      var expectedPredicateResult = BooleanObjectMother.GetRandomBoolean();
+      StubObjectValidator actualValidator = null;
+      Func<StubObjectValidator, bool> predicate = validator =>
+      {
+        actualValidator = validator;
+        return expectedPredicateResult;
+      };
+      Func<IObjectValidator, bool> actualPredicate = null;
+
+      _removingObjectValidationRuleCollectorMock
+          .Stub (
+              mock => mock.RegisterValidator (
+                  Arg.Is (typeof (StubObjectValidator)),
+                  Arg<Type>.Is.Null,
+                  Arg<Func<IObjectValidator, bool>>.Is.NotNull))
+          .WhenCalled (mi => actualPredicate = (Func<IObjectValidator, bool>) mi.Arguments[2]);
+
+      _addingObjectValidationBuilder.Validator<StubObjectValidator> (predicate);
+
+      Assert.That (actualPredicate, Is.Not.Null);
+
+      var actualPredicateResult = actualPredicate (expectedValidator);
+
+      Assert.That (actualPredicateResult, Is.EqualTo (expectedPredicateResult));
+      Assert.That (actualValidator, Is.SameAs (expectedValidator));
     }
 
     [Test]
-    [Ignore ("TODO RM-5906")]
-    public void RemoveValidator_CollectorTypeOverload_Generic ()
+    public void RegisterValidator_WithGenericValidatorType_WithPredicate_WithInvalidValidatorType_ThrowsArgumentException ()
     {
+      Func<IObjectValidator, bool> actualPredicate = null;
+
+      _removingObjectValidationRuleCollectorMock
+          .Stub (
+              mock => mock.RegisterValidator (
+                  Arg.Is (typeof (StubObjectValidator)),
+                  Arg<Type>.Is.Null,
+                  Arg<Func<IObjectValidator, bool>>.Is.NotNull))
+          .WhenCalled (mi => actualPredicate = (Func<IObjectValidator, bool>) mi.Arguments[2]);
+
+      _addingObjectValidationBuilder.Validator<StubObjectValidator> (validator => true);
+
+      Assert.That (actualPredicate, Is.Not.Null);
+
+      var otherValidator = new FakeCustomerValidator();
+      Assert.That (() => actualPredicate (otherValidator), Throws.ArgumentException);
+    }
+
+    [Test]
+    public void RegisterValidator_WithCollectorType ()
+    {
+      _removingObjectValidationRuleCollectorMock.Expect (
+          mock => mock.RegisterValidator (typeof (StubObjectValidator), typeof (CustomerValidationRuleCollector1), null));
+
+      _addingObjectValidationBuilder.Validator (typeof (StubObjectValidator), typeof (CustomerValidationRuleCollector1), null);
+
+      _removingObjectValidationRuleCollectorMock.VerifyAllExpectations();
+    }
+
+    [Test]
+    public void RegisterValidator_WithPredicate ()
+    {
+      Func<IObjectValidator, bool> predicate = _ => false;
+
+      _removingObjectValidationRuleCollectorMock.Expect (
+          mock => mock.RegisterValidator (typeof (StubObjectValidator), null, predicate));
+
+      _addingObjectValidationBuilder.Validator (typeof (StubObjectValidator), null, predicate);
+
+      _removingObjectValidationRuleCollectorMock.VerifyAllExpectations();
+    }
+
+    [Test]
+    public void RegisterValidator_WithGenericCollectorType ()
+    {
+      _removingObjectValidationRuleCollectorMock.Expect (
+          mock => mock.RegisterValidator (typeof (StubObjectValidator), typeof (CustomerValidationRuleCollector1), null));
+
+      _addingObjectValidationBuilder.Validator<StubObjectValidator, CustomerValidationRuleCollector1> (null);
+
+      _removingObjectValidationRuleCollectorMock.VerifyAllExpectations();
+    }
+
+    [Test]
+    public void RegisterValidator_WithGenericCollectorType_WithPredicate ()
+    {
+      var expectedValidator = new StubObjectValidator();
+      var expectedPredicateResult = BooleanObjectMother.GetRandomBoolean();
+      StubObjectValidator actualValidator = null;
+      Func<StubObjectValidator, bool> predicate = validator =>
+      {
+        actualValidator = validator;
+        return expectedPredicateResult;
+      };
+      Func<IObjectValidator, bool> actualPredicate = null;
+
+      _removingObjectValidationRuleCollectorMock
+          .Stub (
+              mock => mock.RegisterValidator (
+                  Arg.Is (typeof (StubObjectValidator)),
+                  Arg.Is (typeof (CustomerValidationRuleCollector1)),
+                  Arg<Func<IObjectValidator, bool>>.Is.NotNull))
+          .WhenCalled (mi => actualPredicate = (Func<IObjectValidator, bool>) mi.Arguments[2]);
+
+      _addingObjectValidationBuilder.Validator<StubObjectValidator, CustomerValidationRuleCollector1> (predicate);
+
+      Assert.That (actualPredicate, Is.Not.Null);
+
+      var actualPredicateResult = actualPredicate (expectedValidator);
+
+      Assert.That (actualPredicateResult, Is.EqualTo (expectedPredicateResult));
+      Assert.That (actualValidator, Is.SameAs (expectedValidator));
+    }
+
+    [Test]
+    public void RegisterValidator_WithGenericCollectorType_WithPredicate_WithInvalidValidatorType_ThrowsArgumentException ()
+    {
+      Func<IObjectValidator, bool> actualPredicate = null;
+
+      _removingObjectValidationRuleCollectorMock
+          .Stub (
+              mock => mock.RegisterValidator (
+                  Arg.Is (typeof (StubObjectValidator)),
+                  Arg.Is (typeof (CustomerValidationRuleCollector1)),
+                  Arg<Func<IObjectValidator, bool>>.Is.NotNull))
+          .WhenCalled (mi => actualPredicate = (Func<IObjectValidator, bool>) mi.Arguments[2]);
+
+      _addingObjectValidationBuilder.Validator<StubObjectValidator, CustomerValidationRuleCollector1> (validator => true);
+
+      Assert.That (actualPredicate, Is.Not.Null);
+
+      var otherValidator = new FakeCustomerValidator();
+      Assert.That (() => actualPredicate (otherValidator), Throws.ArgumentException);
     }
   }
 }

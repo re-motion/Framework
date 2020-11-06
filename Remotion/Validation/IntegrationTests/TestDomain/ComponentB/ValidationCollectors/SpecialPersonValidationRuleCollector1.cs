@@ -16,6 +16,7 @@
 // 
 using System;
 using Remotion.Validation.IntegrationTests.TestDomain.ComponentA.ValidationCollectors;
+using Remotion.Validation.IntegrationTests.TestDomain.Validators;
 using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentB.ValidationCollectors
@@ -28,6 +29,11 @@ namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentB.ValidationC
           typeof (NotEqualValidator),
           typeof (PersonValidationRuleCollector1),
           validator => "Test".Equals (((NotEqualValidator) validator).ComparisonValue));
+
+      RemoveRule ().Validator (
+          typeof (RealPersonValidator),
+          typeof (PersonValidationRuleCollector1),
+          validator => validator is RealPersonValidator);
     }
   }
 }

@@ -16,7 +16,6 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Validation.Implementation;
 using Remotion.Validation.RuleCollectors;
 using Remotion.Validation.UnitTests.TestDomain.Collectors;
 using Remotion.Validation.Validators;
@@ -32,15 +31,18 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
     {
       var validatorType = MockRepository.GenerateStub<IObjectValidator>().GetType();
       var collectorTypeToRemoveFrom = typeof (CustomerValidationRuleCollector1);
+      Func<IObjectValidator, bool> validatorPredicate = _ => false;
       var removingObjectValidationRuleCollectorStub = MockRepository.GenerateStub<IRemovingObjectValidationRuleCollector>();
 
       var removingObjectValidatorRegistration = new RemovingObjectValidatorRegistration (
           validatorType,
           collectorTypeToRemoveFrom,
+          validatorPredicate,
           removingObjectValidationRuleCollectorStub);
 
       Assert.That (removingObjectValidatorRegistration.ValidatorType, Is.SameAs (validatorType));
       Assert.That (removingObjectValidatorRegistration.CollectorTypeToRemoveFrom, Is.SameAs (collectorTypeToRemoveFrom));
+      Assert.That (removingObjectValidatorRegistration.ValidatorPredicate, Is.SameAs (validatorPredicate));
       Assert.That (
           removingObjectValidatorRegistration.RemovingObjectValidationRuleCollector,
           Is.SameAs (removingObjectValidationRuleCollectorStub));
@@ -50,17 +52,41 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
     public void Initialization_WithCollectorTypeToRemoveFromIsNull ()
     {
       var validatorType = MockRepository.GenerateStub<IObjectValidator>().GetType();
+      Func<IObjectValidator, bool> validatorPredicate = _ => false;
       var removingObjectValidationRuleCollectorStub = MockRepository.GenerateStub<IRemovingObjectValidationRuleCollector>();
 
       var removingObjectValidatorRegistration = new RemovingObjectValidatorRegistration (
           validatorType,
           collectorTypeToRemoveFrom: null,
+          validatorPredicate,
           removingObjectValidationRuleCollectorStub);
 
       Assert.That (removingObjectValidatorRegistration.ValidatorType, Is.SameAs (validatorType));
       Assert.That (removingObjectValidatorRegistration.CollectorTypeToRemoveFrom, Is.Null);
+      Assert.That (removingObjectValidatorRegistration.ValidatorPredicate, Is.SameAs (validatorPredicate));
       Assert.That (
           removingObjectValidatorRegistration.RemovingObjectValidationRuleCollector,
+          Is.SameAs (removingObjectValidationRuleCollectorStub));
+    }
+
+    [Test]
+    public void Initialization_WithValidatorPredicateIsNull ()
+    {
+      var validatorType = typeof (NotEqualValidator);
+      var collectorTypeToRemoveFrom = typeof (CustomerValidationRuleCollector1);
+      var removingObjectValidationRuleCollectorStub = MockRepository.GenerateStub<IRemovingObjectValidationRuleCollector>();
+
+      var Object = new RemovingObjectValidatorRegistration (
+          validatorType,
+          collectorTypeToRemoveFrom,
+          validatorPredicate: null,
+          removingObjectValidationRuleCollectorStub);
+
+      Assert.That (Object.ValidatorType, Is.SameAs (validatorType));
+      Assert.That (Object.CollectorTypeToRemoveFrom, Is.SameAs (collectorTypeToRemoveFrom));
+      Assert.That (Object.ValidatorPredicate, Is.Null);
+      Assert.That (
+          Object.RemovingObjectValidationRuleCollector,
           Is.SameAs (removingObjectValidationRuleCollectorStub));
     }
   }

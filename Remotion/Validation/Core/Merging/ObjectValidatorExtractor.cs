@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.RuleCollectors;
@@ -61,14 +62,27 @@ namespace Remotion.Validation.Merging
         IAddingObjectValidationRuleCollector addingObjectValidationRuleCollector)
     {
       return _validatorTypesToRemove[validator.GetType()]
-          .Where (
-              rwc =>
-                  // TODO-5906: should the object validator removal be based on the inheritance hierarchy or constrained to the exact type?
-                  // ReSharper disable PossibleNullReferenceException
-                  addingObjectValidationRuleCollector.ValidatedType.IsAssignableFrom (rwc.RemovingObjectValidationRuleCollector.ValidatedType)
-                  // ReSharper restore PossibleNullReferenceException
-                  && (rwc.CollectorTypeToRemoveFrom == null
-                      || rwc.CollectorTypeToRemoveFrom == addingObjectValidationRuleCollector.CollectorType));
+          .Where (rwc => IsTypeMatch (addingObjectValidationRuleCollector.ValidatedType, rwc.RemovingObjectValidationRuleCollector.ValidatedType))
+          .Where (rwc => IsCollectorTypeMatch (addingObjectValidationRuleCollector.CollectorType, rwc.CollectorTypeToRemoveFrom))
+          .Where (rwc => IsPredicateMatch (validator, rwc.ValidatorPredicate));
+
+      static bool IsTypeMatch (ITypeInformation currentType, ITypeInformation typeToMatch)
+      {
+        // TODO-5906: should the object validator removal be based on the inheritance hierarchy or constrained to the exact type?
+        return currentType.IsAssignableFrom (typeToMatch);
+      }
+
+      static bool IsCollectorTypeMatch (Type currentCollectorType, Type collectorTypeToMatch)
+      {
+        return collectorTypeToMatch == null
+               || collectorTypeToMatch == currentCollectorType;
+      }
+
+      static bool IsPredicateMatch (IObjectValidator currentValidator, Func<IObjectValidator, bool> predicateToMatch)
+      {
+        return predicateToMatch == null
+               || predicateToMatch (currentValidator);
+      }
     }
   }
 }
