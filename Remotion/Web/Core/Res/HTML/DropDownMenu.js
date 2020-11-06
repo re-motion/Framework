@@ -286,7 +286,7 @@ function DropDownMenu_BeginOpenPopUp(menuID, context, evt)
     statusPopup.setAttribute('aria-labelledby', menuButton[0].id);
   _dropDownMenu_currentStatusPopup = statusPopup;
   $(statusPopup).iFrameShim({ top: '0px', left: '0px', width: '100%', height: '100%' });
-  $('#' + menuID).closest('div, td, th, body').append(statusPopup);
+  document.body.appendChild(statusPopup);
 
   DropDownMenu_ApplyPosition($(statusPopup), evt, titleDivFunc());
 
@@ -350,7 +350,7 @@ function DropDownMenu_EndOpenPopUp (menuID, context, selectionCount, evt, itemIn
   ul.setAttribute('role', 'none');
   div.appendChild(ul);
 
-  $('#' + menuID).closest('div, td, th, body').append(div);
+  $('body')[0].appendChild(div);
 
   $(ul).mouseover (function (event)
   {
@@ -429,7 +429,7 @@ function DownDownMenu_CreateTitleDivGetter ($context)
   {
     return function ()
     {
-      return document.getElementById(contextID) && $(document.getElementById(contextID).firstElementChild);
+      return $(document.getElementById (contextID).firstElementChild);
     };
   }
 }
@@ -442,7 +442,7 @@ function DropDownMenu_ApplyPosition (popUpDiv, clickEvent, referenceElement)
   var space_right = $(window).width() - referenceElement.offset().left - referenceElement.width();
 
   // position drop-down list
-  var top = clickEvent ? clickEvent.clientY : Math.max(0, space_top + referenceElement.outerHeight());
+  var top = clickEvent ? clickEvent.clientY : Math.max(0, referenceElement.offset().top + referenceElement.outerHeight());
   var left = clickEvent ? clickEvent.clientX : 'auto';
   var right = clickEvent ? 'auto' : Math.max(0, $(window).width() - referenceElement.offset().left - referenceElement.outerWidth());
 
@@ -450,7 +450,6 @@ function DropDownMenu_ApplyPosition (popUpDiv, clickEvent, referenceElement)
   popUpDiv.css('bottom', 'auto');
   popUpDiv.css('right', right);
   popUpDiv.css('left', left);
-  popUpDiv.css('position', 'fixed');
 
   // move dropdown if there is not enough space to fit it on the page
   if ((popUpDiv.width() > space_left) && (space_left < space_right))
