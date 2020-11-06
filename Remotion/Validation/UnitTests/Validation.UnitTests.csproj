@@ -69,6 +69,7 @@
     <Compile Include="Attributes\Validation\RemoveValidatorAttributeTest.cs" />
     <Compile Include="CachingValidatorProviderTest.cs" />
     <Compile Include="DefaultValidatorExtensionsTest.cs" />
+    <Compile Include="Implementation\ObjectValidatorLogContextInfoTest.cs" />
     <Compile Include="IValidatorProviderTest.cs" />
     <Compile Include="Implementation\AttributeBasedValidationRuleCollectorTest.cs" />
     <Compile Include="Implementation\ClassTypeAwareValidatedTypeResolverDecoratorTest.cs" />
@@ -91,7 +92,7 @@
     <Compile Include="Implementation\IValidationTypeFilterTest.cs" />
     <Compile Include="Implementation\IInvolvedTypeProviderTest.cs" />
     <Compile Include="Implementation\ObjectValidatorFactoryTest.cs" />
-    <Compile Include="Implementation\RemovingObjectValidatorRegistrationTest.cs" />
+    <Compile Include="RoleCollectors\RemovingObjectValidatorRegistrationTest.cs" />
     <Compile Include="Implementation\PropertyValidatorFactoryTest.cs" />
     <Compile Include="Implementation\TypedValidatorDecoratorTest.cs" />
     <Compile Include="Implementation\DefaultLogContextTest.cs" />

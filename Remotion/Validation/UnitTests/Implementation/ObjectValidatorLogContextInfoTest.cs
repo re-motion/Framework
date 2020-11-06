@@ -17,29 +17,33 @@
 using System;
 using NUnit.Framework;
 using Remotion.Validation.Implementation;
-using Remotion.Validation.Merging;
 using Remotion.Validation.RuleCollectors;
+using Remotion.Validation.Validators;
 using Rhino.Mocks;
 
-namespace Remotion.Validation.UnitTests.Merging
+namespace Remotion.Validation.UnitTests.Implementation
 {
   [TestFixture]
-  public class ObjectValidatorExtractorFactoryTest
+  public class ObjectValidatorLogContextInfoTest
   {
-    private ObjectValidatorExtractorFactory _factory;
+    private IObjectValidator _ObjectValidatorStub1;
+    private RemovingObjectValidatorRegistration[] _removingObjectValidatorRegistrations;
+    private ObjectValidatorLogContextInfo _logContextInfo;
 
     [SetUp]
     public void SetUp ()
     {
-      _factory = new ObjectValidatorExtractorFactory ();
+      _ObjectValidatorStub1 = MockRepository.GenerateStub<IObjectValidator>();
+      _removingObjectValidatorRegistrations = new RemovingObjectValidatorRegistration[0];
+
+      _logContextInfo = new ObjectValidatorLogContextInfo (_ObjectValidatorStub1, _removingObjectValidatorRegistrations);
     }
 
     [Test]
-    public void Create ()
+    public void Initialization ()
     {
-      var result = _factory.Create (new RemovingObjectValidatorRegistration[0], MockRepository.GenerateStub<ILogContext>());
-
-      Assert.That (result, Is.TypeOf (typeof (ObjectValidatorExtractor)));
+      Assert.That (_logContextInfo.RemovedValidator, Is.SameAs (_ObjectValidatorStub1));
+      Assert.That (_logContextInfo.RemovingObjectValidatorRegistrations, Is.SameAs (_removingObjectValidatorRegistrations));
     }
   }
 }

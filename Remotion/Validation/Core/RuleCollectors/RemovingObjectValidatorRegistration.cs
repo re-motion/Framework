@@ -17,9 +17,8 @@
 using System;
 using JetBrains.Annotations;
 using Remotion.Utilities;
-using Remotion.Validation.RuleCollectors;
 
-namespace Remotion.Validation.Implementation
+namespace Remotion.Validation.RuleCollectors
 {
   /// <summary>
   /// Represents the information required to remove validators of type <see cref="ValidatorType"/> registered by collector type <see cref="CollectorTypeToRemoveFrom"/>.

@@ -76,7 +76,7 @@
     <Compile Include="Implementation\InvariantValidationMessage.cs" />
     <Compile Include="Implementation\CompoundValidationMessageFactory.cs" />
     <Compile Include="Implementation\ObjectValidatorLogContextInfo.cs" />
-    <Compile Include="Implementation\RemovingObjectValidatorRegistration.cs" />
+    <Compile Include="RuleCollectors\RemovingObjectValidatorRegistration.cs" />
     <Compile Include="Implementation\ValidationMessage.cs" />
     <Compile Include="Implementation\IValidationMessageFactory.cs" />
     <Compile Include="IValidatorProvider.cs" />

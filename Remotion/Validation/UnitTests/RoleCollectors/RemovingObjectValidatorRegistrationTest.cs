@@ -22,7 +22,7 @@ using Remotion.Validation.UnitTests.TestDomain.Collectors;
 using Remotion.Validation.Validators;
 using Rhino.Mocks;
 
-namespace Remotion.Validation.UnitTests.Implementation
+namespace Remotion.Validation.UnitTests.RoleCollectors
 {
   [TestFixture]
   public class RemovingObjectValidatorRegistrationTest
