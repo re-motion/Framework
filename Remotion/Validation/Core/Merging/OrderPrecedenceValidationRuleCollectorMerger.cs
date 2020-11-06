@@ -86,7 +86,7 @@ namespace Remotion.Validation.Merging
             .SelectMany (c => c.RemovedPropertyRules)
             .SelectMany (
                 r => r.Validators,
-                (propertyRule, removingValidatorRegistration) => new RemovingPropertyValidatorRegistration (removingValidatorRegistration, propertyRule));
+                (propertyRule, removingValidatorRegistration) => new RemovingPropertyValidatorRegistration (removingValidatorRegistration.ValidatorType, removingValidatorRegistration.CollectorTypeToRemoveFrom, propertyRule));
 
         var validatorExtractor = _propertyValidatorExtractorFactory.Create (registrationsWithContext, logContext);
         foreach (var validationRule in collectedPropertyValidationRules)

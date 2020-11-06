@@ -124,18 +124,18 @@ namespace Remotion.Validation.UnitTests.Merging
           stubValidator2,
           new[]
           {
-              new RemovingPropertyValidatorRegistration (new RemovingValidatorRegistration (typeof (NotEmptyValidator), null), removingPropertyRuleStub1),
-              new RemovingPropertyValidatorRegistration (new RemovingValidatorRegistration (typeof (NotEmptyValidator), null), removingPropertyRuleStub1),
-              new RemovingPropertyValidatorRegistration (new RemovingValidatorRegistration (typeof (NotEmptyValidator), null), removingPropertyRuleStub2)
+              new RemovingPropertyValidatorRegistration (typeof (NotEmptyValidator), null, removingPropertyRuleStub1),
+              new RemovingPropertyValidatorRegistration (typeof (NotEmptyValidator), null, removingPropertyRuleStub1),
+              new RemovingPropertyValidatorRegistration (typeof (NotEmptyValidator), null, removingPropertyRuleStub2)
           });
       var logContextInfo2 = new PropertyValidatorLogContextInfo (
           stubValidator1,
           new[]
-          { new RemovingPropertyValidatorRegistration (new RemovingValidatorRegistration (typeof (NotNullValidator), null), removingPropertyRuleStub2) });
+          { new RemovingPropertyValidatorRegistration (typeof (NotNullValidator), null, removingPropertyRuleStub2) });
       var logContextInfo3 = new PropertyValidatorLogContextInfo (
           stubValidator3,
           new[]
-          { new RemovingPropertyValidatorRegistration (new RemovingValidatorRegistration (typeof (NotEqualValidator), null), removingPropertyRuleStub1) });
+          { new RemovingPropertyValidatorRegistration (typeof (NotEqualValidator), null, removingPropertyRuleStub1) });
 
       _validatorFormatterStub.Stub (
           stub => stub.Format (Arg<IPropertyValidator>.Matches (c => c.GetType() == typeof (NotNullValidator)), Arg<Func<Type, string>>.Is.Anything))
