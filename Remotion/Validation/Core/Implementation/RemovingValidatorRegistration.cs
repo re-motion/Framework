@@ -18,17 +18,17 @@ using System;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 
-namespace Remotion.Validation.RuleCollectors
+namespace Remotion.Validation.Implementation
 {
   /// <summary>
   /// Represents the information required to remove validators of type <see cref="ValidatorType"/> registered by collector type <see cref="CollectorTypeToRemoveFrom"/>.
   /// </summary>
-  public sealed class ValidatorRegistration
+  public sealed class RemovingValidatorRegistration
   {
     private readonly Type _validatorType;
     private readonly Type _collectorTypeToRemoveFrom;
 
-    public ValidatorRegistration ([NotNull] Type validatorType, [CanBeNull] Type collectorTypeToRemoveFrom)
+    public RemovingValidatorRegistration ([NotNull] Type validatorType, [CanBeNull] Type collectorTypeToRemoveFrom)
     {
       ArgumentUtility.CheckNotNull ("validatorType", validatorType);
 

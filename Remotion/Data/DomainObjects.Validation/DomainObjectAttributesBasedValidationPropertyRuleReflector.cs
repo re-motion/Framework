@@ -196,9 +196,9 @@ namespace Remotion.Data.DomainObjects.Validation
       }
     }
 
-    public IEnumerable<ValidatorRegistration> GetRemovingPropertyRegistrations ()
+    public IEnumerable<RemovingValidatorRegistration> GetRemovingValidatorRegistrations ()
     {
-      return Enumerable.Empty<ValidatorRegistration>();
+      return Enumerable.Empty<RemovingValidatorRegistration>();
     }
 
     public IEnumerable<IPropertyMetaValidationRule> GetMetaValidationRules ()

@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
+using Remotion.Validation.RuleCollectors;
 
 namespace Remotion.Validation.Merging
 {
@@ -33,12 +34,12 @@ namespace Remotion.Validation.Merging
     }
 
     public IObjectValidatorExtractor Create (
-        IEnumerable<ObjectValidatorRegistrationWithContext> validatorRegistrationWithContexts, ILogContext logContext)
+        IEnumerable<RemovingObjectValidatorRegistration> removingObjectValidatorRegistrations, ILogContext logContext)
     {
-      ArgumentUtility.CheckNotNull ("validatorRegistrationWithContexts", validatorRegistrationWithContexts);
+      ArgumentUtility.CheckNotNull ("removingObjectValidatorRegistrations", removingObjectValidatorRegistrations);
       ArgumentUtility.CheckNotNull ("logContext", logContext);
       
-      return new ObjectValidatorExtractor (validatorRegistrationWithContexts, logContext);
+      return new ObjectValidatorExtractor (removingObjectValidatorRegistrations, logContext);
     }
   }
 }

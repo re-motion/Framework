@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Text;
 using Remotion.Reflection;
 using Remotion.Utilities;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.RuleCollectors
 {
@@ -35,7 +36,7 @@ namespace Remotion.Validation.RuleCollectors
     public ITypeInformation ValidatedType { get; }
     public Type CollectorType { get; }
 
-    private readonly List<ValidatorRegistration> _registeredValidators;
+    private readonly List<RemovingObjectValidatorRegistration> _registeredValidators;
 
     public RemovingObjectValidationRuleCollector (ITypeInformation validatedType, Type collectorType)
     {
@@ -44,24 +45,19 @@ namespace Remotion.Validation.RuleCollectors
 
       ValidatedType = validatedType;
       CollectorType = collectorType;
-      _registeredValidators = new List<ValidatorRegistration>();
+      _registeredValidators = new List<RemovingObjectValidatorRegistration>();
     }
 
-    public IEnumerable<ValidatorRegistration> Validators
+    public IEnumerable<RemovingObjectValidatorRegistration> Validators
     {
       get { return _registeredValidators.AsReadOnly(); }
     }
 
-    public void RegisterValidator (Type validatorType)
-    {
-      RegisterValidator (validatorType, null);
-    }
-
-    public void RegisterValidator (Type validatorType, Type collectorTypeToRemoveFrom)
+    public void RegisterValidator (Type validatorType, Type collectorTypeToRemoveFrom, Func<IObjectValidator, bool> validatorPredicate)
     {
       ArgumentUtility.CheckNotNull ("validatorType", validatorType);
 
-      _registeredValidators.Add (new ValidatorRegistration (validatorType, collectorTypeToRemoveFrom));
+      _registeredValidators.Add (new RemovingObjectValidatorRegistration (validatorType, collectorTypeToRemoveFrom, validatorPredicate, this));
     }
 
     public override string ToString ()

@@ -184,14 +184,14 @@ namespace Remotion.Validation.Merging
 
     private void AppendPropertyOutput (
         IPropertyInformation actualProperty,
-        ValidatorRegistration[] removedRegistrations,
+        RemovingPropertyValidatorRegistration[] removingPropertyValidatorRegistrations,
         IPropertyValidator[] addedNonRemovableValidators,
         IPropertyValidator[] addedRemovableValidators,
         IPropertyMetaValidationRule[] addedPropertyMetaValidationRules,
         StringBuilder sb)
     {
       AppendPropertyName (actualProperty, sb);
-      AppendGroupedValidatorRegistrationsOutput (removedRegistrations, "REMOVED VALIDATORS:", sb);
+      AppendGroupedRemovingPropertyValidatorRegistrationsOutput (removingPropertyValidatorRegistrations, "REMOVED VALIDATORS:", sb);
       AppendGroupedValidatorsOutput (addedNonRemovableValidators, "ADDED NON-REMOVABLE VALIDATORS:", sb);
       AppendGroupedValidatorsOutput (addedRemovableValidators, "ADDED REMOVABLE VALIDATORS:", sb);
       AppendCollectionData (sb, addedPropertyMetaValidationRules, "ADDED META VALIDATION RULES:", i => GetTypeName (i.GetType()));
@@ -218,7 +218,7 @@ namespace Remotion.Validation.Merging
       foreach (var logContextInfo in logContextInfos)
       {
         var removingCollectors =
-            logContextInfo.RemovingPropertyValidatorRegistrationsWithContext.Select (ci => ci.RemovingPropertyValidationRuleCollector.CollectorType.Name)
+            logContextInfo.RemovingPropertyValidatorRegistrations.Select (ci => ci.RemovingPropertyValidationRuleCollector.CollectorType.Name)
                 .Distinct()
                 .ToArray();
         var logEntry = string.Format (
@@ -240,14 +240,16 @@ namespace Remotion.Validation.Merging
       AppendCollectionData (sb, groupedValidators, title, i => i.Item1 + " (x" + i.Item2 + ")");
     }
 
-    private void AppendGroupedValidatorRegistrationsOutput (ValidatorRegistration[] validatorRegistrations, string title, StringBuilder sb)
+    private void AppendGroupedRemovingPropertyValidatorRegistrationsOutput (RemovingPropertyValidatorRegistration[] validatorRegistrations, string title, StringBuilder sb)
     {
       var groupedValidatorRegistrations =
           validatorRegistrations
               .Select (
                   vr =>
                       GetTypeName (vr.ValidatorType)
-                      + (vr.CollectorTypeToRemoveFrom != null ? "#" + GetTypeName (vr.CollectorTypeToRemoveFrom) : string.Empty))
+                      + (vr.CollectorTypeToRemoveFrom != null ? "#" + GetTypeName (vr.CollectorTypeToRemoveFrom) : string.Empty)
+                      + (vr.ValidatorPredicate != null ? "#Conditional" : string.Empty)
+                  )
               .GroupBy (f => f, (f, elements) => Tuple.Create (f, elements.Count())).ToArray();
       AppendCollectionData (sb, groupedValidatorRegistrations, title, i => i.Item1 + " (x" + i.Item2 + ")");
     }

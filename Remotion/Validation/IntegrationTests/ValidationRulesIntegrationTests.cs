@@ -143,6 +143,27 @@ namespace Remotion.Validation.IntegrationTests
       Assert.That (result.Errors.First().LocalizedValidationMessage, Is.EqualTo ("Conditional Message Text: Kein Gehalt definiert"));
     }
 
+    [Test]
+    public void BuildSpecialPersonValidator_ConstraintRemovedByPredicate ()
+    {
+      var person1 = new SpecialPerson1 { FirstName = "Name", LastName = null };
+      var person2 = new SpecialPerson1 { FirstName = "Name", LastName = "test" };
+      var person3 = new SpecialPerson1 { FirstName = "Name", LastName = "Test" };
+
+      var validator = ValidationBuilder.BuildValidator<SpecialPerson1>();
+
+      var result1 = validator.Validate (person1);
+      Assert.That (result1.IsValid, Is.False);
+      Assert.That (result1.Errors.OfType<PropertyValidationFailure>().First().ValidatedProperty.Name, Is.EqualTo ("LastName"));
+
+      var result2 = validator.Validate (person2);
+      Assert.That (result2.IsValid, Is.False);
+      Assert.That (result2.Errors.OfType<PropertyValidationFailure>().First().ValidatedProperty.Name, Is.EqualTo ("LastName"));
+
+      var result3 = validator.Validate (person3);
+      Assert.That (result3.IsValid, Is.True);
+    }
+
     [Ignore ("RM-5906: Obsolete due to default value removal on NotEmptyValidator.")]
     [Test]
     public void BuildOrderItemValidator_SetValueTypeToDefaulValue_ValidationFails ()
@@ -243,10 +264,29 @@ namespace Remotion.Validation.IntegrationTests
       Assert.That (result1.Errors.OfType<ObjectValidationFailure>(), Is.Empty);
 
       var result2 = validator.Validate (customer2);
-      Assert.That (result1.Errors.OfType<ObjectValidationFailure>(), Is.Empty);
+      Assert.That (result2.Errors.OfType<ObjectValidationFailure>(), Is.Empty);
 
       var result3 = validator.Validate (customer3);
       Assert.That (result3.IsValid, Is.True);
+    }
+
+    [Test]
+    public void BuildSpecialPerson1Validator_ObjectValidatorRemoved ()
+    {
+      var person1 = new SpecialPerson1 { FirstName = null, LastName = "LastName" };
+      var person2 = new SpecialPerson1 { FirstName = "FirstName", LastName = null };
+      var person3 = new SpecialPerson1 { FirstName = "FirstName", LastName = "LastName" };
+
+      var validator = ValidationBuilder.BuildValidator<SpecialPerson1>();
+
+      var result1 = validator.Validate (person1);
+      Assert.That (result1.Errors.OfType<ObjectValidationFailure>(), Is.Empty);
+
+      var result2 = validator.Validate (person2);
+      Assert.That (result2.Errors.OfType<ObjectValidationFailure>(), Is.Empty);
+
+      var result3 = validator.Validate (person3);
+      Assert.That (result3.Errors.OfType<ObjectValidationFailure>(), Is.Empty);
     }
   }
 }

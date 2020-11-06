@@ -27,7 +27,7 @@ namespace Remotion.Validation.Merging
 {
   /// <summary>
   /// Implements the <see cref="IValidationRuleCollectorMerger"/> interface to merge <see cref="IValidationRule"/>s 
-  /// based on the order of precendence established during retrieval of the <see cref="IValidationRuleCollector"/>s.
+  /// based on the order of precedence established during retrieval of the <see cref="IValidationRuleCollector"/>s.
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
   [ImplementationFor (typeof (IValidationRuleCollectorMerger), Lifetime = LifetimeKind.Singleton)]
@@ -81,14 +81,12 @@ namespace Remotion.Validation.Merging
     {
       if (collectedPropertyValidationRules.Any())
       {
-        var registrationsWithContext = collectorInfos
+        var removingPropertyValidatorRegistrations = collectorInfos
             .Select (ci => ci.Collector)
             .SelectMany (c => c.RemovedPropertyRules)
-            .SelectMany (
-                r => r.Validators,
-                (propertyRule, validatorRegistration) => new PropertyValidatorRegistrationWithContext (validatorRegistration, propertyRule));
+            .SelectMany (r => r.Validators);
 
-        var validatorExtractor = _propertyValidatorExtractorFactory.Create (registrationsWithContext, logContext);
+        var validatorExtractor = _propertyValidatorExtractorFactory.Create (removingPropertyValidatorRegistrations, logContext);
         foreach (var validationRule in collectedPropertyValidationRules)
           validationRule.ApplyRemoveValidatorRegistrations (validatorExtractor);
       }
@@ -101,14 +99,12 @@ namespace Remotion.Validation.Merging
     {
       if (collectedObjectValidationRules.Any())
       {
-        var registrationsWithContext = collectorInfos
+        var removingObjectValidatorRegistrations = collectorInfos
             .Select (ci => ci.Collector)
             .SelectMany (c => c.RemovedObjectRules)
-            .SelectMany (
-                r => r.Validators,
-                (propertyRule, validatorRegistration) => new ObjectValidatorRegistrationWithContext (validatorRegistration, propertyRule));
+            .SelectMany (r => r.Validators);
 
-        var validatorExtractor = _objectValidatorExtractorFactory.Create (registrationsWithContext, logContext);
+        var validatorExtractor = _objectValidatorExtractorFactory.Create (removingObjectValidatorRegistrations, logContext);
         foreach (var validationRule in collectedObjectValidationRules)
           validationRule.ApplyRemoveValidatorRegistrations (validatorExtractor);
       }

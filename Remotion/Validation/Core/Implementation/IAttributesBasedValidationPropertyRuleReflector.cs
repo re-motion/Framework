@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using Remotion.Reflection;
 using Remotion.Validation.MetaValidation;
-using Remotion.Validation.RuleCollectors;
 using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.Implementation
@@ -35,7 +34,7 @@ namespace Remotion.Validation.Implementation
     Func<object, object> GetValidatedPropertyFunc (Type validatedType);
     IEnumerable<IPropertyValidator> GetRemovablePropertyValidators ();
     IEnumerable<IPropertyValidator> GetNonRemovablePropertyValidators ();
-    IEnumerable<ValidatorRegistration> GetRemovingPropertyRegistrations ();
+    IEnumerable<RemovingValidatorRegistration> GetRemovingValidatorRegistrations ();
     IEnumerable<IPropertyMetaValidationRule> GetMetaValidationRules ();
   }
 }

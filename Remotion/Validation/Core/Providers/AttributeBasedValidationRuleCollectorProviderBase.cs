@@ -96,7 +96,7 @@ namespace Remotion.Validation.Providers
           propertyFunc,
           collectorType);
       var addingMetaValidationPropertyRule = GetAddingComponentPropertyMetaValidationRule (propertyRuleReflector, property, collectorType);
-      var removingPropertyRule = GetRemovingComponentPropertyRule (propertyRuleReflector, property, collectorType);
+      var removingPropertyRule = GetRemovingPropertyValidationRule (propertyRuleReflector, property, collectorType);
 
       return Tuple.Create (
           addingPropertyRule,
@@ -134,15 +134,15 @@ namespace Remotion.Validation.Providers
       return addingPropertyValidationRuleCollector;
     }
 
-    private static RemovingPropertyValidationRuleCollector GetRemovingComponentPropertyRule (
+    private static RemovingPropertyValidationRuleCollector GetRemovingPropertyValidationRule (
         IAttributesBasedValidationPropertyRuleReflector propertyRuleReflector,
         IPropertyInformation property,
         Type collectorType)
     {
       var propertyRule = new RemovingPropertyValidationRuleCollector (property, collectorType);
       
-      foreach (var validatorRegistration in propertyRuleReflector.GetRemovingPropertyRegistrations())
-        propertyRule.RegisterValidator (validatorRegistration.ValidatorType, validatorRegistration.CollectorTypeToRemoveFrom);
+      foreach (var removingValidatorRegistration in propertyRuleReflector.GetRemovingValidatorRegistrations())
+        propertyRule.RegisterValidator (removingValidatorRegistration.ValidatorType, removingValidatorRegistration.CollectorTypeToRemoveFrom, null);
       
       return propertyRule;
     }

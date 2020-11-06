@@ -93,16 +93,16 @@ namespace Remotion.Validation.UnitTests.Merging
       _addingPropertyValidationRuleCollector4.RegisterValidator (_ => _notNullValidator);
 
       _removingPropertyValidationRuleCollector1 = RemovingPropertyValidationRuleCollector.Create (_firstNameExpression, typeof (CustomerValidationRuleCollector1));
-      _removingPropertyValidationRuleCollector1.RegisterValidator (typeof (NotEmptyValidator));
+      _removingPropertyValidationRuleCollector1.RegisterValidator (typeof (NotEmptyValidator), null, null);
 
       _removingPropertyValidationRuleCollector2 = RemovingPropertyValidationRuleCollector.Create (_firstNameExpression, typeof (CustomerValidationRuleCollector1));
-      _removingPropertyValidationRuleCollector2.RegisterValidator (typeof (NotNullValidator), _validationRuleCollectorStub1.GetType());
+      _removingPropertyValidationRuleCollector2.RegisterValidator (typeof (NotNullValidator), _validationRuleCollectorStub1.GetType(), null);
 
       _removingPropertyValidationRuleCollector3 = RemovingPropertyValidationRuleCollector.Create (_firstNameExpression, typeof (CustomerValidationRuleCollector1));
-      _removingPropertyValidationRuleCollector3.RegisterValidator (typeof (NotNullValidator), typeof (string)); //Unknown collector type!
+      _removingPropertyValidationRuleCollector3.RegisterValidator (typeof (NotNullValidator), typeof (string), null); //Unknown collector type!
 
       _removingPropertyValidationRuleCollector4 = RemovingPropertyValidationRuleCollector.Create (_lastNameExpression, typeof (CustomerValidationRuleCollector1));
-      _removingPropertyValidationRuleCollector4.RegisterValidator (typeof (MaximumLengthValidator));
+      _removingPropertyValidationRuleCollector4.RegisterValidator (typeof (MaximumLengthValidator), null, null);
 
       _propertyValidatorExtractorFactoryMock = MockRepository.GenerateStrictMock<IPropertyValidatorExtractorFactory>();
       _propertyValidatorExtractorMock = MockRepository.GenerateStrictMock<IPropertyValidatorExtractor>();
@@ -132,8 +132,8 @@ namespace Remotion.Validation.UnitTests.Merging
           .Expect (
               mock =>
                   mock.Create (
-                      Arg<IEnumerable<PropertyValidatorRegistrationWithContext>>.Matches (
-                          c => c.Count() == 1 && c.ToArray()[0].ValidatorRegistration.ValidatorType == typeof (NotEmptyValidator)),
+                      Arg<IEnumerable<RemovingPropertyValidatorRegistration>>.Matches (
+                          c => c.Count() == 1 && c.ToArray()[0].ValidatorType == typeof (NotEmptyValidator)),
                       Arg<ILogContext>.Is.NotNull))
           .Return (_propertyValidatorExtractorMock);
 
@@ -176,8 +176,8 @@ namespace Remotion.Validation.UnitTests.Merging
           .Expect (
               mock =>
                   mock.Create (
-                      Arg<IEnumerable<PropertyValidatorRegistrationWithContext>>.Matches (
-                          c => c.Count() == 1 && c.ToArray()[0].ValidatorRegistration.ValidatorType == typeof (NotNullValidator)),
+                      Arg<IEnumerable<RemovingPropertyValidatorRegistration>>.Matches (
+                          c => c.Count() == 1 && c.ToArray()[0].ValidatorType == typeof (NotNullValidator)),
                       Arg<ILogContext>.Is.NotNull))
           .Return (_propertyValidatorExtractorMock);
 
@@ -219,7 +219,7 @@ namespace Remotion.Validation.UnitTests.Merging
       _validationRuleCollectorStub3.Stub (stub => stub.RemovedObjectRules).Return (new IRemovingObjectValidationRuleCollector[0]);
 
       _propertyValidatorExtractorFactoryMock
-          .Expect (mock => mock.Create (Arg<IEnumerable<PropertyValidatorRegistrationWithContext>>.Is.Anything, Arg<ILogContext>.Is.NotNull))
+          .Expect (mock => mock.Create (Arg<IEnumerable<RemovingPropertyValidatorRegistration>>.Is.Anything, Arg<ILogContext>.Is.NotNull))
           .Return (_propertyValidatorExtractorMock);
 
       _propertyValidatorExtractorMock
@@ -266,7 +266,7 @@ namespace Remotion.Validation.UnitTests.Merging
       _validationRuleCollectorStub2.Stub (stub => stub.RemovedObjectRules).Return (new IRemovingObjectValidationRuleCollector[0]);
 
       _propertyValidatorExtractorFactoryMock
-          .Expect (mock => mock.Create (Arg<IEnumerable<PropertyValidatorRegistrationWithContext>>.Is.Anything, Arg<ILogContext>.Is.NotNull))
+          .Expect (mock => mock.Create (Arg<IEnumerable<RemovingPropertyValidatorRegistration>>.Is.Anything, Arg<ILogContext>.Is.NotNull))
           .Return (_propertyValidatorExtractorMock);
 
       _propertyValidatorExtractorMock

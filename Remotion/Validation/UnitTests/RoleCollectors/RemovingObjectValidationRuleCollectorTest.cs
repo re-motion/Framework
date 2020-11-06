@@ -23,6 +23,7 @@ using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.UnitTests.TestDomain.Collectors;
 using Remotion.Validation.UnitTests.TestDomain.Validators;
 using Remotion.Validation.UnitTests.TestHelpers;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.UnitTests.RoleCollectors
 {
@@ -46,20 +47,67 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
     }
 
     [Test]
-    public void RegisterValidator ()
+    public void RegisterValidator_WithCollectorNullAndPredicateNull_AddsValidatorToCollector ()
     {
-      _removingObjectValidationRuleCollector.RegisterValidator (typeof (StubObjectValidator));
-      _removingObjectValidationRuleCollector.RegisterValidator (typeof (FakeCustomerValidator), typeof (CustomerValidationRuleCollector1));
+      _removingObjectValidationRuleCollector.RegisterValidator (typeof (StubObjectValidator), null, null);
 
-      Assert.That (_removingObjectValidationRuleCollector.Validators.Count(), Is.EqualTo (2));
+      Assert.That (_removingObjectValidationRuleCollector.Validators.Count(), Is.EqualTo (1));
 
-      Assert.That (_removingObjectValidationRuleCollector.Validators.ElementAt (0).ValidatorType, Is.EqualTo (typeof (StubObjectValidator)));
-      Assert.That (_removingObjectValidationRuleCollector.Validators.ElementAt (0).CollectorTypeToRemoveFrom, Is.Null);
-
-      Assert.That (_removingObjectValidationRuleCollector.Validators.ElementAt (1).ValidatorType, Is.EqualTo (typeof (FakeCustomerValidator)));
+      var removingPropertyValidatorRegistration = _removingObjectValidationRuleCollector.Validators.Single();
+      Assert.That (removingPropertyValidatorRegistration.ValidatorType, Is.EqualTo (typeof (StubObjectValidator)));
+      Assert.That (removingPropertyValidatorRegistration.CollectorTypeToRemoveFrom, Is.Null);
+      Assert.That (removingPropertyValidatorRegistration.ValidatorPredicate, Is.Null);
       Assert.That (
-          _removingObjectValidationRuleCollector.Validators.ElementAt (1).CollectorTypeToRemoveFrom,
-          Is.EqualTo (typeof (CustomerValidationRuleCollector1)));
+          removingPropertyValidatorRegistration.RemovingObjectValidationRuleCollector,
+          Is.SameAs (_removingObjectValidationRuleCollector));
+    }
+
+    [Test]
+    public void RegisterValidator_WithCollectorNotNullAndPredicateNull_AddsValidatorToCollector ()
+    {
+      _removingObjectValidationRuleCollector.RegisterValidator (typeof (FakeCustomerValidator), typeof (CustomerValidationRuleCollector1), null);
+
+      Assert.That (_removingObjectValidationRuleCollector.Validators.Count(), Is.EqualTo (1));
+
+      var removingPropertyValidatorRegistration = _removingObjectValidationRuleCollector.Validators.Single();
+
+      Assert.That (removingPropertyValidatorRegistration.ValidatorType, Is.EqualTo (typeof (FakeCustomerValidator)));
+      Assert.That (removingPropertyValidatorRegistration.CollectorTypeToRemoveFrom, Is.EqualTo (typeof (CustomerValidationRuleCollector1)));
+      Assert.That (removingPropertyValidatorRegistration.ValidatorPredicate, Is.Null);
+      Assert.That (
+          removingPropertyValidatorRegistration.RemovingObjectValidationRuleCollector,
+          Is.SameAs (_removingObjectValidationRuleCollector));
+
+    }
+
+    [Test]
+    public void RegisterValidator_WithCollectorNullAndPredicateNotNull_AddsValidatorToCollector ()
+    {
+      Func<IObjectValidator, bool> validatorPredicate = _ => false;
+      _removingObjectValidationRuleCollector.RegisterValidator (typeof (FakeCustomerValidator), null, validatorPredicate);
+
+      Assert.That (_removingObjectValidationRuleCollector.Validators.Count(), Is.EqualTo (1));
+
+      var removingPropertyValidatorRegistration = _removingObjectValidationRuleCollector.Validators.Single();
+
+      Assert.That (removingPropertyValidatorRegistration.ValidatorType, Is.EqualTo (typeof (FakeCustomerValidator)));
+      Assert.That (removingPropertyValidatorRegistration.CollectorTypeToRemoveFrom, Is.Null);
+      Assert.That (removingPropertyValidatorRegistration.ValidatorPredicate, Is.SameAs (validatorPredicate));
+      Assert.That (
+          removingPropertyValidatorRegistration.RemovingObjectValidationRuleCollector,
+          Is.SameAs (_removingObjectValidationRuleCollector));
+    }
+
+    [Test]
+    public void RegisterValidator_WithMultipleValidators_AddsAllValidatorsToCollector ()
+    {
+      _removingObjectValidationRuleCollector.RegisterValidator (typeof (FakeCustomerValidator), null, null);
+      _removingObjectValidationRuleCollector.RegisterValidator (typeof (FakeCustomerValidator), null, null);
+      _removingObjectValidationRuleCollector.RegisterValidator (typeof (StubObjectValidator), null, null);
+
+      Assert.That (
+          _removingObjectValidationRuleCollector.Validators.Select (v => v.ValidatorType),
+          Is.EqualTo (new[] { typeof (FakeCustomerValidator), typeof (FakeCustomerValidator), typeof (StubObjectValidator) }));
     }
 
     [Test]

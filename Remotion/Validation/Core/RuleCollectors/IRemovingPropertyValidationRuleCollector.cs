@@ -18,6 +18,8 @@ using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using Remotion.Reflection;
+using Remotion.Validation.Implementation;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.RuleCollectors
 {
@@ -41,20 +43,19 @@ namespace Remotion.Validation.RuleCollectors
     /// <summary>
     /// Gets the validators registered for removal.
     /// </summary>
-    IEnumerable<ValidatorRegistration> Validators { get; }
+    IEnumerable<RemovingPropertyValidatorRegistration> Validators { get; }
 
     /// <summary>
-    /// Specifies that all validators of <paramref name="validatorType"/> should be removed.
-    /// Note: It is only supported to remove validators which are registered with the <see cref="IAddingPropertyValidationRuleCollector.IsRemovable"/> flag set to <see langword="true" />.
-    /// Attempting to do so will result in an exception when the validation rules aggregated.
+    /// Specifies that all validators of <paramref name="validatorType"/> should be removed, provided that they where registered by <paramref name="collectorTypeToRemoveFrom"/>
+    /// and are matched by <paramref name="validatorPredicate"/>.
     /// </summary>
-    void RegisterValidator ([NotNull] Type validatorType);
-
-    /// <summary>
-    /// Specifies that all validators of <paramref name="validatorType"/> registered by <paramref name="collectorTypeToRemoveFrom"/> should be removed.
-    /// Note: It is only supported to remove validators which are registered with the <see cref="IAddingPropertyValidationRuleCollector.IsRemovable"/> flag set to <see langword="true" />.
+    /// <remarks>
+    /// It is only supported to remove validators which are registered with the <see cref="IAddingPropertyValidationRuleCollector.IsRemovable"/> flag set to <see langword="true" />.
     /// Attempting to do so will result in an exception when the validation rules aggregated.
-    /// </summary>
-    void RegisterValidator ([NotNull] Type validatorType, [CanBeNull] Type collectorTypeToRemoveFrom);
+    /// </remarks>
+    void RegisterValidator (
+        [NotNull] Type validatorType,
+        [CanBeNull] Type collectorTypeToRemoveFrom,
+        [CanBeNull] Func<IPropertyValidator, bool> validatorPredicate);
   }
 }

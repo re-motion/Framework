@@ -15,31 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using NUnit.Framework;
-using Remotion.Validation.Implementation;
-using Remotion.Validation.Merging;
-using Remotion.Validation.RuleCollectors;
-using Rhino.Mocks;
+using Remotion.Validation.IntegrationTests.TestDomain.ComponentA;
 
-namespace Remotion.Validation.UnitTests.Merging
+namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentB
 {
-  [TestFixture]
-  public class ObjectValidatorExtractorFactoryTest
+  public class SpecialPerson1 : Person
   {
-    private ObjectValidatorExtractorFactory _factory;
-
-    [SetUp]
-    public void SetUp ()
-    {
-      _factory = new ObjectValidatorExtractorFactory ();
-    }
-
-    [Test]
-    public void Create ()
-    {
-      var result = _factory.Create (new RemovingObjectValidatorRegistration[0], MockRepository.GenerateStub<ILogContext>());
-
-      Assert.That (result, Is.TypeOf (typeof (ObjectValidatorExtractor)));
-    }
   }
 }

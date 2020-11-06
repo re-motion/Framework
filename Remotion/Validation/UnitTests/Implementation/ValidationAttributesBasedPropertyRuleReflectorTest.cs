@@ -141,20 +141,20 @@ namespace Remotion.Validation.UnitTests.Implementation
     }
 
     [Test]
-    public void GetRemovingPropertyRegistrations_Customer ()
+    public void GetRemovingValidatorRegistrations_Customer ()
     {
-      var removingPropertyRegistrations = _customerPropertyReflector.GetRemovingPropertyRegistrations().ToArray();
+      var removingValidatorRegistrations = _customerPropertyReflector.GetRemovingValidatorRegistrations().ToArray();
 
-      Assert.That (removingPropertyRegistrations.Length, Is.EqualTo (0));
+      Assert.That (removingValidatorRegistrations.Length, Is.EqualTo (0));
     }
 
     [Test]
-    public void GetRemovingPropertyRegistrations_SpecialCustomer ()
+    public void GetRemovingValidatorRegistrations_SpecialCustomer ()
     {
-      var removingPropertyRegistrations = _specialCustomerPropertyReflector.GetRemovingPropertyRegistrations().ToArray();
+      var removingValidatorRegistrations = _specialCustomerPropertyReflector.GetRemovingValidatorRegistrations().ToArray();
 
-      Assert.That (removingPropertyRegistrations.Length, Is.EqualTo (1));
-      Assert.That (removingPropertyRegistrations[0].ValidatorType, Is.EqualTo (typeof (LengthValidator)));
+      Assert.That (removingValidatorRegistrations.Length, Is.EqualTo (1));
+      Assert.That (removingValidatorRegistrations[0].ValidatorType, Is.EqualTo (typeof (LengthValidator)));
     }
 
     [Test]

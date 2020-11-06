@@ -76,7 +76,7 @@
     <Compile Include="Implementation\InvariantValidationMessage.cs" />
     <Compile Include="Implementation\CompoundValidationMessageFactory.cs" />
     <Compile Include="Implementation\ObjectValidatorLogContextInfo.cs" />
-    <Compile Include="Implementation\ObjectValidatorRegistrationWithContext.cs" />
+    <Compile Include="RuleCollectors\RemovingObjectValidatorRegistration.cs" />
     <Compile Include="Implementation\ValidationMessage.cs" />
     <Compile Include="Implementation\IValidationMessageFactory.cs" />
     <Compile Include="IValidatorProvider.cs" />
@@ -140,7 +140,7 @@
     <Compile Include="Implementation\PropertyValidatorLogContextInfo.cs" />
     <Compile Include="Merging\NamespaceAwareDiagnosticOutputValidationRuleMergeDecorator.cs" />
     <Compile Include="Merging\PropertyValidatorExtractorFactory.cs" />
-    <Compile Include="Implementation\PropertyValidatorRegistrationWithContext.cs" />
+    <Compile Include="RuleCollectors\RemovingPropertyValidatorRegistration.cs" />
     <Compile Include="Merging\ValidationCollectorMergeResult.cs" />
     <Compile Include="MetaValidation\DefaultSystemPropertyMetaValidationRuleProviderFactory.cs" />
     <Compile Include="MetaValidation\ISystemPropertyMetaValidationRuleProviderFactory.cs" />
@@ -214,7 +214,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RuleCollectors\IRemovingPropertyValidationRuleCollector.cs" />
     <Compile Include="RuleCollectors\RemovingPropertyValidationRuleCollector.cs" />
-    <Compile Include="RuleCollectors\ValidatorRegistration.cs" />
+    <Compile Include="Implementation\RemovingValidatorRegistration.cs" />
     <Compile Include="Implementation\ValidationRuleCollectorBasedValidatorBuilder.cs" />
     <Compile Include="Providers\IValidationRuleCollectorProvider.cs" />
     <Compile Include="Providers\ApiBasedValidationRuleCollectorProvider.cs" />

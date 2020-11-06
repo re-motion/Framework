@@ -17,6 +17,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.Validation.Implementation;
+using Remotion.Validation.RuleCollectors;
 using Remotion.Validation.Validators;
 using Rhino.Mocks;
 
@@ -26,23 +27,23 @@ namespace Remotion.Validation.UnitTests.Implementation
   public class ObjectValidatorLogContextInfoTest
   {
     private IObjectValidator _ObjectValidatorStub1;
-    private ObjectValidatorRegistrationWithContext[] _ObjectValidatorRegistrationWithContext;
+    private RemovingObjectValidatorRegistration[] _removingObjectValidatorRegistrations;
     private ObjectValidatorLogContextInfo _logContextInfo;
 
     [SetUp]
     public void SetUp ()
     {
       _ObjectValidatorStub1 = MockRepository.GenerateStub<IObjectValidator>();
-      _ObjectValidatorRegistrationWithContext = new ObjectValidatorRegistrationWithContext[0];
+      _removingObjectValidatorRegistrations = new RemovingObjectValidatorRegistration[0];
 
-      _logContextInfo = new ObjectValidatorLogContextInfo (_ObjectValidatorStub1, _ObjectValidatorRegistrationWithContext);
+      _logContextInfo = new ObjectValidatorLogContextInfo (_ObjectValidatorStub1, _removingObjectValidatorRegistrations);
     }
 
     [Test]
     public void Initialization ()
     {
       Assert.That (_logContextInfo.RemovedValidator, Is.SameAs (_ObjectValidatorStub1));
-      Assert.That (_logContextInfo.RemovingObjectValidatorRegistrationsWithContext, Is.SameAs (_ObjectValidatorRegistrationWithContext));
+      Assert.That (_logContextInfo.RemovingObjectValidatorRegistrations, Is.SameAs (_removingObjectValidatorRegistrations));
     }
   }
 }

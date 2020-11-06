@@ -89,10 +89,10 @@ namespace Remotion.Validation.Implementation
       return addingValidationAttributes.SelectMany (a => a.GetPropertyValidators (_property, _validationMessageFactory));
     }
 
-    public IEnumerable<ValidatorRegistration> GetRemovingPropertyRegistrations ()
+    public IEnumerable<RemovingValidatorRegistration> GetRemovingValidatorRegistrations ()
     {
       var removingValidationAttributes = _property.GetCustomAttributes<RemoveValidatorAttribute> (false);
-      return removingValidationAttributes.Select (a => new ValidatorRegistration (a.ValidatorType, a.CollectorTypeToRemoveFrom));
+      return removingValidationAttributes.Select (a => new RemovingValidatorRegistration (a.ValidatorType, a.CollectorTypeToRemoveFrom));
     }
 
     public IEnumerable<IPropertyMetaValidationRule> GetMetaValidationRules ()

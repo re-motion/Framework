@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using Remotion.Validation.Implementation;
+using Remotion.Validation.RuleCollectors;
 
 namespace Remotion.Validation.Merging
 {
@@ -26,6 +27,6 @@ namespace Remotion.Validation.Merging
   /// <seealso cref="PropertyValidatorExtractorFactory"/>
   public interface IPropertyValidatorExtractorFactory
   {
-    IPropertyValidatorExtractor Create (IEnumerable<PropertyValidatorRegistrationWithContext> validatorRegistrationWithContexts, ILogContext logContext);
+    IPropertyValidatorExtractor Create (IEnumerable<RemovingPropertyValidatorRegistration> removingPropertyValidatorRegistrations, ILogContext logContext);
   }
 }

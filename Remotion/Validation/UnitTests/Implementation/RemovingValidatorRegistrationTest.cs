@@ -17,32 +17,30 @@
 using System;
 using NUnit.Framework;
 using Remotion.Validation.Implementation;
-using Remotion.Validation.RuleCollectors;
+using Remotion.Validation.UnitTests.TestDomain.Collectors;
 using Remotion.Validation.Validators;
-using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.Implementation
 {
   [TestFixture]
-  public class PropertyValidatorRegistrationWithContextTest
+  public class RemovingValidatorRegistrationTest
   {
-    private ValidatorRegistration _validatorRegistration;
-    private PropertyValidatorRegistrationWithContext _registrationWithContext;
-    private IRemovingPropertyValidationRuleCollector _removingPropertyValidationRuleCollectorStub;
-
-    [SetUp]
-    public void SetUp ()
+    [Test]
+    public void Initialization_OneParameter ()
     {
-      _validatorRegistration = new ValidatorRegistration (typeof (NotEqualValidator), null);
-      _removingPropertyValidationRuleCollectorStub = MockRepository.GenerateStub<IRemovingPropertyValidationRuleCollector>();
-      _registrationWithContext = new PropertyValidatorRegistrationWithContext (_validatorRegistration, _removingPropertyValidationRuleCollectorStub);
+      var removingValidatorRegistration = new RemovingValidatorRegistration (typeof (NotEmptyValidator), null);
+
+      Assert.That (removingValidatorRegistration.ValidatorType, Is.EqualTo (typeof (NotEmptyValidator)));
+      Assert.That (removingValidatorRegistration.CollectorTypeToRemoveFrom, Is.Null);
     }
 
     [Test]
-    public void Initialization ()
+    public void Initialization_TwoParameters ()
     {
-      Assert.That (_registrationWithContext.ValidatorRegistration, Is.SameAs (_validatorRegistration));
-      Assert.That (_registrationWithContext.RemovingPropertyValidationRuleCollector, Is.SameAs(_removingPropertyValidationRuleCollectorStub));
+      var removingValidatorRegistration = new RemovingValidatorRegistration (typeof (NotEmptyValidator), typeof (CustomerValidationRuleCollector1));
+
+      Assert.That (removingValidatorRegistration.ValidatorType, Is.EqualTo (typeof (NotEmptyValidator)));
+      Assert.That (removingValidatorRegistration.CollectorTypeToRemoveFrom, Is.EqualTo (typeof (CustomerValidationRuleCollector1)));
     }
   }
 }

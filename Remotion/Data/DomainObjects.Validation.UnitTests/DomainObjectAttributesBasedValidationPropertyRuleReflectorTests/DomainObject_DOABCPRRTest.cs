@@ -102,7 +102,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     {
       Assert.That (_propertyWithoutAttributeReflector.GetRemovablePropertyValidators().Any(), Is.False);
       Assert.That (_propertyWithoutAttributeReflector.GetNonRemovablePropertyValidators().Any(), Is.False);
-      Assert.That (_propertyWithoutAttributeReflector.GetRemovingPropertyRegistrations().Any(), Is.False);
+      Assert.That (_propertyWithoutAttributeReflector.GetRemovingValidatorRegistrations().Any(), Is.False);
       Assert.That (_propertyWithoutAttributeReflector.GetMetaValidationRules().Any(), Is.False);
     }
 
@@ -289,7 +289,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     [Test]
     public void GetRemovingPropertyRegistrations ()
     {
-      var result = _propertyWithMandatoryStringPropertyAttributeReflector.GetRemovingPropertyRegistrations().ToArray();
+      var result = _propertyWithMandatoryStringPropertyAttributeReflector.GetRemovingValidatorRegistrations().ToArray();
 
       Assert.That (result.Any(), Is.False);
     }
