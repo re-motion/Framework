@@ -32,6 +32,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       if (Helper.BrowserConfiguration.IsInternetExplorer())
         Assert.Ignore ("Support for Internet Explorer in web tests has been removed. (Version: 1.20.22)");
+
+      if (Helper.BrowserConfiguration.IsEdge())
+        Assert.Ignore("RM-7525: File download tests are temporarily disabled in Edge.");
     }
 
     [Test]
