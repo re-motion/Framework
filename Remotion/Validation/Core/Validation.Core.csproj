@@ -214,7 +214,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RuleCollectors\IRemovingPropertyValidationRuleCollector.cs" />
     <Compile Include="RuleCollectors\RemovingPropertyValidationRuleCollector.cs" />
-    <Compile Include="RuleCollectors\RemovingValidatorRegistration.cs" />
+    <Compile Include="Implementation\RemovingValidatorRegistration.cs" />
     <Compile Include="Implementation\ValidationRuleCollectorBasedValidatorBuilder.cs" />
     <Compile Include="Providers\IValidationRuleCollectorProvider.cs" />
     <Compile Include="Providers\ApiBasedValidationRuleCollectorProvider.cs" />

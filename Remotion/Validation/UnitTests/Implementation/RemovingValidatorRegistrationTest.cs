@@ -16,11 +16,11 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Validation.RuleCollectors;
+using Remotion.Validation.Implementation;
 using Remotion.Validation.UnitTests.TestDomain.Collectors;
 using Remotion.Validation.Validators;
 
-namespace Remotion.Validation.UnitTests.RoleCollectors
+namespace Remotion.Validation.UnitTests.Implementation
 {
   [TestFixture]
   public class RemovingValidatorRegistrationTest
