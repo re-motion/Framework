@@ -247,7 +247,9 @@ namespace Remotion.Validation.Merging
               .Select (
                   vr =>
                       GetTypeName (vr.ValidatorType)
-                      + (vr.CollectorTypeToRemoveFrom != null ? "#" + GetTypeName (vr.CollectorTypeToRemoveFrom) : string.Empty))
+                      + (vr.CollectorTypeToRemoveFrom != null ? "#" + GetTypeName (vr.CollectorTypeToRemoveFrom) : string.Empty)
+                      + (vr.ValidatorPredicate != null ? "#Conditional" : string.Empty)
+                  )
               .GroupBy (f => f, (f, elements) => Tuple.Create (f, elements.Count())).ToArray();
       AppendCollectionData (sb, groupedValidatorRegistrations, title, i => i.Item1 + " (x" + i.Item2 + ")");
     }

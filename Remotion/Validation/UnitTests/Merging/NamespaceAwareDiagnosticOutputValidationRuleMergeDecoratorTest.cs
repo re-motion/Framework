@@ -142,16 +142,16 @@ namespace Remotion.Validation.UnitTests.Merging
           stubValidator2,
           new[]
           {
-              new RemovingPropertyValidatorRegistration (typeof (NotEmptyValidator), null, removingPropertyRuleStub1),
-              new RemovingPropertyValidatorRegistration (typeof (NotEmptyValidator), null, removingPropertyRuleStub1),
-              new RemovingPropertyValidatorRegistration (typeof (NotEmptyValidator), null, removingPropertyRuleStub2)
+              new RemovingPropertyValidatorRegistration (typeof (NotEmptyValidator), null, null, removingPropertyRuleStub1),
+              new RemovingPropertyValidatorRegistration (typeof (NotEmptyValidator), null, null, removingPropertyRuleStub1),
+              new RemovingPropertyValidatorRegistration (typeof (NotEmptyValidator), null, null, removingPropertyRuleStub2)
           });
       var logContextInfo2 = new PropertyValidatorLogContextInfo (
           stubValidator1,
-          new[] { new RemovingPropertyValidatorRegistration (typeof (NotNullValidator), null, removingPropertyRuleStub2) });
+          new[] { new RemovingPropertyValidatorRegistration (typeof (NotNullValidator), null, null, removingPropertyRuleStub2) });
       var logContextInfo3 = new PropertyValidatorLogContextInfo (
           stubValidator3,
-          new[] { new RemovingPropertyValidatorRegistration (typeof (NotEqualValidator), null, removingPropertyRuleStub1) });
+          new[] { new RemovingPropertyValidatorRegistration (typeof (NotEqualValidator), null, null, removingPropertyRuleStub1) });
 
       _logContextStub.Stub (stub => stub.GetLogContextInfos (userNamePropertyRule)).Return (new[] { logContextInfo1, logContextInfo2 });
       _logContextStub.Stub (stub => stub.GetLogContextInfos (lastNamePropertyRule)).Return (new[] { logContextInfo3 });
@@ -206,7 +206,7 @@ namespace Remotion.Validation.UnitTests.Merging
           + "\r\n"
           + "\r\n    -> Remotion.Validation.UnitTests.Implementation.TestDomain.TypeWithoutBaseType#Property2"
           + "\r\n        REMOVED VALIDATORS:"
-          + "\r\n        -> Remotion.Validation.Validators.NotEmptyValidator (x1)"
+          + "\r\n        -> Remotion.Validation.Validators.NotEmptyValidator#Conditional (x1)"
           + "\r\n        -> Remotion.Validation.Validators.MaximumLengthValidator#Remotion.Validation.UnitTests.Implementation.TestDomain.TypeWithoutBaseTypeCollector1 (x1)";
       //TODO RM-5906: test IObjectValidator
       CheckLoggingMethod (() => _diagnosticOutputValidationRuleMergeDecorator.Merge (validationCollectorInfos), expectedBeforeMerge, 1);

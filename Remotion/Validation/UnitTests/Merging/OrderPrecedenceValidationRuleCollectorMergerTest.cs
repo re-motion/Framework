@@ -93,16 +93,16 @@ namespace Remotion.Validation.UnitTests.Merging
       _addingPropertyValidationRuleCollector4.RegisterValidator (_ => _notNullValidator);
 
       _removingPropertyValidationRuleCollector1 = RemovingPropertyValidationRuleCollector.Create (_firstNameExpression, typeof (CustomerValidationRuleCollector1));
-      _removingPropertyValidationRuleCollector1.RegisterValidator (typeof (NotEmptyValidator));
+      _removingPropertyValidationRuleCollector1.RegisterValidator (typeof (NotEmptyValidator), null, null);
 
       _removingPropertyValidationRuleCollector2 = RemovingPropertyValidationRuleCollector.Create (_firstNameExpression, typeof (CustomerValidationRuleCollector1));
-      _removingPropertyValidationRuleCollector2.RegisterValidator (typeof (NotNullValidator), _validationRuleCollectorStub1.GetType());
+      _removingPropertyValidationRuleCollector2.RegisterValidator (typeof (NotNullValidator), _validationRuleCollectorStub1.GetType(), null);
 
       _removingPropertyValidationRuleCollector3 = RemovingPropertyValidationRuleCollector.Create (_firstNameExpression, typeof (CustomerValidationRuleCollector1));
-      _removingPropertyValidationRuleCollector3.RegisterValidator (typeof (NotNullValidator), typeof (string)); //Unknown collector type!
+      _removingPropertyValidationRuleCollector3.RegisterValidator (typeof (NotNullValidator), typeof (string), null); //Unknown collector type!
 
       _removingPropertyValidationRuleCollector4 = RemovingPropertyValidationRuleCollector.Create (_lastNameExpression, typeof (CustomerValidationRuleCollector1));
-      _removingPropertyValidationRuleCollector4.RegisterValidator (typeof (MaximumLengthValidator));
+      _removingPropertyValidationRuleCollector4.RegisterValidator (typeof (MaximumLengthValidator), null, null);
 
       _propertyValidatorExtractorFactoryMock = MockRepository.GenerateStrictMock<IPropertyValidatorExtractorFactory>();
       _propertyValidatorExtractorMock = MockRepository.GenerateStrictMock<IPropertyValidatorExtractor>();

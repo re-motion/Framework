@@ -31,7 +31,8 @@ namespace Remotion.Validation.RuleBuilders
     /// </summary>
     /// <returns>An object to continue the fluent specification.</returns>
     [NotNull]
-    IRemovingPropertyValidationRuleBuilder<TValidatedType, TProperty> Validator<TValidator> ()
+    IRemovingPropertyValidationRuleBuilder<TValidatedType, TProperty> Validator<TValidator> (
+        [CanBeNull] Func<TValidator, bool> validatorPredicate = null)
         where TValidator : IPropertyValidator;
 
     /// <summary>
@@ -39,23 +40,19 @@ namespace Remotion.Validation.RuleBuilders
     /// </summary>
     /// <returns>An object to continue the fluent specification.</returns>
     [NotNull]
-    IRemovingPropertyValidationRuleBuilder<TValidatedType, TProperty> Validator<TValidator, TCollectorTypeToRemoveFrom> ()
+    IRemovingPropertyValidationRuleBuilder<TValidatedType, TProperty> Validator<TValidator, TCollectorTypeToRemoveFrom> (
+        [CanBeNull] Func<TValidator, bool> validatorPredicate = null)
         where TValidator : IPropertyValidator;
 
     /// <summary>
-    /// Removes validators of type <paramref name="validatorType"/>.
-    /// </summary>
-    /// <returns>An object to continue the fluent specification.</returns>
-    [NotNull]
-    IRemovingPropertyValidationRuleBuilder<TValidatedType, TProperty> Validator ([NotNull] Type validatorType);
-
-    /// <summary>
-    /// Removes validators of type <paramref name="validatorType"/> registered by the specified collector <paramref name="collectorTypeToRemoveFrom"/>.
+    /// Removes validators of type <paramref name="validatorType"/> registered by the specified collector <paramref name="collectorTypeToRemoveFrom"/>
+    /// and matching the specified <paramref name="validatorPredicate"/>.
     /// </summary>
     /// <returns>An object to continue the fluent specification.</returns>
     [NotNull]
     IRemovingPropertyValidationRuleBuilder<TValidatedType, TProperty> Validator (
         [NotNull] Type validatorType,
-        [CanBeNull] Type collectorTypeToRemoveFrom);
+        [CanBeNull] Type collectorTypeToRemoveFrom = null,
+        [CanBeNull] Func<IPropertyValidator, bool> validatorPredicate = null);
   }
 }

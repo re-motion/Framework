@@ -17,6 +17,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.RuleCollectors;
@@ -56,19 +58,36 @@ namespace Remotion.Validation.Merging
       }
     }
 
-    //TODO RM-5906: add integration test for redefined (new) property in derived class for that a validator should be removed
     private IEnumerable<RemovingPropertyValidatorRegistration> GetRemovingPropertyRegistrations (
-        IPropertyValidator validator, IAddingPropertyValidationRuleCollector addingPropertyValidationRuleCollector)
+        IPropertyValidator validator,
+        IAddingPropertyValidationRuleCollector addingPropertyValidationRuleCollector)
     {
-      return
-          _validatorTypesToRemove[validator.GetType()].Where (
-              rwc =>
-              rwc.RemovingPropertyValidationRuleCollector.Property.Name== addingPropertyValidationRuleCollector.Property.Name
-// ReSharper disable PossibleNullReferenceException
-              && addingPropertyValidationRuleCollector.Property.DeclaringType.IsAssignableFrom (rwc.RemovingPropertyValidationRuleCollector.Property.DeclaringType)
-// ReSharper restore PossibleNullReferenceException
-              && (rwc.CollectorTypeToRemoveFrom == null
-                  || rwc.CollectorTypeToRemoveFrom == addingPropertyValidationRuleCollector.CollectorType));
+      return _validatorTypesToRemove[validator.GetType()]
+          .Where (rwc => IsPropertyMatch (addingPropertyValidationRuleCollector.Property, rwc.RemovingPropertyValidationRuleCollector.Property))
+          .Where (rwc => IsCollectorTypeMatch (addingPropertyValidationRuleCollector.CollectorType, rwc.CollectorTypeToRemoveFrom))
+          .Where (rwc => IsPredicateMatch (validator, rwc.ValidatorPredicate));
+
+      static bool IsPropertyMatch (IPropertyInformation currentProperty, IPropertyInformation propertyToMatch)
+      {
+        //TODO RM-5906: add integration test for redefined (new) property in derived class for that a validator should be removed, and why do we check property metadata instead of property reference
+
+        return propertyToMatch.Name == currentProperty.Name
+               // ReSharper disable PossibleNullReferenceException
+               && currentProperty.DeclaringType.IsAssignableFrom (propertyToMatch.DeclaringType);
+        // ReSharper restore PossibleNullReferenceException
+      }
+
+      static bool IsCollectorTypeMatch (Type currentCollectorType, Type collectorTypeToMatch)
+      {
+        return collectorTypeToMatch == null
+               || collectorTypeToMatch == currentCollectorType;
+      }
+
+      static bool IsPredicateMatch (IPropertyValidator currentValidator, Func<IPropertyValidator, bool> predicateToMatch)
+      {
+        return predicateToMatch == null 
+               || predicateToMatch (currentValidator);
+      }
     }
   }
 }

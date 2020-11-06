@@ -17,23 +17,32 @@
 using System;
 using JetBrains.Annotations;
 using Remotion.Utilities;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.RuleCollectors
 {
   /// <summary>
-  /// Represents the information required to remove validators of type <see cref="ValidatorType"/> registered by collector type <see cref="CollectorTypeToRemoveFrom"/>.
+  /// Represents the information required to remove validators of type <see cref="ValidatorType"/>
+  /// registered by collector type <see cref="CollectorTypeToRemoveFrom"/> and provided the <see cref="ValidatorPredicate"/> matches.
   /// </summary>
   public class RemovingPropertyValidatorRegistration
   {
+    [NotNull]
     public Type ValidatorType { get; }
 
+    [CanBeNull]
     public Type CollectorTypeToRemoveFrom { get; }
 
+    [CanBeNull]
+    public Func<IPropertyValidator, bool> ValidatorPredicate { get; }
+
+    [NotNull]
     public IRemovingPropertyValidationRuleCollector RemovingPropertyValidationRuleCollector { get; }
 
     public RemovingPropertyValidatorRegistration (
         [NotNull] Type validatorType,
         [CanBeNull] Type collectorTypeToRemoveFrom,
+        [CanBeNull] Func<IPropertyValidator, bool> validatorPredicate,
         [NotNull] IRemovingPropertyValidationRuleCollector removingPropertyValidationRuleCollector)
     {
       ArgumentUtility.CheckNotNull ("validatorType", validatorType);
@@ -41,6 +50,7 @@ namespace Remotion.Validation.RuleCollectors
 
       ValidatorType = validatorType;
       CollectorTypeToRemoveFrom = collectorTypeToRemoveFrom;
+      ValidatorPredicate = validatorPredicate;
       RemovingPropertyValidationRuleCollector = removingPropertyValidationRuleCollector;
     }
   }

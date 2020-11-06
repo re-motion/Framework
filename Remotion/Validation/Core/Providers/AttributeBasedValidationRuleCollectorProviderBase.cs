@@ -142,7 +142,7 @@ namespace Remotion.Validation.Providers
       var propertyRule = new RemovingPropertyValidationRuleCollector (property, collectorType);
       
       foreach (var removingValidatorRegistration in propertyRuleReflector.GetRemovingValidatorRegistrations())
-        propertyRule.RegisterValidator (removingValidatorRegistration.ValidatorType, removingValidatorRegistration.CollectorTypeToRemoveFrom);
+        propertyRule.RegisterValidator (removingValidatorRegistration.ValidatorType, removingValidatorRegistration.CollectorTypeToRemoveFrom, null);
       
       return propertyRule;
     }

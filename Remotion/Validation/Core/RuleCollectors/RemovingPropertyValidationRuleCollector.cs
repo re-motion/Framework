@@ -20,6 +20,7 @@ using System.Linq.Expressions;
 using System.Text;
 using Remotion.Reflection;
 using Remotion.Utilities;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.RuleCollectors
 {
@@ -56,16 +57,11 @@ namespace Remotion.Validation.RuleCollectors
       get { return _registeredValidators.AsReadOnly(); }
     }
 
-    public void RegisterValidator (Type validatorType)
-    {
-      RegisterValidator (validatorType, null);
-    }
-
-    public void RegisterValidator (Type validatorType, Type collectorTypeToRemoveFrom)
+    public void RegisterValidator (Type validatorType, Type collectorTypeToRemoveFrom, Func<IPropertyValidator, bool> validatorPredicate)
     {
       ArgumentUtility.CheckNotNull ("validatorType", validatorType);
 
-      _registeredValidators.Add (new RemovingPropertyValidatorRegistration (validatorType, collectorTypeToRemoveFrom, this));
+      _registeredValidators.Add (new RemovingPropertyValidatorRegistration (validatorType, collectorTypeToRemoveFrom, validatorPredicate, this));
     }
 
     public override string ToString ()

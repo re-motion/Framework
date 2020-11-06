@@ -37,23 +37,31 @@ namespace Remotion.Validation.UnitTests.Merging
     private NotEmptyValidator _stubPropertyValidator2;
     private NotEqualValidator _stubPropertyValidator3;
     private LengthValidator _stubPropertyValidator4;
+    private StubPropertyValidator _stubPropertyValidator5;
+    private ILogContext _logContextMock;
+    private IRemovingPropertyValidationRuleCollector _removingPropertyValidationRuleCollectorStub1;
+    private IRemovingPropertyValidationRuleCollector _removingPropertyValidationRuleCollectorStub2;
+    private IRemovingPropertyValidationRuleCollector _removingPropertyValidationRuleCollectorStub3;
     private RemovingPropertyValidatorRegistration _removingPropertyValidatorRegistration1;
     private RemovingPropertyValidatorRegistration _removingPropertyValidatorRegistration2;
     private RemovingPropertyValidatorRegistration _removingPropertyValidatorRegistration3;
     private RemovingPropertyValidatorRegistration _removingPropertyValidatorRegistration4;
-    private ILogContext _logContextMock;
     private RemovingPropertyValidatorRegistration _removingPropertyValidatorRegistration5;
     private RemovingPropertyValidatorRegistration _removingPropertyValidatorRegistration6;
-    private IRemovingPropertyValidationRuleCollector _removingPropertyValidationRuleCollectorStub1;
-    private IRemovingPropertyValidationRuleCollector _removingPropertyValidationRuleCollectorStub2;
-    private IRemovingPropertyValidationRuleCollector _removingPropertyValidationRuleCollectorStub3;
     private RemovingPropertyValidatorRegistration _removingPropertyValidatorRegistration7;
     private RemovingPropertyValidatorRegistration _removingPropertyValidatorRegistration8;
     private RemovingPropertyValidatorRegistration _removingPropertyValidatorRegistration9;
+    private RemovingPropertyValidatorRegistration _removingPropertyValidatorRegistration10;
 
     [SetUp]
     public void SetUp ()
     {
+      _stubPropertyValidator1 = new StubPropertyValidator(); //not extracted
+      _stubPropertyValidator2 = new NotEmptyValidator (new InvariantValidationMessage ("Fake Message")); //extracted
+      _stubPropertyValidator3 = new NotEqualValidator ("gfsf", new InvariantValidationMessage ("Fake Message")); //extracted
+      _stubPropertyValidator4 = new LengthValidator (0, 10, new InvariantValidationMessage ("Fake Message")); //not extracted
+      _stubPropertyValidator5 = new StubPropertyValidator(); //extracted
+
       var registration1 = new {ValidatorType = typeof (NotEmptyValidator), CollectorTypeToRemoveFrom = (Type) null };
       var registration2 = new {ValidatorType = typeof (NotEqualValidator), CollectorTypeToRemoveFrom = typeof (CustomerValidationRuleCollector1) };
       var registration3 = new {ValidatorType = typeof (NotNullValidator), CollectorTypeToRemoveFrom = (Type) null };
@@ -68,22 +76,18 @@ namespace Remotion.Validation.UnitTests.Merging
       _removingPropertyValidationRuleCollectorStub3 = MockRepository.GenerateStub<IRemovingPropertyValidationRuleCollector> ();
       _removingPropertyValidationRuleCollectorStub3.Stub (stub => stub.Property).Return (PropertyInfoAdapter.Create (typeof (SpecialCustomer2).GetProperty ("LastName")));
 
-      _removingPropertyValidatorRegistration1 = new RemovingPropertyValidatorRegistration (registration1.ValidatorType, registration1.CollectorTypeToRemoveFrom, _removingPropertyValidationRuleCollectorStub1);
-      _removingPropertyValidatorRegistration2 = new RemovingPropertyValidatorRegistration (registration2.ValidatorType, registration2.CollectorTypeToRemoveFrom, _removingPropertyValidationRuleCollectorStub1);
-      _removingPropertyValidatorRegistration3 = new RemovingPropertyValidatorRegistration (registration3.ValidatorType, registration3.CollectorTypeToRemoveFrom, _removingPropertyValidationRuleCollectorStub1);
-      _removingPropertyValidatorRegistration4 = new RemovingPropertyValidatorRegistration (registration4.ValidatorType, registration4.CollectorTypeToRemoveFrom, _removingPropertyValidationRuleCollectorStub1);
-      _removingPropertyValidatorRegistration5 = new RemovingPropertyValidatorRegistration (registration5.ValidatorType, registration5.CollectorTypeToRemoveFrom, _removingPropertyValidationRuleCollectorStub1);
-      _removingPropertyValidatorRegistration6 = new RemovingPropertyValidatorRegistration (registration1.ValidatorType, registration1.CollectorTypeToRemoveFrom, _removingPropertyValidationRuleCollectorStub1);
-      _removingPropertyValidatorRegistration7 = new RemovingPropertyValidatorRegistration (registration6.ValidatorType, registration6.CollectorTypeToRemoveFrom, _removingPropertyValidationRuleCollectorStub2);
-      _removingPropertyValidatorRegistration8 = new RemovingPropertyValidatorRegistration (registration4.ValidatorType, registration4.CollectorTypeToRemoveFrom, _removingPropertyValidationRuleCollectorStub3);
-      _removingPropertyValidatorRegistration9 = new RemovingPropertyValidatorRegistration (registration4.ValidatorType, registration4.CollectorTypeToRemoveFrom, _removingPropertyValidationRuleCollectorStub1);
+      _removingPropertyValidatorRegistration1 = new RemovingPropertyValidatorRegistration (registration1.ValidatorType, registration1.CollectorTypeToRemoveFrom, null, _removingPropertyValidationRuleCollectorStub1);
+      _removingPropertyValidatorRegistration2 = new RemovingPropertyValidatorRegistration (registration2.ValidatorType, registration2.CollectorTypeToRemoveFrom, null, _removingPropertyValidationRuleCollectorStub1);
+      _removingPropertyValidatorRegistration3 = new RemovingPropertyValidatorRegistration (registration3.ValidatorType, registration3.CollectorTypeToRemoveFrom, null, _removingPropertyValidationRuleCollectorStub1);
+      _removingPropertyValidatorRegistration4 = new RemovingPropertyValidatorRegistration (registration4.ValidatorType, registration4.CollectorTypeToRemoveFrom, null, _removingPropertyValidationRuleCollectorStub1);
+      _removingPropertyValidatorRegistration5 = new RemovingPropertyValidatorRegistration (registration5.ValidatorType, registration5.CollectorTypeToRemoveFrom, null, _removingPropertyValidationRuleCollectorStub1);
+      _removingPropertyValidatorRegistration6 = new RemovingPropertyValidatorRegistration (registration1.ValidatorType, registration1.CollectorTypeToRemoveFrom, null, _removingPropertyValidationRuleCollectorStub1);
+      _removingPropertyValidatorRegistration7 = new RemovingPropertyValidatorRegistration (registration6.ValidatorType, registration6.CollectorTypeToRemoveFrom, null, _removingPropertyValidationRuleCollectorStub2);
+      _removingPropertyValidatorRegistration8 = new RemovingPropertyValidatorRegistration (registration4.ValidatorType, registration4.CollectorTypeToRemoveFrom, null, _removingPropertyValidationRuleCollectorStub3);
+      _removingPropertyValidatorRegistration9 = new RemovingPropertyValidatorRegistration (registration4.ValidatorType, registration4.CollectorTypeToRemoveFrom, null, _removingPropertyValidationRuleCollectorStub1);
+      _removingPropertyValidatorRegistration10 = new RemovingPropertyValidatorRegistration (typeof (StubPropertyValidator), null, v => ReferenceEquals (v, _stubPropertyValidator5), _removingPropertyValidationRuleCollectorStub1);
 
       //other property -> filtered!
-
-      _stubPropertyValidator1 = new StubPropertyValidator(); //not extracted
-      _stubPropertyValidator2 = new NotEmptyValidator (new InvariantValidationMessage ("Fake Message")); //extracted
-      _stubPropertyValidator3 = new NotEqualValidator ("gfsf", new InvariantValidationMessage ("Fake Message")); //extracted
-      _stubPropertyValidator4 = new LengthValidator (0, 10, new InvariantValidationMessage ("Fake Message")); //not extracted
 
       _logContextMock = MockRepository.GenerateStrictMock<ILogContext>();
 
@@ -92,7 +96,7 @@ namespace Remotion.Validation.UnitTests.Merging
           {
               _removingPropertyValidatorRegistration1, _removingPropertyValidatorRegistration2, _removingPropertyValidatorRegistration3, _removingPropertyValidatorRegistration4,
               _removingPropertyValidatorRegistration5, _removingPropertyValidatorRegistration6, _removingPropertyValidatorRegistration7, _removingPropertyValidatorRegistration8,
-              _removingPropertyValidatorRegistration9
+              _removingPropertyValidatorRegistration9, _removingPropertyValidatorRegistration10
           },
           _logContextMock);
     }
@@ -104,7 +108,7 @@ namespace Remotion.Validation.UnitTests.Merging
       addingComponentPropertyRule.Stub (stub => stub.Validators)
           .Return (
               new IPropertyValidator[]
-              { _stubPropertyValidator1, _stubPropertyValidator2, _stubPropertyValidator3, _stubPropertyValidator4 });
+              { _stubPropertyValidator1, _stubPropertyValidator2, _stubPropertyValidator3, _stubPropertyValidator4, _stubPropertyValidator5 });
       addingComponentPropertyRule.Stub (stub => stub.CollectorType).Return (typeof (CustomerValidationRuleCollector1));
       addingComponentPropertyRule.Stub (stub => stub.Property).Return (PropertyInfoAdapter.Create(typeof (Customer).GetProperty ("LastName")));
 
@@ -120,15 +124,21 @@ namespace Remotion.Validation.UnitTests.Merging
                   Arg<IPropertyValidator>.Is.Same (_stubPropertyValidator3),
                   Arg<RemovingPropertyValidatorRegistration[]>.List.Equal (new[] { _removingPropertyValidatorRegistration2 }),
                   Arg<IAddingPropertyValidationRuleCollector>.Is.Same (addingComponentPropertyRule))).Repeat.Once();
+      _logContextMock.Expect (
+          mock =>
+              mock.ValidatorRemoved (
+                  Arg<IPropertyValidator>.Is.Same (_stubPropertyValidator5),
+                  Arg<RemovingPropertyValidatorRegistration[]>.List.Equal (new[] { _removingPropertyValidatorRegistration10 }),
+                  Arg<IAddingPropertyValidationRuleCollector>.Is.Same (addingComponentPropertyRule))).Repeat.Once();
 
       var result = _extractor.ExtractPropertyValidatorsToRemove (addingComponentPropertyRule).ToArray();
 
       _logContextMock.VerifyAllExpectations();
-      Assert.That (result, Is.EqualTo (new IPropertyValidator[] { _stubPropertyValidator2, _stubPropertyValidator3 }));
+      Assert.That (result, Is.EqualTo (new IPropertyValidator[] { _stubPropertyValidator2, _stubPropertyValidator3, _stubPropertyValidator5 }));
     }
 
     [Test]
-    public void ExtractPropertyValidatorsToRemove_OnlyRemovesValidatorsOfNewDefinedPropertyOfDerrivedClass ()
+    public void ExtractPropertyValidatorsToRemove_OnlyRemovesValidatorsOfNewDefinedPropertyOfDerivedClass ()
     {
       var addingComponentPropertyRule = MockRepository.GenerateStub<IAddingPropertyValidationRuleCollector> ();
       addingComponentPropertyRule.Stub (stub => stub.Validators)

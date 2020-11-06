@@ -15,16 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Validation.IntegrationTests.TestDomain.Validators;
+using Remotion.Validation.IntegrationTests.TestDomain.ComponentA;
 
-namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentA.ValidationCollectors
+namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentB
 {
-  public class PersonValidationRuleCollector1 : ValidationRuleCollectorBase<Person>
+  public class SpecialPerson1 : Person
   {
-    public PersonValidationRuleCollector1 ()
-    {
-      AddRule (p => p.LastName).CanBeRemoved().NotNull().NotEqual ("Test").NotEqual ("test");
-      AddRule().CanBeRemoved().SetValidator (p => new RealPersonValidator());
-    }
   }
 }

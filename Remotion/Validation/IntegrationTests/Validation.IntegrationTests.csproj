@@ -78,10 +78,12 @@
     <Compile Include="TestDomain\ComponentA\ValidationCollectors\SpecialAddressValidationRuleCollector1.cs" />
     <Compile Include="TestDomain\ComponentB\SpecialCustomer1.cs" />
     <Compile Include="TestDomain\ComponentB\SpecialCustomer2.cs" />
+    <Compile Include="TestDomain\ComponentB\SpecialCustomer4.cs" />
     <Compile Include="TestDomain\ComponentB\SpecialCustomer3.cs" />
     <Compile Include="TestDomain\ComponentB\ValidationCollectors\CustomerValidationRuleCollector2.cs" />
     <Compile Include="TestDomain\ComponentB\ValidationCollectors\PersonValidationRuleCollector2.cs" />
     <Compile Include="TestDomain\ComponentB\ValidationCollectors\SpecialCustomerValidationRuleCollector1.cs" />
+    <Compile Include="TestDomain\ComponentB\ValidationCollectors\SpecialPersonValidationRuleCollector1.cs" />
     <Compile Include="TestDomain\ComponentB\ValidationCollectors\SpecialCustomerValidationRuleCollector3.cs" />
     <Compile Include="TestDomain\MetaValidation\MetaValidationRuleTestClassCollector3.cs" />
     <Compile Include="TestDomain\MetaValidation\MetaValidationRuleTestClassCollector6.cs" />
