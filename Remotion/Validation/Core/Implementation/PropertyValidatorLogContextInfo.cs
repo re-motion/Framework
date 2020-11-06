@@ -26,15 +26,15 @@ namespace Remotion.Validation.Implementation
   public sealed class PropertyValidatorLogContextInfo
   {
     private readonly IPropertyValidator _removedValidator;
-    private readonly PropertyValidatorRegistrationWithContext[] _removingPropertyValidatorRegistrationsWithContext;
+    private readonly RemovingPropertyValidatorRegistration[] _removingPropertyValidatorRegistrations;
 
-    public PropertyValidatorLogContextInfo (IPropertyValidator removedValidator, PropertyValidatorRegistrationWithContext[] removingPropertyValidatorRegistrationsWithContext)
+    public PropertyValidatorLogContextInfo (IPropertyValidator removedValidator, RemovingPropertyValidatorRegistration[] removingPropertyValidatorRegistrations)
     {
       ArgumentUtility.CheckNotNull ("removedValidator", removedValidator);
-      ArgumentUtility.CheckNotNull ("removingPropertyValidatorRegistrationsWithContext", removingPropertyValidatorRegistrationsWithContext);
+      ArgumentUtility.CheckNotNull ("removingPropertyValidatorRegistrations", removingPropertyValidatorRegistrations);
 
       _removedValidator = removedValidator;
-      _removingPropertyValidatorRegistrationsWithContext = removingPropertyValidatorRegistrationsWithContext;
+      _removingPropertyValidatorRegistrations = removingPropertyValidatorRegistrations;
     }
 
     public IPropertyValidator RemovedValidator
@@ -42,9 +42,9 @@ namespace Remotion.Validation.Implementation
       get { return _removedValidator; }
     }
 
-    public PropertyValidatorRegistrationWithContext[] RemovingPropertyValidatorRegistrationsWithContext
+    public RemovingPropertyValidatorRegistration[] RemovingPropertyValidatorRegistrations
     {
-      get { return _removingPropertyValidatorRegistrationsWithContext; }
+      get { return _removingPropertyValidatorRegistrations; }
     }
   }
 }

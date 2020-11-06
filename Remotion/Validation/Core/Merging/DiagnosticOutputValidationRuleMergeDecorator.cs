@@ -218,7 +218,7 @@ namespace Remotion.Validation.Merging
       foreach (var logContextInfo in logContextInfos)
       {
         var removingCollectors =
-            logContextInfo.RemovingPropertyValidatorRegistrationsWithContext.Select (ci => ci.RemovingPropertyValidationRuleCollector.CollectorType.Name)
+            logContextInfo.RemovingPropertyValidatorRegistrations.Select (ci => ci.RemovingPropertyValidationRuleCollector.CollectorType.Name)
                 .Distinct()
                 .ToArray();
         var logEntry = string.Format (

@@ -38,14 +38,14 @@ namespace Remotion.Validation.Implementation
 
     public void ValidatorRemoved (
         IPropertyValidator removedValidator,
-        PropertyValidatorRegistrationWithContext[] removingPropertyValidatorRegistrationsWithContext,
+        RemovingPropertyValidatorRegistration[] removingPropertyValidatorRegistrations,
         IAddingPropertyValidationRuleCollector addingPropertyValidationRuleCollector)
     {
       ArgumentUtility.CheckNotNull ("addingPropertyValidationRuleCollector", addingPropertyValidationRuleCollector);
-      ArgumentUtility.CheckNotNull ("removingPropertyValidatorRegistrationsWithContext", removingPropertyValidatorRegistrationsWithContext);
+      ArgumentUtility.CheckNotNull ("removingPropertyValidatorRegistrations", removingPropertyValidatorRegistrations);
       ArgumentUtility.CheckNotNull ("addingPropertyValidationRuleCollector", addingPropertyValidationRuleCollector);
 
-      var logContextInfo = new PropertyValidatorLogContextInfo (removedValidator, removingPropertyValidatorRegistrationsWithContext);
+      var logContextInfo = new PropertyValidatorLogContextInfo (removedValidator, removingPropertyValidatorRegistrations);
       _removingLogEntriesForPropertyValidators[addingPropertyValidationRuleCollector].Add (logContextInfo);
     }
 

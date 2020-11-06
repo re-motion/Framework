@@ -29,15 +29,15 @@ namespace Remotion.Validation.Merging
   /// </summary>
   public class PropertyValidatorExtractor : IPropertyValidatorExtractor
   {
-    private readonly ILookup<Type, PropertyValidatorRegistrationWithContext> _validatorTypesToRemove;
+    private readonly ILookup<Type, RemovingPropertyValidatorRegistration> _validatorTypesToRemove;
     private readonly ILogContext _logContext;
 
-    public PropertyValidatorExtractor (IEnumerable<PropertyValidatorRegistrationWithContext> removedPropertyRuleRegistrations, ILogContext logContext)
+    public PropertyValidatorExtractor (IEnumerable<RemovingPropertyValidatorRegistration> removingPropertyValidatorRegistrations, ILogContext logContext)
     {
-      ArgumentUtility.CheckNotNull ("removedPropertyRuleRegistrations", removedPropertyRuleRegistrations);
+      ArgumentUtility.CheckNotNull ("removingPropertyValidatorRegistrations", removingPropertyValidatorRegistrations);
       ArgumentUtility.CheckNotNull ("logContext", logContext);
 
-      _validatorTypesToRemove = removedPropertyRuleRegistrations.ToLookup (r => r.RemovingValidatorRegistration.ValidatorType);
+      _validatorTypesToRemove = removingPropertyValidatorRegistrations.ToLookup (r => r.RemovingValidatorRegistration.ValidatorType);
       _logContext = logContext;
     }
 
@@ -47,17 +47,17 @@ namespace Remotion.Validation.Merging
 
       foreach (var existingValidator in addingPropertyValidationRuleCollector.Validators)
       {
-        var removingValidatorRegistrationsWithContext = GetRemovingPropertyRegistrations (existingValidator, addingPropertyValidationRuleCollector).ToArray();
-        if (removingValidatorRegistrationsWithContext.Any())
+        var removingPropertyValidatorRegistrations = GetRemovingPropertyRegistrations (existingValidator, addingPropertyValidationRuleCollector).ToArray();
+        if (removingPropertyValidatorRegistrations.Any())
         {
-          _logContext.ValidatorRemoved (existingValidator, removingValidatorRegistrationsWithContext, addingPropertyValidationRuleCollector);
+          _logContext.ValidatorRemoved (existingValidator, removingPropertyValidatorRegistrations, addingPropertyValidationRuleCollector);
           yield return existingValidator;
         }
       }
     }
 
     //TODO RM-5906: add integration test for redefined (new) property in derived class for that a validator should be removed
-    private IEnumerable<PropertyValidatorRegistrationWithContext> GetRemovingPropertyRegistrations (
+    private IEnumerable<RemovingPropertyValidatorRegistration> GetRemovingPropertyRegistrations (
         IPropertyValidator validator, IAddingPropertyValidationRuleCollector addingPropertyValidationRuleCollector)
     {
       return

@@ -132,7 +132,7 @@ namespace Remotion.Validation.UnitTests.Merging
           .Expect (
               mock =>
                   mock.Create (
-                      Arg<IEnumerable<PropertyValidatorRegistrationWithContext>>.Matches (
+                      Arg<IEnumerable<RemovingPropertyValidatorRegistration>>.Matches (
                           c => c.Count() == 1 && c.ToArray()[0].RemovingValidatorRegistration.ValidatorType == typeof (NotEmptyValidator)),
                       Arg<ILogContext>.Is.NotNull))
           .Return (_propertyValidatorExtractorMock);
@@ -176,7 +176,7 @@ namespace Remotion.Validation.UnitTests.Merging
           .Expect (
               mock =>
                   mock.Create (
-                      Arg<IEnumerable<PropertyValidatorRegistrationWithContext>>.Matches (
+                      Arg<IEnumerable<RemovingPropertyValidatorRegistration>>.Matches (
                           c => c.Count() == 1 && c.ToArray()[0].RemovingValidatorRegistration.ValidatorType == typeof (NotNullValidator)),
                       Arg<ILogContext>.Is.NotNull))
           .Return (_propertyValidatorExtractorMock);
@@ -219,7 +219,7 @@ namespace Remotion.Validation.UnitTests.Merging
       _validationRuleCollectorStub3.Stub (stub => stub.RemovedObjectRules).Return (new IRemovingObjectValidationRuleCollector[0]);
 
       _propertyValidatorExtractorFactoryMock
-          .Expect (mock => mock.Create (Arg<IEnumerable<PropertyValidatorRegistrationWithContext>>.Is.Anything, Arg<ILogContext>.Is.NotNull))
+          .Expect (mock => mock.Create (Arg<IEnumerable<RemovingPropertyValidatorRegistration>>.Is.Anything, Arg<ILogContext>.Is.NotNull))
           .Return (_propertyValidatorExtractorMock);
 
       _propertyValidatorExtractorMock
@@ -266,7 +266,7 @@ namespace Remotion.Validation.UnitTests.Merging
       _validationRuleCollectorStub2.Stub (stub => stub.RemovedObjectRules).Return (new IRemovingObjectValidationRuleCollector[0]);
 
       _propertyValidatorExtractorFactoryMock
-          .Expect (mock => mock.Create (Arg<IEnumerable<PropertyValidatorRegistrationWithContext>>.Is.Anything, Arg<ILogContext>.Is.NotNull))
+          .Expect (mock => mock.Create (Arg<IEnumerable<RemovingPropertyValidatorRegistration>>.Is.Anything, Arg<ILogContext>.Is.NotNull))
           .Return (_propertyValidatorExtractorMock);
 
       _propertyValidatorExtractorMock

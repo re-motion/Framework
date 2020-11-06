@@ -29,7 +29,7 @@ namespace Remotion.Validation.Implementation
   {
     void ValidatorRemoved (
         IPropertyValidator removedValidator,
-        PropertyValidatorRegistrationWithContext[] removingPropertyValidatorRegistrationsWithContext,
+        RemovingPropertyValidatorRegistration[] removingPropertyValidatorRegistrations,
         IAddingPropertyValidationRuleCollector addingPropertyValidationRuleCollector);
 
     IEnumerable<PropertyValidatorLogContextInfo> GetLogContextInfos (IAddingPropertyValidationRuleCollector addingPropertyValidationRuleCollector);

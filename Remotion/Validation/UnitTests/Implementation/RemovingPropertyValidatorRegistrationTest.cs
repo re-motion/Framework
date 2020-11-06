@@ -24,10 +24,10 @@ using Rhino.Mocks;
 namespace Remotion.Validation.UnitTests.Implementation
 {
   [TestFixture]
-  public class PropertyValidatorRegistrationWithContextTest
+  public class RemovingPropertyValidatorRegistrationTest
   {
     private RemovingValidatorRegistration _removingValidatorRegistration;
-    private PropertyValidatorRegistrationWithContext _registrationWithContext;
+    private RemovingPropertyValidatorRegistration _removingPropertyValidatorRegistration;
     private IRemovingPropertyValidationRuleCollector _removingPropertyValidationRuleCollectorStub;
 
     [SetUp]
@@ -35,14 +35,14 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       _removingValidatorRegistration = new RemovingValidatorRegistration (typeof (NotEqualValidator), null);
       _removingPropertyValidationRuleCollectorStub = MockRepository.GenerateStub<IRemovingPropertyValidationRuleCollector>();
-      _registrationWithContext = new PropertyValidatorRegistrationWithContext (_removingValidatorRegistration, _removingPropertyValidationRuleCollectorStub);
+      _removingPropertyValidatorRegistration = new RemovingPropertyValidatorRegistration (_removingValidatorRegistration, _removingPropertyValidationRuleCollectorStub);
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_registrationWithContext.RemovingValidatorRegistration, Is.SameAs (_removingValidatorRegistration));
-      Assert.That (_registrationWithContext.RemovingPropertyValidationRuleCollector, Is.SameAs(_removingPropertyValidationRuleCollectorStub));
+      Assert.That (_removingPropertyValidatorRegistration.RemovingValidatorRegistration, Is.SameAs (_removingValidatorRegistration));
+      Assert.That (_removingPropertyValidatorRegistration.RemovingPropertyValidationRuleCollector, Is.SameAs(_removingPropertyValidationRuleCollectorStub));
     }
   }
 }

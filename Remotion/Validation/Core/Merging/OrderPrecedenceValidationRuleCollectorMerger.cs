@@ -27,7 +27,7 @@ namespace Remotion.Validation.Merging
 {
   /// <summary>
   /// Implements the <see cref="IValidationRuleCollectorMerger"/> interface to merge <see cref="IValidationRule"/>s 
-  /// based on the order of precendence established during retrieval of the <see cref="IValidationRuleCollector"/>s.
+  /// based on the order of precedence established during retrieval of the <see cref="IValidationRuleCollector"/>s.
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
   [ImplementationFor (typeof (IValidationRuleCollectorMerger), Lifetime = LifetimeKind.Singleton)]
@@ -86,7 +86,7 @@ namespace Remotion.Validation.Merging
             .SelectMany (c => c.RemovedPropertyRules)
             .SelectMany (
                 r => r.Validators,
-                (propertyRule, validatorRegistration) => new PropertyValidatorRegistrationWithContext (validatorRegistration, propertyRule));
+                (propertyRule, removingValidatorRegistration) => new RemovingPropertyValidatorRegistration (removingValidatorRegistration, propertyRule));
 
         var validatorExtractor = _propertyValidatorExtractorFactory.Create (registrationsWithContext, logContext);
         foreach (var validationRule in collectedPropertyValidationRules)
