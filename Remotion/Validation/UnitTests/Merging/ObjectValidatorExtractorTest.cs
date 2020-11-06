@@ -37,10 +37,10 @@ namespace Remotion.Validation.UnitTests.Merging
     private IObjectValidator _stubObjectValidator1;
     private IObjectValidator _stubObjectValidator2;
     private IObjectValidator _stubObjectValidator3;
-    private ValidatorRegistration _validatorRegistration1a;
-    private ValidatorRegistration _validatorRegistration2a;
-    private ValidatorRegistration _validatorRegistration2b;
-    private ValidatorRegistration _validatorRegistration2c;
+    private RemovingValidatorRegistration _removingValidatorRegistration1A;
+    private RemovingValidatorRegistration _removingValidatorRegistration2A;
+    private RemovingValidatorRegistration _removingValidatorRegistration2B;
+    private RemovingValidatorRegistration _removingValidatorRegistration2C;
     private ObjectValidatorRegistrationWithContext _registrationWithContext1;
     private ObjectValidatorRegistrationWithContext _registrationWithContext2;
     private ObjectValidatorRegistrationWithContext _registrationWithContext3;
@@ -54,10 +54,10 @@ namespace Remotion.Validation.UnitTests.Merging
     [SetUp]
     public void SetUp ()
     {
-      _validatorRegistration1a = new ValidatorRegistration (typeof (FakeCustomerValidator), null);
-      _validatorRegistration2a = new ValidatorRegistration (typeof (StubObjectValidator), typeof (CustomerValidationRuleCollector1));
-      _validatorRegistration2b = new ValidatorRegistration (typeof (StubObjectValidator), typeof (CustomerValidationRuleCollector2));
-      _validatorRegistration2c = new ValidatorRegistration (typeof (StubObjectValidator), null);
+      _removingValidatorRegistration1A = new RemovingValidatorRegistration (typeof (FakeCustomerValidator), null);
+      _removingValidatorRegistration2A = new RemovingValidatorRegistration (typeof (StubObjectValidator), typeof (CustomerValidationRuleCollector1));
+      _removingValidatorRegistration2B = new RemovingValidatorRegistration (typeof (StubObjectValidator), typeof (CustomerValidationRuleCollector2));
+      _removingValidatorRegistration2C = new RemovingValidatorRegistration (typeof (StubObjectValidator), null);
 
       _removingObjectValidationRuleCollectorStub1 = MockRepository.GenerateStub<IRemovingObjectValidationRuleCollector>();
       _removingObjectValidationRuleCollectorStub1.Stub (stub => stub.ValidatedType).Return (TypeAdapter.Create (typeof (Customer)));
@@ -66,11 +66,11 @@ namespace Remotion.Validation.UnitTests.Merging
       _removingObjectValidationRuleCollectorStub3 = MockRepository.GenerateStub<IRemovingObjectValidationRuleCollector>();
       _removingObjectValidationRuleCollectorStub3.Stub (stub => stub.ValidatedType).Return (TypeAdapter.Create(typeof (Employee)));
 
-      _registrationWithContext1 = new ObjectValidatorRegistrationWithContext (_validatorRegistration1a, _removingObjectValidationRuleCollectorStub1);
-      _registrationWithContext2 = new ObjectValidatorRegistrationWithContext (_validatorRegistration2a, _removingObjectValidationRuleCollectorStub1);
-      _registrationWithContext3 = new ObjectValidatorRegistrationWithContext (_validatorRegistration2b, _removingObjectValidationRuleCollectorStub2);
-      _registrationWithContext4 = new ObjectValidatorRegistrationWithContext (_validatorRegistration1a, _removingObjectValidationRuleCollectorStub1);
-      _registrationWithContext5 = new ObjectValidatorRegistrationWithContext (_validatorRegistration2c, _removingObjectValidationRuleCollectorStub3);
+      _registrationWithContext1 = new ObjectValidatorRegistrationWithContext (_removingValidatorRegistration1A, _removingObjectValidationRuleCollectorStub1);
+      _registrationWithContext2 = new ObjectValidatorRegistrationWithContext (_removingValidatorRegistration2A, _removingObjectValidationRuleCollectorStub1);
+      _registrationWithContext3 = new ObjectValidatorRegistrationWithContext (_removingValidatorRegistration2B, _removingObjectValidationRuleCollectorStub2);
+      _registrationWithContext4 = new ObjectValidatorRegistrationWithContext (_removingValidatorRegistration1A, _removingObjectValidationRuleCollectorStub1);
+      _registrationWithContext5 = new ObjectValidatorRegistrationWithContext (_removingValidatorRegistration2C, _removingObjectValidationRuleCollectorStub3);
 
       _stubObjectValidator1 = new FakeCustomerValidator(); //extracted
       _stubObjectValidator2 = new StubObjectValidator(); //extracted

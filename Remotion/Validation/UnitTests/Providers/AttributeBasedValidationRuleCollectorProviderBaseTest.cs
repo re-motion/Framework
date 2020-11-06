@@ -35,10 +35,10 @@ namespace Remotion.Validation.UnitTests.Providers
     private IPropertyValidator _propertyValidatorStub1;
     private IPropertyValidator _propertyValidatorStub2;
     private IPropertyValidator _propertyValidatorStub3;
-    private ValidatorRegistration _validatorRegistration1;
-    private ValidatorRegistration _validatorRegistration2;
-    private ValidatorRegistration _validatorRegistration3;
-    private ValidatorRegistration _validatorRegistration4;
+    private RemovingValidatorRegistration _removingValidatorRegistration1;
+    private RemovingValidatorRegistration _removingValidatorRegistration2;
+    private RemovingValidatorRegistration _removingValidatorRegistration3;
+    private RemovingValidatorRegistration _removingValidatorRegistration4;
     private IPropertyValidator _propertyValidatorStub4;
     private IPropertyValidator _propertyValidatorStub5;
     private IPropertyValidator _propertyValidatorStub6;
@@ -61,10 +61,10 @@ namespace Remotion.Validation.UnitTests.Providers
       _metaValidationRule2 = new MaxValidatorCountRule();
       _propertyMetaValidationRule3 = new MaxLengthPropertyMetaValidationRule();
 
-      _validatorRegistration1 = new ValidatorRegistration (typeof (NotNullValidator), null);
-      _validatorRegistration2 = new ValidatorRegistration (typeof (NotEmptyValidator), null);
-      _validatorRegistration3 = new ValidatorRegistration (typeof (NotNullValidator), null);
-      _validatorRegistration4 = new ValidatorRegistration (typeof (NotEmptyValidator), null);
+      _removingValidatorRegistration1 = new RemovingValidatorRegistration (typeof (NotNullValidator), null);
+      _removingValidatorRegistration2 = new RemovingValidatorRegistration (typeof (NotEmptyValidator), null);
+      _removingValidatorRegistration3 = new RemovingValidatorRegistration (typeof (NotNullValidator), null);
+      _removingValidatorRegistration4 = new RemovingValidatorRegistration (typeof (NotEmptyValidator), null);
 
       _validationPropertyRuleReflectorMock1 = MockRepository.GenerateStrictMock<IAttributesBasedValidationPropertyRuleReflector>();
       _validationPropertyRuleReflectorMock2 = MockRepository.GenerateStrictMock<IAttributesBasedValidationPropertyRuleReflector> ();
@@ -86,10 +86,10 @@ namespace Remotion.Validation.UnitTests.Providers
               _propertyValidatorStub4,
               _propertyValidatorStub5,
               _propertyValidatorStub6,
-              _validatorRegistration1,
-              _validatorRegistration2,
-              _validatorRegistration3,
-              _validatorRegistration4,
+              _removingValidatorRegistration1,
+              _removingValidatorRegistration2,
+              _removingValidatorRegistration3,
+              _removingValidatorRegistration4,
               _propertyMetaValidationRule1,
               _metaValidationRule2,
               _propertyMetaValidationRule3);
@@ -112,7 +112,7 @@ namespace Remotion.Validation.UnitTests.Providers
           result[0].Collector.RemovedPropertyRules.ToArray().SelectMany (pr => pr.Validators.Select (v => v.ValidatorType));
       Assert.That (
           removedPropertyRuleRegistrations,
-          Is.EquivalentTo (new[] { _validatorRegistration1.ValidatorType, _validatorRegistration2.ValidatorType }));
+          Is.EquivalentTo (new[] { _removingValidatorRegistration1.ValidatorType, _removingValidatorRegistration2.ValidatorType }));
 
       Assert.That (
           result[1].Collector.GetType().Name,
@@ -134,7 +134,7 @@ namespace Remotion.Validation.UnitTests.Providers
           result[1].Collector.RemovedPropertyRules.ToArray().SelectMany (pr => pr.Validators.Select (v => v.ValidatorType));
       Assert.That (
           removedPropertyRuleRegistrations,
-          Is.EquivalentTo (new[] { _validatorRegistration3.ValidatorType, _validatorRegistration4.ValidatorType }));
+          Is.EquivalentTo (new[] { _removingValidatorRegistration3.ValidatorType, _removingValidatorRegistration4.ValidatorType }));
     }
   }
 }

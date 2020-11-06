@@ -38,10 +38,10 @@ namespace Remotion.Validation.UnitTests.Providers
     private readonly IPropertyValidator _propertyValidatorStub4;
     private readonly IPropertyValidator _propertyValidatorStub5;
     private readonly IPropertyValidator _propertyValidatorStub6;
-    private readonly ValidatorRegistration _validatorRegistration1;
-    private readonly ValidatorRegistration _validatorRegistration2;
-    private readonly ValidatorRegistration _validatorRegistration3;
-    private readonly ValidatorRegistration _validatorRegistration4;
+    private readonly RemovingValidatorRegistration _removingValidatorRegistration1;
+    private readonly RemovingValidatorRegistration _removingValidatorRegistration2;
+    private readonly RemovingValidatorRegistration _removingValidatorRegistration3;
+    private readonly RemovingValidatorRegistration _removingValidatorRegistration4;
     private readonly IPropertyMetaValidationRule _propertyMetaValidationRule1;
     private readonly IPropertyMetaValidationRule _propertyMetaValidationRule2;
     private readonly IPropertyMetaValidationRule _propertyMetaValidationRule3;
@@ -54,10 +54,10 @@ namespace Remotion.Validation.UnitTests.Providers
         IPropertyValidator propertyValidatorStub4 = null,
         IPropertyValidator propertyValidatorStub5 = null,
         IPropertyValidator propertyValidatorStub6 = null,
-        ValidatorRegistration validatorRegistration1 = null,
-        ValidatorRegistration validatorRegistration2 = null,
-        ValidatorRegistration validatorRegistration3 = null,
-        ValidatorRegistration validatorRegistration4 = null,
+        RemovingValidatorRegistration removingValidatorRegistration1 = null,
+        RemovingValidatorRegistration removingValidatorRegistration2 = null,
+        RemovingValidatorRegistration removingValidatorRegistration3 = null,
+        RemovingValidatorRegistration removingValidatorRegistration4 = null,
         IPropertyMetaValidationRule propertyMetaValidationRule1 = null,
         IPropertyMetaValidationRule propertyMetaValidationRule2 = null,
         IPropertyMetaValidationRule propertyMetaValidationRule3 = null)
@@ -69,10 +69,10 @@ namespace Remotion.Validation.UnitTests.Providers
       _propertyValidatorStub4 = propertyValidatorStub4;
       _propertyValidatorStub5 = propertyValidatorStub5;
       _propertyValidatorStub6 = propertyValidatorStub6;
-      _validatorRegistration1 = validatorRegistration1;
-      _validatorRegistration2 = validatorRegistration2;
-      _validatorRegistration3 = validatorRegistration3;
-      _validatorRegistration4 = validatorRegistration4;
+      _removingValidatorRegistration1 = removingValidatorRegistration1;
+      _removingValidatorRegistration2 = removingValidatorRegistration2;
+      _removingValidatorRegistration3 = removingValidatorRegistration3;
+      _removingValidatorRegistration4 = removingValidatorRegistration4;
       _propertyMetaValidationRule1 = propertyMetaValidationRule1;
       _propertyMetaValidationRule2 = propertyMetaValidationRule2;
       _propertyMetaValidationRule3 = propertyMetaValidationRule3;
@@ -94,7 +94,7 @@ namespace Remotion.Validation.UnitTests.Providers
             _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetRemovablePropertyValidators ()).Return (new[] { _propertyValidatorStub1 });
             _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetNonRemovablePropertyValidators ())
                 .Return (new[] { _propertyValidatorStub2 });
-            _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetRemovingPropertyRegistrations ()).Return (new ValidatorRegistration[0]);
+            _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetRemovingValidatorRegistrations ()).Return (new RemovingValidatorRegistration[0]);
             _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetMetaValidationRules ()).Return (new IPropertyMetaValidationRule[0]);
           }
           else if (property.Name == "Notes")
@@ -103,8 +103,8 @@ namespace Remotion.Validation.UnitTests.Providers
                 .Return (e => ((Employee) e).Notes);
             _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetRemovablePropertyValidators ()).Return (new[] { _propertyValidatorStub3 });
             _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetNonRemovablePropertyValidators ()).Return (new IPropertyValidator[0]);
-            _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetRemovingPropertyRegistrations ())
-                .Return (new[] { _validatorRegistration1, _validatorRegistration2 });
+            _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetRemovingValidatorRegistrations ())
+                .Return (new[] { _removingValidatorRegistration1, _removingValidatorRegistration2 });
             _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetMetaValidationRules ()).Return (new IPropertyMetaValidationRule[0]);
           }
           else if (property.Name == "LastName")
@@ -114,7 +114,7 @@ namespace Remotion.Validation.UnitTests.Providers
             _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetRemovablePropertyValidators ())
                 .Return (new[] { _propertyValidatorStub4, _propertyValidatorStub5 });
             _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetNonRemovablePropertyValidators ()).Return (new IPropertyValidator[0]);
-            _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetRemovingPropertyRegistrations ()).Return (new ValidatorRegistration[0]);
+            _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetRemovingValidatorRegistrations ()).Return (new RemovingValidatorRegistration[0]);
             _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetMetaValidationRules ())
                 .Return (new[] { _propertyMetaValidationRule1, _propertyMetaValidationRule3 });
           }
@@ -124,8 +124,8 @@ namespace Remotion.Validation.UnitTests.Providers
                 .Return (c => ((SpecialCustomer1) c).UserName);
             _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetRemovablePropertyValidators ()).Return (new[] { _propertyValidatorStub6 });
             _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetNonRemovablePropertyValidators ()).Return (new IPropertyValidator[0]);
-            _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetRemovingPropertyRegistrations ())
-                .Return (new[] { _validatorRegistration3, _validatorRegistration4 });
+            _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetRemovingValidatorRegistrations ())
+                .Return (new[] { _removingValidatorRegistration3, _removingValidatorRegistration4 });
             _validationPropertyRuleReflectorMocks[type].Expect (mock => mock.GetMetaValidationRules ()).Return (new[] { _propertyMetaValidationRule2 });
           }
           else

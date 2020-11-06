@@ -35,7 +35,7 @@ namespace Remotion.Validation.RuleCollectors
     public ITypeInformation ValidatedType { get; }
     public Type CollectorType { get; }
 
-    private readonly List<ValidatorRegistration> _registeredValidators;
+    private readonly List<RemovingValidatorRegistration> _registeredValidators;
 
     public RemovingObjectValidationRuleCollector (ITypeInformation validatedType, Type collectorType)
     {
@@ -44,10 +44,10 @@ namespace Remotion.Validation.RuleCollectors
 
       ValidatedType = validatedType;
       CollectorType = collectorType;
-      _registeredValidators = new List<ValidatorRegistration>();
+      _registeredValidators = new List<RemovingValidatorRegistration>();
     }
 
-    public IEnumerable<ValidatorRegistration> Validators
+    public IEnumerable<RemovingValidatorRegistration> Validators
     {
       get { return _registeredValidators.AsReadOnly(); }
     }
@@ -61,7 +61,7 @@ namespace Remotion.Validation.RuleCollectors
     {
       ArgumentUtility.CheckNotNull ("validatorType", validatorType);
 
-      _registeredValidators.Add (new ValidatorRegistration (validatorType, collectorTypeToRemoveFrom));
+      _registeredValidators.Add (new RemovingValidatorRegistration (validatorType, collectorTypeToRemoveFrom));
     }
 
     public override string ToString ()

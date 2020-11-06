@@ -182,7 +182,7 @@
     <Compile Include="RuleBuilders\AddingPropertyValidationRuleBuilderTest.cs" />
     <Compile Include="ValidationRuleCollectorBaseTest.cs" />
     <Compile Include="RoleCollectors\RemovingPropertyValidationRuleCollectorTest.cs" />
-    <Compile Include="RoleCollectors\ValidatorRegistrationTest.cs" />
+    <Compile Include="RoleCollectors\RemovingValidatorRegistrationTest.cs" />
     <Compile Include="Implementation\InvolvedTypeProviderTest.cs" />
     <Compile Include="TestHelpers\ExpressionHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -144,7 +144,7 @@ namespace Remotion.Data.DomainObjects.Validation
 
       return reflector.GetRemovablePropertyValidators().Any() 
         || reflector.GetNonRemovablePropertyValidators().Any()
-        || reflector.GetRemovingPropertyRegistrations().Any();
+        || reflector.GetRemovingValidatorRegistrations().Any();
     }
   }
 }

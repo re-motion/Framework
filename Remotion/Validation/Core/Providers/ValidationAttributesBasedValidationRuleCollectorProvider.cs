@@ -59,7 +59,7 @@ namespace Remotion.Validation.Providers
       var reflector = new ValidationAttributesBasedPropertyRuleReflector (property, ValidationMessageFactory);
       return reflector.GetRemovablePropertyValidators().Any()
              || reflector.GetNonRemovablePropertyValidators().Any()
-             || reflector.GetRemovingPropertyRegistrations().Any();
+             || reflector.GetRemovingValidatorRegistrations().Any();
     }
   }
 }

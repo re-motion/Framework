@@ -133,7 +133,7 @@ namespace Remotion.Validation.UnitTests.Merging
               mock =>
                   mock.Create (
                       Arg<IEnumerable<PropertyValidatorRegistrationWithContext>>.Matches (
-                          c => c.Count() == 1 && c.ToArray()[0].ValidatorRegistration.ValidatorType == typeof (NotEmptyValidator)),
+                          c => c.Count() == 1 && c.ToArray()[0].RemovingValidatorRegistration.ValidatorType == typeof (NotEmptyValidator)),
                       Arg<ILogContext>.Is.NotNull))
           .Return (_propertyValidatorExtractorMock);
 
@@ -177,7 +177,7 @@ namespace Remotion.Validation.UnitTests.Merging
               mock =>
                   mock.Create (
                       Arg<IEnumerable<PropertyValidatorRegistrationWithContext>>.Matches (
-                          c => c.Count() == 1 && c.ToArray()[0].ValidatorRegistration.ValidatorType == typeof (NotNullValidator)),
+                          c => c.Count() == 1 && c.ToArray()[0].RemovingValidatorRegistration.ValidatorType == typeof (NotNullValidator)),
                       Arg<ILogContext>.Is.NotNull))
           .Return (_propertyValidatorExtractorMock);
 

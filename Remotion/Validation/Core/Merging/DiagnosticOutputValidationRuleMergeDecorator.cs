@@ -184,14 +184,14 @@ namespace Remotion.Validation.Merging
 
     private void AppendPropertyOutput (
         IPropertyInformation actualProperty,
-        ValidatorRegistration[] removedRegistrations,
+        RemovingValidatorRegistration[] removedValidatorRegistrations,
         IPropertyValidator[] addedNonRemovableValidators,
         IPropertyValidator[] addedRemovableValidators,
         IPropertyMetaValidationRule[] addedPropertyMetaValidationRules,
         StringBuilder sb)
     {
       AppendPropertyName (actualProperty, sb);
-      AppendGroupedValidatorRegistrationsOutput (removedRegistrations, "REMOVED VALIDATORS:", sb);
+      AppendGroupedRemovingValidatorRegistrationsOutput (removedValidatorRegistrations, "REMOVED VALIDATORS:", sb);
       AppendGroupedValidatorsOutput (addedNonRemovableValidators, "ADDED NON-REMOVABLE VALIDATORS:", sb);
       AppendGroupedValidatorsOutput (addedRemovableValidators, "ADDED REMOVABLE VALIDATORS:", sb);
       AppendCollectionData (sb, addedPropertyMetaValidationRules, "ADDED META VALIDATION RULES:", i => GetTypeName (i.GetType()));
@@ -240,7 +240,7 @@ namespace Remotion.Validation.Merging
       AppendCollectionData (sb, groupedValidators, title, i => i.Item1 + " (x" + i.Item2 + ")");
     }
 
-    private void AppendGroupedValidatorRegistrationsOutput (ValidatorRegistration[] validatorRegistrations, string title, StringBuilder sb)
+    private void AppendGroupedRemovingValidatorRegistrationsOutput (RemovingValidatorRegistration[] validatorRegistrations, string title, StringBuilder sb)
     {
       var groupedValidatorRegistrations =
           validatorRegistrations

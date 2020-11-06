@@ -23,24 +23,24 @@ using Remotion.Validation.Validators;
 namespace Remotion.Validation.UnitTests.RoleCollectors
 {
   [TestFixture]
-  public class ValidatorRegistrationTest
+  public class RemovingValidatorRegistrationTest
   {
     [Test]
-    public void Initialiuation_OneParameter ()
+    public void Initialization_OneParameter ()
     {
-      var validatorRegistration = new ValidatorRegistration (typeof (NotEmptyValidator), null);
+      var removingValidatorRegistration = new RemovingValidatorRegistration (typeof (NotEmptyValidator), null);
 
-      Assert.That (validatorRegistration.ValidatorType, Is.EqualTo (typeof (NotEmptyValidator)));
-      Assert.That (validatorRegistration.CollectorTypeToRemoveFrom, Is.Null);
+      Assert.That (removingValidatorRegistration.ValidatorType, Is.EqualTo (typeof (NotEmptyValidator)));
+      Assert.That (removingValidatorRegistration.CollectorTypeToRemoveFrom, Is.Null);
     }
 
     [Test]
     public void Initialization_TwoParameters ()
     {
-      var validatorRegistration = new ValidatorRegistration (typeof (NotEmptyValidator), typeof (CustomerValidationRuleCollector1));
+      var removingValidatorRegistration = new RemovingValidatorRegistration (typeof (NotEmptyValidator), typeof (CustomerValidationRuleCollector1));
 
-      Assert.That (validatorRegistration.ValidatorType, Is.EqualTo (typeof (NotEmptyValidator)));
-      Assert.That (validatorRegistration.CollectorTypeToRemoveFrom, Is.EqualTo (typeof (CustomerValidationRuleCollector1)));
+      Assert.That (removingValidatorRegistration.ValidatorType, Is.EqualTo (typeof (NotEmptyValidator)));
+      Assert.That (removingValidatorRegistration.CollectorTypeToRemoveFrom, Is.EqualTo (typeof (CustomerValidationRuleCollector1)));
     }
   }
 }

@@ -41,7 +41,7 @@ namespace Remotion.Validation.RuleCollectors
     /// <summary>
     /// Gets the validators registered for removal.
     /// </summary>
-    IEnumerable<ValidatorRegistration> Validators { get; }
+    IEnumerable<RemovingValidatorRegistration> Validators { get; }
 
     /// <summary>
     /// Specifies that all validators of <paramref name="validatorType"/> should be removed.

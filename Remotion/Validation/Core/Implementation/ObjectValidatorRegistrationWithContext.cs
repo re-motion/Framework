@@ -21,27 +21,27 @@ using Remotion.Validation.RuleCollectors;
 namespace Remotion.Validation.Implementation
 {
   /// <summary>
-  /// Extends a <see cref="RuleCollectors.ValidatorRegistration"/> with information about the property for which it applies.
+  /// Extends a <see cref="RemovingValidatorRegistration"/> with information about the property for which it applies.
   /// </summary>
   public class ObjectValidatorRegistrationWithContext
   {
-    private readonly ValidatorRegistration _validatorRegistration;
+    private readonly RemovingValidatorRegistration _removingValidatorRegistration;
     private readonly IRemovingObjectValidationRuleCollector _removingObjectValidationRuleCollector;
 
     public ObjectValidatorRegistrationWithContext (
-        ValidatorRegistration validatorRegistration,
+        RemovingValidatorRegistration removingValidatorRegistration,
         IRemovingObjectValidationRuleCollector removingObjectValidationRuleCollector)
     {
-      ArgumentUtility.CheckNotNull ("validatorRegistration", validatorRegistration);
+      ArgumentUtility.CheckNotNull ("removingValidatorRegistration", removingValidatorRegistration);
       ArgumentUtility.CheckNotNull ("removingObjectValidationRuleCollector", removingObjectValidationRuleCollector);
 
-      _validatorRegistration = validatorRegistration;
+      _removingValidatorRegistration = removingValidatorRegistration;
       _removingObjectValidationRuleCollector = removingObjectValidationRuleCollector;
     }
 
-    public ValidatorRegistration ValidatorRegistration
+    public RemovingValidatorRegistration RemovingValidatorRegistration
     {
-      get { return _validatorRegistration; }
+      get { return _removingValidatorRegistration; }
     }
 
     public IRemovingObjectValidationRuleCollector RemovingObjectValidationRuleCollector
