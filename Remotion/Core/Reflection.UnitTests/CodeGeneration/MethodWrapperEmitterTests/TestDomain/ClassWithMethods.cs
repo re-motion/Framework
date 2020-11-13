@@ -87,7 +87,7 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
       value = InstanceReferenceTypeValue;
     }
 
-    public void InstanceMethodWithOptionalParameter ([Optional] SimpleReferenceType value)
+    public void InstanceMethodWithOptionalParameter ([Optional] SimpleReferenceType? value)
     {
     }
 

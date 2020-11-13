@@ -89,13 +89,13 @@ namespace Remotion.Collections
     [return: MaybeNull, NotNullIfNotNull ("defaultValue")]
     public static TValue GetValueOrDefault<TKey, TValue> (this Dictionary<TKey, TValue> dictionary, TKey key, [AllowNull] TValue defaultValue)
     {
-      return ((IDictionary<TKey, TValue>) dictionary).GetValueOrDefault (key, defaultValue);
+      return ((IDictionary<TKey, TValue>) dictionary).GetValueOrDefault<TKey, TValue> (key, defaultValue);
     }
 
     [return: MaybeNull, NotNullIfNotNull ("defaultValue")]
     public static TValue GetValueOrDefault<TKey, TValue> (this ReadOnlyDictionary<TKey, TValue> dictionary, TKey key, [AllowNull] TValue defaultValue)
     {
-      return ((IReadOnlyDictionary<TKey, TValue>) dictionary).GetValueOrDefault (key, defaultValue);
+      return ((IReadOnlyDictionary<TKey, TValue>) dictionary).GetValueOrDefault<TKey, TValue> (key, defaultValue);
     }
 
     public static TValue GetOrCreateValue<TKey, TValue> (this IDictionary<TKey, TValue> dictionary, TKey key, Func<TKey, TValue> valueFactory)
