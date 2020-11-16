@@ -131,12 +131,14 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
 
     private AutomationElement GetContentElement (AutomationElement window)
     {
-      return window.FindFirst (
-          TreeScope.Subtree,
-          new AndCondition (
-              new PropertyCondition (AutomationElement.ControlTypeProperty, ControlType.Pane),
-              new PropertyCondition (AutomationElement.ClassNameProperty, "View"),
-              new PropertyCondition (AutomationElement.FrameworkIdProperty, c_edgeFrameworkID)));
+      return window.FindAll (
+              TreeScope.Subtree,
+              new AndCondition (
+                  new PropertyCondition (AutomationElement.ControlTypeProperty, ControlType.Pane),
+                  new PropertyCondition (AutomationElement.ClassNameProperty, "View"),
+                  new PropertyCondition (AutomationElement.FrameworkIdProperty, c_edgeFrameworkID)))
+          .Cast<AutomationElement>()
+          .Aggregate (GetElementWithLargerArea);
     }
 
     private TResult RetryUntilValueChanges<TResult> (Func<TResult> func, TResult value, int retries, TimeSpan interval)
@@ -152,6 +154,27 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
       }
 
       return value;
+    }
+
+    private AutomationElement GetElementWithLargerArea (AutomationElement firstAutomationElement, AutomationElement secondAutomationElement)
+    {
+      var firstRectangle = firstAutomationElement.Current.BoundingRectangle;
+      var secondRectangle = secondAutomationElement.Current.BoundingRectangle;
+
+      // Attention: These are not System.Drawing.Rectangle but System.Windows.Rect whose empty width and height are not 0 but Infinity,
+      // meaning we have to handle these cases separately
+      if (firstRectangle == Rect.Empty)
+        return secondAutomationElement;
+
+      if (secondRectangle == Rect.Empty)
+        return firstAutomationElement;
+
+      var firstRectangleArea = firstRectangle.Height * firstRectangle.Width;
+      var secondRectangleArea = secondRectangle.Height * secondRectangle.Width;
+
+      return firstRectangleArea >= secondRectangleArea
+          ? firstAutomationElement
+          : secondAutomationElement;
     }
   }
 }
