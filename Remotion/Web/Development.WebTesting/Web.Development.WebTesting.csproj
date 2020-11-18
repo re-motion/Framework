@@ -153,6 +153,7 @@
     <Compile Include="HostingStrategies\Configuration\ITestSiteResource.cs" />
     <Compile Include="HostingStrategies\Configuration\TestSiteLayoutConfiguration.cs" />
     <Compile Include="HostingStrategies\Configuration\TestSiteResource.cs" />
+    <Compile Include="HostingStrategies\DockerHosting\DockerOperationException.cs" />
     <Compile Include="HostingStrategies\IisDockerContainerWrapper.cs" />
     <Compile Include="HostingStrategies\DockerHosting\IisDockerContainerConfigurationParameters.cs" />
     <Compile Include="HostingStrategies\DockerHostingStrategy.cs" />
