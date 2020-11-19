@@ -48,7 +48,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     }
 
     [Test]
-    [Ignore ("TODO: RM-7294")]
     public void BidirectionalRelation_CascadeWithinDeleted ()
     {
       var product = Product.NewObject();
@@ -96,7 +95,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     }
 
     [Test]
-    [Ignore ("TODO: RM-7294")]
     public void BidirectionalRelation_CascadeWithinDeleted_SubTransaction ()
     {
       var product = Product.NewObject();

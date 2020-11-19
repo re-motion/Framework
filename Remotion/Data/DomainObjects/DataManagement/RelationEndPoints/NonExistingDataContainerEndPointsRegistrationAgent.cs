@@ -44,18 +44,19 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       ArgumentUtility.CheckNotNull ("endPoint", endPoint);
       ArgumentUtility.CheckNotNull ("relationEndPointMap", relationEndPointMap);
 
-      var objectEndPoint = endPoint as IObjectEndPoint;
-      if (objectEndPoint != null)
+      if (endPoint is IObjectEndPoint objectEndPoint)
       {
         if (objectEndPoint.OppositeObjectID == null && objectEndPoint.OriginalOppositeObjectID == null)
           return null;
       }
-      else
+      else if (endPoint is IDomainObjectCollectionEndPoint domainObjectCollectionEndPoint)
       {
-        //TODO: RM-7294: possibly do not handle IVirtualCollectionEndPoint here since it's graceful
-        var collectionEndPoint = (ICollectionEndPoint<ICollectionEndPointData>) endPoint;
-        if (collectionEndPoint.GetData ().Count == 0 && collectionEndPoint.GetOriginalData ().Count == 0)
+        if (domainObjectCollectionEndPoint.GetData ().Count == 0 && domainObjectCollectionEndPoint.GetOriginalData ().Count == 0)
           return null;
+      }
+      else if (endPoint is IVirtualCollectionEndPoint)
+      {
+        return null;
       }
 
       return string.Format ("Relation end-point '{0}' would leave a dangling reference.", endPoint.ID);
