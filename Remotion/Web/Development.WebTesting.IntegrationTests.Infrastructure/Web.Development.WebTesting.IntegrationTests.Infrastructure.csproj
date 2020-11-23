@@ -92,6 +92,7 @@
     <Compile Include="HostnameResolveHelper.cs" />
     <Compile Include="HostingStrategies\DockerHostingStrategy.cs" />
     <Compile Include="HostingStrategies\DockerHosting\DockerCommandLineClient.cs" />
+    <Compile Include="HostingStrategies\DockerHosting\DockerOperationException.cs" />
     <Compile Include="HostingStrategies\DockerHosting\IDockerClient.cs" />
     <Compile Include="HostingStrategies\DockerHosting\IisDockerContainerConfigurationParameters.cs" />
     <Compile Include="HostingStrategies\IisDockerContainerWrapper.cs" />
