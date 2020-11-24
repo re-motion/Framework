@@ -127,8 +127,7 @@ function DatePicker_Create(datePickerID, button, target, src, width, height)
   frame.marginWidth = 0;
   frame.marginHeight = 0;
 
-  var body = $('body');
-  body.append(datePicker);
+  $(button).closest('div, td, th, body').append(datePicker);
 
   if (_datePicker_repositionTimer) 
     clearTimeout(_datePicker_repositionTimer);
