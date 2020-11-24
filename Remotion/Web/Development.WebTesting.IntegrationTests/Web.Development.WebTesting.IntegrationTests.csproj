@@ -173,8 +173,7 @@
     <EmbeddedResource Include="SavedTestScreenshots\DropDownListControlObjectTest\InternetExplorer.any.DropDownList0.png" />
     <EmbeddedResource Include="SavedTestScreenshots\DropDownListControlObjectTest\InternetExplorer.any.DropDownList1.png" />
     <EmbeddedResource Include="SavedTestScreenshots\DropDownMenuControlObjectTest\DropDownMenu.png" />
-    <EmbeddedResource Include="SavedTestScreenshots\DropDownMenuControlObjectTest\InternetExplorer.any.DropDownMenu0.png" />
-    <EmbeddedResource Include="SavedTestScreenshots\DropDownMenuControlObjectTest\InternetExplorer.any.DropDownMenu1.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\DropDownMenuControlObjectTest\InternetExplorer.any.DropDownMenu.png" />
     <EmbeddedResource Include="SavedTestScreenshots\ListMenuControlObjectTest\ListMenu.png" />
     <EmbeddedResource Include="SavedTestScreenshots\ListMenuControlObjectTest\InternetExplorer.any.ListMenu0.png" />
     <EmbeddedResource Include="SavedTestScreenshots\ListMenuControlObjectTest\InternetExplorer.any.ListMenu1.png" />
