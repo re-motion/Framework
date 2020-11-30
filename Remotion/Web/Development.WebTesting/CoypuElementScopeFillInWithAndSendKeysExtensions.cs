@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -108,6 +108,9 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     private static void FillInWithFixedForNormalBrowsers ([NotNull] this ElementScope scope, [NotNull] string value, bool clearValue)
     {
+      // GeckoDriver treats \r as its own newline character, which causes double newlines inserts. Since all browsers can deal with \n, we can simply remove \r.
+      value = value.Replace ("\r", "");
+
       if (clearValue)
       {
         var clearTextBox = Keys.Control + "a" + Keys.Control + Keys.Delete;

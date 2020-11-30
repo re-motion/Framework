@@ -126,26 +126,23 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
             button.Click();
           });
 
-      if (Helper.BrowserConfiguration.IsChrome())
+      startDownloadLambda();
+
+      var restartBrowserTask = RestartBrowserToCancelDownloadsAfterDelayAsync (downloadUpdatedTimeout + TimeSpan.FromSeconds (3));
+
+      try
       {
-        startDownloadLambda();
-
-        var restartBrowserTask = RestartBrowserToCancelDownloadsAfterDelayAsync (downloadUpdatedTimeout + TimeSpan.FromSeconds (3));
-
-        try
-        {
-          Assert.That (
-              () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithDetectedFileName (downloadStartedTimout, downloadUpdatedTimeout),
-              Throws.InstanceOf<DownloadResultNotFoundException>()
-                  .With.Message.StartsWith (
-                      string.Format (
-                          "The download result file did not get updated for longer than the downloadUpdatedTimeout of '{0}'. The download appears to have failed.",
-                          downloadUpdatedTimeout)));
-        }
-        finally
-        {
-          restartBrowserTask.GetAwaiter().GetResult();
-        }
+        Assert.That (
+            () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithDetectedFileName (downloadStartedTimout, downloadUpdatedTimeout),
+            Throws.InstanceOf<DownloadResultNotFoundException>()
+                .With.Message.StartsWith (
+                    string.Format (
+                        "The download result file did not get updated for longer than the downloadUpdatedTimeout of '{0}'. The download appears to have failed.",
+                        downloadUpdatedTimeout)));
+      }
+      finally
+      {
+        restartBrowserTask.GetAwaiter().GetResult();
       }
     }
 
@@ -155,7 +152,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var downloadStartedTimeout = TimeSpan.FromSeconds (10);
       var downloadUpdatedTimeout = TimeSpan.FromSeconds (3);
-      const string fileName = "SampleFile.txt";
 
       var startDownloadLambda = new Action (
           () =>
@@ -164,31 +160,27 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
             var button = home.Scope.FindId ("body_DownloadWith5SecondTimeout");
             button.Click();
           });
+      startDownloadLambda();
 
-      if (Helper.BrowserConfiguration.IsChrome())
+      var restartBrowserTask = RestartBrowserToCancelDownloadsAfterDelayAsync (downloadUpdatedTimeout + TimeSpan.FromSeconds (3));
+
+      try
       {
-        startDownloadLambda();
-
-        var restartBrowserTask = RestartBrowserToCancelDownloadsAfterDelayAsync (downloadUpdatedTimeout + TimeSpan.FromSeconds (3));
-
-        try
-        {
-          Assert.That (
-              () =>
-                  Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (
-                      fileName,
-                      downloadStartedTimeout,
-                      downloadUpdatedTimeout),
-              Throws.InstanceOf<DownloadResultNotFoundException>()
-                  .With.Message.StartsWith (
-                      string.Format (
-                          "The download result file did not get updated for longer than the downloadUpdatedTimeout of '{0}'. The download appears to have failed.",
-                          downloadUpdatedTimeout)));
-        }
-        finally
-        {
-          restartBrowserTask.GetAwaiter().GetResult();
-        }
+        Assert.That (
+            () =>
+                Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (
+                    "SampleFile.txt",
+                    downloadStartedTimeout,
+                    downloadUpdatedTimeout),
+            Throws.InstanceOf<DownloadResultNotFoundException>()
+                .With.Message.StartsWith (
+                    string.Format (
+                        "The download result file did not get updated for longer than the downloadUpdatedTimeout of '{0}'. The download appears to have failed.",
+                        downloadUpdatedTimeout)));
+      }
+      finally
+      {
+        restartBrowserTask.GetAwaiter().GetResult();
       }
     }
 
