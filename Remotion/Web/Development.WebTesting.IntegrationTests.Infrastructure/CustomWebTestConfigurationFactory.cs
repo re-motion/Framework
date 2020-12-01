@@ -18,6 +18,9 @@ using System;
 using System.Configuration;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
+using System.Text.RegularExpressions;
+using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge;
@@ -35,7 +38,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
       if (string.IsNullOrEmpty (chromeVersionArchivePath))
         return new ChromeConfiguration (configSettings, advancedChromeOptions);
 
-      var versionedChromeFolder = $"Chrome_v{LatestTestedChromeVersion}";
+      var versionedChromeFolder = GetVersionedBrowserFolderName ("Chrome", chromeVersionArchivePath, LatestTestedChromeVersion);
       var customChromeDirectory = PrepareCustomBrowserDirectory (chromeVersionArchivePath, versionedChromeFolder);
 
       var customChromeBinary = GetBinaryPath (customChromeDirectory, "chrome");
@@ -54,7 +57,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
       if (string.IsNullOrEmpty (edgeVersionArchivePath))
         return new EdgeConfiguration (configSettings);
 
-      var versionedEdgeFolder = $"Edge_v{LatestTestedEdgeVersion}";
+      var versionedEdgeFolder = GetVersionedBrowserFolderName ("Edge", edgeVersionArchivePath, LatestTestedEdgeVersion);
       var customEdgeDirectory = PrepareCustomBrowserDirectory (edgeVersionArchivePath, versionedEdgeFolder);
 
       var customBrowserBinary = GetBinaryPath (customEdgeDirectory, "msedge");
@@ -73,7 +76,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
       if (string.IsNullOrEmpty (firefoxVersionArchivePath))
         return new FirefoxConfiguration (configSettings);
 
-      var versionedFirefoxFolder = $"Firefox_v{LatestTestedFirefoxVersion}";
+      var versionedFirefoxFolder = GetVersionedBrowserFolderName ("Firefox", firefoxVersionArchivePath, LatestTestedFirefoxVersion);
       var customFirefoxDirectory = PrepareCustomBrowserDirectory (firefoxVersionArchivePath, versionedFirefoxFolder);
 
       var customBrowserBinary = GetBinaryPath (customFirefoxDirectory, "firefox");
@@ -82,6 +85,26 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
       var firefoxExecutable = new FirefoxExecutable (customBrowserBinary, customDriverBinary);
 
       return new FirefoxConfiguration (configSettings, firefoxExecutable);
+    }
+
+    private string GetVersionedBrowserFolderName (string browserName, string versionArchivePath, string latestTestedMajorBrowserVersion)
+    {
+      return Directory.GetFiles (versionArchivePath)
+          .Select (Path.GetFileNameWithoutExtension)
+          .Where (x => x.StartsWith (browserName))
+          .ToDictionary (fileName => fileName, fileName => CreateVersionFromBrowserZipName (fileName, browserName))
+          .OrderByDescending (kvp => kvp.Value)
+          .First (kvp => kvp.Value.Major == int.Parse (latestTestedMajorBrowserVersion))
+          .Key;
+    }
+
+    private Version CreateVersionFromBrowserZipName (string fileName, string browserName)
+    {
+      var regex = new Regex ($@"^{browserName}_v(?<major>\d+)(?<additionalVersionInfo>(\.\d+)*)");
+      var match = regex.Match (fileName);
+      var additionalVersionInfoValue = StringUtility.EmptyToNull (match.Groups["additionalVersionInfo"].Value) ?? ".0";
+
+      return new Version ($"{match.Groups["major"].Value}{additionalVersionInfoValue}");
     }
 
     private string PrepareCustomBrowserDirectory (string browserVersionArchivePath, string versionedBrowserFolderName)
