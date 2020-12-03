@@ -22,5 +22,5 @@ a.DatePickerButton.disabled img
 div.DatePicker
 {
   z-index: 2147483647;
-  position: absolute;
+  position: fixed;
 }
