@@ -1176,7 +1176,7 @@ function SmartPage_Context(
     };
     if (_submitState == null)
       _submitState = submitState;
-    else if (isAutoPostback || submitterElement == null || submitterElement.id !== _submitState.Submitter.id)
+    else if (_submitState.IsAutoPostback && !isAutoPostback)
       _submitState.NextSubmitState = submitState;
 
     return _submitState;
