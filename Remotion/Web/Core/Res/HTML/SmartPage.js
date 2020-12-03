@@ -813,7 +813,7 @@ function SmartPage_Context(
 
   // Executes the event handlers.
   // eventHandlers: an array of event handlers.
-  function ExecuteEventHandlers(eventHandlers)
+  function ExecuteEventHandlers(eventHandlers/*, ...argumentsRest*/) // ...argumentsRest is not supported in Internet Explorer and will result in a syntax error
   {
     if (eventHandlers == null)
       return;
@@ -823,18 +823,13 @@ function SmartPage_Context(
       var eventHandler = GetFunctionPointer(eventHandlers[i]);
       if (eventHandler != null)
       {
-        var arg1 = null;
-        var arg2 = null;
-        var args = ExecuteEventHandlers.arguments;
-
-        if (args.length > 1)
-          arg1 = args[1];
-        if (args.length > 2)
-          arg2 = args[2];
+        //eventHandlerArguments = argumentsRest; // ...-syntax is not supported in Internet Explorer
+        var eventHandlerArguments = Array.prototype.slice.call(ExecuteEventHandlers.arguments, 1);
 
         try
         {
-          eventHandler(arg1, arg2);
+          //eventHandler(...eventHandlerArguments); // ...-syntax is not supported in Internet Explorer
+          eventHandler.apply(null, eventHandlerArguments);
         }
         catch (e)
         {

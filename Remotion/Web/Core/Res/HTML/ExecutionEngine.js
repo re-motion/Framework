@@ -70,10 +70,11 @@ function WxePage_Context(
   var _dmaWxePostBackSequenceNumberFieldID = dmaWxePostBackSequenceNumberFieldID;
 
   // Handles the page loading event.
-  this.OnLoading = function(hasSubmitted, isCached)
+  this.OnLoading = function(hasSubmitted, isCached, isAsynchronous)
   {
     ArgumentUtility.CheckNotNullAndTypeIsBoolean('hasSubmitted', hasSubmitted);
     ArgumentUtility.CheckNotNullAndTypeIsBoolean('isCached', isCached);
+    ArgumentUtility.CheckNotNullAndTypeIsBoolean('isAsynchronous', isAsynchronous);
 
     if (_dmaWxePostBackSequenceNumberFieldID != null)
     {
@@ -84,10 +85,11 @@ function WxePage_Context(
   };
 
   // Handles the page loaded event.
-  this.OnLoaded = function(hasSubmitted, isCached)
+  this.OnLoaded = function(hasSubmitted, isCached, isAsynchronous)
   {
     ArgumentUtility.CheckNotNullAndTypeIsBoolean('hasSubmitted', hasSubmitted);
     ArgumentUtility.CheckNotNullAndTypeIsBoolean('isCached', isCached);
+    ArgumentUtility.CheckNotNullAndTypeIsBoolean('isAsynchronous', isAsynchronous);
 
     if (_isCacheDetectionEnabled
         && (isCached || hasSubmitted))
@@ -203,14 +205,14 @@ WxePage_Context.SetInstance = function(instance)
   WxePage_Context._instance = instance;
 }
 
-function WxePage_OnLoading(hasSubmitted, isCached)
+function WxePage_OnLoading(hasSubmitted, isCached, isAsynchronous)
 {
-  WxePage_Context._instance.OnLoading(hasSubmitted, isCached);
+  WxePage_Context._instance.OnLoading(hasSubmitted, isCached, isAsynchronous);
 }
 
-function WxePage_OnLoaded(hasSubmitted, isCached)
+function WxePage_OnLoaded(hasSubmitted, isCached, isAsynchronous)
 {
-  WxePage_Context._instance.OnLoaded(hasSubmitted, isCached);
+  WxePage_Context._instance.OnLoaded(hasSubmitted, isCached, isAsynchronous);
 }
 
 function WxePage_OnUnload()
