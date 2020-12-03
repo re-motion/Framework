@@ -1167,6 +1167,7 @@ function SmartPage_Context(
     }
 
     var submitState = {
+      CancelSubmit: false,
       IsAsynchronous: isAsynchronous,
       IsAutoPostback: isAutoPostback,
       Submitter: submitterElement,
@@ -1178,6 +1179,8 @@ function SmartPage_Context(
       _submitState = submitState;
     else if (_submitState.IsAutoPostback && !isAutoPostback)
       _submitState.NextSubmitState = submitState;
+    else
+      _submitState.NextSubmitState = { CancelSubmit: true, Submitter: null };
 
     return _submitState;
   };
