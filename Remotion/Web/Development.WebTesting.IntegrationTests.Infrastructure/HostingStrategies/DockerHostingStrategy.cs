@@ -138,6 +138,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Ho
       webRequest.Method = WebRequestMethods.Http.Head;
       webRequest.AllowAutoRedirect = true;
       webRequest.Host = webApplicationRoot.Host;
+      webRequest.ServerCertificateValidationCallback += (sender, certificate, chain, errors) => true;
 
       HttpStatusCode statusCode = default;
       Assertion.DebugAssert (statusCode != HttpStatusCode.OK);
