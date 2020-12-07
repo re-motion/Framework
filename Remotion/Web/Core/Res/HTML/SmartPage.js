@@ -823,18 +823,11 @@ function SmartPage_Context(
       var eventHandler = GetFunctionPointer(eventHandlers[i]);
       if (eventHandler != null)
       {
-        var arg1 = null;
-        var arg2 = null;
-        var args = ExecuteEventHandlers.arguments;
-
-        if (args.length > 1)
-          arg1 = args[1];
-        if (args.length > 2)
-          arg2 = args[2];
+        var eventHandlerArguments = Array.prototype.slice.call(ExecuteEventHandlers.arguments, 1);
 
         try
         {
-          eventHandler(arg1, arg2);
+          eventHandler.apply(null, eventHandlerArguments);
         }
         catch (e)
         {
