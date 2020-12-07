@@ -71,6 +71,7 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="BrowserLogEntryTest.cs" />
     <Compile Include="Accessibility\AccessibilityAnalyzerTest.cs" />
     <Compile Include="Accessibility\AccessibilityIFrameSupportTest.cs" />
     <Compile Include="Accessibility\AccessibilityResultTest.cs" />
