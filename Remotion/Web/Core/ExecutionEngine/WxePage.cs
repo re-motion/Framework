@@ -152,6 +152,7 @@ namespace Remotion.Web.ExecutionEngine
     private bool? _enableOutOfSequencePostBacks;
     private bool? _enableAbort;
     private bool? _enableStatusMessages;
+    private bool? _enablePageKeepAliveLock;
 
     public WxePage ()
     {
@@ -457,6 +458,28 @@ namespace Remotion.Web.ExecutionEngine
     protected override bool IsStatusIsSubmittingMessageEnabled
     {
       get { return AreStatusMessagesEnabled; }
+    }
+
+    bool IWxePage.IsPageKeepAliveLockEnabled
+    {
+      get { return _enablePageKeepAliveLock != false; }
+    }
+
+    /// <summary> Gets or sets the flag that determines whether to enable the page-keep-alive lock. </summary>
+    /// <value> 
+    ///   <see langword="true"/> to establish a keep-alive lock for the page. Defaults to <see langword="null"/>, which is interpreted as <see langword="true"/>.
+    /// </value>
+    /// <remarks>
+    ///   Only used as a feature toggle in case the keep-alive-lock introduces a bug.
+    /// </remarks>
+    [Description ("The flag that determines whether to enable the page-keep-alive lock. Undefined is interpreted as true.")]
+    [Category ("Behavior")]
+    [DefaultValue (null)]
+    [Obsolete ("Option for disabling the page-keep-alive lock is only available in support branch v1.20. (Version: 1.20.27)")]
+    public bool? EnablePageKeepAliveLock
+    {
+      get { return _enablePageKeepAliveLock; }
+      set { _enablePageKeepAliveLock = value; }
     }
   }
 }

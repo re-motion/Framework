@@ -82,6 +82,12 @@ function WxePage_Context(
       var postBackSequenceNumber = document.getElementById(_wxePostBackSequenceNumberFieldID).value;
       dmaWxePostBackSequenceNumberField.value = postBackSequenceNumber;
     }
+
+    if (!isAsynchronous && _refreshTimer != null)
+    {
+      // The lock remains alive until the page is reloaded using a GET-request or synchronous post-back.
+      this.EstablishPageKeepAliveLock();
+    }
   };
 
   // Handles the page loaded event.
@@ -185,6 +191,33 @@ function WxePage_Context(
     if (_statusIsCachedMessage != null)
       SmartPage_Context.Instance.ShowMessage('WxeStatusIsCachedMessage', _statusIsCachedMessage);
   };
+
+  this.EstablishPageKeepAliveLock = function()
+  {
+    var lockName = btoa(Math.random() * 10e18);
+    var lockIndex = 0;
+
+    function onLockTaken(lock)
+    {
+      if (lock === null)
+      {
+        lockIndex++;
+        navigator.locks.request(lockName + lockIndex, { ifAvailable: true }, onLockTaken);
+        return null;
+      }
+      else
+      {
+        return new Promise(function (resolve, reject) { });
+      }
+    }
+
+    // The navigator.locks API is only available for secure origins, i.e. sites using HTTPS.
+    // The navigator.locks API is only available in Chromium-based browsers, versions 69.* and later.
+    if (navigator.locks && navigator.locks.request)
+    {
+      navigator.locks.request(lockName + lockIndex, { ifAvailable: true }, onLockTaken);
+    }
+  }
 }
 
 // The single instance of the WxePage_Context object

@@ -394,6 +394,14 @@ namespace Remotion.Web.ExecutionEngine
       initScript.Append ("    ").Append (wxePostBackSequenceNumberFieldID).AppendLine (",");
       initScript.Append ("    ").Append (dmaWxePostBackSequenceNumberFieldID).AppendLine ("));");
 
+#pragma warning disable 618
+      if (!_page.IsPageKeepAliveLockEnabled)
+      {
+        initScript.AppendLine();
+        initScript.Append ("    ").Append ("WxePage_Context._instance.EstablishPageKeepAliveLock = function() {};").AppendLine ();
+      }
+#pragma warning restore 618
+
       _page.ClientScript.RegisterClientScriptBlock (_page, typeof (WxePageInfo), "wxeInitialize", initScript.ToString ());
     }
 

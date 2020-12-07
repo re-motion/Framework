@@ -110,5 +110,8 @@ namespace Remotion.Web.ExecutionEngine
     /// <summary> Gets or sets the <see cref="WxeHandler"/> of the current request. </summary>
     [EditorBrowsable (EditorBrowsableState.Never)]
     WxeHandler WxeHandler { get; }
+
+    [Obsolete ("Option for disabling the page-keep-alive lock is only available in support branch v1.20. (Version: 1.20.27)")]
+    bool IsPageKeepAliveLockEnabled { get; }
   }
 }
