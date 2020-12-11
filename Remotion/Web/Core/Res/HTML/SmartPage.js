@@ -1171,11 +1171,20 @@ function SmartPage_Context(
       NextSubmitState : null
     };
     if (_submitState == null)
+    {
       _submitState = submitState;
-    else if (_submitState.IsAutoPostback && !isAutoPostback)
-      _submitState.NextSubmitState = submitState;
-    else
-      _submitState.NextSubmitState = { CancelSubmit: true, Submitter: null };
+    }
+    else if (_submitState.NextSubmitState == null)
+    {
+      if (_submitState.IsAutoPostback && !isAutoPostback)
+      {
+        _submitState.NextSubmitState = submitState;
+      }
+      else
+      {
+        _submitState.NextSubmitState = { CancelSubmit: true, Submitter: null };
+      }
+    }
 
     return _submitState;
   };
