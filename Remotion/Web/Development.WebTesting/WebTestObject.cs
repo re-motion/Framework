@@ -51,5 +51,13 @@ namespace Remotion.Web.Development.WebTesting
     {
       get { return Context.Scope; }
     }
+
+    /// <summary>
+    /// Shortcut for <see cref="Context"/>.<see cref="WebTestObjectContext.Browser"/>.<see cref="Driver"/>.
+    /// </summary>
+    public IDriver Driver
+    {
+      get { return Context.Browser.Driver; }
+    }
   }
 }

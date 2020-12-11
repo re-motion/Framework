@@ -88,7 +88,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
       Assert.That (
           () => control.GetValidationErrors(),
           Throws.Exception.Message.EqualTo (
-              AssertionExceptionUtility.CreateControlReadOnlyException().Message));
+              AssertionExceptionUtility.CreateControlReadOnlyException (control.Context.Browser.Driver).Message));
     }
 
     [GenericPageTestMethod (PageType = GenericTestPageType.EnabledValidation)]
@@ -111,7 +111,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
       Assert.That (
           () => control.GetValidationErrorsForReadOnly(),
           Throws.Exception.Message.EqualTo (
-              AssertionExceptionUtility.CreateControlNotReadOnlyException().Message));
+              AssertionExceptionUtility.CreateControlNotReadOnlyException (control.Context.Browser.Driver).Message));
     }
 
     private void ClickValidationButton (TControl control)

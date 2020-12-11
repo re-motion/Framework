@@ -180,6 +180,8 @@ namespace Remotion.Web.Development.WebTesting
       EnsureAllBrowserWindowsAreClosed();
 
       _mainBrowserSession = CreateNewBrowserSession (maximizeWindow, configurationOverride);
+      s_log.InfoFormat ("Browser: {0}, version {1}", _mainBrowserSession.Driver.GetBrowserName(), _mainBrowserSession.Driver.GetBrowserVersion());
+      s_log.InfoFormat ("WebDriver version: {0}", _mainBrowserSession.Driver.GetWebDriverVersion());
 
       // Note: otherwise cursor could interfere with element hovering.
       EnsureCursorIsOutsideBrowserWindow();
@@ -361,7 +363,7 @@ namespace Remotion.Web.Development.WebTesting
           configurationOverride.RetryInterval ?? configuration.RetryInterval,
           configurationOverride.AsyncJavaScriptTimeout ?? configuration.AsyncJavaScriptTimeout);
     }
-	  
+
     /// <summary>
     /// Returns an instance of AccessibilityAnalyzer.
     /// </summary>

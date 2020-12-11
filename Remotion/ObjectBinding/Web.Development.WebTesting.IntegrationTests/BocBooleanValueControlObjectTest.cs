@@ -64,7 +64,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var control = home.BooleanValues().GetByLocalID ("DeceasedField_Disabled");
 
       Assert.That (control.IsDisabled(), Is.True);
-      Assert.That (() => control.SetTo (false), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("SetTo").Message));
+      Assert.That (
+          () => control.SetTo (false), 
+          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "SetTo").Message));
     }
 
     [Test]
@@ -75,7 +77,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var control = home.BooleanValues().GetByLocalID ("DeceasedField_ReadOnly");
 
       Assert.That (control.IsReadOnly(), Is.True);
-      Assert.That (() => control.SetTo (false), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException().Message));
+      Assert.That (() => control.SetTo (false), Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException (Driver).Message));
     }
 
     [Test]

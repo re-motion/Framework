@@ -52,10 +52,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public UnspecifiedPageObject SetTo (bool newState, [CanBeNull] IWebTestActionOptions actionOptions = null)
     {
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException();
+        throw AssertionExceptionUtility.CreateControlDisabledException (Driver);
 
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException();
+        throw AssertionExceptionUtility.CreateControlReadOnlyException (Driver);
 
       if (GetState() == newState)
         return UnspecifiedPage();

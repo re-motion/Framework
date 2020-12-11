@@ -312,13 +312,21 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var control = home.AutoCompletes().GetByLocalID ("Disabled");
 
       Assert.That (control.IsDisabled(), Is.True);
-      Assert.That (() => control.FillWith ("text"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("FillWith").Message));
-      Assert.That (() => control.FillWith ("text", FinishInput.Promptly), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("FillWith").Message));
-      Assert.That (() => control.ExecuteCommand(), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("ExecuteCommand").Message));
-      Assert.That (() => control.SelectFirstMatch ("DoesntMatter"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("SelectFirstMatch").Message));
+      Assert.That (
+          () => control.FillWith ("text"),
+          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "FillWith").Message));
+      Assert.That (
+          () => control.FillWith ("text", FinishInput.Promptly),
+          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "FillWith").Message));
+      Assert.That (
+          () => control.ExecuteCommand(), 
+          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "ExecuteCommand").Message));
+      Assert.That (
+          () => control.SelectFirstMatch ("DoesntMatter"), 
+          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "SelectFirstMatch").Message));
       Assert.That (
           () => control.SelectFirstMatch ("DoesntMatter", FinishInput.WithTab),
-          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("SelectFirstMatch").Message));
+          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "SelectFirstMatch").Message));
     }
 
     [Test]
@@ -329,10 +337,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var control = home.AutoCompletes().GetByLocalID ("PartnerField_ReadOnly");
 
       Assert.That (control.IsReadOnly(), Is.True);
-      Assert.That (() => control.FillWith ("text"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException().Message));
-      Assert.That (() => control.FillWith ("text", FinishInput.Promptly), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException().Message));
-      Assert.That (() => control.SelectFirstMatch ("DoesntMatter"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException().Message));
-      Assert.That (() => control.SelectFirstMatch ("DoesntMatter", FinishInput.WithTab), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException().Message));
+      Assert.That (() => control.FillWith ("text"), Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException (Driver).Message));
+      Assert.That (
+          () => control.FillWith ("text", FinishInput.Promptly), 
+          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException (Driver).Message));
+      Assert.That (
+          () => control.SelectFirstMatch ("DoesntMatter"), 
+          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException (Driver).Message));
+      Assert.That (
+          () => control.SelectFirstMatch ("DoesntMatter", FinishInput.WithTab), 
+          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException (Driver).Message));
     }
 
     [Test]
@@ -461,7 +475,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (
           () => bocAutoComplete.SelectFirstMatch ("Invalid"),
           Throws.Exception.InstanceOf<WebTestException>()
-              .With.Message.EqualTo ("No matches were found for the specified filter: 'Invalid'."));
+              .With.Message.EqualTo (AssertionExceptionUtility.CreateExpectationException (Driver, "No matches were found for the specified filter: 'Invalid'.").Message));
     }
 
     [Test]

@@ -66,13 +66,13 @@ namespace Remotion.Web.Development.WebTesting
       for (var i = 0; i < 10; i++)
       {
         var disabled = scope.Disabled;
-        
+
         if (!disabled)
           break;
       }
 
       if (scope.Disabled)
-        throw AssertionExceptionUtility.CreateControlDisabledException();
+        throw AssertionExceptionUtility.CreateControlDisabledException (scope.GetDriver());
 
       scope.SendKeys ("");
     }

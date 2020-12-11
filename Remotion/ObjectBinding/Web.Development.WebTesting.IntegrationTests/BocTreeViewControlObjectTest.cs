@@ -31,6 +31,7 @@ using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Screen
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
+using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 {
@@ -100,7 +101,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     private class DerivedBocTreeViewControlObject : BocTreeViewControlObject
     {
       public DerivedBocTreeViewControlObject (ControlObjectContext context)
-          : base(context)
+          : base (context)
       {
       }
     }
@@ -211,37 +212,45 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (
           () => bocTreeView.GetNode().WithDisplayTextContains ("B, A").Select(),
           Throws.InstanceOf<WebTestException>()
-              .With.Message.EqualTo ("The element cannot be found: Unable to find xpath: ((.//ul)[1])/li[contains(@data-content, 'B, A')]"));
+              .With.Message.EqualTo (
+                  AssertionExceptionUtility.CreateControlMissingException (Driver, "Unable to find xpath: ((.//ul)[1])/li[contains(@data-content, 'B, A')]").Message));
       Assert.That (
           () => bocTreeView.GetNode().WithDisplayText ("B, A").Select(),
           Throws.InstanceOf<WebTestException>()
-              .With.Message.EqualTo ("The element cannot be found: Unable to find xpath: ((.//ul)[1])/li[@data-content='B, A']"));
+              .With.Message.EqualTo (
+                  AssertionExceptionUtility.CreateControlMissingException (Driver, "Unable to find xpath: ((.//ul)[1])/li[@data-content='B, A']").Message));
       Assert.That (
           () => bocTreeView.GetNode().WithItemID ("c8ace752-55f6-4074-8890-130276ea6cd1").Select(),
           Throws.InstanceOf<WebTestException>()
-              .With.Message.EqualTo ("The element cannot be found: Unable to find xpath: ((.//ul)[1])/li[@data-item-id='c8ace752-55f6-4074-8890-130276ea6cd1']"));
+              .With.Message.EqualTo (
+                  AssertionExceptionUtility.CreateControlMissingException (Driver, "Unable to find xpath: ((.//ul)[1])/li[@data-item-id='c8ace752-55f6-4074-8890-130276ea6cd1']").Message));
       Assert.That (
           () => bocTreeView.GetNode ("c8ace752-55f6-4074-8890-130276ea6cd1").Select(),
           Throws.InstanceOf<WebTestException>()
-              .With.Message.EqualTo ("The element cannot be found: Unable to find xpath: ((.//ul)[1])/li[@data-item-id='c8ace752-55f6-4074-8890-130276ea6cd1']"));
+              .With.Message.EqualTo (
+                  AssertionExceptionUtility.CreateControlMissingException (Driver, "Unable to find xpath: ((.//ul)[1])/li[@data-item-id='c8ace752-55f6-4074-8890-130276ea6cd1']").Message));
 
       rootNode.Scope.ElementFinder.Options.Timeout = TimeSpan.Zero;
       Assert.That (
           () => rootNode.GetNode().WithDisplayTextContains ("A, B").Select(),
           Throws.InstanceOf<WebTestException>()
-              .With.Message.EqualTo ("The element cannot be found: Unable to find xpath: ((.//ul)[1])/li[contains(@data-content, 'A, B')]"));
+              .With.Message.EqualTo (
+                  AssertionExceptionUtility.CreateControlMissingException (Driver, "Unable to find xpath: ((.//ul)[1])/li[contains(@data-content, 'A, B')]").Message));
       Assert.That (
           () => rootNode.GetNode().WithDisplayText ("A, B").Select(),
           Throws.InstanceOf<WebTestException>()
-              .With.Message.EqualTo ("The element cannot be found: Unable to find xpath: ((.//ul)[1])/li[@data-content='A, B']"));
+              .With.Message.EqualTo (
+                  AssertionExceptionUtility.CreateControlMissingException (Driver, "Unable to find xpath: ((.//ul)[1])/li[@data-content='A, B']").Message));
       Assert.That (
           () => rootNode.GetNode().WithItemID ("eb94bfdb-1140-46f8-971f-e4b41dae13b8").Select(),
           Throws.InstanceOf<WebTestException>()
-              .With.Message.EqualTo ("The element cannot be found: Unable to find xpath: ((.//ul)[1])/li[@data-item-id='eb94bfdb-1140-46f8-971f-e4b41dae13b8']"));
+              .With.Message.EqualTo (
+                  AssertionExceptionUtility.CreateControlMissingException (Driver, "Unable to find xpath: ((.//ul)[1])/li[@data-item-id='eb94bfdb-1140-46f8-971f-e4b41dae13b8']").Message));
       Assert.That (
           () => rootNode.GetNode ("eb94bfdb-1140-46f8-971f-e4b41dae13b8").Select(),
           Throws.InstanceOf<WebTestException>()
-              .With.Message.EqualTo ("The element cannot be found: Unable to find xpath: ((.//ul)[1])/li[@data-item-id='eb94bfdb-1140-46f8-971f-e4b41dae13b8']"));
+              .With.Message.EqualTo (
+                  AssertionExceptionUtility.CreateControlMissingException (Driver, "Unable to find xpath: ((.//ul)[1])/li[@data-item-id='eb94bfdb-1140-46f8-971f-e4b41dae13b8']").Message));
     }
 
     [Test]
@@ -260,12 +269,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (
           () => rootNode.GetNodeInHierarchy().WithIndex (999),
           Throws.InstanceOf<WebTestException>()
-              .With.Message.EqualTo ("No node with the index '999' was found."));
+              .With.Message.EqualTo (AssertionExceptionUtility.CreateExpectationException (Driver, "No node with the index '999' was found.").Message));
 
       Assert.That (
           () => rootNode.GetNodeInHierarchy().WithIndex (1),
           Throws.InstanceOf<WebTestException>()
-              .With.Message.EqualTo ("Multiple nodes with the index '1' were found."));
+              .With.Message.EqualTo (AssertionExceptionUtility.CreateExpectationException (Driver, "Multiple nodes with the index '1' were found.").Message));
     }
 
     [Test]
@@ -295,7 +304,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void TestSelectNodeInHierarchyOnlyRootNodeExpanded ()
     {
-      const string expectedExceptionMessage = "The element cannot be found: This element has been removed from the DOM. Coypu will normally re-find elements using the original locators in this situation, except if you have captured a snapshot list of all matching elements using FindAllCss() or FindAllXPath()";
+      var expectedExceptionMessage = AssertionExceptionUtility.CreateExpectationException (
+              Driver,
+              "The element cannot be found: This element has been removed from the DOM. Coypu will normally re-find elements using the original locators in this situation, except if you have captured a snapshot list of all matching elements using FindAllCss() or FindAllXPath()")
+          .Message;
       var home = Start();
 
       var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
@@ -361,12 +373,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (
           () => bocTreeView.GetNodeInHierarchy().WithIndex (999),
           Throws.InstanceOf<WebTestException>()
-              .With.Message.EqualTo ("No node with the index '999' was found."));
+              .With.Message.EqualTo (AssertionExceptionUtility.CreateExpectationException (Driver, "No node with the index '999' was found.").Message));
 
       Assert.That (
           () => bocTreeView.GetNodeInHierarchy().WithIndex (1),
           Throws.InstanceOf<WebTestException>()
-              .With.Message.EqualTo ("Multiple nodes with the index '1' were found."));
+              .With.Message.EqualTo (AssertionExceptionUtility.CreateExpectationException (Driver, "Multiple nodes with the index '1' were found.").Message));
     }
 
     [Test]
@@ -382,19 +394,23 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (
           () => bocTreeView.GetNodeInHierarchy().WithDisplayTextContains ("A, B").Select(),
           Throws.InstanceOf<WebTestException>()
-              .With.Message.EqualTo ("The element cannot be found: Unable to find css: ul li[data-content*='A, B']"));
+              .With.Message.EqualTo (
+                  AssertionExceptionUtility.CreateControlMissingException(Driver, "Unable to find css: ul li[data-content*='A, B']").Message));
       Assert.That (
           () => bocTreeView.GetNodeInHierarchy().WithDisplayText ("E, ").Select(),
           Throws.InstanceOf<WebTestException>()
-              .With.Message.EqualTo ("The element cannot be found: Unable to find css: ul li[data-content='E, ']"));
+              .With.Message.EqualTo (
+                  AssertionExceptionUtility.CreateControlMissingException(Driver, "Unable to find css: ul li[data-content='E, ']").Message));
       Assert.That (
           () => bocTreeView.GetNodeInHierarchy().WithItemID ("eb94bfdb-1140-46f8-971f-e4b41dae13b8").Select(),
           Throws.InstanceOf<WebTestException>()
-              .With.Message.EqualTo ("The element cannot be found: Unable to find css: ul li[data-item-id='eb94bfdb-1140-46f8-971f-e4b41dae13b8']"));
+              .With.Message.EqualTo (
+                  AssertionExceptionUtility.CreateControlMissingException(Driver, "Unable to find css: ul li[data-item-id='eb94bfdb-1140-46f8-971f-e4b41dae13b8']").Message));
       Assert.That (
           () => bocTreeView.GetNodeInHierarchy ("6866ca48-8957-4f26-ae5f-78a3f6dcc4de").Select(),
           Throws.InstanceOf<WebTestException>()
-              .With.Message.EqualTo ("The element cannot be found: Unable to find css: ul li[data-item-id='6866ca48-8957-4f26-ae5f-78a3f6dcc4de']"));
+              .With.Message.EqualTo (
+                  AssertionExceptionUtility.CreateControlMissingException(Driver, "Unable to find css: ul li[data-item-id='6866ca48-8957-4f26-ae5f-78a3f6dcc4de']").Message));
     }
 
     [Test]
@@ -443,7 +459,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (
           () => rootNode.Expand(),
           Throws.InstanceOf<WebTestException>()
-              .With.Message.EqualTo ("TreeViewNode is already expanded."));
+              .With.Message.EqualTo (AssertionExceptionUtility.CreateExpectationException (Driver, "TreeViewNode is already expanded.").Message));
     }
 
     [Test]
@@ -506,10 +522,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       Assert.That (
           () => node.Expand(),
-          Throws.InstanceOf<WebTestException>().With.Message.EqualTo ("The WebTreeViewNode cannot be expanded as it has no children."));
+          Throws.InstanceOf<WebTestException>()
+              .With.Message.EqualTo (
+                  AssertionExceptionUtility.CreateExpectationException (Driver, "The WebTreeViewNode cannot be expanded as it has no children.").Message));
       Assert.That (
           () => node.Collapse(),
-          Throws.InstanceOf<WebTestException>().With.Message.EqualTo ("The WebTreeViewNode cannot be collapsed as it has no children."));
+          Throws.InstanceOf<WebTestException>()
+              .With.Message.EqualTo (
+                  AssertionExceptionUtility.CreateExpectationException (Driver, "The WebTreeViewNode cannot be collapsed as it has no children.").Message));
     }
 
     [Test]
@@ -539,7 +559,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var rootNode = bocTreeView.GetRootNode();
 
-      Assert.That (() => rootNode.Collapse(), Throws.InstanceOf<WebTestException>().With.Message.EqualTo ("TreeViewNode is already collapsed."));
+      Assert.That (
+          () => rootNode.Collapse(),
+          Throws.InstanceOf<WebTestException>()
+              .With.Message.EqualTo (AssertionExceptionUtility.CreateExpectationException (Driver, "TreeViewNode is already collapsed.").Message));
     }
 
     [Test]
@@ -698,7 +721,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var contextMenu = node.GetContextMenu();
 
-      Assert.That (() => contextMenu.Open(), Throws.TypeOf<WebTestException>().With.Message.EqualTo ("Unable to open the menu."));
+      Assert.That (
+          () => contextMenu.Open(),
+          Throws.TypeOf<WebTestException>()
+              .With.Message.EqualTo (AssertionExceptionUtility.CreateExpectationException (Driver, "Unable to open the menu.").Message));
       Assert.That (contextMenu.IsOpen(), Is.False);
     }
 
@@ -712,7 +738,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var contextMenu = node.GetContextMenu();
 
-      Assert.That (() => contextMenu.Open(), Throws.TypeOf<WebTestException>().With.Message.EqualTo ("Unable to open the menu."));
+      Assert.That (
+          () => contextMenu.Open(),
+          Throws.TypeOf<WebTestException>()
+              .With.Message.EqualTo (AssertionExceptionUtility.CreateExpectationException (Driver, "Unable to open the menu.").Message));
       Assert.That (contextMenu.IsOpen(), Is.False);
     }
 

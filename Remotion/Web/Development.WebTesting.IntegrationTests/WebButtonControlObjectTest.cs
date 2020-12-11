@@ -59,7 +59,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var control = home.WebButtons().GetByLocalID ("MyDisabledWebButton");
 
       Assert.That (control.IsDisabled(), Is.True);
-      Assert.That (() => control.Click(), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("Click").Message));
+      Assert.That (
+          () => control.Click(), 
+          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "Click").Message));
     }
 
     [Test]

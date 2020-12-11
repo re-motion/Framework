@@ -78,6 +78,7 @@
     <Compile Include="BrowserLogEntryTest.cs" />
     <Compile Include="ChromeBinariesProviderTest.cs" />
     <Compile Include="CompletionDetectionStrategyTest.cs" />
+    <Compile Include="DriverExtensionsTest.cs" />
     <Compile Include="EdgeBinariesProviderTest.cs" />
     <Compile Include="FirefoxBinariesProviderTest.cs" />
     <Compile Include="WxeCompletionDetectionHelpersTest.cs" />

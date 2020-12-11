@@ -86,10 +86,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public UnspecifiedPageObject SetDate (DateTime newDate, [CanBeNull] IWebTestActionOptions actionOptions = null)
     {
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException();
+        throw AssertionExceptionUtility.CreateControlDisabledException (Driver);
 
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException();
+        throw AssertionExceptionUtility.CreateControlReadOnlyException (Driver);
 
       var newDateString = newDate.ToShortDateString();
       return SetDate (newDateString, actionOptions);
@@ -104,10 +104,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       ArgumentUtility.CheckNotNull ("newDateString", newDateString);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException();
+        throw AssertionExceptionUtility.CreateControlDisabledException (Driver);
 
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException();
+        throw AssertionExceptionUtility.CreateControlReadOnlyException (Driver);
 
       var dateScope = GetDateScope();
 
@@ -123,10 +123,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public UnspecifiedPageObject SetTime (TimeSpan newTime, [CanBeNull] IWebTestActionOptions actionOptions = null)
     {
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException();
+        throw AssertionExceptionUtility.CreateControlDisabledException (Driver);
 
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException();
+        throw AssertionExceptionUtility.CreateControlReadOnlyException (Driver);
 
       var newTimeAsDateTime = DateTime.MinValue.Add (newTime);
 
@@ -150,10 +150,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       ArgumentUtility.CheckNotNull ("newTimeString", newTimeString);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException();
+        throw AssertionExceptionUtility.CreateControlDisabledException (Driver);
 
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException();
+        throw AssertionExceptionUtility.CreateControlReadOnlyException (Driver);
 
       var timeScope = GetTimeScope();
 
@@ -169,10 +169,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public UnspecifiedPageObject SetDateTime (DateTime newDateTime, [CanBeNull] IWebTestActionOptions actionOptions = null)
     {
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException();
+        throw AssertionExceptionUtility.CreateControlDisabledException (Driver);
 
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException();
+        throw AssertionExceptionUtility.CreateControlReadOnlyException (Driver);
 
       SetDate (newDateTime, actionOptions);
       if (_hasTimeField)

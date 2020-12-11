@@ -64,7 +64,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       ArgumentUtility.CheckNotNull ("scope", scope);
 
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException();
+        throw AssertionExceptionUtility.CreateControlReadOnlyException (Driver);
 
       return GetValidationErrorsInner (scope);
     }
@@ -78,7 +78,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       ArgumentUtility.CheckNotNull ("scope", scope);
 
       if (!IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlNotReadOnlyException();
+        throw AssertionExceptionUtility.CreateControlNotReadOnlyException (Driver);
 
       return GetValidationErrorsInner (scope);
     }

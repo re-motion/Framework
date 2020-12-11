@@ -60,14 +60,16 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       Assert.That (control.IsDisabled(), Is.True);
       Assert.That (
           () => control.SelectOption().WithDisplayText ("EventItem"),
-          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("SelectOption.WithDisplayText").Message));
+          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "SelectOption.WithDisplayText").Message));
       Assert.That (
           () => control.SelectOption().WithIndex (1),
-          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("SelectOption.WithIndex").Message));
+          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "SelectOption.WithIndex").Message));
       Assert.That (
           () => control.SelectOption().WithItemID ("ItemID4"),
-          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("SelectOption.WithItemID").Message));
-      Assert.That (() => control.SelectOption ("ItemID4"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("SelectOption(value)").Message));
+          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "SelectOption.WithItemID").Message));
+      Assert.That (
+          () => control.SelectOption ("ItemID4"), 
+          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "SelectOption(value)").Message));
     }
 
     [Test]

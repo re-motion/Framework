@@ -58,7 +58,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var control = home.Commands().GetByLocalID ("TestCommand3");
 
       Assert.That (control.IsDisabled(), Is.True);
-      Assert.That (() => control.Click(), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateCommandDisabledException ("Click").Message));
+      Assert.That (
+          () => control.Click(), 
+          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateCommandDisabledException (Driver, "Click").Message));
     }
 
     [Test]

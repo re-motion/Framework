@@ -138,7 +138,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public BocListEditableRowControlObject Edit ()
     {
       if (_accessor.ParentScope[DiagnosticMetadataAttributes.IsReadOnly] == "true")
-        throw AssertionExceptionUtility.CreateControlReadOnlyException();
+        throw AssertionExceptionUtility.CreateControlReadOnlyException (Driver);
 
       var editCell = GetWellKnownEditCell();
 

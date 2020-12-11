@@ -69,7 +69,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     public IReadOnlyList<ItemDefinition> GetItemDefinitions ()
     {
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException();
+        throw AssertionExceptionUtility.CreateControlDisabledException (Driver);
 
       var dropDownMenuScope = GetDropDownMenuScope();
 
@@ -110,12 +110,12 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (operationName: operationName);
+        throw AssertionExceptionUtility.CreateControlDisabledException (Driver, operationName: operationName);
 
       var itemCommand = GetItemCommandByItemID (itemID);
 
       if (itemCommand.IsDisabled())
-        throw AssertionExceptionUtility.CreateCommandDisabledException (operationName: operationName);
+        throw AssertionExceptionUtility.CreateCommandDisabledException (Driver, operationName: operationName);
 
       return ClickItem (itemCommand, actionOptions);
     }
@@ -128,12 +128,12 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (operationName: operationName);
+        throw AssertionExceptionUtility.CreateControlDisabledException (Driver, operationName: operationName);
 
       var itemCommand = GetItemCommandByItemID (itemID);
 
       if (itemCommand.IsDisabled())
-        throw AssertionExceptionUtility.CreateCommandDisabledException (operationName: operationName);
+        throw AssertionExceptionUtility.CreateCommandDisabledException (Driver, operationName: operationName);
 
       return ClickItem (itemCommand, actionOptions);
     }
@@ -144,12 +144,12 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       const string operationName = "SelectItem.WithIndex";
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (operationName: operationName);
+        throw AssertionExceptionUtility.CreateControlDisabledException (Driver, operationName: operationName);
 
       var itemCommand = GetItemCommandByIndex (oneBasedIndex);
 
       if (itemCommand.IsDisabled())
-        throw AssertionExceptionUtility.CreateCommandDisabledException (operationName: operationName);
+        throw AssertionExceptionUtility.CreateCommandDisabledException (Driver, operationName: operationName);
 
       return ClickItem (itemCommand, actionOptions);
     }
@@ -162,12 +162,12 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       ArgumentUtility.CheckNotNullOrEmpty ("htmlID", htmlID);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (operationName: operationName);
+        throw AssertionExceptionUtility.CreateControlDisabledException (Driver, operationName: operationName);
 
       var itemCommand = GetItemCommandByHtmlID (htmlID);
 
       if (itemCommand.IsDisabled())
-        throw AssertionExceptionUtility.CreateCommandDisabledException (operationName: operationName);
+        throw AssertionExceptionUtility.CreateCommandDisabledException (Driver, operationName: operationName);
 
       return ClickItem (itemCommand, actionOptions);
     }
@@ -180,12 +180,12 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       ArgumentUtility.CheckNotNullOrEmpty ("displayText", displayText);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (operationName: operationName);
+        throw AssertionExceptionUtility.CreateControlDisabledException (Driver, operationName: operationName);
 
       var itemCommand = GetItemCommandByDisplayText (displayText);
 
       if (itemCommand.IsDisabled())
-        throw AssertionExceptionUtility.CreateCommandDisabledException (operationName: operationName);
+        throw AssertionExceptionUtility.CreateCommandDisabledException (Driver, operationName: operationName);
 
       return ClickItem (itemCommand, actionOptions);
     }
@@ -200,12 +200,12 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       ArgumentUtility.CheckNotNullOrEmpty ("containsDisplayText", containsDisplayText);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (operationName: operationName);
+        throw AssertionExceptionUtility.CreateControlDisabledException (Driver, operationName: operationName);
 
       var itemCommand = GetItemCommandByDisplayTextContains (containsDisplayText);
 
       if (itemCommand.IsDisabled())
-        throw AssertionExceptionUtility.CreateCommandDisabledException (operationName: operationName);
+        throw AssertionExceptionUtility.CreateCommandDisabledException (Driver, operationName: operationName);
 
       return ClickItem (itemCommand, actionOptions);
     }
@@ -270,7 +270,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
             () =>
             {
               if (GetDropDownMenuPopupID (menuButtonScope) == null)
-                throw AssertionExceptionUtility.CreateExpectationException ("Unable to open the menu.");
+                throw AssertionExceptionUtility.CreateExpectationException (Driver, "Unable to open the menu.");
             });
       }
     }

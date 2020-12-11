@@ -81,7 +81,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
       ArgumentUtility.CheckNotNullOrEmpty ("value", value);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (operationName: "SelectOption(value)");
+        throw AssertionExceptionUtility.CreateControlDisabledException (Driver, operationName: "SelectOption(value)");
 
       return SelectOption().WithItemID (value, actionOptions);
     }
@@ -92,7 +92,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
       ArgumentUtility.CheckNotNull ("value", value);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (operationName: "SelectOption.WithItemID");
+        throw AssertionExceptionUtility.CreateControlDisabledException (Driver, operationName: "SelectOption.WithItemID");
 
       Action<ElementScope> selectAction = s => s.SelectOptionByValue (value);
       return SelectOption (selectAction, actionOptions);
@@ -102,7 +102,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithIndex (int oneBasedIndex, IWebTestActionOptions actionOptions)
     {
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (operationName: "SelectOption.WithIndex");
+        throw AssertionExceptionUtility.CreateControlDisabledException (Driver, operationName: "SelectOption.WithIndex");
 
       Action<ElementScope> selectAction = s => s.SelectOptionByIndex (oneBasedIndex);
       return SelectOption (selectAction, actionOptions);
@@ -114,7 +114,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
       ArgumentUtility.CheckNotNull ("displayText", displayText);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (operationName: "SelectOption.WithDisplayText");
+        throw AssertionExceptionUtility.CreateControlDisabledException (Driver, operationName: "SelectOption.WithDisplayText");
 
       Action<ElementScope> selectAction = s => s.SelectOptionByDisplayText (displayText);
       return SelectOption (selectAction, actionOptions);

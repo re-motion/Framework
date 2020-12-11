@@ -89,7 +89,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (operationName: "SelectOption(itemID)");
+        throw AssertionExceptionUtility.CreateControlDisabledException (Driver, operationName: "SelectOption(itemID)");
 
       return SelectOption().WithItemID (itemID, actionOptions);
     }
@@ -100,7 +100,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (operationName: "SelectOption.WithItemID");
+        throw AssertionExceptionUtility.CreateControlDisabledException (Driver, operationName: "SelectOption.WithItemID");
 
       // Workaround for Marionette issue. (RM-7279)
       if (Scope.Browser.IsFirefox() && GetSelectedOption().ItemID == itemID)
@@ -113,7 +113,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithIndex (int oneBasedIndex, IWebTestActionOptions actionOptions)
     {
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (operationName: "SelectOption.WithIndex");
+        throw AssertionExceptionUtility.CreateControlDisabledException (Driver, operationName: "SelectOption.WithIndex");
 
       // Workaround for Marionette issue. (RM-7279)
       if (Scope.Browser.IsFirefox() && GetSelectedOption().Index == oneBasedIndex)
@@ -128,7 +128,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       ArgumentUtility.CheckNotNullOrEmpty ("displayText", displayText);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (operationName: "SelectOption.WithDisplayText");
+        throw AssertionExceptionUtility.CreateControlDisabledException (Driver, operationName: "SelectOption.WithDisplayText");
 
       // Workaround for Marionette issue. (RM-7279)
       if (Scope.Browser.IsFirefox() && GetSelectedOption().Text == displayText)

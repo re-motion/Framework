@@ -78,7 +78,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       var itemCommand = FindItemCommand (itemScope);
 
       if (itemCommand.IsDisabled())
-        throw AssertionExceptionUtility.CreateCommandDisabledException (operationName: "SwitchTo(itemID)");
+        throw AssertionExceptionUtility.CreateCommandDisabledException (Driver, operationName: "SwitchTo(itemID)");
 
       return SwitchTo (itemCommand, actionOptions);
     }
@@ -92,7 +92,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       var itemCommand = FindItemCommand (itemScope);
 
       if (itemCommand.IsDisabled())
-        throw AssertionExceptionUtility.CreateCommandDisabledException (operationName: "SwitchTo.WithItemID");
+        throw AssertionExceptionUtility.CreateCommandDisabledException (Driver, operationName: "SwitchTo.WithItemID");
 
       return SwitchTo (itemCommand, actionOptions);
     }
@@ -108,7 +108,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       var itemCommand = FindItemCommand (itemScope);
 
       if (itemCommand.IsDisabled())
-        throw AssertionExceptionUtility.CreateCommandDisabledException (operationName: "SwitchTo.WithIndex");
+        throw AssertionExceptionUtility.CreateCommandDisabledException (Driver, operationName: "SwitchTo.WithIndex");
 
       return SwitchTo (itemCommand, actionOptions);
     }
@@ -122,7 +122,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       var itemCommand = FindItemCommand (itemScope);
 
       if (itemCommand.IsDisabled())
-        throw AssertionExceptionUtility.CreateCommandDisabledException (operationName: "SwitchTo.WithHtmlID");
+        throw AssertionExceptionUtility.CreateCommandDisabledException (Driver, operationName: "SwitchTo.WithHtmlID");
 
       return SwitchTo (itemCommand, actionOptions);
     }
@@ -136,7 +136,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       var itemCommand = FindItemCommand (itemScope);
 
       if (itemCommand.IsDisabled())
-        throw AssertionExceptionUtility.CreateCommandDisabledException (operationName: "SwitchTo.WithDisplayText");
+        throw AssertionExceptionUtility.CreateCommandDisabledException (Driver, operationName: "SwitchTo.WithDisplayText");
 
       return SwitchTo (itemCommand, actionOptions);
     }
@@ -154,7 +154,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       var itemCommand = FindItemCommand (itemScope);
 
       if (itemCommand.IsDisabled())
-        throw AssertionExceptionUtility.CreateCommandDisabledException (operationName: "SwitchTo.WithDisplayTextContains");
+        throw AssertionExceptionUtility.CreateCommandDisabledException (Driver, operationName: "SwitchTo.WithDisplayTextContains");
 
       return SwitchTo (itemCommand, actionOptions);
     }

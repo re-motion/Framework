@@ -32,6 +32,7 @@ using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
+using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 {
@@ -520,7 +521,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       Assert.That (
           () => bocList.GoToSpecificPage (1),
-          Throws.Exception.TypeOf<WebTestException>().With.Message.EqualTo ("Unable to change current page of the list. List is currently in edit mode."));
+          Throws.Exception.TypeOf<WebTestException>()
+              .With.Message.EqualTo (
+                  AssertionExceptionUtility.CreateExpectationException (Driver, "Unable to change current page of the list. List is currently in edit mode.").Message));
     }
 
     [Test]
@@ -532,7 +535,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       Assert.That (
           () => bocList.GoToFirstPage(),
-          Throws.Exception.TypeOf<WebTestException>().With.Message.EqualTo ("Unable to change current page of the list. List is currently in edit mode."));
+          Throws.Exception.TypeOf<WebTestException>()
+              .With.Message.EqualTo (
+                  AssertionExceptionUtility.CreateExpectationException (Driver, "Unable to change current page of the list. List is currently in edit mode.").Message));
     }
 
     [Test]
@@ -544,7 +549,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       Assert.That (
           () => bocList.GoToPreviousPage(),
-          Throws.Exception.TypeOf<WebTestException>().With.Message.EqualTo ("Unable to change current page of the list. List is currently in edit mode."));
+          Throws.Exception.TypeOf<WebTestException>()
+              .With.Message.EqualTo (
+                  AssertionExceptionUtility.CreateExpectationException (Driver, "Unable to change current page of the list. List is currently in edit mode.").Message));
     }
 
     [Test]
@@ -556,7 +563,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       Assert.That (
           () => bocList.GoToNextPage(),
-          Throws.Exception.TypeOf<WebTestException>().With.Message.EqualTo ("Unable to change current page of the list. List is currently in edit mode."));
+          Throws.Exception.TypeOf<WebTestException>()
+              .With.Message.EqualTo (
+                  AssertionExceptionUtility.CreateExpectationException (Driver, "Unable to change current page of the list. List is currently in edit mode.").Message));
     }
 
     [Test]
@@ -568,7 +577,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       Assert.That (
           () => bocList.GoToLastPage(),
-          Throws.Exception.TypeOf<WebTestException>().With.Message.EqualTo ("Unable to change current page of the list. List is currently in edit mode."));
+          Throws.Exception.TypeOf<WebTestException>()
+              .With.Message.EqualTo (
+                  AssertionExceptionUtility.CreateExpectationException (Driver, "Unable to change current page of the list. List is currently in edit mode.").Message));
     }
 
     private WxePageObject Start ()

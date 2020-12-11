@@ -90,10 +90,10 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       {
         var foundNodes = _webTreeViewNode.Scope.FindTagsWithAttribute ("ul li", DiagnosticMetadataAttributes.IndexInCollection, oneBasedIndex.ToString()).ToArray();
         if (foundNodes.Length > 1)
-          throw AssertionExceptionUtility.CreateExpectationException ($"Multiple nodes with the index '{oneBasedIndex}' were found.");
+          throw AssertionExceptionUtility.CreateExpectationException (_webTreeViewNode.Driver, $"Multiple nodes with the index '{oneBasedIndex}' were found.");
 
         if (foundNodes.Length == 0)
-          throw AssertionExceptionUtility.CreateExpectationException ($"No node with the index '{oneBasedIndex}' was found.");
+          throw AssertionExceptionUtility.CreateExpectationException (_webTreeViewNode.Driver, $"No node with the index '{oneBasedIndex}' was found.");
 
         var nodeScope = foundNodes.Single();
 
@@ -125,7 +125,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
         }
         catch (StaleElementException ex)
         {
-          throw AssertionExceptionUtility.CreateControlMissingException (ex.Message);
+          throw AssertionExceptionUtility.CreateControlMissingException (_webTreeViewNode.Driver, ex.Message);
         }
       }
     }
@@ -156,7 +156,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     {
       var numberChildren = Scope[DiagnosticMetadataAttributes.WebTreeViewNumberOfChildren];
       if (numberChildren == DiagnosticMetadataAttributes.Null)
-        throw AssertionExceptionUtility.CreateExpectationException ("TreeViewNode is not evaluated.");
+        throw AssertionExceptionUtility.CreateExpectationException (Driver, "TreeViewNode is not evaluated.");
 
       return int.Parse (numberChildren);
     }
@@ -237,9 +237,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     public WebTreeViewNodeControlObject Expand ()
     {
       if (!IsExpandable())
-        throw AssertionExceptionUtility.CreateExpectationException ("The WebTreeViewNode cannot be expanded as it has no children.");
+        throw AssertionExceptionUtility.CreateExpectationException (Driver, "The WebTreeViewNode cannot be expanded as it has no children.");
       if (IsExpanded())
-        throw AssertionExceptionUtility.CreateExpectationException ("TreeViewNode is already expanded.");
+        throw AssertionExceptionUtility.CreateExpectationException (Driver, "TreeViewNode is already expanded.");
 
       ToggleExpansion();
 
@@ -252,9 +252,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     public WebTreeViewNodeControlObject Collapse ()
     {
       if (!IsExpandable())
-        throw AssertionExceptionUtility.CreateExpectationException ("The WebTreeViewNode cannot be collapsed as it has no children.");
+        throw AssertionExceptionUtility.CreateExpectationException (Driver, "The WebTreeViewNode cannot be collapsed as it has no children.");
       if (!IsExpanded())
-        throw AssertionExceptionUtility.CreateExpectationException ("TreeViewNode is already collapsed.");
+        throw AssertionExceptionUtility.CreateExpectationException (Driver, "TreeViewNode is already collapsed.");
 
       ToggleExpansion();
 

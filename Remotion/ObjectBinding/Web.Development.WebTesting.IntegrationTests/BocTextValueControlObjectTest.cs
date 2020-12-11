@@ -68,10 +68,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var control = home.TextValues().GetByLocalID ("LastNameField_Disabled");
 
       Assert.That (control.IsDisabled(), Is.True);
-      Assert.That (() => control.FillWith ("text"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("FillWith").Message));
+      Assert.That (
+          () => control.FillWith ("text"), 
+          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "FillWith").Message));
       Assert.That (
           () => control.FillWith ("text", FinishInput.Promptly),
-          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("FillWith").Message));
+          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "FillWith").Message));
     }
 
     [Test]
@@ -82,10 +84,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var control = home.TextValues().GetByLocalID ("LastNameField_ReadOnly");
 
       Assert.That (control.IsReadOnly(), Is.True);
-      Assert.That (() => control.FillWith ("text"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException().Message));
+      Assert.That (() => control.FillWith ("text"), Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException (Driver).Message));
       Assert.That (
           () => control.FillWith ("text", FinishInput.Promptly),
-          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException().Message));
+          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException (Driver).Message));
     }
 
     [Test]

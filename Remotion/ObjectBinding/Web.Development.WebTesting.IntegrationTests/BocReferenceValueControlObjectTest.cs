@@ -71,19 +71,19 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (control.IsDisabled(), Is.True);
       Assert.That (
           () => control.ExecuteCommand(),
-          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("ExecuteCommand").Message));
+          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "ExecuteCommand").Message));
       Assert.That (
           () => control.SelectOption().WithDisplayText ("D, A"),
-          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("SelectOption.WithDisplayText").Message));
+          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "SelectOption.WithDisplayText").Message));
       Assert.That (
           () => control.SelectOption().WithIndex (1),
-          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("SelectOption.WithIndex").Message));
+          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "SelectOption.WithIndex").Message));
       Assert.That (
           () => control.SelectOption().WithItemID (baValue),
-          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("SelectOption.WithItemID").Message));
+          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "SelectOption.WithItemID").Message));
       Assert.That (
           () => control.SelectOption (baValue),
-          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("SelectOption(itemID)").Message));
+          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "SelectOption(itemID)").Message));
     }
 
     [Test]
@@ -96,12 +96,21 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var control = home.ReferenceValues().GetByLocalID ("PartnerField_ReadOnly");
 
       Assert.That (control.IsReadOnly(), Is.True);
-      Assert.That (() => control.GetOptionDefinitions(), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException().Message));
-      Assert.That (() => control.SelectOption().WithDisplayText ("D, A"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException().Message));
-      Assert.That (() => control.SelectOption().WithIndex (1), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException().Message));
-      Assert.That (() => control.SelectOption().WithItemID (baValue), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException().Message));
-      Assert.That (() => control.SelectOption (baValue), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException().Message));
-    
+      Assert.That (
+          () => control.GetOptionDefinitions(), 
+          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException (Driver).Message));
+      Assert.That (
+          () => control.SelectOption().WithDisplayText ("D, A"),
+          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException (Driver).Message));
+      Assert.That (
+          () => control.SelectOption().WithIndex (1),
+          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException (Driver).Message));
+      Assert.That (
+          () => control.SelectOption().WithItemID (baValue), 
+          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException (Driver).Message));
+      Assert.That (
+          () => control.SelectOption (baValue), 
+          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException (Driver).Message));
     }
 
     [Test]

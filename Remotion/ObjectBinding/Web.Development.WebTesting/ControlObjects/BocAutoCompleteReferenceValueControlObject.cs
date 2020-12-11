@@ -120,10 +120,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       ArgumentUtility.CheckNotNull ("text", text);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException();
+        throw AssertionExceptionUtility.CreateControlDisabledException (Driver);
 
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException();
+        throw AssertionExceptionUtility.CreateControlReadOnlyException (Driver);
 
       return FillWith (text, FinishInput.WithTab, actionOptions);
     }
@@ -135,10 +135,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       ArgumentUtility.CheckNotNull ("finishInputWith", finishInputWith);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException();
+        throw AssertionExceptionUtility.CreateControlDisabledException (Driver);
 
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException();
+        throw AssertionExceptionUtility.CreateControlReadOnlyException (Driver);
 
       var actualActionOptions = MergeWithDefaultActionOptions (Scope, actionOptions);
       ExecuteAction (new FillWithAction (this, Scope.FindChild ("TextValue"), text, finishInputWith), actualActionOptions);
@@ -156,7 +156,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public UnspecifiedPageObject ExecuteCommand (IWebTestActionOptions actionOptions = null)
     {
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException();
+        throw AssertionExceptionUtility.CreateControlDisabledException (Driver);
 
       return GetCommand().Click (actionOptions);
     }
@@ -215,10 +215,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       ArgumentUtility.CheckNotNull ("filter", filter);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException();
+        throw AssertionExceptionUtility.CreateControlDisabledException (Driver);
 
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException();
+        throw AssertionExceptionUtility.CreateControlReadOnlyException (Driver);
 
       return SelectFirstMatch (filter, FinishInput.WithTab, actionOptions);
     }
@@ -238,10 +238,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       ArgumentUtility.CheckNotNull ("finishInputWith", finishInputWith);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException();
+        throw AssertionExceptionUtility.CreateControlDisabledException (Driver);
 
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException();
+        throw AssertionExceptionUtility.CreateControlReadOnlyException (Driver);
 
       var firstAutoCompleteResult = GetFirstAutoCompleteResult (filter);
       var textField = Scope.FindChild ("TextValue");
@@ -255,7 +255,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public IReadOnlyList<string> GetValidationErrors ()
     {
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException();
+        throw AssertionExceptionUtility.CreateControlReadOnlyException (Driver);
 
       return GetValidationErrors (Scope.FindChild ("TextValue"));
     }
@@ -285,7 +285,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       var results = GetSearchServiceResults (filter, 2);
 
       if (results.Count == 0)
-        throw AssertionExceptionUtility.CreateExpectationException ("No matches were found for the specified filter: '{0}'.", filter);
+        throw AssertionExceptionUtility.CreateExpectationException (Driver, "No matches were found for the specified filter: '{0}'.", filter);
 
       return results.First();
     }

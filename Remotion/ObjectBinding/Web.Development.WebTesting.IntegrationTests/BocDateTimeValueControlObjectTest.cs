@@ -18,6 +18,7 @@ using System;
 using System.Drawing;
 using System.Linq;
 using Coypu;
+using Coypu.Drivers;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
@@ -162,15 +163,18 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (control.IsDisabled(), Is.True);
       Assert.That (
           () => control.SetDate (DateTime.MinValue),
-          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("SetDate").Message));
-      Assert.That (() => control.SetDate (""), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("SetDate").Message));
+          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "SetDate").Message));
+      Assert.That (() => control.SetDate (""),
+          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "SetDate").Message));
       Assert.That (
           () => control.SetDateTime (DateTime.MinValue),
-          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("SetDateTime").Message));
+          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "SetDateTime").Message));
       Assert.That (
           () => control.SetTime (TimeSpan.MinValue),
-          Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("SetTime").Message));
-      Assert.That (() => control.SetTime (""), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException ("SetTime").Message));
+          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "SetTime").Message));
+      Assert.That (
+          () => control.SetTime (""), 
+          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "SetTime").Message));
     }
 
     [Test]
@@ -181,11 +185,21 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var control = home.DateTimeValues().GetByLocalID ("DateOfBirthField_ReadOnly");
 
       Assert.That (control.IsReadOnly(), Is.True);
-      Assert.That (() => control.SetDate (DateTime.MinValue), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException().Message));
-      Assert.That (() => control.SetDate (""), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException().Message));
-      Assert.That (() => control.SetDateTime (DateTime.MinValue), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException().Message));
-      Assert.That (() => control.SetTime (TimeSpan.MinValue), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException().Message));
-      Assert.That (() => control.SetTime (""), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException().Message));
+      Assert.That (
+          () => control.SetDate (DateTime.MinValue), 
+          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException (Driver).Message));
+      Assert.That (
+          () => control.SetDate (""), 
+          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException (Driver).Message));
+      Assert.That (
+          () => control.SetDateTime (DateTime.MinValue), 
+          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException (Driver).Message));
+      Assert.That (
+          () => control.SetTime (TimeSpan.MinValue), 
+          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException (Driver).Message));
+      Assert.That (
+          () => control.SetTime (""), 
+          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException (Driver).Message));
     }
 
     [Test]

@@ -17,6 +17,8 @@
 using System;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
+using System.Threading;
 using System.Windows.Forms;
 using Coypu;
 using JetBrains.Annotations;
@@ -31,6 +33,12 @@ namespace Remotion.Web.Development.WebTesting
   /// </summary>
   public static class CoypuElementScopeExtensions
   {
+    private static readonly Lazy<FieldInfo> s_driverFieldInfo = new Lazy<FieldInfo> (
+        () => Assertion.IsNotNull (
+            typeof (ElementScope).GetField ("_driver", BindingFlags.NonPublic | BindingFlags.Instance),
+            "Coypu has changed, update CoypuElementScopeExtensions.GetDriver() method."),
+        LazyThreadSafetyMode.ExecutionAndPublication);
+
     /// <summary>
     /// This method ensures that the given <paramref name="scope"/> is existent. Coypu would automatically check for existence whenever we access the
     /// scope, however, we explicitly check the existence when creating new control objects. This ensures that any <see cref="MissingHtmlException"/>
@@ -55,11 +63,11 @@ namespace Remotion.Web.Development.WebTesting
       }
       catch (MissingHtmlException exception)
       {
-        throw AssertionExceptionUtility.CreateControlMissingException (exception.Message);
+        throw AssertionExceptionUtility.CreateControlMissingException (scope.GetDriver(), exception.Message);
       }
       catch (AmbiguousException exception)
       {
-        throw AssertionExceptionUtility.CreateControlAmbiguousException (exception.Message);
+        throw AssertionExceptionUtility.CreateControlAmbiguousException (scope.GetDriver(), exception.Message);
       }
     }
 
@@ -86,11 +94,11 @@ namespace Remotion.Web.Development.WebTesting
       }
       catch (MissingHtmlException exception)
       {
-        throw AssertionExceptionUtility.CreateControlMissingException (exception.Message);
+        throw AssertionExceptionUtility.CreateControlMissingException (scope.GetDriver(), exception.Message);
       }
       catch (AmbiguousException exception)
       {
-        throw AssertionExceptionUtility.CreateControlAmbiguousException (exception.Message);
+        throw AssertionExceptionUtility.CreateControlAmbiguousException (scope.GetDriver(), exception.Message);
       }
       finally
       {
@@ -135,7 +143,6 @@ namespace Remotion.Web.Development.WebTesting
         }
 
         return true;
-        
       }
       catch (MissingHtmlException)
       {
@@ -155,7 +162,7 @@ namespace Remotion.Web.Development.WebTesting
       }
       catch (AmbiguousException exception)
       {
-        throw AssertionExceptionUtility.CreateControlAmbiguousException (exception.Message);
+        throw AssertionExceptionUtility.CreateControlAmbiguousException (scope.GetDriver(), exception.Message);
       }
       finally
       {
@@ -222,6 +229,17 @@ namespace Remotion.Web.Development.WebTesting
         return WebColor.Transparent;
 
       return ParseColorFromBrowserReturnedString (computedTextColor);
+    }
+
+    /// <summary>
+    /// Returns the <see cref="IDriver"/> object of an <see cref="ElementScope"/> instance.
+    /// </summary>
+    /// <returns>The <see cref="IDriver"/> instance held by <paramref name="scope"/>.</returns>
+    internal static IDriver GetDriver ([NotNull] this ElementScope scope)
+    {
+      ArgumentUtility.CheckNotNull ("scope", scope);
+
+      return (IDriver) s_driverFieldInfo.Value.GetValue (scope);
     }
 
     private static bool IsTransparent ([NotNull] string color)

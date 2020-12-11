@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Coypu;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
@@ -42,6 +43,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     protected WebTestHelper Helper
     {
       get { return _webTestHelper; }
+    }
+
+    protected IDriver Driver
+    {
+      get { return _webTestHelper.MainBrowserSession?.Driver; }
     }
 
     [OneTimeSetUp]

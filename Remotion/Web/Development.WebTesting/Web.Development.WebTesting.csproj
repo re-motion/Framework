@@ -229,6 +229,7 @@
     <Compile Include="ScreenshotCreation\BrowserContentLocators\ChromeBrowserContentLocator.cs" />
     <Compile Include="Utilities\DomSelectorUtility.cs" />
     <Compile Include="Utilities\DataContractJsonSerializationUtility.cs" />
+    <Compile Include="Utilities\DriverExtensions.cs" />
     <Compile Include="Utilities\ElementScopeExtensions.cs" />
     <Compile Include="ScreenshotCreation\IBrowserContentLocator.cs" />
     <Compile Include="Utilities\BrowserHelper.cs" />

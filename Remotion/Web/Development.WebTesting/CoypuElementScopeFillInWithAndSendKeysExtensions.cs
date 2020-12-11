@@ -16,8 +16,6 @@
 // 
 using System;
 using System.Linq;
-using System.Reflection;
-using System.Threading;
 using Coypu;
 using JetBrains.Annotations;
 using log4net;
@@ -34,12 +32,6 @@ namespace Remotion.Web.Development.WebTesting
   public static class CoypuElementScopeFillInWithAndSendKeysExtensions
   {
     private static readonly ILog s_log = LogManager.GetLogger (typeof (CoypuElementScopeFillInWithAndSendKeysExtensions));
-
-    private static readonly Lazy<FieldInfo> s_driverFieldInfo = new Lazy<FieldInfo> (
-        () => Assertion.IsNotNull (
-            typeof (ElementScope).GetField ("_driver", BindingFlags.NonPublic | BindingFlags.Instance),
-            "Coypu has changed, please update CoypuElementScopeFillInWithAndSendKeysExtensions.GetDriver() method."),
-        LazyThreadSafetyMode.ExecutionAndPublication);
 
     /// <summary>
     /// ASP.NET WebForms-ready &amp; IE-compatible version for Coypu's <see cref="ElementScope.SendKeys"/> method.
@@ -172,13 +164,6 @@ namespace Remotion.Web.Development.WebTesting
     private static bool ContainsNonEmptyText (string value)
     {
       return ContainsChars (value) && value != "";
-    }
-
-    private static IDriver GetDriver ([NotNull] this ElementScope scope)
-    {
-      ArgumentUtility.CheckNotNull ("scope", scope);
-
-      return (IDriver) s_driverFieldInfo.Value.GetValue (scope);
     }
   }
 }

@@ -55,10 +55,10 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
       ArgumentUtility.CheckNotNull ("text", text);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException();
+        throw AssertionExceptionUtility.CreateControlDisabledException (Driver);
 
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException();
+        throw AssertionExceptionUtility.CreateControlReadOnlyException (Driver);
 
       return FillWith (text, FinishInput.WithTab, actionOptions);
     }
@@ -73,10 +73,10 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
       ArgumentUtility.CheckNotNull ("finishInputWith", finishInputWith);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException();
+        throw AssertionExceptionUtility.CreateControlDisabledException (Driver);
 
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException();
+        throw AssertionExceptionUtility.CreateControlReadOnlyException (Driver);
 
       var actualActionOptions = MergeWithDefaultActionOptions (actionOptions, finishInputWith);
       ExecuteAction (new FillWithAction (this, Scope, text, finishInputWith), actualActionOptions);
