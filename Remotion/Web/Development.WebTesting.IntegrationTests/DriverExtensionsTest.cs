@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.InternetExplorer;
 using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
@@ -24,6 +25,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class DriverExtensionsTest : IntegrationTest
   {
     private const string c_versionPattern = @"(\d+\.){1,3}(\d+)";
+    private const string c_unknown = "unknown";
 
     [Test]
     public void GetBrowserName_ReturnsCorrectName ()
@@ -32,15 +34,29 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    public void GetBrowserName_ReturnsBrowserVersion ()
+    public void GetBrowserVersion_ReturnsBrowserVersion ()
     {
-      Assert.That (Driver.GetBrowserVersion(), Does.Match (c_versionPattern));
+      if (Helper.BrowserConfiguration.IsInternetExplorer())
+      {
+        Assert.That (Driver.GetBrowserVersion(), Is.EqualTo (c_unknown));
+      }
+      else
+      {
+        Assert.That (Driver.GetBrowserVersion(), Does.Match (c_versionPattern));
+      }
     }
 
     [Test]
-    public void GetBrowserName_ReturnsWebDriverVersion ()
+    public void GetWebDriverVersion_ReturnsWebDriverVersion ()
     {
-      Assert.That (Driver.GetWebDriverVersion(), Does.Match (c_versionPattern));
+      if (Helper.BrowserConfiguration.IsInternetExplorer())
+      {
+        Assert.That (Driver.GetWebDriverVersion(), Is.EqualTo (c_unknown));
+      }
+      else
+      {
+        Assert.That (Driver.GetWebDriverVersion(), Does.Match (c_versionPattern));
+      }
     }
   }
 }

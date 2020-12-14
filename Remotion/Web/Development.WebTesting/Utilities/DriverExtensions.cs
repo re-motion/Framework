@@ -21,6 +21,7 @@ using Microsoft.Edge.SeleniumTools;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.IE;
 using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.Utilities
@@ -47,6 +48,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
           ChromeDriver _ => "Chrome",
           EdgeDriver _ => "Edge",
           FirefoxDriver _ => "Firefox",
+          InternetExplorerDriver _ => "InternetExplorer",
           _ => c_unknown
       };
     }
