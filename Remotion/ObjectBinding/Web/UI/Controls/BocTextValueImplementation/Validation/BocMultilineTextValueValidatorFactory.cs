@@ -67,6 +67,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
         requiredValidator.ID = control.ID + "_ValidatorRequired";
         requiredValidator.ControlToValidate = control.TargetControl.ID;
         requiredValidator.ErrorMessage = resourceManager.GetString (BocMultilineTextValue.ResourceIdentifier.RequiredValidationMessage);
+        requiredValidator.EnableViewState = false;
+
         return requiredValidator;
       }
       else
@@ -89,6 +91,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
         lengthValidator.ErrorMessage = string.Format (
             resourceManager.GetString (BocMultilineTextValue.ResourceIdentifier.MaxLengthValidationMessage),
             maxLength.Value);
+        lengthValidator.EnableViewState = false;
+
         return lengthValidator;
       }
       else
@@ -105,6 +109,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
       typeValidator.SampleTextLength = 5;
       typeValidator.EnableMultilineText = true;
       typeValidator.ErrorMessageFormat = resourceManager.GetString (BocMultilineTextValue.ResourceIdentifier.InvalidCharactersErrorMessage);
+      typeValidator.EnableViewState = false;
+
       return typeValidator;
     }
   }

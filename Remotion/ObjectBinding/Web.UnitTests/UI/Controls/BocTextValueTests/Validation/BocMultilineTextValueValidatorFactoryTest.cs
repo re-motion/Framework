@@ -31,9 +31,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests.Val
     public void CreateValidators_WithOptionalValidatorsEnabled (bool isRequired, bool isReadonly, Type[] expectedValidatorTypes)
     {
       var control = GetControlWithOptionalValidatorsEnabled (isRequired);
-      var validators = _validatorFactory.CreateValidators (control, isReadonly);
+      var validators = _validatorFactory.CreateValidators (control, isReadonly).ToArray();
 
       Assert.That (validators.Select (v => v.GetType()), Is.EquivalentTo (expectedValidatorTypes));
+      Assert.That (validators, Has.All.Property ("EnableViewState").False);
     }
 
     [Test]
@@ -47,9 +48,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests.Val
     public void CreateValidators_WithOptionalValidatorsDisabled (bool isRequired, bool isReadonly, bool hasDataSource, bool hasBusinessObject, bool hasProperty, Type[] expectedValidatorTypes)
     {
       var control = GetControlWithOptionalValidatorsDisabled (isRequired, hasDataSource, hasBusinessObject, hasProperty);
-      var validators = _validatorFactory.CreateValidators (control, isReadonly);
+      var validators = _validatorFactory.CreateValidators (control, isReadonly).ToArray();
 
       Assert.That (validators.Select (v => v.GetType()), Is.EquivalentTo (expectedValidatorTypes));
+      Assert.That (validators, Has.All.Property ("EnableViewState").False);
     }
 
     [Test]
@@ -61,8 +63,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests.Val
     {
       var control = GetControlWithOptionalValidatorsEnabled (isRequired);
       control.TextBoxStyle.MaxLength = 10;
-      var validators = _validatorFactory.CreateValidators (control, isReadonly);
+      var validators = _validatorFactory.CreateValidators (control, isReadonly).ToArray();
+
       Assert.That (validators.Select (v => v.GetType()), Is.EquivalentTo (expectedValidatorTypes));
+      Assert.That (validators, Has.All.Property ("EnableViewState").False);
     }
 
     [Test]
@@ -74,8 +78,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests.Val
     {
       var control = GetControlWithOptionalValidatorsDisabled (isRequired);
       control.TextBoxStyle.MaxLength = 10;
-      var validators = _validatorFactory.CreateValidators (control, isReadonly);
+      var validators = _validatorFactory.CreateValidators (control, isReadonly).ToArray();
+
       Assert.That (validators.Select (v => v.GetType()), Is.EquivalentTo (expectedValidatorTypes));
+      Assert.That (validators, Has.All.Property ("EnableViewState").False);
     }
 
     private IBocMultilineTextValue GetControlWithOptionalValidatorsEnabled (bool isRequired)

@@ -62,6 +62,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Vali
         requiredValidator.ID = control.ID + "_ValidatorRequried";
         requiredValidator.ControlToValidate = control.TargetControl.ID;
         requiredValidator.ErrorMessage = resourceManager.GetString (BocEnumValue.ResourceIdentifier.NullItemValidationMessage);
+        requiredValidator.EnableViewState = false;
+
         return requiredValidator;
       }
       else

@@ -30,9 +30,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       // EnableEditModeValidator true
       var control1 = GetControl (isListEditModeEnabled, false, true);
-      var validators1 = _validatorFactory.CreateValidators (control1, isReadonly);
+      var validators1 = _validatorFactory.CreateValidators (control1, isReadonly).ToArray();
 
       Assert.That (validators1.Select (v => v.GetType()), Is.EquivalentTo (expectedValidatorTypes));
+      Assert.That (validators1, Has.All.Property ("EnableViewState").False);
 
       // EnableEditModeValidator false
       var control2 = GetControl (isListEditModeEnabled, false, false);
@@ -50,9 +51,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       // EnableEditModeValidator true
       var control1 = GetControl (false, isRowEditModeActive, true);
-      var validators1 = _validatorFactory.CreateValidators (control1, isReadonly);
+      var validators1 = _validatorFactory.CreateValidators (control1, isReadonly).ToArray();
 
       Assert.That (validators1.Select (v => v.GetType()), Is.EquivalentTo (expectedValidatorTypes));
+      Assert.That (validators1, Has.All.Property ("EnableViewState").False);
 
       // EnableEditModeValidator false
       var control2 = GetControl (false, isRowEditModeActive, false);

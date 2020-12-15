@@ -52,6 +52,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation.Factories
       var bocValidator = new BusinessObjectReferenceDataSourceControlValidationResultDispatchingValidator();
       bocValidator.ControlToValidate = control.ID;
       bocValidator.ID = control.ID + "_BocReferenceDataSourceValidator";
+      bocValidator.EnableViewState = false;
+
       return bocValidator;
     }
   }

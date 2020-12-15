@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Web.UI;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
@@ -55,12 +56,17 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
       mock.Expect (m => m.ID).Return ("ID");
 
       var factory = new ValidationBocListValidatorFactory();
-      var validators = factory.CreateValidators (mock, isReadOnly);
+      var validators = factory.CreateValidators (mock, isReadOnly).ToArray();
 
       if (isReadOnly)
+      {
         Assert.That (validators, Is.Empty);
+      }
       else
+      {
         Assert.That (validators.Select (v => v.GetType()), Is.EquivalentTo (new[] { typeof (BocListValidationResultDispatchingValidator) }));
+        Assert.That (validators, Has.All.Property ("EnableViewState").False);
+      }
     }
   }
 }

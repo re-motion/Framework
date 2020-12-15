@@ -140,6 +140,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation.Factories
       var bocValidator = new BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator();
       bocValidator.ControlToValidate = id;
       bocValidator.ID = id + "_BocValidator";
+      bocValidator.EnableViewState = false;
+
       yield return bocValidator;
     }
   }
