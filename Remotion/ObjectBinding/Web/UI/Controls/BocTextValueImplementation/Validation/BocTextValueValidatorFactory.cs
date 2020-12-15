@@ -65,6 +65,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
       requiredValidator.ID = control.ID + "_ValidatorRequired";
       requiredValidator.ControlToValidate = control.TargetControl.ID;
       requiredValidator.ErrorMessage = resourceManager.GetString (BocTextValue.ResourceIdentifier.RequiredErrorMessage);
+      requiredValidator.EnableViewState = false;
+
       return requiredValidator;
     }
 
@@ -80,6 +82,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
       lengthValidator.ErrorMessage = string.Format (
           resourceManager.GetString (BocTextValue.ResourceIdentifier.MaxLengthValidationMessage),
           maxLength.Value);
+      lengthValidator.EnableViewState = false;
+
       return lengthValidator;
     }
 
@@ -136,6 +140,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
         typeValidator.EnableMultilineText = false;
         typeValidator.ErrorMessageFormat = resourceManager.GetString (BocTextValue.ResourceIdentifier.InvalidCharactersForSingleLineErrorMessage);
       }
+      typeValidator.EnableViewState = false;
+
       return typeValidator;
     }
 
@@ -145,6 +151,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
       typeValidator.ID = control.ID + "_ValidatorType";
       typeValidator.ControlToValidate = control.TargetControl.ID;
       typeValidator.ErrorMessage = resourceManager.GetString (BocTextValue.ResourceIdentifier.InvalidDateAndTimeErrorMessage);
+      typeValidator.EnableViewState = false;
+
       return typeValidator;
     }
 
@@ -156,6 +164,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
       typeValidator.Operator = ValidationCompareOperator.DataTypeCheck;
       typeValidator.Type = ValidationDataType.Date;
       typeValidator.ErrorMessage = resourceManager.GetString (BocTextValue.ResourceIdentifier.InvalidDateErrorMessage);
+      typeValidator.EnableViewState = false;
+
       return typeValidator;
     }
 
@@ -169,6 +179,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
       typeValidator.DataType = GetNumericValidatorDataType (valueType);
       typeValidator.NumberStyle = GetNumberStyle (valueType);
       typeValidator.ErrorMessage = resourceManager.GetString (GetNumericValidatorErrorMessage (GetNumericValidatorDataType (valueType)));
+      typeValidator.EnableViewState = false;
+
       return typeValidator;
     }
 

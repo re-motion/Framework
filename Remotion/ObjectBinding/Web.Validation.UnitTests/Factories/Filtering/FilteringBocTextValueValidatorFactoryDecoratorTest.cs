@@ -54,10 +54,11 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories.Filtering
 
       SetResourceManagerMock (control);
 
-      var validators = factory.CreateValidators (control, false);
+      var validators = factory.CreateValidators (control, false).ToArray();
       Assert.That (
           validators.Select (v => v.GetType()),
           Is.EquivalentTo (expectedValidatorTypes));
+      Assert.That (validators, Has.All.Property ("EnableViewState").False);
     }
   }
 }

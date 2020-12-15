@@ -56,6 +56,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validatio
         editModeValidator.ErrorMessage = resourceManager.GetString (BocList.ResourceIdentifier.RowEditModeErrorMessage);
       else if (control.EditModeController.IsListEditModeActive)
         editModeValidator.ErrorMessage = resourceManager.GetString (BocList.ResourceIdentifier.ListEditModeErrorMessage);
+      editModeValidator.EnableViewState = false;
 
       return editModeValidator;
     }

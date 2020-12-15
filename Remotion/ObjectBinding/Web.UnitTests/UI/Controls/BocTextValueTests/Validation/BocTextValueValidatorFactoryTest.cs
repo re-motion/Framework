@@ -29,9 +29,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests.Val
     public void CreateValidators_UndefinedProperty (bool isRequired, bool isReadonly, Type[] expectedValidatorTypes)
     {
       var control = GetControl (isRequired, BocTextValueType.Undefined);
-      var validators = _validatorFactory.CreateValidators (control, isReadonly).ToList();
+      var validators = _validatorFactory.CreateValidators (control, isReadonly).ToArray();
 
       Assert.That (validators.Select (v => v.GetType()), Is.EquivalentTo (expectedValidatorTypes));
+      Assert.That (validators, Has.All.Property ("EnableViewState").False);
     }
 
     [Test]
@@ -42,9 +43,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests.Val
     public void CreateValidators_StringProperty (bool isRequired, bool isReadonly, Type[] expectedValidatorTypes)
     {
       var control = GetControl (isRequired, BocTextValueType.String);
-      var validators = _validatorFactory.CreateValidators (control, isReadonly).ToList();
+      var validators = _validatorFactory.CreateValidators (control, isReadonly).ToArray();
 
       Assert.That (validators.Select (v => v.GetType()), Is.EquivalentTo (expectedValidatorTypes));
+      Assert.That (validators, Has.All.Property ("EnableViewState").False);
     }
 
     [Test]
@@ -56,9 +58,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests.Val
     {
       var control = GetControl (isRequired, BocTextValueType.String);
       control.TextBoxStyle.MaxLength = 10;
-      var validators = _validatorFactory.CreateValidators (control, isReadonly).ToList();
+      var validators = _validatorFactory.CreateValidators (control, isReadonly).ToArray();
 
       Assert.That (validators.Select (v => v.GetType()), Is.EquivalentTo (expectedValidatorTypes));
+      Assert.That (validators, Has.All.Property ("EnableViewState").False);
     }
 
     [Test]
@@ -69,9 +72,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests.Val
     public void CreateValidators_DateTimeProperty (bool isRequired, bool isReadonly, Type[] expectedValidatorTypes)
     {
       var control = GetControl (isRequired, BocTextValueType.DateTime);
-      var validators = _validatorFactory.CreateValidators (control, isReadonly).ToList();
+      var validators = _validatorFactory.CreateValidators (control, isReadonly).ToArray();
 
       Assert.That (validators.Select (v => v.GetType()), Is.EquivalentTo (expectedValidatorTypes));
+      Assert.That (validators, Has.All.Property ("EnableViewState").False);
     }
 
     [Test]
@@ -82,9 +86,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests.Val
     public void CreateValidators_DateProperty (bool isRequired, bool isReadonly, Type[] expectedValidatorTypes)
     {
       var control = GetControl (isRequired, BocTextValueType.Date);
-      var validators = _validatorFactory.CreateValidators (control, isReadonly).ToList();
+      var validators = _validatorFactory.CreateValidators (control, isReadonly).ToArray();
 
       Assert.That (validators.Select (v => v.GetType()), Is.EquivalentTo (expectedValidatorTypes));
+      Assert.That (validators, Has.All.Property ("EnableViewState").False);
     }
 
     [Test]
@@ -106,9 +111,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests.Val
     private void CheckNumericValueValidators (BocTextValueType type, bool isRequired, bool isReadonly, Type[] expectedValidatorTypes)
     {
       var control = GetControl (isRequired, type);
-      var validators = _validatorFactory.CreateValidators (control, isReadonly).ToList();
+      var validators = _validatorFactory.CreateValidators (control, isReadonly).ToArray();
 
       Assert.That (validators.Select (v => v.GetType()), Is.EquivalentTo (expectedValidatorTypes));
+      Assert.That (validators, Has.All.Property ("EnableViewState").False);
     }
 
     private IBocTextValue GetControl (bool isRequired, BocTextValueType valueType)

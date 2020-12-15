@@ -56,6 +56,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       requiredFieldValidator.ID = control.ID + "_ValidatorNotNullItem";
       requiredFieldValidator.ControlToValidate = control.ID;
       requiredFieldValidator.ErrorMessage = resourceManage.GetString (BocAutoCompleteReferenceValue.ResourceIdentifier.NullItemErrorMessage);
+      requiredFieldValidator.EnableViewState = false;
+
       return requiredFieldValidator;
     }
 
@@ -65,6 +67,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       invalidDisplayNameValidator.ID = control.ID + "_ValidatorValidDisplayName";
       invalidDisplayNameValidator.ControlToValidate = control.ID;
       invalidDisplayNameValidator.ErrorMessage = resourceManage.GetString (BocAutoCompleteReferenceValue.ResourceIdentifier.InvalidItemErrorMessage);
+      invalidDisplayNameValidator.EnableViewState = false;
+
       return invalidDisplayNameValidator;
     }
   }

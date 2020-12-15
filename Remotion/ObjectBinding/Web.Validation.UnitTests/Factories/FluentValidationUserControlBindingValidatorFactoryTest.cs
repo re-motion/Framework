@@ -53,12 +53,17 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories
       mock.Expect (m => m.ID).Return ("ID");
 
       var factory = new FluentValidationUserControlBindingValidatorFactory();
-      var validators = factory.CreateValidators (mock, isReadOnly);
+      var validators = factory.CreateValidators (mock, isReadOnly).ToArray();
 
       if (isReadOnly)
+      {
         Assert.That (validators, Is.Empty);
+      }
       else
-        Assert.That (validators.Select (v => v.GetType ()), Is.EquivalentTo (new[] { typeof (UserControlBindingValidationFailureDisptacher) }));
+      {
+        Assert.That (validators.Select (v => v.GetType()), Is.EquivalentTo (new[] { typeof (UserControlBindingValidationFailureDisptacher) }));
+        Assert.That (validators, Has.All.Property ("EnableViewState").False);
+      }
     }
   }
 }

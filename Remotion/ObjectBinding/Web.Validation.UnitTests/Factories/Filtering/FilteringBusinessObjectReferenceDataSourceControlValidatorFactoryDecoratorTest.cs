@@ -22,10 +22,11 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories.Filtering
 
       var control = MockRepository.GenerateMock<BusinessObjectReferenceDataSourceControl>();
 
-      var validators = factory.CreateValidators (control, false);
+      var validators = factory.CreateValidators (control, false).ToArray();
       Assert.That (
           validators.Select (v => v.GetType()),
           Is.EquivalentTo (new[] { typeof (BocReferenceDataSourceValidationFailureDisptachingValidator) }));
+      Assert.That (validators, Has.All.Property ("EnableViewState").False);
     }
   }
 }

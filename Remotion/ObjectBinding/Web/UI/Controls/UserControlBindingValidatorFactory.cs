@@ -44,6 +44,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       var userControlBindingValidator = new UserControlBindingValidator();
       userControlBindingValidator.ID = control.ID + "_UserControlBindingValidator";
       userControlBindingValidator.ControlToValidate = control.ID;
+      userControlBindingValidator.EnableViewState = false;
+
       return userControlBindingValidator;
     }
   }
