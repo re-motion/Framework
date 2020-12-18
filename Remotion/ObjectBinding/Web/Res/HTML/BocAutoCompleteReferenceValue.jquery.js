@@ -229,7 +229,6 @@
                 case KEY.ESC:
                     // re-motion: block event bubbling
                     event.stopPropagation();
-                    clearTimeout(timeout);
                     var wasVisible = select.visible();
                     state.mouseDownOnSelect = false;
 
