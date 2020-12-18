@@ -360,10 +360,8 @@
                 } else {
                     clearTimeout(timeout);
                     var lastKeyPressCode = state.lastKeyPressCode;
-                    timeout = setTimeout(function () {
-                        invalidateResult();
-                        acceptInput(lastKeyPressCode);
-                    }, 200);
+                    invalidateResult();
+                    acceptInput(lastKeyPressCode);
                 }
             }
         }).click(function() {
