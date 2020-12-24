@@ -69,7 +69,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Build\NuSpec\TemplateSharedForMSBuildTask.nuspec">
+    <None Include="..\..\..\Build\NuSpec\TemplateSharedForMSBuildTask.nuspec">
       <Link>TemplateSharedForMSBuildTask.nuspec</Link>
     </None>
     <None Include="..\..\Remotion LGPL.licenseheader">
