@@ -1,156 +1,183 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
-<!-- This file is part of the re-motion Core Framework (www.re-motion.org)
- ! Copyright (c) rubicon IT GmbH, www.rubicon.eu
- ! 
- ! The re-motion Core Framework is free software; you can redistribute it 
- ! and/or modify it under the terms of the GNU Lesser General Public License 
- ! as published by the Free Software Foundation; either version 2.1 of the 
- ! License, or (at your option) any later version.
- ! 
- ! re-motion is distributed in the hope that it will be useful, 
- ! but WITHOUT ANY WARRANTY; without even the implied warranty of 
- ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
- ! GNU Lesser General Public License for more details.
- ! 
- ! You should have received a copy of the GNU Lesser General Public License
- ! along with re-motion; if not, see http://www.gnu.org/licenses.
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- Copyright (c) rubicon IT GmbH, www.rubicon.eu
+ !
+ ! See the NOTICE file distributed with this work for additional information
+ ! regarding copyright ownership.  rubicon licenses this file to you under 
+ ! the Apache License, Version 2.0 (the "License"); you may not use this 
+ ! file except in compliance with the License.  You may obtain a copy of the 
+ ! License at
+ !
+ !   http://www.apache.org/licenses/LICENSE-2.0
+ !
+ ! Unless required by applicable law or agreed to in writing, software 
+ ! distributed under the License is distributed on an "AS IS" BASIS, WITHOUT 
+ ! WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the 
+ ! License for the specific language governing permissions and limitations
+ ! under the License.
 -->
+
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-  <Import Project="Remotion.Projects.include.build" />
+  <PropertyGroup>
+    <PackagesDirectory Condition="'$(PackagesDirectory)' == ''">$(MSBuildProjectDirectory)\..\packages\</PackagesDirectory>
+    <MSBuildExtensionPackPath Condition="'$(MSBuildExtensionPackPath)' == ''">$(PackagesDirectory)MSBuild.Extension.Pack.1.5.0\tools\net40\</MSBuildExtensionPackPath>
+    <ExtensionTasksPath>$(MSBuildExtensionPackPath)</ExtensionTasksPath>
+    <DependDBBuildProcessorToolPath Condition="'$(NuGetToolPath)' == ''">$(PackagesDirectory)DependDB.BuildProcessor.2.0.0\tools\</DependDBBuildProcessorToolPath>
+    <DependDBNuGetPreProcessorToolPath Condition="'$(NuGetToolPath)' == ''">$(PackagesDirectory)DependDB.BuildProcessor.NuGetPreProcessor.2.0.0\tools\</DependDBNuGetPreProcessorToolPath>
+    <NUnitToolPath Condition="'$(NUnitToolPath)' == ''">$(PackagesDirectory)NUnit.ConsoleRunner.3.11.1\tools\</NUnitToolPath>
+    <NuGetToolPath Condition="'$(NuGetToolPath)' == ''">$(PackagesDirectory)NuGet.CommandLine.3.5.0\tools\</NuGetToolPath>
+    <NuGetForMSBuildPath Condition="'$(NuGetForMSBuildPath)' == ''">$(PackagesDirectory)NuGet.for.MSBuild.1.4.3\build\</NuGetForMSBuildPath>
+    <RemotionBuildTasksPath Condition="'$(RemotionBuildTasksPath)' == ''">$(PackagesDirectory)Remotion.BuildTools.MSBuildTasks.1.0.7562.19810\tools\</RemotionBuildTasksPath>
+    <RemotionBuildScriptPath Condition="'$(RemotionBuildScriptPath)' == ''">$(PackagesDirectory)Remotion.BuildScript.2.0.0-alpha025\BuildTargets\</RemotionBuildScriptPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <NUnitExtensionsPaths Include="$(PackagesDirectory)NUnit.Extension.NUnitV2Driver.3.8.0\"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <SupportedBrowsers Include="Chrome;InternetExplorer;Firefox;Edge"/>
+    <SupportedPlatforms Include="x86;x64"/>
+    <SupportedDatabaseSystems Include="SqlServerDefault;SqlServer2012;SqlServer2014;SqlServer2016;SqlServer2017;SqlServer2019"/>
+    <SupportedExecutionRuntimes Include="Win_NET462=$(DockerImageDotNetFrameworkRuntime4_6);Win_NET472=$(DockerImageDotNetFrameworkRuntime4_7);Win_NET48=$(DockerImageDotNetFrameworkRuntime4_8)"/>
+    <SupportedTargetRuntimes Include="NET462;NET472;NET48;"/>
+    <SupportedConfigurationIDs Include="Debug;Release"/>
+  </ItemGroup>
+
+  <Import Project="$(RemotionBuildScriptPath)*.targets" />
+  <Import Project="$(MSBuildExtensionPackPath)MSBuild.ExtensionPack.tasks" />
+  <Import Project="$(NuGetForMSBuildPath)NuGet.For.MSBuild.tasks" />
+  <Import Project="$(RemotionBuildTasksPath)Remotion.BuildTools.MSBuildTasks.tasks"/>
 
   <PropertyGroup>
+    <!-- Define settings that can be overridden in Customizations.build script. -->
     <Version></Version>
-    <ReleaseType></ReleaseType>
+    <AdditionalBuildMetadata></AdditionalBuildMetadata>
+    <SkipCleanProjects>False</SkipCleanProjects>
+    <SkipTests>False</SkipTests>
+    <SkipDocumentation>False</SkipDocumentation>
+    <SkipNuGetOrg>False</SkipNuGetOrg>
+    <SkipSourceLinks>False</SkipSourceLinks>
+    <SkipNuGet>False</SkipNuGet>
+    <SkipDependDB>False</SkipDependDB>
+  </PropertyGroup>
 
+  <PropertyGroup>
+    <CustomizationsDirectory Condition="'$(CustomizationsDirectory)' == ''">$(MSBuildProjectDirectory)\Customizations\</CustomizationsDirectory>
+  </PropertyGroup>
+
+  <Import Project="$(CustomizationsDirectory)*.props" />
+
+  <PropertyGroup>
+    <!-- Define settings that use previously defined properties. -->
     <SolutionDirectory>$(MSBuildProjectDirectory)\..\</SolutionDirectory>
     <OutputDirectory>$(MSBuildProjectDirectory)\BuildOutput\</OutputDirectory>
     <LogDirectory>$(OutputDirectory)log\</LogDirectory>
-    <TempDirectory>$(MSBuildProjectDirectory)\BuildOutput\temp\</TempDirectory>
-    <ArchiveDirectory>$(MSBuildProjectDirectory)\BuildOutput\Archive\</ArchiveDirectory>
+    <TempDirectory>$(OutputDirectory)temp\</TempDirectory>
 
     <SolutionKeyFile>$(SolutionDirectory)remotion.snk</SolutionKeyFile>
 
     <VcsUrlTemplate></VcsUrlTemplate>
-    <DependDBProjectBranch></DependDBProjectBranch>
-    <DependDBProjectVersion></DependDBProjectVersion>
-    <DependDBProjectImportNotificationMailAddress></DependDBProjectImportNotificationMailAddress>
-    <DependDBProjectImportNotificationMailAddressCc></DependDBProjectImportNotificationMailAddressCc>
-    <DependDBUploadPath>$(MSBuildProjectDirectory)\BuildOutput\DependDB\</DependDBUploadPath>
+    <VcsUrlRequiresWindowsCredentials Condition="'$(VcsUrlRequiresWindowsCredentials)' == ''">False</VcsUrlRequiresWindowsCredentials>
   </PropertyGroup>
-
-  <PropertyGroup>
-    <ToolsPath>$(SolutionDirectory)prereq\Tools\</ToolsPath>
-    <PackagesDirectory Condition="'$(PackagesDirectory)' == ''">$(MSBuildProjectDirectory)\..\packages\</PackagesDirectory>
-  </PropertyGroup>
-
-  <Target Name="CleanProjects">
-    <ItemGroup>
-      <_configurations Remove="@(_configurations)" />
-      <_configurations Include="Release"/>
-      <_configurations Include="Debug"/>
-    </ItemGroup>
-    <MSBuild Projects="$(SolutionDirectory)Remotion.sln" Targets="Clean" Properties="Configuration=%(_configurations.Identity)" />
-  </Target>
-
-  <Target Name="CleanFolders">
-    <Error Text="The property 'OutputDirectory' is not set." Condition="'$(OutputDirectory)' == ''" />
-    <Error Text="The property 'LogDirectory' is not set." Condition="'$(LogDirectory)' == ''" />
-    <Error Text="The property 'TempDirectory' is not set." Condition="'$(TempDirectory)' == ''" />
-    
-    <Exec Command="rmdir /Q /S &quot;$(LogDirectory)&quot;" Condition="Exists ($(LogDirectory))" />
-    <Exec Command="rmdir /Q /S &quot;$(TempDirectory)&quot;" Condition="Exists ($(TempDirectory))" />
-    <Exec Command="rmdir /Q /S &quot;$(OutputDirectory)&quot;" Condition="Exists ($(OutputDirectory))" />
-  </Target>
 
   <Target Name="PrepareBuildProperties">
     <PropertyGroup>
       <BuildProperties>
-          PackagesDirectory=$(PackagesDirectory);
+          SolutionKeyFile=$(SolutionKeyFile);
           SolutionDirectory=$(SolutionDirectory);
           OutputDirectory=$(OutputDirectory);
+          TempDirectory=$(TempDirectory);
+          LogDirectory=$(LogDirectory);
           Version=$(Version);
-          NuGetVersionSuffix=$(NuGetVersionSuffix);
-          ReleaseType=$(ReleaseType);
+          AdditionalBuildMetadata=$(AdditionalBuildMetadata);
           VcsUrlTemplate=$(VcsUrlTemplate);
-          SvnRevision=$(SvnRevision);
-          ChromeVersionArchive=$(ChromeVersionArchive);
-          EdgeVersionArchive=$(EdgeVersionArchive);
-          FirefoxVersionArchive=$(FirefoxVersionArchive);
-          DatabaseNamePrefix=$(DatabaseNamePrefix);
-          DataSourceMsSql2012=$(DataSourceMsSql2012);
-          DataSourceMsSql2014=$(DataSourceMsSql2014);
-          DataSourceMsSql2016=$(DataSourceMsSql2016);
-          DataSourceMsSql2017=$(DataSourceMsSql2017);
-          DatabaseDirectoryMsSql2012=$(DatabaseDirectoryMsSql2012);
-          DatabaseDirectoryMsSql2014=$(DatabaseDirectoryMsSql2014);
-          DatabaseDirectoryMsSql2016=$(DatabaseDirectoryMsSql2016);
-          DatabaseDirectoryMsSql2017=$(DatabaseDirectoryMsSql2017);
-          IntegratedSecurityMsSql2012=$(IntegratedSecurityMsSql2012);
-          IntegratedSecurityMsSql2014=$(IntegratedSecurityMsSql2014);
-          IntegratedSecurityMsSql2016=$(IntegratedSecurityMsSql2016);
-          IntegratedSecurityMsSql2017=$(IntegratedSecurityMsSql2017);
-          UsernameMsSql2012=$(UsernameMsSql2012);
-          UsernameMsSql2014=$(UsernameMsSql2014);
-          UsernameMsSql2016=$(UsernameMsSql2016);
-          UsernameMsSql2017=$(UsernameMsSql2017);
-          PasswordMsSql2012=$(PasswordMsSql2012);
-          PasswordMsSql2014=$(PasswordMsSql2014);
-          PasswordMsSql2016=$(PasswordMsSql2016);
-          PasswordMsSql2017=$(PasswordMsSql2017);
+          VcsUrlRequiresWindowsCredentials=$(VcsUrlRequiresWindowsCredentials);
+          Platforms=$(Platforms);
+          DatabaseSystems=$(DatabaseSystems);
+          Browsers=$(Browsers);
+          ExecutionRuntimes=$(ExecutionRuntimes);
+          TargetRuntimes=$(TargetRuntimes);
+          TestCategoriesToExclude=$(TestCategoriesToExclude);
       </BuildProperties>
     </PropertyGroup>
 
-    <Message Text="Configured build properties for global build script: $(BuildProperties)" />
+    <Message Text="Configured build properties: $(BuildProperties)" />
   </Target>
 
-  <Target Name="PrepareVersionForMasterScript">
-    <Error Text="The build target 'PrepareVersionForMasterScript' must be defined by the calling build file." />
-  </Target>
-
-  <Target Name="RevertModifiedFiles">
-    <Message Text="Deleting files created during build." Importance="High"/>
-
-    <ItemGroup>
-      <_modifiedFiles Remove="@(_modifiedFiles)"/>
-      <_createdFiles Remove="@(_createdFiles)"/>
-      
-      <_modifiedFilesList Remove="@(_modifiedFilesList)"/>
-      <_modifiedFilesList Include="$(TempDirectory)*/ModifiedFiles.txt"/>
-      
-      <_createdFilesList Remove="@(_createdFilesList)"/>
-      <_createdFilesList Include="$(TempDirectory)*/CreatedFiles.txt"/>
-    </ItemGroup>
-
-    <ReadLinesFromFile File="%(_modifiedFilesList.Identity)" Condition="'@(_modifiedFilesList)' != ''">
-      <Output TaskParameter="Lines" ItemName="_modifiedFiles"/>
-    </ReadLinesFromFile>
-
+  <Target Name="PrepareBuildTargets">
     <PropertyGroup>
-      <_pattern><![CDATA[^(?<original>[^\|]+)\|(?<backup2>[^\|]+)\|(?<backup>[^\|]+)$]]></_pattern>
-      <_originalReplacementPattern>${original}</_originalReplacementPattern>
-      <_backup2ReplacementPattern>${backup2}</_backup2ReplacementPattern>
-      <_backupReplacementPattern>${backup}</_backupReplacementPattern>
+
+      <CleanProjectsTarget Condition="'$(SkipCleanProjects)' != 'True'">CleanProjects</CleanProjectsTarget>
+
+      <RunTestsTarget Condition="'$(SkipTests)' != 'True'">RunTests</RunTestsTarget>
+
+      <GenerateDocumentationTarget Condition="'$(SkipDocumentation)' != 'True'">GenerateDocumentation</GenerateDocumentationTarget>
+
+      <PackageNuGetOrgTarget Condition="'$(SkipNuGetOrg)' != 'True'">CreateNuGetPackagesWithSymbolServerSupport</PackageNuGetOrgTarget>
+
+      <SourceLinkTarget Condition="'$(SkipSourceLinks)' != 'True'">InsertSourceLinks</SourceLinkTarget>
+
+      <PackageNuGetTarget Condition="'$(SkipNuGet)' != 'True'">CreateNuGetPackagesWithDebugSymbols</PackageNuGetTarget>
+
+      <DependDBTarget Condition="'$(SkipDependDB)' != 'True'">ProcessForDependDB</DependDBTarget>
+
+      <!-- TODO: include RunMixinXRefTest with the targets -->
+
+      <BuildTargets>
+        LogConfiguration;
+        $(CleanProjectsTarget);
+        BuildReleaseProjects;
+        BuildTestProjects;
+        $(RunTestsTarget);
+        $(GenerateDocumentationTarget);
+        $(PackageNuGetOrgTarget);
+        $(SourceLinkTarget);
+        $(PackageNuGetTarget);
+        $(DependDBTarget);
+        RestoreBackupFiles;
+      </BuildTargets>
+
+    </PropertyGroup>
+    
+    <Message Text="Selected build targets: $(BuildTargets)" />
+  </Target>
+
+  <Target Name="BuildAll" DependsOnTargets="CleanFolders;PrepareBuildProperties;PrepareBuildTargets;">
+    <PropertyGroup>
+      <!-- Property function replaces semi-colum with escape-sequence. -->
+      <_configurations>$([MSBuild]::Unescape($(Configurations.Replace('+',';'))))</_configurations>
     </PropertyGroup>
 
     <ItemGroup>
-      <_modifiedFiles>
-        <Original>$( [System.Text.RegularExpressions.Regex]::Replace ( %(Identity), $(_pattern), $(_originalReplacementPattern) ) )</Original>
-        <Backup2>$( [System.Text.RegularExpressions.Regex]::Replace ( %(Identity), $(_pattern), $(_backup2ReplacementPattern) ) )</Backup2>
-        <Backup>$( [System.Text.RegularExpressions.Regex]::Replace ( %(Identity), $(_pattern), $(_backupReplacementPattern) ) )</Backup>
-      </_modifiedFiles>
+      <_configurationIDs Remove="@(_configurationIDs)" />
+      <_configurationIDs Include="$(_configurations)" />
     </ItemGroup>
 
-    <Move SourceFiles="%(_modifiedFiles.Backup2)" DestinationFiles="%(_modifiedFiles.Original)" />
-    <Delete Files="%(_modifiedFiles.Backup)" />
-
-    <ReadLinesFromFile File="%(_createdFilesList.Identity)" Condition="'@(_createdFilesList)' != ''">
-      <Output TaskParameter="Lines" ItemName="_createdFiles"/>
-    </ReadLinesFromFile>
-
-    <Delete Files="@(_createdFiles)" />
-
-    <Message Text="Done deleting files created during build." Importance="High"/>
+    <MSBuild Projects="$(MSBuildProjectFile)"
+             BuildInParallel="false"
+             Targets="$(BuildTargets)"
+             Properties="ConfigurationID=%(_configurationIDs.Identity);$(BuildProperties);"/>
   </Target>
+
+  <Target Name="UpdateAssemblyInfosForDevelopment" DependsOnTargets="CheckVersion;PrepareBuildProperties;UpdateVersionProps;PrepareVersionWithoutPrerelease">
+    <!-- Re-defines the version to append the local build pre-release tag after UpdateVersionProps has been performed. -->
+    <MSBuild Projects="$(MSBuildProjectFile)"
+             BuildInParallel="false"
+             Targets="UpdateAssemblyInfos;CleanAssemblyBackup"
+             Properties="ConfigurationID=Debug;$(BuildProperties);Version=$(VersionWithoutPrerelease)-x.9"/>
+  </Target>
+
+  <Target Name="UpdateAssemblyInfosForRelease" DependsOnTargets="CheckVersion;PrepareBuildProperties;UpdateVersionProps">
+    <MSBuild Projects="$(MSBuildProjectFile)"
+             BuildInParallel="false"
+             Targets="UpdateAssemblyInfos;CleanAssemblyBackup"
+             Properties="ConfigurationID=Debug;$(BuildProperties);"/>
+  </Target>
+
+  <!-- Customization Targets -->
+
+  <Import Project="$(CustomizationsDirectory)*.targets" />
 
 </Project>
