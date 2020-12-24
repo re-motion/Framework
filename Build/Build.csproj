@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="NOP" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A5E92435-6AEE-4E0B-AD05-E710ED857056}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Build</RootNamespace>
+    <AssemblyName>Build</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>c909e6d8</NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="Build.licenseheader" />
+    <None Include="Customizations\Configuration.props" />
+    <None Include="Customizations\Local\Configuration.Local.props" />
+    <None Include="Customizations\Local\Configuration.Local.targets" />
+    <None Include="Customizations\Overrides.targets" />
+    <None Include="Customizations\Projects.props">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Customizations\Properties.props">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Customizations\Extensions.targets" />
+    <None Include="Customizations\ReleaseProcessScript.config" />
+    <None Include="Customizations\Server\Configuration.Server.props" />
+    <None Include="Customizations\Server\Configuration.Server.targets" />
+    <None Include="Customizations\Server\Extensions.Server.targets" />
+    <None Include="Customizations\Version.props" />
+    <None Include="NuSpec\bin\Debug\.gitmarker" />
+    <None Include="NuSpec\bin\Release\.gitmarker" />
+    <None Include="NuSpec\Install.ps1" />
+    <None Include="NuSpec\res\.gitmarker" />
+    <None Include="NuSpec\schemas\.gitmarker" />
+    <None Include="NuSpec\TemplateSharedForNuGetOrg.nuspec" />
+    <None Include="NuSpec\TemplateSharedForMSBuildTask.nuspec" />
+    <None Include="NuSpec\TemplateSharedForTool.nuspec" />
+    <None Include="NuSpec\TemplateSharedForWeb.nuspec" />
+    <None Include="NuSpec\UI\.gitmarker" />
+    <None Include="NuSpec\Uninstall.ps1" />
+    <None Include="NuSpec\Web.Build.targets">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="NuSpec\Web.targets" />
+    <None Include="packages.config" />
+    <None Include="NuSpec\TemplateShared.nuspec" />
+    <None Include="Remotion.build" />
+    <None Include="Remotion.Local.build" />
+    <None Include="Remotion.Server.build" />
+    <None Include="teamcity.properties" />
+    <None Include="TestingSetupForBrowser.targets" />
+    <None Include="TestingSetupForDatabase.targets" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Remotion.BuildScript, Version=2.0.0-alpha025, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Remotion.BuildScript.2.0.0-alpha025\lib\net45\Remotion.BuildScript.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Annotations, Version=2019.1.3.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325">
+      <HintPath>..\packages\JetBrains.Annotations.2019.1.3\lib\net20\JetBrains.Annotations.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Remotion.ReleaseProcessScript, Version=2.0.0-alpha025, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Remotion.ReleaseProcessScript.2.0.0-alpha025\lib\net45\Remotion.ReleaseProcessScript.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="GlobalFacetManifest.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <Target Name="NOP" />
+  <Import Project="..\packages\NuGet.for.MSBuild.1.4.3\build\NuGet.for.MSBuild.targets" Condition="Exists('..\packages\NuGet.for.MSBuild.1.4.3\build\NuGet.for.MSBuild.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\NuGet.for.MSBuild.1.4.3\build\NuGet.for.MSBuild.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NuGet.for.MSBuild.1.4.3\build\NuGet.for.MSBuild.targets'))" />
+  </Target>
+</Project>

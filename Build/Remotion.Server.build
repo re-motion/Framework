@@ -1,174 +1,127 @@
 ﻿<?xml version="1.0"  encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
+<!-- Copyright (c) rubicon IT GmbH, www.rubicon.eu
+ !
+ ! See the NOTICE file distributed with this work for additional information
+ ! regarding copyright ownership.  rubicon licenses this file to you under 
+ ! the Apache License, Version 2.0 (the "License"); you may not use this 
+ ! file except in compliance with the License.  You may obtain a copy of the 
+ ! License at
+ !
+ !   http://www.apache.org/licenses/LICENSE-2.0
+ !
+ ! Unless required by applicable law or agreed to in writing, software 
+ ! distributed under the License is distributed on an "AS IS" BASIS, WITHOUT 
+ ! WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the 
+ ! License for the specific language governing permissions and limitations
+ ! under the License.
+-->
+
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  
   <Import Project="Remotion.build" />
-  <Import Project="Server.*.targets"/>
-  <Import Project="Server.Version.props"/>
+
+  <Import Project="$(CustomizationsDirectory)Server\*.props" />
 
   <PropertyGroup>
     <!-- Empty properties will be passed to MSBuild by TeamCity -->
 
     <BuildRootDirectory>$(teamcity_build_checkoutdir)\</BuildRootDirectory>
-    <SvnRevision>$(build_vcs_number)</SvnRevision>
-    
+    <CommitID>$(build_vcs_number)</CommitID>
+    <BuildNumber>$(build_number)</BuildNumber>
+
     <LogDirectory>$(BuildRootDirectory)log\</LogDirectory>
     <SolutionDirectory>$(BuildRootDirectory)working\</SolutionDirectory>
     <OutputDirectory>$(BuildRootDirectory)output\</OutputDirectory>
     <TempDirectory>$(BuildRootDirectory)temp\</TempDirectory>
 
-    <SolutionBuildFile>$(SolutionDirectory)build\Remotion.build</SolutionBuildFile>
-
-    <ReleaseType>RTM</ReleaseType>
-    <NuGetVersionSuffix>pre</NuGetVersionSuffix>
-
-    <SecureNetworkShare></SecureNetworkShare>
     <SolutionKeyFile>$(SecureNetworkShare)\remotion.snk</SolutionKeyFile>
 
-    
-    <JiraUsername></JiraUsername>
-    <JiraPassword></JiraPassword>
-    <SvnPassword></SvnPassword>
-
-    <JiraUrl>https://re-motion.atlassian.net/rest/api/2/</JiraUrl>
-    <JiraProject>RM</JiraProject>
-    
-    <SvnBaseUri>https://svn.re-motion.org/svn/Remotion</SvnBaseUri>
-    <SvnUsername>build</SvnUsername>
-    <SvnBranchFolder></SvnBranchFolder>
-    <SvnTagsFolder>tags</SvnTagsFolder>
-    
-    <VcsUrlTemplate>$(SvnBaseUri)/!svn/bc/$(SvnRevision)/$(SvnBranchFolder)/{0}</VcsUrlTemplate>
-
-    <JiraVersionPattern></JiraVersionPattern>
-
-    <DatabaseNamePrefix></DatabaseNamePrefix>
-
-    <DataSourceMsSql2012></DataSourceMsSql2012>
-    <DataSourceMsSql2014></DataSourceMsSql2014>
-    <DataSourceMsSql2016></DataSourceMsSql2016>
-    <DataSourceMsSql2017></DataSourceMsSql2017>
-
-    <DatabaseDirectoryMsSql2012></DatabaseDirectoryMsSql2012>
-    <DatabaseDirectoryMsSql2014></DatabaseDirectoryMsSql2014>
-    <DatabaseDirectoryMsSql2016></DatabaseDirectoryMsSql2016>
-    <DatabaseDirectoryMsSql2017></DatabaseDirectoryMsSql2017>
-
-    <IntegratedSecurityMsSql2012></IntegratedSecurityMsSql2012>
-    <IntegratedSecurityMsSql2014></IntegratedSecurityMsSql2014>
-    <IntegratedSecurityMsSql2016></IntegratedSecurityMsSql2016>
-    <IntegratedSecurityMsSql2017></IntegratedSecurityMsSql2017>
-
-    <UsernameMsSql2012></UsernameMsSql2012>
-    <UsernameMsSql2014></UsernameMsSql2014>
-    <UsernameMsSql2016></UsernameMsSql2016>
-    <UsernameMsSql2017></UsernameMsSql2017>
-
-    <PasswordMsSql2012></PasswordMsSql2012>
-    <PasswordMsSql2014></PasswordMsSql2014>
-    <PasswordMsSql2016></PasswordMsSql2016>
-    <PasswordMsSql2017></PasswordMsSql2017>
-    
-    <DotNetFrameworkRuntimeImageName></DotNetFrameworkRuntimeImageName>
+    <VcsUrlTemplate></VcsUrlTemplate>
   </PropertyGroup>
-
-  <!-- Check properties -->
-
-  <Target Name="CheckProperties" DependsOnTargets="
-          CheckBuildConfigurationProperties;
-          CheckBuildLocationProperties;
-          CheckJiraProperties;
-          CheckSvnProperties;">
-  </Target>
-
-  <Target Name="CheckBuildConfigurationProperties" >
-    <Error Text="The property 'teamcity_build_checkoutdir' is not set." Condition="'$(teamcity_build_checkoutdir)' == ''" />
-    <Error Text="The property 'ReleaseType' is not set." Condition="'$(ReleaseType)' == ''" />
-    <Error Text="The property 'build_number' is not set." Condition="'$(build_number)' == ''" />
-
-    <Message Text="The property 'teamcity_build_checkoutdir' is set to '$(teamcity_build_checkoutdir)'." />
-    <Message Text="The property 'ReleaseType' is set to '$(ReleaseType)'." />
-    <Message Text="The property 'build_number' is set to '$(build_number)'." />
-  </Target>
-
-  <Target Name="CheckBuildLocationProperties" >
-    <Error Text="The property 'SecureNetworkShare' is not set." Condition="'$(SecureNetworkShare)' == ''" />
-
-    <Message Text="The property 'SecureNetworkShare' is set to '$(SecureNetworkShare)'." />
-  </Target>
 
   <!-- re-motion build -->
+  <Target Name="CreateAdditionalBuildMetadata">
+    <PropertyGroup>
+      <AdditionalBuildMetadata>Commit-$(CommitID)</AdditionalBuildMetadata>
+    </PropertyGroup>
+  </Target>
+  
+  <Target Name="TestBuild_Configuration">
+    <PropertyGroup>
+      <Configurations Condition="'$(Configurations)' == ''">Debug</Configurations>
+      <Platforms Condition="'$(Platforms)' == ''">x86</Platforms>
+      <DatabaseSystems Condition="'$(DatabaseSystems)' == ''">NoDB+SqlServer2012</DatabaseSystems>
+      <Browsers Condition="'$(Browsers)' == ''">Chrome+NoBrowser</Browsers>
+      <ExecutionRuntimes Condition="'$(ExecutionRuntimes)' == ''">Win_NET48+EnforcedLocalMachine</ExecutionRuntimes>
+      <TargetRuntimes Condition="'$(TargetRuntimes)' == ''">NET48</TargetRuntimes>
+      <TestCategoriesToExclude Condition="'$(TestCategoriesToExclude)' == ''"></TestCategoriesToExclude>
 
-  <PropertyGroup>
-    <BeforeTestBuildTargets>
-      CheckProperties;
-      CleanFolders;
-      CleanProjects;
-      GetEarliestUnreleasedVersion;
-      SetVersionCiAndNightlyBuild;
-      PrepareBuildProperties;
-    </BeforeTestBuildTargets>
+      <SkipTests Condition="'$(SkipTests)' == ''">False</SkipTests>
+      <SkipDocumentation>True</SkipDocumentation>
+      <SkipNuGetOrg>True</SkipNuGetOrg>
+      <SkipSourceLinks>True</SkipSourceLinks>
+      <SkipNuGet>True</SkipNuGet>
+      <SkipDependDB>True</SkipDependDB>
+    </PropertyGroup>
+  </Target>
+  
+  <Target Name="FullBuild_Configuration">
+    <PropertyGroup>
+      <!-- By listing the debug-build first, the documentation will be generated based on the debug output. -->
+      <Configurations Condition="'$(Configurations)' == ''">Debug+Release</Configurations>
+      <Platforms Condition="'$(Platforms)' == ''">x86+x64</Platforms>
+      <DatabaseSystems Condition="'$(DatabaseSystems)' == ''">NoDB+SqlServer2012+SqlServer2014+SqlServer2016+SqlServer2017+SqlServer2019</DatabaseSystems>
+      <Browsers Condition="'$(Browsers)' == ''">NoBrowser+Chrome+Firefox+Edge</Browsers>
+      <ExecutionRuntimes Condition="'$(ExecutionRuntimes)' == ''">Win_NET462+Win_NET472+Win_NET48+EnforcedLocalMachine</ExecutionRuntimes>
+      <TargetRuntimes Condition="'$(TargetRuntimes)' == ''">NET462+NET472+NET48</TargetRuntimes>
+      <TestCategoriesToExclude Condition="'$(TestCategoriesToExclude)' == ''"></TestCategoriesToExclude>
 
-    <AfterTestBuildTargets>
-      RevertModifiedFiles;
-    </AfterTestBuildTargets>
+      <SkipTests Condition="'$(SkipTests)' == ''">False</SkipTests>
+      <SkipDocumentation Condition="'$(SkipDocumentation)' == ''">False</SkipDocumentation>
+      <SkipNuGetOrg Condition="'$(SkipNuGetOrg)' == ''">False</SkipNuGetOrg>
+      <SkipSourceLinks Condition="'$(SkipSourceLinks)' == ''">False</SkipSourceLinks>
+      <SkipNuGet Condition="'$(SkipNuGet)' == ''">False</SkipNuGet>
+      <SkipDependDB Condition="'$(SkipDependDB)' == ''">False</SkipDependDB>
+    </PropertyGroup>
+  </Target>
+  
+  <Target Name="TestBuild" DependsOnTargets="TestBuild_Configuration;CreateAdditionalBuildMetadata;BuildAll;" />
 
-    <BeforeFullBuildTargets>
-      CheckProperties;
-      CleanFolders;
-      CleanProjects;
-      GetEarliestUnreleasedVersion;
-      SetVersionFullBuild;
-      PrepareBuildProperties;
-    </BeforeFullBuildTargets>
+  <Target Name="FullBuild" DependsOnTargets="FullBuild_Configuration;CreateAdditionalBuildMetadata;BuildAll;" />
 
-    <AfterFullBuildTargets>
-      RevertModifiedFiles;
-      UpdateVersionForTag;
-      Tag;
-      ReleaseJiraVersion;
-      UpdateVersionForLocalBuild;
-    </AfterFullBuildTargets>
-  </PropertyGroup>
+  <!-- Check properties -->
+  
+  <Target Name="CheckProperties" DependsOnTargets="
+          CheckBuildConfigurationProperties;
+          CheckBuildLocationProperties;" />
 
-  <Target Name="UpdateVersionForTag" DependsOnTargets="UpdateAssemblyInfosForTag;UpdateVersionPropertyForTag"/>
+  <!-- Versioning -->
+    
+  <Target Name="SetVersionCiAndNightlyBuild" DependsOnTargets="PrepareVersionCiAndNightlyBuild;CheckVersion">
+    <Message Text="##teamcity[buildNumber '$(Version)']" />
+  </Target>
 
-  <Target Name="UpdateVersionForLocalBuild" DependsOnTargets="CreateLocalBuildVersion;UpdateAssemblyInfosForLocalBuild;UpdateVersionPropertyForLocalBuild;CommitVersionForLocalBuild"/>
+  <Target Name="PrepareVersionCiAndNightlyBuild" Condition="'$(Version)' != ''">
+    <Error Text="The property 'BuildNumber' is not set." Condition="'$(BuildNumber)' == ''" />
+
+    <PropertyGroup>
+      <Version>$(Version)-x.1.$(BuildNumber)</Version>
+    </PropertyGroup>
+  </Target>
+
+  <Target Name="SetVersionFullBuild" DependsOnTargets="CheckVersion">
+    <Message Text="##teamcity[buildNumber '$(Version)']" />
+  </Target>
 
   <!-- Main Build Targets -->  
 
-  <Target Name="Server_CIBuild" DependsOnTargets="$(BeforeTestBuildTargets)">
-    <MSBuild Projects="@(ProjectsBuildServer)" Targets="Server_CIBuild" Properties="$(BuildProperties)" BuildInParallel="false"/>
-    <CallTarget Targets="$(AfterTestBuildTargets)"/>
-  </Target>
-  
-  <Target Name="Server_CIConfigurableBuild" DependsOnTargets="$(BeforeTestBuildTargets)">
-    <MSBuild Projects="@(ProjectsBuildServer)" Targets="Server_CIConfigurableBuild" Properties="$(BuildProperties)" BuildInParallel="false"/>
-    <CallTarget Targets="$(AfterTestBuildTargets)"/>
-  </Target>
+  <Target Name="Server_CIBuild" DependsOnTargets="CheckProperties;SetVersionCiAndNightlyBuild;TestBuild" />
+  <Target Name="Server_NightlyBuild" DependsOnTargets="CheckProperties;SetVersionCiAndNightlyBuild;FullBuild" />
+  <Target Name="Server_FullBuild" DependsOnTargets="CheckProperties;SetVersionFullBuild;FullBuild;" />
 
-  <Target Name="Server_ArtifactBuild" DependsOnTargets="$(BeforeTestBuildTargets)">
-    <MSBuild Projects="@(ProjectsBuildServer)" Targets="Server_ArtifactBuild" Properties="$(BuildProperties)" BuildInParallel="false"/>
-    <CallTarget Targets="$(AfterTestBuildTargets)"/>
-  </Target>
+  <!-- Customization Targets -->
 
-  <Target Name="Server_CIProductionBuild" DependsOnTargets="$(BeforeTestBuildTargets)">
-    <MSBuild Projects="@(ProjectsBuildServer)" Targets="Server_CIProductionBuild" Properties="$(BuildProperties)" BuildInParallel="false"/>
-    <CallTarget Targets="$(AfterTestBuildTargets)"/>
-  </Target>
-
-  <Target Name="Server_NightlyBuild" DependsOnTargets="$(BeforeTestBuildTargets)">
-    <MSBuild Projects="@(ProjectsBuildServer)" Targets="Server_NightlyBuild" Properties="$(BuildProperties)" BuildInParallel="false"/>
-    <CallTarget Targets="$(AfterTestBuildTargets)"/>
-  </Target>
-
-  <Target Name="Server_FullBuild" DependsOnTargets="$(BeforeFullBuildTargets)">
-    <MSBuild Projects="@(ProjectsBuildServer)" Targets="Server_FullBuild" Properties="$(BuildProperties)" BuildInParallel="false"/>
-    <CallTarget Targets="$(AfterFullBuildTargets)"/>
-  </Target>
-
-  <Target Name="TestBuild_InternetExplorer" DependsOnTargets="$(BeforeTestBuildTargets)">
-    <MSBuild Projects="@(ProjectsBuildServer)" Targets="TestBuild_InternetExplorer" Properties="$(BuildProperties)" BuildInParallel="false"/>
-    <CallTarget Targets="$(AfterTestBuildTargets)"/>
-  </Target>
+  <Import Project="$(CustomizationsDirectory)Server\*.targets" />
 
 </Project>
