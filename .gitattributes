@@ -3,3 +3,7 @@
 
 # DotSettings files have LFs, not CRLFs
 *.DotSettings text eol=lf
+
+# 3rd party JS libraries with LFs, not CRLFs
+axe.min.js text eol=lf
+jquery-1.6.4.js text eol=lf
