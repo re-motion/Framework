@@ -87,7 +87,7 @@
     <None Include="Default.aspx">
       <SubType>ASPXCodeBehind</SubType>
     </None>
-    <None Include="..\Build\NuSpec\TemplateSharedForWeb.nuspec">
+    <None Include="..\..\Build\NuSpec\TemplateSharedForWeb.nuspec">
       <Link>TemplateSharedForWeb.nuspec</Link>
     </None>
     <None Include="FacetManifest.xml" />
@@ -593,7 +593,7 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
-  <Import Project="$(MSBuildProjectDirectory)\..\Build\NuSpec\Web.Build.targets" />
+  <Import Project="$(MSBuildProjectDirectory)\..\..\Build\NuSpec\Web.Build.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
