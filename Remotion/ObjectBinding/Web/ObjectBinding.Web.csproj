@@ -593,7 +593,7 @@
     <EmbeddedResource Include="Globalization\BocListNavigationBlockRenderer.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <None Include="..\..\Build\NuSpec\TemplateSharedForWeb.nuspec">
+    <None Include="..\..\..\Build\NuSpec\TemplateSharedForWeb.nuspec">
       <Link>TemplateSharedForWeb.nuspec</Link>
     </None>
     <None Include="..\..\Remotion LGPL.licenseheader">
@@ -726,7 +726,7 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(MSBuildProjectDirectory)\..\..\Build\NuSpec\Web.Build.targets" />
+  <Import Project="$(MSBuildProjectDirectory)\..\..\..\Build\NuSpec\Web.Build.targets" />
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>

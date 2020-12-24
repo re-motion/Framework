@@ -797,7 +797,7 @@
     <EmbeddedResource Include="Globalization\WxePageInfo.fr.resx" />
     <EmbeddedResource Include="Globalization\WxePageInfo.it.resx" />
     <EmbeddedResource Include="UI\SmartPageImplementation\Generic_Error_Async_Remote.htm" />
-    <None Include="..\..\Build\NuSpec\TemplateSharedForWeb.nuspec">
+    <None Include="..\..\..\Build\NuSpec\TemplateSharedForWeb.nuspec">
       <Link>TemplateSharedForWeb.nuspec</Link>
     </None>
     <None Include="..\..\Remotion LGPL.licenseheader">
@@ -980,7 +980,7 @@
     <None Include="Res\Themes\NovaGray\Image\DropDownMenuRequestInProgressIndicator.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(MSBuildProjectDirectory)\..\..\Build\NuSpec\Web.Build.targets" />
+  <Import Project="$(MSBuildProjectDirectory)\..\..\..\Build\NuSpec\Web.Build.targets" />
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>

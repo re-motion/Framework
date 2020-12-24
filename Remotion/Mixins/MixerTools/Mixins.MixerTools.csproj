@@ -78,7 +78,7 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Build\NuSpec\TemplateSharedForTool.nuspec">
+    <None Include="..\..\..\Build\NuSpec\TemplateSharedForTool.nuspec">
       <Link>TemplateSharedForTool.nuspec</Link>
     </None>
     <None Include="..\..\Remotion LGPL.licenseheader">

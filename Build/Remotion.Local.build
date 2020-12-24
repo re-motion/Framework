@@ -1,96 +1,124 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
-<!-- This file is part of the re-motion Core Framework (www.re-motion.org)
- ! Copyright (c) rubicon IT GmbH, www.rubicon.eu
- ! 
- ! The re-motion Core Framework is free software; you can redistribute it 
- ! and/or modify it under the terms of the GNU Lesser General Public License 
- ! as published by the Free Software Foundation; either version 2.1 of the 
- ! License, or (at your option) any later version.
- ! 
- ! re-motion is distributed in the hope that it will be useful, 
- ! but WITHOUT ANY WARRANTY; without even the implied warranty of 
- ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
- ! GNU Lesser General Public License for more details.
- ! 
- ! You should have received a copy of the GNU Lesser General Public License
- ! along with re-motion; if not, see http://www.gnu.org/licenses.
+
+<!-- Copyright (c) rubicon IT GmbH, www.rubicon.eu
+ !
+ ! See the NOTICE file distributed with this work for additional information
+ ! regarding copyright ownership.  rubicon licenses this file to you under 
+ ! the Apache License, Version 2.0 (the "License"); you may not use this 
+ ! file except in compliance with the License.  You may obtain a copy of the 
+ ! License at
+ !
+ !   http://www.apache.org/licenses/LICENSE-2.0
+ !
+ ! Unless required by applicable law or agreed to in writing, software 
+ ! distributed under the License is distributed on an "AS IS" BASIS, WITHOUT 
+ ! WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the 
+ ! License for the specific language governing permissions and limitations
+ ! under the License.
 -->
-<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  
   <Import Project="Remotion.build" />
-  <Import Project="Local.Version.props"/>
+
+  <Import Project="$(CustomizationsDirectory)Local\*.props" />
 
   <PropertyGroup>
-    <ReleaseType>LOCAL</ReleaseType>
-    <NuGetVersionSuffix>x</NuGetVersionSuffix>
-    <SvnBranchFolder>local</SvnBranchFolder>  
-    <SvnRevision>0</SvnRevision>
-
-    <VcsUrlTemplate>http://localost/svn/!svn/bc/$(SvnRevision)/$(SvnBranchFolder)/{0}</VcsUrlTemplate>
-
-    <ChromeVersionArchive></ChromeVersionArchive>
-    <EdgeVersionArchive></EdgeVersionArchive>
-    <FirefoxVersionArchive></FirefoxVersionArchive>
-
-    <DatabaseNamePrefix></DatabaseNamePrefix>
-
-    <DataSourceMsSql2012>localhost\MsSql2012</DataSourceMsSql2012>
-    <DataSourceMsSql2014>localhost\MsSql2014</DataSourceMsSql2014>
-    <DataSourceMsSql2016>localhost\MsSql2016</DataSourceMsSql2016>
-    <DataSourceMsSql2017>localhost\MsSql2017</DataSourceMsSql2017>
-
-    <DatabaseDirectoryMsSql2012>C:\Databases\MsSql2012</DatabaseDirectoryMsSql2012>
-    <DatabaseDirectoryMsSql2014>C:\Databases\MsSql2014</DatabaseDirectoryMsSql2014>
-    <DatabaseDirectoryMsSql2016>C:\Databases\MsSql2016</DatabaseDirectoryMsSql2016>
-    <DatabaseDirectoryMsSql2017>C:\Databases\MsSql2017</DatabaseDirectoryMsSql2017>
-
-    <IntegratedSecurityMsSql2012>true</IntegratedSecurityMsSql2012>
-    <IntegratedSecurityMsSql2014>true</IntegratedSecurityMsSql2014>
-    <IntegratedSecurityMsSql2016>true</IntegratedSecurityMsSql2016>
-    <IntegratedSecurityMsSql2017>true</IntegratedSecurityMsSql2017>
-
-    <UsernameMsSql2012></UsernameMsSql2012>
-    <UsernameMsSql2014></UsernameMsSql2014>
-    <UsernameMsSql2016></UsernameMsSql2016>
-    <UsernameMsSql2017></UsernameMsSql2017>
-
-    <PasswordMsSql2012></PasswordMsSql2012>
-    <PasswordMsSql2014></PasswordMsSql2014>
-    <PasswordMsSql2016></PasswordMsSql2016>
-    <PasswordMsSql2017></PasswordMsSql2017>
+    <DependDBProjectImportNotificationMailAddress Condition="'$(DependDBProjectImportNotificationMailAddress)' == ''">noreply@localhost.net</DependDBProjectImportNotificationMailAddress>
+    <VcsUrlTemplate Condition="'$(VcsUrlTemplate)' == ''">http://localhost/{0}</VcsUrlTemplate>
   </PropertyGroup>
 
   <PropertyGroup>
-    <BeforeBuildTargets>
-      CleanFolders;
-      CleanProjects;
-      PrepareBuildProperties;
-    </BeforeBuildTargets>
+    <SkipCleanProjects>True</SkipCleanProjects>
+    <SkipTests>True</SkipTests>
+    <SkipDocumentation>True</SkipDocumentation>
+    <SkipNuGetOrg>True</SkipNuGetOrg>
+    <SkipSourceLinks>True</SkipSourceLinks>
+    <SkipNuGet>True</SkipNuGet>
+    <SkipDependDB>True</SkipDependDB>
   </PropertyGroup>
 
-  <Target Name="TestBuild" DependsOnTargets="$(BeforeBuildTargets)">
-    <MSBuild Projects="@(ProjectsBuildLocal)" Targets="TestBuild" Properties="$(BuildProperties)" BuildInParallel="false"/>
-    <CallTarget Targets="RevertModifiedFiles"/>
+  <PropertyGroup>
+    <DockerImageDotNetFrameworkRuntime4_7 Condition="'$(DockerImageDotNetFrameworkRuntime4_7)' == ''">Unavailable</DockerImageDotNetFrameworkRuntime4_7>
+    <DockerImageDotNetFrameworkRuntime4_8 Condition="'$(DockerImageDotNetFrameworkRuntime4_8)' == ''">Unavailable</DockerImageDotNetFrameworkRuntime4_8>
+  </PropertyGroup>
+  
+  <Target Name="TestBuild_Configuration">
+    <PropertyGroup>
+      <Configurations Condition="'$(Configurations)' == ''">Debug+Release</Configurations>
+      <Platforms Condition="'$(Platforms)' == ''">x86</Platforms>
+      <DatabaseSystems Condition="'$(DatabaseSystems)' == ''">SqlServerDefault+NoDB</DatabaseSystems>
+      <Browsers Condition="'$(Browsers)' == ''">NoBrowser</Browsers>
+      <ExecutionRuntimes Condition="'$(ExecutionRuntimes)' == ''">LocalMachine</ExecutionRuntimes>
+      <TargetRuntimes Condition="'$(TargetRuntimes)' == ''">NET48</TargetRuntimes>
+      <TestCategoriesToExclude Condition="'$(TestCategoriesToExclude)' == ''"></TestCategoriesToExclude>
+      <SkipTests>False</SkipTests>
+    </PropertyGroup>
+  </Target>
+  
+  <Target Name="FullBuild_Configuration">
+    <PropertyGroup>
+      <!-- By listing the debug-build first, the documentation will be generated based on the debug output. -->
+      <Configurations Condition="'$(Configurations)' == ''">Debug+Release</Configurations>
+      <Platforms Condition="'$(Platforms)' == ''">x64</Platforms>
+      <DatabaseSystems Condition="'$(DatabaseSystems)' == ''">SqlServerDefault+NoDB</DatabaseSystems>
+      <Browsers Condition="'$(Browsers)' == ''">Chrome</Browsers>
+      <ExecutionRuntimes Condition="'$(ExecutionRuntimes)' == ''">LocalMachine</ExecutionRuntimes>
+      <TargetRuntimes Condition="'$(TargetRuntimes)' == ''">NET48</TargetRuntimes>
+      <TestCategoriesToExclude Condition="'$(TestCategoriesToExclude)' == ''"></TestCategoriesToExclude>
+      <SkipCleanProjects>False</SkipCleanProjects>
+      <SkipTests>False</SkipTests>
+      <SkipNuGet>False</SkipNuGet>
+      <SkipDependDB>False</SkipDependDB>
+    </PropertyGroup>
+  </Target>
+  
+  <Target Name="DocumentationBuild_Configuration">
+    <PropertyGroup>
+      <SkipDocumentation>False</SkipDocumentation>
+    </PropertyGroup>
   </Target>
 
-  <Target Name="FullBuildWithoutDocumentation" DependsOnTargets="$(BeforeBuildTargets)">
-    <MSBuild Projects="@(ProjectsBuildLocal)" Targets="FullBuildWithoutDocumentation" Properties="$(BuildProperties)" BuildInParallel="false"/>
-    <CallTarget Targets="RevertModifiedFiles"/>
+  <Target Name="PackageBuild_Configuration">
+    <PropertyGroup>
+      <SkipNuGet>False</SkipNuGet>
+    </PropertyGroup>
   </Target>
 
-  <Target Name="DocumentationBuild" DependsOnTargets="$(BeforeBuildTargets)">
-    <MSBuild Projects="@(ProjectsBuildLocal)" Targets="DocumentationBuild" Properties="$(BuildProperties)" BuildInParallel="false"/>
-    <CallTarget Targets="RevertModifiedFiles"/>
+  <Target Name="DependDBBuild_Configuration">
+    <PropertyGroup>
+      <SkipNuGet>False</SkipNuGet>
+      <SkipDependDB>False</SkipDependDB>
+    </PropertyGroup>
   </Target>
 
-  <Target Name="PackageBuild" DependsOnTargets="$(BeforeBuildTargets)">
-    <MSBuild Projects="@(ProjectsBuildLocal)" Targets="PackageBuild" Properties="$(BuildProperties)" BuildInParallel="false"/>
-    <CallTarget Targets="RevertModifiedFiles"/>
+  <Target Name="SetVersion" DependsOnTargets="PrepareVersion;CheckVersion" />
+
+  <Target Name="PrepareVersion" Condition="'$(Version)' != ''">
+    <MSBuild.ExtensionPack.Framework.DateAndTime TaskAction="Get" Format="yyMMdd-HHmmss"> 
+      <Output TaskParameter="Result" PropertyName="_formattedDateTime"/> 
+    </MSBuild.ExtensionPack.Framework.DateAndTime>
+    
+    <PropertyGroup>
+      <Version>$(Version)-x.9.$(_formattedDateTime)</Version>
+    </PropertyGroup>
   </Target>
 
-  <Target Name="DependDBBuild" DependsOnTargets="$(BeforeBuildTargets)">
-    <MSBuild Projects="@(ProjectsBuildLocal)" Targets="DependDBBuild" Properties="$(BuildProperties)" BuildInParallel="false"/>
-    <CallTarget Targets="RevertModifiedFiles"/>
+  <Target Name="SetVersionTestBuild">
+    <PropertyGroup>
+      <!-- With local test builds, no version update is needed. -->
+      <Version></Version>
+    </PropertyGroup>
   </Target>
+
+  <Target Name="TestBuild" DependsOnTargets="TestBuild_Configuration;SetVersionTestBuild;BuildAll;" />
+  <Target Name="FullBuildWithoutDocumentation" DependsOnTargets="FullBuild_Configuration;SetVersion;BuildAll;" />
+  <Target Name="DocumentationBuild" DependsOnTargets="DocumentationBuild_Configuration;SetVersion;BuildAll;" />
+  <Target Name="PackageBuild" DependsOnTargets="PackageBuild_Configuration;SetVersion;BuildAll;" />
+  <Target Name="DependDBBuild" DependsOnTargets="DependDBBuild_Configuration;SetVersion;BuildAll;" />
+
+  <!-- Customization Targets -->
+
+  <Import Project="$(CustomizationsDirectory)Local\*.targets" />
 
 </Project>

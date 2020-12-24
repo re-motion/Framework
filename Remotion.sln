@@ -1,4 +1,5 @@
-﻿Microsoft Visual Studio Solution File, Format Version 12.00
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.352
 MinimumVisualStudioVersion = 10.0.40219.1
@@ -33,37 +34,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{2E32EB1E-B3A
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SecurityManager", "SecurityManager", "{E1B271E4-22E6-4936-80A5-F0340AAB20A8}"
-	ProjectSection(FolderStartupServices) = postProject
-		{B4F97281-0DBD-4835-9ED8-7DFB966E87FF} = {B4F97281-0DBD-4835-9ED8-7DFB966E87FF}
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_BuildFiles", "_BuildFiles", "{22F8ED2F-3EA0-459E-B5B6-B074A57EDAB9}"
-	ProjectSection(SolutionItems) = preProject
-		Build-Remotion.cmd = Build-Remotion.cmd
-		Build-RemotionOneClick.cmd = Build-RemotionOneClick.cmd
-		Generate-Snk.cmd = Generate-Snk.cmd
-		Build\GlobalFacetManifest.xml = Build\GlobalFacetManifest.xml
-		How to build.txt = How to build.txt
-		Build\Local.Version.props = Build\Local.Version.props
-		NuGet.config = NuGet.config
-		build\Remotion.build = build\Remotion.build
-		build\Remotion.Local.build = build\Remotion.Local.build
-		build\Remotion.Projects.include.build = build\Remotion.Projects.include.build
-		build\Remotion.Server.build = build\Remotion.Server.build
-		build\SecureFileLoggerRules.rules = build\SecureFileLoggerRules.rules
-		Build\Server.Jira.targets = Build\Server.Jira.targets
-		Build\Server.Subversion.targets = Build\Server.Subversion.targets
-		Build\Server.UpdateAssemblyInfos.targets = Build\Server.UpdateAssemblyInfos.targets
-		Build\Server.Version.props = Build\Server.Version.props
-		Build\Server.VersionNumbers.targets = Build\Server.VersionNumbers.targets
-		Build\Shared.Extensions.targets = Build\Shared.Extensions.targets
-		Build\Shared.Local.Overrides.targets = Build\Shared.Local.Overrides.targets
-		Build\Shared.Overrides.targets = Build\Shared.Overrides.targets
-		Build\Shared.Server.Extensions.targets = Build\Shared.Server.Extensions.targets
-		Build\Shared.Server.Overrides.targets = Build\Shared.Server.Overrides.targets
-		Build\TestingSetupForDatabase.targets = Build\TestingSetupForDatabase.targets
-		Build\TestingSetupForWebTest.targets = Build\TestingSetupForWebTest.targets
-	EndProjectSection
 	ProjectSection(FolderStartupServices) = postProject
 		{B4F97281-0DBD-4835-9ED8-7DFB966E87FF} = {B4F97281-0DBD-4835-9ED8-7DFB966E87FF}
 	EndProjectSection
@@ -313,6 +283,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.Developme
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_SolutionItems", "_SolutionItems", "{8FD13EC8-8054-47D6-A818-847C3B022C89}"
 	ProjectSection(SolutionItems) = preProject
+		.BuildProject = .BuildProject
 		directory.build.props = directory.build.props
 		NuGet.config = NuGet.config
 		packages\PackageInfo.ps1 = packages\PackageInfo.ps1
@@ -321,10 +292,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Contracts.DiagnosticMetadata", "Remotion\Web\Contracts.DiagnosticMetadata\Web.Contracts.DiagnosticMetadata.csproj", "{B119DB72-9073-401B-8EC9-C8885A2D4800}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.Contracts.DiagnosticMetadata", "Remotion\ObjectBinding\Web.Contracts.DiagnosticMetadata\ObjectBinding.Web.Contracts.DiagnosticMetadata.csproj", "{AD7D0683-130E-4064-8EB7-D9981DCB22BC}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Build", "Remotion\Build\Core.Build.csproj", "{6CBB099A-DE58-48A4-ADC7-D37725B0181C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityManager.Build", "SecurityManager\Build\SecurityManager.Build.csproj", "{AE475361-8DD6-4DAF-8691-5BB8850093FD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{8C1706D0-5034-4C35-9F3B-3FBF0C552EE6}"
 	ProjectSection(SolutionItems) = preProject
@@ -377,6 +344,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.Compatibility", "Remotion\ObjectBinding\Web.Compatibility\ObjectBinding.Web.Compatibility.csproj", "{B456D62A-817F-44B9-BAC3-99199C564AC7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.Compatibility.UnitTests", "Remotion\ObjectBinding\Web.Compatibility.UnitTests\ObjectBinding.Web.Compatibility.UnitTests.csproj", "{AD575424-C408-4728-A9D2-EBA575E87A2F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Build", "Build\Build.csproj", "{6CBB099A-DE58-48A4-ADC7-D37725B0181C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1222,22 +1191,6 @@ Global
 		{AD7D0683-130E-4064-8EB7-D9981DCB22BC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AD7D0683-130E-4064-8EB7-D9981DCB22BC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{AD7D0683-130E-4064-8EB7-D9981DCB22BC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{6CBB099A-DE58-48A4-ADC7-D37725B0181C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6CBB099A-DE58-48A4-ADC7-D37725B0181C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6CBB099A-DE58-48A4-ADC7-D37725B0181C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{6CBB099A-DE58-48A4-ADC7-D37725B0181C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{6CBB099A-DE58-48A4-ADC7-D37725B0181C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6CBB099A-DE58-48A4-ADC7-D37725B0181C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6CBB099A-DE58-48A4-ADC7-D37725B0181C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{6CBB099A-DE58-48A4-ADC7-D37725B0181C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{AE475361-8DD6-4DAF-8691-5BB8850093FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AE475361-8DD6-4DAF-8691-5BB8850093FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AE475361-8DD6-4DAF-8691-5BB8850093FD}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{AE475361-8DD6-4DAF-8691-5BB8850093FD}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{AE475361-8DD6-4DAF-8691-5BB8850093FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AE475361-8DD6-4DAF-8691-5BB8850093FD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AE475361-8DD6-4DAF-8691-5BB8850093FD}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{AE475361-8DD6-4DAF-8691-5BB8850093FD}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{D2835D55-18C5-427B-A574-3D348A2C1DCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D2835D55-18C5-427B-A574-3D348A2C1DCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2835D55-18C5-427B-A574-3D348A2C1DCC}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -1422,6 +1375,10 @@ Global
 		{AD575424-C408-4728-A9D2-EBA575E87A2F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AD575424-C408-4728-A9D2-EBA575E87A2F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{AD575424-C408-4728-A9D2-EBA575E87A2F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{6CBB099A-DE58-48A4-ADC7-D37725B0181C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CBB099A-DE58-48A4-ADC7-D37725B0181C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{6CBB099A-DE58-48A4-ADC7-D37725B0181C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CBB099A-DE58-48A4-ADC7-D37725B0181C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1532,8 +1489,6 @@ Global
 		{652E65FE-81EF-4D91-9C52-1CB781862957} = {72195525-BF6C-43D6-AC96-39E34D02EA34}
 		{B119DB72-9073-401B-8EC9-C8885A2D4800} = {2E32EB1E-B3AA-4ACF-BA20-EC6FD44CC05B}
 		{AD7D0683-130E-4064-8EB7-D9981DCB22BC} = {72195525-BF6C-43D6-AC96-39E34D02EA34}
-		{6CBB099A-DE58-48A4-ADC7-D37725B0181C} = {5B3CB3F6-DE69-41D6-8BBC-EFF4932F0F7E}
-		{AE475361-8DD6-4DAF-8691-5BB8850093FD} = {E1B271E4-22E6-4936-80A5-F0340AAB20A8}
 		{D2835D55-18C5-427B-A574-3D348A2C1DCC} = {2E32EB1E-B3AA-4ACF-BA20-EC6FD44CC05B}
 		{FEBE7C1A-2CD5-4543-B0F1-DE224D340F51} = {2E32EB1E-B3AA-4ACF-BA20-EC6FD44CC05B}
 		{712E5631-9BC0-44DE-BF20-FB3BFECAD9B2} = {2E32EB1E-B3AA-4ACF-BA20-EC6FD44CC05B}
@@ -1557,6 +1512,7 @@ Global
 		{34C50163-EFE8-45E1-9D8C-B2DCC8A00573} = {9F4D90EC-6AD2-495D-BFC3-270DC15974DD}
 		{B456D62A-817F-44B9-BAC3-99199C564AC7} = {72195525-BF6C-43D6-AC96-39E34D02EA34}
 		{AD575424-C408-4728-A9D2-EBA575E87A2F} = {72195525-BF6C-43D6-AC96-39E34D02EA34}
+		{6CBB099A-DE58-48A4-ADC7-D37725B0181C} = {8FD13EC8-8054-47D6-A818-847C3B022C89}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {26742782-2BDC-4959-9951-6D45B54A5C0D}

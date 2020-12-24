@@ -397,7 +397,7 @@
     <None Include="..\..\..\SharedSource\SharedSource Apache-2.0.licenseheader">
       <Link>SharedSource\SharedSource Apache-2.0.licenseheader</Link>
     </None>
-    <None Include="..\..\Build\NuSpec\TemplateSharedForNuGetOrg.nuspec">
+    <None Include="..\..\..\Build\NuSpec\TemplateSharedForNuGetOrg.nuspec">
       <Link>TemplateSharedForNuGetOrg.nuspec</Link>
     </None>
     <None Include="..\..\Remotion LGPL.licenseheader">
