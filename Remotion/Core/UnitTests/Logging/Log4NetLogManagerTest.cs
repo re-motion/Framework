@@ -187,7 +187,7 @@ namespace Remotion.UnitTests.Logging
           () => _logManager.InitializeConsole (LogLevel.Debug, new LogThreshold (new Log4NetLog (logger), LogLevel.Error)),
           Throws.ArgumentException.With.Message.Matches (
               @"Log-specific thresholds can only be set for log4net loggers of type 'log4net\.Repository\.Hierarchy\.Logger'\. "
-              + @"The specified logger 'Foo' is of type 'ILoggerProxy.*'\."
+              + @"The specified logger 'Foo' is of type 'Castle\.Proxies\.ILoggerProxy.*'\."
               + "\r\nParameter name: logThresholds"));
 
     }
