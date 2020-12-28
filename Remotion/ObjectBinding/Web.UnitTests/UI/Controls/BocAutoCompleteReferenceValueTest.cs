@@ -77,6 +77,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       MockRepository mockRepository = new MockRepository();
       _page = mockRepository.PartialMultiMock<Page> (typeof (ISmartPage));
       ((ISmartPage) _page).Stub (stub => stub.Context).Return (new HttpContextWrapper (HttpContext.Current));
+      ((ISmartPage) _page).Stub (stub => stub.Site).Return (null);
       _page.Replay();
       _page.Controls.Add (_control);
 
