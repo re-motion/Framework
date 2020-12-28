@@ -8,6 +8,7 @@
     <!-- Special settigns for re-strict: -->
     <AssemblyInfoFileForSecurityManager>$(SolutionDirectory)SecurityManager\AssemblyInfoShared.cs</AssemblyInfoFileForSecurityManager>
     <ProductNameForSecurityManager>re-motion Framework: re-strict (www.re-motion.org)</ProductNameForSecurityManager>
+    <CopyrightForSecurityManager>Copyright (c) rubicon IT GmbH, www.rubicon.eu - Licensed under GNU AGPL 3.0</CopyrightForSecurityManager>
 
     <AssemblyInfoFile>$(SolutionDirectory)Remotion\AssemblyInfoShared.*;$(AssemblyInfoFileForMixins);$(AssemblyInfoFileForSecurityManager)</AssemblyInfoFile>
     <CompanyName>rubicon IT GmbH</CompanyName>
