@@ -150,7 +150,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
               Arg.Is (_stubUser),
               Arg<IReadOnlyList<AccessType>>.List.Equal (new[] { AccessType.Get (accessTypeEnum) })))
           .WhenCalled (mi => CheckTransaction())
-          .Do (doDelegate);
+          .Do (doDelegate).Repeat.Once();
     }
 
     public void ExpectObjectSecurityStrategyHasAccess (SecurableObject securableObject, Enum accessTypeEnum, bool returnValue)
@@ -163,7 +163,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
               Arg<IReadOnlyList<AccessType>>.List.Equal (new[] { AccessType.Get (accessTypeEnum) })))
           .WhenCalled (mi => CheckTransaction())
           .WhenCalled (mi => CheckTransaction())
-          .Return (returnValue);
+          .Return (returnValue).Repeat.Once();
     }
 
     public void ExpectFunctionalSecurityStrategyHasAccess (Type securableObjectType, Enum accessTypeEnum, HasStatelessAccessDelegate doDelegate)
@@ -176,7 +176,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
               Arg<IReadOnlyList<AccessType>>.List.Equal (new[] { AccessType.Get (accessTypeEnum) })))
           .WhenCalled (mi => CheckTransaction())
           .WhenCalled (mi => CheckTransaction())
-          .Do (doDelegate);
+          .Do (doDelegate).Repeat.Once();
     }
 
     public void ExpectFunctionalSecurityStrategyHasAccess (Type securableObjectType, Enum accessTypeEnum, bool returnValue)
@@ -198,7 +198,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
           _mockPermissionReflector.GetRequiredMethodPermissions (
               Arg.Is (typeof (SecurableObject)),
               Arg<IMethodInformation>.Matches (mi => mi.Equals (methodInformation))))
-          .Return (returnedAccessTypes);
+          .Return (returnedAccessTypes).Repeat.Once();
     }
 
     public void ExpectSecurityProviderGetAccess (SecurityContext context, params Enum[] returnedAccessTypes)

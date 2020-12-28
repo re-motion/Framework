@@ -403,12 +403,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
             .Expect (mock => mock.HasDataChanged (
                 Arg.Is (_dataManager.CollectionData), 
                 Arg<IDomainObjectCollectionData>.List.Equal (_dataManager.OriginalCollectionData)))
-            .Return (true);
+            .Return (true).Repeat.Once();
         _changeDetectionStrategyMock
             .Expect (mock => mock.HasDataChanged (
                 Arg.Is (_dataManager.CollectionData), 
                 Arg<IDomainObjectCollectionData>.List.Equal (_dataManager.OriginalCollectionData)))
-            .Return (false);
+            .Return (false).Repeat.Once();
       }
       _changeDetectionStrategyMock.Replay ();
 
