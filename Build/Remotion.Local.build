@@ -75,18 +75,21 @@
   
   <Target Name="DocumentationBuild_Configuration">
     <PropertyGroup>
+      <Configurations>Debug</Configurations>
       <SkipDocumentation>False</SkipDocumentation>
     </PropertyGroup>
   </Target>
 
   <Target Name="PackageBuild_Configuration">
     <PropertyGroup>
+      <Configurations>Debug+Release</Configurations>
       <SkipNuGet>False</SkipNuGet>
     </PropertyGroup>
   </Target>
 
   <Target Name="DependDBBuild_Configuration">
     <PropertyGroup>
+      <Configurations>Debug</Configurations>
       <SkipNuGet>False</SkipNuGet>
       <SkipDependDB>False</SkipDependDB>
     </PropertyGroup>
