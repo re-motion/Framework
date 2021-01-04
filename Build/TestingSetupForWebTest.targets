@@ -36,7 +36,7 @@
       <!-- Hostname cannot be longer than 63 characters-->
       <_dockerHostName>RemotionWebTestContainer</_dockerHostName>
       <_dockerPortNumber>60402</_dockerPortNumber>
-      <_dockerWebApplicationRoot>http://$(_dockerHostName):$(_dockerPortNumber)/</_dockerWebApplicationRoot>
+      <_dockerWebApplicationRoot>http://$(_dockerHostName).local:$(_dockerPortNumber)/</_dockerWebApplicationRoot>
       <_dockerPullTimeout>00:15:00</_dockerPullTimeout>
       <_dockerVerifyWebApplicationStartedTimeout>00:01:00</_dockerVerifyWebApplicationStartedTimeout>
     </PropertyGroup>
