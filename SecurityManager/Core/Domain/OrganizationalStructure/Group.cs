@@ -24,6 +24,7 @@ using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
+using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain.AccessControl;
@@ -38,7 +39,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
   [Instantiable]
   [DBTable]
   [SecurityManagerStorageGroup]
-  public abstract class Group : OrganizationalStructureObject, ISupportsGetObject
+  public abstract class Group : OrganizationalStructureObject, ISecurityManagerGroup
   {
     // types
 
@@ -131,6 +132,11 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     [SearchAvailableObjectsServiceType (typeof (GroupTypePropertyTypeSearchService))]
     public abstract GroupType GroupType { get; set; }
 
+    [ObjectBinding (Visible = false)]
+    ISecurityManagerGroupType ISecurityManagerGroup.GroupType
+    {
+      get { return GroupType; }
+    }
 
     [DBBidirectionalRelation ("Group")]
     public abstract ObjectList<Role> Roles { get; [DemandPermission (SecurityManagerAccessTypes.AssignRole)] protected set; }
@@ -199,6 +205,11 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
           null,
           g => new InvalidOperationException (
               string.Format ("The parent hierarchy for group '{0}' cannot be resolved because a circular reference exists.", ID)));
+    }
+
+    IEnumerable<ISecurityManagerGroup> ISecurityManagerGroup.GetParents ()
+    {
+      return GetParents();
     }
 
     /// <summary>

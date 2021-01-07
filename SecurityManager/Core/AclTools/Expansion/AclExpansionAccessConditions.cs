@@ -48,7 +48,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion
 
 
     // Owning Group
-    public Group OwningGroup { get; set; }
+    public ISecurityManagerGroup OwningGroup { get; set; }
     public GroupHierarchyCondition GroupHierarchyCondition { get; set; }
 
     public bool HasOwningGroupCondition
@@ -58,7 +58,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion
 
 
     // Owning Tenant
-    public Tenant OwningTenant { get; set; }
+    public ISecurityManagerTenant OwningTenant { get; set; }
     public TenantHierarchyCondition TenantHierarchyCondition { get; set; }
     
     public bool HasOwningTenantCondition 

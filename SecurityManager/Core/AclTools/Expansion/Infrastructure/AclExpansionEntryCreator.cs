@@ -70,8 +70,14 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
 
       var roles = aclProbe.SecurityToken.Principal.Roles;
       Assertion.IsTrue (roles.Count == 1);
-      Assertion.IsTrue (object.ReferenceEquals (roles[0].Position.GetObjectReference(), userRoleAclAce.Role.Position));
-      Assertion.IsTrue (object.ReferenceEquals (roles[0].Group.GetObjectReference(), userRoleAclAce.Role.Group));
+      Assertion.IsTrue (
+          object.ReferenceEquals (
+              roles[0].Position.GetOrganizationStructureDomainObjectReference (ClientTransaction.Current),
+              userRoleAclAce.Role.Position));
+      Assertion.IsTrue (
+          object.ReferenceEquals (
+              roles[0].Group.GetOrganizationStructureDomainObjectReference (ClientTransaction.Current),
+              userRoleAclAce.Role.Group));
       
       AccessInformation accessInformation = userRoleAclAce.Acl.GetAccessTypes (aclProbe.SecurityToken, accessTypeStatistics);
 

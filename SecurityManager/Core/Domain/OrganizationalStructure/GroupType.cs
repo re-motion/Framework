@@ -32,7 +32,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
   [Instantiable]
   [DBTable]
   [SecurityManagerStorageGroup]
-  public abstract class GroupType : OrganizationalStructureObject, ISupportsGetObject
+  public abstract class GroupType : OrganizationalStructureObject, ISecurityManagerGroupType
   {
     private DomainObjectDeleteHandler _deleteHandler;
 

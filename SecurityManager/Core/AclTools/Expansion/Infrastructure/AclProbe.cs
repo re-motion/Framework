@@ -43,10 +43,11 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
   public class AclProbe
   {
     /// <summary>
-    /// Factory method to create an <see cref="AclProbe"/> from the passed <see cref="User"/>, <see cref="Role"/> and <see cref="AccessControlEntry"/>.
+    /// Factory method to create an <see cref="AclProbe"/> from the passed <see cref="ISecurityManagerUser"/>, 
+    /// <see cref="ISecurityManagerRole"/> and <see cref="AccessControlEntry"/>.
     /// </summary>
     /// <returns></returns>
-    public static AclProbe CreateAclProbe (User user, Role role, AccessControlEntry ace)
+    public static AclProbe CreateAclProbe (ISecurityManagerUser user, ISecurityManagerRole role, AccessControlEntry ace)
     {
       ArgumentUtility.CheckNotNull ("user", user);
       ArgumentUtility.CheckNotNull ("role", role);
@@ -90,9 +91,9 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
       return abstractRoles;
     }
 
-    private static User CreateOwningUserEntry (AclProbe aclProbe, User user, AccessControlEntry ace)
+    private static ISecurityManagerUser CreateOwningUserEntry (AclProbe aclProbe, ISecurityManagerUser user, AccessControlEntry ace)
     {
-      User owningUser;
+      ISecurityManagerUser owningUser;
       switch (ace.UserCondition)
       {
         case UserCondition.Owner:
@@ -117,9 +118,9 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
     }
 
 
-    private static Tenant CreateOwningTenantEntry (AclProbe aclProbe, User user, AccessControlEntry ace)
+    private static ISecurityManagerTenant CreateOwningTenantEntry (AclProbe aclProbe, ISecurityManagerUser user, AccessControlEntry ace)
     {
-      Tenant owningTenant;
+      ISecurityManagerTenant owningTenant;
       switch (ace.TenantCondition)
       {
         case TenantCondition.OwningTenant:
@@ -148,9 +149,9 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
       return owningTenant;
     }
 
-    private static Group CreateOwningGroupEntry (AclProbe aclProbe, Role role, AccessControlEntry ace)
+    private static ISecurityManagerGroup CreateOwningGroupEntry (AclProbe aclProbe, ISecurityManagerRole role, AccessControlEntry ace)
     {
-      Group owningGroup;
+      ISecurityManagerGroup owningGroup;
       switch (ace.GroupCondition)
       {
         case GroupCondition.OwningGroup:
@@ -184,10 +185,12 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
       return owningGroup;
     }
 
-    private static Group FindFirstGroupInThisAndParentHierarchyWhichHasGroupType (Group group, GroupType groupType)
+    private static ISecurityManagerGroup FindFirstGroupInThisAndParentHierarchyWhichHasGroupType (
+        ISecurityManagerGroup group,
+        ISecurityManagerGroupType groupType)
     {
       var thisAndParents = new[] { group }.Concat (group.GetParents());
-      Group matchingGroup = thisAndParents.Where (g => g.GroupType == groupType).FirstOrDefault ();
+      ISecurityManagerGroup matchingGroup = thisAndParents.Where (g => g.GroupType == groupType).FirstOrDefault();
       return matchingGroup;
     }
 

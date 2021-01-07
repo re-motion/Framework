@@ -20,13 +20,12 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Remotion.Data.DomainObjects;
 using Remotion.Globalization;
+using Remotion.Mixins;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation;
 using Remotion.SecurityManager.Domain.Metadata;
-using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.SecurityManager.Domain.SearchInfrastructure.Metadata;
-using Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStructure;
 using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.AccessControl
@@ -45,6 +44,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     private SecurityTokenMatcher _matcher;
     private DomainObjectDeleteHandler _deleteHandler;
+    private IAccessControlEntryMixin _mixin;
 
     protected AccessControlEntry ()
     {
@@ -67,6 +67,14 @@ namespace Remotion.SecurityManager.Domain.AccessControl
         _matcher = new SecurityTokenMatcher (this);
     }
 
+    protected override void OnReferenceInitializing ()
+    {
+      base.OnReferenceInitializing();
+      _mixin = Mixin.Get<IAccessControlEntryMixin> (this);
+    }
+
+    //private IAccessControlEntryMixin Mixin {get {return (IAccessControlEntryMixin)Mixins.Mixin.Get
+
     public abstract int Index { get; set; }
 
     [DisableEnumValues (typeof (AccessControlEntryPropertiesEnumerationValueFilter))]
@@ -82,23 +90,48 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     [DisableEnumValues (typeof (AccessControlEntryPropertiesEnumerationValueFilter))]
     public abstract UserCondition UserCondition { get; set; }
 
-    [SearchAvailableObjectsServiceType (typeof (TenantPropertyTypeSearchService))]
-    public abstract Tenant SpecificTenant { get; set; }
+    [ObjectBinding (Visible = false)]
+    [StorageClassNone]
+    public ISecurityManagerTenant SpecificTenant
+    {
+      get { return _mixin.SpecificTenant; }
+      set { _mixin.SpecificTenant = value; }
+    }
 
-    [SearchAvailableObjectsServiceType (typeof (GroupPropertyTypeSearchService))]
-    public abstract Group SpecificGroup { get; set; }
+    [ObjectBinding (Visible = false)]
+    [StorageClassNone]
+    public ISecurityManagerGroup SpecificGroup
+    {
+      get { return _mixin.SpecificGroup; }
+      set { _mixin.SpecificGroup = value; }
+    }
 
-    [SearchAvailableObjectsServiceType (typeof (GroupTypePropertyTypeSearchService))]
-    public abstract GroupType SpecificGroupType { get; set; }
+    [ObjectBinding (Visible = false)]
+    [StorageClassNone]
+    public ISecurityManagerGroupType SpecificGroupType
+    {
+      get { return _mixin.SpecificGroupType; }
+      set { _mixin.SpecificGroupType = value; }
+    }
 
-    [SearchAvailableObjectsServiceType (typeof (PositionPropertyTypeSearchService))]
-    public abstract Position SpecificPosition { get; set; }
+    [ObjectBinding (Visible = false)]
+    [StorageClassNone]
+    public ISecurityManagerPosition SpecificPosition
+    {
+      get { return _mixin.SpecificPosition; }
+      set { _mixin.SpecificPosition = value; }
+    }
 
-    [SearchAvailableObjectsServiceType (typeof (UserPropertyTypeSearchService))]
-    public abstract User SpecificUser { get; set; }
+    [ObjectBinding (Visible = false)]
+    [StorageClassNone]
+    public ISecurityManagerUser SpecificUser
+    {
+      get { return _mixin.SpecificUser; }
+      set { _mixin.SpecificUser = value; }
+    }
 
     [SearchAvailableObjectsServiceType (typeof (AbstractRoleDefinitionPropertyTypeSearchService))]
-    public abstract AbstractRoleDefinition SpecificAbstractRole { get; set; }
+    public abstract AbstractRoleDefinition SpecificAbstractRole { get; }
 
     [DBBidirectionalRelation ("AccessControlEntries")]
     public abstract AccessControlList AccessControlList { get; set; }

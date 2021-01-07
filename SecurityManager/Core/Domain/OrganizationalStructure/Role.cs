@@ -18,7 +18,9 @@
 using System;
 using Remotion.Data.DomainObjects;
 using Remotion.Globalization;
+using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
+using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStructure;
 
 namespace Remotion.SecurityManager.Domain.OrganizationalStructure
@@ -29,7 +31,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
   [Instantiable]
   [DBTable]
   [SecurityManagerStorageGroup]
-  public abstract class Role : OrganizationalStructureObject
+  public abstract class Role : OrganizationalStructureObject, ISecurityManagerRole
   {
     private DomainObjectDeleteHandler _deleteHandler;
 
@@ -47,14 +49,32 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     [SearchAvailableObjectsServiceType (typeof (GroupPropertyTypeSearchService))]
     public abstract Group Group { get; set; }
 
+    [ObjectBinding (Visible = false)]
+    ISecurityManagerGroup ISecurityManagerRole.Group
+    {
+      get { return Group; }
+    }
+
     [Mandatory]
     [SearchAvailableObjectsServiceType (typeof (RolePropertiesSearchService))]
     public abstract Position Position { get; set; }
+
+    [ObjectBinding (Visible = false)]
+    ISecurityManagerPosition ISecurityManagerRole.Position
+    {
+      get { return Position; }
+    }
 
     [DBBidirectionalRelation ("Roles")]
     [Mandatory]
     [SearchAvailableObjectsServiceType (typeof (UserPropertyTypeSearchService))]
     public abstract User User { get; set; }
+
+    [ObjectBinding (Visible = false)]
+    ISecurityManagerUser ISecurityManagerRole.User
+    {
+      get { return User; }
+    }
 
     [DBBidirectionalRelation ("SubstitutedRole")]
     public abstract ObjectList<Substitution> SubstitutedBy { get; }

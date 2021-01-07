@@ -55,20 +55,20 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'TenantView
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'UserView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[UserView]
 -- Drop foreign keys of all tables
-IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_AccessControlEntry_SpecificTenantID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'AccessControlEntry')
-  ALTER TABLE [dbo].[AccessControlEntry] DROP CONSTRAINT FK_AccessControlEntry_SpecificTenantID
-IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_AccessControlEntry_SpecificGroupID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'AccessControlEntry')
-  ALTER TABLE [dbo].[AccessControlEntry] DROP CONSTRAINT FK_AccessControlEntry_SpecificGroupID
-IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_AccessControlEntry_SpecificGroupTypeID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'AccessControlEntry')
-  ALTER TABLE [dbo].[AccessControlEntry] DROP CONSTRAINT FK_AccessControlEntry_SpecificGroupTypeID
-IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_AccessControlEntry_SpecificPositionID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'AccessControlEntry')
-  ALTER TABLE [dbo].[AccessControlEntry] DROP CONSTRAINT FK_AccessControlEntry_SpecificPositionID
-IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_AccessControlEntry_SpecificUserID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'AccessControlEntry')
-  ALTER TABLE [dbo].[AccessControlEntry] DROP CONSTRAINT FK_AccessControlEntry_SpecificUserID
 IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_AccessControlEntry_SpecificAbstractRoleID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'AccessControlEntry')
   ALTER TABLE [dbo].[AccessControlEntry] DROP CONSTRAINT FK_AccessControlEntry_SpecificAbstractRoleID
 IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_AccessControlEntry_AccessControlListID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'AccessControlEntry')
   ALTER TABLE [dbo].[AccessControlEntry] DROP CONSTRAINT FK_AccessControlEntry_AccessControlListID
+IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_AccessControlEntry_SpecificTenantID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'AccessControlEntry')
+  ALTER TABLE [dbo].[AccessControlEntry] DROP CONSTRAINT FK_AccessControlEntry_SpecificTenantID
+IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_AccessControlEntry_SpecificGroupID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'AccessControlEntry')
+  ALTER TABLE [dbo].[AccessControlEntry] DROP CONSTRAINT FK_AccessControlEntry_SpecificGroupID
+IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_AccessControlEntry_SpecificUserID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'AccessControlEntry')
+  ALTER TABLE [dbo].[AccessControlEntry] DROP CONSTRAINT FK_AccessControlEntry_SpecificUserID
+IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_AccessControlEntry_SpecificGroupTypeID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'AccessControlEntry')
+  ALTER TABLE [dbo].[AccessControlEntry] DROP CONSTRAINT FK_AccessControlEntry_SpecificGroupTypeID
+IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_AccessControlEntry_SpecificPositionID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'AccessControlEntry')
+  ALTER TABLE [dbo].[AccessControlEntry] DROP CONSTRAINT FK_AccessControlEntry_SpecificPositionID
 IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_Permission_AccessTypeDefinitionID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'Permission')
   ALTER TABLE [dbo].[Permission] DROP CONSTRAINT FK_Permission_AccessTypeDefinitionID
 IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_Permission_AccessControlEntryID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'Permission')

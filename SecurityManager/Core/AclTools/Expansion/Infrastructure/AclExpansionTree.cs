@@ -46,7 +46,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
           }
         );
 
-    private readonly List<AclExpansionTreeNode<User, AclExpansionTreeNode<Role, AclExpansionTreeNode<SecurableClassDefinition, 
+    private readonly List<AclExpansionTreeNode<ISecurityManagerUser, AclExpansionTreeNode<ISecurityManagerRole, AclExpansionTreeNode<SecurableClassDefinition, 
       AclExpansionTreeNode<AclExpansionEntry, AclExpansionEntry>>>>> _aclExpansionTree;
 
     public AclExpansionTree (List<AclExpansionEntry> aclExpansion)
@@ -60,7 +60,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
       _aclExpansionTree = CreateAclExpansionTree (aclExpansion);
     }
 
-    public List<AclExpansionTreeNode<User, AclExpansionTreeNode<Role, AclExpansionTreeNode<SecurableClassDefinition, 
+    public List<AclExpansionTreeNode<ISecurityManagerUser, AclExpansionTreeNode<ISecurityManagerRole, AclExpansionTreeNode<SecurableClassDefinition, 
       AclExpansionTreeNode<AclExpansionEntry, AclExpansionEntry>>>>> Tree
     {
       get { return _aclExpansionTree; }
@@ -72,7 +72,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
       get { return _aclExpansionEntryIgnoreStateEqualityComparer; }
     }
 
-    private List<AclExpansionTreeNode<User, AclExpansionTreeNode<Role, AclExpansionTreeNode<SecurableClassDefinition,
+    private List<AclExpansionTreeNode<ISecurityManagerUser, AclExpansionTreeNode<ISecurityManagerRole, AclExpansionTreeNode<SecurableClassDefinition,
       AclExpansionTreeNode<AclExpansionEntry, AclExpansionEntry>>>>> 
       CreateAclExpansionTree (List<AclExpansionEntry> aclExpansion)
     {
@@ -84,14 +84,14 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
       return aclExpansionTree;
     }
 
-    private IEnumerable<AclExpansionTreeNode<Role, AclExpansionTreeNode<SecurableClassDefinition, AclExpansionTreeNode<AclExpansionEntry, AclExpansionEntry>>>> RoleGrouping (IGrouping<User, AclExpansionEntry> grouping)
+    private IEnumerable<AclExpansionTreeNode<ISecurityManagerRole, AclExpansionTreeNode<SecurableClassDefinition, AclExpansionTreeNode<AclExpansionEntry, AclExpansionEntry>>>> RoleGrouping (IGrouping<ISecurityManagerUser, AclExpansionEntry> grouping)
     {
       return (grouping.OrderBy (roleEntry => roleEntry.Role.Group.DisplayName).ThenBy (roleEntry => roleEntry.Role.Position.DisplayName).
           GroupBy (roleEntry => roleEntry.Role).Select (
           roleGrouping => AclExpansionTreeNode.New (roleGrouping.Key, CountRowsBelow (roleGrouping), ClassGrouping(roleGrouping).ToList())));
     }
 
-    private IEnumerable<AclExpansionTreeNode<SecurableClassDefinition, AclExpansionTreeNode<AclExpansionEntry, AclExpansionEntry>>> ClassGrouping (IGrouping<Role, AclExpansionEntry> roleGrouping)
+    private IEnumerable<AclExpansionTreeNode<SecurableClassDefinition, AclExpansionTreeNode<AclExpansionEntry, AclExpansionEntry>>> ClassGrouping (IGrouping<ISecurityManagerRole, AclExpansionEntry> roleGrouping)
     {
       return (roleGrouping.OrderBy (classEntry => _orderbyForSecurableClass (classEntry)).GroupBy (
           classEntry => classEntry.Class).Select (

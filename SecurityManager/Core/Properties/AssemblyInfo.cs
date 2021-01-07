@@ -19,6 +19,9 @@ using System;
 using System.Reflection;
 using System.Resources;
 using Remotion.Globalization;
+using Remotion.Mixins;
+using Remotion.SecurityManager.Domain.AccessControl;
+using Remotion.SecurityManager.Domain.OrganizationalStructure;
 
 [assembly: AssemblyTitle ("re-motion Security Manager Core Components")]
 [assembly: AssemblyDescription ("Component for managing an application's security requirements via access control lists.")]
@@ -26,3 +29,4 @@ using Remotion.Globalization;
 [assembly: NeutralResourcesLanguage ("en")]
 [assembly: AvailableResourcesLanguages ("", "de", "fr", "it")]
 [assembly: CLSCompliant (true)]
+[assembly: Mix (typeof (AccessControlEntry), typeof (AccessControlEntryMixin<Tenant, Group, User, GroupType, Position>))]

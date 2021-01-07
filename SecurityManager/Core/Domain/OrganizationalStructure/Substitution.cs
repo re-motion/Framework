@@ -20,6 +20,7 @@ using Remotion.Data.DomainObjects;
 using Remotion.Globalization;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
+using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStructure;
 
 namespace Remotion.SecurityManager.Domain.OrganizationalStructure
@@ -34,7 +35,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
   [Instantiable]
   [DBTable]
   [SecurityManagerStorageGroup]
-  public abstract class Substitution : BaseSecurityManagerObject
+  public abstract class Substitution : BaseSecurityManagerObject, ISecurityManagerSubstitution
   {
     public static Substitution NewObject ()
     {
@@ -57,9 +58,21 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     [Mandatory]
     public abstract User SubstitutedUser { get; set; }
 
+    [ObjectBinding (Visible = false)]
+    ISecurityManagerUser ISecurityManagerSubstitution.SubstitutedUser
+    {
+      get { return SubstitutingUser; }
+    }
+
     [DBBidirectionalRelation ("SubstitutedBy")]
     [SearchAvailableObjectsServiceType (typeof (SubstitutionPropertiesSearchService))]
     public abstract Role SubstitutedRole { get; set; }
+
+    [ObjectBinding (Visible = false)]
+    ISecurityManagerRole ISecurityManagerSubstitution.SubstitutedRole
+    {
+      get { return SubstitutedRole; }
+    }
 
     [DateProperty]
     public abstract DateTime? BeginDate { get; set; }

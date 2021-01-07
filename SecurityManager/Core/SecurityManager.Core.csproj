@@ -141,6 +141,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Domain\AccessControl\AccessControlEntry.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlEntryMixin.cs" />
     <Compile Include="Domain\AccessControl\AccessControlEntryValidationError.cs" />
     <Compile Include="Domain\AccessControl\AccessControlExtensions.cs" />
     <Compile Include="Domain\AccessControl\AccessEvaluation\AccessResolver.cs" />

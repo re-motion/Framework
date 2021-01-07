@@ -38,8 +38,8 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
       Ace = ace;
     }
 
-    public Role Role { get; private set; }
-    public User User { get { return Role.User; } }
+    public ISecurityManagerRole Role { get; private set; }
+    public ISecurityManagerUser User { get { return Role.User; } }
     public AccessControlEntry Ace { get; private set; }
     public AccessControlList Acl { get { return Ace.AccessControlList; } }
 

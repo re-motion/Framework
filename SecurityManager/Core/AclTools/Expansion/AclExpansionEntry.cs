@@ -32,8 +32,8 @@ namespace Remotion.SecurityManager.AclTools.Expansion
     private readonly AccessControlList _accessControlList;
 
     public AclExpansionEntry (
-        User user,
-        Role role,
+        ISecurityManagerUser user,
+        ISecurityManagerRole role,
         AccessControlList accessControlList,
         AclExpansionAccessConditions accessConditions,
         AccessTypeDefinition[] allowedAccessTypes,
@@ -52,8 +52,8 @@ namespace Remotion.SecurityManager.AclTools.Expansion
       DeniedAccessTypes = deniedAccessTypes;
     }
 
-    public User User { get; private set; }
-    public Role Role { get; private set; }
+    public ISecurityManagerUser User { get; private set; }
+    public ISecurityManagerRole Role { get; private set; }
 
     public SecurableClassDefinition Class
     {

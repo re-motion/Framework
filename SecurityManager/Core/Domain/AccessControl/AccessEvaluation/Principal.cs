@@ -35,8 +35,8 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     public static readonly Principal Null = new Principal();
 
     private readonly bool _isNull;
-    private readonly IDomainObjectHandle<Tenant> _tenant;
-    private readonly IDomainObjectHandle<User> _user;
+    private readonly IDomainObjectHandle<ISecurityManagerTenant> _tenant;
+    private readonly IDomainObjectHandle<ISecurityManagerUser> _user;
     private readonly ReadOnlyCollection<PrincipalRole> _roles;
 
     private Principal ()
@@ -46,8 +46,8 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     }
 
     public Principal (
-        [NotNull] IDomainObjectHandle<Tenant> tenant,
-        [CanBeNull] IDomainObjectHandle<User> user,
+        [NotNull] IDomainObjectHandle<ISecurityManagerTenant> tenant,
+        [CanBeNull] IDomainObjectHandle<ISecurityManagerUser> user,
         [NotNull] IEnumerable<PrincipalRole> roles)
     {
       ArgumentUtility.CheckNotNull ("tenant", tenant);
@@ -60,13 +60,13 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     }
 
     [CanBeNull]
-    public IDomainObjectHandle<Tenant> Tenant
+    public IDomainObjectHandle<ISecurityManagerTenant> Tenant
     {
       get { return _tenant; }
     }
 
     [CanBeNull]
-    public IDomainObjectHandle<User> User
+    public IDomainObjectHandle<ISecurityManagerUser> User
     {
       get { return _user; }
     }

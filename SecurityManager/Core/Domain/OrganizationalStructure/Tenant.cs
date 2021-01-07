@@ -25,6 +25,7 @@ using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.Security;
+using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStructure;
 using Remotion.Utilities;
 
@@ -36,7 +37,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
   [Instantiable]
   [DBTable]
   [SecurityManagerStorageGroup]
-  public abstract class Tenant : OrganizationalStructureObject, ISupportsGetObject
+  public abstract class Tenant : OrganizationalStructureObject, ISecurityManagerTenant
   {
     public enum Methods
     {
@@ -135,6 +136,11 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
           t => new InvalidOperationException (
               string.Format ("The parent hierarchy for tenant '{0}' cannot be resolved because a circular reference exists.", ID))
           );
+    }
+
+    IEnumerable<ISecurityManagerTenant> ISecurityManagerTenant.GetParents ()
+    {
+      return GetParents();
     }
 
     /// <summary>

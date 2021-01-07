@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Remotion.SecurityManager.AclTools.Expansion.Infrastructure;
+using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.SecurityManager.Domain.Metadata;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.SecurityManager.Globalization.AclTools.Expansion;
@@ -101,7 +102,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion
       }
     }
 
-    private void WriteTableBody_ProcessUser (AclExpansionTreeNode<User, AclExpansionTreeNode<Role, AclExpansionTreeNode<SecurableClassDefinition, AclExpansionTreeNode<AclExpansionEntry, AclExpansionEntry>>>> userNode)
+    private void WriteTableBody_ProcessUser (AclExpansionTreeNode<ISecurityManagerUser, AclExpansionTreeNode<ISecurityManagerRole, AclExpansionTreeNode<SecurableClassDefinition, AclExpansionTreeNode<AclExpansionEntry, AclExpansionEntry>>>> userNode)
     {
       Implementation.WriteTableDataWithRowCount (userNode.Key.DisplayName, userNode.NumberLeafNodes);
   
@@ -111,7 +112,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion
       }
     }
 
-    private void WriteTableBody_ProcessRole (AclExpansionTreeNode<Role, AclExpansionTreeNode<SecurableClassDefinition, AclExpansionTreeNode<AclExpansionEntry, AclExpansionEntry>>> roleNode)
+    private void WriteTableBody_ProcessRole (AclExpansionTreeNode<ISecurityManagerRole, AclExpansionTreeNode<SecurableClassDefinition, AclExpansionTreeNode<AclExpansionEntry, AclExpansionEntry>>> roleNode)
     {
       Implementation.WriteTableDataForRole (roleNode.Key, roleNode.NumberLeafNodes);
  

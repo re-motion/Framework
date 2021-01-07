@@ -84,7 +84,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
       }
     }
 
-    public void WriteTableDataForRole (Role role, int rowCount)
+    public void WriteTableDataForRole (ISecurityManagerRole role, int rowCount)
     {
       WriteTableRowBeginIfNotInTableRow();
       HtmlTagWriter.Tags.td ();

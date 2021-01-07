@@ -24,7 +24,7 @@ using Remotion.Data.DomainObjects;
 using Remotion.FunctionalProgramming;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain.Metadata;
-using Remotion.SecurityManager.Domain.OrganizationalStructure;
+//using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
@@ -50,8 +50,8 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     }
 
     /// <exception cref="AccessControlException">
-    ///   A matching <see cref="User"/> is not found for the <paramref name="principal"/>.<br/>- or -<br/>
-    ///   A matching <see cref="Group"/> is not found for the <paramref name="context"/>'s <see cref="ISecurityContext.OwnerGroup"/>.<br/>- or -<br/>
+    ///   A matching <see cref="ISecurityManagerUser"/> is not found for the <paramref name="principal"/>.<br/>- or -<br/>
+    ///   A matching <see cref="ISecurityManagerGroup"/> is not found for the <paramref name="context"/>'s <see cref="ISecurityContext.OwnerGroup"/>.<br/>- or -<br/>
     ///   A matching <see cref="AbstractRoleDefinition"/> is not found for all entries in the <paramref name="context"/>'s <see cref="SecurityContext.AbstractRoles"/> collection.
     /// </exception>
     public SecurityToken CreateToken (ISecurityPrincipal principal, ISecurityContext context)
@@ -76,12 +76,12 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       if (string.IsNullOrEmpty (principal.User))
         throw CreateAccessControlException ("No principal was provided.");
 
-      User user = _securityPrincipalRepository.GetUser (principal.User);
+      ISecurityManagerUser user = _securityPrincipalRepository.GetUser (principal.User);
       lock (user.RootTransaction)
       {
-        Tenant principalTenant = user.Tenant;
-        User principalUser;
-        IEnumerable<Role> principalRoles;
+        ISecurityManagerTenant principalTenant = user.Tenant;
+        ISecurityManagerUser principalUser;
+        IEnumerable<ISecurityManagerRole> principalRoles;
 
         if (principal.SubstitutedUser != null)
         {
@@ -112,7 +112,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
           else
           {
             principalUser = null;
-            principalRoles = new Role[0];
+            principalRoles = new ISecurityManagerRole[0];
           }
         }
         else if (principal.SubstitutedRoles != null)
@@ -128,7 +128,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
           if (substitutionForRoles != null)
             principalRoles = EnumerableUtility.Singleton (substitutionForRoles.SubstitutedRole);
           else
-            principalRoles = new Role[0];
+            principalRoles = new ISecurityManagerRole[0];
         }
         else
         {
@@ -146,8 +146,8 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       }
     }
 
-    private Substitution FilterSubstitutionsForMatchingRoles (
-        IEnumerable<Substitution> availableSubstitutions,
+    private ISecurityManagerSubstitution FilterSubstitutionsForMatchingRoles (
+        IEnumerable<ISecurityManagerSubstitution> availableSubstitutions,
         IReadOnlyList<ISecurityPrincipalRole> principalSubstitutedRoles)
     {
       // ReSharper disable once ReplaceWithSingleCallToFirstOrDefault
@@ -159,7 +159,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
           .FirstOrDefault();
     }
 
-    private bool IsRoleContainedInPrincipalRoles ([CanBeNull]Role role, [NotNull] IEnumerable<ISecurityPrincipalRole> principalRoles)
+    private bool IsRoleContainedInPrincipalRoles ([CanBeNull]ISecurityManagerRole role, [NotNull] IEnumerable<ISecurityPrincipalRole> principalRoles)
     {
       // ReSharper disable once LoopCanBeConvertedToQuery
       foreach (var principalRole in principalRoles)
@@ -170,7 +170,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       return false;
     }
 
-    private bool IsRoleMatchingPrincipalRole ([CanBeNull]Role role, [NotNull] ISecurityPrincipalRole principalRole)
+    private bool IsRoleMatchingPrincipalRole ([CanBeNull]ISecurityManagerRole role, [NotNull] ISecurityPrincipalRole principalRole)
     {
       if (role == null)
         return false;
@@ -186,7 +186,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       return true;
     }
 
-    private IDomainObjectHandle<Tenant> GetTenant (string uniqueIdentifier)
+    private IDomainObjectHandle<ISecurityManagerTenant> GetTenant (string uniqueIdentifier)
     {
       if (string.IsNullOrEmpty (uniqueIdentifier))
         return null;
@@ -194,7 +194,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       return _securityContextRepository.GetTenant (uniqueIdentifier);
     }
 
-    private IDomainObjectHandle<User> GetUser (string userName)
+    private IDomainObjectHandle<ISecurityManagerUser> GetUser (string userName)
     {
       if (string.IsNullOrEmpty (userName))
         return null;
@@ -202,7 +202,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       return _securityContextRepository.GetUser (userName);
     }
 
-    private IDomainObjectHandle<Group> GetGroup (string uniqueIdentifier)
+    private IDomainObjectHandle<ISecurityManagerGroup> GetGroup (string uniqueIdentifier)
     {
       if (string.IsNullOrEmpty (uniqueIdentifier))
         return null;

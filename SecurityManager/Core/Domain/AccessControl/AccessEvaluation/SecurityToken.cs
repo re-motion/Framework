@@ -31,9 +31,9 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
   {
     public static SecurityToken Create (
         [NotNull] Principal principal,
-        [CanBeNull] Tenant owningTenant,
-        [CanBeNull] Group owningGroup,
-        [CanBeNull] User owningUser,
+        [CanBeNull] ISecurityManagerTenant owningTenant,
+        [CanBeNull] ISecurityManagerGroup owningGroup,
+        [CanBeNull] ISecurityManagerUser owningUser,
         [NotNull] IEnumerable<IDomainObjectHandle<AbstractRoleDefinition>> abstractRoles)
     {
       ArgumentUtility.CheckNotNull ("principal", principal);
@@ -48,16 +48,16 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     }
 
     private readonly Principal _principal;
-    private readonly IDomainObjectHandle<Tenant> _owningTenant;
-    private readonly IDomainObjectHandle<Group> _owningGroup;
-    private readonly IDomainObjectHandle<User> _owningUser;
+    private readonly IDomainObjectHandle<ISecurityManagerTenant> _owningTenant;
+    private readonly IDomainObjectHandle<ISecurityManagerGroup> _owningGroup;
+    private readonly IDomainObjectHandle<ISecurityManagerUser> _owningUser;
     private readonly ReadOnlyCollection<IDomainObjectHandle<AbstractRoleDefinition>> _abstractRoles;
 
     public SecurityToken (
         [NotNull] Principal principal,
-        [CanBeNull] IDomainObjectHandle<Tenant> owningTenant,
-        [CanBeNull] IDomainObjectHandle<Group> owningGroup,
-        [CanBeNull] IDomainObjectHandle<User> owningUser,
+        [CanBeNull] IDomainObjectHandle<ISecurityManagerTenant> owningTenant,
+        [CanBeNull] IDomainObjectHandle<ISecurityManagerGroup> owningGroup,
+        [CanBeNull] IDomainObjectHandle<ISecurityManagerUser> owningUser,
         [NotNull] IEnumerable<IDomainObjectHandle<AbstractRoleDefinition>> abstractRoles)
     {
       ArgumentUtility.CheckNotNull ("principal", principal);
@@ -77,19 +77,19 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     }
 
     [CanBeNull]
-    public IDomainObjectHandle<Tenant> OwningTenant
+    public IDomainObjectHandle<ISecurityManagerTenant> OwningTenant
     {
       get { return _owningTenant; }
     }
 
     [CanBeNull]
-    public IDomainObjectHandle<Group> OwningGroup
+    public IDomainObjectHandle<ISecurityManagerGroup> OwningGroup
     {
       get { return _owningGroup; }
     }
 
     [CanBeNull]
-    public IDomainObjectHandle<User> OwningUser
+    public IDomainObjectHandle<ISecurityManagerUser> OwningUser
     {
       get { return _owningUser; }
     }

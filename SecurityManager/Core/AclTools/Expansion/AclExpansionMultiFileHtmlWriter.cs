@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Remotion.SecurityManager.AclTools.Expansion.Infrastructure;
 using Remotion.SecurityManager.AclTools.Expansion.TextWriterFactory;
+using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.SecurityManager.Globalization.AclTools.Expansion;
 using Remotion.Utilities;
@@ -99,7 +100,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion
     }
 
     // Note: Method name has been picked in analogy to method names in AclExpansionHtmlWriter.
-    private void WriteTableBody_ProcessUser (User user, List<AclExpansionEntry> aclExpansion)
+    private void WriteTableBody_ProcessUser (ISecurityManagerUser user, List<AclExpansionEntry> aclExpansion)
     {
       _implementation.WriteTableData (user.UserName);
       _implementation.WriteTableData (user.FirstName);
@@ -126,7 +127,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion
     }
 
 
-    public static List<User> GetUsers (IEnumerable<AclExpansionEntry> aclExpansion)
+    public static List<ISecurityManagerUser> GetUsers (IEnumerable<AclExpansionEntry> aclExpansion)
     {
       return (from aee in aclExpansion
              let user = aee.User
@@ -134,7 +135,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion
               select user).Distinct ().ToList ();
     }
 
-    public static List<AclExpansionEntry> GetAccessControlEntriesForUser (IEnumerable<AclExpansionEntry> aclExpansion, User user)
+    public static List<AclExpansionEntry> GetAccessControlEntriesForUser (IEnumerable<AclExpansionEntry> aclExpansion, ISecurityManagerUser user)
     {
       return (from aee in aclExpansion
              where aee.User == user

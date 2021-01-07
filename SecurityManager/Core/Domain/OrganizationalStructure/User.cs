@@ -23,6 +23,7 @@ using System.Linq.Expressions;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Globalization;
+using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain.AccessControl;
@@ -37,7 +38,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
   [Instantiable]
   [DBTable]
   [SecurityManagerStorageGroup]
-  public abstract class User : OrganizationalStructureObject, ISupportsGetObject
+  public abstract class User : OrganizationalStructureObject, ISecurityManagerUser
   {
     public enum Methods
     {
@@ -109,9 +110,21 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     [DBBidirectionalRelation ("User")]
     public abstract ObjectList<Role> Roles { get; [DemandPermission (SecurityManagerAccessTypes.AssignRole)] protected set; }
+    
+    [ObjectBinding (Visible = false)]
+    IEnumerable<ISecurityManagerRole> ISecurityManagerUser.Roles
+    {
+      get { return Roles; }
+    }
 
     [Mandatory]
     public abstract Tenant Tenant { get; set; }
+
+    [ObjectBinding (Visible = false)]
+    ISecurityManagerTenant ISecurityManagerUser.Tenant
+    {
+      get { return Tenant; }
+    }
 
     [Mandatory]
     [SearchAvailableObjectsServiceType(typeof (GroupPropertyTypeSearchService))]
@@ -130,6 +143,11 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
         return new Substitution[0];
 
       return SubstitutingFor.Where (s => s.IsActive);
+    }
+
+    IEnumerable<ISecurityManagerSubstitution> ISecurityManagerUser.GetActiveSubstitutions ()
+    {
+      return GetActiveSubstitutions();
     }
 
     protected override void OnDeleting (EventArgs args)
