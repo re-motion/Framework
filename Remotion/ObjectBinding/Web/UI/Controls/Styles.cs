@@ -238,6 +238,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   public class DropDownListStyle : Style
   {
     private bool? _autoPostBack;
+    private bool _nullValueTextVisible;
 
     [Description ("Automatically postback to the server after the text is modified.")]
     [Category ("Behavior")]
@@ -247,6 +248,22 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       get { return _autoPostBack; }
       set { _autoPostBack = value; }
+    }
+
+    /// <summary>
+    /// Gets or sets a flag that determines whether to show the text for <see langword="null" />.
+    /// </summary>
+    /// <remarks>
+    /// For some combinations of browser and screen reader, this flag must be set in order to properly announce <see langword="null" /> to the user.
+    /// </remarks>
+    [Description ("A flag that determines whether to show the text for the null value.")]
+    [Category ("Behavior")]
+    [DefaultValue (false)]
+    [NotifyParentProperty (true)]
+    public bool NullValueTextVisible
+    {
+      get { return _nullValueTextVisible; }
+      set { _nullValueTextVisible = value; }
     }
 
     public void ApplyStyle (DropDownList dropDownList)
