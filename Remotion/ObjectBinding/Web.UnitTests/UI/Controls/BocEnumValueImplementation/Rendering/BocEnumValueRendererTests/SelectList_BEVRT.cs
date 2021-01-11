@@ -46,6 +46,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
   [TestFixture]
   public class SelectList_BEVRT : RendererTestBase
   {
+    private enum NullOption
+    {
+      WithoutNullValue,
+      HasNullValueWithScreenReaderOnlyText,
+      HasNullValueWithVisibleText
+    }
+
     private const string c_clientID = "MyEnumValue";
     private const string c_valueName = "ListControlClientID";
     private const string c_labelID = "Label";
@@ -116,7 +123,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
     {
       _enumValue.Stub (mock => mock.IsRequired).Return (false);
 
-      AssertOptionList (true, null, false, false);
+      AssertOptionList (NullOption.HasNullValueWithScreenReaderOnlyText, null, false, false);
     }
 
     [Test]
@@ -124,7 +131,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
     {
       _enumValue.Stub (mock => mock.IsRequired).Return (true);
 
-      AssertOptionList (true, null, false, false);
+      AssertOptionList (NullOption.HasNullValueWithScreenReaderOnlyText, null, false, false);
     }
 
     [Test]
@@ -133,7 +140,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       _enumValue.Stub (mock => mock.IsRequired).Return (true);
       _enumValue.Value = TestEnum.First;
 
-      AssertOptionList (false, TestEnum.First, false, false);
+      AssertOptionList (NullOption.WithoutNullValue, TestEnum.First, false, false);
     }
 
     [Test]
@@ -143,7 +150,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       _enumValue.ListControlStyle.AutoPostBack = true;
       _enumValue.Value = TestEnum.First;
 
-      AssertOptionList (false, TestEnum.First, false, true);
+      AssertOptionList (NullOption.WithoutNullValue, TestEnum.First, false, true);
     }
 
     [Test]
@@ -152,7 +159,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       _enumValue.Stub (mock => mock.IsRequired).Return (false);
       _enumValue.Value = TestEnum.First;
 
-      AssertOptionList (true, TestEnum.First, false, false);
+      AssertOptionList (NullOption.HasNullValueWithScreenReaderOnlyText, TestEnum.First, false, false);
     }
 
     [Test]
@@ -162,7 +169,29 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       _enumValue.Stub (mock => mock.IsRequired).Return (true);
       _enumValue.Value = TestEnum.First;
 
-      AssertOptionList (false, TestEnum.First, false, false);
+      AssertOptionList (NullOption.WithoutNullValue, TestEnum.First, false, false);
+    }
+
+    [Test]
+    public void Render_NullOption_WithVisibleText ()
+    {
+      _enumValue.Stub (mock => mock.IsRequired).Return (false);
+      _enumValue.ListControlStyle.DropDownListNullValueTextVisible = true;
+      _enumValue.Value = TestEnum.First;
+
+      AssertOptionList (NullOption.HasNullValueWithVisibleText, TestEnum.First, false, false);
+    }
+
+    [Test]
+    public void Render_NullOption_WithVisibleText_FromForced ()
+    {
+      _enumValue.Stub (mock => mock.IsRequired).Return (false);
+#pragma warning disable 618
+      _enumValue.Stub (mock => mock.HasForcedDropDownListNullValueText).Return (true);
+#pragma warning restore 618
+      _enumValue.Value = TestEnum.First;
+
+      AssertOptionList (NullOption.HasNullValueWithVisibleText, TestEnum.First, false, false);
     }
 
     [Test]
@@ -172,7 +201,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       _enumValue.Stub (mock => mock.IsRequired).Return (true);
       _enumValue.Value = TestEnum.First;
 
-      AssertOptionList (false, TestEnum.First, false, false);
+      AssertOptionList (NullOption.WithoutNullValue, TestEnum.First, false, false);
     }
 
     [Test]
@@ -185,7 +214,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       _enumValue.Stub (mock => mock.IsRequired).Return (true);
       _enumValue.Value = TestEnum.First;
 
-      AssertOptionList (false, TestEnum.First, true, false);
+      AssertOptionList (NullOption.WithoutNullValue, TestEnum.First, true, false);
     }
 
     [Test]
@@ -196,7 +225,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       _enumValue.Stub (mock => mock.IsRequired).Return (true);
       _enumValue.Value = TestEnum.First;
 
-      AssertOptionList (false, TestEnum.First, true, false);
+      AssertOptionList (NullOption.WithoutNullValue, TestEnum.First, true, false);
     }
 
     [Test]
@@ -243,7 +272,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       return div;
     }
 
-    private void AssertOptionList (bool withNullValue, TestEnum? selectedValue, bool withStyle, bool autoPostBack)
+    private void AssertOptionList (NullOption nullOption, TestEnum? selectedValue, bool withStyle, bool autoPostBack)
     {
       var renderer = new BocEnumValueRenderer (
           new FakeResourceUrlFactory(),
@@ -268,13 +297,15 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       if (withStyle)
         Html.AssertStyleAttribute (select, "height", "100%");
 
-      if (withNullValue)
-        AssertNullOption (select, !selectedValue.HasValue);
+      if (nullOption == NullOption.HasNullValueWithScreenReaderOnlyText)
+        AssertNullOptionWithScreenReaderOnlyText (select, !selectedValue.HasValue);
+      else if (nullOption == NullOption.HasNullValueWithVisibleText)
+        AssertNullOptionWithVisibleText (select, !selectedValue.HasValue);
 
       if (autoPostBack)
         Html.AssertAttribute (select, "onchange", string.Format ("javascript:__doPostBack('{0}','')", c_valueName));
 
-      int index = withNullValue ? 1 : 0;
+      int index = nullOption == NullOption.WithoutNullValue ? 0 : 1;
       foreach (TestEnum value in Enum.GetValues (typeof (TestEnum)))
       {
         AssertOption (select, value.ToString(), value.ToString(), index, selectedValue == value);
@@ -286,7 +317,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       Html.AssertAttribute (validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
     }
 
-    private void AssertOption (XmlNode select, string value, string text, int index, bool isSelected)
+    private XmlNode AssertOption (XmlNode select, string value, string text, int index, bool isSelected)
     {
       var option = Html.GetAssertedChildElement (select, "option", index);
       Html.AssertAttribute (option, "value", value);
@@ -296,11 +327,20 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
 
       if (isSelected)
         Html.AssertAttribute (option, "selected", "selected");
+
+      return option;
     }
 
-    private void AssertNullOption (XmlNode select, bool isSelected)
+    private void AssertNullOptionWithScreenReaderOnlyText (XmlNode select, bool isSelected)
     {
-      AssertOption (select, _enumValue.NullIdentifier, "", 0, isSelected);
+      var option = AssertOption (select, _enumValue.NullIdentifier, "", 0, isSelected);
+      Html.AssertAttribute (option, HtmlTextWriterAttribute2.Label, " ");
+      Html.AssertAttribute (option, HtmlTextWriterAttribute2.AriaLabel, "null-text");
+    }
+
+    private void AssertNullOptionWithVisibleText (XmlNode select, bool isSelected)
+    {
+      AssertOption (select, _enumValue.NullIdentifier, "null-text", 0, isSelected);
     }
   }
 }

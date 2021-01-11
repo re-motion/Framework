@@ -28,6 +28,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation
     Style LabelStyle { get; }
     ListControlStyle ListControlStyle { get; }
     string NullIdentifier { get; }
+    [Obsolete ("Used for backwards-compatible change to null-value rendering behavior. (Version 2.28.0)")]
+    bool HasForcedDropDownListNullValueText { get; }
     IEnumerationValueInfo[] GetEnabledValues();
     string GetNullItemText ();
     string GetValueName ();

@@ -634,6 +634,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       string key = ResourceManagerUtility.GetGlobalResourceKey (ErrorMessage);
       if (! string.IsNullOrEmpty (key))
         ErrorMessage = resourceManager.GetString (key);
+
+      key = ResourceManagerUtility.GetGlobalResourceKey (UndefinedItemText);
+      if (! string.IsNullOrEmpty (key))
+        UndefinedItemText = resourceManager.GetString (key);
     }
 
     /// <summary> Gets the current value. </summary>
@@ -687,7 +691,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private string GetNullItemText ()
     {
       string nullDisplayName = _undefinedItemText;
-      if (string.IsNullOrEmpty (nullDisplayName) && (ListControlStyle.ControlType != ListControlType.DropDownList))
+      if (string.IsNullOrEmpty (nullDisplayName))
       {
         if (IsDesignMode)
           nullDisplayName = "undefined";
@@ -695,6 +699,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           nullDisplayName = GetResourceManager().GetString (ResourceIdentifier.UndefinedItemText);
       }
       return nullDisplayName;
+    }
+
+    bool IBocEnumValue.HasForcedDropDownListNullValueText
+    {
+      get { return !string.IsNullOrEmpty (_undefinedItemText); }
     }
 
     /// <summary> Invokes the <see cref="LoadPostData"/> method. </summary>
