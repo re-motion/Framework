@@ -61,6 +61,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private RepeatLayout _radionButtonListRepeatLayout = RepeatLayout.Table;
     private TextAlign _radioButtonListTextAlign = TextAlign.Right;
     private bool _radioButtonListNullValueVisible = true;
+    private bool _dropDownListNullValueTextVisible = false;
 
     [Description ("The type of control that is used in edit mode.")]
     [Category ("Behavior")]
@@ -162,6 +163,22 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set { _radioButtonListNullValueVisible = value; }
     }
 
+    /// <summary>
+    /// Gets or sets a flag that determines whether to show the text for <see langword="null" /> in the drop-down list.
+    /// </summary>
+    /// <remarks>
+    /// For some combinations of browser and screen reader, this flag must be set in order to properly announce <see langword="null" /> to the user.
+    /// </remarks>
+    [Description ("A flag that determines whether to show the text for the null value in the drop-down list.")]
+    [Category ("Behavior")]
+    [DefaultValue (false)]
+    [NotifyParentProperty (true)]
+    public bool DropDownListNullValueTextVisible
+    {
+      get { return _dropDownListNullValueTextVisible; }
+      set { _dropDownListNullValueTextVisible = value; }
+    }
+
     public ListControl Create (bool applyStyle)
     {
       ListControl control;
@@ -238,6 +255,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   public class DropDownListStyle : Style
   {
     private bool? _autoPostBack;
+    private bool _nullValueTextVisible;
 
     [Description ("Automatically postback to the server after the text is modified.")]
     [Category ("Behavior")]
@@ -247,6 +265,22 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       get { return _autoPostBack; }
       set { _autoPostBack = value; }
+    }
+
+    /// <summary>
+    /// Gets or sets a flag that determines whether to show the text for <see langword="null" />.
+    /// </summary>
+    /// <remarks>
+    /// For some combinations of browser and screen reader, this flag must be set in order to properly announce <see langword="null" /> to the user.
+    /// </remarks>
+    [Description ("A flag that determines whether to show the text for the null value.")]
+    [Category ("Behavior")]
+    [DefaultValue (false)]
+    [NotifyParentProperty (true)]
+    public bool NullValueTextVisible
+    {
+      get { return _nullValueTextVisible; }
+      set { _nullValueTextVisible = value; }
     }
 
     public void ApplyStyle (DropDownList dropDownList)
