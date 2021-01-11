@@ -37,6 +37,7 @@ using Remotion.Web.Services;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Globalization;
+using Remotion.Web.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
@@ -72,6 +73,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [MultiLingualResources ("Remotion.ObjectBinding.Web.Globalization.BocReferenceValue")]
     public enum ResourceIdentifier
     {
+      /// <summary> The text rendered for the null item in the list. </summary>
+      NullItemText,
+
       /// <summary> Label displayed in the OptionsMenu. </summary>
       OptionsTitle,
 
@@ -97,10 +101,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private string _displayName;
     private readonly ListItemCollection _listItems;
 
+    private string _nullItemText = string.Empty;
     private string _select = String.Empty;
     private bool? _enableSelectStatement;
     private string _nullItemErrorMessage;
     private ReadOnlyCollection<BaseValidator> _validators;
+
     // construction and disposing
 
     public BocReferenceValue ()
@@ -117,6 +123,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     // methods and properties
 
+    /// <summary> Gets or sets the text displayed for the undefined item. </summary>
+    /// <value> 
+    ///   The text displayed for <see langword="null"/>. The default value is an empty <see cref="String"/>.
+    ///   In case of the default value, the text is read from the resources for this control.
+    /// </value>
+    [Description ("The description displayed for the undefined item.")]
+    [Category ("Appearance")]
+    [DefaultValue ("")]
+    public string NullItemText
+    {
+      get { return _nullItemText; }
+      set { _nullItemText = value; }
+    }
 
     /// <summary> Gets or sets the validation error message displayed when the value is not set but the control is required. </summary>
     /// <value> 
@@ -220,7 +239,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       base.LoadResources (resourceManager, globalizationService);
 
-      var key = ResourceManagerUtility.GetGlobalResourceKey (NullItemErrorMessage);
+      var key = ResourceManagerUtility.GetGlobalResourceKey (NullItemText);
+      if (! string.IsNullOrEmpty (key))
+        NullItemText = resourceManager.GetString (key);
+
+      key = ResourceManagerUtility.GetGlobalResourceKey (NullItemErrorMessage);
       if (!string.IsNullOrEmpty (key))
         NullItemErrorMessage = resourceManager.GetString (key);
 
@@ -521,14 +544,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return text;
     }
 
-    /// <summary> Creates the <see cref="ListItem"/> symbolizing the undefined selection. </summary>
-    /// <returns> A <see cref="ListItem"/>. </returns>
-    private ListItem CreateNullItem ()
-    {
-      ListItem emptyItem = new ListItem (string.Empty, c_nullIdentifier);
-      return emptyItem;
-    }
-
     protected override sealed IBusinessObjectWithIdentity GetValue ()
     {
       if (InternalValue == null)
@@ -654,6 +669,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     void IBocReferenceValue.PopulateDropDownList (DropDownList dropDownList)
     {
+      // PopulateDropDownList should be moved to the renderer, the BocReferenceValue should only provide a list of items, see also BocEnumValue.
+
       ArgumentUtility.CheckNotNull ("dropDownList", dropDownList);
       dropDownList.Items.Clear();
 
@@ -683,6 +700,36 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           dropDownList.SelectedValue = InternalValue;
         }
       }
+    }
+
+    /// <summary> Creates the <see cref="ListItem"/> symbolizing the undefined selection. </summary>
+    /// <returns> A <see cref="ListItem"/>. </returns>
+    private ListItem CreateNullItem ()
+    {
+      var nullItem = new ListItem (GetNullItemText(), c_nullIdentifier);
+      if (!DropDownListStyle.NullValueTextVisible)
+      {
+        nullItem.Attributes[HtmlTextWriterAttribute2.AriaLabel] = nullItem.Text;
+        // By setting the label to a single whitespace, we can convince the HTML validator that the element is valid,
+        // while preventing text from being displayed in the UI.
+        nullItem.Attributes[HtmlTextWriterAttribute2.Label] = " ";
+        nullItem.Text = string.Empty;
+      }
+
+      return nullItem;
+    }
+
+    private string GetNullItemText ()
+    {
+      string nullDisplayName = _nullItemText;
+      if (string.IsNullOrEmpty (nullDisplayName))
+      {
+        if (IsDesignMode)
+          nullDisplayName = "undefined";
+        else
+          nullDisplayName = GetResourceManager().GetString (ResourceIdentifier.NullItemText);
+      }
+      return nullDisplayName;
     }
 
     /// <summary>
