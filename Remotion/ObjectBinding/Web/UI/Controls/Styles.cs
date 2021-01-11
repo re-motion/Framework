@@ -61,6 +61,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private RepeatLayout _radionButtonListRepeatLayout = RepeatLayout.Table;
     private TextAlign _radioButtonListTextAlign = TextAlign.Right;
     private bool _radioButtonListNullValueVisible = true;
+    private bool _dropDownListNullValueTextVisible = false;
 
     [Description ("The type of control that is used in edit mode.")]
     [Category ("Behavior")]
@@ -160,6 +161,22 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       get { return _radioButtonListNullValueVisible; }
       set { _radioButtonListNullValueVisible = value; }
+    }
+
+    /// <summary>
+    /// Gets or sets a flag that determines whether to show the text for <see langword="null" /> in the drop-down list.
+    /// </summary>
+    /// <remarks>
+    /// For some combinations of browser and screen reader, this flag must be set in order to properly announce <see langword="null" /> to the user.
+    /// </remarks>
+    [Description ("A flag that determines whether to show the text for the null value in the drop-down list.")]
+    [Category ("Behavior")]
+    [DefaultValue (false)]
+    [NotifyParentProperty (true)]
+    public bool DropDownListNullValueTextVisible
+    {
+      get { return _dropDownListNullValueTextVisible; }
+      set { _dropDownListNullValueTextVisible = value; }
     }
 
     public ListControl Create (bool applyStyle)

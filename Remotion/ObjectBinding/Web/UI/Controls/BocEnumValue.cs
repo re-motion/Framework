@@ -640,6 +640,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       string key = ResourceManagerUtility.GetGlobalResourceKey (ErrorMessage);
       if (! string.IsNullOrEmpty (key))
         ErrorMessage = resourceManager.GetString (key);
+
+      key = ResourceManagerUtility.GetGlobalResourceKey (UndefinedItemText);
+      if (! string.IsNullOrEmpty (key))
+        UndefinedItemText = resourceManager.GetString (key);
     }
 
     /// <summary> Gets the current value. </summary>
@@ -693,7 +697,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private string GetNullItemText ()
     {
       string nullDisplayName = _undefinedItemText;
-      if (string.IsNullOrEmpty (nullDisplayName) && (ListControlStyle.ControlType != ListControlType.DropDownList))
+      if (string.IsNullOrEmpty (nullDisplayName))
       {
         if (IsDesignMode)
           nullDisplayName = "undefined";
