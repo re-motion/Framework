@@ -27,6 +27,7 @@ using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Validation;
 using Remotion.ObjectBinding.Web.UnitTests.Domain;
+using Remotion.Utilities;
 using Remotion.Web.Services;
 using Remotion.Web.UI.Controls;
 using Rhino.Mocks;
@@ -545,6 +546,80 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 
       factoryMock.VerifyAllExpectations();
       serviceLocatorMock.VerifyAllExpectations();
+    }
+
+    [Test]
+    public void PopulateDropDownList_WithNullValueTextVisible_WithTextFromProperty ()
+    {
+      var control = new BocReferenceValue();
+      control.DropDownListStyle.NullValueTextVisible = true;
+      control.NullItemText = "The null item";
+
+      var dropDownList = new DropDownList();
+      ((IBocReferenceValue) control).PopulateDropDownList(dropDownList);
+      Assert.That (dropDownList.Items.Count, Is.EqualTo (1));
+      var singleItem = dropDownList.Items[0];
+
+      Assert.That (singleItem.Value, Is.EqualTo ("==null=="));
+      Assert.That (singleItem.Text, Is.EqualTo ("The null item"));
+    }
+
+    [Test]
+    public void PopulateDropDownList_WithNullValueTextVisible_WithTextFromResourceManager ()
+    {
+      var control = new BocReferenceValue();
+      control.DropDownListStyle.NullValueTextVisible = true;
+
+      var dropDownList = new DropDownList();
+      using (CultureScope.CreateInvariantCultureScope())
+      {
+        ((IBocReferenceValue) control).PopulateDropDownList (dropDownList);
+      }
+
+      Assert.That (dropDownList.Items.Count, Is.EqualTo (1));
+      var singleItem = dropDownList.Items[0];
+
+      Assert.That (singleItem.Value, Is.EqualTo ("==null=="));
+      Assert.That (singleItem.Text, Is.Not.Empty);
+    }
+
+    [Test]
+    public void PopulateDropDownList_WithNullValueTextNotVisible_WithTextFromProperty ()
+    {
+      var control = new BocReferenceValue();
+      control.DropDownListStyle.NullValueTextVisible = false;
+      control.NullItemText = "The null item";
+
+      var dropDownList = new DropDownList();
+      ((IBocReferenceValue) control).PopulateDropDownList(dropDownList);
+      Assert.That (dropDownList.Items.Count, Is.EqualTo (1));
+      var singleItem = dropDownList.Items[0];
+
+      Assert.That (singleItem.Value, Is.EqualTo ("==null=="));
+      Assert.That (singleItem.Text, Is.Empty);
+      Assert.That (singleItem.Attributes["label"], Is.EqualTo (" "));
+      Assert.That (singleItem.Attributes["aria-label"], Is.EqualTo ("The null item"));
+    }
+
+    [Test]
+    public void PopulateDropDownList_WithNullValueTextNotVisible_WithTextFromResourceManager ()
+    {
+      var control = new BocReferenceValue();
+      control.DropDownListStyle.NullValueTextVisible = false;
+
+      var dropDownList = new DropDownList();
+      using (CultureScope.CreateInvariantCultureScope())
+      {
+        ((IBocReferenceValue) control).PopulateDropDownList (dropDownList);
+      }
+
+      Assert.That (dropDownList.Items.Count, Is.EqualTo (1));
+      var singleItem = dropDownList.Items[0];
+
+      Assert.That (singleItem.Value, Is.EqualTo ("==null=="));
+      Assert.That (singleItem.Text, Is.Empty);
+      Assert.That (singleItem.Attributes["label"], Is.EqualTo (" "));
+      Assert.That (singleItem.Attributes["aria-label"], Is.Not.Empty);
     }
   }
 }

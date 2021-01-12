@@ -128,7 +128,9 @@
     <td style="WIDTH: 20%"><asp:label id="InstanceEnumFieldValueLabel" runat="server" enableviewstate="False">#</asp:label></td></tr>
   <tr>
     <td>EnumNotNullable</td>
-    <td><remotion:bocenumvalue id="EnumNotNullableDropDownField" runat="server" DataSourceControl="EnumObject" PropertyIdentifier="EnumNotNullable"></remotion:bocenumvalue></td>
+    <td><remotion:bocenumvalue id="EnumNotNullableDropDownField" runat="server" DataSourceControl="EnumObject" PropertyIdentifier="EnumNotNullable">
+        <ListControlStyle DropDownListNullValueTextVisible="True"/>
+    </remotion:bocenumvalue></td>
     <td>
        bound, drop-down</td>
     <td style="WIDTH: 20%"><asp:label id="EnumNotNullableDropDownLabel" runat="server" enableviewstate="False">#</asp:label></td></tr>
