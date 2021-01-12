@@ -432,7 +432,7 @@
                 event.stopPropagation();
 
                 if (select.visible()) {
-                    acceptInput (state.lastKeyPressCode, true);
+                    hideResults(true);
                 } else {
                     $input.focus();
                     onChange(true, $input.val());
@@ -1450,8 +1450,12 @@
         if (BrowserUtility.GetIEVersion() > 0 && field !== document.activeElement && !focusInputAfterSelection)
             return;
 
-        if (field.value.length < 2)
+        if (field.value.length < 2) {
+            if (focusInputAfterSelection) {
+                field.focus();
+            }
             return;
+        }
 
         if (field.createTextRange) {
             var selRange = field.createTextRange();
