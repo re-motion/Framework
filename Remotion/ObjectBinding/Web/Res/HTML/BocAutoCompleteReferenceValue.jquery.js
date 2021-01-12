@@ -1045,9 +1045,7 @@
                 activeItem.addClass (CLASSES.ACTIVE);
                 activeItem.attr("aria-selected", "true");
 
-                select(false);
-                // TODO provide option to avoid setting focus again after selection? useful for cleanup-on-focus
-                input.focus();
+                select(true);
 
                 return false;
             }).mousedown(function() {
