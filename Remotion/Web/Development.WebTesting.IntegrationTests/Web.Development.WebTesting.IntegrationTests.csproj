@@ -77,6 +77,7 @@
     <Compile Include="Accessibility\AccessibilityResultTest.cs" />
     <Compile Include="Accessibility\AccessibilityViolationAnalysisTest.cs" />
     <Compile Include="ChromeBinariesProviderTest.cs" />
+    <Compile Include="DriverExtensionsTest.cs" />
     <Compile Include="EdgeBinariesProviderTest.cs" />
     <Compile Include="FirefoxBinariesProviderTest.cs" />
     <Compile Include="InternetExplorerTestExtensions.cs" />
