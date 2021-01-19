@@ -229,7 +229,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
       LabelReferenceRenderer.AddLabelsReference (renderingContext.Writer, labelIDs);
 
-      if (renderingContext.Control.IsRequired && dropDownList.Items.FindByValue (renderingContext.Control.NullValueString) != null)
+      if (renderingContext.Control.IsRequired)
         dropDownList.Attributes.Add (HtmlTextWriterAttribute2.AriaRequired, HtmlAriaRequiredAttributeValue.True);
 
       return dropDownList;
