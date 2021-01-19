@@ -215,11 +215,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
         listControl.Items.Add (item);
       }
 
-      if (renderingContext.Control.IsRequired && isNullItemVisible && !isRadioButtonList)
+      if (renderingContext.Control.IsRequired && !isRadioButtonList)
       {
         listControl.Attributes.Add (HtmlTextWriterAttribute2.AriaRequired, HtmlAriaRequiredAttributeValue.True);
       }
-      else if (renderingContext.Control.IsRequired && !isNullItemVisible && isRadioButtonList)
+      else if (renderingContext.Control.IsRequired && isRadioButtonList)
       {
         var radioButton = _internalControlMemberCaller.GetControlToRepeat ((RadioButtonList) listControl);
         radioButton.InputAttributes.Add (HtmlTextWriterAttribute2.AriaRequired, HtmlAriaRequiredAttributeValue.True);
