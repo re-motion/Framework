@@ -15,10 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ServiceLocation;
@@ -39,13 +41,27 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
   [ImplementationFor (typeof (IBocBooleanValueRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocBooleanValueRenderer : BocBooleanValueRendererBase<IBocBooleanValue>, IBocBooleanValueRenderer
   {
-    private readonly IBocBooleanValueResourceSetFactory _resourceSetFactory;
-    private readonly ILabelReferenceRenderer _labelReferenceRenderer;
-    private readonly IValidationErrorRenderer _validationErrorRenderer;
+    /// <summary> A list of control specific resources. </summary>
+    /// <remarks> 
+    ///   Resources will be accessed using 
+    ///   <see cref="M:Remotion.Globalization.IResourceManager.GetString(System.Enum)">IResourceManager.GetString(Enum)</see>. 
+    ///   See the documentation of <b>GetString</b> for further details.
+    /// </remarks>
+    [ResourceIdentifiers]
+    [MultiLingualResources ("Remotion.ObjectBinding.Web.Globalization.BocBooleanValueRenderer")]
+    public enum ResourceIdentifier
+    {
+      /// <summary> Additional text to announce required information since the required-attribute is not supported on anchor elements.</summary>
+      ScreenReaderRequiredLabelText
+    }
 
     private const string c_nullString = "null";
 
     private static readonly string s_startUpScriptKeyPrefix = typeof (BocBooleanValueRenderer).FullName + "_Startup_";
+
+    private readonly IBocBooleanValueResourceSetFactory _resourceSetFactory;
+    private readonly ILabelReferenceRenderer _labelReferenceRenderer;
+    private readonly IValidationErrorRenderer _validationErrorRenderer;
 
     public BocBooleanValueRenderer (
         IResourceUrlFactory resourceUrlFactory,
@@ -95,7 +111,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       var validationErrors = GetValidationErrorsToRender (renderingContext).ToArray();
       var validationErrorsID = GetValidationErrorsID (renderingContext);
 
-      var labelControl = new Label { ID = renderingContext.Control.ClientID + "_Description", ClientIDMode = ClientIDMode.Static };
+      var descriptionLabelControl = new Label { ID = renderingContext.Control.ClientID + "_Description", ClientIDMode = ClientIDMode.Static };
+      var requiredLabelControl = new Label { ID = renderingContext.Control.ClientID + "_Required", ClientIDMode = ClientIDMode.Static };
       var imageControl = new Image();
       var hiddenFieldControl = new HiddenField { ID = renderingContext.Control.GetValueName(), ClientIDMode = ClientIDMode.Static };
       var dataValueReadOnlyControl = new Label { ID = renderingContext.Control.GetValueName(), ClientIDMode = ClientIDMode.Static };
@@ -111,12 +128,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
             renderingContext,
             resourceSet,
             renderingContext.Control.Enabled);
-        labelControl.Attributes.Add ("onclick", script);
+        descriptionLabelControl.Attributes.Add ("onclick", script);
         linkControl.Attributes.Add ("onclick", script);
       }
 
       PrepareLinkControl (renderingContext, linkControl, isClientScriptEnabled);
-      PrepareVisibleControls (renderingContext, resourceSet, linkControl, imageControl, labelControl);
+      PrepareVisibleControls (renderingContext, resourceSet, linkControl, imageControl, descriptionLabelControl);
 
       if (!renderingContext.Control.IsReadOnly)
       {
@@ -134,15 +151,29 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
 
       linkControl.Controls.Add (imageControl);
 
-      var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
-      _labelReferenceRenderer.SetLabelReferenceOnControl (linkControl, labelIDs);
+      string[] accessibilityLabelIDs;
+      if (!renderingContext.Control.IsReadOnly && renderingContext.Control.IsRequired)
+      {
+        requiredLabelControl.Text = GetResourceManager (renderingContext).GetString (ResourceIdentifier.ScreenReaderRequiredLabelText);
+        accessibilityLabelIDs = new[] { requiredLabelControl.ID };
+      }
+      else
+      {
+        accessibilityLabelIDs = new string[0];
+      }
 
-      linkControl.Attributes.Add (HtmlTextWriterAttribute2.AriaDescribedBy, labelControl.ClientID);
+      var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
+      _labelReferenceRenderer.SetLabelsReferenceOnControl (linkControl, labelIDs, accessibilityLabelIDs);
+
+      linkControl.Attributes.Add (HtmlTextWriterAttribute2.AriaDescribedBy, descriptionLabelControl.ClientID);
       _validationErrorRenderer.SetValidationErrorsReferenceOnControl (linkControl, validationErrorsID, validationErrors);
 
       linkControl.RenderControl (renderingContext.Writer);
 
-      labelControl.RenderControl (renderingContext.Writer);
+      requiredLabelControl.Attributes.Add (HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
+      requiredLabelControl.RenderControl (renderingContext.Writer);
+
+      descriptionLabelControl.RenderControl (renderingContext.Writer);
 
       _validationErrorRenderer.RenderValidationErrors (renderingContext.Writer, validationErrorsID, validationErrors);
 
@@ -258,7 +289,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       string checkedState;
       string imageUrl;
       string description;
-      bool hasRequiredAttribute;
 
       if (!renderingContext.Control.Value.HasValue)
       {
@@ -267,7 +297,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
         description = string.IsNullOrEmpty (renderingContext.Control.NullDescription)
             ? resourceSet.DefaultNullDescription
             : renderingContext.Control.NullDescription;
-        hasRequiredAttribute = renderingContext.Control.IsRequired;
       }
       else if (renderingContext.Control.Value.Value)
       {
@@ -276,7 +305,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
         description = string.IsNullOrEmpty (renderingContext.Control.TrueDescription)
             ? resourceSet.DefaultTrueDescription
             : renderingContext.Control.TrueDescription;
-        hasRequiredAttribute = false;
       }
       else
       {
@@ -285,12 +313,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
         description = string.IsNullOrEmpty (renderingContext.Control.FalseDescription)
             ? resourceSet.DefaultFalseDescription
             : renderingContext.Control.FalseDescription;
-        hasRequiredAttribute = false;
       }
 
       linkControl.Attributes.Add (HtmlTextWriterAttribute2.AriaChecked, checkedState);
-      if (hasRequiredAttribute)
-        linkControl.Attributes.Add (HtmlTextWriterAttribute2.AriaRequired, HtmlAriaRequiredAttributeValue.True);
 
       imageControl.ImageUrl = imageUrl;
       imageControl.GenerateEmptyAlternateText = true;
@@ -310,6 +335,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
     public override string GetCssClassBase (IBocBooleanValue control)
     {
       return "bocBooleanValue";
+    }
+
+    protected virtual IResourceManager GetResourceManager (BocBooleanValueRenderingContext renderingContext)
+    {
+      return GetResourceManager (typeof (ResourceIdentifier), renderingContext.Control.GetResourceManager());
     }
   }
 }
