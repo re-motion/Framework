@@ -579,10 +579,18 @@
     <EmbeddedResource Include="Globalization\BocMultilineTextValue.it.resx" />
     <EmbeddedResource Include="Globalization\BocReferenceValue.fr.resx" />
     <EmbeddedResource Include="Globalization\BocReferenceValue.it.resx" />
+    <EmbeddedResource Include="Globalization\BocBooleanValueRenderer.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\BocBooleanValueRenderer.de.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Globalization\BocReferenceValueRenderer.de.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\BocBooleanValueRenderer.fr.resx" />
     <EmbeddedResource Include="Globalization\BocReferenceValueRenderer.fr.resx" />
+    <EmbeddedResource Include="Globalization\BocBooleanValueRenderer.it.resx" />
     <EmbeddedResource Include="Globalization\BocReferenceValueRenderer.it.resx" />
     <EmbeddedResource Include="Globalization\BocReferenceValueRenderer.resx">
       <SubType>Designer</SubType>
