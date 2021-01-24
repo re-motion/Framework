@@ -22,10 +22,12 @@ using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
 using Remotion.FunctionalProgramming;
+using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.Factories;
+using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
@@ -51,11 +53,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     private const string c_validationErrors = "ValidationError";
 
     private string _startupScript;
-    private string _clickScript;
     private string _keyDownScript;
     private IBocBooleanValue _booleanValue;
     private BocBooleanValueRenderer _renderer;
     private BocBooleanValueResourceSet _resourceSet;
+    private CultureScope _cultureScope;
 
     [SetUp]
     public void SetUp ()
@@ -100,11 +102,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       clientScriptManagerMock.Stub (mock => mock.IsStartupScriptRegistered (Arg<Type>.Is.NotNull, Arg<string>.Is.NotNull)).Return (false);
       clientScriptManagerMock.Stub (mock => mock.GetPostBackEventReference (_booleanValue, string.Empty)).Return (c_postbackEventReference);
 
-      _clickScript =
-          "BocBooleanValue_SelectNextCheckboxValue ('ResourceKey', $(this).parent().children('a')[0], "
-          + "$(this).parent().children('a').children('img').first()[0], $(this).parent().children('span').first()[0], "
-          + "$(this).parent().children('input').first()[0], false, "
-          + "'" + c_trueDescription + "', '" + c_falseDescription + "', '" + c_nullDescription + "');return false;";
 
       _keyDownScript = "BocBooleanValue_OnKeyDown (this);";
 
@@ -128,7 +125,17 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       _booleanValue.Stub (mock => mock.LabelStyle).Return (new Style (stateBag));
       _booleanValue.Stub (mock => mock.ControlStyle).Return (new Style (stateBag));
 
+      _booleanValue.Stub (stub => stub.GetResourceManager()).Return (NullResourceManager.Instance);
+
       _booleanValue.Stub (stub => stub.CreateResourceSet ()).Return (_resourceSet);
+
+      _cultureScope = CultureScope.CreateInvariantCultureScope();
+    }
+
+    [TearDown]
+    public void TearDown ()
+    {
+      _cultureScope.Dispose();
     }
 
     [Test]
@@ -150,6 +157,33 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     [Test]
     public void RenderNull ()
     {
+      _booleanValue.Stub (mock => mock.Enabled).Return (true);
+      _booleanValue.Value = null;
+      CheckRendering ("mixed", "null", "NullIconUrl", _booleanValue.NullDescription);
+    }
+
+    [Test]
+    public void RenderTrueRequired ()
+    {
+      _booleanValue.Stub (mock => mock.IsRequired).Return (true);
+      _booleanValue.Stub (mock => mock.Enabled).Return (true);
+      _booleanValue.Value = true;
+      CheckRendering ("true", true.ToString(), "TrueIconUrl", _booleanValue.TrueDescription);
+    }
+
+    [Test]
+    public void RenderFalseRequired ()
+    {
+      _booleanValue.Stub (mock => mock.IsRequired).Return (true);
+      _booleanValue.Stub (mock => mock.Enabled).Return (true);
+      _booleanValue.Value = false;
+      CheckRendering ("false", false.ToString(), "FalseIconUrl", _booleanValue.FalseDescription);
+    }
+
+    [Test]
+    public void RenderNullRequired ()
+    {
+      _booleanValue.Stub (mock => mock.IsRequired).Return (true);
       _booleanValue.Stub (mock => mock.Enabled).Return (true);
       _booleanValue.Value = null;
       CheckRendering ("mixed", "null", "NullIconUrl", _booleanValue.NullDescription);
@@ -263,7 +297,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       _booleanValue.Stub (mock => mock.Enabled).Return (true);
       _booleanValue.Value = true;
       _booleanValue.Stub (mock => mock.IsAutoPostBackEnabled).Return (true);
-      _clickScript = _clickScript.Insert (_clickScript.IndexOf ("return false;"), c_postbackEventReference + ";");
       CheckRendering ("true", true.ToString(), "TrueIconUrl", _booleanValue.TrueDescription);
     }
 
@@ -310,15 +343,23 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
         CheckHiddenField (outerSpan, value);
       else
         CheckDataValueField (outerSpan, value);
-      Html.AssertChildElementCount (outerSpan, 4);
+      Html.AssertChildElementCount (outerSpan, 5);
 
       var link = Html.GetAssertedChildElement (outerSpan, "a", 1);
-      CheckLinkAttributes (link, checkedState, null, _booleanValue.IsReadOnly, _booleanValue.IsRequired && value == "null");
+      CheckLinkAttributes (link, checkedState, null, _booleanValue.IsReadOnly, _booleanValue.IsRequired);
 
       var image = Html.GetAssertedChildElement (link, "img", 0);
       checkImageAttributes (image, iconUrl);
 
-      var label = Html.GetAssertedChildElement (outerSpan, "span", 2);
+      var requiredLabel = Html.GetAssertedChildElement (outerSpan, "span", 2);
+      Html.AssertAttribute (requiredLabel, "hidden", "hidden");
+      if (!_booleanValue.IsReadOnly && _booleanValue.IsRequired)
+      {
+        Html.AssertAttribute (requiredLabel, "id", c_clientID + "_Required");
+        Html.AssertTextNode (requiredLabel, "required", 0);
+      }
+
+      var label = Html.GetAssertedChildElement (outerSpan, "span", 3);
       Html.AssertChildElementCount (label, 0);
       Html.AssertAttribute (label, "id", c_clientID + "_Description");
       Html.AssertTextNode (label, description, 0);
@@ -328,9 +369,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
         Html.AssertAttribute (label, "hidden", "hidden");
 
       if (!_booleanValue.IsReadOnly)
-        Html.AssertAttribute (label, "onclick", _booleanValue.Enabled ? _clickScript : _dummyScript);
+      {
+        var clickScript = _booleanValue.Enabled ? GetClickScript (_booleanValue.IsRequired, _booleanValue.IsAutoPostBackEnabled) : _dummyScript;
+        Html.AssertAttribute (label, "onclick", clickScript);
+      }
 
-      AssertValidationErrors (Html.GetAssertedChildElement (outerSpan, "fake", 3));
+      AssertValidationErrors (Html.GetAssertedChildElement (outerSpan, "fake", 4));
     }
 
     private void CheckCssClass (XmlNode outerSpan)
@@ -365,7 +409,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     {
       Html.AssertAttribute (link, "id", c_displayValueName);
       Html.AssertAttribute (link, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
-      Html.AssertAttribute (link, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
+      if (isRequired && !isReadOnly)
+        Html.AssertAttribute (link, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, c_clientID + "_Required");
+      else
+        Html.AssertAttribute (link, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
       Html.AssertAttribute (link, "aria-describedby", c_clientID + "_Description");
 
       AssertValidationErrors (link);
@@ -374,12 +421,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       Html.AssertAttribute (link, "aria-checked", checkedState);
       if (isReadOnly)
         Html.AssertAttribute (link, "aria-readonly", "true");
-      if (isRequired)
-        Html.AssertAttribute (link, "required", "required");
       Html.AssertAttribute (link, "href", "#");
       if (!isReadOnly)
       {
-        Html.AssertAttribute (link, "onclick", _booleanValue.Enabled ? _clickScript : _dummyScript);
+        Html.AssertAttribute (link, "onclick", _booleanValue.Enabled ? GetClickScript(isRequired, _booleanValue.IsAutoPostBackEnabled) : _dummyScript);
         Html.AssertAttribute (link, "onkeydown", _keyDownScript);
       }
       if (description == null)
@@ -409,6 +454,16 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       Html.AssertAttribute (dataValueField, "id", c_keyValueName);
       if(value!="null")
         Html.AssertAttribute (dataValueField, "data-value", value);
+    }
+
+    private string GetClickScript (bool isRequired, bool isAutoPostbackEnabled)
+    {
+      return "BocBooleanValue_SelectNextCheckboxValue ('ResourceKey', $(this).parent().children('a')[0], "
+             + "$(this).parent().children('a').children('img').first()[0], $(this).parent().children('span').first()[0], "
+             + "$(this).parent().children('input').first()[0], " + isRequired.ToString().ToLower() + ", "
+             + "'" + c_trueDescription + "', '" + c_falseDescription + "', '" + c_nullDescription + "');"
+             + (isAutoPostbackEnabled ? c_postbackEventReference + ";" : "")
+             + "return false;";
     }
   }
 }
