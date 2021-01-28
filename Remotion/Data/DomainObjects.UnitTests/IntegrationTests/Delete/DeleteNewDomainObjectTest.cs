@@ -112,7 +112,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     }
 
     [Test]
-    [Ignore ("TODO: RM-7294")]
     public void DomainObjectGetRelatedObjectsForVirtualCollection ()
     {
       var product = Product.NewObject ();
@@ -144,7 +143,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     }
 
     [Test]
-    [Ignore ("TODO: RM-7294")]
 
     public void DomainObjectGetOriginalRelatedObjectsForVirtualCollection ()
     {
@@ -365,16 +363,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     }
 
     [Test]
-    [Ignore ("TODO: RM-7294")]
     public void DeleteFromManyToOneRelationForVirtualCollection ()
     {
       var product = Product.NewObject ();
       var productReview = ProductReview.NewObject ();
       productReview.Product = product;
 
-      product.Delete ();
+      var productReviewID = productReview.ID;
 
-      Assert.That (product.Reviews.Contains (productReview.ID), Is.False);
+      productReview.Delete ();
+
+      Assert.That (product.Reviews.Contains (productReviewID), Is.False);
     }
 
     [Test]
@@ -392,7 +391,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     }
 
     [Test]
-    [Ignore ("TODO: RM-7294")]
     public void DeleteFromOneToManyRelationForVirtualCollection ()
     {
       var product = Product.NewObject ();
