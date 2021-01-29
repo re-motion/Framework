@@ -94,7 +94,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     }
 
     [Test]
-    [Ignore ("TODO: RM-7294")]
+    [Ignore ("TODO: RM-7294: Implement Contains for ObjectID")]
     public void Query_WithVirtualCollection_ContainsObjectID ()
     {
       ProductReview review = DomainObjectIDs.ProductReview1.GetObject<ProductReview>();

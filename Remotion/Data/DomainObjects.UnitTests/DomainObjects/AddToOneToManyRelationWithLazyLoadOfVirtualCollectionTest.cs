@@ -23,7 +23,6 @@ using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 {
   [TestFixture]
-  [Ignore ("TODO: RM-7294")]
   public class AddToOneToManyRelationWithLazyLoadOfVirtualCollectionTest : ClientTransactionBaseTest
   {
     private Product _product;

@@ -162,7 +162,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     }
 
     [Test]
-    [Ignore ("RM-7294")]
     public void CommitDeletedObject_DoesNotInfluencePreviouslyRelatedObjects_OneToManyWithLazyLoadedVirtualCollection ()
     {
       var originalProduct = DomainObjectIDs.Product1.GetObject<Product> ();
@@ -177,7 +176,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         newProduct = DomainObjectIDs.Product2.GetObject<Product> ();
         productReview.Product = newProduct;
         originalProduct.Delete ();
-        Assert.That (newProduct.Reviews.IsDataComplete, Is.False);
+        Assert.That (newProduct.Reviews.IsDataComplete, Is.True);
 
         ClientTransaction.Current.Commit ();
         Assert.That (productReview.Product, Is.SameAs (newProduct));

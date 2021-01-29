@@ -24,7 +24,6 @@ using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 {
   [TestFixture]
-  [Ignore ("TODO: RM-7294")]
   public class OneToManyRelationChangeWithLazyLoadOfVirtualCollectionTest : RelationChangeBaseTest
   {
     private Person _oldReviewer;

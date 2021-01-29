@@ -151,9 +151,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
     }
 
     [Test]
-    [Ignore ("RM-7294")]
     public void RelationEndPointHasStorageClassTransaction_AndQueryCollectionRelationEndPointDefinitionHasPersistentClassDefinition ()
     {
+      var leftEndPointDefinition = new RelationEndPointDefinition (_transactionPropertyDefinitionOnPersistentClassDefinition, false);
+      var rightEndPointDefinition = VirtualCollectionRelationEndPointDefinitionFactory.Create (
+          _persistentClassDefinition,
+          "Right",
+          false,
+          typeof (IObjectList<DomainObject>));
+      var relationDefinition = new RelationDefinition ("Test", leftEndPointDefinition, rightEndPointDefinition);
+      leftEndPointDefinition.SetRelationDefinition (relationDefinition);
+      rightEndPointDefinition.SetRelationDefinition (relationDefinition);
+
+      _persistentClassDefinition.SetRelationEndPointDefinitions (
+          new RelationEndPointDefinitionCollection (new IRelationEndPointDefinition[] { leftEndPointDefinition, rightEndPointDefinition }, true));
+      _persistentClassDefinition.SetReadOnly();
+
+      var validationResult = _validationRule.Validate (_persistentClassDefinition);
+
+      AssertMappingValidationResult (validationResult, true, null);
     }
 
     [Test]
@@ -225,9 +241,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
     }
 
     [Test]
-    [Ignore ("RM-7294")]
-    public void RelationEndPointHasStorageClassTransaction_AndQueryCollectionRelationEndPointDefinitionHasNonPersistentClassDefinition ()
+    public void RelationEndPointHasStorageClassTransaction_AndVirtualCollectionRelationEndPointDefinitionHasNonPersistentClassDefinition ()
     {
+      var leftEndPointDefinition = new RelationEndPointDefinition (_transactionPropertyDefinitionOnPersistentClassDefinition, false);
+      var rightEndPointDefinition = VirtualCollectionRelationEndPointDefinitionFactory.Create (
+          _nonPersistentClassDefinition,
+          "Right",
+          false,
+          typeof (IObjectList<DomainObject>));
+      var relationDefinition = new RelationDefinition ("Test", leftEndPointDefinition, rightEndPointDefinition);
+      leftEndPointDefinition.SetRelationDefinition (relationDefinition);
+      rightEndPointDefinition.SetRelationDefinition (relationDefinition);
+
+      _persistentClassDefinition.SetRelationEndPointDefinitions (new RelationEndPointDefinitionCollection (new [] { leftEndPointDefinition }, true));
+      _persistentClassDefinition.SetReadOnly();
+
+      _nonPersistentClassDefinition.SetRelationEndPointDefinitions (new RelationEndPointDefinitionCollection (new [] { rightEndPointDefinition }, true));
+      _nonPersistentClassDefinition.SetReadOnly();
+
+      var validationResult = _validationRule.Validate (_persistentClassDefinition);
+
+      AssertMappingValidationResult (validationResult, true, null);
     }
 
     [Test]
@@ -292,9 +326,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
     }
 
     [Test]
-    [Ignore ("RM-7294")]
-    public void RelationEndPointHasStorageClassPersistent_AndQueryCollectionRelationEndPointDefinitionHasPersistentClassDefinition ()
+    public void RelationEndPointHasStorageClassPersistent_AndVirtualCollectionRelationEndPointDefinitionHasPersistentClassDefinition ()
     {
+      var leftEndPointDefinition = new RelationEndPointDefinition (_persistentPropertyDefinition, false);
+      var rightEndPointDefinition = VirtualCollectionRelationEndPointDefinitionFactory.Create (
+          _persistentClassDefinition,
+          "Right",
+          false,
+          typeof (IObjectList<DomainObject>));
+      var relationDefinition = new RelationDefinition ("Test", leftEndPointDefinition, rightEndPointDefinition);
+      leftEndPointDefinition.SetRelationDefinition (relationDefinition);
+      rightEndPointDefinition.SetRelationDefinition (relationDefinition);
+
+      _persistentClassDefinition.SetRelationEndPointDefinitions (
+          new RelationEndPointDefinitionCollection (new IRelationEndPointDefinition[] { leftEndPointDefinition, rightEndPointDefinition }, true));
+      _persistentClassDefinition.SetReadOnly();
+
+      var validationResult = _validationRule.Validate (_persistentClassDefinition);
+
+      AssertMappingValidationResult (validationResult, true, null);
     }
 
     [Test]
@@ -384,9 +434,33 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
     }
 
     [Test]
-    [Ignore ("RM-7294")]
-    public void RelationEndPointHasStorageClassPersistent_AndQueryCollectionRelationEndPointDefinitionHasNonPersistentClassDefinition ()
+    public void RelationEndPointHasStorageClassPersistent_AndVirtualCollectionRelationEndPointDefinitionHasNonPersistentClassDefinition ()
     {
+      var leftEndPointDefinition = new RelationEndPointDefinition (_persistentPropertyDefinition, false);
+      var rightEndPointDefinition = VirtualCollectionRelationEndPointDefinitionFactory.Create (
+          _nonPersistentClassDefinition,
+          "Right",
+          false,
+          typeof (IObjectList<DomainObject>));
+      var relationDefinition = new RelationDefinition ("Test", leftEndPointDefinition, rightEndPointDefinition);
+      leftEndPointDefinition.SetRelationDefinition (relationDefinition);
+      rightEndPointDefinition.SetRelationDefinition (relationDefinition);
+
+      _persistentClassDefinition.SetRelationEndPointDefinitions (new RelationEndPointDefinitionCollection (new [] { leftEndPointDefinition }, true));
+      _persistentClassDefinition.SetReadOnly();
+
+      _nonPersistentClassDefinition.SetRelationEndPointDefinitions (new RelationEndPointDefinitionCollection (new [] { rightEndPointDefinition }, true));
+      _nonPersistentClassDefinition.SetReadOnly();
+
+      var validationResult = _validationRule.Validate (_persistentClassDefinition);
+
+      var expectedMessage =
+          "The relation property is defined as persistent but the referenced type "
+          + "'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.OrderViewModel' is non-persistent. "
+          + "Persistent relation properties may only reference persistent types.\r\n\r\n"
+          + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order\r\n"
+          + "Property: PersistentProperty1FakeProperty";
+      AssertMappingValidationResult (validationResult, false, expectedMessage);
     }
 
     [Test]
