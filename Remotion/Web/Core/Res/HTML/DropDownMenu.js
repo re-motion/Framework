@@ -16,6 +16,7 @@
 // 
 var _dropDownMenu_menuInfos = new Object();
 
+var _dropDownMenu_button_timestampDataKey = 'clickTimestamp';
 var _dropDownMenu_buttonClassName = 'DropDownMenuSelect';
 var _dropDownMenu_itemClassName = 'DropDownMenuItem';
 var _dropDownMenu_itemDisabledClassName = 'DropDownMenuItemDisabled';
@@ -176,6 +177,8 @@ function DropDownMenu_LoadFilteredMenuItems(itemInfos, loadMenuItemStatus, onSuc
 function DropDownMenu_OnClick(context, menuID, getSelectionCount, evt)
 {
   ArgumentUtility.CheckNotNullAndTypeIsJQuery('context', context);
+
+  $('#' + menuID).data(_dropDownMenu_button_timestampDataKey, new Date().getTime());
 
   if (_dropDownMenu_itemClicked)
   {
@@ -350,7 +353,8 @@ function DropDownMenu_EndOpenPopUp (menuID, context, selectionCount, evt, itemIn
   ul.setAttribute('role', 'none');
   div.appendChild(ul);
 
-  $('#' + menuID).closest('div, td, th, body').append(div);
+  const $menuButton = $('#' + menuID);
+  $menuButton.closest('div, td, th, body').append(div);
 
   $(ul).mouseover (function (event)
   {
@@ -412,6 +416,15 @@ function DropDownMenu_EndOpenPopUp (menuID, context, selectionCount, evt, itemIn
   // Only reposition if opened via titleDiv
   if (evt == null)
     _dropDownMenu_repositionTimer = setTimeout(repositionHandler, _dropDownMenu_repositionInterval);
+
+  if ($menuButton.data(_dropDownMenu_button_timestampDataKey))
+  {
+    $menuButton.removeData(_dropDownMenu_button_timestampDataKey);
+  }
+  else
+  {
+    DropDownMenu_ClosePopUp(_dropDownMenu_updateFocus);
+  }
 }
 
 function DownDownMenu_CreateTitleDivGetter ($context)
