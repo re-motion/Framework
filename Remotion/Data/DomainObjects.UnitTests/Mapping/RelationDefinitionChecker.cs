@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+using Remotion.Collections;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Utilities;
 
@@ -40,7 +41,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     // methods and properties
 
     public void Check (
-        IEnumerable<RelationDefinition> expectedDefinitions, 
+        IReadOnlyCollection<RelationDefinition> expectedDefinitions, 
         IDictionary<string, RelationDefinition> actualDefinitions,
         bool ignoreUnknown)
     {
@@ -52,7 +53,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       foreach (RelationDefinition expectedDefinition in expectedDefinitions)
       {
-        RelationDefinition actualDefinition = actualDefinitions[expectedDefinition.ID];
+        RelationDefinition actualDefinition = actualDefinitions.GetValueOrDefault (expectedDefinition.ID);
         Assert.IsNotNull (actualDefinition, "Relation '{0}' was not found.", expectedDefinition.ID);
         Check (expectedDefinition, actualDefinition);
       }

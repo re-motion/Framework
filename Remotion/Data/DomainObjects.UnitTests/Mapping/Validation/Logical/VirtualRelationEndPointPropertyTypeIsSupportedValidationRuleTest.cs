@@ -78,9 +78,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     }
 
     [Test]
-    [Ignore ("RM-7294")]
-    public void PropertyTypIsQueryCollection ()
+    public void PropertyTypIsIObjectList ()
     {
+      var propertyType = typeof (IObjectList<BaseOfBaseValidationDomainObjectClass>);
+      var endPointDefinition = 
+          VirtualCollectionRelationEndPointDefinitionFactory.Create (_classDefinition, "Property", false, propertyType);
+      var relationDefinition = new RelationDefinition ("Test", endPointDefinition, endPointDefinition);
+      
+      var validationResult = _validationRule.Validate (relationDefinition);
+
+      AssertMappingValidationResult (validationResult, true, null);
     }
 
     [Test]
@@ -110,7 +117,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     }
 
     [Test]
-    public void LeftEndpointPropertyType_NotAssignableToObjectListOrDomainObject ()
+    public void LeftEndpointPropertyType_NotAssignableToObjectListOrDomainObjectOrOfTypeIObjectList ()
     {
       var leftEndPointDefinition = 
           VirtualObjectRelationEndPointDefinitionFactory.Create (_classDefinition, "Left", false, typeof (string));
@@ -121,14 +128,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
       var validationResult = _validationRule.Validate (relationDefinition);
 
       var expectedMessage =
-          "Virtual property 'Left' of class 'Order' is of type 'String', but must be assignable to 'DomainObject' or 'ObjectList`1'.\r\n\r\n"
+          "Virtual property 'Left' of class 'Order' is of type 'String', but must be assignable to 'DomainObject' or 'ObjectList`1' or be of type 'IObjectList`1'.\r\n\r\n"
           + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order\r\n"
           + "Property: Left";
       AssertMappingValidationResult (validationResult, false, expectedMessage);
     }
 
     [Test]
-    public void RightEndpointPropertyType_NotAssignableToObjectListOrDomainObject ()
+    public void RightEndpointPropertyType_NotAssignableToIObjectListOrObjectListOrDomainObjectOrOfTypeIObjectList ()
     {
       var leftEndPointDefinition = 
           DomainObjectCollectionRelationEndPointDefinitionFactory.Create (_classDefinition, "Left", false, typeof (ObjectList<>));
@@ -139,7 +146,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
       var validationResult = _validationRule.Validate (relationDefinition);
 
       var expectedMessage =
-          "Virtual property 'Right' of class 'Order' is of type 'String', but must be assignable to 'DomainObject' or 'ObjectList`1'.\r\n\r\n"
+          "Virtual property 'Right' of class 'Order' is of type 'String', but must be assignable to 'DomainObject' or 'ObjectList`1' or be of type 'IObjectList`1'.\r\n\r\n"
           + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order\r\n"
           + "Property: Right";
       AssertMappingValidationResult (validationResult, false, expectedMessage);

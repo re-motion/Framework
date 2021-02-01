@@ -432,6 +432,7 @@
     <Compile Include="IntegrationTests\RegisterForCommitTest.cs" />
     <Compile Include="TestDomain\ClassWithPropertyTypeImplementingIStructuralEquatable.cs" />
     <Compile Include="TestDomain\ExtensibleEnumNotDefiningAnyValues.cs" />
+    <Compile Include="TestDomain\IDerivedObjectList.cs" />
     <Compile Include="TestDomain\NonPersistentTestDomainAttribute.cs" />
     <Compile Include="TestDomain\OrderViewModel.cs" />
     <Compile Include="TestDomain\Product.cs" />

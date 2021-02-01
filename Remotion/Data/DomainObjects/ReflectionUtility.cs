@@ -179,6 +179,11 @@ namespace Remotion.Data.DomainObjects
     /// </returns>
     public static bool IsIObjectList (Type type)
     {
+      ArgumentUtility.CheckNotNull ("type", type);
+
+      if (type == typeof (IObjectList<>))
+        return true;
+
       if (!type.IsInterface)
         return false;
 
@@ -210,7 +215,7 @@ namespace Remotion.Data.DomainObjects
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
-      return IsDomainObject (type) || IsObjectList (type) || IsIObjectList (type); //TODO RM-7294
+      return IsDomainObject (type) || IsObjectList (type) || IsIObjectList (type);
     }
 
     /// <remarks>Only temporary solution until type resulition is refactored.</remarks>
@@ -268,10 +273,13 @@ namespace Remotion.Data.DomainObjects
     /// </exception>
     public static Type GetObjectListTypeParameter (Type type)
     {
+      ArgumentUtility.CheckNotNull ("type", type);
+
       var typeParameters = TypeExtensions.GetAscribedGenericArguments (type, typeof (ObjectList<>));
-      if (typeParameters == null)
+      var typeParameter = typeParameters[0];
+      if (typeParameter.IsGenericParameter)
         return null;
-      return typeParameters[0];
+      return typeParameter;
     }
 
     /// <summary>
@@ -287,10 +295,13 @@ namespace Remotion.Data.DomainObjects
     /// </exception>
     public static Type GetIObjectListTypeParameter (Type type)
     {
+      ArgumentUtility.CheckNotNull ("type", type);
+
       var typeParameters = TypeExtensions.GetAscribedGenericArguments (type, typeof (IObjectList<>));
-      if (typeParameters == null)
+      var typeParameter = typeParameters[0];
+      if (typeParameter.IsGenericParameter)
         return null;
-      return typeParameters[0];
+      return typeParameter;
     }
 
     /// <summary>

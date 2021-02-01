@@ -123,6 +123,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       classDefinitions.Add (CreateOrderTicketDefinition (null));
       classDefinitions.Add (CreateOrderItemDefinition (null));
 
+      classDefinitions.Add (CreateProductDefinition (null));
+      classDefinitions.Add (CreateProductReviewDefinition (null));
+
       ClassDefinition officialDefinition = CreateOfficialDefinition (null);
       classDefinitions.Add (officialDefinition);
       classDefinitions.Add (CreateSpecialOfficialDefinition (officialDefinition));
@@ -349,6 +352,41 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       orderItem.SetPropertyDefinitions (new PropertyDefinitionCollection (properties, true));
 
       return orderItem;
+    }
+
+    private ClassDefinition CreateProductDefinition (ClassDefinition baseClass)
+    {
+      var product = CreateClassDefinition (
+          "Product", "Product", typeof (Product), false, baseClass);
+
+      var properties = new List<PropertyDefinition>();
+      properties.Add (
+          CreatePersistentPropertyDefinition (product, typeof (Product), "Name", "Name", false, 100));
+      properties.Add (
+          CreatePersistentPropertyDefinition (product, typeof (Product), "Price", "Price", false, null));
+      product.SetPropertyDefinitions (new PropertyDefinitionCollection (properties, true));
+
+      return product;
+    }
+
+    private ClassDefinition CreateProductReviewDefinition (ClassDefinition baseClass)
+    {
+      var productReview = CreateClassDefinition (
+          "ProductReview", "ProductReview", typeof (ProductReview), false, baseClass);
+
+      var properties = new List<PropertyDefinition>();
+      properties.Add (
+          CreatePersistentPropertyDefinition (productReview, typeof (ProductReview), "Product", "ProductID", true, null));
+      properties.Add (
+          CreatePersistentPropertyDefinition (productReview, typeof (ProductReview), "Reviewer", "ReviewerID", true, null));
+      properties.Add (
+          CreatePersistentPropertyDefinition (
+              productReview, typeof (ProductReview), "CreatedAt", "CreatedAt", false, null));
+      properties.Add (
+          CreatePersistentPropertyDefinition (productReview, typeof (ProductReview), "Comment", "Comment", false, 1000));
+      productReview.SetPropertyDefinitions (new PropertyDefinitionCollection (properties, true));
+
+      return productReview;
     }
 
     private ClassDefinition CreateCeoDefinition (ClassDefinition baseClass)
@@ -960,6 +998,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       relationDefinitions.Add (CreateOrderToOfficialRelationDefinition());
       relationDefinitions.Add (CreateOrderViewModelToOrderRelationDefinition());
 
+      relationDefinitions.Add (CreateProductToProductReviewRelationDefinition());
+      relationDefinitions.Add (CreatePersonToProductReviewRelationDefinition());
+
       relationDefinitions.Add (CreateCompanyToCeoRelationDefinition());
       relationDefinitions.Add (CreatePartnerToPersonRelationDefinition());
       relationDefinitions.Add (CreateClientToLocationRelationDefinition());
@@ -1105,6 +1146,52 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       var relation = CreateExpectedRelationDefinition ("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.OrderViewModel"
           + ":Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.OrderViewModel.Object", endPoint1, endPoint2);
+
+      return relation;
+    }
+
+    private RelationDefinition CreateProductToProductReviewRelationDefinition ()
+    {
+      var productClass = _typeDefinitions[typeof (Product)];
+      var productReviewClass = _typeDefinitions[typeof (ProductReview)];
+      var createdAtPropertyDefinition = productReviewClass.GetPropertyDefinition (typeof (ProductReview).FullName + ".CreatedAt");
+      var sortExpressionDefinition = new SortExpressionDefinition (new[] { SortExpressionDefinitionObjectMother.CreateSortedPropertyDescending (createdAtPropertyDefinition) });
+
+      var endPoint1 =
+          VirtualCollectionRelationEndPointDefinitionFactory.Create (
+              productClass,
+              "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Product.Reviews",
+              false,
+              typeof (IObjectList<ProductReview>),
+              new Lazy<SortExpressionDefinition> (() => sortExpressionDefinition));
+
+      var endPoint2 = new RelationEndPointDefinition (
+          productReviewClass["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ProductReview.Product"], true);
+
+      var relation = CreateExpectedRelationDefinition ("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ProductReview"
+                                                                      + ":Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ProductReview.Product->"
+                                                                      +"Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Product.Reviews", endPoint1, endPoint2);
+
+      return relation;
+    }
+
+    private RelationDefinition CreatePersonToProductReviewRelationDefinition ()
+    {
+      var personClass = _typeDefinitions[typeof (Person)];
+      var endPoint1 =
+          VirtualCollectionRelationEndPointDefinitionFactory.Create (
+              personClass,
+              "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Person.Reviews",
+              false,
+              typeof (IObjectList<ProductReview>));
+
+      var productReviewClass = _typeDefinitions[typeof (ProductReview)];
+      var endPoint2 = new RelationEndPointDefinition (
+          productReviewClass["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ProductReview.Reviewer"], true);
+
+      var relation = CreateExpectedRelationDefinition ("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ProductReview"
+                                                                      + ":Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ProductReview.Reviewer->"
+                                                                      +"Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Person.Reviews", endPoint1, endPoint2);
 
       return relation;
     }

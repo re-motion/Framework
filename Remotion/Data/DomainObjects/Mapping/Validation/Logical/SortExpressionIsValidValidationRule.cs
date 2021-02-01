@@ -56,10 +56,17 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
           return MappingValidationResult.CreateInvalidResult(ex.Message);
         }
       }
-      // else if (relationEndPointDefinition is QueryCollectionRelationEndPointDefinition queryCollectionRelationEndPointDefinition)
-      // {
-      //  TODO: RM-7294
-      // }
+      if (relationEndPointDefinition is VirtualCollectionRelationEndPointDefinition virtualCollectionRelationEndPointDefinition)
+      {
+        try
+        {
+          virtualCollectionRelationEndPointDefinition.GetSortExpression ();
+        }
+        catch (MappingException ex)
+        {
+          return MappingValidationResult.CreateInvalidResult(ex.Message);
+        }
+      }
       return MappingValidationResult.CreateValidResult();
     }
 
