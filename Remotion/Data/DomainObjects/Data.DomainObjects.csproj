@@ -195,6 +195,8 @@
     <Compile Include="DataManagement\DelegatingDataContainerMap.cs" />
     <Compile Include="DataManagement\RelationEndPoints\ICollectionEndPointData.cs" />
     <Compile Include="DataManagement\RelationEndPoints\IVirtualCollectionEndPointChangeDetectionStrategy.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\NullVirtualCollectionEndPoint.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\NullDataContainerMapReadOnlyView.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualCollectionEndPoint.cs" />
     <Compile Include="DataManagement\RelationEndPoints\IDomainObjectCollectionEndPoint.cs" />
     <Compile Include="DataManagement\RelationEndPoints\IVirtualCollectionEndPoint.cs" />

@@ -212,8 +212,14 @@
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
     <Compile Include="ClientTransactionTestHelperWithMocks.cs" />
+    <Compile Include="DataManagement\Commands\EndPointModifications\VirtualCollectionEndPointAddCommandTest.cs" />
+    <Compile Include="DataManagement\Commands\EndPointModifications\VirtualCollectionEndPointDeleteCommandTest.cs" />
+    <Compile Include="DataManagement\Commands\EndPointModifications\VirtualCollectionEndPointRemoveCommandTest.cs" />
     <Compile Include="DataManagement\DataContainerStateTest.cs" />
     <Compile Include="DataManagement\DelegatingDataContainerMapTest.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\NullDataContainerMapReadOnlyViewTest.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\NullVirtualCollectionEndPointTest.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\RelationEndPointExtensionsTests\IVirtualCollectionEndPoint_REPET.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualCollectionEndPointIntegrationTest.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\ChangeCachingVirtualCollectionDataDecoratorTest.cs" />
     <None Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\IncompleteVirtualCollectionEndPointLoadStateTest.cs" />
@@ -430,6 +436,7 @@
     <Compile Include="Infrastructure\TypePipe\DomainObjectParticipantTest.cs" />
     <Compile Include="Infrastructure\TypePipe\MutableTypeObjectMother.cs" />
     <Compile Include="IntegrationTests\RegisterForCommitTest.cs" />
+    <Compile Include="Serialization\NullDataContainerMapReadOnlyViewTest.cs" />
     <Compile Include="TestDomain\ClassWithPropertyTypeImplementingIStructuralEquatable.cs" />
     <Compile Include="TestDomain\ExtensibleEnumNotDefiningAnyValues.cs" />
     <Compile Include="TestDomain\IDerivedObjectList.cs" />
@@ -1327,7 +1334,7 @@
     <Compile Include="DataManagement\Commands\EndPointModifications\ObjectEndPointSetUnidirectionalCommandTest.cs" />
     <Compile Include="DataManagement\RelationEndPoints\NullDomainObjectCollectionEndPointTest.cs" />
     <Compile Include="DataManagement\RelationEndPoints\NullObjectEndPointTest.cs" />
-    <Compile Include="DataManagement\RelationEndPoints\RelationEndPointExtensionsTest.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\RelationEndPointExtensionsTests\IDomainObjectCollectionEndPoint_REPET.cs" />
     <Compile Include="DataManagement\RelationEndPoints\RealObjectEndPointTest.cs" />
     <Compile Include="DataManagement\RelationEndPoints\RelationEndPointObjectMother.cs" />
     <Compile Include="DataManagement\TestDomain\CollectionWithProtectedCtor.cs" />

@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    public void CreateNullEndPoint_CollectionEndPoint ()
+    public void CreateNullEndPoint_DomainObjectCollectionEndPoint ()
     {
       var orderItemsDefinition = 
           Configuration.GetTypeDefinition (typeof (Order)).GetRelationEndPointDefinition (typeof (Order).FullName + ".OrderItems");
@@ -73,6 +73,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       Assert.That (nullObjectEndPoint, Is.TypeOf (typeof (NullDomainObjectCollectionEndPoint)));
       var collectionEndPointID = RelationEndPointID.Create (null, orderItemsDefinition);
+      Assert.That (nullObjectEndPoint.ID, Is.EqualTo (collectionEndPointID));
+    }
+
+    [Test]
+    public void CreateNullEndPoint_VirtualCollectionEndPoint ()
+    {
+      var productReviewsDefinition = 
+          Configuration.GetTypeDefinition (typeof (Product)).GetRelationEndPointDefinition (typeof (Product).FullName + ".Reviews");
+
+      var nullObjectEndPoint = RelationEndPointManager.CreateNullEndPoint (TestableClientTransaction, productReviewsDefinition);
+
+      Assert.That (nullObjectEndPoint, Is.TypeOf (typeof (NullVirtualCollectionEndPoint)));
+      var collectionEndPointID = RelationEndPointID.Create (null, productReviewsDefinition);
       Assert.That (nullObjectEndPoint.ID, Is.EqualTo (collectionEndPointID));
     }
 
@@ -477,7 +490,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    public void GetRelationEndPointWithoutLoading_NullCollectionEndPoint ()
+    public void GetRelationEndPointWithoutLoading_NullDomainObjectCollectionEndPoint ()
     {
       var endPointDefinition =
           Configuration.GetTypeDefinition (typeof (Order)).GetRelationEndPointDefinition (typeof (Order).FullName + ".OrderItems");
@@ -486,6 +499,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var result = _relationEndPointManager.GetRelationEndPointWithoutLoading (relationEndPointID);
 
       Assert.That (result, Is.TypeOf (typeof (NullDomainObjectCollectionEndPoint)));
+      Assert.That (result.Definition, Is.EqualTo (endPointDefinition));
+    }
+
+    [Test]
+    public void GetRelationEndPointWithoutLoading_NullVirtualCollectionEndPoint ()
+    {
+      var endPointDefinition =
+          Configuration.GetTypeDefinition (typeof (Product)).GetRelationEndPointDefinition (typeof (Product).FullName + ".Reviews");
+      var relationEndPointID = RelationEndPointID.Create (null, endPointDefinition);
+
+      var result = _relationEndPointManager.GetRelationEndPointWithoutLoading (relationEndPointID);
+
+      Assert.That (result, Is.TypeOf (typeof (NullVirtualCollectionEndPoint)));
       Assert.That (result.Definition, Is.EqualTo (endPointDefinition));
     }
 
@@ -529,7 +555,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    public void GetRelationEndPointWithLazyLoad_NullCollectionEndPoint ()
+    public void GetRelationEndPointWithLazyLoad_NullDomainObjectCollectionEndPoint ()
     {
       var endPointDefinition =
           Configuration.GetTypeDefinition (typeof (Order)).GetRelationEndPointDefinition (typeof (Order).FullName + ".OrderItems");
@@ -538,6 +564,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var result = _relationEndPointManager.GetRelationEndPointWithLazyLoad (relationEndPointID);
 
       Assert.That (result, Is.TypeOf (typeof (NullDomainObjectCollectionEndPoint)));
+      Assert.That (result.Definition, Is.EqualTo (endPointDefinition));
+    }
+
+    [Test]
+    public void GetRelationEndPointWithLazyLoad_NullVirtualCollectionEndPoint ()
+    {
+      var endPointDefinition =
+          Configuration.GetTypeDefinition (typeof (Product)).GetRelationEndPointDefinition (typeof (Product).FullName + ".Reviews");
+      var relationEndPointID = RelationEndPointID.Create (null, endPointDefinition);
+
+      var result = _relationEndPointManager.GetRelationEndPointWithLazyLoad (relationEndPointID);
+
+      Assert.That (result, Is.TypeOf (typeof (NullVirtualCollectionEndPoint)));
       Assert.That (result.Definition, Is.EqualTo (endPointDefinition));
     }
 
@@ -706,7 +745,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    public void GetOrCreateVirtualEndPoint_Null_CollectionEndPoint ()
+    public void GetOrCreateVirtualEndPoint_Null_DomainObjectCollectionEndPoint ()
     {
       var endPointID = RelationEndPointID.Create (null, GetEndPointDefinition (typeof (Order), "OrderItems"));
       Assert.That (_relationEndPointManager.RelationEndPoints[endPointID], Is.Null);
@@ -714,6 +753,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var result = _relationEndPointManager.GetOrCreateVirtualEndPoint (endPointID);
 
       Assert.That (result, Is.TypeOf<NullDomainObjectCollectionEndPoint> ());
+    }
+
+    [Test]
+    public void GetOrCreateVirtualEndPoint_Null_VirtualCollectionEndPoint ()
+    {
+      var endPointID = RelationEndPointID.Create (null, GetEndPointDefinition (typeof (Product), "Reviews"));
+      Assert.That (_relationEndPointManager.RelationEndPoints[endPointID], Is.Null);
+
+      var result = _relationEndPointManager.GetOrCreateVirtualEndPoint (endPointID);
+
+      Assert.That (result, Is.TypeOf<NullVirtualCollectionEndPoint> ());
     }
 
     [Test]

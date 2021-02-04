@@ -63,6 +63,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       _productReviewWithoutProduct.Product = _product;
 
+      //TODO RM-7294: allow setting the relation without implicitly loading the parent object, make separate test fixture
+
       Assert.That (_productReviewEventReceiver.HasRelationChangingEventBeenCalled, Is.EqualTo (true));
       Assert.That (_productReviewEventReceiver.HasRelationChangedEventBeenCalled, Is.EqualTo (true));
       Assert.That (
