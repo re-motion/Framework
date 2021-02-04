@@ -488,10 +488,10 @@ function DropDownMenu_ClosePopUp (updateFocus)
   if (_dropDownMenu_blurTimer !== null)
     clearTimeout(_dropDownMenu_blurTimer);
 
-  if (_dropDownMenu_currentPopup !== null)
+  if (_dropDownMenu_currentPopup !== null
+      && document.body.contains(_dropDownMenu_currentPopup))
   {
     const menuPopup = _dropDownMenu_currentPopup;
-    _dropDownMenu_currentPopup = null;
     const $menuButton = $('a[aria-controls="' + menuPopup.id + '"]');
     $menuButton.unbind('focus', DropDownMenu_BlurHandler);
     $menuButton.unbind('blur', DropDownMenu_BlurHandler);
@@ -503,15 +503,17 @@ function DropDownMenu_ClosePopUp (updateFocus)
     menuPopup.parentElement.removeChild(menuPopup);
   }
 
-  if (_dropDownMenu_currentStatusPopup !== null)
+  if (_dropDownMenu_currentStatusPopup !== null
+      && document.body.contains(_dropDownMenu_currentStatusPopup))
   {
     const statusPopup = _dropDownMenu_currentStatusPopup;
-    _dropDownMenu_currentStatusPopup = null;
     // Clear the role=alert before removing to item to prevent screenreaders (JAWS) from announcing the old value during removal.
     statusPopup.removeAttribute('role');
     statusPopup.parentElement.removeChild(statusPopup);
   }
 
+  _dropDownMenu_currentPopup = null;
+  _dropDownMenu_currentStatusPopup = null;
   _dropDownMenu_currentMenu = null;
 }
 
