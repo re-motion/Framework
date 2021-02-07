@@ -35,6 +35,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   /// </summary>
   public class VirtualCollectionEndPoint : RelationEndPoint, IVirtualCollectionEndPoint
   {
+    //TODO RM-7294: Remove commented out code
+
     private static readonly ILog s_log = LogManager.GetLogger (typeof (VirtualCollectionEndPoint));
 
     private readonly IVirtualCollectionEndPointCollectionManager _collectionManager;
@@ -119,9 +121,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       get { return _collectionManager.GetCurrentCollectionReference(); }
     }
 
-    public IDomainObjectCollectionEventRaiser GetCollectionEventRaiser ()
+    public IVirtualCollectionEventRaiser GetCollectionEventRaiser ()
     {
-      return (IDomainObjectCollectionEventRaiser) Collection; // TODO RM-7294 invalid cast
+      return (IVirtualCollectionEventRaiser) Collection; // TODO RM-7294 invalid cast
     }
 
     public IObjectList<IDomainObject> GetCollectionWithOriginalData ()
@@ -254,8 +256,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       //foreach (var oppositeEndPointWithoutItem in originalOppositeEndPoints)
       //  RegisterOriginalOppositeEndPoint (oppositeEndPointWithoutItem);
 
-      var eventRaiser = GetCollectionEventRaiser();
-      eventRaiser.WithinReplaceData();
+      RaiseReplaceDataEvent();
     }
 
     public void MarkDataIncomplete ()

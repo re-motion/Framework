@@ -25,7 +25,7 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.DataManagement
 {
   [Serializable]
-  public class VirtualObjectList<T> : IObjectList<T>, IDomainObjectCollectionEventRaiser, IReadOnlyCollectionData<T>
+  public class VirtualObjectList<T> : IObjectList<T>, IVirtualCollectionEventRaiser, IReadOnlyCollectionData<T>
       where T : DomainObject
   {
     private readonly IVirtualCollectionData _dataStrategy;
@@ -57,37 +57,37 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public T GetObject (ObjectID objectID) => (T) _dataStrategy.GetObject (objectID);
 
-    void IDomainObjectCollectionEventRaiser.BeginAdd (int index, DomainObject domainObject)
+    void IVirtualCollectionEventRaiser.BeginAdd (int index, DomainObject domainObject)
     {
       //TODO: RM-7294: API is only implemented because of the interface. Can probably be dropped since there is no usage
     }
 
-    void IDomainObjectCollectionEventRaiser.EndAdd (int index, DomainObject domainObject)
+    void IVirtualCollectionEventRaiser.EndAdd (int index, DomainObject domainObject)
     {
       //TODO: RM-7294: API is only implemented because of the interface. Can probably be dropped since there is no usage
     }
 
-    void IDomainObjectCollectionEventRaiser.BeginRemove (int index, DomainObject domainObject)
+    void IVirtualCollectionEventRaiser.BeginRemove (int index, DomainObject domainObject)
     {
       //TODO: RM-7294: API is only implemented because of the interface. Can probably be dropped since there is no usage
     }
 
-    void IDomainObjectCollectionEventRaiser.EndRemove (int index, DomainObject domainObject)
+    void IVirtualCollectionEventRaiser.EndRemove (int index, DomainObject domainObject)
     {
       //TODO: RM-7294: API is only implemented because of the interface. Can probably be dropped since there is no usage
     }
 
-    void IDomainObjectCollectionEventRaiser.BeginDelete ()
+    void IVirtualCollectionEventRaiser.BeginDelete ()
     {
       //TODO: RM-7294
     }
 
-    void IDomainObjectCollectionEventRaiser.EndDelete ()
+    void IVirtualCollectionEventRaiser.EndDelete ()
     {
       //TODO: RM-7294
     }
 
-    void IDomainObjectCollectionEventRaiser.WithinReplaceData ()
+    void IVirtualCollectionEventRaiser.WithinReplaceData ()
     {
       //TODO: RM-7294
     }

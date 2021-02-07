@@ -510,7 +510,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public IDomainObjectCollectionEventRaiser GetCollectionEventRaiser ()
+    public IVirtualCollectionEventRaiser GetCollectionEventRaiser ()
     {
 #if DEBUG
       using (new ConstantChangeStateAsserter (_innerEndPoint))

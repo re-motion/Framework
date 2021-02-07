@@ -31,5 +31,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     IDataManagementCommand CreateSetCollectionCommand (DomainObjectCollection newCollection);
     IDataManagementCommand CreateInsertCommand (DomainObject insertedRelatedObject, int index);
     IDataManagementCommand CreateReplaceCommand (int index, DomainObject replacementObject);
+    
+    IDomainObjectCollectionEventRaiser GetCollectionEventRaiser ();
   }
 }

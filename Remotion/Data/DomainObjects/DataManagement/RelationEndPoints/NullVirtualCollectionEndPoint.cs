@@ -145,7 +145,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       throw new InvalidOperationException ("It is not possible to call GetOriginalData on a NullVirtualCollectionEndPoint.");
     }
 
-    public IDomainObjectCollectionEventRaiser GetCollectionEventRaiser ()
+    public IVirtualCollectionEventRaiser GetCollectionEventRaiser ()
     {
       throw new InvalidOperationException ("It is not possible to call GetCollectionEventRaiser on a NullVirtualCollectionEndPoint.");
     }

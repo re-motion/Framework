@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     private readonly int _index;
 
     private readonly IVirtualCollectionData _modifiedCollectionData;
-    private readonly IDomainObjectCollectionEventRaiser _modifiedCollectionEventRaiser;
+    private readonly IVirtualCollectionEventRaiser _modifiedCollectionEventRaiser;
     private readonly IRelationEndPointProvider _endPointProvider;
 
     public VirtualCollectionEndPointRemoveCommand (
@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
       _endPointProvider = endPointProvider;
     }
 
-    public IDomainObjectCollectionEventRaiser ModifiedCollectionEventRaiser
+    public IVirtualCollectionEventRaiser ModifiedCollectionEventRaiser
     {
       get { return _modifiedCollectionEventRaiser; }
     }

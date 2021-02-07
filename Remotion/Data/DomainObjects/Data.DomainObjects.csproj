@@ -186,6 +186,7 @@
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\SortExpressionDefinitionProvider.cs" />
     <Compile Include="DataManagement\CollectionData\IncompleteEndPointModicationVirtualCollectionData.cs" />
     <Compile Include="DataManagement\CollectionData\IVirtualCollectionData.cs" />
+    <Compile Include="DataManagement\CollectionData\IVirtualCollectionEventRaiser.cs" />
     <Compile Include="DataManagement\CollectionData\ReadOnlyVirtualCollectionDataDecorator.cs" />
     <Compile Include="DataManagement\CollectionData\VirtualCollectionData.cs" />
     <Compile Include="DataManagement\CollectionData\VirtualCollectionDataExtensions.cs" />

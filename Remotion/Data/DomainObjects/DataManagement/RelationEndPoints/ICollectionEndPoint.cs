@@ -25,14 +25,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   public interface ICollectionEndPoint<out TData> : IVirtualEndPoint<TData>
       where TData : ICollectionEndPointData
   {
-    bool? HasChangedFast { get; } //Keep for new query collection endpoint
+    bool? HasChangedFast { get; } //TODO RM-7294: Keep for new query collection endpoint
 
-    IDomainObjectCollectionEventRaiser GetCollectionEventRaiser ();
+    void MarkDataComplete (DomainObject[] items); //TODO RM-7294: Keep for new query collection endpoint
 
-    void MarkDataComplete (DomainObject[] items); //Keep for new query collection endpoint
+    IDataManagementCommand CreateAddCommand (DomainObject addedRelatedObject); //TODO RM-7294: Keep for new query collection endpoint
 
-    IDataManagementCommand CreateAddCommand (DomainObject addedRelatedObject); //Keep for new query collection endpoint
-
-    void SortCurrentData (Comparison<DomainObject> comparison); //Keep for new query collection endpoint
+    void SortCurrentData (Comparison<DomainObject> comparison); //TODO RM-7294: Keep for new query collection endpoint
   }
 }

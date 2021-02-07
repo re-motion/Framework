@@ -25,5 +25,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     IObjectList<IDomainObject> Collection { get; }
 
     IObjectList<IDomainObject> GetCollectionWithOriginalData ();
+
+    //TODO RM-7294: API can probably be dropped
+    IVirtualCollectionEventRaiser GetCollectionEventRaiser ();
   }
 }

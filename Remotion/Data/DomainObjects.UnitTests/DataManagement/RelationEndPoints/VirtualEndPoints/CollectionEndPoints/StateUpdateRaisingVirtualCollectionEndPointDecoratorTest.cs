@@ -168,7 +168,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var dataContainerMapStub = MockRepository.GenerateStub<IDataContainerMapReadOnlyView>();
       var readOnlyCollectionDataDecorator = new ReadOnlyVirtualCollectionDataDecorator (new VirtualCollectionData (endPointID, dataContainerMapStub, ValueAccess.Current));
       var objectListStub = MockRepository.GenerateStub<IObjectList<ProductReview>>();
-      var eventRaiserStub = MockRepository.GenerateStub<IDomainObjectCollectionEventRaiser>();
+      var eventRaiserStub = MockRepository.GenerateStub<IVirtualCollectionEventRaiser>();
       var productReview = DomainObjectMother.CreateFakeObject<ProductReview>();
 
       _listenerMock.Replay();

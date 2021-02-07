@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
   public class VirtualCollectionEndPointDeleteCommand : RelationEndPointModificationCommand
   {
     private readonly IVirtualCollectionData _modifiedCollectionData;
-    private readonly IDomainObjectCollectionEventRaiser _modifiedCollectionEventRaiser;
+    private readonly IVirtualCollectionEventRaiser _modifiedCollectionEventRaiser;
 
     public VirtualCollectionEndPointDeleteCommand (
         IVirtualCollectionEndPoint modifiedEndPoint,
@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
       _modifiedCollectionEventRaiser = modifiedEndPoint.GetCollectionEventRaiser();
     }
 
-    public IDomainObjectCollectionEventRaiser ModifiedCollectionEventRaiser
+    public IVirtualCollectionEventRaiser ModifiedCollectionEventRaiser
     {
       get { return _modifiedCollectionEventRaiser; }
     }
