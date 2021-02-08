@@ -128,9 +128,13 @@ namespace Remotion.Data.DomainObjects.Validation
           typeof (object));
 
 
-      var nonEmptyDummyValue = ReflectionUtility.IsObjectList (_implementationProperty.PropertyType)
-          ? FakeDomainObject.CollectionValue
-          : (object) FakeDomainObject.SingleValue;
+      object nonEmptyDummyValue;
+      if (ReflectionUtility.IsObjectList (_implementationProperty.PropertyType))
+        nonEmptyDummyValue = FakeDomainObject.CollectionValue;
+      else if (ReflectionUtility.IsIObjectList (_implementationProperty.PropertyType))
+        nonEmptyDummyValue = FakeDomainObject.CollectionValue;
+      else
+        nonEmptyDummyValue = FakeDomainObject.SingleValue;
       var nonEmptyDummyValueExpression = Expression.Constant (nonEmptyDummyValue, typeof (object));
 
       var accessorExpression = Expression.Lambda<Func<object, object>> (
@@ -168,7 +172,8 @@ namespace Remotion.Data.DomainObjects.Validation
 
       if (!_domainModelConstraintProvider.IsNullable (_implementationPropertyInformation) 
           && typeof (IEnumerable).IsAssignableFrom (_implementationProperty.PropertyType)
-          && !ReflectionUtility.IsObjectList (_implementationProperty.PropertyType))
+          && !ReflectionUtility.IsObjectList (_implementationProperty.PropertyType)
+          && !ReflectionUtility.IsIObjectList (_implementationProperty.PropertyType))
       {
         yield return PropertyValidatorFactory.Create (
             _implementationPropertyInformation,
@@ -186,7 +191,8 @@ namespace Remotion.Data.DomainObjects.Validation
             parameters => new NotNullValidator (parameters.ValidationMessage),
             _validationMessageFactory);
 
-        if (ReflectionUtility.IsObjectList (_implementationProperty.PropertyType))
+        if (ReflectionUtility.IsObjectList (_implementationProperty.PropertyType)
+            || ReflectionUtility.IsIObjectList (_implementationProperty.PropertyType))
         {
           yield return PropertyValidatorFactory.Create (
               _implementationPropertyInformation,

@@ -26,7 +26,9 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
 
     TestDomainObject BidirectionalPropertyWithMandatoryAttribute { get; set; }
 
-    ObjectList<TestDomainObject> BidirectionalMultiplePropertyWithMandatoryAttribute { get; set; }
+    ObjectList<TestDomainObject> BidirectionalDomainObjectCollectionPropertyWithMandatoryAttribute { get; set; }
+
+    IObjectList<TestDomainObject> BidirectionalVirtualCollectionPropertyWithMandatoryAttribute { get; set; }
 
     string PropertyWithNullableStringPropertyAttribute { get; set; }
 
@@ -62,11 +64,19 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
     }
 
     [Mandatory]
-    [DBBidirectionalRelation ("OppositeSampleObjects")]
-    public virtual ObjectList<TestDomainObject> BidirectionalMultiplePropertyWithMandatoryAttribute
+    [DBBidirectionalRelation ("OppositeObjectForDomainObjectCollectionProperty")]
+    public virtual ObjectList<TestDomainObject> BidirectionalDomainObjectCollectionPropertyWithMandatoryAttribute
     {
-      get { return Properties[s_type, "BidirectionalMultiplePropertyWithMandatoryAttribute"].GetValue<ObjectList<TestDomainObject>> (); }
-      set { Properties[s_type, "BidirectionalMultiplePropertyWithMandatoryAttribute"].SetValue (value); }
+      get { return Properties[s_type, "BidirectionalDomainObjectCollectionPropertyWithMandatoryAttribute"].GetValue<ObjectList<TestDomainObject>> (); }
+      set { Properties[s_type, "BidirectionalDomainObjectCollectionPropertyWithMandatoryAttribute"].SetValue (value); }
+    }
+
+    [Mandatory]
+    [DBBidirectionalRelation ("OppositeObjectForVirtualCollectionProperty")]
+    public virtual IObjectList<TestDomainObject> BidirectionalVirtualCollectionPropertyWithMandatoryAttribute
+    {
+      get { return Properties[s_type, "BidirectionalVirtualCollectionPropertyWithMandatoryAttribute"].GetValue<IObjectList<TestDomainObject>> (); }
+      set { Properties[s_type, "BidirectionalVirtualCollectionPropertyWithMandatoryAttribute"].SetValue (value); }
     }
 
     [StringProperty (IsNullable = true, MaximumLength = 10)]

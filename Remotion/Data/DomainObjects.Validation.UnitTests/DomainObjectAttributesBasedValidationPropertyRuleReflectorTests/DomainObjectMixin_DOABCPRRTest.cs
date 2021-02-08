@@ -46,15 +46,18 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     private PropertyInfo _interfaceIntProperty;
     private PropertyInfo _mixinBidirectionalRelationProperty;
     private PropertyInfo _interfaceBidirectionalRelationProperty;
-    private PropertyInfo _mixinBidirectionalMultipleRelationProperty;
-    private PropertyInfo _interfaceBidirectionalMultipleRelationProperty;
+    private PropertyInfo _mixinBidirectionalDomainObjectCollectionRelationProperty;
+    private PropertyInfo _interfaceBidirectionalDomainObjectCollectionRelationProperty;
+    private PropertyInfo _mixinBidirectionalVirtualCollectionRelationProperty;
+    private PropertyInfo _interfaceBidirectionalVirtualCollectionRelationProperty;
     private IAttributesBasedValidationPropertyRuleReflector _propertyWithoutAttributeReflector;
     private IAttributesBasedValidationPropertyRuleReflector _propertyWithNullableStringPropertyAttributeReflector;
     private IAttributesBasedValidationPropertyRuleReflector _propertyWithMandatoryStringPropertyAttributeReflector;
     private IAttributesBasedValidationPropertyRuleReflector _propertyWithMandatoryAttributeReflector;
     private IAttributesBasedValidationPropertyRuleReflector _intPropertyReflector;
     private IAttributesBasedValidationPropertyRuleReflector _bidirectionalRelationReflector;
-    private IAttributesBasedValidationPropertyRuleReflector _bidirectionalMultipleRelationReflector;
+    private IAttributesBasedValidationPropertyRuleReflector _bidirectionalDomainObjectCollectionRelationReflector;
+    private IAttributesBasedValidationPropertyRuleReflector _bidirectionalVirtualCollectionRelationReflector;
     private IValidationMessageFactory _validationMessageFactoryStub;
     private DomainModelConstraintProvider _domainModelConstraintProvider;
 
@@ -74,22 +77,35 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
       _mixinBidirectionalRelationProperty =
           typeof (MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty ("BidirectionalPropertyWithMandatoryAttribute");
       _interfaceBidirectionalRelationProperty =
-          typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty ("BidirectionalPropertyWithMandatoryAttribute");
+          typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty (
+              "BidirectionalPropertyWithMandatoryAttribute");
 
-      _mixinBidirectionalMultipleRelationProperty =
-          typeof (MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty ("BidirectionalMultiplePropertyWithMandatoryAttribute");
-      _interfaceBidirectionalMultipleRelationProperty =
-          typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty ("BidirectionalMultiplePropertyWithMandatoryAttribute");
+      _mixinBidirectionalDomainObjectCollectionRelationProperty =
+          typeof (MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty (
+              "BidirectionalDomainObjectCollectionPropertyWithMandatoryAttribute");
+      _interfaceBidirectionalDomainObjectCollectionRelationProperty =
+          typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty (
+              "BidirectionalDomainObjectCollectionPropertyWithMandatoryAttribute");
+
+      _mixinBidirectionalVirtualCollectionRelationProperty =
+          typeof (MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty (
+              "BidirectionalVirtualCollectionPropertyWithMandatoryAttribute");
+      _interfaceBidirectionalVirtualCollectionRelationProperty =
+          typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty (
+              "BidirectionalVirtualCollectionPropertyWithMandatoryAttribute");
 
       _mixinPropertyWithNullableStringPropertyAttribute =
           typeof (MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty ("PropertyWithNullableStringPropertyAttribute");
       _interfacePropertyWithNullableStringPropertyAttribute =
-          typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty ("PropertyWithNullableStringPropertyAttribute");
+          typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty (
+              "PropertyWithNullableStringPropertyAttribute");
 
       _mixinPropertyWithMandatoryStringPropertyAttribute =
-          typeof (MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty ("PropertyWithMandatoryStringPropertyAttribute");
+          typeof (MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty (
+              "PropertyWithMandatoryStringPropertyAttribute");
       _interfacePropertyWithMandatoryStringPropertyAttribute =
-          typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty ("PropertyWithMandatoryStringPropertyAttribute");
+          typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty (
+              "PropertyWithMandatoryStringPropertyAttribute");
 
       _mixinIntProperty =
           typeof (MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty ("IntProperty");
@@ -130,13 +146,19 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
 
       _bidirectionalRelationReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (
           _interfaceBidirectionalRelationProperty,
-          _mixinBidirectionalRelationProperty, 
+          _mixinBidirectionalRelationProperty,
           _domainModelConstraintProvider,
           _validationMessageFactoryStub);
 
-      _bidirectionalMultipleRelationReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (
-          _interfaceBidirectionalMultipleRelationProperty,
-          _mixinBidirectionalMultipleRelationProperty,
+      _bidirectionalDomainObjectCollectionRelationReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (
+          _interfaceBidirectionalDomainObjectCollectionRelationProperty,
+          _mixinBidirectionalDomainObjectCollectionRelationProperty,
+          _domainModelConstraintProvider,
+          _validationMessageFactoryStub);
+
+      _bidirectionalVirtualCollectionRelationReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (
+          _interfaceBidirectionalVirtualCollectionRelationProperty,
+          _mixinBidirectionalVirtualCollectionRelationProperty,
           _domainModelConstraintProvider,
           _validationMessageFactoryStub);
     }
@@ -223,16 +245,32 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     }
 
     [Test]
-    public void GetPropertyAccessExpression_BidirectionalMultipleRelation ()
+    public void GetPropertyAccessExpression_BidirectionalDomainObjectCollectionRelation ()
     {
-      var propertyAccessor = _bidirectionalMultipleRelationReflector
+      var propertyAccessor = _bidirectionalDomainObjectCollectionRelationReflector
           .GetValidatedPropertyFunc (typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface));
 
       using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
       {
         var obj = MixinTarget_AnnotatedPropertiesPartOfInterface.NewObject ();
         var propertyValue = TestDomainObject.NewObject ();
-        ((IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface) obj).BidirectionalMultiplePropertyWithMandatoryAttribute.Add(propertyValue);
+        ((IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface) obj).BidirectionalDomainObjectCollectionPropertyWithMandatoryAttribute.Add(propertyValue);
+        var result = propertyAccessor (obj);
+        Assert.That (result, Is.EqualTo (new[] { propertyValue }));
+      }
+    }
+
+    [Test]
+    public void GetPropertyAccessExpression_BidirectionalVirtualCollectionRelation ()
+    {
+      var propertyAccessor = _bidirectionalVirtualCollectionRelationReflector
+          .GetValidatedPropertyFunc (typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface));
+
+      using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
+      {
+        var obj = MixinTarget_AnnotatedPropertiesPartOfInterface.NewObject ();
+        var propertyValue = TestDomainObject.NewObject ();
+        propertyValue.OppositeObjectForVirtualCollectionProperty = obj;
         var result = propertyAccessor (obj);
         Assert.That (result, Is.EqualTo (new[] { propertyValue }));
       }
@@ -258,10 +296,29 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     }
 
     [Test]
-    public void GetPropertyAccessExpression_BidirectionalMultipleRelation_NotLoaded ()
+    public void GetPropertyAccessExpression_BidirectionalDomainObjectCollectionRelation_NotLoaded ()
     {
-      var propertyAccessor = _bidirectionalMultipleRelationReflector
+      var propertyAccessor = _bidirectionalDomainObjectCollectionRelationReflector
          .GetValidatedPropertyFunc (typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface));
+
+      using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
+      {
+        var obj = (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface) MixinTarget_AnnotatedPropertiesPartOfInterface.NewObject ();
+        using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
+        {
+          var result = propertyAccessor (obj) as IEnumerable<object>;
+
+          Assert.That (result, Is.Not.Null);
+          Assert.That (result.Select (r => r.GetType().Name), Is.EqualTo (new[] { "FakeDomainObject" }));
+        }
+      }
+    }
+
+    [Test]
+    public void GetPropertyAccessExpression_BidirectionalVirtualCollectionRelation_NotLoaded ()
+    {
+      var propertyAccessor = _bidirectionalVirtualCollectionRelationReflector
+          .GetValidatedPropertyFunc (typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface));
 
       using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
       {
