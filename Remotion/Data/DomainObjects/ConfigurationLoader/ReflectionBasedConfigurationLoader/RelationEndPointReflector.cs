@@ -72,19 +72,14 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       _sortExpressionDefinitionProvider = sortExpressionDefinitionProvider;
     }
 
+    public abstract bool IsVirtualEndRelationEndpoint ();
+
     public IRelationEndPointDefinition GetMetadata ()
     {
       if (IsVirtualEndRelationEndpoint())
         return CreateVirtualRelationEndPointDefinition (ClassDefinition);
       else
         return CreateRelationEndPointDefinition (ClassDefinition);
-    }
-
-    public virtual bool IsVirtualEndRelationEndpoint ()
-    {
-      if (!IsBidirectionalRelation)
-        return false;
-      return ReflectionUtility.IsObjectList (PropertyInfo.PropertyType); //TODO: RM-7294
     }
 
     private IRelationEndPointDefinition CreateRelationEndPointDefinition (ClassDefinition classDefinition)
