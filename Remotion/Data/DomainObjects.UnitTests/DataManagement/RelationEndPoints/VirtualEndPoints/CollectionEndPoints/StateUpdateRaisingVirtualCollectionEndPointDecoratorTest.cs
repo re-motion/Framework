@@ -129,12 +129,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    public void SortCurrentData ()
-    {
-      CheckDelegationWithStateUpdate (ep => ep.SortCurrentData ((one, two) => 0));
-    }
-
-    [Test]
     public void CreateRemoveCommand ()
     {
       var orderItem = DomainObjectMother.CreateFakeObject<OrderItem>();
@@ -234,7 +228,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (deserializedInstance.Listener, Is.Not.Null);
     }
 
-    private void CheckDelegationWithStateUpdate (Action<ICollectionEndPoint<ReadOnlyVirtualCollectionDataDecorator>> action)
+    private void CheckDelegationWithStateUpdate (Action<IVirtualCollectionEndPoint> action)
     {
       // Check with HasChangedFast returning the same value before and after the operation - no state update should be raised then
 

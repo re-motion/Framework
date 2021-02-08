@@ -255,7 +255,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (deserializedInstance.Listener, Is.Not.Null);
     }
 
-    private void CheckDelegationWithStateUpdate (Action<ICollectionEndPoint<ReadOnlyDomainObjectCollectionDataDecorator>> action)
+    private void CheckDelegationWithStateUpdate (Action<IDomainObjectCollectionEndPoint> action)
     {
       // Check with HasChangedFast returning the same value before and after the operation - no state update should be raised then
 

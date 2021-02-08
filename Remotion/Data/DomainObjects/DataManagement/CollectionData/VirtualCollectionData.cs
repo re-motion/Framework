@@ -30,8 +30,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 {
   public class VirtualCollectionData : IVirtualCollectionData, IFlattenedSerializable
   {
-    //TODO: RM-7294: drop IVirtualCollectionData interface from type
-
     private readonly RelationEndPointID _associatedEndPointID;
     private readonly IDataContainerMapReadOnlyView _dataContainerMap;
     private readonly ValueAccess _valueAccess;
@@ -55,6 +53,23 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     public IDataContainerMapReadOnlyView DataContainerMap => _dataContainerMap;
 
     public ValueAccess ValueAccess => _valueAccess;
+
+    public ReadOnlyVirtualCollectionDataDecorator GetOriginalData ()
+    {
+      // TODO: RM-7294
+      var originalData = new VirtualCollectionData (_associatedEndPointID, _dataContainerMap, ValueAccess.Original);
+      return new ReadOnlyVirtualCollectionDataDecorator (originalData);
+    }
+
+    public bool IsCacheUpToDate
+    {
+      get { return _cachedDomainObjects != null; }
+    }
+
+    public void ResetCachedDomainObjects ()
+    {
+      _cachedDomainObjects = null;
+    }
 
     public IEnumerator<DomainObject> GetEnumerator () => GetCachedDomainObjectsSorted().GetEnumerator();
 
@@ -137,8 +152,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       //TODO: RM-7294: API is only needed via ChangeCachingDataDecorator, which in turn is used from the EndPointDeleteCommand.
       //Possibly create dedicated interface when we only cache the data and need a cache-reset otherwise. 
       //Or drop interface from VirtualCollectionData.
-      throw new NotSupportedException();
-      //ResetCachedDomainObjects();
+
+      ResetCachedDomainObjects();
     }
 
     void IVirtualCollectionData.Add (DomainObject domainObject)
@@ -146,8 +161,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       //TODO: RM-7294: API is only needed via ChangeCachingDataDecorator, which in turn is used from the EndPointAddCommand.
       //Possibly create dedicated interface when we only cache the data and need a cache-reset otherwise. 
       //Or drop interface from VirtualCollectionData.
-      throw new NotSupportedException();
-      //ResetCachedDomainObjects();
+
+      ResetCachedDomainObjects();
     }
 
     bool IVirtualCollectionData.Remove (DomainObject domainObject)
@@ -155,9 +170,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       //TODO: RM-7294: API is only needed via ChangeCachingDataDecorator, which in turn is used from the EndPointRemoveCommand.
       //Possibly create dedicated interface when we only cache the data and need a cache-reset otherwise. 
       //Or drop interface from VirtualCollectionData.
-      throw new NotSupportedException();
-      //ResetCachedDomainObjects ();
-      //return true;
+
+      ResetCachedDomainObjects();
+      return true;
     }
 
     [NotNull]
@@ -206,11 +221,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       {
         return idComparer;
       }
-    }
-
-    public void ResetCachedDomainObjects ()
-    {
-      _cachedDomainObjects = null;
     }
 
     #region Serialization

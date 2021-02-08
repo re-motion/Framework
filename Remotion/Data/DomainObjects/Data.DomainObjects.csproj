@@ -200,7 +200,6 @@
     <Compile Include="DataManagement\RelationEndPoints\VirtualCollectionEndPoint.cs" />
     <Compile Include="DataManagement\RelationEndPoints\IDomainObjectCollectionEndPoint.cs" />
     <Compile Include="DataManagement\RelationEndPoints\IVirtualCollectionEndPoint.cs" />
-    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\ChangeCachingVirtualCollectionDataDecorator.cs" />
     <None Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\VirtualCollectionEndPointLoadState.cs" />
     <None Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\CompleteVirtualCollectionEndPointLoadState.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\ChangeTrackingVirtualCollectionDataDecorator.cs" />

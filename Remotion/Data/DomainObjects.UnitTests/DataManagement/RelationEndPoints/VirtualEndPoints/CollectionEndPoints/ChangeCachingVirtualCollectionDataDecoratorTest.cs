@@ -30,13 +30,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 {
   [Ignore ("TODO: RM-7294")]
   [TestFixture]
-  public class ChangeCachingVirtualCollectionDataDecoratorTest : StandardMappingTest
+  public class VirtualCollectionDataTest : StandardMappingTest
   {
     private ProductReview _domainObject;
     private RelationEndPointID _endPointID;
 
     private VirtualCollectionData _wrappedData;
-    private ChangeCachingVirtualCollectionDataDecorator _decoratorWithRealData;
+    private VirtualCollectionData _decoratorWithRealData;
 
     private IVirtualCollectionEndPointChangeDetectionStrategy _strategyStrictMock;
     private IDataContainerMapReadOnlyView _dataContainerMapStub;
@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _dataContainerMapStub = MockRepository.GenerateStub<IDataContainerMapReadOnlyView>();
       _wrappedData = new VirtualCollectionData (_endPointID, _dataContainerMapStub, ValueAccess.Current);
       //_wrappedData.Add (_domainObject);
-      _decoratorWithRealData = new ChangeCachingVirtualCollectionDataDecorator (_wrappedData);
+      _decoratorWithRealData = _wrappedData;
 
       _strategyStrictMock = new MockRepository().StrictMock<IVirtualCollectionEndPointChangeDetectionStrategy>();
     }
@@ -152,12 +152,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void Commit_RevertsOriginalObjects_ToCurrentObjects ()
     {
-      var wrappedData = new VirtualCollectionData (_endPointID, _dataContainerMapStub, ValueAccess.Current);
-      var decorator = new ChangeCachingVirtualCollectionDataDecorator (wrappedData);
+      var decorator = new VirtualCollectionData (_endPointID, _dataContainerMapStub, ValueAccess.Current);
       ((IVirtualCollectionData) decorator).Add (_domainObject);
       Assert.That (decorator.GetOriginalData().ToArray(), Is.Empty);
 
-      decorator.Commit();
+      decorator.ResetCachedDomainObjects();
 
       Assert.That (decorator.GetOriginalData().ToArray(), Is.EqualTo (new[] { _domainObject }));
       CheckOriginalDataNotCopied (decorator);
@@ -166,12 +165,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void Commit_SetsFlagUnchanged ()
     {
-      var wrappedData = new VirtualCollectionData (_endPointID, _dataContainerMapStub, ValueAccess.Current);
-      var decorator = new ChangeCachingVirtualCollectionDataDecorator (wrappedData);
+      var decorator = new VirtualCollectionData (_endPointID, _dataContainerMapStub, ValueAccess.Current);
       ((IVirtualCollectionData) decorator).Add (_domainObject);
       _strategyStrictMock.Replay();
 
-      decorator.Commit();
+      decorator.ResetCachedDomainObjects();
 
       Assert.That (decorator.IsCacheUpToDate, Is.True);
     }
@@ -179,14 +177,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void Rollback_RevertsCurrentObjects_ToOriginalObjects ()
     {
-      var wrappedData = new VirtualCollectionData (_endPointID, _dataContainerMapStub, ValueAccess.Current);
-      var decorator = new ChangeCachingVirtualCollectionDataDecorator (wrappedData);
+      var decorator = new VirtualCollectionData (_endPointID, _dataContainerMapStub, ValueAccess.Current);
       ((IVirtualCollectionData) decorator).Add (_domainObject);
 
       Assert.That (decorator.ToArray(), Is.Not.Empty);
       Assert.That (decorator.GetOriginalData().ToArray(), Is.Empty);
 
-      decorator.Rollback();
+      decorator.ResetCachedDomainObjects();
 
       Assert.That (decorator.ToArray(), Is.Empty);
       Assert.That (decorator.GetOriginalData().ToArray(), Is.Empty);
@@ -196,12 +193,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void Rollback_SetsFlagUnchanged ()
     {
-      var wrappedData = new VirtualCollectionData (_endPointID, _dataContainerMapStub, ValueAccess.Current);
-      var decorator = new ChangeCachingVirtualCollectionDataDecorator (wrappedData);
+      var decorator = new VirtualCollectionData (_endPointID, _dataContainerMapStub, ValueAccess.Current);
       ((IVirtualCollectionData) decorator).Add (_domainObject);
       _strategyStrictMock.Replay();
 
-      decorator.Rollback();
+      decorator.ResetCachedDomainObjects();
 
       Assert.That (decorator.IsCacheUpToDate, Is.False);
     }
@@ -326,7 +322,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (_decoratorWithRealData.GetOriginalData().GetObject (domainObject.ID), Is.Null);
       Assert.That (
           //() => _decoratorWithRealData.UnregisterOriginalItem (domainObject.ID),
-          () => _decoratorWithRealData.ResetCachedHasChangedState(),
+          () => _decoratorWithRealData.ResetCachedDomainObjects(),
           Throws.InvalidOperationException
               .With.Message.Matches (@"The original collection does not contain a domain object with ID 'Order\|.*'\."));
     }
@@ -338,7 +334,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (_decoratorWithRealData.GetOriginalData().ContainsObjectID (_domainObject.ID), Is.True);
 
       //_decoratorWithRealData.UnregisterOriginalItem (_domainObject.ID);
-      _decoratorWithRealData.ResetCachedHasChangedState();
+      _decoratorWithRealData.ResetCachedDomainObjects();
 
       Assert.That (((IVirtualCollectionData) _decoratorWithRealData).ContainsObjectID (_domainObject.ID), Is.False);
       Assert.That (_decoratorWithRealData.GetOriginalData().ContainsObjectID (_domainObject.ID), Is.False);
@@ -350,7 +346,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       PrepareCheckChangeFlagRetained (_decoratorWithRealData, false);
 
       //_decoratorWithRealData.UnregisterOriginalItem (_domainObject.ID);
-      _decoratorWithRealData.ResetCachedHasChangedState();
+      _decoratorWithRealData.ResetCachedDomainObjects();
 
       CheckChangeFlagRetained (_decoratorWithRealData);
     }
@@ -374,7 +370,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (_decoratorWithRealData.GetOriginalData().ContainsObjectID (_domainObject.ID), Is.True);
 
       //_decoratorWithRealData.UnregisterOriginalItem (_domainObject.ID);
-      _decoratorWithRealData.ResetCachedHasChangedState();
+      _decoratorWithRealData.ResetCachedDomainObjects();
 
       Assert.That (((IVirtualCollectionData) _decoratorWithRealData).ContainsObjectID (_domainObject.ID), Is.False);
       Assert.That (_decoratorWithRealData.GetOriginalData().ContainsObjectID (_domainObject.ID), Is.False);
@@ -389,7 +385,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       PrepareCheckChangeFlagInvalidated (_decoratorWithRealData, true);
 
      // _decoratorWithRealData.UnregisterOriginalItem (_domainObject.ID);
-      _decoratorWithRealData.ResetCachedHasChangedState();
+      _decoratorWithRealData.ResetCachedDomainObjects();
 
       CheckChangeFlagInvalidated (_decoratorWithRealData);
     }
@@ -405,7 +401,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (_decoratorWithRealData.GetOriginalData().ContainsObjectID (_domainObject.ID), Is.True);
 
       //_decoratorWithRealData.UnregisterOriginalItem (_domainObject.ID);
-      _decoratorWithRealData.ResetCachedHasChangedState();
+      _decoratorWithRealData.ResetCachedDomainObjects();
 
       Assert.That (((IVirtualCollectionData) _decoratorWithRealData).ContainsObjectID (_domainObject.ID), Is.False);
       Assert.That (_decoratorWithRealData.GetOriginalData().ContainsObjectID (_domainObject.ID), Is.False);
@@ -421,7 +417,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       PrepareCheckChangeFlagInvalidated (_decoratorWithRealData, true);
 
       //_decoratorWithRealData.UnregisterOriginalItem (_domainObject.ID);
-      _decoratorWithRealData.ResetCachedHasChangedState();
+      _decoratorWithRealData.ResetCachedDomainObjects();
 
       CheckChangeFlagInvalidated (_decoratorWithRealData);
     }
@@ -429,9 +425,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void Serializable ()
     {
-      var wrappedData = new VirtualCollectionData (_endPointID, _dataContainerMapStub, ValueAccess.Current);
-      //wrappedData.Add (_domainObject);
-      var decorator = new ChangeCachingVirtualCollectionDataDecorator (wrappedData);
+      var decorator = new VirtualCollectionData (_endPointID, _dataContainerMapStub, ValueAccess.Current);
+      //decorator.Add (_domainObject);
 
       WarmUpCache (decorator, false);
 
@@ -444,12 +439,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (deserializedDecorator.IsCacheUpToDate, Is.True);
     }
 
-    private void WarmUpCache (ChangeCachingVirtualCollectionDataDecorator decorator, bool hasChanged)
+    private void WarmUpCache (VirtualCollectionData decorator, bool hasChanged)
     {
       Assert.That (decorator.IsCacheUpToDate, Is.True);
     }
 
-    private void CallOnDataChangedOnWrappedData (ChangeCachingVirtualCollectionDataDecorator decorator)
+    private void CallOnDataChangedOnWrappedData (VirtualCollectionData decorator)
     {
       throw new NotImplementedException();
       //var wrappedData = VirtualCollectionDataTestHelper.GetWrappedDataAndCheckType<ObservableVirtualCollectionDataDecorator> (decorator);
@@ -461,15 +456,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       //    12);
     }
 
-    private void CheckOriginalValuesCopiedBeforeModification (Action<ChangeCachingVirtualCollectionDataDecorator, DomainObject> action)
+    private void CheckOriginalValuesCopiedBeforeModification (Action<VirtualCollectionData, DomainObject> action)
     {
       var domainObject1 = DomainObjectMother.CreateFakeObject<ProductReview>();
       var domainObject2 = DomainObjectMother.CreateFakeObject<ProductReview>();
 
-      var wrappedData = new VirtualCollectionData (_endPointID, _dataContainerMapStub, ValueAccess.Current);
-      //wrappedData.Add (domainObject1);
-      //wrappedData.Add (domainObject2);
-      var decorator = new ChangeCachingVirtualCollectionDataDecorator (wrappedData);
+      var decorator = new VirtualCollectionData (_endPointID, _dataContainerMapStub, ValueAccess.Current);
+      //decorator.Add (domainObject1);
+      //decorator.Add (domainObject2);
 
       action (decorator, domainObject1);
 
@@ -486,18 +480,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       //Assert.That (actualInner, Is.SameAs (expectedInner));
     }
 
-    private void PrepareCheckChangeFlagRetained (ChangeCachingVirtualCollectionDataDecorator decorator, bool hasChanged)
+    private void PrepareCheckChangeFlagRetained (VirtualCollectionData decorator, bool hasChanged)
     {
       WarmUpCache (decorator, hasChanged);
       Assert.That (decorator.IsCacheUpToDate, Is.True);
     }
 
-    private void CheckChangeFlagRetained (ChangeCachingVirtualCollectionDataDecorator decorator)
+    private void CheckChangeFlagRetained (VirtualCollectionData decorator)
     {
       Assert.That (decorator.IsCacheUpToDate, Is.True);
     }
 
-    private void CheckOriginalDataNotCopied (ChangeCachingVirtualCollectionDataDecorator decorator)
+    private void CheckOriginalDataNotCopied (VirtualCollectionData decorator)
     {
       throw new NotImplementedException();
       //var originalData = VirtualCollectionDataTestHelper.GetWrappedDataAndCheckType<CopyOnWriteDomainObjectVirtualCollectionData> (
@@ -508,12 +502,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       //Assert.That (originalDataStore, Is.SameAs (observedWrappedData));
     }
 
-    private void PrepareCheckChangeFlagInvalidated (ChangeCachingVirtualCollectionDataDecorator decorator, bool hasChanged)
+    private void PrepareCheckChangeFlagInvalidated (VirtualCollectionData decorator, bool hasChanged)
     {
       WarmUpCache (decorator, hasChanged);
     }
 
-    private void CheckChangeFlagInvalidated (ChangeCachingVirtualCollectionDataDecorator decorator)
+    private void CheckChangeFlagInvalidated (VirtualCollectionData decorator)
     {
       Assert.That (decorator.IsCacheUpToDate, Is.False);
     }

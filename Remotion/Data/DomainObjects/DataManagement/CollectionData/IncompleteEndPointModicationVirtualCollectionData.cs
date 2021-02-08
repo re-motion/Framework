@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Utilities;
@@ -36,7 +37,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public IEnumerator<DomainObject> GetEnumerator ()
     {
-      throw new NotImplementedException();
+      return Enumerable.Empty<DomainObject>().GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator ()

@@ -145,19 +145,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public void SortCurrentData (Comparison<DomainObject> comparison)
-    {
-      var hasChangedFastBefore = _innerEndPoint.HasChangedFast;
-      try
-      {
-        _innerEndPoint.SortCurrentData (comparison);
-      }
-      finally
-      {
-        RaiseStateUpdatedIfNecessary (hasChangedFastBefore);
-      }
-    }
-
     // Note: The commands created by _innerEndPoint contain a leaked this reference pointing to _innerEndPoint that bypasses this decorator.
     // This is not a problem because we wrap the command into a decorator that raises the StateUpdated notification anyway, so it doesn't matter if 
     // the command internally bypasses this decorator.

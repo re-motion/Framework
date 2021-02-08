@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 {
@@ -25,12 +24,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   public interface ICollectionEndPoint<out TData> : IVirtualEndPoint<TData>
       where TData : ICollectionEndPointData
   {
-    bool? HasChangedFast { get; } //TODO RM-7294: Keep for new query collection endpoint
+    bool? HasChangedFast { get; }
 
-    void MarkDataComplete (DomainObject[] items); //TODO RM-7294: Keep for new query collection endpoint
+    void MarkDataComplete (DomainObject[] items);
 
-    IDataManagementCommand CreateAddCommand (DomainObject addedRelatedObject); //TODO RM-7294: Keep for new query collection endpoint
-
-    void SortCurrentData (Comparison<DomainObject> comparison); //TODO RM-7294: Keep for new query collection endpoint
+    IDataManagementCommand CreateAddCommand (DomainObject addedRelatedObject);
   }
 }

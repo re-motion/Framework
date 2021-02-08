@@ -26,11 +26,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   /// </summary>
   public class VirtualCollectionEndPointDataManager : IVirtualCollectionEndPointDataManager
   {
+    //TODO: RM-7294: merge ChangeTrackingVirtualCollectionDataDecorator into DataManager and make DataManager work for loaded and unloaded state
+
     public RelationEndPointID EndPointID { get; }
 
     public IDataContainerMapReadOnlyView DataContainerMap { get; }
 
-    private readonly ChangeCachingVirtualCollectionDataDecorator _changeCachingVirtualCollectionData;
+    private readonly VirtualCollectionData _virtualCollectionData;
 
     public VirtualCollectionEndPointDataManager (
         RelationEndPointID endPointID,
@@ -42,46 +44,31 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       EndPointID = endPointID;
       DataContainerMap = dataContainerMap;
 
-      //TODO: RM-7294: unify VirtualCollectionData and ChangeCachingVirtualCollectionDataDecorator
-      var wrappedData = new VirtualCollectionData (endPointID, dataContainerMap, ValueAccess.Current);
-      _changeCachingVirtualCollectionData = new ChangeCachingVirtualCollectionDataDecorator (wrappedData);
+      _virtualCollectionData = new VirtualCollectionData (endPointID, dataContainerMap, ValueAccess.Current);
     }
 
     public IVirtualCollectionData CollectionData
     {
-      get { return _changeCachingVirtualCollectionData; }
+      get { return _virtualCollectionData; }
     }
 
     public ReadOnlyVirtualCollectionDataDecorator GetOriginalCollectionData ()
     {
-      return _changeCachingVirtualCollectionData.GetOriginalData();
+      return _virtualCollectionData.GetOriginalData();
+    }
+
+    public void SynchronizeOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
+    {
+      ArgumentUtility.CheckNotNull ("oppositeEndPoint", oppositeEndPoint);
+
+      _virtualCollectionData.ResetCachedDomainObjects();
     }
 
     public void RegisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
       ArgumentUtility.CheckNotNull ("oppositeEndPoint", oppositeEndPoint);
 
-      _changeCachingVirtualCollectionData.ResetCachedDomainObjects();
-    }
-
-    public void RegisterCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
-    {
-      ArgumentUtility.CheckNotNull ("oppositeEndPoint", oppositeEndPoint);
-    }
-
-    public void UnregisterCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
-    {
-      ArgumentUtility.CheckNotNull ("oppositeEndPoint", oppositeEndPoint);
-    }
-
-    public void Commit ()
-    {
-      _changeCachingVirtualCollectionData.Commit();
-    }
-
-    public void Rollback ()
-    {
-      _changeCachingVirtualCollectionData.Rollback();
+      _virtualCollectionData.ResetCachedDomainObjects();
     }
 
     public void SetDataFromSubTransaction (IVirtualCollectionEndPointDataManager sourceDataManager, IRelationEndPointProvider endPointProvider)
@@ -89,7 +76,17 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ArgumentUtility.CheckNotNull ("sourceDataManager", sourceDataManager);
       ArgumentUtility.CheckNotNull ("endPointProvider", endPointProvider);
 
-      _changeCachingVirtualCollectionData.ReplaceContents (sourceDataManager.CollectionData);
+      _virtualCollectionData.ResetCachedDomainObjects();
+    }
+
+    public void Commit ()
+    {
+      _virtualCollectionData.ResetCachedDomainObjects();
+    }
+
+    public void Rollback ()
+    {
+      _virtualCollectionData.ResetCachedDomainObjects();
     }
 
     #region Serialization
@@ -101,7 +98,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
       EndPointID = info.GetValueForHandle<RelationEndPointID>();
 
-      _changeCachingVirtualCollectionData = info.GetValueForHandle<ChangeCachingVirtualCollectionDataDecorator>();
+      _virtualCollectionData = info.GetValueForHandle<VirtualCollectionData>();
     }
 
     // ReSharper restore UnusedMember.Local
@@ -111,7 +108,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ArgumentUtility.CheckNotNull ("info", info);
 
       info.AddHandle (EndPointID);
-      info.AddHandle (_changeCachingVirtualCollectionData);
+      info.AddHandle (_virtualCollectionData);
     }
 
     #endregion
