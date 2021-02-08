@@ -116,7 +116,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
     {
       if (type == typeof (ObjectList<>))
         return ReflectionUtility.IsObjectList (propertyInfo.PropertyType);
-      if (type == typeof (IObjectList<>)) // TODO: RM-7294 Test
+      if (type == typeof (IObjectList<>))
         return ReflectionUtility.IsIObjectList (propertyInfo.PropertyType);
       return type.IsAssignableFrom (propertyInfo.PropertyType);
     }
