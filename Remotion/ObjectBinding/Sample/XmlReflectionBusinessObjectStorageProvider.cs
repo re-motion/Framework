@@ -17,7 +17,7 @@
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
-using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Xml.Serialization;
 using Remotion.Mixins;
@@ -43,25 +43,20 @@ namespace Remotion.ObjectBinding.Sample
       s_current.Value = provider;
     }
 
-    private readonly string _rootPath;
+    private readonly IReflectionBusinessObjectStorageProvider _reflectionBusinessObjectStorageProvider;
     private Hashtable _identityMap = new Hashtable();
     private readonly ConcurrentDictionary<Type, XmlSerializer> _attributeOverridesCache = new ConcurrentDictionary<Type, XmlSerializer>();
 
-    public XmlReflectionBusinessObjectStorageProvider (string rootPath)
+    public XmlReflectionBusinessObjectStorageProvider (IReflectionBusinessObjectStorageProvider reflectionBusinessObjectStorageProvider)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("rootPath", rootPath);
+      ArgumentUtility.CheckNotNull ("reflectionBusinessObjectStorageProvider", reflectionBusinessObjectStorageProvider);
 
-      _rootPath = rootPath;
+      _reflectionBusinessObjectStorageProvider = reflectionBusinessObjectStorageProvider;
     }
 
     public void Reset ()
     {
       _identityMap = new Hashtable();
-    }
-
-    public string RootPath
-    {
-      get { return _rootPath; }
     }
 
     public BindableXmlObject GetObject (Type type, Guid id)
@@ -71,54 +66,39 @@ namespace Remotion.ObjectBinding.Sample
       if (id == Guid.Empty)
         return null;
 
-      BindableXmlObject obj = GetFromIdentityMap (id);
-      if (obj != null)
-        return obj;
-
-
-      string typeDir = Path.Combine (_rootPath, type.FullName);
-      string fileName = Path.Combine (typeDir, id.ToString());
-      if (!File.Exists (fileName))
-        return null;
-
-      Type concreteType = GetConcreteType (type);
-      XmlSerializer serializer = GetXmlSerializer (concreteType);
-      using (FileStream stream = new FileStream (fileName, FileMode.Open, FileAccess.Read))
+      lock (_reflectionBusinessObjectStorageProvider)
       {
-        obj = (BindableXmlObject) serializer.Deserialize (stream);
+        BindableXmlObject obj = GetFromIdentityMap (id);
+        if (obj != null)
+          return obj;
+
+        using (var stream = _reflectionBusinessObjectStorageProvider.GetReadObjectStream (type, id))
+        {
+          if (stream == null)
+            return null;
+
+          Type concreteType = GetConcreteType (type);
+          XmlSerializer serializer = GetXmlSerializer (concreteType);
+
+          obj = (BindableXmlObject) serializer.Deserialize (stream);
+        }
+
+        obj._id = id;
+        AddToIdentityMap (obj);
+        return obj;
       }
-      obj._id = id;
-      AddToIdentityMap (obj);
-      return obj;
     }
 
     public BindableXmlObject[] GetObjects (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
-      ArrayList objects = new ArrayList();
-
-      string typeDir = Path.Combine (_rootPath, type.FullName);
-      string[] filenames = Directory.GetFiles (typeDir);
-
-      foreach (string filename in filenames)
+      lock (_reflectionBusinessObjectStorageProvider)
       {
-        Guid id;
-        try
-        {
-          id = new Guid (new FileInfo (filename).Name);
-        }
-        catch (FormatException)
-        {
-          continue;
-        }
-
-        BindableXmlObject obj = GetObject (type, id);
-        if (obj != null)
-          objects.Add (obj);
+        return _reflectionBusinessObjectStorageProvider.GetObjectIDsForType (type)
+            .Select (objectId => GetObject (type, objectId))
+            .ToArray();
       }
-
-      return (BindableXmlObject[]) objects.ToArray (typeof (BindableXmlObject));
     }
 
     public void SaveObject (BindableXmlObject obj)
@@ -127,17 +107,14 @@ namespace Remotion.ObjectBinding.Sample
 
 
       Type targetType = GetTargetType (obj);
-      string typeDir = Path.Combine (_rootPath, targetType.FullName);
-      if (!Directory.Exists (typeDir))
-        Directory.CreateDirectory (typeDir);
-
-      string fileName = Path.Combine (typeDir, obj.ID.ToString());
-
-      Type concreteType = obj.GetType();
-      XmlSerializer serializer = GetXmlSerializer (concreteType);
-      using (FileStream stream = new FileStream (fileName, FileMode.Create, FileAccess.Write))
+      lock (_reflectionBusinessObjectStorageProvider)
       {
-        serializer.Serialize (stream, obj);
+        using (var stream = _reflectionBusinessObjectStorageProvider.GetWriteObjectStream (targetType, obj.ID))
+        {
+          Type concreteType = obj.GetType();
+          XmlSerializer serializer = GetXmlSerializer (concreteType);
+          serializer.Serialize (stream, obj);
+        }
       }
     }
 
@@ -158,10 +135,13 @@ namespace Remotion.ObjectBinding.Sample
 
     protected BindableXmlObject CreateObject (Type type, Guid id)
     {
-      BindableXmlObject obj = (BindableXmlObject) ObjectFactory.Create (true, type, ParamList.Empty);
-      obj._id = id;
-      AddToIdentityMap (obj);
-      return obj;
+      lock (_reflectionBusinessObjectStorageProvider)
+      {
+        BindableXmlObject obj = (BindableXmlObject) ObjectFactory.Create (true, type, ParamList.Empty);
+        obj._id = id;
+        AddToIdentityMap (obj);
+        return obj;
+      }
     }
 
     private void AddToIdentityMap (BindableXmlObject obj)

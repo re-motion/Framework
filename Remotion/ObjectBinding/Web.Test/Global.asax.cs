@@ -20,6 +20,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Web;
+using System.Web.Configuration;
 using Microsoft.Practices.ServiceLocation;
 using Remotion.Development.Web.ResourceHosting;
 using Remotion.Logging;
@@ -38,11 +39,14 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Val
 using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Validation;
 using Remotion.ServiceLocation;
 using Remotion.Web.Configuration;
+using Remotion.Web.Infrastructure;
 
 namespace OBWTest
 {
   public class Global : HttpApplication
   {
+    private const string c_writeReflectionBusinessObjectToDiskAppSettingName = "WriteBusinessObjectsToDisk";
+
     private WaiConformanceLevel _waiConformanceLevelBackup;
     private static ResourceVirtualPathProvider _resourceVirtualPathProvider;
 
@@ -73,7 +77,21 @@ namespace OBWTest
 
       ServiceLocator.SetLocatorProvider (() => defaultServiceLocator);
 
-      XmlReflectionBusinessObjectStorageProvider provider = new XmlReflectionBusinessObjectStorageProvider (objectPath);
+      IReflectionBusinessObjectStorageProvider reflectionBusinessObjectStorageProvider;
+      var writeReflectionBusinessObjectToDiskSetting = WebConfigurationManager.AppSettings[c_writeReflectionBusinessObjectToDiskAppSettingName];
+      if (StringComparer.OrdinalIgnoreCase.Equals (writeReflectionBusinessObjectToDiskSetting, true.ToString()))
+      {
+        reflectionBusinessObjectStorageProvider = new FileSystemReflectionBusinessObjectStorageProvider (objectPath);
+      }
+      else
+      {
+        var httpContextProvider = SafeServiceLocator.Current.GetInstance<IHttpContextProvider>();
+        reflectionBusinessObjectStorageProvider = new SessionStateReflectionBusinessObjectStorageProvider (
+            httpContextProvider,
+            new InMemoryWithFileSystemReadFallbackReflectionBusinessObjectStorageProviderFactory (objectPath));
+      }
+
+      XmlReflectionBusinessObjectStorageProvider provider = new XmlReflectionBusinessObjectStorageProvider (reflectionBusinessObjectStorageProvider);
       XmlReflectionBusinessObjectStorageProvider.SetCurrent (provider);
       BusinessObjectProvider.GetProvider<BindableObjectWithIdentityProviderAttribute>().AddService (typeof (IGetObjectService), provider);
       BusinessObjectProvider.GetProvider<BindableObjectWithIdentityProviderAttribute>()

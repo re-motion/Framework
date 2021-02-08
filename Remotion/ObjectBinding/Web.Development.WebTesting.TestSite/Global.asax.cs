@@ -22,6 +22,7 @@ using Remotion.Development.Web.ResourceHosting;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ServiceLocation;
+using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
@@ -50,7 +51,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
 
     private static void SetObjectStorageProvider (string objectPath)
     {
-      var provider = new XmlReflectionBusinessObjectStorageProvider (objectPath);
+      var httpContextProvider = SafeServiceLocator.Current.GetInstance<IHttpContextProvider>();
+      var reflectionBusinessObjectStorageProvider = new SessionStateReflectionBusinessObjectStorageProvider (
+          httpContextProvider,
+          new InMemoryWithFileSystemReadFallbackReflectionBusinessObjectStorageProviderFactory (objectPath));
+
+      var provider = new XmlReflectionBusinessObjectStorageProvider (reflectionBusinessObjectStorageProvider);
       XmlReflectionBusinessObjectStorageProvider.SetCurrent (provider);
       BusinessObjectProvider.GetProvider<BindableObjectWithIdentityProviderAttribute>().AddService (typeof (IGetObjectService), provider);
     }
