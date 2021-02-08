@@ -160,18 +160,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       //return true;
     }
 
-    bool IVirtualCollectionData.Remove (ObjectID objectID)
-    {
-      //TODO: RM-7294: API is only implemented because of the interface. Can probably be dropped since there is no usage
-      throw new NotSupportedException();
-    }
-
-    void IVirtualCollectionData.Sort (Comparison<DomainObject> comparison)
-    {
-      //TODO: RM-7294: API is only implemented because of the interface. Can probably be dropped since there is no usage
-      throw new NotSupportedException();
-    }
-
     [NotNull]
     private IReadOnlyDictionary<ObjectID, DomainObject> GetCachedDomainObjects ()
     {

@@ -102,12 +102,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     //  ResetCachedHasChangedState();
     //}
 
-    public void SortOriginalAndCurrent (Comparison<DomainObject> comparison)
-    {
-      //TODO: RM-7294: API is only implemented because of the interface. Can probably be dropped since there is no usage
-      throw new NotSupportedException();
-    }
-
     public void Commit ()
     {
       // TODO: RM-7294
@@ -199,20 +193,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       _virtualCollectionData.ResetCachedDomainObjects();
       //return _virtualCollectionData.Remove (domainObject);
       return true;
-    }
-
-    bool IVirtualCollectionData.Remove (ObjectID objectID)
-    {
-      //return _virtualCollectionData.Remove (objectID);
-      //TODO: RM-7294: API is only implemented because of the interface. Can probably be dropped since there is no usage
-      throw new NotSupportedException();
-    }
-
-    public void Sort (Comparison<DomainObject> comparison)
-    {
-      //_virtualCollectionData.Sort (comparison);
-      //TODO: RM-7294: API is only implemented because of the interface. Can probably be dropped since there is no usage
-      throw new NotSupportedException();
     }
 
     #region Serialization

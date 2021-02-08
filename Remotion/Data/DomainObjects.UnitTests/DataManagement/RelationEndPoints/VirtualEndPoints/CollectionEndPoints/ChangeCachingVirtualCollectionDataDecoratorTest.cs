@@ -253,40 +253,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    [Obsolete]
-    public void Remove_ID_InvalidatesCache_IfTrue ()
-    {
-      WarmUpCache (_decoratorWithRealData, false);
-      Assert.That (_decoratorWithRealData.IsCacheUpToDate, Is.True);
-
-      ((IVirtualCollectionData) _decoratorWithRealData).Remove (_domainObject.ID);
-
-      Assert.That (_wrappedData.ToArray(), Is.Empty);
-      Assert.That (_decoratorWithRealData.IsCacheUpToDate, Is.False);
-    }
-
-    [Test]
-    [Obsolete]
-    public void Remove_ID_LeavesCache_IfFalse ()
-    {
-      //_wrappedData.Clear();
-
-      WarmUpCache (_decoratorWithRealData, false);
-      Assert.That (_decoratorWithRealData.IsCacheUpToDate, Is.True);
-
-      ((IVirtualCollectionData) _decoratorWithRealData).Remove (DomainObjectIDs.Order1);
-
-      Assert.That (_decoratorWithRealData.IsCacheUpToDate, Is.True);
-    }
-
-    [Test]
-    [Obsolete]
-    public void Remove_ID_OriginalValuesCopied ()
-    {
-      CheckOriginalValuesCopiedBeforeModification ((d, obj) => ((IVirtualCollectionData) d).Remove (obj.ID));
-    }
-
-    [Test]
     public void Commit_RevertsOriginalObjects_ToCurrentObjects ()
     {
       var wrappedData = new VirtualCollectionData (_endPointID, _dataContainerMapStub, ValueAccess.Current);
@@ -539,7 +505,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void UnregisterOriginalItem_CurrentCollectionDoesNotContainItem_ItemRemovedFromOriginalCollection ()
     {
 #pragma warning disable 618
-      ((IVirtualCollectionData) _decoratorWithRealData).Remove (_domainObject.ID);
+      ((IVirtualCollectionData) _decoratorWithRealData).Remove (_domainObject);
 #pragma warning restore 618
 
       Assert.That (((IVirtualCollectionData) _decoratorWithRealData).ContainsObjectID (_domainObject.ID), Is.False);
@@ -556,7 +522,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void UnregisterOriginalItem_CurrentCollectionAlreadyContainsItem_ChangeStateInvalidated ()
     {
 #pragma warning disable 618
-      ((IVirtualCollectionData) _decoratorWithRealData).Remove (_domainObject.ID);
+      ((IVirtualCollectionData) _decoratorWithRealData).Remove (_domainObject);
 #pragma warning restore 618
 
       PrepareCheckChangeFlagInvalidated (_decoratorWithRealData, true);
@@ -565,130 +531,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _decoratorWithRealData.ResetCachedHasChangedState();
 
       CheckChangeFlagInvalidated (_decoratorWithRealData);
-    }
-
-    [Test]
-    public void Sort_InvalidatesCache ()
-    {
-      var secondDomainObject = DomainObjectMother.CreateFakeObject<ProductReview>();
-      //_wrappedData.Add (secondDomainObject);
-
-      WarmUpCache (_decoratorWithRealData, false);
-      Assert.That (_decoratorWithRealData, Is.EqualTo (new[] { _domainObject, secondDomainObject }));
-      Assert.That (_decoratorWithRealData.IsCacheUpToDate, Is.True);
-
-      var weights = new Dictionary<DomainObject, int> { { _domainObject, 2 }, { secondDomainObject, 1 } };
-      Comparison<DomainObject> comparison = (one, two) => weights[one].CompareTo (weights[two]);
-      _decoratorWithRealData.Sort (comparison);
-
-      Assert.That (_decoratorWithRealData, Is.EqualTo (new[] { secondDomainObject, _domainObject }));
-      Assert.That (_decoratorWithRealData.IsCacheUpToDate, Is.False);
-    }
-
-    [Test]
-    public void Sort_OriginalValuesCopied ()
-    {
-      CheckOriginalValuesCopiedBeforeModification ((d, obj) => d.Sort ((one, two) => 0));
-    }
-
-    [Test]
-    public void SortOriginalAndCurrent_Unchanged ()
-    {
-      var domainObject1 = DomainObjectMother.CreateFakeObject<ProductReview>();
-      var domainObject2 = DomainObjectMother.CreateFakeObject<OrderItem>();
-      var domainObject3 = DomainObjectMother.CreateFakeObject<Customer>();
-
-      var virtualCollectionData = new VirtualCollectionData (_endPointID, _dataContainerMapStub, ValueAccess.Current);
-      //virtualCollectionData.Add (domainObject1);
-      //virtualCollectionData.Add (domainObject2);
-      //virtualCollectionData.Add (domainObject3);
-      var decorator = new ChangeCachingVirtualCollectionDataDecorator (virtualCollectionData);
-
-      decorator.SortOriginalAndCurrent (CompareTypeNames);
-
-      Assert.That (decorator.ToArray(), Is.EqualTo (new DomainObject[] { domainObject3, domainObject1, domainObject2 }));
-      Assert.That (decorator.GetOriginalData().ToArray(), Is.EqualTo (new DomainObject[] { domainObject3, domainObject1, domainObject2 }));
-    }
-
-    [Test]
-    public void SortOriginalAndCurrent_Unchanged_OriginalDataIsNotCopied ()
-    {
-      var domainObject1 = DomainObjectMother.CreateFakeObject<ProductReview>();
-      var domainObject2 = DomainObjectMother.CreateFakeObject<OrderItem>();
-      var domainObject3 = DomainObjectMother.CreateFakeObject<Customer>();
-
-      var virtualCollectionData = new VirtualCollectionData (_endPointID, _dataContainerMapStub, ValueAccess.Current);
-      //virtualCollectionData.Add (domainObject1);
-      //virtualCollectionData.Add (domainObject2);
-      //virtualCollectionData.Add (domainObject3);
-      var decorator = new ChangeCachingVirtualCollectionDataDecorator (virtualCollectionData);
-
-      decorator.SortOriginalAndCurrent (CompareTypeNames);
-
-      CheckOriginalDataNotCopied (decorator);
-    }
-
-    [Test]
-    public void SortOriginalAndCurrent_Unchanged_ChangeFlagRetained ()
-    {
-      var domainObject1 = DomainObjectMother.CreateFakeObject<ProductReview>();
-      var domainObject2 = DomainObjectMother.CreateFakeObject<OrderItem>();
-      var domainObject3 = DomainObjectMother.CreateFakeObject<Customer>();
-
-      var virtualCollectionData = new VirtualCollectionData (_endPointID, _dataContainerMapStub, ValueAccess.Current);
-      //virtualCollectionData.Add (domainObject1);
-      //virtualCollectionData.Add (domainObject2);
-      //virtualCollectionData.Add (domainObject3);
-      var decorator = new ChangeCachingVirtualCollectionDataDecorator (virtualCollectionData);
-
-      PrepareCheckChangeFlagRetained (decorator, false);
-
-      decorator.SortOriginalAndCurrent (CompareTypeNames);
-
-      CheckChangeFlagRetained (decorator);
-    }
-
-    [Test]
-    public void SortOriginalAndCurrent_OriginalDataCopied ()
-    {
-      var domainObject1 = DomainObjectMother.CreateFakeObject<ProductReview>();
-      var domainObject2 = DomainObjectMother.CreateFakeObject<OrderItem>();
-      var domainObject3 = DomainObjectMother.CreateFakeObject<Customer>();
-
-      var virtualCollectionData = new VirtualCollectionData (_endPointID, _dataContainerMapStub, ValueAccess.Current);
-      //virtualCollectionData.Add (domainObject1);
-      //virtualCollectionData.Add (domainObject2);
-      //virtualCollectionData.Add (domainObject3);
-      var decorator = new ChangeCachingVirtualCollectionDataDecorator (virtualCollectionData);
-
-      ((IVirtualCollectionData) _decoratorWithRealData).Remove (domainObject2);
-
-      decorator.SortOriginalAndCurrent (CompareTypeNames);
-
-      Assert.That (decorator.ToArray(), Is.EqualTo (new DomainObject[] { domainObject3, domainObject1 }));
-      Assert.That (decorator.GetOriginalData().ToArray(), Is.EqualTo (new DomainObject[] { domainObject3, domainObject1, domainObject2 }));
-    }
-
-    [Test]
-    public void SortOriginalAndCurrent_OriginalDataCopied_ChangeFlagInvalidated ()
-    {
-      var domainObject1 = DomainObjectMother.CreateFakeObject<ProductReview>();
-      var domainObject2 = DomainObjectMother.CreateFakeObject<OrderItem>();
-      var domainObject3 = DomainObjectMother.CreateFakeObject<Customer>();
-
-      var virtualCollectionData = new VirtualCollectionData (_endPointID, _dataContainerMapStub, ValueAccess.Current);
-      //virtualCollectionData.Add (domainObject1);
-      //virtualCollectionData.Add (domainObject2);
-      //virtualCollectionData.Add (domainObject3);
-      var decorator = new ChangeCachingVirtualCollectionDataDecorator (virtualCollectionData);
-
-      ((IVirtualCollectionData) _decoratorWithRealData).Remove (domainObject2);
-
-      PrepareCheckChangeFlagInvalidated (decorator, true);
-
-      decorator.SortOriginalAndCurrent (CompareTypeNames);
-
-      CheckChangeFlagInvalidated (decorator);
     }
 
     [Test]

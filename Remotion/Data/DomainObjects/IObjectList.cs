@@ -26,9 +26,9 @@ namespace Remotion.Data.DomainObjects
       : IReadOnlyList<TDomainObject>, IList // TODO: RM-7294 add support for IReadOnlyList<T> to BocList. Fallback: implement IList {IsReadOnly=true}
       where TDomainObject : IDomainObject
   {
-    new int Count { get; } // TODO: RM07294: Tie-breaker for IReadOnlyList<T> and IList
+    new int Count { get; } // TODO: RM-7294: Tie-breaker for IReadOnlyList<T> and IList
 
-    new TDomainObject this [int index] { get; } // TODO: RM07294: Tie-breaker for IReadOnlyList<T> and IList
+    new TDomainObject this [int index] { get; } // TODO: RM-7294: Tie-breaker for IReadOnlyList<T> and IList
 
     /// <summary>
     /// Gets the <see cref="IVirtualCollectionEndPoint"/> for the <see cref="IObjectList{TDomainObject}"/>.

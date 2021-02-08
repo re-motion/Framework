@@ -113,17 +113,5 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
       return result;
     }
-
-    public bool Remove (ObjectID objectID)
-    {
-      //TODO: RM-7294: API is only implemented because of the interface. Can probably be dropped since there is no usage
-      throw new NotSupportedException();
-    }
-
-    public void Sort (Comparison<DomainObject> comparison)
-    {
-      //TODO: RM-7294: API is only implemented because of the interface. Can probably be dropped since there is no usage
-      throw new NotSupportedException();
-    }
   }
 }

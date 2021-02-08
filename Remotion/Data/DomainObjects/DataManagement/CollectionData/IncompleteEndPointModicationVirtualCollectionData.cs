@@ -78,15 +78,5 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     {
       return true;
     }
-
-    public bool Remove (ObjectID objectID)
-    {
-      return true;
-    }
-
-    public void Sort (Comparison<DomainObject> comparison)
-    {
-      throw new NotImplementedException();
-    }
   }
 }

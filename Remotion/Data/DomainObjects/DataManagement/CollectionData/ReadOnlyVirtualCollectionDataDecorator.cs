@@ -48,9 +48,5 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     void IVirtualCollectionData.Add (DomainObject domainObject) => throw new NotSupportedException ("Cannot add an item to a read-only collection.");
 
     bool IVirtualCollectionData.Remove (DomainObject domainObject) => throw new NotSupportedException ("Cannot remove an item from a read-only collection.");
-
-    bool IVirtualCollectionData.Remove (ObjectID objectID) => throw new NotSupportedException ("Cannot remove an item from a read-only collection.");
-
-    void IVirtualCollectionData.Sort (Comparison<DomainObject> comparison) => throw new NotSupportedException ("Cannot sort a read-only collection."); 
   }
 }

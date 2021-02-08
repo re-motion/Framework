@@ -189,32 +189,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       return containsObjectID;
     }
 
-    public bool Remove (ObjectID objectID)
-    {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
-
-      DomainObjectCheckUtility.EnsureNotDeleted (GetAssociatedEndPoint().GetDomainObjectReference(), GetAssociatedEndPoint().ClientTransaction);
-
-      var domainObject = GetObject (objectID);
-      if (domainObject != null)
-      {
-        // we can rely on the fact that this object is not deleted, otherwise we wouldn't have got it
-        Assertion.IsFalse (domainObject.TransactionContext[GetAssociatedEndPoint().ClientTransaction].State.IsDeleted);
-
-        CreateAndExecuteRemoveCommand (domainObject);
-      }
-
-      GetAssociatedEndPoint().Touch();
-      return domainObject != null;
-    }
-
-    public void Sort (Comparison<DomainObject> comparison)
-    {
-      ArgumentUtility.CheckNotNull ("comparison", comparison);
-
-      GetAssociatedEndPoint().SortCurrentData (comparison);
-    }
-
     private void CreateAndExecuteRemoveCommand (DomainObject domainObject)
     {
       var command = GetAssociatedEndPoint().CreateRemoveCommand (domainObject);
