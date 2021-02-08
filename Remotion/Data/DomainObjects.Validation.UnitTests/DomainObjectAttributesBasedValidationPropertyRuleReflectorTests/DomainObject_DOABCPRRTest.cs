@@ -43,8 +43,10 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     private DomainObjectAttributesBasedValidationPropertyRuleReflector _propertyWithMandatoryStringPropertyAttributeReflector;
     private DomainObjectAttributesBasedValidationPropertyRuleReflector _propertyWithMandatoryAttributeReflector;
     private DomainObjectAttributesBasedValidationPropertyRuleReflector _binaryPropertyReflector;
-    private PropertyInfo _collectionProperty;
-    private DomainObjectAttributesBasedValidationPropertyRuleReflector _collectionPropertyReflector;
+    private PropertyInfo _domainObjectCollectionProperty;
+    private DomainObjectAttributesBasedValidationPropertyRuleReflector _domainObjectCollectionPropertyReflector;
+    private PropertyInfo _virtualCollectionProperty;
+    private DomainObjectAttributesBasedValidationPropertyRuleReflector _virtualCollectionPropertyReflector;
     private IValidationMessageFactory _validationMessageFactoryStub;
     private DomainModelConstraintProvider _domainModelConstraintProvider;
 
@@ -58,7 +60,8 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
       _propertyWithMandatoryStringPropertyAttribute =
           typeof (TypeWithDomainObjectAttributes).GetProperty ("PropertyWithMandatoryStringPropertyAttribute");
       _binaryProperty = typeof (TypeWithDomainObjectAttributes).GetProperty ("BinaryProperty");
-      _collectionProperty = typeof (TypeWithDomainObjectAttributes).GetProperty ("CollectionProperty");
+      _domainObjectCollectionProperty = typeof (TypeWithDomainObjectAttributes).GetProperty ("DomainObjectCollectionProperty");
+      _virtualCollectionProperty = typeof (TypeWithDomainObjectAttributes).GetProperty ("VirtualCollectionProperty");
 
       _domainModelConstraintProvider = new DomainModelConstraintProvider();
       _validationMessageFactoryStub = MockRepository.GenerateStub<IValidationMessageFactory>();
@@ -90,9 +93,14 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
           _binaryProperty,
           _domainModelConstraintProvider,
           _validationMessageFactoryStub);
-      _collectionPropertyReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (
-          _collectionProperty,
-          _collectionProperty,
+      _domainObjectCollectionPropertyReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (
+          _domainObjectCollectionProperty,
+          _domainObjectCollectionProperty,
+          _domainModelConstraintProvider,
+          _validationMessageFactoryStub); 
+      _virtualCollectionPropertyReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (
+          _virtualCollectionProperty,
+          _virtualCollectionProperty,
           _domainModelConstraintProvider,
           _validationMessageFactoryStub); 
     }
@@ -221,14 +229,14 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     }
 
     [Test]
-    public void GetRemovablePropertyValidators_CollectionProperty ()
+    public void GetNonRemovablePropertyValidators_DomainObjectCollectionProperty ()
     {
       var notNullValidationMessageStub = MockRepository.GenerateStub<ValidationMessage>();
       _validationMessageFactoryStub
           .Stub (
               _ => _.CreateValidationMessageForPropertyValidator (
                   Arg<NotNullValidator>.Is.TypeOf,
-                  Arg.Is (PropertyInfoAdapter.Create (_collectionProperty))))
+                  Arg.Is (PropertyInfoAdapter.Create (_domainObjectCollectionProperty))))
           .Return (notNullValidationMessageStub);
 
       var notEmptyValidationMessageStub = MockRepository.GenerateStub<ValidationMessage>();
@@ -236,10 +244,10 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
           .Stub (
               _ => _.CreateValidationMessageForPropertyValidator (
                   Arg<NotEmptyValidator>.Is.TypeOf,
-                  Arg.Is (PropertyInfoAdapter.Create (_collectionProperty))))
+                  Arg.Is (PropertyInfoAdapter.Create (_domainObjectCollectionProperty))))
           .Return (notEmptyValidationMessageStub);
 
-      var result = _collectionPropertyReflector.GetNonRemovablePropertyValidators ().ToArray ();
+      var result = _domainObjectCollectionPropertyReflector.GetNonRemovablePropertyValidators ().ToArray ();
 
       notNullValidationMessageStub.Stub (_ => _.ToString()).Return ("Stub Message for NotNull");
       Assert.That (result.Count (), Is.EqualTo (2));
@@ -249,13 +257,60 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
       notEmptyValidationMessageStub.Stub (_ => _.ToString()).Return ("Stub Message for NotEmpty");
       Assert.That (result[1], Is.TypeOf (typeof (NotEmptyValidator)));
       Assert.That (((NotEmptyValidator) result[1]).ValidationMessage.ToString(), Is.EqualTo ("Stub Message for NotEmpty"));
+    }
 
-      Assert.That (_collectionPropertyReflector.GetRemovablePropertyValidators().ToArray(), Is.Empty);
+    [Test]
+    public void GetRemovablePropertyValidators_DomainObjectCollectionProperty ()
+    {
+      Assert.That (_domainObjectCollectionPropertyReflector.GetRemovablePropertyValidators().ToArray(), Is.Empty);
+    }
+
+    [Test]
+    public void GetNonRemovablePropertyValidators_VirtualCollectionProperty ()
+    {
+      var notNullValidationMessageStub = MockRepository.GenerateStub<ValidationMessage>();
+      _validationMessageFactoryStub
+          .Stub (
+              _ => _.CreateValidationMessageForPropertyValidator (
+                  Arg<NotNullValidator>.Is.TypeOf,
+                  Arg.Is (PropertyInfoAdapter.Create (_virtualCollectionProperty))))
+          .Return (notNullValidationMessageStub);
+
+      var notEmptyValidationMessageStub = MockRepository.GenerateStub<ValidationMessage>();
+      _validationMessageFactoryStub
+          .Stub (
+              _ => _.CreateValidationMessageForPropertyValidator (
+                  Arg<NotEmptyValidator>.Is.TypeOf,
+                  Arg.Is (PropertyInfoAdapter.Create (_virtualCollectionProperty))))
+          .Return (notEmptyValidationMessageStub);
+
+      var result = _virtualCollectionPropertyReflector.GetNonRemovablePropertyValidators ().ToArray ();
+
+      notNullValidationMessageStub.Stub (_ => _.ToString()).Return ("Stub Message for NotNull");
+      Assert.That (result.Count (), Is.EqualTo (2));
+      Assert.That (result[0], Is.TypeOf (typeof (NotNullValidator)));
+      Assert.That (((NotNullValidator) result[0]).ValidationMessage.ToString(), Is.EqualTo ("Stub Message for NotNull"));
+
+      notEmptyValidationMessageStub.Stub (_ => _.ToString()).Return ("Stub Message for NotEmpty");
+      Assert.That (result[1], Is.TypeOf (typeof (NotEmptyValidator)));
+      Assert.That (((NotEmptyValidator) result[1]).ValidationMessage.ToString(), Is.EqualTo ("Stub Message for NotEmpty"));
+    }
+
+    [Test]
+    public void GetRemovablePropertyValidators_VirtualCollectionProperty ()
+    {
+      Assert.That (_virtualCollectionPropertyReflector.GetRemovablePropertyValidators().ToArray(), Is.Empty);
     }
 
     [Test]
     [Ignore ("TODO RM-5906")]
-    public void GetRemovablePropertyValidators_CollectionPropertyAndValidationMessageFactoryReturnsNull_ThrowsInvalidOperationException ()
+    public void GetRemovablePropertyValidators_DomainObjectCollectionPropertyAndValidationMessageFactoryReturnsNull_ThrowsInvalidOperationException ()
+    {
+    }
+
+    [Test]
+    [Ignore ("TODO RM-5906")]
+    public void GetRemovablePropertyValidators_VirtualCollectionPropertyAndValidationMessageFactoryReturnsNull_ThrowsInvalidOperationException ()
     {
     }
 
