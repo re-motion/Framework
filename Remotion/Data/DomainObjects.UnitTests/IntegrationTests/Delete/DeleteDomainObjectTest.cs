@@ -170,9 +170,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     }
 
     [Test]
-    [Ignore ("TODO: RM-7294")]
     public void CascadedDeleteForNewObjectsWithVirtualCollection ()
     {
+      Product newProduct = Product.NewObject();
+      ProductReview newProductReview = ProductReview.NewObject();
+      newProductReview.Product = newProduct;
+      Assert.That (newProduct.Reviews, Has.Member (newProductReview));
+
+      newProduct.Deleted += delegate
+      {
+        newProductReview.Delete();
+      };
+
+      newProduct.Delete();
+
+      //Expectation: no exception
+
+      Assert.That (newProduct.State.IsInvalid, Is.True);
+      Assert.That (newProductReview.State.IsInvalid, Is.True);
     }
   }
 }
