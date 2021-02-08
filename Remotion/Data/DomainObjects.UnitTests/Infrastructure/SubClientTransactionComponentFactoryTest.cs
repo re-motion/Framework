@@ -209,7 +209,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 
       Assert.That (endPointFactory.VirtualCollectionEndPointDataManagerFactory, Is.TypeOf (typeof (VirtualCollectionEndPointDataManagerFactory)));
       var virtualCollectionEndPointDataManagerFactory = (VirtualCollectionEndPointDataManagerFactory) endPointFactory.VirtualCollectionEndPointDataManagerFactory;
-      Assert.That (virtualCollectionEndPointDataManagerFactory.ChangeDetectionStrategy, Is.TypeOf<SubVirtualCollectionEndPointChangeDetectionStrategy> ());
       Assert.That (virtualCollectionEndPointDataManagerFactory.DataContainerMap, Is.SameAs (dataContainerMap));
 
       Assert.That (endPointFactory.VirtualCollectionEndPointCollectionProvider, Is.TypeOf<VirtualCollectionEndPointCollectionProvider> ());

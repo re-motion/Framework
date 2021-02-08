@@ -62,7 +62,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _strategyStrictMock.Replay();
 
       Assert.That (_decoratorWithRealData.IsCacheUpToDate, Is.True);
-      Assert.That (_decoratorWithRealData.HasChanged (_strategyStrictMock), Is.False);
     }
 
     [Test]
@@ -79,115 +78,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    public void HasChanged_FastAnswer_WhenContentsNotCopied ()
-    {
-      _strategyStrictMock.Replay();
-
-      var result = _decoratorWithRealData.HasChanged (_strategyStrictMock);
-
-      _strategyStrictMock.AssertWasNotCalled (
-          mock => mock.HasDataChanged (Arg.Is (_decoratorWithRealData), Arg<IVirtualCollectionData>.Is.Anything));
-      Assert.That (result, Is.False);
-    }
-
-    [Test]
-    public void HasChanged_FastAnswer_WhenCountsDiffer ()
-    {
-      _strategyStrictMock.Replay();
-
-      ((IVirtualCollectionData) _decoratorWithRealData).Add (DomainObjectMother.CreateFakeObject<ProductReview>()); // make counts differ
-      Assert.That (_decoratorWithRealData.Count, Is.Not.EqualTo (_decoratorWithRealData.GetOriginalData().Count));
-
-      var result = _decoratorWithRealData.HasChanged (_strategyStrictMock);
-
-      _strategyStrictMock.AssertWasNotCalled (
-          mock => mock.HasDataChanged (Arg.Is (_decoratorWithRealData), Arg<IVirtualCollectionData>.Is.Anything));
-      Assert.That (result, Is.True);
-    }
-
-    [Test]
-    public void HasChanged_UsesStrategy ()
-    {
-      _strategyStrictMock.Expect (mock => mock.HasDataChanged (Arg.Is (_decoratorWithRealData), Arg<IVirtualCollectionData>.Is.Anything))
-          .Return (true)
-          .WhenCalled (mi => CheckOriginalDataMatches (_decoratorWithRealData.GetOriginalData(), (IVirtualCollectionData) mi.Arguments[1]))
-          .Repeat.Once();
-      _strategyStrictMock.Replay();
-
-      // Make strategy call necessary because both collections have the same count, but different items.
-      ((IVirtualCollectionData) _decoratorWithRealData).Remove (_domainObject);
-      ((IVirtualCollectionData) _decoratorWithRealData).Add (DomainObjectMother.CreateFakeObject<ProductReview>());
-      Assert.That (_decoratorWithRealData.Count, Is.EqualTo (_decoratorWithRealData.GetOriginalData().Count));
-
-      var result = _decoratorWithRealData.HasChanged (_strategyStrictMock);
-
-      _strategyStrictMock.VerifyAllExpectations();
-      Assert.That (result, Is.True);
-    }
-
-    [Test]
-    public void HasChanged_CachesData ()
-    {
-      _strategyStrictMock.Expect (mock => mock.HasDataChanged (Arg.Is (_decoratorWithRealData), Arg<IVirtualCollectionData>.Is.Anything))
-          .Return (true)
-          .Repeat.Once();
-      _strategyStrictMock.Replay();
-
-      // Make strategy call necessary because both collections have the same count, but different items.
-      ((IVirtualCollectionData) _decoratorWithRealData).Remove (_domainObject);
-      ((IVirtualCollectionData) _decoratorWithRealData).Add (DomainObjectMother.CreateFakeObject<ProductReview>());
-
-      Assert.That (_decoratorWithRealData.IsCacheUpToDate, Is.False);
-
-      var result1 = _decoratorWithRealData.HasChanged (_strategyStrictMock);
-      Assert.That (_decoratorWithRealData.IsCacheUpToDate, Is.True);
-
-      var result2 = _decoratorWithRealData.HasChanged (_strategyStrictMock);
-      var result3 = _decoratorWithRealData.HasChanged (_strategyStrictMock);
-
-      _strategyStrictMock.VerifyAllExpectations();
-      Assert.That (result1, Is.True);
-      Assert.That (result2, Is.True);
-      Assert.That (result3, Is.True);
-    }
-
-    [Test]
     public void OnWrappedDataChanged ()
     {
-      _decoratorWithRealData.HasChanged (_strategyStrictMock);
       Assert.That (_decoratorWithRealData.IsCacheUpToDate, Is.True);
 
       CallOnDataChangedOnWrappedData (_decoratorWithRealData);
 
       Assert.That (_decoratorWithRealData.IsCacheUpToDate, Is.False);
-    }
-
-    [Test]
-    public void OnWrappedDataChanged_InvalidatedCacheLeadsToReEvaluation ()
-    {
-      using (_strategyStrictMock.GetMockRepository().Ordered())
-      {
-        _strategyStrictMock.Expect (mock => mock.HasDataChanged (Arg.Is (_decoratorWithRealData), Arg<IVirtualCollectionData>.Is.Anything))
-            .Return (true);
-        _strategyStrictMock.Expect (mock => mock.HasDataChanged (Arg.Is (_decoratorWithRealData), Arg<IVirtualCollectionData>.Is.Anything))
-            .Return (false);
-      }
-
-      _strategyStrictMock.Replay();
-
-      // Make strategy call necessary because both collections have the same count, but different items.
-      ((IVirtualCollectionData) _decoratorWithRealData).Remove (_domainObject);
-      ((IVirtualCollectionData) _decoratorWithRealData).Add (DomainObjectMother.CreateFakeObject<ProductReview>());
-
-      var result1 = _decoratorWithRealData.HasChanged (_strategyStrictMock);
-      CallOnDataChangedOnWrappedData (_decoratorWithRealData);
-
-      var result2 = _decoratorWithRealData.HasChanged (_strategyStrictMock);
-
-      _strategyStrictMock.VerifyAllExpectations();
-
-      Assert.That (result1, Is.True);
-      Assert.That (result2, Is.False);
     }
 
     [Test]
@@ -276,9 +173,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       decorator.Commit();
 
-      Assert.That (decorator.HasChanged (_strategyStrictMock), Is.False);
-      _strategyStrictMock.AssertWasNotCalled (
-          mock => mock.HasDataChanged (Arg<IVirtualCollectionData>.Is.Anything, Arg<IVirtualCollectionData>.Is.Anything));
+      Assert.That (decorator.IsCacheUpToDate, Is.True);
     }
 
     [Test]
@@ -308,9 +203,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       decorator.Rollback();
 
-      Assert.That (decorator.HasChanged (_strategyStrictMock), Is.False);
-      _strategyStrictMock.AssertWasNotCalled (
-          mock => mock.HasDataChanged (Arg<IVirtualCollectionData>.Is.Anything, Arg<IVirtualCollectionData>.Is.Anything));
+      Assert.That (decorator.IsCacheUpToDate, Is.False);
     }
 
     [Test]
@@ -544,21 +437,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       Assert.That (decorator.Count, Is.EqualTo (1));
       Assert.That (decorator.IsCacheUpToDate, Is.True);
-      Assert.That (decorator.HasChanged (_strategyStrictMock), Is.False);
 
       var deserializedDecorator = Serializer.SerializeAndDeserialize (decorator);
 
       Assert.That (deserializedDecorator.Count, Is.EqualTo (1));
       Assert.That (deserializedDecorator.IsCacheUpToDate, Is.True);
-      Assert.That (deserializedDecorator.HasChanged (_strategyStrictMock), Is.False);
     }
 
     private void WarmUpCache (ChangeCachingVirtualCollectionDataDecorator decorator, bool hasChanged)
     {
-      _strategyStrictMock.Stub (mock => mock.HasDataChanged (Arg.Is (decorator), Arg<IVirtualCollectionData>.Is.Anything)).Return (hasChanged);
-      _strategyStrictMock.Replay();
-
-      decorator.HasChanged (_strategyStrictMock);
       Assert.That (decorator.IsCacheUpToDate, Is.True);
     }
 
@@ -603,7 +490,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       WarmUpCache (decorator, hasChanged);
       Assert.That (decorator.IsCacheUpToDate, Is.True);
-      Assert.That (decorator.HasChanged (_strategyStrictMock), Is.EqualTo (hasChanged));
     }
 
     private void CheckChangeFlagRetained (ChangeCachingVirtualCollectionDataDecorator decorator)
@@ -625,7 +511,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     private void PrepareCheckChangeFlagInvalidated (ChangeCachingVirtualCollectionDataDecorator decorator, bool hasChanged)
     {
       WarmUpCache (decorator, hasChanged);
-      Assert.That (decorator.HasChanged (_strategyStrictMock), Is.EqualTo (hasChanged));
     }
 
     private void CheckChangeFlagInvalidated (ChangeCachingVirtualCollectionDataDecorator decorator)

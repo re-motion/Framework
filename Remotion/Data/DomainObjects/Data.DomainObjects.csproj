@@ -222,8 +222,6 @@
     <Compile Include="DataManagement\DataContainerState.cs" />
     <Compile Include="DomainObjectState.cs" />
     <Compile Include="IDomainObject.cs" />
-    <Compile Include="Infrastructure\RootVirtualCollectionEndPointChangeDetectionStrategy.cs" />
-    <Compile Include="Infrastructure\SubVirtualCollectionEndPointChangeDetectionStrategy.cs" />
     <Compile Include="IObjectList.cs" />
     <Compile Include="IReadOnlyCollectionData.cs" />
     <Compile Include="Linq\FluentFetchRequest.cs" />

@@ -28,7 +28,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   {
     private readonly VirtualCollectionData _virtualCollectionData;
     private bool _isCacheUpToDate;
-    private bool _hasChanges;
 
     public ChangeCachingVirtualCollectionDataDecorator (VirtualCollectionData virtualCollectionData)
     {
@@ -36,7 +35,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
       _virtualCollectionData = virtualCollectionData;
       _isCacheUpToDate = true;
-      _hasChanges = false;
     }
 
     public bool IsCacheUpToDate
@@ -46,25 +44,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
         // TODO: RM-7294
         return _isCacheUpToDate;
       }
-    }
-
-    public bool HasChanged (IVirtualCollectionEndPointChangeDetectionStrategy changeDetectionStrategy)
-    {
-      // TODO: RM-7294 test, optimize, remove strategy parameter
-
-      if (!_isCacheUpToDate)
-      {
-        var currentData = _virtualCollectionData;
-        var originalData = GetOriginalData();
-        if (currentData.Count != originalData.Count)
-          _hasChanges = true;
-        else
-          _hasChanges = currentData.Select (obj => obj.ID).Except (originalData.Select (obj => obj.ID)).Any();
-
-        _isCacheUpToDate = true;
-      }
-
-      return _hasChanges;
     }
 
     public void ResetCachedHasChangedState ()

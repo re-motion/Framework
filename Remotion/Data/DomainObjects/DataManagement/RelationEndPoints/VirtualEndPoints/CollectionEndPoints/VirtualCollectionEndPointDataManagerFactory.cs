@@ -25,18 +25,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   /// </summary>
   public class VirtualCollectionEndPointDataManagerFactory : IVirtualCollectionEndPointDataManagerFactory
   {
-    public IVirtualCollectionEndPointChangeDetectionStrategy ChangeDetectionStrategy { get; }
-
     public IDataContainerMapReadOnlyView DataContainerMap { get; }
 
-    public VirtualCollectionEndPointDataManagerFactory (
-        IVirtualCollectionEndPointChangeDetectionStrategy changeDetectionStrategy,
-        IDataContainerMapReadOnlyView dataContainerMap)
+    public VirtualCollectionEndPointDataManagerFactory (IDataContainerMapReadOnlyView dataContainerMap)
     {
-      ArgumentUtility.CheckNotNull ("changeDetectionStrategy", changeDetectionStrategy);
       ArgumentUtility.CheckNotNull ("dataContainerMap", dataContainerMap);
 
-      ChangeDetectionStrategy = changeDetectionStrategy;
       DataContainerMap = dataContainerMap;
     }
 
@@ -45,20 +39,18 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     {
       ArgumentUtility.CheckNotNull ("endPointID", endPointID);
 
-      return new VirtualCollectionEndPointDataManager (endPointID, ChangeDetectionStrategy, DataContainerMap);
+      return new VirtualCollectionEndPointDataManager (endPointID, DataContainerMap);
     }
 
     #region Serialization
 
     private VirtualCollectionEndPointDataManagerFactory (FlattenedDeserializationInfo info)
     {
-      ChangeDetectionStrategy = info.GetValueForHandle<IVirtualCollectionEndPointChangeDetectionStrategy>();
       DataContainerMap = info.GetValueForHandle<IDataContainerMapReadOnlyView>();
     }
 
     void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
     {
-      info.AddHandle (ChangeDetectionStrategy);
       info.AddHandle (DataContainerMap);
     }
 

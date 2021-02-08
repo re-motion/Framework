@@ -137,8 +137,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
       var domainObjectCollectionEndPointChangeDetectionStrategy = new SubDomainObjectCollectionEndPointChangeDetectionStrategy ();
       var domainObjectCollectionEndPointDataManagerFactory = new DomainObjectCollectionEndPointDataManagerFactory (domainObjectCollectionEndPointChangeDetectionStrategy);
-      var virtualCollectionEndPointChangeDetectionStrategy = new SubVirtualCollectionEndPointChangeDetectionStrategy();
-      var virtualCollectionEndPointDataManagerFactory = new VirtualCollectionEndPointDataManagerFactory (virtualCollectionEndPointChangeDetectionStrategy, dataContainerMap);
+      var virtualCollectionEndPointDataManagerFactory = new VirtualCollectionEndPointDataManagerFactory (dataContainerMap);
       var virtualObjectEndPointDataManagerFactory = new VirtualObjectEndPointDataManagerFactory();
 
       var relationEndPointFactory = CreateRelationEndPointFactory(

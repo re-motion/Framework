@@ -26,6 +26,5 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   /// </summary>
   public interface IVirtualCollectionEndPointChangeDetectionStrategy
   {
-    bool HasDataChanged (IVirtualCollectionData currentData, IVirtualCollectionData originalData);
   }
 }

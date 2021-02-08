@@ -15,9 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using Remotion.Collections;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Utilities;
@@ -31,23 +28,18 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   {
     public RelationEndPointID EndPointID { get; }
 
-    public IVirtualCollectionEndPointChangeDetectionStrategy ChangeDetectionStrategy { get; }
-
     public IDataContainerMapReadOnlyView DataContainerMap { get; }
 
     private readonly ChangeCachingVirtualCollectionDataDecorator _changeCachingVirtualCollectionData;
 
     public VirtualCollectionEndPointDataManager (
         RelationEndPointID endPointID,
-        IVirtualCollectionEndPointChangeDetectionStrategy changeDetectionStrategy,
         IDataContainerMapReadOnlyView dataContainerMap)
     {
       ArgumentUtility.CheckNotNull ("endPointID", endPointID);
-      ArgumentUtility.CheckNotNull ("changeDetectionStrategy", changeDetectionStrategy);
       ArgumentUtility.CheckNotNull ("dataContainerMap", dataContainerMap);
 
       EndPointID = endPointID;
-      ChangeDetectionStrategy = changeDetectionStrategy;
       DataContainerMap = dataContainerMap;
 
       //TODO: RM-7294: unify VirtualCollectionData and ChangeCachingVirtualCollectionDataDecorator
@@ -108,7 +100,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ArgumentUtility.CheckNotNull ("info", info);
 
       EndPointID = info.GetValueForHandle<RelationEndPointID>();
-      ChangeDetectionStrategy = info.GetValueForHandle<IVirtualCollectionEndPointChangeDetectionStrategy>();
 
       _changeCachingVirtualCollectionData = info.GetValueForHandle<ChangeCachingVirtualCollectionDataDecorator>();
     }
@@ -120,7 +111,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ArgumentUtility.CheckNotNull ("info", info);
 
       info.AddHandle (EndPointID);
-      info.AddHandle (ChangeDetectionStrategy);
       info.AddHandle (_changeCachingVirtualCollectionData);
     }
 
