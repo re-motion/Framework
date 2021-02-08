@@ -123,7 +123,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public IVirtualCollectionEventRaiser GetCollectionEventRaiser ()
     {
-      return (IVirtualCollectionEventRaiser) Collection; // TODO RM-7294 invalid cast
+      return (IVirtualCollectionEventRaiser) Collection;
     }
 
     public IObjectList<IDomainObject> GetCollectionWithOriginalData ()
