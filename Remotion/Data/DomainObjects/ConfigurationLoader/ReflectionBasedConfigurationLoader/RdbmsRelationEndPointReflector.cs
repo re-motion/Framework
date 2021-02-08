@@ -41,14 +41,14 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       if (!IsBidirectionalRelation)
         return false;
 
-      if (BidirectionalRelationAttribute.ContainsForeignKey)
-        return false;
-
       if (ReflectionUtility.IsObjectList (PropertyInfo.PropertyType))
         return true;
 
       if (ReflectionUtility.IsIObjectList (PropertyInfo.PropertyType))
         return true;
+
+      if (BidirectionalRelationAttribute.ContainsForeignKey)
+        return false;
 
       var oppositePropertyInfo = GetOppositePropertyInfo();
       if (oppositePropertyInfo == null)
