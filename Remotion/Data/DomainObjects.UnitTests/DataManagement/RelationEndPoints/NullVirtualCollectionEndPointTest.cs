@@ -87,14 +87,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    public void GetCollectionEventRaiser ()
-    {
-      Assert.That (
-          () => _nullEndPoint.GetCollectionEventRaiser(),
-          Throws.InvalidOperationException);
-    }
-
-    [Test]
     public void GetCollectionWithOriginalData ()
     {
       Assert.That (

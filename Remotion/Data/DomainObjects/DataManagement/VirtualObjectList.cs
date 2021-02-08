@@ -25,7 +25,7 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.DataManagement
 {
   [Serializable]
-  public class VirtualObjectList<T> : IObjectList<T>, IVirtualCollectionEventRaiser, IReadOnlyCollectionData<T>
+  public class VirtualObjectList<T> : IObjectList<T>, IReadOnlyCollectionData<T>
       where T : DomainObject
   {
     private readonly IVirtualCollectionData _dataStrategy;
@@ -56,41 +56,6 @@ namespace Remotion.Data.DomainObjects.DataManagement
     public bool Contains (ObjectID objectID) => _dataStrategy.ContainsObjectID (objectID);
 
     public T GetObject (ObjectID objectID) => (T) _dataStrategy.GetObject (objectID);
-
-    void IVirtualCollectionEventRaiser.BeginAdd (int index, DomainObject domainObject)
-    {
-      //TODO: RM-7294: API is only implemented because of the interface. Can probably be dropped since there is no usage
-    }
-
-    void IVirtualCollectionEventRaiser.EndAdd (int index, DomainObject domainObject)
-    {
-      //TODO: RM-7294: API is only implemented because of the interface. Can probably be dropped since there is no usage
-    }
-
-    void IVirtualCollectionEventRaiser.BeginRemove (int index, DomainObject domainObject)
-    {
-      //TODO: RM-7294: API is only implemented because of the interface. Can probably be dropped since there is no usage
-    }
-
-    void IVirtualCollectionEventRaiser.EndRemove (int index, DomainObject domainObject)
-    {
-      //TODO: RM-7294: API is only implemented because of the interface. Can probably be dropped since there is no usage
-    }
-
-    void IVirtualCollectionEventRaiser.BeginDelete ()
-    {
-      //TODO: RM-7294
-    }
-
-    void IVirtualCollectionEventRaiser.EndDelete ()
-    {
-      //TODO: RM-7294
-    }
-
-    void IVirtualCollectionEventRaiser.WithinReplaceData ()
-    {
-      //TODO: RM-7294
-    }
 
     bool IList.IsReadOnly => true;
 

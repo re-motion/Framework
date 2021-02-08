@@ -164,11 +164,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
 
     public bool? HasChangedFast => throw new NotImplementedException();
 
-    public IVirtualCollectionEventRaiser GetCollectionEventRaiser ()
-    {
-      throw new NotImplementedException();
-    }
-
     public void MarkDataComplete (DomainObject[] items)
     {
       throw new NotImplementedException();

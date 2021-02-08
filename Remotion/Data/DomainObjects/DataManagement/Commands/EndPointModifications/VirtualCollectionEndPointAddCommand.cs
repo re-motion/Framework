@@ -30,7 +30,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     private readonly int _index;
 
     private readonly IVirtualCollectionData _modifiedCollectionData;
-    private readonly IVirtualCollectionEventRaiser _modifiedCollectionEventRaiser;
     private readonly IRelationEndPointProvider _endPointProvider;
 
     public VirtualCollectionEndPointAddCommand (
@@ -53,14 +52,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
 
       _index = collectionData.Count;
       _modifiedCollectionData = collectionData;
-      //TODO: RM-7294: API is only implemented because of the interface on VirtualObjectList. Can probably be dropped since VirtualObjectList has no usage for it.
-      _modifiedCollectionEventRaiser = modifiedEndPoint.GetCollectionEventRaiser();
       _endPointProvider = endPointProvider;
-    }
-
-    public IVirtualCollectionEventRaiser ModifiedCollectionEventRaiser
-    {
-      get { return _modifiedCollectionEventRaiser; }
     }
 
     public IVirtualCollectionData ModifiedCollectionData
@@ -73,29 +65,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
       get { return _endPointProvider; }
     }
 
-    public override void Begin ()
-    {
-      using (EnterTransactionScope())
-      {
-        ModifiedCollectionEventRaiser.BeginAdd (_index, NewRelatedObject);
-      }
-
-      base.Begin();
-    }
-
     public override void Perform ()
     {
       ModifiedCollectionData.Add (NewRelatedObject);
       ModifiedEndPoint.Touch();
-    }
-
-    public override void End ()
-    {
-      base.End();
-      using (EnterTransactionScope())
-      {
-        ModifiedCollectionEventRaiser.EndAdd (_index, NewRelatedObject);
-      }
     }
 
     /// <summary>

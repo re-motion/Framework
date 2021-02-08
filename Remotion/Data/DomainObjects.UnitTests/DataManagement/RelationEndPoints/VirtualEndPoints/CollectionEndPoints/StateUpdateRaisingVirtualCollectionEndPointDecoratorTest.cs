@@ -168,7 +168,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var dataContainerMapStub = MockRepository.GenerateStub<IDataContainerMapReadOnlyView>();
       var readOnlyCollectionDataDecorator = new ReadOnlyVirtualCollectionDataDecorator (new VirtualCollectionData (endPointID, dataContainerMapStub, ValueAccess.Current));
       var objectListStub = MockRepository.GenerateStub<IObjectList<ProductReview>>();
-      var eventRaiserStub = MockRepository.GenerateStub<IVirtualCollectionEventRaiser>();
       var productReview = DomainObjectMother.CreateFakeObject<ProductReview>();
 
       _listenerMock.Replay();
@@ -206,7 +205,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _decoratorTestHelper.CheckDelegation (ep => ep.GetData(), readOnlyCollectionDataDecorator);
       _decoratorTestHelper.CheckDelegation (ep => ep.GetOriginalData(), readOnlyCollectionDataDecorator);
       _decoratorTestHelper.CheckDelegation (ep => ep.Collection, objectListStub);
-      _decoratorTestHelper.CheckDelegation (ep => ep.GetCollectionEventRaiser(), eventRaiserStub);
       _decoratorTestHelper.CheckDelegation (ep => ep.GetCollectionWithOriginalData(), objectListStub);
       _decoratorTestHelper.CheckDelegation (ep => ep.MarkDataComplete (new[] { productReview }));
 

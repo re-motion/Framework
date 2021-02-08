@@ -30,7 +30,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     private readonly int _index;
 
     private readonly IVirtualCollectionData _modifiedCollectionData;
-    private readonly IVirtualCollectionEventRaiser _modifiedCollectionEventRaiser;
     private readonly IRelationEndPointProvider _endPointProvider;
 
     public VirtualCollectionEndPointRemoveCommand (
@@ -53,13 +52,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
 
       _index = collectionData.IsDataComplete ? collectionData.IndexOf (removedObject.ID) : 0;
       _modifiedCollectionData = collectionData;
-      _modifiedCollectionEventRaiser = modifiedEndPoint.GetCollectionEventRaiser();
       _endPointProvider = endPointProvider;
-    }
-
-    public IVirtualCollectionEventRaiser ModifiedCollectionEventRaiser
-    {
-      get { return _modifiedCollectionEventRaiser; }
     }
 
     public IVirtualCollectionData ModifiedCollectionData
@@ -72,29 +65,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
       get { return _endPointProvider; }
     }
 
-    public override void Begin ()
-    {
-      using (EnterTransactionScope())
-      {
-        ModifiedCollectionEventRaiser.BeginRemove (_index, OldRelatedObject);
-      }
-
-      base.Begin();
-    }
-
     public override void Perform ()
     {
       ModifiedCollectionData.Remove (OldRelatedObject);
       ModifiedEndPoint.Touch();
-    }
-
-    public override void End ()
-    {
-      base.End();
-      using (EnterTransactionScope())
-      {
-        ModifiedCollectionEventRaiser.EndRemove (_index, OldRelatedObject);
-      }
     }
 
     /// <summary>

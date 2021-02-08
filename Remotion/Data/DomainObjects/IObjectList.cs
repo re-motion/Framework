@@ -21,8 +21,7 @@ using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 
 namespace Remotion.Data.DomainObjects
 {
-  public interface
-      IObjectList<out TDomainObject>
+  public interface IObjectList<out TDomainObject>
       : IReadOnlyList<TDomainObject>, IList // TODO: RM-7294 add support for IReadOnlyList<T> to BocList. Fallback: implement IList {IsReadOnly=true}
       where TDomainObject : IDomainObject
   {

@@ -121,11 +121,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       get { return _collectionManager.GetCurrentCollectionReference(); }
     }
 
-    public IVirtualCollectionEventRaiser GetCollectionEventRaiser ()
-    {
-      return (IVirtualCollectionEventRaiser) Collection;
-    }
-
     public IObjectList<IDomainObject> GetCollectionWithOriginalData ()
     {
       return CreateCollection (GetOriginalData());
@@ -255,8 +250,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
       //foreach (var oppositeEndPointWithoutItem in originalOppositeEndPoints)
       //  RegisterOriginalOppositeEndPoint (oppositeEndPointWithoutItem);
-
-      RaiseReplaceDataEvent();
     }
 
     public void MarkDataIncomplete ()
@@ -308,8 +301,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       {
         if (_dataManager != null)
           _dataManager.Rollback();
-
-        RaiseReplaceDataEvent();
       }
 
       _addedDomainObjects.Clear();
@@ -473,8 +464,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       //TODO: RM-7294: do we need to reset the CachedDomainObjects?
       //foreach (var item in _dataManager.OriginalItemsWithoutEndPoints)
       //  _dataManager.UnregisterOriginalItemWithoutEndPoint (item);
-
-      RaiseReplaceDataEvent();
     }
 
     public void SynchronizeOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
@@ -496,8 +485,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
       _dataManager.RegisterOriginalOppositeEndPoint (oppositeEndPoint);
       oppositeEndPoint.MarkSynchronized();
-
-      RaiseReplaceDataEvent();
     }
 
     public override IDataManagementCommand CreateRemoveCommand (DomainObject removedRelatedObject)
@@ -640,7 +627,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       Assertion.IsNotNull (_dataManager, "Cannot commit data from a sub-transaction into a virtual collection end-point in incomplete state.");
       Assertion.IsNotNull (sourceDataManager, "Cannot commit incomplete data from a sub-transaction into a virtual collection end-point.");
       _dataManager.SetDataFromSubTransaction (sourceDataManager, _endPointProvider);
-      RaiseReplaceDataEvent();
 
       if (sourceCollectionEndPoint.HasBeenTouched || HasChanged)
         Touch();
@@ -649,14 +635,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     private IObjectList<IDomainObject> CreateCollection (IVirtualCollectionData dataStrategy)
     {
       return ObjectListFactory.Create (dataStrategy);
-    }
-
-    private void RaiseReplaceDataEvent ()
-    {
-      //TODO: RM-7294: unused on VirtualObjectList, can be removed
-
-      var eventRaiser = GetCollectionEventRaiser();
-      eventRaiser.WithinReplaceData();
     }
 
     #region Serialization

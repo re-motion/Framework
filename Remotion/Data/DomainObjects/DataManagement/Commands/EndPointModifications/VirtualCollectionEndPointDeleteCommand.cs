@@ -28,7 +28,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
   public class VirtualCollectionEndPointDeleteCommand : RelationEndPointModificationCommand
   {
     private readonly IVirtualCollectionData _modifiedCollectionData;
-    private readonly IVirtualCollectionEventRaiser _modifiedCollectionEventRaiser;
 
     public VirtualCollectionEndPointDeleteCommand (
         IVirtualCollectionEndPoint modifiedEndPoint,
@@ -44,12 +43,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
         throw new ArgumentException ("Modified end point is null, a NullEndPointModificationCommand is needed.", "modifiedEndPoint");
 
       _modifiedCollectionData = collectionData;
-      _modifiedCollectionEventRaiser = modifiedEndPoint.GetCollectionEventRaiser();
-    }
-
-    public IVirtualCollectionEventRaiser ModifiedCollectionEventRaiser
-    {
-      get { return _modifiedCollectionEventRaiser; }
     }
 
     public IVirtualCollectionData ModifiedCollectionData
@@ -60,11 +53,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     public override void Begin ()
     {
       // do not call base - no transaction notification
-
-      using (EnterTransactionScope())
-      {
-        ModifiedCollectionEventRaiser.BeginDelete();
-      }
     }
 
     public override void Perform ()
@@ -76,11 +64,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     public override void End ()
     {
       // do not call base - no transaction notification
-
-      using (EnterTransactionScope())
-      {
-        ModifiedCollectionEventRaiser.EndDelete();
-      }
     }
 
     public override ExpandedCommand ExpandToAllRelatedObjects ()
