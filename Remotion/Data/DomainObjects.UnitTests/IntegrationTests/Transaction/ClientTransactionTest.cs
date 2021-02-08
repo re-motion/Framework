@@ -138,7 +138,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     }
 
     [Test]
-    public void OppositeDomainObjectsTypeAfterCommit ()
+    public void OppositeDomainObjectsTypeAfterCommit_ForDomainObjectCollection ()
     {
       Customer customer = DomainObjectIDs.Customer1.GetObject<Customer> ();
 
@@ -153,7 +153,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     }
 
     [Test]
-    public void RollbackReadOnlyOppositeDomainObjects ()
+    public void OppositeDomainObjectsTypeAfterCommit_ForVirtualCollection ()
+    {
+      Product product = DomainObjectIDs.Product1.GetObject<Product> ();
+
+      var productReview = ProductReview.NewObject();
+      productReview.Product = product;
+      productReview.Reviewer = DomainObjectIDs.Person3.GetObject<Person>();
+      productReview.Comment = "Test";
+      productReview.CreatedAt = DateTime.Now;
+
+      TestableClientTransaction.Commit ();
+
+      IReadOnlyList<DomainObject> originalProductReviews = product.GetOriginalRelatedObjectsAsVirtualCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews");
+      Assert.That (originalProductReviews.GetType(), Is.EqualTo (typeof (VirtualObjectList<ProductReview>)));
+    }
+
+    [Test]
+    public void RollbackReadOnlyOppositeDomainObjects_ForDomainObjectCollection ()
     {
       Customer customer = DomainObjectIDs.Customer1.GetObject<Customer> ();
       customer.Orders.Add (DomainObjectIDs.Order3.GetObject<Order> ());

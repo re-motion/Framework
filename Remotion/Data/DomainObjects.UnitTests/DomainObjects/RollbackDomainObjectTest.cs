@@ -108,30 +108,61 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    public void RollbackDeletionWithRelationChange ()
+    public void RollbackDeletionWithRelationChange_ForDomainObject ()
     {
       Order order = DomainObjectIDs.Order1.GetObject<Order> ();
 
       OrderTicket oldOrderTicket = order.OrderTicket;
-      DomainObjectCollection oldOrderItems = order.GetOriginalRelatedObjectsAsDomainObjectCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
       Customer oldCustomer = order.Customer;
       Official oldOfficial = order.Official;
 
       order.Delete ();
 
       Assert.That (order.OrderTicket, Is.Null);
-      Assert.That (order.OrderItems.Count, Is.EqualTo (0));
       Assert.That (order.Customer, Is.Null);
       Assert.That (order.Official, Is.Null);
 
       TestableClientTransaction.Rollback ();
 
       Assert.That (order.OrderTicket, Is.SameAs (oldOrderTicket));
+      Assert.That (order.Customer, Is.SameAs (oldCustomer));
+      Assert.That (order.Official, Is.SameAs (oldOfficial));
+    }
+
+    [Test]
+    public void RollbackDeletionWithRelationChange_ForDomainObjectCollection ()
+    {
+      Order order = DomainObjectIDs.Order1.GetObject<Order> ();
+
+      DomainObjectCollection oldOrderItems = order.GetOriginalRelatedObjectsAsDomainObjectCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
+
+      order.Delete ();
+
+      Assert.That (order.OrderItems.Count, Is.EqualTo (0));
+
+      TestableClientTransaction.Rollback ();
+
       Assert.That (order.OrderItems.Count, Is.EqualTo (oldOrderItems.Count));
       Assert.That (order.OrderItems[DomainObjectIDs.OrderItem1], Is.SameAs (oldOrderItems[DomainObjectIDs.OrderItem1]));
       Assert.That (order.OrderItems[DomainObjectIDs.OrderItem2], Is.SameAs (oldOrderItems[DomainObjectIDs.OrderItem2]));
-      Assert.That (order.Customer, Is.SameAs (oldCustomer));
-      Assert.That (order.Official, Is.SameAs (oldOfficial));
+    }
+
+    [Test]
+
+    public void RollbackDeletionWithRelationChange_ForVirtualCollection ()
+    {
+      Product product = DomainObjectIDs.Product1.GetObject<Product> ();
+
+      var oldProductReviews = product.GetOriginalRelatedObjectsAsVirtualCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews");
+
+      product.Delete ();
+
+      Assert.That (product.Reviews.Count, Is.EqualTo (0));
+
+      TestableClientTransaction.Rollback ();
+
+      Assert.That (product.Reviews.Count, Is.EqualTo (oldProductReviews.Count));
+      Assert.That (product.Reviews, Is.EqualTo(oldProductReviews));
     }
 
     [Test]

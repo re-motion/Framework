@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Remotion.Data.DomainObjects.DataManagement;
@@ -126,7 +127,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
       return (DomainObject) Properties[propertyName].GetValueWithoutTypeCheck ();
     }
 
-    // TODO: RM-7294: Add tests for VirtualCollection whenever we have DomainObjectCollection tests
+    public IEnumerable GetRelatedObjects (string propertyName)
+    {
+      return (IEnumerable) Properties[propertyName].GetValueWithoutTypeCheck ();
+    }
+
     public DomainObjectCollection GetRelatedObjectsAsDomainObjectCollection (string propertyName)
     {
       return (DomainObjectCollection) Properties[propertyName].GetValueWithoutTypeCheck ();
@@ -142,7 +147,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
       return (DomainObject) Properties[propertyName].GetOriginalValueWithoutTypeCheck ();
     }
 
-    // TODO: RM-7294: Add tests for VirtualCollection whenever we have DomainObjectCollection tests
     public DomainObjectCollection GetOriginalRelatedObjectsAsDomainObjectCollection (string propertyName)
     {
       return (DomainObjectCollection) Properties[propertyName].GetOriginalValueWithoutTypeCheck ();
