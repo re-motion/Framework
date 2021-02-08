@@ -27,9 +27,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
   [TestFixture]
   public class VirtualCollectionEndPointIntegrationTest : ClientTransactionBaseTest
   {
-    private ProductReview _productReview1; // belongs to customer1
-    private ProductReview _productReview2; // belongs to customer1
-    private ProductReview _productReview3; // belongs to customer3
+    private ProductReview _productReview1; // belongs to poerson1
+    private ProductReview _productReview2; // belongs to poerson1
+    private ProductReview _productReview3; // belongs to poerson3
     private Product _product1;
 
     private VirtualCollectionEndPoint _productEndPoint;

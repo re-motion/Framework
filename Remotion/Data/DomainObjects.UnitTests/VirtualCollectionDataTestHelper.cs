@@ -15,8 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
+using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
+using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
 using Remotion.Development.UnitTesting;
 using Remotion.Reflection;
 
@@ -30,6 +33,15 @@ namespace Remotion.Data.DomainObjects.UnitTests
         return (IVirtualCollectionData) PrivateInvoke.GetNonPublicField (collection, "_dataStrategy");
       else
         throw new NotSupportedException (string.Format ("Type '{0}' is not supported by GetDataStrategy().", collection.GetType()));
+    }
+
+    public static IVirtualCollectionEndPoint GetAssociatedEndPoint (IObjectList<IDomainObject> collection)
+    {
+      if (collection.AssociatedEndPointID == null)
+        return null;
+
+      var delegatingStrategy = (EndPointDelegatingVirtualCollectionData) GetDataStrategy (collection);
+      return delegatingStrategy.GetAssociatedEndPoint();
     }
   }
 }
