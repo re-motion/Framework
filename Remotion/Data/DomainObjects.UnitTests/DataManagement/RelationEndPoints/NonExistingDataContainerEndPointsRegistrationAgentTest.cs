@@ -156,7 +156,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    public void GetUnregisterProblem_VirtualCollectionEndPoint_CurrentReferencesNonNull ()
+    public void GetUnregisterProblem_VirtualCollectionEndPoint ()
     {
       var endPointStub = MockRepository.GenerateStub<IVirtualCollectionEndPoint> ();
       endPointStub.Stub (stub => stub.GetData ()).Throw (new AssertionException ("GetData() should not be called."));
