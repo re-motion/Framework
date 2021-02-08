@@ -88,38 +88,21 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       //TODO: RM-7294: originally, this logic never cleared the _isCacheUpToDate-field. Should this be re-worked?
     }
 
-    //public void RegisterOriginalItem (DomainObject item)
-    //{
-    //  //TODO: RM-7294: ResetCachedDomainObjects() is equivalent to Add()
-    //  _virtualCollectionData.ResetCachedDomainObjects();
-    //  //_virtualCollectionData.Add (item);
-    //}
-
-    //public void UnregisterOriginalItem (ObjectID itemID)
-    //{
-    //  // TODO: RM-7294
-    //  // Only used from Synchronize
-    //  ResetCachedHasChangedState();
-    //}
-
     public void Commit ()
     {
-      // TODO: RM-7294
       ResetCachedHasChangedState();
     }
 
     public void Rollback ()
     {
-      // TODO: RM-7294
       ResetCachedHasChangedState();
-      _virtualCollectionData.ResetCachedDomainObjects(); //TODO: RM-7294
+      _virtualCollectionData.ResetCachedDomainObjects();
     }
 
     public void ReplaceContents (IVirtualCollectionData collectionData)
     {
-      // TODO: RM-7294
       ResetCachedHasChangedState();
-      _virtualCollectionData.ResetCachedDomainObjects(); //TODO: RM-7294
+      _virtualCollectionData.ResetCachedDomainObjects();
     }
 
     IEnumerator<DomainObject> IEnumerable<DomainObject>.GetEnumerator ()
@@ -171,27 +154,21 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     void IVirtualCollectionData.Clear ()
     {
       ResetCachedHasChangedState();
-      //TODO: RM-7294: ResetCachedDomainObjects() is equivalent to Clear()
       _virtualCollectionData.ResetCachedDomainObjects();
-      //_virtualCollectionData.Clear();
     }
 
     void IVirtualCollectionData.Add (DomainObject domainObject)
     {
       ResetCachedHasChangedState();
 
-      //TODO: RM-7294: ResetCachedDomainObjects() is equivalent to Add()
       _virtualCollectionData.ResetCachedDomainObjects();
-      //_virtualCollectionData.Add (domainObject);
     }
 
     bool IVirtualCollectionData.Remove (DomainObject domainObject)
     {
       ResetCachedHasChangedState();
 
-      //TODO: RM-7294: ResetCachedDomainObjects() is equivalent to Remove()
       _virtualCollectionData.ResetCachedDomainObjects();
-      //return _virtualCollectionData.Remove (domainObject);
       return true;
     }
 
