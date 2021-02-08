@@ -23,7 +23,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   {
     DomainObjectCollection Collection { get; }
 
-    [Obsolete ("Use GetCollectionWithOriginalData() instead.", true)] //TODO: RM-7294 revert change
     DomainObjectCollection OriginalCollection { get; }
 
     DomainObjectCollection GetCollectionWithOriginalData ();
