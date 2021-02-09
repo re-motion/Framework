@@ -188,7 +188,6 @@
     <Compile Include="DataManagement\CollectionData\IVirtualCollectionData.cs" />
     <Compile Include="DataManagement\CollectionData\ReadOnlyVirtualCollectionDataDecorator.cs" />
     <Compile Include="DataManagement\CollectionData\VirtualCollectionData.cs" />
-    <Compile Include="DataManagement\CollectionData\VirtualCollectionDataExtensions.cs" />
     <Compile Include="DataManagement\Commands\EndPointModifications\VirtualCollectionEndPointDeleteCommand.cs" />
     <Compile Include="DataManagement\Commands\EndPointModifications\VirtualCollectionEndPointAddCommand.cs" />
     <Compile Include="DataManagement\Commands\EndPointModifications\VirtualCollectionEndPointRemoveCommand.cs" />
