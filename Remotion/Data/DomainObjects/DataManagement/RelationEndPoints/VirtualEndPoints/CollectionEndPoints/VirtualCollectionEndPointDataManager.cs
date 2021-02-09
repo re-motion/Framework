@@ -26,7 +26,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   /// </summary>
   public class VirtualCollectionEndPointDataManager : IVirtualCollectionEndPointDataManager
   {
-    //TODO: RM-7294: merge ChangeTrackingVirtualCollectionDataDecorator into DataManager and make DataManager work for loaded and unloaded state
+    //TODO: RM-7294: merge ChangeTrackingVirtualCollectionDataDecorator into DataManager and make VirtualCollectionEndPointDataManager work for loaded and unloaded state
+    //TODO: RM-7294: merge VirtualCollectionData and VirtualCollectionEndPointDataManager. At this time, VirtualCollectionEndPointDataManager is only an interface wrapping VirtualCollectionData
 
     public RelationEndPointID EndPointID { get; }
 

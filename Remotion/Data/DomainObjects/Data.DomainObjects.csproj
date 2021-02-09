@@ -200,8 +200,6 @@
     <Compile Include="DataManagement\RelationEndPoints\VirtualCollectionEndPoint.cs" />
     <Compile Include="DataManagement\RelationEndPoints\IDomainObjectCollectionEndPoint.cs" />
     <Compile Include="DataManagement\RelationEndPoints\IVirtualCollectionEndPoint.cs" />
-    <None Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\VirtualCollectionEndPointLoadState.cs" />
-    <None Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\CompleteVirtualCollectionEndPointLoadState.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\ChangeTrackingVirtualCollectionDataDecorator.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\EndPointDelegatingVirtualCollectionData.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\IVirtualCollectionEndPointCollectionProvider.cs" />
@@ -212,9 +210,7 @@
     <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\VirtualCollectionEndPointDataManagerFactory.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\IVirtualCollectionEndPointDataManager.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\IVirtualCollectionEndPointDataManagerFactory.cs" />
-    <None Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\IncompleteVirtualCollectionEndPointLoadState.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\IVirtualCollectionEndPointCollectionManager.cs" />
-    <None Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\IVirtualCollectionEndPointLoadState.cs" />
     <Compile Include="DataManagement\ObjectListFactory.cs" />
     <Compile Include="DataManagement\VirtualObjectList.cs" />
     <Compile Include="DomainObjectHandleConverter.cs" />

@@ -35,8 +35,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   /// </summary>
   public class VirtualCollectionEndPoint : RelationEndPoint, IVirtualCollectionEndPoint
   {
-    //TODO RM-7294: Remove commented out code
-
     private static readonly ILog s_log = LogManager.GetLogger (typeof (VirtualCollectionEndPoint));
 
     private readonly IVirtualCollectionEndPointCollectionManager _collectionManager;
@@ -275,7 +273,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
       if (_dataManager != null)
       {
-        //TODO: RM-7294: do we need to reset the CachedDomainObjects?
         _dataManager.RegisterOriginalOppositeEndPoint (oppositeEndPoint);
       }
 

@@ -84,10 +84,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     /// </remarks>
     public override ExpandedCommand ExpandToAllRelatedObjects ()
     {
-      //TODO: RM-7294: Do not allow setting an object that is still part of another collection;
-      //TBD: We're just updating a parent property. Requiring that we first set the parent property to null seems strange.
-      //     This concept should be dropped.
-
       // the end point that will be linked to the collection end point after the operation
       var addedObjectEndPoint = (IRealObjectEndPoint) GetOppositeEndPoint (ModifiedEndPoint, NewRelatedObject, _endPointProvider);
       // the object that was linked to the new related object before the operation
