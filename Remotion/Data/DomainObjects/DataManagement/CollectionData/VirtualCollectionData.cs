@@ -44,7 +44,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       ArgumentUtility.CheckNotNull ("associatedEndPointID", associatedEndPointID);
       ArgumentUtility.CheckNotNull ("dataContainerMap", dataContainerMap);
 
-      //TODO: RM-7294
       _associatedEndPointID = associatedEndPointID;
       _dataContainerMap = dataContainerMap;
       _valueAccess = valueAccess;
