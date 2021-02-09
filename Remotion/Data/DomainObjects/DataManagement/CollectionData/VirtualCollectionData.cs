@@ -149,7 +149,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     void IVirtualCollectionData.Clear ()
     {
-      //TODO: RM-7294: API is only needed via ChangeCachingDataDecorator, which in turn is used from the EndPointDeleteCommand.
+      //TODO: RM-7294: API is only needed via ChangeTrackingVirtualCollectionDataDecorator, which in turn is used from the VirtualCollectionEndPointDeleteCommand.
       //Possibly create dedicated interface when we only cache the data and need a cache-reset otherwise. 
       //Or drop interface from VirtualCollectionData.
 
@@ -158,7 +158,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     void IVirtualCollectionData.Add (DomainObject domainObject)
     {
-      //TODO: RM-7294: API is only needed via ChangeCachingDataDecorator, which in turn is used from the EndPointAddCommand.
+      //TODO: RM-7294: API is only needed via ChangeTrackingVirtualCollectionDataDecorator, which in turn is used from the VirtualCollectionEndPointAddCommand.
       //Possibly create dedicated interface when we only cache the data and need a cache-reset otherwise. 
       //Or drop interface from VirtualCollectionData.
 
@@ -167,7 +167,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     bool IVirtualCollectionData.Remove (DomainObject domainObject)
     {
-      //TODO: RM-7294: API is only needed via ChangeCachingDataDecorator, which in turn is used from the EndPointRemoveCommand.
+      //TODO: RM-7294: API is only needed via ChangeTrackingVirtualCollectionDataDecorator, which in turn is used from the VirtualCollectionEndPointRemoveCommand.
       //Possibly create dedicated interface when we only cache the data and need a cache-reset otherwise. 
       //Or drop interface from VirtualCollectionData.
 
