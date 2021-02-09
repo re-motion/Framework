@@ -28,13 +28,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   /// Decorates another <see cref="IVirtualCollectionEndPoint"/>, raising <see cref="IVirtualEndPointStateUpdateListener"/> events whenever the 
   /// return value of the <see cref="HasChanged"/> property has possibly changed.
   /// </summary>
-  /// <remarks>
-  /// Because the <see cref="HasChanged"/> property of <see cref="IVirtualCollectionEndPoint"/> implementations can be expensive to determine, the 
-  /// <see cref="StateUpdateRaisingVirtualCollectionEndPointDecorator"/> doesn't actually check the property.
-  /// Therefore, events may also be raised even the the <see cref="HasChanged"/> property still returns the same value as before. If the end-point's
-  /// new state is available via the <see cref="ICollectionEndPoint{T}.HasChangedFast"/> property, the new state is passed to the 
-  /// <see cref="IVirtualEndPointStateUpdateListener.VirtualEndPointStateUpdated"/> method as a parameter.
-  /// </remarks>
   public class StateUpdateRaisingVirtualCollectionEndPointDecorator : IVirtualCollectionEndPoint
   {
     /// <summary>
@@ -47,13 +40,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
       public ConstantChangeStateAsserter (IVirtualCollectionEndPoint innerEndPoint)
       {
-        _changeStateBefore = innerEndPoint.HasChangedFast;
+        _changeStateBefore = innerEndPoint.HasChanged;
         _innerEndPoint = innerEndPoint;
       }
 
       public void Dispose ()
       {
-        Assertion.IsTrue (_changeStateBefore == _innerEndPoint.HasChangedFast);
+        Assertion.IsTrue (_changeStateBefore == _innerEndPoint.HasChanged);
       }
     }
 
@@ -64,7 +57,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     {
       ArgumentUtility.CheckNotNull ("innerEndPoint", innerEndPoint);
       ArgumentUtility.CheckNotNull ("listener", listener);
-      //TODO: RM-7294: Identify usages
+
       _innerEndPoint = innerEndPoint;
       _listener = listener;
     }
@@ -82,66 +75,66 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     public void SetDataFromSubTransaction (IRelationEndPoint source)
     {
       var sourceCollectionEndPoint = ArgumentUtility.CheckNotNullAndType<StateUpdateRaisingVirtualCollectionEndPointDecorator> ("source", source);
-      var hasChangedFastBefore = _innerEndPoint.HasChangedFast;
+      var hasChangedBefore = _innerEndPoint.HasChanged;
       try
       {
         _innerEndPoint.SetDataFromSubTransaction (sourceCollectionEndPoint.InnerEndPoint);
       }
       finally
       {
-        RaiseStateUpdatedIfNecessary(hasChangedFastBefore);
+        RaiseStateUpdatedIfNecessary (hasChangedBefore);
       }
     }
 
     public void Synchronize ()
     {
-      var hasChangedFastBefore = _innerEndPoint.HasChangedFast;
+      var hasChangedBefore = _innerEndPoint.HasChanged;
       try
       {
         _innerEndPoint.Synchronize();
       }
       finally
       {
-        RaiseStateUpdatedIfNecessary (hasChangedFastBefore);
+        RaiseStateUpdatedIfNecessary (hasChangedBefore);
       }
     }
 
     public void SynchronizeOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      var hasChangedFastBefore = _innerEndPoint.HasChangedFast;
+      var hasChangedBefore = _innerEndPoint.HasChanged;
       try
       {
         _innerEndPoint.SynchronizeOppositeEndPoint (oppositeEndPoint);
       }
       finally
       {
-        RaiseStateUpdatedIfNecessary (hasChangedFastBefore);
+        RaiseStateUpdatedIfNecessary (hasChangedBefore);
       }
     }
 
     public void Commit ()
     {
-      var hasChangedFastBefore = _innerEndPoint.HasChangedFast;
+      var hasChangedBefore = _innerEndPoint.HasChanged;
       try
       {
         _innerEndPoint.Commit();
       }
       finally
       {
-        RaiseStateUpdatedIfNecessary (hasChangedFastBefore);
+        RaiseStateUpdatedIfNecessary (hasChangedBefore);
       }
     }
 
     public void Rollback ()
     {
-      var hasChangedFastBefore = _innerEndPoint.HasChangedFast;
+      var hasChangedBefore = _innerEndPoint.HasChanged;
       try
       {
         _innerEndPoint.Rollback();
       }
       finally
       {
-        RaiseStateUpdatedIfNecessary (hasChangedFastBefore);
+        RaiseStateUpdatedIfNecessary (hasChangedBefore);
       }
     }
 
@@ -262,31 +255,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public bool? HasChangedFast
-    {
-      // No assertion on this property because the assertion uses this property...
-      get { return _innerEndPoint.HasChangedFast; }
-    }
-
     public bool HasChanged
     {
-      // Evaluating this property can indeed change the result of HasChangedFast to switch from null to something else.
-      get
-      {
-#if DEBUG
-        var hasChangedFastBefore = _innerEndPoint.HasChangedFast;
-        try
-        {
-#endif
-          return _innerEndPoint.HasChanged;
-#if DEBUG
-        }
-        finally
-        {
-          Assertion.DebugAssert (hasChangedFastBefore == null || hasChangedFastBefore == _innerEndPoint.HasChangedFast);
-        }
-#endif
-      }
+      get { return _innerEndPoint.HasChanged; }
     }
 
     public bool HasBeenTouched
@@ -529,17 +500,17 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     #endregion
 
-    private void RaiseStateUpdatedIfNecessary (bool? hasChangedFastBefore)
+    private void RaiseStateUpdatedIfNecessary (bool hasChangedBefore)
     {
-      var hasChangedFastNow = _innerEndPoint.HasChangedFast;
+      var hasChangedNow = _innerEndPoint.HasChanged;
       // We only raise the update if the state has changed or if we don't know the state before the operation.
-      if (hasChangedFastBefore == null || hasChangedFastBefore != hasChangedFastNow)
-        _listener.VirtualEndPointStateUpdated (_innerEndPoint.ID, hasChangedFastNow);
+      if (hasChangedBefore != hasChangedNow)
+        _listener.VirtualEndPointStateUpdated (_innerEndPoint.ID, hasChangedNow);
     }
 
     private IDataManagementCommand CreateStateUpdateRaisingCommandDecorator (IDataManagementCommand command)
     {
-      return new VirtualEndPointStateUpdatedRaisingCommandDecorator (command, _innerEndPoint.ID, _listener, () => _innerEndPoint.HasChangedFast);
+      return new VirtualEndPointStateUpdatedRaisingCommandDecorator (command, _innerEndPoint.ID, _listener, () => _innerEndPoint.HasChanged);
     }
 
     #region Serialization

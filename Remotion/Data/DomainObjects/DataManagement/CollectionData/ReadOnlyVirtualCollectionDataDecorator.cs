@@ -8,8 +8,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 {
   public class ReadOnlyVirtualCollectionDataDecorator : IVirtualCollectionData, ICollectionEndPointData
   {
-    //TODO: RM-7294: drop IVirtualCollectionData interface from type
-
     private readonly IVirtualCollectionData _collectionData;
 
     public ReadOnlyVirtualCollectionDataDecorator (IVirtualCollectionData collectionData)

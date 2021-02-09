@@ -56,7 +56,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public ReadOnlyVirtualCollectionDataDecorator GetOriginalData ()
     {
-      // TODO: RM-7294
       var originalData = new VirtualCollectionData (_associatedEndPointID, _dataContainerMap, ValueAccess.Original);
       return new ReadOnlyVirtualCollectionDataDecorator (originalData);
     }
@@ -94,7 +93,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
 
-      //TODO: RM-7294
       return GetCachedDomainObjects().ContainsKey (objectID);
     }
 
@@ -105,8 +103,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
       if (index >= GetCachedDomainObjects().Count)
         throw new ArgumentOutOfRangeException ("index");
-
-      //TODO: RM-7294
 
       var cachedDomainObjects = GetCachedDomainObjectsSorted();
       int itemIndex = 0;
@@ -125,7 +121,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
 
-      //TODO: RM-7294
       return GetCachedDomainObjects().GetValueOrDefault (objectID);
     }
 
@@ -133,7 +128,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
 
-      //TODO: RM-7294
       var cachedDomainObjects = GetCachedDomainObjectsSorted();
       int itemIndex = 0;
       foreach (var domainObject in cachedDomainObjects)

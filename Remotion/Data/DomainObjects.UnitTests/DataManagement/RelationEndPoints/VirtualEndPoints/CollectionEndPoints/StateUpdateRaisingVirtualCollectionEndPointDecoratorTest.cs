@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _endPointID = RelationEndPointID.Create (DomainObjectIDs.Product1, typeof (Product), "Reviews");
       _listenerMock = MockRepository.GenerateStrictMock<IVirtualEndPointStateUpdateListener>();
       _innerEndPointMock = MockRepository.GenerateStrictMock<IVirtualCollectionEndPoint>();
-      _innerEndPointMock.Stub (stub => stub.HasChangedFast).Return (false);
+      _innerEndPointMock.Stub (stub => stub.HasChanged).Return (false);
       _innerEndPointMock.Stub (stub => stub.ID).Return (_endPointID);
 
       _decorator = new StateUpdateRaisingVirtualCollectionEndPointDecorator (_innerEndPointMock, _listenerMock);
@@ -60,12 +60,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var sourceInnerEndPoint = MockRepository.GenerateStub<IVirtualCollectionEndPoint>();
       var sourceEndPoint = new StateUpdateRaisingVirtualCollectionEndPointDecorator (sourceInnerEndPoint, _listenerMock);
 
-      _listenerMock.Expect (mock => mock.VirtualEndPointStateUpdated (_endPointID, null));
+      _listenerMock.Expect (mock => mock.VirtualEndPointStateUpdated (_endPointID, true));
       _listenerMock.Replay();
 
       _innerEndPointMock.BackToRecord();
       _innerEndPointMock.Stub (stub => stub.ID).Return (_endPointID);
-      _innerEndPointMock.Stub (stub => stub.HasChangedFast).Return (null);
+      _innerEndPointMock.Stub (stub => stub.HasChanged).Return (false).Repeat.Once();
+      _innerEndPointMock.Stub (stub => stub.HasChanged).Return (true);
       _innerEndPointMock
           .Expect (ep => ep.SetDataFromSubTransaction (sourceInnerEndPoint))
           .WhenCalled (
@@ -76,7 +77,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _decorator.SetDataFromSubTransaction (sourceEndPoint);
 
       _innerEndPointMock.VerifyAllExpectations();
-      _listenerMock.AssertWasCalled (mock => mock.VirtualEndPointStateUpdated (_endPointID, null));
+      _listenerMock.AssertWasCalled (mock => mock.VirtualEndPointStateUpdated (_endPointID, true));
     }
 
     [Test]
@@ -85,13 +86,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var sourceInnerEndPoint = MockRepository.GenerateStub<IVirtualCollectionEndPoint>();
       var sourceEndPoint = new StateUpdateRaisingVirtualCollectionEndPointDecorator (sourceInnerEndPoint, _listenerMock);
 
-      _listenerMock.Expect (mock => mock.VirtualEndPointStateUpdated (_endPointID, null));
+      _listenerMock.Expect (mock => mock.VirtualEndPointStateUpdated (_endPointID, false));
       _listenerMock.Replay();
 
       var exception = new Exception();
       _innerEndPointMock.BackToRecord();
       _innerEndPointMock.Stub (stub => stub.ID).Return (_endPointID);
-      _innerEndPointMock.Stub (stub => stub.HasChangedFast).Return (null);
+      _innerEndPointMock.Stub (stub => stub.HasChanged).Return (true).Repeat.Once();
+      _innerEndPointMock.Stub (stub => stub.HasChanged).Return (false);
       _innerEndPointMock
           .Expect (ep => ep.SetDataFromSubTransaction (sourceInnerEndPoint))
           .Throw (exception);
@@ -172,8 +174,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _decoratorTestHelper.CheckDelegation (ep => ep.ObjectID, DomainObjectIDs.Product1);
       _decoratorTestHelper.CheckDelegation (ep => ep.Definition, GetEndPointDefinition (typeof (Product), "Reviews"));
       _decoratorTestHelper.CheckDelegation (ep => ep.RelationDefinition, GetRelationDefinition (typeof (Product), "Reviews"));
-      _decoratorTestHelper.CheckDelegation (ep => ep.HasChanged, false);
-      _decoratorTestHelper.CheckDelegation (ep => ep.HasChanged, true);
       _decoratorTestHelper.CheckDelegation (ep => ep.HasBeenTouched, false);
       _decoratorTestHelper.CheckDelegation (ep => ep.HasBeenTouched, true);
       _decoratorTestHelper.CheckDelegation (ep => ep.GetDomainObject(), productReview);
@@ -204,9 +204,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _innerEndPointMock.BackToRecord();
 
-      _decoratorTestHelper.CheckDelegation (ep => ep.HasChangedFast, true);
-      _decoratorTestHelper.CheckDelegation (ep => ep.HasChangedFast, false);
-      _decoratorTestHelper.CheckDelegation (ep => ep.HasChangedFast, null);
+      _decoratorTestHelper.CheckDelegation (ep => ep.HasChanged, true);
+      _decoratorTestHelper.CheckDelegation (ep => ep.HasChanged, false);
     }
 
     [Test]
@@ -230,11 +229,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
     private void CheckDelegationWithStateUpdate (Action<IVirtualCollectionEndPoint> action)
     {
-      // Check with HasChangedFast returning the same value before and after the operation - no state update should be raised then
+      // Check with HasChanged returning the same value before and after the operation - no state update should be raised then
 
       _innerEndPointMock.BackToRecord();
       _innerEndPointMock.Stub (stub => stub.ID).Return (_endPointID);
-      _innerEndPointMock.Stub (stub => stub.HasChangedFast).Return (true).Repeat.Any();
+      _innerEndPointMock.Stub (stub => stub.HasChanged).Return (true).Repeat.Any();
       _innerEndPointMock.Replay();
 
       _listenerMock.BackToRecord();
@@ -244,28 +243,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _listenerMock.AssertWasNotCalled (mock => mock.VirtualEndPointStateUpdated (Arg<RelationEndPointID>.Is.Anything, Arg<bool?>.Is.Anything));
 
-      // Check with HasChangedFast returning null, also check that listener is called _after_ delegation
-      _innerEndPointMock.BackToRecord();
-      _innerEndPointMock.Stub (stub => stub.ID).Return (_endPointID);
-      _innerEndPointMock.Stub (stub => stub.HasChangedFast).Return (null);
-      _innerEndPointMock.Replay();
-
-      _listenerMock.Expect (mock => mock.VirtualEndPointStateUpdated (_endPointID, null));
-      _listenerMock.Replay();
-
-      _decoratorTestHelper.CheckDelegationWithContinuation (
-          action,
-          mi => _listenerMock.AssertWasNotCalled (
-              mock => mock.VirtualEndPointStateUpdated (Arg<RelationEndPointID>.Is.Anything, Arg<bool?>.Is.Anything)));
-
-      _listenerMock.AssertWasCalled (mock => mock.VirtualEndPointStateUpdated (_endPointID, null));
-
-      // Check with HasChangedFast returning true, then false
+      // Check with HasChanged returning true, then false
 
       _innerEndPointMock.BackToRecord();
       _innerEndPointMock.Stub (stub => stub.ID).Return (_endPointID);
-      _innerEndPointMock.Stub (stub => stub.HasChangedFast).Return (true).Repeat.Once();
-      _innerEndPointMock.Stub (stub => stub.HasChangedFast).Return (false);
+      _innerEndPointMock.Stub (stub => stub.HasChanged).Return (true).Repeat.Once();
+      _innerEndPointMock.Stub (stub => stub.HasChanged).Return (false);
       _innerEndPointMock.Replay();
 
       _listenerMock.BackToRecord();
@@ -280,8 +263,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _innerEndPointMock.BackToRecord();
       _innerEndPointMock.Stub (stub => stub.ID).Return (_endPointID);
-      _innerEndPointMock.Stub (stub => stub.HasChangedFast).Return (true).Repeat.Once();
-      _innerEndPointMock.Stub (stub => stub.HasChangedFast).Return (false);
+      _innerEndPointMock.Stub (stub => stub.HasChanged).Return (true).Repeat.Once();
+      _innerEndPointMock.Stub (stub => stub.HasChanged).Return (false);
       _innerEndPointMock.Replay();
 
       _listenerMock.BackToRecord();
@@ -314,15 +297,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
             _innerEndPointMock.BackToRecord();
             _innerEndPointMock.Stub (stub => stub.ID).Return (_endPointID);
-            _innerEndPointMock.Stub (stub => stub.HasChangedFast).Return (true);
+            _innerEndPointMock.Stub (stub => stub.HasChanged).Return (true);
             _innerEndPointMock.Replay();
             Assert.That (changeStateProvider(), Is.True);
 
             _innerEndPointMock.BackToRecord();
             _innerEndPointMock.Stub (stub => stub.ID).Return (_endPointID);
-            _innerEndPointMock.Stub (stub => stub.HasChangedFast).Return (null);
+            _innerEndPointMock.Stub (stub => stub.HasChanged).Return (false);
             _innerEndPointMock.Replay();
-            Assert.That (changeStateProvider(), Is.Null);
+            Assert.That (changeStateProvider(), Is.False);
           });
     }
   }

@@ -143,17 +143,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public bool CanBeCollected
     {
-      get
-      {
-        if (_dataManager != null)
-        {
-          return true; //TODO: RM-7294: is this okay?
-        }
-        else
-        {
-          return true;
-        }
-      }
+      get { return true; }
     }
 
     public bool CanBeMarkedIncomplete
@@ -162,15 +152,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     }
 
     public override bool HasChanged
-    {
-      get
-      {
-        //TODO: RM-7294: merge ChangeTrackingVirtualCollectionDataDecorator into DataManager and make DataManager work for loaded and unloaded state
-        return _addedDomainObjects.Count > 0 || _removedDomainObjects.Count > 0;
-      }
-    }
-
-    public bool? HasChangedFast
     {
       get
       {
