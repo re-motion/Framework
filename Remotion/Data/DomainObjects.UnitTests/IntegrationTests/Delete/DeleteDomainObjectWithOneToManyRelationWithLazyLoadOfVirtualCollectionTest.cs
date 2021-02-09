@@ -100,7 +100,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     }
 
     [Test]
-    [Ignore ("RM-7294: delete related items even when relation is not loaded")]
     public void Relations ()
     {
       _product.Delete();

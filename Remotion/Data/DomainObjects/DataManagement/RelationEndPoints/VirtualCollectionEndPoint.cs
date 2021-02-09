@@ -349,15 +349,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public override IDataManagementCommand CreateDeleteCommand ()
     {
-      IVirtualCollectionData virtualCollectionData;
-      if (_dataManager == null)
-      {
-        virtualCollectionData = new IncompleteEndPointModificationVirtualCollectionData (ID);
-      }
-      else
-      {
-        virtualCollectionData = _dataManager.CollectionData;
-      }
+      EnsureDataComplete();
+      Assertion.DebugIsNotNull (_dataManager, "EnsureDataComplete sets _dataManager.");
+
+      var virtualCollectionData = _dataManager.CollectionData;
 
       //TODO: RM-7294: merge ChangeTrackingVirtualCollectionDataDecorator into DataManager and make DataManager work for loaded and unloaded state
       var changeTrackingVirtualCollectionData = new ChangeTrackingVirtualCollectionDataDecorator (
