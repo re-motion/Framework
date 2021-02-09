@@ -136,9 +136,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       }
       else
       {
-        // TODO: RM-7294
-        //return new TypeNotVirtualRelationEndPointDefinition (classDefinition, propertyName, propertyDefinition.PropertyInfo.PropertyType);
-        throw new NotImplementedException();
+        return new TypeNotCompatibleWithVirtualRelationEndPointDefinition (classDefinition, GetPropertyName(), PropertyInfo.PropertyType);
       }
     }
 

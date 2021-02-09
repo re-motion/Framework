@@ -75,10 +75,34 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     }
 
     [Test]
+    public void TypeNotCompatibleWithVirtualRelationEndPointDefinition_LeftEndPoint ()
+    {
+      var anonymousEndPointDefinition = new AnonymousRelationEndPointDefinition (_orderClass);
+      var invalidRelationEndPointDefinition = new TypeNotCompatibleWithVirtualRelationEndPointDefinition (_orderClass, "Invalid", typeof(string));
+      var relationDefinition = new RelationDefinition ("Test", invalidRelationEndPointDefinition, anonymousEndPointDefinition);
+
+      var mappingValidationResult = _validationRule.Validate (relationDefinition);
+
+      AssertMappingValidationResult (mappingValidationResult, true, null);
+    }
+
+    [Test]
     public void TypeNotObjectIDRelationEndPointDefinition_RightEndPoint ()
     {
       var anonymousEndPointDefinition = new AnonymousRelationEndPointDefinition (_orderClass);
       var invalidRelationEndPointDefinition = new TypeNotObjectIDRelationEndPointDefinition (_orderClass, "Invalid", typeof(string));
+      var relationDefinition = new RelationDefinition ("Test", anonymousEndPointDefinition, invalidRelationEndPointDefinition);
+
+      var mappingValidationResult = _validationRule.Validate (relationDefinition);
+
+      AssertMappingValidationResult (mappingValidationResult, true, null);
+    }
+
+    [Test]
+    public void TypeNotCompatibleWithVirtualRelationEndPointDefinition_RightEndPoint ()
+    {
+      var anonymousEndPointDefinition = new AnonymousRelationEndPointDefinition (_orderClass);
+      var invalidRelationEndPointDefinition = new TypeNotCompatibleWithVirtualRelationEndPointDefinition (_orderClass, "Invalid", typeof(string));
       var relationDefinition = new RelationDefinition ("Test", anonymousEndPointDefinition, invalidRelationEndPointDefinition);
 
       var mappingValidationResult = _validationRule.Validate (relationDefinition);

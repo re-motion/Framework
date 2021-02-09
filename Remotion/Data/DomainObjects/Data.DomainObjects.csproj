@@ -221,6 +221,7 @@
     <Compile Include="IReadOnlyCollectionData.cs" />
     <Compile Include="Linq\FluentFetchRequest.cs" />
     <Compile Include="Mapping\DefaultStorageClass.cs" />
+    <Compile Include="Mapping\TypeNotCompatibleWithVirtualRelationEndPointDefinition.cs" />
     <Compile Include="Mapping\VirtualCollectionRelationEndPointDefinition.cs" />
     <Compile Include="Mapping\Validation\Logical\CheckForClassIDIsValidValidationRule.cs" />
     <Compile Include="Mapping\Validation\Logical\MandatoryNetEnumTypeHasValuesDefinedValidationRule.cs" />

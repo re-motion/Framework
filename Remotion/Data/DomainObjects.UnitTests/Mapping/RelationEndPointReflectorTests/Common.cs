@@ -131,5 +131,31 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
 
       Assert.That (result, Is.TypeOf (typeof (TypeNotObjectIDRelationEndPointDefinition)));
     }
+
+    [Test]
+    public void GetMetadata_VirtualEndPoint_PropertyTypeIsNotCompatible ()
+    {
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins (typeof (ClassWithVirtualRelationEndPoints));
+      var propertyDefinition = 
+          PropertyDefinitionObjectMother.CreateForFakePropertyInfo (classDefinition, "BidirectionalOneToManyForDomainObjectCollection", typeof (string));
+      classDefinition.SetPropertyDefinitions (new PropertyDefinitionCollection (new[] { propertyDefinition }, true));
+
+      var mappingNameResolverMock = MockRepository.GenerateStub<IMemberInformationNameResolver>();
+      mappingNameResolverMock.Stub (mock => mock.GetPropertyName (propertyDefinition.PropertyInfo)).Return (propertyDefinition.PropertyName);
+
+      var relationEndPointReflector = MockRepository.GeneratePartialMock<RelationEndPointReflector<BidirectionalRelationAttribute>> (
+          classDefinition,
+          propertyDefinition.PropertyInfo,
+          mappingNameResolverMock,
+          PropertyMetadataProvider,
+          DomainModelConstraintProviderStub,
+          SortExpressionDefinitionProviderStub);
+
+      relationEndPointReflector.Stub (_ => _.IsVirtualEndRelationEndpoint()).Return (true);
+
+      var result = relationEndPointReflector.GetMetadata();
+
+      Assert.That (result, Is.TypeOf (typeof (TypeNotCompatibleWithVirtualRelationEndPointDefinition)));
+    }
   }
 }
