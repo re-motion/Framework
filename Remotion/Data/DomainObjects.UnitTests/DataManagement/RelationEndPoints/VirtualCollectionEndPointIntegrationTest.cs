@@ -95,6 +95,38 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
+    public void Add_WithLazyLoadedCollectionEndPoint2 ()
+    {
+      _productEndPoint.EnsureDataComplete();
+      Assert.That (_productEndPoint.IsDataComplete, Is.True);
+      Assert.That (
+          _productEndPoint.Collection,
+          Is.EqualTo (new[] { _productReview1, _productReview2, _productReview3 }),
+          "changes go down to actual data store");
+      this.SetDatabaseModifyable();
+      ObjectID newProductReviewID;
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
+      {
+        ProductReview newProductReview = ProductReview.NewObject();
+        newProductReview.CreatedAt = DateTime.Now;
+        newProductReview.Comment = "test";
+        newProductReview.Reviewer = DomainObjectIDs.Person6.GetObject<Person>();
+        newProductReviewID = newProductReview.ID;
+        newProductReview.Product = _product1.ID.GetObject<Product>();
+        ClientTransaction.Current.Commit();
+      }
+
+      var newProductReview2 = newProductReviewID.GetObject<ProductReview>();
+
+
+      Assert.That (newProductReview2.Product, Is.SameAs (_productEndPoint.GetDomainObject()), "bidirectional modification");
+      Assert.That (
+          _productEndPoint.Collection,
+          Is.EqualTo (new[] { _productReview1, _productReview2, _productReview3, newProductReview2 }),
+          "changes go down to actual data store");
+    }
+
+    [Test]
     public void Remove_WithCompleteCollectionEndPoint_InvalidatesCollectionState ()
     {
       _productEndPoint.EnsureDataComplete();

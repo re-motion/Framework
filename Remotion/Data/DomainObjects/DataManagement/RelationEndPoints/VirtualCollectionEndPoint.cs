@@ -300,10 +300,16 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       if (s_log.IsDebugEnabled())
         s_log.DebugFormat ("End-point '{0}' is being synchronized.", ID);
 
-      EnsureDataComplete ();
-      Assertion.DebugIsNotNull (_dataManager, "EnsureDataComplete sets _dataManager.");
-
-      //TODO: RM-7294: do we need to reset the CachedDomainObjects?
+      if (_dataManager != null)
+      {
+        //TODO: RM-7294: do we need to reset the CachedDomainObjects?
+        //_dataManager.Synchronize()
+      }
+      else
+      {
+        EnsureDataComplete();
+        Assertion.DebugIsNotNull (_dataManager, "EnsureDataComplete sets _dataManager.");
+      }
     }
 
     public void SynchronizeOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
