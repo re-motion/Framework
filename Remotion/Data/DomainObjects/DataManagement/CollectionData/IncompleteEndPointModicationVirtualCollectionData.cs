@@ -24,6 +24,10 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 {
+  /// <summary>
+  /// Represents the <seealso cref="IVirtualCollectionData"/> in situations when the collection has not been loaded.
+  /// This type does not implement any kind of data management for the collection. It is simply intended as a null-object in certain infrastructure use cases.
+  /// </summary>
   public class IncompleteEndPointModificationVirtualCollectionData : IVirtualCollectionData
   {
     private readonly RelationEndPointID _associatedEndPointID;

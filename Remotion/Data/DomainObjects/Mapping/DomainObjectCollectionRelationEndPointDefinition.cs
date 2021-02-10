@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Diagnostics;
-using System.Threading;
 using JetBrains.Annotations;
 using Remotion.Data.DomainObjects.Mapping.SortExpressions;
 using Remotion.Reflection;
@@ -25,7 +24,7 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Mapping
 {
   /// <summary>
-  /// Represents the non-foreign-key side of a bidirectional relationship based on <see cref="DomainObjectCollection"/>.
+  /// Represents the many-side of a bidirectional one-to-many relationship based on <see cref="DomainObjectCollection"/>.
   /// </summary>
   [DebuggerDisplay ("{GetType().Name}: {PropertyName}, Cardinality: {Cardinality}")]
   public class DomainObjectCollectionRelationEndPointDefinition : IRelationEndPointDefinition

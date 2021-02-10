@@ -189,14 +189,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    public void SortCurrentData ()
-    {
-      Assert.That (
-          () => _nullEndPoint.SortCurrentData ((one, two) => 0),
-          Throws.InvalidOperationException);
-    }
-
-    [Test]
     public void RegisterOriginalOppositeEndPoint ()
     {
       var relatedEndPointMock = MockRepository.GenerateStrictMock<IRealObjectEndPoint>();

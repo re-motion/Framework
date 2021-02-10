@@ -22,7 +22,7 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Mapping
 {
   /// <summary>
-  /// Represents the non-foreign-key side of a unidirectional relationship.
+  /// Represents the non-foreign-key side of a bidirectional one-to-one relationship.
   /// </summary>
   [DebuggerDisplay ("{GetType().Name}: {PropertyName}, Cardinality: {Cardinality}")]
   public class VirtualObjectRelationEndPointDefinition : IRelationEndPointDefinition

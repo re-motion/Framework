@@ -28,6 +28,11 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 {
+  /// <summary>
+  /// Provides an an encapsulation of the data required when accessing an implementation of <see cref="IObjectList{TDomainObject}"/>, implementing the 
+  /// <see cref="IVirtualCollectionData"/> interface. The data is retrieved from from the <see cref="ClientTransaction"/>'s <see cref="T:DataContainerMap"/>
+  /// and cached locally.
+  /// </summary>
   public class VirtualCollectionData : IVirtualCollectionData, IFlattenedSerializable
   {
     private readonly RelationEndPointID _associatedEndPointID;

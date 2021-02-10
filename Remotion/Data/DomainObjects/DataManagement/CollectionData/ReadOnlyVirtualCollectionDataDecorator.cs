@@ -6,6 +6,12 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 {
+  /// <summary>
+  /// This class acts as a read-only decorator for another <see cref="IVirtualCollectionData"/> object. Every modifying method 
+  /// of the <see cref="IVirtualCollectionData"/> interface will throw an <see cref="NotSupportedException"/> when invoked on this class.
+  /// Modifications are still possible via the <see cref="IVirtualCollectionData"/> passed into the <see cref="ReadOnlyDomainObjectCollectionDataDecorator"/>'s
+  /// constructor.
+  /// </summary>
   public class ReadOnlyVirtualCollectionDataDecorator : IVirtualCollectionData, ICollectionEndPointData
   {
     private readonly IVirtualCollectionData _collectionData;

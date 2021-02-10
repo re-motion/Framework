@@ -23,6 +23,11 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints
 {
+  /// <summary>
+  /// Implementation of <see cref="IVirtualCollectionData"/> used for tracking the usages of <see cref="IVirtualCollectionData.Add"/>,
+  /// <see cref="IVirtualCollectionData.Remove"/>, and <see cref="IVirtualCollectionData.Clear"/>.
+  /// This is used with the <see cref="IDataManagementCommand"/>s of <see cref="IVirtualCollectionEndPoint"/>.
+  /// </summary>
   public class ChangeTrackingVirtualCollectionDataDecorator : IVirtualCollectionData
   {
     private readonly IVirtualCollectionData _innerVirtualCollectionData;

@@ -18,10 +18,17 @@ using System;
 using System.Collections.Concurrent;
 using System.Reflection;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
+using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
+using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement
 {
+  /// <summary>
+  /// Creates instances that implement the <see cref="IObjectList{TDomainObject}"/> interface via reflection
+  /// for use with the data management classes (mostly <see cref="VirtualCollectionEndPoint"/>).
+  /// </summary>
+  /// <seealso cref="DomainObjectCollectionFactory"/>
   public static class ObjectListFactory
   {
     private static readonly ConcurrentDictionary<Type, ConstructorInfo> s_virtualObjectListConstructorInfos =

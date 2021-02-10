@@ -21,7 +21,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 {
   /// <summary>
   /// This class acts as a read-only decorator for another <see cref="IDomainObjectCollectionData"/> object. Every modifying method 
-  /// of the <see cref="IDomainObjectCollectionData"/> interface will throw an <see cref="InvalidOperationException"/> when invoked on this class.
+  /// of the <see cref="IDomainObjectCollectionData"/> interface will throw an <see cref="NotSupportedException"/> when invoked on this class.
   /// Modifications are still possible via the <see cref="IDomainObjectCollectionData"/> passed into the <see cref="ReadOnlyDomainObjectCollectionDataDecorator"/>'s
   /// constructor.
   /// </summary>

@@ -15,11 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 {
+  /// <summary>
+  /// Represents an <see cref="ICollectionEndPoint{TData}"/> holding a collection of type <see cref="IObjectList{TDomainObject}"/>.
+  /// </summary>
   public interface IVirtualCollectionEndPoint : ICollectionEndPoint<ReadOnlyVirtualCollectionDataDecorator>
   {
     IObjectList<IDomainObject> Collection { get; }

@@ -6,6 +6,9 @@ using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 {
+  /// <summary>
+  /// Null-object implementation for <see cref="IDataContainerMapReadOnlyView"/>.
+  /// </summary>
   public class NullDataContainerMapReadOnlyView : IDataContainerMapReadOnlyView
   {
     public NullDataContainerMapReadOnlyView ()
