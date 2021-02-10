@@ -399,5 +399,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (_productEndPoint.IsDataComplete, Is.False);
       Assert.That (_productEndPoint.HasBeenTouched, Is.True);
     }
+
+    [Test]
+    [Ignore ("RM-7294: Reorder elements when sort property changes its value")]
+    public void SortPropertyChangesValue_UpdatesElementsOrder ()
+    {
+    }
   }
 }
