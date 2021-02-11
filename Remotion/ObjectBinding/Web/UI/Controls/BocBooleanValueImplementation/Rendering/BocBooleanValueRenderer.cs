@@ -255,14 +255,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       scriptBuilder.Append (", ");
       scriptBuilder.Append ("$(this).parent().children('a')[0]");
       scriptBuilder.Append (", ");
-      scriptBuilder.Append ("$(this).parent().children('a').children('img').first()[0]");
+      scriptBuilder.Append ("$(this).parent().children('a').children('img')[0]");
       scriptBuilder.Append (", ");
       if (renderingContext.Control.ShowDescription)
-        scriptBuilder.Append ("$(this).parent().children('span').first()[0]");
+        scriptBuilder.Append ("$(this).parent().children('span')[1]");
       else
         scriptBuilder.Append ("null");
       scriptBuilder.Append (", ");
-      scriptBuilder.Append ("$(this).parent().children('input').first()[0]");
+      scriptBuilder.Append ("$(this).parent().children('input')[0]");
       scriptBuilder.Append (", ");
       scriptBuilder.Append (requiredFlag);
       scriptBuilder.Append (", ");
