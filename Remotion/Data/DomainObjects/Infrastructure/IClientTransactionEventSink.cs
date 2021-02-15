@@ -46,16 +46,16 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     void RaiseNewObjectCreatingEvent (Type type);
 
     // User event
-    void RaiseObjectsLoadingEvent (ReadOnlyCollection<ObjectID> objectIDs);
+    void RaiseObjectsLoadingEvent (IReadOnlyList<ObjectID> objectIDs);
     // User event
-    void RaiseObjectsLoadedEvent (ReadOnlyCollection<DomainObject> domainObjects);
+    void RaiseObjectsLoadedEvent (IReadOnlyList<DomainObject> domainObjects);
     // Infrastructure event
-    void RaiseObjectsNotFoundEvent (ReadOnlyCollection<ObjectID> objectIDs);
+    void RaiseObjectsNotFoundEvent (IReadOnlyList<ObjectID> objectIDs);
 
     // User event
-    void RaiseObjectsUnloadingEvent (ReadOnlyCollection<DomainObject> unloadedDomainObjects);
+    void RaiseObjectsUnloadingEvent (IReadOnlyList<DomainObject> unloadedDomainObjects);
     // User event
-    void RaiseObjectsUnloadedEvent (ReadOnlyCollection<DomainObject> unloadedDomainObjects);
+    void RaiseObjectsUnloadedEvent (IReadOnlyList<DomainObject> unloadedDomainObjects);
 
     // User event
     void RaiseObjectDeletingEvent (DomainObject domainObject);
@@ -97,16 +97,16 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     // User event
     void RaiseTransactionCommittingEvent (
-        ReadOnlyCollection<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar);
+        IReadOnlyList<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar);
     // User event
-    void RaiseTransactionCommitValidateEvent (ReadOnlyCollection<PersistableData> committedData);
+    void RaiseTransactionCommitValidateEvent (IReadOnlyList<PersistableData> committedData);
     // User event
-    void RaiseTransactionCommittedEvent (ReadOnlyCollection<DomainObject> domainObjects);
+    void RaiseTransactionCommittedEvent (IReadOnlyList<DomainObject> domainObjects);
 
     // User event
-    void RaiseTransactionRollingBackEvent (ReadOnlyCollection<DomainObject> domainObjects);
+    void RaiseTransactionRollingBackEvent (IReadOnlyList<DomainObject> domainObjects);
     // User event
-    void RaiseTransactionRolledBackEvent (ReadOnlyCollection<DomainObject> domainObjects);
+    void RaiseTransactionRolledBackEvent (IReadOnlyList<DomainObject> domainObjects);
 
     // Infrastructure event
     void RaiseRelationEndPointMapRegisteringEvent (IRelationEndPoint endPoint);

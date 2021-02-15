@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
@@ -71,31 +70,31 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         s_log.DebugFormat ("{0} NewObjectCreating: {1}", clientTransaction.ID, type.FullName);
     }
 
-    public void ObjectsLoading (ClientTransaction clientTransaction, ReadOnlyCollection<ObjectID> objectIDs)
+    public void ObjectsLoading (ClientTransaction clientTransaction, IReadOnlyList<ObjectID> objectIDs)
     {
       if (s_log.IsDebugEnabled())
         s_log.DebugFormat ("{0} ObjectsLoading: {1}", clientTransaction.ID, GetObjectIDString (objectIDs));
     }
 
-    public void ObjectsLoaded (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects)
+    public void ObjectsLoaded (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
     {
       if (s_log.IsDebugEnabled())
         s_log.DebugFormat ("{0} ObjectsLoaded: {1}", clientTransaction.ID, GetDomainObjectsString (domainObjects));
     }
 
-    public void ObjectsNotFound (ClientTransaction clientTransaction, ReadOnlyCollection<ObjectID> objectIDs)
+    public void ObjectsNotFound (ClientTransaction clientTransaction, IReadOnlyList<ObjectID> objectIDs)
     {
       if (s_log.IsDebugEnabled())
         s_log.DebugFormat ("{0} ObjectsNotFound: {1}", clientTransaction.ID, GetObjectIDString (objectIDs));
     }
 
-    public void ObjectsUnloaded (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> unloadedDomainObjects)
+    public void ObjectsUnloaded (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects)
     {
       if (s_log.IsDebugEnabled())
         s_log.DebugFormat ("{0} ObjectsUnloaded: {1}", clientTransaction.ID, GetDomainObjectsString (unloadedDomainObjects));
     }
 
-    public void ObjectsUnloading (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> unloadedDomainObjects)
+    public void ObjectsUnloading (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects)
     {
       if (s_log.IsDebugEnabled())
         s_log.DebugFormat ("{0} ObjectsUnloading: {1}", clientTransaction.ID, GetDomainObjectsString (unloadedDomainObjects));
@@ -289,31 +288,31 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       return results;
     }
 
-    public void TransactionCommitting (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
+    public void TransactionCommitting (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
     {
       if (s_log.IsDebugEnabled())
         s_log.DebugFormat ("{0} TransactionCommitting: {1}", clientTransaction.ID, GetDomainObjectsString (domainObjects));
     }
 
-    public void TransactionCommitValidate (ClientTransaction clientTransaction, ReadOnlyCollection<PersistableData> committedData)
+    public void TransactionCommitValidate (ClientTransaction clientTransaction, IReadOnlyList<PersistableData> committedData)
     {
       if (s_log.IsDebugEnabled())
         s_log.DebugFormat ("{0} TransactionCommitValidate: {1}", clientTransaction.ID, GetDomainObjectsString (committedData.Select (pd => pd.DomainObject)));
     }
 
-    public void TransactionCommitted (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects)
+    public void TransactionCommitted (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
     {
       if (s_log.IsDebugEnabled())
         s_log.DebugFormat ("{0} TransactionCommitted: {1}", clientTransaction.ID, GetDomainObjectsString (domainObjects));
     }
 
-    public void TransactionRollingBack (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects)
+    public void TransactionRollingBack (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
     {
       if (s_log.IsDebugEnabled())
         s_log.DebugFormat ("{0} TransactionRollingBack: {1}", clientTransaction.ID, GetDomainObjectsString (domainObjects));
     }
 
-    public void TransactionRolledBack (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects)
+    public void TransactionRolledBack (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
     {
       if (s_log.IsDebugEnabled())
         s_log.DebugFormat ("{0} TransactionRolledBack: {1}", clientTransaction.ID, GetDomainObjectsString (domainObjects));

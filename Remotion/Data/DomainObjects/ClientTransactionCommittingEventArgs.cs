@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects
@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects
   {
     private readonly ICommittingEventRegistrar _eventRegistrar;
 
-    public ClientTransactionCommittingEventArgs (ReadOnlyCollection<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
+    public ClientTransactionCommittingEventArgs (IReadOnlyList<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
         : base(domainObjects)
     {
       ArgumentUtility.CheckNotNull ("eventRegistrar", eventRegistrar);

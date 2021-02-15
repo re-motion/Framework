@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement;
@@ -195,7 +195,7 @@ namespace Remotion.Data.DomainObjects
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
-    public void ObjectsLoading (ClientTransaction clientTransaction, ReadOnlyCollection<ObjectID> objectIDs)
+    public void ObjectsLoading (ClientTransaction clientTransaction, IReadOnlyList<ObjectID> objectIDs)
     {
       ArgumentUtility.DebugCheckNotNull ("objectIDs", objectIDs);
 
@@ -204,7 +204,7 @@ namespace Remotion.Data.DomainObjects
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
-    public void ObjectsLoaded (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> loadedDomainObjects)
+    public void ObjectsLoaded (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> loadedDomainObjects)
     {
       ArgumentUtility.DebugCheckNotNullOrEmpty ("loadedDomainObjects", loadedDomainObjects);
 
@@ -212,7 +212,7 @@ namespace Remotion.Data.DomainObjects
         this[i].ObjectsLoaded (clientTransaction, loadedDomainObjects);
     }
 
-    public void ObjectsUnloading (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> unloadedDomainObjects)
+    public void ObjectsUnloading (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects)
     {
       ArgumentUtility.DebugCheckNotNull ("unloadedDomainObjects", unloadedDomainObjects);
 
@@ -220,7 +220,7 @@ namespace Remotion.Data.DomainObjects
         this[i].ObjectsUnloading (clientTransaction, unloadedDomainObjects);
     }
 
-    public void ObjectsUnloaded (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> unloadedDomainObjects)
+    public void ObjectsUnloaded (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects)
     {
       ArgumentUtility.DebugCheckNotNull ("unloadedDomainObjects", unloadedDomainObjects);
 
@@ -348,7 +348,7 @@ namespace Remotion.Data.DomainObjects
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
-    public void Committing (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> changedDomainObjects, ICommittingEventRegistrar eventRegistrar)
+    public void Committing (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> changedDomainObjects, ICommittingEventRegistrar eventRegistrar)
     {
       ArgumentUtility.DebugCheckNotNull ("changedDomainObjects", changedDomainObjects);
 
@@ -357,7 +357,7 @@ namespace Remotion.Data.DomainObjects
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
-    public void CommitValidate (ClientTransaction clientTransaction, ReadOnlyCollection<PersistableData> committedData)
+    public void CommitValidate (ClientTransaction clientTransaction, IReadOnlyList<PersistableData> committedData)
     {
       ArgumentUtility.DebugCheckNotNull ("committedData", committedData);
 
@@ -366,7 +366,7 @@ namespace Remotion.Data.DomainObjects
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
-    public void Committed (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> changedDomainObjects)
+    public void Committed (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> changedDomainObjects)
     {
       ArgumentUtility.DebugCheckNotNull ("changedDomainObjects", changedDomainObjects);
 
@@ -375,7 +375,7 @@ namespace Remotion.Data.DomainObjects
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
-    public void RollingBack (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> changedDomainObjects)
+    public void RollingBack (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> changedDomainObjects)
     {
       ArgumentUtility.DebugCheckNotNull ("changedDomainObjects", changedDomainObjects);
 
@@ -384,7 +384,7 @@ namespace Remotion.Data.DomainObjects
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
-    public void RolledBack (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> changedDomainObjects)
+    public void RolledBack (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> changedDomainObjects)
     {
       ArgumentUtility.DebugCheckNotNull ("changedDomainObjects", changedDomainObjects);
 
