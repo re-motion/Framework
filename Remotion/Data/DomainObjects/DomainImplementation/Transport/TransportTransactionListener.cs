@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Utilities;
@@ -45,12 +45,12 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
         CheckDomainObjectForChangedProperty (domainObject);
     }
 
-    public override void TransactionCommitting (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
+    public override void TransactionCommitting (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
     {
       throw new InvalidOperationException ("The transport transaction cannot be committed.");
     }
 
-    public override void TransactionRollingBack (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects)
+    public override void TransactionRollingBack (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
     {
       throw new InvalidOperationException ("The transport transaction cannot be rolled back.");
     }

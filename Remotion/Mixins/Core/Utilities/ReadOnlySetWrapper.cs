@@ -15,28 +15,46 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Remotion.Utilities;
 
-namespace Remotion.Data.DomainObjects
+// ReSharper disable once CheckNamespace
+namespace Remotion.Collections
 {
   /// <summary>
-  /// Provides contextual data for the <see cref="ClientTransaction.Committing"/> event.
+  /// Read-only wrapper around an <see cref="ISet{T}"/> to prevent casting an <see cref="IReadOnlyCollection{T}"/> back to mutable type.
   /// </summary>
-  public class ClientTransactionCommittingEventArgs : ClientTransactionEventArgs
+  [Serializable]
+  internal sealed class ReadOnlySetWrapper<T> : IReadOnlyCollection<T>
   {
-    private readonly ICommittingEventRegistrar _eventRegistrar;
+    private readonly ISet<T> _collection;
 
-    public ClientTransactionCommittingEventArgs (IReadOnlyList<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
-        : base(domainObjects)
+    public ReadOnlySetWrapper (ISet<T> collection)
     {
-      ArgumentUtility.CheckNotNull ("eventRegistrar", eventRegistrar);
-      _eventRegistrar = eventRegistrar;
+      ArgumentUtility.CheckNotNull ("collection", collection);
+
+      _collection = collection;
     }
 
-    public ICommittingEventRegistrar EventRegistrar
+    public int Count
     {
-      get { return _eventRegistrar; }
+      get { return _collection.Count; }
+    }
+
+    public IEnumerator<T> GetEnumerator ()
+    {
+      return _collection.GetEnumerator ();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator ()
+    {
+      return GetEnumerator ();
+    }
+
+    public bool Contains (T item)
+    {
+      return _collection.Contains (item);
     }
   }
 }

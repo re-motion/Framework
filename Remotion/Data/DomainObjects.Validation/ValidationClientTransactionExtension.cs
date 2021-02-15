@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
@@ -53,7 +52,7 @@ namespace Remotion.Data.DomainObjects.Validation
       get { return _validatorProvider; }
     }
 
-    public override void CommitValidate (ClientTransaction clientTransaction, ReadOnlyCollection<PersistableData> committedData)
+    public override void CommitValidate (ClientTransaction clientTransaction, IReadOnlyList<PersistableData> committedData)
     {
       ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull ("committedData", committedData);
@@ -102,7 +101,7 @@ namespace Remotion.Data.DomainObjects.Validation
       return string.Format ("Validation error on object of Type '{0}':", validatedInstance.GetType ().FullName);
     }
 
-    private List<ValidationResult> Validate (ReadOnlyCollection<PersistableData> domainObjectsToValidate, Dictionary<Type, IValidator> validatorCache)
+    private List<ValidationResult> Validate (IReadOnlyList<PersistableData> domainObjectsToValidate, Dictionary<Type, IValidator> validatorCache)
     {
       ArgumentUtility.CheckNotNull ("domainObjectsToValidate", domainObjectsToValidate);
 

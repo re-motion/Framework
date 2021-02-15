@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.Mapping;
@@ -115,7 +115,7 @@ namespace Remotion.Data.DomainObjects
     /// <remarks>
     /// <note type="inotes">The implementation of this method should throw an exception if the operation must be cancelled.</note>
     /// </remarks>
-    void ObjectsLoading (ClientTransaction clientTransaction, ReadOnlyCollection<ObjectID> objectIDs);
+    void ObjectsLoading (ClientTransaction clientTransaction, IReadOnlyList<ObjectID> objectIDs);
 
     /// <summary>
     /// Invoked when one or multiple <see cref="DomainObject"/>s were loaded. 
@@ -126,7 +126,7 @@ namespace Remotion.Data.DomainObjects
     ///   <see cref="DomainObject.OnLoaded(Remotion.Data.DomainObjects.LoadMode)"/> is called before this method is invoked, whereas <see cref="ClientTransaction.Loaded"/> is fired after it.
     /// <note type="inotes">The implementation of this method must not throw an exception.</note>
     /// </remarks>
-    void ObjectsLoaded (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> loadedDomainObjects);
+    void ObjectsLoaded (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> loadedDomainObjects);
 
     /// <summary>
     /// Invoked when the data of one or multiple <see cref="DomainObject"/> instances are about to be unloaded.
@@ -137,7 +137,7 @@ namespace Remotion.Data.DomainObjects
     /// <remarks>
     /// <note type="inotes">The implementation of this method should throw an exception if the operation must be cancelled.</note>
     /// </remarks>
-    void ObjectsUnloading (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> unloadedDomainObjects);
+    void ObjectsUnloading (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects);
 
     /// <summary>
     /// Invoked when the data of one or multiple <see cref="DomainObject"/> instances was unloaded. 
@@ -148,7 +148,7 @@ namespace Remotion.Data.DomainObjects
     /// <remarks>
     /// <note type="inotes">The implementation of this method must not throw an exception.</note>
     /// </remarks>
-    void ObjectsUnloaded (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> unloadedDomainObjects);
+    void ObjectsUnloaded (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects);
 
     /// <summary>
     /// Invoked before a <see cref="DomainObject"/> is deleted. 
@@ -430,7 +430,7 @@ namespace Remotion.Data.DomainObjects
     /// The operation may be cancelled at this point.
     /// </summary>
     /// <param name="clientTransaction">The <see cref="ClientTransaction"/> instance for which the event is raised.</param>
-    /// <param name="changedDomainObjects">A <see cref="ReadOnlyCollection{T}"/> holding all changed <see cref="DomainObject"/>s that are being committed.</param>
+    /// <param name="changedDomainObjects">A <see cref="IReadOnlyList{T}"/> holding all changed <see cref="DomainObject"/>s that are being committed.</param>
     /// <param name="eventRegistrar">An <see cref="ICommittingEventRegistrar"/> allowing to register objects for additional events to be raised 
     ///   before the <see cref="ClientTransaction.Commit"/>  operation is performed.</param>
     /// <remarks>
@@ -442,7 +442,7 @@ namespace Remotion.Data.DomainObjects
     /// <note type="inotes">The implementation of this method should throw an exception if the operation must be cancelled.</note>
     /// </remarks>
     void Committing (
-        ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> changedDomainObjects, ICommittingEventRegistrar eventRegistrar);
+        ClientTransaction clientTransaction, IReadOnlyList<DomainObject> changedDomainObjects, ICommittingEventRegistrar eventRegistrar);
 
     /// <summary>
     /// Invoked just before a set of <see cref="DomainObject"/> instances is to be committed.
@@ -458,13 +458,13 @@ namespace Remotion.Data.DomainObjects
     /// </remarks>
     /// <exception cref="DomainObjectValidationException">The set of <paramref name="committedData"/> was not valid. 
     /// (Subclasses of this exception may be thrown.)</exception>
-    void CommitValidate (ClientTransaction clientTransaction, ReadOnlyCollection<PersistableData> committedData);
+    void CommitValidate (ClientTransaction clientTransaction, IReadOnlyList<PersistableData> committedData);
     
     /// <summary>
     /// Invoked after a <see cref="ClientTransaction"/> was executed.
     /// </summary>
     /// <param name="clientTransaction">The <see cref="ClientTransaction"/> instance for which the event is raised.</param>
-    /// <param name="changedDomainObjects">A <see cref="ReadOnlyCollection{T}"/> holding all <see cref="DomainObject"/>s that were committed, apart
+    /// <param name="changedDomainObjects">A <see cref="IReadOnlyList{T}"/> holding all <see cref="DomainObject"/>s that were committed, apart
     /// from <see cref="DomainObject"/> instances that were deleted.</param>
     /// <remarks>
     ///   <para>
@@ -475,29 +475,29 @@ namespace Remotion.Data.DomainObjects
     ///   </para>
     /// <note type="inotes">The implementation of this method must not throw an exception. To cancel the operation use <see cref="Committing"/> instead.</note>
     /// </remarks>
-    void Committed (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> changedDomainObjects);
+    void Committed (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> changedDomainObjects);
 
     /// <summary>
     /// Invoked before a <see cref="ClientTransaction"/> is rolled back.
     /// The operation may be cancelled at this point.
     /// </summary>
     /// <param name="clientTransaction">The <see cref="ClientTransaction"/> instance for which the event is raised.</param>
-    /// <param name="changedDomainObjects">A <see cref="ReadOnlyCollection{T}"/> holding all changed <see cref="DomainObject"/>s that are being rolled back.</param>
+    /// <param name="changedDomainObjects">A <see cref="IReadOnlyList{T}"/> holding all changed <see cref="DomainObject"/>s that are being rolled back.</param>
     /// <remarks>
     ///   <para>Use this method to cancel the operation, whereas <see cref="RolledBack"/> should be used to perform actions on its successful execution.</para>
     /// <note type="inotes">The implementation of this method should throw an exception if the operation must be cancelled.</note>
     /// </remarks>
-    void RollingBack (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> changedDomainObjects);
+    void RollingBack (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> changedDomainObjects);
 
     /// <summary>
     /// Invoked after a <see cref="ClientTransaction"/> was rolled back.
     /// </summary>
     /// <param name="clientTransaction">The <see cref="ClientTransaction"/> instance for which the event is raised.</param>
-    /// <param name="changedDomainObjects">A <see cref="ReadOnlyCollection{T}"/> holding all changed <see cref="DomainObject"/>s that are being rolled back.</param>
+    /// <param name="changedDomainObjects">A <see cref="IReadOnlyList{T}"/> holding all changed <see cref="DomainObject"/>s that are being rolled back.</param>
     /// <remarks>
     ///   Use this method to perform actions on a successful execution, whereas <see cref="RollingBack"/> should be used to cancel the operation.
     /// <note type="inotes">The implementation of this method must not throw an exception. To cancel the operation use <see cref="RollingBack"/> instead.</note>
     /// </remarks>
-    void RolledBack (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> changedDomainObjects);
+    void RolledBack (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> changedDomainObjects);
   }
 }

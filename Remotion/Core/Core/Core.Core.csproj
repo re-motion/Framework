@@ -215,9 +215,7 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
-    <Compile Include="Collections\CollectionExtensions.cs" />
     <Compile Include="Collections\ImmutableSingleton.cs" />
-    <Compile Include="Collections\ReadOnlyCollectionDecorator.cs" />
     <Compile Include="Configuration\ServiceLocation\IServiceLocationConfiguration.cs" />
     <Compile Include="Configuration\ServiceLocation\ServiceLocationConfiguration.cs" />
     <Compile Include="Configuration\TypeResolution\TypeResolutionConfiguration.cs" />

@@ -67,7 +67,9 @@
     </Compile>
     <Compile Include="Collections\ArrayComparer.cs" />
     <Compile Include="Collections\AutoInitHashtable.cs" />
+    <Compile Include="Collections\CollectionExtensions.cs" />
     <Compile Include="Collections\MultiSet.cs" />
+    <Compile Include="Collections\ReadOnlyCollectionDecorator.cs" />
     <Compile Include="Collections\SetBasedCacheKey.cs" />
     <Compile Include="Collections\UncastableEnumerableWrapper.cs" />
     <Compile Include="Diagnostics\ByteValue.cs" />

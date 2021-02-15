@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
@@ -123,7 +122,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       _extensionCollection.NewObjectCreating (_clientTransaction, type);
     }
 
-    public void RaiseObjectsLoadingEvent (ReadOnlyCollection<ObjectID> objectIDs)
+    public void RaiseObjectsLoadingEvent (IReadOnlyList<ObjectID> objectIDs)
     {
       ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
 
@@ -131,7 +130,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       _extensionCollection.ObjectsLoading (_clientTransaction, objectIDs);
     }
 
-    public void RaiseObjectsLoadedEvent (ReadOnlyCollection<DomainObject> domainObjects)
+    public void RaiseObjectsLoadedEvent (IReadOnlyList<DomainObject> domainObjects)
     {
       ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
 
@@ -147,12 +146,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       _listenerCollection.ObjectsLoaded (_clientTransaction, domainObjects);
     }
 
-    public void RaiseObjectsNotFoundEvent (ReadOnlyCollection<ObjectID> objectIDs)
+    public void RaiseObjectsNotFoundEvent (IReadOnlyList<ObjectID> objectIDs)
     {
       _listenerCollection.ObjectsNotFound (_clientTransaction, objectIDs);
     }
 
-    public void RaiseObjectsUnloadingEvent (ReadOnlyCollection<DomainObject> unloadedDomainObjects)
+    public void RaiseObjectsUnloadingEvent (IReadOnlyList<DomainObject> unloadedDomainObjects)
     {
       ArgumentUtility.CheckNotNull ("unloadedDomainObjects", unloadedDomainObjects);
 
@@ -171,7 +170,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       }
     }
 
-    public void RaiseObjectsUnloadedEvent (ReadOnlyCollection<DomainObject> unloadedDomainObjects)
+    public void RaiseObjectsUnloadedEvent (IReadOnlyList<DomainObject> unloadedDomainObjects)
     {
       ArgumentUtility.CheckNotNull ("unloadedDomainObjects", unloadedDomainObjects);
 
@@ -337,7 +336,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       return _listenerCollection.FilterCustomQueryResult (_clientTransaction, query, results);
     }
 
-    public void RaiseTransactionCommittingEvent (ReadOnlyCollection<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
+    public void RaiseTransactionCommittingEvent (IReadOnlyList<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
     {
       ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
       ArgumentUtility.CheckNotNull ("eventRegistrar", eventRegistrar);
@@ -358,7 +357,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       }
     }
 
-    public void RaiseTransactionCommitValidateEvent (ReadOnlyCollection<PersistableData> committedData)
+    public void RaiseTransactionCommitValidateEvent (IReadOnlyList<PersistableData> committedData)
     {
       ArgumentUtility.CheckNotNull ("committedData", committedData);
 
@@ -366,7 +365,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       _extensionCollection.CommitValidate (_clientTransaction, committedData);
     }
 
-    public void RaiseTransactionCommittedEvent (ReadOnlyCollection<DomainObject> domainObjects)
+    public void RaiseTransactionCommittedEvent (IReadOnlyList<DomainObject> domainObjects)
     {
       ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
 
@@ -381,7 +380,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       _listenerCollection.TransactionCommitted (_clientTransaction, domainObjects);
     }
 
-    public void RaiseTransactionRollingBackEvent (ReadOnlyCollection<DomainObject> domainObjects)
+    public void RaiseTransactionRollingBackEvent (IReadOnlyList<DomainObject> domainObjects)
     {
       ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
 
@@ -402,7 +401,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       }
     }
 
-    public void RaiseTransactionRolledBackEvent (ReadOnlyCollection<DomainObject> domainObjects)
+    public void RaiseTransactionRolledBackEvent (IReadOnlyList<DomainObject> domainObjects)
     {
       ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
 

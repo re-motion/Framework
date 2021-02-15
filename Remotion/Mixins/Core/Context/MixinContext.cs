@@ -47,8 +47,7 @@ namespace Remotion.Mixins.Context
     private readonly Type _mixinType;
     private readonly MixinKind _mixinKind;
     private readonly MemberVisibility _introducedMemberVisibility;
-    // Must use ReadOnlyCollectionDecorator to have access to Contains-method.
-    private readonly ReadOnlyCollectionDecorator<Type> _explicitDependencies;
+    private readonly ReadOnlySetWrapper<Type> _explicitDependencies;
     private readonly MixinContextOrigin _origin;
 
     private readonly int _cachedHashCode;
@@ -78,7 +77,7 @@ namespace Remotion.Mixins.Context
       _mixinType = mixinType;
       _mixinKind = mixinKind;
       _introducedMemberVisibility = introducedMemberVisibility;
-      _explicitDependencies = new HashSet<Type> (explicitDependencies).AsReadOnly();
+      _explicitDependencies = new ReadOnlySetWrapper<Type> (new HashSet<Type> (explicitDependencies));
       _origin = origin;
 
       _cachedHashCode = EqualityUtility.GetRotatedHashCode (

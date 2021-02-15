@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects
@@ -25,14 +25,14 @@ namespace Remotion.Data.DomainObjects
   /// </summary>
   public class ClientTransactionEventArgs : EventArgs
   {
-    private readonly ReadOnlyCollection<DomainObject> _domainObjects;
+    private readonly IReadOnlyList<DomainObject> _domainObjects;
 
     /// <summary>
     /// Initializes a new instance of the <b>ClientTransactionEventArgs</b> class.
     /// </summary>
     /// <param name="domainObjects">The <see cref="DomainObject"/>s affected by the <see cref="ClientTransaction"/> operation. Must not be <see langword="null"/>.</param>
     /// <exception cref="System.ArgumentNullException"><paramref name="domainObjects"/> is <see langword="null"/>.</exception>
-    public ClientTransactionEventArgs (ReadOnlyCollection<DomainObject> domainObjects)
+    public ClientTransactionEventArgs (IReadOnlyList<DomainObject> domainObjects)
     {
       ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
       _domainObjects = domainObjects;
@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects
     /// <summary>
     /// Gets the <see cref="DomainObject"/>s affected by the <see cref="ClientTransaction.Commit"/> operation.
     /// </summary>
-    public ReadOnlyCollection<DomainObject> DomainObjects
+    public IReadOnlyList<DomainObject> DomainObjects
     {
       get { return _domainObjects; }
     }

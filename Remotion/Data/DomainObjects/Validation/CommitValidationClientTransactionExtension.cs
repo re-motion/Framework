@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.ServiceLocation;
@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.Validation
       get { return _validator; }
     }
 
-    public override void CommitValidate (ClientTransaction clientTransaction, ReadOnlyCollection<PersistableData> committedData)
+    public override void CommitValidate (ClientTransaction clientTransaction, IReadOnlyList<PersistableData> committedData)
     {
       ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull ("committedData", committedData);

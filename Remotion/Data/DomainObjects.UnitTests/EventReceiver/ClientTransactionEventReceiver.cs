@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 {
@@ -29,17 +28,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     // member fields
 
     private readonly ClientTransaction _clientTransaction;
-    private List<ReadOnlyCollection<DomainObject>> _loadedDomainObjectLists;
-    private List<ReadOnlyCollection<DomainObject>> _committingDomainObjectLists;
-    private List<ReadOnlyCollection<DomainObject>> _committedDomainObjectLists;
+    private List<IReadOnlyList<DomainObject>> _loadedDomainObjectLists;
+    private List<IReadOnlyList<DomainObject>> _committingDomainObjectLists;
+    private List<IReadOnlyList<DomainObject>> _committedDomainObjectLists;
 
     // construction and disposing
 
     public ClientTransactionEventReceiver (ClientTransaction clientTransaction)
     {
-      _loadedDomainObjectLists = new List<ReadOnlyCollection<DomainObject>> ();
-      _committingDomainObjectLists = new List<ReadOnlyCollection<DomainObject>> ();
-      _committedDomainObjectLists = new List<ReadOnlyCollection<DomainObject>> ();
+      _loadedDomainObjectLists = new List<IReadOnlyList<DomainObject>> ();
+      _committingDomainObjectLists = new List<IReadOnlyList<DomainObject>> ();
+      _committedDomainObjectLists = new List<IReadOnlyList<DomainObject>> ();
       _clientTransaction = clientTransaction;
 
       _clientTransaction.Loaded += ClientTransaction_Loaded;
@@ -51,9 +50,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     public void Clear ()
     {
-      _loadedDomainObjectLists = new List<ReadOnlyCollection<DomainObject>> ();
-      _committingDomainObjectLists = new List<ReadOnlyCollection<DomainObject>> ();
-      _committedDomainObjectLists = new List<ReadOnlyCollection<DomainObject>> ();
+      _loadedDomainObjectLists = new List<IReadOnlyList<DomainObject>> ();
+      _committingDomainObjectLists = new List<IReadOnlyList<DomainObject>> ();
+      _committedDomainObjectLists = new List<IReadOnlyList<DomainObject>> ();
     }
 
     public void Unregister ()
@@ -78,17 +77,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
       _committedDomainObjectLists.Add (args.DomainObjects);
     }
 
-    public List<ReadOnlyCollection<DomainObject>> LoadedDomainObjectLists
+    public List<IReadOnlyList<DomainObject>> LoadedDomainObjectLists
     {
       get { return _loadedDomainObjectLists; }
     }
 
-    public List<ReadOnlyCollection<DomainObject>> CommittingDomainObjectLists
+    public List<IReadOnlyList<DomainObject>> CommittingDomainObjectLists
     {
       get { return _committingDomainObjectLists; }
     }
 
-    public List<ReadOnlyCollection<DomainObject>> CommittedDomainObjectLists
+    public List<IReadOnlyList<DomainObject>> CommittedDomainObjectLists
     {
       get { return _committedDomainObjectLists; }
     }

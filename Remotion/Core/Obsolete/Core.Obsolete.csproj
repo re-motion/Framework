@@ -69,6 +69,7 @@
     <Compile Include="Collections\LockingInvalidationToken.cs" />
     <Compile Include="Collections\NullCache.cs" />
     <Compile Include="Collections\NullDataStore.cs" />
+    <Compile Include="Collections\ReadOnlyCollectionDecorator.cs" />
     <Compile Include="Collections\SimpleDataStore.cs" />
     <Compile Include="Collections\TimeSpanBasedExpirationPolicy.cs" />
     <Compile Include="DisposableBase.cs" />

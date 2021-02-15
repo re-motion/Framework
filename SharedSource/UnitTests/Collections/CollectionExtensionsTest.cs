@@ -16,27 +16,29 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Utilities;
+using NUnit.Framework;
+using Remotion.Collections;
 
-namespace Remotion.Data.DomainObjects
+// ReSharper disable once CheckNamespace
+namespace Remotion.UnitTests.Collections
 {
-  /// <summary>
-  /// Provides contextual data for the <see cref="ClientTransaction.Committing"/> event.
-  /// </summary>
-  public class ClientTransactionCommittingEventArgs : ClientTransactionEventArgs
+  [TestFixture]
+  public class CollectionExtensionsTest
   {
-    private readonly ICommittingEventRegistrar _eventRegistrar;
+    private IReadOnlyCollection<int> _collection;
 
-    public ClientTransactionCommittingEventArgs (IReadOnlyList<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
-        : base(domainObjects)
+    [SetUp]
+    public void SetUp ()
     {
-      ArgumentUtility.CheckNotNull ("eventRegistrar", eventRegistrar);
-      _eventRegistrar = eventRegistrar;
+      _collection = new[] { 1, 2, 3 };
     }
 
-    public ICommittingEventRegistrar EventRegistrar
+    [Test]
+    public void AsReadOnly ()
     {
-      get { return _eventRegistrar; }
+      ReadOnlyCollectionWrapper<int> decorator = _collection.AsReadOnly();
+
+      Assert.That (decorator, Is.EqualTo (_collection));
     }
   }
 }
