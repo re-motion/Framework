@@ -319,6 +319,7 @@
     <Compile Include="Utilities\MixinGenericArgumentFinder.cs" />
     <Compile Include="Utilities\MixinReflector.cs" />
     <Compile Include="Utilities\MixinTypeCloser.cs" />
+    <Compile Include="Utilities\ReadOnlySetWrapper.cs" />
     <Compile Include="Utilities\ReflectionUtility.cs" />
     <Compile Include="Validation\DefaultValidationLog.cs" />
     <Compile Include="Validation\DelegateRuleDescriptionAttribute.cs" />
