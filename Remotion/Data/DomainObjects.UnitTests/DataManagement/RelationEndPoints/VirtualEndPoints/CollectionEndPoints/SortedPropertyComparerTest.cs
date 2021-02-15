@@ -132,6 +132,53 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (comparer.Compare (domainObject2, domainObject2), Is.EqualTo (0));
     }
 
+    [Test]
+    public void Compare_PropertyOnBaseType ()
+    {
+      var propertyDefinition = DomainObjectIDs.Company1.ClassDefinition.GetMandatoryPropertyDefinition (typeof (Company).FullName + ".Name");
+
+      var domainObject1 = DomainObjectMother.CreateFakeObject<Company> ();
+      var domainObject2 = DomainObjectMother.CreateFakeObject<Customer> ();
+
+      var dataContainer1 = PrepareDataContainer (_dataManagerStub, domainObject1);
+      dataContainer1.SetValue (propertyDefinition, "A");
+      
+      var dataContainer2 = PrepareDataContainer (_dataManagerStub, domainObject2);
+      dataContainer2.SetValue (propertyDefinition, "B");
+
+      var specification = new SortedPropertySpecification (propertyDefinition, SortOrder.Ascending);
+      var comparer = new SortedPropertyComparer (specification, _dataManagerStub);
+
+      Assert.That (comparer.Compare (domainObject1, domainObject1), Is.EqualTo (0));
+      Assert.That (comparer.Compare (domainObject1, domainObject2), Is.EqualTo (-1));
+      Assert.That (comparer.Compare (domainObject2, domainObject1), Is.EqualTo (1));
+      Assert.That (comparer.Compare (domainObject2, domainObject2), Is.EqualTo (0));
+    }
+
+    [Test]
+    public void Compare_PropertyOnMixinType ()
+    {
+      var propertyDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (ClassWithMixedProperty))
+          .GetMandatoryPropertyDefinition (typeof (MixinAddingProperty).FullName + ".MixedProperty");
+
+      var domainObject1 = DomainObjectMother.CreateFakeObject<ClassWithMixedProperty> ();
+      var domainObject2 = DomainObjectMother.CreateFakeObject<ClassWithMixedProperty> ();
+
+      var dataContainer1 = PrepareDataContainer (_dataManagerStub, domainObject1);
+      dataContainer1.SetValue (propertyDefinition, "A");
+      
+      var dataContainer2 = PrepareDataContainer (_dataManagerStub, domainObject2);
+      dataContainer2.SetValue (propertyDefinition, "B");
+
+      var specification = new SortedPropertySpecification (propertyDefinition, SortOrder.Ascending);
+      var comparer = new SortedPropertyComparer (specification, _dataManagerStub);
+
+      Assert.That (comparer.Compare (domainObject1, domainObject1), Is.EqualTo (0));
+      Assert.That (comparer.Compare (domainObject1, domainObject2), Is.EqualTo (-1));
+      Assert.That (comparer.Compare (domainObject2, domainObject1), Is.EqualTo (1));
+      Assert.That (comparer.Compare (domainObject2, domainObject2), Is.EqualTo (0));
+    }
+
     private DataContainer PrepareDataContainer (IDataManager dataManagerStub, Order domainObject, int orderNumber)
     {
       var dataContainer = PrepareDataContainer(dataManagerStub, domainObject);
