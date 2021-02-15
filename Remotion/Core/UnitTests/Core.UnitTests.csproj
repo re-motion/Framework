@@ -258,13 +258,11 @@
     <Compile Include="Reflection\TypeDiscovery\ContextAwareTypeDiscoveryUtilityTest.cs" />
     <Compile Include="Reflection\TypeResolution\DefaultTypeResolutionServiceTest.cs" />
     <TestAssembly Include="Reflection\TypeDiscovery\TestAssemblies\DelaySignAssembly\DelaySignClass.cs" />
-    <Compile Include="Collections\CollectionExtensionsTest.cs" />
     <Compile Include="Collections\CompoundValueEqualityComparerTest.cs" />
     <Compile Include="Collections\ComponentwiseEqualsAndHashcodeWrapperTest.cs" />
     <Compile Include="Collections\DictionaryExtensionsTest.cs" />
     <Compile Include="Collections\ImmutableSingletonTest.cs" />
     <Compile Include="Collections\ListAdapterTest.cs" />
-    <Compile Include="Collections\ReadOnlyCollectionDecoratorTest.cs" />
     <Compile Include="Configuration\ServiceLocation\FakeServiceLocatorProvider.cs" />
     <Compile Include="Configuration\ServiceLocation\ServiceLocationConfigurationTest.cs" />
     <Compile Include="Configuration\TypeDiscovery\IntegrationTests\SpecificRootAssemblies\SpecificRootAssembliesAreNotSubjectToApplicationFilterTest.cs" />

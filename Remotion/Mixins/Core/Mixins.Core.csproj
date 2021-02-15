@@ -54,6 +54,12 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\SharedSource\Core\Collections\CollectionExtensions.cs">
+      <Link>SharedSource\Collections\CollectionExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\Collections\ReadOnlyCollectionWrapper.cs">
+      <Link>SharedSource\Collections\ReadOnlyCollectionWrapper.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\AssertionConditionAttribute.cs">
       <Link>SharedSource\ReSharperAnnotations\AssertionConditionAttribute.cs</Link>
     </Compile>

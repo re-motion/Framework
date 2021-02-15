@@ -66,6 +66,8 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="Collections\CollectionExtensionsTest.cs" />
+    <Compile Include="Collections\ReadOnlyCollectionDecoratorTest.cs" />
     <Compile Include="Collections\SetBasedCacheKeyTest.cs" />
     <Compile Include="Diagnostics\BugReportTest.cs" />
     <Compile Include="Diagnostics\ByteValueTest.cs" />
