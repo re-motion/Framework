@@ -63,6 +63,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections\CollectionExtensionsTest.cs" />
+    <Compile Include="Collections\ReadOnlyCollectionWrapperTest.cs" />
     <Compile Include="Development\Core\UnitTesting\DevNullTest.cs" />
     <Compile Include="Development\Core\UnitTesting\Enumerables\EnumerableExtensionsTest.cs" />
     <Compile Include="Development\Core\UnitTesting\Enumerables\OneTimeEnumerableTest.cs" />
