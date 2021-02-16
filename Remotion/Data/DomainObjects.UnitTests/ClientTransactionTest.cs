@@ -601,7 +601,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Customer1, "Orders");
       _transaction.ExecuteInScope (() => DomainObjectIDs.Customer1.GetObject<Customer> ().Orders);
       
-      var endPoint = (ICollectionEndPoint) _dataManager.GetRelationEndPointWithoutLoading (endPointID);
+      var endPoint = (ICollectionEndPoint<ICollectionEndPointData>) _dataManager.GetRelationEndPointWithoutLoading (endPointID);
       Assert.That (endPoint, Is.Not.Null);
       endPoint.MarkDataIncomplete ();
       Assert.That (endPoint.IsDataComplete, Is.False);
@@ -958,7 +958,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       Order order = _transaction.ExecuteInScope (() => _objectID1.GetObject<Order> ());
 
       var endPointID = RelationEndPointID.Resolve (order, o => o.OrderItems);
-      var endPoint = ((ICollectionEndPoint) ClientTransactionTestHelper.GetDataManager (_transaction).GetRelationEndPointWithLazyLoad (endPointID));
+      var endPoint = ((ICollectionEndPoint<ICollectionEndPointData>) ClientTransactionTestHelper.GetDataManager (_transaction).GetRelationEndPointWithLazyLoad (endPointID));
       endPoint.CreateAddCommand (_transaction.ExecuteInScope (() => DomainObjectIDs.OrderItem3.GetObject<OrderItem>())).ExpandToAllRelatedObjects ().Perform ();
 
       var orderItems = ClientTransactionTestHelper.CallGetRelatedObjects (_transaction, endPointID);
@@ -1005,7 +1005,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       Order order = _transaction.ExecuteInScope (() => _objectID1.GetObject<Order> ());
 
       var endPointID = RelationEndPointID.Create (order.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
-      var endPoint = ((ICollectionEndPoint) ClientTransactionTestHelper.GetDataManager (_transaction).GetRelationEndPointWithLazyLoad (endPointID));
+      var endPoint = ((ICollectionEndPoint<ICollectionEndPointData>) ClientTransactionTestHelper.GetDataManager (_transaction).GetRelationEndPointWithLazyLoad (endPointID));
       endPoint.CreateAddCommand (_transaction.ExecuteInScope (() => DomainObjectIDs.OrderItem3.GetObject<OrderItem>())).ExpandToAllRelatedObjects ().Perform ();
 
       var orderItems = ClientTransactionTestHelper.CallGetOriginalRelatedObjects (_transaction, endPointID);

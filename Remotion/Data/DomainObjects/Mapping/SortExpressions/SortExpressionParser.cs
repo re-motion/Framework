@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.Mapping.SortExpressions
 
       if (parts.Length > 2)
       {
-        var message = string.Format ("Expected one or two parts (a property name and an optional identifier), found {0} parts instead.", parts.Length);
+        var message = string.Format ("Expected 1 or 2 parts (a property name and an optional identifier), found {0} parts instead.", parts.Length);
         throw new MappingException (message);
       }
 

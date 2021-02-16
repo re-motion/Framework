@@ -51,7 +51,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         ClientTransaction constructedTransaction,
         IRelationEndPointProvider endPointProvider,
         ILazyLoader lazyLoader,
-        IClientTransactionEventSink eventSink);
+        IClientTransactionEventSink eventSink,
+        IDataContainerMapReadOnlyView dataContainerMap);
 
     protected abstract IObjectLoader CreateObjectLoader (
         ClientTransaction constructedTransaction,
@@ -93,6 +94,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       var dataContainerEventListener = CreateDataContainerEventListener (eventSink);
 
       var delegatingDataManager = new DelegatingDataManager();
+      var delegatingDataContainerMap = new DelegatingDataContainerMap();
       var objectLoader = CreateObjectLoader (
           constructedTransaction, eventSink, persistenceStrategy, invalidDomainObjectManager, delegatingDataManager, hierarchyManager);
 
@@ -100,11 +102,13 @@ namespace Remotion.Data.DomainObjects.Infrastructure
           constructedTransaction,
           GetEndPointProvider (delegatingDataManager),
           GetLazyLoader (delegatingDataManager),
-          eventSink);
+          eventSink,
+          delegatingDataContainerMap);
 
       var dataManager = new DataManager (
           constructedTransaction, eventSink, dataContainerEventListener, invalidDomainObjectManager, objectLoader, endPointManager);
       delegatingDataManager.InnerDataManager = dataManager;
+      delegatingDataContainerMap.InnerDataContainerMap = dataManager.DataContainers;
       return dataManager;
     }
 

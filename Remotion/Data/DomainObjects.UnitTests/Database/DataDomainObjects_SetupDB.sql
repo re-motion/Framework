@@ -104,6 +104,12 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'OrderTicke
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'PersonView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[PersonView]
+
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ProductView' AND TABLE_SCHEMA = 'dbo')
+  DROP VIEW [dbo].[ProductView]
+
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ProductReviewView' AND TABLE_SCHEMA = 'dbo')
+  DROP VIEW [dbo].[ProductReviewView]
   
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'SupplierView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[SupplierView]
@@ -297,6 +303,14 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Person')
   DROP TABLE [Person]
 GO
 
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Product') 
+  DROP TABLE [Product]
+GO
+
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'ProductReview') 
+  DROP TABLE [ProductReview]
+GO
+
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'FileSystemItem')
   DROP TABLE [FileSystemItem]
 GO
@@ -461,6 +475,34 @@ CREATE TABLE [Person] (
   [AssociatedCustomerCompanyIDClassID] varchar (100) NULL,
   
   CONSTRAINT [PK_Person] PRIMARY KEY CLUSTERED ([ID])
+) 
+GO
+
+CREATE TABLE [Product] (
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+  
+  [Name] varchar (100) NOT NULL,
+  [Price] decimal NOT NULL,
+  
+  CONSTRAINT [PK_Product] PRIMARY KEY CLUSTERED ([ID])
+) 
+GO
+
+CREATE TABLE [ProductReview] (
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+  
+  [ProductID] uniqueidentifier NULL,
+  [ReviewerID] uniqueidentifier NULL,
+  [CreatedAt] datetime NOT NULL,
+  [Comment] varchar (100) NOT NULL,
+  
+  CONSTRAINT [PK_ProductReview] PRIMARY KEY CLUSTERED ([ID]),
+  CONSTRAINT [FK_ProductReview_Product] FOREIGN KEY ([ProductID]) REFERENCES [Product] ([ID]),
+  CONSTRAINT [FK_ProductReview_Person] FOREIGN KEY ([ReviewerID]) REFERENCES [Person] ([ID])
 ) 
 GO
 
@@ -1572,6 +1614,22 @@ CREATE VIEW [dbo].[PersonView] ([ID], [ClassID], [Timestamp], [Name], [Associate
   SELECT [ID], [ClassID], [Timestamp], [Name], [AssociatedCustomerCompanyID], [AssociatedCustomerCompanyIDClassID]
     FROM [dbo].[Person]
     WHERE [ClassID] IN ('Person')
+  WITH CHECK OPTION
+GO
+
+CREATE VIEW [dbo].[ProductView] ([ID], [ClassID], [Timestamp], [Name], [Price])
+  WITH SCHEMABINDING AS
+  SELECT [ID], [ClassID], [Timestamp], [Name], [Price]
+    FROM [dbo].[Product]
+    WHERE [ClassID] IN ('Product')
+  WITH CHECK OPTION
+GO
+
+CREATE VIEW [dbo].[ProductReviewView] ([ID], [ClassID], [Timestamp], [ProductID], [ReviewerID], [CreatedAt], [Comment])
+  WITH SCHEMABINDING AS
+  SELECT [ID], [ClassID], [Timestamp], [ProductID], [ReviewerID], [CreatedAt], [Comment]
+    FROM [dbo].[ProductReview]
+    WHERE [ClassID] IN ('ProductReview')
   WITH CHECK OPTION
 GO
 

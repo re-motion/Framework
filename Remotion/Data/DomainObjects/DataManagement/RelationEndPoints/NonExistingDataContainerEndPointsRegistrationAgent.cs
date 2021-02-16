@@ -25,7 +25,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   /// own both virtual and non-virtual end-points, and when unloading, these end-points must not reference any related objects (because the 
   /// references cannot be reconstructed and the related end-points would therefore end up as dangling references).
   /// </summary>
-  [Serializable]
   public class NonExistingDataContainerEndPointsRegistrationAgent : DataContainerEndPointsRegistrationAgentBase
   {
     public NonExistingDataContainerEndPointsRegistrationAgent (IRelationEndPointFactory endPointFactory, IRelationEndPointRegistrationAgent registrationAgent)
@@ -45,17 +44,19 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       ArgumentUtility.CheckNotNull ("endPoint", endPoint);
       ArgumentUtility.CheckNotNull ("relationEndPointMap", relationEndPointMap);
 
-      var objectEndPoint = endPoint as IObjectEndPoint;
-      if (objectEndPoint != null)
+      if (endPoint is IObjectEndPoint objectEndPoint)
       {
         if (objectEndPoint.OppositeObjectID == null && objectEndPoint.OriginalOppositeObjectID == null)
           return null;
       }
-      else
+      else if (endPoint is IDomainObjectCollectionEndPoint domainObjectCollectionEndPoint)
       {
-        var collectionEndPoint = (ICollectionEndPoint) endPoint;
-        if (collectionEndPoint.GetData ().Count == 0 && collectionEndPoint.GetOriginalData ().Count == 0)
+        if (domainObjectCollectionEndPoint.GetData ().Count == 0 && domainObjectCollectionEndPoint.GetOriginalData ().Count == 0)
           return null;
+      }
+      else if (endPoint is IVirtualCollectionEndPoint)
+      {
+        return null;
       }
 
       return string.Format ("Relation end-point '{0}' would leave a dangling reference.", endPoint.ID);

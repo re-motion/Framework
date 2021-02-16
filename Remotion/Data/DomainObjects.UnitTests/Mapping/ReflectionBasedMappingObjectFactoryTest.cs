@@ -115,8 +115,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       var result = _factory.CreateRelationEndPointDefinition (classDefinition, propertyInfo);
 
-      Assert.That (result, Is.TypeOf (typeof (VirtualRelationEndPointDefinition)));
-      Assert.That (((VirtualRelationEndPointDefinition) result).PropertyInfo, Is.SameAs (propertyInfo));
+      Assert.That (result, Is.TypeOf (typeof (DomainObjectCollectionRelationEndPointDefinition)));
+      Assert.That (((DomainObjectCollectionRelationEndPointDefinition) result).PropertyInfo, Is.SameAs (propertyInfo));
     }
 
     [Test]

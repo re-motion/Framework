@@ -116,6 +116,8 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
     {
       if (type == typeof (ObjectList<>))
         return ReflectionUtility.IsObjectList (propertyInfo.PropertyType);
+      if (type == typeof (IObjectList<>))
+        return ReflectionUtility.IsIObjectList (propertyInfo.PropertyType);
       return type.IsAssignableFrom (propertyInfo.PropertyType);
     }
 
@@ -150,12 +152,14 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
     {
       return new AttributeConstraint (
           string.Format (
-              "The '{0}' may be only applied to properties assignable to types '{1}' or '{2}'.",
+              "The '{0}' may be only applied to properties assignable to types '{1}', '{2}', or '{3}'.",
               typeof (TAttribute).Name,
               typeof (DomainObject).Name,
-              typeof (ObjectList<>).Name),
+              typeof (ObjectList<>).Name,
+              typeof (IObjectList<>).Name),
           typeof (DomainObject),
-          typeof (ObjectList<>));
+          typeof (ObjectList<>),
+          typeof (IObjectList<>));
     }
   }
 }

@@ -17,12 +17,25 @@
 using System;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
+using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
 {
   [Serializable]
   public class SerializableRelationEndPointFactoryFake : IRelationEndPointFactory
   {
+    public SerializableRelationEndPointFactoryFake ()
+    {
+    }
+
+    public SerializableRelationEndPointFactoryFake (FlattenedDeserializationInfo info)
+    {
+    }
+
+    public void SerializeIntoFlatStructure (FlattenedSerializationInfo info)
+    {
+    }
+
     public IRealObjectEndPoint CreateRealObjectEndPoint (RelationEndPointID endPointID, DataContainer dataContainer)
     {
       throw new NotImplementedException();
@@ -33,7 +46,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
       throw new NotImplementedException();
     }
 
-    public ICollectionEndPoint CreateCollectionEndPoint (RelationEndPointID endPointID)
+    public IVirtualCollectionEndPoint CreateVirtualCollectionEndPoint (RelationEndPointID endPointID)
+    {
+      throw new NotImplementedException();
+    }
+
+    public IDomainObjectCollectionEndPoint CreateDomainObjectCollectionEndPoint (RelationEndPointID endPointID)
     {
       throw new NotImplementedException();
     }

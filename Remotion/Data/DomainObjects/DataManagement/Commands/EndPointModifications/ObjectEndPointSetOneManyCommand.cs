@@ -90,8 +90,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     /// </remarks>
     public override ExpandedCommand ExpandToAllRelatedObjects ()
     {
-      var newRelatedEndPoint = (ICollectionEndPoint) GetOppositeEndPoint (ModifiedEndPoint, NewRelatedObject, _endPointProvider);
-      var oldRelatedEndPoint = (ICollectionEndPoint) GetOppositeEndPoint (ModifiedEndPoint, OldRelatedObject, _endPointProvider);
+      var newRelatedEndPoint = (ICollectionEndPoint<ICollectionEndPointData>) GetOppositeEndPoint (ModifiedEndPoint, NewRelatedObject, _endPointProvider);
+      var oldRelatedEndPoint = (ICollectionEndPoint<ICollectionEndPointData>) GetOppositeEndPoint (ModifiedEndPoint, OldRelatedObject, _endPointProvider);
 
       var bidirectionalModification = new ExpandedCommand (
           // => order.Customer = newCustomer

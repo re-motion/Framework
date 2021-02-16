@@ -219,7 +219,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
     public void RaiseRelationReadEvent (
         DomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        ReadOnlyDomainObjectCollectionAdapter<DomainObject> relatedObjects,
+        IReadOnlyCollectionData<DomainObject> relatedObjects,
         ValueAccess valueAccess)
     {
     

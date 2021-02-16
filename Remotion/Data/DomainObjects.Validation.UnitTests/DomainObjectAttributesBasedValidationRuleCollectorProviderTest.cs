@@ -73,7 +73,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
       
       Assert.That (result, Is.Not.Null);
       Assert.That (result.Collector.ValidatedType, Is.EqualTo (typeof (TypeWithDomainObjectAttributes)));
-      Assert.That (result.Collector.AddedPropertyRules.Count, Is.EqualTo (10));
+      Assert.That (result.Collector.AddedPropertyRules.Count, Is.EqualTo (12));
     }
 
     [Test]
@@ -148,7 +148,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
 
       Assert.That (result, Is.Not.Null);
       Assert.That (result.Collector.ValidatedType, Is.EqualTo (typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface)));
-      Assert.That (result.Collector.AddedPropertyRules.Count, Is.EqualTo (10));
+      Assert.That (result.Collector.AddedPropertyRules.Count, Is.EqualTo (12));
     }
 
     [Test]
@@ -194,7 +194,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
             r => r.Collector.ValidatedType == typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface));
 
         Assert.That (resultForMixin, Is.Not.Null);
-        Assert.That (resultForMixin.Collector.AddedPropertyRules.Count, Is.EqualTo (10));
+        Assert.That (resultForMixin.Collector.AddedPropertyRules.Count, Is.EqualTo (12));
       }
     }
   }

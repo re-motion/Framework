@@ -41,5 +41,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 
     [DBBidirectionalRelation ("ContactPerson", ContainsForeignKey = true)]
     public abstract Customer AssociatedCustomerCompany { get; set; }
+
+    [DBBidirectionalRelation ("Reviewer")]
+    public abstract IObjectList<ProductReview> Reviews { get; set; }
   }
 }

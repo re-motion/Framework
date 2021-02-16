@@ -144,39 +144,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
       var validationResult = _validtionRule.Validate (_classDefinition);
 
       AssertMappingValidationResult (validationResult, false, 
-        "The 'MandatoryAttribute' may be only applied to properties assignable to types 'DomainObject' or 'ObjectList`1'.\r\n\r\n"
+        "The 'MandatoryAttribute' may be only applied to properties assignable to types 'DomainObject', 'ObjectList`1', or 'IObjectList`1'.\r\n\r\n"
         + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection."
         +"MappingAttributesAreSupportedForPropertyTypeValidationRule.ClassWithInvalidPropertyAttributes\r\n"
         + "Property: StringPropertyWithMandatoryPropertyAttribute");
     }
 
     [Test]
-    public void InvalidPropertyWithBidirectionalRelationAttribute ()
-    {
-      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo (
-          _classDefinition, 
-          _invalidType, 
-          "StringPropertyWithMandatoryPropertyAttribute");
-      _classDefinition.SetPropertyDefinitions (new PropertyDefinitionCollection (new[]{propertyDefinition}, true));
-      _classDefinition.SetReadOnly ();
-
-      var validationResult = _validtionRule.Validate (_classDefinition);
-
-      AssertMappingValidationResult (validationResult, false,
-        "The 'MandatoryAttribute' may be only applied to properties assignable to types 'DomainObject' or 'ObjectList`1'.\r\n\r\n"
-        + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection."
-        +"MappingAttributesAreSupportedForPropertyTypeValidationRule.ClassWithInvalidPropertyAttributes\r\n"
-        + "Property: StringPropertyWithMandatoryPropertyAttribute");
-    }
-
-    [Test]
-    public void ValidValidPropertyWithBidirectionalRelationAttribute ()
+    public void ValidDomainObjectPropertyWithBidirectionalRelationAttribute ()
     {
       var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo (
           _classDefinition,
           _validType,
-          "BidirectionalRelationProperty");
-      _classDefinition.SetPropertyDefinitions (new PropertyDefinitionCollection (new[]{propertyDefinition}, true));
+          "DomainObjectBidirectionalRelationProperty");
+      _classDefinition.SetPropertyDefinitions (new PropertyDefinitionCollection (new[] { propertyDefinition }, true));
       _classDefinition.SetReadOnly ();
 
       var validationResult = _validtionRule.Validate (_classDefinition);
@@ -185,7 +166,37 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     }
 
     [Test]
-    public void InvalidValidPropertyWithBidirectionalRelationAttribute ()
+    public void ValidDomainObjectCollectionPropertyWithBidirectionalRelationAttribute ()
+    {
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo (
+          _classDefinition,
+          _validType,
+          "DomainObjectCollectionBidirectionalRelationProperty");
+      _classDefinition.SetPropertyDefinitions (new PropertyDefinitionCollection (new[] { propertyDefinition }, true));
+      _classDefinition.SetReadOnly ();
+
+      var validationResult = _validtionRule.Validate (_classDefinition);
+
+      AssertMappingValidationResult (validationResult, true, null);
+    }
+
+    [Test]
+    public void ValidVirtualCollectionPropertyWithBidirectionalRelationAttribute ()
+    {
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo (
+          _classDefinition,
+          _validType,
+          "VirtualCollectionBidirectionalRelationProperty");
+      _classDefinition.SetPropertyDefinitions (new PropertyDefinitionCollection (new[] { propertyDefinition }, true));
+      _classDefinition.SetReadOnly ();
+
+      var validationResult = _validtionRule.Validate (_classDefinition);
+
+      AssertMappingValidationResult (validationResult, true, null);
+    }
+
+    [Test]
+    public void InvalidPropertyWithBidirectionalRelationAttribute ()
     {
       var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo (_classDefinition, _invalidType, "StringPropertyWithBidirectionalRelationAttribute");
       _classDefinition.SetPropertyDefinitions (new PropertyDefinitionCollection (new[]{propertyDefinition}, true));
@@ -194,7 +205,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
       var validationResult = _validtionRule.Validate (_classDefinition);
 
       AssertMappingValidationResult (validationResult, false,
-        "The 'DBBidirectionalRelationAttribute' may be only applied to properties assignable to types 'DomainObject' or 'ObjectList`1'.\r\n\r\n"
+        "The 'DBBidirectionalRelationAttribute' may be only applied to properties assignable to types 'DomainObject', 'ObjectList`1', or 'IObjectList`1'.\r\n\r\n"
         + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection."
         +"MappingAttributesAreSupportedForPropertyTypeValidationRule.ClassWithInvalidPropertyAttributes\r\n"
         + "Property: StringPropertyWithBidirectionalRelationAttribute");
@@ -212,7 +223,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
 
       var validationResult = _validtionRule.Validate (_classDefinition).ToArray();
 
-      var expectedMessage1 = "The 'MandatoryAttribute' may be only applied to properties assignable to types 'DomainObject' or 'ObjectList`1'.\r\n\r\n"
+      var expectedMessage1 = "The 'MandatoryAttribute' may be only applied to properties assignable to types 'DomainObject', 'ObjectList`1', or 'IObjectList`1'.\r\n\r\n"
         + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection."
         +"MappingAttributesAreSupportedForPropertyTypeValidationRule.ClassWithInvalidPropertyAttributes\r\n"
         + "Property: StringPropertyWithMandatoryPropertyAttribute";

@@ -89,10 +89,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     [Test]
     public void CreateQueryParser_RegistersDomainObjectCollectionCount ()
     {
-      var containsObjectMethod = typeof (DomainObjectCollection).GetMethod ("get_Count");
+      var countMethod = typeof (DomainObjectCollection).GetMethod ("get_Count");
       var queryParser = (QueryParser) _factory.CreateQueryParser();
 
-      Assert.That (queryParser.NodeTypeProvider.GetNodeType (containsObjectMethod), Is.SameAs (typeof (CountExpressionNode)));
+      Assert.That (queryParser.NodeTypeProvider.GetNodeType (countMethod), Is.SameAs (typeof (CountExpressionNode)));
+    }
+
+    [Test]
+    public void CreateQueryParser_RegistersIObjectListCount ()
+    {
+      var countMethod = typeof (IObjectList<>).GetMethod ("get_Count");
+      var queryParser = (QueryParser) _factory.CreateQueryParser();
+
+      Assert.That (queryParser.NodeTypeProvider.GetNodeType (countMethod), Is.SameAs (typeof (CountExpressionNode)));
     }
 
     [Test]

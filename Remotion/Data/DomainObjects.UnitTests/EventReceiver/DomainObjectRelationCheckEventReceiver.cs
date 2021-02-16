@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
@@ -74,8 +75,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
       }
       else
       {
-        DomainObjectCollection relatedDomainObjectCollection = domainObject.GetRelatedObjects (changedProperty);
-        _changingRelatedObjects.Add (changedProperty, relatedDomainObjectCollection.Clone (true));
+        IEnumerable relatedDomainObjects = domainObject.GetRelatedObjects (changedProperty);
+        _changingRelatedObjects.Add (changedProperty, relatedDomainObjects.Cast<DomainObject>().ToArray());
       }
 
       base.DomainObject_RelationChanging (sender, args);
@@ -96,8 +97,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
       }
       else
       {
-        DomainObjectCollection relatedDomainObjectCollection = domainObject.GetRelatedObjects (changedProperty);
-        _changedRelatedObjects.Add (changedProperty, relatedDomainObjectCollection.Clone (true));
+        IEnumerable relatedDomainObjects = domainObject.GetRelatedObjects (changedProperty);
+        _changingRelatedObjects.Add (changedProperty, relatedDomainObjects.Cast<DomainObject>().ToArray());
       }
 
       base.DomainObject_RelationChanged (sender, args);

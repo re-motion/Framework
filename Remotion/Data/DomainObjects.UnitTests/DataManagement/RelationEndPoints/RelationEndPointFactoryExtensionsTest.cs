@@ -74,13 +74,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    public void CreateVirtualEndPoint_Many_MarkDataCompleteFalse ()
+    public void CreateVirtualEndPoint_DomainObjectCollection_MarkDataCompleteFalse ()
     {
       var endPointID = RelationEndPointID.Create (DomainObjectIDs.Order1, typeof (Order), "OrderItems");
-      var endPointStub = MockRepository.GenerateStub<ICollectionEndPoint> ();
+      var endPointStub = MockRepository.GenerateStub<IDomainObjectCollectionEndPoint> ();
 
       _endPointFactoryMock
-          .Expect (mock => mock.CreateCollectionEndPoint (endPointID))
+          .Expect (mock => mock.CreateDomainObjectCollectionEndPoint (endPointID))
           .Return (endPointStub);
       _endPointFactoryMock.Replay ();
 
@@ -93,13 +93,51 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    public void CreateVirtualEndPoint_Many_MarkDataCompleteTrue ()
+    public void CreateVirtualEndPoint_DomainObjectCollection_MarkDataCompleteTrue ()
     {
       var endPointID = RelationEndPointID.Create (DomainObjectIDs.Order1, typeof (Order), "OrderItems");
-      var endPointStub = MockRepository.GenerateStub<ICollectionEndPoint> ();
+      var endPointStub = MockRepository.GenerateStub<IDomainObjectCollectionEndPoint> ();
 
       _endPointFactoryMock
-          .Expect (mock => mock.CreateCollectionEndPoint (endPointID))
+          .Expect (mock => mock.CreateDomainObjectCollectionEndPoint (endPointID))
+          .Return (endPointStub);
+      _endPointFactoryMock.Replay ();
+
+      var result = RelationEndPointFactoryExtensions.CreateVirtualEndPoint (_endPointFactoryMock, endPointID, true);
+
+      _endPointFactoryMock.VerifyAllExpectations ();
+
+      Assert.That (result, Is.SameAs (endPointStub));
+      endPointStub.AssertWasCalled (stub => stub.MarkDataComplete (Arg<DomainObject[]>.List.Equal (new DomainObject[0])));
+    }
+
+    [Test]
+    public void CreateVirtualEndPoint_VirtualCollection_MarkDataCompleteFalse ()
+    {
+      var endPointID = RelationEndPointID.Create (DomainObjectIDs.Product1, typeof (Product), "Reviews");
+      var endPointStub = MockRepository.GenerateStub<IVirtualCollectionEndPoint> ();
+
+      _endPointFactoryMock
+          .Expect (mock => mock.CreateVirtualCollectionEndPoint (endPointID))
+          .Return (endPointStub);
+      _endPointFactoryMock.Replay ();
+
+      var result = RelationEndPointFactoryExtensions.CreateVirtualEndPoint (_endPointFactoryMock, endPointID, false);
+
+      _endPointFactoryMock.VerifyAllExpectations ();
+
+      Assert.That (result, Is.SameAs (endPointStub));
+      endPointStub.AssertWasNotCalled (stub => stub.MarkDataComplete (Arg<DomainObject[]>.Is.Anything));
+    }
+
+    [Test]
+    public void CreateVirtualEndPoint_VirtualCollection_MarkDataCompleteTrue ()
+    {
+      var endPointID = RelationEndPointID.Create (DomainObjectIDs.Product1, typeof (Product), "Reviews");
+      var endPointStub = MockRepository.GenerateStub<IVirtualCollectionEndPoint> ();
+
+      _endPointFactoryMock
+          .Expect (mock => mock.CreateVirtualCollectionEndPoint (endPointID))
           .Return (endPointStub);
       _endPointFactoryMock.Replay ();
 

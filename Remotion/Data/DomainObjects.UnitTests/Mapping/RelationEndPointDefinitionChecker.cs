@@ -93,16 +93,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           expectedEndPointDefinition.PropertyName);
 
 
-      if (expectedEndPointDefinition is VirtualRelationEndPointDefinition)
+      if (expectedEndPointDefinition is DomainObjectCollectionRelationEndPointDefinition)
       {
-        var expectedVirtualEndPointDefinition = (VirtualRelationEndPointDefinition) expectedEndPointDefinition;
-        var actualVirtualEndPointDefinition = (VirtualRelationEndPointDefinition) actualEndPointDefinition;
+        var expectedDomainObjectCollectionRelationEndPointDefinition = (DomainObjectCollectionRelationEndPointDefinition) expectedEndPointDefinition;
+        var actualDomainObjectCollectionEndPointDefinition = (DomainObjectCollectionRelationEndPointDefinition) actualEndPointDefinition;
 
         Assert.AreEqual (
-            expectedVirtualEndPointDefinition.SortExpressionText,
-            actualVirtualEndPointDefinition.SortExpressionText,
+            expectedDomainObjectCollectionRelationEndPointDefinition.SortExpressionText,
+            actualDomainObjectCollectionEndPointDefinition.SortExpressionText,
             "SortExpression of end point definitions (property name: '{0}') does not match.",
-            expectedVirtualEndPointDefinition.PropertyName);
+            expectedDomainObjectCollectionRelationEndPointDefinition.PropertyName);
       }
     }
   }

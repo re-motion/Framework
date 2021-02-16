@@ -335,11 +335,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    public void GetAllRelatedObjects_ContainsRelatedObjects ()
+    public void GetAllRelatedObjects_ContainsRelatedObjectsFromDomainObjectCollection ()
     {
       Order order = DomainObjectIDs.Order1.GetObject<Order> (_transaction);
       var relatedObjects = new List<DomainObject> (order.Properties.GetAllRelatedObjects ());
       Assert.That (order.OrderItems, Is.SubsetOf (relatedObjects));
+    }
+
+    [Test]
+    public void GetAllRelatedObjects_ContainsRelatedObjectsFromVirtualCollection ()
+    {
+      Product product = DomainObjectIDs.Product1.GetObject<Product> (_transaction);
+      var relatedObjects = new List<DomainObject> (product.Properties.GetAllRelatedObjects ());
+      Assert.That (product.Reviews, Is.SubsetOf (relatedObjects));
     }
 
     [Test]

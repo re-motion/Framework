@@ -75,7 +75,17 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
       get { return _listOfT.AsReadOnly (); }
       set { ; }
     }
-    
+
+    public IListAndIReadOnlyCollection<SimpleReferenceType> IReadOnlyCollectionOfT
+    {
+      get { return null; } // TODO: RM-7294: update to use only IReadOnlyCollection<T>
+    }
+
+    public IListAndIReadOnlyList<SimpleReferenceType> IReadOnlyListOfT
+    {
+      get { return null; } // TODO: RM-7294: update to use only IReadOnlyList<T>
+    }
+
     [ItemType (typeof (SimpleReferenceType))]
     public ArrayList ArrayList
     {

@@ -46,7 +46,19 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
             endPointDefinition.PropertyName,
             endPointDefinition.ClassDefinition.ClassType.Name,
             endPointDefinition.PropertyInfo.PropertyType.Name,
-            typeof(ObjectID).Name);
+            typeof (ObjectID).Name);
+        }
+        else if (endPointDefinition is TypeNotCompatibleWithVirtualRelationEndPointDefinition)
+        {
+          return MappingValidationResult.CreateInvalidResultForType (
+              endPointDefinition.ClassDefinition.ClassType,
+              "Relation property '{0}' on class '{1}' is of type '{2}', but virtual relation properties must be of type '{3}', '{4}', or '{5}'.",
+              endPointDefinition.PropertyName,
+              endPointDefinition.ClassDefinition.ClassType.Name,
+              endPointDefinition.PropertyInfo.PropertyType.Name,
+              typeof (DomainObject).Name,
+              typeof (ObjectList<>).Name,
+              typeof (IObjectList<>).Name);
         }
       }
       return MappingValidationResult.CreateValidResult();

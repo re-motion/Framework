@@ -133,7 +133,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     }
     
     [Test]
-    public void UnloadVirtualEndPoint_Collection_AlreadyUnloaded ()
+    public void UnloadVirtualEndPoint_DomainObjectCollection_AlreadyUnloaded ()
     {
       var customer = DomainObjectIDs.Customer1.GetObject<Customer> ();
       var endPoint = DomainObjectCollectionDataTestHelper.GetAssociatedEndPoint (customer.Orders);
@@ -144,9 +144,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
       UnloadService.UnloadVirtualEndPoint (TestableClientTransaction, endPoint.ID);
     }
+    
+    [Test]
+    public void UnloadVirtualEndPoint_VirtualCollection_AlreadyUnloaded ()
+    {
+      var product = DomainObjectIDs.Product1.GetObject<Product> ();
+      var endPoint = VirtualCollectionDataTestHelper.GetAssociatedEndPoint (product.Reviews);
+
+      UnloadService.UnloadVirtualEndPoint (TestableClientTransaction, endPoint.ID);
+      ClientTransactionTestHelperWithMocks.EnsureTransactionThrowsOnEvents (TestableClientTransaction);
+      Assert.That (endPoint.IsDataComplete, Is.False);
+
+      UnloadService.UnloadVirtualEndPoint (TestableClientTransaction, endPoint.ID);
+    }
 
     [Test]
-    public void UnloadVirtualEndPoint_Collection_ChangedCollectionReference_Throws ()
+    public void UnloadVirtualEndPoint_DomainObjectCollection_ChangedCollectionReference_Throws ()
     {
       var order = DomainObjectIDs.Order1.GetObject<Order> ();
       order.OrderItems = new ObjectList<OrderItem> (order.OrderItems); // new collection reference, same contents

@@ -357,7 +357,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       {
         _extension.RelationReading (
             TestableClientTransaction, _order1, GetEndPointDefinition (typeof (Order), "OrderItems"), ValueAccess.Current);
-        _extension.RelationRead (null, null, null, (ReadOnlyDomainObjectCollectionAdapter<DomainObject>) null, ValueAccess.Current);
+        _extension.RelationRead (null, null, null, (IReadOnlyCollectionData<DomainObject>) null, ValueAccess.Current);
         LastCall.Constraints (
             Is.Same (TestableClientTransaction),
             Is.Same (_order1),
@@ -401,7 +401,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       {
         _extension.RelationReading (
             TestableClientTransaction, _order1, GetEndPointDefinition (typeof (Order), "OrderItems"), ValueAccess.Current);
-        _extension.RelationRead (null, null, null, (ReadOnlyDomainObjectCollectionAdapter<DomainObject>) null, ValueAccess.Current);
+        _extension.RelationRead (null, null, null, (IReadOnlyCollectionData<DomainObject>) null, ValueAccess.Current);
         LastCall.Constraints (
             Is.Same (TestableClientTransaction),
             Is.Same (_order1),
@@ -447,7 +447,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       {
         _extension.RelationReading (
             TestableClientTransaction, _order1, GetEndPointDefinition (typeof (Order), "OrderItems"), ValueAccess.Current);
-        _extension.RelationRead (null, null, null, (ReadOnlyDomainObjectCollectionAdapter<DomainObject>) null, ValueAccess.Current);
+        _extension.RelationRead (null, null, null, (IReadOnlyCollectionData<DomainObject>) null, ValueAccess.Current);
         LastCall.Constraints (
             Is.Same (TestableClientTransaction),
             Is.Same (_order1),
@@ -520,7 +520,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       {
         _extension.RelationReading (
             TestableClientTransaction, _order1, GetEndPointDefinition (typeof (Order), "OrderItems"), ValueAccess.Current);
-        _extension.RelationRead (null, null, null, (ReadOnlyDomainObjectCollectionAdapter<DomainObject>) null, ValueAccess.Current);
+        _extension.RelationRead (null, null, null, (IReadOnlyCollectionData<DomainObject>) null, ValueAccess.Current);
         LastCall.Constraints (
             Is.Same (TestableClientTransaction),
             Is.Same (_order1),
@@ -577,7 +577,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       {
         _extension.RelationReading (
             TestableClientTransaction, _order1, GetEndPointDefinition (typeof (Order), "OrderItems"), ValueAccess.Current);
-        _extension.RelationRead (null, null, null, (ReadOnlyDomainObjectCollectionAdapter<DomainObject>) null, ValueAccess.Current);
+        _extension.RelationRead (null, null, null, (IReadOnlyCollectionData<DomainObject>) null, ValueAccess.Current);
         LastCall.Constraints (
             Is.Same (TestableClientTransaction),
             Is.Same (_order1),

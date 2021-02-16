@@ -132,25 +132,40 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           .Stub (stub => stub.IsNullable (Arg<IPropertyInformation>.Matches (pi => pi.Name == "BaseBidirectionalOneToOne")))
           .Return (true);
       DomainModelConstraintProviderStub
-          .Stub (stub => stub.IsNullable (Arg<IPropertyInformation>.Matches (pi => pi.Name == "BaseBidirectionalOneToMany")))
+          .Stub (stub => stub.IsNullable (Arg<IPropertyInformation>.Matches (pi => pi.Name == "BaseBidirectionalOneToManyForDomainObjectCollection")))
+          .Return (true);
+      DomainModelConstraintProviderStub
+          .Stub (stub => stub.IsNullable (Arg<IPropertyInformation>.Matches (pi => pi.Name == "BaseBidirectionalOneToManyForVirtualCollection")))
           .Return (true);
       DomainModelConstraintProviderStub
           .Stub (stub => stub.IsNullable (Arg<IPropertyInformation>.Matches (pi => pi.Name == "BasePrivateBidirectionalOneToOne")))
           .Return (true);
       DomainModelConstraintProviderStub
-          .Stub (stub => stub.IsNullable (Arg<IPropertyInformation>.Matches (pi => pi.Name == "BasePrivateBidirectionalOneToMany")))
+          .Stub (stub => stub.IsNullable (Arg<IPropertyInformation>.Matches (pi => pi.Name == "BasePrivateBidirectionalOneToManyForDomainObjectCollection")))
           .Return (true);
       DomainModelConstraintProviderStub
-          .Stub (stub => stub.IsNullable (Arg<IPropertyInformation>.Matches (pi => pi.Name == "NoAttribute")))
+          .Stub (stub => stub.IsNullable (Arg<IPropertyInformation>.Matches (pi => pi.Name == "BasePrivateBidirectionalOneToManyForVirtualCollection")))
           .Return (true);
       DomainModelConstraintProviderStub
-          .Stub (stub => stub.IsNullable (Arg<IPropertyInformation>.Matches (pi => pi.Name == "NotNullable")))
+          .Stub (stub => stub.IsNullable (Arg<IPropertyInformation>.Matches (pi => pi.Name == "NoAttributeForDomainObjectCollection")))
+          .Return (true);
+      DomainModelConstraintProviderStub
+          .Stub (stub => stub.IsNullable (Arg<IPropertyInformation>.Matches (pi => pi.Name == "NoAttributeForVirtualCollection")))
+          .Return (true);
+      DomainModelConstraintProviderStub
+          .Stub (stub => stub.IsNullable (Arg<IPropertyInformation>.Matches (pi => pi.Name == "NotNullableForDomainObjectCollection")))
+          .Return (false);
+      DomainModelConstraintProviderStub
+          .Stub (stub => stub.IsNullable (Arg<IPropertyInformation>.Matches (pi => pi.Name == "NotNullableForVirtualCollection")))
           .Return (false);
       DomainModelConstraintProviderStub
           .Stub (stub => stub.IsNullable (Arg<IPropertyInformation>.Matches (pi => pi.Name == "BidirectionalOneToOne")))
           .Return (true);
       DomainModelConstraintProviderStub
-          .Stub (stub => stub.IsNullable (Arg<IPropertyInformation>.Matches (pi => pi.Name == "BidirectionalOneToMany")))
+          .Stub (stub => stub.IsNullable (Arg<IPropertyInformation>.Matches (pi => pi.Name == "BidirectionalOneToManyForDomainObjectCollection")))
+          .Return (true);
+      DomainModelConstraintProviderStub
+          .Stub (stub => stub.IsNullable (Arg<IPropertyInformation>.Matches (pi => pi.Name == "BidirectionalOneToManyForVirtualCollection")))
           .Return (true);
 
       ClassIDProviderStub.Stub(stub => stub.GetClassID (typeof (ClassWithVirtualRelationEndPoints))).Return ("ClassWithVirtualRelationEndPoints");
@@ -408,45 +423,64 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var endPoints = new List<IRelationEndPointDefinition>();
 
       endPoints.Add (
-          CreateVirtualRelationEndPointDefinition (
-              classDefinition, typeof (ClassWithVirtualRelationEndPoints), "NoAttribute", false, CardinalityType.Many, null));
+          CreateDomainObjectCollectionRelationEndPointDefinition (
+              classDefinition, typeof (ClassWithVirtualRelationEndPoints), "NoAttributeForDomainObjectCollection", false, null));
       endPoints.Add (
-          CreateVirtualRelationEndPointDefinition (
-              classDefinition, typeof (ClassWithVirtualRelationEndPoints), "NotNullable", true, CardinalityType.Many, null));
+          CreateVirtualCollectionRelationEndPointDefinition (
+              classDefinition, typeof (ClassWithVirtualRelationEndPoints), "NoAttributeForVirtualCollection", false, null));
       endPoints.Add (
-          CreateVirtualRelationEndPointDefinition (
-              classDefinition, typeof (ClassWithVirtualRelationEndPoints), "BidirectionalOneToOne", false, CardinalityType.One, null));
+          CreateDomainObjectCollectionRelationEndPointDefinition (
+              classDefinition, typeof (ClassWithVirtualRelationEndPoints), "NotNullableForDomainObjectCollection", true, null));
       endPoints.Add (
-          CreateVirtualRelationEndPointDefinition (
-              classDefinition, typeof (ClassWithVirtualRelationEndPoints), "BidirectionalOneToMany", false, CardinalityType.Many, "NoAttribute"));
+          CreateVirtualCollectionRelationEndPointDefinition (
+              classDefinition, typeof (ClassWithVirtualRelationEndPoints), "NotNullableForVirtualCollection", true, null));
+      endPoints.Add (
+          CreateVirtualObjectRelationEndPointDefinition (
+              classDefinition, typeof (ClassWithVirtualRelationEndPoints), "BidirectionalOneToOne", false));
+      endPoints.Add (
+          CreateDomainObjectCollectionRelationEndPointDefinition (
+              classDefinition, typeof (ClassWithVirtualRelationEndPoints), "BidirectionalOneToManyForDomainObjectCollection", false, "NoAttributeForDomainObjectCollection"));
+      endPoints.Add (
+          CreateVirtualCollectionRelationEndPointDefinition (
+              classDefinition, typeof (ClassWithVirtualRelationEndPoints), "BidirectionalOneToManyForVirtualCollection", false, "NoAttributeForVirtualCollection"));
 
       endPoints.Add (
-          CreateVirtualRelationEndPointDefinition (
-              classDefinition, typeof (ClassWithOneSideRelationPropertiesNotInMapping), "BaseBidirectionalOneToOne", false, CardinalityType.One, null));
+          CreateVirtualObjectRelationEndPointDefinition (
+              classDefinition, typeof (ClassWithOneSideRelationPropertiesNotInMapping), "BaseBidirectionalOneToOne", false));
       endPoints.Add (
-          CreateVirtualRelationEndPointDefinition (
+          CreateDomainObjectCollectionRelationEndPointDefinition (
               classDefinition,
               typeof (ClassWithOneSideRelationPropertiesNotInMapping),
-              "BaseBidirectionalOneToMany",
+              "BaseBidirectionalOneToManyForDomainObjectCollection",
               false,
-              CardinalityType.Many,
-              "NoAttribute"));
+              "NoAttributeForDomainObjectCollection"));
       endPoints.Add (
-          CreateVirtualRelationEndPointDefinition (
+          CreateVirtualCollectionRelationEndPointDefinition (
+              classDefinition,
+              typeof (ClassWithOneSideRelationPropertiesNotInMapping),
+              "BaseBidirectionalOneToManyForVirtualCollection",
+              false,
+              "NoAttributeForVirtualCollection"));
+      endPoints.Add (
+          CreateVirtualObjectRelationEndPointDefinition (
               classDefinition,
               typeof (ClassWithOneSideRelationPropertiesNotInMapping),
               "BasePrivateBidirectionalOneToOne",
-              false,
-              CardinalityType.One,
-              null));
+              false));
       endPoints.Add (
-          CreateVirtualRelationEndPointDefinition (
+          CreateDomainObjectCollectionRelationEndPointDefinition (
               classDefinition,
               typeof (ClassWithOneSideRelationPropertiesNotInMapping),
-              "BasePrivateBidirectionalOneToMany",
+              "BasePrivateBidirectionalOneToManyForDomainObjectCollection",
               false,
-              CardinalityType.Many,
-              "NoAttribute"));
+              "NoAttributeForDomainObjectCollection"));
+      endPoints.Add (
+          CreateVirtualCollectionRelationEndPointDefinition (
+              classDefinition,
+              typeof (ClassWithOneSideRelationPropertiesNotInMapping),
+              "BasePrivateBidirectionalOneToManyForVirtualCollection",
+              false,
+              "NoAttributeForVirtualCollection"));
 
       classDefinition.SetRelationEndPointDefinitions (new RelationEndPointDefinitionCollection (endPoints, true));
     }
@@ -467,21 +501,51 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           isMandatory);
     }
 
-    private VirtualRelationEndPointDefinition CreateVirtualRelationEndPointDefinition (
+    private VirtualObjectRelationEndPointDefinition CreateVirtualObjectRelationEndPointDefinition (
+        ClassDefinition classDefinition,
+        Type declaringType,
+        string shortPropertyName,
+        bool isMandatory)
+    {
+      var propertyInfo = GetPropertyInfo (declaringType, shortPropertyName);
+
+      return new VirtualObjectRelationEndPointDefinition (
+          classDefinition,
+          MappingConfiguration.Current.NameResolver.GetPropertyName (propertyInfo),
+          isMandatory,
+          propertyInfo);
+    }
+
+    private DomainObjectCollectionRelationEndPointDefinition CreateDomainObjectCollectionRelationEndPointDefinition (
         ClassDefinition classDefinition,
         Type declaringType,
         string shortPropertyName,
         bool isMandatory,
-        CardinalityType cardinality,
         string sortExpressionText)
     {
       var propertyInfo = GetPropertyInfo (declaringType, shortPropertyName);
 
-      return new VirtualRelationEndPointDefinition (
+      return new DomainObjectCollectionRelationEndPointDefinition (
           classDefinition,
           MappingConfiguration.Current.NameResolver.GetPropertyName (propertyInfo),
           isMandatory,
-          cardinality,
+          sortExpressionText,
+          propertyInfo);
+    }
+
+    private VirtualCollectionRelationEndPointDefinition CreateVirtualCollectionRelationEndPointDefinition (
+        ClassDefinition classDefinition,
+        Type declaringType,
+        string shortPropertyName,
+        bool isMandatory,
+        string sortExpressionText)
+    {
+      var propertyInfo = GetPropertyInfo (declaringType, shortPropertyName);
+
+      return new VirtualCollectionRelationEndPointDefinition (
+          classDefinition,
+          MappingConfiguration.Current.NameResolver.GetPropertyName (propertyInfo),
+          isMandatory,
           sortExpressionText,
           propertyInfo);
     }

@@ -165,7 +165,33 @@ namespace Remotion.Data.DomainObjects
     /// </returns>
     public static bool IsObjectList (Type type)
     {
+      ArgumentUtility.CheckNotNull ("type", type);
+
       return TypeExtensions.CanAscribeTo (type, typeof (ObjectList<>));
+    }
+
+    /// <summary>
+    /// Evaluates whether the <paramref name="type"/> is an <see cref="IObjectList{T}"/>.
+    /// </summary>
+    /// <param name="type">The <see cref="Type"/> to check. Must not be <see langword="null" />.</param>
+    /// <returns>
+    /// <see langword="true"/> if the <paramref name="type"/> is an <see cref="IObjectList{T}"/>.
+    /// </returns>
+    public static bool IsIObjectList (Type type)
+    {
+      ArgumentUtility.CheckNotNull ("type", type);
+
+      if (type == typeof (IObjectList<>))
+        return true;
+
+      if (!type.IsInterface)
+        return false;
+
+      if (!type.IsConstructedGenericType)
+        return false;
+
+      var genericTypeDefinition = type.GetGenericTypeDefinition();
+      return genericTypeDefinition == typeof (IObjectList<>);
     }
 
     /// <summary>
@@ -189,7 +215,7 @@ namespace Remotion.Data.DomainObjects
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
-      return IsDomainObject (type) || IsObjectList (type);
+      return IsDomainObject (type) || IsObjectList (type) || IsIObjectList (type);
     }
 
     /// <remarks>Only temporary solution until type resulition is refactored.</remarks>
@@ -247,10 +273,35 @@ namespace Remotion.Data.DomainObjects
     /// </exception>
     public static Type GetObjectListTypeParameter (Type type)
     {
+      ArgumentUtility.CheckNotNull ("type", type);
+
       var typeParameters = TypeExtensions.GetAscribedGenericArguments (type, typeof (ObjectList<>));
-      if (typeParameters == null)
+      var typeParameter = typeParameters[0];
+      if (typeParameter.IsGenericParameter)
         return null;
-      return typeParameters[0];
+      return typeParameter;
+    }
+
+    /// <summary>
+    /// Returns the type parameter of the <see cref="IObjectList{T}"/>.
+    /// </summary>
+    /// <param name="type">The <see cref="Type"/> for which to return the type parameter. Must not be <see langword="null" />.</param>
+    /// <returns>
+    /// A <see cref="Type"/> if the <paramref name="type"/> is a closed <see cref="IObjectList{T}"/> or <see langword="null"/> if the generic 
+    /// <see cref="IObjectList{T}"/> is open.
+    /// </returns>
+    /// <exception cref="ArgumentException">
+    /// Thrown if the type is not an <see cref="IObjectList{T}"/> or implements <see cref="IObjectList{T}"/>.
+    /// </exception>
+    public static Type GetIObjectListTypeParameter (Type type)
+    {
+      ArgumentUtility.CheckNotNull ("type", type);
+
+      var typeParameters = TypeExtensions.GetAscribedGenericArguments (type, typeof (IObjectList<>));
+      var typeParameter = typeParameters[0];
+      if (typeParameter.IsGenericParameter)
+        return null;
+      return typeParameter;
     }
 
     /// <summary>
@@ -264,6 +315,8 @@ namespace Remotion.Data.DomainObjects
 
       if (IsObjectList (propertyInfo.PropertyType))
         return GetObjectListTypeParameter (propertyInfo.PropertyType);
+      if (IsIObjectList (propertyInfo.PropertyType))
+        return GetIObjectListTypeParameter (propertyInfo.PropertyType);
       else
         return propertyInfo.PropertyType;
     }

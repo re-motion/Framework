@@ -66,11 +66,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       
       var modificationCheckingDecorator = 
           DomainObjectCollection.CreateDataStrategyForStandAloneCollection (dataStoreStub, typeof (Order), eventRaiserStub);
-      Assert.That (modificationCheckingDecorator, Is.InstanceOf (typeof (ModificationCheckingCollectionDataDecorator)));
+      Assert.That (modificationCheckingDecorator, Is.InstanceOf (typeof (ModificationCheckingDomainObjectCollectionDataDecorator)));
       Assert.That (modificationCheckingDecorator.RequiredItemType, Is.SameAs (typeof (Order)));
 
-      var eventRaisingDecorator = DomainObjectCollectionDataTestHelper.GetWrappedDataAndCheckType<EventRaisingCollectionDataDecorator> (
-          (ModificationCheckingCollectionDataDecorator) modificationCheckingDecorator);
+      var eventRaisingDecorator = DomainObjectCollectionDataTestHelper.GetWrappedDataAndCheckType<EventRaisingDomainObjectCollectionDataDecorator> (
+          (ModificationCheckingDomainObjectCollectionDataDecorator) modificationCheckingDecorator);
       Assert.That (eventRaisingDecorator.EventRaiser, Is.SameAs (eventRaiserStub));
       
       var dataStore = DomainObjectCollectionDataTestHelper.GetWrappedDataAndCheckType<IDomainObjectCollectionData> (eventRaisingDecorator);
@@ -584,8 +584,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       var originalCollectionDataStrategy = DomainObjectCollectionDataTestHelper.GetDataStrategy (_collection);
       var originalCollectionContents = _collection.Cast<DomainObject> ().ToArray ();
       var originalEndPointContents =
-          ((ICollectionEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad (endPointID)).GetData().ToArray();
-      var associatedCollectionDataStrategyFactory = new AssociatedCollectionDataStrategyFactory (TestableClientTransaction.DataManager);
+          ((IDomainObjectCollectionEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad (endPointID)).GetData().ToArray();
+      var associatedCollectionDataStrategyFactory = new AssociatedDomainObjectCollectionDataStrategyFactory (TestableClientTransaction.DataManager);
 
       var result = ((IAssociatableDomainObjectCollection) _collection).TransformToAssociated (endPointID, associatedCollectionDataStrategyFactory);
 
@@ -693,8 +693,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
     private OrderCollection CreateAssociatedCollectionWithEndPointStub ()
     {
-      var collectionEndPointStub = MockRepository.GenerateStub<ICollectionEndPoint> ();
-      var endPointDataStub = new ReadOnlyCollectionDataDecorator(new DomainObjectCollectionData ());
+      var collectionEndPointStub = MockRepository.GenerateStub<IDomainObjectCollectionEndPoint> ();
+      var endPointDataStub = new ReadOnlyDomainObjectCollectionDataDecorator(new DomainObjectCollectionData ());
 
       collectionEndPointStub.Stub (stub => stub.GetData()).Return (endPointDataStub);
 
@@ -702,8 +702,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       var endPointID = RelationEndPointID.Create (DomainObjectIDs.Customer1, typeof (Customer), "Orders");
       virtualEndPointProviderStub.Stub (stub => stub.GetOrCreateVirtualEndPoint (endPointID)).Return (collectionEndPointStub);
 
-      var delegatingStrategy = new EndPointDelegatingCollectionData (endPointID, virtualEndPointProviderStub);
-      var associatedCollection = new OrderCollection (new ModificationCheckingCollectionDataDecorator (typeof (Order), delegatingStrategy));
+      var delegatingStrategy = new EndPointDelegatingDomainObjectCollectionData (endPointID, virtualEndPointProviderStub);
+      var associatedCollection = new OrderCollection (new ModificationCheckingDomainObjectCollectionDataDecorator (typeof (Order), delegatingStrategy));
       Assert.That (DomainObjectCollectionDataTestHelper.GetAssociatedEndPoint (associatedCollection), Is.SameAs (collectionEndPointStub));
       return associatedCollection;
     }

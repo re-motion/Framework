@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Infrastructure;
@@ -125,9 +127,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
       return (DomainObject) Properties[propertyName].GetValueWithoutTypeCheck ();
     }
 
-    public DomainObjectCollection GetRelatedObjects (string propertyName)
+    public IEnumerable GetRelatedObjects (string propertyName)
+    {
+      return (IEnumerable) Properties[propertyName].GetValueWithoutTypeCheck ();
+    }
+
+    public DomainObjectCollection GetRelatedObjectsAsDomainObjectCollection (string propertyName)
     {
       return (DomainObjectCollection) Properties[propertyName].GetValueWithoutTypeCheck ();
+    }
+
+    public IReadOnlyList<DomainObject> GetRelatedObjectsAsVirtualCollection (string propertyName)
+    {
+      return (IReadOnlyList<DomainObject>) Properties[propertyName].GetValueWithoutTypeCheck ();
     }
 
     public DomainObject GetOriginalRelatedObject (string propertyName)
@@ -135,9 +147,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
       return (DomainObject) Properties[propertyName].GetOriginalValueWithoutTypeCheck ();
     }
 
-    public DomainObjectCollection GetOriginalRelatedObjects (string propertyName)
+    public DomainObjectCollection GetOriginalRelatedObjectsAsDomainObjectCollection (string propertyName)
     {
       return (DomainObjectCollection) Properties[propertyName].GetOriginalValueWithoutTypeCheck ();
+    }
+
+    public IReadOnlyList<DomainObject> GetOriginalRelatedObjectsAsVirtualCollection (string propertyName)
+    {
+      return (IReadOnlyList<DomainObject>) Properties[propertyName].GetOriginalValueWithoutTypeCheck ();
     }
 
     public void SetRelatedObject (string propertyName, DomainObject newRelatedObject)

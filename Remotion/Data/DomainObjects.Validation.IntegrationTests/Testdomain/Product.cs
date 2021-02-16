@@ -27,5 +27,7 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain
     }
 
     public virtual decimal Price { get; set; }
+
+    //TODO: RM-7294: Validation integration tests for IObjectList
   }
 }

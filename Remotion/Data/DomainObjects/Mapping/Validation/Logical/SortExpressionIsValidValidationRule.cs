@@ -45,12 +45,22 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
 
     private MappingValidationResult Validate (IRelationEndPointDefinition relationEndPointDefinition)
     {
-      var relationEndPointDefinitionAsVirtualRelationEndPointDefinition = relationEndPointDefinition as VirtualRelationEndPointDefinition;
-      if (relationEndPointDefinitionAsVirtualRelationEndPointDefinition != null)
+      if (relationEndPointDefinition is DomainObjectCollectionRelationEndPointDefinition domainObjectCollectionRelationEndPointDefinition)
       {
         try
         {
-          relationEndPointDefinitionAsVirtualRelationEndPointDefinition.GetSortExpression ();
+          domainObjectCollectionRelationEndPointDefinition.GetSortExpression ();
+        }
+        catch (MappingException ex)
+        {
+          return MappingValidationResult.CreateInvalidResult(ex.Message);
+        }
+      }
+      if (relationEndPointDefinition is VirtualCollectionRelationEndPointDefinition virtualCollectionRelationEndPointDefinition)
+      {
+        try
+        {
+          virtualCollectionRelationEndPointDefinition.GetSortExpression ();
         }
         catch (MappingException ex)
         {

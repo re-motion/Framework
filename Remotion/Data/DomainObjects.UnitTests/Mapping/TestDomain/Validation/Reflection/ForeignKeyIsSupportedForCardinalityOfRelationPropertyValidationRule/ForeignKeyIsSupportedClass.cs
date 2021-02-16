@@ -27,12 +27,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Re
     public string NoCollectionProperty_ContainsForeignKey { get; set; }
 
     [DBBidirectionalRelation ("OppositeProperty", ContainsForeignKey = true)]
-    public ObjectList<OtherDerivedValidationHierarchyClass> CollectionProperty_ContainsForeignKey { get; set; }
+    public ObjectList<OtherDerivedValidationHierarchyClass> DomainObjectCollectionProperty_ContainsForeignKey { get; set; }
+
+    [DBBidirectionalRelation ("OppositeProperty", ContainsForeignKey = true)]
+    public IObjectList<OtherDerivedValidationHierarchyClass> VirtualCollectionProperty_ContainsForeignKey { get; set; }
 
     [DBBidirectionalRelation ("OppositeProperty", ContainsForeignKey = false)]
     public string NoCollectionProperty_ContainsNoForeignKey { get; set; }
 
     [DBBidirectionalRelation ("OppositeProperty", ContainsForeignKey = false)]
-    public ObjectList<OtherDerivedValidationHierarchyClass> CollectionProperty_ContainsNoForeignKey { get; set; }
+    public ObjectList<OtherDerivedValidationHierarchyClass> DomainObjectCollectionProperty_ContainsNoForeignKey { get; set; }
+
+    [DBBidirectionalRelation ("OppositeProperty", ContainsForeignKey = false)]
+    public ObjectList<OtherDerivedValidationHierarchyClass> VirtualCollectionProperty_ContainsNoForeignKey { get; set; }
   }
 }

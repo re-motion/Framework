@@ -182,15 +182,49 @@
     <Compile Include="ClientTransactionFactory.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\IPropertyMetadataProvider.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\PropertyMetadataReflector.cs" />
+    <Compile Include="DataManagement\CollectionData\IncompleteEndPointModicationVirtualCollectionData.cs" />
+    <Compile Include="DataManagement\CollectionData\IVirtualCollectionData.cs" />
+    <Compile Include="DataManagement\CollectionData\ReadOnlyVirtualCollectionDataDecorator.cs" />
+    <Compile Include="DataManagement\CollectionData\VirtualCollectionData.cs" />
+    <Compile Include="DataManagement\Commands\EndPointModifications\VirtualCollectionEndPointDeleteCommand.cs" />
+    <Compile Include="DataManagement\Commands\EndPointModifications\VirtualCollectionEndPointAddCommand.cs" />
+    <Compile Include="DataManagement\Commands\EndPointModifications\VirtualCollectionEndPointRemoveCommand.cs" />
+    <Compile Include="DataManagement\DelegatingDataContainerMap.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\ICollectionEndPointData.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\IVirtualCollectionEndPointChangeDetectionStrategy.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\NullVirtualCollectionEndPoint.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\NullDataContainerMapReadOnlyView.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualCollectionEndPoint.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\IDomainObjectCollectionEndPoint.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\IVirtualCollectionEndPoint.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\ChangeTrackingVirtualCollectionDataDecorator.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\EndPointDelegatingVirtualCollectionData.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\IVirtualCollectionEndPointCollectionProvider.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\StateUpdateRaisingVirtualCollectionEndPointDecorator.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\VirtualCollectionEndPointCollectionManager.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\VirtualCollectionEndPointCollectionProvider.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\VirtualCollectionEndPointDataManager.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\VirtualCollectionEndPointDataManagerFactory.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\IVirtualCollectionEndPointDataManager.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\IVirtualCollectionEndPointDataManagerFactory.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\IVirtualCollectionEndPointCollectionManager.cs" />
+    <Compile Include="DataManagement\ObjectListFactory.cs" />
+    <Compile Include="DataManagement\VirtualObjectList.cs" />
     <Compile Include="DomainObjectHandleConverter.cs" />
     <Compile Include="DataManagement\DataContainerState.cs" />
     <Compile Include="DomainObjectState.cs" />
     <Compile Include="IDomainObject.cs" />
+    <Compile Include="IObjectList.cs" />
+    <Compile Include="IReadOnlyCollectionData.cs" />
     <Compile Include="Linq\FluentFetchRequest.cs" />
     <Compile Include="Mapping\DefaultStorageClass.cs" />
+    <Compile Include="Mapping\TypeNotCompatibleWithVirtualRelationEndPointDefinition.cs" />
+    <Compile Include="Mapping\VirtualCollectionRelationEndPointDefinition.cs" />
     <Compile Include="Mapping\Validation\Logical\CheckForClassIDIsValidValidationRule.cs" />
     <Compile Include="Mapping\Validation\Logical\MandatoryNetEnumTypeHasValuesDefinedValidationRule.cs" />
     <Compile Include="Mapping\Validation\Logical\MandatoryExtensibleEnumTypeHasValuesDefinedValidationRule.cs" />
+    <Compile Include="Mapping\VirtualObjectRelationEndPointDefinition.cs" />
+    <Compile Include="Mapping\DomainObjectCollectionRelationEndPointDefinition.cs" />
     <Compile Include="Persistence\NonPersistent\Validation\RelationPropertyStorageClassMatchesReferencedClassDefinitionStorageClassValidationRule.cs" />
     <Compile Include="Obsolete\IDomainObjectNextCallRequirements.cs" />
     <Compile Include="Infrastructure\CompoundClientTransactionExtensionFactory.cs" />
@@ -223,9 +257,9 @@
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\IgnoreForMappingConfigurationAttribute.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\MixinPropertyFinder.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\NameBasedPropertyFinder.cs" />
-    <Compile Include="DataManagement\CollectionData\ObservableCollectionDataDecorator.cs" />
-    <Compile Include="DataManagement\CollectionData\ObservableCollectionDataDecoratorBase.cs" />
-    <Compile Include="DataManagement\CollectionData\CopyOnWriteDomainObjectCollectionData.cs" />
+    <Compile Include="DataManagement\CollectionData\ObservableDomainObjectCollectionDataDecorator.cs" />
+    <Compile Include="DataManagement\CollectionData\ObservableDomainObjectCollectionDataDecoratorBase.cs" />
+    <Compile Include="DataManagement\CollectionData\CopyOnWriteDomainObjectDomainObjectCollectionData.cs" />
     <Compile Include="DataManagement\Commands\EndPointModifications\VirtualEndPointStateUpdatedRaisingCommandDecorator.cs" />
     <Compile Include="DataManagement\Commands\TransactionHierarchyCommandExecutor.cs" />
     <Compile Include="DataManagement\Commands\EndPointModifications\RealObjectEndPointRegistrationCommandDecorator.cs" />
@@ -245,14 +279,14 @@
     <Compile Include="DataManagement\RelationEndPoints\StateUpdateRaisingRelationEndPointFactoryDecorator.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\AssociatedCollectionDataStrategyFactory.cs" />
-    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\CollectionEndPointCollectionManager.cs" />
-    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\CollectionEndPointCollectionProvider.cs" />
-    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\IAssociatedCollectionDataStrategyFactory.cs" />
-    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\ICollectionEndPointCollectionManager.cs" />
-    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\ICollectionEndPointCollectionProvider.cs" />
-    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\ICollectionEndPointDataManagerFactory.cs" />
-    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\StateUpdateRaisingCollectionEndPointDecorator.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\AssociatedDomainObjectCollectionDataStrategyFactory.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\DomainObjectCollectionEndPointCollectionManager.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\DomainObjectCollectionEndPointCollectionProvider.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\IAssociatedDomainObjectCollectionDataStrategyFactory.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\IDomainObjectCollectionEndPointCollectionManager.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\IDomainObjectCollectionEndPointCollectionProvider.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\IDomainObjectCollectionEndPointDataManagerFactory.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\StateUpdateRaisingDomainObjectCollectionEndPointDecorator.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\VirtualObjectEndPoints\IVirtualObjectEndPointDataManagerFactory.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\VirtualObjectEndPoints\StateUpdateRaisingCollectionEndPointDecorator.cs" />
     <Compile Include="DomainImplementation\ResurrectionService.cs" />
@@ -395,12 +429,12 @@
     <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\VirtualObjectEndPoints\VirtualObjectEndPointDataManager.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\VirtualObjectEndPoints\VirtualObjectEndPointDataManagerFactory.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualEndPointStateUpdateListener.cs" />
-    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\CollectionEndPointDataManagerFactory.cs" />
-    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\CompleteCollectionEndPointLoadState.cs" />
-    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\IncompleteCollectionEndPointLoadState.cs" />
-    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\ICollectionEndPointLoadState.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\DomainObjectCollectionEndPointDataManagerFactory.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\CompleteDomainObjectCollectionEndPointLoadState.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\IncompleteDomainObjectCollectionEndPointLoadState.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\IDomainObjectCollectionEndPointLoadState.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\SortedPropertyComparer.cs" />
-    <Compile Include="DataManagement\Commands\EndPointModifications\CollectionEndPointDeleteCommand.cs" />
+    <Compile Include="DataManagement\Commands\EndPointModifications\DomainObjectCollectionEndPointDeleteCommand.cs" />
     <Compile Include="DataManagement\Commands\EndPointModifications\ObjectEndPointDeleteCommand.cs" />
     <Compile Include="DataManagement\RelationEndPoints\IRealObjectEndPoint.cs" />
     <Compile Include="DataManagement\ILazyLoader.cs" />
@@ -587,7 +621,7 @@
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\PropertyFinder.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\PropertyFinderBase.cs" />
     <Compile Include="ClientTransactionScope.cs" />
-    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\ChangeCachingCollectionDataDecorator.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\ChangeCachingDomainObjectCollectionDataDecorator.cs" />
     <Compile Include="DataManagement\CollectionData\DomainObjectCollectionDataDecoratorBase.cs" />
     <Compile Include="DataManagement\RelationEndPoints\IVirtualEndPointStateUpdateListener.cs" />
     <Compile Include="DataManagement\Commands\DeleteCommand.cs" />
@@ -596,25 +630,25 @@
     <Compile Include="DataManagement\DataManagementCommandExtensions.cs" />
     <Compile Include="DataManagement\IDataContainerMapReadOnlyView.cs" />
     <Compile Include="DataManagement\IDataManagementCommand.cs" />
-    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\ICollectionEndPointDataManager.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\IDomainObjectCollectionEndPointDataManager.cs" />
     <Compile Include="DataManagement\IDataManager.cs" />
     <Compile Include="DataManagement\RelationEndPoints\IRelationEndPointManager.cs" />
-    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\CollectionEndPointDataManager.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\DomainObjectCollectionEndPointDataManager.cs" />
     <Compile Include="DataManagement\RelationEndPoints\IObjectEndPoint.cs" />
     <Compile Include="DataManagement\RelationEndPoints\RelationEndPointExtensions.cs" />
     <Compile Include="DataManagement\RelationEndPoints\RealObjectEndPoint.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualObjectEndPoint.cs" />
     <Compile Include="DomainObjectCollection.EventRaiser.cs" />
-    <Compile Include="DataManagement\RelationEndPoints\ICollectionEndPointChangeDetectionStrategy.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\IDomainObjectCollectionEndPointChangeDetectionStrategy.cs" />
     <Compile Include="DomainObjectCollection.IList.cs" />
     <Compile Include="DataManagement\CollectionData\DomainObjectCollectionDataExtensions.cs" />
     <Compile Include="DataManagement\CollectionData\IndirectDomainObjectCollectionEventRaiser.cs" />
-    <Compile Include="DataManagement\CollectionData\ReadOnlyCollectionDataDecorator.cs" />
+    <Compile Include="DataManagement\CollectionData\ReadOnlyDomainObjectCollectionDataDecorator.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\DomainObjectCollectionFactory.cs" />
-    <Compile Include="DataManagement\CollectionData\ModificationCheckingCollectionDataDecorator.cs" />
-    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\EndPointDelegatingCollectionData.cs" />
+    <Compile Include="DataManagement\CollectionData\ModificationCheckingDomainObjectCollectionDataDecorator.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\EndPointDelegatingDomainObjectCollectionData.cs" />
     <Compile Include="DataManagement\CollectionData\DomainObjectCollectionData.cs" />
-    <Compile Include="DataManagement\CollectionData\EventRaisingCollectionDataDecorator.cs" />
+    <Compile Include="DataManagement\CollectionData\EventRaisingDomainObjectCollectionDataDecorator.cs" />
     <Compile Include="DataManagement\CollectionData\IDomainObjectCollectionData.cs" />
     <Compile Include="DataManagement\CollectionData\IDomainObjectCollectionEventRaiser.cs" />
     <Compile Include="DataManagement\CollectionData\IAssociatableDomainObjectCollection.cs" />
@@ -666,7 +700,7 @@
     <Compile Include="Persistence\Rdbms\Model\Validation\OnlyOneTablePerHierarchyValidationRule.cs" />
     <Compile Include="Persistence\Rdbms\Model\Validation\TableNamesAreDistinctWithinConcreteTableInheritanceHierarchyValidationRule.cs" />
     <Compile Include="Persistence\Rdbms\Model\Validation\ClassAboveTableIsAbstractValidationRule.cs" />
-    <Compile Include="Mapping\Validation\Logical\SortExpressionIsSupportedForCardianlityOfRelationPropertyValidationRule.cs" />
+    <Compile Include="Mapping\Validation\Logical\SortExpressionIsSupportedForCardinalityOfRelationPropertyValidationRule.cs" />
     <Compile Include="Persistence\Rdbms\Model\Validation\ColumnNamesAreUniqueWithinInheritanceTreeValidationRule.cs" />
     <Compile Include="Mapping\Validation\Reflection\DomainObjectTypeDoesNotHaveLegacyInfrastructureConstructorValidationRule.cs" />
     <Compile Include="Mapping\Validation\Reflection\DomainObjectTypeIsNotGenericValidationRule.cs" />
@@ -699,11 +733,11 @@
     <Compile Include="Queries\EagerFetching\FetchedRelationDataRegistrationAgentBase.cs" />
     <Compile Include="Queries\QueryParameterWithType.cs" />
     <Compile Include="ReadOnlyDomainObjectCollectionAdapter.cs" />
-    <Compile Include="DataManagement\Commands\EndPointModifications\CollectionEndPointRemoveCommand.cs" />
-    <Compile Include="DataManagement\Commands\EndPointModifications\CollectionEndPointInsertCommand.cs" />
-    <Compile Include="DataManagement\Commands\EndPointModifications\CollectionEndPointReplaceCommand.cs" />
-    <Compile Include="DataManagement\Commands\EndPointModifications\CollectionEndPointSetCollectionCommand.cs" />
-    <Compile Include="DataManagement\Commands\EndPointModifications\CollectionEndPointReplaceSameCommand.cs" />
+    <Compile Include="DataManagement\Commands\EndPointModifications\DomainObjectCollectionEndPointRemoveCommand.cs" />
+    <Compile Include="DataManagement\Commands\EndPointModifications\DomainObjectCollectionEndPointInsertCommand.cs" />
+    <Compile Include="DataManagement\Commands\EndPointModifications\DomainObjectCollectionEndPointReplaceCommand.cs" />
+    <Compile Include="DataManagement\Commands\EndPointModifications\DomainObjectCollectionEndPointSetCollectionCommand.cs" />
+    <Compile Include="DataManagement\Commands\EndPointModifications\DomainObjectCollectionEndPointReplaceSameCommand.cs" />
     <Compile Include="DataManagement\Commands\EndPointModifications\ObjectEndPointSetOneManyCommand.cs" />
     <Compile Include="DataManagement\Commands\EndPointModifications\ObjectEndPointSetOneOneCommand.cs" />
     <Compile Include="DataManagement\Commands\EndPointModifications\ObjectEndPointSetSameCommand.cs" />
@@ -716,13 +750,13 @@
     <Compile Include="DomainImplementation\UnloadService.cs" />
     <Compile Include="Infrastructure\Enlistment\IEnlistedDomainObjectManager.cs" />
     <Compile Include="Infrastructure\Enlistment\DictionaryBasedEnlistedDomainObjectManager.cs" />
-    <Compile Include="Infrastructure\SubCollectionEndPointChangeDetectionStrategy.cs" />
+    <Compile Include="Infrastructure\SubDomainObjectCollectionEndPointChangeDetectionStrategy.cs" />
     <Compile Include="Infrastructure\ObjectIDStringSerialization\ObjectIDStringSerializer.cs" />
     <Compile Include="Infrastructure\ObjectIDStringSerialization\StringObjectIDValueParser.cs" />
     <Compile Include="Infrastructure\ObjectIDStringSerialization\GuidObjectIDValueParser.cs" />
     <Compile Include="Infrastructure\ObjectIDStringSerialization\Int32ObjectIDValueParser.cs" />
     <Compile Include="Infrastructure\ObjectIDStringSerialization\IObjectIDValueParser.cs" />
-    <Compile Include="Infrastructure\RootCollectionEndPointChangeDetectionStrategy.cs" />
+    <Compile Include="Infrastructure\RootDomainObjectCollectionEndPointChangeDetectionStrategy.cs" />
     <Compile Include="Infrastructure\Serialization\FlattenedSerializationLogger.cs" />
     <Compile Include="InvalidEnumValueException.cs" />
     <Compile Include="DataManagement\Commands\CompositeCommand.cs" />
@@ -875,7 +909,7 @@
     <Compile Include="DataManagement\ClientTransactionsDifferException.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DataManagement\RelationEndPoints\CollectionEndPoint.cs">
+    <Compile Include="DataManagement\RelationEndPoints\DomainObjectCollectionEndPoint.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DataManagement\DataContainerCollection.cs">
@@ -895,7 +929,7 @@
     <Compile Include="Validation\MandatoryRelationNotSetException.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DataManagement\RelationEndPoints\NullCollectionEndPoint.cs">
+    <Compile Include="DataManagement\RelationEndPoints\NullDomainObjectCollectionEndPoint.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DataManagement\RelationEndPoints\NullObjectEndPoint.cs">

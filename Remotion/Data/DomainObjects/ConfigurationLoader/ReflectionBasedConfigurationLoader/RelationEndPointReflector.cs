@@ -54,19 +54,14 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       _domainModelConstraintProvider = domainModelConstraintProvider;
     }
 
+    public abstract bool IsVirtualEndRelationEndpoint ();
+
     public IRelationEndPointDefinition GetMetadata ()
     {
       if (IsVirtualEndRelationEndpoint())
         return CreateVirtualRelationEndPointDefinition (ClassDefinition);
       else
         return CreateRelationEndPointDefinition (ClassDefinition);
-    }
-
-    public virtual bool IsVirtualEndRelationEndpoint ()
-    {
-      if (!IsBidirectionalRelation)
-        return false;
-      return ReflectionUtility.IsObjectList (PropertyInfo.PropertyType);
     }
 
     private IRelationEndPointDefinition CreateRelationEndPointDefinition (ClassDefinition classDefinition)
@@ -82,23 +77,46 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
 
     private IRelationEndPointDefinition CreateVirtualRelationEndPointDefinition (ClassDefinition classDefinition)
     {
-      return new VirtualRelationEndPointDefinition (
-          classDefinition,
-          GetPropertyName(),
-          IsMandatory(),
-          GetCardinality(),
-          GetSortExpression(),
-          PropertyInfo);
+      if (ReflectionUtility.IsDomainObject (PropertyInfo.PropertyType))
+      {
+        var virtualObjectRelationEndPointDefinition = new VirtualObjectRelationEndPointDefinition (
+            classDefinition,
+            GetPropertyName(),
+            IsMandatory(),
+            PropertyInfo);
+
+        if (GetSortExpression() != null)
+          virtualObjectRelationEndPointDefinition.SetHasSortExpressionFlag();
+
+        return virtualObjectRelationEndPointDefinition;
+      }
+      else if (ReflectionUtility.IsObjectList (PropertyInfo.PropertyType))
+      {
+        return new DomainObjectCollectionRelationEndPointDefinition (
+            classDefinition,
+            GetPropertyName(),
+            IsMandatory(),
+            GetSortExpression(),
+            PropertyInfo);
+      }
+      else if (ReflectionUtility.IsIObjectList (PropertyInfo.PropertyType))
+      {
+        return new VirtualCollectionRelationEndPointDefinition (
+            classDefinition,
+            GetPropertyName(),
+            IsMandatory(),
+            GetSortExpression(),
+            PropertyInfo);
+      }
+      else
+      {
+        return new TypeNotCompatibleWithVirtualRelationEndPointDefinition (classDefinition, GetPropertyName(), PropertyInfo.PropertyType);
+      }
     }
 
     private bool IsMandatory ()
     {
       return !_domainModelConstraintProvider.IsNullable (PropertyInfo);
-    }
-
-    private CardinalityType GetCardinality ()
-    {
-      return ReflectionUtility.IsObjectList (PropertyInfo.PropertyType) ? CardinalityType.Many : CardinalityType.One;
     }
 
     private string GetSortExpression ()

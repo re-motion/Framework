@@ -81,12 +81,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Test]
     public void PropertyWithNoDBBidirectionalRelationAttribute ()
     {
-      var endPointDefinition = new VirtualRelationEndPointDefinition (
+      var endPointDefinition = new VirtualObjectRelationEndPointDefinition (
           _classDefinition,
           "PropertyWithNoDbBidirectionalRelationAttribute",
           false,
-          CardinalityType.One,
-          null,
           PropertyInfoAdapter.Create(typeof (ForeignKeyIsSupportedClass).GetProperty ("PropertyWithNoDbBidirectionalRelationAttribute")));
       var relationDefinition = new RelationDefinition ("Test", endPointDefinition, endPointDefinition);
 
@@ -98,12 +96,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Test]
     public void NoCollectionProperty_ContainsForeignKeyIsTrue ()
     {
-      var endPointDefinition = new VirtualRelationEndPointDefinition (
+      var endPointDefinition = new VirtualObjectRelationEndPointDefinition (
           _classDefinition,
           "NoCollectionProperty_ContainsForeignKey",
           false,
-          CardinalityType.One,
-          null,
           PropertyInfoAdapter.Create(typeof (ForeignKeyIsSupportedClass).GetProperty ("NoCollectionProperty_ContainsForeignKey")));
       var relationDefinition = new RelationDefinition ("Test", endPointDefinition, endPointDefinition);
 
@@ -115,12 +111,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Test]
     public void NoCollectionProperty_ContainsForeignKeyIsFalse ()
     {
-      var endPointDefinition = new VirtualRelationEndPointDefinition (
+      var endPointDefinition = new VirtualObjectRelationEndPointDefinition (
           _classDefinition,
           "NoCollectionProperty_ContainsNoForeignKey",
           false,
-          CardinalityType.One,
-          null,
           PropertyInfoAdapter.Create(typeof (ForeignKeyIsSupportedClass).GetProperty ("NoCollectionProperty_ContainsNoForeignKey")));
       var relationDefinition = new RelationDefinition ("Test", endPointDefinition, endPointDefinition);
 
@@ -130,15 +124,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     }
 
     [Test]
-    public void CollectionProperty_ContainsForeignKeyIsTrue ()
+    public void DomainObjectCollectionProperty_ContainsForeignKeyIsTrue ()
     {
-      var endPointDefinition = new VirtualRelationEndPointDefinition (
+      var endPointDefinition = new VirtualObjectRelationEndPointDefinition (
           _classDefinition,
-          "CollectionProperty_ContainsForeignKey",
+          "DomainObjectCollectionProperty_ContainsForeignKey",
           false,
-          CardinalityType.One,
-          null,
-          PropertyInfoAdapter.Create(typeof (ForeignKeyIsSupportedClass).GetProperty ("CollectionProperty_ContainsForeignKey")));
+          PropertyInfoAdapter.Create(typeof (ForeignKeyIsSupportedClass).GetProperty ("DomainObjectCollectionProperty_ContainsForeignKey")));
       var relationDefinition = new RelationDefinition ("Test", endPointDefinition, endPointDefinition);
 
       var validationResult = _validationRule.Validate (relationDefinition);
@@ -147,20 +139,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
           "Only relation end points with a property type of 'DomainObject' can contain the foreign key.\r\n\r\n"
           + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection."
           + "ForeignKeyIsSupportedForCardinalityOfRelationPropertyValidationRule.ForeignKeyIsSupportedClass\r\n"
-          + "Property: CollectionProperty_ContainsForeignKey";
+          + "Property: DomainObjectCollectionProperty_ContainsForeignKey";
       AssertMappingValidationResult (validationResult, false, expectedMessage);
     }
 
     [Test]
-    public void CollectionProperty_ContainsForeignKeyIsTrue_BothEndPoints ()
+    public void VirtualCollectionProperty_ContainsForeignKeyIsTrue ()
     {
-      var endPointDefinition = new VirtualRelationEndPointDefinition (
+      var endPointDefinition = new VirtualObjectRelationEndPointDefinition (
           _classDefinition,
-          "CollectionProperty_ContainsForeignKey",
+          "VirtualCollectionProperty_ContainsForeignKey",
           false,
-          CardinalityType.One,
-          null,
-          PropertyInfoAdapter.Create(typeof (ForeignKeyIsSupportedClass).GetProperty ("CollectionProperty_ContainsForeignKey")));
+          PropertyInfoAdapter.Create(typeof (ForeignKeyIsSupportedClass).GetProperty ("VirtualCollectionProperty_ContainsForeignKey")));
       var relationDefinition = new RelationDefinition ("Test", endPointDefinition, endPointDefinition);
 
       var validationResult = _validationRule.Validate (relationDefinition);
@@ -169,20 +159,73 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
           "Only relation end points with a property type of 'DomainObject' can contain the foreign key.\r\n\r\n"
           + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection."
           + "ForeignKeyIsSupportedForCardinalityOfRelationPropertyValidationRule.ForeignKeyIsSupportedClass\r\n"
-          + "Property: CollectionProperty_ContainsForeignKey";
+          + "Property: VirtualCollectionProperty_ContainsForeignKey";
       AssertMappingValidationResult (validationResult, false, expectedMessage);
     }
 
     [Test]
-    public void CollectionProperty_ContainsForeignKeyIsFalse ()
+    public void DomainObjectCollectionProperty_ContainsForeignKeyIsTrue_BothEndPoints ()
     {
-      var endPointDefinition = new VirtualRelationEndPointDefinition (
+      var endPointDefinition = new VirtualObjectRelationEndPointDefinition (
           _classDefinition,
-          "CollectionProperty_ContainsNoForeignKey",
+          "DomainObjectCollectionProperty_ContainsForeignKey",
           false,
-          CardinalityType.One,
-          null,
-          PropertyInfoAdapter.Create(typeof (ForeignKeyIsSupportedClass).GetProperty ("CollectionProperty_ContainsNoForeignKey")));
+          PropertyInfoAdapter.Create(typeof (ForeignKeyIsSupportedClass).GetProperty ("DomainObjectCollectionProperty_ContainsForeignKey")));
+      var relationDefinition = new RelationDefinition ("Test", endPointDefinition, endPointDefinition);
+
+      var validationResult = _validationRule.Validate (relationDefinition);
+
+      var expectedMessage =
+          "Only relation end points with a property type of 'DomainObject' can contain the foreign key.\r\n\r\n"
+          + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection."
+          + "ForeignKeyIsSupportedForCardinalityOfRelationPropertyValidationRule.ForeignKeyIsSupportedClass\r\n"
+          + "Property: DomainObjectCollectionProperty_ContainsForeignKey";
+      AssertMappingValidationResult (validationResult, false, expectedMessage);
+    }
+
+    [Test]
+    public void VirtualCollectionProperty_ContainsForeignKeyIsTrue_BothEndPoints ()
+    {
+      var endPointDefinition = new VirtualObjectRelationEndPointDefinition (
+          _classDefinition,
+          "VirtualCollectionProperty_ContainsForeignKey",
+          false,
+          PropertyInfoAdapter.Create(typeof (ForeignKeyIsSupportedClass).GetProperty ("VirtualCollectionProperty_ContainsForeignKey")));
+      var relationDefinition = new RelationDefinition ("Test", endPointDefinition, endPointDefinition);
+
+      var validationResult = _validationRule.Validate (relationDefinition);
+
+      var expectedMessage =
+          "Only relation end points with a property type of 'DomainObject' can contain the foreign key.\r\n\r\n"
+          + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection."
+          + "ForeignKeyIsSupportedForCardinalityOfRelationPropertyValidationRule.ForeignKeyIsSupportedClass\r\n"
+          + "Property: VirtualCollectionProperty_ContainsForeignKey";
+      AssertMappingValidationResult (validationResult, false, expectedMessage);
+    }
+
+    [Test]
+    public void DomainObjectCollectionProperty_ContainsForeignKeyIsFalse ()
+    {
+      var endPointDefinition = new VirtualObjectRelationEndPointDefinition (
+          _classDefinition,
+          "DomainObjectCollectionProperty_ContainsNoForeignKey",
+          false,
+          PropertyInfoAdapter.Create(typeof (ForeignKeyIsSupportedClass).GetProperty ("DomainObjectCollectionProperty_ContainsNoForeignKey")));
+      var relationDefinition = new RelationDefinition ("Test", endPointDefinition, endPointDefinition);
+
+      var validationResult = _validationRule.Validate (relationDefinition);
+
+      AssertMappingValidationResult (validationResult, true, null);
+    }
+
+    [Test]
+    public void VirtualCollectionProperty_ContainsForeignKeyIsFalse ()
+    {
+      var endPointDefinition = new VirtualObjectRelationEndPointDefinition (
+          _classDefinition,
+          "VirtualCollectionProperty_ContainsNoForeignKey",
+          false,
+          PropertyInfoAdapter.Create(typeof (ForeignKeyIsSupportedClass).GetProperty ("VirtualCollectionProperty_ContainsNoForeignKey")));
       var relationDefinition = new RelationDefinition ("Test", endPointDefinition, endPointDefinition);
 
       var validationResult = _validationRule.Validate (relationDefinition);

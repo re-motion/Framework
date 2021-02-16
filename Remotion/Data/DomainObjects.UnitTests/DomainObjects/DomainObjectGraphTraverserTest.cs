@@ -228,7 +228,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       {
         return !typeof (Ceo).IsAssignableFrom (linkProperty.PropertyData.PropertyType)
           && !typeof (Order).IsAssignableFrom (linkProperty.PropertyData.PropertyType)
-          && !typeof (ObjectList<Order>).IsAssignableFrom (linkProperty.PropertyData.PropertyType);
+          && !typeof (ObjectList<Order>).IsAssignableFrom (linkProperty.PropertyData.PropertyType)
+          && !typeof (IObjectList<ProductReview>).IsAssignableFrom (linkProperty.PropertyData.PropertyType);
       }
     }
   }

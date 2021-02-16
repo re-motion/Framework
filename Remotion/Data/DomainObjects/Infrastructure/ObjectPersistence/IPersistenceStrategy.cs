@@ -121,7 +121,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     /// Resolves the relation identified by the given <see cref="RelationEndPointID"/>, loading all the related objects' data unless already available.
     /// </summary>
     /// <param name="relationEndPointID">The <see cref="RelationEndPointID"/> of the end point that should be evaluated.
-    ///   <paramref name="relationEndPointID"/> must refer to a <see cref="CollectionEndPoint"/>. Must not be <see langword="null"/>.</param>
+    ///   <paramref name="relationEndPointID"/> must refer to a <see cref="DomainObjectCollectionEndPoint"/>. Must not be <see langword="null"/>.</param>
     /// <param name="alreadyLoadedObjectDataProvider">An implementation of <see cref="ILoadedObjectDataProvider"/> that is used to determine
     ///   whether the result object is already known by the <see cref="ClientTransaction"/>. If so, the existing object data is returned; otherwise,
     ///   the data is loaded and returned.</param>

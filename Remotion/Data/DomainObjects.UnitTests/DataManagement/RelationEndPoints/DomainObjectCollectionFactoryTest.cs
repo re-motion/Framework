@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
   {
     private DomainObjectCollectionFactory _factory;
     private DomainObjectCollectionData _data;
-    private ModificationCheckingCollectionDataDecorator _dataWithOrderType;
+    private ModificationCheckingDomainObjectCollectionDataDecorator _dataWithOrderType;
     private Order _orderA;
     private Order _orderB;
 
@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _factory = DomainObjectCollectionFactory.Instance;
       _data = new DomainObjectCollectionData ();
-      _dataWithOrderType = new ModificationCheckingCollectionDataDecorator (typeof (Order), _data);
+      _dataWithOrderType = new ModificationCheckingDomainObjectCollectionDataDecorator (typeof (Order), _data);
 
       _orderA = DomainObjectMother.CreateFakeObject<Order> ();
       _orderB = DomainObjectMother.CreateFakeObject<Order> ();

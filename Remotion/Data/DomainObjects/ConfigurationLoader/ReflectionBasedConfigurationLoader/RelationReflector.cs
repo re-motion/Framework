@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       var oppositeClassDefinition = GetOppositeClassDefinition (classDefinitions);
       var oppositePropertyInfo = GetOppositePropertyInfo ();
       if (oppositePropertyInfo == null)
-        return new PropertyNotFoundRelationEndPointDefinition (oppositeClassDefinition, BidirectionalRelationAttribute.OppositeProperty);
+        return new PropertyNotFoundRelationEndPointDefinition (oppositeClassDefinition, BidirectionalRelationAttribute.OppositeProperty, typeof (void));
       else
         return GetEndPointDefinition (oppositeClassDefinition, oppositePropertyInfo);
     }
@@ -89,7 +89,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       if (endPointDefinition != null)
         return endPointDefinition;
 
-      return new PropertyNotFoundRelationEndPointDefinition (classDefinition, propertyInfo.Name);
+      return new PropertyNotFoundRelationEndPointDefinition (classDefinition, propertyInfo.Name, propertyInfo.PropertyType);
     }
 
     private ClassDefinition GetOppositeClassDefinition (IDictionary<Type, ClassDefinition> classDefinitions)

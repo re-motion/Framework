@@ -26,7 +26,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   /// only own their non-virtual end-points, and when unloading, these end-points must not be changed (because the changes would be lost and might
   /// leave other end-points in an inconsistent state).
   /// </summary>
-  [Serializable]
   public class ExistingDataContainerEndPointsRegistrationAgent : DataContainerEndPointsRegistrationAgentBase
   {
     public ExistingDataContainerEndPointsRegistrationAgent (

@@ -180,7 +180,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    public void UnregisterEndPoint_RealEndPoint_PointingToNull ()
+    public void UnregisterEndPoint_RealEndPoint_PointingToNull_DomainObjectCollection ()
     {
       var endPointMock = CreateRealObjectEndPointMock (null);
       endPointMock.Stub (stub => stub.HasChanged).Return (false);
@@ -192,7 +192,30 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var oppositeEndPointID = RelationEndPointID.CreateOpposite (endPointMock.Definition, null);
       _endPointProviderMock
           .Expect (mock => mock.GetOrCreateVirtualEndPoint (oppositeEndPointID))
-          .Return (new NullCollectionEndPoint (ClientTransaction.CreateRootTransaction(), oppositeEndPointID.Definition));
+          .Return (new NullDomainObjectCollectionEndPoint (ClientTransaction.CreateRootTransaction(), oppositeEndPointID.Definition));
+      _endPointProviderMock.Replay ();
+
+      _agent.UnregisterEndPoint (endPointMock, _map);
+
+      endPointMock.VerifyAllExpectations();
+      _endPointProviderMock.VerifyAllExpectations();
+      Assert.That (_map, Has.No.Member (endPointMock));
+    }
+
+    [Test]
+    public void UnregisterEndPoint_RealEndPoint_PointingToNull_VirtualCollection ()
+    {
+      var endPointMock = CreateRealObjectEndPointMock (null);
+      endPointMock.Stub (stub => stub.HasChanged).Return (false);
+      endPointMock.Expect (mock => mock.ResetSyncState());
+      endPointMock.Replay ();
+
+      _map.AddEndPoint (endPointMock);
+
+      var oppositeEndPointID = RelationEndPointID.CreateOpposite (endPointMock.Definition, null);
+      _endPointProviderMock
+          .Expect (mock => mock.GetOrCreateVirtualEndPoint (oppositeEndPointID))
+          .Return (new NullVirtualCollectionEndPoint (ClientTransaction.CreateRootTransaction(), oppositeEndPointID.Definition));
       _endPointProviderMock.Replay ();
 
       _agent.UnregisterEndPoint (endPointMock, _map);

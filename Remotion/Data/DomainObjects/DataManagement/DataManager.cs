@@ -266,7 +266,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     {
       ArgumentUtility.CheckNotNull ("endPointID", endPointID);
 
-      var collectionEndPoint = GetRelationEndPointWithoutLoading (endPointID) as ICollectionEndPoint;
+      var collectionEndPoint = GetRelationEndPointWithoutLoading (endPointID) as ICollectionEndPoint<ICollectionEndPointData>;
 
       if (collectionEndPoint == null)
         throw new ArgumentException ("The given ID does not identify an ICollectionEndPoint managed by this DataManager.", "endPointID");

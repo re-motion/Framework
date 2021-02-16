@@ -56,9 +56,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       OrderTicket oldOrderTicket = DomainObjectIDs.OrderTicket1.GetObject<OrderTicket> ();
       OrderTicket newOrderTicket = DomainObjectIDs.OrderTicket2.GetObject<OrderTicket> ();
 
-			object orderTimestamp = order.InternalDataContainer.Timestamp;
-			object oldOrderTicketTimestamp = oldOrderTicket.InternalDataContainer.Timestamp;
-			object newOrderTicketTimestamp = newOrderTicket.InternalDataContainer.Timestamp;
+      object orderTimestamp = order.InternalDataContainer.Timestamp;
+      object oldOrderTicketTimestamp = oldOrderTicket.InternalDataContainer.Timestamp;
+      object newOrderTicketTimestamp = newOrderTicket.InternalDataContainer.Timestamp;
 
       oldOrderTicket.Order = newOrderTicket.Order;
       order.OrderTicket = newOrderTicket;
@@ -131,14 +131,32 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     public void OriginalDomainObjectCollection_IsNotSameAfterCommit ()
     {
       Order order = DomainObjectIDs.Order1.GetObject<Order> ();
-      DomainObjectCollection originalOrderItems = order.GetOriginalRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
+      DomainObjectCollection originalOrderItems = order.GetOriginalRelatedObjectsAsDomainObjectCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
       OrderItem.NewObject (order);
 
       TestableClientTransaction.Commit ();
 
-      Assert.That (order.GetOriginalRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"), Is.Not.SameAs (originalOrderItems));
-      Assert.That (order.GetOriginalRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"), Is.EqualTo (order.OrderItems));
-      Assert.That (order.GetOriginalRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems").IsReadOnly, Is.True);
+      Assert.That (order.GetOriginalRelatedObjectsAsDomainObjectCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"), Is.Not.SameAs (originalOrderItems));
+      Assert.That (order.GetOriginalRelatedObjectsAsDomainObjectCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"), Is.EqualTo (order.OrderItems));
+      Assert.That (order.GetOriginalRelatedObjectsAsDomainObjectCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems").IsReadOnly, Is.True);
+    }
+
+    [Test]
+    public void OriginalVirtualCollection_IsNotSameAfterCommit ()
+    {
+      Product product = DomainObjectIDs.Product1.GetObject<Product> ();
+      var originalProductReviews = product.GetOriginalRelatedObjectsAsVirtualCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews");
+
+      var productReview = ProductReview.NewObject();
+      productReview.Product = product;
+      productReview.Reviewer = DomainObjectIDs.Person3.GetObject<Person>();
+      productReview.Comment = "Test";
+      productReview.CreatedAt = DateTime.Now;
+
+      TestableClientTransaction.Commit ();
+
+      Assert.That (product.GetOriginalRelatedObjectsAsVirtualCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews"), Is.Not.SameAs (originalProductReviews));
+      Assert.That (product.GetOriginalRelatedObjectsAsVirtualCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews"), Is.EqualTo (product.Reviews));
     }
   }
 }

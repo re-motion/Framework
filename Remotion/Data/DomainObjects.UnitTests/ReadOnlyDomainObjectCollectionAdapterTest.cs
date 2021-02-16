@@ -19,6 +19,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
@@ -151,6 +152,14 @@ namespace Remotion.Data.DomainObjects.UnitTests
       StubInnerData (_order1, _order2, _order3);
 
       Assert.That (_readOnlyAdapter.IndexOf (_order2), Is.EqualTo (1));
+    }
+
+    [Test]
+    public void GetObject ()
+    {
+      StubInnerData (_order1, _order2, _order3);
+
+      Assert.That (_readOnlyAdapter.GetObject (_order2.ID), Is.SameAs (_order2));
     }
 
     [Test]

@@ -34,6 +34,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <summary>
     /// The property is a collection of related domain objects.
     /// </summary>
-    RelatedObjectCollection
+    RelatedObjectCollection //TODO: RM-7294: Consider splitting into RelatedObjectsInDomainObjectCollection and RelatedObjectsInVirtualCollection
   }
 }

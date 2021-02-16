@@ -68,7 +68,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var endPointMock = CreateRealObjectEndPointMock (DomainObjectIDs.OrderItem1, "Order", DomainObjectIDs.Order1);
 
-      var oppositeEndPointMock = MockRepository.GenerateStrictMock<ICollectionEndPoint> ();
+      var oppositeEndPointMock = MockRepository.GenerateStrictMock<ICollectionEndPoint<ICollectionEndPointData>> ();
       oppositeEndPointMock.Stub (stub => stub.IsDataComplete).Return (false);
       oppositeEndPointMock.Expect (mock => mock.RegisterOriginalOppositeEndPoint (endPointMock));
       oppositeEndPointMock.Replay ();

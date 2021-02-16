@@ -158,6 +158,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       var lazyLoader = MockRepository.GenerateStub<ILazyLoader> ();
       var endPointProvider = MockRepository.GenerateStub<IRelationEndPointProvider> ();
       var eventSink = MockRepository.GenerateStub<IClientTransactionEventSink> ();
+      var dataContainerMap = MockRepository.GenerateStub<IDataContainerMapReadOnlyView> ();
 
       var relationEndPointManager =
           (RelationEndPointManager) PrivateInvoke.InvokeNonPublicMethod (
@@ -166,7 +167,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
               _fakeConstructedTransaction,
               endPointProvider,
               lazyLoader,
-              eventSink);
+              eventSink,
+              dataContainerMap);
 
       Assert.That (relationEndPointManager.ClientTransaction, Is.SameAs (_fakeConstructedTransaction));
       Assert.That (relationEndPointManager.RegistrationAgent, Is.TypeOf<RootRelationEndPointRegistrationAgent> ());
@@ -186,17 +188,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       Assert.That (endPointFactory.EndPointProvider, Is.SameAs (endPointProvider));
       Assert.That (endPointFactory.TransactionEventSink, Is.SameAs (eventSink));
 
-      Assert.That (endPointFactory.CollectionEndPointDataManagerFactory, Is.TypeOf (typeof (CollectionEndPointDataManagerFactory)));
-      var collectionEndPointDataManagerFactory = ((CollectionEndPointDataManagerFactory) endPointFactory.CollectionEndPointDataManagerFactory);
-      Assert.That (collectionEndPointDataManagerFactory.ChangeDetectionStrategy, Is.TypeOf<RootCollectionEndPointChangeDetectionStrategy> ());
+      Assert.That (endPointFactory.DomainObjectCollectionEndPointDataManagerFactory, Is.TypeOf (typeof (DomainObjectCollectionEndPointDataManagerFactory)));
+      var domainObjectCollectionEndPointDataManagerFactory = ((DomainObjectCollectionEndPointDataManagerFactory) endPointFactory.DomainObjectCollectionEndPointDataManagerFactory);
+      Assert.That (domainObjectCollectionEndPointDataManagerFactory.ChangeDetectionStrategy, Is.TypeOf<RootDomainObjectCollectionEndPointChangeDetectionStrategy> ());
       Assert.That (endPointFactory.VirtualObjectEndPointDataManagerFactory, Is.TypeOf<VirtualObjectEndPointDataManagerFactory> ());
 
-      Assert.That (endPointFactory.CollectionEndPointCollectionProvider, Is.TypeOf<CollectionEndPointCollectionProvider> ());
-      var collectionEndPointCollectionProvider = (CollectionEndPointCollectionProvider) endPointFactory.CollectionEndPointCollectionProvider;
+      Assert.That (endPointFactory.DomainObjectCollectionEndPointCollectionProvider, Is.TypeOf<DomainObjectCollectionEndPointCollectionProvider> ());
+      var domainObjectCollectionEndPointCollectionProvider = (DomainObjectCollectionEndPointCollectionProvider) endPointFactory.DomainObjectCollectionEndPointCollectionProvider;
       Assert.That (
-          collectionEndPointCollectionProvider.DataStrategyFactory,
-          Is.TypeOf<AssociatedCollectionDataStrategyFactory> ()
-              .With.Property ((AssociatedCollectionDataStrategyFactory f) => f.VirtualEndPointProvider).SameAs (endPointProvider));
+          domainObjectCollectionEndPointCollectionProvider.DataStrategyFactory,
+          Is.TypeOf<AssociatedDomainObjectCollectionDataStrategyFactory> ()
+              .With.Property ((AssociatedDomainObjectCollectionDataStrategyFactory f) => f.VirtualEndPointProvider).SameAs (endPointProvider));
+
+      Assert.That (endPointFactory.VirtualCollectionEndPointDataManagerFactory, Is.TypeOf (typeof (VirtualCollectionEndPointDataManagerFactory)));
+      var virtualCollectionEndPointDataManagerFactory = (VirtualCollectionEndPointDataManagerFactory) endPointFactory.VirtualCollectionEndPointDataManagerFactory;
+      Assert.That (virtualCollectionEndPointDataManagerFactory.DataContainerMap, Is.SameAs (dataContainerMap));
+
+      Assert.That (endPointFactory.VirtualCollectionEndPointCollectionProvider, Is.TypeOf<VirtualCollectionEndPointCollectionProvider> ());
+      var virtualCollectionEndPointCollectionProvider = (VirtualCollectionEndPointCollectionProvider) endPointFactory.VirtualCollectionEndPointCollectionProvider;
+      Assert.That (virtualCollectionEndPointCollectionProvider.VirtualEndPointProvider, Is.SameAs (endPointProvider));
     }
 
     [Test]

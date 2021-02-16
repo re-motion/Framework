@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects
   /// This class acts as a read-only adapter for an <see cref="IDomainObjectCollectionData"/> object.
   /// </summary>
   [Serializable]
-  public class ReadOnlyDomainObjectCollectionAdapter<T> : IList<T> where T : DomainObject
+  public class ReadOnlyDomainObjectCollectionAdapter<T> : IReadOnlyCollectionData<T>, IList<T> where T : DomainObject
   {
     private readonly DomainObjectCollection _wrappedData;
 
@@ -90,8 +90,14 @@ namespace Remotion.Data.DomainObjects
       get
       {
         ArgumentUtility.CheckNotNull ("objectID", objectID);
-        return (T) _wrappedData[objectID];
+        return GetObject (objectID);
       }
+    }
+
+    public T GetObject (ObjectID objectID)
+    {
+      ArgumentUtility.CheckNotNull ("objectID", objectID);
+      return (T) _wrappedData[objectID];
     }
 
     public int IndexOf (ObjectID objectID)

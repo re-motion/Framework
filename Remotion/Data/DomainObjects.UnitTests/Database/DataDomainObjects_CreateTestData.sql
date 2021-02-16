@@ -30,6 +30,8 @@ delete from [OrderItemWithNewPropertyAccess]
 delete from [OrderWithNewPropertyAccess]
 delete from [Company]
 delete from [IndustrialSector]
+delete from [ProductReview]
+delete from [Product]
 delete from [Person]
 delete from [TableWithAllDataTypes]
 delete from [TableWithValidRelations]
@@ -126,6 +128,28 @@ insert into [Person] (ID, ClassID, [Name], [AssociatedCustomerCompanyID], [Assoc
 -- Note: This does not conform to mapping, because it is a contact person in two organizations.
 insert into [Person] (ID, ClassID, [Name], [AssociatedCustomerCompanyID], [AssociatedCustomerCompanyIDClassID]) 
     values ('{911957D1-483C-4a8b-AA53-FF07464C58F9}', 'Person', 'Contact person in two organizations', null, null)
+
+
+-- Product
+insert into [Product] (ID, ClassID, [Name], [Price]) 
+    values ('{BA684594-CF77-4009-A010-B70B30396A01}', 'Product', 'Pen', 1.0)
+
+insert into [Product] (ID, ClassID, [Name], [Price]) 
+    values ('{8DD65EF7-BDDA-433E-B081-725B4D53317D}', 'Product', 'Paper', 0.01)
+
+
+-- ProductReview
+insert into [ProductReview] (ID, ClassID, [ProductID], [ReviewerID], [CreatedAt], [Comment]) 
+    values ('{877540A7-FBCF-4BF3-9007-355EA43E796F}', 'ProductReview', '{BA684594-CF77-4009-A010-B70B30396A01}', '{2001BF42-2AA4-4c81-AD8E-73E9145411E9}', '2005-03-28 10:15:19', 'Writes blue')
+
+insert into [ProductReview] (ID, ClassID, [ProductID], [ReviewerID], [CreatedAt], [Comment]) 
+    values ('{C3E4587D-626E-40D2-9D79-67CB148BE842}', 'ProductReview', '{BA684594-CF77-4009-A010-B70B30396A01}', '{DC50A962-EC95-4cf6-A4E7-A6608EAA23C8}', '2008-01-04 14:21:09', 'Uses ink')
+
+insert into [ProductReview] (ID, ClassID, [ProductID], [ReviewerID], [CreatedAt], [Comment]) 
+    values ('{793157CD-10FF-468F-994B-AEA83ADE183B}', 'ProductReview', '{BA684594-CF77-4009-A010-B70B30396A01}', '{10F36130-E97B-4078-A535-B79E07F16AB2}', '2010-09-17 11:48:23', 'You have to press down at the top to get it work')
+
+insert into [ProductReview] (ID, ClassID, [ProductID], [ReviewerID], [CreatedAt], [Comment]) 
+    values ('{B4F0052E-5F8B-4D1F-BEF9-5AA8595E78A7}', 'ProductReview', '{8DD65EF7-BDDA-433E-B081-725B4D53317D}', '{2001BF42-2AA4-4c81-AD8E-73E9145411E9}', '2006-05-21 09:24:42', 'Needs a pen preserve information. Pen is not included.')
 
 
 -- IndustrialSector

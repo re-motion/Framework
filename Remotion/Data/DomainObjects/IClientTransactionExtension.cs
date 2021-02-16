@@ -299,8 +299,8 @@ namespace Remotion.Data.DomainObjects
     /// <param name="domainObject">The <see cref="DomainObject"/> whose relation property was read.</param>
     /// <param name="relationEndPointDefinition">The relation endpoint defintion of the relation property.</param>
     /// <param name="relatedObjects">
-    ///   An implementation of <see cref="ReadOnlyDomainObjectCollectionAdapter{T}"/> wrapping the related object data that is returned to the reader.
-    ///   Implementors should check the <see cref="ReadOnlyDomainObjectCollectionAdapter{T}.IsDataComplete"/> property before accessing the collection 
+    ///   An implementation of <see cref="IReadOnlyCollectionData{T}"/> wrapping the related object data that is returned to the reader.
+    ///   Implementors should check the <see cref="IReadOnlyCollectionData{T}.IsDataComplete"/> property before accessing the collection 
     ///   data in order to avoid reloading an unloaded collection end-point.
     /// </param>
     /// <param name="valueAccess">A value indicating whether the current or the original value was accessed.</param>
@@ -313,7 +313,7 @@ namespace Remotion.Data.DomainObjects
     ///   </para>
     /// <note type="inotes">The implementation of this method must not throw an exception. To cancel the operation use <see cref="RelationReading"/> instead.</note>
     /// </remarks>
-    void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, ReadOnlyDomainObjectCollectionAdapter<DomainObject> relatedObjects, ValueAccess valueAccess);
+    void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, IReadOnlyCollectionData<DomainObject> relatedObjects, ValueAccess valueAccess);
 
     /// <summary>
     /// Invoked before a relation is changed.
