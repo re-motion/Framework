@@ -33,9 +33,7 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
   public abstract class BrowserSessionBase<T> : IBrowserSession
       where T : IBrowserConfiguration
   {
-    private TimeSpan _driverShutdownWaitTime = TimeSpan.FromSeconds (60);
-    private TimeSpan _browserShutdownWaitTime = TimeSpan.FromMilliseconds (500);
-    private TimeSpan _browserSubProcessShutdownWaitTime = TimeSpan.FromMilliseconds (250);
+    private readonly int _browserProcessesShutdownTime = 60 * 1000;
 
     private readonly T _browserConfiguration;
     private readonly Coypu.BrowserSession _value;
@@ -106,26 +104,18 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
       var driverProcess = FindDriverProcess();
       var browserProcess = FindBrowserProcess();
 
-      List<Process> browserSubProcesses;
-      if (browserProcess == null)
-        browserSubProcesses = new List<Process>();
-      else
-        browserSubProcesses = FindSubProcesses (browserProcess).ToList();
+      var processesToClose = new List<Process>();
+      if (driverProcess != null)
+        processesToClose.Add (driverProcess);
+      if (browserProcess != null)
+        processesToClose.Add (browserProcess);
+      if (browserProcess != null)
+        processesToClose.AddRange (FindSubProcesses (browserProcess));
 
       // Dispose the underlying BrowserSession
       _value.Dispose();
 
-      // Check driver and main browser for null
-      if (driverProcess != null)
-      {
-        ProcessUtils.GracefulProcessShutdown (driverProcess, (int) _driverShutdownWaitTime.TotalMilliseconds);
-      }
-
-      if (browserProcess != null)
-      {
-        ProcessUtils.GracefulProcessShutdown (browserProcess, (int) _browserShutdownWaitTime.TotalMilliseconds);
-        browserSubProcesses.ForEach (p => ProcessUtils.GracefulProcessShutdown (p, (int) _browserSubProcessShutdownWaitTime.TotalMilliseconds));
-      }
+      ProcessUtils.GracefulProcessShutdown (processesToClose, _browserProcessesShutdownTime);
     }
 
     /// <summary>
