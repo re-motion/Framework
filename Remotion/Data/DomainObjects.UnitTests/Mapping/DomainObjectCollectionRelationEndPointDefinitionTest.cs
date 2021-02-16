@@ -17,8 +17,9 @@
 using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Mapping.SortExpressions;
+using Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration;
-using Remotion.Development.UnitTesting;
 using Remotion.Reflection;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
@@ -40,8 +41,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           _customerClassDefinition,
           "Orders",
           false,
-          typeof (OrderCollection),
-          "OrderNumber desc");
+          typeof (OrderCollection));
 
       _orderClassDefinition = CreateOrderDefinition_WithEmptyMembers_AndDerivedClasses ();
     }
@@ -53,23 +53,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           _orderClassDefinition,
           "VirtualEndPoint",
           true,
-          typeof (OrderCollection),
-          null);
+          typeof (OrderCollection));
 
       Assert.That (endPoint.PropertyInfo.PropertyType, Is.SameAs (typeof (OrderCollection)));
-    }
-
-    [Test]
-    public void InitializeWithSortExpression ()
-    {
-      var endPointDefinition = DomainObjectCollectionRelationEndPointDefinitionFactory.Create (
-          _customerClassDefinition,
-          "Orders",
-          false,
-          typeof (OrderCollection),
-          "OrderNumber desc");
-
-      Assert.That (endPointDefinition.SortExpressionText, Is.EqualTo ("OrderNumber desc"));
     }
 
     [Test]
@@ -99,33 +85,37 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           "OrderItems",
           false,
           typeof (ObjectList<OrderItem>),
-          null);
-      Assert.That (endPoint.SortExpressionText, Is.Null);
+          new Lazy<SortExpressionDefinition> (() => null));
 
       Assert.That (endPoint.GetSortExpression(), Is.Null);
+
+#pragma warning disable 618
+      Assert.That (endPoint.SortExpressionText, Is.Null);
+#pragma warning restore 618
     }
 
     [Test]
     public void GetSortExpression_NonNull ()
     {
-      var endPoint = CreateFullVirtualEndPointAndClassDefinition_WithProductProperty ("Product asc");
+      var sortExpressionDefinition = new SortExpressionDefinition (
+          new[]
+          {
+              SortExpressionDefinitionObjectMother.CreateSortedPropertyDescending (
+                  PropertyDefinitionObjectMother.CreateForFakePropertyInfo ("ProductNumber", StorageClass.Persistent))
+          });
 
-      Assert.That (endPoint.GetSortExpression(), Is.Not.Null);
-      Assert.That (
-          endPoint.GetSortExpression().ToString(),
-          Is.EqualTo ("Product ASC"));
-    }
+      var endPoint = DomainObjectCollectionRelationEndPointDefinitionFactory.Create (
+          _orderClassDefinition,
+          "OrderItems",
+          false,
+          typeof (ObjectList<OrderItem>),
+          new Lazy<SortExpressionDefinition> (() => sortExpressionDefinition));
 
-    [Test]
-    public void GetSortExpression_Error ()
-    {
-      var endPoint = CreateFullVirtualEndPointAndClassDefinition_WithProductProperty ("Product asc asc");
-      Assert.That (
-          () => endPoint.GetSortExpression(),
-          Throws.InstanceOf<MappingException>()
-              .With.Message.EqualTo (
-                  "SortExpression 'Product asc asc' cannot be parsed: Expected 1 or 2 parts (a property name and an optional identifier), found 3 parts instead.\r\n\r\n"+
-                  "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order\r\nProperty: OrderItems"));
+      Assert.That (endPoint.GetSortExpression(), Is.SameAs (sortExpressionDefinition));
+
+#pragma warning disable 618
+      Assert.That (endPoint.SortExpressionText, Is.EqualTo ("ProductNumber DESC"));
+#pragma warning restore 618
     }
 
     [Test]
@@ -135,26 +125,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       DomainObjectCollectionRelationEndPointDefinition relationEndPointDefinition =
           (DomainObjectCollectionRelationEndPointDefinition) orderClassDefinition.GetRelationEndPointDefinition (typeof (Order) + ".OrderItems");
       Assert.That (relationEndPointDefinition.PropertyInfo, Is.EqualTo (PropertyInfoAdapter.Create(typeof (Order).GetProperty ("OrderItems"))));
-    }
-
-    private DomainObjectCollectionRelationEndPointDefinition CreateFullVirtualEndPointAndClassDefinition_WithProductProperty (string sortExpressionString)
-    {
-      var endPoint = DomainObjectCollectionRelationEndPointDefinitionFactory.Create (
-          _orderClassDefinition,
-          "OrderItems",
-          false,
-          typeof (ObjectList<OrderItem>),
-          sortExpressionString);
-      var orderItemClassDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins (typeof (OrderItem));
-      var oppositeProperty = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_ObjectID (orderItemClassDefinition, "Order");
-      var productProperty = PropertyDefinitionObjectMother.CreateForFakePropertyInfo (orderItemClassDefinition, "Product");
-      orderItemClassDefinition.SetPropertyDefinitions (new PropertyDefinitionCollection (new[]{oppositeProperty, productProperty}, true));
-      orderItemClassDefinition.SetRelationEndPointDefinitions (new RelationEndPointDefinitionCollection());
-      var oppositeEndPoint = new RelationEndPointDefinition (oppositeProperty, false);
-      var relationDefinition = new RelationDefinition ("test", endPoint, oppositeEndPoint);
-      orderItemClassDefinition.SetReadOnly ();
-      endPoint.SetRelationDefinition (relationDefinition);
-      return endPoint;
     }
 
     private static ClassDefinition CreateOrderDefinition_WithEmptyMembers_AndDerivedClasses ()

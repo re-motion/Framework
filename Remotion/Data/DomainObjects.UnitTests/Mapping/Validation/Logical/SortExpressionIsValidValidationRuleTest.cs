@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.SortExpressions;
 using Remotion.Data.DomainObjects.Mapping.Validation.Logical;
@@ -40,12 +41,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     public void ValidSortExpressionWithSortingDirection_WithDomainObjectCollectionRelationEndPointDefinition ()
     {
       var classDefinition = FakeMappingConfiguration.Current.TypeDefinitions[typeof (Order)];
+      var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
+      var sortExpressionDefinitionProvider = new SortExpressionDefinitionProvider();
+      var sortExpressionDefinition = new Lazy<SortExpressionDefinition> (
+          () => sortExpressionDefinitionProvider.GetSortExpression (propertyInformationStub, classDefinition, "OrderNumber desc"));
+
       var endPointDefinition = new DomainObjectCollectionRelationEndPointDefinition (
           classDefinition,
           "Orders",
           false,
-          "OrderNumber desc",
-          MockRepository.GenerateStub<IPropertyInformation>());
+          sortExpressionDefinition,
+          propertyInformationStub);
       var relationDefinition = new RelationDefinition ("Test", endPointDefinition, endPointDefinition);
       endPointDefinition.SetRelationDefinition (relationDefinition);
 
@@ -59,12 +65,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     {
       var classDefinition = FakeMappingConfiguration.Current.TypeDefinitions[typeof (ProductReview)];
       var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
+      var sortExpressionDefinitionProvider = new SortExpressionDefinitionProvider();
+      var sortExpressionDefinition = new Lazy<SortExpressionDefinition> (
+          () => sortExpressionDefinitionProvider.GetSortExpression (propertyInformationStub, classDefinition, "CreatedAt DESC"));
 
       var endPointDefinition = new VirtualCollectionRelationEndPointDefinition (
           classDefinition,
           "Reviews",
           false,
-          "CreatedAt DESC",
+          sortExpressionDefinition,
           propertyInformationStub);
       var relationDefinition = new RelationDefinition ("Test", endPointDefinition, endPointDefinition);
       endPointDefinition.SetRelationDefinition (relationDefinition);
@@ -78,8 +87,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     public void ValidSortExpressionWithoutSortingDirection_WithDomainObjectCollectionRelationEndPointDefinition ()
     {
       var classDefinition = FakeMappingConfiguration.Current.TypeDefinitions[typeof (Order)];
+      var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
+      var sortExpressionDefinitionProvider = new SortExpressionDefinitionProvider();
+      var sortExpressionDefinition = new Lazy<SortExpressionDefinition> (
+          () => sortExpressionDefinitionProvider.GetSortExpression (propertyInformationStub, classDefinition, "OrderNumber"));
+
       var endPointDefinition = new DomainObjectCollectionRelationEndPointDefinition (
-          classDefinition, "Orders", false, "OrderNumber", MockRepository.GenerateStub<IPropertyInformation>());
+          classDefinition, "Orders", false, sortExpressionDefinition, propertyInformationStub);
       var relationDefinition = new RelationDefinition ("Test", endPointDefinition, endPointDefinition);
       endPointDefinition.SetRelationDefinition (relationDefinition);
 
@@ -93,9 +107,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     {
       var classDefinition = FakeMappingConfiguration.Current.TypeDefinitions[typeof (ProductReview)];
       var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
+      var sortExpressionDefinitionProvider = new SortExpressionDefinitionProvider();
+      var sortExpressionDefinition = new Lazy<SortExpressionDefinition> (
+          () => sortExpressionDefinitionProvider.GetSortExpression (propertyInformationStub, classDefinition, "CreatedAt"));
 
       var endPointDefinition = new VirtualCollectionRelationEndPointDefinition (
-          classDefinition, "Reviews", false, "CreatedAt", propertyInformationStub);
+          classDefinition, "Reviews", false, sortExpressionDefinition, propertyInformationStub);
       var relationDefinition = new RelationDefinition ("Test", endPointDefinition, endPointDefinition);
       endPointDefinition.SetRelationDefinition (relationDefinition);
 
@@ -108,12 +125,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     public void InvalidSortExpression_WithDomainObjectCollectionRelationEndPointDefinition ()
     {
       var classDefinition = FakeMappingConfiguration.Current.TypeDefinitions[typeof (Order)];
+      var propertyInfo = PropertyInfoAdapter.Create(typeof (Customer).GetProperty ("Orders"));
+      var sortExpressionDefinitionProvider = new SortExpressionDefinitionProvider();
+      var sortExpressionDefinition = new Lazy<SortExpressionDefinition> (
+          () => sortExpressionDefinitionProvider.GetSortExpression (propertyInfo, classDefinition, "Test"));
+
       var endPointDefinition = new DomainObjectCollectionRelationEndPointDefinition (
           classDefinition,
           "Orders",
           false,
-          "Test",
-          PropertyInfoAdapter.Create(typeof (Customer).GetProperty ("Orders")));
+          sortExpressionDefinition,
+          propertyInfo);
       var relationDefinition = new RelationDefinition ("Test", endPointDefinition, endPointDefinition);
       endPointDefinition.SetRelationDefinition (relationDefinition);
 
@@ -132,12 +154,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     {
       var classDefinition = FakeMappingConfiguration.Current.TypeDefinitions[typeof (ProductReview)];
       var propertyInfo = PropertyInfoAdapter.Create(typeof (Product).GetProperty ("Reviews"));
+      var sortExpressionDefinitionProvider = new SortExpressionDefinitionProvider();
+      var sortExpressionDefinition = new Lazy<SortExpressionDefinition> (
+          () => sortExpressionDefinitionProvider.GetSortExpression (propertyInfo, classDefinition, "Test"));
 
       var endPointDefinition = new VirtualCollectionRelationEndPointDefinition (
           classDefinition,
           "Reviews",
           false,
-          "Test",
+          sortExpressionDefinition,
           propertyInfo);
       var relationDefinition = new RelationDefinition ("Test", endPointDefinition, endPointDefinition);
       endPointDefinition.SetRelationDefinition (relationDefinition);

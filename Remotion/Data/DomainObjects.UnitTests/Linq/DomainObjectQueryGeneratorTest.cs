@@ -304,7 +304,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
             Assert.That (actualQueryModel.BodyClauses, Has.Some.TypeOf<OrderByClause> ());
             var orderByClause = (OrderByClause) actualQueryModel.BodyClauses.Single ();
             var endPointDefinition = ((DomainObjectCollectionRelationEndPointDefinition) GetEndPointDefinition (typeof (Customer), "Orders"));
-            Assert.That (endPointDefinition.SortExpressionText, Is.EqualTo ("OrderNumber asc"));
+            Assert.That (endPointDefinition.GetSortExpression().ToString(), Is.EqualTo ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber ASC"));
             var orderNumberMember = NormalizingMemberInfoFromExpressionUtility.GetProperty ((Order o) => o.OrderNumber);
             Assert.That (((MemberExpression) orderByClause.Orderings[0].Expression).Member, Is.SameAs (orderNumberMember));
             Assert.That (orderByClause.Orderings[0].OrderingDirection, Is.EqualTo (OrderingDirection.Asc));
@@ -339,7 +339,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
             Assert.That (actualQueryModel.BodyClauses, Has.Some.TypeOf<OrderByClause> ());
             var orderByClause = (OrderByClause) actualQueryModel.BodyClauses.Single ();
             var endPointDefinition = ((DomainObjectCollectionRelationEndPointDefinition) GetEndPointDefinition (typeof (RelationTargetForPersistentMixin), "RelationProperty4"));
-            Assert.That (endPointDefinition.SortExpressionText, 
+            Assert.That (endPointDefinition.GetSortExpression().ToString(), 
                 Is.EqualTo ("Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain.MixinAddingPersistentProperties.PersistentProperty ASC"));
             var sortedByMember = NormalizingMemberInfoFromExpressionUtility.GetProperty ((IMixinAddingPersistentProperties o) => o.PersistentProperty);
             Assert.That (((MemberExpression) orderByClause.Orderings[0].Expression).Member, Is.SameAs (sortedByMember));
@@ -411,7 +411,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
             Assert.That (actualQueryModel.BodyClauses, Has.Some.TypeOf<OrderByClause> ());
             var orderByClause = (OrderByClause) actualQueryModel.BodyClauses.Single ();
             var endPointDefinition = ((DomainObjectCollectionRelationEndPointDefinition) GetEndPointDefinition (typeof (RelationTargetManySide), "CollectionProperty"));
-            Assert.That (endPointDefinition.SortExpressionText, 
+            Assert.That (endPointDefinition.GetSortExpression().ToString(),
                 Is.EqualTo ("Remotion.Data.DomainObjects.UnitTests.Linq.TestDomain.Success.SortExpressionForPropertyOnDerivedType.DerivedRelationTargetOneSide.SortProperty ASC"));
             var sortedByMember = NormalizingMemberInfoFromExpressionUtility.GetProperty ((DerivedRelationTargetOneSide o) => o.SortProperty);
             Assert.That (((MemberExpression) orderByClause.Orderings[0].Expression).Member, Is.SameAs (sortedByMember));

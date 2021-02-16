@@ -33,24 +33,28 @@ namespace Remotion.Data.DomainObjects.Mapping
     private readonly IPropertyMetadataProvider _propertyMetadataProvider;
     private readonly IDomainModelConstraintProvider _domainModelConstraintProvider;
     private readonly IDomainObjectCreator _instanceCreator;
+    private readonly ISortExpressionDefinitionProvider _sortExpressionDefinitionProvider;
 
     public ReflectionBasedMappingObjectFactory (
         IMemberInformationNameResolver nameResolver,
         IClassIDProvider classIDProvider,
         IPropertyMetadataProvider propertyMetadataProvider,
         IDomainModelConstraintProvider domainModelConstraintProvider,
+        ISortExpressionDefinitionProvider sortExpressionDefinitionProvider,
         IDomainObjectCreator instanceCreator)
     {
       ArgumentUtility.CheckNotNull ("nameResolver", nameResolver);
       ArgumentUtility.CheckNotNull ("classIDProvider", classIDProvider);
       ArgumentUtility.CheckNotNull ("propertyMetadataProvider", propertyMetadataProvider);
       ArgumentUtility.CheckNotNull ("domainModelConstraintProvider", domainModelConstraintProvider);
+      ArgumentUtility.CheckNotNull ("sortExpressionDefinitionProvider", sortExpressionDefinitionProvider);
       ArgumentUtility.CheckNotNull ("instanceCreator", instanceCreator);
 
       _nameResolver = nameResolver;
       _classIDProvider = classIDProvider;
       _propertyMetadataProvider = propertyMetadataProvider;
       _domainModelConstraintProvider = domainModelConstraintProvider;
+      _sortExpressionDefinitionProvider = sortExpressionDefinitionProvider;
       _instanceCreator = instanceCreator;
     }
 
@@ -65,6 +69,7 @@ namespace Remotion.Data.DomainObjects.Mapping
           _classIDProvider,
           _propertyMetadataProvider,
           _domainModelConstraintProvider,
+          _sortExpressionDefinitionProvider,
           _instanceCreator);
       return classReflector.GetMetadata (baseClass);
     }
@@ -104,7 +109,8 @@ namespace Remotion.Data.DomainObjects.Mapping
           propertyInfo,
           _nameResolver,
           _propertyMetadataProvider,
-          _domainModelConstraintProvider);
+          _domainModelConstraintProvider,
+          _sortExpressionDefinitionProvider);
       return relationEndPointReflector.GetMetadata();
     }
 

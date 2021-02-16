@@ -16,6 +16,7 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Mapping.SortExpressions;
 using Remotion.Reflection;
 using Rhino.Mocks;
 
@@ -28,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
         string propertyName,
         bool isMandatory,
         Type propertyType,
-        string sortExpressionString)
+        Lazy<SortExpressionDefinition> sortExpressionDefinition)
     {
       var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
       propertyInformationStub.Stub (stub => stub.Name).Return (propertyName);
@@ -36,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       propertyInformationStub.Stub (stub => stub.DeclaringType).Return (TypeAdapter.Create (classDefinition.ClassType));
 
       return new DomainObjectCollectionRelationEndPointDefinition (
-          classDefinition, propertyName, isMandatory, sortExpressionString, propertyInformationStub);
+          classDefinition, propertyName, isMandatory, sortExpressionDefinition, propertyInformationStub);
     }
 
     public static DomainObjectCollectionRelationEndPointDefinition Create (
@@ -45,7 +46,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
         bool isMandatory,
         Type propertyType)
     {
-      return Create (classDefinition, propertyName, isMandatory, propertyType, null);
+      return Create (classDefinition, propertyName, isMandatory, propertyType, new Lazy<SortExpressionDefinition> (() => null));
     }
   }
 }

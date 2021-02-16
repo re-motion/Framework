@@ -1049,6 +1049,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     private RelationDefinition CreateCustomerToOrderRelationDefinition ()
     {
       var customer = _typeDefinitions[typeof (Customer)];
+      var orderClass = _typeDefinitions[typeof (Order)];
+      var orderNumber = orderClass.GetPropertyDefinition (typeof (Order).FullName + ".OrderNumber");
+      var sortExpressionDefinition = new SortExpressionDefinition (new[] { SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending (orderNumber) });
 
       var endPoint1 =
           DomainObjectCollectionRelationEndPointDefinitionFactory.Create (
@@ -1056,9 +1059,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
               "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Customer.Orders",
               false,
               typeof (OrderCollection),
-              "OrderNumber asc");
-
-      var orderClass = _typeDefinitions[typeof (Order)];
+              new Lazy<SortExpressionDefinition> (() => sortExpressionDefinition));
 
       var endPoint2 = new RelationEndPointDefinition (
           orderClass["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order.Customer"], true);
@@ -1162,7 +1163,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
               "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Product.Reviews",
               false,
               typeof (IObjectList<ProductReview>),
-              "CreatedAt");
+              new Lazy<SortExpressionDefinition> (() => sortExpressionDefinition));
 
       var endPoint2 = new RelationEndPointDefinition (
           productReviewClass["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ProductReview.Product"], true);

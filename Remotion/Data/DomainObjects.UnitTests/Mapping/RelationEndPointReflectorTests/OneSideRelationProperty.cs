@@ -18,6 +18,8 @@ using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Mapping.SortExpressions;
+using Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample;
 using Remotion.Reflection;
 using Rhino.Mocks;
@@ -129,6 +131,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
       var relationEndPointReflector = CreateRelationEndPointReflector (propertyInfo);
 
       DomainModelConstraintProviderStub.Stub (stub => stub.IsNullable (propertyInfo)).Return (true);
+      SortExpressionDefinitionProviderStub
+          .Stub (stub => stub.GetSortExpression (Arg<IPropertyInformation>.Is.Anything, Arg<ClassDefinition>.Is.Anything, Arg<string>.Is.Anything))
+          .Throw (new InvalidOperationException ("GetSortExpression() should not be called during GetMetadata()"));
 
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
 
@@ -139,8 +144,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
       Assert.That (relationEndPointDefinition.PropertyInfo.PropertyType, Is.SameAs (typeof (ObjectList<ClassWithRealRelationEndPoints>)));
       Assert.That (relationEndPointDefinition.Cardinality, Is.EqualTo (CardinalityType.Many));
       Assert.That (relationEndPointDefinition.RelationDefinition, Is.Null);
-      Assert.That (relationEndPointDefinition.SortExpressionText, Is.EqualTo ("NoAttributeForDomainObjectCollection"));
-      DomainModelConstraintProviderStub.VerifyAllExpectations();
+
+      var oppositeClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (ClassWithRealRelationEndPoints));
+      var oppositeEndPointDefinition = MockRepository.GenerateStub<IRelationEndPointDefinition>();
+      oppositeEndPointDefinition.Stub (stub => stub.ClassDefinition).Return (oppositeClassDefinition);
+      var relationDefinition = new RelationDefinition ("relation", relationEndPointDefinition, oppositeEndPointDefinition);
+      relationEndPointDefinition.SetRelationDefinition (relationDefinition);
+      var oppositePropertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo (
+          oppositeClassDefinition,
+          oppositeClassDefinition.ClassType,
+          "NoAttributeForDomainObjectCollection");
+      var sortExpressionDefinition = new SortExpressionDefinition (new[] { SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending (oppositePropertyDefinition) });
+      SortExpressionDefinitionProviderStub.BackToRecord();
+      SortExpressionDefinitionProviderStub
+          .Stub (stub => stub.GetSortExpression (relationEndPointDefinition.PropertyInfo, oppositeClassDefinition, "NoAttributeForDomainObjectCollection"))
+          .Return (sortExpressionDefinition);
+      SortExpressionDefinitionProviderStub.Replay();
+
+      Assert.That (relationEndPointDefinition.GetSortExpression(), Is.SameAs (sortExpressionDefinition));
     }
 
     [Test]
@@ -150,6 +171,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
       var relationEndPointReflector = CreateRelationEndPointReflector (propertyInfo);
 
       DomainModelConstraintProviderStub.Stub (stub => stub.IsNullable (propertyInfo)).Return (true);
+      SortExpressionDefinitionProviderStub
+          .Stub (stub => stub.GetSortExpression (Arg<IPropertyInformation>.Is.Anything, Arg<ClassDefinition>.Is.Anything, Arg<string>.Is.Anything))
+          .Throw (new InvalidOperationException ("GetSortExpression() should not be called during GetMetadata()"));
 
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
 
@@ -160,8 +184,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
       Assert.That (relationEndPointDefinition.PropertyInfo.PropertyType, Is.SameAs (typeof (IObjectList<ClassWithRealRelationEndPoints>)));
       Assert.That (relationEndPointDefinition.Cardinality, Is.EqualTo (CardinalityType.Many));
       Assert.That (relationEndPointDefinition.RelationDefinition, Is.Null);
-      Assert.That (relationEndPointDefinition.SortExpressionText, Is.EqualTo ("NoAttributeForVirtualCollection"));
-      DomainModelConstraintProviderStub.VerifyAllExpectations();
+
+      var oppositeClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (ClassWithRealRelationEndPoints));
+      var oppositeEndPointDefinition = MockRepository.GenerateStub<IRelationEndPointDefinition>();
+      oppositeEndPointDefinition.Stub (stub => stub.ClassDefinition).Return (oppositeClassDefinition);
+      var relationDefinition = new RelationDefinition ("relation", relationEndPointDefinition, oppositeEndPointDefinition);
+      relationEndPointDefinition.SetRelationDefinition (relationDefinition);
+      var oppositePropertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo (
+          oppositeClassDefinition,
+          oppositeClassDefinition.ClassType,
+          "NoAttributeForVirtualCollection");
+      var sortExpressionDefinition = new SortExpressionDefinition (new[] { SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending (oppositePropertyDefinition) });
+      SortExpressionDefinitionProviderStub.BackToRecord();
+      SortExpressionDefinitionProviderStub
+          .Stub (stub => stub.GetSortExpression (relationEndPointDefinition.PropertyInfo, oppositeClassDefinition, "NoAttributeForVirtualCollection"))
+          .Return (sortExpressionDefinition);
+      SortExpressionDefinitionProviderStub.Replay();
+
+      Assert.That (relationEndPointDefinition.GetSortExpression(), Is.SameAs (sortExpressionDefinition));
     }
 
     [Test]
@@ -198,7 +238,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
           propertyInfo,
           Configuration.NameResolver,
           PropertyMetadataProvider,
-          DomainModelConstraintProviderStub);
+          DomainModelConstraintProviderStub,
+          SortExpressionDefinitionProviderStub);
     }
   }
 }
