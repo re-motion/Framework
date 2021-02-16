@@ -163,6 +163,11 @@
     <Compile Include="BindableXmlObject.cs" />
     <Compile Include="BindableXmlObjectSearchService.cs" />
     <Compile Include="ClassWithEnums.cs" />
+    <Compile Include="FileSystemReflectionBusinessObjectStorageProvider.cs" />
+    <Compile Include="InMemoryReflectionBusinessObjectStorageProvider.cs" />
+    <Compile Include="InMemoryWithFileSystemReadFallbackReflectionBusinessObjectStorageProviderFactory.cs" />
+    <Compile Include="IReflectionBusinessObjectStorageProvider.cs" />
+    <Compile Include="IReflectionBusinessObjectStorageProviderFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -191,6 +196,8 @@
     <Compile Include="ReferenceDataSourceTestDomain\ReferenceDataSourceTestDeleteObjectService.cs" />
     <Compile Include="ReferenceDataSourceTestDomain\ReferenceDataSourceTestDomainBase.cs" />
     <Compile Include="ReflectionBusinessObjectWebUIService.cs" />
+    <Compile Include="ReadFallbackReflectionBusinessObjectStorageProviderDecorator.cs" />
+    <Compile Include="SessionStateReflectionBusinessObjectStorageProvider.cs" />
     <Compile Include="TestBocList.cs">
       <SubType>Code</SubType>
     </Compile>
