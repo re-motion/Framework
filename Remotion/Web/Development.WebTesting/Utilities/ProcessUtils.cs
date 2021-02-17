@@ -15,9 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
 using JetBrains.Annotations;
 using log4net;
 using Remotion.Utilities;
@@ -118,31 +121,74 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     {
       ArgumentUtility.CheckNotNull ("process", process);
 
-      if (timeout < 0)
+      GracefulProcessShutdown (new[] { process }, timeout);
+    }
+
+    /// <summary>
+    /// Tries to shutdown a list of processes gracefully and if they are not closed after <paramref name="timeout"/> it ensures that they are closed.
+    /// </summary>
+    /// <param name="processes">The processes that should be shut down.</param>
+    /// <param name="timeout">The wait timeout after a shutdown has been requested.</param>
+    /// <remarks>
+    /// <p>
+    /// This method will block until the processes have exited. Shutdown procedure is as follows:
+    /// </p>
+    /// <list type="number">
+    /// <item>
+    /// <description>Check if the processes have already exited.</description>
+    /// </item>
+    /// <item>
+    /// <description>Close the main windows of the processes and wait for the processes to exit or the <paramref name="timeout"/> to run out.</description>
+    /// </item>
+    /// <item>
+    /// <description>If the processes are still not closed, kill them and wait for the processes to exit or the <paramref name="timeout"/> is reached.</description>
+    /// </item>
+    /// </list>
+    /// </remarks>
+    public static void GracefulProcessShutdown (IReadOnlyList<Process> processes, int timeout)
+    {
+      ArgumentUtility.CheckNotNullOrItemsNull (nameof (processes), processes);
+      var timeoutAsTimeSpan = TimeSpan.FromMilliseconds (timeout);
+      if (timeoutAsTimeSpan < TimeSpan.Zero)
         throw new ArgumentOutOfRangeException ("timeout", "Timeout can not be smaller that zero.");
 
+      IReadOnlyList<Process> remainingProcesses = processes.ToList();
+
+      // Clear out any processes that already exited
+      remainingProcesses = WaitForProcessesExits (remainingProcesses, TimeSpan.Zero);
+
+      // Try to gracefully close the process
+      var anyMainWindowClosed = remainingProcesses.Any (CloseMainWindow);
+      if (anyMainWindowClosed)
+        remainingProcesses = WaitForProcessesExits (remainingProcesses, timeoutAsTimeSpan);
+
+      // Force closing the process and wait for process exits
+      foreach (var remainingProcess in remainingProcesses)
+        KillProcess (remainingProcess);
+
+      remainingProcesses = WaitForProcessesExits (remainingProcesses, timeoutAsTimeSpan);
+      if (remainingProcesses.Any())
+        throw CreateProcessesDidNotExitInTimeException (remainingProcesses, timeoutAsTimeSpan);
+    }
+
+    private static bool CloseMainWindow (Process process)
+    {
       try
       {
-        if (process.HasExited)
-          return;
+        return process.CloseMainWindow();
       }
-      catch (Win32Exception)
+      catch (InvalidOperationException)
       {
-        // HasExited can throw Win32Exceptions in certain cases (for example when the process is running with admin rights).
-        // We ignore the exception, because it is still possible to kill the process and the following methods do not throw the same exception.
-        // Tested with process running with admin rights.
-        // If there is an unexpected exception which causes any of the other methods to fail, we have to decide how we want to handle that.
+        // Thrown if the process has already exited, or no process is associated with the Process object.
+        // https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.process.closemainwindow#remarks
+        // This exception can be swallowed safely, as we are sure that a process is associated and the process has
+        // already exited, therefore the method can return true at this point.
+        return true;
       }
-      
-      // Try to gracefully close the process
-      if (process.CloseMainWindow())
-      {
-        // No exception is thrown when calling .WaitForExit(..) on an already exited process.
-        if (process.WaitForExit (timeout))
-          return;
-      }
+    }
 
-      // Force closing the process
+    private static void KillProcess (Process process)
+    {
       try
       {
         process.Kill();
@@ -159,14 +205,43 @@ namespace Remotion.Web.Development.WebTesting.Utilities
         // https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.process.kill#System_Diagnostics_Process_Kill
         // This exception can be swallowed safely, as we are sure that a process is associated and the process has
         // already exited, therefore the method can return at this point.
-        return;
+      }
+    }
+
+    /// <summary>
+    /// Waits for the specified <paramref name="processes"/> to exit or until the <paramref name="sharedTimeout"/> is reached.
+    /// </summary>
+    /// <param name="processes">The processes that should be waited on to exit.</param>
+    /// <param name="sharedTimeout">The wait timeout after which waiting will be canceled.</param>
+    /// <returns>A subset of the specified <paramref name="processes"/> that did not exit withing the <paramref name="sharedTimeout"/>.</returns>
+    private static IReadOnlyList<Process> WaitForProcessesExits (IEnumerable<Process> processes, TimeSpan sharedTimeout)
+    {
+      var remainingProcesses = new List<Process>();
+
+      // Go through all processes and call .WaitForExit on each using a shared timeout
+      // If the timeout runs out still go through all remaining process to make sure to clear any exited processes
+      var stopwatch = Stopwatch.StartNew();
+      foreach (var process in processes)
+      {
+        var timeToTimeoutEnd = sharedTimeout - stopwatch.Elapsed;
+
+        // Use 0 (process.WaitForExit returns instantly) if we exceeded our timeout, otherwise use the remaining timeout
+        var remainingTimeoutInMilliseconds = Math.Max ((int) timeToTimeoutEnd.TotalMilliseconds, 0);
+        if (!process.WaitForExit (remainingTimeoutInMilliseconds))
+          remainingProcesses.Add (process);
       }
 
-      // No exception is thrown when calling .WaitForExit(..) on an already exited process.
-      if (process.WaitForExit (timeout))
-        return;
+      return remainingProcesses;
+    }
 
-      throw new InvalidOperationException (string.Format ("Process '{0}' (id: '{1}') did not exit in the expected amount of time.", process.ProcessName, process.Id));
+    private static Exception CreateProcessesDidNotExitInTimeException (IEnumerable<Process> processes, TimeSpan timeout)
+    {
+      var stringBuilder = new StringBuilder();
+      stringBuilder.AppendFormat ("The following processes did not exit within the timeout of {0:0.##} seconds:", timeout.TotalSeconds).AppendLine();
+      foreach (var process in processes)
+        stringBuilder.AppendFormat (" - Process '{0}' (id: {1})", process.ProcessName, process.Id).AppendLine();
+
+      return new InvalidOperationException (stringBuilder.ToString());
     }
 
     /// <summary>
