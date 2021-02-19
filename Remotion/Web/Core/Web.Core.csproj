@@ -797,9 +797,6 @@
     <EmbeddedResource Include="Globalization\WxePageInfo.fr.resx" />
     <EmbeddedResource Include="Globalization\WxePageInfo.it.resx" />
     <EmbeddedResource Include="UI\SmartPageImplementation\Generic_Error_Async_Remote.htm" />
-    <None Include="..\..\..\Build\NuSpec\TemplateSharedForWeb.nuspec">
-      <Link>TemplateSharedForWeb.nuspec</Link>
-    </None>
     <None Include="..\..\Remotion LGPL.licenseheader">
       <Link>Remotion LGPL.licenseheader</Link>
     </None>
@@ -886,6 +883,7 @@
     <None Include="Res\HTML\WebButton.js" />
     <None Include="Res\HTML\Utilities.js" />
     <None Include="Res\Image\Spacer.gif" />
+    <None Include="Web.Core.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />

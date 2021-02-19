@@ -235,6 +235,7 @@
     </UnitTestProjectFiles>
 
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Contracts.DiagnosticMetadata\Web.Contracts.DiagnosticMetadata.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\ClientScript\Web.ClientScript.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Core\Web.Core.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.WebTesting\Web.Development.WebTesting.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.WebTesting.ControlObjects\Web.Development.WebTesting.ControlObjects.csproj"/>

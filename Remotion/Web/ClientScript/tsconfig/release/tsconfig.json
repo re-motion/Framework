@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../bin/Release/dist",
+    "noEmit": false,
+
+    "sourceMap": false,
+    "inlineSources": false
+  }
+}
