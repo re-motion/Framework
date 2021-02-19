@@ -49,7 +49,7 @@ namespace Remotion.Mixins.Definitions
     private readonly MixinKind _mixinKind;
     private readonly bool _acceptsAlphabeticOrdering;
 
-    private ConcreteMixinTypeIdentifier _concreteTypeIdentifier;
+    private ConcreteMixinTypeIdentifier? _concreteTypeIdentifier;
     
     public MixinDefinition (MixinKind mixinKind, Type type, TargetClassDefinition targetClass, bool acceptsAlphabeticOrdering)
         : base (type)

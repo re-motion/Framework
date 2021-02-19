@@ -33,7 +33,7 @@ namespace Remotion.Mixins.Utilities
       if (!typeParameter.IsGenericParameter)
         throw new ArgumentException ("Type must be a generic parameter.", "typeParameter");
 
-      Type candidate = InferFromGenericParameterConstraints(typeParameter);
+      Type? candidate = InferFromGenericParameterConstraints(typeParameter);
 
       if (HasAttribute (typeParameter, GenericParameterAttributes.NotNullableValueTypeConstraint))
         candidate = UnifyConstraints (typeof (ValueType), candidate);
@@ -51,9 +51,9 @@ namespace Remotion.Mixins.Utilities
       return (typeParameter.GenericParameterAttributes & attribute) == attribute;
     }
 
-    private Type InferFromGenericParameterConstraints (Type typeParameter)
+    private Type? InferFromGenericParameterConstraints (Type typeParameter)
     {
-      Type candidate = null;
+      Type? candidate = null;
 
       // Starting with .NET 4.6, the order follows different conventions. 
       // For better diagnostics, the value-type/reference-type constraint should be listed before any interface constraints.
@@ -74,7 +74,7 @@ namespace Remotion.Mixins.Utilities
       return candidate;
     }
 
-    private Type UnifyConstraints (Type constraint, Type candidate)
+    private Type UnifyConstraints (Type constraint, Type? candidate)
     {
       if (candidate == null)
         candidate = constraint;

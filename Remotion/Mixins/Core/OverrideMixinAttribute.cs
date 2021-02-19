@@ -38,7 +38,7 @@ namespace Remotion.Mixins
   [AttributeUsage (AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Event, AllowMultiple = false, Inherited = true)]
   public class OverrideMixinAttribute : Attribute, IOverrideAttribute
   {
-    private readonly Type _mixinType;
+    private readonly Type? _mixinType;
 
     /// <summary>
     /// Indicates that this member overrides a virtual or abstract member of one of the mixins combined with the class. The overridden member
@@ -59,12 +59,12 @@ namespace Remotion.Mixins
       _mixinType = ArgumentUtility.CheckNotNull ("mixinType", mixinType);
     }
 
-    public Type MixinType
+    public Type? MixinType
     {
       get { return _mixinType; }
     }
 
-    Type IOverrideAttribute.OverriddenType
+    Type? IOverrideAttribute.OverriddenType
     {
       get { return MixinType; }
     }

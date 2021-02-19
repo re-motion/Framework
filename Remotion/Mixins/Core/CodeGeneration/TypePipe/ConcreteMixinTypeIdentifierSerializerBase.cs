@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Remotion.Collections;
 using Remotion.Mixins.CodeGeneration.Serialization;
@@ -28,25 +29,26 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   /// </summary>
   public class ConcreteMixinTypeIdentifierSerializerBase : IConcreteMixinTypeIdentifierSerializer
   {
-    private Type _mixinType;
-    private IReadOnlyCollection<MethodInfo> _overriders;
-    private IReadOnlyCollection<MethodInfo> _overridden;
+    private Type? _mixinType;
+    private IReadOnlyCollection<MethodInfo>? _overriders;
+    private IReadOnlyCollection<MethodInfo>? _overridden;
 
-    public Type MixinType
+    public Type? MixinType
     {
       get { return _mixinType; }
     }
 
-    public IReadOnlyCollection<MethodInfo> Overriders
+    public IReadOnlyCollection<MethodInfo>? Overriders
     {
       get { return _overriders; }
     }
 
-    public IReadOnlyCollection<MethodInfo> Overridden
+    public IReadOnlyCollection<MethodInfo>? Overridden
     {
       get { return _overridden; }
     }
 
+    [MemberNotNull (nameof (_mixinType))]
     public void AddMixinType (Type mixinType)
     {
       ArgumentUtility.CheckNotNull ("mixinType", mixinType);
@@ -54,6 +56,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       _mixinType = mixinType;
     }
 
+    [MemberNotNull (nameof (_overriders))]
     public void AddOverriders (HashSet<MethodInfo> overriders)
     {
       ArgumentUtility.CheckNotNull ("overriders", overriders);
@@ -61,6 +64,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       _overriders = overriders.AsReadOnly();
     }
 
+    [MemberNotNull (nameof (_overridden))]
     public void AddOverridden (HashSet<MethodInfo> overridden)
     {
       ArgumentUtility.CheckNotNull ("overridden", overridden);

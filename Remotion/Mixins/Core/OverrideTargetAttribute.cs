@@ -35,7 +35,7 @@ namespace Remotion.Mixins
   [AttributeUsage (AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Event, AllowMultiple = false, Inherited = true)]
   public class OverrideTargetAttribute : Attribute, IOverrideAttribute
   {
-    Type IOverrideAttribute.OverriddenType
+    Type? IOverrideAttribute.OverriddenType
     {
       get { return null; }
     }

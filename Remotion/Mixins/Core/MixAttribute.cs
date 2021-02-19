@@ -78,9 +78,9 @@ namespace Remotion.Mixins
       get { return _mixinType; }
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
-      MixAttribute other = obj as MixAttribute;
+      MixAttribute? other = obj as MixAttribute;
       return !object.ReferenceEquals (other, null)
           && TargetType == other.TargetType
           && MixinType == other.MixinType

@@ -46,21 +46,21 @@ namespace Remotion.Mixins.Definitions.Building
         _allMethods.Add (method);
     }
 
-    public MethodDefinition FindMethodImplementation (MethodInfo methodToFind)
+    public MethodDefinition? FindMethodImplementation (MethodInfo methodToFind)
     {
-      MethodInfo targetMethod;
+      MethodInfo? targetMethod;
       if (_mappingDictionary.TryGetValue (methodToFind, out targetMethod))
         return _allMethods[targetMethod];
       else
         return null;
     }
 
-    public PropertyDefinition FindPropertyImplementation (PropertyInfo propertyToFind)
+    public PropertyDefinition? FindPropertyImplementation (PropertyInfo propertyToFind)
     {
-      MethodDefinition accessorImplementer = null;
+      MethodDefinition? accessorImplementer = null;
 
-      MethodInfo getter = propertyToFind.GetGetMethod ();
-      MethodInfo setter = propertyToFind.GetSetMethod ();
+      MethodInfo? getter = propertyToFind.GetGetMethod ();
+      MethodInfo? setter = propertyToFind.GetSetMethod ();
 
       if (getter != null)
         accessorImplementer = FindMethodImplementation (getter);
@@ -70,21 +70,21 @@ namespace Remotion.Mixins.Definitions.Building
 
       if (accessorImplementer != null)
       {
-        PropertyDefinition property = accessorImplementer.Parent as PropertyDefinition;
+        PropertyDefinition? property = accessorImplementer.Parent as PropertyDefinition;
         return property;
       }
       else
         return null;
     }
 
-    public EventDefinition FindEventImplementation (EventInfo eventToFind)
+    public EventDefinition? FindEventImplementation (EventInfo eventToFind)
     {
-      MethodInfo accessor = eventToFind.GetAddMethod ();
-      MethodDefinition accessorImplementer = FindMethodImplementation (accessor);
+      MethodInfo? accessor = eventToFind.GetAddMethod ();
+      MethodDefinition? accessorImplementer = FindMethodImplementation (accessor!);
 
       if (accessorImplementer != null)
       {
-        EventDefinition eventDefinition = accessorImplementer.Parent as EventDefinition;
+        EventDefinition? eventDefinition = accessorImplementer.Parent as EventDefinition;
         return eventDefinition;
       }
       else

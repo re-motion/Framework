@@ -25,7 +25,7 @@ namespace Remotion.Mixins.Definitions.Building
     protected abstract RequirementDefinitionBase GetRequirement (Type type);
     protected abstract RequirementDefinitionBase CreateRequirement (Type type);
     protected abstract void AddRequirement (RequirementDefinitionBase requirement);
-    protected abstract DependencyDefinitionBase CreateDependency (RequirementDefinitionBase requirement, DependencyDefinitionBase aggregator);
+    protected abstract DependencyDefinitionBase CreateDependency (RequirementDefinitionBase requirement, DependencyDefinitionBase? aggregator);
     protected abstract void AddDependency (DependencyDefinitionBase dependency);
 
     public void Apply (IEnumerable<Type> dependencyTypes)
@@ -42,7 +42,7 @@ namespace Remotion.Mixins.Definitions.Building
       }
     }
 
-    private DependencyDefinitionBase BuildDependency(Type type, DependencyDefinitionBase aggregator)
+    private DependencyDefinitionBase BuildDependency(Type type, DependencyDefinitionBase? aggregator)
     {
       ArgumentUtility.CheckNotNull ("type", type);
 

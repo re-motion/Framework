@@ -55,7 +55,7 @@ namespace Remotion.Mixins.Definitions
       get { return Type.Name; }
     }
 
-    public string FullName
+    public string? FullName
     {
       get {
         if (Type.IsGenericType)
@@ -85,7 +85,7 @@ namespace Remotion.Mixins.Definitions
           // The MethodInfo objects returned by the Methods property has the ReflectedType == DeclaringType; the interface map must reflect this.
           Assertion.IsFalse (targetMethod.ReflectedType == targetMethod.DeclaringType);
 
-          var newTargetMethod = (MethodInfo) MethodBase.GetMethodFromHandle (targetMethod.MethodHandle, targetMethod.DeclaringType.TypeHandle);
+          var newTargetMethod = (MethodInfo) MethodBase.GetMethodFromHandle (targetMethod.MethodHandle, targetMethod.DeclaringType!.TypeHandle)!;
           Assertion.IsTrue (newTargetMethod.ReflectedType == newTargetMethod.DeclaringType);
 
           mapping.TargetMethods[i] = newTargetMethod;
@@ -94,7 +94,7 @@ namespace Remotion.Mixins.Definitions
       return mapping;
     }
 
-    public abstract IVisitableDefinition Parent { get; }
+    public abstract IVisitableDefinition? Parent { get; }
 
     public HashSet<Type> ImplementedInterfaces
     {
@@ -192,7 +192,7 @@ namespace Remotion.Mixins.Definitions
              select m;
     }
 
-    public override string ToString ()
+    public override string? ToString ()
     {
       return FullName;
     }

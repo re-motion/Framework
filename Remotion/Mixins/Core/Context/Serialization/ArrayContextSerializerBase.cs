@@ -37,14 +37,16 @@ namespace Remotion.Mixins.Context.Serialization
     }
 
     protected void SetValue<T> (int index, T value)
+        where T : notnull
     {
       Values[index] = ConvertToStorageFormat (value);
     }
 
     protected virtual object ConvertToStorageFormat<T> (T value)
+        where T : notnull
     {
       if (typeof (T) == typeof (Assembly))
-        return ConvertToStorageFormat (((Assembly) (object) value).FullName);
+        return ConvertToStorageFormat (((Assembly) (object) value).FullName!);
 
       return value;
     }

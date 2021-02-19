@@ -117,7 +117,8 @@ namespace Remotion.Mixins.CodeGeneration
         {
           return index;
         }
-        else if (expectedMixinType.BaseType.IsAssignableFrom (suppliedMixinType) && MixinTypeUtility.IsGeneratedByMixinEngine (expectedMixinType))
+        // TODO RM-7816: expectedMixinType should be constrained to types with a base type.
+        else if (expectedMixinType.BaseType!.IsAssignableFrom (suppliedMixinType) && MixinTypeUtility.IsGeneratedByMixinEngine (expectedMixinType))
         {
           var message = string.Format (
               "A mixin was supplied that would match the expected mixin type '{0}' on target class '{1}'. However, a derived type must be "
@@ -133,9 +134,10 @@ namespace Remotion.Mixins.CodeGeneration
 
     private object CreateMixin (Type mixinType)
     {
+      // TODO RM-7815: Check if ValueType mixins are sensibly supportable.
       if (mixinType.IsValueType)
       {
-        return Activator.CreateInstance (mixinType); // there's always a public constructor for value types
+        return Activator.CreateInstance (mixinType)!; // there's always a public constructor for value types
       }
       else
       {

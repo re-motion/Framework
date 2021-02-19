@@ -42,7 +42,7 @@ namespace Remotion.Mixins.Definitions
 
     public Type AttributeType
     {
-      get { return _data.Constructor.DeclaringType; }
+      get { return _data.Constructor.DeclaringType!; }
     }
 
     public bool IsIntroducible
@@ -61,7 +61,7 @@ namespace Remotion.Mixins.Definitions
       visitor.Visit (this);
     }
 
-    public string FullName
+    public string? FullName
     {
       get
       {
@@ -71,7 +71,7 @@ namespace Remotion.Mixins.Definitions
       }
     }
 
-    public IVisitableDefinition Parent
+    public IVisitableDefinition? Parent
     {
       get { return DeclaringDefinition as IVisitableDefinition; }
     }

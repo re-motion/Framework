@@ -48,7 +48,7 @@ namespace Remotion.Mixins.Definitions
       visitor.Visit (this);
     }
 
-    public string FullName
+    public string? FullName
     {
       get { return InterfaceType.FullName; }
     }

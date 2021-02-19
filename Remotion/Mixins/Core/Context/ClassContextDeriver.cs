@@ -29,10 +29,8 @@ namespace Remotion.Mixins.Context
       ArgumentUtility.CheckNotNull ("contextToBeDerived", contextToBeDerived);
       ArgumentUtility.CheckNotNull ("baseContexts", baseContexts);
 
-      List<MixinContext> mixins;
-      List<Type> interfaces;
-      mixins = new List<MixinContext> (contextToBeDerived.Mixins);
-      interfaces = new List<Type> (contextToBeDerived.ComposedInterfaces);
+      var mixins = new List<MixinContext> (contextToBeDerived.Mixins);
+      var interfaces = new List<Type> (contextToBeDerived.ComposedInterfaces);
 
       foreach (ClassContext baseContext in baseContexts)
         ApplyInheritance (contextToBeDerived.Type, contextToBeDerived.Mixins, baseContext, mixins, interfaces);
@@ -42,7 +40,7 @@ namespace Remotion.Mixins.Context
 
     public void ApplyInheritance (Type targetClass, IEnumerable<MixinContext> ownMixins, ClassContext baseContext, ICollection<MixinContext> mixins, ICollection<Type> interfaces)
     {
-      Tuple<MixinContext, MixinContext> overridden_override = GetFirstOverrideThatIsNotOverriddenByBase (mixins, baseContext.Mixins);
+      Tuple<MixinContext, MixinContext>? overridden_override = GetFirstOverrideThatIsNotOverriddenByBase (mixins, baseContext.Mixins);
       if (overridden_override != null)
       {
         string message = string.Format (
@@ -78,12 +76,12 @@ namespace Remotion.Mixins.Context
     }
 
     // A = overridden, B = override
-    public Tuple<MixinContext, MixinContext> GetFirstOverrideThatIsNotOverriddenByBase (IEnumerable<MixinContext> baseMixins,
+    public Tuple<MixinContext, MixinContext>? GetFirstOverrideThatIsNotOverriddenByBase (IEnumerable<MixinContext> baseMixins,
         IEnumerable<MixinContext> potentialOverrides)
     {
       foreach (MixinContext mixin in baseMixins)
       {
-        MixinContext overrideForMixin;
+        MixinContext? overrideForMixin;
         if ((overrideForMixin = MixinContextCollection.GetOverrideForMixin (potentialOverrides, mixin.MixinType)) != null
             && !MixinContextCollection.ContainsOverrideForMixin (baseMixins, overrideForMixin.MixinType))
           return Tuple.Create (mixin, overrideForMixin);

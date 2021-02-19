@@ -68,7 +68,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       Assertion.IsTrue (ReflectionUtility.IsPublicOrProtected (baseMethod));
       if (baseMethod.IsAbstract)
       {
-        var message = string.Format ("The given method {0}.{1} is abstract.", baseMethod.DeclaringType.FullName, baseMethod.Name);
+        var message = string.Format ("The given method {0}.{1} is abstract.", baseMethod.DeclaringType!.FullName, baseMethod.Name);
         throw new ArgumentException (message, "baseMethod");
       }
 

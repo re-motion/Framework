@@ -24,6 +24,7 @@ namespace Remotion.Mixins.Definitions
 {
   [DebuggerDisplay ("Count = {Count}")]
   public class MultiDefinitionCollection<TKey, TValue> : DefinitionCollectionBase<TKey, TValue>
+      where TKey : notnull
       where TValue : IVisitableDefinition
   {
     private MultiDictionary<TKey, TValue> _items = new MultiDictionary<TKey, TValue>();

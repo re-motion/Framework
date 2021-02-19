@@ -82,7 +82,7 @@ namespace Remotion.Mixins.Validation
       {
         if (!t.IsAbstract && typeof (IRuleSet).IsAssignableFrom (t) && t.Namespace == typeof (IRuleSet).Namespace)
         {
-          IRuleSet ruleSet = (IRuleSet) Activator.CreateInstance (t);
+          IRuleSet ruleSet = (IRuleSet) Activator.CreateInstance (t)!;
           ruleSet.Install (visitor);
         }
       }

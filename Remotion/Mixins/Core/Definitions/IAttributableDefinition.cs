@@ -23,6 +23,6 @@ namespace Remotion.Mixins.Definitions
   {
     MultiDefinitionCollection<Type, AttributeDefinition> CustomAttributes { get; }
     ICustomAttributeProvider CustomAttributeProvider { get; }
-    string FullName { get; }
+    string? FullName { get; }
   }
 }

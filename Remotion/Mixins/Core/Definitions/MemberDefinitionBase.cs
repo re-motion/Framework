@@ -26,7 +26,7 @@ namespace Remotion.Mixins.Definitions
   {
     private IVisitableDefinition _parent;
 
-    private IDefinitionCollection<Type, MemberDefinitionBase> _internalOverridesWrapper = null;
+    private IDefinitionCollection<Type, MemberDefinitionBase>? _internalOverridesWrapper = null;
 
     protected MemberDefinitionBase (MemberInfo memberInfo, ClassDefinitionBase declaringClass)
     {
@@ -85,10 +85,10 @@ namespace Remotion.Mixins.Definitions
 
     public string FullName
     {
-      get { return MemberInfo.DeclaringType.FullName + "." + Name; }
+      get { return MemberInfo.DeclaringType!.FullName + "." + Name; }
     }
 
-    public abstract MemberDefinitionBase BaseAsMember { get; protected internal set; }
+    public abstract MemberDefinitionBase? BaseAsMember { get; protected internal set; }
 
     public IVisitableDefinition Parent
     {

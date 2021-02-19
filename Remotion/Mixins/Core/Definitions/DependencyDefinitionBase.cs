@@ -26,9 +26,9 @@ namespace Remotion.Mixins.Definitions
     private readonly UniqueDefinitionCollection<Type, DependencyDefinitionBase> _aggregatedDependencies;
 
     private readonly RequirementDefinitionBase _requirement; // the required face or base interface
-    private readonly DependencyDefinitionBase _aggregator; // the outer dependency containing this dependency, if defined indirectly
+    private readonly DependencyDefinitionBase? _aggregator; // the outer dependency containing this dependency, if defined indirectly
 
-    public DependencyDefinitionBase (RequirementDefinitionBase requirement, DependencyDefinitionBase aggregator)
+    public DependencyDefinitionBase (RequirementDefinitionBase requirement, DependencyDefinitionBase? aggregator)
     {
       ArgumentUtility.CheckNotNull ("requirement", requirement);
       ArgumentUtility.CheckType ("aggregator", aggregator, GetType ());
@@ -62,12 +62,12 @@ namespace Remotion.Mixins.Definitions
       get { return _requirement; }
     }
 
-    public DependencyDefinitionBase Aggregator
+    public DependencyDefinitionBase? Aggregator
     {
       get { return _aggregator; }
     }
 
-    public string FullName
+    public string? FullName
     {
       get { return RequiredType.FullName; }
     }
@@ -98,7 +98,7 @@ namespace Remotion.Mixins.Definitions
       get { return _aggregatedDependencies; }
     }
 
-    public virtual ClassDefinitionBase GetImplementer()
+    public virtual ClassDefinitionBase? GetImplementer()
     {
       if (RequiredType.Type.IsAssignableFrom (TargetClass.Type))
         return TargetClass;

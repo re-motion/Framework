@@ -92,7 +92,7 @@ namespace Remotion.Mixins.Definitions.Building.DependencySorting
       var groupedMixins = (from mixin in orderedMixins
                            from ovr in mixin.GetAllMethods ().Select (m => m.Base)
                            where ovr != null
-                           select new { Mixin = mixin, OverriddenMethod = ovr })
+                           select new { Mixin = mixin, OverriddenMethod = (MethodDefinition) ovr })
                            .GroupBy (t => t.OverriddenMethod);
 
       var badGroups = groupedMixins

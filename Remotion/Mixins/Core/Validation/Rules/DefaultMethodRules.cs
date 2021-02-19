@@ -64,7 +64,7 @@ namespace Remotion.Mixins.Validation.Rules
     private void NoCircularOverrides (DelegateValidationRule<MethodDefinition>.Args args)
     {
       MethodDefinition originalMethod = args.Definition;
-      MethodDefinition method = args.Definition.Base;
+      MethodDefinition? method = args.Definition.Base;
       while (method != null && method != originalMethod)
         method = method.Base;
       SingleMust (method != originalMethod, args.Log, args.Self);

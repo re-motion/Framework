@@ -47,7 +47,7 @@ namespace Remotion.Mixins.Definitions.Building
 
       foreach (var attributeData in attributes)
       {
-        Type attributeType = attributeData.Constructor.DeclaringType;
+        Type? attributeType = attributeData.Constructor.DeclaringType;
         Assertion.IsNotNull (attributeType);
         if (attributeType == typeof (CopyCustomAttributesAttribute))
           ApplyViaCopyAttribute (attributeSource, attributeData);
@@ -70,7 +70,7 @@ namespace Remotion.Mixins.Definitions.Building
 
       var copyAttribute = (CopyCustomAttributesAttribute) copyAttributeData.CreateInstance();
 
-      MemberInfo copiedAttributesSource;
+      MemberInfo? copiedAttributesSource;
       try
       {
         copiedAttributesSource = copyAttribute.GetAttributeSource (UnifyTypeMemberTypes (copyAttributeSource.MemberType));
@@ -118,7 +118,7 @@ namespace Remotion.Mixins.Definitions.Building
     {
       foreach (var attributeData in TypePipeCustomAttributeData.GetCustomAttributes (copiedAttributesSource, inherit: true))
       {
-        Type attributeType = attributeData.Constructor.DeclaringType;
+        Type attributeType = attributeData.Constructor.DeclaringType!;
         if (typeof (CopyCustomAttributesAttribute).IsAssignableFrom (attributeType))
         {
           if (includeCopyAttributes)

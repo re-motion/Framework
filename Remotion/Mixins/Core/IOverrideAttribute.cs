@@ -23,6 +23,6 @@ namespace Remotion.Mixins
   /// </summary>
   public interface IOverrideAttribute
   {
-    Type OverriddenType { get; }
+    Type? OverriddenType { get; }
   }
 }

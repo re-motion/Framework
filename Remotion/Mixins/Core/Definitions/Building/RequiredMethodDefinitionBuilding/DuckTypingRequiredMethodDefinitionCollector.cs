@@ -52,7 +52,7 @@ namespace Remotion.Mixins.Definitions.Building.RequiredMethodDefinitionBuilding
     {
       var candidatesByInheritanceOffset = from candidate in _allTargetMethodsByName[interfaceMethod.Name]
                                           where s_signatureComparer.Equals (candidate.MethodInfo, interfaceMethod)
-                                          let offset = GetInheritanceOffset (candidate.MethodInfo.DeclaringType)
+                                          let offset = GetInheritanceOffset (candidate.MethodInfo.DeclaringType!)
                                           group candidate by offset;
 
       IGrouping<int, MethodDefinition> candidateGroup = ChooseCandidateGroup (candidatesByInheritanceOffset, interfaceMethod, requirement);
@@ -90,7 +90,7 @@ namespace Remotion.Mixins.Definitions.Building.RequiredMethodDefinitionBuilding
     private int GetInheritanceOffset (Type type)
     {
       int index = 0;
-      Type currentBaseType = _targetClassDefinition.Type;
+      Type? currentBaseType = _targetClassDefinition.Type;
 
       while (type != currentBaseType)
       {

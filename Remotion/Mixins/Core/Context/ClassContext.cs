@@ -125,7 +125,7 @@ namespace Remotion.Mixins.Context
     /// True if the specified <see cref="T:System.Object"></see> is a <see cref="ClassContext"/> for the same type with equal mixin 
     /// and composed interfaces configuration; otherwise, false.
     /// </returns>
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
       if (object.ReferenceEquals (this, obj))
         return true;

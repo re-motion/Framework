@@ -95,7 +95,7 @@ namespace Remotion.Mixins.Context
     /// True if the specified <see cref="T:System.Object"></see> is a <see cref="MixinContext"/> for the same mixin type with equal explicit
     /// dependencies; otherwise, false.
     /// </returns>
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
       if (object.ReferenceEquals (this, obj))
         return true;

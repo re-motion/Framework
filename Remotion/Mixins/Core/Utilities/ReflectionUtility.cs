@@ -75,20 +75,24 @@ namespace Remotion.Mixins.Utilities
       var property = member as PropertyInfo;
       if (property != null)
       {
-        MethodInfo getMethod = property.GetGetMethod (true);
-        MethodInfo setMethod = property.GetSetMethod (true);
+        MethodInfo? getMethod = property.GetGetMethod (true);
+        MethodInfo? setMethod = property.GetSetMethod (true);
         return (getMethod != null && CheckMethodAttributeOnMember (getMethod, attribute))
             || (setMethod != null && CheckMethodAttributeOnMember (setMethod, attribute));
       }
 
       var eventInfo = member as EventInfo;
       if (eventInfo != null)
-        return CheckMethodAttributeOnMember(eventInfo.GetAddMethod (), attribute)
-            || CheckMethodAttributeOnMember(eventInfo.GetRemoveMethod (), attribute);
+      {
+        var addMethod = eventInfo.GetAddMethod();
+        var removeMethod = eventInfo.GetRemoveMethod();
+        return (addMethod != null && CheckMethodAttributeOnMember (addMethod, attribute))
+               || (removeMethod != null && CheckMethodAttributeOnMember (removeMethod, attribute));
+      }
 
       string message = String.Format (
           "The given member {0}.{1} is neither property, method, nor event.",
-          member.DeclaringType.FullName,
+          member.DeclaringType!.FullName,
           member.Name);
       throw new ArgumentException (message, "member");
     }
@@ -139,7 +143,7 @@ namespace Remotion.Mixins.Utilities
     public static bool IsAssemblySigned (AssemblyName assemblyName)
     {
       ArgumentUtility.CheckNotNull ("assemblyName", assemblyName);
-      byte[] publicKeyOrToken = assemblyName.GetPublicKey () ?? assemblyName.GetPublicKeyToken ();
+      byte[]? publicKeyOrToken = assemblyName.GetPublicKey () ?? assemblyName.GetPublicKeyToken ();
       return publicKeyOrToken != null && publicKeyOrToken.Length > 0;
     }
 
@@ -162,7 +166,7 @@ namespace Remotion.Mixins.Utilities
       return types.All (IsReachableFromSignedAssembly);
     }
 
-    public static MethodInfo[] GetAssociatedMethods (MemberInfo memberInfo)
+    public static MethodInfo?[] GetAssociatedMethods (MemberInfo memberInfo)
     {
       ArgumentUtility.CheckNotNull ("memberInfo", memberInfo);
 

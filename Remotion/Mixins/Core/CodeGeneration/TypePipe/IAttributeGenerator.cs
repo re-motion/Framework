@@ -31,7 +31,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   {
     void AddDebuggerBrowsableAttribute (IMutableMember member, DebuggerBrowsableState debuggerBrowsableState);
 
-    void AddDebuggerDisplayAttribute (IMutableMember member, string debuggerDisplayString, string debuggerDisplayNameStringOrNull);
+    void AddDebuggerDisplayAttribute (IMutableMember member, string debuggerDisplayString, string? debuggerDisplayNameStringOrNull);
 
     void AddIntroducedMemberAttribute (IMutableMember member, MemberInfo interfaceMember, MemberDefinitionBase implementingMember);
 

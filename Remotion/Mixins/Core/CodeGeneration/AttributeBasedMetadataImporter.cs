@@ -39,12 +39,12 @@ namespace Remotion.Mixins.CodeGeneration
     // CLS-incompliant version for better testing
     [CLSCompliant (false)]
     [CanBeNull]
-    public virtual ClassContext GetMetadataForMixedType (_Type concreteMixedType)
+    public virtual ClassContext? GetMetadataForMixedType (_Type concreteMixedType)
     {
       ArgumentUtility.CheckNotNull ("concreteMixedType", concreteMixedType);
 
       var attribute = 
-          (ConcreteMixedTypeAttribute) concreteMixedType.GetCustomAttributes (typeof (ConcreteMixedTypeAttribute), false).SingleOrDefault ();
+          (ConcreteMixedTypeAttribute?) concreteMixedType.GetCustomAttributes (typeof (ConcreteMixedTypeAttribute), false).SingleOrDefault ();
       if (attribute != null)
         return attribute.GetClassContext ();
       else
@@ -54,12 +54,12 @@ namespace Remotion.Mixins.CodeGeneration
     // CLS-incompliant version for better testing
     [CLSCompliant (false)]
     [CanBeNull]
-    public virtual ConcreteMixinTypeIdentifier GetIdentifierForMixinType (_Type concreteMixinType)
+    public virtual ConcreteMixinTypeIdentifier? GetIdentifierForMixinType (_Type concreteMixinType)
     {
       ArgumentUtility.CheckNotNull ("concreteMixinType", concreteMixinType);
 
       var attribute = 
-          (ConcreteMixinTypeAttribute) concreteMixinType.GetCustomAttributes (typeof (ConcreteMixinTypeAttribute), false).SingleOrDefault ();
+          (ConcreteMixinTypeAttribute?) concreteMixinType.GetCustomAttributes (typeof (ConcreteMixinTypeAttribute), false).SingleOrDefault ();
       if (attribute != null)
         return attribute.GetIdentifier ();
       else
@@ -74,7 +74,7 @@ namespace Remotion.Mixins.CodeGeneration
       var wrappers = from potentialWrapper in concreteMixinType.GetMethods (BindingFlags.Instance | BindingFlags.Public)
                      let wrappedMethod = GetWrappedMethod (potentialWrapper)
                      where wrappedMethod != null
-                     select new { Method = wrappedMethod, Wrapper = potentialWrapper };
+                     select new { Method = (MethodInfo) wrappedMethod, Wrapper = potentialWrapper };
       return wrappers.ToDictionary (pair => pair.Method, pair => pair.Wrapper);
     }
 
@@ -94,7 +94,7 @@ namespace Remotion.Mixins.CodeGeneration
       return mixinMethodsWithInterfaceMethods.ToDictionary (pair => pair.resolvedMethod, pair => pair.interfaceMethod);
     }
 
-    private MethodInfo GetWrappedMethod (MethodInfo potentialWrapper)
+    private MethodInfo? GetWrappedMethod (MethodInfo potentialWrapper)
     {
       var attribute = GetWrapperAttribute (potentialWrapper);
       if (attribute != null)
@@ -104,19 +104,19 @@ namespace Remotion.Mixins.CodeGeneration
     }
 
     // This is a separate method in order to be able to test it with Rhino.Mocks.
-    protected virtual GeneratedMethodWrapperAttribute GetWrapperAttribute (MethodInfo potentialWrapper)
+    protected virtual GeneratedMethodWrapperAttribute? GetWrapperAttribute (MethodInfo potentialWrapper)
     {
       return AttributeUtility.GetCustomAttribute<GeneratedMethodWrapperAttribute> (potentialWrapper, false);
     }
 
-    public ClassContext GetMetadataForMixedType (Type concreteMixedType)
+    public ClassContext? GetMetadataForMixedType (Type concreteMixedType)
     {
       ArgumentUtility.CheckNotNull ("concreteMixedType", concreteMixedType);
 
       return GetMetadataForMixedType ((_Type) concreteMixedType);
     }
 
-    public ConcreteMixinType GetMetadataForMixinType (Type concreteMixinType)
+    public ConcreteMixinType? GetMetadataForMixinType (Type concreteMixinType)
     {
       ArgumentUtility.CheckNotNull ("concreteMixinType", concreteMixinType);
 

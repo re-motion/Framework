@@ -90,7 +90,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       _targetTypeModifier.ModifyTargetType (concreteTarget, targetClassDefinition, interfacesToImplement, mixinInfos);
     }
 
-    public object GetAdditionalTypeID (Type additionalType)
+    public object? GetAdditionalTypeID (Type additionalType)
     {
       ArgumentUtility.CheckNotNull ("additionalType", additionalType);
 
@@ -100,7 +100,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       return conreteMixinType.Identifier;
     }
 
-    public Type GetOrCreateAdditionalType (object additionalTypeID, IAdditionalTypeAssemblyContext additionalTypeAssemblyContext)
+    public Type? GetOrCreateAdditionalType (object additionalTypeID, IAdditionalTypeAssemblyContext additionalTypeAssemblyContext)
     {
       ArgumentUtility.CheckNotNull ("additionalTypeID", additionalTypeID);
       ArgumentUtility.CheckNotNull ("additionalTypeAssemblyContext", additionalTypeAssemblyContext);

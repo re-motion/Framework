@@ -21,10 +21,10 @@ namespace Remotion.Mixins
 {
   internal class MixinConfigurationScope : IDisposable
   {
-    private readonly MixinConfiguration _previousContext = null;
+    private readonly MixinConfiguration? _previousContext = null;
     private bool _disposed;
 
-    public MixinConfigurationScope (MixinConfiguration previousContext)
+    public MixinConfigurationScope (MixinConfiguration? previousContext)
     {
       _previousContext = previousContext;
     }

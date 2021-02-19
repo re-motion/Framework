@@ -53,11 +53,11 @@ namespace Remotion.Mixins.Definitions.Building
       _mixin.TargetClass.RequiredMixinTypes.Add ((RequiredMixinTypeDefinition) requirement);
     }
 
-    protected override DependencyDefinitionBase CreateDependency (RequirementDefinitionBase requirement, DependencyDefinitionBase aggregator)
+    protected override DependencyDefinitionBase CreateDependency (RequirementDefinitionBase requirement, DependencyDefinitionBase? aggregator)
     {
       ArgumentUtility.CheckNotNull ("requirement", requirement);
 
-      return new MixinDependencyDefinition ((RequiredMixinTypeDefinition) requirement, _mixin, (MixinDependencyDefinition) aggregator);
+      return new MixinDependencyDefinition ((RequiredMixinTypeDefinition) requirement, _mixin, (MixinDependencyDefinition?) aggregator);
     }
 
     protected override void AddDependency (DependencyDefinitionBase dependency)

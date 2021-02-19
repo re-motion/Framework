@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Remotion.Mixins.Context.Serialization;
 using Remotion.Utilities;
@@ -26,25 +27,26 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   /// </summary>
   public class MixinContextOriginSerializerBase : IMixinContextOriginSerializer
   {
-    private string _kind;
-    private Assembly _assembly;
-    private string _locaction;
+    private string? _kind;
+    private Assembly? _assembly;
+    private string? _locaction;
 
-    public string Kind
+    public string? Kind
     {
       get { return _kind; }
     }
 
-    public Assembly Assembly
+    public Assembly? Assembly
     {
       get { return _assembly; }
     }
 
-    public string Locaction
+    public string? Locaction
     {
       get { return _locaction; }
     }
 
+    [MemberNotNull (nameof (_kind))]
     public void AddKind (string kind)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("kind", kind);
@@ -52,6 +54,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       _kind = kind;
     }
 
+    [MemberNotNull (nameof (_assembly))]
     public void AddAssembly (Assembly assembly)
     {
       ArgumentUtility.CheckNotNull ("assembly", assembly);
@@ -59,6 +62,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       _assembly = assembly;
     }
 
+    [MemberNotNull (nameof (_locaction))]
     public void AddLocation (string location)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("location", location);

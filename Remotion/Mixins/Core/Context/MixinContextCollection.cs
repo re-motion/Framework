@@ -28,7 +28,7 @@ namespace Remotion.Mixins.Context
       return GetOverrideForMixin (mixinContexts, mixinType) != null;
     }
 
-    internal static MixinContext GetOverrideForMixin (IEnumerable<MixinContext> mixinContexts, Type mixinType)
+    internal static MixinContext? GetOverrideForMixin (IEnumerable<MixinContext> mixinContexts, Type mixinType)
     {
       Type typeToSearchFor = mixinType.IsGenericType ? mixinType.GetGenericTypeDefinition () : mixinType;
 

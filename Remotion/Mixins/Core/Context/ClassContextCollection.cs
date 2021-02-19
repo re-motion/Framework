@@ -34,8 +34,8 @@ namespace Remotion.Mixins.Context
     private readonly IReadOnlyDictionary<Type, ClassContext> _values;
     private readonly IMixinInheritancePolicy _inheritancePolicy = DefaultMixinInheritancePolicy.Instance;
 
-    private readonly ConcurrentDictionary<Type, ClassContext> _inheritedContextCache = new ConcurrentDictionary<Type, ClassContext>();
-    private readonly Func<Type, ClassContext> _deriveInheritedContextFunc;
+    private readonly ConcurrentDictionary<Type, ClassContext?> _inheritedContextCache = new ConcurrentDictionary<Type, ClassContext?>();
+    private readonly Func<Type, ClassContext?> _deriveInheritedContextFunc;
 
     public ClassContextCollection (IEnumerable<ClassContext> classContexts)
     {
@@ -77,17 +77,17 @@ namespace Remotion.Mixins.Context
       ((ICollection) _values.Values).CopyTo (array, index);
     }
 
-    public ClassContext GetExact (Type type)
+    public ClassContext? GetExact (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
-      ClassContext result;
+      ClassContext? result;
       _values.TryGetValue (type, out result);
       Assertion.IsTrue (result == null || result.Type == type);
       return result;
     }
 
-    public ClassContext GetWithInheritance (Type type)
+    public ClassContext? GetWithInheritance (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
@@ -98,7 +98,7 @@ namespace Remotion.Mixins.Context
         return _inheritedContextCache.GetOrAdd (type, _deriveInheritedContextFunc);
     }
 
-    private ClassContext DeriveInheritedContext (Type type)
+    private ClassContext? DeriveInheritedContext (Type type)
     {
       var contextsToInheritFrom = _inheritancePolicy.GetClassContextsToInheritFrom (type, GetWithInheritance); // Recursion!
 

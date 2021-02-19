@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
@@ -34,7 +35,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   public class MixinTypeGenerator
   {
     private static readonly MethodInfo s_getObjectDataForGeneratedTypesMethod = MemberInfoFromExpressionUtility.GetMethod (
-        () => MixinSerializationHelper.GetObjectDataForGeneratedTypes(null, new StreamingContext(), null, null, false, null));
+        () => MixinSerializationHelper.GetObjectDataForGeneratedTypes(null!, new StreamingContext(), null!, null!, false, null!));
 
     private readonly Dictionary<MethodInfo, MethodInfo> _publicMethodWrappers = new Dictionary<MethodInfo, MethodInfo>();
 
@@ -43,7 +44,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     private readonly IAttributeGenerator _attributeGenerator;
     private readonly string _pipelineIdentifier;
 
-    private Expression _identifierField;
+    private Expression? _identifierField;
 
     public MixinTypeGenerator (ConcreteMixinTypeIdentifier identifier, MutableType type, IAttributeGenerator attributeGenerator, string pipelineIdentifier)
     {
@@ -64,6 +65,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       _type.AddInterface (typeof (IGeneratedMixinType));
     }
 
+    [MemberNotNull (nameof (_identifierField))]
     public void AddFields ()
     {
       var field = _type.AddField ("__identifier", FieldAttributes.Public | FieldAttributes.Static, typeof (ConcreteMixinTypeIdentifier));

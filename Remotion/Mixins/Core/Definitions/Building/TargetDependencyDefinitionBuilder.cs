@@ -54,11 +54,11 @@ namespace Remotion.Mixins.Definitions.Building
       _mixin.TargetClass.RequiredTargetCallTypes.Add ((RequiredTargetCallTypeDefinition) requirement);
     }
 
-    protected override DependencyDefinitionBase CreateDependency (RequirementDefinitionBase requirement, DependencyDefinitionBase aggregator)
+    protected override DependencyDefinitionBase CreateDependency (RequirementDefinitionBase requirement, DependencyDefinitionBase? aggregator)
     {
       ArgumentUtility.CheckNotNull ("requirement", requirement);
 
-      return new TargetCallDependencyDefinition ((RequiredTargetCallTypeDefinition) requirement, _mixin, (TargetCallDependencyDefinition) aggregator);
+      return new TargetCallDependencyDefinition ((RequiredTargetCallTypeDefinition) requirement, _mixin, (TargetCallDependencyDefinition?) aggregator);
     }
 
     protected override void AddDependency (DependencyDefinitionBase dependency)

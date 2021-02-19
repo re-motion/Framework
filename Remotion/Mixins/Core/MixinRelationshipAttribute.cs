@@ -73,7 +73,7 @@ namespace Remotion.Mixins
       set { _introducedMemberVisibility = value; }
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
       var other = obj as MixinRelationshipAttribute;
       return !object.ReferenceEquals (other, null)

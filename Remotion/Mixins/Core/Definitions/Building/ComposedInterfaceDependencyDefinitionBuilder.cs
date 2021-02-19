@@ -51,7 +51,7 @@ namespace Remotion.Mixins.Definitions.Building
       _targetClass.RequiredTargetCallTypes.Add ((RequiredTargetCallTypeDefinition) requirement);
     }
 
-    protected override DependencyDefinitionBase CreateDependency (RequirementDefinitionBase requirement, DependencyDefinitionBase aggregator)
+    protected override DependencyDefinitionBase CreateDependency (RequirementDefinitionBase requirement, DependencyDefinitionBase? aggregator)
     {
       return new ComposedInterfaceDependencyDefinition ((RequiredTargetCallTypeDefinition) requirement, _composedInterface, aggregator);
     }

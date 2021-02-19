@@ -23,6 +23,7 @@ namespace Remotion.Mixins.Definitions
 {
   [DebuggerDisplay ("Count = {Count}")]
   public class CovariantDefinitionCollectionWrapper<TKey, TValue, TValueBase> : IDefinitionCollection<TKey, TValueBase>
+      where TKey : notnull
       where TValue : class, TValueBase
       where TValueBase : IVisitableDefinition
   {
