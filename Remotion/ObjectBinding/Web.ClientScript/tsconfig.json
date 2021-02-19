@@ -1,0 +1,20 @@
+{
+  "compilerOptions" : {
+    "target" : "es6",
+    "module": "system",
+
+    "noEmit": true,
+    "strict": true,
+    "alwaysStrict" : false,
+    "noImplicitUseStrict" : true,
+
+    "allowJs": true
+  },
+  "include": [
+    "./Scripts/**/*.js",
+    "./Scripts/**/*.ts"
+  ],
+  "files": [
+    "../../Web/ClientScript/Scripts/typings/common.d.ts"
+  ]
+}

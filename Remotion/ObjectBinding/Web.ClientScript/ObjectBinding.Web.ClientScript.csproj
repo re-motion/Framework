@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net461</TargetFramework>
+    <OutputType>Library</OutputType>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AssemblyName>Remotion.ObjectBinding.Web.ClientScript</AssemblyName>
+    <RootNamespace>Remotion.ObjectBinding.Web.ClientScript</RootNamespace>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\AssemblyInfoShared.cs" Link="Properties\AssemblyInfoShared.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="tsconfig\debug\tsconfig.json" Condition="'$(Configuration)' == 'Debug'" />
+    <Content Include="tsconfig\release\tsconfig.json" Condition="'$(Configuration)' == 'Release'" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\remotion.snk" Link="remotion.snk" />
+    <None Include="..\..\Remotion LGPL.licenseheader" Link="Remotion LGPL.licenseheader" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="jquery.TypeScript.DefinitelyTyped" Version="1.6.4">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="microsoft-ajax.TypeScript.DefinitelyTyped" Version="0.1.4">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="4.1.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="..\..\Web\ClientScript\Scripts\typings\common.d.ts">
+      <Link>Scripts\typings\common.d.ts</Link>
+    </TypeScriptCompile>
+  </ItemGroup>
+
+</Project>

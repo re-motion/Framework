@@ -194,6 +194,7 @@
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Core\ObjectBinding.Core.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Security\ObjectBinding.Security.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Validation\ObjectBinding.Validation.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.ClientScript\ObjectBinding.Web.ClientScript.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web\ObjectBinding.Web.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Compatibility\ObjectBinding.Web.Compatibility.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Contracts.DiagnosticMetadata\ObjectBinding.Web.Contracts.DiagnosticMetadata.csproj"/>
