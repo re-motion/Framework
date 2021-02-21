@@ -873,15 +873,6 @@
     </None>
     <None Include="Res\HTML\jquery-1.6.4.js" />
     <None Include="Res\HTML\jquery.iFrameShim.js" />
-    <None Include="Res\HTML\DatePicker.js" />
-    <None Include="Res\HTML\ExecutionEngine.js" />
-    <None Include="Res\HTML\ListMenu.js" />
-    <None Include="Res\HTML\SmartNavigation.js" />
-    <None Include="Res\HTML\SmartPage.js" />
-    <None Include="Res\HTML\DropDownMenu.js" />
-    <None Include="Res\HTML\ViewLayout.js" />
-    <None Include="Res\HTML\WebButton.js" />
-    <None Include="Res\HTML\Utilities.js" />
     <None Include="Res\Image\Spacer.gif" />
     <None Include="Web.Core.nuspec" />
   </ItemGroup>
@@ -966,12 +957,6 @@
     <None Include="Res\Themes\NovaGray\UI\DatePickerForm.aspx">
       <SubType>ASPXCodeBehind</SubType>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Res\HTML\TabStrip.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Res\HTML\TreeView.js" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Res\Themes\NovaGray\Image\DropDownMenuErrorIndicator.gif" />

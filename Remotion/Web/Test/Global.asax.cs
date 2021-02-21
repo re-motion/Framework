@@ -37,10 +37,21 @@ namespace Remotion.Web.Test
       ServiceLocator.SetLocatorProvider (() => defaultServiceLocator);
       LogManager.Initialize();
 
+#if DEBUG
+      const string configuration = "Debug";
+#else
+      const string configuration = "Release";
+#endif
+
       _resourceVirtualPathProvider = new ResourceVirtualPathProvider (
           new[]
           {
-              new ResourcePathMapping ("Remotion.Web", @"..\Core\res"),
+              new ResourcePathMapping ("Remotion.Web/Html/jquery-1.6.4.js", @"..\..\Web\Core\res\Html\jquery-1.6.4.js"),
+              new ResourcePathMapping ("Remotion.Web/Html/jquery.iFrameShim.js", @"..\..\Web\Core\res\Html\jquery.iFrameShim.js"),
+              new ResourcePathMapping ("Remotion.Web/Html", @$"..\..\Web\ClientScript\bin\{configuration}\dist"),
+              new ResourcePathMapping ("Remotion.Web/Image", @"..\..\Web\Core\res\Image"),
+              new ResourcePathMapping ("Remotion.Web/Themes", @"..\..\Web\Core\res\Themes"),
+              new ResourcePathMapping ("Remotion.Web/UI", @"..\..\Web\Core\res\UI")
           },
           FileExtensionHandlerMapping.Default);
       _resourceVirtualPathProvider.Register ();

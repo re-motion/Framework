@@ -47,12 +47,24 @@ namespace Remotion.SecurityManager.Clients.Web.Test
           defaultServiceLocator.GetInstance<IPrincipalProvider>() is SecurityManagerPrincipalProvider,
           "Wrong IPrincipalProvider is configured");
 
+#if DEBUG
+      const string configuration = "Debug";
+#else
+      const string configuration = "Release";
+#endif
+
       _resourceVirtualPathProvider = new ResourceVirtualPathProvider (
           new[]
           {
-              new ResourcePathMapping ("Remotion.Web", @"..\..\Remotion\Web\Core\res"),
+              new ResourcePathMapping ("Remotion.Web/Html/jquery-1.6.4.js", @"..\..\Web\Core\res\Html\jquery-1.6.4.js"),
+              new ResourcePathMapping ("Remotion.Web/Html/jquery.iFrameShim.js", @"..\..\Web\Core\res\Html\jquery.iFrameShim.js"),
+              new ResourcePathMapping ("Remotion.Web/Html", @$"..\..\Web\ClientScript\bin\{configuration}\dist"),
+              new ResourcePathMapping ("Remotion.Web/Image", @"..\..\Web\Core\res\Image"),
+              new ResourcePathMapping ("Remotion.Web/Themes", @"..\..\Web\Core\res\Themes"),
+              new ResourcePathMapping ("Remotion.Web/UI", @"..\..\Web\Core\res\UI"),
+              new ResourcePathMapping ("Remotion.ObjectBinding.Web/Html", @$"..\..\ObjectBinding\Web.ClientScript\bin\{configuration}\dist"),
+              new ResourcePathMapping ("Remotion.ObjectBinding.Web/Themes", @"..\..\ObjectBinding\Web\res\Themes"),
               new ResourcePathMapping ("Remotion.Web.Legacy", @"..\..\Remotion\Web\Legacy\Res"),
-              new ResourcePathMapping ("Remotion.ObjectBinding.Web", @"..\..\Remotion\ObjectBinding\Web\res"),
               new ResourcePathMapping ("Remotion.ObjectBinding.Web.Legacy", @"..\..\Remotion\ObjectBinding\Web.Legacy\Res"),
               new ResourcePathMapping ("Remotion.SecurityManager.Clients.Web/Html", @"..\Clients.Web\res\Html"),
               new ResourcePathMapping ("Remotion.SecurityManager.Clients.Web/Themes", @"..\Clients.Web\res\Themes"),

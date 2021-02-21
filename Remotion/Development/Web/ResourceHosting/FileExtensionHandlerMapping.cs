@@ -36,6 +36,7 @@ namespace Remotion.Development.Web.ResourceHosting
                    new FileExtensionHandlerMapping ("png", ResourceVirtualPathProvider.StaticFileHandler),
                    new FileExtensionHandlerMapping ("gif", ResourceVirtualPathProvider.StaticFileHandler),
                    new FileExtensionHandlerMapping ("js", ResourceVirtualPathProvider.StaticFileHandler),
+                   new FileExtensionHandlerMapping ("map", ResourceVirtualPathProvider.StaticFileHandler),
                    new FileExtensionHandlerMapping ("css", ResourceVirtualPathProvider.StaticFileHandler),
                };
       }
