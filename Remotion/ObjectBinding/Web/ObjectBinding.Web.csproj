@@ -601,9 +601,6 @@
     <EmbeddedResource Include="Globalization\BocListNavigationBlockRenderer.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <None Include="..\..\..\Build\NuSpec\TemplateSharedForWeb.nuspec">
-      <Link>TemplateSharedForWeb.nuspec</Link>
-    </None>
     <None Include="..\..\Remotion LGPL.licenseheader">
       <Link>Remotion LGPL.licenseheader</Link>
     </None>
@@ -634,15 +631,8 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Doc\include\UI\Controls\IBusinessObjectDataSourceControl.xml" />
+    <None Include="ObjectBinding.Web.nuspec" />
     <None Include="packages.config" />
-    <None Include="Res\HTML\BocReferenceValueBase.js" />
-    <None Include="Res\HTML\BocBooleanValue.js" />
-    <None Include="Res\HTML\BocCheckBox.js" />
-    <None Include="Res\HTML\BocList.js" />
-    <None Include="Res\HTML\BocAutoCompleteReferenceValue.js" />
-    <None Include="Res\HTML\BocReferenceValue.js" />
-    <None Include="Res\HTML\BocAutoCompleteReferenceValue.jquery.js" />
-    <None Include="Res\HTML\TextBoxStyle.js" />
     <EmbeddedResource Include="Globalization\BocBooleanValue.de.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>

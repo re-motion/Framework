@@ -69,6 +69,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.UnitTests", "Remotion\ObjectBinding\UnitTests\ObjectBinding.UnitTests.csproj", "{5C1EB605-33ED-4A19-91B0-D060638191FB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web", "Remotion\ObjectBinding\Web\ObjectBinding.Web.csproj", "{390FBB93-A757-47A7-B769-A64A7465FF84}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2DA25FE6-18AD-4E69-B860-F30346965646} = {2DA25FE6-18AD-4E69-B860-F30346965646}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.Preview", "Remotion\ObjectBinding\Web.Preview\ObjectBinding.Web.Preview.csproj", "{6D58BB53-8709-48F9-8EF9-0D65B11A162C}"
 EndProject
@@ -100,6 +103,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityManager.Metadata.Importer", "SecurityManager\Metadata.Importer\SecurityManager.Metadata.Importer.csproj", "{28A3431B-A3A8-4E8D-BDA8-CB3CC7EA2894}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Core", "Remotion\Web\Core\Web.Core.csproj", "{DF8BA786-9679-4879-8757-16AE2709D83A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{627D9351-BE97-485E-A720-36C732056FF8} = {627D9351-BE97-485E-A720-36C732056FF8}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Security", "Remotion\Web\Security\Web.Security.csproj", "{9B6F6D1A-A7EA-4EE8-B36E-E31CF7E518E3}"
 EndProject
@@ -346,6 +352,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.Compatibility.UnitTests", "Remotion\ObjectBinding\Web.Compatibility.UnitTests\ObjectBinding.Web.Compatibility.UnitTests.csproj", "{AD575424-C408-4728-A9D2-EBA575E87A2F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Build", "Build\Build.csproj", "{6CBB099A-DE58-48A4-ADC7-D37725B0181C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.ClientScript", "Remotion\Web\ClientScript\Web.ClientScript.csproj", "{627D9351-BE97-485E-A720-36C732056FF8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.ClientScript", "Remotion\ObjectBinding\Web.ClientScript\ObjectBinding.Web.ClientScript.csproj", "{2DA25FE6-18AD-4E69-B860-F30346965646}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1379,6 +1389,22 @@ Global
 		{6CBB099A-DE58-48A4-ADC7-D37725B0181C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
 		{6CBB099A-DE58-48A4-ADC7-D37725B0181C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6CBB099A-DE58-48A4-ADC7-D37725B0181C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{627D9351-BE97-485E-A720-36C732056FF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{627D9351-BE97-485E-A720-36C732056FF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{627D9351-BE97-485E-A720-36C732056FF8}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{627D9351-BE97-485E-A720-36C732056FF8}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{627D9351-BE97-485E-A720-36C732056FF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{627D9351-BE97-485E-A720-36C732056FF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{627D9351-BE97-485E-A720-36C732056FF8}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{627D9351-BE97-485E-A720-36C732056FF8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{2DA25FE6-18AD-4E69-B860-F30346965646}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DA25FE6-18AD-4E69-B860-F30346965646}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DA25FE6-18AD-4E69-B860-F30346965646}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{2DA25FE6-18AD-4E69-B860-F30346965646}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{2DA25FE6-18AD-4E69-B860-F30346965646}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DA25FE6-18AD-4E69-B860-F30346965646}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DA25FE6-18AD-4E69-B860-F30346965646}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{2DA25FE6-18AD-4E69-B860-F30346965646}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1513,6 +1539,8 @@ Global
 		{B456D62A-817F-44B9-BAC3-99199C564AC7} = {72195525-BF6C-43D6-AC96-39E34D02EA34}
 		{AD575424-C408-4728-A9D2-EBA575E87A2F} = {72195525-BF6C-43D6-AC96-39E34D02EA34}
 		{6CBB099A-DE58-48A4-ADC7-D37725B0181C} = {8FD13EC8-8054-47D6-A818-847C3B022C89}
+		{627D9351-BE97-485E-A720-36C732056FF8} = {2E32EB1E-B3AA-4ACF-BA20-EC6FD44CC05B}
+		{2DA25FE6-18AD-4E69-B860-F30346965646} = {72195525-BF6C-43D6-AC96-39E34D02EA34}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {26742782-2BDC-4959-9951-6D45B54A5C0D}

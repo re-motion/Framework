@@ -194,3 +194,7 @@ GitExtensions.settings.backup
 
 # re-motion
 Remotion/ObjectBinding/Web.Test/log-data/
+
+# Do not ignore TypeScript build config directories
+!**/tsconfig/[Dd]ebug
+!**/tsconfig/[Rr]elease
