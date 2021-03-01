@@ -16,54 +16,71 @@
 // 
 
 //  BocCheckBox.js contains client side scripts used by BocCheckBox.
-
-//  The descriptions used for the true, false, and null values
-var _bocCheckBox_trueDescription: string;
-var _bocCheckBox_falseDescription: string;
-
-//  Initializes the strings used to represent the true, false and null values.
-//  Call this method once in a startup script.
-function BocCheckBox_InitializeGlobals (trueDescription: string, falseDescription: string)
+class BocCheckBox
 {
-  _bocCheckBox_trueDescription = trueDescription;
-  _bocCheckBox_falseDescription = falseDescription;
+  //  The descriptions used for the true, false, and null values
+  private static _bocCheckBox_trueDescription: string;
+  private static _bocCheckBox_falseDescription: string;
+
+  //  Initializes the strings used to represent the true, false and null values.
+  //  Call this method once in a startup script.
+  public static InitializeGlobals (trueDescription: string, falseDescription: string): void
+  {
+    BocCheckBox._bocCheckBox_trueDescription = trueDescription;
+    BocCheckBox._bocCheckBox_falseDescription = falseDescription;
+  }
+
+  // Toggle the value of the checkbox.
+  // checkBox: The check box.
+  // label: The label containing the description for the value. null for no description.
+  public static ToggleCheckboxValue (checkBox: HTMLInputElement, label: HTMLLabelElement, trueDescription: Nullable<string>, falseDescription: Nullable<string>): void
+  {    
+    checkBox.checked = !checkBox.checked;
+    BocCheckBox.OnClick (checkBox, label, trueDescription, falseDescription);
+  }
+
+  //  Update the text-represention of the check-box value.
+  public static OnClick (checkBox: HTMLInputElement, label: HTMLLabelElement, trueDescription: Nullable<string>, falseDescription: Nullable<string>): void
+  {    
+  // Update the controls
+    var checkBoxToolTip; // TODO RM-7654: BocCheckBox_OnClick sets checkBoxToolTip but does not use it
+    var labelText;
+    
+    if (checkBox.checked)
+    {
+      var description;
+      if (trueDescription == null)
+        description = BocCheckBox._bocCheckBox_trueDescription;
+      else
+        description = trueDescription;
+      checkBoxToolTip = description;
+      labelText = description;
+    }
+    else
+    {
+      var description;
+      if (falseDescription == null)
+        description = BocCheckBox._bocCheckBox_falseDescription;
+      else
+        description = falseDescription;
+      labelText = description;
+    }
+    if (label != null)
+      label.innerHTML = labelText;
+  }
 }
 
-// Toggle the value of the checkbox.
-// checkBox: The check box.
-// label: The label containing the description for the value. null for no description.
+function BocCheckBox_InitializeGlobals (trueDescription: string, falseDescription: string): void
+{
+  BocCheckBox.InitializeGlobals (trueDescription, falseDescription);
+}
+
 function BocCheckBox_ToggleCheckboxValue (checkBox: HTMLInputElement, label: HTMLLabelElement, trueDescription: Nullable<string>, falseDescription: Nullable<string>)
-{    
-  checkBox.checked = !checkBox.checked;
-  BocCheckBox_OnClick (checkBox, label, trueDescription, falseDescription);
+{
+  BocCheckBox.ToggleCheckboxValue (checkBox, label, trueDescription, falseDescription);
 }
 
-//  Update the text-represention of the check-box value.
 function BocCheckBox_OnClick (checkBox: HTMLInputElement, label: HTMLLabelElement, trueDescription: Nullable<string>, falseDescription: Nullable<string>)
-{    
- // Update the controls
-  var checkBoxToolTip; // TODO RM-7654: BocCheckBox_OnClick sets checkBoxToolTip but does not use it
-  var labelText;
-  
-  if (checkBox.checked)
-  {
-    var description;
-    if (trueDescription == null)
-      description = _bocCheckBox_trueDescription;
-    else
-      description = trueDescription;
-    checkBoxToolTip = description;
-    labelText = description;
-  }
-  else
-  {
-    var description;
-    if (falseDescription == null)
-      description = _bocCheckBox_falseDescription;
-    else
-      description = falseDescription;
-    labelText = description;
-  }
-  if (label != null)
-    label.innerHTML = labelText;
+{
+  BocCheckBox.OnClick (checkBox, label, trueDescription, falseDescription)
 }
