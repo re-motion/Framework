@@ -22,6 +22,7 @@ namespace Remotion.Scripting.StableBindingImplementation
   /// <summary>
   /// Helps with typical reflection tasks such as creating a ModuleScope.
   /// </summary>
+  [Obsolete ("Remotion.Scripting will be removed in the next major release of re-motion. (Version 2.27.2)")]
   public static class ReflectionHelper
   {
     public static ModuleScope CreateModuleScope (string namePostfix, bool savePhysicalAssembly)

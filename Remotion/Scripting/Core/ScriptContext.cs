@@ -31,6 +31,7 @@ namespace Remotion.Scripting
   /// <seealso cref="ExpressionScript{TResult}"/>
   /// <seealso cref="ScriptFunction{TResult}"/>
   /// </remarks>
+  [Obsolete ("Remotion.Scripting will be removed in the next major release of re-motion. (Version 2.27.2)")]
   public class ScriptContext
   {
     private static readonly SafeContextSingleton<ScriptContext> s_scriptContext =

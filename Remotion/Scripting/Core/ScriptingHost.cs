@@ -49,6 +49,7 @@ namespace Remotion.Scripting
   /// </example>
   /// </para>
   /// </remarks>
+  [Obsolete ("Remotion.Scripting will be removed in the next major release of re-motion. (Version 2.27.2)")]
   public class ScriptingHost
   {
     private static readonly SafeContextSingleton<ScriptingHost> s_scriptingHost =

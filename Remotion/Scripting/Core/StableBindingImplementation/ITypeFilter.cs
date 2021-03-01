@@ -22,6 +22,7 @@ namespace Remotion.Scripting.StableBindingImplementation
   /// Supplies functionality to categorize passed <see cref="Type"/>|s into "valid" and "invalid" types 
   /// through its <see cref="IsTypeValid"/> member.
   /// </summary>
+  [Obsolete ("Remotion.Scripting will be removed in the next major release of re-motion. (Version 2.27.2)")]
   public interface ITypeFilter
   {
     /// <summary>

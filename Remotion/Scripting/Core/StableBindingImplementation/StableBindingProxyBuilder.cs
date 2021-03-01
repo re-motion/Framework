@@ -35,6 +35,7 @@ namespace Remotion.Scripting.StableBindingImplementation
   /// <para/> 
   /// Uses <see cref="ForwardingProxyBuilder"/>.
   /// </remarks>
+  [Obsolete ("Remotion.Scripting will be removed in the next major release of re-motion. (Version 2.27.2)")]
   public class StableBindingProxyBuilder
   {
     private readonly Type _proxiedType;
