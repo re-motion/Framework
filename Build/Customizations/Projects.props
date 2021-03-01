@@ -98,7 +98,6 @@
       <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
 
-    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Development\CodeDom\Development.CodeDom.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Development\Core\Development.Core.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Development\Data\Development.Data.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Development\Mixins\Development.Mixins.csproj"/>
