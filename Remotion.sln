@@ -113,18 +113,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Test", "Remotion\Web\Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.UnitTests", "Remotion\Web\UnitTests\Web.UnitTests.csproj", "{F3EE8E9C-5230-4D1A-B655-CA65E2D52F21}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.ExecutionEngine.CodeGenerator", "Remotion\Web\ExecutionEngine.CodeGenerator\Web.ExecutionEngine.CodeGenerator.csproj", "{6693589F-085C-4CB7-A28A-426F19C19E6B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.ExecutionEngine.CodeGenerator.Test", "Remotion\Web\ExecutionEngine.CodeGenerator.Test\Web.ExecutionEngine.CodeGenerator.Test.csproj", "{2ADC369A-4CE5-4378-B72E-4FBEDD8FA724}"
-	ProjectSection(ProjectDependencies) = postProject
-		{6693589F-085C-4CB7-A28A-426F19C19E6B} = {6693589F-085C-4CB7-A28A-426F19C19E6B}
-	EndProjectSection
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Web.ExecutionEngine.CodeGenerator.TestVB", "Remotion\Web\ExecutionEngine.CodeGenerator.TestVB\Web.ExecutionEngine.CodeGenerator.TestVB.vbproj", "{88CA7395-A63D-4934-ADA7-7D0600C85DA3}"
-	ProjectSection(ProjectDependencies) = postProject
-		{6693589F-085C-4CB7-A28A-426F19C19E6B} = {6693589F-085C-4CB7-A28A-426F19C19E6B}
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Development.Data", "Remotion\Development\Data\Development.Data.csproj", "{EBBF3A56-5B7B-4CD7-9AA9-74AF17B0B7ED}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Development.Web", "Remotion\Development\Web\Development.Web.csproj", "{44924ED6-8C12-416D-972F-F1F10417E7EF}"
@@ -353,9 +341,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.Compatibi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Build", "Build\Build.csproj", "{6CBB099A-DE58-48A4-ADC7-D37725B0181C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.ClientScript", "Remotion\Web\ClientScript\Web.ClientScript.csproj", "{627D9351-BE97-485E-A720-36C732056FF8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.ClientScript", "Remotion\Web\ClientScript\Web.ClientScript.csproj", "{627D9351-BE97-485E-A720-36C732056FF8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.ClientScript", "Remotion\ObjectBinding\Web.ClientScript\ObjectBinding.Web.ClientScript.csproj", "{2DA25FE6-18AD-4E69-B860-F30346965646}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectBinding.Web.ClientScript", "Remotion\ObjectBinding\Web.ClientScript\ObjectBinding.Web.ClientScript.csproj", "{2DA25FE6-18AD-4E69-B860-F30346965646}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -629,30 +617,6 @@ Global
 		{F3EE8E9C-5230-4D1A-B655-CA65E2D52F21}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F3EE8E9C-5230-4D1A-B655-CA65E2D52F21}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{F3EE8E9C-5230-4D1A-B655-CA65E2D52F21}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{6693589F-085C-4CB7-A28A-426F19C19E6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6693589F-085C-4CB7-A28A-426F19C19E6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6693589F-085C-4CB7-A28A-426F19C19E6B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{6693589F-085C-4CB7-A28A-426F19C19E6B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{6693589F-085C-4CB7-A28A-426F19C19E6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6693589F-085C-4CB7-A28A-426F19C19E6B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6693589F-085C-4CB7-A28A-426F19C19E6B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{6693589F-085C-4CB7-A28A-426F19C19E6B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{2ADC369A-4CE5-4378-B72E-4FBEDD8FA724}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2ADC369A-4CE5-4378-B72E-4FBEDD8FA724}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2ADC369A-4CE5-4378-B72E-4FBEDD8FA724}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{2ADC369A-4CE5-4378-B72E-4FBEDD8FA724}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{2ADC369A-4CE5-4378-B72E-4FBEDD8FA724}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2ADC369A-4CE5-4378-B72E-4FBEDD8FA724}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2ADC369A-4CE5-4378-B72E-4FBEDD8FA724}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{2ADC369A-4CE5-4378-B72E-4FBEDD8FA724}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{88CA7395-A63D-4934-ADA7-7D0600C85DA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{88CA7395-A63D-4934-ADA7-7D0600C85DA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{88CA7395-A63D-4934-ADA7-7D0600C85DA3}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{88CA7395-A63D-4934-ADA7-7D0600C85DA3}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{88CA7395-A63D-4934-ADA7-7D0600C85DA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{88CA7395-A63D-4934-ADA7-7D0600C85DA3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{88CA7395-A63D-4934-ADA7-7D0600C85DA3}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{88CA7395-A63D-4934-ADA7-7D0600C85DA3}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{EBBF3A56-5B7B-4CD7-9AA9-74AF17B0B7ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EBBF3A56-5B7B-4CD7-9AA9-74AF17B0B7ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EBBF3A56-5B7B-4CD7-9AA9-74AF17B0B7ED}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -1443,9 +1407,6 @@ Global
 		{9B6F6D1A-A7EA-4EE8-B36E-E31CF7E518E3} = {2E32EB1E-B3AA-4ACF-BA20-EC6FD44CC05B}
 		{0B5318E7-4878-402A-8CF8-6BFFC47F571D} = {2E32EB1E-B3AA-4ACF-BA20-EC6FD44CC05B}
 		{F3EE8E9C-5230-4D1A-B655-CA65E2D52F21} = {2E32EB1E-B3AA-4ACF-BA20-EC6FD44CC05B}
-		{6693589F-085C-4CB7-A28A-426F19C19E6B} = {2E32EB1E-B3AA-4ACF-BA20-EC6FD44CC05B}
-		{2ADC369A-4CE5-4378-B72E-4FBEDD8FA724} = {2E32EB1E-B3AA-4ACF-BA20-EC6FD44CC05B}
-		{88CA7395-A63D-4934-ADA7-7D0600C85DA3} = {2E32EB1E-B3AA-4ACF-BA20-EC6FD44CC05B}
 		{EBBF3A56-5B7B-4CD7-9AA9-74AF17B0B7ED} = {9F4D90EC-6AD2-495D-BFC3-270DC15974DD}
 		{44924ED6-8C12-416D-972F-F1F10417E7EF} = {9F4D90EC-6AD2-495D-BFC3-270DC15974DD}
 		{3214FB15-2359-48EC-A926-2CAA47E4D826} = {E1B271E4-22E6-4936-80A5-F0340AAB20A8}
