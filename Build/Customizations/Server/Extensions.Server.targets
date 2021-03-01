@@ -19,6 +19,12 @@
 
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
+  <Target Name="TestBuild_CIConfiguration">
+    <PropertyGroup>
+      <TestCategoriesToExclude Condition="'$(TestCategoriesToExclude)' == ''">LongRunning;ControlSelectorTest</TestCategoriesToExclude>
+    </PropertyGroup>
+  </Target>
+
   <Target Name="TestBuild_ChromeConfiguration" DependsOnTargets="TestBuild_BrowserConfiguration">
     <PropertyGroup>
       <Browsers>Chrome</Browsers>
@@ -67,6 +73,7 @@
     </PropertyGroup>
   </Target>
 
+  <Target Name="Server_CIBuild" DependsOnTargets="TestBuild_CIConfiguration;CheckProperties;SetVersionCiAndNightlyBuild;TestBuild" />
   <Target Name="Server_CIBuild_Chrome" DependsOnTargets="TestBuild_ChromeConfiguration;CheckProperties;SetVersionCiAndNightlyBuild;TestBuild" />
   <Target Name="Server_CIBuild_Edge" DependsOnTargets="TestBuild_EdgeConfiguration;CheckProperties;SetVersionCiAndNightlyBuild;TestBuild" />
   <Target Name="Server_CIBuild_Firefox" DependsOnTargets="TestBuild_FirefoxConfiguration;CheckProperties;SetVersionCiAndNightlyBuild;TestBuild" />
