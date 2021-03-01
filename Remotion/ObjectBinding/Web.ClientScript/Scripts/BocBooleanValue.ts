@@ -17,8 +17,6 @@
 
 //  BocBooleanValue.js contains client side scripts used by BocBooleanValue.
 
-var _bocBooleanValue_Resources: Dictionary<BocBooleanValue_Resource> = {};
-
 class BocBooleanValue_Resource
 {
   constructor(
@@ -116,8 +114,79 @@ class BocBooleanValue_Resource
   }
 }
 
-//  Initializes the strings used to represent the true, false and null values.
-//  Call this method once in a startup script.
+class BocBooleanValue
+{
+  private static _bocBooleanValue_Resources: Dictionary<BocBooleanValue_Resource> = {};
+
+  public static InitializeGlobals(
+      key: string,
+      trueValue: string, 
+      falseValue: string, 
+      nullValue: string, 
+      trueDescription: string,
+      falseDescription: string,
+      nullDescription: string,
+      trueIconUrl: string, 
+      falseIconUrl: string, 
+      nullIconUrl: string): void
+  {
+    BocBooleanValue._bocBooleanValue_Resources[key] = new BocBooleanValue_Resource(
+        trueValue,
+        falseValue,
+        nullValue,
+        trueDescription,
+        falseDescription,
+        nullDescription,
+        trueIconUrl,
+        falseIconUrl,
+        nullIconUrl);
+  }
+
+  // Selected the next value of the tri-state checkbox, skipping the null value if isRequired is true.
+  // link: The anchor tag representing the clickable area.
+  // icon: The icon representing the tri-state checkbox.
+  // label: The label containing the description for the value. null for no description.
+  // hiddenField: The hidden input field used to store the value between postbacks.
+  // isRequired: true to enqable the null value, false to limit the choices to true and false.
+  public static SelectNextCheckboxValue (
+    key: string,
+    link: HTMLAnchorElement,
+    icon: HTMLImageElement,
+    label: Nullable<HTMLElement>,
+    hiddenField: HTMLInputElement,
+    isRequired: boolean,
+    trueDescription: Nullable<string>,
+    falseDescription: Nullable<string>,
+    nullDescription: Nullable<string>): void
+  {
+    var resource = BocBooleanValue._bocBooleanValue_Resources[key]!;
+    resource.SelectNextCheckboxValue(
+    link,
+    icon,
+    label,
+    hiddenField,
+    isRequired,
+    trueDescription,
+    falseDescription,
+    nullDescription);
+  }
+
+  public static OnKeyDown (context: HTMLAnchorElement): void
+  {
+    // TODO: Better provide the event via parameter instead of ambient usage
+    function typeOverride <T>(value: unknown): asserts value is T {};
+    typeOverride<KeyboardEvent>(event);
+
+    // TODO: maybe don't use keyCode and use key instead?
+    if (event.keyCode == 32)
+    {
+      context.click();
+      event.cancelBubble = true;
+      event.returnValue = false;
+    }
+  }
+}
+
 function BocBooleanValue_InitializeGlobals(
     key: string,
     trueValue: string, 
@@ -128,26 +197,21 @@ function BocBooleanValue_InitializeGlobals(
     nullDescription: string,
     trueIconUrl: string, 
     falseIconUrl: string, 
-    nullIconUrl: string)
+    nullIconUrl: string): void
 {
-  _bocBooleanValue_Resources[key] = new BocBooleanValue_Resource(
-      trueValue,
-      falseValue,
-      nullValue,
-      trueDescription,
-      falseDescription,
-      nullDescription,
-      trueIconUrl,
-      falseIconUrl,
-      nullIconUrl);
+  BocBooleanValue.InitializeGlobals (
+    key,
+    trueValue,
+    falseValue,
+    nullValue,
+    trueDescription,
+    falseDescription,
+    nullDescription,
+    trueIconUrl,
+    falseIconUrl,
+    nullIconUrl);
 }
 
-// Selected the next value of the tri-state checkbox, skipping the null value if isRequired is true.
-// link: The anchor tag representing the clickable area.
-// icon: The icon representing the tri-state checkbox.
-// label: The label containing the description for the value. null for no description.
-// hiddenField: The hidden input field used to store the value between postbacks.
-// isRequired: true to enqable the null value, false to limit the choices to true and false.
 function BocBooleanValue_SelectNextCheckboxValue (
   key: string,
   link: HTMLAnchorElement,
@@ -157,31 +221,21 @@ function BocBooleanValue_SelectNextCheckboxValue (
   isRequired: boolean,
   trueDescription: Nullable<string>,
   falseDescription: Nullable<string>,
-  nullDescription: Nullable<string>)
+  nullDescription: Nullable<string>): void
 {
-  var resource = _bocBooleanValue_Resources[key]!;
-  resource.SelectNextCheckboxValue(
-  link,
-  icon,
-  label,
-  hiddenField,
-  isRequired,
-  trueDescription,
-  falseDescription,
-  nullDescription);
+  BocBooleanValue.SelectNextCheckboxValue (
+    key,
+    link,
+    icon,
+    label,
+    hiddenField,
+    isRequired,
+    trueDescription,
+    falseDescription,
+    nullDescription);
 }
 
-function BocBooleanValue_OnKeyDown (context: HTMLAnchorElement)
+function BocBooleanValue_OnKeyDown (context: HTMLAnchorElement): void
 {
-  // TODO: Better provide the event via parameter instead of ambient usage
-  function typeOverride <T>(value: unknown): asserts value is T {};
-  typeOverride<KeyboardEvent>(event);
-
-  // TODO: maybe don't use keyCode and use key instead?
-  if (event.keyCode == 32)
-  {
-    context.click();
-    event.cancelBubble = true;
-    event.returnValue = false;
-  }
+  BocBooleanValue.OnKeyDown (context); 
 }
