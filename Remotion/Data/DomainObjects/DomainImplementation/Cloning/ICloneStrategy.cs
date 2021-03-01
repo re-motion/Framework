@@ -73,6 +73,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Cloning
   /// }
   /// </code>
   /// </example>
+  [Obsolete ("DomainObjectCloner will be removed in the next major release of re-motion. (Version 2.27.2)")]
   public interface ICloneStrategy
   {
     /// <summary>

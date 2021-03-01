@@ -24,6 +24,7 @@ using Remotion.Data.DomainObjects.Infrastructure.TypePipe;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.TypePipe;
 using Rhino.Mocks;
+#pragma warning disable 618
 
 namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
 {

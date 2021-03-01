@@ -26,6 +26,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Cloning
   /// <summary>
   /// Assists in cloning <see cref="DomainObject"/> instances.
   /// </summary>
+  [Obsolete ("DomainObjectCloner will be removed in the next major release of re-motion. (Version 2.27.2)")]
   public class DomainObjectCloner
   {
     private ClientTransaction _cloneTransaction;
