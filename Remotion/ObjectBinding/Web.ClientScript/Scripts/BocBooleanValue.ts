@@ -97,7 +97,7 @@ class BocBooleanValue_Resource
             description = this._trueDescription;
         else
             description = trueDescription;
-    } // TODO: add default case to prevent variables from being undefined
+    } // RM-7676: Handle invalid check box states in BocBooleanValue_Resource.SelectNextCheckboxValue
 
     
     link.setAttribute('aria-checked', checkedState!);
@@ -173,11 +173,10 @@ class BocBooleanValue
 
   public static OnKeyDown (context: HTMLAnchorElement): void
   {
-    // TODO: Better provide the event via parameter instead of ambient usage
+    // TODO RM-7677: Pass event objects into the handler methods instead of using the ambient event variable
     function typeOverride <T>(value: unknown): asserts value is T {};
     typeOverride<KeyboardEvent>(event);
 
-    // TODO: maybe don't use keyCode and use key instead?
     if (event.keyCode == 32)
     {
       context.click();

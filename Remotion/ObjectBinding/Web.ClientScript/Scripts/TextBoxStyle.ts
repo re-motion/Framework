@@ -23,11 +23,10 @@ class TextBoxStyle
     if (textBox.disabled)
       return true;
     
-    // TODO: Better provide the event via parameter instead of ambient usage
+    // TODO RM-7677: Pass event objects into the handler methods instead of using the ambient event variable
     function typeOverride <T>(value: unknown): asserts value is T {};
     typeOverride<KeyboardEvent>(event);
     
-    // TODO: maybe don't use keyCode and use key instead?
     var isInsertDelete = event.keyCode == 45 || event.keyCode == 46;
     var isCursor = event.keyCode >= 37 && event.keyCode <= 40; // Left, Top, Right, Buttom
     var isPagePosition = event.keyCode >= 33 && event.keyCode <= 36; // Home, End, PageUp, PageDown
