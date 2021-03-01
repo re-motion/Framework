@@ -262,11 +262,6 @@
       <TestSetupBuildFile>$(TestSetupBuildFileForWebTest)</TestSetupBuildFile>
     </IntegrationTestProjectFiles>
 
-    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Scripting\Core\Scripting.Core.csproj"/>
-    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Scripting\UnitTests\Scripting.UnitTests.csproj">
-      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
-    </UnitTestProjectFiles>
-
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Integration\Domain\Integration.Domain.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Integration\Web\Integration.Web.csproj"/>
 
