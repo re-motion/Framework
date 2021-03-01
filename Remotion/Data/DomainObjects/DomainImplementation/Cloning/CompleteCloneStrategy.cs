@@ -24,6 +24,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Cloning
   /// Assists <see cref="DomainObjectCloner"/> by cloning all objects referenced by a cloned source object as well. This ensures deep cloning
   /// of a whole object graph.
   /// </summary>
+  [Obsolete ("DomainObjectCloner will be removed in the next major release of re-motion. (Version 2.27.2)")]
   public class CompleteCloneStrategy : ICloneStrategy
   {
     /// <summary>

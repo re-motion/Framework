@@ -20,6 +20,7 @@ using Remotion.Data.DomainObjects.DomainImplementation.Cloning;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Rhino.Mocks;
+#pragma warning disable 618
 
 namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
 {

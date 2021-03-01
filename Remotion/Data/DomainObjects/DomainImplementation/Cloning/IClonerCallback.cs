@@ -22,6 +22,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Cloning
   /// Defines a callback method that is called when a <see cref="DomainObject"/> implementing this interface is created as a clone by the 
   /// <see cref="DomainObjectCloner"/>.
   /// </summary>
+  [Obsolete ("DomainObjectCloner will be removed in the next major release of re-motion. (Version 2.27.2)")]
   public interface IClonerCallback
   {
     void OnObjectCreatedAsClone (ClientTransaction cloneTransaction, DomainObject original);
