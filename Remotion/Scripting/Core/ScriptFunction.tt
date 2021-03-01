@@ -48,6 +48,7 @@ for (int i = 0; i <= parameterCount; i++)
   /// Under IronPython, <see cref="ScriptFunction{<#= typeArguments #>TResult}"/> scripts are less safe than <see cref="ExpressionScript{TResult}"/>-based scripts because
   /// they can contain import statements, allowing them to access objects and classes not directly accessible via their <see cref="ScriptEnvironment"/>.
   /// </remarks>
+  [Obsolete ("Remotion.Scripting will be removed in the next major release of re-motion. (Version 2.27.2)")]
   public class ScriptFunction<<#= typeArguments #>TResult> : ScriptBase
 #pragma warning restore 1712
   {

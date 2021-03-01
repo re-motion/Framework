@@ -31,6 +31,7 @@ namespace Remotion.Scripting.StableBindingImplementation
   /// <para/> 
   /// Used by <see cref="StableBindingProxyBuilder"/>.
   /// </remarks>
+  [Obsolete ("Remotion.Scripting will be removed in the next major release of re-motion. (Version 2.27.2)")]
   public class ForwardingProxyBuilder
   {
     private readonly CustomClassEmitter _classEmitter;

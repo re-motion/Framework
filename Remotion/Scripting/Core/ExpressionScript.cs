@@ -31,6 +31,7 @@ namespace Remotion.Scripting
   /// which can be reached from within their <see cref="ScriptScope"/>.
   /// </remarks>
   /// <typeparam name="TResult">The expression result type.</typeparam>
+  [Obsolete ("Remotion.Scripting will be removed in the next major release of re-motion. (Version 2.27.2)")]
   public class ExpressionScript<TResult> : ScriptBase
   {
     private readonly ScriptSource _scriptSource;
