@@ -21,6 +21,7 @@ namespace Remotion.Scripting.StableBindingImplementation
   /// <summary>
   /// Reflection performance enhancement interface that allows setting of the proxied type instance in a proxy object.
   /// </summary>
+  [Obsolete ("Remotion.Scripting will be removed in the next major release of re-motion. (Version 2.27.2)")]
   public interface IProxy
   {
     void SetProxied (object proxied);  

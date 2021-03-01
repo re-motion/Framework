@@ -30,6 +30,7 @@ namespace Remotion.Scripting
   /// Under IronPython, <see cref="ScriptFunction{TResult}"/> scripts are less safe than <see cref="ExpressionScript{TResult}"/>-based scripts because
   /// they can contain import statements, allowing them to access objects and classes not directly accessible via their <see cref="ScriptEnvironment"/>.
   /// </remarks>
+  [Obsolete ("Remotion.Scripting will be removed in the next major release of re-motion. (Version 2.27.2)")]
   public class ScriptFunction<TResult> : ScriptBase
 #pragma warning restore 1712
   {
@@ -97,6 +98,7 @@ namespace Remotion.Scripting
   /// Under IronPython, <see cref="ScriptFunction{TFixedArg1, TResult}"/> scripts are less safe than <see cref="ExpressionScript{TResult}"/>-based scripts because
   /// they can contain import statements, allowing them to access objects and classes not directly accessible via their <see cref="ScriptEnvironment"/>.
   /// </remarks>
+  [Obsolete ("Remotion.Scripting will be removed in the next major release of re-motion. (Version 2.27.2)")]
   public class ScriptFunction<TFixedArg1, TResult> : ScriptBase
 #pragma warning restore 1712
   {
@@ -164,6 +166,7 @@ namespace Remotion.Scripting
   /// Under IronPython, <see cref="ScriptFunction{TFixedArg1, TFixedArg2, TResult}"/> scripts are less safe than <see cref="ExpressionScript{TResult}"/>-based scripts because
   /// they can contain import statements, allowing them to access objects and classes not directly accessible via their <see cref="ScriptEnvironment"/>.
   /// </remarks>
+  [Obsolete ("Remotion.Scripting will be removed in the next major release of re-motion. (Version 2.27.2)")]
   public class ScriptFunction<TFixedArg1, TFixedArg2, TResult> : ScriptBase
 #pragma warning restore 1712
   {
@@ -231,6 +234,7 @@ namespace Remotion.Scripting
   /// Under IronPython, <see cref="ScriptFunction{TFixedArg1, TFixedArg2, TFixedArg3, TResult}"/> scripts are less safe than <see cref="ExpressionScript{TResult}"/>-based scripts because
   /// they can contain import statements, allowing them to access objects and classes not directly accessible via their <see cref="ScriptEnvironment"/>.
   /// </remarks>
+  [Obsolete ("Remotion.Scripting will be removed in the next major release of re-motion. (Version 2.27.2)")]
   public class ScriptFunction<TFixedArg1, TFixedArg2, TFixedArg3, TResult> : ScriptBase
 #pragma warning restore 1712
   {
@@ -298,6 +302,7 @@ namespace Remotion.Scripting
   /// Under IronPython, <see cref="ScriptFunction{TFixedArg1, TFixedArg2, TFixedArg3, TFixedArg4, TResult}"/> scripts are less safe than <see cref="ExpressionScript{TResult}"/>-based scripts because
   /// they can contain import statements, allowing them to access objects and classes not directly accessible via their <see cref="ScriptEnvironment"/>.
   /// </remarks>
+  [Obsolete ("Remotion.Scripting will be removed in the next major release of re-motion. (Version 2.27.2)")]
   public class ScriptFunction<TFixedArg1, TFixedArg2, TFixedArg3, TFixedArg4, TResult> : ScriptBase
 #pragma warning restore 1712
   {
@@ -365,6 +370,7 @@ namespace Remotion.Scripting
   /// Under IronPython, <see cref="ScriptFunction{TFixedArg1, TFixedArg2, TFixedArg3, TFixedArg4, TFixedArg5, TResult}"/> scripts are less safe than <see cref="ExpressionScript{TResult}"/>-based scripts because
   /// they can contain import statements, allowing them to access objects and classes not directly accessible via their <see cref="ScriptEnvironment"/>.
   /// </remarks>
+  [Obsolete ("Remotion.Scripting will be removed in the next major release of re-motion. (Version 2.27.2)")]
   public class ScriptFunction<TFixedArg1, TFixedArg2, TFixedArg3, TFixedArg4, TFixedArg5, TResult> : ScriptBase
 #pragma warning restore 1712
   {
@@ -432,6 +438,7 @@ namespace Remotion.Scripting
   /// Under IronPython, <see cref="ScriptFunction{TFixedArg1, TFixedArg2, TFixedArg3, TFixedArg4, TFixedArg5, TFixedArg6, TResult}"/> scripts are less safe than <see cref="ExpressionScript{TResult}"/>-based scripts because
   /// they can contain import statements, allowing them to access objects and classes not directly accessible via their <see cref="ScriptEnvironment"/>.
   /// </remarks>
+  [Obsolete ("Remotion.Scripting will be removed in the next major release of re-motion. (Version 2.27.2)")]
   public class ScriptFunction<TFixedArg1, TFixedArg2, TFixedArg3, TFixedArg4, TFixedArg5, TFixedArg6, TResult> : ScriptBase
 #pragma warning restore 1712
   {
@@ -499,6 +506,7 @@ namespace Remotion.Scripting
   /// Under IronPython, <see cref="ScriptFunction{TFixedArg1, TFixedArg2, TFixedArg3, TFixedArg4, TFixedArg5, TFixedArg6, TFixedArg7, TResult}"/> scripts are less safe than <see cref="ExpressionScript{TResult}"/>-based scripts because
   /// they can contain import statements, allowing them to access objects and classes not directly accessible via their <see cref="ScriptEnvironment"/>.
   /// </remarks>
+  [Obsolete ("Remotion.Scripting will be removed in the next major release of re-motion. (Version 2.27.2)")]
   public class ScriptFunction<TFixedArg1, TFixedArg2, TFixedArg3, TFixedArg4, TFixedArg5, TFixedArg6, TFixedArg7, TResult> : ScriptBase
 #pragma warning restore 1712
   {
@@ -566,6 +574,7 @@ namespace Remotion.Scripting
   /// Under IronPython, <see cref="ScriptFunction{TFixedArg1, TFixedArg2, TFixedArg3, TFixedArg4, TFixedArg5, TFixedArg6, TFixedArg7, TFixedArg8, TResult}"/> scripts are less safe than <see cref="ExpressionScript{TResult}"/>-based scripts because
   /// they can contain import statements, allowing them to access objects and classes not directly accessible via their <see cref="ScriptEnvironment"/>.
   /// </remarks>
+  [Obsolete ("Remotion.Scripting will be removed in the next major release of re-motion. (Version 2.27.2)")]
   public class ScriptFunction<TFixedArg1, TFixedArg2, TFixedArg3, TFixedArg4, TFixedArg5, TFixedArg6, TFixedArg7, TFixedArg8, TResult> : ScriptBase
 #pragma warning restore 1712
   {
@@ -633,6 +642,7 @@ namespace Remotion.Scripting
   /// Under IronPython, <see cref="ScriptFunction{TFixedArg1, TFixedArg2, TFixedArg3, TFixedArg4, TFixedArg5, TFixedArg6, TFixedArg7, TFixedArg8, TFixedArg9, TResult}"/> scripts are less safe than <see cref="ExpressionScript{TResult}"/>-based scripts because
   /// they can contain import statements, allowing them to access objects and classes not directly accessible via their <see cref="ScriptEnvironment"/>.
   /// </remarks>
+  [Obsolete ("Remotion.Scripting will be removed in the next major release of re-motion. (Version 2.27.2)")]
   public class ScriptFunction<TFixedArg1, TFixedArg2, TFixedArg3, TFixedArg4, TFixedArg5, TFixedArg6, TFixedArg7, TFixedArg8, TFixedArg9, TResult> : ScriptBase
 #pragma warning restore 1712
   {

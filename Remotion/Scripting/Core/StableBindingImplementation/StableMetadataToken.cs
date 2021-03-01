@@ -21,6 +21,7 @@ namespace Remotion.Scripting.StableBindingImplementation
   /// <summary>
   /// Base class for <see cref="StableMethodMetadataToken"/>.
   /// </summary>
+  [Obsolete ("Remotion.Scripting will be removed in the next major release of re-motion. (Version 2.27.2)")]
   public class StableMetadataToken
   {
     

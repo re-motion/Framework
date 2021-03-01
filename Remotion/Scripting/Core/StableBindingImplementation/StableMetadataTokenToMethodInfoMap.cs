@@ -25,6 +25,7 @@ namespace Remotion.Scripting.StableBindingImplementation
   /// <summary>
   /// Map between <see cref="StableMethodMetadataToken"/> and <see cref="MethodInfo"/>.
   /// </summary>
+  [Obsolete ("Remotion.Scripting will be removed in the next major release of re-motion. (Version 2.27.2)")]
   public class StableMetadataTokenToMethodInfoMap
   {
     private readonly Dictionary<StableMethodMetadataToken, MethodInfo> _map = new Dictionary<StableMethodMetadataToken, MethodInfo>();

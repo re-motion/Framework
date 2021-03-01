@@ -23,6 +23,7 @@ namespace Remotion.Scripting
   /// whether the value is valid (i.e. the variable existed).
   /// </summary>
   /// <typeparam name="T"></typeparam>
+  [Obsolete ("Remotion.Scripting will be removed in the next major release of re-motion. (Version 2.27.2)")]
   public struct ScriptVariable<T>
   {
     private readonly T _value;
