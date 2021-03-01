@@ -25,6 +25,7 @@ namespace Remotion.Scripting
   /// Wrapper around a DLR <see cref="Microsoft.Scripting.Hosting.ScriptScope"/>. 
   /// A <see cref="ScriptEnvironment"/> contains the symbols (DLR: objects) visible to a script running in this environment.
   /// </summary>
+  [Obsolete ("Remotion.Scripting will be removed in the next major release of re-motion. (Version 2.27.2)")]
   public class ScriptEnvironment
   {
     private readonly ScriptScope _scriptScope;

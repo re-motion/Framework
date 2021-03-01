@@ -25,6 +25,7 @@ namespace Remotion.Scripting
   /// Mix (shaken not stirred) to your class to get stable binding in DLR scripts 
   /// (see <see cref="ScriptContext"/> and <see cref="StableBindingProxyProvider"/>). 
   /// </summary>
+  [Obsolete ("Remotion.Scripting will be removed in the next major release of re-motion. (Version 2.27.2)")]
   public class StableBindingMixin : Mixin<object>, IStableBindingMixin
   {
     // GetCustomMember needs to be public.
@@ -35,6 +36,7 @@ namespace Remotion.Scripting
     }    
   }
 
+  [Obsolete ("Remotion.Scripting will be removed in the next major release of re-motion. (Version 2.27.2)")]
   public interface IStableBindingMixin
   {
     // SpecialName attribute is copied from interface, not from class method.
