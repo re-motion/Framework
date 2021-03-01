@@ -42,6 +42,7 @@ namespace Remotion.Development.CodeDom
 ///   and <see cref="CreateBinaryOperator"/>. 
 /// </para>
 /// </remarks>
+[Obsolete ("Remotion.Development.CodeDom will be removed in the next major release of re-motion. (Version 2.27.2)")]
 public abstract class ExtendedCodeProvider
 {
   /// <summary>
@@ -337,12 +338,14 @@ public abstract class ExtendedCodeProvider
 /// <summary>
 /// Specifies one of the two kinds of casting operators.
 /// </summary>
+[Obsolete ("Remotion.Development.CodeDom will be removed in the next major release of re-motion. (Version 2.27.2)")]
 public enum CodeCastOperatorKind 
 { 
   Implicit, 
   Explicit 
 }
 
+[Obsolete ("Remotion.Development.CodeDom will be removed in the next major release of re-motion. (Version 2.27.2)")]
 public enum CodeUnaryOperatorType
 {
   BooleanNot,
@@ -350,6 +353,7 @@ public enum CodeUnaryOperatorType
   Plus
 }
 
+[Obsolete ("Remotion.Development.CodeDom will be removed in the next major release of re-motion. (Version 2.27.2)")]
 public enum CodeOverridableOperatorType
 {
   Equality,
