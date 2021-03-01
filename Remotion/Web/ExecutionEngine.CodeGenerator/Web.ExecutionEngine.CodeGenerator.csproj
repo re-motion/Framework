@@ -135,6 +135,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\Build\NuSpec\Web.ExecutionEngine.CodeGenerator.nuspec">
+      <Link>Web.ExecutionEngine.CodeGenerator.nuspec</Link>
+    </None>
     <None Include="..\..\Remotion LGPL.licenseheader">
       <Link>Remotion LGPL.licenseheader</Link>
     </None>
@@ -142,7 +145,6 @@
       <Link>remotion.snk</Link>
     </None>
     <None Include="packages.config" />
-    <None Include="Web.ExecutionEngine.CodeGenerator.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FacetManifest.xml" />
