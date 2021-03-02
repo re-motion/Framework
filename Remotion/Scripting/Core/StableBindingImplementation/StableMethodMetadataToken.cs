@@ -28,6 +28,7 @@ namespace Remotion.Scripting.StableBindingImplementation
   /// <see cref="MemberInfo.MetadataToken"/>|s referring to the the same method  but coming from different,
   /// related types are not the same if the method was overridden in a child type.
   /// </remarks>
+  [Obsolete ("Remotion.Scripting will be removed in the next major release of re-motion. (Version 2.27.2)")]
   public class StableMethodMetadataToken : StableMetadataToken
   {
     private readonly int _token;

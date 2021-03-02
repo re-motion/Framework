@@ -22,7 +22,7 @@ using System.Text;
 
 namespace Remotion.Development.CodeDom
 {
-
+[Obsolete ("Remotion.Development.CodeDom will be removed in the next major release of re-motion. (Version 2.27.2)")]
 public class ExtendedCSharpCodeProvider: ExtendedCodeProvider
 {
   // constants

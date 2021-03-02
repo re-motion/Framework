@@ -19,7 +19,7 @@ using System.CodeDom;
 
 namespace Remotion.Development.CodeDom
 {
-
+[Obsolete ("Remotion.Development.CodeDom will be removed in the next major release of re-motion. (Version 2.27.2)")]
 public class CodeOperatorChainExpression: CodeBinaryOperatorExpression
 {
   public CodeOperatorChainExpression (CodeBinaryOperatorType binaryOperator, params CodeExpression[] expressions)
@@ -40,6 +40,7 @@ public class CodeOperatorChainExpression: CodeBinaryOperatorExpression
   }
 }
 
+[Obsolete ("Remotion.Development.CodeDom will be removed in the next major release of re-motion. (Version 2.27.2)")]
 public class CodeBooleanAndExpression: CodeOperatorChainExpression
 {
   public CodeBooleanAndExpression (params CodeExpression[] conditions)
@@ -48,6 +49,7 @@ public class CodeBooleanAndExpression: CodeOperatorChainExpression
   }
 }
 
+[Obsolete ("Remotion.Development.CodeDom will be removed in the next major release of re-motion. (Version 2.27.2)")]
 public class CodeBooleanOrExpression: CodeOperatorChainExpression
 {
   public CodeBooleanOrExpression (params CodeExpression[] conditions)

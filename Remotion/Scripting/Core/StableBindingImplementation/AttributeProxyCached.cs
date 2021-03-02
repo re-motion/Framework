@@ -23,6 +23,7 @@ namespace Remotion.Scripting.StableBindingImplementation
   /// <summary>
   /// Used by <see cref="StableBindingProxyProvider"/> to cache the results of the DLR returned attibute proxy.
   /// </summary>
+  [Obsolete ("Remotion.Scripting will be removed in the next major release of re-motion. (Version 2.27.2)")]
   public class AttributeProxyCached
   {
     private readonly FieldInfo _proxiedField;
