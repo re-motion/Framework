@@ -62,6 +62,7 @@
     <None Include="NuSpec\Web.Build.targets">
       <SubType>Designer</SubType>
     </None>
+    <None Include="NuSpec\Web.ExecutionEngine.CodeGenerator.nuspec" />
     <None Include="NuSpec\Web.targets" />
     <None Include="packages.config" />
     <None Include="NuSpec\TemplateShared.nuspec" />
