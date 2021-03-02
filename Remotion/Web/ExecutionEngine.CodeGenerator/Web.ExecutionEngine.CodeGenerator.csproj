@@ -135,8 +135,8 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\Build\NuSpec\TemplateSharedForTool.nuspec">
-      <Link>TemplateSharedForTool.nuspec</Link>
+    <None Include="..\..\..\Build\NuSpec\Web.ExecutionEngine.CodeGenerator.nuspec">
+      <Link>Web.ExecutionEngine.CodeGenerator.nuspec</Link>
     </None>
     <None Include="..\..\Remotion LGPL.licenseheader">
       <Link>Remotion LGPL.licenseheader</Link>
