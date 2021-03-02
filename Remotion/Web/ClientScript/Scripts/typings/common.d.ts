@@ -31,3 +31,9 @@ type Success<T> = { success: true, value: T };
 type NotNullNorUndefined = string | number | boolean | symbol | bigint | object;
 type NotNull = NotNullNorUndefined | undefined;
 type NotUndefined = NotNullNorUndefined | null;
+
+// TODO RM-7607: Remove once SmartPage is translated to TypeScript
+interface Window
+{
+  SmartPage_Context: any;
+}
