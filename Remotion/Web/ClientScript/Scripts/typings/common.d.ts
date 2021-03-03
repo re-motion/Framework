@@ -32,8 +32,77 @@ type NotNullNorUndefined = string | number | boolean | symbol | bigint | object;
 type NotNull = NotNullNorUndefined | undefined;
 type NotUndefined = NotNullNorUndefined | null;
 
-// TODO RM-7607: Remove once SmartPage is translated to TypeScript
+type UndeclaredProperty<TName extends string, TType> = { [K in TName]: TType };
+
+// Enhance the ASP.NET typings
+declare namespace Sys.WebForms
+{ 
+  type PostBackSettings = {
+    async: boolean;
+    asyncTarget?: Nullable<string>;
+    panelsToUpdate?: Nullable<string[]>;
+    sourceElement?: HTMLElement;
+  };
+
+  interface PageRequestManagerInternals
+  {
+    _scriptDisposes: { [key: string]: string };
+    _elementContains: (container: HTMLElement, target: HTMLElement) => boolean;
+  }
+
+  interface PageRequestManagerInternalPrototype
+  {
+    _updatePanel: (this: Sys.WebForms.PageRequestManagerInternals, updatePanelElement: HTMLElement, rendering: string) => void;
+  }
+
+  type DoPostBack = (eventTarget: string, eventArgument: string) => void;
+}
+
 interface Window
 {
-  SmartPage_Context: any;
+  __doPostBack: Sys.WebForms.DoPostBack;
+}
+
+interface HTMLFormElement
+{
+  __EVENTTARGET: HTMLInputElement;
+  __EVENTARGUMENT: HTMLInputElement;
+}
+
+// Type definitions for the Web Locks API
+// https://wicg.github.io/web-locks/
+type LockMode = "exclusive" | "shared"
+
+type LockGrantedCallback<T> = (lock: Lock) => T | Promise<any>;
+
+interface Lock
+{
+  readonly mode: LockMode;
+  readonly name: string;
+}
+
+interface LockOptions
+{
+  mode?: LockMode;
+  ifAvailable?: boolean;
+  steal?: boolean;
+  signal?: AbortSignal;
+}
+
+interface LockManagerSnapshot
+{
+  readonly held: Lock[];
+  readonly pending: Lock[];
+}
+
+interface LockManager
+{
+  request<T>(name: string, callback: LockGrantedCallback<T>): Promise<T>;
+  request<T>(name: string, options: LockOptions, callback: LockGrantedCallback<T>): Promise<T>;
+  query(): Promise<LockManagerSnapshot>;
+}
+
+interface Navigator
+{
+  locks?: LockManager;
 }

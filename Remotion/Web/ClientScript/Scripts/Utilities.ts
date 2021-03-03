@@ -65,6 +65,24 @@ class TypeUtility
   {
     return TypeUtility.IsDefined(value) && value == null;
   };
+
+  public static HasProperty<TTarget, TKey extends string>(target: TTarget, key: TKey): target is TTarget & UndeclaredProperty<TKey, unknown>
+  {
+    return typeof (target as any).key !== "undefined";
+  }
+
+  public static HasPropertyOfType<TTarget, TKey extends string>(target: TTarget, key: TKey, type?: "string"): target is TTarget & UndeclaredProperty<TKey, string>;
+  public static HasPropertyOfType<TTarget, TKey extends string>(target: TTarget, key: TKey, type?: "number"): target is TTarget & UndeclaredProperty<TKey, number>;
+  public static HasPropertyOfType<TTarget, TKey extends string>(target: TTarget, key: TKey, type?: "bigint"): target is TTarget & UndeclaredProperty<TKey, bigint>;
+  public static HasPropertyOfType<TTarget, TKey extends string>(target: TTarget, key: TKey, type?: "boolean"): target is TTarget & UndeclaredProperty<TKey, boolean>;
+  public static HasPropertyOfType<TTarget, TKey extends string>(target: TTarget, key: TKey, type?: "symbol"): target is TTarget & UndeclaredProperty<TKey, symbol>;
+  public static HasPropertyOfType<TTarget, TKey extends string>(target: TTarget, key: TKey, type?: "undefined"): target is TTarget & UndeclaredProperty<TKey, undefined>;
+  public static HasPropertyOfType<TTarget, TKey extends string>(target: TTarget, key: TKey, type?: "object"): target is TTarget & UndeclaredProperty<TKey, object>;
+  public static HasPropertyOfType<TTarget, TKey extends string>(target: TTarget, key: TKey, type?: "function"): target is TTarget & UndeclaredProperty<TKey, Function>;
+  public static HasPropertyOfType<TTarget, TKey extends string>(target: TTarget, key: TKey, type?: string): target is TTarget & UndeclaredProperty<TKey, unknown>
+  {
+    return TypeUtility.HasProperty(target, key) && typeof target[key] === type;
+  }
 }
 
 

@@ -18,7 +18,7 @@ class WebButton
 {
   public static MouseDown (element: HTMLElement, cssClass: string): boolean
   {
-    if (window.SmartPage_Context && SmartPage_Context.Instance.IsSubmitting())
+    if (SmartPage_Context && SmartPage_Context.Instance!.IsSubmitting())
       return false;
 
     element.className += " " + cssClass;
