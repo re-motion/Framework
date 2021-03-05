@@ -49,7 +49,7 @@
         ShowSortingOrder="True"
         
         Width="100%"
-        Height="10em"
+        Height="35em"
         runat="server">
         <OptionsMenuItems>
           <remotion:BocMenuItem ItemID="OptCmd1" Text="Option command">
