@@ -266,7 +266,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
           : renderingContext.Control.GetSelectionCount);
       string hasDedicatedDropDownMenuElement = renderingContext.Control.Mode == MenuMode.DropDownMenu ? "true" : "false";
       string script = string.Format (
-          "$('#{0}').keydown( function(event){{ DropDownMenu_OnKeyDown(event, $('#{0}'), {1}, {2}); }} );",
+          "$('#{0}').keydown( function(event){{ DropDownMenu.OnKeyDown(event, $('#{0}'), {1}, {2}); }} );",
           renderingContext.Control.ClientID,
           getSelectionCount,
           hasDedicatedDropDownMenuElement);
@@ -290,7 +290,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
           && !renderingContext.Control.Page.ClientScript.IsStartupScriptRegistered (typeof (DropDownMenuRenderer), key))
       {
         StringBuilder script = new StringBuilder();
-        script.Append ("DropDownMenu_AddMenuInfo" + " (").AppendLine();
+        script.Append ("DropDownMenu.AddMenuInfo" + " (").AppendLine();
         script.AppendFormat ("  new DropDownMenu_MenuInfo ('{0}', ", renderingContext.Control.ClientID);
         script.Append ("function(onSuccess, onError) {").AppendLine();
         script.Append ("    const unfilteredMenuItems = [").AppendLine();
@@ -330,7 +330,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
 
         var loadMenuItemStatus = renderingContext.Control.LoadMenuItemStatus;
         script.Append ("    const loadMenuItemStatus = ").Append (string.IsNullOrEmpty (loadMenuItemStatus) ? "null" : loadMenuItemStatus).Append (";").AppendLine();
-        script.Append ("    DropDownMenu_LoadFilteredMenuItems (unfilteredMenuItems, loadMenuItemStatus, onSuccess, onError);").AppendLine();
+        script.Append ("    DropDownMenu.LoadFilteredMenuItems (unfilteredMenuItems, loadMenuItemStatus, onSuccess, onError);").AppendLine();
         script.Append ("  },"); // Close function body
         script.Append (GetResourcesAsJson (renderingContext));
         script.Append (" )"); // Close new MenuInfo

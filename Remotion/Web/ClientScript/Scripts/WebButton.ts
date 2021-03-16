@@ -37,18 +37,3 @@ class WebButton
     return false;
   }
 }
-
-function WebButton_MouseDown (element: HTMLElement, cssClass: string): boolean
-{
-  return WebButton.MouseDown(element, cssClass);
-}
-
-function WebButton_MouseUp (element: HTMLElement, cssClass: string): boolean
-{
-  return WebButton.MouseUp(element, cssClass);
-}
-
-function WebButton_MouseOut (element: HTMLElement, cssClass: string): boolean
-{
-  return WebButton.MouseOut(element, cssClass);
-}

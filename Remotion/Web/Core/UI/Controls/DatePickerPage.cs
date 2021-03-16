@@ -156,7 +156,7 @@ public class DatePickerPage : Page
   private void Calendar_SelectionChanged(object sender, EventArgs e)
   {
     string key = "Calendar_SelectionChanged";
-    string script = "DatePickerFrame_Calendar_SelectionChanged ('" + Calendar.SelectedDate.ToShortDateString () + "');\r\n";
+    string script = "DatePickerFrame.Calendar_SelectionChanged ('" + Calendar.SelectedDate.ToShortDateString () + "');\r\n";
     if (!Page.ClientScript.IsStartupScriptRegistered (key))
       Page.ClientScript.RegisterStartupScript (typeof (DatePickerPage), key, script, true);
   }

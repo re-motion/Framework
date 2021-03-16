@@ -186,9 +186,9 @@ namespace Remotion.Web.UI.Controls
         if (!string.IsNullOrEmpty (onClick))
           writer.AddAttribute (HtmlTextWriterAttribute.Onclick, onClick);
 
-        writer.AddAttribute ("onmousedown", "WebButton_MouseDown (this, '" + CssClassMouseDown + "');");
-        writer.AddAttribute ("onmouseup", "WebButton_MouseUp (this, '" + CssClassMouseDown + "');");
-        writer.AddAttribute ("onmouseout", "WebButton_MouseOut (this, '" + CssClassMouseDown + "');");
+        writer.AddAttribute ("onmousedown", "WebButton.MouseDown (this, '" + CssClassMouseDown + "');");
+        writer.AddAttribute ("onmouseup", "WebButton.MouseUp (this, '" + CssClassMouseDown + "');");
+        writer.AddAttribute ("onmouseout", "WebButton.MouseOut (this, '" + CssClassMouseDown + "');");
       }
 
 

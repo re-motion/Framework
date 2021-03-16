@@ -96,7 +96,7 @@
   <remotion:WebButton ID="SyncPostBackOutsideUpdatePanelWebButton" runat="server" Text="WebButton: Sync PostBack Outside Update Panel" /><br />
     <button id="B1" name="B1Name" type="submit" class="webButton"
         onclick="javascript:__doPostBack('B1','');WebButton_Click (this, false);return false;"
-        onmouseout="WebButton_MouseOut (this, 'mouseDown');" onmousedown="WebButton_MouseDown (this, 'mouseDown');" onmouseup="WebButton_MouseUp (this, 'mouseDown');" 
+        onmouseout="WebButton.MouseOut (this, 'mouseDown');" onmousedown="WebButton.MouseDown (this, 'mouseDown');" onmouseup="WebButton.MouseUp (this, 'mouseDown');" 
         ><span class="buttonBody">Test</span></button>
     
     <%--<button name="TheMasterPage$FormContent$SutUserControl$SyncPostBackOutsideUpdatePanelWebButton" class="webButton" id="FormContent_SutUserControl_SyncPostBackOutsideUpdatePanelWebButton"onclick="javascript:WebButton_Click (this, false);__doPostBack('TheMasterPage$FormContent$SutUserControl$SyncPostBackOutsideUpdatePanelWebButton','');return false;" type="submit" value="WebButton: Sync PostBack Outside Update Panel"><span class="buttonBody">WebButton: Sync PostBack Outside Update Panel</span></button>--%>
