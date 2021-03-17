@@ -180,8 +180,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
         RegisterStartupScriptIfNeeded(renderingContext);
 
         string script = GetScriptParameters(renderingContext);
-        checkBoxScript = "BocCheckBox_OnClick" + script;
-        labelScript = "BocCheckBox_ToggleCheckboxValue" + script;
+        checkBoxScript = "BocCheckBox.OnClick" + script;
+        labelScript = "BocCheckBox.ToggleCheckboxValue" + script;
       }
       else
       {
@@ -213,7 +213,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
         return;
 
       string startupScript = string.Format (
-          "BocCheckBox_InitializeGlobals ('{0}', '{1}');",
+          "BocCheckBox.InitializeGlobals ('{0}', '{1}');",
           renderingContext.Control.DefaultTrueDescription,
           renderingContext.Control.DefaultFalseDescription);
       renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock (renderingContext.Control, typeof (BocCheckBoxRenderer), s_startUpScriptKey, startupScript);

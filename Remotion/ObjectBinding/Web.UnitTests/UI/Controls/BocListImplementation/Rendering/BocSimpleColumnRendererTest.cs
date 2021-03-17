@@ -150,7 +150,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var a = Html.GetAssertedChildElement (td, "a", 0);
       Html.AssertAttribute (a, "id", List.ClientID + "_Column_0_Command_Row_10");
       Html.AssertAttribute (a, "href", "url");
-      Html.AssertAttribute (a, "onclick", "BocList_OnCommandClick();");
+      Html.AssertAttribute (a, "onclick", "BocList.OnCommandClick();");
 
       var span = Html.GetAssertedChildElement (a, "span", 0);
       Html.AssertTextNode (span, "referencedObject1", 0);
@@ -202,7 +202,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute (span, "class", _bocListCssClassDefinition.Content);
 
       var clickSpan = Html.GetAssertedChildElement (span, "span", 0);
-      Html.AssertAttribute (clickSpan, "onclick", "BocList_OnCommandClick();");
+      Html.AssertAttribute (clickSpan, "onclick", "BocList.OnCommandClick();");
 
       editableRow.AssertWasCalled (
           mock => mock.RenderSimpleColumnCellEditModeControl (
@@ -233,7 +233,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute (td, DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex, "1");
       var span = Html.GetAssertedChildElement (td, "span", 0);
       var clickSpan = Html.GetAssertedChildElement (span, "span", 0);
-      Html.AssertAttribute (clickSpan, "onclick", "BocList_OnCommandClick();");
+      Html.AssertAttribute (clickSpan, "onclick", "BocList.OnCommandClick();");
       Html.AssertAttribute (clickSpan, DiagnosticMetadataAttributesForObjectBinding.BocListCellContents, "referencedObject1");
 
       editableRow.AssertWasCalled (

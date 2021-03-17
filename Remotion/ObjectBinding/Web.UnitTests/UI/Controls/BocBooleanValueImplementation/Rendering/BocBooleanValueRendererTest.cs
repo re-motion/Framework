@@ -87,7 +87,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       
       string startupScriptKey = typeof (BocBooleanValueRenderer).FullName + "_Startup_" + _resourceSet.ResourceKey;
       _startupScript = string.Format (
-          "BocBooleanValue_InitializeGlobals ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}');",
+          "BocBooleanValue.InitializeGlobals ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}');",
           _resourceSet.ResourceKey,
           "true",
           "false",
@@ -103,7 +103,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       clientScriptManagerMock.Stub (mock => mock.GetPostBackEventReference (_booleanValue, string.Empty)).Return (c_postbackEventReference);
 
 
-      _keyDownScript = "BocBooleanValue_OnKeyDown (this);";
+      _keyDownScript = "BocBooleanValue.OnKeyDown (this);";
 
       var pageStub = MockRepository.GenerateStub<IPage>();
       pageStub.Stub (stub => stub.ClientScript).Return (clientScriptManagerMock);
@@ -458,7 +458,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
 
     private string GetClickScript (bool isRequired, bool isAutoPostbackEnabled)
     {
-      return "BocBooleanValue_SelectNextCheckboxValue ('ResourceKey', $(this).parent().children('a')[0], "
+      return "BocBooleanValue.SelectNextCheckboxValue ('ResourceKey', $(this).parent().children('a')[0], "
              + "$(this).parent().children('a').children('img')[0], $(this).parent().children('span')[1], "
              + "$(this).parent().children('input')[0], " + isRequired.ToString().ToLower() + ", "
              + "'" + c_trueDescription + "', '" + c_falseDescription + "', '" + c_nullDescription + "');"

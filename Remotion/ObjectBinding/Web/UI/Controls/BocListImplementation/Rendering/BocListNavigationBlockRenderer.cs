@@ -207,7 +207,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.RenderEndTag(); // end span
 
       string script = string.Format (
-          "BocListNavigationBlock_Initialize ($('#{0}'), $('#{1}'))",
+          "BocList.InitializeNavigationBlock ($('#{0}'), $('#{1}'))",
           currentPageNumberTextBoxID,
           GetCurrentPageIndexControlID (renderingContext));
       renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock (

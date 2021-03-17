@@ -90,7 +90,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute (td, "role", "cell");
 
       var div = Html.GetAssertedChildElement (td, "div", 0);
-      Html.AssertAttribute (div, "onclick", "BocList_OnCommandClick();");
+      Html.AssertAttribute (div, "onclick", "BocList.OnCommandClick();");
 
       Html.AssertTextNode (div, "mocked dropdown menu", 0);
     }
@@ -113,7 +113,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute (td, "role", "cell");
 
       var div = Html.GetAssertedChildElement (td, "div", 0);
-      Html.AssertAttribute (div, "onclick", "BocList_OnCommandClick();");
+      Html.AssertAttribute (div, "onclick", "BocList.OnCommandClick();");
 
       Html.AssertTextNode (div, "mocked dropdown menu", 0);
     }

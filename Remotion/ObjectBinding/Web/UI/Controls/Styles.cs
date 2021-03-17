@@ -423,7 +423,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           && MaxLength != null
           && CheckClientSideMaxLength != false
           && ! ControlHelper.IsDesignModeForControl (textBox))
-        textBox.Attributes.Add ("onkeydown", "return TextBoxStyle_OnKeyDown (this, " + MaxLength.Value + ");");
+        textBox.Attributes.Add ("onkeydown", "return TextBoxStyle.OnKeyDown (this, " + MaxLength.Value + ");");
 
       textBox.TextMode = GetSystemWebTextMode();
     }

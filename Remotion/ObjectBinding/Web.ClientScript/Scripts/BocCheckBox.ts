@@ -69,18 +69,3 @@ class BocCheckBox
       label.innerHTML = labelText;
   }
 }
-
-function BocCheckBox_InitializeGlobals (trueDescription: string, falseDescription: string): void
-{
-  BocCheckBox.InitializeGlobals (trueDescription, falseDescription);
-}
-
-function BocCheckBox_ToggleCheckboxValue (checkBox: HTMLInputElement, label: HTMLLabelElement, trueDescription: Nullable<string>, falseDescription: Nullable<string>)
-{
-  BocCheckBox.ToggleCheckboxValue (checkBox, label, trueDescription, falseDescription);
-}
-
-function BocCheckBox_OnClick (checkBox: HTMLInputElement, label: HTMLLabelElement, trueDescription: Nullable<string>, falseDescription: Nullable<string>)
-{
-  BocCheckBox.OnClick (checkBox, label, trueDescription, falseDescription)
-}

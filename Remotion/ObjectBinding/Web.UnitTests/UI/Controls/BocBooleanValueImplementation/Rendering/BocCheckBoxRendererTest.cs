@@ -68,7 +68,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       
       var clientScriptManagerMock = MockRepository.GenerateMock<IClientScriptManager>();
       _startupScript = string.Format (
-          "BocCheckBox_InitializeGlobals ('{0}', '{1}');",
+          "BocCheckBox.InitializeGlobals ('{0}', '{1}');",
           _checkbox.DefaultTrueDescription,
           _checkbox.DefaultFalseDescription);
       clientScriptManagerMock.Expect (mock => mock.RegisterStartupScriptBlock (_checkbox, typeof (BocCheckBoxRenderer), _startUpScriptKey, _startupScript));

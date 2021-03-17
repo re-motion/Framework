@@ -3691,7 +3691,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [PublicAPI]
     protected string GetSelectionCountScript ()
     {
-      return "function() { return BocList_GetSelectionCount ('" + ClientID + "'); }";
+      return "function() { return BocList.GetSelectionCount ('" + ClientID + "'); }";
     }
 
     private IRowIDProvider RowIDProvider

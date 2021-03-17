@@ -205,7 +205,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       if (!isClientScriptEnabled)
         return;
 
-      linkControl.Attributes.Add ("onkeydown", "BocBooleanValue_OnKeyDown (this);");
+      linkControl.Attributes.Add ("onkeydown", "BocBooleanValue.OnKeyDown (this);");
       linkControl.Enabled = renderingContext.Control.Enabled;
     }
 
@@ -219,7 +219,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
         string nullValue = c_nullString;
 
         string startupScript = string.Format (
-            "BocBooleanValue_InitializeGlobals ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}');",
+            "BocBooleanValue.InitializeGlobals ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}');",
             resourceSet.ResourceKey,
             trueValue,
             falseValue,
@@ -250,7 +250,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       string requiredFlag = renderingContext.Control.IsRequired ? "true" : "false";
 
       var scriptBuilder = new StringBuilder (500);
-      scriptBuilder.Append ("BocBooleanValue_SelectNextCheckboxValue (");
+      scriptBuilder.Append ("BocBooleanValue.SelectNextCheckboxValue (");
       scriptBuilder.Append ("'").Append (resourceSet.ResourceKey).Append ("'");
       scriptBuilder.Append (", ");
       scriptBuilder.Append ("$(this).parent().children('a')[0]");
