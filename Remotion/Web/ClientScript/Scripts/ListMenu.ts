@@ -64,12 +64,12 @@ class ListMenu
 
   public static AddMenuInfo (listMenu: HTMLElement, menuInfo: ListMenu_MenuInfo): void
   {
-    this._listMenuInfos[listMenu.id] = menuInfo;
+    ListMenu._listMenuInfos[listMenu.id] = menuInfo;
   }
 
   public static Update (listMenu: HTMLElement, getSelectionCount: Nullable<() => number>): void
   {
-    var menuInfo = this._listMenuInfos[listMenu.id];
+    var menuInfo = ListMenu._listMenuInfos[listMenu.id];
     if (menuInfo == null)
       return;
 
@@ -88,11 +88,11 @@ class ListMenu
       }
       else
       {
-        if (itemInfo.RequiredSelection == this._requiredSelectionExactlyOne && selectionCount != 1)
+        if (itemInfo.RequiredSelection == ListMenu._requiredSelectionExactlyOne && selectionCount != 1)
         {
           isEnabled = false;
         }
-        if (itemInfo.RequiredSelection == this._requiredSelectionOneOrMore && selectionCount < 1)
+        if (itemInfo.RequiredSelection == ListMenu._requiredSelectionOneOrMore && selectionCount < 1)
         {
           isEnabled = false;
         }
@@ -105,7 +105,7 @@ class ListMenu
       {
         if (icon != null && icon.nodeType == 1)
           icon.src = itemInfo.Icon;
-        item.className = this._itemClassName;
+        item.className = ListMenu._itemClassName;
         if (itemInfo.Href != null)
         {
           if (itemInfo.Href.toLowerCase().indexOf ('javascript:') >= 0)
@@ -138,7 +138,7 @@ class ListMenu
           else
             icon.src = itemInfo.Icon;
         }
-        item.className = this._itemDisabledClassName;
+        item.className = ListMenu._itemDisabledClassName;
         anchor.removeAttribute ('href');
         anchor.removeAttribute ('target');
         anchor.removeAttribute ('javascript');
