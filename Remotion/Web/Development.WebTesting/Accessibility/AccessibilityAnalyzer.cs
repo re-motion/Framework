@@ -34,6 +34,8 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
   /// </summary>
   public class AccessibilityAnalyzer
   {
+    private static readonly TimeSpan s_defaultMaximumTimeToWaitForFrame = TimeSpan.FromMilliseconds (3000);
+
     /// <summary>
     /// Creates an <see cref="AccessibilityAnalyzer"/> that uses an instance of <see cref="RemoteWebDriver"/> for both <see cref="IWebDriver"/>
     /// and <see cref="IJavaScriptExecutor"/>.
@@ -140,51 +142,60 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     /// Analyzes specific <see cref="ControlObject"/> on Webpage.
     /// </summary>
     /// <param name="controlObject"><see cref="ControlObject"/> to analyze.</param>
+    /// <param name="timeout">
+    /// Maximum wait time after which an iframe on the page must be visible to be analyzed. If <see langword="null"/>, a default value of 3000 ms is used.
+    /// </param>
     /// <returns> Result of the analysis.</returns>
     [NotNull]
-    public AccessibilityResult Analyze ([NotNull] ControlObject controlObject)
+    public AccessibilityResult Analyze ([NotNull] ControlObject controlObject, [CanBeNull] TimeSpan? timeout = null)
     {
       ArgumentUtility.CheckNotNull ("controlObject", controlObject);
 
-      return Analyze ($"#{controlObject.GetHtmlID()}");
+      return Analyze ($"#{controlObject.GetHtmlID()}", timeout);
     }
 
     /// <summary>
     /// Analyzes a specific element on webpage.
     /// </summary>
     /// <param name="cssSelector">CSS selector of the <see cref="ControlObject"/> to analyze.</param>
+    /// <param name="timeout">
+    /// Maximum wait time after which an iframe on the page must be visible to be analyzed. If <see langword="null"/>, a default value of 3000 ms is used.
+    /// </param>
     /// <returns> Result of the analysis.</returns>
     [NotNull]
-    public AccessibilityResult Analyze ([NotNull] string cssSelector)
+    public AccessibilityResult Analyze ([NotNull] string cssSelector, [CanBeNull] TimeSpan? timeout = null)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("cssSelector", cssSelector);
 
-      return GetAccessibilityResult (cssSelector);
+      return GetAccessibilityResult (cssSelector, timeout ?? s_defaultMaximumTimeToWaitForFrame);
     }
 
     /// <summary>
     /// Analyzes all content on a webpage.
     /// </summary>
+    /// <param name="timeout">
+    /// Maximum wait time after which an iframe on the page must be visible to be analyzed. If <see langword="null"/>, a default value of 3000 ms is used.
+    /// </param>
     /// <remarks>
     /// Switches to the outermost frame before the analysis and back to
     /// the original frame after the analysis completed.
     /// </remarks>
     /// <returns> Results of the analysis.</returns>
     [NotNull]
-    public AccessibilityResult Analyze ()
+    public AccessibilityResult Analyze ([CanBeNull] TimeSpan? timeout = null)
     {
       var outerFrame = (string) JsExecutor.ExecuteScript ("return self.name;");
       if (outerFrame != "")
         WebDriver.SwitchTo().DefaultContent();
 
-      var result = GetAccessibilityResult (null);
+      var result = GetAccessibilityResult (null, timeout ?? s_defaultMaximumTimeToWaitForFrame);
       if (outerFrame != "")
         WebDriver.SwitchTo().Frame (outerFrame);
 
       return result;
     }
 
-    private AccessibilityResult GetAccessibilityResult (string cssSelector)
+    private AccessibilityResult GetAccessibilityResult (string cssSelector, TimeSpan timeout)
     {
       var source = AxeSourceProvider.GetSource();
 
@@ -192,7 +203,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
       {
         using (new PerformanceTimer (Logger, "aXe has been injected."))
         {
-          InjectAxeSource (source);
+          InjectAxeSource (source, timeout);
         }
       }
 
@@ -220,17 +231,20 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     /// <summary>
     /// Injects Axe into every iframe manually because axe-core cannot do it itself.
     /// </summary>
+    /// <param name="source">Source of axe.min.js to inject.</param>
+    /// <param name="timeout">Maximum wait time after which an iframe must be visible such that Axe can be injected.</param>
     /// <remarks>
     /// Source: https://www.deque.com/blog/writing-automated-tests-accessibility/
     /// </remarks>
-    private void InjectIntoIFrames (string source)
+    private void InjectIntoIFrames (string source, TimeSpan timeout)
     {
       foreach (var frame in WebDriver.FindElements (By.TagName ("iframe")))
       {
+        frame.WaitUntilFrameIsVisible (timeout);
         WebDriver.SwitchTo().Frame (frame);
 
         if (!IsEmptyFrame() && !AxeIsInjected())
-          InjectAxeSource (source);
+          InjectAxeSource (source, timeout);
 
         WebDriver.SwitchTo().DefaultContent();
       }
@@ -241,12 +255,12 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
       return !WebDriver.FindElements (By.XPath ("/html/body/*")).Any();
     }
 
-    private void InjectAxeSource (string source)
+    private void InjectAxeSource (string source, TimeSpan timeout)
     {
       JsExecutor.ExecuteScript (source);
 
       if (Configuration.IncludeIFrames)
-        InjectIntoIFrames (source);
+        InjectIntoIFrames (source, timeout);
     }
 
     private string BuildAxeRunFunctionCall (string cssToInclude)
