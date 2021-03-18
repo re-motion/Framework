@@ -271,6 +271,7 @@
     <Compile Include="WebDriver\Configuration\BrowserConfigurationBase.cs" />
     <Compile Include="Configuration\TestInfrastructureConfiguration.cs" />
     <Compile Include="BrowserSession\BrowserSessionBase.cs" />
+    <Compile Include="WebElementExtensions.cs" />
     <Compile Include="WebTestConfigurationFactory.cs" />
     <Compile Include="Configuration\WebTestConfigurationSection.cs" />
     <Compile Include="WebDriver\Factories\WebDriverLogUtility.cs" />
