@@ -15,10 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics;
 using Coypu;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting;
@@ -153,6 +153,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// <summary>
     /// Opens the date-picker.
     /// </summary>
+    /// <param name="fluentDatePicker">The date-picker to be opened.</param>
+    /// <param name="timeout">A maximum timeout until the date-picker must be opened. Default is 3000 ms.</param>
     public static void Open (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocDateTimeValuePicker> fluentDatePicker,
         int timeout = 3000)
@@ -162,7 +164,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
       var element = fluentDatePicker.Target.FluentDateTimeValue.GetDatePickerIcon().GetTarget();
       element.Click();
 
-      WaitUntilVisible (fluentDatePicker, timeout);
+      WaitUntilVisible (fluentDatePicker, TimeSpan.FromMilliseconds (timeout));
     }
 
     private static int GetDayOfTheWeekIndex (DateTime date)
@@ -181,37 +183,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
       return result.Exists (Options.NoWait);
     }
 
-    private static void WaitUntilVisible (IFluentScreenshotElementWithCovariance<ScreenshotBocDateTimeValuePicker> fluentDatePicker, int timeout)
+    private static void WaitUntilVisible (IFluentScreenshotElementWithCovariance<ScreenshotBocDateTimeValuePicker> fluentDatePicker, TimeSpan timeout)
     {
       var dateTimeValue = fluentDatePicker.Target.DateTimeValue;
       var datePickerID = GetDatePickerID (dateTimeValue);
       var seleniumDriver = (IWebDriver) dateTimeValue.Context.Browser.Driver.Native;
-
-      var webDriverWait = new WebDriverWait (seleniumDriver, TimeSpan.FromMilliseconds (timeout))
-                          {
-                              PollingInterval = TimeSpan.FromMilliseconds (timeout / 10)
-                          };
-
-      try
-      {
-        webDriverWait.Until (driver => DatePickerContentLoaded (driver, datePickerID));
-      }
-      finally
-      {
-        seleniumDriver.SwitchTo().DefaultContent();
-      }
-    }
-
-    /// <summary>
-    /// Sometimes, due to the delayed generation of the compiled aspx file, the content of the DatePicker iframe is not fully loaded when the iframe is rendered.
-    /// </summary>
-    private static bool DatePickerContentLoaded (IWebDriver driver, string datePickerID)
-    {
-      driver.SwitchTo().DefaultContent();
-      var iframe = driver.FindElement (By.Id (datePickerID)).FindElement (By.TagName ("iframe"));
-      driver.SwitchTo().Frame (iframe);
-
-      return driver.FindElements (By.Id ("Calendar")).Count > 0;
+      var iframe = seleniumDriver.FindElement (By.Id (datePickerID)).FindElement(By.TagName ("iframe"));
+      iframe.WaitUntilFrameIsVisible ("#Calendar", timeout);
     }
 
     private static string GetDatePickerID (BocDateTimeValueControlObject dateTimeValue)
