@@ -86,8 +86,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
     {
       SetUpGetPostBackLinkExpectations (false);
 
-      string script = "ListMenu.Initialize ($('#{0}'));\r\n" +
-                      "ListMenu.AddMenuInfo (document.getElementById ('{0}'), \r\n\tnew ListMenu_MenuInfo ('{0}', new Array (\r\n" +
+      string script = "ListMenu.Initialize ('#{0}');\r\n" +
+                      "ListMenu.AddMenuInfo ('#{0}', \r\n\tnew ListMenu_MenuInfo ('{0}', new Array (\r\n" +
                       "\t\t{1},\r\n\t\t{2},\r\n\t\t{3},\r\n\t\t{4} ) ) );\r\n" +
                       "Update();";
 

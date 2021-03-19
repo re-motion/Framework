@@ -52,23 +52,35 @@ class ListMenu
   private static readonly _requiredSelectionExactlyOne: number = 1;
   private static readonly _requiredSelectionOneOrMore: number = 2;
 
-  public static Initialize ($listMenu: JQuery): void
+  public static Initialize (listMenuOrSelector: CssSelectorOrElement<HTMLElement>): void
   {
-    ArgumentUtility.CheckNotNullAndTypeIsJQuery("$listMenu", $listMenu);
+    ArgumentUtility.CheckNotNull ('listMenuOrSelector', listMenuOrSelector);
 
-    $listMenu.keydown (function (event)
+    const listMenu = ElementResolverUtility.ResolveSingle (listMenuOrSelector);
+
+    listMenu.addEventListener('keydown', function (event)
     {
-      ListMenu.OnKeyDown (event, $listMenu);
+      ListMenu.OnKeyDown (event, listMenu);
     });
   }
 
-  public static AddMenuInfo (listMenu: HTMLElement, menuInfo: ListMenu_MenuInfo): void
+  public static AddMenuInfo (listMenuOrSelector: CssSelectorOrElement<HTMLElement>, menuInfo: ListMenu_MenuInfo): void
   {
+    ArgumentUtility.CheckNotNull ('listMenuOrSelector', listMenuOrSelector);
+    ArgumentUtility.CheckNotNullAndTypeIsObject ('menuInfo', menuInfo);
+
+    const listMenu = ElementResolverUtility.ResolveSingle (listMenuOrSelector);
+
     ListMenu._listMenuInfos[listMenu.id] = menuInfo;
   }
 
-  public static Update (listMenu: HTMLElement, getSelectionCount: Nullable<() => number>): void
+  public static Update (listMenuOrSelector: CssSelectorOrElement<HTMLElement>, getSelectionCount: Nullable<() => number>): void
   {
+    ArgumentUtility.CheckNotNull ('listMenuOrSelector', listMenuOrSelector);
+    ArgumentUtility.CheckTypeIsFunction ('getSelectionCount', getSelectionCount);
+
+    const listMenu = ElementResolverUtility.ResolveSingle (listMenuOrSelector);
+
     var menuInfo = ListMenu._listMenuInfos[listMenu.id];
     if (menuInfo == null)
       return;
@@ -99,8 +111,8 @@ class ListMenu
       }
 
       var item = document.getElementById (itemInfo.ID) as HTMLElement;
-      let anchor = $ (item).children().eq (0)[0] as HTMLAnchorElement;
-      var icon = $ (anchor).children().eq (0)[0] as HTMLImageElement;
+      let anchor = item.children[0] as HTMLAnchorElement;
+      var icon = anchor.children[0] as HTMLImageElement;
       if (isEnabled)
       {
         if (icon != null && icon.nodeType == 1)
@@ -149,55 +161,47 @@ class ListMenu
 
       if (itemInfo.DiagnosticMetadata)
       {
-        // Do not render empty diagnostic metadata attributes
-        $.each(itemInfo.DiagnosticMetadata, function (key, value)
+        for (const [key, value] of Object.entries (itemInfo.DiagnosticMetadata))
         {
-          if (value === "" || value === null)
+          if (value !== "" && value !== null && value !== undefined)
           {
-            delete itemInfo.DiagnosticMetadata[key];
+            item.setAttribute (key, value.toString());
           }
-        });
-
-        $(item).attr(itemInfo.DiagnosticMetadata);
+        }
       }
 
       if (itemInfo.DiagnosticMetadataForCommand)
       {
-        // Do not render empty diagnostic metadata attributes
-        $.each(itemInfo.DiagnosticMetadataForCommand,
-          function (key, value) {
-            if (value === "" || value === null)
-            {
-              delete itemInfo.DiagnosticMetadataForCommand[key];
-            }
-          });
-
         itemInfo.DiagnosticMetadataForCommand['data-is-disabled'] = isEnabled ? 'false' : 'true';
 
-        $(anchor).attr(itemInfo.DiagnosticMetadataForCommand);
+        for (const [key, value] of Object.entries (itemInfo.DiagnosticMetadataForCommand))
+        {
+          if (value !== "" && value !== null && value !== undefined)
+          {
+            anchor.setAttribute (key, value.toString());
+          }
+        }
       }
     }
   }
 
-  public static OnKeyDown (event: JQueryKeyEventObject, $listMenu: JQuery): void
+  private static OnKeyDown (event: KeyboardEvent, listMenu: HTMLElement): void
   {
-    ArgumentUtility.CheckNotNullAndTypeIsJQuery ('$tablist', $listMenu);
-
-    var $menuItems = $listMenu.find ('a');
+    var menuItems = Array.from (listMenu.querySelectorAll ('a'));
 
     var oldMenuItemIndex = -1;
 
-    var selectedMenuItem = document.activeElement;
+    var selectedMenuItem = document.activeElement as HTMLAnchorElement;
     if (selectedMenuItem != null && TypeUtility.IsDefined (selectedMenuItem.tagName) && selectedMenuItem.tagName.toUpperCase() === 'A')
     {
-      oldMenuItemIndex = $menuItems.index(selectedMenuItem);
+      oldMenuItemIndex = menuItems.indexOf (selectedMenuItem);
     }
     else
     {
-      for (var i = 0; i < $menuItems.length; i++)
+      for (var i = 0; i < menuItems.length; i++)
       {
         // TODO RM-7686 Fix misspellings of tabIndex
-        if (($menuItems[i] as any).tabindex === 0)
+        if ((menuItems[i] as any).tabindex === 0)
         {
           oldMenuItemIndex = i;
           break;
@@ -205,9 +209,9 @@ class ListMenu
       }
     }
 
-    var $oldMenuItem = null;
+    var oldMenuItem = null;
     if (oldMenuItemIndex >= 0)
-      $oldMenuItem = $($menuItems[oldMenuItemIndex]);
+      oldMenuItem = menuItems[oldMenuItemIndex];
     var currentMenuItemIndex = Math.max (0, oldMenuItemIndex);
 
     switch (event.keyCode)
@@ -223,10 +227,10 @@ class ListMenu
 
           if (currentMenuItemIndex >= 0)
           {
-            let $newMenuItem = $($menuItems[currentMenuItemIndex]);
-            ListMenu.UpdateFocus ($newMenuItem, $oldMenuItem);
+            let newMenuItem = menuItems[currentMenuItemIndex];
+            ListMenu.UpdateFocus (newMenuItem, oldMenuItem);
 
-            $newMenuItem[0].click();
+            newMenuItem.click();
           }
 
           return;
@@ -240,10 +244,10 @@ class ListMenu
           if (currentMenuItemIndex > 0)
             currentMenuItemIndex--;
           else
-            currentMenuItemIndex = $menuItems.length - 1;
+            currentMenuItemIndex = menuItems.length - 1;
 
-          let $newMenuItem = $ ($menuItems[currentMenuItemIndex]);
-          ListMenu.UpdateFocus ($newMenuItem, $oldMenuItem);
+          let newMenuItem = menuItems[currentMenuItemIndex];
+          ListMenu.UpdateFocus (newMenuItem, oldMenuItem);
 
           return;
         }
@@ -253,25 +257,21 @@ class ListMenu
           event.preventDefault();
           event.stopPropagation();
 
-          if (currentMenuItemIndex < $menuItems.length - 1)
+          if (currentMenuItemIndex < menuItems.length - 1)
             currentMenuItemIndex++;
           else
             currentMenuItemIndex = 0;
 
-          var $newMenuItem = $($menuItems[currentMenuItemIndex]);
-          ListMenu.UpdateFocus ($newMenuItem, $oldMenuItem);
+          var newMenuItem = menuItems[currentMenuItemIndex];
+          ListMenu.UpdateFocus (newMenuItem, oldMenuItem);
 
           return;
         }
     }
   }
 
-  public static UpdateFocus ($newMenuItem: JQuery, $oldMenuItem: Nullable<JQuery>): void
+  private static UpdateFocus (newMenuItem: HTMLAnchorElement, oldMenuItem: Nullable<HTMLAnchorElement>): void
   {
-    ArgumentUtility.CheckNotNullAndTypeIsJQuery('$newMenuItem', $newMenuItem);
-    if ($oldMenuItem != null)
-      ArgumentUtility.CheckNotNullAndTypeIsJQuery ('$oldMenuItem', $oldMenuItem);
-
-    $newMenuItem.focus();
+    newMenuItem.focus();
   }
 }
