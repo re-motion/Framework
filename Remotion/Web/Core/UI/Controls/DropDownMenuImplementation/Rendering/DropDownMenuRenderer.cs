@@ -266,7 +266,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
           : renderingContext.Control.GetSelectionCount);
       string hasDedicatedDropDownMenuElement = renderingContext.Control.Mode == MenuMode.DropDownMenu ? "true" : "false";
       string script = string.Format (
-          "$('#{0}').keydown( function(event){{ DropDownMenu.OnKeyDown(event, $('#{0}'), {1}, {2}); }} );",
+          "document.getElementById ('{0}').addEventListener ('keydown', function(event){{ DropDownMenu.OnKeyDown(event, '#{0}', {1}, {2}); }} );",
           renderingContext.Control.ClientID,
           getSelectionCount,
           hasDedicatedDropDownMenuElement);
@@ -276,7 +276,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
       if (renderingContext.Control.Enabled && renderingContext.Control.Visible && renderingContext.Control.Mode == MenuMode.DropDownMenu)
       {
         key = renderingContext.Control.ClientID + "_ClickEventHandlerBindScript";
-        string elementReference = string.Format ("$('#{0}')", renderingContext.Control.ClientID);
+        string elementReference = string.Format ("'#{0}'", renderingContext.Control.ClientID);
         string menuIDReference = string.Format ("'{0}'", renderingContext.Control.ClientID);
         script = renderingContext.Control.GetBindOpenEventScript (elementReference, menuIDReference, false);
         renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock (renderingContext.Control, typeof (ClientScriptBehavior), key, script);

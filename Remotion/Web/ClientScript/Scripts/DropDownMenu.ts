@@ -27,9 +27,9 @@ type DropDownMenu_MenuInfo_LoadMenuItemsCallback = (successHandler: DropDownMenu
 type DropDownMenu_MenuInfo_LoadMenuItemStatusSuccessHandler = (itemInfos: DropDownMenu_ItemStatus[]) => void;
 type DropDownMenu_MenuInfo_LoadMenuItemStatusErrorHandler = () => void;
 type DropDownMenu_MenuInfo_LoadMenuItemStatusCallback = (successHandler: DropDownMenu_MenuInfo_LoadMenuItemStatusSuccessHandler, errorHandler: DropDownMenu_MenuInfo_LoadMenuItemStatusErrorHandler) => void;
-type DropDownMenu_ItemClickHandler = (event: JQueryEventObject) => boolean;
+type DropDownMenu_ItemClickHandler = (event: Event) => boolean;
 type DropDownMenu_SelectionCountGetter = () => number;
-type DropDownMenu_TitleDivGetter = () => JQuery;
+type DropDownMenu_TitleDivGetter = () => HTMLElement;
 
 class DropDownMenu_MenuInfo
 {
@@ -87,7 +87,7 @@ class DropDownMenu
   private static _itemSelectedClassName: string = 'selected';
   private static _focusClassName: string = 'focus';
   private static _nestedHoverClassName: string = 'nestedHover';
-  private static _currentMenu: Nullable<JQuery> = null;
+  private static _currentMenu: Nullable<HTMLElement> = null;
   private static _currentPopup: Nullable<HTMLDivElement> = null;
   private static _currentStatusPopup: Nullable<HTMLDivElement> = null;
   private static _currentLoadOperation: Nullable<Object> = null;
@@ -105,38 +105,52 @@ class DropDownMenu
 
   public static AddMenuInfo(menuInfo: DropDownMenu_MenuInfo): void
   {
+    ArgumentUtility.CheckNotNullAndTypeIsObject ('menuInfo', menuInfo);
+
     DropDownMenu._menuInfos[menuInfo.ID] = menuInfo;
   }
 
-  public static BindOpenEvent (openTarget: JQuery, menuID: string, eventType: string, getSelectionCount: Nullable<DropDownMenu_SelectionCountGetter>, moveToMousePosition: boolean): void
+  public static BindOpenEvent (openTargetOrSelector: CssSelectorOrElement<HTMLElement>, menuID: string, eventType: string, getSelectionCount: Nullable<DropDownMenu_SelectionCountGetter>, moveToMousePosition: boolean): void
   {
-    ArgumentUtility.CheckNotNullAndTypeIsJQuery ('openTarget', openTarget);
+    ArgumentUtility.CheckNotNull ('openTargetOrSelector', openTargetOrSelector);
     ArgumentUtility.CheckNotNullAndTypeIsString ('menuID', menuID);
     ArgumentUtility.CheckNotNullAndTypeIsString ('eventType', eventType);
+    ArgumentUtility.CheckTypeIsFunction ('getSelectionCount', getSelectionCount);
     ArgumentUtility.CheckNotNullAndTypeIsBoolean ('moveToMousePosition', moveToMousePosition);
 
-    var menuButton = openTarget[0].tagName.toLowerCase() === 'a' ? openTarget : openTarget.find ('a[href]:last');
-    menuButton.attr('aria-haspopup', 'menu');
-    menuButton.attr('aria-expanded', 'false');
+    const openTarget = ElementResolverUtility.ResolveSingle (openTargetOrSelector);
 
-    openTarget.bind(
+    var menuButton: HTMLAnchorElement;
+
+    if (openTarget.tagName.toLowerCase() === 'a')
+    {
+      menuButton = openTarget as HTMLAnchorElement;
+    }
+    else
+    {
+      const menuButtons = openTarget.querySelectorAll<HTMLAnchorElement> ('a[href]');
+      menuButton = menuButtons[menuButtons.length - 1];
+    }
+
+    menuButton.setAttribute ('aria-haspopup', 'menu');
+    menuButton.setAttribute ('aria-expanded', 'false');
+
+    openTarget.addEventListener (
         eventType,
-        function (evt: JQueryMouseEventObject)
+        function (evt)
         {
           menuButton.focus();
-          DropDownMenu.OnClick (openTarget, menuID, getSelectionCount, moveToMousePosition ? evt : null);
+          DropDownMenu.OnClick (openTarget, menuID, getSelectionCount, moveToMousePosition ? evt as MouseEvent : null);
         });
 
     if (!moveToMousePosition)
     {
-      menuButton
-          .bind ("focus", function (evt) { openTarget.find ('.' + DropDownMenu._buttonClassName).addClass (DropDownMenu._focusClassName); })
-          .bind("blur", function (evt) { openTarget.find('.' + DropDownMenu._buttonClassName).removeClass (DropDownMenu._focusClassName); });
+      menuButton.addEventListener ("focus", function () { openTarget.querySelectorAll ('.' + DropDownMenu._buttonClassName).forEach (b => b.classList.add (DropDownMenu._focusClassName)); })
+      menuButton.addEventListener ("blur", function () { openTarget.querySelectorAll ('.' + DropDownMenu._buttonClassName).forEach (b => b.classList.remove (DropDownMenu._focusClassName)); });
 
-      var allButMenuButton = openTarget.find ('a[href]').not(menuButton);
-      allButMenuButton
-          .bind ("mouseover", function (evt) { openTarget.find ('.' + DropDownMenu._buttonClassName).addClass (DropDownMenu._nestedHoverClassName); })
-          .bind ("mouseout", function (evt) { openTarget.find ('.' + DropDownMenu._buttonClassName).removeClass (DropDownMenu._nestedHoverClassName); });
+      var allButMenuButton = Array.from (openTarget.querySelectorAll ('a[href]')).filter (b => menuButton !== b);
+      allButMenuButton.forEach (b => b.addEventListener ("mouseover", function () { openTarget.querySelectorAll ('.' + DropDownMenu._buttonClassName).forEach (b => b.classList.add (DropDownMenu._nestedHoverClassName)); }));
+      allButMenuButton.forEach (b => b.addEventListener ("mouseout", function () { openTarget.querySelectorAll ('.' + DropDownMenu._buttonClassName).forEach (b => b.classList.remove (DropDownMenu._nestedHoverClassName)); }));
     }
   }
 
@@ -146,6 +160,11 @@ class DropDownMenu
       onSuccess: DropDownMenu_MenuInfo_LoadMenuItemsSuccessHandler,
       onError: DropDownMenu_MenuInfo_LoadMenuItemsErrorHandler): void
   {
+    ArgumentUtility.CheckNotNullAndTypeIsObject ('itemInfos', itemInfos);
+    ArgumentUtility.CheckTypeIsFunction ('loadMenuItemStatus', loadMenuItemStatus);
+    ArgumentUtility.CheckNotNullAndTypeIsFunction ('onSuccess', onSuccess);
+    ArgumentUtility.CheckNotNullAndTypeIsFunction ('onError', onError);
+
     if (loadMenuItemStatus !== null)
     {
       const currentLoadOperationID = new Object();
@@ -208,27 +227,25 @@ class DropDownMenu
     }
   }
 
-  private static OnClick(context: JQuery, menuID: string, getSelectionCount: Nullable<DropDownMenu_SelectionCountGetter>, evt: Nullable<JQueryMouseEventObject>): void
+  private static OnClick (context: HTMLElement, menuID: string, getSelectionCount: Nullable<DropDownMenu_SelectionCountGetter>, evt: Nullable<MouseEvent>): void
   {
-    ArgumentUtility.CheckNotNullAndTypeIsJQuery('context', context);
-
-    $('#' + menuID).data(DropDownMenu._button_timestampDataKey, new Date().getTime());
+    document.getElementById (menuID)!.dataset[DropDownMenu._button_timestampDataKey] = new Date().getTime().toString();
 
     if (DropDownMenu._itemClicked)
     {
       DropDownMenu._itemClicked = false;
       return;
     }
-    if (DropDownMenu._currentMenu != null && DropDownMenu._currentMenu[0] !== context[0])
+    if (DropDownMenu._currentMenu !== context)
     {
       DropDownMenu.ClosePopUp(!DropDownMenu._updateFocus);
     }
     if (DropDownMenu._currentMenu == null)
     {
-      var event: Nullable<JQueryMouseEventObject> = null;
+      var event: Nullable<MouseEvent> = null;
       if (evt != null)
       {
-        var bounds = context[0].getBoundingClientRect();
+        var bounds = context.getBoundingClientRect();
         if (bounds.left <= evt.clientX &&
           bounds.right >= evt.clientX &&
           bounds.top <= evt.clientY &&
@@ -240,10 +257,8 @@ class DropDownMenu
     }
   }
 
-  private static OpenPopUp (menuID: string, context: JQuery, getSelectionCount: Nullable<DropDownMenu_SelectionCountGetter>, evt: Nullable<JQueryMouseEventObject>): void
+  private static OpenPopUp (menuID: string, context: HTMLElement, getSelectionCount: Nullable<DropDownMenu_SelectionCountGetter>, evt: Nullable<MouseEvent>): void
   {
-    ArgumentUtility.CheckNotNullAndTypeIsJQuery('context', context);
-
     let selectionCount = -1;
     if (getSelectionCount !== null)
       selectionCount = getSelectionCount();
@@ -304,9 +319,9 @@ class DropDownMenu
     }
   }
 
-  private static BeginOpenPopUp(menuID: string, context: JQuery, evt: Nullable<JQueryMouseEventObject>): void
+  private static BeginOpenPopUp (menuID: string, context: HTMLElement, evt: Nullable<MouseEvent>): void
   {
-    const menuButton = $('#' + menuID + ' a[aria-haspopup=menu]');
+    const menuButton = document.querySelector<HTMLAnchorElement> ('#' + menuID + ' a[aria-haspopup=menu]')!;
 
     const titleDivFunc = DropDownMenu.CreateTitleDivGetter(context);
     const statusPopup = document.createElement('div');
@@ -317,15 +332,14 @@ class DropDownMenu
     statusPopup.setAttribute('aria-atomic', 'true');
     // Do not set role=alert before it is needed prevent an alert-update during 'normal' showing of menu.
     //statusPopup.setAttribute('role', 'alert');
-    if (menuButton.attr('aria-labelledby') !== undefined)
-      statusPopup.setAttribute('aria-labelledby', menuButton.attr('aria-labelledby'));
+    if (menuButton.getAttribute ('aria-labelledby') !== null)
+      statusPopup.setAttribute ('aria-labelledby', menuButton.getAttribute ('aria-labelledby')!);
     else
-      statusPopup.setAttribute('aria-labelledby', menuButton[0].id);
+      statusPopup.setAttribute ('aria-labelledby', menuButton.id);
     DropDownMenu._currentStatusPopup = statusPopup;
-    $(statusPopup).iFrameShim({ top: '0px', left: '0px', width: '100%', height: '100%' });
-    $('#' + menuID).closest('div, td, th, body').append(statusPopup);
+    document.getElementById (menuID)!.closest ('div, td, th, body')!.append (statusPopup);
 
-    DropDownMenu.ApplyPosition($(statusPopup), evt, titleDivFunc());
+    DropDownMenu.ApplyPosition (statusPopup, evt, titleDivFunc());
 
     if (DropDownMenu._statusPopupRepositionTimer)
       clearTimeout(DropDownMenu._statusPopupRepositionTimer);
@@ -336,7 +350,7 @@ class DropDownMenu
 
       if (DropDownMenu._currentStatusPopup && DropDownMenu._currentStatusPopup === statusPopup)
       {
-        DropDownMenu.ApplyPosition($(statusPopup), null, titleDivFunc());
+        DropDownMenu.ApplyPosition (statusPopup, null, titleDivFunc());
         DropDownMenu._statusPopupRepositionTimer = setTimeout(repositionHandler, DropDownMenu._repositionInterval);
       }
     };
@@ -345,14 +359,14 @@ class DropDownMenu
     if (evt === null)
       DropDownMenu._statusPopupRepositionTimer = setTimeout(repositionHandler, DropDownMenu._repositionInterval);
 
-    menuButton.bind('focus', DropDownMenu.FocusHandler);
-    menuButton.bind('blur', DropDownMenu.BlurHandler);
+    menuButton.addEventListener ('focus', DropDownMenu.FocusHandler);
+    menuButton.addEventListener ('blur', DropDownMenu.BlurHandler);
   }
 
-  private static EndOpenPopUp (menuID: string, context: JQuery, selectionCount: number, evt: Nullable<JQueryMouseEventObject>, itemInfos: DropDownMenu_ItemInfo[]): void
+  private static EndOpenPopUp (menuID: string, context: HTMLElement, selectionCount: number, evt: Nullable<MouseEvent>, itemInfos: DropDownMenu_ItemInfo[]): void
   {
     var menuOptionsID = menuID + '_DropDownMenuOptions';
-    var menuButton = $('#' + menuID + ' a[aria-haspopup=menu]');
+    var menuButtonAnchor = document.querySelector<HTMLAnchorElement> ('#' + menuID + ' a[aria-haspopup=menu]')!;
 
     if (itemInfos.length == 0)
       return;
@@ -368,18 +382,18 @@ class DropDownMenu
       statusPopup.parentElement!.removeChild(statusPopup);
     }
 
-    menuButton.attr('aria-controls', menuOptionsID);
-    menuButton.attr('aria-expanded', 'true');
+    menuButtonAnchor.setAttribute ('aria-controls', menuOptionsID);
+    menuButtonAnchor.setAttribute ('aria-expanded', 'true');
 
     var div = document.createElement('div');
     div.className = 'DropDownMenuOptions';
     div.id = menuOptionsID;
-    div.setAttribute('role', 'menu');
-    div.setAttribute('tabindex', '-1');
-    if (menuButton.attr('aria-labelledby') !== undefined)
-      div.setAttribute('aria-labelledby', menuButton.attr('aria-labelledby'));
+    div.setAttribute ('role', 'menu');
+    div.setAttribute ('tabindex', '-1');
+    if (menuButtonAnchor.getAttribute ('aria-labelledby') !== null)
+      div.setAttribute ('aria-labelledby', menuButtonAnchor.getAttribute ('aria-labelledby')!);
     else
-      div.setAttribute('aria-labelledby', menuButton[0].id);
+      div.setAttribute ('aria-labelledby', menuButtonAnchor.id);
     DropDownMenu._currentPopup = div;
 
     var ul = document.createElement('ul');
@@ -387,19 +401,20 @@ class DropDownMenu
     ul.setAttribute('role', 'none');
     div.appendChild(ul);
 
-    const $menuButton = $('#' + menuID);
-    $menuButton.closest('div, td, th, body').append(div);
+    const menuButton = document.getElementById (menuID)!;
+    menuButton.closest ('div, td, th, body')!.append (div);
 
-    $(ul).mouseover (function (event)
+    ul.addEventListener ('mouseover', function (event)
     {
       var eventTarget = DropDownMenu.GetTarget (event, "LI");
-      $("li", ul).removeClass(DropDownMenu._itemSelectedClassName);
+      ul.querySelectorAll ("li").forEach (b => b.classList.remove (DropDownMenu._itemSelectedClassName));
       if (eventTarget.firstChild != null && eventTarget.firstChild.nodeName.toLowerCase() === 'a')
       {
-        $(eventTarget).addClass (DropDownMenu._itemSelectedClassName);
+        eventTarget.classList.add (DropDownMenu._itemSelectedClassName);
         (eventTarget.firstChild as HTMLElement).focus();
       }
-    }).keydown (function (event)
+    });
+    ul.addEventListener ('keydown', function (event)
     {
       // TODO RM-7707 DropDownMenu._currentMenu should not be null
       DropDownMenu.Options_OnKeyDown (event, DropDownMenu._currentMenu!);
@@ -413,8 +428,7 @@ class DropDownMenu
     }
 
     var titleDivFunc = DropDownMenu.CreateTitleDivGetter (context);
-    DropDownMenu.ApplyPosition ($(div), evt, titleDivFunc());
-    $(div).iFrameShim({ top: '0px', left: '0px', width: '100%', height: '100%' });
+    DropDownMenu.ApplyPosition (div, evt, titleDivFunc());
 
     if (DropDownMenu._repositionTimer) 
       clearTimeout(DropDownMenu._repositionTimer);
@@ -423,9 +437,9 @@ class DropDownMenu
       if (DropDownMenu._repositionTimer)
         clearTimeout (DropDownMenu._repositionTimer);
 
-      if (DropDownMenu._currentPopup && DropDownMenu._currentPopup == div && $(div).is (':visible'))
+      if (DropDownMenu._currentPopup && DropDownMenu._currentPopup == div && LayoutUtility.IsVisible (div))
       {
-        DropDownMenu.ApplyPosition ($(div), null, titleDivFunc());
+        DropDownMenu.ApplyPosition (div, null, titleDivFunc());
         DropDownMenu._repositionTimer = setTimeout (repositionHandler, DropDownMenu._repositionInterval);
       }
     };
@@ -434,9 +448,9 @@ class DropDownMenu
     if (evt == null)
       DropDownMenu._repositionTimer = setTimeout(repositionHandler, DropDownMenu._repositionInterval);
 
-    if ($menuButton.data(DropDownMenu._button_timestampDataKey))
+    if (menuButton.dataset[DropDownMenu._button_timestampDataKey] !== undefined)
     {
-      $menuButton.removeData(DropDownMenu._button_timestampDataKey);
+      delete menuButton.dataset[DropDownMenu._button_timestampDataKey];
     }
     else
     {
@@ -444,15 +458,14 @@ class DropDownMenu
     }
   }
 
-  private static CreateTitleDivGetter ($context: JQuery): DropDownMenu_TitleDivGetter
+  private static CreateTitleDivGetter (context: HTMLElement): DropDownMenu_TitleDivGetter
   {
-    const context = $context[0];
     const contextID = context.id;
     if (contextID == null)
     {
       return function ()
       {
-        return $(context.firstElementChild!);
+        return context.firstElementChild as HTMLElement;
       };
     }
     else
@@ -460,63 +473,64 @@ class DropDownMenu
       return function ()
       {
         // TODO RM-7709 Check if null could be returned
-        return $(document.getElementById(contextID)!.firstElementChild!);
+        return document.getElementById (contextID)!.firstElementChild as HTMLElement;
       };
     }
   }
 
-  private static ApplyPosition (popUpDiv: JQuery, clickEvent: Nullable<JQueryMouseEventObject>, referenceElement: JQuery): void
+  private static ApplyPosition (popUpDiv: HTMLDivElement, clickEvent: Nullable<MouseEvent>, referenceElement: HTMLElement): void
   {
-    var space_top = Math.round(referenceElement.offset().top - $(document).scrollTop());
-    var space_bottom = Math.round($(window).height() - referenceElement.offset().top - referenceElement.height() + $(document).scrollTop());
-    var space_left = referenceElement.offset().left;
-    var space_right = $(window).width() - referenceElement.offset().left - referenceElement.width();
+    var space_top = Math.round (LayoutUtility.GetOffset (referenceElement).top - window.pageYOffset);
+    var space_bottom = Math.round (document.documentElement.clientHeight - LayoutUtility.GetOffset (referenceElement).top - LayoutUtility.GetHeight (referenceElement) + window.pageYOffset);
+    var space_left = LayoutUtility.GetOffset (referenceElement).left;
+    var space_right = document.documentElement.clientWidth - LayoutUtility.GetOffset (referenceElement).left - LayoutUtility.GetWidth (referenceElement);
 
     // position drop-down list
-    var top = clickEvent ? clickEvent.clientY : Math.max(0, space_top + referenceElement.outerHeight());
+    var top = clickEvent ? clickEvent.clientY : Math.max (0, space_top + referenceElement.offsetHeight);
     var left = clickEvent ? clickEvent.clientX : 'auto';
-    var right = clickEvent ? 'auto' : Math.max(0, $(window).width() - referenceElement.offset().left - referenceElement.outerWidth());
+    var right = clickEvent ? 'auto' : Math.max (0, document.documentElement.clientWidth - LayoutUtility.GetOffset (referenceElement).left - referenceElement.offsetWidth);
 
-    popUpDiv.css('top', top);
-    popUpDiv.css('bottom', 'auto');
-    // TODO RM-7699 Incorrect style assignments
-    popUpDiv.css('right', right as number);
-    popUpDiv.css('left', left as number);
-    popUpDiv.css('position', 'fixed');
+    popUpDiv.style.top = top + 'px';
+    popUpDiv.style.bottom = 'auto';
+    popUpDiv.style.right = right + 'px';
+    popUpDiv.style.left = left + 'px';
+    popUpDiv.style.position = 'fixed';
 
     // move dropdown if there is not enough space to fit it on the page
-    if ((popUpDiv.width() > space_left) && (space_left < space_right))
+    if ((LayoutUtility.GetWidth (popUpDiv) > space_left) && (space_left < space_right))
     {
-      if (popUpDiv.offset().left < 0)
+      if (LayoutUtility.GetOffset (popUpDiv).left < 0)
       {
-        left = Math.max(0, referenceElement.offset().left);
-        popUpDiv.css('left', left);
-        popUpDiv.css('right', 'auto');
+        left = Math.max (0, LayoutUtility.GetOffset (referenceElement).left);
+        popUpDiv.style.left = left + 'px';
+        popUpDiv.style.right = 'auto';
       }
     }
-    if (popUpDiv.height() > space_bottom)
+    if (LayoutUtility.GetHeight (popUpDiv) > space_bottom)
     {
-      if (popUpDiv.height() > $(window).height())
+      if (LayoutUtility.GetHeight (popUpDiv) > document.documentElement.clientHeight)
       {
-        popUpDiv.css('top', 0);
+        popUpDiv.style.top = '0';
       }
-      else if (space_top > popUpDiv.height())
+      else if (space_top > LayoutUtility.GetHeight (popUpDiv))
       {
-        var bottom = Math.max(0, $(window).height() - referenceElement.offset().top - (referenceElement.outerHeight() - referenceElement.height()));
+        var bottom = Math.max (0, document.documentElement.clientHeight - LayoutUtility.GetOffset (referenceElement).top - (referenceElement.offsetHeight - LayoutUtility.GetHeight (referenceElement)));
 
-        popUpDiv.css('top', 'auto');
-        popUpDiv.css('bottom', bottom);
+        popUpDiv.style.top = 'auto';
+        popUpDiv.style.bottom = bottom + 'px';
       }
       else
       {
-        popUpDiv.css('top', 'auto');
-        popUpDiv.css('bottom', 0);
+        popUpDiv.style.top = 'auto';
+        popUpDiv.style.bottom = '0';
       }
     }
   }
 
   public static ClosePopUp (updateFocus: boolean): void
   {
+    ArgumentUtility.CheckNotNullAndTypeIsBoolean ('updateFocus', updateFocus);
+
     if (DropDownMenu._blurTimer !== null)
       clearTimeout(DropDownMenu._blurTimer);
 
@@ -524,10 +538,9 @@ class DropDownMenu
         && document.body.contains(DropDownMenu._currentPopup))
     {
       const menuPopup = DropDownMenu._currentPopup;
-      const $menuButton = $('a[aria-controls="' + menuPopup.id + '"]');
-      $menuButton.unbind('focus', DropDownMenu.BlurHandler);
-      $menuButton.unbind('blur', DropDownMenu.BlurHandler);
-      const menuButton = $menuButton[0];
+      const menuButton = document.querySelector<HTMLAnchorElement> ('a[aria-controls="' + menuPopup.id + '"]')!;
+      menuButton.removeEventListener ('focus', DropDownMenu.BlurHandler);
+      menuButton.removeEventListener ('blur', DropDownMenu.BlurHandler);
       menuButton.setAttribute('aria-expanded', 'false');
       menuButton.removeAttribute('aria-controls');
       if (updateFocus === DropDownMenu._updateFocus)
@@ -588,7 +601,7 @@ class DropDownMenu
       anchor.setAttribute('aria-disabled', 'true');
     }
 
-    $(anchor).bind('click', DropDownMenu.OnItemClick);
+    anchor.addEventListener ('click', DropDownMenu.OnItemClick);
 
     item.appendChild(anchor);
     if (isEnabled && itemInfo.Href != null)
@@ -633,39 +646,33 @@ class DropDownMenu
 
     if (itemInfo.DiagnosticMetadata)
     {
-      // Do not render empty diagnostic metadata attributes
-      $.each(itemInfo.DiagnosticMetadata, function (key: string, value: string | boolean)
+      for (const [key, value] of Object.entries (itemInfo.DiagnosticMetadata))
       {
-        if (value === "" || value === null)
+        if (value !== "" && value !== null && value !== undefined)
         {
-          delete itemInfo.DiagnosticMetadata![key];
+          item.setAttribute (key, value.toString());
         }
-      });
-
-      $ (item).attr (itemInfo.DiagnosticMetadata);
+      }
     }
 
     if (itemInfo.DiagnosticMetadataForCommand)
     {
-      // Do not render empty diagnostic metadata attributes
-      $.each(itemInfo.DiagnosticMetadataForCommand,
-        function (key, value) {
-          if (value === "" || value === null) {
-            delete itemInfo.DiagnosticMetadataForCommand![key];
-          }
-        });
-
       itemInfo.DiagnosticMetadataForCommand['data-is-disabled'] = isEnabled ? 'false' : 'true';
 
-      $(anchor).attr(itemInfo.DiagnosticMetadataForCommand);
+      for (const [key, value] of Object.entries (itemInfo.DiagnosticMetadataForCommand))
+      {
+        if (value !== "" && value !== null && value !== undefined)
+        {
+          anchor.setAttribute (key, value.toString());
+        }
+      }
     }
 
     var span = document.createElement('span');
     span.innerHTML = itemInfo.Text!;
     anchor.appendChild(span);
-    $(anchor)
-      .bind ('focus', DropDownMenu.FocusHandler)
-      .bind ('blur', DropDownMenu.BlurHandler);
+    anchor.addEventListener ('focus', DropDownMenu.FocusHandler);
+    anchor.addEventListener ('blur', DropDownMenu.BlurHandler);
 
     return item;
   }
@@ -707,9 +714,14 @@ class DropDownMenu
     return false;
   }
 
-  public static OnKeyDown(event: JQueryKeyEventObject, dropDownMenu: JQuery, getSelectionCount: Nullable<DropDownMenu_SelectionCountGetter>, hasDedicatedDropDownMenuElement: boolean): void
+  public static OnKeyDown (event: KeyboardEvent, dropDownMenuOrSelector: CssSelectorOrElement<HTMLAnchorElement>, getSelectionCount: Nullable<DropDownMenu_SelectionCountGetter>, hasDedicatedDropDownMenuElement: boolean): void
   {
-    ArgumentUtility.CheckNotNullAndTypeIsJQuery('dropDownMenu', dropDownMenu);
+    ArgumentUtility.CheckNotNullAndTypeIsObject ('event', event);
+    ArgumentUtility.CheckNotNull ('dropDownMenuOrSelector', dropDownMenuOrSelector);
+    ArgumentUtility.CheckTypeIsFunction ('getSelectionCount', getSelectionCount);
+    ArgumentUtility.CheckNotNullAndTypeIsBoolean ('hasDedicatedDropDownMenuElement', hasDedicatedDropDownMenuElement);
+
+    const dropDownMenu = ElementResolverUtility.ResolveSingle (dropDownMenuOrSelector);
 
     if (DropDownMenu._currentMenu === null && !hasDedicatedDropDownMenuElement)
       return;
@@ -725,8 +737,8 @@ class DropDownMenu
         event.stopPropagation();
         if (dropDownMenu !== DropDownMenu._currentMenu)
         {
-          DropDownMenu.OnClick (dropDownMenu, dropDownMenu[0].id, getSelectionCount, null);
-          event.keyCode = 40; // always act as if the down-arrow was used when opening the drop down menu.
+          DropDownMenu.OnClick (dropDownMenu, dropDownMenu.id, getSelectionCount, null);
+          (event.keyCode as number) = 40; // always act as if the down-arrow was used when opening the drop down menu.
           DropDownMenu.Options_OnKeyDown (event, dropDownMenu);
         }
         else
@@ -745,8 +757,8 @@ class DropDownMenu
         event.stopPropagation();
         if (dropDownMenu !== DropDownMenu._currentMenu)
         {
-          DropDownMenu.OnClick (dropDownMenu, dropDownMenu[0].id, getSelectionCount, null);
-          event.keyCode = 40; // always act as if the down-arrow was used when opening the drop down menu.
+          DropDownMenu.OnClick (dropDownMenu, dropDownMenu.id, getSelectionCount, null);
+          (event.keyCode as number) = 40; // always act as if the down-arrow was used when opening the drop down menu.
         }
         DropDownMenu.Options_OnKeyDown (event, dropDownMenu);
         return;
@@ -756,21 +768,19 @@ class DropDownMenu
     }
   }
 
-  private static Options_OnKeyDown(event: JQueryKeyEventObject, dropDownMenu: JQuery): void
+  private static Options_OnKeyDown (event: KeyboardEvent, dropDownMenu: HTMLElement): void
   {
-    ArgumentUtility.CheckNotNullAndTypeIsJQuery('dropDownMenu', dropDownMenu);
-
     if (DropDownMenu._currentPopup == null)
       return;
 
-    var itemInfos = DropDownMenu._menuInfos[dropDownMenu[0].id]!.ItemInfos!;
+    var itemInfos = DropDownMenu._menuInfos[dropDownMenu.id]!.ItemInfos!;
     if (itemInfos.length === 0)
       return;
 
     var oldIndex;
     var isSelectionUpdated = false;
-    var dropDownMenuItems = $(DropDownMenu._currentPopup).find('ul').children();
-    var currentItemIndex = $('.' + DropDownMenu._itemSelectedClassName, DropDownMenu._currentPopup).index();
+    var dropDownMenuItems = Array.from (DropDownMenu._currentPopup.querySelector ('ul')!.children);
+    var currentItemIndex = dropDownMenuItems.findIndex (i => i.classList.contains (DropDownMenu._itemSelectedClassName))
 
     switch (event.keyCode)
     {
@@ -783,7 +793,7 @@ class DropDownMenu
         event.stopPropagation();
         if (currentItemIndex >= 0)
         {
-          var itemAnchor = $(dropDownMenuItems[currentItemIndex]).children('a');
+          var itemAnchor = dropDownMenuItems[currentItemIndex].querySelector<HTMLAnchorElement> (':scope > a')!;
           itemAnchor.click();
         }
         break;
@@ -812,7 +822,7 @@ class DropDownMenu
 
           if (oldIndex === currentItemIndex)
             break;
-          if ($(dropDownMenuItems[currentItemIndex]).children('a').length > 0) // skip separators
+          if (dropDownMenuItems[currentItemIndex].querySelectorAll (':scope > a').length > 0) // skip separators
             break;
         }
         break;
@@ -830,7 +840,7 @@ class DropDownMenu
 
           if (oldIndex === currentItemIndex)
             break;
-          if ($(dropDownMenuItems[currentItemIndex]).children('a').length > 0)
+          if (dropDownMenuItems[currentItemIndex].querySelectorAll (':scope > a').length > 0)
             break;
         }
         break;
@@ -838,16 +848,15 @@ class DropDownMenu
 
     if (isSelectionUpdated)
     {
-      $("li", DropDownMenu._currentPopup).removeClass (DropDownMenu._itemSelectedClassName);
+      DropDownMenu._currentPopup.querySelectorAll ("li").forEach (b => b.classList.remove (DropDownMenu._itemSelectedClassName));
       if (currentItemIndex >= 0 && currentItemIndex < itemInfos.length)
       {
-        var dropDownMenuItem = $(dropDownMenuItems[currentItemIndex]);
-        if (dropDownMenuItem.children('a').length > 0) // skip separators
+        var dropDownMenuItem = dropDownMenuItems[currentItemIndex];
+        if (dropDownMenuItem.querySelectorAll (':scope > a').length > 0) // skip separators
         {
-          dropDownMenuItem.addClass(DropDownMenu._itemSelectedClassName);
-          var nonJQueryAnchor = dropDownMenuItem.children ('a')[0];
-          // do not use jQuery focus() here because jQuery causes the focus/blur events to fire in the wrong order (first focus, then blur)
-          nonJQueryAnchor.focus();
+          dropDownMenuItem.classList.add (DropDownMenu._itemSelectedClassName);
+          var anchor = dropDownMenuItem.querySelector<HTMLAnchorElement> (':scope > a')!;
+          anchor.focus();
         }
       }
     }
@@ -876,9 +885,9 @@ class DropDownMenu
     return isEnabled;
   }
 
-  private static GetTarget (event: JQueryMouseEventObject, tagName: string): Element
+  private static GetTarget (event: MouseEvent, tagName: string): Element
   {
-    var element: Nullable<Element> = event.target;
+    var element: Nullable<Element> = event.target as Element;
     while (element && element.tagName != tagName)
       element = element.parentNode as Nullable<Element>;
     // more fun with IE, sometimes event.target is empty, just ignore it then
