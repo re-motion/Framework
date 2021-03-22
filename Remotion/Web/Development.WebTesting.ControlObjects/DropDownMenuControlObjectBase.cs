@@ -62,7 +62,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     public void Close ()
     {
       if (IsOpen())
-        Context.Browser.Driver.ExecuteScript ("DropDownMenu_ClosePopUp()", Scope);
+        Context.Browser.Driver.ExecuteScript ("DropDownMenu.ClosePopUp()", Scope);
     }
 
     /// <inheritdoc/>

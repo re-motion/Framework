@@ -214,13 +214,3 @@ class DatePickerFrame
     window.parent.DatePicker.UpdateValue(value);
   }
 }
-
-function DatePicker_ShowDatePicker (button: string, container: HTMLElement, target: HTMLInputElement, src: string, width: number, height: number): void
-{
-  DatePicker.ShowDatePicker (button, container, target, src, width, height);
-}
-
-function DatePickerFrame_Calendar_SelectionChanged (value: string): void
-{
-  DatePickerFrame.Calendar_SelectionChanged(value);
-}

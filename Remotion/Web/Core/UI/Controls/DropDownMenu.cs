@@ -32,7 +32,7 @@ namespace Remotion.Web.UI.Controls
   public class DropDownMenu : MenuBase, IDropDownMenu
   {
     /// <summary> Only used by control developers. </summary>
-    public static readonly string OnHeadTitleClickScript = "DropDownMenu_OnHeadControlClick();";
+    public static readonly string OnHeadTitleClickScript = "DropDownMenu.OnHeadControlClick();";
 
     private static readonly Action<HtmlTextWriter> s_emptyTitleRenderer = writer => { };
 
@@ -135,7 +135,7 @@ namespace Remotion.Web.UI.Controls
       ArgumentUtility.CheckNotNullOrEmpty ("menuIDReference", menuIDReference);
 
       return string.Format (
-          "DropDownMenu_BindOpenEvent({0}, {1}, '{2}', {3}, {4});",
+          "DropDownMenu.BindOpenEvent({0}, {1}, '{2}', {3}, {4});",
           elementReference,
           menuIDReference,
           GetEventType(),

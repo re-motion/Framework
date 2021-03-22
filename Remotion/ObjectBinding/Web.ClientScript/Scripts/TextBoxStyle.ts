@@ -50,8 +50,3 @@ class TextBoxStyle
     return true;
   }
 }
-
-function TextBoxStyle_OnKeyDown (textBox: HTMLInputElement, length: number): boolean
-{
-  return TextBoxStyle.OnKeyDown (textBox, length);
-}

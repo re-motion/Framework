@@ -134,7 +134,7 @@ namespace Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering
         Unit popUpHeight = PopUpHeight;
         string pickerHeight = "'" + popUpHeight + "'";
 
-        script = "DatePicker_ShowDatePicker("
+        script = "DatePicker.ShowDatePicker("
                  + pickerActionButton + ", "
                  + pickerActionContainer + ", "
                  + pickerActionTarget + ", "

@@ -673,33 +673,3 @@ class BocList
     });
   }
 }
-
-function BocList_InitializeGlobals(): void
-{
-  BocList.InitializeGlobals();
-}
-
-function BocList_InitializeList(bocList: HTMLElement, selectRowSelectorControlName: string, selectAllSelectorControlName: string, selection: number, hasClickSensitiveRows: boolean, onSelectionChangedHandler: { (boclist: HTMLElement, flag: boolean): void }): void
-{
-  BocList.InitializeList(bocList, selectRowSelectorControlName, selectAllSelectorControlName, selection, hasClickSensitiveRows, onSelectionChangedHandler)
-}
-
-function BocList_OnSelectAllSelectorControlClick(bocList: HTMLElement, selectAllSelectorControl: JQuery, isRowHighlightingEnabled: boolean): void
-{
-  BocList.OnSelectAllSelectorControlClick(bocList, selectAllSelectorControl, isRowHighlightingEnabled)
-}
-
-function BocList_OnCommandClick(): void
-{
-  BocList.OnCommandClick()
-}
-
-function BocList_GetSelectionCount (bocListID: string): number
-{
-  return BocList.GetSelectionCount (bocListID)
-}
-
-function BocListNavigationBlock_Initialize(pageNumberField: JQuery, pageIndexField: JQuery): void
-{
-  BocList.InitializeNavigationBlock (pageNumberField, pageIndexField)
-}

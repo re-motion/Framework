@@ -901,37 +901,3 @@ class DropDownMenu
     DropDownMenu._blurTimer = setTimeout (function () { DropDownMenu.ClosePopUp (!DropDownMenu._updateFocus); }, 50);
   }
 }
-
-function DropDownMenu_AddMenuInfo(menuInfo: DropDownMenu_MenuInfo): void
-{
-  DropDownMenu.AddMenuInfo (menuInfo);
-}
-
-function DropDownMenu_BindOpenEvent (openTarget: JQuery, menuID: string, eventType: string, getSelectionCount: Nullable<DropDownMenu_SelectionCountGetter>, moveToMousePosition: boolean): void
-{
-  DropDownMenu.BindOpenEvent (openTarget, menuID, eventType, getSelectionCount, moveToMousePosition);
-}
-
-function DropDownMenu_LoadFilteredMenuItems(
-    itemInfos: DropDownMenu_ItemInfo[],
-    loadMenuItemStatus: Nullable<DropDownMenu_MenuInfo_LoadMenuItemStatusCallback>,
-    onSuccess: DropDownMenu_MenuInfo_LoadMenuItemsSuccessHandler,
-    onError: DropDownMenu_MenuInfo_LoadMenuItemsErrorHandler): void
-{
-  DropDownMenu.LoadFilteredMenuItems (itemInfos, loadMenuItemStatus, onSuccess, onError);
-}
-
-function DropDownMenu_ClosePopUp (updateFocus: boolean): void
-{
-  DropDownMenu.ClosePopUp (updateFocus);
-}
-
-function DropDownMenu_OnHeadControlClick(): void
-{
-  DropDownMenu.OnHeadControlClick();
-}
-
-function DropDownMenu_OnKeyDown(event: JQueryKeyEventObject, dropDownMenu: JQuery, getSelectionCount: Nullable<DropDownMenu_SelectionCountGetter>, hasDedicatedDropDownMenuElement: boolean): void
-{
-  DropDownMenu.OnKeyDown (event, dropDownMenu, getSelectionCount, hasDedicatedDropDownMenuElement);
-}

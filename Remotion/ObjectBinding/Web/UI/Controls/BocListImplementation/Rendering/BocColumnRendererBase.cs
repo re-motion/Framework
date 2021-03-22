@@ -49,7 +49,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     protected const string c_whiteSpace = "&nbsp;";
 
     /// <summary>Name of the JavaScript function to call when a command control has been clicked.</summary>
-    protected const string c_onCommandClickScript = "BocList_OnCommandClick();";
+    protected const string c_onCommandClickScript = "BocList.OnCommandClick();";
 
     private readonly IResourceUrlFactory _resourceUrlFactory;
     private readonly IRenderingFeatures _renderingFeatures;

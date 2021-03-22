@@ -248,7 +248,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       string startUpScriptKey = typeof (BocListRenderer).FullName + "_Startup";
       if (!renderingContext.Control.Page.ClientScript.IsStartupScriptRegistered (typeof (BocListRenderer), startUpScriptKey))
       {
-        string script = "BocList_InitializeGlobals ();";
+        string script = "BocList.InitializeGlobals ();";
         renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock (
             renderingContext.Control, typeof (BocListRenderer), startUpScriptKey, script);
       }
@@ -263,7 +263,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         bool hasClickSensitiveRows = renderingContext.Control.IsSelectionEnabled && !renderingContext.Control.EditModeController.IsRowEditModeActive
                                      && renderingContext.Control.AreDataRowsClickSensitive();
 
-        const string scriptTemplate = "BocList_InitializeList ( $('#{0}')[0], '{1}', '{2}', {3}, {4}, {5});";
+        const string scriptTemplate = "BocList.InitializeList ( $('#{0}')[0], '{1}', '{2}', {3}, {4}, {5});";
         string script = string.Format (
             scriptTemplate,
             renderingContext.Control.ClientID,

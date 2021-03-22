@@ -96,7 +96,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DatePickerButtonImplementation
       var button = _htmlHelper.GetAssertedChildElement (buttonDocument, "a", 0);
       _htmlHelper.AssertAttribute (button, "id", "_Boc_DatePickerButton");
       string script = string.Format (
-          "DatePicker_ShowDatePicker(this, document.getElementById ('{0}'), " +
+          "DatePicker.ShowDatePicker(this, document.getElementById ('{0}'), " +
           "document.getElementById ('{1}'), '{2}', '{3}', '{4}');return false;",
           _datePickerButton.ContainerControlID,
           _datePickerButton.TargetControlID,

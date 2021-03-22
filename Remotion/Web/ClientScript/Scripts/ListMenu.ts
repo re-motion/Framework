@@ -275,18 +275,3 @@ class ListMenu
     $newMenuItem.focus();
   }
 }
-
-function ListMenu_Initialize ($listMenu: JQuery): void
-{
-  ListMenu.Initialize ($listMenu);
-}
-
-function ListMenu_AddMenuInfo (listMenu: HTMLElement, menuInfo: ListMenu_MenuInfo): void
-{
-  ListMenu.AddMenuInfo (listMenu, menuInfo);
-}
-
-function ListMenu_Update (listMenu: HTMLElement, getSelectionCount: Nullable<() => number>): void
-{
-  ListMenu.Update (listMenu, getSelectionCount);
-}

@@ -391,7 +391,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
       string isAsynchronous = "false";
       if (IsInAsyncPostBack)
         isAsynchronous = "true";
-      _page.ClientScript.RegisterStartupScriptBlock (_page, typeof (SmartPageInfo), "smartPageStartUp", "SmartPage_OnStartUp (" + isAsynchronous + ", " + isDirty + ");");
+      _page.ClientScript.RegisterStartupScriptBlock (_page, typeof (SmartPageInfo), "smartPageStartUp", "SmartPage_Context.Instance.OnStartUp (" + isAsynchronous + ", " + isDirty + ");");
 
       // Ensure the __doPostBack function and the __EventTarget and __EventArgument hidden fields on the rendered page
       _page.ClientScript.GetPostBackEventReference (new PostBackOptions (_page.WrappedInstance) { ClientSubmit = true }, false);

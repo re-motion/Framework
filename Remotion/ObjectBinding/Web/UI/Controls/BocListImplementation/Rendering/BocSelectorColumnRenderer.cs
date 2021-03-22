@@ -126,7 +126,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       if (renderingContext.Control.HasClientScript)
       {
         var isRowHighlightingEnabled = renderingContext.Control.AreDataRowsClickSensitive();
-        string script = "BocList_OnSelectAllSelectorControlClick ("
+        string script = "BocList.OnSelectAllSelectorControlClick ("
                         + "document.getElementById ('" + renderingContext.Control.ClientID + "'), "
                         + "this,"
                         + (isRowHighlightingEnabled ? "true" : "false")

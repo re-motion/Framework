@@ -412,15 +412,15 @@ class SmartPage_Context
     var pageRequestManager = this.GetPageRequestManager();
     if (pageRequestManager != null)
     {
-      pageRequestManager.remove_pageLoaded(SmartPage_PageRequestManager_pageLoaded);
-      pageRequestManager.add_pageLoaded(SmartPage_PageRequestManager_pageLoaded);
+      pageRequestManager.remove_pageLoaded(this.PageRequestManager_pageLoaded.bind(this));
+      pageRequestManager.add_pageLoaded(this.PageRequestManager_pageLoaded.bind(this));
     }
 
     var isAsynchronous = false;
     this.PageLoaded(isAsynchronous);
   };
 
-  public PageRequestManager_pageLoaded (sender: Sys.WebForms.PageRequestManager, args: Sys.WebForms.PageLoadedEventArgs): void
+  private PageRequestManager_pageLoaded (sender: Sys.WebForms.PageRequestManager, args: Sys.WebForms.PageLoadedEventArgs): void
   {
     var isAsynchronous = sender && sender.get_isInAsyncPostBack();
     if (isAsynchronous)
@@ -1280,20 +1280,4 @@ class SmartPage_Context
 
   // The single instance of the SmartPage_Context object
   public static Instance: Nullable<SmartPage_Context> = null; // TODO RM-7696: Convert SmartPage_Context.Instance to a get method and throw an exception when it is called before initialization
-}
-
-// Called after page's html content is complete.
-function SmartPage_OnStartUp(isAsynchronous: boolean, isDirty: boolean): void
-{
-  SmartPage_Context.Instance!.OnStartUp(isAsynchronous, isDirty);
-}
-
-function SmartPage_PageRequestManager_pageLoaded(sender: Sys.WebForms.PageRequestManager, args: Sys.WebForms.PageLoadedEventArgs): void
-{
-  SmartPage_Context.Instance!.PageRequestManager_pageLoaded(sender, args);
-}
-
-function RenderThisHtml(theHtml: string): void
-{
-  document.write(theHtml);
 }
