@@ -16,64 +16,62 @@
 // 
 class WebTreeView
 {
-  public static Initialize ($treeView: JQuery): void
+  public static Initialize (treeViewOrSelector: CssSelectorOrElement<HTMLElement>): void
   {
-    ArgumentUtility.CheckNotNullAndTypeIsJQuery("$treeView", $treeView);
+    ArgumentUtility.CheckNotNull ('treeViewOrSelector', treeViewOrSelector);
 
-    $treeView.keydown (function (event)
+    const treeView = ElementResolverUtility.ResolveSingle (treeViewOrSelector);
+
+    treeView.addEventListener ('keydown', function (event)
     {
-      WebTreeView.OnKeyDown (event, $treeView);
+      WebTreeView.OnKeyDown (event, treeView);
     });
 
-    var $focusableTreeNode = $treeView.find('li[tabindex=0][role=treeitem]');
-    var hasFocusableTreeNode = $focusableTreeNode.length > 0;
-    if (!hasFocusableTreeNode)
+    var focusableTreeNode = treeView.querySelector ('li[tabindex="0"][role=treeitem]');
+    if (focusableTreeNode === null)
     {
-      var $selectedTreeNodes = $treeView.find ('li[aria-selected=true]');
-      if ($selectedTreeNodes.length === 0)
+      var firstSelectedTreeNode = treeView.querySelector ('li[aria-selected=true]');
+      if (firstSelectedTreeNode === null)
       {
-        var $topLevelTreeNodes = $treeView.find ('ul[role=tree]:first > li[role=treeitem]:first');
-        if ($topLevelTreeNodes.length > 0)
+        var firstTopLevelTreeNodeList = treeView.querySelector ('ul[role=tree]');
+        var firstTopLevelTreeNode = firstTopLevelTreeNodeList?.querySelector (':scope > li[role=treeitem]');
+        if (firstTopLevelTreeNode)
         {
-          $topLevelTreeNodes[0].setAttribute ('tabindex', '0');
+          firstTopLevelTreeNode.setAttribute ('tabindex', '0');
         }
       }
       else
       {
-        $selectedTreeNodes[0].setAttribute ('tabindex', '0');
+        firstSelectedTreeNode.setAttribute ('tabindex', '0');
       }
     }
   };
 
-  public static OnKeyDown (event: JQueryKeyEventObject, $treeView: JQuery): void
+  private static OnKeyDown (event: KeyboardEvent, treeView: HTMLElement): void
   {
-    ArgumentUtility.CheckNotNull ('event', event);
-    ArgumentUtility.CheckNotNullAndTypeIsJQuery ('$treeView', $treeView);
-
-    var $treeNodes = $treeView.find ('li[role=treeitem]');
+    var treeNodes = Array.from (treeView.querySelectorAll<HTMLElement> ('li[role=treeitem]'));
 
     var activeTreeNodeIndex = -1;
 
-    var activeTreeNode = document.activeElement!;
-    var $activeTreeNode = $ (activeTreeNode);
+    var activeTreeNode = document.activeElement as HTMLElement;
     if (activeTreeNode != null &&
       TypeUtility.IsDefined (activeTreeNode.tagName) &&
       activeTreeNode.tagName.toUpperCase() === 'LI')
     {
-      activeTreeNodeIndex = $treeNodes.index (activeTreeNode);
+      activeTreeNodeIndex = treeNodes.indexOf (activeTreeNode);
     }
     else
     {
-      for (var i = 0; i < $treeNodes.length; i++)
+      for (var i = 0; i < treeNodes.length; i++)
       {
-        if (($treeNodes[i] as any).tabindex === 0) // TODO RM-7686: Fix misspellings of tabIndex in the TypeScript codebase
+        if ((treeNodes[i] as any).tabindex === 0) // TODO RM-7686: Fix misspellings of tabIndex in the TypeScript codebase
         {
           activeTreeNodeIndex = i;
           break;
         }
       }
       if (activeTreeNodeIndex >= 0)
-        $activeTreeNode = $ ($treeNodes[activeTreeNodeIndex]);
+        activeTreeNode = treeNodes[activeTreeNodeIndex];
     }
 
     switch (event.keyCode)
@@ -87,7 +85,7 @@ class WebTreeView
           event.preventDefault();
           event.stopPropagation();
 
-          WebTreeView.SelectNode ($activeTreeNode);
+          WebTreeView.SelectNode (activeTreeNode);
 
           return;
         }
@@ -100,19 +98,25 @@ class WebTreeView
           event.preventDefault();
           event.stopPropagation();
 
-          let hasChildren = $activeTreeNode.attr ('aria-expanded') === 'true';
+          let hasChildren = activeTreeNode.getAttribute ('aria-expanded') === 'true';
           if (!hasChildren)
           {
-            var $parentTreeNode = $activeTreeNode.parentsUntil ('ul[role=tree]', 'li').first();
-            if ($parentTreeNode.length > 0)
+            let parent = activeTreeNode.parentElement;
+            while (parent && !parent.matches ('ul[role=tree]'))
             {
-              let $newTreeNode = $parentTreeNode;
-              WebTreeView.SetFocus ($newTreeNode, $activeTreeNode);
+              if (parent.tagName.toLowerCase() === 'li')
+              {
+                let newTreeNode = parent;
+                WebTreeView.SetFocus (newTreeNode, activeTreeNode);
+                break;
+              }
+
+              parent = parent.parentElement;
             }
           }
           else
           {
-            WebTreeView.ToggleExpander ($activeTreeNode);
+            WebTreeView.ToggleExpander (activeTreeNode);
           }
 
           return;
@@ -126,17 +130,15 @@ class WebTreeView
           event.preventDefault();
           event.stopPropagation();
 
-          let hasChildren = $activeTreeNode.attr ('aria-expanded') === 'true';
+          let hasChildren = activeTreeNode.getAttribute ('aria-expanded') === 'true';
           if (hasChildren)
           {
-            var $childrenGroup = $activeTreeNode.children ('ul');
-            var $firstChild = $childrenGroup.children ('li:first');
-            let $newTreeNode = $firstChild;
-            WebTreeView.SetFocus ($newTreeNode, $activeTreeNode);
+            var newTreeNode = activeTreeNode.querySelector<HTMLElement> (':scope > ul > li')!;
+            WebTreeView.SetFocus (newTreeNode, activeTreeNode);
           }
           else
           {
-            WebTreeView.ToggleExpander ($activeTreeNode);
+            WebTreeView.ToggleExpander (activeTreeNode);
           }
 
           return;
@@ -147,8 +149,8 @@ class WebTreeView
           let newTreeNodeIndex = activeTreeNodeIndex - 1;
           if (newTreeNodeIndex >= 0)
           {
-            let $newTreeNode = $($treeNodes[newTreeNodeIndex]);
-            WebTreeView.SetFocus ($newTreeNode, $activeTreeNode);
+            let newTreeNode = treeNodes[newTreeNodeIndex];
+            WebTreeView.SetFocus (newTreeNode, activeTreeNode);
           }
 
           return;
@@ -157,10 +159,10 @@ class WebTreeView
         {
           // Moves focus to the next node that is focusable without opening or closing a node.
           let newTreeNodeIndex = activeTreeNodeIndex + 1;
-          if (newTreeNodeIndex < $treeNodes.length)
+          if (newTreeNodeIndex < treeNodes.length)
           {
-            let $newTreeNode = $($treeNodes[newTreeNodeIndex]);
-            WebTreeView.SetFocus ($newTreeNode, $activeTreeNode);
+            let newTreeNode = treeNodes[newTreeNodeIndex];
+            WebTreeView.SetFocus (newTreeNode, activeTreeNode);
           }
 
           return;
@@ -169,10 +171,10 @@ class WebTreeView
         {
           // Moves focus to the first node in the tree without opening or closing a node.
           let newTreeNodeIndex = 0;
-          if (newTreeNodeIndex < $treeNodes.length)
+          if (newTreeNodeIndex < treeNodes.length)
           {
-            let $newTreeNode = $($treeNodes[newTreeNodeIndex]);
-            WebTreeView.SetFocus ($newTreeNode, $activeTreeNode);
+            let newTreeNode = treeNodes[newTreeNodeIndex];
+            WebTreeView.SetFocus (newTreeNode, activeTreeNode);
           }
 
           return;
@@ -180,11 +182,11 @@ class WebTreeView
       case 35: // end
         {
           // Moves focus to the last node in the tree that is focusable without opening a node.
-          let newTreeNodeIndex = $treeNodes.length -1;
+          let newTreeNodeIndex = treeNodes.length -1;
           if (newTreeNodeIndex >= 0)
           {
-            let $newTreeNode = $($treeNodes[newTreeNodeIndex]);
-            WebTreeView.SetFocus ($newTreeNode, $activeTreeNode);
+            let newTreeNode = treeNodes[newTreeNodeIndex];
+            WebTreeView.SetFocus (newTreeNode, activeTreeNode);
           }
 
           return;
@@ -192,31 +194,26 @@ class WebTreeView
     }
   };
 
-  public static SetFocus ($newTreeNode: JQuery, $oldTreeNode: JQuery): void
+  private static SetFocus (newTreeNode: HTMLElement, oldTreeNode: HTMLElement): void
   {
-    ArgumentUtility.CheckNotNullAndTypeIsJQuery ('$newTreeNode', $newTreeNode);
-    ArgumentUtility.CheckNotNullAndTypeIsJQuery ('$oldTreeNode', $oldTreeNode);
-
-    $newTreeNode.attr('tabindex', 0);
-    $newTreeNode.focus();
-    $oldTreeNode.attr ('tabindex', -1);
+    newTreeNode.setAttribute ('tabindex', '0');
+    newTreeNode.focus();
+    oldTreeNode.setAttribute ('tabindex', '-1');
   };
 
-  public static ToggleExpander ($treeNode: JQuery): void
+  private static ToggleExpander (treeNode: HTMLElement): void
   {
-    ArgumentUtility.CheckNotNullAndTypeIsJQuery ('$treeNode', $treeNode);
-
-    var expanderAnchor = $treeNode.find('span:first > a:first');
+    var expanderSpan = treeNode.querySelector<HTMLElement> ('span')!;
+    var expanderAnchor = expanderSpan.querySelector<HTMLElement> ('a')!;
     expanderAnchor.click();
   };
 
-  public static SelectNode ($treeNode: JQuery): void
+  private static SelectNode (treeNode: HTMLElement): void
   {
-    ArgumentUtility.CheckNotNullAndTypeIsJQuery ('$treeNode', $treeNode);
-
-    $treeNode.attr ('tabindex', 0);
-    $treeNode.focus();
-    let headAnchor = $treeNode.find ('span:first a[id^=Head_]:first');
+    treeNode.setAttribute ('tabindex', '0');
+    treeNode.focus();
+    let headSpan = treeNode.querySelector<HTMLElement> ('span')!;
+    let headAnchor = headSpan.querySelector<HTMLElement> ('a[id^=Head_]')!;
     headAnchor.click();
   };
 }
