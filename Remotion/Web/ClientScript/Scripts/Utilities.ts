@@ -364,3 +364,76 @@ class WebServiceUtility
       });
   };
 }
+
+class ElementResolverUtility
+{
+  // Resolves any provided css selector, checks the element for null and returns it.
+  public static ResolveSingle<TElement extends Element> (selectorOrElement: CssSelectorOrElement<TElement>, context?: ParentNode): TElement
+  {
+    ArgumentUtility.CheckNotNull("selectorOrElement", selectorOrElement);
+
+    if (TypeUtility.IsString(selectorOrElement))
+    {
+      const queryContext = context ? context : window.document;
+      const resolvedElement = queryContext.querySelector(selectorOrElement) as TElement;
+      if (!resolvedElement)
+        throw ('Error: Cannot find an element specified by selector "' + selectorOrElement + '".');
+
+      return resolvedElement;
+    }
+    else if (TypeUtility.IsObject(selectorOrElement))
+    {
+      return selectorOrElement;
+    }
+    else
+    {
+      throw ('Error: The type of parameter "selectorOrElements" is "' + (typeof selectorOrElement) + '" but "string" or "object" was expected.');
+    }
+  }
+
+  // Resolves any provided css selector, and returns the found elements as an array.
+  public static ResolveMultiple<TElement extends Element> (selectorOrElements: CssSelectorOrElements<TElement>, context?: ParentNode): TElement[]
+  {
+    ArgumentUtility.CheckNotNull("selectorOrElements", selectorOrElements);
+
+    if (TypeUtility.IsString(selectorOrElements))
+    {
+      const queryContext = context ? context : window.document;
+      return Array.from(queryContext.querySelectorAll(selectorOrElements));
+    }
+    else if (Array.isArray(selectorOrElements))
+    {
+      return selectorOrElements;
+    }
+    else if (TypeUtility.IsObject(selectorOrElements))
+    {
+      return [selectorOrElements];
+    }
+    else
+    {
+      throw ('Error: The type of parameter "selectorOrElements" is "' + (typeof selectorOrElements) + '" but "string", "object", or "array" was expected.');
+    }
+  }
+}
+
+class LayoutUtility
+{
+  public static offset(element: HTMLElement)
+  {
+    const boundingRectangle = element.getBoundingClientRect();
+    const window = element.ownerDocument.defaultView;
+    return {
+      left: (window?.pageXOffset ?? 0) + boundingRectangle.left,
+      top: (window?.pageYOffset ?? 0) + boundingRectangle.top
+    }
+  }
+
+  public static outerHeight(element: HTMLElement)
+  {
+    const style = window.getComputedStyle(element);
+
+    // Margins on the style are always in px e.g. "34px"
+    // parseInt ignores the "px" suffix so we do not have to remove here
+    return element.offsetHeight + parseInt(style.marginTop) + parseInt(style.marginBottom);
+  }
+}

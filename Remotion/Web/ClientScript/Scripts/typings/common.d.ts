@@ -32,6 +32,9 @@ type NotNullNorUndefined = string | number | boolean | symbol | bigint | object;
 type NotNull = NotNullNorUndefined | undefined;
 type NotUndefined = NotNullNorUndefined | null;
 
+type CssSelectorOrElement<TElement extends Element> = string | TElement;
+type CssSelectorOrElements<TElement extends Element> = string | TElement | TElement[];
+
 type UndeclaredProperty<TName extends string, TType> = { [K in TName]: TType };
 
 // Enhance the ASP.NET typings
