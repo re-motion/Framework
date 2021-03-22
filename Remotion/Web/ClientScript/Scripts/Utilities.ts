@@ -390,4 +390,50 @@ class ElementResolverUtility
       throw ('Error: The type of parameter "selectorOrElements" is "' + (typeof selectorOrElement) + '" but "string" or "object" was expected.');
     }
   }
+
+  // Resolves any provided css selector, and returns the found elements as an array.
+  public static ResolveMultiple<TElement extends Element> (selectorOrElements: CssSelectorOrElements<TElement>, context?: ParentNode): TElement[]
+  {
+    ArgumentUtility.CheckNotNull("selectorOrElements", selectorOrElements);
+
+    if (TypeUtility.IsString(selectorOrElements))
+    {
+      const queryContext = context ? context : window.document;
+      return Array.from(queryContext.querySelectorAll(selectorOrElements));
+    }
+    else if (Array.isArray(selectorOrElements))
+    {
+      return selectorOrElements;
+    }
+    else if (TypeUtility.IsObject(selectorOrElements))
+    {
+      return [selectorOrElements];
+    }
+    else
+    {
+      throw ('Error: The type of parameter "selectorOrElements" is "' + (typeof selectorOrElements) + '" but "string", "object", or "array" was expected.');
+    }
+  }
+}
+
+class LayoutUtility
+{
+  public static offset(element: HTMLElement)
+  {
+    const boundingRectangle = element.getBoundingClientRect();
+    const window = element.ownerDocument.defaultView;
+    return {
+      left: (window?.pageXOffset ?? 0) + boundingRectangle.left,
+      top: (window?.pageYOffset ?? 0) + boundingRectangle.top
+    }
+  }
+
+  public static outerHeight(element: HTMLElement)
+  {
+    const style = window.getComputedStyle(element);
+
+    // Margins on the style are always in px e.g. "34px"
+    // parseInt ignores the "px" suffix so we do not have to remove here
+    return element.offsetHeight + parseInt(style.marginTop) + parseInt(style.marginBottom);
+  }
 }
