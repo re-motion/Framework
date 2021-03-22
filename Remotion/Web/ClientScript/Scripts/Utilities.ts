@@ -364,3 +364,30 @@ class WebServiceUtility
       });
   };
 }
+
+class ElementResolverUtility
+{
+  // Resolves any provided css selector, checks the element for null and returns it.
+  public static ResolveSingle<TElement extends Element> (selectorOrElement: CssSelectorOrElement<TElement>, context?: ParentNode): TElement
+  {
+    ArgumentUtility.CheckNotNull("selectorOrElement", selectorOrElement);
+
+    if (TypeUtility.IsString(selectorOrElement))
+    {
+      const queryContext = context ? context : window.document;
+      const resolvedElement = queryContext.querySelector(selectorOrElement) as TElement;
+      if (!resolvedElement)
+        throw ('Error: Cannot find an element specified by selector "' + selectorOrElement + '".');
+
+      return resolvedElement;
+    }
+    else if (TypeUtility.IsObject(selectorOrElement))
+    {
+      return selectorOrElement;
+    }
+    else
+    {
+      throw ('Error: The type of parameter "selectorOrElements" is "' + (typeof selectorOrElement) + '" but "string" or "object" was expected.');
+    }
+  }
+}
