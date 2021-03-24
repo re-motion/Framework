@@ -901,3 +901,9 @@ class DropDownMenu
     DropDownMenu._blurTimer = setTimeout (function () { DropDownMenu.ClosePopUp (!DropDownMenu._updateFocus); }, 50);
   }
 }
+
+// RM-7723: This global function is required until we have a solution for Firefox to execute JavaScript in context of the web page
+function DropDownMenu_ClosePopUp (updateFocus: boolean): void
+{
+  DropDownMenu.ClosePopUp (updateFocus);
+}
