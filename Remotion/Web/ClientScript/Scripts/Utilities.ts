@@ -16,7 +16,7 @@
 // 
 class TypeUtility
 {
-  public static IsObject (value: unknown): value is object
+  public static IsObject (value: unknown): value is Nullable<object>
   {
       return typeof (value) == 'object';
   };
