@@ -16,43 +16,44 @@
 // 
 class WebTabStrip
 {
-  public static Initialize ($tablist: JQuery): void
+  public static Initialize (tabStripOrSelector: CssSelectorOrElement<HTMLElement>): void
   {
-    ArgumentUtility.CheckNotNullAndTypeIsJQuery("$tablist", $tablist);
+    ArgumentUtility.CheckNotNull('tablistOrSelector', tabStripOrSelector);
 
-    $tablist.keydown (function (event)
+    const tabStrip = ElementResolverUtility.ResolveSingle (tabStripOrSelector);
+
+    tabStrip.addEventListener ('keydown', function (event)
     {
-      WebTabStrip.OnKeyDown (event, $tablist);
+      WebTabStrip.OnKeyDown (event, tabStrip);
     });
   };
 
-  public static OnKeyDown (event: JQueryKeyEventObject, $tablist: JQuery): void
+  private static OnKeyDown (event: KeyboardEvent, tabStrip: HTMLElement): void
   {
-    ArgumentUtility.CheckNotNullAndTypeIsJQuery ('$tablist', $tablist);
-
-    var $tabs = $tablist.find ('ul li a');
+    var tabs = Array.from (tabStrip.querySelectorAll<HTMLElement> ('ul li a'));
 
     var oldTabIndex = -1;
 
-    var $oldTab = null;
-    var activeTab = document.activeElement;
+    var oldTab = null;
+    var activeTab = document.activeElement as Nullable<HTMLElement>;
     if (activeTab != null && TypeUtility.IsDefined (activeTab.tagName) && activeTab.tagName.toUpperCase() === 'A')
     {
-      $oldTab = $(activeTab);
-      oldTabIndex = $tabs.index (activeTab);
+      oldTab = activeTab;
+      oldTabIndex = tabs.indexOf (activeTab);
     }
     else
     {
-      for (var i = 0; i < $tabs.Length; i++)
+      for (var i = 0; i < tabs.length; i++)
       {
-        if (($tabs[i] as any).tabindex === 0)
+        // TODO RM-7686: Fix misspellings of tabIndex in the TypeScript codebase
+        if ((tabs[i] as any).tabindex === 0)
         {
           oldTabIndex = i;
           break;
         }
       }
       if (oldTabIndex >= 0)
-        $oldTab = $($tabs[oldTabIndex]);
+        oldTab = tabs[oldTabIndex];
     }
 
     var currentTabIndex = Math.max (0, oldTabIndex);
@@ -70,13 +71,13 @@ class WebTabStrip
 
           if (currentTabIndex >= 0)
           {
-            let $newTab = $ ($tabs[currentTabIndex]);
-            $newTab.attr ('tabIndex', 0);
-            $newTab.focus();
-            if ($oldTab !== null && $oldTab[0] !== $newTab[0])
-              $oldTab.attr ('tabIndex', -1);
+            let newTab = tabs[currentTabIndex];
+            newTab.setAttribute ('tabindex', '0');
+            newTab.focus();
+            if (oldTab !== null && oldTab !== newTab)
+              oldTab.setAttribute ('tabindex', '-1');
 
-            $newTab[0].click();
+            newTab.click();
           }
 
           return;
@@ -89,10 +90,10 @@ class WebTabStrip
           if (currentTabIndex > 0)
             currentTabIndex--;
           else
-            currentTabIndex = $tabs.length - 1;
+            currentTabIndex = tabs.length - 1;
 
-          let $newTab = $ ($tabs[currentTabIndex]);
-          $newTab.focus();
+          let newTab = tabs[currentTabIndex];
+          newTab.focus();
 
           return;
         }
@@ -101,13 +102,13 @@ class WebTabStrip
           event.preventDefault();
           event.stopPropagation();
 
-          if (currentTabIndex < $tabs.length - 1)
+          if (currentTabIndex < tabs.length - 1)
             currentTabIndex++;
           else
             currentTabIndex = 0;
 
-          var $newTab = $ ($tabs[currentTabIndex]);
-          $newTab.focus();
+          var newTab = tabs[currentTabIndex];
+          newTab.focus();
 
           return;
         }
