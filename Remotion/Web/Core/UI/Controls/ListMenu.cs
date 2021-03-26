@@ -124,7 +124,7 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNullOrEmpty ("getSelectionCount", getSelectionCount);
       
-      return string.Format ("ListMenu.Update (document.getElementById ('{0}'), {1});", ClientID, getSelectionCount);
+      return string.Format ("ListMenu.Update ('#{0}', {1});", ClientID, getSelectionCount);
     }
 
     string IControlWithDiagnosticMetadata.ControlType
