@@ -16,16 +16,11 @@
 // 
 
 type DatePickerContext = {
-  DatePicker: JQuery;
-  Target: JQuery;
+  DatePicker: HTMLElement;
+  Target: HTMLInputElement;
   TargetDocument: Nullable<Document>;
-  ClickHandler: Nullable<EventHandler<JQueryMouseEventObject>>;
+  ClickHandler: Nullable<EventHandler<MouseEvent>>;
 };
-
-interface Window
-{
-  DatePicker: typeof DatePicker;
-}
 
 class DatePicker
 {
@@ -33,8 +28,22 @@ class DatePicker
   private static _datePicker_repositionInterval = 200;
   private static _datePicker_repositionTimer: Nullable<number> = null;
 
-  public static ShowDatePicker (button: string, container: HTMLElement, target: HTMLInputElement, src: string, width: number, height: number): void
+  public static ShowDatePicker (
+    buttonOrSelector: CssSelectorOrElement<HTMLElement>,
+    containerOrSelector: CssSelectorOrElement<HTMLElement>,
+    targetOrSelector: CssSelectorOrElement<HTMLInputElement>,
+    src: string,
+    width: string,
+    height: string): void
   {
+    ArgumentUtility.CheckNotNull("buttonOrSelector", buttonOrSelector);
+    ArgumentUtility.CheckNotNull("containerOrSelector", containerOrSelector);
+    ArgumentUtility.CheckNotNull("targetOrSelector", targetOrSelector);
+
+    const button = ElementResolverUtility.ResolveSingle(buttonOrSelector);
+    const container = ElementResolverUtility.ResolveSingle(containerOrSelector);
+    const target = ElementResolverUtility.ResolveSingle(targetOrSelector);
+
     var datePickerID = container.id + '_DatePicker';
     //  Tried to open the already open date picker?
     //  Close it and return.
@@ -51,11 +60,11 @@ class DatePicker
       targetDocument = target.ownerDocument;
     else if (TypeUtility.IsDefined(target.document))
       targetDocument = target.document;
-    var clickHandler: Nullable<EventHandler<JQueryMouseEventObject>> = null;
+    var clickHandler: Nullable<EventHandler<MouseEvent>> = null;
     if (targetDocument != null)
     {
       var isEventAfterDatePickerButtonClick = true;
-      clickHandler = function (event: JQueryMouseEventObject)
+      clickHandler = function (event: MouseEvent)
       {
         if (isEventAfterDatePickerButtonClick)
         {
@@ -66,18 +75,18 @@ class DatePicker
           DatePicker.CloseDatePicker(false);
         }
       };
-      $(targetDocument).bind('click', clickHandler);
+      targetDocument.addEventListener('click', clickHandler);
     }
 
-    DatePicker._datePicker_current = { DatePicker: datePicker, Target: $(target), TargetDocument: targetDocument, ClickHandler: clickHandler };
-    datePicker.css('visibility', 'visible');
+    DatePicker._datePicker_current = { DatePicker: datePicker, Target: target, TargetDocument: targetDocument, ClickHandler: clickHandler };
+    datePicker.style.visibility = 'visible';
   }
 
   private static CloseVisibleDatePickerFrame (newDatePickerID: string): boolean
   {
     var isSameDatePicker = false;
-    var newDatePicker = $('#' + newDatePickerID);
-    if (newDatePicker.is(':visible'))
+    var newDatePicker = document.getElementById(newDatePickerID);
+    if (newDatePicker && LayoutUtility.IsVisible(newDatePicker))
       isSameDatePicker = true;
 
       DatePicker.CloseDatePicker(isSameDatePicker);
@@ -101,7 +110,7 @@ class DatePicker
     current.DatePicker.remove();
     if (current.TargetDocument != null)
     {
-      $(current.TargetDocument).unbind('click', current.ClickHandler!); // TODO RM-7647: DatePick.DatePicker_CloseDatePicker removes all click handlers from target element if no click handler was specified for the DatePicker
+      current.TargetDocument.removeEventListener('click', current.ClickHandler!);
     }
   }
 
@@ -113,25 +122,25 @@ class DatePicker
 
     DatePicker.CloseDatePicker(true);
 
-    var isValueChanged = current.Target.val() != value;
+    var isValueChanged = current.Target.value != value;
     if (isValueChanged)
     {
-      current.Target.val(value);
-      current.Target.change();
+      current.Target.value = value;
+      current.Target.dispatchEvent(new Event('change'));
     } 
   }
 
-  private static Create(datePickerID: string, button: string, target: HTMLInputElement, src: string, width: number, height: number): JQuery
+  private static Create(datePickerID: string, button: HTMLElement, target: HTMLInputElement, src: string, width: string, height: string): HTMLElement
   {
-    var datePicker = $('<div/>');
-    datePicker.attr('id', datePickerID);
-    datePicker.addClass ('DatePicker');
-    datePicker.width(width);
-    datePicker.height(height);
-    datePicker.css('visibility', 'hidden');
+    var datePicker = document.createElement('div');
+    datePicker.setAttribute('id', datePickerID);
+    datePicker.classList.add('DatePicker');
+    datePicker.style.width = width;
+    datePicker.style.height = height;
+    datePicker.style.visibility = 'hidden';
 
     var frame = window.document.createElement("iframe");
-    datePicker.append($(frame));
+    datePicker.append(frame);
     var queryStringConcatenator = src.indexOf ('?') as unknown === '-1' ? '?' : '&'; // TODO RM-7646: IndexOf comparison in DatePicker.DatePicker_Create will always yield false due to type mismatch
     frame.src = src + queryStringConcatenator + 'DateValueField=' + target.value;
     frame.frameBorder = 'no';
@@ -141,7 +150,7 @@ class DatePicker
     frame.marginWidth = "0";
     frame.marginHeight = "0";
 
-    $(button).closest('div, td, th, body').append(datePicker);
+    button.closest('div, td, th, body')!.append(datePicker);
 
     if (DatePicker._datePicker_repositionTimer) 
       clearTimeout(DatePicker._datePicker_repositionTimer);
@@ -150,67 +159,80 @@ class DatePicker
       if (DatePicker._datePicker_repositionTimer)
         clearTimeout (DatePicker._datePicker_repositionTimer);
 
-      if (DatePicker._datePicker_current && DatePicker._datePicker_current.DatePicker == datePicker && datePicker.is (':visible'))
+      if (DatePicker._datePicker_current && DatePicker._datePicker_current.DatePicker == datePicker && LayoutUtility.IsVisible(datePicker))
       {
-        DatePicker.ApplyPosition (datePicker, $(button));
+        DatePicker.ApplyPosition (datePicker, button);
         DatePicker._datePicker_repositionTimer = setTimeout (repositionHandler, DatePicker._datePicker_repositionInterval);
       }
     };
 
-    DatePicker.ApplyPosition (datePicker, $(button));
+    DatePicker.ApplyPosition (datePicker, button);
     DatePicker._datePicker_repositionTimer = setTimeout(repositionHandler, DatePicker._datePicker_repositionInterval);
 
     return datePicker;
   }
 
-  private static ApplyPosition (datePicker: JQuery, button: JQuery): void
+  private static ApplyPosition (datePicker: HTMLElement, button: HTMLElement): void
   {
     var datePickerLeft;
     var datePickerTop;
     var datePickerWidth;
     var datePickerHeight;
 
-    var body = $ ('body');
-    var left = $(button).offset().left;
-    var top = $(button).offset().top;
+    var body = document.body;
+    var left = LayoutUtility.GetOffset(button).left;
+    var top = LayoutUtility.GetOffset(button).top;
 
     //  Adjust position so the date picker is shown below 
     //  and aligned with the right border of the button.
-    datePicker.css('left', Math.max (0, left - datePicker.width() + $(button).width()));
-    datePicker.css('top', Math.max (0, top + $(button).height()));
-    datePickerLeft = datePicker.offset().left;
-    datePickerTop = datePicker.offset().top;
-    datePickerWidth = datePicker.width();
-    datePickerHeight = datePicker.height();
+    datePicker.style.left = Math.max (0, left - LayoutUtility.GetWidth(datePicker) + LayoutUtility.GetWidth(button)) + 'px';
+    datePicker.style.top = Math.max (0, top + LayoutUtility.GetHeight(button)) + 'px';
+    datePickerLeft = LayoutUtility.GetOffset(datePicker).left;
+    datePickerTop = LayoutUtility.GetOffset(datePicker).top;
+    datePickerWidth = LayoutUtility.GetWidth(datePicker);
+    datePickerHeight = LayoutUtility.GetHeight(datePicker);
 
     //  Re-adjust the button, in case available screen space is insufficient
-    var visibleBodyTop = body.scrollTop();
-    var visibleBodyHeight = $(window).height();
+    var visibleBodyTop = body.scrollTop;
+    var visibleBodyHeight = document.documentElement.clientHeight;
 
     var datePickerTopAdjusted = datePickerTop;
     if (visibleBodyTop + visibleBodyHeight < datePickerTop + datePickerHeight)
     {
-      var newTop = Math.max (0, $(button).offset().top - datePickerHeight);
+      var newTop = Math.max (0, LayoutUtility.GetOffset(button).top - datePickerHeight);
       if (newTop >= 0)
         datePickerTopAdjusted = newTop;
     }
 
-    var visibleBodyLeft = body.scrollLeft();
-    var visibleBodyWidth = $(window).width();
+    var visibleBodyLeft = body.scrollLeft;
+    var visibleBodyWidth = document.documentElement.clientWidth;
 
     var datePickerLeftAdjusted = datePickerLeft;
     if (datePickerLeft < visibleBodyLeft && datePickerWidth <= visibleBodyWidth)
       datePickerLeftAdjusted = visibleBodyLeft;
 
-    datePicker.css('left', datePickerLeftAdjusted);
-    datePicker.css('top', datePickerTopAdjusted);
+    datePicker.style.left = datePickerLeftAdjusted + 'px';
+    datePicker.style.top = datePickerTopAdjusted + 'px';
   }
+}
+
+interface Window
+{
+  DatePickerFrame: typeof DatePickerFrame;
 }
 
 class DatePickerFrame
 {
   public static Calendar_SelectionChanged (value: string): void
   {
-    window.parent.DatePicker.UpdateValue(value);
+    if (window.parent !== window)
+    {
+      window.parent.DatePickerFrame.Calendar_SelectionChanged(value);
+    }
+    else
+    {
+      DatePicker.UpdateValue(value);
+    }
   }
 }
+window.DatePickerFrame = DatePickerFrame;
