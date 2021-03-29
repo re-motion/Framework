@@ -418,7 +418,21 @@ class ElementResolverUtility
 
 class LayoutUtility
 {
-  public static offset(element: HTMLElement)
+  public static GetHeight(element: Element)
+  {
+    // TODO RM-7734: Fix the width/height calculations in the LayoutHelper to respect box-sizing
+    const style = window.getComputedStyle(element);
+    return parseFloat(style.height) || 0;
+  }
+
+  public static GetWidth(element: Element)
+  {
+    // TODO RM-7734: Fix the width/height calculations in the LayoutHelper to respect box-sizing
+    const style = window.getComputedStyle(element);
+    return parseFloat(style.width) || 0;
+  }
+
+  public static GetOffset(element: HTMLElement)
   {
     const boundingRectangle = element.getBoundingClientRect();
     const window = element.ownerDocument.defaultView;
@@ -428,7 +442,7 @@ class LayoutUtility
     }
   }
 
-  public static outerHeight(element: HTMLElement)
+  public static GetOuterHeight(element: HTMLElement)
   {
     const style = window.getComputedStyle(element);
 
