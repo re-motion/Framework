@@ -418,7 +418,7 @@ class ElementResolverUtility
 
 class LayoutUtility
 {
-  public static offset(element: HTMLElement)
+  public static GetOffset(element: HTMLElement)
   {
     const boundingRectangle = element.getBoundingClientRect();
     const window = element.ownerDocument.defaultView;
@@ -428,7 +428,7 @@ class LayoutUtility
     }
   }
 
-  public static outerHeight(element: HTMLElement)
+  public static GetOuterHeight(element: HTMLElement)
   {
     const style = window.getComputedStyle(element);
 
