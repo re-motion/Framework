@@ -60,8 +60,7 @@ namespace Remotion.Collections.DataStore
     {
       ArgumentUtility.CheckNotNull ("key", key);
 
-      TValue dummy;
-      return TryGetValue (key, out dummy);
+      return TryGetValue (key, out var dummy);
     }
 
     public void Add (TKey key, TValue value)
@@ -89,8 +88,7 @@ namespace Remotion.Collections.DataStore
     {
       get
       {
-        TValue result;
-        if (!TryGetValue (key, out result))
+        if (!TryGetValue (key, out var result))
           throw new KeyNotFoundException ("Key not found.");
         return result; 
       }
@@ -106,8 +104,7 @@ namespace Remotion.Collections.DataStore
     {
       ArgumentUtility.CheckNotNull ("key", key);
 
-      TValue value;
-      TryGetValue (key, out value);
+      TryGetValue (key, out var value);
       return value;
     }
 
@@ -137,8 +134,7 @@ namespace Remotion.Collections.DataStore
       ArgumentUtility.CheckNotNull ("key", key);
       ArgumentUtility.CheckNotNull ("valueFactory", valueFactory);
 
-      TValue value;
-      if (!TryGetValue (key, out value))
+      if (!TryGetValue (key, out var value))
       {
         value = valueFactory (key);
         AddWithoutScanning (key, value);
