@@ -64,7 +64,7 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
           renderingContext.Control,
           typeof (WebTabStrip),
           Guid.NewGuid ().ToString (),
-          string.Format ("WebTabStrip.Initialize ('{0}');", renderingContext.Control.ClientID));
+          string.Format ("WebTabStrip.Initialize ('#{0}');", renderingContext.Control.ClientID));
 
       AddAttributesToRender (renderingContext);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Div);
