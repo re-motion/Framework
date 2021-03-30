@@ -127,8 +127,7 @@ namespace Remotion.Collections.Caching
       ArgumentUtility.DebugCheckNotNull ("key", key);
       ArgumentUtility.DebugCheckNotNull ("valueFactory", valueFactory);
 
-      TValue value;
-      if (!TryGetValueInternal (key, out value))
+      if (!TryGetValueInternal (key, out var value))
       {
         ArgumentUtility.CheckNotNull ("valueFactory", valueFactory);
 
