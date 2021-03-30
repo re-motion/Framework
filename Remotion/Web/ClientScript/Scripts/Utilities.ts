@@ -450,4 +450,9 @@ class LayoutUtility
     // parseInt ignores the "px" suffix so we do not have to remove here
     return element.offsetHeight + parseInt(style.marginTop) + parseInt(style.marginBottom);
   }
+
+  public static IsVisible(element: HTMLElement)
+  {
+    return element.offsetWidth !== 0 || element.offsetHeight !== 0 || element.getClientRects().length !== 0;
+  }
 }
