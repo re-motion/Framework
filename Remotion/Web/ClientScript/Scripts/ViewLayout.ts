@@ -16,47 +16,53 @@
 // 
 class ViewLayout
 {
-  public static AdjustActiveViewContent (viewContent: JQuery): void
+  public static AdjustActiveViewContent (viewContent: HTMLElement): void
   {
-    var viewContentBorder = viewContent.children('div').eq (0);
-    var viewBottomControls = viewContent.next();
+    var viewContentBorder = viewContent.querySelector<HTMLDivElement> (':scope > div')!;
+    var viewBottomControls = viewContent.nextElementSibling as HTMLElement;
 
-    var viewContentBorderHeight = viewContentBorder.outerHeight (true) - viewContentBorder.height();
-    var viewBottomControlsBorderHeight = viewBottomControls.outerHeight (true) - viewBottomControls.height();
+    var viewContentBorderHeight = LayoutUtility.GetOuterHeight (viewContentBorder) - LayoutUtility.GetHeight (viewContentBorder);
+    var viewBottomControlsBorderHeight = LayoutUtility.GetOuterHeight (viewBottomControls) - LayoutUtility.GetHeight (viewBottomControls);
 
-    var viewContentOffset = viewContent.offset();
+    var viewContentOffset = LayoutUtility.GetOffset (viewContent);
     var viewTop = viewContentOffset == null ? 0 : viewContentOffset.top;
 
-    var viewBottomControlsOffset = viewBottomControls.offset();
+    var viewBottomControlsOffset = LayoutUtility.GetOffset (viewBottomControls);
     var bottomTop = viewBottomControlsOffset == null ? 0 : viewBottomControlsOffset.top;
 
     var viewNewHeight = bottomTop - viewTop - viewContentBorderHeight - viewBottomControlsBorderHeight;
 
-    viewContentBorder.height (viewNewHeight);
+    viewContentBorder.style.height = viewNewHeight + "px";
   };
 
-  public static AdjustSingleView (containerElement: JQuery): void
+  // TODO RM-7670 this signature needs to be adjusted after Utilities.ts/ExecuteResizeHandlers() has been adapted to not use JQuery anymore.
+  public static AdjustSingleView ($containerElement: JQuery): void
   {
-    var viewContent = containerElement.children().eq(0).children().eq(1);
-    ViewLayout.AdjustActiveViewContent(viewContent);
+    var containerElement = $containerElement[0];
+
+    var viewContent = containerElement.children[0].children[1] as HTMLElement;
+    ViewLayout.AdjustActiveViewContent (viewContent);
   };
 
-  public static AdjustTabbedMultiView (containerElement: JQuery): void
+  // TODO RM-7670 this signature needs to be adjusted after Utilities.ts/ExecuteResizeHandlers() has been adapted to not use JQuery anymore.
+  public static AdjustTabbedMultiView ($containerElement: JQuery): void
   {
-    var viewContent = containerElement.children().eq(0).children().eq(2);
-    ViewLayout.AdjustActiveViewContent(viewContent);
+    var containerElement = $containerElement[0];
+
+    var viewContent = containerElement.children[0].children[2] as HTMLElement;
+    ViewLayout.AdjustActiveViewContent (viewContent);
 
     if (BrowserUtility.GetIEVersion() > 0)
     {
       // For Internet Explorer + JAWS 2018ff, the tabindex-attribute on the table root will break a table with a scrollable header part.
-      var contentBorder = viewContent.children ('div[tabindex]').eq (0);
-      if (contentBorder.length > 0)
+      var contentBorder = viewContent.querySelector (':scope > div[tabindex]');
+      if (contentBorder !== null)
       {
-        contentBorder.removeAttr ('tabindex');
-        var contentLabelledBy = contentBorder.attr ('aria-labelledby') || '';
-        var caption = viewContent.children ('span[aria-hidden]').eq (0);
-        caption.attr ('tabindex', 0);
-        caption.attr ('aria-labelledby', contentLabelledBy + ' ' + caption[0].id);
+        contentBorder.removeAttribute ('tabindex');
+        var contentLabelledBy = contentBorder.getAttribute ('aria-labelledby') || '';
+        var caption = viewContent.querySelector (':scope > span[aria-hidden]')!;
+        caption.setAttribute ('tabindex', '0');
+        caption.setAttribute ('aria-labelledby', contentLabelledBy + ' ' + caption.id);
       }
     }
   };
