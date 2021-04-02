@@ -584,7 +584,7 @@ namespace Remotion.Web.UI.Controls
           this,
           typeof (WebTreeView),
           Guid.NewGuid().ToString(),
-          string.Format ("WebTreeView.Initialize ($('#{0}'));", ClientID));
+          string.Format ("WebTreeView.Initialize ('#{0}');", ClientID));
 
       ResolveNodeIcons();
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassRoot);
@@ -1297,17 +1297,15 @@ namespace Remotion.Web.UI.Controls
       {
         string script =
             string.Format (
-                @"$(document).ready( function(){{ 
-  $('#{0}').find('span.treeViewNodeHead, span.treeViewNodeHeadSelected').each(
-    function() {{
-      var menuID = $(this).attr('id');
-      if (menuID != null && menuID.length > 0)
-        {1}
-    }}
-  ); 
-}} );",
+                @"document.getElementById('{0}').querySelectorAll('span.treeViewNodeHead, span.treeViewNodeHeadSelected').forEach(
+  el => {{
+    var menuID = el.id;
+    if (menuID != null && menuID.length > 0)
+      {1}
+  }}
+);",
                 ClientID,
-                anyNodeContextMenu.GetBindOpenEventScript ("this", "menuID", true));
+                anyNodeContextMenu.GetBindOpenEventScript ("el", "menuID", true));
         ((IControl) this).Page.ClientScript.RegisterStartupScriptBlock (this, typeof (WebTreeView), key, script);
       }
 
