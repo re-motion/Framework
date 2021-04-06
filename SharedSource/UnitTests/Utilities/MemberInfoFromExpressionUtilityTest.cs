@@ -214,7 +214,7 @@ namespace Remotion.UnitTests.Utilities
     {
       var member = MemberInfoFromExpressionUtility.GetMethod (() => DomainType.StaticVoidGenericMethod<SampleType?> (null));
 
-      var expected = typeof (DomainType).GetMethod ("StaticVoidGenericMethod").MakeGenericMethod (typeof (SampleType));
+      var expected = typeof (DomainType).GetMethod ("StaticVoidGenericMethod")!.MakeGenericMethod (typeof (SampleType));
       Assert.That (member, Is.EqualTo (expected));
     }
 
@@ -223,7 +223,7 @@ namespace Remotion.UnitTests.Utilities
     {
       var member = MemberInfoFromExpressionUtility.GetMethod (() => DomainType.StaticGenericMethod<SampleType?> (null));
 
-      var expected = typeof (DomainType).GetMethod ("StaticGenericMethod").MakeGenericMethod (typeof (SampleType));
+      var expected = typeof (DomainType).GetMethod ("StaticGenericMethod")!.MakeGenericMethod (typeof (SampleType));
       Assert.That (member, Is.EqualTo (expected));
     }
 
@@ -279,7 +279,7 @@ namespace Remotion.UnitTests.Utilities
       // The C# compiler always inserts the root method definition for virtual methods into expression trees.
       // To test behavior with non-root definitions, we need to construct an expression tree manually.
       var parameter = Expression.Parameter (typeof (DomainType), "obj");
-      var method = typeof (DomainType).GetMethod ("OverridingVoidMethod");
+      var method = typeof (DomainType).GetMethod ("OverridingVoidMethod")!;
       var expression = Expression.Lambda<Action<DomainType>> (Expression.Call (parameter, method), parameter);
 
       var member = MemberInfoFromExpressionUtility.GetMethod (expression);
@@ -293,7 +293,7 @@ namespace Remotion.UnitTests.Utilities
       // The C# compiler always inserts the root method definition for virtual methods into expression trees.
       // To test behavior with non-root definitions, we need to construct an expression tree manually.
       var parameter = Expression.Parameter (typeof (DomainType), "obj");
-      var method = typeof (DomainType).GetMethod ("OverridingMethod");
+      var method = typeof (DomainType).GetMethod ("OverridingMethod")!;
       var expression = Expression.Lambda<Func<DomainType, int>> (Expression.Call (parameter, method), parameter);
 
       var member = MemberInfoFromExpressionUtility.GetMethod (expression);
@@ -316,7 +316,7 @@ namespace Remotion.UnitTests.Utilities
     {
       var member = MemberInfoFromExpressionUtility.GetMethod ((DomainType obj) => obj.InstanceVoidGenericMethod<SampleType?> (null));
 
-      var expected = typeof (DomainType).GetMethod ("InstanceVoidGenericMethod").MakeGenericMethod (typeof (SampleType));
+      var expected = typeof (DomainType).GetMethod ("InstanceVoidGenericMethod")!.MakeGenericMethod (typeof (SampleType));
       Assert.That (member, Is.EqualTo (expected));
     }
 
@@ -325,7 +325,7 @@ namespace Remotion.UnitTests.Utilities
     {
       var member = MemberInfoFromExpressionUtility.GetMethod ((DomainType obj) => obj.InstanceGenericMethod<SampleType?> (null));
 
-      var expected = typeof (DomainType).GetMethod ("InstanceGenericMethod").MakeGenericMethod (typeof (SampleType));
+      var expected = typeof (DomainType).GetMethod ("InstanceGenericMethod")!.MakeGenericMethod (typeof (SampleType));
       Assert.That (member, Is.EqualTo (expected));
     }
 
@@ -334,7 +334,7 @@ namespace Remotion.UnitTests.Utilities
     {
       var member = MemberInfoFromExpressionUtility.GetMethod ((DomainType obj) => obj.OverridingVoidGenericMethod<SampleType?> (null));
 
-      var expected = typeof (DomainTypeBase).GetMethod ("OverridingVoidGenericMethod").MakeGenericMethod (typeof (SampleType));
+      var expected = typeof (DomainTypeBase).GetMethod ("OverridingVoidGenericMethod")!.MakeGenericMethod (typeof (SampleType));
       Assert.That (member, Is.EqualTo (expected));
     }
 
@@ -343,7 +343,7 @@ namespace Remotion.UnitTests.Utilities
     {
       var member = MemberInfoFromExpressionUtility.GetMethod ((DomainType obj) => obj.OverridingGenericMethod<SampleType?> (null));
 
-      var expected = typeof (DomainTypeBase).GetMethod ("OverridingGenericMethod").MakeGenericMethod (typeof (SampleType));
+      var expected = typeof (DomainTypeBase).GetMethod ("OverridingGenericMethod")!.MakeGenericMethod (typeof (SampleType));
       Assert.That (member, Is.EqualTo (expected));
     }
 
@@ -353,7 +353,7 @@ namespace Remotion.UnitTests.Utilities
       // The C# compiler always inserts the root method definition for virtual methods into expression trees.
       // To test behavior with non-root definitions, we need to construct an expression tree manually.
       var parameter = Expression.Parameter (typeof (DomainType), "obj");
-      var method = typeof (DomainType).GetMethod ("OverridingVoidGenericMethod").MakeGenericMethod (typeof (SampleType));
+      var method = typeof (DomainType).GetMethod ("OverridingVoidGenericMethod")!.MakeGenericMethod (typeof (SampleType));
       var expression = Expression.Lambda<Action<DomainType>> (
           Expression.Call (parameter, method, Expression.Constant (null, typeof (SampleType))), parameter);
 
@@ -368,7 +368,7 @@ namespace Remotion.UnitTests.Utilities
       // The C# compiler always inserts the root method definition for virtual methods into expression trees.
       // To test behavior with non-root definitions, we need to construct an expression tree manually.
       var parameter = Expression.Parameter (typeof (DomainType), "obj");
-      var method = typeof (DomainType).GetMethod ("OverridingGenericMethod").MakeGenericMethod (typeof (SampleType));
+      var method = typeof (DomainType).GetMethod ("OverridingGenericMethod")!.MakeGenericMethod (typeof (SampleType));
       var expression = Expression.Lambda<Func<DomainType, int>> (
           Expression.Call (parameter, method, Expression.Constant (null, typeof (SampleType))), parameter);
 

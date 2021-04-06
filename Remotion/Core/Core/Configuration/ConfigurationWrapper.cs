@@ -60,7 +60,7 @@ namespace Remotion.Configuration
 
     public abstract ConnectionStringSettings GetConnectionString (string name);
 
-    public abstract string GetAppSetting (string name);
+    public abstract string? GetAppSetting (string name);
 
     public object GetSection (string sectionName, bool throwIfNotFound)
     {
@@ -84,11 +84,11 @@ namespace Remotion.Configuration
       return connectionStringSettings;
     }
 
-    public string GetAppSetting (string name, bool throwIfNotFound)
+    public string? GetAppSetting (string name, bool throwIfNotFound)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("name", name);
 
-      string appSetting = GetAppSetting (name);
+      string? appSetting = GetAppSetting (name);
       if (throwIfNotFound && appSetting == null)
         throw new ConfigurationErrorsException (string.Format ("Required application setting '{0}' does not exist in the configuration.", name));
 

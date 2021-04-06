@@ -57,17 +57,18 @@ namespace Remotion.Reflection
     }
 
     private readonly MethodInfo _methodInfo;
-    private readonly Lazy<ITypeInformation> _cachedDeclaringType;
+    private readonly Lazy<ITypeInformation?> _cachedDeclaringType;
     private readonly Lazy<ITypeInformation> _cachedOriginalDeclaringType;
 
-    private readonly Lazy<IPropertyInformation> _declaringProperty;
+    private readonly Lazy<IPropertyInformation?> _declaringProperty;
     private readonly Lazy<IReadOnlyCollection<IMethodInformation>> _interfaceDeclarations;
 
     private MethodInfoAdapter (MethodInfo methodInfo)
     {
       _methodInfo = methodInfo;
 
-      _cachedDeclaringType = new Lazy<ITypeInformation> (
+      // TODO RM-7777: Check if Create or CreateOrNull should be used in the following instantiations.
+      _cachedDeclaringType = new Lazy<ITypeInformation?> (
           () => TypeAdapter.CreateOrNull (_methodInfo.DeclaringType),
           LazyThreadSafetyMode.ExecutionAndPublication);
 
@@ -75,7 +76,7 @@ namespace Remotion.Reflection
           () => TypeAdapter.Create (_methodInfo.GetOriginalDeclaringType()),
           LazyThreadSafetyMode.ExecutionAndPublication);
 
-      _declaringProperty = new Lazy<IPropertyInformation> (
+      _declaringProperty = new Lazy<IPropertyInformation?> (
           () => PropertyInfoAdapter.CreateOrNull (_methodInfo.FindDeclaringProperty()),
           LazyThreadSafetyMode.ExecutionAndPublication);
 
@@ -99,7 +100,7 @@ namespace Remotion.Reflection
       get { return _methodInfo.Name; }
     }
 
-    public ITypeInformation DeclaringType
+    public ITypeInformation? DeclaringType
     {
       get { return _cachedDeclaringType.Value; }
     }
@@ -119,7 +120,7 @@ namespace Remotion.Reflection
       return AttributeUtility.GetCustomAttributes<T> (_methodInfo, inherited);
     }
 
-    public object Invoke (object? instance, object?[]? parameters)
+    public object? Invoke (object? instance, object?[]? parameters)
     {
       //TODO RM-7432: Remove null check, parameter should be nullable
       ArgumentUtility.CheckNotNull ("instance", instance!);
@@ -131,7 +132,8 @@ namespace Remotion.Reflection
     {
       ArgumentUtility.CheckNotNull ("implementationType", implementationType);
 
-      if (!_methodInfo.DeclaringType.IsInterface)
+      // TODO RM-7801: _methodInfo.DeclaringType being null should be handled.
+      if (!_methodInfo.DeclaringType!.IsInterface)
         throw new InvalidOperationException ("This method is not an interface method.");
 
       if (implementationType.IsInterface)
@@ -155,7 +157,8 @@ namespace Remotion.Reflection
 
     private IReadOnlyCollection<IMethodInformation> FindInterfaceDeclarationsImplementation ()
     {
-      if (_methodInfo.DeclaringType.IsInterface)
+      // TODO RM-7801: _methodInfo.DeclaringType being null should be handled.
+      if (_methodInfo.DeclaringType!.IsInterface)
         throw new InvalidOperationException ("This method is itself an interface member, so it cannot have an interface declaration.");
 
       return (from interfaceType in _methodInfo.DeclaringType.GetInterfaces()
@@ -177,7 +180,7 @@ namespace Remotion.Reflection
       return DynamicMethodBasedMethodCallerFactory.CreateMethodCallerDelegate (_methodInfo, delegateType);
     }
 
-    public IPropertyInformation FindDeclaringProperty ()
+    public IPropertyInformation? FindDeclaringProperty ()
     {
       return _declaringProperty.Value;
     }
@@ -207,7 +210,7 @@ namespace Remotion.Reflection
       return RuntimeHelpers.GetHashCode (this);
     }
 
-    public override string ToString ()
+    public override string? ToString ()
     {
       return _methodInfo.ToString ();
     }

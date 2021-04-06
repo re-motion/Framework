@@ -25,7 +25,7 @@ namespace Remotion.UnitTests.Utilities
   [TestFixture]
   public class ITypeConverterFactoryTest
   {
-    private DefaultServiceLocator _serviceLocator = default!;
+    private DefaultServiceLocator _serviceLocator;
 
     [SetUp]
     public void SetUp ()

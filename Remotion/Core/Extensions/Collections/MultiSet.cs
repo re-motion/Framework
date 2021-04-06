@@ -24,6 +24,7 @@ namespace Remotion.Mixins.Utilities
 {
   [DebuggerDisplay ("Count = {_items.Count}")]
   internal class MultiSet<T> : IEnumerable<T>
+      where T : notnull
   {
     private MultiDictionary<T, T> _items;
 

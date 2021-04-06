@@ -23,9 +23,9 @@ namespace Remotion.Reflection.UnitTests
   [TestFixture]
   public class PropertyInfoAdapterConverterTest
   {
-    private PropertyInfo _propertyInfo = default!;
-    private PropertyInfoAdapter _propertyInfoAdapter = default!;
-    private PropertyInfoAdapterConverter _converter = default!;
+    private PropertyInfo _propertyInfo;
+    private PropertyInfoAdapter _propertyInfoAdapter;
+    private PropertyInfoAdapterConverter _converter;
 
     [SetUp]
     public void SetUp ()

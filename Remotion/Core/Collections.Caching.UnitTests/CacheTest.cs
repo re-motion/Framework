@@ -27,7 +27,7 @@ namespace Remotion.Collections.Caching.UnitTests
   [TestFixture]
   public class CacheTest
   {
-    private ICache<string, object> _cache = default!;
+    private ICache<string, object> _cache;
     
     [SetUp]
     public void SetUp ()
@@ -243,7 +243,7 @@ namespace Remotion.Collections.Caching.UnitTests
       object expected3 = new object();
       _cache.GetOrCreateValue ("a", delegate { return expected1; });
       _cache.GetOrCreateValue ("b", delegate { return expected2; });
-      KeyValuePair<string, object>[]? nestedItems = null;
+      KeyValuePair<string, object>[] nestedItems = null;
 
       var actualValue = _cache.GetOrCreateValue (
           "key1",

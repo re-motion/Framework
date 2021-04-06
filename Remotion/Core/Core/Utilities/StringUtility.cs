@@ -263,14 +263,15 @@ namespace Remotion.Utilities
     }
 
     [return: NotNullIfNotNull ("list")]
-    public static string[]? ListToStringArray (IList list)
+    public static string[]? ListToStringArray (IList? list)
     {
       if (list == null)
         return null;
 
       string[] strings = new string[list.Count];
       for (int i = 0; i < list.Count; ++i)
-        strings[i] = list[i].ToString();
+        // TODO RM-7750: list[i] possibly being null must be handled.
+        strings[i] = list[i]!.ToString()!;
       return strings;
     }
 
@@ -295,7 +296,8 @@ namespace Remotion.Utilities
       {
         if (i > 0)
           sb.Append (separator);
-        sb.Append (FormatScalarValue (list[i], formatProvider));
+        // TODO RM-7750: list[i] possibly being null must be handled.
+        sb.Append (FormatScalarValue (list[i]!, formatProvider));
       }
       return sb.ToString();
     }
@@ -343,7 +345,7 @@ namespace Remotion.Utilities
 
     private static string FormatArrayValue (object value, IFormatProvider? formatProvider)
     {
-      Type elementType = value.GetType().GetElementType();
+      Type elementType = value.GetType().GetElementType()!;
       string? format = null;
       if (elementType == typeof (float) || elementType == typeof (double))
         format = "R";
@@ -364,7 +366,7 @@ namespace Remotion.Utilities
           format = "R";
         return formattable.ToString (format, formatProvider);
       }
-      return value.ToString();
+      return value.ToString()!;
     }
 
     /// <summary>
@@ -381,7 +383,8 @@ namespace Remotion.Utilities
     /// <exception cref="ParseException"> The <b>Parse</b> method was not found, or failed. </exception>
     public static object? Parse (Type type, string? value, IFormatProvider? formatProvider)
     {
-      //TODO RM-7432: ParseArrayValue will throw NPE if type is an arrayType and value is null
+      // TODO RM-7778: The behavior of null values for different types should be tested.
+      // TODO RM-7432: ParseArrayValue will throw NRE if type is an arrayType and value is null.
       ArgumentUtility.CheckNotNull ("type", type);
 
       Type underlyingType = Nullable.GetUnderlyingType (type) ?? type;
@@ -396,16 +399,16 @@ namespace Remotion.Utilities
       if (isNullableType && string.IsNullOrEmpty (value))
         return null;
       if (underlyingType.IsEnum)
-        return ParseEnumValue (underlyingType, value);
+        return ParseEnumValue (underlyingType, value!);
       if (underlyingType == typeof (Guid))
-        return new Guid (value);
+        return new Guid (value!);
       else
         return ParseScalarValue (underlyingType, value, formatProvider);
     }
 
     private static object ParseArrayValue (Type type, string value, IFormatProvider? formatProvider)
     {
-      Type elementType = type.GetElementType();
+      Type elementType = type.GetElementType()!;
       if (elementType.IsArray)
         throw new ParseException ("Cannot parse an array of arrays.");
       ParsedItem[] items = ParseSeparatedList (value, ',');
@@ -436,7 +439,7 @@ namespace Remotion.Utilities
 
       try
       {
-        return parseMethod.Invoke (null, args);
+        return parseMethod.Invoke (null, args)!;
       }
       catch (TargetInvocationException e)
       {
@@ -444,8 +447,10 @@ namespace Remotion.Utilities
       }
     }
 
-    private static object ParseEnumValue (Type underlyingType, string? value)
+    private static object ParseEnumValue (Type underlyingType, string value)
     {
+      // TODO RM-7757: value must be checked for null and a ParserException should be thrown in case of null.
+      //               Given the usage of the method, the `value` parameter should be nullable in the signature and only become not null through the null-check.
       try
       {
         return Enum.Parse (underlyingType, value, false);
@@ -472,7 +477,7 @@ namespace Remotion.Utilities
         return true;
       if (type.IsArray)
       {
-        Type elementType = type.GetElementType();
+        Type elementType = type.GetElementType()!;
         if (elementType.IsArray)
           return false;
         return CanParse (elementType);
@@ -499,7 +504,7 @@ namespace Remotion.Utilities
           BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy,
           null,
           new Type[] { typeof (string), typeof (IFormatProvider) },
-          null);
+          null)!;
 
       if (parseMethod != null && type.IsAssignableFrom (parseMethod.ReturnType))
         return parseMethod;
@@ -515,7 +520,7 @@ namespace Remotion.Utilities
           BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy,
           null,
           new Type[] { typeof (string) },
-          null);
+          null)!;
 
       if (parseMethod != null && type.IsAssignableFrom (parseMethod.ReturnType))
         return parseMethod;

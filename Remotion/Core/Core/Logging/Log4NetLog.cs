@@ -83,7 +83,7 @@ namespace Remotion.Logging
 
     /// <inheritdoc />
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
-    public void Log (LogLevel logLevel, int? eventID, object message, Exception? exceptionObject)
+    public void Log (LogLevel logLevel, int? eventID, object? message, Exception? exceptionObject)
     {
       var level = Convert (logLevel);
       if (_logger.IsEnabledFor (level))
@@ -92,7 +92,7 @@ namespace Remotion.Logging
 
     /// <inheritdoc />
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
-    public void LogFormat (LogLevel logLevel, int? eventID, Exception? exceptionObject, string format, params object[] args)
+    public void LogFormat (LogLevel logLevel, int? eventID, Exception? exceptionObject, string? format, params object?[]? args)
     {
       var level = Convert (logLevel);
       if (_logger.IsEnabledFor (level))
@@ -105,7 +105,7 @@ namespace Remotion.Logging
       return _logger.IsEnabledFor (Convert (logLevel));
     }
 
-    private LoggingEvent CreateLoggingEvent (Level level, int? eventID, object message, Exception? exceptionObject)
+    private LoggingEvent CreateLoggingEvent (Level level, int? eventID, object? message, Exception? exceptionObject)
     {
       LoggingEvent loggingEvent = new LoggingEvent (typeof (Log4NetLog), null, _logger.Name, level, message, exceptionObject);
 
@@ -125,7 +125,7 @@ namespace Remotion.Logging
       return loggingEvent;
     }
 
-    private void LogLoggingError (int eventID, Exception? exceptionObject, object message)
+    private void LogLoggingError (int eventID, Exception? exceptionObject, object? message)
     {
       int safeEventID;
       if (eventID < 0)
@@ -147,7 +147,8 @@ namespace Remotion.Logging
                   new SystemStringFormat (
                       CultureInfo.InvariantCulture,
                       "Failure during logging of message:\r\n{0}\r\nEvent ID: {1}",
-                      new object[] { message.ToString(), eventID }),
+                      // TODO RM-7803: message or the ToString() result being null should result in a fallback value being used.
+                      new object?[] { message!.ToString(), eventID }),
                   exceptionObject));
         }
       }

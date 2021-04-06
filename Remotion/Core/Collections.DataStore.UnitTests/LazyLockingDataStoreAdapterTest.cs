@@ -31,8 +31,8 @@ namespace Remotion.Collections.DataStore.UnitTests
   [TestFixture]
   public class LazyLockingDataStoreAdapterTest
   {
-    private IDataStore<string, Lazy<Wrapper>> _innerDataStoreMock = default!;
-    private LazyLockingDataStoreAdapter<string, object> _store = default!;
+    private IDataStore<string, Lazy<Wrapper>> _innerDataStoreMock;
+    private LazyLockingDataStoreAdapter<string, object> _store;
 
     [SetUp]
     public void SetUp ()
@@ -139,7 +139,7 @@ namespace Remotion.Collections.DataStore.UnitTests
       var doubleCheckedLockingContainer = CreateContainerThatChecksForNotProtected (value);
 
       _innerDataStoreMock
-          .Expect (mock => ((InnerFactory) (store => store.GetValueOrDefault ("test")!)) (mock))
+          .Expect (mock => ((InnerFactory) (store => store.GetValueOrDefault ("test"))) (mock))
           .Return (doubleCheckedLockingContainer)
           .WhenCalled (mi => CheckInnerDataStoreIsProtected());
 
@@ -153,8 +153,8 @@ namespace Remotion.Collections.DataStore.UnitTests
     public void GetValueOrDefault_NoValueFound ()
     {
       _innerDataStoreMock
-          .Expect (mock => ((InnerFactory) (store => store.GetValueOrDefault ("test")!)) (mock))
-          .Return (null!)
+          .Expect (mock => ((InnerFactory) (store => store.GetValueOrDefault ("test"))) (mock))
+          .Return (null)
           .WhenCalled (mi => CheckInnerDataStoreIsProtected());
 
       var actualResult = _store.GetValueOrDefault ("test");
@@ -170,7 +170,7 @@ namespace Remotion.Collections.DataStore.UnitTests
       var doubleCheckedLockingContainer = CreateContainerThatChecksForNotProtected (value);
 
       _innerDataStoreMock
-          .Expect (mock => mock.TryGetValue (Arg.Is ("key"), out Arg<Lazy<Wrapper>?>.Out (doubleCheckedLockingContainer).Dummy))
+          .Expect (mock => mock.TryGetValue (Arg.Is ("key"), out Arg<Lazy<Wrapper>>.Out (doubleCheckedLockingContainer).Dummy))
           .Return (true)
           .WhenCalled (mi => CheckInnerDataStoreIsProtected());
 
@@ -186,7 +186,7 @@ namespace Remotion.Collections.DataStore.UnitTests
     public void TryGetValue_NoValueFound ()
     {
       _innerDataStoreMock
-          .Expect (mock => mock.TryGetValue (Arg.Is ("key"), out Arg<Lazy<Wrapper>?>.Out (null).Dummy))
+          .Expect (mock => mock.TryGetValue (Arg.Is ("key"), out Arg<Lazy<Wrapper>>.Out (null).Dummy))
           .Return (false)
           .WhenCalled (mi => CheckInnerDataStoreIsProtected());
 
@@ -205,7 +205,7 @@ namespace Remotion.Collections.DataStore.UnitTests
       var doubleCheckedLockingContainer = CreateContainerThatChecksForNotProtected (value);
 
       _innerDataStoreMock
-          .Expect (mock => mock.TryGetValue (Arg.Is ("key"), out Arg<Lazy<Wrapper>?>.Out (null).Dummy))
+          .Expect (mock => mock.TryGetValue (Arg.Is ("key"), out Arg<Lazy<Wrapper>>.Out (null).Dummy))
           .Return (false)
           .WhenCalled (mi => CheckInnerDataStoreIsProtected());
       _innerDataStoreMock
@@ -229,7 +229,7 @@ namespace Remotion.Collections.DataStore.UnitTests
 
       _innerDataStoreMock
           .Expect (
-              mock => mock.TryGetValue (Arg.Is ("key"), out Arg<Lazy<Wrapper>?>.Out (doubleCheckedLockingContainer).Dummy))
+              mock => mock.TryGetValue (Arg.Is ("key"), out Arg<Lazy<Wrapper>>.Out (doubleCheckedLockingContainer).Dummy))
           .Return (true)
           .WhenCalled (mi => CheckInnerDataStoreIsProtected ());
 
@@ -252,9 +252,7 @@ namespace Remotion.Collections.DataStore.UnitTests
           {
             Assert.That (wasCalled, Is.False);
             wasCalled = true;
-#nullable disable
             return null;
-#nullable enable
           });
       Assert.That (value, Is.Null);
 

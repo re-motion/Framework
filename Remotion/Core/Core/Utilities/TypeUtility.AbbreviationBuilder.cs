@@ -27,7 +27,8 @@ namespace Remotion.Utilities
       {
         ArgumentUtility.DebugCheckNotNull ("type", type);
 
-        var typeNameBuilder = new StringBuilder (type.FullName.Length + 20 + (includeVersionAndCulture ? type.Assembly.FullName.Length : 0));
+        // TODO RM-7763: properties should be checked for null. Consider passing the properties instead of the type/assembly into the next method to use only the null-checked values.
+        var typeNameBuilder = new StringBuilder (type.FullName!.Length + 20 + (includeVersionAndCulture ? type.Assembly!.FullName!.Length : 0));
         BuildAbbreviatedTypeName (typeNameBuilder, type, includeVersionAndCulture, false);
         return typeNameBuilder.ToString();
       }
@@ -35,7 +36,7 @@ namespace Remotion.Utilities
       private void BuildAbbreviatedTypeName (StringBuilder typeNameBuilder, Type type, bool includeVersionAndCulture, bool isTypeParameter)
       {
         string ns = type.Namespace ?? string.Empty;
-        string asm = type.Assembly.GetName().Name;
+        string asm = type.Assembly!.GetName().Name!;
         bool canAbbreviate = ns.StartsWith (asm);
 
         // put type paramters in [brackets] if they include commas, so the commas cannot be confused with type parameter separators
@@ -46,7 +47,7 @@ namespace Remotion.Utilities
         if (canAbbreviate)
         {
           var nsLength = string.IsNullOrEmpty (ns) ? 0 : ns.Length + 1;
-          var name = StripTypeParametersFromName (type.FullName.Substring (nsLength));
+          var name = StripTypeParametersFromName (type.FullName!.Substring (nsLength));
           typeNameBuilder.Append (asm).Append ("::");
 
           if (ns.Length > asm.Length)
@@ -58,13 +59,13 @@ namespace Remotion.Utilities
         }
         else
         {
-          typeNameBuilder.Append (StripTypeParametersFromName (type.FullName));
+          typeNameBuilder.Append (StripTypeParametersFromName (type.FullName!));
           BuildAbbreviatedTypeParameters (typeNameBuilder, type, includeVersionAndCulture);
           typeNameBuilder.Append (", ").Append (asm);
         }
 
         if (includeVersionAndCulture)
-          typeNameBuilder.Append (type.Assembly.FullName.Substring (asm.Length));
+          typeNameBuilder.Append (type.Assembly!.FullName!.Substring (asm.Length));
 
         if (needsBrackets)
           typeNameBuilder.Append ("]");

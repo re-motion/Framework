@@ -68,7 +68,7 @@ namespace Remotion.Text.StringExtensions
     {
       foreach (char c in s)
       {
-        string mappedString;
+        string? mappedString;
         _escapeStringMapping.TryGetValue (c, out mappedString);
         if (mappedString == null)
         {
@@ -91,7 +91,7 @@ namespace Remotion.Text.StringExtensions
       var stringBuilder = new StringBuilder (2 * s.Length);
       foreach (char c in s)
       {
-        string mappedString;
+        string? mappedString;
         _escapeStringMapping.TryGetValue (c, out mappedString);
         if (mappedString == null)
         {

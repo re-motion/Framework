@@ -23,7 +23,7 @@ namespace Remotion.Collections.DataStore.UnitTests
   [TestFixture]
   public class DataStoreFactoryTest
   {
-    private StringComparer _comparer = default!;
+    private StringComparer _comparer;
 
     [SetUp]
     public void SetUp ()

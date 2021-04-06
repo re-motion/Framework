@@ -32,7 +32,7 @@ namespace Remotion.Diagnostics
       get { return Debugger.IsAttached; }
     }
 
-    public string DefaultCategory
+    public string? DefaultCategory
     {
       get { return Debugger.DefaultCategory; }
     }

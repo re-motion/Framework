@@ -35,7 +35,7 @@ namespace Remotion.Utilities
       _comparer = comparer;
     }
 
-    public int Compare (T x, T y)
+    public int Compare (T? x, T? y)
     {
       return _comparer.Compare (y, x);
     }

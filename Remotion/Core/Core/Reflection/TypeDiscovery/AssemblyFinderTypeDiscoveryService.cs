@@ -144,7 +144,7 @@ namespace Remotion.Reflection.TypeDiscovery
             "The types from assembly '{0}' could not be loaded.{1}{2}",
             assembly.GetName(),
             Environment.NewLine,
-            string.Join (Environment.NewLine, ex.LoaderExceptions.Select (e => e.Message)));
+            string.Join (Environment.NewLine, ex.LoaderExceptions.Select (e => e!.Message))); // TODO RM-7753: Message property should not be accessed for null items.
         throw new TypeLoadException (message, ex);
       }
 

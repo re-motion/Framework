@@ -38,10 +38,10 @@ namespace Remotion.Utilities
       ArgumentUtility.CheckNotNull ("filePath", filePath);
       Assembly assembly = typeWhoseNamespaceTheStringResourceResidesIn.Assembly;
       using (
-          Stream from = assembly.GetManifestResourceStream (typeWhoseNamespaceTheStringResourceResidesIn, stringResourceName),
+          Stream from = assembly.GetManifestResourceStream (typeWhoseNamespaceTheStringResourceResidesIn, stringResourceName)!,
               to = new FileStream (filePath, FileMode.Create))
       {
-        Assertion.IsNotNull (from, "Resource '{0}' does not exist in assembly '{1}'.", stringResourceName, assembly.FullName);
+        Assertion.IsNotNull (from, "Resource '{0}' does not exist in assembly '{1}'.", stringResourceName, assembly.FullName!);
         from.CopyTo (to);
       }
     }

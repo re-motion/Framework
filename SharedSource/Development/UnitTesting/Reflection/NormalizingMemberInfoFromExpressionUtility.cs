@@ -202,7 +202,7 @@ namespace Remotion.Development.UnitTesting.Reflection
       return SafeIsMethodOverride (getter, getterBaseDefinition) || SafeIsMethodOverride (setter, setterBaseDefinition);
     }
 
-    private static bool SafeIsMethodOverride (MethodInfo accessorOrNull, MethodInfo accessorBaseDefinitionOrNull)
+    private static bool SafeIsMethodOverride (MethodInfo? accessorOrNull, MethodInfo? accessorBaseDefinitionOrNull)
     {
       return accessorOrNull != null && s_methodComparer.Equals (accessorOrNull.GetBaseDefinition(), accessorBaseDefinitionOrNull);
     }
@@ -213,7 +213,7 @@ namespace Remotion.Development.UnitTesting.Reflection
       if (newExpression == null)
         throw new ArgumentException ("Must be a NewExpression.", "expression");
 
-      return newExpression.Constructor;
+      return newExpression.Constructor!;
     }
 
     private static MethodInfo GetMethodInfoFromMethodCallExpression (Type? sourceObjectType, Expression expression)

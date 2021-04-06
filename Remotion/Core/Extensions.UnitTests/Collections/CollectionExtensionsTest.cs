@@ -24,7 +24,7 @@ namespace Remotion.UnitTests.Collections
   [TestFixture]
   public class CollectionExtensionsTest
   {
-    private ICollection<int> _collection = default!;
+    private ICollection<int> _collection;
 
     [SetUp]
     public void SetUp ()

@@ -140,7 +140,7 @@ namespace Remotion.Tools.Console.ConsoleApplication
         var application = CreateApplication();
         application.Run (settings, _errorWriter, _logWriter);
       }
-      catch (Exception e)
+      catch (Exception? e) // TODO RM-7762: e should not be reassigned.
       {
         //_result = 1;
         using (ConsoleUtility.EnterColorScope (ConsoleColor.White, ConsoleColor.DarkRed))
@@ -189,7 +189,7 @@ namespace Remotion.Tools.Console.ConsoleApplication
     {
       try
       {
-        string applicationName = Path.GetFileName (Process.GetCurrentProcess().MainModule.FileName);
+        string applicationName = Path.GetFileName (Process.GetCurrentProcess().MainModule!.FileName)!;
         _synopsis = _parser.GetAsciiSynopsis (applicationName, _bufferWidth);
       }
       catch (Exception e)

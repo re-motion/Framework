@@ -35,15 +35,16 @@ namespace Remotion.Tools
       ArgumentUtility.CheckNotNull ("appDomain", appDomain);
       ArgumentUtility.CheckNotNullOrEmpty ("applicationBase", applicationBase);
 
+      // TODO RM-7761: null guard should be added.
       return (AppDomainAssemblyResolver) appDomain.CreateInstanceFromAndUnwrap (
                                              typeof (AppDomainAssemblyResolver).Assembly.Location,
-                                             typeof (AppDomainAssemblyResolver).FullName,
+                                             typeof (AppDomainAssemblyResolver).FullName!,
                                              false,
                                              BindingFlags.Public | BindingFlags.Instance,
                                              null,
                                              new[] { applicationBase },
                                              null,
-                                             null);
+                                             null)!;
     }
 
     private readonly string _assemblyDirectory;
@@ -73,9 +74,9 @@ namespace Remotion.Tools
       appDomain.AssemblyResolve += ResolveAssembly;
     }
 
-    public Assembly? ResolveAssembly (object sender, ResolveEventArgs args)
+    public Assembly? ResolveAssembly (object? sender, ResolveEventArgs args)
     {
-      ArgumentUtility.CheckNotNull ("sender", sender);
+      ArgumentUtility.CheckNotNull ("sender", sender!);
       ArgumentUtility.CheckNotNull ("args", args);
 
       var reference = new AssemblyName (args.Name);

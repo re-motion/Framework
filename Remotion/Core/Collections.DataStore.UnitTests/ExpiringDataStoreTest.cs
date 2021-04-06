@@ -27,13 +27,13 @@ namespace Remotion.Collections.DataStore.UnitTests
   public class ExpiringDataStoreTest
   {
     private DateTime _initialScanInfo;
-    private IExpirationPolicy<object, DateTime, DateTime> _expirationPolicyMock = default!;
+    private IExpirationPolicy<object, DateTime, DateTime> _expirationPolicyMock ;
 
-    private ExpiringDataStore<string, object, DateTime, DateTime> _dataStore = default!;
+    private ExpiringDataStore<string, object, DateTime, DateTime> _dataStore;
 
-    private object _fakeValue = default!;
-    private object _fakeValue2 = default!;
-    private object _fakeValue3 = default!;
+    private object _fakeValue;
+    private object _fakeValue2;
+    private object _fakeValue3;
     private DateTime _fakeExpirationInfo;
     private DateTime _fakeExpirationInfo2;
 
@@ -343,7 +343,7 @@ namespace Remotion.Collections.DataStore.UnitTests
       _expirationPolicyMock.Stub (stub => stub.IsExpired (_fakeValue3, _fakeExpirationInfo)).Return (false);
       _expirationPolicyMock.Replay();
 
-      object? value = null;
+      object value = null;
       var result = CheckScansForExpiredItems_WithShouldScanTrue (store => store.TryGetValue ("Test", out value));
 
       Assert.That (result, Is.True);
@@ -358,7 +358,7 @@ namespace Remotion.Collections.DataStore.UnitTests
       _expirationPolicyMock.Stub (stub => stub.IsExpired (_fakeValue3, _fakeExpirationInfo)).Return (true);
       _expirationPolicyMock.Replay();
 
-      object? value = null;
+      object value = null;
       var result = CheckScansForExpiredItems_WithShouldScanTrue (store => store.TryGetValue ("Test", out value));
 
       Assert.That (result, Is.False);
@@ -374,7 +374,7 @@ namespace Remotion.Collections.DataStore.UnitTests
       _expirationPolicyMock.Stub (stub => stub.IsExpired (_fakeValue3, _fakeExpirationInfo)).Return (false);
       _expirationPolicyMock.Replay ();
 
-      object? value = null;
+      object value = null;
       var result = CheckScansForExpiredItems_WithShouldScanTrue (store => store.TryGetValue ("Test", out value));
 
       Assert.That (result, Is.True);
@@ -389,7 +389,7 @@ namespace Remotion.Collections.DataStore.UnitTests
       _expirationPolicyMock.Stub (stub => stub.IsExpired (_fakeValue3, _fakeExpirationInfo)).Return (true);
       _expirationPolicyMock.Replay ();
 
-      object? value = null;
+      object value = null;
       var result = CheckScansForExpiredItems_WithShouldScanTrue (store => store.TryGetValue ("Test", out value));
 
       Assert.That (result, Is.False);
@@ -403,7 +403,7 @@ namespace Remotion.Collections.DataStore.UnitTests
 
       _expirationPolicyMock.Stub (stub => stub.IsExpired (_fakeValue, _fakeExpirationInfo)).Return (false);
 
-      object? result = null;
+      object result = null;
       CheckScansForExpiredItems_WithShouldScanFalse (store => { result = store.GetOrCreateValue ("Test", k => new object ()); });
       
       Assert.That (result, Is.SameAs (_fakeValue));
@@ -419,7 +419,7 @@ namespace Remotion.Collections.DataStore.UnitTests
 
       _expirationPolicyMock.Stub (mock => mock.IsExpired (_fakeValue, _fakeExpirationInfo)).Return (true);
 
-      object? result = null;
+      object result = null;
       CheckScansForExpiredItems_WithShouldScanFalse (store => { result = store.GetOrCreateValue ("Test", k => newValue); });
       
       Assert.That (result, Is.SameAs (newValue));
@@ -432,7 +432,7 @@ namespace Remotion.Collections.DataStore.UnitTests
       var newValue = new object ();
       StubExpirationInfo (newValue, _fakeExpirationInfo);
 
-      object? result = null;
+      object result = null;
       CheckScansForExpiredItems_WithShouldScanFalse (store => { result = store.GetOrCreateValue ("Test", k => newValue); });
 
       Assert.That (result, Is.SameAs (newValue));

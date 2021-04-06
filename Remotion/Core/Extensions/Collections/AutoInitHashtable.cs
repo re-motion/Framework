@@ -38,6 +38,7 @@ namespace Remotion.Collections
 
     public AutoInitHashtable (Type valueType)
     {
+      // TODO RM-7789: valueType should be guarded against nullable value types.
       ArgumentUtility.CheckNotNull ("valueType", valueType);
       _valueType = valueType;
       _createMethod = null;
@@ -53,16 +54,16 @@ namespace Remotion.Collections
     private object CreateObject ()
     {
       if (_createMethod != null)
-        return _createMethod();
+        return _createMethod(); // TODO RM-7789: The result of _createMethod should be checked for null.
       else
-        return Activator.CreateInstance (_valueType);
+        return Activator.CreateInstance (_valueType!)!;
     }
 
-    public override object this [object key]
+    public override object? this [object key]
     {
       get
       {
-        object obj = base[key];
+        object? obj = base[key];
         if (obj == null)
         {
           obj = CreateObject();
@@ -76,7 +77,7 @@ namespace Remotion.Collections
 
     #pragma warning disable 809 // C# 3.0: specifying obsolete for overridden methods causes a warning, but this is intended here.
     [Obsolete ("Explicitly adding or setting keys or values is not supported.", true)]
-    public override void Add (object key, object value)
+    public override void Add (object key, object? value)
     {
       throw new NotSupportedException ("Explicitly adding or setting keys or values is not supported.");
     }

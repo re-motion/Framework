@@ -26,15 +26,15 @@ namespace Remotion.Utilities
   [Serializable]
   public class DelegateBasedComparer<T> : IComparer<T>
   {
-    private readonly Comparison<T> _comparison;
+    private readonly Comparison<T?> _comparison;
 
-    public DelegateBasedComparer (Comparison<T> comparison)
+    public DelegateBasedComparer (Comparison<T?> comparison)
     {
       ArgumentUtility.CheckNotNull ("comparison", comparison);
       _comparison = comparison;
     }
 
-    public int Compare (T x, T y)
+    public int Compare (T? x, T? y)
     {
       return _comparison (x, y);
     }

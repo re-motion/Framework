@@ -44,13 +44,13 @@ namespace Remotion.Reflection
     public TResult Invoke (Type[] valueTypes, object?[] values)
     {
       InvokerUtility.CheckInvokeArguments (valueTypes, values);
-      return (TResult) GetDelegate (GetValueTypes (valueTypes)).DynamicInvoke (GetValues (values));
+      return (TResult) GetDelegate (GetValueTypes (valueTypes)).DynamicInvoke (GetValues (values))!;
     }
 
     public TResult Invoke (object?[] values)
     {
       Type[] valueTypes = InvokerUtility.GetValueTypes (values);
-      return (TResult) GetDelegate (GetValueTypes (valueTypes)).DynamicInvoke (GetValues (values));
+      return (TResult) GetDelegate (GetValueTypes (valueTypes)).DynamicInvoke (GetValues (values))!;
     }
 
     public Delegate GetDelegate (params Type[] parameterTypes)
@@ -276,13 +276,13 @@ namespace Remotion.Reflection
     public TResult Invoke (Type[] valueTypes, object?[] values)
     {
       InvokerUtility.CheckInvokeArguments (valueTypes, values);
-      return (TResult) GetDelegate (GetValueTypes (valueTypes)).DynamicInvoke (GetValues (values));
+      return (TResult) GetDelegate (GetValueTypes (valueTypes)).DynamicInvoke (GetValues (values))!;
     }
 
     public TResult Invoke (object?[] values)
     {
       Type[] valueTypes = InvokerUtility.GetValueTypes (values);
-      return (TResult) GetDelegate (GetValueTypes (valueTypes)).DynamicInvoke (GetValues (values));
+      return (TResult) GetDelegate (GetValueTypes (valueTypes)).DynamicInvoke (GetValues (values))!;
     }
 
     public Delegate GetDelegate (params Type[] parameterTypes)
@@ -510,13 +510,13 @@ namespace Remotion.Reflection
     public TResult Invoke (Type[] valueTypes, object?[] values)
     {
       InvokerUtility.CheckInvokeArguments (valueTypes, values);
-      return (TResult) GetDelegate (GetValueTypes (valueTypes)).DynamicInvoke (GetValues (values));
+      return (TResult) GetDelegate (GetValueTypes (valueTypes)).DynamicInvoke (GetValues (values))!;
     }
 
     public TResult Invoke (object?[] values)
     {
       Type[] valueTypes = InvokerUtility.GetValueTypes (values);
-      return (TResult) GetDelegate (GetValueTypes (valueTypes)).DynamicInvoke (GetValues (values));
+      return (TResult) GetDelegate (GetValueTypes (valueTypes)).DynamicInvoke (GetValues (values))!;
     }
 
     public Delegate GetDelegate (params Type[] parameterTypes)
@@ -746,13 +746,13 @@ namespace Remotion.Reflection
     public TResult Invoke (Type[] valueTypes, object?[] values)
     {
       InvokerUtility.CheckInvokeArguments (valueTypes, values);
-      return (TResult) GetDelegate (GetValueTypes (valueTypes)).DynamicInvoke (GetValues (values));
+      return (TResult) GetDelegate (GetValueTypes (valueTypes)).DynamicInvoke (GetValues (values))!;
     }
 
     public TResult Invoke (object?[] values)
     {
       Type[] valueTypes = InvokerUtility.GetValueTypes (values);
-      return (TResult) GetDelegate (GetValueTypes (valueTypes)).DynamicInvoke (GetValues (values));
+      return (TResult) GetDelegate (GetValueTypes (valueTypes)).DynamicInvoke (GetValues (values))!;
     }
 
     public Delegate GetDelegate (params Type[] parameterTypes)

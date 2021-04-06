@@ -80,7 +80,7 @@ namespace Remotion.ExtensibleEnums.Infrastructure
         var message = string.Format ("Type '{0}' is not an extensible enum type derived from ExtensibleEnum<T>.", extensibleEnumType);
         throw new ArgumentException (message, "extensibleEnumType", ex);
       }
-      return (IExtensibleEnumDefinition) Activator.CreateInstance (definitionType, new[] { ValueDiscoveryService });
+      return (IExtensibleEnumDefinition) Activator.CreateInstance (definitionType, new[] { ValueDiscoveryService })!;
     }
   }
 }

@@ -128,7 +128,7 @@ namespace Remotion.ExtensibleEnums
     /// equality comparisons and hash code calculations.</param>
     protected ExtensibleEnum (MethodBase currentMethod)
         : this (
-            ArgumentUtility.CheckNotNull ("currentMethod", currentMethod).DeclaringType,
+            ArgumentUtility.CheckNotNull ("currentMethod", currentMethod).DeclaringType!,
             currentMethod.Name)
     {
     }

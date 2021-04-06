@@ -93,9 +93,9 @@ namespace Remotion.Collections.Caching.UnitTests
     [Test]
     public void GetOrCreateValue_RetriesClearUntilInvalidationTokenIsCurrent ()
     {
-      var cacheStub = MockRepository.GenerateStub<ICache<object, string?>>();
+      var cacheStub = MockRepository.GenerateStub<ICache<object, string>>();
       var invalidationToken = InvalidationToken.Create();
-      var decorator = new InvalidationTokenBasedCacheDecorator<object, string?> (cacheStub, invalidationToken);
+      var decorator = new InvalidationTokenBasedCacheDecorator<object, string> (cacheStub, invalidationToken);
       var key = new object();
       var count = 0;
       cacheStub.Stub (_ => _.Clear()).WhenCalled (

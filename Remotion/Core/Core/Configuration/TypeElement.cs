@@ -67,7 +67,7 @@ namespace Remotion.Configuration
       if (Type == null)
         return null;
         
-      return (TBase) Activator.CreateInstance (Type);
+      return (TBase?) Activator.CreateInstance (Type);
     }
   }
 

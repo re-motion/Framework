@@ -37,7 +37,7 @@ namespace Remotion.Collections
 
     protected NameObjectCollection (SerializationInfo info, StreamingContext context)
     {
-      _hashtable = (Hashtable) info.GetValue ("_hashtable", typeof (Hashtable));
+      _hashtable = (Hashtable) info.GetValue ("_hashtable", typeof (Hashtable))!;
     }
 
     void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
@@ -45,7 +45,7 @@ namespace Remotion.Collections
       info.AddValue ("_hashtable", _hashtable);
     }
 
-    public object this [string name]
+    public object? this [string name]
     {
       get { return _hashtable[name]; }
       set { _hashtable[name] = value; }
@@ -91,7 +91,7 @@ namespace Remotion.Collections
       return ((IDictionary) _hashtable).GetEnumerator();
     }
 
-    object IDictionary.this [object key]
+    object? IDictionary.this [object key]
     {
       get { return this[(string) key]; }
       set { this[(string) key] = value; }
@@ -122,12 +122,12 @@ namespace Remotion.Collections
       get { return _hashtable.Values; }
     }
 
-    public void Add (string key, object value)
+    public void Add (string key, object? value)
     {
       _hashtable.Add (key, value);
     }
 
-    void IDictionary.Add (object key, object value)
+    void IDictionary.Add (object key, object? value)
     {
       Add ((string) key, value);
     }

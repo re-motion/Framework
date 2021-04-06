@@ -24,8 +24,8 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
   [TestFixture]
   public class CachingAssemblyFinderDecoratorTest
   {
-    private IAssemblyFinder _innerFinder = default!;
-    private CachingAssemblyFinderDecorator _decorator = default!;
+    private IAssemblyFinder _innerFinder;
+    private CachingAssemblyFinderDecorator _decorator;
 
     [SetUp]
     public void SetUp ()

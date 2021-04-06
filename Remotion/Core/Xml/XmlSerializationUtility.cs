@@ -42,7 +42,7 @@ namespace Remotion.Xml
 
       try
       {
-        return serializer.Deserialize (innerReader);
+        return serializer.Deserialize (innerReader)!;
       }
       catch (InvalidOperationException e)
       {
@@ -134,9 +134,9 @@ namespace Remotion.Xml
       }
 
       if (hasXmlRootNamespace)
-        return xmlRoot!.Namespace;
+        return xmlRoot!.Namespace!;
       else
-        return xmlType!.Namespace;
+        return xmlType!.Namespace!;
     }
   }
 }

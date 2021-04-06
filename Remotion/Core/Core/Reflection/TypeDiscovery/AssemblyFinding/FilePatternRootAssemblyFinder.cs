@@ -46,7 +46,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
       public string FilePath { get; private set; }
       public bool FollowReferences { get; private set; }
 
-      public override bool Equals (object obj)
+      public override bool Equals (object? obj)
       {
         return obj is FileDescription && Equals (FilePath, ((FileDescription) obj).FilePath);
       }

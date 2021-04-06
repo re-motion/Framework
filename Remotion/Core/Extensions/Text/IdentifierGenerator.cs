@@ -226,7 +226,7 @@ public class IdentifierGenerator: ICloneable
 
       if (_specificReplaceStrings != null)
       {
-        string replaceString = (string) _specificReplaceStrings[c];
+        string? replaceString = (string?) _specificReplaceStrings[c];
         if (replaceString != null)
           isValid = true;
       }
@@ -274,7 +274,7 @@ public class IdentifierGenerator: ICloneable
     }
     else
     {
-      string uniqueIdentifier = (string) _uniqueIdentfiersByObject![uniqueObject];
+      string? uniqueIdentifier = (string?) _uniqueIdentfiersByObject![uniqueObject];
       if (uniqueIdentifier != null)
         return uniqueIdentifier;
     }

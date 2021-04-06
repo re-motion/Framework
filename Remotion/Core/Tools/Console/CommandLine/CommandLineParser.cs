@@ -315,7 +315,7 @@ public class CommandLineParser
       CommandLineArgument argument = Arguments[i];
       CommandLineArgument? nextArgument = ((i + 1) < Arguments.Count) ? Arguments[i+1] : null;
 
-      if (! (argument is ICommandLinePartArgument))
+      if (argument is { } and not ICommandLinePartArgument)
       {
         // append opening square bracket
         sb.Append (" ");
@@ -338,7 +338,7 @@ public class CommandLineParser
         }
       }
 
-      if (! (argument is CommandLineGroupArgument))
+      if (argument is { } and not CommandLineGroupArgument)
       {
         if (argument.Name != null)
           maxLength = Math.Max (maxLength, argument.Name.Length + 1);

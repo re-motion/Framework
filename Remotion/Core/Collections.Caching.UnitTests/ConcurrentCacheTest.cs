@@ -28,12 +28,12 @@ namespace Remotion.Collections.Caching.UnitTests
   [TestFixture]
   public class ConcurrentCacheTest
   {
-    private ICache<string, object?> _cache = default!;
+    private ICache<string, object> _cache;
 
     [SetUp]
     public void SetUp ()
     {
-      _cache = new ConcurrentCache<string, object?>();
+      _cache = new ConcurrentCache<string, object>();
     }
 
     [Test]
@@ -103,7 +103,7 @@ namespace Remotion.Collections.Caching.UnitTests
     {
       var expectedThread1 = new object();
       var expectedThread2 = new object();
-      object? resultThread2 = null;
+      object resultThread2 = null;
       var waitHandleThread1a = new ManualResetEvent (false);
       var waitHandleThread1b = new ManualResetEvent (false);
       var waitHandleThread2 = new ManualResetEvent (false);
@@ -140,7 +140,7 @@ namespace Remotion.Collections.Caching.UnitTests
     public void GetOrCreateValue_WithParallelThreadsInsertingSameKey_SecondFactoryCallWillNotBeExecuted ()
     {
       var expectedThread1 = "T1";
-      object? resultThread2 = null;
+      object resultThread2 = null;
       var waitHandleThread2 = new ManualResetEvent (false);
 
       var thread2 = Task.Run (
@@ -165,7 +165,7 @@ namespace Remotion.Collections.Caching.UnitTests
     [Test]
     public void GetOrCreateValue_WithParallelThreadsInsertingSameKeyWithNullValue_SecondFactoryCallWillNotBeExecuted ()
     {
-      object? resultThread2 = null;
+      object resultThread2 = null;
       var waitHandleThread2 = new ManualResetEvent (false);
 
       var thread2 = Task.Run (
@@ -201,7 +201,7 @@ namespace Remotion.Collections.Caching.UnitTests
     public void GetOrCreateValue_TryGetValue_WithParallelThreadsUsingSameKey_TryGetValueDuringFactoryCallWillBlock ()
     {
       var expectedThread1 = "T1";
-      object? resultThread2 = null;
+      object resultThread2 = null;
       var waitHandleThread2 = new ManualResetEvent (false);
 
       var thread2 = Task.Run (
@@ -267,7 +267,7 @@ namespace Remotion.Collections.Caching.UnitTests
           Throws.Exception.SameAs (exception));
 
       object expected = new object();
-      object? actual = _cache.GetOrCreateValue ("key1", key => expected);
+      object actual = _cache.GetOrCreateValue ("key1", key => expected);
       Assert.That (actual, Is.SameAs (expected));
     }
 
@@ -383,7 +383,7 @@ namespace Remotion.Collections.Caching.UnitTests
       object expected3 = new object();
       _cache.GetOrCreateValue ("a", delegate { return expected1; });
       _cache.GetOrCreateValue ("b", delegate { return expected2; });
-      KeyValuePair<string, object?>[]? nestedItems = null;
+      KeyValuePair<string, object>[] nestedItems = null;
 
       var actualValue = _cache.GetOrCreateValue (
           "key1",

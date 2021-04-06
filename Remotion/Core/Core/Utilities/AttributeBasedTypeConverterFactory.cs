@@ -40,8 +40,8 @@ namespace Remotion.Utilities
       if (typeConverter == null)
         return null;
 
-      var typeConverterType = TypeUtility.GetType (typeConverter.ConverterTypeName, true);
-      return (TypeConverter) Activator.CreateInstance (typeConverterType);
+      var typeConverterType = TypeUtility.GetType (typeConverter.ConverterTypeName, true)!;
+      return (TypeConverter) Activator.CreateInstance (typeConverterType)!;
     }
   }
 }

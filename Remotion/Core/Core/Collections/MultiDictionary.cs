@@ -24,6 +24,7 @@ namespace Remotion.Collections
   /// </summary>
   [Serializable]
   public class MultiDictionary<TKey, TValue> : AutoInitDictionary<TKey, List<TValue>>
+      where TKey : notnull
   {
     public MultiDictionary ()
     {

@@ -72,7 +72,7 @@ public class CommandLineEnumArgument: CommandLineValueArgument
         {
           foundExact = true;
           _hasValue = true;
-          _value = (Enum) enumValue.GetValue (null);
+          _value = (Enum) enumValue.GetValue (null)!;
           break;
         }
         else if (enumName.Length > value.Length 
@@ -86,7 +86,7 @@ public class CommandLineEnumArgument: CommandLineValueArgument
           {
             foundIncremental = true;
             _hasValue = true;
-            _value = (Enum) enumValue.GetValue (null);
+            _value = (Enum) enumValue.GetValue (null)!;
           }
         }
       }

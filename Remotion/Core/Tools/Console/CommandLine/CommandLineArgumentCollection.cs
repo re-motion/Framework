@@ -40,7 +40,7 @@ public class CommandLineArgumentCollection: CollectionBase
 
   public CommandLineArgument this[int index]
   {
-    get { return (CommandLineArgument) List[index]; }
+    get { return (CommandLineArgument) List[index]!; }
     set { List[index] = value; }
   }
 
@@ -70,7 +70,7 @@ public class CommandLineArgumentCollection: CollectionBase
   }
 
   #region event handlers for type-checking
-  protected override void OnInsert (int index, object value)   
+  protected override void OnInsert (int index, object? value)
   {
     if (value == null) throw new ArgumentNullException ("value");
     CommandLineArgument? argument = value as CommandLineArgument;
@@ -80,7 +80,7 @@ public class CommandLineArgumentCollection: CollectionBase
       argument.AttachParser (_parser);
   }
 
-  protected override void OnRemove (int index, object value)
+  protected override void OnRemove (int index, object? value)
   {
     if (value == null) throw new ArgumentNullException ("value");
     CommandLineArgument? argument = value as CommandLineArgument;
@@ -90,12 +90,13 @@ public class CommandLineArgumentCollection: CollectionBase
       argument.AttachParser (null);
   }
 
-  protected override void OnSet (int index, object oldValue, object newValue)   
+  protected override void OnSet (int index, object? oldValue, object? newValue)
   {
     if (newValue == null) throw new ArgumentNullException ("value");
     CommandLineArgument? newArgument = newValue as CommandLineArgument;
     if (newArgument == null) throw new ArgumentException (c_msgInvalidArgumentType, "newValue") ;
-    CommandLineArgument oldArgument = (CommandLineArgument) oldValue;
+    CommandLineArgument? oldArgument = (CommandLineArgument?) oldValue;
+    if (oldArgument == null) throw new ArgumentException (c_msgInvalidArgumentType, "oldValue") ;
 
     if (oldArgument.Parser == _parser)
       oldArgument.AttachParser (null);

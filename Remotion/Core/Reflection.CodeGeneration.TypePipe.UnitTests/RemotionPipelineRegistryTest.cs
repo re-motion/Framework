@@ -26,9 +26,9 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.UnitTests
   [TestFixture]
   public class RemotionPipelineRegistryTest
   {
-    private IParticipant[] _participants = default!;
+    private IParticipant[] _participants;
 
-    private IPipeline _defaultPipeline = default!;
+    private IPipeline _defaultPipeline;
 
     [SetUp]
     public void SetUp ()

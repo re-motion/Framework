@@ -39,9 +39,9 @@ namespace Remotion.Configuration
       
       MethodInfo getRuntimeObject = configuration.AppSettings.GetType ().GetMethod (
         "GetRuntimeObject",
-        BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.ExactBinding);
+        BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.ExactBinding)!;
       Assertion.IsNotNull (getRuntimeObject, "System.Configuration.AppSettingsSection.GetRuntimeObject() does not exist.");
-      _appSettings = (NameValueCollection) getRuntimeObject.Invoke (configuration.AppSettings, new object[0]) ?? new NameValueCollection();
+      _appSettings = (NameValueCollection?) getRuntimeObject.Invoke (configuration.AppSettings, new object[0]) ?? new NameValueCollection();
     }
 
     public override object GetSection (string sectionName)
@@ -58,7 +58,7 @@ namespace Remotion.Configuration
       return _configuration.ConnectionStrings.ConnectionStrings[name];
     }
 
-    public override string GetAppSetting (string name)
+    public override string? GetAppSetting (string name)
     {
        ArgumentUtility.CheckNotNullOrEmpty ("name", name);
       

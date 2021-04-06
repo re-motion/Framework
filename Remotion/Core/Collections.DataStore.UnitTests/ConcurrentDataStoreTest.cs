@@ -12,12 +12,12 @@ namespace Remotion.Collections.DataStore.UnitTests
   [TestFixture]
   public class ConcurrentDataStoreTest
   {
-    private ConcurrentDataStore<string, object?> _store = default!;
+    private ConcurrentDataStore<string, object> _store;
 
     [SetUp]
     public void SetUp ()
     {
-      _store = new ConcurrentDataStore<string, object?>();
+      _store = new ConcurrentDataStore<string, object>();
       _store.Add ("a", "1");
       _store.Add ("b", "2");
     }
@@ -368,7 +368,7 @@ namespace Remotion.Collections.DataStore.UnitTests
     public void GetOrCreateValue_WithNestedEnumeration_SkipsNewItem()
     {
       object expected = "15";
-      KeyValuePair<string, object?>[]? nestedItems = null;
+      KeyValuePair<string, object>[] nestedItems = null;
 
       var actualValue = _store.GetOrCreateValue (
           "key1",
@@ -436,7 +436,7 @@ namespace Remotion.Collections.DataStore.UnitTests
           Throws.Exception.SameAs (exception));
 
       object expected = "14";
-      object? actual = _store.GetOrCreateValue ("key1", key => expected);
+      object actual = _store.GetOrCreateValue ("key1", key => expected);
       Assert.That (actual, Is.EqualTo (expected));
     }
 
@@ -463,7 +463,7 @@ namespace Remotion.Collections.DataStore.UnitTests
     {
       var expectedThread1 = new object();
       var expectedThread2 = new object();
-      object? resultThread2 = null;
+      object resultThread2 = null;
       var waitHandleThread1a = new ManualResetEvent (false);
       var waitHandleThread1b = new ManualResetEvent (false);
       var waitHandleThread2 = new ManualResetEvent (false);
@@ -500,7 +500,7 @@ namespace Remotion.Collections.DataStore.UnitTests
     public void GetOrCreateValue_WithParallelThreadsInsertingSameKey_SecondFactoryCallWillNotBeExecuted ()
     {
       var expectedThread1 = "T1";
-      object? resultThread2 = null;
+      object resultThread2 = null;
       var waitHandleThread2 = new ManualResetEvent (false);
 
       var thread2 = Task.Run (
@@ -525,7 +525,7 @@ namespace Remotion.Collections.DataStore.UnitTests
     [Test]
     public void GetOrCreateValue_WithParallelThreadsInsertingSameKeyWithNullValue_SecondFactoryCallWillNotBeExecuted ()
     {
-      object? resultThread2 = null;
+      object resultThread2 = null;
       var waitHandleThread2 = new ManualResetEvent (false);
 
       var thread2 = Task.Run (
@@ -551,7 +551,7 @@ namespace Remotion.Collections.DataStore.UnitTests
     public void GetOrCreateValue_TryGetValue_WithParallelThreadsUsingSameKey_TryGetValueDuringFactoryCallWillBlock ()
     {
       var expectedThread1 = "T1";
-      object? resultThread2 = null;
+      object resultThread2 = null;
       var waitHandleThread2 = new ManualResetEvent (false);
 
       var thread2 = Task.Run (

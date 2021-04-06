@@ -22,9 +22,9 @@ namespace Remotion.Reflection.UnitTests
   [TestFixture]
   public class TypeAdapterConverterTest
   {
-    private Type _type = default!;
-    private TypeAdapter _typeAdapter = default!;
-    private TypeAdapterConverter _converter = default!;
+    private Type _type;
+    private TypeAdapter _typeAdapter;
+    private TypeAdapterConverter _converter;
 
     [SetUp]
     public void SetUp ()

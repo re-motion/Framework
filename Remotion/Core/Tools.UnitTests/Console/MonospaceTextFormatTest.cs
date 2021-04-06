@@ -38,7 +38,7 @@ public class MonospaceTextFormatTest
     AssertTextSplit ("",                     0, "",             null);
   }
 
-  private void AssertTextSplit (string text, int splitAt, string expectedBefore, string? expectedAfter)
+  private void AssertTextSplit (string text, int splitAt, string expectedBefore, string expectedAfter)
   {
     MonospaceTextFormat.SplitTextOnSeparator (text, out var before, out var after, splitAt, new char[] {' '});
     Assert.That (before, Is.EqualTo (expectedBefore));

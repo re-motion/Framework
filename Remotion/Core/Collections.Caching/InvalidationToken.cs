@@ -69,8 +69,7 @@ namespace Remotion.Collections.Caching
           // Taking a lock on the _tokenReference is OK in this instance given that the_tokenReference is competely under control of the current type.
           lock (_tokenReference)
           {
-            InvalidationToken token;
-            _tokenReference.TryGetTarget (out token);
+            _tokenReference.TryGetTarget (out var token);
             return token;
           }
         }

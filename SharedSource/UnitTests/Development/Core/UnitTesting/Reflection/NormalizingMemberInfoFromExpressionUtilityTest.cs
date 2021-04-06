@@ -215,7 +215,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetMethod (() => DomainType.StaticVoidGenericMethod<TestClass?> (null));
 
-      var expected = typeof (DomainType).GetMethod ("StaticVoidGenericMethod").MakeGenericMethod (typeof (TestClass));
+      var expected = typeof (DomainType).GetMethod ("StaticVoidGenericMethod")!.MakeGenericMethod (typeof (TestClass));
       Assert.That (member, Is.EqualTo (expected));
     }
 
@@ -224,7 +224,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetMethod (() => DomainType.StaticGenericMethod<TestClass?> (null));
 
-      var expected = typeof (DomainType).GetMethod ("StaticGenericMethod").MakeGenericMethod (typeof (TestClass));
+      var expected = typeof (DomainType).GetMethod ("StaticGenericMethod")!.MakeGenericMethod (typeof (TestClass));
       Assert.That (member, Is.EqualTo (expected));
     }
 
@@ -280,7 +280,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
       // The C# compiler always inserts the root method definition for virtual methods into expression trees.
       // To test behavior with non-root definitions, we need to construct an expression tree manually.
       var parameter = Expression.Parameter (typeof (DomainType), "obj");
-      var method = typeof (DomainType).GetMethod ("OverridingVoidMethod");
+      var method = typeof (DomainType).GetMethod ("OverridingVoidMethod")!;
       var expression = Expression.Lambda<Action<DomainType>> (Expression.Call (parameter, method), parameter);
 
       var member = NormalizingMemberInfoFromExpressionUtility.GetMethod (expression);
@@ -294,7 +294,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
       // The C# compiler always inserts the root method definition for virtual methods into expression trees.
       // To test behavior with non-root definitions, we need to construct an expression tree manually.
       var parameter = Expression.Parameter (typeof (DomainType), "obj");
-      var method = typeof (DomainType).GetMethod ("OverridingMethod");
+      var method = typeof (DomainType).GetMethod ("OverridingMethod")!;
       var expression = Expression.Lambda<Func<DomainType, int>> (Expression.Call (parameter, method), parameter);
 
       var member = NormalizingMemberInfoFromExpressionUtility.GetMethod (expression);
@@ -317,7 +317,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetMethod ((DomainType obj) => obj.InstanceVoidGenericMethod<TestClass?> (null));
 
-      var expected = typeof (DomainType).GetMethod ("InstanceVoidGenericMethod").MakeGenericMethod (typeof (TestClass));
+      var expected = typeof (DomainType).GetMethod ("InstanceVoidGenericMethod")!.MakeGenericMethod (typeof (TestClass));
       Assert.That (member, Is.EqualTo (expected));
     }
 
@@ -326,7 +326,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetMethod ((DomainType obj) => obj.InstanceGenericMethod<TestClass?> (null));
 
-      var expected = typeof (DomainType).GetMethod ("InstanceGenericMethod").MakeGenericMethod (typeof (TestClass));
+      var expected = typeof (DomainType).GetMethod ("InstanceGenericMethod")!.MakeGenericMethod (typeof (TestClass));
       Assert.That (member, Is.EqualTo (expected));
     }
 
@@ -335,7 +335,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetMethod ((DomainType obj) => obj.OverridingVoidGenericMethod<TestClass?> (null));
 
-      var expected = typeof (DomainType).GetMethod ("OverridingVoidGenericMethod").MakeGenericMethod (typeof (TestClass));
+      var expected = typeof (DomainType).GetMethod ("OverridingVoidGenericMethod")!.MakeGenericMethod (typeof (TestClass));
       Assert.That (member, Is.EqualTo (expected));
     }
 
@@ -344,7 +344,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetMethod ((DomainType obj) => obj.OverridingGenericMethod<TestClass?> (null));
 
-      var expected = typeof (DomainType).GetMethod ("OverridingGenericMethod").MakeGenericMethod (typeof (TestClass));
+      var expected = typeof (DomainType).GetMethod ("OverridingGenericMethod")!.MakeGenericMethod (typeof (TestClass));
       Assert.That (member, Is.EqualTo (expected));
     }
 
@@ -354,7 +354,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
       // The C# compiler always inserts the root method definition for virtual methods into expression trees.
       // To test behavior with non-root definitions, we need to construct an expression tree manually.
       var parameter = Expression.Parameter (typeof (DomainType), "obj");
-      var method = typeof (DomainType).GetMethod ("OverridingVoidGenericMethod").MakeGenericMethod (typeof (TestClass));
+      var method = typeof (DomainType).GetMethod ("OverridingVoidGenericMethod")!.MakeGenericMethod (typeof (TestClass));
       var expression = Expression.Lambda<Action<DomainType>> (
           Expression.Call (parameter, method, Expression.Constant (null, typeof (TestClass))), parameter);
 
@@ -369,7 +369,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
       // The C# compiler always inserts the root method definition for virtual methods into expression trees.
       // To test behavior with non-root definitions, we need to construct an expression tree manually.
       var parameter = Expression.Parameter (typeof (DomainType), "obj");
-      var method = typeof (DomainType).GetMethod ("OverridingGenericMethod").MakeGenericMethod (typeof (TestClass));
+      var method = typeof (DomainType).GetMethod ("OverridingGenericMethod")!.MakeGenericMethod (typeof (TestClass));
       var expression = Expression.Lambda<Func<DomainType, int>> (
           Expression.Call (parameter, method, Expression.Constant (null, typeof (TestClass))), parameter);
 

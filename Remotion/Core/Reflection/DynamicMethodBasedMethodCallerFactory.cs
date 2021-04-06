@@ -51,14 +51,15 @@ namespace Remotion.Reflection
       var parameterTypes = delegateMethod.GetParameters().Select (p => p.ParameterType).ToArray();
 
       DynamicMethod dynamicMethod;
-      if (methodInfo.DeclaringType.IsInterface)
+      // TODO RM-7767: methodInfo.DeclaringType should be checked for null
+      if (methodInfo.DeclaringType!.IsInterface)
       {
         // Using the owner-less version for non-nested interfaces helps circumvent issues in the CLR regarding the combination of 
         // DynamicMethods and domain-neutrally loaded assemblies. This case could happen if the interface is from mscorlib, e.g. ICollection. 
         // See http://support.microsoft.com/kb/971030/en-us for details.
 
         if (methodInfo.DeclaringType.IsNested)
-          dynamicMethod = new DynamicMethod (name, returnType, parameterTypes, methodInfo.DeclaringType.DeclaringType, false);
+          dynamicMethod = new DynamicMethod (name, returnType, parameterTypes, methodInfo.DeclaringType.DeclaringType!, false);
         else
           dynamicMethod = new DynamicMethod (name, returnType, parameterTypes, false);
       }

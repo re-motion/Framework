@@ -25,7 +25,7 @@ namespace Remotion.Reflection.CodeGeneration
   public interface IClassEmitter : IAttributableEmitter
   {
     TypeBuilder TypeBuilder { get; }
-    Type BaseType { get; }
+    Type? BaseType { get; }
 
     ConstructorEmitter CreateConstructor (ArgumentReference[] arguments);
     ConstructorEmitter CreateConstructor (Type[] arguments);

@@ -24,7 +24,7 @@ namespace Remotion.Tools.UnitTests
   [TestFixture]
   public class ConsoleUtilityTest
   {
-    private IConsoleManager _consoleStub = default!;
+    private IConsoleManager _consoleStub;
 
     [SetUp]
     public void SetUp ()

@@ -56,21 +56,21 @@ namespace Remotion.Reflection.TypeResolution
       }
     }
 
-    public Type GetType (string name)
+    public Type? GetType (string name)
     {
       ArgumentUtility.DebugCheckNotNull ("name", name);
 
       return GetType (name, throwOnError: false, ignoreCase: false);
     }
 
-    public Type GetType (string name, bool throwOnError)
+    public Type? GetType (string name, bool throwOnError)
     {
       ArgumentUtility.DebugCheckNotNull ("name", name);
 
       return GetType (name, throwOnError, ignoreCase: false);
     }
 
-    public Type GetType (string name, bool throwOnError, bool ignoreCase)
+    public Type? GetType (string name, bool throwOnError, bool ignoreCase)
     {
       ArgumentUtility.DebugCheckNotNull ("name", name);
 

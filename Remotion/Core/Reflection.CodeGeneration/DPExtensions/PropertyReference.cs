@@ -49,10 +49,10 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
 
     public override void LoadReference (ILGenerator gen)
     {
-      MethodInfo getMethod = Reference.GetGetMethod(true);
+      MethodInfo? getMethod = Reference.GetGetMethod(true);
       if (getMethod == null)
       {
-        string message = string.Format("The property {0}.{1} cannot be loaded, it has no getter.", Reference.DeclaringType.FullName, Reference.Name);
+        string message = string.Format("The property {0}.{1} cannot be loaded, it has no getter.", Reference.DeclaringType!.FullName, Reference.Name);
         throw new InvalidOperationException (message);
       }
       if (getMethod.IsStatic)
@@ -67,10 +67,10 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
 
     public override void StoreReference (ILGenerator gen)
     {
-      MethodInfo setMethod = Reference.GetSetMethod (true);
+      MethodInfo? setMethod = Reference.GetSetMethod (true);
       if (setMethod == null)
       {
-        string message = string.Format ("The property {0}.{1} cannot be stored, it has no setter.", Reference.DeclaringType.FullName, Reference.Name);
+        string message = string.Format ("The property {0}.{1} cannot be stored, it has no setter.", Reference.DeclaringType!.FullName, Reference.Name);
         throw new InvalidOperationException (message);
       }
       if (setMethod.IsStatic)

@@ -55,7 +55,8 @@ namespace Remotion.Reflection
                 throw new InvalidOperationException ("Method call delegate must have at least one argument for the current instance ('this' in C# or 'Me' in Visual Basic).");
               Type definingType = parameterTypes[0];
               parameterTypes = ArrayUtility.Skip (parameterTypes, 1);
-              MethodInfo method = definingType.GetMethod (MemberName, BindingFlags, Binder, CallingConvention, parameterTypes, ParameterModifiers);
+              // TODO RM-7771: method should be checked for null
+              MethodInfo method = definingType.GetMethod (MemberName, BindingFlags, Binder, CallingConvention, parameterTypes, ParameterModifiers)!;
               // TODO: verify return type
               return Delegate.CreateDelegate (delegateTypeFromKey, method);
             });

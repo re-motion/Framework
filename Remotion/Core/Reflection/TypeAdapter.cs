@@ -58,13 +58,13 @@ namespace Remotion.Reflection
     }
 
     private readonly Type _type;
-    private readonly Lazy<ITypeInformation> _cachedDeclaringType;
+    private readonly Lazy<ITypeInformation?> _cachedDeclaringType;
 
     private TypeAdapter (Type type)
     {
       _type = type;
 
-      _cachedDeclaringType = new Lazy<ITypeInformation> (
+      _cachedDeclaringType = new Lazy<ITypeInformation?> (
           () => TypeAdapter.CreateOrNull (_type.DeclaringType),
           LazyThreadSafetyMode.ExecutionAndPublication);
     }
@@ -79,17 +79,17 @@ namespace Remotion.Reflection
       get { return _type.Name; }
     }
 
-    public string FullName
+    public string? FullName
     {
       get { return _type.FullName; }
     }
 
-    public string Namespace
+    public string? Namespace
     {
       get { return _type.Namespace; }
     }
 
-    public string AssemblyQualifiedName
+    public string? AssemblyQualifiedName
     {
       get { return _type.AssemblyQualifiedName; }
     }
@@ -99,12 +99,12 @@ namespace Remotion.Reflection
       get { return _type.Assembly; }
     }
 
-    public ITypeInformation DeclaringType
+    public ITypeInformation? DeclaringType
     {
       get { return _cachedDeclaringType.Value; }
     }
 
-    public ITypeInformation GetOriginalDeclaringType ()
+    public ITypeInformation? GetOriginalDeclaringType ()
     {
       return _cachedDeclaringType.Value;
     }
@@ -214,7 +214,7 @@ namespace Remotion.Reflection
       get { return _type.HasElementType; }
     }
 
-    public ITypeInformation GetElementType ()
+    public ITypeInformation? GetElementType ()
     {
       return TypeAdapter.CreateOrNull (_type.GetElementType());
     }
