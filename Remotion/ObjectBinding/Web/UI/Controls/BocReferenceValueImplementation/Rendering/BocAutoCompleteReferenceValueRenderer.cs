@@ -179,7 +179,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       var isIconUpdateEnabled = controlServicePath != null && renderingContext.Control.IsIconEnabled();
 
       var script = new StringBuilder (1000);
-      script.Append ("$(document).ready( function() { BocAutoCompleteReferenceValue.Initialize(");
+      script.Append ("$(document).ready( function() { new BocAutoCompleteReferenceValue(");
       script.AppendFormat ("'{0}', ", renderingContext.Control.ClientID);
       script.AppendFormat (
           "$('#{0} span[{1}={2}]'), ",

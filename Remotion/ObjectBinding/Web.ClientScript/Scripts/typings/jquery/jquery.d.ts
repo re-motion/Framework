@@ -2331,7 +2331,7 @@ interface JQuery {
      * @param eventType A string containing one or more DOM event types, such as "click" or "submit," or custom event names.
      * @param handler A function to execute each time the event is triggered.
      */
-    bind(eventType: string, handler: (eventObject: JQueryEventObject) => any): JQuery;
+    bind(eventType: string, handler: (eventObject: JQueryEventObject, ...eventHandlerArgs: any[]) => any): JQuery;
     /**
      * Attach a handler to an event for the elements.
      * 
