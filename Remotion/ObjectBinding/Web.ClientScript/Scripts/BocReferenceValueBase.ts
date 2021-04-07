@@ -48,8 +48,8 @@ type BocReferenceValueBase_IconInformation = {
   Url: string;
   AlternateText: string;
   ToolTip: string;
-  Width: number;
-  Height: number;
+  Width: string;
+  Height: string;
 };
 
 class BocReferenceValueBase //TODO RM-7715 - Make the TypeScript classes BocReferenceValue and BocAutoCompleteReferenceValue inherit from BocReferenceValueBase
@@ -61,7 +61,7 @@ class BocReferenceValueBase //TODO RM-7715 - Make the TypeScript classes BocRefe
     BocReferenceValueBase._nullIconUrl = nullIconUrl;
   };
 
-  public static UpdateCommand (oldCommand: JQuery, businessObject: Nullable<string>, isIconUpdateEnabled: boolean, controlServiceUrl: Nullable<string>, iconContext: Nullable<BocReferenceValueBase_IconContext>, commandInfo: Nullable<BocReferenceValueBase_CommandInfo>, onFailure: BocReferenceValueBase_ErrorHandler): JQuery
+  public static UpdateCommand (oldCommand: HTMLAnchorElement, businessObject: Nullable<string>, isIconUpdateEnabled: boolean, controlServiceUrl: Nullable<string>, iconContext: Nullable<BocReferenceValueBase_IconContext>, commandInfo: Nullable<BocReferenceValueBase_CommandInfo>, onFailure: BocReferenceValueBase_ErrorHandler): HTMLAnchorElement
   {
     ArgumentUtility.CheckNotNull('oldCommand', oldCommand);
     ArgumentUtility.CheckTypeIsString('businessObject', businessObject);
@@ -75,9 +75,9 @@ class BocReferenceValueBase //TODO RM-7715 - Make the TypeScript classes BocRefe
 
     var newCommand = BocReferenceValueBase.CreateCommand(oldCommand, commandInfo, businessObject);
 
-    var oldIcon = oldCommand.find('img');
-    var newIcon = BocReferenceValueBase.CreateEmptyIcon(oldIcon, newCommand.prop('title'));
-    newCommand.append(newIcon);
+    var oldIcon = oldCommand.querySelector('img')!;
+    var newIcon = BocReferenceValueBase.CreateEmptyIcon(oldIcon, newCommand.title);
+    newCommand.appendChild(newIcon);
 
     oldCommand.replaceWith(newCommand);
 
@@ -109,18 +109,18 @@ class BocReferenceValueBase //TODO RM-7715 - Make the TypeScript classes BocRefe
     return newCommand;
   };
 
-  public static CreateCommand (oldCommand: JQuery, commandInfo: Nullable<BocReferenceValueBase_CommandInfo>, businessObject: Nullable<string>): JQuery
+  public static CreateCommand (oldCommand: HTMLAnchorElement, commandInfo: Nullable<BocReferenceValueBase_CommandInfo>, businessObject: Nullable<string>): HTMLAnchorElement
   {
     ArgumentUtility.CheckNotNull('oldCommand', oldCommand);
     ArgumentUtility.CheckTypeIsObject('commandInfo', commandInfo);
     ArgumentUtility.CheckTypeIsString('businessObject', businessObject);
 
-    var newCommand = $('<a/>');
+    var newCommand = document.createElement('a');
 
     var tempCommandInfo: Dictionary<Nullable<string>> = {};
     if (commandInfo != null)
     {
-      tempCommandInfo = jQuery.extend(true, {}, commandInfo);
+      tempCommandInfo = Object.assign({}, commandInfo);
       if (businessObject == null)
       {
         tempCommandInfo.href = null;
@@ -134,45 +134,50 @@ class BocReferenceValueBase //TODO RM-7715 - Make the TypeScript classes BocRefe
       }
     }
 
-    var oldCommandAttributes = oldCommand[0].attributes;
+    var oldCommandAttributes = oldCommand.attributes;
 
     for (var i = 0; i < oldCommandAttributes.length; i++)
     {
       const value = oldCommandAttributes[i].nodeValue;
       if (value != null && value != '')
-        newCommand.attr(oldCommandAttributes[i].nodeName, value);
+        newCommand.setAttribute(oldCommandAttributes[i].nodeName, value);
     }
 
     for (var property in tempCommandInfo)
     {
       const value = tempCommandInfo[property];
       if (value == null)
-        newCommand.removeAttr(property);
+        newCommand.removeAttribute(property);
       else
-        newCommand.attr(property, value);
+        newCommand.setAttribute(property, value);
     }
 
-    newCommand.removeClass('hasIcon');
+    newCommand.classList.remove('hasIcon');
 
     return newCommand;
   };
 
-  public static CreateEmptyIcon (oldIcon: JQuery, title: Nullable<string>): JQuery
+  public static CreateEmptyIcon (oldIcon: HTMLImageElement, title: Nullable<string>): HTMLImageElement
   {
     ArgumentUtility.CheckNotNull('oldIcon', oldIcon);
     ArgumentUtility.CheckTypeIsString('title', title);
   
-    var newIcon = oldIcon.clone();
-    newIcon.attr({ src: BocReferenceValueBase._nullIconUrl, alt: '' });
-    newIcon.removeAttr('title');
+    var newIcon = oldIcon.cloneNode(true) as HTMLImageElement;
+    
+    newIcon.setAttribute('src', BocReferenceValueBase._nullIconUrl!);
+
+    newIcon.setAttribute('alt', '');
+    newIcon.removeAttribute('title');
     if (!StringUtility.IsNullOrEmpty(title))
-      newIcon.attr({ title: title });
-    newIcon.css({ width: oldIcon.width(), height: oldIcon.height() });
+      newIcon.setAttribute('title', title);
+
+    newIcon.style.width = LayoutUtility.GetWidth(oldIcon) + 'px';
+    newIcon.style.height = LayoutUtility.GetHeight(oldIcon) + 'px';
   
     return newIcon;
   };
 
-  public static UpdateIconFromWebService (command: JQuery, icon: JQuery, iconInformation: BocReferenceValueBase_IconInformation): void
+  public static UpdateIconFromWebService (command: HTMLElement, icon: HTMLImageElement, iconInformation: Nullable<BocReferenceValueBase_IconInformation>): void
   {
     ArgumentUtility.CheckNotNull('icon', icon);
     ArgumentUtility.CheckTypeIsObject('iconInformation', iconInformation);
@@ -180,27 +185,32 @@ class BocReferenceValueBase //TODO RM-7715 - Make the TypeScript classes BocRefe
     if (iconInformation == null)
       return;
   
-    icon.attr({ src: iconInformation.Url });
+    icon.setAttribute('src', iconInformation.Url);
   
-    icon.attr({ alt: '' });
+    icon.setAttribute('alt', '');
     if (!StringUtility.IsNullOrEmpty(iconInformation.AlternateText))
-      icon.attr({ alt: iconInformation.AlternateText });
+      icon.setAttribute('alt', iconInformation.AlternateText);
   
-    if (!StringUtility.IsNullOrEmpty(iconInformation.ToolTip) && StringUtility.IsNullOrEmpty(icon.prop('title')))
-      icon.attr({ title: iconInformation.ToolTip });
+    if (!StringUtility.IsNullOrEmpty(iconInformation.ToolTip) && StringUtility.IsNullOrEmpty(icon.title))
+      icon.setAttribute('title', iconInformation.ToolTip);
   
-    icon.css({ width: iconInformation.Width, height: iconInformation.Height });
+    icon.style.width = iconInformation.Width;
+    icon.style.height = iconInformation.Height;
   
-    command.addClass('hasIcon');
+    command.classList.add('hasIcon');
   };
 
-  public static ResetCommand (command: JQuery): void
+  public static ResetCommand (command: Nullable<HTMLElement>): void
   {
     ArgumentUtility.CheckTypeIsObject('command', command);
-    command.removeAttr('href');
-    command.removeAttr('onclick');
-    command.removeAttr('title');
-    command.removeAttr('target');
-    command.removeClass('hasIcon');
+
+    if (command === null)
+      return;
+
+    command.removeAttribute('href');
+    command.removeAttribute('onclick');
+    command.removeAttribute('title');
+    command.removeAttribute('target');
+    command.classList.remove('hasIcon');
   };
 }

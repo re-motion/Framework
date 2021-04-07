@@ -179,19 +179,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       var isIconUpdateEnabled = controlServicePath != null && renderingContext.Control.IsIconEnabled();
 
       var script = new StringBuilder (1000);
-      script.Append ("$(document).ready( function() { new BocAutoCompleteReferenceValue(");
+      script.Append ("new BocAutoCompleteReferenceValue(");
       script.AppendFormat ("'{0}', ", renderingContext.Control.ClientID);
       script.AppendFormat (
-          "$('#{0} span[{1}={2}]'), ",
+          "'#{0} span[{1}={2}]', ",
           renderingContext.Control.ClientID,
           HtmlTextWriterAttribute2.Role,
           HtmlRoleAttributeValue.Combobox);
-      script.AppendFormat ("$('#{0}'), ", renderingContext.Control.GetTextValueName());
-      script.AppendFormat ("$('#{0}'), ", renderingContext.Control.GetKeyValueName());
-      script.AppendFormat ("$('#{0}'),", GetDropDownButtonName(renderingContext));
+      script.AppendFormat ("'#{0}', ", renderingContext.Control.GetTextValueName());
+      script.AppendFormat ("'#{0}', ", renderingContext.Control.GetKeyValueName());
+      script.AppendFormat ("'#{0}',", GetDropDownButtonName(renderingContext));
 
       if (renderingContext.Control.IsIconEnabled())
-        script.AppendFormat ("$('#{0} .{1}'), ", renderingContext.Control.ClientID, CssClassCommand);
+        script.AppendFormat ("'#{0} .{1}', ", renderingContext.Control.ClientID, CssClassCommand);
       else
         script.Append ("null, ");
 
@@ -219,7 +219,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       script.Append (", ");
 #pragma warning restore 618
       script.Append (GetResourcesAsJson (renderingContext));
-      script.Append ("); } );");
+      script.Append (");");
 
       renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock (
           renderingContext.Control, typeof (IBocAutoCompleteReferenceValue), key, script.ToString());

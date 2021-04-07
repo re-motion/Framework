@@ -18,8 +18,8 @@
 class BocReferenceValue //TODO RM-7715 - Make the TypeScript classes BocReferenceValue and BocAutoCompleteReferenceValue inherit from BocReferenceValueBase
 {
   public static Initialize (
-    dropDownList: JQuery,
-    command: Nullable<JQuery>,
+    dropDownListOrSelector: CssSelectorOrElement<HTMLSelectElement>,
+    commandOrSelector: Nullable<CssSelectorOrElement<HTMLAnchorElement>>,
     nullValueString: string,
     isAutoPostBackEnabled: boolean,
     isIconUpdateEnabled: boolean,
@@ -28,8 +28,7 @@ class BocReferenceValue //TODO RM-7715 - Make the TypeScript classes BocReferenc
     commandInfo: Nullable<BocReferenceValueBase_CommandInfo>,
     resources: BocReferenceValueBase_Resources): void
   {
-    ArgumentUtility.CheckNotNullAndTypeIsObject('dropDownList', dropDownList);
-    ArgumentUtility.CheckTypeIsObject('command', command);
+    ArgumentUtility.CheckNotNull('dropDownListOrSelector', dropDownListOrSelector);
     ArgumentUtility.CheckNotNullAndTypeIsString('nullValueString', nullValueString);
     ArgumentUtility.CheckNotNullAndTypeIsBoolean('isAutoPostBackEnabled', isAutoPostBackEnabled);
     ArgumentUtility.CheckNotNullAndTypeIsBoolean('isIconUpdateEnabled', isIconUpdateEnabled);
@@ -40,11 +39,16 @@ class BocReferenceValue //TODO RM-7715 - Make the TypeScript classes BocReferenc
     ArgumentUtility.CheckTypeIsObject('commandInfo', commandInfo);
     ArgumentUtility.CheckNotNullAndTypeIsObject('resources', resources);
 
-    dropDownList.change(function ()
+    const dropDownList = ElementResolverUtility.ResolveSingle(dropDownListOrSelector);
+    let command = commandOrSelector != null
+      ? ElementResolverUtility.ResolveSingle(commandOrSelector)
+      : null;
+
+    dropDownList.addEventListener('change', function ()
     {
       BocReferenceValue.ClearError(dropDownList);
 
-      if (command == null || command.length == 0)
+      if (command == null)
         return;
 
       if (isAutoPostBackEnabled)
@@ -64,14 +68,14 @@ class BocReferenceValue //TODO RM-7715 - Make the TypeScript classes BocReferenc
     });
   };
 
-  public static GetSelectedValue(dropDownList: JQuery, nullValueString: string): Nullable<string>
+  public static GetSelectedValue(dropDownList: Nullable<HTMLSelectElement>, nullValueString: string): Nullable<string>
   {
-    ArgumentUtility.CheckNotNullAndTypeIsObject('dropDownList', dropDownList);
+    ArgumentUtility.CheckTypeIsObject('dropDownList', dropDownList);
     ArgumentUtility.CheckNotNullAndTypeIsString('nullValueString', nullValueString);
 
-    if (dropDownList.length == 0 || dropDownList.prop('selectedIndex') < 0)
+    if (dropDownList === null || dropDownList.selectedIndex < 0)
       return nullValueString;
-    var selectedValue = (dropDownList.children()[dropDownList.prop('selectedIndex')] as HTMLInputElement).value;
+    var selectedValue = (dropDownList.children[dropDownList.selectedIndex] as HTMLInputElement).value;
     if (selectedValue == nullValueString)
       return null;
     return selectedValue;
@@ -83,33 +87,45 @@ class BocReferenceValue //TODO RM-7715 - Make the TypeScript classes BocReferenc
     ArgumentUtility.CheckNotNullAndTypeIsString('referenceValueDropDownListID', referenceValueDropDownListID);
     ArgumentUtility.CheckNotNullAndTypeIsString('nullValueString', nullValueString);
 
-    var dropDownList = $('#' + referenceValueDropDownListID);
+    var dropDownList = document.getElementById(referenceValueDropDownListID) as Nullable<HTMLSelectElement>;
     if (BocReferenceValue.GetSelectedValue(dropDownList, nullValueString) == null)
       return 0;
     return 1;
   };
 
-  public static ClearError(dropDownList: JQuery): void
+  public static ClearError(dropDownList: HTMLSelectElement): void
   {
-    if (dropDownList.hasClass('error'))
+    if (dropDownList.classList.contains('error'))
     {
-      dropDownList.attr('title', dropDownList.data('title-backup'));
-      dropDownList.removeData('title-backup');
-      dropDownList.removeClass('error');
+      const titleBackup = dropDownList.dataset['title-backup'];
+      if (titleBackup !== undefined)
+      {
+        dropDownList.setAttribute('title', titleBackup);
+      }
+      else
+      {
+        dropDownList.removeAttribute('title');
+      }
+      delete dropDownList.dataset['title-backup'];
+      dropDownList.classList.remove('error');
     }
   };
 
-  public static SetError(dropDownList: JQuery, message: string): void
+  public static SetError(dropDownList: HTMLSelectElement, message: string): void
   {
-    if (!dropDownList.hasClass('error'))
+    if (!dropDownList.classList.contains('error'))
     {
-      var oldTitle: Nullable<string> = dropDownList.attr('title');
-      if (TypeUtility.IsUndefined(oldTitle))
-        oldTitle = null;
-
-      dropDownList.data('title-backup', oldTitle);
+      var oldTitle: Nullable<string> = dropDownList.getAttribute('title');
+      if (oldTitle !== null)
+      {
+        dropDownList.dataset['title-backup'] = oldTitle;
+      }
+      else
+      {
+        delete dropDownList.dataset['title-backup'];
+      }
     }
-    dropDownList.attr('title', message);
-    dropDownList.addClass('error');
+    dropDownList.setAttribute('title', message);
+    dropDownList.classList.add('error');
   };
 }
