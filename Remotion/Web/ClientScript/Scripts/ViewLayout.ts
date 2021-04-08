@@ -35,19 +35,21 @@ class ViewLayout
     viewContentBorder.style.height = viewNewHeight + "px";
   };
 
-  // TODO RM-7670 this signature needs to be adjusted after Utilities.ts/ExecuteResizeHandlers() has been adapted to not use JQuery anymore.
-  public static AdjustSingleView ($containerElement: JQuery): void
+  public static AdjustSingleView (containerElementOrSelector: CssSelectorOrElement<HTMLElement>): void
   {
-    var containerElement = $containerElement[0];
+    ArgumentUtility.CheckNotNull ("containerElementOrSelector", containerElementOrSelector);
+
+    const containerElement = ElementResolverUtility.ResolveSingle (containerElementOrSelector);
 
     var viewContent = containerElement.children[0].children[1] as HTMLElement;
     ViewLayout.AdjustActiveViewContent (viewContent);
   };
 
-  // TODO RM-7670 this signature needs to be adjusted after Utilities.ts/ExecuteResizeHandlers() has been adapted to not use JQuery anymore.
-  public static AdjustTabbedMultiView ($containerElement: JQuery): void
+  public static AdjustTabbedMultiView (containerElementOrSelector: CssSelectorOrElement<HTMLElement>): void
   {
-    var containerElement = $containerElement[0];
+    ArgumentUtility.CheckNotNull ("containerElementOrSelector", containerElementOrSelector);
+
+    var containerElement = ElementResolverUtility.ResolveSingle (containerElementOrSelector);
 
     var viewContent = containerElement.children[0].children[2] as HTMLElement;
     ViewLayout.AdjustActiveViewContent (viewContent);

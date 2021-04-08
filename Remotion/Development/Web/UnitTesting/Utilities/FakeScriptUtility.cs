@@ -31,11 +31,11 @@ namespace Remotion.Development.Web.UnitTesting.Utilities
     {
     }
 
-    public void RegisterElementForBorderSpans (IControl control, string jQuerySelectorForBorderSpanTarget)
+    public void RegisterElementForBorderSpans (IControl control, string cssSelectorForBorderSpanTarget)
     {
     }
 
-    public void RegisterResizeOnElement (IControl control, string jquerySelector, string eventHandler)
+    public void RegisterResizeOnElement (IControl control, string cssSelector, string eventHandler)
     {
     }
   }

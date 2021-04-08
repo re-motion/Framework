@@ -227,7 +227,7 @@ namespace Remotion.Web.UI.Controls.TabbedMultiViewImplementation.Rendering
           renderingContext.Control,
           typeof (TabbedMultiViewRenderer),
           Guid.NewGuid ().ToString (),
-          string.Format ("ViewLayout.AdjustTabbedMultiView ($('#{0}'));", renderingContext.Control.ClientID));
+          string.Format ("ViewLayout.AdjustTabbedMultiView ('#{0}');", renderingContext.Control.ClientID));
     }
 
     #region protected virtual string CssClass...

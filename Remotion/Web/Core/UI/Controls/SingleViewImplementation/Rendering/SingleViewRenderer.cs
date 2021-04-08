@@ -170,7 +170,7 @@ namespace Remotion.Web.UI.Controls.SingleViewImplementation.Rendering
           renderingContext.Control,
           typeof (SingleViewRenderer),
           Guid.NewGuid ().ToString (),
-          string.Format ("ViewLayout.AdjustSingleView ($('#{0}'));", renderingContext.Control.ClientID));
+          string.Format ("ViewLayout.AdjustSingleView ('#{0}');", renderingContext.Control.ClientID));
     }
 
     #region protected virtual string CssClass...
