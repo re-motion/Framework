@@ -31,7 +31,7 @@
       var renderEndTime = new Date().getTime();
       
       var renderDuration = (renderEndTime - renderStartTime) / 1000;
-      $('#PostBackStatus').html(String.format('sync postback: {0:N2}s', renderDuration));
+      document.getElementById('PostBackStatus').innerHTML = String.format('sync postback: {0:N2}s', renderDuration);
 
       renderStartTime = 0;
     }
@@ -51,7 +51,7 @@
       var renderEndTime = new Date().getTime();
       var requestDuration = (renderStartTime - asyncBeginRequestTime) / 1000;
       var renderDuration = (renderEndTime - renderStartTime) / 1000;
-      $('#PostBackStatus').html(String.format('async postback: request duration: {0:N2}s, render duration: {1:N2}s', requestDuration, renderDuration));
+      document.getElementById('PostBackStatus').innerHTML = String.format('async postback: request duration: {0:N2}s, render duration: {1:N2}s', requestDuration, renderDuration);
 
       renderStartTime = 0;
       pageRequestManagerRenderStartTime = 0;
@@ -140,7 +140,7 @@
     prm.add_pageLoading(Page_OnBeginAsyncLoading);
     prm.add_endRequest(Page_OnEndAsyncRequest);
 
-    $(window).load(Page_OnEndSyncRequest);
+    document.defaultView.addEventListener('load', Page_OnEndSyncRequest);
   </script>
 </body>
 </html>

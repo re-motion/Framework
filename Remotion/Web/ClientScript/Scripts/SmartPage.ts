@@ -119,9 +119,9 @@ class SmartPage_Context
   private _formSubmitHandler = function () { return SmartPage_Context.Instance!.OnFormSubmit(); };
   private _formClickHandler = function (evt: MouseEvent) { return SmartPage_Context.Instance!.OnFormClick(evt); };
   private _doPostBackHandler = function (eventTarget: string, eventArg: string) { SmartPage_Context.Instance!.DoPostBack(eventTarget, eventArg); };
-  private _valueChangedHandler = function (evt: JQueryEventObject) { SmartPage_Context.Instance!.OnValueChanged(evt); };
-  private _mouseDownHandler = function (evt: JQueryMouseEventObject) { SmartPage_Context.Instance!.OnMouseDown(evt); };
-  private _mouseUpHandler = function (evt: JQueryMouseEventObject) { SmartPage_Context.Instance!.OnMouseUp(evt); };
+  private _valueChangedHandler = function (evt: Event) { SmartPage_Context.Instance!.OnValueChanged(evt); };
+  private _mouseDownHandler = function (evt: MouseEvent) { SmartPage_Context.Instance!.OnMouseDown(evt); };
+  private _mouseUpHandler = function (evt: MouseEvent) { SmartPage_Context.Instance!.OnMouseUp(evt); };
 
   // theFormID: The ID of the HTML Form on the page.
   // isDirtyStateTrackingEnabled: true if the page should watch the form-fields for changes.
@@ -203,22 +203,22 @@ class SmartPage_Context
   // Attaches the event handlers to the page's events.
   private AttachPageLevelEventHandlers()
   {
-    this.RemoveEventHandler(window, 'load', this._loadHandler);
-    this.AddEventHandler(window, 'load', this._loadHandler);
+    window.removeEventListener('load', this._loadHandler);
+    window.addEventListener('load', this._loadHandler);
 
     // IE, Mozilla 1.7, Firefox 0.9
     window.onbeforeunload = this._beforeUnloadHandler;
 
     window.onunload = this._unloadHandler;
 
-    this.RemoveEventHandler(window, 'scroll', this._scrollHandler);
-    this.AddEventHandler(window, 'scroll', this._scrollHandler);
+    window.removeEventListener('scroll', this._scrollHandler);
+    window.addEventListener('scroll', this._scrollHandler);
 
-    this.RemoveEventHandler(window.document, 'mousedown', this._mouseDownHandler);
-    this.AddEventHandler(window.document, 'mousedown', this._mouseDownHandler);
+    window.document.removeEventListener('mousedown', this._mouseDownHandler);
+    window.document.addEventListener('mousedown', this._mouseDownHandler);
 
-    this.RemoveEventHandler(window.document, 'mouseup', this._mouseUpHandler);
-    this.AddEventHandler(window.document, 'mouseup', this._mouseUpHandler);
+    window.document.removeEventListener('mouseup', this._mouseUpHandler);
+    window.document.addEventListener('mouseup', this._mouseUpHandler);
 
     PageUtility.Instance.RegisterResizeHandler('#' + this._theForm.id, this._resizeHandler);
 
@@ -276,7 +276,7 @@ class SmartPage_Context
     {
       throw "Unsupported AJAX library detected.";
     }
-    $(updatePanelElement).empty().append(rendering);
+    updatePanelElement.innerHTML = rendering;
   }
 
   public SmartPage_PageRequestManager_endRequest = function (sender: unknown, args: Sys.WebForms.EndRequestEventArgs)
@@ -309,30 +309,30 @@ class SmartPage_Context
         var type = (element as HTMLInputElement).type.toLowerCase();
         if (type == 'text' || type == 'hidden')
         {
-          this.RemoveEventHandler(element, 'change', this._valueChangedHandler);
-          this.AddEventHandler(element, 'change', this._valueChangedHandler);
+          element.removeEventListener('change', this._valueChangedHandler);
+          element.addEventListener('change', this._valueChangedHandler);
         }
         else if (type == 'checkbox' || type == 'radio')
         {
-          this.RemoveEventHandler(element, 'click', this._valueChangedHandler);
-          this.AddEventHandler(element, 'click', this._valueChangedHandler);
+          element.removeEventListener('click', this._valueChangedHandler);
+          element.addEventListener('click', this._valueChangedHandler);
         }
       }
       else if (tagName == 'textarea' || tagName == 'select')
       {
-        this.RemoveEventHandler(element, 'change', this._valueChangedHandler);
-        this.AddEventHandler(element, 'change', this._valueChangedHandler);
+        element.removeEventListener('change', this._valueChangedHandler);
+        element.addEventListener('change', this._valueChangedHandler);
       }
     }
   };
 
   // Event handler attached to the change event of tracked form elements
-  public OnValueChanged(e: JQueryEventObject): void
+  public OnValueChanged(e: Event): void
   {
     this._isDirty = true;
   };
 
-  public OnMouseDown (e: JQueryMouseEventObject): void
+  public OnMouseDown (e: MouseEvent): void
   {
     var isLeftButton = e.button === 0;
     var target = this.GetSubmitTarget (e.target as Nullable<HTMLElement>);
@@ -342,7 +342,7 @@ class SmartPage_Context
     }
   };
 
-  public OnMouseUp (e: JQueryMouseEventObject): void
+  public OnMouseUp (e: MouseEvent): void
   {
     var lastTarget = this._lastManualSubmitter;
     this._lastManualSubmitter = null;
@@ -383,7 +383,7 @@ class SmartPage_Context
       }
       else
       {
-        $(currentTarget).trigger ('click');
+        currentTarget.click();
       }
     }
   }
@@ -469,7 +469,7 @@ class SmartPage_Context
           if (isButton)
           {
             isSubmitting = true;
-            setTimeout (function () { $ (submitterElement).trigger ("click"); }, 0);
+            setTimeout (function () { submitterElement.click(); }, 0);
           }
         }
       }
@@ -829,18 +829,6 @@ class SmartPage_Context
     }
   };
 
-  private AddEventHandler(object: string | {}, eventType: string, handler: (eventObject: JQueryEventObject) => any): void
-  {
-    $(object).bind(eventType, handler);
-    return;
-  };
-
-  private RemoveEventHandler(object: string | {}, eventType: string, handler: (eventObject: JQueryEventObject) => any): void
-  {
-    $(object).unbind(eventType, handler);
-    return;
-  }
-
   // Executes the event handlers.
   // eventHandlers: an array of event handlers.
   private ExecuteEventHandlers<TEventName extends SmartPage_Event>(eventName: TEventName, ...args: Parameters<SmartPage_EventMap[TEventName]>)
@@ -922,7 +910,6 @@ class SmartPage_Context
         message +
         '</td></tr></table>';
       statusMessageWindow.appendChild (statusMessageBlock);
-      $(statusMessageBlock).iFrameShim({ top: '0px', left: '0px', width: '100%', height: '100%' });
 
       window.document.body.appendChild (statusMessageWindow);
       this.AlignStatusMessage (statusMessageWindow);
@@ -963,11 +950,7 @@ class SmartPage_Context
 
     // WebKit does not set activeElement if the element is selected using the mouse
 
-    var hoverElement = $('input:hover, button:hover, a:hover');
-    if (hoverElement.length > 0)
-      return hoverElement[0];
-
-    return null;
+    return document.querySelector<HTMLElement>('input:hover, button:hover, a:hover');
   }
 
   private GetDoPostBackSubmitterElement(): Nullable<HTMLElement>
@@ -1165,10 +1148,10 @@ class SmartPage_Context
     var submitterElement = this.GetSubmitterOrActiveElement();
     if (submitterElement != null)
     {
-      $(submitterElement).addClass('SmartPageSubmitter');
+      submitterElement.classList.add('SmartPageSubmitter');
     }
 
-    $('html').addClass('SmartPageBusy');
+    document.documentElement.classList.add('SmartPageBusy');
 
     var isAutoPostback = false;
     if (submitterElement != null)
@@ -1224,21 +1207,25 @@ class SmartPage_Context
     {
       if (this._submitState != null && this._submitState.Submitter != null && this._submitState.Submitter.ownerDocument != null)
       {
-        $(this._submitState.Submitter).removeClass('SmartPageSubmitter');
+        this._submitState.Submitter.classList.remove('SmartPageSubmitter');
       }
+
+      var html = document.documentElement;
+      html.classList.remove('SmartPageBusy');
+
       //setTimeout (function ()
     //{
-      var html = $ ('html');
-      html.removeClass('SmartPageBusy');
+      var html = document.documentElement;
+      html.classList.remove('SmartPageBusy');
 
         // Needed in IE8, Firefox 23, Chrome 4
         // Does not work in Safari 4 for Windows
         // Does not work in IE10, IE11
-        var cursorBackUp = html.css ('cursor');
-        html.css ('cursor', 'auto !important');
+        var cursorBackUp = window.getComputedStyle(html)["cursor"];
+        html.style.cursor = 'auto !important';
         //setTimeout (function ()
         //{
-          html.css ('cursor', cursorBackUp);
+          html.style.cursor = cursorBackUp;
         //}, 0);
     //}, 0);
     }

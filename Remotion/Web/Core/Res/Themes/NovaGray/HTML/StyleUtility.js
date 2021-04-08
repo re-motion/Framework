@@ -62,8 +62,8 @@ StyleUtility.AddBrowserSwitch = function ()
   }
   StyleUtility.AddPlatformSwitch();
 
-  if (!$ ('body').hasClass (browser))
-    $ ('body').addClass (browser);
+  if (!document.body.classList.contains (browser))
+    document.body.classList.add (browser);
 };
 
 StyleUtility.AddPlatformSwitch = function ()
@@ -78,6 +78,6 @@ StyleUtility.AddPlatformSwitch = function ()
   else
     platform = 'platformUnknown';
 
-  if (!$ ('body').hasClass (platform))
-    $ ('body').addClass (platform);
+  if (!document.body.classList.contains (platform))
+    document.body.classList.add (platform);
 };

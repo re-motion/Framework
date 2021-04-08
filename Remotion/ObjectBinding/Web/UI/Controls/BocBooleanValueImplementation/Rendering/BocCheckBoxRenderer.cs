@@ -194,8 +194,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
 
     private string GetScriptParameters (BocCheckBoxRenderingContext renderingContext)
     {
-      string label = renderingContext.Control.IsDescriptionEnabled ? "$(this).parent().children('span').first()[0]" : "null";
-      string checkBox = "$(this).parent().children('input').first()[0]";
+      string label = renderingContext.Control.IsDescriptionEnabled ? "this.parentElement.querySelector (':scope > span')" : "null";
+      string checkBox = "this.parentElement.querySelector (':scope > input')";
       string script = " ("
                       + checkBox + ", "
                       + label + ", "

@@ -45,7 +45,7 @@ namespace Remotion.Web.Development.WebTesting
     {
       ArgumentUtility.CheckNotNullOrEmpty ("cssProperty", cssProperty);
 
-      return string.Format ("return $(arguments[0]).css('{0}');", cssProperty);
+      return string.Format ("return window.getComputedStyle (arguments[0])['{0}'];", cssProperty);
     }
   }
 }

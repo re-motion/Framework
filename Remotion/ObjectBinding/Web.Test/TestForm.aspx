@@ -14,7 +14,6 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-
 <%@ Page Language="c#" CodeBehind="TestForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.TestForm" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -25,35 +24,35 @@
   <script type="text/javascript">
     function DoAspNetAjaxCall()
     {
-      $("#Result").text("");
+      document.getElementById("Result").textContent = "";
 
-      var intValueAsString = $("#IntField").val();
+      var intValueAsString = document.getElementById("IntField").value;
       intValueAsString = intValueAsString == '' ? 0 : intValueAsString;
       var params = {
-        stringValue: $("#StringField").val(),
+        stringValue: document.getElementById("StringField").value,
         intValue: parseInt(intValueAsString)
       };
       executingRequest = Sys.Net.WebServiceProxy.invoke("TestService.asmx", "DoStuff", false, params,
                                           function (result, context, methodName)
                                           {
                                             executingRequest = null;
-                                            $("#Result").text(result);
+                                            document.getElementById("Result").textContent = result;
                                           },
                                           function (err, context, methodName)
                                           {
                                             executingRequest = null;
-                                            $("#Result").text(err.get_message());
+                                            document.getElementById("Result").textContent = err.get_message();
                                           });
 
     }
     function DoJQueryAjaxCall()
     {
-      $("#Result").text("");
+      document.getElementById("Result").textContent = "";
 
-      var intValueAsString = $("#IntField").val();
+      var intValueAsString = document.getElementById("IntField").value;
       intValueAsString = intValueAsString == '' ? 0 : intValueAsString;
       var params = {
-        stringValue: $("#StringField").val(),
+        stringValue: document.getElementById("#StringField").value,
         intValue: parseInt(intValueAsString)
       };
       $.ajax({
@@ -65,28 +64,14 @@
         async: false,
         success: function (result)
         {
-          $("#Result").text(result.d);
+          document.getElementById("Result").textContent = result.d;
         },
         error: function (err)
         {
-          $("#Result").text(err.responseText);
+          document.getElementById("Result").textContent = err.responseText;
         }
       });
     }
-
-    $(document).ready(function ()
-    {
-      $("#StringField").bind("keydown", function (event)
-      {
-        // re-motion: block event bubbling
-        event.stopPropagation();
-        if (event.keyCode == 9) // TAB
-        {
-          DoJQueryAjaxCall();
-        } 
-      });
-    });
-    
   </script>
 </head>
 <body>
@@ -100,5 +85,16 @@
   <div id="Result">
   </div>
   </form>
+  <script type="text/javascript">
+    document.getElementById("StringField").addEventListener("keydown", function (event)
+    {
+      // re-motion: block event bubbling
+      event.stopPropagation();
+      if (event.keyCode == 9) // TAB
+      {
+        DoJQueryAjaxCall();
+      } 
+    });
+  </script>
 </body>
 </html>

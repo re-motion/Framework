@@ -280,7 +280,7 @@ namespace Remotion.Web.UI.Controls
       //if (ControlHelper.IsDesignMode (this))
       //  return;
 
-      ScriptUtility.Instance.RegisterElementForBorderSpans (this, "#" + ClientID + " > *:first");
+      ScriptUtility.Instance.RegisterElementForBorderSpans (this, "#" + ClientID + " > *:first-child");
 
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassButtonBody);
       writer.RenderBeginTag (HtmlTextWriterTag.Span);
