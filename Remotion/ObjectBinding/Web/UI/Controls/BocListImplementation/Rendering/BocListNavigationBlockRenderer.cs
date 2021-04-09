@@ -207,7 +207,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.RenderEndTag(); // end span
 
       string script = string.Format (
-          "BocList.InitializeNavigationBlock ($('#{0}'), $('#{1}'))",
+          "BocList.InitializeNavigationBlock ('#{0}', '#{1}')",
           currentPageNumberTextBoxID,
           GetCurrentPageIndexControlID (renderingContext));
       renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock (
@@ -272,7 +272,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, navigateCommandID);
 
         var currentPageControlClientID = GetCurrentPageIndexControlID (renderingContext);
-        var postBackEvent = string.Format ("$('#{0}').val({1}).trigger('change');return false;", currentPageControlClientID, pageIndex);
+        var postBackEvent = string.Format ("let element = document.getElementById('{0}');element.value = {1};element.dispatchEvent(new Event('change'));return false;", currentPageControlClientID, pageIndex);
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent);
 
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");

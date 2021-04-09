@@ -22,8 +22,8 @@ class BocList_SelectedRows
   public Selection: number;
   public Length: number;
   public Rows: Dictionary<Nullable<BocList_RowBlock>>;
-  public SelectRowSelectorControls: Nullable<JQuery>;
-  public SelectAllSelectorControls: Nullable<JQuery>;
+  public SelectRowSelectorControls: Nullable<NodeListOf<HTMLInputElement>>;
+  public SelectAllSelectorControls: Nullable<NodeListOf<HTMLInputElement>>;
   public DataRowCount: number;
 
   constructor(selection: number)
@@ -50,9 +50,9 @@ class BocList_SelectedRows
 class BocList_RowBlock
 {
   public Row: HTMLElement;
-  public SelectorControl: JQuery;
+  public SelectorControl: HTMLInputElement;
 
-  constructor(row: HTMLElement, selectorControl: JQuery)
+  constructor(row: HTMLElement, selectorControl: HTMLInputElement)
   {
     if (row.nodeName !== 'TR')
       throw 'Unexpected element type: \'' + row.nodeName + '\'';
@@ -104,43 +104,44 @@ class BocList
   //  hasClickSensitiveRows: true if the click event handler is bound to the data rows.
   //  onSelectionChangedHandler: A function to be invoked when the BocList's selection changes. 
   //                             First argument is the BocList, second argument is a flag indicating whether the callback is invoked during initialization.
-  public static InitializeList(bocList: HTMLElement, selectRowSelectorControlName: string, selectAllSelectorControlName: string, selection: number, hasClickSensitiveRows: boolean, onSelectionChangedHandler: BocList_SelectionChangedHandler): void
+  public static InitializeList(bocListOrSelector: CssSelectorOrElement<HTMLElement>, selectRowSelectorControlName: string, selectAllSelectorControlName: string, selection: number, hasClickSensitiveRows: boolean, onSelectionChangedHandler: BocList_SelectionChangedHandler): void
   {
+    ArgumentUtility.CheckNotNull("bocListOrSelector", bocListOrSelector);
+    const bocList = ElementResolverUtility.ResolveSingle(bocListOrSelector);
+
     if (BocList.HasDimensions (bocList))
     {
-      $(bocList).addClass('hasDimensions');
-      BocList.FixUpScrolling($(bocList));
+      bocList.classList.add('hasDimensions')
+      BocList.FixUpScrolling(bocList);
     }
 
     var selectedRows = new BocList_SelectedRows (selection);
     if (   selectedRows.Selection != BocList._rowSelectionUndefined
         && selectedRows.Selection != BocList._rowSelectionDisabled)
     {
-      selectedRows.SelectRowSelectorControls = $('input[name="' + selectRowSelectorControlName + '"]');
-      selectedRows.SelectAllSelectorControls = $('input[name="' + selectAllSelectorControlName + '"]');
+      selectedRows.SelectRowSelectorControls = document.querySelectorAll<HTMLInputElement>('input[name="' + selectRowSelectorControlName + '"]')!;
+      selectedRows.SelectAllSelectorControls = document.querySelectorAll<HTMLInputElement>('input[name="' + selectAllSelectorControlName + '"]')!;
       selectedRows.OnSelectionChanged = onSelectionChangedHandler;
 
-      selectedRows.SelectRowSelectorControls.each (function (this: JQuery)
+      selectedRows.SelectRowSelectorControls.forEach (checkBox =>
       {
         selectedRows.DataRowCount++;
 
-        var checkBox = this;
-
-        var tableCell = checkBox.parentNode;
+        var tableCell = checkBox.parentNode as HTMLElement;
         if (tableCell.nodeName !== 'TD')
           throw 'Unexpected element type: \'' + tableCell.nodeName + '\'';
 
-        var tableRow = tableCell.parentNode;
+        var tableRow = tableCell.parentNode as HTMLElement;
         if (tableRow.nodeName !== 'TR')
           throw 'Unexpected element type: \'' + tableRow.nodeName + '\'';
 
         if (hasClickSensitiveRows)
-          BocList.BindRowClickEventHandler (bocList, tableRow, tableCell, this);
+          BocList.BindRowClickEventHandler (bocList, tableRow, tableCell, checkBox);
     
-        if (this.checked)
+        if (checkBox.checked)
         {
-          var rowBlock = new BocList_RowBlock(tableRow, this);
-          selectedRows.Rows[this.id] = rowBlock;
+          var rowBlock = new BocList_RowBlock(tableRow, checkBox);
+          selectedRows.Rows[checkBox.id] = rowBlock;
           selectedRows.Length++;
         }
       });
@@ -152,12 +153,12 @@ class BocList
     selectedRows.OnSelectionChanged (bocList, true);
 
     // Add diganostic metadata for web testing framework (actually: should only be rendered with IRenderingFeatures.EnableDiagnosticMetadata on)
-    $(bocList).attr('data-boclist-is-initialized', 'true');
+    bocList.setAttribute('data-boclist-is-initialized', 'true');
   }
 
-  private static BindRowClickEventHandler(bocList: HTMLElement, row: HTMLElement, cell: string, selectorControl: JQuery): void
+  private static BindRowClickEventHandler(bocList: HTMLElement, row: HTMLElement, cell: HTMLElement, selectorControl: HTMLInputElement): void
   {
-    $(row).click(function (evt)
+    row.addEventListener('click', (evt) =>
     {
       var hasSelectionChanged = BocList.OnRowClick (evt, bocList, row, selectorControl);
       if (hasSelectionChanged)
@@ -167,24 +168,27 @@ class BocList
       }
     });
   
-    $(selectorControl).click(function (evt)
+    selectorControl.addEventListener('click', function (evt)
     {
       evt.stopPropagation();
       BocList.OnRowSelectorClick();
-      $(row).trigger ('click');
+      row.dispatchEvent (new MouseEvent('click'));
     });
   
       // Enable the entire selector control's cell for click events that mimic the selector control.
-    $(cell).click(function (evt)
+    cell.addEventListener('click', function (evt)
     {
       BocList.OnRowSelectorClick();
     });
   
     // Enable the entire row to the left of the selector control's cell for click events that mimic the selector control.
-    $(cell).prevAll().click(function (evt)
+    for (let current: Nullable<Node> = cell; current != null; current = current.previousSibling)
     {
-      BocList.OnRowSelectorClick();
-    });
+      current.addEventListener('click', function (evt)
+      {
+        BocList.OnRowSelectorClick();
+      });
+    }
   }
 
   //  Event handler for a table row in the BocList. 
@@ -196,7 +200,7 @@ class BocList
   //  currentRow: The row that fired the click event.
   //  selectorControl: The selection selectorControl in this row.
   //  returns: true if the row selection has changed.
-  private static OnRowClick(evt: JQueryEventObject, bocList: HTMLElement, currentRow: HTMLElement, selectorControl: JQuery): boolean
+  private static OnRowClick(evt: MouseEvent, bocList: HTMLElement, currentRow: HTMLElement, selectorControl: HTMLInputElement): boolean
   {
     if (BocList._isCommandClick)
     {
@@ -274,7 +278,7 @@ class BocList
     // Select currentRow
     rowBlock.SelectorControl.checked = true;
     if (isRowHighlightingEnabled)
-      $(rowBlock.Row).addClass(BocList.TrClassNameSelected);
+      rowBlock.Row.classList.add(BocList.TrClassNameSelected);
 
     BocList.SetSelectAllRowsSelectorOnDemand (selectedRows);
   }
@@ -314,7 +318,7 @@ class BocList
     // Unselect currentRow
     rowBlock.SelectorControl.checked = false;
     if (isRowHighlightingEnabled)
-      $(rowBlock.Row).removeClass(BocList.TrClassNameSelected);
+      rowBlock.Row.classList.remove(BocList.TrClassNameSelected);
 
     BocList.ClearSelectAllRowsSelector (selectedRows);
   }
@@ -322,12 +326,12 @@ class BocList
   private static SetSelectAllRowsSelectorOnDemand (selectedRows: BocList_SelectedRows): void
   {
     if (selectedRows.DataRowCount == selectedRows.Length && selectedRows.DataRowCount > 0)
-      selectedRows.SelectAllSelectorControls!.each (function (this: JQuery) { this.checked = true; }); // TODO RM-7711 - Move BocList's Row Selection logic to TypeScript class 'BocList_SelectedRows'.
+      selectedRows.SelectAllSelectorControls!.forEach (element => { element.checked = true; }); // TODO RM-7711 - Move BocList's Row Selection logic to TypeScript class 'BocList_SelectedRows'.
   }
 
   private static ClearSelectAllRowsSelector (selectedRows: BocList_SelectedRows): void
   {
-    selectedRows.SelectAllSelectorControls!.each (function (this: JQuery) { this.checked = false; }); // TODO RM-7711 - Move BocList's Row Selection logic to TypeScript class 'BocList_SelectedRows'.
+    selectedRows.SelectAllSelectorControls!.forEach (element => { element.checked = false; }); // TODO RM-7711 - Move BocList's Row Selection logic to TypeScript class 'BocList_SelectedRows'.
   }
 
   //  Event handler for the selection selectorControl in the title row.
@@ -335,8 +339,13 @@ class BocList
   //  bocList: The BocList to which the selectorControl belongs.
   //  selectRowControlName: The name of the row selector controls.
   //  isRowHighlightingEnabled: true to enable highting of the rows
-  public static OnSelectAllSelectorControlClick (bocList: HTMLElement, selectAllSelectorControl: JQuery, isRowHighlightingEnabled: boolean): void
+  public static OnSelectAllSelectorControlClick (bocListOrSelector: CssSelectorOrElement<HTMLElement>, selectAllSelectorControlOrSelector: CssSelectorOrElement<HTMLInputElement>, isRowHighlightingEnabled: boolean): void
   {
+    ArgumentUtility.CheckNotNull('bocListOrSelector', bocListOrSelector);
+    ArgumentUtility.CheckNotNull('selectAllSelectorControlOrSelector', selectAllSelectorControlOrSelector);
+
+    const bocList = ElementResolverUtility.ResolveSingle(bocListOrSelector);
+    const selectAllSelectorControl = ElementResolverUtility.ResolveSingle(selectAllSelectorControlOrSelector);
     var selectedRows = BocList._selectedRows[bocList.id]!;
 
     if (selectedRows.Selection != BocList.rowSelectionMultiple)
@@ -345,15 +354,13 @@ class BocList
     if (selectAllSelectorControl.checked)
       selectedRows.Length = 0;
 
-    selectedRows.SelectRowSelectorControls!.each (function (this: JQuery) // TODO RM-7711 - Move BocList's Row Selection logic to TypeScript class 'BocList_SelectedRows'.
+    selectedRows.SelectRowSelectorControls!.forEach (checkBox => // TODO RM-7711 - Move BocList's Row Selection logic to TypeScript class 'BocList_SelectedRows'.
     {
-      var checkBox = this;
-  
-      var tableCell = checkBox.parentNode;
+      var tableCell = checkBox.parentNode!;
       if (tableCell.nodeName !== 'TD')
         throw 'Unexpected element type: \'' + tableCell.nodeName + '\'';
   
-      var tableRow = tableCell.parentNode;
+      var tableRow = tableCell.parentNode as HTMLElement;
       if (tableRow.nodeName !== 'TR')
         throw 'Unexpected element type: \'' + tableRow.nodeName + '\'';
   
@@ -395,35 +402,37 @@ class BocList
 
   private static HasDimensions(bocList: HTMLElement): boolean
   {
-    var heightFromAttribute = $(bocList).attr('height');
-    if (TypeUtility.IsDefined(heightFromAttribute) && heightFromAttribute != '')
+    var heightFromAttribute = bocList.getAttribute('height');
+    if (!TypeUtility.IsNull(heightFromAttribute) && heightFromAttribute != '')
       return true;
   
     var heightFromInlineStyle = bocList.style.height;
-    if (TypeUtility.IsDefined(heightFromInlineStyle) && heightFromInlineStyle != '')
+    if (!TypeUtility.IsNull(heightFromInlineStyle) && heightFromInlineStyle != '')
       return true;
   
-    var widthFromAttribute = $(bocList).attr('width');
-    if (TypeUtility.IsDefined(widthFromAttribute) && widthFromAttribute != '')
+    var widthFromAttribute = bocList.getAttribute('width');
+    if (!TypeUtility.IsNull(widthFromAttribute) && widthFromAttribute != '')
       return true;
   
     var widthFromInlineStyle = bocList.style.width;
-    if (TypeUtility.IsDefined(widthFromInlineStyle) && widthFromInlineStyle != '')
+    if (!TypeUtility.IsNull(widthFromAttribute) && widthFromInlineStyle != '')
       return true;
   
     var referenceHeight = 0;
     var referenceWidth = 0;
-    var tempList = $("<div/>").attr("class", $(bocList).prop("class")).css("display", "none");
+    var tempList = document.createElement('div');
+    bocList.classList.forEach(className => { tempList.classList.add(className) });
+    tempList.style.display = 'none';
   
     // Catch styles applied to pseudo-selectors starting at the first element in the DOM collection
-    tempList.insertBefore($(bocList));
+    bocList.parentNode!.insertBefore(tempList, bocList);
   
     try
     {
-      if (tempList.height() > referenceHeight)
+      if (Math.floor(LayoutUtility.GetHeight(tempList)) > referenceHeight)
         return true;
   
-      if (tempList.width() > referenceWidth)
+      if (Math.floor(LayoutUtility.GetWidth(tempList)) > referenceWidth)
         return true;
     } 
     finally
@@ -432,14 +441,14 @@ class BocList
     }
   
     // Catch styles applied to pseudo-selectors starting at the last element in the DOM collection
-    tempList.insertAfter($(bocList));
+    bocList.parentNode!.insertBefore(tempList, bocList.nextSibling)
   
     try
     {
-      if (tempList.height() > referenceHeight)
+      if (Math.floor(LayoutUtility.GetHeight(tempList)) > referenceHeight)
         return true;
   
-      if (tempList.width() > referenceWidth)
+      if (Math.floor(LayoutUtility.GetWidth(tempList)) > referenceWidth)
         return true;
     }
     finally
@@ -450,18 +459,18 @@ class BocList
     return false;
   }
 
-  private static FixUpScrolling(bocList: JQuery): void
+  private static FixUpScrolling(bocList: HTMLElement): void
   {
-    var tableBlock = bocList.children('div.bocListTableBlock').first();
+    var tableBlock = bocList.querySelector(':scope > div.bocListTableBlock')!;
 
     var scrollTimer: Nullable<number> = null;
-    var tableContainer = tableBlock.children('div.bocListTableContainer').first();
-    var scrollableContainer = tableContainer.children('div.bocListTableScrollContainer').first();
+    var tableContainer = tableBlock.querySelector<HTMLElement>(':scope > div.bocListTableContainer')!;
+    var scrollableContainer = tableContainer.querySelector<HTMLElement>(':scope > div.bocListTableScrollContainer')!;
     var horizontalScroll = 0;
   
-    scrollableContainer.bind('scroll', function (event)
+    scrollableContainer.addEventListener('scroll', () =>
     {
-      var newHorizontalScroll = scrollableContainer.scrollLeft();
+      var newHorizontalScroll = scrollableContainer.scrollLeft;
       var hasHorizontalScrollUpdated = horizontalScroll != newHorizontalScroll;
       horizontalScroll = newHorizontalScroll;
   
@@ -482,7 +491,7 @@ class BocList
     var resizeInterval = 50;
     var resizeHandler = function ()
     {
-      if (!PageUtility.Instance.IsInDom (scrollableContainer[0]))
+      if (!PageUtility.Instance.IsInDom (scrollableContainer))
         return;
   
       BocList.FixHeaderSize(scrollableContainer);
@@ -492,116 +501,123 @@ class BocList
     resizeHandler();
   }
 
-  private static CreateFakeTableHead(tableContainer: JQuery, scrollableContainer: JQuery, bocList: JQuery): void
+  private static CreateFakeTableHead(tableContainer: HTMLElement, scrollableContainer: HTMLElement, bocList: HTMLElement): void
   {
     if (BrowserUtility.GetIEVersion() > 0)
     {
       // For Internet Explorer + JAWS 2018ff, the tabindex-attribute on the table root will break a table with a scrollable header part.
-      tableContainer.removeAttr('tabindex');
-      var captionLabelIDs = bocList.attr('aria-labelledby');
+      tableContainer.removeAttribute('tabindex');
+      var captionLabelIDs = bocList.getAttribute('aria-labelledby')!;
       var lastCaptionLabelID = captionLabelIDs.split(' ').slice(-1)[0];
       var captionElement = document.getElementById (lastCaptionLabelID)!;
-      var tableCaption = $ ('<span/>')
-        .attr ({
-          'tabindex' : 0,
-          'aria-label': captionElement.innerText,
-          'aria-hidden' : 'true'
-        })
-        .addClass ('screenReaderText');
+      var tableCaption = document.createElement('span');
+      tableCaption.setAttribute('tabindex', '0')
+      tableCaption.setAttribute('aria-label', captionElement.innerText)
+      tableCaption.setAttribute('aria-hidden', 'true')
+      tableCaption.classList.add('screenReaderText')
       tableContainer.before (tableCaption);
     }
     // Add diganostic metadata for web testing framework (actually: should only be rendered with IRenderingFeatures.EnableDiagnosticMetadata on)
-    tableContainer.attr('data-boclist-has-fake-table-head', 'true');
+    tableContainer.setAttribute('data-boclist-has-fake-table-head', 'true');
   
-    var table = scrollableContainer.children('table').first();
+    var table = scrollableContainer.querySelector(':scope > table')!;
   
-    var fakeTable = $('<table/>');
-    fakeTable.attr({
-        'role' : 'none',
-        'class' : table.attr('class'), 
-        cellPadding: 0,
-        cellSpacing: 0
-      });
-    fakeTable.css({ width: '100%' });
-  
-    var realTableHead = table.children('thead').first();
-    var fakeTableHead = realTableHead.clone(true, true);
-    realTableHead.attr({
-      'aria-hidden': 'true',
-      'role': 'none'
+    var fakeTable = document.createElement('table');
+    fakeTable.setAttribute('role', 'none');
+    table.classList.forEach(className => { fakeTable.classList.add(className) });
+    fakeTable.setAttribute('cellPadding', '0');
+    fakeTable.setAttribute('cellSpacing', '0');
+    fakeTable.style.width = '100%';
+
+    var realTableHead = table.querySelector(':scope > thead')!;
+    var fakeTableHead = realTableHead.cloneNode(true) as HTMLElement;
+    realTableHead.setAttribute('aria-hidden', 'true')
+    realTableHead.setAttribute('role', 'none')
+    realTableHead.querySelectorAll('*[role]').forEach(element =>
+    {
+      element.setAttribute('role', 'none');
     });
-    realTableHead.find ('*[role]').attr ({ 'role' : 'none' });
     fakeTable.append(fakeTableHead);
   
-    var fakeTableHeadWidthContainer = $('<div/>').attr ({ 'role' : 'none' });
+    var fakeTableHeadWidthContainer = document.createElement('div');
+    fakeTableHeadWidthContainer.setAttribute('role', 'none');
     fakeTableHeadWidthContainer.append(fakeTable);
   
-    var fakeTableHeadContainer = $('<div/>').attr({ 'role': 'none', 'class': 'bocListFakeTableHead' });
-    fakeTableHeadContainer.hide();
+    var fakeTableHeadContainer = document.createElement('div');
+    fakeTableHeadContainer.setAttribute('role', 'none');
+    fakeTableHeadContainer.classList.add('bocListFakeTableHead');
+    fakeTableHeadContainer.style.display = 'none';
     fakeTableHeadContainer.append (fakeTableHeadWidthContainer);
   
-    realTableHead.find('*').each(function (this: HTMLElement) { $(this).removeAttr('id').attr({ tabIndex: -1 }).attr({ tabIndex: -1 }); });
+    realTableHead.querySelectorAll('*').forEach(element =>
+    {
+      element.removeAttribute('id');
+      element.setAttribute('tabIndex', '-1');
+    });
   
     scrollableContainer.before(fakeTableHeadContainer);
   
     // sync checkboxes
-    var checkboxes = fakeTableHead.find("th input:checkbox");
-    checkboxes.click(function (this: HTMLElement)
+    var checkboxes = fakeTableHead.querySelectorAll<HTMLInputElement>("th input[type=checkbox]");
+    checkboxes.forEach(checkbox =>
     {
-      var checkName = $(this).attr('name');
-      var checkStatus = $(this).prop('checked');
-      $('input[name="' + checkName + '"]').prop('checked', checkStatus);
+      checkbox.addEventListener('click', (event) =>
+      {
+        var checkName = checkbox.getAttribute('name');
+        var checkStatus = checkbox.checked;
+        document.querySelectorAll('input[name="' + checkName + '"]').forEach(element =>
+        {
+          (element as HTMLInputElement).checked = checkStatus;
+        });
+      })
     });
     // BocList_FixHeaderSize() with timeout needs to be called after setup. This is already taken care of at the call-site.
   }
 
-  private static FixHeaderSize(scrollableContainer: JQuery): void
+  private static FixHeaderSize(scrollableContainer: HTMLElement): void
   {
-    var realTable = scrollableContainer.children('table').first();
-    var realTableWidth = realTable[0].offsetWidth;
-    var previousRealTableWidth = realTable.data("bocListPreviousRealTableWidth");
+    var realTable = scrollableContainer.querySelector<HTMLTableElement>(':scope > table')!;
+    var realTableWidth = Math.floor(LayoutUtility.GetWidth(realTable));
+    var previousRealTableWidth = parseInt(realTable.dataset.bocListPreviousRealTableWidth!);
     if (previousRealTableWidth == realTableWidth)
       return;
-    realTable.data("bocListPreviousRealTableWidth", realTableWidth);
+    realTable.dataset.bocListPreviousRealTableWidth = realTableWidth.toString();
   
-    var realTableHead = realTable.eq(0).find('thead');
-    var realTableHeadRow = realTableHead.children().eq(0);
-    var realTableHeadRowChildren = realTableHeadRow.children();
+    var realTableHead = realTable.querySelector('thead')!;
+    var realTableHeadRow = realTableHead.children[0];
+    var realTableHeadRowChildren = Array.from(realTableHeadRow.children);
   
-    var fakeTableHeadContainer = scrollableContainer.parent().children('div.bocListFakeTableHead').first();
-    var fakeTableHead = fakeTableHeadContainer.find('thead');
-    var fakeTableHeadRow = fakeTableHead.children().eq(0);
-    var fakeTableHeadRowChildren = fakeTableHeadRow.children();
+    var fakeTableHeadContainer = scrollableContainer.parentNode!.querySelector<HTMLTableElement>(':scope > div.bocListFakeTableHead')!;
+    var fakeTableHead = fakeTableHeadContainer.querySelector('thead')!;
+    var fakeTableHeadRow = fakeTableHead.children[0];
+    var fakeTableHeadRowChildren = Array.from(fakeTableHeadRow.children);
   
     // store cell widths in array
     var realTableHeadCellWidths = new Array();
-    realTableHeadRowChildren.each(function (this: HTMLElement, index)
+    realTableHeadRowChildren.forEach(function (element: Element, index: number)
     {
-      realTableHeadCellWidths[index] = $(this).width();
+      realTableHeadCellWidths[index] = Math.floor(LayoutUtility.GetWidth(element as HTMLElement));
     });
   
     // apply widths to fake header
-    fakeTableHeadRowChildren.width(function (index, itemWidth)
+    fakeTableHeadRowChildren.forEach((element: Element, index: number) =>
     {
-      var width = realTableHeadCellWidths[index];
-      return width;
+      (element as HTMLElement).style.width = realTableHeadCellWidths[index] + 'px';
     });
-  
-    var fakeTableHeadWidthContainer = fakeTableHeadContainer.children ('div').first();
-    fakeTableHeadWidthContainer.width(realTableWidth);
-    var fakeTableHeadContainerHeight = fakeTableHeadContainer.height();
-    scrollableContainer.css({ top: fakeTableHeadContainerHeight});
-    realTable.css({ 'margin-top': fakeTableHeadContainerHeight * -1 });
-  
-    fakeTableHeadContainer.show();
+
+    var fakeTableHeadWidthContainer = fakeTableHeadContainer.querySelector<HTMLElement> (':scope > div')!;
+    fakeTableHeadWidthContainer.style.width = realTableWidth + 'px';
+    fakeTableHeadContainer.style.display = 'block';
+    var fakeTableHeadContainerHeight = Math.floor(LayoutUtility.GetHeight(fakeTableHeadContainer));
+    scrollableContainer.style.top = fakeTableHeadContainerHeight + 'px';
+    realTable.style.marginTop = (fakeTableHeadContainerHeight * -1) + 'px';
   }
 
-  private static FixHeaderPosition(tableContainer: JQuery, scrollableContainerJQuery: JQuery): void
+  private static FixHeaderPosition(tableContainer: HTMLElement, scrollableContainer: HTMLElement): void
   {
-    var scrollableContainer = scrollableContainerJQuery[0];
-    var fakeTableHeadContainer = tableContainer.children('div.bocListFakeTableHead').first()[0];
+    var fakeTableHeadContainer = tableContainer.querySelector(':scope > div.bocListFakeTableHead')!;
     var scrollLeft = scrollableContainer.scrollLeft;
-    var previousScrollLeft = scrollableContainerJQuery.data("bocListPreviousScrollLeft");
+    var previousScrollLeft = parseInt(scrollableContainer.dataset.bocListPreviousScrollLeft!)
     var fakeTableHeadScrollLeft = fakeTableHeadContainer.scrollLeft;
 
     var hasScrollMoveFromScrollbar = previousScrollLeft !== scrollLeft;
@@ -610,7 +626,7 @@ class BocList
       return;
 
     scrollLeft = hasScrollMoveFromColumnHeader ? fakeTableHeadScrollLeft : scrollLeft;
-    scrollableContainerJQuery.data("bocListPreviousScrollLeft", scrollLeft);
+    scrollableContainer.dataset.bocListPreviousScrollLeft = scrollLeft.toString();
 
     if (hasScrollMoveFromColumnHeader)
       scrollableContainer.scrollLeft = scrollLeft;
@@ -619,31 +635,35 @@ class BocList
       fakeTableHeadContainer.scrollLeft = scrollLeft;
   }
 
-  public static InitializeNavigationBlock (pageNumberField: JQuery, pageIndexField: JQuery): void
+  public static InitializeNavigationBlock (pageNumberFieldOrSelector: CssSelectorOrElement<HTMLInputElement>, pageIndexFieldOrSelector: CssSelectorOrElement<HTMLInputElement>): void
   {
-    ArgumentUtility.CheckNotNullAndTypeIsObject ('pageNumberField', pageNumberField);
-    ArgumentUtility.CheckNotNullAndTypeIsObject('pageIndexField', pageIndexField);
   
-    pageNumberField.bind('change', function () {
+    ArgumentUtility.CheckNotNull ('pageNumberFieldOrSelector', pageNumberFieldOrSelector);
+    ArgumentUtility.CheckNotNull('pageIndexFieldOrSelector', pageIndexFieldOrSelector);
+
+    const pageNumberField = ElementResolverUtility.ResolveSingle(pageNumberFieldOrSelector);
+    const pageIndexField = ElementResolverUtility.ResolveSingle(pageIndexFieldOrSelector);
+
+    pageNumberField.addEventListener('change', function () {
   
-      var pageNumber = parseInt(pageNumberField.val(), 10);
+      var pageNumber = parseInt(pageNumberField.value, 10);
       if (isNaN (pageNumber) || !TypeUtility.IsInteger (pageNumber))
       {
-        if (pageNumberField.val().length > 0)
+        if (pageNumberField.value.length > 0)
           setTimeout(function () { pageNumberField.focus(); }, 0);
   
-        pageNumberField.val('' + (parseInt(pageIndexField.val(), 10) + 1)); // TODO RM-7699 - Incorrect style assignments in multiple TypeScript files
+        pageNumberField.value = '' + (parseInt(pageIndexField.value, 10) + 1); // TODO RM-7699 - Incorrect style assignments in multiple TypeScript files
         return false;
       }
       else
       {
-        pageIndexField.val ('' + (pageNumber - 1)); // TODO RM-7699 - Incorrect style assignments in multiple TypeScript files
-        pageIndexField.trigger('change');
+        pageIndexField.value =  '' + (pageNumber - 1); // TODO RM-7699 - Incorrect style assignments in multiple TypeScript files
+        pageIndexField.dispatchEvent(new Event('change'));
         return true;
       }
     });
   
-    pageNumberField.bind('keydown', function (event) {
+    pageNumberField.addEventListener('keydown', function (event) {
       var enterKey = 13;
       var zeroKey = 48;
       var nineKey = 57;
@@ -657,7 +677,7 @@ class BocList
   
       if (isEnterKey)
       {
-        pageNumberField.trigger("change");
+        pageNumberField.dispatchEvent(new Event("change"));
         event.cancelBubble = true;
         event.stopPropagation();
         return false;
