@@ -54,7 +54,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
     private class SelectAutoCompleteAction : WebTestAction
     {
-      private const string c_updateResultScript = "$(arguments[0]).trigger('updateResult', [{{DisplayName: '{0}', UniqueIdentifier: '{1}' }}, {{ Value: null }}]);";
+      private const string c_updateResultScript = "Remotion.jQuery(arguments[0]).trigger('updateResult', [{{DisplayName: '{0}', UniqueIdentifier: '{1}' }}, {{ Value: null }}]);";
 
       private string _actionName = "BocAutoCompleteReferenceValueControlObject_SelectAutoCompleteAction";
 
@@ -339,7 +339,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       return string.Format (
           @"
 CallWebService = function() {{
-  var input = $('#{0}');
+  var input = Remotion.jQuery('#{0}');
   var options = input.getAutoCompleteSearchParameters('{1}');
   
   var data = options.params;
@@ -360,7 +360,7 @@ CallWebService = function() {{
     error:function(error, context, methodName){{ returnValue = {{ {4}:'{7}', {5}:error }}; }}
   }};
 
-  $.ajax(request);
+  Remotion.jQuery.ajax(request);
 
   // Normalize communication between JS and C# API: always return an array if succeeded.
   if(returnValue.state === 'success' && !Array.isArray(returnValue.data))

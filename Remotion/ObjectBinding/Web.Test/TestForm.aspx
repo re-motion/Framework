@@ -55,7 +55,7 @@
         stringValue: document.getElementById("#StringField").value,
         intValue: parseInt(intValueAsString)
       };
-      $.ajax({
+      Remotion.jQuery.ajax({
         type: "POST",
         data: "{ stringValue: '" + params.stringValue + "', intValue: " + params.intValue + "}",
         dataType: "json",

@@ -152,7 +152,7 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
       this.SetError(resources.LoadIconFailedErrorMessage);
     };
 
-    $(this._textbox).autocomplete(this._controlServiceUrl, 'Search', 'SearchExact',
+    Remotion.jQuery(this._textbox).autocomplete(this._controlServiceUrl, 'Search', 'SearchExact',
       {
         extraParams: searchContext,
         isAutoPostBackEnabled: this._isAutoPostBackEnabled,
@@ -176,7 +176,7 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
         noDataFoundMessage: resources.NoDataFoundMessage,
         autoFill: true,
         matchContains: true,
-        combobox: $(combobox),
+        combobox: Remotion.jQuery(combobox),
         selectListID: this._selectListID,
         informationPopUpID: this._informationPopUpID,
         dropDownButtonID: button.getAttribute('id'),
@@ -359,11 +359,11 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
   {
     if (parameters.length > 0)
     {
-      $(this._textbox).trigger(name, parameters[0] as any);
+      Remotion.jQuery(this._textbox).trigger(name, parameters[0] as any);
     }
     else
     {
-      $(this._textbox).trigger(name);
+      Remotion.jQuery(this._textbox).trigger(name);
     }
   }
 

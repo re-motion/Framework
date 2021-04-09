@@ -1584,4 +1584,4 @@
       popUpDiv[0].scrollLeft = scrollLeft;
       popUpDiv[0].scrollTop = scrollTop;
     };
-})(jQuery);
+})(Remotion.jQuery);
