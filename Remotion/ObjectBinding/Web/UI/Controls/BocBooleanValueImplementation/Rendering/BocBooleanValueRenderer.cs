@@ -253,16 +253,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       scriptBuilder.Append ("BocBooleanValue.SelectNextCheckboxValue (");
       scriptBuilder.Append ("'").Append (resourceSet.ResourceKey).Append ("'");
       scriptBuilder.Append (", ");
-      scriptBuilder.Append ("$(this).parent().children('a')[0]");
+      scriptBuilder.Append ("this.parentNode.querySelector(':scope > a')");
       scriptBuilder.Append (", ");
-      scriptBuilder.Append ("$(this).parent().children('a').children('img')[0]");
+      scriptBuilder.Append ("this.parentNode.querySelector(':scope > a > img')");
       scriptBuilder.Append (", ");
       if (renderingContext.Control.ShowDescription)
-        scriptBuilder.Append ("$(this).parent().children('span')[1]");
+        scriptBuilder.Append ("this.parentNode.querySelectorAll(':scope > span')[1]");
       else
         scriptBuilder.Append ("null");
       scriptBuilder.Append (", ");
-      scriptBuilder.Append ("$(this).parent().children('input')[0]");
+      scriptBuilder.Append ("this.parentNode.querySelector(':scope > input')");
       scriptBuilder.Append (", ");
       scriptBuilder.Append (requiredFlag);
       scriptBuilder.Append (", ");

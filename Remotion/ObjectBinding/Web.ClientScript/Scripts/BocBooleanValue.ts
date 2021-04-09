@@ -110,7 +110,7 @@ class BocBooleanValue_Resource
     {
       label.innerHTML = description!;
     }
-    $(hiddenField).change();
+    hiddenField.dispatchEvent(new Event('change'))
   }
 }
 
