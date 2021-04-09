@@ -17,14 +17,21 @@
 
 type BocAutoCompleteReferenceValue_UpdateResult = { Value: Nullable<BocAutoCompleteReferenceValue_Item> }
 
-type BocAutoCompleteReferenceValue_Item = { UniqueIdentifier: string, DisplayName: string, IconUrl: Nullable<string>, IsAnnotation: boolean }
+type BocAutoCompleteReferenceValue_Item = { UniqueIdentifier: string, DisplayName: string, IconUrl: string, IsAnnotation: boolean }
+
+interface BocAutoCompleteReferenceValueJQueryContract {
+  hideInformationPopUp: void;
+  showInformationPopUp: { message: string };
+}
+type BocAutoCompleteReferenceValueJQueryContractParameters<K extends keyof BocAutoCompleteReferenceValueJQueryContract> 
+  = BocAutoCompleteReferenceValueJQueryContract[K] extends void ? [] : [BocAutoCompleteReferenceValueJQueryContract[K]];
 
 class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes BocReferenceValue and BocAutoCompleteReferenceValue inherit from BocReferenceValueBase
 {
   private _itemBackUp: Nullable<BocAutoCompleteReferenceValue_Item>;
   private _isInvalidated: boolean;
-  private _command: Nullable<JQuery>;
-  private _commandBackUp: Nullable<JQuery>;
+  private _command: Nullable<HTMLAnchorElement>;
+  private _commandBackUp: Nullable<HTMLAnchorElement>;
   private _selectListID: string;
   private _informationPopUpID: string;
   private _nullValueString: string;
@@ -33,11 +40,11 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
   private _controlServiceUrl: string;
   private _iconContext: Nullable<BocReferenceValueBase_IconContext>;
   private _commandInfo: Nullable<BocReferenceValueBase_CommandInfo>;
-  private _textbox: JQuery;
+  private _textbox: HTMLInputElement;
 
   constructor (
     baseID: Nullable<string>,
-    combobox: JQuery, textbox: JQuery, hiddenField: JQuery, button: JQuery, command: Nullable<JQuery>, controlServiceUrl: string,
+    comboboxOrSelector: CssSelectorOrElement<HTMLElement>, textboxOrSelector: CssSelectorOrElement<HTMLInputElement>, hiddenFieldOrSelector: CssSelectorOrElement<HTMLInputElement>, buttonOrSelector: CssSelectorOrElement<HTMLElement>, commandOrSelector: Nullable<CssSelectorOrElement<HTMLAnchorElement>>, controlServiceUrl: string,
     completionSetCount: number, dropDownDisplayDelay: number, dropDownRefreshDelay: number, selectionUpdateDelay: number,
     searchStringValidationInfo: BocReferenceValueBase_SearchStringValidationInfo,
     nullValueString: string,
@@ -49,11 +56,10 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
     resources: BocReferenceValueBase_Resources)
   {
     ArgumentUtility.CheckTypeIsString('baseID', baseID);
-    ArgumentUtility.CheckNotNullAndTypeIsObject('combobox', combobox);
-    ArgumentUtility.CheckNotNullAndTypeIsObject('this.textbox', textbox);
-    ArgumentUtility.CheckNotNullAndTypeIsObject('hiddenField', hiddenField);
-    ArgumentUtility.CheckNotNullAndTypeIsObject('button', button);
-    ArgumentUtility.CheckTypeIsObject('command', command);
+    ArgumentUtility.CheckNotNull('comboboxOrSelector', comboboxOrSelector);
+    ArgumentUtility.CheckNotNull('textboxOrSelector', textboxOrSelector);
+    ArgumentUtility.CheckNotNull('hiddenFieldOrSelector', hiddenFieldOrSelector);
+    ArgumentUtility.CheckNotNull('buttonOrSelector', buttonOrSelector);
     ArgumentUtility.CheckNotNullAndTypeIsString('controlServiceUrl', controlServiceUrl);
     ArgumentUtility.CheckNotNullAndTypeIsNumber('completionSetCount', completionSetCount);
     ArgumentUtility.CheckNotNullAndTypeIsNumber('dropDownDisplayDelay', dropDownDisplayDelay);
@@ -69,9 +75,17 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
     ArgumentUtility.CheckTypeIsObject('commandInfo', commandInfo);
     ArgumentUtility.CheckNotNullAndTypeIsObject('resources', resources);
 
+    let combobox = ElementResolverUtility.ResolveSingle(comboboxOrSelector);
+    const textbox = ElementResolverUtility.ResolveSingle(textboxOrSelector);
+    const hiddenField = ElementResolverUtility.ResolveSingle(hiddenFieldOrSelector);
+    const button = ElementResolverUtility.ResolveSingle(buttonOrSelector);
+    const command = commandOrSelector !== null
+      ? ElementResolverUtility.ResolveSingle(commandOrSelector)
+      : null;
+
     this._itemBackUp = null;
     this._isInvalidated = false;
-    this.BackupItemData(hiddenField.val(), textbox.val());
+    this.BackupItemData(hiddenField.value, textbox.value);
     this._command = command;
     this._commandBackUp = command;
     this._selectListID = baseID + '_Results';
@@ -90,40 +104,44 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
       // The remaining browsers support ARIA 1.1 with NVDA.
 
       var internetExplorerScreenReaderLabelID = baseID + '_InternetExplorerScreenReaderLabel';
-      var screenReaderLabel = $("<span hidden='hidden' />")
-        .attr("id", internetExplorerScreenReaderLabelID)
-        .html(resources.InternetExplorerScreenReaderLabelText)
-        .appendTo(combobox);
+      var screenReaderLabel = document.createElement('span');
+      screenReaderLabel.hidden = true;
+      screenReaderLabel.id = internetExplorerScreenReaderLabelID;
+      screenReaderLabel.innerHTML = resources.InternetExplorerScreenReaderLabelText;
+      combobox.appendChild(screenReaderLabel);
 
-      this._textbox.attr('role', combobox.attr('role'));
-      combobox.removeAttr('role');
+      this._textbox.setAttribute('role', combobox.getAttribute('role')!);
+      combobox.removeAttribute('role');
 
-      this._textbox.attr('aria-haspopup', combobox.attr('aria-haspopup'));
-      combobox.removeAttr('aria-haspopup');
+      this._textbox.setAttribute('aria-haspopup', combobox.getAttribute('aria-haspopup')!);
+      combobox.removeAttribute('aria-haspopup');
+    
+      this._textbox.setAttribute('aria-expanded', combobox.getAttribute('aria-expanded')!);
+      combobox.removeAttribute('aria-expanded');
 
-      this._textbox.attr('aria-expanded', combobox.attr('aria-expanded'));
-      combobox.removeAttr('aria-expanded');
-
-      if (combobox.attr('aria-labelledby') !== undefined)
+      const comboboxAriaLabeledBy = combobox.getAttribute('aria-labelledby');
+      if (comboboxAriaLabeledBy !== null)
       {
-        this._textbox.attr('aria-labelledby', combobox.attr('aria-labelledby') + ' ' + internetExplorerScreenReaderLabelID);
-        combobox.removeAttr('aria-labelledby');
+        this._textbox.setAttribute('aria-labelledby', comboboxAriaLabeledBy + ' ' + internetExplorerScreenReaderLabelID);
+        combobox.removeAttribute('aria-labelledby');
 
-        if (combobox.attr('data-label-id-index') !== undefined)
+        const comboboxDataLabelIDIndex = combobox.getAttribute('data-label-id-index');
+        if (comboboxDataLabelIDIndex !== null)
         {
-          this._textbox.attr('data-label-id-index', combobox.attr('data-label-id-index'));
-          combobox.removeAttr('data-label-id-index');
+          this._textbox.setAttribute('data-label-id-index', comboboxDataLabelIDIndex);
+          combobox.removeAttribute('data-label-id-index');
         }
       }
       else
       {
-        this._textbox.attr('aria-labelledby', internetExplorerScreenReaderLabelID);
+        this._textbox.setAttribute('aria-labelledby', internetExplorerScreenReaderLabelID);
       }
 
-      if (combobox.attr('aria-describedby') !== undefined)
+      const comboboxAriaDescribedBy = combobox.getAttribute('aria-describedby');
+      if (comboboxAriaDescribedBy != null)
       {
-        this._textbox.attr('aria-describedby', combobox.attr('aria-describedby'));
-        combobox.removeAttr('aria-describedby');
+        this._textbox.setAttribute('aria-describedby', comboboxAriaDescribedBy);
+        combobox.removeAttribute('aria-describedby');
       }
 
       combobox = this._textbox;
@@ -134,7 +152,7 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
       this.SetError(resources.LoadIconFailedErrorMessage);
     };
 
-    this._textbox.autocomplete(this._controlServiceUrl, 'Search', 'SearchExact',
+    $(this._textbox).autocomplete(this._controlServiceUrl, 'Search', 'SearchExact',
       {
         extraParams: searchContext,
         isAutoPostBackEnabled: this._isAutoPostBackEnabled,
@@ -158,10 +176,10 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
         noDataFoundMessage: resources.NoDataFoundMessage,
         autoFill: true,
         matchContains: true,
-        combobox: combobox,
+        combobox: $(combobox),
         selectListID: this._selectListID,
         informationPopUpID: this._informationPopUpID,
-        dropDownButtonID: button.attr('id'),
+        dropDownButtonID: button.getAttribute('id'),
         inputAreaClass: 'content',
         // this can be set to true/removed once the problem is fixed that an empty this.textbox still selects the first element, making it impossible to clear the selection
         selectFirst: function (inputValue: string, searchTerm: string)
@@ -171,7 +189,7 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
         dataType: 'json',
         parse: function (data: BocAutoCompleteReferenceValue_Item[])
         {
-          return $.map(data, function (row)
+          return data.map(function (row)
           {
             row.IsAnnotation = row.UniqueIdentifier === nullValueString;
 
@@ -184,21 +202,30 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
         },
         formatItem: function (item: BocAutoCompleteReferenceValue_Item) //What we display on input box
         {
-          var row = $('<li/>');
+          var row = document.createElement('li');
 
           if (item.IconUrl != '')
           {
-            var img = $('<img/>');
-            img.attr({ src: item.IconUrl, alt: '', 'aria-hidden': 'true' });
-            row.append($('<div/>').append(img));
+            var img = document.createElement('img');
+            img.src = item.IconUrl;
+            img.alt = '';
+            img.setAttribute('aria-hidden', 'true');
+
+            var imgContainer = document.createElement('div');
+            imgContainer.appendChild(img);
+
+            row.append(imgContainer);
           }
 
-          var displayName = $('<span/>');
-          displayName.text(item.DisplayName);
-          row.append($('<div/>').append(displayName));
+          var displayName = document.createElement('span');
+          displayName.innerText = item.DisplayName;
+
+          var displayNameContainer = document.createElement('div');
+          displayNameContainer.appendChild(displayName);
+          row.append(displayNameContainer);
 
           return {
-            html: row.html(),
+            html: row.innerHTML,
             class: null,
             isAnnotation: item.IsAnnotation
           };
@@ -223,7 +250,7 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
 
         this._isInvalidated = true;
 
-      hiddenField.val(this._nullValueString);
+      hiddenField.value = this._nullValueString;
       this.UpdateCommand(this._nullValueString, errorHandler);
       //Do not fire change-event
     }).updateResult((e: JQueryEventObject, item: BocAutoCompleteReferenceValue_Item, out: BocAutoCompleteReferenceValue_UpdateResult) =>
@@ -236,9 +263,9 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
           && (item.UniqueIdentifier == this._itemBackUp!.UniqueIdentifier || item.UniqueIdentifier == this._nullValueString))
         {
           if (item.UniqueIdentifier == this._nullValueString && this._itemBackUp!.UniqueIdentifier != this._nullValueString)
-            this._textbox.val(this._itemBackUp!.DisplayName); // fall back to the last confirmed user input to preserve correct casing
+            this._textbox.value = this._itemBackUp!.DisplayName; // fall back to the last confirmed user input to preserve correct casing
           else
-            this._textbox.val(item.DisplayName); // keep the latest user input to preservce current casing
+            this._textbox.value = item.DisplayName; // keep the latest user input to preservce current casing
           actualItem = this._itemBackUp!;
         }
 
@@ -246,14 +273,14 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
 
         if (this._isInvalidated || hasChanged)
         {
-          hiddenField.val(actualItem.UniqueIdentifier);
+          hiddenField.value = actualItem.UniqueIdentifier;
           this.BackupItemData(actualItem.UniqueIdentifier, actualItem.DisplayName);
 
           if (hasChanged)
           {
             this.UpdateCommand(actualItem.UniqueIdentifier, errorHandler);
             this._commandBackUp = this._command;
-            hiddenField.trigger('change');
+            hiddenField.dispatchEvent(new Event('change'));
           }
           else
           {
@@ -271,10 +298,10 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
 
   private RestoreCommand(): void
   {
-    if (this._commandBackUp == null || this._commandBackUp.length == 0)
+    if (this._commandBackUp == null)
       return;
 
-    if (this._command == null || this._command.length == 0)
+    if (this._command == null)
       return;
 
       this._command.replaceWith(this._commandBackUp);
@@ -283,7 +310,7 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
 
   private UpdateCommand (selectedValue: string, errorHandler: (error: Sys.Net.WebServiceError) => void): void
   {
-    if (this._command == null || this._command.length == 0)
+    if (this._command == null)
       return;
 
     if (this._isAutoPostBackEnabled)
@@ -302,23 +329,23 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
 
   private ClearError(): void
   {
-    if (this._textbox.hasClass('error'))
+    if (this._textbox.classList.contains('error'))
     {
-      this._textbox.removeClass('error');
-      this._textbox.trigger('hideInformationPopUp');
+      this._textbox.classList.remove('error');
+      this.dispatchTextBoxEvent('hideInformationPopUp');
     }
   }
 
   private SetError (message: string): void
   {
-    this._textbox.addClass('error');
-    this._textbox.trigger('showInformationPopUp', { 'message': message });
+    this._textbox.classList.add('error');
+    this.dispatchTextBoxEvent('showInformationPopUp', { message: message });
   }
 
   private BackupItemData(uniqueIdentifier: string, displayName: string): void
   {
     // TODO RM-7741 - BocAutoCompleteReferenceValue.ts: Not all state of Item is backed up
-    this._itemBackUp = { UniqueIdentifier: uniqueIdentifier, DisplayName: displayName, IconUrl: null, IsAnnotation: false };
+    this._itemBackUp = { UniqueIdentifier: uniqueIdentifier, DisplayName: displayName, IconUrl: '', IsAnnotation: false };
   }
 
   private GetDropDownSearchStringForValidInput (searchString: string): string
@@ -328,13 +355,25 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
     return searchString;
   }
 
+  private dispatchTextBoxEvent<K extends keyof BocAutoCompleteReferenceValueJQueryContract>(name: K, ...parameters: BocAutoCompleteReferenceValueJQueryContractParameters<K>): void
+  {
+    if (parameters.length > 0)
+    {
+      $(this._textbox).trigger(name, parameters[0] as any);
+    }
+    else
+    {
+      $(this._textbox).trigger(name);
+    }
+  }
+
   //  Returns the number of rows selected for the specified ReferenceValue
   public static GetSelectionCount (referenceValueHiddenFieldID: string, nullValueString: string): number
   {
     ArgumentUtility.CheckNotNullAndTypeIsString('referenceValueHiddenFieldID', referenceValueHiddenFieldID);
     ArgumentUtility.CheckNotNullAndTypeIsString('nullValueString', nullValueString);
 
-    var hiddenField = <Nullable<HTMLInputElement>>document.getElementById(referenceValueHiddenFieldID);
+    var hiddenField = document.getElementById(referenceValueHiddenFieldID) as Nullable<HTMLInputElement>;
     if (hiddenField == null || hiddenField.value == nullValueString)
       return 0;
 

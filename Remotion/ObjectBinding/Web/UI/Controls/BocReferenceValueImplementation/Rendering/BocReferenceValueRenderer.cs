@@ -141,11 +141,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       var isIconUpdateEnabled = controlServicePath != null && renderingContext.Control.IsIconEnabled();
 
       var script = new StringBuilder (1000);
-      script.Append ("$(document).ready( function() { BocReferenceValue.Initialize(");
-      script.AppendFormat ("$('#{0}'), ", renderingContext.Control.GetValueName());
+      script.Append ("BocReferenceValue.Initialize(");
+      script.AppendFormat ("'#{0}', ", renderingContext.Control.GetValueName());
 
       if (renderingContext.Control.IsIconEnabled())
-        script.AppendFormat ("$('#{0} .{1}'), ", renderingContext.Control.ClientID, CssClassCommand);
+        script.AppendFormat ("'#{0} .{1}', ", renderingContext.Control.ClientID, CssClassCommand);
       else
         script.Append ("null, ");
 
@@ -163,7 +163,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       script.Append (", ");
 #pragma warning restore 618
       script.Append (GetResourcesAsJson (renderingContext));
-      script.Append ("); } );");
+      script.Append (");");
 
       renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock (
           renderingContext.Control,
