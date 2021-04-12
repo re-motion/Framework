@@ -38,6 +38,10 @@ namespace Remotion.Web.UI
       var jqueryFileUrl = ResourceUrlFactory.CreateResourceUrl (typeof (HtmlHeadContents), ResourceType.Html, "jquery-1.6.4.js");
       htmlHeadAppender.RegisterJavaScriptInclude (jqueryKey, jqueryFileUrl);
 
+      string jQueryIframeShimScriptKey = typeof (HtmlHeadContents).FullName + "_JQueryBgiFrames";
+      var href = ResourceUrlFactory.CreateResourceUrl (typeof (HtmlHeadContents), ResourceType.Html, "jquery.IFrameShim.js");
+      htmlHeadAppender.RegisterJavaScriptInclude (jQueryIframeShimScriptKey, href);
+
       string utilitiesKey = typeof (HtmlHeadContents).FullName + "_Utilities";
       var utilitiesScripFileUrl = ResourceUrlFactory.CreateResourceUrl (typeof (HtmlHeadContents), ResourceType.Html, "Utilities.js");
       htmlHeadAppender.RegisterJavaScriptInclude (utilitiesKey, utilitiesScripFileUrl);
@@ -46,13 +50,12 @@ namespace Remotion.Web.UI
     /// <summary>
     /// Registers jquery.IFrameShim.js in non-themed HTML folder of Remotion.Web.dll.
     /// </summary>
+    [Obsolete ("JQuery iFrame shim was only needed for IE, which is no longer supported. (Version 3.0.0-alpha.12)", true)]
     public static void RegisterJQueryIFrameShimJavaScriptInclude (this HtmlHeadAppender htmlHeadAppender)
     {
       ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
 
-      string key = typeof (HtmlHeadContents).FullName + "_JQueryBgiFrames";
-      var href = ResourceUrlFactory.CreateResourceUrl (typeof (HtmlHeadContents), ResourceType.Html, "jquery.IFrameShim.js");
-      htmlHeadAppender.RegisterJavaScriptInclude (key, href);
+      throw new NotSupportedException ("JQuery iFrame shim was only needed for IE, which is no longer supported. (Version 3.0.0-alpha.12)");
     }
 
     /// <summary>

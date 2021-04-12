@@ -261,7 +261,6 @@ namespace Remotion.Web.UI.SmartPageImplementation
       if (!ControlHelper.IsDesignMode (_page))
       {
         HtmlHeadAppender.Current.RegisterUtilitiesJavaScriptInclude ();
-        HtmlHeadAppender.Current.RegisterJQueryIFrameShimJavaScriptInclude ();
 
         var resourceUrlFactory = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory> ();
         
