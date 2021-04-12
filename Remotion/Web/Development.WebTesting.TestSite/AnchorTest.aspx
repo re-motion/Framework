@@ -19,7 +19,7 @@
   <asp:UpdatePanel ID="UpdatePanel" runat="server">
     <ContentTemplate>
       <script type="text/javascript">
-        function myClickHandler(text) { $ ('#TestOutputLabel').text (text); }
+        function myClickHandler(text) { Remotion.jQuery('#TestOutputLabel').text (text); }
       </script>
       <h3>HtmlAnchor1 - re-motion WebLinkButton</h3>
       <%-- ReSharper disable once Html.PathError --%>

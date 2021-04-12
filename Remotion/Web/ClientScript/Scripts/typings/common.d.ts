@@ -37,6 +37,11 @@ type CssSelectorOrElements<TElement extends Element> = string | TElement | TElem
 
 type UndeclaredProperty<TName extends string, TType> = { [K in TName]: TType };
 
+declare namespace Remotion
+{
+  export var jQuery: JQueryStatic;
+}
+
 // Enhance the ASP.NET typings
 declare namespace Sys.WebForms
 { 
