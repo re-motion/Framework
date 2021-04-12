@@ -268,14 +268,19 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void ResolveBorderElementA ()
     {
-      var home = Start();
+      RetryTest (
+          () =>
+          {
+            var home = Start();
 
-      ScreenshotTestingDelegate<IFluentScreenshotElement<ElementScope>> test =
-          (builder, target) => { builder.Crop (target, new WebPadding (1)); };
+            ScreenshotTestingDelegate<IFluentScreenshotElement<ElementScope>> test =
+                (builder, target) => { builder.Crop (target, new WebPadding (1)); };
 
-      var element = home.Scope.FindId ("borderElementA").ForElementScopeScreenshot();
+            var element = home.Scope.FindId ("borderElementA").ForElementScopeScreenshot();
 
-      Helper.RunScreenshotTestExact<IFluentScreenshotElement<ElementScope>, ScreenshotTest> (element, ScreenshotTestingType.Both, test);
+            Helper.RunScreenshotTestExact<IFluentScreenshotElement<ElementScope>, ScreenshotTest> (element, ScreenshotTestingType.Both, test);
+          },
+          2);
     }
 
     [Category ("Screenshot")]
@@ -542,6 +547,26 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       Assert.That (derivedNode.GetChildren(), Is.Not.Null);
       Assert.That (derivedNode.GetLabel(), Is.Not.Null);
+    }
+
+    private void RetryTest (Action action, int retries)
+    {
+      if (retries < 0)
+        throw new ArgumentOutOfRangeException ("retries", "Retries must be greater than or equal to zero.");
+
+      for (int i = 0; i <= retries; i++)
+      {
+        try
+        {
+          action();
+        }
+        catch (AssertionException) when (i < retries)
+        {
+          continue;
+        }
+
+        return;
+      }
     }
 
     private ControlObject PrepareTest ()
