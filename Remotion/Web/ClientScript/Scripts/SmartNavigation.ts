@@ -153,46 +153,45 @@ class SmartFocus
     var activeElementID = data;
     if (! StringUtility.IsNullOrEmpty (activeElementID))
     {
-      var activeElement = $('#' + activeElementID);
+      var activeElement = document.getElementById(activeElementID);
       if (activeElement)
       {
-        var isEnabledFilter = function (this: HTMLElement)
+        function isEnabledFilter(el: HTMLElement)
         {
-          var _this = $ (this);
-          if (_this.is ('button'))
+          if (el.tagName === 'BUTTON')
             return true;
-          if (_this.is ('input[type=button]'))
+          if (el.tagName === 'INPUT' && (el as HTMLInputElement).type.toLowerCase() === "button")
             return true;
-          if (_this.is ('input[type=submit]'))
+          if (el.tagName === 'INPUT' && (el as HTMLInputElement).type.toLowerCase() === "submit")
             return true;
-          if (_this.is ('a'))
+          if (el.tagName === 'A')
             return true;
-          if (!_this.is ('a') && _this.is (':enabled') && !_this.is ('input[type=hidden]'))
+          if (el.tagName !== 'A' && (el as HTMLInputElement).disabled === false && !(el.tagName === 'INPUT' && (el as HTMLInputElement).type.toLowerCase() === "hidden"))
             return true;
-          if (!_this.is ('a') && _this.is ('*[tabindex]'))
+          if (el.tagName !== 'A' && el.hasAttribute ('tabindex'))
             return true;
           return false;
         };
 
-        if (activeElement.is(isEnabledFilter))
+        if (isEnabledFilter(activeElement))
         {
           SmartFocus.SetFocus (activeElement);
         }
         else
         {
-          var focusableElements = $('input, textarea, select, button, a');
-          var elementIndex = focusableElements.index(activeElement);
-          var fallBackElement = focusableElements.slice(elementIndex).filter(isEnabledFilter).first();
-          if (fallBackElement.length > 0)
+          var focusableElements = Array.from(document.querySelectorAll<HTMLElement>('input, textarea, select, button, a'));
+          var elementIndex = focusableElements.indexOf(activeElement);
+          var fallBackElements = focusableElements.slice(elementIndex).filter(isEnabledFilter);
+          if (fallBackElements.length > 0)
           {
-            SmartFocus.SetFocus (fallBackElement);
+            SmartFocus.SetFocus (fallBackElements[0]);
           }
           else
           {
-            fallBackElement = focusableElements.slice(0, elementIndex).filter(isEnabledFilter).last();
-            if (fallBackElement)
+            fallBackElements = focusableElements.slice(0, elementIndex).filter(isEnabledFilter);
+            if (fallBackElements.length > 0)
             {
-              SmartFocus.SetFocus (fallBackElement);
+              SmartFocus.SetFocus (fallBackElements[fallBackElements.length - 1]);
             }
           }
         }
@@ -202,7 +201,7 @@ class SmartFocus
     return undefined as unknown as boolean;
   }
 
-  public static SetFocus (element: JQuery): void
+  public static SetFocus (element: HTMLElement): void
   {
     setTimeout(function () { element.focus(); }, 0);
   }

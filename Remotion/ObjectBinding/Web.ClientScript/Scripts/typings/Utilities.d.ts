@@ -5,7 +5,6 @@ declare class TypeUtility {
     static IsInteger(value: unknown): value is number;
     static IsBoolean(value: unknown): value is boolean;
     static IsFunction(value: unknown): value is AnyFunction;
-    static IsJQuery(value: unknown): value is JQuery;
     static IsUndefined(value: unknown): value is undefined;
     static IsDefined(value: unknown): value is NotUndefined;
     static IsNull(value: unknown): value is null;
@@ -34,8 +33,6 @@ declare class ArgumentUtility {
     static CheckNotNullAndTypeIsBoolean(name: string, value: unknown): asserts value is boolean;
     static CheckTypeIsFunction(name: string, value: unknown): asserts value is Nullable<AnyFunction>;
     static CheckNotNullAndTypeIsFunction(name: string, value: unknown): asserts value is AnyFunction;
-    static CheckTypeIsJQueryObject(name: string, value: unknown): asserts value is Nullable<JQuery>;
-    static CheckNotNullAndTypeIsJQuery(name: string, value: unknown): asserts value is JQuery;
 }
 declare class BrowserUtility {
     static GetIEVersion(): number;
@@ -51,7 +48,7 @@ declare class PageUtility {
     ExecuteResizeHandlers(): void;
     IsInDom(element: HTMLElement): boolean;
 }
-declare type PageUtility_ResizeHandler = (element: JQuery) => void;
+declare type PageUtility_ResizeHandler = (element: HTMLElement) => void;
 declare class PageUtility_ResizeHandlerItem {
     readonly Selector: string;
     Handler: PageUtility_ResizeHandler;

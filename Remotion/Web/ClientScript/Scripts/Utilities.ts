@@ -45,12 +45,7 @@ class TypeUtility
   {
       return typeof (value) == 'function';
   };
-  
-  public static IsJQuery (value: unknown): value is JQuery
-  {
-    return value instanceof jQuery;
-  };
-  
+
   public static IsUndefined (value: unknown): value is undefined
   {
       return typeof (value) == 'undefined';
@@ -184,22 +179,6 @@ class ArgumentUtility
       ArgumentUtility.CheckNotNull(name, value);
       ArgumentUtility.CheckTypeIsFunction(name, value);
   };
-
-  // Checks that value is not null and of type jquery.
-  public static CheckTypeIsJQueryObject (name: string, value: unknown): asserts value is Nullable<JQuery>
-  {
-    if (TypeUtility.IsNull(value))
-      return;
-    if (!TypeUtility.IsJQuery(value))
-      throw ('Error: The value of parameter "' + name + '" is not a jquery object.');
-  };
-
-  // Checks that value is not null and of type jquery.
-  public static CheckNotNullAndTypeIsJQuery (name: string, value: unknown): asserts value is JQuery
-  {
-    ArgumentUtility.CheckNotNull(name, value);
-    ArgumentUtility.CheckTypeIsJQueryObject(name, value);
-  };
 }
 
 class BrowserUtility
@@ -233,10 +212,7 @@ class PageUtility
 
   constructor()
   {
-    $(document).ready(function()
-    {
-      $(window).bind('resize', function() { PageUtility.Instance.PrepareExecuteResizeHandlers(); });
-    });
+    window.addEventListener("resize", function() { PageUtility.Instance.PrepareExecuteResizeHandlers(); });
   }
 
   public RegisterResizeHandler (selector: string, handler: PageUtility_ResizeHandler): void
@@ -270,8 +246,8 @@ class PageUtility
     for (var i = 0; i < this._resizeHandlers.length; i++)
     {
       var item = this._resizeHandlers[i];
-      var element = $ (item.Selector);
-      if (element != null && element.length > 0)
+      var element = document.querySelector<HTMLElement> (item.Selector);
+      if (element != null)
       {
         item.Handler (element);
         existingResizeHandlers[existingResizeHandlers.length] = item;
@@ -296,12 +272,12 @@ class PageUtility
   }
 }
 
-type PageUtility_ResizeHandler = (element: JQuery) => void;
+type PageUtility_ResizeHandler = (element: HTMLElement) => void;
 
 class PageUtility_ResizeHandlerItem
 {
   public readonly Selector: string;
-  public Handler;
+  public readonly Handler: PageUtility_ResizeHandler;
 
   constructor(selector: string, handler: PageUtility_ResizeHandler)
   {

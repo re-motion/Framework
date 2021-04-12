@@ -63,7 +63,7 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
       ArgumentUtility.CheckNotNull ("style", style);
 
-      ScriptUtility.Instance.RegisterElementForBorderSpans (renderingContext.Control, "#" + GetTabClientID (renderingContext, tab) + " > *:first");
+      ScriptUtility.Instance.RegisterElementForBorderSpans (renderingContext.Control, "#" + GetTabClientID (renderingContext, tab) + " > *:first-child");
 
       RenderTabBegin (renderingContext);
       RenderSeperator (renderingContext);
