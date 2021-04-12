@@ -187,7 +187,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.ScreenshotCreatio
       else
         path = Path.Combine (savePath, string.Join (".", typeName, helper.BrowserConfiguration.BrowserName, testName, "png"));
 
-      screenshotBuilder.Save (path);
+      screenshotBuilder.Save (path, true);
 
       // Try to find the resource which belongs to the current test
       var resourcePrefixes = GenerateResourcePrefixes (typeName, helper.BrowserConfiguration.BrowserName, testPrefix, testName);
