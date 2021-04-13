@@ -392,20 +392,53 @@ class ElementResolverUtility
   }
 }
 
+type CssOrientation = "Top" | "Right" | "Bottom" | "Left";
+
 class LayoutUtility
 {
   public static GetHeight(element: Element)
   {
-    // TODO RM-7734: Fix the width/height calculations in the LayoutHelper to respect box-sizing
-    const style = window.getComputedStyle(element);
-    return parseFloat(style.height) || 0;
+    return LayoutUtility.GetElementDimension(element, "height");
   }
 
   public static GetWidth(element: Element)
   {
-    // TODO RM-7734: Fix the width/height calculations in the LayoutHelper to respect box-sizing
+    return LayoutUtility.GetElementDimension(element, "width");
+  }
+
+  private static GetElementDimension(element: Element, dimension: "width" | "height")
+  {
     const style = window.getComputedStyle(element);
-    return parseFloat(style.width) || 0;
+
+    // jQuery 1.6.4 uses the offsetWidth/offsetHeight properties to calculate element dimensions.
+    // The offsetXXX properties are rounded, while the style properties are not.
+    // We round here to make sure that we are compatible with the original behavior, but we do
+    // not use the offsetXXX properties for the calculation because they introduce unnecessary
+    // complexity for backwards compatibility that we don't need (IE).
+    const value = Math.round(parseFloat(style[dimension])) || 0;
+    
+    // For content-box: value is already correct
+    // For border-box: we need to remove padding and border from the value
+    if (style.boxSizing !== "border-box")
+      return value;
+    
+    const orientations: CssOrientation[] = dimension === "width"
+      ? ["Left", "Right"]
+      : ["Top", "Bottom"];
+
+    let adjustment = 0.0;
+    for (const orientation of orientations)
+    {
+      // Subtract padding
+      const paddingProperty = `padding${orientation}` as `padding${CssOrientation}`;
+      adjustment -= parseFloat(style[paddingProperty]) || 0;
+
+      // Subtract border
+      const borderProperty = `border${orientation}Width` as `border${CssOrientation}Width`;
+      adjustment -= parseFloat(style[borderProperty]) || 0;
+    }
+
+    return value + adjustment;
   }
 
   public static GetOffset(element: HTMLElement)
