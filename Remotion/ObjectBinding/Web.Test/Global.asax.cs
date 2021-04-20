@@ -102,28 +102,36 @@ namespace OBWTest
       BusinessObjectProvider.GetProvider<BindableObjectProviderAttribute>().AddService (new ReferenceDataSourceTestDefaultValueService());
       BusinessObjectProvider.GetProvider<BindableObjectProviderAttribute>().AddService (new ReferenceDataSourceTestDeleteObjectService());
 
+      var developmentResourcesExistTestPath = Path.Combine (Server.MapPath ("~/"), @"..\Web.ClientScript");
+      var isResourceMappingRequired = Directory.Exists (developmentResourcesExistTestPath);
+      if (isResourceMappingRequired)
+      {
 #if DEBUG
-      const string configuration = "Debug";
+        const string configuration = "Debug";
 #else
-      const string configuration = "Release";
+        const string configuration = "Release";
 #endif
-
-      _resourceVirtualPathProvider = new ResourceVirtualPathProvider (
-          new[]
-          {
-              new ResourcePathMapping ("Remotion.Web/Html/jquery-1.6.4.js", @"..\..\Web\Core\res\Html\jquery-1.6.4.js"),
-              new ResourcePathMapping ("Remotion.Web/Html/jquery.iFrameShim.js", @"..\..\Web\Core\res\Html\jquery.iFrameShim.js"),
-              new ResourcePathMapping ("Remotion.Web/Html", @$"..\..\Web\ClientScript\bin\{configuration}\dist"),
-              new ResourcePathMapping ("Remotion.Web/Image", @"..\..\Web\Core\res\Image"),
-              new ResourcePathMapping ("Remotion.Web/Themes", @"..\..\Web\Core\res\Themes"),
-              new ResourcePathMapping ("Remotion.Web/UI", @"..\..\Web\Core\res\UI"),
-              new ResourcePathMapping ("Remotion.ObjectBinding.Web/Html", @$"..\..\ObjectBinding\Web.ClientScript\bin\{configuration}\dist"),
-              new ResourcePathMapping ("Remotion.ObjectBinding.Web/Themes", @"..\..\ObjectBinding\Web\res\Themes"),
-              new ResourcePathMapping ("Remotion.Web.Legacy", @"..\..\Web\Legacy\res"),
-              new ResourcePathMapping ("Remotion.ObjectBinding.Web.Legacy", @"..\..\ObjectBinding\Web.Legacy\res")
-          },
-          FileExtensionHandlerMapping.Default);
-      _resourceVirtualPathProvider.Register ();
+        _resourceVirtualPathProvider = new ResourceVirtualPathProvider (
+            new[]
+            {
+                new ResourcePathMapping ("Remotion.Web/Html/jquery-1.6.4.js", @"..\..\Web\Core\res\Html\jquery-1.6.4.js"),
+                new ResourcePathMapping ("Remotion.Web/Html/jquery.iFrameShim.js", @"..\..\Web\Core\res\Html\jquery.iFrameShim.js"),
+                new ResourcePathMapping ("Remotion.Web/Html", @$"..\..\Web\ClientScript\bin\{configuration}\dist"),
+                new ResourcePathMapping ("Remotion.Web/Image", @"..\..\Web\Core\res\Image"),
+                new ResourcePathMapping ("Remotion.Web/Themes", @"..\..\Web\Core\res\Themes"),
+                new ResourcePathMapping ("Remotion.Web/UI", @"..\..\Web\Core\res\UI"),
+                new ResourcePathMapping ("Remotion.ObjectBinding.Web/Html", @$"..\..\ObjectBinding\Web.ClientScript\bin\{configuration}\dist"),
+                new ResourcePathMapping ("Remotion.ObjectBinding.Web/Themes", @"..\..\ObjectBinding\Web\res\Themes"),
+                new ResourcePathMapping ("Remotion.Web.Preview", @"..\..\Web\Preview\res"),
+                new ResourcePathMapping ("Remotion.ObjectBinding.Web.Preview", @"..\..\ObjectBinding\Web.Preview\res")
+            },
+            FileExtensionHandlerMapping.Default);
+        _resourceVirtualPathProvider.Register ();
+      }
+      else
+      {
+        _resourceVirtualPathProvider = new ResourceVirtualPathProvider (new ResourcePathMapping[0], new FileExtensionHandlerMapping[0]);
+      }
 
       //var bundle = new Bundle ("~/bundles/css");
       //foreach (var resourcePathMapping in _resourceVirtualPathProvider.Mappings)
