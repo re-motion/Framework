@@ -487,13 +487,13 @@ class DropDownMenu
 
     // position drop-down list
     var top = clickEvent ? clickEvent.clientY : Math.max (0, space_top + referenceElement.offsetHeight);
-    var left = clickEvent ? clickEvent.clientX : 'auto';
-    var right = clickEvent ? 'auto' : Math.max (0, document.documentElement.clientWidth - LayoutUtility.GetOffset (referenceElement).left - referenceElement.offsetWidth);
+    var left = clickEvent ? clickEvent.clientX + 'px' : 'auto';
+    var right = clickEvent ? 'auto' : Math.max (0, document.documentElement.clientWidth - LayoutUtility.GetOffset (referenceElement).left - referenceElement.offsetWidth) + 'px';
 
     popUpDiv.style.top = top + 'px';
     popUpDiv.style.bottom = 'auto';
-    popUpDiv.style.right = right + 'px';
-    popUpDiv.style.left = left + 'px';
+    popUpDiv.style.right = right;
+    popUpDiv.style.left = left;
     popUpDiv.style.position = 'fixed';
 
     // move dropdown if there is not enough space to fit it on the page
@@ -501,8 +501,8 @@ class DropDownMenu
     {
       if (LayoutUtility.GetOffset (popUpDiv).left < 0)
       {
-        left = Math.max (0, LayoutUtility.GetOffset (referenceElement).left);
-        popUpDiv.style.left = left + 'px';
+        left = Math.max (0, LayoutUtility.GetOffset (referenceElement).left) + 'px';
+        popUpDiv.style.left = left;
         popUpDiv.style.right = 'auto';
       }
     }
