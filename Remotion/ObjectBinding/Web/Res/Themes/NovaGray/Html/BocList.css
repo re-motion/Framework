@@ -400,6 +400,22 @@ tr.bocListDataRow td.bocListDataCell span.CommandText
 
 
 /* Style to override the BocList's anchor style for drop down menus rendered inside a cell. */
+td.bocListDataCell div ul.DropDownMenuOptions li a
+{
+  display: block;
+}
+
+td.bocListDataCell div ul.DropDownMenuOptions li.DropDownMenuItemDisabled.selected a,
+td.bocListDataCell div ul.DropDownMenuOptions li.DropDownMenuItemDisabled a:active,
+td.bocListDataCell div ul.DropDownMenuOptions li.DropDownMenuItemDisabled a:focus,
+td.bocListDataCell div ul.DropDownMenuOptions li.DropDownMenuItemDisabled a:hover
+{
+  background-color: #ECEEEC;
+  border-style: none;
+  padding: 2px;
+  color: gray;
+}
+
 td.bocListDataCell div span.DropDownMenuSelect a.DropDownMenuLabel,
 td.bocListDataCell div span.DropDownMenuSelect:focus a.DropDownMenuLabel,
 td.bocListDataCell div span.DropDownMenuSelect:hover a.DropDownMenuLabel
