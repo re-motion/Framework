@@ -187,6 +187,8 @@
     <Compile Include="Services\IBocReferenceValueWebService.cs" />
     <Compile Include="Services\IBocTreeViewWebService.cs" />
     <Compile Include="Services\IBocAutoCompleteReferenceValueWebService.cs" />
+    <Compile Include="Services\IBusinessObjectIconWebService.obsolete.cs" />
+    <Compile Include="Services\ISearchAvailableObjectWebService.obsolete.cs" />
     <Compile Include="UI\Controls\BaseValidatorReadOnlyCollectionExtension.cs" />
     <Compile Include="UI\Controls\BindableObjectDataSourceControl.cs">
     </Compile>
