@@ -25,8 +25,8 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.UnitTests.Configuration
   [TestFixture]
   public class AppConfigBasedSettingsProviderTest
   {
-    private AppConfigBasedSettingsProvider _provider = default!;
-    private TypePipeConfigurationSection _section = default!;
+    private AppConfigBasedSettingsProvider _provider;
+    private TypePipeConfigurationSection _section;
 
     [SetUp]
     public void SetUp ()

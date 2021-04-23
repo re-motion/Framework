@@ -24,7 +24,7 @@ namespace Remotion.UnitTests.Collections
   [TestFixture]
   public class AutoInitDictionaryTest
   {
-    private MultiDictionary<string, string> _dictionary = default!;
+    private MultiDictionary<string, string> _dictionary;
 
     [SetUp]
     public void SetUp ()

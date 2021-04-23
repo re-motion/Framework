@@ -44,14 +44,14 @@ namespace Remotion.Xml
       Type type = GetType ();
       Assembly assembly = type.Assembly;
 
-      using (Stream schemaStream = assembly.GetManifestResourceStream (type, schemaFileName))
+      using (Stream? schemaStream = assembly.GetManifestResourceStream (type, schemaFileName))
       {
         if (schemaStream == null)
           throw new ApplicationException (string.Format ("Error loading schema resource '{0}' from assembly '{1}'.", schemaFileName, assembly.FullName));
 
         using (XmlReader xmlReader = XmlReader.Create (schemaStream))
         {
-          return XmlSchema.Read (xmlReader, null);
+          return XmlSchema.Read (xmlReader, null)!;
         }
       }
     }

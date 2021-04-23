@@ -30,6 +30,8 @@ namespace Remotion.Configuration.TypeDiscovery
   /// </summary>
   public sealed class TypeDiscoveryConfiguration : ConfigurationSection
   {
+    // TODO RM-7788: The Type property of CustomRootAssemblyFinder & CustomTypeDiscoveryService should be constrained to reference types.
+
     private static readonly DoubleCheckedLockingContainer<TypeDiscoveryConfiguration> s_current = 
         new DoubleCheckedLockingContainer<TypeDiscoveryConfiguration> (GetTypeDiscoveryConfiguration);
 
@@ -151,7 +153,8 @@ namespace Remotion.Configuration.TypeDiscovery
         throw new ConfigurationErrorsException (message);
       }
 
-      var customRootAssemblyFinder = (IRootAssemblyFinder) Activator.CreateInstance (CustomRootAssemblyFinder.Type);
+      // TODO RM-7788: The return value of Activator.CreateInstance should be checked for null.
+      var customRootAssemblyFinder = (IRootAssemblyFinder) Activator.CreateInstance (CustomRootAssemblyFinder.Type)!;
       return CreateServiceWithAssemblyFinder (customRootAssemblyFinder);
     }
 
@@ -174,7 +177,8 @@ namespace Remotion.Configuration.TypeDiscovery
         throw new ConfigurationErrorsException (message);
       }
 
-      return (ITypeDiscoveryService) Activator.CreateInstance (CustomTypeDiscoveryService.Type);
+      // TODO RM-7788: The return value of Activator.CreateInstance should be checked for null.
+      return (ITypeDiscoveryService) Activator.CreateInstance (CustomTypeDiscoveryService.Type)!;
     }
 
     private ITypeDiscoveryService CreateServiceWithAutomaticDiscovery ()

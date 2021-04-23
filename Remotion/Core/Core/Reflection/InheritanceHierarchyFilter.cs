@@ -36,11 +36,12 @@ namespace Remotion.Reflection
 
     public Type[] GetLeafTypes ()
     {
+      // TODO RM-7752: fix possible null dereference when typeof(object) is part of _types.
       HashSet<Type> baseTypes = new HashSet<Type> ();
       foreach (Type type in _types)
       {
-        baseTypes.Add (type.BaseType);
-        if (type.BaseType.IsGenericType)
+        baseTypes.Add (type.BaseType!);
+        if (type.BaseType!.IsGenericType)
           baseTypes.Add (type.BaseType.GetGenericTypeDefinition());
       }
 

@@ -55,16 +55,16 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
     }
 
     private readonly string _baseDirectory;
-    private readonly string _relativeSearchPath;
+    private readonly string? _relativeSearchPath;
     private readonly bool _considerDynamicDirectory;
-    private readonly string _dynamicDirectory;
+    private readonly string? _dynamicDirectory;
     private readonly IAssemblyLoader _assemblyLoader;
 
     public SearchPathRootAssemblyFinder (
         string baseDirectory, 
-        string relativeSearchPath, 
+        string? relativeSearchPath,
         bool considerDynamicDirectory, 
-        string dynamicDirectory, 
+        string? dynamicDirectory,
         IAssemblyLoader assemblyLoader)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("baseDirectory", baseDirectory);
@@ -82,7 +82,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
       get { return _baseDirectory; }
     }
 
-    public string RelativeSearchPath
+    public string? RelativeSearchPath
     {
       get { return _relativeSearchPath; }
     }
@@ -92,7 +92,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
       get { return _considerDynamicDirectory; }
     }
 
-    public string DynamicDirectory
+    public string? DynamicDirectory
     {
       get { return _dynamicDirectory; }
     }

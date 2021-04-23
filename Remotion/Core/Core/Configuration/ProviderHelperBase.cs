@@ -242,15 +242,15 @@ namespace Remotion.Configuration
       {
         string message;
         if (e is TargetInvocationException)
-          message = e.InnerException.Message;
+          message = e.InnerException!.Message;
         else
           message = e.Message;
 
         throw new ConfigurationErrorsException (
             message,
             e,
-            providerSettings.ElementInformation.Properties["type"].Source,
-            providerSettings.ElementInformation.Properties["type"].LineNumber);
+            providerSettings.ElementInformation.Properties["type"]!.Source,
+            providerSettings.ElementInformation.Properties["type"]!.LineNumber);
       }
     }
 
@@ -275,7 +275,7 @@ namespace Remotion.Configuration
           throw new ArgumentException (string.Format ("Provider must implement the interface '{0}'.", interfaceType.FullName));
       }
 
-      return (ExtendedProviderBase) Activator.CreateInstance (actualType, new object[] {name, collection});
+      return (ExtendedProviderBase) Activator.CreateInstance (actualType, new object[] {name, collection})!;
     }
 
     private TProvider? GetProviderFromConfiguration ()

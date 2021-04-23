@@ -48,7 +48,7 @@ namespace Remotion.Collections
         return new Wrapper (array);
       }
 
-      public override bool Equals (object obj)
+      public override bool Equals (object? obj)
       {
         if (! (obj is Wrapper))
           return false;
@@ -77,7 +77,7 @@ namespace Remotion.Collections
     {
     }
 
-    public bool Equals (T[] x, T[] y)
+    public bool Equals (T[]? x, T[]? y)
     {
       if (ReferenceEquals (x, y))
         return true;

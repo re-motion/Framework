@@ -104,7 +104,7 @@ namespace Remotion.Utilities.AttributeRetrieval
       {
         var currentAttributeType = currentAttribute.GetType ();
         AttributeUsageAttribute attributeUsage;
-        if (!visitedAttributeTypes.TryGetValue (currentAttributeType, out attributeUsage))
+        if (!visitedAttributeTypes.TryGetValue (currentAttributeType, out attributeUsage!))
         {
           attributeUsage = AttributeUtility.GetAttributeUsage (currentAttributeType);
           visitedAttributeTypes.Add (currentAttributeType, attributeUsage);

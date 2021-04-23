@@ -127,17 +127,17 @@ namespace Remotion.Utilities
 
       var attributeUsageAttributes = new Dictionary<Type, AttributeUsageAttribute>();
 
-      Type currentType = type;
+      Type? currentType = type;
       do
       {
         var currentAttributes = currentType.GetCustomAttributes (attributeType, false); // get attributes exactly for current type
         foreach (Attribute currentAttribute in currentAttributes)
         {
           var currentAttributeType = currentAttribute.GetType();
-          AttributeUsageAttribute currentAttributeUsage;
 
-          if (!attributeUsageAttributes.TryGetValue (currentAttributeType, out currentAttributeUsage))
+          if (!attributeUsageAttributes.TryGetValue (currentAttributeType, out var currentAttributeUsage))
           {
+            // TODO RM-7774: currentAttributeUsage should not be reassigned.
             currentAttributeUsage = GetAttributeUsage (currentAttributeType);
             attributeUsageAttributes.Add (currentAttributeType, currentAttributeUsage);
             if (currentType == type || currentAttributeUsage.Inherited)
@@ -166,7 +166,7 @@ namespace Remotion.Utilities
     {
       IReadOnlyCollection<AttributeWithMetadata> result;
       var key = Tuple.Create (type, inherit);
-      if (!s_suppressAttributesCache.TryGetValue (key, out result))
+      if (!s_suppressAttributesCache.TryGetValue (key, out result!))
       {
         result = s_suppressAttributesCache.GetOrAdd (
             key, k => GetCustomAttributesWithMetadata (k.Item1, typeof (SuppressAttributesAttribute), k.Item2).ToArray());

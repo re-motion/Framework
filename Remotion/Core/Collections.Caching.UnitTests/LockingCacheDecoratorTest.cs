@@ -31,9 +31,9 @@ namespace Remotion.Collections.Caching.UnitTests
   [TestFixture]
   public class LockingCacheDecoratorTest
   {
-    private LockingCacheDecorator<string, int> _decorator = default!;
+    private LockingCacheDecorator<string, int> _decorator;
 
-    private LockingDecoratorTestHelper<ICache<string, int>> _helper = default!;
+    private LockingDecoratorTestHelper<ICache<string, int>> _helper;
 
     [SetUp]
     public void SetUp ()

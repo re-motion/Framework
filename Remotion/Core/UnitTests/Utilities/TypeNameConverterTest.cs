@@ -29,7 +29,7 @@ namespace Remotion.UnitTests.Utilities
 
     // member fields
 
-    TypeNameConverter _converter = default!;
+    TypeNameConverter _converter;
 
     // construction and disposing
 

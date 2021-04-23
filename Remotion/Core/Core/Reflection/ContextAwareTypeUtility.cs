@@ -47,7 +47,7 @@ namespace Remotion.Reflection
     public static ITypeDiscoveryService GetTypeDiscoveryService ()
     {
       if (DesignerUtility.IsDesignMode)
-        return (ITypeDiscoveryService) DesignerUtility.DesignModeHelper.DesignerHost!.GetService (typeof (ITypeDiscoveryService));
+        return (ITypeDiscoveryService) DesignerUtility.DesignModeHelper.DesignerHost!.GetService (typeof (ITypeDiscoveryService))!;
 
       return s_defaultTypeDiscoveryService.Value;
     }
@@ -61,7 +61,7 @@ namespace Remotion.Reflection
     public static ITypeResolutionService GetTypeResolutionService ()
     {
       if (DesignerUtility.IsDesignMode)
-        return (ITypeResolutionService) DesignerUtility.DesignModeHelper.DesignerHost.GetService (typeof (ITypeResolutionService));
+        return (ITypeResolutionService) DesignerUtility.DesignModeHelper.DesignerHost.GetService (typeof (ITypeResolutionService))!;
 
       return s_defaultTypeResolutionService.Value;
     }

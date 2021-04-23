@@ -26,6 +26,6 @@ namespace Remotion.Reflection
     Type DefiningType { get; }
 
     Delegate GetDelegate (Type delegateType);
-    object DynamicInvoke (Type[] parameterTypes, object[] parameterValues);
+    object? DynamicInvoke (Type[] parameterTypes, object[] parameterValues);
   }
 }

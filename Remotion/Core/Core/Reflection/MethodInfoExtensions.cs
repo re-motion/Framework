@@ -35,7 +35,8 @@ namespace Remotion.Reflection
     public static Type GetOriginalDeclaringType (this MethodInfo methodInfo)
     {
       ArgumentUtility.CheckNotNull ("methodInfo", methodInfo);
-      return methodInfo.GetBaseDefinition ().DeclaringType;
+      // TODO RM-7755: DeclaringType possibly being null should be handled.
+      return methodInfo.GetBaseDefinition ().DeclaringType!;
     }
 
     /// <summary>
@@ -44,7 +45,7 @@ namespace Remotion.Reflection
     /// <returns>
     /// Returns the <see cref="PropertyInfo"/> of the declared property, or <see langword="null" /> if no corresponding property was found.
     /// </returns>
-    public static PropertyInfo FindDeclaringProperty (this MethodInfo methodInfo)
+    public static PropertyInfo? FindDeclaringProperty (this MethodInfo methodInfo)
     {
       ArgumentUtility.CheckNotNull ("methodInfo", methodInfo);
 

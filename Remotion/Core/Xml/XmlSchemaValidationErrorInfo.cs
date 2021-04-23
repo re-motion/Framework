@@ -24,13 +24,13 @@ namespace Remotion.Xml
   public class XmlSchemaValidationErrorInfo: IXmlLineInfo
   {
     private string _errorMessage;
-    private string _context;
+    private string? _context;
     private int _lineNumber;
     private int _linePosition;
     private bool _hasLineInfo;
     private XmlSeverityType _severity;
 
-    public XmlSchemaValidationErrorInfo (string errorMessage, string context, IXmlLineInfo? lineInfo, XmlSeverityType severity)
+    public XmlSchemaValidationErrorInfo (string errorMessage, string? context, IXmlLineInfo? lineInfo, XmlSeverityType severity)
     {
       _errorMessage = errorMessage;
       _context = context;

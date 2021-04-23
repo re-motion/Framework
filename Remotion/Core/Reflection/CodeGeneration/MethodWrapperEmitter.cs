@@ -79,7 +79,7 @@ namespace Remotion.Reflection.CodeGeneration
             string.Format (
                 "The wrapperParameterType #0 ('{0}') cannot be assigned to the declaring type ('{1}') of the wrappedMethod.",
                 wrapperParameterTypes[0].Name,
-                wrappedMethod.DeclaringType.Name),
+                wrappedMethod.DeclaringType!.Name),
             "wrapperParameterTypes");
       }
     }
@@ -150,7 +150,7 @@ namespace Remotion.Reflection.CodeGeneration
 
       _ilGenerator.Emit (OpCodes.Ldarg_0);
 
-      if (_wrappedMethod.DeclaringType.IsValueType)
+      if (_wrappedMethod.DeclaringType!.IsValueType)
       {
         _ilGenerator.DeclareLocal (_wrappedMethod.DeclaringType);
         if (_wrapperParameterTypes[0] != _wrappedMethod.DeclaringType)

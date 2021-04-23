@@ -48,10 +48,11 @@ namespace Remotion.Tools
 
       try
       {
-        appDomain = AppDomain.CreateDomain (_appDomainSetup.ApplicationName, AppDomain.CurrentDomain.Evidence, _appDomainSetup);
+        // TODO RM-7785: ApplicationName & ApplicationBase should be checked for null.
+        appDomain = AppDomain.CreateDomain (_appDomainSetup.ApplicationName!, AppDomain.CurrentDomain.Evidence, _appDomainSetup);
         AppDomainSetup parentAppDomainSetup = AppDomain.CurrentDomain.SetupInformation;
 
-        var resolverInAppDomain = AppDomainAssemblyResolver.CreateInAppDomain (appDomain, parentAppDomainSetup.ApplicationBase);
+        var resolverInAppDomain = AppDomainAssemblyResolver.CreateInAppDomain (appDomain, parentAppDomainSetup.ApplicationBase!);
         resolverInAppDomain.Register (appDomain);
 
         appDomain.DoCallBack (CrossAppDomainCallbackHandler);
@@ -62,7 +63,7 @@ namespace Remotion.Tools
           AppDomain.Unload (appDomain);
 
         if (Directory.Exists (_appDomainSetup.DynamicBase))
-          Directory.Delete (_appDomainSetup.DynamicBase, true);
+          Directory.Delete (_appDomainSetup.DynamicBase!, true);
       }
     }
   }

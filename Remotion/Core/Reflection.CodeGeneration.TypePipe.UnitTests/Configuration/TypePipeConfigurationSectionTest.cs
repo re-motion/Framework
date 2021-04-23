@@ -26,7 +26,7 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.UnitTests.Configuration
   [TestFixture]
   public class TypePipeConfigurationSectionTest
   {
-    private TypePipeConfigurationSection _section = default!;
+    private TypePipeConfigurationSection _section;
 
     [SetUp]
     public void SetUp ()

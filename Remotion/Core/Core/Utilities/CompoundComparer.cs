@@ -49,7 +49,7 @@ namespace Remotion.Utilities
       get { return Array.AsReadOnly (_comparers); }
     }
 
-    public int Compare (T x, T y)
+    public int Compare (T? x, T? y)
     {
       // This is not a LINQ query for performance reasons.
 

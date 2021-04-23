@@ -31,6 +31,7 @@ namespace Remotion.Collections
   [Serializable]
   [DebuggerDisplay ("Count={Count}")]
   public class AutoInitDictionary<TKey, TValue> : IDictionary<TKey, TValue>
+      where TKey : notnull
   {
     private Dictionary<TKey, TValue> _dictionary;
     private Func<TValue>? _createMethod;
@@ -68,10 +69,9 @@ namespace Remotion.Collections
     {
       get
       {
-        TValue value;
-        bool hasValue = _dictionary.TryGetValue (key, out value);
-        if (!hasValue)
+        if (!_dictionary.TryGetValue (key, out var value))
         {
+          // TODO RM-7749: return value of CreateValue should be checked for null.
           value = CreateValue ();
           _dictionary.Add (key, value);
         }

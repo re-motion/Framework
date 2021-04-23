@@ -28,6 +28,8 @@ namespace Remotion.Development.UnitTesting.IO
   /// </summary>
   partial class TempFile : IDisposable
   {
+    // TODO RM-7765: check if the instance is disposed before accessing _fileName.
+
     private string? _fileName;
 
     public TempFile ()
@@ -60,7 +62,7 @@ namespace Remotion.Development.UnitTesting.IO
 
       using (StreamReader streamReader = new StreamReader (stream))
       {
-        using (StreamWriter streamWriter = new StreamWriter (_fileName))
+        using (StreamWriter streamWriter = new StreamWriter (_fileName!))
         {
           while (!streamReader.EndOfStream)
           {
@@ -75,21 +77,21 @@ namespace Remotion.Development.UnitTesting.IO
     {
       ArgumentUtility.CheckNotNull ("bytes", bytes);
 
-      File.WriteAllBytes (_fileName, bytes);
+      File.WriteAllBytes (_fileName!, bytes);
     }
 
     public void WriteAllText (string text)
     {
       ArgumentUtility.CheckNotNull ("text", text);
 
-      File.WriteAllText (_fileName, text);
+      File.WriteAllText (_fileName!, text);
     }
 
     public long Length
     {
       get
       {
-        var fileInfo = new FileInfo (_fileName);
+        var fileInfo = new FileInfo (_fileName!);
         return fileInfo.Length;
       }
     }

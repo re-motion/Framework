@@ -103,7 +103,7 @@ namespace Remotion.Reflection
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("delegateType", delegateType, typeof(Delegate));
 
-      var delegateMethodInfo = delegateType.GetMethod ("Invoke");
+      var delegateMethodInfo = delegateType.GetMethod ("Invoke")!;
       var returnType = delegateMethodInfo.ReturnType;
 
       var nullMethod = Expression.Lambda (

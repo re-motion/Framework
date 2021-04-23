@@ -23,7 +23,7 @@ namespace Remotion.UnitTests.ServiceLocation
   [TestFixture]
   public class DefaultServiceLocatorProviderTest
   {
-    private DefaultServiceLocatorProvider _provider = default!;
+    private DefaultServiceLocatorProvider _provider;
 
     [SetUp]
     public void SetUp ()

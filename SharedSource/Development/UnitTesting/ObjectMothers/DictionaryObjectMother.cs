@@ -67,6 +67,7 @@ namespace Remotion.Development.UnitTesting.ObjectMothers
     }
 
     public static Dictionary<TKey, TValue> New<TKey, TValue> (TKey key0, TValue value0, TKey key1, TValue value1, TKey key2, TValue value2, TKey key3, TValue value3)
+        where TKey : notnull
     {
       var container = new Dictionary<TKey, TValue> (4);
       container[key0] = value0;

@@ -22,7 +22,7 @@ namespace Remotion.Reflection.UnitTests
   [TestFixture]
   public class NullPropertyInformationTest
   {
-    private NullPropertyInformation _nullPropertyInformation = default!;
+    private NullPropertyInformation _nullPropertyInformation;
 
     [SetUp]
     public void SetUp ()

@@ -113,7 +113,7 @@ namespace Remotion.Reflection
         return ascribeeType.IsAssignableFrom (type);
 
       Type ascribeeGenericTypeDefinition = ascribeeType.GetGenericTypeDefinition();
-      for (Type currentType = type; currentType != null; currentType = currentType.BaseType)
+      for (Type? currentType = type; currentType != null; currentType = currentType.BaseType)
       {
         if (CanDirectlyAscribeToGenericTypeInternalFromCache (currentType, ascribeeType, ascribeeGenericTypeDefinition))
           return true;
@@ -182,7 +182,7 @@ namespace Remotion.Reflection
       Type ascribeeGenericTypeDefinition = ascribeeType.GetGenericTypeDefinition ();
 
       // Search via base type until we find a type that is directly ascribable to the base type. That's the type whose generic arguments we want
-      Type currentType = type;
+      Type? currentType = type;
       while (currentType != null && !CanDirectlyAscribeToGenericTypeInternalFromCache (currentType, ascribeeType, ascribeeGenericTypeDefinition))
         currentType = currentType.BaseType;
 

@@ -429,4 +429,11 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
+  <Import Project="..\..\..\packages\ReferenceAssemblyAnnotator.5.0.0.1\build\ReferenceAssemblyAnnotator.targets" Condition="Exists('..\..\..\packages\ReferenceAssemblyAnnotator.5.0.0.1\build\ReferenceAssemblyAnnotator.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105.The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\..\packages\ReferenceAssemblyAnnotator.5.0.0.1\build\ReferenceAssemblyAnnotator.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\ReferenceAssemblyAnnotator.5.0.0.1\build\ReferenceAssemblyAnnotator.targets'))" />
+  </Target>
 </Project>

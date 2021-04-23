@@ -26,7 +26,7 @@ namespace Remotion.Collections.Caching.UnitTests
   [TestFixture]
   public class CacheFactoryTest
   {
-    private StringComparer _comparer = default!;
+    private StringComparer _comparer;
 
     [SetUp]
     public void SetUp ()

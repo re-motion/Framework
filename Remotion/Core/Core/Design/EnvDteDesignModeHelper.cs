@@ -74,22 +74,22 @@ namespace Remotion.Design
       {
         //EnvDTE._DTE environment = (EnvDTE._DTE) ((IServiceProvider)site).GetService (typeof (EnvDTE._DTE));
         Type _DTEType = TypeUtility.GetType ("EnvDTE._DTE, EnvDTE", true)!;
-        object environment = DesignerHost.GetService (_DTEType);
+        object? environment = DesignerHost!.GetService (_DTEType);
 
         if (environment != null)
         {
           //EnvDTE.Project project = environment.ActiveDocument.ProjectItem.ContainingProject;
-          object activeDocument = _DTEType.InvokeMember ("ActiveDocument", BindingFlags.GetProperty, null, environment, null);
-          object projectItem = activeDocument.GetType().InvokeMember ("ProjectItem", BindingFlags.GetProperty, null, activeDocument, null);
-          object project = projectItem.GetType().InvokeMember ("ContainingProject", BindingFlags.GetProperty, null, projectItem, null);
+          object activeDocument = _DTEType.InvokeMember ("ActiveDocument", BindingFlags.GetProperty, null, environment, null)!;
+          object projectItem = activeDocument.GetType().InvokeMember ("ProjectItem", BindingFlags.GetProperty, null, activeDocument, null)!;
+          object project = projectItem.GetType().InvokeMember ("ContainingProject", BindingFlags.GetProperty, null, projectItem, null)!;
 
           ////project.Properties uses a 1-based index
           //foreach (EnvDTE.Property property in project.Properties)
-          object properties = project.GetType().InvokeMember ("Properties", BindingFlags.GetProperty, null, project, null);
+          object properties = project!.GetType().InvokeMember ("Properties", BindingFlags.GetProperty, null, project, null)!;
           foreach (object property in (IEnumerable) properties)
           {
             //if (property.Name == propertyName)
-            string projectPropertyName = (string) property.GetType().InvokeMember ("Name", BindingFlags.GetProperty, null, property, null);
+            string? projectPropertyName = (string?) property.GetType().InvokeMember ("Name", BindingFlags.GetProperty, null, property, null);
             if (projectPropertyName == propertyName)
             {
               //return property.Value;

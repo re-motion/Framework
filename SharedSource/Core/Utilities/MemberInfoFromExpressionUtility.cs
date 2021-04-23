@@ -202,7 +202,8 @@ namespace Remotion.Utilities
       if (newExpression == null)
         throw new ArgumentException ("Must be a NewExpression.", "expression");
 
-      return newExpression.Constructor;
+      // TODO RM-7773: newExpression.Constructor possibly being null must be handled.
+      return newExpression.Constructor!;
     }
 
     private static MethodInfo GetMethodInfoFromMethodCallExpression (Expression expression)

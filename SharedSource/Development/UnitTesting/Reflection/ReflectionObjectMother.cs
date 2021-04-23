@@ -58,11 +58,11 @@ namespace Remotion.Development.UnitTesting.Reflection
     private static readonly MethodInfo[] s_finalMethods = EnsureNoNulls (new[] { typeof (DomainType).GetMethod ("FinalMethod") });
     private static readonly MethodInfo[] s_nonGenericMethods = EnsureNoNulls (new[] { typeof (object).GetMethod ("ToString"), typeof (string).GetMethod ("Concat", new[] { typeof (object) }) });
     private static readonly MethodInfo[] s_genericMethods = EnsureNoNulls (new[] { typeof (Enumerable).GetMethod ("Empty"), typeof (ReflectionObjectMother).GetMethod ("GetRandomElement", BindingFlags.NonPublic | BindingFlags.Static) });
-    private static readonly MethodInfo[] s_methodInstantiations = EnsureNoNulls (new[] { typeof (Enumerable).GetMethod ("Empty").MakeGenericMethod(typeof(int)), typeof (ReflectionObjectMother).GetMethod ("GetRandomElement", BindingFlags.NonPublic | BindingFlags.Static).MakeGenericMethod(typeof(string)) });
+    private static readonly MethodInfo[] s_methodInstantiations = EnsureNoNulls (new[] { typeof (Enumerable).GetMethod ("Empty")!.MakeGenericMethod(typeof(int)), typeof (ReflectionObjectMother).GetMethod ("GetRandomElement", BindingFlags.NonPublic | BindingFlags.Static)!.MakeGenericMethod(typeof(string)) });
     private static readonly MethodInfo[] s_abstractMethodInfos = EnsureNoNulls (new[] { typeof (MethodInfo).GetMethod ("GetBaseDefinition"), typeof (Type).GetMethod ("GetMethods", new[] { typeof (BindingFlags) }) });
     private static readonly MethodInfo[] s_nonPublicMethodInfos = EnsureNoNulls (new[] { typeof (DomainType).GetMethod ("PrivateMethod", BindingFlags.NonPublic | BindingFlags.Instance), typeof (DomainType).GetMethod ("ProtectedMethod", BindingFlags.NonPublic | BindingFlags.Instance) });
     private static readonly MethodInfo[] s_publicMethodInfos = EnsureNoNulls (new[] { typeof (DomainType).GetMethod ("FinalMethod"), typeof (DomainType).GetMethod ("Override") });
-    private static readonly ParameterInfo[] s_parameterInfos = EnsureNoNulls (typeof (Dictionary<,>).GetMethod ("TryGetValue").GetParameters ());
+    private static readonly ParameterInfo[] s_parameterInfos = EnsureNoNulls (typeof (Dictionary<,>).GetMethod ("TryGetValue")!.GetParameters ());
     private static readonly PropertyInfo[] s_properties = EnsureNoNulls (new[] { typeof (List<>).GetProperty ("Count"), typeof (Type).GetProperty ("IsArray") });
     private static readonly PropertyInfo[] s_staticProperties = EnsureNoNulls (new[] { typeof (Environment).GetProperty ("CurrentDirectory"), typeof (Type).GetProperty ("DefaultBinder") });
     private static readonly EventInfo[] s_events = EnsureNoNulls (new[] { typeof (INotifyPropertyChanged).GetEvent ("PropertyChanged"), typeof (AppDomain).GetEvent ("AssemblyLoad") });
@@ -388,7 +388,7 @@ namespace Remotion.Development.UnitTesting.Reflection
     public static EventInfo GetSomeStaticEvent ()
     {
       var @event = GetRandomElement (s_staticEvents);
-      Assertion.IsTrue (@event.GetAddMethod().IsStatic);
+      Assertion.IsTrue (@event.GetAddMethod()!.IsStatic);
       return @event;
     }
 
@@ -420,11 +420,11 @@ namespace Remotion.Development.UnitTesting.Reflection
       return array[index];
     }
 
-    private static T[] EnsureNoNulls<T> (T[] items) where T : class
+    private static T[] EnsureNoNulls<T> (T?[] items) where T : class
     {
       foreach (var item in items)
         Assertion.IsNotNull (item);
-      return items;
+      return items!;
     }
 
     private class DomainTypeBase

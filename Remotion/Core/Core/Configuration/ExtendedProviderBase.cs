@@ -58,7 +58,7 @@ namespace Remotion.Configuration
       ArgumentUtility.CheckNotNullOrEmpty ("attribute", attribute);
       ArgumentUtility.CheckNotNullOrEmpty ("providerName", providerName);
 
-      string value = config.Get (attribute);
+      string? value = config.Get (attribute);
       if ((value == null && required) || (value != null && value.Length == 0))
       {
         throw new ConfigurationErrorsException (

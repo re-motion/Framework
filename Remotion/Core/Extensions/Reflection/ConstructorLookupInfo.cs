@@ -59,7 +59,7 @@ namespace Remotion.Reflection
       CheckNotAbstract();
 
       object key = GetCacheKey(delegateType);
-      Delegate result;
+      Delegate? result;
       if (! s_delegateCache.TryGetValue (key, out result))
       {
         // Split to prevent closure being created during the TryGetValue-operation
@@ -73,7 +73,7 @@ namespace Remotion.Reflection
       return s_delegateCache.GetOrAdd (key, arg => CreateDelegate (delegateType));
     }
 
-    public object DynamicInvoke (Type[] parameterTypes, object[] parameterValues)
+    public object? DynamicInvoke (Type[] parameterTypes, object[] parameterValues)
     {
       ArgumentUtility.CheckNotNull ("parameterTypes", parameterTypes);
       ArgumentUtility.CheckNotNull ("parameterValues", parameterValues);
@@ -113,7 +113,7 @@ namespace Remotion.Reflection
 
     protected virtual ConstructorInfo GetConstructor (Type[] parameterTypes)
     {
-      ConstructorInfo ctor = _definingType.GetConstructor (BindingFlags, Binder, CallingConvention, parameterTypes, ParameterModifiers);
+      ConstructorInfo? ctor = _definingType.GetConstructor (BindingFlags, Binder, CallingConvention, parameterTypes, ParameterModifiers);
       if (ctor == null)
       {
         string message = string.Format ("Type '{0}' does not contain a constructor with the following arguments types: {1}.",

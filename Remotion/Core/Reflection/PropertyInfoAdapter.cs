@@ -57,14 +57,14 @@ namespace Remotion.Reflection
     }
 
     private readonly PropertyInfo _propertyInfo;
-    private readonly Lazy<IMethodInformation> _publicGetMethod;
-    private readonly Lazy<IMethodInformation> _publicOrNonPublicGetMethod;
-    private readonly Lazy<IMethodInformation> _publicSetMethod;
-    private readonly Lazy<IMethodInformation> _publicOrNonPublicSetMethod;
+    private readonly Lazy<IMethodInformation?> _publicGetMethod;
+    private readonly Lazy<IMethodInformation?> _publicOrNonPublicGetMethod;
+    private readonly Lazy<IMethodInformation?> _publicSetMethod;
+    private readonly Lazy<IMethodInformation?> _publicOrNonPublicSetMethod;
     private readonly Lazy<IReadOnlyCollection<IMethodInformation>> _publicAccessors;
     private readonly Lazy<IReadOnlyCollection<IMethodInformation>> _publicOrNonPublicAccessors;
 
-    private readonly Lazy<ITypeInformation> _cachedDeclaringType;
+    private readonly Lazy<ITypeInformation?> _cachedDeclaringType;
     private readonly Lazy<ITypeInformation> _cachedOriginalDeclaringType;
     private readonly Lazy<IPropertyInformation> _cachedOriginalDeclaration;
 
@@ -74,19 +74,20 @@ namespace Remotion.Reflection
     {
       _propertyInfo = propertyInfo;
 
-      _publicGetMethod = new Lazy<IMethodInformation> (
+      // TODO RM-7777: Check if Create or CreateOrNull should be used in the following instantiations.
+      _publicGetMethod = new Lazy<IMethodInformation?> (
           () => MethodInfoAdapter.CreateOrNull (_propertyInfo.GetGetMethod (false)),
           LazyThreadSafetyMode.ExecutionAndPublication);
 
-      _publicOrNonPublicGetMethod = new Lazy<IMethodInformation> (
+      _publicOrNonPublicGetMethod = new Lazy<IMethodInformation?> (
           () => MethodInfoAdapter.CreateOrNull (_propertyInfo.GetGetMethod (true)),
           LazyThreadSafetyMode.ExecutionAndPublication);
 
-      _publicSetMethod = new Lazy<IMethodInformation> (
+      _publicSetMethod = new Lazy<IMethodInformation?> (
           () => MethodInfoAdapter.CreateOrNull (_propertyInfo.GetSetMethod (false)),
           LazyThreadSafetyMode.ExecutionAndPublication);
 
-      _publicOrNonPublicSetMethod = new Lazy<IMethodInformation> (
+      _publicOrNonPublicSetMethod = new Lazy<IMethodInformation?> (
           () => MethodInfoAdapter.CreateOrNull (_propertyInfo.GetSetMethod (true)),
           LazyThreadSafetyMode.ExecutionAndPublication);
 
@@ -98,7 +99,7 @@ namespace Remotion.Reflection
           () => _propertyInfo.GetAccessors (true).Select (MethodInfoAdapter.Create).ToArray(),
           LazyThreadSafetyMode.ExecutionAndPublication);
 
-      _cachedDeclaringType = new Lazy<ITypeInformation> (
+      _cachedDeclaringType = new Lazy<ITypeInformation?> (
           () => TypeAdapter.CreateOrNull (_propertyInfo.DeclaringType),
           LazyThreadSafetyMode.ExecutionAndPublication);
 
@@ -130,7 +131,7 @@ namespace Remotion.Reflection
       get { return _propertyInfo.Name; }
     }
 
-    public ITypeInformation DeclaringType
+    public ITypeInformation? DeclaringType
     {
       get { return _cachedDeclaringType.Value; }
     }
@@ -165,7 +166,7 @@ namespace Remotion.Reflection
       return AttributeUtility.IsDefined<T> (_propertyInfo, inherited);
     }
 
-    public object GetValue (object? instance, object[]? indexParameters)
+    public object? GetValue (object? instance, object[]? indexParameters)
     {
       //TODO RM-7432: Remove null check, parameter should be nullable
       ArgumentUtility.CheckNotNull ("instance", instance!);
@@ -181,7 +182,7 @@ namespace Remotion.Reflection
       _propertyInfo.SetValue (instance, value, indexParameters);
     }
 
-    public IMethodInformation GetGetMethod (bool nonPublic)
+    public IMethodInformation? GetGetMethod (bool nonPublic)
     {
       if (nonPublic)
         return _publicOrNonPublicGetMethod.Value;
@@ -189,7 +190,7 @@ namespace Remotion.Reflection
         return _publicGetMethod.Value;
     }
 
-    public IMethodInformation GetSetMethod (bool nonPublic)
+    public IMethodInformation? GetSetMethod (bool nonPublic)
     {
       if (nonPublic)
         return _publicOrNonPublicSetMethod.Value;
@@ -214,7 +215,8 @@ namespace Remotion.Reflection
     {
       ArgumentUtility.CheckNotNull ("implementationType", implementationType);
 
-      if (!DeclaringType.IsInterface)
+      // TODO RM-7802: DeclaringType being null should be handled.
+      if (!DeclaringType!.IsInterface)
         throw new InvalidOperationException ("This property is not an interface property.");
 
       var interfaceAccessorMethod = _publicAccessors.Value.First();
@@ -238,7 +240,8 @@ namespace Remotion.Reflection
 
     private IReadOnlyCollection<IPropertyInformation> FindInterfaceDeclarationsImplementation ()
     {
-      if (DeclaringType.IsInterface)
+      // TODO RM-7802: DeclaringType being null should be handled.
+      if (DeclaringType!.IsInterface)
         throw new InvalidOperationException ("This property is itself an interface member, so it cannot have an interface declaration.");
 
       var accessorMethod = _publicOrNonPublicAccessors.Value.First();
@@ -257,7 +260,7 @@ namespace Remotion.Reflection
       return RuntimeHelpers.GetHashCode (this);
     }
 
-    public override string ToString ()
+    public override string? ToString ()
     {
       return _propertyInfo.ToString ();
     }

@@ -98,7 +98,7 @@ public class CommandLineModeArgument: CommandLineGroupArgument
           name = attribute.Name;
 
         CommandLineFlagArgument argument = new CommandLineModeFlagArgument (
-            this, name, (Enum) field.GetValue (null));
+            this, name, (Enum) field.GetValue (null)!);
 
         if (attribute != null)
           argument.Description = attribute.Description;

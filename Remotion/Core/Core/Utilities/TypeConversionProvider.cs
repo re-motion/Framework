@@ -199,7 +199,7 @@ namespace Remotion.Utilities
       ArgumentUtility.CheckNotNull ("type", type);
 
       TypeConverter typeConverter;
-      if (_additionalTypeConverters.TryGetValue (type, out typeConverter))
+      if (_additionalTypeConverters.TryGetValue (type, out typeConverter!))
         return typeConverter;
 
       return null;

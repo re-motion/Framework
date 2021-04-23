@@ -43,8 +43,8 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void Equals_True_DifferentReflectedTypes ()
     {
-      var one = typeof (ClassWithMethods).GetMethod ("SimpleMethod1");
-      var two = typeof (DerivedClassWithMethods).GetMethod ("SimpleMethod1");
+      var one = typeof (ClassWithMethods).GetMethod ("SimpleMethod1")!;
+      var two = typeof (DerivedClassWithMethods).GetMethod ("SimpleMethod1")!;
 
       Assert.That (one.DeclaringType, Is.SameAs (two.DeclaringType));
 
@@ -141,8 +141,8 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void Equals_True_SameMethod_WithSameMethodInstantiations ()
     {
-      var one = typeof (ClassWithMethods).GetMethod ("GenericMethod").MakeGenericMethod (typeof (object));
-      var two = typeof (ClassWithMethods).GetMethod ("GenericMethod").MakeGenericMethod (typeof (object));
+      var one = typeof (ClassWithMethods).GetMethod ("GenericMethod")!.MakeGenericMethod (typeof (object));
+      var two = typeof (ClassWithMethods).GetMethod ("GenericMethod")!.MakeGenericMethod (typeof (object));
 
       var result = MemberInfoEqualityComparer<MethodInfo>.Instance.Equals (one, two);
 
@@ -152,8 +152,8 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void Equals_True_SameMethod_GenericMethodDefinition ()
     {
-      var one = typeof (ClassWithMethods).GetMethod ("GenericMethod");
-      var two = typeof (ClassWithMethods).GetMethod ("GenericMethod");
+      var one = typeof (ClassWithMethods).GetMethod ("GenericMethod")!;
+      var two = typeof (ClassWithMethods).GetMethod ("GenericMethod")!;
 
       Assert.That (one.IsGenericMethodDefinition, Is.True);
 
@@ -176,7 +176,7 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void Equals_False_DifferentTypes ()
     {
-      var one = typeof (ClassWithMethods).GetMethod ("SimpleMethod1");
+      var one = typeof (ClassWithMethods).GetMethod ("SimpleMethod1")!;
       var two = new FakeMemberInfo (typeof (string), one.MetadataToken, one.Module);
 
       var result = MemberInfoEqualityComparer<MemberInfo>.Instance.Equals (one, two);
@@ -209,8 +209,8 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void Equals_False_SameMethod_WithDifferentMethodInstantiations ()
     {
-      var one = typeof (ClassWithMethods).GetMethod ("GenericMethod").MakeGenericMethod (typeof (string));
-      var two = typeof (ClassWithMethods).GetMethod ("GenericMethod").MakeGenericMethod (typeof (object));
+      var one = typeof (ClassWithMethods).GetMethod ("GenericMethod")!.MakeGenericMethod (typeof (string));
+      var two = typeof (ClassWithMethods).GetMethod ("GenericMethod")!.MakeGenericMethod (typeof (object));
 
       var result = MemberInfoEqualityComparer<MethodInfo>.Instance.Equals (one, two);
 
@@ -220,8 +220,8 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void Equals_False_WithGenericMethodDefinition_AndInstantiation ()
     {
-      var one = typeof (ClassWithMethods).GetMethod ("GenericMethod");
-      var two = typeof (ClassWithMethods).GetMethod ("GenericMethod").MakeGenericMethod (typeof (object));
+      var one = typeof (ClassWithMethods).GetMethod ("GenericMethod")!;
+      var two = typeof (ClassWithMethods).GetMethod ("GenericMethod")!.MakeGenericMethod (typeof (object));
 
       var result = MemberInfoEqualityComparer<MethodInfo>.Instance.Equals (one, two);
 
@@ -290,7 +290,7 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void GetHashcode_SameInstance ()
     {
-      var one = typeof (ClassWithMethods).GetMethod ("SimpleMethod1");
+      var one = typeof (ClassWithMethods).GetMethod ("SimpleMethod1")!;
       var two = one;
 
       Assert.That (
@@ -301,8 +301,8 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void GetHashcode_DifferentReflectedType ()
     {
-      var one = typeof (ClassWithMethods).GetMethod ("SimpleMethod1");
-      var two = typeof (DerivedClassWithMethods).GetMethod ("SimpleMethod1");
+      var one = typeof (ClassWithMethods).GetMethod ("SimpleMethod1")!;
+      var two = typeof (DerivedClassWithMethods).GetMethod ("SimpleMethod1")!;
 
       Assert.That (one.DeclaringType, Is.SameAs (two.DeclaringType));
       Assert.That (
@@ -325,8 +325,8 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void GetHashcode_ArrayMembers ()
     {
-      var one = typeof (int[]).GetMethod ("Set");
-      var two = typeof (int[]).GetMethod ("Set");
+      var one = typeof (int[]).GetMethod ("Set")!;
+      var two = typeof (int[]).GetMethod ("Set")!;
 
       Assert.That (
           MemberInfoEqualityComparer<MethodInfo>.Instance.GetHashCode (one),
@@ -336,8 +336,8 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void GetHashcode_AbstractArrayMembers ()
     {
-      var one = typeof (Array).GetMethod ("CopyTo", new[] { typeof (Array), typeof (int) });
-      var two = typeof (bool[]).GetMethod ("CopyTo", new[] { typeof (Array), typeof (int) });
+      var one = typeof (Array).GetMethod ("CopyTo", new[] { typeof (Array), typeof (int) })!;
+      var two = typeof (bool[]).GetMethod ("CopyTo", new[] { typeof (Array), typeof (int) })!;
 
       Assert.That (
           MemberInfoEqualityComparer<MethodInfo>.Instance.GetHashCode (one),
@@ -347,8 +347,8 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void GetHashcode_SameMember_OnSameDeclaringTypeInstantiations ()
     {
-      var one = typeof (GenericClassWithMethods<object>).GetMethod ("SimpleMethod");
-      var two = typeof (GenericClassWithMethods<object>).GetMethod ("SimpleMethod");
+      var one = typeof (GenericClassWithMethods<object>).GetMethod ("SimpleMethod")!;
+      var two = typeof (GenericClassWithMethods<object>).GetMethod ("SimpleMethod")!;
 
       Assert.That (
           MemberInfoEqualityComparer<MethodInfo>.Instance.GetHashCode (one),
@@ -358,8 +358,8 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void GetHashcode_SameMember_OnGenericTypeDefinition ()
     {
-      var one = typeof (GenericClassWithMethods<>).GetMethod ("SimpleMethod");
-      var two = typeof (GenericClassWithMethods<>).GetMethod ("SimpleMethod");
+      var one = typeof (GenericClassWithMethods<>).GetMethod ("SimpleMethod")!;
+      var two = typeof (GenericClassWithMethods<>).GetMethod ("SimpleMethod")!;
 
       Assert.That (
           MemberInfoEqualityComparer<MethodInfo>.Instance.GetHashCode (one),

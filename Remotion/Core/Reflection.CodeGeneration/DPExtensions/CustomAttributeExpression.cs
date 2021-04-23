@@ -26,7 +26,7 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
   public class CustomAttributeExpression : Expression
   {
     private static readonly MethodInfo s_getCustomAttributesMethod =
-        typeof (ICustomAttributeProvider).GetMethod ("GetCustomAttributes", new Type[] { typeof (Type), typeof (bool) }, null);
+        typeof (ICustomAttributeProvider).GetMethod ("GetCustomAttributes", new Type[] { typeof (Type), typeof (bool) }, null)!;
 
     private readonly TypeReference _attributeOwner;
     private readonly Type _attributeType;

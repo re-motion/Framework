@@ -27,7 +27,7 @@ namespace Remotion.Extensions.UnitTests.Utilities.Singleton
   [TestFixture]
   public class ServiceLocatorInstanceCreatorTest
   {
-    private ServiceLocatorInstanceCreator<IInterfaceWithConcreteImplementation> _creator = default!;
+    private ServiceLocatorInstanceCreator<IInterfaceWithConcreteImplementation> _creator;
 
     [SetUp]
     public void SetUp ()

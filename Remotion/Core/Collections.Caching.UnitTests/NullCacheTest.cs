@@ -25,7 +25,7 @@ namespace Remotion.Collections.Caching.UnitTests
   [TestFixture]
   public class NullCacheTest
   {
-    private ICache<string, object> _cache = default!;
+    private ICache<string, object> _cache;
 
     [SetUp]
     public void SetUp ()

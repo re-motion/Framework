@@ -57,12 +57,12 @@ namespace Remotion.Tools.Console.CommandLine
     public new object Parse (string[] args)
     {
       base.Parse (args);
-      object obj = Activator.CreateInstance (_argumentClass);
+      object obj = Activator.CreateInstance (_argumentClass)!;
 
       foreach (DictionaryEntry entry in _arguments)
       {
         CommandLineArgument argument = (CommandLineArgument) entry.Key;
-        MemberInfo fieldOrProperty = (MemberInfo) entry.Value;
+        MemberInfo fieldOrProperty = (MemberInfo) entry.Value!;
         Type memberType = CommandLineReflectionUtility.GetFieldOrPropertyType (fieldOrProperty);
         object? value = argument.ValueObject;
         if (argument is ICommandLinePartArgument)

@@ -42,7 +42,7 @@ namespace Remotion.Collections.DataStore
     /// </returns>
     public static ExpiringDataStore<TKey, TValue, TExpirationInfo, TScanInfo> Create<TKey, TValue, TExpirationInfo, TScanInfo> (
         [NotNull] IExpirationPolicy<TValue, TExpirationInfo, TScanInfo> policy,
-        [NotNull] IEqualityComparer<TKey> comparer)
+        [NotNull] IEqualityComparer<TKey?> comparer)
         where TKey : notnull
         where TValue : notnull
     {
@@ -74,7 +74,7 @@ namespace Remotion.Collections.DataStore
     [Obsolete ("Presently, there is no synchronized version of the ExpiringDataStore available. (Version: 1.19.3)")]
     public static LockingDataStoreDecorator<TKey, TValue> CreateWithLocking<TKey, TValue, TExpirationInfo, TScanInfo> (
         [NotNull] IExpirationPolicy<TValue, TExpirationInfo, TScanInfo> policy,
-        [NotNull] IEqualityComparer<TKey> comparer)
+        [NotNull] IEqualityComparer<TKey?> comparer)
         where TKey : notnull
         where TValue : notnull
     {

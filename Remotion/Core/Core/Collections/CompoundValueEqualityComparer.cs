@@ -65,7 +65,7 @@ namespace Remotion.Collections
     /// <summary>
     /// <see cref="object.Equals(object)"/> implementation comparing all <see cref="object"/>|s in the array returned by the <see cref="Func{T,TResult}"/>.
     /// </summary>
-    public bool Equals (T x, T y)
+    public bool Equals (T? x, T? y)
     {
       // Note: We do not use "x == null" etc since an overloaded operator== would lead to endless recursion.
       if (Object.ReferenceEquals(x,null) || Object.ReferenceEquals(y,null))

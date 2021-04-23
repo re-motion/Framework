@@ -30,7 +30,7 @@ namespace Remotion.Reflection.CodeGeneration
   public class CustomClassEmitter : IClassEmitter
   {
     private static readonly ConstructorInfo s_generatedMethodWrapperAttributeCtor =
-        typeof (GeneratedMethodWrapperAttribute).GetConstructor (new[] { typeof (Type), typeof (string), typeof (string) });
+        typeof (GeneratedMethodWrapperAttribute).GetConstructor (new[] { typeof (Type), typeof (string), typeof (string) })!;
 
     public static string FlattenTypeName (string fullName)
     {
@@ -92,7 +92,7 @@ namespace Remotion.Reflection.CodeGeneration
       get { return _innerEmitter; }
     }
 
-    public Type BaseType
+    public Type? BaseType
     {
       get { return TypeBuilder.BaseType; }
     }
@@ -350,7 +350,7 @@ namespace Remotion.Reflection.CodeGeneration
       ArgumentUtility.CheckNotNull ("baseOrInterfaceEvent", baseOrInterfaceEvent);
 
       string eventName = GetMemberOverrideName (baseOrInterfaceEvent, keepName);
-      CustomEventEmitter newEvent = CreateEvent (eventName, EventKind.Instance, baseOrInterfaceEvent.EventHandlerType, EventAttributes.None);
+      CustomEventEmitter newEvent = CreateEvent (eventName, EventKind.Instance, baseOrInterfaceEvent.EventHandlerType!, EventAttributes.None);
       return newEvent;
     }
 
@@ -370,7 +370,7 @@ namespace Remotion.Reflection.CodeGeneration
       ArgumentUtility.CheckNotNull ("preStatementsAdder", preStatementsAdder);
       ArgumentUtility.CheckNotNull ("postStatementsAdder", postStatementsAdder);
 
-      ConstructorInfo[] constructors = BaseType.GetConstructors (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+      ConstructorInfo[] constructors = BaseType!.GetConstructors (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
       foreach (ConstructorInfo constructor in constructors)
       {
         if (IsPublicOrProtected (constructor))
@@ -409,7 +409,7 @@ namespace Remotion.Reflection.CodeGeneration
 
       IMethodEmitter wrapper = CreateMethod ("__wrap__" + methodToBeWrapped.Name, attributes, methodToBeWrapped);
       wrapper.ImplementByDelegating (new TypeReferenceWrapper (SelfReference.Self, TypeBuilder), methodToBeWrapped);
-      var attributeBuilder = new CustomAttributeBuilder (s_generatedMethodWrapperAttributeCtor, new object[] { methodToBeWrapped.DeclaringType, methodToBeWrapped.Name, methodToBeWrapped.ToString() });
+      var attributeBuilder = new CustomAttributeBuilder (s_generatedMethodWrapperAttributeCtor, new object?[] { methodToBeWrapped.DeclaringType, methodToBeWrapped.Name, methodToBeWrapped.ToString() });
       wrapper.AddCustomAttribute (attributeBuilder);
 
       return wrapper;
@@ -429,7 +429,7 @@ namespace Remotion.Reflection.CodeGeneration
       if (keepSimpleName)
         return baseOrInterfaceMember.Name;
       else
-        return string.Format ("{0}.{1}", baseOrInterfaceMember.DeclaringType.FullName, baseOrInterfaceMember.Name);
+        return string.Format ("{0}.{1}", baseOrInterfaceMember.DeclaringType!.FullName, baseOrInterfaceMember.Name);
     }
   }
 }

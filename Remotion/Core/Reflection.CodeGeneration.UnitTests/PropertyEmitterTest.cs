@@ -28,7 +28,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
   [TestFixture]
   public class PropertyEmitterTest : CodeGenerationTestBase
   {
-    private CustomClassEmitter _classEmitter = default!;
+    private CustomClassEmitter _classEmitter;
 
     public override void SetUp ()
     {

@@ -22,7 +22,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests.TestDomain
   {
     public class Nested
     {
-      public T T = default!;
+      public T T;
     }
   }
 }

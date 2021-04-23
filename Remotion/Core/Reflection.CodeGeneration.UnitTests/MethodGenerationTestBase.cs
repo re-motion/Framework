@@ -21,7 +21,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
 {
   public abstract class MethodGenerationTestBase : CodeGenerationTestBase
   {
-    private CustomClassEmitter _classEmitter = default!;
+    private CustomClassEmitter _classEmitter;
 
     protected CustomClassEmitter ClassEmitter
     {

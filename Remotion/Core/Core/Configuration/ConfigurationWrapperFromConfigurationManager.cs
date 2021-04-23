@@ -44,7 +44,7 @@ namespace Remotion.Configuration
       return ConfigurationManager.ConnectionStrings[name];
     }
 
-    public override string GetAppSetting (string name)
+    public override string? GetAppSetting (string name)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("name", name);
 
