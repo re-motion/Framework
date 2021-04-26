@@ -223,8 +223,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       Assert.That (options[15].ItemID, Is.EqualTo (fValue));
       Assert.That (options[15].Index, Is.EqualTo (16));
-      
-      if (Helper.BrowserConfiguration.IsChromium())
+
+      if (Helper.BrowserConfiguration.IsEdge())
         Assert.That (options[15].Text, Is.EqualTo ("F, "));
       else
         Assert.That (options[15].Text, Is.EqualTo ("F,"));
