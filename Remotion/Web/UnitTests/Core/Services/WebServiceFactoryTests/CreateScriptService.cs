@@ -42,14 +42,51 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceFactoryTests
       void MethodWithParameters (int param1, bool param2);
     }
 
+    private interface IAnotherValidScriptService
+    {
+      void AnotherScriptMethod ();
+    }
+
+    private interface IValidInheritedScriptServiceWithMethodsOnBase : IValidScriptService
+    {
+    }
+
+    private interface IValidInheritedScriptServiceWithMethodsOnBaseAndDerived : IValidScriptService
+    {
+      void InheritedScriptMethod ();
+    }
+
+    private interface IValidInheritedScriptServiceWithMethodsOnMultipleBases : IValidScriptService, IAnotherValidScriptService
+    {
+    }
+
     private interface IInvalidScriptServiceWithMissingScriptMethodAttribute
     {
       void MethodWithoutScriptMethodAttribute ();
     }
 
+    private interface IInvalidInheritedScriptServiceWithMethodsOnBase : IInvalidScriptServiceWithMissingScriptMethodAttribute
+    {
+    }
+
+    private interface IInvalidInheritedScriptServiceWithMethodsOnBaseAndDerived : IInvalidScriptServiceWithMissingScriptMethodAttribute
+    {
+      void InheritedScriptMethodWithoutScriptMethodAttribute ();
+    }
+
+    private interface IInvalidInheritedScriptServiceWithMethodsOnMultipleBases : IValidScriptService, IInvalidInheritedScriptServiceWithMethodsOnBase
+    {
+    }
+
     [WebService]
     [ScriptService]
-    private class TestScriptService : WebService, IValidScriptService, IInvalidScriptServiceWithMissingScriptMethodAttribute
+    private class TestScriptService
+        : WebService,
+          IValidInheritedScriptServiceWithMethodsOnBase,
+          IValidInheritedScriptServiceWithMethodsOnBaseAndDerived,
+          IValidInheritedScriptServiceWithMethodsOnMultipleBases,
+          IInvalidInheritedScriptServiceWithMethodsOnBaseAndDerived,
+          IInvalidInheritedScriptServiceWithMethodsOnMultipleBases
     {
       [WebMethod]
       [ScriptMethod]
@@ -65,6 +102,23 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceFactoryTests
       [WebMethod]
       [ScriptMethod]
       public void MethodWithParameters (int param1, bool param2)
+      {
+      }
+
+      [WebMethod]
+      [ScriptMethod]
+      public void InheritedScriptMethod ()
+      {
+      }
+
+      [WebMethod]
+      public void InheritedScriptMethodWithoutScriptMethodAttribute ()
+      {
+      }
+
+      [WebMethod]
+      [ScriptMethod]
+      public void AnotherScriptMethod ()
       {
       }
     }
@@ -132,6 +186,69 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceFactoryTests
       Assert.That (
           () => _webServiceFactory.CreateWebService<IInvalidInterface> ("~/VirtualServicePath"),
           Throws.InvalidOperationException.And.Message.EqualTo ("Web service '~/VirtualServicePath' could not be compiled."));
+    }
+
+    [Test]
+    public void Test_DerivedInterfaceWithMethodsOnBaseType ()
+    {
+      _buildManagerStub.Stub (stub => stub.GetCompiledType ("~/VirtualServicePath")).Return (typeof (TestScriptService));
+
+      var service = _webServiceFactory.CreateScriptService<IValidInheritedScriptServiceWithMethodsOnBase> ("~/VirtualServicePath");
+
+      Assert.That (service, Is.InstanceOf<TestScriptService>());
+    }
+
+    [Test]
+    public void Test_DerivedInterfaceWithMethodsOnBaseType_ThrowsWhenMemberDoesNotHaveAScriptMethodAttribute ()
+    {
+      _buildManagerStub.Stub (stub => stub.GetCompiledType ("~/VirtualServicePath")).Return (typeof (TestScriptService));
+
+      Assert.That (
+          () => _webServiceFactory.CreateScriptService<IInvalidInheritedScriptServiceWithMethodsOnBase> ("~/VirtualServicePath"),
+          Throws.ArgumentException.And.Message.Contains (
+              " does not have the 'System.Web.Script.Services.ScriptMethodAttribute' applied."));
+    }
+
+    [Test]
+    public void Test_DerivedInterfaceWithMethodsOnBaseTypeAndDerivedType ()
+    {
+      _buildManagerStub.Stub (stub => stub.GetCompiledType ("~/VirtualServicePath")).Return (typeof (TestScriptService));
+
+      var service = _webServiceFactory.CreateScriptService<IValidInheritedScriptServiceWithMethodsOnBaseAndDerived> ("~/VirtualServicePath");
+
+      Assert.That (service, Is.InstanceOf<TestScriptService>());
+    }
+
+    [Test]
+    public void Test_DerivedInterfaceWithMethodsOnBaseTypeAndDerivedType_ThrowsWhenMemberDoesNotHaveAScriptMethodAttribute ()
+    {
+      _buildManagerStub.Stub (stub => stub.GetCompiledType ("~/VirtualServicePath")).Return (typeof (TestScriptService));
+
+      Assert.That (
+          () => _webServiceFactory.CreateScriptService<IInvalidInheritedScriptServiceWithMethodsOnBaseAndDerived> ("~/VirtualServicePath"),
+          Throws.ArgumentException.And.Message.Contains (
+              " does not have the 'System.Web.Script.Services.ScriptMethodAttribute' applied."));
+    }
+
+    [Test]
+    public void Test_DerivedInterfaceWithMethodsOnMultipleBaseTypes ()
+    {
+      _buildManagerStub.Stub (stub => stub.GetCompiledType ("~/VirtualServicePath")).Return (typeof (TestScriptService));
+
+      var service = _webServiceFactory.CreateScriptService<IValidInheritedScriptServiceWithMethodsOnMultipleBases> ("~/VirtualServicePath");
+
+      Assert.That (service, Is.InstanceOf<TestScriptService>());
+    }
+
+    [Test]
+    public void Test_DerivedInterfaceWithMethodsOnMultipleBaseTypes_ThrowsWhenMemberDoesNotHaveAScriptMethodAttribute ()
+    {
+      _buildManagerStub.Stub (stub => stub.GetCompiledType ("~/VirtualServicePath")).Return (typeof (TestScriptService));
+
+      Assert.That (
+          () => _webServiceFactory.CreateScriptService<IInvalidInheritedScriptServiceWithMethodsOnMultipleBases> ("~/VirtualServicePath"),
+          Throws.ArgumentException.And.Message.Contains (
+              " does not have the 'System.Web.Script.Services.ScriptMethodAttribute' applied."));
     }
   }
 }

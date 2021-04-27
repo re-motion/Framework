@@ -24,6 +24,8 @@ using Remotion.Web.Infrastructure;
 
 namespace Remotion.Web.Services
 {
+  using System.Reflection;
+
   /// <summary>
   /// Default implementation of the <see cref="IWebServiceFactory"/> interface.
   /// </summary>
@@ -98,11 +100,31 @@ namespace Remotion.Web.Services
 
     private static IReadOnlyCollection<Tuple<string, IReadOnlyCollection<string>>> GetServiceMethods (Type type)
     {
-      return Array.AsReadOnly (
-          type.GetMethods().Select (
-              mi => Tuple.Create<string, IReadOnlyCollection<string>> (
-                  mi.Name,
-                  Array.AsReadOnly (mi.GetParameters().Select (pi => pi.Name).ToArray()))).ToArray());
+      var visitedTypes = new HashSet<Type>();
+      var typesToVisit = new Queue<Type>();
+      typesToVisit.Enqueue (type);
+
+      var serviceMethods = new List<Tuple<string, IReadOnlyCollection<string>>>();
+
+      while (typesToVisit.Count > 0)
+      {
+        var nextType = typesToVisit.Dequeue();
+        if (visitedTypes.Add (nextType))
+        {
+          serviceMethods.AddRange (nextType.GetMethods().Select (CreateServiceMethodTuple));
+          foreach (var @interface in type.GetInterfaces())
+            typesToVisit.Enqueue (@interface);
+        }
+      }
+
+      return serviceMethods.ToArray();
+    }
+
+    private static Tuple<string, IReadOnlyCollection<string>> CreateServiceMethodTuple (MethodInfo method)
+    {
+      return new Tuple<string, IReadOnlyCollection<string>> (
+          method.Name,
+          Array.AsReadOnly (method.GetParameters().Select (pi => pi.Name).ToArray()));
     }
   }
 }
