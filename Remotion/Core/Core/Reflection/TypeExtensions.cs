@@ -22,10 +22,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Reflection
 {
-  /// <summary>
-  /// Defines extension methods for working with <see cref="PropertyInfo"/>.
-  /// </summary>
-  public static class TypeExtensions
+  public static partial class TypeExtensions
   {
     private static readonly ConcurrentDictionary<Tuple<Type, Type>, bool> s_canAscribeCache = 
         new ConcurrentDictionary<Tuple<Type, Type>, bool>();

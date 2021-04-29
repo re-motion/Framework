@@ -45,6 +45,9 @@
     <Compile Include="FunctionalProgramming\EnumerableExtensions.cs" />
     <Compile Include="FunctionalProgramming\EnumerableUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reflection\AssemblyExtensions.cs" />
+    <Compile Include="Reflection\AssemblyNameExtensions.cs" />
+    <Compile Include="Reflection\TypeExtensions.cs" />
     <Compile Include="ReSharperAnnotations\AssertionConditionAttribute.cs" />
     <Compile Include="ReSharperAnnotations\AssertionConditionType.cs" />
     <Compile Include="ReSharperAnnotations\AssertionMethodAttribute.cs" />
