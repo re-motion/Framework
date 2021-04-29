@@ -30,7 +30,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   public class ExpressionMixinContextOriginSerializer : MixinContextOriginSerializerBase
   {
     private static readonly ConstructorInfo s_constructor =
-        MemberInfoFromExpressionUtility.GetConstructor (() => new MixinContextOrigin ("kind", null, "location"));
+        MemberInfoFromExpressionUtility.GetConstructor (() => new MixinContextOrigin ("kind", null!, "location"));
 
     private static readonly MethodInfo s_assemblyLoadMethod =
         MemberInfoFromExpressionUtility.GetMethod (() => Assembly.Load ("assemblyName"));
@@ -43,7 +43,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       return Expression.New (
           s_constructor,
           Expression.Constant (Kind),
-          Expression.Call (s_assemblyLoadMethod, Expression.Constant (Assembly.FullName)),
+          Expression.Call (s_assemblyLoadMethod, Expression.Constant (Assembly!.FullName)), // TODO RM-7691 Change serializer properties to non-nullable return values
           Expression.Constant (Locaction));
     }
   }

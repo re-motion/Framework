@@ -24,7 +24,7 @@ namespace Remotion.Mixins.Validation.Rules
   public class ContextStoreMemberLookupUtility<TMemberDefinition>
       where TMemberDefinition : MemberDefinitionBase
   {
-    private Func<object, object> _contextStoreValueFactory;
+    private Func<object, object>? _contextStoreValueFactory;
 
     public IEnumerable<TMemberDefinition> GetCachedMembersByName (IDictionary<object, object> contextStore, TargetClassDefinition targetClass, string name)
     {

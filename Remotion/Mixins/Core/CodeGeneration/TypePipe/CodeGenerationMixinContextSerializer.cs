@@ -32,7 +32,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   {
     private static readonly ConstructorInfo s_constructor =
         typeof (MixinContext).GetConstructor (
-            new[] { typeof (MixinKind), typeof (Type), typeof (MemberVisibility), typeof (IEnumerable<Type>), typeof (MixinContextOrigin) });
+            new[] { typeof (MixinKind), typeof (Type), typeof (MemberVisibility), typeof (IEnumerable<Type>), typeof (MixinContextOrigin) })!;
 
     private readonly Expression[] _constructorArguments = new Expression[5];
 

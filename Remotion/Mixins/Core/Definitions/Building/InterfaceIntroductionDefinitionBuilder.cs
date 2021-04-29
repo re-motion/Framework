@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.Serialization;
 using Remotion.Utilities;
@@ -99,16 +100,16 @@ namespace Remotion.Mixins.Definitions.Building
     {
       foreach (PropertyInfo interfaceProperty in introducedInterface.InterfaceType.GetProperties())
       {
-        PropertyDefinition implementer = memberFinder.FindPropertyImplementation (interfaceProperty);
+        PropertyDefinition? implementer = memberFinder.FindPropertyImplementation (interfaceProperty);
         CheckMemberImplementationFound (implementer, interfaceProperty);
         MemberVisibility visibility = GetVisibility (implementer.MemberInfo);
         introducedInterface.IntroducedProperties.Add (new PropertyIntroductionDefinition (introducedInterface, interfaceProperty, implementer, visibility));
 
-        MethodInfo getMethod = interfaceProperty.GetGetMethod();
+        MethodInfo? getMethod = interfaceProperty.GetGetMethod();
         if (getMethod != null)
           specialMethods.Add (getMethod);
 
-        MethodInfo setMethod = interfaceProperty.GetSetMethod();
+        MethodInfo? setMethod = interfaceProperty.GetSetMethod();
         if (setMethod != null)
           specialMethods.Add (setMethod);
       }
@@ -119,13 +120,14 @@ namespace Remotion.Mixins.Definitions.Building
     {
       foreach (EventInfo interfaceEvent in introducedInterface.InterfaceType.GetEvents())
       {
-        EventDefinition implementer = memberFinder.FindEventImplementation (interfaceEvent);
+        EventDefinition? implementer = memberFinder.FindEventImplementation (interfaceEvent);
         CheckMemberImplementationFound (implementer, interfaceEvent);
         MemberVisibility visibility = GetVisibility (implementer.MemberInfo);
         introducedInterface.IntroducedEvents.Add (new EventIntroductionDefinition (introducedInterface, interfaceEvent, implementer, visibility));
 
-        specialMethods.Add (interfaceEvent.GetAddMethod());
-        specialMethods.Add (interfaceEvent.GetRemoveMethod());
+        // TODO: Assert notnull
+        specialMethods.Add (interfaceEvent.GetAddMethod()!);
+        specialMethods.Add (interfaceEvent.GetRemoveMethod()!);
       }
     }
 
@@ -136,7 +138,7 @@ namespace Remotion.Mixins.Definitions.Building
       {
         if (!specialMethods.Contains (interfaceMethod))
         {
-          MethodDefinition implementer = memberFinder.FindMethodImplementation (interfaceMethod);
+          MethodDefinition? implementer = memberFinder.FindMethodImplementation (interfaceMethod);
           CheckMemberImplementationFound (implementer, interfaceMethod);
           MemberVisibility visibility = GetVisibility (implementer.MemberInfo);
           introducedInterface.IntroducedMethods.Add (new MethodIntroductionDefinition (introducedInterface, interfaceMethod, implementer, visibility));
@@ -146,14 +148,14 @@ namespace Remotion.Mixins.Definitions.Building
 
     private MemberVisibility GetVisibility (MemberInfo implementingMemberInfo)
     {
-      MemberVisibilityAttribute visibilityAttribute = AttributeUtility.GetCustomAttribute<MemberVisibilityAttribute> (implementingMemberInfo, false);
+      MemberVisibilityAttribute? visibilityAttribute = AttributeUtility.GetCustomAttribute<MemberVisibilityAttribute> (implementingMemberInfo, false);
       if (visibilityAttribute != null)
         return visibilityAttribute.Visibility;
       else
         return _defaultVisibility;
     }
 
-    private void CheckMemberImplementationFound (object implementation, MemberInfo interfaceMember)
+    private void CheckMemberImplementationFound ([NotNull] object? implementation, MemberInfo interfaceMember)
     {
       if (implementation == null)
       {

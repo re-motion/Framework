@@ -31,7 +31,7 @@ namespace Remotion.Mixins.Utilities
       _genericArgumentIndex = genericArgumentIndex;
     }
 
-    public Type FindGenericArgument (Type mixinType)
+    public Type? FindGenericArgument (Type mixinType)
     {
       ArgumentUtility.CheckNotNull ("mixinType", mixinType);
 

@@ -44,7 +44,7 @@ namespace Remotion.Mixins.Definitions
       get { return _attribute.AttributeType; }
     }
 
-    public string FullName
+    public string? FullName
     {
       get { return _attribute.FullName; }
     }

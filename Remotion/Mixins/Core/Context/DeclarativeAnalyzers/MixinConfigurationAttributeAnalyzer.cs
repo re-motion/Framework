@@ -40,7 +40,9 @@ namespace Remotion.Mixins.Context.DeclarativeAnalyzers
 
     public virtual void Analyze (TAnalyzedEntity entity, MixinConfigurationBuilder configurationBuilder)
     {
+#pragma warning disable 8714
       ArgumentUtility.CheckNotNull ("entity", entity);
+#pragma warning restore 8714
       ArgumentUtility.CheckNotNull ("configurationBuilder", configurationBuilder);
 
       var attributes = _attributeProvider (entity);

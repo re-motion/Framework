@@ -43,7 +43,7 @@ namespace Remotion.Mixins.Definitions.Building
     {
       foreach (AttributeDefinition attribute in attributeSource.CustomAttributes.Where (a => a.IsIntroducible))
       {
-        AttributeDefinition suppressor = GetSuppressor (attribute);
+        AttributeDefinition? suppressor = GetSuppressor (attribute);
         if (suppressor != null)
         {
           var suppressedDefinition = new SuppressedAttributeIntroductionDefinition (Target, attribute, suppressor);
@@ -68,7 +68,7 @@ namespace Remotion.Mixins.Definitions.Building
       }
     }
 
-    public AttributeDefinition GetSuppressor (AttributeDefinition attribute)
+    public AttributeDefinition? GetSuppressor (AttributeDefinition attribute)
     {
       ICustomAttributeProvider declaringEntity = attribute.DeclaringDefinition.CustomAttributeProvider;
       var suppressors = from s in Suppressors

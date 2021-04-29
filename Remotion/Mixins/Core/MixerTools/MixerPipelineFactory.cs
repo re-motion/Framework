@@ -51,7 +51,7 @@ namespace Remotion.Mixins.MixerTools
       get { return _degreeOfParallelism; }
     }
 
-    public IPipeline CreatePipeline (string assemblyOutputDirectory)
+    public IPipeline CreatePipeline (string? assemblyOutputDirectory)
     {
       var remotionPipelineFactory = new RemotionPipelineFactory();
       var defaultPipeline = SafeServiceLocator.Current.GetInstance<IPipelineRegistry>().DefaultPipeline;
@@ -77,7 +77,7 @@ namespace Remotion.Mixins.MixerTools
       return pipeline;
     }
 
-    public string[] GetModulePaths (string assemblyOutputDirectory)
+    public string[] GetModulePaths (string? assemblyOutputDirectory)
     {
       var workingDirectory = assemblyOutputDirectory ?? Environment.CurrentDirectory;
       return Directory.GetFiles (workingDirectory, AssemblyName.Replace (PipelineSettings.CounterPattern, "*") + ".dll");

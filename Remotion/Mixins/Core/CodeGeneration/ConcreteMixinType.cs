@@ -92,11 +92,11 @@ namespace Remotion.Mixins.CodeGeneration
       if (methodToBeCalled.IsPublic)
         return methodToBeCalled;
 
-      MethodInfo wrapper;
+      MethodInfo? wrapper;
       if (!_methodWrappers.TryGetValue (methodToBeCalled, out wrapper))
       {
         string message =
-            string.Format ("No public wrapper was generated for method '{0}.{1}'.", methodToBeCalled.DeclaringType.FullName, methodToBeCalled.Name);
+            string.Format ("No public wrapper was generated for method '{0}.{1}'.", methodToBeCalled.DeclaringType!.FullName, methodToBeCalled.Name);
         throw new KeyNotFoundException (message);
       }
       else
@@ -109,11 +109,11 @@ namespace Remotion.Mixins.CodeGeneration
     {
       ArgumentUtility.CheckNotNull ("mixinMethod", mixinMethod);
 
-      MethodInfo interfaceMethod;
+      MethodInfo? interfaceMethod;
       if (!_overrideInterfaceMethodsByMixinMethod.TryGetValue (mixinMethod, out interfaceMethod))
       {
         string message =
-            string.Format ("No override interface method was generated for method '{0}.{1}'.", mixinMethod.DeclaringType.FullName, mixinMethod.Name);
+            string.Format ("No override interface method was generated for method '{0}.{1}'.", mixinMethod.DeclaringType!.FullName, mixinMethod.Name);
         throw new KeyNotFoundException (message);
       }
       else

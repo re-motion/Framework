@@ -39,6 +39,6 @@ namespace Remotion.Mixins.Context
     /// <param name="targetType">The type whose "base" <see cref="ClassContext"/> instances should be retrieved.</param>
     /// <param name="classContextRetriever">A function returning the <see cref="ClassContext"/> for a given type.</param>
     /// <returns><see cref="ClassContext"/> objects for the types from which the given <paramref name="targetType"/> inherits its mixins.</returns>
-    IEnumerable<ClassContext> GetClassContextsToInheritFrom (Type targetType, Func<Type, ClassContext> classContextRetriever);
+    IEnumerable<ClassContext?> GetClassContextsToInheritFrom (Type targetType, Func<Type, ClassContext?> classContextRetriever);
   }
 }

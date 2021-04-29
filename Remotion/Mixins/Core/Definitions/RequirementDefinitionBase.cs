@@ -53,7 +53,7 @@ namespace Remotion.Mixins.Definitions
       get { return _type; }
     }
 
-    public string FullName
+    public string? FullName
     {
       get { return Type.FullName; }
     }

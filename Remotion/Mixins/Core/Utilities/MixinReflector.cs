@@ -29,7 +29,7 @@ namespace Remotion.Mixins.Utilities
   {
     public enum InitializationMode { Construction, Deserialization }
 
-    public static Type GetMixinBaseType (Type mixinType)
+    public static Type? GetMixinBaseType (Type mixinType)
     {
       ArgumentUtility.CheckNotNull ("mixinType", mixinType);
 
@@ -39,28 +39,28 @@ namespace Remotion.Mixins.Utilities
           && !ReflectionUtility.IsEqualOrInstantiationOf (currentType, typeof (Mixin<>))
           && !ReflectionUtility.IsEqualOrInstantiationOf (currentType, typeof (Mixin<,>)))
       {
-        currentType = currentType.BaseType;
+        currentType = currentType.BaseType!;
       }
 
       return currentType;
     }
 
-    public static PropertyInfo GetTargetProperty (Type concreteMixinType)
+    public static PropertyInfo? GetTargetProperty (Type concreteMixinType)
     {
       ArgumentUtility.CheckNotNull ("concreteMixinType", concreteMixinType);
 
-      Type mixinBaseType = GetMixinBaseType (concreteMixinType);
+      Type? mixinBaseType = GetMixinBaseType (concreteMixinType);
       if (mixinBaseType == null)
         return null;
       else
         return mixinBaseType.GetProperty ("Target", BindingFlags.NonPublic | BindingFlags.Instance);
     }
 
-    public static PropertyInfo GetNextProperty (Type concreteMixinType)
+    public static PropertyInfo? GetNextProperty (Type concreteMixinType)
     {
       ArgumentUtility.CheckNotNull ("concreteMixinType", concreteMixinType);
 
-      Type mixinBaseType = GetMixinBaseType (concreteMixinType);
+      Type? mixinBaseType = GetMixinBaseType (concreteMixinType);
       if (mixinBaseType == null)
         return null;
       else
@@ -88,7 +88,7 @@ namespace Remotion.Mixins.Utilities
     /// </summary>
     /// <param name="concreteMixedType">The concrete mixed type whose mixins should be retrieved.</param>
     /// <returns>An ordered array of mixin types that directly corresponds to the mixins held by instances of the mixed type.</returns>
-    public static Type[] GetOrderedMixinTypesFromConcreteType (Type concreteMixedType)
+    public static Type[]? GetOrderedMixinTypesFromConcreteType (Type concreteMixedType)
     {
       ArgumentUtility.CheckNotNull ("concreteMixedType", concreteMixedType);
 

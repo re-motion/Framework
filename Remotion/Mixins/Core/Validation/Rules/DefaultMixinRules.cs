@@ -48,7 +48,7 @@ namespace Remotion.Mixins.Validation.Rules
     [DelegateRuleDescription (Message = "A mixin whose members are overridden by the target class must have a public or protected default constructor.")]
     private void MixinWithOverriddenMembersMustHavePublicOrProtectedDefaultCtor (DelegateValidationRule<MixinDefinition>.Args args)
     {
-      ConstructorInfo defaultCtor = args.Definition.Type.GetConstructor(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
+      ConstructorInfo? defaultCtor = args.Definition.Type.GetConstructor(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
           null, Type.EmptyTypes, null);
       SingleMust (!args.Definition.HasOverriddenMembers() || (defaultCtor != null && ReflectionUtility.IsPublicOrProtected (defaultCtor)),
           args.Log, args.Self);

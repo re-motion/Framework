@@ -34,7 +34,7 @@ namespace Remotion.Mixins.Context.Serialization
       }
 
       if (typeof (T) == typeof (Type))
-        return ConvertToStorageFormat (((Type) (object) value).AssemblyQualifiedName);
+        return ConvertToStorageFormat (((Type) (object) value).AssemblyQualifiedName!);
 
       return base.ConvertToStorageFormat (value);
     }

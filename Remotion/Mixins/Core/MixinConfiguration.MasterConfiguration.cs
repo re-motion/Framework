@@ -65,7 +65,7 @@ namespace Remotion.Mixins
     /// </remarks>
     public static void ResetMasterConfiguration ()
     {
-      s_masterConfiguration.Value = null;
+      s_masterConfiguration.Value = null!;
     }
 
     private static MixinConfiguration BuildMasterConfiguration ()

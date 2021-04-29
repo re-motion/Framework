@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using Remotion.Mixins.Context;
@@ -38,7 +39,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   public class TargetTypeGenerator
   {
     private static readonly ConstructorInfo s_mixinArrayInitializerCtor =
-        MemberInfoFromExpressionUtility.GetConstructor (() => new MixinArrayInitializer (null, Type.EmptyTypes));
+        MemberInfoFromExpressionUtility.GetConstructor (() => new MixinArrayInitializer (null!, Type.EmptyTypes));
     private static readonly MethodInfo s_createMixinArrayMethod =
         MemberInfoFromExpressionUtility.GetMethod ((MixinArrayInitializer o) => o.CreateMixinArray (new object[0]));
     private static readonly MethodInfo s_checkMixinArrayMethod =
@@ -49,7 +50,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     private static readonly PropertyInfo s_firstNextCallProperty = MemberInfoFromExpressionUtility.GetProperty ((IMixinTarget o) => o.FirstNextCallProxy);
 
     private static readonly MethodInfo s_initializeMixinMethod =
-        MemberInfoFromExpressionUtility.GetMethod ((IInitializableMixin o) => o.Initialize (null, null, false));
+        MemberInfoFromExpressionUtility.GetMethod ((IInitializableMixin o) => o.Initialize (null!, null, false));
 
     private static readonly PropertyInfo s_currentMixedObjectInstantiationScopeProperty =
         MemberInfoFromExpressionUtility.GetProperty (() => MixedObjectInstantiationScope.Current);
@@ -61,15 +62,15 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     private readonly IAttributeGenerator _attributeGenerator;
     private readonly INextCallProxyGenerator _nextCallProxyGenerator;
 
-    private INextCallProxy _nextCallProxy;
-    private MutableFieldInfo _extensionsFieldInfo;
-    private MethodInfo _initializationMethod;
+    private INextCallProxy? _nextCallProxy;
+    private MutableFieldInfo? _extensionsFieldInfo;
+    private MethodInfo? _initializationMethod;
 
-    private Expression _extensionsField;
-    private Expression _classContextField;
-    private Expression _mixinArrayInitializerField;
-    private Expression _extensionsInitializedField;
-    private Expression _firstField;
+    private Expression? _extensionsField;
+    private Expression? _classContextField;
+    private Expression? _mixinArrayInitializerField;
+    private Expression? _extensionsInitializedField;
+    private Expression? _firstField;
 
     public TargetTypeGenerator (
         MutableType concreteTarget,
@@ -96,6 +97,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         _concreteTarget.AddInterface (ifc);
     }
 
+    [MemberNotNull (nameof (_extensionsFieldInfo))]
+    [MemberNotNull (nameof (_extensionsField))]
     public void AddExtensionsField ()
     {
       _extensionsFieldInfo = _concreteTarget.AddField ("__extensions", FieldAttributes.Private, typeof (object[]));
@@ -104,6 +107,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       _extensionsField = GetFieldExpression (_extensionsFieldInfo);
     }
 
+    [MemberNotNull (nameof (_nextCallProxy))]
     public void AddNextCallProxy (TargetClassDefinition targetClassDefinition, IList<IMixinInfo> mixinInfos)
     {
       ArgumentUtility.CheckNotNull ("targetClassDefinition", targetClassDefinition);
@@ -114,6 +118,10 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       _nextCallProxy = _nextCallProxyGenerator.Create (_concreteTarget, _extensionsFieldInfo, targetClassDefinition, mixinInfos);
     }
 
+    [MemberNotNull( nameof (_extensionsInitializedField))]
+    [MemberNotNull( nameof (_classContextField))]
+    [MemberNotNull( nameof (_mixinArrayInitializerField))]
+    [MemberNotNull( nameof (_firstField))]
     public void AddFields()
     {
       Assertion.IsNotNull (_nextCallProxy, "AddNextCallProxy must be called first.");
@@ -143,6 +151,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
               InitializeMixinArrayInitializerField (classContext.Type, mixinTypes)));
     }
 
+    [MemberNotNull (nameof (_initializationMethod))]
     public void AddInitializations (List<Type> mixinTypes)
     {
       ArgumentUtility.CheckNotNull ("mixinTypes", mixinTypes);
@@ -189,6 +198,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       ArgumentUtility.CheckNotNull ("introducedInterfaces", introducedInterfaces);
       Assertion.IsNotNull (_extensionsField, "AddExtensionsField must be called first.");
       Assertion.IsNotNull (_extensionsInitializedField, "AddFields must be called first.");
+      Assertion.IsNotNull (_initializationMethod, "AddInitializations must be called first.");
 
       foreach (var introduction in introducedInterfaces)
       {
@@ -260,6 +270,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       Assertion.IsNotNull (_firstField, "AddFields must be called first.");
       Assertion.IsNotNull (_nextCallProxy, "AddNextCallProxy must be called first.");
       Assertion.IsNotNull (_extensionsInitializedField, "AddFields must be called first.");
+      Assertion.IsNotNull (_initializationMethod, "AddInitializations must be called first.");
 
       foreach (var member in targetClassDefinition.GetAllMembers())
       {
@@ -278,7 +289,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       var overriders = targetClassDefinition.GetAllMethods().Where (methodDefinition => methodDefinition.Base != null);
       foreach (var overrider in overriders)
       {
-        var mixin = overrider.Base.DeclaringClass as MixinDefinition;
+        var mixin = overrider.Base!.DeclaringClass as MixinDefinition;
         Assertion.IsNotNull (mixin, "We only support mixins as overriders of target class members.");
         var mixinInfo = mixinInfos[mixin.MixinIndex];
         var methodInOverrideInterface = mixinInfo.GetOverrideInterfaceMethod (overrider.Base.MethodInfo);
@@ -398,6 +409,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     private Expression NewNextCallProxy (ThisExpression @this, int depth)
     {
+      Assertion.DebugIsNotNull (_nextCallProxy, "_nextCallProxy != null");
+
       return _nextCallProxy.CallConstructor (@this, Expression.Constant (depth));
     }
 
@@ -426,6 +439,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     private MutableMethodInfo ImplementIntroducedMethod (
         Expression implementer, MethodInfo interfaceMethod, MethodDefinition implementingMethod, MemberVisibility visibility)
     {
+      Assertion.DebugIsNotNull (_initializationMethod, "_initializationMethod != null");
+
       var method = visibility == MemberVisibility.Public
                        ? _concreteTarget.GetOrAddImplementation (interfaceMethod)
                        : _concreteTarget.AddExplicitOverride (interfaceMethod, ctx => Expression.Default (ctx.ReturnType));
@@ -444,14 +459,26 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       var implementingProperty = introducedProperty.ImplementingMember;
       var visibility = introducedProperty.Visibility;
 
-      MutableMethodInfo getMethod = null, setMethod = null;
+      MutableMethodInfo? getMethod = null, setMethod = null;
       if (introducedProperty.IntroducesGetMethod)
       {
-        getMethod = ImplementIntroducedMethod (implementer, interfaceProperty.GetGetMethod (), implementingProperty.GetMethod, visibility);
+        var implementedGetMethod = Assertion.IsNotNull (
+            implementingProperty.GetMethod,
+            $"Property {implementingProperty.DeclaringClass.FullName}.{implementingProperty.Name} has no getter");
+        var interfaceGetMethod = Assertion.IsNotNull (
+            interfaceProperty.GetGetMethod(),
+            $"Property {interfaceProperty.DeclaringType!.FullName}.{interfaceProperty.Name} has no getter");
+        getMethod = ImplementIntroducedMethod (implementer, interfaceGetMethod, implementedGetMethod, visibility);
       }
       if (introducedProperty.IntroducesSetMethod)
       {
-        setMethod = ImplementIntroducedMethod (implementer, interfaceProperty.GetSetMethod (), implementingProperty.SetMethod, visibility);
+        var implementedSetMethod = Assertion.IsNotNull (
+            implementingProperty.SetMethod,
+            $"Property {implementingProperty.DeclaringClass.FullName}.{implementingProperty.Name} has no setter");
+        var interfaceSetMethod = Assertion.IsNotNull (
+            interfaceProperty.GetSetMethod(),
+            $"Property {interfaceProperty.DeclaringType!.FullName}.{interfaceProperty.Name} has no setter");
+        setMethod = ImplementIntroducedMethod (implementer, interfaceSetMethod, implementedSetMethod, visibility);
       }
 
       var name = GetIntroducedMemberName (visibility, interfaceProperty);
@@ -467,8 +494,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       var implementingEvent = introducedEvent.ImplementingMember;
       var visibility = introducedEvent.Visibility;
 
-      var addMethod = ImplementIntroducedMethod (implementer, interfaceEvent.GetAddMethod (), implementingEvent.AddMethod, visibility);
-      var removeMethod = ImplementIntroducedMethod (implementer, interfaceEvent.GetRemoveMethod (), implementingEvent.RemoveMethod, visibility);
+      var addMethod = ImplementIntroducedMethod (implementer, interfaceEvent.GetAddMethod ()!, implementingEvent.AddMethod, visibility);
+      var removeMethod = ImplementIntroducedMethod (implementer, interfaceEvent.GetRemoveMethod ()!, implementingEvent.RemoveMethod, visibility);
 
       var name = GetIntroducedMemberName (visibility, interfaceEvent);
       var @event = _concreteTarget.AddEvent (name, EventAttributes.None, addMethod, removeMethod);
@@ -521,6 +548,10 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     private MutableMethodInfo ImplementMethodOverride (MethodDefinition method)
     {
+      Assertion.DebugIsNotNull (_nextCallProxy, "_nextCallProxy != null");
+      Assertion.DebugIsNotNull (_initializationMethod, "_initializationMethod != null");
+      Assertion.DebugIsNotNull (_firstField, "_firstField != null");
+
       var proxyMethod = _nextCallProxy.GetProxyMethodForOverriddenMethod (method);
       var methodOverride = _concreteTarget.GetOrAddOverride (method.MethodInfo);
       methodOverride.SetBody (ctx => _expressionBuilder.CreateInitializingDelegation (ctx, _initializationMethod, _firstField, proxyMethod));
@@ -530,7 +561,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     private IMutableMember ImplementPropertyOverride (PropertyDefinition property)
     {
-      MutableMethodInfo getMethodOverride = null, setMethodOverride = null;
+      MutableMethodInfo? getMethodOverride = null, setMethodOverride = null;
       if (property.GetMethod != null && property.GetMethod.Overrides.Count > 0)
         getMethodOverride = ImplementMethodOverride (property.GetMethod);
       if (property.SetMethod != null && property.SetMethod.Overrides.Count > 0)
@@ -541,7 +572,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     private IMutableMember ImplementEventOverride (EventDefinition @event)
     {
-      MutableMethodInfo addMethodOverride = null, removeMethodOverride = null;
+      MutableMethodInfo? addMethodOverride = null, removeMethodOverride = null;
       if (@event.AddMethod.Overrides.Count > 0)
         addMethodOverride = ImplementMethodOverride (@event.AddMethod);
       if (@event.RemoveMethod.Overrides.Count > 0)

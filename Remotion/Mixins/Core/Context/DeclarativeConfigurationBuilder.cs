@@ -77,7 +77,7 @@ namespace Remotion.Mixins.Context
     /// <returns>An mixin configuration inheriting from <paramref name="parentConfiguration"/> and incorporating the configuration information
     /// held by the given assemblies.</returns>
     /// <exception cref="ArgumentNullException">The <paramref name="assemblies"/> parameter is <see langword="null"/>.</exception>
-    public static MixinConfiguration BuildConfigurationFromAssemblies (MixinConfiguration parentConfiguration, IEnumerable<Assembly> assemblies)
+    public static MixinConfiguration BuildConfigurationFromAssemblies (MixinConfiguration? parentConfiguration, IEnumerable<Assembly> assemblies)
     {
       ArgumentUtility.CheckNotNull ("assemblies", assemblies);
 
@@ -96,7 +96,7 @@ namespace Remotion.Mixins.Context
     /// <returns>A mixin configuration inheriting from <paramref name="parentConfiguration"/> and incorporating the configuration information
     /// held by the given types.</returns>
     /// <exception cref="ArgumentNullException">The <paramref name="types"/> parameter is <see langword="null"/>.</exception>
-    public static MixinConfiguration BuildConfigurationFromTypes (MixinConfiguration parentConfiguration, IEnumerable<Type> types)
+    public static MixinConfiguration BuildConfigurationFromTypes (MixinConfiguration? parentConfiguration, IEnumerable<Type> types)
     {
       ArgumentUtility.CheckNotNull ("types", types);
 
@@ -137,7 +137,7 @@ namespace Remotion.Mixins.Context
       return ContextAwareTypeUtility.GetTypeDiscoveryService();
     }
 
-    private readonly MixinConfiguration _parentConfiguration;
+    private readonly MixinConfiguration? _parentConfiguration;
     private readonly HashSet<Type> _allTypes = new HashSet<Type> ();
 
     /// <summary>
@@ -145,7 +145,7 @@ namespace Remotion.Mixins.Context
     /// mixin configuration attributes in order to build an <see cref="MixinConfiguration"/>.
     /// </summary>
     /// <param name="parentConfiguration">The parent configuration used when this instance builds a new <see cref="MixinConfiguration"/>.</param>
-    public DeclarativeConfigurationBuilder (MixinConfiguration parentConfiguration)
+    public DeclarativeConfigurationBuilder (MixinConfiguration? parentConfiguration)
     {
       _parentConfiguration = parentConfiguration;
     }

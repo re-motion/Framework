@@ -17,12 +17,14 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions
 {
   [DebuggerDisplay ("Count = {Count}")]
   public class UniqueDefinitionCollection<TKey, TValue> : DefinitionCollectionBase<TKey, TValue>, IDefinitionCollection<TKey, TValue>
+      where TKey : notnull
       where TValue : IVisitableDefinition
   {
     private Dictionary<TKey, TValue> _items = new Dictionary<TKey, TValue> ();
@@ -60,7 +62,7 @@ namespace Remotion.Mixins.Definitions
 
     public TValue this[TKey key]
     {
-      get { return ContainsKey (ArgumentUtility.CheckNotNull("key", key)) ? _items[key] : default (TValue); }
+      get { return ContainsKey (ArgumentUtility.CheckNotNull("key", key)) ? _items[key] : default (TValue)!; }
     }
   }
 }

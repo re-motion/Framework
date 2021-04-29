@@ -31,7 +31,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   public class CodeGenerationClassContextSerializer : IClassContextSerializer
   {
     private static readonly ConstructorInfo s_constructor =
-        typeof (ClassContext).GetConstructor (new[] { typeof (Type), typeof (IEnumerable<MixinContext>), typeof (IEnumerable<Type>) });
+        typeof (ClassContext).GetConstructor (new[] { typeof (Type), typeof (IEnumerable<MixinContext>), typeof (IEnumerable<Type>) })!;
 
     private readonly Expression[] _constructorArguments = new Expression[3];
 

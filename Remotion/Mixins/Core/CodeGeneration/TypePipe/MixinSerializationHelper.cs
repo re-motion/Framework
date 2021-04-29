@@ -46,7 +46,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       var identifierSerializer = new SerializationInfoConcreteMixinTypeIdentifierSerializer (info, "__identifier");
       identifier.Serialize (identifierSerializer);
       
-      object[] baseMemberValues;
+      object?[]? baseMemberValues;
       if (serializeBaseMembers)
       {
         var baseType = mixin.GetType ().BaseType;
@@ -61,7 +61,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       info.AddValue ("__participantConfigurationID", pipelineIdentifier);
     }
 
-    private readonly object[] _baseMemberValues;
+    private readonly object[]? _baseMemberValues;
     private readonly object _deserializedObject;
     private readonly StreamingContext _context;
 
@@ -79,7 +79,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
       var mixinType = pipeline.ReflectionService.GetAdditionalType (identifier);
 
-      _baseMemberValues = (object[]) info.GetValue ("__baseMemberValues", typeof (object[]));
+      _baseMemberValues = (object[]?) info.GetValue ("__baseMemberValues", typeof (object[]));
 
       // Usually, instantiate a deserialized object using GetSafeUninitializedObject.
       // However, _baseMemberValues being null means that the object itself manages its member deserialization via ISerializable. In such a case, we
@@ -94,7 +94,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
             BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, 
             null,
             new object[] { info, context },
-            null);
+            null)!;
       }
       SerializationImplementer.RaiseOnDeserializing (_deserializedObject, _context);
     }
@@ -110,7 +110,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     }
 
     // Here, we can rely on everything being deserialized as needed.
-    public void OnDeserialization (object sender)
+    public void OnDeserialization (object? sender)
     {
       if (_baseMemberValues != null)
       {

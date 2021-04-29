@@ -26,7 +26,7 @@ namespace Remotion.Mixins.Definitions
   {
     private readonly Type _composedInterface;
 
-    public ComposedInterfaceDependencyDefinition (RequiredTargetCallTypeDefinition requirement, Type composedInterface, DependencyDefinitionBase aggregator)
+    public ComposedInterfaceDependencyDefinition (RequiredTargetCallTypeDefinition requirement, Type composedInterface, DependencyDefinitionBase? aggregator)
         : base (requirement, aggregator)
     {
       ArgumentUtility.CheckNotNull ("composedInterface", composedInterface);

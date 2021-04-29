@@ -26,7 +26,7 @@ namespace Remotion.Mixins.Definitions
   {
     private readonly MixinDefinition _dependingMixin;
 
-    public MixinDependencyDefinition (RequiredMixinTypeDefinition requiredType, MixinDefinition dependingMixin, MixinDependencyDefinition aggregator)
+    public MixinDependencyDefinition (RequiredMixinTypeDefinition requiredType, MixinDefinition dependingMixin, MixinDependencyDefinition? aggregator)
       : base (requiredType, aggregator)
     {
       ArgumentUtility.CheckNotNull ("dependingMixin", dependingMixin);
@@ -54,7 +54,7 @@ namespace Remotion.Mixins.Definitions
       return string.Format ("mixin '{0}'", _dependingMixin.FullName);
     }
 
-    public override ClassDefinitionBase GetImplementer ()
+    public override ClassDefinitionBase? GetImplementer ()
     {
       if (RequiredType.Type.IsInterface)
         return TargetClass.ReceivedInterfaces.ContainsKey (RequiredType.Type)

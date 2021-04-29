@@ -70,7 +70,7 @@ namespace Remotion.Mixins.Validation
       MethodInfo method = rule.Method;
       var attribute = AttributeUtility.GetCustomAttribute<DelegateRuleDescriptionAttribute> (method, true);
       if (attribute == null || attribute.RuleName == null)
-        return method.DeclaringType.FullName + "." + rule.Method.Name;
+        return method.DeclaringType!.FullName + "." + rule.Method.Name;
       else
         return attribute.RuleName;
     }

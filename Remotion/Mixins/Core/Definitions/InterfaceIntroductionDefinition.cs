@@ -44,7 +44,7 @@ namespace Remotion.Mixins.Definitions
     public Type InterfaceType { get; private set; }
     public MixinDefinition Implementer { get; private set; }
 
-    public string FullName
+    public string? FullName
     {
       get { return InterfaceType.FullName; }
     }

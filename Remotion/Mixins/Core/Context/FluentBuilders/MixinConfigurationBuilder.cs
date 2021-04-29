@@ -31,10 +31,10 @@ namespace Remotion.Mixins.Context.FluentBuilders
   {
     private static readonly ILog s_log = LogManager.GetLogger (typeof (MixinConfigurationBuilder));
 
-    private readonly MixinConfiguration _parentConfiguration;
+    private readonly MixinConfiguration? _parentConfiguration;
     private readonly Dictionary<Type, ClassContextBuilder> _classContextBuilders = new Dictionary<Type, ClassContextBuilder>();
 
-    public MixinConfigurationBuilder (MixinConfiguration parentConfiguration)
+    public MixinConfigurationBuilder (MixinConfiguration? parentConfiguration)
     {
       _parentConfiguration = parentConfiguration;
     }
@@ -43,7 +43,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// Gets the parent configuration used as a base for the newly built mixin configuration.
     /// </summary>
     /// <value>The parent configuration.</value>
-    public virtual MixinConfiguration ParentConfiguration
+    public virtual MixinConfiguration? ParentConfiguration
     {
       get { return _parentConfiguration; }
     }
@@ -153,7 +153,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
 
     private MixinContextBuilder AddMixinToClass (Type targetType, Type mixinType, MixinContextOrigin origin)
     {
-      MixinContextBuilder mixinContextBuilder;
+      MixinContextBuilder? mixinContextBuilder;
       try
       {
         mixinContextBuilder = ForClass (targetType).AddMixin (mixinType, origin);

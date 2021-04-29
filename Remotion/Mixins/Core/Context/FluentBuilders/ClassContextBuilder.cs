@@ -291,7 +291,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
       ArgumentUtility.CheckNotNull ("origin", origin);
       ArgumentUtility.CheckNotNull ("mixinTypes", mixinTypes);
       
-      Type lastMixinType = null;
+      Type? lastMixinType = null;
       foreach (Type mixinType in mixinTypes)
       {
         MixinContextBuilder mixinContextBuilder = AddMixin (mixinType, origin);
@@ -388,7 +388,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
       ArgumentUtility.CheckNotNull ("mixinType", mixinType);
       ArgumentUtility.CheckNotNull ("origin", origin);
 
-      MixinContextBuilder builder;
+      MixinContextBuilder? builder;
       if (!_mixinContextBuilders.TryGetValue (mixinType, out builder))
         builder = AddMixin (mixinType, origin);
       return builder;

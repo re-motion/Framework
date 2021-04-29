@@ -28,7 +28,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   public class ExpressionMixinContextSerializer : MixinContextSerializerBase
   {
     private static readonly ConstructorInfo s_constructor =
-        MemberInfoFromExpressionUtility.GetConstructor (() => new MixinContext (MixinKind.Used, null, MemberVisibility.Private, new Type[0], null));
+        MemberInfoFromExpressionUtility.GetConstructor (() => new MixinContext (MixinKind.Used, null!, MemberVisibility.Private, new Type[0], null!));
 
     public Expression CreateNewExpression ()
     {
@@ -40,7 +40,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
           Expression.Constant (MixinType),
           Expression.Constant (IntroducedMemberVisibility),
           Expression.ArrayConstant (ExplicitDependencies),
-          CreateOriginExpression (Origin));
+          CreateOriginExpression (Origin!)); // TODO RM-7691 Change serializer properties to non-nullable return values
     }
 
     private Expression CreateOriginExpression (MixinContextOrigin origin)

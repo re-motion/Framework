@@ -29,9 +29,9 @@ namespace Remotion.Mixins.Validation
   [Serializable]
   public class ValidationException : Exception
   {
-    private readonly SerializableValidationLogData _serializableValidationLogData;
+    private readonly SerializableValidationLogData? _serializableValidationLogData;
 
-    public SerializableValidationLogData ValidationLogData
+    public SerializableValidationLogData? ValidationLogData
     {
       get { return _serializableValidationLogData; }
     }
@@ -102,7 +102,7 @@ namespace Remotion.Mixins.Validation
         : base (info, context)
     {
       _serializableValidationLogData =
-          (SerializableValidationLogData) info.GetValue ("SerializableValidationLogData", typeof (SerializableValidationLogData));
+          (SerializableValidationLogData?) info.GetValue ("SerializableValidationLogData", typeof (SerializableValidationLogData));
     }
 
     public override void GetObjectData (SerializationInfo info, StreamingContext context)

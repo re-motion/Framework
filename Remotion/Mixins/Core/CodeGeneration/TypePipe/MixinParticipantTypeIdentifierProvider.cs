@@ -28,9 +28,9 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   /// </summary>
   public class MixinParticipantTypeIdentifierProvider : ITypeIdentifierProvider
   {
-    private static readonly MethodInfo s_createFlatClassContext = MemberInfoFromExpressionUtility.GetMethod (() => FlatClassContext.Create (null));
+    private static readonly MethodInfo s_createFlatClassContext = MemberInfoFromExpressionUtility.GetMethod (() => FlatClassContext.Create (null!));
 
-    public object GetID (Type requestedType)
+    public object? GetID (Type requestedType)
     {
       ArgumentUtility.DebugCheckNotNull ("requestedType", requestedType);
 

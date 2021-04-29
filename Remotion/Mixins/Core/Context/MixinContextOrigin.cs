@@ -32,7 +32,7 @@ namespace Remotion.Mixins.Context
       ArgumentUtility.CheckNotNull ("attribute", attribute);
       ArgumentUtility.CheckNotNull ("target", target);
 
-      return new MixinContextOrigin (attribute.GetType ().Name, target.Module.Assembly, target.ToString ());
+      return new MixinContextOrigin (attribute.GetType ().Name, target.Module.Assembly, target.ToString ()!);
     }
 
     public static MixinContextOrigin CreateForCustomAttribute (Attribute attribute, Assembly assembly)
@@ -54,7 +54,7 @@ namespace Remotion.Mixins.Context
     public static MixinContextOrigin CreateForStackFrame (StackFrame stackFrame)
     {
       ArgumentUtility.CheckNotNull ("stackFrame", stackFrame);
-      return CreateForMethod (stackFrame.GetMethod ());
+      return CreateForMethod (stackFrame.GetMethod ()!);
     }
 
     public static MixinContextOrigin Deserialize (IMixinContextOriginDeserializer deserializer)
@@ -109,7 +109,7 @@ namespace Remotion.Mixins.Context
       serializer.AddLocation (_location);
     }
 
-    public bool Equals (MixinContextOrigin other)
+    public bool Equals (MixinContextOrigin? other)
     {
       if (ReferenceEquals (null, other))
         return false;
@@ -123,7 +123,7 @@ namespace Remotion.Mixins.Context
           && Equals (other._location, _location);
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
       return Equals (obj as MixinContextOrigin);
     }

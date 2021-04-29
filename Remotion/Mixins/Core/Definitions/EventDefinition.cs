@@ -25,7 +25,7 @@ namespace Remotion.Mixins.Definitions
     public new readonly UniqueDefinitionCollection<Type, EventDefinition> Overrides =
         new UniqueDefinitionCollection<Type, EventDefinition> (m => m.DeclaringClass.Type);
 
-    private EventDefinition _base;
+    private EventDefinition? _base;
     private readonly MethodDefinition _addMethod;
     private readonly MethodDefinition _removeMethod;
 
@@ -47,14 +47,14 @@ namespace Remotion.Mixins.Definitions
       get { return (EventInfo) MemberInfo; }
     }
 
-    public override MemberDefinitionBase BaseAsMember
+    public override MemberDefinitionBase? BaseAsMember
     {
       get { return _base; }
       protected internal set
       {
         if (value == null || value is EventDefinition)
         {
-          _base = (EventDefinition) value;
+          _base = (EventDefinition?) value;
           AddMethod.Base = _base == null ? null : _base.AddMethod;
           RemoveMethod.Base = _base == null ? null : _base.RemoveMethod;
         }
@@ -63,7 +63,7 @@ namespace Remotion.Mixins.Definitions
       }
     }
 
-    public EventDefinition Base
+    public EventDefinition? Base
     {
       get { return _base; }
       protected internal set { BaseAsMember = value; }

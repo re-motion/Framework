@@ -114,7 +114,7 @@ namespace Remotion.Mixins.CodeGeneration
     /// true if the specified <see cref="T:System.Object"/> is an <see cref="ConcreteMixinTypeIdentifier"/> that corresponds to the same concrete
     /// mixin type; otherwise, false.
     /// </returns>
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
       var other = obj as ConcreteMixinTypeIdentifier;
       return other != null 

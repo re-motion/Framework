@@ -40,7 +40,8 @@ namespace Remotion.Mixins.Context.Serialization
       if (typeof (T) == typeof (Type))
       {
         var typeName = ConvertFromStorageFormat<string> (value, index);
-        return (T) (object) Type.GetType (typeName);
+        // TODO RM-7810: A meaningful exception should be thrown if no type can be found.
+        return (T) (object) Type.GetType (typeName)!;
       }
 
       return base.ConvertFromStorageFormat<T> (value, index);

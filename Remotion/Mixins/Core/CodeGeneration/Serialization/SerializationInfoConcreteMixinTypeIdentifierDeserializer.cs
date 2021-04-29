@@ -43,7 +43,8 @@ namespace Remotion.Mixins.CodeGeneration.Serialization
 
     public Type GetMixinType ()
     {
-      return Type.GetType (_serializationInfo.GetString (_key + ".MixinType"));
+      // TODO RM-7810: A meaningful exception should be thrown if no type can be found.
+      return Type.GetType (_serializationInfo.GetString (_key + ".MixinType")!)!;
     }
 
     public HashSet<MethodInfo> GetOverriders ()
@@ -63,10 +64,11 @@ namespace Remotion.Mixins.CodeGeneration.Serialization
 
       for (int i = 0; i < count; ++i)
       {
-        var methodDeclaringType = Type.GetType (_serializationInfo.GetString (collectionKey + "[" + i + "].DeclaringType"));
+        // TODO RM-7810: A meaningful exception should be thrown if no type can be found.
+        var methodDeclaringType = Type.GetType (_serializationInfo.GetString (collectionKey + "[" + i + "].DeclaringType")!)!;
 
-        var name = _serializationInfo.GetString (collectionKey + "[" + i + "].Name");
-        var signature = _serializationInfo.GetString (collectionKey + "[" + i + "].Signature");
+        var name = _serializationInfo.GetString (collectionKey + "[" + i + "].Name")!;
+        var signature = _serializationInfo.GetString (collectionKey + "[" + i + "].Signature")!;
 
         var method = MethodResolver.ResolveMethod (methodDeclaringType, name, signature);
         methods.Add (method);

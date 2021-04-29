@@ -133,7 +133,7 @@ namespace Remotion.Mixins.Utilities
         throw new ConfigurationException (message);
       }
 
-      Type instantiation = null;
+      Type? instantiation = null;
       if (IsBoundToTargetType (genericArgument))
         instantiation = _targetClass;
         

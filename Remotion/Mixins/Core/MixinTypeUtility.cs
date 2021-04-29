@@ -32,8 +32,8 @@ namespace Remotion.Mixins
   /// </summary>
   public static class MixinTypeUtility
   {
-    private static readonly ConcurrentDictionary<Type, ClassContext> s_classContextForConcreteTypesCache =
-        new ConcurrentDictionary<Type, ClassContext>();
+    private static readonly ConcurrentDictionary<Type, ClassContext?> s_classContextForConcreteTypesCache =
+        new ConcurrentDictionary<Type, ClassContext?>();
 
     private static readonly ConcurrentDictionary<Type, ReadOnlyCollection<Type>> s_exactMixinTypesCache =
         new ConcurrentDictionary<Type, ReadOnlyCollection<Type>>();
@@ -65,7 +65,7 @@ namespace Remotion.Mixins
       return IsGeneratedConcreteMixedType (type)
           || typeof (IGeneratedMixinType).IsAssignableFrom (type)
           || typeof (IGeneratedNextCallProxyType).IsAssignableFrom (type)
-          || (type.IsNested && type.IsInterface && IsGeneratedByMixinEngine (type.DeclaringType));
+          || (type.IsNested && type.IsInterface && IsGeneratedByMixinEngine (type.DeclaringType!));
     }
 
     /// <summary>
@@ -162,7 +162,7 @@ namespace Remotion.Mixins
       ArgumentUtility.CheckNotNull ("targetOrConcreteType", targetOrConcreteType);
       ArgumentUtility.CheckNotNull ("mixinType", mixinType);
 
-      ClassContext classContext = MixinConfiguration.ActiveConfiguration.GetContext (targetOrConcreteType);
+      ClassContext? classContext = MixinConfiguration.ActiveConfiguration.GetContext (targetOrConcreteType);
       return classContext != null && classContext.Mixins.ContainsKey (mixinType);
     }
 
@@ -182,7 +182,7 @@ namespace Remotion.Mixins
     /// (as would be returned by <see cref="GetMixinTypes"/>), not the exact mixin type (as would be returned by <see cref="GetMixinTypesExact"/>).
     /// </para>
     /// </remarks>
-    public static Type GetAscribableMixinType (Type targetOrConcreteType, Type mixinType)
+    public static Type? GetAscribableMixinType (Type targetOrConcreteType, Type mixinType)
     {
       ArgumentUtility.CheckNotNull ("targetOrConcreteType", targetOrConcreteType);
       ArgumentUtility.CheckNotNull ("mixinType", mixinType);
@@ -299,7 +299,7 @@ namespace Remotion.Mixins
     /// The results of this method are cached.
     /// </para>
     /// </remarks>
-    public static ClassContext GetClassContextForConcreteType (Type concreteMixedType)
+    public static ClassContext? GetClassContextForConcreteType (Type concreteMixedType)
     {
       ArgumentUtility.CheckNotNull ("concreteMixedType", concreteMixedType);
 

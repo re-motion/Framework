@@ -28,9 +28,9 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   /// </summary>
   public class CodeGenerationMixinContextOriginSerializer : IMixinContextOriginSerializer
   {
-    private static readonly ConstructorInfo s_constructor = 
-        typeof (MixinContextOrigin).GetConstructor (new[] {typeof (string), typeof (Assembly), typeof (string)});
-    private static readonly MethodInfo s_assemblyLoadMethod = typeof (Assembly).GetMethod ("Load", new[] { typeof (string) });
+    private static readonly ConstructorInfo s_constructor =
+        typeof (MixinContextOrigin).GetConstructor (new[] {typeof (string), typeof (Assembly), typeof (string)})!;
+    private static readonly MethodInfo s_assemblyLoadMethod = typeof (Assembly).GetMethod ("Load", new[] { typeof (string) })!;
     
     private readonly Expression[] _constructorArguments = new Expression[3];
 

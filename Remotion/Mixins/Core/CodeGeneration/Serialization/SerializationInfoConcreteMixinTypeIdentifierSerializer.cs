@@ -66,7 +66,7 @@ namespace Remotion.Mixins.CodeGeneration.Serialization
         if (methodInfo.IsGenericMethod && !methodInfo.IsGenericMethodDefinition)
           throw new NotSupportedException ("Cannot serialize closed generic methods. This is not supported.");
 
-        _serializationInfo.AddValue (collectionKey + "[" + index + "].DeclaringType", methodInfo.DeclaringType.AssemblyQualifiedName);
+        _serializationInfo.AddValue (collectionKey + "[" + index + "].DeclaringType", methodInfo.DeclaringType!.AssemblyQualifiedName);
 
         _serializationInfo.AddValue (collectionKey + "[" + index + "].Name", methodInfo.Name);
         _serializationInfo.AddValue (collectionKey + "[" + index + "].Signature", methodInfo.ToString());

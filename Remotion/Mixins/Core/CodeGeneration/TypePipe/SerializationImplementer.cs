@@ -28,7 +28,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   public class SerializationImplementer
   {
     private static readonly MethodInfo s_getObjectDataMethod =
-        MemberInfoFromExpressionUtility.GetMethod ((ISerializable o) => o.GetObjectData (null, new StreamingContext()));
+        MemberInfoFromExpressionUtility.GetMethod ((ISerializable o) => o.GetObjectData (null!, new StreamingContext()))!;
 
     private static readonly ConstructorInfo s_invalidOperationExceptionConstructor =
         MemberInfoFromExpressionUtility.GetConstructor (() => new InvalidOperationException ("message"));
@@ -65,7 +65,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     private static Expression ImplementBaseGetObjectDataCall (MethodBodyContextBase ctx)
     {
-      ConstructorInfo baseConstructor = ctx.DeclaringType.BaseType.GetConstructor (
+      ConstructorInfo? baseConstructor = ctx.DeclaringType.BaseType!.GetConstructor (
           BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
           null,
           CallingConventions.Any,
@@ -79,7 +79,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         return Expression.Throw (Expression.New (s_invalidOperationExceptionConstructor, Expression.Constant (message)));
       }
 
-      MethodInfo baseGetObjectDataMethod =
+      MethodInfo? baseGetObjectDataMethod =
           ctx.DeclaringType.BaseType.GetMethod ("GetObjectData", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
       if (baseGetObjectDataMethod == null || !IsPublicOrProtected (baseGetObjectDataMethod))
       {
@@ -119,7 +119,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     //    return null;
     //}
 
-    public static void RaiseOnDeserialization (object deserializedObject, object sender)
+    public static void RaiseOnDeserialization (object deserializedObject, object? sender)
     {
       ArgumentUtility.CheckNotNull ("deserializedObject", deserializedObject);
       s_serializationEventRaiser.RaiseDeserializationEvent (deserializedObject, sender);

@@ -53,7 +53,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
       var concreteMixinTypeCache = GetOrCreateConcreteMixinTypeCache (context.ParticipantState);
 
-      ConcreteMixinType concreteMixinType;
+      ConcreteMixinType? concreteMixinType;
       if (!concreteMixinTypeCache.TryGetValue (concreteMixinTypeIdentifier, out concreteMixinType))
       {
         concreteMixinType = GenerateConcreteMixinType (context, concreteMixinTypeIdentifier);

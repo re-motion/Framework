@@ -40,7 +40,7 @@ namespace Remotion.Mixins.Utilities
   public class MixedObjectInstantiationScope : IDisposable
   {
     [ThreadStatic]
-    private static MixedObjectInstantiationScope s_current;
+    private static MixedObjectInstantiationScope? s_current;
 
     private static readonly MixedObjectInstantiationScope s_empty = new MixedObjectInstantiationScope (false, new object[0]);
 
@@ -61,7 +61,7 @@ namespace Remotion.Mixins.Utilities
 
     private readonly object[] _suppliedMixinInstances;
 
-    private MixedObjectInstantiationScope _previous;
+    private MixedObjectInstantiationScope? _previous;
     private bool _isDisposed = false;
 
     private MixedObjectInstantiationScope (bool setCurrent, object[] suppliedMixinInstances)

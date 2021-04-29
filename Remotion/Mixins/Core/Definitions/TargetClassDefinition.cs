@@ -80,7 +80,7 @@ namespace Remotion.Mixins.Definitions
       get { return Type.IsAbstract; }
     }
 
-    public override IVisitableDefinition Parent
+    public override IVisitableDefinition? Parent
     {
       get { return null; }
     }

@@ -17,11 +17,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.Context
 {
   public class ReadOnlyContextCollection<TKey, TValue> : ICollection<TValue>, ICollection
+      where TKey : notnull
+      where TValue : notnull
   {
     private readonly Func<TValue, TKey> _keyGenerator;
     private readonly IDictionary<TKey, TValue> _internalCollection;
@@ -44,8 +47,7 @@ namespace Remotion.Mixins.Context
         ArgumentUtility.CheckNotNull ("values[" + _internalCollection.Count + "]", value);
 
         TKey key = _keyGenerator (value);
-        TValue existingValue;
-        if (_internalCollection.TryGetValue (key, out existingValue))
+        if (_internalCollection.TryGetValue (key, out var existingValue))
         {
           if (!value.Equals (existingValue))
           {
@@ -77,19 +79,18 @@ namespace Remotion.Mixins.Context
     {
       ArgumentUtility.CheckNotNull ("value", value);
       TKey key = _keyGenerator (value);
-      TValue foundValue;
-      if (!_internalCollection.TryGetValue (key, out foundValue))
+      if (!_internalCollection.TryGetValue (key, out var foundValue))
         return false;
       else
         return value.Equals (foundValue);
     }
 
-    public virtual TValue this[TKey key]
+    // TODO RM-7703 evaluate if the indexer should be used for checking if a value exists.
+    public virtual TValue? this[TKey key]
     {
       get
       {
-        TValue value;
-        if (!_internalCollection.TryGetValue (key, out value))
+        if (!_internalCollection.TryGetValue (key, out var value))
           return default (TValue);
         else
           return value;

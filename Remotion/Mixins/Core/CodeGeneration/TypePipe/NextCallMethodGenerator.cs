@@ -140,7 +140,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     {
       var mixin = (MixinDefinition) target.DeclaringClass;
       var baseCallMethod = GetMixinMethodToCall (mixin.MixinIndex, target);
-      var mixinReference = GetMixinReference (mixin, baseCallMethod.DeclaringType);
+      var mixinReference = GetMixinReference (mixin, baseCallMethod.DeclaringType!);
 
       return ctx.DelegateTo (mixinReference, baseCallMethod);
     }

@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Remotion.Collections;
 using Remotion.TypePipe.MutableReflection.MemberSignatures;
@@ -31,7 +32,7 @@ namespace Remotion.Mixins.Definitions.Building
     private readonly Type _attributeType;
     private readonly IEnumerable<TMember> _baseMembers;
 
-    private MultiDictionary<string, TMember> _baseMembersByNameCache = null;
+    private MultiDictionary<string, TMember>? _baseMembersByNameCache = null;
 
     public OverridesAnalyzer (Type attributeType, IEnumerable<TMember> baseMembers)
     {
@@ -48,10 +49,10 @@ namespace Remotion.Mixins.Definitions.Building
 
       foreach (TMember member in overriderMembers)
       {
-        var overrideAttribute = (IOverrideAttribute) AttributeUtility.GetCustomAttribute (member.MemberInfo, _attributeType, true);
+        var overrideAttribute = (IOverrideAttribute?) AttributeUtility.GetCustomAttribute (member.MemberInfo, _attributeType, true);
         if (overrideAttribute != null)
         {
-          TMember baseMember = FindOverriddenMember (overrideAttribute, member);
+          TMember? baseMember = FindOverriddenMember (overrideAttribute, member);
 
           if (baseMember == null)
           {
@@ -76,6 +77,7 @@ namespace Remotion.Mixins.Definitions.Building
       }
     }
 
+    [MemberNotNull (nameof (_baseMembersByNameCache))]
     private void EnsureMembersCached ()
     {
       if (_baseMembersByNameCache == null)
@@ -86,7 +88,7 @@ namespace Remotion.Mixins.Definitions.Building
       }
     }
 
-    private TMember FindOverriddenMember (IOverrideAttribute attribute, TMember overrider)
+    private TMember? FindOverriddenMember (IOverrideAttribute attribute, TMember overrider)
     {
       var candidates = from candidate in BaseMembersByName[overrider.Name]
                        let candidateType = candidate.DeclaringClass.Type
@@ -115,7 +117,7 @@ namespace Remotion.Mixins.Definitions.Building
       return string.Join ("; ", candidatesByType.Select (group => string.Join (", ", @group.Select (md => "'" + md.MemberInfo.ToString () + "'")) + " (on '" + @group.Key.FullName + "')"));
     }
 
-    private bool OverriddenMemberTypeMatches (Type overriddenMemberType, Type requiredType)
+    private bool OverriddenMemberTypeMatches (Type overriddenMemberType, Type? requiredType)
     {
       if (requiredType == null) // no type required
         return true;

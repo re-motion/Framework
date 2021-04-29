@@ -29,9 +29,9 @@ namespace Remotion.Mixins.Definitions
     public delegate TKey KeyMaker (TValue value);
     private KeyMaker _keyMaker;
 
-    private Predicate<TValue> _guardian;
+    private Predicate<TValue>? _guardian;
 
-    public DefinitionCollectionBase (KeyMaker keyMaker, Predicate<TValue> guardian)
+    public DefinitionCollectionBase (KeyMaker keyMaker, Predicate<TValue>? guardian)
     {
       ArgumentUtility.CheckNotNull ("keyMaker", keyMaker);
       _keyMaker = keyMaker;
