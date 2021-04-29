@@ -50,7 +50,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
 
     public override string ToString ()
     {
-      return Assembly.FullName + (FollowReferences ? ", including references" : "");
+      return Assembly.GetFullNameSafe() + (FollowReferences ? ", including references" : "");
     }
   }
 }

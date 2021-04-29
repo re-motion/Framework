@@ -21,6 +21,7 @@ using System.Text;
 using Remotion.Data.DomainObjects.ConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping.Validation;
 using Remotion.Data.DomainObjects.Persistence.Model;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Mapping
@@ -138,8 +139,8 @@ namespace Remotion.Data.DomainObjects.Mapping
             duplicates[0].ClassType.FullName,
             duplicates[1].ClassType.FullName,
             duplicates[0].ID,
-            duplicates[0].ClassType.Assembly.FullName,
-            duplicates[1].ClassType.Assembly.FullName);
+            duplicates[0].ClassType.Assembly.GetFullNameSafe(),
+            duplicates[1].ClassType.Assembly.GetFullNameSafe());
       }
     }
 

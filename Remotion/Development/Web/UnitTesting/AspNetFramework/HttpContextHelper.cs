@@ -21,6 +21,7 @@ using System.Web;
 using System.Web.Hosting;
 using System.Web.SessionState;
 using Remotion.Development.UnitTesting;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Development.Web.UnitTesting.AspNetFramework
@@ -51,7 +52,7 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
 
       object httpRuntime = PrivateInvoke.GetNonPublicStaticField (typeof (HttpRuntime), "_theRuntime");
       PrivateInvoke.SetNonPublicField (httpRuntime, "_appDomainAppPath", s_appPhysicalDir);
-      string assemblyName = typeof (HttpApplication).Assembly.FullName;
+      string assemblyName = typeof (HttpApplication).Assembly.GetFullNameChecked();
       Type virtualPathType = Type.GetType ("System.Web.VirtualPath, " + assemblyName, true);
       object virtualPath = PrivateInvoke.InvokePublicStaticMethod (virtualPathType, "Create", s_appVirtualDir);
       PrivateInvoke.SetNonPublicField (httpRuntime, "_appDomainAppVPath", virtualPath);
