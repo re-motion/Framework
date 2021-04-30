@@ -117,7 +117,7 @@ namespace Remotion.Utilities
       ArgumentUtility.CheckNotNull ("type", type);
 
       // C# compiler 7.2 already provides caching for anonymous method.
-      return s_partialAssemblyQualifiedNameCache.GetOrAdd (type, key => key.FullName + ", " + key.Assembly.GetName ().Name);
+      return s_partialAssemblyQualifiedNameCache.GetOrAdd (type, key => key.FullName + ", " + key.Assembly.GetName ().GetNameChecked());
     }
 
     /// <summary>

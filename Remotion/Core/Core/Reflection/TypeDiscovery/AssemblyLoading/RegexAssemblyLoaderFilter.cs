@@ -87,7 +87,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
       switch (_matchTarget)
       {
         case MatchTargetKind.SimpleName:
-          return _matchExpression.IsMatch (assemblyName.Name!); // TODO RM-7770: assemblyName.Name should be checked for null.
+          return _matchExpression.IsMatch (assemblyName.GetNameChecked());
         default:
           return _matchExpression.IsMatch (assemblyName.FullName);
       }

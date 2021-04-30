@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Windows.Forms;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Design.BindableObject
@@ -79,7 +80,7 @@ namespace Remotion.ObjectBinding.Design.BindableObject
       {
         assemblyNode = new TreeNode();
         assemblyNode.Name = assemblyName.FullName;
-        assemblyNode.Text = assemblyName.Name;
+        assemblyNode.Text = assemblyName.GetNameChecked();
         assemblyNode.ToolTipText = assemblyName.FullName;
         assemblyNode.ImageKey = TreeViewIcons.Assembly.ToString();
         assemblyNode.SelectedImageKey = TreeViewIcons.Assembly.ToString();

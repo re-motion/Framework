@@ -37,7 +37,7 @@ namespace Remotion.Utilities
       private void BuildAbbreviatedTypeName (StringBuilder typeNameBuilder, Type type, bool includeVersionAndCulture, bool isTypeParameter)
       {
         string ns = type.Namespace ?? string.Empty;
-        string asm = type.Assembly!.GetName().Name!;
+        string asm = type.Assembly!.GetName().GetNameChecked();
         bool canAbbreviate = ns.StartsWith (asm);
 
         // put type paramters in [brackets] if they include commas, so the commas cannot be confused with type parameter separators

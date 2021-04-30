@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace Remotion.Reflection
 {
@@ -24,5 +25,16 @@ namespace Remotion.Reflection
   /// </summary>
   static partial class AssemblyNameExtensions
   {
+    public static string GetNameSafe (this AssemblyName assemblyName)
+    {
+      // ReSharper disable once ConstantNullCoalescingCondition
+      return assemblyName.Name ?? "<undefined>";
+    }
+
+    public static string GetNameChecked (this AssemblyName assemblyName)
+    {
+      // ReSharper disable once ConstantNullCoalescingCondition
+      return assemblyName.Name ?? throw new InvalidOperationException ("Assembly name is undefined.");
+    }
   }
 }
