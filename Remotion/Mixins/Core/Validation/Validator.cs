@@ -80,7 +80,7 @@ namespace Remotion.Mixins.Validation
     {
       foreach (Type t in AssemblyTypeCache.GetTypes (Assembly.GetExecutingAssembly()))
       {
-        if (!t.IsAbstract && typeof (IRuleSet).IsAssignableFrom (t) && t.Namespace == typeof (IRuleSet).Namespace)
+        if (!t.IsAbstract && typeof (IRuleSet).IsAssignableFrom (t) && t.Namespace == typeof (IRuleSet).GetNamespaceChecked())
         {
           IRuleSet ruleSet = (IRuleSet) Activator.CreateInstance (t)!;
           ruleSet.Install (visitor);

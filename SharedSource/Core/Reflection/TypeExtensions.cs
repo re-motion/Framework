@@ -36,5 +36,17 @@ namespace Remotion.Reflection
       return type.AssemblyQualifiedName
              ?? throw new InvalidOperationException (string.Format ("Type '{0}' does not have an assembly qualified name.", type.FullName ?? type.Name));
     }
+
+    public static string GetNamespaceSafe (this Type type)
+    {
+      // ReSharper disable once ConstantNullCoalescingCondition
+      return type.Namespace ?? "<undefined>";
+    }
+
+    public static string GetNamespaceChecked (this Type type)
+    {
+      // ReSharper disable once ConstantNullCoalescingCondition
+      return type.Namespace ?? throw new InvalidOperationException (string.Format ("Type '{0}' does not have a namespace.", type.Name));
+    }
   }
 }

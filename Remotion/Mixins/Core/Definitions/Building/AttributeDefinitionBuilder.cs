@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Remotion.Reflection;
 using Remotion.TypePipe.MutableReflection;
 using Remotion.Utilities;
 
@@ -58,9 +59,8 @@ namespace Remotion.Mixins.Definitions.Building
 
     private bool IsIgnoredAttributeType (Type type)
     {
-      Assertion.IsNotNull (type.Namespace);
       return type == typeof (SerializableAttribute)
-          || (typeof (ExtendsAttribute).Assembly.Equals (type.Assembly) && type.Namespace.StartsWith ("Remotion.Mixins"));
+          || (typeof (ExtendsAttribute).Assembly.Equals (type.Assembly) && type.GetNamespaceChecked().StartsWith ("Remotion.Mixins"));
     }
 
     private void ApplyViaCopyAttribute (MemberInfo copyAttributeSource, ICustomAttributeData copyAttributeData)

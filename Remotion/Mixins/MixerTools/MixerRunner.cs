@@ -90,7 +90,7 @@ namespace Remotion.Mixins.MixerTools
       else
       {
         var mixerLoggers = from t in AssemblyTypeCache.GetTypes (typeof (Mixer).Assembly)
-                           where t.Namespace == typeof (Mixer).Namespace
+                           where t.Namespace == typeof (Mixer).GetNamespaceChecked()
                            select LogManager.GetLogger (t);
         var logThresholds = from l in mixerLoggers
                             select new LogThreshold (l, LogLevel.Info);

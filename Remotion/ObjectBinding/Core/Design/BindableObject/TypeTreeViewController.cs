@@ -93,12 +93,12 @@ namespace Remotion.ObjectBinding.Design.BindableObject
 
     private TreeNode GetNamespaceNode (Type type, TreeNodeCollection namespaceNodes)
     {
-      TreeNode namespaceNode = namespaceNodes[type.Namespace];
+      TreeNode namespaceNode = namespaceNodes[type.GetNamespaceChecked()];
       if (namespaceNode == null)
       {
         namespaceNode = new TreeNode();
-        namespaceNode.Name = type.Namespace;
-        namespaceNode.Text = type.Namespace;
+        namespaceNode.Name = type.GetNamespaceChecked();
+        namespaceNode.Text = type.GetNamespaceChecked();
         namespaceNode.ImageKey = TreeViewIcons.Namespace.ToString();
         namespaceNode.SelectedImageKey = TreeViewIcons.Namespace.ToString();
 

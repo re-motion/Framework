@@ -17,6 +17,7 @@
 using System;
 using System.Threading;
 using JetBrains.Annotations;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.BindableObject.Properties
@@ -471,7 +472,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
             string.Format (
                 "The '{0}' type does not use the '{1}' implementation of '{2}' and there is no '{3}' registered with the '{4}' associated with this type.",
                 UnderlyingType.FullName,
-                typeof (BindableObjectMixin).Namespace,
+                typeof (BindableObjectMixin).GetNamespaceSafe(),
                 typeof (IBusinessObject).FullName,
                 typeof (IBusinessObjectClassService).FullName,
                 typeof (BusinessObjectProvider).FullName));
