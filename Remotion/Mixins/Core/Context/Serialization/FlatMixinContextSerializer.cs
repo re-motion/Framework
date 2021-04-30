@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Linq;
+using Remotion.Reflection;
 
 namespace Remotion.Mixins.Context.Serialization
 {
@@ -34,7 +35,7 @@ namespace Remotion.Mixins.Context.Serialization
       }
 
       if (typeof (T) == typeof (Type))
-        return ConvertToStorageFormat (((Type) (object) value).AssemblyQualifiedName!);
+        return ConvertToStorageFormat (((Type) (object) value).GetAssemblyQualifiedNameChecked());
 
       return base.ConvertToStorageFormat (value);
     }

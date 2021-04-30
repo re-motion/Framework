@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.Serialization;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.Serialization
@@ -43,7 +44,7 @@ namespace Remotion.Mixins.CodeGeneration.Serialization
 
     public void AddMixinType (Type mixinType)
     {
-      _serializationInfo.AddValue (_key + ".MixinType", mixinType.AssemblyQualifiedName);
+      _serializationInfo.AddValue (_key + ".MixinType", mixinType.GetAssemblyQualifiedNameChecked());
     }
 
     public void AddOverriders (HashSet<MethodInfo> overriders)
@@ -66,7 +67,7 @@ namespace Remotion.Mixins.CodeGeneration.Serialization
         if (methodInfo.IsGenericMethod && !methodInfo.IsGenericMethodDefinition)
           throw new NotSupportedException ("Cannot serialize closed generic methods. This is not supported.");
 
-        _serializationInfo.AddValue (collectionKey + "[" + index + "].DeclaringType", methodInfo.DeclaringType!.AssemblyQualifiedName);
+        _serializationInfo.AddValue (collectionKey + "[" + index + "].DeclaringType", methodInfo.DeclaringType!.GetAssemblyQualifiedNameChecked());
 
         _serializationInfo.AddValue (collectionKey + "[" + index + "].Name", methodInfo.Name);
         _serializationInfo.AddValue (collectionKey + "[" + index + "].Signature", methodInfo.ToString());

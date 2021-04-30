@@ -21,6 +21,7 @@ using System.Xml.Schema;
 using System.Xml.Serialization;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.ExtensibleEnums;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
@@ -186,7 +187,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
       else if (IsObjectID (valueType))
         writer.WriteAttributeString ("Type", "ObjectID");
       else
-        writer.WriteAttributeString ("Type", valueType.AssemblyQualifiedName);
+        writer.WriteAttributeString ("Type", valueType.GetAssemblyQualifiedNameChecked());
       
       return valueType;
     }

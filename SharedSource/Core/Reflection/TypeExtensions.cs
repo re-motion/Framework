@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Runtime.CompilerServices;
 
 namespace Remotion.Reflection
 {
@@ -23,5 +24,17 @@ namespace Remotion.Reflection
   /// </summary>
   static partial class TypeExtensions
   {
+    public static string GetAssemblyQualifiedNameSafe (this Type type)
+    {
+      // ReSharper disable once ConstantNullCoalescingCondition
+      return type.AssemblyQualifiedName ?? type.FullName ?? type.Name ?? "<undefined>";
+    }
+
+    public static string GetAssemblyQualifiedNameChecked (this Type type)
+    {
+      // ReSharper disable once ConstantNullCoalescingCondition
+      return type.AssemblyQualifiedName
+             ?? throw new InvalidOperationException (string.Format ("Type '{0}' does not have an assembly qualified name.", type.FullName ?? type.Name));
+    }
   }
 }

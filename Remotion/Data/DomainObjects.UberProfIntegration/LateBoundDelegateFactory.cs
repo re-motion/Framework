@@ -17,6 +17,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UberProfIntegration
@@ -67,7 +68,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
       return new MissingMethodException (
           String.Format (
               "Type {0} does not define a method {3} {1}({2}).",
-              targetType.AssemblyQualifiedName,
+              targetType.GetAssemblyQualifiedNameSafe(),
               methodName,
               string.Join (", ", parameters),
               returnType == typeof (void) ? "void" : returnType.FullName),

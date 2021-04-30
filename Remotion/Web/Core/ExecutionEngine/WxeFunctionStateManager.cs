@@ -22,6 +22,7 @@ using System.Web;
 using System.Web.SessionState;
 using Remotion.Context;
 using Remotion.Logging;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Web.ExecutionEngine
@@ -68,7 +69,7 @@ namespace Remotion.Web.ExecutionEngine
 
     private static readonly ILog s_log = LogManager.GetLogger (typeof (WxeFunctionStateManager));
 
-    private static readonly string s_key = typeof (WxeFunctionStateManager).AssemblyQualifiedName;
+    private static readonly string s_key = typeof (WxeFunctionStateManager).GetAssemblyQualifiedNameChecked();
     private static readonly string s_sessionKeyForFunctionStates = s_key + "|WxeFunctionStates";
 
     private static readonly SafeContextSingleton<WxeFunctionStateManager> s_functionStateManager =

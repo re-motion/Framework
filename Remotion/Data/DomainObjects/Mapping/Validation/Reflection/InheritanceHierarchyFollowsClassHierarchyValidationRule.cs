@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Reflection;
 
 namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
 {
@@ -35,9 +36,9 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
         return MappingValidationResult.CreateInvalidResultForType (
             classDefinition.BaseClass.ClassType,
             "Type '{0}' of class '{1}' is not derived from type '{2}' of base class '{3}'.",
-            classDefinition.ClassType.AssemblyQualifiedName,
+            classDefinition.ClassType.GetAssemblyQualifiedNameSafe(),
             classDefinition.ID,
-            classDefinition.BaseClass.ClassType.AssemblyQualifiedName,
+            classDefinition.BaseClass.ClassType.GetAssemblyQualifiedNameSafe(),
             classDefinition.BaseClass.ID);
       }
       return MappingValidationResult.CreateValidResult();
