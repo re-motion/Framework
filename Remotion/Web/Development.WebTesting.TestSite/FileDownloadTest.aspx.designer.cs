@@ -17,7 +17,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button DownloadPostbackButton;
         
@@ -26,7 +26,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlAnchor TargetBlankAnchor;
         
@@ -35,7 +35,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlAnchor DownloadXmlFile;
         
@@ -44,7 +44,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button DownloadTxtReplaceSiteButton;
         
@@ -53,7 +53,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlAnchor TargetSelfAnchor;
         
@@ -62,7 +62,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlAnchor DownloadWith5SecondTimeout;
         
@@ -71,7 +71,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlAnchor DownloadFileWithoutFileExtension;
         
@@ -80,8 +80,29 @@ namespace Remotion.Web.Development.WebTesting.TestSite {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlAnchor DownloadZipFile;
+        
+        /// <summary>
+        /// DownloadMultipleFiles control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor DownloadMultipleFiles;
+        
+        /// <summary>
+        /// Master property.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated property.
+        /// </remarks>
+        public new Remotion.Web.Development.WebTesting.TestSite.Layout Master {
+            get {
+                return ((Remotion.Web.Development.WebTesting.TestSite.Layout)(base.Master));
+            }
+        }
     }
 }

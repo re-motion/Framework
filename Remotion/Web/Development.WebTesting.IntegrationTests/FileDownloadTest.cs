@@ -346,6 +346,24 @@ Unmatched files in the download directory (will be cleaned up by the infrastruct
           Throws.Nothing);
     }
 
+    [Test]
+    [Category ("LongRunning")]
+    [Repeat (200)] // This test tests flaky behavior, therefore needs multiple runs.
+    public void TestDownload_HandleMultipleFiles ()
+    {
+      var home = Start();
+
+      var button = home.Scope.FindId ("body_DownloadMultipleFiles");
+      button.Click();
+
+      Assert.That (
+          () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (c_sampleXmlFileName),
+          Throws.Nothing);
+      Assert.That (
+          () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (c_sampleTxtFileName),
+          Throws.Nothing);
+    }
+
     private WebFormsTestPageObject Start ()
     {
       return Start<WebFormsTestPageObject> ("FileDownloadTest.aspx");
