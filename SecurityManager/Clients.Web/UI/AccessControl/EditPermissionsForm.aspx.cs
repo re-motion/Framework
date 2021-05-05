@@ -22,6 +22,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
+using Remotion.Reflection;
 using Remotion.SecurityManager.Clients.Web.Classes;
 using Remotion.SecurityManager.Clients.Web.Classes.AccessControl;
 using Remotion.SecurityManager.Domain.AccessControl;
@@ -303,7 +304,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
       HtmlHeadAppender.Current.RegisterUtilitiesJavaScriptInclude ();
       var url = ResourceUrlFactory.CreateResourceUrl (typeof (EditPermissionsForm), ResourceType.Html, "EditPermissionsForm.js");
-      HtmlHeadAppender.Current.RegisterJavaScriptInclude (GetType().FullName + "_script", url);
+      HtmlHeadAppender.Current.RegisterJavaScriptInclude (GetType().GetFullNameChecked() + "_script", url);
     }
 
     private void EnableNewAccessControlListButton ()

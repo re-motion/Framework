@@ -18,6 +18,7 @@ using System;
 using System.Reflection;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.Definitions;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.Utilities
@@ -73,7 +74,7 @@ namespace Remotion.Mixins.Utilities
       var castTarget = mixinTargetInstance as IMixinTarget;
       if (castTarget == null)
       {
-        string message = string.Format ("The given object of type {0} is not a mixin target.", mixinTargetInstance.GetType().FullName);
+        string message = string.Format ("The given object of type {0} is not a mixin target.", mixinTargetInstance.GetType().GetFullNameSafe());
         throw new ArgumentException (message, "mixinTargetInstance");
       }
 

@@ -23,6 +23,7 @@ using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Tracing;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UberProfIntegration
@@ -176,7 +177,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
 
     public string Key
     {
-      get { return typeof (LinqToSqlExtension).FullName; }
+      get { return typeof (LinqToSqlExtension).GetFullNameChecked(); }
     }
 
     public void TransactionInitialize (ClientTransaction clientTransaction)

@@ -102,8 +102,8 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
                 throw new InvalidOperationException (
                     string.Format (
                         "The concrete type must be assignable to the underlying type '{0}'.\r\nConcrete type: {1}",
-                        underlyingType.FullName,
-                        actualConcreteType.FullName));
+                        underlyingType.GetFullNameSafe(),
+                        actualConcreteType.GetFullNameSafe()));
               }
               return actualConcreteType;
             },

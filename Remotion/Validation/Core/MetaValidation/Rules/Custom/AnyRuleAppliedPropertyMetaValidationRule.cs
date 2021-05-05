@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Validation.Attributes.MetaValidation;
 using Remotion.Validation.Validators;
@@ -48,7 +49,7 @@ namespace Remotion.Validation.MetaValidation.Rules.Custom
             MetaValidationRuleValidationResult.CreateInvalidResult (
                 "'{0}' failed for property '{1}.{2}': No validation rules defined.",
                 GetType ().Name,
-                _property.ReflectedType.FullName,
+                _property.ReflectedType.GetFullNameSafe(),
                 _property.Name);
       }
       else

@@ -19,6 +19,7 @@ using System.Web;
 using System.Web.UI;
 using Remotion.Collections;
 using Remotion.Globalization;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI.Globalization;
@@ -60,7 +61,7 @@ namespace Remotion.Web.ExecutionEngine
       {
         IWxePage wxePage = _control.Page as IWxePage;
         if (wxePage == null)
-          throw new InvalidOperationException (string.Format ("'{0}' can only be added to a Page implementing the IWxePage interface.", _control.GetType ().FullName));
+          throw new InvalidOperationException (string.Format ("'{0}' can only be added to a Page implementing the IWxePage interface.", _control.GetType ().GetFullNameSafe()));
         _wxeHandler = wxePage.WxeHandler;
       }
       if (_wxeHandler == null)

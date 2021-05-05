@@ -131,7 +131,7 @@ namespace Remotion.Security.Metadata
                 "The DemandPermissionAttribute must not be defined on methods overriden or redefined in derived classes. "
                 + "A method '{0}' exists in class '{1}' and its base class.",
                 methodName,
-                type.FullName),
+                type.GetFullNameSafe()),
             "methodName");
       }
 

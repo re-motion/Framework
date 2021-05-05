@@ -16,6 +16,7 @@
 // 
 using System;
 using Remotion.Collections;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Web.ExecutionEngine
@@ -107,7 +108,7 @@ public class WxeParameterDeclaration
   private void SetParameter (string parameterName, object value, NameObjectCollection variables)
   {
     if (value != null && _type != null && ! _type.IsAssignableFrom (value.GetType()))
-      throw new ApplicationException ("Parameter '" + parameterName + "' has unexpected type " + value.GetType().FullName + " (" + _type.FullName + " was expected).");
+      throw new ApplicationException ("Parameter '" + parameterName + "' has unexpected type " + value.GetType().GetFullNameSafe() + " (" + _type.GetFullNameSafe() + " was expected).");
     variables[parameterName] = value;
   }
 

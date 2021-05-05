@@ -17,6 +17,7 @@
 using System;
 using System.Reflection;
 using System.Threading;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.ExtensibleEnums
@@ -115,7 +116,7 @@ namespace Remotion.ExtensibleEnums
     /// and hash code calculations.</param>
     protected ExtensibleEnum (Type declaringType, string valueName)
         : this (
-            ArgumentUtility.CheckNotNull ("declaringType", declaringType).FullName, 
+            ArgumentUtility.CheckNotNull ("declaringType", declaringType).GetFullNameChecked(), 
             ArgumentUtility.CheckNotNullOrEmpty ("valueName", valueName))
     {
     }

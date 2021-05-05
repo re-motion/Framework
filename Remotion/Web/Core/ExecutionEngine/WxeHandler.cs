@@ -20,6 +20,7 @@ using System.IO;
 using System.Web;
 using System.Web.SessionState;
 using Remotion.Logging;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Web.Configuration;
 using Remotion.Web.Utilities;
@@ -214,7 +215,7 @@ namespace Remotion.Web.ExecutionEngine
         if (!typeof (WxeFunction).IsAssignableFrom (type))
         {
           throw new WxeException (
-              string.Format ("The function type '{0}' is invalid. Wxe functions must be derived from '{1}'.", typeName, typeof (WxeFunction).FullName));
+              string.Format ("The function type '{0}' is invalid. Wxe functions must be derived from '{1}'.", typeName, typeof (WxeFunction).GetFullNameSafe()));
         }
         return type;
       }
@@ -405,7 +406,7 @@ namespace Remotion.Web.ExecutionEngine
       ArgumentUtility.CheckNotNull ("function", function);
       ArgumentUtility.CheckNotNull ("context", context);
       if (function.IsAborted)
-        throw new ArgumentException ("The function " + function.GetType().FullName + " is aborted.");
+        throw new ArgumentException ("The function " + function.GetType().GetFullNameSafe() + " is aborted.");
 
       function.ExceptionHandler.AppendCatchExceptionTypes (typeof (WxeUserCancelException));
       function.Execute (context);

@@ -70,9 +70,9 @@ namespace Remotion.Reflection.CodeGeneration
     {
       ArgumentUtility.CheckNotNull ("baseType", baseType);
       if (baseType.IsInterface)
-        throw new ArgumentException ("Base type must not be an interface (" + baseType.FullName + ").", "baseType");
+        throw new ArgumentException ("Base type must not be an interface (" + baseType.GetFullNameSafe() + ").", "baseType");
       if (baseType.IsSealed)
-        throw new ArgumentException ("Base type must not be sealed (" + baseType.FullName + ").", "baseType");
+        throw new ArgumentException ("Base type must not be sealed (" + baseType.GetFullNameSafe() + ").", "baseType");
       return baseType;
     }
 
@@ -82,7 +82,7 @@ namespace Remotion.Reflection.CodeGeneration
       foreach (Type interfaceType in interfaces)
       {
         if (!interfaceType.IsInterface)
-          throw new ArgumentException ("Interface type must not be a class or value type (" + interfaceType.FullName + ").", "interfaces");
+          throw new ArgumentException ("Interface type must not be a class or value type (" + interfaceType.GetFullNameSafe() + ").", "interfaces");
       }
       return interfaces;
     }
@@ -429,7 +429,7 @@ namespace Remotion.Reflection.CodeGeneration
       if (keepSimpleName)
         return baseOrInterfaceMember.Name;
       else
-        return string.Format ("{0}.{1}", baseOrInterfaceMember.DeclaringType!.FullName, baseOrInterfaceMember.Name);
+        return string.Format ("{0}.{1}", baseOrInterfaceMember.DeclaringType!.GetFullNameChecked(), baseOrInterfaceMember.Name);
     }
   }
 }

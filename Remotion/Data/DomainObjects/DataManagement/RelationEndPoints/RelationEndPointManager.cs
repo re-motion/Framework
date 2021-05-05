@@ -21,6 +21,7 @@ using Remotion.Data.DomainObjects.DataManagement.Commands;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
@@ -48,7 +49,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       Assertion.IsTrue (
           endPointDefinition.Cardinality == CardinalityType.One && !endPointDefinition.IsVirtual,
           "The end point definition of type '{0}' cannot be mapped to a null object.",
-          endPointDefinition.GetType().FullName);
+          endPointDefinition.GetType().GetFullNameSafe());
 
       return new NullRealObjectEndPoint (clientTransaction, endPointDefinition);
     }

@@ -23,6 +23,7 @@ using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Logging;
+using Remotion.Reflection;
 
 namespace Remotion.Data.DomainObjects.Infrastructure
 {
@@ -67,7 +68,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     public void NewObjectCreating (ClientTransaction clientTransaction, Type type)
     {
       if (s_log.IsDebugEnabled())
-        s_log.DebugFormat ("{0} NewObjectCreating: {1}", clientTransaction.ID, type.FullName);
+        s_log.DebugFormat ("{0} NewObjectCreating: {1}", clientTransaction.ID, type.GetFullNameSafe());
     }
 
     public void ObjectsLoading (ClientTransaction clientTransaction, IReadOnlyList<ObjectID> objectIDs)

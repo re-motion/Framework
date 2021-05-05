@@ -27,6 +27,7 @@ using System.Web.UI.WebControls;
 using Microsoft.Practices.ServiceLocation;
 using Remotion.Globalization;
 using Remotion.Logging;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
@@ -265,7 +266,7 @@ namespace Remotion.Web.UI.Controls
         //  Not found, append to form grid instead of inserting at position of related form grid row
         if (relatedRow == null)
         {
-          s_log.Warn ("Could not find control '" + relatedRowID + "' inside FormGrid (HtmlTable) '" + _table.ID + "' in naming container '" + _table.NamingContainer.GetType().FullName + "' on page '" + _table.Page.ToString() + "'.");
+          s_log.Warn ("Could not find control '" + relatedRowID + "' inside FormGrid (HtmlTable) '" + _table.ID + "' in naming container '" + _table.NamingContainer.GetType().GetFullNameSafe() + "' on page '" + _table.Page.ToString() + "'.");
 
           //  append html table rows
           for (int i = 0; i < newFormGridRow.HtmlTableRows.Count; i++)
@@ -1220,7 +1221,7 @@ namespace Remotion.Web.UI.Controls
           else
           {
             //  Invalid control
-            s_log.Warn ("FormGrid '" + tableID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page.ToString() + "' does not contain a control with UniqueID '" + controlID + "'.");
+            s_log.Warn ("FormGrid '" + tableID + "' in naming container '" + NamingContainer.GetType().GetFullNameSafe() + "' on page '" + Page.ToString() + "' does not contain a control with UniqueID '" + controlID + "'.");
           }
         }
       }
@@ -1232,7 +1233,7 @@ namespace Remotion.Web.UI.Controls
 
       NamingContainer.Load += new EventHandler(NamingContainer_Load);
 
-      string key = typeof (FormGridManager).FullName + "_Style";
+      string key = typeof (FormGridManager).GetFullNameChecked() + "_Style";
       if (!HtmlHeadAppender.Current.IsRegistered (key))
       {
         var url = InfrastructureResourceUrlFactory.CreateThemedResourceUrl (ResourceType.Html, "FormGrid.css");

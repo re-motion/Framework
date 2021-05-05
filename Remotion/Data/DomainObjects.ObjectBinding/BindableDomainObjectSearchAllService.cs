@@ -91,7 +91,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
       if (!_bindableObjectTypeCache.GetOrAdd (type, BindableObjectProvider.IsBindableObjectImplementation))
       {
         var message = string.Format ("This service only supports queries for bindable DomainObject types, the given type '{0}' is not a bindable "
-            + "type. Derive from BindableDomainObject or apply the BindableDomainObjectAttribute.", type.FullName);
+            + "type. Derive from BindableDomainObject or apply the BindableDomainObjectAttribute.", type.GetFullNameSafe());
         throw new ArgumentException (message, "type");
       }
 

@@ -16,6 +16,7 @@
 // 
 using System;
 using Remotion.Globalization;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI.Controls.Rendering;
@@ -41,11 +42,11 @@ namespace Remotion.Web.UI.Controls.WebButtonImplementation.Rendering
     {
       ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
 
-      string scriptKey = typeof (WebButtonRenderer).FullName + "_Script";
+      string scriptKey = typeof (WebButtonRenderer).GetFullNameChecked() + "_Script";
       var scriptUrl = ResourceUrlFactory.CreateResourceUrl (typeof (WebButtonRenderer), ResourceType.Html, "WebButton.js");
       htmlHeadAppender.RegisterJavaScriptInclude (scriptKey, scriptUrl);
 
-      string styleKey = typeof (WebButtonRenderer).FullName + "_Style";
+      string styleKey = typeof (WebButtonRenderer).GetFullNameChecked() + "_Style";
       var styleUrl = ResourceUrlFactory.CreateThemedResourceUrl (typeof (WebButtonRenderer), ResourceType.Html, "WebButton.css");
       htmlHeadAppender.RegisterStylesheetLink (styleKey, styleUrl, HtmlHeadAppender.Priority.Library);
     }

@@ -18,6 +18,7 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Web.UI.WebControls;
+using Remotion.Reflection;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Design;
 
@@ -167,7 +168,7 @@ public class BocTextValueValidator: CompoundValidator
       case BocTextValueType.Double:
         return ValidationDataType.Double;
       default:
-        throw new ArgumentException ("Cannot convert " + valueType.ToString() + " to type " + typeof (ValidationDataType).FullName + ".");
+        throw new ArgumentException ("Cannot convert " + valueType.ToString() + " to type " + typeof (ValidationDataType).GetFullNameSafe() + ".");
     }
   }
 }

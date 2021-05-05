@@ -111,7 +111,7 @@ namespace Remotion.ObjectBinding.Design.BindableObject
 
     private TreeNode GetTypeNode (Type type, TreeNodeCollection typeNodes)
     {
-      TreeNode typeNode = typeNodes[type.FullName];
+      TreeNode typeNode = typeNodes[type.GetFullNameChecked()];
       if (typeNode == null)
       {
         typeNode = new TreeNode();
@@ -131,7 +131,7 @@ namespace Remotion.ObjectBinding.Design.BindableObject
     {
       if (node.Tag is Type
           && selectedType != null
-          && ((Type) node.Tag).FullName.Equals (selectedType.FullName, StringComparison.CurrentCultureIgnoreCase))
+          && ((Type) node.Tag).GetFullNameChecked().Equals (selectedType.GetFullNameChecked(), StringComparison.CurrentCultureIgnoreCase))
       {
         _treeView.SelectedNode = node;
         node.EnsureVisible();

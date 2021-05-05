@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Validation;
 using Remotion.Validation.Results;
@@ -31,7 +32,7 @@ namespace Remotion.Data.DomainObjects.Validation
 
     public static string DefaultKey
     {
-      get { return typeof (ValidationClientTransactionExtension).FullName; }
+      get { return typeof (ValidationClientTransactionExtension).GetFullNameChecked(); }
     }
 
     public ValidationClientTransactionExtension (IValidatorProvider validatorProvider)
@@ -98,7 +99,7 @@ namespace Remotion.Data.DomainObjects.Validation
       var domainObject = validatedInstance as DomainObject;
       if (domainObject != null)
         return string.Format ("Object '{0}' with ID '{1}':", domainObject.ID.ClassID, domainObject.ID.Value);
-      return string.Format ("Validation error on object of Type '{0}':", validatedInstance.GetType ().FullName);
+      return string.Format ("Validation error on object of Type '{0}':", validatedInstance.GetType ().GetFullNameSafe());
     }
 
     private List<ValidationResult> Validate (IReadOnlyList<PersistableData> domainObjectsToValidate, Dictionary<Type, IValidator> validatorCache)

@@ -17,6 +17,7 @@
 using System;
 using System.Diagnostics;
 using System.Reflection;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins
@@ -81,8 +82,8 @@ namespace Remotion.Mixins
           {
             string message = string.Format (
                 "Both mixins '{0}' and '{1}' match the given type '{2}'.",
-                mixin.GetType ().FullName,
-                potentialMixin.GetType ().FullName,
+                mixin.GetType ().GetFullNameSafe(),
+                potentialMixin.GetType ().GetFullNameSafe(),
                 mixinType.Name);
             throw new AmbiguousMatchException (message);
           }

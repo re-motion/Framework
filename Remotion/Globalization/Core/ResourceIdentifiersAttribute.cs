@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Globalization
@@ -29,7 +30,7 @@ public class ResourceIdentifiersAttribute: Attribute
     Type type = enumValue.GetType();
     if (type.DeclaringType != null && IsEnumTypeNameSuppressed (type)) // if the enum is a nested type, suppress enum name
       type = type.DeclaringType;
-    return type.FullName + "." + enumValue.ToString();
+    return type.GetFullNameChecked() + "." + enumValue.ToString();
 
 //    string typePath = type.FullName.Substring (0, type.FullName.Length - type.Name.Length);
 //    if (typePath.EndsWith ("+"))

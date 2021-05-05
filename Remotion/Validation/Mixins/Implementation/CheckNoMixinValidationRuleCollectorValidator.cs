@@ -16,6 +16,7 @@
 // 
 using System;
 using Remotion.Mixins;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
@@ -45,7 +46,7 @@ namespace Remotion.Validation.Mixins.Implementation
               string.Format (
                   "Validation rules for type '{0}' are not supported. If validation rules should be defined for mixins, "
                   +"please ensure to apply the rules to 'ITargetInterface' or 'IIntroducedInterface' instead.",
-                  collector.ValidatedType.FullName));
+                  collector.ValidatedType.GetFullNameSafe()));
       }
     }
   }

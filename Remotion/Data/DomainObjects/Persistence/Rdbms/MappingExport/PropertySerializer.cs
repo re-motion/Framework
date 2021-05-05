@@ -17,6 +17,7 @@
 using System;
 using System.Xml.Linq;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
@@ -61,7 +62,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
     private string GetTypeName (Type propertyType)
     {
       if (propertyType.Assembly == typeof (int).Assembly)
-        return propertyType.FullName;
+        return propertyType.GetFullNameChecked();
 
       return TypeUtility.GetPartialAssemblyQualifiedName (propertyType);
     }

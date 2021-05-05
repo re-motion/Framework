@@ -141,7 +141,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
       catch (Exception ex)
       {
         string message = string.Format ("The assembly {0} triggered an unexpected exception of type {1}.\r\nUnexpected exception message: {2}", 
-                                        assemblyDescriptionText, ex.GetType().FullName, ex.Message);
+                                        assemblyDescriptionText, ex.GetType().GetFullNameSafe(), ex.Message);
         throw new AssemblyLoaderException (message, ex);
       }
     }

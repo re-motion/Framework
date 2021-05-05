@@ -71,7 +71,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
               targetType.GetAssemblyQualifiedNameSafe(),
               methodName,
               string.Join (", ", parameters),
-              returnType == typeof (void) ? "void" : returnType.FullName),
+              returnType == typeof (void) ? "void" : returnType.GetFullNameSafe()),
           innerException);
     }
   }

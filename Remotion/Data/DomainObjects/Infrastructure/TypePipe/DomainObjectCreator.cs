@@ -18,6 +18,7 @@ using System;
 using System.Runtime.Serialization;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 using Remotion.TypePipe.Implementation;
@@ -101,7 +102,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
     {
       if (domainObjectType.IsSealed)
       {
-        var message = string.Format ("Cannot instantiate type '{0}' as it is sealed.", domainObjectType.FullName);
+        var message = string.Format ("Cannot instantiate type '{0}' as it is sealed.", domainObjectType.GetFullNameSafe());
         throw new NonInterceptableTypeException (message, domainObjectType);
       }
 
@@ -110,7 +111,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       {
         var message1 = string.Format (
             "Cannot instantiate type '{0}' as it is abstract; for classes with automatic properties, InstantiableAttribute must be used.",
-            classDefinition.ClassType.FullName);
+            classDefinition.ClassType.GetFullNameSafe());
         throw new NonInterceptableTypeException (message1, classDefinition.ClassType);
       }
     }

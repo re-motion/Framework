@@ -178,7 +178,7 @@ namespace Remotion.Data.DomainObjects.Mapping
     [NotNull]
     private string GetIdentifierFromTypeAndShortName ([NotNull] Type domainObjectType, [NotNull] string shortPropertyName)
     {
-      return domainObjectType.FullName + "." + shortPropertyName;
+      return domainObjectType.GetFullNameChecked() + "." + shortPropertyName;
     }
 
     private Dictionary<string, PropertyAccessorData> BuildAccessorDataDictionary ()

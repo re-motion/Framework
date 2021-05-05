@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Security
@@ -76,7 +77,7 @@ namespace Remotion.Security
       if (!permissionType.IsDefined (typeof (AccessTypeAttribute), false))
       {
         string message = string.Format (string.Format ("Enumerated Type '{0}' cannot be used as an access type. Valid access types must have the "
-                + "Remotion.Security.AccessTypeAttribute applied.", permissionType.FullName));
+                + "Remotion.Security.AccessTypeAttribute applied.", permissionType.GetFullNameSafe()));
 
         throw new ArgumentException (message, "accessType");
       }

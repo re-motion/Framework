@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Globalization;
+using Remotion.Reflection;
 using Remotion.Tools.Console.CommandLine;
 
 namespace Remotion.Security.Metadata.Extractor
@@ -82,7 +83,7 @@ namespace Remotion.Security.Metadata.Extractor
 
         for (; exception != null; exception = exception.InnerException)
         {
-          Console.Error.WriteLine ("{0}: {1}\n{2}", exception.GetType ().FullName, exception.Message, exception.StackTrace);
+          Console.Error.WriteLine ("{0}: {1}\n{2}", exception.GetType ().GetFullNameSafe(), exception.Message, exception.StackTrace);
         }
       }
       else

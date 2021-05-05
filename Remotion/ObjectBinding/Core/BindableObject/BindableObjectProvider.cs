@@ -20,6 +20,7 @@ using System.Collections.Concurrent;
 using Remotion.Collections;
 using Remotion.Collections.DataStore;
 using Remotion.Mixins;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using TypeExtensions = Remotion.Reflection.TypeExtensions;
 
@@ -49,7 +50,7 @@ namespace Remotion.ObjectBinding.BindableObject
       var providerAttributeType = s_providerAttributeTypeCache.GetOrAdd (type, s_findProviderAttributeTypeFunc);
 
       var provider = (BindableObjectProvider) GetProvider (providerAttributeType);
-      Assertion.IsNotNull (provider, "GetProvider cannot return null (type '{0}').", type.FullName);
+      Assertion.IsNotNull (provider, "GetProvider cannot return null (type '{0}').", type.GetFullNameSafe());
       return provider;
     }
 
@@ -112,8 +113,8 @@ namespace Remotion.ObjectBinding.BindableObject
       {
         var message = string.Format (
             "The type '{0}' does not have the '{1}' applied.",
-            type.FullName,
-            typeof (BusinessObjectProviderAttribute).FullName);
+            type.GetFullNameSafe(),
+            typeof (BusinessObjectProviderAttribute).GetFullNameSafe());
         throw new ArgumentException (message, "type");
       }
 
@@ -121,8 +122,8 @@ namespace Remotion.ObjectBinding.BindableObject
       {
         var message = string.Format (
             "The business object provider associated with the type '{0}' is not of type '{1}'.",
-            type.FullName,
-            typeof (BindableObjectProvider).FullName);
+            type.GetFullNameSafe(),
+            typeof (BindableObjectProvider).GetFullNameSafe());
         throw new ArgumentException (message, "type");
       }
 
@@ -197,7 +198,7 @@ namespace Remotion.ObjectBinding.BindableObject
           throw new ArgumentException (
               string.Format (
                   "The type '{0}' is not a bindable object implementation. Open generic types are not supported.",
-                  type.FullName),
+                  type.GetFullNameSafe()),
               "type");
         }
 
@@ -205,7 +206,7 @@ namespace Remotion.ObjectBinding.BindableObject
             string.Format (
                 "The type '{0}' is not a bindable object implementation. It must either have a mixin derived from BindableObjectMixinBase<T> applied "
                 + "or implement the IBusinessObject interface and apply the BindableObjectBaseClassAttribute.",
-                type.FullName),
+                type.GetFullNameSafe()),
             "type");
       }
 

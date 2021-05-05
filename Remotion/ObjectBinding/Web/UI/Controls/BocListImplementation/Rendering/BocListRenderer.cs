@@ -21,6 +21,7 @@ using System.Web.UI;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
@@ -121,11 +122,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       htmlHeadAppender.RegisterUtilitiesJavaScriptInclude();
 
-      string styleFileKey = typeof (BocListRenderer).FullName + "_Style";
+      string styleFileKey = typeof (BocListRenderer).GetFullNameChecked() + "_Style";
       var styleUrl = ResourceUrlFactory.CreateThemedResourceUrl (typeof (BocListRenderer), ResourceType.Html, "BocList.css");
       htmlHeadAppender.RegisterStylesheetLink (styleFileKey, styleUrl, HtmlHeadAppender.Priority.Library);
 
-      string scriptFileKey = typeof (BocListRenderer).FullName + "_Script";
+      string scriptFileKey = typeof (BocListRenderer).GetFullNameChecked() + "_Script";
       var scriptUrl = ResourceUrlFactory.CreateResourceUrl (typeof (BocListRenderer), ResourceType.Html, "BocList.js");
       htmlHeadAppender.RegisterJavaScriptInclude (scriptFileKey, scriptUrl);
 
@@ -245,7 +246,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       if (!renderingContext.Control.HasClientScript)
         return;
 
-      string startUpScriptKey = typeof (BocListRenderer).FullName + "_Startup";
+      string startUpScriptKey = typeof (BocListRenderer).GetFullNameChecked() + "_Startup";
       if (!renderingContext.Control.Page.ClientScript.IsStartupScriptRegistered (typeof (BocListRenderer), startUpScriptKey))
       {
         string script = "BocList.InitializeGlobals ();";
@@ -276,7 +277,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock (
             renderingContext.Control,
             typeof (BocListTableBlockRenderer),
-            typeof (BocList).FullName + "_" + renderingContext.Control.ClientID + "_InitializeListScript",
+            typeof (BocList).GetFullNameChecked() + "_" + renderingContext.Control.ClientID + "_InitializeListScript",
             script);
       }
     }

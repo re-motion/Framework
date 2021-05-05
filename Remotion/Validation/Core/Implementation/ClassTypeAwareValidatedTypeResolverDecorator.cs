@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Validation.Attributes;
@@ -66,9 +67,9 @@ namespace Remotion.Validation.Implementation
             string.Format (
                 "Invalid '{0}'-definition for collector '{1}': type '{2}' is not assignable from '{3}'.",
                 typeof (ApplyWithClassAttribute).Name,
-                collectorType.FullName,
-                validatedType.FullName,
-                classOrMixinType.FullName));
+                collectorType.GetFullNameSafe(),
+                validatedType.GetFullNameSafe(),
+                classOrMixinType.GetFullNameSafe()));
       }
     }
   }

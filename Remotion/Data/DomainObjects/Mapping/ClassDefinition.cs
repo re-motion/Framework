@@ -29,7 +29,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Mapping
 {
-  [DebuggerDisplay ("{GetType().Name} for {ClassType.FullName}")]
+  [DebuggerDisplay ("{GetType().Name} for {ClassType.GetFullNameSafe()}")]
   public class ClassDefinition
   {
     private readonly string _id;
@@ -420,7 +420,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public override string ToString ()
     {
-      return GetType().FullName + ": " + _id;
+      return GetType().GetFullNameChecked() + ": " + _id;
     }
 
     private MappingException CreateMappingException (string message, params object[] args)

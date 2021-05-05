@@ -20,6 +20,7 @@ using System.Configuration;
 using System.Configuration.Provider;
 using System.IO;
 using System.Reflection;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Configuration
@@ -267,12 +268,12 @@ namespace Remotion.Configuration
       Type actualType = TypeUtility.GetType (providerSettings.Type, throwOnError: true)!;
 
       if (!providerType.IsAssignableFrom (actualType))
-        throw new ArgumentException (string.Format ("Provider must implement the class '{0}'.", providerType.FullName));
+        throw new ArgumentException (string.Format ("Provider must implement the class '{0}'.", providerType.GetFullNameSafe()));
 
       foreach (Type interfaceType in providerInterfaces)
       {
         if (!interfaceType.IsAssignableFrom (actualType))
-          throw new ArgumentException (string.Format ("Provider must implement the interface '{0}'.", interfaceType.FullName));
+          throw new ArgumentException (string.Format ("Provider must implement the interface '{0}'.", interfaceType.GetFullNameSafe()));
       }
 
       return (ExtendedProviderBase) Activator.CreateInstance (actualType, new object[] {name, collection})!;

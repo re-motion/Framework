@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Remotion.Reflection;
 using Remotion.TypePipe.MutableReflection;
 using Remotion.Utilities;
 using ReflectionUtility = Remotion.Mixins.Utilities.ReflectionUtility;
@@ -52,7 +53,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       {
         string message = string.Format (
             "Cannot create base call method for a method defined on a different type than the base type: {0}.{1}.",
-            overriddenMethod.DeclaringType.FullName,
+            overriddenMethod.DeclaringType.GetFullNameSafe(),
             overriddenMethod.Name);
         throw new ArgumentException (message, "overriddenMethod");
       }
@@ -68,7 +69,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       Assertion.IsTrue (ReflectionUtility.IsPublicOrProtected (baseMethod));
       if (baseMethod.IsAbstract)
       {
-        var message = string.Format ("The given method {0}.{1} is abstract.", baseMethod.DeclaringType!.FullName, baseMethod.Name);
+        var message = string.Format ("The given method {0}.{1} is abstract.", baseMethod.DeclaringType!.GetFullNameSafe(), baseMethod.Name);
         throw new ArgumentException (message, "baseMethod");
       }
 

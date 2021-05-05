@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.Security
 
     public static string DefaultKey
     {
-      get { return typeof (SecurityClientTransactionExtension).FullName; }
+      get { return typeof (SecurityClientTransactionExtension).GetFullNameChecked(); }
     }
 
     [NonSerialized]

@@ -22,6 +22,7 @@ using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.Services;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
@@ -130,7 +131,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
       htmlHeadAppender.RegisterUtilitiesJavaScriptInclude();
 
-      string jqueryAutocompleteScriptKey = typeof (BocAutoCompleteReferenceValueRenderer).FullName + "_JQueryAutoCompleteScript";
+      string jqueryAutocompleteScriptKey = typeof (BocAutoCompleteReferenceValueRenderer).GetFullNameChecked() + "_JQueryAutoCompleteScript";
       htmlHeadAppender.RegisterJavaScriptInclude (
           jqueryAutocompleteScriptKey,
           ResourceUrlFactory.CreateResourceUrl (
@@ -138,7 +139,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
               ResourceType.Html,
               "BocAutoCompleteReferenceValue.jquery.js"));
 
-      string scriptKey = typeof (BocAutoCompleteReferenceValueRenderer).FullName + "_Script";
+      string scriptKey = typeof (BocAutoCompleteReferenceValueRenderer).GetFullNameChecked() + "_Script";
       htmlHeadAppender.RegisterJavaScriptInclude (
           scriptKey,
           ResourceUrlFactory.CreateResourceUrl (typeof (BocAutoCompleteReferenceValueRenderer), ResourceType.Html, "BocAutoCompleteReferenceValue.js"));
@@ -146,7 +147,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     private void RegisterStylesheets (HtmlHeadAppender htmlHeadAppender)
     {
-      string styleKey = typeof (BocAutoCompleteReferenceValueRenderer).FullName + "_Style";
+      string styleKey = typeof (BocAutoCompleteReferenceValueRenderer).GetFullNameChecked() + "_Style";
       htmlHeadAppender.RegisterStylesheetLink (
           styleKey,
           ResourceUrlFactory.CreateThemedResourceUrl (
@@ -155,7 +156,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
               "BocAutoCompleteReferenceValue.css"),
           HtmlHeadAppender.Priority.Library);
 
-      string jqueryAutocompleteStyleKey = typeof (BocAutoCompleteReferenceValueRenderer).FullName + "_JQueryAutoCompleteStyle";
+      string jqueryAutocompleteStyleKey = typeof (BocAutoCompleteReferenceValueRenderer).GetFullNameChecked() + "_JQueryAutoCompleteStyle";
       htmlHeadAppender.RegisterStylesheetLink (
           jqueryAutocompleteStyleKey,
           ResourceUrlFactory.CreateThemedResourceUrl (

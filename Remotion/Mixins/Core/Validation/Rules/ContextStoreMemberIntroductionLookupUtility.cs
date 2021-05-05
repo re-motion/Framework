@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using Remotion.Collections;
 using Remotion.Mixins.Definitions;
+using Remotion.Reflection;
 
 namespace Remotion.Mixins.Validation.Rules
 {
@@ -30,7 +31,7 @@ namespace Remotion.Mixins.Validation.Rules
     public IEnumerable<TMemberIntroductionDefinition> GetCachedPublicIntroductionsByName (IDictionary<object, object> contextStore, TargetClassDefinition targetClass, string name)
     {
       Tuple<string, TargetClassDefinition> cacheKey = Tuple.Create (
-          typeof (ContextStoreMemberIntroductionLookupUtility<TMemberIntroductionDefinition>).FullName + ".GetCachedPublicIntroductionsByName",
+          typeof (ContextStoreMemberIntroductionLookupUtility<TMemberIntroductionDefinition>).GetFullNameChecked() + ".GetCachedPublicIntroductionsByName",
           targetClass);
 
       // Optimized for memory allocations

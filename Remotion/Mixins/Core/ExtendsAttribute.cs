@@ -18,6 +18,7 @@ using System;
 using JetBrains.Annotations;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Context.FluentBuilders;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins
@@ -141,8 +142,8 @@ namespace Remotion.Mixins
       {
         string message = string.Format (
             "The ExtendsAttribute for target class {0} applied to mixin type {1} specified {2} generic type argument(s) when {3} argument(s) were expected.",
-            TargetType.FullName,
-            mixinType.FullName,
+            TargetType.GetFullNameSafe(),
+            mixinType.GetFullNameSafe(),
             MixinTypeArguments.Length,
             expectedTypeArgumentLength);
         throw new ConfigurationException (message);

@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Runtime.Serialization;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.Context.Serialization
@@ -50,9 +51,9 @@ namespace Remotion.Mixins.Context.Serialization
       {
         var message = string.Format (
             "Expected value of type '{0}' at index {1} in the values array, but found '{2}'.",
-            typeof (T).FullName,
+            typeof (T).GetFullNameSafe(),
             index,
-            value != null ? value.GetType().FullName : "null");
+            value != null ? value.GetType().GetFullNameSafe() : "null");
         throw new SerializationException (message);
       }
 

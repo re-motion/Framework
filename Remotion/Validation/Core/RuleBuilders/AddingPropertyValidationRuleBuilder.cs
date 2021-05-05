@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Validation.MetaValidation;
 using Remotion.Validation.RuleCollectors;
@@ -104,7 +105,7 @@ namespace Remotion.Validation.RuleBuilders
             return MetaValidationRuleValidationResult.CreateInvalidResult (
                 "Meta validation rule '{0}' failed for validator '{1}' on property '{2}.{3}'.",
                 metaValidationRuleExpression,
-                typeof (TValidator).FullName,
+                typeof (TValidator).GetFullNameSafe(),
                 _addingPropertyValidationRuleCollector.Property.DeclaringType.FullName,
                 _addingPropertyValidationRuleCollector.Property.Name);
           });

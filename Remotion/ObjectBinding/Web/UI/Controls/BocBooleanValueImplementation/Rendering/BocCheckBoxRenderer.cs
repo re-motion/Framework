@@ -21,6 +21,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
@@ -44,7 +45,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
     private const string c_trueIcon = "CheckBoxTrue.gif";
     private const string c_falseIcon = "CheckBoxFalse.gif";
 
-    private static readonly string s_startUpScriptKey = typeof (BocCheckBoxRenderer).FullName + "_Startup";
+    private static readonly string s_startUpScriptKey = typeof (BocCheckBoxRenderer).GetFullNameChecked() + "_Startup";
 
     public BocCheckBoxRenderer (
         IResourceUrlFactory resourceUrlFactory,
@@ -65,11 +66,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
     {
       ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
 
-      string scriptFileKey = typeof (BocCheckBoxRenderer).FullName + "_Script";
+      string scriptFileKey = typeof (BocCheckBoxRenderer).GetFullNameChecked() + "_Script";
       var scriptUrl = ResourceUrlFactory.CreateResourceUrl (typeof (BocCheckBoxRenderer), ResourceType.Html, "BocCheckbox.js");
       htmlHeadAppender.RegisterJavaScriptInclude (scriptFileKey, scriptUrl);
 
-      string styleFileKey = typeof (BocCheckBoxRenderer).FullName + "_Style";
+      string styleFileKey = typeof (BocCheckBoxRenderer).GetFullNameChecked() + "_Style";
       var styleUrl = ResourceUrlFactory.CreateThemedResourceUrl (typeof (BocCheckBoxRenderer), ResourceType.Html, "BocCheckbox.css");
       htmlHeadAppender.RegisterStylesheetLink (styleFileKey, styleUrl, HtmlHeadAppender.Priority.Library);
     }

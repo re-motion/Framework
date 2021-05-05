@@ -18,6 +18,7 @@
 using System;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
+using Remotion.Reflection;
 using Remotion.SecurityManager.Configuration;
 using Remotion.Utilities;
 
@@ -54,7 +55,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
         case "UserCondition":
           return value.IsEnabled && IsUserConditionEnabled ((UserCondition) value.Value, isStateful);
         default:
-          throw CreateInvalidOperationException ("The property '{0}' is not supported by the '{1}'.", property.Identifier, typeof (AccessControlEntryPropertiesEnumerationValueFilter).FullName);
+          throw CreateInvalidOperationException ("The property '{0}' is not supported by the '{1}'.", property.Identifier, typeof (AccessControlEntryPropertiesEnumerationValueFilter).GetFullNameChecked());
       }
     }
 

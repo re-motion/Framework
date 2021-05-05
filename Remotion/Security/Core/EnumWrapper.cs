@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Concurrent;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Security
@@ -78,8 +79,8 @@ namespace Remotion.Security
         throw new ArgumentException (
             string.Format (
                 "Enumerated type '{0}' cannot be wrapped. Only enumerated types without the {1} can be wrapped.",
-                type.FullName,
-                typeof (FlagsAttribute).FullName),
+                type.GetFullNameSafe(),
+                typeof (FlagsAttribute).GetFullNameSafe()),
             "enumValue");
       }
 

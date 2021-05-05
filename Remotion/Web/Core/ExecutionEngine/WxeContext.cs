@@ -20,6 +20,7 @@ using System.ComponentModel;
 using System.Web;
 using System.Web.UI;
 using Remotion.Context;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine.UrlMapping;
 using Remotion.Web.Utilities;
@@ -99,7 +100,7 @@ namespace Remotion.Web.ExecutionEngine
             throw new WxeException (
                 string.Format (
                     "No URL mapping has been defined for WXE Function '{0}', nor has a default WxeHandler URL been specified in the application configuration (web.config).",
-                    functionType.FullName));
+                    functionType.GetFullNameSafe()));
         }
         else
         {

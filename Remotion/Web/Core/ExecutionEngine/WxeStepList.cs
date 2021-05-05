@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 
@@ -73,7 +74,7 @@ namespace Remotion.Web.ExecutionEngine
       {
         var currentStep = _steps[_executingStep];
         if (currentStep.IsAborted)
-          throw new InvalidOperationException ("Step " + _executingStep + " of " + this.GetType ().FullName + " is aborted.");
+          throw new InvalidOperationException ("Step " + _executingStep + " of " + this.GetType ().GetFullNameSafe() + " is aborted.");
         currentStep.Execute (context);
         _executingStep++;
       }

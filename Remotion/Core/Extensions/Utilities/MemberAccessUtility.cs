@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Reflection;
+using Remotion.Reflection;
 
 namespace Remotion.Utilities
 {
@@ -50,7 +51,7 @@ namespace Remotion.Utilities
       if (attributes == null || attributes.Length == 0)
         return null;
       if (attributes.Length > 1)
-        throw new NotSupportedException (String.Format ("Cannot get member value for multiple attributes. Reflection object {0} has {1} instances of attribute {2}", reflectionObject.Name, attributes.Length, attributeType.FullName));
+        throw new NotSupportedException (String.Format ("Cannot get member value for multiple attributes. Reflection object {0} has {1} instances of attribute {2}", reflectionObject.Name, attributes.Length, attributeType.GetFullNameSafe()));
       return GetFieldOrPropertyValue (attributes[0], fieldOrProperty);
     }
 
@@ -65,7 +66,7 @@ namespace Remotion.Utilities
         return member;
 
       if (throwExceptionIfNotFound)
-        throw new ArgumentException (String.Format ("{0} is not an instance field or property of type {1}.", fieldOrPropertyName, type.FullName), "fieldOrPropertyName");
+        throw new ArgumentException (String.Format ("{0} is not an instance field or property of type {1}.", fieldOrPropertyName, type.GetFullNameSafe()), "fieldOrPropertyName");
       return null;
     }
 
@@ -94,7 +95,7 @@ namespace Remotion.Utilities
       else if (fieldOrProperty is PropertyInfo)
         return ((PropertyInfo) fieldOrProperty).GetValue (obj, new object[0]);
       else
-        throw new ArgumentException (String.Format ("Argument must be either FieldInfo or PropertyInfo but is {0}.", fieldOrProperty.GetType ().FullName), "fieldOrProperty");
+        throw new ArgumentException (String.Format ("Argument must be either FieldInfo or PropertyInfo but is {0}.", fieldOrProperty.GetType ().GetFullNameSafe()), "fieldOrProperty");
     }
 
 
@@ -122,7 +123,7 @@ namespace Remotion.Utilities
       else if (fieldOrProperty is PropertyInfo)
         ((PropertyInfo) fieldOrProperty).SetValue (obj, value, new object[0]);
       else
-        throw new ArgumentException (String.Format ("Argument must be either FieldInfo or PropertyInfo but is {0}.", fieldOrProperty.GetType ().FullName), "fieldOrProperty");
+        throw new ArgumentException (String.Format ("Argument must be either FieldInfo or PropertyInfo but is {0}.", fieldOrProperty.GetType ().GetFullNameSafe()), "fieldOrProperty");
     }
 
     public static Type GetFieldOrPropertyType (MemberInfo fieldOrProperty)

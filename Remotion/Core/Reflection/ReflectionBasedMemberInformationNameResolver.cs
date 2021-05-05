@@ -95,7 +95,7 @@ namespace Remotion.Reflection
 
     private string GetEnumNameInternal (Enum enumValue)
     {
-      return enumValue.GetType().FullName + "." + enumValue;
+      return enumValue.GetType().GetFullNameChecked() + "." + enumValue;
     }
   }
 }

@@ -20,6 +20,7 @@ using System.Globalization;
 using System.Web.UI.WebControls;
 using JetBrains.Annotations;
 using Remotion.Globalization;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI.Controls;
@@ -132,7 +133,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
         default:
         {
           throw new InvalidOperationException (
-              "BocTextValue '" + control.ID + "': Cannot convert " + valueType + " to type " + typeof (ValidationDataType).FullName + ".");
+              "BocTextValue '" + control.ID + "': Cannot convert " + valueType + " to type " + typeof (ValidationDataType).GetFullNameSafe() + ".");
         }
       }
     }

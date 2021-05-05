@@ -18,6 +18,7 @@ using System;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Xml
@@ -118,7 +119,7 @@ namespace Remotion.Xml
         throw new ArgumentException (
             string.Format (
                 "Cannot determine the xml namespace of type '{0}' because no neither an XmlTypeAttribute nor an XmlRootAttribute has been provided.",
-                type.FullName),
+                type.GetFullNameSafe()),
             "type");
       }
 
@@ -129,7 +130,7 @@ namespace Remotion.Xml
         throw new ArgumentException (
             string.Format (
                 "Cannot determine the xml namespace of type '{0}' because neither an XmlTypeAttribute nor an XmlRootAttribute is used to define a namespace for the type.",
-                type.FullName),
+                type.GetFullNameSafe()),
             "type");
       }
 

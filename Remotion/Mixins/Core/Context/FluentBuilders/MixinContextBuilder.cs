@@ -130,7 +130,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
       ArgumentUtility.CheckNotNull ("requiredMixin", requiredMixin);
       if (_dependencies.Contains (requiredMixin))
       {
-        string message = string.Format ("The mixin {0} already has a dependency on type {1}.", MixinType.FullName, requiredMixin.FullName);
+        string message = string.Format ("The mixin {0} already has a dependency on type {1}.", MixinType.GetFullNameSafe(), requiredMixin.GetFullNameSafe());
         throw new ArgumentException (message, "requiredMixin");
       }
       _dependencies.Add (requiredMixin);

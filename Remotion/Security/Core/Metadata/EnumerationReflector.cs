@@ -18,6 +18,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Security.Metadata
@@ -43,7 +44,7 @@ namespace Remotion.Security.Metadata
     {
       ArgumentUtility.CheckNotNull ("type", type);
       if (!type.IsEnum)
-        throw new ArgumentException (string.Format ("The type '{0}' is not an enumerated type.", type.FullName), "type");
+        throw new ArgumentException (string.Format ("The type '{0}' is not an enumerated type.", type.GetFullNameSafe()), "type");
       ArgumentUtility.CheckNotNull ("cache", cache);
 
       IList values = Enum.GetValues (type);

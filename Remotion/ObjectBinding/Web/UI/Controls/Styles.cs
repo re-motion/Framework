@@ -17,6 +17,7 @@
 using System;
 using System.ComponentModel;
 using System.Web.UI.WebControls;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI;
@@ -391,7 +392,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   public class TextBoxStyle : SingleRowTextBoxStyle
   {
     private const string c_scriptFileUrl = "TextBoxStyle.js";
-    private static readonly string s_scriptFileKey = typeof (TextBoxStyle).FullName + "_Script";
+    private static readonly string s_scriptFileKey = typeof (TextBoxStyle).GetFullNameChecked() + "_Script";
 
     private int? _rows;
     private BocTextBoxMode _textMode;

@@ -48,9 +48,9 @@ namespace Remotion.SecurityManager.Clients.Web.UI
       CurrentTenantCommandTooltip
     }
 
-    private static readonly string s_isTenantSelectionEnabledKey = typeof (SecurityManagerUserContextControl).FullName + "_IsTenantSelectionEnabled";
-    private static readonly string s_enableAbstractTenantsKey = typeof (SecurityManagerUserContextControl).FullName + "_EnableAbstractTenants";
-    private static readonly string s_isSubstitutionSelectionEnabledKey = typeof (SecurityManagerUserContextControl).FullName + "_IsSubstitutionSelectionEnabled";
+    private static readonly string s_isTenantSelectionEnabledKey = typeof (SecurityManagerUserContextControl).GetFullNameChecked() + "_IsTenantSelectionEnabled";
+    private static readonly string s_enableAbstractTenantsKey = typeof (SecurityManagerUserContextControl).GetFullNameChecked() + "_EnableAbstractTenants";
+    private static readonly string s_isSubstitutionSelectionEnabledKey = typeof (SecurityManagerUserContextControl).GetFullNameChecked() + "_IsSubstitutionSelectionEnabled";
 
     private bool _isCurrentTenantFieldReadOnly = true;
     private bool _isCurrentSubstitutionFieldReadOnly = true;

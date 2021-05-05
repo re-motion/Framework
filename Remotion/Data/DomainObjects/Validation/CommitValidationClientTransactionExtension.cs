@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
@@ -34,7 +35,7 @@ namespace Remotion.Data.DomainObjects.Validation
   {
     public static string DefaultKey
     {
-      get { return typeof (CommitValidationClientTransactionExtension).FullName; }
+      get { return typeof (CommitValidationClientTransactionExtension).GetFullNameChecked(); }
     }
     
     [NonSerialized]

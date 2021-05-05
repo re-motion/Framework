@@ -17,6 +17,7 @@
 using System;
 using System.Text;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
@@ -32,9 +33,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
     public static readonly ObjectIDStringSerializer Instance = new ObjectIDStringSerializer();
 
     private static readonly string s_delimiterAsString = Delimiter.ToString();
-    private static readonly string s_delimitedGuidTypeName = Delimiter + typeof (Guid).FullName;
-    private static readonly string s_delimitedInt32TypeName = Delimiter + typeof (Int32).FullName;
-    private static readonly string s_delimitedStringTypeName = Delimiter + typeof (String).FullName;
+    private static readonly string s_delimitedGuidTypeName = Delimiter + typeof (Guid).GetFullNameChecked();
+    private static readonly string s_delimitedInt32TypeName = Delimiter + typeof (Int32).GetFullNameChecked();
+    private static readonly string s_delimitedStringTypeName = Delimiter + typeof (String).GetFullNameChecked();
 
     private ObjectIDStringSerializer ()
     {
@@ -169,7 +170,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
       else if (value is String)
         return s_delimitedStringTypeName;
       else
-        throw new FormatException (string.Format ("ObjectIDs with a value of type '{0}' are not supported.", value.GetType().FullName));
+        throw new FormatException (string.Format ("ObjectIDs with a value of type '{0}' are not supported.", value.GetType().GetFullNameSafe()));
     }
   }
 }

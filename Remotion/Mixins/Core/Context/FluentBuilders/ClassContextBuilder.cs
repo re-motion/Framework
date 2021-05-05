@@ -148,7 +148,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
         Type mixinTypeForException = mixinType.IsGenericType ? mixinType.GetGenericTypeDefinition() : mixinType;
         Assertion.IsNotNull (mixinTypeForException);
         throw new ArgumentException (
-            string.Format ("{0} is already configured as a mixin for type {1}.", mixinTypeForException.FullName, TargetType.FullName), "mixinType");
+            string.Format ("{0} is already configured as a mixin for type {1}.", mixinTypeForException.GetFullNameSafe(), TargetType.GetFullNameSafe()), "mixinType");
       }
 
       var mixinContextBuilder = new MixinContextBuilder (this, mixinType, origin);
@@ -550,7 +550,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
       if (_composedInterfaces.Contains (interfaceType))
       {
         string message = string.Format ("{0} is already configured as a composed interface for type {1}.",
-            interfaceType.FullName, TargetType.FullName);
+            interfaceType.GetFullNameSafe(), TargetType.GetFullNameSafe());
         throw new ArgumentException (message, "interfaceType");
       }
       _composedInterfaces.Add (interfaceType);

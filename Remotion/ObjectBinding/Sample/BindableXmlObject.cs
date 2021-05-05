@@ -17,6 +17,7 @@
 using System;
 using System.Xml.Serialization;
 using Remotion.Mixins;
+using Remotion.Reflection;
 
 namespace Remotion.ObjectBinding.Sample
 {
@@ -59,7 +60,7 @@ namespace Remotion.ObjectBinding.Sample
     [OverrideMixin]
     public virtual string DisplayName
     {
-      get { return GetType().FullName; }
+      get { return GetType().GetFullNameChecked(); }
     }
 
     [XmlIgnore]

@@ -39,7 +39,7 @@ namespace Remotion.Tools
       // TODO RM-7761: null guard should be added.
       return (AppDomainAssemblyResolver) appDomain.CreateInstanceFromAndUnwrap (
                                              typeof (AppDomainAssemblyResolver).Assembly.Location,
-                                             typeof (AppDomainAssemblyResolver).FullName!,
+                                             typeof (AppDomainAssemblyResolver).GetFullNameChecked(),
                                              false,
                                              BindingFlags.Public | BindingFlags.Instance,
                                              null,

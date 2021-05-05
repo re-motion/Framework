@@ -18,6 +18,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
@@ -88,7 +89,7 @@ namespace Remotion.Web.Services
                           ? "Web service '{0}' does not implement mandatory interface '{1}'."
                           : "Web service '{0}' is not based on type '{1}'.";
 
-        throw new ArgumentException (string.Format (message, virtualPath, typeof (T).FullName));
+        throw new ArgumentException (string.Format (message, virtualPath, typeof (T).GetFullNameSafe()));
       }
       return compiledType;
     }

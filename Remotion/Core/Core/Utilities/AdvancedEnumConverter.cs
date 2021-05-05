@@ -17,6 +17,7 @@
 using System;
 using System.ComponentModel;
 using System.Globalization;
+using Remotion.Reflection;
 
 namespace Remotion.Utilities
 {
@@ -122,7 +123,7 @@ namespace Remotion.Utilities
         if (value != null && _underlyingType == value.GetType())
         {
           if (!EnumUtility.IsValidEnumValue(UnderlyingEnumType, value))
-            throw new ArgumentOutOfRangeException (string.Format ("The value {0} is not supported for enumeration '{1}'.", value, UnderlyingEnumType.FullName), (Exception?) null);
+            throw new ArgumentOutOfRangeException (string.Format ("The value {0} is not supported for enumeration '{1}'.", value, UnderlyingEnumType.GetFullNameSafe()), (Exception?) null);
 
           return Enum.ToObject (UnderlyingEnumType, value);
         }

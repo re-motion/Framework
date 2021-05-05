@@ -29,7 +29,7 @@ namespace Remotion.Utilities
         ArgumentUtility.DebugCheckNotNull ("type", type);
 
         // TODO RM-7763: properties should be checked for null. Consider passing the properties instead of the type/assembly into the next method to use only the null-checked values.
-        var typeNameBuilder = new StringBuilder (type.FullName!.Length + 20 + (includeVersionAndCulture ? type.Assembly!.GetFullNameSafe().Length : 0));
+        var typeNameBuilder = new StringBuilder (type.GetFullNameChecked().Length + 20 + (includeVersionAndCulture ? type.Assembly!.GetFullNameChecked().Length : 0));
         BuildAbbreviatedTypeName (typeNameBuilder, type, includeVersionAndCulture, false);
         return typeNameBuilder.ToString();
       }
@@ -48,7 +48,7 @@ namespace Remotion.Utilities
         if (canAbbreviate)
         {
           var nsLength = string.IsNullOrEmpty (ns) ? 0 : ns.Length + 1;
-          var name = StripTypeParametersFromName (type.FullName!.Substring (nsLength));
+          var name = StripTypeParametersFromName (type.GetFullNameChecked().Substring (nsLength));
           typeNameBuilder.Append (asm).Append ("::");
 
           if (ns.Length > asm.Length)
@@ -60,7 +60,7 @@ namespace Remotion.Utilities
         }
         else
         {
-          typeNameBuilder.Append (StripTypeParametersFromName (type.FullName!));
+          typeNameBuilder.Append (StripTypeParametersFromName (type.GetFullNameChecked()));
           BuildAbbreviatedTypeParameters (typeNameBuilder, type, includeVersionAndCulture);
           typeNameBuilder.Append (", ").Append (asm);
         }

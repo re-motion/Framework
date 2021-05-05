@@ -25,6 +25,7 @@ using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.Mixins;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI;
@@ -77,7 +78,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
       htmlHeadAppender.RegisterUtilitiesJavaScriptInclude();
 
-      string scriptKey = typeof (BocReferenceValueRendererBase<>).FullName + "_Script";
+      string scriptKey = typeof (BocReferenceValueRendererBase<>).GetFullNameChecked() + "_Script";
       htmlHeadAppender.RegisterJavaScriptInclude (
           scriptKey,
           ResourceUrlFactory.CreateResourceUrl (typeof (BocReferenceValueRendererBase<>), ResourceType.Html, "BocReferenceValueBase.js"));
@@ -114,7 +115,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     private void RegisterInitializationScript (BocRenderingContext<TControl> renderingContext)
     {
-      string key = typeof (BocReferenceValueRendererBase<>).FullName + "_InitializeGlobals";
+      string key = typeof (BocReferenceValueRendererBase<>).GetFullNameChecked() + "_InitializeGlobals";
 
       if (renderingContext.Control.Page.ClientScript.IsClientScriptBlockRegistered (typeof (BocReferenceValueRendererBase<>), key))
         return;

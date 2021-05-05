@@ -23,6 +23,7 @@ using System.Linq;
 using System.Reflection;
 using Remotion.Collections;
 using Remotion.FunctionalProgramming;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI.Controls;
@@ -43,7 +44,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     {
       ArgumentUtility.CheckNotNull ("type", type);
       if (!typeof (WxeFunction).IsAssignableFrom (type))
-        throw new ArgumentException ("Type " + type.FullName + " is not derived from WxeFunction.", "type");
+        throw new ArgumentException ("Type " + type.GetFullNameSafe() + " is not derived from WxeFunction.", "type");
 
       return s_parameterDeclarations.GetOrAdd (type, s_getParameterDeclarationsUncheckedFunc);
     }

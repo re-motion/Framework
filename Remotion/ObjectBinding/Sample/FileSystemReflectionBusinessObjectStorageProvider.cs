@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Sample
@@ -92,7 +93,7 @@ namespace Remotion.ObjectBinding.Sample
 
     private string GetDirectoryForType (Type type)
     {
-      return Path.Combine (_rootPath, type.FullName);
+      return Path.Combine (_rootPath, type.GetFullNameChecked());
     }
   }
 }

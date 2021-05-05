@@ -114,7 +114,7 @@ namespace Remotion.Data.DomainObjects.Mapping
             throw new InvalidOperationException (
                 string.Format (
                     ".NET enum type '{0}' does not define any values. Properties based on this type must be declared as nullable.",
-                    _propertyType.FullName));
+                    _propertyType.GetFullNameSafe()));
           }
 
           return firstValueOrNull;
@@ -128,7 +128,7 @@ namespace Remotion.Data.DomainObjects.Mapping
             throw new InvalidOperationException (
                 string.Format (
                     "Extensible enum type '{0}' does not define any values. Properties based on this type must be declared as nullable.",
-                    _propertyType.FullName));
+                    _propertyType.GetFullNameSafe()));
           }
 
           return firstValueOrNull.Value;
@@ -181,7 +181,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public override string ToString ()
     {
-      return GetType ().FullName + ": " + _propertyName;
+      return GetType ().GetFullNameSafe() + ": " + _propertyName;
     }
   }
 }

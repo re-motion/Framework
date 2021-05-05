@@ -159,7 +159,7 @@ namespace Remotion.Reflection
         else
         {
           string message = 
-              String.Format ("The type {0} implements the given interface type {1} more than once.", type.FullName, ascribeeType.FullName);
+              String.Format ("The type {0} implements the given interface type {1} more than once.", type.GetFullNameSafe(), ascribeeType.GetFullNameSafe());
           throw new AmbiguousMatchException (message);
         }
       }

@@ -30,6 +30,7 @@ using Remotion.Globalization;
 using Remotion.Logging;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Design;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
@@ -813,7 +814,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
             {
               //  Invalid collection property
               s_log.Debug (
-                  GetType().Name + " '" + ID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page
+                  GetType().Name + " '" + ID + "' in naming container '" + NamingContainer.GetType().GetFullNameSafe() + "' on page '" + Page
                   + "' does not contain an element named '" + elementID + "'.");
               break;
             }
@@ -841,7 +842,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
             {
               //  Invalid collection property
               s_log.Debug (
-                  GetType().Name + " '" + ID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page
+                  GetType().Name + " '" + ID + "' in naming container '" + NamingContainer.GetType().GetFullNameSafe() + "' on page '" + Page
                   + "' does not contain a collection property named '" + collectionID + "'.");
               break;
             }
@@ -868,7 +869,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         {
           //  Not supported format or invalid property
           s_log.Debug (
-              GetType().Name + " '" + ID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page
+              GetType().Name + " '" + ID + "' in naming container '" + NamingContainer.GetType().GetFullNameSafe() + "' on page '" + Page
               + "' received a resource with an invalid or unknown key '" + key
               + "'. Required format: 'property' or 'collectionID:elementID:property'.");
         }

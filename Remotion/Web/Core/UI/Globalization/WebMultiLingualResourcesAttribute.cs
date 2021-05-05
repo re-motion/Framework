@@ -17,6 +17,7 @@
 using System;
 using System.Web.UI;
 using Remotion.Globalization;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
@@ -137,7 +138,7 @@ namespace Remotion.Web.UI.Globalization
     }
 
     public WebMultiLingualResourcesAttribute (Type resourceType)
-        : base (resourceType.FullName)
+        : base (resourceType.GetFullNameChecked())
     {
       ArgumentUtility.CheckNotNull ("resourceType", resourceType);
       SetResourceAssembly (resourceType.Assembly);

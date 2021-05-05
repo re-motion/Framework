@@ -25,6 +25,7 @@ using JetBrains.Annotations;
 using Remotion.Collections;
 using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
+using Remotion.Reflection;
 using Remotion.Security;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -547,7 +548,7 @@ namespace Remotion.Web.UI.Controls
           return GetCommandInfoForNoneCommand();
         default:
           throw new InvalidOperationException (
-              string.Format ("The CommandType '{0}' is not supported by the '{1}'.", _type, typeof (Command).FullName));
+              string.Format ("The CommandType '{0}' is not supported by the '{1}'.", _type, typeof (Command).GetFullNameSafe()));
       }
     }
 
@@ -1041,7 +1042,7 @@ namespace Remotion.Web.UI.Controls
           return true;
         default:
           throw new InvalidOperationException (
-              string.Format ("The CommandType '{0}' is not supported by the '{1}'.", _type, typeof (Command).FullName));
+              string.Format ("The CommandType '{0}' is not supported by the '{1}'.", _type, typeof (Command).GetFullNameSafe()));
       }
     }
 

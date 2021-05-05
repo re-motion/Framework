@@ -18,6 +18,7 @@ using System;
 using System.Collections;
 using System.Reflection;
 using JetBrains.Annotations;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
@@ -65,7 +66,7 @@ namespace Remotion.Web.Utilities
     {
       ArgumentUtility.CheckNotNull ("type", type);
       if (IsCompiledType (type))
-        return type.FullName;
+        return type.GetFullNameChecked();
       return TypeUtility.GetPartialAssemblyQualifiedName (type);
     }
 

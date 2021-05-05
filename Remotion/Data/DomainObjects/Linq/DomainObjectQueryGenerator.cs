@@ -283,7 +283,7 @@ namespace Remotion.Data.DomainObjects.Linq
         Assertion.IsNotNull (propertyInfo.DeclaringType);
         var message = string.Format (
             "The property '{0}.{1}' is not a relation end point. Fetching it is not supported by this LINQ provider.",
-            propertyInfo.DeclaringType.FullName,
+            propertyInfo.DeclaringType.GetFullNameSafe(),
             propertyInfo.Name);
         throw new NotSupportedException (message);
       }
