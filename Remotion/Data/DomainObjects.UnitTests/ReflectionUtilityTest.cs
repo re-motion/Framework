@@ -92,7 +92,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void GetAssemblyPath_FromNonLocalUri ()
     {
       MockRepository mockRepository = new MockRepository();
-      _Assembly assemblyMock = mockRepository.StrictMock<_Assembly>();
+      Assembly assemblyMock = mockRepository.StrictMock<FakeAssembly>();
 
       SetupResult.For (assemblyMock.EscapedCodeBase).Return ("http://server/File.ext");
       mockRepository.ReplayAll();
@@ -505,6 +505,16 @@ namespace Remotion.Data.DomainObjects.UnitTests
           () => ReflectionUtility.GetIObjectListTypeParameter (typeof (IList<DomainObject>)),
           Throws.ArgumentException.With.Message.StartWith (
               "Parameter 'type' has type 'System.Collections.Generic.IList`1[Remotion.Data.DomainObjects.DomainObject]' when type 'Remotion.Data.DomainObjects.IObjectList`1[TDomainObject]' was expected."));
+    }
+
+    /// <remarks>
+    /// Castle does not support creating a proxy for <see cref="Assembly"/> directly ("The type System.Reflection.Assembly implements ISerializable,
+    /// but failed to provide a deserialization constructor"), thus this type is required. <see cref="Assembly"/> defines the needed property
+    /// <see cref="Assembly.get_EscapedCodeBase"/> as virtual, allowing the type to be
+    /// mocked for our purpose.
+    /// </remarks>
+    public class FakeAssembly : Assembly
+    {
     }
   }
 }
