@@ -128,6 +128,15 @@
     <Compile Include="..\..\..\SharedSource\Core\FunctionalProgramming\EnumerableUtility.cs">
       <Link>SharedSource\FunctionalProgramming\EnumerableUtility.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\Reflection\AssemblyExtensions.cs">
+      <Link>SharedSource\Reflection\AssemblyExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\Reflection\AssemblyNameExtensions.cs">
+      <Link>SharedSource\Reflection\AssemblyNameExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\Reflection\TypeExtensions.cs">
+      <Link>SharedSource\Reflection\TypeExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\AssertionConditionAttribute.cs">
       <Link>SharedSource\ReSharperAnnotations\AssertionConditionAttribute.cs</Link>
     </Compile>
@@ -227,6 +236,8 @@
     <Compile Include="FunctionalProgramming\EnumerableUtility.Partial.cs" />
     <Compile Include="IHandleAttribute.cs" />
     <Compile Include="Obsolete\Reflection\TypeDiscovery\ContextAwareTypeDiscoveryUtility.cs" />
+    <Compile Include="Reflection\AssemblyExtensions.cs" />
+    <Compile Include="Reflection\AssemblyNameExtensions.cs" />
     <Compile Include="Reflection\MethodInfoExtensions.cs" />
     <Compile Include="Reflection\MethodResolver.cs" />
     <Compile Include="Reflection\PropertyInfoExtensions.cs" />

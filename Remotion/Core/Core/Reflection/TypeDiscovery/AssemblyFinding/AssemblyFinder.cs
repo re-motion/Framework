@@ -110,8 +110,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
             rootAssemblies.Select (r=>r.Assembly).Distinct().Select (a => new KeyValuePair<Assembly, object?> (a, null)));
 
         // used to avoid loading assemblies twice.
-        // TODO RM-7754: If the FullName property is null, special handling is needed. Note that simply using a dummy value won't suffice since it can result in errenous assembly detection. Throwing a meaningful exception may be sufficient.
-        var processedAssemblyNames = new HashSet<string> (processedAssemblies.Keys.Select (a => a.FullName!));
+        var processedAssemblyNames = new HashSet<string> (processedAssemblies.Keys.Select (a => a.GetFullNameChecked()));
 
         var result = new ConcurrentBag<Assembly>();
 
@@ -123,8 +122,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
           // Parallel starts here
           foreach (var referencedAssemblyName in nonprocessedAssemblyNames.AsParallel())
           {
-            // TODO RM-7756: currentRoot.FullName must not be null.
-            var referencedAssembly = _assemblyLoader.TryLoadAssembly (referencedAssemblyName, currentRoot.FullName!);
+            var referencedAssembly = _assemblyLoader.TryLoadAssembly (referencedAssemblyName, currentRoot.GetFullNameChecked());
             if (referencedAssembly != null) // might return null if filtered by the loader
             {
               if (processedAssemblies.TryAdd (referencedAssembly, null))

@@ -18,6 +18,7 @@ using System;
 using System.Reflection;
 using System.Runtime.Serialization;
 using Remotion.Mixins;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure
@@ -46,7 +47,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         }
         catch (MissingMethodException ex)
         {
-          throw new MissingMethodException ("No deserialization constructor was found on type " + concreteDeserializedType.FullName + ".", ex);
+          throw new MissingMethodException ("No deserialization constructor was found on type " + concreteDeserializedType.GetFullNameSafe() + ".", ex);
         }
       }
 

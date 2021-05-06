@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
@@ -36,7 +37,7 @@ namespace Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering
     {
       ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
 
-      string key = typeof (DatePickerPageRenderer).FullName + "_Script";
+      string key = typeof (DatePickerPageRenderer).GetFullNameChecked() + "_Script";
       var scriptUrl = ResourceUrlFactory.CreateResourceUrl (typeof (DatePickerPageRenderer), ResourceType.Html, "DatePicker.js");
       htmlHeadAppender.RegisterJavaScriptInclude (key, scriptUrl);
 

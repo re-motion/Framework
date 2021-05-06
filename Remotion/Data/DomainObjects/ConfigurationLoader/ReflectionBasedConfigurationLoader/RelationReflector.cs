@@ -55,12 +55,12 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
 
       if (endPoints.Right.IsAnonymous)
       {
-        return string.Format ("{0}:{1}", endPoints.Left.ClassDefinition.ClassType.FullName, leftPropertyName);
+        return string.Format ("{0}:{1}", endPoints.Left.ClassDefinition.ClassType.GetFullNameChecked(), leftPropertyName);
       }
       else
       {
         var rightPropertyName = NameResolver.GetPropertyName (endPoints.Right.PropertyInfo);
-        return string.Format ("{0}:{1}->{2}", endPoints.Left.ClassDefinition.ClassType.FullName, leftPropertyName, rightPropertyName);
+        return string.Format ("{0}:{1}->{2}", endPoints.Left.ClassDefinition.ClassType.GetFullNameChecked(), leftPropertyName, rightPropertyName);
       }
     }
 

@@ -16,6 +16,7 @@
 // 
 using System;
 using Remotion.Logging;
+using Remotion.Reflection;
 using Remotion.Validation.Implementation;
 
 namespace Remotion.Validation.Merging
@@ -35,7 +36,7 @@ namespace Remotion.Validation.Merging
 
     protected override string GetTypeName (Type type)
     {
-      return type.FullName;
+      return type.GetFullNameChecked();
     }
   }
 }

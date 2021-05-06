@@ -100,7 +100,7 @@ namespace Remotion.Validation.Merging
 
     protected virtual string GetDomainTypeName (Type domainType)
     {
-      return domainType.FullName;
+      return domainType.GetFullNameChecked();
     }
 
     private string GetLogBefore (IEnumerable<IEnumerable<ValidationRuleCollectorInfo>> validationCollectorInfos)

@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Reflection;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Tools.Console.CommandLine
@@ -207,7 +208,7 @@ namespace Remotion.Tools.Console.CommandLine
       {
         throw new ApplicationException (
             string.Format (
-                "Attribute {0} can only be applied to enumeration fields or properties.", typeof (CommandLineEnumArgumentAttribute).FullName));
+                "Attribute {0} can only be applied to enumeration fields or properties.", typeof (CommandLineEnumArgumentAttribute).GetFullNameSafe()));
       }
       ((CommandLineEnumArgument) Argument).EnumType = enumType;
     }
@@ -235,7 +236,7 @@ namespace Remotion.Tools.Console.CommandLine
       {
         throw new ApplicationException (
             string.Format (
-                "Attribute {0} can only be applied to enumeration fields or properties.", typeof (CommandLineEnumArgumentAttribute).FullName));
+                "Attribute {0} can only be applied to enumeration fields or properties.", typeof (CommandLineEnumArgumentAttribute).GetFullNameSafe()));
       }
 
       Argument.EnumType = _enumType;

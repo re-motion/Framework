@@ -16,6 +16,7 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure
@@ -107,7 +108,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       {
         string message = String.Format (
             "The domain object type {0} does not have a mapping property named '{1}'.",
-            classDefinition.ClassType.FullName,
+            classDefinition.ClassType.GetFullNameSafe(),
             propertyIdentifier);
 
         throw new ArgumentException (message, "propertyIdentifier");

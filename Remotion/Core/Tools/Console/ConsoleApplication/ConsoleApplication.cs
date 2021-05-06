@@ -17,6 +17,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using Remotion.Reflection;
 using Remotion.Tools.Console.CommandLine;
 
 namespace Remotion.Tools.Console.ConsoleApplication
@@ -148,7 +149,7 @@ namespace Remotion.Tools.Console.ConsoleApplication
           _errorWriter.WriteLine ("Execution aborted. Exception stack:");
           for (; e != null; e = e.InnerException)
           {
-            _errorWriter.Write (e.GetType ().FullName);
+            _errorWriter.Write (e.GetType ().GetFullNameSafe());
             _errorWriter.Write (": ");
             _errorWriter.WriteLine (e.Message);
             _errorWriter.WriteLine (e.StackTrace);

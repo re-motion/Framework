@@ -18,6 +18,7 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Design.BindableObject
@@ -33,7 +34,7 @@ namespace Remotion.ObjectBinding.Design.BindableObject
       Type type = GetType();
       string resourceID = treeViewIcon.Item2;
       Stream stream = type.Assembly.GetManifestResourceStream (type, resourceID);
-      Assertion.IsNotNull (stream, string.Format ("Resource '{0}' was not found in namespace '{1}'.", resourceID, type.Namespace));
+      Assertion.IsNotNull (stream, string.Format ("Resource '{0}' was not found in namespace '{1}'.", resourceID, type.GetNamespaceSafe()));
       try
       {
         imageList.Images.Add (treeViewIcon.Item1.ToString(), Image.FromStream (stream));

@@ -19,6 +19,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.Utilities
@@ -92,7 +93,7 @@ namespace Remotion.Mixins.Utilities
 
       string message = String.Format (
           "The given member {0}.{1} is neither property, method, nor event.",
-          member.DeclaringType!.FullName,
+          member.DeclaringType!.GetFullNameSafe(),
           member.Name);
       throw new ArgumentException (message, "member");
     }

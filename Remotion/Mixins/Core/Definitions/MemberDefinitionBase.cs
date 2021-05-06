@@ -17,6 +17,7 @@
 using System;
 using System.Diagnostics;
 using System.Reflection;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions
@@ -85,7 +86,7 @@ namespace Remotion.Mixins.Definitions
 
     public string FullName
     {
-      get { return MemberInfo.DeclaringType!.FullName + "." + Name; }
+      get { return MemberInfo.DeclaringType!.GetFullNameChecked() + "." + Name; }
     }
 
     public abstract MemberDefinitionBase? BaseAsMember { get; protected internal set; }

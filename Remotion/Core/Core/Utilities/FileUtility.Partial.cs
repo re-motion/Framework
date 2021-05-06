@@ -17,6 +17,7 @@
 using System;
 using System.IO;
 using System.Reflection;
+using Remotion.Reflection;
 
 namespace Remotion.Utilities
 {
@@ -41,7 +42,7 @@ namespace Remotion.Utilities
           Stream from = assembly.GetManifestResourceStream (typeWhoseNamespaceTheStringResourceResidesIn, stringResourceName)!,
               to = new FileStream (filePath, FileMode.Create))
       {
-        Assertion.IsNotNull (from, "Resource '{0}' does not exist in assembly '{1}'.", stringResourceName, assembly.FullName!);
+        Assertion.IsNotNull (from, "Resource '{0}' does not exist in assembly '{1}'.", stringResourceName, assembly.GetFullNameSafe());
         from.CopyTo (to);
       }
     }

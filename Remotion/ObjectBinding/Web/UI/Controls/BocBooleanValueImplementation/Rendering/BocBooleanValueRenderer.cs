@@ -23,6 +23,7 @@ using System.Web.UI.WebControls;
 using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
@@ -57,7 +58,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
 
     private const string c_nullString = "null";
 
-    private static readonly string s_startUpScriptKeyPrefix = typeof (BocBooleanValueRenderer).FullName + "_Startup_";
+    private static readonly string s_startUpScriptKeyPrefix = typeof (BocBooleanValueRenderer).GetFullNameChecked() + "_Startup_";
 
     private readonly IBocBooleanValueResourceSetFactory _resourceSetFactory;
     private readonly ILabelReferenceRenderer _labelReferenceRenderer;
@@ -85,11 +86,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
     {
       ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
 
-      string scriptFileKey = typeof (BocBooleanValueRenderer).FullName + "_Script";
+      string scriptFileKey = typeof (BocBooleanValueRenderer).GetFullNameChecked() + "_Script";
       var scriptUrl = ResourceUrlFactory.CreateResourceUrl (typeof (BocBooleanValueRenderer), ResourceType.Html, "BocBooleanValue.js");
       htmlHeadAppender.RegisterJavaScriptInclude (scriptFileKey, scriptUrl);
 
-      string styleFileKey = typeof (BocBooleanValueRenderer).FullName + "_Style";
+      string styleFileKey = typeof (BocBooleanValueRenderer).GetFullNameChecked() + "_Style";
       var styleUrl = ResourceUrlFactory.CreateThemedResourceUrl (typeof (BocBooleanValueRenderer), ResourceType.Html, "BocBooleanValue.css");
       htmlHeadAppender.RegisterStylesheetLink (styleFileKey, styleUrl, HtmlHeadAppender.Priority.Library);
     }

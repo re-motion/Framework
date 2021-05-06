@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Windows.Forms;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Design.BindableObject
@@ -79,7 +80,7 @@ namespace Remotion.ObjectBinding.Design.BindableObject
       {
         assemblyNode = new TreeNode();
         assemblyNode.Name = assemblyName.FullName;
-        assemblyNode.Text = assemblyName.Name;
+        assemblyNode.Text = assemblyName.GetNameChecked();
         assemblyNode.ToolTipText = assemblyName.FullName;
         assemblyNode.ImageKey = TreeViewIcons.Assembly.ToString();
         assemblyNode.SelectedImageKey = TreeViewIcons.Assembly.ToString();
@@ -92,12 +93,12 @@ namespace Remotion.ObjectBinding.Design.BindableObject
 
     private TreeNode GetNamespaceNode (Type type, TreeNodeCollection namespaceNodes)
     {
-      TreeNode namespaceNode = namespaceNodes[type.Namespace];
+      TreeNode namespaceNode = namespaceNodes[type.GetNamespaceChecked()];
       if (namespaceNode == null)
       {
         namespaceNode = new TreeNode();
-        namespaceNode.Name = type.Namespace;
-        namespaceNode.Text = type.Namespace;
+        namespaceNode.Name = type.GetNamespaceChecked();
+        namespaceNode.Text = type.GetNamespaceChecked();
         namespaceNode.ImageKey = TreeViewIcons.Namespace.ToString();
         namespaceNode.SelectedImageKey = TreeViewIcons.Namespace.ToString();
 
@@ -110,7 +111,7 @@ namespace Remotion.ObjectBinding.Design.BindableObject
 
     private TreeNode GetTypeNode (Type type, TreeNodeCollection typeNodes)
     {
-      TreeNode typeNode = typeNodes[type.FullName];
+      TreeNode typeNode = typeNodes[type.GetFullNameChecked()];
       if (typeNode == null)
       {
         typeNode = new TreeNode();
@@ -130,7 +131,7 @@ namespace Remotion.ObjectBinding.Design.BindableObject
     {
       if (node.Tag is Type
           && selectedType != null
-          && ((Type) node.Tag).FullName.Equals (selectedType.FullName, StringComparison.CurrentCultureIgnoreCase))
+          && ((Type) node.Tag).GetFullNameChecked().Equals (selectedType.GetFullNameChecked(), StringComparison.CurrentCultureIgnoreCase))
       {
         _treeView.SelectedNode = node;
         node.EnsureVisible();

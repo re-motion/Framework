@@ -19,6 +19,7 @@ using System.Runtime.Serialization;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects
@@ -195,7 +196,7 @@ namespace Remotion.Data.DomainObjects
         throw CreateArgumentException (
             "classDefinition",
             "An ObjectID cannot be constructed for abstract type '{0}' of class '{1}'.",
-            classDefinition.ClassType.AssemblyQualifiedName,
+            classDefinition.ClassType.GetAssemblyQualifiedNameSafe(),
             classDefinition.ID);
       }
 

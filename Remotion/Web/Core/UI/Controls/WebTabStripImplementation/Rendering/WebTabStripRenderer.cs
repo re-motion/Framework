@@ -18,6 +18,7 @@ using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI.Controls.Rendering;
@@ -45,11 +46,11 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
       ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
       ArgumentUtility.CheckNotNull ("control", control);
 
-      string key = typeof (WebTabStripRenderer).FullName + "_Style";
+      string key = typeof (WebTabStripRenderer).GetFullNameChecked() + "_Style";
       var styleSheetUrl = ResourceUrlFactory.CreateThemedResourceUrl (typeof (WebTabStripRenderer), ResourceType.Html, "TabStrip.css");
       htmlHeadAppender.RegisterStylesheetLink (key, styleSheetUrl, HtmlHeadAppender.Priority.Library);
 
-      string keyScript = typeof (WebTabStripRenderer).FullName + "_Script";
+      string keyScript = typeof (WebTabStripRenderer).GetFullNameChecked() + "_Script";
       var scriptUrl = ResourceUrlFactory.CreateResourceUrl (typeof (WebTabStripRenderer), ResourceType.Html, "TabStrip.js");
       htmlHeadAppender.RegisterJavaScriptInclude (keyScript, scriptUrl);
 

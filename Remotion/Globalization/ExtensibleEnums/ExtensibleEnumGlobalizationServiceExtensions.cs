@@ -18,6 +18,7 @@ using System;
 using JetBrains.Annotations;
 using Remotion.ExtensibleEnums;
 using Remotion.Globalization.Implementation;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Globalization.ExtensibleEnums
@@ -61,7 +62,7 @@ namespace Remotion.Globalization.ExtensibleEnums
             "Extensible enum value: '{0}' (Method: '{1}', Type: '{2}')",
             value.ValueName,
             definingMethod.Name,
-            definingMethod.DeclaringType == null ? "" : definingMethod.DeclaringType.FullName);
+            definingMethod.DeclaringType == null ? "" : definingMethod.DeclaringType.GetFullNameSafe());
       }
 
       return value.ValueName;

@@ -19,6 +19,7 @@ using System.IO;
 using System.Reflection;
 using System.Xml;
 using System.Xml.Schema;
+using Remotion.Reflection;
 
 namespace Remotion.Xml
 {
@@ -47,7 +48,7 @@ namespace Remotion.Xml
       using (Stream? schemaStream = assembly.GetManifestResourceStream (type, schemaFileName))
       {
         if (schemaStream == null)
-          throw new ApplicationException (string.Format ("Error loading schema resource '{0}' from assembly '{1}'.", schemaFileName, assembly.FullName));
+          throw new ApplicationException (string.Format ("Error loading schema resource '{0}' from assembly '{1}'.", schemaFileName, assembly.GetFullNameSafe()));
 
         using (XmlReader xmlReader = XmlReader.Create (schemaStream))
         {

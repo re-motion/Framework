@@ -136,7 +136,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
 
     private Type[] GetDomainObjectTypesSorted ()
     {
-      return GetDomainObjectTypes().OrderBy (t => t.FullName, StringComparer.OrdinalIgnoreCase).ToArray();
+      return GetDomainObjectTypes().OrderBy (t => t.GetFullNameChecked(), StringComparer.OrdinalIgnoreCase).ToArray();
     }
 
     bool IMappingLoader.ResolveTypes

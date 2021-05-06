@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using Remotion.Collections;
+using Remotion.Reflection;
 
 namespace Remotion.Utilities
 {
@@ -91,7 +92,7 @@ namespace Remotion.Utilities
       if (!enumType.IsEnum)
       {
         throw new ArgumentException (
-            string.Format ("Argument was of type '{0}' but only enum-types are supported with this overload.", enumType.FullName), "enumValue");
+            string.Format ("Argument was of type '{0}' but only enum-types are supported with this overload.", enumType.GetFullNameSafe()), "enumValue");
       }
 
       var enumMetadata = GetEnumMetadata (enumType);
@@ -119,7 +120,7 @@ namespace Remotion.Utilities
       if (!enumType.IsEnum)
       {
         throw new ArgumentException (
-            string.Format ("Argument was a type representing '{0}' but only enum-types are supported.", enumType.FullName), "enumType");
+            string.Format ("Argument was a type representing '{0}' but only enum-types are supported.", enumType.GetFullNameSafe()), "enumType");
       }
 
       var enumMetadata = GetEnumMetadata (enumType);
@@ -166,7 +167,7 @@ namespace Remotion.Utilities
       if (!enumType.IsEnum)
       {
         throw new ArgumentException (
-            string.Format ("Argument was a type representing '{0}' but only enum-types are supported.", enumType.FullName), "enumType");
+            string.Format ("Argument was a type representing '{0}' but only enum-types are supported.", enumType.GetFullNameSafe()), "enumType");
       }
 
       return GetEnumMetadata (enumType).IsFlagsEnum;

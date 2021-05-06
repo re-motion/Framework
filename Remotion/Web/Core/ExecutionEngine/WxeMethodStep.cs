@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Reflection;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Web.ExecutionEngine
@@ -82,13 +83,13 @@ public class WxeMethodStep: WxeStep
     
     bool isAssignable = declaringType.IsAssignableFrom (targetType);
     if (! isAssignable || method.IsStatic)
-      throw new WxeException ("Method step '" + method.Name + "' is not an instance method of the type '" + targetType.FullName + "'.");
+      throw new WxeException ("Method step '" + method.Name + "' is not an instance method of the type '" + targetType.GetFullNameSafe() + "'.");
     
     ParameterInfo[] parameters = method.GetParameters();
     if (parameters.Length > 1)
-      throw new WxeException ("Method step '" + method.Name + "', declared in type '" + declaringType.FullName + "', does not support more than one parameter.");
+      throw new WxeException ("Method step '" + method.Name + "', declared in type '" + declaringType.GetFullNameSafe() + "', does not support more than one parameter.");
     if (parameters.Length == 1 && ! typeof (WxeContext).IsAssignableFrom (parameters[0].ParameterType))
-      throw new WxeException ("Method step '" + method.Name + "', declared in type '" + declaringType.FullName + "', may only have a parameter of type WxeContext.");
+      throw new WxeException ("Method step '" + method.Name + "', declared in type '" + declaringType.GetFullNameSafe() + "', may only have a parameter of type WxeContext.");
 
     _target = target;
     _methodName = method.Name;

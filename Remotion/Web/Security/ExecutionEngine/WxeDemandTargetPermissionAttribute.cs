@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Reflection;
 using Remotion.Security;
 using Remotion.Utilities;
 
@@ -92,14 +93,14 @@ namespace Remotion.Web.Security.ExecutionEngine
       Type enumType = methodNameEnum.GetType ();
 
       if (enumType.DeclaringType == null)
-        throw new ArgumentException (string.Format ("Enumerated type '{0}' is not declared as a nested type.", enumType.FullName), "methodNameEnum");
+        throw new ArgumentException (string.Format ("Enumerated type '{0}' is not declared as a nested type.", enumType.GetFullNameSafe()), "methodNameEnum");
 
       if (!typeof (ISecurableObject).IsAssignableFrom (enumType.DeclaringType))
       {
         throw new ArgumentException (string.Format (
                 "The declaring type of enumerated type '{0}' does not implement interface '{1}'.",
-                enumType.FullName,
-                typeof (ISecurableObject).FullName),
+                enumType.GetFullNameSafe(),
+                typeof (ISecurableObject).GetFullNameSafe()),
             "methodNameEnum");
       }
     }

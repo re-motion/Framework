@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure
@@ -242,7 +243,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       {
         var message = string.Format (
             "The domain object type '{0}' does not have or inherit a mapping property with the short name '{1}'.",
-            typeToStartSearch.FullName,
+            typeToStartSearch.GetFullNameSafe(),
             shortPropertyName);
         throw new ArgumentException (message, "shortPropertyName");
       }

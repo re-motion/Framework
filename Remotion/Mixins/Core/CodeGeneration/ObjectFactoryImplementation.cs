@@ -16,6 +16,7 @@
 // 
 using System;
 using Remotion.Mixins.Utilities;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 using Remotion.Utilities;
@@ -53,7 +54,7 @@ namespace Remotion.Mixins.CodeGeneration
       if (classContext == null && preparedMixins.Length > 0)
       {
           throw new ArgumentException (string.Format ("There is no mixin configuration for type {0}, so no mixin instances must be specified.",
-              targetOrConcreteType.FullName), "preparedMixins");
+              targetOrConcreteType.GetFullNameSafe()), "preparedMixins");
       }
 
       using (new MixedObjectInstantiationScope(preparedMixins))

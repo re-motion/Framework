@@ -152,7 +152,7 @@ namespace Remotion.Reflection
     public ITypeInformation GetUnderlyingTypeOfEnum ()
     {
       if (!_type.IsEnum)
-        throw new InvalidOperationException (string.Format ("The type '{0}' is not an enum type.", _type.FullName));
+        throw new InvalidOperationException (string.Format ("The type '{0}' is not an enum type.", _type.GetFullNameSafe()));
       return TypeAdapter.Create (Enum.GetUnderlyingType (_type));
     }
 
@@ -165,7 +165,7 @@ namespace Remotion.Reflection
     {
       var underlyingType = Nullable.GetUnderlyingType (_type);
       if (underlyingType == null)
-        throw new InvalidOperationException (string.Format ("The type '{0}' is not a nullable value type.", _type.FullName));
+        throw new InvalidOperationException (string.Format ("The type '{0}' is not a nullable value type.", _type.GetFullNameSafe()));
       return TypeAdapter.Create (underlyingType);
     }
 

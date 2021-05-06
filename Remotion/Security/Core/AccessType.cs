@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Concurrent;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Security
@@ -53,8 +54,8 @@ namespace Remotion.Security
         throw new ArgumentException (
             string.Format (
                 "Enumerated type '{0}' cannot be used as an access type. Valid access types must have the {1} applied.",
-                type.FullName,
-                typeof (AccessTypeAttribute).FullName),
+                type.GetFullNameSafe(),
+                typeof (AccessTypeAttribute).GetFullNameSafe()),
             "accessType");
       }
 

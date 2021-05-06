@@ -19,6 +19,7 @@ using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
+using Remotion.Reflection;
 
 namespace Remotion.Web.UI.Design
 {
@@ -99,7 +100,7 @@ public class CollectionEditorServiceProvider: IServiceProvider, IWindowsFormsEdi
     BindingFlags bindingFlags = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.NonPublic;
 
     Type collectionEditorCollectionFormType = editor.GetType();
-    if (collectionEditorCollectionFormType.FullName != collectionEditorCollectionFormTypeName)
+    if (collectionEditorCollectionFormType.GetFullNameChecked() != collectionEditorCollectionFormTypeName)
     {
       throw new ArgumentException (
           string.Format ("Argument {0} has type {2} when type {1} was expected.",
@@ -125,7 +126,7 @@ public class CollectionEditorServiceProvider: IServiceProvider, IWindowsFormsEdi
     BindingFlags bindingFlags = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.NonPublic;
 
     Type collectionEditorCollectionFormType = editor.GetType();
-    if (collectionEditorCollectionFormType.FullName != collectionEditorCollectionFormTypeName)
+    if (collectionEditorCollectionFormType.GetFullNameChecked() != collectionEditorCollectionFormTypeName)
     {
       throw new ArgumentException (
           string.Format ("Argument {0} has type {2} when type {1} was expected.",

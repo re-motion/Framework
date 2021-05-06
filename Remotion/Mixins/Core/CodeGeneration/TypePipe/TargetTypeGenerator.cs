@@ -23,6 +23,7 @@ using System.Reflection;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Definitions;
 using Remotion.Mixins.Utilities;
+using Remotion.Reflection;
 using Remotion.TypePipe.Dlr.Ast;
 using Remotion.TypePipe.Expressions;
 using Remotion.TypePipe.Implementation;
@@ -467,7 +468,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
             $"Property {implementingProperty.DeclaringClass.FullName}.{implementingProperty.Name} has no getter");
         var interfaceGetMethod = Assertion.IsNotNull (
             interfaceProperty.GetGetMethod(),
-            $"Property {interfaceProperty.DeclaringType!.FullName}.{interfaceProperty.Name} has no getter");
+            $"Property {interfaceProperty.DeclaringType!.GetFullNameSafe()}.{interfaceProperty.Name} has no getter");
         getMethod = ImplementIntroducedMethod (implementer, interfaceGetMethod, implementedGetMethod, visibility);
       }
       if (introducedProperty.IntroducesSetMethod)
@@ -477,7 +478,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
             $"Property {implementingProperty.DeclaringClass.FullName}.{implementingProperty.Name} has no setter");
         var interfaceSetMethod = Assertion.IsNotNull (
             interfaceProperty.GetSetMethod(),
-            $"Property {interfaceProperty.DeclaringType!.FullName}.{interfaceProperty.Name} has no setter");
+            $"Property {interfaceProperty.DeclaringType!.GetFullNameSafe()}.{interfaceProperty.Name} has no setter");
         setMethod = ImplementIntroducedMethod (implementer, interfaceSetMethod, implementedSetMethod, visibility);
       }
 

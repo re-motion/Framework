@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
@@ -34,15 +35,15 @@ namespace Remotion.Web.UI
     {
       ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
 
-      string jqueryKey = typeof (HtmlHeadContents).FullName + "_JQuery";
+      string jqueryKey = typeof (HtmlHeadContents).GetFullNameChecked() + "_JQuery";
       var jqueryFileUrl = ResourceUrlFactory.CreateResourceUrl (typeof (HtmlHeadContents), ResourceType.Html, "jquery-1.6.4.js");
       htmlHeadAppender.RegisterJavaScriptInclude (jqueryKey, jqueryFileUrl);
 
-      string jQueryIframeShimScriptKey = typeof (HtmlHeadContents).FullName + "_JQueryBgiFrames";
+      string jQueryIframeShimScriptKey = typeof (HtmlHeadContents).GetFullNameChecked() + "_JQueryBgiFrames";
       var href = ResourceUrlFactory.CreateResourceUrl (typeof (HtmlHeadContents), ResourceType.Html, "jquery.IFrameShim.js");
       htmlHeadAppender.RegisterJavaScriptInclude (jQueryIframeShimScriptKey, href);
 
-      string utilitiesKey = typeof (HtmlHeadContents).FullName + "_Utilities";
+      string utilitiesKey = typeof (HtmlHeadContents).GetFullNameChecked() + "_Utilities";
       var utilitiesScripFileUrl = ResourceUrlFactory.CreateResourceUrl (typeof (HtmlHeadContents), ResourceType.Html, "Utilities.js");
       htmlHeadAppender.RegisterJavaScriptInclude (utilitiesKey, utilitiesScripFileUrl);
     }
@@ -65,7 +66,7 @@ namespace Remotion.Web.UI
     {
       ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
 
-      string key = typeof (HtmlHeadContents).FullName + "_Style";
+      string key = typeof (HtmlHeadContents).GetFullNameChecked() + "_Style";
       var url = InfrastructureResourceUrlFactory.CreateThemedResourceUrl (ResourceType.Html, "Style.css");
       htmlHeadAppender.RegisterStylesheetLink (key, url, HtmlHeadAppender.Priority.Page);
     }

@@ -17,6 +17,7 @@
 using System;
 using System.Reflection;
 using System.Runtime.Serialization;
+using Remotion.Reflection;
 using Remotion.TypePipe.Dlr.Ast;
 using Remotion.TypePipe.MutableReflection;
 using Remotion.TypePipe.MutableReflection.BodyBuilding;
@@ -75,7 +76,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       {
         string message = string.Format (
             "No public or protected deserialization constructor in type {0} - serialization is not supported.",
-            ctx.DeclaringType.BaseType.FullName);
+            ctx.DeclaringType.BaseType.GetFullNameSafe());
         return Expression.Throw (Expression.New (s_invalidOperationExceptionConstructor, Expression.Constant (message)));
       }
 
@@ -84,7 +85,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       if (baseGetObjectDataMethod == null || !IsPublicOrProtected (baseGetObjectDataMethod))
       {
         string message = string.Format ("No public or protected GetObjectData in type {0} - serialization is not supported.",
-            ctx.DeclaringType.BaseType.FullName);
+            ctx.DeclaringType.BaseType.GetFullNameSafe());
         return Expression.Throw (Expression.New (s_invalidOperationExceptionConstructor, Expression.Constant (message)));
       }
 

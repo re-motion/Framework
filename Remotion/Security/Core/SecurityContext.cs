@@ -18,6 +18,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Security
@@ -128,7 +129,7 @@ namespace Remotion.Security
           string message = string.Format (
               "Enumerated Type '{0}' cannot be used as an abstract role. Valid abstract roles must have the {1} applied.",
               roleType,
-              typeof (AbstractRoleAttribute).FullName);
+              typeof (AbstractRoleAttribute).GetFullNameSafe());
 
           throw new ArgumentException (message, "abstractRoles");
         }
@@ -151,7 +152,7 @@ namespace Remotion.Security
           string message = string.Format (
               "Enumerated Type '{0}' cannot be used as a security state. Valid security states must have the {1} applied.",
               stateType,
-              typeof (SecurityStateAttribute).FullName);
+              typeof (SecurityStateAttribute).GetFullNameSafe());
 
           throw new ArgumentException (message, "states");
         }

@@ -22,6 +22,7 @@ using System.Web.UI.WebControls;
 using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
@@ -69,7 +70,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
     {
       ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
 
-      string key = typeof (BocEnumValueRenderer).FullName + "_Style";
+      string key = typeof (BocEnumValueRenderer).GetFullNameChecked() + "_Style";
       var url = ResourceUrlFactory.CreateThemedResourceUrl (typeof (BocEnumValueRenderer), ResourceType.Html, "BocEnumValue.css");
       htmlHeadAppender.RegisterStylesheetLink (key, url, HtmlHeadAppender.Priority.Library);
     }

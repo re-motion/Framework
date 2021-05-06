@@ -27,6 +27,7 @@ using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.Validation;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
@@ -601,7 +602,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
       catch (InvalidCastException e)
       {
-        throw new ArgumentException ("Expected type '" + _actualValueType + "', but was '" + value.GetType().FullName + "'.", "value", e);
+        throw new ArgumentException ("Expected type '" + _actualValueType + "', but was '" + value.GetType().GetFullNameSafe() + "'.", "value", e);
       }
 
       if (ActualValueType == BocDateTimeValueType.DateTime
@@ -614,7 +615,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         catch (InvalidCastException e)
         {
           throw new ArgumentException (
-              "Expected type '" + _actualValueType + "', but was '" + value.GetType().FullName + "'.",
+              "Expected type '" + _actualValueType + "', but was '" + value.GetType().GetFullNameSafe() + "'.",
               "value",
               e);
         }

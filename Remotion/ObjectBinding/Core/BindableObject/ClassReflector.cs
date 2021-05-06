@@ -79,7 +79,7 @@ namespace Remotion.ObjectBinding.BindableObject
         return new BindableObjectClass (_concreteType, _businessObjectProvider, _bindableObjectGlobalizationService, GetProperties());
 
       throw new NotSupportedException (
-          string.Format ("Type '{0}' does not implement the required IBusinessObject interface.", _concreteType.FullName));
+          string.Format ("Type '{0}' does not implement the required IBusinessObject interface.", _concreteType.GetFullNameSafe()));
     }
 
     protected IEnumerable<PropertyBase> GetProperties ()
@@ -95,7 +95,7 @@ namespace Remotion.ObjectBinding.BindableObject
         {
           string message = string.Format (
               "Type '{0}' has two properties called '{1}', this is currently not supported.",
-              TargetType.FullName,
+              TargetType.GetFullNameSafe(),
               property.Identifier);
           throw new NotSupportedException (message);
         }

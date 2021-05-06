@@ -154,7 +154,7 @@ namespace Remotion.SecurityManager.Metadata.Importer
         Console.Error.WriteLine ("Execution aborted. Exception stack:");
 
         for (; exception != null; exception = exception.InnerException)
-          Console.Error.WriteLine ("{0}: {1}\n{2}", exception.GetType().FullName, exception.Message, exception.StackTrace);
+          Console.Error.WriteLine ("{0}: {1}\n{2}", exception.GetType().GetFullNameSafe(), exception.Message, exception.StackTrace);
       }
       else
         Console.Error.WriteLine ("Execution aborted: {0}", exception.Message);

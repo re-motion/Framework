@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using Remotion.ObjectBinding.BindableObject.Properties;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
@@ -59,9 +60,9 @@ namespace Remotion.ObjectBinding.BindableObject
         throw new InvalidOperationException (
             string.Format (
                 "The '{0}' required for loading objectes of type '{1}' is not registered with the '{2}' associated with this type.",
-                _getObjectServiceType.FullName,
-                TargetType.FullName,
-                typeof (BusinessObjectProvider).FullName));
+                _getObjectServiceType.GetFullNameSafe(),
+                TargetType.GetFullNameSafe(),
+                typeof (BusinessObjectProvider).GetFullNameSafe()));
       }
       return service;
     }

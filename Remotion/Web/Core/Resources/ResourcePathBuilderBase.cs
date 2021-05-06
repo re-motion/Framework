@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Reflection;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Web.Resources
@@ -39,7 +40,7 @@ namespace Remotion.Web.Resources
 
       string root = GetResourceRoot();
       // C# compiler 7.2 already provides caching for anonymous method.
-      string assemblyName = s_assemblyNameCache.GetOrAdd (assembly, key => key.GetName()).Name;
+      string assemblyName = s_assemblyNameCache.GetOrAdd (assembly, key => key.GetName()).GetNameChecked();
 
       string[] completePath = ArrayUtility.Combine (new[] { root, assemblyName }, assemblyRelativePathParts);
       return BuildPath (completePath);

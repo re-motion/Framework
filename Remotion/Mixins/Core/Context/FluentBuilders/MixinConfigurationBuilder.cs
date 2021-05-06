@@ -20,6 +20,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Remotion.Logging;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.Context.FluentBuilders
@@ -166,8 +167,8 @@ namespace Remotion.Mixins.Context.FluentBuilders
         Assertion.IsNotNull (typeForMessage);
         string message = string.Format (
             "Two instances of mixin {0} are configured for target type {1}.",
-            typeForMessage.FullName,
-            targetType.FullName);
+            typeForMessage.GetFullNameSafe(),
+            targetType.GetFullNameSafe());
         throw new ConfigurationException (message, ex);
       }
       return mixinContextBuilder;

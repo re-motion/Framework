@@ -22,6 +22,7 @@ using System.Linq;
 using System.Reflection;
 using System.Resources;
 using Remotion.FunctionalProgramming;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
@@ -71,7 +72,7 @@ namespace Remotion.Globalization.Implementation
         throw new MissingManifestResourceException (
             string.Format (
                 "Could not find any resources appropriate for the neutral culture. Make sure '{1}.resources' was correctly embedded into assembly '{0}' at compile time.",
-                key.Item1.GetName().Name,
+                key.Item1.GetName().GetNameSafe(),
                 key.Item2));
       }
 

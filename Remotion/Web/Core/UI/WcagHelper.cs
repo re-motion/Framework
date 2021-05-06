@@ -17,6 +17,7 @@
 using System;
 using System.Web.UI;
 using Remotion.Logging;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Web.Configuration;
 using Remotion.Web.Utilities;
@@ -109,7 +110,7 @@ public class WcagHelper
 
     string message = string.Format (
        "{0} '{1}' on page '{2}' might not comply with a priority {3} checkpoint.", 
-        control.GetType().Name, control.ID, control.Page.GetType().FullName, priority);
+        control.GetType().Name, control.ID, control.Page.GetType().GetFullNameSafe(), priority);
     HandleWarning (message);
   }
 
@@ -121,7 +122,7 @@ public class WcagHelper
 
     string message = string.Format (
         "The value of property '{0}' for {1} '{2}' on page '{3}' might not comply with a priority {4} checkpoint.", 
-        property, control.GetType().Name, control.ID, control.Page.GetType().FullName, priority);
+        property, control.GetType().Name, control.ID, control.Page.GetType().GetFullNameSafe(), priority);
     HandleWarning (message);
   }
 
@@ -146,7 +147,7 @@ public class WcagHelper
 
     string message = string.Format (
        "{0} '{1}' on page '{2}' does not comply with a priority {3} checkpoint.", 
-        control.GetType().Name, control.ID, control.Page.GetType().FullName, priority);
+        control.GetType().Name, control.ID, control.Page.GetType().GetFullNameSafe(), priority);
     HandleError (message);
   }
 
@@ -158,7 +159,7 @@ public class WcagHelper
 
     string message = string.Format (
         "The value of property '{0}' for {1} '{2}' on page '{3}' does not comply with a priority {4} checkpoint.", 
-        property, control.GetType().Name, control.ID, control.Page.GetType().FullName, priority);
+        property, control.GetType().Name, control.ID, control.Page.GetType().GetFullNameSafe(), priority);
     HandleError (message);
   }
 

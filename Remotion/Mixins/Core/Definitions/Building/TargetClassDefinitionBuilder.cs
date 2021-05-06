@@ -20,6 +20,7 @@ using System.Linq;
 using Remotion.FunctionalProgramming;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Definitions.Building.DependencySorting;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using ReflectionUtility = Remotion.Mixins.Utilities.ReflectionUtility;
@@ -51,7 +52,7 @@ namespace Remotion.Mixins.Definitions.Building
 
       if (classContext.Type.ContainsGenericParameters)
       {
-        string message = string.Format ("The base class {0} contains generic parameters. This is not supported.", classContext.Type.FullName);
+        string message = string.Format ("The base class {0} contains generic parameters. This is not supported.", classContext.Type.GetFullNameSafe());
         throw new ConfigurationException (message);
       }
 

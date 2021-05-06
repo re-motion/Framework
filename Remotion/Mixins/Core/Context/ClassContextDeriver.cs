@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.Context
@@ -46,9 +47,9 @@ namespace Remotion.Mixins.Context
         string message = string.Format (
             "The class {0} inherits the mixin {1} from class {2}, but it is explicitly "
                 + "configured for the less specific mixin {3}.",
-            targetClass.FullName,
-            overridden_override.Item2.MixinType.FullName,
-            baseContext.Type.FullName,
+            targetClass.GetFullNameSafe(),
+            overridden_override.Item2.MixinType.GetFullNameSafe(),
+            baseContext.Type.GetFullNameSafe(),
             overridden_override.Item1.MixinType);
         throw new ConfigurationException (message);
       }

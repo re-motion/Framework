@@ -21,6 +21,7 @@ using System.Linq;
 using Remotion.Data.DomainObjects;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
+using Remotion.Reflection;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.Utilities;
@@ -58,7 +59,7 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStr
       if (!SupportsProperty (property))
       {
         throw new ArgumentException (
-            string.Format ("The property '{0}' is not supported by the '{1}' type.", property.Identifier, GetType().FullName));
+            string.Format ("The property '{0}' is not supported by the '{1}' type.", property.Identifier, GetType().GetFullNameSafe()));
       }
 
       var positions = GetPositions (rolePropertiesSearchArguments);

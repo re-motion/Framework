@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.Serialization;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions.Building
@@ -63,7 +64,7 @@ namespace Remotion.Mixins.Definitions.Building
         MixinDefinition otherIntroducer = _mixin.TargetClass.ReceivedInterfaces[implementedInterface].Implementer;
         string message = string.Format (
             "Two mixins introduce the same interface {0} to base class {1}: {2} and {3}.",
-            implementedInterface.FullName,
+            implementedInterface.GetFullNameSafe(),
             _mixin.TargetClass.FullName,
             otherIntroducer.FullName,
             _mixin.FullName);

@@ -20,6 +20,7 @@ using System.Security.Principal;
 using System.Web;
 using System.Web.SessionState;
 using Remotion.Data.DomainObjects;
+using Remotion.Reflection;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain;
 using Remotion.ServiceLocation;
@@ -30,7 +31,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
 {
   public class SecurityManagerHttpApplication : HttpApplication
   {
-    private static readonly string s_principalKey = typeof (SecurityManagerHttpApplication).AssemblyQualifiedName + "_Principal";
+    private static readonly string s_principalKey = typeof (SecurityManagerHttpApplication).GetAssemblyQualifiedNameChecked() + "_Principal";
     private ISecurityManagerPrincipalFactory _securityManagerPrincipalFactory;
 
     public SecurityManagerHttpApplication ()

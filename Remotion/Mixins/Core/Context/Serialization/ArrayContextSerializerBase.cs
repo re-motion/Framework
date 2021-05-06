@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Reflection;
+using Remotion.Reflection;
 
 namespace Remotion.Mixins.Context.Serialization
 {
@@ -46,7 +47,7 @@ namespace Remotion.Mixins.Context.Serialization
         where T : notnull
     {
       if (typeof (T) == typeof (Assembly))
-        return ConvertToStorageFormat (((Assembly) (object) value).FullName!);
+        return ConvertToStorageFormat (((Assembly) (object) value).GetFullNameChecked());
 
       return value;
     }

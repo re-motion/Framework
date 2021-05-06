@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Xml.Serialization;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Web.Configuration;
 using Remotion.Web.Utilities;
@@ -173,7 +174,7 @@ public class UrlMappingEntry
       if (! typeof (WxeFunction).IsAssignableFrom (value))
         throw new ArgumentException (string.Format ("The FunctionType '{0}' must be derived from WxeFunction.", value), "FunctionType");
       _functionType = value;
-      _functionTypeName = _functionType.AssemblyQualifiedName;
+      _functionTypeName = _functionType.GetAssemblyQualifiedNameChecked();
     }
   }
 

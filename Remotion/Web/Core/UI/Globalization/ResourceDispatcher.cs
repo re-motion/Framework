@@ -22,6 +22,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using Remotion.Globalization;
 using Remotion.Logging;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Web.Utilities;
 
@@ -160,7 +161,7 @@ public sealed class ResourceDispatcher
         if (genericHtmlControl != null)
           genericHtmlControl.Attributes[propertyName] = propertyValue;
         else //  Non-HtmlControls require valid property
-          s_log.Warn ("Control '" + control.ID + "' of type '" + control.GetType().FullName + "' does not contain a public property '" + propertyName + "'.");
+          s_log.Warn ("Control '" + control.ID + "' of type '" + control.GetType().GetFullNameSafe() + "' does not contain a public property '" + propertyName + "'.");
       }
     }
   }

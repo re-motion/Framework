@@ -27,6 +27,7 @@ using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
+using Remotion.Reflection;
 using Remotion.SecurityManager.Domain;
 using Remotion.SecurityManager.Domain.Metadata;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
@@ -241,7 +242,7 @@ namespace Remotion.SecurityManager.Persistence
 
     private string GetPropertyIdentifierFromTypeAndShortName (Type domainObjectType, string shortPropertyName)
     {
-      return domainObjectType.FullName + "." + shortPropertyName;
+      return domainObjectType.GetFullNameChecked() + "." + shortPropertyName;
     }
 
     private void IncrementRevision (IRdbmsProviderCommandExecutionContext executionContext, IRevisionKey revisionKey)

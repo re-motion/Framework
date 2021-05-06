@@ -24,6 +24,7 @@ using System.Web.UI;
 using JetBrains.Annotations;
 using Remotion.Collections;
 using Remotion.Globalization;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
@@ -58,9 +59,9 @@ namespace Remotion.Web.UI.SmartPageImplementation
     private const string c_styleFileUrl = "SmartPage.css";
     private const string c_smartNavigationScriptFileUrl = "SmartNavigation.js";
 
-    private static readonly string s_scriptFileKey = typeof (SmartPageInfo).FullName + "_Script";
-    private static readonly string s_styleFileKey = typeof (SmartPageInfo).FullName + "_Style";
-    private static readonly string s_smartNavigationScriptKey = typeof (SmartPageInfo).FullName + "_SmartNavigation";
+    private static readonly string s_scriptFileKey = typeof (SmartPageInfo).GetFullNameChecked() + "_Script";
+    private static readonly string s_styleFileKey = typeof (SmartPageInfo).GetFullNameChecked() + "_Style";
+    private static readonly string s_smartNavigationScriptKey = typeof (SmartPageInfo).GetFullNameChecked() + "_SmartNavigation";
 
     private readonly ISmartPage _page;
 

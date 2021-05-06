@@ -24,6 +24,7 @@ using System.Web.UI.HtmlControls;
 using JetBrains.Annotations;
 using Remotion.Collections;
 using Remotion.Globalization;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine.Infrastructure;
@@ -64,9 +65,9 @@ namespace Remotion.Web.ExecutionEngine
     private const string c_styleFileUrl = "ExecutionEngine.css";
     private const string c_styleFileUrlForIE = "ExecutionEngineIE.css";
 
-    private static readonly string s_scriptFileKey = typeof (WxePageInfo).FullName + "_Script";
-    private static readonly string s_styleFileKey = typeof (WxePageInfo).FullName + "_Style";
-    private static readonly string s_styleFileKeyForIE = typeof (WxePageInfo).FullName + "_StyleIE";
+    private static readonly string s_scriptFileKey = typeof (WxePageInfo).GetFullNameChecked() + "_Script";
+    private static readonly string s_styleFileKey = typeof (WxePageInfo).GetFullNameChecked() + "_Style";
+    private static readonly string s_styleFileKeyForIE = typeof (WxePageInfo).GetFullNameChecked() + "_StyleIE";
 
     private readonly IWxePage _page;
     private WxeForm _wxeForm;
@@ -206,12 +207,12 @@ namespace Remotion.Web.ExecutionEngine
       if (fields.Length == 0 && !isDesignMode)
       {
         throw new ApplicationException (
-            "Page class " + _page.GetType().FullName + " has no field of type HtmlForm. Please add a field or override property IWxePage.HtmlForm.");
+            message: "Page class " + _page.GetType().GetFullNameSafe() + " has no field of type HtmlForm. Please add a field or override property IWxePage.HtmlForm.");
       }
       else if (fields.Length > 1)
       {
         throw new ApplicationException (
-            "Page class " + _page.GetType().FullName
+            "Page class " + _page.GetType().GetFullNameSafe()
             + " has more than one field of type HtmlForm. Please remove excessive fields or override property IWxePage.HtmlForm.");
       }
 

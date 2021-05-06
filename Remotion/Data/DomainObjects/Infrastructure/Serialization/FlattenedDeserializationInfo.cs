@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.Serialization;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
@@ -126,13 +127,13 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
       catch (InvalidCastException ex)
       {
         string message = string.Format ("{0} stream: The serialization stream contains an object of type {1} at position {2}, but an object of "
-            + "type {3} was expected.", streamName, uncastValue.GetType ().FullName, originalPosition, typeof (T).FullName);
+            + "type {3} was expected.", streamName, uncastValue.GetType ().GetFullNameSafe(), originalPosition, typeof (T).GetFullNameSafe());
         throw new SerializationException (message, ex);
       }
       catch (NullReferenceException ex)
       {
         string message = string.Format ("{0} stream: The serialization stream contains a null value at position {1}, but an object of type {2} was "
-            + "expected.", streamName, originalPosition, typeof (T).FullName);
+            + "expected.", streamName, originalPosition, typeof (T).GetFullNameSafe());
         throw new SerializationException (message, ex);
       }
       return value;

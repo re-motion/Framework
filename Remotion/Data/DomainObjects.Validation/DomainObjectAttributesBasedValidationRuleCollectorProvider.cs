@@ -114,7 +114,7 @@ namespace Remotion.Data.DomainObjects.Validation
         if (annotatedPropertiesSet.Any (p => !interfaceImplementations.Contains (p)))
         {
           throw new InvalidOperationException (
-              string.Format ("Annotated properties of mixin '{0}' have to be part of an interface.", annotatedType.FullName));
+              string.Format ("Annotated properties of mixin '{0}' have to be part of an interface.", annotatedType.GetFullNameSafe()));
         }
 
         var interfacePropertyMappingsForAnnotatedProperties = interfacePropertyMappings

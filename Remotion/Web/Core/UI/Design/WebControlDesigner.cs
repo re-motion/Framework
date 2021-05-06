@@ -20,6 +20,7 @@ using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Reflection;
 using System.Web.UI.Design;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Web.UI.Controls;
 
@@ -75,19 +76,19 @@ namespace Remotion.Web.UI.Design
       Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
       Assembly[] remotionAssemblies = Array.FindAll (
           assemblies,
-          delegate (Assembly assembly) { return assembly.FullName.StartsWith ("Remotion"); });
+          delegate (Assembly assembly) { return assembly.GetFullNameChecked().StartsWith ("Remotion"); });
 
       Dictionary<string, Assembly> assemblyDictionary = new Dictionary<string, Assembly>();
       foreach (Assembly assembly in remotionAssemblies)
       {
-        if (assemblyDictionary.ContainsKey (assembly.FullName))
+        if (assemblyDictionary.ContainsKey (assembly.GetFullNameChecked()))
         {
           throw new NotSupportedException (
               "Duplicate re-motion framework assemblies have been detected. In order to provide a consistent design time experience it is necessary"
               + " to install the re-motion framework in the global assembly cache (GAC). In addition, please ensure that the 'Copy Local' flag"
               + " is set to 'true' for all re-motion framework assemblies referenced by the web project.");
         }
-        assemblyDictionary.Add (assembly.FullName, assembly);
+        assemblyDictionary.Add (assembly.GetFullNameChecked(), assembly);
       }
 
       _hasCheckedForDuplicateAssemblies = true;

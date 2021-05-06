@@ -20,6 +20,7 @@ using System.Linq;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.Validation;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent.Model;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.NonPersistent.Validation
@@ -54,7 +55,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent.Validation
               relationEndPointDefinition.PropertyInfo,
               "The relation property is defined as persistent but the referenced type '{0}' is non-persistent. "
               + "Persistent relation properties may only reference persistent types.",
-              oppositeEndPointDefinition.ClassDefinition.ClassType.FullName);
+              oppositeEndPointDefinition.ClassDefinition.ClassType.GetFullNameSafe());
         }
       }
 

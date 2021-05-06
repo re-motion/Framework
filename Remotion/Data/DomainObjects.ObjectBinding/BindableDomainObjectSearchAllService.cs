@@ -21,6 +21,7 @@ using System.Reflection;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Utilities.ReSharperAnnotations;
 
@@ -90,7 +91,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
       if (!_bindableObjectTypeCache.GetOrAdd (type, BindableObjectProvider.IsBindableObjectImplementation))
       {
         var message = string.Format ("This service only supports queries for bindable DomainObject types, the given type '{0}' is not a bindable "
-            + "type. Derive from BindableDomainObject or apply the BindableDomainObjectAttribute.", type.FullName);
+            + "type. Derive from BindableDomainObject or apply the BindableDomainObjectAttribute.", type.GetFullNameSafe());
         throw new ArgumentException (message, "type");
       }
 
@@ -102,7 +103,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
     [ReflectionAPI]
     private IQuery GetQuery<T> () where T : DomainObject
     {
-      return s_queryCache.GetQuery<T> (typeof (T).AssemblyQualifiedName, source => from x in source select x);
+      return s_queryCache.GetQuery<T> (typeof (T).GetAssemblyQualifiedNameChecked(), source => from x in source select x);
     }
   }
 }

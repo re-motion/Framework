@@ -21,6 +21,7 @@ using System.Linq;
 using System.Reflection;
 using System.Web.Script.Services;
 using System.Web.Services;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Web.Services
@@ -99,7 +100,7 @@ namespace Remotion.Web.Services
         throw CreateArgumentException (
             "Web method '{0}' on web service type '{1}' does not have the ResponseFormat property of the {2} set to Json.",
             method,
-            type.FullName,
+            type.GetFullNameSafe(),
             typeof (ScriptMethodAttribute).Name);
       }
       CheckParameters (type, methodInfo, parameters);
@@ -108,7 +109,7 @@ namespace Remotion.Web.Services
     private static void CheckType (Type type)
     {
       if (!typeof (WebService).IsAssignableFrom (type))
-        throw CreateArgumentException ("Web service type '{0}' does not derive from '{1}'.", type.FullName, typeof (WebService).FullName);
+        throw CreateArgumentException ("Web service type '{0}' does not derive from '{1}'.", type.GetFullNameSafe(), typeof (WebService).GetFullNameSafe());
     }
 
     private static MethodInfo GetCheckedMethodInfo (Type type, string method)
@@ -123,7 +124,7 @@ namespace Remotion.Web.Services
         throw CreateArgumentException (
             "Web method '{0}' was not found on the public API of web service type '{1}'.",
             method,
-            type.FullName);
+            type.GetFullNameSafe());
       }
       return methodInfo;
     }
@@ -136,8 +137,8 @@ namespace Remotion.Web.Services
       {
         throw CreateArgumentException (
             "Web service type '{0}' does not have the '{1}' applied.",
-            type.FullName,
-            typeof (T).FullName);
+            type.GetFullNameSafe(),
+            typeof (T).GetFullNameSafe());
       }
       return attribute;
     }
@@ -151,8 +152,8 @@ namespace Remotion.Web.Services
         throw CreateArgumentException (
             "Web method '{0}' on web service type '{1}' does not have the '{2}' applied.",
             methodInfo.Name,
-            type.FullName,
-            typeof (T).FullName);
+            type.GetFullNameSafe(),
+            typeof (T).GetFullNameSafe());
       }
       return attribute;
     }
@@ -169,7 +170,7 @@ namespace Remotion.Web.Services
         throw CreateArgumentException (
             "Web method '{0}' on web service type '{1}' does not declare the required parameter '{2}'. Parameters are matched by name and case.",
             methodInfo.Name,
-            type.FullName,
+            type.GetFullNameSafe(),
             firstMissingParameter);
       }
 
@@ -179,7 +180,7 @@ namespace Remotion.Web.Services
         throw CreateArgumentException (
             "Web method '{0}' on web service type '{1}' has unexpected parameter '{2}'.",
             methodInfo.Name,
-            type.FullName,
+            type.GetFullNameSafe(),
             firstUnexpectedParameter);
       }
     }

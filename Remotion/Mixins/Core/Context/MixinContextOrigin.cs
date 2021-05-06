@@ -18,6 +18,7 @@ using System;
 using System.Diagnostics;
 using System.Reflection;
 using Remotion.Mixins.Context.Serialization;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.Context
@@ -97,7 +98,7 @@ namespace Remotion.Mixins.Context
     public override string ToString ()
     {
       var assemblyName = Assembly.GetName (false);
-      return String.Format ("{0}, Location: '{1}' (Assembly: '{2}', code base: {3})", Kind, Location, assemblyName.Name, assemblyName.CodeBase);
+      return String.Format ("{0}, Location: '{1}' (Assembly: '{2}', code base: {3})", Kind, Location, assemblyName.GetNameSafe(), assemblyName.CodeBase);
     }
 
     public void Serialize (IMixinContextOriginSerializer serializer)

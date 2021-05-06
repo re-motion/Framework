@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Remotion.Reflection;
 
 namespace Remotion.Utilities
 {
@@ -97,7 +98,7 @@ namespace Remotion.Utilities
 
     public override string ToString ()
     {
-      return "AttributeMetadata: DeclaringType: " + _declaringType.FullName + "; Attibute: " + _attribute.ToString();
+      return "AttributeMetadata: DeclaringType: " + _declaringType.GetFullNameSafe() + "; Attibute: " + _attribute.ToString();
     }
   }
 }

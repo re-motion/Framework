@@ -21,6 +21,7 @@ using System.Threading;
 using JetBrains.Annotations;
 using Remotion.Collections;
 using Remotion.FunctionalProgramming;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine.Infrastructure;
@@ -121,7 +122,7 @@ namespace Remotion.Web.ExecutionEngine
         if (!_exceptionHandler.Catch (unwrappedException))
         {
           throw new WxeUnhandledException (
-              string.Format ("An exception ocured while executing WxeFunction '{0}'.", GetType().FullName),
+              string.Format ("An exception ocured while executing WxeFunction '{0}'.", GetType().GetFullNameSafe()),
               stepException);
         }
       }

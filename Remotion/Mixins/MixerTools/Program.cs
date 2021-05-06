@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Reflection;
 using Remotion.Tools.Console;
 using Remotion.Tools.Console.CommandLine;
 
@@ -49,7 +50,7 @@ namespace Remotion.Mixins.MixerTools
         {
           System.Console.Error.WriteLine ("Execution aborted. Exception stack:");
           for (; e != null; e = e.InnerException)
-            System.Console.Error.WriteLine ("{0}: {1}\n{2}", e.GetType().FullName, e.Message, e.StackTrace);
+            System.Console.Error.WriteLine ("{0}: {1}\n{2}", e.GetType().GetFullNameSafe(), e.Message, e.StackTrace);
         }
         return 1;
       }

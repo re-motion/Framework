@@ -38,7 +38,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
 
     // static members and constants
 
-    private static readonly string s_currentTenantHandleKey = typeof (BaseControl).FullName + "_CurrentTenantID";
+    private static readonly string s_currentTenantHandleKey = typeof (BaseControl).GetFullNameChecked() + "_CurrentTenantID";
 
     // member fields
 
@@ -148,13 +148,13 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
       if (!(control is TControl))
       {
         throw new InvalidOperationException (
-            string.Format ("Control '{0}' on {2} must be of type '{1}'.", controlID, typeof (TControl).FullName, GetType().Name));
+            string.Format ("Control '{0}' on {2} must be of type '{1}'.", controlID, typeof (TControl).GetFullNameSafe(), GetType().Name));
       }
 
       if (!(control is IFocusableControl))
       {
         throw new InvalidOperationException (
-            string.Format ("Control '{0}' on {2} must implement the '{1}' interface.", controlID, typeof (IFocusableControl).FullName, GetType().Name));
+            string.Format ("Control '{0}' on {2} must implement the '{1}' interface.", controlID, typeof (IFocusableControl).GetFullNameSafe(), GetType().Name));
       }
 
       var boundEditableWebControl = (TControl) control;

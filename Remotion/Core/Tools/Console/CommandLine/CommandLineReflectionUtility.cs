@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Reflection;
+using Remotion.Reflection;
 
 namespace Remotion.Tools.Console.CommandLine
 {
@@ -33,7 +34,7 @@ namespace Remotion.Tools.Console.CommandLine
       else if (fieldOrProperty is PropertyInfo)
         ((PropertyInfo) fieldOrProperty).SetValue (obj, value, new object[0]);
       else
-        throw new ArgumentException (String.Format ("Argument must be either FieldInfo or PropertyInfo but is {0}.", fieldOrProperty.GetType ().FullName), "fieldOrProperty");
+        throw new ArgumentException (String.Format ("Argument must be either FieldInfo or PropertyInfo but is {0}.", fieldOrProperty.GetType ().GetFullNameSafe()), "fieldOrProperty");
     }
 
     public static Type GetFieldOrPropertyType (MemberInfo fieldOrProperty)

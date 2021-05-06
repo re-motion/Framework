@@ -20,6 +20,7 @@ using System.Threading;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI.Controls.Rendering;
@@ -48,11 +49,11 @@ namespace Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering
 
       htmlHeadAppender.RegisterUtilitiesJavaScriptInclude ();
 
-      string scriptFileKey = typeof (DatePickerButtonRenderer).FullName + "_Script";
+      string scriptFileKey = typeof (DatePickerButtonRenderer).GetFullNameChecked() + "_Script";
       var scriptUrl = ResourceUrlFactory.CreateResourceUrl (typeof (DatePickerButtonRenderer), ResourceType.Html, "DatePicker.js");
       htmlHeadAppender.RegisterJavaScriptInclude (scriptFileKey, scriptUrl);
 
-      string styleFileKey = typeof (DatePickerButtonRenderer).FullName + "_Style";
+      string styleFileKey = typeof (DatePickerButtonRenderer).GetFullNameChecked() + "_Style";
       var styleUrl = ResourceUrlFactory.CreateThemedResourceUrl (typeof (DatePickerButtonRenderer), ResourceType.Html, "DatePicker.css");
       htmlHeadAppender.RegisterStylesheetLink (styleFileKey, styleUrl, HtmlHeadAppender.Priority.Library);
     }

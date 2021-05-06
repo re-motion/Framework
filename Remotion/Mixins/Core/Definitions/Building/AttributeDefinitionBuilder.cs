@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Remotion.Reflection;
 using Remotion.TypePipe.MutableReflection;
 using Remotion.Utilities;
 
@@ -58,15 +59,14 @@ namespace Remotion.Mixins.Definitions.Building
 
     private bool IsIgnoredAttributeType (Type type)
     {
-      Assertion.IsNotNull (type.Namespace);
       return type == typeof (SerializableAttribute)
-          || (typeof (ExtendsAttribute).Assembly.Equals (type.Assembly) && type.Namespace.StartsWith ("Remotion.Mixins"));
+          || (typeof (ExtendsAttribute).Assembly.Equals (type.Assembly) && type.GetNamespaceChecked().StartsWith ("Remotion.Mixins"));
     }
 
     private void ApplyViaCopyAttribute (MemberInfo copyAttributeSource, ICustomAttributeData copyAttributeData)
     {
       Assertion.IsTrue (copyAttributeData.Constructor.DeclaringType == typeof (CopyCustomAttributesAttribute));
-      string sourceName = GetFullMemberName (copyAttributeSource);
+      string sourceName = GetFullMemberNameSafe (copyAttributeSource);
 
       var copyAttribute = (CopyCustomAttributesAttribute) copyAttributeData.CreateInstance();
 
@@ -145,9 +145,9 @@ namespace Remotion.Mixins.Definitions.Building
         return memberType;
     }
 
-    private string GetFullMemberName (MemberInfo attributeSource)
+    private string GetFullMemberNameSafe (MemberInfo attributeSource)
     {
-      return attributeSource.DeclaringType != null ? attributeSource.DeclaringType.FullName + "." + attributeSource.Name : attributeSource.Name;
+      return attributeSource.DeclaringType != null ? attributeSource.DeclaringType.GetFullNameSafe() + "." + attributeSource.Name : attributeSource.Name;
     }
   }
 }

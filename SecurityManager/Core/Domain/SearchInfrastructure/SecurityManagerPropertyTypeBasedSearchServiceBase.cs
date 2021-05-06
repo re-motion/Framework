@@ -19,6 +19,7 @@ using System;
 using System.Linq;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.SearchInfrastructure
@@ -60,7 +61,7 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure
                 "The type of the property '{0}', declared on '{1}', is not supported by the '{2}' type.",
                 property.Identifier,
                 property.ReflectedClass.Identifier,
-                GetType().FullName));
+                GetType().GetFullNameSafe()));
       }
 
       return CreateQuery;

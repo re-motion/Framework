@@ -19,6 +19,7 @@ using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.Web;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Web.UI.Controls;
 
@@ -42,7 +43,7 @@ namespace Remotion.ObjectBinding.Sample
       }
       else
       {
-        string url = "~/Images/" + ((BindableObjectClass) obj.BusinessObjectClass).TargetType.FullName + ".gif";
+        string url = "~/Images/" + ((BindableObjectClass) obj.BusinessObjectClass).TargetType.GetFullNameChecked() + ".gif";
         return new IconInfo (url, Unit.Pixel (16), Unit.Pixel (16));
       }
     }
@@ -52,7 +53,7 @@ namespace Remotion.ObjectBinding.Sample
       if (obj == null)
         return "No ToolTip";
       else
-        return "ToolTip: " + ((BindableObjectClass) obj.BusinessObjectClass).TargetType.FullName;
+        return "ToolTip: " + ((BindableObjectClass) obj.BusinessObjectClass).TargetType.GetFullNameChecked();
     }
 
     public HelpInfo GetHelpInfo (

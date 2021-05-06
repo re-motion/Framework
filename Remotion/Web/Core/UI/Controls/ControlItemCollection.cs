@@ -21,6 +21,7 @@ using System.Reflection;
 using System.Web.UI;
 using Remotion.Globalization;
 using Remotion.Logging;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Web.UI.Globalization;
 
@@ -60,7 +61,7 @@ namespace Remotion.Web.UI.Controls
         if (!typeof (IControlItem).IsAssignableFrom (type))
         {
           throw new ArgumentException (
-              string.Format ("Type '{0}' at index {1} does not implement interface 'IControlItem'.", type.FullName, i), "supportedTypes");
+              string.Format ("Type '{0}' at index {1} does not implement interface 'IControlItem'.", type.GetFullNameSafe(), i), "supportedTypes");
         }
       }
 

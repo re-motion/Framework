@@ -17,6 +17,7 @@
 using System;
 using JetBrains.Annotations;
 using Remotion.Globalization.Implementation;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Globalization
@@ -55,7 +56,7 @@ namespace Remotion.Globalization
 
       if (ResourceLogger.IsEnabled)
       {
-        ResourceLogger.LogResourceEntryNotFound ("Enum value: '{0}' (Type: '{1}')", value, value.GetType().FullName);
+        ResourceLogger.LogResourceEntryNotFound ("Enum value: '{0}' (Type: '{1}')", value, value.GetType().GetFullNameSafe());
       }
 
       return value.ToString();

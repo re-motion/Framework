@@ -142,7 +142,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       if (suppressedMixin != null)
       {
         string message = string.Format ("Class '{0}' suppresses mixin '{1}' inherited from its base class '{2}'. This is not allowed because "
-            + "the mixin adds persistence information to the base class which must also be present in the derived class.", Type.FullName,
+            + "the mixin adds persistence information to the base class which must also be present in the derived class.", Type.GetFullNameSafe(),
             suppressedMixin.MixinType.Name, ParentClassContext.Type.Name);
         throw new MappingException (message);
       }
@@ -153,7 +153,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       if (mixin.MixinType.ContainsGenericParameters)
       {
         string message = string.Format ("The persistence-relevant mixin {0} applied to class {1} has open generic type parameters. All type "
-            + "parameters of the mixin must be specified when it is applied to a DomainObject.", mixin.MixinType.FullName, Type.FullName);
+            + "parameters of the mixin must be specified when it is applied to a DomainObject.", mixin.MixinType.GetFullNameSafe(), Type.GetFullNameSafe());
         throw new MappingException (message);
       }
       else

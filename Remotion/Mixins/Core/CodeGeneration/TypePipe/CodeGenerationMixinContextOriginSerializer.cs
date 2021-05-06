@@ -18,6 +18,7 @@ using System;
 using System.Reflection;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Context.Serialization;
+using Remotion.Reflection;
 using Remotion.TypePipe.Dlr.Ast;
 using Remotion.Utilities;
 
@@ -52,7 +53,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       ArgumentUtility.CheckNotNull ("assembly", assembly);
 
       Assertion.IsNotNull (s_assemblyLoadMethod);
-      _constructorArguments[1] = Expression.Call (null, s_assemblyLoadMethod, new[] { Expression.Constant (assembly.FullName) });
+      _constructorArguments[1] = Expression.Call (null, s_assemblyLoadMethod, new[] { Expression.Constant (assembly.GetFullNameChecked()) });
     }
 
     public void AddLocation (string location)

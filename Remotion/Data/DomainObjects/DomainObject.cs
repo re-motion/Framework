@@ -22,6 +22,7 @@ using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime;
+using Remotion.Reflection;
 using Remotion.TypePipe;
 using Remotion.Utilities;
 
@@ -252,7 +253,7 @@ namespace Remotion.Data.DomainObjects
         // ReSharper restore DoNotCallOverridableMethodsInConstructor
         string message = String.Format (
             "The GetObjectData method on type {0} did not call DomainObject's BaseGetObjectData method.",
-            publicDomainObjectType.FullName);
+            publicDomainObjectType.GetFullNameSafe());
         throw new SerializationException (message, ex);
       }
     }

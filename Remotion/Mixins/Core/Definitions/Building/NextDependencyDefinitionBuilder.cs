@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions.Building
@@ -49,7 +50,7 @@ namespace Remotion.Mixins.Definitions.Building
       if (!type.IsInterface)
       {
         string message = string.Format ("Next call dependencies must be interfaces (or System.Object), but mixin {0} (on class {1} has a dependency "
-            + "on a class: {2}.", _mixin.FullName, _mixin.TargetClass.FullName, type.FullName);
+            + "on a class: {2}.", _mixin.FullName, _mixin.TargetClass.FullName, type.GetFullNameSafe());
         throw new ConfigurationException (message);
       }
 

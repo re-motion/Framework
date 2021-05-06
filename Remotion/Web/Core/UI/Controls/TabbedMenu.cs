@@ -23,6 +23,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
@@ -433,7 +434,7 @@ namespace Remotion.Web.UI.Controls
       else if (subMenuTab != null)
         tabIDs = ConvertTabIDsToArray (subMenuTab.Parent, subMenuTab);
       else
-        throw new NotSupportedException (string.Format ("menuTab is of unsupported type '{0}'.", menuTab.GetType().FullName));
+        throw new NotSupportedException (string.Format ("menuTab is of unsupported type '{0}'.", menuTab.GetType().GetFullNameSafe()));
 
       string value = (string) TypeConversionProvider.Convert (typeof (string[]), typeof (string), tabIDs);
 

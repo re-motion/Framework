@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       if (_classDefinition.IsAbstract)
       {
         throw new NonInterceptableTypeException (
-            string.Format ("Cannot instantiate type {0} as it is abstract and not instantiable.", _baseType.FullName),
+            string.Format ("Cannot instantiate type {0} as it is abstract and not instantiable.", _baseType.GetFullNameSafe()),
             _baseType);
       }
 
@@ -138,7 +138,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
         var message = string.Format (
             "Cannot instantiate type '{0}' because the mixin member '{1}.{2}' is an automatic property. "
             + "Mixins must implement their persistent members by using 'Properties' to get and set property values.",
-            _baseType.FullName,
+            _baseType.GetFullNameSafe(),
             property.DeclaringType.Name,
             property.Name);
         throw new NonInterceptableTypeException (message, _baseType);
@@ -150,7 +150,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       if (IsAutomaticPropertyAccessor (accessor) && !IsOverridable (accessor))
       {
         string message = string.Format ("Cannot instantiate type '{0}' as its member '{1}' has a non-virtual {2}.",
-            _baseType.FullName, property.Name, accessorDescription);
+            _baseType.GetFullNameSafe(), property.Name, accessorDescription);
         throw new NonInterceptableTypeException (message, _baseType);
       }
     }
@@ -158,7 +158,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
     private void ValidateBaseType ()
     {
       if (_baseType.IsSealed)
-        throw new NonInterceptableTypeException (string.Format ("Cannot instantiate type {0} as it is sealed.", _baseType.FullName), _baseType);
+        throw new NonInterceptableTypeException (string.Format ("Cannot instantiate type {0} as it is sealed.", _baseType.GetFullNameSafe()), _baseType);
     }
 
     private void ValidateRemainingMethods (Type currentType)
@@ -169,7 +169,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
           throw new NonInterceptableTypeException (
               string.Format (
                   "Cannot instantiate type {0} as its member {1} (on type {2}) is abstract (and not an automatic property).",
-                  _baseType.FullName,
+                  _baseType.GetFullNameSafe(),
                   method.Name,
                   currentType.Name),
               _baseType);

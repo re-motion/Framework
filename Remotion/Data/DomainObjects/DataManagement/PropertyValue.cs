@@ -18,6 +18,7 @@ using System;
 using System.Collections;
 using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement
@@ -77,7 +78,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       {
         var message = string.Format ("The property '{0}' (declared on class '{1}') is invalid because its values cannot be copied. Only value types, "
             + "strings, the Type type, byte arrays, types implementing IStructualEquatable, and ObjectIDs are currently supported, but the property's type is '{2}'.",
-            definition.PropertyName, definition.ClassDefinition.ID, definition.PropertyType.FullName);
+            definition.PropertyName, definition.ClassDefinition.ID, definition.PropertyType.GetFullNameSafe());
         throw new NotSupportedException (message);
       }
 

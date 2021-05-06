@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
@@ -29,7 +30,7 @@ namespace Remotion.Web.UI.Controls.Rendering
     {
       ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
       
-      string keyScript = typeof (ViewLayoutExtensions).FullName + "_Script";
+      string keyScript = typeof (ViewLayoutExtensions).GetFullNameChecked() + "_Script";
       var scriptUrl = ResourceUrlFactory.CreateResourceUrl (typeof (ViewLayoutExtensions), ResourceType.Html, "ViewLayout.js");
       htmlHeadAppender.RegisterJavaScriptInclude (keyScript, scriptUrl);
     }

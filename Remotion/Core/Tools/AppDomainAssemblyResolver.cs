@@ -17,6 +17,7 @@
 using System;
 using System.IO;
 using System.Reflection;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Tools
@@ -38,7 +39,7 @@ namespace Remotion.Tools
       // TODO RM-7761: null guard should be added.
       return (AppDomainAssemblyResolver) appDomain.CreateInstanceFromAndUnwrap (
                                              typeof (AppDomainAssemblyResolver).Assembly.Location,
-                                             typeof (AppDomainAssemblyResolver).FullName!,
+                                             typeof (AppDomainAssemblyResolver).GetFullNameChecked(),
                                              false,
                                              BindingFlags.Public | BindingFlags.Instance,
                                              null,
@@ -94,11 +95,11 @@ namespace Remotion.Tools
 
     private string? GetAssemblyLocation (AssemblyName assemblyName)
     {
-      var dllLocation = Path.Combine (_assemblyDirectory, assemblyName.Name + ".dll");
+      var dllLocation = Path.Combine (_assemblyDirectory, assemblyName.GetNameChecked() + ".dll");
       if (File.Exists (dllLocation))
         return dllLocation;
 
-      var exeLocation = Path.Combine (_assemblyDirectory, assemblyName.Name + ".exe");
+      var exeLocation = Path.Combine (_assemblyDirectory, assemblyName.GetNameChecked() + ".exe");
       if (File.Exists (exeLocation))
         return exeLocation;
 

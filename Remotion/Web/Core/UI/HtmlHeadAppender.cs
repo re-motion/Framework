@@ -20,6 +20,7 @@ using System.Linq;
 using System.Web;
 using Remotion.Collections;
 using Remotion.Context;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Web.Resources;
 using Remotion.Web.UI.Controls;
@@ -51,7 +52,7 @@ namespace Remotion.Web.UI
     }
 
     private static readonly SafeContextSingleton<HtmlHeadAppender> s_current =
-        new SafeContextSingleton<HtmlHeadAppender> (typeof (HtmlHeadAppender).AssemblyQualifiedName + "_Current", () => new HtmlHeadAppender());
+        new SafeContextSingleton<HtmlHeadAppender> (typeof (HtmlHeadAppender).GetAssemblyQualifiedNameChecked() + "_Current", () => new HtmlHeadAppender());
 
     /// <summary>
     ///   Gets the <see cref="HtmlHeadAppender"/> instance.

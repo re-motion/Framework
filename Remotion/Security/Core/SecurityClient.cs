@@ -284,7 +284,7 @@ namespace Remotion.Security
         ArgumentUtility.CheckNotNull ("securableObject", securableObject);
 
         throw CreatePermissionDeniedException (
-            "Access to method '{0}' on type '{1}' has been denied.", methodName, securableObject.GetSecurableType().FullName);
+            "Access to method '{0}' on type '{1}' has been denied.", methodName, securableObject.GetSecurableType().GetFullNameSafe());
       }
     }
 
@@ -305,7 +305,7 @@ namespace Remotion.Security
         ArgumentUtility.CheckNotNull ("methodInfo", methodInfo);
 
         throw CreatePermissionDeniedException (
-            "Access to method '{0}' on type '{1}' has been denied.", methodInfo.Name, securableObject.GetSecurableType ().FullName);
+            "Access to method '{0}' on type '{1}' has been denied.", methodInfo.Name, securableObject.GetSecurableType ().GetFullNameSafe());
       }
     }
 
@@ -328,7 +328,7 @@ namespace Remotion.Security
         throw CreatePermissionDeniedException (
             "Access to method '{0}' on type '{1}' has been denied.",
             methodInformation.Name,
-            securableObject.GetSecurableType().FullName);
+            securableObject.GetSecurableType().GetFullNameSafe());
       }
     }
 
@@ -402,7 +402,7 @@ namespace Remotion.Security
         throw CreatePermissionDeniedException (
             "Access to method '{0}' on type '{1}' has been denied.",
             propertyName,
-            securableObject.GetSecurableType().FullName);
+            securableObject.GetSecurableType().GetFullNameSafe());
       }
     }
 
@@ -425,7 +425,7 @@ namespace Remotion.Security
         throw CreatePermissionDeniedException (
             "Access to get-accessor of property '{0}' on type '{1}' has been denied.",
             methodInfo.Name,
-            securableObject.GetSecurableType().FullName);
+            securableObject.GetSecurableType().GetFullNameSafe());
       }
     }
 
@@ -448,7 +448,7 @@ namespace Remotion.Security
         throw CreatePermissionDeniedException (
             "Access to method '{0}' on type '{1}' has been denied.",
             methodInformation.Name,
-            securableObject.GetSecurableType().FullName);
+            securableObject.GetSecurableType().GetFullNameSafe());
       }
     }
 
@@ -522,7 +522,7 @@ namespace Remotion.Security
         throw CreatePermissionDeniedException (
             "Access to set-accessor of property '{0}' on type '{1}' has been denied.",
             propertyName,
-            securableObject.GetSecurableType().FullName);
+            securableObject.GetSecurableType().GetFullNameSafe());
       }
     }
 
@@ -545,7 +545,7 @@ namespace Remotion.Security
         throw CreatePermissionDeniedException (
             "Access to set-accessor of property '{0}' on type '{1}' has been denied.",
             methodInfo.Name,
-            securableObject.GetSecurableType().FullName);
+            securableObject.GetSecurableType().GetFullNameSafe());
       }
     }
 
@@ -568,7 +568,7 @@ namespace Remotion.Security
         throw CreatePermissionDeniedException (
             "Access to set-accessor of property '{0}' on type '{1}' has been denied.",
             methodInformation.Name,
-            securableObject.GetSecurableType().FullName);
+            securableObject.GetSecurableType().GetFullNameSafe());
       }
     }
 
@@ -600,7 +600,7 @@ namespace Remotion.Security
       {
         ArgumentUtility.CheckNotNull ("securableClass", securableClass);
 
-        throw CreatePermissionDeniedException ("Access to constructor of type '{0}' has been denied.", securableClass.FullName);
+        throw CreatePermissionDeniedException ("Access to constructor of type '{0}' has been denied.", securableClass.GetFullNameSafe());
       }
     }
 
@@ -668,7 +668,7 @@ namespace Remotion.Security
         ArgumentUtility.CheckNotNull ("securableClass", securableClass);
         ArgumentUtility.CheckNotNullOrEmpty ("methodName", methodName);
 
-        throw CreatePermissionDeniedException ("Access to static method '{0}' on type '{1}' has been denied.", methodName, securableClass.FullName);
+        throw CreatePermissionDeniedException ("Access to static method '{0}' on type '{1}' has been denied.", methodName, securableClass.GetFullNameSafe());
       }
     }
 
@@ -691,7 +691,7 @@ namespace Remotion.Security
         throw CreatePermissionDeniedException (
             "Access to static method '{0}' on type '{1}' has been denied.",
             methodInfo.Name,
-            securableClass.FullName);
+            securableClass.GetFullNameSafe());
       }
     }
 
@@ -714,7 +714,7 @@ namespace Remotion.Security
         throw CreatePermissionDeniedException (
             "Access to static method '{0}' on type '{1}' has been denied.",
             methodInformation.Name,
-            securableClass.FullName);
+            securableClass.GetFullNameSafe());
       }
     }
 

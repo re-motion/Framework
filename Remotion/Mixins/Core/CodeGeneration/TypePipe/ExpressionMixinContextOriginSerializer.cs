@@ -18,6 +18,7 @@ using System;
 using System.Reflection;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Context.Serialization;
+using Remotion.Reflection;
 using Remotion.TypePipe.Dlr.Ast;
 using Remotion.Utilities;
 
@@ -43,7 +44,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       return Expression.New (
           s_constructor,
           Expression.Constant (Kind),
-          Expression.Call (s_assemblyLoadMethod, Expression.Constant (Assembly!.FullName)), // TODO RM-7691 Change serializer properties to non-nullable return values
+          Expression.Call (s_assemblyLoadMethod, Expression.Constant (Assembly!.GetFullNameChecked())), // TODO RM-7691 Change serializer properties to non-nullable return values
           Expression.Constant (Locaction));
     }
   }

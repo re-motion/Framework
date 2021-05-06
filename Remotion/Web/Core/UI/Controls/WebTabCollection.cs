@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Web.UI;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Web.Utilities;
 
@@ -42,7 +43,7 @@ namespace Remotion.Web.UI.Controls
         if (!typeof (WebTab).IsAssignableFrom (type))
         {
           throw new ArgumentException (
-              string.Format ("Type '{0}' at index {1} is not compatible with type 'WebTab'.", type.FullName, i), "supportedTypes");
+              string.Format ("Type '{0}' at index {1} is not compatible with type 'WebTab'.", type.GetFullNameSafe(), i), "supportedTypes");
         }
       }
     }

@@ -18,6 +18,7 @@ using System;
 using System.Reflection;
 using System.Text;
 using Remotion.Mixins.Definitions;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.Validation
@@ -70,7 +71,7 @@ namespace Remotion.Mixins.Validation
       MethodInfo method = rule.Method;
       var attribute = AttributeUtility.GetCustomAttribute<DelegateRuleDescriptionAttribute> (method, true);
       if (attribute == null || attribute.RuleName == null)
-        return method.DeclaringType!.FullName + "." + rule.Method.Name;
+        return method.DeclaringType!.GetFullNameChecked() + "." + rule.Method.Name;
       else
         return attribute.RuleName;
     }

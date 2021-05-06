@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Text;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
@@ -124,7 +125,7 @@ namespace Remotion.Web.Utilities
       ArgumentUtility.CheckNotNull ("control", control);
       ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
 
-      string key = typeof (ScriptUtility).FullName + "_StyleUtility";
+      string key = typeof (ScriptUtility).GetFullNameChecked() + "_StyleUtility";
       if (!htmlHeadAppender.IsRegistered (key))
       {
         var url = _infrastructureResourceUrlFactory.CreateThemedResourceUrl (ResourceType.Html, "StyleUtility.js");

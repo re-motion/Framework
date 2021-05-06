@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Reflection;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins
@@ -73,7 +74,7 @@ namespace Remotion.Mixins
     {
       get
       {
-        return AttributeSourceMemberName != null ? AttributeSourceType.FullName + "." + AttributeSourceMemberName : AttributeSourceType.FullName!;
+        return AttributeSourceMemberName != null ? AttributeSourceType.GetFullNameChecked() + "." + AttributeSourceMemberName : AttributeSourceType.GetFullNameChecked();
       }
     }
 
@@ -102,7 +103,7 @@ namespace Remotion.Mixins
               string.Format (
                   "The source member string {0} matches several members on type {1}.",
                   AttributeSourceMemberName,
-                  AttributeSourceType.FullName));
+                  AttributeSourceType.GetFullNameSafe()));
         }
       }
     }

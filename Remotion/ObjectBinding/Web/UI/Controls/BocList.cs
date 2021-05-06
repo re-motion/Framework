@@ -40,6 +40,7 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation;
 using Remotion.ObjectBinding.Web.UI.Design;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
@@ -1997,7 +1998,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
             {
               //  Invalid collection property
               s_log.Debug (
-                  "BocList '" + ID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page
+                  "BocList '" + ID + "' in naming container '" + NamingContainer.GetType().GetFullNameSafe() + "' on page '" + Page
                   + "' does not contain a collection property named '" + collectionID + "'.");
               break;
             }
@@ -2024,7 +2025,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         {
           //  Not supported format or invalid property
           s_log.Debug (
-              "BocList '" + ID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page
+              "BocList '" + ID + "' in naming container '" + NamingContainer.GetType().GetFullNameSafe() + "' on page '" + Page
               + "' received a resource with an invalid or unknown key '" + key
               + "'. Required format: 'property' or 'collectionID:elementID:property'.");
         }

@@ -19,6 +19,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering;
@@ -78,11 +79,11 @@ public class DatePickerPage : Page
   override protected void OnInit(EventArgs e)
 	{
     if (Form == null)
-      throw new HttpException (this.GetType().FullName + " does not initialize field 'Form'.");
+      throw new HttpException (this.GetType().GetFullNameSafe() + " does not initialize field 'Form'.");
     if (HtmlHeadContents == null)
-      throw new HttpException (this.GetType().FullName + " does not initialize field 'HtmlHeadContents'.");
+      throw new HttpException (this.GetType().GetFullNameSafe() + " does not initialize field 'HtmlHeadContents'.");
     if (Calendar == null)
-      throw new HttpException (this.GetType().FullName + " does not initialize field 'Calendar'.");
+      throw new HttpException (this.GetType().GetFullNameSafe() + " does not initialize field 'Calendar'.");
 
     Calendar.SelectionChanged += new EventHandler(Calendar_SelectionChanged);
 

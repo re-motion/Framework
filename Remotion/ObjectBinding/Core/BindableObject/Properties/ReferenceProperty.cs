@@ -17,6 +17,7 @@
 using System;
 using System.Threading;
 using JetBrains.Annotations;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.BindableObject.Properties
@@ -419,7 +420,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
             if (!typeof (IBusinessObject).IsAssignableFrom (actualConcreteType))
             {
               throw new InvalidOperationException (
-                  string.Format ("The concrete type must implement the IBusinessObject interface.\r\nConcrete type: {0}", actualConcreteType.FullName));
+                  string.Format ("The concrete type must implement the IBusinessObject interface.\r\nConcrete type: {0}", actualConcreteType.GetFullNameSafe()));
             }
             return actualConcreteType;
           },
@@ -452,10 +453,10 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
         throw new InvalidOperationException (
             string.Format (
                 "The GetBusinessObjectClass method of '{0}', registered with the '{1}', failed to return an '{2}' for type '{3}'.",
-                service.GetType().FullName,
-                BusinessObjectProvider.GetType().FullName,
-                typeof (IBusinessObjectClass).FullName,
-                UnderlyingType.FullName));
+                service.GetType().GetFullNameSafe(),
+                BusinessObjectProvider.GetType().GetFullNameSafe(),
+                typeof (IBusinessObjectClass).GetFullNameSafe(),
+                UnderlyingType.GetFullNameSafe()));
       }
 
       return businessObjectClass;
@@ -470,11 +471,11 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
         throw new InvalidOperationException (
             string.Format (
                 "The '{0}' type does not use the '{1}' implementation of '{2}' and there is no '{3}' registered with the '{4}' associated with this type.",
-                UnderlyingType.FullName,
-                typeof (BindableObjectMixin).Namespace,
-                typeof (IBusinessObject).FullName,
-                typeof (IBusinessObjectClassService).FullName,
-                typeof (BusinessObjectProvider).FullName));
+                UnderlyingType.GetFullNameSafe(),
+                typeof (BindableObjectMixin).GetNamespaceSafe(),
+                typeof (IBusinessObject).GetFullNameSafe(),
+                typeof (IBusinessObjectClassService).GetFullNameSafe(),
+                typeof (BusinessObjectProvider).GetFullNameSafe()));
       }
       return service;
     }
@@ -484,7 +485,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
         where TService: IBusinessObjectService
     {
       var service = GetServiceOrNull<TService> (serviceDefinition);
-      Assertion.IsNotNull (service, "The BusinessObjectProvider did not return a service for '{0}'.", serviceDefinition.Item2.FullName);
+      Assertion.IsNotNull (service, "The BusinessObjectProvider did not return a service for '{0}'.", serviceDefinition.Item2.GetFullNameSafe());
       return service;
     }
 

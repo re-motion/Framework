@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Web.UI;
 using Remotion.Globalization;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
@@ -72,11 +73,11 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
 
       htmlHeadAppender.RegisterUtilitiesJavaScriptInclude();
 
-      string scriptKey = typeof (DropDownMenuRenderer).FullName + "_Script";
+      string scriptKey = typeof (DropDownMenuRenderer).GetFullNameChecked() + "_Script";
       var scriptUrl = ResourceUrlFactory.CreateResourceUrl (typeof (DropDownMenuRenderer), ResourceType.Html, "DropDownMenu.js");
       htmlHeadAppender.RegisterJavaScriptInclude (scriptKey, scriptUrl);
 
-      string styleSheetKey = typeof (DropDownMenuRenderer).FullName + "_Style";
+      string styleSheetKey = typeof (DropDownMenuRenderer).GetFullNameChecked() + "_Style";
       var styleSheetUrl = ResourceUrlFactory.CreateThemedResourceUrl (typeof (DropDownMenuRenderer), ResourceType.Html, "DropDownMenu.css");
       htmlHeadAppender.RegisterStylesheetLink (styleSheetKey, styleSheetUrl, HtmlHeadAppender.Priority.Library);
     }
