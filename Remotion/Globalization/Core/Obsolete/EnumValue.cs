@@ -22,9 +22,9 @@ namespace Remotion.Globalization
   [Obsolete ("This struct is only used when retrieving enum values via EnumDescription, which is no obsolete, too. (Version 1.13.223.0)", true)]
   public struct EnumValue
   {
-    public readonly Enum Value;
+    public readonly Enum? Value;
 
-    public readonly string Description;
+    public readonly string? Description;
 
     [Obsolete ("This struct is only used when retrieving enum values via EnumDescription, which is no obsolete, too. (Version 1.13.223.0)", true)]
     public long NumericValue

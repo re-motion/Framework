@@ -72,9 +72,9 @@ namespace Remotion.Globalization
   public class MultiLingualResourcesAttribute : Attribute, IResourcesAttribute
   {
     /// <summary> The base name of the resource container </summary>
-    private string _baseName = null;
+    private string? _baseName = null;
 
-    private Assembly _resourceAssembly = null;
+    private Assembly? _resourceAssembly = null;
 
     /// <summary> Initalizes an instance. </summary>
     public MultiLingualResourcesAttribute (string baseName)
@@ -89,7 +89,7 @@ namespace Remotion.Globalization
     /// The base name of the resource conantainer to be used by this type
     /// (&lt;assembly&gt;.&lt;path inside project&gt;.&lt;resource file name without extension&gt;).
     /// </remarks>
-    public string BaseName
+    public string? BaseName
     {
       get { return _baseName; }
     }
@@ -100,7 +100,7 @@ namespace Remotion.Globalization
       _baseName = baseName;
     }
 
-    public Assembly ResourceAssembly
+    public Assembly? ResourceAssembly
     {
       get { return _resourceAssembly; }
     }
@@ -111,7 +111,7 @@ namespace Remotion.Globalization
       _resourceAssembly = resourceAssembly;
     }
 
-    public override string ToString ()
+    public override string? ToString ()
     {
       return BaseName;
     }

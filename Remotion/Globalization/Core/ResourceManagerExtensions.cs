@@ -50,12 +50,12 @@ namespace Remotion.Globalization
     ///   The value of the resource. If no match is possible, the identifier is returned.
     /// </returns>
     [NotNull]
-    public static string GetString ([NotNull] this IResourceManager resourceManager, [NotNull] string id)
+    public static string? GetString ([NotNull] this IResourceManager resourceManager, [NotNull] string id)
     {
       ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
       ArgumentUtility.CheckNotNull ("id", id);
 
-      string value;
+      string? value;
       if (resourceManager.TryGetString (id, out value))
         return value;
 
@@ -72,12 +72,12 @@ namespace Remotion.Globalization
     ///   The value of the resource. If no match is possible, <see langword="null"/> is returned.
     /// </returns>
     [CanBeNull]
-    public static string GetStringOrDefault ([NotNull] this IResourceManager resourceManager, [NotNull] string id)
+    public static string? GetStringOrDefault ([NotNull] this IResourceManager resourceManager, [NotNull] string id)
     {
       ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
       ArgumentUtility.CheckNotNull ("id", id);
 
-      string value;
+      string? value;
       if (resourceManager.TryGetString (id, out value))
         return value;
 
@@ -93,7 +93,7 @@ namespace Remotion.Globalization
     ///   The value of the resource. If no match is possible, the identifier is returned.
     /// </returns>
     [NotNull]
-    public static string GetString ([NotNull] this IResourceManager resourceManager, [NotNull] Enum enumValue)
+    public static string? GetString ([NotNull] this IResourceManager resourceManager, [NotNull] Enum enumValue)
     {
       ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
       ArgumentUtility.CheckNotNull ("enumValue", enumValue);
@@ -110,7 +110,7 @@ namespace Remotion.Globalization
     ///   The value of the resource. If no match is possible, null is returned.
     /// </returns>
     [CanBeNull]
-    public static string GetStringOrDefault ([NotNull] this IResourceManager resourceManager, [NotNull] Enum enumValue)
+    public static string? GetStringOrDefault ([NotNull] this IResourceManager resourceManager, [NotNull] Enum enumValue)
     {
       ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
       ArgumentUtility.CheckNotNull ("enumValue", enumValue);
@@ -139,7 +139,7 @@ namespace Remotion.Globalization
       ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
       ArgumentUtility.CheckNotNull ("id", id);
 
-      string value;
+      string? value;
       return resourceManager.TryGetString (id, out value);
     }
   }

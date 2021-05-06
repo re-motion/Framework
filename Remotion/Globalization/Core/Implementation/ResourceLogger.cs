@@ -38,7 +38,7 @@ namespace Remotion.Globalization.Implementation
     }
 
     [StringFormatMethod ("idFormat")]
-    public static void LogResourceEntryNotFound (string idFormat, params object[] args)
+    public static void LogResourceEntryNotFound (string idFormat, params object[]? args)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("idFormat", idFormat);
 

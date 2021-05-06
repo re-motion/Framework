@@ -68,7 +68,7 @@ namespace Remotion.Globalization.Implementation
     {
     }
 
-    public bool TryGetEnumerationValueDisplayName (Enum value, out string result)
+    public bool TryGetEnumerationValueDisplayName (Enum value, out string? result)
     {
       ArgumentUtility.CheckNotNull ("value", value);
 

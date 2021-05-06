@@ -65,12 +65,12 @@ namespace Remotion.Globalization.Implementation
     protected abstract IEnumerable<MultiLingualNameAttribute> GetCustomAttributes ([NotNull] TReflectionObject reflectionObject);
 
     [CanBeNull]
-    protected abstract Assembly GetAssembly ([NotNull] TReflectionObject reflectionObject);
+    protected abstract Assembly? GetAssembly ([NotNull] TReflectionObject reflectionObject);
 
     [NotNull]
     protected abstract string GetContextForExceptionMessage ([NotNull] TReflectionObject reflectionObject);
 
-    public bool TryGetLocalizedNameForCurrentUICulture ([NotNull] TReflectionObject reflectionObject, [CanBeNull] out string result)
+    public bool TryGetLocalizedNameForCurrentUICulture ([NotNull] TReflectionObject reflectionObject, [CanBeNull] out string? result)
     {
       ArgumentUtility.CheckNotNull ("reflectionObject", reflectionObject);
 
@@ -146,7 +146,7 @@ namespace Remotion.Globalization.Implementation
         Dictionary<CultureInfo, string> attributes)
     {
       var assemblyNeutralResourcesCulture = GetAssemblyNeutralResourcesCulture (reflectionObject);
-      string neutralLocalizedName;
+      string? neutralLocalizedName;
       if (!attributes.TryGetValue (assemblyNeutralResourcesCulture, out neutralLocalizedName))
       {
         throw new InvalidOperationException (

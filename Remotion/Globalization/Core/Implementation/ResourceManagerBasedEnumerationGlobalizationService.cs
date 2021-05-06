@@ -47,7 +47,7 @@ namespace Remotion.Globalization.Implementation
       _memberInformationNameResolver = memberInformationNameResolver;
     }
 
-    public bool TryGetEnumerationValueDisplayName (Enum value, out string result)
+    public bool TryGetEnumerationValueDisplayName (Enum value, out string? result)
     {
       ArgumentUtility.CheckNotNull ("value", value);
 

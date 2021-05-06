@@ -83,7 +83,7 @@ namespace Remotion.Globalization
     /// <summary>
     ///   Searches for all string resources inside the resource manager whose name is prefixed with a matching tag.
     /// </summary>
-    public IReadOnlyDictionary<string, string> GetAllStrings (string prefix)
+    public IReadOnlyDictionary<string, string> GetAllStrings (string? prefix)
     {
       var result = new Dictionary<string, string>();
       foreach (var resourceManager in _resourceManagers)
@@ -102,7 +102,7 @@ namespace Remotion.Globalization
     /// <summary>
     ///   Tries to get the value of the specified string resource. If the resource is not found, <see langword="false" /> is returned.
     /// </summary>
-    public bool TryGetString (string id, out string value)
+    public bool TryGetString (string id, out string? value)
     {
       //FOR-loop for performance reasons
       // ReSharper disable ForCanBeConvertedToForeach

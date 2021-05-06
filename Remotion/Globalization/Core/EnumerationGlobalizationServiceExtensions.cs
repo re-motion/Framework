@@ -43,14 +43,14 @@ namespace Remotion.Globalization
     ///   or the <paramref name="value"/>'s name if no resource could be found.
     /// </returns>
     [NotNull]
-    public static string GetEnumerationValueDisplayName (
+    public static string? GetEnumerationValueDisplayName (
         [NotNull] this IEnumerationGlobalizationService enumerationGlobalizationService,
         [NotNull] Enum value)
     {
       ArgumentUtility.CheckNotNull ("enumerationGlobalizationService", enumerationGlobalizationService);
       ArgumentUtility.CheckNotNull ("value", value);
 
-      string result;
+      string? result;
       if (enumerationGlobalizationService.TryGetEnumerationValueDisplayName (value, out result))
         return result;
 
@@ -76,14 +76,14 @@ namespace Remotion.Globalization
     ///   or <see langword="null" /> if no resource could be found.
     /// </returns>
     [CanBeNull]
-    public static string GetEnumerationValueDisplayNameOrDefault (
+    public static string? GetEnumerationValueDisplayNameOrDefault (
         [NotNull] this IEnumerationGlobalizationService enumerationGlobalizationService,
         [NotNull] Enum value)
     {
       ArgumentUtility.CheckNotNull ("enumerationGlobalizationService", enumerationGlobalizationService);
       ArgumentUtility.CheckNotNull ("value", value);
 
-      string result;
+      string? result;
       if (enumerationGlobalizationService.TryGetEnumerationValueDisplayName (value, out result))
         return result;
 
@@ -107,7 +107,7 @@ namespace Remotion.Globalization
       ArgumentUtility.CheckNotNull ("enumerationGlobalizationService", enumerationGlobalizationService);
       ArgumentUtility.CheckNotNull ("value", value);
 
-      string result;
+      string? result;
       return enumerationGlobalizationService.TryGetEnumerationValueDisplayName (value, out result);
     }
   }

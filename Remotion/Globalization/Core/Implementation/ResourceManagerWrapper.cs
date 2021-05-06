@@ -123,7 +123,7 @@ namespace Remotion.Globalization.Implementation
     ///     </list>
     ///   </para>
     /// </remarks>
-    public IReadOnlyDictionary<string, string> GetAllStrings (string prefix)
+    public IReadOnlyDictionary<string, string> GetAllStrings (string? prefix)
     {
       return _cachedResourceSet.GetOrAdd (
           Tuple.Create (CultureInfo.CurrentUICulture, prefix ?? string.Empty),
@@ -146,14 +146,14 @@ namespace Remotion.Globalization.Implementation
       for (int i = 0; i < cultureHierarchy.Length; i++)
       {
         CultureInfo culture = cultureHierarchy[i];
-        ResourceSet resourceSet = GetResourceSet (culture);
+        ResourceSet? resourceSet = GetResourceSet (culture);
         if (resourceSet != null)
         {
           foreach (DictionaryEntry entry in resourceSet)
           {
             string entryKey = (string) entry.Key;
             if (entryKey.StartsWith (prefix))
-              result[entryKey] = (string) entry.Value;
+              result[entryKey] = (string?) entry.Value;
           }
         }
       }
@@ -164,7 +164,7 @@ namespace Remotion.Globalization.Implementation
     /// <summary>
     ///   Gets the value of the specified string resource. 
     /// </summary>
-    public bool TryGetString (string id, out string value)
+    public bool TryGetString (string id, out string? value)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("id", id);
 
@@ -173,7 +173,7 @@ namespace Remotion.Globalization.Implementation
       // This would be a problem for GetAvailableStrings() because we do not want to return fallback values.
       CheckAndSetAvailableCultures (GetCultureHierarchy (CultureInfo.CurrentCulture));
 
-      string result = _resourceManager.GetString (id);
+      string? result = _resourceManager.GetString (id);
       if (result != null)
       {
         value = result;
@@ -248,7 +248,7 @@ namespace Remotion.Globalization.Implementation
       get { return false; }
     }
 
-    private ResourceSet GetResourceSet (CultureInfo culture)
+    private ResourceSet? GetResourceSet (CultureInfo culture)
     {
       return _resourceManager.GetResourceSet (culture, true, false);
     }

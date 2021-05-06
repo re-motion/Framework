@@ -49,7 +49,7 @@ namespace Remotion.Globalization.Implementation
       get { return _enumerationGlobalizationServices; }
     }
 
-    public bool TryGetEnumerationValueDisplayName (Enum value, out string result)
+    public bool TryGetEnumerationValueDisplayName (Enum value, out string? result)
     {
       ArgumentUtility.CheckNotNull ("value", value);
 

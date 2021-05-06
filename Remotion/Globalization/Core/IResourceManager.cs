@@ -31,13 +31,13 @@ namespace Remotion.Globalization
     /// <param name="prefix"> The prefix all returned string resources must have. Use <see langword="null"/> to return all strings.</param>
     /// <returns>A collection of string pairs, the key being the resource's ID, the value being the string.</returns>
     [NotNull]
-    IReadOnlyDictionary<string, string> GetAllStrings ([CanBeNull]string prefix);
+    IReadOnlyDictionary<string, string> GetAllStrings ([CanBeNull]string? prefix);
 
     /// <summary>Tries to get the value of the specified string resource.</summary>
     /// <param name="id">The ID of the resource to get. Must not be <see langword="null" />.</param>
     /// <param name="value">The value of the resource lookup result.</param>
     /// <returns><see langword="true"/> if the <see cref="IResourceManager"/> contains the specified resource.</returns>
-    bool TryGetString ([NotNull]string id, out string value);
+    bool TryGetString ([NotNull]string id, out string? value);
 
     /// <summary>Returns the name of the resource manager.</summary>
     string Name { get; }

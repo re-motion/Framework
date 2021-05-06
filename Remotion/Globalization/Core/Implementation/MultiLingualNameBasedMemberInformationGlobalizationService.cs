@@ -44,7 +44,7 @@ namespace Remotion.Globalization.Implementation
         return typeInformation.GetCustomAttributes<MultiLingualNameAttribute> (false);
       }
 
-      protected override Assembly GetAssembly (ITypeInformation typeInformation)
+      protected override Assembly? GetAssembly (ITypeInformation typeInformation)
       {
         ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
 
@@ -83,7 +83,7 @@ namespace Remotion.Globalization.Implementation
         return originallyDeclaredAttributes;
       }
 
-      protected override Assembly GetAssembly (IPropertyInformation propertyInformation)
+      protected override Assembly? GetAssembly (IPropertyInformation propertyInformation)
       {
         ArgumentUtility.CheckNotNull ("propertyInformation", propertyInformation);
 
@@ -117,7 +117,7 @@ namespace Remotion.Globalization.Implementation
     {
     }
 
-    public bool TryGetTypeDisplayName (ITypeInformation typeInformation, ITypeInformation typeInformationForResourceResolution, out string result)
+    public bool TryGetTypeDisplayName (ITypeInformation typeInformation, ITypeInformation typeInformationForResourceResolution, out string? result)
     {
       ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
       ArgumentUtility.CheckNotNull ("typeInformationForResourceResolution", typeInformationForResourceResolution);
@@ -128,7 +128,7 @@ namespace Remotion.Globalization.Implementation
     public bool TryGetPropertyDisplayName (
         IPropertyInformation propertyInformation,
         ITypeInformation typeInformationForResourceResolution,
-        out string result)
+        out string? result)
     {
       ArgumentUtility.CheckNotNull ("propertyInformation", propertyInformation);
       ArgumentUtility.CheckNotNull ("typeInformationForResourceResolution", typeInformationForResourceResolution);
