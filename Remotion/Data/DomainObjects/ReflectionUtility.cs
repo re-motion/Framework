@@ -57,19 +57,6 @@ namespace Remotion.Data.DomainObjects
     /// <exception cref="InvalidOperationException">The assembly's code base is not a local path.</exception>
     public static string GetAssemblyDirectory (Assembly assembly)
     {
-      return GetAssemblyDirectory ((_Assembly) assembly);
-    }
-
-    /// <summary>
-    /// Gets the directory containing the given assembly.
-    /// </summary>
-    /// <param name="assembly">The assembly whose directory to retrieve.</param>
-    /// <returns>The directory holding the given assembly as a local path. If the assembly has been shadow-copied, this returns the directory before the
-    /// shadow-copying.</returns>
-    /// <exception cref="InvalidOperationException">The assembly's code base is not a local path.</exception>
-    [CLSCompliant (false)]
-    public static string GetAssemblyDirectory (_Assembly assembly)
-    {
       ArgumentUtility.CheckNotNull ("assembly", assembly);
 
       Uri codeBaseUri = new Uri (assembly.EscapedCodeBase);

@@ -36,10 +36,8 @@ namespace Remotion.Mixins.CodeGeneration
     {
     }
 
-    // CLS-incompliant version for better testing
-    [CLSCompliant (false)]
     [CanBeNull]
-    public virtual ClassContext? GetMetadataForMixedType (_Type concreteMixedType)
+    public virtual ClassContext? GetMetadataForMixedType (Type concreteMixedType)
     {
       ArgumentUtility.CheckNotNull ("concreteMixedType", concreteMixedType);
 
@@ -51,10 +49,8 @@ namespace Remotion.Mixins.CodeGeneration
         return null;
     }
 
-    // CLS-incompliant version for better testing
-    [CLSCompliant (false)]
     [CanBeNull]
-    public virtual ConcreteMixinTypeIdentifier? GetIdentifierForMixinType (_Type concreteMixinType)
+    public virtual ConcreteMixinTypeIdentifier? GetIdentifierForMixinType (Type concreteMixinType)
     {
       ArgumentUtility.CheckNotNull ("concreteMixinType", concreteMixinType);
 
@@ -66,9 +62,7 @@ namespace Remotion.Mixins.CodeGeneration
         return null;
     }
 
-    // CLS-incompliant version for better testing
-    [CLSCompliant (false)]
-    public virtual Dictionary<MethodInfo, MethodInfo> GetMethodWrappersForMixinType (_Type concreteMixinType)
+    public virtual Dictionary<MethodInfo, MethodInfo> GetMethodWrappersForMixinType (Type concreteMixinType)
     {
       ArgumentUtility.CheckNotNull ("concreteMixinType", concreteMixinType);
       var wrappers = from potentialWrapper in concreteMixinType.GetMethods (BindingFlags.Instance | BindingFlags.Public)
@@ -107,13 +101,6 @@ namespace Remotion.Mixins.CodeGeneration
     protected virtual GeneratedMethodWrapperAttribute? GetWrapperAttribute (MethodInfo potentialWrapper)
     {
       return AttributeUtility.GetCustomAttribute<GeneratedMethodWrapperAttribute> (potentialWrapper, false);
-    }
-
-    public ClassContext? GetMetadataForMixedType (Type concreteMixedType)
-    {
-      ArgumentUtility.CheckNotNull ("concreteMixedType", concreteMixedType);
-
-      return GetMetadataForMixedType ((_Type) concreteMixedType);
     }
 
     public ConcreteMixinType? GetMetadataForMixinType (Type concreteMixinType)

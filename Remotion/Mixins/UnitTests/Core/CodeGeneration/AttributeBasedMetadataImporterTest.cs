@@ -39,7 +39,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     {
       var importerMock = new MockRepository ().PartialMock<AttributeBasedMetadataImporter> ();
       var expectedResult = ClassContextObjectMother.Create(typeof (object));
-      importerMock.Expect (mock => mock.GetMetadataForMixedType ((_Type) typeof (object))).Return (expectedResult);
+      importerMock.Expect (mock => mock.GetMetadataForMixedType (typeof (object))).Return (expectedResult);
 
       importerMock.Replay ();
       var result = importerMock.GetMetadataForMixedType (typeof (object));
