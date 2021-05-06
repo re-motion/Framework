@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using Remotion.Collections;
@@ -102,7 +103,7 @@ namespace Remotion.Globalization
     /// <summary>
     ///   Tries to get the value of the specified string resource. If the resource is not found, <see langword="false" /> is returned.
     /// </summary>
-    public bool TryGetString (string id, out string? value)
+    public bool TryGetString (string id, [MaybeNullWhen (false)] out string value)
     {
       //FOR-loop for performance reasons
       // ReSharper disable ForCanBeConvertedToForeach

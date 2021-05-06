@@ -19,6 +19,7 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Resources;
@@ -153,7 +154,7 @@ namespace Remotion.Globalization.Implementation
           {
             string entryKey = (string) entry.Key;
             if (entryKey.StartsWith (prefix))
-              result[entryKey] = (string?) entry.Value;
+              result[entryKey] = (string) entry.Value!;
           }
         }
       }
@@ -164,7 +165,7 @@ namespace Remotion.Globalization.Implementation
     /// <summary>
     ///   Gets the value of the specified string resource. 
     /// </summary>
-    public bool TryGetString (string id, out string? value)
+    public bool TryGetString (string id, [MaybeNullWhen (false)] out string value)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("id", id);
 
@@ -248,9 +249,9 @@ namespace Remotion.Globalization.Implementation
       get { return false; }
     }
 
-    private ResourceSet? GetResourceSet (CultureInfo culture)
+    private ResourceSet GetResourceSet (CultureInfo culture)
     {
-      return _resourceManager.GetResourceSet (culture, true, false);
+      return _resourceManager.GetResourceSet (culture, true, false)!;
     }
 
     private void CheckAndSetAvailableCultures (IReadOnlyList<CultureInfo> cultures)

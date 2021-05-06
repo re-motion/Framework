@@ -16,10 +16,11 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using JetBrains.Annotations;
 using Remotion.Globalization.Implementation;
 using Remotion.Reflection;
+using NotNullAttribute = JetBrains.Annotations.NotNullAttribute;
 
 namespace Remotion.Globalization
 {
@@ -47,7 +48,7 @@ namespace Remotion.Globalization
     bool TryGetTypeDisplayName (
         [NotNull] ITypeInformation typeInformation,
         [NotNull] ITypeInformation typeInformationForResourceResolution,
-        out string? result);
+        [MaybeNullWhen (false)] out string result);
 
     /// <summary>
     ///   Tries to get the human-readable property name of the spefified reflection object.
@@ -66,7 +67,7 @@ namespace Remotion.Globalization
     bool TryGetPropertyDisplayName (
         [NotNull] IPropertyInformation propertyInformation,
         [NotNull] ITypeInformation typeInformationForResourceResolution,
-        out string? result);
+        [MaybeNullWhen (false)] out string result);
 
     /// <summary>
     /// Returns all human-readable localized representations of the <paramref name="propertyInformation"/>.

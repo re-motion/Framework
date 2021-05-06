@@ -30,7 +30,7 @@ namespace Remotion.Globalization
     /// (&lt;assembly&gt;.&lt;path inside project&gt;.&lt;resource file name without extension&gt;).
     /// </remarks>
     [NotNull]
-    string? BaseName { get; }
+    string BaseName { get; }
 
     [CanBeNull]
     Assembly? ResourceAssembly { get; }

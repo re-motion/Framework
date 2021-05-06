@@ -18,6 +18,8 @@ using System;
 using System.Globalization;
 using JetBrains.Annotations;
 
+#nullable disable
+
 // ReSharper disable once CheckNamespace
 namespace Remotion.Globalization
 {
@@ -38,7 +40,7 @@ namespace Remotion.Globalization
 
     [NotNull]
     [Obsolete ("Use Enum.GetValues (enumType) to get the values, then use IEnumerationGlobalizationService.GetEnumerationValueDisplayName (...) for each value. Use a CultureScope set the CurrentUICulture. (Version 1.13.223.0)", true)]
-    public static EnumValue[] GetAllValues ([NotNull] Type enumType, [CanBeNull] CultureInfo? culture)
+    public static EnumValue[] GetAllValues ([NotNull] Type enumType, [CanBeNull] CultureInfo culture)
     {
       throw new NotSupportedException ("Use Enum.GetValues (enumType) to get the values, then use IEnumerationGlobalizationService.GetEnumerationValueDisplayName (...) for each value. Use a CultureScope set the CurrentUICulture. (Version 1.13.223.0)");
     }
@@ -52,9 +54,11 @@ namespace Remotion.Globalization
 
     [NotNull]
     [Obsolete ("Use IEnumerationGlobalizationService.GetEnumerationValueDisplayName (...).  Use a CultureScope set the CurrentUICulture. (Version 1.13.223.0)", true)]
-    public static string GetDescription ([NotNull] Enum value, [CanBeNull] CultureInfo? culture)
+    public static string GetDescription ([NotNull] Enum value, [CanBeNull] CultureInfo culture)
     {
       throw new NotSupportedException ("Use IEnumerationGlobalizationService.GetEnumerationValueDisplayName (...).  Use a CultureScope set the CurrentUICulture. (Version 1.13.223.0)");
     }
   }
 }
+
+#nullable restore

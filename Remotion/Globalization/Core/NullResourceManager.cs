@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using Remotion.Collections;
 
@@ -39,7 +40,7 @@ namespace Remotion.Globalization
       return new Dictionary<string, string>();
     }
 
-    public bool TryGetString (string id, out string? value)
+    public bool TryGetString (string id, [MaybeNullWhen (false)] out string value)
     {
       value = null;
       return false;

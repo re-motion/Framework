@@ -43,15 +43,14 @@ namespace Remotion.Globalization
     ///   or the <paramref name="value"/>'s name if no resource could be found.
     /// </returns>
     [NotNull]
-    public static string? GetEnumerationValueDisplayName (
+    public static string GetEnumerationValueDisplayName (
         [NotNull] this IEnumerationGlobalizationService enumerationGlobalizationService,
         [NotNull] Enum value)
     {
       ArgumentUtility.CheckNotNull ("enumerationGlobalizationService", enumerationGlobalizationService);
       ArgumentUtility.CheckNotNull ("value", value);
 
-      string? result;
-      if (enumerationGlobalizationService.TryGetEnumerationValueDisplayName (value, out result))
+      if (enumerationGlobalizationService.TryGetEnumerationValueDisplayName (value, out var result))
         return result;
 
       if (ResourceLogger.IsEnabled)
@@ -83,8 +82,7 @@ namespace Remotion.Globalization
       ArgumentUtility.CheckNotNull ("enumerationGlobalizationService", enumerationGlobalizationService);
       ArgumentUtility.CheckNotNull ("value", value);
 
-      string? result;
-      if (enumerationGlobalizationService.TryGetEnumerationValueDisplayName (value, out result))
+      if (enumerationGlobalizationService.TryGetEnumerationValueDisplayName (value, out var result))
         return result;
 
       return null;
@@ -107,8 +105,7 @@ namespace Remotion.Globalization
       ArgumentUtility.CheckNotNull ("enumerationGlobalizationService", enumerationGlobalizationService);
       ArgumentUtility.CheckNotNull ("value", value);
 
-      string? result;
-      return enumerationGlobalizationService.TryGetEnumerationValueDisplayName (value, out result);
+      return enumerationGlobalizationService.TryGetEnumerationValueDisplayName (value, out var result);
     }
   }
 }

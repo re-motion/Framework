@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Microsoft.Practices.ServiceLocation;
 using Remotion.Utilities;
@@ -72,7 +73,7 @@ namespace Remotion.Globalization
   public class MultiLingualResourcesAttribute : Attribute, IResourcesAttribute
   {
     /// <summary> The base name of the resource container </summary>
-    private string? _baseName = null;
+    private string _baseName;
 
     private Assembly? _resourceAssembly = null;
 
@@ -89,11 +90,12 @@ namespace Remotion.Globalization
     /// The base name of the resource conantainer to be used by this type
     /// (&lt;assembly&gt;.&lt;path inside project&gt;.&lt;resource file name without extension&gt;).
     /// </remarks>
-    public string? BaseName
+    public string BaseName
     {
       get { return _baseName; }
     }
 
+    [MemberNotNull (nameof (_baseName))]
     protected void SetBaseName (string baseName)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("baseName", baseName);

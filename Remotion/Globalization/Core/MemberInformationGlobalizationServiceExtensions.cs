@@ -55,8 +55,7 @@ namespace Remotion.Globalization
       ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
       ArgumentUtility.CheckNotNull ("typeInformationForResourceResolution", typeInformationForResourceResolution);
 
-      string? resourceValue;
-      if (memberInformationGlobalizationService.TryGetTypeDisplayName (typeInformation, typeInformationForResourceResolution, out resourceValue))
+      if (memberInformationGlobalizationService.TryGetTypeDisplayName (typeInformation, typeInformationForResourceResolution, out var resourceValue))
         return resourceValue;
 
       if (ResourceLogger.IsEnabled)

@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
@@ -47,7 +48,7 @@ namespace Remotion.Globalization.Implementation
       _memberInformationNameResolver = memberInformationNameResolver;
     }
 
-    public bool TryGetEnumerationValueDisplayName (Enum value, out string? result)
+    public bool TryGetEnumerationValueDisplayName (Enum value, [MaybeNullWhen (false)] out string result)
     {
       ArgumentUtility.CheckNotNull ("value", value);
 
