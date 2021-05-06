@@ -181,7 +181,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       _productReview.Product = null;
 
       Assert.That (_productReview.Product, Is.Null);
+      Assert.That (_product.Reviews.IsDataComplete, Is.False);
       Assert.That (_product.Reviews.Count, Is.EqualTo (2));
+      Assert.That (_product.Reviews.IsDataComplete, Is.True);
       Assert.That (_product.Reviews.GetObject (_productReview.ID), Is.Null);
     }
   }

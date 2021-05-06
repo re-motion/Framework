@@ -277,17 +277,11 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     public void RegisterCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
       ArgumentUtility.CheckNotNull ("oppositeEndPoint", oppositeEndPoint);
-
-      EnsureDataComplete ();
-      Assertion.DebugIsNotNull (_dataManager, "EnsureDataComplete sets _dataManager.");
     }
 
     public void UnregisterCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
       ArgumentUtility.CheckNotNull ("oppositeEndPoint", oppositeEndPoint);
-
-      EnsureDataComplete ();
-      Assertion.DebugIsNotNull (_dataManager, "EnsureDataComplete sets _dataManager.");
     }
 
     public override bool? IsSynchronized
@@ -421,11 +415,29 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         throw new ArgumentException (message, "source");
       }
 
-      var sourceDataManager = sourceCollectionEndPoint._dataManager;
-      Assertion.IsNotNull (_dataManager, "Cannot commit data from a sub-transaction into a virtual collection end-point in incomplete state.");
-      Assertion.IsNotNull (sourceDataManager, "Cannot commit incomplete data from a sub-transaction into a virtual collection end-point.");
-      _dataManager.SetDataFromSubTransaction (sourceDataManager, _endPointProvider);
+      if (_dataManager != null)
+      {
+        var sourceDataManager = sourceCollectionEndPoint._dataManager;
+        if (sourceDataManager != null)
+        {
+          _dataManager.SetDataFromSubTransaction (sourceDataManager, _endPointProvider);
+        }
+        else
+        {
+          // TODO: RM-7294: Consider reworking IVirtualCollectionEndPointDataManager to replace named operations with a general purpose Reset-api.
+          if (_dataManager.CollectionData is VirtualCollectionData virtualCollectionData)
+          {
+            virtualCollectionData.ResetCachedDomainObjects();
+          }
+          else
+          {
+            //TODO: RM-7294: Hack for supporting unloaded collections. Will be reworked with changes to IVirtualCollectionEndPointDataManager.
+            throw new InvalidOperationException ($"VirtualCollectionEndPoint can only handle collection data of type '{typeof (VirtualCollectionData)}' but collection data type was '{_dataManager.CollectionData.GetType()}'.");
+          }
+        }
+      }
 
+      // TODO: RM-7294: this.HasChanged can be removed, it's redundant since _dataManager.SetDataFromSubTransaction doesn't affect this.HasChanged.
       if (sourceCollectionEndPoint.HasBeenTouched || HasChanged)
         Touch();
     }

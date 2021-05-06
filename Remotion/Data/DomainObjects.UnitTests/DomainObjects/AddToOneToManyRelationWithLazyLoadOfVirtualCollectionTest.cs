@@ -191,7 +191,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       _productReviewWithoutProduct.Product = _product;
 
       Assert.That (_productReviewWithoutProduct.Product, Is.SameAs (_product));
+      Assert.That (_product.Reviews.IsDataComplete, Is.False);
       Assert.That (_product.Reviews.Count, Is.EqualTo (4));
+      Assert.That (_product.Reviews.IsDataComplete, Is.True);
       Assert.That (_product.Reviews.GetObject (_productReviewWithoutProduct.ID), Is.EqualTo (_productReviewWithoutProduct));
     }
 
