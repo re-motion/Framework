@@ -45,7 +45,7 @@ namespace Remotion.Globalization.ExtensibleEnums.Implementation
         return definingMethod.GetCustomAttributes<MultiLingualNameAttribute>(false);
       }
 
-      protected override Assembly GetAssembly (MethodInfo definingMethod)
+      protected override Assembly? GetAssembly (MethodInfo definingMethod)
       {
         ArgumentUtility.CheckNotNull ("definingMethod", definingMethod);
 
@@ -66,7 +66,7 @@ namespace Remotion.Globalization.ExtensibleEnums.Implementation
     {
     }
 
-    public bool TryGetExtensibleEnumValueDisplayName (IExtensibleEnum value, out string result)
+    public bool TryGetExtensibleEnumValueDisplayName (IExtensibleEnum value, out string? result)
     {
       ArgumentUtility.CheckNotNull ("value", value);
 

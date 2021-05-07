@@ -43,7 +43,7 @@ namespace Remotion.Globalization.ExtensibleEnums.Implementation
       _globalizationService = globalizationService;
     }
 
-    public bool TryGetExtensibleEnumValueDisplayName (IExtensibleEnum value, out string result)
+    public bool TryGetExtensibleEnumValueDisplayName (IExtensibleEnum value, out string? result)
     {
       ArgumentUtility.CheckNotNull ("value", value);
 

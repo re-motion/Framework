@@ -50,7 +50,7 @@ namespace Remotion.Globalization.ExtensibleEnums.Implementation
       get { return _extensibleEnumGlobalizationServices; }
     }
 
-    public bool TryGetExtensibleEnumValueDisplayName (IExtensibleEnum value, out string result)
+    public bool TryGetExtensibleEnumValueDisplayName (IExtensibleEnum value, out string? result)
     {
       ArgumentUtility.CheckNotNull ("value", value);
 
