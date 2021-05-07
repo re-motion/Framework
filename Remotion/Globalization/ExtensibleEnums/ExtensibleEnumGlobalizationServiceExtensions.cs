@@ -51,8 +51,7 @@ namespace Remotion.Globalization.ExtensibleEnums
       ArgumentUtility.CheckNotNull ("extensibleEnumGlobalizationService", extensibleEnumGlobalizationService);
       ArgumentUtility.CheckNotNull ("value", value);
 
-      string? result;
-      if (extensibleEnumGlobalizationService.TryGetExtensibleEnumValueDisplayName (value, out result))
+      if (extensibleEnumGlobalizationService.TryGetExtensibleEnumValueDisplayName (value, out var result))
         return result;
 
       if (ResourceLogger.IsEnabled)
