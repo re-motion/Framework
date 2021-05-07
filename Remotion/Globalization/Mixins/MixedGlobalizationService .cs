@@ -39,7 +39,7 @@ namespace Remotion.Globalization.Mixins
   public sealed class MixinGlobalizationService : IGlobalizationService
   {
     private readonly object _mixinConfigurationLockObject = new object();
-    private MixinConfiguration _mixinConfiguration;
+    private MixinConfiguration? _mixinConfiguration;
     private readonly IResourceManagerResolver _resourceManagerResolver;
     private readonly ConcurrentDictionary<ITypeInformation, IResourceManager> _resourceManagerCache =
         new ConcurrentDictionary<ITypeInformation, IResourceManager>();
