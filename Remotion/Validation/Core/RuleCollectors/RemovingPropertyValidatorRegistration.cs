@@ -31,18 +31,18 @@ namespace Remotion.Validation.RuleCollectors
     public Type ValidatorType { get; }
 
     [CanBeNull]
-    public Type CollectorTypeToRemoveFrom { get; }
+    public Type? CollectorTypeToRemoveFrom { get; }
 
     [CanBeNull]
-    public Func<IPropertyValidator, bool> ValidatorPredicate { get; }
+    public Func<IPropertyValidator, bool>? ValidatorPredicate { get; }
 
     [NotNull]
     public IRemovingPropertyValidationRuleCollector RemovingPropertyValidationRuleCollector { get; }
 
     public RemovingPropertyValidatorRegistration (
         [NotNull] Type validatorType,
-        [CanBeNull] Type collectorTypeToRemoveFrom,
-        [CanBeNull] Func<IPropertyValidator, bool> validatorPredicate,
+        [CanBeNull] Type? collectorTypeToRemoveFrom,
+        [CanBeNull] Func<IPropertyValidator, bool>? validatorPredicate,
         [NotNull] IRemovingPropertyValidationRuleCollector removingPropertyValidationRuleCollector)
     {
       ArgumentUtility.CheckNotNull ("validatorType", validatorType);

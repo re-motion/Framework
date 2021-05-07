@@ -34,7 +34,7 @@ namespace Remotion.Validation.Utilities
     private class Node<T>
     {
       private readonly Func<T, IEnumerable<T>> _getDependencies;
-      private HashSet<Node<T>> _dependencies;
+      private HashSet<Node<T>>? _dependencies;
 
       public Node (T content, Func<T, IEnumerable<T>> getDependencies, bool included)
       {
@@ -65,7 +65,7 @@ namespace Remotion.Validation.Utilities
         _dependencies = new HashSet<Node<T>>();
         foreach (T dependency in _getDependencies (Content))
         {
-          Node<T> node;
+          Node<T>? node;
           if (!nodes.TryGetValue (dependency, out node))
           {
             switch (missingDependencies)
@@ -214,7 +214,7 @@ namespace Remotion.Validation.Utilities
       ArgumentUtility.CheckNotNull ("getDependencies", getDependencies);
 
       var unsorted = source.Select (content => new Node<T> (content, getDependencies, true)).ToList();
-      Dictionary<object, Node<T>> nodes;
+      Dictionary<object, Node<T>>? nodes;
       try
       {
         nodes = unsorted.ToDictionary (node => (object) node.Content);

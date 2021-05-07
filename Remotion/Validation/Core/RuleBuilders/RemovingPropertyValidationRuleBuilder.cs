@@ -42,7 +42,7 @@ namespace Remotion.Validation.RuleBuilders
     }
 
     public IRemovingPropertyValidationRuleBuilder<TValidatedType, TProperty> Validator<TValidator> (
-        Func<TValidator, bool> validatorPredicate)
+        Func<TValidator, bool>? validatorPredicate)
         where TValidator : IPropertyValidator
     {
       var typeCheckedValidatorPredicate = GetTypeCheckedValidatorPredicate (validatorPredicate);
@@ -51,7 +51,7 @@ namespace Remotion.Validation.RuleBuilders
     }
 
     public IRemovingPropertyValidationRuleBuilder<TValidatedType, TProperty> Validator<TValidator, TCollectorTypeToRemoveFrom> (
-        Func<TValidator, bool> validatorPredicate)
+        Func<TValidator, bool>? validatorPredicate)
         where TValidator : IPropertyValidator
     {
       var typeCheckedValidatorPredicate = GetTypeCheckedValidatorPredicate (validatorPredicate);
@@ -61,8 +61,8 @@ namespace Remotion.Validation.RuleBuilders
 
     public IRemovingPropertyValidationRuleBuilder<TValidatedType, TProperty> Validator (
         Type validatorType,
-        Type collectorTypeToRemoveFrom,
-        Func<IPropertyValidator, bool> validatorPredicate)
+        Type? collectorTypeToRemoveFrom,
+        Func<IPropertyValidator, bool>? validatorPredicate)
     {
       ArgumentUtility.CheckNotNull ("validatorType", validatorType);
 
@@ -71,7 +71,7 @@ namespace Remotion.Validation.RuleBuilders
     }
 
     [CanBeNull]
-    private static Func<IPropertyValidator, bool> GetTypeCheckedValidatorPredicate<TValidator> ([CanBeNull]Func<TValidator, bool> validatorPredicate)
+    private static Func<IPropertyValidator, bool>? GetTypeCheckedValidatorPredicate<TValidator> ([CanBeNull]Func<TValidator, bool>? validatorPredicate)
         where TValidator : IPropertyValidator
     {
       if (validatorPredicate == null)

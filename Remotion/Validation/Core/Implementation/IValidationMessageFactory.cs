@@ -33,7 +33,7 @@ namespace Remotion.Validation.Implementation
     /// Please note that the method can return <see langword="null"/> if no <see cref="ValidationMessage"/> is defined for the <paramref name="validator"/>.
     /// </returns>
     [CanBeNull]
-    ValidationMessage CreateValidationMessageForPropertyValidator ([NotNull] IPropertyValidator validator, [NotNull] IPropertyInformation validatedProperty);
+    ValidationMessage? CreateValidationMessageForPropertyValidator ([NotNull] IPropertyValidator validator, [NotNull] IPropertyInformation validatedProperty);
 
     /// <summary>
     /// Returns the <see cref="ValidationMessage"/> for a given <see cref="Type"/> that implements the <see cref="IObjectValidator"/> interface.
@@ -45,6 +45,6 @@ namespace Remotion.Validation.Implementation
     /// Please note that the method can return <see langword="null"/> if no <see cref="ValidationMessage"/> is defined for the <paramref name="validator"/>.
     /// </returns>
     [CanBeNull]
-    ValidationMessage CreateValidationMessageForObjectValidator ([NotNull] IObjectValidator validator, [NotNull] ITypeInformation validatedType);
+    ValidationMessage? CreateValidationMessageForObjectValidator ([NotNull] IObjectValidator validator, [NotNull] ITypeInformation validatedType);
   }
 }

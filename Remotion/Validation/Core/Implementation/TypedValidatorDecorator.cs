@@ -65,7 +65,7 @@ namespace Remotion.Validation.Implementation
       return _validator.CanValidateInstancesOfType (type);
     }
 
-    ValidationResult IValidator.Validate (object instance)
+    ValidationResult IValidator.Validate (object? instance)
     {
       ArgumentUtility.CheckNotNull ("instance", instance);
 

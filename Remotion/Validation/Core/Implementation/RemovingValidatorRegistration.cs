@@ -26,9 +26,9 @@ namespace Remotion.Validation.Implementation
   public sealed class RemovingValidatorRegistration
   {
     private readonly Type _validatorType;
-    private readonly Type _collectorTypeToRemoveFrom;
+    private readonly Type? _collectorTypeToRemoveFrom;
 
-    public RemovingValidatorRegistration ([NotNull] Type validatorType, [CanBeNull] Type collectorTypeToRemoveFrom)
+    public RemovingValidatorRegistration ([NotNull] Type validatorType, [CanBeNull] Type? collectorTypeToRemoveFrom)
     {
       ArgumentUtility.CheckNotNull ("validatorType", validatorType);
 
@@ -43,7 +43,7 @@ namespace Remotion.Validation.Implementation
     }
 
     [CanBeNull]
-    public Type CollectorTypeToRemoveFrom
+    public Type? CollectorTypeToRemoveFrom
     {
       get { return _collectorTypeToRemoveFrom; }
     }

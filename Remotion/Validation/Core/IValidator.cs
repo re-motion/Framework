@@ -21,7 +21,7 @@ namespace Remotion.Validation
 {
   public interface IValidator
   {
-    ValidationResult Validate (object instance);
+    ValidationResult Validate (object? instance);
 
     ValidationResult Validate (ValidationContext context);
 

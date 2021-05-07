@@ -39,9 +39,9 @@ namespace Remotion.Validation.MetaValidation
     }
     
     private readonly bool _isValid;
-    private readonly string _message;
+    private readonly string? _message;
 
-    private MetaValidationRuleValidationResult (bool isValid, string message)
+    private MetaValidationRuleValidationResult (bool isValid, string? message)
     {
       _isValid = isValid;
       _message = message;
@@ -52,7 +52,7 @@ namespace Remotion.Validation.MetaValidation
       get { return _isValid; }
     }
 
-    public string Message
+    public string? Message
     {
       get { return _message; }
     }

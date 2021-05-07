@@ -33,7 +33,7 @@ namespace Remotion.Validation.RuleCollectors
     public bool IsRemovable { get; private set; }
 
     [CanBeNull]
-    public Func<TValidatedType, bool> Condition { get; private set; }
+    public Func<TValidatedType, bool>? Condition { get; private set; }
 
     private readonly List<IPropertyValidator> _validators = new List<IPropertyValidator>();
 

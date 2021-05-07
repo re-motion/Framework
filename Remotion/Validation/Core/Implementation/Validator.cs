@@ -78,7 +78,7 @@ namespace Remotion.Validation.Implementation
       return _validatedType.IsAssignableFrom (type);
     }
 
-    ValidationResult IValidator.Validate (object instance)
+    ValidationResult IValidator.Validate (object? instance)
     {
       ArgumentUtility.CheckNotNull ("instance", instance);
 

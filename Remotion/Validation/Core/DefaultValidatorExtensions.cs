@@ -68,7 +68,7 @@ namespace Remotion.Validation
     public static IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> Equal<TValidatedType, TProperty> (
         this IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> ruleBuilder,
         TProperty toCompare,
-        IEqualityComparer comparer = null)
+        IEqualityComparer? comparer = null)
     {
       return ruleBuilder.SetValidator (p => new EqualValidator (toCompare, p.ValidationMessage, comparer));
     }
@@ -76,7 +76,7 @@ namespace Remotion.Validation
     public static IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> NotEqual<TValidatedType, TProperty> (
         this IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> ruleBuilder,
         TProperty toCompare,
-        IEqualityComparer comparer = null)
+        IEqualityComparer? comparer = null)
     {
       return ruleBuilder.SetValidator (p => new NotEqualValidator (toCompare, p.ValidationMessage, comparer));
     }

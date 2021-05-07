@@ -28,7 +28,7 @@ namespace Remotion.Validation.Implementation
   [ImplementationFor (typeof (IValidationTypeFilter), Lifetime = LifetimeKind.Singleton, Position = 0, RegistrationType = RegistrationType.Multiple)]
   public class LoadFilteredValidationTypeFilter : IValidationTypeFilter
   {
-    private List<Type> _filterTypes;
+    private List<Type>? _filterTypes;
 
     public LoadFilteredValidationTypeFilter ()
     {

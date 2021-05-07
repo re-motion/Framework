@@ -27,13 +27,13 @@ namespace Remotion.Validation.Rules
   public class ObjectValidationRule<TValidatedType> : IObjectValidationRule
   {
     [CanBeNull]
-    public Func<TValidatedType, bool> Condition { get; }
+    public Func<TValidatedType, bool>? Condition { get; }
 
     [NotNull]
     public IReadOnlyCollection<IObjectValidator> Validators { get; }
 
     public ObjectValidationRule (
-        [CanBeNull] Func<TValidatedType, bool> condition,
+        [CanBeNull] Func<TValidatedType, bool>? condition,
         [NotNull] IReadOnlyCollection<IObjectValidator> validators)
     {
       ArgumentUtility.CheckNotNull ("validators", validators);

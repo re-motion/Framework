@@ -34,7 +34,7 @@ namespace Remotion.Validation.Rules
     public Func<object, object> PropertyFunc { get; }
 
     [CanBeNull]
-    public Func<TValidatedType, bool> Condition { get; }
+    public Func<TValidatedType, bool>? Condition { get; }
 
     [NotNull]
     public IReadOnlyCollection<IPropertyValidator> Validators { get; }

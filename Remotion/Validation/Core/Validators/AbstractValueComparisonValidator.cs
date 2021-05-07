@@ -31,13 +31,13 @@ namespace Remotion.Validation.Validators
   {
     public IComparable ComparisonValue { get; }
     public Comparison Comparison { get; }
-    public IComparer Comparer { get; }
+    public IComparer? Comparer { get; }
     public string ErrorMessage { get; }
     public ValidationMessage ValidationMessage { get; }
 
     protected AbstractValueComparisonValidator (
         [NotNull] IComparable comparisonValue,
-        [CanBeNull] IComparer comparer,
+        [CanBeNull] IComparer? comparer,
         Comparison comparison,
         [NotNull] string errorMessage,
         [NotNull] ValidationMessage validationMessage)

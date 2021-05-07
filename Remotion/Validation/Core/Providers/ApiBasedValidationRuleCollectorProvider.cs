@@ -49,7 +49,7 @@ namespace Remotion.Validation.Providers
 
       var result = types
           .SelectMany (_validationRuleCollectorReflector.GetCollectorsForType)
-          .Select (c => new ValidationRuleCollectorInfo ((IValidationRuleCollector) Activator.CreateInstance (c), GetType())).ToArray();
+          .Select (c => new ValidationRuleCollectorInfo ((IValidationRuleCollector?) Activator.CreateInstance (c), GetType())).ToArray();
       return result.Any() ? new[] { result } : Enumerable.Empty<IEnumerable<ValidationRuleCollectorInfo>>();
     }
   }

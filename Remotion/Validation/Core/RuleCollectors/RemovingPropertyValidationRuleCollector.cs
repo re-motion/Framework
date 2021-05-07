@@ -57,7 +57,7 @@ namespace Remotion.Validation.RuleCollectors
       get { return _registeredValidators.AsReadOnly(); }
     }
 
-    public void RegisterValidator (Type validatorType, Type collectorTypeToRemoveFrom, Func<IPropertyValidator, bool> validatorPredicate)
+    public void RegisterValidator (Type validatorType, Type? collectorTypeToRemoveFrom, Func<IPropertyValidator, bool>? validatorPredicate)
     {
       ArgumentUtility.CheckNotNull ("validatorType", validatorType);
 

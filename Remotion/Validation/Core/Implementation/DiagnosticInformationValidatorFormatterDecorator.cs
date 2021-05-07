@@ -44,7 +44,7 @@ namespace Remotion.Validation.Implementation
       get { return _fallBackValidatorFormatter; }
     }
 
-    public string Format (IPropertyValidator validator, Func<Type, string> typeNameFormatter)
+    public string? Format (IPropertyValidator validator, Func<Type, string> typeNameFormatter)
     {
       ArgumentUtility.CheckNotNull ("validator", validator);
       ArgumentUtility.CheckNotNull ("typeNameFormatter", typeNameFormatter);

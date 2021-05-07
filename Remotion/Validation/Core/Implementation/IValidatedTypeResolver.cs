@@ -30,6 +30,6 @@ namespace Remotion.Validation.Implementation
     /// <param name="collectorType">The <see cref="Type"/> of the <see cref="IValidationRuleCollector"/> to analyze. Must not be <see langword="null" />.</param>
     /// <returns>A <see cref="Type"/> or <see langword="null" /> if no validated type could be identified.</returns>
     [CanBeNull]
-    Type GetValidatedType ([NotNull] Type collectorType);
+    Type? GetValidatedType ([NotNull] Type collectorType);
   }
 }

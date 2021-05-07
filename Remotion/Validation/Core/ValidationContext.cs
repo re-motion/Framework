@@ -22,9 +22,9 @@ namespace Remotion.Validation
   public class ValidationContext
   {
     [CanBeNull]
-    public object InstanceToValidate { get; }
+    public object? InstanceToValidate { get; }
 
-    public ValidationContext ([CanBeNull] object instanceToValidate)
+    public ValidationContext ([CanBeNull] object? instanceToValidate)
     {
       InstanceToValidate = instanceToValidate;
     }

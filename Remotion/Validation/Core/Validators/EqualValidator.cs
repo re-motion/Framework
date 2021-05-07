@@ -30,14 +30,14 @@ namespace Remotion.Validation.Validators
   public class EqualValidator : IValueComparisonValidator
   {
     public object ComparisonValue { get; }
-    public IEqualityComparer Comparer { get; }
+    public IEqualityComparer? Comparer { get; }
     public string ErrorMessage { get; }
     public ValidationMessage ValidationMessage { get; }
 
     public EqualValidator (
         [NotNull] object comparisonValue,
         [NotNull] ValidationMessage validationMessage,
-        [CanBeNull] IEqualityComparer comparer = null)
+        [CanBeNull] IEqualityComparer? comparer = null)
     {
       ArgumentUtility.CheckNotNull ("comparisonValue", comparisonValue);
       ArgumentUtility.CheckNotNull ("validationMessage", validationMessage);
