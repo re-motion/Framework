@@ -9047,5 +9047,5 @@ window.jQuery = window.$ = jQuery;
 
 var Remotion;
 (function (Remotion) {
-    Remotion.jQuery = jQuery.noConflict();
+    Remotion.jQuery = jQuery.noConflict(true);
 })(Remotion || (Remotion = {}));
