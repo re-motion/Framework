@@ -19,6 +19,7 @@ using System;
 namespace Remotion.Validation
 {
   public interface IValidatorBuilder1<in T> : IValidatorBuilder
+      where T : notnull
   {
     /// <summary>
     /// Returns a validator for <typeparamref name="TValidatedType"/>.

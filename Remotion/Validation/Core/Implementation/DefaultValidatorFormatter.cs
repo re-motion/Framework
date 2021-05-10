@@ -27,11 +27,12 @@ namespace Remotion.Validation.Implementation
   [ImplementationFor (typeof (IValidatorFormatter), Lifetime = LifetimeKind.Singleton)]
   public class DefaultValidatorFormatter : IValidatorFormatter
   {
-    public string? Format (IPropertyValidator validator, Func<Type, string> typeNameFormatter)
+    public string Format (IPropertyValidator validator, Func<Type, string> typeNameFormatter)
     {
       ArgumentUtility.CheckNotNull ("validator", validator);
 
-      return validator.ToString();
+      // TODO RM-7854: Assert that the returned value is not null.
+      return validator.ToString()!;
     }
   }
 }

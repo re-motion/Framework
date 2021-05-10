@@ -57,6 +57,9 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\RoslynAnnotations\NullableAnnotations.cs">
+      <Link>SharedSource\RoslynAnnotations\NullableAnnotations.cs</Link>
+    </Compile>
     <Compile Include="Attributes\ApplyProgrammaticallyAttribute.cs" />
     <Compile Include="Attributes\ApplyWithClassAttribute.cs" />
     <Compile Include="Attributes\MetaValidation\AnyRuleAppliedMetaValidationRuleAttribute.cs" />

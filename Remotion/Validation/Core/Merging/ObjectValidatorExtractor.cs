@@ -72,13 +72,13 @@ namespace Remotion.Validation.Merging
         return currentType.IsAssignableFrom (typeToMatch);
       }
 
-      static bool IsCollectorTypeMatch (Type currentCollectorType, Type collectorTypeToMatch)
+      static bool IsCollectorTypeMatch (Type currentCollectorType, Type? collectorTypeToMatch)
       {
         return collectorTypeToMatch == null
                || collectorTypeToMatch == currentCollectorType;
       }
 
-      static bool IsPredicateMatch (IObjectValidator currentValidator, Func<IObjectValidator, bool> predicateToMatch)
+      static bool IsPredicateMatch (IObjectValidator currentValidator, Func<IObjectValidator, bool>? predicateToMatch)
       {
         return predicateToMatch == null
                || predicateToMatch (currentValidator);

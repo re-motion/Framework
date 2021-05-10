@@ -27,7 +27,7 @@ namespace Remotion.Validation.Attributes.Validation
   public class RemoveValidatorAttribute : Attribute
   {
     private readonly Type _validatorType;
-    private readonly Type _collectorTypeToRemoveFrom;
+    private readonly Type? _collectorTypeToRemoveFrom;
 
     /// <summary>
     /// Instantiates a new <see cref="RemoveValidatorAttribute "/>.
@@ -40,7 +40,7 @@ namespace Remotion.Validation.Attributes.Validation
     /// </summary>
     /// <param name="validatorType">The type of the validator to remove. Must not be <see langword="null" />.</param>
     /// <param name="collectorTypeToRemoveFrom">Constraints the removal to validators introduced by the specified <see cref="Type"/>.</param>/>
-    public RemoveValidatorAttribute (Type validatorType, Type collectorTypeToRemoveFrom)
+    public RemoveValidatorAttribute (Type validatorType, Type? collectorTypeToRemoveFrom)
     {
       ArgumentUtility.CheckNotNull ("validatorType", validatorType);
 
@@ -53,7 +53,7 @@ namespace Remotion.Validation.Attributes.Validation
       get { return _validatorType; }
     }
 
-    public Type CollectorTypeToRemoveFrom
+    public Type? CollectorTypeToRemoveFrom
     {
       get { return _collectorTypeToRemoveFrom; }
     }

@@ -20,7 +20,7 @@ namespace Remotion.Validation.RuleCollectors
       _validationMessage = validationMessage;
     }
 
-    public override string Format (CultureInfo culture, IFormatProvider? formatProvider, params object[] parameters)
+    public override string Format (CultureInfo culture, IFormatProvider? formatProvider, params object?[] parameters)
     {
       if (_validationMessage == null)
         throw new InvalidOperationException ("Validation message has not been initialized.");

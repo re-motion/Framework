@@ -59,7 +59,7 @@ namespace Remotion.Validation.Attributes.Validation
       ArgumentUtility.CheckNotNull ("property", property);
       ArgumentUtility.CheckNotNull ("validationMessageFactory", validationMessageFactory);
 
-      LengthValidator? validator;
+      LengthValidator validator;
       if (string.IsNullOrEmpty (ErrorMessage))
       {
         validator = PropertyValidatorFactory.Create (

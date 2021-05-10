@@ -25,6 +25,7 @@ namespace Remotion.Validation.Implementation
   /// </summary>
   /// <typeparam name="T"></typeparam>
   public class TypedValidatorDecorator<T> : IValidator<T>
+      where T : notnull
   {
     private readonly IValidator _validator;
 
@@ -65,7 +66,7 @@ namespace Remotion.Validation.Implementation
       return _validator.CanValidateInstancesOfType (type);
     }
 
-    ValidationResult IValidator.Validate (object? instance)
+    ValidationResult IValidator.Validate (object instance)
     {
       ArgumentUtility.CheckNotNull ("instance", instance);
 

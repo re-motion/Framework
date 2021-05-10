@@ -46,6 +46,7 @@ namespace Remotion.Validation.Implementation
     }
 
     public IValidator<T> Create<T> ()
+        where T : notnull
     {
       return new TypedValidatorDecorator<T> (this);
     }
@@ -78,7 +79,7 @@ namespace Remotion.Validation.Implementation
       return _validatedType.IsAssignableFrom (type);
     }
 
-    ValidationResult IValidator.Validate (object? instance)
+    ValidationResult IValidator.Validate (object instance)
     {
       ArgumentUtility.CheckNotNull ("instance", instance);
 

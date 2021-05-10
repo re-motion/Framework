@@ -46,7 +46,7 @@ namespace Remotion.Validation.Rules
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
-      var instanceToValidate = (TValidatedType) context.InstanceToValidate;
+      var instanceToValidate = (TValidatedType?) context.InstanceToValidate;
       if (instanceToValidate == null)
         return Enumerable.Empty<ValidationFailure>();
 
@@ -65,7 +65,7 @@ namespace Remotion.Validation.Rules
       if (Condition == null)
         return true;
 
-      var instanceToValidate = (TValidatedType) context.InstanceToValidate;
+      var instanceToValidate = (TValidatedType?) context.InstanceToValidate;
       if (instanceToValidate == null)
         return false;
 

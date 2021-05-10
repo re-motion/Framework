@@ -38,7 +38,7 @@ namespace Remotion.Validation.Attributes.Validation
       ArgumentUtility.CheckNotNull ("property", property);
       ArgumentUtility.CheckNotNull ("validationMessageFactory", validationMessageFactory);
 
-      NotNullValidator? validator;
+      NotNullValidator validator;
       if (string.IsNullOrEmpty (ErrorMessage))
       {
         validator = PropertyValidatorFactory.Create (

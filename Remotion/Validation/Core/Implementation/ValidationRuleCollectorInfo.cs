@@ -26,10 +26,10 @@ namespace Remotion.Validation.Implementation
   /// </summary>
   public sealed class ValidationRuleCollectorInfo
   {
-    private readonly IValidationRuleCollector? _collector;
+    private readonly IValidationRuleCollector _collector;
     private readonly Type _providerType;
 
-    public ValidationRuleCollectorInfo (IValidationRuleCollector? collector, Type providerType)
+    public ValidationRuleCollectorInfo (IValidationRuleCollector collector, Type providerType)
     {
       ArgumentUtility.CheckNotNull ("collector", collector);
       ArgumentUtility.CheckNotNull ("providerType", providerType);
@@ -38,7 +38,7 @@ namespace Remotion.Validation.Implementation
       _collector = collector;
     }
 
-    public IValidationRuleCollector? Collector
+    public IValidationRuleCollector Collector
     {
       get { return _collector; }
     }

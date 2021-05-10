@@ -26,6 +26,6 @@ namespace Remotion.Validation.Implementation
   /// <seealso cref="DiagnosticInformationValidatorFormatterDecorator"/>
   public interface IValidatorFormatter
   {
-    string? Format (IPropertyValidator validator, Func<Type, string> typeNameFormatter);
+    string Format (IPropertyValidator validator, Func<Type, string> typeNameFormatter);
   }
 }

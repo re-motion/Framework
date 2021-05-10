@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Remotion.Utilities;
 
@@ -32,6 +33,7 @@ namespace Remotion.Validation.Utilities
   public static class TopologySortExtensions
   {
     private class Node<T>
+        where T : notnull
     {
       private readonly Func<T, IEnumerable<T>> _getDependencies;
       private HashSet<Node<T>>? _dependencies;
@@ -52,14 +54,18 @@ namespace Remotion.Validation.Utilities
 
       public Node<T> DropDependencies ()
       {
-        foreach (var dependency in _dependencies)
-          dependency.ReferrerCount--;
-        
+        if (_dependencies is not null)
+        {
+          foreach (var dependency in _dependencies)
+            dependency.ReferrerCount--;
+        }
+
         return this;
       }
 
       public bool Included { get; private set; }
 
+      [MemberNotNull (nameof (_dependencies))]
       public void CalculateDependencies (Dictionary<object, Node<T>> nodes, TopologySortMissingDependencyBehavior missingDependencies)
       {
         _dependencies = new HashSet<Node<T>>();
@@ -99,7 +105,7 @@ namespace Remotion.Validation.Utilities
           return;
         if (node.Included)
         {
-          if (_dependencies.Contains (node))
+          if (_dependencies!.Contains (node))
             return;
 
           _dependencies.Add (node);
@@ -108,7 +114,7 @@ namespace Remotion.Validation.Utilities
         }
         else
         {
-          foreach (Node<T> dependencyNode in node._dependencies)
+          foreach (Node<T> dependencyNode in node._dependencies!)
             AddDependency (dependencyNode);
         }
       }
@@ -130,6 +136,7 @@ namespace Remotion.Validation.Utilities
     /// <param name="getDependencies"></param>
     /// <returns>Returns the sorted items of the topology grouped by their hierarchy level starting with the leave-nodes.</returns>
     public static IEnumerable<IEnumerable<T>> TopologySort<T> (this IEnumerable<T> source, Func<T, IEnumerable<T>> getDependencies)
+        where T : notnull
     {
       return TopologySort (source, getDependencies, null);
     }
@@ -147,6 +154,7 @@ namespace Remotion.Validation.Utilities
     /// <param name="getDependencies"></param>
     /// <returns>Returns the sorted items of the topology grouped by their hierarchy level starting with the leave-nodes.</returns>
     public static IEnumerable<IEnumerable<T>> TopologySortDesc<T> (this IEnumerable<T> source, Func<T, IEnumerable<T>> getDependencies)
+        where T : notnull
     {
       return TopologySort (source, getDependencies, null).Reverse();
     }
@@ -163,8 +171,9 @@ namespace Remotion.Validation.Utilities
     public static IEnumerable<IEnumerable<T>> TopologySort<T> (
         this IEnumerable<T> source,
         Func<T, IEnumerable<T>> getDependencies,
-        Func<IEnumerable<T>, IEnumerable<T>> subSort
+        Func<IEnumerable<T>, IEnumerable<T>>? subSort
         )
+        where T : notnull
     {
       return TopologySort (source, getDependencies, subSort, TopologySortMissingDependencyBehavior.Ignore);
     }
@@ -183,6 +192,7 @@ namespace Remotion.Validation.Utilities
         Func<T, IEnumerable<T>> getDependencies,
         Func<IEnumerable<T>, IEnumerable<T>> subSort
         )
+        where T : notnull
     {
       return TopologySort (source, getDependencies, subSort, TopologySortMissingDependencyBehavior.Ignore).Reverse();
     }
@@ -206,15 +216,16 @@ namespace Remotion.Validation.Utilities
     public static IEnumerable<IEnumerable<T>> TopologySort<T> (
         this IEnumerable<T> source,
         Func<T, IEnumerable<T>> getDependencies,
-        Func<IEnumerable<T>, IEnumerable<T>> subSort,
+        Func<IEnumerable<T>, IEnumerable<T>>? subSort,
         TopologySortMissingDependencyBehavior missingDependencies
         )
+        where T : notnull
     {
       ArgumentUtility.CheckNotNull ("source", source);
       ArgumentUtility.CheckNotNull ("getDependencies", getDependencies);
 
       var unsorted = source.Select (content => new Node<T> (content, getDependencies, true)).ToList();
-      Dictionary<object, Node<T>>? nodes;
+      Dictionary<object, Node<T>> nodes;
       try
       {
         nodes = unsorted.ToDictionary (node => (object) node.Content);
@@ -260,6 +271,7 @@ namespace Remotion.Validation.Utilities
         Func<IEnumerable<T>, IEnumerable<T>> subSort,
         TopologySortMissingDependencyBehavior missingDependencies
         )
+        where T : notnull
     {
       return TopologySort (source, getDependencies, subSort, missingDependencies).Reverse ();
     }
