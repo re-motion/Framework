@@ -61,7 +61,7 @@ namespace Remotion.Globalization
 
       if (ResourceLogger.IsEnabled)
       {
-        ResourceLogger.LogResourceEntryNotFound ("Type: '{0}'", typeInformation.FullName);
+        ResourceLogger.LogResourceEntryNotFound ("Type: '{0}'", typeInformation.GetFullNameSafe());
       }
 
       return typeInformation.Name;
@@ -165,7 +165,7 @@ namespace Remotion.Globalization
         ResourceLogger.LogResourceEntryNotFound (
             "Property: '{0}' (Type: '{1}')",
             propertyInformation.Name,
-            propertyInformation.DeclaringType == null ? "" : propertyInformation.DeclaringType.FullName);
+            propertyInformation.DeclaringType == null ? "" : propertyInformation.DeclaringType.GetFullNameSafe());
       }
 
       return propertyInformation.Name;

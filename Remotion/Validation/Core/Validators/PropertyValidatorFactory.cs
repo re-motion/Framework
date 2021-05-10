@@ -49,7 +49,7 @@ namespace Remotion.Validation.Validators
           nameof (IValidationMessageFactory),
           validator.GetType().Name,
           validatedProperty.Name,
-          validatedProperty.GetOriginalDeclaringType().FullName);
+          validatedProperty.GetOriginalDeclaringType().GetFullNameSafe());
       deferredInitializationValidationMessage.Initialize (validationMessage);
 
       return validator;

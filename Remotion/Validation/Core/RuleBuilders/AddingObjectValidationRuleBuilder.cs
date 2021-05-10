@@ -106,7 +106,7 @@ namespace Remotion.Validation.RuleBuilders
                 "Meta validation rule '{0}' failed for validator '{1}' on type '{2}'.",
                 metaValidationRuleExpression,
                 typeof (TValidator).GetFullNameSafe(),
-                _addingObjectValidationRuleCollector.ValidatedType.FullName);
+                _addingObjectValidationRuleCollector.ValidatedType.GetFullNameSafe());
           });
 
       _objectMetaValidationRuleCollector.RegisterMetaValidationRule (metaValidationRule);

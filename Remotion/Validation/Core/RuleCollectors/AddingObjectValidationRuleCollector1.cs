@@ -72,7 +72,7 @@ namespace Remotion.Validation.RuleCollectors
             "The {0} did not return a result for {1} applied to type '{2}'.",
             nameof (IValidationMessageFactory),
             validator.GetType().Name,
-            ValidatedType.FullName);
+            ValidatedType.GetFullNameSafe());
 
         tuple.ValidationMessage.Initialize (validationMessage);
       }
@@ -138,7 +138,7 @@ namespace Remotion.Validation.RuleCollectors
         throw new ValidationConfigurationException (
             string.Format ("Attempted to remove non-removable validator(s) '{0}' on type '{1}'.",
                 string.Join (", ", validatorsToRemove.Select (v => v.GetType().Name).ToArray()),
-                ValidatedType.FullName));
+                ValidatedType.GetFullNameSafe()));
       }
     }
 
@@ -163,7 +163,7 @@ namespace Remotion.Validation.RuleCollectors
         sb.Append (")");
 
       sb.Append (": ");
-      sb.Append (ValidatedType.FullName);
+      sb.Append (ValidatedType.GetFullNameSafe());
 
       return sb.ToString();
     }

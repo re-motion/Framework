@@ -64,7 +64,7 @@ namespace Remotion.Validation.RuleCollectors
     {
       var sb = new StringBuilder (GetType().Name);
       sb.Append (": ");
-      sb.Append (ValidatedType.FullName);
+      sb.Append (ValidatedType.GetFullNameSafe());
 
       return sb.ToString();
     }

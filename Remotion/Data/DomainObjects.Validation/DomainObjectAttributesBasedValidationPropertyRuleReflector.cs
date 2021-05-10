@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.Validation
             string.Format (
                 "The property '{0}' was declared on type '{1}' but only interface declarations are supported when using mixin properties.",
                 interfacePropertyInformation.Name,
-                interfacePropertyInformation.DeclaringType.FullName),
+                interfacePropertyInformation.DeclaringType.GetFullNameSafe()),
             "interfaceProperty");
       }
 
@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.Validation
             string.Format (
                 "The property '{0}' was used from the overridden declaration on type '{1}' but only original declarations are supported.",
                 implementationPropertyInformation.Name,
-                implementationPropertyInformation.DeclaringType.FullName),
+                implementationPropertyInformation.DeclaringType.GetFullNameSafe()),
             "implementationProperty");
       }
 

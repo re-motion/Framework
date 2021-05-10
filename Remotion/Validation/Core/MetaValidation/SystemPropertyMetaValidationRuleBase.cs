@@ -50,7 +50,7 @@ namespace Remotion.Validation.MetaValidation
       return MetaValidationRuleValidationResult.CreateInvalidResult (
           "'{0}' failed for member '{1}.{2}'.",
           GetType().Name,
-          PropertyInfo.DeclaringType.FullName,
+          PropertyInfo.DeclaringType.GetFullNameSafe(),
           PropertyInfo.Name);
     }
   }
