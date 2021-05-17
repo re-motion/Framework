@@ -463,5 +463,61 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         }
       }
     }
+
+    [Test]
+    public void RelatedObjectChangesArePropagatedDuringCommit_WithVirtualCollectionLoaded_DoesNotAffectLoadState ()
+    {
+      Product loadedProduct = DomainObjectIDs.Product1.GetObject<Product>();
+      loadedProduct.Reviews.EnsureDataComplete();
+      ProductReview newProductReview;
+      ProductReview referenceProductReview = loadedProduct.Reviews[0];
+      using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
+      {
+        Assert.That (loadedProduct.Reviews.IsDataComplete, Is.False);
+
+        newProductReview = ProductReview.NewObject();
+        newProductReview.CreatedAt = referenceProductReview.CreatedAt.AddDays (1);
+        newProductReview.Comment = "Baz, buy two get three for free";
+        newProductReview.Product = loadedProduct;
+
+        Assert.That (loadedProduct.Reviews.IsDataComplete, Is.False);
+        ClientTransactionScope.CurrentTransaction.Commit();
+        Assert.That (loadedProduct.Reviews.IsDataComplete, Is.False);
+      }
+
+      Assert.That (loadedProduct.Reviews.IsDataComplete, Is.True);
+      IObjectList<ProductReview> productReviews = loadedProduct.Reviews;
+      Assert.That (
+          productReviews.Select (o => o.ID),
+          Is.EqualTo (new[] { DomainObjectIDs.ProductReview1, newProductReview.ID, DomainObjectIDs.ProductReview2, DomainObjectIDs.ProductReview3 }));
+    }
+
+    [Test]
+    public void RelatedObjectChangesArePropagatedDuringCommit_WithVirtualCollectionNotLoaded_DoesNotAffectLoadState ()
+    {
+      Product loadedProduct = DomainObjectIDs.Product1.GetObject<Product>();
+      ProductReview newProductReview;
+      ProductReview referenceProductReview = DomainObjectIDs.ProductReview1.GetObject<ProductReview>();
+      Assert.That (loadedProduct.Reviews.IsDataComplete, Is.False);
+      using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
+      {
+        Assert.That (loadedProduct.Reviews.IsDataComplete, Is.False);
+
+        newProductReview = ProductReview.NewObject();
+        newProductReview.CreatedAt = referenceProductReview.CreatedAt.AddDays (1);
+        newProductReview.Comment = "Baz, buy two get three for free";
+        newProductReview.Product = loadedProduct;
+
+        Assert.That (loadedProduct.Reviews.IsDataComplete, Is.False);
+        ClientTransactionScope.CurrentTransaction.Commit();
+        Assert.That (loadedProduct.Reviews.IsDataComplete, Is.False);
+      }
+
+      Assert.That (loadedProduct.Reviews.IsDataComplete, Is.False);
+      IObjectList<ProductReview> productReviews = loadedProduct.Reviews;
+      Assert.That (
+          productReviews.Select (o => o.ID),
+          Is.EqualTo (new[] { DomainObjectIDs.ProductReview1, newProductReview.ID, DomainObjectIDs.ProductReview2, DomainObjectIDs.ProductReview3 }));
+    }
   }
 }

@@ -84,14 +84,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       newProductReview.Product = _product1;
 
-      Assert.That (_productEndPoint.IsDataComplete, Is.True);
+      Assert.That (_productEndPoint.IsDataComplete, Is.False);
       Assert.That (_productEndPoint.HasBeenTouched, Is.True);
       Assert.That (
           _productEndPoint.Collection,
           Is.EqualTo (new[] { _productReview1, _productReview2, _productReview3, newProductReview }),
           "changes go down to actual data store");
       Assert.That (newProductReview.Product, Is.SameAs (_productEndPoint.GetDomainObject()), "bidirectional modification");
-      Assert.Ignore ("RM-7294: IsDataComplete after update should be false."); //TODO: RM-7294
     }
 
     [Test]
@@ -153,11 +152,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _productReview1.Product = null;
 
-      Assert.That (_productEndPoint.IsDataComplete, Is.True);
+      Assert.That (_productEndPoint.IsDataComplete, Is.False);
       Assert.That (_productEndPoint.HasBeenTouched, Is.True);
       Assert.That (_productEndPoint.Collection, Is.EqualTo (new[] { _productReview2, _productReview3 }), "changes go down to actual data store");
       Assert.That (_productReview1.Product, Is.Null, "bidirectional modification");
-      Assert.Ignore ("RM-7294: IsDataComplete after update should be false."); //TODO: RM-7294
     }
 
     [Test]
@@ -222,18 +220,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       newProductReview.Product = _product1;
 
-      Assert.That (_productEndPoint.IsDataComplete, Is.True);
+      Assert.That (_productEndPoint.IsDataComplete, Is.False);
       Assert.That (_productEndPoint.HasBeenTouched, Is.True);
 
       _productEndPoint.Rollback();
       newProductReview.InternalDataContainer.RollbackState();
 
-      Assert.That (_productEndPoint.IsDataComplete, Is.True);
+      Assert.That (_productEndPoint.IsDataComplete, Is.False);
       Assert.That (_productEndPoint.HasBeenTouched, Is.False);
       Assert.That (_productEndPoint.Collection, Is.EqualTo (new[] { _productReview1, _productReview2, _productReview3 }));
       Assert.That (_productEndPoint.GetCollectionWithOriginalData(), Is.EqualTo (new[] { _productReview1, _productReview2, _productReview3 }));
       Assert.That (_productEndPoint.GetCollectionWithOriginalData(), Is.EqualTo (_productEndPoint.Collection));
-      Assert.Ignore ("RM-7294: IsDataComplete after update should be false."); //TODO: RM-7294
     }
 
     [Test]
@@ -287,18 +284,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       newProductReview.Product = _product1;
 
-      Assert.That (_productEndPoint.IsDataComplete, Is.True);
+      Assert.That (_productEndPoint.IsDataComplete, Is.False);
       Assert.That (_productEndPoint.HasBeenTouched, Is.True);
 
       _productEndPoint.Commit();
       newProductReview.InternalDataContainer.CommitState();
 
-      Assert.That (_productEndPoint.IsDataComplete, Is.True);
+      Assert.That (_productEndPoint.IsDataComplete, Is.False);
       Assert.That (_productEndPoint.HasBeenTouched, Is.False);
       Assert.That (_productEndPoint.Collection, Is.EqualTo (new[] { _productReview1, _productReview2, _productReview3, newProductReview }));
       Assert.That (_productEndPoint.GetCollectionWithOriginalData(), Is.EqualTo (new[] { _productReview1, _productReview2, _productReview3, newProductReview }));
       Assert.That (_productEndPoint.GetCollectionWithOriginalData(), Is.EqualTo (_productEndPoint.Collection));
-      Assert.Ignore ("RM-7294: IsDataComplete after update should be false."); //TODO: RM-7294
     }
 
     [Test]
@@ -336,9 +332,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       newProductReview.Product = _product1;
 
-      Assert.That (_productEndPoint.IsDataComplete, Is.True);
+      Assert.That (_productEndPoint.IsDataComplete, Is.False);
       Assert.That (_productEndPoint.HasBeenTouched, Is.True);
-      Assert.Ignore ("RM-7294: IsDataComplete after update should be false."); //TODO: RM-7294
     }
 
     [Test]
@@ -361,9 +356,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _productReview1.Product = null;
 
-      Assert.That (_productEndPoint.IsDataComplete, Is.True);
+      Assert.That (_productEndPoint.IsDataComplete, Is.False);
       Assert.That (_productEndPoint.HasBeenTouched, Is.True);
-      Assert.Ignore ("RM-7294: IsDataComplete after update should be false."); //TODO: RM-7294
     }
 
     [Test]

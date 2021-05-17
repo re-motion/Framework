@@ -176,7 +176,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         newProduct = DomainObjectIDs.Product2.GetObject<Product> ();
         productReview.Product = newProduct;
         originalProduct.Delete ();
-        Assert.That (newProduct.Reviews.IsDataComplete, Is.True);
+        Assert.That (newProduct.Reviews.IsDataComplete, Is.False);
 
         ClientTransaction.Current.Commit ();
         Assert.That (productReview.Product, Is.SameAs (newProduct));

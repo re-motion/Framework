@@ -220,6 +220,7 @@
     <Compile Include="DataManagement\RelationEndPoints\NullVirtualCollectionEndPointTest.cs" />
     <Compile Include="DataManagement\RelationEndPoints\RelationEndPointExtensionsTests\IVirtualCollectionEndPoint_REPET.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualCollectionEndPointIntegrationTest.cs" />
+    <Compile Include="DataManagement\RelationEndPoints\VirtualCollectionEndPointTest.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\StateUpdateRaisingVirtualCollectionEndPointDecoratorTest.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\VirtualCollectionEndPointCollectionProviderTest.cs" />
     <Compile Include="DataManagement\SerializableFakes\SerializableClientTransactionHierarchyFake.cs" />
