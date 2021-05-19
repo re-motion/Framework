@@ -71,7 +71,7 @@ namespace Remotion.Validation.RuleCollectors
                 nameof (IValidationMessageFactory),
                 validator.GetType().Name,
                 Property.Name,
-                Property.GetOriginalDeclaringType().FullName));
+                Property.GetOriginalDeclaringType().GetFullNameSafe()));
 
         tuple.ValidationMessage.Initialize (validationMessage);
       }
@@ -137,7 +137,7 @@ namespace Remotion.Validation.RuleCollectors
         throw new ValidationConfigurationException (
             string.Format ("Attempted to remove non-removable validator(s) '{0}' on property '{1}.{2}'.",
                 string.Join (", ", validatorsToRemove.Select (v => v.GetType().Name).ToArray()),
-                Property.DeclaringType.FullName,
+                Property.DeclaringType.GetFullNameSafe(),
                 Property.Name));
       }
     }
@@ -163,7 +163,7 @@ namespace Remotion.Validation.RuleCollectors
         sb.Append (")");
 
       sb.Append (": ");
-      sb.Append (Property.DeclaringType != null ? Property.DeclaringType.FullName + "#" : string.Empty);
+      sb.Append (Property.DeclaringType != null ? Property.DeclaringType.GetFullNameSafe() + "#" : string.Empty);
       sb.Append (Property.Name);
 
       return sb.ToString();

@@ -79,6 +79,7 @@
     <Compile Include="ReflectionExtensions.cs" />
     <Compile Include="TypeAdapter.cs" />
     <Compile Include="TypeAdapterConverter.cs" />
+    <Compile Include="TypeInformationExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\remotion.snk">

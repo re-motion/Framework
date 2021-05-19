@@ -55,7 +55,7 @@ namespace Remotion.Globalization.Implementation
       {
         ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
 
-        return string.Format ("The type '{0}'", typeInformation.FullName);
+        return string.Format ("The type '{0}'", typeInformation.GetFullNameSafe());
       }
     }
 
@@ -102,7 +102,7 @@ namespace Remotion.Globalization.Implementation
 
       private string GetDeclaringTypeName (IPropertyInformation propertyInformation)
       {
-        return propertyInformation.DeclaringType?.FullName ?? "<undefined>";
+        return propertyInformation.DeclaringType?.GetFullNameSafe() ?? "<undefined>";
       }
     }
 

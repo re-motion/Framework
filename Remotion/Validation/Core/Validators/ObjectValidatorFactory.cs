@@ -48,7 +48,7 @@ namespace Remotion.Validation.Validators
           "The {0} did not return a result for {1} applied to type '{2}'.",
           nameof (IValidationMessageFactory),
           validator.GetType().Name,
-          validatedType.FullName);
+          validatedType.GetFullNameSafe());
 
       deferredInitializationValidationMessage.Initialize (validationMessage);
 

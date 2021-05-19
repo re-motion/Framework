@@ -330,9 +330,9 @@ namespace Remotion.Data.DomainObjects.Linq
                         string.Format (
                             "The member '{0}.{1}' is not part of any interface introduced onto the target class '{2}'. "
                             + "Only mixed properties that are part of an introduced interface can be used within the sort-expression of a collection property.",
-                            propertyInformation.DeclaringType.FullName,
+                            propertyInformation.DeclaringType.GetFullNameSafe(),
                             propertyInformation.Name,
-                            instanceTypeInformation.FullName
+                            instanceTypeInformation.GetFullNameSafe()
                             )));
 
         return interfacePropertyInformation;
@@ -343,9 +343,9 @@ namespace Remotion.Data.DomainObjects.Linq
           string.Format (
               "The member '{0}.{1}' is not part of inheritance hierarchy of class '{2}'. "
               + "Only properties that are part of the inheritance hierarhcy can be used within the sort-expression of a collection property.",
-              propertyInformation.DeclaringType.FullName,
+              propertyInformation.DeclaringType.GetFullNameSafe(),
               propertyInformation.Name,
-              instanceTypeInformation.FullName
+              instanceTypeInformation.GetFullNameSafe()
               ));
     }
 

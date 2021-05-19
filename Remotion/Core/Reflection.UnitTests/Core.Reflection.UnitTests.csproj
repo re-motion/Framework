@@ -92,6 +92,7 @@
     <Compile Include="TestDomain\MemberInfoAdapter\SampleAttribute.cs" />
     <Compile Include="TypeAdapterConverterTest.cs" />
     <Compile Include="TypeAdapterTest.cs" />
+    <Compile Include="TypeInformationExtensionsTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\remotion.snk">
