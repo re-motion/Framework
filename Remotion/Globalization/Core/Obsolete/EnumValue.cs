@@ -16,6 +16,8 @@
 // 
 using System;
 
+#nullable disable
+
 // ReSharper disable once CheckNamespace
 namespace Remotion.Globalization
 {
@@ -39,3 +41,5 @@ namespace Remotion.Globalization
     }
   }
 }
+
+#nullable restore

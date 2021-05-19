@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using Remotion.Reflection;
@@ -58,7 +59,7 @@ namespace Remotion.Globalization.Implementation
     public bool TryGetTypeDisplayName (
         ITypeInformation typeInformation,
         ITypeInformation typeInformationForResourceResolution,
-        out string result)
+        [MaybeNullWhen (false)] out string result)
     {
       ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
       ArgumentUtility.CheckNotNull ("typeInformationForResourceResolution", typeInformationForResourceResolution);
@@ -75,7 +76,7 @@ namespace Remotion.Globalization.Implementation
     public bool TryGetPropertyDisplayName (
         IPropertyInformation propertyInformation,
         ITypeInformation typeInformationForResourceResolution,
-        out string result)
+        [MaybeNullWhen (false)] out string result)
     {
       ArgumentUtility.CheckNotNull ("propertyInformation", propertyInformation);
       ArgumentUtility.CheckNotNull ("typeInformationForResourceResolution", typeInformationForResourceResolution);
@@ -124,7 +125,7 @@ namespace Remotion.Globalization.Implementation
       return result;
     }
 
-    private string GetStringOrDefault (ITypeInformation typeInformation, string shortMemberName, string longMemberName, string resourcePrefix)
+    private string? GetStringOrDefault (ITypeInformation typeInformation, string shortMemberName, string longMemberName, string resourcePrefix)
     {
       var resourceManager = _globalizationService.GetResourceManager (typeInformation);
 

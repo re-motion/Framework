@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using Remotion.ExtensibleEnums;
 using Remotion.Reflection;
@@ -43,11 +44,11 @@ namespace Remotion.Globalization.ExtensibleEnums.Implementation
       _globalizationService = globalizationService;
     }
 
-    public bool TryGetExtensibleEnumValueDisplayName (IExtensibleEnum value, out string result)
+    public bool TryGetExtensibleEnumValueDisplayName (IExtensibleEnum value, [MaybeNullWhen (false)] out string result)
     {
       ArgumentUtility.CheckNotNull ("value", value);
 
-      var resourceType = value.GetValueInfo().DefiningMethod.DeclaringType;
+      var resourceType = value.GetValueInfo().DefiningMethod.DeclaringType!;
       var resourceManager = _globalizationService.GetResourceManager (TypeAdapter.Create (resourceType));
 
       return resourceManager.TryGetString(value.ID, out result);
@@ -57,7 +58,7 @@ namespace Remotion.Globalization.ExtensibleEnums.Implementation
     {
       ArgumentUtility.CheckNotNull ("value", value);
 
-      var resourceType = value.GetValueInfo ().DefiningMethod.DeclaringType;
+      var resourceType = value.GetValueInfo ().DefiningMethod.DeclaringType!;
       var resourceManager = _globalizationService.GetResourceManager (TypeAdapter.Create (resourceType));
 
       return resourceManager.GetAvailableStrings (value.ID);

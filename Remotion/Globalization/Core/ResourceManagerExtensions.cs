@@ -55,8 +55,7 @@ namespace Remotion.Globalization
       ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
       ArgumentUtility.CheckNotNull ("id", id);
 
-      string value;
-      if (resourceManager.TryGetString (id, out value))
+      if (resourceManager.TryGetString (id, out var value))
         return value;
 
       ResourceLogger.LogResourceEntryNotFound ("ID: '{0}'", id);
@@ -72,13 +71,12 @@ namespace Remotion.Globalization
     ///   The value of the resource. If no match is possible, <see langword="null"/> is returned.
     /// </returns>
     [CanBeNull]
-    public static string GetStringOrDefault ([NotNull] this IResourceManager resourceManager, [NotNull] string id)
+    public static string? GetStringOrDefault ([NotNull] this IResourceManager resourceManager, [NotNull] string id)
     {
       ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
       ArgumentUtility.CheckNotNull ("id", id);
 
-      string value;
-      if (resourceManager.TryGetString (id, out value))
+      if (resourceManager.TryGetString (id, out var value))
         return value;
 
       return default(string);
@@ -110,7 +108,7 @@ namespace Remotion.Globalization
     ///   The value of the resource. If no match is possible, null is returned.
     /// </returns>
     [CanBeNull]
-    public static string GetStringOrDefault ([NotNull] this IResourceManager resourceManager, [NotNull] Enum enumValue)
+    public static string? GetStringOrDefault ([NotNull] this IResourceManager resourceManager, [NotNull] Enum enumValue)
     {
       ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
       ArgumentUtility.CheckNotNull ("enumValue", enumValue);
@@ -139,8 +137,7 @@ namespace Remotion.Globalization
       ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
       ArgumentUtility.CheckNotNull ("id", id);
 
-      string value;
-      return resourceManager.TryGetString (id, out value);
+      return resourceManager.TryGetString (id, out _);
     }
   }
 }

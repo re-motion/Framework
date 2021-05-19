@@ -39,7 +39,7 @@ public class ResourceIdentifiersAttribute: Attribute
 //      return type.FullName + "." + enumValue.ToString();
   }
 
-  public static ResourceIdentifiersAttribute GetAttribute (Type type)
+  public static ResourceIdentifiersAttribute? GetAttribute (Type type)
   {
     object[] attributes = type.GetCustomAttributes (typeof (ResourceIdentifiersAttribute), false);
     if (attributes == null || attributes.Length == 0)
@@ -50,7 +50,7 @@ public class ResourceIdentifiersAttribute: Attribute
 
   private static bool IsEnumTypeNameSuppressed (Type type)
   {
-    ResourceIdentifiersAttribute attrib = GetAttribute (type);
+    ResourceIdentifiersAttribute? attrib = GetAttribute (type);
     if (attrib == null)
       return false;
     else

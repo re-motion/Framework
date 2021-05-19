@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using Remotion.ExtensibleEnums;
@@ -50,7 +51,7 @@ namespace Remotion.Globalization.ExtensibleEnums.Implementation
       get { return _extensibleEnumGlobalizationServices; }
     }
 
-    public bool TryGetExtensibleEnumValueDisplayName (IExtensibleEnum value, out string result)
+    public bool TryGetExtensibleEnumValueDisplayName (IExtensibleEnum value, [MaybeNullWhen (false)] out string result)
     {
       ArgumentUtility.CheckNotNull ("value", value);
 

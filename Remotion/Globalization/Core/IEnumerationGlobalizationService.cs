@@ -16,9 +16,10 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using JetBrains.Annotations;
 using Remotion.Globalization.Implementation;
+using NotNullAttribute = JetBrains.Annotations.NotNullAttribute;
 
 namespace Remotion.Globalization
 {
@@ -39,7 +40,7 @@ namespace Remotion.Globalization
     ///   The human-readable localized representation of the <paramref name="value"/> or <see langword="null" /> if no localization could be found.
     /// </param>
     /// <returns><see langword="true" /> if a resource could be found.</returns>
-    bool TryGetEnumerationValueDisplayName ([NotNull] Enum value, [CanBeNull] out string result);
+    bool TryGetEnumerationValueDisplayName ([NotNull] Enum value, [MaybeNullWhen (false)] out string result);
 
     /// <summary>
     ///   Returns all human-readable enumeration names of the spefified reflection object.

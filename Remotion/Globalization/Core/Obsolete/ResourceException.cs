@@ -17,6 +17,8 @@
 using System;
 using System.Runtime.Serialization;
 
+#nullable disable
+
 // ReSharper disable once CheckNamespace
 namespace Remotion.Globalization
 {
@@ -34,3 +36,5 @@ public abstract class ResourceException: Exception
 }
 
 }
+
+#nullable restore

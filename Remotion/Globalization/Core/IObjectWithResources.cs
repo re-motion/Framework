@@ -32,7 +32,7 @@ public interface IObjectWithResources
   ///   Returns an instance of <c>IResourceManager</c> for resource container of the object.
   /// </summary>
   [CanBeNull]
-  IResourceManager GetResourceManager();
+  IResourceManager? GetResourceManager();
 }
 
 }

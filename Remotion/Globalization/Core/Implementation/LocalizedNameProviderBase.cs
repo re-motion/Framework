@@ -18,6 +18,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -26,6 +27,7 @@ using System.Threading;
 using JetBrains.Annotations;
 using Remotion.Reflection;
 using Remotion.Utilities;
+using NotNullAttribute = JetBrains.Annotations.NotNullAttribute;
 
 namespace Remotion.Globalization.Implementation
 {
@@ -65,12 +67,14 @@ namespace Remotion.Globalization.Implementation
     protected abstract IEnumerable<MultiLingualNameAttribute> GetCustomAttributes ([NotNull] TReflectionObject reflectionObject);
 
     [CanBeNull]
-    protected abstract Assembly GetAssembly ([NotNull] TReflectionObject reflectionObject);
+    protected abstract Assembly? GetAssembly ([NotNull] TReflectionObject reflectionObject);
 
     [NotNull]
     protected abstract string GetContextForExceptionMessage ([NotNull] TReflectionObject reflectionObject);
 
-    public bool TryGetLocalizedNameForCurrentUICulture ([NotNull] TReflectionObject reflectionObject, [CanBeNull] out string result)
+    public bool TryGetLocalizedNameForCurrentUICulture (
+        [NotNull] TReflectionObject reflectionObject,
+        [CanBeNull][MaybeNullWhen (false)] out string result)
     {
       ArgumentUtility.CheckNotNull ("reflectionObject", reflectionObject);
 
@@ -146,7 +150,7 @@ namespace Remotion.Globalization.Implementation
         Dictionary<CultureInfo, string> attributes)
     {
       var assemblyNeutralResourcesCulture = GetAssemblyNeutralResourcesCulture (reflectionObject);
-      string neutralLocalizedName;
+      string? neutralLocalizedName;
       if (!attributes.TryGetValue (assemblyNeutralResourcesCulture, out neutralLocalizedName))
       {
         throw new InvalidOperationException (

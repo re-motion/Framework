@@ -51,8 +51,7 @@ namespace Remotion.Globalization.ExtensibleEnums
       ArgumentUtility.CheckNotNull ("extensibleEnumGlobalizationService", extensibleEnumGlobalizationService);
       ArgumentUtility.CheckNotNull ("value", value);
 
-      string result;
-      if (extensibleEnumGlobalizationService.TryGetExtensibleEnumValueDisplayName (value, out result))
+      if (extensibleEnumGlobalizationService.TryGetExtensibleEnumValueDisplayName (value, out var result))
         return result;
 
       if (ResourceLogger.IsEnabled)
@@ -82,14 +81,14 @@ namespace Remotion.Globalization.ExtensibleEnums
     ///   or <see langword="null" /> if no resource could be found.
     /// </returns>
     [CanBeNull]
-    public static string GetExtensibleEnumValueDisplayNameOrDefault (
+    public static string? GetExtensibleEnumValueDisplayNameOrDefault (
         [NotNull] this IExtensibleEnumGlobalizationService extensibleEnumGlobalizationService,
         [NotNull] IExtensibleEnum value)
     {
       ArgumentUtility.CheckNotNull ("extensibleEnumGlobalizationService", extensibleEnumGlobalizationService);
       ArgumentUtility.CheckNotNull ("value", value);
 
-      string result;
+      string? result;
       if (extensibleEnumGlobalizationService.TryGetExtensibleEnumValueDisplayName (value, out result))
         return result;
 
@@ -113,7 +112,7 @@ namespace Remotion.Globalization.ExtensibleEnums
       ArgumentUtility.CheckNotNull ("extensibleEnumGlobalizationService", extensibleEnumGlobalizationService);
       ArgumentUtility.CheckNotNull ("value", value);
 
-      string result;
+      string? result;
       return extensibleEnumGlobalizationService.TryGetExtensibleEnumValueDisplayName (value, out result);
     }
   }

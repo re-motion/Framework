@@ -18,6 +18,8 @@ using System;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
 
+#nullable disable
+
 // ReSharper disable once CheckNamespace
 
 
@@ -82,3 +84,5 @@ namespace Remotion.Mixins.Globalization
     }
   }
 }
+
+#nullable restore

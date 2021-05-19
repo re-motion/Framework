@@ -52,7 +52,7 @@ namespace Remotion.Globalization.Implementation
       return GetResolvedResourceManagerFromCache (type);
     }
 
-    private ResolvedResourceManagerResult GetResolvedResourceManagerFromCache (Type type)
+    private ResolvedResourceManagerResult GetResolvedResourceManagerFromCache (Type? type)
     {
       if (type == null)
         return ResolvedResourceManagerResult.Null;
