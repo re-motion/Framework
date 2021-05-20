@@ -18,6 +18,7 @@ using System;
 using System.Runtime.Remoting.Messaging;
 using System.Web;
 using NUnit.Framework;
+using Remotion.Context;
 using Remotion.Development.Web.UnitTesting.AspNetFramework;
 using Remotion.Web.Context;
 
@@ -81,13 +82,14 @@ namespace Remotion.Web.UnitTests.Core.Context
     public void FallbackToCallContext_IfNoCurrentHttpContext ()
     {
       HttpContext.Current = null;
-      
+      var fallbackProvider = new AsyncLocalStorageProvider();
+
       _provider.SetData ("Foo", 123);
       Assert.That (_provider.GetData ("Foo"), Is.EqualTo (123));
-      Assert.That (CallContext.GetData ("Foo"), Is.EqualTo (123));
-      
+      Assert.That (fallbackProvider.GetData ("Foo"), Is.EqualTo (123));
+
       _provider.FreeData ("Foo");
-      Assert.That (CallContext.GetData ("Foo"), Is.Null);
+      Assert.That (fallbackProvider.GetData ("Foo"), Is.Null);
     }
   }
 }

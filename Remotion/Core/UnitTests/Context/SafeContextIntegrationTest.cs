@@ -31,14 +31,12 @@ namespace Remotion.UnitTests.Context
 
       SafeContext.Instance.SetData ("Integration", "value");
       Assert.That (SafeContext.Instance.GetData ("Integration"), Is.EqualTo ("value"));
-      Assert.That (CallContext.GetData ("Integration"), Is.EqualTo ("value"));
 
       SafeContext.Instance.SetData ("Integration", "other value");
       Assert.That (SafeContext.Instance.GetData ("Integration"), Is.EqualTo ("other value"));
 
       SafeContext.Instance.FreeData("Integration");
       Assert.That (SafeContext.Instance.GetData ("Integration"), Is.Null);
-      Assert.That (CallContext.GetData ("Integration"), Is.Null);
     }
   }
 }

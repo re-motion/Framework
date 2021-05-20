@@ -16,33 +16,28 @@
 // 
 using System;
 using System.Runtime.Remoting.Messaging;
-using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Context
 {
   /// <summary>
   /// Implements <see cref="ISafeContextStorageProvider"/> by storing data in the thread-local <see cref="CallContext"/>.
   /// </summary>
-  [ImplementationFor (typeof (ISafeContextStorageProvider), Position = 1)]
+  [Obsolete ("CallContext is deprecated in .NET Core. Use AsyncLocalStorageProvider instead. (Version 3.0.0-alpha.14)", true)]
   public class CallContextStorageProvider : ISafeContextStorageProvider
   {
     public object GetData (string key)
     {
-      ArgumentUtility.CheckNotNull ("key", key);
-      return CallContext.GetData (key);
+      throw new NotSupportedException ("CallContext is deprecated in .NET Core. Use AsyncLocalStorageProvider instead. (Version 3.0.0-alpha.14)");
     }
 
     public void SetData (string key, object? value)
     {
-      ArgumentUtility.CheckNotNull ("key", key);
-      CallContext.SetData (key, value);
+      throw new NotSupportedException ("CallContext is deprecated in .NET Core. Use AsyncLocalStorageProvider instead. (Version 3.0.0-alpha.14)");
     }
 
     public void FreeData (string key)
     {
-      ArgumentUtility.CheckNotNull ("key", key);
-      CallContext.FreeNamedDataSlot (key);
+      throw new NotSupportedException ("CallContext is deprecated in .NET Core. Use AsyncLocalStorageProvider instead. (Version 3.0.0-alpha.14)");
     }
   }
 }
