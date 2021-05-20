@@ -16,11 +16,12 @@
 // 
 using System;
 using Microsoft.Practices.ServiceLocation;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.ServiceLocation;
 using Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
 {
@@ -106,7 +107,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
           Throws.InvalidOperationException.With.Message.EqualTo (
               "Register cannot be called twice or after GetInstance for service type: 'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.ITestType'."));
     }
-    
+
     [Test]
     public void Register_AfterGetInstance_ExceptionIsThrown ()
     {
@@ -114,10 +115,10 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
           typeof (ITestType),
           typeof (TestImplementation1));
 
-      var serviceConfigurationDiscoveryServiceMock = MockRepository.GenerateStrictMock<IServiceConfigurationDiscoveryService>();
-      serviceConfigurationDiscoveryServiceMock.Stub (_ => _.GetDefaultConfiguration (typeof (ITestType))).Return (serviceConfigurationEntry);
+      var serviceConfigurationDiscoveryServiceMock = new Mock<IServiceConfigurationDiscoveryService> (MockBehavior.Strict);
+      serviceConfigurationDiscoveryServiceMock.Setup (_ => _.GetDefaultConfiguration (typeof (ITestType))).Returns (serviceConfigurationEntry);
 
-      var serviceLocator = CreateServiceLocator(serviceConfigurationDiscoveryServiceMock);
+      var serviceLocator = CreateServiceLocator(serviceConfigurationDiscoveryServiceMock.Object);
       serviceLocator.Register (serviceConfigurationEntry);
 
       Assert.That (
@@ -134,10 +135,10 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
           typeof (TestImplementationWithMultipleConstructorParameters));
 
       var expectedException = new Exception ("Expected Exception Message");
-      var serviceConfigurationDiscoveryServiceStub = MockRepository.GenerateStrictMock<IServiceConfigurationDiscoveryService>();
-      serviceConfigurationDiscoveryServiceStub.Stub (_ => _.GetDefaultConfiguration (typeof (InstanceService))).Throw (expectedException);
+      var serviceConfigurationDiscoveryServiceStub = new Mock<IServiceConfigurationDiscoveryService> (MockBehavior.Strict);
+      serviceConfigurationDiscoveryServiceStub.Setup (_ => _.GetDefaultConfiguration (typeof (InstanceService))).Throws (expectedException);
 
-      var serviceLocator = CreateServiceLocator (serviceConfigurationDiscoveryServiceStub);
+      var serviceLocator = CreateServiceLocator (serviceConfigurationDiscoveryServiceStub.Object);
       serviceLocator.Register (serviceConfigurationEntry);
       serviceLocator.Register (CreateMultipleService());
       serviceLocator.Register (CreateSingletonService());
@@ -184,10 +185,10 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
           typeof (TestImplementationWithMultipleConstructorParameters));
 
       var expectedException = new Exception ("Expected Exception Message");
-      var serviceConfigurationDiscoveryServiceStub = MockRepository.GenerateStrictMock<IServiceConfigurationDiscoveryService>();
-      serviceConfigurationDiscoveryServiceStub.Stub (_ => _.GetDefaultConfiguration (typeof (MultipleService))).Throw (expectedException);
+      var serviceConfigurationDiscoveryServiceStub = new Mock<IServiceConfigurationDiscoveryService> (MockBehavior.Strict);
+      serviceConfigurationDiscoveryServiceStub.Setup (_ => _.GetDefaultConfiguration (typeof (MultipleService))).Throws (expectedException);
 
-      var serviceLocator = CreateServiceLocator (serviceConfigurationDiscoveryServiceStub);
+      var serviceLocator = CreateServiceLocator (serviceConfigurationDiscoveryServiceStub.Object);
       serviceLocator.Register (serviceConfigurationEntry);
       serviceLocator.Register (CreateInstanceService());
       serviceLocator.Register (CreateSingletonService());

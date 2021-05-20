@@ -14,8 +14,10 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
+
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace Remotion.Reflection.UnitTests
 {
@@ -26,195 +28,195 @@ namespace Remotion.Reflection.UnitTests
     public void GetAssemblyQualifiedNameSafe_WithAssemblyQualifiedNameAvailable_ReturnsAssemblyQualifiedName ()
     {
       var id = "7EFC8044-EEAB-4F2B-9A77-2B331C13D7F5";
-      var typeInformation = MockRepository.GenerateStrictMock<ITypeInformation>();
-      typeInformation.Expect (_ => _.AssemblyQualifiedName).Return (id);
+      var typeInformation = new Mock<ITypeInformation> (MockBehavior.Strict);
+      typeInformation.Setup (_ => _.AssemblyQualifiedName).Returns (id).Verifiable();
 
-      var result = typeInformation.GetAssemblyQualifiedNameSafe();
+      var result = typeInformation.Object.GetAssemblyQualifiedNameSafe();
 
       Assert.That (result, Is.EqualTo (id));
-      typeInformation.VerifyAllExpectations();
+      typeInformation.Verify();
     }
 
     [Test]
     public void GetAssemblyQualifiedNameSafe_WithNullAssemblyQualifiedName_ReturnsFullName ()
     {
       var id = "7EFC8044-EEAB-4F2B-9A77-2B331C13D7F5";
-      var typeInformation = MockRepository.GenerateStrictMock<ITypeInformation>();
-      typeInformation.Expect (_ => _.AssemblyQualifiedName).Return (null);
-      typeInformation.Expect (_ => _.FullName).Return (id);
+      var typeInformation = new Mock<ITypeInformation> (MockBehavior.Strict);
+      typeInformation.Setup (_ => _.AssemblyQualifiedName).Returns ((string) null).Verifiable();
+      typeInformation.Setup (_ => _.FullName).Returns (id).Verifiable();
 
-      var result = typeInformation.GetAssemblyQualifiedNameSafe();
+      var result = typeInformation.Object.GetAssemblyQualifiedNameSafe();
 
       Assert.That (result, Is.EqualTo (id));
-      typeInformation.VerifyAllExpectations();
+      typeInformation.Verify();
     }
 
     [Test]
     public void GetAssemblyQualifiedNameSafe_WithNullAssemblyQualifiedNameAndFullName_ReturnsName ()
     {
       var id = "7EFC8044-EEAB-4F2B-9A77-2B331C13D7F5";
-      var typeInformation = MockRepository.GenerateStrictMock<ITypeInformation>();
-      typeInformation.Expect (_ => _.AssemblyQualifiedName).Return (null);
-      typeInformation.Expect (_ => _.FullName).Return (null);
-      typeInformation.Expect (_ => _.Name).Return (id);
+      var typeInformation = new Mock<ITypeInformation> (MockBehavior.Strict);
+      typeInformation.Setup (_ => _.AssemblyQualifiedName).Returns ((string) null).Verifiable();
+      typeInformation.Setup (_ => _.FullName).Returns ((string) null).Verifiable();
+      typeInformation.Setup (_ => _.Name).Returns (id).Verifiable();
 
-      var result = typeInformation.GetAssemblyQualifiedNameSafe();
+      var result = typeInformation.Object.GetAssemblyQualifiedNameSafe();
 
       Assert.That (result, Is.EqualTo (id));
-      typeInformation.VerifyAllExpectations();
+      typeInformation.Verify();
     }
 
     [Test]
     public void GetAssemblyQualifiedNameChecked_WithAssemblyQualifiedNameAvailable_ReturnsAssemblyQualifiedName ()
     {
       var id = "7EFC8044-EEAB-4F2B-9A77-2B331C13D7F5";
-      var typeInformation = MockRepository.GenerateStrictMock<ITypeInformation>();
-      typeInformation.Expect (_ => _.AssemblyQualifiedName).Return (id);
+      var typeInformation = new Mock<ITypeInformation> (MockBehavior.Strict);
+      typeInformation.Setup (_ => _.AssemblyQualifiedName).Returns (id).Verifiable();
 
-      var result = typeInformation.GetAssemblyQualifiedNameChecked();
+      var result = typeInformation.Object.GetAssemblyQualifiedNameChecked();
 
       Assert.That (result, Is.EqualTo (id));
-      typeInformation.VerifyAllExpectations();
+      typeInformation.Verify();
     }
 
     [Test]
     public void GetAssemblyQualifiedNameChecked_WithNullAssemblyQualifiedName_ThrowsInvalidOperationExceptionWithFullNameInMessage ()
     {
       var id = "7EFC8044-EEAB-4F2B-9A77-2B331C13D7F5";
-      var typeInformation = MockRepository.GenerateStrictMock<ITypeInformation>();
-      typeInformation.Expect (_ => _.AssemblyQualifiedName).Return (null);
-      typeInformation.Expect (_ => _.FullName).Return (id);
+      var typeInformation = new Mock<ITypeInformation> (MockBehavior.Strict);
+      typeInformation.Setup (_ => _.AssemblyQualifiedName).Returns ((string) null).Verifiable();
+      typeInformation.Setup (_ => _.FullName).Returns (id).Verifiable();
 
       Assert.That (
-          () => typeInformation.GetAssemblyQualifiedNameChecked(),
+          () => typeInformation.Object.GetAssemblyQualifiedNameChecked(),
           Throws.InvalidOperationException
               .With.Message.EqualTo ("Type '7EFC8044-EEAB-4F2B-9A77-2B331C13D7F5' does not have an assembly qualified name."));
-      typeInformation.VerifyAllExpectations();
+      typeInformation.Verify();
     }
 
     [Test]
     public void GetAssemblyQualifiedNameChecked_WithNullAssemblyQualifiedNameAndFullName_ThrowsInvalidOperationExceptionWithNameInMessage ()
     {
       var id = "7EFC8044-EEAB-4F2B-9A77-2B331C13D7F5";
-      var typeInformation = MockRepository.GenerateStrictMock<ITypeInformation>();
-      typeInformation.Expect (_ => _.AssemblyQualifiedName).Return (null);
-      typeInformation.Expect (_ => _.FullName).Return (null);
-      typeInformation.Expect (_ => _.Name).Return (id);
+      var typeInformation = new Mock<ITypeInformation> (MockBehavior.Strict);
+      typeInformation.Setup (_ => _.AssemblyQualifiedName).Returns ((string) null).Verifiable();
+      typeInformation.Setup (_ => _.FullName).Returns ((string) null).Verifiable();
+      typeInformation.Setup (_ => _.Name).Returns (id).Verifiable();
 
       Assert.That (
-          () => typeInformation.GetAssemblyQualifiedNameChecked(),
+          () => typeInformation.Object.GetAssemblyQualifiedNameChecked(),
           Throws.InvalidOperationException
               .With.Message.EqualTo ("Type '7EFC8044-EEAB-4F2B-9A77-2B331C13D7F5' does not have an assembly qualified name."));
-      typeInformation.VerifyAllExpectations();
+      typeInformation.Verify();
     }
 
     [Test]
     public void GetFullNameSafe_WithFullNameAvailable_ReturnsFullName ()
     {
       var id = "7EFC8044-EEAB-4F2B-9A77-2B331C13D7F5";
-      var typeInformation = MockRepository.GenerateStrictMock<ITypeInformation>();
-      typeInformation.Expect (_ => _.FullName).Return (id);
+      var typeInformation = new Mock<ITypeInformation> (MockBehavior.Strict);
+      typeInformation.Setup (_ => _.FullName).Returns (id).Verifiable();
 
-      var result = typeInformation.GetFullNameSafe();
+      var result = typeInformation.Object.GetFullNameSafe();
 
       Assert.That (result, Is.EqualTo (id));
-      typeInformation.VerifyAllExpectations();
+      typeInformation.Verify();
     }
 
     [Test]
     public void GetFullNameSafe_WithNullFullName_ReturnsName ()
     {
       var id = "7EFC8044-EEAB-4F2B-9A77-2B331C13D7F5";
-      var typeInformation = MockRepository.GenerateStrictMock<ITypeInformation>();
-      typeInformation.Expect (_ => _.FullName).Return (null);
-      typeInformation.Expect (_ => _.Name).Return (id);
+      var typeInformation = new Mock<ITypeInformation> (MockBehavior.Strict);
+      typeInformation.Setup (_ => _.FullName).Returns ((string) null).Verifiable();
+      typeInformation.Setup (_ => _.Name).Returns (id).Verifiable();
 
-      var result = typeInformation.GetFullNameSafe();
+      var result = typeInformation.Object.GetFullNameSafe();
 
       Assert.That (result, Is.EqualTo (id));
-      typeInformation.VerifyAllExpectations();
+      typeInformation.Verify();
     }
 
     [Test]
     public void GetFullNameChecked_WithFullNameAvailable_ReturnsFullName ()
     {
       var id = "7EFC8044-EEAB-4F2B-9A77-2B331C13D7F5";
-      var typeInformation = MockRepository.GenerateStrictMock<ITypeInformation>();
-      typeInformation.Expect (_ => _.FullName).Return (id);
+      var typeInformation = new Mock<ITypeInformation> (MockBehavior.Strict);
+      typeInformation.Setup (_ => _.FullName).Returns (id).Verifiable();
 
-      var result = typeInformation.GetFullNameChecked();
+      var result = typeInformation.Object.GetFullNameChecked();
 
       Assert.That (result, Is.EqualTo (id));
-      typeInformation.VerifyAllExpectations();
+      typeInformation.Verify();
     }
 
     [Test]
     public void GetFullNameChecked_WithNullFullName_ThrowsInvalidOperationExceptionWithNameInMessage ()
     {
       var id = "7EFC8044-EEAB-4F2B-9A77-2B331C13D7F5";
-      var typeInformation = MockRepository.GenerateStrictMock<ITypeInformation>();
-      typeInformation.Expect (_ => _.FullName).Return (null);
-      typeInformation.Expect (_ => _.Name).Return (id);
+      var typeInformation = new Mock<ITypeInformation> (MockBehavior.Strict);
+      typeInformation.Setup (_ => _.FullName).Returns ((string) null).Verifiable();
+      typeInformation.Setup (_ => _.Name).Returns (id).Verifiable();
 
       Assert.That (
-          () => typeInformation.GetFullNameChecked(),
+          () => typeInformation.Object.GetFullNameChecked(),
           Throws.InvalidOperationException
               .With.Message.EqualTo ("Type '7EFC8044-EEAB-4F2B-9A77-2B331C13D7F5' does not have a full name."));
-      typeInformation.VerifyAllExpectations();
+      typeInformation.Verify();
     }
 
     [Test]
     public void GetNamespaceSafe_WithNamespaceAvailable_ReturnsNamespace ()
     {
       var id = "7EFC8044-EEAB-4F2B-9A77-2B331C13D7F5";
-      var typeInformation = MockRepository.GenerateStrictMock<ITypeInformation>();
-      typeInformation.Expect (_ => _.Namespace).Return (id);
+      var typeInformation = new Mock<ITypeInformation> (MockBehavior.Strict);
+      typeInformation.Setup (_ => _.Namespace).Returns (id).Verifiable();
 
-      var result = typeInformation.GetNamespaceSafe();
+      var result = typeInformation.Object.GetNamespaceSafe();
 
       Assert.That (result, Is.EqualTo (id));
-      typeInformation.VerifyAllExpectations();
+      typeInformation.Verify();
     }
 
     [Test]
     public void GetNamespaceSafe_WithNullNamespace_ReturnsFallback ()
     {
       var fallback = "<undefined>";
-      var typeInformation = MockRepository.GenerateStrictMock<ITypeInformation>();
-      typeInformation.Expect (_ => _.Namespace).Return (null);
+      var typeInformation = new Mock<ITypeInformation> (MockBehavior.Strict);
+      typeInformation.Setup (_ => _.Namespace).Returns ((string) null).Verifiable();
 
-      var result = typeInformation.GetNamespaceSafe();
+      var result = typeInformation.Object.GetNamespaceSafe();
 
       Assert.That (result, Is.EqualTo (fallback));
-      typeInformation.VerifyAllExpectations();
+      typeInformation.Verify();
     }
 
     [Test]
     public void GetNamespaceChecked_WithNamespaceAvailable_ReturnsNamespace ()
     {
       var id = "7EFC8044-EEAB-4F2B-9A77-2B331C13D7F5";
-      var typeInformation = MockRepository.GenerateStrictMock<ITypeInformation>();
-      typeInformation.Expect (_ => _.Namespace).Return (id);
+      var typeInformation = new Mock<ITypeInformation> (MockBehavior.Strict);
+      typeInformation.Setup (_ => _.Namespace).Returns (id).Verifiable();
 
-      var result = typeInformation.GetNamespaceChecked();
+      var result = typeInformation.Object.GetNamespaceChecked();
 
       Assert.That (result, Is.EqualTo (id));
-      typeInformation.VerifyAllExpectations();
+      typeInformation.Verify();
     }
 
     [Test]
     public void GetNamespaceChecked_WithNullNamespace_ThrowsInvalidOperationExceptionWithNameInMessage ()
     {
       var id = "7EFC8044-EEAB-4F2B-9A77-2B331C13D7F5";
-      var typeInformation = MockRepository.GenerateStrictMock<ITypeInformation>();
-      typeInformation.Expect (_ => _.Namespace).Return (null);
-      typeInformation.Expect (_ => _.Name).Return (id);
+      var typeInformation = new Mock<ITypeInformation> (MockBehavior.Strict);
+      typeInformation.Setup (_ => _.Namespace).Returns ((string) null).Verifiable();
+      typeInformation.Setup (_ => _.Name).Returns (id).Verifiable();
 
       Assert.That (
-          () => typeInformation.GetNamespaceChecked(),
+          () => typeInformation.Object.GetNamespaceChecked(),
           Throws.InvalidOperationException
               .With.Message.EqualTo ("Type '7EFC8044-EEAB-4F2B-9A77-2B331C13D7F5' does not have a namespace."));
-      typeInformation.VerifyAllExpectations();
+      typeInformation.Verify();
     }
   }
 }

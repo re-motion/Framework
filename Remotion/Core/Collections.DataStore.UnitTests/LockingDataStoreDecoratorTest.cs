@@ -16,10 +16,12 @@
 // 
 #pragma warning disable 618
 using System;
+using System.Linq.Expressions;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
-using Remotion.Development.RhinoMocks.UnitTesting.Threading;
+using Remotion.Development.Moq.UnitTesting.Threading;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Collections.DataStore.UnitTests
 {
@@ -33,9 +35,9 @@ namespace Remotion.Collections.DataStore.UnitTests
     [SetUp]
     public void SetUp ()
     {
-      var innerDataStoreMock = MockRepository.GenerateStrictMock<IDataStore<string, int>>();
+      var innerDataStoreMock = new Mock<IDataStore<string, int>> (MockBehavior.Strict);
 
-      _decorator = new LockingDataStoreDecorator<string, int> (innerDataStoreMock);
+      _decorator = new LockingDataStoreDecorator<string, int> (innerDataStoreMock.Object);
 
       var lockObject = PrivateInvoke.GetNonPublicField (_decorator, "_lock");
       _helper = new LockingDecoratorTestHelper<IDataStore<string, int>> (_decorator, lockObject, innerDataStoreMock);
@@ -80,7 +82,18 @@ namespace Remotion.Collections.DataStore.UnitTests
     [Test]
     public void Set_Value ()
     {
-      _helper.ExpectSynchronizedDelegation (store => store["c"] = 17);
+      var indexer = typeof (IDataStore<string, int>).GetProperty ("Item");
+      var parameter = Expression.Parameter (typeof (IDataStore<string, int>), "store");
+      var expression = (Expression<Action<IDataStore<string, int>>>) Expression.Lambda (
+          typeof (Action<IDataStore<string, int>>),
+          Expression.Assign (
+              Expression.MakeIndex (
+                  parameter,
+                  indexer,
+                  new[] { Expression.Constant ("c") }),
+              Expression.Constant (17)),
+          parameter);
+      _helper.ExpectSynchronizedDelegation (expression);
     }
 
     [Test]
@@ -99,7 +112,12 @@ namespace Remotion.Collections.DataStore.UnitTests
     [Test]
     public void GetOrCreateValue ()
     {
-      _helper.ExpectSynchronizedDelegation (store => store.GetOrCreateValue ("hugo", delegate { return 3; }), 17);
+      Func<string, int> valueFactory = _ => 3;
+      _helper.ExpectSynchronizedDelegation (
+          store => store.GetOrCreateValue ("hugo", It.Is<Func<string, int>> (_ => _ == valueFactory)),
+          store => store.GetOrCreateValue ("hugo", valueFactory),
+          17,
+          _ => { });
     }
 
     [Test]

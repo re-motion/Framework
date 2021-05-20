@@ -16,10 +16,11 @@
 // 
 using System;
 using Microsoft.Practices.ServiceLocation;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.ServiceLocation;
 using Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
 {
@@ -45,9 +46,9 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
       //TODO RM-5506: Integration Test
       var serviceConfigurationEntry = CreateMultipleServiceConfigurationEntry (typeof (ITestType), new Type[0]);
 
-      var serviceConfigurationDiscoveryServiceMock = MockRepository.GenerateStrictMock<IServiceConfigurationDiscoveryService>();
-      serviceConfigurationDiscoveryServiceMock.Stub (_ => _.GetDefaultConfiguration (typeof (ITestType))).Return (serviceConfigurationEntry);
-      var serviceLocator = CreateServiceLocator (serviceConfigurationDiscoveryServiceMock);
+      var serviceConfigurationDiscoveryServiceMock = new Mock<IServiceConfigurationDiscoveryService> (MockBehavior.Strict);
+      serviceConfigurationDiscoveryServiceMock.Setup (_ => _.GetDefaultConfiguration (typeof (ITestType))).Returns (serviceConfigurationEntry);
+      var serviceLocator = CreateServiceLocator (serviceConfigurationDiscoveryServiceMock.Object);
 
       var result = ((IServiceLocator) serviceLocator).GetService (typeof (ITestType));
 

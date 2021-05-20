@@ -16,19 +16,20 @@
 // 
 using System;
 using System.Linq;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Configuration.TypeDiscovery;
 using Remotion.Development.UnitTesting.Configuration;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
-using Rhino.Mocks;
 
 namespace Remotion.UnitTests.Configuration.TypeDiscovery
 {
   [TestFixture]
   public class RootAssembliesElementTest
   {
-    private IAssemblyLoader _loaderStub;
+    private Mock<IAssemblyLoader> _loaderStub;
     private const string _emptyXmlFragment = @"<rootAssemblies />";
     private const string _xmlFragmentWithFilesAndNames = @"<rootAssemblies>
             <byName>
@@ -42,7 +43,7 @@ namespace Remotion.UnitTests.Configuration.TypeDiscovery
     [SetUp]
     public void SetUp ()
     {
-      _loaderStub = MockRepository.GenerateStub<IAssemblyLoader> ();
+      _loaderStub = new Mock<IAssemblyLoader>();
     }
 
     [Test]
@@ -68,17 +69,17 @@ namespace Remotion.UnitTests.Configuration.TypeDiscovery
     {
       var element = DeserializeFromXmlFragment (_emptyXmlFragment);
 
-      var finder = element.CreateRootAssemblyFinder (_loaderStub);
+      var finder = element.CreateRootAssemblyFinder (_loaderStub.Object);
       Assert.That (finder.InnerFinders.Count, Is.EqualTo (2));
 
       Assert.That (finder.InnerFinders[0], Is.InstanceOf (typeof (NamedRootAssemblyFinder)));
       var namedFinder = (NamedRootAssemblyFinder) finder.InnerFinders[0];
       Assert.That (namedFinder.Specifications, Is.Empty);
-      Assert.That (namedFinder.AssemblyLoader, Is.SameAs (_loaderStub));
+      Assert.That (namedFinder.AssemblyLoader, Is.SameAs (_loaderStub.Object));
 
       var filePatternFinder = (FilePatternRootAssemblyFinder) finder.InnerFinders[1];
       Assert.That (filePatternFinder.Specifications, Is.Empty);
-      Assert.That (filePatternFinder.AssemblyLoader, Is.SameAs (_loaderStub));
+      Assert.That (filePatternFinder.AssemblyLoader, Is.SameAs (_loaderStub.Object));
 
       Assert.That (finder.FindRootAssemblies (), Is.Empty);
     }
@@ -88,17 +89,17 @@ namespace Remotion.UnitTests.Configuration.TypeDiscovery
     {
       var element = DeserializeFromXmlFragment (_xmlFragmentWithFilesAndNames);
 
-      var finder = element.CreateRootAssemblyFinder (_loaderStub);
+      var finder = element.CreateRootAssemblyFinder (_loaderStub.Object);
       Assert.That (finder.InnerFinders.Count, Is.EqualTo (2));
 
       Assert.That (finder.InnerFinders[0], Is.InstanceOf (typeof (NamedRootAssemblyFinder)));
       var namedFinder = (NamedRootAssemblyFinder) finder.InnerFinders[0];
       Assert.That (namedFinder.Specifications.Single ().AssemblyName.ToString (), Is.EqualTo ("mscorlib"));
-      Assert.That (namedFinder.AssemblyLoader, Is.SameAs (_loaderStub));
+      Assert.That (namedFinder.AssemblyLoader, Is.SameAs (_loaderStub.Object));
 
       var filePatternFinder = (FilePatternRootAssemblyFinder) finder.InnerFinders[1];
       Assert.That (filePatternFinder.Specifications.Single ().FilePattern, Is.EqualTo ("ActaNova.*.dll"));
-      Assert.That (filePatternFinder.AssemblyLoader, Is.SameAs (_loaderStub));
+      Assert.That (filePatternFinder.AssemblyLoader, Is.SameAs (_loaderStub.Object));
     }
 
     private RootAssembliesElement DeserializeFromXmlFragment (string xmlFragment)

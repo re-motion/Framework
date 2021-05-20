@@ -18,11 +18,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Practices.ServiceLocation;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting.Enumerables;
 using Remotion.ServiceLocation;
 using Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
 {
@@ -36,10 +37,10 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
           typeof (ITestType),
           new[] { typeof (TestImplementation1), typeof (TestImplementation2) });
 
-      var serviceConfigurationDiscoveryServiceStub = MockRepository.GenerateStrictMock<IServiceConfigurationDiscoveryService>();
-      serviceConfigurationDiscoveryServiceStub.Stub(_=>_.GetDefaultConfiguration (typeof (ITestType))).Return (serviceConfigurationEntry);
+      var serviceConfigurationDiscoveryServiceStub = new Mock<IServiceConfigurationDiscoveryService> (MockBehavior.Strict);
+      serviceConfigurationDiscoveryServiceStub.Setup(_=>_.GetDefaultConfiguration (typeof (ITestType))).Returns (serviceConfigurationEntry);
 
-      var serviceLocator = CreateServiceLocator (serviceConfigurationDiscoveryServiceStub);
+      var serviceLocator = CreateServiceLocator (serviceConfigurationDiscoveryServiceStub.Object);
 
       var instances = serviceLocator.GetAllInstances (typeof (ITestType));
 
@@ -219,10 +220,10 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     {
       //TODO RM-5506: Integration Test
       var serviceConfigurationEntry = CreateMultipleServiceConfigurationEntry (typeof (ITestType), new Type[0]);
-      var serviceConfigurationDiscoveryServiceStub = MockRepository.GenerateStrictMock<IServiceConfigurationDiscoveryService>();
-      serviceConfigurationDiscoveryServiceStub.Stub(_=>_.GetDefaultConfiguration (typeof (ITestType))).Return (serviceConfigurationEntry);
+      var serviceConfigurationDiscoveryServiceStub = new Mock<IServiceConfigurationDiscoveryService> (MockBehavior.Strict);
+      serviceConfigurationDiscoveryServiceStub.Setup(_=>_.GetDefaultConfiguration (typeof (ITestType))).Returns (serviceConfigurationEntry);
 
-      var serviceLocator = CreateServiceLocator (serviceConfigurationDiscoveryServiceStub);
+      var serviceLocator = CreateServiceLocator (serviceConfigurationDiscoveryServiceStub.Object);
 
       var result = serviceLocator.GetAllInstances (typeof (ITestType));
 
