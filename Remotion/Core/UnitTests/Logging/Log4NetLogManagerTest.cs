@@ -18,9 +18,10 @@ using System;
 using System.IO;
 using System.Linq;
 using log4net.Core;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Logging;
-using Rhino.Mocks;
 
 namespace Remotion.UnitTests.Logging
 {
@@ -170,9 +171,9 @@ namespace Remotion.UnitTests.Logging
     [Test]
     public void InitializeConsole_WithSpecificThresholds_InvalidLoggerType ()
     {
-      var logger = MockRepository.GenerateStub<ILog>();
+      var logger = new Mock<ILog>();
       Assert.That (
-          () => _logManager.InitializeConsole (LogLevel.Debug, new LogThreshold (logger, LogLevel.Error)),
+          () => _logManager.InitializeConsole (LogLevel.Debug, new LogThreshold (logger.Object, LogLevel.Error)),
           Throws.ArgumentException.With.Message.EqualTo (
               "This LogManager only supports ILog implementations that also implement the log4net.Core.ILoggerWrapper interface.\r\nParameter name: logThresholds"));
     }
@@ -180,11 +181,11 @@ namespace Remotion.UnitTests.Logging
     [Test]
     public void InitializeConsole_WithSpecificThresholds_InvalidLog4NetLoggerType ()
     {
-      var logger = MockRepository.GenerateStub<ILogger> ();
-      logger.Stub (stub => stub.Repository).Return (LoggerManager.GetRepository (GetType ().Assembly));
-      logger.Stub (stub => stub.Name).Return ("Foo");
+      var logger = new Mock<ILogger>();
+      logger.Setup (stub => stub.Repository).Returns (LoggerManager.GetRepository (GetType ().Assembly));
+      logger.Setup (stub => stub.Name).Returns ("Foo");
       Assert.That (
-          () => _logManager.InitializeConsole (LogLevel.Debug, new LogThreshold (new Log4NetLog (logger), LogLevel.Error)),
+          () => _logManager.InitializeConsole (LogLevel.Debug, new LogThreshold (new Log4NetLog (logger.Object), LogLevel.Error)),
           Throws.ArgumentException.With.Message.Matches (
               @"Log-specific thresholds can only be set for log4net loggers of type 'log4net\.Repository\.Hierarchy\.Logger'\. "
               + @"The specified logger 'Foo' is of type 'Castle\.Proxies\.ILoggerProxy.*'\."

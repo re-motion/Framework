@@ -16,10 +16,11 @@
 // 
 using System;
 using System.Collections.Generic;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Utilities;
-using Rhino.Mocks;
 
 namespace Remotion.UnitTests.Utilities
 {
@@ -29,15 +30,15 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void Compare ()
     {
-      var innerComparerStub = MockRepository.GenerateStub<IComparer<object>>();
-      var comparer = new InvertedComparerDecorator<object> (innerComparerStub);
+      var innerComparerStub = new Mock<IComparer<object>>();
+      var comparer = new InvertedComparerDecorator<object> (innerComparerStub.Object);
 
       var obj1 = new object();
       var obj2 = new object();
 
-      innerComparerStub.Stub (_ => _.Compare (obj2, obj1)).Return (1);
-      innerComparerStub.Stub (_ => _.Compare (obj1, obj2)).Return (-1);
-      innerComparerStub.Stub (_ => _.Compare (obj1, obj1)).Return (0);
+      innerComparerStub.Setup (_ => _.Compare (obj2, obj1)).Returns (1);
+      innerComparerStub.Setup (_ => _.Compare (obj1, obj2)).Returns (-1);
+      innerComparerStub.Setup (_ => _.Compare (obj1, obj1)).Returns (0);
 
       Assert.That (comparer.Compare (obj1, obj2), Is.EqualTo (1));
       Assert.That (comparer.Compare (obj2, obj1), Is.EqualTo (-1));

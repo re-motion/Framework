@@ -19,10 +19,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
-using Rhino.Mocks;
 
 namespace Remotion.Reflection.UnitTests
 {
@@ -82,14 +83,14 @@ namespace Remotion.Reflection.UnitTests
       var type = typeof (ArrayList);
       Assert.That (TypeAdapter.Create (type).Namespace, Is.EqualTo (type.Namespace));
     }
-    
+
     [Test]
     public void AssemblyQualifiedName ()
     {
       var type = typeof (ArrayList);
       Assert.That (TypeAdapter.Create (type).AssemblyQualifiedName, Is.EqualTo (type.AssemblyQualifiedName));
     }
-    
+
     [Test]
     public void Assembly ()
     {
@@ -648,7 +649,7 @@ namespace Remotion.Reflection.UnitTests
       var value = new object ();
       Assert.That (TypeAdapter.Create (type).IsInstanceOfType (value), Is.EqualTo (type.IsInstanceOfType (value)).And.False);
     }
-    
+
     [Test]
     public void IsSubclassOf_BaseType ()
     {
@@ -682,8 +683,8 @@ namespace Remotion.Reflection.UnitTests
     public void IsSubclassOf_DifferentITypeInformationImplementation ()
     {
       var currentType = typeof (SystemException);
-      var otherType = MockRepository.GenerateStub<ITypeInformation>();
-      Assert.That (TypeAdapter.Create (currentType).IsSubclassOf (otherType), Is.False);
+      var otherType = new Mock<ITypeInformation>();
+      Assert.That (TypeAdapter.Create (currentType).IsSubclassOf (otherType.Object), Is.False);
     }
 
     [Test]
@@ -725,8 +726,8 @@ namespace Remotion.Reflection.UnitTests
     public void IsAssignableFrom_DifferentITypeInformationImplementation ()
     {
       var currentType = typeof (Exception);
-      var otherType = MockRepository.GenerateStub<ITypeInformation> ();
-      Assert.That (TypeAdapter.Create (currentType).IsAssignableFrom (otherType), Is.False);
+      var otherType = new Mock<ITypeInformation>();
+      Assert.That (TypeAdapter.Create (currentType).IsAssignableFrom (otherType.Object), Is.False);
     }
 
     [Test]
@@ -801,8 +802,8 @@ namespace Remotion.Reflection.UnitTests
     public void CanAscribeTo_DifferentITypeInformationImplementation ()
     {
       var currentType = typeof (SystemException);
-      var otherType = MockRepository.GenerateStub<ITypeInformation> ();
-      Assert.That (TypeAdapter.Create (currentType).CanAscribeTo (otherType), Is.False);
+      var otherType = new Mock<ITypeInformation>();
+      Assert.That (TypeAdapter.Create (currentType).CanAscribeTo (otherType.Object), Is.False);
     }
 
     [Test]
@@ -862,11 +863,11 @@ namespace Remotion.Reflection.UnitTests
     public void GetAscribedGenericArgumentsFor_DifferentITypeInformationImplementation ()
     {
       var currentType = typeof (SystemException);
-      var otherType = MockRepository.GenerateStub<ITypeInformation>();
+      var otherType = new Mock<ITypeInformation>();
       Assert.That (
-          () => TypeAdapter.Create (currentType).GetAscribedGenericArgumentsFor (otherType),
+          () => TypeAdapter.Create (currentType).GetAscribedGenericArgumentsFor (otherType.Object),
           Throws.ArgumentException.And.Message.EqualTo (
-              "Parameter 'c' has type '" + otherType.GetType().FullName + "' when type 'Remotion.Reflection.TypeAdapter' was expected."
+              "Parameter 'c' has type '" + otherType.Object.GetType().FullName + "' when type 'Remotion.Reflection.TypeAdapter' was expected."
               + "\r\nParameter name: c"));
     }
 

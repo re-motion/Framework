@@ -21,9 +21,10 @@ using log4net.Appender;
 using log4net.Config;
 using log4net.Core;
 using log4net.Repository;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Logging;
-using Rhino.Mocks;
 using LogManager = log4net.LogManager;
 
 namespace Remotion.UnitTests.Logging
@@ -36,8 +37,7 @@ namespace Remotion.UnitTests.Logging
     private Log4NetTraceListener _filterListener;
     private ILoggerRepository _repository;
     private TraceEventCache _traceEventCache;
-    private MockRepository _mocks;
-    private TraceFilter _mockFilter;
+    private Mock<TraceFilter> _mockFilter;
 
     [SetUp]
     public void SetUp ()
@@ -50,11 +50,10 @@ namespace Remotion.UnitTests.Logging
 
       _listener = new Log4NetTraceListener ();
       _filterListener = new Log4NetTraceListener ("FilterListener");
-      
-      _mocks = new MockRepository();
-      _mockFilter = _mocks.StrictMock<TraceFilter>();
 
-      _filterListener.Filter = _mockFilter;
+      _mockFilter = new Mock<TraceFilter> (MockBehavior.Strict);
+
+      _filterListener.Filter = _mockFilter.Object;
 
       _traceEventCache = new TraceEventCache ();
     }
@@ -67,7 +66,7 @@ namespace Remotion.UnitTests.Logging
 
       LogManager.ResetConfiguration ();
     }
-    
+
     [Test]
     public void Test_ListenerName ()
     {
@@ -179,14 +178,14 @@ namespace Remotion.UnitTests.Logging
     [Test]
     public void Test_TraceEvent_WithFormatAndFilterReturnsTrue ()
     {
-      Expect
-          .Call (_mockFilter.ShouldTrace (_traceEventCache, "Test", TraceEventType.Information, 1, "{0} {1}", new object[] { "The", "message." }, null, null))
-          .Return (true);
-      _mocks.ReplayAll();
+      _mockFilter
+          .Setup (_ => _.ShouldTrace (_traceEventCache, "Test", TraceEventType.Information, 1, "{0} {1}", new object[] { "The", "message." }, null, null))
+          .Returns (true)
+          .Verifiable();
 
       _filterListener.TraceEvent (_traceEventCache, "Test", TraceEventType.Information, 1, "{0} {1}", "The", "message.");
 
-      _mocks.VerifyAll();
+      _mockFilter.Verify();
       LoggingEvent[] events = _memoryAppender.GetEvents ();
       Assert.That (events.Length, Is.EqualTo (1));
       Assert.That (events[0].Level, Is.EqualTo (Level.Info));
@@ -196,14 +195,14 @@ namespace Remotion.UnitTests.Logging
     [Test]
     public void Test_TraceEvent_WithFormatAndFilterReturnsFalse ()
     {
-      Expect
-          .Call (_mockFilter.ShouldTrace (_traceEventCache, "Test", TraceEventType.Information, 1, "{0} {1}", new object[] { "The", "message." }, null, null))
-          .Return (false);
-      _mocks.ReplayAll ();
+      _mockFilter
+          .Setup (_ => _.ShouldTrace (_traceEventCache, "Test", TraceEventType.Information, 1, "{0} {1}", new object[] { "The", "message." }, null, null))
+          .Returns (false)
+          .Verifiable();
 
       _filterListener.TraceEvent (_traceEventCache, "Test", TraceEventType.Information, 1, "{0} {1}", "The", "message.");
 
-      _mocks.VerifyAll ();
+      _mockFilter.Verify();
       Assert.That (_memoryAppender.GetEvents (), Is.Empty);
     }
 
@@ -241,14 +240,14 @@ namespace Remotion.UnitTests.Logging
       Exception exception = new Exception ("An exception.");
       Object[] data = new object[] { exception, "The message." };
 
-      Expect
-          .Call (_mockFilter.ShouldTrace (_traceEventCache, "Test", TraceEventType.Information, 1, null, null, null, data))
-          .Return (true);
-      _mocks.ReplayAll();
+      _mockFilter
+          .Setup (_ => _.ShouldTrace (_traceEventCache, "Test", TraceEventType.Information, 1, null, null, null, data))
+          .Returns (true)
+          .Verifiable();
 
       _filterListener.TraceData (_traceEventCache, "Test", TraceEventType.Information, 1, data);
 
-      _mocks.VerifyAll ();
+      _mockFilter.Verify();
       LoggingEvent[] events = _memoryAppender.GetEvents ();
       Assert.That (events.Length, Is.EqualTo (1));
       Assert.That (events[0].Level, Is.EqualTo (Level.Info));
@@ -261,14 +260,14 @@ namespace Remotion.UnitTests.Logging
       Exception exception = new Exception ("An exception.");
       Object[] data = new object[] { exception, "The message." };
 
-      Expect
-          .Call (_mockFilter.ShouldTrace (_traceEventCache, "Test", TraceEventType.Information, 1, null, null, null, data))
-          .Return (false);
-      _mocks.ReplayAll ();
+      _mockFilter
+          .Setup (_ => _.ShouldTrace (_traceEventCache, "Test", TraceEventType.Information, 1, null, null, null, data))
+          .Returns (false)
+          .Verifiable();
 
       _filterListener.TraceData (_traceEventCache, "Test", TraceEventType.Information, 1, data);
 
-      _mocks.VerifyAll ();
+      _mockFilter.Verify();
       Assert.That (_memoryAppender.GetEvents (), Is.Empty);
     }
 

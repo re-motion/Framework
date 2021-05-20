@@ -17,9 +17,10 @@
 using System;
 using System.ComponentModel;
 using System.Globalization;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Utilities;
-using Rhino.Mocks;
 
 namespace Remotion.UnitTests.Utilities
 {
@@ -27,12 +28,12 @@ namespace Remotion.UnitTests.Utilities
   public class NullValueConverterTest
   {
     private NullValueConverter _nullValueConverter;
-    private ITypeDescriptorContext _typeDescriptorContextStub;
+    private Mock<ITypeDescriptorContext> _typeDescriptorContextStub;
 
     [SetUp]
     public void SetUp ()
     {
-      _typeDescriptorContextStub = MockRepository.GenerateStub<ITypeDescriptorContext>();
+      _typeDescriptorContextStub = new Mock<ITypeDescriptorContext>();
 
       _nullValueConverter = NullValueConverter.Instance;
     }
@@ -40,7 +41,7 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void CanConvertTo_NonNullableType ()
     {
-      var result = _nullValueConverter.CanConvertTo (_typeDescriptorContextStub, typeof (int));
+      var result = _nullValueConverter.CanConvertTo (_typeDescriptorContextStub.Object, typeof (int));
 
       Assert.That (result, Is.False);
     }
@@ -48,7 +49,7 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void CanConvertTo_NullableType ()
     {
-      var result = _nullValueConverter.CanConvertTo (_typeDescriptorContextStub, typeof (string));
+      var result = _nullValueConverter.CanConvertTo (_typeDescriptorContextStub.Object, typeof (string));
 
       Assert.That (result, Is.True);
     }
@@ -56,7 +57,7 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void CanConvertTo_NullableValueType ()
     {
-      var result = _nullValueConverter.CanConvertTo (_typeDescriptorContextStub, typeof (int?));
+      var result = _nullValueConverter.CanConvertTo (_typeDescriptorContextStub.Object, typeof (int?));
 
       Assert.That (result, Is.True);
     }
@@ -64,7 +65,7 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void CanConvertFrom_NonNullableType ()
     {
-      var result = _nullValueConverter.CanConvertFrom (_typeDescriptorContextStub, typeof (int));
+      var result = _nullValueConverter.CanConvertFrom (_typeDescriptorContextStub.Object, typeof (int));
 
       Assert.That (result, Is.False);
     }
@@ -72,7 +73,7 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void CanConvertFrom_NullableType ()
     {
-      var result = _nullValueConverter.CanConvertFrom (_typeDescriptorContextStub, typeof (string));
+      var result = _nullValueConverter.CanConvertFrom (_typeDescriptorContextStub.Object, typeof (string));
 
       Assert.That (result, Is.True);
     }
@@ -80,7 +81,7 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void CanConvertFrom_NullableValueType ()
     {
-      var result = _nullValueConverter.CanConvertFrom (_typeDescriptorContextStub, typeof (int?));
+      var result = _nullValueConverter.CanConvertFrom (_typeDescriptorContextStub.Object, typeof (int?));
 
       Assert.That (result, Is.True);
     }
@@ -88,7 +89,7 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void IsValid_NullValue ()
     {
-      var result = _nullValueConverter.IsValid (_typeDescriptorContextStub, null);
+      var result = _nullValueConverter.IsValid (_typeDescriptorContextStub.Object, null);
 
       Assert.That (result, Is.True);
     }
@@ -96,7 +97,7 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void IsValid_NonNullValue ()
     {
-      var result = _nullValueConverter.IsValid (_typeDescriptorContextStub, "test");
+      var result = _nullValueConverter.IsValid (_typeDescriptorContextStub.Object, "test");
 
       Assert.That (result, Is.False);
     }
@@ -104,7 +105,7 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void ConvertFrom_NullValue()
     {
-      var result = _nullValueConverter.ConvertFrom (_typeDescriptorContextStub, CultureInfo.CurrentCulture, null);
+      var result = _nullValueConverter.ConvertFrom (_typeDescriptorContextStub.Object, CultureInfo.CurrentCulture, null);
 
       Assert.That (result, Is.Null);
     }
@@ -113,7 +114,7 @@ namespace Remotion.UnitTests.Utilities
     public void ConvertFrom_NonNullValue ()
     {
       Assert.That (
-          () => _nullValueConverter.ConvertFromString (_typeDescriptorContextStub, CultureInfo.CurrentCulture, "test"),
+          () => _nullValueConverter.ConvertFromString (_typeDescriptorContextStub.Object, CultureInfo.CurrentCulture, "test"),
           Throws.InstanceOf<NotSupportedException>()
               .With.Message.EqualTo ("Value 'test' cannot be converted to null."));
     }
@@ -122,7 +123,7 @@ namespace Remotion.UnitTests.Utilities
     public void ConvertTo_DestinationTypeNotNullable ()
     {
       Assert.That (
-          () => _nullValueConverter.ConvertTo (_typeDescriptorContextStub, CultureInfo.CurrentCulture, null, typeof (int)),
+          () => _nullValueConverter.ConvertTo (_typeDescriptorContextStub.Object, CultureInfo.CurrentCulture, null, typeof (int)),
           Throws.InstanceOf<NotSupportedException>()
               .With.Message.EqualTo (
                   "Null value cannot be converted to type 'System.Int32'."));
@@ -132,7 +133,7 @@ namespace Remotion.UnitTests.Utilities
     public void ConvertTo_NullableDestinationTypeValueNotNull ()
     {
       Assert.That (
-          () => _nullValueConverter.ConvertTo (_typeDescriptorContextStub, CultureInfo.CurrentCulture, "test", typeof (int)),
+          () => _nullValueConverter.ConvertTo (_typeDescriptorContextStub.Object, CultureInfo.CurrentCulture, "test", typeof (int)),
           Throws.InstanceOf<NotSupportedException>()
               .With.Message.EqualTo (
                   "Value 'test' is not supported by this converter."));
@@ -141,7 +142,7 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void ConvertTo_NullableDestinationTypeWithNullValue ()
     {
-      var result = _nullValueConverter.ConvertTo (_typeDescriptorContextStub, CultureInfo.CurrentCulture, null, typeof (string));
+      var result = _nullValueConverter.ConvertTo (_typeDescriptorContextStub.Object, CultureInfo.CurrentCulture, null, typeof (string));
 
       Assert.That (result, Is.Null);
     }

@@ -16,23 +16,24 @@
 // 
 using System;
 using System.Linq;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting.ObjectMothers;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
-using Rhino.Mocks;
 
 namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
 {
   [TestFixture]
   public class SearchPathRootAssemblyFinderTest
   {
-    private IAssemblyLoader _loaderStub;
+    private Mock<IAssemblyLoader> _loaderStub;
 
     [SetUp]
     public void SetUp ()
     {
-      _loaderStub = MockRepository.GenerateStub<IAssemblyLoader> ();
+      _loaderStub = new Mock<IAssemblyLoader>();
     }
 
     [Test]
@@ -110,24 +111,23 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     [Test]
     public void FindRootAssemblies_UsesCombinedFinder ()
     {
-      var innerFinderStub = MockRepository.GenerateStub<IRootAssemblyFinder> ();
+      var innerFinderStub = new Mock<IRootAssemblyFinder>();
       var rootAssembly = new RootAssembly (typeof (object).Assembly, true);
-      innerFinderStub.Stub (stub => stub.FindRootAssemblies ()).Return (new[] { rootAssembly });
-      innerFinderStub.Replay ();
+      innerFinderStub.Setup (stub => stub.FindRootAssemblies ()).Returns (new[] { rootAssembly });
 
-      var finderMock = new MockRepository ().PartialMock<SearchPathRootAssemblyFinder> (
+      var finderMock = new Mock<SearchPathRootAssemblyFinder> (
           "baseDirectory",
           "relativeSearchPath",
           false,
           "dynamicDirectory",
-          _loaderStub);
-      finderMock.Expect (mock => mock.CreateCombinedFinder ()).Return (new CompositeRootAssemblyFinder (new[] { innerFinderStub }));
-      finderMock.Replay ();
+          _loaderStub.Object)
+          { CallBase = true };
+      finderMock.Setup (mock => mock.CreateCombinedFinder ()).Returns (new CompositeRootAssemblyFinder (new[] { innerFinderStub.Object })).Verifiable();
 
-      var result = finderMock.FindRootAssemblies ();
+      var result = finderMock.Object.FindRootAssemblies ();
       Assert.That (result, Is.EqualTo (new[] { rootAssembly }));
 
-      finderMock.VerifyAllExpectations ();
+      finderMock.Verify();
     }
 
     [Test]
@@ -135,12 +135,12 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     {
       var considerDynamicDirectory = BooleanObjectMother.GetRandomBoolean();
 
-      var finder = SearchPathRootAssemblyFinder.CreateForCurrentAppDomain (considerDynamicDirectory, _loaderStub);
+      var finder = SearchPathRootAssemblyFinder.CreateForCurrentAppDomain (considerDynamicDirectory, _loaderStub.Object);
 
       Assert.That (finder.BaseDirectory, Is.EqualTo (AppContext.BaseDirectory));
       Assert.That (finder.RelativeSearchPath, Is.EqualTo (AppDomain.CurrentDomain.RelativeSearchPath));
       Assert.That (finder.DynamicDirectory, Is.EqualTo (AppDomain.CurrentDomain.DynamicDirectory));
-      Assert.That (finder.AssemblyLoader, Is.SameAs (_loaderStub));
+      Assert.That (finder.AssemblyLoader, Is.SameAs (_loaderStub.Object));
       Assert.That (finder.ConsiderDynamicDirectory, Is.EqualTo (considerDynamicDirectory));
     }
 
@@ -157,7 +157,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
           .Cast<FilePatternRootAssemblyFinder> ();
 
       foreach (var innerFinder in innerFinders)
-        Assert.That (innerFinder.AssemblyLoader, Is.SameAs (_loaderStub));
+        Assert.That (innerFinder.AssemblyLoader, Is.SameAs (_loaderStub.Object));
 
       return innerFinders
           .SelectMany (inner => inner.Specifications)
@@ -177,7 +177,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
 
     private SearchPathRootAssemblyFinder CreateRootAssemblyFinder (string relativeSearchPath, bool considerDynamicDirectory)
     {
-      return new SearchPathRootAssemblyFinder ("baseDirectory", relativeSearchPath, considerDynamicDirectory, "dynamicDirectory", _loaderStub);
+      return new SearchPathRootAssemblyFinder ("baseDirectory", relativeSearchPath, considerDynamicDirectory, "dynamicDirectory", _loaderStub.Object);
     }
   }
 }

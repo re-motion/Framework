@@ -18,10 +18,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Logging;
 using Remotion.Utilities;
-using Rhino.Mocks;
 
 namespace Remotion.UnitTests.Utilities
 {
@@ -177,9 +178,9 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void CreateScope_Writer ()
     {
-      var writerMock = MockRepository.GenerateMock<TextWriter> ();
+      var writerMock = new Mock<TextWriter>();
 
-      var scope = StopwatchScope.CreateScope (writerMock, "{context}#{elapsed}#{elapsed:ms}#{elapsedCP}#{elapsedCP:ms}");
+      var scope = StopwatchScope.CreateScope (writerMock.Object, "{context}#{elapsed}#{elapsed:ms}#{elapsedCP}#{elapsedCP:ms}");
 
       Wait (TimeSpan.FromMilliseconds (1.0));
       
@@ -205,7 +206,7 @@ namespace Remotion.UnitTests.Utilities
           firstElapsedCP.ToString(), 
           firstElapsedCP.TotalMilliseconds.ToString() 
       };
-      writerMock.AssertWasCalled (mock => mock.WriteLine (Arg.Is ("{0}#{1}#{2}#{3}#{4}"), Arg<object[]>.List.Equal(expectedFirstArgs)));
+      writerMock.Verify (mock => mock.WriteLine ("{0}#{1}#{2}#{3}#{4}", expectedFirstArgs), Times.AtLeastOnce());
 
       var expectedSecondArgs = new[] { 
           "end", 
@@ -214,15 +215,15 @@ namespace Remotion.UnitTests.Utilities
           secondElapsedCP.ToString(), 
           secondElapsedCP.TotalMilliseconds.ToString() 
       };
-      writerMock.AssertWasCalled (mock => mock.WriteLine (Arg.Is ("{0}#{1}#{2}#{3}#{4}"), Arg<object[]>.List.Equal (expectedSecondArgs)));
+      writerMock.Verify (mock => mock.WriteLine ("{0}#{1}#{2}#{3}#{4}", expectedSecondArgs), Times.AtLeastOnce());
     }
 
     [Test]
     public void CreateScope_Log ()
     {
-      var logMock = MockRepository.GenerateMock<ILog> ();
+      var logMock = new Mock<ILog>();
 
-      var scope = StopwatchScope.CreateScope (logMock, LogLevel.Error, "{context}#{elapsed}#{elapsed:ms}#{elapsedCP}#{elapsedCP:ms}");
+      var scope = StopwatchScope.CreateScope (logMock.Object, LogLevel.Error, "{context}#{elapsed}#{elapsed:ms}#{elapsedCP}#{elapsedCP:ms}");
 
       Wait (TimeSpan.FromMilliseconds (1.0));
 
@@ -248,14 +249,15 @@ namespace Remotion.UnitTests.Utilities
           firstElapsedCP.ToString(), 
           firstElapsedCP.TotalMilliseconds.ToString() 
       };
-      logMock.AssertWasCalled (
+      logMock.Verify (
           mock =>
               mock.LogFormat (
-                  Arg.Is (LogLevel.Error),
-                  Arg<int>.Is.Null,
-                  Arg<Exception>.Is.Null,
-                  Arg.Is ("{0}#{1}#{2}#{3}#{4}"),
-                  Arg<object[]>.List.Equal (expectedFirstArgs)));
+                  LogLevel.Error,
+                  null,
+                  null,
+                  "{0}#{1}#{2}#{3}#{4}",
+                  expectedFirstArgs),
+          Times.AtLeastOnce());
 
       var expectedSecondArgs = new[] { 
           "end", 
@@ -264,21 +266,22 @@ namespace Remotion.UnitTests.Utilities
           secondElapsedCP.ToString(), 
           secondElapsedCP.TotalMilliseconds.ToString() 
       };
-      logMock.AssertWasCalled (
+      logMock.Verify (
           mock => mock.LogFormat (
-              Arg.Is (LogLevel.Error),
-              Arg<int>.Is.Null,
-              Arg<Exception>.Is.Null,
-              Arg.Is ("{0}#{1}#{2}#{3}#{4}"),
-              Arg<object[]>.List.Equal (expectedSecondArgs)));
+              LogLevel.Error,
+              null,
+              null,
+              "{0}#{1}#{2}#{3}#{4}",
+              expectedSecondArgs),
+          Times.AtLeastOnce());
     }
 
     [Test]
     public void CreateScope_Console ()
     {
       var oldOut = Console.Out;
-      var writerMock = MockRepository.GenerateMock<TextWriter> ();
-      Console.SetOut (writerMock);
+      var writerMock = new Mock<TextWriter>();
+      Console.SetOut (writerMock.Object);
 
       try
       {
@@ -309,7 +312,7 @@ namespace Remotion.UnitTests.Utilities
                                     firstElapsedCP.ToString(),
                                     firstElapsedCP.TotalMilliseconds.ToString()
                                 };
-        writerMock.AssertWasCalled (mock => mock.WriteLine (Arg.Is ("{0}#{1}#{2}#{3}#{4}"), Arg<object[]>.List.Equal (expectedFirstArgs)));
+        writerMock.Verify (mock => mock.WriteLine ("{0}#{1}#{2}#{3}#{4}", expectedFirstArgs), Times.AtLeastOnce());
 
         var expectedSecondArgs = new[]
                                  {
@@ -319,7 +322,7 @@ namespace Remotion.UnitTests.Utilities
                                      secondElapsedCP.ToString(),
                                      secondElapsedCP.TotalMilliseconds.ToString()
                                  };
-        writerMock.AssertWasCalled (mock => mock.WriteLine (Arg.Is ("{0}#{1}#{2}#{3}#{4}"), Arg<object[]>.List.Equal (expectedSecondArgs)));
+        writerMock.Verify (mock => mock.WriteLine ("{0}#{1}#{2}#{3}#{4}", expectedSecondArgs), Times.AtLeastOnce());
       }
       finally
       {

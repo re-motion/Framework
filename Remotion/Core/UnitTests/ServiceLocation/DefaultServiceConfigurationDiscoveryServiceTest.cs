@@ -19,10 +19,11 @@ using System.Collections;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Reflection;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.ServiceLocation;
 using Remotion.UnitTests.ServiceLocation.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.UnitTests.ServiceLocation
 {
@@ -30,24 +31,24 @@ namespace Remotion.UnitTests.ServiceLocation
   public class DefaultServiceConfigurationDiscoveryServiceTest
   {
     private DefaultServiceConfigurationDiscoveryService _defaultServiceConfigurationDiscoveryService;
-    private ITypeDiscoveryService _typeDiscoveryServiceStub;
+    private Mock<ITypeDiscoveryService> _typeDiscoveryServiceStub;
     private bool _excludeGlobalTypes;
 
     [SetUp]
     public void SetUp ()
     {
-      _typeDiscoveryServiceStub = MockRepository.GenerateStub<ITypeDiscoveryService> ();
-      _defaultServiceConfigurationDiscoveryService = new DefaultServiceConfigurationDiscoveryService (_typeDiscoveryServiceStub);
+      _typeDiscoveryServiceStub = new Mock<ITypeDiscoveryService>();
+      _defaultServiceConfigurationDiscoveryService = new DefaultServiceConfigurationDiscoveryService (_typeDiscoveryServiceStub.Object);
       _excludeGlobalTypes = !typeof (ImplementationForAttribute).Assembly.GlobalAssemblyCache;
     }
 
     [Test]
     public void GetDefaultConfiguration_TypeDiscoveryService ()
     {
-      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (null, _excludeGlobalTypes))
-          .Return (new ArrayList { typeof (ITestSingletonConcreteImplementationAttributeType) });
-      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (typeof (ITestSingletonConcreteImplementationAttributeType), true))
-          .Return (new ArrayList { typeof (TestConcreteImplementationAttributeType) });
+      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (null, _excludeGlobalTypes))
+          .Returns (new ArrayList { typeof (ITestSingletonConcreteImplementationAttributeType) });
+      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (typeof (ITestSingletonConcreteImplementationAttributeType), true))
+          .Returns (new ArrayList { typeof (TestConcreteImplementationAttributeType) });
 
       var serviceConfigurationEntries = _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration().ToArray();
 
@@ -63,10 +64,10 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void GetDefaultConfiguration_TypeDiscoveryService_WithMultipleConcreteImplementationAttributes ()
     {
-      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (null, _excludeGlobalTypes))
-          .Return (new ArrayList { typeof (ITestMultipleConcreteImplementationAttributesType) });
-      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (typeof (ITestMultipleConcreteImplementationAttributesType), true))
-          .Return (
+      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (null, _excludeGlobalTypes))
+          .Returns (new ArrayList { typeof (ITestMultipleConcreteImplementationAttributesType) });
+      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (typeof (ITestMultipleConcreteImplementationAttributesType), true))
+          .Returns (
               new ArrayList
               {
                   typeof (TestMultipleConcreteImplementationAttributesType1),
@@ -100,10 +101,10 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void GetDefaultConfiguration_TypeDiscoveryService_WithMultipleConcreteImplementationAttributes_ReturnsSortedByPosition ()
     {
-      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (null, _excludeGlobalTypes))
-          .Return (new ArrayList { typeof (ITestMultipleConcreteImplementationAttributesType) });
-      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (typeof (ITestMultipleConcreteImplementationAttributesType), true))
-          .Return (
+      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (null, _excludeGlobalTypes))
+          .Returns (new ArrayList { typeof (ITestMultipleConcreteImplementationAttributesType) });
+      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (typeof (ITestMultipleConcreteImplementationAttributesType), true))
+          .Returns (
               new ArrayList
               {
                   typeof (TestMultipleConcreteImplementationAttributesType1),
@@ -126,10 +127,10 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void GetDefaultConfiguration_TypeDiscoveryService_WithMixedRegistrationTypes_ThrowsException ()
     {
-      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (null, _excludeGlobalTypes))
-          .Return (new ArrayList { typeof (ITestMixedRegistrationTypes) });
-      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (typeof (ITestMixedRegistrationTypes), true))
-          .Return (
+      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (null, _excludeGlobalTypes))
+          .Returns (new ArrayList { typeof (ITestMixedRegistrationTypes) });
+      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (typeof (ITestMixedRegistrationTypes), true))
+          .Returns (
               new ArrayList
               {
                   typeof (TestMixedRegistrationTypes1),
@@ -148,10 +149,10 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void GetDefaultConfiguration_TypeDiscoveryService_WithTypeWithDuplicatePosition ()
     {
-      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (null, _excludeGlobalTypes))
-          .Return (new ArrayList { typeof (ITestMultipleConcreteImplementationAttributesWithDuplicatePositionType) });
-      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (typeof (ITestMultipleConcreteImplementationAttributesWithDuplicatePositionType), true))
-          .Return (new ArrayList { typeof (TestMultipleConcreteImplementationAttributesWithDuplicatePositionType1), typeof (TestMultipleConcreteImplementationAttributesWithDuplicatePositionType2) });
+      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (null, _excludeGlobalTypes))
+          .Returns (new ArrayList { typeof (ITestMultipleConcreteImplementationAttributesWithDuplicatePositionType) });
+      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (typeof (ITestMultipleConcreteImplementationAttributesWithDuplicatePositionType), true))
+          .Returns (new ArrayList { typeof (TestMultipleConcreteImplementationAttributesWithDuplicatePositionType1), typeof (TestMultipleConcreteImplementationAttributesWithDuplicatePositionType2) });
 
       Assert.That (
           () => _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration ().ToArray(),
@@ -165,10 +166,10 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void GetDefaultConfiguration_TypeDiscoveryService_WithTypeWithDuplicateImplementation ()
     {
-      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (null, _excludeGlobalTypes))
-          .Return (new ArrayList { typeof (ITestMultipleConcreteImplementationAttributesWithDuplicateImplementationType) });
-      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (typeof (ITestMultipleConcreteImplementationAttributesWithDuplicateImplementationType), true))
-          .Return (new ArrayList { typeof (TestMultipleConcreteImplementationAttributesWithDuplicateImplementationType) });
+      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (null, _excludeGlobalTypes))
+          .Returns (new ArrayList { typeof (ITestMultipleConcreteImplementationAttributesWithDuplicateImplementationType) });
+      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (typeof (ITestMultipleConcreteImplementationAttributesWithDuplicateImplementationType), true))
+          .Returns (new ArrayList { typeof (TestMultipleConcreteImplementationAttributesWithDuplicateImplementationType) });
 
       Assert.That (
           () => _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration ().ToArray (),
@@ -183,10 +184,10 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void GetDefaultConfiguration_TypeDiscoveryService_WithCompoundRegistrationType_NoException ()
     {
-      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (null, _excludeGlobalTypes))
-          .Return (new ArrayList { typeof (ITestCompoundRegistration) });
-      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (typeof (ITestCompoundRegistration), true))
-          .Return (
+      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (null, _excludeGlobalTypes))
+          .Returns (new ArrayList { typeof (ITestCompoundRegistration) });
+      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (typeof (ITestCompoundRegistration), true))
+          .Returns (
               new ArrayList
               {
                   typeof (TestCompoundImplementation1),
@@ -200,10 +201,10 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void GetDefaultConfiguration_TypeDiscoveryService_WithDecoratorRegistrationType_NoException ()
     {
-      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (null, _excludeGlobalTypes))
-          .Return (new ArrayList { typeof (ITestDecoratorRegistration) });
-      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (typeof (ITestDecoratorRegistration), true))
-          .Return (
+      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (null, _excludeGlobalTypes))
+          .Returns (new ArrayList { typeof (ITestDecoratorRegistration) });
+      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (typeof (ITestDecoratorRegistration), true))
+          .Returns (
               new ArrayList
               {
                   typeof (TestDecoratorRegistrationDecoratedObject1),
@@ -217,10 +218,10 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void GetDefaultConfiguration_TypeDiscoveryService_WithCompoundAndSingleRegistrationType ()
     {
-      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (null, _excludeGlobalTypes))
-          .Return (new ArrayList { typeof (ITestCompoundMixedRegistrationTypes) });
-      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (typeof (ITestCompoundMixedRegistrationTypes), true))
-          .Return (
+      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (null, _excludeGlobalTypes))
+          .Returns (new ArrayList { typeof (ITestCompoundMixedRegistrationTypes) });
+      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (typeof (ITestCompoundMixedRegistrationTypes), true))
+          .Returns (
               new ArrayList
               {
                   typeof (TestCompoundMixedRegistrationTypes),
@@ -241,7 +242,7 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void GetDefaultConfiguration_WithNoImplementations ()
     {
-      _typeDiscoveryServiceStub.Stub (_ => _.GetTypes (null, _excludeGlobalTypes)).IgnoreArguments().Return (new Type[0]);
+      _typeDiscoveryServiceStub.Setup (_ => _.GetTypes (It.IsAny<Type>(), It.IsAny<bool>())).Returns (new Type[0]);
 
       var entry = _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration (typeof (ICollection));
 
@@ -252,7 +253,7 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void GetDefaultConfiguration_WithGlobalType_IncludesGlobalTypes ()
     {
-      _typeDiscoveryServiceStub.Stub (_ => _.GetTypes (typeof (ICollection), true)).Return (new Type[0]);
+      _typeDiscoveryServiceStub.Setup (_ => _.GetTypes (typeof (ICollection), true)).Returns (new Type[0]);
 
       var entry = _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration (typeof (ICollection));
 
@@ -264,8 +265,8 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void GetDefaultConfiguration_WithNonGlobalType_ExcludesGlobalTypes ()
     {
-      _typeDiscoveryServiceStub.Stub (_ => _.GetTypes (typeof (ITestSingletonConcreteImplementationAttributeType), true))
-          .Return (new[] { typeof (TestConcreteImplementationAttributeType) });
+      _typeDiscoveryServiceStub.Setup (_ => _.GetTypes (typeof (ITestSingletonConcreteImplementationAttributeType), true))
+          .Returns (new[] { typeof (TestConcreteImplementationAttributeType) });
 
       var entry = _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration (typeof (ITestSingletonConcreteImplementationAttributeType));
 
@@ -279,8 +280,8 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void GetDefaultConfiguration_Types ()
     {
-      _typeDiscoveryServiceStub.Stub (_ => _.GetTypes (typeof (ITestSingletonConcreteImplementationAttributeType), true))
-        .Return (new [] { typeof (TestConcreteImplementationAttributeType) });
+      _typeDiscoveryServiceStub.Setup (_ => _.GetTypes (typeof (ITestSingletonConcreteImplementationAttributeType), true))
+        .Returns (new [] { typeof (TestConcreteImplementationAttributeType) });
 
       var serviceConfigurationEntries = _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration (
           new[] { typeof (ITestSingletonConcreteImplementationAttributeType) }).ToArray();
@@ -297,8 +298,8 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void GetDefaultConfiguration_Types_Unresolvable ()
     {
-      _typeDiscoveryServiceStub.Stub (_ => _.GetTypes (typeof (ITestConcreteImplementationAttributeWithUnresolvableImplementationType), true))
-        .Return (new Type[0]);
+      _typeDiscoveryServiceStub.Setup (_ => _.GetTypes (typeof (ITestConcreteImplementationAttributeWithUnresolvableImplementationType), true))
+        .Returns (new Type[0]);
       
       var serviceConfigurationEntries = _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration (
           new[] { typeof (ITestConcreteImplementationAttributeWithUnresolvableImplementationType) }).ToArray();
@@ -309,9 +310,9 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void GetDefaultConfiguration_WithMultipleRegistrationsWithRegistrationTypeSingle_ReturnsFirstRegistration_OrderedByPositionAscending ()
     {
-      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (null, _excludeGlobalTypes)).Return (new ArrayList { typeof (ITestRegistrationTypeSingle) });
-      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (typeof (ITestRegistrationTypeSingle), true))
-          .Return (
+      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (null, _excludeGlobalTypes)).Returns (new ArrayList { typeof (ITestRegistrationTypeSingle) });
+      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (typeof (ITestRegistrationTypeSingle), true))
+          .Returns (
               new ArrayList
               {
                   typeof (TestRegistrationTypeSingle2),
@@ -326,9 +327,9 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void GetDefaultConfiguration_WithMultipleRegistrationsWithRegistrationTypeCompound_ReturnsFirstRegistration_OrderedByPositionAscending ()
     {
-      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (null, _excludeGlobalTypes)).Return (new ArrayList { typeof (ITestCompoundRegistration) });
-      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (typeof (ITestCompoundRegistration), true))
-          .Return (
+      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (null, _excludeGlobalTypes)).Returns (new ArrayList { typeof (ITestCompoundRegistration) });
+      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (typeof (ITestCompoundRegistration), true))
+          .Returns (
               new ArrayList
               {
                   typeof (TestCompoundRegistration2),

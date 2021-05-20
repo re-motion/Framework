@@ -16,34 +16,31 @@
 // 
 using System;
 using System.ComponentModel.Design;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Design;
-using Rhino.Mocks;
 
 namespace Remotion.UnitTests.Design
 {
   [TestFixture]
   public class DesignModeHelperBaseTest
   {
-    private MockRepository _mockRepository;
-    private IDesignerHost _mockDesignerHost;
+    private Mock<IDesignerHost> _mockDesignerHost;
 
     [SetUp]
     public void SetUp()
     {
-      _mockRepository = new MockRepository();
-      _mockDesignerHost = _mockRepository.StrictMock<IDesignerHost>();
+      _mockDesignerHost = new Mock<IDesignerHost> (MockBehavior.Strict);
     }
 
     [Test]
     public void Initialize()
     {
-      _mockRepository.ReplayAll();
+      DesignModeHelperBase stubDesginerHelper = new StubDesignModeHelper (_mockDesignerHost.Object);
 
-      DesignModeHelperBase stubDesginerHelper = new StubDesignModeHelper (_mockDesignerHost);
-
-      _mockRepository.VerifyAll();
-      Assert.That (stubDesginerHelper.DesignerHost, Is.SameAs (_mockDesignerHost));
+      _mockDesignerHost.Verify();
+      Assert.That (stubDesginerHelper.DesignerHost, Is.SameAs (_mockDesignerHost.Object));
     }
   }
 }

@@ -16,9 +16,10 @@
 // 
 using System;
 using System.Linq;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
-using Rhino.Mocks;
 
 namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
 {
@@ -77,16 +78,15 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
       var finder = new CompositeRootAssemblyFinder (new[] { innerFinderStub1, innerFinderStub2 });
 
       var rootAssemblies = finder.FindRootAssemblies ().ToArray();
-      Assert.That (rootAssemblies.Length, Is.EqualTo (6)); 
+      Assert.That (rootAssemblies.Length, Is.EqualTo (6));
       Assert.That (rootAssemblies.Distinct(), Is.EquivalentTo (new[] { _root1, _root2, _root3 }));
     }
 
     private IRootAssemblyFinder CreateInnerFinderStub (params RootAssembly[] assemblies)
     {
-      var innerFinderStub = MockRepository.GenerateStub<IRootAssemblyFinder> ();
-      innerFinderStub.Stub (stub => stub.FindRootAssemblies ()).Return (assemblies);
-      innerFinderStub.Replay ();
-      return innerFinderStub;
+      var innerFinderStub = new Mock<IRootAssemblyFinder>();
+      innerFinderStub.Setup (stub => stub.FindRootAssemblies ()).Returns (assemblies);
+      return innerFinderStub.Object;
     }
   }
 }

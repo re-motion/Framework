@@ -20,9 +20,10 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.UnitTests
 {
@@ -36,14 +37,6 @@ namespace Remotion.UnitTests
 
     public class SampleClass
     {
-    }
-
-    private MockRepository _mocks;
-
-    [SetUp]
-    public void SetUp()
-    {
-      _mocks = new MockRepository();
     }
 
     [Test]
@@ -61,15 +54,14 @@ namespace Remotion.UnitTests
     public void GetValueFromFactory()
     {
       SampleClass expected = new SampleClass();
-      IFactory mockFactory = _mocks.StrictMock<IFactory>();
+      var mockFactory = new Mock<IFactory> (MockBehavior.Strict);
       DoubleCheckedLockingContainer<SampleClass> container =
-          new DoubleCheckedLockingContainer<SampleClass> (delegate { return mockFactory.Create(); });
-      Expect.Call (mockFactory.Create()).Return (expected);
-      _mocks.ReplayAll();
+          new DoubleCheckedLockingContainer<SampleClass> (delegate { return mockFactory.Object.Create(); });
+      mockFactory.Setup (_ => _.Create()).Returns (expected).Verifiable();
 
       SampleClass actual = container.Value;
 
-      _mocks.VerifyAll();
+      mockFactory.Verify();
       Assert.That (actual, Is.SameAs (expected));
     }
 
@@ -77,23 +69,20 @@ namespace Remotion.UnitTests
     public void SetNull()
     {
       SampleClass expected = new SampleClass ();
-      IFactory mockFactory = _mocks.StrictMock<IFactory> ();
+      var mockFactory = new Mock<IFactory> (MockBehavior.Strict);
       DoubleCheckedLockingContainer<SampleClass> container =
-          new DoubleCheckedLockingContainer<SampleClass> (delegate { return mockFactory.Create (); });
-      _mocks.ReplayAll ();
+          new DoubleCheckedLockingContainer<SampleClass> (delegate { return mockFactory.Object.Create (); });
 
       container.Value = null;
 
-      _mocks.VerifyAll ();
+      mockFactory.Verify();
 
-      _mocks.BackToRecordAll ();
-      Expect.Call (mockFactory.Create ()).Return (expected);
-
-      _mocks.ReplayAll ();
+      mockFactory.Reset();
+      mockFactory.Setup (_ => _.Create ()).Returns (expected).Verifiable();
 
       SampleClass actual = container.Value;
 
-      _mocks.VerifyAll ();
+      mockFactory.Verify();
       Assert.That (actual, Is.SameAs (expected));
     }
 
@@ -101,25 +90,21 @@ namespace Remotion.UnitTests
     public void HasValue ()
     {
       SampleClass expected = new SampleClass ();
-      IFactory mockFactory = _mocks.StrictMock<IFactory> ();
+      var mockFactory = new Mock<IFactory> (MockBehavior.Strict);
       DoubleCheckedLockingContainer<SampleClass> container =
-          new DoubleCheckedLockingContainer<SampleClass> (delegate { return mockFactory.Create (); });
-
-      _mocks.ReplayAll ();
+          new DoubleCheckedLockingContainer<SampleClass> (delegate { return mockFactory.Object.Create (); });
 
       Assert.That (container.HasValue, Is.False);
 
-      _mocks.VerifyAll ();
+      mockFactory.Verify();
 
-      _mocks.BackToRecordAll ();
-      Expect.Call (mockFactory.Create ()).Return (expected);
-
-      _mocks.ReplayAll ();
+      mockFactory.Reset();
+      mockFactory.Setup (_ => _.Create ()).Returns (expected).Verifiable();
 
       SampleClass actual = container.Value;
 
       Assert.That (container.HasValue, Is.True);
-      _mocks.VerifyAll ();
+      mockFactory.Verify();
 
       container.Value = null;
       Assert.That (container.HasValue, Is.False);

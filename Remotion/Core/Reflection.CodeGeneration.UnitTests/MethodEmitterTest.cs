@@ -20,10 +20,11 @@ using System.Reflection;
 using System.Reflection.Emit;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Reflection.CodeGeneration.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Reflection.CodeGeneration.UnitTests
 {
@@ -275,24 +276,24 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     public void AcceptStatement ()
     {
       var fakeGenerator = new DynamicMethod ("Test", typeof (void), Type.EmptyTypes).GetILGenerator ();
-      var statementMock = MockRepository.GenerateMock<Statement> ();
+      var statementMock = new Mock<Statement>();
 
       var method = ClassEmitter.CreateMethod ("AcceptStatement", MethodAttributes.Public, typeof (void), new Type[0]);
-      method.AcceptStatement (statementMock, fakeGenerator);
+      method.AcceptStatement (statementMock.Object, fakeGenerator);
 
-      statementMock.AssertWasCalled (mock => mock.Emit (Arg<IMemberEmitter>.Matches (e => e.Member == method.MethodBuilder), Arg.Is (fakeGenerator)));
+      statementMock.Verify (mock => mock.Emit (It.Is<IMemberEmitter> (e => e.Member == method.MethodBuilder), fakeGenerator), Times.AtLeastOnce());
     }
 
     [Test]
     public void AcceptExpression ()
     {
       var fakeGenerator = new DynamicMethod ("Test", typeof (void), Type.EmptyTypes).GetILGenerator ();
-      var expressionMock = MockRepository.GenerateMock<Expression> ();
+      var expressionMock = new Mock<Expression>();
 
       var method = ClassEmitter.CreateMethod ("AcceptStatement", MethodAttributes.Public, typeof (void), new Type[0]);
-      method.AcceptExpression (expressionMock, fakeGenerator);
+      method.AcceptExpression (expressionMock.Object, fakeGenerator);
 
-      expressionMock.AssertWasCalled (mock => mock.Emit (Arg<IMemberEmitter>.Matches (e => e.Member == method.MethodBuilder), Arg.Is(fakeGenerator)));
+      expressionMock.Verify (mock => mock.Emit (It.Is<IMemberEmitter> (e => e.Member == method.MethodBuilder), fakeGenerator), Times.AtLeastOnce());
     }
   }
 }

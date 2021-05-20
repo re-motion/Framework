@@ -16,9 +16,10 @@
 // 
 using System;
 using System.Linq;
+using Moq;
+using Moq.Protected;
 using Remotion.ServiceLocation;
 using Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
 {
@@ -27,7 +28,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     protected DefaultServiceLocator CreateServiceLocator (IServiceConfigurationDiscoveryService serviceConfigurationDiscoveryService = null)
     {
       return new DefaultServiceLocator (
-          serviceConfigurationDiscoveryService ?? MockRepository.GenerateStrictMock<IServiceConfigurationDiscoveryService>());
+          serviceConfigurationDiscoveryService ?? new Mock<IServiceConfigurationDiscoveryService> (MockBehavior.Strict).Object);
     }
 
     protected ServiceConfigurationEntry CreateSingleServiceConfigurationEntry (
