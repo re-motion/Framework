@@ -19,10 +19,10 @@ using System.Collections;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Reflection;
+using Moq;
 using NUnit.Framework;
 using Remotion.ExtensibleEnums.Infrastructure;
 using Remotion.ExtensibleEnums.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
 {
@@ -43,17 +43,17 @@ namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
 
     private ExtensibleEnumDefinition<Color> _fakeColorDefinition;
     private ExtensibleEnumDefinition<Planet> _fakePlanetDefinition;
-    private ITypeDiscoveryService _typeDiscoveryServiceStub;
+    private Mock<ITypeDiscoveryService> _typeDiscoveryServiceStub;
     private ExtensibleEnumValueDiscoveryService _service;
 
     [SetUp]
     public void SetUp ()
     {
-      _fakeColorDefinition = new ExtensibleEnumDefinition<Color> (MockRepository.GenerateStub<IExtensibleEnumValueDiscoveryService> ());
-      _fakePlanetDefinition = new ExtensibleEnumDefinition<Planet> (MockRepository.GenerateStub<IExtensibleEnumValueDiscoveryService> ());
+      _fakeColorDefinition = new ExtensibleEnumDefinition<Color> (new Mock<IExtensibleEnumValueDiscoveryService>().Object);
+      _fakePlanetDefinition = new ExtensibleEnumDefinition<Planet> (new Mock<IExtensibleEnumValueDiscoveryService>().Object);
 
-       _typeDiscoveryServiceStub = MockRepository.GenerateStub<ITypeDiscoveryService> ();
-       _service = new TestableExtensibleEnumValueDiscoveryService (_typeDiscoveryServiceStub);
+       _typeDiscoveryServiceStub = new Mock<ITypeDiscoveryService>();
+       _service = new TestableExtensibleEnumValueDiscoveryService (_typeDiscoveryServiceStub.Object);
     }
 
     [Test]
@@ -178,7 +178,7 @@ namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
     [Test]
     public void GetValueInfos_Value ()
     {
-      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (null, false)).Return (new[] { typeof (ColorExtensions) });
+      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (null, false)).Returns (new[] { typeof (ColorExtensions) });
 
       var valueInfos = _service.GetValueInfos (new ExtensibleEnumDefinition<Color> (_service));
       Assert.That (valueInfos.Select (info => info.Value).ToArray (),
@@ -188,7 +188,7 @@ namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
     [Test]
     public void GetValueInfos_Method ()
     {
-      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (null, false)).Return (new[] { typeof (ColorExtensions) });
+      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (null, false)).Returns (new[] { typeof (ColorExtensions) });
 
       var valueInfos = _service.GetValueInfos (new ExtensibleEnumDefinition<Color> (_service));
 
@@ -202,7 +202,7 @@ namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
     [Test]
     public void GetValueInfos_PassesDefinition_ToExtensionMethod ()
     {
-      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (null, false)).Return (new[] { typeof (ColorExtensions) });
+      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (null, false)).Returns (new[] { typeof (ColorExtensions) });
 
       var definition = new ExtensibleEnumDefinition<Color> (_service);
 

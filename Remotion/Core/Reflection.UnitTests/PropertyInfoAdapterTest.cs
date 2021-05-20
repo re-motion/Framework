@@ -18,13 +18,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests.TestDomain;
 using Remotion.Reflection.UnitTests.TestDomain.MemberInfoAdapter;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
-using Rhino.Mocks;
 
 namespace Remotion.Reflection.UnitTests
 {
@@ -194,26 +194,25 @@ namespace Remotion.Reflection.UnitTests
     public void GetValue_WithIndexerProperty_OneParameter ()
     {
       var scalar = new SimpleReferenceType();
-      var instanceMock = MockRepository.GenerateMock<IInterfaceWithReferenceType<SimpleReferenceType>>();
-      instanceMock.Expect (mock => mock[10]).Return (scalar);
-      instanceMock.Replay();
+      var instanceMock = new Mock<IInterfaceWithReferenceType<SimpleReferenceType>>();
+      instanceMock.Setup (mock => mock[10]).Returns (scalar).Verifiable();
 
       var interfaceDeclarationProperty = typeof (IInterfaceWithReferenceType<SimpleReferenceType>).GetProperty ("Item", new[] { typeof (int) });
       _implicitInterfaceAdapter = PropertyInfoAdapter.Create(interfaceDeclarationProperty);
 
-      object actualScalar = _implicitInterfaceAdapter.GetValue (instanceMock, new object[] { 10 });
+      object actualScalar = _implicitInterfaceAdapter.GetValue (instanceMock.Object, new object[] { 10 });
       Assert.That (actualScalar, Is.SameAs (scalar));
-      instanceMock.VerifyAllExpectations();
+      instanceMock.Verify();
     }
 
     [Test]
     public void GetValue_WithIndexerProperty_OneParameter_IndexParameterArrayLengthMismatch ()
     {
-      var instanceStub = MockRepository.GenerateStub<IInterfaceWithReferenceType<SimpleReferenceType>>();
+      var instanceStub = new Mock<IInterfaceWithReferenceType<SimpleReferenceType>>();
       var interfaceDeclarationProperty = typeof (IInterfaceWithReferenceType<SimpleReferenceType>).GetProperty ("Item", new[] { typeof (int) });
       _implicitInterfaceAdapter = PropertyInfoAdapter.Create(interfaceDeclarationProperty);
       Assert.That (
-          () => _implicitInterfaceAdapter.GetValue (instanceStub, new object[0]),
+          () => _implicitInterfaceAdapter.GetValue (instanceStub.Object, new object[0]),
           Throws.InstanceOf<TargetParameterCountException>()
               .With.Message.EqualTo ("Parameter count mismatch."));
     }
@@ -222,30 +221,29 @@ namespace Remotion.Reflection.UnitTests
     public void GetValue_WithIndexerProperty_TwoParameters ()
     {
       SimpleReferenceType scalar = new SimpleReferenceType();
-      IInterfaceWithReferenceType<SimpleReferenceType> instanceMock = MockRepository.GenerateMock<IInterfaceWithReferenceType<SimpleReferenceType>>();
-      instanceMock.Expect (mock => mock[10, new DateTime (2000, 1, 1)]).Return (scalar);
-      instanceMock.Replay();
+      var instanceMock = new Mock<IInterfaceWithReferenceType<SimpleReferenceType>>();
+      instanceMock.Setup (mock => mock[10, new DateTime (2000, 1, 1)]).Returns (scalar).Verifiable();
 
       var interfaceDeclarationProperty = typeof (IInterfaceWithReferenceType<SimpleReferenceType>)
           .GetProperty ("Item", new[] { typeof (int), typeof (DateTime) });
 
       _implicitInterfaceAdapter = PropertyInfoAdapter.Create(interfaceDeclarationProperty);
 
-      object actualScalar = _implicitInterfaceAdapter.GetValue (instanceMock, new object[] { 10, new DateTime (2000, 1, 1) });
+      object actualScalar = _implicitInterfaceAdapter.GetValue (instanceMock.Object, new object[] { 10, new DateTime (2000, 1, 1) });
       Assert.That (actualScalar, Is.SameAs (scalar));
-      instanceMock.VerifyAllExpectations();
+      instanceMock.Verify();
     }
 
     [Test]
     public void GetValue_WithIndexerProperty_TwoParameters_IndexParameterArrayNull ()
     {
-      var instanceStub = MockRepository.GenerateStub<IInterfaceWithReferenceType<SimpleReferenceType>>();
+      var instanceStub = new Mock<IInterfaceWithReferenceType<SimpleReferenceType>>();
 
       var interfaceDeclarationProperty = typeof (IInterfaceWithReferenceType<SimpleReferenceType>)
           .GetProperty ("Item", new[] { typeof (int), typeof (DateTime) });
       _implicitInterfaceAdapter = PropertyInfoAdapter.Create(interfaceDeclarationProperty);
       Assert.That (
-          () => _implicitInterfaceAdapter.GetValue (instanceStub, null),
+          () => _implicitInterfaceAdapter.GetValue (instanceStub.Object, null),
           Throws.InstanceOf<TargetParameterCountException>()
               .With.Message.EqualTo ("Parameter count mismatch."));
     }
@@ -253,13 +251,13 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void GetValue_WithIndexerProperty_TwoParameters_IndexParameterArrayLengthMismatch ()
     {
-      var instanceStub = MockRepository.GenerateStub<IInterfaceWithReferenceType<SimpleReferenceType>>();
+      var instanceStub = new Mock<IInterfaceWithReferenceType<SimpleReferenceType>>();
 
       var interfaceDeclarationProperty = typeof (IInterfaceWithReferenceType<SimpleReferenceType>)
           .GetProperty ("Item", new[] { typeof (int), typeof (DateTime) });
       _implicitInterfaceAdapter = PropertyInfoAdapter.Create(interfaceDeclarationProperty);
       Assert.That (
-          () => _implicitInterfaceAdapter.GetValue (instanceStub, new object[1]),
+          () => _implicitInterfaceAdapter.GetValue (instanceStub.Object, new object[1]),
           Throws.InstanceOf<TargetParameterCountException>()
               .With.Message.EqualTo ("Parameter count mismatch."));
     }
@@ -268,17 +266,16 @@ namespace Remotion.Reflection.UnitTests
     public void GetValue_WithIndexerProperty_ThreeParameters ()
     {
       var scalar = new SimpleReferenceType();
-      var instanceMock = MockRepository.GenerateMock<IInterfaceWithReferenceType<SimpleReferenceType>>();
-      instanceMock.Expect (mock => mock[10, new DateTime (2000, 1, 1), "foo"]).Return (scalar);
-      instanceMock.Replay();
+      var instanceMock = new Mock<IInterfaceWithReferenceType<SimpleReferenceType>>();
+      instanceMock.Setup (mock => mock[10, new DateTime (2000, 1, 1), "foo"]).Returns (scalar).Verifiable();
 
       var interfaceDeclarationProperty = typeof (IInterfaceWithReferenceType<SimpleReferenceType>)
           .GetProperty ("Item", new[] { typeof (int), typeof (DateTime), typeof (string) });
       _implicitInterfaceAdapter = PropertyInfoAdapter.Create(interfaceDeclarationProperty);
 
-      object actualScalar = _implicitInterfaceAdapter.GetValue (instanceMock, new object[] { 10, new DateTime (2000, 1, 1), "foo" });
+      object actualScalar = _implicitInterfaceAdapter.GetValue (instanceMock.Object, new object[] { 10, new DateTime (2000, 1, 1), "foo" });
       Assert.That (actualScalar, Is.SameAs (scalar));
-      instanceMock.VerifyAllExpectations();
+      instanceMock.Verify();
     }
 
     [Test]
@@ -294,27 +291,26 @@ namespace Remotion.Reflection.UnitTests
     public void SetValue_WithIndexerProperty_WithOneParameter ()
     {
       var scalar = new SimpleReferenceType();
-      var instanceMock = MockRepository.GenerateMock<IInterfaceWithReferenceType<SimpleReferenceType>>();
-      instanceMock.Expect (mock => mock[10] = scalar);
-      instanceMock.Replay();
+      var instanceMock = new Mock<IInterfaceWithReferenceType<SimpleReferenceType>>();
+      instanceMock.SetupSet (mock => mock[10] = scalar).Verifiable();
 
       var interfaceDeclarationProperty = typeof (IInterfaceWithReferenceType<SimpleReferenceType>).GetProperty ("Item", new[] { typeof (int) });
       _implicitInterfaceAdapter = PropertyInfoAdapter.Create(interfaceDeclarationProperty);
 
-      _implicitInterfaceAdapter.SetValue (instanceMock, scalar, new object[] { 10 });
-      instanceMock.VerifyAllExpectations();
+      _implicitInterfaceAdapter.SetValue (instanceMock.Object, scalar, new object[] { 10 });
+      instanceMock.Verify();
     }
 
     [Test]
     public void SetValue_WithIndexerProperty_WithOneParameter_IndexParameterArrayNull ()
     {
       var scalar = new SimpleReferenceType();
-      var instanceStub = MockRepository.GenerateStub<IInterfaceWithReferenceType<SimpleReferenceType>>();
+      var instanceStub = new Mock<IInterfaceWithReferenceType<SimpleReferenceType>>();
 
       var interfaceDeclarationProperty = typeof (IInterfaceWithReferenceType<SimpleReferenceType>).GetProperty ("Item", new[] { typeof (int) });
       _implicitInterfaceAdapter = PropertyInfoAdapter.Create(interfaceDeclarationProperty);
       Assert.That (
-          () => _implicitInterfaceAdapter.SetValue (instanceStub, scalar, null),
+          () => _implicitInterfaceAdapter.SetValue (instanceStub.Object, scalar, null),
           Throws.InstanceOf<TargetParameterCountException>()
               .With.Message.EqualTo ("Parameter count mismatch."));
     }
@@ -323,12 +319,12 @@ namespace Remotion.Reflection.UnitTests
     public void SetValue_WithIndexerProperty_WithOneParameter_IndexParameterArrayLengthMismatch ()
     {
       var scalar = new SimpleReferenceType();
-      var instanceStub = MockRepository.GenerateStub<IInterfaceWithReferenceType<SimpleReferenceType>>();
+      var instanceStub = new Mock<IInterfaceWithReferenceType<SimpleReferenceType>>();
 
       var interfaceDeclarationProperty = typeof (IInterfaceWithReferenceType<SimpleReferenceType>).GetProperty ("Item", new[] { typeof (int) });
       _implicitInterfaceAdapter = PropertyInfoAdapter.Create(interfaceDeclarationProperty);
       Assert.That (
-          () => _implicitInterfaceAdapter.SetValue (instanceStub, scalar, new object[0]),
+          () => _implicitInterfaceAdapter.SetValue (instanceStub.Object, scalar, new object[0]),
           Throws.InstanceOf<TargetParameterCountException>()
               .With.Message.EqualTo ("Parameter count mismatch."));
     }
@@ -337,29 +333,28 @@ namespace Remotion.Reflection.UnitTests
     public void SetValue_WithIndexerProperty_WithTwoParameters ()
     {
       var scalar = new SimpleReferenceType();
-      var instanceMock = MockRepository.GenerateMock<IInterfaceWithReferenceType<SimpleReferenceType>>();
-      instanceMock.Expect (mock => mock[10, new DateTime (2000, 1, 1)] = scalar);
-      instanceMock.Replay();
+      var instanceMock = new Mock<IInterfaceWithReferenceType<SimpleReferenceType>>();
+      instanceMock.SetupSet (mock => mock[10, new DateTime (2000, 1, 1)] = scalar).Verifiable();
 
       var interfaceDeclarationProperty = typeof (IInterfaceWithReferenceType<SimpleReferenceType>)
           .GetProperty ("Item", new[] { typeof (int), typeof (DateTime) });
       _implicitInterfaceAdapter = PropertyInfoAdapter.Create(interfaceDeclarationProperty);
 
-      _implicitInterfaceAdapter.SetValue (instanceMock, scalar, new object[] { 10, new DateTime (2000, 1, 1) });
-      instanceMock.VerifyAllExpectations();
+      _implicitInterfaceAdapter.SetValue (instanceMock.Object, scalar, new object[] { 10, new DateTime (2000, 1, 1) });
+      instanceMock.Verify();
     }
 
     [Test]
     public void SetValue_WithIndexerProperty_WithTwoParameters_IndexParameterArrayNull ()
     {
       var scalar = new SimpleReferenceType();
-      var instanceStub = MockRepository.GenerateStub<IInterfaceWithReferenceType<SimpleReferenceType>>();
+      var instanceStub = new Mock<IInterfaceWithReferenceType<SimpleReferenceType>>();
 
       var interfaceDeclarationProperty = typeof (IInterfaceWithReferenceType<SimpleReferenceType>)
           .GetProperty ("Item", new[] { typeof (int), typeof (DateTime) });
       _implicitInterfaceAdapter = PropertyInfoAdapter.Create(interfaceDeclarationProperty);
       Assert.That (
-          () => _implicitInterfaceAdapter.SetValue (instanceStub, scalar, null),
+          () => _implicitInterfaceAdapter.SetValue (instanceStub.Object, scalar, null),
           Throws.InstanceOf<TargetParameterCountException>()
               .With.Message.EqualTo ("Parameter count mismatch."));
     }
@@ -368,13 +363,13 @@ namespace Remotion.Reflection.UnitTests
     public void SetValue_WithIndexerProperty_WithTwoParameters_IndexParameterArrayLengthMismatch ()
     {
       var scalar = new SimpleReferenceType();
-      var instanceStub = MockRepository.GenerateStub<IInterfaceWithReferenceType<SimpleReferenceType>>();
+      var instanceStub = new Mock<IInterfaceWithReferenceType<SimpleReferenceType>>();
 
       var interfaceDeclarationProperty = typeof (IInterfaceWithReferenceType<SimpleReferenceType>)
           .GetProperty ("Item", new[] { typeof (int), typeof (DateTime) });
       _implicitInterfaceAdapter = PropertyInfoAdapter.Create(interfaceDeclarationProperty);
       Assert.That (
-          () => _implicitInterfaceAdapter.SetValue (instanceStub, scalar, new object[1]),
+          () => _implicitInterfaceAdapter.SetValue (instanceStub.Object, scalar, new object[1]),
           Throws.InstanceOf<TargetParameterCountException>()
               .With.Message.EqualTo ("Parameter count mismatch."));
     }
@@ -383,16 +378,15 @@ namespace Remotion.Reflection.UnitTests
     public void SetValue_WithIndexerProperty_WithThreeParameters ()
     {
       SimpleReferenceType scalar = new SimpleReferenceType();
-      IInterfaceWithReferenceType<SimpleReferenceType> instanceMock = MockRepository.GenerateMock<IInterfaceWithReferenceType<SimpleReferenceType>>();
-      instanceMock.Expect (mock => mock[10, new DateTime (2000, 1, 1), "foo"] = scalar);
-      instanceMock.Replay();
+      var instanceMock = new Mock<IInterfaceWithReferenceType<SimpleReferenceType>>();
+      instanceMock.SetupSet (mock => mock[10, new DateTime (2000, 1, 1), "foo"] = scalar).Verifiable();
 
       var interfaceDeclarationProperty = typeof (IInterfaceWithReferenceType<SimpleReferenceType>)
           .GetProperty ("Item", new[] { typeof (int), typeof (DateTime), typeof (string) });
       _implicitInterfaceAdapter = PropertyInfoAdapter.Create(interfaceDeclarationProperty);
 
-      _implicitInterfaceAdapter.SetValue (instanceMock, scalar, new object[] { 10, new DateTime (2000, 1, 1), "foo" });
-      instanceMock.VerifyAllExpectations();
+      _implicitInterfaceAdapter.SetValue (instanceMock.Object, scalar, new object[] { 10, new DateTime (2000, 1, 1), "foo" });
+      instanceMock.Verify();
     }
 
     [Test]

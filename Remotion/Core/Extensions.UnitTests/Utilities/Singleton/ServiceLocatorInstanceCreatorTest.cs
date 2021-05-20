@@ -16,11 +16,11 @@
 // 
 using System;
 using Microsoft.Practices.ServiceLocation;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Extensions.UnitTests.Utilities.Singleton.TestDomain;
 using Remotion.Utilities.Singleton;
-using Rhino.Mocks;
 
 namespace Remotion.Extensions.UnitTests.Utilities.Singleton
 {
@@ -38,11 +38,11 @@ namespace Remotion.Extensions.UnitTests.Utilities.Singleton
     [Test]
     public void CreateInstance_WithRegisteredServiceLocator ()
     {
-      var serviceLocatorStub = MockRepository.GenerateStub<IServiceLocator>();
+      var serviceLocatorStub = new Mock<IServiceLocator>();
       var fakeInstance = new SecondaryImplementationOfInterface();
-      serviceLocatorStub.Stub (stub => stub.GetInstance<IInterfaceWithConcreteImplementation> ()).Return (fakeInstance);
+      serviceLocatorStub.Setup (stub => stub.GetInstance<IInterfaceWithConcreteImplementation> ()).Returns (fakeInstance);
 
-      using (new ServiceLocatorScope (serviceLocatorStub))
+      using (new ServiceLocatorScope (serviceLocatorStub.Object))
       {
         var instance = _creator.CreateInstance();
         Assert.That (instance, Is.SameAs (fakeInstance));

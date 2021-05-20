@@ -18,19 +18,19 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting.Enumerables;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
-using Rhino.Mocks;
 
 namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
 {
   [TestFixture]
   public class FilePatternRootAssemblyFinderTest
   {
-    private IFileSearchService _searchServiceStub;
-    private IAssemblyLoader _loaderMock;
+    private Mock<IFileSearchService> _searchServiceStub;
+    private Mock<IAssemblyLoader> _loaderMock;
     private Assembly _assembly1;
     private Assembly _assembly2;
     private Assembly _assembly3;
@@ -38,8 +38,8 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     [SetUp]
     public void SetUp ()
     {
-      _searchServiceStub = MockRepository.GenerateStub<IFileSearchService> ();
-      _loaderMock = MockRepository.GenerateMock<IAssemblyLoader> ();
+      _searchServiceStub = new Mock<IFileSearchService>();
+      _loaderMock = new Mock<IAssemblyLoader>();
       _assembly1 = typeof (object).Assembly;
       _assembly2 = typeof (FilePatternRootAssemblyFinder).Assembly;
       _assembly3 = typeof (FilePatternRootAssemblyFinderTest).Assembly;
@@ -54,16 +54,15 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
       StubSearchService ("*.dll", "1.dll", "2.dll");
       StubSearchService ("*.exe", "1.exe");
 
-      _loaderMock.Expect (mock => mock.TryLoadAssembly ("1.dll")).Return (_assembly1);
-      _loaderMock.Expect (mock => mock.TryLoadAssembly ("2.dll")).Return (_assembly2);
-      _loaderMock.Expect (mock => mock.TryLoadAssembly ("1.exe")).Return (_assembly3);
-      _loaderMock.Replay();
+      _loaderMock.Setup (mock => mock.TryLoadAssembly ("1.dll")).Returns (_assembly1).Verifiable();
+      _loaderMock.Setup (mock => mock.TryLoadAssembly ("2.dll")).Returns (_assembly2).Verifiable();
+      _loaderMock.Setup (mock => mock.TryLoadAssembly ("1.exe")).Returns (_assembly3).Verifiable();
 
       var finder = CreateRootAssemblyFinder (specification1, specification2);
 
       var rootAssemblies = finder.FindRootAssemblies ().Select (ra => ra.Assembly).ToArray();
 
-      _loaderMock.VerifyAllExpectations();
+      _loaderMock.Verify();
       Assert.That (rootAssemblies, Is.EquivalentTo (new[] { _assembly1, _assembly2, _assembly3 }));
     }
 
@@ -80,9 +79,9 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
 
       finder.FindRootAssemblies ().ForceEnumeration();
 
-      _loaderMock.AssertWasCalled (mock => mock.TryLoadAssembly ("1.dll"));
-      _loaderMock.AssertWasNotCalled (mock => mock.TryLoadAssembly ("2.dll"));
-      _loaderMock.AssertWasNotCalled (mock => mock.TryLoadAssembly ("3.dll"));
+      _loaderMock.Verify (mock => mock.TryLoadAssembly ("1.dll"), Times.AtLeastOnce());
+      _loaderMock.Verify (mock => mock.TryLoadAssembly ("2.dll"), Times.Never());
+      _loaderMock.Verify (mock => mock.TryLoadAssembly ("3.dll"), Times.Never());
     }
 
     [Test]
@@ -100,10 +99,10 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
 
       finder.FindRootAssemblies ().ForceEnumeration();
 
-      _loaderMock.AssertWasCalled (mock => mock.TryLoadAssembly ("1.dll"));
-      _loaderMock.AssertWasCalled (mock => mock.TryLoadAssembly ("4.dll"));
-      _loaderMock.AssertWasNotCalled (mock => mock.TryLoadAssembly ("2.dll"));
-      _loaderMock.AssertWasNotCalled (mock => mock.TryLoadAssembly ("3.dll"));
+      _loaderMock.Verify (mock => mock.TryLoadAssembly ("1.dll"), Times.AtLeastOnce());
+      _loaderMock.Verify (mock => mock.TryLoadAssembly ("4.dll"), Times.AtLeastOnce());
+      _loaderMock.Verify (mock => mock.TryLoadAssembly ("2.dll"), Times.Never());
+      _loaderMock.Verify (mock => mock.TryLoadAssembly ("3.dll"), Times.Never());
     }
 
     [Test]
@@ -121,9 +120,9 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
 
       finder.FindRootAssemblies ().ForceEnumeration();
 
-      _loaderMock.AssertWasCalled (mock => mock.TryLoadAssembly ("2.dll"));
-      _loaderMock.AssertWasCalled (mock => mock.TryLoadAssembly ("3.dll"));
-      _loaderMock.AssertWasNotCalled (mock => mock.TryLoadAssembly ("1.dll"));
+      _loaderMock.Verify (mock => mock.TryLoadAssembly ("2.dll"), Times.AtLeastOnce());
+      _loaderMock.Verify (mock => mock.TryLoadAssembly ("3.dll"), Times.AtLeastOnce());
+      _loaderMock.Verify (mock => mock.TryLoadAssembly ("1.dll"), Times.Never());
     }
 
     [Test]
@@ -135,17 +134,16 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
       StubSearchService ("*.dll", "1.dll", "2.dll");
       StubSearchService ("*.exe", "1.exe", "2.exe");
 
-      _loaderMock.Expect (mock => mock.TryLoadAssembly ("1.dll")).Return (_assembly1);
-      _loaderMock.Expect (mock => mock.TryLoadAssembly ("2.dll")).Return (null);
-      _loaderMock.Expect (mock => mock.TryLoadAssembly ("1.exe")).Return (_assembly3);
-      _loaderMock.Expect (mock => mock.TryLoadAssembly ("2.exe")).Return (null);
-      _loaderMock.Replay ();
+      _loaderMock.Setup (mock => mock.TryLoadAssembly ("1.dll")).Returns (_assembly1).Verifiable();
+      _loaderMock.Setup (mock => mock.TryLoadAssembly ("2.dll")).Returns ((Assembly) null).Verifiable();
+      _loaderMock.Setup (mock => mock.TryLoadAssembly ("1.exe")).Returns (_assembly3).Verifiable();
+      _loaderMock.Setup (mock => mock.TryLoadAssembly ("2.exe")).Returns ((Assembly) null).Verifiable();
 
       var finder = CreateRootAssemblyFinder (specification1, specification2);
 
       var rootAssemblies = finder.FindRootAssemblies ().Select (ra => ra.Assembly).ToArray ();
 
-      _loaderMock.VerifyAllExpectations ();
+      _loaderMock.Verify();
       Assert.That (rootAssemblies.Length, Is.EqualTo (2));
       Assert.That (rootAssemblies, Is.EquivalentTo (new[] { _assembly1, _assembly3 }));
     }
@@ -159,17 +157,16 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
       StubSearchService ("*.dll", "1.dll", "2.dll");
       StubSearchService ("*.exe", "1.exe", "2.exe");
 
-      _loaderMock.Expect (mock => mock.TryLoadAssembly ("1.dll")).Return (_assembly1);
-      _loaderMock.Expect (mock => mock.TryLoadAssembly ("2.dll")).Return (_assembly2);
-      _loaderMock.Expect (mock => mock.TryLoadAssembly ("1.exe")).Return (_assembly1);
-      _loaderMock.Expect (mock => mock.TryLoadAssembly ("2.exe")).Return (_assembly2);
-      _loaderMock.Replay ();
+      _loaderMock.Setup (mock => mock.TryLoadAssembly ("1.dll")).Returns (_assembly1).Verifiable();
+      _loaderMock.Setup (mock => mock.TryLoadAssembly ("2.dll")).Returns (_assembly2).Verifiable();
+      _loaderMock.Setup (mock => mock.TryLoadAssembly ("1.exe")).Returns (_assembly1).Verifiable();
+      _loaderMock.Setup (mock => mock.TryLoadAssembly ("2.exe")).Returns (_assembly2).Verifiable();
 
       var finder = CreateRootAssemblyFinder (specification1, specification2);
 
       var rootAssemblies = finder.FindRootAssemblies ().Select (ra => ra.Assembly).ToArray ();
 
-      _loaderMock.VerifyAllExpectations ();
+      _loaderMock.Verify();
       Assert.That (rootAssemblies.Length, Is.EqualTo (4));
       Assert.That (rootAssemblies.Distinct(), Is.EquivalentTo (new[] { _assembly1, _assembly2 }));
     }
@@ -183,27 +180,26 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
       StubSearchService ("*.dll", "1.dll");
       StubSearchService ("*.exe", "1.exe");
 
-      _loaderMock.Expect (mock => mock.TryLoadAssembly ("1.dll")).Return (_assembly1);
-      _loaderMock.Expect (mock => mock.TryLoadAssembly ("1.exe")).Return (_assembly2);
-      _loaderMock.Replay ();
+      _loaderMock.Setup (mock => mock.TryLoadAssembly ("1.dll")).Returns (_assembly1).Verifiable();
+      _loaderMock.Setup (mock => mock.TryLoadAssembly ("1.exe")).Returns (_assembly2).Verifiable();
 
       var finder = CreateRootAssemblyFinder (specification1, specification2);
 
       var rootAssemblies = finder.FindRootAssemblies ().ToDictionary (ra => ra.Assembly);
 
-      _loaderMock.VerifyAllExpectations ();
+      _loaderMock.Verify();
       Assert.That (rootAssemblies[_assembly1].FollowReferences, Is.True);
       Assert.That (rootAssemblies[_assembly2].FollowReferences, Is.False);
     }
 
     private FilePatternRootAssemblyFinder CreateRootAssemblyFinder (params FilePatternSpecification[] specifications)
     {
-      return new FilePatternRootAssemblyFinder ("searchPath", specifications.AsOneTime (), _searchServiceStub, _loaderMock);
+      return new FilePatternRootAssemblyFinder ("searchPath", specifications.AsOneTime (), _searchServiceStub.Object, _loaderMock.Object);
     }
 
     private void StubSearchService (string expectedPattern, params string[] fakeFiles)
     {
-      _searchServiceStub.Stub (stub => stub.GetFiles ("searchPath", expectedPattern, SearchOption.TopDirectoryOnly)).Return (fakeFiles);
+      _searchServiceStub.Setup (stub => stub.GetFiles ("searchPath", expectedPattern, SearchOption.TopDirectoryOnly)).Returns (fakeFiles);
     }
   }
 }

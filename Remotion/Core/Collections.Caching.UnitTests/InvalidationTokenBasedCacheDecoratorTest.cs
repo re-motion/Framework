@@ -17,10 +17,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Collections.Caching.UnitTests.Utilities;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Collections.Caching.UnitTests
 {
@@ -93,13 +93,13 @@ namespace Remotion.Collections.Caching.UnitTests
     [Test]
     public void GetOrCreateValue_RetriesClearUntilInvalidationTokenIsCurrent ()
     {
-      var cacheStub = MockRepository.GenerateStub<ICache<object, string>>();
+      var cacheStub = new Mock<ICache<object, string>>();
       var invalidationToken = InvalidationToken.Create();
-      var decorator = new InvalidationTokenBasedCacheDecorator<object, string> (cacheStub, invalidationToken);
+      var decorator = new InvalidationTokenBasedCacheDecorator<object, string> (cacheStub.Object, invalidationToken);
       var key = new object();
       var count = 0;
-      cacheStub.Stub (_ => _.Clear()).WhenCalled (
-          mi =>
+      cacheStub.Setup (_ => _.Clear()).Callback (
+          () =>
           {
             if (count < 2)
             {
@@ -107,7 +107,7 @@ namespace Remotion.Collections.Caching.UnitTests
               count++;
             }
           });
-      cacheStub.Stub (_ => _.GetOrCreateValue (key, o => null)).IgnoreArguments().Return ("Value");
+      cacheStub.Setup (_ => _.GetOrCreateValue (It.IsAny<object>(), It.IsAny<Func<object, string>>())).Returns ("Value");
 
       var value = decorator.GetOrCreateValue (key, o => null);
 
@@ -301,12 +301,12 @@ namespace Remotion.Collections.Caching.UnitTests
     [Test]
     public void Clear_RetriesClearUntilInvalidationTokenIsCurrent ()
     {
-      var cacheStub = MockRepository.GenerateStub<ICache<object, string>>();
+      var cacheStub = new Mock<ICache<object, string>>();
       var invalidationToken = InvalidationToken.Create();
-      var decorator = new InvalidationTokenBasedCacheDecorator<object, string> (cacheStub, invalidationToken);
+      var decorator = new InvalidationTokenBasedCacheDecorator<object, string> (cacheStub.Object, invalidationToken);
       var count = 0;
-      cacheStub.Stub (_ => _.Clear()).WhenCalled (
-          mi =>
+      cacheStub.Setup (_ => _.Clear()).Callback (
+          () =>
           {
             if (count < 2)
             {
