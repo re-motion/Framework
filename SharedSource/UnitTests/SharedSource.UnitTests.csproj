@@ -75,6 +75,8 @@
     <Compile Include="Development\Core\UnitTesting\SerializerTest.cs" />
     <Compile Include="Development\Core\UnitTesting\ThreadRunnerTest.cs" />
     <Compile Include="Development\Moq\UnitTesting\DecoratorTestHelperTest.cs" />
+    <Compile Include="Development\Moq\UnitTesting\Threading\LockingDecoratorTestHelperTest.cs" />
+    <Compile Include="Development\Moq\UnitTesting\Threading\LockTestHelperTest.cs" />
     <Compile Include="Development\RhinoMocks\UnitTesting\DecoratorTestHelperTest.cs" />
     <Compile Include="Development\RhinoMocks\UnitTesting\ListArgExtensionsTest.cs" />
     <Compile Include="Development\RhinoMocks\UnitTesting\Threading\LockingDecoratorTestHelperTest.cs" />
