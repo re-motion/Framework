@@ -20,7 +20,7 @@ namespace Remotion.Validation.Globalization
       ResourceIdentifier = resourceIdentifier;
     }
 
-    public override string Format (CultureInfo culture, IFormatProvider formatProvider, params object[] parameters)
+    public override string Format (CultureInfo culture, IFormatProvider? formatProvider, params object?[] parameters)
     {
       ArgumentUtility.CheckNotNull ("culture", culture);
       ArgumentUtility.CheckNotNull ("parameters", parameters);
