@@ -42,12 +42,12 @@ namespace Remotion.Validation.Mixins.Implementation
       get { return _validatedTypeResolver; }
     }
 
-    public Type GetValidatedType (Type collectorType)
+    public Type? GetValidatedType (Type collectorType)
     {
       ArgumentUtility.CheckNotNull ("collectorType", collectorType);
 
       if (collectorType.IsDefined (typeof (ApplyWithMixinAttribute), false))
-        return AttributeUtility.GetCustomAttribute<ApplyWithMixinAttribute> (collectorType, false).MixinType;
+        return AttributeUtility.GetCustomAttribute<ApplyWithMixinAttribute> (collectorType, false)!.MixinType;
       return _validatedTypeResolver.GetValidatedType (collectorType);
     }
   }

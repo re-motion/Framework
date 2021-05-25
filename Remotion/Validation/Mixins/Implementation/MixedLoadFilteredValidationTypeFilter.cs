@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Mixins;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe.Implementation;
@@ -45,6 +46,7 @@ namespace Remotion.Validation.Mixins.Implementation
       return !_filterTypes.Contains (type);
     }
 
+    [MemberNotNull (nameof (_filterTypes))]
     private void Initialize ()
     {
       _filterTypes = new List<Type>(
