@@ -78,7 +78,7 @@ namespace Remotion.Validation.Globalization
           LazyThreadSafetyMode.ExecutionAndPublication);
     }
 
-    public ValidationMessage CreateValidationMessageForPropertyValidator (IPropertyValidator validator, IPropertyInformation validatedProperty)
+    public ValidationMessage? CreateValidationMessageForPropertyValidator (IPropertyValidator validator, IPropertyInformation validatedProperty)
     {
       ArgumentUtility.CheckNotNull ("validator", validator);
       ArgumentUtility.CheckNotNull ("validatedProperty", validatedProperty);
@@ -90,7 +90,7 @@ namespace Remotion.Validation.Globalization
       return new ResourceManagerBasedValidationMessage (_resourceManager.Value, resourceIdentifier);
     }
 
-    public ValidationMessage CreateValidationMessageForObjectValidator (IObjectValidator validator, ITypeInformation validatedType)
+    public ValidationMessage? CreateValidationMessageForObjectValidator (IObjectValidator validator, ITypeInformation validatedType)
     {
       ArgumentUtility.CheckNotNull ("validator", validator);
       ArgumentUtility.CheckNotNull ("validatedType", validatedType);

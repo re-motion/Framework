@@ -38,7 +38,7 @@ namespace Remotion.Validation.Globalization
       _memberInformationGlobalizationService = memberInformationGlobalizationService;
     }
 
-    public ValidationMessage CreateValidationMessageForPropertyValidator (IPropertyValidator validator, IPropertyInformation validatedProperty)
+    public ValidationMessage? CreateValidationMessageForPropertyValidator (IPropertyValidator validator, IPropertyInformation validatedProperty)
     {
       ArgumentUtility.CheckNotNull ("validator", validator);
       ArgumentUtility.CheckNotNull ("validatedProperty", validatedProperty);
@@ -53,7 +53,7 @@ namespace Remotion.Validation.Globalization
           () => _memberInformationGlobalizationService.GetTypeDisplayName (typeInformation, typeInformationForResourceResolution));
     }
 
-    public ValidationMessage CreateValidationMessageForObjectValidator (IObjectValidator validator, ITypeInformation validatedType)
+    public ValidationMessage? CreateValidationMessageForObjectValidator (IObjectValidator validator, ITypeInformation validatedType)
     {
       ArgumentUtility.CheckNotNull ("validator", validator);
       ArgumentUtility.CheckNotNull ("validatedType", validatedType);
