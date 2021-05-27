@@ -127,7 +127,15 @@ function DatePicker_Create(datePickerID, button, target, src, width, height)
   frame.marginWidth = 0;
   frame.marginHeight = 0;
 
-  $(button).closest('div, td, th, body').append(datePicker);
+  // Because of a rendering issue in IE we have to revert to absolute positioning in IE (see RM-7835)
+  if (isNaN(BrowserUtility.GetIEVersion()))
+  {
+    $(button).closest('div, td, th, body').append(datePicker);
+  }
+  else
+  {
+    $(document.body).append(datePicker);
+  }
 
   if (_datePicker_repositionTimer) 
     clearTimeout(_datePicker_repositionTimer);
