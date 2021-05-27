@@ -55,12 +55,17 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories
       mock.Expect (m => m.ID).Return ("ID");
 
       var factory = new FluentValidationBocListValidatorFactory();
-      var validators = factory.CreateValidators (mock, isReadOnly);
+      var validators = factory.CreateValidators (mock, isReadOnly).ToArray();
 
       if (isReadOnly)
+      {
         Assert.That (validators, Is.Empty);
+      }
       else
+      {
         Assert.That (validators.Select (v => v.GetType()), Is.EquivalentTo (new[] { typeof (BocListValidator) }));
+        Assert.That (validators, Has.All.Property ("EnableViewState").False);
+      }
     }
   }
 }

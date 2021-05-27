@@ -229,23 +229,22 @@
                 case KEY.ESC:
                     // re-motion: block event bubbling
                     event.stopPropagation();
-                    clearTimeout(timeout);
                     var wasVisible = select.visible();
                     state.mouseDownOnSelect = false;
 
                     if (event.keyCode == KEY.RETURN) {
-                        var isValueSelected = selectCurrent();
+                        var isValueSelected = selectCurrent(false);
                         if (isValueSelected) {
                             //SelectCurrent already does everything that's needed.
                         } else {
                             var selectedItem = select.selected(true);
                             var isAnnotationSelected = selectedItem != null && selectedItem.data.IsAnnotation === true;
                             if (!isAnnotationSelected) {
-                                acceptCurrent(true);
+                                acceptCurrent(true, false);
                             }
                         }
                     } else {
-                        acceptCurrent(true);
+                        acceptCurrent(true, false);
                     }
 
                     if (event.keyCode == KEY.RETURN) {
@@ -353,17 +352,16 @@
             if (state.mouseDownOnSelect) {
                 informationPopUp.hide();
             } else {
+                var focusInputAfterSelection = false;
                 var isLastKeyPressBeforeBlurHandled = state.lastKeyPressCode == -1;
                 if (isLastKeyPressBeforeBlurHandled) {
-                    closeDropDownListAndSetValue($input.val());
+                    closeDropDownListAndSetValue($input.val(), focusInputAfterSelection);
                     updateResult ({ DisplayName : $input.val(), UniqueIdentifier : options.nullValue });
                 } else {
                     clearTimeout(timeout);
                     var lastKeyPressCode = state.lastKeyPressCode;
-                    timeout = setTimeout(function () {
-                        invalidateResult();
-                        acceptInput(lastKeyPressCode);
-                    }, 200);
+                    invalidateResult();
+                    acceptInput(lastKeyPressCode, focusInputAfterSelection);
                 }
             }
         }).click(function() {
@@ -434,7 +432,7 @@
                 event.stopPropagation();
 
                 if (select.visible()) {
-                    acceptInput (state.lastKeyPressCode);
+                    acceptInput (state.lastKeyPressCode, true);
                 } else {
                     $input.focus();
                     onChange(true, $input.val());
@@ -443,7 +441,7 @@
             });
         }
 
-        function acceptInput(lastKeyPressCode) {
+        function acceptInput(lastKeyPressCode, focusInputAfterSelection) {
             var isLastKeyPressedNavigationKey = false;
             switch (lastKeyPressCode) {
                 case KEY.UP:
@@ -466,17 +464,17 @@
                 select.selectItem (index);
             }
 
-            if (isLastKeyPressedNavigationKey && selectCurrent()) {
+            if (isLastKeyPressedNavigationKey && selectCurrent(focusInputAfterSelection)) {
                 //SelectCurrent already does everything that's needed.
             } else if (lastKeyPressCode != -1) {
-                acceptCurrent(true);
+                acceptCurrent(true, focusInputAfterSelection);
             } else {
-                closeDropDownListAndSetValue(state.previousValue);
+                closeDropDownListAndSetValue(state.previousValue, focusInputAfterSelection);
             }
         };
 
         // re-motion: allows empty input and invalid input
-        function acceptCurrent(confirmValue) {
+        function acceptCurrent(confirmValue, focusInputAfterSelection) {
             var term = $input.val();
             var selectedItem = null;
             if (confirmValue && term != '' && select.visible())
@@ -488,7 +486,7 @@
                 selectedItem = select.selected(false);
               }
             }
-            closeDropDownListAndSetValue(term);
+            closeDropDownListAndSetValue(term, focusInputAfterSelection);
 
             if (state.previousValue == term && selectedItem != null) {
 
@@ -560,12 +558,12 @@
             isInvalidated = true;
         }
 
-        function selectCurrent() {
+        function selectCurrent(focusInputAfterSelection) {
             var selected = select.selected(false);
             if (!selected)
                 return false;
 
-            closeDropDownListAndSetValue(selected.result);
+            closeDropDownListAndSetValue(selected.result, focusInputAfterSelection);
             updateResult(selected.data);
 
             return true;
@@ -601,7 +599,7 @@
                 };
                 var failureHandler = function (termParameter) {
                     stopLoading();
-                    closeDropDownListAndSetValue(state.previousValue);
+                    closeDropDownListAndSetValue(state.previousValue, false);
                 };
 
                 requestData(searchString, successHandler, failureHandler);
@@ -643,10 +641,10 @@
             // fill in the value (keep the case the user has typed)
             $input.val($input.val() + sValue.substring(query.length));
             // select the portion of the value not typed by the user (so the next character will erase)
-            $.Autocompleter.Selection(input, query.length, query.length + sValue.length);
+            $.Autocompleter.Selection(input, query.length, query.length + sValue.length, false);
         };
 
-        function closeDropDownListAndSetValue(value){
+        function closeDropDownListAndSetValue(value, focusInputAfterSelection){
             // re-motion: reset the timer
             if (autoFillTimeout) {
                 clearTimeout(autoFillTimeout);
@@ -654,12 +652,12 @@
             }
 
             informationPopUp.hide();
-            hideResults();
+            hideResults(focusInputAfterSelection);
             $input.val(value);
             resetState();
         }
 
-        function hideResults() {
+        function hideResults(focusInputAfterSelection) {
             if (state.mouseDownOnSelect)
                 return;
 
@@ -669,7 +667,7 @@
             stopLoading();
             if (wasVisible) {
                 // position cursor at end of input field
-                $.Autocompleter.Selection(input, $input.val().length, $input.val().length);
+                $.Autocompleter.Selection(input, $input.val().length, $input.val().length, focusInputAfterSelection);
             }
         };
 
@@ -693,7 +691,7 @@
                     select.hide();
                 }
             } else {
-                acceptCurrent(false);
+                acceptCurrent(false, false);
             }
         };
 
@@ -996,9 +994,19 @@
             element = $("<div role='listbox' />")
             .hide()
             .attr("id", options.selectListID)
-            .addClass(options.resultsClass)
-            .css("position", "fixed")
-            .appendTo($(input).closest('div, td, th, body'));
+            .addClass(options.resultsClass);
+
+            // Because of a rendering issue in IE we have to revert to absolute positioning in IE (see RM-7835)
+            if (isNaN(BrowserUtility.GetIEVersion()))
+            {
+              element.css("position", "fixed")
+              .appendTo($(input).closest('div, td, th, body'));
+            }
+            else
+            {
+              element.css("position", "absolute")
+              .appendTo(document.body);
+            }
 
             options.combobox.attr('aria-owns', options.selectListID);
             var isAria11 = options.combobox[0] !== input;
@@ -1047,9 +1055,7 @@
                 activeItem.addClass (CLASSES.ACTIVE);
                 activeItem.attr("aria-selected", "true");
 
-                select();
-                // TODO provide option to avoid setting focus again after selection? useful for cleanup-on-focus
-                input.focus();
+                select(true);
 
                 return false;
             }).mousedown(function() {
@@ -1379,8 +1385,19 @@
             .hide()
             .attr("id", options.informationPopUpID)
             .addClass(options.informationPopUpClass)
-            .css("position", "fixed")
-            .appendTo($(input).closest('div, td, th, body'));
+ 
+            // Because of a rendering issue in IE we have to revert to absolute positioning in IE (see RM-7835)
+            if (isNaN(BrowserUtility.GetIEVersion()))
+            {
+              element.css("position", "fixed")
+              .appendTo($(input).closest('div, td, th, body'));
+            }
+            else
+            {
+              element.css("position", "absolute")
+              .appendTo(document.body);
+            }
+
             if (options.combobox.attr('aria-labelledby') !== undefined) {
               element.attr("aria-labelledby", options.combobox.attr('aria-labelledby'));
             }
@@ -1448,7 +1465,10 @@
         };
     };
 
-    $.Autocompleter.Selection = function(field, start, end) {
+    $.Autocompleter.Selection = function(field, start, end, focusInputAfterSelection) {
+        if (BrowserUtility.GetIEVersion() > 0 && field !== document.activeElement && !focusInputAfterSelection)
+            return;
+
         if (field.value.length < 2)
             return;
 
@@ -1466,7 +1486,10 @@
                 field.selectionEnd = end;
             }
         }
-        field.focus();
+
+        if (focusInputAfterSelection) {
+            field.focus();
+        }
     };
 
     $.Autocompleter.calculateSpaceAround = function(element) {

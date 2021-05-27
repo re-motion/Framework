@@ -29,9 +29,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     public void CreateValidators (bool isRequired, bool isReadonly, Type[] expectedValidatorTypes)
     {
       var control = GetControl (isRequired);
-      var validators = _validatorFactory.CreateValidators (control, isReadonly);
+      var validators = _validatorFactory.CreateValidators (control, isReadonly).ToArray();
 
       Assert.That (validators.Select (v => v.GetType()), Is.EquivalentTo (expectedValidatorTypes));
+      Assert.That (validators, Has.All.Property ("EnableViewState").False);
     }
 
     private IBocReferenceValue GetControl (bool isRequired)

@@ -30,6 +30,7 @@
                              Enabled="true"
                              ListControlStyle-AutoPostBack="true"
                              ListControlStyle-ControlType="DropDownList"
+                             ListControlStyle-DropDownListNullValueTextVisible="true"
                              ReadOnly="false"
                              Required="false"
         

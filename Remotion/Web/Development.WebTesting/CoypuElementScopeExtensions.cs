@@ -81,6 +81,14 @@ namespace Remotion.Web.Development.WebTesting
       {
         scope.ElementFinder.Options.Timeout = TimeSpan.Zero;
 
+        try
+        {
+          scope.Exists(Options.NoWait);
+        }
+        catch (Exception)
+        {
+          // Sometimes, the first scope.Exists() call fails after a switch to an IFrame. So we swallow that first exception and just try again.
+        }
         var exists = scope.Exists (Options.NoWait);
 
         // scope.Exists (...) does not work correctly in some circumstances, whereby we do the exist check via this workaround. See RM-6773 for details.

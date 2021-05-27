@@ -25,10 +25,11 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories.Filtering
       control.Expect (c => c.IsRequired).Return (true);
       SetResourceManagerMock (control);
 
-      var validators = factory.CreateValidators (control, false);
+      var validators = factory.CreateValidators (control, false).ToArray();
       Assert.That (
           validators.Select (v => v.GetType()),
           Is.EquivalentTo (new[] { typeof (BusinessObjectBoundEditableWebControlValidator) }));
+      Assert.That (validators, Has.All.Property ("EnableViewState").False);
     }
   }
 }

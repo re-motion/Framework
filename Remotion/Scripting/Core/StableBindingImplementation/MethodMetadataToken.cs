@@ -23,6 +23,7 @@ namespace Remotion.Scripting.StableBindingImplementation
   /// <summary>
   /// Wrapper around a <see cref="MethodInfo"/>.<see cref="MetadataToken"/>.
   /// </summary>
+  [Obsolete ("Remotion.Scripting will be removed in the next major release of re-motion. (Version 2.27.2)")]
   public class MethodMetadataToken
   {
     private readonly int _token;

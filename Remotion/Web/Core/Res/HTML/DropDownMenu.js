@@ -16,6 +16,7 @@
 // 
 var _dropDownMenu_menuInfos = new Object();
 
+var _dropDownMenu_button_timestampDataKey = 'clickTimestamp';
 var _dropDownMenu_buttonClassName = 'DropDownMenuSelect';
 var _dropDownMenu_itemClassName = 'DropDownMenuItem';
 var _dropDownMenu_itemDisabledClassName = 'DropDownMenuItemDisabled';
@@ -177,6 +178,8 @@ function DropDownMenu_OnClick(context, menuID, getSelectionCount, evt)
 {
   ArgumentUtility.CheckNotNullAndTypeIsJQuery('context', context);
 
+  $('#' + menuID).data(_dropDownMenu_button_timestampDataKey, new Date().getTime());
+
   if (_dropDownMenu_itemClicked)
   {
     _dropDownMenu_itemClicked = false;
@@ -286,7 +289,16 @@ function DropDownMenu_BeginOpenPopUp(menuID, context, evt)
     statusPopup.setAttribute('aria-labelledby', menuButton[0].id);
   _dropDownMenu_currentStatusPopup = statusPopup;
   $(statusPopup).iFrameShim({ top: '0px', left: '0px', width: '100%', height: '100%' });
-  $('#' + menuID).closest('div, td, th, body').append(statusPopup);
+
+  // Because of a rendering issue in IE we have to revert to absolute positioning in IE (see RM-7835)
+  if (isNaN(BrowserUtility.GetIEVersion()))
+  {
+    $('#' + menuID).closest('div, td, th, body').append(statusPopup);
+  }
+  else
+  {
+    $(document.body).append(statusPopup);
+  }
 
   DropDownMenu_ApplyPosition($(statusPopup), evt, titleDivFunc());
 
@@ -350,7 +362,17 @@ function DropDownMenu_EndOpenPopUp (menuID, context, selectionCount, evt, itemIn
   ul.setAttribute('role', 'none');
   div.appendChild(ul);
 
-  $('#' + menuID).closest('div, td, th, body').append(div);
+  const $menuButton = $('#' + menuID);
+
+  // Because of a rendering issue in IE we have to revert to absolute positioning in IE (see RM-7835)
+  if (isNaN(BrowserUtility.GetIEVersion()))
+  {
+    $menuButton.closest('div, td, th, body').append(div);
+  }
+  else
+  {
+    $(document.body).append(div);
+  }
 
   $(ul).mouseover (function (event)
   {
@@ -412,6 +434,15 @@ function DropDownMenu_EndOpenPopUp (menuID, context, selectionCount, evt, itemIn
   // Only reposition if opened via titleDiv
   if (evt == null)
     _dropDownMenu_repositionTimer = setTimeout(repositionHandler, _dropDownMenu_repositionInterval);
+
+  if ($menuButton.data(_dropDownMenu_button_timestampDataKey))
+  {
+    $menuButton.removeData(_dropDownMenu_button_timestampDataKey);
+  }
+  else
+  {
+    DropDownMenu_ClosePopUp(_dropDownMenu_updateFocus);
+  }
 }
 
 function DownDownMenu_CreateTitleDivGetter ($context)
@@ -450,7 +481,16 @@ function DropDownMenu_ApplyPosition (popUpDiv, clickEvent, referenceElement)
   popUpDiv.css('bottom', 'auto');
   popUpDiv.css('right', right);
   popUpDiv.css('left', left);
-  popUpDiv.css('position', 'fixed');
+
+  // Because of a rendering issue in IE we have to revert to absolute positioning in IE (see RM-7835)
+  if (isNaN(BrowserUtility.GetIEVersion()))
+  {
+    popUpDiv.css('position', 'fixed');
+  }
+  else
+  {
+    popUpDiv.css('position', 'absolute');
+  }
 
   // move dropdown if there is not enough space to fit it on the page
   if ((popUpDiv.width() > space_left) && (space_left < space_right))
@@ -488,10 +528,10 @@ function DropDownMenu_ClosePopUp (updateFocus)
   if (_dropDownMenu_blurTimer !== null)
     clearTimeout(_dropDownMenu_blurTimer);
 
-  if (_dropDownMenu_currentPopup !== null)
+  if (_dropDownMenu_currentPopup !== null
+      && document.body.contains(_dropDownMenu_currentPopup))
   {
     const menuPopup = _dropDownMenu_currentPopup;
-    _dropDownMenu_currentPopup = null;
     const $menuButton = $('a[aria-controls="' + menuPopup.id + '"]');
     $menuButton.unbind('focus', DropDownMenu_BlurHandler);
     $menuButton.unbind('blur', DropDownMenu_BlurHandler);
@@ -503,15 +543,17 @@ function DropDownMenu_ClosePopUp (updateFocus)
     menuPopup.parentElement.removeChild(menuPopup);
   }
 
-  if (_dropDownMenu_currentStatusPopup !== null)
+  if (_dropDownMenu_currentStatusPopup !== null
+      && document.body.contains(_dropDownMenu_currentStatusPopup))
   {
     const statusPopup = _dropDownMenu_currentStatusPopup;
-    _dropDownMenu_currentStatusPopup = null;
     // Clear the role=alert before removing to item to prevent screenreaders (JAWS) from announcing the old value during removal.
     statusPopup.removeAttribute('role');
     statusPopup.parentElement.removeChild(statusPopup);
   }
 
+  _dropDownMenu_currentPopup = null;
+  _dropDownMenu_currentStatusPopup = null;
   _dropDownMenu_currentMenu = null;
 }
 

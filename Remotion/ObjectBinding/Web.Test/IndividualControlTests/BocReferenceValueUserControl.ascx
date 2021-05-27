@@ -67,7 +67,9 @@
     <td><remotion:bocreferencevalue id=UnboundPartnerField runat="server" IconServicePath="IconService.asmx" DataSourceControl="PersonDataSource" required="True" hasvalueembeddedinsideoptionsmenu="False" showoptionsmenu="False" EnableSelectStatement="False">
 <PersistedCommand>
 <remotion:boccommand Type="Href" HrefCommand-Href="http://localhost/{0}" HrefCommand-Target="_blank" ToolTip="test&quot;test'test"></remotion:boccommand>
-</PersistedCommand></remotion:bocreferencevalue></td>
+</PersistedCommand>
+<DropDownListStyle NullValueTextVisible="True"/>
+    </remotion:bocreferencevalue></td>
     <td>
        unbound, value not set</td>
     <td style="WIDTH: 20%"><asp:label id=UnboundPartnerFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>

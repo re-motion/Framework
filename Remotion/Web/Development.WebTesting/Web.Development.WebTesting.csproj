@@ -224,6 +224,7 @@
     <Compile Include="ScreenshotCreation\BrowserContentLocators\InternetExplorerBrowserContentLocator.cs" />
     <Compile Include="Utilities\DomSelectorUtility.cs" />
     <Compile Include="Utilities\DataContractJsonSerializationUtility.cs" />
+    <Compile Include="Utilities\DriverExtensions.cs" />
     <Compile Include="Utilities\ElementScopeExtensions.cs" />
     <Compile Include="ScreenshotCreation\IBrowserContentLocator.cs" />
     <Compile Include="Utilities\BrowserHelper.cs" />
@@ -270,6 +271,7 @@
     <Compile Include="WebDriver\Configuration\BrowserConfigurationBase.cs" />
     <Compile Include="Configuration\TestInfrastructureConfiguration.cs" />
     <Compile Include="BrowserSession\BrowserSessionBase.cs" />
+    <Compile Include="WebElementExtensions.cs" />
     <Compile Include="WebTestConfigurationFactory.cs" />
     <Compile Include="Configuration\WebTestConfigurationSection.cs" />
     <Compile Include="WebDriver\Factories\WebDriverLogUtility.cs" />

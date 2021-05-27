@@ -184,10 +184,16 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests.Factories
 
     private void CheckValidators (bool isReadOnly, IEnumerable<BaseValidator> validators)
     {
+      var validatorsArray = validators.ToArray();
       if (isReadOnly)
-        Assert.That (validators, Is.Empty);
+      {
+        Assert.That (validatorsArray, Is.Empty);
+      }
       else
-        Assert.That (validators.Select (v => v.GetType ()), Is.EquivalentTo (new[] { typeof (BusinessObjectBoundEditableWebControlValidator) }));
+      {
+        Assert.That (validatorsArray.Select (v => v.GetType()), Is.EquivalentTo (new[] { typeof (BusinessObjectBoundEditableWebControlValidator) }));
+        Assert.That (validatorsArray, Has.All.Property ("EnableViewState").False);
+      }
     }
   }
 }

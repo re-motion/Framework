@@ -53,6 +53,8 @@ namespace Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories
       var bocValidator = new UserControlBindingValidationFailureDisptacher();
       bocValidator.ControlToValidate = control.ID;
       bocValidator.ID = control.ID + "_BocListValidator";
+      bocValidator.EnableViewState = false;
+
       return bocValidator;
     }
   }

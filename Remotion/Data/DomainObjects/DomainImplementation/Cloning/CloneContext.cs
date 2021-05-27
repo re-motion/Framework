@@ -21,6 +21,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DomainImplementation.Cloning
 {
+  [Obsolete ("DomainObjectCloner will be removed in the next major release of re-motion. (Version 2.27.2)")]
   public class CloneContext
   {
     private readonly DomainObjectCloner _cloner;

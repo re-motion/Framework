@@ -30,6 +30,7 @@ namespace Remotion.Scripting.StableBindingImplementation
   /// to the Dynamic Language Runtime, thereby guaranteeing that mixins coming from different re-motion modules do not 
   /// interfere with the mixins and scripts coming from a specific module.
   /// </remarks>
+  [Obsolete ("Remotion.Scripting will be removed in the next major release of re-motion. (Version 2.27.2)")]
   public class StableBindingProxyProvider
   {
     protected static void SetProxiedFieldValue (object proxy, object value)

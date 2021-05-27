@@ -21,6 +21,7 @@ namespace Remotion.Scripting
   /// <summary>
   /// Enumeration of script languages supported by re-motion.
   /// </summary>
+  [Obsolete ("Remotion.Scripting will be removed in the next major release of re-motion. (Version 2.27.2)")]
   public enum ScriptLanguageType
   {
     Python,

@@ -160,6 +160,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
       renderingContext.Control.ListControlStyle.ApplyStyle (listControl);
 
       var isRadioButtonList = renderingContext.Control.ListControlStyle.ControlType == ListControlType.RadioButtonList;
+      var isDropDownList = renderingContext.Control.ListControlStyle.ControlType == ListControlType.DropDownList;
+
       if (isRadioButtonList)
         listControl.Attributes.Add (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.RadioGroup);
 
@@ -173,12 +175,23 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
       if (isNullItemVisible)
       {
         var nullItem = CreateNullItem (renderingContext);
+        var nullItemText = nullItem.Text;
+#pragma warning disable 618
+        if (isDropDownList && !renderingContext.Control.ListControlStyle.DropDownListNullValueTextVisible && !renderingContext.Control.HasForcedDropDownListNullValueText)
+#pragma warning restore 618
+        {
+          nullItem.Attributes[HtmlTextWriterAttribute2.AriaLabel] = nullItemText;
+          // By setting the label to a single whitespace, we can convince the HTML validator that the element is valid,
+          // while preventing text from being displayed in the UI.
+          nullItem.Attributes[HtmlTextWriterAttribute2.Label] = " ";
+          nullItem.Text = string.Empty;
+        }
 
         if (IsDiagnosticMetadataRenderingEnabled)
         {
           nullItem.Attributes[DiagnosticMetadataAttributes.ItemID] = nullItem.Value;
           nullItem.Attributes[DiagnosticMetadataAttributes.IndexInCollection] = oneBasedIndex.ToString();
-          nullItem.Attributes[DiagnosticMetadataAttributes.Content] = HtmlUtility.StripHtmlTags (nullItem.Text);
+          nullItem.Attributes[DiagnosticMetadataAttributes.Content] = HtmlUtility.StripHtmlTags (nullItemText);
         }
 
         listControl.Items.Add (nullItem);
@@ -204,11 +217,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
         listControl.Items.Add (item);
       }
 
-      if (renderingContext.Control.IsRequired && isNullItemVisible && !isRadioButtonList)
+      if (renderingContext.Control.IsRequired && !isRadioButtonList)
       {
         listControl.Attributes.Add (HtmlTextWriterAttribute2.AriaRequired, HtmlAriaRequiredAttributeValue.True);
       }
-      else if (renderingContext.Control.IsRequired && !isNullItemVisible && isRadioButtonList)
+      else if (renderingContext.Control.IsRequired && isRadioButtonList)
       {
         var radioButton = _internalControlMemberCaller.GetControlToRepeat ((RadioButtonList) listControl);
         radioButton.InputAttributes.Add (HtmlTextWriterAttribute2.AriaRequired, HtmlAriaRequiredAttributeValue.True);

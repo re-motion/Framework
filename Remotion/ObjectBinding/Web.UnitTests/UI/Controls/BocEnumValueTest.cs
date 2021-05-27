@@ -25,6 +25,7 @@ using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Validation;
 using Remotion.ObjectBinding.Web.UnitTests.Domain;
+using Remotion.Utilities;
 using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
@@ -377,6 +378,40 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 
       factoryMock.VerifyAllExpectations();
       serviceLocatorMock.VerifyAllExpectations();
+    }
+
+    [Test]
+    [TestCase (ListControlType.DropDownList, TestName = "GetNullItemText_WithTextFromProperty_ForDropDownList_ReturnsTextFromProperty")]
+    [TestCase (ListControlType.ListBox, TestName = "GetNullItemText_WithTextFromProperty_ForListBox_ReturnsTextFromProperty")]
+    [TestCase (ListControlType.RadioButtonList, TestName = "GetNullItemText_WithTextFromProperty_ForRadioButtonList_ReturnsTextFromProperty")]
+    public void GetNullItemText_WithTextFromProperty (ListControlType listControlType)
+    {
+      var control = new BocEnumValue();
+      control.UndefinedItemText = "The undefined item";
+      control.ListControlStyle.ControlType = listControlType;
+
+      Assert.That (((IBocEnumValue) control).GetNullItemText(), Is.EqualTo ("The undefined item"));
+#pragma warning disable 618
+      Assert.That (((IBocEnumValue) control).HasForcedDropDownListNullValueText, Is.True);
+#pragma warning restore 618
+    }
+
+    [Test]
+    [TestCase (ListControlType.DropDownList, TestName = "GetNullItemText_WithTextFromResourceManager_ForDropDownList_ReturnsTextFromResourceManager")]
+    [TestCase (ListControlType.ListBox, TestName = "GetNullItemText_WithTextFromResourceManager_ForListBox_ReturnsTextFromResourceManager")]
+    [TestCase (ListControlType.RadioButtonList, TestName = "GetNullItemText_WithTextFromResourceManager_ForRadioButtonList_ReturnsTextFromResourceManager")]
+    public void GetNullItemText_WithTextFromResourceManager (ListControlType listControlType)
+    {
+      var control = new BocEnumValue();
+      control.ListControlStyle.ControlType = listControlType;
+
+      using (CultureScope.CreateInvariantCultureScope())
+      {
+        Assert.That (((IBocEnumValue) control).GetNullItemText(), Is.Not.Empty);
+#pragma warning disable 618
+        Assert.That (((IBocEnumValue) control).HasForcedDropDownListNullValueText, Is.False);
+#pragma warning restore 618
+      }
     }
   }
 }

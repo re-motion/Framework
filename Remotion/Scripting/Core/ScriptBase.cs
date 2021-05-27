@@ -24,6 +24,7 @@ namespace Remotion.Scripting
   /// <see cref="ScriptFunction{TFixedArg1,TResult}"/>, etc).
   /// Each script knows its <see cref="ScriptContext"/> and <see cref="Scripting.ScriptLanguageType"/>.
   /// </summary>
+  [Obsolete ("Remotion.Scripting will be removed in the next major release of re-motion. (Version 2.27.2)")]
   public abstract class ScriptBase
   {
     private readonly ScriptContext _scriptContext;

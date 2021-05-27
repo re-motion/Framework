@@ -25,6 +25,7 @@ namespace Remotion.Scripting.StableBindingImplementation
   /// Categorizes <see cref="Type"/>|s into "valid" and "invalid" types, 
   /// based on whether their assembly is a member of the class's assembly collection.
   /// </summary>
+  [Obsolete ("Remotion.Scripting will be removed in the next major release of re-motion. (Version 2.27.2)")]
   public class AssemblyLevelTypeFilter : ITypeFilter
   {
     private readonly HashSet<Assembly> _validAssemblies;
