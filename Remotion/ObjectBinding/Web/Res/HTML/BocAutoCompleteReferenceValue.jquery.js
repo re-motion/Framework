@@ -994,9 +994,19 @@
             element = $("<div role='listbox' />")
             .hide()
             .attr("id", options.selectListID)
-            .addClass(options.resultsClass)
-            .css("position", "fixed")
-            .appendTo($(input).closest('div, td, th, body'));
+            .addClass(options.resultsClass);
+
+            // Because of a rendering issue in IE we have to revert to absolute positioning in IE (see RM-7835)
+            if (isNaN(BrowserUtility.GetIEVersion()))
+            {
+              element.css("position", "fixed")
+              .appendTo($(input).closest('div, td, th, body'));
+            }
+            else
+            {
+              element.css("position", "absolute")
+              .appendTo(document.body);
+            }
 
             options.combobox.attr('aria-owns', options.selectListID);
             var isAria11 = options.combobox[0] !== input;
@@ -1375,8 +1385,19 @@
             .hide()
             .attr("id", options.informationPopUpID)
             .addClass(options.informationPopUpClass)
-            .css("position", "fixed")
-            .appendTo($(input).closest('div, td, th, body'));
+ 
+            // Because of a rendering issue in IE we have to revert to absolute positioning in IE (see RM-7835)
+            if (isNaN(BrowserUtility.GetIEVersion()))
+            {
+              element.css("position", "fixed")
+              .appendTo($(input).closest('div, td, th, body'));
+            }
+            else
+            {
+              element.css("position", "absolute")
+              .appendTo(document.body);
+            }
+
             if (options.combobox.attr('aria-labelledby') !== undefined) {
               element.attr("aria-labelledby", options.combobox.attr('aria-labelledby'));
             }
