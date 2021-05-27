@@ -74,6 +74,9 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
     }
 
     [Test]
+#if !NETFRAMEWORK
+    [Ignore ("TODO RM-7799: Create out-of-process test infrastructure to replace tests done with app domains")]
+#endif
     public void ApplicationAssemblyInclusion_DependsOnAttribute ()
     {
       string compiledAssemblyPath = Path.Combine (AppDomain.CurrentDomain.BaseDirectory, "NonApplicationMarkedAssembly.dll");

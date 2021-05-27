@@ -25,6 +25,9 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
   public class AppDomainRunnerTest
   {
     [Test]
+#if !NETFRAMEWORK
+    [Ignore ("TODO RM-7799: Create out-of-process test infrastructure to replace tests done with app domains")]
+#endif
     public void ArgumentsArePassedInCorrectly ()
     {
       AppDomainRunner.Run (delegate (object[] args)

@@ -121,6 +121,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     }
 
     [Test]
+#if !NETFRAMEWORK
+    [Ignore ("TODO RM-7799: Create out-of-process test infrastructure to replace tests done with app domains")]
+#endif
     public void GetDefaultQueryFilePath_WithRelativeSearchPath ()
     {
       AppDomainSetup setup = AppDomain.CurrentDomain.SetupInformation;
