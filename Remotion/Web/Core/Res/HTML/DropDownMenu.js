@@ -286,7 +286,16 @@ function DropDownMenu_BeginOpenPopUp(menuID, context, evt)
     statusPopup.setAttribute('aria-labelledby', menuButton[0].id);
   _dropDownMenu_currentStatusPopup = statusPopup;
   $(statusPopup).iFrameShim({ top: '0px', left: '0px', width: '100%', height: '100%' });
-  $('#' + menuID).closest('div, td, th, body').append(statusPopup);
+
+  // Because of a rendering issue in IE we have to revert to absolute positioning in IE (see RM-7835)
+  if (isNaN(BrowserUtility.GetIEVersion()))
+  {
+    $('#' + menuID).closest('div, td, th, body').append(statusPopup);
+  }
+  else
+  {
+    $(document.body).append(statusPopup);
+  }
 
   DropDownMenu_ApplyPosition($(statusPopup), evt, titleDivFunc());
 
@@ -350,7 +359,15 @@ function DropDownMenu_EndOpenPopUp (menuID, context, selectionCount, evt, itemIn
   ul.setAttribute('role', 'none');
   div.appendChild(ul);
 
-  $('#' + menuID).closest('div, td, th, body').append(div);
+  // Because of a rendering issue in IE we have to revert to absolute positioning in IE (see RM-7835)
+  if (isNaN(BrowserUtility.GetIEVersion()))
+  {
+    $('#' + menuID).closest('div, td, th, body').append(div);
+  }
+  else
+  {
+    $(document.body).append(div);
+  }
 
   $(ul).mouseover (function (event)
   {
@@ -450,7 +467,16 @@ function DropDownMenu_ApplyPosition (popUpDiv, clickEvent, referenceElement)
   popUpDiv.css('bottom', 'auto');
   popUpDiv.css('right', right);
   popUpDiv.css('left', left);
-  popUpDiv.css('position', 'fixed');
+
+  // Because of a rendering issue in IE we have to revert to absolute positioning in IE (see RM-7835)
+  if (isNaN(BrowserUtility.GetIEVersion()))
+  {
+    popUpDiv.css('position', 'fixed');
+  }
+  else
+  {
+    popUpDiv.css('position', 'absolute');
+  }
 
   // move dropdown if there is not enough space to fit it on the page
   if ((popUpDiv.width() > space_left) && (space_left < space_right))
