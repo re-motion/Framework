@@ -16,13 +16,11 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Web.Script.Serialization;
+using System.Text.Json;
 using JetBrains.Annotations;
 using NUnit.Framework;
 using Remotion.Utilities;
-using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
@@ -86,9 +84,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
       if (string.IsNullOrWhiteSpace (text))
         throw new InvalidOperationException ("The generic test page did not provide any test information.");
 
-      var serializer = new JavaScriptSerializer();
-      serializer.RegisterConverters (new[] { GenericTestParameterConverter.Instance });
-      var dto = serializer.Deserialize<GenericTestPageParameterDto> (text);
+      var serializerOptions = new JsonSerializerOptions { Converters = { GenericTestParameterConverter.Instance } };
+      var dto = JsonSerializer.Deserialize<GenericTestPageParameterDto> (text, serializerOptions);
       if (dto == null)
         throw new InvalidOperationException ("The generic test page output is not in a correct format.");
 

@@ -16,7 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Web.Script.Serialization;
+using System.Text.Json;
 using System.Web.UI;
 using JetBrains.Annotations;
 using Remotion.Utilities;
@@ -126,9 +126,9 @@ namespace Remotion.Web.Development.WebTesting.TestSite.Infrastructure
 
     private void SetTestInformation (GenericTestPageParameterDto information)
     {
-      var serializer = new JavaScriptSerializer();
-      serializer.RegisterConverters (new[] { GenericTestParameterConverter.Instance });
-      SetTestInformation (serializer.Serialize (information));
+      var serializerOptions = new JsonSerializerOptions { Converters = { GenericTestParameterConverter.Instance } };
+      var serialized = JsonSerializer.Serialize (information, serializerOptions);
+      SetTestInformation (serialized);
     }
   }
 }
