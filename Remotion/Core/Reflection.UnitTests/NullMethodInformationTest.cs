@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Remoting.Contexts;
 using NUnit.Framework;
 
 namespace Remotion.Reflection.UnitTests
@@ -48,22 +47,22 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void GetCustomAttribute ()
     {
-      Assert.That (_nullMethodInformation.GetCustomAttribute<SynchronizationAttribute> (false), Is.Null);
-      Assert.That (_nullMethodInformation.GetCustomAttribute<SynchronizationAttribute> (true), Is.Null);
+      Assert.That (_nullMethodInformation.GetCustomAttribute<ObsoleteAttribute> (false), Is.Null);
+      Assert.That (_nullMethodInformation.GetCustomAttribute<ObsoleteAttribute> (true), Is.Null);
     }
 
     [Test]
     public void GetCustomAttributes ()
     {
-      Assert.That (_nullMethodInformation.GetCustomAttributes<SynchronizationAttribute[]> (false), Is.Empty);
-      Assert.That (_nullMethodInformation.GetCustomAttributes<SynchronizationAttribute[]> (true), Is.Empty);
+      Assert.That (_nullMethodInformation.GetCustomAttributes<ObsoleteAttribute[]> (false), Is.Empty);
+      Assert.That (_nullMethodInformation.GetCustomAttributes<ObsoleteAttribute[]> (true), Is.Empty);
     }
 
     [Test]
     public void IsDefined ()
     {
-      Assert.That (_nullMethodInformation.IsDefined<SynchronizationAttribute> (false), Is.False);
-      Assert.That (_nullMethodInformation.IsDefined<SynchronizationAttribute> (true), Is.False);
+      Assert.That (_nullMethodInformation.IsDefined<ObsoleteAttribute> (false), Is.False);
+      Assert.That (_nullMethodInformation.IsDefined<ObsoleteAttribute> (true), Is.False);
     }
 
     [Test]
