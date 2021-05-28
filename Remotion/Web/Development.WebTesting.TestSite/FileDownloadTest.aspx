@@ -50,5 +50,8 @@
   <p>
       <a id="DownloadZipFile" target="_blank" href="FileDownloadHandler.ashx?testMode=zip" runat="server">Download zip file</a>
   </p>
+  <p>
+      <a id="DownloadMultipleFiles" target="_blank" href="FileDownloadHandler.ashx?testMode=xml" onclick="window.open('FileDownloadHandler.ashx?testMode=txt');" runat="server">Download multiple files</a>
+  </p>
 
 </asp:Content>
