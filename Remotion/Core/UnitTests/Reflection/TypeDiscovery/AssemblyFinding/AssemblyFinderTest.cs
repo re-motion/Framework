@@ -84,6 +84,9 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     }
 
     [Test]
+#if !NETFRAMEWORK
+    [Ignore ("TODO RM-7799: Create out-of-process test infrastructure to replace tests done with app domains")]
+#endif
     public void FindAssemblies_FindsReferencedAssemblies_Transitive ()
     {
       const string buildOutputDirectory = "Reflection.AssemblyFinderTest.FindAssemblies_FindsReferencedAssemblies_Transitive";
