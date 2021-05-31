@@ -253,6 +253,7 @@
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
     <Compile Include="Collections\EnumerableExtensions.cs" />
+    <Compile Include="Context\AsyncLocalStorageProviderTest.cs" />
     <Compile Include="PermanentGuidAttributeTest.cs" />
     <Compile Include="Reflection\TypeDiscovery\ContextAwareTypeDiscoveryUtilityTest.cs" />
     <Compile Include="Reflection\TypeResolution\DefaultTypeResolutionServiceTest.cs" />
@@ -403,7 +404,6 @@
     <Compile Include="Reflection\TypeDiscovery\AssemblyLoading\FilteringAssemblyLoaderTest.cs" />
     <TestAssembly Include="Reflection\TypeDiscovery\TestAssemblies\FileLoadExceptionConsoleApplication\Program.cs" />
     <Compile Include="Reflection\CodeGeneration\MethodReferencingAttributeTest.cs" />
-    <Compile Include="Context\CallContextStorageProviderTest.cs" />
     <Compile Include="Collections\AutoInitDictionaryTest.cs" />
     <Compile Include="Configuration\ConstructorException.cs" />
     <Compile Include="Configuration\ThrowingFakeProvider.cs" />
