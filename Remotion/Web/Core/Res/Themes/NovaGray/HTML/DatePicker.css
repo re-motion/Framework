@@ -24,3 +24,8 @@ div.DatePicker
   z-index: 2147483647;
   position: fixed;
 }
+
+body.msie > div.DatePicker
+{
+  position: absolute;
+}
