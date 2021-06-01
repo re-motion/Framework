@@ -37,7 +37,7 @@ namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
     [Test]
     public void RunTestsInSandbox ()
     {
-      var permissions = PermissionSets.GetMediumTrust (AppDomain.CurrentDomain.BaseDirectory, Environment.MachineName);
+      var permissions = PermissionSets.GetMediumTrust (AppContext.BaseDirectory, Environment.MachineName);
       var testResults =
           SandboxTestRunner.RunTestFixturesInSandbox (_testFixtureTypes, permissions, null).SelectMany (
               r => r.TestResults).Where (r => r.Status != SandboxTestStatus.Ignored);

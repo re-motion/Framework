@@ -104,7 +104,7 @@ namespace Remotion.Data.DomainObjects.RdbmsTools.UnitTests
 
     private string GetConfigPath (string configFileName)
     {
-      return Path.Combine (AppDomain.CurrentDomain.BaseDirectory, configFileName);
+      return Path.Combine (AppContext.BaseDirectory, configFileName);
     }
   }
 }

@@ -54,11 +54,11 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     public void OneTimeSetUp ()
     {
       Environment.CurrentDirectory = TestContext.CurrentContext.TestDirectory;
-      var searchPathForDlls = Path.Combine (AppDomain.CurrentDomain.BaseDirectory, "Reflection.AssemblyFinderIntegrationTest.Dlls");
-      var searchPathForExes = Path.Combine (AppDomain.CurrentDomain.BaseDirectory, "Reflection.AssemblyFinderIntegrationTest.Exes");
-      var dynamicBase = Path.Combine (AppDomain.CurrentDomain.BaseDirectory, "Reflection.AssemblyFinderIntegrationTest.Dynamic");
+      var searchPathForDlls = Path.Combine (AppContext.BaseDirectory, "Reflection.AssemblyFinderIntegrationTest.Dlls");
+      var searchPathForExes = Path.Combine (AppContext.BaseDirectory, "Reflection.AssemblyFinderIntegrationTest.Exes");
+      var dynamicBase = Path.Combine (AppContext.BaseDirectory, "Reflection.AssemblyFinderIntegrationTest.Dynamic");
 
-      _baseDirectoryBuildOutputManager = CreateAssemblyCompilerBuildOutputManager (AppDomain.CurrentDomain.BaseDirectory);
+      _baseDirectoryBuildOutputManager = CreateAssemblyCompilerBuildOutputManager (AppContext.BaseDirectory);
       _dynamicDirectoryBuildOutputManager = CreateAssemblyCompilerBuildOutputManager (dynamicBase);
       _searchPathForDllsBuildOutputManager = CreateAssemblyCompilerBuildOutputManager (searchPathForDlls);
       _searchPathForExesBuildOutputManager = CreateAssemblyCompilerBuildOutputManager (searchPathForExes);
@@ -267,7 +267,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
 
     private AssemblyCompilerBuildOutputManager CreateAssemblyCompilerBuildOutputManager (string buildOutputDirectory)
     {
-      var createBuildOutputDirectory = buildOutputDirectory != AppDomain.CurrentDomain.BaseDirectory;
+      var createBuildOutputDirectory = buildOutputDirectory != AppContext.BaseDirectory;
       return new AssemblyCompilerBuildOutputManager (
           buildOutputDirectory, createBuildOutputDirectory, c_testAssemblySourceDirectoryRoot, typeof (MarkerAttribute).Module.Name);
     }

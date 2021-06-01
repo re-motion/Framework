@@ -38,7 +38,7 @@ namespace Remotion.Mixins.UnitTests.Core.MixerTools
     [SetUp]
     public void SetUp ()
     {
-      _assemblyOutputDirectory = Path.Combine (AppDomain.CurrentDomain.BaseDirectory, "Mixer_IntegrationTest");
+      _assemblyOutputDirectory = Path.Combine (AppContext.BaseDirectory, "Mixer_IntegrationTest");
     }
 
     [TearDown]

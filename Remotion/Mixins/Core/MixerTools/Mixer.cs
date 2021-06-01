@@ -125,7 +125,7 @@ namespace Remotion.Mixins.MixerTools
         _finishedTypes.Clear();
         _generatedFiles = new string[0];
 
-        s_log.InfoFormat ("The base directory is '{0}'.", AppDomain.CurrentDomain.BaseDirectory);
+        s_log.InfoFormat ("The base directory is '{0}'.", AppContext.BaseDirectory);
 
         var pipeline = MixerPipelineFactory.CreatePipeline (AssemblyOutputDirectory);
 

@@ -46,7 +46,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
       ArgumentUtility.CheckNotNull ("assemblyLoader", assemblyLoader);
 
       var searchPathRootAssemblyFinder = new SearchPathRootAssemblyFinder (
-          AppDomain.CurrentDomain.BaseDirectory,
+          AppContext.BaseDirectory,
           AppDomain.CurrentDomain.RelativeSearchPath,
           considerDynamicDirectory,
           AppDomain.CurrentDomain.DynamicDirectory,

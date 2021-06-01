@@ -122,12 +122,12 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
     private List<string> GetPotentialDefaultQueryFilePaths ()
     {
       List<string> potentialPaths = new List<string> ();
-      potentialPaths.Add (Path.Combine (AppDomain.CurrentDomain.BaseDirectory, c_defaultConfigurationFile));
+      potentialPaths.Add (Path.Combine (AppContext.BaseDirectory, c_defaultConfigurationFile));
       if (AppDomain.CurrentDomain.RelativeSearchPath != null)
       {
         foreach (string part in AppDomain.CurrentDomain.RelativeSearchPath.Split (new[] {';'}, StringSplitOptions.RemoveEmptyEntries))
         {
-          string absoluteSearchPath = Path.GetFullPath (Path.Combine (AppDomain.CurrentDomain.BaseDirectory, part));
+          string absoluteSearchPath = Path.GetFullPath (Path.Combine (AppContext.BaseDirectory, part));
           potentialPaths.Add (Path.Combine (absoluteSearchPath, c_defaultConfigurationFile));
         }
       }

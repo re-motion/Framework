@@ -55,7 +55,7 @@ namespace Remotion.Mixins.UnitTests.Core.MixerTools
     [SetUp]
     public void SetUp ()
     {
-      _assemblyOutputDirectoy = Path.Combine (AppDomain.CurrentDomain.BaseDirectory, "MixerTest");
+      _assemblyOutputDirectoy = Path.Combine (AppContext.BaseDirectory, "MixerTest");
       _modulePath = Path.Combine (_assemblyOutputDirectoy, "Signed.dll");
       
       if (Directory.Exists (_assemblyOutputDirectoy))
@@ -242,7 +242,7 @@ namespace Remotion.Mixins.UnitTests.Core.MixerTools
       var assemblyFinder = (AssemblyFinder) ((CachingAssemblyFinderDecorator) service.AssemblyFinder).InnerFinder;
       Assert.That (assemblyFinder.RootAssemblyFinder, Is.TypeOf (typeof (SearchPathRootAssemblyFinder)));
       var rootAssemblyFinder = ((SearchPathRootAssemblyFinder) assemblyFinder.RootAssemblyFinder);
-      Assert.That (rootAssemblyFinder.BaseDirectory, Is.EqualTo (AppDomain.CurrentDomain.BaseDirectory));
+      Assert.That (rootAssemblyFinder.BaseDirectory, Is.EqualTo (AppContext.BaseDirectory));
       Assert.That (rootAssemblyFinder.ConsiderDynamicDirectory, Is.False);
       Assert.That (rootAssemblyFinder.AssemblyLoader, Is.TypeOf (typeof (FilteringAssemblyLoader)));
       Assert.That (((FilteringAssemblyLoader) rootAssemblyFinder.AssemblyLoader).Filter, Is.TypeOf (typeof (LoadAllAssemblyLoaderFilter)));

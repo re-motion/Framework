@@ -146,7 +146,7 @@ namespace Remotion.UnitTests.Configuration.TypeDiscovery
       var loaderStub = MockRepository.GenerateStub<IAssemblyLoader>();
       var finder = collection.CreateRootAssemblyFinder (loaderStub);
 
-      Assert.That (finder.SearchPath, Is.EqualTo (AppDomain.CurrentDomain.BaseDirectory));
+      Assert.That (finder.SearchPath, Is.EqualTo (AppContext.BaseDirectory));
       Assert.That (finder.FileSearchService, Is.InstanceOf (typeof (FileSystemSearchService)));
       Assert.That (finder.AssemblyLoader, Is.SameAs (loaderStub));
 

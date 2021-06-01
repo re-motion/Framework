@@ -58,7 +58,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.HostingStrategies.Config
     [Test]
     public void CreateFromWebTestConfigurationSection_WithRelativePaths ()
     {
-      var currentBasePath = AppDomain.CurrentDomain.BaseDirectory;
+      var currentBasePath = AppContext.BaseDirectory;
       var configurationSection = (WebTestConfigurationSection) Activator.CreateInstance (typeof (WebTestConfigurationSection), true);
       ConfigurationHelper.DeserializeSection (configurationSection, c_configurationXmlWithRelativePaths);
 
@@ -83,4 +83,4 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.HostingStrategies.Config
       Assert.That (testSiteLayoutConfiguration.Resources[1].Path, Is.EqualTo (@"C:\Some\Path\Some\Other\Resource"));
     }
   }
-}
+}

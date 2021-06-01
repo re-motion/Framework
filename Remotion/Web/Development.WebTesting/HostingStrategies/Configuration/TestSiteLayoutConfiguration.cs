@@ -45,7 +45,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.Configuration
 
     private string GetRootedRootPath ([NotNull] string path)
     {
-      return EnsureRootedPath (AppDomain.CurrentDomain.BaseDirectory, path);
+      return EnsureRootedPath (AppContext.BaseDirectory, path);
     }
 
     private string EnsureRootedPath ([NotNull] string rootPath, [NotNull] string path)

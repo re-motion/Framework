@@ -48,7 +48,7 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
     {
       AppDomainRunner.Run (@"C:\", delegate (object[] args)
       {
-        Assert.That (AppDomain.CurrentDomain.BaseDirectory, Is.EqualTo (@"C:\"));
+        Assert.That (AppContext.BaseDirectory, Is.EqualTo (@"C:\"));
       });
     }
 

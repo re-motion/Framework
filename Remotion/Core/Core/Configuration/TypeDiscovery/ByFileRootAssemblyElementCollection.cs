@@ -88,7 +88,7 @@ namespace Remotion.Configuration.TypeDiscovery
     public FilePatternRootAssemblyFinder CreateRootAssemblyFinder (IAssemblyLoader assemblyLoader)
     {
       return new FilePatternRootAssemblyFinder (
-          AppDomain.CurrentDomain.BaseDirectory, 
+          AppContext.BaseDirectory, 
           this.Select (element => element.CreateSpecification ()),
           new FileSystemSearchService(),
           assemblyLoader);

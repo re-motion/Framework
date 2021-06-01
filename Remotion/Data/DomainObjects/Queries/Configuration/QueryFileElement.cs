@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
       if (Path.IsPathRooted (path))
         return Path.GetFullPath (path);
       else
-        return Path.GetFullPath (Path.Combine (AppDomain.CurrentDomain.BaseDirectory, path));
+        return Path.GetFullPath (Path.Combine (AppContext.BaseDirectory, path));
     }
 
     private readonly ConfigurationPropertyCollection _properties = new ConfigurationPropertyCollection();

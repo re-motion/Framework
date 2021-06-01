@@ -56,7 +56,7 @@ namespace Remotion.Tools.UnitTests
     [SetUp]
     public void SetUp ()
     {
-      _domainBase = Path.Combine (AppDomain.CurrentDomain.BaseDirectory, "AppDomainAsselbyResolverTest");
+      _domainBase = Path.Combine (AppContext.BaseDirectory, "AppDomainAsselbyResolverTest");
       _appDomain = AppDomain.CreateDomain ("Test", null, _domainBase, null, false);
     }
 
@@ -72,9 +72,9 @@ namespace Remotion.Tools.UnitTests
     [Test]
     public void CreateInAppDomain ()
     {
-      var resolver = AppDomainAssemblyResolver.CreateInAppDomain (_appDomain, AppDomain.CurrentDomain.BaseDirectory);
+      var resolver = AppDomainAssemblyResolver.CreateInAppDomain (_appDomain, AppContext.BaseDirectory);
       Assert.That (RemotingServices.IsTransparentProxy (resolver), Is.True);
-      Assert.That (resolver.AssemblyDirectory, Is.EqualTo (AppDomain.CurrentDomain.BaseDirectory));
+      Assert.That (resolver.AssemblyDirectory, Is.EqualTo (AppContext.BaseDirectory));
     }
 
     [Test]
@@ -88,7 +88,7 @@ namespace Remotion.Tools.UnitTests
         shadowCopiedAppDomain.DoCallBack (
             delegate
             {
-              var resolver = AppDomainAssemblyResolver.CreateInAppDomain (_appDomain, AppDomain.CurrentDomain.BaseDirectory);
+              var resolver = AppDomainAssemblyResolver.CreateInAppDomain (_appDomain, AppContext.BaseDirectory);
               Assert.That (resolver, Is.Not.Null);
             });
       }
@@ -159,12 +159,12 @@ namespace Remotion.Tools.UnitTests
 
     private AppDomainAssemblyResolver CreateResolver ()
     {
-      return AppDomainAssemblyResolver.CreateInAppDomain (_appDomain, AppDomain.CurrentDomain.BaseDirectory);
+      return AppDomainAssemblyResolver.CreateInAppDomain (_appDomain, AppContext.BaseDirectory);
     }
 
     private string CreateAssembly (string assemblyName, string moduleName)
     {
-      var targetDirectory = AppDomain.CurrentDomain.BaseDirectory;
+      var targetDirectory = AppContext.BaseDirectory;
       var assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly (new AssemblyName (assemblyName), AssemblyBuilderAccess.Save, targetDirectory);
       assemblyBuilder.DefineDynamicModule (moduleName);
       assemblyBuilder.Save (moduleName);
