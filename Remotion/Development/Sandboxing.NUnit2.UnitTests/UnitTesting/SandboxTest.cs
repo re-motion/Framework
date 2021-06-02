@@ -32,7 +32,7 @@ namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
     [SetUp]
     public void SetUp ()
     {
-      _mediumTrustPermissions = PermissionSets.GetMediumTrust (AppDomain.CurrentDomain.BaseDirectory, Environment.MachineName);
+      _mediumTrustPermissions = PermissionSets.GetMediumTrust (AppContext.BaseDirectory, Environment.MachineName);
     }
 
     [Test]

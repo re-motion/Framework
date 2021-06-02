@@ -24,7 +24,7 @@ namespace Remotion.Development.UnitTesting
   {
     public static void Run (Action<object[]> action, params object[] args)
     {
-      Run (AppDomain.CurrentDomain.BaseDirectory, action, args);
+      Run (AppContext.BaseDirectory, action, args);
     }
 
     public static void Run (string applicationBase, Action<object[]> action, params object[] args)

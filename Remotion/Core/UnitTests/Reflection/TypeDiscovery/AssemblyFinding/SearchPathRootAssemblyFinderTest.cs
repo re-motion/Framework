@@ -137,7 +137,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
 
       var finder = SearchPathRootAssemblyFinder.CreateForCurrentAppDomain (considerDynamicDirectory, _loaderStub);
 
-      Assert.That (finder.BaseDirectory, Is.EqualTo (AppDomain.CurrentDomain.BaseDirectory));
+      Assert.That (finder.BaseDirectory, Is.EqualTo (AppContext.BaseDirectory));
       Assert.That (finder.RelativeSearchPath, Is.EqualTo (AppDomain.CurrentDomain.RelativeSearchPath));
       Assert.That (finder.DynamicDirectory, Is.EqualTo (AppDomain.CurrentDomain.DynamicDirectory));
       Assert.That (finder.AssemblyLoader, Is.SameAs (_loaderStub));

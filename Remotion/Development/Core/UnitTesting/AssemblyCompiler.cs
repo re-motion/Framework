@@ -118,7 +118,7 @@ namespace Remotion.Development.UnitTesting
         appDomain = AppDomain.CreateDomain (
             "CompilerAppDomain",
             null,
-            AppDomain.CurrentDomain.BaseDirectory,
+            AppContext.BaseDirectory,
             AppDomain.CurrentDomain.RelativeSearchPath,
             AppDomain.CurrentDomain.ShadowCopyFiles);
         appDomain.DoCallBack (Compile);

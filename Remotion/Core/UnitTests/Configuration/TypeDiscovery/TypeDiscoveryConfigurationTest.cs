@@ -111,7 +111,7 @@ namespace Remotion.UnitTests.Configuration.TypeDiscovery
       Assert.That (assemblyFinder.RootAssemblyFinder, Is.InstanceOf (typeof (SearchPathRootAssemblyFinder)));
 
       var searchPathRootAssemblyFinder = (SearchPathRootAssemblyFinder) assemblyFinder.RootAssemblyFinder;
-      Assert.That (searchPathRootAssemblyFinder.BaseDirectory, Is.EqualTo (AppDomain.CurrentDomain.BaseDirectory));
+      Assert.That (searchPathRootAssemblyFinder.BaseDirectory, Is.EqualTo (AppContext.BaseDirectory));
       Assert.That (searchPathRootAssemblyFinder.AssemblyLoader, Is.TypeOf<FilteringAssemblyLoader> ());
       Assert.That (((FilteringAssemblyLoader) searchPathRootAssemblyFinder.AssemblyLoader).Filter, Is.SameAs (ApplicationAssemblyLoaderFilter.Instance));
 

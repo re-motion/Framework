@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     public void GetRootedPath_WithUnrootedPath_ReturnsPathRelativeToAppBase ()
     {
       string path = @"foo\bar.txt";
-      string fullPath = Path.Combine (AppDomain.CurrentDomain.BaseDirectory, @"foo\bar.txt");
+      string fullPath = Path.Combine (AppContext.BaseDirectory, @"foo\bar.txt");
       Assert.That (QueryFileElement.GetRootedPath (path), Is.EqualTo (fullPath));
     }
 
@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
       new AppDomainRunner (setup, delegate
       {
         string path = @"foo\bar.txt";
-        string fullPath = Path.Combine (AppDomain.CurrentDomain.BaseDirectory, @"foo\bar.txt");
+        string fullPath = Path.Combine (AppContext.BaseDirectory, @"foo\bar.txt");
         Assert.That (QueryFileElement.GetRootedPath (path), Is.EqualTo (fullPath));
       }).Run();
     }

@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       Assert.That (
           ReflectionUtility.GetAssemblyDirectory (typeof (ReflectionUtilityTest).Assembly),
-          Is.EqualTo (AppDomain.CurrentDomain.BaseDirectory.TrimEnd ('\\')));
+          Is.EqualTo (AppContext.BaseDirectory.TrimEnd ('\\')));
     }
 
     [Test]
@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 #endif
     public void GetAssemblyPath_WithHashInDirectoryName ()
     {
-      string directoryPath = Path.Combine (AppDomain.CurrentDomain.BaseDirectory, "#HashTestPath");
+      string directoryPath = Path.Combine (AppContext.BaseDirectory, "#HashTestPath");
       string originalAssemblyPath = typeof (ReflectionUtilityTest).Assembly.Location;
       string newAssemblyPath = Path.Combine (directoryPath, Path.GetFileName (originalAssemblyPath));
 

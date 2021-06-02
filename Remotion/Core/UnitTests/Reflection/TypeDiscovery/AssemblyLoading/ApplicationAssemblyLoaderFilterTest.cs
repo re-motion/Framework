@@ -79,7 +79,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
 #endif
     public void ApplicationAssemblyInclusion_DependsOnAttribute ()
     {
-      string compiledAssemblyPath = Path.Combine (AppDomain.CurrentDomain.BaseDirectory, "NonApplicationMarkedAssembly.dll");
+      string compiledAssemblyPath = Path.Combine (AppContext.BaseDirectory, "NonApplicationMarkedAssembly.dll");
       try
       {
         AppDomainRunner.Run (
