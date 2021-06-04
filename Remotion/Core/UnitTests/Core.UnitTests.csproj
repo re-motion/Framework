@@ -388,6 +388,7 @@
     <Compile Include="ServiceLocation\TestDomain\TestConcreteImplementationAttributeType.cs" />
     <Compile Include="ServiceLocation\TestDomain\TestConstructorInjectionForServiceWithoutConcreteImplementationAttribute.cs" />
     <Compile Include="Reflection\MethodResolverTest.cs" />
+    <Compile Include="Utilities\AppContextProviderTest.cs" />
     <Compile Include="Utilities\AttributeUtilityTests\GetCustomAttributesFromEventInfoTest.cs" />
     <Compile Include="Utilities\AttributeUtilityTests\GetCustomAttributesFromMethodInfoTest.cs" />
     <Compile Include="Utilities\AttributeUtilityTests\GetCustomAttributesFromMemberInfoTestBase.cs" />
