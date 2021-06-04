@@ -100,7 +100,8 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
 
       _propertyMetaValidationRuleCollectorMock.Setup (
           mock => mock.RegisterMetaValidationRule (
-              It.Is<IPropertyMetaValidationRule> (                  rule =>
+              It.Is<IPropertyMetaValidationRule> (
+                  rule =>
                       rule.GetType() == typeof (DelegatePropertyMetaValidationRule<IPropertyValidator>) &&
                       rule.Validate (new IPropertyValidator[0]).First() == fakeValidationResult))).Verifiable();
 
@@ -114,7 +115,8 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
     {
       _propertyMetaValidationRuleCollectorMock.Setup (
           mock => mock.RegisterMetaValidationRule (
-              It.Is<IPropertyMetaValidationRule> (                  rule =>
+              It.Is<IPropertyMetaValidationRule> (
+                  rule =>
                       rule.GetType() == typeof (DelegatePropertyMetaValidationRule<IPropertyValidator>)
                       && rule.Validate (new IPropertyValidator[0]).First().IsValid))).Verifiable();
 
@@ -128,7 +130,8 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
     {
       _propertyMetaValidationRuleCollectorMock.Setup (
           mock => mock.RegisterMetaValidationRule (
-              It.Is<IPropertyMetaValidationRule> (                  rule =>
+              It.Is<IPropertyMetaValidationRule> (
+                  rule =>
                       rule.GetType() == typeof (DelegatePropertyMetaValidationRule<IPropertyValidator>) &&
                       !rule.Validate (new IPropertyValidator[0]).First().IsValid &&
                       rule.Validate (new IPropertyValidator[0]).First().Message

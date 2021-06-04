@@ -123,7 +123,8 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
     [Test]
     public void RegisterValidator_WithCollectorType ()
     {
-      _removingObjectValidationRuleCollectorMock.Setup (          mock => mock.RegisterValidator (typeof (StubObjectValidator), typeof (CustomerValidationRuleCollector1), null)).Verifiable();
+      _removingObjectValidationRuleCollectorMock.Setup (
+          mock => mock.RegisterValidator (typeof (StubObjectValidator), typeof (CustomerValidationRuleCollector1), null)).Verifiable();
 
       _addingObjectValidationBuilder.Validator (typeof (StubObjectValidator), typeof (CustomerValidationRuleCollector1), null);
 
@@ -135,7 +136,8 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
     {
       Func<IObjectValidator, bool> predicate = _ => false;
 
-      _removingObjectValidationRuleCollectorMock.Setup (          mock => mock.RegisterValidator (typeof (StubObjectValidator), null, predicate)).Verifiable();
+      _removingObjectValidationRuleCollectorMock.Setup (
+          mock => mock.RegisterValidator (typeof (StubObjectValidator), null, predicate)).Verifiable();
 
       _addingObjectValidationBuilder.Validator (typeof (StubObjectValidator), null, predicate);
 
@@ -145,7 +147,8 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
     [Test]
     public void RegisterValidator_WithGenericCollectorType ()
     {
-      _removingObjectValidationRuleCollectorMock.Setup (          mock => mock.RegisterValidator (typeof (StubObjectValidator), typeof (CustomerValidationRuleCollector1), null)).Verifiable();
+      _removingObjectValidationRuleCollectorMock.Setup (
+          mock => mock.RegisterValidator (typeof (StubObjectValidator), typeof (CustomerValidationRuleCollector1), null)).Verifiable();
 
       _addingObjectValidationBuilder.Validator<StubObjectValidator, CustomerValidationRuleCollector1> (null);
 

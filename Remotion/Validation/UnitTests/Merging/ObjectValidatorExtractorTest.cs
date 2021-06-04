@@ -130,7 +130,8 @@ namespace Remotion.Validation.UnitTests.Merging
 
       var result = extractor.ExtractObjectValidatorsToRemove (addingObjectValidationRuleCollector.Object).ToArray();
 
-      _logContextMock.Verify (          mock =>
+      _logContextMock.Verify (
+          mock =>
               mock.ValidatorRemoved (
                   _stubObjectValidator5.Object,
                   new[] { _removingObjectValidatorRegistration7 },

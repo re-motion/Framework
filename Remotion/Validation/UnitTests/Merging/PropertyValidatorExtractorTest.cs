@@ -134,7 +134,8 @@ namespace Remotion.Validation.UnitTests.Merging
 
       var result = _extractor.ExtractPropertyValidatorsToRemove (addingComponentPropertyRule.Object).ToArray();
 
-      _logContextMock.Verify (          mock =>
+      _logContextMock.Verify (
+          mock =>
               mock.ValidatorRemoved (
                   _stubPropertyValidator5,
                   new[] { _removingPropertyValidatorRegistration10 },
@@ -160,7 +161,8 @@ namespace Remotion.Validation.UnitTests.Merging
                   addingComponentPropertyRule.Object)).Verifiable();
 
       var result = _extractor.ExtractPropertyValidatorsToRemove (addingComponentPropertyRule.Object).ToArray ();
-      _logContextMock.Verify (          mock =>
+      _logContextMock.Verify (
+          mock =>
               mock.ValidatorRemoved (
                   _stubPropertyValidator4,
                   new[] { _removingPropertyValidatorRegistration8 },
