@@ -19,15 +19,12 @@ using Moq;
 using Moq.Protected;
 using Remotion.Reflection;
 using Remotion.Validation.Validators;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Validation.UnitTests.Validators
 {
   public abstract class ValidatorTestBase
   {
-
-protected PropertyValidatorContext CreatePropertyValidatorContext (object value)
+    protected PropertyValidatorContext CreatePropertyValidatorContext (object value)
     {
       var propertyStub = new Mock<IPropertyInformation>();
 

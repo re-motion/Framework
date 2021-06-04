@@ -20,8 +20,6 @@ using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Providers;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Validation.UnitTests.Implementation
 {

@@ -21,8 +21,6 @@ using NUnit.Framework;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Merging;
 using Remotion.Validation.RuleCollectors;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Validation.UnitTests.Merging
 {
@@ -40,7 +38,7 @@ namespace Remotion.Validation.UnitTests.Merging
     [Test]
     public void Create ()
     {
-      var result = _factory.Create (new RemovingObjectValidatorRegistration[0], new Mock<ILogContext>());
+      var result = _factory.Create (new RemovingObjectValidatorRegistration[0], new Mock<ILogContext>().Object);
 
       Assert.That (result, Is.TypeOf (typeof (ObjectValidatorExtractor)));
     }

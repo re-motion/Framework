@@ -20,16 +20,13 @@ using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Validation.MetaValidation;
 using Remotion.Validation.RuleCollectors;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Validation.UnitTests.MetaValidation
 {
   [TestFixture]
   public class PropertyMetaValidationRuleValidatorFactoryTest
   {
-
-[Test]
+    [Test]
     public void CreatePropertyMetaValidationRuleValidator ()
     {
       var systemMetaRulesProviderFactoryStub = new Mock<ISystemPropertyMetaValidationRuleProviderFactory>();

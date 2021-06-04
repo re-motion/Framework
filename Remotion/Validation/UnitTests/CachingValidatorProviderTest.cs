@@ -1,16 +1,13 @@
 ﻿using Moq;
 using Moq.Protected;
 using NUnit.Framework;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Validation.UnitTests
 {
   [TestFixture]
   public class CachingValidatorProviderTest
   {
-
-[Test]
+    [Test]
     public void GetValidator_Once_ReturnsBuiltInstance ()
     {
       var validatorStub = new Mock<IValidator>();
@@ -28,7 +25,7 @@ namespace Remotion.Validation.UnitTests
       var validatorBuilderStub = new Mock<IValidatorBuilder>();
       validatorBuilderStub
           .Setup (_ => _.BuildValidator (typeof (DomainType)))
-          .Callback (mi => mi.ReturnValue = new Mock<IValidator>());
+          .Returns (new Mock<IValidator>().Object);
 
       var validatorProvider = new CachingValidatorProvider (validatorBuilderStub.Object);
 

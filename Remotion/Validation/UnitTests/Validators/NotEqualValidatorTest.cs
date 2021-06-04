@@ -24,16 +24,13 @@ using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Validators;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Validation.UnitTests.Validators
 {
   [TestFixture]
   public class NotEqualValidatorTest : ValidatorTestBase
   {
-
-[Test]
+    [Test]
     public void Validate_WithValueTypeAndValueTypeNotEqualsComparisonValue_NoValidationFailures ()
     {
       var propertyValidatorContext = CreatePropertyValidatorContext (2);

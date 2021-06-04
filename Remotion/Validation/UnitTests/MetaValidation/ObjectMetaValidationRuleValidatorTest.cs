@@ -29,8 +29,6 @@ using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.UnitTests.TestDomain.Collectors;
 using Remotion.Validation.UnitTests.TestHelpers;
 using Remotion.Validation.Validators;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Validation.UnitTests.MetaValidation
 {
@@ -88,13 +86,13 @@ namespace Remotion.Validation.UnitTests.MetaValidation
       var objectRule3 = AddingObjectValidationRuleCollector.Create<Person> (typeof (CustomerValidationRuleCollector2));
       var filteredObjectRule = new Mock<IAddingObjectValidationRuleCollector>();
       filteredObjectRule.Setup (_ => _.ValidatedType).Returns (filteredTypeStub.Object);
-      filteredObjectRule.Setup (_ => _.Validators).Returns (new[] { new Mock<IObjectValidator>() });
+      filteredObjectRule.Setup (_ => _.Validators).Returns (new[] { new Mock<IObjectValidator>().Object });
 
-      objectRule1.RegisterValidator (_ => _objectValidatorStub1);
-      objectRule1.RegisterValidator (_ => _objectValidatorStub2);
-      objectRule2.RegisterValidator (_ => _objectValidatorStub3);
-      objectRule2.RegisterValidator (_ => _objectValidatorStub4);
-      objectRule3.RegisterValidator (_ => _objectValidatorStub5);
+      objectRule1.RegisterValidator (_ => _objectValidatorStub1.Object);
+      objectRule1.RegisterValidator (_ => _objectValidatorStub2.Object);
+      objectRule2.RegisterValidator (_ => _objectValidatorStub3.Object);
+      objectRule2.RegisterValidator (_ => _objectValidatorStub4.Object);
+      objectRule3.RegisterValidator (_ => _objectValidatorStub5.Object);
 
       var metaValidationRuleMock1 = new Mock<IObjectMetaValidationRule> (MockBehavior.Strict);
       var metaValidationRuleMock2 = new Mock<IObjectMetaValidationRule> (MockBehavior.Strict);

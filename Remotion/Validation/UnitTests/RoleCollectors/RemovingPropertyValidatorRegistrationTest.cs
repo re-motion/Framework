@@ -21,16 +21,13 @@ using NUnit.Framework;
 using Remotion.Validation.RuleCollectors;
 using Remotion.Validation.UnitTests.TestDomain.Collectors;
 using Remotion.Validation.Validators;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Validation.UnitTests.RoleCollectors
 {
   [TestFixture]
   public class RemovingPropertyValidatorRegistrationTest
   {
-
-[Test]
+    [Test]
     public void Initialization ()
     {
       var validatorType = typeof (NotEqualValidator);

@@ -26,14 +26,12 @@ using Remotion.Validation.MetaValidation;
 using Remotion.Validation.Providers;
 using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.Validators;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Validation.UnitTests.Providers
 {
   public class TestableAttributeBasedValidationRuleCollectorProviderBase : AttributeBasedValidationRuleCollectorProviderBase
   {
-    private readonly IDictionary<Type, IAttributesBasedValidationPropertyRuleReflector> _validationPropertyRuleReflectorMocks;
+    private readonly IDictionary<Type, Mock<IAttributesBasedValidationPropertyRuleReflector>> _validationPropertyRuleReflectorMocks;
     private readonly IPropertyValidator _propertyValidatorStub1;
     private readonly IPropertyValidator _propertyValidatorStub2;
     private readonly IPropertyValidator _propertyValidatorStub3;
@@ -49,7 +47,7 @@ namespace Remotion.Validation.UnitTests.Providers
     private readonly IPropertyMetaValidationRule _propertyMetaValidationRule3;
 
     public TestableAttributeBasedValidationRuleCollectorProviderBase (
-        IDictionary<Type, IAttributesBasedValidationPropertyRuleReflector> validationPropertyRuleReflectorMocks,
+        IDictionary<Type, Mock<IAttributesBasedValidationPropertyRuleReflector>> validationPropertyRuleReflectorMocks,
         IPropertyValidator propertyValidatorStub1 = null,
         IPropertyValidator propertyValidatorStub2 = null,
         IPropertyValidator propertyValidatorStub3 = null,
@@ -132,7 +130,7 @@ namespace Remotion.Validation.UnitTests.Providers
       return
         involvedTypes.SelectMany (t => t.GetProperties (BindingFlags.Public | BindingFlags.Instance  | BindingFlags.DeclaredOnly))
             .Select (p => new { Type = p.DeclaringType, Property = p })
-            .Select (t => new Tuple<Type, IAttributesBasedValidationPropertyRuleReflector> (t.Type, _validationPropertyRuleReflectorMocks[t.Type]))
+            .Select (t => new Tuple<Type, IAttributesBasedValidationPropertyRuleReflector> (t.Type, _validationPropertyRuleReflectorMocks[t.Type].Object))
             .ToLookup (c => c.Item1, c => c.Item2);
     }
   }

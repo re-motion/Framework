@@ -29,8 +29,6 @@ using Remotion.Validation.RuleCollectors;
 using Remotion.Validation.Rules;
 using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.UnitTests.TestHelpers;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Validation.UnitTests.Implementation
 {
@@ -158,7 +156,7 @@ namespace Remotion.Validation.UnitTests.Implementation
       _fakeValidationCollectorMergeResult = new ValidationCollectorMergeResult (
           _fakeAddingPropertyValidationRulesCollectorResult,
           _fakeAddingObjectValidationRulesCollectorResult,
-          new Mock<ILogContext>());
+          new Mock<ILogContext>().Object);
 
       _validatorBuilder = new ValidationRuleCollectorBasedValidatorBuilder (
           _validationRuleCollectorProviderMock.Object,

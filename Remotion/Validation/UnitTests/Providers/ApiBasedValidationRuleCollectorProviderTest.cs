@@ -23,8 +23,6 @@ using Remotion.Validation.Implementation;
 using Remotion.Validation.Providers;
 using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.UnitTests.TestDomain.Collectors;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Validation.UnitTests.Providers
 {

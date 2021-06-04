@@ -27,8 +27,6 @@ using Remotion.Validation.UnitTests.TestDomain.Collectors;
 using Remotion.Validation.UnitTests.TestDomain.Validators;
 using Remotion.Validation.UnitTests.TestHelpers;
 using Remotion.Validation.Validators;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Validation.UnitTests.RoleCollectors
 {
@@ -117,7 +115,7 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
       _addingObjectValidationRuleCollector.SetRemovable();
       Assert.That (_addingObjectValidationRuleCollector.IsRemovable, Is.True);
       _addingObjectValidationRuleCollector.RegisterValidator (_ => _stubObjectValidator1);
-      _addingObjectValidationRuleCollector.RegisterValidator (_ => _stubObjectValidator2);
+      _addingObjectValidationRuleCollector.RegisterValidator (_ => _stubObjectValidator2.Object);
       _addingObjectValidationRuleCollector.RegisterValidator (_ => _stubObjectValidator3);
       Assert.That (_addingObjectValidationRuleCollector.Validators.Count(), Is.EqualTo (3));
 
@@ -154,7 +152,7 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
     public void ApplyRemoveValidatorRegistrations_IsRemovableFalseAndValidatorsToRemove_ExceptionIsThrown ()
     {
       _addingObjectValidationRuleCollector.RegisterValidator (_ => _stubObjectValidator1);
-      _addingObjectValidationRuleCollector.RegisterValidator (_ => _stubObjectValidator2);
+      _addingObjectValidationRuleCollector.RegisterValidator (_ => _stubObjectValidator2.Object);
       _addingObjectValidationRuleCollector.RegisterValidator (_ => _stubObjectValidator3);
       Assert.That (_addingObjectValidationRuleCollector.Validators.Count(), Is.EqualTo (3));
 

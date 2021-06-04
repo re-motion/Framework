@@ -26,8 +26,6 @@ using Remotion.Validation.RuleCollectors;
 using Remotion.Validation.Rules;
 using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.Validators;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Validation.UnitTests.RuleBuilders
 {
@@ -65,7 +63,7 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
     [Test]
     public void SetValidator ()
     {
-      Func<PropertyValidationRuleInitializationParameters, IPropertyValidator> validatorFactory = _ => _propertyValidatorStub;
+      Func<PropertyValidationRuleInitializationParameters, IPropertyValidator> validatorFactory = _ => _propertyValidatorStub.Object;
       _addingPropertyValidationRuleCollectorMock.Setup (mock => mock.RegisterValidator (validatorFactory)).Verifiable();
 
       ((IAddingPropertyValidationRuleBuilder<Customer, string>) _addingPropertyValidationBuilder).SetValidator (validatorFactory);

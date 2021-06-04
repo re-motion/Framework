@@ -24,8 +24,6 @@ using Remotion.Validation.Attributes.Validation;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.Validators;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Validation.UnitTests.Attributes.Validation
 {
@@ -54,7 +52,7 @@ namespace Remotion.Validation.UnitTests.Attributes.Validation
       var propertyInformation = PropertyInfoAdapter.Create (typeof (Customer).GetProperty ("LastName"));
       var validationMessageStub = new Mock<ValidationMessage>();
       _validationMessageFactoryStub
-          .Setup (_ => _.CreateValidationMessageForPropertyValidator (Arg<NotEqualValidator>.Is.TypeOf, propertyInformation))
+          .Setup (_ => _.CreateValidationMessageForPropertyValidator (It.IsAny<NotEqualValidator>(), propertyInformation))
           .Returns (validationMessageStub.Object);
 
       var result = _attribute.GetPropertyValidators (propertyInformation, _validationMessageFactoryStub.Object).ToArray();

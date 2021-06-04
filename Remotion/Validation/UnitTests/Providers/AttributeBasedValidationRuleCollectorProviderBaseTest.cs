@@ -26,8 +26,6 @@ using Remotion.Validation.RuleCollectors;
 using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.UnitTests.TestDomain.ValidationRules;
 using Remotion.Validation.Validators;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Validation.UnitTests.Providers
 {
@@ -76,9 +74,9 @@ namespace Remotion.Validation.UnitTests.Providers
     [Test]
     public void GetValidationRuleCollectors ()
     {
-      var dictionary = new Dictionary<Type, IAttributesBasedValidationPropertyRuleReflector>();
-      dictionary.Add (typeof (Employee), _validationPropertyRuleReflectorMock1.Object);
-      dictionary.Add (typeof (SpecialCustomer1), _validationPropertyRuleReflectorMock2.Object);
+      var dictionary = new Dictionary<Type, Mock<IAttributesBasedValidationPropertyRuleReflector>>();
+      dictionary.Add (typeof (Employee), _validationPropertyRuleReflectorMock1);
+      dictionary.Add (typeof (SpecialCustomer1), _validationPropertyRuleReflectorMock2);
 
       var collectorProvider =
           new TestableAttributeBasedValidationRuleCollectorProviderBase (

@@ -22,8 +22,6 @@ using Remotion.Validation.Implementation;
 using Remotion.Validation.Results;
 using Remotion.Validation.Rules;
 using Remotion.Validation.UnitTests.TestDomain;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Validation.UnitTests.Implementation
 {

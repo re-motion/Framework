@@ -28,8 +28,6 @@ using Remotion.Validation.UnitTests.TestDomain.Collectors;
 using Remotion.Validation.UnitTests.TestDomain.Validators;
 using Remotion.Validation.UnitTests.TestHelpers;
 using Remotion.Validation.Validators;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Validation.UnitTests.Merging
 {

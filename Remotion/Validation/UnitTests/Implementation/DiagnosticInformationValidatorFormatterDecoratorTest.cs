@@ -22,8 +22,6 @@ using NUnit.Framework;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.UnitTests.TestHelpers;
 using Remotion.Validation.Validators;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Validation.UnitTests.Implementation
 {

@@ -28,8 +28,6 @@ using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.UnitTests.TestDomain.Collectors;
 using Remotion.Validation.UnitTests.TestHelpers;
 using Remotion.Validation.Validators;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Validation.UnitTests.MetaValidation
 {
@@ -98,13 +96,13 @@ namespace Remotion.Validation.UnitTests.MetaValidation
       var propertyRule3 = AddingPropertyValidationRuleCollector.Create (lastNameExpression, typeof (CustomerValidationRuleCollector2));
       var filteredPropertyRuleStub = new Mock<IAddingPropertyValidationRuleCollector>();
       filteredPropertyRuleStub.Setup (_ => _.Property).Returns (filteredPropertyStub.Object);
-      filteredPropertyRuleStub.Setup (_ => _.Validators).Returns (new[] { new Mock<IPropertyValidator>() });
+      filteredPropertyRuleStub.Setup (_ => _.Validators).Returns (new[] { new Mock<IPropertyValidator>().Object });
 
-      propertyRule1.RegisterValidator (_ => _propertyValidatorStub1);
-      propertyRule1.RegisterValidator (_ => _propertyValidatorStub2);
-      propertyRule2.RegisterValidator (_ => _propertyValidatorStub3);
-      propertyRule2.RegisterValidator (_ => _propertyValidatorStub4);
-      propertyRule3.RegisterValidator (_ => _propertyValidatorStub5);
+      propertyRule1.RegisterValidator (_ => _propertyValidatorStub1.Object);
+      propertyRule1.RegisterValidator (_ => _propertyValidatorStub2.Object);
+      propertyRule2.RegisterValidator (_ => _propertyValidatorStub3.Object);
+      propertyRule2.RegisterValidator (_ => _propertyValidatorStub4.Object);
+      propertyRule3.RegisterValidator (_ => _propertyValidatorStub5.Object);
 
       var systemMetaValidationRuleMock1 = new Mock<IPropertyMetaValidationRule> (MockBehavior.Strict);
       var systemMetaValidationRuleMock2 = new Mock<IPropertyMetaValidationRule> (MockBehavior.Strict);

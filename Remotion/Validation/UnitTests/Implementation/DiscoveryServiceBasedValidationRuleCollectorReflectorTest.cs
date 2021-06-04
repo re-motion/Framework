@@ -25,8 +25,6 @@ using Remotion.Validation.Implementation;
 using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.UnitTests.TestDomain.Collectors;
 using Remotion.Validation.UnitTests.TestHelpers;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Validation.UnitTests.Implementation
 {
@@ -81,7 +79,7 @@ namespace Remotion.Validation.UnitTests.Implementation
       _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (typeof (IValidationRuleCollector), true)).Returns (new[] { typeof (Person) });
 
       var validatedTypeResolverStub = new Mock<IValidatedTypeResolver>();
-      validatedTypeResolverStub.Setup (stub => stub.GetValidatedType (typeof (Person))).Returns (null);
+      validatedTypeResolverStub.Setup (stub => stub.GetValidatedType (typeof (Person))).Returns ((Type) null);
 
       Assert.That (
           () =>
@@ -177,7 +175,7 @@ namespace Remotion.Validation.UnitTests.Implementation
           .Returns (new[] { typeof (CustomerValidationRuleCollector1) });
 
       var validatedTypeResolverStub = new Mock<IValidatedTypeResolver>();
-      validatedTypeResolverStub.Setup (stub => stub.GetValidatedType (typeof (CustomerValidationRuleCollector1))).Returns (null);
+      validatedTypeResolverStub.Setup (stub => stub.GetValidatedType (typeof (CustomerValidationRuleCollector1))).Returns ((Type) null);
 
       var typeCollectorProvider = DiscoveryServiceBasedValidationRuleCollectorReflector.Create (_typeDiscoveryServiceStub.Object, validatedTypeResolverStub.Object);
       Assert.That (
