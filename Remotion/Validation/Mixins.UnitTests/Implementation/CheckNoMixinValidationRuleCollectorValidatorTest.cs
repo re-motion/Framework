@@ -20,8 +20,6 @@ using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Validation.Mixins.Implementation;
 using Remotion.Validation.Mixins.UnitTests.TestDomain;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Validation.Mixins.UnitTests.Implementation
 {
