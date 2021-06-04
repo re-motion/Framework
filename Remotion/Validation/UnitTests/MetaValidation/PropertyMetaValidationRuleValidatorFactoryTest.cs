@@ -15,22 +15,26 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Validation.MetaValidation;
 using Remotion.Validation.RuleCollectors;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Validation.UnitTests.MetaValidation
 {
   [TestFixture]
   public class PropertyMetaValidationRuleValidatorFactoryTest
   {
-    [Test]
+
+[Test]
     public void CreatePropertyMetaValidationRuleValidator ()
     {
-      var systemMetaRulesProviderFactoryStub = MockRepository.GenerateStub<ISystemPropertyMetaValidationRuleProviderFactory>();
+      var systemMetaRulesProviderFactoryStub = new Mock<ISystemPropertyMetaValidationRuleProviderFactory>();
 
-      var factory = new PropertyMetaValidationRuleValidatorFactory (systemMetaRulesProviderFactoryStub);
+      var factory = new PropertyMetaValidationRuleValidatorFactory (systemMetaRulesProviderFactoryStub.Object);
       
       var result = factory.CreatePropertyMetaValidationRuleValidator (new IPropertyMetaValidationRuleCollector[0]);
 

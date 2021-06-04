@@ -15,23 +15,27 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using Remotion.Reflection;
 using Remotion.Validation.Validators;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Validation.UnitTests.Validators
 {
   public abstract class ValidatorTestBase
   {
-    protected PropertyValidatorContext CreatePropertyValidatorContext (object value)
+
+protected PropertyValidatorContext CreatePropertyValidatorContext (object value)
     {
-      var propertyStub = MockRepository.GenerateStub<IPropertyInformation>();
+      var propertyStub = new Mock<IPropertyInformation>();
 
       var instanceToValidate = new object();
       return new PropertyValidatorContext (
           new ValidationContext (instanceToValidate),
           instanceToValidate,
-          propertyStub,
+          propertyStub.Object,
           value);
     }
   }

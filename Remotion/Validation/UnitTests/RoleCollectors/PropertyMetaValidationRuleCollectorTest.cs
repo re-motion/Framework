@@ -17,6 +17,8 @@
 using System;
 using System.Linq;
 using System.Linq.Expressions;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Reflection;
@@ -26,6 +28,7 @@ using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.UnitTests.TestDomain.Collectors;
 using Remotion.Validation.UnitTests.TestHelpers;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Validation.UnitTests.RoleCollectors
 {
@@ -66,17 +69,17 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
     [Test]
     public void RegisterMetaValidationRule ()
     {
-      var metaValidationRuleStub1 = MockRepository.GenerateStub<IPropertyMetaValidationRule>();
-      var metaValidationRuleStub2 = MockRepository.GenerateStub<IPropertyMetaValidationRule>();
+      var metaValidationRuleStub1 = new Mock<IPropertyMetaValidationRule>();
+      var metaValidationRuleStub2 = new Mock<IPropertyMetaValidationRule>();
       Assert.That (_ruleCollector.MetaValidationRules.Count(), Is.EqualTo (0));
 
-      _ruleCollector.RegisterMetaValidationRule (metaValidationRuleStub1);
-      _ruleCollector.RegisterMetaValidationRule (metaValidationRuleStub2);
+      _ruleCollector.RegisterMetaValidationRule (metaValidationRuleStub1.Object);
+      _ruleCollector.RegisterMetaValidationRule (metaValidationRuleStub2.Object);
 
       Assert.That (_ruleCollector.MetaValidationRules.Count(), Is.EqualTo (2));
       Assert.That (
           _ruleCollector.MetaValidationRules,
-          Is.EquivalentTo (new[] { metaValidationRuleStub1, metaValidationRuleStub2 }));
+          Is.EquivalentTo (new[] { metaValidationRuleStub1.Object, metaValidationRuleStub2.Object }));
     }
 
     [Test]

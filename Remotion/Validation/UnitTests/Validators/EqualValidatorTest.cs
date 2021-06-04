@@ -17,19 +17,23 @@
 using System;
 using System.Collections;
 using System.Linq;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Validators;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Validation.UnitTests.Validators
 {
   [TestFixture]
   public class EqualValidatorTest : ValidatorTestBase
   {
-    [Test]
+
+[Test]
     public void Validate_WithValueTypeAndValueEqualsComparisonValue_ReturnsNoValidationFailures ()
     {
       var propertyValidatorContext = CreatePropertyValidatorContext (1);
@@ -115,16 +119,17 @@ namespace Remotion.Validation.UnitTests.Validators
     [Test]
     public void Validate_WithCustomComparer_UsesComparer ()
     {
-      var equalityComparerMock = MockRepository.GenerateMock<IEqualityComparer>();
+      var equalityComparerMock = new Mock<IEqualityComparer>();
       equalityComparerMock
-          .Expect (_ => _.Equals ("comparisonValue", "propertyValue"))
-          .Return (true);
+          .Setup (_ => _.Equals ("comparisonValue", "propertyValue"))
+          .Returns (true)
+          .Verifiable();
       var propertyValidatorContext = CreatePropertyValidatorContext ("propertyValue");
-      var validator = new EqualValidator ("comparisonValue", new InvariantValidationMessage ("Fake Message"), equalityComparerMock);
+      var validator = new EqualValidator ("comparisonValue", new InvariantValidationMessage ("Fake Message"), equalityComparerMock.Object);
 
       var validationFailures = validator.Validate (propertyValidatorContext);
 
-      equalityComparerMock.VerifyAllExpectations();
+      equalityComparerMock.Verify();
       Assert.That (validationFailures, Is.Empty);
     }
   }

@@ -17,19 +17,23 @@
 using System;
 using System.Collections;
 using System.Linq;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Validators;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Validation.UnitTests.Validators
 {
   [TestFixture]
   public class NotEqualValidatorTest : ValidatorTestBase
   {
-    [Test]
+
+[Test]
     public void Validate_WithValueTypeAndValueTypeNotEqualsComparisonValue_NoValidationFailures ()
     {
       var propertyValidatorContext = CreatePropertyValidatorContext (2);
@@ -117,16 +121,17 @@ namespace Remotion.Validation.UnitTests.Validators
     [Test]
     public void Validate_WithCustomComparer_UsesComparer ()
     {
-      var equalityComparerMock = MockRepository.GenerateMock<IEqualityComparer>();
+      var equalityComparerMock = new Mock<IEqualityComparer>();
       equalityComparerMock
-          .Expect (_ => _.Equals ("comparison value", "property value"))
-          .Return (true);
+          .Setup (_ => _.Equals ("comparison value", "property value"))
+          .Returns (true)
+          .Verifiable();
       var propertyValidatorContext = CreatePropertyValidatorContext ("property value");
-      var validator = new NotEqualValidator ("comparison value", new InvariantValidationMessage ("Fake Message"), equalityComparerMock);
+      var validator = new NotEqualValidator ("comparison value", new InvariantValidationMessage ("Fake Message"), equalityComparerMock.Object);
 
       var validationFailures = validator.Validate (propertyValidatorContext).ToArray();
 
-      equalityComparerMock.VerifyAllExpectations();
+      equalityComparerMock.Verify();
       Assert.That (validationFailures.Length, Is.EqualTo (1));
       Assert.That (validationFailures[0].ErrorMessage, Is.EqualTo ("The value must not be equal to 'comparison value'."));
     }

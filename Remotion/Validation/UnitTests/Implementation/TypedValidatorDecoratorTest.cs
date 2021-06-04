@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Validation.Implementation;
@@ -22,14 +24,15 @@ using Remotion.Validation.Results;
 using Remotion.Validation.Rules;
 using Remotion.Validation.UnitTests.TestDomain;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Validation.UnitTests.Implementation
 {
   [TestFixture]
   public class TypedValidatorDecoratorTest
   {
-    private IValidationRule _validationRuleStub1;
-    private IValidationRule _validationRuleStub2;
+    private Mock<IValidationRule> _validationRuleStub1;
+    private Mock<IValidationRule> _validationRuleStub2;
     private Validator _validator;
     private TypedValidatorDecorator<Customer> _validatorDecorator;
     private ValidationFailure _validationFailure;
@@ -40,12 +43,12 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       _validatedObject = new Customer();
 
-      _validationRuleStub1 = MockRepository.GenerateStub<IValidationRule>();
-      _validationRuleStub2 = MockRepository.GenerateStub<IValidationRule>();
+      _validationRuleStub1 = new Mock<IValidationRule>();
+      _validationRuleStub2 = new Mock<IValidationRule>();
 
       _validationFailure = new ObjectValidationFailure (_validatedObject, "Error", "ValidationMessage");
 
-      _validator = new Validator (new[] { _validationRuleStub1, _validationRuleStub2 }, typeof (Customer));
+      _validator = new Validator (new[] { _validationRuleStub1.Object, _validationRuleStub2.Object }, typeof (Customer));
       _validatorDecorator = new TypedValidatorDecorator<Customer> (_validator);
     }
 
@@ -71,11 +74,11 @@ namespace Remotion.Validation.UnitTests.Implementation
       var customer = _validatedObject;
 
       _validationRuleStub1
-          .Stub (stub => stub.Validate (Arg<ValidationContext>.Is.NotNull))
-          .Return (new[] { _validationFailure });
+          .Setup (stub => stub.Validate (It.IsNotNull<ValidationContext>()))
+          .Returns (new[] { _validationFailure });
       _validationRuleStub2
-          .Stub (stub => stub.Validate (Arg<ValidationContext>.Is.NotNull))
-          .Return (new ValidationFailure[0]);
+          .Setup (stub => stub.Validate (It.IsNotNull<ValidationContext>()))
+          .Returns (new ValidationFailure[0]);
 
       var result = _validatorDecorator.Validate (customer);
 
@@ -96,7 +99,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       var result = _validatorDecorator.CreateDescriptor();
 
-      Assert.That (result.ValidationRules, Is.EquivalentTo (new[] { _validationRuleStub1, _validationRuleStub2 }));
+      Assert.That (result.ValidationRules, Is.EquivalentTo (new[] { _validationRuleStub1.Object, _validationRuleStub2.Object }));
     }
 
     [Test]

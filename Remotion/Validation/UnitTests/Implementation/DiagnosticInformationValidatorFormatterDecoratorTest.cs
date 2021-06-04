@@ -16,28 +16,31 @@
 // 
 using System;
 using System.Text.RegularExpressions;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.UnitTests.TestHelpers;
 using Remotion.Validation.Validators;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Validation.UnitTests.Implementation
 {
   [TestFixture]
   public class DiagnosticInformationValidatorFormatterDecoratorTest
   {
-    private IValidatorFormatter _fallBackValidatorFormatterMock;
+    private Mock<IValidatorFormatter> _fallBackValidatorFormatterMock;
     private DiagnosticInformationValidatorFormatterDecorator _formatter;
     private Func<Type, string> _typeNameFormatter;
 
     [SetUp]
     public void SetUp ()
     {
-      _fallBackValidatorFormatterMock = MockRepository.GenerateStrictMock<IValidatorFormatter>();
+      _fallBackValidatorFormatterMock = new Mock<IValidatorFormatter> (MockBehavior.Strict);
       _typeNameFormatter = t => t.Name;
 
-      _formatter = new DiagnosticInformationValidatorFormatterDecorator (_fallBackValidatorFormatterMock);
+      _formatter = new DiagnosticInformationValidatorFormatterDecorator (_fallBackValidatorFormatterMock.Object);
     }
 
     [Test]
@@ -114,11 +117,11 @@ namespace Remotion.Validation.UnitTests.Implementation
     public void Format_Fallback ()
     {
       var validator = new StubPropertyValidator();
-      _fallBackValidatorFormatterMock.Expect (mock => mock.Format (validator, _typeNameFormatter)).Return ("FakeResult");
+      _fallBackValidatorFormatterMock.Setup (mock => mock.Format (validator, _typeNameFormatter)).Returns ("FakeResult").Verifiable();
 
       var result = _formatter.Format (validator, _typeNameFormatter);
 
-      _fallBackValidatorFormatterMock.VerifyAllExpectations();
+      _fallBackValidatorFormatterMock.Verify();
       Assert.That (result, Is.EqualTo ("FakeResult"));
     }
   }

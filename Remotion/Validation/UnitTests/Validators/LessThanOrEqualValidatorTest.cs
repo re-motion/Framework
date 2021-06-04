@@ -17,17 +17,21 @@
 using System;
 using System.Collections;
 using System.Linq;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Validators;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Validation.UnitTests.Validators
 {
   [TestFixture]
   public class LessThanOrEqualValidatorTest : ValidatorTestBase
   {
-    [Test]
+
+[Test]
     public void Validate_WithPropertyValueEqualsComparisonValue_ReturnsNoValidationFailures ()
     {
       var propertyValidatorContext = CreatePropertyValidatorContext (3);
@@ -94,16 +98,17 @@ namespace Remotion.Validation.UnitTests.Validators
     [Test]
     public void Validate_WithCustomComparer_UsesComparer ()
     {
-      var comparerMock = MockRepository.GenerateMock<IComparer>();
+      var comparerMock = new Mock<IComparer>();
       comparerMock
-          .Expect (_ => _.Compare ("propertyValue", "comparisonValue"))
-          .Return (0);
+          .Setup (_ => _.Compare ("propertyValue", "comparisonValue"))
+          .Returns (0)
+          .Verifiable();
       var propertyValidatorContext = CreatePropertyValidatorContext ("propertyValue");
-      var validator = new LessThanOrEqualValidator ("comparisonValue", new InvariantValidationMessage ("Fake Message"), comparerMock);
+      var validator = new LessThanOrEqualValidator ("comparisonValue", new InvariantValidationMessage ("Fake Message"), comparerMock.Object);
 
       var validationFailures = validator.Validate (propertyValidatorContext);
 
-      comparerMock.VerifyAllExpectations();
+      comparerMock.Verify();
       Assert.That (validationFailures, Is.Empty);
     }
   }
