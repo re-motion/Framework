@@ -135,6 +135,9 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.Implementation
     }
 
     [Test]
+#if !NETFRAMEWORK
+    [Ignore ("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
+#endif
     public void Test_WithoutNeutralResourcesLanguageAttribute_UsesInvariantCultureForNeutralCulture ()
     {
       var service = new MultiLingualNameBasedExtensibleEnumGlobalizationService();
@@ -156,6 +159,9 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.Implementation
     }
 
     [Test]
+#if !NETFRAMEWORK
+    [Ignore ("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
+#endif
     public void Test_WithNeutralResourcesLanguageAttributeSpecifiesNeutralCulture_ReturnsTheSpecifiedCultureAsFallbackForInvariantCulture ()
     {
       var service = new MultiLingualNameBasedExtensibleEnumGlobalizationService();
@@ -177,6 +183,9 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.Implementation
     }
 
     [Test]
+#if !NETFRAMEWORK
+    [Ignore ("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
+#endif
     public void Test_WithNeutralResourcesLanguageAttributeSpecifiesNeutralCulture_DoesNotOverrideExistingInvariantCulture ()
     {
       var service = new MultiLingualNameBasedExtensibleEnumGlobalizationService();
@@ -198,6 +207,9 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.Implementation
     }
 
     [Test]
+#if !NETFRAMEWORK
+    [Ignore ("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
+#endif
     public void Test_WithNeutralResourcesLanguageAttributeSpecifiesNeutralCulture_ReturnsTheNeutralCultureAsFallbackForSpecificCulture ()
     {
       var service = new MultiLingualNameBasedExtensibleEnumGlobalizationService();
@@ -219,6 +231,9 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.Implementation
     }
 
     [Test]
+#if !NETFRAMEWORK
+    [Ignore ("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
+#endif
     public void Test_WithNeutralResourcesLanguageAttributeSpecifiesNeutralCulture_DoesNotOverrideExistingSpecificCulture ()
     {
       var service = new MultiLingualNameBasedExtensibleEnumGlobalizationService();
@@ -240,6 +255,9 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.Implementation
     }
 
     [Test]
+#if !NETFRAMEWORK
+    [Ignore ("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
+#endif
     public void Test_WithNeutralResourcesLanguageAttributeSpecifiesSpecificCulture_ReturnsTheSpecifiedCultureAsFallbackForInvariantCulture ()
     {
       var service = new MultiLingualNameBasedExtensibleEnumGlobalizationService();
@@ -261,6 +279,9 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.Implementation
     }
 
     [Test]
+#if !NETFRAMEWORK
+    [Ignore ("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
+#endif
     public void Test_WithNeutralResourcesLanguageAttributeSpecifiesSpecificCulture_ReturnsTheNeutralCultureAsFallbackForSpecficCulture ()
     {
       var service = new MultiLingualNameBasedExtensibleEnumGlobalizationService();
@@ -282,6 +303,9 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.Implementation
     }
 
     [Test]
+#if !NETFRAMEWORK
+    [Ignore ("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
+#endif
     public void Test_WithNeutralResourcesLanguageAttributeSpecifiesSpecificCulture_DoesNotOverrideExistingSpecificCulture ()
     {
       var service = new MultiLingualNameBasedExtensibleEnumGlobalizationService();

@@ -161,6 +161,9 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
     // for naive tests. We therefore run the actual test in another process using Process.Start; that way, the locked file
     // will be unlocked when the process exits and we can delete it after the test has run.
     [Test]
+#if !NETFRAMEWORK
+    [Ignore ("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
+#endif
     public void TryLoadAssembly_WithFileLoadException ()
     {
       string program = Compile (
@@ -207,6 +210,9 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
     }
 
     [Test]
+#if !NETFRAMEWORK
+    [Ignore ("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
+#endif
     public void TryLoadAssembly_WithFileLoadException_AndShadowCopying ()
     {
       string program = Compile (
