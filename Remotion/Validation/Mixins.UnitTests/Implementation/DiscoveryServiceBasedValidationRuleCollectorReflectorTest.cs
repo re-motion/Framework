@@ -17,6 +17,8 @@
 using System;
 using System.ComponentModel.Design;
 using System.Linq;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Validation.Attributes;
 using Remotion.Validation.Implementation;
@@ -24,13 +26,14 @@ using Remotion.Validation.Mixins.Implementation;
 using Remotion.Validation.Mixins.UnitTests.TestDomain;
 using Remotion.Validation.Mixins.UnitTests.TestDomain.Collectors;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Validation.Mixins.UnitTests.Implementation
 {
   [TestFixture]
   public class DiscoveryServiceBasedValidationRuleCollectorReflectorTest
   {
-    private ITypeDiscoveryService _typeDiscoveryServiceStub;
+    private Mock<ITypeDiscoveryService> _typeDiscoveryServiceStub;
 
     public class FakeValidationRuleCollector<T> : ValidationRuleCollectorBase<T>
     {
@@ -42,7 +45,7 @@ namespace Remotion.Validation.Mixins.UnitTests.Implementation
     [SetUp]
     public void SetUp ()
     {
-      _typeDiscoveryServiceStub = MockRepository.GenerateStub<ITypeDiscoveryService>();
+      _typeDiscoveryServiceStub = new Mock<ITypeDiscoveryService>();
     }
 
     [Test]
@@ -54,10 +57,10 @@ namespace Remotion.Validation.Mixins.UnitTests.Implementation
                                           typeof (CustomerMixinIntroducedValidationRuleCollector2),
                                           typeof (PersonValidationRuleCollector1)
                                       };
-      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (typeof (IValidationRuleCollector), true)).Return (appliedWithAttributeTypes);
+      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (typeof (IValidationRuleCollector), true)).Returns (appliedWithAttributeTypes);
 
       var typeCollectorProvider = DiscoveryServiceBasedValidationRuleCollectorReflector.Create (
-          _typeDiscoveryServiceStub,
+          _typeDiscoveryServiceStub.Object,
           new MixinTypeAwareValidatedTypeResolverDecorator (
               new ClassTypeAwareValidatedTypeResolverDecorator (
                   new GenericTypeAwareValidatedTypeResolverDecorator (new NullValidatedTypeResolver()))));
