@@ -15,10 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Validation.Mixins.Implementation;
 using Remotion.Validation.Mixins.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Validation.Mixins.UnitTests.Implementation
 {
@@ -26,12 +26,12 @@ namespace Remotion.Validation.Mixins.UnitTests.Implementation
   public class CheckNoMixinValidationRuleCollectorValidatorTest
   {
     private CheckNoMixinValidationRuleCollectorValidator _validator;
-    private IValidationRuleCollector _collectorStub;
+    private Mock<IValidationRuleCollector> _collectorStub;
 
     [SetUp]
     public void SetUp ()
     {
-      _collectorStub = MockRepository.GenerateStub<IValidationRuleCollector>();
+      _collectorStub = new Mock<IValidationRuleCollector>();
 
       _validator = new CheckNoMixinValidationRuleCollectorValidator();
     }
@@ -39,10 +39,10 @@ namespace Remotion.Validation.Mixins.UnitTests.Implementation
     [Test]
     public void CheckValid_MixinType_ExceptionIsThrown ()
     {
-      _collectorStub.Stub (stub => stub.ValidatedType).Return (typeof (CustomerMixin));
+      _collectorStub.Setup (stub => stub.ValidatedType).Returns (typeof (CustomerMixin));
 
       Assert.That (
-          () => _validator.CheckValid (_collectorStub),
+          () => _validator.CheckValid (_collectorStub.Object),
           Throws.TypeOf<NotSupportedException> ().And.Message.EqualTo (
               "Validation rules for type 'Remotion.Validation.Mixins.UnitTests.TestDomain.CustomerMixin' are not supported. "
               + "If validation rules should be defined for mixins, please ensure to apply the rules to 'ITargetInterface' or 'IIntroducedInterface' instead."
@@ -52,9 +52,9 @@ namespace Remotion.Validation.Mixins.UnitTests.Implementation
     [Test]
     public void CheckValid_NoMixinType_NoExceptionIsThrown ()
     {
-      _collectorStub.Stub (stub => stub.ValidatedType).Return (typeof (Customer));
+      _collectorStub.Setup (stub => stub.ValidatedType).Returns (typeof (Customer));
 
-      _validator.CheckValid (_collectorStub);
+      _validator.CheckValid (_collectorStub.Object);
     }
   }
 }

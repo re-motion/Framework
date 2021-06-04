@@ -15,26 +15,26 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Mixins.Implementation;
 using Remotion.Validation.Mixins.UnitTests.TestDomain;
 using Remotion.Validation.Mixins.UnitTests.TestDomain.Collectors;
-using Rhino.Mocks;
 
 namespace Remotion.Validation.Mixins.UnitTests.Implementation
 {
   [TestFixture]
   public class MixinTypeAwareValidatedTypeResolverDecoratorTest
   {
-    private IValidatedTypeResolver _decoratedResolverMock;
+    private Mock<IValidatedTypeResolver> _decoratedResolverMock;
     private MixinTypeAwareValidatedTypeResolverDecorator _resolver;
 
     [SetUp]
     public void SetUp ()
     {
-      _decoratedResolverMock = MockRepository.GenerateStrictMock<IValidatedTypeResolver> ();
-      _resolver = new MixinTypeAwareValidatedTypeResolverDecorator (_decoratedResolverMock);
+      _decoratedResolverMock = new Mock<IValidatedTypeResolver> (MockBehavior.Strict);
+      _resolver = new MixinTypeAwareValidatedTypeResolverDecorator (_decoratedResolverMock.Object);
     }
 
     [Test]
@@ -42,7 +42,7 @@ namespace Remotion.Validation.Mixins.UnitTests.Implementation
     {
       var result = _resolver.GetValidatedType (typeof (CustomerMixinIntroducedValidationRuleCollector1));
 
-      _decoratedResolverMock.VerifyAllExpectations ();
+      _decoratedResolverMock.Verify();
       Assert.That (result, Is.EqualTo (typeof (CustomerMixin)));
     }
 
@@ -51,11 +51,11 @@ namespace Remotion.Validation.Mixins.UnitTests.Implementation
     {
       var collectorTypeWithApplyWithClassAttribute = typeof (PersonValidationRuleCollector1);
 
-      _decoratedResolverMock.Expect (mock => mock.GetValidatedType (collectorTypeWithApplyWithClassAttribute)).Return (typeof (Person));
+      _decoratedResolverMock.Setup (mock => mock.GetValidatedType (collectorTypeWithApplyWithClassAttribute)).Returns (typeof (Person)).Verifiable();
 
       var result = _resolver.GetValidatedType (collectorTypeWithApplyWithClassAttribute);
 
-      _decoratedResolverMock.VerifyAllExpectations ();
+      _decoratedResolverMock.Verify();
       Assert.That (result, Is.EqualTo (typeof (Person)));
     }
   }

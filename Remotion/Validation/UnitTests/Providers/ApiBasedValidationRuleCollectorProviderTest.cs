@@ -16,48 +16,50 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Providers;
 using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.UnitTests.TestDomain.Collectors;
-using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.Providers
 {
   [TestFixture]
   public class ApiBasedValidationRuleCollectorProviderTest
   {
-    private IValidationRuleCollectorReflector _validationRuleCollectorReflectorMock;
+    private Mock<IValidationRuleCollectorReflector> _validationRuleCollectorReflectorMock;
     private ApiBasedValidationRuleCollectorProvider _provider;
 
     [SetUp]
     public void SetUp ()
     {
-      _validationRuleCollectorReflectorMock = MockRepository.GenerateStrictMock<IValidationRuleCollectorReflector>();
+      _validationRuleCollectorReflectorMock = new Mock<IValidationRuleCollectorReflector> (MockBehavior.Strict);
 
-      _provider = new ApiBasedValidationRuleCollectorProvider (_validationRuleCollectorReflectorMock);
+      _provider = new ApiBasedValidationRuleCollectorProvider (_validationRuleCollectorReflectorMock.Object);
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_provider.ValidationRuleCollectorReflector, Is.SameAs (_validationRuleCollectorReflectorMock));
+      Assert.That (_provider.ValidationRuleCollectorReflector, Is.SameAs (_validationRuleCollectorReflectorMock.Object));
     }
 
     [Test]
     public void GetValidationRuleCollectors ()
     {
-      _validationRuleCollectorReflectorMock.Expect (mock => mock.GetCollectorsForType (typeof (Customer)))
-          .Return (new[] { typeof (CustomerValidationRuleCollector1), typeof (CustomerValidationRuleCollector2) });
-      _validationRuleCollectorReflectorMock.Expect (mock => mock.GetCollectorsForType (typeof (Person)))
-          .Return (
+      _validationRuleCollectorReflectorMock.Setup (mock => mock.GetCollectorsForType (typeof (Customer)))
+          .Returns (new[] { typeof (CustomerValidationRuleCollector1), typeof (CustomerValidationRuleCollector2) })
+          .Verifiable();
+      _validationRuleCollectorReflectorMock.Setup (mock => mock.GetCollectorsForType (typeof (Person)))
+          .Returns (
               new[]
-              { typeof (PersonValidationRuleCollector1), typeof (PersonValidationRuleCollector2) });
+              { typeof (PersonValidationRuleCollector1), typeof (PersonValidationRuleCollector2) })
+          .Verifiable();
 
       var result = _provider.GetValidationRuleCollectors (new[] { typeof (Customer), typeof (Person) }).SelectMany (g => g).ToArray();
 
-      _validationRuleCollectorReflectorMock.VerifyAllExpectations();
+      _validationRuleCollectorReflectorMock.Verify();
       Assert.That (result[0].Collector.GetType(), Is.EqualTo (typeof (CustomerValidationRuleCollector1)));
       Assert.That (result[0].ProviderType, Is.EqualTo (typeof (ApiBasedValidationRuleCollectorProvider)));
       Assert.That (result[1].Collector.GetType(), Is.EqualTo (typeof (CustomerValidationRuleCollector2)));

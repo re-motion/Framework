@@ -17,12 +17,12 @@
 using System;
 using System.Collections;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Validators;
-using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.Validators
 {
@@ -116,32 +116,32 @@ namespace Remotion.Validation.UnitTests.Validators
     [Test]
     public void Validate_WithIComparable_CallsCompareTo ()
     {
-      var propertyValueMock = MockRepository.GenerateMock<IComparable>();
-      var fromStub = MockRepository.GenerateStub<IComparable>();
-      var toStub = MockRepository.GenerateStub<IComparable>();
-      propertyValueMock.Expect (_ => _.CompareTo (fromStub)).Return (1);
-      propertyValueMock.Expect (_ => _.CompareTo (toStub)).Return (-1);
-      var propertyValidatorContext = CreatePropertyValidatorContext (propertyValueMock);
-      var validator = new ExclusiveRangeValidator (fromStub, toStub, new InvariantValidationMessage ("Fake Message"));
+      var propertyValueMock = new Mock<IComparable>();
+      var fromStub = new Mock<IComparable>();
+      var toStub = new Mock<IComparable>();
+      propertyValueMock.Setup (_ => _.CompareTo (fromStub.Object)).Returns (1).Verifiable();
+      propertyValueMock.Setup (_ => _.CompareTo (toStub.Object)).Returns (-1).Verifiable();
+      var propertyValidatorContext = CreatePropertyValidatorContext (propertyValueMock.Object);
+      var validator = new ExclusiveRangeValidator (fromStub.Object, toStub.Object, new InvariantValidationMessage ("Fake Message"));
 
       var validationFailures = validator.Validate (propertyValidatorContext);
 
-      propertyValueMock.VerifyAllExpectations();
+      propertyValueMock.Verify();
       Assert.That (validationFailures, Is.Empty);
     }
 
     [Test]
     public void Validate_WithCustomComparer_UsesComparer ()
     {
-      var comparerMock = MockRepository.GenerateMock<IComparer>();
-      comparerMock.Expect (_ => _.Compare (10, 1)).Return (1);
-      comparerMock.Expect (_ => _.Compare (10, 3)).Return (-1);
+      var comparerMock = new Mock<IComparer>();
+      comparerMock.Setup (_ => _.Compare (10, 1)).Returns (1).Verifiable();
+      comparerMock.Setup (_ => _.Compare (10, 3)).Returns (-1).Verifiable();
       var propertyValidatorContext = CreatePropertyValidatorContext (10);
-      var validator = new ExclusiveRangeValidator (1, 3, new InvariantValidationMessage ("Fake Message"), comparerMock);
+      var validator = new ExclusiveRangeValidator (1, 3, new InvariantValidationMessage ("Fake Message"), comparerMock.Object);
 
       var validationFailures = validator.Validate (propertyValidatorContext);
 
-      comparerMock.VerifyAllExpectations();
+      comparerMock.Verify();
       Assert.That (validationFailures, Is.Empty);
     }
 

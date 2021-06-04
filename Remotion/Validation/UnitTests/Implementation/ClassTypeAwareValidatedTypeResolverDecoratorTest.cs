@@ -15,25 +15,25 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.UnitTests.TestDomain.Collectors;
-using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.Implementation
 {
   [TestFixture]
   public class ClassTypeAwareValidatedTypeResolverDecoratorTest
   {
-    private IValidatedTypeResolver _decoratedResolverMock;
+    private Mock<IValidatedTypeResolver> _decoratedResolverMock;
     private ClassTypeAwareValidatedTypeResolverDecorator _resolver;
 
     [SetUp]
     public void SetUp ()
     {
-      _decoratedResolverMock = MockRepository.GenerateStrictMock<IValidatedTypeResolver>();
-      _resolver = new ClassTypeAwareValidatedTypeResolverDecorator (_decoratedResolverMock);
+      _decoratedResolverMock = new Mock<IValidatedTypeResolver> (MockBehavior.Strict);
+      _resolver = new ClassTypeAwareValidatedTypeResolverDecorator (_decoratedResolverMock.Object);
     }
 
     [Test]
@@ -43,7 +43,7 @@ namespace Remotion.Validation.UnitTests.Implementation
 
       var result = _resolver.GetValidatedType (collectorTypeWithApplyWithClassAttribute);
 
-      _decoratedResolverMock.VerifyAllExpectations();
+      _decoratedResolverMock.Verify();
       Assert.That (result, Is.EqualTo (typeof (Person)));
     }
 
@@ -52,7 +52,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       var collectorTypeWithApplyWithClassAttribute = typeof (InvalidValidationRuleCollector);
 
-      _decoratedResolverMock.Expect (mock => mock.GetValidatedType (collectorTypeWithApplyWithClassAttribute)).Return (typeof (Customer));
+      _decoratedResolverMock.Setup (mock => mock.GetValidatedType (collectorTypeWithApplyWithClassAttribute)).Returns (typeof (Customer)).Verifiable();
       Assert.That (
           () => _resolver.GetValidatedType (collectorTypeWithApplyWithClassAttribute),
           Throws.InvalidOperationException
@@ -66,7 +66,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       var collectorTypeWithApplyWithClassAttribute = typeof (InvalidValidationRuleRuleCollector2);
 
-      _decoratedResolverMock.Expect (mock => mock.GetValidatedType (collectorTypeWithApplyWithClassAttribute)).Return (typeof (Customer));
+      _decoratedResolverMock.Setup (mock => mock.GetValidatedType (collectorTypeWithApplyWithClassAttribute)).Returns (typeof (Customer)).Verifiable();
 
       var result = _resolver.GetValidatedType (collectorTypeWithApplyWithClassAttribute);
 
@@ -78,11 +78,11 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       var collectorTypeWithApplyWithClassAttribute = typeof (PersonValidationRuleCollector1);
 
-      _decoratedResolverMock.Expect (mock => mock.GetValidatedType (collectorTypeWithApplyWithClassAttribute)).Return (typeof (Person));
+      _decoratedResolverMock.Setup (mock => mock.GetValidatedType (collectorTypeWithApplyWithClassAttribute)).Returns (typeof (Person)).Verifiable();
 
       var result = _resolver.GetValidatedType (collectorTypeWithApplyWithClassAttribute);
 
-      _decoratedResolverMock.VerifyAllExpectations ();
+      _decoratedResolverMock.Verify();
       Assert.That (result, Is.EqualTo (typeof (Person)));
     }
   }

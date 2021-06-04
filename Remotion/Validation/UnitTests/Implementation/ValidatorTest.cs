@@ -15,20 +15,20 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Results;
 using Remotion.Validation.Rules;
 using Remotion.Validation.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.Implementation
 {
   [TestFixture]
   public class ValidatorTest
   {
-    private IValidationRule _validationRuleStub1;
-    private IValidationRule _validationRuleStub2;
+    private Mock<IValidationRule> _validationRuleStub1;
+    private Mock<IValidationRule> _validationRuleStub2;
     private Validator _validator;
     private ValidationFailure _validationFailure;
     private Customer _validatedObject;
@@ -38,18 +38,18 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       _validatedObject = new Customer();
 
-      _validationRuleStub1 = MockRepository.GenerateStub<IValidationRule>();
-      _validationRuleStub2 = MockRepository.GenerateStub<IValidationRule>();
+      _validationRuleStub1 = new Mock<IValidationRule>();
+      _validationRuleStub2 = new Mock<IValidationRule>();
 
       _validationFailure = new ObjectValidationFailure (_validatedObject, "Error", "ValidationMessage");
 
-      _validator = new Validator (new[] { _validationRuleStub1, _validationRuleStub2 }, typeof (Customer));
+      _validator = new Validator (new[] { _validationRuleStub1.Object, _validationRuleStub2.Object }, typeof (Customer));
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_validator.ValidationRules, Is.EquivalentTo (new[] { _validationRuleStub1, _validationRuleStub2 }));
+      Assert.That (_validator.ValidationRules, Is.EquivalentTo (new[] { _validationRuleStub1.Object, _validationRuleStub2.Object }));
     }
 
     [Test]
@@ -66,13 +66,11 @@ namespace Remotion.Validation.UnitTests.Implementation
       var customer = _validatedObject;
 
       _validationRuleStub1
-          .Stub (stub => stub.Validate (Arg<ValidationContext>.Is.NotNull))
-          .Repeat.Once()
-          .Return (new[] { _validationFailure });
+          .Setup (stub => stub.Validate (It.IsNotNull<ValidationContext>()))
+          .Returns (new[] { _validationFailure });
       _validationRuleStub2
-          .Stub (stub => stub.Validate (Arg<ValidationContext>.Is.NotNull))
-          .Repeat.Once()
-          .Return (new ValidationFailure[0]);
+          .Setup (stub => stub.Validate (It.IsNotNull<ValidationContext>()))
+          .Returns (new ValidationFailure[0]);
 
       var result = _validator.Validate (customer);
 
@@ -93,7 +91,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       var result = _validator.CreateDescriptor();
 
-      Assert.That (result.ValidationRules, Is.EquivalentTo (new[] { _validationRuleStub1, _validationRuleStub2 }));
+      Assert.That (result.ValidationRules, Is.EquivalentTo (new[] { _validationRuleStub1.Object, _validationRuleStub2.Object }));
     }
 
     [Test]
