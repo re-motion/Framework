@@ -56,7 +56,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
       Assert.That (ctor, Is.Not.Null, "AdditionalMixinDependencyAttribute ctor not found.");
 
       var assemblyName = "TestAssembly_" + GetType().Name;
-      var assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly (new AssemblyName (assemblyName), AssemblyBuilderAccess.Run);
+      var assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly (new AssemblyName (assemblyName), AssemblyBuilderAccess.Run);
       foreach (var attribute in attributes)
       {
         var attributeBuilder = new CustomAttributeBuilder (ctor, new[] { attribute.TargetType, attribute.DependentMixin, attribute.Dependency });

@@ -45,7 +45,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
       Type generatedType = TypeFactory.GetConcreteType (typeof (BaseType3));
 
       AssemblyBuilder builder =
-          AppDomain.CurrentDomain.DefineDynamicAssembly (new AssemblyName ("Foo"), AssemblyBuilderAccess.Run);
+          AssemblyBuilder.DefineDynamicAssembly (new AssemblyName ("Foo"), AssemblyBuilderAccess.Run);
       TypeBuilder typeBuilder = builder.DefineDynamicModule ("Foo.dll").DefineType ("Derived", TypeAttributes.Public, generatedType);
       ConstructorBuilder ctor = typeBuilder.DefineConstructor (MethodAttributes.Public, CallingConventions.HasThis, Type.EmptyTypes);
       ILGenerator ilgen = ctor.GetILGenerator ();

@@ -26,10 +26,9 @@ namespace Remotion.Validation.UnitTests.TestHelpers
     public static Type CreateDynamicTypeWithCustomAttribute (
         Type classTypeToInstantiate, string className, Type attributeType, Type[] attrParams, object[] attrValues)
     {
-      var currentAppDomain = Thread.GetDomain();
       var dynamicAssembly = new AssemblyName();
       dynamicAssembly.Name = "DynamicAssembly";
-      var assemblyBuilder = currentAppDomain.DefineDynamicAssembly (dynamicAssembly, AssemblyBuilderAccess.Run);
+      var assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly (dynamicAssembly, AssemblyBuilderAccess.Run);
       var moduleBuilder = assemblyBuilder.DefineDynamicModule ("DynamicModule");
 
       var typeBuilder = moduleBuilder.DefineType (className, TypeAttributes.Public | TypeAttributes.Class, classTypeToInstantiate);
