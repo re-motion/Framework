@@ -17,6 +17,7 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
 using Remotion.Development.UnitTesting;
@@ -24,7 +25,6 @@ using Remotion.Security;
 using Remotion.SecurityManager.Domain;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.ServiceLocation;
-using Rhino.Mocks;
 
 namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTests
 {
@@ -176,8 +176,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
     public void UsesSecurityFreeSection ()
     {
       var principal = CreateSecurityManagerPrincipal (_tenant, _user, _roles, _substitution);
-      var securityProviderStub = MockRepository.GenerateStub<ISecurityProvider>();
-      securityProviderStub.Stub (stub => stub.IsNull).Return (false);
+      var securityProviderStub = new Mock<ISecurityProvider>();
+      securityProviderStub.Setup (stub => stub.IsNull).Returns (false);
 
       var serviceLocator = DefaultServiceLocator.Create();
       serviceLocator.RegisterSingle (() => securityProviderStub);

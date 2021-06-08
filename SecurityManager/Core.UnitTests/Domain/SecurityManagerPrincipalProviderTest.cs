@@ -16,10 +16,10 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain;
-using Rhino.Mocks;
 
 namespace Remotion.SecurityManager.UnitTests.Domain
 {
@@ -41,14 +41,14 @@ namespace Remotion.SecurityManager.UnitTests.Domain
     [Test]
     public void GetPrincipal ()
     {
-      ISecurityPrincipal securityPrincipalStub = MockRepository.GenerateStub<ISecurityPrincipal>();
-      ISecurityManagerPrincipal securityManagerPrincipalStub = MockRepository.GenerateStub<ISecurityManagerPrincipal>();
-      securityManagerPrincipalStub.Stub (stub => stub.GetSecurityPrincipal()).Return (securityPrincipalStub);
-      SecurityManagerPrincipal.Current = securityManagerPrincipalStub;
+      var securityPrincipalStub = new Mock<ISecurityPrincipal>();
+      var securityManagerPrincipalStub = new Mock<ISecurityManagerPrincipal>();
+      securityManagerPrincipalStub.Setup (stub => stub.GetSecurityPrincipal()).Returns (securityPrincipalStub.Object);
+      SecurityManagerPrincipal.Current = securityManagerPrincipalStub.Object;
 
       SecurityManagerPrincipalProvider provider = new SecurityManagerPrincipalProvider ();
 
-      Assert.That (provider.GetPrincipal(), Is.SameAs (securityPrincipalStub));
+      Assert.That (provider.GetPrincipal(), Is.SameAs (securityPrincipalStub.Object));
     }
   }
 }
