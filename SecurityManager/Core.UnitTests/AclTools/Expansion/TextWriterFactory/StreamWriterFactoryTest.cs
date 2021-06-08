@@ -17,9 +17,9 @@
 // 
 using System;
 using System.IO;
+using Moq;
 using NUnit.Framework;
 using Remotion.SecurityManager.AclTools.Expansion.TextWriterFactory;
-using Rhino.Mocks;
 
 namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion.TextWriterFactory
 {
@@ -70,21 +70,18 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion.TextWriterFactor
     [Test]
     public void NewTextWriterOnlyNameArgumentTest ()
     {
-      var mocks = new MockRepository();
-      var streamWriterFactoryMock = mocks.PartialMock<StreamWriterFactory> ();
+      var streamWriterFactoryMock = new Mock<StreamWriterFactory>() { CallBase = true };
       const string directory = "the\\dir\\ect\\ory";
-      streamWriterFactoryMock.Directory = directory;
+      streamWriterFactoryMock.Object.Directory = directory;
       const string extension = "xyz";
-      streamWriterFactoryMock.Extension = extension;
+      streamWriterFactoryMock.Object.Extension = extension;
       const string fileName = "someFile";
 
-      streamWriterFactoryMock.Expect (x => x.CreateTextWriter (directory, fileName, extension)).Return(TextWriter.Null);
-      
-      streamWriterFactoryMock.Replay();
+      streamWriterFactoryMock.Setup (x => x.CreateTextWriter (directory, fileName, extension)).Returns (TextWriter.Null).Verifiable();
 
-      streamWriterFactoryMock.CreateTextWriter (fileName);
+      streamWriterFactoryMock.Object.CreateTextWriter (fileName);
 
-      streamWriterFactoryMock.VerifyAllExpectations ();
+      streamWriterFactoryMock.Verify();
     }
   }
 }

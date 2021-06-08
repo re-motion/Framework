@@ -17,6 +17,7 @@
 // 
 using System;
 using JetBrains.Annotations;
+using Moq;
 using NUnit.Framework;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects;
@@ -26,7 +27,6 @@ using Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation;
 using Remotion.SecurityManager.Domain.Metadata;
 using Remotion.SecurityManager.UnitTests.TestDomain;
 using Remotion.Utilities;
-using Rhino.Mocks;
 
 namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluation.AccessControlListFinderTests
 {
@@ -43,17 +43,17 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     protected readonly State Delivery_Post = CreateState (s_deliveryPropertyHandle, "Delivery", Delivery.Post);
     protected readonly State Delivery_Dhl = CreateState (s_deliveryPropertyHandle, "Delivery", Delivery.Dhl);
 
-    private ISecurityContextRepository _securityContextRepositoryStub;
+    private Mock<ISecurityContextRepository> _securityContextRepositoryStub;
 
     [SetUp]
     public virtual void SetUp ()
     {
-      _securityContextRepositoryStub = MockRepository.GenerateStub<ISecurityContextRepository>();
+      _securityContextRepositoryStub = new Mock<ISecurityContextRepository>();
     }
 
     protected AccessControlListFinder CreateAccessControlListFinder ()
     {
-      return new AccessControlListFinder (_securityContextRepositoryStub);
+      return new AccessControlListFinder (_securityContextRepositoryStub.Object);
     }
 
     protected void StubClassDefinition<TClass> (
@@ -61,8 +61,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
         [NotNull] params StatefulAccessControlListData[] statefulAcls)
         where TClass : ISecurableObject
     {
-      _securityContextRepositoryStub.Stub (_ => _.GetClass (TypeUtility.GetPartialAssemblyQualifiedName (typeof (TClass))))
-                                    .Return (new SecurableClassDefinitionData (null, statelessAcl, statefulAcls));
+      _securityContextRepositoryStub.Setup (_ => _.GetClass (TypeUtility.GetPartialAssemblyQualifiedName (typeof (TClass))))
+                                    .Returns (new SecurableClassDefinitionData (null, statelessAcl, statefulAcls));
     }
 
     protected void StubClassDefinition<TClass, TBaseClass> (
@@ -71,8 +71,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
         where TClass : TBaseClass
         where TBaseClass : ISecurableObject
     {
-      _securityContextRepositoryStub.Stub (_ => _.GetClass (TypeUtility.GetPartialAssemblyQualifiedName (typeof (TClass))))
-                                    .Return (
+      _securityContextRepositoryStub.Setup (_ => _.GetClass (TypeUtility.GetPartialAssemblyQualifiedName (typeof (TClass))))
+                                    .Returns (
                                         new SecurableClassDefinitionData (
                                             TypeUtility.GetPartialAssemblyQualifiedName (typeof (TBaseClass)),
                                             statelessAcl,
@@ -81,14 +81,14 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
 
     protected void StubGetStatePropertyValues ()
     {
-      _securityContextRepositoryStub.Stub (_ => _.GetStatePropertyValues (s_orderStatePropertyHandle))
-                                    .Return (new[] { OrderState_Delivered.Value, OrderState_Received.Value });
+      _securityContextRepositoryStub.Setup (_ => _.GetStatePropertyValues (s_orderStatePropertyHandle))
+                                    .Returns (new[] { OrderState_Delivered.Value, OrderState_Received.Value });
 
-      _securityContextRepositoryStub.Stub (_ => _.GetStatePropertyValues (s_paymentStatePropertyHandle))
-                                    .Return (new[] { PaymentState_None.Value, PaymentState_Paid.Value });
+      _securityContextRepositoryStub.Setup (_ => _.GetStatePropertyValues (s_paymentStatePropertyHandle))
+                                    .Returns (new[] { PaymentState_None.Value, PaymentState_Paid.Value });
 
-      _securityContextRepositoryStub.Stub (_ => _.GetStatePropertyValues (s_deliveryPropertyHandle))
-                                    .Return (new[] { Delivery_Post.Value, Delivery_Dhl.Value });
+      _securityContextRepositoryStub.Setup (_ => _.GetStatePropertyValues (s_deliveryPropertyHandle))
+                                    .Returns (new[] { Delivery_Post.Value, Delivery_Dhl.Value });
     }
 
     protected IDomainObjectHandle<StatelessAccessControlList> CreateStatelessAcl ()

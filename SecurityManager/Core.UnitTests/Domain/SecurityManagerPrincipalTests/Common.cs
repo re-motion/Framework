@@ -17,6 +17,7 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
 using Remotion.Development.UnitTesting;
@@ -25,7 +26,6 @@ using Remotion.Security.Configuration;
 using Remotion.SecurityManager.Domain;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.ServiceLocation;
-using Rhino.Mocks;
 
 namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTests
 {
@@ -155,14 +155,14 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
       Tenant tenant = user.Tenant;
       Substitution substitution = user.GetActiveSubstitutions().First();
 
-      var securityProviderStub = MockRepository.GenerateStub<ISecurityProvider>();
-      securityProviderStub.Stub (stub => stub.IsNull).Return (false);
+      var securityProviderStub = new Mock<ISecurityProvider>();
+      securityProviderStub.Setup (stub => stub.IsNull).Returns (false);
       securityProviderStub
-          .Stub (_ => _.GetAccess (Arg<ISecurityContext>.Is.Anything, Arg<ISecurityPrincipal>.Is.Anything))
-          .Return (new AccessType[0]);
+          .Setup (_ => _.GetAccess (It.IsAny<ISecurityContext>(), It.IsAny<ISecurityPrincipal>()))
+          .Returns (new AccessType[0]);
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle (() => securityProviderStub);
+      serviceLocator.RegisterSingle (() => securityProviderStub.Object);
       serviceLocator.RegisterSingle<IPrincipalProvider> (() => new NullPrincipalProvider());
       using (new ServiceLocatorScope (serviceLocator))
       {

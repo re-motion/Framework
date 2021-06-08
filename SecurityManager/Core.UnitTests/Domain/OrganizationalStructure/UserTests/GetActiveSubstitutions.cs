@@ -16,6 +16,7 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Security;
@@ -23,7 +24,6 @@ using Remotion.Development.UnitTesting;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.ServiceLocation;
-using Rhino.Mocks;
 
 namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.UserTests
 {
@@ -74,13 +74,13 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.User
       substitution1.SubstitutingUser = substitutingUser;
       substitution1.SubstitutedUser = CreateUser();
 
-      ISecurityProvider securityProviderStub = MockRepository.GenerateStub<ISecurityProvider> ();
+      var securityProviderStub = new Mock<ISecurityProvider>();
       securityProviderStub
-          .Stub (stub => stub.GetAccess (Arg<SecurityContext>.Is.Anything, Arg<ISecurityPrincipal>.Is.Anything))
-          .Return (new AccessType[0]);
+          .Setup (stub => stub.GetAccess (It.IsAny<SecurityContext>(), It.IsAny<ISecurityPrincipal>()))
+          .Returns (new AccessType[0]);
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle (() => securityProviderStub);
+      serviceLocator.RegisterSingle (() => securityProviderStub.Object);
       serviceLocator.RegisterSingle<IPrincipalProvider> (() => new NullPrincipalProvider());
       using (new ServiceLocatorScope (serviceLocator))
       {

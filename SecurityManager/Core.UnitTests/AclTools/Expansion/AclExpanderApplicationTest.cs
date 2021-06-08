@@ -18,10 +18,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Moq;
 using NUnit.Framework;
 using Remotion.SecurityManager.AclTools.Expansion;
 using Remotion.SecurityManager.AclTools.Expansion.TextWriterFactory;
-using Rhino.Mocks;
 
 namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
 {
@@ -161,23 +161,21 @@ th
     {
       const string directory = "The Directory";
 
-      var mocks = new MockRepository();
-      var textWriterFactoryMock = mocks.DynamicMock<ITextWriterFactory> ();
+      var textWriterFactoryMock = new Mock<ITextWriterFactory>();
 
-      textWriterFactoryMock.Expect (mock => mock.Directory = directory); 
-      textWriterFactoryMock.Expect (mock => mock.CreateTextWriter (Arg<String>.Is.Anything)).Return (new StringWriter ());
-      textWriterFactoryMock.Expect (mock => mock.CreateTextWriter (Arg<String>.Is.Anything, Arg<String>.Is.Anything, Arg<String>.Is.Anything)).Return (new StringWriter ());
-      
-      textWriterFactoryMock.Replay();
+      textWriterFactoryMock.SetupSet (mock => mock.Directory = directory).Verifiable();
+      textWriterFactoryMock.Setup (mock => mock.CreateTextWriter (It.IsAny<String>())).Returns (new StringWriter ()).Verifiable();
+      textWriterFactoryMock.Setup (mock => mock.CreateTextWriter (It.IsAny<String>(), It.IsAny<String>(), It.IsAny<String>())).Returns (new StringWriter ()).Verifiable();
+
 
       var settings = new AclExpanderApplicationSettings ();
       settings.UseMultipleFileOutput = false;
       settings.Directory = directory;
-      var application = new AclExpanderApplication (textWriterFactoryMock);
+      var application = new AclExpanderApplication (textWriterFactoryMock.Object);
 
       application.Run (settings, TextWriter.Null, TextWriter.Null);
 
-      textWriterFactoryMock.VerifyAllExpectations ();
+      textWriterFactoryMock.Verify();
     }
 
     [Test]
@@ -322,21 +320,17 @@ th
     [Test]
     public void VerboseSettingTest ()
     {
-      var mocks = new MockRepository ();
-      var textWriterFactoryStub = mocks.Stub<ITextWriterFactory> ();
-      var applicationMock = mocks.PartialMock<AclExpanderApplication> (textWriterFactoryStub);
-
+      var textWriterFactoryStub = new Mock<ITextWriterFactory>();
+      var applicationMock = new Mock<AclExpanderApplication> (textWriterFactoryStub.Object) { CallBase = true };
 
       var aclExpansionEntries = new List<AclExpansionEntry>();
-      applicationMock.Expect (x => x.GetAclExpansion ()).Return(aclExpansionEntries);
-      applicationMock.Expect (x => x.WriteAclExpansionAsHtmlToStreamWriter (Arg<List<AclExpansionEntry>>.Is.Equal (aclExpansionEntries)));
-
-      mocks.ReplayAll();
+      applicationMock.Setup (x => x.GetAclExpansion ()).Returns (aclExpansionEntries).Verifiable();
+      applicationMock.Setup (x => x.WriteAclExpansionAsHtmlToStreamWriter (aclExpansionEntries)).Verifiable();
 
       var settings = new AclExpanderApplicationSettings ();
-      applicationMock.Run (settings, TextWriter.Null, TextWriter.Null);
+      applicationMock.Object.Run (settings, TextWriter.Null, TextWriter.Null);
 
-      applicationMock.VerifyAllExpectations();
+      applicationMock.Verify();
     }
 
 
@@ -350,8 +344,8 @@ th
 
     private static void AssertGetCultureName (string cultureNameIn, string cultureNameOut)
     {
-      var textWriterFactoryStub = MockRepository.GenerateStub<ITextWriterFactory> ();
-      var application = new AclExpanderApplication (textWriterFactoryStub);
+      var textWriterFactoryStub = new Mock<ITextWriterFactory>();
+      var application = new AclExpanderApplication (textWriterFactoryStub.Object);
       var settings = new AclExpanderApplicationSettings ();
       settings.CultureName = cultureNameIn;
       application.Init (settings);
