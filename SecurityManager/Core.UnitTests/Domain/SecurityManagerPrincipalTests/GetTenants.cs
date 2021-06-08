@@ -17,6 +17,7 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
 using Remotion.Development.UnitTesting;
@@ -24,7 +25,6 @@ using Remotion.Security;
 using Remotion.SecurityManager.Domain;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.ServiceLocation;
-using Rhino.Mocks;
 
 namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTests
 {
@@ -97,17 +97,17 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
         tenantSecurityContext = ((ISecurityContextFactory) user.Tenant).CreateSecurityContext();
       }
 
-      var securityProviderStub = MockRepository.GenerateStub<ISecurityProvider>();
-      securityProviderStub.Stub (stub => stub.IsNull).Return (false);
+      var securityProviderStub = new Mock<ISecurityProvider>();
+      securityProviderStub.Setup (stub => stub.IsNull).Returns (false);
       securityProviderStub
-          .Stub (_ => _.GetAccess (Arg.Is (userSecurityContext), Arg<ISecurityPrincipal>.Is.Anything))
-          .Throw (new AssertionException ("GetAccess should not have been called."));
+          .Setup (_ => _.GetAccess (userSecurityContext, It.IsAny<ISecurityPrincipal>()))
+          .Throws (new AssertionException ("GetAccess should not have been called."));
       securityProviderStub
-          .Stub (_ => _.GetAccess (Arg.Is (tenantSecurityContext), Arg<ISecurityPrincipal>.Is.Anything))
-          .Return (new AccessType[0]);
+          .Setup (_ => _.GetAccess (tenantSecurityContext, It.IsAny<ISecurityPrincipal>()))
+          .Returns (new AccessType[0]);
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle (() => securityProviderStub);
+      serviceLocator.RegisterSingle (() => securityProviderStub.Object);
       serviceLocator.RegisterSingle<IPrincipalProvider> (() => new NullPrincipalProvider());
       using (new ServiceLocatorScope (serviceLocator))
       {

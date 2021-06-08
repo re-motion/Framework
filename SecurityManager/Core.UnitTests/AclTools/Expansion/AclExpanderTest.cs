@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting.ObjectMothers;
 using Remotion.SecurityManager.AclTools.Expansion;
@@ -27,8 +28,6 @@ using Remotion.SecurityManager.Domain.Metadata;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.SecurityManager.UnitTests.AclTools.Expansion.TestClasses;
 using Remotion.Utilities;
-using Rhino.Mocks;
-
 
 namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
 {
@@ -38,32 +37,31 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
     [Test]
     public void Ctor_UserFinderAclFinder_Test ()
     {
-      var userFinderStub = MockRepository.GenerateStub<IAclExpanderUserFinder> ();
-      var aclFinderStub = MockRepository.GenerateStub<IAclExpanderAclFinder> ();
-      var aclExpander = new AclExpander (userFinderStub, aclFinderStub);
+      var userFinderStub = new Mock<IAclExpanderUserFinder>();
+      var aclFinderStub = new Mock<IAclExpanderAclFinder>();
+      var aclExpander = new AclExpander (userFinderStub.Object, aclFinderStub.Object);
       var iFinder = AclExpanderXray.GetUserRoleAclAceCombinationFinder (aclExpander);
       Assert.That (iFinder, Is.TypeOf (typeof (UserRoleAclAceCombinationFinder)));
       var finder = (UserRoleAclAceCombinationFinder) iFinder;
-      Assert.That (finder.UserFinder, Is.EqualTo (userFinderStub));
-      Assert.That (finder.AccessControlListFinder, Is.EqualTo (aclFinderStub));
+      Assert.That (finder.UserFinder, Is.EqualTo (userFinderStub.Object));
+      Assert.That (finder.AccessControlListFinder, Is.EqualTo (aclFinderStub.Object));
     }
 
     [Test]
     public void Ctor_UserRoleAclAceCombinationFinder_Test ()
     {
-      var userRoleAclAceCombinationFinderStub = MockRepository.GenerateStub<IUserRoleAclAceCombinationFinder> ();
-      var aclExpander = new AclExpander (userRoleAclAceCombinationFinderStub);
+      var userRoleAclAceCombinationFinderStub = new Mock<IUserRoleAclAceCombinationFinder>();
+      var aclExpander = new AclExpander (userRoleAclAceCombinationFinderStub.Object);
       var finder = AclExpanderXray.GetUserRoleAclAceCombinationFinder (aclExpander);
-      Assert.That (finder, Is.EqualTo (userRoleAclAceCombinationFinderStub));
+      Assert.That (finder, Is.EqualTo (userRoleAclAceCombinationFinderStub.Object));
     }
 
 
     [Test]
     public void GetAclExpansionEntryListSortedAndDistinctTest ()
     {
-      var userRoleAclAceCombinationFinderStub = MockRepository.GenerateStub<IUserRoleAclAceCombinationFinder> ();
-      var mocks = new MockRepository ();
-      var aclExpanderMock = mocks.PartialMock<AclExpander> (userRoleAclAceCombinationFinderStub);
+      var userRoleAclAceCombinationFinderStub = new Mock<IUserRoleAclAceCombinationFinder>();
+      var aclExpanderMock = new Mock<AclExpander> (userRoleAclAceCombinationFinderStub.Object) { CallBase = true };
       var accessConditions = new AclExpansionAccessConditions ();
       var accessTypeDefinitions = new AccessTypeDefinition[0];
       
@@ -73,26 +71,25 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
 
       var aclExpansionEntryList = ListObjectMother.New (aclExpansionEntry0, aclExpansionEntry2, aclExpansionEntry1, aclExpansionEntry1, aclExpansionEntry0);
 
-      aclExpanderMock.Expect (x => x.GetAclExpansionEntryList ()).Return (aclExpansionEntryList);
-      aclExpanderMock.Replay();
-      var aclExpansionEntryListResult = aclExpanderMock.GetAclExpansionEntryListSortedAndDistinct();
+      aclExpanderMock.Setup (x => x.GetAclExpansionEntryList ()).Returns (aclExpansionEntryList).Verifiable();
+      var aclExpansionEntryListResult = aclExpanderMock.Object.GetAclExpansionEntryListSortedAndDistinct();
       var aclExpansionEntryListExpected = ListObjectMother.New (aclExpansionEntry1, aclExpansionEntry0, aclExpansionEntry2);
 
       Assert.That (aclExpansionEntryListResult, Is.EqualTo (aclExpansionEntryListExpected));
-      aclExpanderMock.VerifyAllExpectations();
+      aclExpanderMock.Verify();
     }
 
 
     [Test]
     public void GetAclExpansionEntryList_UserList_IUserRoleAclAceCombinations2 ()
     {
-      var userRoleAclAceCombinationsMock = MockRepository.GenerateMock<IUserRoleAclAceCombinationFinder> ();
+      var userRoleAclAceCombinationsMock = new Mock<IUserRoleAclAceCombinationFinder>();
       var myValues = ListObjectMother.New (new UserRoleAclAceCombination (Role, Ace));
-      userRoleAclAceCombinationsMock.Expect (mock => mock.GetEnumerator ()).Return (myValues.GetEnumerator ());
+      userRoleAclAceCombinationsMock.Setup (mock => mock.GetEnumerator ()).Returns (myValues.GetEnumerator ()).Verifiable();
 
-      var aclExpander = new AclExpander (userRoleAclAceCombinationsMock);
+      var aclExpander = new AclExpander (userRoleAclAceCombinationsMock.Object);
       aclExpander.GetAclExpansionEntryList ();
-      userRoleAclAceCombinationsMock.VerifyAllExpectations ();
+      userRoleAclAceCombinationsMock.Verify();
     }
 
 
@@ -498,7 +495,7 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
     //--------------------------------------------------------------------------------------------------------------------------------
     // Group Tests
     //--------------------------------------------------------------------------------------------------------------------------------
- 
+
     [Test]
     public void SpecificGroupTest ()
     {
@@ -730,19 +727,19 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
     // Returns a list of AclExpansionEntry for the passed users and ACLs
     private List<AclExpansionEntry> GetAclExpansionEntryList (List<User> userList, List<AccessControlList> aclList)
     {
-      var userFinderStub = MockRepository.GenerateStub<IAclExpanderUserFinder> ();
-      userFinderStub.Expect (mock => mock.FindUsers ()).Return (userList);
+      var userFinderStub = new Mock<IAclExpanderUserFinder>();
+      userFinderStub.Setup (mock => mock.FindUsers ()).Returns (userList).Verifiable();
 
-      var aclFinderStub = MockRepository.GenerateStub<IAclExpanderAclFinder> ();
-      aclFinderStub.Expect (mock => mock.FindAccessControlLists ()).Return (aclList);
+      var aclFinderStub = new Mock<IAclExpanderAclFinder>();
+      aclFinderStub.Setup (mock => mock.FindAccessControlLists ()).Returns (aclList).Verifiable();
 
-      var aclExpander = new AclExpander (userFinderStub, aclFinderStub);
+      var aclExpander = new AclExpander (userFinderStub.Object, aclFinderStub.Object);
 
       // Retrieve the resulting list of AclExpansionEntry|s
       var aclExpansionEntryList = aclExpander.GetAclExpansionEntryList ();
 
-      userFinderStub.VerifyAllExpectations ();
-      aclFinderStub.VerifyAllExpectations ();
+      userFinderStub.Verify();
+      aclFinderStub.Verify();
       return aclExpansionEntryList;
     }
 
@@ -756,8 +753,8 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
       List<User> userList = new List<User> ();
       userList.Add (user);
 
-      var userFinderStub = MockRepository.GenerateStub<IAclExpanderUserFinder> (); 
-      userFinderStub.Expect (mock => mock.FindUsers()).Return (userList);
+      var userFinderStub = new Mock<IAclExpanderUserFinder>(); 
+      userFinderStub.Setup (mock => mock.FindUsers()).Returns (userList).Verifiable();
 
       List<AccessControlList> aclList = new List<AccessControlList>();
 
@@ -769,10 +766,10 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
       var acl = TestHelper.CreateStatefulAcl (ace);
       aclList.Add (acl);
 
-      var aclFinderStub = MockRepository.GenerateStub<IAclExpanderAclFinder> ();
-      aclFinderStub.Expect (mock => mock.FindAccessControlLists ()).Return (aclList);
+      var aclFinderStub = new Mock<IAclExpanderAclFinder>();
+      aclFinderStub.Setup (mock => mock.FindAccessControlLists ()).Returns (aclList).Verifiable();
 
-      var aclExpander = new AclExpander (userFinderStub, aclFinderStub);
+      var aclExpander = new AclExpander (userFinderStub.Object, aclFinderStub.Object);
 
       // Retrieve the resulting list of AclExpansionEntry|s
       var aclExpansionEntryList = aclExpander.GetAclExpansionEntryList();
@@ -783,13 +780,13 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
 
     private void AssertIsNotInMatchingAces (List<User> userList, List<AccessControlList> aclList)
     {
-      var userFinderStub = MockRepository.GenerateStub<IAclExpanderUserFinder> ();
-      userFinderStub.Expect (mock => mock.FindUsers ()).Return (userList);
+      var userFinderStub = new Mock<IAclExpanderUserFinder>();
+      userFinderStub.Setup (mock => mock.FindUsers ()).Returns (userList).Verifiable();
 
-      var aclFinderStub = MockRepository.GenerateStub<IAclExpanderAclFinder> ();
-      aclFinderStub.Expect (mock => mock.FindAccessControlLists ()).Return (aclList);
+      var aclFinderStub = new Mock<IAclExpanderAclFinder>();
+      aclFinderStub.Setup (mock => mock.FindAccessControlLists ()).Returns (aclList).Verifiable();
 
-      var aclExpander = new AclExpander (userFinderStub, aclFinderStub);
+      var aclExpander = new AclExpander (userFinderStub.Object, aclFinderStub.Object);
       foreach (User user in userList)
       {
         foreach (Role role in user.Roles)

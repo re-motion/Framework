@@ -16,9 +16,9 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.SecurityManager.AclTools.Expansion.TextWriterFactory;
-using Rhino.Mocks;
 
 namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion.TextWriterFactory
 {
@@ -34,37 +34,33 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion.TextWriterFactor
       Assert.That (TextWriterFactoryBase.AppendExtension (name, null), Is.EqualTo (name));
       Assert.That (TextWriterFactoryBase.AppendExtension (name, ""), Is.EqualTo (name));
     }
-    
+
 
     [Test]
     public void GetRelativePathTest ()
     {
-      var mocks = new MockRepository ();
-      var textWriterFactoryBaseMock = mocks.PartialMock<TextWriterFactoryBase> ();
-      textWriterFactoryBaseMock.Expect (x => x.TextWriterExists ("yang")).Return (true);
-      textWriterFactoryBaseMock.Replay();
-      textWriterFactoryBaseMock.Extension = "dat";
-      var result = textWriterFactoryBaseMock.GetRelativePath ("yin", "yang");
+      var textWriterFactoryBaseMock = new Mock<TextWriterFactoryBase>() { CallBase = true };
+      textWriterFactoryBaseMock.Setup (x => x.TextWriterExists ("yang")).Returns (true).Verifiable();
+      textWriterFactoryBaseMock.Object.Extension = "dat";
+      var result = textWriterFactoryBaseMock.Object.GetRelativePath ("yin", "yang");
       Assert.That (result, Is.EqualTo (@".\yang.dat"));
-      textWriterFactoryBaseMock.VerifyAllExpectations ();
+      textWriterFactoryBaseMock.Verify();
     }
 
 
     [Test]
     public void GetRelativePathNoEntryWithNameExistsTest ()
     {
-      var mocks = new MockRepository ();
-      var textWriterFactoryBaseMock = mocks.PartialMock<TextWriterFactoryBase> ();
+      var textWriterFactoryBaseMock = new Mock<TextWriterFactoryBase>() { CallBase = true };
 
-      textWriterFactoryBaseMock.Expect (x => x.TextWriterExists ("yang")).Return (false);
-      textWriterFactoryBaseMock.Replay ();
+      textWriterFactoryBaseMock.Setup (x => x.TextWriterExists ("yang")).Returns (false).Verifiable();
 
       Assert.That (
-          () => textWriterFactoryBaseMock.GetRelativePath ("yin", "yang"),
+          () => textWriterFactoryBaseMock.Object.GetRelativePath ("yin", "yang"),
           Throws.ArgumentException
               .With.Message.EqualTo (@"No TextWriter with name ""yang"" registered => no relative path exists."));
 
-      textWriterFactoryBaseMock.VerifyAllExpectations();
+      textWriterFactoryBaseMock.Verify();
     }   
 
   }

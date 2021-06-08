@@ -16,12 +16,12 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.SecurityManager.AclTools.Expansion.Infrastructure;
 using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation;
 using Remotion.SecurityManager.UnitTests.Domain.AccessControl;
-using Rhino.Mocks;
 
 namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion.Infrastructure
 {
@@ -68,22 +68,19 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion.Infrastructure
       var deniedAccessTypes = new[] { ReadAccessType };
       AccessInformation accessInformation = new AccessInformation (allowedAccessTypes, deniedAccessTypes);
 
-      var mocks = new MockRepository ();
-      var aclExpansionEntryCreatorMock = mocks.PartialMock<AclExpansionEntryCreator> ();
+      var aclExpansionEntryCreatorMock = new Mock<AclExpansionEntryCreator>() { CallBase = true };
       var aclProbe = AclProbe.CreateAclProbe (User, Role, Ace);
-      var accessTypeStatisticsMock = mocks.StrictMock<AccessTypeStatistics>();
-      accessTypeStatisticsMock.Expect (x => x.IsInAccessTypesContributingAces (userRoleAclAce.Ace)).Return(true);
+      var accessTypeStatisticsMock = new Mock<AccessTypeStatistics> (MockBehavior.Strict);
+      accessTypeStatisticsMock.Setup (x => x.IsInAccessTypesContributingAces (userRoleAclAce.Ace)).Returns (true).Verifiable();
 
-      aclExpansionEntryCreatorMock.Expect (x => x.GetAccessTypes (userRoleAclAce)).
-        Return (new AclExpansionEntryCreator_GetAccessTypesResult (accessInformation, aclProbe, accessTypeStatisticsMock));
+      aclExpansionEntryCreatorMock.Setup (x => x.GetAccessTypes (userRoleAclAce))
+          .Returns (new AclExpansionEntryCreator_GetAccessTypesResult (accessInformation, aclProbe, accessTypeStatisticsMock.Object))
+          .Verifiable();
 
-      aclExpansionEntryCreatorMock.Replay ();
-      accessTypeStatisticsMock.Replay ();
+      var aclExpansionEntry = aclExpansionEntryCreatorMock.Object.CreateAclExpansionEntry (userRoleAclAce);
 
-      var aclExpansionEntry = aclExpansionEntryCreatorMock.CreateAclExpansionEntry (userRoleAclAce);
-
-      aclExpansionEntryCreatorMock.VerifyAllExpectations ();
-      accessTypeStatisticsMock.VerifyAllExpectations();
+      aclExpansionEntryCreatorMock.Verify();
+      accessTypeStatisticsMock.Verify();
 
       Assert.That (aclExpansionEntry.User, Is.EqualTo (userRoleAclAce.User));
       Assert.That (aclExpansionEntry.Role, Is.EqualTo (userRoleAclAce.Role));
