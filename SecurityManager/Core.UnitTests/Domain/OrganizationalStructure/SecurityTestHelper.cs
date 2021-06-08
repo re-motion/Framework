@@ -17,10 +17,10 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using Remotion.Security;
 using Remotion.Security.Metadata;
 using Remotion.Utilities;
-using Rhino.Mocks;
 
 namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
 {
@@ -40,37 +40,37 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
           CreateSecurityProviderStub (typeof (T), principalStub, accessTypes),
           new PermissionReflector(),
           CreateUserProviderStub (principalStub),
-          MockRepository.GenerateStub<IFunctionalSecurityStrategy>(),
+          new Mock<IFunctionalSecurityStrategy>().Object,
           new ReflectionBasedMemberResolver());
     }
 
     private ISecurityProvider CreateSecurityProviderStub (Type securableClassType, ISecurityPrincipal principal, Enum[] returnedAccessTypes)
     {
-      var securityProviderStub = MockRepository.GenerateStub<ISecurityProvider>();
-      securityProviderStub.Stub (
+      var securityProviderStub = new Mock<ISecurityProvider>();
+      securityProviderStub.Setup (
           stub => stub.GetAccess (
-                      Arg<ISecurityContext>.Matches (sc => TypeUtility.GetType (sc.Class, true) == securableClassType),
-                      Arg.Is (principal)))
-          .Return (returnedAccessTypes.Select (accessType => AccessType.Get (accessType)).ToArray());
+                      It.Is<ISecurityContext> (sc => TypeUtility.GetType (sc.Class, true) == securableClassType),
+                      principal))
+          .Returns (returnedAccessTypes.Select (accessType => AccessType.Get (accessType)).ToArray());
       
-      return securityProviderStub;
+      return securityProviderStub.Object;
     }
 
     private IPrincipalProvider CreateUserProviderStub (ISecurityPrincipal principal)
     {
-      var userProviderStub = MockRepository.GenerateStub<IPrincipalProvider>();
-      userProviderStub.Stub (stub => stub.GetPrincipal()).Return (principal);
+      var userProviderStub = new Mock<IPrincipalProvider>();
+      userProviderStub.Setup (stub => stub.GetPrincipal()).Returns (principal);
       
-      return userProviderStub;
+      return userProviderStub.Object;
     }
 
     private static ISecurityPrincipal CreatePrincipalStub ()
     {
-      var principalStub = MockRepository.GenerateStub<ISecurityPrincipal> ();
+      var principalStub = new Mock<ISecurityPrincipal>();
 
-      principalStub.Stub (stub => stub.User).Return ("user");
+      principalStub.Setup (stub => stub.User).Returns ("user");
 
-      return principalStub;
+      return principalStub.Object;
     }
   }
 }

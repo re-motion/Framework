@@ -17,6 +17,7 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Mapping;
@@ -28,7 +29,6 @@ using Remotion.Security;
 using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.SecurityManager.UnitTests.Domain.AccessControl;
-using Rhino.Mocks;
 
 namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
 {
@@ -228,13 +228,12 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void Initializ_SetsUniqueIdentityInsideSecurityFreeSection ()
     {
-      var extensionStub = MockRepository.GenerateStub<IClientTransactionExtension>();
+      var extensionStub = new Mock<IClientTransactionExtension>();
       bool propertyValueChangingCalled = false;
-      extensionStub.Stub (_ => _.Key).Return ("STUB");
-      extensionStub.Stub (_ => _.PropertyValueChanging (null, null, null, null, null)).IgnoreArguments().WhenCalled (
-          mi =>
+      extensionStub.Setup (_ => _.Key).Returns ("STUB");
+      extensionStub.Setup (_ => _.PropertyValueChanging (It.IsAny<ClientTransaction>(), It.IsAny<DomainObject>(), It.IsAny<PropertyDefinition>(), It.IsAny<object>(), It.IsAny<object>()))
+          .Callback ((ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue) =>
           {
-            var propertyDefinition = ((PropertyDefinition) mi.Arguments[2]);
             if (propertyDefinition.PropertyInfo.Name == "UniqueIdentifier")
             {
               propertyValueChangingCalled = true;
@@ -245,7 +244,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
       OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
       using (testHelper.Transaction.EnterNonDiscardingScope())
       {
-        testHelper.Transaction.Extensions.Add (extensionStub);
+        testHelper.Transaction.Extensions.Add (extensionStub.Object);
         Assert.That (SecurityFreeSection.IsActive, Is.False);
         testHelper.CreatePosition ("Position1");
         Assert.That (SecurityFreeSection.IsActive, Is.False);

@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting.ObjectMothers;
 using Remotion.SecurityManager.AclTools.Expansion;
@@ -26,7 +27,6 @@ using Remotion.SecurityManager.AclTools.Expansion.TextWriterFactory;
 using Remotion.SecurityManager.Domain.Metadata;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.Utilities;
-using Rhino.Mocks;
 
 namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
 {
@@ -106,7 +106,7 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
     [Test]
     public void ToValidFileNameTest ()
     {
-      const string unityInput = "µabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      const string unityInput = "ÂµabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
       //const string forbiddenInput =  "\"?/\\*:";
       string forbiddenInput = new string (Path.GetInvalidFileNameChars());
       string forbiddenInputResult = new String ('_', forbiddenInput.Length);
@@ -120,7 +120,7 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
     [Test]
     public void DetailHtmlWriterSettingsTest ()
     {
-      var aclExpansionMultiFileHtmlWriter = new AclExpansionMultiFileHtmlWriter (MockRepository.GenerateMock<ITextWriterFactory>(), true);
+      var aclExpansionMultiFileHtmlWriter = new AclExpansionMultiFileHtmlWriter (new Mock<ITextWriterFactory>().Object, true);
       var settings = new AclExpansionHtmlWriterSettings();
       aclExpansionMultiFileHtmlWriter.DetailHtmlWriterSettings = settings;
       Assert.That(aclExpansionMultiFileHtmlWriter.DetailHtmlWriterSettings, Is.EqualTo(settings));
