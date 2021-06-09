@@ -15,11 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.IO;
+using System.Threading;
 using JetBrains.Annotations;
-using OpenQA.Selenium;
-using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
+using log4net;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge;
 
 namespace Remotion.Web.Development.WebTesting.BrowserSession.Edge
@@ -29,12 +28,102 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession.Edge
   /// </summary>
   public class EdgeBrowserSession : BrowserSessionBase<IEdgeConfiguration>
   {
+    private static readonly ILog s_log = LogManager.GetLogger (typeof (EdgeBrowserSession));
+
+    private readonly string _userDirectory;
+
     public EdgeBrowserSession (
         [NotNull] Coypu.BrowserSession value,
         [NotNull] IEdgeConfiguration configuration,
-        int driverProcessID)
+        int driverProcessID,
+        [CanBeNull] string userDirectory)
         : base (value, configuration, driverProcessID)
     {
+      _userDirectory = userDirectory;
+    }
+
+    /// <summary>
+    /// Makes sure that any unused user data related folder are removed.
+    /// </summary>
+    public override void Dispose ()
+    {
+      base.Dispose();
+
+      DeleteUserDirectory();
+      DeleteUserDirectoryRootOnDemand();
+    }
+
+    /// <summary>
+    /// Deletes the specific user directory assigned to the current browser session.
+    /// </summary>
+    private void DeleteUserDirectory ()
+    {
+      if (string.IsNullOrEmpty (_userDirectory))
+        return;
+
+      // The amount of times we try to delete the user data folder before giving up
+      const int maxTries = 5;
+
+      // Try to delete the user data folder.
+      // One of the files in the folder is still used by a process even if the driver and browser are shutdown.
+      // Therefore we retry maxTries times and increase the amount of time we wait between each tries.
+
+      var sleep = 50f;
+      var tries = 0;
+      do
+      {
+        if (!Directory.Exists (_userDirectory))
+          return;
+
+        try
+        {
+          Directory.Delete (_userDirectory, true);
+        }
+        catch (Exception ex)
+        {
+          // We only handle these exceptions, as they get thrown when trying to delete the directory 
+          // and some Edge process is still accessing a file inside the directory.
+          if (!(ex is IOException) && !(ex is UnauthorizedAccessException))
+            throw;
+
+          if (tries == maxTries - 1)
+          {
+            s_log.InfoFormat (
+                @"Could not delete the edge user data folder '{0}' because of an '{1}':
+{2}",
+                _userDirectory,
+                ex.GetType().Name,
+                ex.Message);
+          }
+
+          Thread.Sleep ((int) sleep);
+          sleep *= 1.25f;
+
+          tries++;
+        }
+      } while (tries < maxTries);
+    }
+
+    /// <summary>
+    /// Removes the user directory root if we are the last session to use it. 
+    /// </summary>
+    private void DeleteUserDirectoryRootOnDemand ()
+    {
+      var userDirectoryRoot = BrowserConfiguration.UserDirectoryRoot;
+
+      if (!BrowserConfiguration.EnableUserDirectoryRootCleanup)
+        return;
+
+      if (string.IsNullOrEmpty (userDirectoryRoot))
+        return;
+
+      if (!Directory.Exists (userDirectoryRoot))
+        return;
+
+      if (Directory.GetDirectories (userDirectoryRoot).Length > 0)
+        return;
+
+      Directory.Delete (userDirectoryRoot);
     }
   }
 }

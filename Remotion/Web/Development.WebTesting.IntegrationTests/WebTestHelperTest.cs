@@ -24,6 +24,7 @@ using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.WebDriver;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -132,6 +133,41 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       }
 
       var configuration = (ChromeConfiguration) webTestHelper.BrowserConfiguration;
+
+      // Simulate test
+      SetupWebTestHelper (webTestHelper);
+      ShutdownWebTestHelper (webTestHelper, testSuccess);
+
+      // Assert specific cleanup behavior depending if EnableUserDirectoryRootCleanup is set or not
+      if (configuration.EnableUserDirectoryRootCleanup)
+      {
+        // The user directory root should no longer exist
+        Assert.That (
+            Directory.Exists (configuration.UserDirectoryRoot),
+            Is.False,
+            string.Format ("User directory root '{0}' is not cleaned up.", configuration.UserDirectoryRoot));
+      }
+      else
+      {
+        // The user directory root should be empty
+        Assert.That (
+            Directory.GetDirectories (configuration.UserDirectoryRoot),
+            Is.Empty,
+            string.Format ("User directory root '{0}' is not cleaned up.", configuration.UserDirectoryRoot));
+      }
+    }
+
+    [Test]
+    public void WebTestHelper_OnTestFixtureTearDown_CleansUserDirectory_Edge ([Values (true, false)] bool testSuccess)
+    {
+      var webTestHelper = WebTestHelper.CreateFromConfiguration<CustomWebTestConfigurationFactory>();
+
+      if (!webTestHelper.BrowserConfiguration.IsEdge())
+      {
+        Assert.Ignore ("This test is specific for the Edge browser.");
+      }
+
+      var configuration = (EdgeConfiguration) webTestHelper.BrowserConfiguration;
 
       // Simulate test
       SetupWebTestHelper (webTestHelper);
