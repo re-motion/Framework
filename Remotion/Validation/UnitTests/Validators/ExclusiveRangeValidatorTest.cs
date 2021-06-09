@@ -18,7 +18,6 @@ using System;
 using System.Collections;
 using System.Linq;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Utilities;

@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Moq;
-using Moq.Protected;
 using Remotion.Reflection;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.MetaValidation;

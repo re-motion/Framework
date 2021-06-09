@@ -17,7 +17,6 @@
 using System;
 using System.Text.RegularExpressions;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.UnitTests.TestHelpers;

@@ -22,7 +22,6 @@ using log4net.Core;
 using log4net.Repository;
 using log4net.Repository.Hierarchy;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Logging;
 using Remotion.Validation.Implementation;

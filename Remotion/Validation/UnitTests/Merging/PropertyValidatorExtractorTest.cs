@@ -17,7 +17,6 @@
 using System;
 using System.Linq;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Reflection;
 using Remotion.Validation.Implementation;
@@ -118,19 +117,22 @@ namespace Remotion.Validation.UnitTests.Merging
               mock.ValidatorRemoved (
                   _stubPropertyValidator2,
                   new[] { _removingPropertyValidatorRegistration1, _removingPropertyValidatorRegistration6 },
-                  addingComponentPropertyRule.Object)).Verifiable();
+                  addingComponentPropertyRule.Object))
+          .Verifiable();
       _logContextMock.Setup (
           mock =>
               mock.ValidatorRemoved (
                   _stubPropertyValidator3,
                   new[] { _removingPropertyValidatorRegistration2 },
-                  addingComponentPropertyRule.Object)).Verifiable();
+                  addingComponentPropertyRule.Object))
+          .Verifiable();
       _logContextMock.Setup (
           mock =>
               mock.ValidatorRemoved (
                   _stubPropertyValidator5,
                   new[] { _removingPropertyValidatorRegistration10 },
-                  addingComponentPropertyRule.Object)).Verifiable();
+                  addingComponentPropertyRule.Object))
+          .Verifiable();
 
       var result = _extractor.ExtractPropertyValidatorsToRemove (addingComponentPropertyRule.Object).ToArray();
 
@@ -158,7 +160,8 @@ namespace Remotion.Validation.UnitTests.Merging
               mock.ValidatorRemoved (
                   _stubPropertyValidator4,
                   new[] { _removingPropertyValidatorRegistration8 },
-                  addingComponentPropertyRule.Object)).Verifiable();
+                  addingComponentPropertyRule.Object))
+          .Verifiable();
 
       var result = _extractor.ExtractPropertyValidatorsToRemove (addingComponentPropertyRule.Object).ToArray ();
       _logContextMock.Verify (

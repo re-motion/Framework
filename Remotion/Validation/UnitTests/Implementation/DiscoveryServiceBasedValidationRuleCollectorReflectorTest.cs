@@ -18,7 +18,6 @@ using System;
 using System.ComponentModel.Design;
 using System.Linq;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Validation.Attributes;
 using Remotion.Validation.Implementation;

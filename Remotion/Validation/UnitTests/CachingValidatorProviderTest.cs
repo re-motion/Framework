@@ -1,5 +1,4 @@
 ﻿using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 
 namespace Remotion.Validation.UnitTests

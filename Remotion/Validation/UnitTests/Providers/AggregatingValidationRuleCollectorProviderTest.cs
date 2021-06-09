@@ -19,7 +19,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Providers;

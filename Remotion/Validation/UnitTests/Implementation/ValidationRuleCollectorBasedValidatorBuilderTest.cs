@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Reflection;
 using Remotion.Validation.Implementation;
@@ -300,7 +299,8 @@ namespace Remotion.Validation.UnitTests.Implementation
       _validationRuleCollectorMergerMock
           .Setup (
               mock => mock.Merge (
-                  It.Is<IEnumerable<IEnumerable<ValidationRuleCollectorInfo>>> (                      c =>
+                  It.Is<IEnumerable<IEnumerable<ValidationRuleCollectorInfo>>> (
+                      c =>
                           c.SelectMany (g => g).ElementAt (0).Equals (_validationRuleCollectorInfo1) &&
                           c.SelectMany (g => g).ElementAt (1).Equals (_validationRuleCollectorInfo3) &&
                           c.SelectMany (g => g).ElementAt (2).Equals (_validationRuleCollectorInfo2))))

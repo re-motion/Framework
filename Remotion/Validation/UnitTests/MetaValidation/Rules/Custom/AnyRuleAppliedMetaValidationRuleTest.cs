@@ -17,7 +17,6 @@
 using System;
 using System.Linq;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Validation.MetaValidation.Rules.Custom;
 using Remotion.Validation.UnitTests.TestDomain;

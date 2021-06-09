@@ -19,7 +19,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Reflection;

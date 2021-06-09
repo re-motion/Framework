@@ -17,7 +17,6 @@
 using System;
 using System.Linq;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Reflection;
 using Remotion.Validation.MetaValidation;
@@ -103,7 +102,8 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
               It.Is<IPropertyMetaValidationRule> (
                   rule =>
                       rule.GetType() == typeof (DelegatePropertyMetaValidationRule<IPropertyValidator>) &&
-                      rule.Validate (new IPropertyValidator[0]).First() == fakeValidationResult))).Verifiable();
+                      rule.Validate (new IPropertyValidator[0]).First() == fakeValidationResult)))
+          .Verifiable();
 
       _addingPropertyValidationBuilder.AddMetaValidationRule (v => fakeValidationResult);
 

@@ -18,7 +18,6 @@ using System;
 using System.Linq;
 using System.Reflection;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Reflection;
 using Remotion.Validation.Implementation;

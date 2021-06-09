@@ -17,7 +17,6 @@
 using System;
 using System.Linq;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Reflection;
 using Remotion.Validation.Implementation;
@@ -100,25 +99,29 @@ namespace Remotion.Validation.UnitTests.Merging
               mock.ValidatorRemoved (
                   _stubObjectValidator1,
                   new[] { _removingObjectValidatorRegistration1, _removingObjectValidatorRegistration4 },
-                  addingObjectValidationRuleCollector.Object)).Verifiable();
+                  addingObjectValidationRuleCollector.Object))
+          .Verifiable();
       _logContextMock.Setup (
           mock =>
               mock.ValidatorRemoved (
                   _stubObjectValidator2,
                   new[] { _removingObjectValidatorRegistration2 },
-                  addingObjectValidationRuleCollector.Object)).Verifiable();
+                  addingObjectValidationRuleCollector.Object))
+          .Verifiable();
       _logContextMock.Setup (
           mock =>
               mock.ValidatorRemoved (
                   _stubObjectValidator4.Object,
                   new[] { _removingObjectValidatorRegistration6 },
-                  addingObjectValidationRuleCollector.Object)).Verifiable();
+                  addingObjectValidationRuleCollector.Object))
+          .Verifiable();
       _logContextMock.Setup (
           mock =>
               mock.ValidatorRemoved (
                   _stubObjectValidator5.Object,
                   new[] { _removingObjectValidatorRegistration7 },
-                  addingObjectValidationRuleCollector.Object)).Verifiable();
+                  addingObjectValidationRuleCollector.Object))
+          .Verifiable();
 
       var extractor = new ObjectValidatorExtractor (
           new[]

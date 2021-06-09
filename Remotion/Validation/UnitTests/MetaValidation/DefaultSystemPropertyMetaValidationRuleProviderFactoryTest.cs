@@ -16,7 +16,6 @@
 // 
 using System;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Reflection;
 using Remotion.Validation.MetaValidation;

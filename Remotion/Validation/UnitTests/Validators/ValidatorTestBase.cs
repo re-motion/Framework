@@ -16,7 +16,6 @@
 // 
 using System;
 using Moq;
-using Moq.Protected;
 using Remotion.Reflection;
 using Remotion.Validation.Validators;
 
