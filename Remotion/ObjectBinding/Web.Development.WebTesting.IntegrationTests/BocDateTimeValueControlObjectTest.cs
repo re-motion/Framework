@@ -362,8 +362,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var validateButton = home.GetValidateButton();
       var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
 
-      var dateScope = GetDateScope (bocDateTimeValue.Scope);
-      dateScope.FillInWith ("");
+      bocDateTimeValue.SetDate ("");
 
       validateButton.Click();
 
@@ -381,8 +380,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var validateButton = home.GetValidateButton();
       var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
 
-      var timeScope = GetTimeScope (bocDateTimeValue.Scope);
-      timeScope.FillInWith ("");
+      bocDateTimeValue.SetTime ("");
 
       validateButton.Click();
 
@@ -400,8 +398,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var validateButton = home.GetValidateButton();
       var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
 
-      var timeScope = GetTimeScope (bocDateTimeValue.Scope);
-      timeScope.FillInWith ("");
+      bocDateTimeValue.SetTime ("");
 
       validateButton.Click();
 
@@ -423,11 +420,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var validateButton = home.GetValidateButton();
       var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
 
-      var dateScope = GetDateScope (bocDateTimeValue.Scope);
-      dateScope.FillInWith ("");
+      bocDateTimeValue.SetDate ("");
 
-      var timeScope = GetTimeScope (bocDateTimeValue.Scope);
-      timeScope.FillInWith ("");
+      bocDateTimeValue.SetTime ("");
 
       validateButton.Click();
 
@@ -440,16 +435,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     private WxePageObject Start ()
     {
       return Start ("BocDateTimeValue");
-    }
-
-    private ElementScope GetDateScope (ElementScope scope)
-    {
-      return scope.FindTagWithAttribute ("input", DiagnosticMetadataAttributesForObjectBinding.BocDateTimeValueDateField, "true");
-    }
-
-    private ElementScope GetTimeScope (ElementScope scope)
-    {
-      return scope.FindTagWithAttribute ("input", DiagnosticMetadataAttributesForObjectBinding.BocDateTimeValueTimeField, "true");
     }
 
     private class DerivedBocDateTimeValueControlObject : BocDateTimeValueControlObject
