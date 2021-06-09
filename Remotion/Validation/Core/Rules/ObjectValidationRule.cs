@@ -27,13 +27,13 @@ namespace Remotion.Validation.Rules
   public class ObjectValidationRule<TValidatedType> : IObjectValidationRule
   {
     [CanBeNull]
-    public Func<TValidatedType, bool> Condition { get; }
+    public Func<TValidatedType, bool>? Condition { get; }
 
     [NotNull]
     public IReadOnlyCollection<IObjectValidator> Validators { get; }
 
     public ObjectValidationRule (
-        [CanBeNull] Func<TValidatedType, bool> condition,
+        [CanBeNull] Func<TValidatedType, bool>? condition,
         [NotNull] IReadOnlyCollection<IObjectValidator> validators)
     {
       ArgumentUtility.CheckNotNull ("validators", validators);
@@ -46,7 +46,7 @@ namespace Remotion.Validation.Rules
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
-      var instanceToValidate = (TValidatedType) context.InstanceToValidate;
+      var instanceToValidate = (TValidatedType?) context.InstanceToValidate;
       if (instanceToValidate == null)
         return Enumerable.Empty<ValidationFailure>();
 
@@ -65,7 +65,7 @@ namespace Remotion.Validation.Rules
       if (Condition == null)
         return true;
 
-      var instanceToValidate = (TValidatedType) context.InstanceToValidate;
+      var instanceToValidate = (TValidatedType?) context.InstanceToValidate;
       if (instanceToValidate == null)
         return false;
 

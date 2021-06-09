@@ -26,7 +26,7 @@ namespace Remotion.Validation.Implementation
     {
     }
 
-    public abstract string Format ([NotNull] CultureInfo culture, [CanBeNull] IFormatProvider formatProvider, [NotNull] params object[] parameters);
+    public abstract string Format ([NotNull] CultureInfo culture, [CanBeNull] IFormatProvider? formatProvider, [NotNull] params object?[] parameters);
 
     public abstract override string ToString ();
   }

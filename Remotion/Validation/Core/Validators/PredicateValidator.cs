@@ -28,7 +28,7 @@ namespace Remotion.Validation.Validators
 {
   public class PredicateValidator : IPredicateValidator
   {
-    public delegate bool Predicate (object instanceToValidate, object propertyValue, PropertyValidatorContext propertyValidatorContext);
+    public delegate bool Predicate (object instanceToValidate, object? propertyValue, PropertyValidatorContext propertyValidatorContext);
 
     private readonly Predicate _predicate;
 

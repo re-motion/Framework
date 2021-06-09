@@ -34,7 +34,7 @@ namespace Remotion.Validation.Rules
     public Func<object, object> PropertyFunc { get; }
 
     [CanBeNull]
-    public Func<TValidatedType, bool> Condition { get; }
+    public Func<TValidatedType, bool>? Condition { get; }
 
     [NotNull]
     public IReadOnlyCollection<IPropertyValidator> Validators { get; }
@@ -42,7 +42,7 @@ namespace Remotion.Validation.Rules
     public PropertyValidationRule (
         [NotNull] IPropertyInformation property,
         [NotNull] Func<object, object> propertyFunc,
-        [NotNull] Func<TValidatedType, bool> condition,
+        [CanBeNull] Func<TValidatedType, bool>? condition,
         [NotNull] IReadOnlyCollection<IPropertyValidator> validators)
     {
       ArgumentUtility.CheckNotNull ("property", property);
@@ -59,7 +59,7 @@ namespace Remotion.Validation.Rules
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
-      var instanceToValidate = (TValidatedType) context.InstanceToValidate;
+      var instanceToValidate = (TValidatedType?) context.InstanceToValidate;
       if (instanceToValidate == null)
         return Enumerable.Empty<ValidationFailure>();
 
@@ -79,7 +79,7 @@ namespace Remotion.Validation.Rules
       if (Condition == null)
         return true;
 
-      var instanceToValidate = (TValidatedType) context.InstanceToValidate;
+      var instanceToValidate = (TValidatedType?) context.InstanceToValidate;
       if (instanceToValidate == null)
         return false;
 

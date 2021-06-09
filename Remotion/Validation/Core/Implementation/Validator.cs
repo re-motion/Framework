@@ -46,6 +46,7 @@ namespace Remotion.Validation.Implementation
     }
 
     public IValidator<T> Create<T> ()
+        where T : notnull
     {
       return new TypedValidatorDecorator<T> (this);
     }

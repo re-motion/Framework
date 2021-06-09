@@ -33,13 +33,13 @@ namespace Remotion.Validation.Validators
     public IPropertyInformation Property { get; }
 
     [CanBeNull]
-    public object PropertyValue { get; }
+    public object? PropertyValue { get; }
 
     public PropertyValidatorContext (
         [NotNull] ValidationContext parentContext,
         [NotNull] object instance,
         [NotNull] IPropertyInformation property,
-        [CanBeNull] object propertyValue)
+        [CanBeNull] object? propertyValue)
     {
       ArgumentUtility.CheckNotNull ("parentContext", parentContext);
       ArgumentUtility.CheckNotNull ("instance", instance);

@@ -33,7 +33,7 @@ namespace Remotion.Validation.Validators
     public IComparable To { get; }
 
     [CanBeNull]
-    public IComparer Comparer { get; }
+    public IComparer? Comparer { get; }
     public string ErrorMessage { get; }
     public ValidationMessage ValidationMessage { get; }
 
@@ -41,7 +41,7 @@ namespace Remotion.Validation.Validators
         [NotNull] IComparable from,
         [NotNull] IComparable to,
         [NotNull] ValidationMessage validationMessage,
-        [CanBeNull] IComparer comparer = null)
+        [CanBeNull] IComparer? comparer = null)
     {
       ArgumentUtility.CheckNotNull ("from", from);
       ArgumentUtility.CheckNotNull ("to", to);

@@ -25,6 +25,7 @@ namespace Remotion.Validation.Implementation
   /// </summary>
   /// <typeparam name="T"></typeparam>
   public class TypedValidatorDecorator<T> : IValidator<T>
+      where T : notnull
   {
     private readonly IValidator _validator;
 

@@ -13,6 +13,7 @@
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -55,6 +56,9 @@
   <ItemGroup>
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\RoslynAnnotations\NullableAnnotations.cs">
+      <Link>SharedSource\RoslynAnnotations\NullableAnnotations.cs</Link>
     </Compile>
     <Compile Include="Attributes\ApplyProgrammaticallyAttribute.cs" />
     <Compile Include="Attributes\ApplyWithClassAttribute.cs" />
@@ -260,6 +264,13 @@
     <None Include="FacetManifest.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\..\..\packages\ReferenceAssemblyAnnotator.5.0.0.1\build\ReferenceAssemblyAnnotator.targets" Condition="Exists('..\..\..\packages\ReferenceAssemblyAnnotator.5.0.0.1\build\ReferenceAssemblyAnnotator.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105.The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\..\packages\ReferenceAssemblyAnnotator.5.0.0.1\build\ReferenceAssemblyAnnotator.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\ReferenceAssemblyAnnotator.5.0.0.1\build\ReferenceAssemblyAnnotator.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

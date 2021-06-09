@@ -32,7 +32,7 @@ namespace Remotion.Validation.RuleBuilders
     /// <returns>An object to continue the fluent specification.</returns>
     [NotNull]
     IRemovingPropertyValidationRuleBuilder<TValidatedType, TProperty> Validator<TValidator> (
-        [CanBeNull] Func<TValidator, bool> validatorPredicate = null)
+        [CanBeNull] Func<TValidator, bool>? validatorPredicate = null)
         where TValidator : IPropertyValidator;
 
     /// <summary>
@@ -41,7 +41,7 @@ namespace Remotion.Validation.RuleBuilders
     /// <returns>An object to continue the fluent specification.</returns>
     [NotNull]
     IRemovingPropertyValidationRuleBuilder<TValidatedType, TProperty> Validator<TValidator, TCollectorTypeToRemoveFrom> (
-        [CanBeNull] Func<TValidator, bool> validatorPredicate = null)
+        [CanBeNull] Func<TValidator, bool>? validatorPredicate = null)
         where TValidator : IPropertyValidator;
 
     /// <summary>
@@ -52,7 +52,7 @@ namespace Remotion.Validation.RuleBuilders
     [NotNull]
     IRemovingPropertyValidationRuleBuilder<TValidatedType, TProperty> Validator (
         [NotNull] Type validatorType,
-        [CanBeNull] Type collectorTypeToRemoveFrom = null,
-        [CanBeNull] Func<IPropertyValidator, bool> validatorPredicate = null);
+        [CanBeNull] Type? collectorTypeToRemoveFrom = null,
+        [CanBeNull] Func<IPropertyValidator, bool>? validatorPredicate = null);
   }
 }

@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -42,6 +43,7 @@ namespace Remotion.Validation.Implementation
       return !_filterTypes.Contains (type);
     }
 
+    [MemberNotNull (nameof (_filterTypes))]
     private void Initialize ()
     {
       _filterTypes = new List<Type> (

@@ -73,17 +73,17 @@ namespace Remotion.Validation.Merging
 
         return propertyToMatch.Name == currentProperty.Name
                // ReSharper disable PossibleNullReferenceException
-               && currentProperty.DeclaringType.IsAssignableFrom (propertyToMatch.DeclaringType);
+               && currentProperty.DeclaringType!.IsAssignableFrom (propertyToMatch.DeclaringType!);
         // ReSharper restore PossibleNullReferenceException
       }
 
-      static bool IsCollectorTypeMatch (Type currentCollectorType, Type collectorTypeToMatch)
+      static bool IsCollectorTypeMatch (Type currentCollectorType, Type? collectorTypeToMatch)
       {
         return collectorTypeToMatch == null
                || collectorTypeToMatch == currentCollectorType;
       }
 
-      static bool IsPredicateMatch (IPropertyValidator currentValidator, Func<IPropertyValidator, bool> predicateToMatch)
+      static bool IsPredicateMatch (IPropertyValidator currentValidator, Func<IPropertyValidator, bool>? predicateToMatch)
       {
         return predicateToMatch == null 
                || predicateToMatch (currentValidator);

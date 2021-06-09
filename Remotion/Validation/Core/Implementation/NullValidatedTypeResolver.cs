@@ -26,7 +26,7 @@ namespace Remotion.Validation.Implementation
   [ImplementationFor (typeof (IValidatedTypeResolver), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
   public class NullValidatedTypeResolver : IValidatedTypeResolver
   {
-    public Type GetValidatedType (Type collectorType)
+    public Type? GetValidatedType (Type collectorType)
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("collectorType", collectorType, typeof (IValidationRuleCollector));
 

@@ -44,7 +44,7 @@ namespace Remotion.Validation.Implementation
       get { return _resolver; }
     }
 
-    public Type GetValidatedType (Type collectorType)
+    public Type? GetValidatedType (Type collectorType)
     {
       ArgumentUtility.CheckNotNull ("collectorType", collectorType);
 

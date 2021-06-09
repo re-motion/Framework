@@ -54,7 +54,7 @@ namespace Remotion.Validation.RuleCollectors
     /// </remarks>
     void RegisterValidator (
         [NotNull] Type validatorType,
-        [CanBeNull] Type collectorTypeToRemoveFrom,
-        [CanBeNull] Func<IObjectValidator, bool> validatorPredicate);
+        [CanBeNull] Type? collectorTypeToRemoveFrom,
+        [CanBeNull] Func<IObjectValidator, bool>? validatorPredicate);
   }
 }

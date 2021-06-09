@@ -33,7 +33,7 @@ namespace Remotion.Validation.RuleCollectors
     public bool IsRemovable { get; private set; }
 
     [CanBeNull]
-    public Func<TValidatedType, bool> Condition { get; private set; }
+    public Func<TValidatedType, bool>? Condition { get; private set; }
 
     private readonly List<IPropertyValidator> _validators = new List<IPropertyValidator>();
 
@@ -71,7 +71,7 @@ namespace Remotion.Validation.RuleCollectors
                 nameof (IValidationMessageFactory),
                 validator.GetType().Name,
                 Property.Name,
-                Property.GetOriginalDeclaringType().GetFullNameSafe()));
+                Property.GetOriginalDeclaringType()!.GetFullNameSafe()));
 
         tuple.ValidationMessage.Initialize (validationMessage);
       }
@@ -137,7 +137,7 @@ namespace Remotion.Validation.RuleCollectors
         throw new ValidationConfigurationException (
             string.Format ("Attempted to remove non-removable validator(s) '{0}' on property '{1}.{2}'.",
                 string.Join (", ", validatorsToRemove.Select (v => v.GetType().Name).ToArray()),
-                Property.DeclaringType.GetFullNameSafe(),
+                Property.DeclaringType!.GetFullNameSafe(),
                 Property.Name));
       }
     }

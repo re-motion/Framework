@@ -31,7 +31,7 @@ namespace Remotion.Validation.Implementation
       _validationMessageProvider = validationMessageProvider;
     }
 
-    public override string Format (CultureInfo culture, IFormatProvider formatProvider, params object[] parameters)
+    public override string Format (CultureInfo culture, IFormatProvider? formatProvider, params object?[] parameters)
     {
       ArgumentUtility.CheckNotNull ("culture", culture);
       ArgumentUtility.CheckNotNull ("parameters", parameters);

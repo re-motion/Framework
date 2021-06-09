@@ -22,6 +22,7 @@ namespace Remotion.Validation
   /// <summary>Defines a validator for a particular type.</summary>
   /// <typeparam name="T"></typeparam>
   public interface IValidator<in T> : IValidator
+      where T : notnull
   {
     /// <summary>Validates the specified <paramref name="instance"/>.</summary>
     /// <param name="instance">The instance to validate</param>

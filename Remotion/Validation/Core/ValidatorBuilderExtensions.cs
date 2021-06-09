@@ -30,6 +30,7 @@ namespace Remotion.Validation
     /// </summary>
     /// <typeparam name="TValidatedType">The <see cref="Type"/> that is validated by the returned <see cref="IValidator{T}"/></typeparam>.
     public static IValidator<TValidatedType> BuildValidator<TValidatedType> (this IValidatorBuilder builder)
+        where TValidatedType : notnull
     {
       ArgumentUtility.CheckNotNull ("builder", builder);
 

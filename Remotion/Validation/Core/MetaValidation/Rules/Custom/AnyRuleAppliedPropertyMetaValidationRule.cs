@@ -49,7 +49,7 @@ namespace Remotion.Validation.MetaValidation.Rules.Custom
             MetaValidationRuleValidationResult.CreateInvalidResult (
                 "'{0}' failed for property '{1}.{2}': No validation rules defined.",
                 GetType ().Name,
-                _property.ReflectedType.GetFullNameSafe(),
+                _property.ReflectedType!.GetFullNameSafe(),
                 _property.Name);
       }
       else

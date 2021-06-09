@@ -27,12 +27,12 @@ namespace Remotion.Validation.Results
     public IPropertyInformation ValidatedProperty { get; }
 
     [CanBeNull]
-    public object ValidatedPropertyValue { get; }
+    public object? ValidatedPropertyValue { get; }
 
     public PropertyValidationFailure (
         [NotNull] object validatedObject,
         [NotNull] IPropertyInformation validatedProperty,
-        [CanBeNull] object validatedPropertyValue,
+        [CanBeNull] object? validatedPropertyValue,
         [NotNull] string errorMessage,
         [NotNull] string localizedValidationMessage)
         :base (validatedObject, errorMessage, localizedValidationMessage)

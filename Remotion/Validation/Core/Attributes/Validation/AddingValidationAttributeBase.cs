@@ -37,7 +37,7 @@ namespace Remotion.Validation.Attributes.Validation
     /// <summary>
     /// Gets or sets the error message displayed when the validation fails.
     /// </summary>
-    public string ErrorMessage { get; set; }
+    public string? ErrorMessage { get; set; }
 
     protected abstract IEnumerable<IPropertyValidator> GetValidators (IPropertyInformation property, IValidationMessageFactory validationMessageFactory); 
 
