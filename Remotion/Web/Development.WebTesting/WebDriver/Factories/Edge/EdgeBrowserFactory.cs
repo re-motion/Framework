@@ -52,7 +52,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Edge
       var sessionConfiguration = CreateSessionConfiguration (configuration);
       var commandTimeout = configuration.CommandTimeout;
 
-      var driver = CreateEdgeDriver (out var driverProcessID, commandTimeout);
+      var driver = CreateEdgeDriver (out var driverProcessID, out var userDirectory, commandTimeout);
       driver.Manage().Timeouts().AsynchronousJavaScript = configuration.AsyncJavaScriptTimeout;
 
       var session = new Coypu.BrowserSession (sessionConfiguration, new CustomSeleniumWebDriver (driver, Browser.Edge));
@@ -60,7 +60,8 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Edge
       return new EdgeBrowserSession (
           session,
           _edgeConfiguration,
-          driverProcessID);
+          driverProcessID,
+          userDirectory);
     }
 
     private SessionConfiguration CreateSessionConfiguration (DriverConfiguration configuration)
@@ -77,11 +78,12 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Edge
              };
     }
 
-    private EdgeDriver CreateEdgeDriver (out int driverProcessID, TimeSpan commandTimeout)
+    private EdgeDriver CreateEdgeDriver (out int driverProcessID, [CanBeNull] out string userDirectory, TimeSpan commandTimeout)
     {
       var driverService = CreateEdgeDriverService();
       var driver = new EdgeDriver (driverService, _extendedEdgeOptions, commandTimeout);
       driverProcessID = driverService.ProcessId;
+      userDirectory = _extendedEdgeOptions.UserDirectory;
 
       return driver;
     }
