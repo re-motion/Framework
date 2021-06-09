@@ -180,7 +180,7 @@ namespace Remotion.Web.Development.WebTesting
     {
       ArgumentUtility.CheckNotNull ("configSettings", configSettings);
 
-      return new EdgeConfiguration (configSettings);
+      return new EdgeConfiguration (configSettings, new AdvancedEdgeOptions());
     }
 
     protected virtual IFirefoxConfiguration CreateFirefoxConfiguration (WebTestConfigurationSection configSettings)

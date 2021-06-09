@@ -246,6 +246,7 @@
     <Compile Include="BrowserSession\IBrowserSession.cs" />
     <Compile Include="BrowserSession\InternetExplorer\InternetExplorerBrowserSession.cs" />
     <Compile Include="WebDriver\Configuration\Chrome\IChromeConfiguration.cs" />
+    <Compile Include="WebDriver\Configuration\Edge\AdvancedEdgeOptions.cs" />
     <Compile Include="WebDriver\Configuration\Edge\EdgeBinariesProvider.cs" />
     <Compile Include="WebDriver\Configuration\Edge\EdgeConfiguration.cs" />
     <Compile Include="WebDriver\Configuration\Edge\EdgeExecutable.cs" />
