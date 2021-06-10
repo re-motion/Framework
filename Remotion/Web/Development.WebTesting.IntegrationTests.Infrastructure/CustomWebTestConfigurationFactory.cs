@@ -53,9 +53,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
     protected override IEdgeConfiguration CreateEdgeConfiguration (WebTestConfigurationSection configSettings)
     {
       var edgeVersionArchivePath = ConfigurationManager.AppSettings["EdgeVersionArchive"];
+      var advancedEdgeOptions = new AdvancedEdgeOptions();
 
       if (string.IsNullOrEmpty (edgeVersionArchivePath))
-        return new EdgeConfiguration (configSettings);
+        return new EdgeConfiguration (configSettings, advancedEdgeOptions);
 
       var versionedEdgeFolder = GetVersionedBrowserFolderName ("Edge", edgeVersionArchivePath, LatestTestedEdgeVersion);
       var customEdgeDirectory = PrepareCustomBrowserDirectory (edgeVersionArchivePath, versionedEdgeFolder);
@@ -66,7 +67,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 
       var edgeExecutable = new EdgeExecutable (customBrowserBinary, customDriverBinary, customUserDirectoryPath);
 
-      return new EdgeConfiguration (configSettings, edgeExecutable);
+      return new EdgeConfiguration (configSettings, edgeExecutable, advancedEdgeOptions);
     }
 
     protected override IFirefoxConfiguration CreateFirefoxConfiguration (WebTestConfigurationSection configSettings)

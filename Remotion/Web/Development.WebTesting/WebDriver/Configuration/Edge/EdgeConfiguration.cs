@@ -61,25 +61,31 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
     public string BrowserBinaryPath { get; }
     public string DriverBinaryPath { get; }
     public string UserDirectoryRoot { get; }
+    public bool EnableUserDirectoryRootCleanup { get; }
     public string DownloadDirectory { get; }
 
     public EdgeConfiguration (
-        [NotNull] WebTestConfigurationSection webTestConfigurationSection)
-        : this (webTestConfigurationSection, s_edgeExecutable.Value)
+        [NotNull] WebTestConfigurationSection webTestConfigurationSection,
+        [NotNull] AdvancedEdgeOptions advancedEdgeOptions)
+        : this (webTestConfigurationSection, s_edgeExecutable.Value, advancedEdgeOptions)
     {
     }
 
     public EdgeConfiguration (
         [NotNull] WebTestConfigurationSection webTestConfigurationSection,
-        [NotNull] EdgeExecutable edgeExecutable)
+        [NotNull] EdgeExecutable edgeExecutable,
+        [NotNull] AdvancedEdgeOptions advancedEdgeOptions)
         : base (webTestConfigurationSection)
     {
       ArgumentUtility.CheckNotNull ("webTestConfigurationSection", webTestConfigurationSection);
       ArgumentUtility.CheckNotNull ("edgeExecutable", edgeExecutable);
+      ArgumentUtility.CheckNotNull ("advancedEdgeOptions", advancedEdgeOptions);
 
       BrowserBinaryPath = edgeExecutable.BrowserBinaryPath;
       DriverBinaryPath = edgeExecutable.DriverBinaryPath;
       UserDirectoryRoot = edgeExecutable.UserDirectory;
+
+      EnableUserDirectoryRootCleanup = advancedEdgeOptions.DeleteUserDirectoryRoot;
 
       DownloadDirectory = Path.Combine (Path.GetTempPath(), Path.GetRandomFileName());
 

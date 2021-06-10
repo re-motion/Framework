@@ -44,6 +44,11 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
     string UserDirectoryRoot { get; }
 
     /// <summary>
+    /// Defines whether the infrastructure should delete the given <see cref="UserDirectoryRoot"/>.
+    /// </summary>
+    bool EnableUserDirectoryRootCleanup { get; }
+
+    /// <summary>
     /// Creates the <see cref="ChromeOptions"/> used when instantiating the Edge browser.
     /// </summary>
     [NotNull]
