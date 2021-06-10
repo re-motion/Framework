@@ -273,6 +273,7 @@
     <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\CachingAssemblyFinderDecorator.cs" />
     <Compile Include="Reflection\ContextAwareTypeUtility.cs" />
     <Compile Include="ServiceLocation\SafeServiceLocator.cs" />
+    <Compile Include="Utilities\AppContextProvider.cs" />
     <Compile Include="Utilities\Assertion.Partial.cs" />
     <Compile Include="Utilities\AttributeBasedTypeConverterFactory.cs" />
     <Compile Include="Utilities\CompoundTypeConverterFactory.cs" />
@@ -280,6 +281,7 @@
     <Compile Include="Utilities\EnumTypeConverterFactory.cs" />
     <Compile Include="Utilities\EqualityUtility.Partial.cs" />
     <Compile Include="Utilities\ExceptionUtility.Partial.cs" />
+    <Compile Include="Utilities\IAppContextProvider.cs" />
     <Compile Include="Utilities\ITypeConversionProvider.cs" />
     <Compile Include="Utilities\ITypeConverterFactory.cs" />
     <Compile Include="Utilities\MemberInfoEqualityComparer.Partial.cs" />

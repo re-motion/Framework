@@ -38,8 +38,26 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
 
     private readonly DoubleCheckedLockingContainer<QueryDefinitionCollection> _queries;
 
-    public QueryConfiguration ()
+    private readonly IAppContextProvider _contextProvider;
+
+    public QueryConfiguration () : this (new AppContextProvider(), new string[0])
     {
+    }
+
+    public QueryConfiguration (IAppContextProvider provider) : this (provider, new string[0])
+    {
+    }
+
+    public QueryConfiguration (params string[] configurationFiles) : this (new AppContextProvider(), configurationFiles)
+    {
+    }
+
+    public QueryConfiguration (IAppContextProvider provider, params string[] configurationFiles)
+    {
+      ArgumentUtility.CheckNotNull ("provider", provider);
+      ArgumentUtility.CheckNotNull ("configurationFiles", configurationFiles);
+
+      _contextProvider = provider;
       _queries = new DoubleCheckedLockingContainer<QueryDefinitionCollection> (LoadAllQueryDefinitions);
 
       _queryFilesProperty = new ConfigurationProperty (
@@ -49,11 +67,6 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
           ConfigurationPropertyOptions.None);
 
       _properties.Add (_queryFilesProperty);
-    }
-
-    public QueryConfiguration (params string[] configurationFiles) : this()
-    {
-      ArgumentUtility.CheckNotNull ("configurationFiles", configurationFiles);
 
       for (int i = 0; i < configurationFiles.Length; i++)
       {
@@ -122,12 +135,12 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
     private List<string> GetPotentialDefaultQueryFilePaths ()
     {
       List<string> potentialPaths = new List<string> ();
-      potentialPaths.Add (Path.Combine (AppContext.BaseDirectory, c_defaultConfigurationFile));
-      if (AppDomain.CurrentDomain.RelativeSearchPath != null)
+      potentialPaths.Add (Path.Combine (_contextProvider.BaseDirectory, c_defaultConfigurationFile));
+      if (_contextProvider.RelativeSearchPath != null)
       {
-        foreach (string part in AppDomain.CurrentDomain.RelativeSearchPath.Split (new[] {';'}, StringSplitOptions.RemoveEmptyEntries))
+        foreach (string part in _contextProvider.RelativeSearchPath.Split (new[] {';'}, StringSplitOptions.RemoveEmptyEntries))
         {
-          string absoluteSearchPath = Path.GetFullPath (Path.Combine (AppContext.BaseDirectory, part));
+          string absoluteSearchPath = Path.GetFullPath (Path.Combine (_contextProvider.BaseDirectory, part));
           potentialPaths.Add (Path.Combine (absoluteSearchPath, c_defaultConfigurationFile));
         }
       }
