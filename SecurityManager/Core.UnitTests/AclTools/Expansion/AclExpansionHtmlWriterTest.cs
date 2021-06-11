@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting.ObjectMothers;
 using Remotion.SecurityManager.AclTools.Expansion;
@@ -29,7 +30,6 @@ using Remotion.SecurityManager.Domain.Metadata;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.SecurityManager.Globalization.AclTools.Expansion;
 using Remotion.Utilities;
-using Rhino.Mocks;
 
 namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
 {
@@ -676,27 +676,29 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
     {
       const int nrLeafNodes = 33;
 
-      var mocks = new MockRepository();
+      var aclExpansionTreeChildrenMock = new Mock<List<AclExpansionTreeNode<AclExpansionEntry, AclExpansionEntry>>>();
 
-      var aclExpansionTreeChildrenMock = mocks.DynamicMock<List<AclExpansionTreeNode<AclExpansionEntry, AclExpansionEntry>>> ();
+      var aclExpansionTreeNodeMock = new Mock<AclExpansionTreeNode<SecurableClassDefinition,
+        AclExpansionTreeNode<AclExpansionEntry, AclExpansionEntry>>> (null, nrLeafNodes, aclExpansionTreeChildrenMock.Object);
+      aclExpansionTreeNodeMock.Setup (x => x.NumberLeafNodes).Returns (nrLeafNodes).Verifiable();
+      aclExpansionTreeNodeMock.Setup (x => x.Children).Returns (aclExpansionTreeChildrenMock.Object).Verifiable();
 
-      var aclExpansionTreeNodeMock = mocks.DynamicMock<AclExpansionTreeNode<SecurableClassDefinition,
-        AclExpansionTreeNode<AclExpansionEntry, AclExpansionEntry>>> (null, nrLeafNodes, aclExpansionTreeChildrenMock);
-      aclExpansionTreeNodeMock.Expect(x => x.NumberLeafNodes).Return(nrLeafNodes);
-      aclExpansionTreeNodeMock.Expect(x => x.Children).Return(aclExpansionTreeChildrenMock);
+      var aclExpansionHtmlWriterImplementation = new Mock<AclExpansionHtmlWriterImplementation> (TextWriter.Null, true, new AclExpansionHtmlWriterSettings());
+      aclExpansionHtmlWriterImplementation.Setup (x => x.WriteTableDataWithRowCount (AclToolsExpansion.NO_CLASSES_DEFINED_Text, nrLeafNodes)).Verifiable();
 
-      var aclExpansionHtmlWriterImplementation = mocks.DynamicMock<AclExpansionHtmlWriterImplementation>(TextWriter.Null,true,new AclExpansionHtmlWriterSettings());
-      aclExpansionHtmlWriterImplementation.Expect(x => x.WriteTableDataWithRowCount (AclToolsExpansion.NO_CLASSES_DEFINED_Text, nrLeafNodes));
+      var aclExpansionHtmlWriterMock =
+          new Mock<AclExpansionHtmlWriter> (
+              aclExpansionHtmlWriterImplementation.Object,
+              new AclExpansionHtmlWriterSettings())
+          { CallBase = true };
+      aclExpansionHtmlWriterMock.Setup (x => x.WriteTableBody_ProcessStates (aclExpansionTreeChildrenMock.Object)).Verifiable();
 
-      var aclExpansionHtmlWriterMock = mocks.PartialMock<AclExpansionHtmlWriter> (
-          aclExpansionHtmlWriterImplementation, new AclExpansionHtmlWriterSettings());
-      aclExpansionHtmlWriterMock.Expect(x => x.WriteTableBody_ProcessStates(aclExpansionTreeChildrenMock));
+      aclExpansionHtmlWriterMock.Object.WriteTableBody_ProcessClass (aclExpansionTreeNodeMock.Object);
 
-      mocks.ReplayAll();
-
-      aclExpansionHtmlWriterMock.WriteTableBody_ProcessClass (aclExpansionTreeNodeMock);
-
-      mocks.VerifyAll();
+      aclExpansionTreeChildrenMock.Verify();
+      aclExpansionTreeNodeMock.Verify();
+      aclExpansionHtmlWriterImplementation.Verify();
+      aclExpansionHtmlWriterMock.Verify();
     }
 
 

@@ -15,12 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Mixins;
 using Remotion.SecurityManager.Persistence;
-using Rhino.Mocks;
 
 namespace Remotion.SecurityManager.UnitTests.Persistence
 {
@@ -29,23 +29,23 @@ namespace Remotion.SecurityManager.UnitTests.Persistence
   {
     private RdbmsProviderDefinition _rdbmsProviderDefinition;
     private SecurityManagerSqlStorageObjectFactory _securityManagerSqlStorageObjectFactory;
-    private IPersistenceExtension _persistenceExtensionStub;
+    private Mock<IPersistenceExtension> _persistenceExtensionStub;
 
     [SetUp]
     public void SetUp ()
     {
       _rdbmsProviderDefinition = new RdbmsProviderDefinition ("TestDomain", new SecurityManagerSqlStorageObjectFactory(), "ConnectionString");
       _securityManagerSqlStorageObjectFactory = new SecurityManagerSqlStorageObjectFactory ();
-      _persistenceExtensionStub = MockRepository.GenerateStub<IPersistenceExtension>();
+      _persistenceExtensionStub = new Mock<IPersistenceExtension>();
     }
 
     [Test]
     public void CreateStorageProvider ()
     {
-      var result = _securityManagerSqlStorageObjectFactory.CreateStorageProvider (_rdbmsProviderDefinition, _persistenceExtensionStub);
+      var result = _securityManagerSqlStorageObjectFactory.CreateStorageProvider (_rdbmsProviderDefinition, _persistenceExtensionStub.Object);
 
       Assert.That (result, Is.TypeOf (typeof (SecurityManagerRdbmsProvider)));
-      Assert.That (result.PersistenceExtension, Is.SameAs (_persistenceExtensionStub));
+      Assert.That (result.PersistenceExtension, Is.SameAs (_persistenceExtensionStub.Object));
       Assert.That (result.StorageProviderDefinition, Is.SameAs (_rdbmsProviderDefinition));
     }
 
@@ -56,7 +56,7 @@ namespace Remotion.SecurityManager.UnitTests.Persistence
           MixinConfiguration.BuildFromActive().ForClass (typeof (RdbmsProvider)).Clear().AddMixins (typeof (SecurityManagerRdbmsProviderTestMixin)).
               EnterScope())
       {
-        var result = _securityManagerSqlStorageObjectFactory.CreateStorageProvider (_rdbmsProviderDefinition, _persistenceExtensionStub);
+        var result = _securityManagerSqlStorageObjectFactory.CreateStorageProvider (_rdbmsProviderDefinition, _persistenceExtensionStub.Object);
 
         Assert.That (Mixin.Get<SecurityManagerRdbmsProviderTestMixin> (result), Is.Not.Null);
       }

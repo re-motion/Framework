@@ -17,12 +17,12 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting.ObjectMothers;
 using Remotion.SecurityManager.AclTools.Expansion;
 using Remotion.SecurityManager.AclTools.Expansion.Infrastructure;
 using Remotion.SecurityManager.Domain.AccessControl;
-using Rhino.Mocks;
 
 namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
 {
@@ -32,12 +32,12 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
     [Test]
     public void CtorTest ()
     {
-      var userFinderMock = MockRepository.GenerateMock<IAclExpanderUserFinder> ();
-      var aclFinderMock = MockRepository.GenerateMock<IAclExpanderAclFinder> ();
+      var userFinderMock = new Mock<IAclExpanderUserFinder>();
+      var aclFinderMock = new Mock<IAclExpanderAclFinder>();
 
-      var userRoleAclAceCombinations = new UserRoleAclAceCombinationFinder (userFinderMock,aclFinderMock);
-      Assert.That (Remotion.Development.UnitTesting.PrivateInvoke.GetNonPublicField (userRoleAclAceCombinations, "_userFinder"), Is.EqualTo(userFinderMock));
-      Assert.That (Remotion.Development.UnitTesting.PrivateInvoke.GetNonPublicField (userRoleAclAceCombinations, "_accessControlListFinder"), Is.EqualTo (aclFinderMock));
+      var userRoleAclAceCombinations = new UserRoleAclAceCombinationFinder (userFinderMock.Object,aclFinderMock.Object);
+      Assert.That (Remotion.Development.UnitTesting.PrivateInvoke.GetNonPublicField (userRoleAclAceCombinations, "_userFinder"), Is.EqualTo(userFinderMock.Object));
+      Assert.That (Remotion.Development.UnitTesting.PrivateInvoke.GetNonPublicField (userRoleAclAceCombinations, "_accessControlListFinder"), Is.EqualTo (aclFinderMock.Object));
     }
 
     
@@ -46,13 +46,13 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
     {
       // Prepare to serve some User|s
       var users = ListObjectMother.New (User, User2, User3);
-      var userFinderStub = MockRepository.GenerateStub<IAclExpanderUserFinder> ();
-      userFinderStub.Expect (stub => stub.FindUsers ()).Return (users);
+      var userFinderStub = new Mock<IAclExpanderUserFinder>();
+      userFinderStub.Setup (stub => stub.FindUsers ()).Returns (users).Verifiable();
 
       // Prepare to serve some Acl|s
       var acls = ListObjectMother.New<AccessControlList> (Acl, Acl2);
-      var aclFinderStub = MockRepository.GenerateStub<IAclExpanderAclFinder> ();
-      aclFinderStub.Expect (stub => stub.FindAccessControlLists ()).Return (acls);
+      var aclFinderStub = new Mock<IAclExpanderAclFinder>();
+      aclFinderStub.Setup (stub => stub.FindAccessControlLists ()).Returns (acls).Verifiable();
 
       // Assert that our test set is not too small.
       var numberRoles = users.SelectMany (x => x.Roles).Count ();
@@ -68,7 +68,7 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
                                                from ace in acl.AccessControlEntries
                                                select new UserRoleAclAceCombination (role, ace);
 
-      var userRoleAclAceCombinations = new UserRoleAclAceCombinationFinder (userFinderStub, aclFinderStub);
+      var userRoleAclAceCombinations = new UserRoleAclAceCombinationFinder (userFinderStub.Object, aclFinderStub.Object);
       Assert.That (userRoleAclAceCombinations.ToArray (), Is.EquivalentTo (userRoleAclAceCombinationsExpected.ToArray ()));
     }
 
