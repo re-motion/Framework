@@ -104,25 +104,25 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
 
     private bool AddCalled (object instance)
     {
-      FieldInfo field = instance.GetType().GetField ("AddCalled");
+      FieldInfo field = instance.GetType().GetField ("AddCalled", BindingFlags.NonPublic | BindingFlags.Instance);
       return (bool) field.GetValue (instance);
     }
 
     private bool AddCalled (Type type)
     {
-      FieldInfo field = type.GetField ("AddCalled");
+      FieldInfo field = type.GetField ("AddCalled", BindingFlags.NonPublic | BindingFlags.Static);
       return (bool) field.GetValue (null);
     }
 
     private bool RemoveCalled (object instance)
     {
-      FieldInfo field = instance.GetType ().GetField ("RemoveCalled");
+      FieldInfo field = instance.GetType ().GetField ("RemoveCalled", BindingFlags.NonPublic | BindingFlags.Instance);
       return (bool) field.GetValue (instance);
     }
 
     private bool RemoveCalled (Type type)
     {
-      FieldInfo field = type.GetField ("RemoveCalled");
+      FieldInfo field = type.GetField ("RemoveCalled", BindingFlags.NonPublic | BindingFlags.Static);
       return (bool) field.GetValue (null);
     }
 

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Reflection;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
@@ -28,8 +29,8 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void TryFinallyWithoutException ()
     {
-      FieldReference tryField = ClassEmitter.CreateField ("TryExecuted", typeof (bool));
-      FieldReference finallyField = ClassEmitter.CreateField ("FinallyExecuted", typeof (bool));
+      FieldReference tryField = ClassEmitter.CreateField ("TryExecuted", typeof (bool), FieldAttributes.Public);
+      FieldReference finallyField = ClassEmitter.CreateField ("FinallyExecuted", typeof (bool), FieldAttributes.Public);
 
       var methodEmitter = GetMethodEmitter (false, typeof (void), new Type[0]);
       Statement[] tryBlock = new Statement[]
@@ -52,8 +53,8 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void TryFinallyWithException ()
     {
-      FieldReference tryField = ClassEmitter.CreateField ("TryExecuted", typeof (bool));
-      FieldReference finallyField = ClassEmitter.CreateField ("FinallyExecuted", typeof (bool));
+      FieldReference tryField = ClassEmitter.CreateField ("TryExecuted", typeof (bool), FieldAttributes.Public);
+      FieldReference finallyField = ClassEmitter.CreateField ("FinallyExecuted", typeof (bool), FieldAttributes.Public);
 
       var methodEmitter = GetMethodEmitter (false, typeof (void), new Type[0]);
       Statement[] tryBlock = new Statement[]
