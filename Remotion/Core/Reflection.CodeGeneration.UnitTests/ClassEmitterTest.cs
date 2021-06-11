@@ -103,7 +103,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
           .AddStatement (new ReturnStatement());
 
       object instance = Activator.CreateInstance (classEmitter.BuildType (), "bla", 0);
-      Assert.That (instance.GetType ().GetField ("_test").GetValue (instance), Is.EqualTo ("bla"));
+      Assert.That (instance.GetType ().GetField ("_test", BindingFlags.NonPublic | BindingFlags.Instance).GetValue (instance), Is.EqualTo ("bla"));
     }
 
     [Test]
@@ -143,7 +143,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
           .AddStatement (new AssignStatement (field, (new ConstReference ("Yay").ToExpression ())))
           .AddStatement (new ReturnStatement ());
       Type t = classEmitter.BuildType ();
-      Assert.That (t.GetField ("s_test").GetValue (null), Is.EqualTo ("Yay"));
+      Assert.That (t.GetField ("s_test", BindingFlags.NonPublic | BindingFlags.Static).GetValue (null), Is.EqualTo ("Yay"));
     }
 
     [Test]
