@@ -20,6 +20,7 @@ namespace Remotion.Security.Metadata
 {
   public class MetadataInfo
   {
+    // TODO RM-7875: MetadataInfo and subtypes should be reworked to increase null safety.
     // types
 
     // static members

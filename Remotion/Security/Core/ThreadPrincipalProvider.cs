@@ -33,11 +33,13 @@ namespace Remotion.Security
 
     public ISecurityPrincipal GetPrincipal ()
     {
-      IIdentity? identity = Thread.CurrentPrincipal.Identity;
+      // TODO RM-7872: Add notnull assertions
+      IIdentity identity = Thread.CurrentPrincipal!.Identity!;
       if (!identity.IsAuthenticated)
         return s_nullSecurityPrincipal;
 
-      return new SecurityPrincipal (identity.Name, null, null, null);
+      // TODO RM-7873: Add notnull assertion
+      return new SecurityPrincipal (identity.Name!, null, null, null);
     }
 
     bool INullObject.IsNull

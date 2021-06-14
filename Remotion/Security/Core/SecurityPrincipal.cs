@@ -67,7 +67,7 @@ namespace Remotion.Security
       get { return _substitutedRoles; }
     }
 
-    public bool Equals (SecurityPrincipal other)
+    public bool Equals (SecurityPrincipal? other)
     {
       if (ReferenceEquals (this, other))
         return true;
@@ -138,7 +138,7 @@ namespace Remotion.Security
       return false;
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
       SecurityPrincipal? other = obj as SecurityPrincipal;
       if (other == null)

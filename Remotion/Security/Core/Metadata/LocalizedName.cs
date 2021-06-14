@@ -51,7 +51,7 @@ namespace Remotion.Security.Metadata
       get { return _referencedObjectID; }
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
       LocalizedName? otherName = obj as LocalizedName;
       if (otherName == null)

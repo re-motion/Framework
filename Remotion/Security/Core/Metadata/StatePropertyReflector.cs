@@ -58,14 +58,14 @@ namespace Remotion.Security.Metadata
       if (!property.PropertyType.IsEnum)
       {
         throw new ArgumentException (
-            string.Format ("The type of the property '{0}' in type '{1}' is not an enumerated type.", property.Name, property.DeclaringType.GetFullNameSafe()),
+            string.Format ("The type of the property '{0}' in type '{1}' is not an enumerated type.", property.Name, property.DeclaringType!.GetFullNameSafe()),
             "property");
       }
 
       if (!Attribute.IsDefined (property.PropertyType, typeof (SecurityStateAttribute), false))
       {
         throw new ArgumentException (string.Format ("The type of the property '{0}' in type '{1}' does not have the {2} applied.", 
-                property.Name, property.DeclaringType.GetFullNameSafe(), typeof (SecurityStateAttribute).GetFullNameSafe()),
+                property.Name, property.DeclaringType!.GetFullNameSafe(), typeof (SecurityStateAttribute).GetFullNameSafe()),
             "property");
       }
 

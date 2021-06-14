@@ -114,7 +114,7 @@ namespace Remotion.Security
       return string.Equals (this._name, other._name);
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
       if (obj == null)
         return false;

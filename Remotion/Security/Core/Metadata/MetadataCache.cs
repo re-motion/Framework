@@ -95,17 +95,18 @@ namespace Remotion.Security.Metadata
       return _stateProperties.ContainsKey (NormalizeProperty (key));
     }
 
-    private PropertyInfo? NormalizeProperty (PropertyInfo property)
+    private PropertyInfo NormalizeProperty (PropertyInfo property)
     {
       ArgumentUtility.CheckNotNull ("property", property);
 
       if (property.DeclaringType == property.ReflectedType)
         return property;
       else
-        return property.DeclaringType.GetProperty (property.Name);
+        // TODO RM-7871: Add notnull assertion
+        return property.DeclaringType!.GetProperty (property.Name)!;
     }
 
-    public EnumValueInfo? GetEnumValueInfo (Enum? key)
+    public EnumValueInfo? GetEnumValueInfo (Enum key)
     {
       ArgumentUtility.CheckNotNull ("key", key);
 

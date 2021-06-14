@@ -22,10 +22,13 @@ namespace Remotion.Security.Metadata
 {
   public class LocalizationFileNameStrategy
   {
+    // TODO RM-7869: Add missing argument checks
+
     public string GetLocalizationFileName (string metadataFilename, CultureInfo culture)
     {
       string baseFilename = Path.GetFileNameWithoutExtension (metadataFilename);
-      string? basePath = Path.GetDirectoryName (metadataFilename);
+      // TODO RM-7870: Add notnull assertion
+      string basePath = Path.GetDirectoryName (metadataFilename)!;
       string baseFilePath = Path.Combine (basePath, baseFilename);
 
       if (string.IsNullOrEmpty (culture.Name))
@@ -37,7 +40,8 @@ namespace Remotion.Security.Metadata
     public string[] GetLocalizationFileNames (string metadataFilename)
     {
       string baseFileName = Path.GetFileNameWithoutExtension (metadataFilename);
-      string? basePath = Path.GetDirectoryName (metadataFilename);
+      // TODO RM-7870: Add notnull assertion
+      string basePath = Path.GetDirectoryName (metadataFilename)!;
       string searchPattern = baseFileName + ".Localization.*xml";
 
       if (basePath == string.Empty)

@@ -88,8 +88,7 @@ namespace Remotion.Security
 
     private AccessType[] GetAccessTypesFromCache (ISecurityProvider securityProvider, ISecurityPrincipal principal)
     {
-      AccessType[] value;
-      if (_cache.TryGetValue (principal, out value))
+      if (_cache.TryGetValue (principal, out var value))
         return value;
 
       // Split to prevent closure being created during the TryGetValue-operation

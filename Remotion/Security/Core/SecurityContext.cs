@@ -240,12 +240,12 @@ namespace Remotion.Security
       return _hashCode;
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
       return EqualityUtility.EqualsEquatable (this, obj);
     }
 
-    bool IEquatable<SecurityContext>.Equals (SecurityContext other)
+    bool IEquatable<SecurityContext>.Equals (SecurityContext? other)
     {
       if (other == null)
         return false;

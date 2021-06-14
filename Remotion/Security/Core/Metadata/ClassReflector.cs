@@ -109,7 +109,7 @@ namespace Remotion.Security.Metadata
       return statePropertyInfos;
     }
 
-    protected bool FindStatePropertiesFilter (MemberInfo member, object filterCriteria)
+    protected bool FindStatePropertiesFilter (MemberInfo member, object? filterCriteria)
     {
       PropertyInfo property = ArgumentUtility.CheckNotNullAndType<PropertyInfo> ("member", member);
       return property.PropertyType.IsEnum && Attribute.IsDefined (property.PropertyType, typeof (SecurityStateAttribute), false);
