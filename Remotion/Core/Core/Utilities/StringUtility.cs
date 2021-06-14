@@ -250,7 +250,7 @@ namespace Remotion.Utilities
       return str;
     }
 
-    public static string? EmptyToNull (string str)
+    public static string? EmptyToNull (string? str)
     {
       if (str != null && str.Length == 0)
         return null;
