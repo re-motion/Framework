@@ -68,12 +68,12 @@ namespace Remotion.Security.Metadata
         throw new ArgumentException ("Value types are not supported.", "type");
       ArgumentUtility.CheckNotNull ("cache", cache);
 
-      SecurableClassInfo info = cache.GetSecurableClassInfo (type);
+      SecurableClassInfo? info = cache.GetSecurableClassInfo (type);
       if (info == null)
       {
         info = new SecurableClassInfo ();
         info.Name = TypeUtility.GetPartialAssemblyQualifiedName (type);
-        PermanentGuidAttribute guidAttribute = (PermanentGuidAttribute) Attribute.GetCustomAttribute (type, typeof (PermanentGuidAttribute), true);
+        PermanentGuidAttribute? guidAttribute = (PermanentGuidAttribute?) Attribute.GetCustomAttribute (type, typeof (PermanentGuidAttribute), true);
         if (guidAttribute != null)
           info.ID = guidAttribute.Value.ToString ();
         info.Properties.AddRange (GetProperties (type, cache));

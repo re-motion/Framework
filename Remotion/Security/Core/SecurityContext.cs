@@ -163,9 +163,9 @@ namespace Remotion.Security
     }
 
     private readonly string _class;
-    private readonly string _owner;
-    private readonly string _ownerGroup;
-    private readonly string _ownerTenant;
+    private readonly string? _owner;
+    private readonly string? _ownerGroup;
+    private readonly string? _ownerTenant;
     private readonly bool _isStateless;
     private readonly Dictionary<string, EnumWrapper> _states;
     private readonly EnumWrapper[] _abstractRoles;
@@ -173,9 +173,9 @@ namespace Remotion.Security
 
     private SecurityContext (
         Type classType,
-        string owner,
-        string ownerGroup,
-        string ownerTenant,
+        string? owner,
+        string? ownerGroup,
+        string? ownerTenant,
         bool isStateless,
         Dictionary<string, EnumWrapper> states,
         EnumWrapper[] abstractRoles)
@@ -195,17 +195,17 @@ namespace Remotion.Security
       get { return _class; }
     }
 
-    public string Owner
+    public string? Owner
     {
       get { return _owner; }
     }
 
-    public string OwnerGroup
+    public string? OwnerGroup
     {
       get { return _ownerGroup; }
     }
 
-    public string OwnerTenant
+    public string? OwnerTenant
     {
       get { return _ownerTenant; }
     }

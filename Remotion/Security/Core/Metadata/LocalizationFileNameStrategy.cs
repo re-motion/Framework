@@ -25,7 +25,7 @@ namespace Remotion.Security.Metadata
     public string GetLocalizationFileName (string metadataFilename, CultureInfo culture)
     {
       string baseFilename = Path.GetFileNameWithoutExtension (metadataFilename);
-      string basePath = Path.GetDirectoryName (metadataFilename);
+      string? basePath = Path.GetDirectoryName (metadataFilename);
       string baseFilePath = Path.Combine (basePath, baseFilename);
 
       if (string.IsNullOrEmpty (culture.Name))
@@ -37,7 +37,7 @@ namespace Remotion.Security.Metadata
     public string[] GetLocalizationFileNames (string metadataFilename)
     {
       string baseFileName = Path.GetFileNameWithoutExtension (metadataFilename);
-      string basePath = Path.GetDirectoryName (metadataFilename);
+      string? basePath = Path.GetDirectoryName (metadataFilename);
       string searchPattern = baseFileName + ".Localization.*xml";
 
       if (basePath == string.Empty)

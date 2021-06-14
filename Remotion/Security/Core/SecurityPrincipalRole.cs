@@ -68,7 +68,7 @@ namespace Remotion.Security
 
     public override bool Equals (object obj)
     {
-      SecurityPrincipalRole other = obj as SecurityPrincipalRole;
+      SecurityPrincipalRole? other = obj as SecurityPrincipalRole;
       if (other == null)
         return false;
       return ((IEquatable<SecurityPrincipalRole>) this).Equals (other);

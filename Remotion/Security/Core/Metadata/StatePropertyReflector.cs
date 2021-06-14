@@ -71,12 +71,12 @@ namespace Remotion.Security.Metadata
 
       ArgumentUtility.CheckNotNull ("cache", cache);
 
-      StatePropertyInfo info = cache.GetStatePropertyInfo (property);
+      StatePropertyInfo? info = cache.GetStatePropertyInfo (property);
       if (info == null)
       {
         info = new StatePropertyInfo ();
         info.Name = property.Name;
-        PermanentGuidAttribute attribute = (PermanentGuidAttribute) Attribute.GetCustomAttribute (property, typeof (PermanentGuidAttribute), true);
+        PermanentGuidAttribute? attribute = (PermanentGuidAttribute?) Attribute.GetCustomAttribute (property, typeof (PermanentGuidAttribute), true);
         if (attribute != null)
           info.ID = attribute.Value.ToString ();
         info.Values = new List<EnumValueInfo> (_enumerationReflector.GetValues (property.PropertyType, cache).Values);

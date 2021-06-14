@@ -28,22 +28,22 @@ namespace Remotion.Security
     {
     }
 
-    public string User
+    public string? User
     {
       get { return null; }
     }
 
-    public IReadOnlyList<ISecurityPrincipalRole> Roles
+    public IReadOnlyList<ISecurityPrincipalRole>? Roles
     {
       get { return null; }
     }
 
-    public string SubstitutedUser
+    public string? SubstitutedUser
     {
       get { return null; }
     }
 
-    public IReadOnlyList<ISecurityPrincipalRole> SubstitutedRoles
+    public IReadOnlyList<ISecurityPrincipalRole>? SubstitutedRoles
     {
       get { return null; }
     }

@@ -53,7 +53,7 @@ namespace Remotion.Security.Metadata
 
     public override bool Equals (object obj)
     {
-      LocalizedName otherName = obj as LocalizedName;
+      LocalizedName? otherName = obj as LocalizedName;
       if (otherName == null)
         return false;
 

@@ -33,7 +33,7 @@ namespace Remotion.Security
 
     public ISecurityPrincipal GetPrincipal ()
     {
-      IIdentity identity = Thread.CurrentPrincipal.Identity;
+      IIdentity? identity = Thread.CurrentPrincipal.Identity;
       if (!identity.IsAuthenticated)
         return s_nullSecurityPrincipal;
 

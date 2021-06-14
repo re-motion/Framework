@@ -26,7 +26,7 @@ namespace Remotion.Security.Metadata
     private delegate LocalizedName CreateLocalizedName<T> (T item, string text);
 
     private CultureInfo[] _cultures;
-    private IMetadataConverter _metadataConverter;
+    private IMetadataConverter? _metadataConverter;
     private IMetadataLocalizationConverter _localizationConverter;
 
     public LocalizingMetadataConverter (IMetadataLocalizationConverter localizationConverter, CultureInfo[] cultures)
@@ -38,7 +38,7 @@ namespace Remotion.Security.Metadata
       _cultures = cultures;
     }
 
-    public IMetadataConverter MetadataConverter
+    public IMetadataConverter? MetadataConverter
     {
       get { return _metadataConverter; }
       set { _metadataConverter = value; }

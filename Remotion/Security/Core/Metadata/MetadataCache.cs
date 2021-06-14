@@ -44,7 +44,7 @@ namespace Remotion.Security.Metadata
 
     // methods and properties
 
-    public SecurableClassInfo GetSecurableClassInfo (Type key)
+    public SecurableClassInfo? GetSecurableClassInfo (Type key)
     {
       ArgumentUtility.CheckNotNull ("key", key);
 
@@ -69,7 +69,7 @@ namespace Remotion.Security.Metadata
       return _classes.ContainsKey (key);
     }
 
-    public StatePropertyInfo GetStatePropertyInfo (PropertyInfo key)
+    public StatePropertyInfo? GetStatePropertyInfo (PropertyInfo key)
     {
       ArgumentUtility.CheckNotNull ("key", key);
 
@@ -95,7 +95,7 @@ namespace Remotion.Security.Metadata
       return _stateProperties.ContainsKey (NormalizeProperty (key));
     }
 
-    private PropertyInfo NormalizeProperty (PropertyInfo property)
+    private PropertyInfo? NormalizeProperty (PropertyInfo property)
     {
       ArgumentUtility.CheckNotNull ("property", property);
 
@@ -105,7 +105,7 @@ namespace Remotion.Security.Metadata
         return property.DeclaringType.GetProperty (property.Name);
     }
 
-    public EnumValueInfo GetEnumValueInfo (Enum key)
+    public EnumValueInfo? GetEnumValueInfo (Enum? key)
     {
       ArgumentUtility.CheckNotNull ("key", key);
 
@@ -130,7 +130,7 @@ namespace Remotion.Security.Metadata
       return _enumValues.ContainsKey (key);
     }
 
-    public EnumValueInfo GetAccessType (Enum key)
+    public EnumValueInfo? GetAccessType (Enum key)
     {
       ArgumentUtility.CheckNotNull ("key", key);
 
@@ -155,7 +155,7 @@ namespace Remotion.Security.Metadata
       return _accessTypes.ContainsKey (key);
     }
 
-    public EnumValueInfo GetAbstractRole (Enum key)
+    public EnumValueInfo? GetAbstractRole (Enum key)
     {
       ArgumentUtility.CheckNotNull ("key", key);
 

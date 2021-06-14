@@ -182,7 +182,7 @@ namespace Remotion.Security.Metadata
       return CreateRefElement (document, "accessTypeRef", accessTypeInfo.ID);
     }
 
-    private XmlElement CreateRefElement (XmlDocument document, string elementName, string idText)
+    private XmlElement CreateRefElement (XmlDocument document, string elementName, string? idText)
     {
       XmlElement refElement = document.CreateElement (elementName, _metadataSchema.SchemaUri);
 
