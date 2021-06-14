@@ -189,7 +189,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
 
       Type type = _classEmitter.BuildType ();
 
-      FieldInfo backingField = type.GetField ("_fieldForStaticProperty");
+      FieldInfo backingField = type.GetField ("_fieldForStaticProperty", BindingFlags.NonPublic | BindingFlags.Static);
       Assert.That (backingField, Is.Not.Null);
       Assert.That (backingField.IsStatic, Is.True);
 
@@ -213,7 +213,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
       object instance = BuildInstance ();
       Type type = instance.GetType();
 
-      FieldInfo backingField = type.GetField ("_fieldForInstanceProperty");
+      FieldInfo backingField = type.GetField ("_fieldForInstanceProperty", BindingFlags.NonPublic | BindingFlags.Instance);
       Assert.That (backingField, Is.Not.Null);
       Assert.That (backingField.IsStatic, Is.False);
 
