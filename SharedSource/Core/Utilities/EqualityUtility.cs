@@ -229,7 +229,7 @@ namespace Remotion.Utilities
         return false;
     }
 
-    public static bool NotNullAndSameType<T> (T a, T? b)
+    public static bool NotNullAndSameType<T> (T a, [NotNullWhen (true)] T? b)
       where T: class, IEquatable<T>
     {
       ArgumentUtility.CheckNotNull ("a", a);
