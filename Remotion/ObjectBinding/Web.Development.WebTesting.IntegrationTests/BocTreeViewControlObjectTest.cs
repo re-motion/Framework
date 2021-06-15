@@ -74,7 +74,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var home = Start();
       var webTreeView = home.TreeViews().GetByLocalID ("NoTopLevelExpander");
-      var fluentNode = webTreeView.GetRootNode().ForScreenshot();
+      var fluentNode = webTreeView.GetNode().WithIndex (1).ForScreenshot();
 
       Helper.RunScreenshotTest<FluentScreenshotElement<ScreenshotBocTreeViewNodeControlObject>, BocTreeViewControlObjectTest> (
           fluentNode,
@@ -90,7 +90,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var fluentControlObject = controlObject.ForControlObjectScreenshot();
       Assert.That (fluentControlObject, Is.Not.Null);
 
-      var fluentNode = controlObject.GetRootNode().ForScreenshot();
+      var fluentNode = controlObject.GetNode().WithIndex (1).ForScreenshot();
       var derivedNode = SelfResolvableFluentScreenshot.Create (
           new DerivedScreenshotBocTreeViewNodeControlObject (fluentNode.GetTarget().FluentBocTreeViewNode, fluentNode.GetTarget().FluentElement));
 
@@ -132,7 +132,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
 
-      var rootNode = bocTreeView.GetRootNode().Expand();
+      var rootNode = bocTreeView.GetNode().WithIndex (1).Expand();
       Assert.That (home.Scope.FindIdEndingWith ("NormalSelectedNodeLabel").Text, Is.Empty);
 
       rootNode.GetNode ("c8ace752-55f6-4074-8890-130276ea6cd1").Select();
@@ -178,7 +178,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var bocTreeView = home.TreeViews().GetByLocalID ("NoTopLevelExpander");
 
-      var rootNode = bocTreeView.GetRootNode();
+      var rootNode = bocTreeView.GetNode().WithIndex (1);
       Assert.That (home.Scope.FindIdEndingWith ("NoTopLevelExpanderSelectedNodeLabel").Text, Is.Empty);
 
       rootNode.GetNode ("c8ace752-55f6-4074-8890-130276ea6cd1").Select();
@@ -191,7 +191,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
-      var node = bocTreeView.GetRootNode();
+      var node = bocTreeView.GetNode().WithIndex (1);
 
       Assert.That (node.GetText(), Is.EqualTo ("Doe, John"));
     }
@@ -202,7 +202,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
-      var rootNode = bocTreeView.GetRootNode();
+      var rootNode = bocTreeView.GetNode().WithIndex (1);
 
       rootNode.Expand();
       var firstChildOfRootNode = rootNode.GetNode().WithDisplayTextContains ("B, A");
@@ -259,7 +259,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var bocTreeView = home.TreeViews().GetByLocalID ("NoPropertyIdentifier");
-      var rootNode = bocTreeView.GetRootNode();
+      var rootNode = bocTreeView.GetNode().WithIndex (1);
       rootNode.Expand();
       rootNode.GetNode ("Children").Expand();
 
@@ -283,7 +283,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
-      var rootNode = bocTreeView.GetRootNode();
+      var rootNode = bocTreeView.GetNode().WithIndex (1);
       rootNode.Expand();
       var firstChildOfRootNode = rootNode.GetNode().WithDisplayTextContains ("B, A");
       firstChildOfRootNode.Expand();
@@ -311,7 +311,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
-      var rootNode = bocTreeView.GetRootNode();
+      var rootNode = bocTreeView.GetNode().WithIndex (1);
       rootNode.Expand();
 
       rootNode.Scope.ElementFinder.Options.Timeout = TimeSpan.Zero;
@@ -339,7 +339,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
-      var rootNode = bocTreeView.GetRootNode();
+      var rootNode = bocTreeView.GetNode().WithIndex (1);
       rootNode.Expand();
       var firstChildOfRootNode = rootNode.GetNode().WithDisplayTextContains ("B, A");
       firstChildOfRootNode.Expand();
@@ -363,7 +363,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var bocTreeView = home.TreeViews().GetByLocalID ("NoPropertyIdentifier");
-      var rootNode = bocTreeView.GetRootNode();
+      var rootNode = bocTreeView.GetNode().WithIndex (1);
       rootNode.Expand();
       rootNode.GetNode ("Children").Expand();
 
@@ -387,7 +387,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
-      var rootNode = bocTreeView.GetRootNode();
+      var rootNode = bocTreeView.GetNode().WithIndex (1);
       rootNode.Expand();
 
       bocTreeView.Scope.ElementFinder.Options.Timeout = TimeSpan.Zero;
@@ -419,7 +419,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
-      var rootNode = bocTreeView.GetRootNode();
+      var rootNode = bocTreeView.GetNode().WithIndex (1);
       Assert.That (rootNode.IsSelected(), Is.False);
 
       rootNode.Select();
@@ -439,7 +439,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
-      var rootNode = bocTreeView.GetRootNode();
+      var rootNode = bocTreeView.GetNode().WithIndex (1);
       Assert.That (rootNode.GetNumberOfChildren(), Is.EqualTo (6));
 
       var bANode = rootNode.Expand().GetNode ("c8ace752-55f6-4074-8890-130276ea6cd1");
@@ -453,7 +453,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
 
-      var rootNode = bocTreeView.GetRootNode();
+      var rootNode = bocTreeView.GetNode().WithIndex (1);
       rootNode.Expand();
 
       Assert.That (
@@ -468,7 +468,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
-      var node = bocTreeView.GetRootNode().Expand();
+      var node = bocTreeView.GetNode().WithIndex (1).Expand();
       node = node.GetNode ("c8ace752-55f6-4074-8890-130276ea6cd1");
       var completionDetection = new CompletionDetectionStrategyTestHelper (node);
       node.Expand();
@@ -487,7 +487,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
 
-      var rootNode = bocTreeView.GetRootNode();
+      var rootNode = bocTreeView.GetNode().WithIndex (1);
       Assert.That (rootNode.IsExpanded(), Is.EqualTo (false));
 
       rootNode.Expand();
@@ -501,7 +501,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var bocTreeView = home.TreeViews().GetByLocalID ("NoLookAheadEvaluation");
 
-      var rootNode = bocTreeView.GetRootNode();
+      var rootNode = bocTreeView.GetNode().WithIndex (1);
       Assert.That (rootNode.IsEvaluated(), Is.EqualTo (false));
 
       rootNode.Expand();
@@ -515,7 +515,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
 
-      var rootNode = bocTreeView.GetRootNode().Expand();
+      var rootNode = bocTreeView.GetNode().WithIndex (1).Expand();
 
       var node = rootNode.GetNode().WithDisplayText ("B, C");
       Assert.That (node.IsExpandable(), Is.EqualTo (false));
@@ -538,7 +538,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var bocTreeView = home.TreeViews().GetByLocalID ("NoLookAheadEvaluation");
-      var node = bocTreeView.GetRootNode().Expand();
+      var node = bocTreeView.GetNode().WithIndex (1).Expand();
       node = node.GetNode ("c8ace752-55f6-4074-8890-130276ea6cd1").Expand();
       node = node.GetNode ("eb94bfdb-1140-46f8-971f-e4b41dae13b8").Expand();
       Assert.That (home.Scope.FindIdEndingWith ("NoLookAheadEvaluationSelectedNodeLabel").Text, Is.Empty);
@@ -557,7 +557,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
 
-      var rootNode = bocTreeView.GetRootNode();
+      var rootNode = bocTreeView.GetNode().WithIndex (1);
 
       Assert.That (
           () => rootNode.Collapse(),
@@ -572,7 +572,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
 
-      var node = bocTreeView.GetRootNode().Expand();
+      var node = bocTreeView.GetNode().WithIndex (1).Expand();
       var completionDetection = new CompletionDetectionStrategyTestHelper (node);
       node = node.Collapse();
       Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
@@ -588,7 +588,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
 
-      var node = bocTreeView.GetRootNode();
+      var node = bocTreeView.GetNode().WithIndex (1);
       var completionDetection = new CompletionDetectionStrategyTestHelper (node);
       Assert.That (home.Scope.FindIdEndingWith ("NormalSelectedNodeLabel").Text, Is.Empty);
 
@@ -604,7 +604,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
 
-      var node = bocTreeView.GetRootNode();
+      var node = bocTreeView.GetNode().WithIndex (1);
       var completionDetection = new CompletionDetectionStrategyTestHelper (node);
       Assert.That (home.Scope.FindIdEndingWith ("NormalSelectedNodeLabel").Text, Is.Empty);
 
@@ -620,7 +620,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var bocTreeView = home.TreeViews().GetByLocalID ("NoPropertyIdentifier");
 
-      var node = bocTreeView.GetRootNode().Expand();
+      var node = bocTreeView.GetNode().WithIndex (1).Expand();
 
       node = node.GetNode ("Children").Expand().GetNode ("c8ace752-55f6-4074-8890-130276ea6cd1").Select();
       Assert.That (
@@ -637,7 +637,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
-      var node = bocTreeView.GetRootNode();
+      var node = bocTreeView.GetNode().WithIndex (1);
       node = node.Expand().GetNode ("c8ace752-55f6-4074-8890-130276ea6cd1").Select();
 
       node.GetContextMenu().SelectItem ("MenuItem");
@@ -653,7 +653,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
-      var node = bocTreeView.GetRootNode();
+      var node = bocTreeView.GetNode().WithIndex (1);
       node = node.Expand().GetNode ("c8ace752-55f6-4074-8890-130276ea6cd1").Select();
 
       var contextMenu = node.GetContextMenu();
@@ -669,7 +669,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
-      var node = bocTreeView.GetRootNode();
+      var node = bocTreeView.GetNode().WithIndex (1);
       node = node.Expand().GetNode ("c8ace752-55f6-4074-8890-130276ea6cd1").Select();
 
       var contextMenu = node.GetContextMenu();
@@ -683,7 +683,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
-      var node = bocTreeView.GetRootNode();
+      var node = bocTreeView.GetNode().WithIndex (1);
       node = node.Expand().GetNode ("c8ace752-55f6-4074-8890-130276ea6cd1").Select();
 
       var contextMenu = node.GetContextMenu();
@@ -702,7 +702,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var bocTreeView = home.TreeViews().GetByLocalID ("ContextMenu_Delayed");
-      var node = bocTreeView.GetRootNode();
+      var node = bocTreeView.GetNode().WithIndex (1);
 
       var contextMenu = node.GetContextMenu();
 
@@ -717,7 +717,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var bocTreeView = home.TreeViews().GetByLocalID ("ContextMenu_DelayedLongerThanTimeout");
-      var node = bocTreeView.GetRootNode();
+      var node = bocTreeView.GetNode().WithIndex (1);
 
       var contextMenu = node.GetContextMenu();
 
@@ -734,7 +734,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var bocTreeView = home.TreeViews().GetByLocalID ("ContextMenu_Error");
-      var node = bocTreeView.GetRootNode();
+      var node = bocTreeView.GetNode().WithIndex (1);
 
       var contextMenu = node.GetContextMenu();
 
@@ -751,7 +751,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
-      var node = bocTreeView.GetRootNode();
+      var node = bocTreeView.GetNode().WithIndex (1);
       node = node.Expand().GetNode ("c8ace752-55f6-4074-8890-130276ea6cd1").Select();
 
       var contextMenu = node.GetContextMenu();

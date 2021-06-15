@@ -43,8 +43,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <summary>
-    /// Returns the tree's root node.
+    /// Returns the tree's first root node.
     /// </summary>
+    [Obsolete ("This method is equivalent to .GetNode().WithIndex (1), which should be used instead. (Version 3.0.0-alpha.14)", false)]
     public BocTreeViewNodeControlObject GetRootNode ()
     {
       return _metaRootNode.GetNode().WithIndex (1);
@@ -107,7 +108,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
     private ElementScope GetScopeWithReferenceInformation ()
     {
-      return GetRootNode().Scope.FindXPath ("..");
+      return GetNode().WithIndex (1).Scope.FindXPath ("..");
     }
   }
 }
