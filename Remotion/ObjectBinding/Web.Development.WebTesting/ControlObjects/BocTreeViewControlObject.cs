@@ -119,7 +119,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
     private ElementScope GetScopeWithReferenceInformation ()
     {
-      return GetRootNode().Scope.FindXPath ("..");
+      return GetNode().WithIndex (1).Scope.FindXPath ("..");
     }
   }
 }
