@@ -24,12 +24,12 @@ namespace Remotion.Security.Metadata.Extractor
     [CommandLineStringArgument ("assembly", false,
         Description="The path to the assembly containing the application domain to analyze.",
         Placeholder="assemblyPath")]
-    public string DomainAssemblyName;
+    public string DomainAssemblyName = null!;
 
     [CommandLineStringArgument ("output", false,
         Description = "The name of the XML metadata output file.",
         Placeholder = "metadata")]
-    public string MetadataOutputFile;
+    public string MetadataOutputFile = null!;
 
     [CommandLineStringArgument ("language", true,
         Description="The language code for the multilingual descriptions of the metadata objects.",
