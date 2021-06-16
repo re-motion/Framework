@@ -43,7 +43,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var treeView = home.TreeViews().GetByLocalID ("MyTreeView");
-      var rootNode = treeView.GetRootNode();
+      var rootNode = treeView.GetNode().WithIndex (1);
       Assert.That (rootNode.GetText(), Is.EqualTo ("Root node"));
     }
 
@@ -54,7 +54,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       var treeView = home.TreeViews().GetByLocalID ("MyTreeView");
 
-      var rootNode = treeView.GetRootNode().Expand();
+      var rootNode = treeView.GetNode().WithIndex (1).Expand();
       Assert.That (home.Scope.FindIdEndingWith ("TestOutputLabel").Text, Is.EqualTo ("Expanded: Root node|RootValue (None)"));
 
       rootNode.GetNode().WithIndex (2).Select();
@@ -73,7 +73,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var treeView = home.TreeViews().GetByLocalID ("MyTreeView");
-      var node = treeView.GetRootNode();
+      var node = treeView.GetNode().WithIndex (1);
 
       Assert.That (node.GetText(), Is.EqualTo ("Root node"));
     }
@@ -84,7 +84,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var treeView = home.TreeViews().GetByLocalID ("MyTreeView");
-      var rootNode = treeView.GetRootNode();
+      var rootNode = treeView.GetNode().WithIndex (1);
 
       // Set Timeout to Zero so we don't have to wait the full timeout for the exception
       var backupTimeout = rootNode.Scope.ElementFinder.Options.Timeout;
@@ -117,7 +117,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var treeView = home.TreeViews().GetByLocalID ("MyTreeView");
-      var rootNode = treeView.GetRootNode();
+      var rootNode = treeView.GetNode().WithIndex (1);
       Assert.That (rootNode.GetNumberOfChildren(), Is.EqualTo (2));
 
       var child1Node = rootNode.Expand().GetNode (1);
@@ -130,7 +130,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var treeView = home.TreeViews().GetByLocalID ("MyTreeView");
-      var node = treeView.GetRootNode().Expand();
+      var node = treeView.GetNode().WithIndex (1).Expand();
       node = node.GetNode (1).Expand();
       Assert.That (home.Scope.FindIdEndingWith ("TestOutputLabel").Text, Is.EqualTo ("Expanded: Child node 1|Child1Value (None)"));
 
@@ -144,7 +144,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var treeView = home.TreeViews().GetByLocalID ("MyTreeView");
-      var node = treeView.GetRootNode().Expand().Collapse().Expand();
+      var node = treeView.GetNode().WithIndex (1).Expand().Collapse().Expand();
       node = node.GetNode (2).Expand().Collapse().Expand();
       Assert.That (home.Scope.FindIdEndingWith ("TestOutputLabel").Text, Is.EqualTo ("Expanded: Child node 2|Child2Value (None)"));
 
@@ -159,7 +159,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       var treeView = home.TreeViews().GetByLocalID ("MyTreeView");
 
-      var node = treeView.GetRootNode();
+      var node = treeView.GetNode().WithIndex (1);
       Assert.That (home.Scope.FindIdEndingWith ("TestOutputLabel").Text, Is.Empty);
 
       node.Select();
@@ -173,7 +173,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       var treeView = home.TreeViews().GetByLocalID ("MyTreeViewWithSpecialChildren");
       
-      var rootNode = treeView.GetRootNode();
+      var rootNode = treeView.GetNode().WithIndex (1);
       var node = rootNode.GetNode().WithDisplayText ("With'SingleQuote");
       Assert.That (node.GetText(), Is.EqualTo ("With'SingleQuote"));
     }
@@ -185,7 +185,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       var treeView = home.TreeViews().GetByLocalID ("MyTreeViewWithSpecialChildren");
       
-      var rootNode = treeView.GetRootNode();
+      var rootNode = treeView.GetNode().WithIndex (1);
       var node = rootNode.GetNode().WithDisplayText ("With'SingleQuoteAndDouble\"Quote");
       Assert.That (node.GetText(), Is.EqualTo ("With'SingleQuoteAndDouble\"Quote"));
     }
@@ -197,7 +197,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       var treeView = home.TreeViews().GetByLocalID ("MyTreeViewWithSpecialChildren");
       
-      var rootNode = treeView.GetRootNode();
+      var rootNode = treeView.GetNode().WithIndex (1);
       var node = rootNode.GetNode().WithDisplayTextContains ("ith'SingleQuot");
       Assert.That (node.GetText(), Is.EqualTo ("With'SingleQuote"));
     }
@@ -209,7 +209,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       var treeView = home.TreeViews().GetByLocalID ("MyTreeViewWithSpecialChildren");
       
-      var rootNode = treeView.GetRootNode();
+      var rootNode = treeView.GetNode().WithIndex (1);
       var node = rootNode.GetNode().WithDisplayTextContains ("ith'SingleQuoteAndDouble\"Quot");
       Assert.That (node.GetText(), Is.EqualTo ("With'SingleQuoteAndDouble\"Quote"));
     }
