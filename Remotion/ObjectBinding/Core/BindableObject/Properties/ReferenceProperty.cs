@@ -291,7 +291,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     /// <seealso cref="SupportsDefaultValue"/>
     /// <seealso cref="CreateDefaultValue"/>
     [Obsolete ("The default value feature is not supported. (Version 1.13.142)")]
-    public bool IsDefaultValue (IBusinessObject referencingObject, IBusinessObject value, IBusinessObjectProperty[] emptyProperties)
+    public bool IsDefaultValue (IBusinessObject? referencingObject, IBusinessObject value, IBusinessObjectProperty?[] emptyProperties)
     {
       ArgumentUtility.CheckNotNull ("value", value);
       ArgumentUtility.CheckNotNull ("emptyProperties", emptyProperties);
@@ -393,7 +393,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     /// <seealso cref="IDeleteObjectService"/>
     /// <seealso cref="SupportsDelete"/>
     [Obsolete ("The delete-object feature is not supported. (Version 1.13.142)")]
-    public void Delete (IBusinessObject referencingObject, IBusinessObject value)
+    public void Delete (IBusinessObject? referencingObject, IBusinessObject value)
     {
       ArgumentUtility.CheckNotNull ("value", value);
 
@@ -465,7 +465,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     [NotNull]
     private IBusinessObjectClassService GetBusinessObjectClassService ()
     {
-      IBusinessObjectClassService service = BusinessObjectProvider.GetService<IBusinessObjectClassService>();
+      IBusinessObjectClassService? service = BusinessObjectProvider.GetService<IBusinessObjectClassService>();
       if (service == null)
       {
         throw new InvalidOperationException (
@@ -506,7 +506,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
           throw new InvalidOperationException();
       }
 
-      return (TService) provider.GetService (serviceDefinition.Item2);
+      return (TService?) provider.GetService (serviceDefinition.Item2);
     }
 
     [NotNull]

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Remotion.Utilities;
 
@@ -221,6 +222,9 @@ namespace Remotion.ObjectBinding
     ///   <see cref="IBusinessObjectReferenceProperty.CreateDefaultValue"/> API. It is cleared once the newly created <see cref="BusinessObject"/> 
     ///   has been saved back into the <see cref="ReferencedDataSource"/>.
     /// </summary>
+    [MemberNotNullWhen (true, nameof (BusinessObject))]
+    [MemberNotNullWhen (true, nameof (ReferencedDataSource))]
+    [MemberNotNullWhen (true, nameof (ReferenceProperty))]
     public bool HasBusinessObjectCreated
     {
       get { return _hasBusinessObjectCreated; }
@@ -279,6 +283,8 @@ namespace Remotion.ObjectBinding
       }
     }
 
+    [MemberNotNullWhen (true, nameof (ReferenceProperty))]
+    [MemberNotNullWhen (true, nameof (ReferencedDataSource))]
     private bool IsReadOnlyInDomainModel
     {
       get
@@ -292,6 +298,8 @@ namespace Remotion.ObjectBinding
       }
     }
 
+    [MemberNotNullWhen (true, nameof (ReferencedDataSource))]
+    [MemberNotNullWhen (true, nameof (ReferenceProperty))]
     private bool HasValidBinding
     {
       get { return ReferencedDataSource != null && ReferenceProperty != null; }
@@ -299,14 +307,23 @@ namespace Remotion.ObjectBinding
 
     private bool RequiresWriteBack
     {
-      get { return (HasBusinessObjectChanged || HasBusinessObjectCreated || ReferenceProperty.ReferenceClass.RequiresWriteBack); }
+      get
+      {
+        Assertion.DebugAssert (HasValidBinding, nameof (RequiresWriteBack) + " is only supported if the binding is valid.");
+        return (HasBusinessObjectChanged || HasBusinessObjectCreated || ReferenceProperty.ReferenceClass.RequiresWriteBack);
+      }
     }
 
     private bool SupportsDefaultValueSemantics
     {
-      get { return (Mode == DataSourceMode.Edit && ReferenceProperty.SupportsDefaultValue); }
+      get
+      {
+        Assertion.DebugAssert (HasValidBinding, nameof (SupportsDefaultValueSemantics) + " is only supported if the binding is valid.");
+        return (Mode == DataSourceMode.Edit && ReferenceProperty.SupportsDefaultValue);
+      }
     }
 
+    [MemberNotNullWhen (true, nameof (BusinessObject))]
     private bool IsBusinessObjectSetToDefaultValue ()
     {
       if (HasValidBinding && BusinessObject != null && ReferenceProperty.SupportsDefaultValue)
@@ -326,6 +343,8 @@ namespace Remotion.ObjectBinding
     private void DeleteBusinessObject ()
     {
       Assertion.IsNotNull (BusinessObject, "The business object of this reference data source cannot be null when invoking DeleteBusinessObject().");
+      Assertion.DebugIsNotNull (ReferenceProperty, nameof (ReferenceProperty) + " cannot be null when " + nameof (BusinessObject) + " is not null.");
+      Assertion.DebugIsNotNull (ReferencedDataSource, nameof (ReferencedDataSource) + " cannot be null when " + nameof (BusinessObject) + " is not null.");
       if (ReferenceProperty.SupportsDelete)
         ReferenceProperty.Delete (ReferencedDataSource.BusinessObject, BusinessObject);
     }

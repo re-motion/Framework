@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Remotion.ObjectBinding.BindableObject.Properties;
 using Remotion.ServiceLocation;
@@ -66,7 +67,7 @@ namespace Remotion.ObjectBinding.BindableObject
         IBusinessObject businessObject,
         PropertyBase bindableProperty,
         Exception exception,
-        out BusinessObjectPropertyAccessException? propertyAccessException)
+        [MaybeNullWhen (false)] out BusinessObjectPropertyAccessException propertyAccessException)
     {
       ArgumentUtility.DebugCheckNotNull ("businessObject", businessObject);
       ArgumentUtility.DebugCheckNotNull ("bindableProperty", bindableProperty);

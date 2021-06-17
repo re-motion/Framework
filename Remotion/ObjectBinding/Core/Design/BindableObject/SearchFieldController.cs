@@ -27,10 +27,10 @@ namespace Remotion.ObjectBinding.Design.BindableObject
       Search = 0
     }
 
-    private readonly TextBox? _searchField;
-    private readonly Button? _searchButton;
+    private readonly TextBox _searchField;
+    private readonly Button _searchButton;
 
-    public SearchFieldController (TextBox? searchField, Button? searchButton)
+    public SearchFieldController (TextBox searchField, Button searchButton)
     {
       ArgumentUtility.CheckNotNull ("searchField", searchField);
       ArgumentUtility.CheckNotNull ("searchButton", searchButton);
@@ -44,12 +44,12 @@ namespace Remotion.ObjectBinding.Design.BindableObject
       _searchButton.Enabled = false;
     }
 
-    public TextBox? SearchField
+    public TextBox SearchField
     {
       get { return _searchField; }
     }
 
-    public Button? SearchButton
+    public Button SearchButton
     {
       get { return _searchButton; }
     }

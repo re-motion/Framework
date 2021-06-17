@@ -76,6 +76,6 @@ namespace Remotion.ObjectBinding.BindableObject
         [CanBeNull] IBusinessObject? referencingObject,
         [NotNull] IBusinessObjectReferenceProperty property,
         [NotNull] IBusinessObject value,
-        [NotNull] IBusinessObjectProperty[] emptyProperties);
+        [NotNull] IBusinessObjectProperty?[] emptyProperties);
   }
 }

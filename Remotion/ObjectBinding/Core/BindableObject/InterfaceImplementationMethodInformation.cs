@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Remotion.FunctionalProgramming;
 using Remotion.Reflection;
@@ -29,10 +30,10 @@ namespace Remotion.ObjectBinding.BindableObject
   /// </summary>
   public sealed class InterfaceImplementationMethodInformation : IMethodInformation
   {
-    private readonly IMethodInformation? _implementationMethodInfo;
+    private readonly IMethodInformation _implementationMethodInfo;
     private readonly IMethodInformation _declarationMethodInfo;
 
-    public InterfaceImplementationMethodInformation (IMethodInformation? implementationMethodInfo, IMethodInformation declarationMethodInfo)
+    public InterfaceImplementationMethodInformation (IMethodInformation implementationMethodInfo, IMethodInformation declarationMethodInfo)
     {
       ArgumentUtility.CheckNotNull ("implementationMethodInfo", implementationMethodInfo);
       ArgumentUtility.CheckNotNull ("declarationMethodInfo", declarationMethodInfo);
@@ -115,9 +116,9 @@ namespace Remotion.ObjectBinding.BindableObject
       get { return _implementationMethodInfo.ReturnType; }
     }
 
-    public object? Invoke (object? instance, object[]? parameters)
+    public object? Invoke (object? instance, object?[]? parameters)
     {
-      ArgumentUtility.CheckNotNull ("instance", instance);
+      ArgumentUtility.CheckNotNull ("instance", instance!);
       
       return _declarationMethodInfo.Invoke (instance, parameters);
     }
@@ -140,7 +141,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public override string? ToString ()
     {
-      return string.Format ("{0} (impl of '{1}')", _implementationMethodInfo.Name, _declarationMethodInfo.DeclaringType.Name);
+      return string.Format ("{0} (impl of '{1}')", _implementationMethodInfo.Name, _declarationMethodInfo.DeclaringType!.Name);
     }
 
     bool INullObject.IsNull

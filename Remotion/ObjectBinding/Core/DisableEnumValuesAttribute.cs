@@ -28,7 +28,7 @@ namespace Remotion.ObjectBinding
   [AttributeUsage (AttributeTargets.Enum | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
   public sealed class DisableEnumValuesAttribute : Attribute, IDisableEnumValuesAttribute
   {
-    private readonly IEnumerationValueFilter? _filter;
+    private readonly IEnumerationValueFilter _filter;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DisableEnumValuesAttribute"/> class with a custom filter type.
@@ -37,8 +37,8 @@ namespace Remotion.ObjectBinding
     public DisableEnumValuesAttribute (Type filterType)
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("filterType", filterType, typeof (IEnumerationValueFilter));
-
-      _filter = (IEnumerationValueFilter?) Activator.CreateInstance (filterType);
+      // TODO: Check return value
+      _filter = (IEnumerationValueFilter) Activator.CreateInstance (filterType)!;
     }
 
     /// <summary>
@@ -147,7 +147,7 @@ namespace Remotion.ObjectBinding
     /// Gets the enumeration value filter defined by this <see cref="DisableExtensibleEnumValuesAttribute"/> instance.
     /// </summary>
     /// <returns>An instance of the filter defined by this instance.</returns>
-    public IEnumerationValueFilter? GetEnumerationValueFilter ()
+    public IEnumerationValueFilter GetEnumerationValueFilter ()
     {
       return _filter;
     }

@@ -45,10 +45,10 @@ namespace Remotion.ObjectBinding
     ///     If your object model does not support services, this method may always return null.
     ///    </note>
     ///  </remarks>
-    IBusinessObjectService GetService (Type serviceType);
+    IBusinessObjectService? GetService (Type serviceType);
 
     /// <summary> Retrieves the requested <see cref="IBusinessObjectService"/>. </summary>
-    T GetService<T> () where T: IBusinessObjectService;
+    T? GetService<T> () where T: IBusinessObjectService;
 
     /// <summary> Adds the requested <see cref="IBusinessObjectService"/>. </summary>
     /// <param name="serviceType">The <see cref="Type"/> of <see cref="IBusinessObjectService"/> to get from the object model. Must not be <see langword="null" />.</param>

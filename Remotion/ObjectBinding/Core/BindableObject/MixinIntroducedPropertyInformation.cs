@@ -117,14 +117,14 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public object? GetValue (object? instance, object[]? indexParameters)
     {
-      ArgumentUtility.CheckNotNull ("instance", instance);
+      ArgumentUtility.CheckNotNull ("instance", instance!);
 
       return _interfaceImplementationPropertyInfo.GetValue (instance, indexParameters);
     }
 
     public void SetValue (object? instance, object? value, object[]? indexParameters)
     {
-      ArgumentUtility.CheckNotNull ("instance", instance);
+      ArgumentUtility.CheckNotNull ("instance", instance!);
 
       _interfaceImplementationPropertyInfo.SetValue (instance, value, indexParameters);
     }

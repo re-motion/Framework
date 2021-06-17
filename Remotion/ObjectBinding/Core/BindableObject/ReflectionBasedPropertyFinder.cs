@@ -88,8 +88,10 @@ namespace Remotion.ObjectBinding.BindableObject
       if (introducedMemberAttributes.Length > 0)
       {
         var introducedMemberAttribute = (IntroducedMemberAttribute) introducedMemberAttributes[0];
-        var interfaceProperty = PropertyInfoAdapter.Create(introducedMemberAttribute.IntroducedInterface.GetProperty (introducedMemberAttribute.InterfaceMemberName));
-        var mixinProperty = interfaceProperty.FindInterfaceImplementation (introducedMemberAttribute.Mixin);
+        // TODO: create local variable for the below expression and check for null
+        var interfaceProperty = PropertyInfoAdapter.Create(introducedMemberAttribute.IntroducedInterface.GetProperty (introducedMemberAttribute.InterfaceMemberName)!);
+        // TODO: check mixinProperty for null value
+        var mixinProperty = interfaceProperty.FindInterfaceImplementation (introducedMemberAttribute.Mixin)!;
         var interfaceImplementation = new InterfaceImplementationPropertyInformation (mixinProperty, interfaceProperty);
 
         return new MixinIntroducedPropertyInformation (interfaceImplementation);
@@ -110,7 +112,7 @@ namespace Remotion.ObjectBinding.BindableObject
       return _concreteType.CreateSequence (c => c.BaseType);
     }
 
-    protected virtual bool PropertyFilter (MemberInfo memberInfo, object filterCriteria)
+    protected virtual bool PropertyFilter (MemberInfo memberInfo, object? filterCriteria)
     {
       // properties explicitly marked invisible are ignored
       var attribute = AttributeUtility.GetCustomAttribute<ObjectBindingAttribute> (memberInfo, true);
@@ -137,7 +139,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     protected virtual bool IsInfrastructureProperty (PropertyInfo propertyInfo, MethodInfo accessorDeclaration)
     {
-      return accessorDeclaration.DeclaringType.Assembly == typeof (IBusinessObject).Assembly
+      return accessorDeclaration.DeclaringType!.Assembly == typeof (IBusinessObject).Assembly
           || accessorDeclaration.DeclaringType.Assembly == typeof (BindableObjectClass).Assembly
           || accessorDeclaration.DeclaringType.Assembly == typeof (IMixinTarget).Assembly;
     }

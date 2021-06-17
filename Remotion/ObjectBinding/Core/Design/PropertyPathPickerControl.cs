@@ -16,6 +16,7 @@
 // 
 using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using Remotion.Utilities;
@@ -32,11 +33,11 @@ namespace Remotion.ObjectBinding.Design
     /// </summary>
     private Container? components = null;
 
-    private TextBox? FilterField;
-    private Label? FilterLabel;
-    private Button? SelectButton;
-    private CheckBox? ClassFilterCheck;
-    private TreeView? PathTree;
+    private TextBox FilterField;
+    private Label FilterLabel;
+    private Button SelectButton;
+    private CheckBox ClassFilterCheck;
+    private TreeView PathTree;
 
     public PropertyPathPickerControl (IBusinessObjectClassSource classSource, IServiceProvider provider, IWindowsFormsEditorService editorService)
       : base (provider, editorService)
@@ -48,8 +49,7 @@ namespace Remotion.ObjectBinding.Design
 
       _classSource = classSource;
 
-      if (_classSource != null && _classSource.BusinessObjectClass != null)
-        PathTree.PathSeparator = classSource.BusinessObjectClass.BusinessObjectProvider.GetPropertyPathSeparator().ToString();
+      PathTree.PathSeparator = classSource.BusinessObjectClass.BusinessObjectProvider.GetPropertyPathSeparator().ToString();
 
       FillTree();
     }
@@ -174,6 +174,11 @@ namespace Remotion.ObjectBinding.Design
     /// Required method for Designer support - do not modify 
     /// the contents of this method with the code editor.
     /// </summary>
+    [MemberNotNull (nameof (PathTree))]
+    [MemberNotNull (nameof (FilterField))]
+    [MemberNotNull (nameof (FilterLabel))]
+    [MemberNotNull (nameof (SelectButton))]
+    [MemberNotNull (nameof (ClassFilterCheck))]
     private void InitializeComponent ()
     {
       this.PathTree = new System.Windows.Forms.TreeView();
@@ -274,11 +279,11 @@ namespace Remotion.ObjectBinding.Design
       Cursor.Current = oldCursor;
     }
 
-    private void ClassFilterCheck_CheckedChanged (object sender, EventArgs e)
+    private void ClassFilterCheck_CheckedChanged (object? sender, EventArgs e)
     {
     }
 
-    private void SelectButton_Click (object sender, EventArgs e)
+    private void SelectButton_Click (object? sender, EventArgs e)
     {
       if (PathTree.SelectedNode != null)
       {
@@ -288,7 +293,7 @@ namespace Remotion.ObjectBinding.Design
       }
     }
 
-    private void FilterField_TextChanged (object sender, EventArgs e)
+    private void FilterField_TextChanged (object? sender, EventArgs e)
     {
       FillTree();
     }
@@ -316,7 +321,8 @@ namespace Remotion.ObjectBinding.Design
           IBusinessObjectPropertyPath? propertyPath = null;
           try
           {
-            propertyPath = BusinessObjectPropertyPath.CreateStatic (_classSource.BusinessObjectClass, (string?) value);
+            // TODO: It is safe to use value here due to it being equal to _value, the compiler doesn't like it though. Should use _value instead.
+            propertyPath = BusinessObjectPropertyPath.CreateStatic (_classSource.BusinessObjectClass, (string) value!);
           }
           catch (ParseException)
           {

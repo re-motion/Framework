@@ -17,6 +17,7 @@
 using System;
 using JetBrains.Annotations;
 using Remotion.ObjectBinding.BindableObject.Properties;
+using MaybeNullWhenAttribute = System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribute;
 
 namespace Remotion.ObjectBinding.BindableObject
 {
@@ -57,6 +58,6 @@ namespace Remotion.ObjectBinding.BindableObject
         [NotNull] IBusinessObject businessObject,
         [NotNull] PropertyBase bindableProperty,
         [NotNull] Exception exception,
-        [CanBeNull] out BusinessObjectPropertyAccessException? propertyAccessException);
+        [CanBeNull][MaybeNullWhen (false)] out BusinessObjectPropertyAccessException propertyAccessException);
   }
 }

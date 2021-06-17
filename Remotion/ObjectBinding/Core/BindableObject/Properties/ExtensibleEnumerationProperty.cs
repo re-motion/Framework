@@ -58,8 +58,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
       if (enumValue == null)
         return null;
 
-      IExtensibleEnumInfo extensibleEnumInfo;
-      if (!_definition.TryGetValueInfoByID (enumValue.ID, out extensibleEnumInfo))
+      if (!_definition.TryGetValueInfoByID (enumValue.ID, out var extensibleEnumInfo))
         return null;
 
       return CreateEnumerationValueInfo (extensibleEnumInfo, businessObject);
@@ -70,8 +69,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
       if (string.IsNullOrEmpty (identifier))
         return null;
 
-      IExtensibleEnumInfo extensibleEnumInfo;
-      if (!_definition.TryGetValueInfoByID (identifier, out extensibleEnumInfo))
+      if (!_definition.TryGetValueInfoByID (identifier, out var extensibleEnumInfo))
       {
         var message = string.Format ("The identifier '{0}' does not identify a defined value for type '{1}'.", identifier, _definition.GetEnumType());
         throw new ArgumentException (message, "identifier");

@@ -24,7 +24,7 @@ namespace Remotion.ObjectBinding.Design
     {
     }
 
-    public override object Value
+    public override object? Value
     {
       get { throw new NotImplementedException(); }
       set { throw new NotImplementedException (); }

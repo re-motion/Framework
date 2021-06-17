@@ -16,6 +16,7 @@
 // 
 using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using Remotion.Utilities;
@@ -24,13 +25,13 @@ namespace Remotion.ObjectBinding.Design
 {
   public class PropertyPickerControl : EditorControlBase
   {
-    private Label? FilterLabel;
-    private TextBox? FilterField;
-    private Button? SelectButton;
+    private Label FilterLabel;
+    private TextBox FilterField;
+    private Button SelectButton;
 
     private IBusinessObjectBoundControl _control;
     private string? _value;
-    private ListBox? PropertiesList;
+    private ListBox PropertiesList;
 
     /// <summary> 
     /// Required designer variable.
@@ -97,6 +98,10 @@ namespace Remotion.ObjectBinding.Design
     /// Required method for Designer support - do not modify 
     /// the contents of this method with the code editor.
     /// </summary>
+    [MemberNotNull (nameof (FilterLabel))]
+    [MemberNotNull (nameof (FilterField))]
+    [MemberNotNull (nameof (SelectButton))]
+    [MemberNotNull (nameof (PropertiesList))]
     private void InitializeComponent ()
     {
       this.FilterLabel = new System.Windows.Forms.Label();
@@ -164,19 +169,19 @@ namespace Remotion.ObjectBinding.Design
 
     #endregion
 
-    private void SelectButton_Click (object sender, EventArgs e)
+    private void SelectButton_Click (object? sender, EventArgs e)
     {
       _value = (string) PropertiesList.SelectedItem;
       if (EditorService != null)
         EditorService.CloseDropDown();
     }
 
-    private void FilterField_TextChanged (object sender, EventArgs e)
+    private void FilterField_TextChanged (object? sender, EventArgs e)
     {
       FillList();
     }
 
-    private void PropertyPathPicker_Load (object sender, EventArgs e)
+    private void PropertyPathPicker_Load (object? sender, EventArgs e)
     {
     }
 

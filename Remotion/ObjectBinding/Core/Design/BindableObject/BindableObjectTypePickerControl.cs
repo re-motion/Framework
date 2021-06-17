@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using Remotion.Utilities;
@@ -27,8 +28,8 @@ namespace Remotion.ObjectBinding.Design.BindableObject
     private static bool s_isGacIncluded;
 
     private Type? _value;
-    private TypeTreeViewController? _typeTreeViewController;
-    private SearchFieldController? _searchFieldController;
+    private TypeTreeViewController _typeTreeViewController;
+    private SearchFieldController _searchFieldController;
     private BindableObjectTypeFinder? _typeFinder;
 
     public BindableObjectTypePickerControl (IServiceProvider provider, IWindowsFormsEditorService editorService, BindableObjectTypeFinder typeFinder)
@@ -44,6 +45,8 @@ namespace Remotion.ObjectBinding.Design.BindableObject
       Initialize (null);
     }
 
+    [MemberNotNull (nameof (_searchFieldController))]
+    [MemberNotNull (nameof (_typeTreeViewController))]
     private void Initialize (BindableObjectTypeFinder? typeFinder)
     {
       InitializeComponent ();
@@ -84,13 +87,15 @@ namespace Remotion.ObjectBinding.Design.BindableObject
       List<Type> types;
       try
       {
-        types = _typeFinder.GetTypes (IncludeGacCheckBox.Checked);
+        // TODO: must be checked for null
+        types = _typeFinder!.GetTypes (IncludeGacCheckBox.Checked);
       }
       catch (Exception e)
       {
         MessageBox.Show (e.Message, "Error looking up the available types", MessageBoxButtons.OK, MessageBoxIcon.Error);
         Cursor = cursorBackUp;
-        EditorService.CloseDropDown ();
+        // TODO: must be checked for null
+        EditorService!.CloseDropDown ();
         return;
       }
       
@@ -111,7 +116,8 @@ namespace Remotion.ObjectBinding.Design.BindableObject
     {
       _value = _typeTreeViewController.GetSelectedType ();
 
-      EditorService.CloseDropDown();
+      // TODO: should be checked for null
+      EditorService!.CloseDropDown();
     }
 
     private void FilterField_TextChanged (object sender, EventArgs e)

@@ -59,12 +59,12 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
       return guid.ToString();
     }
 
-    private string[]? ConvertFromGuidListToStringArray (object? nativeValue)
+    private string?[]? ConvertFromGuidListToStringArray (object? nativeValue)
     {
       if (nativeValue == null)
         return null;
       IList nativeValueList = ArgumentUtility.CheckType<IList> ("nativeValue", nativeValue);
-      string[] publicValueList = new string[nativeValueList.Count];
+      string?[] publicValueList = new string[nativeValueList.Count];
       for (int i = 0; i < nativeValueList.Count; i++)
         publicValueList[i] = ConvertFromGuidToString (nativeValueList[i]);
       return publicValueList;
@@ -72,7 +72,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
 
     private Guid? ConvertFromStringToGuid (object? publicValue)
     {
-      string stringValue = ArgumentUtility.CheckType<string> ("publicValue", publicValue);
+      string? stringValue = ArgumentUtility.CheckType<string?> ("publicValue", publicValue);
       if (stringValue == null)
         return null;
       if (stringValue == string.Empty)

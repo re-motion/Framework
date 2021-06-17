@@ -122,9 +122,9 @@ namespace Remotion.ObjectBinding.BindableObject
       get { return _mixinMethodInfo.ReturnType; }
     }
 
-    public object? Invoke (object? instance, object[]? parameters)
+    public object? Invoke (object? instance, object?[]? parameters)
     {
-      ArgumentUtility.CheckNotNull ("instance", instance);
+      ArgumentUtility.CheckNotNull ("instance", instance!);
 
       return _mixinMethodInfo.Invoke (instance, parameters);
     }

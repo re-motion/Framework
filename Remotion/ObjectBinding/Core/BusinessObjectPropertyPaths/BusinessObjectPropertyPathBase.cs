@@ -72,7 +72,8 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths
         catch (BusinessObjectPropertyAccessException)
         {
           HandlePropertyAccessDenied (unreachableValueBehavior, propertyIndex);
-          return new NotAccessibleBusinessObjectPropertyPathResult (currentObject.BusinessObjectClass.BusinessObjectProvider);
+          // TODO: should be checked for null
+          return new NotAccessibleBusinessObjectPropertyPathResult (currentObject!.BusinessObjectClass.BusinessObjectProvider);
         }
 
         if (currentObject == null)
@@ -106,7 +107,8 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths
               string.Format ("Property #{0} of property path '{1}' is not a single-value property.", propertyIndex, Identifier));
         }
 
-        var list = (IList?) currentObject.GetProperty (currentProperty);
+        // TODO: check for null
+        var list = (IList) currentObject.GetProperty (currentProperty)!;
         if (list.Count > 0)
           return (IBusinessObject?) list[0];
         else

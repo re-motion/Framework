@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Mixins;
 using Remotion.ObjectBinding.BindableObject.Properties;
 using Remotion.Utilities;
@@ -48,11 +49,11 @@ namespace Remotion.ObjectBinding.BindableObject
     /// <exception cref="Exception">
     ///   Thrown if the <paramref name="property"/> is not part of this business object's class. 
     /// </exception>
-    public object? GetProperty (IBusinessObjectProperty? property)
+    public object? GetProperty (IBusinessObjectProperty property)
     {
       var propertyBase = ArgumentUtility.CheckNotNullAndType<PropertyBase> ("property", property);
       
-      object nativeValue = propertyBase.GetValue ((IBusinessObject) Target);
+      object? nativeValue = propertyBase.GetValue ((IBusinessObject) Target);
       
       if (!propertyBase.IsList && propertyBase.IsDefaultValue(((IBusinessObject) Target)))
         return null;
@@ -69,7 +70,7 @@ namespace Remotion.ObjectBinding.BindableObject
     /// <exception cref="Exception"> 
     ///   Thrown if the <paramref name="property"/> is not part of this business object's class. 
     /// </exception>
-    public void SetProperty (IBusinessObjectProperty property, object value)
+    public void SetProperty (IBusinessObjectProperty property, object? value)
     {
       var propertyBase = ArgumentUtility.CheckNotNullAndType<PropertyBase> ("property", property);
       
@@ -90,19 +91,21 @@ namespace Remotion.ObjectBinding.BindableObject
     /// <exception cref="Exception"> 
     ///   Thrown if the <paramref name="property"/> is not part of this business object's class. 
     /// </exception>
-    public string? GetPropertyString (IBusinessObjectProperty property, string? format)
+    public string GetPropertyString (IBusinessObjectProperty property, string? format)
     {
       var stringFormatterService =
-          (IBusinessObjectStringFormatterService)
+          (IBusinessObjectStringFormatterService?)
           BusinessObjectClass.BusinessObjectProvider.GetService (typeof (IBusinessObjectStringFormatterService));
-      return stringFormatterService.GetPropertyString ((IBusinessObject) Target, property, format);
+      // TODO: must be checked for null
+      return stringFormatterService!.GetPropertyString ((IBusinessObject) Target, property, format);
     }
 
     /// <summary> Gets the <see cref="BindableObjectClass"/> of this business object. </summary>
     /// <value> An <see cref="BindableObjectClass"/> instance acting as the business object's type. </value>
     public BindableObjectClass BusinessObjectClass
     {
-      get { return _bindableObjectClass.Value; }
+      // TODO: null guard
+      get { return _bindableObjectClass!.Value; }
     }
 
     /// <summary> Gets the <see cref="IBusinessObjectClass"/> of this business object. </summary>
@@ -112,6 +115,9 @@ namespace Remotion.ObjectBinding.BindableObject
       get { return BusinessObjectClass; }
     }
 
+    [MemberNotNull (nameof (_mixinConfigurationAtInstantiationTime))]
+    [MemberNotNull (nameof (_bindableObjectProvider))]
+    [MemberNotNull (nameof (_bindableObjectClass))]
     protected override void OnInitialized ()
     {
       base.OnInitialized();
@@ -122,6 +128,9 @@ namespace Remotion.ObjectBinding.BindableObject
       _bindableObjectClass = new DoubleCheckedLockingContainer<BindableObjectClass> (InitializeBindableObjectClass);
     }
 
+    [MemberNotNull (nameof (_mixinConfigurationAtInstantiationTime))]
+    [MemberNotNull (nameof (_bindableObjectProvider))]
+    [MemberNotNull (nameof (_bindableObjectClass))]
     protected override void OnDeserialized ()
     {
       base.OnDeserialized();
@@ -135,10 +144,11 @@ namespace Remotion.ObjectBinding.BindableObject
     private BindableObjectClass InitializeBindableObjectClass ()
     {
       // reactivate the mixin configuration to get the bindable object class originally expected
-      using (_mixinConfigurationAtInstantiationTime.EnterScope ())
+      // TODO: should these be checked? how is this class instantiated?
+      using (_mixinConfigurationAtInstantiationTime!.EnterScope ())
       {
         var targetType = GetTypeForBindableObjectClass();
-        return _bindableObjectProvider.GetBindableObjectClass (targetType);
+        return _bindableObjectProvider!.GetBindableObjectClass (targetType);
       }
     }
   }

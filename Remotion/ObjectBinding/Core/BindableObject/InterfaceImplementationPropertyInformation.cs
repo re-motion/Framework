@@ -30,10 +30,10 @@ namespace Remotion.ObjectBinding.BindableObject
   /// </summary>
   public sealed class InterfaceImplementationPropertyInformation : IPropertyInformation
   {
-    private readonly IPropertyInformation? _implementationPropertyInfo;
+    private readonly IPropertyInformation _implementationPropertyInfo;
     private readonly IPropertyInformation _declarationPropertyInfo;
 
-    public InterfaceImplementationPropertyInformation (IPropertyInformation? implementationPropertyInfo, IPropertyInformation declarationPropertyInfo)
+    public InterfaceImplementationPropertyInformation (IPropertyInformation implementationPropertyInfo, IPropertyInformation declarationPropertyInfo)
     {
       ArgumentUtility.CheckNotNull ("implementationPropertyInfo", implementationPropertyInfo);
       ArgumentUtility.CheckNotNull ("declarationPropertyInfo", declarationPropertyInfo);
@@ -42,7 +42,7 @@ namespace Remotion.ObjectBinding.BindableObject
       _declarationPropertyInfo = declarationPropertyInfo;
     }
 
-    public IPropertyInformation? ImplementationPropertyInfo
+    public IPropertyInformation ImplementationPropertyInfo
     {
       get { return _implementationPropertyInfo; }
     }
@@ -121,26 +121,28 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public object? GetValue (object? instance, object[]? indexParameters)
     {
-      ArgumentUtility.CheckNotNull ("instance", instance);
+      ArgumentUtility.CheckNotNull ("instance", instance!);
 
-      return GetGetMethod (true).Invoke (instance, indexParameters);
+      // TODO: check for null value
+      return GetGetMethod (true)!.Invoke (instance, indexParameters);
     }
 
     public void SetValue (object? instance, object? value, object[]? indexParameters)
     {
-      ArgumentUtility.CheckNotNull ("instance", instance);
+      ArgumentUtility.CheckNotNull ("instance", instance!);
 
+      // TODO: setMethod might be null
       var setMethod = GetSetMethod (true);
 
       if (indexParameters != null)
       {
-        var parameters = new List<object> (indexParameters);
+        var parameters = new List<object?> (indexParameters);
         parameters.Add (value);
-        setMethod.Invoke (instance, parameters.ToArray ());
+        setMethod!.Invoke (instance, parameters.ToArray ());
       }
       else
       {
-        setMethod.Invoke (instance, new[] { value });
+        setMethod!.Invoke (instance, new[] { value });
       }
     }
 
@@ -162,7 +164,8 @@ namespace Remotion.ObjectBinding.BindableObject
       var interfaceAccessor = _declarationPropertyInfo.GetGetMethod (nonPublic);
 
       if (interfaceAccessor != null)
-        return new InterfaceImplementationMethodInformation (_implementationPropertyInfo.GetGetMethod (true), interfaceAccessor);
+        // TODO: check for null value
+        return new InterfaceImplementationMethodInformation (_implementationPropertyInfo.GetGetMethod (true)!, interfaceAccessor);
       else
         return _implementationPropertyInfo.GetGetMethod (nonPublic);
     }
@@ -185,7 +188,8 @@ namespace Remotion.ObjectBinding.BindableObject
       var interfaceAccessor = _declarationPropertyInfo.GetSetMethod (nonPublic);
 
       if (interfaceAccessor != null)
-        return new InterfaceImplementationMethodInformation (_implementationPropertyInfo.GetSetMethod (true), interfaceAccessor);
+        // TODO: check for null values
+        return new InterfaceImplementationMethodInformation (_implementationPropertyInfo.GetSetMethod (true)!, interfaceAccessor);
       else
         return _implementationPropertyInfo.GetSetMethod (nonPublic);
     }
@@ -208,7 +212,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public override string? ToString ()
     {
-      return string.Format ("{0} (impl of '{1}')", _implementationPropertyInfo.Name, _declarationPropertyInfo.DeclaringType.Name);
+      return string.Format ("{0} (impl of '{1}')", _implementationPropertyInfo.Name, _declarationPropertyInfo.DeclaringType!.Name);
     }
 
     bool INullObject.IsNull
