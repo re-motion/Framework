@@ -15,18 +15,18 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Reflection;
 using Remotion.Security.Metadata;
 using Remotion.Security.UnitTests.SampleDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Security.UnitTests.Metadata
 {
   [TestFixture]
   public class CachingPermissionProviderDecoratorTest
   {
-    private IPermissionProvider _innerProviderStub;
+    private Mock<IPermissionProvider> _innerProviderStub;
     private CachingPermissionProviderDecorator _cacheDecorator;
     private MethodInfoAdapter _methodInformation;
     private Type _type;
@@ -34,8 +34,8 @@ namespace Remotion.Security.UnitTests.Metadata
     [SetUp]
     public void SetUp ()
     {
-      _innerProviderStub = MockRepository.GenerateStub<IPermissionProvider>();
-      _cacheDecorator = new CachingPermissionProviderDecorator (_innerProviderStub);
+      _innerProviderStub = new Mock<IPermissionProvider>();
+      _cacheDecorator = new CachingPermissionProviderDecorator (_innerProviderStub.Object);
       _type = typeof (SecurableObject);
       _methodInformation = MethodInfoAdapter.Create (_type.GetMethod ("Save"));
     }
@@ -44,7 +44,7 @@ namespace Remotion.Security.UnitTests.Metadata
     public void GetRequiredMethodPermissions_WithoutAccessTypes_ReturnsEmptyFromCache ()
     {
       var expected = new Enum[0];
-      _innerProviderStub.Stub (_ => _.GetRequiredMethodPermissions (_type, _methodInformation)).Return (expected);
+      _innerProviderStub.Setup (_ => _.GetRequiredMethodPermissions (_type, _methodInformation)).Returns (expected);
 
       var result = _cacheDecorator.GetRequiredMethodPermissions (_type, _methodInformation);
 
@@ -57,7 +57,7 @@ namespace Remotion.Security.UnitTests.Metadata
     public void GetRequiredMethodPermissions_WithAccessTypes_ReturnsValueCopyFromCache ()
     {
       var expected = new Enum[] { GeneralAccessTypes.Read };
-      _innerProviderStub.Stub (_ => _.GetRequiredMethodPermissions (_type, _methodInformation)).Return (expected);
+      _innerProviderStub.Setup (_ => _.GetRequiredMethodPermissions (_type, _methodInformation)).Returns (expected);
 
       var result = _cacheDecorator.GetRequiredMethodPermissions (_type, _methodInformation);
 
@@ -69,7 +69,7 @@ namespace Remotion.Security.UnitTests.Metadata
     [Test]
     public void GetRequiredMethodPermissions_WithNullMethod_ReturnsValueCopyFromCache ()
     {
-      _innerProviderStub.Stub (_ => _.GetRequiredMethodPermissions (null, null)).IgnoreArguments().Throw (new InvalidOperationException());
+      _innerProviderStub.Setup (_ => _.GetRequiredMethodPermissions (It.IsAny<Type>(), It.IsAny<IMethodInformation>())).Throws (new InvalidOperationException());
 
       var methodInformation = new NullMethodInformation();
 

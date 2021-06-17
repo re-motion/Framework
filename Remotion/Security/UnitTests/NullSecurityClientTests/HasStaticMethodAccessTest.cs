@@ -16,10 +16,10 @@
 // 
 using System;
 using System.Reflection;
+using Moq;
 using NUnit.Framework;
 using Remotion.Reflection;
 using Remotion.Security.UnitTests.SampleDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Security.UnitTests.NullSecurityClientTests
 {
@@ -29,7 +29,7 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     private NullSecurityClientTestHelper _testHelper;
     private SecurityClient _securityClient;
     private MethodInfo _methodInfo;
-    private IMethodInformation _methodInformation;
+    private Mock<IMethodInformation> _methodInformation;
 
     [SetUp]
     public void SetUp()
@@ -37,14 +37,12 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
       _testHelper = NullSecurityClientTestHelper.CreateForStatelessSecurity();
       _securityClient = _testHelper.CreateSecurityClient();
       _methodInfo = typeof (SecurableObject).GetMethod ("IsValid", new[] { typeof (SecurableObject) });
-      _methodInformation = MockRepository.GenerateStub<IMethodInformation>();
+      _methodInformation = new Mock<IMethodInformation>();
     }
 
     [Test]
     public void Test_AccessGranted()
     {
-      _testHelper.ReplayAll();
-
       bool hasAccess = _securityClient.HasStaticMethodAccess (typeof (SecurableObject), "IsValid");
 
       _testHelper.VerifyAll();
@@ -54,8 +52,6 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     [Test]
     public void Test_AccessGranted_WithMethodInfo ()
     {
-      _testHelper.ReplayAll ();
-
       bool hasAccess = _securityClient.HasStaticMethodAccess (typeof (SecurableObject), _methodInfo);
 
       _testHelper.VerifyAll ();
@@ -65,9 +61,7 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     [Test]
     public void Test_AccessGranted_WithMethodInfo_WithMethodInformation ()
     {
-      _testHelper.ReplayAll ();
-
-      bool hasAccess = _securityClient.HasStaticMethodAccess (typeof (SecurableObject), _methodInformation);
+      bool hasAccess = _securityClient.HasStaticMethodAccess (typeof (SecurableObject), _methodInformation.Object);
 
       _testHelper.VerifyAll ();
       Assert.That (hasAccess, Is.True);
@@ -76,8 +70,6 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     [Test]
     public void Test_WithinSecurityFreeSection_AccessGranted()
     {
-      _testHelper.ReplayAll();
-
       bool hasAccess;
       using (SecurityFreeSection.Activate())
       {
@@ -91,8 +83,6 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     [Test]
     public void Test_WithinSecurityFreeSection_AccessGranted_WithMethodInfo ()
     {
-      _testHelper.ReplayAll ();
-
       bool hasAccess;
       using (SecurityFreeSection.Activate())
       {
@@ -106,12 +96,10 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     [Test]
     public void Test_WithinSecurityFreeSection_AccessGranted_WithMethodInformation ()
     {
-      _testHelper.ReplayAll ();
-
       bool hasAccess;
       using (SecurityFreeSection.Activate())
       {
-        hasAccess = _securityClient.HasStaticMethodAccess (typeof (SecurableObject), _methodInformation);
+        hasAccess = _securityClient.HasStaticMethodAccess (typeof (SecurableObject), _methodInformation.Object);
       }
 
       _testHelper.VerifyAll ();
