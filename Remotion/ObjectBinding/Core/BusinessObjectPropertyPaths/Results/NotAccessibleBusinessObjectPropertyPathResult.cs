@@ -31,22 +31,22 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths.Results
       _businessObjectProvider = businessObjectProvider;
     }
 
-    public object GetValue ()
+    public object? GetValue ()
     {
       return null;
     }
 
-    public string GetString (string format)
+    public string GetString (string? format)
     {
       return _businessObjectProvider.GetNotAccessiblePropertyStringPlaceHolder();
     }
 
-    public IBusinessObjectProperty ResultProperty
+    public IBusinessObjectProperty? ResultProperty
     {
       get { return null; }
     }
 
-    public IBusinessObject ResultObject
+    public IBusinessObject? ResultObject
     {
       get { return null; }
     }

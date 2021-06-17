@@ -26,9 +26,9 @@ namespace Remotion.ObjectBinding.Validation
     public string ErrorMessage { get; }
 
     [CanBeNull]
-    public IBusinessObjectProperty ValidatedProperty { get; }
+    public IBusinessObjectProperty? ValidatedProperty { get; }
 
-    public UnhandledBusinessObjectValidationFailure ([NotNull] string errorMessage, [CanBeNull] IBusinessObjectProperty validatedProperty)
+    public UnhandledBusinessObjectValidationFailure ([NotNull] string errorMessage, [CanBeNull] IBusinessObjectProperty? validatedProperty)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("errorMessage", errorMessage);
 

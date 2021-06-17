@@ -45,7 +45,7 @@ namespace Remotion.ObjectBinding
     ///   Returns the <see cref="IBusinessObjectProperty"/> 
     ///   or <see langword="null" /> if the <see cref="IBusinessObjectProperty"/> does not exist on this <see cref="IBusinessObjectClass"/>. 
     ///  </returns>
-    IBusinessObjectProperty GetPropertyDefinition (string propertyIdentifier);
+    IBusinessObjectProperty? GetPropertyDefinition (string propertyIdentifier);
 
     /// <summary> 
     ///   Returns the <see cref="IBusinessObjectProperty"/> instances defined for this business object class.

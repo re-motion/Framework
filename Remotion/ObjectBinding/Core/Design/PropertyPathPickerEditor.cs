@@ -33,7 +33,7 @@ namespace Remotion.ObjectBinding.Design
       ArgumentUtility.CheckNotNull ("provider", provider);
       ArgumentUtility.CheckNotNull ("editorService", editorService);
 
-      IBusinessObjectClassSource propertySource = context.Instance as IBusinessObjectClassSource;
+      IBusinessObjectClassSource? propertySource = context.Instance as IBusinessObjectClassSource;
       if (propertySource == null)
         throw new InvalidOperationException ("Cannot use PropertyPathPickerEditor for objects other than IBusinessObjectClassSource.");
 

@@ -28,6 +28,6 @@ namespace Remotion.ObjectBinding
   /// </remarks>
   public interface IBusinessObjectServiceFactory
   {
-    IBusinessObjectService CreateService (IBusinessObjectProviderWithIdentity provider, Type serviceType);
+    IBusinessObjectService? CreateService (IBusinessObjectProviderWithIdentity provider, Type serviceType);
   }
 }

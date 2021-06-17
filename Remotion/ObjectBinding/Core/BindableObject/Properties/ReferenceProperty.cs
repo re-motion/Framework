@@ -490,7 +490,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     }
 
     [CanBeNull]
-    private TService GetServiceOrNull<TService> (Tuple<ServiceProvider, Type> serviceDefinition)
+    private TService? GetServiceOrNull<TService> (Tuple<ServiceProvider, Type> serviceDefinition)
         where TService: IBusinessObjectService
     {
       IBusinessObjectProvider provider;

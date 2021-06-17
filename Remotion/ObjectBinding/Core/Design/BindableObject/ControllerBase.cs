@@ -33,7 +33,7 @@ namespace Remotion.ObjectBinding.Design.BindableObject
     {
       Type type = GetType();
       string resourceID = treeViewIcon.Item2;
-      Stream stream = type.Assembly.GetManifestResourceStream (type, resourceID);
+      Stream? stream = type.Assembly.GetManifestResourceStream (type, resourceID);
       Assertion.IsNotNull (stream, string.Format ("Resource '{0}' was not found in namespace '{1}'.", resourceID, type.GetNamespaceSafe()));
       try
       {

@@ -50,7 +50,7 @@ namespace Remotion.ObjectBinding.BindableObject
     /// The <see cref="IBusinessObjectReferenceProperty"/> that will hold the reference to the default value. Must not be <see langword="null" />.
     /// </param>
     /// <returns>A new <see cref="IBusinessObject" /> instance that can be used as the default value for the <paramref name="property"/>.</returns>
-    IBusinessObject Create ([CanBeNull] IBusinessObject referencingObject, [NotNull] IBusinessObjectReferenceProperty property);
+    IBusinessObject Create ([CanBeNull] IBusinessObject? referencingObject, [NotNull] IBusinessObjectReferenceProperty property);
 
     /// <summary>
     /// Evaluates whether the <paramref name="value"/> is equivalent to the default value returned by the <see cref="Create"/> method.
@@ -73,7 +73,7 @@ namespace Remotion.ObjectBinding.BindableObject
     ///   information on how this method is used by the data binding infrastructure.
     /// </remarks>
     bool IsDefaultValue (
-        [CanBeNull] IBusinessObject referencingObject,
+        [CanBeNull] IBusinessObject? referencingObject,
         [NotNull] IBusinessObjectReferenceProperty property,
         [NotNull] IBusinessObject value,
         [NotNull] IBusinessObjectProperty[] emptyProperties);

@@ -100,7 +100,7 @@ namespace Remotion.ObjectBinding
     /// <exception cref="Exception"> 
     ///   Thrown if the <paramref name="property"/> is not part of <paramref name="businessObject"/>'s class. 
     /// </exception>
-    public string GetPropertyString (IBusinessObject businessObject, IBusinessObjectProperty property, string format)
+    public string? GetPropertyString (IBusinessObject businessObject, IBusinessObjectProperty property, string? format)
     {
       ArgumentUtility.CheckNotNull ("businessObject", businessObject);
       ArgumentUtility.CheckNotNull ("property", property);
@@ -118,7 +118,7 @@ namespace Remotion.ObjectBinding
 
     private string GetStringValues (IBusinessObject businessObject, IBusinessObjectProperty property, string format, int lines)
     {
-      IList list = (IList) businessObject.GetProperty (property);
+      IList? list = (IList?) businessObject.GetProperty (property);
       if (list == null)
         return string.Empty;
 
@@ -139,13 +139,13 @@ namespace Remotion.ObjectBinding
       return sb.ToString();
     }
 
-    private Tuple<int, string> GetLineCountAndFormatString (string format)
+    private Tuple<int, string> GetLineCountAndFormatString (string? format)
     {
       Tuple<string, string> formatStrings = GetFormatStrings (format);
       return new Tuple<int, string> (ParseLineCount(formatStrings.Item1), formatStrings.Item2);
     }
 
-    private Tuple<string, string> GetFormatStrings (string format)
+    private Tuple<string, string> GetFormatStrings (string? format)
     {
       if (format == null)
         return new Tuple<string, string> (null, null);
@@ -174,7 +174,7 @@ namespace Remotion.ObjectBinding
       return 1;
     }
 
-    private string GetStringValue (IBusinessObject businessObject, object value, IBusinessObjectProperty property, string format)
+    private string? GetStringValue (IBusinessObject businessObject, object? value, IBusinessObjectProperty property, string? format)
     {
       if (property is IBusinessObjectBooleanProperty)
         return GetStringValueForBooleanProperty (value, (IBusinessObjectBooleanProperty) property);
@@ -192,7 +192,7 @@ namespace Remotion.ObjectBinding
       return (value != null) ? value.ToString() : string.Empty;
     }
 
-    private string GetStringValueForDateTimeProperty (object value, IBusinessObjectDateTimeProperty property, string format)
+    private string GetStringValueForDateTimeProperty (object? value, IBusinessObjectDateTimeProperty property, string? format)
     {
       if (string.IsNullOrEmpty (format))
       {
@@ -202,10 +202,10 @@ namespace Remotion.ObjectBinding
           format = "g";
       }
 
-      return GetStringValueForFormattableValue ((IFormattable) value, format);
+      return GetStringValueForFormattableValue ((IFormattable?) value, format);
     }
 
-    private string GetStringValueForBooleanProperty (object value, IBusinessObjectBooleanProperty property)
+    private string GetStringValueForBooleanProperty (object? value, IBusinessObjectBooleanProperty property)
     {
       if (value is bool)
         return property.GetDisplayName ((bool) value);
@@ -213,20 +213,20 @@ namespace Remotion.ObjectBinding
         return string.Empty;
     }
 
-    private string GetStringValueForEnumerationProperty (object value, IBusinessObjectEnumerationProperty property, IBusinessObject businessObject)
+    private string? GetStringValueForEnumerationProperty (object? value, IBusinessObjectEnumerationProperty property, IBusinessObject businessObject)
     {
-      IEnumerationValueInfo enumValueInfo = property.GetValueInfoByValue (value, businessObject);
+      IEnumerationValueInfo? enumValueInfo = property.GetValueInfoByValue (value, businessObject);
       if (enumValueInfo == null)
         return string.Empty;
       return enumValueInfo.DisplayName;
     }
 
-    private string GetStringValueForNumericProperty (object value, string format)
+    private string GetStringValueForNumericProperty (object? value, string? format)
     {
-      return GetStringValueForFormattableValue ((IFormattable) value, format);
+      return GetStringValueForFormattableValue ((IFormattable?) value, format);
     }
 
-    private string GetStringValueForReferenceProperty (object value)
+    private string? GetStringValueForReferenceProperty (object? value)
     {
       if (value == null)
         return string.Empty;
@@ -240,12 +240,12 @@ namespace Remotion.ObjectBinding
       return value.ToString();
     }
 
-    private string GetStringValueForStringProperty (object value)
+    private string GetStringValueForStringProperty (object? value)
     {
-      return (string) value ?? string.Empty;
+      return (string?) value ?? string.Empty;
     }
 
-    private string GetStringValueForFormattableValue (IFormattable value, string format)
+    private string GetStringValueForFormattableValue (IFormattable? value, string? format)
     {
       if (value == null)
         return string.Empty;

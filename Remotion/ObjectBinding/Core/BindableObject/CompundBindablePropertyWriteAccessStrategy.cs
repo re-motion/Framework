@@ -45,7 +45,7 @@ namespace Remotion.ObjectBinding.BindableObject
       get { return _bindablePropertyWriteAccessStrategies.ToList().AsReadOnly(); }
     }
 
-    public bool CanWrite (IBusinessObject businessObject, PropertyBase bindableProperty)
+    public bool CanWrite (IBusinessObject? businessObject, PropertyBase bindableProperty)
     {
       // businessObject can be null
       ArgumentUtility.DebugCheckNotNull ("bindableProperty", bindableProperty);
@@ -66,7 +66,7 @@ namespace Remotion.ObjectBinding.BindableObject
         IBusinessObject businessObject,
         PropertyBase bindableProperty,
         Exception exception,
-        out BusinessObjectPropertyAccessException propertyAccessException)
+        out BusinessObjectPropertyAccessException? propertyAccessException)
     {
       ArgumentUtility.DebugCheckNotNull ("businessObject", businessObject);
       ArgumentUtility.DebugCheckNotNull ("bindableProperty", bindableProperty);

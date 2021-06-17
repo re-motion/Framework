@@ -32,7 +32,7 @@ namespace Remotion.ObjectBinding.Design
       ArgumentUtility.CheckNotNull ("provider", provider);
       ArgumentUtility.CheckNotNull ("editorService", editorService);
 
-      IBusinessObjectBoundControl control = context.Instance as IBusinessObjectBoundControl;
+      IBusinessObjectBoundControl? control = context.Instance as IBusinessObjectBoundControl;
       if (control == null)
         throw new InvalidOperationException ("Cannot use PropertyPickerEditor for objects other than IBusinessObjectBoundControl.");
 

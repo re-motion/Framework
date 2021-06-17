@@ -33,7 +33,7 @@ namespace Remotion.ObjectBinding.Design
     {
       if (context != null && context.Instance != null && provider != null)
       {
-        IWindowsFormsEditorService editorService = (IWindowsFormsEditorService) provider.GetService (typeof (IWindowsFormsEditorService));
+        IWindowsFormsEditorService? editorService = (IWindowsFormsEditorService?) provider.GetService (typeof (IWindowsFormsEditorService));
 
         if (editorService != null)
         {

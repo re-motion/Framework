@@ -54,7 +54,7 @@ namespace Remotion.ObjectBinding.BindableObject
     {
     }
 
-    public virtual IBusinessObjectService CreateService (IBusinessObjectProviderWithIdentity provider, Type serviceType)
+    public virtual IBusinessObjectService? CreateService (IBusinessObjectProviderWithIdentity provider, Type serviceType)
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("serviceType", serviceType, typeof (IBusinessObjectService));
 

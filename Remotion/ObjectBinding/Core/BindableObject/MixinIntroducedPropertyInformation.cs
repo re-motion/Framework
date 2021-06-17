@@ -53,12 +53,12 @@ namespace Remotion.ObjectBinding.BindableObject
       get { return _interfaceImplementationPropertyInfo.Name;  }
     }
 
-    public ITypeInformation DeclaringType
+    public ITypeInformation? DeclaringType
     {
       get { return _interfaceImplementationPropertyInfo.DeclaringType; }
     }
 
-    public ITypeInformation GetOriginalDeclaringType ()
+    public ITypeInformation? GetOriginalDeclaringType ()
     {
       return _interfaceImplementationPropertyInfo.GetOriginalDeclaringType();
     }
@@ -68,7 +68,7 @@ namespace Remotion.ObjectBinding.BindableObject
       return _interfaceImplementationPropertyInfo.GetOriginalDeclaration();
     }
 
-    public T GetCustomAttribute<T> (bool inherited) where T: class
+    public T? GetCustomAttribute<T> (bool inherited) where T: class
     {
       return _interfaceImplementationPropertyInfo.GetCustomAttribute<T>(inherited);
     }
@@ -83,7 +83,7 @@ namespace Remotion.ObjectBinding.BindableObject
       return _interfaceImplementationPropertyInfo.IsDefined<T> (inherited);
     }
 
-    public IPropertyInformation FindInterfaceImplementation (Type implementationType)
+    public IPropertyInformation? FindInterfaceImplementation (Type implementationType)
     {
       ArgumentUtility.CheckNotNull ("implementationType", implementationType);
 
@@ -115,21 +115,21 @@ namespace Remotion.ObjectBinding.BindableObject
       get { return GetSetMethod (false) != null; }
     }
 
-    public object GetValue (object instance, object[] indexParameters)
+    public object? GetValue (object? instance, object[]? indexParameters)
     {
       ArgumentUtility.CheckNotNull ("instance", instance);
 
       return _interfaceImplementationPropertyInfo.GetValue (instance, indexParameters);
     }
 
-    public void SetValue (object instance, object value, object[] indexParameters)
+    public void SetValue (object? instance, object? value, object[]? indexParameters)
     {
       ArgumentUtility.CheckNotNull ("instance", instance);
 
       _interfaceImplementationPropertyInfo.SetValue (instance, value, indexParameters);
     }
 
-    public IMethodInformation GetGetMethod (bool nonPublic)
+    public IMethodInformation? GetGetMethod (bool nonPublic)
     {
       var getMethod = _interfaceImplementationPropertyInfo.GetGetMethod (nonPublic);
       var interfaceImplementationGetMethod = getMethod as InterfaceImplementationMethodInformation;
@@ -140,7 +140,7 @@ namespace Remotion.ObjectBinding.BindableObject
       return new MixinIntroducedMethodInformation (interfaceImplementationGetMethod);
     }
 
-    public IMethodInformation GetSetMethod (bool nonPublic)
+    public IMethodInformation? GetSetMethod (bool nonPublic)
     {
       var setMethod = _interfaceImplementationPropertyInfo.GetSetMethod (nonPublic);
       var interfaceImplementationGetMethod = setMethod as InterfaceImplementationMethodInformation;
@@ -151,7 +151,7 @@ namespace Remotion.ObjectBinding.BindableObject
       return new MixinIntroducedMethodInformation (interfaceImplementationGetMethod);
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
       if (obj == null)
         return false;
@@ -167,7 +167,7 @@ namespace Remotion.ObjectBinding.BindableObject
       return _interfaceImplementationPropertyInfo.GetHashCode();
     }
 
-    public override string ToString ()
+    public override string? ToString ()
     {
       return _interfaceImplementationPropertyInfo + " (Mixin)";
     }

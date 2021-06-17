@@ -49,13 +49,13 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
       return GetFilterFromProperty () ?? GetFilterFromType () ?? new NullEnumerationValueFilter();
     }
 
-    private IEnumerationValueFilter GetFilterFromProperty ()
+    private IEnumerationValueFilter? GetFilterFromProperty ()
     {
       var attribute = PropertyInformation.GetCustomAttribute<T> (true);
       return attribute != null ? attribute.GetEnumerationValueFilter () : null;
     }
 
-    private IEnumerationValueFilter GetFilterFromType ()
+    private IEnumerationValueFilter? GetFilterFromType ()
     {
       var underlyingType = Nullable.GetUnderlyingType (PropertyInformation.PropertyType) ?? PropertyInformation.PropertyType;
       var attributes = _typeAttributeProvider (underlyingType);

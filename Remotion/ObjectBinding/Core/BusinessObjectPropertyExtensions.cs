@@ -31,7 +31,7 @@ namespace Remotion.ObjectBinding
     /// <returns> <see langword="true"/> if the user can access this property. </returns>
     /// <remarks> The result may depend on the user's authorization and/or the object. </remarks>
     [Obsolete ("Use IBusinessObjectProperty.IsAccessible (IBusinessObject) instead. (Version 1.15.20.0)", true)]
-    public static bool IsAccessible (this IBusinessObjectProperty property, [CanBeNull] IBusinessObjectClass objectClass, [CanBeNull] IBusinessObject obj)
+    public static bool IsAccessible (this IBusinessObjectProperty property, [CanBeNull] IBusinessObjectClass? objectClass, [CanBeNull] IBusinessObject? obj)
     {
       throw new NotSupportedException ("Use IBusinessObjectProperty.IsAccessible (IBusinessObject) instead. (Version 1.15.20.0)");
     }

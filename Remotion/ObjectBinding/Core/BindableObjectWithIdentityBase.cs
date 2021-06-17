@@ -47,7 +47,7 @@ namespace Remotion.ObjectBinding
       _implementation = implementation;
     }
 
-    public object GetProperty(IBusinessObjectProperty property)
+    public object? GetProperty(IBusinessObjectProperty? property)
     {
       return _implementation.GetProperty(property);
     }
@@ -57,7 +57,7 @@ namespace Remotion.ObjectBinding
       _implementation.SetProperty(property, value);
     }
 
-    public string GetPropertyString(IBusinessObjectProperty property, string format)
+    public string? GetPropertyString(IBusinessObjectProperty property, string? format)
     {
       return _implementation.GetPropertyString(property, format);
     }

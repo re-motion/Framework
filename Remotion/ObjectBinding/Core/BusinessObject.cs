@@ -25,7 +25,7 @@ namespace Remotion.ObjectBinding
   {
     /// <overloads> Gets the value accessed through the specified property. </overloads>
     /// <summary> Gets the value accessed through the specified <see cref="IBusinessObjectProperty"/>. </summary>
-    public abstract object GetProperty (IBusinessObjectProperty property);
+    public abstract object? GetProperty (IBusinessObjectProperty? property);
 
     /// <overloads> Sets the value accessed through the specified property. </overloads>
     /// <summary> Sets the value accessed through the specified <see cref="IBusinessObjectProperty"/>. </summary>
@@ -34,7 +34,7 @@ namespace Remotion.ObjectBinding
     /// <summary> 
     ///   Gets the formatted string representation of the value accessed through the specified <see cref="IBusinessObjectProperty"/>.
     /// </summary>
-    public virtual string GetPropertyString (IBusinessObjectProperty property, string format)
+    public virtual string? GetPropertyString (IBusinessObjectProperty property, string? format)
     {
       return StringFormatterService.GetPropertyString (this, property, format);
     }

@@ -25,18 +25,18 @@ namespace Remotion.ObjectBinding.Design
   public class PropertyPathPickerControl : EditorControlBase
   {
     private IBusinessObjectClassSource _classSource;
-    private string _value;
+    private string? _value;
 
     /// <summary> 
     /// Required designer variable.
     /// </summary>
-    private Container components = null;
+    private Container? components = null;
 
-    private TextBox FilterField;
-    private Label FilterLabel;
-    private Button SelectButton;
-    private CheckBox ClassFilterCheck;
-    private TreeView PathTree;
+    private TextBox? FilterField;
+    private Label? FilterLabel;
+    private Button? SelectButton;
+    private CheckBox? ClassFilterCheck;
+    private TreeView? PathTree;
 
     public PropertyPathPickerControl (IBusinessObjectClassSource classSource, IServiceProvider provider, IWindowsFormsEditorService editorService)
       : base (provider, editorService)
@@ -103,7 +103,7 @@ namespace Remotion.ObjectBinding.Design
       if (! includeReferenceClassProperties)
         return;
 
-      IBusinessObjectReferenceProperty referenceProperty = property as IBusinessObjectReferenceProperty;
+      IBusinessObjectReferenceProperty? referenceProperty = property as IBusinessObjectReferenceProperty;
       if (referenceProperty != null)
         AddReferenceClassProperties (node.Nodes, referenceProperty.ReferenceClass);
     }
@@ -146,7 +146,7 @@ namespace Remotion.ObjectBinding.Design
           continue;
 
         //  Is the Property this node represents a ReferenceProperty?
-        IBusinessObjectReferenceProperty referenceProperty =
+        IBusinessObjectReferenceProperty? referenceProperty =
             childNode.Tag as IBusinessObjectReferenceProperty;
         if (referenceProperty != null)
           AddReferenceClassProperties (childNode.Nodes, referenceProperty.ReferenceClass);
@@ -293,7 +293,7 @@ namespace Remotion.ObjectBinding.Design
       FillTree();
     }
 
-    public override object Value
+    public override object? Value
     {
       get { return _value; }
 
@@ -313,10 +313,10 @@ namespace Remotion.ObjectBinding.Design
           if (_classSource.BusinessObjectClass == null)
             throw new InvalidOperationException ("Cannot set value because edited object has no object class set.");
 
-          IBusinessObjectPropertyPath propertyPath = null;
+          IBusinessObjectPropertyPath? propertyPath = null;
           try
           {
-            propertyPath = BusinessObjectPropertyPath.CreateStatic (_classSource.BusinessObjectClass, (string) value);
+            propertyPath = BusinessObjectPropertyPath.CreateStatic (_classSource.BusinessObjectClass, (string?) value);
           }
           catch (ParseException)
           {
@@ -332,7 +332,7 @@ namespace Remotion.ObjectBinding.Design
             {
               if (nodes == null)
                 break;
-              TreeNode node = null;
+              TreeNode? node = null;
               foreach (TreeNode childNode in nodes)
               {
                 IBusinessObjectProperty nodeProperty = (IBusinessObjectProperty) childNode.Tag;

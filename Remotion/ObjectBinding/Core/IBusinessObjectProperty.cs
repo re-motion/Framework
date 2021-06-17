@@ -78,15 +78,15 @@ namespace Remotion.ObjectBinding
     /// <param name="obj"> The object to evaluate this property for, or <see langword="null"/>. </param>
     /// <returns> <see langword="true"/> if the user can access this property. </returns>
     /// <remarks> The result may depend on the user's authorization and/or the object. </remarks>
-    bool IsAccessible ([CanBeNull] IBusinessObject obj);
+    bool IsAccessible ([CanBeNull] IBusinessObject? obj);
 
     /// <summary> Indicates whether this property can be modified by the user. </summary>
     /// <param name="obj"> The object to evaluate this property for, or <see langword="null"/>. </param>
     /// <returns> <see langword="true"/> if the user can set this property. </returns>
     /// <remarks> The result may depend on the user's authorization and/or the object. </remarks>
-    bool IsReadOnly ([CanBeNull] IBusinessObject obj);
+    bool IsReadOnly ([CanBeNull] IBusinessObject? obj);
 
-    IEnumerable<IBusinessObjectPropertyConstraint> GetConstraints ([CanBeNull] IBusinessObject obj);
+    IEnumerable<IBusinessObjectPropertyConstraint> GetConstraints ([CanBeNull] IBusinessObject? obj);
 
     /// <summary>Gets the <see cref="IBusinessObjectClass"/> that was used to retrieve this property.</summary>
     /// <value>An instance of the <see cref="IBusinessObjectClass"/> type.</value>

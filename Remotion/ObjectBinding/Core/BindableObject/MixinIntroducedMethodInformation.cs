@@ -53,17 +53,17 @@ namespace Remotion.ObjectBinding.BindableObject
       get { return _mixinMethodInfo.Name; }
     }
 
-    public ITypeInformation DeclaringType
+    public ITypeInformation? DeclaringType
     {
       get { return _mixinMethodInfo.DeclaringType; }
     }
 
-    public ITypeInformation GetOriginalDeclaringType ()
+    public ITypeInformation? GetOriginalDeclaringType ()
     {
       return _mixinMethodInfo.GetOriginalDeclaringType();
     }
 
-    public T GetCustomAttribute<T> (bool inherited) where T: class
+    public T? GetCustomAttribute<T> (bool inherited) where T: class
     {
       return _mixinMethodInfo.GetCustomAttribute<T> (inherited);
     }
@@ -78,7 +78,7 @@ namespace Remotion.ObjectBinding.BindableObject
       return _mixinMethodInfo.IsDefined<T> (inherited);
     }
 
-    public IMethodInformation FindInterfaceImplementation (Type implementationType)
+    public IMethodInformation? FindInterfaceImplementation (Type implementationType)
     {
       ArgumentUtility.CheckNotNull ("implementationType", implementationType);
 
@@ -112,7 +112,7 @@ namespace Remotion.ObjectBinding.BindableObject
       return _mixinMethodInfo.GetOriginalDeclaration();
     }
 
-    public IPropertyInformation FindDeclaringProperty ()
+    public IPropertyInformation? FindDeclaringProperty ()
     {
       return _mixinMethodInfo.FindDeclaringProperty ();
     }
@@ -122,14 +122,14 @@ namespace Remotion.ObjectBinding.BindableObject
       get { return _mixinMethodInfo.ReturnType; }
     }
 
-    public object Invoke (object instance, object[] parameters)
+    public object? Invoke (object? instance, object[]? parameters)
     {
       ArgumentUtility.CheckNotNull ("instance", instance);
 
       return _mixinMethodInfo.Invoke (instance, parameters);
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
       if (obj == null)
         return false;
@@ -144,7 +144,7 @@ namespace Remotion.ObjectBinding.BindableObject
       return _mixinMethodInfo.GetHashCode();
     }
 
-    public override string ToString ()
+    public override string? ToString ()
     {
       return _mixinMethodInfo + " (Mixin)";
     }

@@ -51,8 +51,8 @@ namespace Remotion.ObjectBinding.BindableObject
     /// <param name="searchArguments">A parameter-object containing additional information for executing the search. Can be <see langword="null"/>.</param>
     /// <returns>A list of <see cref="IBusinessObject"/> instances. The result may be empty.</returns>
     IBusinessObject[] Search (
-        [CanBeNull] IBusinessObject referencingObject,
+        [CanBeNull] IBusinessObject? referencingObject,
         [NotNull] IBusinessObjectReferenceProperty property,
-        [CanBeNull] ISearchAvailableObjectsArguments searchArguments);
+        [CanBeNull] ISearchAvailableObjectsArguments? searchArguments);
   }
 }

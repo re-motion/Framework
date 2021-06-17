@@ -74,7 +74,7 @@ namespace Remotion.ObjectBinding.Design.BindableObject
 
     private ICollection GetAllDesignerTypes (bool includeGac)
     {
-      ITypeDiscoveryService typeDiscoveryService = (ITypeDiscoveryService) _serviceProvider.GetService (typeof (ITypeDiscoveryService));
+      ITypeDiscoveryService? typeDiscoveryService = (ITypeDiscoveryService?) _serviceProvider.GetService (typeof (ITypeDiscoveryService));
       if (typeDiscoveryService == null)
         return Type.EmptyTypes;
       else

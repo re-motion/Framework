@@ -24,18 +24,18 @@ namespace Remotion.ObjectBinding.Design
 {
   public class PropertyPickerControl : EditorControlBase
   {
-    private Label FilterLabel;
-    private TextBox FilterField;
-    private Button SelectButton;
+    private Label? FilterLabel;
+    private TextBox? FilterField;
+    private Button? SelectButton;
 
     private IBusinessObjectBoundControl _control;
-    private string _value;
-    private ListBox PropertiesList;
+    private string? _value;
+    private ListBox? PropertiesList;
 
     /// <summary> 
     /// Required designer variable.
     /// </summary>
-    private Container components = null;
+    private Container? components = null;
 
     public PropertyPickerControl (IBusinessObjectBoundControl control, IServiceProvider provider, IWindowsFormsEditorService editorService)
       : base (provider, editorService)
@@ -180,7 +180,7 @@ namespace Remotion.ObjectBinding.Design
     {
     }
 
-    public override object Value
+    public override object? Value
     {
       get { return _value; }
 
@@ -196,7 +196,7 @@ namespace Remotion.ObjectBinding.Design
           for (int i = 0; i < PropertiesList.Items.Count; ++i)
           {
             string item = (string) PropertiesList.Items[i];
-            if (item == (string)value)
+            if (item == (string?)value)
               PropertiesList.SelectedIndex = i;
           }
         }

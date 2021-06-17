@@ -46,7 +46,7 @@ namespace Remotion.ObjectBinding
     /// </value>
     [Browsable (false)]
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    public abstract IBusinessObject BusinessObject { get; set; }
+    public abstract IBusinessObject? BusinessObject { get; set; }
 
     /// <summary> 
     ///   Gets the <see cref="IBusinessObjectClass"/> of the <see cref="IBusinessObject"/> connected to this <see cref="BusinessObjectDataSource"/>. 
@@ -57,7 +57,7 @@ namespace Remotion.ObjectBinding
     /// </remarks>
     [Browsable (false)]
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    public abstract IBusinessObjectClass BusinessObjectClass { get; }
+    public abstract IBusinessObjectClass? BusinessObjectClass { get; }
 
     /// <summary> Gets or sets the current <see cref="DataSourceMode"/>. </summary>
     /// <value> A value of the <see cref="DataSourceMode"/> enumeration. </value>
@@ -93,7 +93,7 @@ namespace Remotion.ObjectBinding
     /// <value> The <see cref="IBusinessObjectProvider"/> for the current <see cref="BusinessObjectClass"/>. </value>
     [Browsable (false)]
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    public IBusinessObjectProvider BusinessObjectProvider
+    public IBusinessObjectProvider? BusinessObjectProvider
     {
       get { return (BusinessObjectClass == null) ? null : BusinessObjectClass.BusinessObjectProvider; }
     }

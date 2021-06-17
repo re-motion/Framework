@@ -26,10 +26,10 @@ namespace Remotion.ObjectBinding.Design.BindableObject
   {
     private static bool s_isGacIncluded;
 
-    private Type _value;
-    private TypeTreeViewController _typeTreeViewController;
-    private SearchFieldController _searchFieldController;
-    private BindableObjectTypeFinder _typeFinder;
+    private Type? _value;
+    private TypeTreeViewController? _typeTreeViewController;
+    private SearchFieldController? _searchFieldController;
+    private BindableObjectTypeFinder? _typeFinder;
 
     public BindableObjectTypePickerControl (IServiceProvider provider, IWindowsFormsEditorService editorService, BindableObjectTypeFinder typeFinder)
         : base (provider, editorService)
@@ -44,7 +44,7 @@ namespace Remotion.ObjectBinding.Design.BindableObject
       Initialize (null);
     }
 
-    private void Initialize (BindableObjectTypeFinder typeFinder)
+    private void Initialize (BindableObjectTypeFinder? typeFinder)
     {
       InitializeComponent ();
       _searchFieldController = new SearchFieldController (SearchField, SearchButton);
@@ -52,7 +52,7 @@ namespace Remotion.ObjectBinding.Design.BindableObject
       _typeFinder = typeFinder;
     }
 
-    public override object Value
+    public override object? Value
     {
       get { return _value; }
       set { _value = ArgumentUtility.CheckType<Type> ("value", value); }
@@ -100,7 +100,7 @@ namespace Remotion.ObjectBinding.Design.BindableObject
 
     private void HandleSelectionChanged ()
     {
-      Type type = _typeTreeViewController.GetSelectedType();
+      Type? type = _typeTreeViewController.GetSelectedType();
       if (type != null)
         SelectButton.Enabled = true;
       else

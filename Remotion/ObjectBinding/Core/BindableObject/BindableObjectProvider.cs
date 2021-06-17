@@ -78,7 +78,7 @@ namespace Remotion.ObjectBinding.BindableObject
       return IsBindableObjectBaseClass (type);
     }
 
-    internal static Type GetConcreteTypeForBindableObjectImplementation (Type type)
+    internal static Type GetConcreteTypeForBindableObjectImplementation (Type? type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
 

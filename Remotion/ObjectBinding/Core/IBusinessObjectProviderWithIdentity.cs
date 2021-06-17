@@ -25,6 +25,6 @@ namespace Remotion.ObjectBinding
   /// </summary>
   public interface IBusinessObjectProviderWithIdentity : IBusinessObjectProvider
   {
-    BusinessObjectProviderAttribute ProviderAttribute { get; }
+    BusinessObjectProviderAttribute? ProviderAttribute { get; }
   }
 }

@@ -32,9 +32,9 @@ namespace Remotion.ObjectBinding.Design.BindableObject
       Class = 2
     }
 
-    private readonly TreeView _treeView;
+    private readonly TreeView? _treeView;
 
-    public TypeTreeViewController (TreeView treeView)
+    public TypeTreeViewController (TreeView? treeView)
     {
       _treeView = treeView;
       _treeView.ImageList = CreateImageList (
@@ -43,12 +43,12 @@ namespace Remotion.ObjectBinding.Design.BindableObject
           Tuple.Create ((Enum) TreeViewIcons.Class, "VSObject_Class.bmp"));
     }
 
-    public TreeView TreeView
+    public TreeView? TreeView
     {
       get { return _treeView; }
     }
 
-    public void PopulateTreeNodes (List<Type> types, Type selectedType)
+    public void PopulateTreeNodes (List<Type> types, Type? selectedType)
     {
       _treeView.BeginUpdate();
       _treeView.Nodes.Clear();
@@ -65,7 +65,7 @@ namespace Remotion.ObjectBinding.Design.BindableObject
       _treeView.EndUpdate();
     }
 
-    public Type GetSelectedType ()
+    public Type? GetSelectedType ()
     {
       if (_treeView.SelectedNode == null)
         return null;
@@ -127,7 +127,7 @@ namespace Remotion.ObjectBinding.Design.BindableObject
       return typeNode;
     }
 
-    private void TrySelect (TreeNode node, Type selectedType)
+    private void TrySelect (TreeNode node, Type? selectedType)
     {
       if (node.Tag is Type
           && selectedType != null

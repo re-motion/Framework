@@ -30,22 +30,22 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths.Results
       get { return true; }
     }
 
-    public object GetValue ()
+    public object? GetValue ()
     {
       return null;
     }
 
-    public string GetString (string format)
+    public string GetString (string? format)
     {
       return string.Empty;
     }
 
-    public IBusinessObjectProperty ResultProperty
+    public IBusinessObjectProperty? ResultProperty
     {
       get { return null; }
     }
 
-    public IBusinessObject ResultObject
+    public IBusinessObject? ResultObject
     {
       get { return null; }
     }

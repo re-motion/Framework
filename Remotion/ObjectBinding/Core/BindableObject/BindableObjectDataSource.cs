@@ -25,16 +25,16 @@ namespace Remotion.ObjectBinding.BindableObject
   //TODO: Doc
   public class BindableObjectDataSource : BusinessObjectDataSource
   {
-    private IBusinessObject _businessObject;
-    private string _typeName;
+    private IBusinessObject? _businessObject;
+    private string? _typeName;
     private DataSourceMode _mode = DataSourceMode.Edit;
-    private BindableObjectClass _bindableObjectClass;
+    private BindableObjectClass? _bindableObjectClass;
 
     public BindableObjectDataSource ()
     {
     }
 
-    public override IBusinessObject BusinessObject
+    public override IBusinessObject? BusinessObject
     {
       get { return _businessObject; }
       set { _businessObject = value; }
@@ -55,7 +55,7 @@ namespace Remotion.ObjectBinding.BindableObject
     [DefaultValue (null)]
     [Editor (typeof (BindableObjectTypePickerEditor), typeof (UITypeEditor))]
     [TypeConverter (typeof (TypeNameConverter))]
-    public Type Type
+    public Type? Type
     {
       get
       {
@@ -76,7 +76,7 @@ namespace Remotion.ObjectBinding.BindableObject
       }
     }
 
-    private new Type GetType ()
+    private new Type? GetType ()
     {
       if (_typeName == null)
         return null;
@@ -84,7 +84,7 @@ namespace Remotion.ObjectBinding.BindableObject
       return TypeUtility.GetType (_typeName, true);
     }
 
-    private BindableObjectClass GetBindableObjectClass ()
+    private BindableObjectClass? GetBindableObjectClass ()
     {
       var type = GetType();
       if (type == null)

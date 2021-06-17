@@ -25,8 +25,8 @@ namespace Remotion.ObjectBinding.Design
   [TypeDescriptionProvider (typeof (EditorControlBaseClassProvider))]
   public abstract class EditorControlBase : UserControl
   {
-    private readonly IServiceProvider _serviceProvider;
-    private readonly IWindowsFormsEditorService _editorService;
+    private readonly IServiceProvider? _serviceProvider;
+    private readonly IWindowsFormsEditorService? _editorService;
 
     protected EditorControlBase (IServiceProvider provider, IWindowsFormsEditorService editorService)
     {
@@ -43,14 +43,14 @@ namespace Remotion.ObjectBinding.Design
 
     [Browsable (false)]
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    public abstract object Value { get; set; }
+    public abstract object? Value { get; set; }
 
-    public IServiceProvider ServiceProvider
+    public IServiceProvider? ServiceProvider
     {
       get { return _serviceProvider; }
     }
 
-    public IWindowsFormsEditorService EditorService
+    public IWindowsFormsEditorService? EditorService
     {
       get { return _editorService; }
     }
