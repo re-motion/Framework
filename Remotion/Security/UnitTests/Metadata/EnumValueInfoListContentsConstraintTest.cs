@@ -16,10 +16,10 @@
 // 
 using System;
 using System.Collections.Generic;
+using Moq;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
 using Remotion.Security.Metadata;
-using Rhino.Mocks;
 
 namespace Remotion.Security.UnitTests.Metadata
 {
@@ -68,14 +68,13 @@ namespace Remotion.Security.UnitTests.Metadata
     [Test]
     public void GetMessage ()
     {
-      var writerMock = MockRepository.GenerateMock<MessageWriter>();
-      writerMock.Expect (mock => mock.Write ("Expected: ExpectedName	 but was: First, Second"));
-      writerMock.Replay();
+      var writerMock = new Mock<MessageWriter>();
+      writerMock.Setup (mock => mock.Write ("Expected: ExpectedName	 but was: First, Second")).Verifiable();
 
       var constraint = new EnumValueInfoListContentsConstraintResult (null, _list, "ExpectedName", false);
-      constraint.WriteMessageTo (writerMock);
+      constraint.WriteMessageTo (writerMock.Object);
       
-      writerMock.VerifyAllExpectations();
+      writerMock.Verify();
     }
     
   }

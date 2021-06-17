@@ -37,8 +37,6 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     [Test]
     public void Test_WithParamsArray ()
     {
-      _testHelper.ReplayAll();
-
       bool hasAccess = _securityClient.HasAccess (_testHelper.SecurableObject, AccessType.Get (TestAccessTypes.First));
 
       _testHelper.VerifyAll();
@@ -48,8 +46,6 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     [Test]
     public void Test_WithParamsArray_AndSecurityPrincipal ()
     {
-      _testHelper.ReplayAll();
-
       var securityPrincipal = _securityClient.PrincipalProvider.GetPrincipal();
       bool hasAccess = _securityClient.HasAccess (_testHelper.SecurableObject, securityPrincipal, AccessType.Get (TestAccessTypes.First));
 
@@ -60,8 +56,6 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     [Test]
     public void Test_AccessGranted ()
     {
-      _testHelper.ReplayAll();
-
       bool hasAccess = _securityClient.HasAccess (
           _testHelper.SecurableObject,
           (IReadOnlyList<AccessType>) new[] { AccessType.Get (TestAccessTypes.First) });
@@ -73,8 +67,6 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     [Test]
     public void Test_WithinSecurityFreeSection_AccessGranted ()
     {
-      _testHelper.ReplayAll();
-
       bool hasAccess;
       using (SecurityFreeSection.Activate())
       {
@@ -90,8 +82,6 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     [Test]
     public void Test_WithSecurityStrategyIsNull ()
     {
-      _testHelper.ReplayAll();
-
       bool hasAccess = _securityClient.HasAccess (
           new SecurableObject (null),
           (IReadOnlyList<AccessType>) new[] { AccessType.Get (TestAccessTypes.First) });
