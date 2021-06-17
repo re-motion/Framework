@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Remotion.Reflection;
 using Remotion.Utilities;
@@ -52,7 +53,7 @@ namespace Remotion.Security.Metadata
       Dictionary<Enum, EnumValueInfo> enumValueInfos = new Dictionary<Enum, EnumValueInfo> ();
       for (int i = 0; i < values.Count; i++)
       {
-        Enum value = (Enum) values[i];
+        Enum value = (Enum) values[i]!;
         enumValueInfos.Add (value, GetValue (value, cache));
       }
 
@@ -64,13 +65,14 @@ namespace Remotion.Security.Metadata
       ArgumentUtility.CheckNotNull ("value", value);
       ArgumentUtility.CheckNotNull ("cache", cache);
 
-      EnumValueInfo info = cache.GetEnumValueInfo (value);
+      EnumValueInfo? info = cache.GetEnumValueInfo (value);
       if (info == null)
       {
         string name = value.ToString ();
         info = new EnumValueInfo (TypeUtility.GetPartialAssemblyQualifiedName (value.GetType ()), name, Convert.ToInt32 (value));
-        FieldInfo fieldInfo = value.GetType ().GetField (name, BindingFlags.Static | BindingFlags.Public);
-        PermanentGuidAttribute attribute = (PermanentGuidAttribute) Attribute.GetCustomAttribute (fieldInfo, typeof (PermanentGuidAttribute), false);
+        // TODO RM-7868: Add debug notnull assertion
+        FieldInfo fieldInfo = value.GetType ().GetField (name, BindingFlags.Static | BindingFlags.Public)!;
+        PermanentGuidAttribute? attribute = (PermanentGuidAttribute?) Attribute.GetCustomAttribute (fieldInfo, typeof (PermanentGuidAttribute), false);
         if (attribute != null)
           info.ID = attribute.Value.ToString ();
 

@@ -52,7 +52,7 @@ namespace Remotion.Security
       get { return _position; }
     }
 
-    bool IEquatable<SecurityPrincipalRole>.Equals (SecurityPrincipalRole other)
+    bool IEquatable<SecurityPrincipalRole>.Equals (SecurityPrincipalRole? other)
     {
       if (other == null)
         return false;
@@ -66,9 +66,9 @@ namespace Remotion.Security
       return true;
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
-      SecurityPrincipalRole other = obj as SecurityPrincipalRole;
+      SecurityPrincipalRole? other = obj as SecurityPrincipalRole;
       if (other == null)
         return false;
       return ((IEquatable<SecurityPrincipalRole>) this).Equals (other);

@@ -25,14 +25,14 @@ namespace Remotion.Security.Metadata.Extractor
   {
     public static int Main (string[] args)
     {
-      CommandLineArguments arguments = GetArguments (args);
+      CommandLineArguments? arguments = GetArguments (args);
       if (arguments == null)
         return 1;
 
       return ExtractMetadata (arguments);
     }
 
-    private static CommandLineArguments GetArguments (string[] args)
+    private static CommandLineArguments? GetArguments (string[] args)
     {
       CommandLineClassParser parser = new CommandLineClassParser (typeof (CommandLineArguments));
 
@@ -81,7 +81,8 @@ namespace Remotion.Security.Metadata.Extractor
       {
         Console.Error.WriteLine ("Execution aborted. Exception stack:");
 
-        for (; exception != null; exception = exception.InnerException)
+        // TODO RM-7874: Introduce new variable for reassigned exception
+        for (; exception != null; exception = exception.InnerException!)
         {
           Console.Error.WriteLine ("{0}: {1}\n{2}", exception.GetType ().GetFullNameSafe(), exception.Message, exception.StackTrace);
         }

@@ -98,7 +98,8 @@ namespace Remotion.Security.Metadata
       XmlAttribute enumValueIDAttribute = document.CreateAttribute ("id");
       enumValueIDAttribute.Value = enumValueInfo.ID;
 
-      EnumWrapper enumWrapper = EnumWrapper.Get(enumValueInfo.Name, enumValueInfo.TypeName);
+      // TODO RM-7875: MetadataInfo and subtypes should be reworked to increase null safety.
+      EnumWrapper enumWrapper = EnumWrapper.Get(enumValueInfo.Name!, enumValueInfo.TypeName);
       XmlAttribute enumValueNameAttribute = document.CreateAttribute ("name");
       enumValueNameAttribute.Value = enumWrapper.Name;
 
@@ -134,7 +135,8 @@ namespace Remotion.Security.Metadata
       XmlElement propertyValueElement = document.CreateElement ("state", _metadataSchema.SchemaUri);
 
       XmlAttribute propertyValueNameAttribute = document.CreateAttribute ("name");
-      propertyValueNameAttribute.Value = EnumWrapper.Get(enumValueInfo.Name, enumValueInfo.TypeName).Name;
+      // TODO RM-7875: MetadataInfo and subtypes should be reworked to increase null safety.
+      propertyValueNameAttribute.Value = EnumWrapper.Get(enumValueInfo.Name!, enumValueInfo.TypeName).Name;
       
       XmlAttribute propertyValueValueAttribute = document.CreateAttribute ("value");
       propertyValueValueAttribute.Value = enumValueInfo.Value.ToString ();
@@ -182,7 +184,7 @@ namespace Remotion.Security.Metadata
       return CreateRefElement (document, "accessTypeRef", accessTypeInfo.ID);
     }
 
-    private XmlElement CreateRefElement (XmlDocument document, string elementName, string idText)
+    private XmlElement CreateRefElement (XmlDocument document, string elementName, string? idText)
     {
       XmlElement refElement = document.CreateElement (elementName, _metadataSchema.SchemaUri);
 

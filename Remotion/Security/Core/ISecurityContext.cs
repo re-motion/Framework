@@ -51,7 +51,7 @@ namespace Remotion.Security
     /// A <see cref="string"/> that uniquely identifies the owning user of the <see cref="ISecurableObject"/> to the <see cref="ISecurityProvider"/>.
     /// This property may return <see langword="null" />.
     /// </value>
-    string Owner { get; }
+    string? Owner { get; }
 
     /// <summary>
     /// Gets the name of the group that owns the <see cref="ISecurableObject"/>.
@@ -60,7 +60,7 @@ namespace Remotion.Security
     /// A <see cref="string"/> that uniquely identifies the owning group of the <see cref="ISecurableObject"/> to the <see cref="ISecurityProvider"/>.
     /// This property may return <see langword="null" />.
     /// </value>
-    string OwnerGroup { get; }
+    string? OwnerGroup { get; }
 
     /// <summary>
     /// Gets the name of the tenant that owns the <see cref="ISecurableObject"/>.
@@ -69,7 +69,7 @@ namespace Remotion.Security
     /// A <see cref="string"/> that uniquely identifies the owning tenant of the <see cref="ISecurableObject"/> to the <see cref="ISecurityProvider"/>.
     /// This property may return <see langword="null" />.
     /// </value>
-    string OwnerTenant { get; }
+    string? OwnerTenant { get; }
 
     /// <summary>
     /// Gets the list of abstract roles the current user has in regards to the <see cref="ISecurableObject"/>.

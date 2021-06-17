@@ -163,9 +163,9 @@ namespace Remotion.Security
     }
 
     private readonly string _class;
-    private readonly string _owner;
-    private readonly string _ownerGroup;
-    private readonly string _ownerTenant;
+    private readonly string? _owner;
+    private readonly string? _ownerGroup;
+    private readonly string? _ownerTenant;
     private readonly bool _isStateless;
     private readonly Dictionary<string, EnumWrapper> _states;
     private readonly EnumWrapper[] _abstractRoles;
@@ -173,9 +173,9 @@ namespace Remotion.Security
 
     private SecurityContext (
         Type classType,
-        string owner,
-        string ownerGroup,
-        string ownerTenant,
+        string? owner,
+        string? ownerGroup,
+        string? ownerTenant,
         bool isStateless,
         Dictionary<string, EnumWrapper> states,
         EnumWrapper[] abstractRoles)
@@ -195,17 +195,17 @@ namespace Remotion.Security
       get { return _class; }
     }
 
-    public string Owner
+    public string? Owner
     {
       get { return _owner; }
     }
 
-    public string OwnerGroup
+    public string? OwnerGroup
     {
       get { return _ownerGroup; }
     }
 
-    public string OwnerTenant
+    public string? OwnerTenant
     {
       get { return _ownerTenant; }
     }
@@ -240,12 +240,12 @@ namespace Remotion.Security
       return _hashCode;
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
       return EqualityUtility.EqualsEquatable (this, obj);
     }
 
-    bool IEquatable<SecurityContext>.Equals (SecurityContext other)
+    bool IEquatable<SecurityContext>.Equals (SecurityContext? other)
     {
       if (other == null)
         return false;

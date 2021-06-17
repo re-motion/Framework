@@ -63,7 +63,7 @@ namespace Remotion.Security.Metadata
         return _type.GetHashCode () ^ _methodName[0];
       }
 
-      public bool Equals (CacheKey other)
+      public bool Equals (CacheKey? other)
       {
         return EqualityUtility.NotNullAndSameType (this, other)
                && _type.Equals (other._type)
@@ -117,7 +117,7 @@ namespace Remotion.Security.Metadata
         throw new ArgumentException (string.Format ("The method '{0}' could not be found.", methodName), "methodName");
 
       var foundMembers = new List<MemberInfo> ();
-      for (Type currentType = type; currentType != null; currentType = currentType.BaseType)
+      for (Type? currentType = type; currentType != null; currentType = currentType.BaseType)
         foundMembers.AddRange (currentType.FindMembers (MemberTypes.Method, bindingFlags | BindingFlags.DeclaredOnly, IsSecuredMethod, methodName));
 
       if (foundMembers.Count == 0)
@@ -144,9 +144,9 @@ namespace Remotion.Security.Metadata
       return existingMembers.Length > 0;
     }
 
-    private static bool IsSecuredMethod (MemberInfo memberInfo, object filterCriteria)
+    private static bool IsSecuredMethod (MemberInfo memberInfo, object? filterCriteria)
     {
-      string memberName = (string) filterCriteria;
+      var memberName = (string) filterCriteria!;
       return memberInfo.Name == memberName && memberInfo.IsDefined (typeof (DemandPermissionAttribute), false);
     }
 

@@ -28,15 +28,15 @@ namespace Remotion.Security
   public sealed class SecurityPrincipal : ISecurityPrincipal, IEquatable<SecurityPrincipal>
   {
     private readonly string _user;
-    private readonly IReadOnlyList<ISecurityPrincipalRole> _roles;
-    private readonly string _substitutedUser;
-    private readonly IReadOnlyList<ISecurityPrincipalRole> _substitutedRoles;
+    private readonly IReadOnlyList<ISecurityPrincipalRole>? _roles;
+    private readonly string? _substitutedUser;
+    private readonly IReadOnlyList<ISecurityPrincipalRole>? _substitutedRoles;
 
     public SecurityPrincipal (
         [NotNull] string user,
-        [CanBeNull] IReadOnlyList<ISecurityPrincipalRole> roles,
-        [CanBeNull] string substitutedUser,
-        [CanBeNull] IReadOnlyList<ISecurityPrincipalRole> substitutedRoles)
+        [CanBeNull] IReadOnlyList<ISecurityPrincipalRole>? roles,
+        [CanBeNull] string? substitutedUser,
+        [CanBeNull] IReadOnlyList<ISecurityPrincipalRole>? substitutedRoles)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("user", user);
       ArgumentUtility.CheckNotEmpty ("substitutedUser", substitutedUser);
@@ -52,22 +52,22 @@ namespace Remotion.Security
       get { return _user; }
     }
 
-    public IReadOnlyList<ISecurityPrincipalRole> Roles
+    public IReadOnlyList<ISecurityPrincipalRole>? Roles
     {
       get { return _roles; }
     }
 
-    public string SubstitutedUser
+    public string? SubstitutedUser
     {
       get { return _substitutedUser; }
     }
 
-    public IReadOnlyList<ISecurityPrincipalRole> SubstitutedRoles
+    public IReadOnlyList<ISecurityPrincipalRole>? SubstitutedRoles
     {
       get { return _substitutedRoles; }
     }
 
-    public bool Equals (SecurityPrincipal other)
+    public bool Equals (SecurityPrincipal? other)
     {
       if (ReferenceEquals (this, other))
         return true;
@@ -138,9 +138,9 @@ namespace Remotion.Security
       return false;
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
-      SecurityPrincipal other = obj as SecurityPrincipal;
+      SecurityPrincipal? other = obj as SecurityPrincipal;
       if (other == null)
         return false;
       return ((IEquatable<SecurityPrincipal>) this).Equals (other);

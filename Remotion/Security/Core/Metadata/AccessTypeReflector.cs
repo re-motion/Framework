@@ -123,7 +123,7 @@ namespace Remotion.Security.Metadata
       return instanceMethods.Cast<MethodInfo>();
     }
 
-    private bool FindSecuredMembersFilter (MemberInfo member, object filterCriteria)
+    private bool FindSecuredMembersFilter (MemberInfo member, object? filterCriteria)
     {
       return Attribute.IsDefined (member, typeof (DemandPermissionAttribute), true);
     }
@@ -132,7 +132,7 @@ namespace Remotion.Security.Metadata
     {
       foreach (var methodInfo in methodInfos)
       {
-        var values = _permissionReflector.GetRequiredMethodPermissions (methodInfo.DeclaringType, MethodInfoAdapter.Create(methodInfo));
+        var values = _permissionReflector.GetRequiredMethodPermissions (methodInfo.DeclaringType!, MethodInfoAdapter.Create(methodInfo));
         foreach (Enum value in values)
         {
           EnumValueInfo accessType = _enumerationReflector.GetValue (value, cache);
