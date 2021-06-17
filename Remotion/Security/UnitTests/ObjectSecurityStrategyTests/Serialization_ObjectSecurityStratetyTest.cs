@@ -16,12 +16,12 @@
 // 
 using System;
 using System.Collections.Generic;
+using Moq;
 using NUnit.Framework;
 using Remotion.Collections;
 using Remotion.Collections.Caching;
 using Remotion.Development.UnitTesting;
 using Remotion.Security.UnitTests.SampleDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Security.UnitTests.ObjectSecurityStrategyTests
 {
@@ -60,14 +60,14 @@ namespace Remotion.Security.UnitTests.ObjectSecurityStrategyTests
     [Test]
     public void Serialization ()
     {
-      var securityProviderMock = MockRepository.GenerateStrictMock<ISecurityProvider>();
+      var securityProviderMock = new Mock<ISecurityProvider> (MockBehavior.Strict);
       securityProviderMock
-          .Expect (_ => _.GetAccess (_context, new SecurityPrincipal ("foo", null, null, null)))
-          .Return (new[] { AccessType.Get (GeneralAccessTypes.Read) })
-          .Repeat.Once();
+          .Setup (_ => _.GetAccess (_context, new SecurityPrincipal ("foo", null, null, null)))
+          .Returns (new[] { AccessType.Get (GeneralAccessTypes.Read) })
+          .Verifiable();
 
       bool hasAccess = _strategy.HasAccess (
-          securityProviderMock,
+          securityProviderMock.Object,
           new SecurityPrincipal ("foo", null, null, null),
           new[] { AccessType.Get (GeneralAccessTypes.Read) });
 
@@ -77,7 +77,7 @@ namespace Remotion.Security.UnitTests.ObjectSecurityStrategyTests
       Assert.That (deserializedStrategy, Is.Not.SameAs (_strategy));
 
       bool hasAccessAfterDeserialization = _strategy.HasAccess (
-          MockRepository.GenerateStrictMock<ISecurityProvider>(),
+          new Mock<ISecurityProvider> (MockBehavior.Strict).Object,
           new SecurityPrincipal ("foo", null, null, null),
           new[] { AccessType.Get (GeneralAccessTypes.Read) });
 

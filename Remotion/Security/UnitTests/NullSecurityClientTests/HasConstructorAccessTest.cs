@@ -36,8 +36,6 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     [Test]
     public void Test_AccessGranted()
     {
-      _testHelper.ReplayAll();
-
       bool hasAccess = _securityClient.HasConstructorAccess (typeof (SecurableObject));
 
       _testHelper.VerifyAll();
@@ -47,7 +45,6 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     [Test]
     public void Test_WithinSecurityFreeSection_AccessGranted()
     {
-      _testHelper.ReplayAll();
       bool hasAccess;
 
       using (SecurityFreeSection.Activate())

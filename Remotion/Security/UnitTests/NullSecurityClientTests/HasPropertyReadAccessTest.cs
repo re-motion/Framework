@@ -39,8 +39,6 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     [Test]
     public void Test_AccessGranted()
     {
-      _testHelper.ReplayAll();
-
       bool hasAccess = _securityClient.HasPropertyReadAccess (_testHelper.SecurableObject, "IsVisible");
 
       _testHelper.VerifyAll();
@@ -50,8 +48,6 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     [Test]
     public void Test_AccessGranted_WithPropertyInfo ()
     {
-      _testHelper.ReplayAll ();
-
       bool hasAccess = _securityClient.HasPropertyReadAccess (_testHelper.SecurableObject, _methodInformation);
 
       _testHelper.VerifyAll ();
@@ -61,8 +57,6 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     [Test]
     public void Test_AccessGranted_WithPropertyInformation ()
     {
-      _testHelper.ReplayAll ();
-
       bool hasAccess = _securityClient.HasPropertyReadAccess (_testHelper.SecurableObject, _methodInformation);
 
       _testHelper.VerifyAll ();
@@ -72,8 +66,6 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     [Test]
     public void Test_WithinSecurityFreeSection_AccessGranted()
     {
-      _testHelper.ReplayAll();
-
       bool hasAccess;
       using (SecurityFreeSection.Activate())
       {
@@ -87,8 +79,6 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     [Test]
     public void Test_WithinSecurityFreeSection_AccessGranted_WithPropertyInfo ()
     {
-      _testHelper.ReplayAll ();
-
       bool hasAccess;
       using (SecurityFreeSection.Activate())
       {
@@ -102,8 +92,6 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     [Test]
     public void Test_WithinSecurityFreeSection_AccessGranted_WithPropertyInformation ()
     {
-      _testHelper.ReplayAll ();
-
       bool hasAccess;
       using (SecurityFreeSection.Activate())
       {
@@ -117,8 +105,6 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     [Test]
     public void Test_WithSecurityStrategyIsNull()
     {
-      _testHelper.ReplayAll();
-
       bool hasAccess = _securityClient.HasPropertyReadAccess (new SecurableObject (null), "IsVisible");
 
       _testHelper.VerifyAll();
@@ -128,8 +114,6 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     [Test]
     public void Test_WithSecurityStrategyIsNull_PropertyInfo ()
     {
-      _testHelper.ReplayAll ();
-
       bool hasAccess = _securityClient.HasPropertyReadAccess (new SecurableObject (null), _methodInformation);
 
       _testHelper.VerifyAll ();
@@ -139,8 +123,6 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     [Test]
     public void Test_WithSecurityStrategyIsNull_PropertyInformation ()
     {
-      _testHelper.ReplayAll ();
-
       bool hasAccess = _securityClient.HasPropertyReadAccess (new SecurableObject (null), _methodInformation);
 
       _testHelper.VerifyAll ();
