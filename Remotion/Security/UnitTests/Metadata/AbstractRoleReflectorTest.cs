@@ -16,10 +16,10 @@
 // 
 using System;
 using System.Collections.Generic;
+using Moq;
 using NUnit.Framework;
 using Remotion.Security.Metadata;
 using Remotion.Security.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Security.UnitTests.Metadata
 {
@@ -33,8 +33,7 @@ namespace Remotion.Security.UnitTests.Metadata
 
     // member fields
 
-    private MockRepository _mocks;
-    private IEnumerationReflector _enumeratedTypeReflectorMock;
+    private Mock<IEnumerationReflector> _enumeratedTypeReflectorMock;
     private AbstractRoleReflector _abstractRoleReflector;
     private MetadataCache _cache;
 
@@ -49,9 +48,8 @@ namespace Remotion.Security.UnitTests.Metadata
     [SetUp]
     public void SetUp ()
     {
-      _mocks = new MockRepository ();
-      _enumeratedTypeReflectorMock = _mocks.StrictMock<IEnumerationReflector> ();
-      _abstractRoleReflector = new AbstractRoleReflector (_enumeratedTypeReflectorMock);
+      _enumeratedTypeReflectorMock = new Mock<IEnumerationReflector> (MockBehavior.Strict);
+      _abstractRoleReflector = new AbstractRoleReflector (_enumeratedTypeReflectorMock.Object);
       _cache = new MetadataCache ();
     }
 
@@ -59,7 +57,7 @@ namespace Remotion.Security.UnitTests.Metadata
     public void Initialize ()
     {
       Assert.IsInstanceOf (typeof (IAbstractRoleReflector), _abstractRoleReflector);
-      Assert.That (_abstractRoleReflector.EnumerationTypeReflector, Is.SameAs (_enumeratedTypeReflectorMock));
+      Assert.That (_abstractRoleReflector.EnumerationTypeReflector, Is.SameAs (_enumeratedTypeReflectorMock.Object));
     }
 
     [Test]
@@ -72,13 +70,12 @@ namespace Remotion.Security.UnitTests.Metadata
       Dictionary<Enum, EnumValueInfo> specialAbstractRoles = new Dictionary<Enum, EnumValueInfo> ();
       specialAbstractRoles.Add (SpecialAbstractRoles.Administrator, AbstractRoles.Administrator);
 
-      Expect.Call (_enumeratedTypeReflectorMock.GetValues (typeof (DomainAbstractRoles), _cache)).Return (domainAbstractRoles);
-      Expect.Call (_enumeratedTypeReflectorMock.GetValues (typeof (SpecialAbstractRoles), _cache)).Return (specialAbstractRoles);
-      _mocks.ReplayAll ();
+      _enumeratedTypeReflectorMock.Setup (_ => _.GetValues (typeof (DomainAbstractRoles), _cache)).Returns (domainAbstractRoles).Verifiable();
+      _enumeratedTypeReflectorMock.Setup (_ => _.GetValues (typeof (SpecialAbstractRoles), _cache)).Returns (specialAbstractRoles).Verifiable();
 
       List<EnumValueInfo> values = _abstractRoleReflector.GetAbstractRoles (typeof (File).Assembly, _cache);
 
-      _mocks.VerifyAll ();
+      _enumeratedTypeReflectorMock.Verify();
 
       Assert.That (values, Is.Not.Null);
       Assert.That (values.Count, Is.EqualTo (3));

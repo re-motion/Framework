@@ -16,20 +16,20 @@
 // 
 using System;
 using System.Collections.Generic;
+using Moq;
 using NUnit.Framework;
 using Remotion.Collections;
 using Remotion.Collections.Caching;
 using Remotion.Security.UnitTests.SampleDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Security.UnitTests.ObjectSecurityStrategyTests
 {
   [TestFixture]
   public class HasAccessWithCaching_ObjectSecurityStrategyTest
   {
-    private ISecurityProvider _securityProviderMock;
-    private ISecurityContextFactory _securityContextFactoryStub;
-    private ISecurityPrincipal _principalStub;
+    private Mock<ISecurityProvider> _securityProviderMock;
+    private Mock<ISecurityContextFactory> _securityContextFactoryStub;
+    private Mock<ISecurityPrincipal> _principalStub;
     private SecurityContext _context;
     private InvalidationToken _invalidationToken;
     private IObjectSecurityStrategy _strategy;
@@ -37,143 +37,142 @@ namespace Remotion.Security.UnitTests.ObjectSecurityStrategyTests
     [SetUp]
     public void SetUp ()
     {
-      _securityProviderMock = MockRepository.GenerateStrictMock<ISecurityProvider>();
-      _securityContextFactoryStub = MockRepository.GenerateStub<ISecurityContextFactory>();
+      _securityProviderMock = new Mock<ISecurityProvider> (MockBehavior.Strict);
+      _securityContextFactoryStub = new Mock<ISecurityContextFactory>();
 
-      _principalStub = MockRepository.GenerateStub<ISecurityPrincipal>();
-      _principalStub.Stub (_ => _.User).Return ("user");
+      _principalStub = new Mock<ISecurityPrincipal>();
+      _principalStub.Setup (_ => _.User).Returns ("user");
       _context = SecurityContext.Create (typeof (SecurableObject), "owner", "group", "tenant", new Dictionary<string, Enum>(), new Enum[0]);
-      _securityContextFactoryStub.Stub (_ => _.CreateSecurityContext()).Return (_context);
+      _securityContextFactoryStub.Setup (_ => _.CreateSecurityContext()).Returns (_context);
 
       _invalidationToken = InvalidationToken.Create();
-      _strategy = ObjectSecurityStrategy.Create (_securityContextFactoryStub, _invalidationToken);
+      _strategy = ObjectSecurityStrategy.Create (_securityContextFactoryStub.Object, _invalidationToken);
     }
 
     [Test]
     public void HasAccess_WithAccessGranted_OnlyRequestsAccessTypesOnce_ReturnsTrue ()
     {
       _securityProviderMock
-          .Expect (_ => _.GetAccess (_context, _principalStub))
-          .Return (new[]{AccessType.Get (GeneralAccessTypes.Read)})
-          .Repeat.Once();
+          .Setup (_ => _.GetAccess (_context, _principalStub.Object))
+          .Returns (new[]{AccessType.Get (GeneralAccessTypes.Read)})
+          .Verifiable();
 
       bool hasAccessOnFirstCall = _strategy.HasAccess (
-          _securityProviderMock,
-          _principalStub,
+          _securityProviderMock.Object,
+          _principalStub.Object,
           new[] { AccessType.Get (GeneralAccessTypes.Read) });
 
       Assert.That (hasAccessOnFirstCall, Is.True);
 
       bool hasAccessOnSecondCall = _strategy.HasAccess (
-          _securityProviderMock,
-          _principalStub,
+          _securityProviderMock.Object,
+          _principalStub.Object,
           new[] { AccessType.Get (GeneralAccessTypes.Read) });
 
       Assert.That (hasAccessOnSecondCall, Is.True);
 
-      _securityProviderMock.VerifyAllExpectations();
+      _securityProviderMock.Verify (_ => _.GetAccess (_context, _principalStub.Object), Times.Once());
     }
 
     [Test]
     public void HasAccess_WithAccessDenied_OnlyRequestsAccessTypesOnce_ReturnsFalse ()
     {
       _securityProviderMock
-          .Expect (_ => _.GetAccess (_context, _principalStub))
-          .Return (new[]{AccessType.Get (GeneralAccessTypes.Create)})
-          .Repeat.Once();
+          .Setup (_ => _.GetAccess (_context, _principalStub.Object))
+          .Returns (new[]{AccessType.Get (GeneralAccessTypes.Create)})
+          .Verifiable();
 
       bool hasAccessOnFirstCall = _strategy.HasAccess (
-          _securityProviderMock,
-          _principalStub,
+          _securityProviderMock.Object,
+          _principalStub.Object,
           new[] { AccessType.Get (GeneralAccessTypes.Read) });
 
       Assert.That (hasAccessOnFirstCall, Is.False);
 
       bool hasAccessOnSecondCall = _strategy.HasAccess (
-          _securityProviderMock,
-          _principalStub,
+          _securityProviderMock.Object,
+          _principalStub.Object,
           new[] { AccessType.Get (GeneralAccessTypes.Read) });
 
       Assert.That (hasAccessOnSecondCall, Is.False);
 
-      _securityProviderMock.VerifyAllExpectations();
+      _securityProviderMock.Verify (_ => _.GetAccess (_context, _principalStub.Object), Times.Once());
     }
 
     [Test]
     public void HasAccess_WithAccessGranted_AndWithAccessDenied_OnlyRequestsAccessTypesOnce_ReturnsBooleanBasedOnRequestedAccess ()
     {
       _securityProviderMock
-          .Expect (_ => _.GetAccess (_context, _principalStub))
-          .Return (new[]{AccessType.Get (GeneralAccessTypes.Create)})
-          .Repeat.Once();
+          .Setup (_ => _.GetAccess (_context, _principalStub.Object))
+          .Returns (new[]{AccessType.Get (GeneralAccessTypes.Create)})
+          .Verifiable();
 
       bool hasAccessOnFirstCall = _strategy.HasAccess (
-          _securityProviderMock,
-          _principalStub,
+          _securityProviderMock.Object,
+          _principalStub.Object,
           new[] { AccessType.Get (GeneralAccessTypes.Read) });
 
       Assert.That (hasAccessOnFirstCall, Is.False);
 
       bool hasAccessOnSecondCall = _strategy.HasAccess (
-          _securityProviderMock,
-          _principalStub,
+          _securityProviderMock.Object,
+          _principalStub.Object,
           new[] { AccessType.Get (GeneralAccessTypes.Create) });
 
       Assert.That (hasAccessOnSecondCall, Is.True);
 
-      _securityProviderMock.VerifyAllExpectations();
+      _securityProviderMock.Verify (_ => _.GetAccess (_context, _principalStub.Object), Times.Once());
     }
 
     [Test]
     public void HasAccess_WithCacheInvalidation_RequestsNewAccessTypes_ReturnsBooleanBasedOnRequestedAccess ()
     {
       _securityProviderMock
-          .Expect (_ => _.GetAccess (_context, _principalStub))
-          .Return (new[]{AccessType.Get (GeneralAccessTypes.Read)})
-          .Repeat.Once();
+          .Setup (_ => _.GetAccess (_context, _principalStub.Object))
+          .Returns (new[]{AccessType.Get (GeneralAccessTypes.Read)})
+          .Verifiable();
 
       bool hasAccessOnFirstCall = _strategy.HasAccess (
-          _securityProviderMock,
-          _principalStub,
+          _securityProviderMock.Object,
+          _principalStub.Object,
           new[] { AccessType.Get (GeneralAccessTypes.Read) });
 
       Assert.That (hasAccessOnFirstCall, Is.True);
-      _securityProviderMock.VerifyAllExpectations();
+      _securityProviderMock.Verify (_ => _.GetAccess (_context, _principalStub.Object), Times.Once());
 
       _invalidationToken.Invalidate();
 
-      _securityProviderMock.BackToRecord();
+      _securityProviderMock.Reset();
       _securityProviderMock
-          .Expect (_ => _.GetAccess (_context, _principalStub))
-          .Return (new[]{AccessType.Get (GeneralAccessTypes.Create)})
-          .Repeat.Once();
-      _securityProviderMock.Replay();
+          .Setup (_ => _.GetAccess (_context, _principalStub.Object))
+          .Returns (new[]{AccessType.Get (GeneralAccessTypes.Create)})
+          .Verifiable();
 
       bool hasAccessOnSecondCall = _strategy.HasAccess (
-          _securityProviderMock,
-          _principalStub,
+          _securityProviderMock.Object,
+          _principalStub.Object,
           new[] { AccessType.Get (GeneralAccessTypes.Create) });
 
       Assert.That (hasAccessOnSecondCall, Is.True);
-      _securityProviderMock.VerifyAllExpectations();
+      _securityProviderMock.Verify (_ => _.GetAccess (_context, _principalStub.Object), Times.Once());
     }
 
     [Test]
     public void CreateWithCustomCache_UsesCache ()
     {
       var cache = new Cache<ISecurityPrincipal, AccessType[]>();
-      var strategy = ObjectSecurityStrategy.CreateWithCustomCache (_securityContextFactoryStub, cache);
+      var strategy = ObjectSecurityStrategy.CreateWithCustomCache (_securityContextFactoryStub.Object, cache);
 
       _securityProviderMock
-          .Expect (_ => _.GetAccess (null, null))
-          .IgnoreArguments()
-          .Throw (new InvalidOperationException ("Should not be called."));
+          .Setup (_ => _.GetAccess (It.IsAny<ISecurityContext>(), It.IsAny<ISecurityPrincipal>()))
+          .Throws (new InvalidOperationException ("Should not be called."))
+          .Verifiable();
 
-      cache.GetOrCreateValue (_principalStub, key => new[] { AccessType.Get (GeneralAccessTypes.Read) });
+      cache.GetOrCreateValue (_principalStub.Object, key => new[] { AccessType.Get (GeneralAccessTypes.Read) });
 
       bool hasAccess = strategy.HasAccess (
-          _securityProviderMock,
-          _principalStub,
+          _securityProviderMock.Object,
+          _principalStub.Object,
           new[] { AccessType.Get (GeneralAccessTypes.Read) });
 
       Assert.That (hasAccess, Is.True);
