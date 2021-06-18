@@ -15,9 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Globalization.Implementation;
-using Rhino.Mocks;
 
 namespace Remotion.Globalization.UnitTests.Implementation
 {
@@ -36,45 +36,45 @@ namespace Remotion.Globalization.UnitTests.Implementation
     [Test]
     public void Create_WithBothDefinedAndInheritedResourceManagerIsNotNull_CombinesResourceManagers ()
     {
-      var definedResourceManager = MockRepository.GenerateStub<IResourceManager>();
-      var inheritedResourceManager = MockRepository.GenerateStub<IResourceManager>();
+      var definedResourceManager = new Mock<IResourceManager>();
+      var inheritedResourceManager = new Mock<IResourceManager>();
 
-      var result = ResolvedResourceManagerResult.Create (definedResourceManager, inheritedResourceManager);
+      var result = ResolvedResourceManagerResult.Create (definedResourceManager.Object, inheritedResourceManager.Object);
 
       Assert.That (result.IsNull, Is.False);
       Assert.That (result.ResourceManager, Is.InstanceOf<ResourceManagerSet>());
       Assert.That (
           ((ResourceManagerSet) result.ResourceManager).ResourceManagers,
-          Is.EqualTo (new[] { definedResourceManager, inheritedResourceManager }));
-      Assert.That (result.DefinedResourceManager, Is.SameAs (definedResourceManager));
-      Assert.That (result.InheritedResourceManager, Is.SameAs (inheritedResourceManager));
+          Is.EqualTo (new[] { definedResourceManager.Object, inheritedResourceManager.Object }));
+      Assert.That (result.DefinedResourceManager, Is.SameAs (definedResourceManager.Object));
+      Assert.That (result.InheritedResourceManager, Is.SameAs (inheritedResourceManager.Object));
     }
 
     [Test]
     public void Create_WithDefinedResourceManagerIsNull_UsesInheritedResourceManager ()
     {
       var definedResourceManager = NullResourceManager.Instance;
-      var inheritedResourceManager = MockRepository.GenerateStub<IResourceManager>();
+      var inheritedResourceManager = new Mock<IResourceManager>();
 
-      var result = ResolvedResourceManagerResult.Create (definedResourceManager, inheritedResourceManager);
+      var result = ResolvedResourceManagerResult.Create (definedResourceManager, inheritedResourceManager.Object);
 
       Assert.That (result.IsNull, Is.False);
-      Assert.That (result.ResourceManager, Is.SameAs (inheritedResourceManager));
+      Assert.That (result.ResourceManager, Is.SameAs (inheritedResourceManager.Object));
       Assert.That (result.DefinedResourceManager, Is.SameAs (definedResourceManager));
-      Assert.That (result.InheritedResourceManager, Is.SameAs (inheritedResourceManager));
+      Assert.That (result.InheritedResourceManager, Is.SameAs (inheritedResourceManager.Object));
     }
 
     [Test]
     public void Create_WithInheritedResourceManagerIsNotNull_UsesDefinedResourceManager ()
     {
-      var definedResourceManager = MockRepository.GenerateStub<IResourceManager>();
+      var definedResourceManager = new Mock<IResourceManager>();
       var inheritedResourceManager = NullResourceManager.Instance;
 
-      var result = ResolvedResourceManagerResult.Create (definedResourceManager, inheritedResourceManager);
+      var result = ResolvedResourceManagerResult.Create (definedResourceManager.Object, inheritedResourceManager);
 
       Assert.That (result.IsNull, Is.False);
-      Assert.That (result.ResourceManager, Is.SameAs (definedResourceManager));
-      Assert.That (result.DefinedResourceManager, Is.SameAs (definedResourceManager));
+      Assert.That (result.ResourceManager, Is.SameAs (definedResourceManager.Object));
+      Assert.That (result.DefinedResourceManager, Is.SameAs (definedResourceManager.Object));
       Assert.That (result.InheritedResourceManager, Is.SameAs (inheritedResourceManager));
     }
 
