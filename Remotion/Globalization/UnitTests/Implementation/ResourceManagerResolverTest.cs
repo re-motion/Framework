@@ -15,9 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Globalization.Implementation;
-using Rhino.Mocks;
 
 namespace Remotion.Globalization.UnitTests.Implementation
 {
@@ -37,27 +37,27 @@ namespace Remotion.Globalization.UnitTests.Implementation
     }
 
     private ResourceManagerResolver _resolver;
-    private IResourceManagerFactory _factoryStub;
+    private Mock<IResourceManagerFactory> _factoryStub;
 
     [SetUp]
     public void SetUp ()
     {
-      _factoryStub = MockRepository.GenerateStub<IResourceManagerFactory>();
-      _factoryStub.Stub (_ => _.CreateResourceManager (typeof (object))).Return (NullResourceManager.Instance);
+      _factoryStub = new Mock<IResourceManagerFactory>();
+      _factoryStub.Setup (_ => _.CreateResourceManager (typeof (object))).Returns (NullResourceManager.Instance);
 
-      _resolver = new ResourceManagerResolver (_factoryStub);
+      _resolver = new ResourceManagerResolver (_factoryStub.Object);
     }
 
     [Test]
     public void Resolve_WithResourceManagerOnlyDefinedOnCurrentType_ReturnsNullResourceManagerForInheritedResourceManager ()
     {
-      var resourceManagerStub = MockRepository.GenerateStub<IResourceManager>();
-      _factoryStub.Stub (_ => _.CreateResourceManager (typeof (Class))).Return (resourceManagerStub);
-      _factoryStub.Stub (_ => _.CreateResourceManager (typeof (BaseClass))).Return (NullResourceManager.Instance);
+      var resourceManagerStub = new Mock<IResourceManager>();
+      _factoryStub.Setup (_ => _.CreateResourceManager (typeof (Class))).Returns (resourceManagerStub.Object);
+      _factoryStub.Setup (_ => _.CreateResourceManager (typeof (BaseClass))).Returns (NullResourceManager.Instance);
 
       var result = _resolver.Resolve (typeof (Class));
 
-      Assert.That (result.ResourceManager, Is.SameAs (resourceManagerStub));
+      Assert.That (result.ResourceManager, Is.SameAs (resourceManagerStub.Object));
       Assert.That (result.DefinedResourceManager, Is.SameAs (result.ResourceManager));
       Assert.That (result.InheritedResourceManager.IsNull, Is.True);
     }
@@ -65,13 +65,13 @@ namespace Remotion.Globalization.UnitTests.Implementation
     [Test]
     public void Resolve_WithResourceManagerOnlyDefinedOnBaseTypeReturnsNullResourceManagerForDefinedResourceManager ()
     {
-      var resourceManagerStub = MockRepository.GenerateStub<IResourceManager>();
-      _factoryStub.Stub (_ => _.CreateResourceManager (typeof (Class))).Return (NullResourceManager.Instance);
-      _factoryStub.Stub (_ => _.CreateResourceManager (typeof (BaseClass))).Return (resourceManagerStub);
+      var resourceManagerStub = new Mock<IResourceManager>();
+      _factoryStub.Setup (_ => _.CreateResourceManager (typeof (Class))).Returns (NullResourceManager.Instance);
+      _factoryStub.Setup (_ => _.CreateResourceManager (typeof (BaseClass))).Returns (resourceManagerStub.Object);
 
       var result = _resolver.Resolve (typeof (Class));
 
-      Assert.That (result.ResourceManager, Is.SameAs (resourceManagerStub));
+      Assert.That (result.ResourceManager, Is.SameAs (resourceManagerStub.Object));
       Assert.That (result.DefinedResourceManager.IsNull, Is.True);
       Assert.That (result.InheritedResourceManager, Is.SameAs (result.ResourceManager));
     }
@@ -79,33 +79,33 @@ namespace Remotion.Globalization.UnitTests.Implementation
     [Test]
     public void Resolve_WithMultipleResourceManagersDefinedOnTypeHierarchy_ReturnsResourceManagersInOrderOfDefinition ()
     {
-      var resourceManagerOnBaseClassStub = MockRepository.GenerateStub<IResourceManager>();
-      resourceManagerOnBaseClassStub.Stub (_ => _.Name).Return ("Base");
+      var resourceManagerOnBaseClassStub = new Mock<IResourceManager>();
+      resourceManagerOnBaseClassStub.Setup (_ => _.Name).Returns ("Base");
 
-      var resourceManagerOnClassStub = MockRepository.GenerateStub<IResourceManager>();
-      resourceManagerOnClassStub.Stub (_ => _.Name).Return ("Class");
+      var resourceManagerOnClassStub = new Mock<IResourceManager>();
+      resourceManagerOnClassStub.Setup (_ => _.Name).Returns ("Class");
 
-      var resourceManagerOnDerivedClassStub = MockRepository.GenerateStub<IResourceManager>();
-      resourceManagerOnDerivedClassStub.Stub (_ => _.Name).Return ("Derived");
+      var resourceManagerOnDerivedClassStub = new Mock<IResourceManager>();
+      resourceManagerOnDerivedClassStub.Setup (_ => _.Name).Returns ("Derived");
 
-      _factoryStub.Stub (_ => _.CreateResourceManager (typeof (BaseClass))).Return (resourceManagerOnBaseClassStub);
-      _factoryStub.Stub (_ => _.CreateResourceManager (typeof (Class))).Return (resourceManagerOnClassStub);
-      _factoryStub.Stub (_ => _.CreateResourceManager (typeof (DerivedClass))).Return (resourceManagerOnDerivedClassStub);
+      _factoryStub.Setup (_ => _.CreateResourceManager (typeof (BaseClass))).Returns (resourceManagerOnBaseClassStub.Object);
+      _factoryStub.Setup (_ => _.CreateResourceManager (typeof (Class))).Returns (resourceManagerOnClassStub.Object);
+      _factoryStub.Setup (_ => _.CreateResourceManager (typeof (DerivedClass))).Returns (resourceManagerOnDerivedClassStub.Object);
 
       var result = _resolver.Resolve (typeof (DerivedClass));
 
       Assert.That (result.ResourceManager, Is.InstanceOf<ResourceManagerSet>());
-      Assert.That (result.DefinedResourceManager, Is.SameAs (resourceManagerOnDerivedClassStub));
+      Assert.That (result.DefinedResourceManager, Is.SameAs (resourceManagerOnDerivedClassStub.Object));
       Assert.That (result.InheritedResourceManager, Is.InstanceOf<ResourceManagerSet>());
       var inheritedResourceManagerSet = (ResourceManagerSet) result.InheritedResourceManager;
-      Assert.That (inheritedResourceManagerSet.ResourceManagers, Is.EqualTo (new[] { resourceManagerOnClassStub, resourceManagerOnBaseClassStub }));
+      Assert.That (inheritedResourceManagerSet.ResourceManagers, Is.EqualTo (new[] { resourceManagerOnClassStub.Object, resourceManagerOnBaseClassStub.Object }));
     }
 
     [Test]
     public void Resolve_WithoutResourcesDefinedOnTypeHierarchy_ReturnsNullResult ()
     {
-      _factoryStub.Stub (_ => _.CreateResourceManager (typeof (Class))).Return (NullResourceManager.Instance);
-      _factoryStub.Stub (_ => _.CreateResourceManager (typeof (BaseClass))).Return (NullResourceManager.Instance);
+      _factoryStub.Setup (_ => _.CreateResourceManager (typeof (Class))).Returns (NullResourceManager.Instance);
+      _factoryStub.Setup (_ => _.CreateResourceManager (typeof (BaseClass))).Returns (NullResourceManager.Instance);
 
       var result = _resolver.Resolve (typeof (Class));
 
