@@ -15,20 +15,19 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Mixins;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BindableObject.Properties;
 using Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests.TestDomain;
 using Remotion.TypePipe;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
 {
   [TestFixture]
   public class SearchAvailableObjects : TestBase
   {
-    private MockRepository _mockRepository;
     private BindableObjectProvider _bindableObjectProviderForDeclaringType;
     private BindableObjectProvider _bindableObjectProviderForPropertyType;
 
@@ -36,7 +35,6 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     {
       base.SetUp();
 
-      _mockRepository = new MockRepository();
       _bindableObjectProviderForDeclaringType = CreateBindableObjectProviderWithStubBusinessObjectServiceFactory();
       _bindableObjectProviderForPropertyType = CreateBindableObjectProviderWithStubBusinessObjectServiceFactory();
 
@@ -47,45 +45,41 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     [Test]
     public void Search_WithSearchSupported ()
     {
-      IBusinessObject stubBusinessObject = _mockRepository.Stub<IBusinessObject>();
-      ISearchServiceOnProperty mockService = _mockRepository.StrictMock<ISearchServiceOnProperty>();
+      var stubBusinessObject = new Mock<IBusinessObject>();
+      var mockService = new Mock<ISearchServiceOnProperty> (MockBehavior.Strict);
       IBusinessObjectReferenceProperty property = CreateProperty ("SearchServiceFromPropertyDeclaration");
       IBusinessObject[] expected = new IBusinessObject[0];
-      ISearchAvailableObjectsArguments searchArgumentsStub = _mockRepository.Stub<ISearchAvailableObjectsArguments>();
+      var searchArgumentsStub = new Mock<ISearchAvailableObjectsArguments>();
 
-      using (_mockRepository.Ordered())
-      {
-        Expect.Call (mockService.SupportsProperty (property)).Return (true);
-        Expect.Call (mockService.Search (stubBusinessObject, property, searchArgumentsStub)).Return (expected);
-      }
-      _mockRepository.ReplayAll();
+      var sequence = new MockSequence();
+      mockService.InSequence (sequence).Setup (_ => _.SupportsProperty (property)).Returns (true).Verifiable();
 
-      _bindableObjectProviderForDeclaringType.AddService (mockService);
-      IBusinessObject[] actual = property.SearchAvailableObjects (stubBusinessObject, searchArgumentsStub);
+      mockService.InSequence (sequence).Setup (_ => _.Search (stubBusinessObject.Object, property, searchArgumentsStub.Object)).Returns (expected).Verifiable();
 
-      _mockRepository.VerifyAll();
+      _bindableObjectProviderForDeclaringType.AddService (mockService.Object);
+      IBusinessObject[] actual = property.SearchAvailableObjects (stubBusinessObject.Object, searchArgumentsStub.Object);
+
+      mockService.Verify();
       Assert.That (actual, Is.SameAs (expected));
     }
 
     [Test]
     public void Search_WithSearchSupportedAndReferencingObjectNull ()
     {
-      ISearchServiceOnType mockService = _mockRepository.StrictMock<ISearchServiceOnType>();
+      var mockService = new Mock<ISearchServiceOnType> (MockBehavior.Strict);
       IBusinessObjectReferenceProperty property = CreateProperty ("SearchServiceFromPropertyType");
       IBusinessObject[] expected = new IBusinessObject[0];
-      ISearchAvailableObjectsArguments searchArgumentsStub = _mockRepository.Stub<ISearchAvailableObjectsArguments>();
+      var searchArgumentsStub = new Mock<ISearchAvailableObjectsArguments>();
 
-      using (_mockRepository.Ordered())
-      {
-        Expect.Call (mockService.SupportsProperty (property)).Return (true);
-        Expect.Call (mockService.Search (null, property, searchArgumentsStub)).Return (expected);
-      }
-      _mockRepository.ReplayAll();
+      var sequence = new MockSequence();
+      mockService.InSequence (sequence).Setup (_ => _.SupportsProperty (property)).Returns (true).Verifiable();
 
-      _bindableObjectProviderForPropertyType.AddService (mockService);
-      IBusinessObject[] actual = property.SearchAvailableObjects (null, searchArgumentsStub);
+      mockService.InSequence (sequence).Setup (_ => _.Search (null, property, searchArgumentsStub.Object)).Returns (expected).Verifiable();
 
-      _mockRepository.VerifyAll();
+      _bindableObjectProviderForPropertyType.AddService (mockService.Object);
+      IBusinessObject[] actual = property.SearchAvailableObjects (null, searchArgumentsStub.Object);
+
+      mockService.Verify();
       Assert.That (actual, Is.SameAs (expected));
     }
 
@@ -93,24 +87,23 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     public void Search_WithSearchNotSupported ()
     {
       IBusinessObject businessObject = (IBusinessObject) ObjectFactory.Create<ClassWithBusinessObjectProperties> (ParamList.Empty);
-      ISearchServiceOnProperty mockService = _mockRepository.StrictMock<ISearchServiceOnProperty>();
+      var mockService = new Mock<ISearchServiceOnProperty> (MockBehavior.Strict);
       IBusinessObjectReferenceProperty property = CreateProperty ("SearchServiceFromPropertyDeclaration");
-      ISearchAvailableObjectsArguments searchArgumentsStubb = _mockRepository.Stub<ISearchAvailableObjectsArguments>();
+      var searchArgumentsStubb = new Mock<ISearchAvailableObjectsArguments>();
 
-      Expect.Call (mockService.SupportsProperty (property)).Return (false);
-      _mockRepository.ReplayAll();
+      mockService.Setup (_ => _.SupportsProperty (property)).Returns (false).Verifiable();
 
-      _bindableObjectProviderForDeclaringType.AddService (mockService);
+      _bindableObjectProviderForDeclaringType.AddService (mockService.Object);
 
       Assert.That (
-          () => property.SearchAvailableObjects (businessObject, searchArgumentsStubb),
+          () => property.SearchAvailableObjects (businessObject, searchArgumentsStubb.Object),
           Throws.InstanceOf<NotSupportedException>()
               .With.Message.EqualTo (
                   "Searching is not supported for reference property 'SearchServiceFromPropertyDeclaration' of business object class "
                   + "'Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests.TestDomain.ClassWithBusinessObjectProperties, "
                   + "Remotion.ObjectBinding.UnitTests'."));
 
-      _mockRepository.VerifyAll();
+      mockService.Verify();
     }
 
     private ReferenceProperty CreateProperty (string propertyName)

@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using CommonServiceLocator;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.Web.UnitTesting.Configuration;
@@ -30,7 +31,6 @@ using Remotion.ObjectBinding.Web.UnitTests.Domain;
 using Remotion.Utilities;
 using Remotion.Web.Services;
 using Remotion.Web.UI.Controls;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 {
@@ -56,7 +56,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     private TypeWithReference _businessObject;
     private IBusinessObjectDataSource _dataSource;
     private IBusinessObjectReferenceProperty _propertyReferenceValue;
-    private IWebServiceFactory _webServiceFactoryStub;
+    private Mock<IWebServiceFactory> _webServiceFactoryStub;
 
     public BocReferenceValueTest ()
     {
@@ -67,9 +67,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     {
       base.SetUp();
 
-      _webServiceFactoryStub = MockRepository.GenerateStub<IWebServiceFactory>();
+      _webServiceFactoryStub = new Mock<IWebServiceFactory>();
 
-      _bocReferenceValue = new BocReferenceValueMock (_webServiceFactoryStub);
+      _bocReferenceValue = new BocReferenceValueMock (_webServiceFactoryStub.Object);
       _bocReferenceValue.ID = "BocReferenceValue";
       _bocReferenceValue.ShowOptionsMenu = false;
 #pragma warning disable 618
@@ -534,18 +534,18 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     public void CreateValidators_UsesValidatorFactory ()
     {
       var control = new BocReferenceValue();
-      var serviceLocatorMock = MockRepository.GenerateMock<IServiceLocator>();
-      var factoryMock = MockRepository.GenerateMock<IBocReferenceValueValidatorFactory>();
-      serviceLocatorMock.Expect (m => m.GetInstance<IBocReferenceValueValidatorFactory>()).Return (factoryMock);
-      factoryMock.Expect (f => f.CreateValidators (control, false)).Return (new List<BaseValidator>());
+      var serviceLocatorMock = new Mock<IServiceLocator>();
+      var factoryMock = new Mock<IBocReferenceValueValidatorFactory>();
+      serviceLocatorMock.Setup (m => m.GetInstance<IBocReferenceValueValidatorFactory>()).Returns (factoryMock.Object).Verifiable();
+      factoryMock.Setup (f => f.CreateValidators (control, false)).Returns (new List<BaseValidator>()).Verifiable();
 
-      using (new ServiceLocatorScope (serviceLocatorMock))
+      using (new ServiceLocatorScope (serviceLocatorMock.Object))
       {
         control.CreateValidators();
       }
 
-      factoryMock.VerifyAllExpectations();
-      serviceLocatorMock.VerifyAllExpectations();
+      factoryMock.Verify();
+      serviceLocatorMock.Verify();
     }
 
     [Test]

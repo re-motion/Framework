@@ -17,9 +17,9 @@
 using System;
 using System.Linq;
 using System.Web.UI;
+using Moq;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.UI.Controls;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 {
@@ -32,10 +32,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     public void CreateValidators (bool isReadOnly)
     {
       var factory = new UserControlBindingValidatorFactory();
-      var control = MockRepository.GenerateMock<UserControlBinding>();
-      control.Expect (c => c.ID).Return ("ID");
+      var control = new Mock<UserControlBinding>();
+      control.Setup (c => c.ID).Returns ("ID").Verifiable();
 
-      var validators = factory.CreateValidators (control, isReadOnly).ToArray();
+      var validators = factory.CreateValidators (control.Object, isReadOnly).ToArray();
       Assert.That (validators.Select (v => v.GetType()), Is.EqualTo (new[] { typeof (UserControlBindingValidator) }));
       Assert.That (validators, Has.All.Property ("EnableViewState").False);
     }

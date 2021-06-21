@@ -1,7 +1,7 @@
-﻿using NUnit.Framework;
+﻿using Moq;
+using NUnit.Framework;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.Validation;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
 {
@@ -13,7 +13,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
     {
       var configuration = new CompatibilityBusinessObjectBoundEditableWebControlValidatorConfiguration();
 
-      Assert.That (configuration.AreOptionalValidatorsEnabled (MockRepository.GenerateStub<IBusinessObjectBoundEditableWebControl>()), Is.True);
+      Assert.That (configuration.AreOptionalValidatorsEnabled (new Mock<IBusinessObjectBoundEditableWebControl>().Object), Is.True);
     }
   }
 }

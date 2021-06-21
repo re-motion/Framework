@@ -15,11 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 {
@@ -73,7 +73,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
     private IBusinessObject CreateObject ()
     {
-      return MockRepository.GenerateStub<IBusinessObject>();
+      return new Mock<IBusinessObject>().Object;
     }
   }
 }

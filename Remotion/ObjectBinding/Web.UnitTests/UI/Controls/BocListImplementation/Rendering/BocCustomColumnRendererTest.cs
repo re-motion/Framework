@@ -20,6 +20,7 @@ using System.Collections.ObjectModel;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.ObjectBinding.Web.Services;
@@ -29,7 +30,6 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UnitTests.Domain;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering
 {
@@ -62,11 +62,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
               {
                   { Column, triplets }
               });
-      List.Stub (mock => mock.CustomColumns).Return (customColumns);
+      List.Setup (mock => mock.CustomColumns).Returns (customColumns);
 
       var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create (null, null, null);
       _renderingContext = new BocColumnRenderingContext<BocCustomColumnDefinition> (
-              new BocColumnRenderingContext (HttpContext, Html.Writer, List, businessObjectWebServiceContext, Column, 0, 0));
+              new BocColumnRenderingContext (HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, Column, 0, 0));
     }
 
     [Test]

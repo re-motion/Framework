@@ -18,12 +18,12 @@ using System;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using CommonServiceLocator;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation;
 using Remotion.ObjectBinding.Web.UnitTests.Domain;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 {
@@ -466,18 +466,18 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     public void CreateValidators_UsesValidatorFactory ()
     {
       var control = new BocList();
-      var serviceLocatorMock = MockRepository.GenerateMock<IServiceLocator>();
-      var factoryMock = MockRepository.GenerateMock<IBocListValidatorFactory>();
-      serviceLocatorMock.Expect (m => m.GetInstance<IBocListValidatorFactory>()).Return (factoryMock);
-      factoryMock.Expect (f => f.CreateValidators (control, false)).Return (new List<BaseValidator>());
+      var serviceLocatorMock = new Mock<IServiceLocator>();
+      var factoryMock = new Mock<IBocListValidatorFactory>();
+      serviceLocatorMock.Setup (m => m.GetInstance<IBocListValidatorFactory>()).Returns (factoryMock.Object).Verifiable();
+      factoryMock.Setup (f => f.CreateValidators (control, false)).Returns (new List<BaseValidator>()).Verifiable();
 
-      using (new ServiceLocatorScope (serviceLocatorMock))
+      using (new ServiceLocatorScope (serviceLocatorMock.Object))
       {
         control.CreateValidators();
       }
 
-      factoryMock.VerifyAllExpectations();
-      serviceLocatorMock.VerifyAllExpectations();
+      factoryMock.Verify();
+      serviceLocatorMock.Verify();
     }
   }
 }

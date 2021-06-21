@@ -16,36 +16,36 @@
 // 
 using System;
 using System.Reflection;
+using Moq;
 using NUnit.Framework;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.UnitTests.TestDomain;
 using Remotion.Reflection;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject
 {
   [TestFixture]
   public class MixinIntroducedPropertyInformationTest
   {
-    private IPropertyInformation _implementationPropertyInformationStub;
+    private Mock<IPropertyInformation> _implementationPropertyInformationStub;
     private MixinIntroducedPropertyInformation _mixinIntroducedPropertyInformation;
-    private IPropertyInformation _declarationPropertyInformationStub;
+    private Mock<IPropertyInformation> _declarationPropertyInformationStub;
     private InterfaceImplementationPropertyInformation _interfaceImplementationPropertyInformation;
 
     [SetUp]
     public void SetUp ()
     {
-      _implementationPropertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
-      _declarationPropertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
+      _implementationPropertyInformationStub = new Mock<IPropertyInformation>();
+      _declarationPropertyInformationStub = new Mock<IPropertyInformation>();
       _interfaceImplementationPropertyInformation = new InterfaceImplementationPropertyInformation (
-          _implementationPropertyInformationStub, _declarationPropertyInformationStub);
+          _implementationPropertyInformationStub.Object, _declarationPropertyInformationStub.Object);
       _mixinIntroducedPropertyInformation = new MixinIntroducedPropertyInformation (_interfaceImplementationPropertyInformation);
     }
 
     [Test]
     public void Name ()
     {
-      _implementationPropertyInformationStub.Stub (stub => stub.Name).Return ("Test");
+      _implementationPropertyInformationStub.Setup (stub => stub.Name).Returns ("Test");
 
       Assert.That (_mixinIntroducedPropertyInformation.Name, Is.EqualTo ("Test"));
     }
@@ -53,35 +53,35 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void DeclaringType ()
     {
-      var typeInformationStub = MockRepository.GenerateStub<ITypeInformation> ();
-      _implementationPropertyInformationStub.Stub (stub => stub.DeclaringType).Return (typeInformationStub);
+      var typeInformationStub = new Mock<ITypeInformation>();
+      _implementationPropertyInformationStub.Setup (stub => stub.DeclaringType).Returns (typeInformationStub.Object);
 
-      Assert.That (_mixinIntroducedPropertyInformation.DeclaringType, Is.SameAs (typeInformationStub));
+      Assert.That (_mixinIntroducedPropertyInformation.DeclaringType, Is.SameAs (typeInformationStub.Object));
     }
 
     [Test]
     public void GetOriginalDeclaringType ()
     {
-      var typeInformationStub = MockRepository.GenerateStub<ITypeInformation> ();
-      _implementationPropertyInformationStub.Stub (stub => stub.GetOriginalDeclaringType()).Return (typeInformationStub);
+      var typeInformationStub = new Mock<ITypeInformation>();
+      _implementationPropertyInformationStub.Setup (stub => stub.GetOriginalDeclaringType()).Returns (typeInformationStub.Object);
 
-      Assert.That (_mixinIntroducedPropertyInformation.GetOriginalDeclaringType(), Is.SameAs (typeInformationStub));
+      Assert.That (_mixinIntroducedPropertyInformation.GetOriginalDeclaringType(), Is.SameAs (typeInformationStub.Object));
     }
 
     [Test]
     public void GetOriginalDeclaration ()
     {
-      var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation> ();
-      _implementationPropertyInformationStub.Stub (stub => stub.GetOriginalDeclaration()).Return (propertyInformationStub);
+      var propertyInformationStub = new Mock<IPropertyInformation>();
+      _implementationPropertyInformationStub.Setup (stub => stub.GetOriginalDeclaration()).Returns (propertyInformationStub.Object);
 
-      Assert.That (_mixinIntroducedPropertyInformation.GetOriginalDeclaration(), Is.SameAs (propertyInformationStub));
+      Assert.That (_mixinIntroducedPropertyInformation.GetOriginalDeclaration(), Is.SameAs (propertyInformationStub.Object));
     }
 
     [Test]
     public void GetCustomAttribute ()
     {
       var objToReturn = new object();
-      _implementationPropertyInformationStub.Stub (stub => stub.GetCustomAttribute<object> (false)).Return (objToReturn);
+      _implementationPropertyInformationStub.Setup (stub => stub.GetCustomAttribute<object> (false)).Returns (objToReturn);
 
       Assert.That (_mixinIntroducedPropertyInformation.GetCustomAttribute<object> (false), Is.SameAs (objToReturn));
     }
@@ -90,7 +90,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void GetCustomAttributes ()
     {
       var objToReturn = new object[0];
-      _implementationPropertyInformationStub.Stub (stub => stub.GetCustomAttributes<object> (false)).Return (objToReturn);
+      _implementationPropertyInformationStub.Setup (stub => stub.GetCustomAttributes<object> (false)).Returns (objToReturn);
 
       Assert.That (_mixinIntroducedPropertyInformation.GetCustomAttributes<object> (false), Is.SameAs (objToReturn));
     }
@@ -98,7 +98,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void IsDefined ()
     {
-      _implementationPropertyInformationStub.Stub (stub => stub.IsDefined<object> (false)).Return (false);
+      _implementationPropertyInformationStub.Setup (stub => stub.IsDefined<object> (false)).Returns (false);
 
       Assert.That (_mixinIntroducedPropertyInformation.IsDefined<object> (false), Is.False);
     }
@@ -107,7 +107,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void FindInterfaceImplementation ()
     {
       var propertyInfoAdapter = PropertyInfoAdapter.Create(typeof (string).GetProperty ("Length"));
-      _implementationPropertyInformationStub.Stub (stub => stub.FindInterfaceImplementation (typeof (object))).Return (propertyInfoAdapter);
+      _implementationPropertyInformationStub.Setup (stub => stub.FindInterfaceImplementation (typeof (object))).Returns (propertyInfoAdapter);
 
       Assert.That (_mixinIntroducedPropertyInformation.FindInterfaceImplementation (typeof (object)), Is.SameAs (propertyInfoAdapter));
     }
@@ -115,13 +115,13 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void FindInterfaceDeclaration ()
     {
-      Assert.That (_mixinIntroducedPropertyInformation.FindInterfaceDeclarations(), Is.EqualTo (new[] { _declarationPropertyInformationStub }));
+      Assert.That (_mixinIntroducedPropertyInformation.FindInterfaceDeclarations(), Is.EqualTo (new[] { _declarationPropertyInformationStub.Object }));
     }
 
     [Test]
     public void PropertyType ()
     {
-      _implementationPropertyInformationStub.Stub (stub => stub.PropertyType).Return (typeof (object));
+      _implementationPropertyInformationStub.Setup (stub => stub.PropertyType).Returns (typeof (object));
 
       Assert.That (_mixinIntroducedPropertyInformation.PropertyType, Is.SameAs (typeof (object)));
     }
@@ -130,8 +130,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void CanBeSetFromOutside_IsBasedOnGetSetMethod_TrueForInterfaceImplementationPropertySetter ()
     {
       var methodInfoAdapter = MethodInfoAdapter.Create(typeof (object).GetMethod ("ToString"));
-      _implementationPropertyInformationStub.Stub (stub => stub.GetSetMethod (true)).Return (methodInfoAdapter);
-      _declarationPropertyInformationStub.Stub (stub => stub.GetSetMethod (false)).Return (methodInfoAdapter);
+      _implementationPropertyInformationStub.Setup (stub => stub.GetSetMethod (true)).Returns (methodInfoAdapter);
+      _declarationPropertyInformationStub.Setup (stub => stub.GetSetMethod (false)).Returns (methodInfoAdapter);
 
       Assert.That (_mixinIntroducedPropertyInformation.CanBeSetFromOutside, Is.True);
     }
@@ -140,7 +140,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void CanBeSetFromOutside_IsBasedOnGetSetMethod_FalseForImplementationOnlyPropertySetter ()
     {
       var methodInfoAdapter = MethodInfoAdapter.Create(typeof (object).GetMethod ("ToString"));
-      _implementationPropertyInformationStub.Stub (stub => stub.GetSetMethod (false)).Return (methodInfoAdapter);
+      _implementationPropertyInformationStub.Setup (stub => stub.GetSetMethod (false)).Returns (methodInfoAdapter);
 
       Assert.That (_mixinIntroducedPropertyInformation.CanBeSetFromOutside, Is.False);
     }
@@ -148,7 +148,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void CanBeSetFromOutside_IsBasedOnGetSetMethod_FalseForNoPropertySetter ()
     {
-      _implementationPropertyInformationStub.Stub (stub => stub.GetSetMethod (false)).Return (null);
+      _implementationPropertyInformationStub.Setup (stub => stub.GetSetMethod (false)).Returns ((IMethodInformation) null);
 
       Assert.That (_mixinIntroducedPropertyInformation.CanBeSetFromOutside, Is.False);
     }
@@ -157,8 +157,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void GetGetMethod ()
     {
       var methodInfoAdapter = MethodInfoAdapter.Create(typeof (object).GetMethod ("ToString"));
-      _implementationPropertyInformationStub.Stub (stub => stub.GetGetMethod (true)).Return (methodInfoAdapter);
-      _declarationPropertyInformationStub.Stub (stub => stub.GetGetMethod (false)).Return (methodInfoAdapter);
+      _implementationPropertyInformationStub.Setup (stub => stub.GetGetMethod (true)).Returns (methodInfoAdapter);
+      _declarationPropertyInformationStub.Setup (stub => stub.GetGetMethod (false)).Returns (methodInfoAdapter);
 
       var result = _mixinIntroducedPropertyInformation.GetGetMethod (false);
 
@@ -169,7 +169,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetGetMethod_ReturnsNull ()
     {
-      _implementationPropertyInformationStub.Stub (stub => stub.GetGetMethod (false)).Return (null);
+      _implementationPropertyInformationStub.Setup (stub => stub.GetGetMethod (false)).Returns ((IMethodInformation) null);
 
       Assert.That (_mixinIntroducedPropertyInformation.GetGetMethod (false), Is.Null);
     }
@@ -178,8 +178,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void GetSetMethod ()
     {
       var methodInfoAdapter = MethodInfoAdapter.Create(typeof (object).GetMethod ("ToString"));
-      _implementationPropertyInformationStub.Stub (stub => stub.GetSetMethod (true)).Return (methodInfoAdapter);
-      _declarationPropertyInformationStub.Stub (stub => stub.GetSetMethod (false)).Return (methodInfoAdapter);
+      _implementationPropertyInformationStub.Setup (stub => stub.GetSetMethod (true)).Returns (methodInfoAdapter);
+      _declarationPropertyInformationStub.Setup (stub => stub.GetSetMethod (false)).Returns (methodInfoAdapter);
 
       var result = _mixinIntroducedPropertyInformation.GetSetMethod (false);
 
@@ -190,7 +190,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetSetMethod_ReturnsNull ()
     {
-      _implementationPropertyInformationStub.Stub (stub => stub.GetSetMethod (false)).Return (null);
+      _implementationPropertyInformationStub.Setup (stub => stub.GetSetMethod (false)).Returns ((IMethodInformation) null);
 
       Assert.That (_mixinIntroducedPropertyInformation.GetSetMethod (false), Is.Null);
     }
@@ -201,9 +201,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       var instance = new ClassWithReferenceType<SimpleReferenceType>();
       var value = new SimpleReferenceType();
 
-      _declarationPropertyInformationStub.Stub (stub => stub.GetSetMethod (true)).Return (null);
-      _implementationPropertyInformationStub.Stub (stub => stub.GetSetMethod (true)).Return(
-          MethodInfoAdapter.Create(typeof (ClassWithReferenceType<SimpleReferenceType>).GetProperty ("ImplicitInterfaceScalar").GetSetMethod (true)));
+      _declarationPropertyInformationStub.Setup (stub => stub.GetSetMethod (true)).Returns ((IMethodInformation) null);
+      _implementationPropertyInformationStub.Setup (stub => stub.GetSetMethod (true)).Returns (
+          MethodInfoAdapter.Create (typeof (ClassWithReferenceType<SimpleReferenceType>).GetProperty ("ImplicitInterfaceScalar").GetSetMethod (true)));
 
       _mixinIntroducedPropertyInformation.SetValue (instance, value, null);
 
@@ -217,9 +217,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       var value = new SimpleReferenceType();
       instance.ImplicitInterfaceScalar = value;
 
-      _declarationPropertyInformationStub.Stub (stub => stub.GetGetMethod (true)).Return (null);
-      _implementationPropertyInformationStub.Stub (stub => stub.GetGetMethod (true)).Return (
-          MethodInfoAdapter.Create(typeof (ClassWithReferenceType<SimpleReferenceType>).GetProperty ("ImplicitInterfaceScalar").GetGetMethod (true)));
+      _declarationPropertyInformationStub.Setup (stub => stub.GetGetMethod (true)).Returns ((IMethodInformation) null);
+      _implementationPropertyInformationStub.Setup (stub => stub.GetGetMethod (true)).Returns (
+          MethodInfoAdapter.Create (typeof (ClassWithReferenceType<SimpleReferenceType>).GetProperty ("ImplicitInterfaceScalar").GetGetMethod (true)));
 
       Assert.That (_mixinIntroducedPropertyInformation.GetValue (instance, null), Is.SameAs (value));
     }
@@ -228,7 +228,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void GetIndexParameters ()
     {
       var objToReturn = new ParameterInfo[0];
-      _implementationPropertyInformationStub.Stub (stub => stub.GetIndexParameters()).Return (objToReturn);
+      _implementationPropertyInformationStub.Setup (stub => stub.GetIndexParameters()).Returns (objToReturn);
 
       Assert.That (_mixinIntroducedPropertyInformation.GetIndexParameters(), Is.SameAs (objToReturn));
     }
@@ -237,7 +237,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void GetAccessors ()
     {
       var objToReturn = new IMethodInformation[0];
-      _implementationPropertyInformationStub.Stub (stub => stub.GetAccessors (false)).Return (objToReturn);
+      _implementationPropertyInformationStub.Setup (stub => stub.GetAccessors (false)).Returns (objToReturn);
 
       Assert.That (_mixinIntroducedPropertyInformation.GetAccessors (false), Is.SameAs (objToReturn));
     }
@@ -271,10 +271,10 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void To_String ()
     {
-      var typeInformationStub = MockRepository.GenerateStub<ITypeInformation> ();
-      typeInformationStub.Stub (stub => stub.Name).Return ("Boolean");
-      _implementationPropertyInformationStub.Stub (stub => stub.Name).Return ("Test");
-      _declarationPropertyInformationStub.Stub (stub => stub.DeclaringType).Return (typeInformationStub);
+      var typeInformationStub = new Mock<ITypeInformation>();
+      typeInformationStub.Setup (stub => stub.Name).Returns ("Boolean");
+      _implementationPropertyInformationStub.Setup (stub => stub.Name).Returns ("Test");
+      _declarationPropertyInformationStub.Setup (stub => stub.DeclaringType).Returns (typeInformationStub.Object);
       Assert.That (_mixinIntroducedPropertyInformation.ToString(), Is.EqualTo ("Test (impl of 'Boolean') (Mixin)"));
     }
 

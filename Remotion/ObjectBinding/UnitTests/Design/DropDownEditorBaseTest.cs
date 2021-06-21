@@ -17,53 +17,60 @@
 using System;
 using System.ComponentModel;
 using System.Drawing.Design;
+using System.Windows.Forms;
 using System.Windows.Forms.Design;
+using Moq;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Design;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.UnitTests.Design
 {
   [TestFixture]
   public class DropDownEditorBaseTest
   {
-    private MockRepository _mockRepository;
-    private ITypeDescriptorContext _mockTypeDescriptorContext;
-    private IServiceProvider _mockServiceProvider;
-    private IWindowsFormsEditorService _mockWindowsFormsEditorService;
-    private MockDropDownEditorBase _mockDropDownEditorBase;
-    private EditorControlBase _mockEditorControlBase;
+    private Mock<ITypeDescriptorContext> _mockTypeDescriptorContext;
+    private Mock<IServiceProvider> _mockServiceProvider;
+    private Mock<IWindowsFormsEditorService> _mockWindowsFormsEditorService;
+    private Mock<MockDropDownEditorBase> _mockDropDownEditorBase;
+    private Mock<EditorControlBase> _mockEditorControlBase;
 
     [SetUp]
     public void SetUp ()
     {
-      _mockRepository = new MockRepository();
-
-      _mockTypeDescriptorContext = _mockRepository.StrictMock<ITypeDescriptorContext>();
-      _mockServiceProvider = _mockRepository.StrictMock<IServiceProvider>();
-      _mockWindowsFormsEditorService = _mockRepository.StrictMock<IWindowsFormsEditorService>();
-      _mockDropDownEditorBase = _mockRepository.PartialMock<MockDropDownEditorBase>();
-      _mockEditorControlBase = _mockRepository.PartialMock<EditorControlBase> (_mockServiceProvider, _mockWindowsFormsEditorService);
+      _mockTypeDescriptorContext = new Mock<ITypeDescriptorContext> (MockBehavior.Strict);
+      _mockServiceProvider = new Mock<IServiceProvider> (MockBehavior.Strict);
+      _mockWindowsFormsEditorService = new Mock<IWindowsFormsEditorService> (MockBehavior.Strict);
+      _mockDropDownEditorBase = new Mock<MockDropDownEditorBase>() { CallBase = true };
+      _mockEditorControlBase = new Mock<EditorControlBase> (_mockServiceProvider.Object, _mockWindowsFormsEditorService.Object) { CallBase = true };
     }
 
     [Test]
     public void EditValue ()
     {
-      Expect.Call (_mockTypeDescriptorContext.Instance).Return (new object());
-      Expect.Call (_mockServiceProvider.GetService (typeof (IWindowsFormsEditorService))).Return (_mockWindowsFormsEditorService);
-      Expect.Call (_mockDropDownEditorBase.NewCreateEditorControl (_mockTypeDescriptorContext, _mockWindowsFormsEditorService))
-          .Return (_mockEditorControlBase);
-      using (_mockRepository.Ordered())
-      {
-        _mockEditorControlBase.Value = "The input value";
-        _mockWindowsFormsEditorService.DropDownControl (_mockEditorControlBase);
-        Expect.Call (_mockEditorControlBase.Value).Return ("The output value");
-      }
-      _mockRepository.ReplayAll();
+      _mockTypeDescriptorContext.Setup (_ => _.Instance).Returns (new object()).Verifiable();
+      _mockServiceProvider.Setup (_ => _.GetService (typeof (IWindowsFormsEditorService))).Returns (_mockWindowsFormsEditorService.Object).Verifiable();
+      _mockDropDownEditorBase.Setup (_ => _.NewCreateEditorControl (_mockTypeDescriptorContext.Object, _mockWindowsFormsEditorService.Object))
+          .Returns (_mockEditorControlBase.Object)
+          .Verifiable();
 
-      object actual = _mockDropDownEditorBase.EditValue (_mockTypeDescriptorContext, _mockServiceProvider, "The input value");
+      _mockEditorControlBase.SetupProperty (_ => _.Value);
+      _mockWindowsFormsEditorService
+          .Setup (_ => _.DropDownControl (_mockEditorControlBase.Object))
+          .Callback (
+              (Control control) =>
+              {
+                Assert.That (_mockEditorControlBase.Object.Value, Is.EqualTo ("The input value"));
+                _mockEditorControlBase.Object.Value = "The output value";
+              })
+          .Verifiable();
 
-      _mockRepository.VerifyAll();
+      object actual = _mockDropDownEditorBase.Object.EditValue (_mockTypeDescriptorContext.Object, _mockServiceProvider.Object, "The input value");
+
+      _mockTypeDescriptorContext.Verify();
+      _mockServiceProvider.Verify();
+      _mockWindowsFormsEditorService.Verify();
+      _mockDropDownEditorBase.Verify();
+      _mockEditorControlBase.Verify();
 
       Assert.That (actual, Is.EqualTo ("The output value"));
     }
@@ -71,12 +78,15 @@ namespace Remotion.ObjectBinding.UnitTests.Design
     [Test]
     public void EditValue_WithoutTypeDescriptorContextInstance ()
     {
-      Expect.Call (_mockTypeDescriptorContext.Instance).Return (null);
-      _mockRepository.ReplayAll();
+      _mockTypeDescriptorContext.Setup (_ => _.Instance).Returns ((object) null).Verifiable();
 
-      object actual = _mockDropDownEditorBase.EditValue (_mockTypeDescriptorContext, _mockServiceProvider, "The input value");
+      object actual = _mockDropDownEditorBase.Object.EditValue (_mockTypeDescriptorContext.Object, _mockServiceProvider.Object, "The input value");
 
-      _mockRepository.VerifyAll();
+      _mockTypeDescriptorContext.Verify();
+      _mockServiceProvider.Verify();
+      _mockWindowsFormsEditorService.Verify();
+      _mockDropDownEditorBase.Verify();
+      _mockEditorControlBase.Verify();
 
       Assert.That (actual, Is.EqualTo ("The input value"));
     }
@@ -84,11 +94,13 @@ namespace Remotion.ObjectBinding.UnitTests.Design
     [Test]
     public void EditValue_WithoutTypeDescriptorContext ()
     {
-      _mockRepository.ReplayAll();
+      object actual = _mockDropDownEditorBase.Object.EditValue (null, _mockServiceProvider.Object, "The input value");
 
-      object actual = _mockDropDownEditorBase.EditValue (null, _mockServiceProvider, "The input value");
-
-      _mockRepository.VerifyAll();
+      _mockTypeDescriptorContext.Verify();
+      _mockServiceProvider.Verify();
+      _mockWindowsFormsEditorService.Verify();
+      _mockDropDownEditorBase.Verify();
+      _mockEditorControlBase.Verify();
 
       Assert.That (actual, Is.EqualTo ("The input value"));
     }
@@ -96,12 +108,15 @@ namespace Remotion.ObjectBinding.UnitTests.Design
     [Test]
     public void EditValue_WithoutServiceProvider ()
     {
-      Expect.Call (_mockTypeDescriptorContext.Instance).Return (new object());
-      _mockRepository.ReplayAll();
+      _mockTypeDescriptorContext.Setup (_ => _.Instance).Returns (new object()).Verifiable();
 
-      object actual = _mockDropDownEditorBase.EditValue (_mockTypeDescriptorContext, null, "The input value");
+      object actual = _mockDropDownEditorBase.Object.EditValue (_mockTypeDescriptorContext.Object, null, "The input value");
 
-      _mockRepository.VerifyAll();
+      _mockTypeDescriptorContext.Verify();
+      _mockServiceProvider.Verify();
+      _mockWindowsFormsEditorService.Verify();
+      _mockDropDownEditorBase.Verify();
+      _mockEditorControlBase.Verify();
 
       Assert.That (actual, Is.EqualTo ("The input value"));
     }
@@ -109,13 +124,16 @@ namespace Remotion.ObjectBinding.UnitTests.Design
     [Test]
     public void EditValue_WitoutEditorSerivce ()
     {
-      Expect.Call (_mockTypeDescriptorContext.Instance).Return (new object());
-      Expect.Call (_mockServiceProvider.GetService (typeof (IWindowsFormsEditorService))).Return (null);
-      _mockRepository.ReplayAll();
+      _mockTypeDescriptorContext.Setup (_ => _.Instance).Returns (new object()).Verifiable();
+      _mockServiceProvider.Setup (_ => _.GetService (typeof (IWindowsFormsEditorService))).Returns ((object) null).Verifiable();
 
-      object actual = _mockDropDownEditorBase.EditValue (_mockTypeDescriptorContext, _mockServiceProvider, "The input value");
+      object actual = _mockDropDownEditorBase.Object.EditValue (_mockTypeDescriptorContext.Object, _mockServiceProvider.Object, "The input value");
 
-      _mockRepository.VerifyAll();
+      _mockTypeDescriptorContext.Verify();
+      _mockServiceProvider.Verify();
+      _mockWindowsFormsEditorService.Verify();
+      _mockDropDownEditorBase.Verify();
+      _mockEditorControlBase.Verify();
 
       Assert.That (actual, Is.EqualTo ("The input value"));
     }
@@ -123,12 +141,15 @@ namespace Remotion.ObjectBinding.UnitTests.Design
     [Test]
     public void GetEditStyle ()
     {
-      Expect.Call (_mockTypeDescriptorContext.Instance).Return (new object ());
-      _mockRepository.ReplayAll ();
+      _mockTypeDescriptorContext.Setup (_ => _.Instance).Returns (new object ()).Verifiable();
 
-      UITypeEditorEditStyle actual = _mockDropDownEditorBase.GetEditStyle (_mockTypeDescriptorContext);
+      UITypeEditorEditStyle actual = _mockDropDownEditorBase.Object.GetEditStyle (_mockTypeDescriptorContext.Object);
 
-      _mockRepository.VerifyAll ();
+      _mockTypeDescriptorContext.Verify();
+      _mockServiceProvider.Verify();
+      _mockWindowsFormsEditorService.Verify();
+      _mockDropDownEditorBase.Verify();
+      _mockEditorControlBase.Verify();
 
       Assert.That (actual, Is.EqualTo (UITypeEditorEditStyle.DropDown));
     }
@@ -136,12 +157,15 @@ namespace Remotion.ObjectBinding.UnitTests.Design
     [Test]
     public void GetEditStyle_WithoutTypeDescriptorContextInstance ()
     {
-      Expect.Call (_mockTypeDescriptorContext.Instance).Return (null);
-      _mockRepository.ReplayAll ();
+      _mockTypeDescriptorContext.Setup (_ => _.Instance).Returns ((object) null).Verifiable();
 
-      UITypeEditorEditStyle actual = _mockDropDownEditorBase.GetEditStyle (_mockTypeDescriptorContext);
+      UITypeEditorEditStyle actual = _mockDropDownEditorBase.Object.GetEditStyle (_mockTypeDescriptorContext.Object);
 
-      _mockRepository.VerifyAll ();
+      _mockTypeDescriptorContext.Verify();
+      _mockServiceProvider.Verify();
+      _mockWindowsFormsEditorService.Verify();
+      _mockDropDownEditorBase.Verify();
+      _mockEditorControlBase.Verify();
 
       Assert.That (actual, Is.EqualTo (UITypeEditorEditStyle.None));
     }
@@ -149,11 +173,13 @@ namespace Remotion.ObjectBinding.UnitTests.Design
     [Test]
     public void GetEditStyle_WithoutTypeDescriptorContext ()
     {
-      _mockRepository.ReplayAll ();
+      UITypeEditorEditStyle actual = _mockDropDownEditorBase.Object.GetEditStyle (null);
 
-      UITypeEditorEditStyle actual = _mockDropDownEditorBase.GetEditStyle (null);
-
-      _mockRepository.VerifyAll ();
+      _mockTypeDescriptorContext.Verify();
+      _mockServiceProvider.Verify();
+      _mockWindowsFormsEditorService.Verify();
+      _mockDropDownEditorBase.Verify();
+      _mockEditorControlBase.Verify();
 
       Assert.That (actual, Is.EqualTo (UITypeEditorEditStyle.None));
     }

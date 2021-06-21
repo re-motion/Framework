@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Mixins;
 using Remotion.ObjectBinding.BindableObject;
@@ -25,7 +26,6 @@ using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 using Remotion.Utilities;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject
 {
@@ -150,8 +150,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetMetadata_UsesFactory ()
     {
-      var mockRepository = new MockRepository ();
-      var factoryMock = mockRepository.StrictMock<IMetadataFactory> ();
+      var factoryMock = new Mock<IMetadataFactory> (MockBehavior.Strict);
 
       IPropertyInformation dummyProperty1 = GetPropertyInfo (typeof (DateTime), "Now");
       IPropertyInformation dummyProperty2 = GetPropertyInfo (typeof (Environment), "TickCount");
@@ -159,22 +158,20 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       PropertyReflector dummyReflector1 = PropertyReflector.Create(GetPropertyInfo (typeof (DateTime), "Ticks"), _businessObjectProvider);
       PropertyReflector dummyReflector2 = PropertyReflector.Create(GetPropertyInfo (typeof (Environment), "NewLine"), _businessObjectProvider);
 
-      var propertyFinderMock = mockRepository.StrictMock<IPropertyFinder> ();
+      var propertyFinderMock = new Mock<IPropertyFinder> (MockBehavior.Strict);
 
       var otherClassReflector = new ClassReflector (
           _type,
           _businessObjectProvider,
-          factoryMock,
+          factoryMock.Object,
           _bindableObjectGlobalizationService);
 
       Type concreteType = MixinTypeUtility.GetConcreteMixedType (_type);
 
-      Expect.Call (factoryMock.CreatePropertyFinder (concreteType)).Return (propertyFinderMock);
-      Expect.Call (propertyFinderMock.GetPropertyInfos ()).Return (new[] { dummyProperty1, dummyProperty2 });
-      Expect.Call (factoryMock.CreatePropertyReflector (concreteType, dummyProperty1, _businessObjectProvider)).Return (dummyReflector1);
-      Expect.Call (factoryMock.CreatePropertyReflector (concreteType, dummyProperty2, _businessObjectProvider)).Return (dummyReflector2);
-
-      mockRepository.ReplayAll ();
+      factoryMock.Setup (_ => _.CreatePropertyFinder (concreteType)).Returns (propertyFinderMock.Object).Verifiable();
+      propertyFinderMock.Setup (_ => _.GetPropertyInfos ()).Returns (new[] { dummyProperty1, dummyProperty2 }).Verifiable();
+      factoryMock.Setup (_ => _.CreatePropertyReflector (concreteType, dummyProperty1, _businessObjectProvider)).Returns (dummyReflector1).Verifiable();
+      factoryMock.Setup (_ => _.CreatePropertyReflector (concreteType, dummyProperty2, _businessObjectProvider)).Returns (dummyReflector2).Verifiable();
 
       BindableObjectClass theClass = otherClassReflector.GetMetadata ();
       Assert.That (theClass.GetPropertyDefinition ("Ticks"), Is.Not.Null);
@@ -183,7 +180,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       Assert.That (theClass.GetPropertyDefinition ("Now"), Is.Null);
       Assert.That (theClass.GetPropertyDefinition ("TickCount"), Is.Null);
 
-      mockRepository.VerifyAll ();
+      factoryMock.Verify();
+      propertyFinderMock.Verify();
     }
 
     [Test]

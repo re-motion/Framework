@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
@@ -26,7 +27,6 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation;
 using Remotion.ObjectBinding.Web.UnitTests.Domain;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering
 {
@@ -46,15 +46,15 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Column.ColumnTitle = "FirstColumn";
       Column.PropertyPathIdentifier = "DisplayName";
       Column.FormatString = "unusedWithReferenceValue";
-      Column.OwnerControl = List;
 
       base.SetUp();
+      Column.OwnerControl = List.Object;
 
       _bocListCssClassDefinition = new BocListCssClassDefinition();
 
       var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create (null, null, null);
       _renderingContext = new BocColumnRenderingContext<BocSimpleColumnDefinition> (
-          new BocColumnRenderingContext (HttpContext, Html.Writer, List, businessObjectWebServiceContext, Column, 0, 0));
+          new BocColumnRenderingContext (HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, Column, 0, 0));
     }
 
     [Test]
@@ -148,7 +148,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute (td, "role", "cell");
 
       var a = Html.GetAssertedChildElement (td, "a", 0);
-      Html.AssertAttribute (a, "id", List.ClientID + "_Column_0_Command_Row_10");
+      Html.AssertAttribute (a, "id", List.Object.ClientID + "_Column_0_Command_Row_10");
       Html.AssertAttribute (a, "href", "url");
       Html.AssertAttribute (a, "onclick", "BocList.OnCommandClick();");
 
@@ -183,11 +183,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       var firstObject = (IBusinessObject) ((TypeWithReference) BusinessObject).FirstValue;
 
-      IEditableRow editableRow = MockRepository.GenerateMock<IEditableRow>();
-      editableRow.Stub (mock => mock.HasEditControl (0)).IgnoreArguments().Return (true);
-      editableRow.Stub (mock => mock.GetEditControl (0)).IgnoreArguments().Return (MockRepository.GenerateStub<IBocTextValue>());
+      var editableRow = new Mock<IEditableRow>();
+      editableRow.Setup (mock => mock.HasEditControl (It.IsAny<int>())).Returns (true);
+      editableRow.Setup (mock => mock.GetEditControl (It.IsAny<int>())).Returns (new Mock<IBocTextValue>().Object);
 
-      List.EditModeController.Stub (mock => mock.GetEditableRow (EventArgs.ListIndex)).Return (editableRow);
+      Mock.Get (List.Object.EditModeController).Setup (mock => mock.GetEditableRow (EventArgs.ListIndex)).Returns (editableRow.Object);
 
       IBocColumnRenderer renderer = new BocSimpleColumnRenderer (new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
       renderer.RenderDataCell (_renderingContext, 0, false, EventArgs);
@@ -204,13 +204,14 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var clickSpan = Html.GetAssertedChildElement (span, "span", 0);
       Html.AssertAttribute (clickSpan, "onclick", "BocList.OnCommandClick();");
 
-      editableRow.AssertWasCalled (
+      editableRow.Verify (
           mock => mock.RenderSimpleColumnCellEditModeControl (
               Html.Writer,
               Column,
               firstObject,
               0,
-              List.ClientID + "_0_Title"));
+              List.Object.ClientID + "_0_Title"),
+          Times.AtLeastOnce());
     }
 
     [Test]
@@ -218,11 +219,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       var firstObject = (IBusinessObject) ((TypeWithReference) BusinessObject).FirstValue;
 
-      IEditableRow editableRow = MockRepository.GenerateMock<IEditableRow>();
-      editableRow.Stub (mock => mock.HasEditControl (0)).IgnoreArguments().Return (true);
-      editableRow.Stub (mock => mock.GetEditControl (0)).IgnoreArguments().Return (MockRepository.GenerateStub<IBocTextValue>());
+      var editableRow = new Mock<IEditableRow>();
+      editableRow.Setup (mock => mock.HasEditControl (It.IsAny<int>())).Returns (true);
+      editableRow.Setup (mock => mock.GetEditControl (It.IsAny<int>())).Returns (new Mock<IBocTextValue>().Object);
 
-      List.EditModeController.Stub (mock => mock.GetEditableRow (EventArgs.ListIndex)).Return (editableRow);
+      Mock.Get (List.Object.EditModeController).Setup (mock => mock.GetEditableRow (EventArgs.ListIndex)).Returns (editableRow.Object);
 
       IBocColumnRenderer renderer = new BocSimpleColumnRenderer (new FakeResourceUrlFactory(), RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition);
       renderer.RenderDataCell (_renderingContext, 0, false, EventArgs);
@@ -236,13 +237,14 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute (clickSpan, "onclick", "BocList.OnCommandClick();");
       Html.AssertAttribute (clickSpan, DiagnosticMetadataAttributesForObjectBinding.BocListCellContents, "referencedObject1");
 
-      editableRow.AssertWasCalled (
+      editableRow.Verify (
           mock => mock.RenderSimpleColumnCellEditModeControl (
               Html.Writer,
               Column,
               firstObject,
               0,
-              List.ClientID + "_0_Title"));
+              List.Object.ClientID + "_0_Title"),
+          Times.AtLeastOnce());
     }
   }
 }

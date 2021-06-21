@@ -20,6 +20,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Xml;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
@@ -37,7 +38,6 @@ using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImplementation.Rendering
 {
@@ -71,9 +71,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     private BusinessObjectReferenceDataSource _dataSource;
     private IBusinessObjectProvider _provider;
     private IResourceUrlFactory _resourceUrlFactory;
-    private IBocAutoCompleteReferenceValue Control { get; set; }
+    private Mock<IBocAutoCompleteReferenceValue> Control { get; set; }
     private DropDownMenu OptionsMenu { get; set; }
-    private IClientScriptManager ClientScriptManagerMock { get; set; }
+    private Mock<IClientScriptManager> ClientScriptManagerMock { get; set; }
     private TypeWithReference BusinessObject { get; set; }
     private IBusinessObjectDataSource DataSource { get; set; }
     private StubTextBox TextBox { get; set; }
@@ -87,29 +87,30 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       OptionsMenu = new StubDropDownMenu();
       TextBox = new StubTextBox();
 
-      Control = MockRepository.GenerateStub<IBocAutoCompleteReferenceValue>();
-      Control.Stub (stub => stub.ClientID).Return (c_clientID);
-      Control.Stub (stub => stub.ControlType).Return ("BocAutoCompleteReferenceValue");
-      Control.Stub (stub => stub.GetTextValueName()).Return (c_textValueName);
-      Control.Stub (stub => stub.GetKeyValueName()).Return (c_keyValueName);
-      Control.Stub (mock => mock.GetLabelIDs()).Return (EnumerableUtility.Singleton (c_labelID));
-      Control.Stub (mock => mock.GetValidationErrors()).Return (EnumerableUtility.Singleton (c_validationErrors));
-      Control.Stub (stub => stub.BusinessObjectUniqueIdentifier).Return (c_uniqueidentifier);
+      Control = new Mock<IBocAutoCompleteReferenceValue>();
+      Control.SetupProperty (_ => _.CssClass);
+      Control.Setup (stub => stub.ClientID).Returns (c_clientID);
+      Control.Setup (stub => stub.ControlType).Returns ("BocAutoCompleteReferenceValue");
+      Control.Setup (stub => stub.GetTextValueName()).Returns (c_textValueName);
+      Control.Setup (stub => stub.GetKeyValueName()).Returns (c_keyValueName);
+      Control.Setup (mock => mock.GetLabelIDs()).Returns (EnumerableUtility.Singleton (c_labelID));
+      Control.Setup (mock => mock.GetValidationErrors()).Returns (EnumerableUtility.Singleton (c_validationErrors));
+      Control.Setup (stub => stub.BusinessObjectUniqueIdentifier).Returns (c_uniqueidentifier);
 #pragma warning disable 618
-      Control.Stub (stub => stub.Command).Return (new BocCommand());
-      Control.Command.Type = CommandType.Event;
-      Control.Command.Show = CommandShow.Always;
+      Control.Setup (stub => stub.Command).Returns (new BocCommand());
+      Control.Object.Command.Type = CommandType.Event;
+      Control.Object.Command.Show = CommandShow.Always;
 #pragma warning restore 618
-      Control.Stub (stub=>stub.ControlServicePath).Return ("~/ControlService.asmx");
+      Control.Setup (stub=>stub.ControlServicePath).Returns ("~/ControlService.asmx");
 
-      Control.Stub (stub => stub.OptionsMenu).Return (OptionsMenu);
+      Control.Setup (stub => stub.OptionsMenu).Returns (OptionsMenu);
 
-      IPage pageStub = MockRepository.GenerateStub<IPage>();
-      pageStub.Stub (stub => stub.Form).Return (new HtmlForm());
-      Control.Stub (stub => stub.Page).Return (pageStub);
+      var pageStub = new Mock<IPage>();
+      pageStub.Setup (stub => stub.Form).Returns (new HtmlForm());
+      Control.Setup (stub => stub.Page).Returns (pageStub.Object);
 
-      ClientScriptManagerMock = MockRepository.GenerateMock<IClientScriptManager>();
-      pageStub.Stub (stub => stub.ClientScript).Return (ClientScriptManagerMock);
+      ClientScriptManagerMock = new Mock<IClientScriptManager>();
+      pageStub.Setup (stub => stub.ClientScript).Returns (ClientScriptManagerMock.Object);
 
       BusinessObject = TypeWithReference.Create ("MyBusinessObject");
       BusinessObject.ReferenceList = new[]
@@ -126,19 +127,19 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       _provider.AddService<IBusinessObjectWebUIService> (new ReflectionBusinessObjectWebUIService());
 
       DataSource = new BindableObjectDataSource { Type = typeof (TypeWithReference) };
-      DataSource.Register (Control);
+      DataSource.Register (Control.Object);
 
       StateBag stateBag = new StateBag();
-      Control.Stub (mock => mock.Attributes).Return (new AttributeCollection (stateBag));
-      Control.Stub (mock => mock.Style).Return (Control.Attributes.CssStyle);
-      Control.Stub (mock => mock.CommonStyle).Return (new Style (stateBag));
-      Control.Stub (mock => mock.LabelStyle).Return (new Style (stateBag));
-      Control.Stub (mock => mock.TextBoxStyle).Return (new SingleRowTextBoxStyle());
-      Control.Stub (mock => mock.ControlStyle).Return (new Style (stateBag));
+      Control.Setup (mock => mock.Attributes).Returns (new AttributeCollection (stateBag));
+      Control.Setup (mock => mock.Style).Returns (Control.Object.Attributes.CssStyle);
+      Control.Setup (mock => mock.CommonStyle).Returns (new Style (stateBag));
+      Control.Setup (mock => mock.LabelStyle).Returns (new Style (stateBag));
+      Control.Setup (mock => mock.TextBoxStyle).Returns (new SingleRowTextBoxStyle());
+      Control.Setup (mock => mock.ControlStyle).Returns (new Style (stateBag));
 
-      Control.Stub (stub => stub.GetLabelText()).Return ("MyText");
-      Control.Stub (stub => stub.ResolveClientUrl (null)).IgnoreArguments().Do ((Func<string, string>) (url => url.TrimStart ('~')));
-      Control.Stub (stub => stub.GetResourceManager()).Return (NullResourceManager.Instance);
+      Control.Setup (stub => stub.GetLabelText()).Returns ("MyText");
+      Control.Setup (stub => stub.ResolveClientUrl (It.IsAny<string>())).Returns ((string url) => url.TrimStart ('~'));
+      Control.Setup (stub => stub.GetResourceManager()).Returns (NullResourceManager.Instance);
 
       _resourceUrlFactory = new FakeResourceUrlFactory();
     }
@@ -146,13 +147,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     [TearDown]
     public void TearDown ()
     {
-      ClientScriptManagerMock.VerifyAllExpectations();
+      ClientScriptManagerMock.Verify();
     }
 
     [Test]
     public void RenderNullReferenceValue ()
     {
-      Control.Stub (stub => stub.Enabled).Return (true);
+      Control.Setup (stub => stub.Enabled).Returns (true);
 
       XmlNode containerDiv = GetAssertedContainerSpan (false);
       AssertControl (containerDiv, OptionMenuConfiguration.NoOptionsMenu, AutoPostBack.Disabled);
@@ -161,8 +162,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     [Test]
     public void RenderNullReferenceValueWithOptionsMenu ()
     {
-      Control.Stub (stub => stub.Enabled).Return (true);
-      Control.Stub (stub => stub.HasOptionsMenu).Return (true);
+      Control.Setup (stub => stub.Enabled).Returns (true);
+      Control.Setup (stub => stub.HasOptionsMenu).Returns (true);
 
       XmlNode containerDiv = GetAssertedContainerSpan (false);
       AssertControl (containerDiv, OptionMenuConfiguration.SeparateOptionsMenu, AutoPostBack.Disabled);
@@ -173,9 +174,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
     public void RenderNullReferenceValueWithEmbeddedOptionsMenu ()
     {
-      Control.Stub (stub => stub.Enabled).Return (true);
-      Control.Stub (stub => stub.HasValueEmbeddedInsideOptionsMenu).Return (true);
-      Control.Stub (stub => stub.HasOptionsMenu).Return (true);
+      Control.Setup (stub => stub.Enabled).Returns (true);
+      Control.Setup (stub => stub.HasValueEmbeddedInsideOptionsMenu).Returns (true);
+      Control.Setup (stub => stub.HasOptionsMenu).Returns (true);
 
       XmlNode span = GetAssertedContainerSpan (false);
       AssertControl (span, OptionMenuConfiguration.EmbeddedOptionsMenu, AutoPostBack.Disabled);
@@ -186,9 +187,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
     public void RenderNullReferenceValueWithEmbeddedOptionsMenuAndStyle ()
     {
-      Control.Stub (stub => stub.Enabled).Return (true);
-      Control.Stub (stub => stub.HasValueEmbeddedInsideOptionsMenu).Return (true);
-      Control.Stub (stub => stub.HasOptionsMenu).Return (true);
+      Control.Setup (stub => stub.Enabled).Returns (true);
+      Control.Setup (stub => stub.HasValueEmbeddedInsideOptionsMenu).Returns (true);
+      Control.Setup (stub => stub.HasOptionsMenu).Returns (true);
       AddStyle();
 
       XmlNode span = GetAssertedContainerSpan (true);
@@ -198,9 +199,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     [Test]
     public void RenderNullReferenceValueReadOnly ()
     {
-      Control.Stub (stub => stub.Enabled).Return (true);
-      Control.Stub (stub => stub.IsIconEnabled()).Return (true);
-      Control.Stub (stub => stub.IsReadOnly).Return (true);
+      Control.Setup (stub => stub.Enabled).Returns (true);
+      Control.Setup (stub => stub.IsIconEnabled()).Returns (true);
+      Control.Setup (stub => stub.IsReadOnly).Returns (true);
 
       XmlNode span = GetAssertedContainerSpan (false);
       AssertReadOnlyContent (span);
@@ -209,9 +210,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     [Test]
     public void RenderNullReferenceValueReadOnlyWithStyle ()
     {
-      Control.Stub (stub => stub.Enabled).Return (true);
-      Control.Stub (stub => stub.IsIconEnabled()).Return (true);
-      Control.Stub (stub => stub.IsReadOnly).Return (true);
+      Control.Setup (stub => stub.Enabled).Returns (true);
+      Control.Setup (stub => stub.IsIconEnabled()).Returns (true);
+      Control.Setup (stub => stub.IsReadOnly).Returns (true);
       AddStyle();
 
       XmlNode span = GetAssertedContainerSpan (true);
@@ -222,10 +223,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     [Ignore ("Assertions for embedded menu are incorrect: COMMONS-2431")]
     public void RenderNullReferenceValueReadOnlyWithOptionsMenu ()
     {
-      Control.Stub (stub => stub.Enabled).Return (true);
-      Control.Stub (stub => stub.IsIconEnabled()).Return (true);
-      Control.Stub (stub => stub.HasOptionsMenu).Return (true);
-      Control.Stub (stub => stub.IsReadOnly).Return (true);
+      Control.Setup (stub => stub.Enabled).Returns (true);
+      Control.Setup (stub => stub.IsIconEnabled()).Returns (true);
+      Control.Setup (stub => stub.HasOptionsMenu).Returns (true);
+      Control.Setup (stub => stub.IsReadOnly).Returns (true);
 
       XmlNode span = GetAssertedContainerSpan (false);
       AssertReadOnlyContent (span);
@@ -237,7 +238,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     [Test]
     public void RenderNullReferenceValueWithStyle ()
     {
-      Control.Stub (stub => stub.Enabled).Return (true);
+      Control.Setup (stub => stub.Enabled).Returns (true);
       AddStyle();
 
       XmlNode span = GetAssertedContainerSpan (true);
@@ -247,8 +248,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     [Test]
     public void RenderNullReferenceValueWithOptionsAndStyle ()
     {
-      Control.Stub (stub => stub.Enabled).Return (true);
-      Control.Stub (stub => stub.HasOptionsMenu).Return (true);
+      Control.Setup (stub => stub.Enabled).Returns (true);
+      Control.Setup (stub => stub.HasOptionsMenu).Returns (true);
       AddStyle();
 
       XmlNode span = GetAssertedContainerSpan (true);
@@ -261,9 +262,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     [Test]
     public void RenderNullReferenceValueWithIcon ()
     {
-      Control.Stub (stub => stub.Enabled).Return (true);
-      Control.Stub (stub => stub.IsIconEnabled()).Return (true);
-      Control.Stub (stub => stub.Property).Return (
+      Control.Setup (stub => stub.Enabled).Returns (true);
+      Control.Setup (stub => stub.IsIconEnabled()).Returns (true);
+      Control.Setup (stub => stub.Property).Returns (
           (IBusinessObjectReferenceProperty) ((IBusinessObject) BusinessObject).BusinessObjectClass.GetPropertyDefinition ("ReferenceValue"));
       SetUpGetIconExpectations();
 
@@ -274,7 +275,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     [Test]
     public void RenderReferenceValue ()
     {
-      Control.Stub (stub => stub.Enabled).Return (true);
+      Control.Setup (stub => stub.Enabled).Returns (true);
       SetValue();
       XmlNode span = GetAssertedContainerSpan (false);
       AssertControl (span, OptionMenuConfiguration.NoOptionsMenu, AutoPostBack.Disabled);
@@ -284,12 +285,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     public void RenderReferenceValueAutoPostback ()
     {
       TextBox.AutoPostBack = false;
-      Control.Stub (stub => stub.Enabled).Return (true);
+      Control.Setup (stub => stub.Enabled).Returns (true);
       SetUpClientScriptExpectations();
       SetValue();
 
-      Control.Stub (stub => stub.TextBoxStyle).Return (new SingleRowTextBoxStyle());
-      Control.TextBoxStyle.AutoPostBack = true;
+      Control.Setup (stub => stub.TextBoxStyle).Returns (new SingleRowTextBoxStyle());
+      Control.Object.TextBoxStyle.AutoPostBack = true;
 
       XmlNode span = GetAssertedContainerSpan (false);
       AssertControl (span, OptionMenuConfiguration.NoOptionsMenu, AutoPostBack.Enabled);
@@ -299,15 +300,15 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     private void SetValue ()
     {
       BusinessObject.ReferenceValue = BusinessObject.ReferenceList[0];
-      Control.Stub (stub => stub.Value).Return ((IBusinessObjectWithIdentity) BusinessObject.ReferenceValue);
+      Control.Setup (stub => stub.Value).Returns ((IBusinessObjectWithIdentity) BusinessObject.ReferenceValue);
     }
 
     [Test]
     public void RenderReferenceValueWithOptionsMenu ()
     {
-      Control.Stub (stub => stub.Enabled).Return (true);
+      Control.Setup (stub => stub.Enabled).Returns (true);
       SetValue();
-      Control.Stub (stub => stub.HasOptionsMenu).Return (true);
+      Control.Setup (stub => stub.HasOptionsMenu).Returns (true);
 
       XmlNode span = GetAssertedContainerSpan (false);
       AssertControl (span, OptionMenuConfiguration.SeparateOptionsMenu, AutoPostBack.Disabled);
@@ -321,10 +322,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
     public void RenderReferenceValueWithEmbeddedOptionsMenu ()
     {
-      Control.Stub (stub => stub.Enabled).Return (true);
+      Control.Setup (stub => stub.Enabled).Returns (true);
       SetValue();
-      Control.Stub (stub => stub.HasValueEmbeddedInsideOptionsMenu).Return (true);
-      Control.Stub (stub => stub.HasOptionsMenu).Return (true);
+      Control.Setup (stub => stub.HasValueEmbeddedInsideOptionsMenu).Returns (true);
+      Control.Setup (stub => stub.HasOptionsMenu).Returns (true);
 
       XmlNode span = GetAssertedContainerSpan (false);
       AssertControl (span, OptionMenuConfiguration.EmbeddedOptionsMenu, AutoPostBack.Disabled);
@@ -335,10 +336,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
     public void RenderReferenceValueWithEmbeddedOptionsMenuAndStyle ()
     {
-      Control.Stub (stub => stub.Enabled).Return (true);
+      Control.Setup (stub => stub.Enabled).Returns (true);
       SetValue();
-      Control.Stub (stub => stub.HasValueEmbeddedInsideOptionsMenu).Return (true);
-      Control.Stub (stub => stub.HasOptionsMenu).Return (true);
+      Control.Setup (stub => stub.HasValueEmbeddedInsideOptionsMenu).Returns (true);
+      Control.Setup (stub => stub.HasOptionsMenu).Returns (true);
       AddStyle();
 
       XmlNode span = GetAssertedContainerSpan (false);
@@ -348,10 +349,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     [Test]
     public void RenderReferenceValueReadOnly ()
     {
-      Control.Stub (stub => stub.Enabled).Return (true);
+      Control.Setup (stub => stub.Enabled).Returns (true);
       SetValue();
-      Control.Stub (stub => stub.IsIconEnabled()).Return (true);
-      Control.Stub (stub => stub.IsReadOnly).Return (true);
+      Control.Setup (stub => stub.IsIconEnabled()).Returns (true);
+      Control.Setup (stub => stub.IsReadOnly).Returns (true);
 
       XmlNode span = GetAssertedContainerSpan (false);
       AssertReadOnlyContent (span);
@@ -360,10 +361,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     [Test]
     public void RenderReferenceValueReadOnlyWithStyle ()
     {
-      Control.Stub (stub => stub.Enabled).Return (true);
+      Control.Setup (stub => stub.Enabled).Returns (true);
       SetValue();
-      Control.Stub (stub => stub.IsIconEnabled()).Return (true);
-      Control.Stub (stub => stub.IsReadOnly).Return (true);
+      Control.Setup (stub => stub.IsIconEnabled()).Returns (true);
+      Control.Setup (stub => stub.IsReadOnly).Returns (true);
       AddStyle();
 
       XmlNode span = GetAssertedContainerSpan (true);
@@ -374,11 +375,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     [Ignore ("Assertions for embedded menu are incorrect: COMMONS-2431")]
     public void RenderReferenceValueReadOnlyWithOptionsMenu ()
     {
-      Control.Stub (stub => stub.Enabled).Return (true);
+      Control.Setup (stub => stub.Enabled).Returns (true);
       SetValue();
-      Control.Stub (stub => stub.IsIconEnabled()).Return (true);
-      Control.Stub (stub => stub.HasOptionsMenu).Return (true);
-      Control.Stub (stub => stub.IsReadOnly).Return (true);
+      Control.Setup (stub => stub.IsIconEnabled()).Returns (true);
+      Control.Setup (stub => stub.HasOptionsMenu).Returns (true);
+      Control.Setup (stub => stub.IsReadOnly).Returns (true);
 
       XmlNode span = GetAssertedContainerSpan (false);
       AssertReadOnlyContent (span);
@@ -390,7 +391,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     [Test]
     public void RenderReferenceValueWithStyle ()
     {
-      Control.Stub (stub => stub.Enabled).Return (true);
+      Control.Setup (stub => stub.Enabled).Returns (true);
       SetValue();
       AddStyle();
 
@@ -401,9 +402,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     [Test]
     public void RenderReferenceValueWithOptionsAndStyle ()
     {
-      Control.Stub (stub => stub.Enabled).Return (true);
+      Control.Setup (stub => stub.Enabled).Returns (true);
       SetValue();
-      Control.Stub (stub => stub.HasOptionsMenu).Return (true);
+      Control.Setup (stub => stub.HasOptionsMenu).Returns (true);
       AddStyle();
 
       XmlNode span = GetAssertedContainerSpan (true);
@@ -416,10 +417,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     [Test]
     public void RenderReferenceValueWithIcon ()
     {
-      Control.Stub (stub => stub.Enabled).Return (true);
+      Control.Setup (stub => stub.Enabled).Returns (true);
       SetValue();
-      Control.Stub (stub => stub.IsIconEnabled()).Return (true);
-      Control.Stub (stub => stub.Property).Return (
+      Control.Setup (stub => stub.IsIconEnabled()).Returns (true);
+      Control.Setup (stub => stub.Property).Returns (
           (IBusinessObjectReferenceProperty) ((IBusinessObject) BusinessObject).BusinessObjectClass.GetPropertyDefinition ("ReferenceValue"));
       SetUpGetIconExpectations();
 
@@ -455,8 +456,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     [Test]
     public void RenderOptionsReadOnly ()
     {
-      Control.Stub (stub => stub.IsIconEnabled()).Return (true);
-      Control.Stub (stub => stub.IsReadOnly).Return (true);
+      Control.Setup (stub => stub.IsIconEnabled()).Returns (true);
+      Control.Setup (stub => stub.IsReadOnly).Returns (true);
 
       var renderer = new TestableBocAutoCompleteReferenceValueRenderer (
           _resourceUrlFactory,
@@ -486,12 +487,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
           () => TextBox);
 
       TextBox.AutoPostBack = false;
-      Control.Stub (stub => stub.Enabled).Return (true);
+      Control.Setup (stub => stub.Enabled).Returns (true);
       SetUpClientScriptExpectations();
       SetValue();
 
-      Control.Stub (stub => stub.TextBoxStyle).Return (new SingleRowTextBoxStyle());
-      Control.TextBoxStyle.AutoPostBack = true;
+      Control.Setup (stub => stub.TextBoxStyle).Returns (new SingleRowTextBoxStyle());
+      Control.Object.TextBoxStyle.AutoPostBack = true;
 
       Html.Writer.AddAttribute (HtmlTextWriterAttribute.Class, "body");
       Html.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
@@ -506,39 +507,43 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     
     protected void AddStyle ()
     {
-      Control.Height = s_height;
-      Control.Width = s_width;
-      Control.Style["height"] = Control.Height.ToString();
-      Control.Style["width"] = Control.Width.ToString();
+      Control.SetupProperty (_ => _.Height);
+      Control.SetupProperty (_ => _.Width);
+      Control.Object.Height = s_height;
+      Control.Object.Width = s_width;
+      Control.Object.Style["height"] = Control.Object.Height.ToString();
+      Control.Object.Style["width"] = Control.Object.Width.ToString();
     }
 
     protected void SetUpGetIconExpectations ()
     {
-      Control.Expect (mock => mock.GetIcon()).IgnoreArguments().Return (new IconInfo ("~/Images/NullIcon.gif"));
+      Control.Setup (mock => mock.GetIcon()).Returns (new IconInfo ("~/Images/NullIcon.gif")).Verifiable();
     }
 
     protected void SetUpClientScriptExpectations ()
     {
-      ClientScriptManagerMock.Expect (
+      ClientScriptManagerMock.Setup (
           mock => mock.GetPostBackEventReference (
-              Arg<PostBackOptions>.Matches (options => options.TargetControl == TextBox && options.AutoPostBack),
-              Arg.Is (true))
-          ).Return ("PostBackEventReference");
+              It.Is<PostBackOptions> (options => options.TargetControl == TextBox && options.AutoPostBack),
+              true)
+          )
+          .Returns ("PostBackEventReference")
+          .Verifiable();
     }
 
     protected void AssertIcon (XmlNode parent, bool wrapNonCommandIcon)
     {
-      var isIconEnabled = Control.IsIconEnabled();
+      var isIconEnabled = Control.Object.IsIconEnabled();
       var commandClass = "command";
       if (isIconEnabled)
         commandClass += " hasIcon";
 
 #pragma warning disable 618
-      if (Control.IsCommandEnabled())
+      if (Control.Object.IsCommandEnabled())
 #pragma warning restore 618
       {
         var link = parent.GetAssertedChildElement ("a", 0);
-        link.AssertAttributeValueEquals ("id", Control.ClientID + "_Command");
+        link.AssertAttributeValueEquals ("id", Control.Object.ClientID + "_Command");
         link.AssertAttributeValueEquals ("class", commandClass);
         link.AssertAttributeValueEquals ("href", "#");
         link.AssertAttributeValueEquals ("onclick", "");
@@ -560,7 +565,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
         if (wrapNonCommandIcon)
         {
           var anchor = parent.GetAssertedChildElement ("a", 0);
-          anchor.AssertAttributeValueEquals ("id", Control.ClientID + "_Command");
+          anchor.AssertAttributeValueEquals ("id", Control.Object.ClientID + "_Command");
           anchor.AssertAttributeValueEquals ("class", commandClass);
 
           iconParent = anchor;
@@ -583,13 +588,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     {
       var span = parent.GetAssertedChildElement ("span", 0);
       span.AssertAttributeValueEquals ("class", "body");
-      span.AssertChildElementCount (Control.HasOptionsMenu ? 3 : 2);
+      span.AssertChildElementCount (Control.Object.HasOptionsMenu ? 3 : 2);
 
       var commandLink = span.GetAssertedChildElement ("a", 0);
-      commandLink.AssertAttributeValueEquals ("id", Control.ClientID + "_Command");
+      commandLink.AssertAttributeValueEquals ("id", Control.Object.ClientID + "_Command");
       commandLink.AssertAttributeValueEquals (StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
       commandLink.AssertAttributeValueEquals (StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, c_readOnlyTextValueName);
-      commandLink.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsIDAttribute, Control.ClientID + "_ValidationErrors");
+      commandLink.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsIDAttribute, Control.Object.ClientID + "_ValidationErrors");
       commandLink.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
       commandLink.AssertAttributeValueEquals ("class", "command");
       commandLink.AssertChildElementCount (1);
@@ -604,7 +609,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       innerSpan.AssertChildElementCount (0);
       innerSpan.AssertTextNode ("MyText", 0);
 
-      if (Control.HasOptionsMenu)
+      if (Control.Object.HasOptionsMenu)
       {
         var wrapperSpan = span.GetAssertedChildElement ("span", 1);
         wrapperSpan.AssertAttributeValueEquals ("class", "optionsMenu");
@@ -625,11 +630,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       inputSpan.AssertChildElementCount (1);
       var inputField = inputSpan.GetAssertedChildElement ("input", 0);
       inputField.AssertAttributeValueEquals ("type", "stub");
-      inputField.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsIDAttribute, Control.ClientID + "_ValidationErrors");
+      inputField.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsIDAttribute, Control.Object.ClientID + "_ValidationErrors");
       inputField.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
 
       int hiddenFieldIndex = 1;
-      if (Control.Enabled)
+      if (Control.Object.Enabled)
       {
         var dropDownButton = contentSpan.GetAssertedChildElement ("span", 1);
         dropDownButton.AssertAttributeValueEquals ("class", "bocAutoCompleteReferenceValueButton");
@@ -684,7 +689,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       }
 
       var validationErrors = contentSpan.GetAssertedChildElement ("fake", 3);
-      validationErrors.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsIDAttribute, Control.ClientID + "_ValidationErrors");
+      validationErrors.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsIDAttribute, Control.Object.ClientID + "_ValidationErrors");
       validationErrors.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
     }
 
@@ -704,9 +709,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
 
       containerDiv.AssertAttributeValueEquals ("id", "MyReferenceValue");
       containerDiv.AssertAttributeValueContains ("class", "bocAutoCompleteReferenceValue");
-      if (Control.IsReadOnly)
+      if (Control.Object.IsReadOnly)
         containerDiv.AssertAttributeValueContains ("class", "readOnly");
-      if (!Control.Enabled)
+      if (!Control.Object.Enabled)
         containerDiv.AssertAttributeValueContains ("class", "disabled");
 
       // containerDiv.AssertChildElementCount (1);
@@ -725,8 +730,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       return new BocAutoCompleteReferenceValueRenderingContext (
           HttpContext,
           Html.Writer,
-          Control,
-          BusinessObjectWebServiceContext.Create (Control.DataSource, Control.Property, "Args"));
+          Control.Object,
+          BusinessObjectWebServiceContext.Create (Control.Object.DataSource, Control.Object.Property, "Args"));
     }
   }
 }

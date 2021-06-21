@@ -15,38 +15,32 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.UnitTests
 {
   [TestFixture]
   public class BusinessObjectDataSourceTest
   {
-    private MockRepository _mockRepository;
     private IBusinessObjectDataSource _dataSource;
 
     [SetUp]
     public void SetUp ()
     {
-      _mockRepository = new MockRepository();
-
       _dataSource = new StubBusinessObjectDataSource (null);
     }
 
     [Test]
     public void GetBusinessObjectProvider ()
     {
-      var stubBusinessObjectClass = _mockRepository.Stub<IBusinessObjectClass>();
-      var stubBusinessObjectProvider = _mockRepository.Stub<IBusinessObjectProvider>();
-      var dataSource = new StubBusinessObjectDataSource (stubBusinessObjectClass);
+      var stubBusinessObjectClass = new Mock<IBusinessObjectClass>();
+      var stubBusinessObjectProvider = new Mock<IBusinessObjectProvider>();
+      var dataSource = new StubBusinessObjectDataSource (stubBusinessObjectClass.Object);
 
-      SetupResult.For (stubBusinessObjectClass.BusinessObjectProvider).Return (stubBusinessObjectProvider);
-      _mockRepository.ReplayAll();
+      stubBusinessObjectClass.Setup (_ => _.BusinessObjectProvider).Returns (stubBusinessObjectProvider.Object);
 
-      Assert.That (dataSource.BusinessObjectProvider, Is.SameAs (stubBusinessObjectProvider));
-
-      _mockRepository.VerifyAll();
+      Assert.That (dataSource.BusinessObjectProvider, Is.SameAs (stubBusinessObjectProvider.Object));
     }
 
     [Test]
@@ -59,115 +53,101 @@ namespace Remotion.ObjectBinding.UnitTests
     [Test]
     public void RegisterAndGetBoundControls ()
     {
-      var stubControl1 = _mockRepository.Stub<IBusinessObjectBoundControl>();
-      var stubControl2 = _mockRepository.Stub<IBusinessObjectBoundControl>();
+      var stubControl1 = new Mock<IBusinessObjectBoundControl>();
+      var stubControl2 = new Mock<IBusinessObjectBoundControl>();
 
-      _mockRepository.ReplayAll();
-
-      _dataSource.Register (stubControl1);
-      _dataSource.Register (stubControl2);
-      Assert.That (_dataSource.GetAllBoundControls(), Is.EqualTo (new[] { stubControl1, stubControl2 }));
-
-      _mockRepository.VerifyAll();
+      _dataSource.Register (stubControl1.Object);
+      _dataSource.Register (stubControl2.Object);
+      Assert.That (_dataSource.GetAllBoundControls(), Is.EqualTo (new[] { stubControl1.Object, stubControl2.Object }));
     }
 
     [Test]
     public void Unregister ()
     {
-      var stubControl1 = _mockRepository.Stub<IBusinessObjectBoundControl>();
-      var stubControl2 = _mockRepository.Stub<IBusinessObjectBoundControl>();
+      var stubControl1 = new Mock<IBusinessObjectBoundControl>();
+      var stubControl2 = new Mock<IBusinessObjectBoundControl>();
 
-      _mockRepository.ReplayAll();
+      _dataSource.Register (stubControl1.Object);
+      _dataSource.Register (stubControl2.Object);
+      Assert.That (_dataSource.GetAllBoundControls(), Is.EqualTo (new[] { stubControl1.Object, stubControl2.Object }));
 
-      _dataSource.Register (stubControl1);
-      _dataSource.Register (stubControl2);
-      Assert.That (_dataSource.GetAllBoundControls(), Is.EqualTo (new[] { stubControl1, stubControl2 }));
+      _dataSource.Unregister (stubControl1.Object);
+      Assert.That (_dataSource.GetAllBoundControls(), Is.EqualTo (new[] { stubControl2.Object }));
 
-      _dataSource.Unregister (stubControl1);
-      Assert.That (_dataSource.GetAllBoundControls(), Is.EqualTo (new[] { stubControl2 }));
-
-      _dataSource.Unregister (stubControl2);
+      _dataSource.Unregister (stubControl2.Object);
       Assert.That (_dataSource.GetAllBoundControls(), Is.EqualTo (new IBusinessObjectBoundControl[0]));
-
-      _mockRepository.VerifyAll();
     }
 
     [Test]
     public void Register_SameTwice ()
     {
-      var stubControl1 = _mockRepository.Stub<IBusinessObjectBoundControl>();
-      var stubControl2 = _mockRepository.Stub<IBusinessObjectBoundControl>();
+      var stubControl1 = new Mock<IBusinessObjectBoundControl>();
+      var stubControl2 = new Mock<IBusinessObjectBoundControl>();
 
-      SetupResult.For (stubControl1.HasValidBinding).Return (true);
-      SetupResult.For (stubControl2.HasValidBinding).Return (true);
-      _mockRepository.ReplayAll();
+      stubControl1.Setup (_ => _.HasValidBinding).Returns (true);
+      stubControl2.Setup (_ => _.HasValidBinding).Returns (true);
 
-      _dataSource.Register (stubControl1);
-      _dataSource.Register (stubControl2);
-      _dataSource.Register (stubControl1);
-      Assert.That (_dataSource.GetAllBoundControls(), Is.EqualTo (new[] { stubControl1, stubControl2 }));
-
-      _mockRepository.VerifyAll();
+      _dataSource.Register (stubControl1.Object);
+      _dataSource.Register (stubControl2.Object);
+      _dataSource.Register (stubControl1.Object);
+      Assert.That (_dataSource.GetAllBoundControls(), Is.EqualTo (new[] { stubControl1.Object, stubControl2.Object }));
     }
 
     [Test]
     public void Unegister_SameTwice ()
     {
-      var stubControl1 = _mockRepository.Stub<IBusinessObjectBoundControl>();
-      var stubControl2 = _mockRepository.Stub<IBusinessObjectBoundControl>();
+      var stubControl1 = new Mock<IBusinessObjectBoundControl>();
+      var stubControl2 = new Mock<IBusinessObjectBoundControl>();
 
-      SetupResult.For (stubControl1.HasValidBinding).Return (true);
-      SetupResult.For (stubControl2.HasValidBinding).Return (true);
-      _mockRepository.ReplayAll();
+      stubControl1.Setup (_ => _.HasValidBinding).Returns (true);
+      stubControl2.Setup (_ => _.HasValidBinding).Returns (true);
 
-      _dataSource.Register (stubControl1);
-      _dataSource.Register (stubControl2);
-      Assert.That (_dataSource.GetAllBoundControls(), Is.EqualTo (new[] { stubControl1, stubControl2 }));
+      _dataSource.Register (stubControl1.Object);
+      _dataSource.Register (stubControl2.Object);
+      Assert.That (_dataSource.GetAllBoundControls(), Is.EqualTo (new[] { stubControl1.Object, stubControl2.Object }));
 
-      _dataSource.Unregister (stubControl1);
-      _dataSource.Unregister (stubControl1);
-      Assert.That (_dataSource.GetAllBoundControls(), Is.EqualTo (new[] { stubControl2 }));
-
-      _mockRepository.VerifyAll();
+      _dataSource.Unregister (stubControl1.Object);
+      _dataSource.Unregister (stubControl1.Object);
+      Assert.That (_dataSource.GetAllBoundControls(), Is.EqualTo (new[] { stubControl2.Object }));
     }
 
     [Test]
     public void LoadValues ()
     {
-      var mockControl1 = _mockRepository.StrictMock<IBusinessObjectBoundControl>();
-      var mockControl2 = _mockRepository.StrictMock<IBusinessObjectBoundControl>();
+      var mockControl1 = new Mock<IBusinessObjectBoundControl> (MockBehavior.Strict);
+      var mockControl2 = new Mock<IBusinessObjectBoundControl> (MockBehavior.Strict);
 
-      SetupResult.For (mockControl1.HasValidBinding).Return (true);
-      SetupResult.For (mockControl2.HasValidBinding).Return (true);
-      mockControl1.LoadValue (true);
-      mockControl2.LoadValue (true);
-      _mockRepository.ReplayAll();
+      mockControl1.Setup (_ => _.HasValidBinding).Returns (true);
+      mockControl2.Setup (_ => _.HasValidBinding).Returns (true);
+      mockControl1.Setup (_ => _.LoadValue (true));
+      mockControl2.Setup (_ => _.LoadValue (true));
 
-      _dataSource.Register (mockControl1);
-      _dataSource.Register (mockControl2);
+      _dataSource.Register (mockControl1.Object);
+      _dataSource.Register (mockControl2.Object);
       _dataSource.LoadValues (true);
 
-      _mockRepository.VerifyAll();
+      mockControl1.Verify();
+      mockControl2.Verify();
     }
 
     [Test]
     public void SaveValues ()
     {
-      var mockControl1 = _mockRepository.StrictMock<IBusinessObjectBoundEditableControl>();
-      var mockControl2 = _mockRepository.StrictMock<IBusinessObjectBoundEditableControl>();
+      var mockControl1 = new Mock<IBusinessObjectBoundEditableControl> (MockBehavior.Strict);
+      var mockControl2 = new Mock<IBusinessObjectBoundEditableControl> (MockBehavior.Strict);
 
-      SetupResult.For (mockControl1.HasValidBinding).Return (true);
-      SetupResult.For (mockControl2.HasValidBinding).Return (true);
-      SetupResult.For (mockControl1.SaveValue (true)).Return (true);
-      SetupResult.For (mockControl2.SaveValue (true)).Return (true);
-      _mockRepository.ReplayAll();
+      mockControl1.Setup (_ => _.HasValidBinding).Returns (true);
+      mockControl2.Setup (_ => _.HasValidBinding).Returns (true);
+      mockControl1.Setup (_ => _.SaveValue (true)).Returns (true);
+      mockControl2.Setup (_ => _.SaveValue (true)).Returns (true);
 
-      _dataSource.Register (mockControl1);
-      _dataSource.Register (mockControl2);
+      _dataSource.Register (mockControl1.Object);
+      _dataSource.Register (mockControl2.Object);
       var result = _dataSource.SaveValues (true);
 
       Assert.That (result, Is.True);
-      _mockRepository.VerifyAll();
+      mockControl1.Verify();
+      mockControl2.Verify();
     }
 
     [Test]
@@ -181,21 +161,21 @@ namespace Remotion.ObjectBinding.UnitTests
     [Test]
     public void SaveValues_WithNotAllControlsSavingTheValue_ReturnsFalse ()
     {
-      var mockControl1 = _mockRepository.StrictMock<IBusinessObjectBoundEditableControl>();
-      var mockControl2 = _mockRepository.StrictMock<IBusinessObjectBoundEditableControl>();
+      var mockControl1 = new Mock<IBusinessObjectBoundEditableControl> (MockBehavior.Strict);
+      var mockControl2 = new Mock<IBusinessObjectBoundEditableControl> (MockBehavior.Strict);
 
-      SetupResult.For (mockControl1.HasValidBinding).Return (true);
-      SetupResult.For (mockControl2.HasValidBinding).Return (true);
-      SetupResult.For (mockControl1.SaveValue (true)).Return (false);
-      SetupResult.For (mockControl2.SaveValue (true)).Return (true);
-      _mockRepository.ReplayAll();
+      mockControl1.Setup (_ => _.HasValidBinding).Returns (true);
+      mockControl2.Setup (_ => _.HasValidBinding).Returns (true);
+      mockControl1.Setup (_ => _.SaveValue (true)).Returns (false);
+      mockControl2.Setup (_ => _.SaveValue (true)).Returns (true);
 
-      _dataSource.Register (mockControl1);
-      _dataSource.Register (mockControl2);
+      _dataSource.Register (mockControl1.Object);
+      _dataSource.Register (mockControl2.Object);
       var result = _dataSource.SaveValues (true);
 
       Assert.That (result, Is.False);
-      _mockRepository.VerifyAll();
+      mockControl1.Verify();
+      mockControl2.Verify();
     }
 
     [Test]
@@ -208,21 +188,18 @@ namespace Remotion.ObjectBinding.UnitTests
     [Test]
     public void GetBoundControlsWithValidBinding ()
     {
-      var stubControl1 = _mockRepository.Stub<IBusinessObjectBoundControl>();
-      var stubControl2 = _mockRepository.Stub<IBusinessObjectBoundControl>();
-      var stubControl3 = _mockRepository.Stub<IBusinessObjectBoundControl>();
+      var stubControl1 = new Mock<IBusinessObjectBoundControl>();
+      var stubControl2 = new Mock<IBusinessObjectBoundControl>();
+      var stubControl3 = new Mock<IBusinessObjectBoundControl>();
 
-      SetupResult.For (stubControl1.HasValidBinding).Return (true);
-      SetupResult.For (stubControl2.HasValidBinding).Return (false);
-      SetupResult.For (stubControl3.HasValidBinding).Return (true);
-      _mockRepository.ReplayAll();
+      stubControl1.Setup (_ => _.HasValidBinding).Returns (true);
+      stubControl2.Setup (_ => _.HasValidBinding).Returns (false);
+      stubControl3.Setup (_ => _.HasValidBinding).Returns (true);
 
-      _dataSource.Register (stubControl1);
-      _dataSource.Register (stubControl2);
-      _dataSource.Register (stubControl3);
-      Assert.That (_dataSource.GetBoundControlsWithValidBinding(), Is.EquivalentTo (new[] { stubControl1, stubControl3 }));
-
-      _mockRepository.VerifyAll();
+      _dataSource.Register (stubControl1.Object);
+      _dataSource.Register (stubControl2.Object);
+      _dataSource.Register (stubControl3.Object);
+      Assert.That (_dataSource.GetBoundControlsWithValidBinding(), Is.EquivalentTo (new[] { stubControl1.Object, stubControl3.Object }));
     }
   }
 }

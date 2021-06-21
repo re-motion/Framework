@@ -15,13 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Globalization;
 using Remotion.Globalization.ExtensibleEnums;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BindableObject.Properties;
 using Remotion.ObjectBinding.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTests
 {
@@ -29,9 +29,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTes
   public class GetValueInfoByValue : EnumerationTestBase
   {
     private BindableObjectProvider _businessObjectProvider;
-
-    private MockRepository _mockRepository;
-    private IBusinessObject _mockBusinessObject;
+    private Mock<IBusinessObject> _mockBusinessObject;
 
     public override void SetUp ()
     {
@@ -39,8 +37,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTes
 
       _businessObjectProvider = CreateBindableObjectProviderWithStubBusinessObjectServiceFactory();
 
-      _mockRepository = new MockRepository();
-      _mockBusinessObject = _mockRepository.StrictMock<IBusinessObject>();
+      _mockBusinessObject = new Mock<IBusinessObject> (MockBehavior.Strict);
     }
 
     [Test]
@@ -83,11 +80,10 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTes
     public void DisabledEnumValue ()
     {
       IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithDisabledEnumValue), "DisabledFromProperty");
-      _mockRepository.ReplayAll();
 
-      IEnumerationValueInfo actual = property.GetValueInfoByValue (TestEnum.Value1, _mockBusinessObject);
+      IEnumerationValueInfo actual = property.GetValueInfoByValue (TestEnum.Value1, _mockBusinessObject.Object);
 
-      _mockRepository.VerifyAll();
+      _mockBusinessObject.Verify();
       CheckEnumerationValueInfo (new EnumerationValueInfo (TestEnum.Value1, "Value1", "Value1", false), actual);
     }
 
@@ -106,24 +102,25 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTes
     [Test]
     public void GetDisplayNameFromGlobalizationSerivce ()
     {
-      var mockEnumerationGlobalizationService = _mockRepository.StrictMock<IEnumerationGlobalizationService>();
+      var outValue = "MockValue1";
+      var mockEnumerationGlobalizationService = new Mock<IEnumerationGlobalizationService> (MockBehavior.Strict);
       IBusinessObjectEnumerationProperty property = CreateProperty (
           typeof (ClassWithValueType<TestEnum>),
           "Scalar",
           bindableObjectGlobalizationService: new BindableObjectGlobalizationService (
-              MockRepository.GenerateStub<IGlobalizationService>(),
-              MockRepository.GenerateStub<IMemberInformationGlobalizationService>(),
-              mockEnumerationGlobalizationService,
-              MockRepository.GenerateStub<IExtensibleEnumGlobalizationService>()));
+              new Mock<IGlobalizationService>().Object,
+              new Mock<IMemberInformationGlobalizationService>().Object,
+              mockEnumerationGlobalizationService.Object,
+              new Mock<IExtensibleEnumGlobalizationService>().Object));
 
-      Expect.Call (
-          mockEnumerationGlobalizationService.TryGetEnumerationValueDisplayName (Arg.Is (TestEnum.Value1), out Arg<string>.Out ("MockValue1").Dummy))
-          .Return (true);
-      _mockRepository.ReplayAll();
+      mockEnumerationGlobalizationService.Setup (_ => _.TryGetEnumerationValueDisplayName (TestEnum.Value1, out outValue))
+          .Returns (true)
+          .Verifiable();
 
       IEnumerationValueInfo actual = property.GetValueInfoByValue (TestEnum.Value1, null);
 
-      _mockRepository.VerifyAll();
+      _mockBusinessObject.Verify();
+      mockEnumerationGlobalizationService.Verify();
       CheckEnumerationValueInfo (new EnumerationValueInfo (TestEnum.Value1, "Value1", "MockValue1", true), actual);
     }
 

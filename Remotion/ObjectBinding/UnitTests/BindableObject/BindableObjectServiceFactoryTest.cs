@@ -15,9 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.ObjectBinding.BindableObject;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject
 {
@@ -25,33 +25,33 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
   public class BindableObjectServiceFactoryTest
   {
     private IBusinessObjectServiceFactory _serviceFactory;
-    private IBusinessObjectProviderWithIdentity _provider;
+    private Mock<IBusinessObjectProviderWithIdentity> _provider;
 
     [SetUp]
     public void SetUp ()
     {
       _serviceFactory = BindableObjectServiceFactory.Create();
-      _provider = MockRepository.GenerateStub<IBusinessObjectProviderWithIdentity>();
+      _provider = new Mock<IBusinessObjectProviderWithIdentity>();
     }
 
     [Test]
     public void GetService_FromIBusinessObjectStringFormatterService ()
     {
       Assert.That (
-          _serviceFactory.CreateService (_provider, typeof (IBusinessObjectStringFormatterService)),
+          _serviceFactory.CreateService (_provider.Object, typeof (IBusinessObjectStringFormatterService)),
           Is.InstanceOf (typeof (BusinessObjectStringFormatterService)));
     }
 
     [Test]
     public void GetService_FromIGetObjectService ()
     {
-      Assert.That (_serviceFactory.CreateService (_provider, typeof (IGetObjectService)), Is.Null);
+      Assert.That (_serviceFactory.CreateService (_provider.Object, typeof (IGetObjectService)), Is.Null);
     }
 
     [Test]
     public void GetService_FromISearchAvailableObjectsService ()
     {
-      Assert.That (_serviceFactory.CreateService (_provider, typeof (ISearchAvailableObjectsService)), Is.Null);
+      Assert.That (_serviceFactory.CreateService (_provider.Object, typeof (ISearchAvailableObjectsService)), Is.Null);
     }
   }
 }

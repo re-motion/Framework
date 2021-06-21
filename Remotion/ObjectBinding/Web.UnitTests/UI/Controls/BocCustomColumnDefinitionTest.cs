@@ -15,11 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.ObjectBinding.BusinessObjectPropertyPaths;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 {
@@ -29,15 +29,15 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     [Test]
     public void GetComparer_WithPropertyPathSet ()
     {
-      var propertyPath = MockRepository.GenerateStub<IBusinessObjectPropertyPath>();
+      var propertyPath = new Mock<IBusinessObjectPropertyPath>();
 
       var column = new BocCustomColumnDefinition();
-      column.SetPropertyPath (propertyPath);
-      column.CustomCell = MockRepository.GeneratePartialMock<BocCustomColumnDefinitionCell>();
+      column.SetPropertyPath (propertyPath.Object);
+      column.CustomCell = new Mock<BocCustomColumnDefinitionCell>() { CallBase = true }.Object;
 
       var comparer = ((IBocSortableColumnDefinition) column).CreateCellValueComparer();
       Assert.That (comparer, Is.InstanceOf<BusinessObjectPropertyPathBasedComparer>());
-      Assert.That (((BusinessObjectPropertyPathBasedComparer) comparer).PropertyPath, Is.SameAs (propertyPath));
+      Assert.That (((BusinessObjectPropertyPathBasedComparer) comparer).PropertyPath, Is.SameAs (propertyPath.Object));
     }
 
     [Test]
@@ -45,7 +45,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     {
       var column = new BocCustomColumnDefinition();
       column.SetPropertyPath (null);
-      column.CustomCell = MockRepository.GeneratePartialMock<BocCustomColumnDefinitionCell>();
+      column.CustomCell = new Mock<BocCustomColumnDefinitionCell>() { CallBase = true }.Object;
 
       var comparer = ((IBocSortableColumnDefinition) column).CreateCellValueComparer();
       Assert.That (comparer, Is.InstanceOf<BusinessObjectPropertyPathBasedComparer>());

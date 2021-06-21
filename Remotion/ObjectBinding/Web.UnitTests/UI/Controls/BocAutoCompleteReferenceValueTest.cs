@@ -17,11 +17,13 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using CommonServiceLocator;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.Web.UnitTesting.Configuration;
@@ -34,7 +36,6 @@ using Remotion.ObjectBinding.Web.UnitTests.Domain;
 using Remotion.Web.Services;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 {
@@ -56,30 +57,28 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       }
     }
 
-    private Page _page;
+    private Mock<Page> _page;
     private BocAutoCompleteReferenceValueMock _control;
     private TypeWithReference _businessObject;
     private IBusinessObjectDataSource _dataSource;
     private IBusinessObjectReferenceProperty _propertyReferenceValue;
-    private IWebServiceFactory _webServiceFactoryStub;
+    private Mock<IWebServiceFactory> _webServiceFactoryStub;
 
     [SetUp]
     public override void SetUp ()
     {
       base.SetUp();
 
-      _webServiceFactoryStub = MockRepository.GenerateStub<IWebServiceFactory>();
+      _webServiceFactoryStub = new Mock<IWebServiceFactory>();
 
-      _control = new BocAutoCompleteReferenceValueMock (_webServiceFactoryStub);
+      _control = new BocAutoCompleteReferenceValueMock (_webServiceFactoryStub.Object);
       _control.ID = "BocAutoCompleteReferenceValue";
       _control.Value = (IBusinessObjectWithIdentity) _businessObject;
 
-      MockRepository mockRepository = new MockRepository();
-      _page = mockRepository.PartialMultiMock<Page> (typeof (ISmartPage));
-      ((ISmartPage) _page).Stub (stub => stub.Context).Return (new HttpContextWrapper (HttpContext.Current));
-      ((ISmartPage) _page).Stub (stub => stub.Site).Return (null);
-      _page.Replay();
-      _page.Controls.Add (_control);
+      _page = new Mock<Page> () { CallBase = true };
+      _page.As<ISmartPage>().Setup (stub => stub.Context).Returns (new HttpContextWrapper (HttpContext.Current));
+      _page.As<ISmartPage>().Setup (stub => stub.Site).Returns ((ISite) null);
+      _page.Object.Controls.Add (_control);
 
       _businessObject = TypeWithReference.Create();
 
@@ -343,10 +342,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 
       _control.IsDirty = false;
       PrivateInvoke.SetNonPublicField (_control, "_hasBeenRenderedInPreviousLifecycle", true);
-      ((ISmartPage) _control.Page).Stub (stub => stub.GetPostBackCollection()).Return (postbackCollection);
+      Mock.Get ((Page) _control.Page).As<ISmartPage>().Setup (stub => stub.GetPostBackCollection()).Returns (postbackCollection);
 
-      _webServiceFactoryStub.Stub (stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService> ("~/ControlService.asmx"))
-          .Return (MockRepository.GenerateStub<IBocAutoCompleteReferenceValueWebService>());
+      _webServiceFactoryStub.Setup (stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService> ("~/ControlService.asmx"))
+          .Returns (new Mock<IBocAutoCompleteReferenceValueWebService>().Object);
       _control.AppRelativeTemplateSourceDirectory = "~/";
       _control.ControlServicePath = "~/ControlService.asmx";
 
@@ -370,10 +369,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _control.Value = null;
       _control.IsDirty = false;
       PrivateInvoke.SetNonPublicField (_control, "_hasBeenRenderedInPreviousLifecycle", true);
-      ((ISmartPage) _control.Page).Stub (stub => stub.GetPostBackCollection()).Return (postbackCollection);
+      Mock.Get ((Page) _control.Page).As<ISmartPage>().Setup (stub => stub.GetPostBackCollection()).Returns (postbackCollection);
 
-      _webServiceFactoryStub.Stub (stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService> ("~/ControlService.asmx"))
-          .Return (MockRepository.GenerateStub<IBocAutoCompleteReferenceValueWebService>());
+      _webServiceFactoryStub.Setup (stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService> ("~/ControlService.asmx"))
+          .Returns (new Mock<IBocAutoCompleteReferenceValueWebService>().Object);
       _control.AppRelativeTemplateSourceDirectory = "~/";
       _control.ControlServicePath = "~/ControlService.asmx";
 
@@ -394,10 +393,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 
       _control.IsDirty = false;
       PrivateInvoke.SetNonPublicField (_control, "_hasBeenRenderedInPreviousLifecycle", true);
-      ((ISmartPage) _control.Page).Stub (stub => stub.GetPostBackCollection()).Return (postbackCollection);
+      Mock.Get ((Page) _control.Page).As<ISmartPage>().Setup (stub => stub.GetPostBackCollection()).Returns (postbackCollection);
 
-      _webServiceFactoryStub.Stub (stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService> ("~/SearchService.asmx"))
-          .Return (MockRepository.GenerateStub<IBocAutoCompleteReferenceValueWebService>());
+      _webServiceFactoryStub.Setup (stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService> ("~/SearchService.asmx"))
+          .Returns (new Mock<IBocAutoCompleteReferenceValueWebService>().Object);
       _control.AppRelativeTemplateSourceDirectory = "~/";
       _control.ControlServicePath = "~/SearchService.asmx";
 
@@ -423,11 +422,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _control.IsDirty = false;
 
       PrivateInvoke.SetNonPublicField (_control, "_hasBeenRenderedInPreviousLifecycle", true);
-      ((ISmartPage) _control.Page).Stub (stub => stub.GetPostBackCollection()).Return (postbackCollection);
+      Mock.Get ((Page) _control.Page).As<ISmartPage>().Setup (stub => stub.GetPostBackCollection()).Returns (postbackCollection);
 
       _webServiceFactoryStub
-          .Stub (stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService> ("~/ControlService.asmx"))
-          .Return (MockRepository.GenerateStub<IBocAutoCompleteReferenceValueWebService>());
+          .Setup (stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService> ("~/ControlService.asmx"))
+          .Returns (new Mock<IBocAutoCompleteReferenceValueWebService>().Object);
       _control.AppRelativeTemplateSourceDirectory = "~/";
       _control.ControlServicePath = "~/ControlService.asmx";
 
@@ -455,11 +454,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _control.IsDirty = false;
 
       PrivateInvoke.SetNonPublicField (_control, "_hasBeenRenderedInPreviousLifecycle", true);
-      ((ISmartPage) _control.Page).Stub (stub => stub.GetPostBackCollection()).Return (postbackCollection);
+      Mock.Get ((Page) _control.Page).As<ISmartPage>().Setup (stub => stub.GetPostBackCollection()).Returns (postbackCollection);
 
       _webServiceFactoryStub
-          .Stub (stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService> ("~/ControlService.asmx"))
-          .Return (MockRepository.GenerateStub<IBocAutoCompleteReferenceValueWebService>());
+          .Setup (stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService> ("~/ControlService.asmx"))
+          .Returns (new Mock<IBocAutoCompleteReferenceValueWebService>().Object);
       _control.AppRelativeTemplateSourceDirectory = "~/";
       _control.ControlServicePath = "~/ControlService.asmx";
 
@@ -486,11 +485,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _control.IsDirty = false;
 
       PrivateInvoke.SetNonPublicField (_control, "_hasBeenRenderedInPreviousLifecycle", true);
-      ((ISmartPage) _control.Page).Stub (stub => stub.GetPostBackCollection()).Return (postbackCollection);
+      Mock.Get ((Page) _control.Page).As<ISmartPage>().Setup (stub => stub.GetPostBackCollection()).Returns (postbackCollection);
 
       _webServiceFactoryStub
-          .Stub (stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService> ("~/ControlService.asmx"))
-          .Return (MockRepository.GenerateStub<IBocAutoCompleteReferenceValueWebService>());
+          .Setup (stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService> ("~/ControlService.asmx"))
+          .Returns (new Mock<IBocAutoCompleteReferenceValueWebService>().Object);
       _control.AppRelativeTemplateSourceDirectory = "~/";
       _control.ControlServicePath = "~/ControlService.asmx";
 
@@ -516,11 +515,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _control.IsDirty = false;
 
       PrivateInvoke.SetNonPublicField (_control, "_hasBeenRenderedInPreviousLifecycle", true);
-      ((ISmartPage) _control.Page).Stub (stub => stub.GetPostBackCollection()).Return (postbackCollection);
+      Mock.Get ((Page) _control.Page).As<ISmartPage>().Setup (stub => stub.GetPostBackCollection()).Returns (postbackCollection);
 
       _webServiceFactoryStub
-          .Stub (stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService> ("~/ControlService.asmx"))
-          .Return (MockRepository.GenerateStub<IBocAutoCompleteReferenceValueWebService>());
+          .Setup (stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService> ("~/ControlService.asmx"))
+          .Returns (new Mock<IBocAutoCompleteReferenceValueWebService>().Object);
       _control.AppRelativeTemplateSourceDirectory = "~/";
       _control.ControlServicePath = "~/ControlService.asmx";
 
@@ -547,21 +546,21 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       PrivateInvoke.SetNonPublicField (_control, "_hasBeenRenderedInPreviousLifecycle", true);
       var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create (_dataSource, _propertyReferenceValue, "Args");
       PrivateInvoke.SetNonPublicField (_control, "_businessObjectWebServiceContextFromPreviousLifeCycle", businessObjectWebServiceContext);
-      ((ISmartPage) _control.Page).Stub (stub => stub.GetPostBackCollection()).Return (postbackCollection);
+      Mock.Get ((Page) _control.Page).As<ISmartPage>().Setup (stub => stub.GetPostBackCollection()).Returns (postbackCollection);
 
-      var searchServiceStub = MockRepository.GenerateStub<IBocAutoCompleteReferenceValueWebService>();
+      var searchServiceStub = new Mock<IBocAutoCompleteReferenceValueWebService>();
       searchServiceStub
-          .Stub (
+          .Setup (
               stub => stub.SearchExact (
                   "SomeValue",
                   businessObjectWebServiceContext.BusinessObjectClass,
                   businessObjectWebServiceContext.BusinessObjectProperty,
                   businessObjectWebServiceContext.BusinessObjectIdentifier,
                   businessObjectWebServiceContext.Arguments))
-          .Return (new BusinessObjectWithIdentityProxy { DisplayName = "ValidName", UniqueIdentifier = "ValidIdentifier" });
+          .Returns (new BusinessObjectWithIdentityProxy { DisplayName = "ValidName", UniqueIdentifier = "ValidIdentifier" });
       _webServiceFactoryStub
-          .Stub (stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService> ("~/ControlService.asmx"))
-          .Return (searchServiceStub);
+          .Setup (stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService> ("~/ControlService.asmx"))
+          .Returns (searchServiceStub.Object);
       _control.AppRelativeTemplateSourceDirectory = "~/";
       _control.ControlServicePath = "~/ControlService.asmx";
 
@@ -792,18 +791,18 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     [Test]
     public void GetValidationValue_UniqueIdentifierNull ()
     {
-      var classStub = MockRepository.GenerateStub<IBusinessObjectClass>();
-      var propertyStub = MockRepository.GenerateStub<IBusinessObjectProperty>();
-      var businessObjectWithIdentityStub = MockRepository.GenerateStub<IBusinessObjectWithIdentity>();
+      var classStub = new Mock<IBusinessObjectClass>();
+      var propertyStub = new Mock<IBusinessObjectProperty>();
+      var businessObjectWithIdentityStub = new Mock<IBusinessObjectWithIdentity>();
 
-      businessObjectWithIdentityStub.Stub (stub => stub.UniqueIdentifier).Return (null);
-      businessObjectWithIdentityStub.Stub (_ => _.BusinessObjectClass).Return (classStub);
-      businessObjectWithIdentityStub.Stub (_ => _.GetProperty (propertyStub)).Return ("Name");
+      businessObjectWithIdentityStub.Setup (stub => stub.UniqueIdentifier).Returns ((string) null);
+      businessObjectWithIdentityStub.Setup (_ => _.BusinessObjectClass).Returns (classStub.Object);
+      businessObjectWithIdentityStub.Setup (_ => _.GetProperty (propertyStub.Object)).Returns ("Name");
 
-      classStub.Stub (_ => _.GetPropertyDefinition ("DisplayName")).Return (propertyStub);
-      propertyStub.Stub (_ => _.IsAccessible (businessObjectWithIdentityStub)).Return (true);
+      classStub.Setup (_ => _.GetPropertyDefinition ("DisplayName")).Returns (propertyStub.Object);
+      propertyStub.Setup (_ => _.IsAccessible (businessObjectWithIdentityStub.Object)).Returns (true);
 
-      _control.Value = businessObjectWithIdentityStub;
+      _control.Value = businessObjectWithIdentityStub.Object;
 
       Assert.That (_control.ValidationValue, Is.EqualTo ("\nName"));
     }
@@ -824,18 +823,18 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     public void CreateValidators_UsesValidatorFactory ()
     {
       var control = new BocAutoCompleteReferenceValue();
-      var serviceLocatorMock = MockRepository.GenerateMock<IServiceLocator>();
-      var factoryMock = MockRepository.GenerateMock<IBocAutoCompleteReferenceValueValidatorFactory>();
-      serviceLocatorMock.Expect (m => m.GetInstance<IBocAutoCompleteReferenceValueValidatorFactory>()).Return (factoryMock);
-      factoryMock.Expect (f => f.CreateValidators (control, false)).Return (new List<BaseValidator>());
+      var serviceLocatorMock = new Mock<IServiceLocator>();
+      var factoryMock = new Mock<IBocAutoCompleteReferenceValueValidatorFactory>();
+      serviceLocatorMock.Setup (m => m.GetInstance<IBocAutoCompleteReferenceValueValidatorFactory>()).Returns (factoryMock.Object).Verifiable();
+      factoryMock.Setup (f => f.CreateValidators (control, false)).Returns (new List<BaseValidator>()).Verifiable();
 
-      using (new ServiceLocatorScope (serviceLocatorMock))
+      using (new ServiceLocatorScope (serviceLocatorMock.Object))
       {
         control.CreateValidators();
       }
 
-      factoryMock.VerifyAllExpectations();
-      serviceLocatorMock.VerifyAllExpectations();
+      factoryMock.Verify();
+      serviceLocatorMock.Verify();
     }
   }
 }

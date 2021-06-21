@@ -15,13 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Mixins;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BindableObject.Properties;
 using Remotion.ObjectBinding.UnitTests.TestDomain;
 using Remotion.ServiceLocation;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject
 {
@@ -29,7 +29,6 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
   public class BindableObjectClassWithIdentityTest : TestBase
   {
     private BindableObjectProvider _bindableObjectProvider;
-    private MockRepository _mockRepository;
     private BindableObjectGlobalizationService _bindableObjectGlobalizationService;
 
     public override void SetUp ()
@@ -37,7 +36,6 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       base.SetUp();
 
       _bindableObjectProvider = new BindableObjectProvider();
-      _mockRepository = new MockRepository();
       _bindableObjectGlobalizationService = SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>();
     }
 
@@ -66,17 +64,16 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
           _bindableObjectProvider,
           _bindableObjectGlobalizationService,
           new PropertyBase[0]);
-      var mockService = _mockRepository.StrictMock<IGetObjectService>();
-      var expected = _mockRepository.Stub<IBusinessObjectWithIdentity>();
+      var mockService = new Mock<IGetObjectService> (MockBehavior.Strict);
+      var expected = new Mock<IBusinessObjectWithIdentity>();
 
-      Expect.Call (mockService.GetObject (bindableObjectClass, "TheUniqueIdentifier")).Return (expected);
-      _mockRepository.ReplayAll();
+      mockService.Setup (_ => _.GetObject (bindableObjectClass, "TheUniqueIdentifier")).Returns (expected.Object).Verifiable();
 
-      _bindableObjectProvider.AddService (typeof (IGetObjectService), mockService);
+      _bindableObjectProvider.AddService (typeof (IGetObjectService), mockService.Object);
       IBusinessObjectWithIdentity actual = bindableObjectClass.GetObject ("TheUniqueIdentifier");
 
-      _mockRepository.VerifyAll();
-      Assert.That (actual, Is.SameAs (expected));
+      mockService.Verify();
+      Assert.That (actual, Is.SameAs (expected.Object));
     }
 
     [Test]
@@ -87,17 +84,16 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
           _bindableObjectProvider,
           _bindableObjectGlobalizationService,
           new PropertyBase[0]);
-      var mockService = _mockRepository.StrictMock<ICustomGetObjectService>();
-      var expected = _mockRepository.Stub<IBusinessObjectWithIdentity>();
+      var mockService = new Mock<ICustomGetObjectService> (MockBehavior.Strict);
+      var expected = new Mock<IBusinessObjectWithIdentity>();
 
-      Expect.Call (mockService.GetObject (bindableObjectClass, "TheUniqueIdentifier")).Return (expected);
-      _mockRepository.ReplayAll();
+      mockService.Setup (_ => _.GetObject (bindableObjectClass, "TheUniqueIdentifier")).Returns (expected.Object).Verifiable();
 
-      _bindableObjectProvider.AddService (typeof (ICustomGetObjectService), mockService);
+      _bindableObjectProvider.AddService (typeof (ICustomGetObjectService), mockService.Object);
       IBusinessObjectWithIdentity actual = bindableObjectClass.GetObject ("TheUniqueIdentifier");
 
-      _mockRepository.VerifyAll();
-      Assert.That (actual, Is.SameAs (expected));
+      mockService.Verify();
+      Assert.That (actual, Is.SameAs (expected.Object));
     }
 
     [Test]
