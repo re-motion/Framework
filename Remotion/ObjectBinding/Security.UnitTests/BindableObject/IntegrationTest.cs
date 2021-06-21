@@ -16,7 +16,6 @@
 // 
 using System;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Collections;
 using Remotion.Collections.Caching;
@@ -26,8 +25,6 @@ using Remotion.ObjectBinding.Security.UnitTests.TestDomain;
 using Remotion.Security;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.Security.UnitTests.BindableObject
 {
