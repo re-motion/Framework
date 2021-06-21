@@ -15,11 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.Validation;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
 {
@@ -29,84 +29,88 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
     [Test]
     public void GetValidationFailures_HasValidBindingFalse_ReturnsEmpty ()
     {
-      var controlMock = MockRepository.GenerateMock<IBusinessObjectBoundEditableWebControl>();
-      controlMock.Expect (_ => _.HasValidBinding).Return (false);
+      var controlMock = new Mock<IBusinessObjectBoundEditableWebControl>();
+      controlMock.Setup (_ => _.HasValidBinding).Returns (false).Verifiable();
 
-      var validationResultStub = MockRepository.GenerateStub<IBusinessObjectValidationResult>();
+      var validationResultStub = new Mock<IBusinessObjectValidationResult>();
       validationResultStub
-          .Stub (_ => _.GetValidationFailures (Arg<IBusinessObject>.Is.Anything, Arg<IBusinessObjectProperty>.Is.Anything, Arg<bool>.Is.Anything))
-          .Throw (new InvalidOperationException());
+          .Setup (_ => _.GetValidationFailures (It.IsAny<IBusinessObject>(), It.IsAny<IBusinessObjectProperty>(), It.IsAny<bool>()))
+          .Throws (new InvalidOperationException());
 
-      var validationFailures = BusinessObjectValidationResultExtensions.GetValidationFailures (validationResultStub, controlMock);
+      var validationFailures = BusinessObjectValidationResultExtensions.GetValidationFailures (validationResultStub.Object, controlMock.Object);
 
       Assert.That (validationFailures, Is.Empty);
-      controlMock.VerifyAllExpectations();
+      controlMock.Verify();
     }
 
     [Test]
     public void GetValidationFailures_WithDataSourceNull_ReturnsEmpty()
     {
-      var controlMock = MockRepository.GenerateMock<IBusinessObjectBoundEditableWebControl>();
-      controlMock.Expect (_ => _.HasValidBinding).Return (true);
-      controlMock.Expect (_ => _.DataSource).Return (null);
+      var controlMock = new Mock<IBusinessObjectBoundEditableWebControl>();
+      controlMock.Setup (_ => _.HasValidBinding).Returns (true).Verifiable();
+      controlMock.Setup (_ => _.DataSource).Returns ((IBusinessObjectDataSource) null).Verifiable();
 
-      var validationResultStub = MockRepository.GenerateStub<IBusinessObjectValidationResult>();
+      var validationResultStub = new Mock<IBusinessObjectValidationResult>();
       validationResultStub
-          .Stub (_ => _.GetValidationFailures (Arg<IBusinessObject>.Is.Anything, Arg<IBusinessObjectProperty>.Is.Anything, Arg<bool>.Is.Anything))
-          .Throw (new InvalidOperationException());
+          .Setup (_ => _.GetValidationFailures (It.IsAny<IBusinessObject>(), It.IsAny<IBusinessObjectProperty>(), It.IsAny<bool>()))
+          .Throws (new InvalidOperationException());
 
-      var validationFailures = BusinessObjectValidationResultExtensions.GetValidationFailures (validationResultStub, controlMock);
+      var validationFailures = BusinessObjectValidationResultExtensions.GetValidationFailures (validationResultStub.Object, controlMock.Object);
 
       Assert.That (validationFailures, Is.Empty);
-      controlMock.VerifyAllExpectations();
+      controlMock.Verify();
     }
 
     [Test]
     public void GetValidationFailures_WithPropertyNull_ReturnsEmpty()
     {
-      var businessObjectStub = MockRepository.GenerateStub<IBusinessObject>();
+      var businessObjectStub = new Mock<IBusinessObject>();
 
-      var dataSourceStub = MockRepository.GenerateStub<IBusinessObjectDataSource>();
-      dataSourceStub.BusinessObject = businessObjectStub;
+      var dataSourceStub = new Mock<IBusinessObjectDataSource>();
+      dataSourceStub.SetupProperty (_ => _.BusinessObject);
+      dataSourceStub.Object.BusinessObject = businessObjectStub.Object;
 
-      var controlMock = MockRepository.GenerateMock<IBusinessObjectBoundEditableWebControl>();
-      controlMock.Expect (_ => _.HasValidBinding).Return (true);
-      controlMock.Expect (_ => _.DataSource).Return (dataSourceStub);
-      controlMock.Expect (_ => _.Property).Return (null);
+      var controlMock = new Mock<IBusinessObjectBoundEditableWebControl>();
+      controlMock.Setup (_ => _.HasValidBinding).Returns (true).Verifiable();
+      controlMock.Setup (_ => _.DataSource).Returns (dataSourceStub.Object).Verifiable();
+      controlMock.Setup (_ => _.Property).Returns ((IBusinessObjectProperty) null).Verifiable();
 
-      var validationResultStub = MockRepository.GenerateStub<IBusinessObjectValidationResult>();
+      var validationResultStub = new Mock<IBusinessObjectValidationResult>();
       validationResultStub
-          .Stub (_ => _.GetValidationFailures (Arg<IBusinessObject>.Is.Anything, Arg<IBusinessObjectProperty>.Is.Anything, Arg<bool>.Is.Anything))
-          .Throw (new InvalidOperationException());
+          .Setup (_ => _.GetValidationFailures (It.IsAny<IBusinessObject>(), It.IsAny<IBusinessObjectProperty>(), It.IsAny<bool>()))
+          .Throws (new InvalidOperationException());
 
-      var validationFailures = BusinessObjectValidationResultExtensions.GetValidationFailures (validationResultStub, controlMock);
+      var validationFailures = BusinessObjectValidationResultExtensions.GetValidationFailures (validationResultStub.Object, controlMock.Object);
 
       Assert.That (validationFailures, Is.Empty);
-      controlMock.VerifyAllExpectations();
+      controlMock.Verify();
     }
 
     [Test]
     public void GetValidationFailures_WithValidObjectAndProperty_ReturnsValidationFailures ()
     {
-      var businessObjectStub = MockRepository.GenerateStub<IBusinessObject>();
-      var businessObjectPropertyStub = MockRepository.GenerateStub<IBusinessObjectProperty>();
+      var businessObjectStub = new Mock<IBusinessObject>();
+      var businessObjectPropertyStub = new Mock<IBusinessObjectProperty>();
 
-      var dataSourceStub = MockRepository.GenerateStub<IBusinessObjectDataSource>();
-      dataSourceStub.BusinessObject = businessObjectStub;
+      var dataSourceStub = new Mock<IBusinessObjectDataSource>();
+      dataSourceStub.SetupProperty (_ => _.BusinessObject);
+      dataSourceStub.Object.BusinessObject = businessObjectStub.Object;
 
-      var controlStub = MockRepository.GenerateStub<IBusinessObjectBoundEditableWebControl>();
-      controlStub.Stub (_ => _.HasValidBinding).Return (true);
-      controlStub.DataSource = dataSourceStub;
-      controlStub.Property = businessObjectPropertyStub;
+      var controlStub = new Mock<IBusinessObjectBoundEditableWebControl>();
+      controlStub.Setup (_ => _.HasValidBinding).Returns (true);
+      controlStub.SetupProperty (_ => _.DataSource);
+      controlStub.SetupProperty (_ => _.Property);
+      controlStub.Object.DataSource = dataSourceStub.Object;
+      controlStub.Object.Property = businessObjectPropertyStub.Object;
 
       var businessObjectValidationFailure1 = BusinessObjectValidationFailure.Create ("Error 1");
       var businessObjectValidationFailure2 = BusinessObjectValidationFailure.Create ("Error 2");
-      var validationResultStub = MockRepository.GenerateStub<IBusinessObjectValidationResult>();
+      var validationResultStub = new Mock<IBusinessObjectValidationResult>();
       validationResultStub
-          .Stub (_ => _.GetValidationFailures (businessObjectStub, businessObjectPropertyStub, true))
-          .Return (new[] {businessObjectValidationFailure1, businessObjectValidationFailure2});
+          .Setup (_ => _.GetValidationFailures (businessObjectStub.Object, businessObjectPropertyStub.Object, true))
+          .Returns (new[] {businessObjectValidationFailure1, businessObjectValidationFailure2});
 
-      var validationFailures = BusinessObjectValidationResultExtensions.GetValidationFailures (validationResultStub, controlStub);
+      var validationFailures = BusinessObjectValidationResultExtensions.GetValidationFailures (validationResultStub.Object, controlStub.Object);
 
       Assert.That (validationFailures, Is.EquivalentTo (new[] {businessObjectValidationFailure1, businessObjectValidationFailure2}));
     }

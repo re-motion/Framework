@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.ObjectBinding.BusinessObjectPropertyPaths;
 using Remotion.ObjectBinding.BusinessObjectPropertyPaths.Results;
@@ -37,12 +38,9 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.BusinessO
     [Test]
     public void GetValue_ListProperty_ReturnsFirstItem ()
     {
-      using (_testHelper.Ordered())
-      {
-        ExpectOnceOnReferenceListPropertyIsAccessible (true);
-        ExpectOnceOnBusinessObjectGetProperty (_testHelper.BusinessObjectWithIdentityList);
-      }
-      _testHelper.ReplayAll();
+      var sequence = new MockSequence();
+      ExpectOnceOnReferenceListPropertyIsAccessible (true, sequence);
+      ExpectOnceOnBusinessObjectGetProperty (_testHelper.BusinessObjectWithIdentityList, sequence);
 
       var actual = _path.GetResult (
           _testHelper.BusinessObject,
@@ -59,12 +57,9 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.BusinessO
     [Test]
     public void GetValue_ListProperty_ThrowsInvalidOperationException ()
     {
-      using (_testHelper.Ordered())
-      {
-        ExpectOnceOnReferenceListPropertyIsAccessible (true);
-        ExpectOnceOnBusinessObjectGetProperty (_testHelper.BusinessObjectWithIdentityList);
-      }
-      _testHelper.ReplayAll();
+      var sequence = new MockSequence();
+      ExpectOnceOnReferenceListPropertyIsAccessible (true, sequence);
+      ExpectOnceOnBusinessObjectGetProperty (_testHelper.BusinessObjectWithIdentityList, sequence);
 
       Assert.That (
           () =>
@@ -76,17 +71,19 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.BusinessO
                 .EqualTo ("Property #0 of property path 'Identifier' is not a single-value property."));
     }
 
-    private void ExpectOnceOnReferenceListPropertyIsAccessible (bool returnValue)
+    private void ExpectOnceOnReferenceListPropertyIsAccessible (bool returnValue, MockSequence sequence)
     {
       _testHelper.ExpectOnceOnIsAccessible (
           _testHelper.BusinessObjectClass,
           _testHelper.BusinessObject,
-          _testHelper.ReferenceListProperty, returnValue);
+          Mock.Get (_testHelper.ReferenceListProperty).As<IBusinessObjectProperty>(),
+          returnValue,
+          sequence);
     }
 
-    private void ExpectOnceOnBusinessObjectGetProperty (IBusinessObjectWithIdentity[] businessObjectsWithIdentity)
+    private void ExpectOnceOnBusinessObjectGetProperty (IBusinessObjectWithIdentity[] businessObjectsWithIdentity, MockSequence sequence)
     {
-      _testHelper.ExpectOnceOnGetProperty (_testHelper.BusinessObject, _testHelper.ReferenceListProperty, businessObjectsWithIdentity);
+      _testHelper.ExpectOnceOnGetProperty (Mock.Get (_testHelper.BusinessObject), _testHelper.ReferenceListProperty, businessObjectsWithIdentity, sequence);
     }
   }
 }

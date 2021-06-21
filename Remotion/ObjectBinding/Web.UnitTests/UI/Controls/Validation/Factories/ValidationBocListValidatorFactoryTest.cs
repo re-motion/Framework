@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web.UI;
+using Moq;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
@@ -8,7 +9,6 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls.Validation.Factories;
 using Remotion.ServiceLocation;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
 {
@@ -52,11 +52,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
     [TestCase (false)]
     public void CreateValidators (bool isReadOnly)
     {
-      var mock = MockRepository.GenerateMock<IBocList>();
-      mock.Expect (m => m.ID).Return ("ID");
+      var mock = new Mock<IBocList>();
+      mock.Setup (m => m.ID).Returns ("ID").Verifiable();
 
       var factory = new ValidationBocListValidatorFactory();
-      var validators = factory.CreateValidators (mock, isReadOnly).ToArray();
+      var validators = factory.CreateValidators (mock.Object, isReadOnly).ToArray();
 
       if (isReadOnly)
       {

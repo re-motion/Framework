@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
@@ -24,7 +25,6 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSu
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering
 {
@@ -47,16 +47,16 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       EventArgs = new BocListDataRowRenderEventArgs (EventArgs.ListIndex, EventArgs.BusinessObject, true, EventArgs.IsOddRow);
 
-      List.Stub (mock => mock.EnableClientScript).Return (true);
-      List.Stub (mock => mock.IsDesignMode).Return (false);
-      List.Stub (mock => mock.IsReadOnly).Return (false);
-      List.DataSource.Mode = DataSourceMode.Edit;
+      List.Setup (mock => mock.EnableClientScript).Returns (true);
+      List.Setup (mock => mock.IsDesignMode).Returns (false);
+      List.Setup (mock => mock.IsReadOnly).Returns (false);
+      List.Object.DataSource.Mode = DataSourceMode.Edit;
 
       _bocListCssClassDefinition = new BocListCssClassDefinition();
 
       var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create (null, null, null);
       _renderingContext = new BocColumnRenderingContext<BocRowEditModeColumnDefinition> (
-          new BocColumnRenderingContext (HttpContext, Html.Writer, List, businessObjectWebServiceContext, Column, 0, 0));
+          new BocColumnRenderingContext (HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, Column, 0, 0));
     }
 
     [Test]
@@ -77,7 +77,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute (td, "class", _bocListCssClassDefinition.DataCell);
 
       var a = Html.GetAssertedChildElement (td, "a", 0);
-      Html.AssertAttribute (a, "id", List.ClientID + "_Column_0_RowEditCommand_Edit_Row_10");
+      Html.AssertAttribute (a, "id", List.Object.ClientID + "_Column_0_RowEditCommand_Edit_Row_10");
       Html.AssertAttribute (a, "href", "#");
       Html.AssertAttribute (a, "onclick", "postBackEventReference;BocList.OnCommandClick();return false;");
       Html.AssertTextNode (a, "Bearbeiten", 0);
@@ -86,7 +86,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void RenderEditing ()
     {
-      List.EditModeController.Stub (mock => mock.GetEditableRow (10)).Return (MockRepository.GenerateStub<IEditableRow>());
+      Mock.Get (List.Object.EditModeController).Setup (mock => mock.GetEditableRow (10)).Returns (new Mock<IEditableRow>().Object);
 
       IBocColumnRenderer renderer = new BocRowEditModeColumnRenderer (
           new FakeResourceUrlFactory(),
@@ -100,13 +100,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute (td, "class", _bocListCssClassDefinition.DataCell);
 
       var save = Html.GetAssertedChildElement (td, "a", 0);
-      Html.AssertAttribute (save, "id", List.ClientID + "_Column_0_RowEditCommand_Save_Row_10");
+      Html.AssertAttribute (save, "id", List.Object.ClientID + "_Column_0_RowEditCommand_Save_Row_10");
       Html.AssertAttribute (save, "href", "#");
       Html.AssertAttribute (save, "onclick", "postBackEventReference;BocList.OnCommandClick();return false;");
       Html.AssertTextNode (save, "Speichern", 0);
 
       var cancel = Html.GetAssertedChildElement (td, "a", 1);
-      Html.AssertAttribute (cancel, "id", List.ClientID + "_Column_0_RowEditCommand_Cancel_Row_10");
+      Html.AssertAttribute (cancel, "id", List.Object.ClientID + "_Column_0_RowEditCommand_Cancel_Row_10");
       Html.AssertAttribute (cancel, "href", "#");
       Html.AssertAttribute (cancel, "onclick", "postBackEventReference;BocList.OnCommandClick();return false;");
       Html.AssertTextNode (cancel, "Abbrechen", 0);

@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Reflection;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.NUnit;
@@ -29,7 +30,6 @@ using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.ObjectBinding.UnitTests.TestDomain;
 using Remotion.Reflection;
 using Remotion.TypePipe;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject
 {
@@ -37,7 +37,6 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
   public class PropertyBaseTest : TestBase
   {
     private BindableObjectProvider _bindableObjectProvider;
-    private MockRepository _mockRepository;
     private BindableObjectClass _bindableObjectClass;
 
     public override void SetUp ()
@@ -47,7 +46,6 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       _bindableObjectProvider = CreateBindableObjectProviderWithStubBusinessObjectServiceFactory();
       BusinessObjectProvider.SetProvider<BindableObjectProviderAttribute> (_bindableObjectProvider);
       BusinessObjectProvider.SetProvider<BindableObjectWithIdentityProviderAttribute> (_bindableObjectProvider);
-      _mockRepository = new MockRepository();
       _bindableObjectClass = BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (SimpleBusinessObjectClass));
     }
 
@@ -135,15 +133,15 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetValue_NoGetter ()
     {
-      var propertyInfo = MockRepository.GenerateStub<IPropertyInformation>();
-      propertyInfo.Stub (stub => stub.PropertyType).Return (typeof (bool));
-      propertyInfo.Stub (stub => stub.GetIndexParameters()).Return (new ParameterInfo[0]);
-      propertyInfo.Stub (stub => stub.GetSetMethod (true)).Return (null);
+      var propertyInfo = new Mock<IPropertyInformation>();
+      propertyInfo.Setup (stub => stub.PropertyType).Returns (typeof (bool));
+      propertyInfo.Setup (stub => stub.GetIndexParameters()).Returns (new ParameterInfo[0]);
+      propertyInfo.Setup (stub => stub.GetSetMethod (true)).Returns ((IMethodInformation) null);
       PropertyBase propertyBase = new StubPropertyBase (
           CreateParameters (
-              propertyInfo: propertyInfo,
-              underlyingType: propertyInfo.PropertyType,
-              concreteType: propertyInfo.PropertyType,
+              propertyInfo: propertyInfo.Object,
+              underlyingType: propertyInfo.Object.PropertyType,
+              concreteType: propertyInfo.Object.PropertyType,
               listInfo: null,
               isRequired: true,
               isReadOnly: true));
@@ -158,7 +156,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetValue_WithExceptionHandledByPropertyAccessStrategy_ThrowsBusinessObjectPropertyAccessException ()
     {
-      var bindablePropertyReadAccessStrategyStub = MockRepository.GenerateStub<IBindablePropertyReadAccessStrategy>();
+      var bindablePropertyReadAccessStrategyStub = new Mock<IBindablePropertyReadAccessStrategy>();
 
       IPropertyInformation propertyInfo = GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "ThrowingProperty");
       PropertyBase propertyBase = new StubPropertyBase (
@@ -167,20 +165,20 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               underlyingType: propertyInfo.PropertyType,
               concreteType: propertyInfo.PropertyType,
               listInfo: null,
-              bindablePropertyReadAccessStrategy: bindablePropertyReadAccessStrategyStub));
+              bindablePropertyReadAccessStrategy: bindablePropertyReadAccessStrategyStub.Object));
 
       var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>> (ParamList.Empty);
 
       var originalException = new Exception ("The Exception");
       var expectedException = new BusinessObjectPropertyAccessException ("The Message", null);
       bindablePropertyReadAccessStrategyStub
-          .Stub (
+          .Setup (
               mock => mock.IsPropertyAccessException (
-                  Arg.Is ((IBusinessObject) instance),
-                  Arg.Is (propertyBase),
-                  Arg.Is (originalException),
-                  out Arg<BusinessObjectPropertyAccessException>.Out (expectedException).Dummy))
-          .Return (true);
+                  (IBusinessObject) instance,
+                  propertyBase,
+                  originalException,
+                  out expectedException))
+          .Returns (true);
 
       instance.PrepareException (originalException);
 
@@ -191,7 +189,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetValue_WithExceptionNotHandledByPropertyAccessStrategy_RethrowsOriginalException ()
     {
-      var bindablePropertyReadAccessStrategyStub = MockRepository.GenerateStub<IBindablePropertyReadAccessStrategy>();
+      var bindablePropertyReadAccessStrategyStub = new Mock<IBindablePropertyReadAccessStrategy>();
+      var expectedException = new BusinessObjectPropertyAccessException ("Unexpected", null);
 
       IPropertyInformation propertyInfo = GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "ThrowingProperty");
       PropertyBase propertyBase = new StubPropertyBase (
@@ -200,19 +199,19 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               underlyingType: propertyInfo.PropertyType,
               concreteType: propertyInfo.PropertyType,
               listInfo: null,
-              bindablePropertyReadAccessStrategy: bindablePropertyReadAccessStrategyStub));
+              bindablePropertyReadAccessStrategy: bindablePropertyReadAccessStrategyStub.Object));
 
       var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>> (ParamList.Empty);
 
       var originalException = new Exception ("The Exception");
       bindablePropertyReadAccessStrategyStub
-          .Stub (
+          .Setup (
               mock => mock.IsPropertyAccessException (
-                  Arg.Is ((IBusinessObject) instance),
-                  Arg.Is (propertyBase),
-                  Arg.Is (originalException),
-                  out Arg<BusinessObjectPropertyAccessException>.Out (new BusinessObjectPropertyAccessException ("Unexpected", null)).Dummy))
-          .Return (false);
+                  (IBusinessObject) instance,
+                  propertyBase,
+                  originalException,
+                  out expectedException))
+          .Returns (false);
 
       instance.PrepareException (originalException);
 
@@ -270,15 +269,15 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetValue_NoSetter ()
     {
-      var propertyInfo = MockRepository.GenerateStub<IPropertyInformation>();
-      propertyInfo.Stub (stub => stub.PropertyType).Return (typeof (bool));
-      propertyInfo.Stub (stub => stub.GetIndexParameters()).Return (new ParameterInfo[0]);
-      propertyInfo.Stub (stub => stub.GetSetMethod (true)).Return (null);
+      var propertyInfo = new Mock<IPropertyInformation>();
+      propertyInfo.Setup (stub => stub.PropertyType).Returns (typeof (bool));
+      propertyInfo.Setup (stub => stub.GetIndexParameters()).Returns (new ParameterInfo[0]);
+      propertyInfo.Setup (stub => stub.GetSetMethod (true)).Returns ((IMethodInformation) null);
       PropertyBase propertyBase = new StubPropertyBase (
           CreateParameters (
-              propertyInfo: propertyInfo,
-              underlyingType: propertyInfo.PropertyType,
-              concreteType: propertyInfo.PropertyType,
+              propertyInfo: propertyInfo.Object,
+              underlyingType: propertyInfo.Object.PropertyType,
+              concreteType: propertyInfo.Object.PropertyType,
               listInfo: null,
               isRequired: true,
               isReadOnly: true));
@@ -293,7 +292,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void SetValue_WithExceptionHandledByPropertyAccessStrategy_ThrowsBusinessObjectPropertyAccessException ()
     {
-      var bindablePropertyWriteAccessStrategyStub = MockRepository.GenerateStub<IBindablePropertyWriteAccessStrategy>();
+      var bindablePropertyWriteAccessStrategyStub = new Mock<IBindablePropertyWriteAccessStrategy>();
 
       IPropertyInformation propertyInfo = GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "ThrowingProperty");
       PropertyBase propertyBase = new StubPropertyBase (
@@ -302,20 +301,20 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               underlyingType: propertyInfo.PropertyType,
               concreteType: propertyInfo.PropertyType,
               listInfo: null,
-              bindablePropertyWriteAccessStrategy: bindablePropertyWriteAccessStrategyStub));
+              bindablePropertyWriteAccessStrategy: bindablePropertyWriteAccessStrategyStub.Object));
 
       var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>> (ParamList.Empty);
 
       var originalException = new Exception ("The Exception");
       var expectedException = new BusinessObjectPropertyAccessException ("The Message", null);
       bindablePropertyWriteAccessStrategyStub
-          .Stub (
+          .Setup (
               mock => mock.IsPropertyAccessException (
-                  Arg.Is ((IBusinessObject) instance),
-                  Arg.Is (propertyBase),
-                  Arg.Is (originalException),
-                  out Arg<BusinessObjectPropertyAccessException>.Out (expectedException).Dummy))
-          .Return (true);
+                  (IBusinessObject) instance,
+                  propertyBase,
+                  originalException,
+                  out expectedException))
+          .Returns (true);
 
       instance.PrepareException (originalException);
 
@@ -327,7 +326,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void SetValue_WithExceptionNotHandledByPropertyAccessStrategy_RethrowsOriginalException ()
     {
-      var bindablePropertyWriteAccessStrategyStub = MockRepository.GenerateStub<IBindablePropertyWriteAccessStrategy>();
+      var bindablePropertyWriteAccessStrategyStub = new Mock<IBindablePropertyWriteAccessStrategy>();
+      var expectedException = new BusinessObjectPropertyAccessException ("Unexpected", null);
 
       IPropertyInformation propertyInfo = GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "ThrowingProperty");
       PropertyBase propertyBase = new StubPropertyBase (
@@ -336,19 +336,19 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               underlyingType: propertyInfo.PropertyType,
               concreteType: propertyInfo.PropertyType,
               listInfo: null,
-              bindablePropertyWriteAccessStrategy: bindablePropertyWriteAccessStrategyStub));
+              bindablePropertyWriteAccessStrategy: bindablePropertyWriteAccessStrategyStub.Object));
 
       var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>> (ParamList.Empty);
 
       var originalException = new Exception ("The Exception");
       bindablePropertyWriteAccessStrategyStub
-          .Stub (
+          .Setup (
               mock => mock.IsPropertyAccessException (
-                  Arg.Is ((IBusinessObject) instance),
-                  Arg.Is (propertyBase),
-                  Arg.Is (originalException),
-                  out Arg<BusinessObjectPropertyAccessException>.Out (new BusinessObjectPropertyAccessException ("Unexpected", null)).Dummy))
-          .Return (false);
+                  (IBusinessObject) instance,
+                  propertyBase,
+                  originalException,
+                  out expectedException))
+          .Returns (false);
 
       instance.PrepareException (originalException);
 
@@ -364,7 +364,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void IsAccessible_ReturnsValueFromStrategy ()
     {
-      var bindablePropertyReadAccessStrategyMock = MockRepository.GenerateMock<IBindablePropertyReadAccessStrategy>();
+      var bindablePropertyReadAccessStrategyMock = new Mock<IBindablePropertyReadAccessStrategy>();
 
       IPropertyInformation propertyInfo = GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "ThrowingProperty");
       PropertyBase propertyBase = new StubPropertyBase (
@@ -373,21 +373,21 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               underlyingType: propertyInfo.PropertyType,
               concreteType: propertyInfo.PropertyType,
               listInfo: null,
-              bindablePropertyReadAccessStrategy: bindablePropertyReadAccessStrategyMock));
+              bindablePropertyReadAccessStrategy: bindablePropertyReadAccessStrategyMock.Object));
 
       var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>> (ParamList.Empty);
 
       var expectedValue = BooleanObjectMother.GetRandomBoolean();
-      bindablePropertyReadAccessStrategyMock.Expect (mock => mock.CanRead ((IBusinessObject) instance, propertyBase)).Return (expectedValue);
+      bindablePropertyReadAccessStrategyMock.Setup (mock => mock.CanRead ((IBusinessObject) instance, propertyBase)).Returns (expectedValue).Verifiable();
 
       Assert.That (propertyBase.IsAccessible ((IBusinessObject)instance), Is.EqualTo (expectedValue));
-      bindablePropertyReadAccessStrategyMock.VerifyAllExpectations();
+      bindablePropertyReadAccessStrategyMock.Verify();
     }
 
     [Test]
     public void IsReadOnly_WithReadOnlyProperty_ReturnsTrue_DoesNotUseStrategy()
     {
-      var bindablePropertyWriteAccessStrategyMock = MockRepository.GenerateMock<IBindablePropertyWriteAccessStrategy>();
+      var bindablePropertyWriteAccessStrategyMock = new Mock<IBindablePropertyWriteAccessStrategy>();
 
       IPropertyInformation propertyInfo = GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "ThrowingProperty");
       PropertyBase propertyBase = new StubPropertyBase (
@@ -397,18 +397,18 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               concreteType: propertyInfo.PropertyType,
               listInfo: null,
               isReadOnly: true,
-              bindablePropertyWriteAccessStrategy: bindablePropertyWriteAccessStrategyMock));
+              bindablePropertyWriteAccessStrategy: bindablePropertyWriteAccessStrategyMock.Object));
 
       var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>> (ParamList.Empty);
 
       Assert.That (propertyBase.IsReadOnly ((IBusinessObject)instance), Is.True);
-      bindablePropertyWriteAccessStrategyMock.AssertWasNotCalled (mock => mock.CanWrite (null, null), options=>options.IgnoreArguments());
+      bindablePropertyWriteAccessStrategyMock.Verify (mock => mock.CanWrite (null, null), Times.Never());
     }
 
     [Test]
     public void IsReadOnly_WithWritableProperty_ReturnsValueFromStrategy()
     {
-      var bindablePropertyWriteAccessStrategyMock = MockRepository.GenerateMock<IBindablePropertyWriteAccessStrategy>();
+      var bindablePropertyWriteAccessStrategyMock = new Mock<IBindablePropertyWriteAccessStrategy>();
 
       IPropertyInformation propertyInfo = GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "ThrowingProperty");
       PropertyBase propertyBase = new StubPropertyBase (
@@ -418,54 +418,54 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               concreteType: propertyInfo.PropertyType,
               listInfo: null,
               isReadOnly: false,
-              bindablePropertyWriteAccessStrategy: bindablePropertyWriteAccessStrategyMock));
+              bindablePropertyWriteAccessStrategy: bindablePropertyWriteAccessStrategyMock.Object));
 
       var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>> (ParamList.Empty);
 
       var expectedValue = BooleanObjectMother.GetRandomBoolean();
-      bindablePropertyWriteAccessStrategyMock.Expect (mock => mock.CanWrite ((IBusinessObject) instance, propertyBase)).Return (!expectedValue);
+      bindablePropertyWriteAccessStrategyMock.Setup (mock => mock.CanWrite ((IBusinessObject) instance, propertyBase)).Returns (!expectedValue).Verifiable();
 
       Assert.That (propertyBase.IsReadOnly ((IBusinessObject)instance), Is.EqualTo (expectedValue));
-      bindablePropertyWriteAccessStrategyMock.VerifyAllExpectations();
+      bindablePropertyWriteAccessStrategyMock.Verify();
     }
 
     [Test]
     public void GetConstraints_WithBusinessObject_ReturnsValueFromProvider ()
     {
-      var businessObject = MockRepository.GenerateStub<IBusinessObject>();
+      var businessObject = new Mock<IBusinessObject>();
         var propertyInfo = GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Scalar");
-        var constraintProviderStub = MockRepository.GenerateStub<IBusinessObjectPropertyConstraintProvider>();
+        var constraintProviderStub = new Mock<IBusinessObjectPropertyConstraintProvider>();
         PropertyBase propertyBase =
             new StubPropertyBase (
                 CreateParameters (
                     propertyInfo: propertyInfo,
                     underlyingType: propertyInfo.PropertyType,
                     concreteType: propertyInfo.PropertyType,
-                    businessObjectPropertyConstraintProvider: constraintProviderStub));
+                    businessObjectPropertyConstraintProvider: constraintProviderStub.Object));
         propertyBase.SetReflectedClass (_bindableObjectClass);
 
-        var result = new[] { MockRepository.GenerateStub<IBusinessObjectPropertyConstraint>() };
-        constraintProviderStub.Stub (_ => _.GetPropertyConstraints (_bindableObjectClass, propertyBase, businessObject)).Return (result);
+        var result = new[] { new Mock<IBusinessObjectPropertyConstraint>().Object };
+        constraintProviderStub.Setup (_ => _.GetPropertyConstraints (_bindableObjectClass, propertyBase, businessObject.Object)).Returns (result);
 
-        Assert.That (propertyBase.GetConstraints (businessObject), Is.SameAs (result));
+        Assert.That (propertyBase.GetConstraints (businessObject.Object), Is.SameAs (result));
     }
 
     [Test]
     public void GetConstraints_WithoutBusinessObject_ReturnsValueFromProvider ()
     {
       var propertyInfo = GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Scalar");
-      var constraintProviderStub = MockRepository.GenerateStub<IBusinessObjectPropertyConstraintProvider>();
+      var constraintProviderStub = new Mock<IBusinessObjectPropertyConstraintProvider>();
       PropertyBase propertyBase =
           new StubPropertyBase (
               CreateParameters (
                   propertyInfo: propertyInfo,
                   underlyingType: propertyInfo.PropertyType,
                   concreteType: propertyInfo.PropertyType,
-                  businessObjectPropertyConstraintProvider: constraintProviderStub));
+                  businessObjectPropertyConstraintProvider: constraintProviderStub.Object));
       propertyBase.SetReflectedClass (_bindableObjectClass);
 
-      var result = new[] { MockRepository.GenerateStub<IBusinessObjectPropertyConstraint>() };
-      constraintProviderStub.Stub (_ => _.GetPropertyConstraints (_bindableObjectClass, propertyBase, null)).Return (result);
+      var result = new[] { new Mock<IBusinessObjectPropertyConstraint>().Object };
+      constraintProviderStub.Setup (_ => _.GetPropertyConstraints (_bindableObjectClass, propertyBase, null)).Returns (result);
 
       Assert.That (propertyBase.GetConstraints (null), Is.SameAs (result));
     }
@@ -473,7 +473,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetDefaultValueStrategy ()
     {
-      var businessObject = MockRepository.GenerateStub<IBusinessObject>();
+      var businessObject = new Mock<IBusinessObject>();
       IPropertyInformation propertyInfo = GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Scalar");
       PropertyBase propertyBase =
           new StubPropertyBase (
@@ -485,7 +485,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
                   isRequired: true,
                   isReadOnly: true));
 
-      Assert.That (propertyBase.IsDefaultValue (businessObject), Is.False);
+      Assert.That (propertyBase.IsDefaultValue (businessObject.Object), Is.False);
     }
 
     [Test]
@@ -571,10 +571,10 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               isRequired: false,
               isReadOnly: false,
               bindableObjectGlobalizationService: new BindableObjectGlobalizationService (
-                  MockRepository.GenerateStub<IGlobalizationService>(),
-                  MockRepository.GenerateStub<IMemberInformationGlobalizationService>(),
-                  MockRepository.GenerateStub<IEnumerationGlobalizationService>(),
-                  MockRepository.GenerateStub<IExtensibleEnumGlobalizationService>())));
+                  new Mock<IGlobalizationService>().Object,
+                  new Mock<IMemberInformationGlobalizationService>().Object,
+                  new Mock<IEnumerationGlobalizationService>().Object,
+                  new Mock<IExtensibleEnumGlobalizationService>().Object)));
       Assert.That (
           () => property.DisplayName,
           Throws.InvalidOperationException
@@ -584,7 +584,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetDisplayName_WithGlobalizationSerivce ()
     {
-      var mockMemberInformationGlobalizationService = _mockRepository.StrictMock<IMemberInformationGlobalizationService>();
+      var outValue = "MockString";
+      var mockMemberInformationGlobalizationService = new Mock<IMemberInformationGlobalizationService> (MockBehavior.Strict);
       IPropertyInformation propertyInfo = GetPropertyInfo (typeof (SimpleBusinessObjectClass), "String");
       PropertyBase property = new StubPropertyBase (
           CreateParameters (
@@ -595,23 +596,22 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               isRequired: false,
               isReadOnly: false,
               bindableObjectGlobalizationService: new BindableObjectGlobalizationService (
-                  MockRepository.GenerateStub<IGlobalizationService>(),
-                  mockMemberInformationGlobalizationService,
-                  MockRepository.GenerateStub<IEnumerationGlobalizationService>(),
-                  MockRepository.GenerateStub<IExtensibleEnumGlobalizationService>())));
+                  new Mock<IGlobalizationService>().Object,
+                  mockMemberInformationGlobalizationService.Object,
+                  new Mock<IEnumerationGlobalizationService>().Object,
+                  new Mock<IExtensibleEnumGlobalizationService>().Object)));
       property.SetReflectedClass (_bindableObjectClass);
 
-      Expect.Call (
-          mockMemberInformationGlobalizationService.TryGetPropertyDisplayName (
-              Arg.Is (propertyInfo),
-              Arg<ITypeInformation>.Matches (c => c.ConvertToRuntimeType() == _bindableObjectClass.TargetType),
-              out Arg<string>.Out ("MockString").Dummy))
-          .Return (true);
-      _mockRepository.ReplayAll();
+      mockMemberInformationGlobalizationService.Setup (_ => _.TryGetPropertyDisplayName (
+              propertyInfo,
+              It.Is<ITypeInformation> (c => c.ConvertToRuntimeType() == _bindableObjectClass.TargetType),
+              out outValue))
+          .Returns (true)
+          .Verifiable();
 
       string actual = property.DisplayName;
 
-      _mockRepository.VerifyAll();
+      mockMemberInformationGlobalizationService.Verify();
       Assert.That (actual, Is.EqualTo ("MockString"));
     }
 

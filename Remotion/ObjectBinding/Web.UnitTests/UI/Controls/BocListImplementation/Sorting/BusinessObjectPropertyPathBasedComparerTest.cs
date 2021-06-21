@@ -16,12 +16,12 @@
 // 
 using System;
 using System.Collections.Generic;
+using Moq;
 using NUnit.Framework;
 using Remotion.ObjectBinding.BusinessObjectPropertyPaths.Results;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting;
 using Remotion.ObjectBinding.Web.UnitTests.Domain;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Sorting
 {
@@ -113,30 +113,30 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var valueA = TypeWithAllDataTypes.Create();
       var valueThrows = TypeWithAllDataTypes.Create();
 
-      var resultA = MockRepository.GenerateStub<IBusinessObjectPropertyPathResult>();
-      resultA.Stub (_ => _.GetValue()).Return (new object());
+      var resultA = new Mock<IBusinessObjectPropertyPathResult>();
+      resultA.Setup (_ => _.GetValue()).Returns (new object());
 
-      var propertyPathStub = MockRepository.GenerateStub<IBusinessObjectPropertyPath>();
+      var propertyPathStub = new Mock<IBusinessObjectPropertyPath>();
 
       propertyPathStub
-          .Stub (
+          .Setup (
               _ =>
               _.GetResult (
                   (IBusinessObject) valueA,
                   BusinessObjectPropertyPath.UnreachableValueBehavior.ReturnNullForUnreachableValue,
                   BusinessObjectPropertyPath.ListValueBehavior.GetResultForFirstListEntry))
-          .Return (resultA);
+          .Returns (resultA.Object);
 
       propertyPathStub
-          .Stub (
+          .Setup (
               _ =>
               _.GetResult (
                   (IBusinessObject) valueThrows,
                   BusinessObjectPropertyPath.UnreachableValueBehavior.ReturnNullForUnreachableValue,
                   BusinessObjectPropertyPath.ListValueBehavior.GetResultForFirstListEntry))
-          .Throw (new Exception());
+          .Throws (new Exception());
 
-      var comparer = new BusinessObjectPropertyPathBasedComparer (propertyPathStub);
+      var comparer = new BusinessObjectPropertyPathBasedComparer (propertyPathStub.Object);
 
       CompareEqualValues (comparer, (IBusinessObject) valueThrows, (IBusinessObject) valueThrows);
       CompareAscendingValues (comparer, (IBusinessObject) valueThrows, (IBusinessObject) valueA);
@@ -149,33 +149,33 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var valueA = TypeWithAllDataTypes.Create();
       var valueThrows = TypeWithAllDataTypes.Create();
 
-      var resultA = MockRepository.GenerateStub<IBusinessObjectPropertyPathResult>();
-      resultA.Stub (_ => _.GetValue()).Return (new object());
+      var resultA = new Mock<IBusinessObjectPropertyPathResult>();
+      resultA.Setup (_ => _.GetValue()).Returns (new object());
 
-      var resultThrows = MockRepository.GenerateStub<IBusinessObjectPropertyPathResult>();
-      resultThrows.Stub (_ => _.GetValue()).Throw (new Exception());
+      var resultThrows = new Mock<IBusinessObjectPropertyPathResult>();
+      resultThrows.Setup (_ => _.GetValue()).Throws (new Exception());
 
-      var propertyPathStub = MockRepository.GenerateStub<IBusinessObjectPropertyPath>();
+      var propertyPathStub = new Mock<IBusinessObjectPropertyPath>();
 
       propertyPathStub
-          .Stub (
+          .Setup (
               _ =>
               _.GetResult (
                   (IBusinessObject) valueA,
                   BusinessObjectPropertyPath.UnreachableValueBehavior.ReturnNullForUnreachableValue,
                   BusinessObjectPropertyPath.ListValueBehavior.GetResultForFirstListEntry))
-          .Return (resultA);
+          .Returns (resultA.Object);
 
       propertyPathStub
-          .Stub (
+          .Setup (
               _ =>
               _.GetResult (
                   (IBusinessObject) valueThrows,
                   BusinessObjectPropertyPath.UnreachableValueBehavior.ReturnNullForUnreachableValue,
                   BusinessObjectPropertyPath.ListValueBehavior.GetResultForFirstListEntry))
-          .Return (resultThrows);
+          .Returns (resultThrows.Object);
 
-      var comparer = new BusinessObjectPropertyPathBasedComparer (propertyPathStub);
+      var comparer = new BusinessObjectPropertyPathBasedComparer (propertyPathStub.Object);
 
       CompareEqualValues (comparer, (IBusinessObject) valueThrows, (IBusinessObject) valueThrows);
       CompareAscendingValues (comparer, (IBusinessObject) valueThrows, (IBusinessObject) valueA);
@@ -188,35 +188,35 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var valueA = TypeWithAllDataTypes.Create();
       var valueThrows = TypeWithAllDataTypes.Create();
 
-      var resultA = MockRepository.GenerateStub<IBusinessObjectPropertyPathResult>();
-      resultA.Stub (_ => _.GetValue()).Return (new object());
-      resultA.Stub (_ => _.GetString (null)).Return ("A");
+      var resultA = new Mock<IBusinessObjectPropertyPathResult>();
+      resultA.Setup (_ => _.GetValue()).Returns (new object());
+      resultA.Setup (_ => _.GetString (null)).Returns ("A");
 
-      var resultThrows = MockRepository.GenerateStub<IBusinessObjectPropertyPathResult>();
-      resultThrows.Stub (_ => _.GetValue()).Return (new object());
-      resultThrows.Stub (_ => _.GetString (null)).Throw (new Exception());
+      var resultThrows = new Mock<IBusinessObjectPropertyPathResult>();
+      resultThrows.Setup (_ => _.GetValue()).Returns (new object());
+      resultThrows.Setup (_ => _.GetString (null)).Throws (new Exception());
 
-      var propertyPathStub = MockRepository.GenerateStub<IBusinessObjectPropertyPath>();
+      var propertyPathStub = new Mock<IBusinessObjectPropertyPath>();
 
       propertyPathStub
-          .Stub (
+          .Setup (
               _ =>
               _.GetResult (
                   (IBusinessObject) valueA,
                   BusinessObjectPropertyPath.UnreachableValueBehavior.ReturnNullForUnreachableValue,
                   BusinessObjectPropertyPath.ListValueBehavior.GetResultForFirstListEntry))
-          .Return (resultA);
+          .Returns (resultA.Object);
 
       propertyPathStub
-          .Stub (
+          .Setup (
               _ =>
               _.GetResult (
                   (IBusinessObject) valueThrows,
                   BusinessObjectPropertyPath.UnreachableValueBehavior.ReturnNullForUnreachableValue,
                   BusinessObjectPropertyPath.ListValueBehavior.GetResultForFirstListEntry))
-          .Return (resultThrows);
+          .Returns (resultThrows.Object);
 
-      var comparer = new BusinessObjectPropertyPathBasedComparer (propertyPathStub);
+      var comparer = new BusinessObjectPropertyPathBasedComparer (propertyPathStub.Object);
 
       CompareEqualValues (comparer, (IBusinessObject) valueThrows, (IBusinessObject) valueThrows);
       CompareAscendingValues (comparer, (IBusinessObject) valueThrows, (IBusinessObject) valueA);

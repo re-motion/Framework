@@ -15,8 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Enumerators
 {
@@ -43,8 +43,8 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Enumerato
 
       var enumerator = new TestableBusinessObjectPropertyPathPropertyEnumeratorBase ("FirstProperty");
 
-      Assert.That (enumerator.MoveNext (classStub), Is.True);
-      Assert.That (enumerator.Current, Is.SameAs (propertyStub));
+      Assert.That (enumerator.MoveNext (classStub.Object), Is.True);
+      Assert.That (enumerator.Current, Is.SameAs (propertyStub.Object));
       Assert.That (enumerator.HasNext, Is.False);
     }
 
@@ -56,9 +56,9 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Enumerato
 
       var enumerator = new TestableBusinessObjectPropertyPathPropertyEnumeratorBase ("FirstProperty");
 
-      Assert.That (enumerator.MoveNext (classStub), Is.True);
+      Assert.That (enumerator.MoveNext (classStub.Object), Is.True);
 
-      Assert.That (enumerator.MoveNext (MockRepository.GenerateStub<IBusinessObjectClass>()), Is.False);
+      Assert.That (enumerator.MoveNext (new Mock<IBusinessObjectClass>().Object), Is.False);
       Assert.That (()=>enumerator.Current, Throws.InvalidOperationException.With.Message.EqualTo ("Enumeration already finished."));
       Assert.That (enumerator.HasNext, Is.False);
     }
@@ -72,9 +72,9 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Enumerato
 
       var enumerator = new TestableBusinessObjectPropertyPathPropertyEnumeratorBase ("FirstProperty");
 
-      Assert.That (enumerator.MoveNext (classStub), Is.True);
+      Assert.That (enumerator.MoveNext (classStub.Object), Is.True);
 
-      Assert.That (enumerator.MoveNext (MockRepository.GenerateStub<IBusinessObjectClass>()), Is.False);
+      Assert.That (enumerator.MoveNext (new Mock<IBusinessObjectClass>().Object), Is.False);
       Assert.That (()=>enumerator.Current, Throws.InvalidOperationException.With.Message.EqualTo ("Enumeration already finished."));
       Assert.That (enumerator.HasNext, Is.False);
     }
@@ -89,15 +89,15 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Enumerato
 
       var enumerator = new TestableBusinessObjectPropertyPathPropertyEnumeratorBase ("FirstProperty:SecondProperty");
 
-      Assert.That (enumerator.MoveNext (firstClassStub), Is.True);
-      Assert.That (enumerator.Current, Is.SameAs (firstPropertyStub));
+      Assert.That (enumerator.MoveNext (firstClassStub.Object), Is.True);
+      Assert.That (enumerator.Current, Is.SameAs (firstPropertyStub.Object));
       Assert.That (enumerator.HasNext, Is.True);
 
-      Assert.That (enumerator.MoveNext (secondClassStub), Is.True);
-      Assert.That (enumerator.Current, Is.SameAs (secondPropertyStub));
+      Assert.That (enumerator.MoveNext (secondClassStub.Object), Is.True);
+      Assert.That (enumerator.Current, Is.SameAs (secondPropertyStub.Object));
       Assert.That (enumerator.HasNext, Is.False);
 
-      Assert.That (enumerator.MoveNext (MockRepository.GenerateStub<IBusinessObjectClass>()), Is.False);
+      Assert.That (enumerator.MoveNext (new Mock<IBusinessObjectClass>().Object), Is.False);
       Assert.That (()=>enumerator.Current, Throws.InvalidOperationException.With.Message.EqualTo ("Enumeration already finished."));
       Assert.That (enumerator.HasNext, Is.False);
     }
@@ -114,15 +114,15 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Enumerato
 
       var enumerator = new TestableBusinessObjectPropertyPathPropertyEnumeratorBase ("FirstProperty:SecondProperty");
 
-      Assert.That (enumerator.MoveNext (firstClassStub), Is.True);
-      Assert.That (enumerator.Current, Is.SameAs (firstPropertyStub));
+      Assert.That (enumerator.MoveNext (firstClassStub.Object), Is.True);
+      Assert.That (enumerator.Current, Is.SameAs (firstPropertyStub.Object));
       Assert.That (enumerator.HasNext, Is.True);
 
-      Assert.That (enumerator.MoveNext (secondClassStub), Is.True);
-      Assert.That (enumerator.Current, Is.SameAs (secondPropertyStub));
+      Assert.That (enumerator.MoveNext (secondClassStub.Object), Is.True);
+      Assert.That (enumerator.Current, Is.SameAs (secondPropertyStub.Object));
       Assert.That (enumerator.HasNext, Is.False);
 
-      Assert.That (enumerator.MoveNext (MockRepository.GenerateStub<IBusinessObjectClass>()), Is.False);
+      Assert.That (enumerator.MoveNext (new Mock<IBusinessObjectClass>().Object), Is.False);
       Assert.That (()=>enumerator.Current, Throws.InvalidOperationException.With.Message.EqualTo ("Enumeration already finished."));
       Assert.That (enumerator.HasNext, Is.False);
     }
@@ -132,9 +132,9 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Enumerato
     {
       var firstClassStub = CreateClassStub();
 
-      var secondClassStub = MockRepository.GenerateStub<IBusinessObjectClass>();
-      secondClassStub.Stub (_ => _.BusinessObjectProvider).Return (MockRepository.GenerateStub<IBusinessObjectProvider>());
-      secondClassStub.BusinessObjectProvider.Stub (_ => _.GetPropertyPathSeparator()).Return ('|');
+      var secondClassStub = new Mock<IBusinessObjectClass>();
+      secondClassStub.Setup (_ => _.BusinessObjectProvider).Returns (new Mock<IBusinessObjectProvider>().Object);
+      Mock.Get (secondClassStub.Object.BusinessObjectProvider).Setup (_ => _.GetPropertyPathSeparator()).Returns ('|');
 
       var thirdClassStub = CreateClassStub();
 
@@ -144,18 +144,18 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Enumerato
 
       var enumerator = new TestableBusinessObjectPropertyPathPropertyEnumeratorBase ("FirstProperty:SecondProperty|ThirdProperty");
 
-      Assert.That (enumerator.MoveNext (firstClassStub), Is.True);
-      Assert.That (enumerator.Current, Is.SameAs (firstPropertyStub));
+      Assert.That (enumerator.MoveNext (firstClassStub.Object), Is.True);
+      Assert.That (enumerator.Current, Is.SameAs (firstPropertyStub.Object));
 
-      Assert.That (enumerator.MoveNext (secondClassStub), Is.True);
-      Assert.That (enumerator.Current, Is.SameAs (secondPropertyStub));
+      Assert.That (enumerator.MoveNext (secondClassStub.Object), Is.True);
+      Assert.That (enumerator.Current, Is.SameAs (secondPropertyStub.Object));
       Assert.That (enumerator.HasNext, Is.True);
 
-      Assert.That (enumerator.MoveNext (thirdClassStub), Is.True);
-      Assert.That (enumerator.Current, Is.SameAs (thirdPropertyStub));
+      Assert.That (enumerator.MoveNext (thirdClassStub.Object), Is.True);
+      Assert.That (enumerator.Current, Is.SameAs (thirdPropertyStub.Object));
       Assert.That (enumerator.HasNext, Is.False);
 
-      Assert.That (enumerator.MoveNext (MockRepository.GenerateStub<IBusinessObjectClass>()), Is.False);
+      Assert.That (enumerator.MoveNext (new Mock<IBusinessObjectClass>().Object), Is.False);
       Assert.That (()=>enumerator.Current, Throws.InvalidOperationException.With.Message.EqualTo ("Enumeration already finished."));
       Assert.That (enumerator.HasNext, Is.False);
     }
@@ -165,18 +165,18 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Enumerato
     {
       var firstClassStub = CreateClassStub();
       var secondClassStub = CreateClassStub();
-      secondClassStub.Stub (_ => _.Identifier).Return ("SecondClass");
+      secondClassStub.Setup (_ => _.Identifier).Returns ("SecondClass");
 
       var firstPropertyStub = CreateReferencePropertyStub (firstClassStub, "FirstProperty", secondClassStub);
 
       var enumerator = new TestableBusinessObjectPropertyPathPropertyEnumeratorBase ("FirstProperty:Missing:ThirdProperty");
 
-      Assert.That (enumerator.MoveNext (firstClassStub), Is.True);
-      Assert.That (enumerator.Current, Is.SameAs (firstPropertyStub));
+      Assert.That (enumerator.MoveNext (firstClassStub.Object), Is.True);
+      Assert.That (enumerator.Current, Is.SameAs (firstPropertyStub.Object));
       Assert.That (enumerator.HasNext, Is.True);
 
       Assert.That (
-          () => enumerator.MoveNext (secondClassStub),
+          () => enumerator.MoveNext (secondClassStub.Object),
           Throws.Exception.With.Message.EqualTo ("HandlePropertyNotFound, class: SecondClass, property: Missing"));
       Assert.That (enumerator.Current, Is.Null);
       Assert.That (enumerator.HasNext, Is.True);
@@ -187,19 +187,19 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Enumerato
     {
       var firstClassStub = CreateClassStub();
       var secondClassStub = CreateClassStub();
-      secondClassStub.Stub (_ => _.Identifier).Return ("SecondClass");
+      secondClassStub.Setup (_ => _.Identifier).Returns ("SecondClass");
 
       var firstPropertyStub = CreateReferencePropertyStub (firstClassStub, "FirstProperty", secondClassStub);
       CreatePropertyStub (secondClassStub, "SecondProperty");
 
       var enumerator = new TestableBusinessObjectPropertyPathPropertyEnumeratorBase ("FirstProperty:SecondProperty:ThirdProperty");
 
-      Assert.That (enumerator.MoveNext (firstClassStub), Is.True);
-      Assert.That (enumerator.Current, Is.SameAs (firstPropertyStub));
+      Assert.That (enumerator.MoveNext (firstClassStub.Object), Is.True);
+      Assert.That (enumerator.Current, Is.SameAs (firstPropertyStub.Object));
       Assert.That (enumerator.HasNext, Is.True);
 
       Assert.That (
-          () => enumerator.MoveNext (secondClassStub),
+          () => enumerator.MoveNext (secondClassStub.Object),
           Throws.Exception.With.Message.EqualTo ("HandlePropertyNotLastPropertyAndNotReferenceProperty, class: SecondClass, property: SecondProperty"));
       Assert.That (enumerator.Current, Is.Null);
       Assert.That (enumerator.HasNext, Is.True);

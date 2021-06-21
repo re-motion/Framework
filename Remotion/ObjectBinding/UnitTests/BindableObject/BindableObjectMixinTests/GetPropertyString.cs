@@ -15,12 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Mixins;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.UnitTests.TestDomain;
 using Remotion.TypePipe;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectMixinTests
 {
@@ -28,18 +28,16 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectMixinTes
   public class GetPropertyString : TestBase
   {
     private IBusinessObject _businessObject;
-    private MockRepository _mockRepository;
-    private IBusinessObjectStringFormatterService _mockStringFormatterService;
+    private Mock<IBusinessObjectStringFormatterService> _mockStringFormatterService;
     private IBusinessObjectProperty _property;
 
     public override void SetUp ()
     {
       base.SetUp ();
 
-      _mockRepository = new MockRepository();
-      _mockStringFormatterService = _mockRepository.StrictMock<IBusinessObjectStringFormatterService>();
+      _mockStringFormatterService = new Mock<IBusinessObjectStringFormatterService> (MockBehavior.Strict);
       BindableObjectProvider provider = new BindableObjectProvider();
-      provider.AddService (typeof (IBusinessObjectStringFormatterService), _mockStringFormatterService);
+      provider.AddService (typeof (IBusinessObjectStringFormatterService), _mockStringFormatterService.Object);
       BusinessObjectProvider.SetProvider(typeof (BindableObjectProviderAttribute), provider);
 
       _businessObject = (IBusinessObject) ObjectFactory.Create<SimpleBusinessObjectClass> (ParamList.Empty);
@@ -54,24 +52,22 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectMixinTes
     [Test]
     public void FromProperty ()
     {
-      Expect.Call (_mockStringFormatterService.GetPropertyString (_businessObject, _property, "TheFormatString")).Return ("TheStringValue");
-      _mockRepository.ReplayAll();
+      _mockStringFormatterService.Setup (_ => _.GetPropertyString (_businessObject, _property, "TheFormatString")).Returns ("TheStringValue").Verifiable();
 
       string actual = _businessObject.GetPropertyString (_property, "TheFormatString");
       
-      _mockRepository.VerifyAll();
+      _mockStringFormatterService.Verify();
       Assert.That (actual, Is.EqualTo ("TheStringValue"));
     }
 
     [Test]
     public void FromIdentifier ()
     {
-      Expect.Call (_mockStringFormatterService.GetPropertyString (_businessObject, _property, null)).Return ("TheStringValue");
-      _mockRepository.ReplayAll ();
+      _mockStringFormatterService.Setup (_ => _.GetPropertyString (_businessObject, _property, null)).Returns ("TheStringValue").Verifiable();
 
       string actual = _businessObject.GetPropertyString ("String");
 
-      _mockRepository.VerifyAll ();
+      _mockStringFormatterService.Verify();
       Assert.That (actual, Is.EqualTo ("TheStringValue"));
     }
   }

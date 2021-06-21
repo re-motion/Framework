@@ -18,6 +18,7 @@ using System;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Reflection;
+using Moq;
 using NUnit.Framework;
 using Remotion.Context;
 using Remotion.Design;
@@ -29,7 +30,6 @@ using Remotion.Mixins.CodeGeneration;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.UnitTests.TestDomain;
 using Remotion.Utilities;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectDataSourceTests
 {
@@ -37,10 +37,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectDataSour
   public class DesignTime : TestBase
   {
     private BindableObjectDataSource _dataSource;
-    private MockRepository _mockRepository;
-    private ISite _stubSite;
-    private IDesignerHost _mockDesignerHost;
-    private ITypeResolutionService _typeResolutionServiceMock;
+    private Mock<ISite> _stubSite;
+    private Mock<IDesignerHost> _mockDesignerHost;
+    private Mock<ITypeResolutionService> _typeResolutionServiceMock;
 
     [SetUp]
     public override void SetUp ()
@@ -49,28 +48,28 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectDataSour
 
       _dataSource = new BindableObjectDataSource();
 
-      _mockRepository = new MockRepository();
-      _stubSite = _mockRepository.Stub<ISite>();
-      SetupResult.For (_stubSite.DesignMode).Return (true);
-      _dataSource.Site = _stubSite;
+      _stubSite = new Mock<ISite>();
+      _stubSite.Setup (_ => _.DesignMode).Returns (true);
+      _dataSource.Site = _stubSite.Object;
 
-      _mockDesignerHost = _mockRepository.StrictMock<IDesignerHost>();
-      SetupResult.For (_stubSite.GetService (typeof (IDesignerHost))).Return (_mockDesignerHost);
+      _mockDesignerHost = new Mock<IDesignerHost> (MockBehavior.Strict);
+      _stubSite.Setup (_ => _.GetService (typeof (IDesignerHost))).Returns (_mockDesignerHost.Object);
 
-      var helperStub = _mockRepository.Stub<IDesignModeHelper> ();
-      SetupResult.For (helperStub.DesignerHost).Return (_mockDesignerHost);
+      var helperStub = new Mock<IDesignModeHelper>();
+      helperStub.Setup (_ => _.DesignerHost).Returns (_mockDesignerHost.Object);
 
-      _typeResolutionServiceMock = _mockRepository.StrictMock<ITypeResolutionService> ();
-      SetupResult.For (_mockDesignerHost.GetService (typeof (ITypeResolutionService))).Return (_typeResolutionServiceMock);
+      _typeResolutionServiceMock = new Mock<ITypeResolutionService> (MockBehavior.Strict);
 
-      var typeDiscoveryServiceStub = _mockRepository.Stub<ITypeDiscoveryService> ();
-      SetupResult.For (typeDiscoveryServiceStub.GetTypes (null, false)).IgnoreArguments ().Return (Assembly.GetExecutingAssembly ().GetTypes ());
-      SetupResult.For (_mockDesignerHost.GetService (typeof (ITypeDiscoveryService))).Return (typeDiscoveryServiceStub);
+      _mockDesignerHost.Setup (_ => _.GetService (typeof (ITypeResolutionService))).Returns (_typeResolutionServiceMock.Object);
+
+      var typeDiscoveryServiceStub = new Mock<ITypeDiscoveryService>();
+      typeDiscoveryServiceStub.Setup (_ => _.GetTypes (It.IsAny<Type>(), It.IsAny<bool>())).Returns (Assembly.GetExecutingAssembly ().GetTypes ());
+      _mockDesignerHost.Setup (_ => _.GetService (typeof (ITypeDiscoveryService))).Returns (typeDiscoveryServiceStub.Object);
 
       // initialize IoC and mixin infrastructure to remove sideeffects in test.
       MixinTypeUtility.GetConcreteMixedType (typeof (SimpleBusinessObjectClass));
 
-      DesignerUtility.SetDesignMode (helperStub);
+      DesignerUtility.SetDesignMode (helperStub.Object);
     }
 
     [TearDown]
@@ -83,39 +82,38 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectDataSour
     [Test]
     public void GetAndSetType ()
     {
-      Expect.Call (
-          _typeResolutionServiceMock.GetType (
+      _typeResolutionServiceMock.Setup (
+              _ => _.GetType (
               "Remotion.ObjectBinding.UnitTests.TestDomain.SimpleBusinessObjectClass, Remotion.ObjectBinding.UnitTests", true))
-          .Return (typeof (SimpleBusinessObjectClass));
-      _mockRepository.ReplayAll();
+          .Returns (typeof (SimpleBusinessObjectClass))
+          .Verifiable();
 
       Assert.That (_dataSource.Type, Is.Null);
       _dataSource.Type = typeof (SimpleBusinessObjectClass);
       Assert.That (_dataSource.Type, Is.SameAs (typeof (SimpleBusinessObjectClass)));
 
-      _mockRepository.VerifyAll();
+      _mockDesignerHost.Verify();
+      _typeResolutionServiceMock.Verify();
     }
 
     [Test]
     public void GetType_WithNull ()
     {
-      _mockRepository.ReplayAll();
-
       _dataSource.Type = null;
       Assert.That (_dataSource.Type, Is.Null);
 
-      _mockRepository.VerifyAll();
+      _mockDesignerHost.Verify();
+      _typeResolutionServiceMock.Verify();
     }
 
     [Test]
     public void GetBusinessObjectClass ()
     {
-      Expect.Call (
-          _typeResolutionServiceMock.GetType (
+      _typeResolutionServiceMock.Setup (
+              _ => _.GetType (
               "Remotion.ObjectBinding.UnitTests.TestDomain.SimpleBusinessObjectClass, Remotion.ObjectBinding.UnitTests", true))
-          .Return (typeof (SimpleBusinessObjectClass))
-          .Repeat.AtLeastOnce();
-      _mockRepository.ReplayAll();
+          .Returns (typeof (SimpleBusinessObjectClass))
+          .Verifiable();
 
       _dataSource.Type = typeof (SimpleBusinessObjectClass);
 
@@ -123,17 +121,19 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectDataSour
       Assert.That (actual, Is.Not.Null);
       Assert.That (actual.BusinessObjectProvider, Is.SameAs (BindableObjectProvider.GetProviderForBindableObjectType (typeof (SimpleBusinessObjectClass))));
 
-      _mockRepository.VerifyAll();
+      _mockDesignerHost.Verify();
+      _typeResolutionServiceMock.Verify (_ => _.GetType (
+              "Remotion.ObjectBinding.UnitTests.TestDomain.SimpleBusinessObjectClass, Remotion.ObjectBinding.UnitTests", true), Times.AtLeastOnce());
     }
 
     [Test]
     public void GetBusinessObjectClass_SameTwice ()
     {
-      SetupResult.For (
-          _typeResolutionServiceMock.GetType (
+      _typeResolutionServiceMock.Setup (
+              _ => _.GetType (
               "Remotion.ObjectBinding.UnitTests.TestDomain.SimpleBusinessObjectClass, Remotion.ObjectBinding.UnitTests", true))
-          .Return (typeof (SimpleBusinessObjectClass));
-      _mockRepository.ReplayAll();
+          .Returns (typeof (SimpleBusinessObjectClass))
+          .Verifiable();
 
       _dataSource.Type = typeof (SimpleBusinessObjectClass);
 
@@ -141,18 +141,18 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectDataSour
       Assert.That (actual, Is.Not.Null);
       Assert.That (actual, Is.SameAs (_dataSource.BusinessObjectClass));
 
-      _mockRepository.VerifyAll();
+      _mockDesignerHost.Verify();
+      _typeResolutionServiceMock.Verify();
     }
 
     [Test]
     public void GetBusinessObjectClass_WithNonBindableType ()
     {
-      Expect.Call (
-          _typeResolutionServiceMock.GetType (
+      _typeResolutionServiceMock.Setup (
+              _ => _.GetType (
               "Remotion.ObjectBinding.UnitTests.TestDomain.StubBusinessObjectWithoutBindableObjectBaseClassAttributeClass, Remotion.ObjectBinding.UnitTests", true))
-          .Return (typeof (StubBusinessObjectWithoutBindableObjectBaseClassAttributeClass))
-          .Repeat.AtLeastOnce();
-      _mockRepository.ReplayAll();
+          .Returns (typeof (StubBusinessObjectWithoutBindableObjectBaseClassAttributeClass))
+          .Verifiable();
 
       _dataSource.Type = typeof (StubBusinessObjectWithoutBindableObjectBaseClassAttributeClass);
 
@@ -163,25 +163,28 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectDataSour
                   "The type 'Remotion.ObjectBinding.UnitTests.TestDomain.StubBusinessObjectWithoutBindableObjectBaseClassAttributeClass' is not a bindable object implementation. "
                   +"It must either have a mixin derived from BindableObjectMixinBase<T> applied "
                   +"or implement the IBusinessObject interface and apply the BindableObjectBaseClassAttribute.", "type"));
-      _mockRepository.VerifyAll();
+      _mockDesignerHost.Verify();
+      _typeResolutionServiceMock.Verify (_ => _.GetType (
+              "Remotion.ObjectBinding.UnitTests.TestDomain.StubBusinessObjectWithoutBindableObjectBaseClassAttributeClass, Remotion.ObjectBinding.UnitTests", true), Times.AtLeastOnce());
     }
 
     [Test]
     public void GetBusinessObjectClass_WithTypeDerivedFromBaseClass ()
     {
-      Expect.Call (
-          _typeResolutionServiceMock.GetType (
+      _typeResolutionServiceMock.Setup (
+              _ => _.GetType (
               "Remotion.ObjectBinding.UnitTests.TestDomain.ClassDerivedFromBindableObjectBase, Remotion.ObjectBinding.UnitTests", true))
-          .Return (typeof (ClassDerivedFromBindableObjectBase))
-          .Repeat.AtLeastOnce ();
-      _mockRepository.ReplayAll ();
+          .Returns (typeof (ClassDerivedFromBindableObjectBase))
+          .Verifiable();
 
       _dataSource.Type = typeof (ClassDerivedFromBindableObjectBase);
       IBusinessObjectClass actual = _dataSource.BusinessObjectClass;
       Assert.That (actual, Is.Not.Null);
       Assert.That (actual.BusinessObjectProvider, Is.SameAs (BindableObjectProvider.GetProviderForBindableObjectType (typeof (ClassDerivedFromBindableObjectBase))));
 
-      _mockRepository.VerifyAll ();
+      _mockDesignerHost.Verify();
+      _typeResolutionServiceMock.Verify (_ => _.GetType (
+              "Remotion.ObjectBinding.UnitTests.TestDomain.ClassDerivedFromBindableObjectBase, Remotion.ObjectBinding.UnitTests", true), Times.AtLeastOnce());
     }
   }
 }

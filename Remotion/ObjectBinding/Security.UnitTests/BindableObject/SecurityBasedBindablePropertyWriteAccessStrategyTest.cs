@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.ObjectMothers;
@@ -29,7 +30,6 @@ using Remotion.Reflection;
 using Remotion.Security;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.Security.UnitTests.BindableObject
 {
@@ -38,28 +38,28 @@ namespace Remotion.ObjectBinding.Security.UnitTests.BindableObject
   {
     private SecurableClassWithReferenceType<string> _securableObject;
     private ServiceLocatorScope _serviceLocatorScope;
-    private ISecurityProvider _securityProviderStub;
-    private ISecurityPrincipal _principalStub;
-    private IObjectSecurityStrategy _objectSecurityStrategyMock;
+    private Mock<ISecurityProvider> _securityProviderStub;
+    private Mock<ISecurityPrincipal> _principalStub;
+    private Mock<IObjectSecurityStrategy> _objectSecurityStrategyMock;
     private SecurityBasedBindablePropertyWriteAccessStrategy _strategy;
 
     public override void SetUp ()
     {
       base.SetUp();
 
-      _objectSecurityStrategyMock = MockRepository.GenerateStrictMock<IObjectSecurityStrategy>();
+      _objectSecurityStrategyMock = new Mock<IObjectSecurityStrategy> (MockBehavior.Strict);
 
-      _securableObject = new SecurableClassWithReferenceType<string> (_objectSecurityStrategyMock);
+      _securableObject = new SecurableClassWithReferenceType<string> (_objectSecurityStrategyMock.Object);
 
-      _securityProviderStub = MockRepository.GenerateStub<ISecurityProvider>();
+      _securityProviderStub = new Mock<ISecurityProvider>();
 
-      _principalStub = MockRepository.GenerateStub<ISecurityPrincipal>();
-      var principalProviderStub = MockRepository.GenerateStub<IPrincipalProvider>();
-      principalProviderStub.Stub (_ => _.GetPrincipal()).Return (_principalStub);
+      _principalStub = new Mock<ISecurityPrincipal>();
+      var principalProviderStub = new Mock<IPrincipalProvider>();
+      principalProviderStub.Setup (_ => _.GetPrincipal()).Returns (_principalStub.Object);
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle (() => _securityProviderStub);
-      serviceLocator.RegisterSingle (() => principalProviderStub);
+      serviceLocator.RegisterSingle (() => _securityProviderStub.Object);
+      serviceLocator.RegisterSingle (() => principalProviderStub.Object);
       _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
 
       _strategy = new SecurityBasedBindablePropertyWriteAccessStrategy();
@@ -103,7 +103,7 @@ namespace Remotion.ObjectBinding.Security.UnitTests.BindableObject
       var actualResult = _strategy.CanWrite (_securableObject, bindableProperty);
 
       Assert.That (actualResult, Is.EqualTo (expectedResult));
-      _objectSecurityStrategyMock.VerifyAllExpectations();
+      _objectSecurityStrategyMock.Verify();
     }
 
     [Test]
@@ -117,7 +117,7 @@ namespace Remotion.ObjectBinding.Security.UnitTests.BindableObject
       var actualResult = _strategy.CanWrite (_securableObject, bindableProperty);
 
       Assert.That (actualResult, Is.EqualTo (expectedResult));
-      _objectSecurityStrategyMock.VerifyAllExpectations();
+      _objectSecurityStrategyMock.Verify();
     }
 
     [Test]
@@ -125,16 +125,16 @@ namespace Remotion.ObjectBinding.Security.UnitTests.BindableObject
     {
       var bindableProperty = CreateBindableProperty ((() => ((ClassWithReferenceType<string>) null).Scalar));
 
-      var businessObjectClassStub = MockRepository.GenerateStub<IBusinessObjectClass>();
-      businessObjectClassStub.Stub (_ => _.Identifier).Return ("TheClass");
+      var businessObjectClassStub = new Mock<IBusinessObjectClass>();
+      businessObjectClassStub.Setup (_ => _.Identifier).Returns ("TheClass");
 
-      var businessObjectStub = MockRepository.GenerateStub<IBusinessObject>();
-      businessObjectStub.Stub (_ => _.BusinessObjectClass).Return (businessObjectClassStub);
+      var businessObjectStub = new Mock<IBusinessObject>();
+      businessObjectStub.Setup (_ => _.BusinessObjectClass).Returns (businessObjectClassStub.Object);
 
       var permissionDeniedException = new PermissionDeniedException ("The Exception");
       BusinessObjectPropertyAccessException actualException;
       var actualResult = _strategy.IsPropertyAccessException (
-          businessObjectStub,
+          businessObjectStub.Object,
           bindableProperty,
           permissionDeniedException,
           out actualException);
@@ -154,13 +154,13 @@ namespace Remotion.ObjectBinding.Security.UnitTests.BindableObject
     {
       var bindableProperty = CreateBindableProperty ((() => ((ClassWithReferenceType<string>) null).Scalar));
 
-      var businessObjectStub = MockRepository.GenerateStub<IBusinessObjectWithIdentity>();
-      businessObjectStub.Stub (_ => _.UniqueIdentifier).Return ("TheIdentifier");
+      var businessObjectStub = new Mock<IBusinessObjectWithIdentity>();
+      businessObjectStub.Setup (_ => _.UniqueIdentifier).Returns ("TheIdentifier");
 
       var permissionDeniedException = new PermissionDeniedException ("The Exception");
       BusinessObjectPropertyAccessException actualException;
       var actualResult = _strategy.IsPropertyAccessException (
-          businessObjectStub,
+          businessObjectStub.Object,
           bindableProperty,
           permissionDeniedException,
           out actualException);
@@ -180,12 +180,12 @@ namespace Remotion.ObjectBinding.Security.UnitTests.BindableObject
     {
       var bindableProperty = CreateBindableProperty ((() => ((ClassWithReferenceType<string>) null).Scalar));
 
-      var businessObjectStub = MockRepository.GenerateStub<IBusinessObject>();
+      var businessObjectStub = new Mock<IBusinessObject>();
 
       var permissionDeniedException = new Exception ("The Exception");
       BusinessObjectPropertyAccessException actualException;
       var actualResult = _strategy.IsPropertyAccessException (
-          businessObjectStub,
+          businessObjectStub.Object,
           bindableProperty,
           permissionDeniedException,
           out actualException);
@@ -211,26 +211,27 @@ namespace Remotion.ObjectBinding.Security.UnitTests.BindableObject
           true,
           false,
           false,
-          MockRepository.GenerateStub<IDefaultValueStrategy>(),
-          MockRepository.GenerateStub<IBindablePropertyReadAccessStrategy>(),
-          MockRepository.GenerateStub<IBindablePropertyWriteAccessStrategy>(),
+          new Mock<IDefaultValueStrategy>().Object,
+          new Mock<IBindablePropertyReadAccessStrategy>().Object,
+          new Mock<IBindablePropertyWriteAccessStrategy>().Object,
           SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>(),
-          MockRepository.GenerateStub<IBusinessObjectPropertyConstraintProvider>());
+          new Mock<IBusinessObjectPropertyConstraintProvider>().Object);
     }
 
     private void ExpectHasAccessOnObjectSecurityStrategy (bool expectedResult, Enum accessType)
     {
-      _objectSecurityStrategyMock.Expect (
+      _objectSecurityStrategyMock.Setup (
           _ => _.HasAccess (
-              Arg.Is (_securityProviderStub),
-              Arg.Is (_principalStub),
-              Arg<IReadOnlyList<AccessType>>.List.Equal (new[] { AccessType.Get (accessType) })))
-          .Return (expectedResult);
+              _securityProviderStub.Object,
+              _principalStub.Object,
+              new[] { AccessType.Get (accessType) }))
+          .Returns (expectedResult)
+          .Verifiable();
     }
 
     protected BindableObjectProvider CreateBindableObjectProviderWithStubBusinessObjectServiceFactory ()
     {
-      return new BindableObjectProvider (BindableObjectMetadataFactory.Create(), MockRepository.GenerateStub<IBusinessObjectServiceFactory>());
+      return new BindableObjectProvider (BindableObjectMetadataFactory.Create(), new Mock<IBusinessObjectServiceFactory>().Object);
     }
   }
 }

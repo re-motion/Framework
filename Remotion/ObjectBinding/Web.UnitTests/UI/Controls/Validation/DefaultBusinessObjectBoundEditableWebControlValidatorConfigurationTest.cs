@@ -1,7 +1,7 @@
-﻿using NUnit.Framework;
+﻿using Moq;
+using NUnit.Framework;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.Validation;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
 {
@@ -13,13 +13,15 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
     {
       var configuration = new DefaultBusinessObjectBoundEditableWebControlValidatorConfiguration();
 
-      var propertyStub = MockRepository.GenerateStub<IBusinessObjectProperty>();
-      var dataSourceStub = MockRepository.GenerateStub<IBusinessObjectDataSource>();
-      var controlStub = MockRepository.GenerateStub<IBusinessObjectBoundEditableWebControl>();
-      controlStub.DataSource = dataSourceStub;
-      controlStub.Property = propertyStub;
+      var propertyStub = new Mock<IBusinessObjectProperty>();
+      var dataSourceStub = new Mock<IBusinessObjectDataSource>();
+      var controlStub = new Mock<IBusinessObjectBoundEditableWebControl>();
+      controlStub.SetupProperty (_ => _.DataSource);
+      controlStub.SetupProperty (_ => _.Property);
+      controlStub.Object.DataSource = dataSourceStub.Object;
+      controlStub.Object.Property = propertyStub.Object;
 
-      Assert.That (configuration.AreOptionalValidatorsEnabled (controlStub), Is.False);
+      Assert.That (configuration.AreOptionalValidatorsEnabled (controlStub.Object), Is.False);
     }
 
     [Test]
@@ -27,11 +29,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
     {
       var configuration = new DefaultBusinessObjectBoundEditableWebControlValidatorConfiguration();
 
-      var controlStub = MockRepository.GenerateStub<IBusinessObjectBoundEditableWebControl>();
-      controlStub.DataSource = null;
-      controlStub.Property = null;
+      var controlStub = new Mock<IBusinessObjectBoundEditableWebControl>();
+      controlStub.Object.DataSource = null;
+      controlStub.Object.Property = null;
 
-      Assert.That (configuration.AreOptionalValidatorsEnabled (controlStub), Is.True);
+      Assert.That (configuration.AreOptionalValidatorsEnabled (controlStub.Object), Is.True);
     }
 
     [Test]
@@ -39,12 +41,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
     {
       var configuration = new DefaultBusinessObjectBoundEditableWebControlValidatorConfiguration();
 
-      var propertyStub = MockRepository.GenerateStub<IBusinessObjectProperty>();
-      var controlStub = MockRepository.GenerateStub<IBusinessObjectBoundEditableWebControl>();
-      controlStub.DataSource = null;
-      controlStub.Property = propertyStub;
+      var propertyStub = new Mock<IBusinessObjectProperty>();
+      var controlStub = new Mock<IBusinessObjectBoundEditableWebControl>();
+      controlStub.Object.DataSource = null;
+      controlStub.Object.Property = propertyStub.Object;
 
-      Assert.That (configuration.AreOptionalValidatorsEnabled (controlStub), Is.True);
+      Assert.That (configuration.AreOptionalValidatorsEnabled (controlStub.Object), Is.True);
     }
 
     [Test]
@@ -52,12 +54,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
     {
       var configuration = new DefaultBusinessObjectBoundEditableWebControlValidatorConfiguration();
 
-      var dataSourceStub = MockRepository.GenerateStub<IBusinessObjectDataSource>();
-      var controlStub = MockRepository.GenerateStub<IBusinessObjectBoundEditableWebControl>();
-      controlStub.DataSource = dataSourceStub;
-      controlStub.Property = null;
+      var dataSourceStub = new Mock<IBusinessObjectDataSource>();
+      var controlStub = new Mock<IBusinessObjectBoundEditableWebControl>();
+      controlStub.Object.DataSource = dataSourceStub.Object;
+      controlStub.Object.Property = null;
 
-      Assert.That (configuration.AreOptionalValidatorsEnabled (controlStub), Is.True);
+      Assert.That (configuration.AreOptionalValidatorsEnabled (controlStub.Object), Is.True);
     }
   }
 }

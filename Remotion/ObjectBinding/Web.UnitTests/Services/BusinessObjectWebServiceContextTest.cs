@@ -15,43 +15,43 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.ObjectBinding.Web.Services;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.Services
 {
   [TestFixture]
   public class BusinessObjectWebServiceContextTest
   {
-    private IBusinessObjectDataSource _dataSourceStub;
-    private IBusinessObjectClass _dataSourceBusinessObjectClassStub;
-    private IBusinessObject _businessObjectStub;
-    private IBusinessObjectClass _businessObjectBusinessObjectClassStub;
-    private IBusinessObjectWithIdentity _businessObjectWithIdentityStub;
-    private IBusinessObjectProperty _propertyStub;
+    private Mock<IBusinessObjectDataSource> _dataSourceStub;
+    private Mock<IBusinessObjectClass> _dataSourceBusinessObjectClassStub;
+    private Mock<IBusinessObject> _businessObjectStub;
+    private Mock<IBusinessObjectClass> _businessObjectBusinessObjectClassStub;
+    private Mock<IBusinessObjectWithIdentity> _businessObjectWithIdentityStub;
+    private Mock<IBusinessObjectProperty> _propertyStub;
 
     [SetUp]
     public void SetUp ()
     {
-      _dataSourceBusinessObjectClassStub = MockRepository.GenerateStub<IBusinessObjectClass>();
-      _dataSourceBusinessObjectClassStub.Stub (stub => stub.Identifier).Return ("DataSourceBusinessObjectClass");
+      _dataSourceBusinessObjectClassStub = new Mock<IBusinessObjectClass>();
+      _dataSourceBusinessObjectClassStub.Setup (stub => stub.Identifier).Returns ("DataSourceBusinessObjectClass");
 
-      _dataSourceStub = MockRepository.GenerateStub<IBusinessObjectDataSource>();
-      _dataSourceStub.Stub (stub => stub.BusinessObjectClass).Return (_dataSourceBusinessObjectClassStub);
+      _dataSourceStub = new Mock<IBusinessObjectDataSource>();
+      _dataSourceStub.Setup (stub => stub.BusinessObjectClass).Returns (_dataSourceBusinessObjectClassStub.Object);
 
-      _businessObjectBusinessObjectClassStub = MockRepository.GenerateStub<IBusinessObjectClass>();
-      _businessObjectBusinessObjectClassStub.Stub (stub => stub.Identifier).Return ("BusinessObjectBusinessObjectClass");
+      _businessObjectBusinessObjectClassStub = new Mock<IBusinessObjectClass>();
+      _businessObjectBusinessObjectClassStub.Setup (stub => stub.Identifier).Returns ("BusinessObjectBusinessObjectClass");
 
-      _businessObjectStub = MockRepository.GenerateStub<IBusinessObject>();
-      _businessObjectStub.Stub (stub => stub.BusinessObjectClass).Return (_businessObjectBusinessObjectClassStub);
+      _businessObjectStub = new Mock<IBusinessObject>();
+      _businessObjectStub.Setup (stub => stub.BusinessObjectClass).Returns (_businessObjectBusinessObjectClassStub.Object);
 
-      _businessObjectWithIdentityStub = MockRepository.GenerateStub<IBusinessObjectWithIdentity>();
-      _businessObjectWithIdentityStub.Stub (stub => stub.UniqueIdentifier).Return ("BusinessObjectIdentifier");
+      _businessObjectWithIdentityStub = new Mock<IBusinessObjectWithIdentity>();
+      _businessObjectWithIdentityStub.Setup (stub => stub.UniqueIdentifier).Returns ("BusinessObjectIdentifier");
 
-      _propertyStub = MockRepository.GenerateStub<IBusinessObjectProperty>();
-      _propertyStub.Stub (stub => stub.Identifier).Return ("BusinessObjectProperty");
+      _propertyStub = new Mock<IBusinessObjectProperty>();
+      _propertyStub.Setup (stub => stub.Identifier).Returns ("BusinessObjectProperty");
     }
 
     [Test]
@@ -73,7 +73,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.Services
     [Test]
     public void Create_DataSourceSet_BusinessObjectNull_SetsBusinessObjectClass_FromDataSource_BusinessObjectClass ()
     {
-      var serviceContext = BusinessObjectWebServiceContext.Create (_dataSourceStub, null, null);
+      var serviceContext = BusinessObjectWebServiceContext.Create (_dataSourceStub.Object, null, null);
 
       Assert.That (serviceContext.BusinessObjectClass, Is.EqualTo ("DataSourceBusinessObjectClass"));
     }
@@ -81,8 +81,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.Services
     [Test]
     public void Create_BusinessObjectNotNull_SetsBusinessObjectClass_FromDataSource_BusinessObject_BusinessObjectClass ()
     {
-      _dataSourceStub.BusinessObject = _businessObjectStub;
-      var serviceContext = BusinessObjectWebServiceContext.Create (_dataSourceStub, null, null);
+      _dataSourceStub.SetupProperty (_ => _.BusinessObject);
+      _dataSourceStub.Object.BusinessObject = _businessObjectStub.Object;
+      var serviceContext = BusinessObjectWebServiceContext.Create (_dataSourceStub.Object, null, null);
 
       Assert.That (serviceContext.BusinessObjectClass, Is.EqualTo ("BusinessObjectBusinessObjectClass"));
     }
@@ -98,7 +99,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.Services
     [Test]
     public void Create_PropertySet_SetsBusinessObjectProperty ()
     {
-      var serviceContext = BusinessObjectWebServiceContext.Create (null, _propertyStub, null);
+      var serviceContext = BusinessObjectWebServiceContext.Create (null, _propertyStub.Object, null);
 
       Assert.That (serviceContext.BusinessObjectProperty, Is.EqualTo ("BusinessObjectProperty"));
     }
@@ -106,8 +107,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.Services
     [Test]
     public void Create_BusinessObjectNotNullAndHasNoIdentity_SetsBusinessObjectIdentifierNull ()
     {
-      _dataSourceStub.BusinessObject = _businessObjectStub;
-      var serviceContext = BusinessObjectWebServiceContext.Create (_dataSourceStub, null, null);
+      _dataSourceStub.SetupProperty (_ => _.BusinessObject);
+      _dataSourceStub.Object.BusinessObject = _businessObjectStub.Object;
+      var serviceContext = BusinessObjectWebServiceContext.Create (_dataSourceStub.Object, null, null);
 
       Assert.That (serviceContext.BusinessObjectIdentifier, Is.Null);
     }
@@ -115,8 +117,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.Services
     [Test]
     public void Create_BusinessObjectNotNullAndHasIdentity_SetsBusinessObjectIdentifier ()
     {
-      _dataSourceStub.BusinessObject = _businessObjectWithIdentityStub;
-      var serviceContext = BusinessObjectWebServiceContext.Create (_dataSourceStub, null, null);
+      _dataSourceStub.SetupProperty (_ => _.BusinessObject);
+      _dataSourceStub.Object.BusinessObject = _businessObjectWithIdentityStub.Object;
+      var serviceContext = BusinessObjectWebServiceContext.Create (_dataSourceStub.Object, null, null);
 
       Assert.That (serviceContext.BusinessObjectIdentifier, Is.EqualTo ("BusinessObjectIdentifier"));
     }
@@ -148,8 +151,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.Services
     [Test]
     public void SerializeAndDeserialize ()
     {
-      _dataSourceStub.BusinessObject = _businessObjectWithIdentityStub;
-      var serviceContext = BusinessObjectWebServiceContext.Create (_dataSourceStub, _propertyStub, "args");
+      _dataSourceStub.Object.BusinessObject = _businessObjectWithIdentityStub.Object;
+      var serviceContext = BusinessObjectWebServiceContext.Create (_dataSourceStub.Object, _propertyStub.Object, "args");
       var deserialized = Serializer.SerializeAndDeserialize (serviceContext);
       Assert.That (deserialized.BusinessObjectClass, Is.EqualTo (serviceContext.BusinessObjectClass));
       Assert.That (deserialized.BusinessObjectProperty, Is.EqualTo (serviceContext.BusinessObjectProperty));
