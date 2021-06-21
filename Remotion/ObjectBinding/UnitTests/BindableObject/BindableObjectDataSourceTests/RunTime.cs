@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.NUnit;
@@ -22,6 +24,7 @@ using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.UnitTests.TestDomain;
 using Remotion.Utilities;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectDataSourceTests
 {
@@ -46,9 +49,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectDataSour
     [Test]
     public void GetAndSetBusinessObject ()
     {
-      IBusinessObject businessObject = MockRepository.GenerateStub<IBusinessObject>();
-      ((IBusinessObjectDataSource) _dataSource).BusinessObject = businessObject;
-      Assert.That (((IBusinessObjectDataSource) _dataSource).BusinessObject, Is.SameAs (businessObject));
+      var businessObject = new Mock<IBusinessObject>();
+      ((IBusinessObjectDataSource) _dataSource).BusinessObject = businessObject.Object;
+      Assert.That (((IBusinessObjectDataSource) _dataSource).BusinessObject, Is.SameAs (businessObject.Object));
     }
 
     [Test]

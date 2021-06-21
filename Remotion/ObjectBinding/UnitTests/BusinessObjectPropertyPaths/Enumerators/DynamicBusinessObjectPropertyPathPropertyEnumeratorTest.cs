@@ -15,9 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.ObjectBinding.BusinessObjectPropertyPaths.Enumerators;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Enumerators
 {
@@ -46,7 +49,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Enumerato
       Assert.That (enumerator.MoveNext (thirdClassStub), Is.True);
       Assert.That (enumerator.Current, Is.SameAs (thirdPropertyStub));
 
-      Assert.That (enumerator.MoveNext (MockRepository.GenerateStub<IBusinessObjectClass>()), Is.False);
+      Assert.That (enumerator.MoveNext (new Mock<IBusinessObjectClass>().Object), Is.False);
       Assert.That (()=>enumerator.Current, Throws.InvalidOperationException.With.Message.EqualTo ("Enumeration already finished."));
     }
 
@@ -55,7 +58,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Enumerato
     {
       var firstClassStub = CreateClassStub();
       var secondClassStub = CreateClassStub();
-      secondClassStub.Stub (_ => _.Identifier).Return ("SecondClass");
+      secondClassStub.Setup (_ => _.Identifier).Returns ("SecondClass");
 
       var firstPropertyStub = CreateReferencePropertyStub (firstClassStub, "FirstProperty", secondClassStub);
 
@@ -73,7 +76,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Enumerato
     {
       var firstClassStub = CreateClassStub();
       var secondClassStub = CreateClassStub();
-      secondClassStub.Stub (_ => _.Identifier).Return ("SecondClass");
+      secondClassStub.Setup (_ => _.Identifier).Returns ("SecondClass");
 
       var firstPropertyStub = CreateReferencePropertyStub (firstClassStub, "FirstProperty", secondClassStub);
 

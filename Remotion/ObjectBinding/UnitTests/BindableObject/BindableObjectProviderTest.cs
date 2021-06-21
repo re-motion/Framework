@@ -16,6 +16,8 @@
 // 
 using System;
 using System.Linq;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Mixins;
@@ -25,6 +27,7 @@ using Remotion.ObjectBinding.UnitTests.TestDomain;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject
 {
@@ -32,8 +35,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
   public class BindableObjectProviderTest : TestBase
   {
     private BindableObjectProvider _provider;
-    private IMetadataFactory _metadataFactoryStub;
-    private IBusinessObjectServiceFactory _serviceFactoryStub;
+    private Mock<IMetadataFactory> _metadataFactoryStub;
+    private Mock<IBusinessObjectServiceFactory> _serviceFactoryStub;
 
     public override void SetUp ()
     {
@@ -41,8 +44,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
 
       _provider = new BindableObjectProvider();
       BindableObjectProvider.SetProvider (typeof (BindableObjectProviderAttribute), _provider);
-      _metadataFactoryStub = MockRepository.GenerateStub<IMetadataFactory>();
-      _serviceFactoryStub = MockRepository.GenerateStub<IBusinessObjectServiceFactory>();
+      _metadataFactoryStub = new Mock<IMetadataFactory>();
+      _serviceFactoryStub = new Mock<IBusinessObjectServiceFactory>();
     }
 
     [Test]
@@ -159,11 +162,10 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetBindableObjectClass ()
     {
-      var mockRepository = new MockRepository();
-      var metadataFactoryMock = mockRepository.StrictMock<IMetadataFactory>();
-      var classReflectorMock = mockRepository.StrictMock<IClassReflector>();
+      var metadataFactoryMock = new Mock<IMetadataFactory> (MockBehavior.Strict);
+      var classReflectorMock = new Mock<IClassReflector> (MockBehavior.Strict);
 
-      var provider = new BindableObjectProvider (metadataFactoryMock, _serviceFactoryStub);
+      var provider = new BindableObjectProvider (metadataFactoryMock.Object, _serviceFactoryStub.Object);
       BindableObjectProvider.SetProvider (typeof (BindableObjectProviderAttribute), provider);
       Type targetType = typeof (SimpleBusinessObjectClass);
       Type concreteType = MixinTypeUtility.GetConcreteMixedType (targetType);
@@ -173,14 +175,13 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
           SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>(),
           new PropertyBase[0]);
 
-      Expect.Call (metadataFactoryMock.CreateClassReflector (targetType, provider)).Return (classReflectorMock);
-      Expect.Call (classReflectorMock.GetMetadata()).Return (expectedBindableObjectClass);
-
-      mockRepository.ReplayAll();
+      metadataFactoryMock.Setup (_ => _.CreateClassReflector (targetType, provider)).Returns (classReflectorMock.Object).Verifiable();
+      classReflectorMock.Setup (_ => _.GetMetadata()).Returns (expectedBindableObjectClass).Verifiable();
 
       BindableObjectClass actual = provider.GetBindableObjectClass (targetType);
 
-      mockRepository.VerifyAll();
+      metadataFactoryMock.Verify();
+      classReflectorMock.Verify();
 
       Assert.That (actual, Is.SameAs (expectedBindableObjectClass));
     }
@@ -226,8 +227,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetMetadataFactoryForType_WithCustomMetadataFactory ()
     {
-      var provider = new BindableObjectProvider (_metadataFactoryStub, _serviceFactoryStub);
-      Assert.That (provider.MetadataFactory, Is.SameAs (_metadataFactoryStub));
+      var provider = new BindableObjectProvider (_metadataFactoryStub.Object, _serviceFactoryStub.Object);
+      Assert.That (provider.MetadataFactory, Is.SameAs (_metadataFactoryStub.Object));
     }
 
     [Test]
@@ -250,8 +251,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetServiceFactoryForType_WithCustomServiceFactory ()
     {
-      var provider = new BindableObjectProvider (_metadataFactoryStub, _serviceFactoryStub);
-      Assert.That (provider.ServiceFactory, Is.SameAs (_serviceFactoryStub));
+      var provider = new BindableObjectProvider (_metadataFactoryStub.Object, _serviceFactoryStub.Object);
+      Assert.That (provider.ServiceFactory, Is.SameAs (_serviceFactoryStub.Object));
     }
 
     [Test]

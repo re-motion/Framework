@@ -17,6 +17,8 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Mixins.CodeGeneration;
@@ -26,6 +28,7 @@ using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject
 {
@@ -103,7 +106,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       var reflector = new PropertyReflector (
           property,
           provider,
-          MockRepository.GenerateStub<IDefaultValueStrategy>(),
+          new Mock<IDefaultValueStrategy>().Object,
           bindablePropertyReadAccessStrategy ?? SafeServiceLocator.Current.GetInstance<IBindablePropertyReadAccessStrategy>(),
           bindablePropertyWriteAccessStrategy ?? SafeServiceLocator.Current.GetInstance<IBindablePropertyWriteAccessStrategy>(),
           bindableObjectGlobalizationService ?? SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>(),
@@ -118,7 +121,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
 
     protected BindableObjectProvider CreateBindableObjectProviderWithStubBusinessObjectServiceFactory ()
     {
-      return new BindableObjectProvider(BindableObjectMetadataFactory.Create(),MockRepository.GenerateStub<IBusinessObjectServiceFactory>());
+      return new BindableObjectProvider(BindableObjectMetadataFactory.Create(),new Mock<IBusinessObjectServiceFactory>().Object);
     }
 
     protected PropertyBase.Parameters CreateParameters (

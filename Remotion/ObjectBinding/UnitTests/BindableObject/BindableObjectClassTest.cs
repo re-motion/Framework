@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Globalization;
 using Remotion.Globalization.ExtensibleEnums;
@@ -27,6 +29,7 @@ using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject
 {
@@ -58,7 +61,6 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
 
     private BindableObjectProvider _bindableObjectProvider;
     private BindableObjectGlobalizationService _bindableObjectGlobalizationService;
-    private MockRepository _mockRepository;
 
     public override void SetUp ()
     {
@@ -68,7 +70,6 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       BusinessObjectProvider.SetProvider<BindableObjectProviderAttribute> (_bindableObjectProvider);
       BusinessObjectProvider.SetProvider<BindableObjectWithIdentityProviderAttribute> (_bindableObjectProvider);
       _bindableObjectGlobalizationService = SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>();
-      _mockRepository = new MockRepository ();
     }
 
     public void Initialize_WithTypeNotUsingBindableObjectMixin ()
@@ -116,25 +117,24 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetDisplayName_WithGlobalizationService ()
     {
-      var mockMemberInformationGlobalizationService = _mockRepository.StrictMock<IMemberInformationGlobalizationService> ();
+      var mockMemberInformationGlobalizationService = new Mock<IMemberInformationGlobalizationService> (MockBehavior.Strict);
       var classReflector = new ClassReflector (
           typeof (ClassWithAllDataTypes),
           _bindableObjectProvider,
           BindableObjectMetadataFactory.Create(),
           new BindableObjectGlobalizationService (
-              MockRepository.GenerateStub<IGlobalizationService>(),
-              mockMemberInformationGlobalizationService,
-              MockRepository.GenerateStub<IEnumerationGlobalizationService>(),
-              MockRepository.GenerateStub<IExtensibleEnumGlobalizationService>()));
+              new Mock<IGlobalizationService>().Object,
+              mockMemberInformationGlobalizationService.Object,
+              new Mock<IEnumerationGlobalizationService>().Object,
+              new Mock<IExtensibleEnumGlobalizationService>().Object));
       var bindableObjectClass = classReflector.GetMetadata ();
 
-      Expect.Call (
-          mockMemberInformationGlobalizationService.TryGetTypeDisplayName (
-              Arg<ITypeInformation>.Matches (c => c.ConvertToRuntimeType() == bindableObjectClass.TargetType),
-              Arg<ITypeInformation>.Matches (c => c.ConvertToRuntimeType() == bindableObjectClass.TargetType),
+      mockMemberInformationGlobalizationService.Setup (_ => _.TryGetTypeDisplayName (
+              It.Is<ITypeInformation> (c => c.ConvertToRuntimeType() == bindableObjectClass.TargetType),
+              It.Is<ITypeInformation> (c => c.ConvertToRuntimeType() == bindableObjectClass.TargetType),
               out Arg<string>.Out ("MockString").Dummy))
-          .Return (true);
-      _mockRepository.ReplayAll ();
+          .Returns (true)
+          .Verifiable();
 
       Assert.That (bindableObjectClass.GetDisplayName (), Is.EqualTo ("MockString"));
     }
@@ -346,7 +346,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       return new StubPropertyBase (
           new PropertyBase.Parameters (
               new BindableObjectProvider (
-                  MockRepository.GenerateStub<IMetadataFactory> (), MockRepository.GenerateStub<IBusinessObjectServiceFactory> ()),
+                  new Mock<IMetadataFactory>().Object, new Mock<IBusinessObjectServiceFactory>().Object),
               GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Scalar"),
               typeof (SimpleReferenceType),
               new Lazy<Type> (() => typeof (SimpleReferenceType)),
@@ -355,10 +355,10 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               false,
               false,
               new BindableObjectDefaultValueStrategy (),
-              MockRepository.GenerateStub<IBindablePropertyReadAccessStrategy>(),
-              MockRepository.GenerateStub<IBindablePropertyWriteAccessStrategy>(),
+              new Mock<IBindablePropertyReadAccessStrategy>().Object,
+              new Mock<IBindablePropertyWriteAccessStrategy>().Object,
               SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>(),
-              MockRepository.GenerateStub<IBusinessObjectPropertyConstraintProvider>()));
+              new Mock<IBusinessObjectPropertyConstraintProvider>().Object));
     }
   }
 }

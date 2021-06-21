@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Mixins;
@@ -25,13 +27,13 @@ using Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests.Tes
 using Remotion.ObjectBinding.UnitTests.TestDomain;
 using Remotion.ServiceLocation;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
 {
   [TestFixture]
   public class GetReferenceClass : TestBase
   {
-    private MockRepository _mockRepository;
     private BindableObjectProvider _bindableObjectProvider;
     private BindableObjectProvider _bindableObjectWithIdentityProvider;
 
@@ -39,7 +41,6 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     {
       base.SetUp();
 
-      _mockRepository = new MockRepository();
       _bindableObjectProvider = CreateBindableObjectProviderWithStubBusinessObjectServiceFactory();
       _bindableObjectWithIdentityProvider = CreateBindableObjectProviderWithStubBusinessObjectServiceFactory();
 
@@ -61,10 +62,10 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
               false,
               false,
               new BindableObjectDefaultValueStrategy(),
-              MockRepository.GenerateStub<IBindablePropertyReadAccessStrategy>(),
-              MockRepository.GenerateStub<IBindablePropertyWriteAccessStrategy>(),
+              new Mock<IBindablePropertyReadAccessStrategy>().Object,
+              new Mock<IBindablePropertyWriteAccessStrategy>().Object,
               SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>(),
-              MockRepository.GenerateStub<IBusinessObjectPropertyConstraintProvider>()));
+              new Mock<IBusinessObjectPropertyConstraintProvider>().Object));
 
       Assert.That (property.ReferenceClass, Is.SameAs (BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (ClassWithIdentity))));
       Assert.That (
@@ -90,10 +91,10 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
               false,
               false,
               new BindableObjectDefaultValueStrategy (),
-              MockRepository.GenerateStub<IBindablePropertyReadAccessStrategy>(),
-              MockRepository.GenerateStub<IBindablePropertyWriteAccessStrategy>(),
+              new Mock<IBindablePropertyReadAccessStrategy>().Object,
+              new Mock<IBindablePropertyWriteAccessStrategy>().Object,
               SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>(),
-              MockRepository.GenerateStub<IBusinessObjectPropertyConstraintProvider>()));
+              new Mock<IBusinessObjectPropertyConstraintProvider>().Object));
 
       Assert.That (property.ReferenceClass, Is.SameAs (BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (ClassDerivedFromBindableObjectBase))));
       Assert.That (
@@ -108,20 +109,19 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     [Test]
     public void UseBusinessObjectClassService ()
     {
-      IBusinessObjectClassService mockService = _mockRepository.StrictMock<IBusinessObjectClassService>();
-      IBusinessObjectClass expectedClass = _mockRepository.Stub<IBusinessObjectClass>();
-      IBusinessObject businessObjectFromOtherBusinessObjectProvider = _mockRepository.Stub<IBusinessObject>();
-      Type typeFromOtherBusinessObjectProvider = businessObjectFromOtherBusinessObjectProvider.GetType();
+      var mockService = new Mock<IBusinessObjectClassService> (MockBehavior.Strict);
+      var expectedClass = new Mock<IBusinessObjectClass>();
+      var businessObjectFromOtherBusinessObjectProvider = new Mock<IBusinessObject>();
+      Type typeFromOtherBusinessObjectProvider = businessObjectFromOtherBusinessObjectProvider.Object.GetType();
       IBusinessObjectReferenceProperty property = CreateProperty ("Scalar", typeFromOtherBusinessObjectProvider);
 
-      Expect.Call (mockService.GetBusinessObjectClass (typeFromOtherBusinessObjectProvider)).Return (expectedClass);
-      _mockRepository.ReplayAll();
+      mockService.Setup (_ => _.GetBusinessObjectClass (typeFromOtherBusinessObjectProvider)).Returns (expectedClass.Object).Verifiable();
 
-      _bindableObjectProvider.AddService (typeof (IBusinessObjectClassService), mockService);
+      _bindableObjectProvider.AddService (typeof (IBusinessObjectClassService), mockService.Object);
       IBusinessObjectClass actualClass = property.ReferenceClass;
 
-      _mockRepository.VerifyAll();
-      Assert.That (actualClass, Is.SameAs (expectedClass));
+      mockService.Verify();
+      Assert.That (actualClass, Is.SameAs (expectedClass.Object));
     }
 
     [Test]

@@ -16,6 +16,8 @@
 // 
 using System;
 using System.Reflection;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Globalization;
 using Remotion.Globalization.ExtensibleEnums;
@@ -26,6 +28,7 @@ using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject
 {
@@ -34,8 +37,6 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
   {
     private BindableObjectProvider _businessObjectProvider;
     private IBusinessObjectClass _businessObjectClass;
-
-    private MockRepository _mockRepository;
     private BindableObjectGlobalizationService _bindableObjectGlobalizationService;
 
     public override void SetUp ()
@@ -50,8 +51,6 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
           BindableObjectMetadataFactory.Create(),
           _bindableObjectGlobalizationService);
       _businessObjectClass = classReflector.GetMetadata();
-
-      _mockRepository = new MockRepository();
     }
 
     [Test]
@@ -107,31 +106,30 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetDisplayName_WithGlobalizationSerivce ()
     {
-      var mockglobalizationService = _mockRepository.StrictMock<IGlobalizationService>();
+      var mockglobalizationService = new Mock<IGlobalizationService> (MockBehavior.Strict);
       IBusinessObjectBooleanProperty property = CreateProperty (
           "Scalar",
           bindableObjectGlobalizationService: new BindableObjectGlobalizationService (
-              mockglobalizationService,
-              MockRepository.GenerateStub<IMemberInformationGlobalizationService>(),
-              MockRepository.GenerateStub<IEnumerationGlobalizationService>(),
-              MockRepository.GenerateStub<IExtensibleEnumGlobalizationService>()));
+              mockglobalizationService.Object,
+              new Mock<IMemberInformationGlobalizationService>().Object,
+              new Mock<IEnumerationGlobalizationService>().Object,
+              new Mock<IExtensibleEnumGlobalizationService>().Object));
 
-      var mockResourceManager = _mockRepository.StrictMock<IResourceManager>();
-      Expect.Call (
-          mockglobalizationService.GetResourceManager (TypeAdapter.Create (typeof (BindableObjectGlobalizationService.ResourceIdentifier))))
-          .Return (mockResourceManager);
+      var mockResourceManager = new Mock<IResourceManager> (MockBehavior.Strict);
+      mockglobalizationService.Setup (_ => _.GetResourceManager (TypeAdapter.Create (typeof (BindableObjectGlobalizationService.ResourceIdentifier))))
+          .Returns (mockResourceManager.Object)
+          .Verifiable();
 
-      Expect.Call (
-          mockResourceManager.TryGetString (
-              Arg.Is ("Remotion.ObjectBinding.BindableObject.BindableObjectGlobalizationService.True"),
+      mockResourceManager.Setup (_ => _.TryGetString (
+              "Remotion.ObjectBinding.BindableObject.BindableObjectGlobalizationService.True",
               out Arg<string>.Out ("MockTrue").Dummy))
-          .Return (true);
-
-      _mockRepository.ReplayAll();
+          .Returns (true)
+          .Verifiable();
 
       string actual = property.GetDisplayName (true);
 
-      _mockRepository.VerifyAll();
+      mockglobalizationService.Verify();
+      mockResourceManager.Verify();
       Assert.That (actual, Is.EqualTo ("MockTrue"));
     }
 

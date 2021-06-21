@@ -15,9 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.ObjectBinding.BusinessObjectPropertyPaths.Results;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Results
 {
@@ -29,10 +32,10 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Results
     [SetUp]
     public void SetUp ()
     {
-      var businessObjectProviderStub = MockRepository.GenerateStub<IBusinessObjectProvider>();
-      businessObjectProviderStub.Stub (_ => _.GetNotAccessiblePropertyStringPlaceHolder()).Return ("X");
+      var businessObjectProviderStub = new Mock<IBusinessObjectProvider>();
+      businessObjectProviderStub.Setup (_ => _.GetNotAccessiblePropertyStringPlaceHolder()).Returns ("X");
 
-      _result = new NotAccessibleBusinessObjectPropertyPathResult(businessObjectProviderStub);
+      _result = new NotAccessibleBusinessObjectPropertyPathResult(businessObjectProviderStub.Object);
     }
 
     [Test]

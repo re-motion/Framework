@@ -15,9 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBaseTests.TestDomain;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBaseTests
 {
@@ -25,43 +28,42 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
   [TestFixture]
   public class BusinessObject
   {
-    private IBusinessObjectReferenceProperty _referencePropertyStub;
-    private IBusinessObjectDataSource _referencedDataSourceStub;
+    private Mock<IBusinessObjectReferenceProperty> _referencePropertyStub;
+    private Mock<IBusinessObjectDataSource> _referencedDataSourceStub;
 
     [SetUp]
     public void SetUp ()
     {
-      _referencedDataSourceStub = MockRepository.GenerateStub<IBusinessObjectDataSource>();
-      _referencedDataSourceStub.BusinessObject = MockRepository.GenerateStub<IBusinessObject>();
-      _referencedDataSourceStub.Stub (_ => _.BusinessObjectClass).Return (MockRepository.GenerateStub<IBusinessObjectClass>());
-      _referencePropertyStub = MockRepository.GenerateStub<IBusinessObjectReferenceProperty> ();
-      _referencePropertyStub.Stub (_ => _.ReflectedClass).Return (MockRepository.GenerateStub<IBusinessObjectClass>());
+      _referencedDataSourceStub = new Mock<IBusinessObjectDataSource>();
+      _referencedDataSourceStub.Object.BusinessObject = new Mock<IBusinessObject>().Object;
+      _referencedDataSourceStub.Setup (_ => _.BusinessObjectClass).Returns (new Mock<IBusinessObjectClass>().Object);
+      _referencePropertyStub = new Mock<IBusinessObjectReferenceProperty>();
+      _referencePropertyStub.Setup (_ => _.ReflectedClass).Returns (new Mock<IBusinessObjectClass>().Object);
     }
 
     [Test]
     public void SetValue_OldValueIsNewlyCreatedDefaultValue ()
     {
-      _referencedDataSourceStub.BusinessObject.Stub (stub => stub.GetProperty (_referencePropertyStub)).Return (null).Repeat.Once ();
-      _referencePropertyStub.Stub (stub => stub.SupportsDefaultValue).Return (true);
-      _referencePropertyStub.Stub (stub => stub.SupportsDelete).Return (true);
-      var oldValue = MockRepository.GenerateStub<IBusinessObject> ();
-      _referencePropertyStub.Stub (stub => stub.CreateDefaultValue (_referencedDataSourceStub.BusinessObject))
-          .Return (oldValue)
-          .Repeat.Once ();
+      _referencedDataSourceStub.Object.BusinessObject.Setup (stub => stub.GetProperty (_referencePropertyStub.Object)).Returns ((object) null);
+      _referencePropertyStub.Setup (stub => stub.SupportsDefaultValue).Returns (true);
+      _referencePropertyStub.Setup (stub => stub.SupportsDelete).Returns (true);
+      var oldValue = new Mock<IBusinessObject>();
+      _referencePropertyStub.Setup (stub => stub.CreateDefaultValue (_referencedDataSourceStub.Object.BusinessObject))
+          .Returns (oldValue.Object);
 
-      var referenceDataSource = new TestableBusinessObjectReferenceDataSource (_referencedDataSourceStub, _referencePropertyStub);
+      var referenceDataSource = new TestableBusinessObjectReferenceDataSource (_referencedDataSourceStub.Object, _referencePropertyStub.Object);
       referenceDataSource.Mode = DataSourceMode.Edit;
 
       referenceDataSource.LoadValue (false);
 
       Assert.That (referenceDataSource.HasBusinessObjectCreated, Is.True);
-      Assert.That (referenceDataSource.BusinessObject, Is.SameAs (oldValue));
+      Assert.That (referenceDataSource.BusinessObject, Is.SameAs (oldValue.Object));
 
       referenceDataSource.BusinessObject = null;
 
       Assert.That (referenceDataSource.HasBusinessObjectCreated, Is.False);
       Assert.That (referenceDataSource.BusinessObject, Is.Null);
-      _referencePropertyStub.AssertWasCalled (stub => stub.Delete (_referencedDataSourceStub.BusinessObject, oldValue));
+      _referencePropertyStub.Verify (stub => stub.CreateDefaultValue (_referencedDataSourceStub.Object.BusinessObject), Times.Once());
     }
   }
 #pragma warning restore 612,618

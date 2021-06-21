@@ -15,25 +15,26 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting.NUnit;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.UnitTests.TestDomain;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject
 {
   [TestFixture]
   public class ConstantEnumerationValueFilterTest : EnumerationTestBase
   {
-    private MockRepository _mockRepository;
 
     public override void SetUp ()
     {
       base.SetUp ();
 
-      _mockRepository = new MockRepository ();
-      _mockRepository.StrictMock<IBusinessObject> ();
+      new Mock<IBusinessObject> (MockBehavior.Strict).Object;
     }
     
     [Test]
@@ -60,32 +61,32 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void IsEnabled_WithFalse ()
     {
-      IBusinessObject mockBusinessObject  =_mockRepository.StrictMock<IBusinessObject>();
-      IBusinessObjectEnumerationProperty mockProperty = _mockRepository.StrictMock<IBusinessObjectEnumerationProperty>();
+      var mockBusinessObject  =new Mock<IBusinessObject> (MockBehavior.Strict);
+      var mockProperty = new Mock<IBusinessObjectEnumerationProperty> (MockBehavior.Strict);
 
       IEnumerationValueFilter filter = new ConstantEnumerationValueFilter (new Enum[] { TestEnum.Value1, TestEnum.Value4 });
 
-      _mockRepository.ReplayAll();
+      bool actual = filter.IsEnabled (new EnumerationValueInfo (TestEnum.Value1, "Value1", null, true), mockBusinessObject.Object, mockProperty.Object);
 
-      bool actual = filter.IsEnabled (new EnumerationValueInfo (TestEnum.Value1, "Value1", null, true), mockBusinessObject, mockProperty);
-
-      _mockRepository.VerifyAll();
+      mockBusinessObject.Verify();
+      mockProperty.Verify();
       Assert.That (actual, Is.False);
     }
 
     [Test]
     public void IsEnabled_WithTrue ()
     {
-      IBusinessObject mockBusinessObject = _mockRepository.StrictMock<IBusinessObject> ();
-      IBusinessObjectEnumerationProperty mockProperty = _mockRepository.StrictMock<IBusinessObjectEnumerationProperty> ();
+      var mockBusinessObject = new Mock<IBusinessObject> (MockBehavior.Strict);
+      var mockProperty = new Mock<IBusinessObjectEnumerationProperty> (MockBehavior.Strict);
 
       IEnumerationValueFilter filter = new ConstantEnumerationValueFilter (new Enum[] { TestEnum.Value1, TestEnum.Value4 });
 
       _mockRepository.ReplayAll ();
 
-      bool actual = filter.IsEnabled (new EnumerationValueInfo (TestEnum.Value2, "Value2", null, true), mockBusinessObject, mockProperty);
+      bool actual = filter.IsEnabled (new EnumerationValueInfo (TestEnum.Value2, "Value2", null, true), mockBusinessObject.Object, mockProperty.Object);
 
-      _mockRepository.VerifyAll ();
+      mockBusinessObject.Verify();
+      mockProperty.Verify();
       Assert.That (actual, Is.True);
     }
   }

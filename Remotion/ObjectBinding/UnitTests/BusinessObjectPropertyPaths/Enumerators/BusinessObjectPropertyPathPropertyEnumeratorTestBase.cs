@@ -15,7 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Enumerators
 {
@@ -23,18 +26,18 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Enumerato
   {
     protected static IBusinessObjectClass CreateClassStub ()
     {
-      var classStub = MockRepository.GenerateStub<IBusinessObjectClass>();
-      classStub.Stub (_ => _.BusinessObjectProvider).Return (MockRepository.GenerateStub<IBusinessObjectProvider>());
-      classStub.BusinessObjectProvider.Stub (_ => _.GetPropertyPathSeparator()).Return (':');
-      return classStub;
+      var classStub = new Mock<IBusinessObjectClass>();
+      classStub.Setup (_ => _.BusinessObjectProvider).Returns (new Mock<IBusinessObjectProvider>().Object);
+      classStub.Object.BusinessObjectProvider.Setup (_ => _.GetPropertyPathSeparator()).Returns (':');
+      return classStub.Object;
     }
 
     protected IBusinessObjectProperty CreatePropertyStub (IBusinessObjectClass classStub, string propertyIdentifier)
     {
-      var propertyStub = MockRepository.GenerateStub<IBusinessObjectProperty>();
-      propertyStub.Stub (_ => _.Identifier).Return (propertyIdentifier);
-      classStub.Stub (_ => _.GetPropertyDefinition (propertyIdentifier)).Return (propertyStub);
-      return propertyStub;
+      var propertyStub = new Mock<IBusinessObjectProperty>();
+      propertyStub.Setup (_ => _.Identifier).Returns (propertyIdentifier);
+      classStub.Setup (_ => _.GetPropertyDefinition (propertyIdentifier)).Returns (propertyStub.Object);
+      return propertyStub.Object;
     }
 
     protected IBusinessObjectReferenceProperty CreateReferencePropertyStub (
@@ -42,11 +45,11 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Enumerato
         string propertyIdentifier,
         IBusinessObjectClass referenceClassStub)
     {
-      var propertyStub = MockRepository.GenerateStub<IBusinessObjectReferenceProperty>();
-      propertyStub.Stub (_ => _.Identifier).Return (propertyIdentifier);
-      propertyStub.Stub (_ => _.ReferenceClass).Return (referenceClassStub);
-      classStub.Stub (_ => _.GetPropertyDefinition (propertyIdentifier)).Return (propertyStub);
-      return propertyStub;
+      var propertyStub = new Mock<IBusinessObjectReferenceProperty>();
+      propertyStub.Setup (_ => _.Identifier).Returns (propertyIdentifier);
+      propertyStub.Setup (_ => _.ReferenceClass).Returns (referenceClassStub);
+      classStub.Setup (_ => _.GetPropertyDefinition (propertyIdentifier)).Returns (propertyStub.Object);
+      return propertyStub.Object;
     }
   }
 }

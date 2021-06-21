@@ -15,9 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.ObjectBinding.BusinessObjectPropertyPaths.Enumerators;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Enumerators
 {
@@ -59,7 +62,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Enumerato
 
       Assert.That (enumerator.MoveNext (classStub), Is.True);
 
-      Assert.That (enumerator.MoveNext (MockRepository.GenerateStub<IBusinessObjectClass>()), Is.False);
+      Assert.That (enumerator.MoveNext (new Mock<IBusinessObjectClass>().Object), Is.False);
       Assert.That (() => enumerator.Current, Throws.InvalidOperationException.With.Message.EqualTo ("Enumeration already finished."));
       Assert.That (enumerator.HasNext, Is.False);
     }
@@ -74,8 +77,8 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Enumerato
 
       Assert.That (enumerator.MoveNext (classStub), Is.True);
 
-      Assert.That (enumerator.MoveNext (MockRepository.GenerateStub<IBusinessObjectClass>()), Is.False);
-      Assert.That (enumerator.MoveNext (MockRepository.GenerateStub<IBusinessObjectClass>()), Is.False);
+      Assert.That (enumerator.MoveNext (new Mock<IBusinessObjectClass>().Object), Is.False);
+      Assert.That (enumerator.MoveNext (new Mock<IBusinessObjectClass>().Object), Is.False);
       Assert.That (() => enumerator.Current, Throws.InvalidOperationException.With.Message.EqualTo ("Enumeration already finished."));
       Assert.That (enumerator.HasNext, Is.False);
     }
@@ -98,7 +101,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Enumerato
       Assert.That (enumerator.Current, Is.SameAs (secondPropertyStub));
       Assert.That (enumerator.HasNext, Is.False);
 
-      Assert.That (enumerator.MoveNext (MockRepository.GenerateStub<IBusinessObjectClass>()), Is.False);
+      Assert.That (enumerator.MoveNext (new Mock<IBusinessObjectClass>().Object), Is.False);
       Assert.That (() => enumerator.Current, Throws.InvalidOperationException.With.Message.EqualTo ("Enumeration already finished."));
       Assert.That (enumerator.HasNext, Is.False);
     }
