@@ -15,11 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.UnitTests.BusinessObjectStringFormatterServiceTests
 {
@@ -29,7 +27,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectStringFormatterServiceT
     private BusinessObjectStringFormatterService _stringFormatterService;
     private Mock<IBusinessObject> _mockBusinessObject;
     private Mock<IBusinessObjectNumericProperty> _mockProperty;
-    private IFormattable[] _mockValues;
+    private Mock<IFormattable>[]_mockValues;
 
     [SetUp]
     public void SetUp ()
@@ -37,11 +35,11 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectStringFormatterServiceT
       _stringFormatterService = new BusinessObjectStringFormatterService();
       _mockBusinessObject = new Mock<IBusinessObject> (MockBehavior.Strict);
       _mockProperty = new Mock<IBusinessObjectNumericProperty> (MockBehavior.Strict);
-      _mockValues = new IFormattable[]
+      _mockValues = new Mock<IFormattable>[]
           {
-              new Mock<IFormattable> (MockBehavior.Strict).Object,
-              new Mock<IFormattable> (MockBehavior.Strict).Object,
-              new Mock<IFormattable> (MockBehavior.Strict).Object
+              new Mock<IFormattable> (MockBehavior.Strict),
+              new Mock<IFormattable> (MockBehavior.Strict),
+              new Mock<IFormattable> (MockBehavior.Strict)
           };
     }
 
@@ -49,8 +47,8 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectStringFormatterServiceT
     public void List_WithoutLineCount ()
     {
       _mockProperty.Setup (_ => _.IsList).Returns (true).Verifiable();
-      _mockBusinessObject.Setup (_ => _.GetProperty (_mockProperty.Object)).Returns (_mockValues).Verifiable();
-      _mockValues.Setup (_ => _[0].ToString (null, null)).Returns ("First").Verifiable();
+      _mockBusinessObject.Setup (_ => _.GetProperty (_mockProperty.Object)).Returns (_mockValues.Select (_ => _.Object).ToArray()).Verifiable();
+      _mockValues[0].Setup (_ => _.ToString (null, null)).Returns ("First").Verifiable();
 
       string actual = _stringFormatterService.GetPropertyString (_mockBusinessObject.Object, _mockProperty.Object, null);
 
@@ -63,8 +61,8 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectStringFormatterServiceT
     public void List_WithoutLineCountHavingFormatString ()
     {
       _mockProperty.Setup (_ => _.IsList).Returns (true).Verifiable();
-      _mockBusinessObject.Setup (_ => _.GetProperty (_mockProperty.Object)).Returns (_mockValues).Verifiable();
-      _mockValues.Setup (_ => _[0].ToString ("TheFormatString", null)).Returns ("First").Verifiable();
+      _mockBusinessObject.Setup (_ => _.GetProperty (_mockProperty.Object)).Returns (_mockValues.Select (_ => _.Object).ToArray()).Verifiable();
+      _mockValues[0].Setup (_ => _.ToString ("TheFormatString", null)).Returns ("First").Verifiable();
 
       string actual = _stringFormatterService.GetPropertyString (_mockBusinessObject.Object, _mockProperty.Object, "TheFormatString");
 
@@ -77,9 +75,9 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectStringFormatterServiceT
     public void List_WithLineCountBelowListLength ()
     {
       _mockProperty.Setup (_ => _.IsList).Returns (true).Verifiable();
-      _mockBusinessObject.Setup (_ => _.GetProperty (_mockProperty.Object)).Returns (_mockValues).Verifiable();
-      _mockValues.Setup (_ => _[0].ToString (null, null)).Returns ("First").Verifiable();
-      _mockValues.Setup (_ => _[1].ToString (null, null)).Returns ("Second").Verifiable();
+      _mockBusinessObject.Setup (_ => _.GetProperty (_mockProperty.Object)).Returns (_mockValues.Select (_ => _.Object).ToArray()).Verifiable();
+      _mockValues[0].Setup (_ => _.ToString (null, null)).Returns ("First").Verifiable();
+      _mockValues[1].Setup (_ => _.ToString (null, null)).Returns ("Second").Verifiable();
 
       string actual = _stringFormatterService.GetPropertyString (_mockBusinessObject.Object, _mockProperty.Object, "lines=2");
 
@@ -92,10 +90,10 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectStringFormatterServiceT
     public void List_WithLineCountAboveListLength ()
     {
       _mockProperty.Setup (_ => _.IsList).Returns (true).Verifiable();
-      _mockBusinessObject.Setup (_ => _.GetProperty (_mockProperty.Object)).Returns (_mockValues).Verifiable();
-      _mockValues.Setup (_ => _[0].ToString (null, null)).Returns ("First").Verifiable();
-      _mockValues.Setup (_ => _[1].ToString (null, null)).Returns ("Second").Verifiable();
-      _mockValues.Setup (_ => _[2].ToString (null, null)).Returns ("Third").Verifiable();
+      _mockBusinessObject.Setup (_ => _.GetProperty (_mockProperty.Object)).Returns (_mockValues.Select (_ => _.Object).ToArray()).Verifiable();
+      _mockValues[0].Setup (_ => _.ToString (null, null)).Returns ("First").Verifiable();
+      _mockValues[1].Setup (_ => _.ToString (null, null)).Returns ("Second").Verifiable();
+      _mockValues[2].Setup (_ => _.ToString (null, null)).Returns ("Third").Verifiable();
 
       string actual = _stringFormatterService.GetPropertyString (_mockBusinessObject.Object, _mockProperty.Object, "lines=4");
 
@@ -108,10 +106,10 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectStringFormatterServiceT
     public void List_WithLineCountAll ()
     {
       _mockProperty.Setup (_ => _.IsList).Returns (true).Verifiable();
-      _mockBusinessObject.Setup (_ => _.GetProperty (_mockProperty.Object)).Returns (_mockValues).Verifiable();
-      _mockValues.Setup (_ => _[0].ToString (null, null)).Returns ("First").Verifiable();
-      _mockValues.Setup (_ => _[1].ToString (null, null)).Returns ("Second").Verifiable();
-      _mockValues.Setup (_ => _[2].ToString (null, null)).Returns ("Third").Verifiable();
+      _mockBusinessObject.Setup (_ => _.GetProperty (_mockProperty.Object)).Returns (_mockValues.Select (_ => _.Object).ToArray()).Verifiable();
+      _mockValues[0].Setup (_ => _.ToString (null, null)).Returns ("First").Verifiable();
+      _mockValues[1].Setup (_ => _.ToString (null, null)).Returns ("Second").Verifiable();
+      _mockValues[2].Setup (_ => _.ToString (null, null)).Returns ("Third").Verifiable();
 
       string actual = _stringFormatterService.GetPropertyString (_mockBusinessObject.Object, _mockProperty.Object, "lines=all");
 
@@ -124,8 +122,8 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectStringFormatterServiceT
     public void List_WithInvalidLineCountHavingNonInteger ()
     {
       _mockProperty.Setup (_ => _.IsList).Returns (true).Verifiable();
-      _mockBusinessObject.Setup (_ => _.GetProperty (_mockProperty.Object)).Returns (_mockValues).Verifiable();
-      _mockValues.Setup (_ => _[0].ToString (null, null)).Returns ("First").Verifiable();
+      _mockBusinessObject.Setup (_ => _.GetProperty (_mockProperty.Object)).Returns (_mockValues.Select (_ => _.Object).ToArray()).Verifiable();
+      _mockValues[0].Setup (_ => _.ToString (null, null)).Returns ("First").Verifiable();
 
       string actual = _stringFormatterService.GetPropertyString (_mockBusinessObject.Object, _mockProperty.Object, "lines=X");
 
@@ -138,8 +136,8 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectStringFormatterServiceT
     public void List_WithInvalidLineCountHavingMissingNumber ()
     {
       _mockProperty.Setup (_ => _.IsList).Returns (true).Verifiable();
-      _mockBusinessObject.Setup (_ => _.GetProperty (_mockProperty.Object)).Returns (_mockValues).Verifiable();
-      _mockValues.Setup (_ => _[0].ToString (null, null)).Returns ("First").Verifiable();
+      _mockBusinessObject.Setup (_ => _.GetProperty (_mockProperty.Object)).Returns (_mockValues.Select (_ => _.Object).ToArray()).Verifiable();
+      _mockValues[0].Setup (_ => _.ToString (null, null)).Returns ("First").Verifiable();
 
       string actual = _stringFormatterService.GetPropertyString (_mockBusinessObject.Object, _mockProperty.Object, "lines=");
 
@@ -152,9 +150,9 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectStringFormatterServiceT
     public void List_WithLineCountAndFormatString ()
     {
       _mockProperty.Setup (_ => _.IsList).Returns (true).Verifiable();
-      _mockBusinessObject.Setup (_ => _.GetProperty (_mockProperty.Object)).Returns (_mockValues).Verifiable();
-      _mockValues.Setup (_ => _[0].ToString ("TheFormatString", null)).Returns ("First").Verifiable();
-      _mockValues.Setup (_ => _[1].ToString ("TheFormatString", null)).Returns ("Second").Verifiable();
+      _mockBusinessObject.Setup (_ => _.GetProperty (_mockProperty.Object)).Returns (_mockValues.Select (_ => _.Object).ToArray()).Verifiable();
+      _mockValues[0].Setup (_ => _.ToString ("TheFormatString", null)).Returns ("First").Verifiable();
+      _mockValues[1].Setup (_ => _.ToString ("TheFormatString", null)).Returns ("Second").Verifiable();
 
       string actual = _stringFormatterService.GetPropertyString (_mockBusinessObject.Object, _mockProperty.Object, "lines=2|TheFormatString");
 
@@ -167,9 +165,9 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectStringFormatterServiceT
     public void List_WithLineCountAndOnlySeparator ()
     {
       _mockProperty.Setup (_ => _.IsList).Returns (true).Verifiable();
-      _mockBusinessObject.Setup (_ => _.GetProperty (_mockProperty.Object)).Returns (_mockValues).Verifiable();
-      _mockValues.Setup (_ => _[0].ToString (string.Empty, null)).Returns ("First").Verifiable();
-      _mockValues.Setup (_ => _[1].ToString (string.Empty, null)).Returns ("Second").Verifiable();
+      _mockBusinessObject.Setup (_ => _.GetProperty (_mockProperty.Object)).Returns (_mockValues.Select (_ => _.Object).ToArray()).Verifiable();
+      _mockValues[0].Setup (_ => _.ToString (string.Empty, null)).Returns ("First").Verifiable();
+      _mockValues[1].Setup (_ => _.ToString (string.Empty, null)).Returns ("Second").Verifiable();
 
       string actual = _stringFormatterService.GetPropertyString (_mockBusinessObject.Object, _mockProperty.Object, "lines=2|");
 
@@ -182,9 +180,9 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectStringFormatterServiceT
     public void List_WithLineCountAndFormatStringWithMultipleSeparatorCharacters ()
     {
       _mockProperty.Setup (_ => _.IsList).Returns (true).Verifiable();
-      _mockBusinessObject.Setup (_ => _.GetProperty (_mockProperty.Object)).Returns (_mockValues).Verifiable();
-      _mockValues.Setup (_ => _[0].ToString ("|The|FormatString", null)).Returns ("First").Verifiable();
-      _mockValues.Setup (_ => _[1].ToString ("|The|FormatString", null)).Returns ("Second").Verifiable();
+      _mockBusinessObject.Setup (_ => _.GetProperty (_mockProperty.Object)).Returns (_mockValues.Select (_ => _.Object).ToArray()).Verifiable();
+      _mockValues[0].Setup (_ => _.ToString ("|The|FormatString", null)).Returns ("First").Verifiable();
+      _mockValues[1].Setup (_ => _.ToString ("|The|FormatString", null)).Returns ("Second").Verifiable();
 
       string actual = _stringFormatterService.GetPropertyString (_mockBusinessObject.Object, _mockProperty.Object, "lines=2||The|FormatString");
 

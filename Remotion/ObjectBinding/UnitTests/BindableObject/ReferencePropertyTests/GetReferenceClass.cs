@@ -16,7 +16,6 @@
 // 
 using System;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Mixins;
@@ -26,8 +25,6 @@ using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests.TestDomain;
 using Remotion.ObjectBinding.UnitTests.TestDomain;
 using Remotion.ServiceLocation;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
 {

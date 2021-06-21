@@ -16,11 +16,8 @@
 // 
 using System;
 using Moq;
-using Moq.Protected;
 using Remotion.Collections;
 using Remotion.Collections.DataStore;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.UnitTests.TestDomain
 {

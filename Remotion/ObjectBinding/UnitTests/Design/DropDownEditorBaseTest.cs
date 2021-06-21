@@ -19,11 +19,8 @@ using System.ComponentModel;
 using System.Drawing.Design;
 using System.Windows.Forms.Design;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Design;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.UnitTests.Design
 {
@@ -55,8 +52,9 @@ namespace Remotion.ObjectBinding.UnitTests.Design
           .Returns (_mockEditorControlBase.Object)
           .Verifiable();
       var sequence = new MockSequence();
+      _mockEditorControlBase.SetupProperty (_ => _.Value);
       _mockEditorControlBase.Object.Value = "The input value";
-      _mockWindowsFormsEditorService.Object.DropDownControl (_mockEditorControlBase.Object);
+      _mockWindowsFormsEditorService.Setup (_ => _.DropDownControl (_mockEditorControlBase.Object));
       _mockEditorControlBase.InSequence (sequence).Setup (_ => _.Value).Returns ("The output value").Verifiable();
 
       object actual = _mockDropDownEditorBase.Object.EditValue (_mockTypeDescriptorContext.Object, _mockServiceProvider.Object, "The input value");

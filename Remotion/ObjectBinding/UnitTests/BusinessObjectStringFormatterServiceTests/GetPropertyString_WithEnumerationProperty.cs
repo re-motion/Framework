@@ -16,11 +16,8 @@
 // 
 using System;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.ObjectBinding.UnitTests.TestDomain;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.UnitTests.BusinessObjectStringFormatterServiceTests
 {
@@ -74,7 +71,6 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectStringFormatterServiceT
       _mockProperty.Setup (_ => _.IsList).Returns (false).Verifiable();
       _mockBusinessObject.Setup (_ => _.GetProperty (_mockProperty.Object)).Returns (TestEnum.Value5).Verifiable();
       _mockProperty.Setup (_ => _.GetValueInfoByValue (TestEnum.Value5, _mockBusinessObject.Object)).Returns ((IEnumerationValueInfo) null).Verifiable();
-      _mockRepository.ReplayAll ();
 
       string actual = _stringFormatterService.GetPropertyString (_mockBusinessObject.Object, _mockProperty.Object, null);
 

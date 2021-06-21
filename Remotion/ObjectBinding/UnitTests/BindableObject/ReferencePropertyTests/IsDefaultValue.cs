@@ -16,15 +16,12 @@
 // 
 using System;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Mixins;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BindableObject.Properties;
 using Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests.TestDomain;
 using Remotion.TypePipe;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
 {
@@ -57,9 +54,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
 
       var sequence = new MockSequence();
       mockService.InSequence (sequence).Setup (_ => _.SupportsProperty (property)).Returns (true).Verifiable();
-
-      mockService.Setup (_ => _.IsDefaultValue (stubBusinessObject.Object, property, value.Object, emptyProperties)).Returns (true).Verifiable();
-      _mockRepository.ReplayAll();
+      mockService.InSequence (sequence).Setup (_ => _.IsDefaultValue (stubBusinessObject.Object, property, value.Object, emptyProperties)).Returns (true).Verifiable();
 
       _bindableObjectProviderForDeclaringType.AddService (mockService.Object);
       bool actual = property.IsDefaultValue (stubBusinessObject.Object, value.Object, emptyProperties);
@@ -78,8 +73,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
 
       var sequence = new MockSequence();
       mockService.InSequence (sequence).Setup (_ => _.SupportsProperty (property)).Returns (true).Verifiable();
-
-      mockService.Setup (_ => _.IsDefaultValue (null, property, value.Object, emptyProperties)).Returns (true).Verifiable();
+      mockService.InSequence (sequence).Setup (_ => _.IsDefaultValue (null, property, value.Object, emptyProperties)).Returns (true).Verifiable();
 
       _bindableObjectProviderForPropertyType.AddService (mockService.Object);
       bool actual = property.IsDefaultValue (null, value.Object, emptyProperties);

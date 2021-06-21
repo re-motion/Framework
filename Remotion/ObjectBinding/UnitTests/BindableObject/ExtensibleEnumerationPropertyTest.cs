@@ -17,7 +17,6 @@
 using System;
 using System.Reflection;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.NUnit;
@@ -28,8 +27,6 @@ using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BindableObject.Properties;
 using Remotion.ObjectBinding.UnitTests.TestDomain;
 using Remotion.Reflection;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject
 {
@@ -60,6 +57,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void CreateEnumerationValueInfo_DisplayName_WithGlobalizationService ()
     {
       var extensibleEnumInfo = ExtensibleEnumWithResources.Values.Value1 ().GetValueInfo ();
+      var displayNameOutValue = "DisplayName 1";
       var mockExtensibleEnumerationGlobalizationService = new Mock<IExtensibleEnumGlobalizationService>();
 
       var property = CreateProperty (
@@ -70,7 +68,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               new Mock<IEnumerationGlobalizationService>().Object,
               mockExtensibleEnumerationGlobalizationService.Object));
       mockExtensibleEnumerationGlobalizationService
-          .Setup (mock => mock.TryGetExtensibleEnumValueDisplayName (extensibleEnumInfo.Value, out Arg<string>.Out("DisplayName 1").Dummy))
+          .Setup (mock => mock.TryGetExtensibleEnumValueDisplayName (extensibleEnumInfo.Value, out displayNameOutValue))
           .Returns (true)
           .Verifiable();
 
@@ -103,7 +101,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       // the filter must be called exactly as specified
       filterMock
           .Setup (mock => mock.IsEnabled (
-              It.Is<IEnumerationValueInfo> (                  i => i.Value.Equals (extensibleEnumInfo.Value)
+              It.Is<IEnumerationValueInfo> (
+                  i => i.Value.Equals (extensibleEnumInfo.Value)
                        && i.Identifier == extensibleEnumInfo.Value.ID
                        && i.DisplayName == null
                        && i.IsEnabled),

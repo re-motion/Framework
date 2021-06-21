@@ -17,7 +17,6 @@
 using System;
 using System.Reflection;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Globalization;
 using Remotion.Globalization.ExtensibleEnums;
@@ -27,8 +26,6 @@ using Remotion.ObjectBinding.UnitTests.TestDomain;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject
 {
@@ -106,6 +103,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetDisplayName_WithGlobalizationSerivce ()
     {
+      var outValue = "MockTrue";
+
       var mockglobalizationService = new Mock<IGlobalizationService> (MockBehavior.Strict);
       IBusinessObjectBooleanProperty property = CreateProperty (
           "Scalar",
@@ -122,7 +121,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
 
       mockResourceManager.Setup (_ => _.TryGetString (
               "Remotion.ObjectBinding.BindableObject.BindableObjectGlobalizationService.True",
-              out Arg<string>.Out ("MockTrue").Dummy))
+              out outValue))
           .Returns (true)
           .Verifiable();
 

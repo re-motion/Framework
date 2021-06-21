@@ -16,15 +16,12 @@
 // 
 using System;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Mixins;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BindableObject.Properties;
 using Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests.TestDomain;
 using Remotion.TypePipe;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
 {
@@ -56,8 +53,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
 
       var sequence = new MockSequence();
       mockService.InSequence (sequence).Setup (_ => _.SupportsProperty (property)).Returns (true).Verifiable();
-
-      mockService.Setup (_ => _.Create (stubBusinessObject.Object, property)).Returns (expected.Object).Verifiable();
+      mockService.InSequence (sequence).Setup (_ => _.Create (stubBusinessObject.Object, property)).Returns (expected.Object).Verifiable();
 
       _bindableObjectProviderForDeclaringType.AddService (mockService.Object);
       IBusinessObject actual = property.CreateDefaultValue (stubBusinessObject.Object);

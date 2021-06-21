@@ -17,14 +17,11 @@
 using System;
 using System.Linq;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BindableObject.Properties;
 using Remotion.ObjectBinding.UnitTests.TestDomain;
 using Remotion.ServiceLocation;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject
 {
@@ -90,9 +87,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void CanWrite_WithAllStrategiesReturingTrue_ReturnsTrue ()
     {
       var sequence = new MockSequence();
-      _innerStrategy1.Setup (mock => mock.CanWrite (_businessObject.Object, _property)).Returns (true).Verifiable();
-      _innerStrategy2.Setup (mock => mock.CanWrite (_businessObject.Object, _property)).Returns (true).Verifiable();
-      _innerStrategy3.Setup (mock => mock.CanWrite (_businessObject.Object, _property)).Returns (true).Verifiable();
+      _innerStrategy1.InSequence (sequence).Setup (mock => mock.CanWrite (_businessObject.Object, _property)).Returns (true).Verifiable();
+      _innerStrategy2.InSequence (sequence).Setup (mock => mock.CanWrite (_businessObject.Object, _property)).Returns (true).Verifiable();
+      _innerStrategy3.InSequence (sequence).Setup (mock => mock.CanWrite (_businessObject.Object, _property)).Returns (true).Verifiable();
 
       var result = _strategy.CanWrite (_businessObject.Object, _property);
 
@@ -107,10 +104,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void CanWrite_WithOneStrategyReturingFalse_ReturnsFalse_AndAbortsChecks ()
     {
       var sequence = new MockSequence();
-      _innerStrategy1.Setup (mock => mock.CanWrite (_businessObject.Object, _property)).Returns (true).Verifiable();
-      _innerStrategy2.Setup (mock => mock.CanWrite (_businessObject.Object, _property)).Returns (false).Verifiable();
-      _innerStrategy3.Setup (mock => mock.CanWrite (_businessObject.Object, _property)).Verifiable();
-      _mockRepository.ReplayAll();
+      _innerStrategy1.InSequence (sequence).Setup (mock => mock.CanWrite (_businessObject.Object, _property)).Returns (true).Verifiable();
+      _innerStrategy2.InSequence (sequence).Setup (mock => mock.CanWrite (_businessObject.Object, _property)).Returns (false).Verifiable();
+      _innerStrategy3.InSequence (sequence).Setup (mock => mock.CanWrite (_businessObject.Object, _property)).Verifiable();
 
       var result = _strategy.CanWrite (_businessObject.Object, _property);
 
@@ -125,32 +121,37 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void IsPropertyAccessException_WithAllStrategiesReturningFalse_ReturnsFalse ()
     {
       var exception = new Exception();
+      var expectedException = new BusinessObjectPropertyAccessException ("Unexpected", null);
+      BusinessObjectPropertyAccessException nullOutValue = null;
       var sequence = new MockSequence();
       _innerStrategy1
+            .InSequence (sequence)
             .Setup (
                 mock => mock.IsPropertyAccessException (
                     _businessObject.Object,
                     _property,
                     exception,
-                    out Arg<BusinessObjectPropertyAccessException>.Out (null).Dummy))
+                    out nullOutValue))
             .Returns (false)
             .Verifiable();
       _innerStrategy2
+            .InSequence (sequence)
             .Setup (
                 mock => mock.IsPropertyAccessException (
                     _businessObject.Object,
                     _property,
                     exception,
-                    out Arg<BusinessObjectPropertyAccessException>.Out (new BusinessObjectPropertyAccessException ("Unexpected", null)).Dummy))
+                    out expectedException))
             .Returns (false)
             .Verifiable();
       _innerStrategy3
+            .InSequence (sequence)
             .Setup (
                 mock => mock.IsPropertyAccessException (
                     _businessObject.Object,
                     _property,
                     exception,
-                    out Arg<BusinessObjectPropertyAccessException>.Out (null).Dummy))
+                    out nullOutValue))
             .Returns (false)
             .Verifiable();
 
@@ -170,32 +171,37 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     {
       var exception = new Exception();
       var expectedException = new BusinessObjectPropertyAccessException ("The Message", null);
+      BusinessObjectPropertyAccessException nullOutValue = null;
       var sequence = new MockSequence();
       _innerStrategy1
+            .InSequence (sequence)
             .Setup (
                 mock => mock.IsPropertyAccessException (
                     _businessObject.Object,
                     _property,
                     exception,
-                    out Arg<BusinessObjectPropertyAccessException>.Out (null).Dummy))
+                    out nullOutValue))
             .Returns (false)
             .Verifiable();
       _innerStrategy2
+            .InSequence (sequence)
             .Setup (
                 mock => mock.IsPropertyAccessException (
                     _businessObject.Object,
                     _property,
                     exception,
-                    out Arg<BusinessObjectPropertyAccessException>.Out (expectedException).Dummy))
+                    out expectedException))
             .Returns (true)
             .Verifiable();
-      _innerStrategy3.Setup (
-            mock => mock.IsPropertyAccessException (
-                _businessObject.Object,
-                _property,
-                exception,
-                out Arg<BusinessObjectPropertyAccessException>.Out (null).Dummy))
-.Verifiable();
+      _innerStrategy3
+            .InSequence (sequence)
+            .Setup (
+                mock => mock.IsPropertyAccessException (
+                    _businessObject.Object,
+                    _property,
+                    exception,
+                    out nullOutValue))
+            .Verifiable();
 
       BusinessObjectPropertyAccessException actualException;
       var result = _strategy.IsPropertyAccessException (_businessObject.Object, _property, exception, out actualException);
@@ -205,11 +211,13 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
 
       _innerStrategy1.Verify();
       _innerStrategy2.Verify();
-      _innerStrategy3.Verify (            mock => mock.IsPropertyAccessException (
+      _innerStrategy3.Verify (
+          mock => mock.IsPropertyAccessException (
                 _businessObject.Object,
                 _property,
                 exception,
-                out Arg<BusinessObjectPropertyAccessException>.Out (null).Dummy), Times.Never());
+                out nullOutValue),
+          Times.Never());
     }
   }
 }

@@ -16,10 +16,7 @@
 // 
 using System;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.UnitTests.BusinessObjectStringFormatterServiceTests
 {
@@ -48,7 +45,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectStringFormatterServiceT
 
       string actual = _stringFormatterService.GetPropertyString (_businessObjectStub.Object, _propertyStub.Object, null);
 
-      Assert.That (actual, Is.EqualTo (valueStub.ToString()));
+      Assert.That (actual, Is.EqualTo (valueStub.Object.ToString()));
     }
 
     [Test]

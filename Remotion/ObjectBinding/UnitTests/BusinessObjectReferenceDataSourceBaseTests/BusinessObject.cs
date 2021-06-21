@@ -16,11 +16,8 @@
 // 
 using System;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBaseTests.TestDomain;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBaseTests
 {
@@ -35,6 +32,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
     public void SetUp ()
     {
       _referencedDataSourceStub = new Mock<IBusinessObjectDataSource>();
+      _referencedDataSourceStub.SetupProperty (_ => _.BusinessObject);
       _referencedDataSourceStub.Object.BusinessObject = new Mock<IBusinessObject>().Object;
       _referencedDataSourceStub.Setup (_ => _.BusinessObjectClass).Returns (new Mock<IBusinessObjectClass>().Object);
       _referencePropertyStub = new Mock<IBusinessObjectReferenceProperty>();
@@ -44,12 +42,15 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
     [Test]
     public void SetValue_OldValueIsNewlyCreatedDefaultValue ()
     {
-      _referencedDataSourceStub.Object.BusinessObject.Setup (stub => stub.GetProperty (_referencePropertyStub.Object)).Returns ((object) null);
+      Mock.Get (_referencedDataSourceStub.Object.BusinessObject).SetupSequence (stub => stub.GetProperty (_referencePropertyStub.Object))
+          .Returns ((object) null)
+          .Throws (new InvalidOperationException ("Method is supposed to be called only once!"));
       _referencePropertyStub.Setup (stub => stub.SupportsDefaultValue).Returns (true);
       _referencePropertyStub.Setup (stub => stub.SupportsDelete).Returns (true);
       var oldValue = new Mock<IBusinessObject>();
-      _referencePropertyStub.Setup (stub => stub.CreateDefaultValue (_referencedDataSourceStub.Object.BusinessObject))
-          .Returns (oldValue.Object);
+      _referencePropertyStub.SetupSequence (stub => stub.CreateDefaultValue (_referencedDataSourceStub.Object.BusinessObject))
+          .Returns (oldValue.Object)
+          .Throws (new InvalidOperationException ("Method is supposed to be called only once!"));
 
       var referenceDataSource = new TestableBusinessObjectReferenceDataSource (_referencedDataSourceStub.Object, _referencePropertyStub.Object);
       referenceDataSource.Mode = DataSourceMode.Edit;

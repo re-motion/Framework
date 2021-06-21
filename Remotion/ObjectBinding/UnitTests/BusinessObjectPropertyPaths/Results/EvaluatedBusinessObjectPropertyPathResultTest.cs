@@ -16,12 +16,9 @@
 // 
 using System;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BusinessObjectPropertyPaths.Results;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Results
 {
@@ -58,8 +55,8 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Results
     public void GetValue ()
     {
       var sequence = new MockSequence();
-      ExpectOnceOnPropertyIsAccessible (true);
-      ExpectOnceOnBusinessObjectWithIdentityGetProperty (100);
+      ExpectOnceOnPropertyIsAccessible (true, sequence);
+      ExpectOnceOnBusinessObjectWithIdentityGetProperty (100, sequence);
 
       object actual = _result.GetValue();
 
@@ -84,8 +81,8 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Results
     public void GetValue_WithBusinessObjectPropertyAccessException ()
     {
       var sequence = new MockSequence();
-      ExpectOnceOnPropertyIsAccessible (true);
-      ExpectThrowBusinessObjectPropertyAccessExceptionOnBusinessObjectWithIdentityGetProperty();
+      ExpectOnceOnPropertyIsAccessible (true, sequence);
+      ExpectThrowBusinessObjectPropertyAccessExceptionOnBusinessObjectWithIdentityGetProperty (sequence);
 
       object actualObject = _result.GetValue();
 
@@ -98,8 +95,8 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Results
     public void GetPropertyString ()
     {
       var sequence = new MockSequence();
-      ExpectOnceOnPropertyIsAccessible (true);
-      ExpectOnceOnBusinessObjectWithIdentityGetPropertyString ("value", "format");
+      ExpectOnceOnPropertyIsAccessible (true, sequence);
+      ExpectOnceOnBusinessObjectWithIdentityGetPropertyString ("value", "format", sequence);
 
       string actual = _result.GetString ("format");
 
@@ -124,8 +121,8 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Results
     public void GetString_WithBusinessObjectPropertyAccessException ()
     {
       var sequence = new MockSequence();
-      ExpectOnceOnPropertyIsAccessible (true);
-      ExpectThrowBusinessObjectPropertyAccessExceptionOnBusinessObjectWithIdentityGetPropertyString ("format");
+      ExpectOnceOnPropertyIsAccessible (true, sequence);
+      ExpectThrowBusinessObjectPropertyAccessExceptionOnBusinessObjectWithIdentityGetPropertyString ("format", sequence);
 
       string actual = _result.GetString ("format");
 
@@ -159,9 +156,25 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Results
                    .Verifiable();
     }
 
+    private void ExpectOnceOnPropertyIsAccessible (bool returnValue, MockSequence sequence)
+    {
+      _propertyMock.InSequence (sequence)
+                   .Setup (_ => _.IsAccessible (_businessObjectWithIdentityMock.Object))
+                   .Returns (returnValue)
+                   .Verifiable();
+    }
+
     private void ExpectOnceOnBusinessObjectWithIdentityGetProperty (int returnValue)
     {
       _businessObjectWithIdentityMock.Setup (_ => _.GetProperty (_propertyMock.Object))
+                                     .Returns (returnValue)
+                                     .Verifiable();
+    }
+
+    private void ExpectOnceOnBusinessObjectWithIdentityGetProperty (int returnValue, MockSequence sequence)
+    {
+      _businessObjectWithIdentityMock.InSequence (sequence)
+                                     .Setup (_ => _.GetProperty (_propertyMock.Object))
                                      .Returns (returnValue)
                                      .Verifiable();
     }
@@ -173,9 +186,25 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Results
                                      .Verifiable();
     }
 
+    private void ExpectThrowBusinessObjectPropertyAccessExceptionOnBusinessObjectWithIdentityGetProperty (MockSequence sequence)
+    {
+      _businessObjectWithIdentityMock.InSequence (sequence)
+                                     .Setup (_ => _.GetProperty (_propertyMock.Object))
+                                     .Throws (new BusinessObjectPropertyAccessException ("The Message", null))
+                                     .Verifiable();
+    }
+
     private void ExpectOnceOnBusinessObjectWithIdentityGetPropertyString (string returnValue, string format)
     {
       _businessObjectWithIdentityMock.Setup (_ => _.GetPropertyString (_propertyMock.Object, format))
+                                     .Returns (returnValue)
+                                     .Verifiable();
+    }
+
+    private void ExpectOnceOnBusinessObjectWithIdentityGetPropertyString (string returnValue, string format, MockSequence sequence)
+    {
+      _businessObjectWithIdentityMock.InSequence (sequence)
+                                     .Setup (_ => _.GetPropertyString (_propertyMock.Object, format))
                                      .Returns (returnValue)
                                      .Verifiable();
     }
@@ -184,6 +213,14 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Results
     {
       _businessObjectWithIdentityMock.Setup (_ => _.GetPropertyString (_propertyMock.Object, format))
                                      .Throws (new BusinessObjectPropertyAccessException("The Message", null))
+                                     .Verifiable();
+    }
+
+    private void ExpectThrowBusinessObjectPropertyAccessExceptionOnBusinessObjectWithIdentityGetPropertyString (string format, MockSequence sequence)
+    {
+      _businessObjectWithIdentityMock.InSequence (sequence)
+                                     .Setup (_ => _.GetPropertyString (_propertyMock.Object, format))
+                                     .Throws (new BusinessObjectPropertyAccessException ("The Message", null))
                                      .Verifiable();
     }
   }

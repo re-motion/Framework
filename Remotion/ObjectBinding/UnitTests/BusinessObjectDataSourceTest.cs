@@ -16,10 +16,7 @@
 // 
 using System;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.UnitTests
 {
@@ -41,7 +38,7 @@ namespace Remotion.ObjectBinding.UnitTests
       var stubBusinessObjectProvider = new Mock<IBusinessObjectProvider>();
       var dataSource = new StubBusinessObjectDataSource (stubBusinessObjectClass.Object);
 
-      stubBusinessObjectClass.Setup (_ => _.BusinessObjectProvider).Returns (stubBusinessObjectProvider.Object).Verifiable();
+      stubBusinessObjectClass.Setup (_ => _.BusinessObjectProvider).Returns (stubBusinessObjectProvider.Object);
 
       Assert.That (dataSource.BusinessObjectProvider, Is.SameAs (stubBusinessObjectProvider.Object));
     }
@@ -87,8 +84,8 @@ namespace Remotion.ObjectBinding.UnitTests
       var stubControl1 = new Mock<IBusinessObjectBoundControl>();
       var stubControl2 = new Mock<IBusinessObjectBoundControl>();
 
-      stubControl1.Setup (_ => _.HasValidBinding).Returns (true).Verifiable();
-      stubControl2.Setup (_ => _.HasValidBinding).Returns (true).Verifiable();
+      stubControl1.Setup (_ => _.HasValidBinding).Returns (true);
+      stubControl2.Setup (_ => _.HasValidBinding).Returns (true);
 
       _dataSource.Register (stubControl1.Object);
       _dataSource.Register (stubControl2.Object);
@@ -102,8 +99,8 @@ namespace Remotion.ObjectBinding.UnitTests
       var stubControl1 = new Mock<IBusinessObjectBoundControl>();
       var stubControl2 = new Mock<IBusinessObjectBoundControl>();
 
-      stubControl1.Setup (_ => _.HasValidBinding).Returns (true).Verifiable();
-      stubControl2.Setup (_ => _.HasValidBinding).Returns (true).Verifiable();
+      stubControl1.Setup (_ => _.HasValidBinding).Returns (true);
+      stubControl2.Setup (_ => _.HasValidBinding).Returns (true);
 
       _dataSource.Register (stubControl1.Object);
       _dataSource.Register (stubControl2.Object);
@@ -120,10 +117,10 @@ namespace Remotion.ObjectBinding.UnitTests
       var mockControl1 = new Mock<IBusinessObjectBoundControl> (MockBehavior.Strict);
       var mockControl2 = new Mock<IBusinessObjectBoundControl> (MockBehavior.Strict);
 
-      mockControl1.Setup (_ => _.HasValidBinding).Returns (true).Verifiable();
-      mockControl2.Setup (_ => _.HasValidBinding).Returns (true).Verifiable();
-      mockControl1.Object.LoadValue (true);
-      mockControl2.Object.LoadValue (true);
+      mockControl1.Setup (_ => _.HasValidBinding).Returns (true);
+      mockControl2.Setup (_ => _.HasValidBinding).Returns (true);
+      mockControl1.Setup (_ => _.LoadValue (true));
+      mockControl2.Setup (_ => _.LoadValue (true));
 
       _dataSource.Register (mockControl1.Object);
       _dataSource.Register (mockControl2.Object);
@@ -139,10 +136,10 @@ namespace Remotion.ObjectBinding.UnitTests
       var mockControl1 = new Mock<IBusinessObjectBoundEditableControl> (MockBehavior.Strict);
       var mockControl2 = new Mock<IBusinessObjectBoundEditableControl> (MockBehavior.Strict);
 
-      mockControl1.Setup (_ => _.HasValidBinding).Returns (true).Verifiable();
-      mockControl2.Setup (_ => _.HasValidBinding).Returns (true).Verifiable();
-      mockControl1.Setup (_ => _.SaveValue (true)).Returns (true).Verifiable();
-      mockControl2.Setup (_ => _.SaveValue (true)).Returns (true).Verifiable();
+      mockControl1.Setup (_ => _.HasValidBinding).Returns (true);
+      mockControl2.Setup (_ => _.HasValidBinding).Returns (true);
+      mockControl1.Setup (_ => _.SaveValue (true)).Returns (true);
+      mockControl2.Setup (_ => _.SaveValue (true)).Returns (true);
 
       _dataSource.Register (mockControl1.Object);
       _dataSource.Register (mockControl2.Object);
@@ -167,10 +164,10 @@ namespace Remotion.ObjectBinding.UnitTests
       var mockControl1 = new Mock<IBusinessObjectBoundEditableControl> (MockBehavior.Strict);
       var mockControl2 = new Mock<IBusinessObjectBoundEditableControl> (MockBehavior.Strict);
 
-      mockControl1.Setup (_ => _.HasValidBinding).Returns (true).Verifiable();
-      mockControl2.Setup (_ => _.HasValidBinding).Returns (true).Verifiable();
-      mockControl1.Setup (_ => _.SaveValue (true)).Returns (false).Verifiable();
-      mockControl2.Setup (_ => _.SaveValue (true)).Returns (true).Verifiable();
+      mockControl1.Setup (_ => _.HasValidBinding).Returns (true);
+      mockControl2.Setup (_ => _.HasValidBinding).Returns (true);
+      mockControl1.Setup (_ => _.SaveValue (true)).Returns (false);
+      mockControl2.Setup (_ => _.SaveValue (true)).Returns (true);
 
       _dataSource.Register (mockControl1.Object);
       _dataSource.Register (mockControl2.Object);
@@ -195,9 +192,9 @@ namespace Remotion.ObjectBinding.UnitTests
       var stubControl2 = new Mock<IBusinessObjectBoundControl>();
       var stubControl3 = new Mock<IBusinessObjectBoundControl>();
 
-      stubControl1.Setup (_ => _.HasValidBinding).Returns (true).Verifiable();
-      stubControl2.Setup (_ => _.HasValidBinding).Returns (false).Verifiable();
-      stubControl3.Setup (_ => _.HasValidBinding).Returns (true).Verifiable();
+      stubControl1.Setup (_ => _.HasValidBinding).Returns (true);
+      stubControl2.Setup (_ => _.HasValidBinding).Returns (false);
+      stubControl3.Setup (_ => _.HasValidBinding).Returns (true);
 
       _dataSource.Register (stubControl1.Object);
       _dataSource.Register (stubControl2.Object);

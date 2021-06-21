@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BusinessObjectPropertyPaths;
@@ -38,12 +39,9 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.BusinessO
     [Test]
     public void GetResult ()
     {
-      using (_testHelper.Ordered())
-      {
-        ExpectOnceOnReferencePropertyIsAccessible (true);
-        ExpectOnceOnBusinessObjectGetProperty (_testHelper.BusinessObjectWithIdentity);
-      }
-      _testHelper.ReplayAll();
+      var sequence = new MockSequence();
+      ExpectOnceOnReferencePropertyIsAccessible (true, sequence);
+      ExpectOnceOnBusinessObjectGetProperty (_testHelper.BusinessObjectWithIdentity, sequence);
 
       var actual = _path.GetResult (
           _testHelper.BusinessObject,
@@ -60,12 +58,9 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.BusinessO
     [Test]
     public void GetResult_WithUnreachableObject_ReturnsNull ()
     {
-      using (_testHelper.Ordered())
-      {
-        ExpectOnceOnReferencePropertyIsAccessible (true);
-        ExpectOnceOnBusinessObjectGetProperty (null);
-      }
-      _testHelper.ReplayAll();
+      var sequence = new MockSequence();
+      ExpectOnceOnReferencePropertyIsAccessible (true, sequence);
+      ExpectOnceOnBusinessObjectGetProperty (null, sequence);
 
       var actual = _path.GetResult (
           _testHelper.BusinessObject,
@@ -80,12 +75,9 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.BusinessO
     [Test]
     public void GetResult_WithUnreachableObject_ThrowsInvalidOperationException ()
     {
-      using (_testHelper.Ordered())
-      {
-        ExpectOnceOnReferencePropertyIsAccessible (true);
-        ExpectOnceOnBusinessObjectGetProperty (null);
-      }
-      _testHelper.ReplayAll();
+      var sequence = new MockSequence();
+      ExpectOnceOnReferencePropertyIsAccessible (true, sequence);
+      ExpectOnceOnBusinessObjectGetProperty (null, sequence);
 
       Assert.That (
           () =>
@@ -100,11 +92,8 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.BusinessO
     [Test]
     public void GetResult_WithAccessDenied_ReturnsNull ()
     {
-      using (_testHelper.Ordered())
-      {
-        ExpectOnceOnReferencePropertyIsAccessible (false);
-      }
-      _testHelper.ReplayAll();
+      var sequence = new MockSequence();
+      ExpectOnceOnReferencePropertyIsAccessible (false, sequence);
 
       var actual = _path.GetResult (
           _testHelper.BusinessObject,
@@ -118,11 +107,8 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.BusinessO
     [Test]
     public void GetResult_WithAccessDenied_ThrowsInvalidOperationException ()
     {
-      using (_testHelper.Ordered())
-      {
-        ExpectOnceOnReferencePropertyIsAccessible (false);
-      }
-      _testHelper.ReplayAll();
+      var sequence = new MockSequence();
+      ExpectOnceOnReferencePropertyIsAccessible (false, sequence);
 
       Assert.That (
           () =>
@@ -137,12 +123,9 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.BusinessO
     [Test]
     public void GetResult_WithBusinessObjectPropertyAccessException_ReturnsNull ()
     {
-      using (_testHelper.Ordered())
-      {
-        ExpectOnceOnReferencePropertyIsAccessible (true);
-        ExpectThrowBusinessObjectPropertyAccessExceptionOnBusinessObjectGetProperty();
-      }
-      _testHelper.ReplayAll();
+      var sequence = new MockSequence();
+      ExpectOnceOnReferencePropertyIsAccessible (true, sequence);
+      ExpectThrowBusinessObjectPropertyAccessExceptionOnBusinessObjectGetProperty (sequence);
 
       var actual = _path.GetResult (
           _testHelper.BusinessObject,
@@ -156,12 +139,9 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.BusinessO
     [Test]
     public void GetResult_WithBusinessObjectPropertyAccessException_ThrowsInvalidOperationException ()
     {
-      using (_testHelper.Ordered())
-      {
-        ExpectOnceOnReferencePropertyIsAccessible (true);
-        ExpectThrowBusinessObjectPropertyAccessExceptionOnBusinessObjectGetProperty();
-      }
-      _testHelper.ReplayAll();
+      var sequence = new MockSequence();
+      ExpectOnceOnReferencePropertyIsAccessible (true, sequence);
+      ExpectThrowBusinessObjectPropertyAccessExceptionOnBusinessObjectGetProperty(sequence);
 
       Assert.That (
           () =>
@@ -184,20 +164,44 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.BusinessO
       _testHelper.ExpectOnceOnIsAccessible (
           _testHelper.BusinessObjectClass,
           _testHelper.BusinessObject,
-          _testHelper.ReferenceProperty, returnValue);
+          Mock.Get (_testHelper.ReferenceProperty).As<IBusinessObjectProperty>(), returnValue);
+    }
+
+    private void ExpectOnceOnReferencePropertyIsAccessible (bool returnValue, MockSequence sequence)
+    {
+      _testHelper.ExpectOnceOnIsAccessible (
+          _testHelper.BusinessObjectClass,
+          _testHelper.BusinessObject,
+          Mock.Get (_testHelper.ReferenceProperty).As<IBusinessObjectProperty>(),
+          returnValue,
+          sequence);
     }
 
     private void ExpectOnceOnBusinessObjectGetProperty (IBusinessObjectWithIdentity businessObejctWithIdentity)
     {
-      _testHelper.ExpectOnceOnGetProperty (_testHelper.BusinessObject, _testHelper.ReferenceProperty, businessObejctWithIdentity);
+      _testHelper.ExpectOnceOnGetProperty (Mock.Get (_testHelper.BusinessObject), _testHelper.ReferenceProperty, businessObejctWithIdentity);
+    }
+
+    private void ExpectOnceOnBusinessObjectGetProperty (IBusinessObjectWithIdentity businessObejctWithIdentity, MockSequence sequence)
+    {
+      _testHelper.ExpectOnceOnGetProperty (Mock.Get (_testHelper.BusinessObject), _testHelper.ReferenceProperty, businessObejctWithIdentity, sequence);
     }
 
     private void ExpectThrowBusinessObjectPropertyAccessExceptionOnBusinessObjectGetProperty ()
     {
       _testHelper.ExpectThrowOnGetProperty (
-          _testHelper.BusinessObject,
+          Mock.Get (_testHelper.BusinessObject),
           _testHelper.ReferenceProperty,
           new BusinessObjectPropertyAccessException ("The Message", null));
+    }
+
+    private void ExpectThrowBusinessObjectPropertyAccessExceptionOnBusinessObjectGetProperty (MockSequence sequence)
+    {
+      _testHelper.ExpectThrowOnGetProperty (
+          Mock.Get (_testHelper.BusinessObject),
+          _testHelper.ReferenceProperty,
+          new BusinessObjectPropertyAccessException ("The Message", null),
+          sequence);
     }
   }
 }

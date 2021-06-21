@@ -35,7 +35,6 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.BusinessO
     public void GetValue ()
     {
       var path = new TestableBusinessObjectPropertyPathBase (_testHelper.Property);
-      _testHelper.ReplayAll();
 
       var actual = path.GetResult (
           _testHelper.BusinessObjectWithIdentity,
@@ -53,7 +52,6 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.BusinessO
     public void GetValue_LastPropertyIsReferenceProperty ()
     {
       var path = new TestableBusinessObjectPropertyPathBase (_testHelper.ReferenceProperty);
-      _testHelper.ReplayAll();
 
       var actual = path.GetResult (
           _testHelper.BusinessObject,

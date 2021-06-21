@@ -17,7 +17,6 @@
 using System;
 using System.Reflection;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.NUnit;
@@ -31,8 +30,6 @@ using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.ObjectBinding.UnitTests.TestDomain;
 using Remotion.Reflection;
 using Remotion.TypePipe;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject
 {
@@ -180,7 +177,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
                   (IBusinessObject) instance,
                   propertyBase,
                   originalException,
-                  out Arg<BusinessObjectPropertyAccessException>.Out (expectedException).Dummy))
+                  out expectedException))
           .Returns (true);
 
       instance.PrepareException (originalException);
@@ -193,6 +190,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void GetValue_WithExceptionNotHandledByPropertyAccessStrategy_RethrowsOriginalException ()
     {
       var bindablePropertyReadAccessStrategyStub = new Mock<IBindablePropertyReadAccessStrategy>();
+      var expectedException = new BusinessObjectPropertyAccessException ("Unexpected", null);
 
       IPropertyInformation propertyInfo = GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "ThrowingProperty");
       PropertyBase propertyBase = new StubPropertyBase (
@@ -212,7 +210,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
                   (IBusinessObject) instance,
                   propertyBase,
                   originalException,
-                  out Arg<BusinessObjectPropertyAccessException>.Out (new BusinessObjectPropertyAccessException ("Unexpected", null)).Dummy))
+                  out expectedException))
           .Returns (false);
 
       instance.PrepareException (originalException);
@@ -315,7 +313,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
                   (IBusinessObject) instance,
                   propertyBase,
                   originalException,
-                  out Arg<BusinessObjectPropertyAccessException>.Out (expectedException).Dummy))
+                  out expectedException))
           .Returns (true);
 
       instance.PrepareException (originalException);
@@ -329,6 +327,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void SetValue_WithExceptionNotHandledByPropertyAccessStrategy_RethrowsOriginalException ()
     {
       var bindablePropertyWriteAccessStrategyStub = new Mock<IBindablePropertyWriteAccessStrategy>();
+      var expectedException = new BusinessObjectPropertyAccessException ("Unexpected", null);
 
       IPropertyInformation propertyInfo = GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "ThrowingProperty");
       PropertyBase propertyBase = new StubPropertyBase (
@@ -348,7 +347,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
                   (IBusinessObject) instance,
                   propertyBase,
                   originalException,
-                  out Arg<BusinessObjectPropertyAccessException>.Out (new BusinessObjectPropertyAccessException ("Unexpected", null)).Dummy))
+                  out expectedException))
           .Returns (false);
 
       instance.PrepareException (originalException);
@@ -585,6 +584,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetDisplayName_WithGlobalizationSerivce ()
     {
+      var outValue = "MockString";
       var mockMemberInformationGlobalizationService = new Mock<IMemberInformationGlobalizationService> (MockBehavior.Strict);
       IPropertyInformation propertyInfo = GetPropertyInfo (typeof (SimpleBusinessObjectClass), "String");
       PropertyBase property = new StubPropertyBase (
@@ -605,7 +605,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       mockMemberInformationGlobalizationService.Setup (_ => _.TryGetPropertyDisplayName (
               propertyInfo,
               It.Is<ITypeInformation> (c => c.ConvertToRuntimeType() == _bindableObjectClass.TargetType),
-              out Arg<string>.Out ("MockString").Dummy))
+              out outValue))
           .Returns (true)
           .Verifiable();
 

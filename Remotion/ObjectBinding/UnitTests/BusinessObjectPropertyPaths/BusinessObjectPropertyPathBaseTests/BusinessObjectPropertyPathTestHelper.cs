@@ -16,9 +16,6 @@
 // 
 using System;
 using Moq;
-using Moq.Protected;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.BusinessObjectPropertyPathBaseTests
 {
@@ -47,8 +44,6 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.BusinessO
 
     public BusinessObjectPropertyPathTestHelper ()
     {
-      _mocks = new MockRepository ();
-
       _mockProperty = new Mock<IBusinessObjectProperty> (MockBehavior.Strict);
       _mockReferenceProperty = new Mock<IBusinessObjectReferenceProperty> (MockBehavior.Strict);
       _mockReferenceListProperty = new Mock<IBusinessObjectReferenceProperty> (MockBehavior.Strict);
@@ -62,36 +57,27 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.BusinessO
 
       _mockBusinessObjectProvider = new Mock<IBusinessObjectProvider> (MockBehavior.Strict);
 
-      _mockBusinessObject.Setup (_ => _.BusinessObjectClass).Returns (_mockBusinessObjectClass.Object).Verifiable();
-      _mockBusinessObjectWithIdentity.Setup (_ => _.BusinessObjectClass).Returns (_mockBusinessObjectClassWithIdentity.Object).Verifiable();
-      _mockReferenceProperty.Setup (_ => _.IsList).Returns (false).Verifiable();
-      _mockReferenceListProperty.Setup (_ => _.IsList).Returns (true).Verifiable();
+      _mockBusinessObject.Setup (_ => _.BusinessObjectClass).Returns (_mockBusinessObjectClass.Object);
+      _mockBusinessObjectWithIdentity.Setup (_ => _.BusinessObjectClass).Returns (_mockBusinessObjectClassWithIdentity.Object);
+      _mockReferenceProperty.Setup (_ => _.IsList).Returns (false);
+      _mockReferenceListProperty.Setup (_ => _.IsList).Returns (true);
 
-      _mockProperty.Setup (_ => _.Identifier).Returns ("Property").Verifiable();
-      _mockReferenceProperty.Setup (_ => _.Identifier).Returns ("ReferenceProperty").Verifiable();
-      _mockReferenceListProperty.Setup (_ => _.Identifier).Returns ("ReferenceListProperty").Verifiable();
+      _mockProperty.Setup (_ => _.Identifier).Returns ("Property");
+      _mockReferenceProperty.Setup (_ => _.Identifier).Returns ("ReferenceProperty");
+      _mockReferenceListProperty.Setup (_ => _.Identifier).Returns ("ReferenceListProperty");
 
-      _mockProperty.Setup (_ => _.BusinessObjectProvider).Returns (_mockBusinessObjectProvider.Object).Verifiable();
-      _mockReferenceProperty.Setup (_ => _.BusinessObjectProvider).Returns (_mockBusinessObjectProvider.Object).Verifiable();
-      _mockReferenceListProperty.Setup (_ => _.BusinessObjectProvider).Returns (_mockBusinessObjectProvider.Object).Verifiable();
+      _mockProperty.Setup (_ => _.BusinessObjectProvider).Returns (_mockBusinessObjectProvider.Object);
+      _mockReferenceProperty.Setup (_ => _.BusinessObjectProvider).Returns (_mockBusinessObjectProvider.Object);
+      _mockReferenceListProperty.Setup (_ => _.BusinessObjectProvider).Returns (_mockBusinessObjectProvider.Object);
 
-      _mockBusinessObjectClass.Setup (_ => _.BusinessObjectProvider).Returns (_mockBusinessObjectProvider.Object).Verifiable();
-      _mockBusinessObjectClassWithIdentity.Setup (_ => _.BusinessObjectProvider).Returns (_mockBusinessObjectProvider.Object).Verifiable();
+      _mockBusinessObjectClass.Setup (_ => _.BusinessObjectProvider).Returns (_mockBusinessObjectProvider.Object);
+      _mockBusinessObjectClassWithIdentity.Setup (_ => _.BusinessObjectProvider).Returns (_mockBusinessObjectProvider.Object);
 
-      _mockBusinessObjectProvider.Setup (_ => _.GetPropertyPathSeparator ()).Returns ('.').Verifiable();
-      _mockBusinessObjectProvider.Setup (_ => _.GetNotAccessiblePropertyStringPlaceHolder ()).Returns (BusinessObjectPropertyPathTestHelper.NotAccessible).Verifiable();
+      _mockBusinessObjectProvider.Setup (_ => _.GetPropertyPathSeparator ()).Returns ('.');
+      _mockBusinessObjectProvider.Setup (_ => _.GetNotAccessiblePropertyStringPlaceHolder ()).Returns (BusinessObjectPropertyPathTestHelper.NotAccessible);
     }
 
     // methods and properties
-
-    public IDisposable Ordered ()
-    {
-      return _mocks.Ordered ();
-    }
-
-    public void ReplayAll ()
-    {
-    }
 
     public void VerifyAll ()
     {
@@ -145,23 +131,43 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.BusinessO
       get { return _businessObjectWithIdentityList; }
     }
 
-    public void ExpectOnceOnGetProperty (IBusinessObject businessObject, IBusinessObjectProperty property, object returnValue)
+    public void ExpectOnceOnGetProperty (Mock<IBusinessObject> businessObject, IBusinessObjectProperty property, object returnValue)
     {
       businessObject.Setup (_ => _.GetProperty (property)).Returns (returnValue).Verifiable();
     }
 
-    public void ExpectThrowOnGetProperty (IBusinessObject businessObject, IBusinessObjectProperty property, Exception exception)
+    public void ExpectOnceOnGetProperty (Mock<IBusinessObject> businessObject, IBusinessObjectProperty property, object returnValue, MockSequence sequence)
+    {
+      businessObject.InSequence (sequence).Setup (_ => _.GetProperty (property)).Returns (returnValue).Verifiable();
+    }
+
+    public void ExpectThrowOnGetProperty (Mock<IBusinessObject> businessObject, IBusinessObjectProperty property, Exception exception)
     {
       businessObject.Setup (_ => _.GetProperty (property)).Throws (exception).Verifiable();
+    }
+
+    public void ExpectThrowOnGetProperty (Mock<IBusinessObject> businessObject, IBusinessObjectProperty property, Exception exception, MockSequence sequence)
+    {
+      businessObject.InSequence (sequence).Setup (_ => _.GetProperty (property)).Throws (exception).Verifiable();
     }
 
     public void ExpectOnceOnIsAccessible (
         IBusinessObjectClass businessObjectClass, 
         IBusinessObject businessObject, 
-        IBusinessObjectProperty property, 
+        Mock<IBusinessObjectProperty> property,
         bool returnValue)
     {
       property.Setup (_ => _.IsAccessible (businessObject)).Returns (returnValue).Verifiable();
+    }
+
+    public void ExpectOnceOnIsAccessible (
+        IBusinessObjectClass businessObjectClass,
+        IBusinessObject businessObject,
+        Mock<IBusinessObjectProperty> property,
+        bool returnValue,
+        MockSequence sequence)
+    {
+      property.InSequence (sequence).Setup (_ => _.IsAccessible (businessObject)).Returns (returnValue).Verifiable();
     }
   }
 }

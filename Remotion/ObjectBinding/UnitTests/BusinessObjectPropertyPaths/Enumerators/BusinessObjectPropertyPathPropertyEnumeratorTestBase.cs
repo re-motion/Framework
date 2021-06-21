@@ -16,40 +16,37 @@
 // 
 using System;
 using Moq;
-using Moq.Protected;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Enumerators
 {
   public class BusinessObjectPropertyPathPropertyEnumeratorTestBase
   {
-    protected static IBusinessObjectClass CreateClassStub ()
+    protected static Mock<IBusinessObjectClass> CreateClassStub ()
     {
       var classStub = new Mock<IBusinessObjectClass>();
       classStub.Setup (_ => _.BusinessObjectProvider).Returns (new Mock<IBusinessObjectProvider>().Object);
-      classStub.Object.BusinessObjectProvider.Setup (_ => _.GetPropertyPathSeparator()).Returns (':');
-      return classStub.Object;
+      Mock.Get (classStub.Object.BusinessObjectProvider).Setup (_ => _.GetPropertyPathSeparator()).Returns (':');
+      return classStub;
     }
 
-    protected IBusinessObjectProperty CreatePropertyStub (IBusinessObjectClass classStub, string propertyIdentifier)
+    protected Mock<IBusinessObjectProperty> CreatePropertyStub (Mock<IBusinessObjectClass> classStub, string propertyIdentifier)
     {
       var propertyStub = new Mock<IBusinessObjectProperty>();
       propertyStub.Setup (_ => _.Identifier).Returns (propertyIdentifier);
       classStub.Setup (_ => _.GetPropertyDefinition (propertyIdentifier)).Returns (propertyStub.Object);
-      return propertyStub.Object;
+      return propertyStub;
     }
 
-    protected IBusinessObjectReferenceProperty CreateReferencePropertyStub (
-        IBusinessObjectClass classStub,
+    protected Mock<IBusinessObjectReferenceProperty> CreateReferencePropertyStub (
+        Mock<IBusinessObjectClass> classStub,
         string propertyIdentifier,
-        IBusinessObjectClass referenceClassStub)
+        Mock<IBusinessObjectClass> referenceClassStub)
     {
       var propertyStub = new Mock<IBusinessObjectReferenceProperty>();
       propertyStub.Setup (_ => _.Identifier).Returns (propertyIdentifier);
-      propertyStub.Setup (_ => _.ReferenceClass).Returns (referenceClassStub);
+      propertyStub.Setup (_ => _.ReferenceClass).Returns (referenceClassStub.Object);
       classStub.Setup (_ => _.GetPropertyDefinition (propertyIdentifier)).Returns (propertyStub.Object);
-      return propertyStub.Object;
+      return propertyStub;
     }
   }
 }

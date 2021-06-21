@@ -16,11 +16,8 @@
 // 
 using System;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBaseTests.TestDomain;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBaseTests
 {
@@ -36,6 +33,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
     public void SetUp ()
     {
       _referencedDataSourceStub = new Mock<IBusinessObjectDataSource>();
+      _referencedDataSourceStub.SetupProperty (_ => _.BusinessObject);
       _referencedDataSourceStub.Object.BusinessObject = new Mock<IBusinessObject>().Object;
       _referencedDataSourceStub.Setup (_ => _.BusinessObjectClass).Returns (new Mock<IBusinessObjectClass>().Object);
       _referencedDataSourceStub.Object.Mode = DataSourceMode.Edit;
@@ -61,7 +59,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
       var result = referenceDataSource.SaveValue (false);
 
       Assert.That (result, Is.True);
-      _referencedDataSourceStub.Verify (stub => stub.SetProperty (_referencePropertyStub.Object, expectedValue.Object), Times.AtLeastOnce());
+      Mock.Get (_referencedDataSourceStub.Object.BusinessObject).Verify (stub => stub.SetProperty (_referencePropertyStub.Object, expectedValue.Object), Times.AtLeastOnce());
     }
 
     [Test]
@@ -106,7 +104,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
       var result = referenceDataSource.SaveValue (false);
 
       Assert.That (result, Is.False);
-      parentObjectStub.Verify (stub => stub.SetProperty (null, null), Times.Never());
+      Mock.Get (parentObjectStub).Verify (stub => stub.SetProperty (It.IsAny<IBusinessObjectProperty>(), It.IsAny<object>()), Times.Never());
     }
 
     [Test]
@@ -145,7 +143,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
     public void HasBusinessObjectChangedFalse_DoesNotSaveValueIntoBoundObject_AndReturnsTrue ()
     {
       var referenceDataSource = new TestableBusinessObjectReferenceDataSource (_referencedDataSourceStub.Object, _referencePropertyStub.Object);
-      _referencedDataSourceStub.Object.BusinessObject.Setup (stub => stub.GetProperty (_referencePropertyStub.Object))
+      Mock.Get (_referencedDataSourceStub.Object.BusinessObject).Setup (stub => stub.GetProperty (_referencePropertyStub.Object))
           .Returns (new Mock<IBusinessObject>().Object);
       referenceDataSource.LoadValue (false);
       Assert.That (referenceDataSource.HasBusinessObjectChanged, Is.False);
@@ -153,21 +151,21 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
       var result = referenceDataSource.SaveValue (false);
 
       Assert.That (result, Is.True);
-      _referencedDataSourceStub.Verify (stub => stub.SetProperty (null, null), Times.Never());
+      Mock.Get (_referencedDataSourceStub.Object.BusinessObject).Verify (stub => stub.SetProperty (It.IsAny<IBusinessObjectProperty>(), It.IsAny<object>()), Times.Never());
     }
 
     [Test]
     public void HasBusinessObjectChangedFalse_BusinessObjectNull_DoesNotSaveValueIntoBoundObject_AndReturnsTrue ()
     {
       var referenceDataSource = new TestableBusinessObjectReferenceDataSource (_referencedDataSourceStub.Object, _referencePropertyStub.Object);
-      _referencedDataSourceStub.Object.BusinessObject.Setup (stub => stub.GetProperty (_referencePropertyStub.Object)).Returns ((object) null);
+      Mock.Get (_referencedDataSourceStub.Object.BusinessObject).Setup (stub => stub.GetProperty (_referencePropertyStub.Object)).Returns ((object) null);
       referenceDataSource.LoadValue (false);
       Assert.That (referenceDataSource.HasBusinessObjectChanged, Is.False);
 
       var result = referenceDataSource.SaveValue (false);
 
       Assert.That (result, Is.True);
-      _referencedDataSourceStub.Verify (stub => stub.SetProperty (null, null), Times.Never());
+      Mock.Get (_referencedDataSourceStub.Object.BusinessObject).Verify (stub => stub.SetProperty (It.IsAny<IBusinessObjectProperty>(), It.IsAny<object>()), Times.Never());
     }
 
     [Test]
@@ -178,7 +176,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
 
       referenceDataSource.SaveValue (false);
 
-      _referencedDataSourceStub.Verify (stub => stub.SetProperty (null, null), Times.Never());
+      Mock.Get (_referencedDataSourceStub.Object.BusinessObject).Verify (stub => stub.SetProperty (It.IsAny<IBusinessObjectProperty>(), It.IsAny<object>()), Times.Never());
       Assert.That (referenceDataSource.HasBusinessObjectChanged, Is.True);
     }
 
@@ -190,15 +188,15 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
 
       referenceDataSource.SaveValue (false);
 
-      _referencedDataSourceStub.Verify (stub => stub.SetProperty (null, null), Times.Never());
+      Mock.Get (_referencedDataSourceStub.Object.BusinessObject).Verify (stub => stub.SetProperty (It.IsAny<IBusinessObjectProperty>(), It.IsAny<object>()), Times.Never());
     }
 
     [Test]
     public void ReferenceClassRequiresWriteBackTrue_ReadsBusinessObject_SavesValueIntoBoundObject_AndReturnsTrue ()
     {
       var expectedValue = new Mock<IBusinessObject>();
-      _referencedDataSourceStub.Object.BusinessObject.Setup (stub => stub.GetProperty (_referencePropertyStub.Object)).Returns (expectedValue.Object);
-      _referencePropertyStub.Object.ReferenceClass.Setup (stub => stub.RequiresWriteBack).Returns (true);
+      Mock.Get (_referencedDataSourceStub.Object.BusinessObject).Setup (stub => stub.GetProperty (_referencePropertyStub.Object)).Returns (expectedValue.Object);
+      Mock.Get (_referencePropertyStub.Object.ReferenceClass).Setup (stub => stub.RequiresWriteBack).Returns (true);
 
       var referenceDataSource = new TestableBusinessObjectReferenceDataSource (_referencedDataSourceStub.Object, _referencePropertyStub.Object);
       referenceDataSource.LoadValue (false);
@@ -207,7 +205,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
       var result = referenceDataSource.SaveValue (false);
 
       Assert.That (result, Is.True);
-      _referencedDataSourceStub.Verify (stub => stub.SetProperty (_referencePropertyStub.Object, expectedValue.Object), Times.AtLeastOnce());
+      Mock.Get (_referencedDataSourceStub.Object.BusinessObject).Verify (stub => stub.SetProperty (_referencePropertyStub.Object, expectedValue.Object), Times.AtLeastOnce());
     }
 
     [Test]
@@ -225,7 +223,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
       var result = referenceDataSource.SaveValue (false);
 
       Assert.That (result, Is.True);
-      _referencedDataSourceStub.Verify (stub => stub.SetProperty (_referencePropertyStub.Object, expectedValue.Object), Times.AtLeastOnce());
+      Mock.Get (_referencedDataSourceStub.Object.BusinessObject).Verify (stub => stub.SetProperty (_referencePropertyStub.Object, expectedValue.Object), Times.AtLeastOnce());
     }
 
     [Test]
@@ -234,7 +232,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
       var expectedValue = new Mock<IBusinessObject>();
       bool isControlSaved = false;
 
-      _referencedDataSourceStub.Object.BusinessObject.Setup (stub => stub.SetProperty (_referencePropertyStub.Object, expectedValue.Object))
+      Mock.Get (_referencedDataSourceStub.Object.BusinessObject).Setup (stub => stub.SetProperty (_referencePropertyStub.Object, expectedValue.Object))
 // ReSharper disable AccessToModifiedClosure
           .Callback ((IBusinessObjectProperty property, object value) => Assert.That (isControlSaved, Is.True));
 // ReSharper restore AccessToModifiedClosure
@@ -250,7 +248,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
       secondControlMock.Setup (stub => stub.HasValidBinding).Returns (true);
       referenceDataSource.Register (secondControlMock.Object);
 
-      firstControlMock.Setup (mock => mock.SaveValue (false)).Returns (true).Callback (mi => isControlSaved = true).Verifiable();
+      firstControlMock.Setup (mock => mock.SaveValue (false)).Returns (true).Callback ((bool interim) => isControlSaved = true).Verifiable();
       secondControlMock.Setup (mock => mock.SaveValue (false)).Returns (true).Verifiable();
 
       var result = referenceDataSource.SaveValue (false);
@@ -356,7 +354,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
       var result = referenceDataSource.SaveValue (false);
 
       Assert.That (result, Is.True);
-      _referencedDataSourceStub.Verify (stub => stub.SetProperty (_referencePropertyStub.Object, null), Times.AtLeastOnce());
+      Mock.Get (_referencedDataSourceStub.Object.BusinessObject).Verify (stub => stub.SetProperty (_referencePropertyStub.Object, null), Times.AtLeastOnce());
     }
 
     [Test]
@@ -452,18 +450,21 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
       var firstControlStub = new Mock<IBusinessObjectBoundControl>();
       firstControlStub.Setup (stub => stub.HasValidBinding).Returns (true);
       firstControlStub.Setup (stub => stub.HasValue).Returns (false);
+      firstControlStub.SetupProperty (_ => _.Property);
       firstControlStub.Object.Property = firstPropertyStub.Object;
       referenceDataSource.Register (firstControlStub.Object);
 
       var secondControlStub = new Mock<IBusinessObjectBoundControl>();
       secondControlStub.Setup (stub => stub.HasValidBinding).Returns (true);
       secondControlStub.Setup (stub => stub.HasValue).Returns (false);
+      secondControlStub.SetupProperty (_ => _.Property);
       secondControlStub.Object.Property = secondPropertyStub.Object;
       referenceDataSource.Register (secondControlStub.Object);
 
       var thirdControlStub = new Mock<IBusinessObjectBoundControl>();
       thirdControlStub.Setup (stub => stub.HasValidBinding).Returns (true);
       thirdControlStub.Setup (stub => stub.HasValue).Returns (false);
+      thirdControlStub.SetupProperty (_ => _.Property);
       thirdControlStub.Object.Property = firstPropertyStub.Object;
       referenceDataSource.Register (thirdControlStub.Object);
 
@@ -504,8 +505,8 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
       var result = referenceDataSource.SaveValue (false);
 
       Assert.That (result, Is.True);
-      _referencePropertyStub.Verify (stub => stub.IsDefaultValue (null, null, null), Times.Never());
-      _referencePropertyStub.Verify (stub => stub.Delete (null, null), Times.Never());
+      _referencePropertyStub.Verify (stub => stub.IsDefaultValue (It.IsAny<IBusinessObject>(), It.IsAny<IBusinessObject>(), It.IsAny<IBusinessObjectProperty[]>()), Times.Never());
+      _referencePropertyStub.Verify (stub => stub.Delete (It.IsAny<IBusinessObject>(), It.IsAny<IBusinessObject>()), Times.Never());
       Assert.That (referenceDataSource.BusinessObject, Is.SameAs (referencedObject.Object));
       Assert.That (referenceDataSource.HasBusinessObjectChanged, Is.False);
     }
@@ -521,9 +522,9 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
       Assert.That (result, Is.True);
       _referencePropertyStub.Verify (stub => stub.SupportsDefaultValue, Times.Never());
       _referencePropertyStub.Verify (stub => stub.SupportsDelete, Times.Never());
-      _referencePropertyStub.Verify (stub => stub.IsDefaultValue (null, null, null), Times.Never());
-      _referencePropertyStub.Verify (stub => stub.Delete (null, null), Times.Never());
-      _referencedDataSourceStub.Verify (stub => stub.SetProperty (_referencePropertyStub.Object, null), Times.AtLeastOnce());
+      _referencePropertyStub.Verify (stub => stub.IsDefaultValue (It.IsAny<IBusinessObject>(), It.IsAny<IBusinessObject>(), It.IsAny<IBusinessObjectProperty[]>()), Times.Never());
+      _referencePropertyStub.Verify (stub => stub.Delete (It.IsAny<IBusinessObject>(), It.IsAny<IBusinessObject>()), Times.Never());
+      Mock.Get (_referencedDataSourceStub.Object.BusinessObject).Verify (stub => stub.SetProperty (_referencePropertyStub.Object, null), Times.AtLeastOnce());
     }
 
     [Test]
@@ -538,7 +539,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
 
       referenceDataSource.SaveValue (false);
 
-      _referencePropertyStub.Verify (stub => stub.IsDefaultValue (null, null, null), Times.Never());
+      _referencePropertyStub.Verify (stub => stub.IsDefaultValue (It.IsAny<IBusinessObject>(), It.IsAny<IBusinessObject>(), It.IsAny<IBusinessObjectProperty[]>()), Times.Never());
     }
 
     [Test]
@@ -560,17 +561,17 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
       firstControlMock.Verify();
       _referencePropertyStub.Verify (stub => stub.SupportsDefaultValue, Times.Never());
       _referencePropertyStub.Verify (stub => stub.SupportsDelete, Times.Never());
-      _referencePropertyStub.Verify (stub => stub.IsDefaultValue (null, null, null), Times.Never());
-      _referencePropertyStub.Verify (stub => stub.Delete (null, null), Times.Never());
-      _referencedDataSourceStub.Verify (stub => stub.SetProperty (_referencePropertyStub.Object, expectedValue.Object), Times.AtLeastOnce());
+      _referencePropertyStub.Verify (stub => stub.IsDefaultValue (It.IsAny<IBusinessObject>(), It.IsAny<IBusinessObject>(), It.IsAny<IBusinessObjectProperty[]>()), Times.Never());
+      _referencePropertyStub.Verify (stub => stub.Delete (It.IsAny<IBusinessObject>(), It.IsAny<IBusinessObject>()), Times.Never());
+      Mock.Get (_referencedDataSourceStub.Object.BusinessObject).Verify (stub => stub.SetProperty (_referencePropertyStub.Object, expectedValue.Object), Times.AtLeastOnce());
     }
 
     [Test]
     public void PropertyIsReadWrite_SavesValueIntoBoundObject_AndReturnsTrue ()
     {
       var expectedValue = new Mock<IBusinessObject>();
-      _referencedDataSourceStub.Object.BusinessObject.Setup (stub => stub.GetProperty (_referencePropertyStub.Object)).Returns (expectedValue.Object);
-      _referencePropertyStub.Object.ReferenceClass.Setup (stub => stub.RequiresWriteBack).Returns (true);
+      Mock.Get (_referencedDataSourceStub.Object.BusinessObject).Setup (stub => stub.GetProperty (_referencePropertyStub.Object)).Returns (expectedValue.Object);
+      Mock.Get (_referencePropertyStub.Object.ReferenceClass).Setup (stub => stub.RequiresWriteBack).Returns (true);
 
       var referenceDataSource = new TestableBusinessObjectReferenceDataSource (_referencedDataSourceStub.Object, _referencePropertyStub.Object);
       referenceDataSource.LoadValue (false);
@@ -579,15 +580,15 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
       var result = referenceDataSource.SaveValue (false);
 
       Assert.That (result, Is.True);
-      _referencedDataSourceStub.Verify (stub => stub.SetProperty (_referencePropertyStub.Object, expectedValue.Object), Times.AtLeastOnce());
+      Mock.Get (_referencedDataSourceStub.Object.BusinessObject).Verify (stub => stub.SetProperty (_referencePropertyStub.Object, expectedValue.Object), Times.AtLeastOnce());
     }
 
     [Test]
     public void PropertyIsReadOnly_ThrowsInvalidOperationException ()
     {
       var expectedValue = new Mock<IBusinessObject>();
-      _referencedDataSourceStub.Object.BusinessObject.Setup (stub => stub.GetProperty (_readOnlyReferencePropertyStub.Object)).Returns (expectedValue.Object);
-      _readOnlyReferencePropertyStub.Object.ReferenceClass.Setup (stub => stub.RequiresWriteBack).Returns (true);
+      Mock.Get (_referencedDataSourceStub.Object.BusinessObject).Setup (stub => stub.GetProperty (_readOnlyReferencePropertyStub.Object)).Returns (expectedValue.Object);
+      Mock.Get (_readOnlyReferencePropertyStub.Object.ReferenceClass).Setup (stub => stub.RequiresWriteBack).Returns (true);
       _readOnlyReferencePropertyStub.Setup (stub => stub.Identifier).Returns ("TestProperty");
 
       var referenceDataSource = new TestableBusinessObjectReferenceDataSource (_referencedDataSourceStub.Object, _readOnlyReferencePropertyStub.Object);
@@ -601,15 +602,15 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
               "The business object of the TestDataSource could not be saved into the domain model "
               + "because the property 'TestProperty' is read only."));
 
-      _referencedDataSourceStub.Verify (stub => stub.SetProperty (null, null), Times.Never());
+      Mock.Get (_referencedDataSourceStub.Object.BusinessObject).Verify (stub => stub.SetProperty (It.IsAny<IBusinessObjectProperty>(), It.IsAny<object>()), Times.Never());
     }
 
     [Test]
     public void PropertyIsReadOnly_DoesNotSaveValueIntoBoundObject ()
     {
       var expectedValue = new Mock<IBusinessObject>();
-      _referencedDataSourceStub.Object.BusinessObject.Setup (stub => stub.GetProperty (_readOnlyReferencePropertyStub.Object)).Returns (expectedValue.Object);
-      _readOnlyReferencePropertyStub.Object.ReferenceClass.Setup (stub => stub.RequiresWriteBack).Returns (true);
+      Mock.Get (_referencedDataSourceStub.Object.BusinessObject).Setup (stub => stub.GetProperty (_readOnlyReferencePropertyStub.Object)).Returns (expectedValue.Object);
+      Mock.Get (_readOnlyReferencePropertyStub.Object.ReferenceClass).Setup (stub => stub.RequiresWriteBack).Returns (true);
 
       var referenceDataSource = new TestableBusinessObjectReferenceDataSource (_referencedDataSourceStub.Object, _readOnlyReferencePropertyStub.Object);
       referenceDataSource.LoadValue (false);
@@ -617,7 +618,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
 
       Assert.That (() => referenceDataSource.SaveValue (false), Throws.Exception);
 
-      _referencedDataSourceStub.Verify (stub => stub.SetProperty (null, null), Times.Never());
+      Mock.Get (_referencedDataSourceStub.Object.BusinessObject).Verify (stub => stub.SetProperty (It.IsAny<IBusinessObjectProperty>(), It.IsAny<object>()), Times.Never());
     }
 
     [Test]
@@ -647,7 +648,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
       _readOnlyReferencePropertyStub.Setup (stub => stub.IsDefaultValue (It.IsAny<IBusinessObject>(), It.IsAny<IBusinessObject>(), It.IsAny<IBusinessObjectProperty[]>())).Returns (true);
       _readOnlyReferencePropertyStub.Setup (stub => stub.SupportsDelete).Returns (true);
       _readOnlyReferencePropertyStub.Setup (stub => stub.Identifier).Returns ("TestProperty");
-      _referencedDataSourceStub.Object.BusinessObject.Setup (stub => stub.GetProperty (_readOnlyReferencePropertyStub.Object)).Returns (referencedObject.Object);
+      Mock.Get (_referencedDataSourceStub.Object.BusinessObject).Setup (stub => stub.GetProperty (_readOnlyReferencePropertyStub.Object)).Returns (referencedObject.Object);
 
       var referenceDataSource = new TestableBusinessObjectReferenceDataSource (_referencedDataSourceStub.Object, _readOnlyReferencePropertyStub.Object);
       referenceDataSource.ID = "TestDataSource";
@@ -700,7 +701,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
     public void DoesNotRequireWriteBack_AllControlsCanSave_ReturnsTrue ()
     {
       var referenceDataSource = new TestableBusinessObjectReferenceDataSource (_referencedDataSourceStub.Object, _referencePropertyStub.Object);
-      _referencedDataSourceStub.Object.BusinessObjectClass.Setup (_ => _.RequiresWriteBack).Returns (false);
+      Mock.Get (_referencedDataSourceStub.Object.BusinessObjectClass).Setup (_ => _.RequiresWriteBack).Returns (false);
       _referencePropertyStub.Setup (_ => _.IsReadOnly (It.IsAny<IBusinessObject>())).Returns (true); // IsReadOnlyInDomain to ensure exit branch
 
       var controlMock = new Mock<IBusinessObjectBoundEditableControl>();
@@ -719,7 +720,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
     public void DoesNotRequireWriteBack_WithoutControls_ReturnsTrue ()
     {
       var referenceDataSource = new TestableBusinessObjectReferenceDataSource (_referencedDataSourceStub.Object, _referencePropertyStub.Object);
-      _referencedDataSourceStub.Object.BusinessObjectClass.Setup (_ => _.RequiresWriteBack).Returns (false);
+      Mock.Get (_referencedDataSourceStub.Object.BusinessObjectClass).Setup (_ => _.RequiresWriteBack).Returns (false);
       _referencePropertyStub.Setup (_ => _.IsReadOnly (It.IsAny<IBusinessObject>())).Returns (true); // IsReadOnlyInDomain to ensure exit branch
 
       var result = referenceDataSource.SaveValue (false);
@@ -731,7 +732,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
     public void DoesNotRequireWriteBack_NotAllControlsCanSave_ReturnsFalse ()
     {
       var referenceDataSource = new TestableBusinessObjectReferenceDataSource (_referencedDataSourceStub.Object, _referencePropertyStub.Object);
-      _referencedDataSourceStub.Object.BusinessObjectClass.Setup (_ => _.RequiresWriteBack).Returns (false);
+      Mock.Get (_referencedDataSourceStub.Object.BusinessObjectClass).Setup (_ => _.RequiresWriteBack).Returns (false);
       _referencePropertyStub.Setup (_ => _.IsReadOnly (It.IsAny<IBusinessObject>())).Returns (true); // IsReadOnlyInDomain to ensure exit branch
 
       var controlMock = new Mock<IBusinessObjectBoundEditableControl>();

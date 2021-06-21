@@ -16,13 +16,10 @@
 // 
 using System;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting.NUnit;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.UnitTests.TestDomain;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject
 {
@@ -33,8 +30,6 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public override void SetUp ()
     {
       base.SetUp ();
-
-      new Mock<IBusinessObject> (MockBehavior.Strict).Object;
     }
     
     [Test]
@@ -80,8 +75,6 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       var mockProperty = new Mock<IBusinessObjectEnumerationProperty> (MockBehavior.Strict);
 
       IEnumerationValueFilter filter = new ConstantEnumerationValueFilter (new Enum[] { TestEnum.Value1, TestEnum.Value4 });
-
-      _mockRepository.ReplayAll ();
 
       bool actual = filter.IsEnabled (new EnumerationValueInfo (TestEnum.Value2, "Value2", null, true), mockBusinessObject.Object, mockProperty.Object);
 

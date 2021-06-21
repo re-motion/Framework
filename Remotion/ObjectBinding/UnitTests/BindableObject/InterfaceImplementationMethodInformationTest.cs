@@ -17,12 +17,9 @@
 using System;
 using System.Reflection;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.Reflection;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject
 {
@@ -73,7 +70,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetCustomAttribute ()
     {
-      _implementationMethodInformationStub.Setup (stub => stub.GetCustomAttribute<string>  (false)).Returns ("Test");
+      _implementationMethodInformationStub.Setup (stub => stub.GetCustomAttribute<string> (false)).Returns ("Test");
 
       Assert.That (_interfaceImplementationMethodInformation.GetCustomAttribute<string> (false), Is.EqualTo ("Test"));
     }
@@ -82,7 +79,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void GetCustomAttributes ()
     {
       var objToReturn = new string[0];
-      _implementationMethodInformationStub.Setup (stub => stub.GetCustomAttributes<string>  (false)).Returns (objToReturn);
+      _implementationMethodInformationStub.Setup (stub => stub.GetCustomAttributes<string> (false)).Returns (objToReturn);
 
       Assert.That (_interfaceImplementationMethodInformation.GetCustomAttributes<string> (false), Is.SameAs (objToReturn));
     }
@@ -90,7 +87,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void IsDefined ()
     {
-      _implementationMethodInformationStub.Setup (stub => stub.IsDefined<Attribute>  (false)).Returns (false);
+      _implementationMethodInformationStub.Setup (stub => stub.IsDefined<Attribute> (false)).Returns (false);
 
       Assert.That (_interfaceImplementationMethodInformation.IsDefined<Attribute> (false), Is.False);
     }

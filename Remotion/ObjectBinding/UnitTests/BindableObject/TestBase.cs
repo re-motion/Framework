@@ -18,7 +18,6 @@ using System;
 using System.Linq;
 using System.Reflection;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Mixins.CodeGeneration;
@@ -27,8 +26,6 @@ using Remotion.ObjectBinding.BindableObject.Properties;
 using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject
 {

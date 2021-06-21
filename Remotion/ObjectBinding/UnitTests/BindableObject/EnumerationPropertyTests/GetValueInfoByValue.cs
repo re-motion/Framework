@@ -16,15 +16,12 @@
 // 
 using System;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Globalization;
 using Remotion.Globalization.ExtensibleEnums;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BindableObject.Properties;
 using Remotion.ObjectBinding.UnitTests.TestDomain;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTests
 {
@@ -105,6 +102,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTes
     [Test]
     public void GetDisplayNameFromGlobalizationSerivce ()
     {
+      var outValue = "MockValue1";
       var mockEnumerationGlobalizationService = new Mock<IEnumerationGlobalizationService> (MockBehavior.Strict);
       IBusinessObjectEnumerationProperty property = CreateProperty (
           typeof (ClassWithValueType<TestEnum>),
@@ -115,10 +113,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTes
               mockEnumerationGlobalizationService.Object,
               new Mock<IExtensibleEnumGlobalizationService>().Object));
 
-      mockEnumerationGlobalizationService.Setup (_ => _.TryGetEnumerationValueDisplayName (TestEnum.Value1, out Arg<string>.Out ("MockValue1").Dummy))
+      mockEnumerationGlobalizationService.Setup (_ => _.TryGetEnumerationValueDisplayName (TestEnum.Value1, out outValue))
           .Returns (true)
           .Verifiable();
-      _mockRepository.ReplayAll();
 
       IEnumerationValueInfo actual = property.GetValueInfoByValue (TestEnum.Value1, null);
 

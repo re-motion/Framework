@@ -16,12 +16,9 @@
 // 
 using System;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.ObjectBinding.BusinessObjectPropertyPaths.Enumerators;
 using Remotion.Utilities;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Enumerators
 {
@@ -41,14 +38,14 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Enumerato
 
       var enumerator = new StaticBusinessObjectPropertyPathPropertyEnumerator ("FirstProperty:SecondProperty:ThirdProperty");
 
-      Assert.That (enumerator.MoveNext (firstClassStub), Is.True);
-      Assert.That (enumerator.Current, Is.SameAs (firstPropertyStub));
+      Assert.That (enumerator.MoveNext (firstClassStub.Object), Is.True);
+      Assert.That (enumerator.Current, Is.SameAs (firstPropertyStub.Object));
 
-      Assert.That (enumerator.MoveNext (secondClassStub), Is.True);
-      Assert.That (enumerator.Current, Is.SameAs (secondPropertyStub));
+      Assert.That (enumerator.MoveNext (secondClassStub.Object), Is.True);
+      Assert.That (enumerator.Current, Is.SameAs (secondPropertyStub.Object));
       
-      Assert.That (enumerator.MoveNext (thirdClassStub), Is.True);
-      Assert.That (enumerator.Current, Is.SameAs (thirdPropertyStub));
+      Assert.That (enumerator.MoveNext (thirdClassStub.Object), Is.True);
+      Assert.That (enumerator.Current, Is.SameAs (thirdPropertyStub.Object));
 
       Assert.That (enumerator.MoveNext (new Mock<IBusinessObjectClass>().Object), Is.False);
       Assert.That (()=>enumerator.Current, Throws.InvalidOperationException.With.Message.EqualTo ("Enumeration already finished."));
@@ -65,11 +62,11 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Enumerato
 
       var enumerator = new StaticBusinessObjectPropertyPathPropertyEnumerator ("FirstProperty:Missing:ThirdProperty");
 
-      Assert.That (enumerator.MoveNext (firstClassStub), Is.True);
-      Assert.That (enumerator.Current, Is.SameAs (firstPropertyStub));
+      Assert.That (enumerator.MoveNext (firstClassStub.Object), Is.True);
+      Assert.That (enumerator.Current, Is.SameAs (firstPropertyStub.Object));
 
       Assert.That (
-          () => enumerator.MoveNext (secondClassStub),
+          () => enumerator.MoveNext (secondClassStub.Object),
           Throws.TypeOf<ParseException>().With.Message.EqualTo ("BusinessObjectClass 'SecondClass' does not contain a property named 'Missing'."));
     }
 
@@ -85,17 +82,17 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Enumerato
 
       var enumerator = new StaticBusinessObjectPropertyPathPropertyEnumerator ("FirstProperty:SecondProperty:ThirdProperty");
 
-      Assert.That (enumerator.MoveNext (firstClassStub), Is.True);
-      Assert.That (enumerator.Current, Is.SameAs (firstPropertyStub));
+      Assert.That (enumerator.MoveNext (firstClassStub.Object), Is.True);
+      Assert.That (enumerator.Current, Is.SameAs (firstPropertyStub.Object));
 
       Assert.That (
-          () => enumerator.MoveNext (secondClassStub),
+          () => enumerator.MoveNext (secondClassStub.Object),
           Throws.TypeOf<ParseException>()
                 .With.Message.EqualTo (
                     string.Format (
                         "Each property in a property path except the last one must be a reference property. "
                         + "Property 'SecondProperty' is of type '{0}'.",
-                        secondPropertyStub.GetType().Name)));
+                        secondPropertyStub.Object.GetType().Name)));
     }
   }
 }

@@ -16,15 +16,12 @@
 // 
 using System;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BindableObject.Properties;
 using Remotion.ObjectBinding.UnitTests.TestDomain;
 using Remotion.Reflection;
 using Remotion.Utilities;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject
 {
@@ -43,7 +40,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void GetEnumerationValueFilter_FromPropertyInformation ()
     {
       var propertyInformationStub = new Mock<IPropertyInformation>();
-      propertyInformationStub.Setup (stub => stub.GetCustomAttribute<DisableEnumValuesAttribute>  (true)).Returns (_attribute);
+      propertyInformationStub.Setup (stub => stub.GetCustomAttribute<DisableEnumValuesAttribute> (true)).Returns (_attribute);
 
       var provider = new EnumValueFilterProvider<DisableEnumValuesAttribute> (
           propertyInformationStub.Object,
@@ -59,7 +56,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void GetEnumerationValueFilter_FromAttributeProvider ()
     {
       var propertyInformationStub = new Mock<IPropertyInformation>();
-      propertyInformationStub.Setup (stub => stub.GetCustomAttribute<DisableEnumValuesAttribute>  (true)).Returns ((DisableEnumValuesAttribute) null);
+      propertyInformationStub.Setup (stub => stub.GetCustomAttribute<DisableEnumValuesAttribute> (true)).Returns ((DisableEnumValuesAttribute) null);
       propertyInformationStub.Setup (stub => stub.PropertyType).Returns (typeof (int));
 
       var provider = new EnumValueFilterProvider<DisableEnumValuesAttribute> (
@@ -76,7 +73,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void GetEnumerationValueFilter_FromAttributeProvider_WithNullableProperty ()
     {
       var propertyInformationStub = new Mock<IPropertyInformation>();
-      propertyInformationStub.Setup (stub => stub.GetCustomAttribute<DisableEnumValuesAttribute>  (true)).Returns ((DisableEnumValuesAttribute) null);
+      propertyInformationStub.Setup (stub => stub.GetCustomAttribute<DisableEnumValuesAttribute> (true)).Returns ((DisableEnumValuesAttribute) null);
       propertyInformationStub.Setup (stub => stub.PropertyType).Returns (typeof (int?));
 
       var provider = new EnumValueFilterProvider<DisableEnumValuesAttribute> (
@@ -93,7 +90,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void GetEnumerationValueFilter_FromAttributeProvider_Multiple ()
     {
       var propertyInformationStub = new Mock<IPropertyInformation>();
-      propertyInformationStub.Setup (stub => stub.GetCustomAttribute<IDisableEnumValuesAttribute>  (true)).Returns ((IDisableEnumValuesAttribute) null);
+      propertyInformationStub.Setup (stub => stub.GetCustomAttribute<IDisableEnumValuesAttribute> (true)).Returns ((IDisableEnumValuesAttribute) null);
       propertyInformationStub.Setup (stub => stub.PropertyType).Returns (typeof (int));
 
       var filterStub = new Mock<IEnumerationValueFilter>();
@@ -123,7 +120,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void GetEnumerationValueFilter_None ()
     {
       var propertyInformationStub = new Mock<IPropertyInformation>();
-      propertyInformationStub.Setup (stub => stub.GetCustomAttribute<DisableEnumValuesAttribute>  (true)).Returns ((DisableEnumValuesAttribute) null);
+      propertyInformationStub.Setup (stub => stub.GetCustomAttribute<DisableEnumValuesAttribute> (true)).Returns ((DisableEnumValuesAttribute) null);
       propertyInformationStub.Setup (stub => stub.PropertyType).Returns (typeof (int));
 
       var provider = new EnumValueFilterProvider<DisableEnumValuesAttribute> (

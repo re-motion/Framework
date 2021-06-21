@@ -16,7 +16,6 @@
 // 
 using System;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Globalization;
 using Remotion.Globalization.ExtensibleEnums;
@@ -28,8 +27,6 @@ using Remotion.ObjectBinding.UnitTests.TestDomain;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject
 {
@@ -128,11 +125,12 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               new Mock<IEnumerationGlobalizationService>().Object,
               new Mock<IExtensibleEnumGlobalizationService>().Object));
       var bindableObjectClass = classReflector.GetMetadata ();
+      var outValue = "MockString";
 
       mockMemberInformationGlobalizationService.Setup (_ => _.TryGetTypeDisplayName (
               It.Is<ITypeInformation> (c => c.ConvertToRuntimeType() == bindableObjectClass.TargetType),
               It.Is<ITypeInformation> (c => c.ConvertToRuntimeType() == bindableObjectClass.TargetType),
-              out Arg<string>.Out ("MockString").Dummy))
+              out outValue))
           .Returns (true)
           .Verifiable();
 
