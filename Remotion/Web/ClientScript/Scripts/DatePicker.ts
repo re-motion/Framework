@@ -174,45 +174,32 @@ class DatePicker
 
   private static ApplyPosition (datePicker: HTMLElement, button: HTMLElement): void
   {
-    var datePickerLeft;
-    var datePickerTop;
-    var datePickerWidth;
-    var datePickerHeight;
-
-    var body = document.body;
-    var left = LayoutUtility.GetOffset(button).left;
-    var top = LayoutUtility.GetOffset(button).top;
+    var left = LayoutUtility.GetOffset(button).left - window.pageXOffset;
+    var top = LayoutUtility.GetOffset(button).top - window.pageYOffset;
 
     //  Adjust position so the date picker is shown below 
     //  and aligned with the right border of the button.
     datePicker.style.left = Math.max (0, left - LayoutUtility.GetWidth(datePicker) + LayoutUtility.GetWidth(button)) + 'px';
     datePicker.style.top = Math.max (0, top + LayoutUtility.GetHeight(button)) + 'px';
-    datePickerLeft = LayoutUtility.GetOffset(datePicker).left;
-    datePickerTop = LayoutUtility.GetOffset(datePicker).top;
-    datePickerWidth = LayoutUtility.GetWidth(datePicker);
-    datePickerHeight = LayoutUtility.GetHeight(datePicker);
+    var datePickerLeft = LayoutUtility.GetOffset(datePicker).left - window.pageXOffset;
+    var datePickerTop = LayoutUtility.GetOffset(datePicker).top - window.pageYOffset;
+    var datePickerWidth = LayoutUtility.GetWidth(datePicker);
+    var datePickerHeight = LayoutUtility.GetHeight(datePicker);
 
-    //  Re-adjust the button, in case available screen space is insufficient
-    var visibleBodyTop = body.scrollTop;
+    var visibleBodyWidth = document.documentElement.clientWidth;
     var visibleBodyHeight = document.documentElement.clientHeight;
 
-    var datePickerTopAdjusted = datePickerTop;
-    if (visibleBodyTop + visibleBodyHeight < datePickerTop + datePickerHeight)
-    {
-      var newTop = Math.max (0, LayoutUtility.GetOffset(button).top - datePickerHeight);
-      if (newTop >= 0)
-        datePickerTopAdjusted = newTop;
-    }
+    //  Move the popup to the top of the button if there is not enough space below
+    datePickerTop = visibleBodyHeight < datePickerTop + datePickerHeight
+      ? LayoutUtility.GetOffset(button).top - window.pageYOffset - datePickerHeight
+      : datePickerTop;
 
-    var visibleBodyLeft = body.scrollLeft;
-    var visibleBodyWidth = document.documentElement.clientWidth;
+    // Make sure that the popup is always in the visible area
+    datePickerLeft = Math.max(0, Math.min(datePickerLeft, visibleBodyWidth - datePickerWidth));
+    datePickerTop = Math.max(0, Math.min(datePickerTop, visibleBodyHeight - datePickerHeight));
 
-    var datePickerLeftAdjusted = datePickerLeft;
-    if (datePickerLeft < visibleBodyLeft && datePickerWidth <= visibleBodyWidth)
-      datePickerLeftAdjusted = visibleBodyLeft;
-
-    datePicker.style.left = datePickerLeftAdjusted + 'px';
-    datePicker.style.top = datePickerTopAdjusted + 'px';
+    datePicker.style.left = datePickerLeft + 'px';
+    datePicker.style.top = datePickerTop + 'px';
   }
 }
 

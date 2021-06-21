@@ -13,6 +13,15 @@ namespace OBWTest {
     public partial class StandardMode {
         
         /// <summary>
+        /// Html control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl Html;
+
+        /// <summary>
         /// HtmlHeadContents control.
         /// </summary>
         /// <remarks>

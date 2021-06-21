@@ -17,6 +17,7 @@
 using System;
 using System.Reflection;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BindableObject.Properties;
@@ -35,6 +36,8 @@ namespace OBWTest.UI
   /// </summary>
   public class NavigationTabs : UserControl
   {
+    private const string c_mainContentScrollableKey = "MainContentScrollableKey";
+
     public enum WaiConformanceLevel
     {
       Undefined = 0,
@@ -45,6 +48,7 @@ namespace OBWTest.UI
 
     protected BocEnumValue WaiConformanceLevelField;
     protected TabbedMenu TabbedMenu;
+    protected CheckBox MainContentScrollableCheckBox;
     
     public WaiConformanceLevel ConformanceLevel
     {
@@ -85,12 +89,23 @@ namespace OBWTest.UI
       string mode = Global.PreferQuirksModeRendering ? "Quirks" : "Standard";
       string theme = Global.PreferQuirksModeRendering ? "" : SafeServiceLocator.Current.GetInstance<ResourceTheme> ().Name;
       TabbedMenu.StatusText = mode + " " + theme;
+
+      var mainContentScrollable = (bool?) Session[c_mainContentScrollableKey] ?? false;
+      MainContentScrollableCheckBox.Checked = mainContentScrollable;
+      if (mainContentScrollable)
+        (Page.Master as StandardMode)?.SetPageContentScrollable();
     }
 
     private void WaiConformanceLevelField_SelectionChanged (object sender, EventArgs e)
     {
       ConformanceLevel = (WaiConformanceLevel) WaiConformanceLevelField.Value;
       WaiConformanceLevelField.IsDirty = false;
+    }
+
+    protected void MainContentScrollableCheckBox_OnCheckedChanged (object sender, EventArgs e)
+    {
+      var mainContentScrollable = MainContentScrollableCheckBox.Checked;
+      Session[c_mainContentScrollableKey] = mainContentScrollable;
     }
 
     #region Web Form Designer generated code

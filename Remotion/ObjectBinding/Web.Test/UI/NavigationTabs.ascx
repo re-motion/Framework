@@ -115,6 +115,8 @@
 </Tabs>
 </remotion:TabbedMenu>
 <div style="WIDTH: 100%;TEXT-ALIGN: right">
+<asp:CheckBox ID="MainContentScrollableCheckBox" runat="server" AutoPostBack="True" Text="Main content scrollable" OnCheckedChanged="MainContentScrollableCheckBox_OnCheckedChanged"/>
+<span>|</span>
 WAI Conformance Level: 
 <remotion:BocEnumValue id="WaiConformanceLevelField" runat="server" Required="true">
 <listcontrolstyle autopostback="True">
