@@ -38,7 +38,6 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     public void Test_WithParamsArray ()
     {
       _testHelper.ExpectFunctionalSecurityStrategyHasAccess (TestAccessTypes.First, true);
-      _testHelper.ReplayAll();
 
       bool hasAccess = _securityClient.HasStatelessAccess (typeof (SecurableObject), AccessType.Get (TestAccessTypes.First));
 
@@ -50,7 +49,6 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     public void Test_WithParamsArray_AndSecurityPrincipal ()
     {
       _testHelper.ExpectFunctionalSecurityStrategyHasAccess (TestAccessTypes.First, true);
-      _testHelper.ReplayAll();
 
       var securityPrincipal = _securityClient.PrincipalProvider.GetPrincipal();
       bool hasAccess = _securityClient.HasStatelessAccess (typeof (SecurableObject), securityPrincipal, AccessType.Get (TestAccessTypes.First));
@@ -63,7 +61,6 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     public void Test_AccessGranted ()
     {
       _testHelper.ExpectFunctionalSecurityStrategyHasAccess (TestAccessTypes.First, true);
-      _testHelper.ReplayAll();
 
       bool hasAccess = _securityClient.HasStatelessAccess (
           typeof (SecurableObject),
@@ -77,7 +74,6 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     public void Test_AccessDenied ()
     {
       _testHelper.ExpectFunctionalSecurityStrategyHasAccess (TestAccessTypes.First, false);
-      _testHelper.ReplayAll();
 
       bool hasAccess = _securityClient.HasStatelessAccess (
           typeof (SecurableObject),
@@ -90,8 +86,6 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     [Test]
     public void Test_WithinSecurityFreeSection_AccessGranted ()
     {
-      _testHelper.ReplayAll();
-
       bool hasAccess;
       using (SecurityFreeSection.Activate())
       {
