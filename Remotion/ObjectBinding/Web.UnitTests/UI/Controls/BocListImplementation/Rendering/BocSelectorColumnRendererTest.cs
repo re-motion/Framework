@@ -16,15 +16,12 @@
 // 
 using System;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.Web.UI.Controls.Rendering;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering
 {
@@ -46,7 +43,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       _bocListRenderingContext = new BocListRenderingContext (
           HttpContext,
           Html.Writer,
-          List,
+          List.Object,
           businessObjectWebServiceContext,
           new BocColumnRenderer[0]);
     }
@@ -66,7 +63,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var input = Html.GetAssertedChildElement (th, "input", 0);
       Html.AssertAttribute (input, "type", "checkbox");
-      Html.AssertAttribute (input, "name", List.GetSelectAllControlName ());
+      Html.AssertAttribute (input, "name", List.Object.GetSelectAllControlName ());
       Html.AssertNoAttribute (input, "id");
       Html.AssertNoAttribute (input, "value");
       Html.AssertAttribute (input, "title", "Select all rows");

@@ -16,13 +16,10 @@
 // 
 using System;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.Validation;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
 {
@@ -70,6 +67,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
       var businessObjectStub = new Mock<IBusinessObject>();
 
       var dataSourceStub = new Mock<IBusinessObjectDataSource>();
+      dataSourceStub.SetupProperty (_ => _.BusinessObject);
       dataSourceStub.Object.BusinessObject = businessObjectStub.Object;
 
       var controlMock = new Mock<IBusinessObjectBoundEditableWebControl>();
@@ -95,10 +93,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
       var businessObjectPropertyStub = new Mock<IBusinessObjectProperty>();
 
       var dataSourceStub = new Mock<IBusinessObjectDataSource>();
+      dataSourceStub.SetupProperty (_ => _.BusinessObject);
       dataSourceStub.Object.BusinessObject = businessObjectStub.Object;
 
       var controlStub = new Mock<IBusinessObjectBoundEditableWebControl>();
       controlStub.Setup (_ => _.HasValidBinding).Returns (true);
+      controlStub.SetupProperty (_ => _.DataSource);
+      controlStub.SetupProperty (_ => _.Property);
       controlStub.Object.DataSource = dataSourceStub.Object;
       controlStub.Object.Property = businessObjectPropertyStub.Object;
 

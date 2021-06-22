@@ -16,10 +16,7 @@
 // 
 using System;
 using Moq;
-using Moq.Protected;
 using Remotion.ObjectBinding.Web.UI.Controls;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering
 {
@@ -32,8 +29,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       Initialize();
 
-      Column.OwnerControl = List;
-      List.Setup (stub => stub.ResolveClientUrl (It.IsAny<string>())).Callback ((Func<string, string>) (url => url.TrimStart ('~')));
+      Column.OwnerControl = List.Object;
+      List.Setup (stub => stub.ResolveClientUrl (It.IsAny<string>())).Returns ((string url) => url.TrimStart ('~'));
     }
   }
 }

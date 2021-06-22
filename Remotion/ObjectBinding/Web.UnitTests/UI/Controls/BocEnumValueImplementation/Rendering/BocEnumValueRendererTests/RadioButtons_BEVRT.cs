@@ -21,7 +21,6 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.AspNetFramework;
 using Remotion.Development.Web.UnitTesting.Resources;
@@ -41,9 +40,7 @@ using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.Utilities;
-using Rhino.Mocks;
 using AttributeCollection = System.Web.UI.AttributeCollection;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplementation.Rendering.BocEnumValueRendererTests
 {
@@ -66,6 +63,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       Initialize();
 
       _enumValue = new Mock<IBocEnumValue>();
+      _enumValue.SetupProperty (_ => _.CssClass);
       var businessObjectProvider = BindableObjectProvider.GetProvider (typeof (BindableObjectProviderAttribute));
       var propertyInfo = PropertyInfoAdapter.Create(typeof (TypeWithEnum).GetProperty ("EnumValue"));
       IBusinessObjectEnumerationProperty property =
@@ -182,6 +180,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
     public void Render_NamedValueSelected ()
     {
       _enumValue.Setup (mock => mock.IsRequired).Returns (true);
+      _enumValue.SetupProperty (_ => _.Value);
       _enumValue.Object.Value = TestEnum.First;
 
       AssertRadioButtonList (false, TestEnum.First, false, false);
@@ -192,6 +191,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
     {
       _enumValue.Setup (mock => mock.IsRequired).Returns (true);
       _enumValue.Object.ListControlStyle.AutoPostBack = true;
+      _enumValue.SetupProperty (_ => _.Value);
       _enumValue.Object.Value = TestEnum.First;
 
       AssertRadioButtonList (false, TestEnum.First, false, true);
@@ -202,6 +202,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
     {
       _enumValue.Setup (mock => mock.IsRequired).Returns (false);
       _enumValue.Object.ListControlStyle.RadioButtonListNullValueVisible = false;
+      _enumValue.SetupProperty (_ => _.Value);
       _enumValue.Object.Value = TestEnum.First;
 
       AssertRadioButtonList (false, TestEnum.First, false, false);
@@ -212,6 +213,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
     {
       _enumValue.Setup (mock => mock.IsRequired).Returns (false);
       _enumValue.Object.ListControlStyle.RadioButtonListNullValueVisible = true;
+      _enumValue.SetupProperty (_ => _.Value);
       _enumValue.Object.Value = TestEnum.First;
 
       AssertRadioButtonList (true, TestEnum.First, false, false);
@@ -222,6 +224,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
     {
       _enumValue.Setup (mock => mock.IsRequired).Returns (true);
       _enumValue.Object.ListControlStyle.RadioButtonListNullValueVisible = false;
+      _enumValue.SetupProperty (_ => _.Value);
       _enumValue.Object.Value = TestEnum.First;
 
       AssertRadioButtonList (false, TestEnum.First, false, false);
@@ -232,6 +235,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
     {
       _enumValue.Setup (mock => mock.IsRequired).Returns (true);
       _enumValue.Object.ListControlStyle.RadioButtonListNullValueVisible = true;
+      _enumValue.SetupProperty (_ => _.Value);
       _enumValue.Object.Value = TestEnum.First;
 
       AssertRadioButtonList (false, TestEnum.First, false, false);
@@ -242,6 +246,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
     {
       _enumValue.Object.CssClass = "CssClass";
       _enumValue.Setup (mock => mock.IsRequired).Returns (true);
+      _enumValue.SetupProperty (_ => _.Value);
       _enumValue.Object.Value = TestEnum.First;
 
       AssertRadioButtonList (false, TestEnum.First, false, false);
@@ -252,6 +257,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
     {
       _enumValue.Object.Attributes["class"] = "CssClass";
       _enumValue.Setup (mock => mock.IsRequired).Returns (true);
+      _enumValue.SetupProperty (_ => _.Value);
       _enumValue.Object.Value = TestEnum.First;
 
       AssertRadioButtonList (false, TestEnum.First, false, false);
@@ -260,11 +266,14 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
     [Test]
     public void Render_NamedValueSelected_WithStyle ()
     {
+      _enumValue.SetupProperty (_ => _.Height);
+      _enumValue.SetupProperty (_ => _.Width);
       _enumValue.Object.Height = _height;
       _enumValue.Object.Width = _width;
       _enumValue.Object.ControlStyle.Height = _height;
       _enumValue.Object.ControlStyle.Width = _width;
       _enumValue.Setup (mock => mock.IsRequired).Returns (true);
+      _enumValue.SetupProperty (_ => _.Value);
       _enumValue.Object.Value = TestEnum.First;
 
       AssertRadioButtonList (false, TestEnum.First, true, false);
@@ -276,6 +285,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       _enumValue.Object.Style["height"] = _height.ToString();
       _enumValue.Object.Style["width"] = _width.ToString();
       _enumValue.Setup (mock => mock.IsRequired).Returns (true);
+      _enumValue.SetupProperty (_ => _.Value);
       _enumValue.Object.Value = TestEnum.First;
 
       AssertRadioButtonList (false, TestEnum.First, true, false);

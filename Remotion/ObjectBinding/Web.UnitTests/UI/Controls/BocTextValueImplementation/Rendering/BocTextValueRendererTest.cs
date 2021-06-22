@@ -20,7 +20,6 @@ using System.Web;
 using System.Web.UI;
 using System.Xml;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.AspNetFramework;
 using Remotion.Development.Web.UnitTesting.Resources;
@@ -33,8 +32,6 @@ using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplementation.Rendering
 {
@@ -51,7 +48,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
     public void SetUp ()
     {
       Initialize();
-      TextValue = new Mock<IBocTextValue>().Object;
+      TextValue = new Mock<IBocTextValue>();
       _renderer = new BocTextValueRenderer (
           new FakeResourceUrlFactory(),
           GlobalizationService,
@@ -62,7 +59,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       TextValue.Setup (stub => stub.ControlType).Returns ("BocTextValue");
       TextValue.Setup (stub => stub.GetValueName()).Returns (c_valueName);
       TextValue.Setup (mock => mock.GetLabelIDs()).Returns (EnumerableUtility.Singleton (c_labelID));
-      TextValue.Setup (mock => mock.CssClass).PropertyBehavior();
+      TextValue.SetupProperty (_ => _.CssClass);
       TextValue.Setup (mock => mock.GetValidationErrors()).Returns (EnumerableUtility.Singleton (c_validationErrors));
 
       var pageStub = new Mock<IPage>();
@@ -261,7 +258,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
 
       SetStyle (withStyle, withCssClass, inStandardProperties, autoPostBack);
 
-      _renderer.Render (new BocTextValueRenderingContext (new Mock<HttpContextBase>().Object, Html.Writer, TextValue));
+      _renderer.Render (new BocTextValueRenderingContext (new Mock<HttpContextBase>().Object, Html.Writer, TextValue.Object));
 
       var document = Html.GetResultDocument();
       Html.AssertChildElementCount (document.DocumentElement, 1);
@@ -283,7 +280,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       Html.AssertAttribute (input, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
       Html.AssertAttribute (input, "type", "text");
       Html.AssertAttribute (input, "value", c_firstLineText);
-      Assert.That (TextValue.TextBoxStyle.AutoPostBack, Is.EqualTo (autoPostBack));
+      Assert.That (TextValue.Object.TextBoxStyle.AutoPostBack, Is.EqualTo (autoPostBack));
       if (autoPostBack)
         Html.AssertAttribute (input, "onchange", string.Format ("javascript:__doPostBack('{0}','')", c_valueName));
       else
@@ -305,7 +302,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       SetStyle (withStyle, withCssClass, inStandardProperties, false);
 
       TextValue.Setup (mock => mock.Enabled).Returns (false);
-      _renderer.Render (new BocTextValueRenderingContext (new Mock<HttpContextBase>().Object, Html.Writer, TextValue));
+      _renderer.Render (new BocTextValueRenderingContext (new Mock<HttpContextBase>().Object, Html.Writer, TextValue.Object));
 
       var document = Html.GetResultDocument();
       Html.AssertChildElementCount (document.DocumentElement, 1);
@@ -338,7 +335,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       SetStyle (withStyle, withCssClass, inStandardProperties, false);
 
       TextValue.Setup (mock => mock.IsReadOnly).Returns (true);
-      _renderer.Render (new BocTextValueRenderingContext (new Mock<HttpContextBase>().Object, Html.Writer, TextValue));
+      _renderer.Render (new BocTextValueRenderingContext (new Mock<HttpContextBase>().Object, Html.Writer, TextValue.Object));
 
       var document = Html.GetResultDocument();
       Html.AssertChildElementCount (document.DocumentElement, 1);
@@ -372,9 +369,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       TextValue.Setup (mock => mock.IsReadOnly).Returns (true);
 
       SetStyle (withStyle, withCssClass, inStandardProperties, false);
-      TextValue.TextBoxStyle.TextMode = BocTextBoxMode.MultiLine;
+      TextValue.Object.TextBoxStyle.TextMode = BocTextBoxMode.MultiLine;
 
-      _renderer.Render (new BocTextValueRenderingContext (new Mock<HttpContextBase>().Object, Html.Writer, TextValue));
+      _renderer.Render (new BocTextValueRenderingContext (new Mock<HttpContextBase>().Object, Html.Writer, TextValue.Object));
 
       var document = Html.GetResultDocument();
       Html.AssertChildElementCount (document.DocumentElement, 1);
@@ -408,9 +405,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       TextValue.Setup (mock => mock.Text).Returns (c_firstLineText);
 
       SetStyle (false, false, false, autoPostBack);
-      TextValue.TextBoxStyle.TextMode = renderPassword ? BocTextBoxMode.PasswordRenderMasked : BocTextBoxMode.PasswordNoRender;
+      TextValue.Object.TextBoxStyle.TextMode = renderPassword ? BocTextBoxMode.PasswordRenderMasked : BocTextBoxMode.PasswordNoRender;
 
-      _renderer.Render (new BocTextValueRenderingContext (new Mock<HttpContextBase>().Object, Html.Writer, TextValue));
+      _renderer.Render (new BocTextValueRenderingContext (new Mock<HttpContextBase>().Object, Html.Writer, TextValue.Object));
 
       var document = Html.GetResultDocument();
       Html.AssertChildElementCount (document.DocumentElement, 1);
@@ -429,7 +426,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       else
         Html.AssertNoAttribute (input, "value");
 
-      Assert.That (TextValue.TextBoxStyle.AutoPostBack, Is.EqualTo (autoPostBack));
+      Assert.That (TextValue.Object.TextBoxStyle.AutoPostBack, Is.EqualTo (autoPostBack));
       if (autoPostBack)
         Html.AssertAttribute (input, "onchange", string.Format ("javascript:__doPostBack('{0}','')", c_valueName));
       else
@@ -445,10 +442,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       TextValue.Setup (mock => mock.Text).Returns (c_firstLineText);
 
       SetStyle (false, false, false, false);
-      TextValue.TextBoxStyle.TextMode = renderPassword ? BocTextBoxMode.PasswordRenderMasked : BocTextBoxMode.PasswordNoRender;
+      TextValue.Object.TextBoxStyle.TextMode = renderPassword ? BocTextBoxMode.PasswordRenderMasked : BocTextBoxMode.PasswordNoRender;
 
       TextValue.Setup (mock => mock.IsReadOnly).Returns (true);
-      _renderer.Render (new BocTextValueRenderingContext (new Mock<HttpContextBase>().Object, Html.Writer, TextValue));
+      _renderer.Render (new BocTextValueRenderingContext (new Mock<HttpContextBase>().Object, Html.Writer, TextValue.Object));
 
       var document = Html.GetResultDocument();
       Html.AssertChildElementCount (document.DocumentElement, 1);

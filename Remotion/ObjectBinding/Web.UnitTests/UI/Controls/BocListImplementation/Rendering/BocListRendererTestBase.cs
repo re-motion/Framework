@@ -19,7 +19,6 @@ using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Moq;
-using Moq.Protected;
 using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls;
@@ -30,14 +29,12 @@ using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.ListMenuImplementation;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering
 {
   public abstract class BocListRendererTestBase : RendererTestBase
   {
-    protected IBocList List { get; set; }
+    protected Mock<IBocList> List { get; set; }
     protected IBusinessObject BusinessObject { get; set; }
     protected BocListDataRowRenderEventArgs EventArgs { get; set; }
 
@@ -75,7 +72,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
     private void InitializeMockList ()
     {
-      List = new Mock<IBocList>().Object;
+      List = new Mock<IBocList>();
 
       List.Setup (list => list.ClientID).Returns ("MyList");
       List.Setup (mock => mock.ControlType).Returns ("BocList");
@@ -83,8 +80,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       List.Setup (mock => mock.GetLabelIDs()).Returns (EnumerableUtility.Singleton ("Label"));
       List.Setup (mock => mock.GetValidationErrors()).Returns (EnumerableUtility.Singleton ("ValidationError"));
 
-      List.Setup (list => list.DataSource).Returns (new Mock<IBusinessObjectDataSource>().Object);
-      List.DataSource.BusinessObject = BusinessObject;
+      var dataSourceMock = new Mock<IBusinessObjectDataSource>();
+      dataSourceMock.SetupProperty (_ => _.BusinessObject);
+      List.Setup (list => list.DataSource).Returns (dataSourceMock.Object);
+      List.Object.DataSource.BusinessObject = BusinessObject;
       List.Setup (list => list.Property).Returns (BusinessObject.BusinessObjectClass.GetPropertyDefinition ("ReferenceList"));
 
       var value = ((TypeWithReference) BusinessObject).ReferenceList;
@@ -92,15 +91,16 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       List.Setup (list => list.HasValue).Returns (value != null && value.Length > 0);
 
       var listMenuStub = new Mock<IListMenu>();
+      listMenuStub.SetupProperty (_ => _.Visible);
       List.Setup (list => list.ListMenu).Returns (listMenuStub.Object);
 
       StateBag stateBag = new StateBag ();
       List.Setup (mock => mock.Attributes).Returns (new AttributeCollection (stateBag));
-      List.Setup (mock => mock.Style).Returns (List.Attributes.CssStyle);
+      List.Setup (mock => mock.Style).Returns (List.Object.Attributes.CssStyle);
       List.Setup (mock => mock.ControlStyle).Returns (new Style (stateBag));
 
       var page = new Mock<IPage>();
-      page.Setup (stub => page.Object.Context).Returns (HttpContext);
+      page.Setup (_ => _.Context).Returns (HttpContext);
       List.Setup (list => list.Page).Returns (page.Object);
 
       var clientScriptManager = new Mock<IClientScriptManager>();
@@ -120,7 +120,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       List.Setup (list => list.GetResourceManager()).Returns (
           GlobalizationService.GetResourceManager (typeof (ObjectBinding.Web.UI.Controls.BocList.ResourceIdentifier)));
 
-      List.Setup (stub => stub.ResolveClientUrl (It.IsAny<string>())).Callback ((Func<string, string>) (url => url.TrimStart ('~')));
+      List.Setup (stub => stub.ResolveClientUrl (It.IsAny<string>())).Returns ((string url) => url.TrimStart ('~'));
     }
   }
 }

@@ -3,14 +3,11 @@ using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Validation;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImplementation.Validation
 {
@@ -59,6 +56,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
 
     private IBocAutoCompleteReferenceValue GetControlWithOptionalValidatorsEnabled (bool isRequired)
     {
+      var outValue = "MockValue";
       var dataSourceStub = new Mock<IBusinessObjectDataSource>();
       var propertyStub = new Mock<IBusinessObjectReferenceProperty>();
       propertyStub.Setup (p => p.IsNullable).Throws (new InvalidOperationException ("Property.IsNullable is not relevant with optional validators enabled."));
@@ -72,7 +70,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       controlMock.Setup (c => c.DataSource).Returns (dataSourceStub.Object).Verifiable();
 
       var resourceManagerMock = new Mock<IResourceManager>();
-      resourceManagerMock.Setup (r => r.TryGetString (It.IsAny<string>(), out Arg<string>.Out ("MockValue").Dummy))
+      resourceManagerMock.Setup (r => r.TryGetString (It.IsAny<string>(), out outValue))
           .Returns (true)
           .Verifiable();
 
@@ -84,8 +82,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
 
     private IBocAutoCompleteReferenceValue GetControlWithOptionalValidatorsDisabled (bool isRequired, bool hasDataSource = true, bool hasBusinessObject = true, bool hasProperty = true)
     {
+      var outValue = "MockValue";
       var dataSourceStub = new Mock<IBusinessObjectDataSource>();
-      dataSourceStub.Object.BusinessObject = hasBusinessObject ? new Mock<IBusinessObject>() : null;
+      dataSourceStub.SetupProperty (_ => _.BusinessObject);
+      dataSourceStub.Object.BusinessObject = hasBusinessObject ? new Mock<IBusinessObject>().Object : null;
       var propertyStub = new Mock<IBusinessObjectReferenceProperty>();
       propertyStub.Setup (p => p.IsNullable).Returns (!isRequired);
       propertyStub.Setup (p => p.IsRequired).Throws (new InvalidOperationException ("Property.IsRequired is not relevant."));
@@ -94,11 +94,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       controlMock.Setup (c => c.IsRequired).Throws (new InvalidOperationException ("Control settings are not relevant with optional validators disabled.")).Verifiable();
       controlMock.Setup (c => c.TextBoxStyle).Returns (new TextBoxStyle()).Verifiable();
       controlMock.Setup (c => c.AreOptionalValidatorsEnabled).Returns (false).Verifiable();
-      controlMock.Setup (c => c.Property).Returns (hasProperty ? propertyStub : null).Verifiable();
-      controlMock.Setup (c => c.DataSource).Returns (hasDataSource ? dataSourceStub : null).Verifiable();
+      controlMock.Setup (c => c.Property).Returns (hasProperty ? propertyStub.Object : null).Verifiable();
+      controlMock.Setup (c => c.DataSource).Returns (hasDataSource ? dataSourceStub.Object : null).Verifiable();
 
       var resourceManagerMock = new Mock<IResourceManager>();
-      resourceManagerMock.Setup (r => r.TryGetString (It.IsAny<string>(), out Arg<string>.Out ("MockValue").Dummy))
+      resourceManagerMock.Setup (r => r.TryGetString (It.IsAny<string>(), out outValue))
           .Returns (true)
           .Verifiable();
 

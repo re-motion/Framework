@@ -15,17 +15,15 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.IO;
 using System.Web;
 using System.Web.UI;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering
 {
@@ -44,7 +42,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       _nullColumnRenderer = new NullColumnRenderer();
       _columnDefinition = new StubColumnDefinition();
-      _htmlTextWriterMock = new Mock<HtmlTextWriter> (MockBehavior.Strict);
+      _htmlTextWriterMock = new Mock<HtmlTextWriter> (MockBehavior.Strict, TextWriter.Null);
       _httpContextStub = new Mock<HttpContextBase>();
       _bocListStub = new Mock<IBocList>();
       _renderingContext = new BocColumnRenderingContext<StubColumnDefinition> (

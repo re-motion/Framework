@@ -19,7 +19,6 @@ using System.Linq;
 using System.Web;
 using System.Xml;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.AspNetFramework;
 using Remotion.Development.Web.UnitTesting.Resources;
@@ -32,8 +31,6 @@ using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplementation.Rendering
 {
@@ -51,7 +48,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
     {
       Initialize();
 
-      TextValue = new Mock<IBocMultilineTextValue>().Object;
+      TextValue = new Mock<IBocMultilineTextValue>();
       TextValue.Setup (mock => mock.Text).Returns (
           BocTextValueRendererTestBase<IBocTextValue>.c_firstLineText + Environment.NewLine
           + BocTextValueRendererTestBase<IBocTextValue>.c_secondLineText);
@@ -63,7 +60,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       TextValue.Setup (stub => stub.GetValueName()).Returns (c_textValueID);
       TextValue.Setup (mock => mock.GetLabelIDs()).Returns (EnumerableUtility.Singleton (c_labelID));
       TextValue.Setup (mock => mock.GetValidationErrors()).Returns (EnumerableUtility.Singleton (c_validationErrors));
-      TextValue.Setup (mock => mock.CssClass).PropertyBehavior();
+      TextValue.SetupProperty (_ => _.CssClass);
 
       var pageStub = new Mock<IPage>();
       pageStub.Setup (stub => stub.WrappedInstance).Returns (new PageMock());
@@ -197,7 +194,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
 
       TextValue.Setup (mock => mock.Enabled).Returns (!isDisabled);
 
-      _renderer.Render (new BocMultilineTextValueRenderingContext (new Mock<HttpContextBase>().Object, Html.Writer, TextValue));
+      _renderer.Render (new BocMultilineTextValueRenderingContext (new Mock<HttpContextBase>().Object, Html.Writer, TextValue.Object));
       
       var document = Html.GetResultDocument();
       Html.AssertChildElementCount (document.DocumentElement, 1);
@@ -220,10 +217,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       Html.AssertAttribute (textarea, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
       Html.AssertAttribute (textarea, StubValidationErrorRenderer.ValidationErrorsIDAttribute, "MyTextValue_ValidationErrors");
       Html.AssertAttribute (textarea, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
-      if (TextValue.TextBoxStyle.AutoPostBack == true)
+      if (TextValue.Object.TextBoxStyle.AutoPostBack == true)
         Html.AssertAttribute (textarea, "onchange", string.Format("javascript:__doPostBack('{0}','')", c_textValueID));
       CheckTextAreaStyle (textarea, false, withStyle);
-      Html.AssertTextNode (textarea, TextValue.Text, 0);
+      Html.AssertTextNode (textarea, TextValue.Object.Text, 0);
       Html.AssertChildElementCount (textarea, 0);
 
       var validationErrors = Html.GetAssertedChildElement (content, "fake", 1);
@@ -239,7 +236,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
 
       TextValue.Setup (mock => mock.IsReadOnly).Returns (true);
 
-      _renderer.Render (new BocMultilineTextValueRenderingContext (new Mock<HttpContextBase>().Object, Html.Writer, TextValue));
+      _renderer.Render (new BocMultilineTextValueRenderingContext (new Mock<HttpContextBase>().Object, Html.Writer, TextValue.Object));
 
       var document = Html.GetResultDocument();
       Html.AssertChildElementCount (document.DocumentElement, 1);
@@ -290,7 +287,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
     protected override void SetStyle (bool withStyle, bool withCssClass, bool inStyleProperty, bool autoPostBack)
     {
       base.SetStyle (withStyle, withCssClass, inStyleProperty, autoPostBack);
-      TextValue.TextBoxStyle.TextMode = BocTextBoxMode.MultiLine;
+      TextValue.Object.TextBoxStyle.TextMode = BocTextBoxMode.MultiLine;
     }
   }
 }

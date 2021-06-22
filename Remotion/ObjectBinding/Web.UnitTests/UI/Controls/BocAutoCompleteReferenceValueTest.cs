@@ -17,13 +17,13 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Microsoft.Practices.ServiceLocation;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.Web.UnitTesting.Configuration;
@@ -36,8 +36,6 @@ using Remotion.ObjectBinding.Web.UnitTests.Domain;
 using Remotion.Web.Services;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 {
@@ -77,9 +75,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _control.ID = "BocAutoCompleteReferenceValue";
       _control.Value = (IBusinessObjectWithIdentity) _businessObject;
 
-      _page = new Mock<Page> (typeof (ISmartPage)) { CallBase = true };
-      ((ISmartPage) _page).Setup (stub => stub.Context).Returns (new HttpContextWrapper (HttpContext.Current));
-      ((ISmartPage) _page).Setup (stub => stub.Site).Returns ((ISite) null);
+      _page = new Mock<Page> () { CallBase = true };
+      _page.As<ISmartPage>().Setup (stub => stub.Context).Returns (new HttpContextWrapper (HttpContext.Current));
+      _page.As<ISmartPage>().Setup (stub => stub.Site).Returns ((ISite) null);
       _page.Object.Controls.Add (_control);
 
       _businessObject = TypeWithReference.Create();
@@ -344,7 +342,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 
       _control.IsDirty = false;
       PrivateInvoke.SetNonPublicField (_control, "_hasBeenRenderedInPreviousLifecycle", true);
-      ((ISmartPage) _control.Page).Setup (stub => stub.GetPostBackCollection()).Returns (postbackCollection);
+      Mock.Get ((Page) _control.Page).As<ISmartPage>().Setup (stub => stub.GetPostBackCollection()).Returns (postbackCollection);
 
       _webServiceFactoryStub.Setup (stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService> ("~/ControlService.asmx"))
           .Returns (new Mock<IBocAutoCompleteReferenceValueWebService>().Object);
@@ -371,7 +369,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _control.Value = null;
       _control.IsDirty = false;
       PrivateInvoke.SetNonPublicField (_control, "_hasBeenRenderedInPreviousLifecycle", true);
-      ((ISmartPage) _control.Page).Setup (stub => stub.GetPostBackCollection()).Returns (postbackCollection);
+      Mock.Get ((Page) _control.Page).As<ISmartPage>().Setup (stub => stub.GetPostBackCollection()).Returns (postbackCollection);
 
       _webServiceFactoryStub.Setup (stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService> ("~/ControlService.asmx"))
           .Returns (new Mock<IBocAutoCompleteReferenceValueWebService>().Object);
@@ -395,7 +393,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 
       _control.IsDirty = false;
       PrivateInvoke.SetNonPublicField (_control, "_hasBeenRenderedInPreviousLifecycle", true);
-      ((ISmartPage) _control.Page).Setup (stub => stub.GetPostBackCollection()).Returns (postbackCollection);
+     Mock.Get ((Page) _control.Page).As<ISmartPage>().Setup (stub => stub.GetPostBackCollection()).Returns (postbackCollection);
 
       _webServiceFactoryStub.Setup (stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService> ("~/SearchService.asmx"))
           .Returns (new Mock<IBocAutoCompleteReferenceValueWebService>().Object);
@@ -424,7 +422,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _control.IsDirty = false;
 
       PrivateInvoke.SetNonPublicField (_control, "_hasBeenRenderedInPreviousLifecycle", true);
-      ((ISmartPage) _control.Page).Setup (stub => stub.GetPostBackCollection()).Returns (postbackCollection);
+     Mock.Get ((Page) _control.Page).As<ISmartPage>().Setup (stub => stub.GetPostBackCollection()).Returns (postbackCollection);
 
       _webServiceFactoryStub
           .Setup (stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService> ("~/ControlService.asmx"))
@@ -456,7 +454,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _control.IsDirty = false;
 
       PrivateInvoke.SetNonPublicField (_control, "_hasBeenRenderedInPreviousLifecycle", true);
-      ((ISmartPage) _control.Page).Setup (stub => stub.GetPostBackCollection()).Returns (postbackCollection);
+     Mock.Get ((Page) _control.Page).As<ISmartPage>().Setup (stub => stub.GetPostBackCollection()).Returns (postbackCollection);
 
       _webServiceFactoryStub
           .Setup (stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService> ("~/ControlService.asmx"))
@@ -487,7 +485,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _control.IsDirty = false;
 
       PrivateInvoke.SetNonPublicField (_control, "_hasBeenRenderedInPreviousLifecycle", true);
-      ((ISmartPage) _control.Page).Setup (stub => stub.GetPostBackCollection()).Returns (postbackCollection);
+     Mock.Get ((Page) _control.Page).As<ISmartPage>().Setup (stub => stub.GetPostBackCollection()).Returns (postbackCollection);
 
       _webServiceFactoryStub
           .Setup (stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService> ("~/ControlService.asmx"))
@@ -517,7 +515,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _control.IsDirty = false;
 
       PrivateInvoke.SetNonPublicField (_control, "_hasBeenRenderedInPreviousLifecycle", true);
-      ((ISmartPage) _control.Page).Setup (stub => stub.GetPostBackCollection()).Returns (postbackCollection);
+     Mock.Get ((Page) _control.Page).As<ISmartPage>().Setup (stub => stub.GetPostBackCollection()).Returns (postbackCollection);
 
       _webServiceFactoryStub
           .Setup (stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService> ("~/ControlService.asmx"))
@@ -548,7 +546,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       PrivateInvoke.SetNonPublicField (_control, "_hasBeenRenderedInPreviousLifecycle", true);
       var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create (_dataSource, _propertyReferenceValue, "Args");
       PrivateInvoke.SetNonPublicField (_control, "_businessObjectWebServiceContextFromPreviousLifeCycle", businessObjectWebServiceContext);
-      ((ISmartPage) _control.Page).Setup (stub => stub.GetPostBackCollection()).Returns (postbackCollection);
+     Mock.Get ((Page) _control.Page).As<ISmartPage>().Setup (stub => stub.GetPostBackCollection()).Returns (postbackCollection);
 
       var searchServiceStub = new Mock<IBocAutoCompleteReferenceValueWebService>();
       searchServiceStub

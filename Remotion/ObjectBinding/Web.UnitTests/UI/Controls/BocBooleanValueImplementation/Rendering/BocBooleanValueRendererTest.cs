@@ -19,7 +19,6 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
@@ -35,8 +34,6 @@ using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.Utilities;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplementation.Rendering
 {
@@ -110,7 +107,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       var pageStub = new Mock<IPage>();
       pageStub.Setup (stub => stub.ClientScript).Returns (clientScriptManagerMock.Object);
 
-      _booleanValue.Setup (mock => mock.Value).PropertyBehavior();
+      _booleanValue.SetupProperty (_ => _.Value);
       _booleanValue.Setup (mock => mock.IsDesignMode).Returns (false);
       _booleanValue.Setup (mock => mock.ShowDescription).Returns (true);
 
@@ -119,7 +116,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       _booleanValue.Setup (mock => mock.FalseDescription).Returns (c_falseDescription);
       _booleanValue.Setup (mock => mock.NullDescription).Returns (c_nullDescription);
 
-      _booleanValue.Setup (mock => mock.CssClass).PropertyBehavior();
+      _booleanValue.SetupProperty (_ => _.CssClass);
 
       StateBag stateBag = new StateBag();
       _booleanValue.Setup (mock => mock.Attributes).Returns (new AttributeCollection (stateBag));

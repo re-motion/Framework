@@ -2,14 +2,11 @@
 using System.Linq;
 using System.Web.UI;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Validation
 {
@@ -68,6 +65,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
     private IBocList GetControl (bool isListEditModeEnabled, bool isRowEditModeActive, bool enableEditModeValidator)
     {
+      var outValue = "MockValue";
       var controlMock = new Mock<IBocList>();
       var editModeControllerMock = new Mock<IEditModeController>();
       editModeControllerMock.Setup (c => c.IsListEditModeActive).Returns (isListEditModeEnabled).Verifiable();
@@ -77,7 +75,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       controlMock.Setup (c => c.AreOptionalValidatorsEnabled).Returns (true).Verifiable();
 
       var resourceManagerMock = new Mock<IResourceManager>();
-      resourceManagerMock.Setup (r => r.TryGetString (It.IsAny<string>(), out Arg<string>.Out ("MockValue").Dummy))
+      resourceManagerMock.Setup (r => r.TryGetString (It.IsAny<string>(), out outValue))
           .Returns (true)
           .Verifiable();
 

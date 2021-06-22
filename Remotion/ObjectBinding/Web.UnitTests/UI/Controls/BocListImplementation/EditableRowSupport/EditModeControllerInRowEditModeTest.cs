@@ -20,13 +20,10 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Web.UI.WebControls;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.EditableRowSupport
 {
@@ -690,9 +687,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       var editedObject = (IBusinessObject) EditModeHost.Value[2];
       var dataSourceStub = new Mock<IBusinessObjectReferenceDataSource>();
+      dataSourceStub.SetupProperty (_ => _.BusinessObject);
       dataSourceStub.Object.BusinessObject = editedObject;
       EditModeHost.EditModeDataSourceFactory = new Mock<EditableRowDataSourceFactory>().Object;
-      EditModeHost.EditModeDataSourceFactory.Setup (_ => _.Create (editedObject)).Returns (dataSourceStub.Object);
+      Mock.Get (EditModeHost.EditModeDataSourceFactory).Setup (_ => _.Create (editedObject)).Returns (dataSourceStub.Object);
 
       Assert.That (Controller.IsRowEditModeActive, Is.False);
       ControllerInvoker.LoadControlState (CreateControlState (null, EditMode.RowEditMode, new List<string> { "2" }, false));

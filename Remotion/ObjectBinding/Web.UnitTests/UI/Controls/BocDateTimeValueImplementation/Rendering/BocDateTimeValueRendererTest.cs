@@ -20,7 +20,6 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.AspNetFramework;
 using Remotion.Development.Web.UnitTesting.Resources;
@@ -38,8 +37,6 @@ using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls.DatePickerButtonImplementation;
 using Remotion.Web.UI.Controls.Rendering;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImplementation.Rendering
 {
@@ -74,6 +71,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
     {
       Initialize();
       _control = new Mock<IBocDateTimeValue>();
+      _control.SetupProperty (_ => _.CssClass);
       _control.Setup (stub => stub.ClientID).Returns (c_dateValueID);
       _control.Setup (stub => stub.ControlType).Returns ("BocDateTimeValue");
       _control.Setup (stub => stub.GetDateValueName()).Returns (c_dateValueName);
@@ -100,8 +98,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
       StateBag stateBag = new StateBag ();
       _control.Setup (stub => stub.Attributes).Returns (new AttributeCollection (stateBag));
       _control.Setup (stub => stub.Style).Returns (_control.Object.Attributes.CssStyle);
-      _control.Setup (stub => stub.DateTextBoxStyle).Returns (new TextBoxStyle ());
-      _control.Setup (stub => stub.TimeTextBoxStyle).Returns (new TextBoxStyle ());
       _control.Setup (stub => stub.DateTimeTextBoxStyle).Returns (new TextBoxStyle ());
       _control.Setup (stub => stub.ControlStyle).Returns (new Style (stateBag));
 

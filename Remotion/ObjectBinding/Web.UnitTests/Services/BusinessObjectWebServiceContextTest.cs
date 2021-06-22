@@ -16,12 +16,9 @@
 // 
 using System;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.ObjectBinding.Web.Services;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.Services
 {
@@ -84,6 +81,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.Services
     [Test]
     public void Create_BusinessObjectNotNull_SetsBusinessObjectClass_FromDataSource_BusinessObject_BusinessObjectClass ()
     {
+      _dataSourceStub.SetupProperty (_ => _.BusinessObject);
       _dataSourceStub.Object.BusinessObject = _businessObjectStub.Object;
       var serviceContext = BusinessObjectWebServiceContext.Create (_dataSourceStub.Object, null, null);
 
@@ -109,6 +107,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.Services
     [Test]
     public void Create_BusinessObjectNotNullAndHasNoIdentity_SetsBusinessObjectIdentifierNull ()
     {
+      _dataSourceStub.SetupProperty (_ => _.BusinessObject);
       _dataSourceStub.Object.BusinessObject = _businessObjectStub.Object;
       var serviceContext = BusinessObjectWebServiceContext.Create (_dataSourceStub.Object, null, null);
 
@@ -118,6 +117,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.Services
     [Test]
     public void Create_BusinessObjectNotNullAndHasIdentity_SetsBusinessObjectIdentifier ()
     {
+      _dataSourceStub.SetupProperty (_ => _.BusinessObject);
       _dataSourceStub.Object.BusinessObject = _businessObjectWithIdentityStub.Object;
       var serviceContext = BusinessObjectWebServiceContext.Create (_dataSourceStub.Object, null, null);
 

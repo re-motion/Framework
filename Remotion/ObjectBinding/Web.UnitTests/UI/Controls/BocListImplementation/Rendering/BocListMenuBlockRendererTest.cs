@@ -18,13 +18,10 @@ using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.Web.UI.Controls.DropDownMenuImplementation;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering
 {
@@ -51,7 +48,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       dropDownList.Setup (mock => mock.ClientID).Returns ("MockedDropDownListClientID");
       dropDownList.Setup (mock => mock.RenderControl (Html.Writer)).Callback (
-          (HtmlTextWriter writer) =>           ((HtmlTextWriter) invocation.Arguments[0]).Write ("mocked dropdown list"));
+          (HtmlTextWriter writer) => writer.Write ("mocked dropdown list"));
 
       var renderer = new BocListMenuBlockRenderer (_bocListCssClassDefinition);
       renderer.Render (CreateRenderingContext());
@@ -77,6 +74,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       StateBag bag = new StateBag();
       AttributeCollection attributes = new AttributeCollection (bag);
       optionsMenu.Setup (stub => stub.Style).Returns (attributes.CssStyle);
+      optionsMenu.SetupProperty (_ => _.Visible);
       optionsMenu.Object.Visible = true;
 
       List.Setup (mock => mock.OptionsMenu).Returns (optionsMenu.Object);
@@ -85,7 +83,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       List.Setup (mock => mock.MenuBlockItemOffset).Returns (new Unit (7, UnitType.Pixel));
 
       optionsMenu.Setup (menuMock => menuMock.RenderControl (Html.Writer)).Callback (
-          (HtmlTextWriter writer) =>           ((HtmlTextWriter) invocation.Arguments[0]).Write ("mocked dropdown menu"));
+          (HtmlTextWriter writer) => writer.Write ("mocked dropdown menu"));
 
       var renderer = new BocListMenuBlockRenderer (_bocListCssClassDefinition);
       renderer.Render (CreateRenderingContext());
@@ -97,7 +95,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     public void RenderWithListMenu ()
     {
       List.Setup (mock => mock.HasListMenu).Returns (true);
-      List.ListMenu.Visible = true;
+      List.Object.ListMenu.Visible = true;
 
       Unit menuBlockOffset = new Unit (3, UnitType.Pixel);
       List.Setup (mock => mock.MenuBlockItemOffset).Returns (menuBlockOffset);
@@ -115,8 +113,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
     private BocListRenderingContext CreateRenderingContext ()
     {
-      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create (List.DataSource, List.Property, "Args");
-      return new BocListRenderingContext (HttpContext, Html.Writer, List, businessObjectWebServiceContext, new BocColumnRenderer[0]);
+      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create (List.Object.DataSource, List.Object.Property, "Args");
+      return new BocListRenderingContext (HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, new BocColumnRenderer[0]);
     }
   }
 }

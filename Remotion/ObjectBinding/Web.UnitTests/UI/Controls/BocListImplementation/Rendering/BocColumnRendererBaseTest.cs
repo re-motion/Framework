@@ -17,7 +17,6 @@
 using System;
 using System.Web.UI;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
@@ -29,8 +28,6 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ServiceLocation;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.UI.Controls.Rendering;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering
 {
@@ -55,7 +52,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var editModeController = new Mock<IEditModeController>();
       editModeController.Setup (mock => mock.RenderTitleCellMarkers (Html.Writer, Column, 0)).Callback (
-          (HtmlTextWriter writer, BocColumnDefinition column, int columnIndex) =>           ((HtmlTextWriter) invocation.Arguments[0]).Write (string.Empty));
+          (HtmlTextWriter writer, BocColumnDefinition column, int columnIndex) => writer.Write (string.Empty));
 
       List.Setup (mock => mock.EditModeController).Returns (editModeController.Object);
 
@@ -111,11 +108,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       Assert.Less (0, th.ChildNodes.Count);
       var sortCommandLink = Html.GetAssertedChildElement (th, "a", 0);
-      Html.AssertAttribute (sortCommandLink, "id", List.ClientID + "_0_SortCommand");
+      Html.AssertAttribute (sortCommandLink, "id", List.Object.ClientID + "_0_SortCommand");
       Html.AssertChildElementCount (sortCommandLink, 1);
 
       var titleSpan = Html.GetAssertedChildElement (sortCommandLink, "span", 0);
-      Html.AssertAttribute (titleSpan, "id", List.ClientID + "_0_Title");
+      Html.AssertAttribute (titleSpan, "id", List.Object.ClientID + "_0_Title");
       Html.AssertTextNode (titleSpan, Column.ColumnTitleDisplayValue, 0);
       Html.AssertChildElementCount (titleSpan, 0);
     }
@@ -139,7 +136,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var titleSpan = Html.GetAssertedChildElement (sortCommandLink, "span", 0);
       Html.AssertAttribute (titleSpan, "class", c_screenReaderText, HtmlHelperBase.AttributeValueCompareMode.Equal);
-      Html.AssertAttribute (titleSpan, "id", List.ClientID + "_0_Title");
+      Html.AssertAttribute (titleSpan, "id", List.Object.ClientID + "_0_Title");
       Html.AssertTextNode (titleSpan, Column.ColumnTitleDisplayValue, 0);
       Html.AssertChildElementCount (titleSpan, 0);
 
@@ -166,7 +163,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var titleSpan = Html.GetAssertedChildElement (cellBody, "span", 0);
       Html.AssertAttribute (titleSpan, "class", c_screenReaderText, HtmlHelperBase.AttributeValueCompareMode.Equal);
-      Html.AssertAttribute (titleSpan, "id", List.ClientID + "_0_Title");
+      Html.AssertAttribute (titleSpan, "id", List.Object.ClientID + "_0_Title");
       Html.AssertTextNode (titleSpan, Column.ColumnTitleDisplayValue, 0);
       Html.AssertChildElementCount (titleSpan, 0);
 
@@ -261,11 +258,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       Assert.Less (0, th.ChildNodes.Count);
       var sortCommandLink = Html.GetAssertedChildElement (th, "a", 0);
-      Html.AssertAttribute (sortCommandLink, "id", List.ClientID + "_0_SortCommand");
+      Html.AssertAttribute (sortCommandLink, "id", List.Object.ClientID + "_0_SortCommand");
       Html.AssertChildElementCount (sortCommandLink, 2);
 
       var titleSpan = Html.GetAssertedChildElement (sortCommandLink, "span", 0);
-      Html.AssertAttribute (titleSpan, "id", List.ClientID + "_0_Title");
+      Html.AssertAttribute (titleSpan, "id", List.Object.ClientID + "_0_Title");
       Html.AssertTextNode (titleSpan, Column.ColumnTitleDisplayValue, 0);
 
       Html.AssertTextNode (sortCommandLink, HtmlHelper.WhiteSpace, 1);
@@ -282,10 +279,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
     private BocColumnRenderingContext<BocSimpleColumnDefinition> CreateRenderingContext ()
     {
-      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create (List.DataSource, List.Property, "Args");
+      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create (List.Object.DataSource, List.Object.Property, "Args");
 
       return new BocColumnRenderingContext<BocSimpleColumnDefinition> (
-          new BocColumnRenderingContext (HttpContext, Html.Writer, List, businessObjectWebServiceContext, Column, 0, 6));
+          new BocColumnRenderingContext (HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, Column, 0, 6));
     }
   }
 }

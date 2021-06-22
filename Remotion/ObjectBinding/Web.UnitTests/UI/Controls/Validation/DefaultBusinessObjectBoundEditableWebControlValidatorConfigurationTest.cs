@@ -1,10 +1,7 @@
 ﻿using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.Validation;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
 {
@@ -19,6 +16,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
       var propertyStub = new Mock<IBusinessObjectProperty>();
       var dataSourceStub = new Mock<IBusinessObjectDataSource>();
       var controlStub = new Mock<IBusinessObjectBoundEditableWebControl>();
+      controlStub.SetupProperty (_ => _.DataSource);
+      controlStub.SetupProperty (_ => _.Property);
       controlStub.Object.DataSource = dataSourceStub.Object;
       controlStub.Object.Property = propertyStub.Object;
 

@@ -18,7 +18,6 @@ using System;
 using System.Web.UI;
 using System.Xml;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
@@ -26,8 +25,6 @@ using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UnitTests.Domain;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering
 {
@@ -153,7 +150,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           new StubLabelReferenceRenderer(),
           new StubValidationErrorRenderer());
       var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create (null, null, null);
-      renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, businessObjectWebServiceContext, _stubColumnRenderers));
+      renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, _stubColumnRenderers));
       Html.Writer.RenderEndTag();
     }
 

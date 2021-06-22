@@ -16,12 +16,9 @@
 // 
 using System;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Web.UI.Controls;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BusinessObjectReferenceDataSourceControlTests
 {
@@ -37,6 +34,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BusinessObjectReferen
       base.SetUp();
 
       _referencedDataSourceStub = new Mock<IBusinessObjectDataSource>();
+      _referencedDataSourceStub.SetupProperty (_ => _.BusinessObject);
+      _referencedDataSourceStub.SetupProperty (_ => _.Mode);
       _referencedDataSourceStub.Object.BusinessObject = new Mock<IBusinessObject>().Object;
       _referencedDataSourceStub.Object.Mode = DataSourceMode.Edit;
       _referencePropertyStub = new Mock<IBusinessObjectReferenceProperty>();
@@ -63,13 +62,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BusinessObjectReferen
       var firstControlStub = new Mock<IBusinessObjectBoundControl>();
       firstControlStub.Setup (stub => stub.HasValidBinding).Returns (true);
       firstControlStub.Setup (stub => stub.HasValue).Returns (true);
-      ((IValidatableControl) firstControlStub).Setup (stub => stub.Validate ()).Returns (true);
+      firstControlStub.As<IValidatableControl>().Setup (stub => stub.Validate ()).Returns (true);
       _dataSourceControl.Register (firstControlStub.Object);
 
       var secondControlStub = new Mock<IBusinessObjectBoundControl>();
       secondControlStub.Setup (stub => stub.HasValidBinding).Returns (true);
       secondControlStub.Setup (stub => stub.HasValue).Returns (true);
-      ((IValidatableControl) secondControlStub).Setup (stub => stub.Validate ()).Returns (true);
+      secondControlStub.As<IValidatableControl>().Setup (stub => stub.Validate ()).Returns (true);
       _dataSourceControl.Register (secondControlStub.Object);
 
       Assert.That (_dataSourceControl.Validate (), Is.True);
@@ -81,19 +80,19 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BusinessObjectReferen
       var firstControlStub = new Mock<IBusinessObjectBoundControl>();
       firstControlStub.Setup (stub => stub.HasValidBinding).Returns (true);
       firstControlStub.Setup (stub => stub.HasValue).Returns (true);
-      ((IValidatableControl) firstControlStub).Setup (stub => stub.Validate ()).Returns (true);
+      firstControlStub.As<IValidatableControl>().Setup (stub => stub.Validate ()).Returns (true);
       _dataSourceControl.Register (firstControlStub.Object);
 
       var secondControlStub = new Mock<IBusinessObjectBoundControl>();
       secondControlStub.Setup (stub => stub.HasValidBinding).Returns (true);
       secondControlStub.Setup (stub => stub.HasValue).Returns (true);
-      ((IValidatableControl) secondControlStub).Setup (stub => stub.Validate ()).Returns (false);
+      secondControlStub.As<IValidatableControl>().Setup (stub => stub.Validate ()).Returns (false);
       _dataSourceControl.Register (secondControlStub.Object);
 
       var thirdControlStub = new Mock<IBusinessObjectBoundControl>();
       thirdControlStub.Setup (stub => stub.HasValidBinding).Returns (true);
       thirdControlStub.Setup (stub => stub.HasValue).Returns (true);
-      ((IValidatableControl) thirdControlStub).Setup (stub => stub.Validate ()).Returns (true);
+      thirdControlStub.As<IValidatableControl>().Setup (stub => stub.Validate ()).Returns (true);
       _dataSourceControl.Register (thirdControlStub.Object);
 
       Assert.That (_dataSourceControl.Validate (), Is.False);
@@ -109,13 +108,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BusinessObjectReferen
       var firstControlStub = new Mock<IBusinessObjectBoundControl>();
       firstControlStub.Setup (stub => stub.HasValidBinding).Returns (true);
       firstControlStub.Setup (stub => stub.HasValue).Returns (false);
-      ((IValidatableControl) firstControlStub).Setup (stub => stub.Validate ()).Returns (true);
+      firstControlStub.As<IValidatableControl>().Setup (stub => stub.Validate ()).Returns (true);
       _dataSourceControl.Register (firstControlStub.Object);
 
       var secondControlStub = new Mock<IBusinessObjectBoundControl>();
       secondControlStub.Setup (stub => stub.HasValidBinding).Returns (true);
       secondControlStub.Setup (stub => stub.HasValue).Returns (false);
-      ((IValidatableControl) secondControlStub).Setup (stub => stub.Validate ()).Returns (false);
+      secondControlStub.As<IValidatableControl>().Setup (stub => stub.Validate ()).Returns (false);
       _dataSourceControl.Register (secondControlStub.Object);
 
       Assert.That (_dataSourceControl.Validate (), Is.True);
@@ -131,13 +130,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BusinessObjectReferen
       var firstControlStub = new Mock<IBusinessObjectBoundControl>();
       firstControlStub.Setup (stub => stub.HasValidBinding).Returns (true);
       firstControlStub.Setup (stub => stub.HasValue).Returns (false);
-      ((IValidatableControl) firstControlStub).Setup (stub => stub.Validate ()).Returns (true);
+      firstControlStub.As<IValidatableControl>().Setup (stub => stub.Validate ()).Returns (true);
       _dataSourceControl.Register (firstControlStub.Object);
 
       var secondControlStub = new Mock<IBusinessObjectBoundControl>();
       secondControlStub.Setup (stub => stub.HasValidBinding).Returns (true);
       secondControlStub.Setup (stub => stub.HasValue).Returns (false);
-      ((IValidatableControl) secondControlStub).Setup (stub => stub.Validate ()).Returns (false);
+      secondControlStub.As<IValidatableControl>().Setup (stub => stub.Validate ()).Returns (false);
       _dataSourceControl.Register (secondControlStub.Object);
 
       Assert.That (_dataSourceControl.Validate (), Is.False);

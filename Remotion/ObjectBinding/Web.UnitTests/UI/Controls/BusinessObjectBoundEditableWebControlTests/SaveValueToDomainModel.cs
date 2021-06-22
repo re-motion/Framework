@@ -16,11 +16,8 @@
 // 
 using System;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BusinessObjectBoundEditableWebControlTests.TestDomain;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BusinessObjectBoundEditableWebControlTests
 {
@@ -40,6 +37,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BusinessObjectBoundEd
       _businessObjectStub = new Mock<IBusinessObject>();
       _businessObjectClassStub = new Mock<IBusinessObjectClass>();
       _dataSourceStub = new Mock<IBusinessObjectDataSource>();
+      _dataSourceStub.SetupProperty (_ => _.BusinessObject);
+      _dataSourceStub.SetupProperty (_ => _.Mode);
       _dataSourceStub.Object.BusinessObject = _businessObjectStub.Object;
       _dataSourceStub.Object.Mode = DataSourceMode.Edit;
       _dataSourceStub.Setup (_ => _.BusinessObjectClass).Returns (_businessObjectClassStub.Object);
@@ -59,7 +58,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BusinessObjectBoundEd
       _control.Value = "test";
 
       Assert.That (_control.SaveValueToDomainModel(), Is.True);
-      _dataSourceStub.Verify (stub => stub.SetProperty (_propertyStub.Object, "test"), Times.AtLeastOnce());
+      Mock.Get (_dataSourceStub.Object.BusinessObject).Verify (stub => stub.SetProperty (_propertyStub.Object, "test"), Times.AtLeastOnce());
     }
 
     [Test]
@@ -70,7 +69,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BusinessObjectBoundEd
       _control.Value = null;
 
       Assert.That (_control.SaveValueToDomainModel(), Is.False);
-      _dataSourceStub.Verify (stub => stub.SetProperty (null, null), Times.Never());
+      Mock.Get (_dataSourceStub.Object.BusinessObject).Verify (stub => stub.SetProperty (It.IsAny<IBusinessObjectProperty>(), It.IsAny<object>()), Times.Never());
     }
 
     [Test]
@@ -81,7 +80,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BusinessObjectBoundEd
       _control.Value = null;
 
       Assert.That (_control.SaveValueToDomainModel(), Is.False);
-      _dataSourceStub.Verify (stub => stub.SetProperty (null, null), Times.Never());
+      Mock.Get (_dataSourceStub.Object.BusinessObject).Verify (stub => stub.SetProperty (It.IsAny<IBusinessObjectProperty>(), It.IsAny<object>()), Times.Never());
     }
 
     [Test]
@@ -93,7 +92,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BusinessObjectBoundEd
       _control.Value = "value";
 
       Assert.That (_control.SaveValueToDomainModel(), Is.False);
-      _businessObjectStub.Verify (stub => stub.SetProperty (null, null), Times.Never());
+      _businessObjectStub.Verify (stub => stub.SetProperty (It.IsAny<IBusinessObjectProperty>(), It.IsAny<object>()), Times.Never());
     }
 
     [Test]
@@ -105,7 +104,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BusinessObjectBoundEd
       _control.Value = null;
 
       Assert.That (_control.SaveValueToDomainModel(), Is.True);
-      _businessObjectStub.Verify (stub => stub.SetProperty (null, null), Times.Never());
+      _businessObjectStub.Verify (stub => stub.SetProperty (It.IsAny<IBusinessObjectProperty>(), It.IsAny<object>()), Times.Never());
     }
 
     [Test]
@@ -117,7 +116,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BusinessObjectBoundEd
       _control.ReadOnly = true;
 
       Assert.That (_control.SaveValueToDomainModel(), Is.True);
-      _dataSourceStub.Verify (stub => stub.SetProperty (_propertyStub.Object, "test"), Times.AtLeastOnce());
+      Mock.Get (_dataSourceStub.Object.BusinessObject).Verify (stub => stub.SetProperty (_propertyStub.Object, "test"), Times.AtLeastOnce());
     }
 
     [Test]
@@ -134,7 +133,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BusinessObjectBoundEd
           Throws.InvalidOperationException.With.Message.EqualTo (
               "The value of the TestableBusinessObjectBoundEditableWebControl 'TestID' could not be saved into the domain model "
               + "because the property 'TestProperty' is read only."));
-      _dataSourceStub.Verify (stub => stub.SetProperty (null, null), Times.Never());
+      Mock.Get (_dataSourceStub.Object.BusinessObject).Verify (stub => stub.SetProperty (null, null), Times.Never());
     }
   }
 }

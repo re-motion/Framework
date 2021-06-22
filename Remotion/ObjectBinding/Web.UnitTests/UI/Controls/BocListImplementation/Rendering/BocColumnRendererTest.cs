@@ -15,17 +15,15 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.IO;
 using System.Web;
 using System.Web.UI;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering
 {
@@ -46,7 +44,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       _columnDefinition = new StubColumnDefinition();
       _columnRenderMock = new Mock<IBocColumnRenderer> (MockBehavior.Strict);
       _columnRendererAdapter = new BocColumnRenderer (_columnRenderMock.Object, _columnDefinition, 0, 0, true, SortingDirection.None, 0);
-      _htmlTextWriterStub = new Mock<HtmlTextWriter>();
+      _htmlTextWriterStub = new Mock<HtmlTextWriter> (TextWriter.Null);
       _httpContextStub = new Mock<HttpContextBase>();
       _bocListStub = new Mock<IBocList>();
       var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create (null, null, null);
@@ -64,12 +62,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       _columnRenderMock.Setup (
           mock =>
               mock.RenderTitleCell (
-                  Arg<BocColumnRenderingContext>.Matches (
+                  It.Is<BocColumnRenderingContext> (
                       rc =>
-                          rc.HttpContext == _httpContextStub && rc.Control == _bocListStub && rc.Writer == _htmlTextWriterStub && rc.ColumnIndex == 0
+                          rc.HttpContext == _httpContextStub.Object && rc.Control == _bocListStub.Object && rc.Writer == _htmlTextWriterStub.Object && rc.ColumnIndex == 0
                           && rc.ColumnDefinition == _columnDefinition),
                   SortingDirection.None,
-                  0)).Verifiable();
+                  0))
+          .Verifiable();
 
       _columnRendererAdapter.RenderTitleCell (_renderingContext);
 
@@ -81,9 +80,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       _columnRenderMock.Setup (
           mock => mock.RenderDataColumnDeclaration (
-              Arg<BocColumnRenderingContext>.Matches (
+              It.Is<BocColumnRenderingContext> (
                   rc =>
-                      rc.HttpContext == _httpContextStub && rc.Control == _bocListStub && rc.Writer == _htmlTextWriterStub && rc.ColumnIndex == 0
+                      rc.HttpContext == _httpContextStub.Object && rc.Control == _bocListStub.Object && rc.Writer == _htmlTextWriterStub.Object && rc.ColumnIndex == 0
                       && rc.ColumnDefinition == _columnDefinition),
               false)).Verifiable();
 
@@ -99,9 +98,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       _columnRenderMock.Setup (
           mock => mock.RenderDataCell (
-              Arg<BocColumnRenderingContext>.Matches (
+              It.Is<BocColumnRenderingContext> (
                   rc =>
-                      rc.HttpContext == _httpContextStub && rc.Control == _bocListStub && rc.Writer == _htmlTextWriterStub && rc.ColumnIndex == 0
+                      rc.HttpContext == _httpContextStub.Object && rc.Control == _bocListStub.Object && rc.Writer == _htmlTextWriterStub.Object && rc.ColumnIndex == 0
                       && rc.ColumnDefinition == _columnDefinition),
               0,
               true,

@@ -25,8 +25,7 @@ using NUnit.Framework;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.Validation;
 using Remotion.Utilities;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
+using Remotion.Web.UI;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImplementation.Validation
 {
@@ -282,8 +281,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
     private BocDateTimeValue CreateBocDateTimeValue (string dateValue, string timeValue, bool isRequired, BocDateTimeValueType valueType)
     {
       var bocDateTimeValue = new Mock<BocDateTimeValue>() { CallBase = true };
-      bocDateTimeValue.Setup (c => c.DateString).Returns (dateValue);
-      bocDateTimeValue.Setup (c => c.TimeString).Returns (timeValue);
+      bocDateTimeValue.Protected().Setup<string> ("InternalDateValue").Returns (dateValue);
+      bocDateTimeValue.Protected().Setup<string> ("InternalTimeValue").Returns (timeValue);
       bocDateTimeValue.Object.Required = isRequired;
       bocDateTimeValue.Object.ValueType = valueType;
       return bocDateTimeValue.Object;
@@ -296,6 +295,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
 
       var requiredValidator = new Mock<BocDateTimeRequiredValidator>() { CallBase = true };
       requiredValidator.Setup (c => c.NamingContainer).Returns (namingContainer.Object);
+      requiredValidator.SetupProperty (_ => _.ID);
       requiredValidator.Object.ID = "RequiredValidator";
       requiredValidator.Object.ControlToValidate = "Control";
       requiredValidator.Object.MissingDateAndTimeErrorMessage = MissingDateAndTimeErrorMessage;
