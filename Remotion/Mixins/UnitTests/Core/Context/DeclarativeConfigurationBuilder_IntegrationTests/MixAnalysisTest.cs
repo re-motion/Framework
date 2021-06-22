@@ -74,7 +74,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
 
     private static AssemblyBuilder DefineDynamicAssemblyWithMixAttribute (string assemblyName, Type targetType, Type mixinType)
     {
-      var assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly (new AssemblyName (assemblyName), AssemblyBuilderAccess.Run);
+      var assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly (new AssemblyName (assemblyName), AssemblyBuilderAccess.Run);
 
       var constructor = typeof (MixAttribute).GetConstructor (new[] { typeof (Type), typeof (Type) });
       var customAttributeBuilder = new CustomAttributeBuilder (constructor, new[] { targetType, mixinType });
