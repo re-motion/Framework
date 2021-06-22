@@ -17,6 +17,8 @@
 using System;
 using System.Web.UI;
 using System.Xml;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
@@ -25,6 +27,7 @@ using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UnitTests.Domain;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering
 {
@@ -62,8 +65,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       Initialize (false);
       CommonInitialize();
-      List.Stub (mock => mock.ShowEmptyListMessage).Return (true);
-      List.Stub (mock => mock.ShowEmptyListEditMode).Return (true);
+      List.Setup (mock => mock.ShowEmptyListMessage).Returns (true);
+      List.Setup (mock => mock.ShowEmptyListEditMode).Returns (true);
 
       XmlNode tbody;
       RenderAndAssertTable (out tbody);
@@ -89,7 +92,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute (table, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
       Html.AssertAttribute (table, StubValidationErrorRenderer.ValidationErrorsIDAttribute, "MyList_ValidationErrors");
       Html.AssertAttribute (table, StubValidationErrorRenderer.ValidationErrorsAttribute, "ValidationError");
-
 
       var td = Html.GetAssertedChildElement (tr, "td", 0);
       Html.AssertTextNode (td, HtmlHelper.WhiteSpace, 0);
@@ -157,13 +159,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
     private void CommonInitialize ()
     {
-      List.Stub (list => list.IsSelectionEnabled).Return (true);
-      List.Stub (mock => mock.IsDesignMode).Return (false);
+      List.Setup (list => list.IsSelectionEnabled).Returns (true);
+      List.Setup (mock => mock.IsDesignMode).Returns (false);
       var stubColumnDefinition1 = new StubColumnDefinition();
       var stubColumnDefinition2 = new StubColumnDefinition();
       var stubColumnDefinition3 = new StubColumnDefinition();
-      List.Stub (mock => mock.IsPagingEnabled).Return (true);
-      List.Stub (mock => mock.PageSize).Return (5);
+      List.Setup (mock => mock.IsPagingEnabled).Returns (true);
+      List.Setup (mock => mock.PageSize).Returns (5);
 
       _stubColumnRenderers = new[]
                              {
@@ -202,7 +204,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
                             new BocListRowRenderingContext(new BocListRow (0, firstObject), 0, false),
                             new BocListRowRenderingContext(new BocListRow (1, secondObject), 1, false)
                           };
-      List.Stub (list => list.GetRowsToRender ()).Return (rows);
+      List.Setup (list => list.GetRowsToRender ()).Returns (rows);
     }
   }
 }

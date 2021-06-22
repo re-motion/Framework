@@ -17,6 +17,8 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Web.UI;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
@@ -26,6 +28,7 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering
 {
@@ -48,13 +51,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       base.SetUp();
 
-      List.Stub (mock => mock.HasMenuBlock).Return (true);
-      List.Stub (mock => mock.RowMenuDisplay).Return (RowMenuDisplay.Manual);
+      List.Setup (mock => mock.HasMenuBlock).Returns (true);
+      List.Setup (mock => mock.RowMenuDisplay).Returns (RowMenuDisplay.Manual);
 
-
-      Menu = MockRepository.GenerateMock<DropDownMenu> (List);
-      Menu.Stub (menuMock => menuMock.RenderControl (Html.Writer)).WhenCalled (
-          invocation => ((HtmlTextWriter) invocation.Arguments[0]).Write ("mocked dropdown menu"));
+      Menu = new Mock<DropDownMenu> (List).Object;
+      Menu.Setup (menuMock => menuMock.RenderControl (Html.Writer)).Callback (
+          (HtmlTextWriter writer) =>           ((HtmlTextWriter) invocation.Arguments[0]).Write ("mocked dropdown menu"));
 
       var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create (List.DataSource, List.Property, "Args");
       _renderingContext = new BocColumnRenderingContext<BocDropDownMenuColumnDefinition> (
@@ -137,7 +139,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     private void InitializeRowMenus ()
     {
       var rowMenus = new ReadOnlyCollection<DropDownMenu> (new[] { Menu, Menu });
-      List.Stub (mock => mock.RowMenus).Return (rowMenus);
+      List.Setup (mock => mock.RowMenus).Returns (rowMenus);
     }
   }
 }

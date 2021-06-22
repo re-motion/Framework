@@ -16,9 +16,12 @@
 // 
 using System;
 using System.Web;
+using Moq;
+using Moq.Protected;
 using Remotion.Globalization;
 using Remotion.Globalization.Implementation;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 {
@@ -44,7 +47,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     {
       Html = new HtmlHelper();
 
-      HttpContext = MockRepository.GenerateStub<HttpContextBase>();
+      HttpContext = new Mock<HttpContextBase>().Object;
     }
   }
 }

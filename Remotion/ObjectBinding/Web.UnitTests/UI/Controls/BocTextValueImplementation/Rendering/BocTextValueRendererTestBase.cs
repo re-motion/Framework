@@ -18,10 +18,13 @@ using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
+using Moq;
+using Moq.Protected;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rendering;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplementation.Rendering
 {
@@ -61,10 +64,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
     protected virtual void SetStyle (bool withStyle, bool withCssClass, bool inStyleProperty, bool autoPostBack)
     {
       StateBag stateBag = new StateBag();
-      TextValue.Stub (mock => mock.Attributes).Return (new AttributeCollection (stateBag));
-      TextValue.Stub (mock => mock.Style).Return (TextValue.Attributes.CssStyle);
-      TextValue.Stub (mock => mock.TextBoxStyle).Return (new TextBoxStyle());
-      TextValue.Stub (mock => mock.ControlStyle).Return (new Style (stateBag));
+      TextValue.Setup (mock => mock.Attributes).Returns (new AttributeCollection (stateBag));
+      TextValue.Setup (mock => mock.Style).Returns (TextValue.Attributes.CssStyle);
+      TextValue.Setup (mock => mock.TextBoxStyle).Returns (new TextBoxStyle());
+      TextValue.Setup (mock => mock.ControlStyle).Returns (new Style (stateBag));
 
       TextValue.TextBoxStyle.AutoPostBack = autoPostBack;
 
@@ -85,8 +88,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
         }
         else
         {
-          TextValue.Stub (mock => mock.Height).Return (Height);
-          TextValue.Stub (mock => mock.Width).Return (Width);
+          TextValue.Setup (mock => mock.Height).Returns (Height);
+          TextValue.Setup (mock => mock.Width).Returns (Width);
           TextValue.ControlStyle.Height = TextValue.Height;
           TextValue.ControlStyle.Width = TextValue.Width;
         }

@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.ObjectBinding.Web.UI.Controls;
@@ -23,20 +25,21 @@ using Remotion.ServiceLocation;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering
 {
   [TestFixture]
   public class IsColumnVisible_BocColumnRendererArrayBuilderTest
   {
-    private WcagHelper _wcagHelperStub;
+    private Mock<WcagHelper> _wcagHelperStub;
     private DefaultServiceLocator _serviceLocator;
 
     [SetUp]
     public void SetUp ()
     {
       _serviceLocator = DefaultServiceLocator.Create();
-      _wcagHelperStub = MockRepository.GenerateStub<WcagHelper> ();
+      _wcagHelperStub = new Mock<WcagHelper>();
     }
 
     [Test]
@@ -44,9 +47,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       var columnDefinition = new BocCommandColumnDefinition ();
       columnDefinition.Command = new BocListItemCommand (CommandType.None);
-      var builder = new BocColumnRendererArrayBuilder (new[] { columnDefinition }, _serviceLocator, _wcagHelperStub);
+      var builder = new BocColumnRendererArrayBuilder (new[] { columnDefinition }, _serviceLocator, _wcagHelperStub.Object);
 
-      _wcagHelperStub.Stub (stub => stub.IsWaiConformanceLevelARequired ()).Return (true);
+      _wcagHelperStub.Setup (stub => stub.IsWaiConformanceLevelARequired ()).Returns (true);
 
       var bocColumnRenderers = builder.CreateColumnRenderers ();
       Assert.That (bocColumnRenderers.Length, Is.EqualTo (1));
@@ -59,9 +62,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       var columnDefinition = new BocCommandColumnDefinition ();
       columnDefinition.Command = new BocListItemCommand (CommandType.Event);
-      var builder = new BocColumnRendererArrayBuilder (new[] { columnDefinition }, _serviceLocator, _wcagHelperStub);
+      var builder = new BocColumnRendererArrayBuilder (new[] { columnDefinition }, _serviceLocator, _wcagHelperStub.Object);
 
-      _wcagHelperStub.Stub (stub => stub.IsWaiConformanceLevelARequired ()).Return (false);
+      _wcagHelperStub.Setup (stub => stub.IsWaiConformanceLevelARequired ()).Returns (false);
 
       var bocColumnRenderers = builder.CreateColumnRenderers ();
       Assert.That (bocColumnRenderers.Length, Is.EqualTo (1));
@@ -74,9 +77,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       var columnDefinition = new BocCommandColumnDefinition ();
       columnDefinition.Command = new BocListItemCommand (CommandType.Event);
-      var builder = new BocColumnRendererArrayBuilder (new[] { columnDefinition }, _serviceLocator, _wcagHelperStub);
+      var builder = new BocColumnRendererArrayBuilder (new[] { columnDefinition }, _serviceLocator, _wcagHelperStub.Object);
 
-      _wcagHelperStub.Stub (stub => stub.IsWaiConformanceLevelARequired ()).Return (true);
+      _wcagHelperStub.Setup (stub => stub.IsWaiConformanceLevelARequired ()).Returns (true);
 
       var bocColumnRenderers = builder.CreateColumnRenderers ();
       Assert.That (bocColumnRenderers.Length, Is.EqualTo (1));
@@ -89,9 +92,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       var columnDefinition = new BocCommandColumnDefinition ();
       columnDefinition.Command = new BocListItemCommand (CommandType.WxeFunction);
-      var builder = new BocColumnRendererArrayBuilder (new[] { columnDefinition }, _serviceLocator, _wcagHelperStub);
+      var builder = new BocColumnRendererArrayBuilder (new[] { columnDefinition }, _serviceLocator, _wcagHelperStub.Object);
 
-      _wcagHelperStub.Stub (stub => stub.IsWaiConformanceLevelARequired ()).Return (false);
+      _wcagHelperStub.Setup (stub => stub.IsWaiConformanceLevelARequired ()).Returns (false);
 
       var bocColumnRenderers = builder.CreateColumnRenderers ();
       Assert.That (bocColumnRenderers.Length, Is.EqualTo (1));
@@ -105,9 +108,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       var columnDefinition = new BocCommandColumnDefinition ();
       columnDefinition.Command = new BocListItemCommand (CommandType.WxeFunction);
-      var builder = new BocColumnRendererArrayBuilder (new[] { columnDefinition }, _serviceLocator, _wcagHelperStub);
+      var builder = new BocColumnRendererArrayBuilder (new[] { columnDefinition }, _serviceLocator, _wcagHelperStub.Object);
 
-      _wcagHelperStub.Stub (stub => stub.IsWaiConformanceLevelARequired ()).Return (true);
+      _wcagHelperStub.Setup (stub => stub.IsWaiConformanceLevelARequired ()).Returns (true);
 
       var bocColumnRenderers = builder.CreateColumnRenderers ();
       Assert.That (bocColumnRenderers.Length, Is.EqualTo (1));
@@ -119,9 +122,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     public void BocRowEditModeColumnDefinition_IsWaiConformanceLevelARequired_True ()
     {
       var columnDefinition = new BocRowEditModeColumnDefinition ();
-      var builder = new BocColumnRendererArrayBuilder (new[] { columnDefinition }, _serviceLocator, _wcagHelperStub);
+      var builder = new BocColumnRendererArrayBuilder (new[] { columnDefinition }, _serviceLocator, _wcagHelperStub.Object);
 
-      _wcagHelperStub.Stub (stub => stub.IsWaiConformanceLevelARequired ()).Return (true);
+      _wcagHelperStub.Setup (stub => stub.IsWaiConformanceLevelARequired ()).Returns (true);
 
       var bocColumnRenderers = builder.CreateColumnRenderers ();
       Assert.That (bocColumnRenderers.Length, Is.EqualTo (1));
@@ -134,10 +137,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       var columnDefinition = new BocRowEditModeColumnDefinition ();
       columnDefinition.Show = BocRowEditColumnDefinitionShow.Always;
-      var builder = new BocColumnRendererArrayBuilder (new[] { columnDefinition }, _serviceLocator, _wcagHelperStub);
+      var builder = new BocColumnRendererArrayBuilder (new[] { columnDefinition }, _serviceLocator, _wcagHelperStub.Object);
       builder.IsListReadOnly = true;
 
-      _wcagHelperStub.Stub (stub => stub.IsWaiConformanceLevelARequired ()).Return (false);
+      _wcagHelperStub.Setup (stub => stub.IsWaiConformanceLevelARequired ()).Returns (false);
 
       var bocColumnRenderers = builder.CreateColumnRenderers ();
       Assert.That (bocColumnRenderers.Length, Is.EqualTo (1));
@@ -150,10 +153,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       var columnDefinition = new BocRowEditModeColumnDefinition ();
       columnDefinition.Show = BocRowEditColumnDefinitionShow.EditMode;
-      var builder = new BocColumnRendererArrayBuilder (new[] { columnDefinition }, _serviceLocator, _wcagHelperStub);
+      var builder = new BocColumnRendererArrayBuilder (new[] { columnDefinition }, _serviceLocator, _wcagHelperStub.Object);
       builder.IsListReadOnly = false;
 
-      _wcagHelperStub.Stub (stub => stub.IsWaiConformanceLevelARequired ()).Return (false);
+      _wcagHelperStub.Setup (stub => stub.IsWaiConformanceLevelARequired ()).Returns (false);
 
       var bocColumnRenderers = builder.CreateColumnRenderers ();
       Assert.That (bocColumnRenderers.Length, Is.EqualTo (1));
@@ -166,10 +169,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       var columnDefinition = new BocRowEditModeColumnDefinition ();
       columnDefinition.Show = BocRowEditColumnDefinitionShow.EditMode;
-      var builder = new BocColumnRendererArrayBuilder (new[] { columnDefinition }, _serviceLocator, _wcagHelperStub);
+      var builder = new BocColumnRendererArrayBuilder (new[] { columnDefinition }, _serviceLocator, _wcagHelperStub.Object);
       builder.IsListReadOnly = true;
 
-      _wcagHelperStub.Stub (stub => stub.IsWaiConformanceLevelARequired ()).Return (false);
+      _wcagHelperStub.Setup (stub => stub.IsWaiConformanceLevelARequired ()).Returns (false);
 
       var bocColumnRenderers = builder.CreateColumnRenderers ();
       Assert.That (bocColumnRenderers.Length, Is.EqualTo (1));
@@ -181,10 +184,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     public void BocRowEditModeColumnDefinition_IsListEditModeActive_False ()
     {
       var columnDefinition = new BocRowEditModeColumnDefinition ();
-      var builder = new BocColumnRendererArrayBuilder (new[] { columnDefinition }, _serviceLocator, _wcagHelperStub);
+      var builder = new BocColumnRendererArrayBuilder (new[] { columnDefinition }, _serviceLocator, _wcagHelperStub.Object);
       builder.IsListEditModeActive = false;
 
-      _wcagHelperStub.Stub (stub => stub.IsWaiConformanceLevelARequired ()).Return (false);
+      _wcagHelperStub.Setup (stub => stub.IsWaiConformanceLevelARequired ()).Returns (false);
 
       var bocColumnRenderers = builder.CreateColumnRenderers ();
       Assert.That (bocColumnRenderers.Length, Is.EqualTo (1));
@@ -196,10 +199,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     public void BocRowEditModeColumnDefinition_IsListEditModeActive_True ()
     {
       var columnDefinition = new BocRowEditModeColumnDefinition ();
-      var builder = new BocColumnRendererArrayBuilder (new[] { columnDefinition }, _serviceLocator, _wcagHelperStub);
+      var builder = new BocColumnRendererArrayBuilder (new[] { columnDefinition }, _serviceLocator, _wcagHelperStub.Object);
       builder.IsListEditModeActive = true;
 
-      _wcagHelperStub.Stub (stub => stub.IsWaiConformanceLevelARequired ()).Return (false);
+      _wcagHelperStub.Setup (stub => stub.IsWaiConformanceLevelARequired ()).Returns (false);
 
       var bocColumnRenderers = builder.CreateColumnRenderers ();
       Assert.That (bocColumnRenderers.Length, Is.EqualTo (1));
@@ -211,9 +214,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     public void BocDropDownMenuColumnDefinition_IsWaiConformanceLevelARequired_True ()
     {
       var columnDefinition = new BocDropDownMenuColumnDefinition ();
-      var builder = new BocColumnRendererArrayBuilder (new[] { columnDefinition }, _serviceLocator, _wcagHelperStub);
+      var builder = new BocColumnRendererArrayBuilder (new[] { columnDefinition }, _serviceLocator, _wcagHelperStub.Object);
 
-      _wcagHelperStub.Stub (stub => stub.IsWaiConformanceLevelARequired ()).Return (true);
+      _wcagHelperStub.Setup (stub => stub.IsWaiConformanceLevelARequired ()).Returns (true);
 
       var bocColumnRenderers = builder.CreateColumnRenderers ();
       Assert.That (bocColumnRenderers.Length, Is.EqualTo (1));
@@ -225,10 +228,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     public void BocDropDownMenuColumnDefinition_IsWaiConformanceLevelARequired_False_And_IsBrowserCapableOfScripting_False ()
     {
       var columnDefinition = new BocDropDownMenuColumnDefinition ();
-      var builder = new BocColumnRendererArrayBuilder (new[] { columnDefinition }, _serviceLocator, _wcagHelperStub);
+      var builder = new BocColumnRendererArrayBuilder (new[] { columnDefinition }, _serviceLocator, _wcagHelperStub.Object);
       builder.IsBrowserCapableOfScripting = false;
 
-      _wcagHelperStub.Stub (stub => stub.IsWaiConformanceLevelARequired ()).Return (false);
+      _wcagHelperStub.Setup (stub => stub.IsWaiConformanceLevelARequired ()).Returns (false);
 
       var bocColumnRenderers = builder.CreateColumnRenderers ();
       Assert.That (bocColumnRenderers.Length, Is.EqualTo (1));
@@ -240,10 +243,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     public void BocDropDownMenuColumnDefinition_IsWaiConformanceLevelARequired_False_And_IsBrowserCapableOfScripting_True ()
     {
       var columnDefinition = new BocDropDownMenuColumnDefinition ();
-      var builder = new BocColumnRendererArrayBuilder (new[] { columnDefinition }, _serviceLocator, _wcagHelperStub);
+      var builder = new BocColumnRendererArrayBuilder (new[] { columnDefinition }, _serviceLocator, _wcagHelperStub.Object);
       builder.IsBrowserCapableOfScripting = true;
 
-      _wcagHelperStub.Stub (stub => stub.IsWaiConformanceLevelARequired ()).Return (false);
+      _wcagHelperStub.Setup (stub => stub.IsWaiConformanceLevelARequired ()).Returns (false);
 
       var bocColumnRenderers = builder.CreateColumnRenderers ();
       Assert.That (bocColumnRenderers.Length, Is.EqualTo (1));

@@ -18,6 +18,8 @@ using System;
 using System.Linq;
 using System.Web;
 using System.Xml;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.AspNetFramework;
 using Remotion.Development.Web.UnitTesting.Resources;
@@ -31,6 +33,7 @@ using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplementation.Rendering
 {
@@ -48,23 +51,23 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
     {
       Initialize();
 
-      TextValue = MockRepository.GenerateMock<IBocMultilineTextValue>();
-      TextValue.Stub (mock => mock.Text).Return (
+      TextValue = new Mock<IBocMultilineTextValue>().Object;
+      TextValue.Setup (mock => mock.Text).Returns (
           BocTextValueRendererTestBase<IBocTextValue>.c_firstLineText + Environment.NewLine
           + BocTextValueRendererTestBase<IBocTextValue>.c_secondLineText);
-      TextValue.Stub (mock => mock.Value).Return (
+      TextValue.Setup (mock => mock.Value).Returns (
           new[] { BocTextValueRendererTestBase<IBocTextValue>.c_firstLineText, BocTextValueRendererTestBase<IBocTextValue>.c_secondLineText });
 
-      TextValue.Stub (stub => stub.ClientID).Return ("MyTextValue");
-      TextValue.Stub (stub => stub.ControlType).Return ("BocMultilineTextValue");
-      TextValue.Stub (stub => stub.GetValueName()).Return (c_textValueID);
-      TextValue.Stub (mock => mock.GetLabelIDs()).Return (EnumerableUtility.Singleton (c_labelID));
-      TextValue.Stub (mock => mock.GetValidationErrors()).Return (EnumerableUtility.Singleton (c_validationErrors));
-      TextValue.Stub (mock => mock.CssClass).PropertyBehavior();
+      TextValue.Setup (stub => stub.ClientID).Returns ("MyTextValue");
+      TextValue.Setup (stub => stub.ControlType).Returns ("BocMultilineTextValue");
+      TextValue.Setup (stub => stub.GetValueName()).Returns (c_textValueID);
+      TextValue.Setup (mock => mock.GetLabelIDs()).Returns (EnumerableUtility.Singleton (c_labelID));
+      TextValue.Setup (mock => mock.GetValidationErrors()).Returns (EnumerableUtility.Singleton (c_validationErrors));
+      TextValue.Setup (mock => mock.CssClass).PropertyBehavior();
 
-      var pageStub = MockRepository.GenerateStub<IPage>();
-      pageStub.Stub (stub => stub.WrappedInstance).Return (new PageMock());
-      TextValue.Stub (stub => stub.Page).Return (pageStub);
+      var pageStub = new Mock<IPage>();
+      pageStub.Setup (stub => stub.WrappedInstance).Returns (new PageMock());
+      TextValue.Setup (stub => stub.Page).Returns (pageStub.Object);
 
       _renderer = new BocMultilineTextValueRenderer (
           new FakeResourceUrlFactory(),
@@ -192,9 +195,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
     {
       SetStyle (withStyle, withCssClass, inStandardProperties, autoPostBack);
 
-      TextValue.Stub (mock => mock.Enabled).Return (!isDisabled);
+      TextValue.Setup (mock => mock.Enabled).Returns (!isDisabled);
 
-      _renderer.Render (new BocMultilineTextValueRenderingContext (MockRepository.GenerateMock<HttpContextBase> (), Html.Writer, TextValue));
+      _renderer.Render (new BocMultilineTextValueRenderingContext (new Mock<HttpContextBase>().Object, Html.Writer, TextValue));
       
       var document = Html.GetResultDocument();
       Html.AssertChildElementCount (document.DocumentElement, 1);
@@ -234,9 +237,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
     {
       SetStyle (withStyle, withCssClass, inStandardProperties, false);
 
-      TextValue.Stub (mock => mock.IsReadOnly).Return (true);
+      TextValue.Setup (mock => mock.IsReadOnly).Returns (true);
 
-      _renderer.Render (new BocMultilineTextValueRenderingContext (MockRepository.GenerateMock<HttpContextBase> (), Html.Writer, TextValue));
+      _renderer.Render (new BocMultilineTextValueRenderingContext (new Mock<HttpContextBase>().Object, Html.Writer, TextValue));
 
       var document = Html.GetResultDocument();
       Html.AssertChildElementCount (document.DocumentElement, 1);

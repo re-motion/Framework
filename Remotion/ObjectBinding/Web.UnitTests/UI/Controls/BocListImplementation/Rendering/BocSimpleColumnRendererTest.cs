@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
@@ -27,6 +29,7 @@ using Remotion.ObjectBinding.Web.UnitTests.Domain;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering
 {
@@ -183,11 +186,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       var firstObject = (IBusinessObject) ((TypeWithReference) BusinessObject).FirstValue;
 
-      IEditableRow editableRow = MockRepository.GenerateMock<IEditableRow>();
-      editableRow.Stub (mock => mock.HasEditControl (0)).IgnoreArguments().Return (true);
-      editableRow.Stub (mock => mock.GetEditControl (0)).IgnoreArguments().Return (MockRepository.GenerateStub<IBocTextValue>());
+      var editableRow = new Mock<IEditableRow>();
+      editableRow.Setup (mock => mock.HasEditControl (It.IsAny<int>())).Returns (true);
+      editableRow.Setup (mock => mock.GetEditControl (It.IsAny<int>())).Returns (new Mock<IBocTextValue>().Object);
 
-      List.EditModeController.Stub (mock => mock.GetEditableRow (EventArgs.ListIndex)).Return (editableRow);
+      List.EditModeController.Setup (mock => mock.GetEditableRow (EventArgs.ListIndex)).Returns (editableRow.Object);
 
       IBocColumnRenderer renderer = new BocSimpleColumnRenderer (new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
       renderer.RenderDataCell (_renderingContext, 0, false, EventArgs);
@@ -204,13 +207,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var clickSpan = Html.GetAssertedChildElement (span, "span", 0);
       Html.AssertAttribute (clickSpan, "onclick", "BocList.OnCommandClick();");
 
-      editableRow.AssertWasCalled (
-          mock => mock.RenderSimpleColumnCellEditModeControl (
+      editableRow.Verify (          mock => mock.RenderSimpleColumnCellEditModeControl (
               Html.Writer,
               Column,
               firstObject,
               0,
-              List.ClientID + "_0_Title"));
+              List.ClientID + "_0_Title"), Times.AtLeastOnce());
     }
 
     [Test]
@@ -218,11 +220,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       var firstObject = (IBusinessObject) ((TypeWithReference) BusinessObject).FirstValue;
 
-      IEditableRow editableRow = MockRepository.GenerateMock<IEditableRow>();
-      editableRow.Stub (mock => mock.HasEditControl (0)).IgnoreArguments().Return (true);
-      editableRow.Stub (mock => mock.GetEditControl (0)).IgnoreArguments().Return (MockRepository.GenerateStub<IBocTextValue>());
+      var editableRow = new Mock<IEditableRow>();
+      editableRow.Setup (mock => mock.HasEditControl (It.IsAny<int>())).Returns (true);
+      editableRow.Setup (mock => mock.GetEditControl (It.IsAny<int>())).Returns (new Mock<IBocTextValue>().Object);
 
-      List.EditModeController.Stub (mock => mock.GetEditableRow (EventArgs.ListIndex)).Return (editableRow);
+      List.EditModeController.Setup (mock => mock.GetEditableRow (EventArgs.ListIndex)).Returns (editableRow.Object);
 
       IBocColumnRenderer renderer = new BocSimpleColumnRenderer (new FakeResourceUrlFactory(), RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition);
       renderer.RenderDataCell (_renderingContext, 0, false, EventArgs);
@@ -236,13 +238,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute (clickSpan, "onclick", "BocList.OnCommandClick();");
       Html.AssertAttribute (clickSpan, DiagnosticMetadataAttributesForObjectBinding.BocListCellContents, "referencedObject1");
 
-      editableRow.AssertWasCalled (
-          mock => mock.RenderSimpleColumnCellEditModeControl (
+      editableRow.Verify (          mock => mock.RenderSimpleColumnCellEditModeControl (
               Html.Writer,
               Column,
               firstObject,
               0,
-              List.ClientID + "_0_Title"));
+              List.ClientID + "_0_Title"), Times.AtLeastOnce());
     }
   }
 }

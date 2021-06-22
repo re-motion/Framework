@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls;
@@ -9,6 +11,7 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Validation;
 using Remotion.Web.UI.Controls;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests.Validation
 {
@@ -232,53 +235,55 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests.Val
 
     private IBocTextValue GetControlWithOptionalValidatorsEnabled (bool isRequired, BocTextValueType valueType, Type propertyType)
     {
-      var dataSourceStub = MockRepository.GenerateStub<IBusinessObjectDataSource>();
-      var propertyStub = (IBusinessObjectProperty) MockRepository.GenerateStub (propertyType);
-      propertyStub.Stub (p => p.IsNullable).Throw (new InvalidOperationException ("Property.IsNullable is not relevant with optional validators enabled."));
-      propertyStub.Stub (p => p.IsRequired).Throw (new InvalidOperationException ("Property.IsRequired is not relevant."));
+      var dataSourceStub = new Mock<IBusinessObjectDataSource>();
+      var propertyStub = (IBusinessObjectProperty) new Mock<propertyType>();
+      propertyStub.Setup (p => p.IsNullable).Throws (new InvalidOperationException ("Property.IsNullable is not relevant with optional validators enabled."));
+      propertyStub.Setup (p => p.IsRequired).Throws (new InvalidOperationException ("Property.IsRequired is not relevant."));
 
-      var controlMock = MockRepository.GenerateMock<IBocTextValue>();
-      controlMock.Expect (c => c.ActualValueType).Return (valueType);
-      controlMock.Expect (c => c.IsRequired).Return (isRequired);
-      controlMock.Expect (c => c.TextBoxStyle).Return (new TextBoxStyle());
-      controlMock.Expect (c => c.AreOptionalValidatorsEnabled).Return (true);
-      controlMock.Expect (c => c.Property).Return (propertyStub);
-      controlMock.Expect (c => c.DataSource).Return (dataSourceStub);
+      var controlMock = new Mock<IBocTextValue>();
+      controlMock.Setup (c => c.ActualValueType).Returns (valueType).Verifiable();
+      controlMock.Setup (c => c.IsRequired).Returns (isRequired).Verifiable();
+      controlMock.Setup (c => c.TextBoxStyle).Returns (new TextBoxStyle()).Verifiable();
+      controlMock.Setup (c => c.AreOptionalValidatorsEnabled).Returns (true).Verifiable();
+      controlMock.Setup (c => c.Property).Returns (propertyStub).Verifiable();
+      controlMock.Setup (c => c.DataSource).Returns (dataSourceStub.Object).Verifiable();
 
-      var resourceManagerMock = MockRepository.GenerateMock<IResourceManager>();
-      resourceManagerMock.Expect (r => r.TryGetString (Arg<string>.Is.Anything, out Arg<string>.Out ("MockValue").Dummy))
-          .Return (true);
+      var resourceManagerMock = new Mock<IResourceManager>();
+      resourceManagerMock.Setup (r => r.TryGetString (It.IsAny<string>(), out Arg<string>.Out ("MockValue").Dummy))
+          .Returns (true)
+          .Verifiable();
 
-      controlMock.Expect (c => c.GetResourceManager()).Return (resourceManagerMock);
-      controlMock.Expect (c => c.TargetControl).Return (new Control() { ID = "ID" });
+      controlMock.Setup (c => c.GetResourceManager()).Returns (resourceManagerMock.Object).Verifiable();
+      controlMock.Setup (c => c.TargetControl).Returns (new Control() { ID = "ID" }).Verifiable();
 
-      return controlMock;
+      return controlMock.Object;
     }
 
     private IBocTextValue GetControlWithOptionalValidatorsDisabled (bool isRequired, bool hasDataSource, bool hasBusinessObject, bool hasProperty, BocTextValueType valueType, Type propertyType)
     {
-      var dataSourceStub = MockRepository.GenerateStub<IBusinessObjectDataSource>();
-      dataSourceStub.BusinessObject = hasBusinessObject ? MockRepository.GenerateStub<IBusinessObject>() : null;
-      var propertyStub = (IBusinessObjectProperty) MockRepository.GenerateStub (propertyType);
-      propertyStub.Stub (p => p.IsNullable).Return (!isRequired);
-      propertyStub.Stub (p => p.IsRequired).Throw (new InvalidOperationException ("Property.IsRequired is not relevant."));
+      var dataSourceStub = new Mock<IBusinessObjectDataSource>();
+      dataSourceStub.Object.BusinessObject = hasBusinessObject ? new Mock<IBusinessObject>() : null;
+      var propertyStub = (IBusinessObjectProperty) new Mock<propertyType>();
+      propertyStub.Setup (p => p.IsNullable).Returns (!isRequired);
+      propertyStub.Setup (p => p.IsRequired).Throws (new InvalidOperationException ("Property.IsRequired is not relevant."));
 
-      var controlMock = MockRepository.GenerateMock<IBocTextValue>();
-      controlMock.Expect (c => c.ActualValueType).Return (valueType);
-      controlMock.Expect (c => c.IsRequired).Throw (new InvalidOperationException ("Control settings are not relevant with optional validators disabled."));
-      controlMock.Expect (c => c.TextBoxStyle).Return (new TextBoxStyle());
-      controlMock.Expect (c => c.AreOptionalValidatorsEnabled).Return (false);
-      controlMock.Expect (c => c.Property).Return (hasProperty ? propertyStub : null);
-      controlMock.Expect (c => c.DataSource).Return (hasDataSource ? dataSourceStub : null);
+      var controlMock = new Mock<IBocTextValue>();
+      controlMock.Setup (c => c.ActualValueType).Returns (valueType).Verifiable();
+      controlMock.Setup (c => c.IsRequired).Throws (new InvalidOperationException ("Control settings are not relevant with optional validators disabled.")).Verifiable();
+      controlMock.Setup (c => c.TextBoxStyle).Returns (new TextBoxStyle()).Verifiable();
+      controlMock.Setup (c => c.AreOptionalValidatorsEnabled).Returns (false).Verifiable();
+      controlMock.Setup (c => c.Property).Returns (hasProperty ? propertyStub : null).Verifiable();
+      controlMock.Setup (c => c.DataSource).Returns (hasDataSource ? dataSourceStub : null).Verifiable();
 
-      var resourceManagerMock = MockRepository.GenerateMock<IResourceManager>();
-      resourceManagerMock.Expect (r => r.TryGetString (Arg<string>.Is.Anything, out Arg<string>.Out ("MockValue").Dummy))
-          .Return (true);
+      var resourceManagerMock = new Mock<IResourceManager>();
+      resourceManagerMock.Setup (r => r.TryGetString (It.IsAny<string>(), out Arg<string>.Out ("MockValue").Dummy))
+          .Returns (true)
+          .Verifiable();
 
-      controlMock.Expect (c => c.GetResourceManager()).Return (resourceManagerMock);
-      controlMock.Expect (c => c.TargetControl).Return (new Control() { ID = "ID" });
+      controlMock.Setup (c => c.GetResourceManager()).Returns (resourceManagerMock.Object).Verifiable();
+      controlMock.Setup (c => c.TargetControl).Returns (new Control() { ID = "ID" }).Verifiable();
 
-      return controlMock;
+      return controlMock.Object;
     }
   }
 }

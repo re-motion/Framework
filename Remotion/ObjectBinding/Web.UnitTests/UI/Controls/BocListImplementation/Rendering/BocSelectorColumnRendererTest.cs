@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.Services;
@@ -22,6 +24,7 @@ using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.Web.UI.Controls.Rendering;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering
 {
@@ -36,7 +39,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       Initialize();
 
-      List.Stub (mock => mock.IsSelectionEnabled).Return (true);
+      List.Setup (mock => mock.IsSelectionEnabled).Returns (true);
 
       _bocListCssClassDefinition = new BocListCssClassDefinition();
       var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create (null, null, null);
@@ -51,7 +54,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void RenderTitleCellForMultiSelect ()
     {
-      List.Stub (mock => mock.Selection).Return (RowSelection.Multiple);
+      List.Setup (mock => mock.Selection).Returns (RowSelection.Multiple);
       IBocSelectorColumnRenderer renderer = new BocSelectorColumnRenderer (RenderingFeatures.Default, _bocListCssClassDefinition);
       renderer.RenderTitleCell (_bocListRenderingContext);
 
@@ -73,8 +76,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     public void RenderDataCellForMultiSelect ()
     {
       var row = new BocListRow (1, BusinessObject);
-      List.Stub (mock => mock.Selection).Return (RowSelection.Multiple);
-      List.Stub (mock => mock.GetSelectorControlValue (row)).Return ("row1");
+      List.Setup (mock => mock.Selection).Returns (RowSelection.Multiple);
+      List.Setup (mock => mock.GetSelectorControlValue (row)).Returns ("row1");
       IBocSelectorColumnRenderer renderer = new BocSelectorColumnRenderer (RenderingFeatures.Default, _bocListCssClassDefinition);
       renderer.RenderDataCell (
           _bocListRenderingContext,
@@ -97,7 +100,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void RenderTitleCellForSingleSelect ()
     {
-      List.Stub (mock => mock.Selection).Return (RowSelection.SingleRadioButton);
+      List.Setup (mock => mock.Selection).Returns (RowSelection.SingleRadioButton);
       IBocSelectorColumnRenderer renderer = new BocSelectorColumnRenderer (RenderingFeatures.Default, _bocListCssClassDefinition);
       renderer.RenderTitleCell (_bocListRenderingContext);
 
@@ -114,8 +117,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     public void RenderDataCellForSingleSelect ()
     {
       var row = new BocListRow (1, BusinessObject);
-      List.Stub (mock => mock.Selection).Return (RowSelection.SingleRadioButton);
-      List.Stub (mock => mock.GetSelectorControlValue (row)).Return ("row1");
+      List.Setup (mock => mock.Selection).Returns (RowSelection.SingleRadioButton);
+      List.Setup (mock => mock.GetSelectorControlValue (row)).Returns ("row1");
       IBocSelectorColumnRenderer renderer = new BocSelectorColumnRenderer (RenderingFeatures.Default, _bocListCssClassDefinition);
       renderer.RenderDataCell (
           _bocListRenderingContext,
@@ -138,7 +141,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void TestDiagnosticMetadataRenderingInTitleCell ()
     {
-      List.Stub (mock => mock.Selection).Return (RowSelection.Multiple);
+      List.Setup (mock => mock.Selection).Returns (RowSelection.Multiple);
       IBocSelectorColumnRenderer renderer = new BocSelectorColumnRenderer (RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition);
       renderer.RenderTitleCell (_bocListRenderingContext);
 
@@ -155,8 +158,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     public void TestDiagnosticMetadataRenderingInDataCell ()
     {
       var row = new BocListRow (1, BusinessObject);
-      List.Stub (mock => mock.Selection).Return (RowSelection.SingleRadioButton);
-      List.Stub (mock => mock.GetSelectorControlValue (row)).Return ("row1");
+      List.Setup (mock => mock.Selection).Returns (RowSelection.SingleRadioButton);
+      List.Setup (mock => mock.GetSelectorControlValue (row)).Returns ("row1");
       IBocSelectorColumnRenderer renderer = new BocSelectorColumnRenderer (RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition);
       renderer.RenderDataCell (
           _bocListRenderingContext,

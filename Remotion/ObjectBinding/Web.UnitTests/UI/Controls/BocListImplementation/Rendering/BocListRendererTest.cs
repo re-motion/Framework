@@ -17,6 +17,8 @@
 using System;
 using System.Web.UI.WebControls;
 using System.Xml;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
@@ -27,6 +29,7 @@ using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering
 {
@@ -49,7 +52,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void RenderOnlyTableBlock ()
     {
-      List.Stub (mock => mock.HasMenuBlock).Return (false);
+      List.Setup (mock => mock.HasMenuBlock).Returns (false);
 
       var renderer = new BocListRenderer (
           new FakeResourceUrlFactory(),
@@ -84,9 +87,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void RenderWithMenuBlock ()
     {
-      List.Stub (mock => mock.HasMenuBlock).Return (true);
-      List.Stub (mock => mock.MenuBlockWidth).Return (s_menuBlockWidth);
-      List.Stub (mock => mock.MenuBlockOffset).Return (s_menuBlockOffset);
+      List.Setup (mock => mock.HasMenuBlock).Returns (true);
+      List.Setup (mock => mock.MenuBlockWidth).Returns (s_menuBlockWidth);
+      List.Setup (mock => mock.MenuBlockOffset).Returns (s_menuBlockOffset);
 
       var renderer = new BocListRenderer (
           new FakeResourceUrlFactory(),
@@ -119,7 +122,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertStyleAttribute (menuBlockContent, "margin-left", s_menuBlockOffset.ToString());
       Html.GetAssertedChildElement (menuBlockContent, "menu", 0);
 
-
       var tableBlock = Html.GetAssertedChildElement (div, "div", 2);
       Html.AssertAttribute (tableBlock, "class", "bocListTableBlock hasMenuBlock");
 
@@ -131,7 +133,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void RenderWithMenuBlockWithoutWidth ()
     {
-      List.Stub (mock => mock.HasMenuBlock).Return (true);
+      List.Setup (mock => mock.HasMenuBlock).Returns (true);
 
       var renderer = new BocListRenderer (
           new FakeResourceUrlFactory(),
@@ -162,7 +164,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var menuBlockContent = Html.GetAssertedChildElement (menuBlock, "div", 0);
       Html.GetAssertedChildElement (menuBlockContent, "menu", 0);
 
-
       var tableBlock = Html.GetAssertedChildElement (div, "div", 2);
       Html.AssertAttribute (tableBlock, "class", "bocListTableBlock hasMenuBlock");
 
@@ -172,7 +173,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void RenderWithNavigationBlock ()
     {
-      List.Stub (mock => mock.HasNavigator).Return (true);
+      List.Setup (mock => mock.HasNavigator).Returns (true);
 
       var renderer = new BocListRenderer (
           new FakeResourceUrlFactory(),
@@ -238,7 +239,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           new StubRenderer ("menu"),
           new StubLabelReferenceRenderer());
 
-      List.Stub (mock => mock.HasNavigator).Return (true);
+      List.Setup (mock => mock.HasNavigator).Returns (true);
 
       renderer.Render (CreateRenderingContext());
 
@@ -261,7 +262,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           new StubRenderer ("menu"),
           new StubLabelReferenceRenderer());
 
-      List.Stub (mock => mock.HasNavigator).Return (false);
+      List.Setup (mock => mock.HasNavigator).Returns (false);
 
       renderer.Render (CreateRenderingContext());
 
@@ -284,8 +285,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           new StubRenderer ("menu"),
           new StubLabelReferenceRenderer());
 
-      List.EditModeController.Stub (mock => mock.IsListEditModeActive).Return (true);
-      List.EditModeController.Stub (mock => mock.IsRowEditModeActive).Return (true);
+      List.EditModeController.Setup (mock => mock.IsListEditModeActive).Returns (true);
+      List.EditModeController.Setup (mock => mock.IsRowEditModeActive).Returns (true);
 
       renderer.Render (CreateRenderingContext());
 
@@ -308,8 +309,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           new StubRenderer ("menu"),
           new StubLabelReferenceRenderer());
 
-      List.EditModeController.Stub (mock => mock.IsListEditModeActive).Return (false);
-      List.EditModeController.Stub (mock => mock.IsRowEditModeActive).Return (false);
+      List.EditModeController.Setup (mock => mock.IsListEditModeActive).Returns (false);
+      List.EditModeController.Setup (mock => mock.IsRowEditModeActive).Returns (false);
 
       renderer.Render (CreateRenderingContext());
 
@@ -332,8 +333,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           new StubRenderer ("menu"),
           new StubLabelReferenceRenderer());
 
-      List.EditModeController.Stub (mock => mock.IsListEditModeActive).Return (true);
-      List.EditModeController.Stub (mock => mock.IsRowEditModeActive).Return (false);
+      List.EditModeController.Setup (mock => mock.IsListEditModeActive).Returns (true);
+      List.EditModeController.Setup (mock => mock.IsRowEditModeActive).Returns (false);
 
       renderer.Render (CreateRenderingContext());
 
@@ -356,8 +357,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           new StubRenderer ("menu"),
           new StubLabelReferenceRenderer());
 
-      List.EditModeController.Stub (mock => mock.IsListEditModeActive).Return (false);
-      List.EditModeController.Stub (mock => mock.IsRowEditModeActive).Return (true);
+      List.EditModeController.Setup (mock => mock.IsListEditModeActive).Returns (false);
+      List.EditModeController.Setup (mock => mock.IsRowEditModeActive).Returns (true);
 
       renderer.Render (CreateRenderingContext());
 

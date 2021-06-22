@@ -15,11 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.ObjectBinding.BusinessObjectPropertyPaths;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 {
@@ -29,14 +32,14 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     [Test]
     public void GetComparer_WithPropertyPathSet ()
     {
-      var propertyPath = MockRepository.GenerateStub<IBusinessObjectPropertyPath>();
+      var propertyPath = new Mock<IBusinessObjectPropertyPath>();
 
       var column = new BocSimpleColumnDefinition();
-      column.SetPropertyPath (propertyPath);
+      column.SetPropertyPath (propertyPath.Object);
 
       var comparer = ((IBocSortableColumnDefinition) column).CreateCellValueComparer();
       Assert.That (comparer, Is.InstanceOf<BusinessObjectPropertyPathBasedComparer>());
-      Assert.That (((BusinessObjectPropertyPathBasedComparer) comparer).PropertyPath, Is.SameAs (propertyPath));
+      Assert.That (((BusinessObjectPropertyPathBasedComparer) comparer).PropertyPath, Is.SameAs (propertyPath.Object));
     }
 
     [Test]

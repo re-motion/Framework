@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
@@ -24,6 +26,7 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.UI.Controls.Rendering;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering
 {
@@ -39,13 +42,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       _bocListCssClassDefinition = new BocListCssClassDefinition();
 
-      List.Stub (mock => mock.IsIndexEnabled).Return (true);
+      List.Setup (mock => mock.IsIndexEnabled).Returns (true);
     }
 
     [Test]
     public void RenderIndexTitleCell ()
     {
-      List.Stub (mock => mock.Index).Return (RowIndex.InitialOrder);
+      List.Setup (mock => mock.Index).Returns (RowIndex.InitialOrder);
 
       IBocIndexColumnRenderer renderer = new BocIndexColumnRenderer (RenderingFeatures.Default, _bocListCssClassDefinition);
       renderer.RenderTitleCell (CreateRenderingContext());
@@ -64,7 +67,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void RenderIndexDataCellInitialOrder ()
     {
-      List.Stub (mock => mock.Index).Return (RowIndex.InitialOrder);
+      List.Setup (mock => mock.Index).Returns (RowIndex.InitialOrder);
 
       RenderIndexDataCell (0);
     }
@@ -72,8 +75,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void RenderIndexDataCellSortedOrderAndIndexOffset ()
     {
-      List.Stub (mock => mock.Index).Return (RowIndex.SortedOrder);
-      List.Stub (mock => mock.IndexOffset).Return (2);
+      List.Setup (mock => mock.Index).Returns (RowIndex.SortedOrder);
+      List.Setup (mock => mock.IndexOffset).Returns (2);
 
       RenderIndexDataCell (2);
     }
@@ -81,8 +84,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void TestDiagnosticMetadataRenderingInTitleCell ()
     {
-      List.Stub (mock => mock.Index).Return (RowIndex.InitialOrder);
-      List.Stub (mock => mock.IndexColumnTitle).Return ("My_IndexColumn");
+      List.Setup (mock => mock.Index).Returns (RowIndex.InitialOrder);
+      List.Setup (mock => mock.IndexColumnTitle).Returns ("My_IndexColumn");
 
       IBocIndexColumnRenderer renderer = new BocIndexColumnRenderer (RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition);
       renderer.RenderTitleCell (CreateRenderingContext());

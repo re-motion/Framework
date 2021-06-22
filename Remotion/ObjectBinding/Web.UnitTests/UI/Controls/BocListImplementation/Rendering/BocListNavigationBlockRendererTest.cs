@@ -17,6 +17,8 @@
 using System;
 using System.Globalization;
 using System.Xml;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
@@ -26,6 +28,7 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering
 {
@@ -44,7 +47,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       _bocListCssClassDefinition = new BocListCssClassDefinition();
 
-      List.Stub (mock => mock.HasNavigator).Return (true);
+      List.Setup (mock => mock.HasNavigator).Returns (true);
     }
 
     [Test]
@@ -53,8 +56,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var currentPageIndex = 0;
       var totalPageCount = 1;
 
-      List.Stub (mock => mock.CurrentPageIndex).Return (currentPageIndex);
-      List.Stub (mock => mock.PageCount).Return (totalPageCount);
+      List.Setup (mock => mock.CurrentPageIndex).Returns (currentPageIndex);
+      List.Setup (mock => mock.PageCount).Returns (totalPageCount);
 
       var renderer = new BocListNavigationBlockRenderer (
           new FakeResourceUrlFactory(),
@@ -92,8 +95,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var currentPageIndex = 0;
       var totalPageCount = 2;
 
-      List.Stub (mock => mock.CurrentPageIndex).Return (currentPageIndex);
-      List.Stub (mock => mock.PageCount).Return (totalPageCount);
+      List.Setup (mock => mock.CurrentPageIndex).Returns (currentPageIndex);
+      List.Setup (mock => mock.PageCount).Returns (totalPageCount);
 
       var renderer = new BocListNavigationBlockRenderer (
           new FakeResourceUrlFactory(),
@@ -132,8 +135,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var currentPageIndex = 1;
       var totalPageCount = 2;
 
-      List.Stub (mock => mock.CurrentPageIndex).Return (currentPageIndex);
-      List.Stub (mock => mock.PageCount).Return (totalPageCount);
+      List.Setup (mock => mock.CurrentPageIndex).Returns (currentPageIndex);
+      List.Setup (mock => mock.PageCount).Returns (totalPageCount);
 
       var renderer = new BocListNavigationBlockRenderer (
           new FakeResourceUrlFactory(),
@@ -172,8 +175,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var currentPageIndex = 3;
       var totalPageCount = 7;
 
-      List.Stub (mock => mock.CurrentPageIndex).Return (currentPageIndex);
-      List.Stub (mock => mock.PageCount).Return (totalPageCount);
+      List.Setup (mock => mock.CurrentPageIndex).Returns (currentPageIndex);
+      List.Setup (mock => mock.PageCount).Returns (totalPageCount);
 
       var renderer = new BocListNavigationBlockRenderer (
           new FakeResourceUrlFactory(),
@@ -212,8 +215,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var currentPageIndex = 3;
       var totalPageCount = 7;
 
-      List.Stub (mock => mock.CurrentPageIndex).Return (currentPageIndex);
-      List.Stub (mock => mock.PageCount).Return (totalPageCount);
+      List.Setup (mock => mock.CurrentPageIndex).Returns (currentPageIndex);
+      List.Setup (mock => mock.PageCount).Returns (totalPageCount);
 
       var renderer = new BocListNavigationBlockRenderer (
           new FakeResourceUrlFactory(),

@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
@@ -25,6 +27,7 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering
 {
@@ -47,9 +50,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       EventArgs = new BocListDataRowRenderEventArgs (EventArgs.ListIndex, EventArgs.BusinessObject, true, EventArgs.IsOddRow);
 
-      List.Stub (mock => mock.EnableClientScript).Return (true);
-      List.Stub (mock => mock.IsDesignMode).Return (false);
-      List.Stub (mock => mock.IsReadOnly).Return (false);
+      List.Setup (mock => mock.EnableClientScript).Returns (true);
+      List.Setup (mock => mock.IsDesignMode).Returns (false);
+      List.Setup (mock => mock.IsReadOnly).Returns (false);
       List.DataSource.Mode = DataSourceMode.Edit;
 
       _bocListCssClassDefinition = new BocListCssClassDefinition();
@@ -86,7 +89,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void RenderEditing ()
     {
-      List.EditModeController.Stub (mock => mock.GetEditableRow (10)).Return (MockRepository.GenerateStub<IEditableRow>());
+      List.EditModeController.Setup (mock => mock.GetEditableRow (10)).Returns (new Mock<IEditableRow>().Object);
 
       IBocColumnRenderer renderer = new BocRowEditModeColumnRenderer (
           new FakeResourceUrlFactory(),

@@ -17,12 +17,15 @@
 using System;
 using System.Web;
 using System.Web.UI;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering
 {
@@ -30,9 +33,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
   public class NullColumnRendererTest
   {
     private NullColumnRenderer _nullColumnRenderer;
-    private HtmlTextWriter _htmlTextWriterMock;
-    private HttpContextBase _httpContextStub;
-    private IBocList _bocListStub;
+    private Mock<HtmlTextWriter> _htmlTextWriterMock;
+    private Mock<HttpContextBase> _httpContextStub;
+    private Mock<IBocList> _bocListStub;
     private BocColumnRenderingContext<StubColumnDefinition> _renderingContext;
     private StubColumnDefinition _columnDefinition;
 
@@ -41,14 +44,14 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       _nullColumnRenderer = new NullColumnRenderer();
       _columnDefinition = new StubColumnDefinition();
-      _htmlTextWriterMock = MockRepository.GenerateStrictMock<HtmlTextWriter> ();
-      _httpContextStub = MockRepository.GenerateStub<HttpContextBase> ();
-      _bocListStub = MockRepository.GenerateStub<IBocList> ();
+      _htmlTextWriterMock = new Mock<HtmlTextWriter> (MockBehavior.Strict);
+      _httpContextStub = new Mock<HttpContextBase>();
+      _bocListStub = new Mock<IBocList>();
       _renderingContext = new BocColumnRenderingContext<StubColumnDefinition> (
           new BocColumnRenderingContext (
-              _httpContextStub,
-              _htmlTextWriterMock,
-              _bocListStub,
+              _httpContextStub.Object,
+              _htmlTextWriterMock.Object,
+              _bocListStub.Object,
               BusinessObjectWebServiceContext.Create (null, null, null),
               _columnDefinition,
               0,
@@ -65,31 +68,25 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void RenderTitleCell ()
     {
-      _htmlTextWriterMock.Replay();
-
       _nullColumnRenderer.RenderTitleCell (_renderingContext, SortingDirection.None, 0);
 
-      _htmlTextWriterMock.VerifyAllExpectations();
+      _htmlTextWriterMock.Verify();
     }
 
     [Test]
     public void RenderDataCell ()
     {
-      _htmlTextWriterMock.Replay ();
-
       _nullColumnRenderer.RenderDataCell (_renderingContext, 0, true, null);
 
-      _htmlTextWriterMock.VerifyAllExpectations ();
+      _htmlTextWriterMock.Verify();
     }
 
     [Test]
     public void RenderDataColumnDeclaration ()
     {
-      _htmlTextWriterMock.Replay();
-
       _nullColumnRenderer.RenderDataColumnDeclaration (_renderingContext, false);
 
-      _htmlTextWriterMock.VerifyAllExpectations();
+      _htmlTextWriterMock.Verify();
     }
 
   }

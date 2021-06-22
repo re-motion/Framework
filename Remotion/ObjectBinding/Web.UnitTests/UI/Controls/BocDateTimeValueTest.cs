@@ -18,6 +18,8 @@ using System;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using Microsoft.Practices.ServiceLocation;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.Web.UnitTesting.Configuration;
@@ -26,6 +28,7 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.Validation;
 using Remotion.ObjectBinding.Web.UnitTests.Domain;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 {
@@ -507,18 +510,18 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     public void CreateValidators_UsesValidatorFactory ()
     {
       var control = new BocDateTimeValue();
-      var serviceLocatorMock = MockRepository.GenerateMock<IServiceLocator>();
-      var factoryMock = MockRepository.GenerateMock<IBocDateTimeValueValidatorFactory>();
-      serviceLocatorMock.Expect (m => m.GetInstance<IBocDateTimeValueValidatorFactory>()).Return (factoryMock);
-      factoryMock.Expect (f => f.CreateValidators (control, false)).Return (new List<BaseValidator>());
+      var serviceLocatorMock = new Mock<IServiceLocator>();
+      var factoryMock = new Mock<IBocDateTimeValueValidatorFactory>();
+      serviceLocatorMock.Setup (m => m.GetInstance<IBocDateTimeValueValidatorFactory>()).Returns (factoryMock.Object).Verifiable();
+      factoryMock.Setup (f => f.CreateValidators (control, false)).Returns (new List<BaseValidator>()).Verifiable();
 
-      using (new ServiceLocatorScope (serviceLocatorMock))
+      using (new ServiceLocatorScope (serviceLocatorMock.Object))
       {
         control.CreateValidators();
       }
 
-      factoryMock.VerifyAllExpectations();
-      serviceLocatorMock.VerifyAllExpectations();
+      factoryMock.Verify();
+      serviceLocatorMock.Verify();
     }
   }
 }

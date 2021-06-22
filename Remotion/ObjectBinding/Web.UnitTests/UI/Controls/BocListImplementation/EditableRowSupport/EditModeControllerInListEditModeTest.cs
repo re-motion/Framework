@@ -18,6 +18,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.FunctionalProgramming;
 using Remotion.ObjectBinding.Web.UI.Controls;
@@ -25,6 +27,7 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
 using Remotion.ObjectBinding.Web.UnitTests.Domain;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.EditableRowSupport
 {
@@ -462,12 +465,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void EnsureEditModeRestored_CallsLoadValueWithInterimTrue()
     {
-      var dataSourceStub = MockRepository.GenerateStub<IBusinessObjectReferenceDataSource>();
-      dataSourceStub.BusinessObject = MockRepository.GenerateStub<IBusinessObject>();
-      EditModeHost.EditModeDataSourceFactory = MockRepository.GenerateStub<EditableRowDataSourceFactory>();
+      var dataSourceStub = new Mock<IBusinessObjectReferenceDataSource>();
+      dataSourceStub.Object.BusinessObject = new Mock<IBusinessObject>().Object;
+      EditModeHost.EditModeDataSourceFactory = new Mock<EditableRowDataSourceFactory>().Object;
       EditModeHost.EditModeDataSourceFactory
-                  .Stub (_ => _.Create (Arg<IBusinessObject>.Is.Anything))
-                  .Return (dataSourceStub);
+                  .Setup (_ => _.Create (It.IsAny<IBusinessObject>()))
+                  .Returns (dataSourceStub.Object);
 
       Assert.That (Controller.IsListEditModeActive, Is.False);
       ControllerInvoker.LoadControlState (CreateControlState (null, EditMode.ListEditMode, new List<string> { "0", "1", "2", "3", "4" }, false));
@@ -476,20 +479,20 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Controller.EnsureEditModeRestored (Columns);
       Assert.That (Controller.IsListEditModeActive, Is.True);
 
-      dataSourceStub.AssertWasCalled (_ => _.LoadValues (true), mo => mo.Repeat.Times (EditModeHost.Value.Count));
+      dataSourceStub.Object.AssertWasCalled (_ => _.Object.LoadValues (true), mo => mo);
     }
 
     [Test]
     public void EnsureEditModeRestored_CallsLoadValueWithInterimTrue_ForAddedRow()
     {
       var addedBusinessObject = (IBusinessObject) EditModeHost.Value[2];
-      var dataSourceStub = MockRepository.GenerateStub<IBusinessObjectReferenceDataSource>();
-      dataSourceStub.BusinessObject = MockRepository.GenerateStub<IBusinessObject>();
-      var addedRowDataSourceStub = MockRepository.GenerateStub<IBusinessObjectReferenceDataSource>();
-      addedRowDataSourceStub.BusinessObject =addedBusinessObject;
-      EditModeHost.EditModeDataSourceFactory = MockRepository.GenerateStub<EditableRowDataSourceFactory>();
-      EditModeHost.EditModeDataSourceFactory.Stub (_ => _.Create (addedBusinessObject)).Return (addedRowDataSourceStub);
-      EditModeHost.EditModeDataSourceFactory.Stub (_ => _.Create (Arg<IBusinessObject>.Is.NotSame (addedBusinessObject))).Return (dataSourceStub);
+      var dataSourceStub = new Mock<IBusinessObjectReferenceDataSource>();
+      dataSourceStub.Object.BusinessObject = new Mock<IBusinessObject>().Object;
+      var addedRowDataSourceStub = new Mock<IBusinessObjectReferenceDataSource>();
+      addedRowDataSourceStub.Object.BusinessObject =addedBusinessObject;
+      EditModeHost.EditModeDataSourceFactory = new Mock<EditableRowDataSourceFactory>().Object;
+      EditModeHost.EditModeDataSourceFactory.Setup (_ => _.Create (addedBusinessObject)).Returns (addedRowDataSourceStub.Object);
+      EditModeHost.EditModeDataSourceFactory.Setup (_ => _.Create (It.Is<IBusinessObject> (_ => !object.ReferenceEquals (_, addedBusinessObject)))).Returns (dataSourceStub.Object);
 
       Assert.That (Controller.IsListEditModeActive, Is.False);
       ControllerInvoker.LoadControlState (CreateControlState (null, EditMode.ListEditMode, new List<string> { "0", "1", "3", "4" }, false));
@@ -498,8 +501,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Controller.EnsureEditModeRestored (Columns);
       Assert.That (Controller.IsListEditModeActive, Is.True);
 
-      dataSourceStub.AssertWasCalled (_ => _.LoadValues (true), mo => mo.Repeat.Times (EditModeHost.Value.Count - 1));
-      addedRowDataSourceStub.AssertWasCalled (_ => _.LoadValues (false), mo => mo.Repeat.Times (1));
+      dataSourceStub.Object.AssertWasCalled (_ => _.Object.LoadValues (true), mo => mo);
+      addedRowDataSourceStub.Object.AssertWasCalled (_ => _.Object.LoadValues (false), mo => mo);
     }
 
     [Test]
@@ -574,13 +577,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     public void SynchronizeEditModeControls_CallsLoadValueWithInterimTrue_ForAddedRow()
     {
       var addedBusinessObject = (IBusinessObject) NewValues[0];
-      var dataSourceStub = MockRepository.GenerateStub<IBusinessObjectReferenceDataSource>();
-      dataSourceStub.BusinessObject = MockRepository.GenerateStub<IBusinessObject>();
-      var addedRowDataSourceStub = MockRepository.GenerateStub<IBusinessObjectReferenceDataSource>();
-      addedRowDataSourceStub.BusinessObject = addedBusinessObject;
-      EditModeHost.EditModeDataSourceFactory = MockRepository.GenerateStub<EditableRowDataSourceFactory>();
-      EditModeHost.EditModeDataSourceFactory.Stub (_ => _.Create (addedBusinessObject)).Return (addedRowDataSourceStub);
-      EditModeHost.EditModeDataSourceFactory.Stub (_ => _.Create (Arg<IBusinessObject>.Is.NotSame (addedBusinessObject))).Return (dataSourceStub);
+      var dataSourceStub = new Mock<IBusinessObjectReferenceDataSource>();
+      dataSourceStub.Object.BusinessObject = new Mock<IBusinessObject>().Object;
+      var addedRowDataSourceStub = new Mock<IBusinessObjectReferenceDataSource>();
+      addedRowDataSourceStub.Object.BusinessObject = addedBusinessObject;
+      EditModeHost.EditModeDataSourceFactory = new Mock<EditableRowDataSourceFactory>().Object;
+      EditModeHost.EditModeDataSourceFactory.Setup (_ => _.Create (addedBusinessObject)).Returns (addedRowDataSourceStub.Object);
+      EditModeHost.EditModeDataSourceFactory.Setup (_ => _.Create (It.Is<IBusinessObject> (_ => !object.ReferenceEquals (_, addedBusinessObject)))).Returns (dataSourceStub.Object);
 
       Assert.That (Controller.IsListEditModeActive, Is.False);
       ControllerInvoker.LoadControlState (CreateControlState (null, EditMode.ListEditMode, new List<string> { "0", "1", "2", "3", "4" }, false));
@@ -592,8 +595,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       EditModeHost.Value = Values.Concat (NewValues[0]).ToArray();
       Controller.SynchronizeEditModeControls (Columns);
 
-      dataSourceStub.AssertWasCalled (_ => _.LoadValues (true), mo => mo.Repeat.Times (EditModeHost.Value.Count - 1));
-      addedRowDataSourceStub.AssertWasCalled (_ => _.LoadValues (false), mo => mo.Repeat.Times (1));
+      dataSourceStub.Object.AssertWasCalled (_ => _.Object.LoadValues (true), mo => mo);
+      addedRowDataSourceStub.Object.AssertWasCalled (_ => _.Object.LoadValues (false), mo => mo);
     }
 
 
