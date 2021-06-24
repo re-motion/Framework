@@ -12,6 +12,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\..\..\SharedSource\Development\UnitTesting\NUnit\NUnitExtensions.cs" Link="SharedSource\UnitTesting\NUnit\NUnitExtensions.cs" />
+    <Compile Include="..\..\..\SharedSource\Development\Moq\UnitTesting\MoqExtensions.cs" Link="SharedSource\Development\Moq\UnitTesting\MoqExtensions.cs" />
     <Content Include="Res\*.xml" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <ItemGroup>
@@ -25,9 +26,6 @@
     <ProjectReference Include="..\Contracts.DiagnosticMetadata\Web.Contracts.DiagnosticMetadata.csproj" />
     <ProjectReference Include="..\Core\Web.Core.csproj" />
     <ProjectReference Include="..\Security\Web.Security.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="CoreRhinoMocks" Version="3.6.1.2" PrivateAssets="all" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Design" />

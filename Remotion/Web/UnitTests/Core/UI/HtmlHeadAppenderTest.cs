@@ -17,11 +17,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Web.Resources;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
-using Rhino.Mocks;
 
 namespace Remotion.Web.UnitTests.Core.UI
 {
@@ -205,26 +205,26 @@ namespace Remotion.Web.UnitTests.Core.UI
     [Test]
     public void GetHtmlHeadElements_PlacesStyleSheetImportRulesBeforeStyleSheetElements ()
     {
-      var libraryElement1 = MockRepository.GenerateStub<StyleSheetElement>();
-      _htmlHeadAppender.RegisterHeadElement ("libraryElement1", libraryElement1, HtmlHeadAppender.Priority.Library);
+      var libraryElement1 = new Mock<StyleSheetElement>();
+      _htmlHeadAppender.RegisterHeadElement ("libraryElement1", libraryElement1.Object, HtmlHeadAppender.Priority.Library);
 
       var libraryRule1 = new StyleSheetImportRule (new StaticResourceUrl ("url.css"));
       _htmlHeadAppender.RegisterHeadElement ("libraryRule1", libraryRule1, HtmlHeadAppender.Priority.Library);
 
-      var libraryElement2 = MockRepository.GenerateStub<StyleSheetElement>();
-      _htmlHeadAppender.RegisterHeadElement ("libraryElement2", libraryElement2, HtmlHeadAppender.Priority.Library);
+      var libraryElement2 = new Mock<StyleSheetElement>();
+      _htmlHeadAppender.RegisterHeadElement ("libraryElement2", libraryElement2.Object, HtmlHeadAppender.Priority.Library);
 
       var libraryRule2 = new StyleSheetImportRule (new StaticResourceUrl ("url.css"));
       _htmlHeadAppender.RegisterHeadElement ("libraryRule2", libraryRule2, HtmlHeadAppender.Priority.Library);
 
-      var libraryElement3 = MockRepository.GenerateStub<StyleSheetElement>();
-      _htmlHeadAppender.RegisterHeadElement ("libraryElement3", libraryElement3, HtmlHeadAppender.Priority.Library);
+      var libraryElement3 = new Mock<StyleSheetElement>();
+      _htmlHeadAppender.RegisterHeadElement ("libraryElement3", libraryElement3.Object, HtmlHeadAppender.Priority.Library);
 
       var userControlRule1 = new StyleSheetImportRule (new StaticResourceUrl ("url.css"));
       _htmlHeadAppender.RegisterHeadElement ("userControlRule1", userControlRule1, HtmlHeadAppender.Priority.UserControl);
 
-      var userControlElement1 = MockRepository.GenerateStub<StyleSheetElement>();
-      _htmlHeadAppender.RegisterHeadElement ("userControlElement1", userControlElement1, HtmlHeadAppender.Priority.UserControl);
+      var userControlElement1 = new Mock<StyleSheetElement>();
+      _htmlHeadAppender.RegisterHeadElement ("userControlElement1", userControlElement1.Object, HtmlHeadAppender.Priority.UserControl);
 
       var htmlHeadElements = _htmlHeadAppender.GetHtmlHeadElements().ToArray();
 
@@ -237,9 +237,9 @@ namespace Remotion.Web.UnitTests.Core.UI
 
       var libraryBlock2 = (StyleSheetBlock) htmlHeadElements[1];
       Assert.That (libraryBlock2.StyleSheetElements.Count, Is.EqualTo (3));
-      Assert.That (libraryBlock2.StyleSheetElements[0], Is.SameAs (libraryElement1));
-      Assert.That (libraryBlock2.StyleSheetElements[1], Is.SameAs (libraryElement2));
-      Assert.That (libraryBlock2.StyleSheetElements[2], Is.SameAs (libraryElement3));
+      Assert.That (libraryBlock2.StyleSheetElements[0], Is.SameAs (libraryElement1.Object));
+      Assert.That (libraryBlock2.StyleSheetElements[1], Is.SameAs (libraryElement2.Object));
+      Assert.That (libraryBlock2.StyleSheetElements[2], Is.SameAs (libraryElement3.Object));
 
       var userControlBlock1 = (StyleSheetBlock) htmlHeadElements[2];
       Assert.That (userControlBlock1.StyleSheetElements.Count, Is.EqualTo (1));
@@ -247,53 +247,53 @@ namespace Remotion.Web.UnitTests.Core.UI
 
       var userControlBlock2 = (StyleSheetBlock) htmlHeadElements[3];
       Assert.That (userControlBlock2.StyleSheetElements.Count, Is.EqualTo (1));
-      Assert.That (userControlBlock2.StyleSheetElements[0], Is.SameAs (userControlElement1));
+      Assert.That (userControlBlock2.StyleSheetElements[0], Is.SameAs (userControlElement1.Object));
     }
 
     [Test]
     public void GetHtmlHeadElements_PlacesTitleFirst ()
     {
-      var element1 = MockRepository.GenerateStub<HtmlHeadElement>();
-      _htmlHeadAppender.RegisterHeadElement ("element1", element1, HtmlHeadAppender.Priority.Library);
+      var element1 = new Mock<HtmlHeadElement>();
+      _htmlHeadAppender.RegisterHeadElement ("element1", element1.Object, HtmlHeadAppender.Priority.Library);
 
       _htmlHeadAppender.SetTitle ("The Title");
 
-      var element2 = MockRepository.GenerateStub<HtmlHeadElement>();
-      _htmlHeadAppender.RegisterHeadElement ("element2", element2, HtmlHeadAppender.Priority.Library);
+      var element2 = new Mock<HtmlHeadElement>();
+      _htmlHeadAppender.RegisterHeadElement ("element2", element2.Object, HtmlHeadAppender.Priority.Library);
 
       var htmlHeadElements = _htmlHeadAppender.GetHtmlHeadElements().ToArray();
 
       Assert.That (htmlHeadElements.Length, Is.EqualTo (3));
 
       Assert.That (htmlHeadElements[0], Is.InstanceOf (typeof (TitleTag)));
-      Assert.That (htmlHeadElements[1], Is.SameAs (element1));
-      Assert.That (htmlHeadElements[2], Is.SameAs (element2));
+      Assert.That (htmlHeadElements[1], Is.SameAs (element1.Object));
+      Assert.That (htmlHeadElements[2], Is.SameAs (element2.Object));
     }
 
     [Test]
     public void RegisterHeadElement ()
     {
-      var userControlElement = MockRepository.GenerateStub<HtmlHeadElement>();
-      _htmlHeadAppender.RegisterHeadElement ("userControl", userControlElement, HtmlHeadAppender.Priority.UserControl);
+      var userControlElement = new Mock<HtmlHeadElement>();
+      _htmlHeadAppender.RegisterHeadElement ("userControl", userControlElement.Object, HtmlHeadAppender.Priority.UserControl);
 
-      var libraryElement = MockRepository.GenerateStub<HtmlHeadElement>();
-      _htmlHeadAppender.RegisterHeadElement ("library", libraryElement, HtmlHeadAppender.Priority.Library);
+      var libraryElement = new Mock<HtmlHeadElement>();
+      _htmlHeadAppender.RegisterHeadElement ("library", libraryElement.Object, HtmlHeadAppender.Priority.Library);
 
       var htmlHeadElements = _htmlHeadAppender.GetHtmlHeadElements().ToArray();
 
       Assert.That (htmlHeadElements.Length, Is.EqualTo (2));
 
-      Assert.That (htmlHeadElements[0], Is.SameAs (libraryElement));
-      Assert.That (htmlHeadElements[1], Is.SameAs (userControlElement));
+      Assert.That (htmlHeadElements[0], Is.SameAs (libraryElement.Object));
+      Assert.That (htmlHeadElements[1], Is.SameAs (userControlElement.Object));
     }
 
     [Test]
     public void RegisterHeadElement_AfterHasAppended ()
     {
       _htmlHeadAppender.SetAppended();
-      var userControlElement = MockRepository.GenerateStub<HtmlHeadElement>();
+      var userControlElement = new Mock<HtmlHeadElement>();
       Assert.That (
-          () => _htmlHeadAppender.RegisterHeadElement ("userControl", userControlElement, HtmlHeadAppender.Priority.UserControl),
+          () => _htmlHeadAppender.RegisterHeadElement ("userControl", userControlElement.Object, HtmlHeadAppender.Priority.UserControl),
           Throws.InvalidOperationException
               .With.Message.EqualTo ("RegisterHeadElement must not be called after SetAppended has been called."));
     }

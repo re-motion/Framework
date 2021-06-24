@@ -15,11 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories;
-using Rhino.Mocks;
 
 namespace Remotion.Web.Development.WebTesting.UnitTests
 {
@@ -112,22 +113,21 @@ namespace Remotion.Web.Development.WebTesting.UnitTests
 
     private DriverConfiguration GetBrowserFactoryStubCreateBrowserArgument (IBrowserFactory browserFactoryStub)
     {
-      var createBrowserArguments = browserFactoryStub.GetArgumentsForCallsMadeOn (_ => _.CreateBrowser (null));
-      return (DriverConfiguration) createBrowserArguments[0][0];
+      return (DriverConfiguration) Mock.Get (browserFactoryStub).Invocations.Single().Arguments.Single();
     }
 
     private class TestWebTestConfigurationFactory : WebTestConfigurationFactory
     {
       protected override IChromeConfiguration CreateChromeConfiguration (WebTestConfigurationSection configSettings)
       {
-        var browserFactoryStub = MockRepository.GenerateStub<IBrowserFactory>();
+        var browserFactoryStub = new Mock<IBrowserFactory>();
 
-        var chromeConfigurationStub = MockRepository.GenerateStub<IChromeConfiguration>();
+        var chromeConfigurationStub = new Mock<IChromeConfiguration>();
         chromeConfigurationStub
-            .Stub (_ => _.BrowserFactory)
-            .Return (browserFactoryStub);
+            .Setup (_ => _.BrowserFactory)
+            .Returns (browserFactoryStub.Object);
 
-        return chromeConfigurationStub;
+        return chromeConfigurationStub.Object;
       }
     }
   }

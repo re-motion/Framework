@@ -15,13 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Security;
 using Remotion.ServiceLocation;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.Security.ExecutionEngine;
-using Rhino.Mocks;
 
 namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
 {
@@ -35,10 +35,9 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     // member fields
 
     private IWxeSecurityAdapter _securityAdapter;
-    private MockRepository _mocks;
-    private IFunctionalSecurityStrategy _mockFunctionalSecurityStrategy;
-    private ISecurityProvider _mockSecurityProvider;
-    private IPrincipalProvider _mockPrincipalProvider;
+    private Mock<IFunctionalSecurityStrategy> _mockFunctionalSecurityStrategy;
+    private Mock<ISecurityProvider> _mockSecurityProvider;
+    private Mock<IPrincipalProvider> _mockPrincipalProvider;
     private ServiceLocatorScope _serviceLocatorScope;
 
     // construction and disposing
@@ -54,17 +53,15 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     {
       _securityAdapter = new WxeSecurityAdapter ();
 
-      _mocks = new MockRepository ();
-
-      _mockSecurityProvider = _mocks.StrictMock<ISecurityProvider> ();
-      SetupResult.For (_mockSecurityProvider.IsNull).Return (false);
-      _mockPrincipalProvider = _mocks.StrictMock<IPrincipalProvider> ();
-      _mockFunctionalSecurityStrategy = _mocks.StrictMock<IFunctionalSecurityStrategy> ();
+      _mockSecurityProvider = new Mock<ISecurityProvider> (MockBehavior.Strict);
+      _mockSecurityProvider.Setup (_ => _.IsNull).Returns (false).Verifiable();
+      _mockPrincipalProvider = new Mock<IPrincipalProvider> (MockBehavior.Strict);
+      _mockFunctionalSecurityStrategy = new Mock<IFunctionalSecurityStrategy> (MockBehavior.Strict);
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle (() => _mockSecurityProvider);
-      serviceLocator.RegisterSingle (() => _mockPrincipalProvider);
-      serviceLocator.RegisterSingle (() => _mockFunctionalSecurityStrategy);
+      serviceLocator.RegisterSingle (() => _mockSecurityProvider.Object);
+      serviceLocator.RegisterSingle (() => _mockPrincipalProvider.Object);
+      serviceLocator.RegisterSingle (() => _mockFunctionalSecurityStrategy.Object);
       _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
     }
 
@@ -77,32 +74,32 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     [Test]
     public void CheckAccess_AccessGranted ()
     {
-      _mocks.ReplayAll ();
-
       _securityAdapter.CheckAccess (new TestFunctionWithoutPermissions ());
 
-      _mocks.VerifyAll ();
+      _mockSecurityProvider.Verify (_ => _.IsNull, Times.Never);
+      _mockPrincipalProvider.Verify();
+      _mockFunctionalSecurityStrategy.Verify();
     }
 
     [Test]
     public void HasAccess_AccessGranted ()
     {
-      _mocks.ReplayAll ();
-
       bool hasAccess = _securityAdapter.HasAccess (new TestFunctionWithoutPermissions ());
 
-      _mocks.VerifyAll ();
+      _mockSecurityProvider.Verify (_ => _.IsNull, Times.Never);
+      _mockPrincipalProvider.Verify();
+      _mockFunctionalSecurityStrategy.Verify();
       Assert.That (hasAccess, Is.True);
     }
 
     [Test]
     public void HasStatelessAccess_AccessGranted ()
     {
-      _mocks.ReplayAll ();
-      
       bool hasAccess = _securityAdapter.HasStatelessAccess (typeof (TestFunctionWithoutPermissions));
 
-      _mocks.VerifyAll ();
+      _mockSecurityProvider.Verify (_ => _.IsNull, Times.Never);
+      _mockPrincipalProvider.Verify();
+      _mockFunctionalSecurityStrategy.Verify();
       Assert.That (hasAccess, Is.True);
     }
   }

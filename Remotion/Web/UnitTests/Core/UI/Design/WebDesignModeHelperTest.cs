@@ -18,69 +18,67 @@ using System;
 using System.ComponentModel.Design;
 using System.Configuration;
 using System.Web.UI.Design;
+using Moq;
 using NUnit.Framework;
 using Remotion.Web.UI.Design;
-using Rhino.Mocks;
 
 namespace Remotion.Web.UnitTests.Core.UI.Design
 {
   [TestFixture]
   public class WebDesignModeHelperTest
   {
-    private MockRepository _mockRepository;
-    private IDesignerHost _mockDesignerHost;
-    private IWebApplication _mockWebApplication;
+    private Mock<IDesignerHost> _mockDesignerHost;
+    private Mock<IWebApplication> _mockWebApplication;
 
     [SetUp]
     public void SetUp()
     {
-      _mockRepository = new MockRepository();
-      _mockDesignerHost = _mockRepository.StrictMock<IDesignerHost> ();
-      _mockWebApplication = _mockRepository.StrictMock<IWebApplication>();
+      _mockDesignerHost = new Mock<IDesignerHost> (MockBehavior.Strict);
+      _mockWebApplication = new Mock<IWebApplication> (MockBehavior.Strict);
     }
 
     [Test]
     public void Initialize()
     {
-      _mockRepository.ReplayAll();
+      WebDesginModeHelper webDesginModeHelper = new WebDesginModeHelper (_mockDesignerHost.Object);
 
-      WebDesginModeHelper webDesginModeHelper = new WebDesginModeHelper (_mockDesignerHost);
-
-      _mockRepository.VerifyAll();
-      Assert.That (webDesginModeHelper.DesignerHost, Is.SameAs (_mockDesignerHost));
+      _mockDesignerHost.Verify();
+      _mockWebApplication.Verify();
+      Assert.That (webDesginModeHelper.DesignerHost, Is.SameAs (_mockDesignerHost.Object));
     }
 
     [Test]
     public void GetConfiguration()
     {
       System.Configuration.Configuration expected = ConfigurationManager.OpenExeConfiguration (ConfigurationUserLevel.None);
-      Expect.Call (_mockDesignerHost.GetService (typeof (IWebApplication))).Return (_mockWebApplication);
-      Expect.Call (_mockWebApplication.OpenWebConfiguration (true)).Return (expected);
-      _mockRepository.ReplayAll();
+      _mockDesignerHost.Setup (_ => _.GetService (typeof (IWebApplication))).Returns (_mockWebApplication.Object).Verifiable();
+      _mockWebApplication.Setup (_ => _.OpenWebConfiguration (true)).Returns (expected).Verifiable();
 
-      WebDesginModeHelper webDesginModeHelper = new WebDesginModeHelper (_mockDesignerHost);
+      WebDesginModeHelper webDesginModeHelper = new WebDesginModeHelper (_mockDesignerHost.Object);
 
       System.Configuration.Configuration actual = webDesginModeHelper.GetConfiguration();
 
-      _mockRepository.VerifyAll();
+      _mockDesignerHost.Verify();
+      _mockWebApplication.Verify();
       Assert.That (actual, Is.SameAs (expected));
     }
 
     [Test]
     public void GetProjectPath()
     {
-      IProjectItem mockProjectItem = _mockRepository.StrictMock<IProjectItem>();
+      var mockProjectItem = new Mock<IProjectItem> (MockBehavior.Strict);
 
-      Expect.Call (_mockDesignerHost.GetService (typeof (IWebApplication))).Return (_mockWebApplication);
-      SetupResult.For (_mockWebApplication.RootProjectItem).Return (mockProjectItem);
-      Expect.Call (mockProjectItem.PhysicalPath).Return ("TheProjectPath");
-      _mockRepository.ReplayAll();
+      _mockDesignerHost.Setup (_ => _.GetService (typeof (IWebApplication))).Returns (_mockWebApplication.Object).Verifiable();
+      _mockWebApplication.Setup (_ => _.RootProjectItem).Returns (mockProjectItem.Object).Verifiable();
+      mockProjectItem.Setup (_ => _.PhysicalPath).Returns ("TheProjectPath").Verifiable();
 
-      WebDesginModeHelper webDesginModeHelper = new WebDesginModeHelper (_mockDesignerHost);
+      WebDesginModeHelper webDesginModeHelper = new WebDesginModeHelper (_mockDesignerHost.Object);
 
       string actual = webDesginModeHelper.GetProjectPath();
 
-      _mockRepository.VerifyAll();
+      _mockDesignerHost.Verify();
+      _mockWebApplication.Verify();
+      mockProjectItem.Verify();
       Assert.That (actual, Is.EqualTo ("TheProjectPath"));
     }
   }

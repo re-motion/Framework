@@ -15,10 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
-using Rhino.Mocks;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTransactionStrategyTests
 {
@@ -31,24 +31,20 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
     {
       base.SetUp ();
 
-      _strategy = CreateScopedTransactionStrategy (true, NullTransactionStrategy.Null);
+      _strategy = CreateScopedTransactionStrategy (true, NullTransactionStrategy.Null).Object;
     }
 
     [Test]
     public void Test ()
     {
-      using (MockRepository.Ordered ())
-      {
-        TransactionMock.Expect (mock => mock.EnterScope ()).Return (ScopeMock);
-        ChildTransactionStrategyMock.Expect (mock => mock.OnExecutionPlay (Context, ExecutionListenerStub));
-      }
+      var sequence = new MockSequence();
+      TransactionMock.InSequence (sequence).Setup (mock => mock.EnterScope ()).Returns (ScopeMock.Object).Verifiable();
+      ChildTransactionStrategyMock.InSequence (sequence).Setup (mock => mock.OnExecutionPlay (Context, ExecutionListenerStub.Object)).Verifiable();
 
-      MockRepository.ReplayAll ();
+      _strategy.OnExecutionPlay (Context, ExecutionListenerStub.Object);
 
-      _strategy.OnExecutionPlay (Context, ExecutionListenerStub);
-
-      MockRepository.VerifyAll ();
-      Assert.That (_strategy.Scope, Is.SameAs (ScopeMock));
+      VerifyAll();
+      Assert.That (_strategy.Scope, Is.SameAs (ScopeMock.Object));
     }
 
     [Test]
@@ -63,19 +59,19 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
     public void Test_EnterScopeThrows ()
     {
       var innerException = new Exception ("Enter Scope Exception");
-      TransactionMock.Expect (mock => mock.EnterScope ()).Throw (innerException);
-
-      MockRepository.ReplayAll ();
+      TransactionMock.Setup (mock => mock.EnterScope ()).Throws (innerException).Verifiable();
 
       try
       {
-        _strategy.OnExecutionPlay (Context, ExecutionListenerStub);
+        _strategy.OnExecutionPlay (Context, ExecutionListenerStub.Object);
         Assert.Fail ("Expected Exception");
       }
       catch (WxeFatalExecutionException actualException)
       {
         Assert.That (actualException.InnerException, Is.SameAs (innerException));
       }
+
+      VerifyAll();
       Assert.That (_strategy.Scope, Is.Null);
     }
 
@@ -83,9 +79,9 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
     public void Test_WithScope ()
     {
       InvokeOnExecutionPlay (_strategy);
-      Assert.That (_strategy.Scope, Is.SameAs (ScopeMock));
+      Assert.That (_strategy.Scope, Is.SameAs (ScopeMock.Object));
       Assert.That (
-          () => _strategy.OnExecutionPlay (Context, ExecutionListenerStub),
+          () => _strategy.OnExecutionPlay (Context, ExecutionListenerStub.Object),
           Throws.InvalidOperationException
               .With.Message.EqualTo (
                   "OnExecutionPlay may not be invoked twice without calling OnExecutionStop, OnExecutionPause, or OnExecutionFail in-between."));
@@ -96,17 +92,13 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
     {
       var innerException = new ApplicationException ("InnerListener Exception");
       
-      using (MockRepository.Ordered ())
-      {
-        TransactionMock.Expect (mock => mock.EnterScope ()).Return (ScopeMock);
-        ChildTransactionStrategyMock.Expect (mock => mock.OnExecutionPlay (Context, ExecutionListenerStub)).Throw (innerException);
-      }
-
-      MockRepository.ReplayAll ();
+      var sequence = new MockSequence();
+      TransactionMock.InSequence (sequence).Setup (mock => mock.EnterScope ()).Returns (ScopeMock.Object).Verifiable();
+      ChildTransactionStrategyMock.InSequence (sequence).Setup (mock => mock.OnExecutionPlay (Context, ExecutionListenerStub.Object)).Throws (innerException).Verifiable();
 
       try
       {
-        _strategy.OnExecutionPlay (Context, ExecutionListenerStub);
+        _strategy.OnExecutionPlay (Context, ExecutionListenerStub.Object);
         Assert.Fail ("Expected Exception");
       }
       catch (ApplicationException actualException)
@@ -114,7 +106,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
         Assert.That (actualException, Is.SameAs (innerException));
       }
 
-      MockRepository.VerifyAll ();
+      VerifyAll();
       Assert.That (_strategy.Scope, Is.Not.Null);
     }
 
@@ -123,17 +115,13 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
     {
       var innerException = new WxeFatalExecutionException (new Exception ("InnerListener Exception"), null);
 
-      using (MockRepository.Ordered())
-      {
-        TransactionMock.Expect (mock => mock.EnterScope()).Return (ScopeMock);
-        ChildTransactionStrategyMock.Expect (mock => mock.OnExecutionPlay (Context, ExecutionListenerStub)).Throw (innerException);
-      }
-
-      MockRepository.ReplayAll();
+      var sequence = new MockSequence();
+      TransactionMock.InSequence (sequence).Setup (mock => mock.EnterScope()).Returns (ScopeMock.Object).Verifiable();
+      ChildTransactionStrategyMock.InSequence (sequence).Setup (mock => mock.OnExecutionPlay (Context, ExecutionListenerStub.Object)).Throws (innerException).Verifiable();
 
       try
       {
-        _strategy.OnExecutionPlay (Context, ExecutionListenerStub);
+        _strategy.OnExecutionPlay (Context, ExecutionListenerStub.Object);
         Assert.Fail ("Expected Exception");
       }
       catch (WxeFatalExecutionException actualException)
@@ -141,7 +129,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
         Assert.That (actualException, Is.SameAs (innerException));
       }
 
-      MockRepository.VerifyAll();
+      VerifyAll();
       Assert.That (_strategy.Scope, Is.Not.Null);
     }
   }

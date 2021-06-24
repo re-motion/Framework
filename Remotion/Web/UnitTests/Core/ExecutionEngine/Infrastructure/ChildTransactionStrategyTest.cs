@@ -16,56 +16,57 @@
 // 
 using System;
 using System.Collections;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data;
 using Remotion.Development.UnitTesting;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
-using Rhino.Mocks;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
 {
   [TestFixture]
   public class ChildTransactionStrategyTest
   {
-    private MockRepository _mockRepository;
     private ChildTransactionStrategy _strategy;
-    private ITransaction _parentTransactionMock;
-    private ITransaction _childTransactionMock;
-    private IWxeFunctionExecutionContext _executionContextStub;
-    private TransactionStrategyBase _outerTransactionStrategyMock;
-    private IWxeFunctionExecutionListener _executionListenerStub;
+    private Mock<ITransaction> _parentTransactionMock;
+    private Mock<ITransaction> _childTransactionMock;
+    private Mock<IWxeFunctionExecutionContext> _executionContextStub;
+    private Mock<TransactionStrategyBase> _outerTransactionStrategyMock;
+    private Mock<IWxeFunctionExecutionListener> _executionListenerStub;
     private WxeContext _context;
 
     [SetUp]
     public void SetUp ()
     {
-      _mockRepository = new MockRepository();
       WxeContextFactory wxeContextFactory = new WxeContextFactory ();
       _context = wxeContextFactory.CreateContext (new TestFunction ());
-      _outerTransactionStrategyMock = _mockRepository.StrictMock<TransactionStrategyBase> ();
-      _parentTransactionMock = _mockRepository.StrictMock<ITransaction>();
-      _childTransactionMock = _mockRepository.StrictMock<ITransaction> ();
-      _executionContextStub = _mockRepository.Stub<IWxeFunctionExecutionContext> ();
-      _executionListenerStub = _mockRepository.Stub<IWxeFunctionExecutionListener> ();
+      _outerTransactionStrategyMock = new Mock<TransactionStrategyBase> (MockBehavior.Strict);
+      _parentTransactionMock = new Mock<ITransaction> (MockBehavior.Strict);
+      _childTransactionMock = new Mock<ITransaction> (MockBehavior.Strict);
+      _executionContextStub = new Mock<IWxeFunctionExecutionContext>();
+      _executionListenerStub = new Mock<IWxeFunctionExecutionListener>();
      
-      _executionContextStub.Stub (stub => stub.GetInParameters ()).Return (new object[0]);
-      _parentTransactionMock.Stub (stub => stub.CreateChild()).Return (_childTransactionMock);
-      _childTransactionMock.Stub (stub => stub.EnsureCompatibility (Arg<IEnumerable>.Is.NotNull));
-      _mockRepository.ReplayAll ();
+      _executionContextStub.Setup (stub => stub.GetInParameters ()).Returns (new object[0]);
+      _parentTransactionMock.Setup (stub => stub.CreateChild()).Returns (_childTransactionMock.Object);
+      _childTransactionMock.Setup (stub => stub.EnsureCompatibility (It.IsNotNull<IEnumerable>()));
 
-      _strategy = new ChildTransactionStrategy (true, _outerTransactionStrategyMock, _parentTransactionMock, _executionContextStub);
-      
-      _mockRepository.BackToRecordAll();
+      _strategy = new ChildTransactionStrategy (true, _outerTransactionStrategyMock.Object, _parentTransactionMock.Object, _executionContextStub.Object);
+
+      _outerTransactionStrategyMock.Reset();
+      _parentTransactionMock.Reset();
+      _childTransactionMock.Reset();
+      _executionContextStub.Reset();
+      _executionListenerStub.Reset();
     }
 
     [Test]
     public void Initialize ()
     {
-      Assert.That (_strategy.Transaction, Is.SameAs (_childTransactionMock));
-      Assert.That (_strategy.OuterTransactionStrategy, Is.SameAs (_outerTransactionStrategyMock));
-      Assert.That (_strategy.ExecutionContext, Is.SameAs (_executionContextStub));
+      Assert.That (_strategy.Transaction, Is.SameAs (_childTransactionMock.Object));
+      Assert.That (_strategy.OuterTransactionStrategy, Is.SameAs (_outerTransactionStrategyMock.Object));
+      Assert.That (_strategy.ExecutionContext, Is.SameAs (_executionContextStub.Object));
       Assert.That (_strategy.AutoCommit, Is.True);
       Assert.That (_strategy.IsNull, Is.False);
     }
@@ -73,72 +74,70 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     [Test]
     public void CreateExecutionListener ()
     {
-      IWxeFunctionExecutionListener innerExecutionListenerStub = MockRepository.GenerateStub<IWxeFunctionExecutionListener> ();
-      IWxeFunctionExecutionListener executionListener = _strategy.CreateExecutionListener (innerExecutionListenerStub);
+      var innerExecutionListenerStub = new Mock<IWxeFunctionExecutionListener>();
+      IWxeFunctionExecutionListener executionListener = _strategy.CreateExecutionListener (innerExecutionListenerStub.Object);
 
       Assert.That (executionListener, Is.InstanceOf(typeof (ChildTransactionExecutionListener)));
-      Assert.That (((ChildTransactionExecutionListener) executionListener).InnerListener, Is.SameAs (innerExecutionListenerStub));
+      Assert.That (((ChildTransactionExecutionListener) executionListener).InnerListener, Is.SameAs (innerExecutionListenerStub.Object));
     }
 
     [Test]
     public void ReleaseTransaction ()
     {
-      using (_mockRepository.Ordered ())
-      {
-        _childTransactionMock.Expect (mock => mock.Release ());
-        _outerTransactionStrategyMock.Expect (mock => mock.UnregisterChildTransactionStrategy (_strategy));
-      }
-      _mockRepository.ReplayAll();
+      var sequence = new MockSequence();
+      _childTransactionMock.InSequence (sequence).Setup (mock => mock.Release ()).Verifiable();
+      _outerTransactionStrategyMock.InSequence (sequence).Setup (mock => mock.UnregisterChildTransactionStrategy (_strategy)).Verifiable();
 
       PrivateInvoke.InvokeNonPublicMethod (_strategy, "ReleaseTransaction");
 
-      _mockRepository.VerifyAll();
+      _outerTransactionStrategyMock.Verify();
+      _parentTransactionMock.Verify();
+      _childTransactionMock.Verify();
+      _executionContextStub.Verify();
+      _executionListenerStub.Verify();
     }
 
     [Test]
     public void OnExecutionStop ()
     {
-      _childTransactionMock.Stub (stub => stub.EnterScope ()).Return (MockRepository.GenerateStub<ITransactionScope> ());
-      _mockRepository.ReplayAll();
-      _strategy.OnExecutionPlay (_context, _executionListenerStub);
-      _childTransactionMock.BackToRecord ();
+      _childTransactionMock.Setup (stub => stub.EnterScope ()).Returns (new Mock<ITransactionScope>().Object);
+      _strategy.OnExecutionPlay (_context, _executionListenerStub.Object);
+      _childTransactionMock.Reset();
 
-      using (_mockRepository.Ordered ())
-      {
-        _childTransactionMock.Stub (stub => stub.Commit ());
-        _executionContextStub.Stub (stub => stub.GetOutParameters ()).Return (new object[0]);
-        _childTransactionMock.Stub (stub => stub.EnsureCompatibility (Arg<IEnumerable>.Is.NotNull));
-        _outerTransactionStrategyMock.Stub (mock => mock.EnsureCompatibility (Arg<IEnumerable>.Is.NotNull));
-        _childTransactionMock.Expect (mock => mock.Release ());
-        _outerTransactionStrategyMock.Expect (mock => mock.UnregisterChildTransactionStrategy (_strategy));
-      }
+      var sequence = new MockSequence();
+      _childTransactionMock.InSequence (sequence).Setup (stub => stub.Commit ()); ;
+      _executionContextStub.InSequence (sequence).Setup (stub => stub.GetOutParameters ()).Returns (new object[0]);
+      _outerTransactionStrategyMock.InSequence (sequence).Setup (mock => mock.EnsureCompatibility (It.IsNotNull<IEnumerable>()));
+      _childTransactionMock.InSequence (sequence).Setup (mock => mock.Release ()).Verifiable();
+      _outerTransactionStrategyMock.InSequence (sequence).Setup (mock => mock.UnregisterChildTransactionStrategy (_strategy)).Verifiable();
 
-      _mockRepository.ReplayAll ();
+      _strategy.OnExecutionStop (_context, _executionListenerStub.Object);
 
-      _strategy.OnExecutionStop (_context, _executionListenerStub);
-
-      _mockRepository.VerifyAll ();
+      _outerTransactionStrategyMock.Verify();
+      _parentTransactionMock.Verify();
+      _childTransactionMock.Verify();
+      _executionContextStub.Verify();
+      _executionListenerStub.Verify();
     }
 
     [Test]
     public void OnExecutionFail ()
     {
-      _childTransactionMock.Stub (stub => stub.EnterScope ()).Return (MockRepository.GenerateStub<ITransactionScope> ());
-      _mockRepository.ReplayAll ();
-      _strategy.OnExecutionPlay (_context, _executionListenerStub);
-      _childTransactionMock.BackToRecord ();
+      _childTransactionMock.Setup (stub => stub.EnterScope ()).Returns (new Mock<ITransactionScope>().Object);
+      _strategy.OnExecutionPlay (_context, _executionListenerStub.Object);
+      _childTransactionMock.Reset();
 
-      using (_mockRepository.Ordered ())
-      {
-        _childTransactionMock.Expect (mock => mock.Release ());
-        _outerTransactionStrategyMock.Expect (mock => mock.UnregisterChildTransactionStrategy (_strategy));
-      }
+      var sequence = new MockSequence();
+      _childTransactionMock.InSequence (sequence).Setup (mock => mock.Release ()).Verifiable();
+      _outerTransactionStrategyMock.InSequence (sequence).Setup (mock => mock.UnregisterChildTransactionStrategy (_strategy)).Verifiable();
 
-      _mockRepository.ReplayAll ();
+      _strategy.OnExecutionFail(_context, _executionListenerStub.Object, new Exception ("Inner Exception"));
 
-      _strategy.OnExecutionFail(_context, _executionListenerStub, new Exception ("Inner Exception"));
-
-      _mockRepository.VerifyAll ();
+      _outerTransactionStrategyMock.Verify();
+      _parentTransactionMock.Verify();
+      _childTransactionMock.Verify();
+      _executionContextStub.Verify();
+      _executionListenerStub.Verify();
     }
   }
 }

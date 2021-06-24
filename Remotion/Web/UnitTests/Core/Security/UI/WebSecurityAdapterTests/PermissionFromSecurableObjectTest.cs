@@ -55,8 +55,6 @@ namespace Remotion.Web.UnitTests.Core.Security.UI.WebSecurityAdapterTests
     [Test]
     public void HasAccessGranted_WithoutHandler ()
     {
-      _testHelper.ReplayAll ();
-
       bool hasAccess = _securityAdapter.HasAccess (_testHelper.CreateSecurableObject (), null);
 
       _testHelper.VerifyAll ();
@@ -66,8 +64,6 @@ namespace Remotion.Web.UnitTests.Core.Security.UI.WebSecurityAdapterTests
     [Test]
     public void HasAccessGranted_WithinSecurityFreeSection ()
     {
-      _testHelper.ReplayAll ();
-
       bool hasAccess;
       using (SecurityFreeSection.Activate())
       {
@@ -82,7 +78,6 @@ namespace Remotion.Web.UnitTests.Core.Security.UI.WebSecurityAdapterTests
     public void HasAccessGranted ()
     {
       _testHelper.ExpectHasAccess (new Enum[] { GeneralAccessTypes.Read }, true);
-      _testHelper.ReplayAll ();
 
       bool hasAccess = _securityAdapter.HasAccess (_testHelper.CreateSecurableObject (), new EventHandler (TestEventHandler));
 
@@ -94,7 +89,6 @@ namespace Remotion.Web.UnitTests.Core.Security.UI.WebSecurityAdapterTests
     public void HasAccessDenied ()
     {
       _testHelper.ExpectHasAccess (new Enum[] { GeneralAccessTypes.Read }, false);
-      _testHelper.ReplayAll ();
 
       bool hasAccess = _securityAdapter.HasAccess (_testHelper.CreateSecurableObject (), new EventHandler (TestEventHandler));
 
@@ -106,7 +100,6 @@ namespace Remotion.Web.UnitTests.Core.Security.UI.WebSecurityAdapterTests
     public void HasAccessGranted_WithSecurableObjectSetToNull ()
     {
       _testHelper.ExpectHasStatelessAccessForSecurableObject (new Enum[] { GeneralAccessTypes.Read }, true);
-      _testHelper.ReplayAll ();
 
       bool hasAccess = _securityAdapter.HasAccess (null, new EventHandler (TestEventHandler));
 
@@ -118,7 +111,6 @@ namespace Remotion.Web.UnitTests.Core.Security.UI.WebSecurityAdapterTests
     public void HasAccessDenied_WithSecurableObjectSetToNull ()
     {
       _testHelper.ExpectHasStatelessAccessForSecurableObject (new Enum[] { GeneralAccessTypes.Read }, false);
-      _testHelper.ReplayAll ();
 
       bool hasAccess = _securityAdapter.HasAccess (null, new EventHandler (TestEventHandler));
 

@@ -15,9 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Web.UI.Controls;
-using Rhino.Mocks;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls
 {
@@ -35,10 +35,10 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     [Test]
     public void Render ()
     {
-      IResourceUrl resourceUrl = MockRepository.GenerateStub<IResourceUrl>();
-      resourceUrl.Stub (stub => stub.GetUrl()).Return ("myScriptUrl.js");
+      var resourceUrl = new Mock<IResourceUrl>();
+      resourceUrl.Setup (stub => stub.GetUrl()).Returns ("myScriptUrl.js");
 
-      var javaScriptInclude = new JavaScriptInclude (resourceUrl);
+      var javaScriptInclude = new JavaScriptInclude (resourceUrl.Object);
 
       javaScriptInclude.Render (_htmlHelper.Writer);
 

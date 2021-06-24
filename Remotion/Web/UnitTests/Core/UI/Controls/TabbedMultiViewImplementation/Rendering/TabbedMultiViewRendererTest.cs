@@ -19,6 +19,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
@@ -30,7 +31,6 @@ using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Controls.TabbedMultiViewImplementation;
 using Remotion.Web.UI.Controls.TabbedMultiViewImplementation.Rendering;
 using Remotion.Web.UI.Controls.WebTabStripImplementation;
-using Rhino.Mocks;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMultiViewImplementation.Rendering
 {
@@ -39,8 +39,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMultiViewImplementation.
   {
     private const string c_cssClass = "SomeCssClass";
 
-    private ITabbedMultiView _control;
-    private HttpContextBase _httpContext;
+    private Mock<ITabbedMultiView> _control;
+    private Mock<HttpContextBase> _httpContext;
     private HtmlHelper _htmlHelper;
     private TabbedMultiViewRenderer _renderer;
 
@@ -48,50 +48,50 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMultiViewImplementation.
     public void SetUp ()
     {
       _htmlHelper = new HtmlHelper ();
-      _httpContext = MockRepository.GenerateStub<HttpContextBase> ();
+      _httpContext = new Mock<HttpContextBase>();
 
-      _control = MockRepository.GenerateStub<ITabbedMultiView>();
-      _control.Stub (stub => stub.ClientID).Return ("MyTabbedMultiView");
-      _control.Stub (stub => stub.ControlType).Return ("TabbedMultiView");
-      _control.Stub (stub => stub.TopControl).Return (new PlaceHolder { ID = "MyTabbedMultiView_TopControl" });
-      _control.Stub (stub => stub.BottomControl).Return (new PlaceHolder { ID = "MyTabbedMultiView_BottomControl" });
+      _control = new Mock<ITabbedMultiView>();
+      _control.Setup (stub => stub.ClientID).Returns ("MyTabbedMultiView");
+      _control.Setup (stub => stub.ControlType).Returns ("TabbedMultiView");
+      _control.Setup (stub => stub.TopControl).Returns (new PlaceHolder { ID = "MyTabbedMultiView_TopControl" });
+      _control.Setup (stub => stub.BottomControl).Returns (new PlaceHolder { ID = "MyTabbedMultiView_BottomControl" });
 
-      var tabStrip = MockRepository.GenerateStub<IWebTabStrip>();
-      tabStrip.Stub (stub => stub.RenderControl (_htmlHelper.Writer)).WhenCalled (
-          delegate (MethodInvocation obj)
+      var tabStrip = new Mock<IWebTabStrip>();
+      tabStrip.SetupProperty (_ => _.CssClass);
+      tabStrip.Setup (stub => stub.RenderControl (_htmlHelper.Writer)).Callback (
+          delegate (HtmlTextWriter writer)
           {
-            HtmlTextWriter writer = (HtmlTextWriter) obj.Arguments[0];
-            writer.AddAttribute (HtmlTextWriterAttribute.Class, tabStrip.CssClass);
+            writer.AddAttribute (HtmlTextWriterAttribute.Class, tabStrip.Object.CssClass);
             writer.RenderBeginTag ("tabStrip");
-            writer.RenderEndTag ();
+            writer.RenderEndTag();
           });
-      var tabs = new WebTabCollection(tabStrip);
+      var tabs = new WebTabCollection(tabStrip.Object);
       tabs.Add (new WebTab { ItemID = "Tab1" });
       tabs.Add (new WebTab { ItemID = "Tab2", IsSelected = true });
       tabs.Add (new WebTab { ItemID = "Tab3" });
-      tabStrip.Stub (stub => stub.Tabs).Return (tabs);
-      tabStrip.Stub (stub => stub.ClientID).Return ("TabStripClientID");
+      tabStrip.Setup (stub => stub.Tabs).Returns (tabs);
+      tabStrip.Setup (stub => stub.ClientID).Returns ("TabStripClientID");
 
-      _control.Stub (stub => stub.TabStrip).Return (tabStrip);
+      _control.Setup (stub => stub.TabStrip).Returns (tabStrip.Object);
 
-      _control.Stub (stub => stub.ActiveViewClientID).Return (_control.ClientID + "_ActiveView");
-      _control.Stub (stub => stub.ActiveViewContentClientID).Return (_control.ActiveViewClientID + "_Content");
-      _control.Stub (stub => stub.WrapperClientID).Return ("WrapperClientID");
+      _control.Setup (stub => stub.ActiveViewClientID).Returns (_control.Object.ClientID + "_ActiveView");
+      _control.Setup (stub => stub.ActiveViewContentClientID).Returns (_control.Object.ActiveViewClientID + "_Content");
+      _control.Setup (stub => stub.WrapperClientID).Returns ("WrapperClientID");
       
 
       StateBag stateBag = new StateBag ();
-      _control.Stub (stub => stub.Attributes).Return (new AttributeCollection (stateBag));
-      _control.Stub (stub => stub.TopControlsStyle).Return (new Style (stateBag));
-      _control.Stub (stub => stub.BottomControlsStyle).Return (new Style (stateBag));
-      _control.Stub (stub => stub.ActiveViewStyle).Return (new WebTabStyle ());
-      _control.Stub (stub => stub.ControlStyle).Return (new Style (stateBag));
+      _control.Setup (stub => stub.Attributes).Returns (new AttributeCollection (stateBag));
+      _control.Setup (stub => stub.TopControlsStyle).Returns (new Style (stateBag));
+      _control.Setup (stub => stub.BottomControlsStyle).Returns (new Style (stateBag));
+      _control.Setup (stub => stub.ActiveViewStyle).Returns (new WebTabStyle ());
+      _control.Setup (stub => stub.ControlStyle).Returns (new Style (stateBag));
 
-      var clientScriptStub = MockRepository.GenerateStub<IClientScriptManager> ();
+      var clientScriptStub = new Mock<IClientScriptManager>();
 
-      var pageStub = MockRepository.GenerateStub<IPage> ();
-      pageStub.Stub (stub => stub.ClientScript).Return (clientScriptStub);
+      var pageStub = new Mock<IPage>();
+      pageStub.Setup (stub => stub.ClientScript).Returns (clientScriptStub.Object);
 
-      _control.Stub (stub => stub.Page).Return (pageStub);
+      _control.Setup (stub => stub.Page).Returns (pageStub.Object);
 
       _renderer = new TabbedMultiViewRenderer (new FakeResourceUrlFactory(), GlobalizationService, RenderingFeatures.Default, new StubLabelReferenceRenderer());
     }
@@ -105,10 +105,11 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMultiViewImplementation.
     [Test]
     public void RenderEmptyControlWithCssClass ()
     {
-      _control.CssClass = c_cssClass;
-      _control.TopControlsStyle.CssClass = c_cssClass;
-      _control.ActiveViewStyle.CssClass = c_cssClass;
-      _control.BottomControlsStyle.CssClass = c_cssClass;
+      _control.SetupProperty (_ => _.CssClass);
+      _control.Object.CssClass = c_cssClass;
+      _control.Object.TopControlsStyle.CssClass = c_cssClass;
+      _control.Object.ActiveViewStyle.CssClass = c_cssClass;
+      _control.Object.BottomControlsStyle.CssClass = c_cssClass;
 
       AssertControl (true, false, false, true);
     }
@@ -116,10 +117,10 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMultiViewImplementation.
     [Test]
     public void RenderEmptyControlWithCssClassInAttributes ()
     {
-      _control.Attributes["class"] = c_cssClass;
-      _control.TopControlsStyle.CssClass = c_cssClass;
-      _control.ActiveViewStyle.CssClass = c_cssClass;
-      _control.BottomControlsStyle.CssClass = c_cssClass;
+      _control.Object.Attributes["class"] = c_cssClass;
+      _control.Object.TopControlsStyle.CssClass = c_cssClass;
+      _control.Object.ActiveViewStyle.CssClass = c_cssClass;
+      _control.Object.BottomControlsStyle.CssClass = c_cssClass;
 
       AssertControl (true, true, false, true);
     }
@@ -127,7 +128,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMultiViewImplementation.
     [Test]
     public void RenderEmptyControlInDesignMode ()
     {
-      _control.Stub (stub => stub.IsDesignMode).Return (true);
+      _control.Setup (stub => stub.IsDesignMode).Returns (true);
 
       AssertControl (false, false, true, true);
     }
@@ -135,11 +136,12 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMultiViewImplementation.
     [Test]
     public void RenderEmptyControlWithCssClassInDesignMode ()
     {
-      _control.Stub (stub => stub.IsDesignMode).Return (true);
-      _control.CssClass = c_cssClass;
-      _control.TopControlsStyle.CssClass = c_cssClass;
-      _control.ActiveViewStyle.CssClass = c_cssClass;
-      _control.BottomControlsStyle.CssClass = c_cssClass;
+      _control.Setup (stub => stub.IsDesignMode).Returns (true);
+      _control.SetupProperty (_ => _.CssClass);
+      _control.Object.CssClass = c_cssClass;
+      _control.Object.TopControlsStyle.CssClass = c_cssClass;
+      _control.Object.ActiveViewStyle.CssClass = c_cssClass;
+      _control.Object.BottomControlsStyle.CssClass = c_cssClass;
 
       AssertControl (true, false,true, true);
     }
@@ -157,10 +159,11 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMultiViewImplementation.
     {
       PopulateControl();
 
-      _control.CssClass = c_cssClass;
-      _control.TopControlsStyle.CssClass = c_cssClass;
-      _control.ActiveViewStyle.CssClass = c_cssClass;
-      _control.BottomControlsStyle.CssClass = c_cssClass;
+      _control.SetupProperty (_ => _.CssClass);
+      _control.Object.CssClass = c_cssClass;
+      _control.Object.TopControlsStyle.CssClass = c_cssClass;
+      _control.Object.ActiveViewStyle.CssClass = c_cssClass;
+      _control.Object.BottomControlsStyle.CssClass = c_cssClass;
 
       AssertControl (true, false, false, false);
     }
@@ -169,7 +172,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMultiViewImplementation.
     public void RenderPopulatedControlInDesignMode ()
     {
       PopulateControl ();
-      _control.Stub (stub => stub.IsDesignMode).Return (true);
+      _control.Setup (stub => stub.IsDesignMode).Returns (true);
 
       AssertControl (false, false, true, false);
     }
@@ -179,11 +182,12 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMultiViewImplementation.
     {
       PopulateControl();
 
-      _control.Stub (stub => stub.IsDesignMode).Return (true);
-      _control.CssClass = c_cssClass;
-      _control.TopControlsStyle.CssClass = c_cssClass;
-      _control.ActiveViewStyle.CssClass = c_cssClass;
-      _control.BottomControlsStyle.CssClass = c_cssClass;
+      _control.Setup (stub => stub.IsDesignMode).Returns (true);
+      _control.SetupProperty (_ => _.CssClass);
+      _control.Object.CssClass = c_cssClass;
+      _control.Object.TopControlsStyle.CssClass = c_cssClass;
+      _control.Object.ActiveViewStyle.CssClass = c_cssClass;
+      _control.Object.BottomControlsStyle.CssClass = c_cssClass;
 
       AssertControl (true, false, true, false);
     }
@@ -202,18 +206,18 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMultiViewImplementation.
 
     private void PopulateControl ()
     {
-      _control.TopControl.Controls.Add (new LiteralControl ("TopControls"));
+      _control.Object.TopControl.Controls.Add (new LiteralControl ("TopControls"));
       
       var view1 = new TabView { ID="View1ID", Title = "View1Title" };
       view1.LazyControls.Add (new LiteralControl ("View1Contents"));
-      _control.Stub(stub=>stub.GetActiveView()).Return (view1);
+      _control.Setup(stub=>stub.GetActiveView()).Returns (view1);
 
-      _control.BottomControl.Controls.Add (new LiteralControl ("BottomControls"));
+      _control.Object.BottomControl.Controls.Add (new LiteralControl ("BottomControls"));
     }
 
     private XmlNode AssertControl (bool withCssClass, bool inAttributes, bool isDesignMode, bool isEmpty)
     {
-      _renderer.Render (new TabbedMultiViewRenderingContext (_httpContext, _htmlHelper.Writer, _control));
+      _renderer.Render (new TabbedMultiViewRenderingContext (_httpContext.Object, _htmlHelper.Writer, _control.Object));
 
       var outerDiv = GetAssertedElement (withCssClass, inAttributes, isDesignMode, _renderer);
       var contentDiv = outerDiv.GetAssertedChildElement ("div", 0);
@@ -232,7 +236,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMultiViewImplementation.
       string cssClass = renderer.CssClassBase;
       if (withCssClass)
       {
-        cssClass = inAttributes ? _control.Attributes["class"] : _control.CssClass;
+        cssClass = inAttributes ? _control.Object.Attributes["class"] : _control.Object.CssClass;
       }
 
       var document = _htmlHelper.GetResultDocument();
@@ -257,7 +261,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMultiViewImplementation.
 
       var divBottomControls = container.GetAssertedChildElement ("div", 3);
 
-      divBottomControls.AssertAttributeValueEquals ("id", _control.BottomControl.ClientID);
+      divBottomControls.AssertAttributeValueEquals ("id", _control.Object.BottomControl.ClientID);
       divBottomControls.AssertAttributeValueContains ("class", cssClass);
       if( isEmpty )
         divBottomControls.AssertAttributeValueContains ("class", renderer.CssClassEmpty);
@@ -278,7 +282,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMultiViewImplementation.
         cssClassActiveView = c_cssClass;
 
       var divActiveView = container.GetAssertedChildElement ("div", 2);
-      divActiveView.AssertAttributeValueEquals ("id", _control.ActiveViewClientID);
+      divActiveView.AssertAttributeValueEquals ("id", _control.Object.ActiveViewClientID);
       divActiveView.AssertAttributeValueEquals ("class", cssClassActiveView);
 
       if( isDesignMode )
@@ -311,7 +315,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMultiViewImplementation.
         cssClass = c_cssClass;
 
       var divTopControls = container.GetAssertedChildElement ("div", 0);
-      divTopControls.AssertAttributeValueEquals ("id", _control.TopControl.ClientID);
+      divTopControls.AssertAttributeValueEquals ("id", _control.Object.TopControl.ClientID);
       divTopControls.AssertAttributeValueContains ("class", cssClass);
       if (isEmpty)
         divTopControls.AssertAttributeValueContains ("class", renderer.CssClassEmpty);
