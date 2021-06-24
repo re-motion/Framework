@@ -16,12 +16,9 @@
 // 
 using System;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.Utilities;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.Utilities
 {
@@ -34,6 +31,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     public void SetUp ()
     {
       _controlStub = new Mock<IControl>();
+      _controlStub.SetupProperty (_ => _.AppRelativeTemplateSourceDirectory);
       _controlStub.Object.AppRelativeTemplateSourceDirectory = "~/base/Path";
     }
 

@@ -16,11 +16,8 @@
 // 
 using System;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Web.UI.Controls;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.MenuTabTests
 {
@@ -40,10 +37,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.MenuTabTests
       _mockTabbedMenu = new Mock<TabbedMenu>() { CallBase = true };
 
       _mockNavigationCommand1 = new Mock<NavigationCommand>() { CallBase = true };
-      _mocks.Replay (_mockNavigationCommand1.Object);
 
       _mockNavigationCommand2 = new Mock<NavigationCommand>() { CallBase = true };
-      _mocks.Replay (_mockNavigationCommand2.Object);
 
       _mainMenuTab = new MainMenuTab();
       _mainMenuTab.ItemID = "MainMenuTab";
@@ -55,17 +50,11 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.MenuTabTests
 
       _mockSubMenuTab2 = CreateSubMenuTab ("SubMenuTab2", _mockNavigationCommand2.Object);
       _mainMenuTab.SubMenuTabs.Add (_mockSubMenuTab2);
-
-      _mocks.BackToRecord (_mockSubMenuTab1);
-      _mocks.BackToRecord (_mockSubMenuTab2);
-      _mocks.BackToRecord (_mockNavigationCommand1.Object);
-      _mocks.BackToRecord (_mockNavigationCommand2.Object);
     }
 
     private SubMenuTab CreateSubMenuTab (string itemID, NavigationCommand command)
     {
       var tab = new Mock<SubMenuTab>() { CallBase = true };
-      _mocks.Replay (tab.Object);
       tab.Object.ItemID = itemID;
       tab.Object.Command = command;
 

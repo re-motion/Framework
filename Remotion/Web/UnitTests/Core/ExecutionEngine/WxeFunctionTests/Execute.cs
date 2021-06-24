@@ -17,13 +17,10 @@
 using System;
 using System.Threading;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
 {
@@ -109,15 +106,21 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
       }
 
       _executionListenerMock.Verify();
-      _mockRepository.BackToRecordAll();
+      step1.Verify (mock => mock.Execute (_context), Times.Once);
+      step2.Verify (mock => mock.Execute (_context), Times.Never);
 
       var sequence2 = new MockSequence();
       _executionListenerMock.InSequence (sequence2).Setup (mock => mock.OnExecutionPlay (_context)).Verifiable();
       _executionListenerMock.InSequence (sequence2).Setup (mock => mock.OnExecutionStop (_context)).Verifiable();
 
+      step1.Reset();
+      step2.Reset();
+
       function.Execute (_context);
 
       _executionListenerMock.Verify();
+      step1.Verify (mock => mock.Execute (_context), Times.Once);
+      step2.Verify (mock => mock.Execute (_context), Times.Once);
     }
 
     [Test]

@@ -21,7 +21,6 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
@@ -32,8 +31,6 @@ using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Controls.TabbedMenuImplementation;
 using Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering;
 using Remotion.Web.UI.Controls.WebTabStripImplementation;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMenuImplementation.Rendering
 {
@@ -62,8 +59,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMenuImplementation.Rende
       _control.Setup (stub => stub.ControlStyle).Returns (new Style (stateBag));
       _control.Setup (stub => stub.StatusStyle).Returns (new Style (stateBag));
 
-      _control.Object.SubMenuTabStrip.Setup (stub => stub.ControlStyle).Returns (new Style (stateBag));
-      _control.Object.SubMenuTabStrip.Setup (stub => stub.Style).Returns (_control.Object.SubMenuTabStrip.ControlStyle.GetStyleAttributes (_control.Object));
+      Mock.Get (_control.Object.SubMenuTabStrip).Setup (stub => stub.ControlStyle).Returns (new Style (stateBag));
+      Mock.Get (_control.Object.SubMenuTabStrip).Setup (stub => stub.Style).Returns (_control.Object.SubMenuTabStrip.ControlStyle.GetStyleAttributes(_control.Object));
 
       var pageStub = new Mock<IPage>();
       _control.Setup (stub => stub.Page).Returns (pageStub.Object);
@@ -102,6 +99,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMenuImplementation.Rende
     [Test]
     public void RenderEmptyMenuWithCssClass ()
     {
+      _control.SetupProperty (_ => _.CssClass);
       _control.Object.CssClass = "CustomCssClass";
       AssertControl (false, false, true);
     }

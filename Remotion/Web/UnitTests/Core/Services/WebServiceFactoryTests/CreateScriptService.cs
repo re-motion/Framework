@@ -18,12 +18,9 @@ using System;
 using System.Web.Script.Services;
 using System.Web.Services;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.Services;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.Services.WebServiceFactoryTests
 {

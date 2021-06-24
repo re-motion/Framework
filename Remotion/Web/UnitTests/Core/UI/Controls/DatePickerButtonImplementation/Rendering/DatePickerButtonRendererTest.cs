@@ -17,7 +17,6 @@
 using System;
 using System.Web;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Utilities;
@@ -25,8 +24,6 @@ using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.DatePickerButtonImplementation;
 using Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering;
 using Remotion.Web.UI.Controls.Rendering;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.DatePickerButtonImplementation.Rendering
 {
@@ -45,6 +42,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DatePickerButtonImplementation
       _httpContext = new Mock<HttpContextBase>();
 
       _datePickerButton = new Mock<IDatePickerButton>();
+      _datePickerButton.SetupProperty (_ => _.ID);
       _datePickerButton.Object.ID = "_Boc_DatePickerButton";
       _datePickerButton.Setup (mock => mock.ContainerControlID).Returns ("Container");
       _datePickerButton.Setup (mock => mock.TargetControlID).Returns ("Target");

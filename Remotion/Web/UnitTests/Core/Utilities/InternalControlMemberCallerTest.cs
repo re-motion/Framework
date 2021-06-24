@@ -24,14 +24,11 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.Web.UnitTesting.AspNetFramework;
 using Remotion.Development.Web.UnitTesting.UI.Controls;
 using Remotion.Web.Utilities;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.Utilities
 {
@@ -91,6 +88,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       _pageInvoker = new ControlInvoker (_page);
 
       _memberCaller = new InternalControlMemberCaller ();
+
     }
 
     [TearDown]
@@ -102,17 +100,20 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     [Test]
     public void InitRecursive ()
     {
+      // TODO: Fix .InSequence().Protected() mock setup
       Page namingContainer = new Page();
       var parentControlMock = new Mock<Control>() { CallBase = true };
       var childControlMock = new Mock<Control>() { CallBase = true };
 
       var sequence = new MockSequence();
-      childControlMock.InSequence (sequence).Protected().Setup ("OnInit", true, EventArgs.Empty).Verifiable();
-      parentControlMock.InSequence (sequence).Protected().Setup ("OnInit", true, EventArgs.Empty).Verifiable();
+      // childControlMock.InSequence (sequence).Protected().Setup ("OnInit", true, EventArgs.Empty).Verifiable();
+      // parentControlMock.InSequence (sequence).Protected().Setup ("OnInit", true, EventArgs.Empty).Verifiable();
 
       namingContainer.Controls.Add (parentControlMock.Object);
       parentControlMock.Object.Controls.Add (childControlMock.Object);
       _memberCaller.InitRecursive (parentControlMock.Object, namingContainer);
+
+      Assert.Fail();
 
       parentControlMock.Verify();
       childControlMock.Verify();
@@ -423,7 +424,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     {
       _memberCaller.GetControlState (_parent);
     }
-    
+
     [Test]
     public void InitRecursive_CanInvoke ()
     {

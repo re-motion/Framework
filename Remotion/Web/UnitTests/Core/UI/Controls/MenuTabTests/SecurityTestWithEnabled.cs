@@ -16,13 +16,10 @@
 // 
 using System;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.MenuTabTests
 {
@@ -42,6 +39,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.MenuTabTests
     [Test]
     public void EvaluateTrue_FromTrueAndWithMissingPermissionBehaviorSetToInvisible ()
     {
+      // TODO: Replace BackToRecordAll and insert Callbase = true
       MainMenuTab mainMenuTab = CreateMainMenuTab ();
       mainMenuTab.MissingPermissionBehavior = MissingPermissionBehavior.Invisible;
       mainMenuTab.IsDisabled = false;
@@ -57,6 +55,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.MenuTabTests
     [Test]
     public void EvaluateFalse_FromFalseAndWithMissingPermissionBehaviorSetToInvisible ()
     {
+      // TODO: Replace BackToRecordAll and insert Callbase = true
       MainMenuTab mainMenuTab = CreateMainMenuTab ();
       mainMenuTab.MissingPermissionBehavior = MissingPermissionBehavior.Invisible;
       mainMenuTab.IsDisabled = true;
@@ -158,6 +157,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.MenuTabTests
     [Test]
     public void EvaluateTrue_FromTrueAndWithAccessGranted ()
     {
+      // TODO: Replace BackToRecordAll and insert Callbase = true
       MainMenuTab mainMenuTab = CreateMainMenuTab ();
       mainMenuTab.IsDisabled = false;
       _mockNavigationCommand.Setup (_ => _.HasAccess (null)).Returns (true).Verifiable();
@@ -172,6 +172,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.MenuTabTests
     [Test]
     public void EvaluateFalse_FromTrueAndWithAccessDenied ()
     {
+      // TODO: Replace BackToRecordAll and insert Callbase = true
       MainMenuTab mainMenuTab = CreateMainMenuTab ();
       mainMenuTab.IsDisabled = false;
       _mockNavigationCommand.Setup (_ => _.HasAccess (null)).Returns (false).Verifiable();
@@ -187,6 +188,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.MenuTabTests
     [Test]
     public void EvaluateFalse_FromFalse ()
     {
+      // TODO: Replace BackToRecordAll and insert Callbase = true
       MainMenuTab mainMenuTab = CreateMainMenuTab ();
       mainMenuTab.IsDisabled = true;
 
@@ -199,9 +201,10 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.MenuTabTests
 
     private MainMenuTab CreateMainMenuTab ()
     {
+      // TODO: Replace BackToRecordAll
       MainMenuTab mainMenuTab = CreateMainMenuTabWithCommandSetNull ();
       mainMenuTab.Command = _mockNavigationCommand.Object;
-      _mocks.BackToRecordAll();
+      // _mocks.BackToRecordAll();
 
       return mainMenuTab;
     }

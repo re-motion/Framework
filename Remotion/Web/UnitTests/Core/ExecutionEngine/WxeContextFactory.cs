@@ -18,10 +18,7 @@ using System;
 using System.Collections.Specialized;
 using System.Web;
 using Moq;
-using Moq.Protected;
 using Remotion.Web.ExecutionEngine;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine
 {

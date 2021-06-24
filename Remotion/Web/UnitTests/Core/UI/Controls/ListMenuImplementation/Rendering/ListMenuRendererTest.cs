@@ -18,7 +18,6 @@ using System;
 using System.Web;
 using System.Xml;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.Web.UnitTesting.Resources;
@@ -32,8 +31,6 @@ using Remotion.Web.UI.Controls.ListMenuImplementation;
 using Remotion.Web.UI.Controls.ListMenuImplementation.Rendering;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.Utilities;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Rendering
 {
@@ -60,7 +57,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
 
       _control.Setup (stub => stub.Enabled).Returns (true);
       _control.Setup (stub => stub.HasClientScript).Returns (true);
-      _control.Setup (stub => stub.ResolveClientUrl (It.IsAny<string>())).Callback ((Func<string, string>) (url => url.TrimStart ('~')));
+      _control.Setup (stub => stub.ResolveClientUrl (It.IsAny<string>())).Returns ((string relativeUrl) => relativeUrl.TrimStart ('~'));
       _control.Setup (stub => stub.GetUpdateScriptReference ("null")).Returns ("Update();");
 
       var pageStub = new Mock<IPage>();

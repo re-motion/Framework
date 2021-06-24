@@ -16,14 +16,11 @@
 // 
 using System;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.ServiceLocation;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
 {
@@ -57,7 +54,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
     public void ExecuteFunctionWithAccessGranted ()
     {
       TestFunction function = new TestFunction ();
-      _mockWxeSecurityAdapter.Object.CheckAccess (function);
+      _mockWxeSecurityAdapter.Setup (_ => _.CheckAccess (function));
 
       function.Execute (_wxeContext);
 

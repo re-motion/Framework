@@ -16,15 +16,11 @@
 // 
 using System;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data;
 using Remotion.Development.Web.UnitTesting.ExecutionEngine.TestFunctions;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
-using Rhino.Mocks;
-using Rhino.Mocks.Interfaces;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
 {
@@ -113,10 +109,9 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     {
       _childTransactionMock.Setup (stub => stub.EnterScope ()).Returns (new Mock<ITransactionScope>().Object);
 
-      _transactionStrategyMock.Setup (stub => stub.OnExecutionPlay (It.IsNotNull<WxeContext>(), It.IsNotNull<IWxeFunctionExecutionListener>()))
-          .CallOriginalMethod (OriginalCallOptions.NoExpectation);
+      _transactionStrategyMock.CallBase = true;
       _transactionStrategyMock.Object.OnExecutionPlay (_wxeContext, new Mock<IWxeFunctionExecutionListener>().Object);
-      _transactionStrategyMock.BackToRecord ();
+      _transactionStrategyMock.CallBase = false;
     }
   }
 }

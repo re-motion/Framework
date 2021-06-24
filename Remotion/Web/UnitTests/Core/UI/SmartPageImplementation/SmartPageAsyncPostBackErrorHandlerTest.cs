@@ -19,13 +19,10 @@ using System.Collections;
 using System.Web;
 using System.Web.UI;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Web.UI;
 using Remotion.Web.UI.SmartPageImplementation;
 using Remotion.Web.Utilities;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.UI.SmartPageImplementation
 {

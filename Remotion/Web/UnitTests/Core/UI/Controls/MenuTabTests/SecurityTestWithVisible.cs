@@ -16,15 +16,12 @@
 // 
 using System;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.ServiceLocation;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.MenuTabTests
 {
@@ -150,8 +147,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.MenuTabTests
     private MainMenuTab CreateMainMenuTab ()
     {
       MainMenuTab mainMenuTab = CreateMainMenuTabWithoutCommand ();
+      _mockNavigationCommand.Protected().SetupSet<IControl> ("OwnerControlImplementation", It.IsAny<IControl>());
       mainMenuTab.Command = _mockNavigationCommand.Object;
-      _mocks.BackToRecordAll ();
 
       return mainMenuTab;
     }

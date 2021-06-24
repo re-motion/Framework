@@ -19,11 +19,8 @@ using System.Collections;
 using System.IO;
 using System.Web.UI;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Web.UI.Controls.ControlReplacing;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
 {
@@ -38,7 +35,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
     {
       base.SetUp();
 
-      _replacer = new ControlReplacer (MemberCallerMock);
+      _replacer = new ControlReplacer (MemberCallerMock.Object);
 
       Pair state = new Pair (new Hashtable(), new object());
       LosFormatter formatter = new LosFormatter ();
@@ -64,19 +61,22 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
 
       MemberCallerMock.Setup (mock => mock.SetChildControlState (_replacer, It.IsNotNull<Hashtable>())).Verifiable();
 
-      _stateModificationStrategy.LoadControlState (_replacer, MemberCallerMock);
+      _stateModificationStrategy.LoadControlState (_replacer, MemberCallerMock.Object);
+
+      MemberCallerMock.Verify();
     }
 
     [Test]
     public void LoadViewState ()
     {
+      // TODO: Fix strrict mock setup, "IInternalControlMemberCaller.LoadViewStateRecursive(ControlReplacer, object) invocation failed with mock behavior Strict. All invocations on the mock must have a corresponding setup."
       var testPageHolder = new TestPageHolder (false, RequestMode.PostBack);
       _replacer.StateModificationStrategy = _stateModificationStrategy;
       _replacer.Controls.Add (testPageHolder.NamingContainer);
 
       MemberCallerMock.Setup (mock => mock.LoadViewStateRecursive (_replacer, It.IsNotNull<Hashtable>())).Verifiable();
 
-      _stateModificationStrategy.LoadViewState (_replacer, MemberCallerMock);
+      _stateModificationStrategy.LoadViewState (_replacer, MemberCallerMock.Object);
 
       MemberCallerMock.Verify();
     }

@@ -16,14 +16,11 @@
 // 
 using System;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Security;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
 {
@@ -102,7 +99,6 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     public void ExecutionPlay_AfterExecutionStarted ()
     {
       _function.Execute (_wxeContext);
-      _mockRepository.BackToRecordAll();
       _innerListenerMock.Setup (mock => mock.OnExecutionPlay (_wxeContext)).Verifiable();
 
       var securityListener = CreateSecurityListener (_securityAdapterMock.Object);

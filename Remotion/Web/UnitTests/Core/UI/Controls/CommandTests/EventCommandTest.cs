@@ -39,7 +39,6 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
     public void HasAccess_WithoutSeucrityProvider ()
     {
       Command command = _testHelper.CreateEventCommand ();
-      _testHelper.ReplayAll ();
 
       bool hasAccess = command.HasAccess (null);
 
@@ -53,7 +52,6 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
       Command command = _testHelper.CreateEventCommand (_testHelper.WebSecurityAdapter, _testHelper.WxeSecurityAdapter);
       command.Click += TestHandler;
       _testHelper.ExpectWebSecurityProviderHasAccess (_testHelper.SecurableObject, new CommandClickEventHandler (TestHandler), true);
-      _testHelper.ReplayAll();
 
       bool hasAccess = command.HasAccess (_testHelper.SecurableObject);
 
@@ -67,7 +65,6 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
       Command command = _testHelper.CreateEventCommand (_testHelper.WebSecurityAdapter, _testHelper.WxeSecurityAdapter);
       command.Click += TestHandler;
       _testHelper.ExpectWebSecurityProviderHasAccess (_testHelper.SecurableObject, new CommandClickEventHandler (TestHandler), false);
-      _testHelper.ReplayAll();
 
       bool hasAccess = command.HasAccess (_testHelper.SecurableObject);
 
@@ -78,13 +75,12 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
     [Test]
     public void Render_WithAccessGranted ()
     {
-      Command command = _testHelper.CreateEventCommandAsPartialMock ();
-      command.Click += TestHandler;
+      var command = _testHelper.CreateEventCommandAsPartialMock ();
+      command.Object.Click += TestHandler;
       string expectedOnClick = _testHelper.PostBackEvent + _testHelper.OnClick + "return false;";
       _testHelper.ExpectOnceOnHasAccess (command, true);
-      _testHelper.ReplayAll ();
 
-      command.RenderBegin (_testHelper.HtmlWriter, RenderingFeatures.Default, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick, _testHelper.SecurableObject);
+      command.Object.RenderBegin (_testHelper.HtmlWriter, RenderingFeatures.Default, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick, _testHelper.SecurableObject);
 
       _testHelper.VerifyAll ();
 
@@ -106,12 +102,11 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
     [Test]
     public void Render_WithAccessDenied ()
     {
-      Command command = _testHelper.CreateEventCommandAsPartialMock ();
-      command.Click += TestHandler;
+      var command = _testHelper.CreateEventCommandAsPartialMock ();
+      command.Object.Click += TestHandler;
       _testHelper.ExpectOnceOnHasAccess (command, false);
-      _testHelper.ReplayAll ();
 
-      command.RenderBegin (_testHelper.HtmlWriter, RenderingFeatures.Default, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick, _testHelper.SecurableObject);
+      command.Object.RenderBegin (_testHelper.HtmlWriter, RenderingFeatures.Default, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick, _testHelper.SecurableObject);
 
       _testHelper.VerifyAll ();
       Assert.IsNotNull (_testHelper.HtmlWriter.Tag, "Missing Tag");

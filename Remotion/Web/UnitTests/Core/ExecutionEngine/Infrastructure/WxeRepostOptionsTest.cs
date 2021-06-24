@@ -17,11 +17,8 @@
 using System;
 using System.Web.UI;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Web.ExecutionEngine.Infrastructure;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
 {
@@ -43,7 +40,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     public void SuppressRepost_SenderImplementsIPostBackEventHandler ()
     {
       var sender = new Mock<Control>();
-      var options = WxeRepostOptions.SuppressRepost (sender.Object, false);
+      var options = WxeRepostOptions.SuppressRepost ((Control) sender.As<IPostBackEventHandler>().Object, false);
 
       Assert.That (options.Sender, Is.SameAs (sender.Object));
       Assert.That (options.SuppressesRepost, Is.True);
@@ -54,7 +51,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     public void SuppressRepost_SenderImplementsIPostBackDataHandler ()
     {
       var sender = new Mock<Control>();
-      var options = WxeRepostOptions.SuppressRepost (sender.Object, false);
+      var options = WxeRepostOptions.SuppressRepost ((Control) sender.As<IPostBackDataHandler>().Object, false);
 
       Assert.That (options.Sender, Is.SameAs (sender.Object));
       Assert.That (options.SuppressesRepost, Is.True);

@@ -17,12 +17,9 @@
 using System;
 using System.Web;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.Resources;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.Resources
 {
@@ -48,7 +45,7 @@ namespace Remotion.Web.UnitTests.Core.Resources
           builder.BuildAbsolutePath (GetType().Assembly, ".", "part2"),
           Is.EqualTo ("/appDir/resourceRoot/Remotion.Web.UnitTests/part2"));
     }
-    
+
     [Test]
     public void BuildAbsolutePath_LastPathPartIsDot_SkipsPart ()
     {
@@ -85,10 +82,10 @@ namespace Remotion.Web.UnitTests.Core.Resources
       var builder = (TestableResourcePathBuilder) CreateResourcePathBuilder (new Uri ("http://localhost/appDir/file"), "/appDir");
 
       builder.BuildAbsolutePath (GetType().Assembly, "part1");
-      builder.HttpContextProvider.AssertWasCalled (_ => _.GetCurrentHttpContext(), options => options);
+      Mock.Get (builder.HttpContextProvider).Verify (_ => _.GetCurrentHttpContext());
 
       builder.BuildAbsolutePath (GetType().Assembly, "part1");
-      builder.HttpContextProvider.AssertWasCalled (_ => _.GetCurrentHttpContext(), options => options);
+      Mock.Get (builder.HttpContextProvider).Verify (_ => _.GetCurrentHttpContext(), Times.Exactly (2));
     }
 
     private ResourcePathBuilder CreateResourcePathBuilder (Uri url, string applicationPath)

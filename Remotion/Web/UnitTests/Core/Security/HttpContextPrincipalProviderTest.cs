@@ -18,13 +18,10 @@ using System;
 using System.Security.Principal;
 using System.Web;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Security;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.Security;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.Security
 {
@@ -41,6 +38,7 @@ namespace Remotion.Web.UnitTests.Core.Security
       principalStub.Setup (_ => _.Identity).Returns (identityStub.Object);
 
       var httpContextStub = new Mock<HttpContextBase>();
+      httpContextStub.SetupProperty (_ => _.User);
       httpContextStub.Object.User = principalStub.Object;
 
       var httpContextProviderStub = new Mock<IHttpContextProvider>();
@@ -62,6 +60,7 @@ namespace Remotion.Web.UnitTests.Core.Security
       principalStub.Setup (_ => _.Identity).Returns (identityStub.Object);
 
       var httpContextStub = new Mock<HttpContextBase>();
+      httpContextStub.SetupProperty (_ => _.User);
       httpContextStub.Object.User = principalStub.Object;
 
       var httpContextProviderStub = new Mock<IHttpContextProvider>();

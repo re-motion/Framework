@@ -17,15 +17,12 @@
 using System;
 using System.Collections;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data;
 using Remotion.Development.UnitTesting;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
 {
@@ -56,8 +53,6 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
       _childTransactionMock.Setup (stub => stub.EnsureCompatibility (It.IsNotNull<IEnumerable>()));
 
       _strategy = new ChildTransactionStrategy (true, _outerTransactionStrategyMock.Object, _parentTransactionMock.Object, _executionContextStub.Object);
-      
-      _mockRepository.BackToRecordAll();
     }
 
     [Test]
@@ -92,14 +87,17 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
       _outerTransactionStrategyMock.Verify();
       _parentTransactionMock.Verify();
       _childTransactionMock.Verify();
+      _executionContextStub.Verify();
+      _executionListenerStub.Verify();
     }
 
     [Test]
     public void OnExecutionStop ()
     {
+      // TODO: Fix strict mock setup, "TransactionStrategyBase.EnsureCompatibility([]) invocation failed with mock behavior Strict."
       _childTransactionMock.Setup (stub => stub.EnterScope ()).Returns (new Mock<ITransactionScope>().Object);
       _strategy.OnExecutionPlay (_context, _executionListenerStub.Object);
-      _childTransactionMock.BackToRecord ();
+      _childTransactionMock.Reset();
 
       var sequence = new MockSequence();
       _childTransactionMock.InSequence (sequence).Setup (stub => stub.Commit ());
@@ -114,6 +112,8 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
       _outerTransactionStrategyMock.Verify();
       _parentTransactionMock.Verify();
       _childTransactionMock.Verify();
+      _executionContextStub.Verify();
+      _executionListenerStub.Verify();
     }
 
     [Test]
@@ -121,7 +121,6 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     {
       _childTransactionMock.Setup (stub => stub.EnterScope ()).Returns (new Mock<ITransactionScope>().Object);
       _strategy.OnExecutionPlay (_context, _executionListenerStub.Object);
-      _childTransactionMock.BackToRecord ();
 
       var sequence = new MockSequence();
       _childTransactionMock.InSequence (sequence).Setup (mock => mock.Release ()).Verifiable();
@@ -132,6 +131,8 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
       _outerTransactionStrategyMock.Verify();
       _parentTransactionMock.Verify();
       _childTransactionMock.Verify();
+      _executionContextStub.Verify();
+      _executionListenerStub.Verify();
     }
   }
 }

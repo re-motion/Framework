@@ -18,13 +18,10 @@ using System;
 using System.Collections.Specialized;
 using System.Web;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTests
 {
@@ -72,6 +69,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
       _httpContextMock.Verify();
       _pageExecutorMock.Verify();
       _pageStep.Verify();
+
       Assert.That (_pageStep.Object.IsPostBack, Is.False);
     }
 
@@ -80,7 +78,6 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
     {
       _pageExecutorMock.Setup (stub => stub.ExecutePage (_wxeContext, "~/ThePage", false));
       _pageStep.Object.Execute (_wxeContext);
-      _mockRepository.BackToRecordAll();
 
       _pageExecutorMock.Setup (mock => mock.ExecutePage (_wxeContext, "~/ThePage", true)).Callback (
           (WxeContext context, string page, bool isPostBack) =>
@@ -95,6 +92,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
       _httpContextMock.Verify();
       _pageExecutorMock.Verify();
       _pageStep.Verify();
+
       Assert.That (_pageStep.Object.IsPostBack, Is.True);
     }
   }

@@ -16,7 +16,6 @@
 // 
 using System;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Security;
@@ -24,8 +23,6 @@ using Remotion.ServiceLocation;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.WebMenuItemTests
 {
@@ -59,9 +56,11 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebMenuItemTests
     [Test]
     public void EvaluateTrue_FromTrueAndWithMissingPermissionBehaviorSetToDisabled ()
     {
+      // TODO: Replace BackToRecordAll and insert Callbase = true
       WebMenuItem menuItem = CreateWebMenuItem ();
       menuItem.MissingPermissionBehavior = MissingPermissionBehavior.Disabled;
       menuItem.IsVisible = true;
+
       _mockCommand.Setup (_ => _.HasAccess (_mockSecurableObject.Object)).Verifiable();
 
       bool isVisible = menuItem.EvaluateVisible ();
@@ -75,6 +74,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebMenuItemTests
     [Test]
     public void EvaluateFalse_FromFalseAndWithMissingPermissionBehaviorSetToDisabled ()
     {
+      // TODO: Replace BackToRecordAll and insert Callbase = true
       WebMenuItem menuItem = CreateWebMenuItem ();
       menuItem.MissingPermissionBehavior = MissingPermissionBehavior.Disabled;
       menuItem.IsVisible = false;
@@ -113,6 +113,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebMenuItemTests
     [Test]
     public void EvaluateTrue_FromTrueAndWithAccessGranted ()
     {
+      // TODO: Replace BackToRecordAll and insert Callbase = true
       WebMenuItem menuItem = CreateWebMenuItem ();
       menuItem.IsVisible = true;
       _mockCommand.Setup (_ => _.HasAccess (_mockSecurableObject.Object)).Returns (true).Verifiable();
@@ -128,6 +129,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebMenuItemTests
     [Test]
     public void EvaluateFalse_FromTrueAndWithAccessDenied ()
     {
+      // TODO: Replace BackToRecordAll and insert Callbase = true
       WebMenuItem menuItem = CreateWebMenuItem ();
       menuItem.IsVisible = true;
       _mockCommand.Setup (_ => _.HasAccess (_mockSecurableObject.Object)).Returns (false).Verifiable();
@@ -144,6 +146,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebMenuItemTests
     [Test]
     public void EvaluateFalse_FromFalse ()
     {
+      // TODO: Replace BackToRecordAll and insert Callbase = true
       WebMenuItem menuItem = CreateWebMenuItem ();
       menuItem.IsVisible = false;
 
@@ -157,9 +160,10 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebMenuItemTests
 
     private WebMenuItem CreateWebMenuItem ()
     {
+      // TODO: Replace BackToRecordAll
       WebMenuItem menuItem = CreateWebMenuItemWithoutCommand ();
       menuItem.Command = _mockCommand.Object;
-      _mocks.BackToRecordAll();
+      // _mocks.BackToRecordAll();
 
       return menuItem;
     }

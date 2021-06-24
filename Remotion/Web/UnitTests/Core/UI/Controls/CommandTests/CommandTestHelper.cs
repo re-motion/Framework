@@ -18,7 +18,6 @@ using System;
 using System.Text;
 using System.Web;
 using Moq;
-using Moq.Protected;
 using Remotion.Development.Web.UnitTesting.AspNetFramework;
 using Remotion.Security;
 using Remotion.Utilities;
@@ -26,14 +25,17 @@ using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
-using Rhino.Mocks;
-using Rhino.Mocks.Interfaces;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
 {
   public class CommandTestHelper
   {
+    // types
+
+    // static members
+
+    // member fields
+
     private readonly Mock<IWebSecurityAdapter> _mockWebSecurityAdapter;
     private readonly Mock<IWxeSecurityAdapter> _mockWxeSecurityAdapter;
     private readonly Mock<ISecurableObject> _mockSecurableObject;
@@ -62,7 +64,6 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
       _functionType = typeof (TestFunction);
       _functionTypeName = TypeUtility.GetPartialAssemblyQualifiedName (_functionType);
 
-      _mocks = new MockRepository();
       _mockWebSecurityAdapter = new Mock<IWebSecurityAdapter> (MockBehavior.Strict);
       _mockWxeSecurityAdapter = new Mock<IWxeSecurityAdapter> (MockBehavior.Strict);
       _mockSecurableObject = new Mock<ISecurableObject> (MockBehavior.Strict);
@@ -95,10 +96,6 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
     public ISecurableObject SecurableObject
     {
       get { return _mockSecurableObject.Object; }
-    }
-
-    public void ReplayAll ()
-    {
     }
 
     public void VerifyAll ()
@@ -167,13 +164,13 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
       return command;
     }
 
-    public Command CreateHrefCommandAsPartialMock ()
+    public Mock<Command> CreateHrefCommandAsPartialMock ()
     {
       var command = new Mock<Command> (CommandType.Href, (IWebSecurityAdapter) null, (IWxeSecurityAdapter) null) { CallBase = true };
-      command.Setup (_ => _.HrefCommand).CallOriginalMethod (OriginalCallOptions.NoExpectation).Verifiable();
+
       InitializeHrefCommand (command.Object);
 
-      return command.Object;
+      return command;
     }
 
     private void InitializeHrefCommand (Command command)
@@ -194,12 +191,12 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
       return command;
     }
 
-    public Command CreateEventCommandAsPartialMock ()
+    public Mock<Command> CreateEventCommandAsPartialMock ()
     {
       var command = new Mock<Command> (CommandType.Event, (IWebSecurityAdapter) null, (IWxeSecurityAdapter) null) { CallBase = true };
       InitializeEventCommand (command.Object);
 
-      return command.Object;
+      return command;
     }
 
     private void InitializeEventCommand (Command command)
@@ -218,13 +215,13 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
       return command;
     }
 
-    public Command CreateWxeFunctionCommandAsPartialMock ()
+    public Mock<Command> CreateWxeFunctionCommandAsPartialMock ()
     {
       var command = new Mock<Command> (CommandType.WxeFunction, (IWebSecurityAdapter) null, (IWxeSecurityAdapter) null) { CallBase = true };
-      command.Setup (_ => _.WxeFunctionCommand).CallOriginalMethod (OriginalCallOptions.NoExpectation).Verifiable();
+
       InitializeWxeFunctionCommand (command.Object);
 
-      return command.Object;
+      return command;
     }
 
     private void InitializeWxeFunctionCommand (Command command)
@@ -246,12 +243,12 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
       return command;
     }
 
-    public Command CreateNoneCommandAsPartialMock ()
+    public Mock<Command> CreateNoneCommandAsPartialMock ()
     {
       var command = new Mock<Command> (CommandType.None, (IWebSecurityAdapter) null, (IWxeSecurityAdapter) null) { CallBase = true };
       InitializeNoneCommand (command.Object);
 
-      return command.Object;
+      return command;
     }
 
     private void InitializeNoneCommand (Command command)
@@ -260,7 +257,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
       command.Type = CommandType.None;
     }
 
-    public void ExpectOnceOnHasAccess (Command command, bool returnValue)
+    public void ExpectOnceOnHasAccess (Mock<Command> command, bool returnValue)
     {
       command.Setup (_ => _.HasAccess (_mockSecurableObject.Object)).Returns (returnValue).Verifiable();
     }

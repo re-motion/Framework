@@ -17,11 +17,8 @@
 using System;
 using System.Web.UI.WebControls;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Web.UI.Controls;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls
 {
@@ -36,7 +33,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     {
       _html = new HtmlHelper();
       _controlStub = new Mock<IControl>();
-      _controlStub.Setup (stub => stub.ResolveClientUrl (It.IsAny<string>())).Callback ((Func<string, string>) (url => url.TrimStart ('~')));
+      _controlStub.Setup (stub => stub.ResolveClientUrl(It.IsAny<string>())).Returns ((string relativeUrl) => relativeUrl.TrimStart ('~'));
     }
 
     [Test]

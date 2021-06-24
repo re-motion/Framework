@@ -18,12 +18,9 @@ using System;
 using System.Web;
 using System.Web.UI.WebControls;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Web.Services;
 using Remotion.Web.UI.Controls;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.Services
 {
@@ -37,7 +34,7 @@ namespace Remotion.Web.UnitTests.Core.Services
     {
       _httpContextStub = new Mock<HttpContextBase>();
       var httpRequestStub = new Mock<HttpRequestBase>();
-      httpRequestStub.Setup (_ => _.Url).Returns (new Uri ("http://localhost/root/file"));
+      httpRequestStub.Setup (_ => _.Url).Returns (new Uri("http://localhost/root/file"));
       httpRequestStub.Setup (_ => _.ApplicationPath).Returns ("/root");
       _httpContextStub.Setup (stub => stub.Request).Returns (httpRequestStub.Object);
     }

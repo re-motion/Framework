@@ -21,7 +21,6 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
@@ -34,8 +33,6 @@ using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Controls.TabbedMenuImplementation;
 using Remotion.Web.UI.Controls.WebTabStripImplementation;
 using Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rendering
 {
@@ -59,7 +56,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
       _webTabStrip = new Mock<IWebTabStrip>();
       _webTabStrip.Setup (stub => stub.ClientID).Returns ("WebTabStrip");
       _webTabStrip.Setup (stub => stub.ControlType).Returns ("WebTabStrip");
-      _webTabStrip.Setup (stub => stub.ResolveClientUrl (It.IsAny<string>())).Callback ((Func<string, string>) (url => url.TrimStart ('~')));
+      _webTabStrip.Setup (stub => stub.ResolveClientUrl (It.IsAny<string>())).Returns ((string relativeUrl) => relativeUrl.TrimStart ('~'));
 
       _pageStub = new Mock<IPage>();
       var clientScriptStub = new Mock<IClientScriptManager>();
@@ -159,6 +156,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
     [Test]
     public void RenderPopulatedStripWithDisabledTab ()
     {
+      // TODO: Fix mock in test "Attribute 'aria-disabled' is present although it should not be."
       PopulateTabStrip();
       _tab1.Setup (stub => stub.EvaluateEnabled()).Returns (false);
 

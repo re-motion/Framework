@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Security;
@@ -26,8 +25,6 @@ using Remotion.ServiceLocation;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.Security.ExecutionEngine;
 using Remotion.Web.UnitTests.Core.Security.Domain;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
 {
@@ -64,7 +61,7 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
       _mockSecurityProvider = new Mock<ISecurityProvider> (MockBehavior.Strict);
       _mockSecurityProvider.Setup (_ => _.IsNull).Returns (false).Verifiable();
       _stubUser = new Mock<ISecurityPrincipal>();
-      _stubUser.Setup (_ => _.User).Returns ("user").Verifiable();
+      _stubUser.Setup (_ => _.User).Returns ("user");
       _mockPrincipalProvider = new Mock<IPrincipalProvider> (MockBehavior.Strict);
       _mockPrincipalProvider.Setup (_ => _.GetPrincipal ()).Returns (_stubUser.Object).Verifiable();
 
@@ -95,6 +92,7 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
       _securityAdapter.CheckAccess (function);
 
       _mockSecurityProvider.Verify();
+      _stubUser.Verify();
       _mockPrincipalProvider.Verify();
       _mockObjectSecurityStrategy.Verify();
       _mockFunctionalSecurityStrategy.Verify();
@@ -124,8 +122,9 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
         _securityAdapter.CheckAccess (function);
       }
 
-      _mockSecurityProvider.Verify();
-      _mockPrincipalProvider.Verify();
+      _mockSecurityProvider.Verify (_ => _.IsNull, Times.Never);
+      _stubUser.Verify();
+      _mockPrincipalProvider.Verify (_ => _.GetPrincipal (), Times.Never);
       _mockObjectSecurityStrategy.Verify();
       _mockFunctionalSecurityStrategy.Verify();
     }
@@ -141,6 +140,7 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
       bool hasAccess = _securityAdapter.HasAccess (function);
 
       _mockSecurityProvider.Verify();
+      _stubUser.Verify();
       _mockPrincipalProvider.Verify();
       _mockObjectSecurityStrategy.Verify();
       _mockFunctionalSecurityStrategy.Verify();
@@ -158,6 +158,7 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
       bool hasAccess = _securityAdapter.HasAccess (function);
 
       _mockSecurityProvider.Verify();
+      _stubUser.Verify();
       _mockPrincipalProvider.Verify();
       _mockObjectSecurityStrategy.Verify();
       _mockFunctionalSecurityStrategy.Verify();
@@ -177,8 +178,9 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
         hasAccess = _securityAdapter.HasAccess (function);
       }
 
-      _mockSecurityProvider.Verify();
-      _mockPrincipalProvider.Verify();
+      _mockSecurityProvider.Verify (_ => _.IsNull, Times.Never);
+      _stubUser.Verify();
+      _mockPrincipalProvider.Verify(_ => _.GetPrincipal (), Times.Never);
       _mockObjectSecurityStrategy.Verify();
       _mockFunctionalSecurityStrategy.Verify();
       Assert.That (hasAccess, Is.True);
@@ -192,6 +194,7 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
       bool hasAccess = _securityAdapter.HasStatelessAccess (typeof (TestFunctionWithPermissionsFromInstanceMethod));
 
       _mockSecurityProvider.Verify();
+      _stubUser.Verify();
       _mockPrincipalProvider.Verify();
       _mockObjectSecurityStrategy.Verify();
       _mockFunctionalSecurityStrategy.Verify();
@@ -206,6 +209,7 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
       bool hasAccess = _securityAdapter.HasStatelessAccess (typeof (TestFunctionWithPermissionsFromInstanceMethod));
 
       _mockSecurityProvider.Verify();
+      _stubUser.Verify();
       _mockPrincipalProvider.Verify();
       _mockObjectSecurityStrategy.Verify();
       _mockFunctionalSecurityStrategy.Verify();
@@ -221,8 +225,9 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
         hasAccess = _securityAdapter.HasStatelessAccess (typeof (TestFunctionWithPermissionsFromInstanceMethod));
       }
 
-      _mockSecurityProvider.Verify();
-      _mockPrincipalProvider.Verify();
+      _mockSecurityProvider.Verify (_ => _.IsNull, Times.Never);
+      _stubUser.Verify();
+      _mockPrincipalProvider.Verify(_ => _.GetPrincipal (), Times.Never);
       _mockObjectSecurityStrategy.Verify();
       _mockFunctionalSecurityStrategy.Verify();
       Assert.That (hasAccess, Is.True);
@@ -230,7 +235,8 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
 
     private void ExpectObjectSecurityStrategyHasAccessForSecurableObject (Enum accessTypeEnum, bool returnValue)
     {
-      _mockObjectSecurityStrategy.Setup (_ => _.HasAccess (
+      _mockObjectSecurityStrategy.Setup (
+              _ => _.HasAccess (
                   _mockSecurityProvider.Object,
                   _stubUser.Object,
                   new[] { AccessType.Get (accessTypeEnum) }))
@@ -240,7 +246,8 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
 
     private void ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (Enum accessTypeEnum, bool returnValue)
     {
-      _mockFunctionalSecurityStrategy.Setup (_ => _.HasAccess (
+      _mockFunctionalSecurityStrategy.Setup (
+              _ => _.HasAccess (
                   typeof (SecurableObject),
                   _mockSecurityProvider.Object,
                   _stubUser.Object,

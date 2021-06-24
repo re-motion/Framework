@@ -17,17 +17,19 @@
 using System;
 using System.Collections.Generic;
 using Moq;
-using Moq.Protected;
 using Remotion.Security;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UnitTests.Core.Security.Domain;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.Security.UI.WebSecurityAdapterTests
 {
   public class WebPermissionProviderTestHelper
   {
+    // types
+
+    // static members
+
+    // member fields
     private readonly Mock<ISecurityPrincipal> _stubUser;
     private readonly Mock<ISecurityProvider> _mockSecurityProvider;
     private readonly Mock<IPrincipalProvider> _mockPrincipalProvider;
@@ -39,8 +41,6 @@ namespace Remotion.Web.UnitTests.Core.Security.UI.WebSecurityAdapterTests
 
     public WebPermissionProviderTestHelper ()
     {
-      _mocks = new MockRepository();
-
       _mockSecurityProvider = new Mock<ISecurityProvider> (MockBehavior.Strict);
       _mockSecurityProvider.Setup (_ => _.IsNull).Returns (false).Verifiable();
       _mockObjectSecurityStrategy = new Mock<IObjectSecurityStrategy> (MockBehavior.Strict);
@@ -48,7 +48,7 @@ namespace Remotion.Web.UnitTests.Core.Security.UI.WebSecurityAdapterTests
       _mockWxeSecurityAdapter = new Mock<IWxeSecurityAdapter> (MockBehavior.Strict);
 
       _stubUser = new Mock<ISecurityPrincipal>();
-      _stubUser.Setup (_ => _.User).Returns ("user").Verifiable();
+      _stubUser.Setup (_ => _.User).Returns ("user");
       _mockPrincipalProvider = new Mock<IPrincipalProvider> (MockBehavior.Strict);
       _mockPrincipalProvider.Setup (_ => _.GetPrincipal()).Returns (_stubUser.Object).Verifiable();
     }
@@ -58,10 +58,11 @@ namespace Remotion.Web.UnitTests.Core.Security.UI.WebSecurityAdapterTests
     public void ExpectHasAccess (Enum[] accessTypeEnums, bool returnValue)
     {
       AccessType[] accessTypes = Array.ConvertAll<Enum, AccessType> (accessTypeEnums, AccessType.Get);
-      _mockObjectSecurityStrategy.Setup (_ => _.HasAccess (
-              _mockSecurityProvider.Object,
-              _stubUser.Object,
-              accessTypes))
+      _mockObjectSecurityStrategy.Setup (
+              _ => _.HasAccess (
+                  _mockSecurityProvider.Object,
+                  _stubUser.Object,
+                  accessTypes))
           .Returns (returnValue)
           .Verifiable();
     }
@@ -69,7 +70,8 @@ namespace Remotion.Web.UnitTests.Core.Security.UI.WebSecurityAdapterTests
     public void ExpectHasStatelessAccessForSecurableObject (Enum[] accessTypeEnums, bool returnValue)
     {
       AccessType[] accessTypes = Array.ConvertAll<Enum, AccessType> (accessTypeEnums, AccessType.Get);
-      _mockFunctionalSecurityStrategy.Setup (_ => _.HasAccess (
+      _mockFunctionalSecurityStrategy.Setup (
+              _ => _.HasAccess (
                   typeof (SecurableObject),
                   _mockSecurityProvider.Object,
                   _stubUser.Object,
@@ -83,17 +85,24 @@ namespace Remotion.Web.UnitTests.Core.Security.UI.WebSecurityAdapterTests
       _mockWxeSecurityAdapter.Setup (_ => _.HasStatelessAccess (functionType)).Returns (returnValue).Verifiable();
     }
 
-    public void ReplayAll ()
-    {
-    }
-
     public void VerifyAll ()
     {
       _mockSecurityProvider.Verify();
       _mockObjectSecurityStrategy.Verify();
       _mockFunctionalSecurityStrategy.Verify();
       _mockWxeSecurityAdapter.Verify();
+      _stubUser.Verify();
       _mockPrincipalProvider.Verify();
+    }
+
+    public void VerifyNotAllMocksWhereCalled ()
+    {
+      _mockSecurityProvider.Verify (_ => _.IsNull, Times.Never);
+      _mockObjectSecurityStrategy.Verify();
+      _mockFunctionalSecurityStrategy.Verify();
+      _mockWxeSecurityAdapter.Verify();
+      _stubUser.Verify();
+      _mockPrincipalProvider.Verify (_ => _.GetPrincipal(), Times.Never);
     }
 
     public ISecurityProvider SecurityProvider

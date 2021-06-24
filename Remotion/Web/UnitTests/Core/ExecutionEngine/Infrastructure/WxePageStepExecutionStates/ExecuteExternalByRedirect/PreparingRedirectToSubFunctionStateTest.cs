@@ -18,15 +18,12 @@ using System;
 using System.Collections.Specialized;
 using System.Text;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates;
 using Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates.ExecuteExternalByRedirect;
 using Remotion.Web.ExecutionEngine.UrlMapping;
 using Remotion.Web.Utilities;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStepExecutionStates.ExecuteExternalByRedirect
 {
@@ -38,7 +35,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
       base.SetUp();
 
       UrlMappingConfiguration.Current.Mappings.Add (new UrlMappingEntry (RootFunction.GetType(), "~/root.wxe"));
-      UrlMappingConfiguration.Current.Mappings.Add (new UrlMappingEntry (SubFunction.GetType(), "~/sub.wxe"));
+      UrlMappingConfiguration.Current.Mappings.Add (new UrlMappingEntry (SubFunction.Object.GetType(), "~/sub.wxe"));
 
       Uri uri = new Uri ("http://localhost/AppDir/root.wxe");
 
@@ -63,17 +60,19 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
 
       ExecutionStateContextMock.Setup (mock => mock.SetExecutionState (It.IsNotNull<RedirectingToSubFunctionState>()))
           .Callback (
-          (IExecutionState executionState) =>
-          {
-            var nextState = CheckExecutionState ((RedirectingToSubFunctionState) invocation.Arguments[0]);
-            Assert.That (nextState.Parameters.SubFunction.ReturnUrl, Is.EqualTo ("DefaultReturn.html"));
-            Assert.That (
-                nextState.Parameters.DestinationUrl,
-                Is.EqualTo ("/AppDir/sub.wxe?WxeFunctionToken=" + SubFunction.FunctionToken));
-          })
+              (IExecutionState executionState) =>
+              {
+                var nextState = CheckExecutionState ((RedirectingToSubFunctionState) executionState);
+                Assert.That (nextState.Parameters.SubFunction.ReturnUrl, Is.EqualTo ("DefaultReturn.html"));
+                Assert.That (
+                    nextState.Parameters.DestinationUrl,
+                    Is.EqualTo ("/AppDir/sub.wxe?WxeFunctionToken=" + SubFunction.Object.FunctionToken));
+              })
           .Verifiable();
 
       executionState.ExecuteSubFunction (WxeContext);
+
+      ExecutionStateContextMock.Verify();
     }
 
     [Test]
@@ -83,17 +82,19 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
 
       ExecutionStateContextMock.Setup (mock => mock.SetExecutionState (It.IsNotNull<RedirectingToSubFunctionState>()))
           .Callback (
-          (IExecutionState executionState) =>
-          {
-            var nextState = CheckExecutionState ((RedirectingToSubFunctionState) invocation.Arguments[0]);
-            Assert.That (nextState.Parameters.SubFunction.ReturnUrl, Is.EqualTo ("DefaultReturn.html"));
-            Assert.That (
-                nextState.Parameters.DestinationUrl,
-                Is.EqualTo ("/AppDir/sub.wxe?Parameter1=OtherValue&WxeFunctionToken=" + SubFunction.FunctionToken));
-          })
+              (IExecutionState executionState) =>
+              {
+                var nextState = CheckExecutionState ((RedirectingToSubFunctionState) executionState);
+                Assert.That (nextState.Parameters.SubFunction.ReturnUrl, Is.EqualTo ("DefaultReturn.html"));
+                Assert.That (
+                    nextState.Parameters.DestinationUrl,
+                    Is.EqualTo ("/AppDir/sub.wxe?Parameter1=OtherValue&WxeFunctionToken=" + SubFunction.Object.FunctionToken));
+              })
           .Verifiable();
 
       executionState.ExecuteSubFunction (WxeContext);
+
+      ExecutionStateContextMock.Verify();
     }
 
     [Test]
@@ -104,17 +105,21 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
 
       ExecutionStateContextMock.Setup (mock => mock.SetExecutionState (It.IsNotNull<RedirectingToSubFunctionState>()))
           .Callback (
-          (IExecutionState executionState) =>
-          {
-            var nextState = CheckExecutionState ((RedirectingToSubFunctionState) invocation.Arguments[0]);
-            Assert.That (nextState.Parameters.SubFunction.ReturnUrl, Is.EqualTo ("/AppDir/root.wxe?WxeFunctionToken=" + WxeContext.FunctionToken));
-            Assert.That (
-                nextState.Parameters.DestinationUrl,
-                Is.EqualTo ("/AppDir/sub.wxe?Parameter1=OtherValue&WxeFunctionToken=" + SubFunction.FunctionToken));
-          })
+              (IExecutionState executionState) =>
+              {
+                var nextState = CheckExecutionState ((RedirectingToSubFunctionState) executionState);
+                Assert.That (
+                    nextState.Parameters.SubFunction.ReturnUrl,
+                    Is.EqualTo ("/AppDir/root.wxe?WxeFunctionToken=" + WxeContext.FunctionToken));
+                Assert.That (
+                    nextState.Parameters.DestinationUrl,
+                    Is.EqualTo ("/AppDir/sub.wxe?Parameter1=OtherValue&WxeFunctionToken=" + SubFunction.Object.FunctionToken));
+              })
           .Verifiable();
 
       executionState.ExecuteSubFunction (WxeContext);
+
+      ExecutionStateContextMock.Verify();
     }
 
     [Test]
@@ -126,19 +131,21 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
 
       ExecutionStateContextMock.Setup (mock => mock.SetExecutionState (It.IsNotNull<RedirectingToSubFunctionState>()))
           .Callback (
-          (IExecutionState executionState) =>
-          {
-            var nextState = CheckExecutionState ((RedirectingToSubFunctionState) invocation.Arguments[0]);
-            Assert.That (
-                nextState.Parameters.SubFunction.ReturnUrl,
-                Is.EqualTo ("/AppDir/root.wxe?Key=Value&WxeFunctionToken=" + WxeContext.FunctionToken));
-            Assert.That (
-                nextState.Parameters.DestinationUrl,
-                Is.EqualTo ("/AppDir/sub.wxe?Parameter1=OtherValue&WxeFunctionToken=" + SubFunction.FunctionToken));
-          })
+              (IExecutionState executionState) =>
+              {
+                var nextState = CheckExecutionState ((RedirectingToSubFunctionState) executionState);
+                Assert.That (
+                    nextState.Parameters.SubFunction.ReturnUrl,
+                    Is.EqualTo ("/AppDir/root.wxe?Key=Value&WxeFunctionToken=" + WxeContext.FunctionToken));
+                Assert.That (
+                    nextState.Parameters.DestinationUrl,
+                    Is.EqualTo ("/AppDir/sub.wxe?Parameter1=OtherValue&WxeFunctionToken=" + SubFunction.Object.FunctionToken));
+              })
           .Verifiable();
 
       executionState.ExecuteSubFunction (WxeContext);
+
+      ExecutionStateContextMock.Verify();
     }
 
     [Test]
@@ -149,17 +156,19 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
 
       ExecutionStateContextMock.Setup (mock => mock.SetExecutionState (It.IsNotNull<RedirectingToSubFunctionState>()))
           .Callback (
-          (IExecutionState executionState) =>
-          {
-            var nextState = CheckExecutionState ((RedirectingToSubFunctionState) invocation.Arguments[0]);
-            Assert.That (nextState.Parameters.SubFunction.ReturnUrl, Is.EqualTo ("DefaultReturn.html"));
-            Assert.That (
-                nextState.Parameters.DestinationUrl,
-                Is.EqualTo ("/AppDir/sub.wxe?Key=NewValue&WxeFunctionToken=" + SubFunction.FunctionToken));
-          })
+              (IExecutionState executionState) =>
+              {
+                var nextState = CheckExecutionState ((RedirectingToSubFunctionState) executionState);
+                Assert.That (nextState.Parameters.SubFunction.ReturnUrl, Is.EqualTo ("DefaultReturn.html"));
+                Assert.That (
+                    nextState.Parameters.DestinationUrl,
+                    Is.EqualTo ("/AppDir/sub.wxe?Key=NewValue&WxeFunctionToken=" + SubFunction.Object.FunctionToken));
+              })
           .Verifiable();
 
       executionState.ExecuteSubFunction (WxeContext);
+
+      ExecutionStateContextMock.Verify();
     }
 
     [Test]
@@ -172,31 +181,33 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
 
       ExecutionStateContextMock.Setup (mock => mock.SetExecutionState (It.IsNotNull<RedirectingToSubFunctionState>()))
           .Callback (
-          (IExecutionState executionState) =>
-          {
-            var nextState = CheckExecutionState ((RedirectingToSubFunctionState) invocation.Arguments[0]);
-            Assert.That (nextState.Parameters.SubFunction.ReturnUrl, Is.EqualTo ("DefaultReturn.html"));
-            
-            string destinationUrl = UrlUtility.AddParameters (
-                "/AppDir/sub.wxe",
-                new NameValueCollection
-                {
-                    { "Parameter1", "OtherValue" },
-                    { WxeHandler.Parameters.WxeFunctionToken, SubFunction.FunctionToken },
-                    { WxeHandler.Parameters.ReturnUrl, "/AppDir/root.wxe?Key=NewValue" }
-                },
-                Encoding.Default);
-            Assert.That (nextState.Parameters.DestinationUrl, Is.EqualTo (destinationUrl));
-          })
+              (IExecutionState executionState) =>
+              {
+                var nextState = CheckExecutionState ((RedirectingToSubFunctionState) executionState);
+                Assert.That (nextState.Parameters.SubFunction.ReturnUrl, Is.EqualTo ("DefaultReturn.html"));
+
+                string destinationUrl = UrlUtility.AddParameters (
+                    "/AppDir/sub.wxe",
+                    new NameValueCollection
+                    {
+                        { "Parameter1", "OtherValue" },
+                        { WxeHandler.Parameters.WxeFunctionToken, SubFunction.Object.FunctionToken },
+                        { WxeHandler.Parameters.ReturnUrl, "/AppDir/root.wxe?Key=NewValue" }
+                    },
+                    Encoding.Default);
+                Assert.That (nextState.Parameters.DestinationUrl, Is.EqualTo (destinationUrl));
+              })
           .Verifiable();
 
       executionState.ExecuteSubFunction (WxeContext);
+
+      ExecutionStateContextMock.Verify();
     }
 
     private PreparingRedirectToSubFunctionState CreateExecutionState (WxePermaUrlOptions permaUrlOptions, WxeReturnOptions returnOptions)
     {
       return new PreparingRedirectToSubFunctionState (
-          ExecutionStateContextMock, new PreparingRedirectToSubFunctionStateParameters (SubFunction, PostBackCollection, permaUrlOptions), returnOptions);
+          ExecutionStateContextMock.Object, new PreparingRedirectToSubFunctionStateParameters (SubFunction.Object, PostBackCollection, permaUrlOptions), returnOptions);
     }
   }
 }

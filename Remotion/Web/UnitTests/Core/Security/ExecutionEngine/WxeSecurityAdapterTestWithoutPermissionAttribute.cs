@@ -16,15 +16,12 @@
 // 
 using System;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Security;
 using Remotion.ServiceLocation;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.Security.ExecutionEngine;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
 {
@@ -79,7 +76,7 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     {
       _securityAdapter.CheckAccess (new TestFunctionWithoutPermissions ());
 
-      _mockSecurityProvider.Verify();
+      _mockSecurityProvider.Verify (_ => _.IsNull, Times.Never);
       _mockPrincipalProvider.Verify();
       _mockFunctionalSecurityStrategy.Verify();
     }
@@ -89,7 +86,7 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     {
       bool hasAccess = _securityAdapter.HasAccess (new TestFunctionWithoutPermissions ());
 
-      _mockSecurityProvider.Verify();
+      _mockSecurityProvider.Verify (_ => _.IsNull, Times.Never);
       _mockPrincipalProvider.Verify();
       _mockFunctionalSecurityStrategy.Verify();
       Assert.That (hasAccess, Is.True);
@@ -98,10 +95,9 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     [Test]
     public void HasStatelessAccess_AccessGranted ()
     {
-      
       bool hasAccess = _securityAdapter.HasStatelessAccess (typeof (TestFunctionWithoutPermissions));
 
-      _mockSecurityProvider.Verify();
+      _mockSecurityProvider.Verify (_ => _.IsNull, Times.Never);
       _mockPrincipalProvider.Verify();
       _mockFunctionalSecurityStrategy.Verify();
       Assert.That (hasAccess, Is.True);

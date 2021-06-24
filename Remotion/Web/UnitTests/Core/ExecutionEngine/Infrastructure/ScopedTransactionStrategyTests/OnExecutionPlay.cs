@@ -16,12 +16,9 @@
 // 
 using System;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTransactionStrategyTests
 {
@@ -34,18 +31,21 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
     {
       base.SetUp ();
 
-      _strategy = CreateScopedTransactionStrategy (true, NullTransactionStrategy.Null);
+      _strategy = CreateScopedTransactionStrategy (true, NullTransactionStrategy.Null).Object;
     }
 
     [Test]
     public void Test ()
     {
       var sequence = new MockSequence();
-      TransactionMock.Setup (mock => mock.EnterScope ()).Returns (ScopeMock).Verifiable();
-      ChildTransactionStrategyMock.Setup (mock => mock.OnExecutionPlay (Context, ExecutionListenerStub)).Verifiable();
+      TransactionMock.InSequence (sequence).Setup (mock => mock.EnterScope ()).Returns (ScopeMock.Object).Verifiable();
+      ChildTransactionStrategyMock.InSequence (sequence).Setup (mock => mock.OnExecutionPlay (Context, ExecutionListenerStub.Object)).Verifiable();
 
-      _strategy.OnExecutionPlay (Context, ExecutionListenerStub);
-      Assert.That (_strategy.Scope, Is.SameAs (ScopeMock));
+      _strategy.OnExecutionPlay (Context, ExecutionListenerStub.Object);
+
+      TransactionMock.Verify();
+      ChildTransactionStrategyMock.Verify();
+      Assert.That (_strategy.Scope, Is.SameAs (ScopeMock.Object));
     }
 
     [Test]
@@ -64,7 +64,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
 
       try
       {
-        _strategy.OnExecutionPlay (Context, ExecutionListenerStub);
+        _strategy.OnExecutionPlay (Context, ExecutionListenerStub.Object);
         Assert.Fail ("Expected Exception");
       }
       catch (WxeFatalExecutionException actualException)
@@ -78,9 +78,9 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
     public void Test_WithScope ()
     {
       InvokeOnExecutionPlay (_strategy);
-      Assert.That (_strategy.Scope, Is.SameAs (ScopeMock));
+      Assert.That (_strategy.Scope, Is.SameAs (ScopeMock.Object));
       Assert.That (
-          () => _strategy.OnExecutionPlay (Context, ExecutionListenerStub),
+          () => _strategy.OnExecutionPlay (Context, ExecutionListenerStub.Object),
           Throws.InvalidOperationException
               .With.Message.EqualTo (
                   "OnExecutionPlay may not be invoked twice without calling OnExecutionStop, OnExecutionPause, or OnExecutionFail in-between."));
@@ -92,20 +92,21 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
       var innerException = new ApplicationException ("InnerListener Exception");
       
       var sequence = new MockSequence();
-      
-      TransactionMock.Setup (mock => mock.EnterScope ()).Returns (ScopeMock).Verifiable();
-      
-      ChildTransactionStrategyMock.Setup (mock => mock.OnExecutionPlay (Context, ExecutionListenerStub)).Throws (innerException).Verifiable();
+      TransactionMock.InSequence (sequence).Setup (mock => mock.EnterScope ()).Returns (ScopeMock.Object).Verifiable();
+      ChildTransactionStrategyMock.InSequence (sequence).Setup (mock => mock.OnExecutionPlay (Context, ExecutionListenerStub.Object)).Throws (innerException).Verifiable();
 
       try
       {
-        _strategy.OnExecutionPlay (Context, ExecutionListenerStub);
+        _strategy.OnExecutionPlay (Context, ExecutionListenerStub.Object);
         Assert.Fail ("Expected Exception");
       }
       catch (ApplicationException actualException)
       {
         Assert.That (actualException, Is.SameAs (innerException));
       }
+
+      TransactionMock.Verify();
+      ChildTransactionStrategyMock.Verify();
       Assert.That (_strategy.Scope, Is.Not.Null);
     }
 
@@ -115,20 +116,21 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
       var innerException = new WxeFatalExecutionException (new Exception ("InnerListener Exception"), null);
 
       var sequence = new MockSequence();
-
-      TransactionMock.Setup (mock => mock.EnterScope()).Returns (ScopeMock).Verifiable();
-
-      ChildTransactionStrategyMock.Setup (mock => mock.OnExecutionPlay (Context, ExecutionListenerStub)).Throws (innerException).Verifiable();
+      TransactionMock.InSequence (sequence).Setup (mock => mock.EnterScope()).Returns (ScopeMock.Object).Verifiable();
+      ChildTransactionStrategyMock.InSequence (sequence).Setup (mock => mock.OnExecutionPlay (Context, ExecutionListenerStub.Object)).Throws (innerException).Verifiable();
 
       try
       {
-        _strategy.OnExecutionPlay (Context, ExecutionListenerStub);
+        _strategy.OnExecutionPlay (Context, ExecutionListenerStub.Object);
         Assert.Fail ("Expected Exception");
       }
       catch (WxeFatalExecutionException actualException)
       {
         Assert.That (actualException, Is.SameAs (innerException));
       }
+
+      TransactionMock.Verify();
+      ChildTransactionStrategyMock.Verify();
       Assert.That (_strategy.Scope, Is.Not.Null);
     }
   }

@@ -16,14 +16,11 @@
 // 
 using System;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates;
 using Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates.ExecuteExternalByRedirect;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStepExecutionStates.ExecuteExternalByRedirect
 {
@@ -35,7 +32,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
     public override void SetUp ()
     {
       base.SetUp();
-      _executionState = new PostProcessingSubFunctionState (ExecutionStateContextMock, new ExecutionStateParameters (SubFunction, PostBackCollection));
+      _executionState = new PostProcessingSubFunctionState (ExecutionStateContextMock.Object, new ExecutionStateParameters (SubFunction.Object, PostBackCollection));
     }
 
     [Test]
@@ -51,12 +48,12 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
       RequestMock.Setup (stub => stub.HttpMethod).Returns ("GET");
 
       var sequence = new MockSequence();
-
-      ExecutionStateContextMock.Setup (mock => mock.SetReturnState (SubFunction, true, PostBackCollection)).Verifiable();
-
-      ExecutionStateContextMock.Setup (mock => mock.SetExecutionState (NullExecutionState.Null)).Verifiable();
+      ExecutionStateContextMock.InSequence (sequence).Setup (mock => mock.SetReturnState (SubFunction.Object, true, PostBackCollection)).Verifiable();
+      ExecutionStateContextMock.InSequence (sequence).Setup (mock => mock.SetExecutionState (NullExecutionState.Null)).Verifiable();
 
       _executionState.ExecuteSubFunction (WxeContext);
+
+      ExecutionStateContextMock.Verify();
 
       Assert.That (PostBackCollection[WxePageInfo.PostBackSequenceNumberID], Is.EqualTo ("100"));
     }
@@ -68,12 +65,12 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
       RequestMock.Setup (stub => stub.HttpMethod).Returns ("POST");
 
       var sequence = new MockSequence();
-
-      ExecutionStateContextMock.Setup (mock => mock.SetReturnState (SubFunction, false, null)).Verifiable();
-
-      ExecutionStateContextMock.Setup (mock => mock.SetExecutionState (NullExecutionState.Null)).Verifiable();
+      ExecutionStateContextMock.InSequence (sequence).Setup (mock => mock.SetReturnState (SubFunction.Object, false, null)).Verifiable();
+      ExecutionStateContextMock.InSequence (sequence).Setup (mock => mock.SetExecutionState (NullExecutionState.Null)).Verifiable();
 
       _executionState.ExecuteSubFunction (WxeContext);
+
+      ExecutionStateContextMock.Verify();
     }
   }
 }
