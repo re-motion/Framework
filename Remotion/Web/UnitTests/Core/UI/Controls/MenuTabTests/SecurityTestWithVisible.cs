@@ -16,6 +16,7 @@
 // 
 using System;
 using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.ServiceLocation;

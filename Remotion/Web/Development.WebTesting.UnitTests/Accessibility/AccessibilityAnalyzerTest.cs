@@ -18,14 +18,11 @@ using System;
 using System.Collections.Generic;
 using log4net;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using Remotion.Web.Development.WebTesting.Accessibility;
 using Remotion.Web.Development.WebTesting.Accessibility.AxeJsonResultDtos;
 using Remotion.Web.Development.WebTesting.Accessibility.Implementation;
-using Rhino.Mocks;
-using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
 {
@@ -117,11 +114,11 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
           true,
           AccessibilityConformanceLevel.Wcag20_ConformanceLevelDoubleA,
           new List<AccessibilityRuleResult>());
-      _jsExecutorStub.Setup (_ => _.ExecuteAsyncScript (It.IsAny<string>(), It.IsAny<object[]>())).Returns ((object) null);
-      _jsExecutorStub.Setup (_ => _.ExecuteAsyncScript (It.IsAny<string>(), It.IsAny<object[]>())).Returns ("{}");
+      _jsExecutorStub.Setup (_ => _.ExecuteAsyncScript (It.IsAny<string>(),It.IsAny<object[]>())).Returns  (null);
+      _jsExecutorStub.Setup (_ => _.ExecuteAsyncScript (It.IsAny<string>(),It.IsAny<object[]>())).Returns  ("{}");
       _jsExecutorStub.Setup (_ => _.ExecuteScript ("return (typeof axe !== 'undefined')")).Returns (true);
       _jsExecutorStub.Setup (_ => _.ExecuteScript ("return self.name;")).Returns ("TestFrame");
-      _webDriverStub.Setup (_ => _.FindElements (It.IsAny<By>())).Returns (new List<IWebElement>().AsReadOnly());
+      _webDriverStub.Setup (_ => _.FindElements (It.IsAny<By>())).Returns  (new List<IWebElement>().AsReadOnly());
       _webDriverStub.Setup (_ => _.SwitchTo().DefaultContent());
       _resultParserStub.Setup (_ => _.Parse ("{}")).Returns (axeResult);
       _resultMapperStub.Setup (_ => _.Map (axeResult)).Returns (accessibilityResult);
