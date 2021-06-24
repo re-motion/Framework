@@ -15,27 +15,28 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.MenuTabTests
 {
   [TestFixture]
   public class SecurityTestWithEnabled : BaseTest
   {
-    private MockRepository _mocks;
-    private IWebSecurityAdapter _mockWebSecurityAdapter;
-    private NavigationCommand _mockNavigationCommand;
+    private Mock<IWebSecurityAdapter> _mockWebSecurityAdapter;
+    private Mock<NavigationCommand> _mockNavigationCommand;
 
     [SetUp]
     public void Setup ()
     {
-      _mocks = new MockRepository();
-      _mockWebSecurityAdapter = _mocks.StrictMock<IWebSecurityAdapter>();
-      _mockNavigationCommand = _mocks.StrictMock<NavigationCommand> (CommandType.Href, _mockWebSecurityAdapter, (IWxeSecurityAdapter) null);
+      _mockWebSecurityAdapter = new Mock<IWebSecurityAdapter> (MockBehavior.Strict);
+      _mockNavigationCommand = new Mock<NavigationCommand> (MockBehavior.Strict, CommandType.Href, _mockWebSecurityAdapter.Object, (IWxeSecurityAdapter) null);
     }
 
     [Test]
@@ -44,12 +45,12 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.MenuTabTests
       MainMenuTab mainMenuTab = CreateMainMenuTab ();
       mainMenuTab.MissingPermissionBehavior = MissingPermissionBehavior.Invisible;
       mainMenuTab.IsDisabled = false;
-      Expect.Call (_mockNavigationCommand.HasAccess (null)).Repeat.Never ();
-      _mocks.ReplayAll ();
+      _mockNavigationCommand.Setup (_ => _.HasAccess (null)).Verifiable();
 
       bool isEnabled = mainMenuTab.EvaluateEnabled ();
 
-      _mocks.VerifyAll ();
+      _mockWebSecurityAdapter.Verify();
+      _mockNavigationCommand.Verify (_ => _.HasAccess (null), Times.Never());
       Assert.That (isEnabled, Is.True);
     }
 
@@ -59,12 +60,12 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.MenuTabTests
       MainMenuTab mainMenuTab = CreateMainMenuTab ();
       mainMenuTab.MissingPermissionBehavior = MissingPermissionBehavior.Invisible;
       mainMenuTab.IsDisabled = true;
-      Expect.Call (_mockNavigationCommand.HasAccess (null)).Repeat.Never ();
-      _mocks.ReplayAll ();
+      _mockNavigationCommand.Setup (_ => _.HasAccess (null)).Verifiable();
 
       bool isEnabled = mainMenuTab.EvaluateEnabled ();
 
-      _mocks.VerifyAll ();
+      _mockWebSecurityAdapter.Verify();
+      _mockNavigationCommand.Verify (_ => _.HasAccess (null), Times.Never());
       Assert.That (isEnabled, Is.False);
     }
 
@@ -159,12 +160,12 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.MenuTabTests
     {
       MainMenuTab mainMenuTab = CreateMainMenuTab ();
       mainMenuTab.IsDisabled = false;
-      Expect.Call (_mockNavigationCommand.HasAccess (null)).Return (true);
-      _mocks.ReplayAll ();
+      _mockNavigationCommand.Setup (_ => _.HasAccess (null)).Returns (true).Verifiable();
 
       bool isEnabled = mainMenuTab.EvaluateEnabled ();
 
-      _mocks.VerifyAll ();
+      _mockWebSecurityAdapter.Verify();
+      _mockNavigationCommand.Verify();
       Assert.That (isEnabled, Is.True);
     }
 
@@ -173,12 +174,12 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.MenuTabTests
     {
       MainMenuTab mainMenuTab = CreateMainMenuTab ();
       mainMenuTab.IsDisabled = false;
-      Expect.Call (_mockNavigationCommand.HasAccess (null)).Return (false);
-      _mocks.ReplayAll ();
+      _mockNavigationCommand.Setup (_ => _.HasAccess (null)).Returns (false).Verifiable();
 
       bool isEnabled = mainMenuTab.EvaluateEnabled ();
 
-      _mocks.VerifyAll ();
+      _mockWebSecurityAdapter.Verify();
+      _mockNavigationCommand.Verify();
       Assert.That (isEnabled, Is.False);
     }
 
@@ -188,18 +189,18 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.MenuTabTests
     {
       MainMenuTab mainMenuTab = CreateMainMenuTab ();
       mainMenuTab.IsDisabled = true;
-      _mocks.ReplayAll ();
 
       bool isEnabled = mainMenuTab.EvaluateEnabled ();
 
-      _mocks.VerifyAll ();
+      _mockWebSecurityAdapter.Verify();
+      _mockNavigationCommand.Verify();
       Assert.That (isEnabled, Is.False);
     }
 
     private MainMenuTab CreateMainMenuTab ()
     {
       MainMenuTab mainMenuTab = CreateMainMenuTabWithCommandSetNull ();
-      mainMenuTab.Command = _mockNavigationCommand;
+      mainMenuTab.Command = _mockNavigationCommand.Object;
       _mocks.BackToRecordAll();
 
       return mainMenuTab;

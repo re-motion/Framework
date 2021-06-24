@@ -17,10 +17,13 @@
 using System;
 using System.Web.Script.Services;
 using System.Web.Services;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.Services;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.Services.WebServiceFactoryTests
 {
@@ -66,20 +69,20 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceFactoryTests
       }
     }
 
-    private IBuildManager _buildManagerStub;
+    private Mock<IBuildManager> _buildManagerStub;
     private WebServiceFactory _webServiceFactory;
 
     [SetUp]
     public void SetUp ()
     {
-      _buildManagerStub = MockRepository.GenerateStub<IBuildManager>();
-      _webServiceFactory = new WebServiceFactory (_buildManagerStub);
+      _buildManagerStub = new Mock<IBuildManager>();
+      _webServiceFactory = new WebServiceFactory (_buildManagerStub.Object);
     }
 
     [Test]
     public void Test ()
     {
-      _buildManagerStub.Stub (stub => stub.GetCompiledType ("~/VirtualServicePath")).Return (typeof (TestScriptService));
+      _buildManagerStub.Setup (stub => stub.GetCompiledType ("~/VirtualServicePath")).Returns (typeof (TestScriptService));
 
       var service = _webServiceFactory.CreateWebService<IValidWebService> ("~/VirtualServicePath");
 
@@ -89,7 +92,7 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceFactoryTests
     [Test]
     public void Test_InterfaceNotImplemented ()
     {
-      _buildManagerStub.Stub (stub => stub.GetCompiledType ("~/VirtualServicePath")).Return (typeof (TestScriptService));
+      _buildManagerStub.Setup (stub => stub.GetCompiledType ("~/VirtualServicePath")).Returns (typeof (TestScriptService));
 
       Assert.That (
           () => _webServiceFactory.CreateWebService<IInvalidInterface> ("~/VirtualServicePath"),
@@ -101,7 +104,7 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceFactoryTests
     [Test]
     public void Test_BaseTypeNotImplemented ()
     {
-      _buildManagerStub.Stub (stub => stub.GetCompiledType ("~/VirtualServicePath")).Return (typeof (TestScriptService));
+      _buildManagerStub.Setup (stub => stub.GetCompiledType ("~/VirtualServicePath")).Returns (typeof (TestScriptService));
 
       Assert.That (
           () => _webServiceFactory.CreateWebService<InvalidBaseType> ("~/VirtualServicePath"),
@@ -113,7 +116,7 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceFactoryTests
     [Test]
     public void Test_FactoryChecksWebServiceDeclaration ()
     {
-      _buildManagerStub.Stub (stub => stub.GetCompiledType ("~/VirtualServicePath")).Return (typeof (TestScriptService));
+      _buildManagerStub.Setup (stub => stub.GetCompiledType ("~/VirtualServicePath")).Returns (typeof (TestScriptService));
 
       Assert.That (
           () => _webServiceFactory.CreateWebService<IInvalidWebServiceWithMissingWebMethodAttribute> ("~/VirtualServicePath"),
@@ -124,7 +127,7 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceFactoryTests
     [Test]
     public void Test_VirtualPathCannotBeCompiled ()
     {
-      _buildManagerStub.Stub (stub => stub.GetCompiledType ("~/VirtualServicePath")).Return (null);
+      _buildManagerStub.Setup (stub => stub.GetCompiledType ("~/VirtualServicePath")).Returns ((Type) null);
 
       Assert.That (
           () => _webServiceFactory.CreateWebService<IInvalidInterface> ("~/VirtualServicePath"),

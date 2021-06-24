@@ -23,12 +23,15 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.Web.UnitTesting.AspNetFramework;
 using Remotion.Development.Web.UnitTesting.UI.Controls;
 using Remotion.Web.Utilities;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.Utilities
 {
@@ -88,7 +91,6 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       _pageInvoker = new ControlInvoker (_page);
 
       _memberCaller = new InternalControlMemberCaller ();
-
     }
 
     [TearDown]
@@ -100,24 +102,20 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     [Test]
     public void InitRecursive ()
     {
-      MockRepository mockRepository = new MockRepository();
       Page namingContainer = new Page();
-      Control parentControlMock = mockRepository.PartialMock<Control> ();
-      Control childControlMock = mockRepository.PartialMock<Control> ();
+      var parentControlMock = new Mock<Control>() { CallBase = true };
+      var childControlMock = new Mock<Control>() { CallBase = true };
 
-      using (mockRepository.Ordered())
-      {
-        childControlMock.Expect (mock => PrivateInvoke.InvokeNonPublicMethod (mock, "OnInit", EventArgs.Empty));
-        parentControlMock.Expect (mock => PrivateInvoke.InvokeNonPublicMethod (mock, "OnInit", EventArgs.Empty));
-      }
+      var sequence = new MockSequence();
+      childControlMock.InSequence (sequence).Protected().Setup ("OnInit", true, EventArgs.Empty).Verifiable();
+      parentControlMock.InSequence (sequence).Protected().Setup ("OnInit", true, EventArgs.Empty).Verifiable();
 
-      mockRepository.ReplayAll();
+      namingContainer.Controls.Add (parentControlMock.Object);
+      parentControlMock.Object.Controls.Add (childControlMock.Object);
+      _memberCaller.InitRecursive (parentControlMock.Object, namingContainer);
 
-      namingContainer.Controls.Add (parentControlMock);
-      parentControlMock.Controls.Add (childControlMock);
-      _memberCaller.InitRecursive (parentControlMock, namingContainer);
-
-      mockRepository.VerifyAll();
+      parentControlMock.Verify();
+      childControlMock.Verify();
     }
 
     [Test]

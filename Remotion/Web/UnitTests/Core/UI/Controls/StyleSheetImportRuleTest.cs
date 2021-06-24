@@ -15,9 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Web.UI.Controls;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls
 {
@@ -35,10 +38,10 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     [Test]
     public void Render ()
     {
-      IResourceUrl resourceUrl = MockRepository.GenerateStub<IResourceUrl>();
-      resourceUrl.Stub (stub => stub.GetUrl()).Return ("myStylesheetUrl.js");
+      var resourceUrl = new Mock<IResourceUrl>();
+      resourceUrl.Setup (stub => stub.GetUrl()).Returns ("myStylesheetUrl.js");
 
-      var javaScriptInclude = new StyleSheetImportRule (resourceUrl);
+      var javaScriptInclude = new StyleSheetImportRule (resourceUrl.Object);
 
       javaScriptInclude.Render (_htmlHelper.Writer);
 

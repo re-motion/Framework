@@ -16,6 +16,8 @@
 // 
 using System;
 using System.Web;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Utilities;
@@ -24,14 +26,15 @@ using Remotion.Web.UI.Controls.DatePickerButtonImplementation;
 using Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering;
 using Remotion.Web.UI.Controls.Rendering;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.DatePickerButtonImplementation.Rendering
 {
   [TestFixture]
   public class DatePickerButtonRendererTest : RendererTestBase
   {
-    private IDatePickerButton _datePickerButton;
-    private HttpContextBase _httpContext;
+    private Mock<IDatePickerButton> _datePickerButton;
+    private Mock<HttpContextBase> _httpContext;
     private HtmlHelper _htmlHelper;
     private CultureScope _cultureScope;
 
@@ -39,13 +42,13 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DatePickerButtonImplementation
     public void SetUp ()
     {
       _htmlHelper = new HtmlHelper ();
-      _httpContext = MockRepository.GenerateStub<HttpContextBase> ();
+      _httpContext = new Mock<HttpContextBase>();
 
-      _datePickerButton = MockRepository.GenerateStub<IDatePickerButton>();
-      _datePickerButton.ID = "_Boc_DatePickerButton";
-      _datePickerButton.Stub (mock => mock.ContainerControlID).Return ("Container");
-      _datePickerButton.Stub (mock => mock.TargetControlID).Return ("Target");
-      _datePickerButton.Stub (mock => mock.ClientID).Return (_datePickerButton.ID);
+      _datePickerButton = new Mock<IDatePickerButton>();
+      _datePickerButton.Object.ID = "_Boc_DatePickerButton";
+      _datePickerButton.Setup (mock => mock.ContainerControlID).Returns ("Container");
+      _datePickerButton.Setup (mock => mock.TargetControlID).Returns ("Target");
+      _datePickerButton.Setup (mock => mock.ClientID).Returns (_datePickerButton.Object.ID);
 
       _cultureScope = new CultureScope ("de-DE", "de-CH");
     }
@@ -59,8 +62,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DatePickerButtonImplementation
     [Test]
     public void RenderButton ()
     {
-      _datePickerButton.Stub (mock => mock.Enabled).Return (true);
-      _datePickerButton.Stub (mock => mock.EnableClientScript).Return (true);
+      _datePickerButton.Setup (mock => mock.Enabled).Returns (true);
+      _datePickerButton.Setup (mock => mock.EnableClientScript).Returns (true);
 
       AssertDateTimePickerButton (false, true);
     }
@@ -68,7 +71,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DatePickerButtonImplementation
     [Test]
     public void RenderButtonNoClientScript ()
     {
-      _datePickerButton.Stub (mock => mock.Enabled).Return (true);
+      _datePickerButton.Setup (mock => mock.Enabled).Returns (true);
 
       AssertDateTimePickerButton (false, false);
     }
@@ -76,7 +79,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DatePickerButtonImplementation
     [Test]
     public void RenderButtonDisabled ()
     {
-      _datePickerButton.Stub (mock => mock.EnableClientScript).Return (true);
+      _datePickerButton.Setup (mock => mock.EnableClientScript).Returns (true);
 
       AssertDateTimePickerButton (true, true);
     }
@@ -90,7 +93,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DatePickerButtonImplementation
     private void AssertDateTimePickerButton (bool isDisabled, bool hasClientScript)
     {
       var renderer = new DatePickerButtonRenderer (new FakeResourceUrlFactory(), GlobalizationService, RenderingFeatures.Default);
-      renderer.Render (new DatePickerButtonRenderingContext (_httpContext, _htmlHelper.Writer, _datePickerButton));
+      renderer.Render (new DatePickerButtonRenderingContext (_httpContext.Object, _htmlHelper.Writer, _datePickerButton.Object));
       var buttonDocument = _htmlHelper.GetResultDocument();
 
       var button = _htmlHelper.GetAssertedChildElement (buttonDocument, "a", 0);
@@ -98,8 +101,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DatePickerButtonImplementation
       string script = string.Format (
           "DatePicker.ShowDatePicker(this, document.getElementById ('{0}'), " +
           "document.getElementById ('{1}'), '{2}', '{3}', '{4}');return false;",
-          _datePickerButton.ContainerControlID,
-          _datePickerButton.TargetControlID,
+          _datePickerButton.Object.ContainerControlID,
+          _datePickerButton.Object.TargetControlID,
           "/fake/Remotion.Web/Themes/Fake/UI/DatePickerForm.aspx?Culture=de-DE&UICulture=de-CH",
           "14em",
           "16em"
@@ -115,11 +118,10 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DatePickerButtonImplementation
       _htmlHelper.AssertAttribute (button, "href", "#");
       _htmlHelper.AssertAttribute (button, "tabindex", "-1");
 
-
       if (hasClientScript)
       {
         var image = _htmlHelper.GetAssertedChildElement (button, "img", 0);
-        _htmlHelper.AssertAttribute (image, "alt", _datePickerButton.AlternateText);
+        _htmlHelper.AssertAttribute (image, "alt", _datePickerButton.Object.AlternateText);
         _htmlHelper.AssertAttribute (image, "src", renderer.GetResolvedImageUrl().GetUrl());
       }
     }

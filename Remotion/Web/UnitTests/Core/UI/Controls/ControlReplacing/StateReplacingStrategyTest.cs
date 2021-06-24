@@ -18,9 +18,12 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Web.UI;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Web.UI.Controls.ControlReplacing;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
 {
@@ -59,12 +62,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
       _replacer.StateModificationStrategy = _stateModificationStrategy;
       _replacer.Controls.Add (testPageHolder.NamingContainer);
 
-      MemberCallerMock.Expect (mock => mock.SetChildControlState (Arg<ControlReplacer>.Is.Same (_replacer), Arg<Hashtable>.Is.NotNull));
-      MockRepository.ReplayAll ();
+      MemberCallerMock.Setup (mock => mock.SetChildControlState (_replacer, It.IsNotNull<Hashtable>())).Verifiable();
 
       _stateModificationStrategy.LoadControlState (_replacer, MemberCallerMock);
-
-      MockRepository.VerifyAll ();
     }
 
     [Test]
@@ -74,13 +74,11 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
       _replacer.StateModificationStrategy = _stateModificationStrategy;
       _replacer.Controls.Add (testPageHolder.NamingContainer);
 
-      MemberCallerMock.Expect (mock => mock.LoadViewStateRecursive (Arg<ControlReplacer>.Is.Same (_replacer), Arg<Hashtable>.Is.NotNull));
-
-      MockRepository.ReplayAll ();
+      MemberCallerMock.Setup (mock => mock.LoadViewStateRecursive (_replacer, It.IsNotNull<Hashtable>())).Verifiable();
 
       _stateModificationStrategy.LoadViewState (_replacer, MemberCallerMock);
 
-      MemberCallerMock.VerifyAllExpectations ();
+      MemberCallerMock.Verify();
     }
   }
 }

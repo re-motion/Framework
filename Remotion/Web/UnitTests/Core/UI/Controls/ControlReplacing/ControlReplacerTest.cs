@@ -18,10 +18,13 @@ using System;
 using System.Collections;
 using System.Collections.Specialized;
 using System.Web.UI;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Web.UI.Controls.ControlReplacing;
 using Remotion.Web.Utilities;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
 {
@@ -423,25 +426,23 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
       ControlReplacer replacer = new ControlReplacer (MemberCallerMock) { ID = "TheReplacer" };
       var controlToReplace = new ReplaceableControlMock();
       var controlToWrap = new ReplaceableControlMock ();
-      MemberCallerMock.Stub (stub => stub.GetControlState (controlToReplace)).Return (ControlState.ChildrenInitialized);
+      MemberCallerMock.Setup (stub => stub.GetControlState (controlToReplace)).Returns (ControlState.ChildrenInitialized);
 
-      using (MockRepository.Ordered ())
-      {
-        MemberCallerMock.Expect (mock => mock.SetCollectionReadOnly (testPageHolder.Page.Controls, null)).Return ("error");
-        MemberCallerMock.Expect (mock => mock.SetCollectionReadOnly (testPageHolder.Page.Controls, "error")).Return (null).WhenCalled (
-            invocation => Assert.That (
+      var sequence = new MockSequence();
+
+      MemberCallerMock.Setup (mock => mock.SetCollectionReadOnly (testPageHolder.Page.Controls, null)).Returns ("error").Verifiable();
+
+      MemberCallerMock.Setup (mock => mock.SetCollectionReadOnly (testPageHolder.Page.Controls, "error")).Returns ((string) null).Callback (
+            (ControlCollection collection, string exceptionMessage) =>             Assert.That (
                               testPageHolder.Page.Controls,
-                              Is.EqualTo (new Control[] { testPageHolder.OtherNamingContainer, testPageHolder.NamingContainer, replacer })));
-        MemberCallerMock.Expect (mock => mock.InitRecursive (replacer, testPageHolder.Page));
-      }
+                              Is.EqualTo (new Control[] { testPageHolder.OtherNamingContainer, testPageHolder.NamingContainer, replacer }))).Verifiable();
+
+      MemberCallerMock.Setup (mock => mock.InitRecursive (replacer, testPageHolder.Page)).Verifiable();
 
       Assert.That (replacer.Controls, Is.Empty);
-      MockRepository.ReplayAll ();
 
       testPageHolder.Page.Controls.Add (controlToReplace);
       replacer.ReplaceAndWrap (controlToReplace, controlToWrap, new StateLoadingStrategy ());
-
-      MockRepository.VerifyAll();
 
       Assert.That (
           testPageHolder.Page.Controls, 
@@ -459,36 +460,32 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
       ControlReplacer replacer = new ControlReplacer (MemberCallerMock) { ID = "TheReplacer" };
       var controlToReplace = new ReplaceableControlMock();
       var controlToWrap = new ReplaceableControlMock();
-      MemberCallerMock.Stub (stub => stub.GetControlState (controlToReplace)).Return (ControlState.ChildrenInitialized);
+      MemberCallerMock.Setup (stub => stub.GetControlState (controlToReplace)).Returns (ControlState.ChildrenInitialized);
 
-      using (MockRepository.Ordered())
-      {
-        MemberCallerMock.Expect (mock => mock.SetCollectionReadOnly (testPageHolder.Page.Controls, null)).Return ("error");
-        MemberCallerMock.Expect (mock => mock.SetCollectionReadOnly (testPageHolder.Page.Controls, "error")).Return (null).WhenCalled (
-            invocation => Assert.That (
+      var sequence = new MockSequence();
+
+      MemberCallerMock.Setup (mock => mock.SetCollectionReadOnly (testPageHolder.Page.Controls, null)).Returns ("error").Verifiable();
+
+      MemberCallerMock.Setup (mock => mock.SetCollectionReadOnly (testPageHolder.Page.Controls, "error")).Returns ((string) null).Callback (
+            (ControlCollection collection, string exceptionMessage) =>             Assert.That (
                               testPageHolder.Page.Controls,
-                              Is.EqualTo (new Control[] { testPageHolder.OtherNamingContainer, testPageHolder.NamingContainer, replacer })));
-        MemberCallerMock.Expect (mock => mock.InitRecursive (replacer, testPageHolder.Page));
-      }
+                              Is.EqualTo (new Control[] { testPageHolder.OtherNamingContainer, testPageHolder.NamingContainer, replacer }))).Verifiable();
+
+      MemberCallerMock.Setup (mock => mock.InitRecursive (replacer, testPageHolder.Page)).Verifiable();
 
       Assert.That (replacer.Controls, Is.Empty);
-      MockRepository.ReplayAll();
 
       testPageHolder.Page.Controls.Add (controlToReplace);
       replacer.ReplaceAndWrap (controlToReplace, controlToWrap, new StateLoadingStrategy());
-      MockRepository.VerifyAll();
       Assert.That (
           testPageHolder.Page.Controls,
           Is.EqualTo (new Control[] { testPageHolder.OtherNamingContainer, testPageHolder.NamingContainer, replacer }));
       Assert.That (replacer.Controls, Is.Empty);
 
       MockRepository.BackToRecordAll();
-      MemberCallerMock.Stub (stub => stub.SetControlState (controlToWrap, ControlState.Constructed));
-      MockRepository.ReplayAll();
+      MemberCallerMock.Setup (stub => stub.SetControlState (controlToWrap, ControlState.Constructed));
 
       replacer.LoadPostData (null, null);
-
-      MockRepository.VerifyAll();
 
       Assert.That (
           testPageHolder.Page.Controls,
@@ -504,7 +501,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
     {
       ControlReplacer replacer = new ControlReplacer (MemberCallerMock) { ID = "TheReplacer" };
       var control = new ReplaceableControlMock();
-      MemberCallerMock.Stub (stub => stub.GetControlState (control)).Return (ControlState.Initialized);
+      MemberCallerMock.Setup (stub => stub.GetControlState (control)).Returns (ControlState.Initialized);
       Assert.That (
           () => replacer.ReplaceAndWrap (control, control, new StateLoadingStrategy ()),
           Throws.InvalidOperationException
@@ -517,10 +514,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
     {
       ControlReplacer replacer = new ControlReplacer (MemberCallerMock) { ID = "TheReplacer" };
       var control = new ReplaceableControlMock ();
-      MemberCallerMock.Stub (stub => stub.GetControlState (control)).Return (ControlState.ChildrenInitialized);
+      MemberCallerMock.Setup (stub => stub.GetControlState (control)).Returns (ControlState.ChildrenInitialized);
       control.EnsureLazyInitializationContainer ();
 
-      MockRepository.ReplayAll ();
       Assert.That (
           () => replacer.ReplaceAndWrap (control, control, new StateLoadingStrategy ()),
           Throws.InvalidOperationException

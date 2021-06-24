@@ -15,9 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Web.Resources;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.Resources
 {
@@ -27,12 +30,12 @@ namespace Remotion.Web.UnitTests.Core.Resources
     [Test]
     public void GetUrl ()
     {
-      var resourceUrlBuilderStub = MockRepository.GenerateStub<IResourcePathBuilder>();
-      var resourceUrl = new ThemedResourceUrl (resourceUrlBuilderStub, typeof (ResourceUrlTest), ResourceType.Html, new ResourceTheme.NovaGray(), "theRelativeUrl.js");
+      var resourceUrlBuilderStub = new Mock<IResourcePathBuilder>();
+      var resourceUrl = new ThemedResourceUrl (resourceUrlBuilderStub.Object, typeof (ResourceUrlTest), ResourceType.Html, new ResourceTheme.NovaGray(), "theRelativeUrl.js");
 
       resourceUrlBuilderStub
-          .Stub (_ => _.BuildAbsolutePath (typeof (ResourceUrlTest).Assembly, new[] { "Themes", "NovaGray", "Html", "theRelativeUrl.js" }))
-          .Return ("expectedUrl");
+          .Setup (_ => _.BuildAbsolutePath (typeof (ResourceUrlTest).Assembly, new[] { "Themes", "NovaGray", "Html", "theRelativeUrl.js" }))
+          .Returns ("expectedUrl");
 
       Assert.That (resourceUrl.GetUrl(), Is.EqualTo ("expectedUrl"));
     }

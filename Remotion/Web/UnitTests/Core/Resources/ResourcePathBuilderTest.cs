@@ -16,10 +16,13 @@
 // 
 using System;
 using System.Web;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.Resources;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.Resources
 {
@@ -82,25 +85,25 @@ namespace Remotion.Web.UnitTests.Core.Resources
       var builder = (TestableResourcePathBuilder) CreateResourcePathBuilder (new Uri ("http://localhost/appDir/file"), "/appDir");
 
       builder.BuildAbsolutePath (GetType().Assembly, "part1");
-      builder.HttpContextProvider.AssertWasCalled (_ => _.GetCurrentHttpContext(), options => options.Repeat.Once());
+      builder.HttpContextProvider.AssertWasCalled (_ => _.GetCurrentHttpContext(), options => options);
 
       builder.BuildAbsolutePath (GetType().Assembly, "part1");
-      builder.HttpContextProvider.AssertWasCalled (_ => _.GetCurrentHttpContext(), options => options.Repeat.Twice());
+      builder.HttpContextProvider.AssertWasCalled (_ => _.GetCurrentHttpContext(), options => options);
     }
 
     private ResourcePathBuilder CreateResourcePathBuilder (Uri url, string applicationPath)
     {
-      var httpRequestStub = MockRepository.GenerateStub<HttpRequestBase>();
-      httpRequestStub.Stub (_ => _.Url).Return (url);
-      httpRequestStub.Stub (_ => _.ApplicationPath).Return (applicationPath);
+      var httpRequestStub = new Mock<HttpRequestBase>();
+      httpRequestStub.Setup (_ => _.Url).Returns (url);
+      httpRequestStub.Setup (_ => _.ApplicationPath).Returns (applicationPath);
 
-      var httpContextStub = MockRepository.GenerateStub<HttpContextBase>();
-      httpContextStub.Stub (_ => _.Request).Return (httpRequestStub);
+      var httpContextStub = new Mock<HttpContextBase>();
+      httpContextStub.Setup (_ => _.Request).Returns (httpRequestStub.Object);
 
-      var httpContextProviderStub = MockRepository.GenerateStub<IHttpContextProvider>();
-      httpContextProviderStub.Stub (_ => _.GetCurrentHttpContext()).Return (httpContextStub);
+      var httpContextProviderStub = new Mock<IHttpContextProvider>();
+      httpContextProviderStub.Setup (_ => _.GetCurrentHttpContext()).Returns (httpContextStub.Object);
 
-      return new TestableResourcePathBuilder (httpContextProviderStub, "resourceRoot");
+      return new TestableResourcePathBuilder (httpContextProviderStub.Object, "resourceRoot");
     }
   }
 }

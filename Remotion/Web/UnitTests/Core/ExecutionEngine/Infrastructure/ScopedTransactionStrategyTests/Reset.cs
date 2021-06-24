@@ -16,11 +16,14 @@
 // 
 using System;
 using System.Collections;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTransactionStrategyTests
 {
@@ -28,13 +31,13 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
   public class Reset : ScopedTransactionStrategyTestBase
   {
     private ScopedTransactionStrategyBase _strategy;
-    private ITransaction _newTransactionMock;
+    private Mock<ITransaction> _newTransactionMock;
 
     public override void SetUp ()
     {
       base.SetUp();
       _strategy = CreateScopedTransactionStrategy (true, NullTransactionStrategy.Null);
-      _newTransactionMock = MockRepository.StrictMock<ITransaction> ();
+      _newTransactionMock = new Mock<ITransaction> (MockBehavior.Strict);
     }
 
     [Test]
@@ -45,22 +48,18 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
 
       TransactionMock.BackToRecord();
       TransactionFactoryMock.BackToRecord ();
-      using (MockRepository.Ordered())
-      {
-        TransactionMock.Expect (mock => mock.Release());
-        TransactionFactoryMock.Expect (mock => mock.Create ()).Return (_newTransactionMock);
-
-        ExecutionContextMock.Expect (mock => mock.GetVariables()).Return (new[] { object1, object2 });
-        _newTransactionMock.Expect (mock => mock.EnsureCompatibility (Arg<IEnumerable>.List.ContainsAll (new[] { object1, object2 })));
-      }
+      var sequence = new MockSequence();
+      TransactionMock.Setup (mock => mock.Release()).Verifiable();
+      TransactionFactoryMock.Setup (mock => mock.Create ()).Returns (_newTransactionMock.Object).Verifiable();
+      ExecutionContextMock.Setup (mock => mock.GetVariables()).Returns (new[] { object1, object2 }).Verifiable();
+      _newTransactionMock.InSequence (sequence).Setup (mock => mock.EnsureCompatibility (It.Is<IEnumerable> (_ => new[] { object1, object2 }.All (_.Contains)))).Verifiable();
       Assert.That (_strategy.Scope, Is.Null);
-      MockRepository.ReplayAll();
 
       _strategy.Reset();
 
-      MockRepository.VerifyAll();
+      _newTransactionMock.Verify();
       Assert.That (_strategy.Scope, Is.Null);
-      Assert.That (_strategy.Transaction, Is.SameAs (_newTransactionMock));
+      Assert.That (_strategy.Transaction, Is.SameAs (_newTransactionMock.Object));
     }
 
     [Test]
@@ -69,12 +68,11 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
       var exception = new ApplicationException ("Reset Exception");
 
       TransactionMock.BackToRecord ();
-      TransactionMock.Expect (mock => mock.Release ());
+      TransactionMock.Setup (mock => mock.Release ()).Verifiable();
       TransactionFactoryMock.BackToRecord();
-      TransactionFactoryMock.Expect (mock => mock.Create ()).Throw (exception);
+      TransactionFactoryMock.Setup (mock => mock.Create ()).Throws (exception).Verifiable();
 
       Assert.That (_strategy.Scope, Is.Null);
-      MockRepository.ReplayAll();
 
       try
       {
@@ -85,7 +83,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
       {
         Assert.That (actualException, Is.SameAs (exception));
       }
-      MockRepository.VerifyAll();
+      _newTransactionMock.Verify();
       Assert.That (_strategy.Scope, Is.Null);
       Assert.That (_strategy.Transaction, Is.SameAs (TransactionMock), "Transaction just released is retained.");
     }
@@ -99,25 +97,26 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
       InvokeOnExecutionPlay (_strategy);
       TransactionMock.BackToRecord ();
       TransactionFactoryMock.BackToRecord();
-      var newScopeMock = MockRepository.StrictMock<ITransactionScope>();
+      var newScopeMock = new Mock<ITransactionScope> (MockBehavior.Strict);
 
-      using (MockRepository.Ordered ())
-      {
-        ScopeMock.Expect (mock => mock.Leave());
-        TransactionMock.Expect (mock => mock.Release());
-        TransactionFactoryMock.Expect (mock => mock.Create ()).Return (_newTransactionMock);
-        _newTransactionMock.Expect (mock => mock.EnterScope ()).Return (newScopeMock);
+      var sequence = new MockSequence();
 
-        ExecutionContextMock.Expect (mock => mock.GetVariables()).Return (new[] { object1, object2 });
-        _newTransactionMock.Expect (mock => mock.EnsureCompatibility (Arg<IEnumerable>.List.ContainsAll (new[] { object1, object2 })));
-      }
+      ScopeMock.Setup (mock => mock.Leave()).Verifiable();
+
+      TransactionMock.Setup (mock => mock.Release()).Verifiable();
+
+      TransactionFactoryMock.Setup (mock => mock.Create ()).Returns (_newTransactionMock.Object).Verifiable();
+      _newTransactionMock.InSequence (sequence).Setup (mock => mock.EnterScope ()).Returns (newScopeMock.Object).Verifiable();
+
+      ExecutionContextMock.Setup (mock => mock.GetVariables()).Returns (new[] { object1, object2 }).Verifiable();
+      _newTransactionMock.InSequence (sequence).Setup (mock => mock.EnsureCompatibility (It.Is<IEnumerable> (_ => new[] { object1, object2 }.All (_.Contains)))).Verifiable();
       Assert.That (_strategy.Scope, Is.SameAs (ScopeMock));
-      MockRepository.ReplayAll();
 
       _strategy.Reset();
 
-      MockRepository.VerifyAll();
-      Assert.That (_strategy.Scope, Is.SameAs (newScopeMock));
+      _newTransactionMock.Verify();
+      newScopeMock.Verify();
+      Assert.That (_strategy.Scope, Is.SameAs (newScopeMock.Object));
     }
 
     [Test]
@@ -125,12 +124,9 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
     {
       InvokeOnExecutionPlay (_strategy);
       var exception = new ApplicationException ("Leave Exception");
-      using (MockRepository.Ordered ())
-      {
-        ScopeMock.Expect (mock => mock.Leave ()).Throw (exception);
-      }
+      var sequence = new MockSequence();
+      ScopeMock.Setup (mock => mock.Leave ()).Throws (exception).Verifiable();
       Assert.That (_strategy.Scope, Is.SameAs (ScopeMock));
-      MockRepository.ReplayAll ();
 
       try
       {
@@ -141,7 +137,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
       {
         Assert.That (actualException, Is.SameAs (exception));
       }
-      MockRepository.VerifyAll ();
+      _newTransactionMock.Verify();
       Assert.That (_strategy.Scope, Is.SameAs (ScopeMock));
     }
 
@@ -152,14 +148,11 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
       var exception = new ApplicationException ("Reset Exception");
       TransactionFactoryMock.BackToRecord ();
       TransactionMock.BackToRecord ();
-      using (MockRepository.Ordered ())
-      {
-        ScopeMock.Expect (mock => mock.Leave());
-        TransactionMock.Expect (mock => mock.Release ());
-        TransactionFactoryMock.Expect (mock => mock.Create ()).Throw (exception);
-      }
+      var sequence = new MockSequence();
+      ScopeMock.Setup (mock => mock.Leave()).Verifiable();
+      TransactionMock.Setup (mock => mock.Release ()).Verifiable();
+      TransactionFactoryMock.Setup (mock => mock.Create ()).Throws (exception).Verifiable();
       Assert.That (_strategy.Scope, Is.SameAs (ScopeMock));
-      MockRepository.ReplayAll();
 
       try
       {
@@ -170,7 +163,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
       {
         Assert.That (actualException, Is.SameAs (exception));
       }
-      MockRepository.VerifyAll();
+      _newTransactionMock.Verify();
       Assert.That (_strategy.Scope, Is.SameAs (ScopeMock));
       Assert.That (_strategy.Transaction, Is.SameAs (TransactionMock), "Transaction just released is retained.");
     }
@@ -184,14 +177,13 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
 
       TransactionMock.BackToRecord ();
       TransactionFactoryMock.BackToRecord ();
-      TransactionMock.Stub (mock => mock.Release());
-      TransactionFactoryMock.Stub (mock => mock.Create()).Return (_newTransactionMock);
+      TransactionMock.Setup (mock => mock.Release());
+      TransactionFactoryMock.Setup (mock => mock.Create()).Returns (_newTransactionMock.Object);
 
-      ExecutionContextMock.Stub (mock => mock.GetVariables()).Return (new[] { object1, object2 });
+      ExecutionContextMock.Setup (mock => mock.GetVariables()).Returns (new[] { object1, object2 });
       _newTransactionMock
-          .Stub (mock => mock.EnsureCompatibility (Arg<IEnumerable>.List.ContainsAll (new[] { object1, object2 })))
-          .Throw (invalidOperationException);
-      MockRepository.ReplayAll ();
+          .Setup (mock => mock.EnsureCompatibility (It.Is<IEnumerable> (_ => new[] { object1, object2 }.All (_.Contains))))
+          .Throws (invalidOperationException);
 
       Assert.That (
           () => _strategy.Reset(),
@@ -204,7 +196,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
               .And.InnerException.SameAs (invalidOperationException));
 
       Assert.That (_strategy.Scope, Is.Null);
-      Assert.That (_strategy.Transaction, Is.SameAs (_newTransactionMock));
+      Assert.That (_strategy.Transaction, Is.SameAs (_newTransactionMock.Object));
     }
   }
 }

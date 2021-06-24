@@ -16,11 +16,14 @@
 // 
 using System;
 using System.Threading;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates;
 using Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates.Execute;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStepExecutionStates.Execute
 {
@@ -37,7 +40,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
 
     protected override OtherTestFunction CreateSubFunction ()
     {
-      return MockRepository.StrictMock<OtherTestFunction>();
+      return new Mock<OtherTestFunction> (MockBehavior.Strict).Object;
     }
 
     [Test]
@@ -49,31 +52,22 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
     [Test]
     public void ExecuteSubFunction_GoesToPostProcessingSubFunction ()
     {
-      using (MockRepository.Ordered())
-      {
-        SubFunction.Expect (mock => mock.Execute (WxeContext));
-        ExecutionStateContextMock.Expect (mock => mock.SetExecutionState (Arg<PostProcessingSubFunctionState>.Is.NotNull))
-            .WhenCalled (invocation => CheckExecutionState ((PostProcessingSubFunctionState) invocation.Arguments[0]));
-      }
-
-      MockRepository.ReplayAll();
+      var sequence = new MockSequence();
+      SubFunction.Setup (mock => mock.Execute (WxeContext)).Verifiable();
+      ExecutionStateContextMock.Setup (mock => mock.SetExecutionState (It.IsNotNull<PostProcessingSubFunctionState>()))
+            .Callback ((IExecutionState executionState) => CheckExecutionState ((PostProcessingSubFunctionState) invocation.Arguments[0]))
+            .Verifiable();
 
       _executionState.ExecuteSubFunction (WxeContext);
-
-      MockRepository.VerifyAll();
     }
 
     [Test]
     public void ExecuteSubFunction_ReEntrancy_GoesToPostProcessingSubFunction ()
     {
-      using (MockRepository.Ordered())
-      {
-        SubFunction.Expect (mock => mock.Execute (WxeContext)).WhenCalled (invocation => Thread.CurrentThread.Abort ());
-        SubFunction.Expect (mock => mock.Execute (WxeContext));
-        ExecutionStateContextMock.Expect (mock => mock.SetExecutionState (Arg<IExecutionState>.Is.NotNull));
-      }
-
-      MockRepository.ReplayAll();
+      var sequence = new MockSequence();
+      SubFunction.Setup (mock => mock.Execute (WxeContext)).Callback ((WxeContext context) => Thread.CurrentThread.Abort ()).Verifiable();
+      SubFunction.Setup (mock => mock.Execute (WxeContext)).Verifiable();
+      ExecutionStateContextMock.Setup (mock => mock.SetExecutionState (It.IsNotNull<IExecutionState>())).Verifiable();
 
       try
       {
@@ -86,8 +80,6 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
       }
 
       _executionState.ExecuteSubFunction (WxeContext);
-
-      MockRepository.VerifyAll();
     }
   }
 }

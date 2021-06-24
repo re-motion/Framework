@@ -18,11 +18,14 @@ using System;
 using System.Collections.Specialized;
 using System.Text;
 using System.Web;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.Utilities;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.Utilities
 {
@@ -400,9 +403,9 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     {
       var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
 
-      var sessionStub = MockRepository.GenerateStub<HttpSessionStateBase>();
-      sessionStub.Stub (_ => _.IsCookieless).Return (false);
-      httpContextStub.Stub (_ => _.Session).Return (sessionStub);
+      var sessionStub = new Mock<HttpSessionStateBase>();
+      sessionStub.Setup (_ => _.IsCookieless).Returns (false);
+      httpContextStub.Setup (_ => _.Session).Returns (sessionStub.Object);
 
       Assert.That (
           UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/path"),
@@ -414,9 +417,9 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     {
       var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
 
-      var sessionStub = MockRepository.GenerateStub<HttpSessionStateBase>();
-      sessionStub.Stub (_ => _.IsCookieless).Return (true);
-      httpContextStub.Stub (_ => _.Session).Return (sessionStub);
+      var sessionStub = new Mock<HttpSessionStateBase>();
+      sessionStub.Setup (_ => _.IsCookieless).Returns (true);
+      httpContextStub.Setup (_ => _.Session).Returns (sessionStub.Object);
 
       Assert.That (
           () =>
@@ -427,17 +430,17 @@ namespace Remotion.Web.UnitTests.Core.Utilities
 
     private HttpContextBase CreateHttpContextStub (Uri url, string applicationPath)
     {
-      var httpRequestStub = MockRepository.GenerateStub<HttpRequestBase>();
-      httpRequestStub.Stub (_ => _.Url).Return (url);
-      httpRequestStub.Stub (_ => _.ApplicationPath).Return (applicationPath);
+      var httpRequestStub = new Mock<HttpRequestBase>();
+      httpRequestStub.Setup (_ => _.Url).Returns (url);
+      httpRequestStub.Setup (_ => _.ApplicationPath).Returns (applicationPath);
 
-      var httpContextStub = MockRepository.GenerateStub<HttpContextBase>();
-      httpContextStub.Stub (_ => _.Request).Return (httpRequestStub);
+      var httpContextStub = new Mock<HttpContextBase>();
+      httpContextStub.Setup (_ => _.Request).Returns (httpRequestStub.Object);
 
-      var httpContextProviderStub = MockRepository.GenerateStub<IHttpContextProvider>();
-      httpContextProviderStub.Stub (_ => _.GetCurrentHttpContext()).Return (httpContextStub);
+      var httpContextProviderStub = new Mock<IHttpContextProvider>();
+      httpContextProviderStub.Setup (_ => _.GetCurrentHttpContext()).Returns (httpContextStub.Object);
 
-      return httpContextStub;
+      return httpContextStub.Object;
     }
 
     [Test]

@@ -17,11 +17,14 @@
 using System;
 using System.Collections;
 using System.Web.UI;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.AspNetFramework;
 using Remotion.Development.Web.UnitTesting.UI.Controls;
 using Remotion.Web.UI.Controls.ControlReplacing;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
 {
@@ -37,12 +40,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
       replacer.StateModificationStrategy = stateModificationStrategy;
       replacer.Controls.Add (testPageHolder.NamingContainer);
 
-      MemberCallerMock.Expect (mock => mock.ClearChildControlState (replacer));
-      MockRepository.ReplayAll ();
+      MemberCallerMock.Setup (mock => mock.ClearChildControlState (replacer)).Verifiable();
 
       stateModificationStrategy.LoadControlState (replacer, MemberCallerMock);
-
-      MockRepository.VerifyAll ();
     }
 
     [Test]

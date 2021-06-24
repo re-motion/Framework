@@ -16,9 +16,12 @@
 // 
 using System;
 using System.Web.UI.WebControls;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Web.UI.Controls;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls
 {
@@ -26,14 +29,14 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
   public class IconInfoTest
   {
     private HtmlHelper _html;
-    private IControl _controlStub;
+    private Mock<IControl> _controlStub;
 
     [SetUp]
     public void SetUp ()
     {
       _html = new HtmlHelper();
-      _controlStub = MockRepository.GenerateStub<IControl>();
-      _controlStub.Stub (stub => stub.ResolveClientUrl(null)).IgnoreArguments ().Do ((Func<string, string>) (url => url.TrimStart ('~')));
+      _controlStub = new Mock<IControl>();
+      _controlStub.Setup (stub => stub.ResolveClientUrl (It.IsAny<string>())).Callback ((Func<string, string>) (url => url.TrimStart ('~')));
     }
 
     [Test]
@@ -41,7 +44,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     {
       IconInfo iconInfo = new IconInfo ("/image.gif") { Height = Unit.Pixel (20) };
 
-      iconInfo.Render (_html.Writer, _controlStub);
+      iconInfo.Render (_html.Writer, _controlStub.Object);
 
       var document = _html.GetResultDocument();
       var imgTag = _html.GetAssertedChildElement (document, "img", 0);
@@ -54,7 +57,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     {
       IconInfo iconInfo = new IconInfo ("/image.gif") { Width = Unit.Pixel (10) };
 
-      iconInfo.Render (_html.Writer, _controlStub);
+      iconInfo.Render (_html.Writer, _controlStub.Object);
 
       var document = _html.GetResultDocument ();
       var imgTag = _html.GetAssertedChildElement (document, "img", 0);
@@ -67,7 +70,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     {
       IconInfo iconInfo = new IconInfo ("/image.gif") {  Height = Unit.Percentage (20) };
 
-      iconInfo.Render (_html.Writer, _controlStub);
+      iconInfo.Render (_html.Writer, _controlStub.Object);
 
       var document = _html.GetResultDocument ();
       var imgTag = _html.GetAssertedChildElement (document, "img", 0);
@@ -81,7 +84,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     {
       IconInfo iconInfo = new IconInfo ("/image.gif") { Width = Unit.Percentage (10) };
 
-      iconInfo.Render (_html.Writer, _controlStub);
+      iconInfo.Render (_html.Writer, _controlStub.Object);
 
       var document = _html.GetResultDocument();
       var imgTag = _html.GetAssertedChildElement (document, "img", 0);
@@ -94,7 +97,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     {
       IconInfo iconInfo = new IconInfo ("/image.gif") { Height = Unit.Point (20) };
 
-      iconInfo.Render (_html.Writer, _controlStub);
+      iconInfo.Render (_html.Writer, _controlStub.Object);
 
       var document = _html.GetResultDocument();
       var imgTag = _html.GetAssertedChildElement (document, "img", 0);
@@ -107,7 +110,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     {
       IconInfo iconInfo = new IconInfo ("/image.gif") { Width = Unit.Parse ("20em") };
 
-      iconInfo.Render (_html.Writer, _controlStub);
+      iconInfo.Render (_html.Writer, _controlStub.Object);
 
       var document = _html.GetResultDocument ();
       var imgTag = _html.GetAssertedChildElement (document, "img", 0);
