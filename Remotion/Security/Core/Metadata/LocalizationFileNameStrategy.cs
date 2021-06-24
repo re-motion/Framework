@@ -30,8 +30,11 @@ namespace Remotion.Security.Metadata
       ArgumentUtility.CheckNotNull ("culture", culture);
 
       string baseFilename = Path.GetFileNameWithoutExtension (metadataFilename);
-      // TODO RM-7870: Add notnull assertion
-      string basePath = Path.GetDirectoryName (metadataFilename)!;
+
+      string? basePath = Path.GetDirectoryName (metadataFilename);
+      if (basePath == null)
+        throw new ArgumentException ("The metadata filename must denote a path that is not a root directory.", "metadataFilename");
+
       string baseFilePath = Path.Combine (basePath, baseFilename);
 
       if (string.IsNullOrEmpty (culture.Name))
@@ -45,8 +48,11 @@ namespace Remotion.Security.Metadata
       ArgumentUtility.CheckNotNullOrEmpty ("metadataFilename", metadataFilename);
 
       string baseFileName = Path.GetFileNameWithoutExtension (metadataFilename);
-      // TODO RM-7870: Add notnull assertion
-      string basePath = Path.GetDirectoryName (metadataFilename)!;
+
+      string? basePath = Path.GetDirectoryName (metadataFilename);
+      if (basePath == null)
+        throw new ArgumentException ("The metadata filename must denote a path that is not a root directory.", "metadataFilename");
+
       string searchPattern = baseFileName + ".Localization.*xml";
 
       if (basePath == string.Empty)
