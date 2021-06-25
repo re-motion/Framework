@@ -19,6 +19,7 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests
 {
@@ -70,8 +71,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       Assert.That (
           () => Provider.ExecuteScalarQuery (QueryFactory.CreateQueryFromConfiguration ("OrderQuery")),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Expected query type is 'Scalar', but was 'Collection'.\r\nParameter name: query"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Expected query type is 'Scalar', but was 'Collection'.", "query"));
     }
 
     [Test]

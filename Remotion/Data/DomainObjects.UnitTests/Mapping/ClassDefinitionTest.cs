@@ -29,6 +29,7 @@ using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Mixed
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance;
 using Remotion.Development.UnitTesting.Enumerables;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Mixins;
 using Remotion.Reflection;
 using Rhino.Mocks;
@@ -392,8 +393,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       Assert.That (
           () => _orderClass.GetRelationEndPointDefinition (string.Empty),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Parameter 'propertyName' cannot be empty.\r\nParameter name: propertyName"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Parameter 'propertyName' cannot be empty.", "propertyName"));
     }
 
     [Test]
@@ -476,8 +477,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       Assert.That (
           () => _orderClass.GetPropertyDefinition (string.Empty),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Parameter 'propertyName' cannot be empty.\r\nParameter name: propertyName"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Parameter 'propertyName' cannot be empty.", "propertyName"));
     }
 
     [Test]

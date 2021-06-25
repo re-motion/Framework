@@ -22,6 +22,7 @@ using System.Reflection;
 using Castle.DynamicProxy;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Mixins.Samples.DynamicMixinBuilding.Core;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
@@ -154,9 +155,9 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.UnitTests
       Assert.That (
           () => _builder.OverrideMethod (typeof (object).GetMethod ("ToString")),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "The declaring type of the method must be the "
-                  + "target type.\r\nParameter name: method"));
+                  + "target type.", "method"));
     }
 
     [Test]

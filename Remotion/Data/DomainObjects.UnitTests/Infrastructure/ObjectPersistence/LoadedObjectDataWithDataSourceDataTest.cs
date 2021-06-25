@@ -18,6 +18,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 {
@@ -61,8 +62,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       var loadedObjectDataStub = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub (DomainObjectIDs.Order3);
       Assert.That (
           () => new LoadedObjectDataWithDataSourceData (loadedObjectDataStub, _dataSourceData),
-          Throws.ArgumentException.With.Message.EqualTo (
-              "The ID of the dataSourceData parameter does not match the loadedObjectData.\r\nParameter name: dataSourceData"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+              "The ID of the dataSourceData parameter does not match the loadedObjectData.", "dataSourceData"));
     }
 
     [Test]
@@ -70,8 +71,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
     {
       Assert.That (
           () => new LoadedObjectDataWithDataSourceData (new NullLoadedObjectData(), _dataSourceData),
-          Throws.ArgumentException.With.Message.EqualTo (
-              "The dataSourceData parameter must be null when loadedObjectData.IsNull is true.\r\nParameter name: dataSourceData"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+              "The dataSourceData parameter must be null when loadedObjectData.IsNull is true.", "dataSourceData"));
     }
 
     [Test]
@@ -79,8 +80,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
     {
       Assert.That (
           () => new LoadedObjectDataWithDataSourceData (_loadedObjectData, null),
-          Throws.ArgumentException.With.Message.EqualTo (
-              "The dataSourceData parameter must not be null when loadedObjectData.IsNull is false.\r\nParameter name: dataSourceData"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+              "The dataSourceData parameter must not be null when loadedObjectData.IsNull is false.", "dataSourceData"));
     }
   }
 }

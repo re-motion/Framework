@@ -33,6 +33,7 @@ using Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Development.UnitTesting.ObjectMothers;
 using Remotion.TypePipe;
 using Rhino.Mocks;
@@ -447,9 +448,9 @@ namespace Remotion.Data.DomainObjects.UnitTests
       Assert.That (
           () => ClientTransactionTestHelper.CallGetInvalidObjectReference (_transaction, _objectID1),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "The object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' has "
-                  + "not been marked invalid.\r\nParameter name: id"));
+                  + "not been marked invalid.", "id"));
     }
 
     [Test]
@@ -910,8 +911,8 @@ namespace Remotion.Data.DomainObjects.UnitTests
           _transaction, 
           RelationEndPointID.Create (order.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems")),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "The given end-point ID does not denote a related object (cardinality one).\r\nParameter name: relationEndPointID"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "The given end-point ID does not denote a related object (cardinality one).", "relationEndPointID"));
     }
 
     [Test]
@@ -948,8 +949,8 @@ namespace Remotion.Data.DomainObjects.UnitTests
           _transaction,
           RelationEndPointID.Create (order.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems")),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "The given end-point ID does not denote a related object (cardinality one).\r\nParameter name: relationEndPointID"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "The given end-point ID does not denote a related object (cardinality one).", "relationEndPointID"));
     }
 
     [Test]
@@ -995,8 +996,8 @@ namespace Remotion.Data.DomainObjects.UnitTests
           _transaction,
           RelationEndPointID.Create (order.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket")),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "The given end-point ID does not denote a related object collection (cardinality many).\r\nParameter name: relationEndPointID"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "The given end-point ID does not denote a related object collection (cardinality many).", "relationEndPointID"));
     }
 
     [Test]
@@ -1040,8 +1041,8 @@ namespace Remotion.Data.DomainObjects.UnitTests
           _transaction,
           RelationEndPointID.Create (order.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket")),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "The given end-point ID does not denote a related object collection (cardinality many).\r\nParameter name: relationEndPointID"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "The given end-point ID does not denote a related object collection (cardinality many).", "relationEndPointID"));
     }
 
     [Test]

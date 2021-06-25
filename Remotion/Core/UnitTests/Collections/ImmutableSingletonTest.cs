@@ -19,6 +19,7 @@ using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
 using Remotion.Collections;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.UnitTests.Collections
 {
@@ -46,7 +47,7 @@ namespace Remotion.UnitTests.Collections
       Assert.That (
           () => list[1],
           Throws.TypeOf<ArgumentOutOfRangeException>()
-              .With.Message.EqualTo ("The list contains only a single item.\r\nParameter name: index\r\nActual value was 1."));
+              .With.ArgumentOutOfRangeExceptionMessageEqualTo ("The list contains only a single item.", "index", 1));
     }
 
     [Test]
@@ -56,7 +57,7 @@ namespace Remotion.UnitTests.Collections
       Assert.That (
           () => list[-1],
           Throws.TypeOf<ArgumentOutOfRangeException>()
-              .With.Message.EqualTo ("The list contains only a single item.\r\nParameter name: index\r\nActual value was -1."));
+              .With.ArgumentOutOfRangeExceptionMessageEqualTo ("The list contains only a single item.", "index", -1));
     }
 
     [Test]

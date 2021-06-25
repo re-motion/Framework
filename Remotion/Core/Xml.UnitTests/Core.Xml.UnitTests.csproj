@@ -60,6 +60,9 @@
     <Compile Include="SchemaLoaderBaseMock.cs">
       <DependentUpon>SchemaLoaderBaseMock.xsd</DependentUpon>
     </Compile>
+    <Compile Include="..\..\..\SharedSource\Development\UnitTesting\NUnit\NUnitExtensions.cs">
+      <Link>SharedSource\UnitTesting\NUnit\NUnitExtensions.cs</Link>
+    </Compile>
     <Compile Include="SchemaLoaderBaseTest.cs" />
     <Compile Include="XmlSerializationUtilityTests\DeserializeUsingSchema.cs" />
     <Compile Include="XmlSerializationUtilityTests\GetNamespaceTest.cs" />

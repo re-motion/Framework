@@ -20,6 +20,7 @@ using Remotion.Data.DomainObjects.Linq.ExecutableQueries;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Linq.ExecutableQueries
@@ -44,7 +45,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.ExecutableQueries
       Assert.That (
           () => new DomainObjectSequenceQueryAdapter<string> (_queryStub),
           Throws.ArgumentException
-              .With.Message.EqualTo ("Only collection queries can be used to load data containers.\r\nParameter name: query"));
+              .With.ArgumentExceptionMessageEqualTo ("Only collection queries can be used to load data containers.", "query"));
     }
 
     [Test]

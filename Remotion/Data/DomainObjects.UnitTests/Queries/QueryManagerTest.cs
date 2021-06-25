@@ -24,6 +24,7 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Queries
@@ -217,7 +218,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       Assert.That (
           () => _queryManager.GetCustom (_collectionQuery, _rowConversion),
           Throws.ArgumentException
-              .With.Message.EqualTo ("A collection or scalar query cannot be used with GetCustom.\r\nParameter name: query"));
+              .With.ArgumentExceptionMessageEqualTo ("A collection or scalar query cannot be used with GetCustom.", "query"));
     }
 
     [Test]
@@ -228,7 +229,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       Assert.That (
           () => _queryManager.GetCustom (_customQuery, _rowConversion),
           Throws.ArgumentException
-              .With.Message.EqualTo ("A custom query cannot have eager fetch queries defined.\r\nParameter name: query"));
+              .With.ArgumentExceptionMessageEqualTo ("A custom query cannot have eager fetch queries defined.", "query"));
     }
 
     [Test]

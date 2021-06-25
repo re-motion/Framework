@@ -19,6 +19,7 @@ using System.Collections.Specialized;
 using System.Text;
 using System.Web;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.Utilities;
 using Rhino.Mocks;
@@ -517,7 +518,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
 
       Assert.That (
           () => UrlUtility.AddParameter (url, "", value, _currentEncoding),
-          Throws.ArgumentException.With.Message.EqualTo ("Parameter 'name' cannot be empty.\r\nParameter name: name"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo ("Parameter 'name' cannot be empty.", "name"));
     }
 
     [Test]
@@ -980,7 +981,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
 
       Assert.That (
           () => UrlUtility.DeleteParameter (url, "", _currentEncoding),
-          Throws.ArgumentException.With.Message.EqualTo ("Parameter 'name' cannot be empty.\r\nParameter name: name"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo ("Parameter 'name' cannot be empty.", "name"));
     }
 
     [Test]
@@ -1094,7 +1095,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
 
       Assert.That (
           () => UrlUtility.GetParameter (url, "", _currentEncoding),
-          Throws.ArgumentException.With.Message.EqualTo ("Parameter 'name' cannot be empty.\r\nParameter name: name"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo ("Parameter 'name' cannot be empty.", "name"));
     }
   }
 

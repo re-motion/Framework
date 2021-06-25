@@ -23,6 +23,7 @@ using Remotion.Data.DomainObjects.DomainImplementation.Transport;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.TypePipe;
 using Rhino.Mocks;
 
@@ -291,10 +292,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       Assert.That (
           () => _transporter.GetTransportedObject (DomainObjectIDs.Order1),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "Object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be "
                   +
-                  "retrieved, it hasn't been loaded yet. Load it first, then retrieve it for editing.\r\nParameter name: loadedObjectID"
+                  "retrieved, it hasn't been loaded yet. Load it first, then retrieve it for editing.", "loadedObjectID"
 ));
     }
 

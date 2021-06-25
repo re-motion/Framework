@@ -25,6 +25,7 @@ using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoi
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints
@@ -91,7 +92,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (
           () => new EndPointDelegatingDomainObjectCollectionData (RelationEndPointID.Resolve (_owningOrder, o => o.Customer), _virtualEndPointProviderStub),
           Throws.ArgumentException
-              .With.Message.EqualTo ("Associated end-point must be a CollectionEndPoint.\r\nParameter name: endPointID"));
+              .With.ArgumentExceptionMessageEqualTo ("Associated end-point must be a CollectionEndPoint.", "endPointID"));
     }
 
     [Test]

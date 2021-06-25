@@ -17,6 +17,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 {
@@ -62,10 +63,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That (
           () => new DomainObjectCollectionWrapper<Customer> (wrappedCollection),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "Cannot implement 'IList<Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer>' for a DomainObjectCollection with required item type "
-                  + "'Remotion.Data.DomainObjects.DomainObject'. The IList<T>'s item type must be assignable from the required item type.\r\n"
-                  + "Parameter name: wrappedCollection"));
+                  + "'Remotion.Data.DomainObjects.DomainObject'. The IList<T>'s item type must be assignable from the required item type.",
+                  "wrappedCollection"));
     }
 
     [Test]
@@ -83,10 +84,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That (
           () => new DomainObjectCollectionWrapper<Customer> (wrappedCollection),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "Cannot implement 'IList<Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer>' for a DomainObjectCollection with required item type "
-                  + "'Remotion.Data.DomainObjects.DomainObject'. The IList<T>'s item type must be assignable from the required item type.\r\n"
-                  + "Parameter name: wrappedCollection"));
+                  + "'Remotion.Data.DomainObjects.DomainObject'. The IList<T>'s item type must be assignable from the required item type.",
+                  "wrappedCollection"));
     }
 
     [Test]

@@ -17,6 +17,7 @@
 using System;
 using System.ComponentModel;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
@@ -319,7 +320,7 @@ namespace Remotion.UnitTests.Utilities
       Assert.That (
           () => _provider.Convert (_int32, _int32, DBNull.Value),
           Throws.ArgumentException
-              .With.Message.EqualTo ("Parameter 'value' has type 'System.DBNull' when type 'System.Int32' was expected.\r\nParameter name: value"));
+              .With.ArgumentExceptionMessageEqualTo ("Parameter 'value' has type 'System.DBNull' when type 'System.Int32' was expected.", "value"));
     }
 
     [Test]
@@ -328,7 +329,7 @@ namespace Remotion.UnitTests.Utilities
       Assert.That (
           () => _provider.Convert (_int32, _nullableInt32, "pwned!"),
           Throws.ArgumentException
-              .With.Message.EqualTo ("Parameter 'value' has type 'System.String' when type 'System.Int32' was expected.\r\nParameter name: value"));
+              .With.ArgumentExceptionMessageEqualTo ("Parameter 'value' has type 'System.String' when type 'System.Int32' was expected.", "value"));
     }
 
     [Test]

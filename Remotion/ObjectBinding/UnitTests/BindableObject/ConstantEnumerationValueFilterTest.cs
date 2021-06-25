@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.UnitTests.TestDomain;
 using Rhino.Mocks;
@@ -50,10 +51,10 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       Assert.That (
           () => new ConstantEnumerationValueFilter (new Enum[] { TestEnum.Value1, EnumWithUndefinedValue.Value2 }),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "Item 1 of parameter 'disabledValues' has the type 'Remotion.ObjectBinding.UnitTests.TestDomain.EnumWithUndefinedValue' "
-                  + "instead of 'Remotion.ObjectBinding.UnitTests.TestDomain.TestEnum'."
-                  + "\r\nParameter name: disabledValues"));
+                  + "instead of 'Remotion.ObjectBinding.UnitTests.TestDomain.TestEnum'.",
+                  "disabledValues"));
     }
 
     [Test]

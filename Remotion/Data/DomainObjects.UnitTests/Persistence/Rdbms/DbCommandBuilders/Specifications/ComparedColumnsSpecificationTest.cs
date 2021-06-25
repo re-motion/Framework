@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specifications;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuilders.Specifications
@@ -66,8 +67,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
     {
       Assert.That (
           () => new ComparedColumnsSpecification (Enumerable.Empty<ColumnValue>()),
-          Throws.ArgumentException.With.Message.EqualTo (
-                  "The sequence of compared column values must contain at least one element.\r\nParameter name: comparedColumnValues"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+                  "The sequence of compared column values must contain at least one element.", "comparedColumnValues"));
     }
 
     [Test]

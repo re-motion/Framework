@@ -20,6 +20,7 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 {
@@ -337,11 +338,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That (
           () => _productReview1.SetRelatedObject (typeof (ProductReview).FullName + ".Reviewer", DomainObjectIDs.Company1.GetObject<Company>()),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "DomainObject 'Company|c4954da8-8870-45c1-b7a3-c7e5e6ad641a|System.Guid' cannot be assigned "
                   + "to property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.ProductReview.Reviewer' "
-                  + "of DomainObject 'ProductReview|877540a7-fbcf-4bf3-9007-355ea43e796f|System.Guid', because it is not compatible with the type of the property."
-                  + "\r\nParameter name: newRelatedObject"));
+                  + "of DomainObject 'ProductReview|877540a7-fbcf-4bf3-9007-355ea43e796f|System.Guid', because it is not compatible with the type of the property.",
+                  "newRelatedObject"));
     }
   }
 }

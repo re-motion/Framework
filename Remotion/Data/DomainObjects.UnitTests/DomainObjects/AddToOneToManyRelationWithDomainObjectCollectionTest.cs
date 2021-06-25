@@ -18,6 +18,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 {
@@ -306,9 +307,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That (
           () => _supervisor.Subordinates.Add (_subordinate),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "The collection already contains an object with ID 'Employee|c3b2bbc3-e083-4974-bac7-9cee1fb85a5e|System.Guid'.\r\n"
-                  + "Parameter name: domainObject"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "The collection already contains an object with ID 'Employee|c3b2bbc3-e083-4974-bac7-9cee1fb85a5e|System.Guid'.",
+                  "domainObject"));
     }
 
     [Test]
@@ -318,9 +319,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That (
           () => _supervisor.Subordinates.Insert (0, _subordinate),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "The collection already contains an object with ID 'Employee|c3b2bbc3-e083-4974-bac7-9cee1fb85a5e|System.Guid'.\r\n"
-                  + "Parameter name: domainObject"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "The collection already contains an object with ID 'Employee|c3b2bbc3-e083-4974-bac7-9cee1fb85a5e|System.Guid'.",
+                  "domainObject"));
     }
 
     [Test]

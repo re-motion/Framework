@@ -27,6 +27,7 @@ using Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Mixins;
 using Remotion.Mixins.Utilities;
 
@@ -176,8 +177,9 @@ namespace Remotion.Data.DomainObjects.UnitTests
       var orderItem = (OrderItem) FormatterServices.GetSafeUninitializedObject (type);
       Assert.That (
           () => orderItem.Initialize (DomainObjectIDs.OrderItem1, _transaction.CreateSubTransaction()),
-          Throws.ArgumentException.With.Message.EqualTo (
-            "The rootTransaction parameter must be passed a root transaction.\r\nParameter name: rootTransaction"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+              "The rootTransaction parameter must be passed a root transaction.",
+              "rootTransaction"));
     }
 
     [Test]

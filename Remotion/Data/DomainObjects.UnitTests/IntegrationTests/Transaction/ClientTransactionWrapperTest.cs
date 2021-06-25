@@ -21,6 +21,7 @@ using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 {
@@ -50,9 +51,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Assert.That (
           () => _transaction.To<DomainObject>(),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "Parameter 'TTransaction' is a 'Remotion.Data.DomainObjects.DomainObject', "
-                  + "which cannot be assigned to type 'Remotion.Data.DomainObjects.ClientTransaction'.\r\nParameter name: TTransaction"));
+                  + "which cannot be assigned to type 'Remotion.Data.DomainObjects.ClientTransaction'.", "TTransaction"));
     }
 
     [Test]

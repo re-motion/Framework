@@ -19,6 +19,7 @@ using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
 {
@@ -74,7 +75,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
       Assert.That (
           () => _data.AddRangeAndCheckItems (new[] { _order3, null }, typeof (Order)),
           Throws.InstanceOf<ArgumentNullException>()
-              .With.Message.EqualTo ("Item 1 of parameter 'domainObjects' is null.\r\nParameter name: domainObjects"));
+              .With.ArgumentExceptionMessageEqualTo ("Item 1 of parameter 'domainObjects' is null.", "domainObjects"));
     }
 
     [Test]
@@ -83,9 +84,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
       Assert.That (
           () => _data.AddRangeAndCheckItems (new[] { _order3, _order3 }, typeof (Order)),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Item 1 of parameter 'domainObjects' is a duplicate ('Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid')."
-                  + "\r\nParameter name: domainObjects"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Item 1 of parameter 'domainObjects' is a duplicate ('Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid').",
+                  "domainObjects"));
     }
 
     [Test]
@@ -94,9 +95,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
       Assert.That (
           () => _data.AddRangeAndCheckItems (new[] { _order3 }, typeof (Customer)),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "Item 0 of parameter 'domainObjects' has the type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' " +
-                  "instead of 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer'.\r\nParameter name: domainObjects"));
+                  "instead of 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer'.", "domainObjects"));
     }
 
     [Test]

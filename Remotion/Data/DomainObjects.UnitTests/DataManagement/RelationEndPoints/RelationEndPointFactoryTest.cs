@@ -25,6 +25,7 @@ using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.Serialization;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.UnitTests.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
@@ -116,7 +117,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       Assert.That (
           () => _factory.CreateRealObjectEndPoint (endPointID, dataContainer), 
-          Throws.ArgumentException.With.Message.EqualTo ("End point ID must refer to a non-virtual end point.\r\nParameter name: id"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo ("End point ID must refer to a non-virtual end point.", "id"));
     }
 
     [Test]
@@ -143,7 +144,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       Assert.That (
           () => _factory.CreateVirtualObjectEndPoint (endPointID), 
-          Throws.ArgumentException.With.Message.EqualTo ("End point ID must refer to a virtual end point.\r\nParameter name: id"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo ("End point ID must refer to a virtual end point.", "id"));
     }
 
     [Test]
@@ -153,7 +154,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       Assert.That (
           () => _factory.CreateVirtualObjectEndPoint (endPointID),
-          Throws.ArgumentException.With.Message.EqualTo ("End point ID must refer to an end point with cardinality 'One'.\r\nParameter name: id"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo ("End point ID must refer to an end point with cardinality 'One'.", "id"));
     }
 
     [Test]
@@ -184,7 +185,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       Assert.That (
           () => _factory.CreateVirtualCollectionEndPoint (endPointID),
-          Throws.ArgumentException.With.Message.EqualTo ("End point ID must refer to an end point with cardinality 'Many'.\r\nParameter name: id"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo ("End point ID must refer to an end point with cardinality 'Many'.", "id"));
     }
 
     [Test]
@@ -194,7 +195,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       Assert.That (
           () => _factory.CreateVirtualCollectionEndPoint (endPointID),
-          Throws.ArgumentException.With.Message.EqualTo ("End point ID must not refer to an anonymous end point.\r\nParameter name: id"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo ("End point ID must not refer to an anonymous end point.", "id"));
     }
 
     [Test]
@@ -226,7 +227,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       Assert.That (
           () => _factory.CreateDomainObjectCollectionEndPoint (endPointID),
-          Throws.ArgumentException.With.Message.EqualTo ("End point ID must refer to an end point with cardinality 'Many'.\r\nParameter name: id"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo ("End point ID must refer to an end point with cardinality 'Many'.", "id"));
     }
 
     [Test]
@@ -236,7 +237,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       Assert.That (
           () => _factory.CreateDomainObjectCollectionEndPoint (endPointID),
-          Throws.ArgumentException.With.Message.EqualTo ("End point ID must not refer to an anonymous end point.\r\nParameter name: id"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo ("End point ID must not refer to an anonymous end point.", "id"));
     }
 
     [Test]

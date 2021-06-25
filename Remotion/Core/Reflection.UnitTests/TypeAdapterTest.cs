@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Rhino.Mocks;
@@ -844,9 +845,9 @@ namespace Remotion.Reflection.UnitTests
       var type = typeof (List<int>);
       Assert.That (
           () => TypeAdapter.Create (type).GetAscribedGenericArgumentsFor (TypeAdapter.Create (typeof (string))),
-          Throws.ArgumentException.And.Message.EqualTo (
+          Throws.ArgumentException.And.ArgumentExceptionMessageEqualTo (
               "Parameter 'type' has type 'System.Collections.Generic.List`1[System.Int32]' "
-              + "when type 'System.String' was expected.\r\nParameter name: type"));
+              + "when type 'System.String' was expected.", "type"));
     }
 
     [Test]
@@ -865,9 +866,9 @@ namespace Remotion.Reflection.UnitTests
       var otherType = MockRepository.GenerateStub<ITypeInformation>();
       Assert.That (
           () => TypeAdapter.Create (currentType).GetAscribedGenericArgumentsFor (otherType),
-          Throws.ArgumentException.And.Message.EqualTo (
-              "Parameter 'c' has type '" + otherType.GetType().FullName + "' when type 'Remotion.Reflection.TypeAdapter' was expected."
-              + "\r\nParameter name: c"));
+          Throws.ArgumentException.And.ArgumentExceptionMessageEqualTo (
+              "Parameter 'c' has type '" + otherType.GetType().FullName + "' when type 'Remotion.Reflection.TypeAdapter' was expected.",
+              "c"));
     }
 
     [Test]

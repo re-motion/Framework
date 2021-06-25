@@ -17,6 +17,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Queries.Configuration;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
 {
@@ -37,7 +38,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
       Assert.That (
           () => new QueryDefinition ("QueryID", TestDomainStorageProviderDefinition, "Statement", QueryType.Scalar, typeof (DomainObjectCollection)),
           Throws.ArgumentException
-              .With.Message.EqualTo ("The scalar query 'QueryID' must not specify a collectionType.\r\nParameter name: collectionType"));
+              .With.ArgumentExceptionMessageEqualTo ("The scalar query 'QueryID' must not specify a collectionType.", "collectionType"));
     }
 
     [Test]
@@ -46,9 +47,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
       Assert.That (
           () => new QueryDefinition ("QueryID", TestDomainStorageProviderDefinition, "Statement", QueryType.Collection, this.GetType ()),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "The collectionType of query 'QueryID' must be 'Remotion.Data.DomainObjects.DomainObjectCollection' or derived from it.\r\n"
-                  + "Parameter name: collectionType"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "The collectionType of query 'QueryID' must be 'Remotion.Data.DomainObjects.DomainObjectCollection' or derived from it.",
+                  "collectionType"));
     }
 
     [Test]

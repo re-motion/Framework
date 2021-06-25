@@ -21,6 +21,7 @@ using Remotion.Data.DomainObjects.Infrastructure.InvalidObjects;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.InvalidObjects
@@ -68,8 +69,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.InvalidObjects
     {
       Assert.That (
           () => new InvalidDomainObjectManager (_transactionEventSinkWithMock, new[] { _order1, _order1 }),
-          Throws.ArgumentException.With.Message.EqualTo (
-              "The sequence contains multiple different objects with the same ID.\r\nParameter name: invalidObjects"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+              "The sequence contains multiple different objects with the same ID.", "invalidObjects"));
     }
 
     [Test]
@@ -169,8 +170,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.InvalidObjects
       Assert.That (
           () => _manager.GetInvalidObjectReference (_order1.ID),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "The object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' has not been marked invalid.\r\nParameter name: id"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "The object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' has not been marked invalid.", "id"));
     }
 
     [Test]

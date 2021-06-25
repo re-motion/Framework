@@ -19,6 +19,7 @@ using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
@@ -148,9 +149,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
           new IIndexDefinition[0],
           new EntityNameDefinition[0]),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "Item 0 is of type 'Remotion.Data.DomainObjects.Persistence.Rdbms.Model.FilterViewDefinition', "
-                  + "but the unioned entities must either be a TableDefinitions or UnionViewDefinitions.\r\nParameter name: unionedEntities"));
+                  + "but the unioned entities must either be a TableDefinitions or UnionViewDefinitions.", "unionedEntities"));
     }
 
     [Test]

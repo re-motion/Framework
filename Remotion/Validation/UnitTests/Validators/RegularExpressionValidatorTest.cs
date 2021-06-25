@@ -18,6 +18,7 @@ using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Validators;
@@ -57,7 +58,7 @@ namespace Remotion.Validation.UnitTests.Validators
         Assert.That (
             () => new RegularExpressionValidator (null, new InvariantValidationMessage ("Fake Message")),
             Throws.InstanceOf<ArgumentNullException>()
-                .With.Message.EqualTo ($"Value cannot be null.{Environment.NewLine}Parameter name: regex"));
+                .With.ArgumentExceptionMessageEqualTo ($"Value cannot be null.", "regex"));
       }
     }
 

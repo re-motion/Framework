@@ -22,6 +22,7 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
@@ -186,7 +187,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       Assert.That (
           () => _existingDataContainer.GetValue (_nonOrderProperty), 
-          Throws.ArgumentException.With.Message.Contains ("Parameter name: propertyDefinition"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageWithParameterNameEqualTo ("propertyDefinition"));
     }
 
     [Test]
@@ -286,7 +287,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       Assert.That (
           () => _existingDataContainer.SetValue (_nonOrderProperty, 17), 
-          Throws.ArgumentException.With.Message.Contains ("Parameter name: propertyDefinition"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageWithParameterNameEqualTo ("propertyDefinition"));
     }
 
     [Test]
@@ -333,7 +334,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       Assert.That (
           () => _existingDataContainer.GetValueWithoutEvents (_nonOrderProperty, ValueAccess.Current), 
-          Throws.ArgumentException.With.Message.Contains ("Parameter name: propertyDefinition"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageWithParameterNameEqualTo ("propertyDefinition"));
     }
 
     [Test]
@@ -349,7 +350,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       Assert.That (
           () => _existingDataContainer.HasValueBeenTouched (_nonOrderProperty), 
-          Throws.ArgumentException.With.Message.Contains ("Parameter name: propertyDefinition"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageWithParameterNameEqualTo ("propertyDefinition"));
     }
 
     [Test]
@@ -375,7 +376,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       Assert.That (
           () => _existingDataContainer.TouchValue (_nonOrderProperty), 
-          Throws.ArgumentException.With.Message.Contains ("Parameter name: propertyDefinition"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageWithParameterNameEqualTo ("propertyDefinition"));
     }
 
     [Test]
@@ -405,7 +406,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       Assert.That (
           () => _existingDataContainer.HasValueChanged (_nonOrderProperty), 
-          Throws.ArgumentException.With.Message.Contains ("Parameter name: propertyDefinition"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageWithParameterNameEqualTo ("propertyDefinition"));
     }
 
     [Test]
@@ -524,7 +525,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       Assert.That (
           () => _existingDataContainer.CommitValue (_nonOrderProperty),
-          Throws.ArgumentException.With.Message.Contains ("Parameter name: propertyDefinition"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageWithParameterNameEqualTo ("propertyDefinition"));
     }
 
     [Test]
@@ -582,7 +583,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       Assert.That (
           () => _existingDataContainer.RollbackValue (_nonOrderProperty),
-          Throws.ArgumentException.With.Message.Contains ("Parameter name: propertyDefinition"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageWithParameterNameEqualTo ("propertyDefinition"));
     }
 
     [Test]
@@ -635,7 +636,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var sourceDataContainer = DataContainerObjectMother.Create (_existingDataContainer.ID);
       Assert.That (
           () => _existingDataContainer.SetValueDataFromSubTransaction (_nonOrderProperty, sourceDataContainer),
-          Throws.ArgumentException.With.Message.Contains ("Parameter name: propertyDefinition"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageWithParameterNameEqualTo ("propertyDefinition"));
     }
 
     [Test]
@@ -644,9 +645,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var sourceDataContainer = DataContainerObjectMother.Create (DomainObjectIDs.Customer1);
       Assert.That (
           () => _existingDataContainer.SetValueDataFromSubTransaction (_orderNumberProperty, sourceDataContainer),
-          Throws.ArgumentException.With.Message.EqualTo (
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
               "Cannot set this data container's property values from 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid'; the data " 
-              + "containers do not have the same class definition.\r\nParameter name: source"));
+              + "containers do not have the same class definition.", "source"));
     }
 
     [Test]
@@ -1128,9 +1129,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       Assert.That (
           () => targetDataContainer.SetPropertyDataFromSubTransaction (sourceDataContainer),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "Cannot set this data container's property values from 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid'; the data containers do not "
-                  + "have the same class definition.\r\nParameter name: source"));
+                  + "have the same class definition.", "source"));
     }
 
     [Test]
@@ -1294,9 +1295,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       Assert.That (
           () => dc.SetDomainObject (domainObject),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "The given DomainObject has another ID than this DataContainer.\r\n"
-                  + "Parameter name: domainObject"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "The given DomainObject has another ID than this DataContainer.",
+                  "domainObject"));
     }
 
     [Test]

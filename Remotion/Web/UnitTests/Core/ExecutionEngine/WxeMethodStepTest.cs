@@ -18,6 +18,7 @@ using System;
 using System.Reflection;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
 
@@ -124,9 +125,9 @@ public class WxeMethodStepTest: WxeTest
     Assert.That (
         () => new WxeMethodStep (action),
         Throws.ArgumentException
-            .With.Message.EqualTo (
+            .With.ArgumentExceptionMessageEqualTo (
                 "The delegate's target must be a non-null WxeStepList, but it was 'Remotion.Web.UnitTests.Core.ExecutionEngine.WxeMethodStepTest'. When used " 
-                + "within a WxeFunction, the delegate should be a method of the surrounding WxeFunction, and it must not be a closure.\r\nParameter name: method"));
+                + "within a WxeFunction, the delegate should be a method of the surrounding WxeFunction, and it must not be a closure.", "method"));
   }
 
   [Test]
@@ -137,9 +138,9 @@ public class WxeMethodStepTest: WxeTest
     Assert.That (
         () => new WxeMethodStep (action),
         Throws.ArgumentException
-            .With.Message.EqualTo (
+            .With.ArgumentExceptionMessageEqualTo (
                 "The delegate's target must be a non-null WxeStepList, but it was 'null'. When used "
-                + "within a WxeFunction, the delegate should be a method of the surrounding WxeFunction, and it must not be a closure.\r\nParameter name: method"));
+                + "within a WxeFunction, the delegate should be a method of the surrounding WxeFunction, and it must not be a closure.", "method"));
   }
 
   [Test]

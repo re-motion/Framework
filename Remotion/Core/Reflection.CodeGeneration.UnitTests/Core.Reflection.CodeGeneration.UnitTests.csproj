@@ -154,6 +154,9 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\SharedSource\Development\UnitTesting\NUnit\NUnitExtensions.cs">
+      <Link>SharedSource\UnitTesting\NUnit\NUnitExtensions.cs</Link>
+    </Compile>
     <Compile Include="AssemblySaverTest.cs" />
     <Compile Include="BlockStatementTest.cs" />
     <Compile Include="CastClassExpressionTest.cs" />

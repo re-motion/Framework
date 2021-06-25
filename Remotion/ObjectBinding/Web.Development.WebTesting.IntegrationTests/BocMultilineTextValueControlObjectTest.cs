@@ -19,6 +19,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using OpenQA.Selenium;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.TestCaseFactories;
@@ -187,7 +188,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       Assert.That (
           () => bocMultilineText.FillWith ("a" + Keys.Enter + "a"),
-          Throws.ArgumentException.With.Message.EqualTo ("Value may not contain both text and keys at the same time.\r\nParameter name: value"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo ("Value may not contain both text and keys at the same time.", "value"));
     }
 
     [Test]

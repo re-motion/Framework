@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.ExtensibleEnums.UnitTests.TestDomain;
 using Remotion.Reflection;
 
@@ -76,8 +77,8 @@ namespace Remotion.ExtensibleEnums.UnitTests
       Assert.That (
           () => ExtensibleEnumUtility.GetDefinition (typeof (object)),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Type 'System.Object' is not an extensible enum type derived from ExtensibleEnum<T>.\r\nParameter name: extensibleEnumType"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Type 'System.Object' is not an extensible enum type derived from ExtensibleEnum<T>.", "extensibleEnumType"));
     }
   }
 }

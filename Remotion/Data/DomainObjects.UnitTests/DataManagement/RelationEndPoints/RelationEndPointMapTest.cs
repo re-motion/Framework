@@ -23,6 +23,7 @@ using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.Serialization;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
@@ -217,9 +218,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       // Note: We'll get an event even when an exception is thrown. This is more an optimization than a feature.
       _transactionEventSinkWithMock.Stub (l => l.RaiseRelationEndPointMapUnregisteringEvent ( _endPointID1));
 
-      Assert.That (() => _map.RemoveEndPoint (_endPointID1), Throws.ArgumentException.With.Message.EqualTo (
+      Assert.That (() => _map.RemoveEndPoint (_endPointID1), Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
           "End point 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' is not "
-          + "part of this map.\r\nParameter name: endPointID"));
+          + "part of this map.", "endPointID"));
     }
 
     [Test]

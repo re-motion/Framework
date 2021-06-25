@@ -18,6 +18,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
 {
@@ -40,10 +41,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       Assert.That (
           () => DomainObjectIDs.Order1.GetHandle<OrderItem>(),
           Throws.TypeOf<ArgumentException>()
-                .With.Message.EqualTo (
+                .With.ArgumentExceptionMessageEqualTo (
                     "The ObjectID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be represented as an "
-                    + "'IDomainObjectHandle<Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem>'.\r\n"
-                    + "Parameter name: T"));
+                    + "'IDomainObjectHandle<Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem>'.",
+                    "T"));
     }
 
     [Test]

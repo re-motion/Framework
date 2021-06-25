@@ -18,6 +18,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
 {
@@ -58,9 +59,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       Assert.That (
           () => endPoint.Collection.Remove (orderItem1),
           Throws.ArgumentException
-              .With.Message.Matches (
-                  "The object to be removed has the same ID as an object in this collection, but is a different object reference.\r\n"
-                  + "Parameter name: domainObject"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "The object to be removed has the same ID as an object in this collection, but is a different object reference.",
+                  "domainObject"));
     }
 
     [Test]

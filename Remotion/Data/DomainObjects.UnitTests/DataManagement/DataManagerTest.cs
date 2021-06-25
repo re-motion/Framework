@@ -28,6 +28,7 @@ using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Development.UnitTesting.ObjectMothers;
 using Rhino.Mocks;
 
@@ -962,8 +963,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       Assert.That (
           () => _dataManagerWithMocks.LoadLazyCollectionEndPoint (endPointID),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "The given ID does not identify an ICollectionEndPoint managed by this DataManager.\r\nParameter name: endPointID"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "The given ID does not identify an ICollectionEndPoint managed by this DataManager.", "endPointID"));
     }
 
     [Test]
@@ -975,8 +976,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       Assert.That (
           () => _dataManagerWithMocks.LoadLazyCollectionEndPoint (endPointID),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "The given ID does not identify an ICollectionEndPoint managed by this DataManager.\r\nParameter name: endPointID"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "The given ID does not identify an ICollectionEndPoint managed by this DataManager.", "endPointID"));
     }
 
     [Test]
@@ -1063,8 +1064,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       Assert.That (
           () => _dataManagerWithMocks.LoadLazyVirtualObjectEndPoint (endPointID),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "The given ID does not identify an IVirtualObjectEndPoint managed by this DataManager.\r\nParameter name: endPointID"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "The given ID does not identify an IVirtualObjectEndPoint managed by this DataManager.", "endPointID"));
     }
 
     [Test]
@@ -1076,8 +1077,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       Assert.That (
           () => _dataManagerWithMocks.LoadLazyVirtualObjectEndPoint (endPointID),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "The given ID does not identify an IVirtualObjectEndPoint managed by this DataManager.\r\nParameter name: endPointID"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "The given ID does not identify an IVirtualObjectEndPoint managed by this DataManager.", "endPointID"));
     }
 
     [Test]

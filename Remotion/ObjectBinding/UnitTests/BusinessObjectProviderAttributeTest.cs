@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.ObjectBinding.BindableObject;
 
 namespace Remotion.ObjectBinding.UnitTests
@@ -45,9 +46,9 @@ namespace Remotion.ObjectBinding.UnitTests
       Assert.That (
           () => new StubBusinessObjectProviderAttribute (typeof (object)),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Parameter 'businessObjectProviderType' is a 'System.Object', which cannot be assigned to type 'Remotion.ObjectBinding.IBusinessObjectProvider'."
-                  + "\r\nParameter name: businessObjectProviderType"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Parameter 'businessObjectProviderType' is a 'System.Object', which cannot be assigned to type 'Remotion.ObjectBinding.IBusinessObjectProvider'.",
+                  "businessObjectProviderType"));
     }
   }
 }

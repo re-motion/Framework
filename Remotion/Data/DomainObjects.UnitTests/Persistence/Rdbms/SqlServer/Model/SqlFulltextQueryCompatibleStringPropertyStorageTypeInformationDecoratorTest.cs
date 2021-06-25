@@ -21,6 +21,7 @@ using System.Data;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Development.UnitTesting.ObjectMothers;
 using Rhino.Mocks;
 
@@ -288,9 +289,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
 
       Assert.That (
           () => source.UnifyForEquivalentProperties (equivalentStorageTypes),
-          Throws.ArgumentException.With.Message.EqualTo (
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
               "Only equivalent properties can be combined, but this property has fulltext compatible max-length '13', and "
-              + "the given property has fulltext compatible max-length '42'.\r\nParameter name: equivalentStorageTypes"));
+              + "the given property has fulltext compatible max-length '42'.", "equivalentStorageTypes"));
     }
   }
 }

@@ -19,6 +19,7 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 {
@@ -512,14 +513,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       var expectedMessage = string.Format (
           "DomainObject '{0}' cannot be assigned to property '{1}' of DomainObject '{2}',"
-          + " because it is not compatible with the type of the property.\r\nParameter name: newRelatedObject",
+          + " because it is not compatible with the type of the property.",
           DomainObjectIDs.Customer1,
           "Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order",
           DomainObjectIDs.OrderTicket1);
 
       Assert.That (
           () => orderTicket.SetRelatedObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", newRelatedObject),
-          Throws.ArgumentException.And.Message.EqualTo (expectedMessage));
+          Throws.ArgumentException.And.ArgumentExceptionMessageEqualTo (expectedMessage, "newRelatedObject"));
     }
 
     [Test]
@@ -529,14 +530,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       var expectedMessage = string.Format (
           "DomainObject '{0}' cannot be assigned to property '{1}' of DomainObject '{2}',"
-          + " because it is not compatible with the type of the property.\r\nParameter name: newRelatedObject",
+          + " because it is not compatible with the type of the property.",
           newRelatedObject,
           "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket",
           _order);
 
       Assert.That (
           () => _order.SetRelatedObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", newRelatedObject),
-          Throws.ArgumentException.And.Message.EqualTo (expectedMessage));
+          Throws.ArgumentException.And.ArgumentExceptionMessageEqualTo (expectedMessage, "newRelatedObject"));
     }
   }
 }

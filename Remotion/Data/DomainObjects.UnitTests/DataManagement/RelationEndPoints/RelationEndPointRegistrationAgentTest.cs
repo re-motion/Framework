@@ -21,6 +21,7 @@ using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
@@ -322,9 +323,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var existingEndPoint = MockRepository.GenerateStub<IRelationEndPoint> ();
       existingEndPoint.Stub (stub => stub.ID).Return (_realOneManyEndPointID);
 
-      Assert.That (() => _agent.UnregisterEndPoint (existingEndPoint, _map), Throws.ArgumentException.With.Message.EqualTo (
+      Assert.That (() => _agent.UnregisterEndPoint (existingEndPoint, _map), Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
           "End-point 'OrderItem|2f4d42c7-7ffa-490d-bfcd-a9101bbf4e1a|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order' "
-          + "is not part of this map.\r\nParameter name: endPoint"));
+          + "is not part of this map.",
+          "endPoint"));
     }
 
     [Test]

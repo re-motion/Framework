@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.Security.ExecutionEngine;
 using Remotion.Web.UnitTests.Core.Security.Domain;
@@ -138,9 +139,9 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
       Assert.That (
           () => helper.GetSecurableObject (new TestFunctionWithoutPermissions()),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "Parameter 'function' has type 'Remotion.Web.UnitTests.Core.Security.ExecutionEngine.TestFunctionWithoutPermissions' "
-                  + "when type 'Remotion.Web.UnitTests.Core.Security.ExecutionEngine.TestFunctionWithThisObject' was expected.\r\nParameter name: function"));
+                  + "when type 'Remotion.Web.UnitTests.Core.Security.ExecutionEngine.TestFunctionWithThisObject' was expected.", "function"));
     }
 
     [Test]

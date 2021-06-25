@@ -28,6 +28,7 @@ using Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.UnitTests.UnitTesting;
 using Remotion.Development.UnitTesting.Enumerables;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
@@ -345,12 +346,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
     {
       Assert.That (
           () => _persistenceStrategy.ResolveObjectRelationData (_collectionEndPointID, _alreadyLoadedObjectDataProviderMock),
-          Throws.ArgumentException.With.Message.EqualTo (
-            "ResolveObjectRelationData can only be called for virtual object end points.\r\nParameter name: relationEndPointID"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+              "ResolveObjectRelationData can only be called for virtual object end points.",
+              "relationEndPointID"));
       Assert.That (
           () => _persistenceStrategy.ResolveObjectRelationData (_nonVirtualEndPointID, _alreadyLoadedObjectDataProviderMock),
-          Throws.ArgumentException.With.Message.EqualTo (
-            "ResolveObjectRelationData can only be called for virtual object end points.\r\nParameter name: relationEndPointID"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+              "ResolveObjectRelationData can only be called for virtual object end points.",
+              "relationEndPointID"));
     }
 
     [Test]
@@ -395,12 +398,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
     {
       Assert.That (
           () => _persistenceStrategy.ResolveCollectionRelationData (_virtualObjectRelationEndPointID, _alreadyLoadedObjectDataProviderMock),
-          Throws.ArgumentException.With.Message.EqualTo (
-            "ResolveCollectionRelationData can only be called for CollectionEndPoints.\r\nParameter name: relationEndPointID"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+            "ResolveCollectionRelationData can only be called for CollectionEndPoints.", "relationEndPointID"));
       Assert.That (
           () => _persistenceStrategy.ResolveCollectionRelationData (_nonVirtualEndPointID, _alreadyLoadedObjectDataProviderMock),
-          Throws.ArgumentException.With.Message.EqualTo (
-            "ResolveCollectionRelationData can only be called for CollectionEndPoints.\r\nParameter name: relationEndPointID"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+            "ResolveCollectionRelationData can only be called for CollectionEndPoints.", "relationEndPointID"));
     }
 
     [Test]

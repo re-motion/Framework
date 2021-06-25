@@ -18,6 +18,7 @@ using System;
 using System.Reflection;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.ExtensibleEnums;
 using Remotion.Globalization;
 using Remotion.Globalization.ExtensibleEnums;
@@ -187,9 +188,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       Assert.That (
           () => property.GetValueInfoByIdentifier ("?", null),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "The identifier '?' does not identify a defined value for type " 
-                  + "'Remotion.ObjectBinding.UnitTests.TestDomain.ExtensibleEnumWithResources'.\r\nParameter name: identifier"));
+                  + "'Remotion.ObjectBinding.UnitTests.TestDomain.ExtensibleEnumWithResources'.", "identifier"));
     }
 
     [Test]

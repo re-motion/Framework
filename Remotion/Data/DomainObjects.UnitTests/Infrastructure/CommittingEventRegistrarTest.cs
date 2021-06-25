@@ -19,6 +19,7 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 {
@@ -92,27 +93,30 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     {
       Assert.That (
           () => _registrar.RegisterForAdditionalCommittingEvents (_invalidObject), 
-          Throws.ArgumentException.With.Message.EqualTo (
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
               string.Format (
                   "The given DomainObject '{0}' cannot be registered due to its DomainObjectState (Invalid). Only objects that are part of the commit "
-                  + "set can be registered. Use RegisterForCommit to add an unchanged object to the commit set.\r\nParameter name: domainObjects",
-                  _invalidObject.ID)));
+                  + "set can be registered. Use RegisterForCommit to add an unchanged object to the commit set.",
+                  _invalidObject.ID),
+              "domainObjects"));
 
       Assert.That (
           () => _registrar.RegisterForAdditionalCommittingEvents (_unchangedObject),
-          Throws.ArgumentException.With.Message.EqualTo (
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
             string.Format (
                   "The given DomainObject '{0}' cannot be registered due to its DomainObjectState (Unchanged). Only objects that are part of the commit "
-                  + "set can be registered. Use RegisterForCommit to add an unchanged object to the commit set.\r\nParameter name: domainObjects", 
-                  _unchangedObject.ID)));
+                  + "set can be registered. Use RegisterForCommit to add an unchanged object to the commit set.",
+                  _unchangedObject.ID),
+            "domainObjects"));
 
       Assert.That (
           () => _registrar.RegisterForAdditionalCommittingEvents (_notLoadedYetObject),
-          Throws.ArgumentException.With.Message.EqualTo (
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
             string.Format (
                   "The given DomainObject '{0}' cannot be registered due to its DomainObjectState (NotLoadedYet). Only objects that are part of the commit "
-                  + "set can be registered. Use RegisterForCommit to add an unchanged object to the commit set.\r\nParameter name: domainObjects", 
-                  _notLoadedYetObject.ID)));
+                  + "set can be registered. Use RegisterForCommit to add an unchanged object to the commit set.",
+                  _notLoadedYetObject.ID),
+                  "domainObjects"));
     }
   }
 }

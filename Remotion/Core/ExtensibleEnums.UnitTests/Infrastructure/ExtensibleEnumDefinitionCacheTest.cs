@@ -17,6 +17,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.ExtensibleEnums.Infrastructure;
 using Remotion.ExtensibleEnums.UnitTests.TestDomain;
 using Remotion.Reflection;
@@ -78,9 +79,9 @@ namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
       Assert.That (
           () => _cache.GetDefinition (typeof (object)),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "Type 'System.Object' is not an extensible enum type "
-                  + "derived from ExtensibleEnum<T>.\r\nParameter name: extensibleEnumType"));
+                  + "derived from ExtensibleEnum<T>.", "extensibleEnumType"));
     }
 
     [Test]
@@ -89,9 +90,9 @@ namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
       Assert.That (
           () => _cache.GetDefinition (typeof (MetallicColor)),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "Type 'Remotion.ExtensibleEnums.UnitTests.TestDomain.MetallicColor' is not an extensible enum type "
-                  + "derived from ExtensibleEnum<T>.\r\nParameter name: extensibleEnumType"));
+                  + "derived from ExtensibleEnum<T>.", "extensibleEnumType"));
     }
 
     [Test]

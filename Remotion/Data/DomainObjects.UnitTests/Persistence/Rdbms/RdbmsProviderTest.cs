@@ -31,6 +31,7 @@ using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Data.DomainObjects.UnitTests.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 using SortOrder = Remotion.Data.DomainObjects.Mapping.SortExpressions.SortOrder;
 
@@ -314,9 +315,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
       Assert.That (
           () => _provider.LoadDataContainer (objectID),
-          Throws.ArgumentException.With.Message.EqualTo (
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
               "The StorageProviderID 'UnitTestStorageProviderStub' of the provided ObjectID 'Official|1|System.Int32' does not match with this "
-              + "StorageProvider's ID 'TestDomain'.\r\nParameter name: id"));
+              + "StorageProvider's ID 'TestDomain'.", "id"));
     }
 
     [Test]
@@ -390,9 +391,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
       Assert.That (
           () => _provider.LoadDataContainers (new[] { objectID }),
-          Throws.ArgumentException.With.Message.EqualTo (
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
               "The StorageProviderID 'UnitTestStorageProviderStub' of the provided ObjectID 'Official|1|System.Int32' does not match with this "
-              + "StorageProvider's ID 'TestDomain'.\r\nParameter name: ids"));
+              + "StorageProvider's ID 'TestDomain'.", "ids"));
     }
 
     [Test]
@@ -503,8 +504,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
       Assert.That (
           () => providerWithDifferentID.LoadDataContainersByRelatedID (relationEndPointDefinition, null, objectID),
-          Throws.Exception.TypeOf<ArgumentException>().With.Message.EqualTo (
-              "The StorageProviderID 'TestDomain' of the provided ClassDefinition does not match with this StorageProvider's ID 'Test'.\r\nParameter name: classDefinition"));
+          Throws.Exception.TypeOf<ArgumentException>().With.ArgumentExceptionMessageEqualTo (
+              "The StorageProviderID 'TestDomain' of the provided ClassDefinition does not match with this StorageProvider's ID 'Test'.", "classDefinition"));
     }
 
     [Test]

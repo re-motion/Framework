@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Mixins;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.UnitTests.BindableObject;
@@ -153,9 +154,9 @@ namespace Remotion.ObjectBinding.UnitTests
       Assert.That (
           () => BusinessObjectProvider.SetProvider (typeof (BindableObjectProviderAttribute), _provider),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "The provider is not compatible with the provider-type required by the businessObjectProviderAttributeType's instantiation."
-                  + "\r\nParameter name: provider"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "The provider is not compatible with the provider-type required by the businessObjectProviderAttributeType's instantiation.",
+                  "provider"));
     }
 
     [Test]

@@ -20,6 +20,7 @@ using System.Reflection;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Reflection;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.MetaValidation.Rules.Custom;
@@ -378,10 +379,10 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
               implementationProperty: overriddenProperty,
               domainModelConstraintProvider: _domainModelConstraintProvider,
               validationMessageFactory: _validationMessageFactoryStub),
-          Throws.ArgumentException.With.Message.EqualTo (
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
               "The property 'PropertyWithNullableStringPropertyAttribute' was used from the overridden declaration on type "
               + "'Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain.DerivedTypeWithDomainObjectAttributes' "
-              + "but only original declarations are supported.\r\nParameter name: implementationProperty"));
+              + "but only original declarations are supported.", "implementationProperty"));
     }
   }
 }

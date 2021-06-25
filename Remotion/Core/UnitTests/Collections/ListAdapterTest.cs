@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using NUnit.Framework;
 using Remotion.Collections;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.UnitTests.Collections
 {
@@ -190,8 +191,8 @@ namespace Remotion.UnitTests.Collections
       Assert.That (
           () => _adapter.CopyTo (destArray, -1),
           Throws.InstanceOf<ArgumentOutOfRangeException>()
-              .With.Message.EqualTo (
-                  "Index must not be negative.\r\nParameter name: arrayIndex"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Index must not be negative.", "arrayIndex"));
     }
 
     [Test]
@@ -201,7 +202,7 @@ namespace Remotion.UnitTests.Collections
       Assert.That (
           () => _adapter.CopyTo (destArray, 6),
           Throws.ArgumentException
-              .With.Message.EqualTo ("Index must be less than the length of the array.\r\nParameter name: arrayIndex"));
+              .With.ArgumentExceptionMessageEqualTo ("Index must be less than the length of the array.", "arrayIndex"));
     }
 
     [Test]
@@ -221,8 +222,8 @@ namespace Remotion.UnitTests.Collections
       Assert.That (
           () => _adapter.CopyTo (destArray, 4),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "There must be enough space to copy all items into the destination array starting at the given index.\r\nParameter name: arrayIndex"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "There must be enough space to copy all items into the destination array starting at the given index.", "arrayIndex"));
     }
 
     [Test]

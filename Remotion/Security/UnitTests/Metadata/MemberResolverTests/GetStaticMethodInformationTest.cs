@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Reflection;
 using Remotion.Security.Metadata;
 using Remotion.Security.UnitTests.SampleDomain;
@@ -93,8 +94,8 @@ namespace Remotion.Security.UnitTests.Metadata.MemberResolverTests
       Assert.That (
           () => _resolver.GetMethodInformation (typeof (SecurableObject), "Sve", MemberAffiliation.Static),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "The method 'Sve' could not be found.\r\nParameter name: methodName"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "The method 'Sve' could not be found.", "methodName"));
     }
   }
 }

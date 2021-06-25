@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Security.UnitTests.SampleDomain;
 
 namespace Remotion.Security.UnitTests
@@ -36,9 +37,9 @@ namespace Remotion.Security.UnitTests
       Assert.That (
           () => new DemandPermissionAttribute (TestAccessTypesWithoutAccessTypeAttribute.First),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "Enumerated Type 'Remotion.Security.UnitTests.SampleDomain.TestAccessTypesWithoutAccessTypeAttribute' cannot be used as an access type. "
-                  + "Valid access types must have the Remotion.Security.AccessTypeAttribute applied.\r\nParameter name: accessType"));
+                  + "Valid access types must have the Remotion.Security.AccessTypeAttribute applied.", "accessType"));
     }
 
     [Test]
@@ -47,9 +48,9 @@ namespace Remotion.Security.UnitTests
       Assert.That (
           () => new DemandPermissionAttribute (new SimpleType()),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Item 0 of parameter 'accessTypes' has the type 'Remotion.Security.UnitTests.SampleDomain.SimpleType' instead of 'System.Enum'."
-                  + "\r\nParameter name: accessTypes"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Item 0 of parameter 'accessTypes' has the type 'Remotion.Security.UnitTests.SampleDomain.SimpleType' instead of 'System.Enum'.",
+                  "accessTypes"));
     }
 
     [Test]

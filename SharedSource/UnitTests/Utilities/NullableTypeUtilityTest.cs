@@ -17,6 +17,7 @@
 
 using System;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Utilities;
 
 #nullable enable
@@ -52,7 +53,7 @@ namespace Remotion.UnitTests.Utilities
     {
       Assert.That (
           () => NullableTypeUtility.IsNullableType (null!),
-          Throws.TypeOf<ArgumentNullException>().With.Message.EndsWith ("Parameter name: type"));
+          Throws.TypeOf<ArgumentNullException>().With.ArgumentExceptionMessageWithParameterNameEqualTo ("type"));
     }
 
     [Test]
@@ -78,7 +79,7 @@ namespace Remotion.UnitTests.Utilities
     {
       Assert.That (
           () => NullableTypeUtility.GetNullableType (null!),
-          Throws.TypeOf<ArgumentNullException>().With.Message.EndsWith ("Parameter name: type"));
+          Throws.TypeOf<ArgumentNullException>().With.ArgumentExceptionMessageWithParameterNameEqualTo ("type"));
     }
 
     [Test]
@@ -104,7 +105,7 @@ namespace Remotion.UnitTests.Utilities
     {
       Assert.That (
           () => NullableTypeUtility.GetBasicType (null!),
-          Throws.TypeOf<ArgumentNullException>().With.Message.EndsWith ("Parameter name: type"));
+          Throws.TypeOf<ArgumentNullException>().With.ArgumentExceptionMessageWithParameterNameEqualTo ("type"));
     }
   }
 }

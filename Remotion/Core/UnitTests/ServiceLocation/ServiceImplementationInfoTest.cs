@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.ServiceLocation;
 
 namespace Remotion.UnitTests.ServiceLocation
@@ -72,8 +73,8 @@ namespace Remotion.UnitTests.ServiceLocation
     {
       Assert.That (
           () => new ServiceImplementationInfo (typeof (ServiceImplementationInfoTest), LifetimeKind.Singleton, RegistrationType.Decorator),
-          Throws.ArgumentException.And.Message.EqualTo (
-              "For implementations of type 'Decorator', the lifetime can only be specified as 'InstancePerDependency'.\r\nParameter name: lifetime"));
+          Throws.ArgumentException.And.ArgumentExceptionMessageEqualTo (
+              "For implementations of type 'Decorator', the lifetime can only be specified as 'InstancePerDependency'.", "lifetime"));
     }
 
     [Test]

@@ -18,6 +18,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
@@ -136,9 +137,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 
       Assert.That (
           () => _unsupportedStorageProperty.UnifyWithEquivalentProperties (new[] { property2 }),
-          Throws.ArgumentException.With.Message.EqualTo (
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
               "Only equivalent properties can be combined, but this property has type 'UnsupportedStoragePropertyDefinition', and the given property has "
-              + "type 'SimpleStoragePropertyDefinition'.\r\nParameter name: equivalentProperties"));
+              + "type 'SimpleStoragePropertyDefinition'.", "equivalentProperties"));
     }
 
     [Test]
@@ -150,9 +151,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 
       Assert.That (
           () => property1.UnifyWithEquivalentProperties (new[] { property2 }),
-          Throws.ArgumentException.With.Message.EqualTo (
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
               "Only equivalent properties can be combined, but this property has property type 'System.Int32', and the given property has "
-              + "property type 'System.String'.\r\nParameter name: equivalentProperties"));
+              + "property type 'System.String'.", "equivalentProperties"));
     }
 
     [Test]
@@ -164,9 +165,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       
       Assert.That (
           () => property1.UnifyWithEquivalentProperties (new[] { property2 }),
-          Throws.ArgumentException.With.Message.EqualTo (
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
               "Only equivalent properties can be combined, but this property has message 'x', and the given property has "
-              + "message 'y'.\r\nParameter name: equivalentProperties"));
+              + "message 'y'.", "equivalentProperties"));
     }
 
     [Test]
@@ -177,9 +178,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 
       Assert.That (
           () => property1.UnifyWithEquivalentProperties (new[] { property2 }),
-          Throws.ArgumentException.With.Message.EqualTo (
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
               "Only equivalent properties can be combined, but this property has inner exception type 'System.InvalidOperationException', and the "
-              + "given property has inner exception type 'System.ArgumentException'.\r\nParameter name: equivalentProperties"));
+              + "given property has inner exception type 'System.ArgumentException'.", "equivalentProperties"));
     }
   }
 }

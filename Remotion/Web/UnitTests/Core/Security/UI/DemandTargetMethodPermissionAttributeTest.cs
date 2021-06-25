@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Web.Security.UI;
 using Remotion.Web.UnitTests.Core.Security.Domain;
 
@@ -70,8 +71,8 @@ namespace Remotion.Web.UnitTests.Core.Security.UI
       Assert.That (
           () => new DemandTargetMethodPermissionAttribute (MethodNameEnum.Show),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Enumerated type 'Remotion.Web.UnitTests.Core.Security.Domain.MethodNameEnum' is not declared as a nested type.\r\nParameter name: methodNameEnum"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Enumerated type 'Remotion.Web.UnitTests.Core.Security.Domain.MethodNameEnum' is not declared as a nested type.", "methodNameEnum"));
     }
 
     [Test]
@@ -80,9 +81,9 @@ namespace Remotion.Web.UnitTests.Core.Security.UI
       Assert.That (
           () => new DemandTargetMethodPermissionAttribute (SimpleType.MethodNameEnum.Show),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "The declaring type of enumerated type 'Remotion.Web.UnitTests.Core.Security.Domain.SimpleType+MethodNameEnum' does not implement interface"
-                  + " 'Remotion.Security.ISecurableObject'.\r\nParameter name: methodNameEnum"));
+                  + " 'Remotion.Security.ISecurableObject'.", "methodNameEnum"));
     }
 
     [Test]
@@ -91,9 +92,9 @@ namespace Remotion.Web.UnitTests.Core.Security.UI
       Assert.That (
           () => new DemandTargetMethodPermissionAttribute (SecurableObject.Method.Show, typeof (OtherSecurableObject)),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "Type 'Remotion.Web.UnitTests.Core.Security.Domain.OtherSecurableObject' cannot be assigned to the declaring type of enumerated type"
-                  + " 'Remotion.Web.UnitTests.Core.Security.Domain.SecurableObject+Method'.\r\nParameter name: securableClass"));
+                  + " 'Remotion.Web.UnitTests.Core.Security.Domain.SecurableObject+Method'.", "securableClass"));
     }
   }
 }

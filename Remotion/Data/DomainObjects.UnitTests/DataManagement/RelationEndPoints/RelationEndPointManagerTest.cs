@@ -21,6 +21,7 @@ using Remotion.Data.DomainObjects.DataManagement.Commands;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
@@ -457,10 +458,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       Assert.That (
           () => _relationEndPointManager.CreateUnloadVirtualEndPointsCommand (new[] { endPointID }),
-          Throws.ArgumentException.With.Message.EqualTo (
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
               "The given end point ID "
               + "'OrderItem|2f4d42c7-7ffa-490d-bfcd-a9101bbf4e1a|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order' "
-              + "does not denote a virtual end-point.\r\nParameter name: endPointIDs"));
+              + "does not denote a virtual end-point.", "endPointIDs"));
     }
 
     [Test]
@@ -595,7 +596,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (
           () => _relationEndPointManager.GetRelationEndPointWithLazyLoad (RelationEndPointID.Create (parentClient.ID, anonymousEndPointDefinition)),
           Throws.ArgumentException
-              .With.Message.EqualTo ("GetRelationEndPointWithLazyLoad cannot be called for anonymous end points.\r\nParameter name: endPointID"));
+              .With.ArgumentExceptionMessageEqualTo ("GetRelationEndPointWithLazyLoad cannot be called for anonymous end points.", "endPointID"));
     }
 
     [Test]
@@ -781,7 +782,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (
           () => _relationEndPointManager.GetOrCreateVirtualEndPoint (RelationEndPointID.Create (parentClient.ID, anonymousEndPointDefinition)),
           Throws.ArgumentException
-              .With.Message.EqualTo ("GetOrCreateVirtualEndPoint cannot be called for anonymous end points.\r\nParameter name: endPointID"));
+              .With.ArgumentExceptionMessageEqualTo ("GetOrCreateVirtualEndPoint cannot be called for anonymous end points.", "endPointID"));
     }
 
     [Test]
@@ -791,7 +792,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (
           () => _relationEndPointManager.GetOrCreateVirtualEndPoint (endPointID),
           Throws.ArgumentException
-              .With.Message.EqualTo ("GetOrCreateVirtualEndPoint cannot be called for non-virtual end points.\r\nParameter name: endPointID"));
+              .With.ArgumentExceptionMessageEqualTo ("GetOrCreateVirtualEndPoint cannot be called for non-virtual end points.", "endPointID"));
     }
 
     [Test]

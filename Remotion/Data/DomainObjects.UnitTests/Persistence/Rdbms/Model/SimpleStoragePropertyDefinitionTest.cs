@@ -19,6 +19,7 @@ using System.Data;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Development.UnitTesting.ObjectMothers;
 using Rhino.Mocks;
 
@@ -175,9 +176,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 
       Assert.That (
           () => _storagePropertyDefinition.UnifyWithEquivalentProperties (new[] { property2 }),
-          Throws.ArgumentException.With.Message.EqualTo (
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
               "Only equivalent properties can be combined, but this property has type 'SimpleStoragePropertyDefinition', and the given property has "
-              + "type 'CompoundStoragePropertyDefinition'.\r\nParameter name: equivalentProperties"));
+              + "type 'CompoundStoragePropertyDefinition'.", "equivalentProperties"));
     }
 
     [Test]
@@ -189,9 +190,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 
       Assert.That (
           () => property1.UnifyWithEquivalentProperties (new[] { property2 }),
-          Throws.ArgumentException.With.Message.EqualTo (
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
               "Only equivalent properties can be combined, but this property has property type 'System.Int32', and the given property has "
-              + "property type 'System.String'.\r\nParameter name: equivalentProperties"));
+              + "property type 'System.String'.", "equivalentProperties"));
     }
 
     [Test]
@@ -203,9 +204,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 
       Assert.That (
           () => property1.UnifyWithEquivalentProperties (new[] { property2 }),
-          Throws.ArgumentException.With.Message.EqualTo (
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
               "Only equivalent properties can be combined, but this property has column name 'Foo', and the given property has "
-              + "column name 'Bar'.\r\nParameter name: equivalentProperties"));
+              + "column name 'Bar'.", "equivalentProperties"));
     }
 
     [Test]
@@ -217,9 +218,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 
       Assert.That (
           () => property1.UnifyWithEquivalentProperties (new[] { property2 }),
-          Throws.ArgumentException.With.Message.EqualTo (
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
               "Only equivalent properties can be combined, but this property has primary key flag 'True', and the given property has "
-              + "primary key flag 'False'.\r\nParameter name: equivalentProperties"));
+              + "primary key flag 'False'.", "equivalentProperties"));
     }
 
     private static StorageTypeInformation CreateDefinedStorageTypeInformation (bool isStorageTypeNullable = false)

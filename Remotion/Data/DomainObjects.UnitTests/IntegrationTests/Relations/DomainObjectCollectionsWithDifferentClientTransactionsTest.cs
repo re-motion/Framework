@@ -17,6 +17,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
 {
@@ -61,9 +62,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
       Assert.That (
           () => _secondCollection.Add (_customer1),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "The collection already contains an object with ID 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid'.\r\n"
-                  + "Parameter name: domainObject"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "The collection already contains an object with ID 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid'.",
+                  "domainObject"));
     }
 
     [Test]
@@ -73,9 +74,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
       Assert.That (
           () => _secondCollection.Insert (0, _customer1),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "The collection already contains an object with ID 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid'.\r\n"
-                  + "Parameter name: domainObject"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "The collection already contains an object with ID 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid'.",
+                  "domainObject"));
     }
 
     [Test]
@@ -94,9 +95,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
       Assert.That (
           () => collection.Remove (customerInOtherTx),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "The object to be removed has the same ID as an object in this collection, but "
-                  + "is a different object reference.\r\nParameter name: domainObject"));
+                  + "is a different object reference.", "domainObject"));
 
       Assert.That (collection.ContainsObject (customer), Is.True);
     }

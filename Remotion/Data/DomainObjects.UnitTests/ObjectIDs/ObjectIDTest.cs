@@ -22,6 +22,7 @@ using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.ObjectIDs
 {
@@ -41,11 +42,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.ObjectIDs
     {
       Assert.That (
           () => new ObjectID (typeof (TIDomainBase), Guid.NewGuid()),
-          Throws.ArgumentException.With.Message.EqualTo (
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
               string.Format (
-                  "An ObjectID cannot be constructed for abstract type '{0}' of class '{1}'.\r\nParameter name: classDefinition",
+                  "An ObjectID cannot be constructed for abstract type '{0}' of class '{1}'.",
                   typeof (TIDomainBase).AssemblyQualifiedName,
-                  "TI_DomainBase")));
+                  "TI_DomainBase"),
+              "classDefinition"));
     }
 
     [Test]
@@ -85,9 +87,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.ObjectIDs
 
       Assert.That (
           () => id.GetHandle<OrderItem>(),
-          Throws.TypeOf<ArgumentException>().With.Message.EqualTo (
+          Throws.TypeOf<ArgumentException>().With.ArgumentExceptionMessageEqualTo (
               "The ObjectID 'Order|5d09030c-25c2-4735-b514-46333bd28ac8|System.Guid' cannot be represented as an "
-              + "'IDomainObjectHandle<Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem>'.\r\nParameter name: T"));
+              + "'IDomainObjectHandle<Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem>'.", "T"));
     }
 
     [Test]
@@ -300,8 +302,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.ObjectIDs
       Assert.That (
           () => new ObjectID (MappingConfiguration.Current.GetClassDefinition ("Order"), Guid.Empty),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Parameter 'value' cannot be empty.\r\nParameter name: value"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Parameter 'value' cannot be empty.", "value"));
     }
 
     [Test]
@@ -310,8 +312,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.ObjectIDs
       Assert.That (
           () => new ObjectID (MappingConfiguration.Current.GetClassDefinition ("Order"), string.Empty),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Parameter 'value' cannot be empty.\r\nParameter name: value"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Parameter 'value' cannot be empty.", "value"));
     }
 
     [Test]
@@ -356,8 +358,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.ObjectIDs
       Assert.That (
           () => new ObjectID ("Official", (byte) 1),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Remotion.Data.DomainObjects.ObjectID does not support values of type 'System.Byte'.\r\nParameter name: value"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Remotion.Data.DomainObjects.ObjectID does not support values of type 'System.Byte'.", "value"));
     }
 
     [Test]
@@ -401,8 +403,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.ObjectIDs
       Assert.That (
           () => id.CompareTo ("test"),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "The argument must be of type ObjectID.\r\nParameter name: obj"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "The argument must be of type ObjectID.", "obj"));
     }
   }
 }

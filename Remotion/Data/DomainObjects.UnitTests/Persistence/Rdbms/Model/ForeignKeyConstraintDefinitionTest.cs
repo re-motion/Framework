@@ -18,6 +18,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
@@ -60,8 +61,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
           () => new ForeignKeyConstraintDefinition (
           "Test", new EntityNameDefinition (null, _referencedTableName), new[] { _referencingColumn }, new ColumnDefinition[0]),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "The referencing and referenced column sets must have the same number of items.\r\nParameter name: referencingColumns"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "The referencing and referenced column sets must have the same number of items.", "referencingColumns"));
     }
 
     [Test]

@@ -17,6 +17,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Security.UnitTests.SampleDomain;
 
 namespace Remotion.Security.UnitTests
@@ -39,9 +40,9 @@ namespace Remotion.Security.UnitTests
       Assert.That (
           () => AccessType.Get (TestAccessTypesWithoutAccessTypeAttribute.First),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "Enumerated type 'Remotion.Security.UnitTests.SampleDomain.TestAccessTypesWithoutAccessTypeAttribute' cannot be used as an access type. "
-                  + "Valid access types must have the Remotion.Security.AccessTypeAttribute applied.\r\nParameter name: accessType"));
+                  + "Valid access types must have the Remotion.Security.AccessTypeAttribute applied.", "accessType"));
     }
 
     [Test]

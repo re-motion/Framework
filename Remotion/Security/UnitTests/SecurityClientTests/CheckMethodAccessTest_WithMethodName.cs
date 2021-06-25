@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Reflection;
 using Remotion.Security.Metadata;
 using Remotion.Security.UnitTests.SampleDomain;
@@ -91,7 +92,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
       Assert.That (
           () => _securityClient.CheckMethodAccess (_testHelper.SecurableObject, "InstanceMethod"),
           Throws.ArgumentException
-              .With.Message.EqualTo ("The member 'InstanceMethod' does not define required permissions.\r\nParameter name: requiredAccessTypeEnums"));
+              .With.ArgumentExceptionMessageEqualTo ("The member 'InstanceMethod' does not define required permissions.", "requiredAccessTypeEnums"));
 
       _testHelper.VerifyAll();
     }
@@ -108,7 +109,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
         Assert.That (
             () =>  _securityClient.CheckMethodAccess (_testHelper.SecurableObject, "InstanceMethod"),
             Throws.ArgumentException
-                .With.Message.EqualTo ("The member 'InstanceMethod' does not define required permissions.\r\nParameter name: requiredAccessTypeEnums"));
+                .With.ArgumentExceptionMessageEqualTo ("The member 'InstanceMethod' does not define required permissions.", "requiredAccessTypeEnums"));
       }
 
       _testHelper.VerifyAll();

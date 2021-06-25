@@ -20,6 +20,7 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Development.UnitTesting.ObjectMothers;
 using Rhino.Mocks;
 
@@ -121,7 +122,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       Assert.That (
           () => _objectLoader.GetOrLoadRelatedObject (endPointID),
           Throws.ArgumentException
-              .With.Message.EqualTo ("GetOrLoadRelatedObject can only be used with virtual end points.\r\nParameter name: relationEndPointID"));
+              .With.ArgumentExceptionMessageEqualTo ("GetOrLoadRelatedObject can only be used with virtual end points.", "relationEndPointID"));
     }
 
     [Test]
@@ -131,7 +132,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       Assert.That (
           () => _objectLoader.GetOrLoadRelatedObject (endPointID),
           Throws.ArgumentException
-              .With.Message.EqualTo ("GetOrLoadRelatedObject can only be used with one-valued end points.\r\nParameter name: relationEndPointID"));
+              .With.ArgumentExceptionMessageEqualTo ("GetOrLoadRelatedObject can only be used with one-valued end points.", "relationEndPointID"));
     }
 
     [Test]
@@ -164,7 +165,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       Assert.That (
           () => _objectLoader.GetOrLoadRelatedObjects (endPointID),
           Throws.ArgumentException
-              .With.Message.EqualTo ("GetOrLoadRelatedObjects can only be used with many-valued end points.\r\nParameter name: relationEndPointID"));
+              .With.ArgumentExceptionMessageEqualTo ("GetOrLoadRelatedObjects can only be used with many-valued end points.", "relationEndPointID"));
     }
 
     [Test]

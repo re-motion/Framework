@@ -23,6 +23,7 @@ using log4net.Core;
 using log4net.Layout;
 using log4net.Util;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Logging;
 using LogManager = log4net.LogManager;
 
@@ -115,8 +116,8 @@ namespace Remotion.UnitTests.Logging.Log4NetLogTests
       Assert.That (
           () => _log.Log (LogLevel.Info, 0x10000, (object) "The message.", (Exception) null),
           Throws.InstanceOf<ArgumentOutOfRangeException>()
-              .With.Message.EqualTo (
-                  "An event id of value 65536 is not supported. Valid event ids must be within a range of 0 and 65535.\r\nParameter name: eventID"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "An event id of value 65536 is not supported. Valid event ids must be within a range of 0 and 65535.", "eventID"));
       Assert.That (_testEventLog.Entries.Count, Is.EqualTo (1));
       EventLogEntry eventLogEntry = _testEventLog.Entries[0];
       Assert.That (eventLogEntry.EntryType, Is.EqualTo (EventLogEntryType.Error));
@@ -132,8 +133,8 @@ namespace Remotion.UnitTests.Logging.Log4NetLogTests
       Assert.That (
           () => _log.Log (LogLevel.Info, -1, (object) "The message.", (Exception) null),
           Throws.InstanceOf<ArgumentOutOfRangeException>()
-              .With.Message.EqualTo (
-                  "An event id of value -1 is not supported. Valid event ids must be within a range of 0 and 65535.\r\nParameter name: eventID"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "An event id of value -1 is not supported. Valid event ids must be within a range of 0 and 65535.", "eventID"));
       Assert.That (_testEventLog.Entries.Count, Is.EqualTo (1));
       EventLogEntry eventLogEntry = _testEventLog.Entries[0];
       Assert.That (eventLogEntry.EntryType, Is.EqualTo (EventLogEntryType.Error));

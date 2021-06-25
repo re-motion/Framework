@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Mixins.UnitTests.Core.Utilities.TestDomain;
 using Remotion.Mixins.Utilities;
 
@@ -39,8 +40,8 @@ namespace Remotion.Mixins.UnitTests.Core.Utilities
       Assert.That (
           () => _instantiator.Instantiate (typeof (object)),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Type must be a generic parameter.\r\nParameter name: typeParameter"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Type must be a generic parameter.", "typeParameter"));
     }
 
     [Test]

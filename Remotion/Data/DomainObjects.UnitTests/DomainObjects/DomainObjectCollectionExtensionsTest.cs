@@ -20,6 +20,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 {
@@ -94,10 +95,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That (
           () => _collection.UnionWith (secondCollection),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "Item 0 of parameter 'domainObjects' has the type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' "
-                  + "instead of 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer'."
-                  + "\r\nParameter name: domainObjects"));
+                  + "instead of 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer'.",
+                  "domainObjects"));
     }
 
     [Test]

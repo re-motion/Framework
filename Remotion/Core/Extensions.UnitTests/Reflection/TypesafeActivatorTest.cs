@@ -17,6 +17,7 @@
 using System;
 using System.Reflection;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Extensions.UnitTests.Reflection.TestDomain;
 using Remotion.Reflection;
 
@@ -99,9 +100,9 @@ namespace Remotion.Extensions.UnitTests.Reflection
       Assert.That (
           () => TypesafeActivator.CreateInstance<Derived> (typeof (Base)).With(),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "Parameter 'type' is a 'Remotion.Extensions.UnitTests.Reflection.TestDomain.Base', "
-                  + "which cannot be assigned to type 'Remotion.Extensions.UnitTests.Reflection.TestDomain.Derived'.\r\nParameter name: type"));
+                  + "which cannot be assigned to type 'Remotion.Extensions.UnitTests.Reflection.TestDomain.Derived'.", "type"));
     }
 
     [Test]

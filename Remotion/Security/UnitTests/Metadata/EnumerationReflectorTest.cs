@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Security.Metadata;
 using Remotion.Security.UnitTests.TestDomain;
 
@@ -100,8 +101,8 @@ namespace Remotion.Security.UnitTests.Metadata
       Assert.That (
           () => new EnumerationReflector ().GetValues (typeof (string), _cache),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "The type 'System.String' is not an enumerated type.\r\nParameter name: type"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "The type 'System.String' is not an enumerated type.", "type"));
     }
   }
 }

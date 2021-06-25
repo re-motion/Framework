@@ -19,6 +19,7 @@ using System;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.SecurityManager.Domain;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 
@@ -68,8 +69,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
 
       Assert.That (
           () => CreateSecurityManagerPrincipal (tenant, user, null, null, substitution.SubstitutedUser),
-          Throws.ArgumentException.With.Message.EqualTo (
-              "When the 'substitutedUserHandle' or the 'substitutedRoleHandles' are set, the 'substitutionHandle' must also be specified.\r\nParameter name: substitutionHandle"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+              "When the 'substitutedUserHandle' or the 'substitutedRoleHandles' are set, the 'substitutionHandle' must also be specified.", "substitutionHandle"));
     }
 
     [Test]
@@ -80,8 +81,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
 
       Assert.That (
           () => CreateSecurityManagerPrincipal (tenant, user, null, null, null, new Role[0]),
-          Throws.ArgumentException.With.Message.EqualTo (
-              "When the 'substitutedUserHandle' or the 'substitutedRoleHandles' are set, the 'substitutionHandle' must also be specified.\r\nParameter name: substitutionHandle"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+              "When the 'substitutedUserHandle' or the 'substitutedRoleHandles' are set, the 'substitutionHandle' must also be specified.", "substitutionHandle"));
     }
   }
 }

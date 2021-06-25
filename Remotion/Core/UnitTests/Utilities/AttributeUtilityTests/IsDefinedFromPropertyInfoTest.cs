@@ -17,6 +17,7 @@
 using System;
 using System.Reflection;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.UnitTests.Utilities.AttributeUtilityTests.TestDomain;
 using Remotion.Utilities;
 
@@ -82,7 +83,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
       Assert.That (
           () => AttributeUtility.IsDefined<object> (_basePropertyWithSingleAttribute, true),
           Throws.ArgumentException
-              .With.Message.EqualTo ("The attribute type must be assignable to System.Attribute or an interface.\r\nParameter name: T"));
+              .With.ArgumentExceptionMessageEqualTo ("The attribute type must be assignable to System.Attribute or an interface.", "T"));
     }
 
     [Test]
@@ -91,7 +92,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
       Assert.That (
           () => AttributeUtility.IsDefined (_basePropertyWithSingleAttribute, typeof (object), true),
           Throws.ArgumentException
-              .With.Message.EqualTo ("The attribute type must be assignable to System.Attribute or an interface.\r\nParameter name: attributeType"));
+              .With.ArgumentExceptionMessageEqualTo ("The attribute type must be assignable to System.Attribute or an interface.", "attributeType"));
     }
 
     [Test]

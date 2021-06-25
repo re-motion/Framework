@@ -17,6 +17,7 @@
 using System;
 using System.Reflection;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Reflection;
 
 namespace Remotion.UnitTests.Reflection.TypeExtensionsTests
@@ -150,10 +151,10 @@ namespace Remotion.UnitTests.Reflection.TypeExtensionsTests
       Assert.That (
           () => TypeExtensions.GetAscribedGenericArguments (typeof (TypeWithBaseInterface), typeof (IGenericInterface<>)),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "Parameter 'type' has type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.TypeWithBaseInterface' "
-                  + "when type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.IGenericInterface`1[T]' was expected."
-                  + "\r\nParameter name: type"));
+                  + "when type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.IGenericInterface`1[T]' was expected.",
+                  "type"));
     }
   }
 }

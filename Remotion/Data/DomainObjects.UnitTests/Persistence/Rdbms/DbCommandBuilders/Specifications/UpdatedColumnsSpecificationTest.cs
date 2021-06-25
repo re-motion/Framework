@@ -22,6 +22,7 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specifications;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuilders.Specifications
@@ -65,8 +66,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
       Assert.That (
           () => new UpdatedColumnsSpecification (new ColumnValue[0]),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Parameter 'columnValues' cannot be empty.\r\nParameter name: columnValues"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Parameter 'columnValues' cannot be empty.", "columnValues"));
     }
 
     [Test]

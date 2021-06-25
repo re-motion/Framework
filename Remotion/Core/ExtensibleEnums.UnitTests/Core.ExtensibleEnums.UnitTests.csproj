@@ -61,6 +61,9 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\SharedSource\Development\UnitTesting\NUnit\NUnitExtensions.cs">
+      <Link>SharedSource\UnitTesting\NUnit\NUnitExtensions.cs</Link>
+    </Compile>
     <Compile Include="ExtensibleEnumConverterTest.cs" />
     <Compile Include="ExtensibleEnumDefinitionTest.cs" />
     <Compile Include="ExtensibleEnumTest.cs" />

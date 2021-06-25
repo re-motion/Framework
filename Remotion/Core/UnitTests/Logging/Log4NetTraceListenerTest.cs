@@ -22,6 +22,7 @@ using log4net.Config;
 using log4net.Core;
 using log4net.Repository;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Logging;
 using Rhino.Mocks;
 using LogManager = log4net.LogManager;
@@ -338,8 +339,8 @@ namespace Remotion.UnitTests.Logging
       Assert.That (
           () => Log4NetTraceListener.Convert ((TraceEventType) 10000),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "LogLevel does not support value 10000.\r\nParameter name: logLevel"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "LogLevel does not support value 10000.", "logLevel"));
     }
   }
 }

@@ -18,6 +18,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Validators;
@@ -68,7 +69,7 @@ namespace Remotion.Validation.UnitTests.Validators
       {
         Assert.That (
             () => new ExclusiveRangeValidator (2m, 4f, new InvariantValidationMessage ("Fake Message")),
-            Throws.ArgumentException.With.Message.EqualTo ($"'from' must have the same type as 'to'.{Environment.NewLine}Parameter name: to"));
+            Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo ("'from' must have the same type as 'to'.", "to"));
       }
     }
 
@@ -80,7 +81,7 @@ namespace Remotion.Validation.UnitTests.Validators
         Assert.That (
             () => new ExclusiveRangeValidator (2, 1, new InvariantValidationMessage ("Fake Message")),
             Throws.InstanceOf<ArgumentOutOfRangeException>()
-                .With.Message.EqualTo ($"'to' should be larger than 'from'.{Environment.NewLine}Parameter name: to"));
+                .With.ArgumentExceptionMessageEqualTo ("'to' should be larger than 'from'.", "to"));
       }
     }
 

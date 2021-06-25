@@ -18,6 +18,7 @@ using System;
 using System.Reflection;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Development.UnitTesting.ObjectMothers;
 using Remotion.Globalization;
 using Remotion.Globalization.ExtensibleEnums;
@@ -650,10 +651,10 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       Assert.That (
           () => property.SetReflectedClass (bindableObjectClass),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "The BusinessObjectProvider of property 'String' does not match the BusinessObjectProvider of class "
-                  + "'Remotion.ObjectBinding.UnitTests.TestDomain.SimpleBusinessObjectClass, Remotion.ObjectBinding.UnitTests'."
-                  + "\r\nParameter name: reflectedClass"));
+                  + "'Remotion.ObjectBinding.UnitTests.TestDomain.SimpleBusinessObjectClass, Remotion.ObjectBinding.UnitTests'.",
+                  "reflectedClass"));
     }
 
     [Test]

@@ -35,6 +35,7 @@ using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflec
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection.RelationEndPointPropertyTypeIsSupportedValidationRule;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Reflection;
 using Rhino.Mocks;
 
@@ -546,8 +547,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       Assert.That (
           () => MappingConfiguration.SetCurrent (configuration),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Argument 'mappingConfiguration' must have property 'ResolveTypes' set.\r\nParameter name: mappingConfiguration"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Argument 'mappingConfiguration' must have property 'ResolveTypes' set.", "mappingConfiguration"));
     }
 
     private void StubMockMappingLoader (ClassDefinition[] classDefinitions, RelationDefinition[] relationDefinitions)

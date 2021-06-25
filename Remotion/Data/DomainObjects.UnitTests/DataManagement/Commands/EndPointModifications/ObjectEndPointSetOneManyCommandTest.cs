@@ -22,6 +22,7 @@ using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPointModifications
@@ -68,9 +69,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       Assert.That (
           () => new ObjectEndPointSetOneManyCommand (endPoint, _newRelatedObject, OppositeObjectSetter, EndPointProviderStub, TransactionEventSinkWithMock),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Modified end point is null, a NullEndPointModificationCommand is needed.\r\n"
-                  + "Parameter name: modifiedEndPoint"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Modified end point is null, a NullEndPointModificationCommand is needed.",
+                  "modifiedEndPoint"));
     }
 
     [Test]
@@ -84,10 +85,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       Assert.That (
           () => new ObjectEndPointSetOneManyCommand (endPoint, Client.NewObject (), mi => { }, EndPointProviderStub, TransactionEventSinkWithMock),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "EndPoint 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Client.ParentClient' "
                   +
-                  "is from a unidirectional relation - use a ObjectEndPointSetUnidirectionalCommand instead.\r\nParameter name: modifiedEndPoint"
+                  "is from a unidirectional relation - use a ObjectEndPointSetUnidirectionalCommand instead.", "modifiedEndPoint"
 ));
     }
 
@@ -101,10 +102,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       Assert.That (
           () => new ObjectEndPointSetOneManyCommand (endPoint, Order.NewObject (), mi => { }, EndPointProviderStub, TransactionEventSinkWithMock),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "EndPoint 'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order' "
                   +
-                  "is from a 1:1 relation - use a ObjectEndPointSetOneOneCommand instead.\r\nParameter name: modifiedEndPoint"
+                  "is from a 1:1 relation - use a ObjectEndPointSetOneOneCommand instead.", "modifiedEndPoint"
 ));
     }
 
@@ -115,11 +116,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       Assert.That (
           () => new ObjectEndPointSetOneManyCommand (endPoint, _oldRelatedObject, mi => { }, EndPointProviderStub, TransactionEventSinkWithMock),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "New related object for EndPoint "
                   +
                   "'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order' is the same as its old value - use a ObjectEndPointSetSameCommand "
-                  + "instead.\r\nParameter name: newRelatedObject"));
+                  + "instead.", "newRelatedObject"));
     }
 
     [Test]

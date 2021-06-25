@@ -18,6 +18,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
@@ -113,7 +114,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
           new IIndexDefinition[0],
           new EntityNameDefinition[0]),
           Throws.ArgumentException
-              .With.Message.EqualTo ("The base entity must either be a TableDefinition or a FilterViewDefinition.\r\nParameter name: baseEntity"));
+              .With.ArgumentExceptionMessageEqualTo ("The base entity must either be a TableDefinition or a FilterViewDefinition.", "baseEntity"));
     }
 
     [Test]

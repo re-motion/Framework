@@ -17,6 +17,7 @@
 
 using System;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Utilities;
 
 #nullable enable
@@ -36,8 +37,8 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
       Assert.That (
           () => ArgumentUtility.DebugCheckTypeIsAssignableFrom ("arg", typeof (object), typeof (string)),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Parameter 'arg' is a 'System.Object', which cannot be assigned to type 'System.String'.\r\nParameter name: arg"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Parameter 'arg' is a 'System.Object', which cannot be assigned to type 'System.String'.", "arg"));
     }
 
     [Test]

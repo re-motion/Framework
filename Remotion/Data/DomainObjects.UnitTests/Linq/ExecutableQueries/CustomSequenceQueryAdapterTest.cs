@@ -19,6 +19,7 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.Linq.ExecutableQueries;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Linq.ExecutableQueries
@@ -43,7 +44,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.ExecutableQueries
       Assert.That (
           () => new CustomSequenceQueryAdapter<string> (_queryStub, _resultConversion),
           Throws.ArgumentException
-              .With.Message.EqualTo ("Only custom queries can be used to load custom results.\r\nParameter name: query"));
+              .With.ArgumentExceptionMessageEqualTo ("Only custom queries can be used to load custom results.", "query"));
     }
 
     [Test]
