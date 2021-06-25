@@ -17,7 +17,7 @@
 
 namespace Remotion.Development.Moq.UnitTesting.Threading
 {
-  public partial class LockingDecoratorTestHelper<T>
+  public partial class LockingDecoratorTestHelper<T> // this is gud
   {
   }
 }
