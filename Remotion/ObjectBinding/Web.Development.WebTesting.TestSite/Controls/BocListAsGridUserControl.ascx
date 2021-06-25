@@ -52,7 +52,7 @@
         Height="35em"
         runat="server">
         <OptionsMenuItems>
-          <remotion:BocMenuItem ItemID="OptCmd1" Text="Option command">
+          <remotion:BocMenuItem ItemID="OptCmd1" Text="Option command 2">
             <PersistedCommand>
               <remotion:BocMenuItemCommand Type="Event"></remotion:BocMenuItemCommand>
             </PersistedCommand>
