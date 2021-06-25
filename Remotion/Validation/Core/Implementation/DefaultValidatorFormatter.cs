@@ -32,7 +32,7 @@ namespace Remotion.Validation.Implementation
       ArgumentUtility.CheckNotNull ("validator", validator);
 
       string? formattedValidator = validator.ToString();
-      Assertion.DebugIsNotNull (formattedValidator, "formattedValidator must not be null");
+      Assertion.IsNotNull (formattedValidator, "ToString() of validator type '{0}' returned null.", validator.GetType());
       return formattedValidator;
     }
   }
