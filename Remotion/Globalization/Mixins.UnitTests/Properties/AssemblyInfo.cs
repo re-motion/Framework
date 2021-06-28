@@ -25,7 +25,6 @@ using Remotion.Globalization;
 // associated with an assembly.
 //
 
-[assembly: AssemblyTitle ("Remotion Mixins Library Unit Tests")]
 [assembly: NeutralResourcesLanguage ("en")]
 [assembly: AvailableResourcesLanguages ("")]
 [assembly: AssemblyCulture ("")]

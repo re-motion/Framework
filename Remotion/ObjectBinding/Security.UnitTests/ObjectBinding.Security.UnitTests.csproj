@@ -1,134 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="Current" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{70E32417-8077-4157-9FA0-337868889015}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Remotion.ObjectBinding.Security.UnitTests</RootNamespace>
+    <ProjectType>Test</ProjectType>
+  </PropertyGroup>
+  <Import Project="..\..\..\Build\Shared.build.props" />
+  <PropertyGroup>
+    <AssemblyTitle>Integration Tests for Remotion ObjectBinding Security</AssemblyTitle>
     <AssemblyName>Remotion.ObjectBinding.Security.UnitTests</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn>0067</NoWarn>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <NoWarn>0067</NoWarn>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\CommonServiceLocator.1.2\lib\portable-windows8+net40+sl5+windowsphone8\Microsoft.Practices.ServiceLocation.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="nunit.framework, Version=3.12.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\NUnit.3.12.0\lib\net45\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="Remotion.TypePipe, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Remotion.TypePipe.2.0.3\lib\net45\Remotion.TypePipe.dll</HintPath>
-    </Reference>
-    <Reference Include="Rhino.Mocks, Version=3.6.1.2, Culture=neutral, PublicKeyToken=0b3305902db7183f">
-      <HintPath>..\..\..\packages\CoreRhinoMocks.3.6.1.2\lib\net35\Rhino.Mocks.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
+    <ProjectReference Include="..\..\Core\Collections.Caching\Core.Collections.Caching.csproj" />
+    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
+    <ProjectReference Include="..\..\Core\Reflection\Core.Reflection.csproj" />
+    <ProjectReference Include="..\..\Development\Core\Development.Core.csproj" />
+    <ProjectReference Include="..\..\Mixins\Core\Mixins.Core.csproj" />
+    <ProjectReference Include="..\..\Security\Core\Security.Core.csproj" />
+    <ProjectReference Include="..\Core\ObjectBinding.Core.csproj" />
+    <ProjectReference Include="..\Security\ObjectBinding.Security.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\AssemblyInfoShared.cs">
-      <Link>Properties\AssemblyInfoShared.cs</Link>
-    </Compile>
-    <Compile Include="BindableObject\IBindablePropertReadAccessStrategyTest.cs" />
-    <Compile Include="BindableObject\IBindablePropertyWriteAccessStrategyTest.cs" />
-    <Compile Include="BindableObject\SecurityBasedBindablePropertyReadAccessStrategyTest.cs" />
-    <Compile Include="BindableObject\SecurityBasedBindablePropertyWriteAccessStrategyTest.cs" />
-    <Compile Include="BindableObject\IntegrationTest.cs" />
-    <Compile Include="BindableObject\StubPropertyBase.cs" />
-    <Compile Include="BindableObject\TestBase.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestDomain\ClassWithReferenceType.cs" />
-    <Compile Include="TestDomain\TestAccessTypes.cs" />
-    <Compile Include="TestDomain\DerivedSecurableClassWithProperties.cs" />
-    <Compile Include="TestDomain\IInterfaceWithReferenceType.cs" />
-    <Compile Include="TestDomain\IMixinSecurableClass.cs" />
-    <Compile Include="TestDomain\MixinSecurableClassWithProperties.cs" />
-    <Compile Include="TestDomain\SecurableClassWithProperties.cs" />
-    <Compile Include="TestDomain\SecurableClassWithReferenceType.cs" />
+    <PackageReference Include="CoreRhinoMocks" Version="3.6.1.2" PrivateAssets="all" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\..\remotion.snk">
-      <Link>remotion.snk</Link>
-    </None>
-    <None Include="..\..\Remotion LGPL.licenseheader">
-      <Link>Remotion LGPL.licenseheader</Link>
-    </None>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Core\Collections.Caching\Core.Collections.Caching.csproj">
-      <Project>{2D4D3106-4853-4D18-B80B-797A2015328F}</Project>
-      <Name>Core.Collections.Caching</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">
-      <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
-      <Name>Core.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Core\Reflection\Core.Reflection.csproj">
-      <Project>{82D3420D-F557-4E31-955B-2935A785753E}</Project>
-      <Name>Core.Reflection</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Development\Core\Development.Core.csproj">
-      <Project>{B719A305-0493-4C72-88FE-9A2FC6964578}</Project>
-      <Name>Development.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Mixins\Core\Mixins.Core.csproj">
-      <Project>{D641E4E2-23F3-4454-8074-1327EF07BAA1}</Project>
-      <Name>Mixins.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Security\Core\Security.Core.csproj">
-      <Project>{fbe0cbdd-82ff-4173-8536-47d3b5bc2e98}</Project>
-      <Name>Security.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Core\ObjectBinding.Core.csproj">
-      <Project>{fdccdb1e-0962-41da-99a1-2db390c48748}</Project>
-      <Name>ObjectBinding.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Security\ObjectBinding.Security.csproj">
-      <Project>{89f98c4b-11e3-43ec-8776-b552574f9a9f}</Project>
-      <Name>ObjectBinding.Security</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

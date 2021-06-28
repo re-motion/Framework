@@ -24,7 +24,6 @@ using System.Reflection;
 //
 using Remotion.ObjectBinding.Security;
 
-[assembly: AssemblyTitle("Unit Tests for Remotion DomainObjects Security Library")]
 [assembly: AssemblyCulture("")]		
 [assembly: CLSCompliant(true)]
 

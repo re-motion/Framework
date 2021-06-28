@@ -23,6 +23,5 @@ using System.Reflection;
 // associated with an assembly.
 //
 
-[assembly: AssemblyTitle("Integration Tests for Remotion DomainObjects ObjectBinding Library")]
 [assembly: AssemblyCulture("")]		
 [assembly: CLSCompliant(true)]

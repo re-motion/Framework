@@ -1,165 +1,39 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="Current" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{98969947-CAFA-4DC3-8C9C-C5D8FEA6CE17}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Remotion.Integration.Domain</RootNamespace>
+    <ProjectType>Library</ProjectType>
+  </PropertyGroup>
+  <Import Project="..\..\..\Build\Shared.build.props" />
+  <PropertyGroup>
+    <AssemblyTitle>re-motion Integration Library for Application Domains</AssemblyTitle>
+    <Description>This assembly can be linked to ensure that all domain-layer-related dependencies are integrated in the build output of a project.</Description>
     <AssemblyName>Remotion.Integration.Domain</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;JETBRAINS_ANNOTATIONS</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <NoWarn>1591;0419</NoWarn>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DocumentationFile>bin\Debug\Remotion.Integration.Domain.XML</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;JETBRAINS_ANNOTATIONS</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn>1591;0419</NoWarn>
-    <DocumentationFile>bin\Release\Remotion.Integration.Domain.XML</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">
-      <Project>{2aa369ec-a4e7-4d75-9101-efa90e902625}</Project>
-      <Name>Core.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Core\ExtensibleEnums\Core.ExtensibleEnums.csproj">
-      <Project>{bdae7146-01a8-4dc1-80c2-0e67291ac3ed}</Project>
-      <Name>Core.ExtensibleEnums</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Core\Reflection\Core.Reflection.csproj">
-      <Project>{82d3420d-f557-4e31-955b-2935a785753e}</Project>
-      <Name>Core.Reflection</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Data\DomainObjects.ObjectBinding\Data.DomainObjects.ObjectBinding.csproj">
-      <Project>{f3935d12-39e6-4f06-8316-98cd7ed60c6b}</Project>
-      <Name>Data.DomainObjects.ObjectBinding</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Data\DomainObjects.Security\Data.DomainObjects.Security.csproj">
-      <Project>{2c87fb62-cc00-4297-a3ea-35f4fc6649f0}</Project>
-      <Name>Data.DomainObjects.Security</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Data\DomainObjects.Validation\Data.DomainObjects.Validation.csproj">
-      <Project>{04fa07e3-b868-4846-a5e2-4d375f607c22}</Project>
-      <Name>Data.DomainObjects.Validation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Data\DomainObjects\Data.DomainObjects.csproj">
-      <Project>{c2d4102a-6db9-4997-85be-afa6ecf42f1a}</Project>
-      <Name>Data.DomainObjects</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Globalization\Core\Globalization.Core.csproj">
-      <Project>{ac6ab6eb-f6ac-45a4-88a7-877d11a65ccb}</Project>
-      <Name>Globalization.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Globalization\ExtensibleEnums\Globalization.ExtensibleEnums.csproj">
-      <Project>{E585C288-E534-42F0-8F43-96F98BB18BE2}</Project>
-      <Name>Globalization.ExtensibleEnums</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Globalization\Mixins\Globalization.Mixins.csproj">
-      <Project>{E2CD7C20-2728-4F72-A6E8-FC4F7AE72EC9}</Project>
-      <Name>Globalization.Mixins</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Mixins\Core\Mixins.Core.csproj">
-      <Project>{d641e4e2-23f3-4454-8074-1327ef07baa1}</Project>
-      <Name>Mixins.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\ObjectBinding\Core\ObjectBinding.Core.csproj">
-      <Project>{fdccdb1e-0962-41da-99a1-2db390c48748}</Project>
-      <Name>ObjectBinding.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\ObjectBinding\Security\ObjectBinding.Security.csproj">
-      <Project>{89F98C4B-11E3-43EC-8776-B552574F9A9F}</Project>
-      <Name>ObjectBinding.Security</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Security\Core\Security.Core.csproj">
-      <Project>{fbe0cbdd-82ff-4173-8536-47d3b5bc2e98}</Project>
-      <Name>Security.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Validation\Core\Validation.Core.csproj">
-      <Project>{d057d6f3-2015-4eb0-b6bd-77be8ed1571a}</Project>
-      <Name>Validation.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Validation\Globalization\Validation.Globalization.csproj">
-      <Project>{30c3afa1-d7b3-4a2a-b314-19282a2e312d}</Project>
-      <Name>Validation.Globalization</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Validation\Mixins\Validation.Mixins.csproj">
-      <Project>{b34d9485-39d7-4f73-805c-39a65059001e}</Project>
-      <Name>Validation.Mixins</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
+    <ProjectReference Include="..\..\Core\ExtensibleEnums\Core.ExtensibleEnums.csproj" />
+    <ProjectReference Include="..\..\Core\Reflection\Core.Reflection.csproj" />
+    <ProjectReference Include="..\..\Data\DomainObjects.ObjectBinding\Data.DomainObjects.ObjectBinding.csproj" />
+    <ProjectReference Include="..\..\Data\DomainObjects.Security\Data.DomainObjects.Security.csproj" />
+    <ProjectReference Include="..\..\Data\DomainObjects.Validation\Data.DomainObjects.Validation.csproj" />
+    <ProjectReference Include="..\..\Data\DomainObjects\Data.DomainObjects.csproj" />
+    <ProjectReference Include="..\..\Globalization\Core\Globalization.Core.csproj" />
+    <ProjectReference Include="..\..\Globalization\ExtensibleEnums\Globalization.ExtensibleEnums.csproj" />
+    <ProjectReference Include="..\..\Globalization\Mixins\Globalization.Mixins.csproj" />
+    <ProjectReference Include="..\..\Mixins\Core\Mixins.Core.csproj" />
+    <ProjectReference Include="..\..\ObjectBinding\Core\ObjectBinding.Core.csproj" />
+    <ProjectReference Include="..\..\ObjectBinding\Security\ObjectBinding.Security.csproj" />
+    <ProjectReference Include="..\..\Security\Core\Security.Core.csproj" />
+    <ProjectReference Include="..\..\Validation\Core\Validation.Core.csproj" />
+    <ProjectReference Include="..\..\Validation\Globalization\Validation.Globalization.csproj" />
+    <ProjectReference Include="..\..\Validation\Mixins\Validation.Mixins.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\AssemblyInfoShared.cs">
-      <Link>Properties\AssemblyInfoShared.cs</Link>
-    </Compile>
-    <Compile Include="EnsureDomainIntegrationAttribute.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <PackageReference Include="Remotion.IO" version="2.0.0" />
+    <PackageReference Include="Remotion.IO.Archive.Zip" version="2.0.0" />
+    <PackageReference Include="Remotion.TypePipe" version="2.0.3" />
+    <PackageReference Include="Remotion.TypePipe.Documentation" version="2.0.1" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\..\remotion.snk">
-      <Link>remotion.snk</Link>
-    </None>
-    <None Include="..\..\..\Build\NuSpec\TemplateShared.nuspec">
-      <Link>TemplateShared.nuspec</Link>
-    </None>
-    <None Include="..\..\Remotion LGPL.licenseheader">
-      <Link>Remotion LGPL.licenseheader</Link>
-    </None>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FacetManifest.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Remotion.IO, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Remotion.IO.2.0.0\lib\net45\Remotion.IO.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Remotion.IO.Archive.Zip, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Remotion.IO.Archive.Zip.2.0.0\lib\net45\Remotion.IO.Archive.Zip.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Remotion.TypePipe, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Remotion.TypePipe.2.0.3\lib\net45\Remotion.TypePipe.dll</HintPath>
-    </Reference>
-    <Reference Include="Remotion.TypePipe.Documentation, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Remotion.TypePipe.Documentation.2.0.1\lib\net45\Remotion.TypePipe.Documentation.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

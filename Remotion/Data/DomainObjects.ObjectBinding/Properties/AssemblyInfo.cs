@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -17,8 +17,5 @@
 using System;
 using System.Reflection;
 
-[assembly: AssemblyTitle ("re-motion ObjectBinding Support for DomainObjects")]
-[assembly: AssemblyDescription (@"Integrates Remotion.ObjectBinding and Remotion.Data.DomainObjects assemblies.
-- Use BindableDomainObject as a base class when using object binding in a domain.")]
 [assembly: AssemblyCulture ("")]
 [assembly: CLSCompliant (true)]

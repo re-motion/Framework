@@ -1,0 +1,15 @@
+<Project InitialTargets="VerifyProjectConfiguration;VerifyProductType">
+
+  <Import Project="$(ProjectTypeTargetsFile)" Condition="'$(ProjectTypeTargetsFile)' != '' AND Exists('$(ProjectTypeTargetsFile)')" />
+  <Import Project="$(ProjectFeaturesRoot)UseWebForms.targets" Condition="'$(UseWebForms)' == 'true' AND Exists('$(FeaturesRoot)UseWebForms.targets')" />
+
+  <Target Name="VerifyProjectConfiguration">
+    <Error Text="No project type configured." Condition="'$(ProjectType)' == ''" />
+    <Error Text="Invalid project type '$(ProjectType)'." Condition="!Exists('$(ProjectTypePropsFile)')" />
+  </Target>
+
+  <Target Name="VerifyProductType">
+    <Error Text="Invalid product type '$(ProductType)'." Condition="'$(ProductType)' != 'Default' AND '$(ProductType)' != 'Mixins' AND '$(ProductType)' != 'SecurityManager'" />
+  </Target>
+
+</Project>

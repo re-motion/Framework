@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -17,7 +17,5 @@
 using System;
 using System.Reflection;
 
-[assembly: AssemblyTitle ("re-motion Code Generation Library (based on Castle)")]
-[assembly: AssemblyDescription ("Code generation library based on Castle")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]

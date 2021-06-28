@@ -25,8 +25,6 @@ using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-[assembly: AssemblyTitle("Remotion Shared Source Library")]
-[assembly: AssemblyDescription("Contains source files intended for embedding in other libraries.")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]
 

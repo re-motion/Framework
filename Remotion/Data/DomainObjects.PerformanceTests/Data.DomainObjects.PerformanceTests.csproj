@@ -1,266 +1,34 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="Current">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <ProjectType>Local</ProjectType>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{717B711E-97AB-4751-97C5-C0491D1919FA}</ProjectGuid>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ApplicationIcon>
-    </ApplicationIcon>
-    <AssemblyKeyContainerName>
-    </AssemblyKeyContainerName>
+    <ProjectType>Test</ProjectType>
+  </PropertyGroup>
+  <Import Project="..\..\..\Build\Shared.build.props" />
+  <PropertyGroup>
+    <AssemblyTitle>Performance Tests for Remotion DomainObjects Library</AssemblyTitle>
+    <Description>Performance Tests for Remotion DomainObjects Library</Description>
     <AssemblyName>Remotion.Data.DomainObjects.PerformanceTests</AssemblyName>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <DefaultClientScript>JScript</DefaultClientScript>
-    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
-    <DefaultTargetSchema>IE50</DefaultTargetSchema>
-    <DelaySign>false</DelaySign>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
     <OutputType>Exe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Remotion.Data.DomainObjects.PerformanceTests</RootNamespace>
-    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    <StartupObject>
-    </StartupObject>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>bin\Debug\</OutputPath>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-    <BaseAddress>285212672</BaseAddress>
-    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
-    <ConfigurationOverrideFile>
-    </ConfigurationOverrideFile>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DocumentationFile>
-    </DocumentationFile>
-    <DebugSymbols>true</DebugSymbols>
-    <FileAlignment>4096</FileAlignment>
-    <NoStdLib>false</NoStdLib>
-    <NoWarn>
-    </NoWarn>
-    <Optimize>false</Optimize>
-    <RegisterForComInterop>false</RegisterForComInterop>
-    <RemoveIntegerChecks>false</RemoveIntegerChecks>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningLevel>4</WarningLevel>
-    <DebugType>full</DebugType>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>bin\Release\</OutputPath>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-    <BaseAddress>285212672</BaseAddress>
-    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
-    <ConfigurationOverrideFile>
-    </ConfigurationOverrideFile>
-    <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>
-    </DocumentationFile>
-    <DebugSymbols>false</DebugSymbols>
-    <FileAlignment>4096</FileAlignment>
-    <NoStdLib>false</NoStdLib>
-    <NoWarn>
-    </NoWarn>
-    <Optimize>true</Optimize>
-    <RegisterForComInterop>false</RegisterForComInterop>
-    <RemoveIntegerChecks>false</RemoveIntegerChecks>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningLevel>4</WarningLevel>
-    <DebugType>none</DebugType>
-    <ErrorReport>prompt</ErrorReport>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\CommonServiceLocator.1.2\lib\portable-windows8+net40+sl5+windowsphone8\Microsoft.Practices.ServiceLocation.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="nunit.framework, Version=3.12.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\NUnit.3.12.0\lib\net45\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="Remotion.Linq, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Remotion.Linq.2.0.3\lib\net45\Remotion.Linq.dll</HintPath>
-    </Reference>
-    <Reference Include="Remotion.Linq.SqlBackend, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Remotion.Linq.SqlBackend.2.0.1\lib\net45\Remotion.Linq.SqlBackend.dll</HintPath>
-    </Reference>
-    <Reference Include="Remotion.TypePipe, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Remotion.TypePipe.2.0.3\lib\net45\Remotion.TypePipe.dll</HintPath>
-    </Reference>
-    <Reference Include="System">
-      <Name>System</Name>
-    </Reference>
-    <Reference Include="System.configuration" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>4.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data">
-      <Name>System.Data</Name>
-    </Reference>
-    <Reference Include="System.Xml">
-      <Name>System.XML</Name>
-    </Reference>
-    <ProjectReference Include="..\..\Core\Collections.Caching\Core.Collections.Caching.csproj">
-      <Project>{2D4D3106-4853-4D18-B80B-797A2015328F}</Project>
-      <Name>Core.Collections.Caching</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">
-      <Name>Core.Core</Name>
-      <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Core\Reflection\Core.Reflection.csproj">
-      <Project>{82D3420D-F557-4E31-955B-2935A785753E}</Project>
-      <Name>Core.Reflection</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Development\Core\Development.Core.csproj">
-      <Project>{B719A305-0493-4C72-88FE-9A2FC6964578}</Project>
-      <Name>Development.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Mixins\Core\Mixins.Core.csproj">
-      <Project>{D641E4E2-23F3-4454-8074-1327EF07BAA1}</Project>
-      <Name>Mixins.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\ObjectBinding\Core\ObjectBinding.Core.csproj">
-      <Project>{FDCCDB1E-0962-41DA-99A1-2DB390C48748}</Project>
-      <Name>ObjectBinding.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\ObjectBinding\Security\ObjectBinding.Security.csproj">
-      <Project>{89F98C4B-11E3-43EC-8776-B552574F9A9F}</Project>
-      <Name>ObjectBinding.Security</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Security\Core\Security.Core.csproj">
-      <Project>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</Project>
-      <Name>Security.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DomainObjects.ObjectBinding\Data.DomainObjects.ObjectBinding.csproj">
-      <Project>{f3935d12-39e6-4f06-8316-98cd7ed60c6b}</Project>
-      <Name>Data.DomainObjects.ObjectBinding</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DomainObjects.Security\Data.DomainObjects.Security.csproj">
-      <Project>{2C87FB62-CC00-4297-A3EA-35F4FC6649F0}</Project>
-      <Name>Data.DomainObjects.Security</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DomainObjects\Data.DomainObjects.csproj">
-      <Name>Data.DomainObjects</Name>
-      <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-    </ProjectReference>
-    <ProjectReference Include="..\Core\Data.Core.csproj">
-      <Project>{70273934-12F1-49AF-975A-303BAEFE1CAE}</Project>
-      <Name>Data.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\..\AssemblyInfoShared.cs">
-      <Link>Properties\AssemblyInfoShared.cs</Link>
-    </Compile>
-    <Compile Include="PropertyTest.cs" />
-    <Compile Include="BindableObjectTestBase.cs" />
-    <Compile Include="BindableObjectWithoutSecurityTest.cs" />
-    <Compile Include="BindableObjectWithSecurityTest.cs" />
-    <Compile Include="CommitTest.cs" />
-    <Compile Include="ClassDefinitionTest.cs" />
-    <Compile Include="HasRelationChangedTest.cs" />
-    <Compile Include="InstantiationTest.cs" />
-    <Compile Include="LinqPerformanceTestHelper.cs" />
-    <Compile Include="LinqTest.cs" />
-    <Compile Include="PerformanceTestHelper.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DatabaseTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Database\TestDataLoader.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LoadObjectsTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Root.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="SerializationTest.cs" />
-    <Compile Include="SetupFixture.cs" />
-    <Compile Include="StandardConfiguration.cs" />
-    <Compile Include="StubSecurityProvider.cs" />
-    <Compile Include="TestDomainObjectMother.cs" />
-    <Compile Include="TestDomain\ClassWithValueProperties.cs" />
-    <Compile Include="TestDomain\Client.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="TestDomain\ClientBoundBaseClass.cs" />
-    <Compile Include="TestDomain\Company.cs" />
-    <Compile Include="TestDomain\ClassWithRelationProperties.cs" />
-    <Compile Include="TestDomain\ClassWithFewValueProperties.cs" />
-    <Compile Include="TestDomain\ObjectWithSecurity.cs" />
-    <Compile Include="TestDomain\OppositeClassWithReallRelationProperties.cs" />
-    <Compile Include="TestDomain\OppositeClassWithVirtualRelationProperties.cs" />
-    <Compile Include="TestDomain\OppositeClassWithCollectionRelationProperties.cs" />
-    <Compile Include="TestDomain\OppositeClassWithAnonymousRelationProperties.cs" />
-    <Compile Include="TestDomain\Person.cs" />
-    <Compile Include="TestDomain\File.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <None Include="..\..\Remotion LGPL.licenseheader">
-      <Link>Remotion LGPL.licenseheader</Link>
-    </None>
-    <None Include="App.config" />
-    <Content Include="Database\CreateTestData.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Database\SetupDB.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Include="..\..\..\remotion.snk">
-      <Link>remotion.snk</Link>
-    </None>
-    <Content Include="Database\CreateDB.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Database\*.sql" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Queries.xml" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="Doc\readme.txt" />
-    <Content Include="Queries.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+    <ProjectReference Include="..\..\Core\Collections.Caching\Core.Collections.Caching.csproj" />
+    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
+    <ProjectReference Include="..\..\Core\Reflection\Core.Reflection.csproj" />
+    <ProjectReference Include="..\..\Development\Core\Development.Core.csproj" />
+    <ProjectReference Include="..\..\Mixins\Core\Mixins.Core.csproj" />
+    <ProjectReference Include="..\..\ObjectBinding\Core\ObjectBinding.Core.csproj" />
+    <ProjectReference Include="..\..\ObjectBinding\Security\ObjectBinding.Security.csproj" />
+    <ProjectReference Include="..\..\Security\Core\Security.Core.csproj" />
+    <ProjectReference Include="..\DomainObjects.ObjectBinding\Data.DomainObjects.ObjectBinding.csproj" />
+    <ProjectReference Include="..\DomainObjects.Security\Data.DomainObjects.Security.csproj" />
+    <ProjectReference Include="..\DomainObjects\Data.DomainObjects.csproj" />
+    <ProjectReference Include="..\Core\Data.Core.csproj" />
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
+  <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

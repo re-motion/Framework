@@ -1,30 +1,20 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
-    <OutputType>Library</OutputType>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <AssemblyName>Remotion.Web.ClientScript</AssemblyName>
-    <RootNamespace>Remotion.Web.ClientScript</RootNamespace>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
+    <ProjectType>Library</ProjectType>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Include="..\..\AssemblyInfoShared.cs" Link="Properties\AssemblyInfoShared.cs" />
-  </ItemGroup>
-
+  <Import Project="..\..\..\Build\Shared.build.props" />
+  <PropertyGroup>
+    <AssemblyTitle>re-motion Web Client Scripts</AssemblyTitle>
+    <Description>Client Scripts for re-motion's web applications controls.</Description>
+    <AssemblyName>Remotion.Web.ClientScript</AssemblyName>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
+    <IsPackable>False</IsPackable>
+  </PropertyGroup>
   <ItemGroup>
     <Content Include="tsconfig\debug\tsconfig.json" Condition="'$(Configuration)' == 'Debug'" />
     <Content Include="tsconfig\release\tsconfig.json" Condition="'$(Configuration)' == 'Release'" />
   </ItemGroup>
-
-  <ItemGroup>
-    <None Include="..\..\..\remotion.snk" Link="remotion.snk" />
-    <None Include="..\..\Remotion LGPL.licenseheader" Link="Remotion LGPL.licenseheader" />
-  </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="jquery.TypeScript.DefinitelyTyped" Version="1.6.4">
       <PrivateAssets>all</PrivateAssets>
@@ -37,5 +27,5 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
-
+  <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

@@ -25,7 +25,6 @@ using Remotion.Globalization;
 // associated with an assembly.
 //
 
-[assembly: AssemblyTitle("Integration Tests for Remotion DomainObjects Validation")]
 [assembly: NeutralResourcesLanguage ("en")]
 [assembly: AvailableResourcesLanguages ("")]
 [assembly: AssemblyCulture("")]

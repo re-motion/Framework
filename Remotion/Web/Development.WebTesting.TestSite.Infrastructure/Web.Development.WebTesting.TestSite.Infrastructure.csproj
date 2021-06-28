@@ -1,152 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="Current" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{651E6B2A-5C3C-4981-AAB3-CA2AA3A433CA}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Remotion.Web.Development.WebTesting.TestSite.Infrastructure</RootNamespace>
+    <ProjectType>WebLibrary</ProjectType>
+  </PropertyGroup>
+  <Import Project="..\..\..\Build\Shared.build.props" />
+  <PropertyGroup>
+    <AssemblyTitle>Remotion WebTesting Framework TestSite Infrastructure</AssemblyTitle>
     <AssemblyName>Remotion.Web.Development.WebTesting.TestSite.Infrastructure</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn>1591;0419</NoWarn>
-    <DocumentationFile>bin\Debug\Remotion.Web.Development.WebTesting.TestSite.Infrastructure.XML</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <NoWarn>1591;0419</NoWarn>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DocumentationFile>bin\Release\Remotion.Web.Development.WebTesting.TestSite.Infrastructure.XML</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
+    <Nullable>disable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="JetBrains.Annotations, Version=11.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Fork.JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
-      <HintPath>..\..\..\packages\Microsoft.Bcl.AsyncInterfaces.5.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="mscorlib" />
-    <Reference Include="System" />
-    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
-      <HintPath>..\..\..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Core" />
-    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
-      <HintPath>..\..\..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <HintPath>..\..\..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <HintPath>..\..\..\packages\System.Runtime.CompilerServices.Unsafe.5.0.0\lib\net45\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Text.Encodings.Web, Version=5.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
-      <HintPath>..\..\..\packages\System.Text.Encodings.Web.5.0.1\lib\net461\System.Text.Encodings.Web.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Text.Json, Version=5.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
-      <HintPath>..\..\..\packages\System.Text.Json.5.0.2\lib\net461\System.Text.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
-      <HintPath>..\..\..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
-      <HintPath>..\..\..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Web" />
+    <Compile Include="..\Development.WebTesting.IntegrationTests.Infrastructure\GenericTestPageParameter.cs" Link="GenericTestPageParameter.cs" />
+    <Compile Include="..\Development.WebTesting.IntegrationTests.Infrastructure\GenericTestPageParameterDictionaryExtensions.cs" Link="GenericTestPageParameterDictionaryExtensions.cs" />
+    <Compile Include="..\Development.WebTesting.IntegrationTests.Infrastructure\GenericTestPageParameterDto.cs" Link="GenericTestPageParameterDto.cs" />
+    <Compile Include="..\Development.WebTesting.IntegrationTests.Infrastructure\GenericTestPageParameterExtensions.cs" Link="GenericTestPageParameterExtensions.cs" />
+    <Compile Include="..\Development.WebTesting.IntegrationTests.Infrastructure\GenericTestPageStatus.cs" Link="GenericTestPageStatus.cs" />
+    <Compile Include="..\Development.WebTesting.IntegrationTests.Infrastructure\GenericTestPageType.cs" Link="GenericTestPageType.cs" />
+    <Compile Include="..\Development.WebTesting.IntegrationTests.Infrastructure\GenericTestParameterConverter.cs" Link="GenericTestParameterConverter.cs" />
+    <Compile Include="..\Development.WebTesting.IntegrationTests.Infrastructure\TestConstants.cs" Link="TestConstants.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\AssemblyInfoShared.cs">
-      <Link>Properties\AssemblyInfoShared.cs</Link>
-    </Compile>
-    <Compile Include="..\Development.WebTesting.IntegrationTests.Infrastructure\GenericTestPageParameter.cs">
-      <Link>GenericTestPageParameter.cs</Link>
-    </Compile>
-    <Compile Include="..\Development.WebTesting.IntegrationTests.Infrastructure\GenericTestPageParameterDictionaryExtensions.cs">
-      <Link>GenericTestPageParameterDictionaryExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\Development.WebTesting.IntegrationTests.Infrastructure\GenericTestPageParameterDto.cs">
-      <Link>GenericTestPageParameterDto.cs</Link>
-    </Compile>
-    <Compile Include="..\Development.WebTesting.IntegrationTests.Infrastructure\GenericTestPageParameterExtensions.cs">
-      <Link>GenericTestPageParameterExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\Development.WebTesting.IntegrationTests.Infrastructure\GenericTestPageStatus.cs">
-      <Link>GenericTestPageStatus.cs</Link>
-    </Compile>
-    <Compile Include="..\Development.WebTesting.IntegrationTests.Infrastructure\GenericTestPageType.cs">
-      <Link>GenericTestPageType.cs</Link>
-    </Compile>
-    <Compile Include="..\Development.WebTesting.IntegrationTests.Infrastructure\GenericTestParameterConverter.cs">
-      <Link>GenericTestParameterConverter.cs</Link>
-    </Compile>
-    <Compile Include="..\Development.WebTesting.IntegrationTests.Infrastructure\TestConstants.cs">
-      <Link>TestConstants.cs</Link>
-    </Compile>
-    <Compile Include="GenericTestPageBase.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="GenericTestPageParameterFactory.cs" />
-    <Compile Include="IGenericTestPage.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
+    <ProjectReference Include="..\Core\Web.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\remotion.snk">
-      <Link>remotion.snk</Link>
-    </None>
-    <None Include="..\..\Remotion LGPL.licenseheader">
-      <Link>Remotion LGPL.licenseheader</Link>
-    </None>
-    <None Include="packages.config" />
+    <PackageReference Include="System.Text.Json" Version="5.0.2" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">
-      <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
-      <Name>Core.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Core\Web.Core.csproj">
-      <Project>{DF8BA786-9679-4879-8757-16AE2709D83A}</Project>
-      <Name>Web.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

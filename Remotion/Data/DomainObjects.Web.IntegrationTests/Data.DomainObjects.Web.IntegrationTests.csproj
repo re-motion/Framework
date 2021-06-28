@@ -1,174 +1,35 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="Current" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7A088A69-24BE-49C5-92CC-036C94D0E870}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Remotion.Data.DomainObjects.Web.IntegrationTests</RootNamespace>
+    <ProjectType>Test</ProjectType>
+    <UseWebForms>true</UseWebForms>
+  </PropertyGroup>
+  <Import Project="..\..\..\Build\Shared.build.props" />
+  <PropertyGroup>
+    <AssemblyTitle>Integration Tests for Remotion DomainObjects Web Library</AssemblyTitle>
     <AssemblyName>Remotion.Data.DomainObjects.Web.IntegrationTests</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn>0067</NoWarn>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <NoWarn>0067</NoWarn>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="JetBrains.Annotations, Version=11.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Fork.JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\CommonServiceLocator.1.2\lib\portable-windows8+net40+sl5+windowsphone8\Microsoft.Practices.ServiceLocation.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="nunit.framework, Version=3.12.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\NUnit.3.12.0\lib\net45\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="Remotion.Linq, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Remotion.Linq.2.0.3\lib\net45\Remotion.Linq.dll</HintPath>
-    </Reference>
-    <Reference Include="Remotion.TypePipe, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Remotion.TypePipe.2.0.3\lib\net45\Remotion.TypePipe.dll</HintPath>
-    </Reference>
-    <Reference Include="Rhino.Mocks, Version=3.6.1.2, Culture=neutral, PublicKeyToken=0b3305902db7183f">
-      <HintPath>..\..\..\packages\CoreRhinoMocks.3.6.1.2\lib\net35\Rhino.Mocks.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
+    <Content Include="Database\CreateDB.sql" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
+    <ProjectReference Include="..\..\Core\Tools\Core.Tools.csproj" />
+    <ProjectReference Include="..\..\Development\Core\Development.Core.csproj" />
+    <ProjectReference Include="..\..\Development\Web\Development.Web.csproj" />
+    <ProjectReference Include="..\..\Mixins\Core\Mixins.Core.csproj" />
+    <ProjectReference Include="..\..\Security\Core\Security.Core.csproj" />
+    <ProjectReference Include="..\..\Web\Core\Web.Core.csproj" />
+    <ProjectReference Include="..\..\Web\Security\Web.Security.csproj" />
+    <ProjectReference Include="..\Core\Data.Core.csproj" />
+    <ProjectReference Include="..\DomainObjects\Data.DomainObjects.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="CoreRhinoMocks" Version="3.6.1.2" PrivateAssets="all" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="System.Transactions" />
-    <Reference Include="System.Web" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\..\AssemblyInfoShared.cs">
-      <Link>Properties\AssemblyInfoShared.cs</Link>
-    </Compile>
-    <Compile Include="DatabaseConfiguration.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SetUpFixture.cs" />
-    <Compile Include="TestDomain\SampleObject.cs" />
-    <Compile Include="TestDomain\DomainObjectIDs.cs" />
-    <Compile Include="WxeParameterIntegrationTest.cs" />
-    <Compile Include="WxeTransactedFunctionIntegrationTests\DomainObjectParametersTest.cs" />
-    <Compile Include="WxeTransactedFunctionIntegrationTests\ResetTest.cs" />
-    <Compile Include="WxeTransactedFunctionIntegrationTests\SecuredFunctionTestBase.cs" />
-    <Compile Include="WxeTransactedFunctionIntegrationTests\SecuredFunctionViaDomainObjectHandleParameterTest.cs" />
-    <Compile Include="WxeTransactedFunctionIntegrationTests\SecuredFunctionViaDomainObjectParameterTest.cs" />
-    <Compile Include="WxeTransactedFunctionIntegrationTests\SerializationTest.cs" />
-    <Compile Include="WxeTransactedFunctionIntegrationTests\ThreadAbortExceptionTest.cs" />
-    <Compile Include="WxeTransactedFunctionIntegrationTests\TransactionModeTest.cs" />
-    <Compile Include="WxeTransactedFunctionIntegrationTests\TransactionScopeTest.cs" />
-    <Compile Include="WxeTransactedFunctionIntegrationTests\WxeFunctions\AutoCommitTestTransactedFunction.cs" />
-    <Compile Include="WxeTransactedFunctionIntegrationTests\WxeFunctions\CreateChildIfParentTestTransactedFunction.cs" />
-    <Compile Include="WxeTransactedFunctionIntegrationTests\WxeFunctions\CreateNoneTestTransactedFunction.cs" />
-    <Compile Include="WxeTransactedFunctionIntegrationTests\WxeFunctions\CreateRootTestTransactedFunction.cs" />
-    <Compile Include="WxeTransactedFunctionIntegrationTests\WxeFunctions\CreateRootWithChildTestTransactedFunction.cs" />
-    <Compile Include="WxeTransactedFunctionIntegrationTests\WxeFunctions\DelegateExecutingTransactedFunction.cs" />
-    <Compile Include="WxeTransactedFunctionIntegrationTests\WxeFunctions\DomainObjectHandleParameterTestTransactedFunction.cs" />
-    <Compile Include="WxeTransactedFunctionIntegrationTests\WxeFunctions\DomainObjectParameterTestTransactedFunction.cs" />
-    <Compile Include="WxeTransactedFunctionIntegrationTests\WxeFunctions\FunctionWithSecuredDomainObjectHandleParameter.cs" />
-    <Compile Include="WxeTransactedFunctionIntegrationTests\WxeFunctions\FunctionWithSecuredDomainObjectParameter.cs" />
-    <Compile Include="WxeTransactedFunctionIntegrationTests\WxeFunctions\NoAutoCommitTestTransactedFunction.cs" />
-    <Compile Include="WxeTransactedFunctionIntegrationTests\WxeFunctions\RemoveCurrentTransactionScopeFunction.cs" />
-    <Compile Include="TestDomain\SecurableDomainObject.cs" />
-    <Compile Include="WxeTransactedFunctionIntegrationTests\WxeFunctions\SerializationTestTransactedFunction.cs" />
-    <Compile Include="WxeTransactedFunctionIntegrationTests\WxeFunctions\TestAccessTypes.cs" />
-    <Compile Include="WxeTransactedFunctionIntegrationTests\WxeFunctions\ThreadAbortTestTransactedFunction.cs" />
-    <Compile Include="WxeTransactedFunctionIntegrationTests\WxeFunctions\TransactedFunctionWithChildFunction.cs" />
-    <Compile Include="WxeTransactedFunctionIntegrationTests\WxeTransactedFunctionIntegrationTestBase.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\..\remotion.snk">
-      <Link>remotion.snk</Link>
-    </None>
-    <None Include="..\..\Remotion LGPL.licenseheader">
-      <Link>Remotion LGPL.licenseheader</Link>
-    </None>
-    <None Include="app.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">
-      <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
-      <Name>Core.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Core\Tools\Core.Tools.csproj">
-      <Project>{18269689-DC0F-4975-879B-A6ACBA0FA596}</Project>
-      <Name>Core.Tools</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Development\Core\Development.Core.csproj">
-      <Project>{B719A305-0493-4C72-88FE-9A2FC6964578}</Project>
-      <Name>Development.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Development\Web\Development.Web.csproj">
-      <Project>{44924ED6-8C12-416D-972F-F1F10417E7EF}</Project>
-      <Name>Development.Web</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Mixins\Core\Mixins.Core.csproj">
-      <Project>{d641e4e2-23f3-4454-8074-1327ef07baa1}</Project>
-      <Name>Mixins.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Security\Core\Security.Core.csproj">
-      <Project>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</Project>
-      <Name>Security.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Web\Core\Web.Core.csproj">
-      <Project>{DF8BA786-9679-4879-8757-16AE2709D83A}</Project>
-      <Name>Web.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Web\Security\Web.Security.csproj">
-      <Project>{9B6F6D1A-A7EA-4EE8-B36E-E31CF7E518E3}</Project>
-      <Name>Web.Security</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Core\Data.Core.csproj">
-      <Project>{70273934-12F1-49AF-975A-303BAEFE1CAE}</Project>
-      <Name>Data.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DomainObjects\Data.DomainObjects.csproj">
-      <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>
-      <Name>Data.DomainObjects</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Database\CreateDB.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

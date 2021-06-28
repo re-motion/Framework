@@ -17,7 +17,5 @@
 using System;
 using System.Reflection;
 
-[assembly: AssemblyTitle ("re-motion Globalization Library")]
-[assembly: AssemblyDescription ("Infrastructure for globalizing an application.")]
 [assembly: AssemblyCulture ("")]
 [assembly: CLSCompliant (true)]

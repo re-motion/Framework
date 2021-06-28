@@ -17,8 +17,6 @@
 using System;
 using System.Reflection;
 
-[assembly: AssemblyTitle ("re-motion Data Library")]
-[assembly: AssemblyDescription ("Common APIs for data management used by re-motion.")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]
 
