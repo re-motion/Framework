@@ -29,6 +29,11 @@ span.bocTextValue .content
   width: auto;
 }
 
+.mozilla span.bocTextValue .content
+{
+  right: 8px;
+}
+
 .bocTextValue.readOnly .content
 {
   position: static;
