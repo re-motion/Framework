@@ -321,6 +321,13 @@ span.content.embeddedOptionsMenu span.bocAutoCompleteReferenceValueInput
   right: 24px;
 }
 
+.mozilla span.content.separateOptionsMenu span.bocAutoCompleteReferenceValueInput,
+.mozilla span.content.withoutOptionsMenu span.bocAutoCompleteReferenceValueInput,
+.mozilla span.content.embeddedOptionsMenu span.bocAutoCompleteReferenceValueInput
+{
+  right: 26px;
+}
+
 /* embeddedOptionsMenu */
 span.content.embeddedOptionsMenu span.bocAutoCompleteReferenceValueInput
 {
