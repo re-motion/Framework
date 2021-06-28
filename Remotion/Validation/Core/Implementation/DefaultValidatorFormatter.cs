@@ -31,8 +31,9 @@ namespace Remotion.Validation.Implementation
     {
       ArgumentUtility.CheckNotNull ("validator", validator);
 
-      // TODO RM-7854: Assert that the returned value is not null.
-      return validator.ToString()!;
+      string? formattedValidator = validator.ToString();
+      Assertion.IsNotNull (formattedValidator, "ToString() of validator type '{0}' returned null.", validator.GetType());
+      return formattedValidator;
     }
   }
 }
