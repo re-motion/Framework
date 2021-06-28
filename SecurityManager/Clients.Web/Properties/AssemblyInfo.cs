@@ -20,8 +20,6 @@ using System.Reflection;
 using System.Resources;
 using Remotion.Globalization;
 
-[assembly: AssemblyTitle ("re-motion Security Manager Web Interface")]
-[assembly: AssemblyDescription ("Provides the web user interface for administering the organizational structure and access-control domain of the re-motion Security Manager.")]
 [assembly: AssemblyCulture ("")]
 [assembly: NeutralResourcesLanguage ("en")]
 [assembly: AvailableResourcesLanguages ("", "de", "fr", "it")]

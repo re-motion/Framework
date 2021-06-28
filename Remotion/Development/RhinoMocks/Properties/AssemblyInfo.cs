@@ -17,7 +17,5 @@
 using System;
 using System.Reflection;
 
-[assembly: AssemblyTitle ("re-motion Development Support Library for RhinoMocks")]
-[assembly: AssemblyDescription ("Library for unit testing with RhinoMocks.")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant (true)]

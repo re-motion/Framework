@@ -53,4 +53,8 @@ namespace Remotion.Development.UnitTesting.PEVerifyPathSources
   public partial class WindowsSdk80aPEVerifyPathSource
   {
   }
+
+  public partial class WindowsSdk81aPEVerifyPathSource
+  {
+  }
 }

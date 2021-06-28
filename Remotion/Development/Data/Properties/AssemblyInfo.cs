@@ -17,7 +17,5 @@
 using System;
 using System.Reflection;
 
-[assembly: AssemblyTitle("re-motion Development Support Library for DomainObjects")]
-[assembly: AssemblyDescription ("Library for unit testing, building, and other development-time activities in regard to Remotion.Data.DomainObjects.")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant (true)]

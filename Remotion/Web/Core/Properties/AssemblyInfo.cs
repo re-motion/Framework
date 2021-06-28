@@ -25,7 +25,5 @@ using Remotion.Globalization;
 [assembly: NeutralResourcesLanguage ("en")]
 [assembly: AvailableResourcesLanguages ("", "de", "fr", "it")]
 
-[assembly: AssemblyTitle("remotion Web Controls")]
-[assembly: AssemblyDescription ("Common controls for web applications.")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]

@@ -52,6 +52,8 @@
 // SOFTWARE.
 // 
 
+#nullable disable
+
 using System;
 
 #pragma warning disable 1591
@@ -85,3 +87,5 @@ namespace JetBrains.Annotations
     public string Comment { get; private set; }
   }
 }
+
+#nullable restore

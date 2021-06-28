@@ -17,7 +17,5 @@
 using System;
 using System.Reflection;
 
-[assembly: AssemblyTitle ("re-motion Core Library")]
-[assembly: AssemblyDescription ("General .NET classes and utilities.")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]

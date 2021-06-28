@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -25,7 +25,5 @@ using Remotion.Globalization;
 [assembly: NeutralResourcesLanguage ("en")]
 [assembly: AvailableResourcesLanguages ("", "de", "fr", "it")]
 
-[assembly: AssemblyTitle ("re-motion ObjectBinding Web Controls (compatibility extension) Library")]
-[assembly: AssemblyDescription ("Contains infrastructure for backwards-compatibility of 2-way databinding with business objects.")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]

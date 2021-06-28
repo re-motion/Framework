@@ -17,7 +17,5 @@
 using System;
 using System.Reflection;
 
-[assembly: AssemblyTitle ("re-motion Mixin Support for Validation Rules")]
-[assembly: AssemblyDescription ("Internal: Integrates Remotion.Mixins and Remotion.Validation assemblies.")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]

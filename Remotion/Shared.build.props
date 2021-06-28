@@ -1,0 +1,97 @@
+<Project>
+  <Import Project="$(MSBuildThisFileDirectory)..\Build\Customizations\Properties.props" />
+  <Import Project="$(MSBuildThisFileDirectory)..\Build\Customizations\Version.props" Condition="'$(Version)' == ''" />
+
+  <PropertyGroup>
+    <Product>$(ProductName)</Product>
+    <Company>$(CompanyName)</Company>
+    <Copyright>$(Copyright)</Copyright>
+    <Authors>$(Company)</Authors>
+    <PackageLicenseExpression>LGPL-2.1-or-later</PackageLicenseExpression>
+    <PackageProjectUrl>http://www.re-motion.org</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/re-motion/Framework/</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <LangVersion>9</LangVersion>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)..\remotion.snk</AssemblyOriginatorKeyFile>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder Condition="'$(IncludeSymbols)' != 'True'">$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <PackageTags>re-motion</PackageTags>
+    <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(ProjectType)' == 'Library'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>1591</NoWarn>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <IsPackable>True</IsPackable>
+    <TargetFrameworks>net461</TargetFrameworks>
+    <DefineConstants>$(DefineConstants);</DefineConstants>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(ProjectType)' == 'Test'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>0067;0649;0169</NoWarn>
+    <GenerateDocumentationFile>False</GenerateDocumentationFile>
+    <IsPackable>False</IsPackable>
+    <TargetFrameworks>net461</TargetFrameworks>
+    <DefineConstants>$(DefineConstants);</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(ProjectType)' == 'Web'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>0067;0649;0169</NoWarn>
+    <GenerateDocumentationFile>False</GenerateDocumentationFile>
+    <IsPackable>False</IsPackable>
+    <TargetFrameworks>net461</TargetFrameworks>
+    <DefineConstants>$(DefineConstants);</DefineConstants>
+    <OutputPath>bin</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)..\remotion.snk" Link="remotion.snk" />
+    <None Include="$(MSBuildThisFileDirectory)Remotion LGPL.licenseheader" Link="Remotion LGPL.licenseheader" />
+    <None Include="$(MSBuildThisFileFullPath)" Link="Shared.build.props" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(ProjectType)' == 'Library'" >
+    <None Include="$(MSBuildThisFileDirectory)..\Build\NuSpec\TemplateShared.nuspec" Link="TemplateShared.nuspec" />
+    <None Include="FacetManifest.xml" Condition="Exists('FacetManifest.xml')" />
+    <PackageReference Include="ReferenceAssemblyAnnotator" Version="5.0.0.1" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(ProjectType)' == 'Test'" >
+    <PackageReference Include="CoreRhinoMocks" Version="3.6.1.2" PrivateAssets="all" />
+    <PackageReference Include="Moq" Version="4.13.1" PrivateAssets="all" />
+    <PackageReference Include="NUnit" Version="3.13.1" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(ProjectType)' == 'Web'" >
+    <ProjectCapability Include="DotNetCoreWeb" />
+    <ProjectCapability Include="SupportsSystemWeb" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Services" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <_version>$(Version.Split('-')[0])</_version>
+
+    <AssemblyVersion Condition="'$(AssemblyVersion)' == ''">$(_version).0</AssemblyVersion>
+    <AssemblyVersion Condition="'$(AssemblyVersion)' != ''">$(AssemblyVersion)</AssemblyVersion>
+
+    <FileVersion Condition="'$(AssemblyFileVersion)' == ''">$(_version).24009</FileVersion>
+    <FileVersion Condition="'$(AssemblyFileVersion)' != ''">$(AssemblyFileVersion)</FileVersion>
+
+    <InformationalVersion Condition="'$(AssemblyInformationalVersion)' == ''">$(_version)-x.9+$(Configuration)</InformationalVersion>
+    <InformationalVersion Condition="'$(AssemblyInformationalVersion)' != ''">$(AssemblyInformationalVersion)</InformationalVersion>
+
+    <PackageVersion Condition="'$(AssemblyNuGetVersion)' == ''">$(_version)-x.9</PackageVersion>
+    <PackageVersion Condition="'$(AssemblyNuGetVersion)' != ''">$(AssemblyNuGetVersion)</PackageVersion>
+  </PropertyGroup>
+</Project>

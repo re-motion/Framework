@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -17,7 +17,5 @@
 using System;
 using System.Reflection;
 
-[assembly: AssemblyTitle ("re-motion Web Testing Framework")]
-[assembly: AssemblyDescription ("Provides a basic infrastructure for performing web tests based on Selenium.")]
 [assembly: AssemblyCulture ("")]
 [assembly: CLSCompliant (true)]

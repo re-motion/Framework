@@ -17,7 +17,5 @@
 using System;
 using System.Reflection;
 
-[assembly: AssemblyTitle ("re-motion Web Client Scripts")]
-[assembly: AssemblyDescription ("Client Scripts for re-motion's web applications controls.")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]

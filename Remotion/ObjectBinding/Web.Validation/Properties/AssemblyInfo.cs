@@ -25,7 +25,5 @@ using Remotion.Globalization;
 [assembly: NeutralResourcesLanguage ("en")]
 [assembly: AvailableResourcesLanguages ("", "de", "fr", "it")]
 
-[assembly: AssemblyTitle ("re-motion Validation Support for ObjectBinding Web Controls")]
-[assembly: AssemblyDescription ("Internal: Integrates Remotion.Validation and Remotion.ObjectBinding.Web assemblies.")]
 [assembly: AssemblyCulture("")]		
 [assembly: CLSCompliant(true)]
