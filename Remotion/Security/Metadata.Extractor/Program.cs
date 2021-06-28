@@ -81,10 +81,9 @@ namespace Remotion.Security.Metadata.Extractor
       {
         Console.Error.WriteLine ("Execution aborted. Exception stack:");
 
-        // TODO RM-7874: Introduce new variable for reassigned exception
-        for (; exception != null; exception = exception.InnerException!)
+        for (Exception? currentException = exception; currentException != null; currentException = currentException.InnerException)
         {
-          Console.Error.WriteLine ("{0}: {1}\n{2}", exception.GetType ().GetFullNameSafe(), exception.Message, exception.StackTrace);
+          Console.Error.WriteLine ("{0}: {1}\n{2}", currentException.GetType ().GetFullNameSafe(), currentException.Message, currentException.StackTrace);
         }
       }
       else
