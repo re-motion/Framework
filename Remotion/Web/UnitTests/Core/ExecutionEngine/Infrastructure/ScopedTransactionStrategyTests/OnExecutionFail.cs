@@ -16,7 +16,9 @@
 // 
 using System;
 using Moq;
+using Moq.Protected;
 using NUnit.Framework;
+using Remotion.Development.Moq.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
@@ -56,14 +58,20 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
     [Test]
     public void Test_WithReleaseTransactionOverride ()
     {
-      // TODO: Fix .InSequence().Protected() mock setup
       InvokeOnExecutionPlay (_strategy.Object);
-      var sequence = new MockSequence();
-      ChildTransactionStrategyMock.InSequence (sequence).Setup (mock => mock.OnExecutionFail (Context, ExecutionListenerStub.Object, _failException)).Verifiable();
-      ScopeMock.InSequence (sequence).Setup (mock => mock.Leave ()).Verifiable();
-      // _strategy.InSequence (sequence).Protected().Setup ("ReleaseTransaction", true).Verifiable();
-
-      Assert.Fail();
+      var sequenceCounter = 0;
+      ChildTransactionStrategyMock
+          .Setup (mock => mock.OnExecutionFail (Context, ExecutionListenerStub.Object, _failException))
+          .InSequence (ref sequenceCounter, 0)
+          .Verifiable();
+      ScopeMock
+          .Setup (mock => mock.Leave ())
+          .InSequence (ref sequenceCounter, 1)
+          .Verifiable();
+      _strategy
+          .Protected().Setup ("ReleaseTransaction", true)
+          .InSequence (ref sequenceCounter, 2)
+          .Verifiable();
 
       _strategy.Object.OnExecutionFail (Context, ExecutionListenerStub.Object, _failException);
 

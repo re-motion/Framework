@@ -24,8 +24,10 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.Moq.UnitTesting;
 using Remotion.Development.Web.UnitTesting.AspNetFramework;
 using Remotion.Development.Web.UnitTesting.UI.Controls;
 using Remotion.Web.Utilities;
@@ -100,20 +102,25 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     [Test]
     public void InitRecursive ()
     {
-      // TODO: Fix .InSequence().Protected() mock setup
       Page namingContainer = new Page();
       var parentControlMock = new Mock<Control>() { CallBase = true };
       var childControlMock = new Mock<Control>() { CallBase = true };
 
-      var sequence = new MockSequence();
-      // childControlMock.InSequence (sequence).Protected().Setup ("OnInit", true, EventArgs.Empty).Verifiable();
-      // parentControlMock.InSequence (sequence).Protected().Setup ("OnInit", true, EventArgs.Empty).Verifiable();
+      var sequenceCounter = 0;
+      childControlMock
+          .Protected()
+          .Setup ("OnInit", true, EventArgs.Empty)
+          .InSequence (ref sequenceCounter, 0)
+          .Verifiable();
+      parentControlMock
+          .Protected()
+          .Setup ("OnInit", true, EventArgs.Empty)
+          .InSequence (ref sequenceCounter, 1)
+          .Verifiable();
 
       namingContainer.Controls.Add (parentControlMock.Object);
       parentControlMock.Object.Controls.Add (childControlMock.Object);
       _memberCaller.InitRecursive (parentControlMock.Object, namingContainer);
-
-      Assert.Fail();
 
       parentControlMock.Verify();
       childControlMock.Verify();

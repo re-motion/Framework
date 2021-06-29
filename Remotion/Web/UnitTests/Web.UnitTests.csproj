@@ -162,6 +162,10 @@
       <Project>{44924ED6-8C12-416D-972F-F1F10417E7EF}</Project>
       <Name>Development.Web</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Development\Moq\Development.Moq.csproj">
+      <Project>{f49b0545-2ad6-401e-8db9-f11a3e01c07b}</Project>
+      <Name>Development.Moq</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Globalization\Core\Globalization.Core.csproj">
       <Project>{AC6AB6EB-F6AC-45A4-88A7-877D11A65CCB}</Project>
       <Name>Globalization.Core</Name>

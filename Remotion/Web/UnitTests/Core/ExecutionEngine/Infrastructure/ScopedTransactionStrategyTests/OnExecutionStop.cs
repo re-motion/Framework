@@ -17,7 +17,9 @@
 using System;
 using System.Collections;
 using Moq;
+using Moq.Protected;
 using NUnit.Framework;
+using Remotion.Development.Moq.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
@@ -102,18 +104,32 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
     [Test]
     public void Test_WithCommitTransactionOverride ()
     {
-      // TODO: Fix .InSequence().Protected() mock setup
       var strategy = CreateScopedTransactionStrategy (true, NullTransactionStrategy.Null);
 
       InvokeOnExecutionPlay (strategy.Object);
-      var sequence = new MockSequence();
-      ChildTransactionStrategyMock.InSequence (sequence).Setup (mock => mock.OnExecutionStop (Context, ExecutionListenerStub.Object)).Verifiable();
-      // strategy.InSequence (sequence).Protected().Setup ("CommitTransaction", true).Verifiable();
-      ExecutionContextMock.InSequence (sequence).Setup (mock => mock.GetOutParameters ()).Returns (new object[0]).Verifiable();
-      ScopeMock.InSequence (sequence).Setup (mock => mock.Leave ()).Verifiable();
-      TransactionMock.InSequence (sequence).Setup (mock => mock.Release ()).Verifiable();
-
-      Assert.Fail();
+      var sequenceCounter = 0;
+      ChildTransactionStrategyMock
+          .Setup (mock => mock.OnExecutionStop (Context, ExecutionListenerStub.Object))
+          .InSequence (ref sequenceCounter, 0)
+          .Verifiable();
+      strategy
+          .Protected()
+          .Setup ("CommitTransaction", true)
+          .InSequence (ref sequenceCounter, 1)
+          .Verifiable();
+      ExecutionContextMock
+          .Setup (mock => mock.GetOutParameters ())
+          .Returns (new object[0])
+          .InSequence (ref sequenceCounter, 2)
+          .Verifiable();
+      ScopeMock
+          .Setup (mock => mock.Leave ())
+          .InSequence (ref sequenceCounter, 3)
+          .Verifiable();
+      TransactionMock
+          .Setup (mock => mock.Release ())
+          .InSequence (ref sequenceCounter, 4)
+          .Verifiable();
 
       strategy.Object.OnExecutionStop (Context, ExecutionListenerStub.Object);
 
@@ -128,17 +144,28 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
     [Test]
     public void Test_WithReleaseTransactionOverride ()
     {
-      // TODO: Fix .InSequence().Protected() mock setup
       var strategy = CreateScopedTransactionStrategy (false, NullTransactionStrategy.Null);
 
       InvokeOnExecutionPlay (strategy.Object);
-      var sequence = new MockSequence();
-      ChildTransactionStrategyMock.InSequence (sequence).Setup (mock => mock.OnExecutionStop (Context, ExecutionListenerStub.Object)).Verifiable();
-      ExecutionContextMock.InSequence (sequence).Setup (mock => mock.GetOutParameters ()).Returns (new object[0]).Verifiable();
-      ScopeMock.InSequence (sequence).Setup (mock => mock.Leave ()).Verifiable();
-      // strategy.InSequence (sequence).Protected().Setup ("ReleaseTransaction", true).Verifiable();
-
-      Assert.Fail();
+      var sequenceCounter = 0;
+      ChildTransactionStrategyMock
+          .Setup (mock => mock.OnExecutionStop (Context, ExecutionListenerStub.Object))
+          .InSequence (ref sequenceCounter, 0)
+          .Verifiable();
+      ExecutionContextMock
+          .Setup (mock => mock.GetOutParameters ())
+          .Returns (new object[0])
+          .InSequence (ref sequenceCounter, 1)
+          .Verifiable();
+      ScopeMock
+          .Setup (mock => mock.Leave ())
+          .InSequence (ref sequenceCounter, 2)
+          .Verifiable();
+      strategy
+          .Protected()
+          .Setup ("ReleaseTransaction", true)
+          .InSequence (ref sequenceCounter, 3)
+          .Verifiable();
 
       strategy.Object.OnExecutionStop (Context, ExecutionListenerStub.Object);
 
