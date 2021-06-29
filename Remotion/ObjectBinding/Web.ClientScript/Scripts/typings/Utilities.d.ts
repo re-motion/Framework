@@ -8,15 +8,15 @@ declare class TypeUtility {
     static IsUndefined(value: unknown): value is undefined;
     static IsDefined(value: unknown): value is NotUndefined;
     static IsNull(value: unknown): value is null;
-    static HasProperty<TTarget, TKey extends string>(target: TTarget, key: TKey): target is TTarget & UndeclaredProperty<TKey, unknown>;
-    static HasPropertyOfType<TTarget, TKey extends string>(target: TTarget, key: TKey, type?: "string"): target is TTarget & UndeclaredProperty<TKey, string>;
-    static HasPropertyOfType<TTarget, TKey extends string>(target: TTarget, key: TKey, type?: "number"): target is TTarget & UndeclaredProperty<TKey, number>;
-    static HasPropertyOfType<TTarget, TKey extends string>(target: TTarget, key: TKey, type?: "bigint"): target is TTarget & UndeclaredProperty<TKey, bigint>;
-    static HasPropertyOfType<TTarget, TKey extends string>(target: TTarget, key: TKey, type?: "boolean"): target is TTarget & UndeclaredProperty<TKey, boolean>;
-    static HasPropertyOfType<TTarget, TKey extends string>(target: TTarget, key: TKey, type?: "symbol"): target is TTarget & UndeclaredProperty<TKey, symbol>;
-    static HasPropertyOfType<TTarget, TKey extends string>(target: TTarget, key: TKey, type?: "undefined"): target is TTarget & UndeclaredProperty<TKey, undefined>;
-    static HasPropertyOfType<TTarget, TKey extends string>(target: TTarget, key: TKey, type?: "object"): target is TTarget & UndeclaredProperty<TKey, object>;
-    static HasPropertyOfType<TTarget, TKey extends string>(target: TTarget, key: TKey, type?: "function"): target is TTarget & UndeclaredProperty<TKey, Function>;
+    static HasProperty<TTarget, TKey extends string>(target: TTarget, key: TKey): target is TTarget & Record<TKey, unknown>;
+    static HasPropertyOfType<TTarget, TKey extends string>(target: TTarget, key: TKey, type?: "string"): target is TTarget & Record<TKey, string>;
+    static HasPropertyOfType<TTarget, TKey extends string>(target: TTarget, key: TKey, type?: "number"): target is TTarget & Record<TKey, number>;
+    static HasPropertyOfType<TTarget, TKey extends string>(target: TTarget, key: TKey, type?: "bigint"): target is TTarget & Record<TKey, bigint>;
+    static HasPropertyOfType<TTarget, TKey extends string>(target: TTarget, key: TKey, type?: "boolean"): target is TTarget & Record<TKey, boolean>;
+    static HasPropertyOfType<TTarget, TKey extends string>(target: TTarget, key: TKey, type?: "symbol"): target is TTarget & Record<TKey, symbol>;
+    static HasPropertyOfType<TTarget, TKey extends string>(target: TTarget, key: TKey, type?: "undefined"): target is TTarget & Record<TKey, undefined>;
+    static HasPropertyOfType<TTarget, TKey extends string>(target: TTarget, key: TKey, type?: "object"): target is TTarget & Record<TKey, object>;
+    static HasPropertyOfType<TTarget, TKey extends string>(target: TTarget, key: TKey, type?: "function"): target is TTarget & Record<TKey, Function>;
 }
 declare class StringUtility {
     static IsNullOrEmpty(value: Nullable<string>): value is null | "";

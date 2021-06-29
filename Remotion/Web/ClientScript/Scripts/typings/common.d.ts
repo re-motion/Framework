@@ -35,8 +35,6 @@ type NotUndefined = NotNullNorUndefined | null;
 type CssSelectorOrElement<TElement extends Element> = string | TElement;
 type CssSelectorOrElements<TElement extends Element> = string | TElement | TElement[];
 
-type UndeclaredProperty<TName extends string, TType> = { [K in TName]: TType };
-
 declare namespace Remotion
 {
   export var jQuery: JQueryStatic;
