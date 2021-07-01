@@ -17,15 +17,18 @@
 using System;
 using System.Globalization;
 using System.IO;
+using Remotion.Utilities;
 
 namespace Remotion.Security.Metadata
 {
   public class LocalizationFileNameStrategy
   {
-    // TODO RM-7869: Add missing argument checks
 
     public string GetLocalizationFileName (string metadataFilename, CultureInfo culture)
     {
+      ArgumentUtility.CheckNotNullOrEmpty ("metadataFilename", metadataFilename);
+      ArgumentUtility.CheckNotNull ("culture", culture);
+
       string baseFilename = Path.GetFileNameWithoutExtension (metadataFilename);
       // TODO RM-7870: Add notnull assertion
       string basePath = Path.GetDirectoryName (metadataFilename)!;
@@ -39,6 +42,8 @@ namespace Remotion.Security.Metadata
 
     public string[] GetLocalizationFileNames (string metadataFilename)
     {
+      ArgumentUtility.CheckNotNullOrEmpty ("metadataFilename", metadataFilename);
+
       string baseFileName = Path.GetFileNameWithoutExtension (metadataFilename);
       // TODO RM-7870: Add notnull assertion
       string basePath = Path.GetDirectoryName (metadataFilename)!;
