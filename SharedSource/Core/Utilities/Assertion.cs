@@ -136,6 +136,14 @@ namespace Remotion.Utilities
       IsNotNull (obj, message, s_emptyArguments);
     }
 
+    [Conditional ("DEBUG")]
+    [AssertionMethod]
+    [StringFormatMethod ("message")]
+    public static void DebugIsNotNull<T> ([AssertionCondition (AssertionConditionType.IS_NOT_NULL), System.Diagnostics.CodeAnalysis.NotNull] T obj, string message, params object[] arguments)
+    {
+      IsNotNull (obj, message, arguments);
+    }
+
     [AssertionMethod]
     [return: System.Diagnostics.CodeAnalysis.NotNull]
     public static T IsNotNull<T> ([AssertionCondition (AssertionConditionType.IS_NOT_NULL), System.Diagnostics.CodeAnalysis.NotNull] T obj, string message)

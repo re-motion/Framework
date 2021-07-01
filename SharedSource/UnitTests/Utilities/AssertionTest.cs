@@ -203,6 +203,30 @@ namespace Remotion.UnitTests.Utilities
               .With.Message.EqualTo ("a"));
     }
 
+#if !DEBUG
+  [Ignore ("Skipped unless DEBUG build")]
+#endif
+    [Test]
+    public void DebugIsNotNull_Message_Args_True ()
+    {
+      var instance = "x";
+
+      Assert.That (() => Assertion.DebugIsNotNull (instance, "a{0}b", 5), Throws.Nothing);
+    }
+
+#if !DEBUG
+  [Ignore ("Skipped unless DEBUG build")]
+#endif
+    [Test]
+    public void DebugIsNotNull_Message_Args_False ()
+    {
+      Assert.That (
+          () => Assertion.DebugIsNotNull<object?> (null, "a{0}b", 5),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("a5b")
+          );
+    }
+
     [Test]
     public void IsNotNull_Message_Args_True ()
     {
