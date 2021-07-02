@@ -70,8 +70,8 @@ namespace Remotion.Security.Metadata
       {
         string name = value.ToString ();
         info = new EnumValueInfo (TypeUtility.GetPartialAssemblyQualifiedName (value.GetType ()), name, Convert.ToInt32 (value));
-        // TODO RM-7868: Add debug notnull assertion
-        FieldInfo fieldInfo = value.GetType ().GetField (name, BindingFlags.Static | BindingFlags.Public)!;
+        FieldInfo? fieldInfo = value.GetType ().GetField (name, BindingFlags.Static | BindingFlags.Public);
+        Assertion.DebugIsNotNull (fieldInfo, "Field '{0}' was not found on type '{1}'.", name, value.GetType());
         PermanentGuidAttribute? attribute = (PermanentGuidAttribute?) Attribute.GetCustomAttribute (fieldInfo, typeof (PermanentGuidAttribute), false);
         if (attribute != null)
           info.ID = attribute.Value.ToString ();
