@@ -70,9 +70,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     {
       StubInnerData (_order1);
 
-      CheckThrows<ArgumentException> (
-          () => _modificationCheckingDecorator.Insert (0, _order1), 
-          "The collection already contains an object with ID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid'.\r\nParameter name: domainObject");
+      Assert.That (
+          () => _modificationCheckingDecorator.Insert (0, _order1),
+          Throws.InstanceOf<ArgumentException>()
+              .With.Message.EqualTo (
+                  "The collection already contains an object with ID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid'.\r\nParameter name: domainObject"));
 
       _wrappedDataMock.AssertWasNotCalled (mock => mock.Insert (Arg<int>.Is.Anything, Arg<DomainObject>.Is.Anything));
     }
@@ -80,9 +82,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     [Test]
     public void Insert_IndexTooHigh ()
     {
-      CheckThrows<ArgumentOutOfRangeException> (
+      Assert.That (
           () => _modificationCheckingDecorator.Insert (1, _order1),
-          "Index is out of range. Must be non-negative and less than or equal to the size of the collection.\r\nParameter name: index\r\nActual value was 1.");
+          Throws.InstanceOf<ArgumentOutOfRangeException>()
+              .With.Message.EqualTo (
+                  "Index is out of range. Must be non-negative and less than or equal to the size of the collection.\r\nParameter name: index\r\nActual value was 1."));
 
       _wrappedDataMock.AssertWasNotCalled (mock => mock.Insert (Arg<int>.Is.Anything, Arg<DomainObject>.Is.Anything));
     }
@@ -90,9 +94,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     [Test]
     public void Insert_IndexTooLow ()
     {
-      CheckThrows<ArgumentOutOfRangeException> (
+      Assert.That (
           () => _modificationCheckingDecorator.Insert (-1, _order1),
-          "Index is out of range. Must be non-negative and less than or equal to the size of the collection.\r\nParameter name: index\r\nActual value was -1.");
+          Throws.InstanceOf<ArgumentOutOfRangeException>()
+              .With.Message.EqualTo (
+                  "Index is out of range. Must be non-negative and less than or equal to the size of the collection.\r\nParameter name: index\r\nActual value was -1."));
 
       _wrappedDataMock.AssertWasNotCalled (mock => mock.Insert (Arg<int>.Is.Anything, Arg<DomainObject>.Is.Anything));
     }
@@ -100,11 +106,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     [Test]
     public void Insert_WrongType ()
     {
-      CheckThrows<ArgumentException> (
+      Assert.That (
           () => _modificationCheckingDecorator.Insert (0, _orderItem1),
-          "Values of type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem'"
-          + " cannot be added to this collection. Values must be of type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' or derived from "
-          + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order'.\r\nParameter name: domainObject");
+          Throws.InstanceOf<ArgumentException>()
+              .With.Message.EqualTo (
+                  "Values of type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem'"
+                  + " cannot be added to this collection. Values must be of type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' or derived from "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order'.\r\nParameter name: domainObject"));
 
       _wrappedDataMock.AssertWasNotCalled (mock => mock.Insert (Arg<int>.Is.Anything, Arg<DomainObject>.Is.Anything));
     }
@@ -134,9 +142,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     {
       _wrappedDataMock.Stub (stub => stub.GetObject (DomainObjectIDs.Order1)).Return (_order3);
 
-      CheckThrows<ArgumentException> (
+      Assert.That (
           () => _modificationCheckingDecorator.Remove (_order1),
-          "The object to be removed has the same ID as an object in this collection, but is a different object reference.\r\nParameter name: domainObject");
+          Throws.InstanceOf<ArgumentException>()
+              .With.Message.EqualTo (
+                  "The object to be removed has the same ID as an object in this collection, but is a different object reference.\r\nParameter name: domainObject"));
 
       _wrappedDataMock.AssertWasNotCalled (mock => mock.Remove (Arg<DomainObject>.Is.Anything));
     }
@@ -166,9 +176,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     {
       StubInnerData (_order1, _order3);
 
-      CheckThrows<InvalidOperationException> (
+      Assert.That (
           () => _modificationCheckingDecorator.Replace (1, _order1),
-          "The collection already contains an object with ID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid'.");
+          Throws.InstanceOf<InvalidOperationException>()
+              .With.Message.EqualTo (
+                  "The collection already contains an object with ID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid'."));
 
       _wrappedDataMock.AssertWasNotCalled (mock => mock.Replace (Arg<int>.Is.Anything, Arg<DomainObject>.Is.Anything));
     }
@@ -178,9 +190,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     {
       StubInnerData (_order1);
 
-      CheckThrows<ArgumentOutOfRangeException> (
+      Assert.That (
           () => _modificationCheckingDecorator.Replace (-1, _order1),
-          "Index is out of range. Must be non-negative and less than the size of the collection.\r\nParameter name: index\r\nActual value was -1.");
+          Throws.InstanceOf<ArgumentOutOfRangeException>()
+              .With.Message.EqualTo (
+                  "Index is out of range. Must be non-negative and less than the size of the collection.\r\nParameter name: index\r\nActual value was -1."));
 
       _wrappedDataMock.AssertWasNotCalled (mock => mock.Replace (Arg<int>.Is.Anything, Arg<DomainObject>.Is.Anything));
     }
@@ -190,9 +204,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     {
       StubInnerData (_order1);
 
-      CheckThrows<ArgumentOutOfRangeException> (
+      Assert.That (
           () => _modificationCheckingDecorator.Replace (1, _order1),
-          "Index is out of range. Must be non-negative and less than the size of the collection.\r\nParameter name: index\r\nActual value was 1.");
+          Throws.InstanceOf<ArgumentOutOfRangeException>()
+              .With.Message.EqualTo (
+                  "Index is out of range. Must be non-negative and less than the size of the collection.\r\nParameter name: index\r\nActual value was 1."));
 
       _wrappedDataMock.AssertWasNotCalled (mock => mock.Replace (Arg<int>.Is.Anything, Arg<DomainObject>.Is.Anything));
     }
@@ -202,11 +218,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     {
       StubInnerData (_order1);
 
-      CheckThrows<ArgumentException> (
+      Assert.That (
           () => _modificationCheckingDecorator.Replace (0, _orderItem1),
-          "Values of type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem'"
-          + " cannot be added to this collection. Values must be of type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' or derived from "
-          + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order'.\r\nParameter name: value");
+          Throws.InstanceOf<ArgumentException>()
+              .With.Message.EqualTo (
+                  "Values of type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem'"
+                  + " cannot be added to this collection. Values must be of type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' or derived from "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order'.\r\nParameter name: value"));
 
       _wrappedDataMock.AssertWasNotCalled (mock => mock.Replace (Arg<int>.Is.Anything, Arg<DomainObject>.Is.Anything));
     }
@@ -230,24 +248,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
       var deserializedDecorator = Serializer.SerializeAndDeserialize (decorator);
 
       Assert.That (deserializedDecorator.Count(), Is.EqualTo (2));
-    }
-
-    private void CheckThrows<T> (Action action, string expectedMessage) where T : Exception
-    {
-      try
-      {
-        action ();
-      }
-      catch (T ex)
-      {
-        Assert.That (ex.Message, Is.EqualTo (expectedMessage), "Exception message doesn't match.");
-        return;
-      }
-      catch (Exception ex)
-      {
-        Assert.Fail ("Expected " + typeof (T) + ", got " + ex);
-      }
-      Assert.Fail ("Expected " + typeof (T));
     }
 
     private void StubInnerData (params DomainObject[] contents)
