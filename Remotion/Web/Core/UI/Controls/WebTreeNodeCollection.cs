@@ -15,16 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.ComponentModel;
-using System.Drawing.Design;
 using Remotion.Utilities;
-using Remotion.Web.UI.Design;
 using Remotion.Web.Utilities;
 
 namespace Remotion.Web.UI.Controls
 {
   /// <summary> A collection of <see cref="WebTreeNode"/> objects. </summary>
-  [Editor (typeof (WebTreeNodeCollectionEditor), typeof (UITypeEditor))]
   public class WebTreeNodeCollection : ControlItemCollection
   {
     private WebTreeView _treeView;

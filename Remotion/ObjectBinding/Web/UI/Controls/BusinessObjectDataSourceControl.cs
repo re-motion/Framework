@@ -20,7 +20,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Web.UI;
-using Remotion.ObjectBinding.Web.UI.Design;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
@@ -49,7 +48,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   ///   </note>
   /// </remarks>
   [NonVisualControl]
-  [Designer (typeof (BocDataSourceDesigner))]
   public abstract class BusinessObjectDataSourceControl : Control, IBusinessObjectDataSourceControl
   {
     /// <summary>

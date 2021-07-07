@@ -16,7 +16,6 @@
 // 
 using System;
 using System.ComponentModel;
-using System.Drawing.Design;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using CommonServiceLocator;
@@ -28,7 +27,6 @@ using Remotion.Web.UI.Globalization;
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary> A BocColumnDefinition defines how to display a column of a list. </summary>
-  [Editor (typeof (ExpandableObjectConverter), typeof (UITypeEditor))]
   public abstract class BocColumnDefinition : BusinessObjectControlItem
   {
     private string _itemID = string.Empty;

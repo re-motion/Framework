@@ -19,7 +19,6 @@ using System.ComponentModel;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Remotion.Web.UI.Design;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
@@ -55,7 +54,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets or sets the input control to validate. </summary>
-    [TypeConverter (typeof (BocDateTimeValueControlToStringConverter))]
     public new string ControlToValidate
     {
       get { return base.ControlToValidate; }
@@ -73,21 +71,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         return base.ErrorMessage;
       }
       set { base.ErrorMessage = value; }
-    }
-  }
-
-  /// <summary>
-  ///   Creates a VS.NET designer pick list for a property that references a 
-  ///   <see cref="BocDateTimeValue"/> control.
-  /// </summary>
-  /// <remarks>
-  ///   Use the <see cref="TypeConverter"/> attribute to assign this converter to a property.
-  /// </remarks>
-  public class BocDateTimeValueControlToStringConverter : ControlToStringConverter
-  {
-    public BocDateTimeValueControlToStringConverter ()
-        : base (typeof (BocDateTimeValue))
-    {
     }
   }
 }

@@ -17,7 +17,6 @@
 using System;
 using System.ComponentModel;
 using System.Drawing.Design;
-using Remotion.ObjectBinding.Design.BindableObject;
 using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.BindableObject
@@ -53,7 +52,6 @@ namespace Remotion.ObjectBinding.BindableObject
 
     [Category ("Data")]
     [DefaultValue (null)]
-    [Editor (typeof (BindableObjectTypePickerEditor), typeof (UITypeEditor))]
     [TypeConverter (typeof (TypeNameConverter))]
     public Type Type
     {

@@ -32,7 +32,6 @@ using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Controls.WebTabStripImplementation;
 using Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering;
-using Remotion.Web.UI.Design;
 using Remotion.Web.UI.Globalization;
 using Remotion.Web.Utilities;
 
@@ -40,15 +39,13 @@ namespace Remotion.Web.UI.Controls
 {
   /// <include file='..\..\doc\include\UI\Controls\WebTabStrip.xml' path='WebTabStrip/Class/*' />
   [ToolboxData ("<{0}:WebTabStrip runat=server></{0}:WebTabStrip>")]
-  [Designer (typeof (WebControlDesigner))]
   public class WebTabStrip
       :
           WebControl,
           IWebTabStrip,
           IPostBackDataHandler,
           IPostBackEventHandler,
-          IResourceDispatchTarget,
-          IControlWithDesignTimeSupport
+          IResourceDispatchTarget
   {
     //  constants
     /// <summary> The key identifying a tab resource entry. </summary>
@@ -235,16 +232,6 @@ namespace Remotion.Web.UI.Controls
       var globalizationService = SafeServiceLocator.Current.GetInstance<IGlobalizationService>();
 
       LoadResources (resourceManager, globalizationService);
-    }
-
-    /// <summary> Calls <see cref="Control.OnPreRender"/> on every invocation. </summary>
-    /// <remarks> Used by the <see cref="WebControlDesigner"/>. </remarks>
-    void IControlWithDesignTimeSupport.PreRenderForDesignMode ()
-    {
-      if (! IsDesignMode)
-        throw new InvalidOperationException ("PreRenderChildControlsForDesignMode may only be called during design time.");
-      EnsureChildControls();
-      OnPreRender (EventArgs.Empty);
     }
 
     protected override void Render (HtmlTextWriter writer)

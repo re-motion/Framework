@@ -21,7 +21,6 @@ using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
-using Remotion.Web.UI.Design;
 using Remotion.Web.UI.Globalization;
 using Remotion.Web.Utilities;
 
@@ -41,7 +40,6 @@ public class SmartLabel: WebControl, IControl
   /// <summary>
   ///   The ID of the control to display a label for.
   /// </summary>
-  [TypeConverter (typeof (SmartControlToStringConverter))]
   [Category ("Behavior")]
   public string ForControl
   {

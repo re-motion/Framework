@@ -17,12 +17,10 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing.Design;
 using System.Linq;
 using System.Web.UI;
 using CommonServiceLocator;
 using Remotion.Mixins;
-using Remotion.ObjectBinding.Design;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting;
 using Remotion.TypePipe;
@@ -115,7 +113,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Must not be <see langword="null"/> or emtpy.
     /// </summary>
     /// <value> A <see cref="string"/> representing the <see cref="GetPropertyPath"/>. </value>
-    [Editor (typeof (PropertyPathPickerEditor), typeof (UITypeEditor))]
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Data")]
     [Description ("The string representation of the Property Path. Must not be emtpy.")]

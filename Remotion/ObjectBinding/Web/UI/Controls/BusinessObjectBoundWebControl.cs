@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing.Design;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -27,8 +26,6 @@ using CommonServiceLocator;
 using Remotion.Collections;
 using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
-using Remotion.ObjectBinding.Design;
-using Remotion.ObjectBinding.Web.UI.Design;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
@@ -47,7 +44,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   /// <seealso cref="IBusinessObjectBoundWebControl"/>
   // It is required to use a Designer from the same assambly as is the control (or the GAC etc), 
   // otherwise the VS 2003 Toolbox will have trouble loading the assembly.
-  [Designer (typeof (BocDesigner))]
   public abstract class BusinessObjectBoundWebControl : WebControl, IBusinessObjectBoundWebControl
   {
     #region BusinessObjectBinding implementation
@@ -77,7 +73,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </value>
     [Category ("Data")]
     [Description ("The string representation of the Property.")]
-    [Editor (typeof (PropertyPickerEditor), typeof (UITypeEditor))]
     [DefaultValue ("")]
     [MergableProperty (false)]
     public string PropertyIdentifier
@@ -101,7 +96,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   this  <see cref="IBusinessObjectBoundWebControl"/> is bound to.
     /// </summary>
     /// <value>A string set to the <b>ID</b> of an <see cref="IBusinessObjectDataSourceControl"/> inside the current naming container.</value>
-    [TypeConverter (typeof (BusinessObjectDataSourceControlConverter))]
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Data")]
     [Description ("The ID of the BusinessObjectDataSourceControl control used as data source.")]
@@ -310,16 +304,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </remarks>
     [Browsable (false)]
     public abstract bool HasValue { get; }
-
-    /// <summary> Calls <see cref="Control.OnPreRender"/> on every invocation. </summary>
-    /// <remarks> Used by the <see cref="BocDesigner"/>. </remarks>
-    void IControlWithDesignTimeSupport.PreRenderForDesignMode ()
-    {
-      if (!IsDesignMode)
-        throw new InvalidOperationException ("PreRenderChildControlsForDesignMode may only be called during design time.");
-      EnsureChildControls();
-      OnPreRender (EventArgs.Empty);
-    }
 
     /// <summary>
     /// Overrides the base method to temporarily enable the control before adding attributes.

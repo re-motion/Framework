@@ -18,14 +18,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing.Design;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
-using Remotion.ObjectBinding.Design;
 using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.ObjectBinding.Web.UI.Design;
 using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
@@ -209,7 +206,6 @@ namespace Remotion.ObjectBinding.Sample
 
     [Category ("Data")]
     [Description ("The string representation of the Property.")]
-    [Editor (typeof (PropertyPickerEditor), typeof (UITypeEditor))]
     [DefaultValue ("")]
     [MergableProperty (false)]
     public string PropertyIdentifier
@@ -230,7 +226,6 @@ namespace Remotion.ObjectBinding.Sample
       set { _repeaterInternal.Property = value; }
     }
 
-    [TypeConverter (typeof (BusinessObjectDataSourceControlConverter))]
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Data")]
     [Description ("The ID of the BusinessObjectDataSourceControl control used as data source.")]
@@ -403,11 +398,6 @@ namespace Remotion.ObjectBinding.Sample
     public bool SupportsProperty (IBusinessObjectProperty property)
     {
       return _repeaterInternal.SupportsProperty (property);
-    }
-
-    void IControlWithDesignTimeSupport.PreRenderForDesignMode ()
-    {
-      ((IControlWithDesignTimeSupport) _repeaterInternal).PreRenderForDesignMode();
     }
 
     #endregion

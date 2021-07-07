@@ -17,13 +17,10 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing.Design;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Remotion.ObjectBinding.Design;
-using Remotion.ObjectBinding.Web.UI.Design;
 using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
@@ -36,7 +33,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   /// <summary> This control can be used to render text without any escaping applied. </summary>
   /// <include file='..\..\doc\include\UI\Controls\BocLiteral.xml' path='BocLiteral/Class/*' />
   [ToolboxItemFilter ("System.Web.UI")]
-  [Designer (typeof (BocDesigner))]
   public class BocLiteral : Control, IBusinessObjectBoundWebControl
   {
     #region BusinessObjectBinding implementation
@@ -66,7 +62,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </value>
     [Category ("Data")]
     [Description ("The string representation of the Property.")]
-    [Editor (typeof (PropertyPickerEditor), typeof (UITypeEditor))]
     [DefaultValue ("")]
     [MergableProperty (false)]
     public string PropertyIdentifier
@@ -90,7 +85,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   this  <see cref="IBusinessObjectBoundWebControl"/> is bound to.
     /// </summary>
     /// <value>A string set to the <b>ID</b> of an <see cref="IBusinessObjectDataSourceControl"/> inside the current naming container.</value>
-    [TypeConverter (typeof (BusinessObjectDataSourceControlConverter))]
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Data")]
     [Description ("The ID of the BusinessObjectDataSourceControl control used as data source.")]
@@ -288,16 +282,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       get { return Value; }
       set { Value = (string) value; }
-    }
-
-    /// <summary> Calls <see cref="Control.OnPreRender"/> on every invocation. </summary>
-    /// <remarks> Used by the <see cref="BocDesigner"/>. </remarks>
-    void IControlWithDesignTimeSupport.PreRenderForDesignMode ()
-    {
-      if (!IsDesignMode)
-        throw new InvalidOperationException ("PreRenderChildControlsForDesignMode may only be called during design time.");
-      EnsureChildControls ();
-      OnPreRender (EventArgs.Empty);
     }
 
     bool IBusinessObjectBoundWebControl.SupportsPropertyMultiplicity (bool isList)

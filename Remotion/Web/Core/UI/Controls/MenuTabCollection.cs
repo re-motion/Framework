@@ -16,13 +16,10 @@
 // 
 using System;
 using System.ComponentModel;
-using System.Drawing.Design;
 using Remotion.Utilities;
-using Remotion.Web.UI.Design;
 
 namespace Remotion.Web.UI.Controls
 {
-  [Editor (typeof (MainMenuTabCollectionEditor), typeof (UITypeEditor))]
   public class MainMenuTabCollection : WebTabCollection
   {
     /// <summary> Initializes a new instance. </summary>
@@ -60,7 +57,6 @@ namespace Remotion.Web.UI.Controls
     }
   }
 
-  [Editor (typeof (SubMenuTabCollectionEditor), typeof (UITypeEditor))]
   public class SubMenuTabCollection : WebTabCollection
   {
     private MainMenuTab _parent;

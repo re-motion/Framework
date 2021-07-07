@@ -19,17 +19,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Drawing.Design;
 using System.Linq;
 using System.Reflection;
 using System.Web.UI;
-using System.Web.UI.Design;
 using System.Web.UI.WebControls;
 using JetBrains.Annotations;
 using Remotion.Globalization;
 using Remotion.Logging;
 using Remotion.ObjectBinding.Web.Services;
-using Remotion.ObjectBinding.Web.UI.Design;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -309,7 +306,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     [Category ("Menu")]
     [Description ("The menu items displayed by options menu.")]
     [DefaultValue ((string) null)]
-    [Editor (typeof (BocMenuItemCollectionEditor), typeof (UITypeEditor))]
     public WebMenuItemCollection OptionsMenuItems
     {
       get { return _optionsMenu.MenuItems; }
@@ -1103,7 +1099,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       get { return ControlType; }
     }
 
-    [Editor (typeof (UrlEditor), typeof (UITypeEditor))]
     [Category ("Behavior")]
     [DefaultValue ("")]
     public string ControlServicePath

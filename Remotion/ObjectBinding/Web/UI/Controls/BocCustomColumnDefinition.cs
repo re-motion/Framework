@@ -18,14 +18,12 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Drawing.Design;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Web.UI;
 using JetBrains.Annotations;
 using CommonServiceLocator;
-using Remotion.ObjectBinding.Design;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting;
@@ -135,7 +133,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Must not be <see langword="null"/> or emtpy.
     /// </summary>
     /// <value> A <see cref="string"/> representing the <see cref="IBusinessObjectPropertyPath"/>. </value>
-    [Editor (typeof (PropertyPathPickerEditor), typeof (UITypeEditor))]
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Data")]
     [Description ("The string representation of the Property Path. Must not be emtpy.")]

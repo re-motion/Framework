@@ -23,12 +23,10 @@ using Remotion.Utilities;
 using Remotion.Web.UI.Controls.DropDownMenuImplementation;
 using Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering;
 using Remotion.Web.UI.Controls.Rendering;
-using Remotion.Web.UI.Design;
 
 namespace Remotion.Web.UI.Controls
 {
   /// <include file='..\..\doc\include\UI\Controls\DropDownMenu.xml' path='DropDownMenu/Class/*' />
-  [Designer (typeof (WebControlDesigner))]
   public class DropDownMenu : MenuBase, IDropDownMenu
   {
     /// <summary> Only used by control developers. </summary>
