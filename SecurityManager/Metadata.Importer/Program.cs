@@ -17,7 +17,7 @@
 // 
 using System;
 using System.ComponentModel.Design;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;

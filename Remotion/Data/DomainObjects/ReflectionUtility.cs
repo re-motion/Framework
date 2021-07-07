@@ -26,6 +26,7 @@ using Remotion.ExtensibleEnums;
 using Remotion.FunctionalProgramming;
 using Remotion.Reflection;
 using Remotion.Utilities;
+using TypeExtensions = Remotion.Reflection.TypeExtensions;
 
 namespace Remotion.Data.DomainObjects
 {
@@ -59,7 +60,7 @@ namespace Remotion.Data.DomainObjects
     {
       ArgumentUtility.CheckNotNull ("assembly", assembly);
 
-      Uri codeBaseUri = new Uri (assembly.EscapedCodeBase);
+      Uri codeBaseUri = new Uri (assembly.Location);
       if (!codeBaseUri.IsFile)
         throw new InvalidOperationException (String.Format ("The assembly's code base '{0}' is not a local path.", codeBaseUri.OriginalString));
       return Path.GetDirectoryName (codeBaseUri.LocalPath);

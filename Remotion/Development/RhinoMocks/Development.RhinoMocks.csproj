@@ -21,6 +21,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CoreRhinoMocks" Version="3.6.1.2" />
-    <PackageReference Include="NUnit" Version="3.13.1" />
+    <PackageReference Include="NUnit" Version="3.12.0" />
   </ItemGroup>
 </Project>

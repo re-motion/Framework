@@ -17,31 +17,36 @@
 using System;
 using NUnit.Framework;
 using Remotion.TypePipe;
+using Remotion.TypePipe.Implementation;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 {
   public abstract class CodeGenerationBaseTest
   {
-    private IPipeline _previousDefaultPipeline;
+    private readonly DefaultPipelineRegistry _registryWithSetupFixturePipeline;
+
+    protected CodeGenerationBaseTest ()
+    {
+      _registryWithSetupFixturePipeline = new DefaultPipelineRegistry(Pipeline);
+    }
 
     [SetUp]
     public virtual void SetUp ()
     {
-      _previousDefaultPipeline = PipelineRegistry.DefaultPipeline;
-      PipelineRegistry.SetDefaultPipeline (Pipeline);
+      if (PipelineRegistry?.DefaultPipeline != Pipeline)
+      {
+        PipelineRegistry = _registryWithSetupFixturePipeline;
+      }
     }
 
     [TearDown]
     public virtual void TearDown ()
     {
-      PipelineRegistry.SetDefaultPipeline (_previousDefaultPipeline);
+      PipelineRegistry = _registryWithSetupFixturePipeline;
     }
 
-    protected IPipelineRegistry PipelineRegistry
-    {
-      get { return SetUpFixture.PipelineRegistry; }
-    }
+    protected IPipelineRegistry PipelineRegistry { get; set; }
 
     protected IPipeline Pipeline
     {

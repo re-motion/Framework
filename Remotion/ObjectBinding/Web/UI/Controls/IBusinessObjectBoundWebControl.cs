@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.ObjectBinding.Web.UI.Design;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
@@ -36,7 +35,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   /// <seealso cref="ISmartControl"/>
   /// <seealso cref="IBusinessObjectBoundEditableWebControl"/>
   /// <seealso cref="IBusinessObjectDataSourceControl"/>
-  public interface IBusinessObjectBoundWebControl : IBusinessObjectBoundControl, ISmartControl, IControlWithDesignTimeSupport
+  public interface IBusinessObjectBoundWebControl : IBusinessObjectBoundControl, ISmartControl
   {
     /// <summary>
     ///   Gets or sets the <b>ID</b> of the <see cref="IBusinessObjectDataSourceControl"/> encapsulating the 
@@ -45,7 +44,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <value>A string set to the <b>ID</b> of an <see cref="IBusinessObjectDataSourceControl"/> inside the current naming container.</value>
     /// <remarks>
     ///   The value of this property is used to find the <see cref="IBusinessObjectDataSourceControl"/> in the controls collection.
-    ///   <note type="inotes">Apply an <see cref="BusinessObjectDataSourceControlConverter"/> when implementing the property.</note>
     /// </remarks>
     string DataSourceControl { get; set; }
 

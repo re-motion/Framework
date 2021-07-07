@@ -89,7 +89,7 @@ namespace Remotion.Reflection.TypeResolution
       var assembly = GetAssembly (name, throwOnError: false);
       if (assembly == null)
         return null;
-      return assembly.CodeBase;
+      return assembly.Location;
     }
   }
 }

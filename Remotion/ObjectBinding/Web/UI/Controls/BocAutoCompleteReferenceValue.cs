@@ -29,7 +29,6 @@ using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Validation;
-using Remotion.ObjectBinding.Web.UI.Design;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Services;
@@ -45,7 +44,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   [ValidationProperty ("ValidationValue")]
   [DefaultEvent ("SelectionChanged")]
   [ToolboxItemFilter ("System.Web.UI")]
-  [Designer (typeof (BocDesigner))]
   public class BocAutoCompleteReferenceValue
       :
           BocReferenceValueBase<IBocAutoCompleteReferenceValueWebService>,

@@ -110,6 +110,7 @@ namespace Remotion.Development.UnitTesting
       }
     }
 
+#if NETFRAMEWORK
     public void CompileInSeparateAppDomain ()
     {
       AppDomain appDomain = null;
@@ -129,5 +130,6 @@ namespace Remotion.Development.UnitTesting
           AppDomain.Unload (appDomain);
       }     
     }
+#endif
   }
 }

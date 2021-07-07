@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <ProjectType>Library</ProjectType>
+    <ProjectType>WebTestingLibrary</ProjectType>
   </PropertyGroup>
   <Import Project="..\..\Shared.build.props" />
   <PropertyGroup>
@@ -9,11 +9,9 @@
     <AssemblyName>Remotion.Web.Development.WebTesting.ControlObjects</AssemblyName>
     <Description>Provides an abstraction layer when implementing web tests for applications based on re-motion web controls.</Description>
     <RootNamespace>$(AssemblyName)</RootNamespace>
-    <SignAssembly>False</SignAssembly>
-    <Nullable>disable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Fork.JetBrains.Annotations" Version="11.1.0" PrivateAssets="all" />
+    <PackageReference Include="JetBrains.Annotations" Version="2021.1.0" PrivateAssets="all" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Contracts.DiagnosticMetadata\Web.Contracts.DiagnosticMetadata.csproj" />

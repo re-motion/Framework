@@ -293,6 +293,7 @@ namespace Remotion.FunctionalProgramming
       return new HashSet<T> (sequence1).SetEquals (sequence2);
     }
 
+#if NETFRAMEWORK
     /// <summary>
     /// Combines two sequences into a single sequence of <see cref="Tuple{T1,T2}"/> values.
     /// </summary>
@@ -314,6 +315,7 @@ namespace Remotion.FunctionalProgramming
 
       return first.Zip (second, Tuple.Create);
     }
+#endif
 
     /// <summary>
     /// Interleaves the elements of two sequences.

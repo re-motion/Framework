@@ -5,6 +5,7 @@
   </PropertyGroup>
   <Import Project="..\..\Shared.build.props" />
   <PropertyGroup>
+    <TargetFrameworks>net461</TargetFrameworks>
     <AssemblyTitle>re-motion BusinessObjects</AssemblyTitle>
     <AssemblyName>Remotion.ObjectBinding</AssemblyName>
     <Description>Generic interfaces and classes for business objects and data binding.</Description>

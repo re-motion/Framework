@@ -23,10 +23,8 @@
     <ProjectReference Include="..\Samples\Mixins.Samples.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <!--  TODO RM-7862: Moq can be included after the castle upgrade  -->
-    <PackageReference Remove="Moq" />
-    <PackageReference Include="Fork.JetBrains.Annotations" Version="11.1.0" />
-    <PackageReference Include="Remotion.TypePipe.Development" Version="2.0.3" />
+    <PackageReference Include="JetBrains.Annotations" Version="2021.1.0" />
+    <PackageReference Include="Remotion.TypePipe.Development" Version="3.0.0-x.9" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Web" />

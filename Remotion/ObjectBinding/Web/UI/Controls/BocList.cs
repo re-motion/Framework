@@ -26,7 +26,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Web.UI;
-using System.Web.UI.Design;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using JetBrains.Annotations;
@@ -39,7 +38,6 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSu
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation;
-using Remotion.ObjectBinding.Web.UI.Design;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -56,7 +54,6 @@ using Remotion.Web.UI.Controls.PostBackTargets;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Globalization;
 using Remotion.Web.Utilities;
-using StringArrayConverter = Remotion.Web.UI.Design.StringArrayConverter;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
@@ -66,7 +63,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   /// </summary>
   /// <include file='..\..\doc\include\UI\Controls\BocList.xml' path='BocList/Class/*' />
   // TODO: see "Doc\Bugs and ToDos.txt"
-  [Designer (typeof (BocListDesigner))]
   [DefaultEvent ("CommandClick")]
   [ToolboxItemFilter ("System.Web.UI")]
   public partial class BocList : 
@@ -3440,7 +3436,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Category ("Menu")]
     [Description ("The menu items displayed by options menu.")]
     [DefaultValue ((string) null)]
-    [Editor (typeof (BocMenuItemCollectionEditor), typeof (UITypeEditor))]
     public WebMenuItemCollection OptionsMenuItems
     {
       get { return _optionsMenu.MenuItems; }
@@ -3452,7 +3447,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Category ("Menu")]
     [Description ("The menu items displayed in the list's menu area.")]
     [DefaultValue ((string) null)]
-    [Editor (typeof (BocMenuItemCollectionEditor), typeof (UITypeEditor))]
     public WebMenuItemCollection ListMenuItems
     {
       get { return _listMenu.MenuItems; }
@@ -3558,7 +3552,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
-    [Editor (typeof (UrlEditor), typeof (UITypeEditor))]
     [Category ("Behavior")]
     [DefaultValue ("")]
     public string ControlServicePath

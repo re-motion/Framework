@@ -37,7 +37,9 @@ namespace Remotion.Reflection
       ArgumentUtility.CheckNotNull ("assembly", assembly);
 
       // C# compiler 7.2 already provides caching for anonymous method.
+#pragma warning disable SYSLIB0005
       return s_typeCache.GetOrAdd (assembly, a => Tuple.Create (Array.AsReadOnly (a.GetTypes()), a.GlobalAssemblyCache)).Item2;
+#pragma warning restore SYSLIB0005
     }
 
     [CLSCompliant (false)]
@@ -46,7 +48,9 @@ namespace Remotion.Reflection
       ArgumentUtility.CheckNotNull ("assembly", assembly);
 
       // C# compiler 7.2 already provides caching for anonymous method.
+#pragma warning disable SYSLIB0005
       return s_typeCache.GetOrAdd (assembly, a => Tuple.Create (Array.AsReadOnly (a.GetTypes()), a.GlobalAssemblyCache)).Item1;
+#pragma warning restore SYSLIB0005
     }
   }
 }

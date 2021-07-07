@@ -24,7 +24,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using Remotion.Globalization;
 using Remotion.Logging;
 using Remotion.Reflection;
@@ -35,7 +35,6 @@ using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls.FormGridManagerImplementation;
 using Remotion.Web.UI.Controls.Hotkey;
 using Remotion.Web.UI.Controls.Rendering;
-using Remotion.Web.UI.Design;
 using Remotion.Web.UI.Globalization;
 using Remotion.Web.Utilities;
 
@@ -46,7 +45,6 @@ namespace Remotion.Web.UI.Controls
   /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/Class/*' />
   [NonVisualControl]
   [ToolboxItemFilter("System.Web.UI")]
-  [Designer (typeof (FormGridManagerDesigner))]
   public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupportsPostLoadControl
   {
     // types

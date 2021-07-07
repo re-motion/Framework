@@ -20,7 +20,6 @@ using System.Drawing.Design;
 using System.Globalization;
 using System.Text;
 using System.Web.UI;
-using System.Web.UI.Design;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
@@ -97,7 +96,6 @@ namespace Remotion.Web.UI.Controls
     {
     }
 
-    [Editor (typeof (ImageUrlEditor), typeof (UITypeEditor))]
     [PersistenceMode (PersistenceMode.Attribute)]
     [DefaultValue ("")]
     [NotifyParentProperty (true)]

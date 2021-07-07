@@ -15,6 +15,8 @@
 // under the License.
 // 
 
+#if !NO_PEVERIFY
+
 using System;
 using System.IO;
 using Microsoft.Win32;
@@ -64,3 +66,4 @@ namespace Remotion.Development.UnitTesting.PEVerifyPathSources
     }
   }
 }
+#endif

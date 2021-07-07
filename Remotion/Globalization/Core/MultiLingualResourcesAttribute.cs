@@ -17,7 +17,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using Remotion.Utilities;
 
 namespace Remotion.Globalization

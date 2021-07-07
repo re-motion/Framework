@@ -5,6 +5,7 @@
   </PropertyGroup>
   <Import Project="..\..\Shared.build.props" />
   <PropertyGroup>
+    <TargetFrameworks>net461</TargetFrameworks>
     <AssemblyTitle>re-motion Security Support for Web Controls and Web Execution Engine</AssemblyTitle>
     <AssemblyName>Remotion.Web.Security</AssemblyName>
     <Description>Internal: Integrates Remotion.Security and Remotion.Web assemblies.</Description>

@@ -1,15 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <ProjectType>Library</ProjectType>
+    <ProjectType>WebTestingLibrary</ProjectType>
   </PropertyGroup>
   <Import Project="..\..\Shared.build.props" />
   <PropertyGroup>
     <AssemblyTitle>Remotion WebTesting Framework TestSite Infrastructure</AssemblyTitle>
     <AssemblyName>Remotion.Web.Development.WebTesting.TestSite.Infrastructure</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
-    <SignAssembly>False</SignAssembly>
-    <Nullable>disable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\Development.WebTesting.IntegrationTests.Infrastructure\GenericTestPageParameter.cs" Link="GenericTestPageParameter.cs" />

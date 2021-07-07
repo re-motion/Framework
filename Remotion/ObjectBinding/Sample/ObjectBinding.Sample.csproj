@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <ProjectType>Library</ProjectType>
+    <ProjectType>WebLibrary</ProjectType>
   </PropertyGroup>
   <Import Project="..\..\Shared.build.props" />
   <PropertyGroup>
@@ -18,8 +18,7 @@
     <ProjectReference Include="..\Web\ObjectBinding.Web.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="FluentValidation-Signed" Version="5.0.0.1" />
-    <PackageReference Include="Remotion.TypePipe" Version="2.0.3" />
+    <PackageReference Include="Remotion.TypePipe" Version="3.0.0-x.9" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Web" />

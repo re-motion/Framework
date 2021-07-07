@@ -15,6 +15,8 @@
 // under the License.
 // 
 
+#if !NO_PEVERIFY
+
 using System;
 using System.Diagnostics;
 using System.Reflection;
@@ -120,3 +122,5 @@ namespace Remotion.Development.UnitTesting
     }
   }
 }
+
+#endif

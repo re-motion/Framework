@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <ProjectType>Library</ProjectType>
+    <ProjectType>WebLibrary</ProjectType>
   </PropertyGroup>
   <Import Project="..\..\Shared.build.props" />
   <PropertyGroup>
@@ -22,11 +22,6 @@
     <ProjectReference Include="..\..\Web\Contracts.DiagnosticMetadata\Web.Contracts.DiagnosticMetadata.csproj" />
     <ProjectReference Include="..\..\Web\Core\Web.Core.csproj" />
     <ProjectReference Include="..\Core\ObjectBinding.Core.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Design" />
   </ItemGroup>
   <Import Project="$(MSBuildProjectDirectory)\..\..\..\Build\NuSpec\Web.Build.targets" />
 </Project>

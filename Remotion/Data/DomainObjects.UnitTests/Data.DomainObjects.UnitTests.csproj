@@ -10,7 +10,6 @@
     <RootNamespace>$(AssemblyName)</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\SharedSource\Development\UnitTesting\NUnit\NUnitExtensions.cs" Link="SharedSource\UnitTesting\NUnit\NUnitExtensions.cs" />
     <Content Include="Database\*.sql" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="Queries*.xml" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="ScalarQueryWithCollectionType.xml" CopyToOutputDirectory="PreserveNewest" />
@@ -35,9 +34,9 @@
     <ProjectReference Include="..\Core\Data.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Remotion.Linq.EagerFetching" Version="2.0.1" />
-    <PackageReference Include="Remotion.Linq.Development" Version="2.0.3" />
-    <PackageReference Include="Remotion.Linq.SqlBackend.Development" Version="2.0.1" />
-    <PackageReference Include="Remotion.TypePipe.Development" Version="2.0.3" />
+    <PackageReference Include="Remotion.Linq.EagerFetching" Version="2.2.0" />
+    <PackageReference Include="Remotion.Linq.Development" Version="2.2.0" />
+    <PackageReference Include="Remotion.Linq.SqlBackend.Development" Version="2.1.0-x.9" />
+    <PackageReference Include="Remotion.TypePipe.Development" Version="3.0.0-x.9" />
   </ItemGroup>
 </Project>

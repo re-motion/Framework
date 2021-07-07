@@ -21,7 +21,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
 

@@ -127,7 +127,9 @@ namespace Remotion.Reflection.TypeDiscovery
     private IEnumerable<Assembly> GetAssemblies (bool excludeGlobalTypes)
     {
       var assemblies = _assemblyFinder.FindAssemblies();
+#pragma warning disable SYSLIB0005
       return assemblies.Where (assembly => !excludeGlobalTypes || !assembly.GlobalAssemblyCache);
+#pragma warning restore SYSLIB0005
     }
 
     private IEnumerable<Type> GetTypesFromBaseType (Assembly assembly, Type? baseType)

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <ProjectType>Library</ProjectType>
+    <ProjectType>WebLibrary</ProjectType>
   </PropertyGroup>
   <Import Project="..\..\Shared.build.props" />
   <PropertyGroup>
@@ -28,9 +28,6 @@
   <ItemGroup>
     <Reference Include="System.Configuration" />
     <Reference Include="System.Design" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <Import Project="$(MSBuildProjectDirectory)\..\..\..\Build\NuSpec\Web.Build.targets" />

@@ -5,6 +5,7 @@
   </PropertyGroup>
   <Import Project="..\..\Shared.build.props" />
   <PropertyGroup>
+    <TargetFrameworks>net461</TargetFrameworks>
     <AssemblyTitle>Remotion WebTesting Framework Unit Tests</AssemblyTitle>
     <AssemblyName>Remotion.Web.Development.WebTesting.UnitTests</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>

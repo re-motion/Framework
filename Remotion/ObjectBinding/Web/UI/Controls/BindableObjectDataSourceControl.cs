@@ -20,12 +20,10 @@ using System.Drawing.Design;
 using System.Web.UI;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.Design.BindableObject;
-using Remotion.ObjectBinding.Web.UI.Design;
 using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
-  [Designer (typeof (BindableObjectDataSourceDesigner))]
   public class BindableObjectDataSourceControl : BusinessObjectDataSourceControl
   {
     private readonly BindableObjectDataSource _dataSource = new BindableObjectDataSource();

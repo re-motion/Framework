@@ -20,12 +20,11 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
-using Remotion.Web.UI.Design;
 using Remotion.Web.Utilities;
 
 namespace Remotion.Web.UI.Controls
 {
-  public abstract class MenuBase : WebControl, IControl, IPostBackEventHandler, IControlWithDesignTimeSupport
+  public abstract class MenuBase : WebControl, IControl, IPostBackEventHandler
   {
     private readonly WebMenuItemCollection _menuItems;
 
@@ -129,16 +128,6 @@ namespace Remotion.Web.UI.Controls
     [Category ("Action")]
     [Description ("Occurs when a command of type WxeFunction is clicked.")]
     public virtual event WebMenuItemClickEventHandler WxeFunctionCommandClick;
-
-    /// <summary> Calls <see cref="Control.OnPreRender"/> on every invocation. </summary>
-    /// <remarks> Used by the <see cref="WebControlDesigner"/>. </remarks>
-    void IControlWithDesignTimeSupport.PreRenderForDesignMode ()
-    {
-      if (!IsDesignMode)
-        throw new InvalidOperationException ("PreRenderChildControlsForDesignMode may only be called during design time.");
-      EnsureChildControls();
-      OnPreRender (EventArgs.Empty);
-    }
 
     /// <summary> Fires the <see cref="MenuBase.EventCommandClick"/> event. </summary>
     protected virtual void OnEventCommandClick (WebMenuItem item)

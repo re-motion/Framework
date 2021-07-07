@@ -24,6 +24,7 @@ using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
+using Remotion.TypePipe.Implementation;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTypeCodeGeneration
 {
@@ -38,7 +39,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTy
 
       // Use a dedicated pipeline to ensure that this test does not interfere with other tests.
       _savedPipeline = CreatePipeline ();
-      PipelineRegistry.SetDefaultPipeline (_savedPipeline);
+      PipelineRegistry = new DefaultPipelineRegistry (_savedPipeline);
     }
 
     [Test]

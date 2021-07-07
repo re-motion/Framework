@@ -18,7 +18,7 @@
 using System;
 using System.ComponentModel.Design;
 using System.Data.SqlClient;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using NUnit.Framework;
 using Remotion.Configuration;
 using Remotion.Data.DomainObjects.Configuration;

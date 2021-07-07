@@ -38,6 +38,7 @@ namespace Remotion.Collections
       return GetValueOrDefault (dictionary, key, default (TValue)!);
     }
 
+#if NETFRAMEWORK
     [return: MaybeNull]
     public static TValue GetValueOrDefault<TKey, TValue> (this IReadOnlyDictionary<TKey, TValue> dictionary, TKey key)
         where TKey : notnull
@@ -47,6 +48,7 @@ namespace Remotion.Collections
 
       return GetValueOrDefault (dictionary, key, default (TValue)!);
     }
+#endif
 
     [return: MaybeNull]
     public static TValue GetValueOrDefault<TKey, TValue> (this Dictionary<TKey, TValue> dictionary, TKey key)

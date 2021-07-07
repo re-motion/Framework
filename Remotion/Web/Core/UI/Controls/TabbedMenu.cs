@@ -32,7 +32,6 @@ using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Controls.TabbedMenuImplementation;
 using Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering;
 using Remotion.Web.UI.Controls.WebTabStripImplementation;
-using Remotion.Web.UI.Design;
 using Remotion.Web.UI.Globalization;
 using Remotion.Web.Utilities;
 
@@ -42,7 +41,6 @@ namespace Remotion.Web.UI.Controls
   /// <summary>
   ///   The <b>TabbedMenu</b> can be used to provide a navigation menu.
   /// </summary>
-  [Designer (typeof (TabbedMenuDesigner))]
   public class TabbedMenu : WebControl, INavigationControl, ITabbedMenu
   {
     // constants
@@ -588,7 +586,6 @@ namespace Remotion.Web.UI.Controls
     [ListBindable (false)]
     [Description ("")]
     [DefaultValue ((string) null)]
-    [Editor (typeof (MainMenuTabCollectionEditor), typeof (UITypeEditor))]
     public MainMenuTabCollection Tabs
     {
       get

@@ -10,14 +10,6 @@
     <RootNamespace>$(AssemblyName)</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\SharedSource\Development\UnitTesting\NUnit\NUnitExtensions.cs" Link="SharedSource\UnitTesting\NUnit\NUnitExtensions.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <!--  TODO RM-7862: Moq can be included after the castle upgrade  -->
-    <PackageReference Remove="Moq" />
-    <PackageReference Include="Castle.Core" Version="4.4.0" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Reflection.CodeGeneration\Core.Reflection.CodeGeneration.csproj" />
     <ProjectReference Include="..\..\Development\RhinoMocks\Development.RhinoMocks.csproj" />
     <ProjectReference Include="..\Core\Core.Core.csproj" />

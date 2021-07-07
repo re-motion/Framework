@@ -20,7 +20,7 @@ using System.ComponentModel;
 using System.Drawing.Design;
 using System.Linq;
 using System.Web.UI;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using Remotion.Mixins;
 using Remotion.ObjectBinding.Design;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;

@@ -5,6 +5,7 @@
   </PropertyGroup>
   <Import Project="..\..\Shared.build.props" />
   <PropertyGroup>
+    <TargetFrameworks>net461</TargetFrameworks>
     <AssemblyTitle>re-motion DomainObjects Database Tools Console</AssemblyTitle>
     <AssemblyName>dbschema</AssemblyName>
     <Description>Command line tool for generating the database schema and other related metadata for an application.</Description>

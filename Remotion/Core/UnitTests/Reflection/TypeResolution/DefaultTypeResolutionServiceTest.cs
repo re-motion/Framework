@@ -191,13 +191,13 @@ namespace Remotion.UnitTests.Reflection.TypeResolution
     }
 
     [Test]
-    public void GetPathOfAssembly_WithValidAssemblyName_ReturnsCodeBase ()
+    public void GetPathOfAssembly_WithValidAssemblyName_ReturnsLocation ()
     {
       var service = CreateTypeResolutionService();
 
       var assembly = typeof (string).Assembly;
-      Assert.That (assembly.CodeBase, Is.Not.Null);
-      Assert.That (service.GetPathOfAssembly (assembly.GetName()), Is.EqualTo (assembly.CodeBase));
+      Assert.That (assembly.Location, Is.Not.Null);
+      Assert.That (service.GetPathOfAssembly (assembly.GetName()), Is.EqualTo (assembly.Location));
     }
 
     [Test]

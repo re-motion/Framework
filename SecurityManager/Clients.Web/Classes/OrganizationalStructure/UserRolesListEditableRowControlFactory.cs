@@ -17,7 +17,7 @@
 // 
 using System;
 using System.Linq;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using Remotion.Data.DomainObjects;
 using Remotion.FunctionalProgramming;
 using Remotion.ObjectBinding;

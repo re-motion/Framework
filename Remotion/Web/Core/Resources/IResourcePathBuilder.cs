@@ -17,7 +17,6 @@
 using System;
 using System.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Web.Design;
 
 namespace Remotion.Web.Resources
 {
@@ -33,13 +32,11 @@ namespace Remotion.Web.Resources
   ///     <see cref="Remotion.Web.Configuration.WebConfiguration.Resources">WebConfiguration.Resources</see>, and 
   ///     defaults to <c>/&lt;AppDir&gt;/res</c>, e.g. <c>/WebApplication/res/Remotion.Web/Html/Utilities.js</c>.
   ///   </para><para>
-  ///     During design time, the <see cref="DesignTimeResourcePathBuilder"/> is used. 
-  ///     The <b>resource root</b> is mapped to the environment variable <c>REMOTIONRESOURCES</c>, 
+  ///     The <b>resource root</b> is mapped to the environment variable <c>REMOTIONRESOURCES</c>,
   ///     or if the variable does not exist, <c>C:\Remotion.Resources</c>.
   ///   </para>
   /// </remarks>
   /// <seealso cref="ResourcePathBuilder"/>
-  /// <seealso cref="DesignTimeResourcePathBuilder"/>
   /// <seealso cref="T:Remotion.Development.Web.UnitTesting.Resources.FakeResourcePathBuilder"/>
  public interface IResourcePathBuilder
   {

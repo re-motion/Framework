@@ -18,7 +18,6 @@ using System;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Web.UI;
-using Remotion.ObjectBinding.Web.UI.Design;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
@@ -110,7 +109,6 @@ public class BocListView: BusinessObjectControlItem
   /// <value>
   ///   An array of <see cref="BocColumnDefinition"/> objects that comprise this <see cref="BocListView"/>.
   /// </value>
-  [Editor (typeof (BocSimpleColumnDefinitionCollectionEditor), typeof (UITypeEditor))]
   [PersistenceMode (PersistenceMode.InnerDefaultProperty)]
   [Category ("Data")]
   [DefaultValue((string) null)]

@@ -17,13 +17,11 @@
 using System;
 using System.ComponentModel;
 using System.Drawing.Design;
-using Remotion.ObjectBinding.Web.UI.Design;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
 
 /// <summary> A collection of <see cref="BocListView"/> objects. </summary>
-[Editor (typeof (BocListViewCollectionEditor), typeof (UITypeEditor))]
 public class BocListViewCollection: BusinessObjectControlItemCollection
 {
   public BocListViewCollection (IBusinessObjectBoundWebControl ownerControl)

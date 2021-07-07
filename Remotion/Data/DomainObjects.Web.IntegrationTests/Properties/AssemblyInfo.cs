@@ -24,4 +24,4 @@ using System.Reflection;
 //
 
 [assembly: AssemblyCulture("")]		
-[assembly: CLSCompliant(true)]
+[assembly: CLSCompliant(false)]

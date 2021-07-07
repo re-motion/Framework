@@ -17,7 +17,7 @@
 using System;
 using System.IO;
 using System.Web;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using Remotion.Development.Web.ResourceHosting;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.Sample;

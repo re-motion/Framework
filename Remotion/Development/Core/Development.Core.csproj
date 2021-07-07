@@ -12,9 +12,7 @@
     <Nullable>disable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\SharedSource\Development\UnitTesting\**\*"
-             Link="SharedSource\UnitTesting\%(RecursiveDir)%(Filename)%(Extension)"
-             Exclude="**\PEVerifyVersion.cs" />
+    <Compile Include="..\..\..\SharedSource\Development\UnitTesting\**\*" Link="SharedSource\UnitTesting\%(RecursiveDir)%(Filename)%(Extension)" Exclude="**\PEVerifyVersion.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Tools\Core.Tools.csproj" />
@@ -22,5 +20,10 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Configuration" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="NUnit" Version="3.12.0" />
+    <PackageReference Include="System.CodeDom" Version="5.0.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
   </ItemGroup>
 </Project>

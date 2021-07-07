@@ -51,17 +51,18 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.UnitTests
     private readonly List<Tuple<object, MethodInfo, object[], object>> _calls = new List<Tuple<object, MethodInfo, object[], object>> ();
     private MethodInvocationHandler _invocationHandler;
     private DynamicMixinBuilder _builder;
+    private ServiceLocatorScope _serviceLocatorScope;
 
     [SetUp]
     public void SetUp ()
     {
+      var serviceLocator = DefaultServiceLocator.Create();
+      _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
+
       string directory = PrepareDirectory();
 
       DynamicMixinBuilder.Scope = new ModuleScope (true, false, "DynamicMixinBuilder.Signed", Path.Combine (directory, "DynamicMixinBuilder.Signed.dll"),
         "DynamicMixinBuilder.Unsigned", Path.Combine (directory, "DynamicMixinBuilder.Unsigned.dll"));
-
-      // Set new default pipeline to avoid cached types to influence each other.
-      ResetDefaultPipeline();
 
       _invocationHandler = delegate (object instance, MethodInfo method, object[] args, BaseMethodInvoker baseMethod)
       {
@@ -74,22 +75,6 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.UnitTests
 
       _builder = new DynamicMixinBuilder (typeof (SampleTarget));
     }
-
-    private static void ResetDefaultPipeline ()
-    {
-      var pipelineRegistry = SafeServiceLocator.Current.GetInstance<IPipelineRegistry>();
-      var pipelineFactory = SafeServiceLocator.Current.GetInstance<IPipelineFactory>();
-      var previousPipeline = pipelineRegistry.DefaultPipeline;
-
-      var pipeline = pipelineFactory.Create (
-          previousPipeline.ParticipantConfigurationID,
-          previousPipeline.Settings,
-          previousPipeline.Participants.ToArray());
-
-      // This overrides the previous default pipeline.
-      pipelineRegistry.SetDefaultPipeline (pipeline);
-    }
-
 
     private string PrepareDirectory ()
     {
@@ -122,6 +107,8 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.UnitTests
         DynamicMixinBuilder.Scope.SaveAssembly (false);
         PEVerifier.CreateDefault ().VerifyPEFile (DynamicMixinBuilder.Scope.WeakNamedModule.FullyQualifiedName);
       }
+
+      _serviceLocatorScope.Dispose();
     }
 
     [Test]

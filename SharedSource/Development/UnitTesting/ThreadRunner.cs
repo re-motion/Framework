@@ -95,8 +95,11 @@ namespace Remotion.Development.UnitTesting
 
       otherThread.Start ();
       bool timedOut = !JoinThread(otherThread);
+
+#if NETFRAMEWORK
       if (timedOut)
         AbortThread(otherThread);
+#endif
 
       if (lastException != null)
         throw lastException; // TODO: wrap exception to preserve stack trace
@@ -109,9 +112,11 @@ namespace Remotion.Development.UnitTesting
       return otherThread.Join (_timeoutTimeSpan);
     }
 
+#if NETFRAMEWORK
     protected virtual void AbortThread (Thread otherThread)
     {
       otherThread.Abort ();
     }
+#endif
   }
 }

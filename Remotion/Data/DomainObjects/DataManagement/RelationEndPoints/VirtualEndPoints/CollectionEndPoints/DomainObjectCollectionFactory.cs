@@ -20,6 +20,7 @@ using System.Reflection;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Reflection;
 using Remotion.Utilities;
+using TypeExtensions = Remotion.Reflection.TypeExtensions;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints
 {

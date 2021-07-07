@@ -21,7 +21,6 @@ using System.ComponentModel;
 using System.Drawing.Design;
 using System.Linq;
 using System.Web.UI;
-using System.Web.UI.Design;
 using System.Web.UI.WebControls;
 using JetBrains.Annotations;
 using Remotion.Mixins;
@@ -781,7 +780,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return _treeView; }
     }
 
-    [Editor (typeof (UrlEditor), typeof (UITypeEditor))]
     [Category ("Behavior")]
     [DefaultValue ("")]
     public string ControlServicePath

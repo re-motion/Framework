@@ -66,9 +66,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
       // In theory, this might return invalid objects (in practice we won't be called with invalid IDs). 
       // TransferParentObject called by GetLoadedObjectDataForParentObject below will indirectly throw on invalid IDs.
-      var parentObject = Tuple.Create (id, _parentTransactionContext.TryGetObject (id));
-
-      return GetLoadedObjectDataForParentObject (parentObject);
+      return GetLoadedObjectDataForParentObject (id, _parentTransactionContext.TryGetObject (id));
     }
 
     public virtual IEnumerable<ILoadedObjectData> LoadObjectData (IEnumerable<ObjectID> objectIDs)
@@ -81,7 +79,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       // TransferParentObject called by GetLoadedObjectDataForParentObject below will throw on invalid IDs.
       var parentObjects = objectIDsAsCollection.Zip (_parentTransactionContext.TryGetObjects (objectIDsAsCollection));
 
-      return parentObjects.Select (GetLoadedObjectDataForParentObject);
+      return parentObjects.Select (o => GetLoadedObjectDataForParentObject(o.Item1, o.Item2));
     }
 
     public virtual ILoadedObjectData ResolveObjectRelationData (
@@ -178,12 +176,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       }
     }
 
-    private ILoadedObjectData GetLoadedObjectDataForParentObject (Tuple<ObjectID, DomainObject> parentObject)
+    private ILoadedObjectData GetLoadedObjectDataForParentObject (ObjectID parentObjectID, DomainObject parentObject)
     {
-      if (parentObject.Item2 == null)
-        return new NotFoundLoadedObjectData (parentObject.Item1);
+      if (parentObject == null)
+        return new NotFoundLoadedObjectData (parentObjectID);
       else
-        return TransferParentObject (parentObject.Item1);
+        return TransferParentObject (parentObjectID);
     }
 
     private ILoadedObjectData TransferParentObject (DomainObject parentObject, ILoadedObjectDataProvider alreadyLoadedObjectDataProvider)

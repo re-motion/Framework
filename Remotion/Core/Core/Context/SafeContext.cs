@@ -15,19 +15,18 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Remoting.Messaging;
 using System.Threading;
 using Remotion.ServiceLocation;
 
 namespace Remotion.Context
 {
   /// <summary>
-  /// Superior alternative to the <see cref="ThreadStaticAttribute"/> and <see cref="CallContext"/> for making member variables thread safe that 
+  /// Superior alternative to the <see cref="ThreadStaticAttribute"/> and <c>CallContext</c> for making member variables thread safe that
   /// also works with ASP.NET threads.
   /// </summary>
   /// <remarks>
   /// <para>
-  /// The data managed by this class is by default stored in the <see cref="CallContext"/>, but the storage provider can be replaced by application 
+  /// The data managed by this class is by default stored in the <c>CallContext</c>, but the storage provider can be replaced by application
   /// code if needed. Replacements for the storage provider must guarantee that all data stored by the <see cref="SafeContext"/> is thread-local.
   /// </para>
   /// <para>

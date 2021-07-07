@@ -40,7 +40,9 @@ namespace Remotion.Development.UnitTesting.Reflection.TypeDiscovery
     private bool IncludeType (Type type, Type baseTypeFilter, bool excludeGlobalTypes)
     {
       return (baseTypeFilter == null || baseTypeFilter.IsAssignableFrom (type)) 
-          && (!excludeGlobalTypes || !type.Assembly.GlobalAssemblyCache);
+#pragma warning disable SYSLIB0005
+             && (!excludeGlobalTypes || !type.Assembly.GlobalAssemblyCache);
+#pragma warning restore SYSLIB0005
     }
   }
 }

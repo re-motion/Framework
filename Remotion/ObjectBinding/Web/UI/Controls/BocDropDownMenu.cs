@@ -20,11 +20,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Web.UI;
-using System.Web.UI.Design;
 using JetBrains.Annotations;
 using Remotion.Mixins;
 using Remotion.ObjectBinding.Web.Services;
-using Remotion.ObjectBinding.Web.UI.Design;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
@@ -372,7 +370,6 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   [Category ("Menu")]
   [Description ("The menu items displayed by the menu.")]
   [DefaultValue ((string) null)]
-  [Editor (typeof (BocMenuItemCollectionEditor), typeof (System.Drawing.Design.UITypeEditor))]
   public WebMenuItemCollection MenuItems
   {
     get { return _dropDownMenu.MenuItems; }
@@ -385,7 +382,6 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
     set { _dropDownMenu.EnableGrouping = value; }
   }
 
-  [Editor (typeof (UrlEditor), typeof (UITypeEditor))]
   [Category ("Behavior")]
   [DefaultValue ("")]
   public string ControlServicePath
@@ -523,8 +519,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   [Description ("The list of menu items to be hidden, identified by their ItemIDs.")]
   [DefaultValue ((string) null)]
   [PersistenceMode (PersistenceMode.Attribute)]
-  [TypeConverter (typeof (Remotion.Web.UI.Design.StringArrayConverter))]
-  public string[] HiddenMenuItems 
+  public string[] HiddenMenuItems
   {
     get 
     {
