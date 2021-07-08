@@ -18,6 +18,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
 {
@@ -48,8 +49,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
       Assert.That (
           () => _collection.Add (_definition),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "QueryDefinition 'OrderQuery' already exists in collection.\r\nParameter name: queryDefinition"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "QueryDefinition 'OrderQuery' already exists in collection.", "queryDefinition"));
     }
 
     [Test]

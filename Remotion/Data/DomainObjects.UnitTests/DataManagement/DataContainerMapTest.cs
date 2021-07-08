@@ -18,6 +18,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
@@ -95,8 +96,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       Assert.That (
           () => _map.Remove (DomainObjectIDs.Order1),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Data container 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' is not part of this map.\r\nParameter name: id"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Data container 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' is not part of this map.", "id"));
     }
   }
 }

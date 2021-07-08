@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Remotion.Mixins.Utilities;
 
@@ -30,9 +31,9 @@ namespace Remotion.Mixins.UnitTests.Core.Utilities
       Assert.That (
           () => new MixinTypeCloser (typeof (GenericTargetClass<>)),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "The target class must not contain generic parameters.\r\n"
-                  + "Parameter name: targetClass"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "The target class must not contain generic parameters.",
+                  "targetClass"));
     }
 
     [Test]

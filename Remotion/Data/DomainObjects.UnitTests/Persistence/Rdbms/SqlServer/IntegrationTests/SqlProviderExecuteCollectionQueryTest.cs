@@ -22,6 +22,7 @@ using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.UnitTests.Resources;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests
 {
@@ -144,8 +145,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       Assert.That (
           () => Provider.ExecuteCollectionQuery (QueryFactory.CreateQueryFromConfiguration ("OrderNoSumByCustomerNameQuery")),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Expected query type is 'Collection', but was 'Scalar'.\r\nParameter name: query"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Expected query type is 'Collection', but was 'Scalar'.", "query"));
     }
 
     [Test]

@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Xml.UnitTests.XmlSerializationUtilityTests.TestDomain;
 
 namespace Remotion.Xml.UnitTests.XmlSerializationUtilityTests
@@ -35,9 +36,9 @@ namespace Remotion.Xml.UnitTests.XmlSerializationUtilityTests
       Assert.That (
           () => XmlSerializationUtility.GetNamespace (typeof (SampleTypeWithXmlTypeWithoutNamespace)),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "Cannot determine the xml namespace of type 'Remotion.Xml.UnitTests.XmlSerializationUtilityTests.TestDomain.SampleTypeWithXmlTypeWithoutNamespace' "
-                  + "because neither an XmlTypeAttribute nor an XmlRootAttribute is used to define a namespace for the type.\r\nParameter name: type"));
+                  + "because neither an XmlTypeAttribute nor an XmlRootAttribute is used to define a namespace for the type.", "type"));
     }
 
     [Test]
@@ -52,9 +53,9 @@ namespace Remotion.Xml.UnitTests.XmlSerializationUtilityTests
       Assert.That (
           () => XmlSerializationUtility.GetNamespace (typeof (SampleTypeWithXmlRootWithoutNamespace)),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "Cannot determine the xml namespace of type 'Remotion.Xml.UnitTests.XmlSerializationUtilityTests.TestDomain.SampleTypeWithXmlRootWithoutNamespace' "
-                  + "because neither an XmlTypeAttribute nor an XmlRootAttribute is used to define a namespace for the type.\r\nParameter name: type"));
+                  + "because neither an XmlTypeAttribute nor an XmlRootAttribute is used to define a namespace for the type.", "type"));
     }
 
     [Test]
@@ -69,9 +70,9 @@ namespace Remotion.Xml.UnitTests.XmlSerializationUtilityTests
       Assert.That (
           () => XmlSerializationUtility.GetNamespace (typeof (SampleTypeWithoutXmlAttributes)),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "Cannot determine the xml namespace of type 'Remotion.Xml.UnitTests.XmlSerializationUtilityTests.TestDomain.SampleTypeWithoutXmlAttributes' "
-                  + "because no neither an XmlTypeAttribute nor an XmlRootAttribute has been provided.\r\nParameter name: type"));
+                  + "because no neither an XmlTypeAttribute nor an XmlRootAttribute has been provided.", "type"));
     }
   }
 }

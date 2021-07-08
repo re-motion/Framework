@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Results;
 using Remotion.Validation.Rules;
@@ -60,8 +61,8 @@ namespace Remotion.Validation.UnitTests.Implementation
       Assert.That (
           () => new TypedValidatorDecorator<Address> (_validator),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "The validated type 'Address' is not supported by the passed validator.\r\nParameter name: validator"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "The validated type 'Address' is not supported by the passed validator.", "validator"));
     }
 
     [Test]

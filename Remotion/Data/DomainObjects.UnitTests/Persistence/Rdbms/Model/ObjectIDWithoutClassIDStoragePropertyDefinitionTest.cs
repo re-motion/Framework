@@ -24,6 +24,7 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
@@ -74,8 +75,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 
       Assert.That (
           () => new ObjectIDWithoutClassIDStoragePropertyDefinition (_valuePropertyStub, abstractClassDefinition),
-          Throws.ArgumentException.With.Message.EqualTo (
-              "ObjectIDs without ClassIDs cannot have abstract ClassDefinitions.\r\nParameter name: classDefinition"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+              "ObjectIDs without ClassIDs cannot have abstract ClassDefinitions.", "classDefinition"));
     }
 
     [Test]
@@ -138,8 +139,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       Assert.That (
           () => _objectIDWithoutClassIDStoragePropertyDefinition.SplitValue (DomainObjectIDs.OrderItem1),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "The specified ObjectID has an invalid ClassDefinition.\r\nParameter name: value"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "The specified ObjectID has an invalid ClassDefinition.", "value"));
     }
 
     [Test]
@@ -170,8 +171,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       Assert.That (
           () => _objectIDWithoutClassIDStoragePropertyDefinition.SplitValueForComparison (DomainObjectIDs.OrderItem2),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "The specified ObjectID has an invalid ClassDefinition.\r\nParameter name: value"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "The specified ObjectID has an invalid ClassDefinition.", "value"));
     }
 
     [Test]
@@ -221,8 +222,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
           () => _objectIDWithoutClassIDStoragePropertyDefinition.SplitValuesForComparison (new object[] { DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2 })
           .Columns.ToArray(),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "The specified ObjectID has an invalid ClassDefinition.\r\nParameter name: values"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "The specified ObjectID has an invalid ClassDefinition.", "values"));
     }
 
     [Test]
@@ -282,9 +283,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 
       Assert.That (
           () => _objectIDWithoutClassIDStoragePropertyDefinition.UnifyWithEquivalentProperties (new[] { property2 }),
-          Throws.ArgumentException.With.Message.EqualTo (
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
               "Only equivalent properties can be combined, but this property has type 'ObjectIDWithoutClassIDStoragePropertyDefinition', and the "
-              + "given property has type 'SimpleStoragePropertyDefinition'.\r\nParameter name: equivalentProperties"));
+              + "given property has type 'SimpleStoragePropertyDefinition'.", "equivalentProperties"));
     }
 
     [Test]
@@ -294,10 +295,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 
       Assert.That (
           () => _objectIDWithoutClassIDStoragePropertyDefinition.UnifyWithEquivalentProperties (new[] { property2 }),
-          Throws.ArgumentException.With.Message.EqualTo (
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
               "Only equivalent properties can be combined, but this property has class definition "
               + "'Remotion.Data.DomainObjects.Mapping.ClassDefinition: Order', and the given property has "
-              + "class definition 'Remotion.Data.DomainObjects.Mapping.ClassDefinition: OrderItem'.\r\nParameter name: equivalentProperties"));
+              + "class definition 'Remotion.Data.DomainObjects.Mapping.ClassDefinition: OrderItem'.", "equivalentProperties"));
     }
 
     [Test]

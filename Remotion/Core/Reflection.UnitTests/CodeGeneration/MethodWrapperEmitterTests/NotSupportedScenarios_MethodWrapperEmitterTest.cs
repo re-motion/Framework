@@ -19,6 +19,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.Serialization;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Reflection.CodeGeneration;
 using Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests.TestDomain;
 
@@ -46,9 +47,9 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
       Assert.That (
           () => new MethodWrapperEmitter (_fakeILGenerator, methodInfo, parameterTypes, returnType),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Parameter 'value' of the wrappedMethod is an out parameter, but out parameters are not supported by the MethodWrapperGenerator.\r\n"
-                  + "Parameter name: wrappedMethod"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Parameter 'value' of the wrappedMethod is an out parameter, but out parameters are not supported by the MethodWrapperGenerator.",
+                  "wrappedMethod"));
     }
 
     [Test]
@@ -62,9 +63,9 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
       Assert.That (
           () => new MethodWrapperEmitter (_fakeILGenerator, methodInfo, parameterTypes, returnType),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Parameter 'value' of the wrappedMethod is a by-ref parameter, but by-ref parameters are not supported by the MethodWrapperGenerator.\r\n"
-                  + "Parameter name: wrappedMethod"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Parameter 'value' of the wrappedMethod is a by-ref parameter, but by-ref parameters are not supported by the MethodWrapperGenerator.",
+                  "wrappedMethod"));
     }
 
     [Test]
@@ -78,9 +79,9 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
       Assert.That (
           () => new MethodWrapperEmitter (_fakeILGenerator, methodInfo, parameterTypes, returnType),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Parameter 'value' of the wrappedMethod is an optional parameter, but optional parameters are not supported by the MethodWrapperGenerator.\r\n"
-                  + "Parameter name: wrappedMethod"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Parameter 'value' of the wrappedMethod is an optional parameter, but optional parameters are not supported by the MethodWrapperGenerator.",
+                  "wrappedMethod"));
     }
 
     [Test]
@@ -94,9 +95,9 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
       Assert.That (
           () => new MethodWrapperEmitter (_fakeILGenerator, methodInfo, parameterTypes, returnType),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Open generic method definitions are not supported by the MethodWrapperGenerator.\r\n"
-                  + "Parameter name: wrappedMethod"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Open generic method definitions are not supported by the MethodWrapperGenerator.",
+                  "wrappedMethod"));
     }
   }
 }

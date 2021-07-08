@@ -18,6 +18,7 @@ using System;
 using System.Collections.Specialized;
 using System.Text;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates;
 using Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates.Execute;
@@ -142,9 +143,9 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
       Assert.That (
           () => CreateExecutionState (WxePermaUrlOptions.Null),
           Throws.ArgumentException
-              .With.Message.Contains (
-                  "The 'PreparingRedirectToSubFunctionState' type only supports WxePermaUrlOptions with the UsePermaUrl-flag set to true.\r\n"
-                  + "Parameter name: parameters"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "The 'PreparingRedirectToSubFunctionState' type only supports WxePermaUrlOptions with the UsePermaUrl-flag set to true.",
+                  "parameters"));
     }
 
     private PreparingRedirectToSubFunctionState CreateExecutionState (WxePermaUrlOptions permaUrlOptions)

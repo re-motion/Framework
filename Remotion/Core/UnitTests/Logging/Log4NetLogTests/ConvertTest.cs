@@ -17,6 +17,7 @@
 using System;
 using log4net.Core;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Logging;
 
 namespace Remotion.UnitTests.Logging.Log4NetLogTests
@@ -60,8 +61,8 @@ namespace Remotion.UnitTests.Logging.Log4NetLogTests
       Assert.That (
           () => Log4NetLog.Convert ((LogLevel) 10),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "LogLevel does not support value 10.\r\nParameter name: logLevel"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "LogLevel does not support value 10.", "logLevel"));
     }
   }
 }

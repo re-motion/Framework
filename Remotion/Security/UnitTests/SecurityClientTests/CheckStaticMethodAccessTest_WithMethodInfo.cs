@@ -17,6 +17,7 @@
 using System;
 using System.Reflection;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Reflection;
 using Remotion.Security.Metadata;
 using Remotion.Security.UnitTests.SampleDomain;
@@ -93,7 +94,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
       Assert.That (
           () => _securityClient.CheckStaticMethodAccess (typeof (SecurableObject), _methodInfo),
           Throws.ArgumentException
-              .With.Message.EqualTo ("The member 'StaticMethod' does not define required permissions.\r\nParameter name: requiredAccessTypeEnums"));
+              .With.ArgumentExceptionMessageEqualTo ("The member 'StaticMethod' does not define required permissions.", "requiredAccessTypeEnums"));
       _testHelper.VerifyAll();
     }
 
@@ -109,7 +110,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
         Assert.That (
             () => _securityClient.CheckStaticMethodAccess (typeof (SecurableObject), _methodInfo),
             Throws.ArgumentException
-                .With.Message.EqualTo ("The member 'StaticMethod' does not define required permissions.\r\nParameter name: requiredAccessTypeEnums"));
+                .With.ArgumentExceptionMessageEqualTo ("The member 'StaticMethod' does not define required permissions.", "requiredAccessTypeEnums"));
       }
 
       _testHelper.VerifyAll();

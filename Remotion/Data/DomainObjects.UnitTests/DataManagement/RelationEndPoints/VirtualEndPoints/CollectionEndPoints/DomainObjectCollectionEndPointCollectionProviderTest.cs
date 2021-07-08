@@ -23,6 +23,7 @@ using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints
@@ -127,7 +128,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var collection = new DomainObjectCollection (_dataStrategyStub);
       Assert.That (
           () => _provider.RegisterCollection (_endPointID, collection),
-          Throws.ArgumentException.With.Message.EqualTo ("The collection must be associated with the given endPointID.\r\nParameter name: collection"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo ("The collection must be associated with the given endPointID.", "collection"));
     }
 
     [Test]
@@ -138,7 +139,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       Assert.That (
           () => _provider.RegisterCollection (_endPointID, collection),
-          Throws.ArgumentException.With.Message.EqualTo ("The collection must be associated with the given endPointID.\r\nParameter name: collection"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo ("The collection must be associated with the given endPointID.", "collection"));
     }
 
     [Test]

@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 {
@@ -46,8 +47,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     {
       Assert.That (
           () => _attribute.GetReferencedType (typeof (Order)),
-          Throws.ArgumentException.With.Message.EqualTo (
-              "The handleType parameter must be an instantiation of 'IDomainObjectHandle<T>'.\r\nParameter name: handleType"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+              "The handleType parameter must be an instantiation of 'IDomainObjectHandle<T>'.", "handleType"));
     }
 
     [Test]
@@ -55,8 +56,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     {
       Assert.That (
           () => _attribute.GetReferencedType (typeof (List<Order>)),
-          Throws.ArgumentException.With.Message.EqualTo (
-              "The handleType parameter must be an instantiation of 'IDomainObjectHandle<T>'.\r\nParameter name: handleType"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+              "The handleType parameter must be an instantiation of 'IDomainObjectHandle<T>'.", "handleType"));
     }
 
     [Test]
@@ -101,10 +102,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     {
       Assert.That (
           () => _attribute.GetReferencedInstance (new object()),
-          Throws.ArgumentException.With.Message.EqualTo (
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
               "Parameter 'handleInstance' has type 'System.Object' "
-              + "when type 'Remotion.Data.DomainObjects.IDomainObjectHandle`1[Remotion.Data.DomainObjects.DomainObject]' was expected."
-              + "\r\nParameter name: handleInstance"));
+              + "when type 'Remotion.Data.DomainObjects.IDomainObjectHandle`1[Remotion.Data.DomainObjects.DomainObject]' was expected.",
+              "handleInstance"));
     }
 
     [Test]

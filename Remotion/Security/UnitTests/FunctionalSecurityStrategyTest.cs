@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Security.UnitTests.SampleDomain;
 using Rhino.Mocks;
 
@@ -127,7 +128,7 @@ namespace Remotion.Security.UnitTests
 
       Assert.That (
           () => _strategy.HasAccess (_securableType, _securityProviderMock, _principalStub, new AccessType[0]),
-          Throws.ArgumentException.With.Message.EqualTo ("Parameter 'requiredAccessTypes' cannot be empty.\r\nParameter name: requiredAccessTypes"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo ("Parameter 'requiredAccessTypes' cannot be empty.", "requiredAccessTypes"));
     }
 
     [Test]

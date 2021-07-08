@@ -18,6 +18,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Mixins.Definitions;
 using Remotion.Mixins.UnitTests.Core.Definitions.TestDomain;
 using Remotion.Mixins.UnitTests.Core.TestDomain;
@@ -71,9 +72,9 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions
       Assert.That (
           () => new TestClassDefinition (typeof (GenericTargetClass<>)),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "The type Remotion.Mixins.UnitTests.Core.TestDomain.GenericTargetClass`1[T] "
-                  + "contains generic parameters, which is not allowed.\r\nParameter name: type"));
+                  + "contains generic parameters, which is not allowed.", "type"));
     }
 
     [Test]

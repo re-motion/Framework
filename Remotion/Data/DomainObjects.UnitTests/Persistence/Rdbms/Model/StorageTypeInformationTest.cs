@@ -20,6 +20,7 @@ using System.ComponentModel;
 using System.Data;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Utilities;
 using Rhino.Mocks;
 
@@ -405,9 +406,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       var typeInfo2 = new FakeStorageTypeInformation ();
       Assert.That (
           () => _storageTypeInformation.UnifyForEquivalentProperties (new[] { typeInfo2 }),
-          Throws.ArgumentException.With.Message.EqualTo (
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
               "Only equivalent properties can be combined, but this property has type 'StorageTypeInformation', and the given property has "
-              + "type 'FakeStorageTypeInformation'.\r\nParameter name: equivalentStorageTypes"));
+              + "type 'FakeStorageTypeInformation'.", "equivalentStorageTypes"));
     }
 
     [Test]
@@ -417,9 +418,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       var typeInfo2 = new StorageTypeInformation (typeof (int), "X", DbType.Int32, true, null, typeof (string), new DefaultConverter (typeof (string)));
       Assert.That (
           () => typeInfo1.UnifyForEquivalentProperties (new[] { typeInfo2 }),
-          Throws.ArgumentException.With.Message.EqualTo (
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
               "Only equivalent properties can be combined, but this property has storage type 'System.String', and the given property has "
-              + "storage type 'System.Int32'.\r\nParameter name: equivalentStorageTypes"));
+              + "storage type 'System.Int32'.", "equivalentStorageTypes"));
     }
 
     [Test]
@@ -429,9 +430,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       var typeInfo2 = new StorageTypeInformation (typeof (int), "X", DbType.Int32, true, null, typeof (string), new DefaultConverter (typeof (string)));
       Assert.That (
           () => typeInfo1.UnifyForEquivalentProperties (new[] { typeInfo2 }),
-          Throws.ArgumentException.With.Message.EqualTo (
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
               "Only equivalent properties can be combined, but this property has storage DbType 'String', and the given property has "
-              + "storage DbType 'Int32'.\r\nParameter name: equivalentStorageTypes"));
+              + "storage DbType 'Int32'.", "equivalentStorageTypes"));
     }
 
     [Test]
@@ -441,9 +442,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       var typeInfo2 = new StorageTypeInformation (typeof (string), "X", DbType.Int32, true, 0, typeof (string), new DefaultConverter (typeof (string)));
       Assert.That (
           () => typeInfo1.UnifyForEquivalentProperties (new[] { typeInfo2 }),
-          Throws.ArgumentException.With.Message.EqualTo (
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
               "Only equivalent properties can be combined, but this property has storage type length 'null', and the given property has "
-              + "storage type length '0'.\r\nParameter name: equivalentStorageTypes"));
+              + "storage type length '0'.", "equivalentStorageTypes"));
     }
 
     [Test]
@@ -453,9 +454,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       var typeInfo2 = new StorageTypeInformation (typeof (int), "X", DbType.Int32, true, null, typeof (int), new DefaultConverter (typeof (string)));
       Assert.That (
           () => typeInfo1.UnifyForEquivalentProperties (new[] { typeInfo2 }),
-          Throws.ArgumentException.With.Message.EqualTo (
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
               "Only equivalent properties can be combined, but this property has .NET type 'System.String', and the given property has "
-              + ".NET type 'System.Int32'.\r\nParameter name: equivalentStorageTypes"));
+              + ".NET type 'System.Int32'.", "equivalentStorageTypes"));
     }
 
 
@@ -466,9 +467,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       var typeInfo2 = new StorageTypeInformation (typeof (int), "X", DbType.Int32, true, null, typeof (string), new AdvancedEnumConverter (typeof (DbType)));
       Assert.That (
           () => typeInfo1.UnifyForEquivalentProperties (new[] { typeInfo2 }),
-          Throws.ArgumentException.With.Message.EqualTo (
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
               "Only equivalent properties can be combined, but this property has .NET type converter type 'Remotion.Utilities.DefaultConverter', and "
-              + "the given property has .NET type converter type 'Remotion.Utilities.AdvancedEnumConverter'.\r\nParameter name: equivalentStorageTypes"));
+              + "the given property has .NET type converter type 'Remotion.Utilities.AdvancedEnumConverter'.", "equivalentStorageTypes"));
     }
     
     private class FakeStorageTypeInformation : IStorageTypeInformation

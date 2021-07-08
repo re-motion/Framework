@@ -21,6 +21,7 @@ using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
@@ -219,9 +220,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 
       Assert.That (
           () => _serializedObjectIDStoragePropertyDefinition.UnifyWithEquivalentProperties (new[] { property2 }),
-          Throws.ArgumentException.With.Message.EqualTo (
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
               "Only equivalent properties can be combined, but this property has type 'SerializedObjectIDStoragePropertyDefinition', and the "
-              + "given property has type 'SimpleStoragePropertyDefinition'.\r\nParameter name: equivalentProperties"));
+              + "given property has type 'SimpleStoragePropertyDefinition'.", "equivalentProperties"));
     }
 
     [Test]

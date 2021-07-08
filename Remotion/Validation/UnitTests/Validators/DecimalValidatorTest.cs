@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Validators;
@@ -22,7 +23,7 @@ namespace Remotion.Validation.UnitTests.Validators
                 ignoreTrailingZeros: false,
                 validationMessage: new InvariantValidationMessage ("Fake Message")),
             Throws.InstanceOf<ArgumentOutOfRangeException>()
-                .With.Message.EqualTo ("Value must not be negative.\r\nParameter name: maxDecimalPlaces\r\nActual value was -1."));
+                .With.ArgumentOutOfRangeExceptionMessageEqualTo ("Value must not be negative.", "maxDecimalPlaces", -1));
       }
     }
 
@@ -38,7 +39,7 @@ namespace Remotion.Validation.UnitTests.Validators
                 ignoreTrailingZeros: false,
                 validationMessage: new InvariantValidationMessage ("Fake Message")),
             Throws.InstanceOf<ArgumentOutOfRangeException>()
-                .With.Message.EqualTo ("Value must not be zero or negative.\r\nParameter name: maxIntegerPlaces\r\nActual value was 0."));
+                .With.ArgumentOutOfRangeExceptionMessageEqualTo ("Value must not be zero or negative.", "maxIntegerPlaces", 0));
       }
     }
 
@@ -54,7 +55,7 @@ namespace Remotion.Validation.UnitTests.Validators
                 ignoreTrailingZeros: false,
                 validationMessage: new InvariantValidationMessage ("Fake Message")),
             Throws.InstanceOf<ArgumentOutOfRangeException>()
-                .With.Message.EqualTo ("Value must not be zero or negative.\r\nParameter name: maxIntegerPlaces\r\nActual value was -1."));
+                .With.ArgumentOutOfRangeExceptionMessageEqualTo ("Value must not be zero or negative.", "maxIntegerPlaces", -1));
       }
     }
 

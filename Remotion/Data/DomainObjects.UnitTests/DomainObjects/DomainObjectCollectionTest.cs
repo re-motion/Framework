@@ -24,6 +24,7 @@ using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoi
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
@@ -129,9 +130,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That (
           () => new DomainObjectCollection (new[] { _customer1 }, typeof (Order)),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "Item 0 of parameter 'domainObjects' has the type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer' "
-                  + "instead of 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order'.\r\nParameter name: domainObjects"));
+                  + "instead of 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order'.", "domainObjects"));
     }
 
     [Test]
@@ -348,7 +349,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That (
           () => collection.AddRange (new[] { _customer1, null }),
           Throws.InstanceOf<ArgumentNullException>()
-              .With.Message.EqualTo ("Item 1 of parameter 'domainObjects' is null.\r\nParameter name: domainObjects"));
+              .With.ArgumentExceptionMessageEqualTo ("Item 1 of parameter 'domainObjects' is null.", "domainObjects"));
     }
 
     [Test]

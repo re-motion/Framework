@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 {
@@ -151,12 +152,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
                     {
                       Assert.That (
                           () => ((ICommittingEventRegistrar) mi.Arguments[2]).RegisterForAdditionalCommittingEvents (UnchangedObject),
-                          Throws.ArgumentException.With.Message.EqualTo (
+                          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
                               string.Format (
                                   "The given DomainObject '{0}' cannot be registered due to its DomainObjectState (Unchanged). "
                                   + "Only objects that are part of the commit set can be registered. Use RegisterForCommit to add an unchanged "
-                                  + "object to the commit set.\r\nParameter name: domainObjects",
-                                  UnchangedObject.ID)));
+                                  + "object to the commit set.",
+                                  UnchangedObject.ID),
+                              "domainObjects"));
                       UnchangedObject.RegisterForCommit();
                       ((ICommittingEventRegistrar) mi.Arguments[2]).RegisterForAdditionalCommittingEvents (UnchangedObject);
                     }));

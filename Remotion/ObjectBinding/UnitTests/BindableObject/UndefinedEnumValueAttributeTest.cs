@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject
 {
@@ -52,9 +53,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       Assert.That (
           () => new UndefinedEnumValueAttribute (this),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "Parameter 'value' has type 'Remotion.ObjectBinding.UnitTests.BindableObject.UndefinedEnumValueAttributeTest' "
-                  + "when type 'System.Enum' was expected.\r\nParameter name: value"));
+                  + "when type 'System.Enum' was expected.", "value"));
     }
 
     [Test]

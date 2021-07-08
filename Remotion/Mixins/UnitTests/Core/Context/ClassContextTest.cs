@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Context.FluentBuilders;
 using Remotion.Mixins.Context.Serialization;
@@ -116,9 +117,9 @@ namespace Remotion.Mixins.UnitTests.Core.Context
       Assert.That (
           () => ClassContextObjectMother.Create(typeof (string), typeof (object), typeof (object)),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "The mixin type System.Object was tried to be added twice.\r\n"
-                  + "Parameter name: mixinTypes"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "The mixin type System.Object was tried to be added twice.",
+                  "mixinTypes"));
     }
 
     [Test]

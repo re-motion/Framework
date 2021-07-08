@@ -20,6 +20,7 @@ using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests.TestDomain;
 using Remotion.Reflection.UnitTests.TestDomain.MemberInfoAdapter;
 using Remotion.ServiceLocation;
@@ -232,7 +233,7 @@ namespace Remotion.Reflection.UnitTests
       Assert.That (
           () => adapter.FindInterfaceImplementation (typeof (IInterfaceWithReferenceType<object>)),
           Throws.ArgumentException
-              .With.Message.EqualTo ("The implementationType parameter must not be an interface.\r\nParameter name: implementationType"));
+              .With.ArgumentExceptionMessageEqualTo ("The implementationType parameter must not be an interface.", "implementationType"));
     }
 
     [Test]

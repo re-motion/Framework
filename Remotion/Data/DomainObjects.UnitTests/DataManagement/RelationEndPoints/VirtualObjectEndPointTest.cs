@@ -25,6 +25,7 @@ using Remotion.Data.DomainObjects.UnitTests.Serialization;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.UnitTests.UnitTesting;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
@@ -104,7 +105,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (
           () => new VirtualObjectEndPoint (TestableClientTransaction, id, _lazyLoaderMock, _endPointProviderStub, _transactionEventSinkStub, _dataManagerFactory),
           Throws.ArgumentException
-              .With.Message.EqualTo ("End point ID must refer to a virtual end point.\r\nParameter name: id"));
+              .With.ArgumentExceptionMessageEqualTo ("End point ID must refer to a virtual end point.", "id"));
     }
 
     [Test]

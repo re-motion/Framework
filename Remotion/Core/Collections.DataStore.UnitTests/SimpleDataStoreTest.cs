@@ -21,6 +21,7 @@ using System.Linq;
 using NUnit.Framework;
 using Remotion.Collections.DataStore.UnitTests.Utilities;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Collections.DataStore.UnitTests
 {
@@ -90,7 +91,7 @@ namespace Remotion.Collections.DataStore.UnitTests
       _store.Add ("d", 1);
       Assert.That (
           () => _store.Add ("d", 2),
-          Throws.ArgumentException.And.Message.EqualTo ("The store already contains an element with key \'d\'.\r\nParameter name: key"));
+          Throws.ArgumentException.And.ArgumentExceptionMessageEqualTo ("The store already contains an element with key \'d\'.", "key"));
     }
 
     [Test]

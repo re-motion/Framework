@@ -17,6 +17,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Remotion.Mixins.UnitTests.Core.Validation.ValidationTestDomain;
 using Remotion.TypePipe;
@@ -144,8 +145,8 @@ namespace Remotion.Mixins.UnitTests.Core
       Assert.That (
           () => ObjectFactory.Create<IBaseType2> (ParamList.Empty),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Cannot instantiate type 'Remotion.Mixins.UnitTests.Core.TestDomain.IBaseType2', it's an interface.\r\nParameter name: targetOrConcreteType"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Cannot instantiate type 'Remotion.Mixins.UnitTests.Core.TestDomain.IBaseType2', it's an interface.", "targetOrConcreteType"));
     }
 
     [Test]

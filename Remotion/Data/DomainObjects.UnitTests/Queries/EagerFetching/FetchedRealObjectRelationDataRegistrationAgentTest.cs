@@ -22,6 +22,7 @@ using Remotion.Data.DomainObjects.Queries.EagerFetching;
 using Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
 {
@@ -172,8 +173,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
 
       Assert.That (
           () => _agent.GroupAndRegisterRelatedObjects (endPointDefinition, new[] { _originatingOrderTicketData1 }, new[] { _fetchedOrderData1 }), 
-          Throws.ArgumentException.With.Message.EqualTo (
-              "Only non-virtual object-valued relation end-points can be handled by this registration agent.\r\nParameter name: relationEndPointDefinition"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+              "Only non-virtual object-valued relation end-points can be handled by this registration agent.", "relationEndPointDefinition"));
     }
 
     [Test]

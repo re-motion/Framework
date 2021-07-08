@@ -22,6 +22,7 @@ using Remotion.Data.DomainObjects.DomainImplementation.Cloning;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.TypePipe;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.TypePipe;
 using Rhino.Mocks;
 
@@ -401,8 +402,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
       var otherCloner = new DomainObjectCloner();
       Assert.That (
           () => _cloner.CreateClone (_classWithAllDataTypes, new CompleteCloneStrategy(), new CloneContext (otherCloner)),
-          Throws.ArgumentException.With.Message.EqualTo (
-              "The given CloneContext must have been created for this DomainObjectCloner.\r\nParameter name: context"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+              "The given CloneContext must have been created for this DomainObjectCloner.", "context"));
     }
 
     private void ExpectHandleReference (ICloneStrategy strategyMock, TestDomainBase original, TestDomainBase clone, string propertyName,

@@ -22,6 +22,7 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.Resources;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.ExtensibleEnums;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
@@ -712,9 +713,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
       Assert.That (
           () => target.SetDataFromSubTransaction (source),
-          Throws.ArgumentException.With.Message.EqualTo (
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
               "Cannot set this property's value from 'Remotion.Data.DomainObjects.Mapping.PropertyDefinition: OrderNumber'; the properties "
-              + "do not have the same property definition.\r\nParameter name: source"));
+              + "do not have the same property definition.", "source"));
     }
 
     [Test]

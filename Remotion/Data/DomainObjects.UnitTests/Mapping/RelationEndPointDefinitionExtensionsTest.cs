@@ -18,6 +18,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
@@ -46,8 +47,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       Assert.That (
           () => endPointDefinition.GetOppositeEndPointDefinition (), 
-          Throws.ArgumentException.With.Message.EqualTo (
-              "The given IRelationEndPointDefinition object must be part of a RelationDefinition.\r\nParameter name: relationEndPointDefinition"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+              "The given IRelationEndPointDefinition object must be part of a RelationDefinition.", "relationEndPointDefinition"));
     }
 
     [Test]
@@ -69,8 +70,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       Assert.That (
           () => endPointDefinition.GetOppositeClassDefinition (),
-          Throws.ArgumentException.With.Message.EqualTo (
-              "The given IRelationEndPointDefinition object must be part of a RelationDefinition.\r\nParameter name: relationEndPointDefinition"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+              "The given IRelationEndPointDefinition object must be part of a RelationDefinition.", "relationEndPointDefinition"));
     }
   }
 }

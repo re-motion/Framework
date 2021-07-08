@@ -21,6 +21,7 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
@@ -65,9 +66,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That (
           () => new ObjectList<Customer> (dataStub),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "The given data strategy must have a required item type of 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer' in order to be used "
-                  + "with this collection type.\r\nParameter name: dataStrategy"));
+                  + "with this collection type.", "dataStrategy"));
     }
 
     [Test]

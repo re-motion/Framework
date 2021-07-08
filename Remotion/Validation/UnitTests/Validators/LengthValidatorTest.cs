@@ -17,6 +17,7 @@
 using System;
 using System.Linq;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Validators;
@@ -34,7 +35,7 @@ namespace Remotion.Validation.UnitTests.Validators
         Assert.That (
             () => new LengthValidator (-1, 3, new InvariantValidationMessage ("Fake Message")),
             Throws.InstanceOf<ArgumentOutOfRangeException>()
-                .With.Message.EqualTo ($"Value cannot be less than zero.{Environment.NewLine}Parameter name: min"));
+                .With.ArgumentExceptionMessageEqualTo ("Value cannot be less than zero.", "min"));
       }
     }
 
@@ -46,7 +47,7 @@ namespace Remotion.Validation.UnitTests.Validators
         Assert.That (
             () => new LengthValidator (4, 3, new InvariantValidationMessage ("Fake Message")),
             Throws.InstanceOf<ArgumentOutOfRangeException>()
-                .With.Message.EqualTo ($"Max should be larger than min.{Environment.NewLine}Parameter name: max"));
+                .With.ArgumentExceptionMessageEqualTo ("Max should be larger than min.", "max"));
       }
     }
 

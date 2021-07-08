@@ -17,6 +17,7 @@
 using System;
 using System.Linq;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Mixins;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BindableObject.Properties;
@@ -104,9 +105,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       Assert.That (
           () => BindableObjectProvider.GetProviderForBindableObjectType (typeof (ManualBusinessObject)),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "The type 'Remotion.ObjectBinding.UnitTests.TestDomain.ManualBusinessObject' does not have the "
-                  + "'Remotion.ObjectBinding.BusinessObjectProviderAttribute' applied.\r\nParameter name: type"));
+                  + "'Remotion.ObjectBinding.BusinessObjectProviderAttribute' applied.", "type"));
     }
 
     [Test]
@@ -115,9 +116,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       Assert.That (
           () => BindableObjectProvider.GetProviderForBindableObjectType (typeof (BindableObjectWithStubBusinessObjectProvider)),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "The business object provider associated with the type 'Remotion.ObjectBinding.UnitTests.TestDomain.BindableObjectWithStubBusinessObjectProvider' "
-                  + "is not of type 'Remotion.ObjectBinding.BindableObject.BindableObjectProvider'.\r\nParameter name: type"));
+                  + "is not of type 'Remotion.ObjectBinding.BindableObject.BindableObjectProvider'.", "type"));
     }
 
     [Test]
@@ -126,10 +127,10 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       var provider = (BindableObjectProvider) BindableObjectProvider.GetProvider (typeof (BindableObjectProviderAttribute));
       Assert.That (
           () => provider.GetBindableObjectClass (typeof (StubBusinessObjectWithoutBindableObjectBaseClassAttributeClass)),
-          Throws.ArgumentException.With.Message.EqualTo (
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
               "The type 'Remotion.ObjectBinding.UnitTests.TestDomain.StubBusinessObjectWithoutBindableObjectBaseClassAttributeClass' "
               + "is not a bindable object implementation. It must either have a mixin derived from BindableObjectMixinBase<T> applied "
-              + "or implement the IBusinessObject interface and apply the BindableObjectBaseClassAttribute.\r\nParameter name: type"));
+              + "or implement the IBusinessObject interface and apply the BindableObjectBaseClassAttribute.", "type"));
     }
 
     [Test]
@@ -138,10 +139,10 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       var provider = (BindableObjectProvider) BindableObjectProvider.GetProvider (typeof (BindableObjectProviderAttribute));
       Assert.That (
           () => provider.GetBindableObjectClass (typeof (StubBusinessObjectWithoutBusinessObjectInterface)),
-          Throws.ArgumentException.With.Message.EqualTo (
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
               "The type 'Remotion.ObjectBinding.UnitTests.TestDomain.StubBusinessObjectWithoutBusinessObjectInterface' "
               + "is not a bindable object implementation. It must either have a mixin derived from BindableObjectMixinBase<T> applied "
-              + "or implement the IBusinessObject interface and apply the BindableObjectBaseClassAttribute.\r\nParameter name: type"));
+              + "or implement the IBusinessObject interface and apply the BindableObjectBaseClassAttribute.", "type"));
     }
 
     [Test]
@@ -150,9 +151,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       var provider = (BindableObjectProvider) BindableObjectProvider.GetProvider (typeof (BindableObjectProviderAttribute));
       Assert.That (
           () => provider.GetBindableObjectClass (typeof (GenericBindableObject<>)),
-          Throws.ArgumentException.With.Message.EqualTo (
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
               "The type 'Remotion.ObjectBinding.UnitTests.TestDomain.GenericBindableObject`1' "
-              + "is not a bindable object implementation. Open generic types are not supported.\r\nParameter name: type"));
+              + "is not a bindable object implementation. Open generic types are not supported.", "type"));
     }
 
     [Test]

@@ -17,6 +17,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Security.UnitTests
 {
@@ -40,9 +41,9 @@ namespace Remotion.Security.UnitTests
       Assert.That (
           () => EnumWrapper.Get(TestFlags.One),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "Enumerated type 'Remotion.Security.UnitTests.EnumWrapperTest+TestFlags' "
-                  + "cannot be wrapped. Only enumerated types without the System.FlagsAttribute can be wrapped.\r\nParameter name: enumValue"));
+                  + "cannot be wrapped. Only enumerated types without the System.FlagsAttribute can be wrapped.", "enumValue"));
     }
 
     [Test]

@@ -22,6 +22,7 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
@@ -105,8 +106,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       Assert.That (
           () => BidirectionalRelationSyncService.IsSynchronized (_transaction, RelationEndPointID.Create (DomainObjectIDs.Location1, typeof (Location), "Client")),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "BidirectionalRelationSyncService cannot be used with unidirectional relation end-points.\r\nParameter name: endPointID"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "BidirectionalRelationSyncService cannot be used with unidirectional relation end-points.", "endPointID"));
     }
 
     [Test]
@@ -117,8 +118,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       Assert.That (
           () => BidirectionalRelationSyncService.IsSynchronized (_transaction, oppositeEndPoint),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "BidirectionalRelationSyncService cannot be used with unidirectional relation end-points.\r\nParameter name: endPointID"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "BidirectionalRelationSyncService cannot be used with unidirectional relation end-points.", "endPointID"));
     }
 
     [Test]
@@ -222,8 +223,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       Assert.That (
           () => BidirectionalRelationSyncService.Synchronize (_transaction, endPointID),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "BidirectionalRelationSyncService cannot be used with unidirectional relation end-points.\r\nParameter name: endPointID"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "BidirectionalRelationSyncService cannot be used with unidirectional relation end-points.", "endPointID"));
     }
 
     [Test]
@@ -234,8 +235,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       Assert.That (
           () => BidirectionalRelationSyncService.Synchronize (_transaction, endPointID),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "BidirectionalRelationSyncService cannot be used with unidirectional relation end-points.\r\nParameter name: endPointID"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "BidirectionalRelationSyncService cannot be used with unidirectional relation end-points.", "endPointID"));
     }
 
     [Test]

@@ -17,6 +17,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 {
@@ -67,9 +68,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
               actual,
               "param",
               item => Tuple.Create<string, object> ("Year", item.Year)),
-          Throws.ArgumentException.With.Message.EqualTo (
-              "Only equivalent properties can be combined, but this property has type 'DateTime', and the given property has type 'String'.\r\n"
-              + "Parameter name: param"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+              "Only equivalent properties can be combined, but this property has type 'DateTime', and the given property has type 'String'.",
+              "param"));
     }
 
     [Test]
@@ -84,9 +85,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
               actual,
               "param",
               item => Tuple.Create<string, object> ("Year", item.Year)),
-          Throws.ArgumentException.With.Message.EqualTo (
-              "Only equivalent properties can be combined, but this property has Year '2013', and the given property has Year '2014'.\r\n"
-              + "Parameter name: param"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+              "Only equivalent properties can be combined, but this property has Year '2013', and the given property has Year '2014'.",
+              "param"));
     }
 
     [Test]
@@ -101,9 +102,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
               actual,
               "param",
               item => Tuple.Create<string, object> ("Item1", item.Item1)),
-          Throws.ArgumentException.With.Message.EqualTo (
-              "Only equivalent properties can be combined, but this property has Item1 'null', and the given property has Item1 '5'.\r\n"
-              + "Parameter name: param"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+              "Only equivalent properties can be combined, but this property has Item1 'null', and the given property has Item1 '5'.",
+              "param"));
     }
 
     [Test]
@@ -118,9 +119,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
               actual,
               "param",
               item => Tuple.Create<string, object> ("Item1", item.Item1)),
-          Throws.ArgumentException.With.Message.EqualTo (
-              "Only equivalent properties can be combined, but this property has Item1 '5', and the given property has Item1 'null'.\r\n"
-              + "Parameter name: param"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+              "Only equivalent properties can be combined, but this property has Item1 '5', and the given property has Item1 'null'.",
+              "param"));
     }
   }
 }

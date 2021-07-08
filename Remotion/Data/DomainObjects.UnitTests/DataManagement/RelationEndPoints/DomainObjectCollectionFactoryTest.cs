@@ -20,6 +20,7 @@ using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 {
@@ -107,7 +108,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (
           () =>  _factory.CreateCollection (typeof (ObjectList<Order>), new Order[] { null }, typeof (Order)),
           Throws.InstanceOf<ArgumentNullException>()
-              .With.Message.EqualTo ("Item 0 of parameter 'domainObjects' is null.\r\nParameter name: domainObjects"));
+              .With.ArgumentExceptionMessageEqualTo ("Item 0 of parameter 'domainObjects' is null.", "domainObjects"));
     }
 
     [Test]

@@ -18,6 +18,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization;
 using Remotion.Data.DomainObjects.UnitTests.Mapping;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectIDStringSerialization
 {
@@ -64,8 +65,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectIDStringSer
 #if DEBUG
       Assert.That (
           () => ObjectIDStringSerializer.Instance.Serialize (id),
-          Throws.ArgumentException.With.Message.EqualTo (
-              "The class id 'Class|ID' contains the delimiter character ('|'). This is not allowed when serializing the ObjectID.\r\nParameter name: objectID"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+              "The class id 'Class|ID' contains the delimiter character ('|'). This is not allowed when serializing the ObjectID.", "objectID"));
 #else
       Assert.That (ObjectIDStringSerializer.Instance.Serialize (id), Is.EqualTo ("Class|ID|Arthur Dent|System.String"));
 #endif

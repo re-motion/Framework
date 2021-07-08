@@ -74,7 +74,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
       Assert.That (
           () => WxeRepostOptions.SuppressRepost (null, false),
           Throws.InstanceOf<ArgumentNullException>()
-              .With.Message.Contains ("Parameter name: sender"));
+              .With.Message.Contains ("sender"));
       // ReSharper restore AssignNullToNotNullAttribute
     }
 

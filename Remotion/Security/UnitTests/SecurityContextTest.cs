@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Security.UnitTests.SampleDomain;
 using Remotion.Security.UnitTests.TestDomain;
 
@@ -45,9 +46,9 @@ namespace Remotion.Security.UnitTests
       Assert.That (
           () => CreateTestSecurityContextWithAbstractRoles (abstractRoles),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "Enumerated Type 'Remotion.Security.UnitTests.SampleDomain.SimpleEnum' cannot be used as an abstract role. "
-                  + "Valid abstract roles must have the Remotion.Security.AbstractRoleAttribute applied.\r\nParameter name: abstractRoles"));
+                  + "Valid abstract roles must have the Remotion.Security.AbstractRoleAttribute applied.", "abstractRoles"));
     }
 
     [Test]
@@ -80,9 +81,9 @@ namespace Remotion.Security.UnitTests
       Assert.That (
           () => CreateTestSecurityContextWithStates (testStates),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "Enumerated Type 'Remotion.Security.UnitTests.SampleDomain.SimpleEnum' cannot be used as a security state. "
-                  + "Valid security states must have the Remotion.Security.SecurityStateAttribute applied.\r\nParameter name: states"));
+                  + "Valid security states must have the Remotion.Security.SecurityStateAttribute applied.", "states"));
     }
 
     [Test]
@@ -91,10 +92,10 @@ namespace Remotion.Security.UnitTests
       Assert.That (
           () => CreateTestSecurityContextForType (typeof (SimpleType)),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "Parameter 'type' is a 'Remotion.Security.UnitTests.SampleDomain.SimpleType', "
-                  + "which cannot be assigned to type 'Remotion.Security.ISecurableObject'."
-                  + "\r\nParameter name: type"));
+                  + "which cannot be assigned to type 'Remotion.Security.ISecurableObject'.",
+                  "type"));
     }
 
     [Test]

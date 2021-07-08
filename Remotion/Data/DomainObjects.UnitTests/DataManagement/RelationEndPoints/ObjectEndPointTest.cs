@@ -21,6 +21,7 @@ using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
@@ -48,8 +49,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
           TestableClientTransaction,
           endPointID),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "End point ID must refer to an end point with cardinality 'One'.\r\nParameter name: id"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "End point ID must refer to an end point with cardinality 'One'.", "id"));
     }
 
     [Test]
@@ -148,10 +149,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (
           () => _endPointPartialMock.SetDataFromSubTransaction (source),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "Cannot set this end point's value from "
                   + "'OrderTicket|058ef259-f9cd-4cb1-85e5-5c05119ab596|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order'; "
-                  + "the end points do not have the same end point definition.\r\nParameter name: source"));
+                  + "the end points do not have the same end point definition.", "source"));
     }
     
     [Test]

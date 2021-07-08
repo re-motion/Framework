@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Remotion.Context;
 using Remotion.Design;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Logging;
 using Remotion.Mixins;
 using Remotion.Mixins.CodeGeneration;
@@ -158,10 +159,10 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectDataSour
       Assert.That (
           () => _dataSource.BusinessObjectClass,
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "The type 'Remotion.ObjectBinding.UnitTests.TestDomain.StubBusinessObjectWithoutBindableObjectBaseClassAttributeClass' is not a bindable object implementation. "
                   +"It must either have a mixin derived from BindableObjectMixinBase<T> applied "
-                  +"or implement the IBusinessObject interface and apply the BindableObjectBaseClassAttribute.\r\nParameter name: type"));
+                  +"or implement the IBusinessObject interface and apply the BindableObjectBaseClassAttribute.", "type"));
       _mockRepository.VerifyAll();
     }
 

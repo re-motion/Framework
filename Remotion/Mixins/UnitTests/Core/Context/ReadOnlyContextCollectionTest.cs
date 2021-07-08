@@ -19,6 +19,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Mixins.Context;
 
 namespace Remotion.Mixins.UnitTests.Core.Context
@@ -60,9 +61,9 @@ namespace Remotion.Mixins.UnitTests.Core.Context
       Assert.That (
           () => new ReadOnlyContextCollection<string, int> (delegate { return "1"; }, new int[] { 1, 2 }),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "The items 1 and 2 are identified by the same key 1 and cannot both be added "
-                  + "to the collection.\r\nParameter name: values"));
+                  + "to the collection.", "values"));
     }
 
     [Test]
@@ -71,8 +72,8 @@ namespace Remotion.Mixins.UnitTests.Core.Context
       Assert.That (
           () => new ReadOnlyContextCollection<string, string> ( delegate { return ""; }, new string[] { null }),
           Throws.InstanceOf<ArgumentNullException>()
-              .With.Message.EqualTo (
-                  "Value cannot be null.\r\nParameter name: values[0]"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Value cannot be null.", "values[0]"));
     }
 
     [Test]

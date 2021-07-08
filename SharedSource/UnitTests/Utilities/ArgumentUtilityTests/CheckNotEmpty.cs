@@ -19,6 +19,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Utilities;
 
 #nullable enable
@@ -49,8 +50,8 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
       Assert.That (
           () => ArgumentUtility.CheckNotEmpty ("arg", ""),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Parameter 'arg' cannot be empty.\r\nParameter name: arg"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Parameter 'arg' cannot be empty.", "arg"));
     }
 
     [Test]
@@ -140,8 +141,8 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
       Assert.That (
           () => ArgumentUtility.CheckNotEmpty ("arg", Type.EmptyTypes),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Parameter 'arg' cannot be empty.\r\nParameter name: arg"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Parameter 'arg' cannot be empty.", "arg"));
     }
 
     [Test]
@@ -152,8 +153,8 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
       Assert.That (
           () => ArgumentUtility.CheckNotEmpty ("arg", value),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Parameter 'arg' cannot be empty.\r\nParameter name: arg"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Parameter 'arg' cannot be empty.", "arg"));
     }
 
     [Test]
@@ -164,8 +165,8 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
       Assert.That (
           () => ArgumentUtility.CheckNotEmpty ("arg", value),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Parameter 'arg' cannot be empty.\r\nParameter name: arg"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Parameter 'arg' cannot be empty.", "arg"));
     }
 
     [Test]
@@ -176,8 +177,8 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
       Assert.That (
           () => ArgumentUtility.CheckNotEmpty ("arg", value),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Parameter 'arg' cannot be empty.\r\nParameter name: arg"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Parameter 'arg' cannot be empty.", "arg"));
     }
 
     [Test]
@@ -188,8 +189,8 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
       Assert.That (
           () => ArgumentUtility.CheckNotEmpty ("arg", value),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Parameter 'arg' cannot be empty.\r\nParameter name: arg"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Parameter 'arg' cannot be empty.", "arg"));
     }
 
     [Test]
@@ -206,8 +207,8 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
       Assert.That (
           () => ArgumentUtility.CheckNotEmpty ("arg", Guid.Empty),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Parameter 'arg' cannot be empty.\r\nParameter name: arg"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Parameter 'arg' cannot be empty.", "arg"));
     }
   }
 }

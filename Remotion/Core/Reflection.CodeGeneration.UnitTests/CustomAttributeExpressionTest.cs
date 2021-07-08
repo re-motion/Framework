@@ -18,6 +18,7 @@ using System;
 using System.Reflection;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Reflection.CodeGeneration.DPExtensions;
 using Remotion.Reflection.CodeGeneration.UnitTests.TestDomain;
 
@@ -54,9 +55,9 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
       Assert.That (
           () => new CustomAttributeExpression (new LocalReference (typeof (string)), typeof (SimpleAttribute), 0, true),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Parameter 'attributeOwner' is a 'System.String', which cannot be assigned to type 'System.Reflection.ICustomAttributeProvider'."
-                  + "\r\nParameter name: attributeOwner"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Parameter 'attributeOwner' is a 'System.String', which cannot be assigned to type 'System.Reflection.ICustomAttributeProvider'.",
+                  "attributeOwner"));
     }
   }
 }

@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Security.Metadata;
 using Remotion.Security.UnitTests.SampleDomain;
 using Remotion.Security.UnitTests.TestDomain;
@@ -140,9 +141,9 @@ namespace Remotion.Security.UnitTests.Metadata
       Assert.That (
           () => new ClassReflector().GetMetadata (typeof (Role), _cache),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Parameter 'type' is a 'Remotion.Security.UnitTests.TestDomain.Role', which cannot be assigned to type 'Remotion.Security.ISecurableObject'."
-                  + "\r\nParameter name: type"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Parameter 'type' is a 'Remotion.Security.UnitTests.TestDomain.Role', which cannot be assigned to type 'Remotion.Security.ISecurableObject'.",
+                  "type"));
     }
 
     [Test]
@@ -151,8 +152,8 @@ namespace Remotion.Security.UnitTests.Metadata
       Assert.That (
           () => new ClassReflector ().GetMetadata (typeof (TestValueType), _cache),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Value types are not supported.\r\nParameter name: type"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Value types are not supported.", "type"));
     }
   }
 }

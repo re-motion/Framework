@@ -26,6 +26,7 @@ using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
@@ -370,8 +371,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
               endPointDefinition,
               new[] { _originatingEmployeeData1 },
               new[] { _fetchedComputerData1 }), 
-          Throws.ArgumentException.With.Message.EqualTo (
-              "Only virtual object-valued relation end-points can be handled by this registration agent.\r\nParameter name: relationEndPointDefinition"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+              "Only virtual object-valued relation end-points can be handled by this registration agent.", "relationEndPointDefinition"));
     }
 
     [Test]

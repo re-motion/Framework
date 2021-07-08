@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Context.FluentBuilders;
 using Remotion.Mixins.Samples.UsesAndExtends.Core;
@@ -81,7 +82,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context
       Assert.That (
           () => _builder.AddType (typeof (List<int>)),
           Throws.ArgumentException
-              .With.Message.EqualTo ("Type must be non-generic or a generic type definition.\r\nParameter name: type"));
+              .With.ArgumentExceptionMessageEqualTo ("Type must be non-generic or a generic type definition.", "type"));
     }
 
     class DerivedList : List<int> { }

@@ -21,6 +21,7 @@ using System.Reflection;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Reflection;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.MetaValidation.Rules.Custom;
@@ -493,10 +494,10 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
               _mixinPropertyWithMandatoryAttribute,
               _domainModelConstraintProvider,
               _validationMessageFactoryStub),
-          Throws.ArgumentException.And.Message.EqualTo (
+          Throws.ArgumentException.And.ArgumentExceptionMessageEqualTo (
               "The property 'PropertyWithMandatoryAttribute' was declared on type "
               + "'Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain.MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface' "
-              + "but only interface declarations are supported when using mixin properties.\r\nParameter name: interfaceProperty"));
+              + "but only interface declarations are supported when using mixin properties.", "interfaceProperty"));
     }
 
     [Test]
@@ -510,10 +511,10 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
               implementationProperty: overriddenProperty,
               domainModelConstraintProvider: _domainModelConstraintProvider,
               validationMessageFactory: _validationMessageFactoryStub),
-          Throws.ArgumentException.With.Message.EqualTo (
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
               "The property 'PropertyWithNullableStringPropertyAttribute' was used from the overridden declaration on type "
               + "'Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain.DerivedMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface' "
-              + "but only original declarations are supported.\r\nParameter name: implementationProperty"));
+              + "but only original declarations are supported.", "implementationProperty"));
     }
   }
 }

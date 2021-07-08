@@ -17,6 +17,7 @@
 
 using System;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Utilities;
 
 #nullable enable
@@ -62,7 +63,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     {
       Assert.That (
           () => AttributeUtility.GetAttributeUsage (null!),
-          Throws.TypeOf<ArgumentNullException>().With.Message.EqualTo ("Value cannot be null.\r\nParameter name: attributeType"));
+          Throws.TypeOf<ArgumentNullException>().With.ArgumentExceptionMessageEqualTo ("Value cannot be null.", "attributeType"));
     }
 
     [Test]

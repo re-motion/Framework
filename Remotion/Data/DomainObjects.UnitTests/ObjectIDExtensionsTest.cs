@@ -20,6 +20,7 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests
 {
@@ -104,9 +105,9 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       Assert.That (
           () => _orderID1.GetObject<OrderItem> (_clientTransaction),
-          Throws.TypeOf<ArgumentException> ().With.Message.EqualTo (
+          Throws.TypeOf<ArgumentException> ().With.ArgumentExceptionMessageEqualTo (
               "The ObjectID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' is not compatible with type "
-              + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem'.\r\nParameter name: id"));
+              + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem'.", "id"));
     }
 
     [Test]
@@ -154,9 +155,9 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       Assert.That (
           () => _orderID1.TryGetObject<OrderItem> (_clientTransaction),
-          Throws.TypeOf<ArgumentException> ().With.Message.EqualTo (
+          Throws.TypeOf<ArgumentException> ().With.ArgumentExceptionMessageEqualTo (
               "The ObjectID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' is not compatible with type "
-              + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem'.\r\nParameter name: id"));
+              + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem'.", "id"));
     }
 
     [Test]
@@ -197,9 +198,9 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       Assert.That (
           () => _orderID1.GetObjectReference<OrderItem> (_clientTransaction),
-          Throws.TypeOf<ArgumentException> ().With.Message.EqualTo (
+          Throws.TypeOf<ArgumentException> ().With.ArgumentExceptionMessageEqualTo (
               "The ObjectID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' is not compatible with type "
-              + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem'.\r\nParameter name: id"));
+              + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem'.", "id"));
     }
 
     [Test]
@@ -250,9 +251,9 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       Assert.That (
           () => new[] { _orderID1 }.GetObjects<OrderItem> (_clientTransaction),
-          Throws.TypeOf<ArgumentException> ().With.Message.EqualTo (
+          Throws.TypeOf<ArgumentException> ().With.ArgumentExceptionMessageEqualTo (
               "The ObjectID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' is not compatible with type "
-              + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem'.\r\nParameter name: id"));
+              + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem'.", "id"));
     }
 
     [Test]
@@ -303,9 +304,9 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       Assert.That (
           () => new[] { _orderID1 }.TryGetObjects<OrderItem> (_clientTransaction),
-          Throws.TypeOf<ArgumentException> ().With.Message.EqualTo (
+          Throws.TypeOf<ArgumentException> ().With.ArgumentExceptionMessageEqualTo (
               "The ObjectID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' is not compatible with type "
-              + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem'.\r\nParameter name: id"));
+              + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem'.", "id"));
     }
 
     private void CheckDomainObject (

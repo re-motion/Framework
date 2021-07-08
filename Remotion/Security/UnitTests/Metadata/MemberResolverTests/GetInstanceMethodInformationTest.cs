@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Reflection;
 using Remotion.Security.Metadata;
 using Remotion.Security.UnitTests.SampleDomain;
@@ -103,8 +104,8 @@ namespace Remotion.Security.UnitTests.Metadata.MemberResolverTests
       Assert.That (
           () => _resolver.GetMethodInformation (typeof (SecurableObject), "Sve", MemberAffiliation.Instance),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "The method 'Sve' could not be found.\r\nParameter name: methodName"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "The method 'Sve' could not be found.", "methodName"));
     }
 
     [Test]
@@ -113,10 +114,10 @@ namespace Remotion.Security.UnitTests.Metadata.MemberResolverTests
       Assert.That (
           () => _resolver.GetMethodInformation (typeof (DerivedSecurableObject), "Send", MemberAffiliation.Instance),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "The DemandPermissionAttribute must not be defined on methods overriden or redefined in derived classes. "
-                  + "A method 'Send' exists in class 'Remotion.Security.UnitTests.SampleDomain.DerivedSecurableObject' and its base class."
-                  + "\r\nParameter name: methodName"));
+                  + "A method 'Send' exists in class 'Remotion.Security.UnitTests.SampleDomain.DerivedSecurableObject' and its base class.",
+                  "methodName"));
     }
 
     [Test]
@@ -125,10 +126,10 @@ namespace Remotion.Security.UnitTests.Metadata.MemberResolverTests
       Assert.That (
           () => _resolver.GetMethodInformation (typeof (DerivedSecurableObject), "Print", MemberAffiliation.Instance),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "The DemandPermissionAttribute must not be defined on methods overriden or redefined in derived classes. "
-                  + "A method 'Print' exists in class 'Remotion.Security.UnitTests.SampleDomain.DerivedSecurableObject' and its base class."
-                  + "\r\nParameter name: methodName"));
+                  + "A method 'Print' exists in class 'Remotion.Security.UnitTests.SampleDomain.DerivedSecurableObject' and its base class.",
+                  "methodName"));
     }
   }
 }

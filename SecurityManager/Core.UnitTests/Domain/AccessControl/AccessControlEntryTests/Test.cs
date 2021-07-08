@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.SecurityManager.Domain.Metadata;
 
@@ -102,8 +103,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
       Assert.That (
           () => ace.AllowAccess (accessType),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "The access type 'Test' is not assigned to this access control entry.\r\nParameter name: accessType"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "The access type 'Test' is not assigned to this access control entry.", "accessType"));
     }
 
     [Test]

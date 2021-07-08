@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Security.Metadata;
 using Remotion.Security.UnitTests.TestDomain;
 using Rhino.Mocks;
@@ -107,8 +108,8 @@ namespace Remotion.Security.UnitTests.Metadata
       Assert.That (
           () => new StatePropertyReflector().GetMetadata (typeof (PaperFile).GetProperty ("ID"), _cache),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "The type of the property 'ID' in type 'Remotion.Security.UnitTests.TestDomain.File' is not an enumerated type.\r\nParameter name: property"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "The type of the property 'ID' in type 'Remotion.Security.UnitTests.TestDomain.File' is not an enumerated type.", "property"));
     }
 
     [Test]
@@ -117,8 +118,8 @@ namespace Remotion.Security.UnitTests.Metadata
       Assert.That (
           () => new StatePropertyReflector ().GetMetadata (typeof (PaperFile).GetProperty ("SimpleEnum"), _cache),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "The type of the property 'SimpleEnum' in type 'Remotion.Security.UnitTests.TestDomain.File' does not have the Remotion.Security.SecurityStateAttribute applied.\r\nParameter name: property"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "The type of the property 'SimpleEnum' in type 'Remotion.Security.UnitTests.TestDomain.File' does not have the Remotion.Security.SecurityStateAttribute applied.", "property"));
     }
   }
 }

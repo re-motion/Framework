@@ -17,6 +17,7 @@
 
 using System;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Utilities;
 
 #nullable enable
@@ -32,7 +33,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
       Assert.That (
           () => ArgumentUtility.CheckType ("arg", 13, typeof (string)),
           Throws.ArgumentException
-              .With.Message.EqualTo ("Parameter 'arg' has type 'System.Int32' when type 'System.String' was expected.\r\nParameter name: arg"));
+              .With.ArgumentExceptionMessageEqualTo ("Parameter 'arg' has type 'System.Int32' when type 'System.String' was expected.", "arg"));
     }
 
     [Test]
@@ -53,7 +54,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
       Assert.That (
           () => ArgumentUtility.CheckType ("arg", (object?) null, typeof (int)),
           Throws.ArgumentException
-              .With.Message.EqualTo ("Parameter 'arg' has type '<null>' when type 'System.Int32' was expected.\r\nParameter name: arg"));
+              .With.ArgumentExceptionMessageEqualTo ("Parameter 'arg' has type '<null>' when type 'System.Int32' was expected.", "arg"));
     }
 
     [Test]
@@ -62,7 +63,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
       Assert.That (
           () => ArgumentUtility.CheckType ("arg", (object) DateTime.MinValue, typeof (int)),
           Throws.ArgumentException
-              .With.Message.EqualTo ("Parameter 'arg' has type 'System.DateTime' when type 'System.Int32' was expected.\r\nParameter name: arg"));
+              .With.ArgumentExceptionMessageEqualTo ("Parameter 'arg' has type 'System.DateTime' when type 'System.Int32' was expected.", "arg"));
     }
 
     [Test]

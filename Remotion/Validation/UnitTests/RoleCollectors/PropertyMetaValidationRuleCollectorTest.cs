@@ -18,6 +18,7 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Reflection;
 using Remotion.Validation.MetaValidation;
 using Remotion.Validation.RuleCollectors;
@@ -59,7 +60,7 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
 
       Assert.That (
           () => PropertyMetaValidationRuleCollector.Create (dummyExpression, typeof (CustomerValidationRuleCollector1)),
-          Throws.ArgumentException.With.Message.EqualTo ("Must be a MemberExpression.\r\nParameter name: expression"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo ("Must be a MemberExpression.", "expression"));
     }
 
     [Test]

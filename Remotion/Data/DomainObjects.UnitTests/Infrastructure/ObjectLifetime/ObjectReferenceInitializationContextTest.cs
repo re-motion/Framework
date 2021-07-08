@@ -18,6 +18,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure.Enlistment;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
@@ -60,8 +61,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
     {
       Assert.That (
           () => new ObjectReferenceInitializationContext (_objectID, _rootTransaction.CreateSubTransaction(), _enlistedDomainObjectManagerMock),
-          Throws.ArgumentException.With.Message.EqualTo (
-              "The rootTransaction parameter must be passed a root transaction.\r\nParameter name: rootTransaction"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+              "The rootTransaction parameter must be passed a root transaction.", "rootTransaction"));
     }
 
     [Test]
@@ -100,7 +101,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
 
       Assert.That (
           () => _context.RegisterObject (objectWithWrongID),
-          Throws.ArgumentException.With.Message.EqualTo ("The given DomainObject must have ID '" + _objectID + "'.\r\nParameter name: domainObject"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo ("The given DomainObject must have ID '" + _objectID + "'.", "domainObject"));
     }
   }
 }

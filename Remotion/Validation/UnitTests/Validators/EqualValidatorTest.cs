@@ -18,6 +18,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Validators;
@@ -73,7 +74,7 @@ namespace Remotion.Validation.UnitTests.Validators
         Assert.That (
             () => new EqualValidator (null, new InvariantValidationMessage ("Fake Message")),
             Throws.InstanceOf<ArgumentNullException>()
-                .With.Message.EqualTo ($"Value cannot be null.{Environment.NewLine}Parameter name: comparisonValue"));
+                .With.ArgumentExceptionMessageEqualTo ($"Value cannot be null.", "comparisonValue"));
       }
     }
 

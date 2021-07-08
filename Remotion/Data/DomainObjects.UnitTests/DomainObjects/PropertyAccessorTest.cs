@@ -21,6 +21,7 @@ using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
@@ -171,9 +172,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That (
           () => CreateAccessor (sector1, "Companies").SetValue (sector2.Companies),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "The given collection is already associated with an end point.\r\n"
-                  + "Parameter name: value"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "The given collection is already associated with an end point.",
+                  "value"));
     }
 
     [Test]
@@ -292,11 +293,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That (
           () => CreateAccessor (order, "OrderTicket").SetValueWithoutTypeCheck (customer),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "DomainObject 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid' cannot be assigned "
                   + "to property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket' "
-                  + "of DomainObject 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid', because it is not compatible with the type of the property."
-                  + "\r\nParameter name: newRelatedObject"));
+                  + "of DomainObject 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid', because it is not compatible with the type of the property.",
+                  "newRelatedObject"));
     }
 
     [Test]
@@ -318,11 +319,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That (
           () => CreateAccessor (person, "AssociatedPartnerCompany").SetValueWithoutTypeCheck (company),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "DomainObject 'Company|c4954da8-8870-45c1-b7a3-c7e5e6ad641a|System.Guid' cannot be assigned "
                   + "to property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Person.AssociatedPartnerCompany' "
-                  + "of DomainObject 'Person|2001bf42-2aa4-4c81-ad8e-73e9145411e9|System.Guid', because it is not compatible with the type of the property."
-                  + "\r\nParameter name: newRelatedObject"));
+                  + "of DomainObject 'Person|2001bf42-2aa4-4c81-ad8e-73e9145411e9|System.Guid', because it is not compatible with the type of the property.",
+                  "newRelatedObject"));
     }
 
     [Test]

@@ -25,6 +25,7 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
@@ -63,7 +64,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (
           () => new RealObjectEndPoint (TestableClientTransaction, id, foreignKeyDataContainer, _endPointProviderStub, _transactionEventSinkStub),
           Throws.ArgumentException
-              .With.Message.EqualTo ("End point ID must refer to a non-virtual end point.\r\nParameter name: id"));
+              .With.ArgumentExceptionMessageEqualTo ("End point ID must refer to a non-virtual end point.", "id"));
     }
 
     [Test]
@@ -74,8 +75,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (
           () => new RealObjectEndPoint (TestableClientTransaction, id, foreignKeyDataContainer, _endPointProviderStub, _transactionEventSinkStub),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "The foreign key data container must be from the same object as the end point definition.\r\nParameter name: foreignKeyDataContainer"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "The foreign key data container must be from the same object as the end point definition.", "foreignKeyDataContainer"));
     }
 
     [Test]

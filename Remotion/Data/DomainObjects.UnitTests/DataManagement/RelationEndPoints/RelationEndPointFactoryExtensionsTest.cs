@@ -18,6 +18,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
@@ -157,7 +158,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       Assert.That (
           () => RelationEndPointFactoryExtensions.CreateVirtualEndPoint (_endPointFactoryMock, endPointID, true),
-          Throws.ArgumentException.With.Message.EqualTo ("The RelationEndPointID must identify a virtual end-point.\r\nParameter name: endPointID"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo ("The RelationEndPointID must identify a virtual end-point.", "endPointID"));
     }
 
     // ReSharper restore InvokeAsExtensionMethod

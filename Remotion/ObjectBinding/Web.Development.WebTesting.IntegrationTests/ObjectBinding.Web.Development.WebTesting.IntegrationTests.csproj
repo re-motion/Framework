@@ -45,6 +45,10 @@
     <Reference Include="Coypu, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\..\..\packages\Fork.Coypu.3.1.1.2\lib\net45\Coypu.dll</HintPath>
     </Reference>
+    <Reference Include="JetBrains.Annotations, Version=2021.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325">
+      <HintPath>..\..\..\packages\JetBrains.Annotations.2021.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="nunit.framework, Version=3.12.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\NUnit.3.12.0\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
@@ -66,6 +70,10 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\SharedSource\Development\UnitTesting\NUnit\NUnitExtensions.cs">
+      <Link>SharedSource\UnitTesting\NUnit\NUnitExtensions.cs</Link>
+    </Compile>
+    <Compile Include="App_Packages\Remotion.Utilities.Assertion.Sources.1.15.23.0\Assertion.cs" />
     <Compile Include="BocControlObjectTest.cs" />
     <Compile Include="BocEnumValueControlObjectTest.cs" />
     <Compile Include="BocCheckBoxControlObjectTest.cs" />
@@ -145,6 +153,7 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="App_Packages\Remotion.Utilities.Assertion.Sources.1.15.23.0\SharedSource Apache-2.0.licenseheader" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

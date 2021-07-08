@@ -18,6 +18,7 @@ using System;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Security.UnitTests
 {
@@ -80,8 +81,8 @@ namespace Remotion.Security.UnitTests
       Assert.That (
           () => new SecurityPrincipal (null, null, null, null),
           Throws.InstanceOf<ArgumentNullException>()
-              .With.Message.EqualTo (
-                  "Value cannot be null.\r\nParameter name: user"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Value cannot be null.", "user"));
     }
 
     [Test]
@@ -90,7 +91,7 @@ namespace Remotion.Security.UnitTests
       Assert.That (
           () => new SecurityPrincipal (string.Empty, null, null, null),
           Throws.ArgumentException
-              .With.Message.EqualTo ("Parameter 'user' cannot be empty.\r\nParameter name: user"));
+              .With.ArgumentExceptionMessageEqualTo ("Parameter 'user' cannot be empty.", "user"));
     }
 
     [Test]
@@ -99,7 +100,7 @@ namespace Remotion.Security.UnitTests
       Assert.That (
           () => new SecurityPrincipal ("TheUser", null, string.Empty, null),
           Throws.ArgumentException
-              .With.Message.EqualTo ("Parameter 'substitutedUser' cannot be empty.\r\nParameter name: substitutedUser"));
+              .With.ArgumentExceptionMessageEqualTo ("Parameter 'substitutedUser' cannot be empty.", "substitutedUser"));
     }
 
     [Test]

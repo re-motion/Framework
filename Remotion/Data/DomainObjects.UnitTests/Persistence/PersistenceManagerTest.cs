@@ -28,6 +28,7 @@ using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence
@@ -262,7 +263,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
       Assert.That (
           () => _persistenceManager.LoadRelatedDataContainer (relationEndPointID),
           Throws.ArgumentException
-              .With.Message.EqualTo ("LoadRelatedDataContainer can only be used with virtual end points.\r\nParameter name: relationEndPointID"));
+              .With.ArgumentExceptionMessageEqualTo ("LoadRelatedDataContainer can only be used with virtual end points.", "relationEndPointID"));
     }
 
     [Test]

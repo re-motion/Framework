@@ -20,6 +20,7 @@ using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Mixins;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
@@ -93,7 +94,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (
           () => RelationEndPointID.Create (DomainObjectIDs.Order1, "PropertyName"),
           Throws.ArgumentException
-              .With.Message.EqualTo ("No relation found for class 'Order' and property 'PropertyName'.\r\nParameter name: propertyIdentifier"));
+              .With.ArgumentExceptionMessageEqualTo ("No relation found for class 'Order' and property 'PropertyName'.", "propertyIdentifier"));
     }
 
     [Test]
@@ -110,9 +111,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (
           () => RelationEndPointID.Create (_objectID, typeof (Order), "OrderJoe"),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "The domain object type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' does not have a mapping property named "
-                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderJoe'.\r\nParameter name: shortPropertyName"));
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderJoe'.", "shortPropertyName"));
     }
 
     [Test]
@@ -121,9 +122,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (
           () => RelationEndPointID.Create (_objectID, typeof (Order), "OrderNumber"),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "The property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber' is not a relation property.\r\n"
-                  + "Parameter name: shortPropertyName"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "The property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber' is not a relation property.",
+                  "shortPropertyName"));
     }
 
     [Test]
@@ -170,9 +171,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (
           () => RelationEndPointID.Resolve (instance, o => ((OrderItem) (object) o).Product),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "The domain object type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' does not have a mapping property identified by expression "
-                  + "'o => Convert(Convert(o)).Product'.\r\nParameter name: propertyAccessExpression"));
+                  + "'o => Convert(Convert(o)).Product'.", "propertyAccessExpression"));
     }
 
     [Test]
@@ -182,9 +183,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (
           () => RelationEndPointID.Resolve (instance, o => o.OrderNumber),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "The property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber' is not a relation property.\r\n"
-                  + "Parameter name: propertyAccessExpression"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "The property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber' is not a relation property.",
+                  "propertyAccessExpression"));
     }
 
     [Test]

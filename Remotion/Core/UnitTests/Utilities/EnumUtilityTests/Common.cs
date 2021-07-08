@@ -18,6 +18,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Utilities;
 
 namespace Remotion.UnitTests.Utilities.EnumUtilityTests
@@ -56,8 +57,8 @@ namespace Remotion.UnitTests.Utilities.EnumUtilityTests
       Assert.That (
           () => EnumUtility.IsFlagsEnumType (typeof (int)),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Argument was a type representing 'System.Int32' but only enum-types are supported.\r\nParameter name: enumType"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Argument was a type representing 'System.Int32' but only enum-types are supported.", "enumType"));
     }
 
     [Test]
@@ -66,10 +67,10 @@ namespace Remotion.UnitTests.Utilities.EnumUtilityTests
       Assert.That (
           () => EnumUtility.IsValidEnumValue (typeof (TestFlags), (Int16Enum.TestEnum) (short) 1),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "Object must be the same type as the enum. The type passed in was 'Remotion.UnitTests.Utilities.EnumUtilityTests.Int16Enum+TestEnum'; "
-                  + "the enum type was 'Remotion.UnitTests.Utilities.EnumUtilityTests.Common+TestFlags'."
-                  + "\r\nParameter name: value"));
+                  + "the enum type was 'Remotion.UnitTests.Utilities.EnumUtilityTests.Common+TestFlags'.",
+                  "value"));
     }
 
     [Test]
@@ -78,9 +79,9 @@ namespace Remotion.UnitTests.Utilities.EnumUtilityTests
       Assert.That (
           () => EnumUtility.IsValidEnumValue (typeof (TestFlags), (short) 1),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Enum underlying type and the object must be same type. The type passed in was 'System.Int16'; the enum underlying type was 'System.Int32'."
-                  + "\r\nParameter name: value"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Enum underlying type and the object must be same type. The type passed in was 'System.Int16'; the enum underlying type was 'System.Int32'.",
+                  "value"));
     }
 
     [Test]
@@ -89,8 +90,8 @@ namespace Remotion.UnitTests.Utilities.EnumUtilityTests
       Assert.That (
           () => EnumUtility.IsValidEnumValue ((short) 1),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Argument was of type 'System.Int16' but only enum-types are supported with this overload.\r\nParameter name: enumValue"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Argument was of type 'System.Int16' but only enum-types are supported with this overload.", "enumValue"));
     }
 
     [Test]
@@ -99,8 +100,8 @@ namespace Remotion.UnitTests.Utilities.EnumUtilityTests
       Assert.That (
           () => EnumUtility.IsValidEnumValue (typeof (Int32), (short) 1),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Argument was a type representing 'System.Int32' but only enum-types are supported.\r\nParameter name: enumType"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Argument was a type representing 'System.Int32' but only enum-types are supported.", "enumType"));
     }
 
     [Test]

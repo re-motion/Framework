@@ -20,6 +20,7 @@ using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
@@ -56,8 +57,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       
       Assert.That (
           () => new AlreadyExistingLoadedObjectData (existingDataContainer),
-          Throws.ArgumentException.With.Message.EqualTo (
-              "The DataContainer must have been registered with a ClientTransaction.\r\nParameter name: existingDataContainer"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+              "The DataContainer must have been registered with a ClientTransaction.", "existingDataContainer"));
     }
 
     [Test]

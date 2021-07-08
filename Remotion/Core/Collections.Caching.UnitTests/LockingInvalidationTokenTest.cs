@@ -17,6 +17,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Collections.Caching.UnitTests
 {
@@ -82,8 +83,8 @@ namespace Remotion.Collections.Caching.UnitTests
 
       Assert.That (
           () => token2.IsCurrent (token1.GetCurrent()),
-          Throws.ArgumentException.With.Message.EqualTo (
-              "The Revision used for the comparision was not created by the current CacheInvalidationToken.\r\nParameter name: revision"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+              "The Revision used for the comparision was not created by the current CacheInvalidationToken.", "revision"));
     }
 
 #if !DEBUG
@@ -96,9 +97,9 @@ namespace Remotion.Collections.Caching.UnitTests
 
       Assert.That (
           () => token.IsCurrent (new InvalidationToken.Revision()),
-          Throws.ArgumentException.With.Message.EqualTo (
-              "The Revision used for the comparision was either created via the default constructor or the associated CacheInvalidationToken has already been garbage collected.\r\n"
-              + "Parameter name: revision"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+              "The Revision used for the comparision was either created via the default constructor or the associated CacheInvalidationToken has already been garbage collected.",
+              "revision"));
     }
 
     [Test]
@@ -115,8 +116,8 @@ namespace Remotion.Collections.Caching.UnitTests
 #if DEBUG
       Assert.That (
           () => token.IsCurrent (deserializedRevision),
-          Throws.ArgumentException.With.Message.EqualTo (
-              "The Revision used for the comparision was not created by the current CacheInvalidationToken.\r\nParameter name: revision"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+              "The Revision used for the comparision was not created by the current CacheInvalidationToken.", "revision"));
 #endif
     }
   }

@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Utilities;
 
 namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
@@ -103,9 +104,9 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
 	    Assert.That (
 	        () => ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<TestFlags> ("arg", TestEnum.Value1),
 	        Throws.ArgumentException
-	            .With.Message.EqualTo (
+	            .With.ArgumentExceptionMessageEqualTo (
 	                "Parameter 'arg' has type 'Remotion.UnitTests.Utilities.ArgumentUtilityTests.TestEnum' "
-	                + "when type 'Remotion.UnitTests.Utilities.ArgumentUtilityTests.TestFlags' was expected.\r\nParameter name: arg"));
+	                + "when type 'Remotion.UnitTests.Utilities.ArgumentUtilityTests.TestFlags' was expected.", "arg"));
 	  }
 
 	  [Test]
@@ -154,9 +155,9 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
 	    Assert.That (
 	        () => ArgumentUtility.CheckValidEnumValueAndType<TestFlags> ("arg", TestEnum.Value1),
 	        Throws.ArgumentException
-	            .With.Message.EqualTo (
+	            .With.ArgumentExceptionMessageEqualTo (
 	                "Parameter 'arg' has type 'Remotion.UnitTests.Utilities.ArgumentUtilityTests.TestEnum' "
-	                + "when type 'Remotion.UnitTests.Utilities.ArgumentUtilityTests.TestFlags' was expected.\r\nParameter name: arg"));
+	                + "when type 'Remotion.UnitTests.Utilities.ArgumentUtilityTests.TestFlags' was expected.", "arg"));
 	  }
 
 	  [Test]

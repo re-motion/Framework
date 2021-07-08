@@ -24,6 +24,7 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.TypePipe;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
@@ -196,9 +197,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       Assert.That (
           () => UnloadService.UnloadVirtualEndPoint (TestableClientTransaction, objectEndPointID),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "The given end point ID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid/"
-                  + "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' does not denote a virtual end-point.\r\nParameter name: endPointID"));
+                  + "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' does not denote a virtual end-point.", "endPointID"));
     }
 
     [Test]
@@ -685,9 +686,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       Assert.That (
           () => UnloadService.UnloadVirtualEndPointAndItemData (TestableClientTransaction, objectEndPointID),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "The given end point ID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid/"
-                  + "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' does not denote a virtual end-point.\r\nParameter name: endPointID"));
+                  + "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' does not denote a virtual end-point.", "endPointID"));
     }
 
     [Test]
@@ -698,9 +699,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       Assert.That (
           () => UnloadService.UnloadVirtualEndPointAndItemData (TestableClientTransaction, endPointID),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "The given end point ID 'Client|1627ade8-125f-4819-8e33-ce567c42b00c|System.Guid/' denotes an anonymous end-point, which cannot be unloaded.\r\n"
-                  + "Parameter name: endPointID"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "The given end point ID 'Client|1627ade8-125f-4819-8e33-ce567c42b00c|System.Guid/' denotes an anonymous end-point, which cannot be unloaded.",
+                 "endPointID"));
     }
 
     [Test]
@@ -881,9 +882,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       Assert.That (
           () => UnloadService.TryUnloadVirtualEndPointAndItemData (TestableClientTransaction, objectEndPointID),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "The given end point ID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid/"
-                  + "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' does not denote a virtual end-point.\r\nParameter name: endPointID"));
+                  + "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' does not denote a virtual end-point.", "endPointID"));
     }
 
     [Test]

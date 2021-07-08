@@ -20,6 +20,7 @@ using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Infrastructure.Enlistment;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime;
 using Remotion.Data.UnitTests.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
@@ -94,7 +95,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
 
       Assert.That (
           () => _context.RegisterObject (objectWithWrongID),
-          Throws.ArgumentException.With.Message.EqualTo ("The given DomainObject must have ID '" + _objectID + "'.\r\nParameter name: domainObject"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo ("The given DomainObject must have ID '" + _objectID + "'.", "domainObject"));
 
       _dataManagerMock.AssertWasNotCalled (mock => mock.RegisterDataContainer (Arg<DataContainer>.Is.Anything));
     }

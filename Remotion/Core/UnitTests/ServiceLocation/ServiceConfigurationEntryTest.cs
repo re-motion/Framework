@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.ServiceLocation;
 using Remotion.UnitTests.ServiceLocation.TestDomain;
 
@@ -72,8 +73,8 @@ namespace Remotion.UnitTests.ServiceLocation
 
       Assert.That (
           () => new ServiceConfigurationEntry (typeof (ITestSingletonConcreteImplementationAttributeType), implementationInfo),
-          Throws.ArgumentException.With.Message.EqualTo (
-              "The implementation type 'System.Object' does not implement the service type.\r\nParameter name: implementationInfos"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+              "The implementation type 'System.Object' does not implement the service type.", "implementationInfos"));
     }
 
     [Test]

@@ -21,6 +21,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Development.UnitTesting.Reflection;
 
 #nullable enable
@@ -67,7 +68,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
       Assert.That (
           () => NormalizingMemberInfoFromExpressionUtility.GetMember (() => 1),
           Throws.ArgumentException
-              .With.Message.EqualTo ("Must be a MemberExpression, MethodCallExpression or NewExpression.\r\nParameter name: expression"));
+              .With.ArgumentExceptionMessageEqualTo ("Must be a MemberExpression, MethodCallExpression or NewExpression.", "expression"));
     }
 
     [Test]
@@ -112,7 +113,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
       Assert.That (
           () => NormalizingMemberInfoFromExpressionUtility.GetMember ((DomainType obj) => 1),
           Throws.ArgumentException
-              .With.Message.EqualTo ("Must be a MemberExpression, MethodCallExpression or NewExpression.\r\nParameter name: expression"));
+              .With.ArgumentExceptionMessageEqualTo ("Must be a MemberExpression, MethodCallExpression or NewExpression.", "expression"));
     }
 
     [Test]
@@ -130,8 +131,8 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
       Assert.That (
           () => NormalizingMemberInfoFromExpressionUtility.GetField (() => DomainType.StaticMethod ()),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Must be a MemberExpression.\r\nParameter name: expression"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Must be a MemberExpression.", "expression"));
     }
 
     [Test]
@@ -140,8 +141,8 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
       Assert.That (
           () => NormalizingMemberInfoFromExpressionUtility.GetField (() => DomainType.StaticProperty),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Must hold a field access expression.\r\nParameter name: expression"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Must hold a field access expression.", "expression"));
     }
 
     [Test]
@@ -159,8 +160,8 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
       Assert.That (
           () => NormalizingMemberInfoFromExpressionUtility.GetField ((DomainType obj) => obj.InstanceMethod()),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Must be a MemberExpression.\r\nParameter name: expression"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Must be a MemberExpression.", "expression"));
     }
 
     [Test]
@@ -169,8 +170,8 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
       Assert.That (
           () => NormalizingMemberInfoFromExpressionUtility.GetField ((DomainType obj) => obj.InstanceProperty),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Must hold a field access expression.\r\nParameter name: expression"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Must hold a field access expression.", "expression"));
     }
 
     [Test]
@@ -188,8 +189,8 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
       Assert.That (
           () => NormalizingMemberInfoFromExpressionUtility.GetConstructor (() => DomainType.StaticField),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Must be a NewExpression.\r\nParameter name: expression"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Must be a NewExpression.", "expression"));
     }
 
     [Test]
@@ -234,8 +235,8 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
       Assert.That (
           () => NormalizingMemberInfoFromExpressionUtility.GetMethod (() => DomainType.StaticProperty),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Must be a MethodCallExpression.\r\nParameter name: expression"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Must be a MethodCallExpression.", "expression"));
     }
 
     [Test]
@@ -308,8 +309,8 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
       Assert.That (
           () => NormalizingMemberInfoFromExpressionUtility.GetMethod ((DomainType obj) => obj.InstanceProperty),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Must be a MethodCallExpression.\r\nParameter name: expression"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Must be a MethodCallExpression.", "expression"));
     }
 
     [Test]
@@ -439,8 +440,8 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
       Assert.That (
           () => NormalizingMemberInfoFromExpressionUtility.GetGenericMethodDefinition (() => DomainType.StaticVoidMethod ()),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Must hold a generic method access expression.\r\nParameter name: expression"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Must hold a generic method access expression.", "expression"));
     }
 
     [Test]
@@ -458,8 +459,8 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
       Assert.That (
           () => NormalizingMemberInfoFromExpressionUtility.GetGenericMethodDefinition (() => DomainType.StaticProperty),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Must be a MethodCallExpression.\r\nParameter name: expression"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Must be a MethodCallExpression.", "expression"));
     }
 
     [Test]
@@ -468,8 +469,8 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
       Assert.That (
           () => NormalizingMemberInfoFromExpressionUtility.GetGenericMethodDefinition (() => DomainType.StaticMethod ()),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Must hold a generic method access expression.\r\nParameter name: expression"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Must hold a generic method access expression.", "expression"));
     }
 
     [Test]
@@ -514,8 +515,8 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
       Assert.That (
           () => NormalizingMemberInfoFromExpressionUtility.GetGenericMethodDefinition ((DomainType obj) => obj.InstanceProperty),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Must be a MethodCallExpression.\r\nParameter name: expression"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Must be a MethodCallExpression.", "expression"));
     }
 
     [Test]
@@ -524,8 +525,8 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
       Assert.That (
           () => NormalizingMemberInfoFromExpressionUtility.GetGenericMethodDefinition ((DomainType obj) => obj.InstanceVoidMethod ()),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Must hold a generic method access expression.\r\nParameter name: expression"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Must hold a generic method access expression.", "expression"));
     }
 
     [Test]
@@ -534,8 +535,8 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
       Assert.That (
           () => NormalizingMemberInfoFromExpressionUtility.GetGenericMethodDefinition ((DomainType obj) => obj.InstanceMethod ()),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Must hold a generic method access expression.\r\nParameter name: expression"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Must hold a generic method access expression.", "expression"));
     }
 
     [Test]
@@ -553,8 +554,8 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
       Assert.That (
           () => NormalizingMemberInfoFromExpressionUtility.GetProperty (() => DomainType.StaticMethod()),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Must be a MemberExpression.\r\nParameter name: expression"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Must be a MemberExpression.", "expression"));
     }
 
     [Test]
@@ -563,8 +564,8 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
       Assert.That (
           () => NormalizingMemberInfoFromExpressionUtility.GetProperty (() => DomainType.StaticField),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Must hold a property access expression.\r\nParameter name: expression"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Must hold a property access expression.", "expression"));
     }
 
     [Test]
@@ -582,8 +583,8 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
       Assert.That (
           () => NormalizingMemberInfoFromExpressionUtility.GetProperty ((DomainType obj) => obj.InstanceMethod()),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Must be a MemberExpression.\r\nParameter name: expression"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Must be a MemberExpression.", "expression"));
     }
 
     [Test]
@@ -592,8 +593,8 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
       Assert.That (
           () => NormalizingMemberInfoFromExpressionUtility.GetProperty ((DomainType obj) => obj.InstanceField),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Must hold a property access expression.\r\nParameter name: expression"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Must hold a property access expression.", "expression"));
     }
 
     [Test]

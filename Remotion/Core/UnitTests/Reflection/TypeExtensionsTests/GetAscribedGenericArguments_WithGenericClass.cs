@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Reflection;
 
 namespace Remotion.UnitTests.Reflection.TypeExtensionsTests
@@ -109,10 +110,10 @@ namespace Remotion.UnitTests.Reflection.TypeExtensionsTests
       Assert.That (
           () => TypeExtensions.GetAscribedGenericArguments (typeof (BaseType), typeof (GenericType<>)),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "Parameter 'type' has type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.BaseType' "
-                  + "when type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.GenericType`1[T]' was expected."
-                  + "\r\nParameter name: type"));
+                  + "when type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.GenericType`1[T]' was expected.",
+                  "type"));
     }
   }
 }

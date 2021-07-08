@@ -63,8 +63,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       
       if (map[endPoint.ID] != endPoint)
       {
-        var message = string.Format ("End-point '{0}' is not part of this map.\r\nParameter name: endPoint", endPoint.ID);
-        throw new ArgumentException (message);
+        var message = string.Format ("End-point '{0}' is not part of this map.", endPoint.ID);
+        throw new ArgumentException (message, "endPoint");
       }
 
       var realObjectEndPoint = endPoint as IRealObjectEndPoint;

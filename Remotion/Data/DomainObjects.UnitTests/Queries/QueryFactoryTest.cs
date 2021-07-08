@@ -23,6 +23,7 @@ using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Linq;
 using Remotion.Linq.Parsing.Structure;
 using Remotion.ServiceLocation;
@@ -182,11 +183,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       Assert.That (
           () => QueryFactory.CreateQuery<int> ("<dynamic query>", queryable),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "The given queryable must stem from an instance of DomainObjectQueryable. Instead, "
                   +
                   "it is of type 'EnumerableQuery`1', with a query provider of type 'EnumerableQuery`1'. Be sure to use QueryFactory.CreateLinqQuery to "
-                  + "create the queryable instance, and only use standard query methods on it.\r\nParameter name: queryable"));
+                  + "create the queryable instance, and only use standard query methods on it.", "queryable"));
     }
 
     [Test]

@@ -17,6 +17,7 @@
 
 using System;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Utilities;
 
 #nullable enable
@@ -125,7 +126,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
       Assert.That (
           () => ArgumentUtility.CheckType<string> ("arg", 1),
           Throws.ArgumentException
-              .With.Message.EqualTo ("Parameter 'arg' has type 'System.Int32' when type 'System.String' was expected.\r\nParameter name: arg"));
+              .With.ArgumentExceptionMessageEqualTo ("Parameter 'arg' has type 'System.Int32' when type 'System.String' was expected.", "arg"));
     }
 
     [Test]
@@ -134,7 +135,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
       Assert.That (
           () => ArgumentUtility.CheckType<long> ("arg", 1),
           Throws.ArgumentException
-              .With.Message.EqualTo ("Parameter 'arg' has type 'System.Int32' when type 'System.Int64' was expected.\r\nParameter name: arg"));
+              .With.ArgumentExceptionMessageEqualTo ("Parameter 'arg' has type 'System.Int32' when type 'System.Int64' was expected.", "arg"));
     }
 
     [Test]
@@ -143,7 +144,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
       Assert.That (
           () => ArgumentUtility.CheckType<int> ("arg", "test"),
           Throws.ArgumentException
-              .With.Message.EqualTo ("Parameter 'arg' has type 'System.String' when type 'System.Int32' was expected.\r\nParameter name: arg"));
+              .With.ArgumentExceptionMessageEqualTo ("Parameter 'arg' has type 'System.String' when type 'System.Int32' was expected.", "arg"));
     }
   }
 }

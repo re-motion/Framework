@@ -19,6 +19,7 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Rhino.Mocks;
@@ -40,14 +41,14 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       Assert.That (
           () => new DomainObjectHandle<OrderItem> (DomainObjectIDs.Order1), 
-          Throws.ArgumentException.With.Message.EqualTo (
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
               "The class type of ObjectID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' doesn't match the handle type "
-              + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem'.\r\nParameter name: objectID"));
+              + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem'.", "objectID"));
       Assert.That (
           () => new DomainObjectHandle<DomainObject> (DomainObjectIDs.Order1),
-          Throws.ArgumentException.With.Message.EqualTo (
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
               "The class type of ObjectID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' doesn't match the handle type "
-              + "'Remotion.Data.DomainObjects.DomainObject'.\r\nParameter name: objectID"));
+              + "'Remotion.Data.DomainObjects.DomainObject'.", "objectID"));
     }
 
     [Test]

@@ -17,6 +17,7 @@
 
 using System;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Utilities;
 
 #nullable enable
@@ -32,7 +33,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
       Assert.That (
           () => ArgumentUtility.CheckType<string> ("arg", 13),
           Throws.ArgumentException
-              .With.Message.EqualTo ("Parameter 'arg' has type 'System.Int32' when type 'System.String' was expected.\r\nParameter name: arg"));
+              .With.ArgumentExceptionMessageEqualTo ("Parameter 'arg' has type 'System.Int32' when type 'System.String' was expected.", "arg"));
     }
 
     [Test]

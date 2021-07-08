@@ -18,6 +18,7 @@ using System;
 using System.Runtime.Serialization;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Mixins.Context.Serialization;
 
 namespace Remotion.Mixins.UnitTests.Core.Context.Serialization
@@ -69,8 +70,8 @@ namespace Remotion.Mixins.UnitTests.Core.Context.Serialization
       Assert.That (
           () => new AttributeMixinContextOriginDeserializer (new[] { "x" }),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Expected an array with 3 elements.\r\nParameter name: values"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Expected an array with 3 elements.", "values"));
     }
 
     [Test]

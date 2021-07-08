@@ -17,6 +17,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 {
@@ -50,10 +51,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     {
       Assert.That (
           () => new EntityNameDefinition ("", "entity"),
-          Throws.ArgumentException.And.Message.EqualTo ("Parameter 'schemaName' cannot be empty.\r\nParameter name: schemaName"));
+          Throws.ArgumentException.And.ArgumentExceptionMessageEqualTo ("Parameter 'schemaName' cannot be empty.", "schemaName"));
       Assert.That (
           () => new EntityNameDefinition ("schema", ""),
-          Throws.ArgumentException.And.Message.EqualTo ("Parameter 'entityName' cannot be empty.\r\nParameter name: entityName"));
+          Throws.ArgumentException.And.ArgumentExceptionMessageEqualTo ("Parameter 'entityName' cannot be empty.", "entityName"));
     }
 
     [Test]

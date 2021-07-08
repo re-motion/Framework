@@ -28,6 +28,7 @@ using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.DomainObjects.Validation;
 using Remotion.Data.UnitTests.UnitTesting;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
@@ -122,8 +123,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
           _transactionEventSinkStub,
           _dataManagerFactoryStub),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "End point ID must refer to an end point with cardinality 'Many'.\r\nParameter name: id"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "End point ID must refer to an end point with cardinality 'Many'.", "id"));
     }
 
     [Test]
@@ -140,8 +141,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
           _transactionEventSinkStub,
           _dataManagerFactoryStub),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "End point ID must not refer to an anonymous end point.\r\nParameter name: id"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "End point ID must not refer to an anonymous end point.", "id"));
     }
 
     [Test]
@@ -856,10 +857,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That (
           () => _endPoint.SetDataFromSubTransaction (source),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "Cannot set this end point's value from "
                   + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems'; the end points "
-                  + "do not have the same end point definition.\r\nParameter name: source"));
+                  + "do not have the same end point definition.", "source"));
     }
 
     [Test]

@@ -21,6 +21,7 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Mixins;
 using Remotion.Reflection;
 
@@ -241,7 +242,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       Assert.That (
           () => _orderCache.ResolvePropertyAccessorData ((Order o) => o.OrderNumber + 5),
           Throws.ArgumentException
-              .With.Message.EqualTo ("The expression must identify a property.\r\nParameter name: propertyAccessExpression"));
+              .With.ArgumentExceptionMessageEqualTo ("The expression must identify a property.", "propertyAccessExpression"));
     }
 
     [Test]
@@ -250,7 +251,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       Assert.That (
           () => _orderCache.ResolvePropertyAccessorData ((Order o) => o.CtorCalled),
           Throws.ArgumentException
-              .With.Message.EqualTo ("The expression must identify a property.\r\nParameter name: propertyAccessExpression"));
+              .With.ArgumentExceptionMessageEqualTo ("The expression must identify a property.", "propertyAccessExpression"));
     }
 
     [Test]

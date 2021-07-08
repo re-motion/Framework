@@ -19,6 +19,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.Serialization;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Reflection.CodeGeneration;
 using Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests.TestDomain;
 
@@ -46,9 +47,9 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
       Assert.That (
           () => new MethodWrapperEmitter (_fakeILGenerator, methodInfo, parameterTypes, returnType),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "The wrapperReturnType ('String') cannot be assigned from the return type ('SimpleReferenceType') of the wrappedMethod.\r\n"
-                  + "Parameter name: wrapperReturnType"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "The wrapperReturnType ('String') cannot be assigned from the return type ('SimpleReferenceType') of the wrappedMethod.",
+                  "wrapperReturnType"));
     }
 
     [Test]
@@ -62,9 +63,9 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
       Assert.That (
           () => new MethodWrapperEmitter (_fakeILGenerator, methodInfo, parameterTypes, returnType),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "The wrapperParameterType #1 ('String') cannot be assigned to the type ('SimpleReferenceType') of parameter 'value' of the wrappedMethod.\r\n"
-                  + "Parameter name: wrapperParameterTypes"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "The wrapperParameterType #1 ('String') cannot be assigned to the type ('SimpleReferenceType') of parameter 'value' of the wrappedMethod.",
+                  "wrapperParameterTypes"));
     }
 
     [Test]
@@ -78,9 +79,9 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
       Assert.That (
           () => new MethodWrapperEmitter (_fakeILGenerator, methodInfo, parameterTypes, returnType),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "The wrapperParameterType #0 ('String') cannot be assigned to the declaring type ('ClassWithMethods') of the wrappedMethod.\r\n"
-                  + "Parameter name: wrapperParameterTypes"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "The wrapperParameterType #0 ('String') cannot be assigned to the declaring type ('ClassWithMethods') of the wrappedMethod.",
+                  "wrapperParameterTypes"));
     }
 
     [Test]
@@ -94,9 +95,9 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
       Assert.That (
           () => new MethodWrapperEmitter (_fakeILGenerator, methodInfo, parameterTypes, returnType),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "The number of elements in the wrapperParameterTypes array (3) does not match the number of parameters required for invoking the wrappedMethod (5).\r\n"
-                  + "Parameter name: wrapperParameterTypes"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "The number of elements in the wrapperParameterTypes array (3) does not match the number of parameters required for invoking the wrappedMethod (5).",
+                  "wrapperParameterTypes"));
     }
   }
 }

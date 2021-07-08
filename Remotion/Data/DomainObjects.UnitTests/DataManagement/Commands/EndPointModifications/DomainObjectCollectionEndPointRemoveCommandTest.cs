@@ -22,6 +22,7 @@ using Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.UnitTests.UnitTesting;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPointModifications
@@ -59,9 +60,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       Assert.That (
           () => new DomainObjectCollectionEndPointRemoveCommand (endPoint, _removedRelatedObject, CollectionDataMock, EndPointProviderStub, TransactionEventSinkMock),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "Modified end point is null, a NullEndPointModificationCommand is needed.\r\n"
-                  + "Parameter name: modifiedEndPoint"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Modified end point is null, a NullEndPointModificationCommand is needed.",
+                  "modifiedEndPoint"));
     }
 
     [Test]

@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain;
 using Remotion.SecurityManager.Domain.AccessControl;
@@ -666,9 +667,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
         Assert.That (
             () => orderClass.GetStateProperty ("Invalid"),
             Throws.ArgumentException
-                .With.Message.EqualTo (
-                    "A state property with the name 'Invalid' is not defined for the secureable class definition 'Remotion.SecurityManager.UnitTests.TestDomain.Order'."
-                    + "\r\nParameter name: propertyName"));
+                .With.ArgumentExceptionMessageEqualTo (
+                    "A state property with the name 'Invalid' is not defined for the secureable class definition 'Remotion.SecurityManager.UnitTests.TestDomain.Order'.",
+                    "propertyName"));
       }
     }
 

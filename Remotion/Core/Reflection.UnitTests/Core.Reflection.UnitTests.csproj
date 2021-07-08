@@ -61,6 +61,9 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\SharedSource\Development\UnitTesting\NUnit\NUnitExtensions.cs">
+      <Link>SharedSource\UnitTesting\NUnit\NUnitExtensions.cs</Link>
+    </Compile>
     <Compile Include="CodeGeneration\MethodWrapperEmitterTests\ArgumentChecks_MethodWrapperEmitterTest.cs" />
     <Compile Include="CodeGeneration\MethodWrapperEmitterTests\Common_MethodWrapperEmitterTest.cs" />
     <Compile Include="CodeGeneration\MethodWrapperEmitterTests\MethodWrapperEmitterTestBase.cs" />

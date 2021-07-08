@@ -18,6 +18,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain;
 using Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain.Search;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
 
@@ -72,8 +73,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
       Assert.That (
           () => _service.GetAllObjects (ClientTransaction.Current, typeof (object)),
           Throws.ArgumentException
-              .With.Message.EqualTo (
-                  "This service only supports queries for DomainObject types.\r\nParameter name: type"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "This service only supports queries for DomainObject types.", "type"));
     }
 
     [Test]
@@ -82,10 +83,10 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
       Assert.That (
           () => _service.GetAllObjects (ClientTransaction.Current, typeof (NonBindableDomainObject)),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "This service only supports queries for bindable DomainObject types, the " 
                   + "given type 'Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain.Search.NonBindableDomainObject' is not a bindable type. "
-                  + "Derive from BindableDomainObject or apply the BindableDomainObjectAttribute.\r\nParameter name: type"));
+                  + "Derive from BindableDomainObject or apply the BindableDomainObjectAttribute.", "type"));
     }
 
     [Test]
@@ -113,11 +114,11 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
       Assert.That (
           () => _service.Search (null, property, null),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "The property 'ReferencePropertyNotInMapping' on type "
                   + "'Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain.Search.BindableDomainObjectWithProperties, Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests' is not "
                   + "supported by the BindableDomainObjectSearchAllService: The service only supports relation properties (ie. references to other DomainObject "
-                  + "instances).\r\nParameter name: property"));
+                  + "instances).", "property"));
     }
 
     [Test]

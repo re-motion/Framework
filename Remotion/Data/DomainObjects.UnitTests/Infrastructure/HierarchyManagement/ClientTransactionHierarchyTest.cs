@@ -18,6 +18,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManagement
 {
@@ -78,8 +79,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
 
       Assert.That (
           () => _hierarchy.AppendLeafTransaction (unrelatedTransaction), 
-          Throws.ArgumentException.With.Message.EqualTo (
-              "The new LeafTransaction must have the previous LeafTransaction as its parent.\r\nParameter name: leafTransaction"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+              "The new LeafTransaction must have the previous LeafTransaction as its parent.", "leafTransaction"));
 
       Assert.That (_hierarchy.RootTransaction, Is.SameAs (_rootTransaction));
       Assert.That (_hierarchy.LeafTransaction, Is.SameAs (_rootTransaction));
@@ -207,8 +208,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
 
       Assert.That (
           () => _hierarchy.ActivateTransaction (unrelatedTransaction),
-          Throws.ArgumentException.With.Message.EqualTo (
-              "The activated transaction must be from this ClientTransactionHierarchy.\r\nParameter name: clientTransaction"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+              "The activated transaction must be from this ClientTransactionHierarchy.", "clientTransaction"));
 
       Assert.That (_hierarchy.ActiveTransaction, Is.SameAs (_rootTransaction));
     }
