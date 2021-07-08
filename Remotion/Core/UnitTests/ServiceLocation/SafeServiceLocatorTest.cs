@@ -16,7 +16,7 @@
 // 
 using System;
 using System.Collections.ObjectModel;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using Moq;
 using NUnit.Framework;
 using Remotion.Configuration.ServiceLocation;
@@ -34,14 +34,14 @@ namespace Remotion.UnitTests.ServiceLocation
     [OneTimeSetUp]
     public void OneTimeSetUp ()
     {
-      _serviceLocatorProviderBackup = (ServiceLocatorProvider) PrivateInvoke.GetNonPublicStaticField (typeof (ServiceLocator), "currentProvider");
-      PrivateInvoke.SetNonPublicStaticField (typeof (ServiceLocator), "currentProvider", null);
+      _serviceLocatorProviderBackup = (ServiceLocatorProvider) PrivateInvoke.GetNonPublicStaticField (typeof (ServiceLocator), "_currentProvider");
+      PrivateInvoke.SetNonPublicStaticField (typeof (ServiceLocator), "_currentProvider", null);
     }
 
     [OneTimeTearDown]
     public void TestFixtureTearDown ()
     {
-      PrivateInvoke.SetNonPublicStaticField (typeof (ServiceLocator), "currentProvider", _serviceLocatorProviderBackup);
+      PrivateInvoke.SetNonPublicStaticField (typeof (ServiceLocator), "_currentProvider", _serviceLocatorProviderBackup);
     }
 
     [SetUp]

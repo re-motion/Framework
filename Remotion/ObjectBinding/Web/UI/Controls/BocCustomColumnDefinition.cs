@@ -24,7 +24,7 @@ using System.Linq;
 using System.Reflection;
 using System.Web.UI;
 using JetBrains.Annotations;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using Remotion.ObjectBinding.Design;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
