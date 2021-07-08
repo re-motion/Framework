@@ -36,7 +36,7 @@
     <PackageReference Include="CoreRhinoMocks" Version="3.6.1.2" PrivateAssets="all" />
     <PackageReference Include="Remotion.Linq.EagerFetching" Version="2.2.0" />
     <PackageReference Include="Remotion.Linq.Development" Version="2.2.0" />
-    <PackageReference Include="Remotion.Linq.SqlBackend.Development" Version="2.0.1" />
+    <PackageReference Include="Remotion.Linq.SqlBackend.Development" Version="2.1.0-alpha.1" />
     <PackageReference Include="Remotion.TypePipe.Development" Version="2.0.3" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
