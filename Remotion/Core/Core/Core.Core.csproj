@@ -20,7 +20,7 @@
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.0" />
     <PackageReference Include="CommonServiceLocator" Version="1.2.0" />
-    <PackageReference Remove="Fork.JetBrains.Annotations" />
+    <PackageReference Remove="JetBrains.Annotations" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Configuration" />
