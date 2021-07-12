@@ -17,6 +17,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
 using Remotion.SecurityManager.AclTools.Expansion;
@@ -24,7 +25,6 @@ using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.SecurityManager.Domain.Metadata;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.SecurityManager.UnitTests.Domain.AccessControl;
-using Rhino.Mocks;
 
 namespace Remotion.SecurityManager.UnitTests.AclTools
 {
@@ -153,13 +153,13 @@ namespace Remotion.SecurityManager.UnitTests.AclTools
     protected List<AclExpansionEntry> GetAclExpansionEntryList (List<User> userList, List<AccessControlList> aclList, 
       bool sortedAndDistinct)
     {
-      var userFinderStub = MockRepository.GenerateStub<IAclExpanderUserFinder> ();
-      userFinderStub.Expect (mock => mock.FindUsers ()).Return (userList);
+      var userFinderStub = new Mock<IAclExpanderUserFinder>();
+      userFinderStub.Setup (mock => mock.FindUsers ()).Returns (userList).Verifiable();
 
-      var aclFinderStub = MockRepository.GenerateStub<IAclExpanderAclFinder> ();
-      aclFinderStub.Expect (mock => mock.FindAccessControlLists ()).Return (aclList);
+      var aclFinderStub = new Mock<IAclExpanderAclFinder>();
+      aclFinderStub.Setup (mock => mock.FindAccessControlLists ()).Returns (aclList).Verifiable();
 
-      var aclExpander = new AclExpander (userFinderStub, aclFinderStub);
+      var aclExpander = new AclExpander (userFinderStub.Object, aclFinderStub.Object);
       
       List<AclExpansionEntry> aclExpansionEntryList; 
 

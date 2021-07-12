@@ -16,6 +16,7 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.ObjectBinding;
@@ -23,7 +24,6 @@ using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStructure;
-using Rhino.Mocks;
 
 namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
 {
@@ -41,7 +41,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
       base.TearDown();
       BusinessObjectProvider.SetProvider (typeof (BindableDomainObjectProviderAttribute), null);
     }
-    
+
     [Test]
     public void GetDisplayName_WithGroupTypeAndPosition ()
     {
@@ -81,50 +81,50 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void SearchGroupTypes ()
     {
-      var searchServiceStub = MockRepository.GenerateStub<ISearchAvailableObjectsService>();
-      var args = MockRepository.GenerateStub<ISearchAvailableObjectsArguments>();
+      var searchServiceStub = new Mock<ISearchAvailableObjectsService>();
+      var args = new Mock<ISearchAvailableObjectsArguments>();
 
       BusinessObjectProvider.SetProvider (typeof (BindableDomainObjectProviderAttribute), null);
       BusinessObjectProvider.GetProvider<BindableDomainObjectProviderAttribute>()
-          .AddService (typeof (GroupTypePropertyTypeSearchService), searchServiceStub);
+          .AddService (typeof (GroupTypePropertyTypeSearchService), searchServiceStub.Object);
       var groupTypePositionClass = BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (GroupTypePosition));
       var groupTypeProperty = (IBusinessObjectReferenceProperty) groupTypePositionClass.GetPropertyDefinition ("GroupType");
       Assert.That (groupTypeProperty, Is.Not.Null);
 
       var groupTypePosition = CreateGroupTypePosition();
-      var expected = new[] { MockRepository.GenerateStub<IBusinessObject> () };
+      var expected = new[] { new Mock<IBusinessObject>().Object };
 
-      searchServiceStub.Stub (stub => stub.SupportsProperty (groupTypeProperty)).Return (true);
-      searchServiceStub.Stub (stub => stub.Search (groupTypePosition, groupTypeProperty, args)).Return (expected);
+      searchServiceStub.Setup (stub => stub.SupportsProperty (groupTypeProperty)).Returns (true);
+      searchServiceStub.Setup (stub => stub.Search (groupTypePosition, groupTypeProperty, args.Object)).Returns (expected);
 
       Assert.That (groupTypeProperty.SupportsSearchAvailableObjects, Is.True);
 
-      IBusinessObject[] actual = groupTypeProperty.SearchAvailableObjects (groupTypePosition, args);
+      IBusinessObject[] actual = groupTypeProperty.SearchAvailableObjects (groupTypePosition, args.Object);
       Assert.That (actual, Is.SameAs (expected));
     }
 
     [Test]
     public void SearchPositions ()
     {
-      var searchServiceStub = MockRepository.GenerateStub<ISearchAvailableObjectsService>();
-      var args = MockRepository.GenerateStub<ISearchAvailableObjectsArguments>();
+      var searchServiceStub = new Mock<ISearchAvailableObjectsService>();
+      var args = new Mock<ISearchAvailableObjectsArguments>();
 
       BusinessObjectProvider.SetProvider (typeof (BindableDomainObjectProviderAttribute), null);
       BusinessObjectProvider.GetProvider<BindableDomainObjectProviderAttribute>()
-          .AddService (typeof (PositionPropertyTypeSearchService), searchServiceStub);
+          .AddService (typeof (PositionPropertyTypeSearchService), searchServiceStub.Object);
       var groupTypePositionClass = BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (GroupTypePosition));
       var positionProperty = (IBusinessObjectReferenceProperty) groupTypePositionClass.GetPropertyDefinition ("Position");
       Assert.That (positionProperty, Is.Not.Null);
 
       var groupTypePosition = CreateGroupTypePosition();
-      var expected = new[] { MockRepository.GenerateStub<IBusinessObject> () };
+      var expected = new[] { new Mock<IBusinessObject>().Object };
 
-      searchServiceStub.Stub (stub => stub.SupportsProperty (positionProperty)).Return (true);
-      searchServiceStub.Stub (stub => stub.Search (groupTypePosition, positionProperty, args)).Return (expected);
+      searchServiceStub.Setup (stub => stub.SupportsProperty (positionProperty)).Returns (true);
+      searchServiceStub.Setup (stub => stub.Search (groupTypePosition, positionProperty, args.Object)).Returns (expected);
 
       Assert.That (positionProperty.SupportsSearchAvailableObjects, Is.True);
 
-      IBusinessObject[] actual = positionProperty.SearchAvailableObjects (groupTypePosition, args);
+      IBusinessObject[] actual = positionProperty.SearchAvailableObjects (groupTypePosition, args.Object);
       Assert.That (actual, Is.SameAs (expected));
     }
 
