@@ -5,6 +5,7 @@
   </PropertyGroup>
   <Import Project="..\..\Remotion\Shared.build.props" />
   <PropertyGroup>
+    <UseWebForms>true</UseWebForms>
     <AssemblyTitle>re-motion Security Manager Web Interface</AssemblyTitle>
     <AssemblyName>Remotion.SecurityManager.Clients.Web</AssemblyName>
     <Description>Provides the web user interface for administering the organizational structure and access-control domain of the re-motion Security Manager.</Description>
@@ -30,11 +31,6 @@
     <ProjectReference Include="..\..\Remotion\Web\Core\Web.Core.csproj" />
     <ProjectReference Include="..\..\Remotion\Web\Security\Web.Security.csproj" />
     <ProjectReference Include="..\Core\SecurityManager.Core.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Services" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />

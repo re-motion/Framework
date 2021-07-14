@@ -5,6 +5,8 @@
   </PropertyGroup>
   <Import Project="..\..\Shared.build.props" />
   <PropertyGroup>
+    <UseWebForms>true</UseWebForms>
+    <UseWindowsForms>true</UseWindowsForms>
     <AssemblyTitle>remotion Web Controls</AssemblyTitle>
     <AssemblyName>Remotion.Web</AssemblyName>
     <Description>Common controls for web applications.</Description>
@@ -24,11 +26,6 @@
     <ProjectReference Include="..\..\Globalization\Core\Globalization.Core.csproj" />
     <ProjectReference Include="..\..\Security\Core\Security.Core.csproj" />
     <ProjectReference Include="..\Contracts.DiagnosticMetadata\Web.Contracts.DiagnosticMetadata.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Design" />
-    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <Import Project="$(MSBuildProjectDirectory)\..\..\..\Build\NuSpec\Web.Build.targets" />
 </Project>

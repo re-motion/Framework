@@ -5,6 +5,7 @@
   </PropertyGroup>
   <Import Project="..\..\Shared.build.props" />
   <PropertyGroup>
+    <UseWebForms>true</UseWebForms>
     <AssemblyTitle>Remotion WebTesting Framework TestSite Infrastructure</AssemblyTitle>
     <AssemblyName>Remotion.Web.Development.WebTesting.TestSite.Infrastructure</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
@@ -25,8 +26,5 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Text.Json" Version="5.0.2" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Web" />
   </ItemGroup>
 </Project>

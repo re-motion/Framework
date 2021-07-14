@@ -5,6 +5,10 @@
   </PropertyGroup>
   <Import Project="..\..\Shared.build.props" />
   <PropertyGroup>
+    <TargetFrameworks>net461;net5.0-windows</TargetFrameworks>
+    <UseWebForms>true</UseWebForms>
+    <UseWindowsForms>true</UseWindowsForms>
+    <UseWpf>true</UseWpf>
     <AssemblyTitle>re-motion Web Testing Framework</AssemblyTitle>
     <AssemblyName>Remotion.Web.Development.WebTesting</AssemblyName>
     <Description>Provides a basic infrastructure for performing web tests based on Selenium.</Description>
@@ -25,13 +29,5 @@
     <PackageReference Include="log4net" Version="2.0.12" />
     <PackageReference Include="Selenium.Support" Version="3.141.0" />
     <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="UIAutomationClient" />
-    <Reference Include="UIAutomationTypes" />
-    <Reference Include="WindowsBase" />
   </ItemGroup>
 </Project>

@@ -1,10 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <ProjectType>WebLibrary</ProjectType>
+    <ProjectType>Library</ProjectType>
   </PropertyGroup>
   <Import Project="..\..\Shared.build.props" />
   <PropertyGroup>
+    <TargetFrameworks>net461;net5.0-windows</TargetFrameworks>
+    <UseWebForms>true</UseWebForms>
     <AssemblyTitle>re-motion ObjectBinding Web Controls</AssemblyTitle>
     <AssemblyName>Remotion.ObjectBinding.Web</AssemblyName>
     <Description>Web controls for 2-way databinding with business objects.</Description>

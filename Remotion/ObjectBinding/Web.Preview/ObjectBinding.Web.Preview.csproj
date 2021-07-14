@@ -1,10 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <ProjectType>WebLibrary</ProjectType>
+    <ProjectType>Library</ProjectType>
   </PropertyGroup>
   <Import Project="..\..\Shared.build.props" />
   <PropertyGroup>
+    <TargetFrameworks>net461;net5.0-windows</TargetFrameworks>
+    <UseWebForms>true</UseWebForms>
     <AssemblyTitle>re-motion ObjectBinding Web Controls (Preview) Library</AssemblyTitle>
     <AssemblyName>Remotion.ObjectBinding.Web.Preview</AssemblyName>
     <Description>Contains pre-release versions of new web controls for 2-way databinding with business objects.</Description>
@@ -17,8 +19,5 @@
     <ProjectReference Include="..\..\Web\Core\Web.Core.csproj" />
     <ProjectReference Include="..\Core\ObjectBinding.Core.csproj" />
     <ProjectReference Include="..\Web\ObjectBinding.Web.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Web" />
   </ItemGroup>
 </Project>

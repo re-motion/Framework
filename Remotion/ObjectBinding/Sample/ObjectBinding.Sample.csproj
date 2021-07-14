@@ -1,10 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <ProjectType>WebLibrary</ProjectType>
+    <ProjectType>Library</ProjectType>
   </PropertyGroup>
   <Import Project="..\..\Shared.build.props" />
   <PropertyGroup>
+    <TargetFrameworks>net461;net5.0-windows</TargetFrameworks>
+    <UseWebForms>true</UseWebForms>
     <AssemblyName>Remotion.ObjectBinding.Sample</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
     <Nullable>disable</Nullable>
@@ -19,8 +21,5 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Remotion.TypePipe" Version="3.0.0-x.9" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Web" />
   </ItemGroup>
 </Project>

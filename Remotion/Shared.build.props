@@ -35,7 +35,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(ProjectType)' == 'WebTestingLibrary'">
-    <TargetFrameworks>net461</TargetFrameworks>
+    <TargetFrameworks>net461;net5.0-windows</TargetFrameworks>
     <SignAssembly>False</SignAssembly>
     <Nullable>disable</Nullable>
   </PropertyGroup>
@@ -63,6 +63,7 @@
     <DefineConstants>$(DefineConstants);</DefineConstants>
     <OutputPath>bin</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <UseWebForms>true</UseWebForms>
   </PropertyGroup>
 
   <ItemGroup>
@@ -86,21 +87,6 @@
   <ItemGroup Condition="'$(ProjectType)' == 'Web'" >
     <ProjectCapability Include="DotNetCoreWeb" />
     <ProjectCapability Include="SupportsSystemWeb" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Services" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(ProjectType)' == 'WebLibrary' And '$(TargetFramework)' == 'net5.0-windows'">
-    <PackageReference Include="CoreForms.Web" Version="5.0.0-alpha-001" />
-    <PackageReference Include="CoreForms.Web.Extensions" Version="5.0.0-alpha-001" />
-    <PackageReference Include="CoreForms.Web.Services" Version="5.0.0-alpha-001" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(ProjectType)' == 'WebLibrary' And '$(TargetFramework)' != 'net5.0-windows'">
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Services" />
   </ItemGroup>
 
   <PropertyGroup>
@@ -118,4 +104,21 @@
     <PackageVersion Condition="'$(AssemblyNuGetVersion)' == ''">$(_version)-x.9</PackageVersion>
     <PackageVersion Condition="'$(AssemblyNuGetVersion)' != ''">$(AssemblyNuGetVersion)</PackageVersion>
   </PropertyGroup>
+
+  <Target Name="AdaptUseWebForms" BeforeTargets="ResolveAssemblyReferences" Condition="'$(UseWebForms)' == 'true'">
+
+    <ItemGroup Condition="'$(TargetFramework)' == 'net5.0-windows'">
+      <PackageReference Include="CoreForms.Web" Version="5.0.0-alpha-001" />
+      <PackageReference Include="CoreForms.Web.Extensions" Version="5.0.0-alpha-001" />
+      <PackageReference Include="CoreForms.Web.Services" Version="5.0.0-alpha-001" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(TargetFramework)' != 'net5.0-windows'">
+      <Reference Include="System.Web" />
+      <Reference Include="System.Web.Extensions" />
+      <Reference Include="System.Web.Services" />
+    </ItemGroup>
+
+  </Target>
+
 </Project>
