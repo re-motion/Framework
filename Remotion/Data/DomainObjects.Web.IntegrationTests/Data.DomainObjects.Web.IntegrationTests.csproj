@@ -5,6 +5,7 @@
   </PropertyGroup>
   <Import Project="..\..\Shared.build.props" />
   <PropertyGroup>
+    <UseWebForms>true</UseWebForms>
     <AssemblyTitle>Integration Tests for Remotion DomainObjects Web Library</AssemblyTitle>
     <AssemblyName>Remotion.Data.DomainObjects.Web.IntegrationTests</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
@@ -26,6 +27,5 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Transactions" />
-    <Reference Include="System.Web" />
   </ItemGroup>
 </Project>

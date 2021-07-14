@@ -5,6 +5,7 @@
   </PropertyGroup>
   <Import Project="..\..\Shared.build.props" />
   <PropertyGroup>
+    <UseWebForms>true</UseWebForms>
     <AssemblyTitle>Remotion BusinessObject Web Library Unit Tests</AssemblyTitle>
     <AssemblyName>Remotion.ObjectBinding.Web.UnitTests</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
@@ -22,8 +23,5 @@
     <ProjectReference Include="..\Core\ObjectBinding.Core.csproj" />
     <ProjectReference Include="..\Web.Contracts.DiagnosticMetadata\ObjectBinding.Web.Contracts.DiagnosticMetadata.csproj" />
     <ProjectReference Include="..\Web\ObjectBinding.Web.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Web" />
   </ItemGroup>
 </Project>

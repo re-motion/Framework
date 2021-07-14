@@ -5,6 +5,7 @@
   </PropertyGroup>
   <Import Project="..\..\Shared.build.props" />
   <PropertyGroup>
+    <UseWindowsForms>true</UseWindowsForms>
     <AssemblyTitle>Remotion BusinessObject Library Unit Tests</AssemblyTitle>
     <AssemblyName>Remotion.ObjectBinding.UnitTests</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>

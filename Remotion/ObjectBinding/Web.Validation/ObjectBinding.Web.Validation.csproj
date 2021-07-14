@@ -5,7 +5,6 @@
   </PropertyGroup>
   <Import Project="..\..\Shared.build.props" />
   <PropertyGroup>
-    <TargetFrameworks>net461;net5.0-windows</TargetFrameworks>
     <UseWebForms>true</UseWebForms>
     <AssemblyTitle>re-motion Validation Support for ObjectBinding Web Controls</AssemblyTitle>
     <AssemblyName>Remotion.ObjectBinding.Web.Validation</AssemblyName>

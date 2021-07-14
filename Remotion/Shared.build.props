@@ -21,7 +21,7 @@
     <AllowedOutputExtensionsInPackageBuildOutputFolder Condition="'$(IncludeSymbols)' != 'True'">$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
     <PackageTags>re-motion</PackageTags>
     <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
-    <DefineConstants Condition="'$(TargetFramework)' == 'net5.0'">$(DefineConstants);NO_PEVERIFY</DefineConstants>
+    <DefineConstants Condition="'$(TargetFramework)' == 'net5.0-windows'">$(DefineConstants);NO_PEVERIFY</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(ProjectType)' == 'Library' Or '$(ProjectType)' == 'WebTestingLibrary' Or '$(ProjectType)' == 'WebLibrary'">
@@ -29,19 +29,17 @@
     <NoWarn>1591;SYSLIB0011</NoWarn>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <IsPackable>True</IsPackable>
-    <TargetFrameworks>net461;net5.0</TargetFrameworks>
+    <TargetFrameworks>net461;net5.0-windows</TargetFrameworks>
     <DefineConstants>$(DefineConstants);</DefineConstants>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(ProjectType)' == 'WebTestingLibrary'">
-    <TargetFrameworks>net461;net5.0-windows</TargetFrameworks>
     <SignAssembly>False</SignAssembly>
     <Nullable>disable</Nullable>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(ProjectType)' == 'WebLibrary'">
-    <TargetFrameworks>net461;net5.0-windows</TargetFrameworks>
     <Nullable>disable</Nullable>
   </PropertyGroup>
 
@@ -50,7 +48,7 @@
     <NoWarn>0067;0649;0169</NoWarn>
     <GenerateDocumentationFile>False</GenerateDocumentationFile>
     <IsPackable>False</IsPackable>
-    <TargetFrameworks>net461</TargetFrameworks>
+    <TargetFrameworks>net461;net5.0-windows</TargetFrameworks>
     <DefineConstants>$(DefineConstants);</DefineConstants>
   </PropertyGroup>
 

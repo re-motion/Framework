@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
+#if !NO_PEVERIFY
+
 using System;
 using System.IO;
 using NUnit.Framework;
@@ -84,3 +86,4 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
     }
   }
 }
+#endif

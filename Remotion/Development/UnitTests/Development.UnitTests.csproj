@@ -5,6 +5,7 @@
   </PropertyGroup>
   <Import Project="..\..\Shared.build.props" />
   <PropertyGroup>
+    <UseWebForms>true</UseWebForms>
     <AssemblyTitle>Remotion Development Support Library Unit Tests</AssemblyTitle>
     <AssemblyName>Remotion.Development.UnitTests</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
@@ -24,8 +25,5 @@
     <ProjectReference Include="..\Data\Development.Data.csproj" />
     <ProjectReference Include="..\RhinoMocks\Development.RhinoMocks.csproj" />
     <ProjectReference Include="..\Web\Development.Web.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Web" />
   </ItemGroup>
 </Project>
