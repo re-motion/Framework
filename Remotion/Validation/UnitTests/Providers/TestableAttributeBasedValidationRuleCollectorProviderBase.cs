@@ -82,59 +82,127 @@ namespace Remotion.Validation.UnitTests.Providers
       var involvedTypes = types.ToArray();
       foreach (var type in involvedTypes)
       {
+        var properties = type.GetProperties (BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+        _validationPropertyRuleReflectorMocks[type].Setup (stub => stub.ValidatedProperty).Returns (PropertyInfoAdapter.Create (properties.First()));
+
+        var sequence1 = new MockSequence();
+        var sequence2 = new MockSequence();
+        var sequence3 = new MockSequence();
+        var sequence4 = new MockSequence();
+        var sequence5 = new MockSequence();
         foreach (var property in type.GetProperties (BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly))
         {
-          _validationPropertyRuleReflectorMocks[type].Setup (stub => stub.ValidatedProperty).Returns (PropertyInfoAdapter.Create (property));
-
           if (property.Name == "Position")
           {
-            _validationPropertyRuleReflectorMocks[type].Setup (mock => mock.GetValidatedPropertyFunc (typeof (Employee)))
+            _validationPropertyRuleReflectorMocks[type]
+                .InSequence (sequence1)
+                .Setup (mock => mock.GetValidatedPropertyFunc (typeof (Employee)))
                 .Returns (e => ((Employee) e).Position)
                 .Verifiable();
-            _validationPropertyRuleReflectorMocks[type].Setup (mock => mock.GetRemovablePropertyValidators ()).Returns (new[] { _propertyValidatorStub1 }).Verifiable();
-            _validationPropertyRuleReflectorMocks[type].Setup (mock => mock.GetNonRemovablePropertyValidators())
+            _validationPropertyRuleReflectorMocks[type]
+                .InSequence (sequence2)
+                .Setup (mock => mock.GetRemovablePropertyValidators ())
+                .Returns (new[] { _propertyValidatorStub1 })
+                .Verifiable();
+            _validationPropertyRuleReflectorMocks[type]
+                .InSequence (sequence3)
+                .Setup (mock => mock.GetNonRemovablePropertyValidators())
                 .Returns (new[] { _propertyValidatorStub2 })
                 .Verifiable();
-            _validationPropertyRuleReflectorMocks[type].Setup (mock => mock.GetRemovingValidatorRegistrations ()).Returns (new RemovingValidatorRegistration[0]).Verifiable();
-            _validationPropertyRuleReflectorMocks[type].Setup (mock => mock.GetMetaValidationRules ()).Returns (new IPropertyMetaValidationRule[0]).Verifiable();
+            _validationPropertyRuleReflectorMocks[type]
+                .InSequence (sequence4)
+                .Setup (mock => mock.GetRemovingValidatorRegistrations ())
+                .Returns (new RemovingValidatorRegistration[0])
+                .Verifiable();
+            _validationPropertyRuleReflectorMocks[type]
+                .InSequence (sequence5)
+                .Setup (mock => mock.GetMetaValidationRules ())
+                .Returns (new IPropertyMetaValidationRule[0])
+                .Verifiable();
           }
           else if (property.Name == "Notes")
           {
-            _validationPropertyRuleReflectorMocks[type].Setup (mock => mock.GetValidatedPropertyFunc (typeof (Employee)))
+            _validationPropertyRuleReflectorMocks[type]
+                .InSequence (sequence1)
+                .Setup (mock => mock.GetValidatedPropertyFunc (typeof (Employee)))
                 .Returns (e => ((Employee) e).Notes)
                 .Verifiable();
-            _validationPropertyRuleReflectorMocks[type].Setup (mock => mock.GetRemovablePropertyValidators ()).Returns (new[] { _propertyValidatorStub3 }).Verifiable();
-            _validationPropertyRuleReflectorMocks[type].Setup (mock => mock.GetNonRemovablePropertyValidators ()).Returns (new IPropertyValidator[0]).Verifiable();
-            _validationPropertyRuleReflectorMocks[type].Setup (mock => mock.GetRemovingValidatorRegistrations())
+            _validationPropertyRuleReflectorMocks[type]
+                .InSequence (sequence2)
+                .Setup (mock => mock.GetRemovablePropertyValidators ())
+                .Returns (new[] { _propertyValidatorStub3 })
+                .Verifiable();
+            _validationPropertyRuleReflectorMocks[type]
+                .InSequence (sequence3)
+                .Setup (mock => mock.GetNonRemovablePropertyValidators ())
+                .Returns (new IPropertyValidator[0])
+                .Verifiable();
+            _validationPropertyRuleReflectorMocks[type]
+                .InSequence (sequence4)
+                .Setup (mock => mock.GetRemovingValidatorRegistrations())
                 .Returns (new[] { _removingValidatorRegistration1, _removingValidatorRegistration2 })
                 .Verifiable();
-            _validationPropertyRuleReflectorMocks[type].Setup (mock => mock.GetMetaValidationRules ()).Returns (new IPropertyMetaValidationRule[0]).Verifiable();
+            _validationPropertyRuleReflectorMocks[type]
+                .InSequence (sequence5)
+                .Setup (mock => mock.GetMetaValidationRules ())
+                .Returns (new IPropertyMetaValidationRule[0])
+                .Verifiable();
           }
           else if (property.Name == "LastName")
           {
-            _validationPropertyRuleReflectorMocks[type].Setup (mock => mock.GetValidatedPropertyFunc (typeof (SpecialCustomer1)))
+            _validationPropertyRuleReflectorMocks[type]
+                .InSequence (sequence1)
+                .Setup (mock => mock.GetValidatedPropertyFunc (typeof (SpecialCustomer1)))
                 .Returns (c => ((SpecialCustomer1) c).LastName)
                 .Verifiable();
-            _validationPropertyRuleReflectorMocks[type].Setup (mock => mock.GetRemovablePropertyValidators())
+            _validationPropertyRuleReflectorMocks[type]
+                .InSequence (sequence2)
+                .Setup (mock => mock.GetRemovablePropertyValidators())
                 .Returns (new[] { _propertyValidatorStub4, _propertyValidatorStub5 })
                 .Verifiable();
-            _validationPropertyRuleReflectorMocks[type].Setup (mock => mock.GetNonRemovablePropertyValidators ()).Returns (new IPropertyValidator[0]).Verifiable();
-            _validationPropertyRuleReflectorMocks[type].Setup (mock => mock.GetRemovingValidatorRegistrations ()).Returns (new RemovingValidatorRegistration[0]).Verifiable();
-            _validationPropertyRuleReflectorMocks[type].Setup (mock => mock.GetMetaValidationRules())
+            _validationPropertyRuleReflectorMocks[type]
+                .InSequence (sequence3)
+                .Setup (mock => mock.GetNonRemovablePropertyValidators ())
+                .Returns (new IPropertyValidator[0])
+                .Verifiable();
+            _validationPropertyRuleReflectorMocks[type]
+                .InSequence (sequence4)
+                .Setup (mock => mock.GetRemovingValidatorRegistrations ())
+                .Returns (new RemovingValidatorRegistration[0])
+                .Verifiable();
+            _validationPropertyRuleReflectorMocks[type]
+                .InSequence (sequence5)
+                .Setup (mock => mock.GetMetaValidationRules())
                 .Returns (new[] { _propertyMetaValidationRule1, _propertyMetaValidationRule3 })
                 .Verifiable();
           }
           else if (property.Name == "UserName")
           {
-            _validationPropertyRuleReflectorMocks[type].Setup (mock => mock.GetValidatedPropertyFunc (typeof (SpecialCustomer1)))
+            _validationPropertyRuleReflectorMocks[type]
+                .InSequence (sequence1)
+                .Setup (mock => mock.GetValidatedPropertyFunc (typeof (SpecialCustomer1)))
                 .Returns (c => ((SpecialCustomer1) c).UserName)
                 .Verifiable();
-            _validationPropertyRuleReflectorMocks[type].Setup (mock => mock.GetRemovablePropertyValidators ()).Returns (new[] { _propertyValidatorStub6 }).Verifiable();
-            _validationPropertyRuleReflectorMocks[type].Setup (mock => mock.GetNonRemovablePropertyValidators ()).Returns (new IPropertyValidator[0]).Verifiable();
-            _validationPropertyRuleReflectorMocks[type].Setup (mock => mock.GetRemovingValidatorRegistrations())
+            _validationPropertyRuleReflectorMocks[type]
+                .InSequence (sequence2)
+                .Setup (mock => mock.GetRemovablePropertyValidators ())
+                .Returns (new[] { _propertyValidatorStub6 })
+                .Verifiable();
+            _validationPropertyRuleReflectorMocks[type]
+                .InSequence (sequence3)
+                .Setup (mock => mock.GetNonRemovablePropertyValidators ())
+                .Returns (new IPropertyValidator[0])
+                .Verifiable();
+            _validationPropertyRuleReflectorMocks[type]
+                .InSequence (sequence4)
+                .Setup (mock => mock.GetRemovingValidatorRegistrations())
                 .Returns (new[] { _removingValidatorRegistration3, _removingValidatorRegistration4 })
                 .Verifiable();
-            _validationPropertyRuleReflectorMocks[type].Setup (mock => mock.GetMetaValidationRules ()).Returns (new[] { _propertyMetaValidationRule2 }).Verifiable();
+            _validationPropertyRuleReflectorMocks[type]
+                .InSequence (sequence5)
+                .Setup (mock => mock.GetMetaValidationRules ())
+                .Returns (new[] { _propertyMetaValidationRule2 })
+                .Verifiable();
           }
           else
           {
