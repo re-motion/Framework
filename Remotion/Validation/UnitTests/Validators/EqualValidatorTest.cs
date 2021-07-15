@@ -17,12 +17,12 @@
 using System;
 using System.Collections;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Validators;
-using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.Validators
 {
@@ -115,16 +115,17 @@ namespace Remotion.Validation.UnitTests.Validators
     [Test]
     public void Validate_WithCustomComparer_UsesComparer ()
     {
-      var equalityComparerMock = MockRepository.GenerateMock<IEqualityComparer>();
+      var equalityComparerMock = new Mock<IEqualityComparer>();
       equalityComparerMock
-          .Expect (_ => _.Equals ("comparisonValue", "propertyValue"))
-          .Return (true);
+          .Setup (_ => _.Equals ("comparisonValue", "propertyValue"))
+          .Returns (true)
+          .Verifiable();
       var propertyValidatorContext = CreatePropertyValidatorContext ("propertyValue");
-      var validator = new EqualValidator ("comparisonValue", new InvariantValidationMessage ("Fake Message"), equalityComparerMock);
+      var validator = new EqualValidator ("comparisonValue", new InvariantValidationMessage ("Fake Message"), equalityComparerMock.Object);
 
       var validationFailures = validator.Validate (propertyValidatorContext);
 
-      equalityComparerMock.VerifyAllExpectations();
+      equalityComparerMock.Verify();
       Assert.That (validationFailures, Is.Empty);
     }
   }

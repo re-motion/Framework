@@ -15,10 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Reflection;
 using Remotion.Validation.MetaValidation;
-using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.MetaValidation
 {
@@ -36,12 +36,12 @@ namespace Remotion.Validation.UnitTests.MetaValidation
     [Test]
     public void Create ()
     {
-      var fakePropertyInformation = MockRepository.GenerateStub<IPropertyInformation>();
+      var fakePropertyInformation = new Mock<IPropertyInformation>();
 
-      var result = _factory.Create (fakePropertyInformation);
+      var result = _factory.Create (fakePropertyInformation.Object);
 
       Assert.That (result, Is.TypeOf<DefaultSystemPropertyMetaValidationRuleProvider>());
-      Assert.That (((DefaultSystemPropertyMetaValidationRuleProvider) result).PropertyInformation, Is.SameAs (fakePropertyInformation));
+      Assert.That (((DefaultSystemPropertyMetaValidationRuleProvider) result).PropertyInformation, Is.SameAs (fakePropertyInformation.Object));
     }
   }
 }

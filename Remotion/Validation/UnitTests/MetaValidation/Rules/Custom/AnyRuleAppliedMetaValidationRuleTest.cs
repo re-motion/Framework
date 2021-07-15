@@ -16,11 +16,11 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Validation.MetaValidation.Rules.Custom;
 using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.Validators;
-using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.MetaValidation.Rules.Custom
 {
@@ -28,14 +28,14 @@ namespace Remotion.Validation.UnitTests.MetaValidation.Rules.Custom
   public class AnyRuleAppliedMetaValidationRuleTest
   {
     private AnyRuleAppliedPropertyMetaValidationRule _rule;
-    private IPropertyValidator _propertyValidatorStub1;
-    private IPropertyValidator _propertyValidatorStub2;
+    private Mock<IPropertyValidator> _propertyValidatorStub1;
+    private Mock<IPropertyValidator> _propertyValidatorStub2;
 
     [SetUp]
     public void SetUp ()
     {
-      _propertyValidatorStub1 = MockRepository.GenerateStub<IPropertyValidator>();
-      _propertyValidatorStub2 = MockRepository.GenerateStub<IPropertyValidator>();
+      _propertyValidatorStub1 = new Mock<IPropertyValidator>();
+      _propertyValidatorStub2 = new Mock<IPropertyValidator>();
 
       _rule = new AnyRuleAppliedPropertyMetaValidationRule (typeof (Customer).GetProperty ("UserName"));
     }
@@ -56,7 +56,7 @@ namespace Remotion.Validation.UnitTests.MetaValidation.Rules.Custom
     [Test]
     public void Validate_WithValidators ()
     {
-      var result = _rule.Validate (new[] { _propertyValidatorStub1, _propertyValidatorStub2 }).Single();
+      var result = _rule.Validate (new[] { _propertyValidatorStub1.Object, _propertyValidatorStub2.Object }).Single();
 
       Assert.That (result.IsValid, Is.True);
     }

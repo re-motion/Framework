@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Merging;
@@ -25,7 +26,6 @@ using Remotion.Validation.UnitTests.TestDomain.Collectors;
 using Remotion.Validation.UnitTests.TestDomain.Validators;
 using Remotion.Validation.UnitTests.TestHelpers;
 using Remotion.Validation.Validators;
-using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.RoleCollectors
 {
@@ -33,18 +33,18 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
   public class AddingObjectValidationRuleCollector1Test
   {
     private IAddingObjectValidationRuleCollector _addingObjectValidationRuleCollector;
-    private IObjectValidatorExtractor _objectValidatorExtractorMock;
+    private Mock<IObjectValidatorExtractor> _objectValidatorExtractorMock;
     private IObjectValidator _stubObjectValidator1;
-    private IObjectValidator _stubObjectValidator2;
+    private Mock<IObjectValidator> _stubObjectValidator2;
     private IObjectValidator _stubObjectValidator3;
 
     [SetUp]
     public void SetUp ()
     {
       _addingObjectValidationRuleCollector = AddingObjectValidationRuleCollector.Create<Customer> (typeof (CustomerValidationRuleCollector1));
-      _objectValidatorExtractorMock = MockRepository.GenerateMock<IObjectValidatorExtractor>();
+      _objectValidatorExtractorMock = new Mock<IObjectValidatorExtractor>();
       _stubObjectValidator1 = new StubObjectValidator();
-      _stubObjectValidator2 = MockRepository.GenerateStub<IObjectValidator>();
+      _stubObjectValidator2 = new Mock<IObjectValidator>();
       _stubObjectValidator3 = new FakeCustomerValidator();
     }
 
@@ -114,19 +114,20 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
       _addingObjectValidationRuleCollector.SetRemovable();
       Assert.That (_addingObjectValidationRuleCollector.IsRemovable, Is.True);
       _addingObjectValidationRuleCollector.RegisterValidator (_ => _stubObjectValidator1);
-      _addingObjectValidationRuleCollector.RegisterValidator (_ => _stubObjectValidator2);
+      _addingObjectValidationRuleCollector.RegisterValidator (_ => _stubObjectValidator2.Object);
       _addingObjectValidationRuleCollector.RegisterValidator (_ => _stubObjectValidator3);
       Assert.That (_addingObjectValidationRuleCollector.Validators.Count(), Is.EqualTo (3));
 
       _objectValidatorExtractorMock
-          .Expect (
+          .Setup (
               mock => mock.ExtractObjectValidatorsToRemove (_addingObjectValidationRuleCollector))
-          .Return (new[] { _stubObjectValidator1, _stubObjectValidator3 });
+          .Returns (new[] { _stubObjectValidator1, _stubObjectValidator3 })
+          .Verifiable();
 
-      _addingObjectValidationRuleCollector.ApplyRemoveValidatorRegistrations (_objectValidatorExtractorMock);
+      _addingObjectValidationRuleCollector.ApplyRemoveValidatorRegistrations (_objectValidatorExtractorMock.Object);
 
-      _objectValidatorExtractorMock.VerifyAllExpectations();
-      Assert.That (_addingObjectValidationRuleCollector.Validators, Is.EqualTo (new[] { _stubObjectValidator2 }));
+      _objectValidatorExtractorMock.Verify();
+      Assert.That (_addingObjectValidationRuleCollector.Validators, Is.EqualTo (new[] { _stubObjectValidator2.Object }));
     }
 
     [Test]
@@ -137,11 +138,11 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
       Assert.That (_addingObjectValidationRuleCollector.Validators.Count(), Is.EqualTo (1));
 
       _objectValidatorExtractorMock
-          .Stub (
+          .Setup (
               stub => stub.ExtractObjectValidatorsToRemove (_addingObjectValidationRuleCollector))
-          .Return (new IObjectValidator[0]);
+          .Returns (new IObjectValidator[0]);
 
-      _addingObjectValidationRuleCollector.ApplyRemoveValidatorRegistrations (_objectValidatorExtractorMock);
+      _addingObjectValidationRuleCollector.ApplyRemoveValidatorRegistrations (_objectValidatorExtractorMock.Object);
 
       Assert.That (_addingObjectValidationRuleCollector.Validators.Count(), Is.EqualTo (1));
     }
@@ -150,17 +151,17 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
     public void ApplyRemoveValidatorRegistrations_IsRemovableFalseAndValidatorsToRemove_ExceptionIsThrown ()
     {
       _addingObjectValidationRuleCollector.RegisterValidator (_ => _stubObjectValidator1);
-      _addingObjectValidationRuleCollector.RegisterValidator (_ => _stubObjectValidator2);
+      _addingObjectValidationRuleCollector.RegisterValidator (_ => _stubObjectValidator2.Object);
       _addingObjectValidationRuleCollector.RegisterValidator (_ => _stubObjectValidator3);
       Assert.That (_addingObjectValidationRuleCollector.Validators.Count(), Is.EqualTo (3));
 
       _objectValidatorExtractorMock
-          .Stub (
+          .Setup (
               stub => stub.ExtractObjectValidatorsToRemove (_addingObjectValidationRuleCollector))
-          .Return (new[] { _stubObjectValidator1, _stubObjectValidator3 });
+          .Returns (new[] { _stubObjectValidator1, _stubObjectValidator3 });
 
       Assert.That (
-          () => _addingObjectValidationRuleCollector.ApplyRemoveValidatorRegistrations (_objectValidatorExtractorMock),
+          () => _addingObjectValidationRuleCollector.ApplyRemoveValidatorRegistrations (_objectValidatorExtractorMock.Object),
           Throws.TypeOf<ValidationConfigurationException>()
               .And.Message.EqualTo (
                   "Attempted to remove non-removable validator(s) 'StubObjectValidator, FakeCustomerValidator' on type "

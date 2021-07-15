@@ -15,35 +15,35 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.UnitTests.TestDomain.Collectors;
-using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.Implementation
 {
   [TestFixture]
   public class GenericTypeAwareValidatedTypeResolverDecoratorTest
   {
-    private IValidatedTypeResolver _decoratedResolverMock;
+    private Mock<IValidatedTypeResolver> _decoratedResolverMock;
     private GenericTypeAwareValidatedTypeResolverDecorator _resolver;
 
     [SetUp]
     public void SetUp ()
     {
-      _decoratedResolverMock = MockRepository.GenerateStrictMock<IValidatedTypeResolver> ();
-      _resolver = new GenericTypeAwareValidatedTypeResolverDecorator (_decoratedResolverMock);
+      _decoratedResolverMock = new Mock<IValidatedTypeResolver> (MockBehavior.Strict);
+      _resolver = new GenericTypeAwareValidatedTypeResolverDecorator (_decoratedResolverMock.Object);
     }
 
     [Test]
     public void GetValidatedType_CollectorWithoutGenericArgument ()
     {
-      _decoratedResolverMock.Expect (mock => mock.GetValidatedType (typeof (IValidationRuleCollector))).Return (typeof (string));
+      _decoratedResolverMock.Setup (mock => mock.GetValidatedType (typeof (IValidationRuleCollector))).Returns (typeof (string)).Verifiable();
 
       var result = _resolver.GetValidatedType (typeof (IValidationRuleCollector));
 
-      _decoratedResolverMock.VerifyAllExpectations();
+      _decoratedResolverMock.Verify();
       Assert.That (result, Is.EqualTo (typeof (string)));
     }
 
@@ -54,7 +54,7 @@ namespace Remotion.Validation.UnitTests.Implementation
 
       var result = _resolver.GetValidatedType (collectorTypeWithApplyWithClassAttribute);
 
-      _decoratedResolverMock.VerifyAllExpectations ();
+      _decoratedResolverMock.Verify();
       Assert.That (result, Is.EqualTo (typeof (IPerson)));
     }
     

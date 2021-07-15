@@ -17,13 +17,13 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using Moq;
 using NUnit.Framework;
 using Remotion.Reflection;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.MetaValidation.Rules.Custom;
 using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.Validators;
-using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.Implementation
 {
@@ -36,12 +36,12 @@ namespace Remotion.Validation.UnitTests.Implementation
     private ValidationAttributesBasedPropertyRuleReflector _specialCustomerPropertyReflector;
     private PropertyInfo _addressPostalCodeProperty;
     private ValidationAttributesBasedPropertyRuleReflector _addressPropertyReflector;
-    private IValidationMessageFactory _validationMessageFactory;
+    private Mock<IValidationMessageFactory> _validationMessageFactory;
 
     [SetUp]
     public void SetUp ()
     {
-      _validationMessageFactory = MockRepository.GenerateStub<IValidationMessageFactory>();
+      _validationMessageFactory = new Mock<IValidationMessageFactory>();
 
       _customerLastNameProperty = typeof (Customer).GetProperty ("UserName");
       _specialCustomerLastNameProperty = typeof (SpecialCustomer1).GetProperty ("UserName");
@@ -49,15 +49,15 @@ namespace Remotion.Validation.UnitTests.Implementation
 
       _customerPropertyReflector = new ValidationAttributesBasedPropertyRuleReflector (
           _customerLastNameProperty,
-          _validationMessageFactory);
+          _validationMessageFactory.Object);
 
       _specialCustomerPropertyReflector = new ValidationAttributesBasedPropertyRuleReflector (
           _specialCustomerLastNameProperty,
-          _validationMessageFactory);
+          _validationMessageFactory.Object);
 
       _addressPropertyReflector = new ValidationAttributesBasedPropertyRuleReflector (
           _addressPostalCodeProperty,
-          _validationMessageFactory);
+          _validationMessageFactory.Object);
     }
 
     [Test]
@@ -69,13 +69,13 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void GetRemovablePropertyValidators_Customer ()
     {
-      var validationMessageStub = MockRepository.GenerateStub<ValidationMessage>();
+      var validationMessageStub = new Mock<ValidationMessage>();
       _validationMessageFactory
-          .Stub (
+          .Setup (
               _ => _.CreateValidationMessageForPropertyValidator (
-                  Arg<IPropertyValidator>.Is.NotNull,
-                  Arg.Is (PropertyInfoAdapter.Create (_customerLastNameProperty))))
-          .Return (validationMessageStub);
+                  It.IsNotNull<IPropertyValidator>(),
+                  PropertyInfoAdapter.Create (_customerLastNameProperty)))
+          .Returns (validationMessageStub.Object);
 
       var addingPropertyValidators = _customerPropertyReflector.GetRemovablePropertyValidators().ToArray();
 
@@ -84,7 +84,7 @@ namespace Remotion.Validation.UnitTests.Implementation
           addingPropertyValidators.Select (v => v.GetType()),
           Is.EquivalentTo (new[] { typeof (LengthValidator), typeof (NotNullValidator) }));
 
-      validationMessageStub.Stub (_ => _.ToString()).Return ("Stub Message");
+      validationMessageStub.Setup (_ => _.ToString()).Returns ("Stub Message");
       Assert.That (addingPropertyValidators.OfType<LengthValidator>().Single().ValidationMessage.ToString(), Is.EqualTo ("Stub Message"));
       Assert.That (addingPropertyValidators.OfType<NotNullValidator>().Single().ValidationMessage.ToString(), Is.EqualTo ("Stub Message"));
     }
@@ -92,13 +92,13 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void GetRemovablePropertyValidators_SpecialCustomer ()
     {
-      var validationMessageStub = MockRepository.GenerateStub<ValidationMessage>();
+      var validationMessageStub = new Mock<ValidationMessage>();
       _validationMessageFactory
-          .Stub (
+          .Setup (
               _ => _.CreateValidationMessageForPropertyValidator (
-                  Arg<IPropertyValidator>.Is.NotNull,
-                  Arg.Is (PropertyInfoAdapter.Create (_specialCustomerLastNameProperty))))
-          .Return (validationMessageStub);
+                  It.IsNotNull<IPropertyValidator>(),
+                  PropertyInfoAdapter.Create (_specialCustomerLastNameProperty)))
+          .Returns (validationMessageStub.Object);
 
       var addingPropertyValidators = _specialCustomerPropertyReflector.GetRemovablePropertyValidators().ToArray();
 
@@ -107,7 +107,7 @@ namespace Remotion.Validation.UnitTests.Implementation
           addingPropertyValidators.Select (v => v.GetType()),
           Is.EquivalentTo (new[] { typeof (LengthValidator), typeof (NotNullValidator) }));
 
-      validationMessageStub.Stub (_ => _.ToString()).Return ("Stub Message");
+      validationMessageStub.Setup (_ => _.ToString()).Returns ("Stub Message");
       Assert.That (addingPropertyValidators.OfType<LengthValidator>().Single().ValidationMessage.ToString(), Is.EqualTo ("Stub Message"));
       Assert.That (addingPropertyValidators.OfType<NotNullValidator>().Single().ValidationMessage.ToString(), Is.EqualTo ("Stub Message"));
     }
@@ -115,20 +115,20 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void GetNonRemovablePropertyValidators_Customer ()
     {
-      var validationMessageStub = MockRepository.GenerateStub<ValidationMessage>();
+      var validationMessageStub = new Mock<ValidationMessage>();
       _validationMessageFactory
-          .Stub (
+          .Setup (
               _ => _.CreateValidationMessageForPropertyValidator (
-                  Arg<IPropertyValidator>.Is.NotNull,
-                  Arg.Is (PropertyInfoAdapter.Create (_customerLastNameProperty))))
-          .Return (validationMessageStub);
+                  It.IsNotNull<IPropertyValidator>(),
+                  PropertyInfoAdapter.Create (_customerLastNameProperty)))
+          .Returns (validationMessageStub.Object);
 
       var hardConstraintPropertyValidators = _customerPropertyReflector.GetNonRemovablePropertyValidators().ToArray();
 
       Assert.That (hardConstraintPropertyValidators.Length, Is.EqualTo (1));
       Assert.That (hardConstraintPropertyValidators[0].GetType(), Is.EqualTo (typeof (NotEqualValidator)));
 
-      validationMessageStub.Stub (_ => _.ToString()).Return ("Stub Message");
+      validationMessageStub.Setup (_ => _.ToString()).Returns ("Stub Message");
       Assert.That (((NotEqualValidator)hardConstraintPropertyValidators[0]).ValidationMessage.ToString(), Is.EqualTo ("Stub Message"));
     }
 

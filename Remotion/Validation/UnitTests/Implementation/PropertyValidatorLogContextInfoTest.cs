@@ -15,34 +15,34 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.RuleCollectors;
 using Remotion.Validation.Validators;
-using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.Implementation
 {
   [TestFixture]
   public class PropertyValidatorLogContextInfoTest
   {
-    private IPropertyValidator _propertyValidatorStub1;
+    private Mock<IPropertyValidator> _propertyValidatorStub1;
     private RemovingPropertyValidatorRegistration[] _removingPropertyValidatorRegistrations;
     private PropertyValidatorLogContextInfo _logContextInfo;
 
     [SetUp]
     public void SetUp ()
     {
-      _propertyValidatorStub1 = MockRepository.GenerateStub<IPropertyValidator>();
+      _propertyValidatorStub1 = new Mock<IPropertyValidator>();
       _removingPropertyValidatorRegistrations = new RemovingPropertyValidatorRegistration[0];
 
-      _logContextInfo = new PropertyValidatorLogContextInfo (_propertyValidatorStub1, _removingPropertyValidatorRegistrations);
+      _logContextInfo = new PropertyValidatorLogContextInfo (_propertyValidatorStub1.Object, _removingPropertyValidatorRegistrations);
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_logContextInfo.RemovedValidator, Is.SameAs (_propertyValidatorStub1));
+      Assert.That (_logContextInfo.RemovedValidator, Is.SameAs (_propertyValidatorStub1.Object));
       Assert.That (_logContextInfo.RemovingPropertyValidatorRegistrations, Is.SameAs (_removingPropertyValidatorRegistrations));
     }
   }

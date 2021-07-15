@@ -18,6 +18,7 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Reflection;
@@ -29,7 +30,6 @@ using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.UnitTests.TestDomain.Collectors;
 using Remotion.Validation.UnitTests.TestHelpers;
 using Remotion.Validation.Validators;
-using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.RoleCollectors
 {
@@ -40,7 +40,7 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
     private Expression<Func<Customer, string>> _lastNameExpression;
     private IAddingPropertyValidationRuleCollector _addingPropertyValidationRuleCollector;
     private IPropertyInformation _property;
-    private IPropertyValidatorExtractor _propertyValidatorExtractorMock;
+    private Mock<IPropertyValidatorExtractor> _propertyValidatorExtractorMock;
     private StubPropertyValidator _stubPropertyValidator1;
     private NotEmptyValidator _stubPropertyValidator2;
     private NotEqualValidator _stubPropertyValidator3;
@@ -57,7 +57,7 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
       _stubPropertyValidator2 = new NotEmptyValidator (new InvariantValidationMessage ("Fake Message"));
       _stubPropertyValidator3 = new NotEqualValidator ("gfsf", new InvariantValidationMessage ("Fake Message"));
 
-      _propertyValidatorExtractorMock = MockRepository.GenerateStrictMock<IPropertyValidatorExtractor>();
+      _propertyValidatorExtractorMock = new Mock<IPropertyValidatorExtractor> (MockBehavior.Strict);
 
       _addingPropertyValidationRuleCollector = AddingPropertyValidationRuleCollector.Create (_userNameExpression, typeof (CustomerValidationRuleCollector1));
     }
@@ -175,13 +175,14 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
       Assert.That (_addingPropertyValidationRuleCollector.Validators.Count(), Is.EqualTo (3));
 
       _propertyValidatorExtractorMock
-          .Expect (
+          .Setup (
               mock => mock.ExtractPropertyValidatorsToRemove (_addingPropertyValidationRuleCollector))
-          .Return (new IPropertyValidator[] { _stubPropertyValidator1, _stubPropertyValidator3 });
+          .Returns (new IPropertyValidator[] { _stubPropertyValidator1, _stubPropertyValidator3 })
+          .Verifiable();
 
-      _addingPropertyValidationRuleCollector.ApplyRemoveValidatorRegistrations (_propertyValidatorExtractorMock);
+      _addingPropertyValidationRuleCollector.ApplyRemoveValidatorRegistrations (_propertyValidatorExtractorMock.Object);
 
-      _propertyValidatorExtractorMock.VerifyAllExpectations();
+      _propertyValidatorExtractorMock.Verify();
       Assert.That (_addingPropertyValidationRuleCollector.Validators, Is.EqualTo (new[] { _stubPropertyValidator2 }));
     }
 
@@ -193,11 +194,11 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
       Assert.That (_addingPropertyValidationRuleCollector.Validators.Count(), Is.EqualTo (1));
 
       _propertyValidatorExtractorMock
-          .Stub (
+          .Setup (
               stub => stub.ExtractPropertyValidatorsToRemove (_addingPropertyValidationRuleCollector))
-          .Return (new IPropertyValidator[0]);
+          .Returns (new IPropertyValidator[0]);
 
-      _addingPropertyValidationRuleCollector.ApplyRemoveValidatorRegistrations (_propertyValidatorExtractorMock);
+      _addingPropertyValidationRuleCollector.ApplyRemoveValidatorRegistrations (_propertyValidatorExtractorMock.Object);
 
       Assert.That (_addingPropertyValidationRuleCollector.Validators.Count(), Is.EqualTo (1));
     }
@@ -211,12 +212,12 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
       Assert.That (_addingPropertyValidationRuleCollector.Validators.Count(), Is.EqualTo (3));
 
       _propertyValidatorExtractorMock
-          .Stub (
+          .Setup (
               stub => stub.ExtractPropertyValidatorsToRemove (_addingPropertyValidationRuleCollector))
-          .Return (new IPropertyValidator[] { _stubPropertyValidator1, _stubPropertyValidator3 });
+          .Returns (new IPropertyValidator[] { _stubPropertyValidator1, _stubPropertyValidator3 });
 
       Assert.That (
-          () => _addingPropertyValidationRuleCollector.ApplyRemoveValidatorRegistrations (_propertyValidatorExtractorMock),
+          () => _addingPropertyValidationRuleCollector.ApplyRemoveValidatorRegistrations (_propertyValidatorExtractorMock.Object),
           Throws.TypeOf<ValidationConfigurationException>().And.Message.EqualTo (
               "Attempted to remove non-removable validator(s) 'StubPropertyValidator, NotEqualValidator' on property "
               + "'Remotion.Validation.UnitTests.TestDomain.Customer.UserName'."));

@@ -17,13 +17,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Reflection;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.RuleCollectors;
 using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.Validators;
-using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.Providers
 {
@@ -31,13 +31,13 @@ namespace Remotion.Validation.UnitTests.Providers
   public class ValidationAttributesBasedValidationRuleCollectorProviderTest
   {
     private TestableValidationAttributesBasedValidationRuleCollectorProvider _provider;
-    private IValidationMessageFactory _validationMessageFactoryStub;
+    private Mock<IValidationMessageFactory> _validationMessageFactoryStub;
 
     [SetUp]
     public void SetUp ()
     {
-      _validationMessageFactoryStub = MockRepository.GenerateStub<IValidationMessageFactory>();
-      _provider = new TestableValidationAttributesBasedValidationRuleCollectorProvider (_validationMessageFactoryStub);
+      _validationMessageFactoryStub = new Mock<IValidationMessageFactory>();
+      _provider = new TestableValidationAttributesBasedValidationRuleCollectorProvider (_validationMessageFactoryStub.Object);
     }
 
     [Test]
@@ -49,13 +49,13 @@ namespace Remotion.Validation.UnitTests.Providers
     [Test]
     public void GetValidationRuleCollectors_SetValidationMessageFromFactory ()
     {
-      var validationMessageStub = MockRepository.GenerateStub<ValidationMessage>();
+      var validationMessageStub = new Mock<ValidationMessage>();
       _validationMessageFactoryStub
-          .Stub (
+          .Setup (
               _ => _.CreateValidationMessageForPropertyValidator (
-                  Arg<IPropertyValidator>.Is.NotNull,
-                  Arg<IPropertyInformation>.Is.NotNull))
-          .Return (validationMessageStub);
+                  It.IsNotNull<IPropertyValidator>(),
+                  It.IsNotNull<IPropertyInformation>()))
+          .Returns (validationMessageStub.Object);
 
       var collectors = _provider.GetValidationRuleCollectors (new[] { typeof (Customer) });
       Assert.That (collectors, Is.Not.Empty);
@@ -66,7 +66,7 @@ namespace Remotion.Validation.UnitTests.Providers
       Assert.That (addingComponentPropertyRules.OfType<AddingPropertyValidationRuleCollector<Customer, Address>>(), Is.Empty);
       Assert.That (addingComponentPropertyRules.OfType<AddingPropertyValidationRuleCollector<Customer, ICollection<Address>>>(), Is.Empty);
 
-      validationMessageStub.Stub (_ => _.ToString()).Return ("Stub Message");
+      validationMessageStub.Setup (_ => _.ToString()).Returns ("Stub Message");
       var validators = addingComponentPropertyRules.SelectMany (r => r.Validators).ToArray();
       Assert.That (validators, Is.Not.Empty);
       Assert.That (validators, Is.All.InstanceOf<IPropertyValidator>());

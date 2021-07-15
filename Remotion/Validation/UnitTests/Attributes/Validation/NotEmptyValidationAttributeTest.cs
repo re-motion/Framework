@@ -16,13 +16,13 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Reflection;
 using Remotion.Validation.Attributes.Validation;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.Validators;
-using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.Attributes.Validation
 {
@@ -30,31 +30,31 @@ namespace Remotion.Validation.UnitTests.Attributes.Validation
   public class NotEmptyValidationAttributeTest
   {
     private NotEmptyValidationAttribute _attribute;
-    private IValidationMessageFactory _validationMessageFactoryStub;
+    private Mock<IValidationMessageFactory> _validationMessageFactoryStub;
 
     [SetUp]
     public void SetUp ()
     {
       _attribute = new NotEmptyValidationAttribute();
-      _validationMessageFactoryStub = MockRepository.GenerateStub<IValidationMessageFactory>();
+      _validationMessageFactoryStub = new Mock<IValidationMessageFactory>();
     }
 
     [Test]
     public void GetPropertyValidator ()
     {
       var propertyInformation = PropertyInfoAdapter.Create (typeof (Customer).GetProperty ("LastName"));
-      var validationMessageStub = MockRepository.GenerateStub<ValidationMessage>();
+      var validationMessageStub = new Mock<ValidationMessage>();
       _validationMessageFactoryStub
-          .Stub (_ => _.CreateValidationMessageForPropertyValidator (Arg<NotEmptyValidator>.Is.TypeOf, Arg.Is (propertyInformation)))
-          .Return (validationMessageStub);
+          .Setup (_ => _.CreateValidationMessageForPropertyValidator (It.IsAny<NotEmptyValidator>(), propertyInformation))
+          .Returns (validationMessageStub.Object);
 
-      var result = _attribute.GetPropertyValidators (propertyInformation, _validationMessageFactoryStub).ToArray();
+      var result = _attribute.GetPropertyValidators (propertyInformation, _validationMessageFactoryStub.Object).ToArray();
 
       Assert.That (result.Length, Is.EqualTo (1));
       Assert.That (result[0], Is.TypeOf (typeof (NotEmptyValidator)));
       Assert.That (((NotEmptyValidator) result[0]).ValidationMessage, Is.Not.Null);
 
-      validationMessageStub.Stub (_ => _.ToString()).Return ("Stub Message");
+      validationMessageStub.Setup (_ => _.ToString()).Returns ("Stub Message");
       Assert.That (((NotEmptyValidator) result[0]).ValidationMessage.ToString(), Is.EqualTo ("Stub Message"));
     }
 
@@ -64,7 +64,7 @@ namespace Remotion.Validation.UnitTests.Attributes.Validation
       var propertyInformation = PropertyInfoAdapter.Create (typeof (Customer).GetProperty ("LastName"));
       _attribute.ErrorMessage = "CustomMessage";
 
-      var result = _attribute.GetPropertyValidators (propertyInformation, _validationMessageFactoryStub).ToArray();
+      var result = _attribute.GetPropertyValidators (propertyInformation, _validationMessageFactoryStub.Object).ToArray();
 
       Assert.That (result.Length, Is.EqualTo (1));
       Assert.That (((NotEmptyValidator) result[0]).ValidationMessage, Is.InstanceOf<InvariantValidationMessage>());

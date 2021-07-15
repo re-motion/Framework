@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Reflection;
 using Remotion.Validation.MetaValidation;
@@ -24,72 +25,71 @@ using Remotion.Validation.RuleCollectors;
 using Remotion.Validation.Rules;
 using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.Validators;
-using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.RuleBuilders
 {
   [TestFixture]
   public class AddingPropertyValidationRuleBuilderTest
   {
-    private IAddingPropertyValidationRuleCollector _addingPropertyValidationRuleCollectorMock;
+    private Mock<IAddingPropertyValidationRuleCollector> _addingPropertyValidationRuleCollectorMock;
     private AddingPropertyValidationRuleBuilder<Customer, string> _addingPropertyValidationBuilder;
-    private IPropertyValidator _propertyValidatorStub;
-    private IPropertyMetaValidationRuleCollector _propertyMetaValidationRuleCollectorMock;
+    private Mock<IPropertyValidator> _propertyValidatorStub;
+    private Mock<IPropertyMetaValidationRuleCollector> _propertyMetaValidationRuleCollectorMock;
 
     [SetUp]
     public void SetUp ()
     {
-      _addingPropertyValidationRuleCollectorMock = MockRepository.GenerateStrictMock<IAddingPropertyValidationRuleCollector>();
-      _addingPropertyValidationRuleCollectorMock.Stub (stub => stub.Property).Return (PropertyInfoAdapter.Create(typeof (Customer).GetProperty ("UserName")));
+      _addingPropertyValidationRuleCollectorMock = new Mock<IAddingPropertyValidationRuleCollector> (MockBehavior.Strict);
+      _addingPropertyValidationRuleCollectorMock.Setup (stub => stub.Property).Returns (PropertyInfoAdapter.Create (typeof (Customer).GetProperty ("UserName")));
 
-      _propertyMetaValidationRuleCollectorMock = MockRepository.GenerateStrictMock<IPropertyMetaValidationRuleCollector>();
-      _addingPropertyValidationRuleCollectorMock.Stub (stub => stub.Property).Return (PropertyInfoAdapter.Create(typeof (Customer).GetProperty ("UserName")));
+      _propertyMetaValidationRuleCollectorMock = new Mock<IPropertyMetaValidationRuleCollector> (MockBehavior.Strict);
+      _addingPropertyValidationRuleCollectorMock.Setup (stub => stub.Property).Returns (PropertyInfoAdapter.Create (typeof (Customer).GetProperty ("UserName")));
 
       _addingPropertyValidationBuilder = new AddingPropertyValidationRuleBuilder<Customer, string> (
-          _addingPropertyValidationRuleCollectorMock,
-          _propertyMetaValidationRuleCollectorMock);
+          _addingPropertyValidationRuleCollectorMock.Object,
+          _propertyMetaValidationRuleCollectorMock.Object);
 
-      _propertyValidatorStub = MockRepository.GenerateStub<IPropertyValidator>();
+      _propertyValidatorStub = new Mock<IPropertyValidator>();
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_addingPropertyValidationBuilder.AddingPropertyValidationRuleCollector, Is.SameAs (_addingPropertyValidationRuleCollectorMock));
-      Assert.That (_addingPropertyValidationBuilder.PropertyMetaValidationRuleCollector, Is.SameAs (_propertyMetaValidationRuleCollectorMock));
+      Assert.That (_addingPropertyValidationBuilder.AddingPropertyValidationRuleCollector, Is.SameAs (_addingPropertyValidationRuleCollectorMock.Object));
+      Assert.That (_addingPropertyValidationBuilder.PropertyMetaValidationRuleCollector, Is.SameAs (_propertyMetaValidationRuleCollectorMock.Object));
     }
 
     [Test]
     public void SetValidator ()
     {
-      Func<PropertyValidationRuleInitializationParameters, IPropertyValidator> validatorFactory = _ => _propertyValidatorStub;
-      _addingPropertyValidationRuleCollectorMock.Expect (mock => mock.RegisterValidator (validatorFactory));
+      Func<PropertyValidationRuleInitializationParameters, IPropertyValidator> validatorFactory = _ => _propertyValidatorStub.Object;
+      _addingPropertyValidationRuleCollectorMock.Setup (mock => mock.RegisterValidator (validatorFactory)).Verifiable();
 
       ((IAddingPropertyValidationRuleBuilder<Customer, string>) _addingPropertyValidationBuilder).SetValidator (validatorFactory);
 
-      _addingPropertyValidationRuleCollectorMock.VerifyAllExpectations();
+      _addingPropertyValidationRuleCollectorMock.Verify();
     }
 
     [Test]
     public void CanBeRemoved ()
     {
-      _addingPropertyValidationRuleCollectorMock.Expect (mock => mock.SetRemovable());
+      _addingPropertyValidationRuleCollectorMock.Setup (mock => mock.SetRemovable()).Verifiable();
 
       _addingPropertyValidationBuilder.CanBeRemoved();
 
-      _addingPropertyValidationRuleCollectorMock.VerifyAllExpectations();
+      _addingPropertyValidationRuleCollectorMock.Verify();
     }
 
     [Test]
     public void AddMetaValidationRule ()
     {
-      var metaValidationRuleStub = MockRepository.GenerateStub<IPropertyMetaValidationRule>();
+      var metaValidationRuleStub = new Mock<IPropertyMetaValidationRule>();
 
-      _propertyMetaValidationRuleCollectorMock.Expect (mock => mock.RegisterMetaValidationRule (metaValidationRuleStub));
+      _propertyMetaValidationRuleCollectorMock.Setup (mock => mock.RegisterMetaValidationRule (metaValidationRuleStub.Object)).Verifiable();
 
-      _addingPropertyValidationBuilder.AddMetaValidationRule (metaValidationRuleStub);
+      _addingPropertyValidationBuilder.AddMetaValidationRule (metaValidationRuleStub.Object);
 
-      _propertyMetaValidationRuleCollectorMock.VerifyAllExpectations();
+      _propertyMetaValidationRuleCollectorMock.Verify();
     }
 
     [Test]
@@ -97,49 +97,50 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
     {
       var fakeValidationResult = MetaValidationRuleValidationResult.CreateValidResult();
 
-      _propertyMetaValidationRuleCollectorMock.Expect (
+      _propertyMetaValidationRuleCollectorMock.Setup (
           mock => mock.RegisterMetaValidationRule (
-              Arg<IPropertyMetaValidationRule>.Matches (
+              It.Is<IPropertyMetaValidationRule> (
                   rule =>
                       rule.GetType() == typeof (DelegatePropertyMetaValidationRule<IPropertyValidator>) &&
-                      rule.Validate (new IPropertyValidator[0]).First() == fakeValidationResult)));
+                      rule.Validate (new IPropertyValidator[0]).First() == fakeValidationResult)))
+          .Verifiable();
 
       _addingPropertyValidationBuilder.AddMetaValidationRule (v => fakeValidationResult);
 
-      _propertyMetaValidationRuleCollectorMock.VerifyAllExpectations();
+      _propertyMetaValidationRuleCollectorMock.Verify();
     }
 
     [Test]
     public void AddMetaValidationRule_ExpressionOverload_IsValidIsTrue ()
     {
-      _propertyMetaValidationRuleCollectorMock.Expect (
+      _propertyMetaValidationRuleCollectorMock.Setup (
           mock => mock.RegisterMetaValidationRule (
-              Arg<IPropertyMetaValidationRule>.Matches (
+              It.Is<IPropertyMetaValidationRule> (
                   rule =>
                       rule.GetType() == typeof (DelegatePropertyMetaValidationRule<IPropertyValidator>)
-                      && rule.Validate (new IPropertyValidator[0]).First().IsValid)));
+                      && rule.Validate (new IPropertyValidator[0]).First().IsValid))).Verifiable();
 
       _addingPropertyValidationBuilder.AddMetaValidationRule<IPropertyValidator> (v => true);
 
-      _propertyMetaValidationRuleCollectorMock.VerifyAllExpectations();
+      _propertyMetaValidationRuleCollectorMock.Verify();
     }
 
     [Test]
     public void AddMetaValidationRule_ExpressionOverload_IsValidIsFalse ()
     {
-      _propertyMetaValidationRuleCollectorMock.Expect (
+      _propertyMetaValidationRuleCollectorMock.Setup (
           mock => mock.RegisterMetaValidationRule (
-              Arg<IPropertyMetaValidationRule>.Matches (
+              It.Is<IPropertyMetaValidationRule> (
                   rule =>
                       rule.GetType() == typeof (DelegatePropertyMetaValidationRule<IPropertyValidator>) &&
                       !rule.Validate (new IPropertyValidator[0]).First().IsValid &&
                       rule.Validate (new IPropertyValidator[0]).First().Message
                       == "Meta validation rule 'v => False' failed for validator 'Remotion.Validation.Validators.IPropertyValidator' "
-                      + "on property 'Remotion.Validation.UnitTests.TestDomain.Customer.UserName'.")));
+                      + "on property 'Remotion.Validation.UnitTests.TestDomain.Customer.UserName'."))).Verifiable();
 
       _addingPropertyValidationBuilder.AddMetaValidationRule<IPropertyValidator> (v => false);
 
-      _propertyMetaValidationRuleCollectorMock.VerifyAllExpectations();
+      _propertyMetaValidationRuleCollectorMock.Verify();
     }
 
     [Test]

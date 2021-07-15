@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting.ObjectMothers;
 using Remotion.Validation.RuleBuilders;
@@ -24,47 +25,46 @@ using Remotion.Validation.UnitTests.TestDomain.Collectors;
 using Remotion.Validation.UnitTests.TestDomain.Validators;
 using Remotion.Validation.UnitTests.TestHelpers;
 using Remotion.Validation.Validators;
-using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.RuleBuilders
 {
   [TestFixture]
   public class RemovingObjectValidationRuleBuilderTest
   {
-    private IRemovingObjectValidationRuleCollector _removingObjectValidationRuleCollectorMock;
+    private Mock<IRemovingObjectValidationRuleCollector> _removingObjectValidationRuleCollectorMock;
     private RemovingObjectValidationRuleBuilder<Customer> _addingObjectValidationBuilder;
 
     [SetUp]
     public void SetUp ()
     {
-      _removingObjectValidationRuleCollectorMock = MockRepository.GenerateStrictMock<IRemovingObjectValidationRuleCollector>();
-      _addingObjectValidationBuilder = new RemovingObjectValidationRuleBuilder<Customer> (_removingObjectValidationRuleCollectorMock);
+      _removingObjectValidationRuleCollectorMock = new Mock<IRemovingObjectValidationRuleCollector> (MockBehavior.Strict);
+      _addingObjectValidationBuilder = new RemovingObjectValidationRuleBuilder<Customer> (_removingObjectValidationRuleCollectorMock.Object);
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_addingObjectValidationBuilder.RemovingObjectValidationRuleCollector, Is.SameAs (_removingObjectValidationRuleCollectorMock));
+      Assert.That (_addingObjectValidationBuilder.RemovingObjectValidationRuleCollector, Is.SameAs (_removingObjectValidationRuleCollectorMock.Object));
     }
 
     [Test]
     public void RegisterValidator ()
     {
-      _removingObjectValidationRuleCollectorMock.Expect (mock => mock.RegisterValidator (typeof (StubObjectValidator), null, null));
+      _removingObjectValidationRuleCollectorMock.Setup (mock => mock.RegisterValidator (typeof (StubObjectValidator), null, null)).Verifiable();
 
       _addingObjectValidationBuilder.Validator (typeof (StubObjectValidator), null, null);
 
-      _removingObjectValidationRuleCollectorMock.VerifyAllExpectations();
+      _removingObjectValidationRuleCollectorMock.Verify();
     }
 
     [Test]
     public void RegisterValidator_WithGenericValidatorType ()
     {
-      _removingObjectValidationRuleCollectorMock.Expect (mock => mock.RegisterValidator (typeof (StubObjectValidator), null, null));
+      _removingObjectValidationRuleCollectorMock.Setup (mock => mock.RegisterValidator (typeof (StubObjectValidator), null, null)).Verifiable();
 
       _addingObjectValidationBuilder.Validator<StubObjectValidator> (null);
 
-      _removingObjectValidationRuleCollectorMock.VerifyAllExpectations();
+      _removingObjectValidationRuleCollectorMock.Verify();
     }
 
     [Test]
@@ -81,12 +81,12 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
       Func<IObjectValidator, bool> actualPredicate = null;
 
       _removingObjectValidationRuleCollectorMock
-          .Stub (
+          .Setup (
               mock => mock.RegisterValidator (
-                  Arg.Is (typeof (StubObjectValidator)),
-                  Arg<Type>.Is.Null,
-                  Arg<Func<IObjectValidator, bool>>.Is.NotNull))
-          .WhenCalled (mi => actualPredicate = (Func<IObjectValidator, bool>) mi.Arguments[2]);
+                  typeof (StubObjectValidator),
+                  null,
+                  It.IsNotNull<Func<IObjectValidator, bool>>()))
+          .Callback ((Type validatorType, Type collectorTypeToRemoveFrom, Func<IObjectValidator, bool> validatorPredicate) => actualPredicate = validatorPredicate);
 
       _addingObjectValidationBuilder.Validator<StubObjectValidator> (predicate);
 
@@ -104,12 +104,12 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
       Func<IObjectValidator, bool> actualPredicate = null;
 
       _removingObjectValidationRuleCollectorMock
-          .Stub (
+          .Setup (
               mock => mock.RegisterValidator (
-                  Arg.Is (typeof (StubObjectValidator)),
-                  Arg<Type>.Is.Null,
-                  Arg<Func<IObjectValidator, bool>>.Is.NotNull))
-          .WhenCalled (mi => actualPredicate = (Func<IObjectValidator, bool>) mi.Arguments[2]);
+                  typeof (StubObjectValidator),
+                  null,
+                  It.IsNotNull<Func<IObjectValidator, bool>>()))
+          .Callback ((Type validatorType, Type collectorTypeToRemoveFrom, Func<IObjectValidator, bool> validatorPredicate) => actualPredicate = validatorPredicate);
 
       _addingObjectValidationBuilder.Validator<StubObjectValidator> (validator => true);
 
@@ -122,12 +122,13 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
     [Test]
     public void RegisterValidator_WithCollectorType ()
     {
-      _removingObjectValidationRuleCollectorMock.Expect (
-          mock => mock.RegisterValidator (typeof (StubObjectValidator), typeof (CustomerValidationRuleCollector1), null));
+      _removingObjectValidationRuleCollectorMock.Setup (
+          mock => mock.RegisterValidator (typeof (StubObjectValidator), typeof (CustomerValidationRuleCollector1), null))
+          .Verifiable();
 
       _addingObjectValidationBuilder.Validator (typeof (StubObjectValidator), typeof (CustomerValidationRuleCollector1), null);
 
-      _removingObjectValidationRuleCollectorMock.VerifyAllExpectations();
+      _removingObjectValidationRuleCollectorMock.Verify();
     }
 
     [Test]
@@ -135,23 +136,25 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
     {
       Func<IObjectValidator, bool> predicate = _ => false;
 
-      _removingObjectValidationRuleCollectorMock.Expect (
-          mock => mock.RegisterValidator (typeof (StubObjectValidator), null, predicate));
+      _removingObjectValidationRuleCollectorMock.Setup (
+          mock => mock.RegisterValidator (typeof (StubObjectValidator), null, predicate))
+          .Verifiable();
 
       _addingObjectValidationBuilder.Validator (typeof (StubObjectValidator), null, predicate);
 
-      _removingObjectValidationRuleCollectorMock.VerifyAllExpectations();
+      _removingObjectValidationRuleCollectorMock.Verify();
     }
 
     [Test]
     public void RegisterValidator_WithGenericCollectorType ()
     {
-      _removingObjectValidationRuleCollectorMock.Expect (
-          mock => mock.RegisterValidator (typeof (StubObjectValidator), typeof (CustomerValidationRuleCollector1), null));
+      _removingObjectValidationRuleCollectorMock.Setup (
+          mock => mock.RegisterValidator (typeof (StubObjectValidator), typeof (CustomerValidationRuleCollector1), null))
+          .Verifiable();
 
       _addingObjectValidationBuilder.Validator<StubObjectValidator, CustomerValidationRuleCollector1> (null);
 
-      _removingObjectValidationRuleCollectorMock.VerifyAllExpectations();
+      _removingObjectValidationRuleCollectorMock.Verify();
     }
 
     [Test]
@@ -168,12 +171,12 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
       Func<IObjectValidator, bool> actualPredicate = null;
 
       _removingObjectValidationRuleCollectorMock
-          .Stub (
+          .Setup (
               mock => mock.RegisterValidator (
-                  Arg.Is (typeof (StubObjectValidator)),
-                  Arg.Is (typeof (CustomerValidationRuleCollector1)),
-                  Arg<Func<IObjectValidator, bool>>.Is.NotNull))
-          .WhenCalled (mi => actualPredicate = (Func<IObjectValidator, bool>) mi.Arguments[2]);
+                  typeof (StubObjectValidator),
+                  typeof (CustomerValidationRuleCollector1),
+                  It.IsNotNull<Func<IObjectValidator, bool>>()))
+          .Callback ((Type validatorType, Type collectorTypeToRemoveFrom, Func<IObjectValidator, bool> validatorPredicate) => actualPredicate = validatorPredicate);
 
       _addingObjectValidationBuilder.Validator<StubObjectValidator, CustomerValidationRuleCollector1> (predicate);
 
@@ -191,12 +194,12 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
       Func<IObjectValidator, bool> actualPredicate = null;
 
       _removingObjectValidationRuleCollectorMock
-          .Stub (
+          .Setup (
               mock => mock.RegisterValidator (
-                  Arg.Is (typeof (StubObjectValidator)),
-                  Arg.Is (typeof (CustomerValidationRuleCollector1)),
-                  Arg<Func<IObjectValidator, bool>>.Is.NotNull))
-          .WhenCalled (mi => actualPredicate = (Func<IObjectValidator, bool>) mi.Arguments[2]);
+                  typeof (StubObjectValidator),
+                  typeof (CustomerValidationRuleCollector1),
+                  It.IsNotNull<Func<IObjectValidator, bool>>()))
+          .Callback ((Type validatorType, Type collectorTypeToRemoveFrom, Func<IObjectValidator, bool> validatorPredicate) => actualPredicate = validatorPredicate);
 
       _addingObjectValidationBuilder.Validator<StubObjectValidator, CustomerValidationRuleCollector1> (validator => true);
 

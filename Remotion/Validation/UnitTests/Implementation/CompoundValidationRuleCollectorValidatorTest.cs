@@ -15,41 +15,41 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Validation.Implementation;
-using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.Implementation
 {
   [TestFixture]
   public class CompoundValidationRuleCollectorValidatorTest
   {
-    private IValidationRuleCollectorValidator _collectorValidatorMock1;
-    private IValidationRuleCollectorValidator _collectorValidatorMock2;
+    private Mock<IValidationRuleCollectorValidator> _collectorValidatorMock1;
+    private Mock<IValidationRuleCollectorValidator> _collectorValidatorMock2;
     private CompoundValidationRuleCollectorValidator _compoundValidationRuleCollectorValidator;
-    private IValidationRuleCollector _collector;
+    private Mock<IValidationRuleCollector> _collector;
 
     [SetUp]
     public void SetUp ()
     {
-      _collectorValidatorMock1 = MockRepository.GenerateStrictMock<IValidationRuleCollectorValidator>();
-      _collectorValidatorMock2 = MockRepository.GenerateStrictMock<IValidationRuleCollectorValidator> ();
+      _collectorValidatorMock1 = new Mock<IValidationRuleCollectorValidator> (MockBehavior.Strict);
+      _collectorValidatorMock2 = new Mock<IValidationRuleCollectorValidator> (MockBehavior.Strict);
 
-      _collector = MockRepository.GenerateStub<IValidationRuleCollector>();
+      _collector = new Mock<IValidationRuleCollector>();
 
-      _compoundValidationRuleCollectorValidator = new CompoundValidationRuleCollectorValidator (new[] { _collectorValidatorMock1, _collectorValidatorMock2 });
+      _compoundValidationRuleCollectorValidator = new CompoundValidationRuleCollectorValidator (new[] { _collectorValidatorMock1.Object, _collectorValidatorMock2.Object });
     }
 
     [Test]
     public void CheckValid ()
     {
-      _collectorValidatorMock1.Expect (stub => stub.CheckValid (_collector));
-      _collectorValidatorMock2.Expect (stub => stub.CheckValid (_collector));
+      _collectorValidatorMock1.Setup (stub => stub.CheckValid (_collector.Object)).Verifiable();
+      _collectorValidatorMock2.Setup (stub => stub.CheckValid (_collector.Object)).Verifiable();
 
-      _compoundValidationRuleCollectorValidator.CheckValid (_collector);
+      _compoundValidationRuleCollectorValidator.CheckValid (_collector.Object);
 
-      _collectorValidatorMock1.VerifyAllExpectations();
-      _collectorValidatorMock2.VerifyAllExpectations();
+      _collectorValidatorMock1.Verify();
+      _collectorValidatorMock2.Verify();
     }
     
   }
