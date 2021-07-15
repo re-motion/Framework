@@ -20,6 +20,7 @@ using NUnit.Framework;
 using Remotion.Reflection;
 using Remotion.UnitTests.Reflection.TestDomain.MethodInfoExtensions;
 using Remotion.Utilities;
+using MethodInfoExtensions = Remotion.Reflection.MethodInfoExtensions;
 
 namespace Remotion.UnitTests.Utilities.ReflectionUtilityTests
 {

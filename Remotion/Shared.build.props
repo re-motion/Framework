@@ -22,11 +22,11 @@
     <PackageTags>re-motion</PackageTags>
     <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
     <DefineConstants Condition="'$(TargetFramework)' == 'net5.0-windows'">$(DefineConstants);NO_PEVERIFY</DefineConstants>
+    <NoWarn>1591;SYSLIB0011;SYSLIB0005;SYSLIB0012</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(ProjectType)' == 'Library' Or '$(ProjectType)' == 'WebTestingLibrary' Or '$(ProjectType)' == 'WebLibrary'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn>1591;SYSLIB0011</NoWarn>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <IsPackable>True</IsPackable>
     <TargetFrameworks>net461;net5.0-windows</TargetFrameworks>
@@ -45,7 +45,7 @@
 
   <PropertyGroup Condition="'$(ProjectType)' == 'Test'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn>0067;0649;0169</NoWarn>
+    <NoWarn>$(NoWarn);0067;0649;0169</NoWarn>
     <GenerateDocumentationFile>False</GenerateDocumentationFile>
     <IsPackable>False</IsPackable>
     <TargetFrameworks>net461;net5.0-windows</TargetFrameworks>
@@ -103,7 +103,14 @@
     <PackageVersion Condition="'$(AssemblyNuGetVersion)' != ''">$(AssemblyNuGetVersion)</PackageVersion>
   </PropertyGroup>
 
-  <Target Name="AdaptUseWebForms" BeforeTargets="ResolveAssemblyReferences" Condition="'$(UseWebForms)' == 'true'">
+  <PropertyGroup>
+    <ResolveReferencesDependsOn>
+      ResolveWebFormsDependencies;
+      $(ResolveReferencesDependsOn)
+    </ResolveReferencesDependsOn>
+  </PropertyGroup>
+
+  <Target Name="ResolveWebFormsDependencies" Condition="'$(UseWebForms)' == 'true'">
 
     <ItemGroup Condition="'$(TargetFramework)' == 'net5.0-windows'">
       <PackageReference Include="CoreForms.Web" Version="5.0.0-alpha-001" />

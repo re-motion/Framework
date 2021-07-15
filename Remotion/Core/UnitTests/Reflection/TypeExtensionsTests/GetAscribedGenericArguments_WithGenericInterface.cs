@@ -19,6 +19,7 @@ using System.Reflection;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Reflection;
+using TypeExtensions = Remotion.Reflection.TypeExtensions;
 
 namespace Remotion.UnitTests.Reflection.TypeExtensionsTests
 {

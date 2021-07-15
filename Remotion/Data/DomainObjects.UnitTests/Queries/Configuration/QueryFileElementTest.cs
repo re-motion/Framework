@@ -54,6 +54,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
 #endif
     public void GetRootedPath_WithUnrootedPath_ReturnsPathRelativeToAppBase_InSeparateAddDomain ()
     {
+#if NETFRAMEWORK
       AppDomainSetup setup = AppDomain.CurrentDomain.SetupInformation;
       setup.ApplicationBase = @"c:\";
       setup.DynamicBase = Path.GetTempPath ();
@@ -63,6 +64,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
         string fullPath = Path.Combine (AppContext.BaseDirectory, @"foo\bar.txt");
         Assert.That (QueryFileElement.GetRootedPath (path), Is.EqualTo (fullPath));
       }).Run();
+#endif
     }
   }
 }

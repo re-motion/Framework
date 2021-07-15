@@ -14,6 +14,9 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
+#if NETFRAMEWORK
+
 using System;
 using System.IO;
 using NUnit.Framework;
@@ -108,3 +111,4 @@ namespace Remotion.Data.DomainObjects.RdbmsTools.UnitTests
     }
   }
 }
+#endif

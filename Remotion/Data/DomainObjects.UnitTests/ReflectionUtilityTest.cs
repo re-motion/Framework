@@ -61,6 +61,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 #endif
     public void GetAssemblyPath_WithHashInDirectoryName ()
     {
+#if NETFRAMEWORK
       string directoryPath = Path.Combine (AppContext.BaseDirectory, "#HashTestPath");
       string originalAssemblyPath = typeof (ReflectionUtilityTest).Assembly.Location;
       string newAssemblyPath = Path.Combine (directoryPath, Path.GetFileName (originalAssemblyPath));
@@ -89,6 +90,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       {
         Directory.Delete (directoryPath, true);
       }
+#endif
     }
 
     [Test]

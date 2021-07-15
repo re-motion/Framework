@@ -97,6 +97,7 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.UnitTests
     [TearDown]
     public void TearDown ()
     {
+#if !NO_PEVERIFY
       if (DynamicMixinBuilder.Scope.StrongNamedModule != null)
       {
         DynamicMixinBuilder.Scope.SaveAssembly (true);
@@ -107,6 +108,7 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.UnitTests
         DynamicMixinBuilder.Scope.SaveAssembly (false);
         PEVerifier.CreateDefault ().VerifyPEFile (DynamicMixinBuilder.Scope.WeakNamedModule.FullyQualifiedName);
       }
+#endif
 
       _serviceLocatorScope.Dispose();
     }

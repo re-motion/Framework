@@ -5,7 +5,7 @@
   </PropertyGroup>
   <Import Project="..\..\Shared.build.props" />
   <PropertyGroup>
-    <TargetFrameworks>net461</TargetFrameworks>
+    <UseWebForms>true</UseWebForms>
     <AssemblyTitle>re-motion Development Support Library for Web Applications</AssemblyTitle>
     <AssemblyName>Remotion.Development.Web</AssemblyName>
     <Description>Library for unit testing, building, and other development-time activities of web applications.</Description>
