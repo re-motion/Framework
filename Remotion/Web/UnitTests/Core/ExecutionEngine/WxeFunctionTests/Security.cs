@@ -15,20 +15,19 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.ServiceLocation;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
-using Rhino.Mocks;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
 {
   [TestFixture]
   public class Security
   {
-    private MockRepository _mockRepository;
-    private IWxeSecurityAdapter _mockWxeSecurityAdapter;
+    private Mock<IWxeSecurityAdapter> _mockWxeSecurityAdapter;
     private WxeContext _wxeContext;
     private ServiceLocatorScope _serviceLocatorScope;
 
@@ -38,11 +37,10 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
       TestFunction rootFunction = new TestFunction ();
       WxeContextFactory contextFactory = new WxeContextFactory ();
       _wxeContext = contextFactory.CreateContext (rootFunction);
-      _mockRepository = new MockRepository ();
-      _mockWxeSecurityAdapter = _mockRepository.StrictMock<IWxeSecurityAdapter> ();
+      _mockWxeSecurityAdapter = new Mock<IWxeSecurityAdapter> (MockBehavior.Strict);
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterMultiple<IWxeSecurityAdapter> (() => _mockWxeSecurityAdapter);
+      serviceLocator.RegisterMultiple<IWxeSecurityAdapter> (() => _mockWxeSecurityAdapter.Object);
       _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
     }
 
@@ -56,35 +54,32 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
     public void ExecuteFunctionWithAccessGranted ()
     {
       TestFunction function = new TestFunction ();
-      _mockWxeSecurityAdapter.CheckAccess (function);
-      _mockRepository.ReplayAll ();
+      _mockWxeSecurityAdapter.Setup (_ => _.CheckAccess (function));
 
       function.Execute (_wxeContext);
 
-      _mockRepository.VerifyAll ();
+      _mockWxeSecurityAdapter.Verify();
     }
 
     [Test]
     public void HasStatelessAccessGranted ()
     {
-      Expect.Call (_mockWxeSecurityAdapter.HasStatelessAccess (typeof (TestFunction))).Return (true);
-      _mockRepository.ReplayAll ();
+      _mockWxeSecurityAdapter.Setup (_ => _.HasStatelessAccess (typeof (TestFunction))).Returns (true).Verifiable();
 
       bool hasAccess = WxeFunction.HasAccess (typeof (TestFunction));
 
-      _mockRepository.VerifyAll ();
+      _mockWxeSecurityAdapter.Verify();
       Assert.That (hasAccess, Is.True);
     }
 
     [Test]
     public void HasStatelessAccessDenied ()
     {
-      Expect.Call (_mockWxeSecurityAdapter.HasStatelessAccess (typeof (TestFunction))).Return (false);
-      _mockRepository.ReplayAll ();
+      _mockWxeSecurityAdapter.Setup (_ => _.HasStatelessAccess (typeof (TestFunction))).Returns (false).Verifiable();
 
       bool hasAccess = WxeFunction.HasAccess (typeof (TestFunction));
 
-      _mockRepository.VerifyAll ();
+      _mockWxeSecurityAdapter.Verify();
       Assert.That (hasAccess, Is.False);
     }
 
@@ -95,11 +90,9 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
       serviceLocator.RegisterMultiple<IWxeSecurityAdapter>();
       using (new ServiceLocatorScope (serviceLocator))
       {
-        _mockRepository.ReplayAll();
-
         bool hasAccess = WxeFunction.HasAccess (typeof (TestFunction));
 
-        _mockRepository.VerifyAll();
+        _mockWxeSecurityAdapter.Verify();
         Assert.That (hasAccess, Is.True);
       }
     }

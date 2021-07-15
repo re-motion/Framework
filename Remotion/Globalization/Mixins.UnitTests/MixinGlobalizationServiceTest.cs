@@ -18,13 +18,13 @@ using System;
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading.Tasks;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Globalization.Implementation;
 using Remotion.Globalization.Mixins.UnitTests.TestDomain;
 using Remotion.Mixins;
 using Remotion.Reflection;
-using Rhino.Mocks;
 
 namespace Remotion.Globalization.Mixins.UnitTests
 {
@@ -42,9 +42,9 @@ namespace Remotion.Globalization.Mixins.UnitTests
     [Test]
     public void GetResourceManager_WithTypeNotSupportingConversionFromITypeInformationToType ()
     {
-      var typeInformation = MockRepository.GenerateStub<ITypeInformation>();
+      var typeInformation = new Mock<ITypeInformation>();
 
-      var result = _globalizationService.GetResourceManager (typeInformation);
+      var result = _globalizationService.GetResourceManager (typeInformation.Object);
 
       Assert.That (result, Is.TypeOf (typeof (NullResourceManager)));
     }

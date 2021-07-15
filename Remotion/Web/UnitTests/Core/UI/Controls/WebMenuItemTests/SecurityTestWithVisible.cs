@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Security;
@@ -22,29 +23,26 @@ using Remotion.ServiceLocation;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
-using Rhino.Mocks;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.WebMenuItemTests
 {
   [TestFixture]
   public class SecurityTestWithVisible : BaseTest
   {
-    private MockRepository _mocks;
-    private IWebSecurityAdapter _mockWebSecurityAdapter;
-    private ISecurableObject _mockSecurableObject;
-    private Command _mockCommand;
+    private Mock<IWebSecurityAdapter> _mockWebSecurityAdapter;
+    private Mock<ISecurableObject> _mockSecurableObject;
+    private Mock<Command> _mockCommand;
     private ServiceLocatorScope _serviceLocatorStub;
 
     [SetUp]
     public void Setup ()
     {
-      _mocks = new MockRepository ();
-      _mockWebSecurityAdapter = _mocks.StrictMock<IWebSecurityAdapter> ();
-      _mockSecurableObject = _mocks.StrictMock<ISecurableObject> ();
-      _mockCommand = _mocks.StrictMock<Command> ();
+      _mockWebSecurityAdapter = new Mock<IWebSecurityAdapter> (MockBehavior.Strict);
+      _mockSecurableObject = new Mock<ISecurableObject> (MockBehavior.Strict);
+      _mockCommand = new Mock<Command> (MockBehavior.Strict);
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterMultiple<IWebSecurityAdapter> (() => _mockWebSecurityAdapter);
+      serviceLocator.RegisterMultiple<IWebSecurityAdapter> (() => _mockWebSecurityAdapter.Object);
       serviceLocator.RegisterMultiple<IWxeSecurityAdapter>();
       _serviceLocatorStub = new ServiceLocatorScope (serviceLocator);
     }
@@ -58,30 +56,35 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebMenuItemTests
     [Test]
     public void EvaluateTrue_FromTrueAndWithMissingPermissionBehaviorSetToDisabled ()
     {
+      // TODO: Replace BackToRecordAll and insert Callbase = true
       WebMenuItem menuItem = CreateWebMenuItem ();
       menuItem.MissingPermissionBehavior = MissingPermissionBehavior.Disabled;
       menuItem.IsVisible = true;
-      Expect.Call (_mockCommand.HasAccess (_mockSecurableObject)).Repeat.Never ();
-      _mocks.ReplayAll ();
+
+      _mockCommand.Setup (_ => _.HasAccess (_mockSecurableObject.Object)).Verifiable();
 
       bool isVisible = menuItem.EvaluateVisible ();
 
-      _mocks.VerifyAll ();
+      _mockWebSecurityAdapter.Verify();
+      _mockSecurableObject.Verify();
+      _mockCommand.Verify (_ => _.HasAccess (_mockSecurableObject.Object), Times.Never());
       Assert.That (isVisible, Is.True);
     }
 
     [Test]
     public void EvaluateFalse_FromFalseAndWithMissingPermissionBehaviorSetToDisabled ()
     {
+      // TODO: Replace BackToRecordAll and insert Callbase = true
       WebMenuItem menuItem = CreateWebMenuItem ();
       menuItem.MissingPermissionBehavior = MissingPermissionBehavior.Disabled;
       menuItem.IsVisible = false;
-      Expect.Call (_mockCommand.HasAccess (_mockSecurableObject)).Repeat.Never ();
-      _mocks.ReplayAll ();
+      _mockCommand.Setup (_ => _.HasAccess (_mockSecurableObject.Object)).Verifiable();
 
       bool isVisible = menuItem.EvaluateVisible ();
 
-      _mocks.VerifyAll ();
+      _mockWebSecurityAdapter.Verify();
+      _mockSecurableObject.Verify();
+      _mockCommand.Verify (_ => _.HasAccess (_mockSecurableObject.Object), Times.Never());
       Assert.That (isVisible, Is.False);
     }
 
@@ -110,28 +113,32 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebMenuItemTests
     [Test]
     public void EvaluateTrue_FromTrueAndWithAccessGranted ()
     {
+      // TODO: Replace BackToRecordAll and insert Callbase = true
       WebMenuItem menuItem = CreateWebMenuItem ();
       menuItem.IsVisible = true;
-      Expect.Call (_mockCommand.HasAccess (_mockSecurableObject)).Return (true);
-      _mocks.ReplayAll ();
+      _mockCommand.Setup (_ => _.HasAccess (_mockSecurableObject.Object)).Returns (true).Verifiable();
 
       bool isVisible = menuItem.EvaluateVisible ();
 
-      _mocks.VerifyAll ();
+      _mockWebSecurityAdapter.Verify();
+      _mockSecurableObject.Verify();
+      _mockCommand.Verify();
       Assert.That (isVisible, Is.True);
     }
 
     [Test]
     public void EvaluateFalse_FromTrueAndWithAccessDenied ()
     {
+      // TODO: Replace BackToRecordAll and insert Callbase = true
       WebMenuItem menuItem = CreateWebMenuItem ();
       menuItem.IsVisible = true;
-      Expect.Call (_mockCommand.HasAccess (_mockSecurableObject)).Return (false);
-      _mocks.ReplayAll ();
+      _mockCommand.Setup (_ => _.HasAccess (_mockSecurableObject.Object)).Returns (false).Verifiable();
 
       bool isVisible = menuItem.EvaluateVisible ();
 
-      _mocks.VerifyAll ();
+      _mockWebSecurityAdapter.Verify();
+      _mockSecurableObject.Verify();
+      _mockCommand.Verify();
       Assert.That (isVisible, Is.False);
     }
 
@@ -139,21 +146,24 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebMenuItemTests
     [Test]
     public void EvaluateFalse_FromFalse ()
     {
+      // TODO: Replace BackToRecordAll and insert Callbase = true
       WebMenuItem menuItem = CreateWebMenuItem ();
       menuItem.IsVisible = false;
-      _mocks.ReplayAll ();
 
       bool isVisible = menuItem.EvaluateVisible ();
 
-      _mocks.VerifyAll ();
+      _mockWebSecurityAdapter.Verify();
+      _mockSecurableObject.Verify();
+      _mockCommand.Verify();
       Assert.That (isVisible, Is.False);
     }
 
     private WebMenuItem CreateWebMenuItem ()
     {
+      // TODO: Replace BackToRecordAll
       WebMenuItem menuItem = CreateWebMenuItemWithoutCommand ();
-      menuItem.Command = _mockCommand;
-      _mocks.BackToRecordAll();
+      menuItem.Command = _mockCommand.Object;
+      // _mocks.BackToRecordAll();
 
       return menuItem;
     }
@@ -164,7 +174,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebMenuItemTests
       menuItem.Command.Type = CommandType.None;
       menuItem.Command = null;
       menuItem.MissingPermissionBehavior = MissingPermissionBehavior.Invisible;
-      menuItem.SecurableObject = _mockSecurableObject;
+      menuItem.SecurableObject = _mockSecurableObject.Object;
       
       return menuItem;
     }

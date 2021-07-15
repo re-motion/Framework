@@ -15,27 +15,24 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
-using Rhino.Mocks;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
 {
   [TestFixture]
   public class WxeFunctionTest
   {
-    private MockRepository _mockRepository;
-    private IWxeFunctionExecutionListener _executionListenerMock;
+    private Mock<IWxeFunctionExecutionListener> _executionListenerMock;
 
     [SetUp]
     public void SetUp ()
     {
-      _mockRepository = new MockRepository();
-
-      _executionListenerMock = _mockRepository.StrictMock<IWxeFunctionExecutionListener>();
+      _executionListenerMock = new Mock<IWxeFunctionExecutionListener> (MockBehavior.Strict);
     }
 
     [Test]
@@ -122,8 +119,8 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
     public void SetExecutionListener ()
     {
       TestFunction2 function = new TestFunction2();
-      function.SetExecutionListener (_executionListenerMock);
-      Assert.That (function.ExecutionListener, Is.SameAs (_executionListenerMock));
+      function.SetExecutionListener (_executionListenerMock.Object);
+      Assert.That (function.ExecutionListener, Is.SameAs (_executionListenerMock.Object));
     }
 
     [Test]
@@ -133,7 +130,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
       function.Add (
           new WxeDelegateStep (
               () => Assert.That (
-                  () => function.SetExecutionListener (_executionListenerMock),
+                  () => function.SetExecutionListener (_executionListenerMock.Object),
                   Throws.InvalidOperationException
                       .With.Message.EqualTo ("The ExecutionListener cannot be set after the TransactionStrategy has been initialized."))));
 

@@ -18,9 +18,9 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Web.UI;
+using Moq;
 using NUnit.Framework;
 using Remotion.Web.UI.Controls.ControlReplacing;
-using Rhino.Mocks;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
 {
@@ -35,7 +35,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
     {
       base.SetUp();
 
-      _replacer = new ControlReplacer (MemberCallerMock);
+      _replacer = new ControlReplacer (MemberCallerMock.Object);
 
       Pair state = new Pair (new Hashtable(), new object());
       LosFormatter formatter = new LosFormatter ();
@@ -59,28 +59,26 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
       _replacer.StateModificationStrategy = _stateModificationStrategy;
       _replacer.Controls.Add (testPageHolder.NamingContainer);
 
-      MemberCallerMock.Expect (mock => mock.SetChildControlState (Arg<ControlReplacer>.Is.Same (_replacer), Arg<Hashtable>.Is.NotNull));
-      MockRepository.ReplayAll ();
+      MemberCallerMock.Setup (mock => mock.SetChildControlState (_replacer, It.IsNotNull<Hashtable>())).Verifiable();
 
-      _stateModificationStrategy.LoadControlState (_replacer, MemberCallerMock);
+      _stateModificationStrategy.LoadControlState (_replacer, MemberCallerMock.Object);
 
-      MockRepository.VerifyAll ();
+      MemberCallerMock.Verify();
     }
 
     [Test]
     public void LoadViewState ()
     {
+      // TODO: Fix strrict mock setup, "IInternalControlMemberCaller.LoadViewStateRecursive(ControlReplacer, object) invocation failed with mock behavior Strict. All invocations on the mock must have a corresponding setup."
       var testPageHolder = new TestPageHolder (false, RequestMode.PostBack);
       _replacer.StateModificationStrategy = _stateModificationStrategy;
       _replacer.Controls.Add (testPageHolder.NamingContainer);
 
-      MemberCallerMock.Expect (mock => mock.LoadViewStateRecursive (Arg<ControlReplacer>.Is.Same (_replacer), Arg<Hashtable>.Is.NotNull));
+      MemberCallerMock.Setup (mock => mock.LoadViewStateRecursive (_replacer, It.IsNotNull<Hashtable>())).Verifiable();
 
-      MockRepository.ReplayAll ();
+      _stateModificationStrategy.LoadViewState (_replacer, MemberCallerMock.Object);
 
-      _stateModificationStrategy.LoadViewState (_replacer, MemberCallerMock);
-
-      MemberCallerMock.VerifyAllExpectations ();
+      MemberCallerMock.Verify();
     }
   }
 }

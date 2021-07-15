@@ -19,6 +19,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
@@ -30,7 +31,6 @@ using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.DropDownMenuImplementation;
 using Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering;
 using Remotion.Web.UI.Controls.Rendering;
-using Rhino.Mocks;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Rendering
 {
@@ -46,8 +46,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
     private static readonly Unit s_iconHeight = Unit.Pixel (12);
     private static readonly IconInfo s_titleIcon = new IconInfo (c_Icon_Url, c_IconAlternateText, c_Icon_ToolTip, s_iconWidth, s_iconHeight);
 
-    private IDropDownMenu _control;
-    private HttpContextBase _httpContextStub;
+    private Mock<IDropDownMenu> _control;
+    private Mock<HttpContextBase> _httpContextStub;
     private HtmlHelper _htmlHelper;
     private FakeResourceUrlFactory _resourceUrlFactory;
 
@@ -55,30 +55,30 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
     public void SetUp ()
     {
       _htmlHelper = new HtmlHelper();
-      _httpContextStub = MockRepository.GenerateStub<HttpContextBase>();
+      _httpContextStub = new Mock<HttpContextBase>();
 
-      _control = MockRepository.GenerateStub<IDropDownMenu>();
-      _control.ID = "DropDownMenu1";
-      _control.Stub (stub => stub.Enabled).Return (true);
-      _control.Stub (stub => stub.UniqueID).Return ("DropDownMenu1");
-      _control.Stub (stub => stub.ClientID).Return ("DropDownMenu1");
-      _control.Stub (stub => stub.ControlType).Return ("DropDownMenu");
-      _control.Stub (stub => stub.MenuItems).Return (new WebMenuItemCollection (_control));
-      _control.Stub (stub => stub.GetBindOpenEventScript (null, null, true)).IgnoreArguments().Return ("OpenDropDownMenuEventReference");
-      _control.Stub (stub => stub.ResolveClientUrl (null)).IgnoreArguments().Do ((Func<string, string>) (url => url.TrimStart ('~')));
+      _control = new Mock<IDropDownMenu>();
+      _control.SetupProperty (_ => _.ID);
+      _control.Object.ID = "DropDownMenu1";
+      _control.Setup (stub => stub.Enabled).Returns (true);
+      _control.Setup (stub => stub.UniqueID).Returns ("DropDownMenu1");
+      _control.Setup (stub => stub.ClientID).Returns ("DropDownMenu1");
+      _control.Setup (stub => stub.ControlType).Returns ("DropDownMenu");
+      _control.Setup (stub => stub.MenuItems).Returns (new WebMenuItemCollection (_control.Object));
+      _control.Setup (stub => stub.GetBindOpenEventScript (It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>())).Returns ("OpenDropDownMenuEventReference");
+      _control.Setup (stub => stub.ResolveClientUrl (It.IsAny<string>())).Returns ((string relativeUrl) => (relativeUrl.TrimStart ('~')));
 
-      IPage pageStub = MockRepository.GenerateStub<IPage>();
-      _control.Stub (stub => stub.Page).Return (pageStub);
+      var pageStub = new Mock<IPage>();
+      _control.Setup (stub => stub.Page).Returns (pageStub.Object);
 
       StateBag stateBag = new StateBag();
-      _control.Stub (stub => stub.Attributes).Return (new AttributeCollection (stateBag));
-      _control.Stub (stub => stub.ControlStyle).Return (new Style (stateBag));
+      _control.Setup (stub => stub.Attributes).Returns (new AttributeCollection (stateBag));
+      _control.Setup (stub => stub.ControlStyle).Returns (new Style (stateBag));
 
-      _control.Stub (stub => stub.GetResourceManager()).Return (NullResourceManager.Instance);
+      _control.Setup (stub => stub.GetResourceManager()).Returns (NullResourceManager.Instance);
 
-      IClientScriptManager scriptManagerMock = MockRepository.GenerateMock<IClientScriptManager>();
-      _control.Page.Stub (stub => stub.ClientScript).Return (scriptManagerMock);
-
+      var scriptManagerMock = new Mock<IClientScriptManager>();
+      Mock.Get (_control.Object.Page).Setup (stub => stub.ClientScript).Returns (scriptManagerMock.Object);
       _resourceUrlFactory = new FakeResourceUrlFactory();
     }
 
@@ -92,7 +92,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
     [Test]
     public void RenderEmptyMenuWithTitle ()
     {
-      _control.Stub(stub=>stub.TitleText).Return(c_MenuTitle);
+      _control.Setup(stub=>stub.TitleText).Returns(c_MenuTitle);
 
       XmlNode containerDiv = GetAssertedContainerSpan ();
       AssertTitleSpan (containerDiv, true, false);
@@ -101,8 +101,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
     [Test]
     public void RenderEmptyMenuWithTitleAndIcon ()
     {
-      _control.Stub (stub => stub.TitleText).Return (c_MenuTitle);
-      _control.Stub (stub => stub.TitleIcon).Return (s_titleIcon);
+      _control.Setup (stub => stub.TitleText).Returns (c_MenuTitle);
+      _control.Setup (stub => stub.TitleIcon).Returns (s_titleIcon);
 
       XmlNode containerDiv = GetAssertedContainerSpan ();
       AssertTitleSpan (containerDiv, true, true);
@@ -111,7 +111,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
     [Test]
     public void RenderPopulatedMenu ()
     {
-      _control.Stub (stub => stub.TitleText).Return (c_MenuTitle);
+      _control.Setup (stub => stub.TitleText).Returns (c_MenuTitle);
       PopulateMenu();
 
       XmlNode containerDiv = GetAssertedContainerSpan ();
@@ -121,17 +121,17 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
     [Test]
     public void RenderDiagnosticMetadataAttributes ()
     {
-      _control.Stub (stub => stub.TitleText).Return (c_MenuTitle);
+      _control.Setup (stub => stub.TitleText).Returns (c_MenuTitle);
       PopulateMenu();
 
       var renderer = new DropDownMenuRenderer (_resourceUrlFactory, GlobalizationService, RenderingFeatures.WithDiagnosticMetadata, new StubLabelReferenceRenderer());
-      renderer.Render (new DropDownMenuRenderingContext (_httpContextStub, _htmlHelper.Writer, _control));
+      renderer.Render (new DropDownMenuRenderingContext (_httpContextStub.Object, _htmlHelper.Writer, _control.Object));
       
       var document = _htmlHelper.GetResultDocument();
       var containerDiv = document.GetAssertedChildElement ("span", 0);
       containerDiv.AssertAttributeValueEquals (DiagnosticMetadataAttributes.ControlType, "DropDownMenu");
       containerDiv.AssertAttributeValueEquals (DiagnosticMetadataAttributes.Content, c_MenuTitle);
-      containerDiv.AssertAttributeValueEquals (DiagnosticMetadataAttributes.IsDisabled, (!_control.Enabled).ToString().ToLower());
+      containerDiv.AssertAttributeValueEquals (DiagnosticMetadataAttributes.IsDisabled, (!_control.Object.Enabled).ToString().ToLower());
     }
 
     private void AssertTitleSpan (XmlNode containerDiv, bool withTitle, bool withIcon)
@@ -156,9 +156,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
       }
       else
       {
-        buttonAnchor.AssertAttributeValueEquals ("id", _control.ClientID + "_DropDownMenuButton");
+        buttonAnchor.AssertAttributeValueEquals ("id", _control.Object.ClientID + "_DropDownMenuButton");
         buttonAnchor.AssertAttributeValueEquals ("role", "button");
-        buttonAnchor.AssertAttributeValueEquals (StubLabelReferenceRenderer.LabelReferenceAttribute, _control.ClientID + "_DropDownMenuLabel");
+        buttonAnchor.AssertAttributeValueEquals (StubLabelReferenceRenderer.LabelReferenceAttribute, _control.Object.ClientID + "_DropDownMenuLabel");
         buttonAnchor.AssertAttributeValueEquals (StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
         buttonAnchor.AssertNoAttribute ("aria-hidden");
       }
@@ -193,10 +193,10 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
     private XmlNode GetAssertedContainerSpan ()
     {
       var renderer = new DropDownMenuRenderer (_resourceUrlFactory, GlobalizationService, RenderingFeatures.Default, new StubLabelReferenceRenderer());
-      renderer.Render (new DropDownMenuRenderingContext (_httpContextStub, _htmlHelper.Writer, _control));
+      renderer.Render (new DropDownMenuRenderingContext (_httpContextStub.Object, _htmlHelper.Writer, _control.Object));
       var document = _htmlHelper.GetResultDocument();
       var containerDiv = document.GetAssertedChildElement ("span", 0);
-      containerDiv.AssertAttributeValueEquals ("id", _control.ClientID);
+      containerDiv.AssertAttributeValueEquals ("id", _control.Object.ClientID);
       containerDiv.AssertAttributeValueEquals ("class", "DropDownMenuContainer");
       containerDiv.AssertChildElementCount (1);
 
@@ -229,7 +229,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
         command.HrefCommand.Target = "_blank";
       }
 
-      _control.MenuItems.Add (
+      _control.Object.MenuItems.Add (
           new WebMenuItem (
               id,
               category,
@@ -246,11 +246,12 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
       }
       else
       {
-        if (isVisible && _control.Enabled)
+        if (isVisible && _control.Object.Enabled)
         {
-          _control.Page.ClientScript.Expect (
-              mock => mock.GetPostBackClientHyperlink (Arg.Is<IControl> (_control), Arg.Text.Like (index.ToString ())))
-              .Return ("PostBackHyperLink:" + index);
+          Mock.Get (_control.Object.Page.ClientScript).Setup (
+                  mock => mock.GetPostBackClientHyperlink (_control.Object, index.ToString()))
+              .Returns ("PostBackHyperLink:" + index)
+              .Verifiable();
         }
       }
     }

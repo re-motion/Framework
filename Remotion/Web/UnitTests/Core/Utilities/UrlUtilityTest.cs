@@ -18,11 +18,11 @@ using System;
 using System.Collections.Specialized;
 using System.Text;
 using System.Web;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.Utilities;
-using Rhino.Mocks;
 
 namespace Remotion.Web.UnitTests.Core.Utilities
 {
@@ -44,7 +44,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
 
       Assert.That (
-          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, ""),
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub.Object, ""),
           Is.EqualTo (""));
     }
 
@@ -54,7 +54,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
 
       Assert.That (
-          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "/AppDir/path"),
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub.Object, "/AppDir/path"),
           Is.EqualTo ("/AppDir/path"));
     }
 
@@ -64,7 +64,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
 
       Assert.That (
-          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "\\AppDir\\path"),
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub.Object, "\\AppDir\\path"),
           Is.EqualTo ("/AppDir/path"));
     }
 
@@ -74,7 +74,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
 
       Assert.That (
-          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "/AppDir\\path"),
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub.Object, "/AppDir\\path"),
           Is.EqualTo ("/AppDir/path"));
     }
 
@@ -84,7 +84,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/AppdIr/folder/file?x=y"), "/appDir");
 
       Assert.That (
-          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "part1/part2"),
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub.Object, "part1/part2"),
           Is.EqualTo ("/AppdIr/folder/part1/part2"));
     }
 
@@ -94,7 +94,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/AppdIr/folder/file?x=y"), "/appDir");
 
       Assert.That (
-          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "part1\\part2"),
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub.Object, "part1\\part2"),
           Is.EqualTo ("/AppdIr/folder/part1/part2"));
     }
 
@@ -104,7 +104,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost"), "/");
 
       Assert.That (
-          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "part1/part2"),
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub.Object, "part1/part2"),
           Is.EqualTo ("/part1/part2"));
     }
 
@@ -114,17 +114,17 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/"), "/");
 
       Assert.That (
-          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "part1/part2"),
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub.Object, "part1/part2"),
           Is.EqualTo ("/part1/part2"));
     }
 
     [Test]
     public void ResolveUrlCaseSensitive_WithRelativePath_UsesPathFromRequestUrl ()
     {
-      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/_%20_%C3%84_%C3%A4_/_%D6_%f6_/"), "/_ _Ä_ä_");
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/_%20_%C3%84_%C3%A4_/_%D6_%f6_/"), "/_ _Ã„_Ã¤_");
 
       Assert.That (
-          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "path"),
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub.Object, "path"),
           Is.EqualTo ("/_%20_%C3%84_%C3%A4_/_%D6_%f6_/path"),
           "This test fails in Visual Studio because some environments change the URL to use upper case escape sequences. This started somewhere in 2015. Other environments (nunit console, IIS) seem unaffected.");
     }
@@ -135,7 +135,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
 
       Assert.That (
-          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~"),
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub.Object, "~"),
           Is.EqualTo ("/appDir/"));
     }
 
@@ -145,7 +145,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
 
       Assert.That (
-          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/"),
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub.Object, "~/"),
           Is.EqualTo ("/appDir/"));
     }
 
@@ -155,7 +155,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
 
       Assert.That (
-          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/part1/part2"),
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub.Object, "~/part1/part2"),
           Is.EqualTo ("/appDir/part1/part2"));
     }
 
@@ -165,7 +165,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
 
       Assert.That (
-          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/."),
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub.Object, "~/."),
           Is.EqualTo ("/appDir"));
     }
 
@@ -175,7 +175,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
 
       Assert.That (
-          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/./part2"),
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub.Object, "~/./part2"),
           Is.EqualTo ("/appDir/part2"));
     }
 
@@ -185,7 +185,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
 
       Assert.That (
-          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/part1/."),
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub.Object, "~/part1/."),
           Is.EqualTo ("/appDir/part1"));
     }
 
@@ -195,7 +195,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
 
       Assert.That (
-          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/~"),
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub.Object, "~/~"),
           Is.EqualTo ("/appDir/~"));
     }
 
@@ -205,7 +205,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
 
       Assert.That (
-          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/~/"),
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub.Object, "~/~/"),
           Is.EqualTo ("/appDir/~/"));
     }
 
@@ -215,7 +215,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
 
       Assert.That (
-          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/~/part1/part2/"),
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub.Object, "~/~/part1/part2/"),
           Is.EqualTo ("/appDir/~/part1/part2/"));
     }
 
@@ -225,7 +225,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
 
       Assert.That (
-          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/part1/../part2/"),
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub.Object, "~/part1/../part2/"),
           Is.EqualTo ("/appDir/part2/"));
     }
 
@@ -235,7 +235,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
 
       Assert.That (
-          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/../part2/"),
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub.Object, "~/../part2/"),
           Is.EqualTo ("/part2/"));
     }
 
@@ -245,7 +245,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
 
       Assert.That (
-          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/~/part1/part2/"),
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub.Object, "~/~/part1/part2/"),
           Is.EqualTo ("/appDir/~/part1/part2/"));
     }
 
@@ -255,7 +255,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
 
       Assert.That (
-          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/~/part1/../../part2/"),
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub.Object, "~/~/part1/../../part2/"),
           Is.EqualTo ("/appDir/part2/"));
     }
 
@@ -265,7 +265,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
 
       Assert.That (
-          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/~/../../part1/part2/"),
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub.Object, "~/~/../../part1/part2/"),
           Is.EqualTo ("/part1/part2/"));
     }
 
@@ -275,7 +275,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
 
       Assert.That (
-          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/part1/part2/"),
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub.Object, "~/part1/part2/"),
           Is.EqualTo ("/appDir/part1/part2/"));
     }
 
@@ -285,7 +285,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/AppdiR/file?x=y"), "/appDir");
 
       Assert.That (
-          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/path"),
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub.Object, "~/path"),
           Is.EqualTo ("/AppdiR/path"));
     }
 
@@ -295,7 +295,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost"), "/");
 
       Assert.That (
-          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/path"),
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub.Object, "~/path"),
           Is.EqualTo ("/path"));
     }
 
@@ -305,7 +305,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/"), "/");
 
       Assert.That (
-          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/path"),
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub.Object, "~/path"),
           Is.EqualTo ("/path"));
     }
 
@@ -315,7 +315,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost"), null);
 
       Assert.That (
-          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/path"),
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub.Object, "~/path"),
           Is.EqualTo ("/path"));
     }
 
@@ -325,7 +325,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir"), "/appDir");
 
       Assert.That (
-          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/path"),
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub.Object, "~/path"),
           Is.EqualTo ("/appDir/path"));
     }
 
@@ -335,17 +335,17 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/"), "/appDir");
 
       Assert.That (
-          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/path"),
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub.Object, "~/path"),
           Is.EqualTo ("/appDir/path"));
     }
 
     [Test]
     public void ResolveUrlCaseSensitive_WithRootOperator_UsesVirtualApplicationPathFromUrl_ComparesUsingDecodedPath ()
     {
-      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/_%20_%C3%84_%C3%A4_/file"), "/_ _Ä_ä_");
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/_%20_%C3%84_%C3%A4_/file"), "/_ _Ã„_Ã¤_");
 
       Assert.That (
-          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/path"),
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub.Object, "~/path"),
           Is.EqualTo ("/_%20_%C3%84_%C3%A4_/path"),
           "This test fails in Visual Studio because some environments change the URL to use upper case escape sequences. This started somewhere in 2015. Other environments (nunit console, IIS) seem unaffected.");
     }
@@ -353,10 +353,10 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     [Test]
     public void ResolveUrlCaseSensitive_WithRootOperator_UsesVirtualApplicationPathFromUrl_ComparesUsingDecodedPathWithTrailingSlash ()
     {
-      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/_%20_%C3%84_%C3%A4_/file"), "/_ _Ä_ä_/");
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/_%20_%C3%84_%C3%A4_/file"), "/_ _Ã„_Ã¤_/");
 
       Assert.That (
-          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/path"),
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub.Object, "~/path"),
           Is.EqualTo ("/_%20_%C3%84_%C3%A4_/path"),
           "This test fails in Visual Studio because some environments change the URL to use upper case escape sequences. This started somewhere in 2015. Other environments (nunit console, IIS) seem unaffected.");
     }
@@ -364,10 +364,10 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     [Test]
     public void ResolveUrlCaseSensitive_WithRootOperator_UsesVirtualApplicationPathFromRootUrl_ComparesUsingDecodedPath ()
     {
-      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/_%20_%C3%84_%C3%A4_"), "/_ _Ä_ä_");
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/_%20_%C3%84_%C3%A4_"), "/_ _Ã„_Ã¤_");
 
       Assert.That (
-          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/path"),
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub.Object, "~/path"),
           Is.EqualTo ("/_%20_%C3%84_%C3%A4_/path"),
           "This test fails in Visual Studio because some environments change the URL to use upper case escape sequences. This started somewhere in 2015. Other environments (nunit console, IIS) seem unaffected.");
     }
@@ -375,10 +375,10 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     [Test]
     public void ResolveUrlCaseSensitive_WithRootOperator_UsesVirtualApplicationPathFromRootUrlWithTrailingSlash_ComparesUsingDecodedPath ()
     {
-      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/_%20_%C3%84_%C3%A4_/"), "/_ _Ä_ä_");
+      var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/_%20_%C3%84_%C3%A4_/"), "/_ _Ã„_Ã¤_");
 
       Assert.That (
-          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/path"),
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub.Object, "~/path"),
           Is.EqualTo ("/_%20_%C3%84_%C3%A4_/path"),
           "This test fails in Visual Studio because some environments change the URL to use upper case escape sequences. This started somewhere in 2015. Other environments (nunit console, IIS) seem unaffected.");
     }
@@ -390,7 +390,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
 
       Assert.That (
           () =>
-          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/path"),
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub.Object, "~/path"),
           Throws.InvalidOperationException
                 .With.Message.StartsWith ("Cannot calculate the application path when the request URL does not start with the application path."));
     }
@@ -400,12 +400,12 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     {
       var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
 
-      var sessionStub = MockRepository.GenerateStub<HttpSessionStateBase>();
-      sessionStub.Stub (_ => _.IsCookieless).Return (false);
-      httpContextStub.Stub (_ => _.Session).Return (sessionStub);
+      var sessionStub = new Mock<HttpSessionStateBase>();
+      sessionStub.Setup (_ => _.IsCookieless).Returns (false);
+      httpContextStub.Setup (_ => _.Session).Returns (sessionStub.Object);
 
       Assert.That (
-          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/path"),
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub.Object, "~/path"),
           Is.EqualTo ("/appDir/path"));
     }
 
@@ -414,28 +414,28 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     {
       var httpContextStub = CreateHttpContextStub (new Uri ("http://localhost/appDir/file?x=y"), "/appDir");
 
-      var sessionStub = MockRepository.GenerateStub<HttpSessionStateBase>();
-      sessionStub.Stub (_ => _.IsCookieless).Return (true);
-      httpContextStub.Stub (_ => _.Session).Return (sessionStub);
+      var sessionStub = new Mock<HttpSessionStateBase>();
+      sessionStub.Setup (_ => _.IsCookieless).Returns (true);
+      httpContextStub.Setup (_ => _.Session).Returns (sessionStub.Object);
 
       Assert.That (
           () =>
-          UrlUtility.ResolveUrlCaseSensitive (httpContextStub, "~/path"),
+          UrlUtility.ResolveUrlCaseSensitive (httpContextStub.Object, "~/path"),
           Throws.InvalidOperationException
                 .With.Message.EqualTo ("Cookieless sessions are not supported for resolving URLs."));
     }
 
-    private HttpContextBase CreateHttpContextStub (Uri url, string applicationPath)
+    private Mock<HttpContextBase> CreateHttpContextStub (Uri url, string applicationPath)
     {
-      var httpRequestStub = MockRepository.GenerateStub<HttpRequestBase>();
-      httpRequestStub.Stub (_ => _.Url).Return (url);
-      httpRequestStub.Stub (_ => _.ApplicationPath).Return (applicationPath);
+      var httpRequestStub = new Mock<HttpRequestBase>();
+      httpRequestStub.Setup (_ => _.Url).Returns (url);
+      httpRequestStub.Setup (_ => _.ApplicationPath).Returns (applicationPath);
 
-      var httpContextStub = MockRepository.GenerateStub<HttpContextBase>();
-      httpContextStub.Stub (_ => _.Request).Return (httpRequestStub);
+      var httpContextStub = new Mock<HttpContextBase>();
+      httpContextStub.Setup (_ => _.Request).Returns (httpRequestStub.Object);
 
-      var httpContextProviderStub = MockRepository.GenerateStub<IHttpContextProvider>();
-      httpContextProviderStub.Stub (_ => _.GetCurrentHttpContext()).Return (httpContextStub);
+      var httpContextProviderStub = new Mock<IHttpContextProvider>();
+      httpContextProviderStub.Setup (_ => _.GetCurrentHttpContext()).Returns (httpContextStub.Object);
 
       return httpContextStub;
     }
@@ -445,7 +445,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     {
       string url = string.Empty;
       string parameter = "Parameter1";
-      string value = "Value1ä#";
+      string value = "Value1Ã¤#";
 
       string expected = string.Format (
           "{0}?{1}={2}",
@@ -462,7 +462,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     {
       string url = "http://localhost/Default.html";
       string parameter = "Parameter1";
-      string value = "Value1ä#";
+      string value = "Value1Ã¤#";
 
       string expected = string.Format (
           "{0}?{1}={2}",
@@ -499,7 +499,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     public void AddParameter_WithParameterNameIsNull_ReturnsUrlWithOnlyTheParameterValue ()
     {
       string url = "http://localhost/Default.html";
-      string value = "Value1ä#";
+      string value = "Value1Ã¤#";
 
       string expected = string.Format (
           "{0}?{1}",
@@ -526,7 +526,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     {
       string url = "http://localhost/Default.html?Parameter2=Value2";
       string parameter = "Parameter1";
-      string value = "Value1ä#";
+      string value = "Value1Ã¤#";
 
       string expected = string.Format (
           "{0}&{1}={2}",
@@ -543,7 +543,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     {
       string url = "http://localhost/Default.html?";
       string parameter = "Parameter1";
-      string value = "Value1ä#";
+      string value = "Value1Ã¤#";
 
       string expected = string.Format (
           "{0}{1}={2}",
@@ -560,7 +560,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     {
       string url = "http://localhost/Default.html?Parameter2=Value2&";
       string parameter = "Parameter1";
-      string value = "Value1ä#";
+      string value = "Value1Ã¤#";
 
       string expected = string.Format (
           "{0}{1}={2}",
@@ -582,7 +582,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       string parameter3 = null;
       string parameter4 = "Parameter4";
       string parameter5 = "Parameter5";
-      string value1 = "Value1ä#";
+      string value1 = "Value1Ã¤#";
       string value2a = "Value2a";
       string value2b = "Value2b";
       string value3 = "Value3";
@@ -635,7 +635,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     {
       string parameter1 = "Parameter1";
       string parameter2 = "Parameter2";
-      string value1 = "Value1ä#";
+      string value1 = "Value1Ã¤#";
       string value2 = "Value2";
 
       NameValueCollection queryString = new NameValueCollection();
@@ -670,7 +670,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       string url = "http://localhost/Default.html";
       string parameter1 = "Parameter1";
       string parameter2 = "Parameter2";
-      string value1 = "Value1ä#";
+      string value1 = "Value1Ã¤#";
       string value2 = "Value2";
 
       string original = string.Format (
@@ -699,7 +699,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       string url = "http://localhost/Default.html";
       string parameter1 = "Parameter1";
       string parameter2 = "Parameter2";
-      string value1 = "Value1ä#";
+      string value1 = "Value1Ã¤#";
       string value2 = "Value2";
 
       string original = string.Format (
@@ -728,7 +728,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       string url = "http://localhost/Parameter1.html";
       string parameter1 = "Parameter1";
       string parameter2 = "Parameter2";
-      string value1 = "Value1ä#";
+      string value1 = "Value1Ã¤#";
       string value2 = "Value2";
 
       string original = string.Format (
@@ -757,7 +757,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       string url = "http://localhost/Default.html";
       string parameter1 = "Parameter1";
       string parameter2 = "Parameter2";
-      string value1 = "Value1ä#Parameter2";
+      string value1 = "Value1Ã¤#Parameter2";
       string value2 = "Value2";
 
       string original = string.Format (
@@ -785,7 +785,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     {
       string url = "http://localhost/Default.html";
       string parameter1 = "Parameter1";
-      string value1 = "Value1ä#";
+      string value1 = "Value1Ã¤#";
 
       string original = string.Format (
           "{0}?{1}={2}",
@@ -803,7 +803,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     public void DeleteParameterFromUrlWithNoUrl ()
     {
       string parameter1 = "Parameter1";
-      string value1 = "Value1ä#";
+      string value1 = "Value1Ã¤#";
 
       string original = string.Format (
           "?{0}={1}",
@@ -821,7 +821,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     {
       string url = "http://localhost/Default.html";
       string parameter1 = "Parameter1";
-      string value1 = "Value1ä#";
+      string value1 = "Value1Ã¤#";
       string parameter2 = "Parameter2";
 
       string original = string.Format (
@@ -842,7 +842,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       string url = "http://localhost/Default.html";
       string parameter1 = "Parameter1";
       string parameter2 = "Parameter2";
-      string value1 = "Value1ä#";
+      string value1 = "Value1Ã¤#";
       string value2 = "Value2";
 
       string original = string.Format (
@@ -871,7 +871,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       string url = "http://localhost/Default.html";
       string parameter1 = "Parameter1";
       string parameter2 = "Parameter2";
-      string value1 = "Value1ä#";
+      string value1 = "Value1Ã¤#";
       string value2 = "Value2";
 
       string original = string.Format (
@@ -900,7 +900,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       string url = "http://localhost/Default.html";
       string parameter1 = "Parameter1";
       string parameter2 = null;
-      string value1 = "Value1ä#";
+      string value1 = "Value1Ã¤#";
       string value2 = "Value2";
 
       string original = string.Format (
@@ -929,7 +929,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       string url = "http://localhost/Default.html";
       string parameter1 = null;
       string parameter2 = "Parameter2";
-      string value1 = "Value1ä#";
+      string value1 = "Value1Ã¤#";
       string value2 = "Value2";
 
       string original = string.Format (
@@ -989,7 +989,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     {
       string parameter1 = "Parameter1";
       string parameter2 = "Parameter2";
-      string value1 = "Value1ä#";
+      string value1 = "Value1Ã¤#";
       string value2 = "Value2";
 
       string url = string.Format (
@@ -1008,7 +1008,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     {
       string parameter1 = "Parameter1";
       string parameter2 = "Parameter2";
-      string value1 = "Value1ä#";
+      string value1 = "Value1Ã¤#";
       string value2 = "Value2";
 
       string url = string.Format (
@@ -1027,7 +1027,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     {
       string parameter1 = "Parameter1";
       string parameter2 = "Parameter2";
-      string value1 = "Value1ä#";
+      string value1 = "Value1Ã¤#";
 
       string url = string.Format (
           "http://localhost/Default.html?{0}={1}",
@@ -1043,7 +1043,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     {
       string parameter1 = "Parameter1";
       string parameter2 = "Parameter2";
-      string value1 = "Value1ä#";
+      string value1 = "Value1Ã¤#";
       string value2 = string.Empty;
 
       string url = string.Format (
@@ -1060,7 +1060,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     public void GetParameter_WithMissingParameter_ReturnsNull ()
     {
       string parameter1 = "Parameter1";
-      string value1 = "Value1ä#";
+      string value1 = "Value1Ã¤#";
 
       string url = string.Format (
           "http://localhost/Default.html?{0}={1}",
@@ -1075,8 +1075,8 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     public void GetParameter_WithNullParameterName_ReturnsParameterValue ()
     {
       string parameter1 = "Parameter1";
-      string value1 = "Value1ä#";
-      string value2 = "Value2#ä";
+      string value1 = "Value1Ã¤#";
+      string value2 = "Value2#Ã¤";
 
       string url = string.Format (
           "http://localhost/Default.html?{0}={1}&{2}",

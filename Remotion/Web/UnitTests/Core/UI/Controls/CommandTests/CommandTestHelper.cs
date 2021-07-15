@@ -17,6 +17,7 @@
 using System;
 using System.Text;
 using System.Web;
+using Moq;
 using Remotion.Development.Web.UnitTesting.AspNetFramework;
 using Remotion.Security;
 using Remotion.Utilities;
@@ -24,8 +25,6 @@ using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
-using Rhino.Mocks;
-using Rhino.Mocks.Interfaces;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
 {
@@ -37,10 +36,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
 
     // member fields
 
-    private readonly MockRepository _mocks;
-    private readonly IWebSecurityAdapter _mockWebSecurityAdapter;
-    private readonly IWxeSecurityAdapter _mockWxeSecurityAdapter;
-    private readonly ISecurableObject _mockSecurableObject;
+    private readonly Mock<IWebSecurityAdapter> _mockWebSecurityAdapter;
+    private readonly Mock<IWxeSecurityAdapter> _mockWxeSecurityAdapter;
+    private readonly Mock<ISecurableObject> _mockSecurableObject;
 
     private readonly HttpContext _httpContext;
     private readonly HtmlTextWriterSingleTagMock _htmlWriter;
@@ -66,10 +64,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
       _functionType = typeof (TestFunction);
       _functionTypeName = TypeUtility.GetPartialAssemblyQualifiedName (_functionType);
 
-      _mocks = new MockRepository();
-      _mockWebSecurityAdapter = _mocks.StrictMock<IWebSecurityAdapter>();
-      _mockWxeSecurityAdapter = _mocks.StrictMock<IWxeSecurityAdapter>();
-      _mockSecurableObject = _mocks.StrictMock<ISecurableObject>();
+      _mockWebSecurityAdapter = new Mock<IWebSecurityAdapter> (MockBehavior.Strict);
+      _mockWxeSecurityAdapter = new Mock<IWxeSecurityAdapter> (MockBehavior.Strict);
+      _mockSecurableObject = new Mock<ISecurableObject> (MockBehavior.Strict);
 
       _htmlWriter = new HtmlTextWriterSingleTagMock();
     }
@@ -88,37 +85,34 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
 
     public IWebSecurityAdapter WebSecurityAdapter
     {
-      get { return _mockWebSecurityAdapter; }
+      get { return _mockWebSecurityAdapter.Object; }
     }
 
     public IWxeSecurityAdapter WxeSecurityAdapter
     {
-      get { return _mockWxeSecurityAdapter; }
+      get { return _mockWxeSecurityAdapter.Object; }
     }
 
     public ISecurableObject SecurableObject
     {
-      get { return _mockSecurableObject; }
-    }
-
-    public void ReplayAll ()
-    {
-      _mocks.ReplayAll();
+      get { return _mockSecurableObject.Object; }
     }
 
     public void VerifyAll ()
     {
-      _mocks.VerifyAll();
+      _mockWebSecurityAdapter.Verify();
+      _mockWxeSecurityAdapter.Verify();
+      _mockSecurableObject.Verify();
     }
 
     public void ExpectWebSecurityProviderHasAccess (ISecurableObject securableObject, Delegate handler, bool returnValue)
     {
-      Expect.Call (_mockWebSecurityAdapter.HasAccess (securableObject, handler)).Return (returnValue).Repeat.Once();
+      _mockWebSecurityAdapter.Setup (_ => _.HasAccess (securableObject, handler)).Returns (returnValue).Verifiable();
     }
 
     public void ExpectWxeSecurityProviderHasStatelessAccess (Type functionType, bool returnValue)
     {
-      Expect.Call (_mockWxeSecurityAdapter.HasStatelessAccess (functionType)).Return (returnValue).Repeat.Once();
+      _mockWxeSecurityAdapter.Setup (_ => _.HasStatelessAccess (functionType)).Returns (returnValue).Verifiable();
     }
 
 
@@ -170,11 +164,11 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
       return command;
     }
 
-    public Command CreateHrefCommandAsPartialMock ()
+    public Mock<Command> CreateHrefCommandAsPartialMock ()
     {
-      Command command = _mocks.PartialMock<Command> (CommandType.Href,  (IWebSecurityAdapter) null, (IWxeSecurityAdapter) null);
-      SetupResult.For (command.HrefCommand).CallOriginalMethod (OriginalCallOptions.NoExpectation);
-      InitializeHrefCommand (command);
+      var command = new Mock<Command> (CommandType.Href, (IWebSecurityAdapter) null, (IWxeSecurityAdapter) null) { CallBase = true };
+
+      InitializeHrefCommand (command.Object);
 
       return command;
     }
@@ -197,10 +191,10 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
       return command;
     }
 
-    public Command CreateEventCommandAsPartialMock ()
+    public Mock<Command> CreateEventCommandAsPartialMock ()
     {
-      Command command = _mocks.PartialMock<Command> (CommandType.Event, (IWebSecurityAdapter) null, (IWxeSecurityAdapter) null);
-      InitializeEventCommand (command);
+      var command = new Mock<Command> (CommandType.Event, (IWebSecurityAdapter) null, (IWxeSecurityAdapter) null) { CallBase = true };
+      InitializeEventCommand (command.Object);
 
       return command;
     }
@@ -221,11 +215,11 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
       return command;
     }
 
-    public Command CreateWxeFunctionCommandAsPartialMock ()
+    public Mock<Command> CreateWxeFunctionCommandAsPartialMock ()
     {
-      Command command = _mocks.PartialMock<Command> (CommandType.WxeFunction, (IWebSecurityAdapter) null, (IWxeSecurityAdapter) null);
-      SetupResult.For (command.WxeFunctionCommand).CallOriginalMethod (OriginalCallOptions.NoExpectation);
-      InitializeWxeFunctionCommand (command);
+      var command = new Mock<Command> (CommandType.WxeFunction, (IWebSecurityAdapter) null, (IWxeSecurityAdapter) null) { CallBase = true };
+
+      InitializeWxeFunctionCommand (command.Object);
 
       return command;
     }
@@ -249,10 +243,10 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
       return command;
     }
 
-    public Command CreateNoneCommandAsPartialMock ()
+    public Mock<Command> CreateNoneCommandAsPartialMock ()
     {
-      Command command = _mocks.PartialMock<Command> (CommandType.None,  (IWebSecurityAdapter) null, (IWxeSecurityAdapter) null);
-      InitializeNoneCommand (command);
+      var command = new Mock<Command> (CommandType.None, (IWebSecurityAdapter) null, (IWxeSecurityAdapter) null) { CallBase = true };
+      InitializeNoneCommand (command.Object);
 
       return command;
     }
@@ -263,16 +257,16 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
       command.Type = CommandType.None;
     }
 
-    public void ExpectOnceOnHasAccess (Command command, bool returnValue)
+    public void ExpectOnceOnHasAccess (Mock<Command> command, bool returnValue)
     {
-      Expect.Call (command.HasAccess (_mockSecurableObject)).Return (returnValue);
+      command.Setup (_ => _.HasAccess (_mockSecurableObject.Object)).Returns (returnValue).Verifiable();
     }
 
     private IControl CreateOwnerControl ()
     {
-      var controlStub = MockRepository.GenerateStub<IControl>();
-      controlStub.Stub (stub => stub.ClientID).Return (_ownerControlClientID);
-      return controlStub;
+      var controlStub = new Mock<IControl>();
+      controlStub.Setup (stub => stub.ClientID).Returns (_ownerControlClientID);
+      return controlStub.Object;
     }
   }
 }

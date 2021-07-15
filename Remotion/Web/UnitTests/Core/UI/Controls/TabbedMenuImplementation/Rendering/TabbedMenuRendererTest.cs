@@ -20,6 +20,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
@@ -30,15 +31,14 @@ using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Controls.TabbedMenuImplementation;
 using Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering;
 using Remotion.Web.UI.Controls.WebTabStripImplementation;
-using Rhino.Mocks;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMenuImplementation.Rendering
 {
   [TestFixture]
   public class TabbedMenuRendererTest : RendererTestBase
   {
-    private ITabbedMenu _control;
-    private HttpContextBase _httpContext;
+    private Mock<ITabbedMenu> _control;
+    private Mock<HttpContextBase> _httpContext;
     private HtmlHelper _htmlHelper;
     private TabbedMenuRenderer _renderer;
 
@@ -46,24 +46,24 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMenuImplementation.Rende
     public void SetUp ()
     {
       _htmlHelper = new HtmlHelper ();
-      _httpContext = MockRepository.GenerateStub<HttpContextBase> ();
+      _httpContext = new Mock<HttpContextBase>();
 
-      _control = MockRepository.GenerateStub<ITabbedMenu>();
-      _control.Stub (stub => stub.ClientID).Return ("MyTabbedMenu");
-      _control.Stub (stub => stub.ControlType).Return ("TabbedMenu");
-      _control.Stub (stub => stub.MainMenuTabStrip).Return (MockRepository.GenerateStub<IWebTabStrip>());
-      _control.Stub (stub => stub.SubMenuTabStrip).Return (MockRepository.GenerateStub<IWebTabStrip> ());
+      _control = new Mock<ITabbedMenu>();
+      _control.Setup (stub => stub.ClientID).Returns ("MyTabbedMenu");
+      _control.Setup (stub => stub.ControlType).Returns ("TabbedMenu");
+      _control.Setup (stub => stub.MainMenuTabStrip).Returns (new Mock<IWebTabStrip>().Object);
+      _control.Setup (stub => stub.SubMenuTabStrip).Returns (new Mock<IWebTabStrip>().Object);
 
       StateBag stateBag = new StateBag ();
-      _control.Stub (stub => stub.Attributes).Return (new AttributeCollection (stateBag));
-      _control.Stub (stub => stub.ControlStyle).Return (new Style (stateBag));
-      _control.Stub (stub => stub.StatusStyle).Return (new Style (stateBag));
+      _control.Setup (stub => stub.Attributes).Returns (new AttributeCollection (stateBag));
+      _control.Setup (stub => stub.ControlStyle).Returns (new Style (stateBag));
+      _control.Setup (stub => stub.StatusStyle).Returns (new Style (stateBag));
 
-      _control.SubMenuTabStrip.Stub (stub => stub.ControlStyle).Return (new Style (stateBag));
-      _control.SubMenuTabStrip.Stub (stub => stub.Style).Return (_control.SubMenuTabStrip.ControlStyle.GetStyleAttributes(_control));
+      Mock.Get (_control.Object.SubMenuTabStrip).Setup (stub => stub.ControlStyle).Returns (new Style (stateBag));
+      Mock.Get (_control.Object.SubMenuTabStrip).Setup (stub => stub.Style).Returns (_control.Object.SubMenuTabStrip.ControlStyle.GetStyleAttributes(_control.Object));
 
-      IPage pageStub = MockRepository.GenerateStub<IPage>();
-      _control.Stub (stub => stub.Page).Return (pageStub);
+      var pageStub = new Mock<IPage>();
+      _control.Setup (stub => stub.Page).Returns (pageStub.Object);
 
       _renderer = new TabbedMenuRenderer (new FakeResourceUrlFactory(), GlobalizationService, RenderingFeatures.Default);
     }
@@ -77,36 +77,37 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMenuImplementation.Rende
     [Test]
     public void RenderEmptyMenuInDesignMode ()
     {
-      _control.Stub (stub => stub.IsDesignMode).Return (true);
+      _control.Setup (stub => stub.IsDesignMode).Returns (true);
       AssertControl (true, false, false);
     }
 
     [Test]
     public void RenderEmptyMenuWithStatusText ()
     {
-      _control.Stub (stub => stub.StatusText).Return ("Status");
+      _control.Setup (stub => stub.StatusText).Returns ("Status");
       AssertControl (false, true, false);
     }
 
     [Test]
     public void RenderEmptyMenuWithStatusTextInDesignMode ()
     {
-      _control.Stub (stub => stub.IsDesignMode).Return (true);
-      _control.Stub (stub => stub.StatusText).Return ("Status");
+      _control.Setup (stub => stub.IsDesignMode).Returns (true);
+      _control.Setup (stub => stub.StatusText).Returns ("Status");
       AssertControl (true, true, false);
     }
 
     [Test]
     public void RenderEmptyMenuWithCssClass ()
     {
-      _control.CssClass = "CustomCssClass";
+      _control.SetupProperty (_ => _.CssClass);
+      _control.Object.CssClass = "CustomCssClass";
       AssertControl (false, false, true);
     }
 
     [Test]
     public void RenderEmptyMenuWithBackgroundColor ()
     {
-      _control.Stub (stub => stub.SubMenuBackgroundColor).Return (Color.Yellow);
+      _control.Setup (stub => stub.SubMenuBackgroundColor).Returns (Color.Yellow);
       AssertControl (false, false, false);
     }
 
@@ -122,7 +123,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMenuImplementation.Rende
 
     private XmlNode AssertControl (bool isDesignMode, bool hasStatusText, bool hasCssClass)
     {
-      _renderer.Render (new TabbedMenuRenderingContext (_httpContext, _htmlHelper.Writer, _control));
+      _renderer.Render (new TabbedMenuRenderingContext (_httpContext.Object, _htmlHelper.Writer, _control.Object));
       // _control.RenderControl (_htmlHelper.Writer);
 
       var document = _htmlHelper.GetResultDocument();
@@ -145,7 +146,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMenuImplementation.Rende
 
       var tdSubMenu = trSubMenu.GetAssertedChildElement ("td", 0);
       tdSubMenu.AssertAttributeValueEquals ("class", "tabbedSubMenuCell");
-      if (!_control.SubMenuBackgroundColor.IsEmpty)
+      if (!_control.Object.SubMenuBackgroundColor.IsEmpty)
         tdSubMenu.AssertStyleAttribute ("background-color", ColorTranslator.ToHtml (Color.Yellow));
       tdSubMenu.AssertChildElementCount (0);
 

@@ -17,12 +17,12 @@
 using System;
 using System.Collections.Generic;
 using System.Web;
+using Moq;
 using NUnit.Framework;
 using Remotion.Web.Resources;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.HtmlHeadContentsImplementation;
 using Remotion.Web.UI.Controls.HtmlHeadContentsImplementation.Rendering;
-using Rhino.Mocks;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.HtmlHeadContentsImplementation.Rendering
 {
@@ -46,9 +46,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.HtmlHeadContentsImplementation
       var htmlHelper = new HtmlHelper();
 
       var htmlHeadContentsRenderingContext = new HtmlHeadContentsRenderingContext (
-          MockRepository.GenerateStub<HttpContextBase>(),
+          new Mock<HttpContextBase>().Object,
           htmlHelper.Writer,
-          MockRepository.GenerateStub<IHtmlHeadContents>(),
+          new Mock<IHtmlHeadContents>().Object,
           htmlHeadElements);
 
       renderer.Render (htmlHeadContentsRenderingContext);
@@ -79,9 +79,9 @@ head-2
       var htmlHelper = new HtmlHelper();
 
       var htmlHeadContentsRenderingContext = new HtmlHeadContentsRenderingContext (
-          MockRepository.GenerateStub<HttpContextBase>(),
+          new Mock<HttpContextBase>().Object,
           htmlHelper.Writer,
-          MockRepository.GenerateStub<IHtmlHeadContents>(),
+          new Mock<IHtmlHeadContents>().Object,
           htmlHeadElements);
 
       renderer.Render (htmlHeadContentsRenderingContext);

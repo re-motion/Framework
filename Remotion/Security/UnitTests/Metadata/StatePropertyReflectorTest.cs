@@ -16,11 +16,11 @@
 // 
 using System;
 using System.Collections.Generic;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Security.Metadata;
 using Remotion.Security.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Security.UnitTests.Metadata
 {
@@ -34,8 +34,7 @@ namespace Remotion.Security.UnitTests.Metadata
 
     // member fields
 
-    private MockRepository _mocks;
-    private IEnumerationReflector _enumeratedTypeReflectorMock;
+    private Mock<IEnumerationReflector> _enumeratedTypeReflectorMock;
     private StatePropertyReflector _statePropertyReflector;
     private MetadataCache _cache;
 
@@ -50,9 +49,8 @@ namespace Remotion.Security.UnitTests.Metadata
     [SetUp]
     public void SetUp ()
     {
-      _mocks = new MockRepository ();
-      _enumeratedTypeReflectorMock = _mocks.StrictMock<IEnumerationReflector> ();
-      _statePropertyReflector = new StatePropertyReflector (_enumeratedTypeReflectorMock);
+      _enumeratedTypeReflectorMock = new Mock<IEnumerationReflector> (MockBehavior.Strict);
+      _statePropertyReflector = new StatePropertyReflector (_enumeratedTypeReflectorMock.Object);
       _cache = new MetadataCache ();
     }
 
@@ -60,7 +58,7 @@ namespace Remotion.Security.UnitTests.Metadata
     public void Initialize ()
     {
       Assert.IsInstanceOf (typeof (IStatePropertyReflector), _statePropertyReflector);
-      Assert.That (_statePropertyReflector.EnumerationTypeReflector, Is.SameAs (_enumeratedTypeReflectorMock));
+      Assert.That (_statePropertyReflector.EnumerationTypeReflector, Is.SameAs (_enumeratedTypeReflectorMock.Object));
     }
 
     [Test]
@@ -71,12 +69,11 @@ namespace Remotion.Security.UnitTests.Metadata
       values.Add (Confidentiality.Confidential, PropertyStates.ConfidentialityConfidential);
       values.Add (Confidentiality.Private, PropertyStates.ConfidentialityPrivate);
 
-      Expect.Call (_enumeratedTypeReflectorMock.GetValues (typeof (Confidentiality), _cache)).Return (values);
-      _mocks.ReplayAll ();
+      _enumeratedTypeReflectorMock.Setup (_ => _.GetValues (typeof (Confidentiality), _cache)).Returns (values).Verifiable();
 
       StatePropertyInfo info = _statePropertyReflector.GetMetadata (typeof (PaperFile).GetProperty ("Confidentiality"), _cache);
 
-      _mocks.VerifyAll ();
+      _enumeratedTypeReflectorMock.Verify();
 
       Assert.That (info, Is.Not.Null);
       Assert.That (info.Name, Is.EqualTo ("Confidentiality"));

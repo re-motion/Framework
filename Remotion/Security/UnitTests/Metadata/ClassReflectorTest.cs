@@ -16,12 +16,12 @@
 // 
 using System;
 using System.Collections.Generic;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Security.Metadata;
 using Remotion.Security.UnitTests.SampleDomain;
 using Remotion.Security.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Security.UnitTests.Metadata
 {
@@ -35,9 +35,8 @@ namespace Remotion.Security.UnitTests.Metadata
 
     // member fields
 
-    private MockRepository _mocks;
-    private IStatePropertyReflector _statePropertyReflectorMock;
-    private IAccessTypeReflector _accessTypeReflectorMock;
+    private Mock<IStatePropertyReflector> _statePropertyReflectorMock;
+    private Mock<IAccessTypeReflector> _accessTypeReflectorMock;
     private ClassReflector _classReflector;
     private MetadataCache _cache;
     private StatePropertyInfo _confidentialityProperty;
@@ -54,10 +53,9 @@ namespace Remotion.Security.UnitTests.Metadata
     [SetUp]
     public void SetUp ()
     {
-      _mocks = new MockRepository ();
-      _statePropertyReflectorMock = _mocks.StrictMock<IStatePropertyReflector> ();
-      _accessTypeReflectorMock = _mocks.StrictMock<IAccessTypeReflector> ();
-      _classReflector = new ClassReflector (_statePropertyReflectorMock, _accessTypeReflectorMock);
+      _statePropertyReflectorMock = new Mock<IStatePropertyReflector> (MockBehavior.Strict);
+      _accessTypeReflectorMock = new Mock<IAccessTypeReflector> (MockBehavior.Strict);
+      _classReflector = new ClassReflector (_statePropertyReflectorMock.Object, _accessTypeReflectorMock.Object);
       _cache = new MetadataCache ();
 
       _confidentialityProperty = new StatePropertyInfo ();
@@ -73,8 +71,8 @@ namespace Remotion.Security.UnitTests.Metadata
     public void Initialize ()
     {
       Assert.IsInstanceOf (typeof (IClassReflector), _classReflector);
-      Assert.That (_classReflector.StatePropertyReflector, Is.SameAs (_statePropertyReflectorMock));
-      Assert.That (_classReflector.AccessTypeReflector, Is.SameAs (_accessTypeReflectorMock));
+      Assert.That (_classReflector.StatePropertyReflector, Is.SameAs (_statePropertyReflectorMock.Object));
+      Assert.That (_classReflector.AccessTypeReflector, Is.SameAs (_accessTypeReflectorMock.Object));
     }
 
     [Test]
@@ -91,16 +89,16 @@ namespace Remotion.Security.UnitTests.Metadata
       paperFileAccessTypes.Add (AccessTypes.Journalize);
       paperFileAccessTypes.Add (AccessTypes.Archive);
 
-      Expect.Call (_statePropertyReflectorMock.GetMetadata (typeof (PaperFile).GetProperty ("Confidentiality"), _cache)).Return (_confidentialityProperty);
-      Expect.Call (_statePropertyReflectorMock.GetMetadata (typeof (PaperFile).GetProperty ("State"), _cache)).Return (_stateProperty);
-      Expect.Call (_statePropertyReflectorMock.GetMetadata (typeof (File).GetProperty ("Confidentiality"), _cache)).Return (_confidentialityProperty);
-      Expect.Call (_accessTypeReflectorMock.GetAccessTypesFromType (typeof (File), _cache)).Return (fileAccessTypes);
-      Expect.Call (_accessTypeReflectorMock.GetAccessTypesFromType(typeof (PaperFile), _cache)).Return (paperFileAccessTypes);
-      _mocks.ReplayAll ();
+      _statePropertyReflectorMock.Setup (_ => _.GetMetadata (typeof (PaperFile).GetProperty ("Confidentiality"), _cache)).Returns (_confidentialityProperty).Verifiable();
+      _statePropertyReflectorMock.Setup (_ => _.GetMetadata (typeof (PaperFile).GetProperty ("State"), _cache)).Returns (_stateProperty).Verifiable();
+      _statePropertyReflectorMock.Setup (_ => _.GetMetadata (typeof (File).GetProperty ("Confidentiality"), _cache)).Returns (_confidentialityProperty).Verifiable();
+      _accessTypeReflectorMock.Setup (_ => _.GetAccessTypesFromType (typeof (File), _cache)).Returns (fileAccessTypes).Verifiable();
+      _accessTypeReflectorMock.Setup (_ => _.GetAccessTypesFromType (typeof (PaperFile), _cache)).Returns (paperFileAccessTypes).Verifiable();
 
       SecurableClassInfo info = _classReflector.GetMetadata (typeof (PaperFile), _cache);
 
-      _mocks.VerifyAll ();
+      _statePropertyReflectorMock.Verify();
+      _accessTypeReflectorMock.Verify();
 
       Assert.That (info, Is.Not.Null);
       Assert.That (info.Name, Is.EqualTo ("Remotion.Security.UnitTests.TestDomain.PaperFile, Remotion.Security.UnitTests.TestDomain"));

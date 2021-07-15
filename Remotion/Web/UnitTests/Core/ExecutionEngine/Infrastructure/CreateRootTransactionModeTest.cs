@@ -15,11 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
-using Rhino.Mocks;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
 {
@@ -51,19 +51,19 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
       WxeFunction childFunction = new TestFunction2 (transactionMode);
       parentFunction.Add (childFunction);
 
-      WxeStep stepMock = MockRepository.GenerateMock<WxeStep> ();
-      childFunction.Add (stepMock);
+      var stepMock = new Mock<WxeStep>();
+      childFunction.Add (stepMock.Object);
 
       WxeContextFactory wxeContextFactory = new WxeContextFactory ();
       WxeContext context = wxeContextFactory.CreateContext (new TestFunction ());
 
-      stepMock.Expect (mock => mock.Execute (context)).WhenCalled (
-          invocation =>
+      stepMock.Setup (mock => mock.Execute (context)).Callback (
+          (WxeContext context) =>
           {
             TransactionStrategyBase strategy = transactionMode.CreateTransactionStrategy (childFunction, context);
             Assert.That (strategy, Is.InstanceOf (typeof (RootTransactionStrategy)));
             Assert.That (strategy.OuterTransactionStrategy, Is.SameAs (((TestFunction2) parentFunction).TransactionStrategy));
-          });
+          }).Verifiable();
 
       parentFunction.Execute (context);
     }

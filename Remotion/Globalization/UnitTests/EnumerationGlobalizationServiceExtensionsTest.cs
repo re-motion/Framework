@@ -20,24 +20,24 @@ using log4net.Appender;
 using log4net.Config;
 using log4net.Core;
 using log4net.Filter;
+using Moq;
 using NUnit.Framework;
 using Remotion.Globalization.Implementation;
 using Remotion.Globalization.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Globalization.UnitTests
 {
   [TestFixture]
   public class EnumerationGlobalizationServiceExtensionsTest
   {
-    private IEnumerationGlobalizationService _serviceStub;
+    private Mock<IEnumerationGlobalizationService> _serviceStub;
     private Enum _value;
     private MemoryAppender _memoryAppender;
 
     [SetUp]
     public void SetUp ()
     {
-      _serviceStub = MockRepository.GenerateStub<IEnumerationGlobalizationService>();
+      _serviceStub = new Mock<IEnumerationGlobalizationService>();
       _value = EnumWithResources.Value1;
 
       _memoryAppender = new MemoryAppender();
@@ -62,41 +62,49 @@ namespace Remotion.Globalization.UnitTests
     [Test]
     public void GetEnumerationValueDisplayName_WithResourceManager_ReturnsLocalizedValue ()
     {
-      _serviceStub
-          .Stub (_ => _.TryGetEnumerationValueDisplayName (Arg.Is (_value), out Arg<string>.Out ("expected").Dummy))
-          .Return (true);
+      var outValue = "expected";
 
-      Assert.That (_serviceStub.GetEnumerationValueDisplayName (_value), Is.EqualTo ("expected"));
+      _serviceStub
+          .Setup (_ => _.TryGetEnumerationValueDisplayName (_value, out outValue))
+          .Returns (true);
+
+      Assert.That (_serviceStub.Object.GetEnumerationValueDisplayName (_value), Is.EqualTo ("expected"));
     }
 
     [Test]
     public void GetEnumerationValueDisplayNameOrDefault_WithResourceManager_ReturnsLocalizedValue ()
     {
-      _serviceStub
-          .Stub (_ => _.TryGetEnumerationValueDisplayName (Arg.Is (_value), out Arg<string>.Out ("expected").Dummy))
-          .Return (true);
+      var outValue = "expected";
 
-      Assert.That (_serviceStub.GetEnumerationValueDisplayNameOrDefault (_value), Is.EqualTo ("expected"));
+      _serviceStub
+          .Setup (_ => _.TryGetEnumerationValueDisplayName (_value, out outValue))
+          .Returns (true);
+
+      Assert.That (_serviceStub.Object.GetEnumerationValueDisplayNameOrDefault (_value), Is.EqualTo ("expected"));
     }
 
     [Test]
     public void ContainsEnumerationValueDisplayName_WithResourceManager_ReturnsLocalizedValue ()
     {
-      _serviceStub
-          .Stub (_ => _.TryGetEnumerationValueDisplayName (Arg.Is (_value), out Arg<string>.Out ("expected").Dummy))
-          .Return (true);
+      var outValue = "expected";
 
-      Assert.That (_serviceStub.ContainsEnumerationValueDisplayName (_value), Is.True);
+      _serviceStub
+          .Setup (_ => _.TryGetEnumerationValueDisplayName (_value, out outValue))
+          .Returns (true);
+
+      Assert.That (_serviceStub.Object.ContainsEnumerationValueDisplayName (_value), Is.True);
     }
 
     [Test]
     public void GetEnumerationValueDisplayName_WithoutResourceManager_ReturnsValueName ()
     {
-      _serviceStub
-          .Stub (_ => _.TryGetEnumerationValueDisplayName (Arg.Is (_value), out Arg<string>.Out (null).Dummy))
-          .Return (false);
+      string outValue = null;
 
-      Assert.That (_serviceStub.GetEnumerationValueDisplayName (_value), Is.EqualTo ("Value1"));
+      _serviceStub
+          .Setup (_ => _.TryGetEnumerationValueDisplayName (_value, out outValue))
+          .Returns (false);
+
+      Assert.That (_serviceStub.Object.GetEnumerationValueDisplayName (_value), Is.EqualTo ("Value1"));
 
       LoggingEvent[] events = _memoryAppender.GetEvents();
       Assert.That (events.Length, Is.EqualTo (1));
@@ -110,21 +118,25 @@ namespace Remotion.Globalization.UnitTests
     [Test]
     public void GetEnumerationValueDisplayNameOrDefault_WithoutResourceManager_ReturnsNull ()
     {
-      _serviceStub
-          .Stub (_ => _.TryGetEnumerationValueDisplayName (Arg.Is (_value), out Arg<string>.Out (null).Dummy))
-          .Return (false);
+      string outValue = null;
 
-      Assert.That (_serviceStub.GetEnumerationValueDisplayNameOrDefault (_value), Is.Null);
+      _serviceStub
+          .Setup (_ => _.TryGetEnumerationValueDisplayName (_value, out outValue))
+          .Returns (false);
+
+      Assert.That (_serviceStub.Object.GetEnumerationValueDisplayNameOrDefault (_value), Is.Null);
     }
 
     [Test]
     public void ContainsEnumerationValueDisplayName_WithoutResourceManager_ReturnsFalse ()
     {
-      _serviceStub
-          .Stub (_ => _.TryGetEnumerationValueDisplayName (Arg.Is (_value), out Arg<string>.Out (null).Dummy))
-          .Return (false);
+      string outValue = null;
 
-      Assert.That (_serviceStub.ContainsEnumerationValueDisplayName (_value), Is.False);
+      _serviceStub
+          .Setup (_ => _.TryGetEnumerationValueDisplayName (_value, out outValue))
+          .Returns (false);
+
+      Assert.That (_serviceStub.Object.ContainsEnumerationValueDisplayName (_value), Is.False);
     }
   }
 }

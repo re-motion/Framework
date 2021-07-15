@@ -15,42 +15,43 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting.ObjectMothers;
-using Rhino.Mocks;
 
 namespace Remotion.Security.UnitTests
 {
   [TestFixture]
   public class InstanceBasedReEntrancyGuardedObjectSecurityStrategyDecoratorTest
   {
-    private ISecurityProvider _securityProviderStub;
-    private ISecurityPrincipal _principalStub;
+    private Mock<ISecurityProvider> _securityProviderStub;
+    private Mock<ISecurityPrincipal> _principalStub;
 
     [SetUp]
     public void SetUp ()
     {
-      _securityProviderStub = MockRepository.GenerateStub<ISecurityProvider>();
+      _securityProviderStub = new Mock<ISecurityProvider>();
 
-      _principalStub = MockRepository.GenerateStub<ISecurityPrincipal>();
-      _principalStub.Stub (_ => _.User).Return ("user");
+      _principalStub = new Mock<ISecurityPrincipal>();
+      _principalStub.Setup (_ => _.User).Returns ("user");
     }
 
     [Test]
     public void HasAccess_DelegatesToDecoratedStrategy_ReturnsResult ()
     {
-      var objectSecurityStrategyStub = MockRepository.GenerateStub<IObjectSecurityStrategy>();
-      var guard = new InstanceBasedReEntrancyGuardedObjectSecurityStrategyDecorator (objectSecurityStrategyStub);
+      var objectSecurityStrategyStub = new Mock<IObjectSecurityStrategy>();
+      var guard = new InstanceBasedReEntrancyGuardedObjectSecurityStrategyDecorator (objectSecurityStrategyStub.Object);
       var accessTypes = new[] { AccessType.Get (GeneralAccessTypes.Find) };
 
       bool expectedResult = BooleanObjectMother.GetRandomBoolean();
       bool securityStrategyWasCalled = false;
       objectSecurityStrategyStub
-          .Stub (_ => _.HasAccess (_securityProviderStub, _principalStub, accessTypes))
-          .Return (expectedResult)
-          .WhenCalled (mi => { securityStrategyWasCalled = true; });
+          .Setup (_ => _.HasAccess (_securityProviderStub.Object, _principalStub.Object, accessTypes))
+          .Returns (expectedResult)
+          .Callback ((ISecurityProvider securityProvider, ISecurityPrincipal principal, IReadOnlyList<AccessType> requiredAccessTypes) => { securityStrategyWasCalled = true; });
 
-      var result = guard.HasAccess (_securityProviderStub, _principalStub, accessTypes);
+      var result = guard.HasAccess (_securityProviderStub.Object, _principalStub.Object, accessTypes);
 
       Assert.That (result, Is.EqualTo (expectedResult));
       Assert.That (securityStrategyWasCalled, Is.True);
@@ -59,25 +60,25 @@ namespace Remotion.Security.UnitTests
     [Test]
     public void HasAccess_WithReEntrancyOnSameGuard_ThrowsInvalidOperationException ()
     {
-      var objectSecurityStrategyStub = MockRepository.GenerateStub<IObjectSecurityStrategy>();
-      var guard = new InstanceBasedReEntrancyGuardedObjectSecurityStrategyDecorator (objectSecurityStrategyStub);
+      var objectSecurityStrategyStub = new Mock<IObjectSecurityStrategy>();
+      var guard = new InstanceBasedReEntrancyGuardedObjectSecurityStrategyDecorator (objectSecurityStrategyStub.Object);
       var accessTypesOnFirstCall = new[] { AccessType.Get (GeneralAccessTypes.Find) };
 
       bool isExceptionThrownBySecondHasAccess = false;
       objectSecurityStrategyStub
-          .Stub (_ => _.HasAccess (_securityProviderStub, _principalStub, accessTypesOnFirstCall))
-          .Return (false)
-          .WhenCalled (
-              mi =>
+          .Setup (_ => _.HasAccess (_securityProviderStub.Object, _principalStub.Object, accessTypesOnFirstCall))
+          .Returns (false)
+          .Callback (
+              (ISecurityProvider securityProvider, ISecurityPrincipal principal, IReadOnlyList<AccessType> requiredAccessTypes) =>
               {
                 var exception = Assert.Throws<InvalidOperationException> (
-                    () => guard.HasAccess (_securityProviderStub, _principalStub, new[] { AccessType.Get (GeneralAccessTypes.Read) }));
+                    () => guard.HasAccess (_securityProviderStub.Object, _principalStub.Object, new[] { AccessType.Get (GeneralAccessTypes.Read) }));
                 isExceptionThrownBySecondHasAccess = true;
                 throw exception;
               });
 
       Assert.That (
-          () => guard.HasAccess (_securityProviderStub, _principalStub, accessTypesOnFirstCall),
+          () => guard.HasAccess (_securityProviderStub.Object, _principalStub.Object, accessTypesOnFirstCall),
           Throws.InvalidOperationException
               .With.Message.StartsWith (
                   "Multiple reentrancies on InstanceBasedReEntrancyGuardedObjectSecurityStrategyDecorator.HasAccess(...) are not allowed as they can indicate a possible infinite recursion."));
@@ -88,36 +89,36 @@ namespace Remotion.Security.UnitTests
     [Test]
     public void HasAccess_WithReEntrancyOnDifferentGuard_ReturnsResult ()
     {
-      var firstObjectSecurityStrategyStub = MockRepository.GenerateStub<IObjectSecurityStrategy>();
-      var firstGuard = new InstanceBasedReEntrancyGuardedObjectSecurityStrategyDecorator (firstObjectSecurityStrategyStub);
+      var firstObjectSecurityStrategyStub = new Mock<IObjectSecurityStrategy>();
+      var firstGuard = new InstanceBasedReEntrancyGuardedObjectSecurityStrategyDecorator (firstObjectSecurityStrategyStub.Object);
       var accessTypesOnFirstCall = new[] { AccessType.Get (GeneralAccessTypes.Find) };
       bool expectedResultOnFirstCall = BooleanObjectMother.GetRandomBoolean();
 
       bool secondCallWasPerformed = false;
       firstObjectSecurityStrategyStub
-          .Stub (_ => _.HasAccess (_securityProviderStub, _principalStub, accessTypesOnFirstCall))
-          .Return (expectedResultOnFirstCall)
-          .WhenCalled (
-              mi =>
+          .Setup (_ => _.HasAccess (_securityProviderStub.Object, _principalStub.Object, accessTypesOnFirstCall))
+          .Returns (expectedResultOnFirstCall)
+          .Callback (
+              (ISecurityProvider securityProvider, ISecurityPrincipal principal, IReadOnlyList<AccessType> requiredAccessTypes) =>
               {
-                var secondObjectSecurityStrategyStub = MockRepository.GenerateStub<IObjectSecurityStrategy>();
-                var secondGuard = new InstanceBasedReEntrancyGuardedObjectSecurityStrategyDecorator (secondObjectSecurityStrategyStub);
+                var secondObjectSecurityStrategyStub = new Mock<IObjectSecurityStrategy>();
+                var secondGuard = new InstanceBasedReEntrancyGuardedObjectSecurityStrategyDecorator (secondObjectSecurityStrategyStub.Object);
                 var accessTypesOnSecondCall = new[] { AccessType.Get (GeneralAccessTypes.Read) };
                 bool expectedResultOnSecondCall = BooleanObjectMother.GetRandomBoolean();
 
                 secondObjectSecurityStrategyStub
-                    .Stub (_ => _.HasAccess (_securityProviderStub, _principalStub, accessTypesOnSecondCall))
-                    .Return (expectedResultOnSecondCall);
+                    .Setup (_ => _.HasAccess (_securityProviderStub.Object, _principalStub.Object, accessTypesOnSecondCall))
+                    .Returns (expectedResultOnSecondCall);
 
                 Assert.That (
-                    secondGuard.HasAccess (_securityProviderStub, _principalStub, accessTypesOnSecondCall),
+                    secondGuard.HasAccess (_securityProviderStub.Object, _principalStub.Object, accessTypesOnSecondCall),
                     Is.EqualTo (expectedResultOnSecondCall));
 
                 secondCallWasPerformed = true;
               });
 
       Assert.That (
-          firstGuard.HasAccess (_securityProviderStub, _principalStub, accessTypesOnFirstCall),
+          firstGuard.HasAccess (_securityProviderStub.Object, _principalStub.Object, accessTypesOnFirstCall),
           Is.EqualTo (expectedResultOnFirstCall));
 
       Assert.That (secondCallWasPerformed, Is.True);
@@ -126,19 +127,19 @@ namespace Remotion.Security.UnitTests
     [Test]
     public void HasAccess_WithExceptionDuringDecoratedCall_ResetsReentrancyForSubsequentCalls ()
     {
-      var objectSecurityStrategyStub = MockRepository.GenerateStub<IObjectSecurityStrategy>();
-      var guard = new InstanceBasedReEntrancyGuardedObjectSecurityStrategyDecorator (objectSecurityStrategyStub);
+      var objectSecurityStrategyStub = new Mock<IObjectSecurityStrategy>();
+      var guard = new InstanceBasedReEntrancyGuardedObjectSecurityStrategyDecorator (objectSecurityStrategyStub.Object);
 
       var accessTypesOnFirstCall = new[] { AccessType.Get (GeneralAccessTypes.Find) };
       var exception = new Exception();
-      objectSecurityStrategyStub.Stub (_ => _.HasAccess (_securityProviderStub, _principalStub, accessTypesOnFirstCall)).Throw (exception);
+      objectSecurityStrategyStub.Setup (_ => _.HasAccess (_securityProviderStub.Object, _principalStub.Object, accessTypesOnFirstCall)).Throws (exception);
 
       var accessTypesOnSecondCall = new[] { AccessType.Get (GeneralAccessTypes.Read) };
       bool expectedResult = BooleanObjectMother.GetRandomBoolean();
-      objectSecurityStrategyStub.Stub (_ => _.HasAccess (_securityProviderStub, _principalStub, accessTypesOnSecondCall)).Return (expectedResult);
+      objectSecurityStrategyStub.Setup (_ => _.HasAccess (_securityProviderStub.Object, _principalStub.Object, accessTypesOnSecondCall)).Returns (expectedResult);
 
-      Assert.That (() => guard.HasAccess (_securityProviderStub, _principalStub, accessTypesOnFirstCall), Throws.Exception.SameAs (exception));
-      Assert.That (guard.HasAccess (_securityProviderStub, _principalStub, accessTypesOnSecondCall), Is.EqualTo (expectedResult));
+      Assert.That (() => guard.HasAccess (_securityProviderStub.Object, _principalStub.Object, accessTypesOnFirstCall), Throws.Exception.SameAs (exception));
+      Assert.That (guard.HasAccess (_securityProviderStub.Object, _principalStub.Object, accessTypesOnSecondCall), Is.EqualTo (expectedResult));
     }
   }
 }
