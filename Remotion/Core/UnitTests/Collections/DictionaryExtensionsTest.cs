@@ -17,9 +17,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Moq;
 using NUnit.Framework;
 using Remotion.Collections;
-using Rhino.Mocks;
 
 namespace Remotion.UnitTests.Collections
 {
@@ -53,7 +53,7 @@ namespace Remotion.UnitTests.Collections
       var notFoundValue = ((IDictionary<string, string>) _dictionary).GetValueOrDefault ("z");
       Assert.That (notFoundValue, Is.Null);
     }
-    
+
     [Test]
     public void GetValueOrDefault_WithDictionary_ValueTypes ()
     {
@@ -65,7 +65,7 @@ namespace Remotion.UnitTests.Collections
       var notFoundValue = dictionary.GetValueOrDefault ("z");
       Assert.That (notFoundValue, Is.EqualTo (0));
     }
-    
+
     [Test]
     public void GetValueOrDefault_WithReadOnlyDictionary_ValueTypes ()
     {
@@ -82,20 +82,22 @@ namespace Remotion.UnitTests.Collections
     [Test]
     public void GetValueOrDefault_WithIReadOnlyDictionary_NullKey ()
     {
-      var dictionaryStub = MockRepository.GenerateStub<IReadOnlyDictionary<string, string>>();
-      dictionaryStub.Stub (stub => stub.TryGetValue (Arg<string>.Is.Null, out Arg<string>.Out ("out").Dummy)).Return (true);
+      var dictionaryStub = new Mock<IReadOnlyDictionary<string, string>>();
+      var outResult = "out";
+      dictionaryStub.Setup (stub => stub.TryGetValue (null, out outResult)).Returns (true);
 
-      var foundValue = dictionaryStub.GetValueOrDefault (null);
+      var foundValue = dictionaryStub.Object.GetValueOrDefault (null);
       Assert.That (foundValue, Is.EqualTo ("out"));
     }
 
     [Test]
     public void GetValueOrDefault_WithIDictionary_NullKey ()
     {
-      var dictionaryStub = MockRepository.GenerateStub<IDictionary<string, string>>();
-      dictionaryStub.Stub (stub => stub.TryGetValue (Arg<string>.Is.Null, out Arg<string>.Out ("out").Dummy)).Return (true);
+      var dictionaryStub = new Mock<IDictionary<string, string>>();
+      var outResult = "out";
+      dictionaryStub.Setup (stub => stub.TryGetValue (null, out outResult)).Returns (true);
 
-      var foundValue = dictionaryStub.GetValueOrDefault (null);
+      var foundValue = dictionaryStub.Object.GetValueOrDefault (null);
       Assert.That (foundValue, Is.EqualTo ("out"));
     }
 
@@ -187,10 +189,11 @@ namespace Remotion.UnitTests.Collections
     [Test]
     public void GetOrCreateValue_WithNullKey ()
     {
-      var dictionaryStub = MockRepository.GenerateStub<IDictionary<string, string>>();
-      dictionaryStub.Stub (stub => stub.TryGetValue (Arg<string>.Is.Null, out Arg<string>.Out ("out").Dummy)).Return (true);
+      var dictionaryStub = new Mock<IDictionary<string, string>>();
+      var outResult = "out";
+      dictionaryStub.Setup (stub => stub.TryGetValue (null, out outResult)).Returns (true);
 
-      var foundValue = dictionaryStub.GetOrCreateValue (null, key => throw new InvalidOperationException());
+      var foundValue = dictionaryStub.Object.GetOrCreateValue (null, key => throw new InvalidOperationException());
       Assert.That (foundValue, Is.EqualTo ("out"));
     }
 

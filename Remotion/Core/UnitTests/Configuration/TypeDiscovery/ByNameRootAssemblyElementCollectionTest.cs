@@ -16,11 +16,11 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Configuration.TypeDiscovery;
 using Remotion.Development.UnitTesting.Configuration;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
-using Rhino.Mocks;
 
 namespace Remotion.UnitTests.Configuration.TypeDiscovery
 {
@@ -115,9 +115,9 @@ namespace Remotion.UnitTests.Configuration.TypeDiscovery
     public void CreateRootAssemblyFinder ()
     {
       var collection = DeserializeFromXmlFragment (_xmlFragment);
-      var loaderStub = MockRepository.GenerateStub<IAssemblyLoader>();
+      var loaderStub = new Mock<IAssemblyLoader>();
 
-      var finder = collection.CreateRootAssemblyFinder (loaderStub);
+      var finder = collection.CreateRootAssemblyFinder (loaderStub.Object);
 
       var specs = finder.Specifications.ToArray();
       Assert.That (specs[0].AssemblyName.ToString (), Is.EqualTo ("mscorlib"));
@@ -126,7 +126,7 @@ namespace Remotion.UnitTests.Configuration.TypeDiscovery
       Assert.That (specs[1].AssemblyName.ToString (), Is.EqualTo ("System.Xml, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"));
       Assert.That (specs[1].FollowReferences, Is.True);
 
-      Assert.That (finder.AssemblyLoader, Is.SameAs (loaderStub));
+      Assert.That (finder.AssemblyLoader, Is.SameAs (loaderStub.Object));
     }
 
     private ByNameRootAssemblyElementCollection DeserializeFromXmlFragment (string xmlFragment)

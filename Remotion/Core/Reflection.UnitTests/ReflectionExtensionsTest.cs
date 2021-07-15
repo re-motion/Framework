@@ -15,9 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Utilities;
-using Rhino.Mocks;
 
 namespace Remotion.Reflection.UnitTests
 {
@@ -32,51 +32,51 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void IsOriginalDeclaration_DeclaringTypeEqualsOrignalDeclaringType_True ()
     {
-      var memberInfoStub = MockRepository.GenerateStub<IMemberInformation>();
-      var typeInformationStub = MockRepository.GenerateStub<ITypeInformation>();
-      memberInfoStub.Stub (stub => stub.DeclaringType).Return (typeInformationStub);
-      memberInfoStub.Stub (stub => stub.GetOriginalDeclaringType()).Return (typeInformationStub);
-      Assert.That (memberInfoStub.IsOriginalDeclaration(), Is.True);
+      var memberInfoStub = new Mock<IMemberInformation>();
+      var typeInformationStub = new Mock<ITypeInformation>();
+      memberInfoStub.Setup (stub => stub.DeclaringType).Returns (typeInformationStub.Object);
+      memberInfoStub.Setup (stub => stub.GetOriginalDeclaringType()).Returns (typeInformationStub.Object);
+      Assert.That (memberInfoStub.Object.IsOriginalDeclaration(), Is.True);
     }
 
     [Test]
     public void IsOriginalDeclaration_DeclaringTypeNotEqualToOrignalDeclaringType_False ()
     {
-      var memberInfoStub = MockRepository.GenerateStub<IMemberInformation> ();
-      memberInfoStub.Stub (stub => stub.DeclaringType).Return (MockRepository.GenerateStub<ITypeInformation>());
-      memberInfoStub.Stub (stub => stub.GetOriginalDeclaringType()).Return (MockRepository.GenerateStub<ITypeInformation>());
+      var memberInfoStub = new Mock<IMemberInformation>();
+      memberInfoStub.Setup (stub => stub.DeclaringType).Returns (new Mock<ITypeInformation>().Object);
+      memberInfoStub.Setup (stub => stub.GetOriginalDeclaringType()).Returns (new Mock<ITypeInformation>().Object);
 
-      Assert.That (memberInfoStub.IsOriginalDeclaration (), Is.False);
+      Assert.That (memberInfoStub.Object.IsOriginalDeclaration (), Is.False);
     }
 
     [Test]
     public void IsOriginalDeclaration_DeclaringTypeIsNull_False ()
     {
-      var memberInfoStub = MockRepository.GenerateStub<IMemberInformation> ();
-      memberInfoStub.Stub (stub => stub.DeclaringType).Return (null);
-      memberInfoStub.Stub (stub => stub.GetOriginalDeclaringType()).Return (MockRepository.GenerateStub<ITypeInformation>());
+      var memberInfoStub = new Mock<IMemberInformation>();
+      memberInfoStub.Setup (stub => stub.DeclaringType).Returns ((ITypeInformation) null);
+      memberInfoStub.Setup (stub => stub.GetOriginalDeclaringType()).Returns (new Mock<ITypeInformation>().Object);
 
-      Assert.That (memberInfoStub.IsOriginalDeclaration (), Is.False);
+      Assert.That (memberInfoStub.Object.IsOriginalDeclaration (), Is.False);
     }
 
     [Test]
     public void IsOriginalDeclaration_OrignalDeclaringTypeIsNull_False ()
     {
-      var memberInfoStub = MockRepository.GenerateStub<IMemberInformation> ();
-      memberInfoStub.Stub (stub => stub.DeclaringType).Return (MockRepository.GenerateStub<ITypeInformation>());
-      memberInfoStub.Stub (stub => stub.GetOriginalDeclaringType ()).Return (null);
+      var memberInfoStub = new Mock<IMemberInformation>();
+      memberInfoStub.Setup (stub => stub.DeclaringType).Returns (new Mock<ITypeInformation>().Object);
+      memberInfoStub.Setup (stub => stub.GetOriginalDeclaringType ()).Returns ((ITypeInformation) null);
 
-      Assert.That (memberInfoStub.IsOriginalDeclaration (), Is.False);
+      Assert.That (memberInfoStub.Object.IsOriginalDeclaration (), Is.False);
     }
 
     [Test]
     public void IsOriginalDeclaration_DeclaringTypeIsNullAndOrignalDeclaringTypeIsNull_True ()
     {
-      var memberInfoStub = MockRepository.GenerateStub<IMemberInformation> ();
-      memberInfoStub.Stub (stub => stub.DeclaringType).Return (null);
-      memberInfoStub.Stub (stub => stub.GetOriginalDeclaringType ()).Return (null);
+      var memberInfoStub = new Mock<IMemberInformation>();
+      memberInfoStub.Setup (stub => stub.DeclaringType).Returns ((ITypeInformation) null);
+      memberInfoStub.Setup (stub => stub.GetOriginalDeclaringType ()).Returns ((ITypeInformation) null);
 
-      Assert.That (memberInfoStub.IsOriginalDeclaration (), Is.True);
+      Assert.That (memberInfoStub.Object.IsOriginalDeclaration (), Is.True);
     }
 
     [Test]
@@ -91,9 +91,9 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void AsRuntimeType_WithOtherITypeInformation_ReturnsNull ()
     {
-      var typeInformation = MockRepository.GenerateStub<ITypeInformation>();
+      var typeInformation = new Mock<ITypeInformation>();
 
-      Assert.That (typeInformation.AsRuntimeType(), Is.Null);
+      Assert.That (typeInformation.Object.AsRuntimeType(), Is.Null);
     }
 
     [Test]
@@ -108,15 +108,15 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void ConvertToRuntimeType_WithOtherITypeInformation_ThrowsInvalidOperationException ()
     {
-      var typeInformation = MockRepository.GenerateStub<ITypeInformation>();
-      typeInformation.Stub (_ => _.Name).Return ("TheName");
+      var typeInformation = new Mock<ITypeInformation>();
+      typeInformation.Setup (_ => _.Name).Returns ("TheName");
 
       Assert.That (
-          () => typeInformation.ConvertToRuntimeType(),
+          () => typeInformation.Object.ConvertToRuntimeType(),
           Throws.InvalidOperationException.And.Message.EqualTo (
               string.Format (
                   "The type 'TheName' cannot be converted to a runtime type because no conversion is registered for '{0}'.",
-                  typeInformation.GetType().FullName)));
+                  typeInformation.Object.GetType().FullName)));
     }
 
     [Test]
@@ -131,9 +131,9 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void AsRuntimeProperty_WithOtherIPropertyInformation_ReturnsNull ()
     {
-      var propertyInformation = MockRepository.GenerateStub<IPropertyInformation>();
+      var propertyInformation = new Mock<IPropertyInformation>();
 
-      Assert.That (propertyInformation.AsRuntimePropertyInfo(), Is.Null);
+      Assert.That (propertyInformation.Object.AsRuntimePropertyInfo(), Is.Null);
     }
 
     [Test]
@@ -148,15 +148,15 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void ConvertToRuntimeProperty_WithOtherIPropertyInformation_ThrowsInvalidOperationException ()
     {
-      var propertyInformation = MockRepository.GenerateStub<IPropertyInformation>();
-      propertyInformation.Stub (_ => _.Name).Return ("TheName");
+      var propertyInformation = new Mock<IPropertyInformation>();
+      propertyInformation.Setup (_ => _.Name).Returns ("TheName");
 
       Assert.That (
-          () => propertyInformation.ConvertToRuntimePropertyInfo(),
+          () => propertyInformation.Object.ConvertToRuntimePropertyInfo(),
           Throws.InvalidOperationException.And.Message.EqualTo (
               string.Format (
                   "The property 'TheName' cannot be converted to a runtime property because no conversion is registered for '{0}'.",
-                  propertyInformation.GetType().Name)));
+                  propertyInformation.Object.GetType().Name)));
     }
   }
 }

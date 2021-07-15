@@ -16,10 +16,10 @@
 // 
 using System;
 using System.Collections.Generic;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Utilities;
-using Rhino.Mocks;
 
 namespace Remotion.UnitTests.Utilities
 {
@@ -39,10 +39,10 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void OneComparer_NonZero ()
     {
-      var stubComparer = MockRepository.GenerateStub<IComparer<int>> ();
-      var compoundComparer = new CompoundComparer<int> (stubComparer);
+      var stubComparer = new Mock<IComparer<int>>();
+      var compoundComparer = new CompoundComparer<int> (stubComparer.Object);
 
-      stubComparer.Stub (stub => stub.Compare (1, 2)).Return (-1);
+      stubComparer.Setup (stub => stub.Compare (1, 2)).Returns (-1);
 
       Assert.That (compoundComparer.Compare (1, 2), Is.EqualTo (-1));
     }
@@ -50,10 +50,10 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void OneComparer_Zero ()
     {
-      var stubComparer = MockRepository.GenerateStub<IComparer<int>> ();
-      var compoundComparer = new CompoundComparer<int> (stubComparer);
+      var stubComparer = new Mock<IComparer<int>>();
+      var compoundComparer = new CompoundComparer<int> (stubComparer.Object);
 
-      stubComparer.Stub (stub => stub.Compare (1, 2)).Return (0);
+      stubComparer.Setup (stub => stub.Compare (1, 2)).Returns (0);
 
       Assert.That (compoundComparer.Compare (1, 2), Is.EqualTo (0));
     }
@@ -61,17 +61,17 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void ManyComparers_UsesFirstNonZero ()
     {
-      var stubComparer1 = MockRepository.GenerateStub<IComparer<int>> ();
-      var stubComparer2 = MockRepository.GenerateStub<IComparer<int>> ();
-      var stubComparer3 = MockRepository.GenerateStub<IComparer<int>> ();
-      var stubComparer4 = MockRepository.GenerateStub<IComparer<int>> ();
+      var stubComparer1 = new Mock<IComparer<int>>();
+      var stubComparer2 = new Mock<IComparer<int>>();
+      var stubComparer3 = new Mock<IComparer<int>>();
+      var stubComparer4 = new Mock<IComparer<int>>();
       
-      var compoundComparer = new CompoundComparer<int> (stubComparer1, stubComparer2, stubComparer3, stubComparer4);
+      var compoundComparer = new CompoundComparer<int> (stubComparer1.Object, stubComparer2.Object, stubComparer3.Object, stubComparer4.Object);
 
-      stubComparer1.Stub (stub => stub.Compare (1, 2)).Return (0);
-      stubComparer2.Stub (stub => stub.Compare (1, 2)).Return (0);
-      stubComparer3.Stub (stub => stub.Compare (1, 2)).Return (1);
-      stubComparer4.Stub (stub => stub.Compare (1, 2)).Return (-1);
+      stubComparer1.Setup (stub => stub.Compare (1, 2)).Returns (0);
+      stubComparer2.Setup (stub => stub.Compare (1, 2)).Returns (0);
+      stubComparer3.Setup (stub => stub.Compare (1, 2)).Returns (1);
+      stubComparer4.Setup (stub => stub.Compare (1, 2)).Returns (-1);
 
       Assert.That (compoundComparer.Compare (1, 2), Is.EqualTo (1));
     }

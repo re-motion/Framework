@@ -18,13 +18,12 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
 using Remotion.Utilities;
-using Rhino.Mocks;
-using Rhino_Is = Rhino.Mocks.Constraints.Is;
 
 namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
 {
@@ -173,11 +172,10 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
         Assembly markedAssembly = Load (_markedAssemblyPath);
 
         var loader = CreateLoaderForMarkedAssemblies ();
-        var rootAssemblyFinderStub = MockRepository.GenerateStub<IRootAssemblyFinder> ();
-        rootAssemblyFinderStub.Stub (stub => stub.FindRootAssemblies ()).Return (new[] { new RootAssembly (markedAssembly, true) });
-        rootAssemblyFinderStub.Replay ();
+        var rootAssemblyFinderStub = new Mock<IRootAssemblyFinder>();
+        rootAssemblyFinderStub.Setup (stub => stub.FindRootAssemblies ()).Returns (new[] { new RootAssembly (markedAssembly, true) });
 
-        var assemblyFinder = new AssemblyFinder (rootAssemblyFinderStub, loader);
+        var assemblyFinder = new AssemblyFinder (rootAssemblyFinderStub.Object, loader);
 
         Assembly[] assemblies = assemblyFinder.FindAssemblies().ToArray();
         Assert.That (assemblies, Is.EquivalentTo (new[] { markedAssembly, Load (_markedReferencedAssemblyPath) }));
@@ -191,17 +189,16 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
       {
         InitializeDynamicDirectory ();
 
-        var filterMock = new MockRepository ().StrictMock<IAssemblyLoaderFilter> ();
-        filterMock.Expect (mock => mock.ShouldConsiderAssembly (Arg<AssemblyName>.Is.Anything)).Return (false).Repeat.AtLeastOnce ();
-        filterMock.Replay ();
+        var filterMock = new Mock<IAssemblyLoaderFilter> (MockBehavior.Strict);
+        filterMock.Setup (mock => mock.ShouldConsiderAssembly (It.IsAny<AssemblyName>())).Returns (false).Verifiable();
 
-        var assemblyLoader = new FilteringAssemblyLoader (filterMock);
+        var assemblyLoader = new FilteringAssemblyLoader (filterMock.Object);
         var rootAssemblyFinder = SearchPathRootAssemblyFinder.CreateForCurrentAppDomain (true, assemblyLoader);
         var assemblyFinder = new AssemblyFinder (rootAssemblyFinder, assemblyLoader);
 
         Assembly[] assemblies = assemblyFinder.FindAssemblies().ToArray();
 
-        filterMock.VerifyAllExpectations ();
+        filterMock.Verify (mock => mock.ShouldConsiderAssembly (It.IsAny<AssemblyName>()), Times.AtLeastOnce());
         Assert.That (assemblies, Is.Empty);
       });
     }
@@ -213,18 +210,17 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
       {
         InitializeDynamicDirectory ();
 
-        var filterMock = new MockRepository ().StrictMock<IAssemblyLoaderFilter> ();
-        filterMock.Expect (mock => mock.ShouldConsiderAssembly (Arg<AssemblyName>.Is.NotNull)).Return (true).Repeat.AtLeastOnce ();
-        filterMock.Expect (mock => mock.ShouldIncludeAssembly (Arg<Assembly>.Is.NotNull)).Return (false).Repeat.AtLeastOnce ();
-        filterMock.Replay ();
+        var filterMock = new Mock<IAssemblyLoaderFilter> (MockBehavior.Strict);
+        filterMock.Setup (mock => mock.ShouldConsiderAssembly (It.IsNotNull<AssemblyName>())).Returns (true).Verifiable();
+        filterMock.Setup (mock => mock.ShouldIncludeAssembly (It.IsNotNull<Assembly>())).Returns (false).Verifiable();
 
-        var assemblyLoader = new FilteringAssemblyLoader (filterMock);
+        var assemblyLoader = new FilteringAssemblyLoader (filterMock.Object);
         var rootAssemblyFinder = SearchPathRootAssemblyFinder.CreateForCurrentAppDomain (true, assemblyLoader);
         var assemblyFinder = new AssemblyFinder (rootAssemblyFinder, assemblyLoader);
 
         Assembly[] assemblies = assemblyFinder.FindAssemblies().ToArray();
 
-        filterMock.VerifyAllExpectations();
+        filterMock.Verify (mock => mock.ShouldIncludeAssembly (It.IsNotNull<Assembly>()), Times.AtLeastOnce());
         Assert.That (assemblies, Is.Empty);
       });
     }

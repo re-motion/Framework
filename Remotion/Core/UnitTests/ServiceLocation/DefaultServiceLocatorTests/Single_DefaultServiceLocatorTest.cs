@@ -16,10 +16,10 @@
 // 
 using System;
 using Microsoft.Practices.ServiceLocation;
+using Moq;
 using NUnit.Framework;
 using Remotion.ServiceLocation;
 using Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
 {
@@ -30,16 +30,16 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     public void GetInstance_LookUpViaServiceConfigurationDiscoveryService_InstantiatesImplementation ()
     {
       var serviceConfigurationEntry = CreateSingleServiceConfigurationEntry (typeof (ITestType), typeof (TestImplementation1));
-      var serviceConfigurationDiscoveryServiceStub = MockRepository.GenerateStrictMock<IServiceConfigurationDiscoveryService>();
-      serviceConfigurationDiscoveryServiceStub.Stub(_=>_.GetDefaultConfiguration (typeof (ITestType))).Return (serviceConfigurationEntry);
+      var serviceConfigurationDiscoveryServiceStub = new Mock<IServiceConfigurationDiscoveryService> (MockBehavior.Strict);
+      serviceConfigurationDiscoveryServiceStub.Setup(_=>_.GetDefaultConfiguration (typeof (ITestType))).Returns (serviceConfigurationEntry);
 
-      var serviceLocator = CreateServiceLocator (serviceConfigurationDiscoveryServiceStub);
+      var serviceLocator = CreateServiceLocator (serviceConfigurationDiscoveryServiceStub.Object);
 
       var instance = serviceLocator.GetInstance (typeof (ITestType));
 
       Assert.That (instance, Is.TypeOf<TestImplementation1>());
     }
-        
+
     [Test]
     public void GetInstance_InstantiatesService ()
     {
@@ -52,7 +52,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
 
       Assert.That (instance, Is.TypeOf<TestImplementation1>());
     }
-    
+
     [Test]
     public void GetInstance_GenericOverload_InstantiatesImplementation ()
     {
@@ -158,7 +158,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
 
       Assert.That (result, Is.TypeOf (typeof (TestImplementation1)));
     }
-    
+
     [Test]
     public void GetInstance_Generic_WithKeyParameter_KeyIsIgnored ()
     {
@@ -225,10 +225,10 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     public void GetInstance_ServiceTypeWithoutImplementation_ThrowsActivationException ()
     {
       var serviceConfigurationEntry = CreateMultipleServiceConfigurationEntry (typeof (ITestType), new Type[0]);
-      var serviceConfigurationDiscoveryServiceStub = MockRepository.GenerateStrictMock<IServiceConfigurationDiscoveryService>();
-      serviceConfigurationDiscoveryServiceStub.Stub (_ => _.GetDefaultConfiguration (typeof (ITestType))).Return (serviceConfigurationEntry);
+      var serviceConfigurationDiscoveryServiceStub = new Mock<IServiceConfigurationDiscoveryService> (MockBehavior.Strict);
+      serviceConfigurationDiscoveryServiceStub.Setup (_ => _.GetDefaultConfiguration (typeof (ITestType))).Returns (serviceConfigurationEntry);
 
-      var serviceLocator = CreateServiceLocator (serviceConfigurationDiscoveryServiceStub);
+      var serviceLocator = CreateServiceLocator (serviceConfigurationDiscoveryServiceStub.Object);
 
       Assert.That (
           () => serviceLocator.GetInstance (typeof (ITestType)),

@@ -16,10 +16,10 @@
 // 
 using System;
 using System.Collections.Generic;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting.Enumerables;
 using Remotion.Logging;
-using Rhino.Mocks;
 
 namespace Remotion.UnitTests.Logging
 {
@@ -29,41 +29,39 @@ namespace Remotion.UnitTests.Logging
     [Test]
     public void LogAndReturnValue_ReturnsValue ()
     {
-      var logMock = MockRepository.GenerateMock<ILog> ();
+      var logMock = new Mock<ILog>();
 
-      var result = "test".LogAndReturnValue (logMock, LogLevel.Debug, value => string.Format ("x{0}y", value));
+      var result = "test".LogAndReturnValue (logMock.Object, LogLevel.Debug, value => string.Format ("x{0}y", value));
       Assert.That (result, Is.EqualTo ("test"));
     }
 
     [Test]
     public void LogAndReturnValue_DoesNotLog_IfNotConfigured ()
     {
-      var logMock = MockRepository.GenerateMock<ILog> ();
+      var logMock = new Mock<ILog>();
 
-      "test".LogAndReturnValue (logMock, LogLevel.Debug, value => { throw new Exception ("Should not be called"); });
-      logMock.AssertWasNotCalled (mock => mock.Log (Arg<LogLevel>.Is.Anything, Arg<int?>.Is.Anything, Arg<object>.Is.Anything, Arg<Exception>.Is.Anything));
+      "test".LogAndReturnValue (logMock.Object, LogLevel.Debug, value => { throw new Exception ("Should not be called"); });
+      logMock.Verify (mock => mock.Log (It.IsAny<LogLevel>(), It.IsAny<int?>(), It.IsAny<object>(), It.IsAny<Exception>()), Times.Never());
     }
 
     [Test]
     public void LogAndReturnValue_Logs_IfConfigured ()
     {
-      var logMock = MockRepository.GenerateMock<ILog> ();
-      logMock.Expect (mock => mock.IsEnabled (LogLevel.Debug)).Return (true);
-      logMock.Replay ();
+      var logMock = new Mock<ILog>();
+      logMock.Setup (mock => mock.IsEnabled (LogLevel.Debug)).Returns (true).Verifiable();
 
-      "test".LogAndReturnValue (logMock, LogLevel.Debug, value => string.Format ("x{0}y", value));
-      logMock.AssertWasCalled (mock => mock.Log (LogLevel.Debug, (int?) null, "xtesty", (Exception) null));
+      "test".LogAndReturnValue (logMock.Object, LogLevel.Debug, value => string.Format ("x{0}y", value));
+      logMock.Verify (mock => mock.Log (LogLevel.Debug, (int?) null, "xtesty", (Exception) null), Times.AtLeastOnce());
     }
 
     [Test]
     public void LogAndReturnItems_ReturnsValue ()
     {
-      var logMock = MockRepository.GenerateMock<ILog>();
-      logMock.Expect (mock => mock.IsEnabled (LogLevel.Debug)).Return (true);
-      logMock.Replay ();
+      var logMock = new Mock<ILog>();
+      logMock.Setup (mock => mock.IsEnabled (LogLevel.Debug)).Returns (true).Verifiable();
 
       var input = new[] { "A", "B", "C" };
-      var result = input.LogAndReturnItems (logMock, LogLevel.Debug, count => string.Format ("x{0}y", count));
+      var result = input.LogAndReturnItems (logMock.Object, LogLevel.Debug, count => string.Format ("x{0}y", count));
       Assert.That (result, Is.EqualTo (new[] { "A", "B", "C" }));
       Assert.That (result, Is.Not.SameAs (input));
     }
@@ -71,30 +69,29 @@ namespace Remotion.UnitTests.Logging
     [Test]
     public void LogAndReturnItems_DoesNotIterate_AndDoesNotLog_IfNotConfigured ()
     {
-      var logMock = MockRepository.GenerateMock<ILog> ();
-      var sequenceMock = MockRepository.GenerateStrictMock<IEnumerable<int>>();
+      var logMock = new Mock<ILog>();
+      var sequenceMock = new Mock<IEnumerable<int>> (MockBehavior.Strict);
 
-      var result = sequenceMock.LogAndReturnItems (logMock, LogLevel.Debug, value => { throw new Exception ("Should not be called"); });
-      Assert.That (result, Is.SameAs (sequenceMock));
-      logMock.AssertWasNotCalled (mock => mock.Log (Arg<LogLevel>.Is.Anything, Arg<int?>.Is.Anything, Arg<object>.Is.Anything, Arg<Exception>.Is.Anything));
+      var result = sequenceMock.Object.LogAndReturnItems (logMock.Object, LogLevel.Debug, value => { throw new Exception ("Should not be called"); });
+      Assert.That (result, Is.SameAs (sequenceMock.Object));
+      logMock.Verify (mock => mock.Log (It.IsAny<LogLevel>(), It.IsAny<int?>(), It.IsAny<object>(), It.IsAny<Exception>()), Times.Never());
     }
 
     [Test]
     public void LogAndReturnItems_LogsAfterIterationIsComplete_IfConfigured ()
     {
-      var logMock = MockRepository.GenerateMock<ILog>();
-      logMock.Expect (mock => mock.IsEnabled (LogLevel.Debug)).Return (true);
-      logMock.Replay();
+      var logMock = new Mock<ILog>();
+      logMock.Setup (mock => mock.IsEnabled (LogLevel.Debug)).Returns (true).Verifiable();
 
-      var result = new[] { "A", "B", "C" }.LogAndReturnItems (logMock, LogLevel.Debug, count => string.Format ("x{0}y", count));
+      var result = new[] { "A", "B", "C" }.LogAndReturnItems (logMock.Object, LogLevel.Debug, count => string.Format ("x{0}y", count));
       var enumerator = result.GetEnumerator();
       enumerator.MoveNext();
       enumerator.MoveNext();
       enumerator.MoveNext();
       Assert.That (enumerator.Current, Is.EqualTo ("C"));
-      logMock.AssertWasNotCalled (mock => mock.Log (LogLevel.Debug, "x3y"));
+      logMock.Verify (mock => mock.Log (LogLevel.Debug, null, "x3y", null), Times.Never());
       enumerator.MoveNext();
-      logMock.AssertWasCalled (mock => mock.Log (LogLevel.Debug, "x3y"));
+      logMock.Verify (mock => mock.Log (LogLevel.Debug, null, "x3y", null), Times.AtLeastOnce());
     }
   }
 }

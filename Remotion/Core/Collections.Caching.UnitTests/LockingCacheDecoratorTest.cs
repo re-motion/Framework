@@ -21,10 +21,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using Moq;
 using NUnit.Framework;
-using Remotion.Development.RhinoMocks.UnitTesting.Threading;
+using Remotion.Development.Moq.UnitTesting.Threading;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Collections.Caching.UnitTests
 {
@@ -38,9 +38,9 @@ namespace Remotion.Collections.Caching.UnitTests
     [SetUp]
     public void SetUp ()
     {
-      var innerCacheMock = MockRepository.GenerateStrictMock<ICache<string, int>>();
+      var innerCacheMock = new Mock<ICache<string, int>> (MockBehavior.Strict);
 
-      _decorator = new LockingCacheDecorator<string, int> (innerCacheMock);
+      _decorator = new LockingCacheDecorator<string, int> (innerCacheMock.Object);
 
       var lockObject = PrivateInvoke.GetNonPublicField (_decorator, "_lock");
       _helper = new LockingDecoratorTestHelper<ICache<string, int>> (_decorator, lockObject, innerCacheMock);
@@ -55,7 +55,12 @@ namespace Remotion.Collections.Caching.UnitTests
     [Test]
     public void GetOrCreateValue ()
     {
-      _helper.ExpectSynchronizedDelegation (cache => cache.GetOrCreateValue ("hugo", delegate { return 3; }), 17);
+      Func<string, int> valueFactory = _ => 3;
+      _helper.ExpectSynchronizedDelegation (
+          cache => cache.GetOrCreateValue ("hugo", It.Is<Func<string, int>> (_ => _ == valueFactory)),
+          cache => cache.GetOrCreateValue ("hugo", valueFactory),
+          17,
+          _ => { });
     }
 
     [Test]

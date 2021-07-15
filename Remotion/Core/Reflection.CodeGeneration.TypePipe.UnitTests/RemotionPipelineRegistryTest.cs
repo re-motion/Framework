@@ -15,11 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Reflection.TypeDiscovery;
 using Remotion.TypePipe;
 using Remotion.TypePipe.TypeAssembly;
-using Rhino.Mocks;
 
 namespace Remotion.Reflection.CodeGeneration.TypePipe.UnitTests
 {
@@ -34,10 +34,10 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.UnitTests
     public void SetUp ()
     {
       var action = (Action<object, IProxyTypeAssemblyContext>) ((id, ctx) => ctx.ProxyType.AddField ("field", 0, typeof (int)));
-      var participantStub = MockRepository.GenerateStub<IParticipant>();
+      var participantStub = new Mock<IParticipant>();
       // Modify proxy type to avoid no-modification optimization.
-      participantStub.Stub (_ => _.Participate (Arg<object>.Is.Anything, Arg<IProxyTypeAssemblyContext>.Is.Anything)).Do (action);
-      _participants = new[] { participantStub };
+      participantStub.Setup (_ => _.Participate (It.IsAny<object>(), It.IsAny<IProxyTypeAssemblyContext>())).Callback (action);
+      _participants = new[] { participantStub.Object };
 
       var registry = new RemotionPipelineRegistry (_participants);
       _defaultPipeline = registry.DefaultPipeline;
