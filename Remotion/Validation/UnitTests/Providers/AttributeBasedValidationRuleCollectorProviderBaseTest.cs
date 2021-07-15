@@ -73,7 +73,6 @@ namespace Remotion.Validation.UnitTests.Providers
     [Test]
     public void GetValidationRuleCollectors ()
     {
-      // TODO: fix unit test
       var dictionary = new Dictionary<Type, Mock<IAttributesBasedValidationPropertyRuleReflector>>();
       dictionary.Add (typeof (Employee), _validationPropertyRuleReflectorMock1);
       dictionary.Add (typeof (SpecialCustomer1), _validationPropertyRuleReflectorMock2);
