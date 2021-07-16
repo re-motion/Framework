@@ -28,8 +28,9 @@
     <PackageReference Include="Remotion.Linq.EagerFetching" Version="2.2.0" />
     <PackageReference Include="Remotion.Linq.SqlBackend" Version="2.1.0-alpha.1" />
     <PackageReference Include="Remotion.TypePipe" Version="3.0.0-alpha.1" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
   </ItemGroup>
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />

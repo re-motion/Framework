@@ -28,7 +28,7 @@
     <ProjectReference Include="..\..\Security\Core\Security.Core.csproj" />
     <ProjectReference Include="..\Contracts.DiagnosticMetadata\Web.Contracts.DiagnosticMetadata.csproj" />
   </ItemGroup>
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />

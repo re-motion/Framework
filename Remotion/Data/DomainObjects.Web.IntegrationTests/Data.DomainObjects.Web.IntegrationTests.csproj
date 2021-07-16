@@ -29,7 +29,7 @@
   <ItemGroup>
     <PackageReference Include="CoreRhinoMocks" Version="3.6.1.2" PrivateAssets="all" />
   </ItemGroup>
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
     <Reference Include="System.Transactions" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
