@@ -60,6 +60,7 @@
 // SOFTWARE.
 //
 
+#if NETFRAMEWORK
 #define INTERNAL_NULLABLE_ATTRIBUTES
 
 #pragma warning disable MA0048 // File name must match type name
@@ -211,3 +212,4 @@ namespace System.Diagnostics.CodeAnalysis
     public string[] Members { get; }
   }
 }
+#endif
