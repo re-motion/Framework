@@ -55,8 +55,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     public void GetRootedPath_WithUnrootedPath_ReturnsPathRelativeToAppBase_InSeparateAddDomain ()
     {
       AppDomainSetup setup = AppDomain.CurrentDomain.SetupInformation;
+#if NETFRAMEWORK
       setup.ApplicationBase = @"c:\";
       setup.DynamicBase = Path.GetTempPath ();
+#endif
       new AppDomainRunner (setup, delegate
       {
         string path = @"foo\bar.txt";

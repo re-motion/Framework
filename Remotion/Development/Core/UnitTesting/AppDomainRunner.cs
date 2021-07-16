@@ -29,11 +29,15 @@ namespace Remotion.Development.UnitTesting
 
     public static void Run (string applicationBase, Action<object[]> action, params object[] args)
     {
+#if NETFRAMEWORK
       AppDomainSetup setup = AppDomain.CurrentDomain.SetupInformation;
       setup.ApplicationBase = applicationBase;
       setup.ApplicationName = "AppDomainRunner - AppDomain";
       var runner = new AppDomainRunner (setup, action, args);
       runner.Run ();
+#else
+      throw new PlatformNotSupportedException ("This API is not supported on the current platform.");
+#endif
     }
 
     private readonly Action<object[]> _action;
