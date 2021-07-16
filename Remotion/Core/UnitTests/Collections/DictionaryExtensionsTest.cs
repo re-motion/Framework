@@ -104,10 +104,10 @@ namespace Remotion.UnitTests.Collections
     [Test]
     public void GetValueOrDefault_WithIReadOnlyDictionary_WithDefaultValue ()
     {
-      var foundValue = ((IReadOnlyDictionary<string, string>) _dictionary).GetValueOrDefault ("a", "Beta");
+      var foundValue = DictionaryExtensions.GetValueOrDefault ((IReadOnlyDictionary<string, string>) _dictionary, "a", "Beta");
       Assert.That (foundValue, Is.EqualTo ("Alpha"));
 
-      var substitutedDefaultValue = ((IReadOnlyDictionary<string, string>) _dictionary).GetValueOrDefault ("z", "Beta");
+      var substitutedDefaultValue = DictionaryExtensions.GetValueOrDefault ((IReadOnlyDictionary<string, string>) _dictionary, "z", "Beta");
       Assert.That (substitutedDefaultValue, Is.EqualTo ("Beta"));
     }
 
@@ -144,7 +144,7 @@ namespace Remotion.UnitTests.Collections
     [Test]
     public void GetValueOrDefault_WithIReadOnlyDictionary_WithDefaultValue_NullDefaultValue ()
     {
-      var substitutedDefaultValue = ((IReadOnlyDictionary<string, string>) _dictionary).GetValueOrDefault ("z", null);
+      var substitutedDefaultValue = DictionaryExtensions.GetValueOrDefault ((IReadOnlyDictionary<string, string>) _dictionary, "z", null);
       Assert.That (substitutedDefaultValue, Is.Null);
     }
 
