@@ -90,7 +90,7 @@ namespace Remotion.Logging
     /// <remarks>
     /// <see cref="Write(string)"/> does not use <see cref="TraceFilter"/>, even though the inherited overloads
     /// use it; this follows the behavior of the standard <see cref="TraceListener"/> implementations like 
-    /// <see cref="EventLogTraceListener"/> and <see cref="TextWriterTraceListener"/>; 
+    /// <see cref="T:System.Diagnostics.EventLogTraceListener"/> and <see cref="TextWriterTraceListener"/>; 
     /// this behavior is not explicitely documented for the classes of System.Diagnostics.
     /// </remarks>
     public override void Write (string? message)

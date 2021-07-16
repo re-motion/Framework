@@ -29,6 +29,7 @@ using LogManager = log4net.LogManager;
 
 namespace Remotion.UnitTests.Logging.Log4NetLogTests
 {
+#if NETFRAMEWORK
   [TestFixture]
   public class LogToEventLogTest
   {
@@ -143,4 +144,5 @@ namespace Remotion.UnitTests.Logging.Log4NetLogTests
 
     }
   }
+#endif
 }
