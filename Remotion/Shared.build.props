@@ -77,6 +77,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(ProjectType)' == 'Test'" >
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0" />
     <PackageReference Include="CoreRhinoMocks" Version="3.6.1.2" PrivateAssets="all" />
     <PackageReference Include="Moq" Version="4.13.1" PrivateAssets="all" />
     <PackageReference Include="NUnit" Version="3.12.0" PrivateAssets="all" />
@@ -103,14 +104,7 @@
     <PackageVersion Condition="'$(AssemblyNuGetVersion)' != ''">$(AssemblyNuGetVersion)</PackageVersion>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <ResolveReferencesDependsOn>
-      ResolveWebFormsDependencies;
-      $(ResolveReferencesDependsOn)
-    </ResolveReferencesDependsOn>
-  </PropertyGroup>
-
-  <Target Name="ResolveWebFormsDependencies" Condition="'$(UseWebForms)' == 'true'">
+  <Target Name="AdaptUseWebForms" BeforeTargets="ResolveAssemblyReferences" Condition="'$(UseWebForms)' == 'true'">
 
     <ItemGroup Condition="'$(TargetFramework)' == 'net5.0-windows'">
       <PackageReference Include="CoreForms.Web" Version="5.0.0-alpha-001" />

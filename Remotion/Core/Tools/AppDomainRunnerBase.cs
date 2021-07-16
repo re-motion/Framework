@@ -15,8 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
-#if NETFRAMEWORK
-
 using System;
 using System.IO;
 using Remotion.Utilities;
@@ -47,6 +45,7 @@ namespace Remotion.Tools
 
     public void Run ()
     {
+#if NETFRAMEWORK
       AppDomain? appDomain = null;
 
       try
@@ -68,7 +67,7 @@ namespace Remotion.Tools
         if (Directory.Exists (_appDomainSetup.DynamicBase))
           Directory.Delete (_appDomainSetup.DynamicBase!, true);
       }
+#endif
     }
   }
 }
-#endif

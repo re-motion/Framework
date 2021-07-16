@@ -41,4 +41,10 @@
     <PackageReference Include="Remotion.Linq.SqlBackend.Development" Version="2.1.0-x.9" />
     <PackageReference Include="Remotion.TypePipe.Development" Version="3.0.0-x.9" />
   </ItemGroup>
+  <Target Name="CopySqlScripts" AfterTargets="Build">
+    <ItemGroup>
+      <SqlScripts Include="Database\*.sql" />
+    </ItemGroup>
+    <Copy SourceFiles="@(SqlScripts)" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" />
+  </Target>
 </Project>

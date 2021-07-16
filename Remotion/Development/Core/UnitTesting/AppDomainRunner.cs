@@ -13,9 +13,7 @@
 // 
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
-// 
-
-#if NETFRAMEWORK
+//
 
 using System;
 using Remotion.Tools;
@@ -32,11 +30,13 @@ namespace Remotion.Development.UnitTesting
 
     public static void Run (string applicationBase, Action<object[]> action, params object[] args)
     {
+#if NETFRAMEWORK
       AppDomainSetup setup = AppDomain.CurrentDomain.SetupInformation;
       setup.ApplicationBase = applicationBase;
       setup.ApplicationName = "AppDomainRunner - AppDomain";
       var runner = new AppDomainRunner (setup, action, args);
       runner.Run ();
+#endif
     }
 
     private readonly Action<object[]> _action;
@@ -55,4 +55,3 @@ namespace Remotion.Development.UnitTesting
     }
   }
 }
-#endif
