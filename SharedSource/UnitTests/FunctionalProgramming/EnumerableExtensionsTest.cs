@@ -436,6 +436,7 @@ namespace Remotion.UnitTests.FunctionalProgramming
       Assert.That (first.SetEquals (second), Is.False);
     }
 
+#if NETFRAMEWORK
     [Test]
     public void Zip_Tuples ()
     {
@@ -446,6 +447,7 @@ namespace Remotion.UnitTests.FunctionalProgramming
 
       Assert.That (result, Is.EqualTo (new[] { Tuple.Create (1, "a"), Tuple.Create (2, "b") }));
     }
+#endif
 
     [Test]
     public void Interleave ()

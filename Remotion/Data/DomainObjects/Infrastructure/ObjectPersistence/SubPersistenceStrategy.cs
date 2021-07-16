@@ -79,7 +79,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
       // In theory, this might return invalid objects (in practice we won't be called with invalid IDs). 
       // TransferParentObject called by GetLoadedObjectDataForParentObject below will throw on invalid IDs.
-      var parentObjects = objectIDsAsCollection.Zip (_parentTransactionContext.TryGetObjects (objectIDsAsCollection));
+      var parentObjects = objectIDsAsCollection.Zip (_parentTransactionContext.TryGetObjects (objectIDsAsCollection), (l, r) => new Tuple<ObjectID, DomainObject>(l, r));
 
       return parentObjects.Select (GetLoadedObjectDataForParentObject);
     }
