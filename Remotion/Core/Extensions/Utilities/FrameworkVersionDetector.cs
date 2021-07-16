@@ -40,6 +40,7 @@ namespace Remotion.Utilities
     /// </summary>
     public static bool IsVersionSupported (FrameworkVersion frameworkVersion)
     {
+#if NETFRAMEWORK
       if (frameworkVersion >= FrameworkVersion.Net_4_6)
         return s_isNet_4_6_Supported.Value;
 
@@ -56,6 +57,9 @@ namespace Remotion.Utilities
         return s_isNet_4_0_Supported.Value;
 
       throw new ArgumentException (string.Format("'{0}' is not a valid FrameworkVersion.", frameworkVersion));
+#else
+      throw new PlatformNotSupportedException ("This API is not available on the current platform.");
+#endif
     }
 
     private static bool IsNet_4_6_Installed ()
