@@ -27,5 +27,10 @@
     <ProjectReference Include="..\Core\Web.Core.csproj" />
     <ProjectReference Include="..\Security\Web.Security.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="Config\machine.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

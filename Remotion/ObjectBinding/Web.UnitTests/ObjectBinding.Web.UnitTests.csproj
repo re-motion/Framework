@@ -24,5 +24,11 @@
     <ProjectReference Include="..\Web.Contracts.DiagnosticMetadata\ObjectBinding.Web.Contracts.DiagnosticMetadata.csproj" />
     <ProjectReference Include="..\Web\ObjectBinding.Web.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Web\UnitTests\Config\machine.config">
+      <Link>Config\machine.config</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>
