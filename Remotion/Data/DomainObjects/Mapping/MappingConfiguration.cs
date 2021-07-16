@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.Mapping
   {
     private static readonly ILog s_log = LogManager.GetLogger (typeof (MappingConfiguration));
 
-    private static readonly DoubleCheckedLockingContainer<IMappingConfiguration> s_mappingConfiguration =
+    private static DoubleCheckedLockingContainer<IMappingConfiguration> s_mappingConfiguration =
         new DoubleCheckedLockingContainer<IMappingConfiguration> (
             () =>
             new MappingConfiguration (
