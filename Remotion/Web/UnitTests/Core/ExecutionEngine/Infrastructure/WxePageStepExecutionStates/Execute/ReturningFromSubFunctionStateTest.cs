@@ -20,6 +20,7 @@ using NUnit.Framework;
 using Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates;
 using Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates.Execute;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
+using Remotion.Web.UnitTests.Core.Utilities;
 using Rhino.Mocks;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStepExecutionStates.Execute
@@ -52,7 +53,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
     {
       using (MockRepository.Ordered())
       {
-        ResponseMock.Expect (mock => mock.Redirect ("/resumeUrl.wxe")).WhenCalled (invocation => Thread.CurrentThread.Abort ());
+        ResponseMock.Expect (mock => mock.Redirect ("/resumeUrl.wxe")).WhenCalled (invocation => ThreadAbortUtility.Abort ());
         ExecutionStateContextMock.Expect (mock => mock.SetExecutionState (Arg<PostProcessingSubFunctionState>.Is.NotNull))
             .WhenCalled (invocation => CheckExecutionState ((PostProcessingSubFunctionState) invocation.Arguments[0]));
       }
@@ -66,7 +67,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
       }
       catch (ThreadAbortException)
       {
-        Thread.ResetAbort();
+        ThreadAbortUtility.ResetAbort();
       }
 
       MockRepository.VerifyAll();

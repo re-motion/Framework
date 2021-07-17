@@ -20,6 +20,7 @@ using NUnit.Framework;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
+using Remotion.Web.UnitTests.Core.Utilities;
 using Rhino.Mocks;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
@@ -92,7 +93,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
       function.SetExecutionListener (_executionListenerMock);
       
       WxeStep step1 = MockRepository.GenerateMock<WxeStep> ();
-      step1.Expect (mock => mock.Execute (_context)).WhenCalled (invocation => Thread.CurrentThread.Abort ()).Repeat.Once();
+      step1.Expect (mock => mock.Execute (_context)).WhenCalled (invocation => ThreadAbortUtility.Abort ()).Repeat.Once();
       function.Add (step1);
 
       WxeStep step2 = MockRepository.GenerateMock<WxeStep>();
@@ -113,7 +114,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
       }
       catch (ThreadAbortException)
       {
-        Thread.ResetAbort();
+        ThreadAbortUtility.ResetAbort();
       }
 
       _mockRepository.VerifyAll();
@@ -138,7 +139,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
       function.SetExecutionListener (_executionListenerMock);
 
       WxeStep step1 = MockRepository.GenerateMock<WxeStep> ();
-      step1.Expect (mock => mock.Execute (_context)).WhenCalled (invocation => Thread.CurrentThread.Abort ());
+      step1.Expect (mock => mock.Execute (_context)).WhenCalled (invocation => ThreadAbortUtility.Abort ());
       function.Add (step1);
 
       var fatalExecutionException = new WxeFatalExecutionException (new Exception ("Pause exception"), null);
@@ -158,7 +159,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
       catch (WxeFatalExecutionException actualException)
       {
         Assert.That (actualException, Is.SameAs (fatalExecutionException));
-        Thread.ResetAbort ();
+        ThreadAbortUtility.ResetAbort ();
       }
     } 
 

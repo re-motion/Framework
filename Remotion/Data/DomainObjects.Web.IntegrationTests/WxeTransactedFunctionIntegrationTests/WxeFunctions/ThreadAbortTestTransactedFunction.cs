@@ -66,7 +66,11 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
         TransactionScopeInSecondStepBeforeException = ClientTransactionScope.ActiveScope;
         Assert.That (TransactionScopeInSecondStepBeforeException, Is.SameAs (TransactionScopeInFirstStep));
         ThreadAborted = true;
-        Thread.CurrentThread.Abort();
+#if NETFRAMEWORK
+      Thread.CurrentThread.Abort();
+#else
+      Assert.Ignore("This test uses Thread.Abort, which is not supported under .NET Core."); 
+#endif
       }
       TransactionScopeInSecondStepAfterException = ClientTransactionScope.ActiveScope;
       Assert.That (TransactionScopeInSecondStepAfterException, Is.Not.SameAs (TransactionScopeInFirstStep));

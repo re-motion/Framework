@@ -27,6 +27,7 @@ using Remotion.Web.ExecutionEngine.Infrastructure;
 using Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates;
 using Remotion.Web.ExecutionEngine.UrlMapping;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
+using Remotion.Web.UnitTests.Core.Utilities;
 using Rhino.Mocks;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTests
@@ -128,7 +129,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
           _pageMock.Expect (mock => mock.WxeHandler).Return (_wxeHandler);
         }
 
-        _subFunction.Expect (mock => mock.Execute (_wxeContext)).WhenCalled (invocation => Thread.CurrentThread.Abort ());
+        _subFunction.Expect (mock => mock.Execute (_wxeContext)).WhenCalled (invocation => ThreadAbortUtility.Abort ());
 
         _pageExecutorMock.Expect (mock => mock.ExecutePage (_wxeContext, "~/ThePage", true));
       }
@@ -144,7 +145,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
       }
       catch (ThreadAbortException)
       {
-        Thread.ResetAbort();
+        ThreadAbortUtility.ResetAbort();
       }
       _pageStep.Execute();
 
@@ -165,7 +166,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
           _pageMock.Expect (mock => mock.WxeHandler).Return (_wxeHandler);
         }
 
-        _subFunction.Expect (mock => mock.Execute (_wxeContext)).WhenCalled (invocation => Thread.CurrentThread.Abort ());
+        _subFunction.Expect (mock => mock.Execute (_wxeContext)).WhenCalled (invocation => ThreadAbortUtility.Abort ());
 
         _subFunction.Expect (mock => mock.Execute (_wxeContext));
 
@@ -183,7 +184,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
       }
       catch (ThreadAbortException)
       {
-        Thread.ResetAbort();
+        ThreadAbortUtility.ResetAbort();
       }
       _pageStep.Execute();
 
@@ -216,10 +217,10 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
 
         //Redirect to subfunction
         responseMock.Expect (mock => mock.Redirect ("/AppDir/sub.wxe?WxeFunctionToken=" + _wxeContext.FunctionToken))
-            .WhenCalled (invocation => Thread.CurrentThread.Abort ());
+            .WhenCalled (invocation => ThreadAbortUtility.Abort ());
 
         //Show sub function
-        _subFunction.Expect (mock => mock.Execute (_wxeContext)).WhenCalled (invocation => Thread.CurrentThread.Abort ());
+        _subFunction.Expect (mock => mock.Execute (_wxeContext)).WhenCalled (invocation => ThreadAbortUtility.Abort ());
 
         //Return from sub function
         _subFunction.Expect (mock => mock.Execute (_wxeContext)).Throw (new WxeExecuteNextStepException());
@@ -231,7 +232,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
             {
               PrivateInvoke.SetNonPublicField (_functionState, "_postBackID", 100);
               _pageStep.SetPostBackCollection (new NameValueCollection ());
-              Thread.CurrentThread.Abort ();
+              ThreadAbortUtility.Abort ();
             });
 
         _pageExecutorMock.Expect (mock => mock.ExecutePage (_wxeContext, "~/ThePage", true)).WhenCalled (
@@ -257,7 +258,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
       }
       catch (ThreadAbortException)
       {
-        Thread.ResetAbort();
+        ThreadAbortUtility.ResetAbort();
       }
 
       try
@@ -268,7 +269,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
       }
       catch (ThreadAbortException)
       {
-        Thread.ResetAbort();
+        ThreadAbortUtility.ResetAbort();
       }
 
       try
@@ -289,7 +290,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
       }
       catch (ThreadAbortException)
       {
-        Thread.ResetAbort ();
+        ThreadAbortUtility.ResetAbort ();
       }
 
       //Show current page
