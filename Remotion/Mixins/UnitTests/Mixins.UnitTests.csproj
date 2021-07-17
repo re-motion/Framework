@@ -24,7 +24,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="2021.1.0" />
-    <PackageReference Include="Remotion.TypePipe.Development" Version="3.0.0-x.9" />
+    <PackageReference Include="Remotion.TypePipe.Development" Version="3.0.0-alpha.1" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Web" />
