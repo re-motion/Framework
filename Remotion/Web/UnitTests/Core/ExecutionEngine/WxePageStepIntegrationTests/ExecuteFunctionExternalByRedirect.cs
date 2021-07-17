@@ -28,6 +28,7 @@ using Remotion.Web.ExecutionEngine.Infrastructure;
 using Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates;
 using Remotion.Web.ExecutionEngine.UrlMapping;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
+using Remotion.Web.UnitTests.Core.Utilities;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTests
 {
@@ -103,7 +104,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
       //Redirect to external subfunction
       _responseMock
             .Setup (mock => mock.Redirect (It.Is<string> (arg => arg == "/AppDir/sub.wxe?WxeFunctionToken=" + _subFunction.Object.FunctionToken)))
-            .Callback ((string url) => Thread.CurrentThread.Abort ())
+            .Callback ((string url) => WxeThreadAbortHelper.Abort ())
             .Verifiable();
 
       //Show external sub function
@@ -112,7 +113,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
           {
             PrivateInvoke.SetNonPublicField (_functionState, "_postBackID", 100);
             _pageStep.Object.SetPostBackCollection (new NameValueCollection());
-            Thread.CurrentThread.Abort();
+              WxeThreadAbortHelper.Abort ();
           }).Verifiable();
 
       //Return from external sub function
@@ -139,7 +140,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
       }
       catch (ThreadAbortException)
       {
-        Thread.ResetAbort();
+        WxeThreadAbortHelper.ResetAbort();
       }
 
       try
@@ -150,7 +151,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
       }
       catch (ThreadAbortException)
       {
-        Thread.ResetAbort();
+        WxeThreadAbortHelper.ResetAbort();
       }
 
       try
@@ -189,11 +190,11 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
       //Redirect to external subfunction
       _responseMock
             .Setup (mock => mock.Redirect (It.Is<string> (arg => arg == "/AppDir/sub.wxe?WxeFunctionToken=" + _subFunction.Object.FunctionToken)))
-            .Callback ((string url) => Thread.CurrentThread.Abort ())
+            .Callback ((string url) => WxeThreadAbortHelper.Abort ())
             .Verifiable();
 
       //Show external sub function
-      _subFunction.InSequence (sequence).Setup (mock => mock.Execute (_wxeContext)).Callback ((WxeContext context) => Thread.CurrentThread.Abort ()).Verifiable();
+      _subFunction.InSequence (sequence).Setup (mock => mock.Execute (_wxeContext)).Callback ((WxeContext context) => WxeThreadAbortHelper.Abort ()).Verifiable();
 
       //Return from external sub function
       _subFunction.InSequence (sequence).Setup (mock => mock.Execute (_wxeContext)).Throws (new WxeExecuteNextStepException()).Verifiable();
@@ -208,7 +209,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
       }
       catch (ThreadAbortException)
       {
-        Thread.ResetAbort();
+        WxeThreadAbortHelper.ResetAbort();
       }
 
       try
@@ -219,7 +220,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
       }
       catch (ThreadAbortException)
       {
-        Thread.ResetAbort();
+        WxeThreadAbortHelper.ResetAbort();
       }
 
       try

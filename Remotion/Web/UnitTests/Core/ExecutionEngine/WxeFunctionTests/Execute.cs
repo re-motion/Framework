@@ -18,9 +18,11 @@ using System;
 using System.Threading;
 using Moq;
 using NUnit.Framework;
+using Remotion.Development.Web.UnitTesting.ExecutionEngine;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
+using Remotion.Web.UnitTests.Core.Utilities;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
 {
@@ -84,7 +86,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
       function.SetExecutionListener (_executionListenerMock.Object);
       
       var step1 = new Mock<WxeStep>();
-      step1.Setup (mock => mock.Execute (_context)).Callback ((WxeContext context) => Thread.CurrentThread.Abort ()).Verifiable();
+      step1.Setup (mock => mock.Execute (_context)).Callback ((WxeContext context) => WxeThreadAbortHelper.Abort ()).Verifiable();
       function.Add (step1.Object);
 
       var step2 = new Mock<WxeStep>();
@@ -102,7 +104,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
       }
       catch (ThreadAbortException)
       {
-        Thread.ResetAbort();
+        WxeThreadAbortHelper.ResetAbort();
       }
 
       _executionListenerMock.Verify();
@@ -131,7 +133,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
       function.SetExecutionListener (_executionListenerMock.Object);
 
       var step1 = new Mock<WxeStep>();
-      step1.Setup (mock => mock.Execute (_context)).Callback ((WxeContext context) => Thread.CurrentThread.Abort ()).Verifiable();
+      step1.Setup (mock => mock.Execute (_context)).Callback ((WxeContext context) => WxeThreadAbortHelper.Abort ()).Verifiable();
       function.Add (step1.Object);
 
       var fatalExecutionException = new WxeFatalExecutionException (new Exception ("Pause exception"), null);
@@ -148,7 +150,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
       catch (WxeFatalExecutionException actualException)
       {
         Assert.That (actualException, Is.SameAs (fatalExecutionException));
-        Thread.ResetAbort ();
+        WxeThreadAbortHelper.ResetAbort ();
       }
     } 
 

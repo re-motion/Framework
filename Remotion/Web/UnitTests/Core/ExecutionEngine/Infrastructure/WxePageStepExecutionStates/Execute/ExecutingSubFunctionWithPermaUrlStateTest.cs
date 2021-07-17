@@ -18,10 +18,12 @@ using System;
 using System.Threading;
 using Moq;
 using NUnit.Framework;
+using Remotion.Development.Web.UnitTesting.ExecutionEngine;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates;
 using Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates.Execute;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
+using Remotion.Web.UnitTests.Core.Utilities;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStepExecutionStates.Execute
 {
@@ -77,7 +79,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
     public void ExecuteSubFunction_ReEntrancy_GoesToReturningFromSubFunction ()
     {
       var sequence = new MockSequence();
-      SubFunction.InSequence (sequence).Setup (mock => mock.Execute (WxeContext)).Callback ((WxeContext context) => Thread.CurrentThread.Abort ()).Verifiable();
+      SubFunction.InSequence (sequence).Setup (mock => mock.Execute (WxeContext)).Callback ((WxeContext context) => WxeThreadAbortHelper.Abort ()).Verifiable();
       SubFunction.InSequence (sequence).Setup (mock => mock.Execute (WxeContext)).Verifiable();
       ExecutionStateContextMock.InSequence (sequence).Setup (mock => mock.SetExecutionState (It.IsNotNull<IExecutionState>())).Verifiable();
 
@@ -88,7 +90,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
       }
       catch (ThreadAbortException)
       {
-        Thread.ResetAbort();
+        WxeThreadAbortHelper.ResetAbort();
       }
 
       _executionState.ExecuteSubFunction (WxeContext);

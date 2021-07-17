@@ -28,6 +28,7 @@ using Remotion.Web.ExecutionEngine.Infrastructure;
 using Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates;
 using Remotion.Web.ExecutionEngine.UrlMapping;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
+using Remotion.Web.UnitTests.Core.Utilities;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTests
 {
@@ -119,7 +120,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
       _pageMock.Setup (mock => mock.SaveAllState()).Verifiable();
       _pageMock.Setup (mock => mock.WxeHandler).Returns (_wxeHandler).Verifiable();
 
-      _subFunction.InSequence (sequence).Setup (mock => mock.Execute (_wxeContext)).Callback ((WxeContext context) => Thread.CurrentThread.Abort ()).Verifiable();
+      _subFunction.InSequence (sequence).Setup (mock => mock.Execute (_wxeContext)).Callback ((WxeContext context) => WxeThreadAbortHelper.Abort ()).Verifiable();
 
       _pageExecutorMock.InSequence (sequence).Setup (mock => mock.ExecutePage (_wxeContext, "~/ThePage", true)).Verifiable();
 
@@ -132,7 +133,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
       }
       catch (ThreadAbortException)
       {
-        Thread.ResetAbort();
+        WxeThreadAbortHelper.ResetAbort();
       }
       _pageStep.Object.Execute();
 
@@ -155,7 +156,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
       _pageMock.Setup (mock => mock.SaveAllState()).Verifiable();
       _pageMock.Setup (mock => mock.WxeHandler).Returns (_wxeHandler).Verifiable();
 
-      _subFunction.InSequence (sequence).Setup (mock => mock.Execute (_wxeContext)).Callback ((WxeContext context) => Thread.CurrentThread.Abort ()).Verifiable();
+      _subFunction.InSequence (sequence).Setup (mock => mock.Execute (_wxeContext)).Callback ((WxeContext context) => WxeThreadAbortHelper.Abort ()).Verifiable();
 
       _subFunction.InSequence (sequence).Setup (mock => mock.Execute (_wxeContext)).Verifiable();
 
@@ -170,7 +171,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
       }
       catch (ThreadAbortException)
       {
-        Thread.ResetAbort();
+        WxeThreadAbortHelper.ResetAbort();
       }
       _pageStep.Object.Execute();
 
@@ -205,11 +206,11 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
 
       //Redirect to subfunction
       responseMock.InSequence (sequence).Setup (mock => mock.Redirect ("/AppDir/sub.wxe?WxeFunctionToken=" + _wxeContext.FunctionToken))
-            .Callback ((string url) => Thread.CurrentThread.Abort ())
+            .Callback ((string url) => WxeThreadAbortHelper.Abort ())
             .Verifiable();
 
       //Show sub function
-      _subFunction.InSequence (sequence).Setup (mock => mock.Execute (_wxeContext)).Callback ((WxeContext context) => Thread.CurrentThread.Abort ()).Verifiable();
+      _subFunction.InSequence (sequence).Setup (mock => mock.Execute (_wxeContext)).Callback ((WxeContext context) => WxeThreadAbortHelper.Abort ()).Verifiable();
 
       //Return from sub function
       _subFunction.InSequence (sequence).Setup (mock => mock.Execute (_wxeContext)).Throws (new WxeExecuteNextStepException()).Verifiable();
@@ -220,7 +221,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
             (string url) => {
               PrivateInvoke.SetNonPublicField (_functionState, "_postBackID", 100);
               _pageStep.Object.SetPostBackCollection (new NameValueCollection ());
-              Thread.CurrentThread.Abort ();
+              WxeThreadAbortHelper.Abort ();
             })
               .Verifiable();
 
@@ -244,7 +245,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
       }
       catch (ThreadAbortException)
       {
-        Thread.ResetAbort();
+        WxeThreadAbortHelper.ResetAbort();
       }
 
       try
@@ -255,7 +256,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
       }
       catch (ThreadAbortException)
       {
-        Thread.ResetAbort();
+        WxeThreadAbortHelper.ResetAbort();
       }
 
       try
@@ -276,7 +277,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
       }
       catch (ThreadAbortException)
       {
-        Thread.ResetAbort ();
+        WxeThreadAbortHelper.ResetAbort ();
       }
 
       //Show current page

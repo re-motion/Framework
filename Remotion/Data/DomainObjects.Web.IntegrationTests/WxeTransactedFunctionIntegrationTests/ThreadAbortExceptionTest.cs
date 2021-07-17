@@ -19,6 +19,7 @@ using System.Threading;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunctionIntegrationTests.WxeFunctions;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.Web.UnitTesting.ExecutionEngine;
 
 namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunctionIntegrationTests
 {
@@ -36,7 +37,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
       }
       catch (ThreadAbortException)
       {
-        Thread.ResetAbort ();
+        WxeThreadAbortHelper.ResetAbort ();
       }
 
       Assert.That (function.FirstStepExecuted, Is.True);
@@ -64,7 +65,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
       }
       catch (ThreadAbortException)
       {
-        Thread.ResetAbort ();
+        WxeThreadAbortHelper.ResetAbort ();
       }
 
       Assert.That (ClientTransactionScope.ActiveScope, Is.SameAs (originalScope));
@@ -97,7 +98,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
       }
       catch (ThreadAbortException)
       {
-        Thread.ResetAbort ();
+        WxeThreadAbortHelper.ResetAbort ();
       }
 
       Assert.That (ClientTransactionScope.ActiveScope, Is.SameAs (originalScope));
