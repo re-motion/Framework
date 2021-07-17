@@ -62,8 +62,13 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
           "Remotion.Reflection.CodeGeneration.Generated.Unsigned",
           Path.Combine (TestContext.CurrentContext.TestDirectory, "Remotion.Reflection.CodeGeneration.Generated.Unsigned.dll"));
       s_unsavedScope = new ModuleScope (true);
+#if NETFRAMEWORK
       DeleteIfExists (Path.Combine (s_scope.StrongNamedModuleDirectory ?? Environment.CurrentDirectory, s_scope.StrongNamedModuleName));
       DeleteIfExists (Path.Combine (s_scope.WeakNamedModuleDirectory ?? Environment.CurrentDirectory, s_scope.WeakNamedModuleName));
+#else
+      DeleteIfExists (Path.Combine (Environment.CurrentDirectory, s_scope.StrongNamedModuleName));
+      DeleteIfExists (Path.Combine (Environment.CurrentDirectory, s_scope.WeakNamedModuleName));
+#endif
     }
 
     [OneTimeTearDown]

@@ -47,7 +47,9 @@ namespace Remotion.Mixins.UnitTests.Core.MixerTools
     {
       var setup = MixerRunner.CreateAppDomainSetup (_parameters);
 
+#if NETFRAMEWORK
       Assert.That (setup.ApplicationName, Is.EqualTo ("Mixer"));
+#endif
       Assert.That (setup.ApplicationBase, Is.EqualTo (_parameters.BaseDirectory));
     }
 

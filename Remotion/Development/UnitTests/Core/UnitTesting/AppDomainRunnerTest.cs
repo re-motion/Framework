@@ -83,6 +83,7 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
       AppDomainRunner.Run (@"c:\", delegate { Dev.Null = typeof (AppDomainRunnerBase); });
     }
 
+#if NETFRAMEWORK
     [Test]
     public void DoesntChangeCurrentSetup ()
     {
@@ -90,5 +91,6 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
       AppDomainRunner.Run (delegate { new AppDomainRunnerTest (); });
       Assert.That (AppDomain.CurrentDomain.SetupInformation.DynamicBase, Is.EqualTo (dynamicBaseBefore));
     }
+#endif
   }
 }

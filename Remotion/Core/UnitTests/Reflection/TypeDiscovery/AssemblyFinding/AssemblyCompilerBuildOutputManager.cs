@@ -80,9 +80,13 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
       var fullSourceDirectory = Path.Combine (_sourceDirectoryRoot, Path.GetFileNameWithoutExtension (outputAssemblyFileName));
       var assemblyCompiler = new AssemblyCompiler (fullSourceDirectory, outputAssemblyPath, allReferencedAssemblies);
       
+#if NETFRAMEWORK
       assemblyCompiler.CompileInSeparateAppDomain ();
       _generatedAssemblyPaths.Add (outputAssemblyPath);
       return outputAssemblyPath;
+#else
+      throw new PlatformNotSupportedException ("Compiling in a separate assembly is not supported in .NET 5.");
+#endif
     }
 
     public string RenameGeneratedAssembly (string oldFileName, string newFileName)

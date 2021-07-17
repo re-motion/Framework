@@ -25,6 +25,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 {
+#if NETFRAMEWORK
   [SetUpFixture]
   public class SetUpFixture
   {
@@ -114,4 +115,5 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       }
     }
   }
+#endif
 }

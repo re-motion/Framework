@@ -28,35 +28,54 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 
     protected CodeGenerationBaseTest ()
     {
+#if NETFRAMEWORK
       _registryWithSetupFixturePipeline = new DefaultPipelineRegistry(Pipeline);
+#endif
     }
 
     [SetUp]
     public virtual void SetUp ()
     {
+#if NETFRAMEWORK
       if (PipelineRegistry?.DefaultPipeline != Pipeline)
       {
         PipelineRegistry = _registryWithSetupFixturePipeline;
       }
+#endif
     }
 
     [TearDown]
     public virtual void TearDown ()
     {
+#if NETFRAMEWORK
       PipelineRegistry = _registryWithSetupFixturePipeline;
+#endif
     }
 
     protected IPipelineRegistry PipelineRegistry { get; set; }
 
     protected IPipeline Pipeline
     {
-      get { return SetUpFixture.Pipeline; }
+      get
+      {
+#if NETFRAMEWORK
+        return SetUpFixture.Pipeline;
+#else
+        Assert.Ignore("Code generation is not supported under .NET Core.");
+        throw new PlatformNotSupportedException ();
+#endif
+      }
     }
 
     protected void AddSavedAssembly (string assemblyPath)
     {
       ArgumentUtility.CheckNotNullOrEmpty("assemblyPath", assemblyPath);
+#if NETFRAMEWORK
       SetUpFixture.AddSavedAssembly (assemblyPath);
+#else
+      Assert.Ignore("Code generation is not supported under .NET Core.");
+      throw new PlatformNotSupportedException ();
+#endif
     }
 
     protected Type CreateMixedType (Type targetType, params Type[] mixinTypes)
@@ -101,7 +120,12 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     /// </summary>
     public void SkipDeletion ()
     {
+#if NETFRAMEWORK
       SetUpFixture.SkipDeletion();
+#else
+      Assert.Ignore("Code generation is not supported under .NET Core.");
+      throw new PlatformNotSupportedException ();
+#endif
     }
   }
 }
