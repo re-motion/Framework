@@ -3,6 +3,8 @@
 
   <PropertyGroup>
     <HostTestSitesInDocker>False</HostTestSitesInDocker>
+    <DockerImageDotNetFrameworkRuntime4_7 Condition="'$(DockerImageDotNetFrameworkRuntime4_7)' == ''">Unavailable</DockerImageDotNetFrameworkRuntime4_7>
+    <DockerImageDotNetFrameworkRuntime4_8 Condition="'$(DockerImageDotNetFrameworkRuntime4_8)' == ''">Unavailable</DockerImageDotNetFrameworkRuntime4_8>
   </PropertyGroup>
 
 </Project>
