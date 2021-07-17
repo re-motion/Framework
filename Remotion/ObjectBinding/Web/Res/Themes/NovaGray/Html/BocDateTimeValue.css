@@ -35,6 +35,11 @@ span.bocDateValue.disabled
 {
 }
 
+.mozilla span.bocDateInputWrapper
+{
+    margin-right: 2px;
+}
+
 span.bocDateInputWrapper
 {
   position: absolute;
@@ -55,10 +60,22 @@ span.bocDateTimeValue span.bocDate12HoursWithSeconds
   right: 9.0em;
 }
 
+.mozilla span.bocDateTimeValue span.bocDate24HoursWithSeconds,
+.mozilla span.bocDateTimeValue span.bocDate12HoursWithSeconds
+{
+    right: calc(9.0em + 3px);
+}
+
 span.bocDateTimeValue span.bocDate24Hours,
 span.bocDateTimeValue span.bocDate12Hours
 {
   right: 7.4em;
+}
+
+.mozilla span.bocDateTimeValue span.bocDate24Hours,
+.mozilla span.bocDateTimeValue span.bocDate12Hours
+{
+    right: calc(7.4em + 3px);
 }
 
 span.bocDateValue span.bocDate24Hours,
@@ -143,10 +160,22 @@ span.bocDateTimeValue a.bocPicker12HoursWithSeconds
   right: 6.7em;
 }
 
+.mozilla span.bocDateTimeValue a.bocPicker24HoursWithSeconds,
+.mozilla span.bocDateTimeValue a.bocPicker12HoursWithSeconds
+{
+    right: calc(6.7em + 2px);
+}
+
 span.bocDateTimeValue a.bocPicker24Hours,
 span.bocDateTimeValue a.bocPicker12Hours
 {
   right: 5.2em;
+}
+
+.mozilla span.bocDateTimeValue a.bocPicker24Hours,
+.mozilla span.bocDateTimeValue a.bocPicker12Hours
+{
+    right: calc(5.2em + 1px);
 }
 
 span.bocDateValue a.bocPicker24Hours,

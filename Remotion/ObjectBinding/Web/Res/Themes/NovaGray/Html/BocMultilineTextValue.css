@@ -33,6 +33,12 @@ span.bocMultilineTextValue .content
   height: auto;
 }
 
+.mozilla span.bocMultilineTextValue .content
+{
+  right: 8px;
+  bottom: calc(0.5em + 3px);
+}
+
 .bocMultilineTextValue.readOnly .content
 {
   position: static;
