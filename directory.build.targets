@@ -1,0 +1,4 @@
+<Project>
+  <Target Name="DispatchToInnerBuilds" DependsOnTargets="Build" />
+  <Target Name="Pack" />
+</Project>

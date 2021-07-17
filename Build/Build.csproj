@@ -80,17 +80,17 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Remotion.BuildScript, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Remotion.BuildScript.2.0.0\lib\net461\Remotion.BuildScript.dll</HintPath>
-    </Reference>
     <Reference Include="JetBrains.Annotations, Version=2019.1.3.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325">
       <HintPath>..\packages\JetBrains.Annotations.2019.1.3\lib\net20\JetBrains.Annotations.dll</HintPath>
     </Reference>
-    <Reference Include="Remotion.ReleaseProcessScript, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Remotion.ReleaseProcessScript.2.0.0\lib\net461\Remotion.ReleaseProcessScript.dll</HintPath>
+    <Reference Include="Remotion.BuildScript, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Remotion.BuildScript.3.0.0-alpha.2\lib\net461\Remotion.BuildScript.dll</HintPath>
+    </Reference>
+    <Reference Include="Remotion.ReleaseProcessScript, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Remotion.ReleaseProcessScript.3.0.0-alpha.2\lib\net461\Remotion.ReleaseProcessScript.dll</HintPath>
     </Reference>
     <Reference Include="RestSharp, Version=104.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Remotion.ReleaseProcessScript.2.0.0\lib\net461\RestSharp.dll</HintPath>
+      <HintPath>..\packages\Remotion.ReleaseProcessScript.3.0.0-alpha.2\lib\net461\RestSharp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
