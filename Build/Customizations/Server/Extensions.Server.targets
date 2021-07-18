@@ -43,13 +43,6 @@
     </PropertyGroup>
   </Target>
 
-  <Target Name="TestBuild_InternetExplorerConfiguration" DependsOnTargets="TestBuild_BrowserConfiguration">
-    <PropertyGroup>
-      <Browsers>InternetExplorer</Browsers>
-      <TestCategoriesToExclude>LongRunning;ControlSelectorTest</TestCategoriesToExclude>
-    </PropertyGroup>
-  </Target>
-
   <Target Name="TestBuild_BrowserConfiguration">
     <PropertyGroup>
       <Configurations>Debug+Release</Configurations>

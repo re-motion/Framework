@@ -269,7 +269,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.Developme
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_SolutionItems", "_SolutionItems", "{8FD13EC8-8054-47D6-A818-847C3B022C89}"
 	ProjectSection(SolutionItems) = preProject
-		.BuildProject = .BuildProject
 		directory.build.props = directory.build.props
 		NuGet.config = NuGet.config
 		packages\PackageInfo.ps1 = packages\PackageInfo.ps1

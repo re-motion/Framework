@@ -15,6 +15,7 @@
     <CompanyUrl>http://www.rubicon.eu</CompanyUrl>
     <Copyright>Copyright (c) rubicon IT GmbH, www.rubicon.eu - Licensed under GNU LGPL 2.1 (or later)</Copyright>
     <ProductName>re-motion Framework (www.re-motion.org)</ProductName>
+    <DocumentationFileName>Remotion</DocumentationFileName>
     <DocumentationRootPage>$(SolutionDirectory)Remotion\Core\Core\Doc\include\GettingStartedWithRemotion.aml</DocumentationRootPage>
     <DocumentationNamespaceSummaryFiles>$(SolutionDirectory)Remotion\**\Doc\include\*.NamespaceDoc.xml</DocumentationNamespaceSummaryFiles>
     <DependDBProjectName>re-motion Framework</DependDBProjectName>
@@ -25,5 +26,6 @@
     <DependDBTrackedReferences>Remotion;Remotion.*</DependDBTrackedReferences>
     <!-- '#OutputDirectory#' and '#ConfigurationID#' will be replaced by '$(OutputDirectory)' and '$(ConfigurationID)' during DependDB processing. See Shared.Overrides.targets:BeforeCheckDependDBProperties -->
     <DependDBNuGetSources>$(SolutionDirectory)packages</DependDBNuGetSources>
+    <DependDBTargetFramework>net461</DependDBTargetFramework>
   </PropertyGroup>
 </Project>

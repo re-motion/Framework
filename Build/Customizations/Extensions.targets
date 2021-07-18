@@ -22,13 +22,6 @@
       <DependDBNuGetSources>$(DependDBNuGetSources.Replace( '#ConfigurationID#' , $(ConfigurationID) ))</DependDBNuGetSources>
     </PropertyGroup>
   </Target>
-  
-  <Target Name="Before_ProcessForDependDBInternal" BeforeTargets="ProcessForDependDBInternal">
-    <PropertyGroup>
-      <!-- Set TargetFramework for resolving the dependencies to the highest common framework name -->
-      <_preProcessorParameters>$(_preProcessorParameters) --target-framework="net461"</_preProcessorParameters>
-    </PropertyGroup>
-  </Target>
 
   <Target Name="After_BuildReleaseProjects" AfterTargets="BuildReleaseProjects">
     <Error Text="The property '_timeTaken' is not set." Condition="'$(_timeTaken)' == ''" />
