@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 {
   public abstract class CustomStorageObjectFactoryTestBase : DatabaseTest
   {
-    public const string CreateEmptyTestDataFileName = "DataDomainObjects_CreateEmptyTestData.sql";
+    public const string CreateEmptyTestDataFileName = "Database\\DataDomainObjects_CreateEmptyTestData.sql";
 
     private SqlStorageObjectFactory _storageObjectFactory;
     private RdbmsProviderDefinition _storageProviderDefinition;
