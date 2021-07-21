@@ -15,62 +15,68 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Globalization.Implementation;
 using Remotion.Globalization.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Globalization.UnitTests.Implementation
 {
   [TestFixture]
   public class CompoundEnumerationGlobalizationServiceTest
   {
-    private MockRepository _mockRepository;
     private CompoundEnumerationGlobalizationService _service;
-    private IEnumerationGlobalizationService _innerService1;
-    private IEnumerationGlobalizationService _innerService2;
-    private IEnumerationGlobalizationService _innerService3;
+    private Mock<IEnumerationGlobalizationService> _innerService1;
+    private Mock<IEnumerationGlobalizationService> _innerService2;
+    private Mock<IEnumerationGlobalizationService> _innerService3;
 
     [SetUp]
     public void SetUp ()
     {
-      _mockRepository = new MockRepository();
+      _innerService1 = new Mock<IEnumerationGlobalizationService> (MockBehavior.Strict);
+      _innerService2 = new Mock<IEnumerationGlobalizationService> (MockBehavior.Strict);
+      _innerService3 = new Mock<IEnumerationGlobalizationService> (MockBehavior.Strict);
 
-      _innerService1 = _mockRepository.StrictMock<IEnumerationGlobalizationService>();
-      _innerService2 = _mockRepository.StrictMock<IEnumerationGlobalizationService>();
-      _innerService3 = _mockRepository.StrictMock<IEnumerationGlobalizationService>();
-
-      _service = new CompoundEnumerationGlobalizationService (new[] { _innerService1, _innerService2, _innerService3 });
+      _service = new CompoundEnumerationGlobalizationService (new[] { _innerService1.Object, _innerService2.Object, _innerService3.Object });
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_service.EnumerationGlobalizationServices, Is.EqualTo (new[] { _innerService1, _innerService2, _innerService3 }));
+      Assert.That (_service.EnumerationGlobalizationServices, Is.EqualTo (new[] { _innerService1.Object, _innerService2.Object, _innerService3.Object }));
     }
 
     [Test]
     public void TryGetTypeDisplayName_WithInnerServiceHavingResult_ReturnsResult ()
     {
       var enumValue = EnumWithResources.Value1;
+      string nullOutValue = null;
+      var theNameOutValue = "The Name";
 
-      using (_mockRepository.Ordered())
-      {
-        _innerService1.Expect (
+      var sequence = new MockSequence();
+      _innerService1
+          .InSequence (sequence)
+          .Setup (
             mock => mock.TryGetEnumerationValueDisplayName (
-                Arg.Is (enumValue),
-                out Arg<string>.Out (null).Dummy)).Return (false);
-        _innerService2.Expect (
+                enumValue,
+                out nullOutValue))
+          .Returns (false)
+          .Verifiable();
+      _innerService2
+          .InSequence (sequence)
+          .Setup (
             mock => mock.TryGetEnumerationValueDisplayName (
-                Arg.Is (enumValue),
-                out Arg<string>.Out ("The Name").Dummy)).Return (true);
-        _innerService3.Expect (
+                enumValue,
+                out theNameOutValue))
+          .Returns (true)
+          .Verifiable();
+      _innerService3
+          .InSequence (sequence)
+          .Setup (
             mock => mock.TryGetEnumerationValueDisplayName (
-                Arg<Enum>.Is.Anything,
-                out Arg<string>.Out (null).Dummy))
-            .Repeat.Never();
-      }
-      _mockRepository.ReplayAll();
+                It.IsAny<Enum>(),
+                out nullOutValue))
+          .Verifiable();
 
       string value;
       var result = _service.TryGetEnumerationValueDisplayName (enumValue, out value);
@@ -78,30 +84,46 @@ namespace Remotion.Globalization.UnitTests.Implementation
       Assert.That (result, Is.True);
       Assert.That (value, Is.EqualTo ("The Name"));
 
-      _mockRepository.VerifyAll();
+      _innerService1.Verify();
+      _innerService2.Verify();
+      _innerService3.Verify (
+          mock => mock.TryGetEnumerationValueDisplayName (
+                It.IsAny<Enum>(),
+                out nullOutValue),
+          Times.Never());
     }
 
     [Test]
     public void TryGetTypeDisplayName_WithoutInnerServiceHavingResult_ReturnsNull ()
     {
       var enumValue = EnumWithResources.Value1;
+      string nullOutValue = null;
 
-      using (_mockRepository.Ordered())
-      {
-        _innerService1.Expect (
+      var sequence = new MockSequence();
+      _innerService1
+          .InSequence (sequence)
+          .Setup (
             mock => mock.TryGetEnumerationValueDisplayName (
-                Arg.Is (enumValue),
-                out Arg<string>.Out (null).Dummy)).Return (false);
-        _innerService2.Expect (
+                enumValue,
+                out nullOutValue))
+          .Returns (false)
+          .Verifiable();
+      _innerService2
+          .InSequence (sequence)
+          .Setup (
             mock => mock.TryGetEnumerationValueDisplayName (
-                Arg.Is (enumValue),
-                out Arg<string>.Out (null).Dummy)).Return (false);
-        _innerService3.Expect (
+                enumValue,
+                out nullOutValue))
+          .Returns (false)
+          .Verifiable();
+      _innerService3
+          .InSequence (sequence)
+          .Setup (
             mock => mock.TryGetEnumerationValueDisplayName (
-                Arg.Is (enumValue),
-                out Arg<string>.Out (null).Dummy)).Return (false);
-      }
-      _mockRepository.ReplayAll();
+                enumValue,
+                out nullOutValue))
+          .Returns (false)
+          .Verifiable();
 
       string value;
       var result = _service.TryGetEnumerationValueDisplayName (enumValue, out value);
@@ -109,7 +131,9 @@ namespace Remotion.Globalization.UnitTests.Implementation
       Assert.That (result, Is.False);
       Assert.That (value, Is.Null);
 
-      _mockRepository.VerifyAll();
+      _innerService1.Verify();
+      _innerService2.Verify();
+      _innerService3.Verify();
     }
   }
 }
