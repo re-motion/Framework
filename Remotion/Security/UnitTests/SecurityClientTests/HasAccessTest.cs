@@ -38,7 +38,6 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     public void Test_WithParamsArray ()
     {
       _testHelper.ExpectObjectSecurityStrategyHasAccess (TestAccessTypes.First, true);
-      _testHelper.ReplayAll();
 
       bool hasAccess = _securityClient.HasAccess (_testHelper.SecurableObject, AccessType.Get (TestAccessTypes.First));
 
@@ -50,7 +49,6 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     public void Test_WithParamsArray_AndSecurityPrincipal ()
     {
       _testHelper.ExpectObjectSecurityStrategyHasAccess (TestAccessTypes.First, true);
-      _testHelper.ReplayAll();
 
       var securityPrincipal = _securityClient.PrincipalProvider.GetPrincipal();
       bool hasAccess = _securityClient.HasAccess (_testHelper.SecurableObject, securityPrincipal, AccessType.Get (TestAccessTypes.First));
@@ -63,7 +61,6 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     public void Test_AccessGranted ()
     {
       _testHelper.ExpectObjectSecurityStrategyHasAccess (TestAccessTypes.First, true);
-      _testHelper.ReplayAll();
 
       bool hasAccess = _securityClient.HasAccess (
           _testHelper.SecurableObject,
@@ -77,7 +74,6 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     public void Test_AccessDenied ()
     {
       _testHelper.ExpectObjectSecurityStrategyHasAccess (TestAccessTypes.First, false);
-      _testHelper.ReplayAll();
 
       bool hasAccess = _securityClient.HasAccess (
           _testHelper.SecurableObject,
@@ -90,8 +86,6 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     [Test]
     public void Test_WithinSecurityFreeSection_AccessGranted ()
     {
-      _testHelper.ReplayAll();
-
       bool hasAccess;
       using (SecurityFreeSection.Activate())
       {
@@ -110,8 +104,6 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     [Test]
     public void Test_WithSecurityStrategyIsNull ()
     {
-      _testHelper.ReplayAll();
-
       Assert.That (
           () =>  _securityClient.HasAccess (new SecurableObject (null), (IReadOnlyList<AccessType>) new[] { AccessType.Get (TestAccessTypes.First) }),
           Throws.InvalidOperationException
