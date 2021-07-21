@@ -16,11 +16,13 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.CodeGeneration.TypePipe;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 using Remotion.TypePipe.Development;
+using Remotion.TypePipe.Implementation;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
@@ -28,17 +30,11 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
   [SetUpFixture]
   public class SetUpFixture
   {
-    private static readonly IPipelineRegistry s_pipelineRegistry = SafeServiceLocator.Current.GetInstance<IPipelineRegistry>();
-
     private static IPipeline s_pipeline;
     private static bool s_skipDeletion;
 
     private static AssemblyTrackingCodeManager s_assemblyTrackingCodeManager;
-
-    public static IPipelineRegistry PipelineRegistry
-    {
-      get { return s_pipelineRegistry; }
-    }
+    private ServiceLocatorScope s_serviceLocatorScope;
 
     public static IPipeline Pipeline
     {
@@ -71,6 +67,11 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     [OneTimeSetUp]
     public void OneTimeSetUp ()
     {
+      // Force-initialize ObjectFactory to ensure it does not default onto the test pipeline.
+      Dev.Null = ObjectFactory.Create<object>();
+      // Force-initialize TestFactory to ensure it does not default onto the test pipeline.
+      Dev.Null = TypeFactory.GetConcreteType (typeof (object));
+
       var assemblyTrackingPipelineFactory = new AssemblyTrackingPipelineFactory();
       var settings = PipelineSettings.New().SetEnableSerializationWithoutAssemblySaving (true).SetAssemblyDirectory (TestContext.CurrentContext.TestDirectory).Build();
       var participants = new IParticipant[]
@@ -84,10 +85,15 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 
       s_pipeline = assemblyTrackingPipelineFactory.Create ("re-mix-tests", settings, participants);
       s_assemblyTrackingCodeManager = assemblyTrackingPipelineFactory.AssemblyTrackingCodeManager;
+
+      var pipelineRegistry = new DefaultPipelineRegistry (s_pipeline);
+      var serviceLocator = DefaultServiceLocator.Create();
+      serviceLocator.RegisterSingle<IPipelineRegistry> (() => pipelineRegistry);
+      s_serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
     }
 
     [OneTimeTearDown]
-    public void TearDown()
+    public void OneTimeTearDown()
     {
 #if !NO_PEVERIFY
       try
@@ -112,6 +118,8 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
             "Assemblies saved to: " + Environment.NewLine
             + string.Join (Environment.NewLine, s_assemblyTrackingCodeManager.SavedAssemblies));
       }
+
+      s_serviceLocatorScope.Dispose();
     }
   }
 }

@@ -19,7 +19,7 @@
     <ProjectReference Include="..\Web\ObjectBinding.Web.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Remotion.TypePipe" Version="2.0.3" />
+    <PackageReference Include="Remotion.TypePipe" Version="3.0.0-alpha.1" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

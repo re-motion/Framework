@@ -24,6 +24,7 @@ using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
+using Remotion.TypePipe.Implementation;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTypeCodeGeneration
 {
@@ -31,14 +32,25 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTy
   public class LoadingFlushedCodeTest : CodeGenerationBaseTest
   {
     private IPipeline _savedPipeline;
+    private ServiceLocatorScope _serviceLocatorScope;
 
     public override void SetUp ()
     {
-      base.SetUp ();
-
       // Use a dedicated pipeline to ensure that this test does not interfere with other tests.
       _savedPipeline = CreatePipeline ();
-      PipelineRegistry.SetDefaultPipeline (_savedPipeline);
+      var pipelineRegistry = new DefaultPipelineRegistry (_savedPipeline);
+      var serviceLocator = DefaultServiceLocator.Create();
+      serviceLocator.RegisterSingle<IPipelineRegistry> (() => pipelineRegistry);
+      _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
+
+      base.SetUp();
+    }
+
+    public override void TearDown ()
+    {
+      base.TearDown();
+
+      _serviceLocatorScope.Dispose();
     }
 
     [Test]
@@ -119,8 +131,8 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTy
 
     private IPipeline CreatePipeline ()
     {
-      var settings = PipelineSettings.From (PipelineSettings.Defaults).SetAssemblyDirectory (TestContext.CurrentContext.TestDirectory).Build();
-      return SafeServiceLocator.Current.GetInstance<IPipelineFactory>().Create (Pipeline.ParticipantConfigurationID, settings, Pipeline.Participants.ToArray());
+      var pipelineFactory = SafeServiceLocator.Current.GetInstance<IPipelineFactory>();
+      return pipelineFactory.Create (Pipeline.ParticipantConfigurationID, Pipeline.Settings, Pipeline.Participants.ToArray());
     }
 
     private Assembly FlushAndLoadAssemblyWithoutLocking ()

@@ -16,6 +16,8 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Mixins.CodeGeneration;
+using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 using Remotion.Utilities;
 
@@ -23,24 +25,24 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 {
   public abstract class CodeGenerationBaseTest
   {
-    private IPipeline _previousDefaultPipeline;
-
     [SetUp]
     public virtual void SetUp ()
     {
-      _previousDefaultPipeline = PipelineRegistry.DefaultPipeline;
-      PipelineRegistry.SetDefaultPipeline (Pipeline);
     }
 
     [TearDown]
     public virtual void TearDown ()
     {
-      PipelineRegistry.SetDefaultPipeline (_previousDefaultPipeline);
     }
 
-    protected IPipelineRegistry PipelineRegistry
+    protected ObjectFactoryAdapter ObjectFactory
     {
-      get { return SetUpFixture.PipelineRegistry; }
+      get { return new ObjectFactoryAdapter (SafeServiceLocator.Current.GetInstance<IObjectFactoryImplementation>()); }
+    }
+
+    protected ITypeFactoryImplementation TypeFactory
+    {
+      get { return SafeServiceLocator.Current.GetInstance<ITypeFactoryImplementation>(); }
     }
 
     protected IPipeline Pipeline
