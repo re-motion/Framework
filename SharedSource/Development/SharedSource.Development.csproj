@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Moq\UnitTesting\DecoratorTestHelper.cs" />
+    <Compile Include="Moq\UnitTesting\MoqExtensions.cs" />
     <Compile Include="Moq\UnitTesting\Threading\LockingDecoratorTestHelper.cs" />
     <Compile Include="Moq\UnitTesting\Threading\LockTestHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
