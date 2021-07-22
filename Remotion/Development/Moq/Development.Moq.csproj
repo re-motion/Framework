@@ -64,6 +64,9 @@
     <Compile Include="..\..\..\SharedSource\Development\Moq\UnitTesting\DecoratorTestHelper.cs">
       <Link>SharedSource\Moq\UnitTesting\DecoratorTestHelper.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\SharedSource\Development\Moq\UnitTesting\MoqExtensions.cs">
+      <Link>SharedSource\Moq\UnitTesting\MoqExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\SharedSource\Development\Moq\UnitTesting\Threading\LockingDecoratorTestHelper.cs">
       <Link>SharedSource\Moq\UnitTesting\Threading\LockingDecoratorTestHelper.cs</Link>
     </Compile>
@@ -71,6 +74,7 @@
       <Link>SharedSource\Moq\UnitTesting\Threading\LockTestHelper.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitTesting\MoqExtensions.cs" />
     <Compile Include="UnitTesting\Threading\LockingDecoratorTestHelper.Partial.cs" />
     <Compile Include="UnitTesting\Threading\LockTestHelper.Partial.cs" />
         <Compile Include="..\..\..\SharedSource\Core\FunctionalProgramming\EnumerableExtensions.cs">
