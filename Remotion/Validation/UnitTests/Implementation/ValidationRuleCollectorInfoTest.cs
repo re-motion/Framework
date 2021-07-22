@@ -15,31 +15,30 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Providers;
-using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.Implementation
 {
   [TestFixture]
   public class ValidationRuleCollectorInfoTest
   {
-    private IValidationRuleCollector _collectorStub;
+    private Mock<IValidationRuleCollector> _collectorStub;
     private ValidationRuleCollectorInfo _validationRuleCollectorInfo;
 
     [SetUp]
     public void SetUp ()
     {
-
-      _collectorStub = MockRepository.GenerateStub<IValidationRuleCollector>();
-      _validationRuleCollectorInfo = new ValidationRuleCollectorInfo (_collectorStub, typeof (ApiBasedValidationRuleCollectorProvider));
+      _collectorStub = new Mock<IValidationRuleCollector>();
+      _validationRuleCollectorInfo = new ValidationRuleCollectorInfo (_collectorStub.Object, typeof (ApiBasedValidationRuleCollectorProvider));
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_validationRuleCollectorInfo.Collector, Is.SameAs (_collectorStub));
+      Assert.That (_validationRuleCollectorInfo.Collector, Is.SameAs (_collectorStub.Object));
       Assert.That (_validationRuleCollectorInfo.ProviderType, Is.EqualTo (typeof (ApiBasedValidationRuleCollectorProvider)));
     }
   }

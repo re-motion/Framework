@@ -1,5 +1,5 @@
-﻿using NUnit.Framework;
-using Rhino.Mocks;
+﻿using Moq;
+using NUnit.Framework;
 
 namespace Remotion.Validation.UnitTests
 {
@@ -9,24 +9,24 @@ namespace Remotion.Validation.UnitTests
     [Test]
     public void GetValidator_Once_ReturnsBuiltInstance ()
     {
-      var validatorStub = MockRepository.GenerateStub<IValidator>();
-      var validatorBuilderStub = MockRepository.GenerateStub<IValidatorBuilder>();
-      validatorBuilderStub.Stub (_ => _.BuildValidator (typeof (DomainType))).Return (validatorStub);
+      var validatorStub = new Mock<IValidator>();
+      var validatorBuilderStub = new Mock<IValidatorBuilder>();
+      validatorBuilderStub.Setup (_ => _.BuildValidator (typeof (DomainType))).Returns (validatorStub.Object);
 
-      var validatorProvider = new CachingValidatorProvider (validatorBuilderStub);
+      var validatorProvider = new CachingValidatorProvider (validatorBuilderStub.Object);
 
-      Assert.That (validatorProvider.GetValidator (typeof (DomainType)), Is.SameAs (validatorStub));
+      Assert.That (validatorProvider.GetValidator (typeof (DomainType)), Is.SameAs (validatorStub.Object));
     }
 
     [Test]
     public void GetValidator_Twice_ReturnsCachedInstance ()
     {
-      var validatorBuilderStub = MockRepository.GenerateStub<IValidatorBuilder>();
+      var validatorBuilderStub = new Mock<IValidatorBuilder>();
       validatorBuilderStub
-          .Stub (_ => _.BuildValidator (typeof (DomainType)))
-          .WhenCalled (mi => mi.ReturnValue = MockRepository.GenerateStub<IValidator>());
+          .Setup (_ => _.BuildValidator (typeof (DomainType)))
+          .Returns (new Mock<IValidator>().Object);
 
-      var validatorProvider = new CachingValidatorProvider (validatorBuilderStub);
+      var validatorProvider = new CachingValidatorProvider (validatorBuilderStub.Object);
 
       var instance1 = validatorProvider.GetValidator (typeof (DomainType));
       var instance2 = validatorProvider.GetValidator (typeof (DomainType));

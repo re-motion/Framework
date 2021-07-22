@@ -21,6 +21,7 @@ using log4net.Appender;
 using log4net.Core;
 using log4net.Repository;
 using log4net.Repository.Hierarchy;
+using Moq;
 using NUnit.Framework;
 using Remotion.Logging;
 using Remotion.Validation.Implementation;
@@ -33,7 +34,6 @@ using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.UnitTests.TestDomain.Collectors;
 using Remotion.Validation.UnitTests.TestHelpers;
 using Remotion.Validation.Validators;
-using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.Merging
 {
@@ -41,10 +41,10 @@ namespace Remotion.Validation.UnitTests.Merging
   public class DiagnosticOutputValidationRuleMergeDecoratorTest
   {
     private MemoryAppender _memoryAppender;
-    private IValidationRuleCollectorMerger _wrappedMergerStub;
+    private Mock<IValidationRuleCollectorMerger> _wrappedMergerStub;
     private DiagnosticOutputValidationRuleMergeDecorator _diagnosticOutputValidationRuleMergeDecorator;
-    private ILogContext _logContextStub;
-    private IValidatorFormatter _validatorFormatterStub;
+    private Mock<ILogContext> _logContextStub;
+    private Mock<IValidatorFormatter> _validatorFormatterStub;
 
     [SetUp]
     public void SetUp ()
@@ -54,15 +54,14 @@ namespace Remotion.Validation.UnitTests.Merging
       ((IBasicRepositoryConfigurator) hierarchy).Configure (_memoryAppender);
       var logger = hierarchy.GetLogger ("The Name");
       var log = new Log4NetLog (logger);
-      var logManagerStub = MockRepository.GenerateStub<ILogManager>();
-      logManagerStub.Stub (stub => stub.GetLogger (typeof (DiagnosticOutputValidationRuleMergeDecorator))).Return (log);
+      var logManagerStub = new Mock<ILogManager>();
+      logManagerStub.Setup (stub => stub.GetLogger (typeof (DiagnosticOutputValidationRuleMergeDecorator))).Returns (log);
 
+      _logContextStub = new Mock<ILogContext>();
+      _wrappedMergerStub = new Mock<IValidationRuleCollectorMerger>();
+      _validatorFormatterStub = new Mock<IValidatorFormatter>();
 
-      _logContextStub = MockRepository.GenerateStub<ILogContext>();
-      _wrappedMergerStub = MockRepository.GenerateStub<IValidationRuleCollectorMerger>();
-      _validatorFormatterStub = MockRepository.GenerateStub<IValidatorFormatter>();
-
-      _diagnosticOutputValidationRuleMergeDecorator = new DiagnosticOutputValidationRuleMergeDecorator (_wrappedMergerStub, _validatorFormatterStub, logManagerStub);
+      _diagnosticOutputValidationRuleMergeDecorator = new DiagnosticOutputValidationRuleMergeDecorator (_wrappedMergerStub.Object, _validatorFormatterStub.Object, logManagerStub.Object);
     }
 
     [Test]
@@ -70,12 +69,12 @@ namespace Remotion.Validation.UnitTests.Merging
     {
       var collectors = Enumerable.Empty<IEnumerable<ValidationRuleCollectorInfo>>();
       _wrappedMergerStub
-          .Stub (stub => stub.Merge (collectors))
-          .Return (
+          .Setup (stub => stub.Merge (collectors))
+          .Returns (
               new ValidationCollectorMergeResult (
                   new IAddingPropertyValidationRuleCollector[0],
                   new IAddingObjectValidationRuleCollector[0],
-                  _logContextStub));
+                  _logContextStub.Object));
 
       CheckLoggingMethod (() => _diagnosticOutputValidationRuleMergeDecorator.Merge (collectors), "\r\nAFTER MERGE:", 0);
       CheckLoggingMethod (() => _diagnosticOutputValidationRuleMergeDecorator.Merge (collectors), "\r\nBEFORE MERGE:", 1);
@@ -115,54 +114,54 @@ namespace Remotion.Validation.UnitTests.Merging
       var noPropertyRuleStub = new AddingPropertyValidationRuleCollectorStub();
       noPropertyRuleStub.RegisterValidator (_ => stubValidator4);
 
-      var removingPropertyRuleStub1 = MockRepository.GenerateStub<IRemovingPropertyValidationRuleCollector>();
-      removingPropertyRuleStub1.Stub (stub => stub.CollectorType).Return (typeof (CustomerValidationRuleCollector1));
-      var removingPropertyRuleStub2 = MockRepository.GenerateStub<IRemovingPropertyValidationRuleCollector>();
-      removingPropertyRuleStub2.Stub (stub => stub.CollectorType).Return (typeof (CustomerValidationRuleCollector2));
+      var removingPropertyRuleStub1 = new Mock<IRemovingPropertyValidationRuleCollector>();
+      removingPropertyRuleStub1.Setup (stub => stub.CollectorType).Returns (typeof (CustomerValidationRuleCollector1));
+      var removingPropertyRuleStub2 = new Mock<IRemovingPropertyValidationRuleCollector>();
+      removingPropertyRuleStub2.Setup (stub => stub.CollectorType).Returns (typeof (CustomerValidationRuleCollector2));
 
       var logContextInfo1 = new PropertyValidatorLogContextInfo (
           stubValidator2,
           new[]
           {
-              new RemovingPropertyValidatorRegistration (typeof (NotEmptyValidator), null, null, removingPropertyRuleStub1),
-              new RemovingPropertyValidatorRegistration (typeof (NotEmptyValidator), null, null, removingPropertyRuleStub1),
-              new RemovingPropertyValidatorRegistration (typeof (NotEmptyValidator), null, null, removingPropertyRuleStub2)
+              new RemovingPropertyValidatorRegistration (typeof (NotEmptyValidator), null, null, removingPropertyRuleStub1.Object),
+              new RemovingPropertyValidatorRegistration (typeof (NotEmptyValidator), null, null, removingPropertyRuleStub1.Object),
+              new RemovingPropertyValidatorRegistration (typeof (NotEmptyValidator), null, null, removingPropertyRuleStub2.Object)
           });
       var logContextInfo2 = new PropertyValidatorLogContextInfo (
           stubValidator1,
           new[]
-          { new RemovingPropertyValidatorRegistration (typeof (NotNullValidator), null, null, removingPropertyRuleStub2) });
+          { new RemovingPropertyValidatorRegistration (typeof (NotNullValidator), null, null, removingPropertyRuleStub2.Object) });
       var logContextInfo3 = new PropertyValidatorLogContextInfo (
           stubValidator3,
           new[]
-          { new RemovingPropertyValidatorRegistration (typeof (NotEqualValidator), null, null, removingPropertyRuleStub1) });
+          { new RemovingPropertyValidatorRegistration (typeof (NotEqualValidator), null, null, removingPropertyRuleStub1.Object) });
 
-      _validatorFormatterStub.Stub (
-          stub => stub.Format (Arg<IPropertyValidator>.Matches (c => c.GetType() == typeof (NotNullValidator)), Arg<Func<Type, string>>.Is.Anything))
-          .Return ("NotNullValidator");
-      _validatorFormatterStub.Stub (
-          stub => stub.Format (Arg<IPropertyValidator>.Matches (c => c.GetType() == typeof (LengthValidator)), Arg<Func<Type, string>>.Is.Anything))
-          .Return ("LengthValidator");
-      _validatorFormatterStub.Stub (
-          stub => stub.Format (Arg<IPropertyValidator>.Matches (c => c.GetType() == typeof (NotEmptyValidator)), Arg<Func<Type, string>>.Is.Anything))
-          .Return ("NotEmptyValidator");
-      _validatorFormatterStub.Stub (
-          stub => stub.Format (Arg<IPropertyValidator>.Matches (c => c.GetType() == typeof (NotEqualValidator)), Arg<Func<Type, string>>.Is.Anything))
-          .Return ("NotEqualValidator");
-      _validatorFormatterStub.Stub (
+      _validatorFormatterStub.Setup (
+          stub => stub.Format (It.Is<IPropertyValidator> (c => c.GetType() == typeof (NotNullValidator)), It.IsAny<Func<Type, string>>()))
+          .Returns ("NotNullValidator");
+      _validatorFormatterStub.Setup (
+          stub => stub.Format (It.Is<IPropertyValidator> (c => c.GetType() == typeof (LengthValidator)), It.IsAny<Func<Type, string>>()))
+          .Returns ("LengthValidator");
+      _validatorFormatterStub.Setup (
+          stub => stub.Format (It.Is<IPropertyValidator> (c => c.GetType() == typeof (NotEmptyValidator)), It.IsAny<Func<Type, string>>()))
+          .Returns ("NotEmptyValidator");
+      _validatorFormatterStub.Setup (
+          stub => stub.Format (It.Is<IPropertyValidator> (c => c.GetType() == typeof (NotEqualValidator)), It.IsAny<Func<Type, string>>()))
+          .Returns ("NotEqualValidator");
+      _validatorFormatterStub.Setup (
           stub =>
-              stub.Format (Arg<IPropertyValidator>.Matches (c => c.GetType() == typeof (StubPropertyValidator)), Arg<Func<Type, string>>.Is.Anything))
-          .Return ("StubPropertyValidator");
+              stub.Format (It.Is<IPropertyValidator> (c => c.GetType() == typeof (StubPropertyValidator)), It.IsAny<Func<Type, string>>()))
+          .Returns ("StubPropertyValidator");
 
-      _logContextStub.Stub (stub => stub.GetLogContextInfos (userNamePropertyRule)).Return (new[] { logContextInfo1, logContextInfo2 });
-      _logContextStub.Stub (stub => stub.GetLogContextInfos (lastNamePropertyRule)).Return (new[] { logContextInfo3 });
-      _logContextStub.Stub (stub => stub.GetLogContextInfos (noPropertyRuleStub)).Return (new PropertyValidatorLogContextInfo[0]);
+      _logContextStub.Setup (stub => stub.GetLogContextInfos (userNamePropertyRule)).Returns (new[] { logContextInfo1, logContextInfo2 });
+      _logContextStub.Setup (stub => stub.GetLogContextInfos (lastNamePropertyRule)).Returns (new[] { logContextInfo3 });
+      _logContextStub.Setup (stub => stub.GetLogContextInfos (noPropertyRuleStub)).Returns (new PropertyValidatorLogContextInfo[0]);
 
       var addingPropertyValidationRuleCollectors = new IAddingPropertyValidationRuleCollector[] { userNamePropertyRule, lastNamePropertyRule, noPropertyRuleStub };
       var addingObjectValidationRuleCollectors = new IAddingObjectValidationRuleCollector[] { /* TODO RM-5906: test object rules */ };
-      _wrappedMergerStub.Stub (stub => stub.Merge (validationCollectorInfos))
-          .Return (
-              new ValidationCollectorMergeResult (addingPropertyValidationRuleCollectors, addingObjectValidationRuleCollectors, _logContextStub));
+      _wrappedMergerStub.Setup (stub => stub.Merge (validationCollectorInfos))
+          .Returns (
+              new ValidationCollectorMergeResult (addingPropertyValidationRuleCollectors, addingObjectValidationRuleCollectors, _logContextStub.Object));
 
       var expectedAfterMerge =
           "\r\nAFTER MERGE:"

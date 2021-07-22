@@ -16,10 +16,10 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.UnitTests.Implementation.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.Implementation
 {
@@ -150,10 +150,10 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void GetAffectedType_WithoutFilter_TerminatesWhenBaseTypeIsNull ()
     {
-      var validationTypeFilterStub = MockRepository.GenerateStub<IValidationTypeFilter>();
-      validationTypeFilterStub.Stub (stub => stub.IsValidatableType (Arg<Type>.Is.Anything)).Return (true);
+      var validationTypeFilterStub = new Mock<IValidationTypeFilter>();
+      validationTypeFilterStub.Setup (stub => stub.IsValidatableType (It.IsAny<Type>())).Returns (true);
 
-      var involvedTypeProvider = new InvolvedTypeProvider (validationTypeFilterStub);
+      var involvedTypeProvider = new InvolvedTypeProvider (validationTypeFilterStub.Object);
 
       var result = involvedTypeProvider.GetTypes (typeof (TypeWithOneInterface)).SelectMany (t => t).ToList();
 
