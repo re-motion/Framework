@@ -30,6 +30,14 @@ namespace Remotion.Web
       }
     }
 
+    public class NovaViso : ResourceTheme
+    {
+      public NovaViso ()
+          : base ("NovaViso")
+      {
+      }
+    }
+
     private readonly string _name;
 
     public ResourceTheme (string name)
