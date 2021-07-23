@@ -30,6 +30,15 @@ namespace Remotion.Web
       }
     }
 
+    [Obsolete ("'NovaViso' theme is work in progress and not intended for production use at this time.")]
+    public class NovaViso : ResourceTheme
+    {
+      public NovaViso ()
+          : base ("NovaViso")
+      {
+      }
+    }
+
     private readonly string _name;
 
     public ResourceTheme (string name)
