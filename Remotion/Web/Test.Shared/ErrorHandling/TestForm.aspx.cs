@@ -20,12 +20,16 @@ using System.Text;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.UI;
+using Remotion.ServiceLocation;
+using Remotion.Web.Resources;
 using Remotion.Web.UI;
 
-namespace Remotion.Web.Test.ErrorHandling
+namespace Remotion.Web.Test.Shared.ErrorHandling
 {
   public partial class TestForm : SmartPage
   {
+    private readonly IResourceUrlFactory _resourceUrlFactory = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>();
+
     protected override void OnInit (EventArgs e)
     {
       base.OnInit (e);
@@ -39,10 +43,11 @@ namespace Remotion.Web.Test.ErrorHandling
     protected void SynchronousPostbackErrorButton_Click (object sender, EventArgs e)
     {
       var f = new ErrorPageHandlerFactory();
-      var p = f.GetHandler (Context, "GET", "~/ErrorHandling/ErrorForm.aspx", Server.MapPath ("~/ErrorHandling/ErrorForm.aspx"));
+      var errorFormVirtualPath = _resourceUrlFactory.CreateResourceUrl (typeof (ErrorForm), TestResourceType.Root, "ErrorHandling/ErrorForm.aspx").GetUrl();
+      var p = f.GetHandler (Context, "GET", errorFormVirtualPath, Server.MapPath (errorFormVirtualPath));
       var stringBuilder = new StringBuilder();
       TextWriter output = new StringWriter(stringBuilder);
-      var context = new HttpContext (new SimpleWorkerRequest ("~/ErrorHandling/ErrorForm.aspx", "", output));
+      var context = new HttpContext (new SimpleWorkerRequest (errorFormVirtualPath, "", output));
       context.AddError (new ApplicationException ("temp error"));
       p.ProcessRequest (context);
       context.Response.Flush();

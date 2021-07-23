@@ -17,7 +17,7 @@
 using System;
 using System.Web.UI;
 
-namespace Remotion.Web.Test
+namespace Remotion.Web.Test.Shared
 {
   public partial class CssIncludeTest : Page
   {

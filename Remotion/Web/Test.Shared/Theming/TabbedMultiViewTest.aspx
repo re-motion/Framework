@@ -14,7 +14,8 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="TabbedMultiViewTest.aspx.cs" Inherits="Remotion.Web.Test.Theming.TabbedMultiViewTest" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="TabbedMultiViewTest.aspx.cs" Inherits="Remotion.Web.Test.Shared.Theming.TabbedMultiViewTest" %>
+<%@ Register tagPrefix="remotion" namespace="Remotion.Web.UI.Controls" assembly="Remotion.Web" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!-- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" > -->
@@ -59,10 +60,10 @@
         <remotion:TabView ID="TabView2" runat="server" Title="Second">
           <asp:Literal runat="server">This is view no. 2</asp:Literal>
         </remotion:TabView>
-        <remotion:TabView ID="TabView3" runat="server" Title="Person Details" Icon-Url="~/Images/Person.gif" Icon-Height="16" Icon-Width="16">
+        <remotion:TabView ID="TabView3" runat="server" Title="Person Details" Icon-Url="Image/Person.gif" Icon-Height="16" Icon-Width="16">
           <asp:Literal runat="server">This is view no. 3</asp:Literal>
         </remotion:TabView>
-        <remotion:TabView ID="TabView4" runat="server" Title="Jobs" Icon-Url="~/Images/Job.gif" Icon-Height="16" Icon-Width="16">
+        <remotion:TabView ID="TabView4" runat="server" Title="Jobs" Icon-Url="Image/Job.gif" Icon-Height="16" Icon-Width="16">
           <asp:Literal runat="server">This is view no. 4</asp:Literal>
         </remotion:TabView>
         <remotion:TabView ID="TabView5" runat="server" Title="View 5">

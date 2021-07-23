@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Remotion.Web.Test.ExecutionEngine.ExceptionHandling {
+namespace Remotion.Web.Test.Shared.ExecutionEngine.ExceptionHandling {
     
     
     public partial class TestForm {

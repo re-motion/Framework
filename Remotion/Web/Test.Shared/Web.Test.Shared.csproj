@@ -7,7 +7,6 @@
   <PropertyGroup>
     <AssemblyName>Remotion.Web.Test.Shared</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
-    <NoWarn>$(NoWarn);0419</NoWarn>
     <Nullable>disable</Nullable>
   </PropertyGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net461'">

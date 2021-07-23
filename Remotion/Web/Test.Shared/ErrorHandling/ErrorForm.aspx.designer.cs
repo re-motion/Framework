@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Remotion.Web.Test.ErrorHandling {
+namespace Remotion.Web.Test.Shared.ErrorHandling {
     
     
     public partial class ErrorForm {

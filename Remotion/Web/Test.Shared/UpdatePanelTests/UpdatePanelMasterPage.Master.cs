@@ -17,7 +17,7 @@
 using System;
 using System.Web.UI;
 
-namespace Remotion.Web.Test.UpdatePanelTests
+namespace Remotion.Web.Test.Shared.UpdatePanelTests
 {
   public partial class UpdatePanelMasterPage : MasterPage
   {

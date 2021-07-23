@@ -15,10 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.ServiceLocation;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 
-namespace Remotion.Web.Test.ExecutionEngine
+namespace Remotion.Web.Test.Shared.ExecutionEngine
 {
   [Serializable]
   public class RedirectedSubWxeFunction : WxeFunction
@@ -30,7 +31,8 @@ namespace Remotion.Web.Test.ExecutionEngine
 
     private void Step1 (WxeContext context)
     {
-      context.HttpContext.Response.Redirect ("~/Start.aspx?Redirected");
+      var redirectUrl = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>().CreateResourceUrl (typeof (Start), TestResourceType.Root, "Start.aspx?Redirected").GetUrl();
+      context.HttpContext.Response.Redirect (redirectUrl);
     }
   }
 
@@ -50,6 +52,6 @@ namespace Remotion.Web.Test.ExecutionEngine
 
     private WxeStep Step1 = new RedirectedSubWxeFunction();
 
-    private WxeStep Step2 = new WxePageStep ("~/ExecutionEngine/SessionForm.aspx");
+    private WxeStep Step2 = new WxeResourcePageStep (typeof (SessionForm), "ExecutionEngine/SessionForm.aspx");
   }
 }

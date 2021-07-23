@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="PostBackFocus.aspx.cs" Inherits="Remotion.Web.Test.PostBackFocus"  %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="PostBackFocus.aspx.cs" Inherits="Remotion.Web.Test.Shared.PostBackFocus"  %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -10,7 +10,7 @@
     <form id="form1" runat="server">
     <asp:ScriptManager ID="ScriptManager" runat="server" EnablePartialRendering="true" />
     <div>
-    <asp:HyperLink ID="SelfLink" runat="server" NavigateUrl="~/PostBackFocus.aspx">Self</asp:HyperLink>
+    <asp:HyperLink ID="SelfLink" runat="server" NavigateUrl="PostBackFocus.aspx">Self</asp:HyperLink>
     <br />
 <asp:TextBox ID="Field1" runat="server" AutoPostBack="true" />
 <asp:TextBox ID="Field2" runat="server" AutoPostBack="true" />

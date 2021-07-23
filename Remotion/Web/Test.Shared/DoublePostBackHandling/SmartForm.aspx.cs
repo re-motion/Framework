@@ -18,7 +18,7 @@ using System;
 using System.Threading;
 using Remotion.Web.UI;
 
-namespace Remotion.Web.Test.DoublePostBackHandling
+namespace Remotion.Web.Test.Shared.DoublePostBackHandling
 {
   public partial class SmartForm : SmartPage
   {

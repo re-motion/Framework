@@ -22,7 +22,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace Remotion.Web.Test.DoublePostBackHandling
+namespace Remotion.Web.Test.Shared.DoublePostBackHandling
 {
   public partial class AspNetForm : System.Web.UI.Page
   {

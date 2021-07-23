@@ -18,7 +18,7 @@ using System;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 
-namespace Remotion.Web.Test.ExecutionEngine
+namespace Remotion.Web.Test.Shared.ExecutionEngine
 {
   [Serializable]
   public class ShowFirstUserControlFormFunction : WxeFunction
@@ -29,6 +29,6 @@ namespace Remotion.Web.Test.ExecutionEngine
       ExceptionHandler.AppendCatchExceptionTypes (typeof (WxeUserCancelException));
     }
 
-    private WxeUserControlStep Step1 = new WxeUserControlStep ("~/ExecutionEngine/FirstControl.ascx");
+    private WxeResourceUserControlStep Step1 = new WxeResourceUserControlStep (typeof (FirstControl), "ExecutionEngine/FirstControl.ascx");
   }
 }

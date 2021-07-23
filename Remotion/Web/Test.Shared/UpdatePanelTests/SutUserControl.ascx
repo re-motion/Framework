@@ -15,7 +15,8 @@
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
 <%@ Control Language="C#" AutoEventWireup="true" Codebehind="SutUserControl.ascx.cs"
-  Inherits="Remotion.Web.Test.UpdatePanelTests.SutUserControl" %>
+  Inherits="Remotion.Web.Test.Shared.UpdatePanelTests.SutUserControl" %>
+<%@ Register tagPrefix="remotion" namespace="Remotion.Web.UI.Controls" assembly="Remotion.Web" %>
 <asp:ScriptManagerProxy ID="ScriptManagerProxy" runat="server" />
 <asp:UpdatePanel ID="UpdatePanel" runat="server">
   <ContentTemplate>

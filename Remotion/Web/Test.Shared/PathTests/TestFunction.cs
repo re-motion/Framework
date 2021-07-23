@@ -18,7 +18,7 @@ using System;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 
-namespace Remotion.Web.Test.PathTests
+namespace Remotion.Web.Test.Shared.PathTests
 {
   [Serializable]
   public class TestFunction : WxeFunction
@@ -28,6 +28,6 @@ namespace Remotion.Web.Test.PathTests
     {
     }
 
-    private WxePageStep Step1 = new WxePageStep ("~/PathTests/TestForm.aspx");
+    private WxeResourcePageStep Step1 = new WxeResourcePageStep (typeof (TestForm), "PathTests/TestForm.aspx");
   }
 }

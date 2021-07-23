@@ -17,7 +17,7 @@
 using System;
 using Remotion.Web.ExecutionEngine;
 
-namespace Remotion.Web.Test.ExecutionEngine
+namespace Remotion.Web.Test.Shared.ExecutionEngine
 {
   public class ProfilingForm : WxePage
   {

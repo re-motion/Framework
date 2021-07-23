@@ -18,7 +18,7 @@ using System;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
 
-namespace Remotion.Web.Test.ExecutionEngine
+namespace Remotion.Web.Test.Shared.ExecutionEngine
 {
   public partial class FourthControl : WxeUserControl
   {

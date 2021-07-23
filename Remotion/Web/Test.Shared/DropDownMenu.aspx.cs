@@ -18,7 +18,7 @@ using System;
 using System.Web.UI;
 using Remotion.Web.UI.Controls;
 
-namespace Remotion.Web.Test
+namespace Remotion.Web.Test.Shared
 {
   public partial class DropDownMenu : Page
   {

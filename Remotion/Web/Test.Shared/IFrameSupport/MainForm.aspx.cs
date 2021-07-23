@@ -18,7 +18,7 @@ using System;
 using System.Web;
 using Remotion.Web.ExecutionEngine;
 
-namespace Remotion.Web.Test.IFrameSupport
+namespace Remotion.Web.Test.Shared.IFrameSupport
 {
   public partial class MainForm : WxePage
   {

@@ -18,7 +18,7 @@ using System;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UI;
 
-namespace Remotion.Web.Test.UpdatePanelTests
+namespace Remotion.Web.Test.Shared.UpdatePanelTests
 {
   public partial class SutForm : WxePage
   {

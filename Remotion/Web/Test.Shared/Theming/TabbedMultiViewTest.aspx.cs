@@ -17,7 +17,7 @@
 using System;
 using Remotion.Web.UI;
 
-namespace Remotion.Web.Test.Theming
+namespace Remotion.Web.Test.Shared.Theming
 {
   public partial class TabbedMultiViewTest : SmartPage
   {

@@ -14,7 +14,7 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ThrowingForm.aspx.cs" Inherits="Remotion.Web.Test.ExecutionEngine.ExceptionHandling.ThrowingForm" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ThrowingForm.aspx.cs" Inherits="Remotion.Web.Test.Shared.ExecutionEngine.ExceptionHandling.ThrowingForm" %>
 
 <!DOCTYPE html>
 

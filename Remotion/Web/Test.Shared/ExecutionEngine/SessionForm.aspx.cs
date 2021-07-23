@@ -23,7 +23,7 @@ using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Obsolete;
 using Remotion.Web.UI;
 
-namespace Remotion.Web.Test.ExecutionEngine
+namespace Remotion.Web.Test.Shared.ExecutionEngine
 {
   public class SessionForm : WxePage
   {

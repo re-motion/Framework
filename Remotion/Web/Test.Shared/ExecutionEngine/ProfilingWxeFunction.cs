@@ -16,10 +16,11 @@
 // 
 using System;
 using System.Diagnostics;
+using Remotion.ServiceLocation;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 
-namespace Remotion.Web.Test.ExecutionEngine
+namespace Remotion.Web.Test.Shared.ExecutionEngine
 {
   [Serializable]
   public class ProfilingWxeFunction : WxeFunction
@@ -30,13 +31,13 @@ namespace Remotion.Web.Test.ExecutionEngine
     public ProfilingWxeFunction ()
         : base (new NoneTransactionMode())
     {
-      ReturnUrl = "~/Start.aspx";
+      ReturnUrl = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>().CreateResourceUrl (typeof (Start), TestResourceType.Root, "Start.aspx").GetUrl();
     }
 
     public ProfilingWxeFunction (params object[] args)
         : base (new NoneTransactionMode(), args)
     {
-      ReturnUrl = "~/Start.aspx";
+      ReturnUrl = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>().CreateResourceUrl (typeof (Start), TestResourceType.Root, "Start.aspx").GetUrl();
     }
 
     // steps
@@ -46,15 +47,15 @@ namespace Remotion.Web.Test.ExecutionEngine
       _start = DateTime.Now;
     }
 
-    private WxeStep Step21 = new WxePageStep ("~/ExecutionEngine/ProfilingForm.aspx");
-    private WxeStep Step22 = new WxePageStep ("~/ExecutionEngine/ProfilingForm.aspx");
-    private WxeStep Step23 = new WxePageStep ("~/ExecutionEngine/ProfilingForm.aspx");
-    private WxeStep Step24 = new WxePageStep ("~/ExecutionEngine/ProfilingForm.aspx");
-    private WxeStep Step25 = new WxePageStep ("~/ExecutionEngine/ProfilingForm.aspx");
-    private WxeStep Step26 = new WxePageStep ("~/ExecutionEngine/ProfilingForm.aspx");
-    private WxeStep Step27 = new WxePageStep ("~/ExecutionEngine/ProfilingForm.aspx");
-    private WxeStep Step28 = new WxePageStep ("~/ExecutionEngine/ProfilingForm.aspx");
-    private WxeStep Step29 = new WxePageStep ("~/ExecutionEngine/ProfilingForm.aspx");
+    private WxeStep Step21 = new WxeResourcePageStep (typeof (ProfilingForm), "ExecutionEngine/ProfilingForm.aspx");
+    private WxeStep Step22 = new WxeResourcePageStep (typeof (ProfilingForm), "ExecutionEngine/ProfilingForm.aspx");
+    private WxeStep Step23 = new WxeResourcePageStep (typeof (ProfilingForm), "ExecutionEngine/ProfilingForm.aspx");
+    private WxeStep Step24 = new WxeResourcePageStep (typeof (ProfilingForm), "ExecutionEngine/ProfilingForm.aspx");
+    private WxeStep Step25 = new WxeResourcePageStep (typeof (ProfilingForm), "ExecutionEngine/ProfilingForm.aspx");
+    private WxeStep Step26 = new WxeResourcePageStep (typeof (ProfilingForm), "ExecutionEngine/ProfilingForm.aspx");
+    private WxeStep Step27 = new WxeResourcePageStep (typeof (ProfilingForm), "ExecutionEngine/ProfilingForm.aspx");
+    private WxeStep Step28 = new WxeResourcePageStep (typeof (ProfilingForm), "ExecutionEngine/ProfilingForm.aspx");
+    private WxeStep Step29 = new WxeResourcePageStep (typeof (ProfilingForm), "ExecutionEngine/ProfilingForm.aspx");
 
     // Tracing: 100ms/start-end
     // Profiling: 1sek/start-end

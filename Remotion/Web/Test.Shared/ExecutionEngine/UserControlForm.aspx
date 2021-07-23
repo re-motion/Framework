@@ -14,9 +14,11 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="UserControlForm.aspx.cs" Inherits="Remotion.Web.Test.ExecutionEngine.UserControlForm" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="UserControlForm.aspx.cs" Inherits="Remotion.Web.Test.Shared.ExecutionEngine.UserControlForm" %>
 <%@ Register Src="FirstControl.ascx" TagName="FirstControl" TagPrefix="uc1" %>
 <%@ Register TagPrefix="webTest" TagName="ZeroControl" Src="ZeroControl.ascx" %>
+<%@ Register tagPrefix="remotion" namespace="Remotion.Web.UI.Controls" assembly="Remotion.Web" %>
+<%@ Register tagPrefix="remotion" namespace="Remotion.Development.Web.UnitTesting.AspNetFramework" assembly="Remotion.Development.Web" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">

@@ -15,7 +15,7 @@
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
 
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ErrorForm.aspx.cs" Inherits="Remotion.Web.Test.ErrorHandling.ErrorForm" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ErrorForm.aspx.cs" Inherits="Remotion.Web.Test.Shared.ErrorHandling.ErrorForm" %>
 
 <!DOCTYPE html>
 

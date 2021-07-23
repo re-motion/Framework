@@ -14,7 +14,7 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Page language="c#" Codebehind="ProfilingForm.aspx.cs" AutoEventWireup="false" Inherits="Remotion.Web.Test.ExecutionEngine.ProfilingForm" %>
+<%@ Page language="c#" Codebehind="ProfilingForm.aspx.cs" AutoEventWireup="false" Inherits="Remotion.Web.Test.Shared.ExecutionEngine.ProfilingForm" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" > 
 
 <html>

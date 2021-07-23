@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="DefaultButtonTest.aspx.cs" Inherits="Remotion.Web.Test.DefaultButtonTest" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="DefaultButtonTest.aspx.cs" Inherits="Remotion.Web.Test.Shared.DefaultButtonTest" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -8,7 +8,7 @@
 <body>
   <form id="form1" runat="server">
   <div>
-    <asp:HyperLink runat="server" NavigateUrl="~/DefaultButtonTest.aspx" Text="Restart" />
+    <asp:HyperLink runat="server" NavigateUrl="DefaultButtonTest.aspx" Text="Restart" />
     <hr />
     <asp:ScriptManager runat="server" EnablePartialRendering="true" />
     <asp:Button ID="SyncNotDefaultButton" Text="Not the Default Button (sync)" runat="server" OnClick="Button_Click" />

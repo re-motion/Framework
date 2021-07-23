@@ -19,7 +19,7 @@ using System.Threading;
 using System.Web;
 using System.Web.Services;
 
-namespace Remotion.Web.Test
+namespace Remotion.Web.Test.Shared
 {
   /// <summary>
   /// Summary description for $codebehindclassname$

@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Remotion.Web.Test {
+namespace Remotion.Web.Test.Shared {
     
     
     public partial class DefaultButtonTest {

@@ -20,7 +20,7 @@ using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 using Remotion.Web.ExecutionEngine.Obsolete;
 
-namespace Remotion.Web.Test.ExecutionEngine
+namespace Remotion.Web.Test.Shared.ExecutionEngine
 {
   /// <summary>
   /// Summary description for WebForm1.
@@ -215,7 +215,7 @@ namespace Remotion.Web.Test.ExecutionEngine
         Var2 = "SubFunction Step1";
       }
 
-      private WxeStep Step2 = new WxePageStep (@"~\ExecutionEngine\WebForm1.aspx");
+      private WxeStep Step2 = new WxeResourcePageStep (typeof (WebForm1), @"ExecutionEngine\WebForm1.aspx");
 
       private static int counter = 0;
       private void Step3 (WxeContext context)

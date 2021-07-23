@@ -17,7 +17,7 @@
 using System;
 using Remotion.Web.UI;
 
-namespace Remotion.Web.Test.Rendering
+namespace Remotion.Web.Test.Shared.Rendering
 {
   public partial class WebButtonDisabledCssTest : SmartPage
   {

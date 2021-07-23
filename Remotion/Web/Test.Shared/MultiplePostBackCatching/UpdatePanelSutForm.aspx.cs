@@ -16,7 +16,7 @@
 // 
 using System;
 
-namespace Remotion.Web.Test.MultiplePostBackCatching
+namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
 {
   public partial class UpdatePanelSutForm : SutBasePage
   {

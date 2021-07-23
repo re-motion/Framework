@@ -17,7 +17,7 @@
 using System;
 using Remotion.Data;
 
-namespace Remotion.Web.Test.IFrameSupport
+namespace Remotion.Web.Test.Shared.IFrameSupport
 {
   public class NullTransactionFactory : ITransactionFactory
   {

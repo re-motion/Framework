@@ -20,7 +20,7 @@ using System.Web;
 using Remotion.FunctionalProgramming;
 using Remotion.Web.ExecutionEngine;
 
-namespace Remotion.Web.Test.ExecutionEngine.ExceptionHandling
+namespace Remotion.Web.Test.Shared.ExecutionEngine.ExceptionHandling
 {
   public partial class TestForm : WxePage
   {

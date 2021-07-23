@@ -18,7 +18,7 @@ using System;
 using System.Web;
 using System.Web.UI;
 
-namespace Remotion.Web.Test.ErrorHandling
+namespace Remotion.Web.Test.Shared.ErrorHandling
 {
   public partial class ErrorForm : Page
   {

@@ -18,7 +18,7 @@ using System;
 using System.ComponentModel;
 using Remotion.Utilities;
 
-namespace Remotion.Web.Test.ExecutionEngine
+namespace Remotion.Web.Test.Shared.ExecutionEngine
 {
   public class NonSerializeableObjectConverter : TypeConverter
   {

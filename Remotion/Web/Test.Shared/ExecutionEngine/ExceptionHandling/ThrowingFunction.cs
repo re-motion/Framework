@@ -18,7 +18,7 @@ using System;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 
-namespace Remotion.Web.Test.ExecutionEngine.ExceptionHandling
+namespace Remotion.Web.Test.Shared.ExecutionEngine.ExceptionHandling
 {
   [Serializable]
   public class ThrowingFunction : WxeFunction
@@ -28,6 +28,6 @@ namespace Remotion.Web.Test.ExecutionEngine.ExceptionHandling
     {
     }
 
-    private WxePageStep Step1 = new WxePageStep ("~/ExecutionEngine/ExceptionHandling/ThrowingForm.aspx");
+    private WxeResourcePageStep Step1 = new WxeResourcePageStep (typeof (ThrowingForm), "ExecutionEngine/ExceptionHandling/ThrowingForm.aspx");
   }
 }

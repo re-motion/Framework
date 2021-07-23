@@ -18,7 +18,7 @@ using System;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 
-namespace Remotion.Web.Test.ExecutionEngine
+namespace Remotion.Web.Test.Shared.ExecutionEngine
 {
   [Serializable]
   public class ShowThirdUserControlFormFunction : WxeFunction
@@ -28,6 +28,6 @@ namespace Remotion.Web.Test.ExecutionEngine
     {
     }
 
-    private WxeUserControlStep Step1 = new WxeUserControlStep ("~/ExecutionEngine/ThirdControl.ascx");
+    private WxeResourceUserControlStep Step1 = new WxeResourceUserControlStep (typeof (ThirdControl), "ExecutionEngine/ThirdControl.ascx");
   }
 }

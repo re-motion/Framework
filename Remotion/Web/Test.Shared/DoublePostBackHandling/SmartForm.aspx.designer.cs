@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Remotion.Web.Test.DoublePostBackHandling {
+namespace Remotion.Web.Test.Shared.DoublePostBackHandling {
     
     
     public partial class SmartForm {

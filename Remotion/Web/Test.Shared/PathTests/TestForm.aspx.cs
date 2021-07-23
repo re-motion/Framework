@@ -18,7 +18,7 @@ using System;
 using System.Web;
 using Remotion.Web.UI;
 
-namespace Remotion.Web.Test.PathTests
+namespace Remotion.Web.Test.Shared.PathTests
 {
   /// <summary>
   /// Summary description for Start.

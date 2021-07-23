@@ -21,7 +21,7 @@ using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.PostBackTargets;
 
-namespace Remotion.Web.Test.UpdatePanelTests
+namespace Remotion.Web.Test.Shared.UpdatePanelTests
 {
   public partial class SutUserControl : System.Web.UI.UserControl
   {

@@ -14,7 +14,8 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ThirdControl.ascx.cs" Inherits="Remotion.Web.Test.ExecutionEngine.ThirdControl" %>
+<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ThirdControl.ascx.cs" Inherits="Remotion.Web.Test.Shared.ExecutionEngine.ThirdControl" %>
+<%@ Register tagPrefix="remotion" namespace="Remotion.Web.UI.Controls" assembly="Remotion.Web" %>
 <div style="background-color: #CCFFFF">
   Third Control
   <p>

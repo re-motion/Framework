@@ -18,7 +18,7 @@ using System;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 
-namespace Remotion.Web.Test.ExecutionEngine
+namespace Remotion.Web.Test.Shared.ExecutionEngine
 {
   [Serializable]
   public class SessionWxeFunction: WxeFunction
@@ -50,14 +50,14 @@ namespace Remotion.Web.Test.ExecutionEngine
     class Step2 : WxeStepList
     {
       SessionWxeFunction Function { get { return (SessionWxeFunction) ParentFunction; } }
-      WxeStep Step1_ = new WxePageStep ("~/ExecutionEngine/SessionForm.aspx");
+      WxeStep Step1_ = new WxeResourcePageStep (typeof (SessionForm), "ExecutionEngine/SessionForm.aspx");
     }
 
     [Serializable]
     class Step3 : WxeStepList
     {
       SessionWxeFunction Function { get { return (SessionWxeFunction) ParentFunction; } }
-      WxeStep Step1_ = new WxePageStep ("~/ExecutionEngine/SessionForm.aspx");
+      WxeStep Step1_ = new WxeResourcePageStep (typeof (SessionForm), "ExecutionEngine/SessionForm.aspx");
     }
   }
 }

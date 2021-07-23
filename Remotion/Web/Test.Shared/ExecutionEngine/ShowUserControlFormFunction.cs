@@ -15,10 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.ServiceLocation;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 
-namespace Remotion.Web.Test.ExecutionEngine
+namespace Remotion.Web.Test.Shared.ExecutionEngine
 {
   [Serializable]
   public class ShowUserControlFormFunction : WxeFunction
@@ -26,9 +27,9 @@ namespace Remotion.Web.Test.ExecutionEngine
     public ShowUserControlFormFunction ()
         : base (new NoneTransactionMode())
     {
-      ReturnUrl = "Start.aspx";
+      ReturnUrl = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>().CreateResourceUrl (typeof (Start), TestResourceType.Root, "Start.aspx").GetUrl();
     }
 
-    private WxePageStep Step1 = new WxePageStep ("~/ExecutionEngine/UserControlForm.aspx");
+    private WxeResourcePageStep Step1 = new WxeResourcePageStep (typeof (UserControlForm), "ExecutionEngine/UserControlForm.aspx");
   }
 }

@@ -167,6 +167,7 @@
     <Content Include="Global.asax">
       <SubType>Component</SubType>
     </Content>
+    <Content Include="index.html" />
     <Content Include="UrlMapping.xml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

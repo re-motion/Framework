@@ -18,7 +18,7 @@ using System;
 using JetBrains.Annotations;
 using Remotion.Web.ExecutionEngine;
 
-namespace Remotion.Web.Test.IFrameSupport
+namespace Remotion.Web.Test.Shared.IFrameSupport
 {
   [Serializable]
   public class FrameContentFunction : WxeFunction
@@ -29,6 +29,6 @@ namespace Remotion.Web.Test.IFrameSupport
     }
 
     [UsedImplicitly]
-    private WxeStep Step1 = new WxePageStep ("~/IFrameSupport/FrameContent.aspx");
+    private WxeStep Step1 = new WxeResourcePageStep (typeof (FrameContent), "IFrameSupport/FrameContent.aspx");
   }
 }

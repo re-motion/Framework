@@ -14,7 +14,7 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Control Language="c#" AutoEventWireup="false" Codebehind="UserControl1.ascx.cs" Inherits="Remotion.Web.Test.ExecutionEngine.UserControl1" TargetSchema="http://schemas.microsoft.com/intellisense/ie5"%>
+<%@ Control Language="c#" AutoEventWireup="false" Codebehind="UserControl1.ascx.cs" Inherits="Remotion.Web.Test.Shared.ExecutionEngine.UserControl1" TargetSchema="http://schemas.microsoft.com/intellisense/ie5"%>
 <DIV style="WIDTH: 464px; POSITION: relative; HEIGHT: 128px" ms_positioning="GridLayout">&nbsp;
   <asp:TextBox id="TextBox1" style="Z-INDEX: 101; LEFT: 40px; POSITION: absolute; TOP: 32px" runat="server"></asp:TextBox>
   <asp:Button id="Stay" style="Z-INDEX: 102; LEFT: 32px; POSITION: absolute; TOP: 88px" runat="server"

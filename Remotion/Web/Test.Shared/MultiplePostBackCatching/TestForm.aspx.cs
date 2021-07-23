@@ -15,9 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.ServiceLocation;
 using Remotion.Web.UI;
 
-namespace Remotion.Web.Test.MultiplePostBackCatching
+namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
 {
   public partial class TestForm : TestBasePage
   {
@@ -25,7 +26,8 @@ namespace Remotion.Web.Test.MultiplePostBackCatching
     {
       base.OnLoad (e);
 
-      TestExpectationsGenerator.GenerateExpectations (this, TestTable.Rows, "~/MultiplePostbackCatching/SutForm.aspx");
+      var sutFormUrl = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>().CreateResourceUrl (typeof (SutForm), TestResourceType.Root, "MultiplePostbackCatching/SutForm.aspx").GetUrl();
+      TestExpectationsGenerator.GenerateExpectations (this, TestTable.Rows, sutFormUrl);
       HtmlHeadAppender.Current.SetTitle (TestExpectationsGenerator.GetTestCaseUrlParameter (this) ?? "All Multiple Postback Catcher Tests");
     }
   }

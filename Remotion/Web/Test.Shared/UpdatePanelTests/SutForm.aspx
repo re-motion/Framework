@@ -15,7 +15,7 @@
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
 
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SutForm.aspx.cs" Inherits="Remotion.Web.Test.UpdatePanelTests.SutForm" MasterPageFile="UpdatePanelMasterPage.master" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SutForm.aspx.cs" Inherits="Remotion.Web.Test.Shared.UpdatePanelTests.SutForm" MasterPageFile="UpdatePanelMasterPage.master" %>
 
 <%@ Register Src="SutUserControl.ascx" TagName="SutUserControl" TagPrefix="rwt" %>
 <asp:Content runat="server" ContentPlaceHolderID="FormContent">

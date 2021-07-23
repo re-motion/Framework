@@ -23,7 +23,7 @@ using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.PostBackTargets;
 using Remotion.Web.Utilities;
 
-namespace Remotion.Web.Test.MultiplePostBackCatching
+namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
 {
   public class TestExpectationsGenerator
   {

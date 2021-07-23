@@ -19,14 +19,17 @@ using System.Collections;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.PostBackTargets;
 
-namespace Remotion.Web.Test.MultiplePostBackCatching
+namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
 {
   public class TestControlGenerator
   {
+    private readonly IResourceUrlFactory _resourceUrlFactory = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>();
+
     public event EventHandler<IDEventArgs> Click;
     private readonly Page _page;
     private readonly PostBackEventHandler _postBackEventHandler;
@@ -245,7 +248,7 @@ namespace Remotion.Web.Test.MultiplePostBackCatching
       Image image = new Image ();
       image.ID = CreateID (prefix, "Inner");
       image.AlternateText = text;
-      image.ImageUrl = "~/Images/Image.gif";
+      image.ImageUrl = _resourceUrlFactory.CreateResourceUrl (typeof (TestControlGenerator), ResourceType.Image, "Image.gif").GetUrl();
       image.Style.Add (HtmlTextWriterStyle.BorderStyle, "none");
 
       return image;

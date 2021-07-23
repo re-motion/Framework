@@ -18,7 +18,7 @@ using System;
 using System.Web;
 using Remotion.Web.Utilities;
 
-namespace Remotion.Web.Test.ExecutionEngine
+namespace Remotion.Web.Test.Shared.ExecutionEngine
 {
   public class RedirectHandler : IHttpHandler
   {

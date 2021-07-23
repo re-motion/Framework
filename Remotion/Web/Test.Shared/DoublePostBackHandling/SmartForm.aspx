@@ -14,7 +14,7 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SmartForm.aspx.cs" Inherits="Remotion.Web.Test.DoublePostBackHandling.SmartForm" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SmartForm.aspx.cs" Inherits="Remotion.Web.Test.Shared.DoublePostBackHandling.SmartForm" %>
 
 <!DOCTYPE html>
 

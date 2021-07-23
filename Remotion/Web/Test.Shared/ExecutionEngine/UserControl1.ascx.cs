@@ -19,7 +19,7 @@ using System.Web.UI;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Obsolete;
 
-namespace Remotion.Web.Test.ExecutionEngine
+namespace Remotion.Web.Test.Shared.ExecutionEngine
 {
   public class UserControl1 : WxeUserControl
   {

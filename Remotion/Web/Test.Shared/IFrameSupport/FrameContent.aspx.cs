@@ -18,7 +18,7 @@ using System;
 using System.Web.UI;
 using Remotion.Web.ExecutionEngine;
 
-namespace Remotion.Web.Test.IFrameSupport
+namespace Remotion.Web.Test.Shared.IFrameSupport
 {
   public partial class FrameContent : WxePage
   {

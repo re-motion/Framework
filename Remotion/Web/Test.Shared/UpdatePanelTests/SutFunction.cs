@@ -18,7 +18,7 @@ using System;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 
-namespace Remotion.Web.Test.UpdatePanelTests
+namespace Remotion.Web.Test.Shared.UpdatePanelTests
 {
   [Serializable]
   public class SutFunction : WxeFunction
@@ -28,6 +28,6 @@ namespace Remotion.Web.Test.UpdatePanelTests
     {      
     }
 
-    private WxeStep Step1 = new WxePageStep ("~/UpdatePanelTests/SutForm.aspx");
+    private WxeStep Step1 = new WxeResourcePageStep (typeof (SutForm), "UpdatePanelTests/SutForm.aspx");
   }
 }

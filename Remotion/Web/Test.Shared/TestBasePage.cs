@@ -17,7 +17,7 @@
 using System;
 using Remotion.Web.UI;
 
-namespace Remotion.Web.Test
+namespace Remotion.Web.Test.Shared
 {
   public class TestBasePage : SmartPage
   {

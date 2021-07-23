@@ -15,7 +15,8 @@
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SingleViewTest.aspx.cs" 
-    Inherits="Remotion.Web.Test.Theming.SingleViewTest" %>
+    Inherits="Remotion.Web.Test.Shared.Theming.SingleViewTest" %>
+<%@ Register tagPrefix="remotion" namespace="Remotion.Web.UI.Controls" assembly="Remotion.Web" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!-- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" > -->

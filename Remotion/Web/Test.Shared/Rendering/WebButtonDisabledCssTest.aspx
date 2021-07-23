@@ -15,7 +15,8 @@
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
 
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="WebButtonDisabledCssTest.aspx.cs" Inherits="Remotion.Web.Test.Rendering.WebButtonDisabledCssTest" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="WebButtonDisabledCssTest.aspx.cs" Inherits="Remotion.Web.Test.Shared.Rendering.WebButtonDisabledCssTest" %>
+<%@ Register tagPrefix="remotion" namespace="Remotion.Web.Test.Shared.Rendering" assembly="Remotion.Web.Test.Shared" %>
 
 <!DOCTYPE html>
 

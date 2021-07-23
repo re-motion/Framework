@@ -17,7 +17,7 @@
 using System;
 using Remotion.Web.ExecutionEngine;
 
-namespace Remotion.Web.Test.ExecutionEngine.ExceptionHandling
+namespace Remotion.Web.Test.Shared.ExecutionEngine.ExceptionHandling
 {
   public partial class ThrowingForm : WxePage
   {

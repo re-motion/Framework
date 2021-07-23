@@ -16,7 +16,7 @@
 // 
 using System;
 
-namespace Remotion.Web.Test
+namespace Remotion.Web.Test.Shared
 {
   public class IDEventArgs : EventArgs
   {

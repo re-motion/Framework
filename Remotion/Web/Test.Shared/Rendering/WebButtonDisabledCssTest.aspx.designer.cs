@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Remotion.Web.Test.Rendering {
+namespace Remotion.Web.Test.Shared.Rendering {
     
     
     public partial class WebButtonDisabledCssTest {
@@ -17,7 +17,7 @@ namespace Remotion.Web.Test.Rendering {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
@@ -26,17 +26,17 @@ namespace Remotion.Web.Test.Rendering {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
-        protected global::Remotion.Web.Test.Rendering.WebButtonWithDisabledCssStyleSupport WebButtonWithDisabledCssStyleSupport5;
+        protected global::Remotion.Web.Test.Shared.Rendering.WebButtonWithDisabledCssStyleSupport WebButtonWithDisabledCssStyleSupport5;
         
         /// <summary>
         /// WebButtonWithDisabledCssStyleSupport1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
-        protected global::Remotion.Web.Test.Rendering.WebButtonWithDisabledCssStyleSupport WebButtonWithDisabledCssStyleSupport1;
+        protected global::Remotion.Web.Test.Shared.Rendering.WebButtonWithDisabledCssStyleSupport WebButtonWithDisabledCssStyleSupport1;
     }
 }

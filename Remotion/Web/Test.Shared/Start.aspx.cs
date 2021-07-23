@@ -19,7 +19,7 @@ using System.Web.UI.WebControls;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UI;
 
-namespace Remotion.Web.Test
+namespace Remotion.Web.Test.Shared
 {
   /// <summary>
   /// Summary description for Start.

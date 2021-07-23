@@ -16,7 +16,7 @@
 // 
 using System;
 
-namespace Remotion.Web.Test.ErrorHandling
+namespace Remotion.Web.Test.Shared.ErrorHandling
 {
   public class ErrorHandlingException : Exception
   {

@@ -17,7 +17,7 @@
 using System;
 using Remotion.Web.UI.Controls;
 
-namespace Remotion.Web.Test.Rendering
+namespace Remotion.Web.Test.Shared.Rendering
 {
   public class WebButtonWithDisabledCssStyleSupport : WebButton
   {
