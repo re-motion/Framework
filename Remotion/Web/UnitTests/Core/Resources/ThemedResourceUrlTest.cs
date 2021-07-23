@@ -25,13 +25,28 @@ namespace Remotion.Web.UnitTests.Core.Resources
   public class ThemedResourceUrlTest
   {
     [Test]
-    public void GetUrl ()
+    public void GetUrl_NovaGray ()
     {
       var resourceUrlBuilderStub = new Mock<IResourcePathBuilder>();
       var resourceUrl = new ThemedResourceUrl (resourceUrlBuilderStub.Object, typeof (ResourceUrlTest), ResourceType.Html, new ResourceTheme.NovaGray(), "theRelativeUrl.js");
 
       resourceUrlBuilderStub
           .Setup (_ => _.BuildAbsolutePath (typeof (ResourceUrlTest).Assembly, new[] { "Themes", "NovaGray", "Html", "theRelativeUrl.js" }))
+          .Returns ("expectedUrl");
+
+      Assert.That (resourceUrl.GetUrl(), Is.EqualTo ("expectedUrl"));
+    }
+
+    [Test]
+    public void GetUrl_NovaViso ()
+    {
+      var resourceUrlBuilderStub = new Mock<IResourcePathBuilder>();
+#pragma warning disable 618
+      var resourceUrl = new ThemedResourceUrl (resourceUrlBuilderStub.Object, typeof (ResourceUrlTest), ResourceType.Html, new ResourceTheme.NovaViso(), "theRelativeUrl.js");
+#pragma warning restore 618
+
+      resourceUrlBuilderStub
+          .Setup (_ => _.BuildAbsolutePath (typeof (ResourceUrlTest).Assembly, new[] { "Themes", "NovaViso", "Html", "theRelativeUrl.js" }))
           .Returns ("expectedUrl");
 
       Assert.That (resourceUrl.GetUrl(), Is.EqualTo ("expectedUrl"));
