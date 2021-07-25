@@ -21,7 +21,7 @@
     <PackageReference Remove="NUnit3TestAdapter" />
     <PackageReference Include="NUnitTestAdapter" Version="2.3.0" />
 
-    <PackageReference Remove="Fork.JetBrains.Annotations" />
+    <PackageReference Remove="JetBrains.Annotations" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

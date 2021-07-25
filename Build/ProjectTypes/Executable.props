@@ -6,8 +6,4 @@
     <OutputType>Exe</OutputType>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Fork.JetBrains.Annotations" Version="11.1.0" />
-  </ItemGroup>
-
 </Project>

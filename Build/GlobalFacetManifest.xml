@@ -23,7 +23,7 @@
            feature="FluentValidation"
            layer="Core"/>
 
-  <package id="Fork.JetBrains.Annotations"
+  <package id="JetBrains.Annotations"
            feature="JetBrains.Annotations"
            layer="Core"/>
 

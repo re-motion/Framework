@@ -15,7 +15,7 @@
     <None Include="ReSharperAnnotations\ReSharperAnnotations MIT.licenseheader" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Remove="Fork.JetBrains.Annotations" />
+    <PackageReference Remove="JetBrains.Annotations" />
   </ItemGroup>
   <Import Project="..\..\Build\Shared.build.targets" />
 </Project>
