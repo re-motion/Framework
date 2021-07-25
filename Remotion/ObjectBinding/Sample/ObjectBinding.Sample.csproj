@@ -19,10 +19,7 @@
     <ProjectReference Include="..\Web\ObjectBinding.Web.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="FluentValidation-Signed" Version="5.0.0.1" />
     <PackageReference Include="Remotion.TypePipe" Version="2.0.3" />
-  </ItemGroup>
-  <ItemGroup>
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>
