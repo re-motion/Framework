@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 {
   public abstract class TableInheritanceMappingTest : DatabaseTest
   {
-    public const string CreateTestDataFileName = "DataDomainObjects_CreateTableInheritanceTestData.sql";
+    public const string CreateTestDataFileName = "Database\\DataDomainObjects_CreateTableInheritanceTestData.sql";
     public const string TableInheritanceTestDomainProviderID = "TableInheritanceTestDomain";
 
     private ClientTransactionScope _transactionScope;
