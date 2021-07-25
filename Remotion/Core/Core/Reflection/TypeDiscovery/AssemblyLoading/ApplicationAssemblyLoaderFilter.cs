@@ -77,7 +77,13 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
                 @"System",
                 @"System\..*",
                 @"Microsoft\..*",
+                @"Moq",
+                @"netstandard",
+                @"NUnit\..*",
+                @"NUnit3\..*",
                 @"Remotion\..*\.Generated\..*",
+                @"Rhino.Mocks",
+                @"testcentric\.engine\.metadata",
                 @"TypePipe_.*Generated.*",
             });
         _assemblyNameFilter = null;

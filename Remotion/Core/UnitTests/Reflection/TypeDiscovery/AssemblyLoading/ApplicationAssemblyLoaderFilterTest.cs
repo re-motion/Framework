@@ -44,7 +44,9 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
     public void ApplicationAssemblyMatchExpression ()
     {
       ApplicationAssemblyLoaderFilter filter = ApplicationAssemblyLoaderFilter.Instance;
-      Assert.That (filter.SystemAssemblyMatchExpression, Is.EqualTo (@"^((mscorlib)|(System)|(System\..*)|(Microsoft\..*)|(Remotion\..*\.Generated\..*)|(TypePipe_.*Generated.*))$"));
+      Assert.That (
+          filter.SystemAssemblyMatchExpression,
+          Is.EqualTo (@"^((mscorlib)|(System)|(System\..*)|(Microsoft\..*)|(Moq)|(netstandard)|(NUnit\..*)|(NUnit3\..*)|(Remotion\..*\.Generated\..*)|(Rhino.Mocks)|(testcentric\.engine\.metadata)|(TypePipe_.*Generated.*))$"));
     }
 
     [Test]
@@ -58,10 +60,15 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
       Assert.That (filter.ShouldConsiderAssembly (typeof (object).Assembly.GetName ()), Is.False);
       Assert.That (filter.ShouldConsiderAssembly (new AssemblyName ("System")), Is.False);
       Assert.That (filter.ShouldConsiderAssembly (new AssemblyName ("Microsoft.Something.Whatever")), Is.False);
+      Assert.That (filter.ShouldConsiderAssembly (new AssemblyName ("Moq")), Is.False);
+      Assert.That (filter.ShouldConsiderAssembly (new AssemblyName ("netstandard")), Is.False);
+      Assert.That (filter.ShouldConsiderAssembly (new AssemblyName ("NUnit.Something.Whatever")), Is.False);
+      Assert.That (filter.ShouldConsiderAssembly (new AssemblyName ("NUnit3.Something.Whatever")), Is.False);
       Assert.That (filter.ShouldConsiderAssembly (new AssemblyName ("Remotion.Mixins.Generated.Unsigned")), Is.False);
       Assert.That (filter.ShouldConsiderAssembly (new AssemblyName ("Remotion.Mixins.Generated.Signed")), Is.False);
       Assert.That (filter.ShouldConsiderAssembly (new AssemblyName ("Remotion.Data.DomainObjects.Generated.Signed")), Is.False);
       Assert.That (filter.ShouldConsiderAssembly (new AssemblyName ("Remotion.Data.DomainObjects.Generated.Unsigned")), Is.False);
+      Assert.That (filter.ShouldConsiderAssembly (new AssemblyName ("Rhino.Mocks")), Is.False);
     }
 
     [Test]
