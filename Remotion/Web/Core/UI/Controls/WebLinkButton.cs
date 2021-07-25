@@ -18,7 +18,7 @@ using System;
 using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using Remotion.ServiceLocation;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls.Hotkey;

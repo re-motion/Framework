@@ -21,7 +21,7 @@ using System.Linq;
 using System.Threading;
 using System.Web;
 using System.Web.Configuration;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using Remotion.Development.Web.ResourceHosting;
 using Remotion.Logging;
 using Remotion.ObjectBinding;
