@@ -1,119 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="Current" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{04FA07E3-B868-4846-A5E2-4D375F607C22}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Remotion.Data.DomainObjects.Validation</RootNamespace>
+    <ProjectType>Library</ProjectType>
+  </PropertyGroup>
+  <Import Project="..\..\..\Build\Shared.build.props" />
+  <PropertyGroup>
+    <AssemblyTitle>re-motion Validation Support for DomainObjects</AssemblyTitle>
+    <Description>Internal: Integrates Remotion.Validation and Remotion.Data.DomainObjects assemblies.</Description>
     <AssemblyName>Remotion.Data.DomainObjects.Validation</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;JETBRAINS_ANNOTATIONS</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <NoWarn>1591;0419</NoWarn>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DocumentationFile>bin\Debug\Remotion.Data.DomainObjects.Validation.XML</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;JETBRAINS_ANNOTATIONS</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <NoWarn>1591;0419</NoWarn>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DocumentationFile>bin\Release\Remotion.Data.DomainObjects.Validation.XML</DocumentationFile>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
+    <Nullable>disable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="JetBrains.Annotations, Version=11.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Fork.JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\CommonServiceLocator.1.2\lib\portable-windows8+net40+sl5+windowsphone8\Microsoft.Practices.ServiceLocation.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Remotion.Linq, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Remotion.Linq.2.0.3\lib\net45\Remotion.Linq.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
+    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
+    <ProjectReference Include="..\..\Core\Reflection\Core.Reflection.csproj" />
+    <ProjectReference Include="..\..\Mixins\Core\Mixins.Core.csproj" />
+    <ProjectReference Include="..\..\Validation\Core\Validation.Core.csproj" />
+    <ProjectReference Include="..\..\Validation\Mixins\Validation.Mixins.csproj" />
+    <ProjectReference Include="..\Core\Data.Core.csproj" />
+    <ProjectReference Include="..\DomainObjects\Data.DomainObjects.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\..\AssemblyInfoShared.cs">
-      <Link>Properties\AssemblyInfoShared.cs</Link>
-    </Compile>
-    <Compile Include="ExtendedDomainObjectValidationException.cs" />
-    <Compile Include="EnsureValidationSupportForDomainObjectsAttribute.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DomainObjectAttributesBasedValidationRuleCollectorProvider.cs" />
-    <Compile Include="DomainObjectAttributesBasedValidationPropertyRuleReflector.cs" />
-    <Compile Include="ValidationClientTransactionExtension.cs" />
-    <Compile Include="ValidationClientTransactionExtensionFactory.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\..\remotion.snk">
-      <Link>remotion.snk</Link>
-    </None>
-    <None Include="..\..\..\Build\NuSpec\TemplateShared.nuspec">
-      <Link>TemplateShared.nuspec</Link>
-    </None>
-    <None Include="..\..\Remotion LGPL.licenseheader">
-      <Link>Remotion LGPL.licenseheader</Link>
-    </None>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">
-      <Project>{2aa369ec-a4e7-4d75-9101-efa90e902625}</Project>
-      <Name>Core.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Core\Reflection\Core.Reflection.csproj">
-      <Project>{82D3420D-F557-4E31-955B-2935A785753E}</Project>
-      <Name>Core.Reflection</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Mixins\Core\Mixins.Core.csproj">
-      <Project>{d641e4e2-23f3-4454-8074-1327ef07baa1}</Project>
-      <Name>Mixins.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Validation\Core\Validation.Core.csproj">
-      <Project>{D057D6F3-2015-4EB0-B6BD-77BE8ED1571A}</Project>
-      <Name>Validation.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Validation\Mixins\Validation.Mixins.csproj">
-      <Project>{b34d9485-39d7-4f73-805c-39a65059001e}</Project>
-      <Name>Validation.Mixins</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Core\Data.Core.csproj">
-      <Project>{70273934-12f1-49af-975a-303baefe1cae}</Project>
-      <Name>Data.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DomainObjects\Data.DomainObjects.csproj">
-      <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>
-      <Name>Data.DomainObjects</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FacetManifest.xml" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

@@ -1,120 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="Current" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{651D3C40-63D1-4422-B2C0-67272AA1DBDF}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Remotion.Web.Development.WebTesting.UnitTests</RootNamespace>
+    <ProjectType>Test</ProjectType>
+  </PropertyGroup>
+  <Import Project="..\..\..\Build\Shared.build.props" />
+  <PropertyGroup>
+    <AssemblyTitle>Remotion WebTesting Framework Unit Tests</AssemblyTitle>
     <AssemblyName>Remotion.Web.Development.WebTesting.UnitTests</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn>0067</NoWarn>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <NoWarn>0067</NoWarn>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
+    <SignAssembly>False</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Coypu, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\packages\Fork.Coypu.3.1.1.2\lib\net45\Coypu.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a">
-      <HintPath>..\..\..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="nunit.framework, Version=3.12.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\NUnit.3.12.0\lib\net45\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="Rhino.Mocks, Version=3.6.1.2, Culture=neutral, PublicKeyToken=0b3305902db7183f">
-      <HintPath>..\..\..\packages\CoreRhinoMocks.3.6.1.2\lib\net35\Rhino.Mocks.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Xml" />
-    <Reference Include="WebDriver, Version=3.141.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\packages\Selenium.WebDriver.3.141.0\lib\net45\WebDriver.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="WebDriver.Support, Version=3.141.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\packages\Selenium.Support.3.141.0\lib\net45\WebDriver.Support.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
+    <ProjectReference Include="..\..\Development\Core\Development.Core.csproj" />
+    <ProjectReference Include="..\Development.WebTesting\Web.Development.WebTesting.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\AssemblyInfoShared.cs">
-      <Link>Properties\AssemblyInfoShared.cs</Link>
-    </Compile>
-    <Compile Include="Accessibility\AccessibilityConfigurationJsonSerializerTest.cs" />
-    <Compile Include="Configuration\TestInfrastructureConfigurationTest.cs" />
-    <Compile Include="Configuration\WebTestConfigurationSectionTest.cs" />
-    <Compile Include="Accessibility\AccessibilityAnalyzerTest.cs" />
-    <Compile Include="Accessibility\AccessibilityConfigurationTest.cs" />
-    <Compile Include="Accessibility\AccessibilityConformanceLevelConverterTest.cs" />
-    <Compile Include="Accessibility\AccessibilityResultMapperTest.cs" />
-    <Compile Include="Accessibility\AccessibilityResultViolationExtensionTest.cs" />
-    <Compile Include="Accessibility\AccessibilityCheckIDConverterTest.cs" />
-    <Compile Include="Accessibility\AccessibilityRuleIDConverterTest.cs" />
-    <Compile Include="Accessibility\AxeResultParserTest.cs" />
-    <Compile Include="Accessibility\AxeSourceProviderTest.cs" />
-    <Compile Include="HostingStrategies\Configuration\TestSiteLayoutConfigurationTest.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utilities\ScreenshotRecorderPathUtilityTest.cs" />
-    <Compile Include="Utilities\DomSelectorUtilityTest.cs" />
-    <Compile Include="WebDriver\Configuration\Chromium\ChromiumUserDirectoryCleanUpStrategyTest.cs" />
-    <Compile Include="WebTestHelperTest.cs" />
+    <PackageReference Include="CoreRhinoMocks" Version="3.6.1.2" PrivateAssets="all" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\Remotion LGPL.licenseheader">
-      <Link>Remotion LGPL.licenseheader</Link>
-    </None>
-    <None Include="App.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Development\Core\Development.Core.csproj">
-      <Project>{B719A305-0493-4C72-88FE-9A2FC6964578}</Project>
-      <Name>Development.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Development.WebTesting\Web.Development.WebTesting.csproj">
-      <Project>{5B5EC73A-B796-4D2D-A781-E889EE9EC4DF}</Project>
-      <Name>Web.Development.WebTesting</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

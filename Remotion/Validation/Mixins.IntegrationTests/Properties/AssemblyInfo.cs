@@ -24,7 +24,6 @@ using Remotion.Globalization;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle ("Remotion Validation for Mixins Library Integration Tests")]
 [assembly: NeutralResourcesLanguage ("en")]
 [assembly: AvailableResourcesLanguages ("")]
 [assembly: AssemblyCulture("")]		

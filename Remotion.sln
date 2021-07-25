@@ -38,215 +38,212 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SecurityManager", "Security
 		{B4F97281-0DBD-4835-9ED8-7DFB966E87FF} = {B4F97281-0DBD-4835-9ED8-7DFB966E87FF}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Core", "Remotion\Core\Core\Core.Core.csproj", "{2AA369EC-A4E7-4D75-9101-EFA90E902625}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Core", "Remotion\Core\Core\Core.Core.csproj", "{2AA369EC-A4E7-4D75-9101-EFA90E902625}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.UnitTests", "Remotion\Core\UnitTests\Core.UnitTests.csproj", "{C216DEC9-8820-4298-B10F-FB4131466B69}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.UnitTests", "Remotion\Core\UnitTests\Core.UnitTests.csproj", "{C216DEC9-8820-4298-B10F-FB4131466B69}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects", "Remotion\Data\DomainObjects\Data.DomainObjects.csproj", "{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.DomainObjects", "Remotion\Data\DomainObjects\Data.DomainObjects.csproj", "{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.PerformanceTests", "Remotion\Data\DomainObjects.PerformanceTests\Data.DomainObjects.PerformanceTests.csproj", "{717B711E-97AB-4751-97C5-C0491D1919FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.DomainObjects.PerformanceTests", "Remotion\Data\DomainObjects.PerformanceTests\Data.DomainObjects.PerformanceTests.csproj", "{717B711E-97AB-4751-97C5-C0491D1919FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.RdbmsTools", "Remotion\Data\DomainObjects.RdbmsTools\Data.DomainObjects.RdbmsTools.csproj", "{A6505EE0-0F6B-4CB6-ACC7-1C05C0E236BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.DomainObjects.RdbmsTools", "Remotion\Data\DomainObjects.RdbmsTools\Data.DomainObjects.RdbmsTools.csproj", "{A6505EE0-0F6B-4CB6-ACC7-1C05C0E236BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.Security", "Remotion\Data\DomainObjects.Security\Data.DomainObjects.Security.csproj", "{2C87FB62-CC00-4297-A3EA-35F4FC6649F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.DomainObjects.Security", "Remotion\Data\DomainObjects.Security\Data.DomainObjects.Security.csproj", "{2C87FB62-CC00-4297-A3EA-35F4FC6649F0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.Web.Test", "Remotion\Data\DomainObjects.Web.Test\Data.DomainObjects.Web.Test.csproj", "{86C6C68B-3AF4-4ADE-95FD-29D404F114FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.Core", "Remotion\Data\Core\Data.Core.csproj", "{70273934-12F1-49AF-975A-303BAEFE1CAE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.Core", "Remotion\Data\Core\Data.Core.csproj", "{70273934-12F1-49AF-975A-303BAEFE1CAE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.UnitTests", "Remotion\Data\DomainObjects.UnitTests\Data.DomainObjects.UnitTests.csproj", "{6DEF9C11-1D5A-4B14-A4EB-F4C7E7CC3E7B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.DomainObjects.UnitTests", "Remotion\Data\DomainObjects.UnitTests\Data.DomainObjects.UnitTests.csproj", "{6DEF9C11-1D5A-4B14-A4EB-F4C7E7CC3E7B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Development.Core", "Remotion\Development\Core\Development.Core.csproj", "{B719A305-0493-4C72-88FE-9A2FC6964578}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Development.Core", "Remotion\Development\Core\Development.Core.csproj", "{B719A305-0493-4C72-88FE-9A2FC6964578}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Development.UnitTests", "Remotion\Development\UnitTests\Development.UnitTests.csproj", "{F5416318-15B4-421E-9B44-03CD4C052D5A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Development.UnitTests", "Remotion\Development\UnitTests\Development.UnitTests.csproj", "{F5416318-15B4-421E-9B44-03CD4C052D5A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Core", "Remotion\ObjectBinding\Core\ObjectBinding.Core.csproj", "{FDCCDB1E-0962-41DA-99A1-2DB390C48748}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectBinding.Core", "Remotion\ObjectBinding\Core\ObjectBinding.Core.csproj", "{FDCCDB1E-0962-41DA-99A1-2DB390C48748}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Sample", "Remotion\ObjectBinding\Sample\ObjectBinding.Sample.csproj", "{5F1B88F7-FAFB-45C2-A357-333245870A6B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectBinding.Sample", "Remotion\ObjectBinding\Sample\ObjectBinding.Sample.csproj", "{5F1B88F7-FAFB-45C2-A357-333245870A6B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.UnitTests", "Remotion\ObjectBinding\UnitTests\ObjectBinding.UnitTests.csproj", "{5C1EB605-33ED-4A19-91B0-D060638191FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectBinding.UnitTests", "Remotion\ObjectBinding\UnitTests\ObjectBinding.UnitTests.csproj", "{5C1EB605-33ED-4A19-91B0-D060638191FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web", "Remotion\ObjectBinding\Web\ObjectBinding.Web.csproj", "{390FBB93-A757-47A7-B769-A64A7465FF84}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectBinding.Web", "Remotion\ObjectBinding\Web\ObjectBinding.Web.csproj", "{390FBB93-A757-47A7-B769-A64A7465FF84}"
 	ProjectSection(ProjectDependencies) = postProject
 		{2DA25FE6-18AD-4E69-B860-F30346965646} = {2DA25FE6-18AD-4E69-B860-F30346965646}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.Preview", "Remotion\ObjectBinding\Web.Preview\ObjectBinding.Web.Preview.csproj", "{6D58BB53-8709-48F9-8EF9-0D65B11A162C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectBinding.Web.Preview", "Remotion\ObjectBinding\Web.Preview\ObjectBinding.Web.Preview.csproj", "{6D58BB53-8709-48F9-8EF9-0D65B11A162C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.Test", "Remotion\ObjectBinding\Web.Test\ObjectBinding.Web.Test.csproj", "{FE98ED8D-E645-4E11-9431-FA5EE8ED7C86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.Core", "Remotion\Security\Core\Security.Core.csproj", "{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Security.Core", "Remotion\Security\Core\Security.Core.csproj", "{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.Metadata.Extractor", "Remotion\Security\Metadata.Extractor\Security.Metadata.Extractor.csproj", "{E294058B-D4F0-4124-BD22-15E44F57749B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Security.Metadata.Extractor", "Remotion\Security\Metadata.Extractor\Security.Metadata.Extractor.csproj", "{E294058B-D4F0-4124-BD22-15E44F57749B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.MSBuild.Tasks", "Remotion\Security\MSBuild.Tasks\Security.MSBuild.Tasks.csproj", "{7CA0F5EF-CDEA-4B5D-9954-1CC50973C7D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Security.MSBuild.Tasks", "Remotion\Security\MSBuild.Tasks\Security.MSBuild.Tasks.csproj", "{7CA0F5EF-CDEA-4B5D-9954-1CC50973C7D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.UnitTests.TestDomain", "Remotion\Security\UnitTests.TestDomain\Security.UnitTests.TestDomain.csproj", "{AC34B1D8-A295-44A4-AE9D-8167B3C3ED44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Security.UnitTests.TestDomain", "Remotion\Security\UnitTests.TestDomain\Security.UnitTests.TestDomain.csproj", "{AC34B1D8-A295-44A4-AE9D-8167B3C3ED44}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.UnitTests", "Remotion\Security\UnitTests\Security.UnitTests.csproj", "{EF86BF16-81EF-4F51-B2B1-DB3C7C1E4CDE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Security.UnitTests", "Remotion\Security\UnitTests\Security.UnitTests.csproj", "{EF86BF16-81EF-4F51-B2B1-DB3C7C1E4CDE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityManager.Clients.Web", "SecurityManager\Clients.Web\SecurityManager.Clients.Web.csproj", "{558839F6-D762-47BA-A26C-1D4AA75D0994}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecurityManager.Clients.Web", "SecurityManager\Clients.Web\SecurityManager.Clients.Web.csproj", "{558839F6-D762-47BA-A26C-1D4AA75D0994}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityManager.Clients.Web.Test", "SecurityManager\Clients.Web.Test\SecurityManager.Clients.Web.Test.csproj", "{1FF52B13-C212-4ADA-86E0-04E49A808FE0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityManager.Clients.Web.Test.SetupDB", "SecurityManager\Clients.Web.Test.SetupDB\SecurityManager.Clients.Web.Test.SetupDB.csproj", "{F9D890F8-EB08-4D58-BDFA-6C6540F15795}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecurityManager.Clients.Web.Test.SetupDB", "SecurityManager\Clients.Web.Test.SetupDB\SecurityManager.Clients.Web.Test.SetupDB.csproj", "{F9D890F8-EB08-4D58-BDFA-6C6540F15795}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityManager.Core", "SecurityManager\Core\SecurityManager.Core.csproj", "{990B8638-A08F-4A94-B01A-E7DAEF089F27}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecurityManager.Core", "SecurityManager\Core\SecurityManager.Core.csproj", "{990B8638-A08F-4A94-B01A-E7DAEF089F27}"
 	ProjectSection(ProjectDependencies) = postProject
 		{A6505EE0-0F6B-4CB6-ACC7-1C05C0E236BC} = {A6505EE0-0F6B-4CB6-ACC7-1C05C0E236BC}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityManager.Core.UnitTests", "SecurityManager\Core.UnitTests\SecurityManager.Core.UnitTests.csproj", "{65B86B2E-D54D-425B-B681-82449E31BA01}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecurityManager.Core.UnitTests", "SecurityManager\Core.UnitTests\SecurityManager.Core.UnitTests.csproj", "{65B86B2E-D54D-425B-B681-82449E31BA01}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityManager.Metadata.Importer", "SecurityManager\Metadata.Importer\SecurityManager.Metadata.Importer.csproj", "{28A3431B-A3A8-4E8D-BDA8-CB3CC7EA2894}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecurityManager.Metadata.Importer", "SecurityManager\Metadata.Importer\SecurityManager.Metadata.Importer.csproj", "{28A3431B-A3A8-4E8D-BDA8-CB3CC7EA2894}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Core", "Remotion\Web\Core\Web.Core.csproj", "{DF8BA786-9679-4879-8757-16AE2709D83A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Core", "Remotion\Web\Core\Web.Core.csproj", "{DF8BA786-9679-4879-8757-16AE2709D83A}"
 	ProjectSection(ProjectDependencies) = postProject
 		{627D9351-BE97-485E-A720-36C732056FF8} = {627D9351-BE97-485E-A720-36C732056FF8}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Security", "Remotion\Web\Security\Web.Security.csproj", "{9B6F6D1A-A7EA-4EE8-B36E-E31CF7E518E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Security", "Remotion\Web\Security\Web.Security.csproj", "{9B6F6D1A-A7EA-4EE8-B36E-E31CF7E518E3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Test", "Remotion\Web\Test\Web.Test.csproj", "{0B5318E7-4878-402A-8CF8-6BFFC47F571D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.UnitTests", "Remotion\Web\UnitTests\Web.UnitTests.csproj", "{F3EE8E9C-5230-4D1A-B655-CA65E2D52F21}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.UnitTests", "Remotion\Web\UnitTests\Web.UnitTests.csproj", "{F3EE8E9C-5230-4D1A-B655-CA65E2D52F21}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Development.Data", "Remotion\Development\Data\Development.Data.csproj", "{EBBF3A56-5B7B-4CD7-9AA9-74AF17B0B7ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Development.Data", "Remotion\Development\Data\Development.Data.csproj", "{EBBF3A56-5B7B-4CD7-9AA9-74AF17B0B7ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Development.Web", "Remotion\Development\Web\Development.Web.csproj", "{44924ED6-8C12-416D-972F-F1F10417E7EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Development.Web", "Remotion\Development\Web\Development.Web.csproj", "{44924ED6-8C12-416D-972F-F1F10417E7EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityManager.AclTools.Expander", "SecurityManager\AclTools.Expander\SecurityManager.AclTools.Expander.csproj", "{3214FB15-2359-48EC-A926-2CAA47E4D826}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecurityManager.AclTools.Expander", "SecurityManager\AclTools.Expander\SecurityManager.AclTools.Expander.csproj", "{3214FB15-2359-48EC-A926-2CAA47E4D826}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.UberProfIntegration", "Remotion\Data\DomainObjects.UberProfIntegration\Data.DomainObjects.UberProfIntegration.csproj", "{81E5BEC0-B845-4470-BD19-9FCB121CB413}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.DomainObjects.UberProfIntegration", "Remotion\Data\DomainObjects.UberProfIntegration\Data.DomainObjects.UberProfIntegration.csproj", "{81E5BEC0-B845-4470-BD19-9FCB121CB413}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mixins", "Mixins", "{5D41A27E-2DB6-4BFB-B65E-CE4344369B88}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mixins.UnitTests", "Remotion\Mixins\UnitTests\Mixins.UnitTests.csproj", "{51F58AF1-F925-4000-A0C3-7C88E290DFB8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mixins.UnitTests", "Remotion\Mixins\UnitTests\Mixins.UnitTests.csproj", "{51F58AF1-F925-4000-A0C3-7C88E290DFB8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mixins.Core", "Remotion\Mixins\Core\Mixins.Core.csproj", "{D641E4E2-23F3-4454-8074-1327EF07BAA1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mixins.Core", "Remotion\Mixins\Core\Mixins.Core.csproj", "{D641E4E2-23F3-4454-8074-1327EF07BAA1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mixins.MixerTools", "Remotion\Mixins\MixerTools\Mixins.MixerTools.csproj", "{152DAF45-13C9-4A73-90D0-DF774ED12528}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mixins.MixerTools", "Remotion\Mixins\MixerTools\Mixins.MixerTools.csproj", "{152DAF45-13C9-4A73-90D0-DF774ED12528}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mixins.Samples", "Remotion\Mixins\Samples\Mixins.Samples.csproj", "{9731FCDD-0F9F-41C5-B691-8AA9101CE249}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mixins.Samples", "Remotion\Mixins\Samples\Mixins.Samples.csproj", "{9731FCDD-0F9F-41C5-B691-8AA9101CE249}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Development.RhinoMocks", "Remotion\Development\RhinoMocks\Development.RhinoMocks.csproj", "{2177143E-345F-4FAA-9958-1AE2B5EED242}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Development.RhinoMocks", "Remotion\Development\RhinoMocks\Development.RhinoMocks.csproj", "{2177143E-345F-4FAA-9958-1AE2B5EED242}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityManager.PerformanceTests", "SecurityManager\PerformanceTests\SecurityManager.PerformanceTests.csproj", "{2657E4C0-90AB-4B2E-A1B9-90DD4EEE7825}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecurityManager.PerformanceTests", "SecurityManager\PerformanceTests\SecurityManager.PerformanceTests.csproj", "{2657E4C0-90AB-4B2E-A1B9-90DD4EEE7825}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.ObjectBinding", "Remotion\Data\DomainObjects.ObjectBinding\Data.DomainObjects.ObjectBinding.csproj", "{F3935D12-39E6-4F06-8316-98CD7ED60C6B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.DomainObjects.ObjectBinding", "Remotion\Data\DomainObjects.ObjectBinding\Data.DomainObjects.ObjectBinding.csproj", "{F3935D12-39E6-4F06-8316-98CD7ED60C6B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Reflection.CodeGeneration.UnitTests", "Remotion\Core\Reflection.CodeGeneration.UnitTests\Core.Reflection.CodeGeneration.UnitTests.csproj", "{32BADB42-2482-4356-9B29-E4E514170C02}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Reflection.CodeGeneration.UnitTests", "Remotion\Core\Reflection.CodeGeneration.UnitTests\Core.Reflection.CodeGeneration.UnitTests.csproj", "{32BADB42-2482-4356-9B29-E4E514170C02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Reflection.CodeGeneration", "Remotion\Core\Reflection.CodeGeneration\Core.Reflection.CodeGeneration.csproj", "{503DCAC3-E668-41D8-AA48-176E489B8E86}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Reflection.CodeGeneration", "Remotion\Core\Reflection.CodeGeneration\Core.Reflection.CodeGeneration.csproj", "{503DCAC3-E668-41D8-AA48-176E489B8E86}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SharedSource", "SharedSource", "{A01E19B1-74DF-4827-B024-D06CB0D838DD}"
-	ProjectSection(SolutionItems) = preProject
-		SharedSource\directory.build.props = SharedSource\directory.build.props
-	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedSource.Core", "SharedSource\Core\SharedSource.Core.csproj", "{378885D1-5D3E-4226-9C57-AA5183BA45D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedSource.Core", "SharedSource\Core\SharedSource.Core.csproj", "{378885D1-5D3E-4226-9C57-AA5183BA45D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedSource.UnitTests", "SharedSource\UnitTests\SharedSource.UnitTests.csproj", "{CDC130AA-4ACE-4F02-9AC0-4971523C2E3C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedSource.UnitTests", "SharedSource\UnitTests\SharedSource.UnitTests.csproj", "{CDC130AA-4ACE-4F02-9AC0-4971523C2E3C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Development.Mixins", "Remotion\Development\Mixins\Development.Mixins.csproj", "{E2ECD01B-1321-498E-8228-D6D16B5F647C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Development.Mixins", "Remotion\Development\Mixins\Development.Mixins.csproj", "{E2ECD01B-1321-498E-8228-D6D16B5F647C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Reflection.CodeGeneration.TypePipe", "Remotion\Core\Reflection.CodeGeneration.TypePipe\Core.Reflection.CodeGeneration.TypePipe.csproj", "{EC62E06A-4AC6-48A0-8A81-69250ABC35B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Reflection.CodeGeneration.TypePipe", "Remotion\Core\Reflection.CodeGeneration.TypePipe\Core.Reflection.CodeGeneration.TypePipe.csproj", "{EC62E06A-4AC6-48A0-8A81-69250ABC35B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Reflection.CodeGeneration.TypePipe.UnitTests", "Remotion\Core\Reflection.CodeGeneration.TypePipe.UnitTests\Core.Reflection.CodeGeneration.TypePipe.UnitTests.csproj", "{2A89F4FC-977B-44D8-A701-73F3FE98F489}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Reflection.CodeGeneration.TypePipe.UnitTests", "Remotion\Core\Reflection.CodeGeneration.TypePipe.UnitTests\Core.Reflection.CodeGeneration.TypePipe.UnitTests.csproj", "{2A89F4FC-977B-44D8-A701-73F3FE98F489}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedSource.Development", "SharedSource\Development\SharedSource.Development.csproj", "{5EB23134-3042-4B17-AD32-BDAE468CE225}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedSource.Development", "SharedSource\Development\SharedSource.Development.csproj", "{5EB23134-3042-4B17-AD32-BDAE468CE225}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Reflection.CodeGeneration.TypePipe.PerformanceTests", "Remotion\Core\Reflection.CodeGeneration.TypePipe.PerformanceTests\Core.Reflection.CodeGeneration.TypePipe.PerformanceTests.csproj", "{C138ADE5-F991-49A8-8BB3-B5F5381F60DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Reflection.CodeGeneration.TypePipe.PerformanceTests", "Remotion\Core\Reflection.CodeGeneration.TypePipe.PerformanceTests\Core.Reflection.CodeGeneration.TypePipe.PerformanceTests.csproj", "{C138ADE5-F991-49A8-8BB3-B5F5381F60DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Extensions", "Remotion\Core\Extensions\Core.Extensions.csproj", "{25811F76-8D00-496D-AFD0-8225569F666D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Extensions", "Remotion\Core\Extensions\Core.Extensions.csproj", "{25811F76-8D00-496D-AFD0-8225569F666D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Extensions.UnitTests", "Remotion\Core\Extensions.UnitTests\Core.Extensions.UnitTests.csproj", "{C6A7DDAC-BCBC-42A3-BC2A-C979FFF334B2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Extensions.UnitTests", "Remotion\Core\Extensions.UnitTests\Core.Extensions.UnitTests.csproj", "{C6A7DDAC-BCBC-42A3-BC2A-C979FFF334B2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Globalization", "Globalization", "{A4439E9E-20EE-4A49-A988-253A66FCEB09}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Globalization.Core", "Remotion\Globalization\Core\Globalization.Core.csproj", "{AC6AB6EB-F6AC-45A4-88A7-877D11A65CCB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Globalization.Core", "Remotion\Globalization\Core\Globalization.Core.csproj", "{AC6AB6EB-F6AC-45A4-88A7-877D11A65CCB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Globalization.ExtensibleEnums", "Remotion\Globalization\ExtensibleEnums\Globalization.ExtensibleEnums.csproj", "{E585C288-E534-42F0-8F43-96F98BB18BE2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Globalization.ExtensibleEnums", "Remotion\Globalization\ExtensibleEnums\Globalization.ExtensibleEnums.csproj", "{E585C288-E534-42F0-8F43-96F98BB18BE2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Globalization.Mixins", "Remotion\Globalization\Mixins\Globalization.Mixins.csproj", "{E2CD7C20-2728-4F72-A6E8-FC4F7AE72EC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Globalization.Mixins", "Remotion\Globalization\Mixins\Globalization.Mixins.csproj", "{E2CD7C20-2728-4F72-A6E8-FC4F7AE72EC9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Globalization.UnitTests", "Remotion\Globalization\UnitTests\Globalization.UnitTests.csproj", "{7602CDF2-DD09-4180-9777-1EA5EC0D933C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Globalization.UnitTests", "Remotion\Globalization\UnitTests\Globalization.UnitTests.csproj", "{7602CDF2-DD09-4180-9777-1EA5EC0D933C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Globalization.ExtensibleEnums.UnitTests", "Remotion\Globalization\ExtensibleEnums.UnitTests\Globalization.ExtensibleEnums.UnitTests.csproj", "{DE668AD9-4C26-4771-B641-9E4B3E06558A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Globalization.ExtensibleEnums.UnitTests", "Remotion\Globalization\ExtensibleEnums.UnitTests\Globalization.ExtensibleEnums.UnitTests.csproj", "{DE668AD9-4C26-4771-B641-9E4B3E06558A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Globalization.Mixins.UnitTests", "Remotion\Globalization\Mixins.UnitTests\Globalization.Mixins.UnitTests.csproj", "{FFEF40DB-3E0C-4F8A-BC6D-4483ACE3A136}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Globalization.Mixins.UnitTests", "Remotion\Globalization\Mixins.UnitTests\Globalization.Mixins.UnitTests.csproj", "{FFEF40DB-3E0C-4F8A-BC6D-4483ACE3A136}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.ExtensibleEnums", "Remotion\Core\ExtensibleEnums\Core.ExtensibleEnums.csproj", "{BDAE7146-01A8-4DC1-80C2-0E67291AC3ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.ExtensibleEnums", "Remotion\Core\ExtensibleEnums\Core.ExtensibleEnums.csproj", "{BDAE7146-01A8-4DC1-80C2-0E67291AC3ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.ExtensibleEnums.UnitTests", "Remotion\Core\ExtensibleEnums.UnitTests\Core.ExtensibleEnums.UnitTests.csproj", "{66633A01-B399-4AA5-A3B5-8237FF85F8B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.ExtensibleEnums.UnitTests", "Remotion\Core\ExtensibleEnums.UnitTests\Core.ExtensibleEnums.UnitTests.csproj", "{66633A01-B399-4AA5-A3B5-8237FF85F8B6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integration", "Integration", "{A289495D-35D0-4C14-A3FA-D9DFE5EF9432}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Integration.Domain", "Remotion\Integration\Domain\Integration.Domain.csproj", "{98969947-CAFA-4DC3-8C9C-C5D8FEA6CE17}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Integration.Domain", "Remotion\Integration\Domain\Integration.Domain.csproj", "{98969947-CAFA-4DC3-8C9C-C5D8FEA6CE17}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Integration.Web", "Remotion\Integration\Web\Integration.Web.csproj", "{DFCD4E02-5B99-49C3-87AE-613600C71818}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Integration.Web", "Remotion\Integration\Web\Integration.Web.csproj", "{DFCD4E02-5B99-49C3-87AE-613600C71818}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Tools", "Remotion\Core\Tools\Core.Tools.csproj", "{18269689-DC0F-4975-879B-A6ACBA0FA596}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Tools", "Remotion\Core\Tools\Core.Tools.csproj", "{18269689-DC0F-4975-879B-A6ACBA0FA596}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Tools.UnitTests", "Remotion\Core\Tools.UnitTests\Core.Tools.UnitTests.csproj", "{F3DE9C3D-D9B2-46A7-B2D6-11C69168241A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Tools.UnitTests", "Remotion\Core\Tools.UnitTests\Core.Tools.UnitTests.csproj", "{F3DE9C3D-D9B2-46A7-B2D6-11C69168241A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.UnitTests", "Remotion\ObjectBinding\Web.UnitTests\ObjectBinding.Web.UnitTests.csproj", "{AB09FD88-9422-4BE7-8605-8A0EB8F9051B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectBinding.Web.UnitTests", "Remotion\ObjectBinding\Web.UnitTests\ObjectBinding.Web.UnitTests.csproj", "{AB09FD88-9422-4BE7-8605-8A0EB8F9051B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.RdbmsTools.UnitTests", "Remotion\Data\DomainObjects.RdbmsTools.UnitTests\Data.DomainObjects.RdbmsTools.UnitTests.csproj", "{0AF7960E-B65F-4E5E-AEEC-00EA23B1DF47}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.DomainObjects.RdbmsTools.UnitTests", "Remotion\Data\DomainObjects.RdbmsTools.UnitTests\Data.DomainObjects.RdbmsTools.UnitTests.csproj", "{0AF7960E-B65F-4E5E-AEEC-00EA23B1DF47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.UberProfIntegration.UnitTests", "Remotion\Data\DomainObjects.UberProfIntegration.UnitTests\Data.DomainObjects.UberProfIntegration.UnitTests.csproj", "{1203D162-42F9-46AE-9416-4D4CA12E824F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.DomainObjects.UberProfIntegration.UnitTests", "Remotion\Data\DomainObjects.UberProfIntegration.UnitTests\Data.DomainObjects.UberProfIntegration.UnitTests.csproj", "{1203D162-42F9-46AE-9416-4D4CA12E824F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.Security.UnitTests", "Remotion\Data\DomainObjects.Security.UnitTests\Data.DomainObjects.Security.UnitTests.csproj", "{ABDD62A5-7490-418E-8D30-23E480621E8B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.DomainObjects.Security.UnitTests", "Remotion\Data\DomainObjects.Security.UnitTests\Data.DomainObjects.Security.UnitTests.csproj", "{ABDD62A5-7490-418E-8D30-23E480621E8B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.ObjectBinding.UnitTests", "Remotion\Data\DomainObjects.ObjectBinding.UnitTests\Data.DomainObjects.ObjectBinding.UnitTests.csproj", "{FBEAC696-BF2A-4839-9587-44DDF80E8C6A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.DomainObjects.ObjectBinding.UnitTests", "Remotion\Data\DomainObjects.ObjectBinding.UnitTests\Data.DomainObjects.ObjectBinding.UnitTests.csproj", "{FBEAC696-BF2A-4839-9587-44DDF80E8C6A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.Web.IntegrationTests", "Remotion\Data\DomainObjects.Web.IntegrationTests\Data.DomainObjects.Web.IntegrationTests.csproj", "{7A088A69-24BE-49C5-92CC-036C94D0E870}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.DomainObjects.Web.IntegrationTests", "Remotion\Data\DomainObjects.Web.IntegrationTests\Data.DomainObjects.Web.IntegrationTests.csproj", "{7A088A69-24BE-49C5-92CC-036C94D0E870}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Validation", "Validation", "{0C89EC19-48C8-4639-877B-A90C72C59C04}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Validation.Core", "Remotion\Validation\Core\Validation.Core.csproj", "{D057D6F3-2015-4EB0-B6BD-77BE8ED1571A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Validation.Core", "Remotion\Validation\Core\Validation.Core.csproj", "{D057D6F3-2015-4EB0-B6BD-77BE8ED1571A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Validation.UnitTests", "Remotion\Validation\UnitTests\Validation.UnitTests.csproj", "{3CAFF072-4461-4F1A-A07F-4DEA68D0FA7F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Validation.UnitTests", "Remotion\Validation\UnitTests\Validation.UnitTests.csproj", "{3CAFF072-4461-4F1A-A07F-4DEA68D0FA7F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Validation.Mixins", "Remotion\Validation\Mixins\Validation.Mixins.csproj", "{B34D9485-39D7-4F73-805C-39A65059001E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Validation.Mixins", "Remotion\Validation\Mixins\Validation.Mixins.csproj", "{B34D9485-39D7-4F73-805C-39A65059001E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Validation.IntegrationTests", "Remotion\Validation\IntegrationTests\Validation.IntegrationTests.csproj", "{039B28BB-042E-4CF8-A59E-6F717F9251C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Validation.IntegrationTests", "Remotion\Validation\IntegrationTests\Validation.IntegrationTests.csproj", "{039B28BB-042E-4CF8-A59E-6F717F9251C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.Validation", "Remotion\Data\DomainObjects.Validation\Data.DomainObjects.Validation.csproj", "{04FA07E3-B868-4846-A5E2-4D375F607C22}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.DomainObjects.Validation", "Remotion\Data\DomainObjects.Validation\Data.DomainObjects.Validation.csproj", "{04FA07E3-B868-4846-A5E2-4D375F607C22}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.Validation.UnitTests", "Remotion\Data\DomainObjects.Validation.UnitTests\Data.DomainObjects.Validation.UnitTests.csproj", "{BD1697E0-75A8-46C9-9F05-941D3E933F98}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.DomainObjects.Validation.UnitTests", "Remotion\Data\DomainObjects.Validation.UnitTests\Data.DomainObjects.Validation.UnitTests.csproj", "{BD1697E0-75A8-46C9-9F05-941D3E933F98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.Validation.IntegrationTests", "Remotion\Data\DomainObjects.Validation.IntegrationTests\Data.DomainObjects.Validation.IntegrationTests.csproj", "{4DBB4365-35D6-4B7E-B329-767623029FF3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.DomainObjects.Validation.IntegrationTests", "Remotion\Data\DomainObjects.Validation.IntegrationTests\Data.DomainObjects.Validation.IntegrationTests.csproj", "{4DBB4365-35D6-4B7E-B329-767623029FF3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Validation.Mixins.IntegrationTests", "Remotion\Validation\Mixins.IntegrationTests\Validation.Mixins.IntegrationTests.csproj", "{A51D86EA-38D3-4D1D-A623-82C01C9296DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Validation.Mixins.IntegrationTests", "Remotion\Validation\Mixins.IntegrationTests\Validation.Mixins.IntegrationTests.csproj", "{A51D86EA-38D3-4D1D-A623-82C01C9296DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Validation.Mixins.UnitTests", "Remotion\Validation\Mixins.UnitTests\Validation.Mixins.UnitTests.csproj", "{94B2CB16-1706-4D38-B25F-5DB51E521BD2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Validation.Mixins.UnitTests", "Remotion\Validation\Mixins.UnitTests\Validation.Mixins.UnitTests.csproj", "{94B2CB16-1706-4D38-B25F-5DB51E521BD2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Validation.Globalization", "Remotion\Validation\Globalization\Validation.Globalization.csproj", "{30C3AFA1-D7B3-4A2A-B314-19282A2E312D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Validation.Globalization", "Remotion\Validation\Globalization\Validation.Globalization.csproj", "{30C3AFA1-D7B3-4A2A-B314-19282A2E312D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Validation.Globalization.UnitTests", "Remotion\Validation\Globalization.UnitTests\Validation.Globalization.UnitTests.csproj", "{31F1296C-15A5-45E4-A238-55BB7F6362E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Validation.Globalization.UnitTests", "Remotion\Validation\Globalization.UnitTests\Validation.Globalization.UnitTests.csproj", "{31F1296C-15A5-45E4-A238-55BB7F6362E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.Validation", "Remotion\ObjectBinding\Web.Validation\ObjectBinding.Web.Validation.csproj", "{1ABECBFF-E3BC-4D02-AF23-52094CEE41DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectBinding.Web.Validation", "Remotion\ObjectBinding\Web.Validation\ObjectBinding.Web.Validation.csproj", "{1ABECBFF-E3BC-4D02-AF23-52094CEE41DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.ServiceLocation.PerformanceTestConsole", "Remotion\Core\ServiceLocation.PerformanceTestConsole\Core.ServiceLocation.PerformanceTestConsole.csproj", "{349318F9-9F6B-4FCA-BCE7-56F525007417}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.ServiceLocation.PerformanceTestConsole", "Remotion\Core\ServiceLocation.PerformanceTestConsole\Core.ServiceLocation.PerformanceTestConsole.csproj", "{349318F9-9F6B-4FCA-BCE7-56F525007417}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Security", "Remotion\ObjectBinding\Security\ObjectBinding.Security.csproj", "{89F98C4B-11E3-43EC-8776-B552574F9A9F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectBinding.Security", "Remotion\ObjectBinding\Security\ObjectBinding.Security.csproj", "{89F98C4B-11E3-43EC-8776-B552574F9A9F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Security.UnitTests", "Remotion\ObjectBinding\Security.UnitTests\ObjectBinding.Security.UnitTests.csproj", "{70E32417-8077-4157-9FA0-337868889015}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectBinding.Security.UnitTests", "Remotion\ObjectBinding\Security.UnitTests\ObjectBinding.Security.UnitTests.csproj", "{70E32417-8077-4157-9FA0-337868889015}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.ObjectBinding.IntegrationTests", "Remotion\Data\DomainObjects.ObjectBinding.IntegrationTests\Data.DomainObjects.ObjectBinding.IntegrationTests.csproj", "{408B081B-710E-4C50-8DF0-B8F78E67A498}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.DomainObjects.ObjectBinding.IntegrationTests", "Remotion\Data\DomainObjects.ObjectBinding.IntegrationTests\Data.DomainObjects.ObjectBinding.IntegrationTests.csproj", "{408B081B-710E-4C50-8DF0-B8F78E67A498}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Reflection", "Remotion\Core\Reflection\Core.Reflection.csproj", "{82D3420D-F557-4E31-955B-2935A785753E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Reflection", "Remotion\Core\Reflection\Core.Reflection.csproj", "{82D3420D-F557-4E31-955B-2935A785753E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Reflection.UnitTests", "Remotion\Core\Reflection.UnitTests\Core.Reflection.UnitTests.csproj", "{3FA43EBF-E154-4610-B14C-0A5A09FEA35C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Reflection.UnitTests", "Remotion\Core\Reflection.UnitTests\Core.Reflection.UnitTests.csproj", "{3FA43EBF-E154-4610-B14C-0A5A09FEA35C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Obsolete", "Remotion\Core\Obsolete\Core.Obsolete.csproj", "{235ED823-F40C-4836-A2F8-C9C37A54C4F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Obsolete", "Remotion\Core\Obsolete\Core.Obsolete.csproj", "{235ED823-F40C-4836-A2F8-C9C37A54C4F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Development.WebTesting", "Remotion\Web\Development.WebTesting\Web.Development.WebTesting.csproj", "{5B5EC73A-B796-4D2D-A781-E889EE9EC4DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Development.WebTesting", "Remotion\Web\Development.WebTesting\Web.Development.WebTesting.csproj", "{5B5EC73A-B796-4D2D-A781-E889EE9EC4DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.Development.WebTesting", "Remotion\ObjectBinding\Web.Development.WebTesting\ObjectBinding.Web.Development.WebTesting.csproj", "{78086B10-9951-4680-A060-2395E1990F8A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectBinding.Web.Development.WebTesting", "Remotion\ObjectBinding\Web.Development.WebTesting\ObjectBinding.Web.Development.WebTesting.csproj", "{78086B10-9951-4680-A060-2395E1990F8A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Development.WebTesting.IntegrationTests", "Remotion\Web\Development.WebTesting.IntegrationTests\Web.Development.WebTesting.IntegrationTests.csproj", "{5282552B-F3AB-42D3-B965-BF676E4F40F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Development.WebTesting.IntegrationTests", "Remotion\Web\Development.WebTesting.IntegrationTests\Web.Development.WebTesting.IntegrationTests.csproj", "{5282552B-F3AB-42D3-B965-BF676E4F40F0}"
 	ProjectSection(ProjectDependencies) = postProject
 		{E660CF09-930B-4381-9AC6-7A349E899D3B} = {E660CF09-930B-4381-9AC6-7A349E899D3B}
 		{1B8F7A8A-F95C-4497-8029-9CF32B271134} = {1B8F7A8A-F95C-4497-8029-9CF32B271134}
@@ -257,7 +254,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Development.WebTesting.
 		{651E6B2A-5C3C-4981-AAB3-CA2AA3A433CA} = {651E6B2A-5C3C-4981-AAB3-CA2AA3A433CA}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.Development.WebTesting.IntegrationTests", "Remotion\ObjectBinding\Web.Development.WebTesting.IntegrationTests\ObjectBinding.Web.Development.WebTesting.IntegrationTests.csproj", "{6FE3C047-655C-4C26-92BC-E3C0D293D1A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectBinding.Web.Development.WebTesting.IntegrationTests", "Remotion\ObjectBinding\Web.Development.WebTesting.IntegrationTests\ObjectBinding.Web.Development.WebTesting.IntegrationTests.csproj", "{6FE3C047-655C-4C26-92BC-E3C0D293D1A7}"
 	ProjectSection(ProjectDependencies) = postProject
 		{652E65FE-81EF-4D91-9C52-1CB781862957} = {652E65FE-81EF-4D91-9C52-1CB781862957}
 	EndProjectSection
@@ -269,14 +266,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.Developme
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_SolutionItems", "_SolutionItems", "{8FD13EC8-8054-47D6-A818-847C3B022C89}"
 	ProjectSection(SolutionItems) = preProject
-		directory.build.props = directory.build.props
 		NuGet.config = NuGet.config
 		packages\PackageInfo.ps1 = packages\PackageInfo.ps1
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Contracts.DiagnosticMetadata", "Remotion\Web\Contracts.DiagnosticMetadata\Web.Contracts.DiagnosticMetadata.csproj", "{B119DB72-9073-401B-8EC9-C8885A2D4800}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Contracts.DiagnosticMetadata", "Remotion\Web\Contracts.DiagnosticMetadata\Web.Contracts.DiagnosticMetadata.csproj", "{B119DB72-9073-401B-8EC9-C8885A2D4800}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.Contracts.DiagnosticMetadata", "Remotion\ObjectBinding\Web.Contracts.DiagnosticMetadata\ObjectBinding.Web.Contracts.DiagnosticMetadata.csproj", "{AD7D0683-130E-4064-8EB7-D9981DCB22BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectBinding.Web.Contracts.DiagnosticMetadata", "Remotion\ObjectBinding\Web.Contracts.DiagnosticMetadata\ObjectBinding.Web.Contracts.DiagnosticMetadata.csproj", "{AD7D0683-130E-4064-8EB7-D9981DCB22BC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{8C1706D0-5034-4C35-9F3B-3FBF0C552EE6}"
 	ProjectSection(SolutionItems) = preProject
@@ -284,51 +280,51 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{8C1706
 		packages\repositories.config = packages\repositories.config
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Development.WebTesting.WebFormsControlObjects", "Remotion\Web\Development.WebTesting.WebFormsControlObjects\Web.Development.WebTesting.WebFormsControlObjects.csproj", "{D2835D55-18C5-427B-A574-3D348A2C1DCC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Development.WebTesting.WebFormsControlObjects", "Remotion\Web\Development.WebTesting.WebFormsControlObjects\Web.Development.WebTesting.WebFormsControlObjects.csproj", "{D2835D55-18C5-427B-A574-3D348A2C1DCC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Development.WebTesting.ExecutionEngine", "Remotion\Web\Development.WebTesting.ExecutionEngine\Web.Development.WebTesting.ExecutionEngine.csproj", "{FEBE7C1A-2CD5-4543-B0F1-DE224D340F51}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Development.WebTesting.ExecutionEngine", "Remotion\Web\Development.WebTesting.ExecutionEngine\Web.Development.WebTesting.ExecutionEngine.csproj", "{FEBE7C1A-2CD5-4543-B0F1-DE224D340F51}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Development.WebTesting.ControlObjects", "Remotion\Web\Development.WebTesting.ControlObjects\Web.Development.WebTesting.ControlObjects.csproj", "{712E5631-9BC0-44DE-BF20-FB3BFECAD9B2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Development.WebTesting.ControlObjects", "Remotion\Web\Development.WebTesting.ControlObjects\Web.Development.WebTesting.ControlObjects.csproj", "{712E5631-9BC0-44DE-BF20-FB3BFECAD9B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.Validation.UnitTests", "Remotion\ObjectBinding\Web.Validation.UnitTests\ObjectBinding.Web.Validation.UnitTests.csproj", "{38429E11-0D23-41F0-8ED7-084C65EFDDC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectBinding.Web.Validation.UnitTests", "Remotion\ObjectBinding\Web.Validation.UnitTests\ObjectBinding.Web.Validation.UnitTests.csproj", "{38429E11-0D23-41F0-8ED7-084C65EFDDC9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityManager.Documentation", "SecurityManager\Documentation\SecurityManager.Documentation.csproj", "{F09B222C-EE32-4219-A817-8BF60980BEE4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecurityManager.Documentation", "SecurityManager\Documentation\SecurityManager.Documentation.csproj", "{F09B222C-EE32-4219-A817-8BF60980BEE4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Documentation", "Remotion\Documentation\Core.Documentation.csproj", "{63B34091-CDF0-4F92-9789-7816F86DEC4E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Documentation", "Remotion\Documentation\Core.Documentation.csproj", "{63B34091-CDF0-4F92-9789-7816F86DEC4E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Development.WebTesting.TestSite.Infrastructure", "Remotion\Web\Development.WebTesting.TestSite.Infrastructure\Web.Development.WebTesting.TestSite.Infrastructure.csproj", "{651E6B2A-5C3C-4981-AAB3-CA2AA3A433CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Development.WebTesting.TestSite.Infrastructure", "Remotion\Web\Development.WebTesting.TestSite.Infrastructure\Web.Development.WebTesting.TestSite.Infrastructure.csproj", "{651E6B2A-5C3C-4981-AAB3-CA2AA3A433CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Development.WebTesting.IntegrationTests.Infrastructure", "Remotion\Web\Development.WebTesting.IntegrationTests.Infrastructure\Web.Development.WebTesting.IntegrationTests.Infrastructure.csproj", "{1B8F7A8A-F95C-4497-8029-9CF32B271134}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Development.WebTesting.IntegrationTests.Infrastructure", "Remotion\Web\Development.WebTesting.IntegrationTests.Infrastructure\Web.Development.WebTesting.IntegrationTests.Infrastructure.csproj", "{1B8F7A8A-F95C-4497-8029-9CF32B271134}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Development.WebTesting.UnitTests", "Remotion\Web\Development.WebTesting.UnitTests\Web.Development.WebTesting.UnitTests.csproj", "{651D3C40-63D1-4422-B2C0-67272AA1DBDF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Development.WebTesting.UnitTests", "Remotion\Web\Development.WebTesting.UnitTests\Web.Development.WebTesting.UnitTests.csproj", "{651D3C40-63D1-4422-B2C0-67272AA1DBDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Xml", "Remotion\Core\Xml\Core.Xml.csproj", "{06FD65E1-C6B5-4DC7-9827-8036F71444A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Xml", "Remotion\Core\Xml\Core.Xml.csproj", "{06FD65E1-C6B5-4DC7-9827-8036F71444A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Xml.UnitTests", "Remotion\Core\Xml.UnitTests\Core.Xml.UnitTests.csproj", "{206397E9-51DB-40AA-BEC2-3D4C74D2CDFC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Xml.UnitTests", "Remotion\Core\Xml.UnitTests\Core.Xml.UnitTests.csproj", "{206397E9-51DB-40AA-BEC2-3D4C74D2CDFC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Collections.DataStore", "Remotion\Core\Collections.DataStore\Core.Collections.DataStore.csproj", "{4712787F-916E-4A47-88B3-92B39358EC09}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Collections.DataStore", "Remotion\Core\Collections.DataStore\Core.Collections.DataStore.csproj", "{4712787F-916E-4A47-88B3-92B39358EC09}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Collections.DataStore.UnitTests", "Remotion\Core\Collections.DataStore.UnitTests\Core.Collections.DataStore.UnitTests.csproj", "{D46780F8-D1F4-4733-9726-381ABF8866CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Collections.DataStore.UnitTests", "Remotion\Core\Collections.DataStore.UnitTests\Core.Collections.DataStore.UnitTests.csproj", "{D46780F8-D1F4-4733-9726-381ABF8866CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Collections.Caching", "Remotion\Core\Collections.Caching\Core.Collections.Caching.csproj", "{2D4D3106-4853-4D18-B80B-797A2015328F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Collections.Caching", "Remotion\Core\Collections.Caching\Core.Collections.Caching.csproj", "{2D4D3106-4853-4D18-B80B-797A2015328F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Collections.Caching.UnitTests", "Remotion\Core\Collections.Caching.UnitTests\Core.Collections.Caching.UnitTests.csproj", "{EDD6570E-13D6-4F77-B912-9E76A2B86665}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Collections.Caching.UnitTests", "Remotion\Core\Collections.Caching.UnitTests\Core.Collections.Caching.UnitTests.csproj", "{EDD6570E-13D6-4F77-B912-9E76A2B86665}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Validation", "Remotion\ObjectBinding\Validation\ObjectBinding.Validation.csproj", "{A00DD42F-48B0-4E49-B79A-9CD7F401A9F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectBinding.Validation", "Remotion\ObjectBinding\Validation\ObjectBinding.Validation.csproj", "{A00DD42F-48B0-4E49-B79A-9CD7F401A9F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Validation.UnitTests", "Remotion\ObjectBinding\Validation.UnitTests\ObjectBinding.Validation.UnitTests.csproj", "{73119503-AEC8-4256-9E6C-ABABB1F1EC6F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectBinding.Validation.UnitTests", "Remotion\ObjectBinding\Validation.UnitTests\ObjectBinding.Validation.UnitTests.csproj", "{73119503-AEC8-4256-9E6C-ABABB1F1EC6F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.IntegrationTests", "Remotion\Web\IntegrationTests\Web.IntegrationTests.csproj", "{6800F4E0-363D-4FF9-8B25-4A916D164867}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.IntegrationTests", "Remotion\Web\IntegrationTests\Web.IntegrationTests.csproj", "{6800F4E0-363D-4FF9-8B25-4A916D164867}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.IntegrationTests", "Remotion\ObjectBinding\Web.IntegrationTests\ObjectBinding.Web.IntegrationTests.csproj", "{963B16B7-01CE-4AF0-940E-B8D7B086856F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectBinding.Web.IntegrationTests", "Remotion\ObjectBinding\Web.IntegrationTests\ObjectBinding.Web.IntegrationTests.csproj", "{963B16B7-01CE-4AF0-940E-B8D7B086856F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Development.Sandboxing.NUnit2", "Remotion\Development\Sandboxing.NUnit2\Development.Sandboxing.NUnit2.csproj", "{8E50108A-309F-4933-B054-D44D6065DA80}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Development.Sandboxing.NUnit2", "Remotion\Development\Sandboxing.NUnit2\Development.Sandboxing.NUnit2.csproj", "{8E50108A-309F-4933-B054-D44D6065DA80}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Development.Sandboxing.NUnit2.UnitTests", "Remotion\Development\Sandboxing.NUnit2.UnitTests\Development.Sandboxing.NUnit2.UnitTests.csproj", "{34C50163-EFE8-45E1-9D8C-B2DCC8A00573}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Development.Sandboxing.NUnit2.UnitTests", "Remotion\Development\Sandboxing.NUnit2.UnitTests\Development.Sandboxing.NUnit2.UnitTests.csproj", "{34C50163-EFE8-45E1-9D8C-B2DCC8A00573}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.Compatibility", "Remotion\ObjectBinding\Web.Compatibility\ObjectBinding.Web.Compatibility.csproj", "{B456D62A-817F-44B9-BAC3-99199C564AC7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectBinding.Web.Compatibility", "Remotion\ObjectBinding\Web.Compatibility\ObjectBinding.Web.Compatibility.csproj", "{B456D62A-817F-44B9-BAC3-99199C564AC7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.Compatibility.UnitTests", "Remotion\ObjectBinding\Web.Compatibility.UnitTests\ObjectBinding.Web.Compatibility.UnitTests.csproj", "{AD575424-C408-4728-A9D2-EBA575E87A2F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectBinding.Web.Compatibility.UnitTests", "Remotion\ObjectBinding\Web.Compatibility.UnitTests\ObjectBinding.Web.Compatibility.UnitTests.csproj", "{AD575424-C408-4728-A9D2-EBA575E87A2F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Build", "Build\Build.csproj", "{6CBB099A-DE58-48A4-ADC7-D37725B0181C}"
 EndProject
@@ -336,7 +332,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.ClientScript", "Remotio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectBinding.Web.ClientScript", "Remotion\ObjectBinding\Web.ClientScript\ObjectBinding.Web.ClientScript.csproj", "{2DA25FE6-18AD-4E69-B860-F30346965646}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Development.Moq", "Remotion\Development\Moq\Development.Moq.csproj", "{F49B0545-2AD6-401E-8DB9-F11A3E01C07B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Development.Moq", "Remotion\Development\Moq\Development.Moq.csproj", "{F49B0545-2AD6-401E-8DB9-F11A3E01C07B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -674,12 +670,14 @@ Global
 		{2177143E-345F-4FAA-9958-1AE2B5EED242}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2177143E-345F-4FAA-9958-1AE2B5EED242}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{2177143E-345F-4FAA-9958-1AE2B5EED242}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{2657E4C0-90AB-4B2E-A1B9-90DD4EEE7825}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{2657E4C0-90AB-4B2E-A1B9-90DD4EEE7825}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{2657E4C0-90AB-4B2E-A1B9-90DD4EEE7825}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{2657E4C0-90AB-4B2E-A1B9-90DD4EEE7825}.Release|Any CPU.ActiveCfg = Release|x86
-		{2657E4C0-90AB-4B2E-A1B9-90DD4EEE7825}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{2657E4C0-90AB-4B2E-A1B9-90DD4EEE7825}.Release|Mixed Platforms.Build.0 = Release|x86
+		{2657E4C0-90AB-4B2E-A1B9-90DD4EEE7825}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2657E4C0-90AB-4B2E-A1B9-90DD4EEE7825}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2657E4C0-90AB-4B2E-A1B9-90DD4EEE7825}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{2657E4C0-90AB-4B2E-A1B9-90DD4EEE7825}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{2657E4C0-90AB-4B2E-A1B9-90DD4EEE7825}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2657E4C0-90AB-4B2E-A1B9-90DD4EEE7825}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2657E4C0-90AB-4B2E-A1B9-90DD4EEE7825}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{2657E4C0-90AB-4B2E-A1B9-90DD4EEE7825}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{F3935D12-39E6-4F06-8316-98CD7ED60C6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F3935D12-39E6-4F06-8316-98CD7ED60C6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F3935D12-39E6-4F06-8316-98CD7ED60C6B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -1065,9 +1063,11 @@ Global
 		{3FA43EBF-E154-4610-B14C-0A5A09FEA35C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{3FA43EBF-E154-4610-B14C-0A5A09FEA35C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{235ED823-F40C-4836-A2F8-C9C37A54C4F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{235ED823-F40C-4836-A2F8-C9C37A54C4F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{235ED823-F40C-4836-A2F8-C9C37A54C4F3}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
 		{235ED823-F40C-4836-A2F8-C9C37A54C4F3}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{235ED823-F40C-4836-A2F8-C9C37A54C4F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{235ED823-F40C-4836-A2F8-C9C37A54C4F3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{235ED823-F40C-4836-A2F8-C9C37A54C4F3}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{235ED823-F40C-4836-A2F8-C9C37A54C4F3}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{5B5EC73A-B796-4D2D-A781-E889EE9EC4DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -1320,8 +1320,10 @@ Global
 		{AD575424-C408-4728-A9D2-EBA575E87A2F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{6CBB099A-DE58-48A4-ADC7-D37725B0181C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6CBB099A-DE58-48A4-ADC7-D37725B0181C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{6CBB099A-DE58-48A4-ADC7-D37725B0181C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{6CBB099A-DE58-48A4-ADC7-D37725B0181C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6CBB099A-DE58-48A4-ADC7-D37725B0181C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{6CBB099A-DE58-48A4-ADC7-D37725B0181C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{627D9351-BE97-485E-A720-36C732056FF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{627D9351-BE97-485E-A720-36C732056FF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{627D9351-BE97-485E-A720-36C732056FF8}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU

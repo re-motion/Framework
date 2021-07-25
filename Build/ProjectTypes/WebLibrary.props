@@ -1,0 +1,24 @@
+<Project>
+
+  <Import Project="$(MSBuildThisFileDirectory)Library.props" />
+
+  <PropertyGroup>
+    <UseWebForms>true</UseWebForms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="res\**\*.*" Exclude="**\.gitmarker" CopyToOutputDirectory="Never">
+      <Pack>true</Pack>
+      <PackagePath>res</PackagePath>
+    </Content>
+    <Content Include="UI\**\*.as?x;UI\**\*.master" Exclude="**\.gitmarker" CopyToOutputDirectory="Never">
+      <Pack>true</Pack>
+      <PackagePath>res/UI</PackagePath>
+    </Content>
+    <Content Include="UrlMapping.xml" Condition="Exists('UrlMapping.xml')" CopyToOutputDirectory="Never">
+      <Pack>true</Pack>
+      <PackagePath>res</PackagePath>
+    </Content>
+  </ItemGroup>
+
+</Project>

@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -17,7 +17,5 @@
 using System;
 using System.Reflection;
 
-[assembly: AssemblyTitle ("re-motion Extensible Enums")]
-[assembly: AssemblyDescription ("Support for setting up enum-like types in an application's domain.")]
 [assembly: AssemblyCulture ("")]
 [assembly: CLSCompliant (true)]

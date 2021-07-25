@@ -1,122 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="Current" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BDAE7146-01A8-4DC1-80C2-0E67291AC3ED}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Remotion.ExtensibleEnums</RootNamespace>
+    <ProjectType>Library</ProjectType>
+  </PropertyGroup>
+  <Import Project="..\..\..\Build\Shared.build.props" />
+  <PropertyGroup>
+    <AssemblyTitle>re-motion Extensible Enums</AssemblyTitle>
+    <Description>Support for setting up enum-like types in an application's domain.</Description>
     <AssemblyName>Remotion.ExtensibleEnums</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;JETBRAINS_ANNOTATIONS</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <NoWarn>1591;0419</NoWarn>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DocumentationFile>bin\Debug\Remotion.ExtensibleEnums.XML</DocumentationFile>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;JETBRAINS_ANNOTATIONS</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn>1591;0419</NoWarn>
-    <DocumentationFile>bin\Release\Remotion.ExtensibleEnums.XML</DocumentationFile>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\CommonServiceLocator.1.2\lib\portable-windows8+net40+sl5+windowsphone8\Microsoft.Practices.ServiceLocation.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
+    <Compile Include="..\..\..\SharedSource\Core\RoslynAnnotations\NullableAnnotations.cs" Link="SharedSource\RoslynAnnotations\NullableAnnotations.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\SharedSource\Core\RoslynAnnotations\NullableAnnotations.cs">
-      <Link>SharedSource\RoslynAnnotations\NullableAnnotations.cs</Link>
-    </Compile>
-    <Compile Include="..\..\AssemblyInfoShared.cs">
-      <Link>Properties\AssemblyInfoShared.cs</Link>
-    </Compile>
-    <Compile Include="ExtensibleEnum.cs" />
-    <Compile Include="ExtensibleEnumConverter.cs" />
-    <Compile Include="ExtensibleEnumDefinition.cs" />
-    <Compile Include="ExtensibleEnumExtensions.cs" />
-    <Compile Include="ExtensibleEnumInfo.cs" />
-    <Compile Include="ExtensibleEnumPositionAttribute.cs" />
-    <Compile Include="ExtensibleEnumUtility.cs" />
-    <Compile Include="IExtensibleEnum.cs" />
-    <Compile Include="IExtensibleEnumDefinition.cs" />
-    <Compile Include="IExtensibleEnumInfo.cs" />
-    <Compile Include="Infrastructure\ExtensibleEnumDefinitionCache.cs" />
-    <Compile Include="Infrastructure\ExtensibleEnumInfoComparer.cs" />
-    <Compile Include="Infrastructure\ExtensibleEnumTypeConverterFactory.cs" />
-    <Compile Include="Infrastructure\ExtensibleEnumValueDiscoveryService.cs" />
-    <Compile Include="Infrastructure\IExtensibleEnumValueDiscoveryService.cs" />
-    <Compile Include="InvalidExtensibleEnumDefinitionException.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <ProjectReference Include="..\Core\Core.Core.csproj" />
+    <ProjectReference Include="..\Reflection\Core.Reflection.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\..\remotion.snk">
-      <Link>remotion.snk</Link>
-    </None>
-    <None Include="..\..\..\Build\NuSpec\TemplateShared.nuspec">
-      <Link>TemplateShared.nuspec</Link>
-    </None>
-    <None Include="..\..\Remotion LGPL.licenseheader">
-      <Link>Remotion LGPL.licenseheader</Link>
-    </None>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Core\Core.Core.csproj">
-      <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
-      <Name>Core.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Reflection\Core.Reflection.csproj">
-      <Project>{82D3420D-F557-4E31-955B-2935A785753E}</Project>
-      <Name>Core.Reflection</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="doc\include\Remotion.ExtensibleEnums.NamespaceDoc.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FacetManifest.xml" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\..\..\packages\ReferenceAssemblyAnnotator.5.0.0.1\build\ReferenceAssemblyAnnotator.targets" Condition="Exists('..\..\..\packages\ReferenceAssemblyAnnotator.5.0.0.1\build\ReferenceAssemblyAnnotator.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105.The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\..\..\packages\ReferenceAssemblyAnnotator.5.0.0.1\build\ReferenceAssemblyAnnotator.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\ReferenceAssemblyAnnotator.5.0.0.1\build\ReferenceAssemblyAnnotator.targets'))" />
-  </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

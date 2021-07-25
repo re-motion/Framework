@@ -1,278 +1,30 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="Current">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <ProjectType>Local</ProjectType>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{F5416318-15B4-421E-9B44-03CD4C052D5A}</ProjectGuid>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ApplicationIcon>
-    </ApplicationIcon>
-    <AssemblyKeyContainerName>
-    </AssemblyKeyContainerName>
+    <ProjectType>Test</ProjectType>
+    <UseWebForms>true</UseWebForms>
+  </PropertyGroup>
+  <Import Project="..\..\..\Build\Shared.build.props" />
+  <PropertyGroup>
+    <AssemblyTitle>Remotion Development Support Library Unit Tests</AssemblyTitle>
     <AssemblyName>Remotion.Development.UnitTests</AssemblyName>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <DefaultClientScript>JScript</DefaultClientScript>
-    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
-    <DefaultTargetSchema>IE50</DefaultTargetSchema>
-    <DelaySign>false</DelaySign>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Remotion.Development.UnitTests</RootNamespace>
-    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    <StartupObject>
-    </StartupObject>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>bin\Debug\</OutputPath>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-    <BaseAddress>285212672</BaseAddress>
-    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
-    <ConfigurationOverrideFile>
-    </ConfigurationOverrideFile>
-    <DefineConstants>DEBUG;TRACE;NETFRAMEWORK</DefineConstants>
-    <DocumentationFile>
-    </DocumentationFile>
-    <DebugSymbols>true</DebugSymbols>
-    <FileAlignment>4096</FileAlignment>
-    <NoStdLib>false</NoStdLib>
-    <NoWarn>
-    </NoWarn>
-    <Optimize>false</Optimize>
-    <RegisterForComInterop>false</RegisterForComInterop>
-    <RemoveIntegerChecks>false</RemoveIntegerChecks>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningLevel>4</WarningLevel>
-    <DebugType>full</DebugType>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>bin\Release\</OutputPath>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-    <BaseAddress>285212672</BaseAddress>
-    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
-    <ConfigurationOverrideFile>
-    </ConfigurationOverrideFile>
-    <DefineConstants>TRACE;NETFRAMEWORK</DefineConstants>
-    <DocumentationFile>
-    </DocumentationFile>
-    <DebugSymbols>false</DebugSymbols>
-    <FileAlignment>4096</FileAlignment>
-    <NoStdLib>false</NoStdLib>
-    <NoWarn>
-    </NoWarn>
-    <Optimize>true</Optimize>
-    <RegisterForComInterop>false</RegisterForComInterop>
-    <RemoveIntegerChecks>false</RemoveIntegerChecks>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningLevel>4</WarningLevel>
-    <DebugType>none</DebugType>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\CommonServiceLocator.1.2\lib\portable-windows8+net40+sl5+windowsphone8\Microsoft.Practices.ServiceLocation.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="nunit.framework, Version=3.12.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\NUnit.3.12.0\lib\net45\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="Remotion.TypePipe, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Remotion.TypePipe.2.0.3\lib\net45\Remotion.TypePipe.dll</HintPath>
-    </Reference>
-    <Reference Include="Rhino.Mocks, Version=3.6.1.2, Culture=neutral, PublicKeyToken=0b3305902db7183f">
-      <HintPath>..\..\..\packages\CoreRhinoMocks.3.6.1.2\lib\net35\Rhino.Mocks.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System">
-      <Name>System</Name>
-    </Reference>
-    <Reference Include="System.configuration" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>4.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Xml" />
-    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">
-      <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
-      <Name>Core.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Core\Reflection.CodeGeneration.TypePipe\Core.Reflection.CodeGeneration.TypePipe.csproj">
-      <Project>{EC62E06A-4AC6-48A0-8A81-69250ABC35B6}</Project>
-      <Name>Core.Reflection.CodeGeneration.TypePipe</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Core\Reflection\Core.Reflection.csproj">
-      <Project>{82D3420D-F557-4E31-955B-2935A785753E}</Project>
-      <Name>Core.Reflection</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Core\Tools\Core.Tools.csproj">
-      <Project>{18269689-DC0F-4975-879B-A6ACBA0FA596}</Project>
-      <Name>Core.Tools</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Data\DomainObjects\Data.DomainObjects.csproj">
-      <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>
-      <Name>Data.DomainObjects</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Mixins\Core\Mixins.Core.csproj">
-      <Project>{D641E4E2-23F3-4454-8074-1327EF07BAA1}</Project>
-      <Name>Mixins.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Core\Development.Core.csproj">
-      <Name>Development.Core</Name>
-      <Project>{B719A305-0493-4C72-88FE-9A2FC6964578}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-    </ProjectReference>
-    <ProjectReference Include="..\Data\Development.Data.csproj">
-      <Project>{EBBF3A56-5B7B-4CD7-9AA9-74AF17B0B7ED}</Project>
-      <Name>Development.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\RhinoMocks\Development.RhinoMocks.csproj">
-      <Project>{2177143e-345f-4faa-9958-1ae2b5eed242}</Project>
-      <Name>Development.RhinoMocks</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Web\Development.Web.csproj">
-      <Project>{44924ED6-8C12-416D-972F-F1F10417E7EF}</Project>
-      <Name>Development.Web</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\..\..\SharedSource\Core\RoslynAnnotations\NullableAnnotations.cs">
-      <Link>SharedSource\RoslynAnnotations\NullableAnnotations.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\UnitTests\Development\Core\UnitTesting\DevNullTest.cs">
-      <Link>SharedSource\Core\UnitTesting\DevNullTest.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\UnitTests\Development\Core\UnitTesting\Enumerables\EnumerableExtensionsTest.cs">
-      <Link>SharedSource\Core\UnitTesting\Enumerables\EnumerableExtensionsTest.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\UnitTests\Development\Core\UnitTesting\Enumerables\OneTimeEnumerableTest.cs">
-      <Link>SharedSource\Core\UnitTesting\Enumerables\OneTimeEnumerableTest.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\UnitTests\Development\Core\UnitTesting\IO\TempFileTest.cs">
-      <Link>Core\UnitTesting\IO\TempFileTest.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\UnitTests\Development\Core\UnitTesting\ObjectMothers\ObjectMotherTest.cs">
-      <Link>SharedSource\Core\UnitTesting\ObjectMothers\ObjectMotherTest.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\UnitTests\Development\Core\UnitTesting\PEVerifierTest.cs">
-      <Link>SharedSource\Core\UnitTesting\PEVerifierTest.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\UnitTests\Development\Core\UnitTesting\Reflection\NormalizingMemberInfoFromExpressionUtilityTest.cs">
-      <Link>SharedSource\Core\UnitTesting\Reflection\NormalizingMemberInfoFromExpressionUtilityTest.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\UnitTests\Development\Core\UnitTesting\SerializerTest.cs">
-      <Link>SharedSource\Core\UnitTesting\SerializerTest.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\UnitTests\Development\Core\UnitTesting\ThreadRunnerTest.cs">
-      <Link>SharedSource\Core\UnitTesting\ThreadRunnerTest.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\UnitTests\Development\RhinoMocks\UnitTesting\DecoratorTestHelperTest.cs">
-      <Link>SharedSource\RhinoMocks\UnitTesting\DecoratorTestHelperTest.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\UnitTests\Development\RhinoMocks\UnitTesting\ListArgExtensionsTest.cs">
-      <Link>SharedSource\RhinoMocks\UnitTesting\ListArgExtensionsTest.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\UnitTests\Development\RhinoMocks\UnitTesting\Threading\LockingDecoratorTestHelperTest.cs">
-      <Link>SharedSource\RhinoMocks\UnitTesting\Threading\LockingDecoratorTestHelperTest.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\UnitTests\Development\RhinoMocks\UnitTesting\Threading\LockTestHelperTest.cs">
-      <Link>SharedSource\RhinoMocks\UnitTesting\Threading\LockTestHelperTest.cs</Link>
-    </Compile>
-    <Compile Include="..\..\AssemblyInfoShared.cs">
-      <Link>Properties\AssemblyInfoShared.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\Development\UnitTesting\NUnit\NUnitExtensions.cs">
-      <Link>SharedSource\UnitTesting\NUnit\NUnitExtensions.cs</Link>
-    </Compile>
-    <Compile Include="Core\UnitTesting\Configuration\XmlSchemaValidationTest.cs" />
-    <Compile Include="Core\UnitTesting\Reflection\TypeDiscovery\FilteringTypeDiscoveryServiceTest.cs" />
-    <Compile Include="Core\UnitTesting\Reflection\TypeDiscovery\FixedTypeDiscoveryServiceTest.cs" />
-    <Compile Include="Core\UnitTesting\Resources\ResourceUtilityTest.cs" />
-    <Compile Include="Core\UnitTesting\XmlSerializationHelperTest.cs" />
-    <Compile Include="Core\UnitTesting\ServiceLocatorScopeTest.cs" />
-    <Compile Include="Data\UnitTesting\DomainObjects\Linq\QueryableComparerTest.cs" />
-    <Compile Include="Data\UnitTesting\DomainObjects\SetUpFixture.cs" />
-    <Compile Include="Data\UnitTesting\DomainObjects\TestDomain\TestDomainObject.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\UnitTesting\AppDomainRunnerTest.cs" />
-    <Compile Include="Core\UnitTesting\Data\SqlClient\DatabaseAgentTest.cs" />
-    <Compile Include="Core\UnitTesting\Data\SqlClient\TestableDatabaseAgent.cs" />
-    <Compile Include="Core\UnitTesting\RhinoMocksRepositoryAdapter.cs" />
-    <Compile Include="Core\UnitTesting\SerializationCallbackTesterTest.cs" />
-    <Compile Include="Core\UnitTesting\TestCreateInstance.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\UnitTesting\TestFieldAccess.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\UnitTesting\TestMethodInvoke.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\UnitTesting\TestPropertyAccess.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Web\ResourceHosting\ResourceVirtualDirectoryTest.cs" />
-    <Compile Include="Web\ResourceHosting\ResourceVirtualFileTest.cs" />
-    <Compile Include="Web\ResourceHosting\ResourceVirtualPathProviderTest.cs" />
-    <Compile Include="Web\ResourceHosting\RootMappingVirtualDirectoryTest.cs" />
-    <Compile Include="Web\ResourceHosting\TestableResourceVirtualPathProvider.cs" />
-    <Compile Include="Web\UnitTesting\UI\Controls\ControlInvokerTest.cs" />
-    <Compile Include="Web\UnitTesting\UI\Controls\Rendering\ConcreteHtmlHelper.cs" />
-    <Compile Include="Web\UnitTesting\UI\Controls\Rendering\HtmlHelperBaseTest.cs" />
-    <Compile Include="Web\UnitTesting\UI\Controls\Rendering\IAsserter.cs" />
-    <None Include="..\..\Remotion LGPL.licenseheader">
-      <Link>Remotion LGPL.licenseheader</Link>
-    </None>
-    <None Include="..\..\..\remotion.snk">
-      <Link>remotion.snk</Link>
-    </None>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
-  </ItemGroup>
-  <ItemGroup>
+    <Compile Include="..\..\..\SharedSource\Development\UnitTesting\NUnit\NUnitExtensions.cs" Link="SharedSource\UnitTesting\NUnit\NUnitExtensions.cs" />
     <EmbeddedResource Include="Core\UnitTesting\Resources\TestEmbeddedResource.txt" />
   </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
+    <ProjectReference Include="..\..\Core\Reflection.CodeGeneration.TypePipe\Core.Reflection.CodeGeneration.TypePipe.csproj" />
+    <ProjectReference Include="..\..\Core\Reflection\Core.Reflection.csproj" />
+    <ProjectReference Include="..\..\Core\Tools\Core.Tools.csproj" />
+    <ProjectReference Include="..\..\Data\DomainObjects\Data.DomainObjects.csproj" />
+    <ProjectReference Include="..\..\Mixins\Core\Mixins.Core.csproj" />
+    <ProjectReference Include="..\Core\Development.Core.csproj" />
+    <ProjectReference Include="..\Data\Development.Data.csproj" />
+    <ProjectReference Include="..\RhinoMocks\Development.RhinoMocks.csproj" />
+    <ProjectReference Include="..\Web\Development.Web.csproj" />
+  </ItemGroup>
+  <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

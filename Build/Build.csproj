@@ -52,26 +52,24 @@
     <None Include="Customizations\Server\Configuration.targets" />
     <None Include="Customizations\Server\Extensions.Server.targets" />
     <None Include="Customizations\Version.props" />
-    <None Include="NuSpec\bin\Debug\.gitmarker" />
-    <None Include="NuSpec\bin\Release\.gitmarker" />
     <None Include="NuSpec\Install.ps1" />
-    <None Include="NuSpec\res\.gitmarker" />
-    <None Include="NuSpec\schemas\.gitmarker" />
-    <None Include="NuSpec\TemplateSharedForNuGetOrg.nuspec" />
-    <None Include="NuSpec\TemplateSharedForMSBuildTask.nuspec" />
-    <None Include="NuSpec\TemplateSharedForTool.nuspec" />
-    <None Include="NuSpec\TemplateSharedForWeb.nuspec" />
-    <None Include="NuSpec\UI\.gitmarker" />
     <None Include="NuSpec\Uninstall.ps1" />
-    <None Include="NuSpec\Web.Build.targets">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="NuSpec\Web.targets" />
     <None Include="packages.config" />
-    <None Include="NuSpec\TemplateShared.nuspec" />
+    <None Include="ProjectFeatures\UseWebForms.props" />
+    <None Include="ProjectTypes\Executable.props" />
+    <None Include="ProjectTypes\Library.props" />
+    <None Include="ProjectTypes\Test.props" />
+    <None Include="ProjectTypes\Test.targets" />
+    <None Include="ProjectTypes\WebLibrary.props" />
+    <None Include="ProjectTypes\WebLibrary.targets" />
     <None Include="Remotion.build" />
     <None Include="Remotion.Local.build" />
     <None Include="Remotion.Server.build" />
+    <None Include="Shared.build.NetFramework.props" />
+    <None Include="Shared.build.NetFramework.targets" />
+    <None Include="Shared.build.props" />
+    <None Include="Shared.build.targets" />
     <None Include="teamcity.properties" />
     <None Include="TestingSetupForDatabase.targets" />
     <None Include="TestingSetupForWebTest.targets" />

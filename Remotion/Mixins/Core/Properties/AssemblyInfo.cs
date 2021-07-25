@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -17,12 +17,5 @@
 using System;
 using System.Reflection;
 
-[assembly: AssemblyTitle ("re-motion Mixins")]
-[assembly: AssemblyDescription (@"Provides extensive support for static and dynamic mixins in .NET languages.
-- Add interfaces, implementations and state
-- Override behaviour
-- Call base type methods
-- Use mixins from your own classes
-- Apply your mixins to other classes or entire class hierarchies")]
 [assembly: AssemblyCulture ("")]
 [assembly: CLSCompliant (true)]
