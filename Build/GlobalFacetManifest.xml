@@ -19,10 +19,6 @@
            feature="Remotion.Web.Testing"
            layer="Core"/>
 
-  <package id="FluentValidation-Signed"
-           feature="FluentValidation"
-           layer="Core"/>
-
   <package id="JetBrains.Annotations"
            feature="JetBrains.Annotations"
            layer="Core"/>
