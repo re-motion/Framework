@@ -2915,7 +2915,7 @@ namespace Remotion.Web.UI.Controls
     /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/GetImageUrl/*' />
     protected string GetImageUrl (FormGridImage image)
     {
-      string relativeUrl = image + ImageExtension;
+      string relativeUrl = "sprite.svg#" + image;
 
       return InfrastructureResourceUrlFactory.CreateThemedResourceUrl (ResourceType.Image, relativeUrl).GetUrl();
     }
