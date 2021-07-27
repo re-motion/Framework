@@ -56,14 +56,14 @@ namespace Remotion.SecurityManager.Clients.Web.Test
       _resourceVirtualPathProvider = new ResourceVirtualPathProvider (
           new[]
           {
-              new ResourcePathMapping ("Remotion.Web/Html/jquery-1.6.4.js", @"..\..\Web\Core\res\Html\jquery-1.6.4.js"),
-              new ResourcePathMapping ("Remotion.Web/Html/jquery.iFrameShim.js", @"..\..\Web\Core\res\Html\jquery.iFrameShim.js"),
-              new ResourcePathMapping ("Remotion.Web/Html", @$"..\..\Web\ClientScript\bin\{configuration}\dist"),
-              new ResourcePathMapping ("Remotion.Web/Image", @"..\..\Web\Core\res\Image"),
-              new ResourcePathMapping ("Remotion.Web/Themes", @"..\..\Web\Core\res\Themes"),
-              new ResourcePathMapping ("Remotion.Web/UI", @"..\..\Web\Core\res\UI"),
-              new ResourcePathMapping ("Remotion.ObjectBinding.Web/Html", @$"..\..\ObjectBinding\Web.ClientScript\bin\{configuration}\dist"),
-              new ResourcePathMapping ("Remotion.ObjectBinding.Web/Themes", @"..\..\ObjectBinding\Web\res\Themes"),
+              new ResourcePathMapping ("Remotion.Web/Html/jquery-1.6.4.js", @"..\..\Remotion\Web\Core\res\Html\jquery-1.6.4.js"),
+              new ResourcePathMapping ("Remotion.Web/Html/jquery.iFrameShim.js", @"..\..\Remotion\Web\Core\res\Html\jquery.iFrameShim.js"),
+              new ResourcePathMapping ("Remotion.Web/Html", @$"..\..\Remotion\Web\ClientScript\bin\{configuration}\dist"),
+              new ResourcePathMapping ("Remotion.Web/Image", @"..\..\Remotion\Web\Core\res\Image"),
+              new ResourcePathMapping ("Remotion.Web/Themes", @"..\..\Remotion\Web\Core\res\Themes"),
+              new ResourcePathMapping ("Remotion.Web/UI", @"..\..\Remotion\Web\Core\res\UI"),
+              new ResourcePathMapping ("Remotion.ObjectBinding.Web/Html", @$"..\..\Remotion\ObjectBinding\Web.ClientScript\bin\{configuration}\dist"),
+              new ResourcePathMapping ("Remotion.ObjectBinding.Web/Themes", @"..\..\Remotion\ObjectBinding\Web\res\Themes"),
               new ResourcePathMapping ("Remotion.Web.Legacy", @"..\..\Remotion\Web\Legacy\Res"),
               new ResourcePathMapping ("Remotion.ObjectBinding.Web.Legacy", @"..\..\Remotion\ObjectBinding\Web.Legacy\Res"),
               new ResourcePathMapping ("Remotion.SecurityManager.Clients.Web/Html", @"..\Clients.Web\res\Html"),
