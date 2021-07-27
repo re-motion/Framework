@@ -53,14 +53,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       GoToPreviousAlternateText,
     }
 
-    private const string c_goToFirstIcon = "MoveFirst.gif";
-    private const string c_goToLastIcon = "MoveLast.gif";
-    private const string c_goToPreviousIcon = "MovePrevious.gif";
-    private const string c_goToNextIcon = "MoveNext.gif";
-    private const string c_goToFirstInactiveIcon = "MoveFirstInactive.gif";
-    private const string c_goToLastInactiveIcon = "MoveLastInactive.gif";
-    private const string c_goToPreviousInactiveIcon = "MovePreviousInactive.gif";
-    private const string c_goToNextInactiveIcon = "MoveNextInactive.gif";
+    private const string c_goToFirstIcon = "sprite.svg#MoveFirst";
+    private const string c_goToLastIcon = "sprite.svg#MoveLast";
+    private const string c_goToPreviousIcon = "sprite.svg#MovePrevious";
+    private const string c_goToNextIcon = "sprite.svg#MoveNext";
+    private const string c_goToFirstInactiveIcon = "sprite.svg#MoveFirstInactive";
+    private const string c_goToLastInactiveIcon = "sprite.svg#MoveLastInactive";
+    private const string c_goToPreviousInactiveIcon = "sprite.svg#MovePreviousInactive";
+    private const string c_goToNextInactiveIcon = "sprite.svg#MoveNextInactive";
 
     private static readonly IDictionary<GoToOption, string> s_activeIcons = new Dictionary<GoToOption, string>
                                                                             {

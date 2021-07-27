@@ -30,9 +30,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Factories
   [ImplementationFor (typeof (IBocBooleanValueResourceSetFactory), Lifetime = LifetimeKind.Singleton)]
   public class BocBooleanValueResourceSetFactory : IBocBooleanValueResourceSetFactory
   {
-    private const string c_trueIcon = "CheckBoxTrue.gif";
-    private const string c_falseIcon = "CheckBoxFalse.gif";
-    private const string c_nullIcon = "CheckBoxNull.gif";
+    private const string c_trueIcon = "sprite.svg#CheckBoxTrue";
+    private const string c_falseIcon = "sprite.svg#CheckBoxFalse";
+    private const string c_nullIcon = "sprite.svg#CheckBoxNull";
     private const string c_defaultResourceGroup = "default";
 
     private readonly IResourceUrlFactory _resourceUrlFactory;

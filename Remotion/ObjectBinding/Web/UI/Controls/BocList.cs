@@ -85,8 +85,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private const string c_customCellEventPrefix = "CustomCell=";
 
     private const string c_eventRowEditModePrefix = "RowEditMode=";
-    private const string c_rowEditModeRequiredFieldIcon = "RequiredField.gif";
-    private const string c_rowEditModeValidationErrorIcon = "ValidationError.gif";
+    private const string c_rowEditModeRequiredFieldIcon = "sprite.svg#RequiredField";
+    private const string c_rowEditModeValidationErrorIcon = "sprite.svg#ValidationError";
 
     /// <summary> Prefix applied to the post back argument of the sort buttons. </summary>
     public const string SortCommandPrefix = "Sort=";

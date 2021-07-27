@@ -271,7 +271,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute (link, "href", "#");
 
       var icon = Html.GetAssertedChildElement (link, "img", 0);
-      Html.AssertAttribute (icon, "src", string.Format ("/Move{0}.gif", command), HtmlHelperBase.AttributeValueCompareMode.Contains);
+      Html.AssertAttribute (icon, "src", string.Format ("/sprite.svg#Move{0}", command), HtmlHelperBase.AttributeValueCompareMode.Contains);
     }
 
     private void AssertInactiveIcon (XmlNode link, string command)
@@ -281,7 +281,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertNoAttribute (link, "href");
 
       var icon = Html.GetAssertedChildElement (link, "img", 0);
-      Html.AssertAttribute (icon, "src", string.Format ("/Move{0}Inactive.gif", command), HtmlHelperBase.AttributeValueCompareMode.Contains);
+      Html.AssertAttribute (icon, "src", string.Format ("/sprite.svg#Move{0}Inactive", command), HtmlHelperBase.AttributeValueCompareMode.Contains);
     }
 
     private BocListRenderingContext CreateRenderingContext ()

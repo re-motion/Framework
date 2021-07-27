@@ -346,7 +346,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     {
       var image = Html.GetAssertedChildElement (outerSpan, "img", 0);
       Html.AssertNoAttribute (image, "id");
-      Html.AssertAttribute (image, "src", string.Format ("/CheckBox{0}.gif", value), HtmlHelper.AttributeValueCompareMode.Contains);
+      Html.AssertAttribute (image, "src", string.Format ("/sprite.svg#CheckBox{0}", value), HtmlHelper.AttributeValueCompareMode.Contains);
       Html.AssertAttribute (image, "alt", altText);
     }
 
