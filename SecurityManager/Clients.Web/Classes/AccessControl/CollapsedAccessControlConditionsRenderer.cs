@@ -207,13 +207,13 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
         case TenantHierarchyCondition.Undefined:
           throw new InvalidOperationException();
         case TenantHierarchyCondition.This:
-          url = "HierarchyThis.gif";
+          url = "sprite.svg#HierarchyThis";
           text = ResourceManager.GetString (ResourceIdentifier.TenantHierarchyCondition_This);
           break;
         case TenantHierarchyCondition.Parent:
           throw new InvalidOperationException();
         case TenantHierarchyCondition.ThisAndParent:
-          url = "HierarchyThisAndParent.gif";
+          url = "sprite.svg#HierarchyThisAndParent";
           text = ResourceManager.GetString (ResourceIdentifier.TenantHierarchyCondition_ThisAndParent);
           break;
         default:
@@ -233,7 +233,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
         case GroupHierarchyCondition.Undefined:
           throw new InvalidOperationException();
         case GroupHierarchyCondition.This:
-          url = "HierarchyThis.gif";
+          url = "sprite.svg#HierarchyThis";
           text = ResourceManager.GetString (ResourceIdentifier.GroupHierarchyCondition_This);
           break;
         case GroupHierarchyCondition.Parent:
@@ -241,15 +241,15 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
         case GroupHierarchyCondition.Children:
           throw new InvalidOperationException();
         case GroupHierarchyCondition.ThisAndParent:
-          url = "HierarchyThisAndParent.gif";
+          url = "sprite.svg#HierarchyThisAndParent";
           text = ResourceManager.GetString (ResourceIdentifier.GroupHierarchyCondition_ThisAndParent);
           break;
         case GroupHierarchyCondition.ThisAndChildren:
-          url = "HierarchyThisAndChildren.gif";
+          url = "sprite.svg#HierarchyThisAndChildren";
           text = ResourceManager.GetString (ResourceIdentifier.GroupHierarchyCondition_ThisAndChildren);
           break;
         case GroupHierarchyCondition.ThisAndParentAndChildren:
-          url = "HierarchyThisAndParentAndChildren.gif";
+          url = "sprite.svg#HierarchyThisAndParentAndChildren";
           text = ResourceManager.GetString (ResourceIdentifier.GroupHierarchyCondition_ThisAndParentAndChildren);
           break;
         default:
