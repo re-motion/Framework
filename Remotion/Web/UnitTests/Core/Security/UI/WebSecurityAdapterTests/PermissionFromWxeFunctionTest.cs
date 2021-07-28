@@ -54,7 +54,6 @@ namespace Remotion.Web.UnitTests.Core.Security.UI.WebSecurityAdapterTests
     public void HasAccessGranted ()
     {
       _testHelper.ExpectHasStatelessAccessForWxeFunction (typeof (TestFunctionWithThisObject), true);
-      _testHelper.ReplayAll ();
 
       bool hasAccess = _securityAdapter.HasAccess (null, new EventHandler (TestEventHandler));
 
@@ -66,7 +65,6 @@ namespace Remotion.Web.UnitTests.Core.Security.UI.WebSecurityAdapterTests
     public void HasAccessDenied ()
     {
       _testHelper.ExpectHasStatelessAccessForWxeFunction (typeof (TestFunctionWithThisObject), false);
-      _testHelper.ReplayAll ();
 
       bool hasAccess = _securityAdapter.HasAccess (null, new EventHandler (TestEventHandler));
 

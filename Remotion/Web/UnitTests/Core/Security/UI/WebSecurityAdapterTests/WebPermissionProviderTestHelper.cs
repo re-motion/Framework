@@ -16,10 +16,10 @@
 // 
 using System;
 using System.Collections.Generic;
+using Moq;
 using Remotion.Security;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UnitTests.Core.Security.Domain;
-using Rhino.Mocks;
 
 namespace Remotion.Web.UnitTests.Core.Security.UI.WebSecurityAdapterTests
 {
@@ -30,31 +30,27 @@ namespace Remotion.Web.UnitTests.Core.Security.UI.WebSecurityAdapterTests
     // static members
 
     // member fields
-
-    private readonly MockRepository _mocks;
-    private readonly ISecurityPrincipal _stubUser;
-    private readonly ISecurityProvider _mockSecurityProvider;
-    private readonly IPrincipalProvider _mockPrincipalProvider;
-    private readonly IObjectSecurityStrategy _mockObjectSecurityStrategy;
-    private readonly IFunctionalSecurityStrategy _mockFunctionalSecurityStrategy;
-    private readonly IWxeSecurityAdapter _mockWxeSecurityAdapter;
+    private readonly Mock<ISecurityPrincipal> _stubUser;
+    private readonly Mock<ISecurityProvider> _mockSecurityProvider;
+    private readonly Mock<IPrincipalProvider> _mockPrincipalProvider;
+    private readonly Mock<IObjectSecurityStrategy> _mockObjectSecurityStrategy;
+    private readonly Mock<IFunctionalSecurityStrategy> _mockFunctionalSecurityStrategy;
+    private readonly Mock<IWxeSecurityAdapter> _mockWxeSecurityAdapter;
 
     // construction and disposing
 
     public WebPermissionProviderTestHelper ()
     {
-      _mocks = new MockRepository();
+      _mockSecurityProvider = new Mock<ISecurityProvider> (MockBehavior.Strict);
+      _mockSecurityProvider.Setup (_ => _.IsNull).Returns (false);
+      _mockObjectSecurityStrategy = new Mock<IObjectSecurityStrategy> (MockBehavior.Strict);
+      _mockFunctionalSecurityStrategy = new Mock<IFunctionalSecurityStrategy> (MockBehavior.Strict);
+      _mockWxeSecurityAdapter = new Mock<IWxeSecurityAdapter> (MockBehavior.Strict);
 
-      _mockSecurityProvider = _mocks.StrictMock<ISecurityProvider>();
-      SetupResult.For (_mockSecurityProvider.IsNull).Return (false);
-      _mockObjectSecurityStrategy = _mocks.StrictMock<IObjectSecurityStrategy>();
-      _mockFunctionalSecurityStrategy = _mocks.StrictMock<IFunctionalSecurityStrategy>();
-      _mockWxeSecurityAdapter = _mocks.StrictMock<IWxeSecurityAdapter>();
-
-      _stubUser = _mocks.Stub<ISecurityPrincipal>();
-      SetupResult.For (_stubUser.User).Return ("user");
-      _mockPrincipalProvider = _mocks.StrictMock<IPrincipalProvider>();
-      SetupResult.For (_mockPrincipalProvider.GetPrincipal()).Return (_stubUser);
+      _stubUser = new Mock<ISecurityPrincipal>();
+      _stubUser.Setup (_ => _.User).Returns ("user");
+      _mockPrincipalProvider = new Mock<IPrincipalProvider> (MockBehavior.Strict);
+      _mockPrincipalProvider.Setup (_ => _.GetPrincipal()).Returns (_stubUser.Object);
     }
 
     // methods and properties
@@ -62,65 +58,68 @@ namespace Remotion.Web.UnitTests.Core.Security.UI.WebSecurityAdapterTests
     public void ExpectHasAccess (Enum[] accessTypeEnums, bool returnValue)
     {
       AccessType[] accessTypes = Array.ConvertAll<Enum, AccessType> (accessTypeEnums, AccessType.Get);
-      Expect.Call (
-          _mockObjectSecurityStrategy.HasAccess (
-              Arg.Is (_mockSecurityProvider),
-              Arg.Is (_stubUser),
-              Arg<IReadOnlyList<AccessType>>.List.Equal (accessTypes)))
-          .Return (returnValue);
+      _mockObjectSecurityStrategy
+          .Setup (
+              _ => _.HasAccess (
+                  _mockSecurityProvider.Object,
+                  _stubUser.Object,
+                  accessTypes))
+          .Returns (returnValue)
+          .Verifiable();
     }
 
     public void ExpectHasStatelessAccessForSecurableObject (Enum[] accessTypeEnums, bool returnValue)
     {
       AccessType[] accessTypes = Array.ConvertAll<Enum, AccessType> (accessTypeEnums, AccessType.Get);
-      Expect
-          .Call (
-              _mockFunctionalSecurityStrategy.HasAccess (
-                  Arg.Is (typeof (SecurableObject)),
-                  Arg.Is (_mockSecurityProvider),
-                  Arg.Is (_stubUser),
-                  Arg<IReadOnlyList<AccessType>>.List.Equal (accessTypes)))
-          .Return (returnValue);
+      _mockFunctionalSecurityStrategy
+          .Setup (
+              _ => _.HasAccess (
+                  typeof (SecurableObject),
+                  _mockSecurityProvider.Object,
+                  _stubUser.Object,
+                  accessTypes))
+          .Returns (returnValue)
+          .Verifiable();
     }
 
     public void ExpectHasStatelessAccessForWxeFunction (Type functionType, bool returnValue)
     {
-      Expect.Call (_mockWxeSecurityAdapter.HasStatelessAccess (functionType)).Return (returnValue);
-    }
-
-    public void ReplayAll ()
-    {
-      _mocks.ReplayAll ();
+      _mockWxeSecurityAdapter.Setup (_ => _.HasStatelessAccess (functionType)).Returns (returnValue).Verifiable();
     }
 
     public void VerifyAll ()
     {
-      _mocks.VerifyAll ();
+      _mockSecurityProvider.Verify();
+      _mockObjectSecurityStrategy.Verify();
+      _mockFunctionalSecurityStrategy.Verify();
+      _mockWxeSecurityAdapter.Verify();
+      _stubUser.Verify();
+      _mockPrincipalProvider.Verify();
     }
 
     public ISecurityProvider SecurityProvider
     {
-      get { return _mockSecurityProvider; }
+      get { return _mockSecurityProvider.Object; }
     }
 
     public IPrincipalProvider PrincipalProvider
     {
-      get { return _mockPrincipalProvider; }
+      get { return _mockPrincipalProvider.Object; }
     }
 
     public IFunctionalSecurityStrategy FunctionalSecurityStrategy
     {
-      get { return _mockFunctionalSecurityStrategy; }
+      get { return _mockFunctionalSecurityStrategy.Object; }
     }
 
     public IWxeSecurityAdapter WxeSecurityAdapter
     {
-      get { return _mockWxeSecurityAdapter; }
+      get { return _mockWxeSecurityAdapter.Object; }
     }
 
     public SecurableObject CreateSecurableObject ()
     {
-      return new SecurableObject (_mockObjectSecurityStrategy);
+      return new SecurableObject (_mockObjectSecurityStrategy.Object);
     }
   }
 }

@@ -17,27 +17,25 @@
 using System;
 using System.Text;
 using System.Web.UI;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.AspNetFramework;
 using Remotion.Development.Web.UnitTesting.UI.Controls;
 using Remotion.Utilities;
 using Remotion.Web.UI.Controls.ControlReplacing;
 using Remotion.Web.Utilities;
-using Rhino.Mocks;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
 {
   public class TestBase
   {
-    private IInternalControlMemberCaller _memberCallerMock;
-    private MockRepository _mockRepository;
+    private Mock<IInternalControlMemberCaller> _memberCallerMock;
 
     [SetUp]
     public virtual void SetUp ()
     {
       SetupHttpContext();
-      _mockRepository = new MockRepository();
-      _memberCallerMock = _mockRepository.StrictMultiMock<IInternalControlMemberCaller> ();
+      _memberCallerMock = new Mock<IInternalControlMemberCaller> (MockBehavior.Strict);
     }
 
     [TearDown]
@@ -101,14 +99,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
       return testPageHolder.Page.GetPageStatePersister().ControlState;
     }
 
-    protected IInternalControlMemberCaller MemberCallerMock
+    protected Mock<IInternalControlMemberCaller> MemberCallerMock
     {
       get { return _memberCallerMock; }
-    }
-
-    protected MockRepository MockRepository
-    {
-      get { return _mockRepository; }
     }
   }
 }

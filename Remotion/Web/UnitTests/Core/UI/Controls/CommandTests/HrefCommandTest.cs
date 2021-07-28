@@ -42,7 +42,6 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
     public void HasAccess_WithoutSeucrityProvider ()
     {
       Command command = _testHelper.CreateHrefCommand ();
-      _testHelper.ReplayAll ();
 
       bool hasAccess = command.HasAccess (null);
 
@@ -53,20 +52,19 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
     [Test]
     public void Render_WithAccessGranted ()
     {
-      Command command = _testHelper.CreateHrefCommandAsPartialMock ();
+      var command = _testHelper.CreateHrefCommandAsPartialMock ();
       string[] parameters = new string[] { "Value1", "Value2" };
 
       NameValueCollection additionalUrlParameters = new NameValueCollection ();
       additionalUrlParameters.Add ("Parameter3", "Value3");
 
-      string expectedHref = command.HrefCommand.FormatHref (parameters);
+      string expectedHref = command.Object.HrefCommand.FormatHref (parameters);
       expectedHref = UrlUtility.AddParameter (expectedHref, additionalUrlParameters.GetKey (0), additionalUrlParameters.Get (0));
       string expectedOnClick = _testHelper.OnClick;
 
       _testHelper.ExpectOnceOnHasAccess (command, true);
-      _testHelper.ReplayAll ();
 
-      command.RenderBegin (
+      command.Object.RenderBegin (
           _testHelper.HtmlWriter, 
           RenderingFeatures.Default,
           _testHelper.PostBackEvent, 
@@ -99,14 +97,13 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
     [Test]
     public void Render_WithAccessDenied ()
     {
-      Command command = _testHelper.CreateHrefCommandAsPartialMock ();
+      var command = _testHelper.CreateHrefCommandAsPartialMock ();
       string[] parameters = new string[] { "Value1", "Value2" };
       NameValueCollection additionalUrlParameters = new NameValueCollection ();
       additionalUrlParameters.Add ("Parameter3", "Value3");
       _testHelper.ExpectOnceOnHasAccess (command, false);
-      _testHelper.ReplayAll ();
 
-      command.RenderBegin (
+      command.Object.RenderBegin (
           _testHelper.HtmlWriter, 
           RenderingFeatures.Default,
           _testHelper.PostBackEvent, 

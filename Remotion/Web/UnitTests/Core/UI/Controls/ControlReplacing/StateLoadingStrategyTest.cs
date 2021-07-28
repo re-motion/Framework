@@ -28,15 +28,13 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
     {
       var testPageHolder = new TestPageHolder (false, RequestMode.PostBack);
       IStateModificationStrategy stateModificationStrategy = new StateLoadingStrategy ();
-      var replacer = new ControlReplacer (MemberCallerMock);
+      var replacer = new ControlReplacer (MemberCallerMock.Object);
       replacer.StateModificationStrategy = stateModificationStrategy;
       replacer.Controls.Add (testPageHolder.NamingContainer);
 
-      MockRepository.ReplayAll ();
+      stateModificationStrategy.LoadControlState (replacer, MemberCallerMock.Object);
 
-      stateModificationStrategy.LoadControlState (replacer, MemberCallerMock);
-
-      MockRepository.VerifyAll ();
+      MemberCallerMock.Verify();
     }
 
     [Test]
@@ -44,15 +42,13 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
     {
       var testPageHolder = new TestPageHolder (false, RequestMode.PostBack);
       IStateModificationStrategy stateModificationStrategy = new StateLoadingStrategy ();
-      var replacer = new ControlReplacer (MemberCallerMock);
+      var replacer = new ControlReplacer (MemberCallerMock.Object);
       replacer.StateModificationStrategy = stateModificationStrategy;
       replacer.Controls.Add (testPageHolder.NamingContainer);
 
-      MockRepository.ReplayAll ();
+      stateModificationStrategy.LoadViewState (replacer, MemberCallerMock.Object);
 
-      stateModificationStrategy.LoadViewState (replacer, MemberCallerMock);
-
-      MockRepository.VerifyAll ();
+      MemberCallerMock.Verify();
     }
   }
 }

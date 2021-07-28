@@ -15,30 +15,29 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Security;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
-using Rhino.Mocks;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.WebMenuItemTests
 {
   [TestFixture]
   public class SecurityTestWithEnabled : BaseTest
   {
-    private MockRepository _mocks;
-    private IWebSecurityAdapter _mockWebSecurityAdapter;
-    private ISecurableObject _mockSecurableObject;
-    private Command _mockCommand;
+    private Mock<IWebSecurityAdapter> _mockWebSecurityAdapter;
+    private Mock<ISecurableObject> _mockSecurableObject;
+    private Mock<Command> _mockCommand;
 
     [SetUp]
     public void Setup ()
     {
-      _mocks = new MockRepository ();
-      _mockWebSecurityAdapter = _mocks.StrictMock<IWebSecurityAdapter> ();
-      _mockSecurableObject = _mocks.StrictMock<ISecurableObject> ();
-      _mockCommand = _mocks.StrictMock<Command> (CommandType.None, _mockWebSecurityAdapter, (IWxeSecurityAdapter) null);
+      _mockWebSecurityAdapter = new Mock<IWebSecurityAdapter> (MockBehavior.Strict);
+      _mockSecurableObject = new Mock<ISecurableObject> (MockBehavior.Strict);
+      _mockCommand = new Mock<Command> (MockBehavior.Strict, CommandType.None, _mockWebSecurityAdapter.Object, (IWxeSecurityAdapter) null);
     }
 
     [Test]
@@ -47,12 +46,13 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebMenuItemTests
       WebMenuItem menuItem = CreateWebMenuItem ();
       menuItem.MissingPermissionBehavior = MissingPermissionBehavior.Invisible;
       menuItem.IsDisabled = false;
-      Expect.Call (_mockCommand.HasAccess (_mockSecurableObject)).Repeat.Never ();
-      _mocks.ReplayAll ();
+      _mockCommand.Setup (_ => _.HasAccess (_mockSecurableObject.Object)).Verifiable();
 
       bool isEnabled = menuItem.EvaluateEnabled ();
 
-      _mocks.VerifyAll ();
+      _mockWebSecurityAdapter.Verify();
+      _mockSecurableObject.Verify();
+      _mockCommand.Verify (_ => _.HasAccess (_mockSecurableObject.Object), Times.Never());
       Assert.That (isEnabled, Is.True);
     }
 
@@ -62,12 +62,13 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebMenuItemTests
       WebMenuItem menuItem = CreateWebMenuItem ();
       menuItem.MissingPermissionBehavior = MissingPermissionBehavior.Invisible;
       menuItem.IsDisabled = true;
-      Expect.Call (_mockCommand.HasAccess (_mockSecurableObject)).Repeat.Never ();
-      _mocks.ReplayAll ();
+      _mockCommand.Setup (_ => _.HasAccess (_mockSecurableObject.Object)).Verifiable();
 
       bool isEnabled = menuItem.EvaluateEnabled ();
 
-      _mocks.VerifyAll ();
+      _mockWebSecurityAdapter.Verify();
+      _mockSecurableObject.Verify();
+      _mockCommand.Verify (_ => _.HasAccess (_mockSecurableObject.Object), Times.Never());
       Assert.That (isEnabled, Is.False);
     }
 
@@ -98,12 +99,13 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebMenuItemTests
     {
       WebMenuItem menuItem = CreateWebMenuItem ();
       menuItem.IsDisabled = false;
-      Expect.Call (_mockCommand.HasAccess (_mockSecurableObject)).Return (true);
-      _mocks.ReplayAll ();
+      _mockCommand.Setup (_ => _.HasAccess (_mockSecurableObject.Object)).Returns (true).Verifiable();
 
       bool isEnabled = menuItem.EvaluateEnabled ();
 
-      _mocks.VerifyAll ();
+      _mockWebSecurityAdapter.Verify();
+      _mockSecurableObject.Verify();
+      _mockCommand.Verify();
       Assert.That (isEnabled, Is.True);
     }
 
@@ -112,12 +114,13 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebMenuItemTests
     {
       WebMenuItem menuItem = CreateWebMenuItem ();
       menuItem.IsDisabled = false;
-      Expect.Call (_mockCommand.HasAccess (_mockSecurableObject)).Return (false);
-      _mocks.ReplayAll ();
+      _mockCommand.Setup (_ => _.HasAccess (_mockSecurableObject.Object)).Returns (false).Verifiable();
 
       bool isEnabled = menuItem.EvaluateEnabled ();
 
-      _mocks.VerifyAll ();
+      _mockWebSecurityAdapter.Verify();
+      _mockSecurableObject.Verify();
+      _mockCommand.Verify();
       Assert.That (isEnabled, Is.False);
     }
 
@@ -127,19 +130,23 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebMenuItemTests
     {
       WebMenuItem menuItem = CreateWebMenuItem ();
       menuItem.IsDisabled = true;
-      _mocks.ReplayAll ();
 
       bool isEnabled = menuItem.EvaluateEnabled ();
 
-      _mocks.VerifyAll ();
+      _mockWebSecurityAdapter.Verify();
+      _mockSecurableObject.Verify();
+      _mockCommand.Verify();
       Assert.That (isEnabled, Is.False);
     }
 
     private WebMenuItem CreateWebMenuItem ()
     {
       WebMenuItem menuItem = CreateWebMenuItemWithoutCommand ();
-      menuItem.Command = _mockCommand;
-      _mocks.BackToRecordAll();
+      _mockCommand.Protected().SetupSet<IControl> ("OwnerControlImplementation", null);
+      menuItem.Command = _mockCommand.Object;
+      _mockWebSecurityAdapter.Reset();
+      _mockSecurableObject.Reset();
+      _mockCommand.Reset();
 
       return menuItem;
     }
@@ -150,7 +157,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebMenuItemTests
       menuItem.Command.Type = CommandType.None;
       menuItem.Command = null;
       menuItem.MissingPermissionBehavior = MissingPermissionBehavior.Disabled;
-      menuItem.SecurableObject = _mockSecurableObject;
+      menuItem.SecurableObject = _mockSecurableObject.Object;
 
       return menuItem;
     }

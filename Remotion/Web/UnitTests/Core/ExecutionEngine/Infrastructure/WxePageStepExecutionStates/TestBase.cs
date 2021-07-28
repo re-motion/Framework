@@ -17,56 +17,54 @@
 using System;
 using System.Collections.Specialized;
 using System.Web;
+using Moq;
 using NUnit.Framework;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates;
 using Remotion.Web.ExecutionEngine.UrlMapping;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
-using Rhino.Mocks;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
 {
   public class TestBase
   {
-    private MockRepository _mockRepository;
-    private IExecutionStateContext _executionStateContextMock;
+    private Mock<IExecutionStateContext> _executionStateContextMock;
     private TestFunction _rootFunction;
-    private OtherTestFunction _subFunction;
-    private HttpContextBase _httpContextMock;
+    private Mock<OtherTestFunction> _subFunction;
+    private Mock<HttpContextBase> _httpContextMock;
     private WxeFunctionState _functionState;
     private WxeContext _wxeContext;
-    private HttpResponseBase _responseMock;
-    private HttpRequestBase _requestMock;
+    private Mock<HttpResponseBase> _responseMock;
+    private Mock<HttpRequestBase> _requestMock;
     private NameValueCollection _postBackCollection;
     private WxeFunctionStateManager _functionStateManager;
 
     [SetUp]
     public virtual void SetUp ()
     {
-      _mockRepository = new MockRepository();
-      _executionStateContextMock = MockRepository.StrictMock<IExecutionStateContext>();
+      _executionStateContextMock = new Mock<IExecutionStateContext> (MockBehavior.Strict);
 
       _rootFunction = new TestFunction ("Value");
       _subFunction = CreateSubFunction();
 
-      _httpContextMock = MockRepository.DynamicMock<HttpContextBase>();
+      _httpContextMock = new Mock<HttpContextBase>();
       _functionState = new WxeFunctionState (_rootFunction, true);
 
-      _responseMock = MockRepository.StrictMock<HttpResponseBase>();
-      _httpContextMock.Stub (stub => stub.Response).Return (_responseMock).Repeat.Any();
+      _responseMock = new Mock<HttpResponseBase> (MockBehavior.Strict);
+      _httpContextMock.Setup (stub => stub.Response).Returns (_responseMock.Object);
 
-      _requestMock = MockRepository.StrictMock<HttpRequestBase>();
-      _httpContextMock.Stub (stub => stub.Request).Return (_requestMock).Repeat.Any();
+      _requestMock = new Mock<HttpRequestBase> (MockBehavior.Strict);
+      _httpContextMock.Setup (stub => stub.Request).Returns (_requestMock.Object);
 
       _postBackCollection = new NameValueCollection();
 
       _functionStateManager = new WxeFunctionStateManager (new FakeHttpSessionStateBase());
-      _wxeContext = new WxeContext (_httpContextMock, _functionStateManager, _functionState, new NameValueCollection ());
+      _wxeContext = new WxeContext (_httpContextMock.Object, _functionStateManager, _functionState, new NameValueCollection ());
     }
 
-    protected virtual OtherTestFunction CreateSubFunction ()
+    protected virtual Mock<OtherTestFunction> CreateSubFunction ()
     {
-      return new OtherTestFunction ("OtherValue");
+      return new Mock<OtherTestFunction> ("OtherValue");
     }
 
     [TearDown]
@@ -76,17 +74,12 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
       UrlMappingConfiguration.SetCurrent (null);
     }
 
-    protected MockRepository MockRepository
-    {
-      get { return _mockRepository; }
-    }
-
     protected WxeFunctionState FunctionState
     {
       get { return _functionState; }
     }
 
-    protected IExecutionStateContext ExecutionStateContextMock
+    protected Mock<IExecutionStateContext> ExecutionStateContextMock
     {
       get { return _executionStateContextMock; }
     }
@@ -96,7 +89,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
       get { return _rootFunction; }
     }
 
-    protected OtherTestFunction SubFunction
+    protected Mock<OtherTestFunction> SubFunction
     {
       get { return _subFunction; }
     }
@@ -106,17 +99,17 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
       get { return _wxeContext; }
     }
 
-    protected HttpContextBase HttpContextMock
+    protected Mock<HttpContextBase> HttpContextMock
     {
       get { return _httpContextMock; }
     }
 
-    protected HttpRequestBase RequestMock
+    protected Mock<HttpRequestBase> RequestMock
     {
       get { return _requestMock; }
     }
 
-    protected HttpResponseBase ResponseMock
+    protected Mock<HttpResponseBase> ResponseMock
     {
       get { return _responseMock; }
     }
@@ -130,10 +123,19 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
         where T: IExecutionState
     {
       Assert.That (executionState, Is.Not.Null);
-      Assert.That (executionState.ExecutionStateContext, Is.SameAs (ExecutionStateContextMock));
-      Assert.That (executionState.Parameters.SubFunction, Is.SameAs (SubFunction));
+      Assert.That (executionState.ExecutionStateContext, Is.SameAs (ExecutionStateContextMock.Object));
+      Assert.That (executionState.Parameters.SubFunction, Is.SameAs (SubFunction.Object));
 
       return executionState;
+    }
+
+    protected void VerifyAll ()
+    {
+      _executionStateContextMock.Verify();
+      _httpContextMock.Verify();
+      _responseMock.Verify();
+      _requestMock.Verify();
+      _subFunction.Verify();
     }
   }
 }

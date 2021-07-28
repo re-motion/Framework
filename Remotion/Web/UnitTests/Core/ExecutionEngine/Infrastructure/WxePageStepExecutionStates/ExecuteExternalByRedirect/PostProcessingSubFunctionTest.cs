@@ -15,12 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates;
 using Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates.ExecuteExternalByRedirect;
-using Rhino.Mocks;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStepExecutionStates.ExecuteExternalByRedirect
 {
@@ -32,7 +32,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
     public override void SetUp ()
     {
       base.SetUp();
-      _executionState = new PostProcessingSubFunctionState (ExecutionStateContextMock, new ExecutionStateParameters (SubFunction, PostBackCollection));
+      _executionState = new PostProcessingSubFunctionState (ExecutionStateContextMock.Object, new ExecutionStateParameters (SubFunction.Object, PostBackCollection));
     }
 
     [Test]
@@ -45,19 +45,15 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
     public void ExecuteSubFunction_WithGetRequest ()
     {
       PrivateInvoke.SetNonPublicField (FunctionState, "_postBackID", 100);
-      RequestMock.Stub (stub => stub.HttpMethod).Return ("GET").Repeat.Any();
+      RequestMock.Setup (stub => stub.HttpMethod).Returns ("GET");
 
-      using (MockRepository.Ordered())
-      {
-        ExecutionStateContextMock.Expect (mock => mock.SetReturnState (SubFunction, true, PostBackCollection));
-        ExecutionStateContextMock.Expect (mock => mock.SetExecutionState (NullExecutionState.Null));
-      }
-
-      MockRepository.ReplayAll();
+      var sequence = new MockSequence();
+      ExecutionStateContextMock.InSequence (sequence).Setup (mock => mock.SetReturnState (SubFunction.Object, true, PostBackCollection)).Verifiable();
+      ExecutionStateContextMock.InSequence (sequence).Setup (mock => mock.SetExecutionState (NullExecutionState.Null)).Verifiable();
 
       _executionState.ExecuteSubFunction (WxeContext);
 
-      MockRepository.VerifyAll();
+      VerifyAll();
 
       Assert.That (PostBackCollection[WxePageInfo.PostBackSequenceNumberID], Is.EqualTo ("100"));
     }
@@ -66,19 +62,15 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
     public void ExecuteSubFunction_WithPostRequest ()
     {
       PrivateInvoke.SetNonPublicField (FunctionState, "_postBackID", 100);
-      RequestMock.Stub (stub => stub.HttpMethod).Return ("POST").Repeat.Any();
+      RequestMock.Setup (stub => stub.HttpMethod).Returns ("POST");
 
-      using (MockRepository.Ordered ())
-      {
-        ExecutionStateContextMock.Expect (mock => mock.SetReturnState (SubFunction, false, null));
-        ExecutionStateContextMock.Expect (mock => mock.SetExecutionState (NullExecutionState.Null));
-      }
-
-      MockRepository.ReplayAll();
+      var sequence = new MockSequence();
+      ExecutionStateContextMock.InSequence (sequence).Setup (mock => mock.SetReturnState (SubFunction.Object, false, null)).Verifiable();
+      ExecutionStateContextMock.InSequence (sequence).Setup (mock => mock.SetExecutionState (NullExecutionState.Null)).Verifiable();
 
       _executionState.ExecuteSubFunction (WxeContext);
 
-      MockRepository.VerifyAll();
+      VerifyAll();
     }
   }
 }
