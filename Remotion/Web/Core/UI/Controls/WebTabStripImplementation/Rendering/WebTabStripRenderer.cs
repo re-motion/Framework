@@ -215,7 +215,7 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
     /// </remarks>
     public virtual string CssClassDisabled
     {
-      get { return "disabled"; }
+      get { return CssClassDefinition.Disabled; }
     }
 
     /// <summary> Gets the CSS-Class applied to the div used to clear the flow-layout at the end of the tab-strip. </summary>

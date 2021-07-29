@@ -209,7 +209,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
       if (hasDateField)
       {
         renderingContext.Writer.AddAttribute (
-            HtmlTextWriterAttribute.Class, CssClassDateInputWrapper + " " + GetPositioningCssClass (renderingContext, DateTimeValuePart.Date));
+            HtmlTextWriterAttribute.Class, CssClassDateInputWrapper + " " + CssClassThemed + " " + GetPositioningCssClass (renderingContext, DateTimeValuePart.Date));
         renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
         _validationErrorRenderer.SetValidationErrorsReferenceOnControl (dateTextBox, dateValueValidationErrorsID, dateValueValidationErrors);
@@ -237,7 +237,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
       if (hasTimeField)
       {
         renderingContext.Writer.AddAttribute (
-            HtmlTextWriterAttribute.Class, CssClassTimeInputWrapper + " " + GetPositioningCssClass (renderingContext, DateTimeValuePart.Time));
+            HtmlTextWriterAttribute.Class, CssClassTimeInputWrapper + " " + CssClassThemed + " " + GetPositioningCssClass (renderingContext, DateTimeValuePart.Time));
         renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
         _validationErrorRenderer.SetValidationErrorsReferenceOnControl (timeTextBox, timeValueValidationErrorsID, timeValueValidationErrors);
