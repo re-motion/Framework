@@ -204,6 +204,7 @@ namespace Remotion.Web.UI.Controls
       var originalCssClass = (CssClass ?? "").Replace (DisabledCssClass, "").Trim();
       var isCssStyleOverridden = !string.IsNullOrEmpty (originalCssClass);
       var computedCssClass = isCssStyleOverridden ? originalCssClass : CssClassBase;
+      computedCssClass += " " + CssClassThemed;
       ControlStyle.CssClass = computedCssClass;
 
       base.AddAttributesToRender (writer);
@@ -533,6 +534,19 @@ namespace Remotion.Web.UI.Controls
     protected virtual string CssClassButtonBody
     {
       get { return "buttonBody"; }
+    }
+
+    /// <summary>
+    /// Gets the CSS-Class applied to the <c>div</c> when itself and child elements
+    /// that are standard browser controls (e.g. input elements) should be styled in the current theme.
+    /// </summary>
+    /// <remarks> 
+    ///   <para> Class: <c>remotion-themed</c>. </para>
+    ///   <para> Applied in addition to the regular CSS-Class.</para>
+    /// </remarks>
+    public virtual string CssClassThemed
+    {
+      get { return CssClassDefinition.Themed; }
     }
 
     /// <summary> Gets the CSS-Class applied when the section is empty. </summary>

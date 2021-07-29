@@ -320,7 +320,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     private string GetCssClassInnerContent (BocRenderingContext<TControl> renderingContext)
     {
-      string cssClass = CssClassInnerContent;
+      string cssClass = CssClassInnerContent + " " + CssClassThemed;
 
       if (GetIcon (renderingContext) != null)
         cssClass += " " + CssClassHasIcon;

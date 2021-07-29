@@ -463,7 +463,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
 
       var contentSpan = span.GetAssertedChildElement ("span", 0 + iconOffset);
       contentSpan.AssertAttributeValueEquals ("id",  c_contentID);
-      contentSpan.AssertAttributeValueEquals ("class", "content" + hasIconCssClass + " " + hasOptionsMenuCssClass);
+      contentSpan.AssertAttributeValueEquals ("class", "content remotion-themed" + hasIconCssClass + " " + hasOptionsMenuCssClass);
       contentSpan.AssertAttributeValueEquals (StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
       contentSpan.AssertAttributeValueEquals (StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, c_readOnlyTextValueName);
       contentSpan.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsIDAttribute, Control.Object.ClientID + "_ValidationErrors");
@@ -539,10 +539,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       switch (optionMenuConfiguration)
       {
         case OptionMenuConfiguration.NoOptionsMenu:
-          contentSpan.AssertAttributeValueEquals ("class", "content" + hasIconCssClass + " withoutOptionsMenu");
+          contentSpan.AssertAttributeValueEquals ("class", "content remotion-themed" + hasIconCssClass + " withoutOptionsMenu");
           break;
         case OptionMenuConfiguration.HasOptionsMenu:
-          contentSpan.AssertAttributeValueEquals ("class", "content" + hasIconCssClass + " hasOptionsMenu");
+          contentSpan.AssertAttributeValueEquals ("class", "content remotion-themed" + hasIconCssClass + " hasOptionsMenu");
           break;
       }
 
