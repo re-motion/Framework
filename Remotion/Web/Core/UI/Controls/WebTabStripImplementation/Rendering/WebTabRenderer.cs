@@ -296,7 +296,7 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
     /// </remarks>
     public virtual string CssClassDisabled
     {
-      get { return "disabled"; }
+      get { return CssClassDefinition.Disabled; }
     }
   }
 }

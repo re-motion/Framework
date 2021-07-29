@@ -21,6 +21,7 @@ using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI;
+using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
@@ -60,7 +61,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         return;
 
       string selectorControlID = renderingContext.Control.GetSelectorControlName().Replace ('$', '_') + "_" + rowRenderingContext.Row.Index;
-      var cssClass = cssClassTableCell + " " + CssClasses.DataCellSelector;
+      var cssClass = cssClassTableCell + " " + CssClasses.Themed + " " + CssClasses.DataCellSelector;
       var selectorControlName = renderingContext.Control.GetSelectorControlName();
       var selectorControlValue = renderingContext.Control.GetSelectorControlValue (rowRenderingContext.Row);
       var isChecked = rowRenderingContext.IsSelected;
@@ -90,7 +91,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       if (!renderingContext.Control.IsSelectionEnabled)
         return;
 
-      var cssClass = CssClasses.TitleCell + " " + CssClasses.TitleCellSelector;
+      var cssClass = CssClasses.TitleCell + " " + CssClasses.Themed + " " + CssClasses.TitleCellSelector;
 
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClass);
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.ColumnHeader);
