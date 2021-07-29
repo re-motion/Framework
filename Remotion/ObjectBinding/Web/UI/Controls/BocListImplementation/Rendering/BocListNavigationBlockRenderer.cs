@@ -178,6 +178,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     private void RenderPageInformation (BocListRenderingContext renderingContext)
     {
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClasses.Themed);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
       var pageLabelText = GetResourceManager (renderingContext).GetString (ResourceIdentifier.PageLabelText);

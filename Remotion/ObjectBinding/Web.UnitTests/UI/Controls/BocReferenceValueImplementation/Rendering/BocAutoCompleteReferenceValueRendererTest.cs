@@ -600,7 +600,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       commandLink.AssertChildElementCount (1);
 
       var contentSpan = commandLink.GetAssertedChildElement ("span", 0);
-      contentSpan.AssertAttributeValueEquals ("class", "content withoutOptionsMenu");
+      contentSpan.AssertAttributeValueEquals ("class", "content remotion-themed withoutOptionsMenu");
       contentSpan.AssertChildElementCount (1);
       
       var innerSpan = contentSpan.GetAssertedChildElement ("span", 0);
@@ -669,13 +669,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       switch (optionMenuConfiguration)
       {
         case OptionMenuConfiguration.NoOptionsMenu:
-          contentSpan.AssertAttributeValueEquals ("class", "content withoutOptionsMenu");
+          contentSpan.AssertAttributeValueEquals ("class", "content remotion-themed withoutOptionsMenu");
           break;
         case OptionMenuConfiguration.SeparateOptionsMenu:
-          contentSpan.AssertAttributeValueEquals ("class", "content separateOptionsMenu");
+          contentSpan.AssertAttributeValueEquals ("class", "content remotion-themed separateOptionsMenu");
           break;
         case OptionMenuConfiguration.EmbeddedOptionsMenu:
-          contentSpan.AssertAttributeValueEquals ("class", "content embeddedOptionsMenu");
+          contentSpan.AssertAttributeValueEquals ("class", "content remotion-themed embeddedOptionsMenu");
           break;
       }
 

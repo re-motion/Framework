@@ -136,6 +136,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       var availableViewsList = renderingContext.Control.GetAvailableViewsList();
 
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClasses.Themed);
       renderingContext.Writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
       renderingContext.Writer.AddStyleAttribute ("margin-bottom", menuBlockItemOffset);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Div);

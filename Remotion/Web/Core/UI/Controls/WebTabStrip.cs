@@ -631,7 +631,7 @@ namespace Remotion.Web.UI.Controls
     /// </remarks>
     protected virtual string CssClassDisabled
     {
-      get { return "disabled"; }
+      get { return CssClassDefinition.Disabled; }
     }
 
     #endregion

@@ -66,6 +66,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
       _validationErrorRenderer = validationErrorRenderer;
     }
 
+    /// <inheritdoc />
+    protected override bool UseThemingContext
+    {
+      get { return true; }
+    }
+
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
       ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);

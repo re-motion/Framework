@@ -65,6 +65,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
       get { return _labelReferenceRenderer; }
     }
 
+    /// <inheritdoc />
+    protected override bool UseThemingContext
+    {
+      get { return true; }
+    }
+
     /// <summary>
     /// Renders a label when <see cref="IBusinessObjectBoundEditableControl.IsReadOnly"/> is <see langword="true"/>,
     /// a textbox in edit mode.
