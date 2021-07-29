@@ -42,6 +42,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
     {
     }
 
+    /// <inheritdoc />
+    protected override bool UseThemingContext
+    {
+      get { return true; }
+    }
+
     protected IEnumerable<string> GetValidationErrorsToRender (BocRenderingContext<TControl> renderingContext)
     {
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
