@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Moq;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation;
@@ -19,7 +20,6 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Validati
 using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls.Validation.Factories;
 using Remotion.ServiceLocation;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
 {
@@ -83,11 +83,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
     [TestCase (false)]
     public void CreateValidators_IBocTextValue (bool isReadOnly)
     {
-      var mock = MockRepository.GenerateMock<IBocTextValue>();
-      mock.Expect (m => m.ID).Return ("ID");
+      var mock = new Mock<IBocTextValue>();
+      mock.Setup (m => m.ID).Returns ("ID").Verifiable();
 
       var factory = new ValidationBusinessObjectBoundEditableWebControlValidatorFactory();
-      var validators = factory.CreateValidators (mock, isReadOnly);
+      var validators = factory.CreateValidators (mock.Object, isReadOnly);
       CheckValidators (isReadOnly, validators);
     }
 
@@ -96,11 +96,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
     [TestCase (false)]
     public void CreateValidators_IBocReferenceValue (bool isReadOnly)
     {
-      var mock = MockRepository.GenerateMock<IBocReferenceValue>();
-      mock.Expect (m => m.ID).Return ("ID");
+      var mock = new Mock<IBocReferenceValue>();
+      mock.Setup (m => m.ID).Returns ("ID").Verifiable();
 
       var factory = new ValidationBusinessObjectBoundEditableWebControlValidatorFactory();
-      var validators = factory.CreateValidators (mock, isReadOnly);
+      var validators = factory.CreateValidators (mock.Object, isReadOnly);
       CheckValidators (isReadOnly, validators);
     }
 
@@ -109,11 +109,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
     [TestCase (false)]
     public void CreateValidators_IBocAutoCompleteReferenceValue (bool isReadOnly)
     {
-      var mock = MockRepository.GenerateMock<IBocAutoCompleteReferenceValue>();
-      mock.Expect (m => m.ID).Return ("ID");
+      var mock = new Mock<IBocAutoCompleteReferenceValue>();
+      mock.Setup (m => m.ID).Returns ("ID").Verifiable();
 
       var factory = new ValidationBusinessObjectBoundEditableWebControlValidatorFactory();
-      var validators = factory.CreateValidators (mock, isReadOnly);
+      var validators = factory.CreateValidators (mock.Object, isReadOnly);
       CheckValidators (isReadOnly, validators);
     }
 
@@ -122,11 +122,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
     [TestCase (false)]
     public void CreateValidators_IBocBooleanValue (bool isReadOnly)
     {
-      var mock = MockRepository.GenerateMock<IBocBooleanValue>();
-      mock.Expect (m => m.ID).Return ("ID");
+      var mock = new Mock<IBocBooleanValue>();
+      mock.Setup (m => m.ID).Returns ("ID").Verifiable();
 
       var factory = new ValidationBusinessObjectBoundEditableWebControlValidatorFactory();
-      var validators = factory.CreateValidators (mock, isReadOnly);
+      var validators = factory.CreateValidators (mock.Object, isReadOnly);
       CheckValidators (isReadOnly, validators);
     }
 
@@ -135,11 +135,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
     [TestCase (false)]
     public void CreateValidators_IBocCheckBox (bool isReadOnly)
     {
-      var mock = MockRepository.GenerateMock<IBocCheckBox>();
-      mock.Expect (m => m.ID).Return ("ID");
+      var mock = new Mock<IBocCheckBox>();
+      mock.Setup (m => m.ID).Returns ("ID").Verifiable();
 
       var factory = new ValidationBusinessObjectBoundEditableWebControlValidatorFactory();
-      var validators = factory.CreateValidators (mock, isReadOnly);
+      var validators = factory.CreateValidators (mock.Object, isReadOnly);
       CheckValidators (isReadOnly, validators);
     }
 
@@ -148,11 +148,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
     [TestCase (false)]
     public void CreateValidators_IBocDateTimeValue (bool isReadOnly)
     {
-      var mock = MockRepository.GenerateMock<IBocDateTimeValue>();
-      mock.Expect (m => m.ID).Return ("ID");
+      var mock = new Mock<IBocDateTimeValue>();
+      mock.Setup (m => m.ID).Returns ("ID").Verifiable();
 
       var factory = new ValidationBusinessObjectBoundEditableWebControlValidatorFactory();
-      var validators = factory.CreateValidators (mock, isReadOnly);
+      var validators = factory.CreateValidators (mock.Object, isReadOnly);
       CheckValidators (isReadOnly, validators);
     }
 
@@ -161,11 +161,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
     [TestCase (false)]
     public void CreateValidators_IBocEnumValue (bool isReadOnly)
     {
-      var mock = MockRepository.GenerateMock<IBocEnumValue>();
-      mock.Expect (m => m.ID).Return ("ID");
+      var mock = new Mock<IBocEnumValue>();
+      mock.Setup (m => m.ID).Returns ("ID").Verifiable();
 
       var factory = new ValidationBusinessObjectBoundEditableWebControlValidatorFactory();
-      var validators = factory.CreateValidators (mock, isReadOnly);
+      var validators = factory.CreateValidators (mock.Object, isReadOnly);
       CheckValidators (isReadOnly, validators);
     }
 
@@ -174,11 +174,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
     [TestCase (false)]
     public void CreateValidators_IBocMultilineTextValue (bool isReadOnly)
     {
-      var mock = MockRepository.GenerateMock<IBocMultilineTextValue>();
-      mock.Expect (m => m.ID).Return ("ID");
+      var mock = new Mock<IBocMultilineTextValue>();
+      mock.Setup (m => m.ID).Returns ("ID").Verifiable();
 
       var factory = new ValidationBusinessObjectBoundEditableWebControlValidatorFactory();
-      var validators = factory.CreateValidators (mock, isReadOnly);
+      var validators = factory.CreateValidators (mock.Object, isReadOnly);
       CheckValidators (isReadOnly, validators);
     }
 

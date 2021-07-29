@@ -15,11 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BindableObject.Properties;
 using Remotion.ObjectBinding.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject
 {
@@ -67,7 +67,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       return new StubPropertyBase (
           CreateParameters (
               new BindableObjectProvider (
-                  MockRepository.GenerateStub<IMetadataFactory>(), MockRepository.GenerateStub<IBusinessObjectServiceFactory>()),
+                  new Mock<IMetadataFactory>().Object, new Mock<IBusinessObjectServiceFactory>().Object),
               GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Scalar"),
               typeof (SimpleReferenceType),
               typeof (SimpleReferenceType),

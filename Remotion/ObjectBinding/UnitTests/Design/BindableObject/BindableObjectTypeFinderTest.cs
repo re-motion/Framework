@@ -17,36 +17,34 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using Moq;
 using NUnit.Framework;
 using Remotion.Mixins;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.Design.BindableObject;
 using Remotion.ObjectBinding.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.UnitTests.Design.BindableObject
 {
   [TestFixture]
   public class BindableObjectTypeFinderTest
   {
-    private MockRepository _mockRepository;
-    private IServiceProvider _serviceProvider;
-    private ITypeDiscoveryService _typeDiscoveryService;
+    private Mock<IServiceProvider> _serviceProvider;
+    private Mock<ITypeDiscoveryService> _typeDiscoveryService;
 
     [SetUp]
     public void SetUp ()
     {
-      _mockRepository = new MockRepository();
-      _serviceProvider = _mockRepository.StrictMock<IServiceProvider> ();
-      _typeDiscoveryService = _mockRepository.StrictMock<ITypeDiscoveryService> ();
+      _serviceProvider = new Mock<IServiceProvider> (MockBehavior.Strict);
+      _typeDiscoveryService = new Mock<ITypeDiscoveryService> (MockBehavior.Strict);
     }
 
     [Test]
     public void GetTypes_WithTypeDiscoveryService_IncludeGac ()
     {
-      Expect.Call (_serviceProvider.GetService (typeof (ITypeDiscoveryService))).Return (_typeDiscoveryService);
-      Expect.Call (_typeDiscoveryService.GetTypes (typeof (object), false))
-          .Return (
+      _serviceProvider.Setup (_ => _.GetService (typeof (ITypeDiscoveryService))).Returns (_typeDiscoveryService.Object).Verifiable();
+      _typeDiscoveryService.Setup (_ => _.GetTypes (typeof (object), false))
+          .Returns (
           new object[]
               {
                   typeof (ClassWithAllDataTypes),
@@ -56,11 +54,10 @@ namespace Remotion.ObjectBinding.UnitTests.Design.BindableObject
                   typeof (ClassWithIdentity),
                   typeof (ClassDerivedFromBindableObjectBase),
                   typeof (ClassDerivedFromBindableObjectWithIdentityBase),
-              });
+              })
+          .Verifiable();
 
-      _mockRepository.ReplayAll ();
-
-      var finder = new BindableObjectTypeFinder (_serviceProvider);
+      var finder = new BindableObjectTypeFinder (_serviceProvider.Object);
       List<Type> types = finder.GetTypes (true);
 
       Assert.That (types, Is.EquivalentTo (new[]
@@ -71,15 +68,16 @@ namespace Remotion.ObjectBinding.UnitTests.Design.BindableObject
                                                  typeof (ClassDerivedFromBindableObjectWithIdentityBase)
                                              }));
 
-      _mockRepository.VerifyAll ();
+      _serviceProvider.Verify();
+      _typeDiscoveryService.Verify();
     }
 
     [Test]
     public void GetTypes_WithTypeDiscoveryService_NotIncludeGac ()
     {
-      Expect.Call (_serviceProvider.GetService (typeof (ITypeDiscoveryService))).Return (_typeDiscoveryService);
-      Expect.Call (_typeDiscoveryService.GetTypes (typeof (object), true))
-          .Return (
+      _serviceProvider.Setup (_ => _.GetService (typeof (ITypeDiscoveryService))).Returns (_typeDiscoveryService.Object).Verifiable();
+      _typeDiscoveryService.Setup (_ => _.GetTypes (typeof (object), true))
+          .Returns (
           new object[]
           {
               typeof (ClassWithAllDataTypes),
@@ -88,11 +86,10 @@ namespace Remotion.ObjectBinding.UnitTests.Design.BindableObject
               typeof (ManualBusinessObject),
               typeof (ClassDerivedFromBindableObjectBase),
               typeof (ClassDerivedFromBindableObjectWithIdentityBase),
-          });
+          })
+          .Verifiable();
 
-      _mockRepository.ReplayAll();
-
-      var finder = new BindableObjectTypeFinder (_serviceProvider);
+      var finder = new BindableObjectTypeFinder (_serviceProvider.Object);
       List<Type> types = finder.GetTypes (false);
 
       Assert.That (types, Is.EquivalentTo (new[]
@@ -102,7 +99,8 @@ namespace Remotion.ObjectBinding.UnitTests.Design.BindableObject
                                                  typeof (ClassDerivedFromBindableObjectWithIdentityBase),
                                              }));
 
-      _mockRepository.VerifyAll();
+      _serviceProvider.Verify();
+      _typeDiscoveryService.Verify();
     }
 
     [Test]
@@ -110,9 +108,9 @@ namespace Remotion.ObjectBinding.UnitTests.Design.BindableObject
     {
       using (MixinConfiguration.BuildNew ().EnterScope ())
       {
-        Expect.Call (_serviceProvider.GetService (typeof (ITypeDiscoveryService))).Return (_typeDiscoveryService);
-        Expect.Call (_typeDiscoveryService.GetTypes (typeof (object), true))
-            .Return (
+        _serviceProvider.Setup (_ => _.GetService (typeof (ITypeDiscoveryService))).Returns (_typeDiscoveryService.Object).Verifiable();
+        _typeDiscoveryService.Setup (_ => _.GetTypes (typeof (object), true))
+            .Returns (
             new object[]
                 {
                     typeof (ClassWithAllDataTypes),
@@ -121,11 +119,10 @@ namespace Remotion.ObjectBinding.UnitTests.Design.BindableObject
                     typeof (ManualBusinessObject),
                     typeof (ClassDerivedFromBindableObjectBase),
                     typeof (ClassDerivedFromBindableObjectWithIdentityBase),
-                });
+                })
+            .Verifiable();
 
-        _mockRepository.ReplayAll();
-
-        var finder = new BindableObjectTypeFinder (_serviceProvider);
+        var finder = new BindableObjectTypeFinder (_serviceProvider.Object);
         List<Type> types = finder.GetTypes (false);
 
         Assert.That (types,
@@ -136,63 +133,62 @@ namespace Remotion.ObjectBinding.UnitTests.Design.BindableObject
                                             typeof (ClassDerivedFromBindableObjectWithIdentityBase),
                                         }));
 
-        _mockRepository.VerifyAll();
+        _serviceProvider.Verify();
+        _typeDiscoveryService.Verify();
       }
     }
 
     [Test]
     public void GetTypes_WithTypeDiscoveryService_GetsTypeInheritingMixinFromBase ()
     {
-      Expect.Call (_serviceProvider.GetService (typeof (ITypeDiscoveryService))).Return (_typeDiscoveryService);
-      Expect.Call (_typeDiscoveryService.GetTypes (typeof (object), true))
-          .Return (
+      _serviceProvider.Setup (_ => _.GetService (typeof (ITypeDiscoveryService))).Returns (_typeDiscoveryService.Object).Verifiable();
+      _typeDiscoveryService.Setup (_ => _.GetTypes (typeof (object), true))
+          .Returns (
           new object[]
               {
                   typeof (DerivedBusinessObjectClassWithoutAttribute)
-              });
+              })
+          .Verifiable();
 
-      _mockRepository.ReplayAll ();
-
-      var finder = new BindableObjectTypeFinder (_serviceProvider);
+      var finder = new BindableObjectTypeFinder (_serviceProvider.Object);
       List<Type> types = finder.GetTypes (false);
 
       Assert.That (types, Is.EquivalentTo (new[] { typeof (DerivedBusinessObjectClassWithoutAttribute) }));
 
-      _mockRepository.VerifyAll ();
+      _serviceProvider.Verify();
+      _typeDiscoveryService.Verify();
     }
 
     [Test]
     public void GetTypes_WithoutTypeDiscoveryService ()
     {
-      Expect.Call (_serviceProvider.GetService (typeof (ITypeDiscoveryService))).Return (null);
+      _serviceProvider.Setup (_ => _.GetService (typeof (ITypeDiscoveryService))).Returns ((object) null).Verifiable();
 
-      _mockRepository.ReplayAll ();
-
-      var finder = new BindableObjectTypeFinder (_serviceProvider);
+      var finder = new BindableObjectTypeFinder (_serviceProvider.Object);
       List<Type> types = finder.GetTypes (false);
 
       Assert.That (types, Is.Empty);
 
-      _mockRepository.VerifyAll ();
+      _serviceProvider.Verify();
+      _typeDiscoveryService.Verify();
     }
 
     [Test]
     public void GetMixinConfiguration_IncludeGac ()
     {
-      Expect.Call (_serviceProvider.GetService (typeof (ITypeDiscoveryService))).Return (_typeDiscoveryService);
-      Expect.Call (_typeDiscoveryService.GetTypes (typeof (object), false))
-          .Return (
+      _serviceProvider.Setup (_ => _.GetService (typeof (ITypeDiscoveryService))).Returns (_typeDiscoveryService.Object).Verifiable();
+      _typeDiscoveryService.Setup (_ => _.GetTypes (typeof (object), false))
+          .Returns (
           new object[]
               {
                   typeof (DerivedBusinessObjectClassWithoutAttribute),
                   typeof (SimpleBusinessObjectClass),
                   typeof (ClassWithIdentity),
                   typeof (ManualBusinessObject),
-              });
+              })
+          .Verifiable();
 
-      _mockRepository.ReplayAll ();
-
-      var finder = new BindableObjectTypeFinder (_serviceProvider);
+      var finder = new BindableObjectTypeFinder (_serviceProvider.Object);
       MixinConfiguration configuration = finder.GetMixinConfiguration (true);
       Assert.That (configuration.ClassContexts.Count, Is.EqualTo (3));
       Assert.That (configuration.ClassContexts.ContainsExact (typeof (BaseBusinessObjectClass)));
@@ -203,21 +199,21 @@ namespace Remotion.ObjectBinding.UnitTests.Design.BindableObject
       Assert.That (configuration.GetContext (typeof (BaseBusinessObjectClass)).Mixins.ContainsKey (typeof (BindableObjectMixin)));
       Assert.That (configuration.GetContext (typeof (ClassWithIdentity)).Mixins.ContainsKey (typeof (BindableObjectWithIdentityMixin)));
 
-      _mockRepository.VerifyAll ();
+      _serviceProvider.Verify();
+      _typeDiscoveryService.Verify();
     }
 
     [Test]
     public void GetMixinConfiguration_NotIncludeGac ()
     {
-      Expect.Call (_serviceProvider.GetService (typeof (ITypeDiscoveryService))).Return (_typeDiscoveryService);
-      Expect.Call (_typeDiscoveryService.GetTypes (typeof (object), true)).Return (new object[0]);
+      _serviceProvider.Setup (_ => _.GetService (typeof (ITypeDiscoveryService))).Returns (_typeDiscoveryService.Object).Verifiable();
+      _typeDiscoveryService.Setup (_ => _.GetTypes (typeof (object), true)).Returns (new object[0]).Verifiable();
 
-      _mockRepository.ReplayAll ();
-
-      var finder = new BindableObjectTypeFinder (_serviceProvider);
+      var finder = new BindableObjectTypeFinder (_serviceProvider.Object);
       finder.GetMixinConfiguration (false);
 
-      _mockRepository.VerifyAll ();
+      _serviceProvider.Verify();
+      _typeDiscoveryService.Verify();
     }
   }
 }

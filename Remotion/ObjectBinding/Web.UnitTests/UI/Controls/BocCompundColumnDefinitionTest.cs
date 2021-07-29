@@ -15,12 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.ObjectBinding.BusinessObjectPropertyPaths;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting;
 using Remotion.Utilities;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 {
@@ -30,30 +30,30 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     [Test]
     public void GetComparer_WithPropertyPathSet ()
     {
-      var propertyPath0 = MockRepository.GenerateStub<IBusinessObjectPropertyPath>();
-      var propertyPath1 = MockRepository.GenerateStub<IBusinessObjectPropertyPath>();
+      var propertyPath0 = new Mock<IBusinessObjectPropertyPath>();
+      var propertyPath1 = new Mock<IBusinessObjectPropertyPath>();
 
       var column = new BocCompoundColumnDefinition();
-      column.PropertyPathBindings.Add (new PropertyPathBinding (propertyPath0));
-      column.PropertyPathBindings.Add (new PropertyPathBinding (propertyPath1));
+      column.PropertyPathBindings.Add (new PropertyPathBinding (propertyPath0.Object));
+      column.PropertyPathBindings.Add (new PropertyPathBinding (propertyPath1.Object));
 
       var comparer = ((IBocSortableColumnDefinition) column).CreateCellValueComparer();
       Assert.That (comparer, Is.InstanceOf<CompoundComparer<BocListRow>>());
 
       var comparers = ((CompoundComparer<BocListRow>) comparer).Comparers;
       Assert.That (comparers.Count, Is.EqualTo (2));
-      Assert.That (((BusinessObjectPropertyPathBasedComparer) comparers[0]).PropertyPath, Is.SameAs (propertyPath0));
-      Assert.That (((BusinessObjectPropertyPathBasedComparer) comparers[1]).PropertyPath, Is.SameAs (propertyPath1));
+      Assert.That (((BusinessObjectPropertyPathBasedComparer) comparers[0]).PropertyPath, Is.SameAs (propertyPath0.Object));
+      Assert.That (((BusinessObjectPropertyPathBasedComparer) comparers[1]).PropertyPath, Is.SameAs (propertyPath1.Object));
     }
 
     [Test]
     public void GetComparer_WithPropertyPathNull ()
     {
-      var propertyPath1 = MockRepository.GenerateStub<IBusinessObjectPropertyPath>();
+      var propertyPath1 = new Mock<IBusinessObjectPropertyPath>();
 
       var column = new BocCompoundColumnDefinition();
       column.PropertyPathBindings.Add (new PropertyPathBinding());
-      column.PropertyPathBindings.Add (new PropertyPathBinding (propertyPath1));
+      column.PropertyPathBindings.Add (new PropertyPathBinding (propertyPath1.Object));
 
       var comparer = ((IBocSortableColumnDefinition) column).CreateCellValueComparer();
       Assert.That (comparer, Is.InstanceOf<CompoundComparer<BocListRow>>());
@@ -61,7 +61,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       var comparers = ((CompoundComparer<BocListRow>) comparer).Comparers;
       Assert.That (comparers.Count, Is.EqualTo (2));
       Assert.That (((BusinessObjectPropertyPathBasedComparer) comparers[0]).PropertyPath, Is.InstanceOf<NullBusinessObjectPropertyPath>());
-      Assert.That (((BusinessObjectPropertyPathBasedComparer) comparers[1]).PropertyPath, Is.SameAs (propertyPath1));
+      Assert.That (((BusinessObjectPropertyPathBasedComparer) comparers[1]).PropertyPath, Is.SameAs (propertyPath1.Object));
     }
   }
 }

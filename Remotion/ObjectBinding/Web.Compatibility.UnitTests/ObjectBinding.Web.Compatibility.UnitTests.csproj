@@ -16,8 +16,5 @@
     <ProjectReference Include="..\Web.Compatibility\ObjectBinding.Web.Compatibility.csproj" />
     <ProjectReference Include="..\Web\ObjectBinding.Web.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="CoreRhinoMocks" Version="3.6.1.2" PrivateAssets="all" />
-  </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

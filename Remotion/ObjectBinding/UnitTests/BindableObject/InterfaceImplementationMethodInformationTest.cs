@@ -16,35 +16,35 @@
 // 
 using System;
 using System.Reflection;
+using Moq;
 using NUnit.Framework;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.Reflection;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject
 {
   [TestFixture]
   public class InterfaceImplementationMethodInformationTest
   {
-    private IMethodInformation _implementationMethodInformationStub;
-    private IMethodInformation _declarationMethodInformationStub;
+    private Mock<IMethodInformation> _implementationMethodInformationStub;
+    private Mock<IMethodInformation> _declarationMethodInformationStub;
     private InterfaceImplementationMethodInformation _interfaceImplementationMethodInformation;
 
     [SetUp]
     public void SetUp ()
     {
-      _implementationMethodInformationStub = MockRepository.GenerateStub<IMethodInformation>();
-      _declarationMethodInformationStub = MockRepository.GenerateStub<IMethodInformation>();
+      _implementationMethodInformationStub = new Mock<IMethodInformation>();
+      _declarationMethodInformationStub = new Mock<IMethodInformation>();
 
       _interfaceImplementationMethodInformation = new InterfaceImplementationMethodInformation (
-          _implementationMethodInformationStub,
-          _declarationMethodInformationStub);
+          _implementationMethodInformationStub.Object,
+          _declarationMethodInformationStub.Object);
     }
 
     [Test]
     public void Name ()
     {
-      _implementationMethodInformationStub.Stub (stub => stub.Name).Return ("Test");
+      _implementationMethodInformationStub.Setup (stub => stub.Name).Returns ("Test");
 
       Assert.That (_interfaceImplementationMethodInformation.Name, Is.EqualTo ("Test"));
     }
@@ -52,25 +52,25 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void DeclaringType ()
     {
-      var typeInformationStub = MockRepository.GenerateStub<ITypeInformation>();
-      _implementationMethodInformationStub.Stub (stub => stub.DeclaringType).Return (typeInformationStub);
+      var typeInformationStub = new Mock<ITypeInformation>();
+      _implementationMethodInformationStub.Setup (stub => stub.DeclaringType).Returns (typeInformationStub.Object);
 
-      Assert.That (_interfaceImplementationMethodInformation.DeclaringType, Is.SameAs (typeInformationStub));
+      Assert.That (_interfaceImplementationMethodInformation.DeclaringType, Is.SameAs (typeInformationStub.Object));
     }
 
     [Test]
     public void GetOriginalDeclaringType ()
     {
-      var typeInformationStub = MockRepository.GenerateStub<ITypeInformation> ();
-      _implementationMethodInformationStub.Stub (stub => stub.GetOriginalDeclaringType()).Return (typeInformationStub);
+      var typeInformationStub = new Mock<ITypeInformation>();
+      _implementationMethodInformationStub.Setup (stub => stub.GetOriginalDeclaringType()).Returns (typeInformationStub.Object);
 
-      Assert.That (_interfaceImplementationMethodInformation.GetOriginalDeclaringType(), Is.SameAs (typeInformationStub));
+      Assert.That (_interfaceImplementationMethodInformation.GetOriginalDeclaringType(), Is.SameAs (typeInformationStub.Object));
     }
 
     [Test]
     public void GetCustomAttribute ()
     {
-      _implementationMethodInformationStub.Stub (stub => stub.GetCustomAttribute<string> (false)).Return ("Test");
+      _implementationMethodInformationStub.Setup (stub => stub.GetCustomAttribute<string> (false)).Returns ("Test");
 
       Assert.That (_interfaceImplementationMethodInformation.GetCustomAttribute<string> (false), Is.EqualTo ("Test"));
     }
@@ -79,7 +79,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void GetCustomAttributes ()
     {
       var objToReturn = new string[0];
-      _implementationMethodInformationStub.Stub (stub => stub.GetCustomAttributes<string> (false)).Return (objToReturn);
+      _implementationMethodInformationStub.Setup (stub => stub.GetCustomAttributes<string> (false)).Returns (objToReturn);
 
       Assert.That (_interfaceImplementationMethodInformation.GetCustomAttributes<string> (false), Is.SameAs (objToReturn));
     }
@@ -87,7 +87,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void IsDefined ()
     {
-      _implementationMethodInformationStub.Stub (stub => stub.IsDefined<Attribute> (false)).Return (false);
+      _implementationMethodInformationStub.Setup (stub => stub.IsDefined<Attribute> (false)).Returns (false);
 
       Assert.That (_interfaceImplementationMethodInformation.IsDefined<Attribute> (false), Is.False);
     }
@@ -96,7 +96,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void FindInterfaceImplementation ()
     {
       var methodInfoAdapter = MethodInfoAdapter.Create(typeof (object).GetMethod ("ToString"));
-      _implementationMethodInformationStub.Stub (stub => stub.FindInterfaceImplementation (typeof (bool))).Return (methodInfoAdapter);
+      _implementationMethodInformationStub.Setup (stub => stub.FindInterfaceImplementation (typeof (bool))).Returns (methodInfoAdapter);
 
       Assert.That (_interfaceImplementationMethodInformation.FindInterfaceImplementation (typeof (bool)), Is.SameAs (methodInfoAdapter));
     }
@@ -104,14 +104,14 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void FindInterfaceDeclaration ()
     {
-      Assert.That (_interfaceImplementationMethodInformation.FindInterfaceDeclarations(), Is.EqualTo (new[] { _declarationMethodInformationStub }));
+      Assert.That (_interfaceImplementationMethodInformation.FindInterfaceDeclarations(), Is.EqualTo (new[] { _declarationMethodInformationStub.Object }));
     }
 
     [Test]
     public void GetFastInvoker ()
     {
       var objToReturn = (Func<string>) (() => "Test");
-      _declarationMethodInformationStub.Stub (stub => stub.GetFastInvoker (typeof (Func<string>))).Return (objToReturn);
+      _declarationMethodInformationStub.Setup (stub => stub.GetFastInvoker (typeof (Func<string>))).Returns (objToReturn);
 
       var invoker = _interfaceImplementationMethodInformation.GetFastInvoker<Func<string>>();
 
@@ -122,7 +122,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void GetParameters ()
     {
       var objToReturn = new ParameterInfo[0];
-      _implementationMethodInformationStub.Stub (stub => stub.GetParameters()).Return (objToReturn);
+      _implementationMethodInformationStub.Setup (stub => stub.GetParameters()).Returns (objToReturn);
 
       Assert.That (_interfaceImplementationMethodInformation.GetParameters(), Is.SameAs (objToReturn));
     }
@@ -131,7 +131,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void GetOriginalDeclaration ()
     {
       var objToReturn = MethodInfoAdapter.Create(typeof (string).GetMethod ("get_Length"));
-      _implementationMethodInformationStub.Stub (stub => stub.GetOriginalDeclaration ()).Return (objToReturn);
+      _implementationMethodInformationStub.Setup (stub => stub.GetOriginalDeclaration ()).Returns (objToReturn);
 
       Assert.That (_interfaceImplementationMethodInformation.GetOriginalDeclaration (), Is.SameAs (objToReturn));
     }
@@ -140,7 +140,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void FindDeclaringProperty ()
     {
       var objToReturn = PropertyInfoAdapter.Create(typeof (string).GetProperty ("Length"));
-      _implementationMethodInformationStub.Stub (stub => stub.FindDeclaringProperty()).Return (objToReturn);
+      _implementationMethodInformationStub.Setup (stub => stub.FindDeclaringProperty()).Returns (objToReturn);
 
       Assert.That (_interfaceImplementationMethodInformation.FindDeclaringProperty(), Is.SameAs (objToReturn));
     }
@@ -148,7 +148,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void ReturnsType ()
     {
-      _implementationMethodInformationStub.Stub (stub => stub.ReturnType).Return (typeof (bool));
+      _implementationMethodInformationStub.Setup (stub => stub.ReturnType).Returns (typeof (bool));
 
       Assert.That (_interfaceImplementationMethodInformation.ReturnType, Is.SameAs (typeof (bool)));
     }
@@ -158,7 +158,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     {
       var instance = new object();
       var parameters = new object[0];
-      _declarationMethodInformationStub.Stub (stub => stub.Invoke (instance, parameters)).Return ("Test");
+      _declarationMethodInformationStub.Setup (stub => stub.Invoke (instance, parameters)).Returns ("Test");
 
       var result = _interfaceImplementationMethodInformation.Invoke (instance, parameters);
 
@@ -173,38 +173,38 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
 
       Assert.That (
           _interfaceImplementationMethodInformation.Equals (
-              new InterfaceImplementationMethodInformation (_declarationMethodInformationStub, _declarationMethodInformationStub)),
+              new InterfaceImplementationMethodInformation (_declarationMethodInformationStub.Object, _declarationMethodInformationStub.Object)),
           Is.False);
       Assert.That (
           _interfaceImplementationMethodInformation.Equals (
-              new InterfaceImplementationMethodInformation (_implementationMethodInformationStub, _implementationMethodInformationStub)),
+              new InterfaceImplementationMethodInformation (_implementationMethodInformationStub.Object, _implementationMethodInformationStub.Object)),
           Is.False);
       Assert.That (
           _interfaceImplementationMethodInformation.Equals (
-              new InterfaceImplementationMethodInformation (_declarationMethodInformationStub, _implementationMethodInformationStub)),
+              new InterfaceImplementationMethodInformation (_declarationMethodInformationStub.Object, _implementationMethodInformationStub.Object)),
           Is.False);
 
       Assert.That (
           _interfaceImplementationMethodInformation.Equals (
-              new InterfaceImplementationMethodInformation (_implementationMethodInformationStub, _declarationMethodInformationStub)),
+              new InterfaceImplementationMethodInformation (_implementationMethodInformationStub.Object, _declarationMethodInformationStub.Object)),
           Is.True);
     }
 
     [Test]
     public void GetHashcode ()
     {
-      var equalObject = new InterfaceImplementationMethodInformation (_implementationMethodInformationStub, _declarationMethodInformationStub);
+      var equalObject = new InterfaceImplementationMethodInformation (_implementationMethodInformationStub.Object, _declarationMethodInformationStub.Object);
       Assert.That (_interfaceImplementationMethodInformation.GetHashCode(), Is.EqualTo (equalObject.GetHashCode()));
     }
 
     [Test]
     public void To_String ()
     {
-      var typeInformationStub = MockRepository.GenerateStub<ITypeInformation> ();
-      typeInformationStub.Stub (stub => stub.Name).Return ("Boolean");
+      var typeInformationStub = new Mock<ITypeInformation>();
+      typeInformationStub.Setup (stub => stub.Name).Returns ("Boolean");
 
-      _implementationMethodInformationStub.Stub (stub => stub.Name).Return ("Test");
-      _declarationMethodInformationStub.Stub (stub => stub.DeclaringType).Return (typeInformationStub);
+      _implementationMethodInformationStub.Setup (stub => stub.Name).Returns ("Test");
+      _declarationMethodInformationStub.Setup (stub => stub.DeclaringType).Returns (typeInformationStub.Object);
 
       Assert.That (_interfaceImplementationMethodInformation.ToString(), Is.EqualTo ("Test (impl of 'Boolean')"));
     }

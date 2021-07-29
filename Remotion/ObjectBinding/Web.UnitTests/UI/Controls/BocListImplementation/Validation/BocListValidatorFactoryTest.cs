@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Web.UI;
+using Moq;
 using NUnit.Framework;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Validation
 {
@@ -65,22 +65,24 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
     private IBocList GetControl (bool isListEditModeEnabled, bool isRowEditModeActive, bool enableEditModeValidator)
     {
-      var controlMock = MockRepository.GenerateMock<IBocList>();
-      var editModeControllerMock = MockRepository.GenerateMock<IEditModeController>();
-      editModeControllerMock.Expect (c => c.IsListEditModeActive).Return (isListEditModeEnabled);
-      editModeControllerMock.Expect (c => c.IsRowEditModeActive).Return (isRowEditModeActive);
-      editModeControllerMock.Expect (c => c.EnableEditModeValidator).Return (enableEditModeValidator);
-      controlMock.Expect (c => c.EditModeController).Return (editModeControllerMock);
-      controlMock.Expect (c => c.AreOptionalValidatorsEnabled).Return (true);
+      var outValue = "MockValue";
+      var controlMock = new Mock<IBocList>();
+      var editModeControllerMock = new Mock<IEditModeController>();
+      editModeControllerMock.Setup (c => c.IsListEditModeActive).Returns (isListEditModeEnabled).Verifiable();
+      editModeControllerMock.Setup (c => c.IsRowEditModeActive).Returns (isRowEditModeActive).Verifiable();
+      editModeControllerMock.Setup (c => c.EnableEditModeValidator).Returns (enableEditModeValidator).Verifiable();
+      controlMock.Setup (c => c.EditModeController).Returns (editModeControllerMock.Object).Verifiable();
+      controlMock.Setup (c => c.AreOptionalValidatorsEnabled).Returns (true).Verifiable();
 
-      var resourceManagerMock = MockRepository.GenerateMock<IResourceManager>();
-      resourceManagerMock.Expect (r => r.TryGetString (Arg<string>.Is.Anything, out Arg<string>.Out ("MockValue").Dummy))
-          .Return (true);
+      var resourceManagerMock = new Mock<IResourceManager>();
+      resourceManagerMock.Setup (r => r.TryGetString (It.IsAny<string>(), out outValue))
+          .Returns (true)
+          .Verifiable();
 
-      controlMock.Expect (c => c.GetResourceManager()).Return (resourceManagerMock);
-      controlMock.Expect (c => c.TargetControl).Return (new Control() { ID = "ID" });
+      controlMock.Setup (c => c.GetResourceManager()).Returns (resourceManagerMock.Object).Verifiable();
+      controlMock.Setup (c => c.TargetControl).Returns (new Control() { ID = "ID" }).Verifiable();
 
-      return controlMock;
+      return controlMock.Object;
     }
   }
 }

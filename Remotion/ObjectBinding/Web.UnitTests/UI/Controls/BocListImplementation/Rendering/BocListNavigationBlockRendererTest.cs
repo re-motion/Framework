@@ -17,6 +17,7 @@
 using System;
 using System.Globalization;
 using System.Xml;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
@@ -25,7 +26,6 @@ using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering
 {
@@ -44,7 +44,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       _bocListCssClassDefinition = new BocListCssClassDefinition();
 
-      List.Stub (mock => mock.HasNavigator).Return (true);
+      List.Setup (mock => mock.HasNavigator).Returns (true);
     }
 
     [Test]
@@ -53,8 +53,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var currentPageIndex = 0;
       var totalPageCount = 1;
 
-      List.Stub (mock => mock.CurrentPageIndex).Return (currentPageIndex);
-      List.Stub (mock => mock.PageCount).Return (totalPageCount);
+      List.Setup (mock => mock.CurrentPageIndex).Returns (currentPageIndex);
+      List.Setup (mock => mock.PageCount).Returns (totalPageCount);
 
       var renderer = new BocListNavigationBlockRenderer (
           new FakeResourceUrlFactory(),
@@ -92,8 +92,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var currentPageIndex = 0;
       var totalPageCount = 2;
 
-      List.Stub (mock => mock.CurrentPageIndex).Return (currentPageIndex);
-      List.Stub (mock => mock.PageCount).Return (totalPageCount);
+      List.Setup (mock => mock.CurrentPageIndex).Returns (currentPageIndex);
+      List.Setup (mock => mock.PageCount).Returns (totalPageCount);
 
       var renderer = new BocListNavigationBlockRenderer (
           new FakeResourceUrlFactory(),
@@ -132,8 +132,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var currentPageIndex = 1;
       var totalPageCount = 2;
 
-      List.Stub (mock => mock.CurrentPageIndex).Return (currentPageIndex);
-      List.Stub (mock => mock.PageCount).Return (totalPageCount);
+      List.Setup (mock => mock.CurrentPageIndex).Returns (currentPageIndex);
+      List.Setup (mock => mock.PageCount).Returns (totalPageCount);
 
       var renderer = new BocListNavigationBlockRenderer (
           new FakeResourceUrlFactory(),
@@ -172,8 +172,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var currentPageIndex = 3;
       var totalPageCount = 7;
 
-      List.Stub (mock => mock.CurrentPageIndex).Return (currentPageIndex);
-      List.Stub (mock => mock.PageCount).Return (totalPageCount);
+      List.Setup (mock => mock.CurrentPageIndex).Returns (currentPageIndex);
+      List.Setup (mock => mock.PageCount).Returns (totalPageCount);
 
       var renderer = new BocListNavigationBlockRenderer (
           new FakeResourceUrlFactory(),
@@ -212,8 +212,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var currentPageIndex = 3;
       var totalPageCount = 7;
 
-      List.Stub (mock => mock.CurrentPageIndex).Return (currentPageIndex);
-      List.Stub (mock => mock.PageCount).Return (totalPageCount);
+      List.Setup (mock => mock.CurrentPageIndex).Returns (currentPageIndex);
+      List.Setup (mock => mock.PageCount).Returns (totalPageCount);
 
       var renderer = new BocListNavigationBlockRenderer (
           new FakeResourceUrlFactory(),
@@ -231,7 +231,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
     private void AssertManualInputArea (XmlNode manualInputArea, int currentPageIndex, int totalPageCount)
     {
-      var inputID = List.GetCurrentPageControlName().Replace ('$', '_') + "_TextBox";
+      var inputID = List.Object.GetCurrentPageControlName().Replace ('$', '_') + "_TextBox";
 
       var pageInputLabel = Html.GetAssertedChildElement (manualInputArea, "label", 0);
       Html.AssertTextNode (pageInputLabel, c_pageLabelText, 0);
@@ -256,17 +256,17 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
     private void AssertPageIndexHiddenField (XmlNode pageIndexField, int currentPageIndex)
     {
-      var inputID = List.GetCurrentPageControlName().Replace ('$', '_');
+      var inputID = List.Object.GetCurrentPageControlName().Replace ('$', '_');
 
       Html.AssertAttribute (pageIndexField, "value", (currentPageIndex).ToString (CultureInfo.InvariantCulture));
       Html.AssertAttribute (pageIndexField, "id", inputID);
-      Html.AssertAttribute (pageIndexField, "name", List.GetCurrentPageControlName());
+      Html.AssertAttribute (pageIndexField, "name", List.Object.GetCurrentPageControlName());
       Html.AssertAttribute (pageIndexField, "type", "hidden");
     }
 
     private void AssertActiveIcon (XmlNode link, string command, int pageIndex)
     {
-      Html.AssertAttribute (link, "id", List.ClientID + "_Navigation_" + command);
+      Html.AssertAttribute (link, "id", List.Object.ClientID + "_Navigation_" + command);
       Html.AssertAttribute (link, "onclick", string.Format ("let element = document.getElementById('CurrentPageControl_UniqueID');element.value = {0};element.dispatchEvent(new Event('change'));return false;", pageIndex));
       Html.AssertAttribute (link, "href", "#");
 
@@ -276,7 +276,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
     private void AssertInactiveIcon (XmlNode link, string command)
     {
-      Html.AssertAttribute (link, "id", List.ClientID + "_Navigation_" + command);
+      Html.AssertAttribute (link, "id", List.Object.ClientID + "_Navigation_" + command);
       Html.AssertNoAttribute (link, "onclick");
       Html.AssertNoAttribute (link, "href");
 
@@ -287,7 +287,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     private BocListRenderingContext CreateRenderingContext ()
     {
       var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create (null, null, null);
-      return new BocListRenderingContext (HttpContext, Html.Writer, List, businessObjectWebServiceContext, new BocColumnRenderer[0]);
+      return new BocListRenderingContext (HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, new BocColumnRenderer[0]);
     }
   }
 }
