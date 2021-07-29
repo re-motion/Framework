@@ -148,7 +148,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </remarks>
     public virtual string CssClassReadOnly
     {
-      get { return "readOnly"; }
+      get { return CssClassDefinition.ReadOnly; }
     }
 
     /// <summary> Gets the CSS-Class applied to the <see cref="IBocRenderableControl"/> when it is displayed disabled. </summary>
@@ -158,7 +158,29 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </remarks>
     public virtual string CssClassDisabled
     {
-      get { return "disabled"; }
+      get { return CssClassDefinition.Disabled; }
+    }
+
+    /// <summary>
+    /// Gets the CSS-Class applied to the <see cref="IBocRenderableControl"/> when itself and child elements
+    /// that are standard browser controls (e.g. input elements) should be styled in the current theme.
+    /// </summary>
+    /// <remarks> 
+    ///   <para> Class: <c>remotion-themed</c>. </para>
+    ///   <para> Applied in addition to the regular CSS-Class.</para>
+    /// </remarks>
+    public virtual string CssClassThemed
+    {
+      get { return CssClassDefinition.Themed; }
+    }
+
+    /// <summary>
+    /// Gets whether the control establishes a theming context which automatically styles standard browser controls (e.g. input elements)
+    /// in the current theme. <see langword="false" /> by default. Derived classes may override this behavior. 
+    /// </summary>
+    protected virtual bool UseThemingContext
+    {
+      get { return false; }
     }
 
     private void OverrideCssClass (RenderingContext<TControl> renderingContext, out string backUpCssClass, out string backUpAttributeCssClass)
@@ -190,10 +212,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       var additionalCssClass = string.Empty;
 
+      if (UseThemingContext)
+        additionalCssClass += " " + CssClassThemed;
+
       if (isReadOnly)
-        additionalCssClass = " " + CssClassReadOnly;
+        additionalCssClass += " " + CssClassReadOnly;
       else if (isDisabled)
-        additionalCssClass = " " + CssClassDisabled;
+        additionalCssClass += " " + CssClassDisabled;
 
       return additionalCssClass;
     }

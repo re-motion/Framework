@@ -156,7 +156,7 @@ namespace Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering
 
     public string CssClassDisabled
     {
-      get { return "disabled"; }
+      get { return CssClassDefinition.Disabled; }
     }
 
     protected Unit PopUpWidth
