@@ -494,7 +494,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
 
     protected string CssClassDisabled
     {
-      get { return "disabled"; }
+      get { return CssClassDefinition.Disabled; }
     }
   }
 }
