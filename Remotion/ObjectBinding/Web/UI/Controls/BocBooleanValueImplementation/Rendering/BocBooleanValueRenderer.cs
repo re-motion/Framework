@@ -90,6 +90,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       var scriptUrl = ResourceUrlFactory.CreateResourceUrl (typeof (BocBooleanValueRenderer), ResourceType.Html, "BocBooleanValue.js");
       htmlHeadAppender.RegisterJavaScriptInclude (scriptFileKey, scriptUrl);
 
+      htmlHeadAppender.RegisterCommonStyleSheet();
+
       string styleFileKey = typeof (BocBooleanValueRenderer).GetFullNameChecked() + "_Style";
       var styleUrl = ResourceUrlFactory.CreateThemedResourceUrl (typeof (BocBooleanValueRenderer), ResourceType.Html, "BocBooleanValue.css");
       htmlHeadAppender.RegisterStylesheetLink (styleFileKey, styleUrl, HtmlHeadAppender.Priority.Library);

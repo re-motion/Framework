@@ -46,6 +46,8 @@ namespace Remotion.Web.UI.Controls.WebTreeViewImplementation.Rendering
       var scriptFileUrl = ResourceUrlFactory.CreateResourceUrl (typeof (WebTreeViewRenderer), ResourceType.Html, "TreeView.js");
       htmlHeadAppender.RegisterJavaScriptInclude (scriptFileKey, scriptFileUrl);
 
+      htmlHeadAppender.RegisterCommonStyleSheet();
+
       string styleKey = typeof (WebTreeViewRenderer).GetFullNameChecked() + "_Style";
       var styleSheetUrl = ResourceUrlFactory.CreateThemedResourceUrl (typeof (WebTreeViewRenderer), ResourceType.Html, "TreeView.css");
       htmlHeadAppender.RegisterStylesheetLink (styleKey, styleSheetUrl, HtmlHeadAppender.Priority.Library);
