@@ -56,6 +56,8 @@ namespace Remotion.Web.UI.Controls.TabbedMultiViewImplementation.Rendering
 
       htmlHeadAppender.RegisterUtilitiesJavaScriptInclude();
 
+      htmlHeadAppender.RegisterCommonStyleSheet();
+
       string keyStyle = typeof (TabbedMultiViewRenderer).GetFullNameChecked() + "_Style";
       var styleSheetUrl = ResourceUrlFactory.CreateThemedResourceUrl (typeof (TabbedMultiViewRenderer), ResourceType.Html, "TabbedMultiView.css");
       htmlHeadAppender.RegisterStylesheetLink (keyStyle, styleSheetUrl, HtmlHeadAppender.Priority.Library);

@@ -1231,6 +1231,8 @@ namespace Remotion.Web.UI.Controls
 
       NamingContainer.Load += new EventHandler(NamingContainer_Load);
 
+      HtmlHeadAppender.Current.RegisterCommonStyleSheet();
+
       string key = typeof (FormGridManager).GetFullNameChecked() + "_Style";
       if (!HtmlHeadAppender.Current.IsRegistered (key))
       {

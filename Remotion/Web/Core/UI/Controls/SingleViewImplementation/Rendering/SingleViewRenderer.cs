@@ -48,6 +48,8 @@ namespace Remotion.Web.UI.Controls.SingleViewImplementation.Rendering
 
       htmlHeadAppender.RegisterUtilitiesJavaScriptInclude();
 
+      htmlHeadAppender.RegisterCommonStyleSheet();
+
       string keyStyle = typeof (SingleViewRenderer).GetFullNameChecked() + "_Style";
 
       var styleSheetUrl = ResourceUrlFactory.CreateThemedResourceUrl (typeof (SingleViewRenderer), ResourceType.Html, "SingleView.css");

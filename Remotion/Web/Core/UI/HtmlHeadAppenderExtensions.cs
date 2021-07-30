@@ -71,6 +71,17 @@ namespace Remotion.Web.UI
       htmlHeadAppender.RegisterStylesheetLink (key, url, HtmlHeadAppender.Priority.Page);
     }
 
+    /// <summary>
+    /// Registers Common.css in themed HTML folder of Remotion.Web.dll with priority level <see cref="HtmlHeadAppender.Priority.Library"/>.
+    /// </summary>
+    public static void RegisterCommonStyleSheet (this HtmlHeadAppender htmlHeadAppender)
+    {
+      var key = typeof (HtmlHeadContents).GetFullNameChecked() + "_CommonStyle";
+      var url = ResourceUrlFactory.CreateThemedResourceUrl (typeof (HtmlHeadContents), ResourceType.Html, "Common.css");
+
+      htmlHeadAppender.RegisterStylesheetLink (key, url, HtmlHeadAppender.Priority.Library);
+    }
+
     private static IResourceUrlFactory ResourceUrlFactory
     {
       get { return SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>(); }
