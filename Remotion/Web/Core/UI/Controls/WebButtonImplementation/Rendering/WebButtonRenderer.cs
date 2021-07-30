@@ -46,6 +46,8 @@ namespace Remotion.Web.UI.Controls.WebButtonImplementation.Rendering
       var scriptUrl = ResourceUrlFactory.CreateResourceUrl (typeof (WebButtonRenderer), ResourceType.Html, "WebButton.js");
       htmlHeadAppender.RegisterJavaScriptInclude (scriptKey, scriptUrl);
 
+      htmlHeadAppender.RegisterCommonStyleSheet();
+
       string styleKey = typeof (WebButtonRenderer).GetFullNameChecked() + "_Style";
       var styleUrl = ResourceUrlFactory.CreateThemedResourceUrl (typeof (WebButtonRenderer), ResourceType.Html, "WebButton.css");
       htmlHeadAppender.RegisterStylesheetLink (styleKey, styleUrl, HtmlHeadAppender.Priority.Library);
