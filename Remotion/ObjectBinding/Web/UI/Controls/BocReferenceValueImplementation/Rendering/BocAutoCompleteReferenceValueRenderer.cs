@@ -144,6 +144,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     private void RegisterStylesheets (HtmlHeadAppender htmlHeadAppender)
     {
+      htmlHeadAppender.RegisterCommonStyleSheet();
+
       string styleKey = typeof (BocAutoCompleteReferenceValueRenderer).GetFullNameChecked() + "_Style";
       htmlHeadAppender.RegisterStylesheetLink (
           styleKey,
