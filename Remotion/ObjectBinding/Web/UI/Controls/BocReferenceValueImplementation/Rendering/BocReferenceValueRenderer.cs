@@ -124,6 +124,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     private void RegisterStylesheets (HtmlHeadAppender htmlHeadAppender)
     {
+      htmlHeadAppender.RegisterCommonStyleSheet();
+
       string styleFileKey = typeof (BocReferenceValueRenderer).GetFullNameChecked() + "_Style";
       var styleUrl = ResourceUrlFactory.CreateThemedResourceUrl (typeof (BocReferenceValueRenderer), ResourceType.Html, "BocReferenceValue.css");
       htmlHeadAppender.RegisterStylesheetLink (styleFileKey, styleUrl, HtmlHeadAppender.Priority.Library);

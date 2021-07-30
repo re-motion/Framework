@@ -184,6 +184,7 @@
       <Link>remotion.snk</Link>
     </None>
     <Content Include="packages.config" />
+    <None Include="NovaViso.html" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>

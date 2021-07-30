@@ -1,0 +1,117 @@
+:root
+{
+  --color-primary: #0C6594;
+  --color-primary-highlight: #218FC9;
+  --color-highlight: #DEF3FE;
+  --color-contrast-separator: #C4C4C4;
+  --color-standard-separator: #E1E1E1;
+  --color-contrast: #F2F2F2;
+  --color-contrast-background: #F9F9F9;
+  --color-standard-border: #979797;
+  --color-indicator-error: #DA2222;
+  --color-indicator-warning: #DFAF00;
+  --color-indicator-success: #4AD439;
+  --color-indicator-normal: #23ADF8;
+
+  --color-popup-scrollbar-track: #E3E3E3;
+  --color-standard-scrollbar-track: #D3D3D3D3;
+  --color-standard-background: #FFFFFF;
+
+  --remotion-themed-border-radius: 2px;
+  --remotion-themed-border-width: 1px;
+  --remotion-themed-border: var(--remotion-themed-border-width) solid var(--color-standard-border);
+  --remotion-themed-border-focus: var(--remotion-themed-border-width) solid var(--color-primary);
+  --remotion-themed-dropdown-scrollbar-border-radius: 10px;
+  --remotion-themed-dropdown-scrollbar-width: 10px;
+  --remotion-themed-scrollbar-width: 14px;
+}
+
+input.remotion-themed,
+textarea.remotion-themed,
+select.remotion-themed,
+.remotion-themed input,
+.remotion-themed textarea,
+.remotion-themed select
+{
+  border: var(--remotion-themed-border);
+  border-radius: var(--remotion-themed-border-radius);
+}
+
+input.remotion-themed:hover,
+textarea.remotion-themed:hover,
+select.remotion-themed:hover,
+.remotion-themed input:hover,
+.remotion-themed textarea:hover,
+.remotion-themed select:hover
+{
+  border: var(--remotion-themed-border-focus);
+  outline-style: none;
+}
+
+input.remotion-themed:focus,
+textarea.remotion-themed:focus,
+select.remotion-themed:focus,
+.remotion-themed input:focus,
+.remotion-themed textarea:focus,
+.remotion-themed select:focus
+{
+  border: var(--remotion-themed-border-focus);
+  outline-style: none;
+  background-color: var(--color-highlight);
+}
+
+select option
+{
+  background-color: var(--color-standard-background);
+}
+
+input.remotion-themed:disabled,
+textarea.remotion-themed:disabled,
+select.remotion-themed:disabled,
+.remotion-themed input:disabled,
+.remotion-themed textarea:disabled,
+.remotion-themed select:disabled
+{
+  border: var(--remotion-themed-border);
+  outline-style: none;
+}
+
+a.remotion-themed,
+.remotion-themed a
+{
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+a.remotion-themed:hover,
+.remotion-themed a:hover
+{
+  outline: none;
+}
+
+a.remotion-themed:focus,
+.remotion-themed a:focus
+{
+  text-decoration: underline;
+  outline: none;
+}
+
+select.remotion-themed::-webkit-scrollbar,
+.remotion-themed select::-webkit-scrollbar
+{
+  width: var(--remotion-themed-dropdown-scrollbar-width);
+}
+
+select.remotion-themed::-webkit-scrollbar-track,
+.remotion-themed select::-webkit-scrollbar-track
+{
+  background-color: var(--color-popup-scrollbar-track);
+  border-radius: var(--remotion-themed-dropdown-scrollbar-border-radius);
+}
+
+select.remotion-themed::-webkit-scrollbar-thumb,
+.remotion-themed select::-webkit-scrollbar-thumb
+{
+  background-color: var(--color-primary);
+  border-radius: var(--remotion-themed-dropdown-scrollbar-border-radius);
+}

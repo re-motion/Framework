@@ -70,6 +70,8 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
 
     private void RegisterStyleSheets ()
     {
+      HtmlHeadAppender.Current.RegisterCommonStyleSheet();
+
       var globalStyleFileUrl = ResourceUrlFactory.CreateThemedResourceUrl (typeof (BasePage), ResourceType.Html, c_globalStyleFileUrl);
       HtmlHeadAppender.Current.RegisterStylesheetLink (c_globalStyleFileKey, globalStyleFileUrl, HtmlHeadAppender.Priority.Library);
 
