@@ -44,6 +44,9 @@ namespace Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
       ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+
+      htmlHeadAppender.RegisterCommonStyleSheet();
+
       string key = typeof (TabbedMenuRenderer).GetFullNameChecked() + "_Style";
       var url = ResourceUrlFactory.CreateThemedResourceUrl (typeof (TabbedMenuRenderer), ResourceType.Html, "TabbedMenu.css");
       htmlHeadAppender.RegisterStylesheetLink (key, url, HtmlHeadAppender.Priority.Library);

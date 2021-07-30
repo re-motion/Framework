@@ -542,6 +542,7 @@
     <Content Include="CssIncludeTest.aspx" />
     <Content Include="UpdatePanelTests\UpdatePanelMasterPage.Master" />
     <Content Include="packages.config" />
+    <None Include="NovaViso.html" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="res\" />

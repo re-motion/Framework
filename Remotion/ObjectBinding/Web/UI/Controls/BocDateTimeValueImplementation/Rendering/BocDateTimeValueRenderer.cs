@@ -97,6 +97,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
 
       RegisterBrowserCompatibilityScript (htmlHeadAppender);
 
+      htmlHeadAppender.RegisterCommonStyleSheet();
+
       string styleKey = typeof (BocDateTimeValueRenderer).GetFullNameChecked() + "_Style";
       var styleFile = ResourceUrlFactory.CreateThemedResourceUrl (typeof (BocDateTimeValueRenderer), ResourceType.Html, "BocDateTimeValue.css");
       htmlHeadAppender.RegisterStylesheetLink (styleKey, styleFile, HtmlHeadAppender.Priority.Library);
