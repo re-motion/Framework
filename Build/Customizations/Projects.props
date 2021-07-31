@@ -117,6 +117,9 @@
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Mixins\UnitTests\Mixins.UnitTests.csproj">
       <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Mixins\Samples\Mixins.Samples.csproj">
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
+    </UnitTestProjectFiles>
 
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Globalization\Core\Globalization.Core.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Globalization\ExtensibleEnums\Globalization.ExtensibleEnums.csproj"/>
