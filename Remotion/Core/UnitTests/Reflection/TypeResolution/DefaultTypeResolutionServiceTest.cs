@@ -191,13 +191,28 @@ namespace Remotion.UnitTests.Reflection.TypeResolution
     }
 
     [Test]
-    public void GetPathOfAssembly_WithValidAssemblyName_ReturnsCodeBase ()
+    public void GetPathOfAssembly_WithValidAssemblyName_ReturnsLocationBeforeShadowCopy ()
     {
       var service = CreateTypeResolutionService();
 
       var assembly = typeof (string).Assembly;
-      Assert.That (assembly.CodeBase, Is.Not.Null);
-      Assert.That (service.GetPathOfAssembly (assembly.GetName()), Is.EqualTo (assembly.CodeBase));
+
+      // Shadow Copying is only supported in .NET Framework.
+      // Given that we are using mscorlib.dll, we may assume the assembly is never shadow copied and thus Assembly.Location and Assembly.CodeBase are equal
+
+      Assert.That (assembly.Location, Is.Not.Null);
+      Assert.That (service.GetPathOfAssembly (assembly.GetName()), Is.EqualTo (assembly.Location));
+    }
+
+    [Test]
+#if !NETFRAMEWORK
+    [Ignore ("TODO RM-7799: Create out-of-process test infrastructure to replace tests done with app domains")]
+#endif
+    public void GetPathOfAssembly_WithHashInDirectoryName ()
+    {
+      // See Remotion.Data.DomainObjects.UnitTests.Utilities.ReflectionUtilityTest
+#if NETFRAMEWORK
+#endif
     }
 
     [Test]

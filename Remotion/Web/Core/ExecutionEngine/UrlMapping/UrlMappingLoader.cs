@@ -127,9 +127,9 @@ namespace Remotion.Web.ExecutionEngine.UrlMapping
 
     private string GetExecutingAssemblyPath ()
     {
-      AssemblyName assemblyName = Assembly.GetExecutingAssembly ().GetName ();
+      AssemblyName assemblyName = Assembly.GetExecutingAssembly ().GetName (copiedName: false);
 
-      Uri codeBaseUri = new Uri (assemblyName.CodeBase);
+      Uri codeBaseUri = new Uri (assemblyName.EscapedCodeBase);
       return Path.GetDirectoryName (codeBaseUri.LocalPath);
     }
   }

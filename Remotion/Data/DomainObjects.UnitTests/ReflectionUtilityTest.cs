@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.Mapping;
@@ -61,6 +60,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 #endif
     public void GetAssemblyPath_WithHashInDirectoryName ()
     {
+#if NETFRAMEWORK
       string directoryPath = Path.Combine (AppContext.BaseDirectory, "#HashTestPath");
       string originalAssemblyPath = typeof (ReflectionUtilityTest).Assembly.Location;
       string newAssemblyPath = Path.Combine (directoryPath, Path.GetFileName (originalAssemblyPath));
@@ -89,6 +89,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       {
         Directory.Delete (directoryPath, true);
       }
+#endif
     }
 
     [Test]
@@ -96,8 +97,10 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       MockRepository mockRepository = new MockRepository();
       Assembly assemblyMock = mockRepository.StrictMock<FakeAssembly>();
+      AssemblyName fakeAssemblyName = new AssemblyName();
+      fakeAssemblyName.CodeBase = "http://server/File.ext";
 
-      SetupResult.For (assemblyMock.EscapedCodeBase).Return ("http://server/File.ext");
+      SetupResult.For (assemblyMock.GetName (false)).Return (fakeAssemblyName);
       mockRepository.ReplayAll();
       Assert.That (
           () => ReflectionUtility.GetAssemblyDirectory (assemblyMock),
@@ -110,7 +113,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       Assert.That (
           ReflectionUtility.GetConfigFileDirectory(),
-          Is.EqualTo (Path.GetDirectoryName (new Uri (typeof (DomainObject).Assembly.EscapedCodeBase).AbsolutePath)));
+          Is.EqualTo (TestContext.CurrentContext.TestDirectory));
     }
 
     [Test]
@@ -513,7 +516,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     /// <remarks>
     /// Castle does not support creating a proxy for <see cref="Assembly"/> directly ("The type System.Reflection.Assembly implements ISerializable,
     /// but failed to provide a deserialization constructor"), thus this type is required. <see cref="Assembly"/> defines the needed property
-    /// <see cref="Assembly.get_EscapedCodeBase"/> as virtual, allowing the type to be
+    /// <see cref="Assembly.GetName(bool)"/> as virtual, allowing the type to be
     /// mocked for our purpose.
     /// </remarks>
     public class FakeAssembly : Assembly

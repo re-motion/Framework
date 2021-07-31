@@ -89,7 +89,23 @@ namespace Remotion.Reflection.TypeResolution
       var assembly = GetAssembly (name, throwOnError: false);
       if (assembly == null)
         return null;
-      return assembly.CodeBase;
+
+      var assemblyNameWithoutShadowCopy = assembly.GetName (copiedName: false);
+      var escapedCodeBase = assemblyNameWithoutShadowCopy.EscapedCodeBase;
+      if (escapedCodeBase == null)
+        return null;
+
+      var codeBaseUri = new Uri (escapedCodeBase);
+      if (codeBaseUri.IsFile)
+      {
+        return codeBaseUri.LocalPath;
+      }
+      else
+      {
+        // Assembly has been loaded from remote location.
+        // This scenario cannot be tested.
+        return codeBaseUri.OriginalString;
+      }
     }
   }
 }
