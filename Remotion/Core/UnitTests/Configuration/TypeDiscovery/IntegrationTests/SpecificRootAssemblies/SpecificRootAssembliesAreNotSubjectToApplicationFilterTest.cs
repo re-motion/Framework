@@ -25,15 +25,15 @@ namespace Remotion.UnitTests.Configuration.TypeDiscovery.IntegrationTests.Specif
   [TestFixture]
   public class SpecificRootAssembliesAreNotSubjectToApplicationFilterTest
   {
-    private const string _xmlFragmentWithMscorlibByName = @"<typeDiscovery mode=""SpecificRootAssemblies"" xmlns=""..."">
+    private const string c_xmlFragmentWithMscorlibByName = @"<typeDiscovery mode=""SpecificRootAssemblies"" xmlns=""..."">
         <specificRootAssemblies>
           <byName>
-            <include name=""mscorlib""/>
+            <include name=""Moq""/>
           </byName>
         </specificRootAssemblies>
       </typeDiscovery>";
 
-    private static readonly string _xmlFragmentWithAssemblyByFilePattern =
+    private static readonly string s_xmlFragmentWithAssemblyByFilePattern =
         @"<typeDiscovery mode=""SpecificRootAssemblies"" xmlns=""..."">
         <specificRootAssemblies>
           <byFile>
@@ -45,12 +45,12 @@ namespace Remotion.UnitTests.Configuration.TypeDiscovery.IntegrationTests.Specif
     [Test]
     public void Deserialization_SpecificRootAssemblies_ByName ()
     {
-      var section = Deserialize (_xmlFragmentWithMscorlibByName);
+      var section = Deserialize (c_xmlFragmentWithMscorlibByName);
 
       var service = section.CreateTypeDiscoveryService();
       
       var types = service.GetTypes (null, false);
-      Assert.That (types, Has.Member (typeof (object)));
+      Assert.That (types, Has.Member (typeof (Moq.Capture)));
     }
 
     [Test]
@@ -59,7 +59,7 @@ namespace Remotion.UnitTests.Configuration.TypeDiscovery.IntegrationTests.Specif
       ApplicationAssemblyLoaderFilter.Instance.AddIgnoredAssembly (GetTestAssemblyName());
       try
       {
-        var section = Deserialize (_xmlFragmentWithAssemblyByFilePattern);
+        var section = Deserialize (s_xmlFragmentWithAssemblyByFilePattern);
 
         var service = section.CreateTypeDiscoveryService ();
 

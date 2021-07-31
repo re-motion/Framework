@@ -143,9 +143,9 @@ namespace Remotion.UnitTests.Utilities
     public void TestGetType_WithGenericAbbreviatedClosedNestedGenericType ()
     {
       Type t = TypeUtility.GetType (
-          "Remotion.UnitTests::Utilities.TypeUtilityTests+NestedGenericType`1[Remotion.UnitTests::Utilities.TypeUtilityTests+NestedGenericType`1[[System.Int32, mscorlib]]]",
+          "Remotion.UnitTests::Utilities.TypeUtilityTests+NestedGenericType`1[Remotion.UnitTests::Utilities.TypeUtilityTests+NestedGenericType`1[[NUnit.Framework.TestAttribute, nunit.framework]]]",
           true);
-      Assert.That (t, Is.EqualTo (typeof (NestedGenericType<NestedGenericType<int>>)));
+      Assert.That (t, Is.EqualTo (typeof (NestedGenericType<NestedGenericType<TestAttribute>>)));
     }
 
     [Test]
@@ -166,9 +166,9 @@ namespace Remotion.UnitTests.Utilities
     public void TestGetType_WithClosedNestedGenericNestedGenericType ()
     {
       Type t = TypeUtility.GetType (
-          "Remotion.UnitTests::Utilities.TypeUtilityTests+NestedGenericType`1+NestedGenericNestedGenericType`1[[System.Int32, mscorlib], [System.Double, mscorlib]]",
+          "Remotion.UnitTests::Utilities.TypeUtilityTests+NestedGenericType`1+NestedGenericNestedGenericType`1[[NUnit.Framework.TestAttribute, nunit.framework], [NUnit.Framework.TestCaseData, nunit.framework]]",
           true);
-      Assert.That (t, Is.EqualTo (typeof (NestedGenericType<int>.NestedGenericNestedGenericType<double>)));
+      Assert.That (t, Is.EqualTo (typeof (NestedGenericType<TestAttribute>.NestedGenericNestedGenericType<TestCaseData>)));
     }
 
     [Test]
@@ -245,36 +245,41 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void GetAbbreviatedTypeName_WithoutSubNamespaceAndWithoutVersionAndCulture ()
     {
-      string name = TypeUtility.GetAbbreviatedTypeName (typeof (Uri), false);
-      Assert.That (name, Is.EqualTo ("System::Uri"));
+      var type = typeof (Moq.Capture);
+      string name = TypeUtility.GetAbbreviatedTypeName (type, false);
+      Assert.That (name, Is.EqualTo ("Moq::Capture"));
     }
 
     [Test]
     public void GetAbbreviatedTypeName_WithoutSubNamespaceAndWithVersionAndCulture ()
     {
-      string name = TypeUtility.GetAbbreviatedTypeName (typeof (Uri), true);
-      Assert.That (name, Is.EqualTo ("System::Uri" + typeof (Uri).Assembly.FullName.Replace ("System", string.Empty)));
+      var type = typeof (Moq.Capture);
+      string name = TypeUtility.GetAbbreviatedTypeName (type, true);
+      Assert.That (name, Is.EqualTo ("Moq::Capture" + type.Assembly.FullName.Replace ("Moq", string.Empty)));
     }
 
     [Test]
     public void GetAbbreviatedTypeName_WithSubNamespaceAndWithoutVersionAndCulture ()
     {
-      string name = TypeUtility.GetAbbreviatedTypeName (typeof (Timer), false);
-      Assert.That (name, Is.EqualTo ("System::Timers.Timer"));
+      var type = typeof (Moq.Language.ICallback);
+      string name = TypeUtility.GetAbbreviatedTypeName (type, false);
+      Assert.That (name, Is.EqualTo ("Moq::Language.ICallback"));
     }
 
     [Test]
     public void GetAbbreviatedTypeName_WithSubNamespaceAndWithVersionAndCulture ()
     {
-      string name = TypeUtility.GetAbbreviatedTypeName (typeof (Timer), true);
-      Assert.That (name, Is.EqualTo ("System::Timers.Timer" + typeof (Timer).Assembly.FullName.Replace ("System", string.Empty)));
+      var type = typeof (Moq.Language.ICallback);
+      string name = TypeUtility.GetAbbreviatedTypeName (type, true);
+      Assert.That (name, Is.EqualTo ("Moq::Language.ICallback" + type.Assembly.FullName.Replace ("Moq", string.Empty)));
     }
 
     [Test]
     public void GetAbbreviatedTypeName_WithoutAbbreviate ()
     {
-      string name = TypeUtility.GetAbbreviatedTypeName (typeof (Hashtable), false);
-      Assert.That (name, Is.EqualTo ("System.Collections.Hashtable, mscorlib"));
+      var type = typeof (NUnit.Framework.Constraints.AllOperator);
+      string name = TypeUtility.GetAbbreviatedTypeName (type, false);
+      Assert.That (name, Is.EqualTo ("NUnit.Framework.Constraints.AllOperator, nunit.framework"));
     }
 
     [Test]
@@ -315,15 +320,15 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void GetAbbreviatedTypeName_WithClosedNestedGenericType ()
     {
-      string name = TypeUtility.GetAbbreviatedTypeName (typeof (NestedGenericType<int>), false);
-      Assert.That(name, Is.EqualTo ("Remotion.UnitTests::Utilities.TypeUtilityTests+NestedGenericType`1[[System.Int32, mscorlib]]"));
+      string name = TypeUtility.GetAbbreviatedTypeName (typeof (NestedGenericType<TestAttribute>), false);
+      Assert.That(name, Is.EqualTo ("Remotion.UnitTests::Utilities.TypeUtilityTests+NestedGenericType`1[[NUnit.Framework.TestAttribute, nunit.framework]]"));
     }
 
     [Test]
     public void GetAbbreviatedTypeName_WithGenericAbbreviatedClosedNestedGenericType ()
     {
-      string name = TypeUtility.GetAbbreviatedTypeName (typeof (NestedGenericType<NestedGenericType<int>>), false);
-      Assert.That(name, Is.EqualTo ("Remotion.UnitTests::Utilities.TypeUtilityTests+NestedGenericType`1[Remotion.UnitTests::Utilities.TypeUtilityTests+NestedGenericType`1[[System.Int32, mscorlib]]]"));
+      string name = TypeUtility.GetAbbreviatedTypeName (typeof (NestedGenericType<NestedGenericType<TestAttribute>>), false);
+      Assert.That(name, Is.EqualTo ("Remotion.UnitTests::Utilities.TypeUtilityTests+NestedGenericType`1[Remotion.UnitTests::Utilities.TypeUtilityTests+NestedGenericType`1[[NUnit.Framework.TestAttribute, nunit.framework]]]"));
     }
 
 
@@ -337,8 +342,8 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void GetAbbreviatedTypeName_WithClosedNestedGenericNestedType ()
     {
-      string name = TypeUtility.GetAbbreviatedTypeName (typeof (NestedGenericType<int>.NestedGenericNestedType), false);
-      Assert.That(name, Is.EqualTo ("Remotion.UnitTests::Utilities.TypeUtilityTests+NestedGenericType`1+NestedGenericNestedType[[System.Int32, mscorlib]]"));
+      string name = TypeUtility.GetAbbreviatedTypeName (typeof (NestedGenericType<TestAttribute>.NestedGenericNestedType), false);
+      Assert.That(name, Is.EqualTo ("Remotion.UnitTests::Utilities.TypeUtilityTests+NestedGenericType`1+NestedGenericNestedType[[NUnit.Framework.TestAttribute, nunit.framework]]"));
     }
 
     [Test]
@@ -351,8 +356,8 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void GetAbbreviatedTypeName_WithClosedNestedGenericNestedGenericType ()
     {
-      string name = TypeUtility.GetAbbreviatedTypeName (typeof (NestedGenericType<int>.NestedGenericNestedGenericType<double>), false);
-      Assert.That(name, Is.EqualTo ("Remotion.UnitTests::Utilities.TypeUtilityTests+NestedGenericType`1+NestedGenericNestedGenericType`1[[System.Int32, mscorlib], [System.Double, mscorlib]]"));
+      string name = TypeUtility.GetAbbreviatedTypeName (typeof (NestedGenericType<TestAttribute>.NestedGenericNestedGenericType<TestCaseData>), false);
+      Assert.That(name, Is.EqualTo ("Remotion.UnitTests::Utilities.TypeUtilityTests+NestedGenericType`1+NestedGenericNestedGenericType`1[[NUnit.Framework.TestAttribute, nunit.framework], [NUnit.Framework.TestCaseData, nunit.framework]]"));
     }
 
     private void AssertTransformation(string abbreviatedName, string fullName)

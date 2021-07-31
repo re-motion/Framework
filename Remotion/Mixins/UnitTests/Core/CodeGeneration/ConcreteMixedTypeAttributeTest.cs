@@ -46,7 +46,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
                   typeof (BT1Mixin1),
                   MemberVisibility.Private,
                   Enumerable.Empty<Type>(),
-                  new MixinContextOrigin ("some kind", typeof (object).Assembly, "some location")
+                  new MixinContextOrigin ("some kind", typeof (TestAttribute).Assembly, "some location")
               )
           },
           Enumerable.Empty<Type> ());

@@ -32,7 +32,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
               MixinKind.Used, 
               MemberVisibility.Private, 
               new Type[0],
-              new object[] { "some kind", "mscorlib", "some location" }
+              new object[] { "some kind", "nunit.framework", "some location" }
           }
         }, 
         new Type[0] 
