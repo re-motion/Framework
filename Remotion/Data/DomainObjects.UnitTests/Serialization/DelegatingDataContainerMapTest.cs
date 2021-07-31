@@ -19,6 +19,7 @@ using System.Runtime.Serialization;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Serialization
@@ -26,6 +27,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
   [TestFixture]
   public class DelegatingDataContainerMapTest : ClientTransactionBaseTest
   {
+    public override void SetUp ()
+    {
+      base.SetUp();
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
+    }
+
     [Test]
     public void DataContainerMapIsNotSerializable ()
     {

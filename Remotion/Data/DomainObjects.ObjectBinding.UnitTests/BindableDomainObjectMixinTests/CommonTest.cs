@@ -17,6 +17,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Remotion.ObjectBinding;
 
@@ -34,6 +35,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     [Test]
     public void SerializeAndDeserialize ()
     {
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
+
       SampleBindableMixinDomainObject value = SampleBindableMixinDomainObject.NewObject ();
       Assert.That (value.Name, Is.Not.EqualTo ("Earl"));
       value.Name = "Earl";
@@ -49,6 +52,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     [Test]
     public void SerializeAndDeserialize_WithNewBindableObjectProvider ()
     {
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
+
       SampleBindableMixinDomainObject value = SampleBindableMixinDomainObject.NewObject ();
       byte[] serialized = Serializer.Serialize (Tuple.Create (TestableClientTransaction, value));
       BusinessObjectProvider.SetProvider (typeof (BindableDomainObjectProviderAttribute), null);

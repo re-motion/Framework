@@ -22,6 +22,7 @@ using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoi
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
@@ -145,6 +146,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void Serialization ()
     {
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
+
       var instance = new DomainObjectCollectionEndPointCollectionProvider (new SerializableAssociatedDomainObjectCollectionDataStrategyFactoryFake ());
 
       var deserializedInstance = Serializer.SerializeAndDeserialize (instance);

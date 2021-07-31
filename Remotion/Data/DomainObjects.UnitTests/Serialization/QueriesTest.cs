@@ -15,24 +15,31 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.IO;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.Development;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
+using Remotion.Development.NUnit.UnitTesting;
+using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Serialization
 {
   [TestFixture]
-  public class QueriesTest : SerializationBaseTest
+  public class QueriesTest : ClientTransactionBaseTest
   {
+    public override void SetUp ()
+    {
+      base.SetUp();
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
+    }
+    
     [Test]
     public void QueryParameter ()
     {
       QueryParameter queryParameter = new QueryParameter ("name", "value", QueryParameterType.Text);
 
-      QueryParameter deserializedQueryParameter = (QueryParameter) SerializeAndDeserialize (queryParameter);
+      QueryParameter deserializedQueryParameter = Serializer.SerializeAndDeserialize (queryParameter);
 
       AreEqual (queryParameter, deserializedQueryParameter);
     }
@@ -44,7 +51,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       queryParameters.Add ("Text Parameter", "Value 1", QueryParameterType.Text);
       queryParameters.Add ("Value Parameter", "Value 2", QueryParameterType.Value);
 
-      QueryParameterCollection deserializedQueryParameters = (QueryParameterCollection) SerializeAndDeserialize (queryParameters);
+      QueryParameterCollection deserializedQueryParameters = Serializer.SerializeAndDeserialize (queryParameters);
 
       AreEqual (queryParameters, deserializedQueryParameters);
     }
@@ -54,7 +61,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     {
       QueryDefinition queryDefinition = new QueryDefinition ("queryID", TestDomainStorageProviderDefinition, "statement", QueryType.Collection, typeof (DomainObjectCollection));
 
-      QueryDefinition deserializedQueryDefinition = (QueryDefinition) SerializeAndDeserialize (queryDefinition);
+      QueryDefinition deserializedQueryDefinition = Serializer.SerializeAndDeserialize (queryDefinition);
 
       Assert.That (ReferenceEquals (queryDefinition, deserializedQueryDefinition), Is.False);
       AreEqual (queryDefinition, deserializedQueryDefinition);
@@ -65,7 +72,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     {
       QueryDefinition queryDefinition = DomainObjectsConfiguration.Current.Query.QueryDefinitions["OrderQuery"];
 
-      QueryDefinition deserializedQueryDefinition = (QueryDefinition) SerializeAndDeserialize (queryDefinition);
+      QueryDefinition deserializedQueryDefinition = Serializer.SerializeAndDeserialize (queryDefinition);
 
       Assert.That (deserializedQueryDefinition, Is.SameAs (queryDefinition));
     }
@@ -76,18 +83,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       QueryDefinition unknownQueryDefinition = new QueryDefinition ("UnknownQuery", TestDomainStorageProviderDefinition, "select 42", QueryType.Scalar);
       DomainObjectsConfiguration.Current.Query.QueryDefinitions.Add (unknownQueryDefinition);
 
-      using (MemoryStream stream = new MemoryStream ())
-      {
-        Serialize (stream, unknownQueryDefinition);
-        DomainObjectsConfiguration.SetCurrent (
-            new FakeDomainObjectsConfiguration (
-                DomainObjectsConfiguration.Current.MappingLoader, DomainObjectsConfiguration.Current.Storage, new QueryConfiguration()));
+      var serialized = Serializer.Serialize (unknownQueryDefinition);
+      DomainObjectsConfiguration.SetCurrent (
+          new FakeDomainObjectsConfiguration (
+              DomainObjectsConfiguration.Current.MappingLoader,
+              DomainObjectsConfiguration.Current.Storage,
+              new QueryConfiguration()));
 
-        Assert.That (
-            () => Deserialize (stream),
-            Throws.InstanceOf<QueryConfigurationException>()
-                .With.Message.EqualTo ("QueryDefinition 'UnknownQuery' does not exist."));
-      }
+      Assert.That (
+          () => Serializer.Deserialize (serialized),
+          Throws.InstanceOf<QueryConfigurationException>()
+              .With.Message.EqualTo ("QueryDefinition 'UnknownQuery' does not exist."));
     }
 
     [Test]
@@ -97,7 +103,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       queryDefinitions.Add (DomainObjectsConfiguration.Current.Query.QueryDefinitions[0]);
       queryDefinitions.Add (DomainObjectsConfiguration.Current.Query.QueryDefinitions[1]);
 
-      QueryDefinitionCollection deserializedQueryDefinitions = (QueryDefinitionCollection) SerializeAndDeserialize (queryDefinitions);
+      QueryDefinitionCollection deserializedQueryDefinitions = Serializer.SerializeAndDeserialize (queryDefinitions);
       AreEqual (queryDefinitions, deserializedQueryDefinitions);
       Assert.That (DomainObjectsConfiguration.Current.Query.QueryDefinitions[0], Is.SameAs (deserializedQueryDefinitions[0]));
       Assert.That (DomainObjectsConfiguration.Current.Query.QueryDefinitions[1], Is.SameAs (deserializedQueryDefinitions[1]));
@@ -109,7 +115,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       var query = (Query) QueryFactory.CreateQueryFromConfiguration ("OrderQuery");
       query.Parameters.Add ("@customerID", DomainObjectIDs.Customer1);
 
-      var deserializedQuery = (Query) SerializeAndDeserialize (query);
+      var deserializedQuery = Serializer.SerializeAndDeserialize (query);
       AreEqual (query, deserializedQuery);
       Assert.That (deserializedQuery.Definition, Is.SameAs (DomainObjectsConfiguration.Current.Query.QueryDefinitions["OrderQuery"]));
     }

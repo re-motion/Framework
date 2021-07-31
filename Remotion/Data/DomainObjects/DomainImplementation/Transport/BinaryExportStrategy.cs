@@ -48,7 +48,9 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
       ArgumentUtility.CheckNotNull ("dataStream", dataStream);
       ArgumentUtility.CheckNotNull ("formatter", formatter);
 
+#pragma warning disable SYSLIB0011
       formatter.Serialize (dataStream, versionIndependentItems);
+#pragma warning restore SYSLIB0011
     }
 
     private KeyValuePair<string, Dictionary<string, object>>[] GetVersionIndependentItems (TransportItem[] transportItems)

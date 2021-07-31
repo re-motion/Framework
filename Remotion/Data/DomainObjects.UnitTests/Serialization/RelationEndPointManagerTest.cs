@@ -20,6 +20,7 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Serialization
@@ -33,6 +34,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     {
       base.SetUp ();
       _relationEndPointManager = (RelationEndPointManager) DataManagerTestHelper.GetRelationEndPointManager (TestableClientTransaction.DataManager);
+
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
     }
 
     [Test]

@@ -24,6 +24,7 @@ using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Rhino.Mocks;
 
@@ -567,6 +568,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
     [Test]
     public void Serializable ()
     {
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
+
       var clientTransaction = ClientTransaction.CreateRootTransaction();
       var agent = new LoadedObjectDataRegistrationAgent (
           clientTransaction,

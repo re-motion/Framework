@@ -19,6 +19,7 @@ using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
@@ -133,6 +134,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     [Test]
     public void Serializable ()
     {
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
+
      Assert.That (_copyOnWriteData.Count, Is.EqualTo (2));
 
       var deserialized = Serializer.SerializeAndDeserialize (_copyOnWriteData);

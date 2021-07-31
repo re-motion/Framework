@@ -32,6 +32,7 @@ using Remotion.Data.DomainObjects.UnitTests.DataManagement;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Development.UnitTesting.ObjectMothers;
@@ -1076,6 +1077,8 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void Serialization ()
     {
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
+
       var clientTransaction = ClientTransaction.CreateRootTransaction();
       var subTransaction = clientTransaction.CreateSubTransaction ();
 

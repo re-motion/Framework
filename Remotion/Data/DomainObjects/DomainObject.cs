@@ -39,7 +39,9 @@ namespace Remotion.Data.DomainObjects
   /// </para>
   /// </remarks>
   [IgnoreForMappingConfiguration]
+#if FEATURE_SERIALIZATION
   [Serializable]
+#endif
   public class DomainObject : IDomainObject
   {
     #region Creation and GetObject factory methods

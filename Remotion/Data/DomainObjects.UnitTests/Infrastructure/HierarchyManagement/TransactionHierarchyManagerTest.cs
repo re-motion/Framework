@@ -21,6 +21,7 @@ using Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.UnitTests.UnitTesting;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Rhino.Mocks;
 
@@ -436,6 +437,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
     [Test]
     public void Serializable ()
     {
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
+
       var instance = new TransactionHierarchyManager (
           ClientTransactionObjectMother.Create(),
           new SerializableClientTransactionEventSinkFake(),

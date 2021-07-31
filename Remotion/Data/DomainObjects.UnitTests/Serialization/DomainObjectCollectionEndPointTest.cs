@@ -24,6 +24,7 @@ using Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Serialization
@@ -42,6 +43,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, ReflectionMappingHelper.GetPropertyName (typeof (Order), "OrderItems"));
       _endPoint = (DomainObjectCollectionEndPoint) 
           ((StateUpdateRaisingDomainObjectCollectionEndPointDecorator) TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (endPointID)).InnerEndPoint;
+
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
     }
 
     [Test]

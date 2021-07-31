@@ -51,7 +51,9 @@ namespace Remotion.Data.DomainObjects
 /// ensure they are executed in the right context.
 /// </para>
 /// </remarks>
+#if FEATURE_SERIALIZATION
 [Serializable]
+#endif
 public class ClientTransaction
 {
   /// <summary>

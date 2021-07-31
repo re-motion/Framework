@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -15,23 +15,20 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+#if !FEATURE_SERIALIZATION
 using NUnit.Framework;
-using Remotion.Data.DomainObjects.DataManagement;
-using Remotion.Development.UnitTesting;
+#endif
 
-namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
+// ReSharper disable once CheckNamespace
+namespace Remotion.Development.NUnit.UnitTesting
 {
-  [TestFixture]
-  public class ObjectDeletedExceptionTest : StandardMappingTest
+  public static class Assert2
   {
-    [Test]
-    public void Serialization ()
+    public static void IgnoreIfFeatureSerializationIsDisabled ()
     {
-      ObjectDeletedException exception = new ObjectDeletedException (DomainObjectIDs.Order1);
-
-      var deserializedException = Serializer.SerializeAndDeserialize (exception);
-
-      Assert.That (deserializedException.ID, Is.EqualTo (DomainObjectIDs.Order1));
+#if !FEATURE_SERIALIZATION
+      Assert.Ignore ("Binary serialization has been disabled.");
+#endif
     }
   }
 }

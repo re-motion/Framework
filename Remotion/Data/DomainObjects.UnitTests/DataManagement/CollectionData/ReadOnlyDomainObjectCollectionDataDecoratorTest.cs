@@ -21,6 +21,7 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Rhino.Mocks;
 
@@ -190,6 +191,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     [Test]
     public void Serializable ()
     {
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
+
       var decorator = new ReadOnlyDomainObjectCollectionDataDecorator (new DomainObjectCollectionData (new[] { _order1, _order3, _order4 }));
       var result = Serializer.SerializeAndDeserialize (decorator);
       Assert.That (result.Count, Is.EqualTo (3));

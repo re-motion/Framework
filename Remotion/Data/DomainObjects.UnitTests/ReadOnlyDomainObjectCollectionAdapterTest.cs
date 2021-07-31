@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests
@@ -165,6 +166,8 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void Serializable ()
     {
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
+
       StubInnerData (_order1, _order2, _order3);
       var result = Serializer.SerializeAndDeserialize (_readOnlyAdapter);
       Assert.That (result.Count, Is.EqualTo (3));

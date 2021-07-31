@@ -23,6 +23,7 @@ using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
@@ -86,6 +87,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     [Test]
     public void Serialization ()
     {
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
+
       var instance = SampleBindableDomainObject.NewObject ();
       instance = Serializer.SerializeAndDeserialize (instance);
       var implementation = (BindableDomainObjectImplementation) PrivateInvoke.GetNonPublicField (instance, "_implementation");
@@ -97,6 +100,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     [Test]
     public void Serialization_ViaISerializable ()
     {
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
+
       var instance = SampleBindableDomainObject_ImplementingISerializable.NewObject ();
       instance = Serializer.SerializeAndDeserialize (instance);
       

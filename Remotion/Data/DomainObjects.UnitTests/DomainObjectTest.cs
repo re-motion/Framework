@@ -26,6 +26,7 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Mixins;
@@ -148,6 +149,8 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void Initialize_ThrowsForDeserializedObject ()
     {
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
+
       var orderItem = _transaction.ExecuteInScope (() => DomainObjectIDs.OrderItem1.GetObject<OrderItem>());
 
 
@@ -477,6 +480,8 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void NeedsLoadModeDataContainerOnly_Serialization_True ()
     {
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
+
       var order = _transaction.ExecuteInScope (() => Order.NewObject ());
       Assert.That (order.NeedsLoadModeDataContainerOnly, Is.True);
 
@@ -487,6 +492,8 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void NeedsLoadModeDataContainerOnly_Serialization_False ()
     {
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
+
       var order = (Order) LifetimeService.GetObjectReference (_transaction, DomainObjectIDs.Order1);
 
       Assert.That (order.NeedsLoadModeDataContainerOnly, Is.False);
@@ -498,6 +505,8 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void NeedsLoadModeDataContainerOnly_Serialization_ISerializable_True ()
     {
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
+
       var classWithAllDataTypes = _transaction.ExecuteInScope (() => ClassWithAllDataTypes.NewObject ());
       Assert.That (classWithAllDataTypes.NeedsLoadModeDataContainerOnly, Is.True);
 
@@ -508,6 +517,8 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void NeedsLoadModeDataContainerOnly_Serialization_ISerializable_False ()
     {
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
+
       var classWithAllDataTypes = (ClassWithAllDataTypes) LifetimeService.GetObjectReference (_transaction, DomainObjectIDs.ClassWithAllDataTypes1);
 
       Assert.That (classWithAllDataTypes.NeedsLoadModeDataContainerOnly, Is.False);
@@ -528,6 +539,8 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void Properties_Serialization ()
     {
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
+
       var order = _transaction.ExecuteInScope (() => Order.NewObject ());
       var propertyIndexer = _transaction.ExecuteInScope (() => order.Properties);
       Assert.That (propertyIndexer, Is.Not.Null);

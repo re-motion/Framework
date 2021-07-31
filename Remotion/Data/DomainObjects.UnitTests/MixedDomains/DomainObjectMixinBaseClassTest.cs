@@ -18,6 +18,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Remotion.Mixins;
 using Remotion.Mixins.Validation;
@@ -149,6 +150,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
     [Test]
     public void Serializable ()
     {
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
+
       Serializer.SerializeAndDeserialize (_loadedClassWithAllDataTypesMixin);
       // no exception
     }

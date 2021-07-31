@@ -17,6 +17,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Remotion.ObjectBinding;
 
@@ -37,6 +38,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     [Test]
     public void Deserialization ()
     {
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
+
       var wrapper = SampleBindableDomainObject.NewObject ();
       var mixin = BindableDomainObjectImplementation.Create (wrapper);
       var deserializedData = Serializer.SerializeAndDeserialize (Tuple.Create (mixin, wrapper));

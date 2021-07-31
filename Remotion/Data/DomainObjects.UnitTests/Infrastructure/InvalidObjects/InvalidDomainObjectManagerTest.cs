@@ -20,6 +20,7 @@ using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.InvalidObjects;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
@@ -177,6 +178,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.InvalidObjects
     [Test]
     public void Serializable ()
     {
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
+
       var order = DomainObjectMother.CreateFakeObject<Order> (DomainObjectIDs.Order1);
 
       var transactionEventSink = new SerializableClientTransactionEventSinkFake();

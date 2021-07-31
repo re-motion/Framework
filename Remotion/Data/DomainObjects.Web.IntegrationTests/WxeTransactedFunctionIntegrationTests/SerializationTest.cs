@@ -17,6 +17,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunctionIntegrationTests.WxeFunctions;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunctionIntegrationTests
@@ -27,6 +28,8 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     [Test]
     public void Serialization ()
     {
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
+
       var function = new SerializationTestTransactedFunction();
       function.Execute (Context);
       Assert.That (function.FirstStepExecuted, Is.True);
