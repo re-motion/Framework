@@ -23,10 +23,11 @@ using Castle.DynamicProxy;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.NUnit;
+using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.Samples.DynamicMixinBuilding.Core;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
-using Remotion.Utilities;
+using Remotion.TypePipe.Implementation;
 
 namespace Remotion.Mixins.Samples.DynamicMixinBuilding.UnitTests
 {
@@ -48,20 +49,37 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.UnitTests
       }
     }
 
+    private static class ObjectFactory
+    {
+      public static T Create<T> (ParamList constructorParameters)
+      {
+        var objectFactoryImplementation = SafeServiceLocator.Current.GetInstance<IObjectFactoryImplementation>();
+        return (T) objectFactoryImplementation.CreateInstance (false, typeof (T), constructorParameters);
+      }
+    }
+
     private readonly List<Tuple<object, MethodInfo, object[], object>> _calls = new List<Tuple<object, MethodInfo, object[], object>> ();
     private MethodInvocationHandler _invocationHandler;
     private DynamicMixinBuilder _builder;
+    private ServiceLocatorScope _serviceLocatorScope;
 
     [SetUp]
     public void SetUp ()
     {
       string directory = PrepareDirectory();
 
-      DynamicMixinBuilder.Scope = new ModuleScope (true, false, "DynamicMixinBuilder.Signed", Path.Combine (directory, "DynamicMixinBuilder.Signed.dll"),
-        "DynamicMixinBuilder.Unsigned", Path.Combine (directory, "DynamicMixinBuilder.Unsigned.dll"));
+      // Force-initialize ObjectFactory to ensure it does not default onto the test pipeline.
+      Dev.Null = Remotion.Mixins.ObjectFactory.Create<object>();
 
       // Set new default pipeline to avoid cached types to influence each other.
-      ResetDefaultPipeline();
+      var pipelineRegistry = CreatePipelineRegistry();
+      var serviceLocator = DefaultServiceLocator.Create();
+      // ReSharper disable once RedundantTypeArgumentsOfMethod
+      serviceLocator.RegisterSingle<IPipelineRegistry> (() => pipelineRegistry);
+      _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
+
+      DynamicMixinBuilder.Scope = new ModuleScope (true, false, "DynamicMixinBuilder.Signed", Path.Combine (directory, "DynamicMixinBuilder.Signed.dll"),
+        "DynamicMixinBuilder.Unsigned", Path.Combine (directory, "DynamicMixinBuilder.Unsigned.dll"));
 
       _invocationHandler = delegate (object instance, MethodInfo method, object[] args, BaseMethodInvoker baseMethod)
       {
@@ -75,7 +93,7 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.UnitTests
       _builder = new DynamicMixinBuilder (typeof (SampleTarget));
     }
 
-    private static void ResetDefaultPipeline ()
+    private IPipelineRegistry CreatePipelineRegistry ()
     {
       var pipelineRegistry = SafeServiceLocator.Current.GetInstance<IPipelineRegistry>();
       var pipelineFactory = SafeServiceLocator.Current.GetInstance<IPipelineFactory>();
@@ -86,10 +104,8 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.UnitTests
           previousPipeline.Settings,
           previousPipeline.Participants.ToArray());
 
-      // This overrides the previous default pipeline.
-      pipelineRegistry.SetDefaultPipeline (pipeline);
+      return new DefaultPipelineRegistry (pipeline);
     }
-
 
     private string PrepareDirectory ()
     {
@@ -122,6 +138,8 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.UnitTests
         DynamicMixinBuilder.Scope.SaveAssembly (false);
         PEVerifier.CreateDefault ().VerifyPEFile (DynamicMixinBuilder.Scope.WeakNamedModule.FullyQualifiedName);
       }
+
+      _serviceLocatorScope.Dispose();
     }
 
     [Test]

@@ -32,12 +32,12 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.Core
     private static readonly MethodInfo s_handlerInvokeMethod = typeof (MethodInvocationHandler).GetMethod ("Invoke");
 
     private readonly CustomClassEmitter _emitter;
-    private readonly IEnumerable<MethodInfo> _methodsToOverride;
+    private readonly IReadOnlyCollection<MethodInfo> _methodsToOverride;
     private readonly MethodInvocationHandler _invocationHandler;
     private readonly FieldReference _invocationHandlerField;
     private readonly BaseRequirements _baseCallInterface;
 
-    public DynamicMixinTypeGenerator (ModuleScope scope, Type targetType, IEnumerable<MethodInfo> methodsToOverride, MethodInvocationHandler invocationHandler)
+    public DynamicMixinTypeGenerator (ModuleScope scope, Type targetType, IReadOnlyCollection<MethodInfo> methodsToOverride, MethodInvocationHandler invocationHandler)
     {
       ArgumentUtility.CheckNotNull ("scope", scope);
       ArgumentUtility.CheckNotNull ("targetType", targetType);
