@@ -31,18 +31,22 @@ namespace Remotion.Data.DomainObjects.Mapping
 {
   public class MappingConfiguration : IMappingConfiguration
   {
-    private static readonly ILog s_log = LogManager.GetLogger (typeof (MappingConfiguration));
+    /// <summary>Workaround to allow reflection to reset the fields since setting a static readonly field is not supported in .NET 3.0 and later.</summary>
+    private class Fields
+    {
+      // ReSharper disable once MemberHidesStaticFromOuterClass
+      public readonly DoubleCheckedLockingContainer<IMappingConfiguration> Current = new DoubleCheckedLockingContainer<IMappingConfiguration> (
+          () => new MappingConfiguration (
+              DomainObjectsConfiguration.Current.MappingLoader.CreateMappingLoader(),
+              new PersistenceModelLoader(new StorageGroupBasedStorageProviderDefinitionFinder (DomainObjectsConfiguration.Current.Storage))));
+    }
 
-    private static readonly DoubleCheckedLockingContainer<IMappingConfiguration> s_mappingConfiguration =
-        new DoubleCheckedLockingContainer<IMappingConfiguration> (
-            () =>
-            new MappingConfiguration (
-                DomainObjectsConfiguration.Current.MappingLoader.CreateMappingLoader(),
-                new PersistenceModelLoader(new StorageGroupBasedStorageProviderDefinitionFinder (DomainObjectsConfiguration.Current.Storage))));
+    private static readonly Fields s_fields = new Fields();
+    private static readonly ILog s_log = LogManager.GetLogger (typeof (MappingConfiguration));
 
     public static IMappingConfiguration Current
     {
-      get { return s_mappingConfiguration.Value; }
+      get { return s_fields.Current.Value; }
     }
 
     public static void SetCurrent (IMappingConfiguration mappingConfiguration)
@@ -53,7 +57,7 @@ namespace Remotion.Data.DomainObjects.Mapping
           throw CreateArgumentException ("mappingConfiguration", "Argument 'mappingConfiguration' must have property 'ResolveTypes' set.");
       }
 
-      s_mappingConfiguration.Value = mappingConfiguration;
+      s_fields.Current.Value = mappingConfiguration;
     }
 
     private static ArgumentException CreateArgumentException (Exception innerException, string argumentName, string message, params object[] args)

@@ -24,17 +24,19 @@ namespace Remotion.Security.Configuration
   /// <threadsafety static="true" instance="true" />
   public class SecurityConfiguration : ExtendedConfigurationSection
   {
-    private static readonly Lazy<SecurityConfiguration> s_current;
-
-    static SecurityConfiguration ()
+    /// <summary>Workaround to allow reflection to reset the fields since setting a static readonly field is not supported in .NET 3.0 and later.</summary>
+    private class Fields
     {
-      s_current = new Lazy<SecurityConfiguration> (
-        () => (SecurityConfiguration) ConfigurationManager.GetSection ("remotion.security") ?? new SecurityConfiguration());
+      // ReSharper disable once MemberHidesStaticFromOuterClass
+      public readonly Lazy<SecurityConfiguration> Current = new Lazy<SecurityConfiguration> (
+          () => (SecurityConfiguration) ConfigurationManager.GetSection ("remotion.security") ?? new SecurityConfiguration());
     }
+
+    private static readonly Fields s_fields = new Fields();
 
     public static SecurityConfiguration Current
     {
-      get { return s_current.Value; }
+      get { return s_fields.Current.Value; }
     }
 
     private readonly ConfigurationPropertyCollection _properties = new ConfigurationPropertyCollection();
