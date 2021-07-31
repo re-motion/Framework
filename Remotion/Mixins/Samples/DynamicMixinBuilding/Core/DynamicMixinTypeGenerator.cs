@@ -57,7 +57,7 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.Core
       Type mixinBase = typeof (Mixin<,>).MakeGenericType (typeof (object), _baseCallInterface.RequirementsType);
       _emitter = new CustomClassEmitter (scope, className, mixinBase);
 
-      _invocationHandlerField = _emitter.CreateStaticField ("InvocationHandler", typeof (MethodInvocationHandler));
+      _invocationHandlerField = _emitter.CreateStaticField ("InvocationHandler", typeof (MethodInvocationHandler), FieldAttributes.Public);
 
       foreach (MethodInfo method in _methodsToOverride)
         AddOverrider (method, _invocationHandlerField);
