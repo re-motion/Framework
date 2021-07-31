@@ -70,14 +70,19 @@ namespace Remotion.Mixins.Samples.UsesAndExtends.UnitTests
     [Test]
     public void GCCallsAllUnmanagedCleanup ()
     {
-      C c = ObjectFactory.Create<C> (ParamList.Empty);
-      Data data = c.Data;
+      Data GetDataObject ()
+      {
+        C c = ObjectFactory.Create<C> (ParamList.Empty);
 
-      Assert.That (data.ManagedCalled, Is.False);
-      Assert.That (data.UnmanagedCalled, Is.False);
+        Assert.That (c.Data.ManagedCalled, Is.False);
+        Assert.That (c.Data.UnmanagedCalled, Is.False);
 
-      GC.KeepAlive (c);
-      c = null;
+        GC.KeepAlive (c);
+        return c.Data;
+      }
+
+      // The object must be created in a separate method: The x64 JITter in .NET 4.7.2 (DEBUG builds only) keeps the reference alive until the variable is out of scope.
+      var data = GetDataObject();
 
       GC.Collect ();
       GC.WaitForPendingFinalizers();
