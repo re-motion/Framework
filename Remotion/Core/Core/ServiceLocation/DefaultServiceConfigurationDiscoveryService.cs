@@ -139,10 +139,16 @@ namespace Remotion.ServiceLocation
 
     private IEnumerable<Type> GetImplementingTypes (Type serviceType, bool excludeGlobalTypes)
     {
-      var derivedTypes = _typeDiscoveryService.GetTypes (serviceType, excludeGlobalTypes);
+      Type normalizedServiceType;
+      if (serviceType.IsConstructedGenericType)
+        normalizedServiceType = serviceType.GetGenericTypeDefinition();
+      else
+        normalizedServiceType = serviceType;
+
+      var derivedTypes = _typeDiscoveryService.GetTypes (normalizedServiceType, excludeGlobalTypes);
       Assertion.IsNotNull (derivedTypes, "TypeDiscoveryService evaluated for serviceType '{0}' and returned null.", serviceType);
 
-      return derivedTypes.Cast<Type>();
+      return derivedTypes.Cast<Type>().Where (serviceType.IsAssignableFrom);
     }
 
     private IReadOnlyCollection<ImplementationForAttribute> GetImplementationForAttributesFromCache (Type type)

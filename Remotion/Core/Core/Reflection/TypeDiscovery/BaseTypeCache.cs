@@ -16,10 +16,8 @@
 // 
 using System;
 using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Remotion.FunctionalProgramming;
 using Remotion.Logging;
 using Remotion.Utilities;
@@ -27,7 +25,7 @@ using Remotion.Utilities;
 namespace Remotion.Reflection.TypeDiscovery
 {
   /// <summary>
-  /// Holds a cache of type hierachies.
+  /// Holds a cache of type hierarchies.
   /// </summary>
   public sealed class BaseTypeCache
   {
@@ -40,19 +38,23 @@ namespace Remotion.Reflection.TypeDiscovery
       s_log.Value.DebugFormat ("Beginning to build BaseTypeCache...");
       using (StopwatchScope.CreateScope (s_log.Value, LogLevel.Debug, string.Format ("Built BaseTypeCache. Time taken: {{elapsed}}")))
       {
-        // Note: there is no meassurable impact when switching this code to parallel execution.
+        // Note: there is no measurable impact when switching this code to parallel execution.
         var classes = new List<KeyValuePair<Type, Type>>();
         var interfaces = new List<KeyValuePair<Type, Type>>();
 
-        foreach (var type in types)
+        foreach (var type in types.Select (CheckTypeIsNormalized))
         {
           classes.AddRange (
               type.CreateSequence (t => t.BaseType)
                   .Where (t => !t.IsInterface)
+                  .Select (GetNormalizedType)
+                  .Distinct (MemberInfoEqualityComparer<Type>.Instance)
                   .Select (baseType => new KeyValuePair<Type, Type> (baseType, type)));
 
           interfaces.AddRange (
               type.GetInterfaces()
+                  .Select (GetNormalizedType)
+                  .Distinct (MemberInfoEqualityComparer<Type>.Instance)
                   .Select (interfaceType => new KeyValuePair<Type, Type> (interfaceType, type)));
 
           if (type.IsInterface)
@@ -63,6 +65,27 @@ namespace Remotion.Reflection.TypeDiscovery
         var interfaceCache = interfaces.ToLookup (kvp => kvp.Key, kvp => kvp.Value, MemberInfoEqualityComparer<Type>.Instance);
 
         return new BaseTypeCache (classCache, interfaceCache);
+      }
+
+      static Type CheckTypeIsNormalized (Type type)
+      {
+        if (type.IsConstructedGenericType)
+        {
+          throw new ArgumentException (
+              string.Format (
+                  "Only non-generic types and open generic types may be used when creating a BaseTypeCache. Type '{0}' is a closed generic type.",
+                  type.GetFullNameSafe()),
+              "types");
+        }
+
+        return type;
+      }
+
+      static Type GetNormalizedType (Type type)
+      {
+        if (type.IsConstructedGenericType)
+          return type.GetGenericTypeDefinition();
+        return type;
       }
     }
 
