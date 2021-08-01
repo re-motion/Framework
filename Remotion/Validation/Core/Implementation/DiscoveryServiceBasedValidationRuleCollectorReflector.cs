@@ -77,7 +77,7 @@ namespace Remotion.Validation.Implementation
 
     private ILookup<Type, Type> GetValidationCollectors ()
     {
-      return _typeDiscoveryService.GetTypes (typeof (IValidationRuleCollector), true).Cast<Type>()
+      return _typeDiscoveryService.GetTypes (typeof (IValidationRuleCollector), excludeGlobalTypes: false).Cast<Type>()
           .Where (IsRelevant)
           .ToLookup (GetValidatedType, collectorType => collectorType);
     }

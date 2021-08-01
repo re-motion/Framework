@@ -60,6 +60,8 @@ namespace Remotion.ServiceLocation
 
     public DefaultServiceConfigurationDiscoveryService (ITypeDiscoveryService typeDiscoveryService)
     {
+      ArgumentUtility.CheckNotNull ("typeDiscoveryService", typeDiscoveryService);
+
       _typeDiscoveryService = typeDiscoveryService;
     }
 
@@ -70,7 +72,12 @@ namespace Remotion.ServiceLocation
     /// Types without the attribute are ignored.</returns>
     public IEnumerable<ServiceConfigurationEntry> GetDefaultConfiguration ()
     {
-      return GetDefaultConfiguration (_typeDiscoveryService.GetTypes (null, _excludeGlobalTypesForDefaultConfiguration).Cast<Type>());
+#if !FEATURE_GAC
+      if (!_excludeGlobalTypesForDefaultConfiguration)
+        throw new PlatformNotSupportedException ("The default service configuration cannot be part of the GAC on this platform.");
+#endif
+
+      return GetDefaultConfiguration (_typeDiscoveryService.GetTypes (null, excludeGlobalTypes: _excludeGlobalTypesForDefaultConfiguration).Cast<Type>());
     }
 
     /// <summary>
@@ -98,8 +105,7 @@ namespace Remotion.ServiceLocation
 
       try
       {
-        var excludeGlobalTypes = _excludeGlobalTypesForDefaultConfiguration || !AssemblyTypeCache.IsGacAssembly (serviceType.Assembly);
-        var implementingTypes = GetImplementingTypes (serviceType, excludeGlobalTypes);
+        var implementingTypes = GetImplementingTypes (serviceType);
 
         var attributes = implementingTypes
             .SelectMany (
@@ -137,7 +143,7 @@ namespace Remotion.ServiceLocation
       return assemblies.SelectMany (a => GetDefaultConfiguration (AssemblyTypeCache.GetTypes (a)));
     }
 
-    private IEnumerable<Type> GetImplementingTypes (Type serviceType, bool excludeGlobalTypes)
+    private IEnumerable<Type> GetImplementingTypes (Type serviceType)
     {
       Type normalizedServiceType;
       if (serviceType.IsConstructedGenericType)
@@ -145,7 +151,7 @@ namespace Remotion.ServiceLocation
       else
         normalizedServiceType = serviceType;
 
-      var derivedTypes = _typeDiscoveryService.GetTypes (normalizedServiceType, excludeGlobalTypes);
+      var derivedTypes = _typeDiscoveryService.GetTypes (normalizedServiceType, excludeGlobalTypes: false);
       Assertion.IsNotNull (derivedTypes, "TypeDiscoveryService evaluated for serviceType '{0}' and returned null.", serviceType);
 
       return derivedTypes.Cast<Type>().Where (serviceType.IsAssignableFrom);

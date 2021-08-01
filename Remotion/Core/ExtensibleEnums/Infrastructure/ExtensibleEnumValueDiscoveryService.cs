@@ -36,6 +36,8 @@ namespace Remotion.ExtensibleEnums.Infrastructure
   {
     private readonly ITypeDiscoveryService _typeDiscoveryService;
 
+    private readonly bool _excludeGlobalTypes = !AssemblyTypeCache.IsGacAssembly (typeof (ExtensibleEnum<>).Assembly);
+
     public ExtensibleEnumValueDiscoveryService ()
     {
       _typeDiscoveryService = ContextAwareTypeUtility.GetTypeDiscoveryService ();
@@ -57,7 +59,12 @@ namespace Remotion.ExtensibleEnums.Infrastructure
     {
       ArgumentUtility.CheckNotNull ("definition", definition);
 
-      var types = _typeDiscoveryService.GetTypes (null, false).Cast<Type>();
+#if !FEATURE_GAC
+      if (!_excludeGlobalTypes)
+        throw new PlatformNotSupportedException ("The extensible enum definitions cannot be part of the GAC on this platform.");
+#endif
+
+      var types = _typeDiscoveryService.GetTypes (null, excludeGlobalTypes: _excludeGlobalTypes).Cast<Type>();
       return GetValueInfosForTypes (definition, types);
     }
 

@@ -18,6 +18,7 @@ using System;
 using System.Collections;
 using System.ComponentModel.Design;
 using System.Linq;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Development.UnitTesting.Reflection.TypeDiscovery
@@ -40,7 +41,7 @@ namespace Remotion.Development.UnitTesting.Reflection.TypeDiscovery
     private bool IncludeType (Type type, Type baseTypeFilter, bool excludeGlobalTypes)
     {
       return (baseTypeFilter == null || baseTypeFilter.IsAssignableFrom (type)) 
-          && (!excludeGlobalTypes || !type.Assembly.GlobalAssemblyCache);
+             && (!excludeGlobalTypes || !AssemblyTypeCache.IsGacAssembly (type.Assembly));
     }
   }
 }
