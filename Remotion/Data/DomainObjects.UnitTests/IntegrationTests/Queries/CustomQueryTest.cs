@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+ï»¿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -48,8 +48,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
 
       var expected = new object[]
                             {
-                                new object[] { "üäöfedcba", -32767, true, 0, "Remotion.Data.DomainObjects.UnitTests.TestDomain.ColorExtensions.Blue" },
-                                new object[] { "abcdeföäü", 32767, false, 1, "Remotion.Data.DomainObjects.UnitTests.TestDomain.ColorExtensions.Red" }
+                                new object[] { "Ã¼Ã¤Ã¶fedcba", -32767, true, 0, "Remotion.Data.DomainObjects.UnitTests.TestDomain.ColorExtensions.Blue" },
+                                new object[] { "abcdefÃ¶Ã¤Ã¼", 32767, false, 1, "Remotion.Data.DomainObjects.UnitTests.TestDomain.ColorExtensions.Red" }
                             };
 
       Assert.That (result, Is.EquivalentTo (expected));
@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
           {
               new
               {
-                  StringValue = "üäöfedcba",
+                  StringValue = "Ã¼Ã¤Ã¶fedcba",
                   Int16Value = (Int16) (-32767),
                   BoolValue = true,
                   EnumValue = ClassWithAllDataTypes.EnumType.Value0,
@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
               },
               new
               {
-                  StringValue = "abcdeföäü",
+                  StringValue = "abcdefÃ¶Ã¤Ã¼",
                   Int16Value = (Int16) 32767,
                   BoolValue = false,
                   EnumValue = ClassWithAllDataTypes.EnumType.Value1,

@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+Ôªø// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -136,7 +136,7 @@ public class EmailAddressValidatorTest
 	[Test]
   public void MatchValidUserPartWithLeadingUmlaut()
   {
-    string text = @"‰jdoe";
+    string text = @"√§jdoe";
     bool result = _validator.IsMatchUserPart (text);
 	  Assert.That (result, Is.EqualTo (true));
   }
@@ -144,7 +144,7 @@ public class EmailAddressValidatorTest
 	[Test]
   public void MatchValidUserPartWithMiddleUmlaut()
   {
-    string text = @"j‰doe";
+    string text = @"j√§doe";
     bool result = _validator.IsMatchUserPart (text);
 	  Assert.That (result, Is.EqualTo (true));
   }
@@ -152,7 +152,7 @@ public class EmailAddressValidatorTest
 	[Test]
   public void MatchValidUserPartWithTrailingUmlaut()
   {
-    string text = @"jdoe‰";
+    string text = @"jdoe√§";
     bool result = _validator.IsMatchUserPart (text);
 	  Assert.That (result, Is.EqualTo (true));
   }
@@ -268,7 +268,7 @@ public class EmailAddressValidatorTest
 	[Test]
   public void MatchValidDomainPartWithLeadingUmlaut()
   {
-    string text = @"‰provider.net";
+    string text = @"√§provider.net";
     bool result = _validator.IsMatchDomainPart (text);
 	  Assert.That (result, Is.EqualTo (true));
   }
@@ -276,7 +276,7 @@ public class EmailAddressValidatorTest
 	[Test]
   public void MatchValidDomainPartWithMiddleUmlaut()
   {
-    string text = @"pro‰vider.net";
+    string text = @"pro√§vider.net";
     bool result = _validator.IsMatchDomainPart (text);
 	  Assert.That (result, Is.EqualTo (true));
   }
@@ -284,7 +284,7 @@ public class EmailAddressValidatorTest
 	[Test]
   public void MatchValidDomainPartWithTrailingUmlaut()
   {
-    string text = @"provider‰.net";
+    string text = @"provider√§.net";
     bool result = _validator.IsMatchDomainPart (text);
 	  Assert.That (result, Is.EqualTo (true));
   }

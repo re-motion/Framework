@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+ï»¿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
       persistentPropertyValues.Add (classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int32Property"], 2147483647);
       persistentPropertyValues.Add (classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int64Property"], (long) 9223372036854775807);
       persistentPropertyValues.Add (classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.SingleProperty"], (float) 6789.321);
-      persistentPropertyValues.Add (classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringProperty"], "abcdeföäü");
+      persistentPropertyValues.Add (classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringProperty"], "abcdefÃ¶Ã¤Ã¼");
       persistentPropertyValues.Add (classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringPropertyWithoutMaxLength"], "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
       persistentPropertyValues.Add (classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty"], ResourceManager.GetImage1 ());
 
@@ -135,7 +135,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
       Dictionary<PropertyDefinition, object> persistentPropertyValues = new Dictionary<PropertyDefinition, object> ();
 
       // use GetPropertyDefinition because we are setting properties from the base class here
-      persistentPropertyValues.Add (classDefinition.GetPropertyDefinition ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Company.Name"), "Händler 2");
+      persistentPropertyValues.Add (classDefinition.GetPropertyDefinition ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Company.Name"), "HÃ¤ndler 2");
       persistentPropertyValues.Add (classDefinition.GetPropertyDefinition ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Partner.ContactPerson"), _domainObjectIDs.Person6);
       persistentPropertyValues.Add (classDefinition.GetPropertyDefinition ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Company.IndustrialSector"), _domainObjectIDs.IndustrialSector1);
       persistentPropertyValues.Add (classDefinition.GetPropertyDefinition ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Distributor.NumberOfShops"), 10);

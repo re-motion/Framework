@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+ï»¿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -376,7 +376,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
           .Expect (mock => mock.FilterCustomQueryResult (
               Arg.Is (TestableClientTransaction),
               Arg.Is (query),
-              Arg<IEnumerable<object>>.Matches (qr => qr.SetEquals (new[] { "abcdeföäü", "üäöfedcba" }))))
+              Arg<IEnumerable<object>>.Matches (qr => qr.SetEquals (new[] { "abcdefÃ¶Ã¤Ã¼", "Ã¼Ã¤Ã¶fedcba" }))))
           .Return (newQueryResult);
 
       _mockRepository.ReplayAll ();

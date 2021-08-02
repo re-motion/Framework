@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+ï»¿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
         var result = ClientTransactionScope.CurrentTransaction.QueryManager.GetCustom (query, qrr => qrr.GetRawValue (0));
 
-        CollectionAssert.AreEquivalent (new[] { "üäöfedcba", "abcdeföäü" }, result);
+        CollectionAssert.AreEquivalent (new[] { "Ã¼Ã¤Ã¶fedcba", "abcdefÃ¶Ã¤Ã¼" }, result);
       }
     }
 

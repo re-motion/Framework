@@ -1,4 +1,4 @@
-use DBPrefix_TestDomain
+Ôªøuse DBPrefix_TestDomain
 
 delete from [TableInheritance_DerivedClassWithEntityWithHierarchy]
 delete from [TableInheritance_Order]
@@ -39,7 +39,7 @@ insert into [TableInheritance_OrganizationalUnit] (ID, ClassID, [ClientID], [Cre
 
 
 -- Region
-insert into [TableInheritance_Region] (ID, ClassID, [Name]) values ('{7905CF32-FBC2-47fe-AC40-3E398BEEA5AB}', 'TI_Region', 'N÷')
+insert into [TableInheritance_Region] (ID, ClassID, [Name]) values ('{7905CF32-FBC2-47fe-AC40-3E398BEEA5AB}', 'TI_Region', 'N√ñ')
 
 
 -- Person 
@@ -70,7 +70,7 @@ insert into [TableInheritance_HistoryEntry] (ID, ClassID, [OwnerID], [OwnerIDCla
     values ('{0A2A6302-9CCB-4ab2-B006-2F1D89526435}', 'TI_HistoryEntry', '{623016F9-B525-4CAE-A2BD-D4A6155B2F33}', 'TI_Customer', '2006/5/24', 'Kunde angelegt')
 
 insert into [TableInheritance_HistoryEntry] (ID, ClassID, [OwnerID], [OwnerIDClassID], [HistoryDate], [Text])
-    values ('{02D662F0-ED50-49b4-8A26-BB6025EDCA8C}', 'TI_HistoryEntry', '{623016F9-B525-4CAE-A2BD-D4A6155B2F33}', 'TI_Customer', '2006/5/25', 'Name ge‰ndert')
+    values ('{02D662F0-ED50-49b4-8A26-BB6025EDCA8C}', 'TI_HistoryEntry', '{623016F9-B525-4CAE-A2BD-D4A6155B2F33}', 'TI_Customer', '2006/5/25', 'Name ge√§ndert')
 
 insert into [TableInheritance_HistoryEntry] (ID, ClassID, [OwnerID], [OwnerIDClassID], [HistoryDate], [Text])
     values ('{9CCCB590-B765-4bc3-B481-AAC67AEEAD7E}', 'TI_HistoryEntry', '{21E9BEA1-3026-430a-A01E-E9B6A39928A8}', 'TI_Person', '2006/5/26', 'Person angelegt')
@@ -84,7 +84,7 @@ insert into [TableInheritance_HistoryEntry] (ID, ClassID, [OwnerID], [OwnerIDCla
 
 -- Address
 insert into [TableInheritance_Address] (ID, ClassID, [PersonID], [PersonIDClassID], [Street], [Zip], [City], [Country]) 
-    values ('{5D5AA233-7371-44bc-807F-7849E8B08302}', 'TI_Address', '{21E9BEA1-3026-430a-A01E-E9B6A39928A8}', 'TI_Person', 'Werdertorgasse 14', '1010', 'Wien', '÷sterreich')
+    values ('{5D5AA233-7371-44bc-807F-7849E8B08302}', 'TI_Address', '{21E9BEA1-3026-430a-A01E-E9B6A39928A8}', 'TI_Person', 'Werdertorgasse 14', '1010', 'Wien', '√ñsterreich')
 
 
 -- Order

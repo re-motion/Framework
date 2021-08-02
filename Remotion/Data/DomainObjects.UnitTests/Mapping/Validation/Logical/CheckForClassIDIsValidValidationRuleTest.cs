@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+Ôªø// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -34,9 +34,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
 
     [Test]
     [TestCase ("a")]
-    [TestCase ("‰")]
+    [TestCase ("√§")]
     [TestCase ("_")]
-    [TestCase ("a‰")]
+    [TestCase ("a√§")]
     [TestCase ("a_")]
     [TestCase ("a1")]
     public void ValidClassID (string classID)
