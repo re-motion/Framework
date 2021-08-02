@@ -19,7 +19,7 @@ using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.TestSite.Infrastructure;
 
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
+namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
 {
   /// <summary>
   /// Represents options that are passed to <see cref="IGenericTestPage{TOptions}"/>.

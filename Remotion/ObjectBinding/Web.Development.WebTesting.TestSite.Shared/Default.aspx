@@ -25,34 +25,34 @@
       <div>
         <label>Specific tests</label>
         <table style="margin-bottom: 20px">
-          <tr><td><a href="ControlTest.wxe?UserControl=Controls/BocAutoCompleteReferenceValueUserControl.ascx">BocAutoCompleteReferenceValue</a></td></tr>
-          <tr><td><a href="ControlTest.wxe?UserControl=Controls/BocBooleanValueUserControl.ascx">BocBooleanValue</a></td></tr>
-          <tr><td><a href="ControlTest.wxe?UserControl=Controls/BocCheckBoxUserControl.ascx">BocCheckBox</a></td></tr>
-          <tr><td><a href="ControlTest.wxe?UserControl=Controls/BocDateTimeValueUserControl.ascx">BocDateTimeValue</a></td></tr>
-          <tr><td><a href="ControlTest.wxe?UserControl=Controls/BocEnumValueUserControl.ascx">BocEnumValue</a></td></tr>
-          <tr><td><a href="ControlTest.wxe?UserControl=Controls/BocListUserControl.ascx">BocList</a></td></tr>
-          <tr><td><a href="ControlTest.wxe?UserControl=Controls/BocListAsGridUserControl.ascx">BocList (as Grid)</a></td></tr>
-          <tr><td><a href="ControlTest.wxe?UserControl=Controls/BocMultilineTextValueUserControl.ascx">BocMultilineTextValue</a></td></tr>
-          <tr><td><a href="ControlTest.wxe?UserControl=Controls/BocReferenceValueUserControl.ascx">BocReferenceValue</a></td></tr>
-          <tr><td><a href="ControlTest.wxe?UserControl=Controls/BocTextValueUserControl.ascx">BocTextValue</a></td></tr>
-          <tr><td><a href="ControlTest.wxe?UserControl=Controls/BocTreeViewUserControl.ascx">BocTreeView</a></td></tr>
+          <tr><td><a href="<%= ResolveUrl("~/") %>ControlTest.wxe?UserControl=Controls/BocAutoCompleteReferenceValueUserControl.ascx">BocAutoCompleteReferenceValue</a></td></tr>
+          <tr><td><a href="<%= ResolveUrl("~/") %>ControlTest.wxe?UserControl=Controls/BocBooleanValueUserControl.ascx">BocBooleanValue</a></td></tr>
+          <tr><td><a href="<%= ResolveUrl("~/") %>ControlTest.wxe?UserControl=Controls/BocCheckBoxUserControl.ascx">BocCheckBox</a></td></tr>
+          <tr><td><a href="<%= ResolveUrl("~/") %>ControlTest.wxe?UserControl=Controls/BocDateTimeValueUserControl.ascx">BocDateTimeValue</a></td></tr>
+          <tr><td><a href="<%= ResolveUrl("~/") %>ControlTest.wxe?UserControl=Controls/BocEnumValueUserControl.ascx">BocEnumValue</a></td></tr>
+          <tr><td><a href="<%= ResolveUrl("~/") %>ControlTest.wxe?UserControl=Controls/BocListUserControl.ascx">BocList</a></td></tr>
+          <tr><td><a href="<%= ResolveUrl("~/") %>ControlTest.wxe?UserControl=Controls/BocListAsGridUserControl.ascx">BocList (as Grid)</a></td></tr>
+          <tr><td><a href="<%= ResolveUrl("~/") %>ControlTest.wxe?UserControl=Controls/BocMultilineTextValueUserControl.ascx">BocMultilineTextValue</a></td></tr>
+          <tr><td><a href="<%= ResolveUrl("~/") %>ControlTest.wxe?UserControl=Controls/BocReferenceValueUserControl.ascx">BocReferenceValue</a></td></tr>
+          <tr><td><a href="<%= ResolveUrl("~/") %>ControlTest.wxe?UserControl=Controls/BocTextValueUserControl.ascx">BocTextValue</a></td></tr>
+          <tr><td><a href="<%= ResolveUrl("~/") %>ControlTest.wxe?UserControl=Controls/BocTreeViewUserControl.ascx">BocTreeView</a></td></tr>
         </table>
         
         <label>Generic tests</label>
         <table>
-          <tr><td><a href="GenericTest.wxe?control=autoCompleteReferenceValue">BocAutoCompleteReferenceValue</a></td></tr>
-          <tr><td><a href="GenericTest.wxe?control=booleanValue">BocBooleanValue</a></td></tr>
-          <tr><td><a href="GenericTest.wxe?control=checkBox">BocCheckBox</a></td></tr>
-          <tr><td><a href="GenericTest.wxe?control=dateTimeValue">BocDateTimeValue</a></td></tr>
-          <tr><td><a href="GenericTest.wxe?control=dropDownList">BocEnumValue - DropDownList</a></td></tr>
-          <tr><td><a href="GenericTest.wxe?control=list">BocList</a></td></tr>
-          <tr><td><a href="GenericTest.wxe?control=listAsGrid">BocListAsGrid</a></td></tr>
-          <tr><td><a href="GenericTest.wxe?control=listBox">BocEnumValue - ListBox</a></td></tr>
-          <tr><td><a href="GenericTest.wxe?control=multilineText">BocMultilineTextValue</a></td></tr>
-          <tr><td><a href="GenericTest.wxe?control=radioButtonList">BocEnumValue - RadioButtonList</a></td></tr>
-          <tr><td><a href="GenericTest.wxe?control=referenceValue">BocReferenceValue</a></td></tr>
-          <tr><td><a href="GenericTest.wxe?control=textValue">BocTextValue</a></td></tr>
-          <tr><td><a href="GenericTest.wxe?control=treeView">BocTreeView</a></td></tr>
+          <tr><td><a href="<%= ResolveUrl("~/") %>GenericTest.wxe?control=autoCompleteReferenceValue">BocAutoCompleteReferenceValue</a></td></tr>
+          <tr><td><a href="<%= ResolveUrl("~/") %>GenericTest.wxe?control=booleanValue">BocBooleanValue</a></td></tr>
+          <tr><td><a href="<%= ResolveUrl("~/") %>GenericTest.wxe?control=checkBox">BocCheckBox</a></td></tr>
+          <tr><td><a href="<%= ResolveUrl("~/") %>GenericTest.wxe?control=dateTimeValue">BocDateTimeValue</a></td></tr>
+          <tr><td><a href="<%= ResolveUrl("~/") %>GenericTest.wxe?control=dropDownList">BocEnumValue - DropDownList</a></td></tr>
+          <tr><td><a href="<%= ResolveUrl("~/") %>GenericTest.wxe?control=list">BocList</a></td></tr>
+          <tr><td><a href="<%= ResolveUrl("~/") %>GenericTest.wxe?control=listAsGrid">BocListAsGrid</a></td></tr>
+          <tr><td><a href="<%= ResolveUrl("~/") %>GenericTest.wxe?control=listBox">BocEnumValue - ListBox</a></td></tr>
+          <tr><td><a href="<%= ResolveUrl("~/") %>GenericTest.wxe?control=multilineText">BocMultilineTextValue</a></td></tr>
+          <tr><td><a href="<%= ResolveUrl("~/") %>GenericTest.wxe?control=radioButtonList">BocEnumValue - RadioButtonList</a></td></tr>
+          <tr><td><a href="<%= ResolveUrl("~/") %>GenericTest.wxe?control=referenceValue">BocReferenceValue</a></td></tr>
+          <tr><td><a href="<%= ResolveUrl("~/") %>GenericTest.wxe?control=textValue">BocTextValue</a></td></tr>
+          <tr><td><a href="<%= ResolveUrl("~/") %>GenericTest.wxe?control=treeView">BocTreeView</a></td></tr>
         </table>
       </div>
     </form>

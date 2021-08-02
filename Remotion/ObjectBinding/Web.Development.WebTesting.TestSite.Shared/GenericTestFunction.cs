@@ -20,7 +20,7 @@ using Remotion.ObjectBinding.Sample;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
+namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
 {
   [UsedImplicitly]
   public class GenericTestFunction : WxeFunction
@@ -39,6 +39,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
     }
 
     // Steps
-    private WxeStep Step1 = new WxePageStep ("GenericTest.aspx");
+    private WxeStep Step1 = new WxeResourcePageStep (typeof (GenericTest), "GenericTest.aspx");
   }
 }

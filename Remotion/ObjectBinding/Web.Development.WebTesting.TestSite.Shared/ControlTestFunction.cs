@@ -21,7 +21,7 @@ using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
+namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
 {
   [UsedImplicitly]
   public class ControlTestFunction : WxeFunction
@@ -63,7 +63,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
       _person = Person.GetObject (personID);
     }
 
-    private WxeStep Step3 = new WxePageStep ("ControlTestForm.aspx");
+    private WxeStep Step3 = new WxeResourcePageStep (typeof (ControlTestForm), "ControlTestForm.aspx");
 
     private void Step4 ()
     {

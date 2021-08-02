@@ -17,7 +17,7 @@
 using System;
 using Remotion.ObjectBinding.Web.UI.Controls;
 
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.GenericPages
+namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.GenericPages
 {
   public abstract class EditableGenericTestPage<TControl> : SimpleGenericTestPage<TControl>
       where TControl : BusinessObjectBoundEditableWebControl, new()

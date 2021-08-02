@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite {
+namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared {
     
     
     public partial class ControlTestForm {
@@ -17,7 +17,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.WebButton ValidateButton;
         
@@ -26,7 +26,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder ControlPlaceHolder;
         
@@ -35,8 +35,20 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder TestOutputControlPlaceHolder;
+        
+        /// <summary>
+        /// Master property.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated property.
+        /// </remarks>
+        public new Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Layout Master {
+            get {
+                return ((Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Layout)(base.Master));
+            }
+        }
     }
 }

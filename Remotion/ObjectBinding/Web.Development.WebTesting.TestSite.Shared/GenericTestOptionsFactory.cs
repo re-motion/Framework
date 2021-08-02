@@ -17,7 +17,7 @@
 using System;
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests;
 
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
+namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
 {
   /// <summary>
   /// Provides default initializations for common <see cref="GenericTestOptions"/>.

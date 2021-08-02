@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite {
+namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared {
     
     
     public partial class Layout {
@@ -17,7 +17,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ContentPlaceHolder head;
         
@@ -26,7 +26,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
@@ -35,7 +35,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::System.Web.UI.ScriptManager ScriptManager;
         
@@ -44,7 +44,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ContentPlaceHolder body;
         
@@ -53,7 +53,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel TestInformationUpdatePanel;
         
@@ -62,7 +62,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel TestInformationOutputPanel;
         
@@ -71,7 +71,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label TestInformationOutput;
         
@@ -80,7 +80,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel MainUpdatePanel;
         
@@ -89,7 +89,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ContentPlaceHolder testOutput;
         
@@ -98,7 +98,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink RefreshButton;
     }

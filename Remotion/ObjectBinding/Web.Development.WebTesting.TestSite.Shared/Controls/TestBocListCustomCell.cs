@@ -19,7 +19,7 @@ using System.Linq;
 using System.Web.UI;
 using Remotion.ObjectBinding.Web.UI.Controls;
 
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls
+namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls
 {
   public class TestBocListCustomCell : BocCustomColumnDefinitionCell
   {

@@ -14,7 +14,7 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="BocListUserControlTestOutput.ascx.cs" Inherits="Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls.BocListUserControlTestOutput" %>
+<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="BocListUserControlTestOutput.ascx.cs" Inherits="Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls.BocListUserControlTestOutput" %>
 <table border="1">
   <tr><td>Selected indices (normal):</td><td colspan="4"><asp:Label ID="SelectedIndicesLabel" ViewStateMode="Disabled" runat="server"></asp:Label></td></tr>
   <tr><td>Selected view (normal):</td><td colspan="4"><asp:Label ID="SelectedViewLabel" ViewStateMode="Disabled" runat="server"></asp:Label></td></tr>

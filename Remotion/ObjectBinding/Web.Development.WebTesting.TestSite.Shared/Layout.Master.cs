@@ -19,7 +19,7 @@ using System.Web;
 using System.Web.UI;
 using Remotion.Web.UI;
 
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
+namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
 {
   public partial class Layout : MasterPage
   {

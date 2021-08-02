@@ -28,7 +28,7 @@ using Remotion.Web.Services;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.Utilities;
 
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls
+namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls
 {
   [WebService (Namespace = "http://re-motion.org/ObjectBinding.Web/")]
   [WebServiceBinding (ConformsTo = WsiProfiles.BasicProfile1_1)]

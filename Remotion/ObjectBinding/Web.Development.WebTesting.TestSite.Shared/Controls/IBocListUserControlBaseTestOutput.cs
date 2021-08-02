@@ -16,7 +16,7 @@
 // 
 using System;
 
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls
+namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls
 {
   public interface IBocListUserControlBaseTestOutput
   {

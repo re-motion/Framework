@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls {
+namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls {
     
     
     public partial class BocListAsGridUserControl {
@@ -55,7 +55,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls {
         /// Auto-generated field.
         /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
-        protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls.TestBocListWithRowMenuItems JobList_Normal;
+        protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls.TestBocListWithRowMenuItems JobList_Normal;
         
         /// <summary>
         /// JobList_Empty control.
@@ -64,7 +64,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls {
         /// Auto-generated field.
         /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
-        protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls.TestBocListWithRowMenuItems JobList_Empty;
+        protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls.TestBocListWithRowMenuItems JobList_Empty;
         
         /// <summary>
         /// JobList_AlwaysInvalid control.
@@ -73,7 +73,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls {
         /// Auto-generated field.
         /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
-        protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls.TestBocListWithRowMenuItems JobList_AlwaysInvalid;
+        protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls.TestBocListWithRowMenuItems JobList_AlwaysInvalid;
         
         /// <summary>
         /// AlwaysInvalidValidator control.

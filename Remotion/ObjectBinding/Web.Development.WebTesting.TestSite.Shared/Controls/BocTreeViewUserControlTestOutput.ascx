@@ -14,7 +14,7 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="BocTreeViewUserControlTestOutput.ascx.cs" Inherits="Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls.BocTreeViewUserControlTestOutput" %>
+<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="BocTreeViewUserControlTestOutput.ascx.cs" Inherits="Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls.BocTreeViewUserControlTestOutput" %>
 <table border="1">
   <tr><td>Selected node (normal):</td><td colspan="3"><asp:Label ID="NormalSelectedNodeLabel" ViewStateMode="Disabled" runat="server"></asp:Label></td></tr>
   <tr><td>Selected node (no top level expander):</td><td colspan="3"><asp:Label ID="NoTopLevelExpanderSelectedNodeLabel" ViewStateMode="Disabled" runat="server"></asp:Label></td></tr>

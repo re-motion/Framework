@@ -111,9 +111,7 @@
     <Content Include="objects\Remotion.ObjectBinding.Sample.Job\2D15EFA6-AC6C-4b35-8678-8AE55E0D8ECC" />
     <Content Include="objects\Remotion.ObjectBinding.Sample.Job\774E8412-FA31-46c6-B9F5-703DCB91CE24" />
     <Content Include="objects\Remotion.ObjectBinding.Sample.Job\89dc8cd2-30e0-4bb3-92a0-4587f32492f5" />
-    <Content Include="objects\Remotion.ObjectBinding.Sample.Job\EFBF1D71-D05A-46c4-8E30-0287307042C3">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Job\EFBF1D71-D05A-46c4-8E30-0287307042C3" />
     <Content Include="objects\Remotion.ObjectBinding.Sample.Person\00000000-0000-0000-0000-000000000001" />
     <Content Include="objects\Remotion.ObjectBinding.Sample.Person\00000000-0000-0000-0000-000000000009" />
     <Content Include="objects\Remotion.ObjectBinding.Sample.Person\00000000-0000-0000-0000-00000000000A" />
@@ -129,17 +127,14 @@
     <Content Include="objects\Remotion.ObjectBinding.Sample.Person\c93f1935-2d55-4b2a-9fd5-219739324cfb" />
     <Content Include="objects\Remotion.ObjectBinding.Sample.Person\eb94bfdb-1140-46f8-971f-e4b41dae13b8" />
     <Content Include="objects\Remotion.ObjectBinding.Sample.Person\ef898bb1-7095-46d2-872b-5f732a7c0036" />
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Job\02e98644-2051-464d-96f5-0d778862a260" />
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Job\f5758e93-4eb6-457c-abea-038322f986cd" />
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Job\62187fba-be7e-4a6e-8a0c-7e3f1b696d7f" />
     <Content Include="..\..\Remotion LGPL.licenseheader">
       <Link>Remotion LGPL.licenseheader</Link>
     </Content>
+    <Content Include="index.html" />
     <Content Include="packages.config" />
-    <None Include="objects\Remotion.ObjectBinding.Sample.Job\02e98644-2051-464d-96f5-0d778862a260" />
-    <None Include="objects\Remotion.ObjectBinding.Sample.Job\f5758e93-4eb6-457c-abea-038322f986cd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="objects\Remotion.ObjectBinding.Sample.Job\62187fba-be7e-4a6e-8a0c-7e3f1b696d7f">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -149,10 +144,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
-    <Content Include="UrlMapping.xml" />
-    <Content Include="Web.config">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\AssemblyInfoShared.cs">
@@ -161,9 +153,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Content Include="..\Web.Development.WebTesting.TestSite.Shared\UrlMapping.xml">
+      <Link>UrlMapping.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
@@ -188,6 +183,10 @@
     <ProjectReference Include="..\Sample\ObjectBinding.Sample.csproj">
       <Project>{5F1B88F7-FAFB-45C2-A357-333245870A6B}</Project>
       <Name>ObjectBinding.Sample</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Web.Development.WebTesting.TestSite.Shared\ObjectBinding.Web.Development.WebTesting.TestSite.Shared.csproj">
+      <Project>{7af5e2a9-f8be-479f-93fd-3c461e75582e}</Project>
+      <Name>ObjectBinding.Web.Development.WebTesting.TestSite.Shared</Name>
     </ProjectReference>
     <ProjectReference Include="..\Web.UnitTests\ObjectBinding.Web.UnitTests.csproj">
       <Project>{AB09FD88-9422-4BE7-8605-8A0EB8F9051B}</Project>

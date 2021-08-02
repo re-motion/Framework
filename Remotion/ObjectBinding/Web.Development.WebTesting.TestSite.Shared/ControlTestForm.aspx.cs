@@ -18,7 +18,7 @@ using System;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Web.ExecutionEngine;
 
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
+namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
 {
   public partial class ControlTestForm : WxePage
   {

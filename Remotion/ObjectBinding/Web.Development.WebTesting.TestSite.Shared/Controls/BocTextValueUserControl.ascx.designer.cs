@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls {
+namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls {
     
     
     public partial class BocTextValueUserControl {

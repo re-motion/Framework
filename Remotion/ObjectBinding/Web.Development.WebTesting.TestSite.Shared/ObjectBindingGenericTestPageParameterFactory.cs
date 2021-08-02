@@ -19,7 +19,7 @@ using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.TestSite.Infrastructure;
 
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
+namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
 {
   /// <summary>
   /// Provides default initializations for common <see cref="GenericTestPageParameter"/>.

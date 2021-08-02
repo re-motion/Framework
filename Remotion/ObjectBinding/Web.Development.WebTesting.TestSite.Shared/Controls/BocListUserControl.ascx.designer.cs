@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls {
+namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls {
     
     
     public partial class BocListUserControl {
@@ -55,7 +55,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls {
         /// Auto-generated field.
         /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
-        protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls.TestBocListWithRowMenuItems JobList_Normal;
+        protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls.TestBocListWithRowMenuItems JobList_Normal;
         
         /// <summary>
         /// JobList_WithRadioButtons control.
@@ -64,7 +64,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls {
         /// Auto-generated field.
         /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
-        protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls.TestBocListWithRowMenuItems JobList_WithRadioButtons;
+        protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls.TestBocListWithRowMenuItems JobList_WithRadioButtons;
         
         /// <summary>
         /// JobList_ReadOnly control.
@@ -73,7 +73,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls {
         /// Auto-generated field.
         /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
-        protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls.TestBocListWithRowMenuItems JobList_ReadOnly;
+        protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls.TestBocListWithRowMenuItems JobList_ReadOnly;
         
         /// <summary>
         /// JobList_Special control.
@@ -82,7 +82,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls {
         /// Auto-generated field.
         /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
-        protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls.TestBocListWithRowMenuItems JobList_Special;
+        protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls.TestBocListWithRowMenuItems JobList_Special;
         
         /// <summary>
         /// JobList_Empty control.
@@ -91,7 +91,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls {
         /// Auto-generated field.
         /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
-        protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls.TestBocListWithRowMenuItems JobList_Empty;
+        protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls.TestBocListWithRowMenuItems JobList_Empty;
         
         /// <summary>
         /// JobList_NoFakeTableHeader control.
@@ -100,7 +100,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls {
         /// Auto-generated field.
         /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
-        protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls.TestBocListWithRowMenuItems JobList_NoFakeTableHeader;
+        protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls.TestBocListWithRowMenuItems JobList_NoFakeTableHeader;
         
         /// <summary>
         /// JobList_ColumnsWithoutDiagnosticMetadata control.
@@ -109,7 +109,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls {
         /// Auto-generated field.
         /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
-        protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls.TestBocListWithRowMenuItems JobList_ColumnsWithoutDiagnosticMetadata;
+        protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls.TestBocListWithRowMenuItems JobList_ColumnsWithoutDiagnosticMetadata;
         
         /// <summary>
         /// NestedPropertyPathIdentifier control.
@@ -118,7 +118,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls {
         /// Auto-generated field.
         /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
-        protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls.TestBocListWithRowMenuItems NestedPropertyPathIdentifier;
+        protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls.TestBocListWithRowMenuItems NestedPropertyPathIdentifier;
         
         /// <summary>
         /// JobList_Empty_WithoutPlaceholder control.
@@ -127,7 +127,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls {
         /// Auto-generated field.
         /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
-        protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls.TestBocListWithRowMenuItems JobList_Empty_WithoutPlaceholder;
+        protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls.TestBocListWithRowMenuItems JobList_Empty_WithoutPlaceholder;
         
         /// <summary>
         /// JobList_AlwaysInvalid control.
@@ -136,7 +136,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls {
         /// Auto-generated field.
         /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
-        protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls.TestBocListWithRowMenuItems JobList_AlwaysInvalid;
+        protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls.TestBocListWithRowMenuItems JobList_AlwaysInvalid;
         
         /// <summary>
         /// AlwaysInvalidValidator control.
@@ -154,6 +154,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls {
         /// Auto-generated field.
         /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
-        protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls.TestBocListWithRowMenuItems JobList_Empty_VariableColumns;
+        protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls.TestBocListWithRowMenuItems JobList_Empty_VariableColumns;
     }
 }

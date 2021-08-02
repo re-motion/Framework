@@ -21,7 +21,7 @@ using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.TestSite.Infrastructure;
 
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.GenericPages
+namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.GenericPages
 {
   /// <summary>
   /// Provides a simple way to implement <see cref="IGenericTestPage{TOptions}"/>.

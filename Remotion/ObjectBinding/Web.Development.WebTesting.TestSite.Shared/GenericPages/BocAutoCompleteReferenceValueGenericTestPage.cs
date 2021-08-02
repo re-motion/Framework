@@ -15,10 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ServiceLocation;
+using Remotion.Web;
 using Remotion.Web.Development.WebTesting.TestSite.Infrastructure;
 
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.GenericPages
+namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.GenericPages
 {
   /// <summary>
   /// Custom <see cref="IGenericTestPage{TOptions}"/> for a <see cref="BocAutoCompleteReferenceValue"/>.
@@ -51,7 +54,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.GenericPage
     public override BocAutoCompleteReferenceValue CreateControl (GenericTestOptions options)
     {
       var control = base.CreateControl (options);
-      control.ControlServicePath = "~/Controls/BocAutoCompleteReferenceValueWebService.asmx";
+      var resourceUrlFactory = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>();
+      control.ControlServicePath = resourceUrlFactory.CreateResourceUrl (typeof (BocAutoCompleteReferenceValueWebService), TestResourceType.Root, "Controls/BocAutoCompleteReferenceValueWebService.asmx").GetUrl();
       return control;
     }
   }

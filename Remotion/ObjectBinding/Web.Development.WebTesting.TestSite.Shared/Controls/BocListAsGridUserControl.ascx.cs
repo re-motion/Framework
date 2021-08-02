@@ -19,12 +19,16 @@ using System.Linq;
 using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ServiceLocation;
+using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls
+namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls
 {
   public partial class BocListAsGridUserControl : DataEditUserControl
   {
+    protected string SampleIconUrl;
+
     public override IBusinessObjectDataSourceControl DataSource
     {
       get { return CurrentObject; }
@@ -53,6 +57,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls
 
       AlwaysInvalidValidator.ServerValidate += (source, args) => args.IsValid = false;
       JobList_AlwaysInvalid.RegisterValidator (AlwaysInvalidValidator);
+
+      SampleIconUrl = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>().CreateResourceUrl (typeof (BocListAsGridUserControl), ResourceType.Image, "SampleIcon.gif").GetUrl();
     }
 
     protected override void OnLoad (EventArgs e)

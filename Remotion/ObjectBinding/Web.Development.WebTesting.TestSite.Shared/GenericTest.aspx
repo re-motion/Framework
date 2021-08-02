@@ -14,7 +14,13 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Page Title="" Language="C#" MasterPageFile="~/Layout.Master" AutoEventWireup="true" CodeBehind="GenericTest.aspx.cs" Inherits="Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.GenericTest" %>
+<%@ Page Title="" Language="C#" MasterPageFile="Layout.Master" AutoEventWireup="true" CodeBehind="GenericTest.aspx.cs" Inherits="Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.GenericTest" %>
+<%@ Register tagPrefix="remotion" namespace="Remotion.Web.UI.Controls" assembly="Remotion.Web" %>
+<%@ Register tagPrefix="remotion" namespace="Remotion.ObjectBinding.Web.UI.Controls" assembly="Remotion.ObjectBinding.Web" %>
+<%@ Import Namespace="Remotion.ServiceLocation" %>
+<%@ Import Namespace="Remotion.Web" %>
+<%@ Import Namespace="Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared" %>
+<%@ Import Namespace="Remotion.Web.Development.WebTesting.TestSite.Infrastructure" %>
 <asp:Content ContentPlaceHolderID="body" runat="server">
 
   <remotion:BindableObjectDataSourceControl ID="DataSource" runat="server" Type="Remotion.ObjectBinding.Sample::Person" />
@@ -111,7 +117,7 @@
       <remotion:WebButton ID="ValidateButton" runat="server" Width="10em" Text="Validate"/>
 
       <h3>Frame test</h3>
-      <iframe id="testFrame" src="FrameTestFrame.aspx">
+      <iframe id="testFrame" src="<%= ResolveUrl(SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>().CreateResourceUrl (typeof (FrameTestFrame), TestResourceType.Root, "FrameTestFrame.aspx").GetUrl()) %>">
       </iframe>
     </ContentTemplate>
   </asp:UpdatePanel>

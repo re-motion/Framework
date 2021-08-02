@@ -14,7 +14,10 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="BocListAsGridUserControl.ascx.cs" Inherits="Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls.BocListAsGridUserControl" %>
+<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="BocListAsGridUserControl.ascx.cs" Inherits="Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls.BocListAsGridUserControl" %>
+<%@ Register tagPrefix="remotion" namespace="Remotion.Web.UI.Controls" assembly="Remotion.Web" %>
+<%@ Register tagPrefix="remotion" namespace="Remotion.ObjectBinding.Web.UI.Controls" assembly="Remotion.ObjectBinding.Web" %>
+<%@ Register tagPrefix="testsite" namespace="Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls" assembly="Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared" %>
 <remotion:FormGridManager ID="FormGridManager" runat="server" />
 <remotion:BindableObjectDataSourceControl ID="CurrentObject" runat="server" Type="Remotion.ObjectBinding.Sample::Person" />
 <remotion:BindableObjectDataSourceControl ID="EmptyObject" runat="server" Type="Remotion.ObjectBinding.Sample::Person" />
@@ -74,7 +77,7 @@
               <remotion:BocMenuItemCommand Type="Event"></remotion:BocMenuItemCommand>
             </PersistedCommand>
           </remotion:BocMenuItem>
-          <remotion:BocMenuItem ItemID="ListMenuCmd2" Icon-Url="~/Images/SampleIcon.gif" Icon-AlternateText="SampleIcon" Icon-ToolTip="SampleIcon">
+          <remotion:BocMenuItem ItemID="ListMenuCmd2" Icon-Url="../Image/SampleIcon.gif" Icon-AlternateText="SampleIcon" Icon-ToolTip="SampleIcon">
             <PersistedCommand>
               <remotion:BocMenuItemCommand Type="Event"></remotion:BocMenuItemCommand>
             </PersistedCommand>

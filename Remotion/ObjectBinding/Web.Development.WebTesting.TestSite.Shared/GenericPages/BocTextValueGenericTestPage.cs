@@ -18,7 +18,7 @@ using System;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Web.Development.WebTesting.TestSite.Infrastructure;
 
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.GenericPages
+namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.GenericPages
 {
   /// <summary>
   /// Custom <see cref="IGenericTestPage{TOptions}"/> for a <see cref="BocTextValue"/>.

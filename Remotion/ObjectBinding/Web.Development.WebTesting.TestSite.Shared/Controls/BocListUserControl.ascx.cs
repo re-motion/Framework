@@ -18,12 +18,16 @@ using System;
 using System.Linq;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ServiceLocation;
+using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls
+namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls
 {
   public partial class BocListUserControl : DataEditUserControl
   {
+    protected string SampleIconUrl;
+
     public override IBusinessObjectDataSourceControl DataSource
     {
       get { return CurrentObject; }
@@ -77,6 +81,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls
                                      new BocListView ("View 2", variableColumnsColumnDefinitions.Take(3).ToArray()) { ItemID = "ViewCmd2" },
                                  };
       JobList_Empty_VariableColumns.AvailableViews.AddRange (variableColumnsViews);
+
+      SampleIconUrl = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>().CreateResourceUrl (typeof (BocListUserControl), ResourceType.Image, "SampleIcon.gif").GetUrl();
     }
 
     protected override void OnPreRender (EventArgs e)

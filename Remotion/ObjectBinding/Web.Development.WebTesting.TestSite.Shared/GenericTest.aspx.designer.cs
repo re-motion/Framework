@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite {
+namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared {
     
     
     public partial class GenericTest {
@@ -162,9 +162,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite {
         /// <remarks>
         /// Auto-generated property.
         /// </remarks>
-        public new Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Layout Master {
+        public new Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Layout Master {
             get {
-                return ((Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Layout)(base.Master));
+                return ((Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Layout)(base.Master));
             }
         }
     }

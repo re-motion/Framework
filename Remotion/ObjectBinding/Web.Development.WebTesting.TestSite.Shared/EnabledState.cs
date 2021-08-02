@@ -16,7 +16,7 @@
 // 
 using System;
 
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
+namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
 {
   public enum EnabledState
   {

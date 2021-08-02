@@ -14,7 +14,7 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="BocAutoCompleteReferenceValueUserControlTestOutput.ascx.cs" Inherits="Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls.BocAutoCompleteReferenceValueUserControlTestOutput" %>
+<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="BocAutoCompleteReferenceValueUserControlTestOutput.ascx.cs" Inherits="Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls.BocAutoCompleteReferenceValueUserControlTestOutput" %>
 <table border="1">
   <tr><td>BOUI (normal):</td><td colspan="3"><asp:Label ID="BOUINormalLabel" ViewStateMode="Disabled" runat="server"></asp:Label></td></tr>
   <tr><td>BOUI (no auto postback):</td><td colspan="3"><asp:Label ID="BOUINoAutoPostBackLabel" ViewStateMode="Disabled" runat="server"></asp:Label></td></tr>

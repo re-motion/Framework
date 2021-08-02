@@ -19,11 +19,11 @@ using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.GenericPages;
+using Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.GenericPages;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
+namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
 {
   public partial class GenericTest : ObjectBindingGenericTestPage<GenericTestOptions>
   {
