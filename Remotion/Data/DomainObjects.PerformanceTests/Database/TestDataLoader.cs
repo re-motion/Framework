@@ -66,7 +66,7 @@ public class TestDataLoader : IDisposable
 
   private string ReadFile (string file)
   {
-    using (StreamReader reader = new StreamReader (file, Encoding.Default))
+    using (StreamReader reader = new StreamReader (file, Encoding.UTF8))
     {
       return reader.ReadToEnd ();
     }

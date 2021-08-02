@@ -73,7 +73,7 @@ namespace Remotion.Development.UnitTesting.Data.SqlClient
         Uri uri = new Uri (assemblyUrl);
         sqlFileName = Path.Combine (Path.GetDirectoryName (uri.LocalPath), sqlFileName);
       }
-      return ExecuteBatchString (File.ReadAllText (sqlFileName, Encoding.Default), useTransaction, replacementDictionary);
+      return ExecuteBatchString (File.ReadAllText (sqlFileName, Encoding.UTF8), useTransaction, replacementDictionary);
     }
 
     public int ExecuteBatchString (string commandBatch, bool useTransaction)

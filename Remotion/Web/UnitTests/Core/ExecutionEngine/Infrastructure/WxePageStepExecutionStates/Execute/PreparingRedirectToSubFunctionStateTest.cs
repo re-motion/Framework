@@ -40,11 +40,11 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
 
       Uri uri = new Uri ("http://localhost/AppDir/root.wxe");
 
-      ResponseMock.Setup (stub => stub.ContentEncoding).Returns (Encoding.Default);
+      ResponseMock.Setup (stub => stub.ContentEncoding).Returns (Encoding.UTF8);
 
       RequestMock.Setup (stub => stub.Url).Returns (uri);
       RequestMock.Setup (stub => stub.ApplicationPath).Returns ("/AppDir");
-      RequestMock.Setup (stub => stub.ContentEncoding).Returns (Encoding.Default);
+      RequestMock.Setup (stub => stub.ContentEncoding).Returns (Encoding.UTF8);
     }
 
     [Test]
@@ -122,7 +122,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
                         { WxeHandler.Parameters.WxeFunctionToken, WxeContext.FunctionToken },
                         { WxeHandler.Parameters.ReturnUrl, "/AppDir/root.wxe?Key=Value" }
                     },
-                    Encoding.Default);
+                    Encoding.UTF8);
                 Assert.That (nextState.Parameters.DestinationUrl, Is.EqualTo (destinationUrl));
 
                 Assert.That (nextState.Parameters.ResumeUrl, Is.EqualTo ("/AppDir/root.wxe?Key=Value&WxeFunctionToken=" + WxeContext.FunctionToken));
