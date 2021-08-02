@@ -105,7 +105,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     protected DataContainerMap (FlattenedDeserializationInfo info)
         : this (info.GetValueForHandle<IClientTransactionEventSink>())
     {
-      var dataContainerCount = info.GetValue<int>();
+      var dataContainerCount = info.GetIntValue();
       for (int i = 0; i < dataContainerCount; ++i)
         _dataContainers.Add (info.GetValueForHandle<DataContainer>());
     }
@@ -114,7 +114,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     {
       info.AddHandle (_transactionEventSink);
 
-      info.AddValue (_dataContainers.Count);
+      info.AddIntValue (_dataContainers.Count);
       foreach (DataContainer dataContainer in _dataContainers)
         info.AddHandle (dataContainer);
     }
