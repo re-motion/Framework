@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Serialization
@@ -407,13 +408,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     {
       FlattenedSerializableStub stub1 = new FlattenedSerializableStub ("begone, foul fiend", 123);
       FlattenedSerializableStub stub2 = new FlattenedSerializableStub ("'twas brillig, and the slithy toves", 124);
-      object[] stubs = new object[] { stub1, stub2 };
+      FlattenedSerializableStub[] stubs = new FlattenedSerializableStub[] { stub1, stub2 };
       FlattenedSerializationInfo serializationInfo = new FlattenedSerializationInfo ();
       serializationInfo.AddArray (stubs);
       object[] data = serializationInfo.GetData ();
 
       FlattenedDeserializationInfo deserializationInfo = new FlattenedDeserializationInfo (data);
-      object[] deserializedStubs = deserializationInfo.GetArray<object> ();
+      FlattenedSerializableStub[] deserializedStubs = deserializationInfo.GetArray<FlattenedSerializableStub> ();
 
       Assert.That (deserializedStubs.Length, Is.EqualTo (2));
       Assert.That (((FlattenedSerializableStub) deserializedStubs[0]).Data1, Is.EqualTo ("begone, foul fiend"));

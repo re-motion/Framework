@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
@@ -50,7 +51,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
       _boolWriter.AddSimpleValue (value);
     }
 
-    // Note: This will use T to decide whether to recurse into an IFlattenedSerializable or not.
+    /// <remarks>Note: This will use T to decide whether to recurse into an IFlattenedSerializable or not.</remarks>
     public void AddValue<T> (T value)
     {
       if (typeof (IFlattenedSerializable).IsAssignableFrom (typeof (T)))
@@ -63,7 +64,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
     {
       if (serializable != null)
       {
-        AddHandle (serializable.GetType ());
+        var typeName = serializable.GetType().AssemblyQualifiedName;
+        AddHandle (typeName);
         serializable.SerializeIntoFlatStructure (this);
       }
       else
