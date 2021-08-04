@@ -126,6 +126,9 @@ packages/
 # Visual Stduio 2015
 .vs/
 
+# JetBrains Rider
+.idea/
+
 # Windows Azure Build Output
 csx
 *.build.csdef
