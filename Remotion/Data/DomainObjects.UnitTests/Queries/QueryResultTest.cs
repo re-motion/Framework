@@ -19,6 +19,7 @@ using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Queries
@@ -152,8 +153,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       Assert.That (
           () => _resultWithNulls.ToObjectList(),
           Throws.InstanceOf<UnexpectedQueryResultException>()
-              .With.Message.EqualTo (
-                  "Cannot create an ObjectList for the query result: Item 3 of parameter 'domainObjects' is null.\r\nParameter name: domainObjects"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Cannot create an ObjectList for the query result: Item 3 of parameter 'domainObjects' is null.",
+                  "domainObjects"));
     }
 
     [Test]
@@ -162,9 +164,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       Assert.That (
           () => _resultWithDuplicates.ToObjectList(),
           Throws.InstanceOf<UnexpectedQueryResultException>()
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "Cannot create an ObjectList for the query result: Item 3 of parameter 'domainObjects' "
-                  + "is a duplicate ('Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid').\r\nParameter name: domainObjects"));
+                  + "is a duplicate ('Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid').",
+                  "domainObjects"));
     }
 
     [Test]
@@ -197,9 +200,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       Assert.That (
           () => _resultWithNulls.ToCustomCollection(),
           Throws.InstanceOf<UnexpectedQueryResultException>()
-              .With.Message.EqualTo (
-                  "Cannot create a custom collection of type 'DomainObjectCollection' for the query result: Item 3 of parameter 'domainObjects' is null."
-                  + "\r\nParameter name: domainObjects"));
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Cannot create a custom collection of type 'DomainObjectCollection' for the query result: Item 3 of parameter 'domainObjects' is null.",
+                  "domainObjects"));
     }
 
     [Test]
@@ -208,10 +211,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       Assert.That (
           () => _resultWithDuplicates.ToCustomCollection(),
           Throws.InstanceOf<UnexpectedQueryResultException>()
-              .With.Message.EqualTo (
+              .With.ArgumentExceptionMessageEqualTo (
                   "Cannot create a custom collection of type 'DomainObjectCollection' for the query result: "
-                  + "Item 3 of parameter 'domainObjects' is a duplicate ('Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid')."
-                  + "\r\nParameter name: domainObjects"));
+                  + "Item 3 of parameter 'domainObjects' is a duplicate ('Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid').",
+                  "domainObjects"));
     }
 
     [Test]
