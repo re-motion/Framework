@@ -25,7 +25,7 @@ span.bocReferenceValue select
 span.bocReferenceValue select.error
 {
   background-image: url('../Image/sprite.svg#ReferenceValueErrorIndicator');
-  background-size: 40px 16px;
+  background-size: 16px 16px;
   background-position: right center;
   background-repeat: no-repeat;
 }

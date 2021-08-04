@@ -19,7 +19,7 @@ ul.treeViewTopLevelNodeChildren
 ul.treeViewNodeChildren
 {
   background-image: url(../Image/sprite.svg#TreeViewI);
-  background-size: 19px 22px;
+  background-size: 16px 16px;
   background-repeat: repeat-y;
   margin: 0;
   padding: 0;
@@ -593,8 +593,8 @@ span.treeViewNode > a img
 
 span.treeViewNode > a img.Icon
 {
-  height: 22px;
-  width: 19px;
+  height: 16px;
+  width: 16px;
 }
 
 /* Applied to the node's head. */

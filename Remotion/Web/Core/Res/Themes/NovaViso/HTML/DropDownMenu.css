@@ -183,7 +183,6 @@ span.DropDownMenuSelect a.DropDownMenuButton img
   width: 12px;
   margin-left: 2px;
   margin-right: 2px;
-  background-position: -2px center;
   background-image: url('../Image/sprite.svg#DropDownMenuButton');
   background-size: 32px 15px;
   background-repeat: no-repeat;
@@ -197,7 +196,6 @@ span.DropDownMenuSelect a.DropDownMenuButton:focus img
 
 span.DropDownMenuSelect.disabled a.DropDownMenuButton img
 {
-  background-position: -18px center;
   opacity: 0.4;
   filter: progid:DXImageTransform.Microsoft.BasicImage(opacity=0.40),
           progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
