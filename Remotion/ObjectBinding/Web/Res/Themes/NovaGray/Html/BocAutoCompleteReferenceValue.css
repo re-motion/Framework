@@ -83,7 +83,6 @@ span.bocAutoCompleteReferenceValue.disabled span.bocAutoCompleteReferenceValueBu
 
 span.bocAutoCompleteReferenceValue.disabled span.bocAutoCompleteReferenceValueButton img
 {
-  background-position: -15px center;
   opacity: 0.4;
   filter: progid:DXImageTransform.Microsoft.BasicImage(opacity=0.40),
           progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
@@ -91,13 +90,11 @@ span.bocAutoCompleteReferenceValue.disabled span.bocAutoCompleteReferenceValueBu
 
 span.bocAutoCompleteReferenceValueButton img:hover
 {
-  background-position: -30px center;
   background-color: #DEECFC;
 }
 
 span.bocAutoCompleteReferenceValueButton img:active
 {
-  background-position: -45px center;
   background-color: #C5E0FC;
 }
 
