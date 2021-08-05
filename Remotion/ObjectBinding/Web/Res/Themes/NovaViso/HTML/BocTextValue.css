@@ -1,0 +1,92 @@
+/* Style applied to the BocTextValue. */
+
+span.bocTextValue
+{
+  width: 15em;
+  min-height: 1.7em;
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  overflow: hidden;
+}
+
+.bocTextValue.readOnly
+{
+  min-height: 0;
+  /* Ensures that the outline is visible in Firefox. */
+  overflow: visible;
+}
+
+.bocTextValue.disabled
+{
+}
+
+span.bocTextValue .content
+{
+  position: absolute;
+  left: 0;
+  right: 6px;
+  width: auto;
+}
+
+.mozilla span.bocTextValue .content
+{
+  right: 8px;
+}
+
+.bocTextValue.readOnly .content
+{
+  position: static;
+}
+
+.bocTextValue.readOnly .content span[tabindex]
+{
+  /* Ensures that the outline is rendered outside of the space reserved for diacritic marks. */
+  display: inline-block;
+}
+
+.bocTextValue.readOnly .content span[tabindex]:first-child
+{
+  /* Ensures that diacritic marks can be rendered without being cut off. */
+  padding-top: 0.2em;
+}
+
+.bocTextValue.readOnly .content span[tabindex]:last-child
+{
+  /* Ensures that diacritic marks can be rendered without being cut off. */
+  padding-bottom: 0.2em;
+}
+
+.bocTextValue.readOnly .content span[tabindex]:empty
+{
+  /* Ensures that empty readonly values are not collapsed and can therefor visualize the keyboard focus */
+  width: calc(100% - 2px);
+  min-height: 1.5em;
+  padding-top: 0;
+  padding-bottom: 0;
+  vertical-align: -0.2em;
+}
+
+span.bocTextValue input
+{
+  width: 100%;
+}
+
+span.bocTextValue textarea
+{
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+}
+
+span.bocTextValue input
+{
+  height: 1.2em;
+  line-height: 1em;
+}
+
+.blink span.bocTextValue input
+{
+  padding-left: 1px;
+  padding-right: 1px;
+}
