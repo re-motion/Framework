@@ -1,0 +1,230 @@
+/* Style applied to the TabbedMultiView. */
+
+div.tabbedMultiView
+{
+  width: 100%;
+  height: 100%;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  background-color: white;
+}
+
+div.tabbedMultiView > div.wrapper
+{
+  position: absolute;
+  background-color: white;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: auto;
+  height: auto;
+}
+
+div.tabbedMultiViewActiveView
+{
+  height: 80%;
+  width: inherit;
+}
+
+div.tabbedMultiViewActiveView > div.contentBorder
+{
+  position: relative;
+  background-color: white;
+  margin: 0; 
+  padding: 0.5em;
+  overflow: auto;
+  height: 60%;
+}
+
+div.tabbedMultiViewActiveView > span:focus + div.contentBorder 
+{
+  outline: dotted black 1px;
+  outline: auto 5px -webkit-focus-ring-color;
+}
+
+div.tabbedMultiViewActiveView > div.contentBorder > div.content
+{
+  position: relative;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Applied to the top section of the multi view. Height cannot be provided in percent. */
+div.tabbedMultiViewTopControls
+{
+  overflow: hidden;
+  background-color: White;
+}
+
+div.tabbedMultiViewTopControls.empty
+{
+  height: 1em;
+  background-color: White;
+}
+
+/* Applied to the bottom section of the multi view. Height cannot be provided in percent. */
+div.tabbedMultiViewBottomControls
+{
+  position: absolute;
+  overflow: hidden;
+  background-color: White;
+  margin-top: 0.5em;
+  left: 0.5em;
+  right: 0.5em;
+  bottom: 0.5em;
+}
+
+div.tabbedMultiViewBottomControls.empty
+{
+  height: 1em;
+  background-color: White;
+}
+
+/* Tab Strip */
+div.tabbedMultiViewTabStrip
+{
+  position: relative;
+  left: 0;
+  right: 0;
+  padding: 0;
+  background-color: White;
+  margin: 0;
+  margin-top: 0.1em;
+}
+
+div.tabbedMultiViewTabStrip div.tabStripTabsPane ul
+{
+  display: block;
+}
+
+div.tabbedMultiViewTabStrip span.tabStripTabWrapper
+{
+  padding-top: 0.3em;
+  position: relative;
+}
+
+div.tabbedMultiViewTabStrip span.tabStripTabSeparator
+{
+  width: 0.5em;
+  border-bottom: solid 1px #AAAAAA;
+}
+
+div.tabbedMultiViewTabStrip span.tabStripTab,
+div.tabbedMultiViewTabStrip span.tabStripTabSelected
+{
+  position: static;
+  display: inline;
+}
+
+div.tabbedMultiViewTabStrip span.tabStripTab a
+{
+  border: solid 1px #AAAAAA;
+}
+
+div.tabbedMultiViewTabStrip span.tabStripTab a,
+div.tabbedMultiViewTabStrip span.tabStripTabSelected a
+{
+  position: relative;
+  display: inline-block;
+  color: Black;
+  background-image: url(../Image/ButtonBackground.gif);
+  background-color: #E6E5E7;
+  background-position: center top;
+  background-repeat: repeat-x;
+}
+
+div.tabbedMultiViewTabStrip span.tabStripTab a:focus,
+div.tabbedMultiViewTabStrip span.tabStripTab a:hover
+{
+  border: solid 1px #7CB2E6;
+  border-bottom: solid 1px #AAAAAA;
+  background-image: url(../Image/ButtonBackgroundHover.gif);
+  background-color: #E5F0FC;
+}
+
+div.tabbedMultiViewTabStrip span.tabStripTab a:active
+{
+  border: solid 1px #569CE0;
+  border-bottom: solid 1px #AAAAAA;
+  background-image: url(../Image/ButtonBackgroundActive.gif);
+  background-color: #C5E0FC;
+}
+
+div.tabbedMultiViewTabStrip span.tabStripTabSelected a
+{
+  border: solid 1px #AAAAAA;
+  border-bottom: none;
+  background-image: none;
+  background-color: White;
+  position: relative;
+}
+
+div.tabbedMultiViewTabStrip span.tabStripTabSelected a:after
+{
+  content: '';
+  display: block;
+  /* Use a separate border element to ensure sharp corners instead of transitioning at the point where the border colors meet. */
+  border-bottom: solid 1px White;
+}
+
+/* Content area of the tab */
+div.tabbedMultiViewTabStrip a span.anchorBody
+{
+  padding-top: 0.2em;
+  padding-bottom: 0.2em; 
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+
+div.tabbedMultiViewTabStrip a span.anchorBody:first-child::before
+{
+  content: "";
+  height: 1.2em;
+  width: 0;
+  display: inline-block;
+  vertical-align: text-bottom;
+}
+
+div.tabbedMultiViewTabStrip span.tabStripTab a img,
+div.tabbedMultiViewTabStrip span.tabStripTabSelected a img
+{
+  position: relative;
+  top: -0.1em;
+  vertical-align: middle;
+}
+
+div.tabbedMultiViewTabStrip span.tabStripTabSeparator span
+{
+  margin-bottom: 1px; /* The width of the top-border of the tabs. */
+  padding-top: 0.2em; /* The padding used for the content span. */
+  padding-bottom: 0.2em; /* The padding used for the content span. */
+}
+
+div.tabbedMultiViewTabStrip span.tabStripTab span.anchorBody,
+div.tabbedMultiViewTabStrip span.tabStripTabSelected span.anchorBody,
+div.tabbedMultiViewTabStrip span.tabStripTabSeparator span
+{
+  height: 1.2em;
+}
+
+div.tabbedMultiViewTabStrip div.clearingPane
+{
+  clear: both;
+}
+
+/* Shared in other CSS files */
+.screenReaderText
+{
+  clip: rect(1px, 1px, 1px, 1px) !important;
+  height: 1px !important;
+  width: 1px !important;
+  overflow: hidden !important;
+  position: absolute !important;
+  display: inline !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}

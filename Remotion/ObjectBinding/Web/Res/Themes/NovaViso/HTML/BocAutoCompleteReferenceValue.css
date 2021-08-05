@@ -1,0 +1,251 @@
+/* Style applied to the BocAutoCompleteReferenceValue. */
+
+span.bocAutoCompleteReferenceValue
+{
+  width: 21.5em;
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  overflow: hidden;
+  min-height: 1.7em;
+}
+
+span.bocAutoCompleteReferenceValue span.body
+{
+  display: block;
+}
+
+span.bocAutoCompleteReferenceValue input
+{
+  width: 100%;
+  display: inline-block;
+}
+
+span.bocAutoCompleteReferenceValue input.error
+{
+  background-image: url('../Image/sprite.svg#AutoCompleteReferenceValueErrorIndicator');
+  background-size: 16px 16px;
+  background-position: right center;
+  background-repeat: no-repeat;
+}
+
+span.bocAutoCompleteReferenceValueButton
+{
+  display: inline-block;
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  border: solid 1px #AAAAAA;
+}
+
+span.bocAutoCompleteReferenceValue.disabled span.bocAutoCompleteReferenceValueButton
+{
+  border: 1px solid #BCBCBC;
+}
+
+span.bocAutoCompleteReferenceValueButton:hover
+{
+  border: 1px solid #7CB2E6;
+}
+
+span.bocAutoCompleteReferenceValueButton
+{
+  background-color: #EAEEFE;
+}
+
+span.bocAutoCompleteReferenceValueButton img
+{
+  height: 100%;
+  width: 15px;
+  border: none;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  background-image: url('../Image/AutoCompleteReferenceValueDropDownButtonFace.gif');
+  background-size: 60px 99px;
+  background-position: 0 center; /*-1px for border*/
+  background-repeat: no-repeat;
+}
+
+span.bocAutoCompleteReferenceValue.disabled span.bocAutoCompleteReferenceValueButton
+{
+  background-color: #EFEFF0;
+}
+
+span.bocAutoCompleteReferenceValue.disabled span.bocAutoCompleteReferenceValueButton img
+{
+  background-position: -15px center;
+  opacity: 0.4;
+  filter: progid:DXImageTransform.Microsoft.BasicImage(opacity=0.40),
+          progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
+}
+
+span.bocAutoCompleteReferenceValueButton img:hover
+{
+  background-position: -30px center;
+  background-color: #DEECFC;
+}
+
+span.bocAutoCompleteReferenceValueButton img:active
+{
+  background-position: -45px center;
+  background-color: #C5E0FC;
+}
+
+span.bocAutoCompleteReferenceValue span.body
+{
+  display: inline-block;
+  margin-top: 1px;
+  margin-left: 1px;
+  padding: 1px;
+}
+
+span.bocAutoCompleteReferenceValue.disabled span.content,
+span.bocAutoCompleteReferenceValue .disabled span.content
+{
+  color: gray;
+  cursor: default;
+}
+
+span.bocAutoCompleteReferenceValue span.body span.content
+{
+  margin-right: 1px;
+}
+
+span.bocAutoCompleteReferenceValue.readOnly span.icon img
+{
+  margin-right: 6px;
+}
+
+span.bocAutoCompleteReferenceValue.disabled span.icon img,
+span.bocAutoCompleteReferenceValue .disabled span.icon img
+{
+  opacity: 0.4;
+  filter: progid:DXImageTransform.Microsoft.BasicImage(opacity=0.40),
+          progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
+}
+
+/* withoutOptionsMenu */
+span.bocAutoCompleteReferenceValue span.content.withoutOptionsMenu
+{
+  right: 0;
+}
+
+/* hasOptionsMenu */
+span.bocAutoCompleteReferenceValue span.optionsMenu span.DropDownMenuSelect,
+span.bocAutoCompleteReferenceValue.disabled span.optionsMenu span.DropDownMenuSelect,
+span.bocAutoCompleteReferenceValue.readOnly span.optionsMenu span.DropDownMenuSelect
+{
+  height: 1.5em;
+  top: 0;
+}
+
+span.bocAutoCompleteReferenceValue span.optionsMenu span.DropDownMenuSelect a.DropDownMenuLabel,
+span.bocAutoCompleteReferenceValue.disabled span.optionsMenu span.DropDownMenuSelect a.DropDownMenuLabel,
+span.bocAutoCompleteReferenceValue.readOnly span.optionsMenu span.DropDownMenuSelect a.DropDownMenuLabel
+{
+  top: 0.1em;
+}
+
+span.bocAutoCompleteReferenceValue span.content,
+span.bocAutoCompleteReferenceValue.disabled span.content
+{
+  position: absolute;
+  width: auto;
+  display: inline-block;
+  top: 0;
+  left: 0;
+  height: 1.65em; /* for Drop Down Button */
+  white-space: nowrap; /* for Drop Down Button */
+}
+
+span.bocAutoCompleteReferenceValue.readOnly span.content
+{
+  position: static;
+  height: auto;
+}
+
+span.bocAutoCompleteReferenceValue.readOnly span.content span:empty
+{
+  /* Ensures that empty readonly values are not collapsed and can therefor visualize the keyboard focus */
+  min-width: 2em;
+  min-height: 1.5em;
+  vertical-align: -0.2em;
+}
+
+span.bocAutoCompleteReferenceValue.readOnly span.body
+{
+  /* Ensures that diacritic marks can be rendered without being cut off. 
+     Using line-height instead of padding works better with BocAutoCompleteReferenceValue. When using padding, the text is not aligned with the label. */
+  height: 1.4em;
+  /* Ensures that the outline is rendered outside of the space reserved for diacritic marks. */
+  display: inline-block;
+}
+
+span.bocAutoCompleteReferenceValue.readOnly span.content.hasOptionsMenu span,
+span.bocAutoCompleteReferenceValue.readOnly span.content.withoutOptionsMenu span
+{
+  /* Ensures that diacritic marks can be rendered without being cut off. 
+     Using line-height instead of padding works better with BocAutoCompleteReferenceValue. When using padding, the text is not aligned with the label. */
+  line-height: 1.4em;
+  /* Ensures that the outline is rendered outside of the space reserved for diacritic marks. */
+  display: inline-block;
+}
+
+/* has Icon */
+span.bocAutoCompleteReferenceValue span.content.hasIcon
+{
+  left: 22px; /* width of a.command icon + desired space between */
+}
+
+span.bocAutoCompleteReferenceValue span.icon img
+{
+  width: 16px;
+  height: 16px;
+  display: inline;
+}
+
+span.bocAutoCompleteReferenceValue span.optionsMenu
+{
+  position: absolute;
+  display: inline-block;
+  top: 0;
+  right: 0;
+  width: 6.7em; /* Define width of span.optionsMenu */
+}
+
+span.bocAutoCompleteReferenceValue span.content.hasOptionsMenu
+{
+  right: 7em; /* width of span.optionsMenu + desired space between */
+}
+
+span.content.hasOptionsMenu span.bocAutoCompleteReferenceValueInput,
+span.content.withoutOptionsMenu span.bocAutoCompleteReferenceValueInput
+{
+  display: inline-block;
+  width: auto;
+  position: absolute;
+  left: 0;
+  right: 24px;
+}
+
+.mozilla span.content.hasOptionsMenu span.bocAutoCompleteReferenceValueInput,
+.mozilla span.content.withoutOptionsMenu span.bocAutoCompleteReferenceValueInput
+{
+  right: 26px;
+}
+
+span.bocAutoCompleteReferenceValueInput input
+{
+  height: 1.2em;
+  line-height: 1em;
+}
+
+.blink span.bocAutoCompleteReferenceValue input
+{
+  padding-left: 1px;
+  padding-right: 1px;
+}
