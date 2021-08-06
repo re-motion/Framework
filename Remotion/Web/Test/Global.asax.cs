@@ -21,7 +21,7 @@ using Remotion.Development.Web.ResourceHosting;
 using Remotion.Logging;
 using Remotion.ServiceLocation;
 using Remotion.Web.ExecutionEngine;
-using Remotion.Web.Test.ErrorHandling;
+using Remotion.Web.Test.Shared.ErrorHandling;
 using Remotion.Web.UI;
 
 namespace Remotion.Web.Test
@@ -46,6 +46,7 @@ namespace Remotion.Web.Test
       _resourceVirtualPathProvider = new ResourceVirtualPathProvider (
           new[]
           {
+              new ResourcePathMapping ("Remotion.Web.Test.Shared", @"..\..\Web\Test.Shared"),
               new ResourcePathMapping ("Remotion.Web/Html/jquery-1.6.4.js", @"..\..\Web\Core\res\Html\jquery-1.6.4.js"),
               new ResourcePathMapping ("Remotion.Web/Html/jquery.iFrameShim.js", @"..\..\Web\Core\res\Html\jquery.iFrameShim.js"),
               new ResourcePathMapping ("Remotion.Web/Html", @$"..\..\Web\ClientScript\bin\{configuration}\dist"),

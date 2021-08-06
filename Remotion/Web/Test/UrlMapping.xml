@@ -20,15 +20,15 @@
     xmlns="http://www.re-motion.org/Web/ExecutionEngine/UrlMapping/1.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.re-motion.org/Web/ExecutionEngine/UrlMapping/1.0 UrlMapping.xsd">
-  <add type="Remotion.Web.Test::ExecutionEngine.SessionWxeFunction" resource="session.wxe"/>
-  <add type="Remotion.Web.Test::ExecutionEngine.ProfilingWxeFunction" resource="prof.wxe"/>
-  <add type="Remotion.Web.Test::ExecutionEngine.RedirectedWxeFunction" resource="redirected.wxe"/>
-  <add type="Remotion.Web.Test::UpdatePanelTests.SutFunction" resource="UpdatePanelTests/Sut.wxe"/>
-  <add type="Remotion.Web.Test::ExecutionEngine.ShowUserControlFormFunction" resource="ShowUserControl.wxe"/>
-  <add type="Remotion.Web.Test::IFrameSupport.MainFunction" resource="Main.wxe"/>
-  <add type="Remotion.Web.Test::IFrameSupport.FrameContentFunction" resource="FrameContent.wxe"/>
-  <add type="Remotion.Web.Test::ExecutionEngine.ExceptionHandling.TestFunction" resource="ExceptionHandlingTest.wxe"/>
-  <add type="Remotion.Web.Test::PathTests.TestFunction" resource="PathTests.wxe"/>
+  <add type="Remotion.Web.Test.Shared::ExecutionEngine.SessionWxeFunction" resource="session.wxe"/>
+  <add type="Remotion.Web.Test.Shared::ExecutionEngine.ProfilingWxeFunction" resource="prof.wxe"/>
+  <add type="Remotion.Web.Test.Shared::ExecutionEngine.RedirectedWxeFunction" resource="redirected.wxe"/>
+  <add type="Remotion.Web.Test.Shared::UpdatePanelTests.SutFunction" resource="UpdatePanelTests/Sut.wxe"/>
+  <add type="Remotion.Web.Test.Shared::ExecutionEngine.ShowUserControlFormFunction" resource="ShowUserControl.wxe"/>
+  <add type="Remotion.Web.Test.Shared::IFrameSupport.MainFunction" resource="Main.wxe"/>
+  <add type="Remotion.Web.Test.Shared::IFrameSupport.FrameContentFunction" resource="FrameContent.wxe"/>
+  <add type="Remotion.Web.Test.Shared::ExecutionEngine.ExceptionHandling.TestFunction" resource="ExceptionHandlingTest.wxe"/>
+  <add type="Remotion.Web.Test.Shared::PathTests.TestFunction" resource="PathTests.wxe"/>
   <!--
 		<add type="Remotion.Web.Test.SampleWxeFunction,Remotion.Web.Test" resource="sample.wxe"/>
 		<add type="Remotion.Web.Test.SampleWxeFunction,Remotion.Web.Test" resource="sample_old.wxe"/>
