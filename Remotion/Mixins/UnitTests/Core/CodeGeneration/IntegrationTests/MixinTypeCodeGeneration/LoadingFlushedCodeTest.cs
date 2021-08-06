@@ -99,6 +99,10 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTy
     [Test]
     public void LoadFlushedCode_DoesNotIncludesGeneratedMixinTypes ()
     {
+#if !FEATURE_ASSEMBLYBUILDER_SAVE
+      Assert.Ignore (".NET does not support assembly persistence.");
+#endif
+
       var mixedInstance = CreateMixedObject<ClassOverridingMixinMembers> (typeof (MixinWithAbstractMembers));
       var mixin = Mixin.Get<MixinWithAbstractMembers> (mixedInstance);
 
@@ -120,6 +124,10 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTy
     [Test]
     public void LoadFlushedCodeTwice ()
     {
+#if !FEATURE_ASSEMBLYBUILDER_SAVE
+      Assert.Ignore (".NET does not support assembly persistence.");
+#endif
+
       CreateMixedType (typeof (ClassOverridingMixinMembers), typeof (MixinWithAbstractMembers));
       
       var assembly = FlushAndLoadAssemblyWithoutLocking ();

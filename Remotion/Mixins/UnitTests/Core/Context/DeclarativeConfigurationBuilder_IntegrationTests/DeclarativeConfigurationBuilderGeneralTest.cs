@@ -97,6 +97,10 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
     [Test]
     public void BuildDefault_DoesNotLockPersistedFile ()
     {
+#if !FEATURE_ASSEMBLYBUILDER_SAVE
+      Assert.Ignore (".NET does not support assembly persistence.");
+#endif
+
       TypeGenerationHelper.ForceTypeGeneration (typeof (object));
       string[] paths = TypeGenerationHelper.Pipeline.CodeManager.FlushCodeToDisk();
 
