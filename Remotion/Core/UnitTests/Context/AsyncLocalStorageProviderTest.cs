@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using NUnit.Framework;
 using Remotion.Context;
@@ -102,42 +103,39 @@ namespace Remotion.UnitTests.Context
     public void SetData_OnThreadPoolThread_IsResetForNextWorkItem ()
     {
       object result = string.Empty;
-      int threadId1 = -1;
-      int threadId2 = -2;
-      ThreadPool.GetMinThreads (out var minWorkerThreads, out var minCompletionPortThreads);
-      ThreadPool.GetMaxThreads (out var maxWorkerThreads, out var maxCompletionPortThreads);
-      ThreadPool.GetAvailableThreads (out var availableWorkerThreads, out _);
-      try
-      {
-        ThreadPool.SetMinThreads (1, 0);
-        ThreadPool.SetMaxThreads (maxWorkerThreads - availableWorkerThreads + 1, 0);
-        using var resetEvent = new AutoResetEvent (false);
 
-        ThreadPool.QueueUserWorkItem (
-            _ =>
-            {
-              threadId1 = Thread.CurrentThread.ManagedThreadId;
-              _provider.SetData (c_testKey, "1");
-              resetEvent.Set();
-            });
-        resetEvent.WaitOne();
-        ThreadPool.QueueUserWorkItem (
-            _ =>
-            {
-              threadId2 = Thread.CurrentThread.ManagedThreadId;
-              result = _provider.GetData (c_testKey);
-              resetEvent.Set();
-            });
-        resetEvent.WaitOne();
-      }
-      finally
+      using var resetEvent = new AutoResetEvent (false);
+
+      var visitedThreadPoolThreads = new HashSet<int>();
+      var completed = false;
+
+      while (!completed)
       {
-        ThreadPool.SetMaxThreads (maxWorkerThreads, maxCompletionPortThreads);
-        ThreadPool.SetMinThreads (minWorkerThreads, minCompletionPortThreads);
+        ThreadPool.QueueUserWorkItem (
+            _ =>
+            {
+              var threadPoolThreadId = Thread.CurrentThread.ManagedThreadId;
+              var didNotVisitThreadPoolThreadYet = visitedThreadPoolThreads.Add (threadPoolThreadId);
+
+              if (didNotVisitThreadPoolThreadYet)
+              {
+                _provider.SetData (c_testKey, "1");
+              }
+              else
+              {
+                result = _provider.GetData (c_testKey);
+                completed = true;
+              }
+
+              Thread.MemoryBarrier();
+              resetEvent.Set();
+            });
+
+        if (!resetEvent.WaitOne (TimeSpan.FromSeconds (3)))
+          Assert.Fail ("Queued thread pool work item did not complete within the expected time.");
       }
 
       Assert.That (result, Is.Null);
-      Assert.That (threadId1, Is.EqualTo(threadId2));
     }
 
 #if NETFRAMEWORK && DEBUG
