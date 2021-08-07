@@ -6,25 +6,26 @@
   </PropertyGroup>
   <Import Project="..\..\..\Build\Shared.build.props" />
   <PropertyGroup>
-    <AssemblyTitle>Remotion Mixins Library Unit Tests</AssemblyTitle>
-    <AssemblyName>Remotion.Mixins.UnitTests</AssemblyName>
+    <AssemblyTitle>Remotion Mixins Mixer Tools Console Unit Tests</AssemblyTitle>
+    <AssemblyName>Remotion.Mixins.MixerTools.UnitTests</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
-    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
+  <ItemGroup>
+    <Content Include="SampleAssembly\SampleTypes.cs" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
     <ProjectReference Include="..\..\Core\Tools\Core.Tools.csproj" />
     <ProjectReference Include="..\..\Development\Core\Development.Core.csproj" />
     <ProjectReference Include="..\..\Development\Mixins\Development.Mixins.csproj" />
     <ProjectReference Include="..\Core\Mixins.Core.csproj" />
-    <ProjectReference Include="..\Samples\Mixins.Samples.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MixerTools\Mixins.MixerTools.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CoreRhinoMocks" Version="3.6.1.2" PrivateAssets="all" />
     <PackageReference Include="Remotion.TypePipe.Development" Version="3.0.0-alpha.1" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Web" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

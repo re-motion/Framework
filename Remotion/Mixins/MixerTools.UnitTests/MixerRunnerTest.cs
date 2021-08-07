@@ -18,9 +18,8 @@ using System;
 using System.IO;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
-using Remotion.Mixins.MixerTools;
 
-namespace Remotion.Mixins.UnitTests.Core.MixerTools
+namespace Remotion.Mixins.MixerTools.UnitTests
 {
   [TestFixture]
   public class MixerRunnerTest
@@ -81,7 +80,7 @@ namespace Remotion.Mixins.UnitTests.Core.MixerTools
         Directory.CreateDirectory (_parameters.BaseDirectory);
 
         var compiler = new AssemblyCompiler (
-            Path.Combine (TestContext.CurrentContext.TestDirectory, @"Core\MixerTools\SampleAssembly"),
+            Path.Combine (TestContext.CurrentContext.TestDirectory, @"SampleAssembly"),
             Path.Combine (_parameters.BaseDirectory, "SampleAssembly.dll"), 
             typeof (Mixin).Assembly.Location);
         compiler.Compile();

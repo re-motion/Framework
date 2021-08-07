@@ -15,16 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Mixins;
 
-namespace Remotion.Mixins.UnitTests.Core.MixerTools.SampleAssembly
+namespace Remotion.Mixins.MixerTools.UnitTests.TestDomain
 {
-  public class BaseType
-  {
-  }
-
-  [Extends (typeof (BaseType))]
-  public class Mixin
+  [Serializable]
+  public class DerivedNullMixin : NullMixin
   {
   }
 }

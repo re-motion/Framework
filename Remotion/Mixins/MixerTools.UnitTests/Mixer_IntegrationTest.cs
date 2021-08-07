@@ -21,13 +21,12 @@ using System.Reflection;
 using System.Web.UI;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
-using Remotion.Mixins.MixerTools;
-using Remotion.Mixins.UnitTests.Core.TestDomain;
+using Remotion.Mixins.MixerTools.UnitTests.TestDomain;
 using Remotion.Reflection.TypeDiscovery;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 
-namespace Remotion.Mixins.UnitTests.Core.MixerTools
+namespace Remotion.Mixins.MixerTools.UnitTests
 {
   [Serializable]
   [TestFixture]

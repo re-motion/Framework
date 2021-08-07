@@ -18,13 +18,16 @@ using System;
 using System.ComponentModel.Design;
 using System.Linq;
 using NUnit.Framework;
+using Remotion.Mixins.CodeGeneration;
+using Remotion.Mixins.CodeGeneration.TypePipe;
 using Remotion.Mixins.Context;
-using Remotion.Mixins.MixerTools;
-using Remotion.Mixins.UnitTests.Core.MixerTools.TestDomain;
-using Remotion.Mixins.UnitTests.Core.TestDomain;
+using Remotion.Mixins.MixerTools.UnitTests.TestDomain;
+using Remotion.ServiceLocation;
+using Remotion.TypePipe;
+using Remotion.TypePipe.Caching;
 using Rhino.Mocks;
 
-namespace Remotion.Mixins.UnitTests.Core.MixerTools
+namespace Remotion.Mixins.MixerTools.UnitTests
 {
   [TestFixture]
   public class MixedTypeFinderTest
@@ -41,10 +44,10 @@ namespace Remotion.Mixins.UnitTests.Core.MixerTools
     [SetUp]
     public void SetUp ()
     {
-      _configuredClassContext1 = ClassContextObjectMother.Create(typeof (BaseType1), typeof (NullMixin));
-      _configuredClassContext2 = ClassContextObjectMother.Create(typeof (NullTarget), typeof (NullMixin));
-      _genericClassContext = ClassContextObjectMother.Create(typeof (GenericTargetClass<>), typeof (NullMixin));
-      _interfaceClassContext = ClassContextObjectMother.Create(typeof (IBaseType2), typeof (NullMixin));
+      _configuredClassContext1 = CreateClassContext(typeof (BaseType1), typeof (NullMixin));
+      _configuredClassContext2 = CreateClassContext(typeof (NullTarget), typeof (NullMixin));
+      _genericClassContext = CreateClassContext(typeof (GenericTargetClass<>), typeof (NullMixin));
+      _interfaceClassContext = CreateClassContext(typeof (IBaseType2), typeof (NullMixin));
 
       var classContexts = new ClassContextCollection (_configuredClassContext1, _configuredClassContext2, _genericClassContext, _interfaceClassContext);
       _configuration = new MixinConfiguration (classContexts);
@@ -142,7 +145,20 @@ namespace Remotion.Mixins.UnitTests.Core.MixerTools
     [Test]
     public void FindMixedTypes_NoMixedTypes ()
     {
-      var generatedType = TypeGenerationHelper.ForceTypeGeneration (typeof (object));
+      var pipeline = SafeServiceLocator.Current.GetInstance<IPipelineFactory>()
+          .Create (
+              "FindMixedTypes_NoMixedTypes",
+              new MixinParticipant (
+                  SafeServiceLocator.Current.GetInstance<IConfigurationProvider>(),
+                  SafeServiceLocator.Current.GetInstance<IMixinTypeProvider>(),
+                  SafeServiceLocator.Current.GetInstance<ITargetTypeModifier>(),
+                  SafeServiceLocator.Current.GetInstance<IConcreteTypeMetadataImporter>()));
+
+      var targetType = typeof (object);
+      var classContext = new ClassContext (targetType, Enumerable.Empty<MixinContext>(), Enumerable.Empty<Type>());
+      // Explicitly pass classContext in to the MixinParticipant; that way we generate a mixed type even if there are no mixins on the type.
+      var generatedType = pipeline.ReflectionService.GetAssembledType (new AssembledTypeID (targetType, new[] { classContext }));
+
       var typeDiscoveryServiceStub = CreateTypeDiscoveryServiceStub (generatedType);
 
       var finder = new MixedTypeFinder (typeDiscoveryServiceStub);
@@ -156,6 +172,21 @@ namespace Remotion.Mixins.UnitTests.Core.MixerTools
       var typeDiscoveryServiceStub = MockRepository.GenerateStub<ITypeDiscoveryService> ();
       typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (null, false)).Return (stubResult);
       return typeDiscoveryServiceStub;
+    }
+
+    private ClassContext CreateClassContext (Type type, Type mixinType)
+    {
+      var mixinContexts = new[]
+                          {
+                              new MixinContext (
+                                  MixinKind.Extending,
+                                  mixinType,
+                                  MemberVisibility.Private,
+                                  Enumerable.Empty<Type>(),
+                                  new MixinContextOrigin ("some kind", typeof (MixedTypeFinderTest).Assembly, "some location"))
+                          };
+      var composedInterfaces = Enumerable.Empty<Type>();
+      return new ClassContext (type, mixinContexts, composedInterfaces);
     }
   }
 }
