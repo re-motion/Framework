@@ -34,6 +34,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
     {
     }
 
+#if NETFRAMEWORK
     [STAThread]
     public static void Main (string[] args)
     {
@@ -70,6 +71,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       Console.WriteLine ("Tests complete");
       //Console.ReadLine();
     }
+#endif
 
     private static void RunHasRelationChangedTest ()
     {
