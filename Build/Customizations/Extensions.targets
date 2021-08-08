@@ -36,6 +36,15 @@
     <Message Text="##teamcity[buildStatisticValue key='Duration.BuildTestProjects.$(ConfigurationID)' value='$(_timeTaken)']"
              Condition="'$(TEAMCITY_VERSION)' != ''" />
   </Target>
+  
+  <Target Name="After_CreateTestConfigurations" AfterTargets="CreateTestConfigurations">
+    <ItemGroup>
+      <_testOutputFilesToKeep Include="@(_testOutputFiles)" Condition="$([System.Text.RegularExpressions.Regex]::Match(%(TestAssemblyDirectoryName),'\\net4\d{1,2}$').Success)" />
+      <_testOutputFiles Remove="@(_testOutputFiles)" />
+      <_testOutputFiles Include="@(_testOutputFilesToKeep)" />
+    </ItemGroup>
+    <Message Text="Removed .NET 5.0 assemblies from test set." Importance="High" />
+  </Target>
 
   <Target Name="After_RunTests" AfterTargets="RunTests">
     <Error Text="The property '_timeTaken' is not set." Condition="'$(_timeTaken)' == ''" />
