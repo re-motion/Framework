@@ -41,9 +41,7 @@ namespace Remotion.Web.UnitTests.Core.Resources
     public void GetUrl_NovaViso ()
     {
       var resourceUrlBuilderStub = new Mock<IResourcePathBuilder>();
-#pragma warning disable 618
       var resourceUrl = new ThemedResourceUrl (resourceUrlBuilderStub.Object, typeof (ResourceUrlTest), ResourceType.Html, new ResourceTheme.NovaViso(), "theRelativeUrl.js");
-#pragma warning restore 618
 
       resourceUrlBuilderStub
           .Setup (_ => _.BuildAbsolutePath (typeof (ResourceUrlTest).Assembly, new[] { "Themes", "NovaViso", "Html", "theRelativeUrl.js" }))

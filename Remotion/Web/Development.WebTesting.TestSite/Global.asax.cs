@@ -30,7 +30,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
     protected void Application_Start (object sender, EventArgs e)
     {
       RegisterResourceVirtualPathProvider();
-      SetRenderingFeatures (RenderingFeatures.WithDiagnosticMetadata);
+      SetRenderingFeatures (RenderingFeatures.WithDiagnosticMetadata, new ResourceTheme.NovaGray());
     }
 
     protected void Application_BeginRequest (Object sender, EventArgs e)
@@ -59,10 +59,11 @@ namespace Remotion.Web.Development.WebTesting.TestSite
       _resourceVirtualPathProvider.Register();
     }
 
-    private void SetRenderingFeatures (IRenderingFeatures renderingFeatures)
+    private void SetRenderingFeatures (IRenderingFeatures renderingFeatures, ResourceTheme resourceTheme)
     {
       var serviceLocator = DefaultServiceLocator.Create();
       serviceLocator.RegisterSingle (() => renderingFeatures);
+      serviceLocator.RegisterSingle (() => resourceTheme);
       ServiceLocator.SetLocatorProvider (() => serviceLocator);
     }
   }
