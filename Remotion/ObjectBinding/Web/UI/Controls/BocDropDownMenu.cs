@@ -77,8 +77,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   protected override void OnInit(EventArgs e)
   {
     base.OnInit (e);
-    if (!IsDesignMode)
-      InitializeMenusItems ();
+    InitializeMenusItems ();
   }
 
   protected override void CreateChildControls()
@@ -101,8 +100,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   protected override void OnPreRender(EventArgs e)
   {
     base.OnPreRender (e);
-    if (! IsDesignMode)
-      PreRenderMenuItems();
+    PreRenderMenuItems();
 
     PreRenderDropDownMenu();
 
@@ -111,9 +109,6 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
 
   private void CheckControlService ()
   {
-    if (IsDesignMode)
-      return;
-
     if (string.IsNullOrEmpty (ControlServicePath))
       return;
 
@@ -205,9 +200,6 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
     {
       _dropDownMenu.GetSelectionCount = "function() { return 0; }";
     }
-
-    if (IsDesignMode)
-      _dropDownMenu.TitleText = "##";
   }
 
   protected virtual string GetTitleText (IBusinessObject businessObject)

@@ -229,7 +229,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       base.OnInit (e);
       EnsureChildControls();
       _binding.EnsureDataSource();
-      if (!IsDesignMode && Page != null)
+      if (Page != null)
       {
         Page.RegisterRequiresControlState (this);
         RegisterHtmlHeadContents (HtmlHeadAppender.Current);
@@ -260,9 +260,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         if (!base.Visible)
           return false;
-
-        if (IsDesignMode)
-          return true;
 
         return HasValidBinding;
       }
@@ -428,10 +425,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return EnumerableUtility.Singleton (_assignedLabelID);
     }
 
-    /// <summary> Evalutes whether this control is in <b>Design Mode</b>. </summary>
+    /// <summary> Evaluates whether this control is in <b>Design Mode</b>. </summary>
     /// <value><see langword="true"/> if the control is currently rendered by the Visual Studio Designer.</value>
-    [Browsable (false)]
-    protected virtual bool IsDesignMode
+    [Obsolete ("Design-mode support has been removed, method always returns false. (Version: 3.0.0)", false)]
+    protected bool IsDesignMode
     {
       get { return false; }
     }
@@ -493,9 +490,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
       ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
-      
-      if (IsDesignMode)
-        return;
 
       string key;
       key = ResourceManagerUtility.GetGlobalResourceKey (AccessKey);

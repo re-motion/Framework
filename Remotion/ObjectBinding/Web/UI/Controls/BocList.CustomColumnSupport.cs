@@ -52,8 +52,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       _customColumnsInitialized = true;
 
-      if (IsDesignMode)
-        return;
       if (!HasValue)
         return;
 

@@ -21,8 +21,6 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation
 {
   public class WebTabStripMock : WebTabStrip
   {
-    private bool _isDesignMode;
-
     public string CssClassBasePublic
     {
       get { return CssClassBase; }
@@ -58,14 +56,6 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation
       get { return CssClassTabAnchorBody; }
     }
 
-    public override bool IsDesignMode
-    {
-      get
-      {
-        return _isDesignMode;
-      }
-    }
-
     public string CssClassTabSelectedPublic
     {
       get { return CssClassTabSelected; }
@@ -74,11 +64,6 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation
     public string CssClassDisabledPublic
     {
       get { return CssClassDisabled; }
-    }
-
-    public void SetDesignMode (bool value)
-    {
-      _isDesignMode = value;
     }
   }
 }

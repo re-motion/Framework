@@ -515,8 +515,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override void OnInit (EventArgs e)
     {
       base.OnInit (e);
-      if (!IsDesignMode)
-        Page.RegisterRequiresPostBack (this);
+      Page.RegisterRequiresPostBack (this);
     }
 
     protected override void LoadControlState (object savedState)
@@ -631,9 +630,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
       ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
-      
-      if (IsDesignMode)
-        return;
+
       base.LoadResources (resourceManager, globalizationService);
 
       //  Dispatch simple properties
@@ -698,12 +695,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       string nullDisplayName = _undefinedItemText;
       if (string.IsNullOrEmpty (nullDisplayName))
-      {
-        if (IsDesignMode)
-          nullDisplayName = "undefined";
-        else
-          nullDisplayName = GetResourceManager().GetString (ResourceIdentifier.UndefinedItemText);
-      }
+        nullDisplayName = GetResourceManager().GetString (ResourceIdentifier.UndefinedItemText);
       return nullDisplayName;
     }
 
@@ -721,11 +713,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     void IPostBackDataHandler.RaisePostDataChangedEvent ()
     {
       RaisePostDataChangedEvent();
-    }
-
-    bool IBocRenderableControl.IsDesignMode
-    {
-      get { return IsDesignMode; }
     }
 
     IEnumerable<string> IControlWithLabel.GetLabelIDs ()

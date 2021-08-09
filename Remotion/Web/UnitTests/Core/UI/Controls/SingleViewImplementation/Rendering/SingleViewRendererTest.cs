@@ -114,51 +114,6 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.SingleViewImplementation.Rende
     }
 
     [Test]
-    public void RenderViewInDesignMode ()
-    {
-      PopulateControl ();
-      _control.Setup (stub => stub.IsDesignMode).Returns (true);
-      AssertRendering (false, false, false, true);
-    }
-
-    [Test]
-    public void RenderViewWithCssClassInDesignMode ()
-    {
-      PopulateControl ();
-      _control.Setup (stub => stub.IsDesignMode).Returns (true);
-      AssertRendering (false, true, false, true);
-    }
-
-    [Test]
-    public void RenderViewWithCssClassInAttributesInDesignMode ()
-    {
-      PopulateControl ();
-      _control.Setup (stub => stub.IsDesignMode).Returns (true);
-      AssertRendering (false, true, true, true);
-    }
-
-    [Test]
-    public void RenderEmptyViewInDesignMode ()
-    {
-      _control.Setup (stub => stub.IsDesignMode).Returns (true);
-      AssertRendering (true, false, false, true);
-    }
-
-    [Test]
-    public void RenderEmptyViewWithCssClassInDesignMode ()
-    {
-      _control.Setup (stub => stub.IsDesignMode).Returns (true);
-      AssertRendering (true, true, false, true);
-    }
-
-    [Test]
-    public void RenderEmptyViewWithCssClassInAttributesInDesignMode ()
-    {
-      _control.Setup (stub => stub.IsDesignMode).Returns (true);
-      AssertRendering (true, true, true, true);
-    }
-
-    [Test]
     public void RenderDiagnosticMetadataAttributes ()
     {
       _renderer = new SingleViewRenderer (new FakeResourceUrlFactory(), GlobalizationService, RenderingFeatures.WithDiagnosticMetadata);

@@ -45,9 +45,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
     private readonly ILabelReferenceRenderer _labelReferenceRenderer;
     private readonly IValidationErrorRenderer _validationErrorRenderer;
 
-    /// <summary> The text displayed when control is displayed in desinger, is read-only, and has no contents. </summary>
-    private const string c_designModeEmptyLabelContents = "##";
-
     public BocEnumValueRenderer (
         IResourceUrlFactory resourceUrlFactory,
         IGlobalizationService globalizationService,
@@ -272,13 +269,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
     {
       Label label = new Label { ID = renderingContext.Control.GetValueName(), ClientIDMode = ClientIDMode.Static };
       string text;
-      if (renderingContext.Control.IsDesignMode && renderingContext.Control.EnumerationValueInfo == null)
-      {
-        text = c_designModeEmptyLabelContents;
-        //  Too long, can't resize in designer to less than the content's width
-        //  label.Text = "[ " + this.GetType().Name + " \"" + this.ID + "\" ]";
-      }
-      else if (renderingContext.Control.EnumerationValueInfo == null)
+      if (renderingContext.Control.EnumerationValueInfo == null)
       {
         text = null;
         label.Attributes.Add ("data-value", renderingContext.Control.NullIdentifier);

@@ -194,7 +194,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
 
     private bool DetermineClientScriptLevel (BocBooleanValueRenderingContext renderingContext)
     {
-      return !renderingContext.Control.IsDesignMode && !renderingContext.Control.IsReadOnly;
+      return !renderingContext.Control.IsReadOnly;
     }
 
     private void PrepareLinkControl (BocBooleanValueRenderingContext renderingContext, HyperLink linkControl, bool isClientScriptEnabled)

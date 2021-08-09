@@ -61,14 +61,6 @@ public class BocListMock: BocList
     get { return base.IsClientSideSortingEnabled; }
   }
 
-  protected override bool IsDesignMode
-  {
-    get
-    {
-      return IsDesignModeOverrideValue.HasValue ? IsDesignModeOverrideValue.Value : base.IsDesignMode;
-    }
-  }
-
   protected override WebMenuItem[] InitializeRowMenuItems (IBusinessObject businessObject, int listIndex)
   {
 
@@ -86,8 +78,6 @@ public class BocListMock: BocList
                    null)
            };
   }
-
-  public bool? IsDesignModeOverrideValue { get; set; }
 
   public void OnLoad ()
   {

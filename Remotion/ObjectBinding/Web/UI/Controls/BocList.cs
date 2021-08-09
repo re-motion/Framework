@@ -377,11 +377,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       _availableViews.CollectionChanged += AvailableViews_CollectionChanged;
       Binding.BindingChanged += Binding_BindingChanged;
 
-      if (!IsDesignMode)
-      {
-        Page.RegisterRequiresPostBack (this);
-        InitializeMenusItems();
-      }
+      Page.RegisterRequiresPostBack (this);
+      InitializeMenusItems();
     }
 
     public override void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
@@ -1017,19 +1014,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       LoadResources (GetResourceManager(), GlobalizationService);
 
-      if (!IsDesignMode)
-      {
-        PreRenderMenuItems();
-        PreRenderListItemCommands();
+      PreRenderMenuItems();
+      PreRenderListItemCommands();
 
-        EnsureRowMenusInitialized();
-        PreRenderRowMenusItems();
+      EnsureRowMenusInitialized();
+      PreRenderRowMenusItems();
 
-        EnsureCustomColumnsInitialized (columns);
-        PreRenderCustomColumns();
+      EnsureCustomColumnsInitialized (columns);
+      PreRenderCustomColumns();
 
-        _optionsMenu.GetSelectionCount = GetSelectionCountScript();
-      }
+      _optionsMenu.GetSelectionCount = GetSelectionCountScript();
 
       CheckControlService();
 
@@ -1038,9 +1032,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private void CheckControlService ()
     {
-      if (IsDesignMode)
-        return;
-
       if (string.IsNullOrEmpty (ControlServicePath))
         return;
 
@@ -1115,13 +1106,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       BocColumnDefinition[] renderColumns = EnsureColumnsGot ();
       EvaluateWaiConformity (renderColumns);
 
-      if (IsDesignMode)
-      {
-        //  Normally set in OnPreRender, which is omitted during design-time
-        if (_pageCount == 0)
-          _pageCount = 1;
-      }
-
       var renderer = CreateRenderer();
       renderer.Render (CreateRenderingContext (writer, GetColumnRenderers (renderColumns)));
     }
@@ -1151,7 +1135,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         bool isReadOnly = IsReadOnly;
         bool showForEmptyList = isReadOnly && _showEmptyListReadOnlyMode
                                 || !isReadOnly && _showEmptyListEditMode;
-        if (!IsDesignMode && !HasValue && !showForEmptyList)
+        if (!HasValue && !showForEmptyList)
           hasNavigator = false;
         return hasNavigator;
       }
@@ -1178,8 +1162,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           return false;
 
         bool showAvailableViewsList = _showAvailableViewsList
-                                      && (_availableViews.Count > 1
-                                          || IsDesignMode);
+                                      && _availableViews.Count > 1;
         bool isReadOnly = IsReadOnly;
         bool showForEmptyList = isReadOnly && _showEmptyListReadOnlyMode
                                 || ! isReadOnly && _showEmptyListEditMode;
@@ -1217,8 +1200,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           return false;
 
         bool showOptionsMenu = ShowOptionsMenu
-                               && (OptionsMenuItems.Count > 0
-                                   || IsDesignMode);
+                               && OptionsMenuItems.Count > 0;
         bool isReadOnly = IsReadOnly;
         bool showForEmptyList = isReadOnly && ShowMenuForEmptyListReadOnlyMode
                                 || ! isReadOnly && ShowMenuForEmptyListEditMode;
@@ -1243,8 +1225,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           return false;
 
         bool showListMenu = ShowListMenu
-                            && (ListMenuItems.Count > 0
-                                || IsDesignMode);
+                            && ListMenuItems.Count > 0;
         bool isReadOnly = IsReadOnly;
         bool showForEmptyList = isReadOnly && ShowMenuForEmptyListReadOnlyMode
                                 || ! isReadOnly && ShowMenuForEmptyListEditMode;
@@ -1601,8 +1582,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private void PreRenderListItemCommands ()
     {
-      if (IsDesignMode)
-        return;
       if (!HasValue)
         return;
 
@@ -1626,7 +1605,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private BocColumnDefinition[] EnsureColumnsGot ()
     {
-      if (_columnDefinitions == null || IsDesignMode)
+      if (_columnDefinitions == null)
         _columnDefinitions = GetColumnsInternal();
       return _columnDefinitions;
     }
@@ -2040,9 +2019,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
       ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
-      
-      if (IsDesignMode)
-        return;
+
       base.LoadResources (resourceManager, globalizationService);
 
       string key;
@@ -3575,7 +3552,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected bool HasClientScript
     {
-      get { return (!IsDesignMode && EnableClientScript); }
+      get { return EnableClientScript; }
     }
 
     DropDownList IBocList.GetAvailableViewsList ()
@@ -3617,11 +3594,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ReadOnlyDictionary<BocCustomColumnDefinition, BocListCustomColumnTuple[]> IBocList.CustomColumns
     {
       get { return new ReadOnlyDictionary<BocCustomColumnDefinition, BocListCustomColumnTuple[]> (_customColumnControls); }
-    }
-
-    bool IBocRenderableControl.IsDesignMode
-    {
-      get { return IsDesignMode; }
     }
 
     IEnumerable<string> IBocList.GetValidationErrors ()

@@ -32,8 +32,6 @@ namespace Remotion.Web.UI.Controls.SingleViewImplementation
     Style ViewStyle { get; }
     Style BottomControlsStyle { get; }
 
-    bool IsDesignMode { get; }
-    
     string ViewClientID { get; }
     string ViewContentClientID { get; }
     string WrapperClientID { get; }

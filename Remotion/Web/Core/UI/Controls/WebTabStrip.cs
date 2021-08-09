@@ -100,13 +100,10 @@ namespace Remotion.Web.UI.Controls
     {
       base.OnInit (e);
 
-      if (!IsDesignMode)
-      {
-        RegisterHtmlHeadContents (Page.Context, HtmlHeadAppender.Current);
+      RegisterHtmlHeadContents (Page.Context, HtmlHeadAppender.Current);
 
-        Page.RegisterRequiresControlState (this);
-        Page.RegisterRequiresPostBack (this);
-      }
+      Page.RegisterRequiresControlState (this);
+      Page.RegisterRequiresPostBack (this);
     }
 
     public void RegisterHtmlHeadContents (HttpContextBase context, HtmlHeadAppender htmlHeadAppender)
@@ -268,36 +265,19 @@ namespace Remotion.Web.UI.Controls
     {
       WebTabCollection tabs = Tabs;
 
-      if (IsDesignMode
-          && tabs.Count == 0)
-        tabs = GetDesignTimeTabs();
-
       var visibleTabs = new List<WebTab>();
       foreach (WebTab tab in tabs)
       {
-        if (tab.EvaluateVisible() || IsDesignMode)
+        if (tab.EvaluateVisible())
           visibleTabs.Add (tab);
       }
 
       return visibleTabs;
     }
 
-    private WebTabCollection GetDesignTimeTabs ()
-    {
-      WebTabCollection tabs = new WebTabCollection (null);
-      for (int i = 0; i < 5; i++)
-        tabs.Add (new WebTab (i.ToString(), "Tab " + (i + 1)));
-      return tabs;
-    }
-
     IList<IWebTab> IWebTabStrip.GetVisibleTabs ()
     {
       return GetVisibleTabs().ConvertAll<IWebTab> (tab => tab);
-    }
-
-    public virtual bool IsDesignMode
-    {
-      get { return false; }
     }
 
     /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
@@ -395,9 +375,7 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
       ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
-      
-      if (IsDesignMode)
-        return;
+
       Tabs.LoadResources (resourceManager, globalizationService);
     }
 

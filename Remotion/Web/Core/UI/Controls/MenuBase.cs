@@ -62,11 +62,6 @@ namespace Remotion.Web.UI.Controls
       set { _isReadOnly = value; }
     }
 
-    public bool IsDesignMode
-    {
-      get { return false; }
-    }
-
     /// <summary> Implements interface <see cref="IPostBackEventHandler"/>. </summary>
     /// <param name="eventArgument"> &lt;index&gt; </param>
     void IPostBackEventHandler.RaisePostBackEvent (string eventArgument)

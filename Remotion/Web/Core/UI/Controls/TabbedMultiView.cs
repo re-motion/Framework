@@ -16,7 +16,6 @@
 // 
 using System;
 using System.ComponentModel;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.ServiceLocation;
@@ -26,7 +25,6 @@ using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Controls.TabbedMultiViewImplementation;
 using Remotion.Web.UI.Controls.TabbedMultiViewImplementation.Rendering;
 using Remotion.Web.UI.Controls.WebTabStripImplementation;
-using Remotion.Web.Utilities;
 
 namespace Remotion.Web.UI.Controls
 {
@@ -221,10 +219,7 @@ namespace Remotion.Web.UI.Controls
     {
       base.OnInit (e);
       _isInitialized = true;
-      if (!IsDesignMode)
-      {
-        RegisterHtmlHeadContents (HtmlHeadAppender.Current);
-      }
+      RegisterHtmlHeadContents (HtmlHeadAppender.Current);
     }
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
@@ -358,11 +353,6 @@ namespace Remotion.Web.UI.Controls
         Views.Add (_placeHolderTabView);
 
       base.OnPreRender (e);
-    }
-
-    public virtual bool IsDesignMode
-    {
-      get { return false; }
     }
 
     protected override void Render (HtmlTextWriter writer)

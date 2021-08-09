@@ -48,7 +48,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       EventArgs = new BocListDataRowRenderEventArgs (EventArgs.ListIndex, EventArgs.BusinessObject, true, EventArgs.IsOddRow);
 
       List.Setup (mock => mock.EnableClientScript).Returns (true);
-      List.Setup (mock => mock.IsDesignMode).Returns (false);
       List.Setup (mock => mock.IsReadOnly).Returns (false);
       List.Object.DataSource.Mode = DataSourceMode.Edit;
 

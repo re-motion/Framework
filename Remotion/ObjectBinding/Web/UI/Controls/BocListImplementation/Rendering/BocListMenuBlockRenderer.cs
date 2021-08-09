@@ -40,7 +40,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   {
     private const string c_whiteSpace = "&nbsp;";
     protected const string c_defaultMenuBlockItemOffset = "5pt";
-    protected const int c_designModeAvailableViewsListWidthInPoints = 40;
 
     private readonly BocListCssClassDefinition _cssClasses;
 
@@ -155,10 +154,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       renderingContext.Writer.Write (c_whiteSpace);
 
-      if (renderingContext.Control.IsDesignMode)
-        availableViewsList.Width = Unit.Point (c_designModeAvailableViewsListWidthInPoints);
       availableViewsList.Enabled = !renderingContext.Control.EditModeController.IsRowEditModeActive && 
-        !renderingContext.Control.EditModeController.IsListEditModeActive;
+                                   !renderingContext.Control.EditModeController.IsListEditModeActive;
       availableViewsList.CssClass = CssClasses.AvailableViewsListDropDownList;
       availableViewsList.RenderControl (renderingContext.Writer);
 

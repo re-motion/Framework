@@ -99,11 +99,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
         return NullBusinessObjectConstraintVisitor.Instance;
       }
 
-      public new bool IsDesignMode
-      {
-        get { return false; }
-      }
-
       IEnumerable<string> IControlWithLabel.GetLabelIDs ()
       {
         return Enumerable.Empty<string>();

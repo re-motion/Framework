@@ -39,16 +39,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private IBusinessObjectProperty _property;
     private string _propertyIdentifier;
     private bool _bindingChanged = false;
-    /// <summary>
-    ///   Set after the <see cref="DataSource"/> returned a value for the first time
-    ///   in the <c>get accessor</c> of <see cref="Property"/>.
-    /// </summary>
-    private bool _isDesignModePropertyInitalized = false;
-    /// <summary>
-    ///   Set in the <c>get accessor</c> of <see cref="Property"/> when <see cref="_dataSourceChanged"/> is set.
-    ///   Reset after the <see cref="Property"/> is bound.
-    /// </summary>
-    private bool _hasDesignModePropertyChanged = false;
 
     public BusinessObjectBinding (IBusinessObjectBoundWebControl control)
     {
@@ -188,7 +178,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get
       {
         // evaluate binding
-        if (_bindingChanged || _hasDesignModePropertyChanged && _isDesignModePropertyInitalized)
+        if (_bindingChanged)
         {
           if (_property == null
               && DataSource != null
@@ -217,8 +207,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           }
 
           _bindingChanged = false;
-          if (_isDesignModePropertyInitalized)
-            _hasDesignModePropertyChanged = false;
 
           OnBindingChanged ();
         }

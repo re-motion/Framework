@@ -35,12 +35,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   [ImplementationFor (typeof (IBocRowRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocRowRenderer : IBocRowRenderer
   {
-    /// <summary>Text displayed when control is displayed in desinger and is read-only has no contents.</summary>
-    public const string DesignModeDummyColumnTitle = "Column Title {0}";
-
-    /// <summary>Number of columns to show in design mode before actual columns have been defined.</summary>
-    public const int DesignModeDummyColumnCount = 3;
-
     private readonly BocListCssClassDefinition _cssClasses;
     private readonly IBocIndexColumnRenderer _indexColumnRenderer;
     private readonly IBocSelectorColumnRenderer _selectorColumnRenderer;

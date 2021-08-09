@@ -39,9 +39,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
   public abstract class BocTextValueRendererBase<T> : BocRendererBase<T>
       where T: IBocTextValueBase
   {
-    /// <summary> Text displayed when control is displayed in desinger, is read-only, and has no contents. </summary>
-    protected const string c_designModeEmptyLabelContents = "##";
-
     private readonly ILabelReferenceRenderer _labelReferenceRenderer;
     private readonly IValidationErrorRenderer _validationErrorRenderer;
 

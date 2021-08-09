@@ -162,11 +162,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         WcagHelper.Instance.HandleError (1, this);
     }
 
-    bool IBocRenderableControl.IsDesignMode
-    {
-      get { return IsDesignMode; }
-    }
-
     IEnumerable<string> IControlWithLabel.GetLabelIDs ()
     {
       return GetLabelIDs();
@@ -188,9 +183,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private void CheckControlService ()
     {
-      if (IsDesignMode)
-        return;
-
       if (string.IsNullOrEmpty (ControlServicePath))
         return;
 

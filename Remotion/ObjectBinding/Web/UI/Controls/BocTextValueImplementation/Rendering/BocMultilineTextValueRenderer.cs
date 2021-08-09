@@ -77,12 +77,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
       string[] lines = renderingContext.Control.Value;
       string text = RenderUtility.JoinLinesWithEncoding (lines ?? Enumerable.Empty<string>());
 
-      if (string.IsNullOrEmpty (text) && renderingContext.Control.IsDesignMode)
-      {
-        text = c_designModeEmptyLabelContents;
-        //  Too long, can't resize in designer to less than the content's width
-        //  label.Text = "[ " + this.GetType().Name + " \"" + this.ID + "\" ]";
-      }
       label.Text = text;
 
       label.Width = Unit.Empty;

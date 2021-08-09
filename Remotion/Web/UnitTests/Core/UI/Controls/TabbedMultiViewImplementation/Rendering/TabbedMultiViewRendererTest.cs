@@ -126,27 +126,6 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMultiViewImplementation.
     }
 
     [Test]
-    public void RenderEmptyControlInDesignMode ()
-    {
-      _control.Setup (stub => stub.IsDesignMode).Returns (true);
-
-      AssertControl (false, false, true, true);
-    }
-
-    [Test]
-    public void RenderEmptyControlWithCssClassInDesignMode ()
-    {
-      _control.Setup (stub => stub.IsDesignMode).Returns (true);
-      _control.SetupProperty (_ => _.CssClass);
-      _control.Object.CssClass = c_cssClass;
-      _control.Object.TopControlsStyle.CssClass = c_cssClass;
-      _control.Object.ActiveViewStyle.CssClass = c_cssClass;
-      _control.Object.BottomControlsStyle.CssClass = c_cssClass;
-
-      AssertControl (true, false,true, true);
-    }
-
-    [Test]
     public void RenderPopulatedControl ()
     {
       PopulateControl();
@@ -166,30 +145,6 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMultiViewImplementation.
       _control.Object.BottomControlsStyle.CssClass = c_cssClass;
 
       AssertControl (true, false, false, false);
-    }
-
-    [Test]
-    public void RenderPopulatedControlInDesignMode ()
-    {
-      PopulateControl ();
-      _control.Setup (stub => stub.IsDesignMode).Returns (true);
-
-      AssertControl (false, false, true, false);
-    }
-
-    [Test]
-    public void RenderPopulatedControlWithCssClassInDesignMode ()
-    {
-      PopulateControl();
-
-      _control.Setup (stub => stub.IsDesignMode).Returns (true);
-      _control.SetupProperty (_ => _.CssClass);
-      _control.Object.CssClass = c_cssClass;
-      _control.Object.TopControlsStyle.CssClass = c_cssClass;
-      _control.Object.ActiveViewStyle.CssClass = c_cssClass;
-      _control.Object.BottomControlsStyle.CssClass = c_cssClass;
-
-      AssertControl (true, false, true, false);
     }
 
     [Test]

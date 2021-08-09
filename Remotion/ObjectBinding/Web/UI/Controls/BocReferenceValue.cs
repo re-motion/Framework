@@ -54,9 +54,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   {
     // constants
 
-    /// <summary> The text displayed when control is displayed in desinger, is read-only, and has no contents. </summary>
-    private const string c_designModeEmptyLabelContents = "##";
-
     private const string c_dropDownListIDPostfix = "_Value";
 
     // types
@@ -231,9 +228,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
       ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
-
-      if (IsDesignMode)
-        return;
 
       base.LoadResources (resourceManager, globalizationService);
 
@@ -533,12 +527,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         text = _displayName;
       else
         text = String.Empty;
-      if (string.IsNullOrEmpty (text) && IsDesignMode)
-      {
-        text = c_designModeEmptyLabelContents;
-        //  Too long, can't resize in designer to less than the content's width
-        //  _label.Text = "[ " + this.GetType().Name + " \"" + this.ID + "\" ]";
-      }
       return text;
     }
 
@@ -721,12 +709,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       string nullDisplayName = _nullItemText;
       if (string.IsNullOrEmpty (nullDisplayName))
-      {
-        if (IsDesignMode)
-          nullDisplayName = "undefined";
-        else
-          nullDisplayName = GetResourceManager().GetString (ResourceIdentifier.NullItemText);
-      }
+        nullDisplayName = GetResourceManager().GetString (ResourceIdentifier.NullItemText);
       return nullDisplayName;
     }
 

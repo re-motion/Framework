@@ -63,9 +63,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     private void CheckControlService ()
     {
-      if (IsDesignMode)
-        return;
-
       if (string.IsNullOrEmpty (ControlServicePath))
         return;
 
@@ -289,7 +286,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       get
       {
         return ! WcagHelper.Instance.IsWaiConformanceLevelARequired()
-               && _showOptionsMenu && (OptionsMenuItems.Count > 0 || IsDesignMode)
+               && _showOptionsMenu && (OptionsMenuItems.Count > 0)
                && OptionsMenu.IsBrowserCapableOfScripting;
       }
     }
@@ -446,11 +443,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     {
       base.OnInit (e);
 
-      if (!IsDesignMode)
-      {
-        Page.RegisterRequiresPostBack (this);
-        InitializeMenusItems ();
-      }
+      Page.RegisterRequiresPostBack (this);
+      InitializeMenusItems ();
     }
 
     /// <include file='..\..\..\doc\include\UI\Controls\BocReferenceValueBase.xml' path='BocReferenceValue/InitializeMenusItems/*' />
@@ -743,8 +737,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
       LoadResources (GetResourceManager(), GlobalizationService);
 
-      if (!IsDesignMode)
-        PreRenderMenuItems();
+      PreRenderMenuItems();
 
       if (HasOptionsMenu)
       {
@@ -889,9 +882,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     {
       ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
       ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
-      
-      if (IsDesignMode)
-        return;
 
       base.LoadResources (resourceManager, globalizationService);
 
@@ -929,20 +919,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         OptionsMenu.TitleText = OptionsTitle;
       OptionsMenu.Style["vertical-align"] = "middle";
 
-      if (!IsDesignMode)
+      string getSelectionCount;
+      if (IsReadOnly)
       {
-        string getSelectionCount;
-        if (IsReadOnly)
-        {
-          if (InternalValue != null)
-            getSelectionCount = "function() { return 1; }";
-          else
-            getSelectionCount = "function() { return 0; }";
-        }
+        if (InternalValue != null)
+          getSelectionCount = "function() { return 1; }";
         else
-          getSelectionCount = GetSelectionCountScript();
-        OptionsMenu.GetSelectionCount = getSelectionCount;
+          getSelectionCount = "function() { return 0; }";
       }
+      else
+        getSelectionCount = GetSelectionCountScript();
+
+      OptionsMenu.GetSelectionCount = getSelectionCount;
     }
 
     /// <summary>
@@ -977,11 +965,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       else if (DataSource != null)
         businessObjectClass = (IBusinessObjectClassWithIdentity) DataSource.BusinessObjectClass;
       return businessObjectClass;
-    }
-
-    bool IBocRenderableControl.IsDesignMode
-    {
-      get { return IsDesignMode; }
     }
 
     bool IBocReferenceValueBase.HasOptionsMenu

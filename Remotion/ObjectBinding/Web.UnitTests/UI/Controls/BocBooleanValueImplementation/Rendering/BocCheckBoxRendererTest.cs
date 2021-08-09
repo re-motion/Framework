@@ -79,7 +79,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       pageStub.Setup (stub => stub.ClientScript).Returns (clientScriptManagerMock.Object);
 
       _checkbox.SetupProperty (_ => _.Value);
-      _checkbox.Setup (mock => mock.IsDesignMode).Returns (false);
       _checkbox.Setup (mock => mock.IsDescriptionEnabled).Returns (true);
 
       _checkbox.Setup (mock => mock.Page).Returns (pageStub.Object);

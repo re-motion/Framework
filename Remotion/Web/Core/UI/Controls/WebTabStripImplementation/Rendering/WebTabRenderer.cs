@@ -124,13 +124,6 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
 
     private void RenderTabBegin (WebTabStripRenderingContext renderingContext)
     {
-      if (renderingContext.Control.IsDesignMode)
-      {
-        renderingContext.Writer.AddStyleAttribute ("float", "left");
-        renderingContext.Writer.AddStyleAttribute ("display", "block");
-        renderingContext.Writer.AddStyleAttribute ("white-space", "nowrap");
-      }
-
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.None);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Li); // Begin list item
 

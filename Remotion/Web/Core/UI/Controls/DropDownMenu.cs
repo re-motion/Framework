@@ -62,12 +62,9 @@ namespace Remotion.Web.UI.Controls
 
     protected override void OnInit (EventArgs e)
     {
-      if (!IsDesignMode)
-      {
-        var clientScriptBahavior = SafeServiceLocator.Current.GetInstance<IClientScriptBehavior> ();
-        _isBrowserCapableOfScripting = clientScriptBahavior.IsBrowserCapableOfScripting(Page.Context, this);
-        RegisterHtmlHeadContents (HtmlHeadAppender.Current);
-      }
+      var clientScriptBahavior = SafeServiceLocator.Current.GetInstance<IClientScriptBehavior>();
+      _isBrowserCapableOfScripting = clientScriptBahavior.IsBrowserCapableOfScripting (Page.Context, this);
+      RegisterHtmlHeadContents (HtmlHeadAppender.Current);
     }
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
@@ -213,7 +210,7 @@ namespace Remotion.Web.UI.Controls
 
     public bool IsBrowserCapableOfScripting
     {
-      get { return IsDesignMode || _isBrowserCapableOfScripting; }
+      get { return _isBrowserCapableOfScripting; }
     }
 
     [DefaultValue (true)]

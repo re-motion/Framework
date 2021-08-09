@@ -250,10 +250,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     {
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Colgroup);
 
-      bool isTextXml = false;
-
-      if (!renderingContext.Control.IsDesignMode)
-        isTextXml = ControlHelper.IsXmlConformResponseTextRequired (renderingContext.HttpContext);
+      var isTextXml = ControlHelper.IsXmlConformResponseTextRequired (renderingContext.HttpContext);
 
       RenderIndexColumnDeclaration (renderingContext, isTextXml);
       RenderSelectorColumnDeclaration (renderingContext, isTextXml);

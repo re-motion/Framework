@@ -143,8 +143,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       base.OnInit (e);
       Binding.BindingChanged += Binding_BindingChanged;
-      if (!IsDesignMode)
-        Page.RegisterRequiresPostBack (this);
+      Page.RegisterRequiresPostBack (this);
     }
 
     public override void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
@@ -403,8 +402,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
       ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
 
-      if (IsDesignMode)
-        return;
       base.LoadResources (resourceManager, globalizationService);
 
       string key = ResourceManagerUtility.GetGlobalResourceKey (ErrorMessage);
@@ -529,8 +526,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       try
       {
-        if (!IsDesignMode || !string.IsNullOrEmpty (InternalDateValue))
-          dateTimeValue = DateTime.Parse (InternalDateValue).Date;
+        dateTimeValue = DateTime.Parse (InternalDateValue).Date;
       }
       catch (FormatException)
       {
@@ -550,9 +546,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         try
         {
-          if (!IsDesignMode
-              || !string.IsNullOrEmpty (InternalTimeValue))
-            dateTimeValue = dateTimeValue.Add (DateTime.Parse (InternalTimeValue).TimeOfDay);
+          dateTimeValue = dateTimeValue.Add (DateTime.Parse (InternalTimeValue).TimeOfDay);
         }
         catch (FormatException)
         {
@@ -645,11 +639,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       get { return (IBusinessObjectDateTimeProperty) base.Property; }
       set { base.Property = value; }
-    }
-
-    bool IBocRenderableControl.IsDesignMode
-    {
-      get { return IsDesignMode; }
     }
 
     IEnumerable<string> IControlWithLabel.GetLabelIDs ()

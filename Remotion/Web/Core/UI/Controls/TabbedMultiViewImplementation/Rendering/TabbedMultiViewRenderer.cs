@@ -100,11 +100,6 @@ namespace Remotion.Web.UI.Controls.TabbedMultiViewImplementation.Rendering
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
 
       AddStandardAttributesToRender (renderingContext);
-      if (renderingContext.Control.IsDesignMode)
-      {
-        renderingContext.Writer.AddStyleAttribute ("width", "100%");
-        renderingContext.Writer.AddStyleAttribute ("height", "75%");
-      }
       if (string.IsNullOrEmpty (renderingContext.Control.CssClass) && string.IsNullOrEmpty (renderingContext.Control.Attributes["class"]))
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassBase);
     }
@@ -122,9 +117,6 @@ namespace Remotion.Web.UI.Controls.TabbedMultiViewImplementation.Rendering
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
 
       ScriptUtility.Instance.RegisterElementForBorderSpans (renderingContext.Control, "#" + renderingContext.Control.ActiveViewClientID);
-
-      if (renderingContext.Control.IsDesignMode)
-        renderingContext.Writer.AddStyleAttribute ("border", "solid 1px black");
 
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, renderingContext.Control.ActiveViewClientID);
       renderingContext.Control.ActiveViewStyle.AddAttributesToRender (renderingContext.Writer);

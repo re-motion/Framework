@@ -204,7 +204,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           return false;
         if (DataSource.Mode == DataSourceMode.Read) // Bound Control && Reader DataSource
           return true;
-        if (!IsDesignMode && DataSource.BusinessObject == null) // Bound Control but no BusinessObject
+        if (DataSource.BusinessObject == null) // Bound Control but no BusinessObject
           return true;
         if (_readOnly == false) // Bound Control && ReadOnly==false
           return false;
@@ -363,9 +363,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private void ApplyConstraints ()
     {
-      if (IsDesignMode)
-        return;
-
       if (DataSource == null)
         return;
 

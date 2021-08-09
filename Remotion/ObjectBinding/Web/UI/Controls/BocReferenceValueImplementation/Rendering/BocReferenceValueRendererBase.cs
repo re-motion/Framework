@@ -333,9 +333,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     private string GetPostBackEvent (BocRenderingContext<TControl> renderingContext)
     {
-      if (renderingContext.Control.IsDesignMode)
-        return "";
-
       string argument = BocReferenceValueBase.CommandArgumentName;
       return renderingContext.Control.Page.ClientScript.GetPostBackEventReference (renderingContext.Control, argument) + ";";
     }
