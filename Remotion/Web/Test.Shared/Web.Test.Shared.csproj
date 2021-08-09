@@ -9,7 +9,7 @@
     <RootNamespace>$(AssemblyName)</RootNamespace>
     <Nullable>disable</Nullable>
   </PropertyGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>

@@ -5,7 +5,7 @@
     <NoWarn>0067;0649;0169</NoWarn>
     <GenerateDocumentationFile>False</GenerateDocumentationFile>
     <IsPackable>False</IsPackable>
-    <TargetFrameworks>net461</TargetFrameworks>
+    <TargetFrameworks>net48</TargetFrameworks>
     <DefineConstants>$(DefineConstants);</DefineConstants>
     <Nullable>disable</Nullable>
   </PropertyGroup>
