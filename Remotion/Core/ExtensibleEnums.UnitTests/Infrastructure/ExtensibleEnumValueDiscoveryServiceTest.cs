@@ -45,6 +45,7 @@ namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
     private ExtensibleEnumDefinition<Planet> _fakePlanetDefinition;
     private Mock<ITypeDiscoveryService> _typeDiscoveryServiceStub;
     private ExtensibleEnumValueDiscoveryService _service;
+    private bool _excludeGlobalTypes;
 
     [SetUp]
     public void SetUp ()
@@ -54,6 +55,9 @@ namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
 
        _typeDiscoveryServiceStub = new Mock<ITypeDiscoveryService>();
        _service = new TestableExtensibleEnumValueDiscoveryService (_typeDiscoveryServiceStub.Object);
+#pragma warning disable SYSLIB0005
+      _excludeGlobalTypes = !typeof (ExtensibleEnum<>).Assembly.GlobalAssemblyCache;
+#pragma warning restore SYSLIB0005
     }
 
     [Test]
@@ -178,7 +182,7 @@ namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
     [Test]
     public void GetValueInfos_Value ()
     {
-      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (null, false)).Returns (new[] { typeof (ColorExtensions) });
+      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (null, _excludeGlobalTypes)).Returns (new[] { typeof (ColorExtensions) });
 
       var valueInfos = _service.GetValueInfos (new ExtensibleEnumDefinition<Color> (_service));
       Assert.That (valueInfos.Select (info => info.Value).ToArray (),
@@ -188,7 +192,7 @@ namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
     [Test]
     public void GetValueInfos_Method ()
     {
-      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (null, false)).Returns (new[] { typeof (ColorExtensions) });
+      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (null, _excludeGlobalTypes)).Returns (new[] { typeof (ColorExtensions) });
 
       var valueInfos = _service.GetValueInfos (new ExtensibleEnumDefinition<Color> (_service));
 
@@ -202,7 +206,7 @@ namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
     [Test]
     public void GetValueInfos_PassesDefinition_ToExtensionMethod ()
     {
-      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (null, false)).Returns (new[] { typeof (ColorExtensions) });
+      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (null, _excludeGlobalTypes)).Returns (new[] { typeof (ColorExtensions) });
 
       var definition = new ExtensibleEnumDefinition<Color> (_service);
 

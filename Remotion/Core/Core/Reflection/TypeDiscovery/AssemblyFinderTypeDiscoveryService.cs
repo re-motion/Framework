@@ -22,7 +22,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using Remotion.Configuration.TypeDiscovery;
 using Remotion.Logging;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
@@ -43,8 +42,10 @@ namespace Remotion.Reflection.TypeDiscovery
     private readonly IAssemblyFinder _assemblyFinder;
     private readonly Lazy<BaseTypeCache> _baseTypeCache;
 
+#if FEATURE_GAC
     private readonly ConcurrentDictionary<Type, ReadOnlyCollection<Type>> _globalTypesCache =
         new ConcurrentDictionary<Type, ReadOnlyCollection<Type>>();
+#endif
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AssemblyFinderTypeDiscoveryService"/> class with a specific <see cref="AssemblyFinder"/>
@@ -85,6 +86,7 @@ namespace Remotion.Reflection.TypeDiscovery
 
       if (!excludeGlobalTypes && AssemblyTypeCache.IsGacAssembly (nonNullBaseType.Assembly))
       {
+#if FEATURE_GAC
         // C# compiler 7.2 does not provide caching for anonymous method but calls are only during application start so no caching is needed.
         return _globalTypesCache.GetOrAdd (
             nonNullBaseType,
@@ -96,9 +98,13 @@ namespace Remotion.Reflection.TypeDiscovery
                   LogLevel.Info,
                   string.Format ("Discovered types derived from '{0}', including GAC. Time taken: {{elapsed}}", key)))
               {
-                return GetTypesFromAllAssemblies (key, false).ToList().AsReadOnly();
+                return GetTypesFromAllAssemblies (key, excludeGlobalTypes: false).ToList().AsReadOnly();
               }
             });
+#else
+        throw new PlatformNotSupportedException (
+            $"{nameof (AssemblyTypeCache)} resolved type '{baseType}' as belonging to the Global Assembly Cache, but the Global Assembly Cache does not exist on this platform.");
+#endif
       }
 
       var baseTypeCache = _baseTypeCache.Value;
@@ -121,18 +127,33 @@ namespace Remotion.Reflection.TypeDiscovery
 
     private IEnumerable<Type> GetTypesFromAllAssemblies (Type? baseType, bool excludeGlobalTypes)
     {
+#if !FEATURE_GAC
+      Assertion.DebugAssert (baseType == null, "{0} parameter must be 'null'.", nameof (baseType));
+      Assertion.DebugAssert (excludeGlobalTypes == true, "{0} parameter must be 'true'.", nameof (excludeGlobalTypes));
+#endif
+
       return GetAssemblies (excludeGlobalTypes).AsParallel().SelectMany (a => GetTypesFromBaseType (a, baseType));
     }
 
     private IEnumerable<Assembly> GetAssemblies (bool excludeGlobalTypes)
     {
       var assemblies = _assemblyFinder.FindAssemblies();
+
+#if FEATURE_GAC
       return assemblies.Where (assembly => !excludeGlobalTypes || !assembly.GlobalAssemblyCache);
+#else
+      Assertion.IsTrue (excludeGlobalTypes, "{0} parameter must be 'true'.", nameof (excludeGlobalTypes));
+      return assemblies;
+#endif
     }
 
     private IEnumerable<Type> GetTypesFromBaseType (Assembly assembly, Type? baseType)
     {
-      ReadOnlyCollection<Type> allTypesInAssembly;
+#if !FEATURE_GAC
+      Assertion.DebugAssert (baseType == null, "{0} parameter must be 'null'.", nameof (baseType));
+#endif
+
+      IReadOnlyCollection<Type> allTypesInAssembly;
 
       try
       {
@@ -156,7 +177,11 @@ namespace Remotion.Reflection.TypeDiscovery
 
     private IEnumerable<Type> GetFilteredTypes (IEnumerable<Type> types, Type baseType)
     {
+#if FEATURE_GAC
       return types.Where (type => baseType.IsAssignableFrom (type) || type.CanAscribeTo (baseType));
+#else
+      throw new PlatformNotSupportedException ($"{nameof (GetFilteredTypes)} is only used with GAC lookups but the GAC is not supported on this this platform.");
+#endif
     }
   }
 }

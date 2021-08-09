@@ -43,17 +43,22 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Reflection.TypeDiscove
     [Test]
     public void GetTypes_ExcludeGlobalTypes_True ()
     {
-      var service = new FixedTypeDiscoveryService (new[] { typeof (FixedTypeDiscoveryServiceTest), typeof (object) });
+      var service = new FixedTypeDiscoveryService (new[] { typeof (FixedTypeDiscoveryServiceTest), typeof (string) });
 
-      Assert.That (service.GetTypes (null, true), Is.EqualTo (new[] { typeof (FixedTypeDiscoveryServiceTest) }));
+#if FEATURE_GAC
+      var expected = new[] { typeof (FixedTypeDiscoveryServiceTest) };
+#else
+      var expected = new[] { typeof (FixedTypeDiscoveryServiceTest), typeof (string) };
+#endif
+      Assert.That (service.GetTypes (null, true), Is.EqualTo (expected));
     }
 
     [Test]
     public void GetTypes_ExcludeGlobalTypes_False ()
     {
-      var service = new FixedTypeDiscoveryService (new[] { typeof (FixedTypeDiscoveryServiceTest), typeof (object) });
+      var service = new FixedTypeDiscoveryService (new[] { typeof (FixedTypeDiscoveryServiceTest), typeof (string) });
 
-      Assert.That (service.GetTypes (null, false), Is.EqualTo (new[] { typeof (FixedTypeDiscoveryServiceTest), typeof (object) }));
+      Assert.That (service.GetTypes (null, false), Is.EqualTo (new[] { typeof (FixedTypeDiscoveryServiceTest), typeof (string) }));
     }
   }
 }

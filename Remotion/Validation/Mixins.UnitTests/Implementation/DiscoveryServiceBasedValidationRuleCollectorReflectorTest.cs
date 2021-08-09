@@ -54,7 +54,7 @@ namespace Remotion.Validation.Mixins.UnitTests.Implementation
                                           typeof (CustomerMixinIntroducedValidationRuleCollector2),
                                           typeof (PersonValidationRuleCollector1)
                                       };
-      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (typeof (IValidationRuleCollector), true)).Returns (appliedWithAttributeTypes);
+      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (typeof (IValidationRuleCollector), false)).Returns (appliedWithAttributeTypes);
 
       var typeCollectorProvider = DiscoveryServiceBasedValidationRuleCollectorReflector.Create (
           _typeDiscoveryServiceStub.Object,
