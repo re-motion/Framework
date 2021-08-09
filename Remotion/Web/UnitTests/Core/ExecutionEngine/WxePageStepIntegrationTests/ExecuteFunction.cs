@@ -188,7 +188,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
       Uri uri = new Uri ("http://localhost/AppDir/root.wxe");
 
       var responseMock = new Mock<HttpResponseBase> (MockBehavior.Strict);
-      responseMock.Setup (stub => stub.ContentEncoding).Returns (Encoding.Default);
+      responseMock.Setup (stub => stub.ContentEncoding).Returns (Encoding.UTF8);
       _httpContextMock.Setup (stub => stub.Response).Returns (responseMock.Object);
 
       var requestMock = new Mock<HttpRequestBase> (MockBehavior.Strict);

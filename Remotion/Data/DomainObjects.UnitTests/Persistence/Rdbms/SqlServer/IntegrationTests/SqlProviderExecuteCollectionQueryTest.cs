@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+ï»¿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       query.Parameters.Add ("@int64", 9223372036854775807L);
       query.Parameters.Add ("@singleLowerBound", (float) 6789);
       query.Parameters.Add ("@singleUpperBound", (float) 6790);
-      query.Parameters.Add ("@string", "abcdeföäü");
+      query.Parameters.Add ("@string", "abcdefÃ¶Ã¤Ã¼");
       query.Parameters.Add ("@stringWithoutMaxLength", 
           "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
       query.Parameters.Add ("@binary", ResourceManager.GetImage1());

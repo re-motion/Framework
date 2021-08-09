@@ -71,7 +71,7 @@ public class DBUtility
 
   public static string ReadFile (string file)
   {
-    using (StreamReader reader = new StreamReader (file, Encoding.Default))
+    using (StreamReader reader = new StreamReader (file, Encoding.UTF8))
     {
       return reader.ReadToEnd ();
     }
@@ -167,7 +167,7 @@ public class DBUtility
       Trace ("------------");
       TimeTrace ("before read csv file");
 
-      csvReader = new StreamReader (path, Encoding.Default);
+      csvReader = new StreamReader (path, Encoding.UTF8);
 
       string columnNameLine = csvReader.ReadLine();
       int commaPos = columnNameLine.IndexOf (",");
@@ -358,7 +358,7 @@ public class DBUtility
         else if (columnType == typeof (Byte[]))
         {
           parameter = command.Parameters.Add (parameterName, SqlDbType.Image);
-          parameter.Value = isNull ? DBNull.Value : (object) Encoding.Default.GetBytes (columnValue);
+          parameter.Value = isNull ? DBNull.Value : (object) Encoding.UTF8.GetBytes (columnValue);
         }
         else 
         {

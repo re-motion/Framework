@@ -1,4 +1,4 @@
-// This file is part of re-strict (www.re-motion.org)
+﻿// This file is part of re-strict (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // This program is free software; you can redistribute it and/or modify

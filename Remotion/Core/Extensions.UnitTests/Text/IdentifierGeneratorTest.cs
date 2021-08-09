@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+Ôªø// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -51,16 +51,16 @@ public class IdentifierGeneratorTest
     CheckValidIdentifier (idGen, "myid", "myid");
     CheckValidIdentifier (idGen, "3myid", "_myid");
     CheckValidIdentifier (idGen, "_myid3", "_myid3");
-    CheckValidIdentifier (idGen, "myid‰", "myid_");
-    CheckValidIdentifier (idGen, "myidﬂ", "myid_");
+    CheckValidIdentifier (idGen, "myid√§", "myid_");
+    CheckValidIdentifier (idGen, "myid√ü", "myid_");
 
-    CheckUniqueIdentifier (idGen, "myƒid", "my_id");
-    CheckUniqueIdentifier (idGen, "Myƒid", "My_id");
-    CheckUniqueIdentifier (idGen, "my‹id", "my_id_1");
-    CheckUniqueIdentifier (idGen, "my÷id", "my_id_2");
-    CheckUniqueIdentifier (idGen, "myﬂid", "my_id_3");
-    CheckUniqueIdentifier (idGen, "myƒid", "my_id");
-    CheckUniqueIdentifier (idGen, "my‹id", "my_id_1");
+    CheckUniqueIdentifier (idGen, "my√Ñid", "my_id");
+    CheckUniqueIdentifier (idGen, "My√Ñid", "My_id");
+    CheckUniqueIdentifier (idGen, "my√úid", "my_id_1");
+    CheckUniqueIdentifier (idGen, "my√ñid", "my_id_2");
+    CheckUniqueIdentifier (idGen, "my√üid", "my_id_3");
+    CheckUniqueIdentifier (idGen, "my√Ñid", "my_id");
+    CheckUniqueIdentifier (idGen, "my√úid", "my_id_1");
   }
 
   [Test]
@@ -86,17 +86,17 @@ public class IdentifierGeneratorTest
     CheckValidIdentifier (idGen, "myid", "myid");
     CheckValidIdentifier (idGen, "_myid", "myid");
     CheckValidIdentifier (idGen, "myid3", "myid3");
-    CheckValidIdentifier (idGen, "myid‰", "myid_");
-    CheckValidIdentifier (idGen, "myid‰", "myid_");
-    CheckValidIdentifier (idGen, "myidﬂ", "myid_");
+    CheckValidIdentifier (idGen, "myid√§", "myid_");
+    CheckValidIdentifier (idGen, "myid√§", "myid_");
+    CheckValidIdentifier (idGen, "myid√ü", "myid_");
 
-    CheckUniqueIdentifier (idGen, "myƒid", "my_id");
-    CheckUniqueIdentifier (idGen, "Myƒid", "my_id");
-    CheckUniqueIdentifier (idGen, "my‹id", "my_id_1");
-    CheckUniqueIdentifier (idGen, "my÷id", "my_id_2");
-    CheckUniqueIdentifier (idGen, "myﬂid", "my_id_3");
-    CheckUniqueIdentifier (idGen, "myƒid", "my_id");
-    CheckUniqueIdentifier (idGen, "my‹id", "my_id_1");
+    CheckUniqueIdentifier (idGen, "my√Ñid", "my_id");
+    CheckUniqueIdentifier (idGen, "My√Ñid", "my_id");
+    CheckUniqueIdentifier (idGen, "my√úid", "my_id_1");
+    CheckUniqueIdentifier (idGen, "my√ñid", "my_id_2");
+    CheckUniqueIdentifier (idGen, "my√üid", "my_id_3");
+    CheckUniqueIdentifier (idGen, "my√Ñid", "my_id");
+    CheckUniqueIdentifier (idGen, "my√úid", "my_id_1");
   }
 
   [Test]
@@ -108,16 +108,16 @@ public class IdentifierGeneratorTest
     CheckValidIdentifier (idGen, "_myid", "_myid");
     CheckValidIdentifier (idGen, "-myid", "_myid");
     CheckValidIdentifier (idGen, "myid3", "myid3");
-    CheckValidIdentifier (idGen, "myid‰", "myid_");
-    CheckValidIdentifier (idGen, "myidﬂ", "myid_");
+    CheckValidIdentifier (idGen, "myid√§", "myid_");
+    CheckValidIdentifier (idGen, "myid√ü", "myid_");
 
-    CheckUniqueIdentifier (idGen, "myƒid", "my_id");
-    CheckUniqueIdentifier (idGen, "Myƒid", "My_id_1");
-    CheckUniqueIdentifier (idGen, "my‹id", "my_id_2");
-    CheckUniqueIdentifier (idGen, "my÷id", "my_id_3");
-    CheckUniqueIdentifier (idGen, "myﬂid", "my_id_4");
-    CheckUniqueIdentifier (idGen, "myƒid", "my_id");
-    CheckUniqueIdentifier (idGen, "my‹id", "my_id_2");
+    CheckUniqueIdentifier (idGen, "my√Ñid", "my_id");
+    CheckUniqueIdentifier (idGen, "My√Ñid", "My_id_1");
+    CheckUniqueIdentifier (idGen, "my√úid", "my_id_2");
+    CheckUniqueIdentifier (idGen, "my√ñid", "my_id_3");
+    CheckUniqueIdentifier (idGen, "my√üid", "my_id_4");
+    CheckUniqueIdentifier (idGen, "my√Ñid", "my_id");
+    CheckUniqueIdentifier (idGen, "my√úid", "my_id_2");
   }
 
   public void CheckValidIdentifier (IdentifierGenerator idGen, string uniqueName, string expectedIdentifier)

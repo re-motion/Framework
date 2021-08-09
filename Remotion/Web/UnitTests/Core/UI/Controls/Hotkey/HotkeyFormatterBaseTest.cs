@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -122,7 +122,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.Hotkey
     public void FormatText_WithHtmlEncoding_WithEncodedHotkey ()
     {
       var formatter = new TestableHotkeyFormatterBase();
-      var textWithHotkey = new TextWithHotkey ("foo �ar", 4);
+      var textWithHotkey = new TextWithHotkey ("foo öar", 4);
 
       Assert.That (formatter.FormatText (textWithHotkey, true), Is.EqualTo ("foo <x '&#246;'>&#246;</x>ar"));
     }
