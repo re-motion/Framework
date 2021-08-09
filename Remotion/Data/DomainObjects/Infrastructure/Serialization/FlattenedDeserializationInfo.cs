@@ -27,8 +27,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
 {
   public sealed class FlattenedDeserializationInfo
   {
-    private static readonly ConcurrentDictionary<Type, Func<FlattenedDeserializationInfo, object>> s_instanceFactoryCache =
-        new ConcurrentDictionary<Type, Func<FlattenedDeserializationInfo, object>>();
+    private static readonly ConcurrentDictionary<string, Func<FlattenedDeserializationInfo, object>> s_instanceFactoryCache =
+        new ConcurrentDictionary<string, Func<FlattenedDeserializationInfo, object>>();
 
     public event EventHandler DeserializationFinished;
 
@@ -85,19 +85,20 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
 
     private T GetFlattenedSerializable<T> ()
     {
-      Type type = GetValueForHandle<Type>();
-      if (type == null)
+      var typeName = GetValueForHandle<string>();
+      if (typeName == null)
         return default (T);
 
       // C# compiler 7.2 does not provide caching for delegate but during serialization there is already a significant amount of GC pressure so the delegate creation does not matter
-      var instanceFactory = s_instanceFactoryCache.GetOrAdd (type, GetInstanceFactory);
+      var instanceFactory = s_instanceFactoryCache.GetOrAdd (typeName, GetInstanceFactory);
       object instance = instanceFactory (this);
       var originalPosition = _objectReader.ReadPosition;
       return CastValue<T> (instance, originalPosition, "Object");
     }
 
-    private Func<FlattenedDeserializationInfo, object> GetInstanceFactory (Type type)
+    private Func<FlattenedDeserializationInfo, object> GetInstanceFactory (string typeName)
     {
+      var type = Type.GetType (typeName, throwOnError: true, ignoreCase: false);
       var ctorInfo = type.GetConstructor (
           BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
           null,
