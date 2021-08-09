@@ -24,8 +24,6 @@ using Remotion.Development.UnitTesting;
 using Remotion.Reflection;
 using Remotion.Reflection.TypeResolution;
 using Remotion.UnitTests.Configuration.TypeDiscovery;
-using Remotion.UnitTests.Design;
-using Remotion.Utilities;
 
 namespace Remotion.UnitTests.Reflection
 {
@@ -53,7 +51,6 @@ namespace Remotion.UnitTests.Reflection
           typeof (ContextAwareTypeUtility),
           "s_defaultTypeResolutionService",
           new Lazy<ITypeResolutionService> (() => TypeResolutionConfiguration.Current.CreateTypeResolutionService()));
-      DesignerUtility.ClearDesignMode();
       TypeDiscoveryConfiguration.SetCurrent (new TypeDiscoveryConfiguration());
       TypeResolutionConfiguration.SetCurrent (new TypeResolutionConfiguration (new DefaultTypeResolutionService()));
     }
@@ -69,7 +66,6 @@ namespace Remotion.UnitTests.Reflection
           typeof (ContextAwareTypeUtility),
           "s_defaultTypeResolutionService",
           new Lazy<ITypeResolutionService> (() => _oldTypeResolutionService));
-      DesignerUtility.ClearDesignMode();
 
       TypeDiscoveryConfiguration.SetCurrent (_oldTypeDiscoveryConfiguration);
       TypeResolutionConfiguration.SetCurrent (_oldTypeResolutionConfiguration);
@@ -98,19 +94,6 @@ namespace Remotion.UnitTests.Reflection
     }
 
     [Test]
-    public void GetTypeDiscoveryService_DesignModeContext ()
-    {
-      var typeDiscoveryServiceStub = new Mock<ITypeDiscoveryService>();
-      var designerHostMock = new Mock<IDesignerHost>();
-      designerHostMock.Setup (_ => _.GetService (typeof (ITypeDiscoveryService))).Returns (typeDiscoveryServiceStub.Object).Verifiable();
-
-      DesignerUtility.SetDesignMode (new StubDesignModeHelper (designerHostMock.Object));
-      Assert.That (ContextAwareTypeUtility.GetTypeDiscoveryService(), Is.SameAs (typeDiscoveryServiceStub.Object));
-
-      designerHostMock.Verify();
-    }
-
-    [Test]
     public void GetTypeResolutionService_ComesFromConfiguration ()
     {
       var typeResolutionServiceStub = new Mock<ITypeResolutionService>();
@@ -130,19 +113,6 @@ namespace Remotion.UnitTests.Reflection
       var defaultService2 = ContextAwareTypeUtility.GetTypeResolutionService();
 
       Assert.That (defaultService, Is.SameAs (defaultService2));
-    }
-
-    [Test]
-    public void GetTypeResolutionService_DesignModeContext ()
-    {
-      var typeResolutionServiceStub = new Mock<ITypeResolutionService>();
-      var designerHostMock = new Mock<IDesignerHost>();
-      designerHostMock.Setup (_ => _.GetService (typeof (ITypeResolutionService))).Returns (typeResolutionServiceStub.Object).Verifiable();
-
-      DesignerUtility.SetDesignMode (new StubDesignModeHelper (designerHostMock.Object));
-      Assert.That (ContextAwareTypeUtility.GetTypeResolutionService(), Is.SameAs (typeResolutionServiceStub.Object));
-
-      designerHostMock.Verify();
     }
   }
 }

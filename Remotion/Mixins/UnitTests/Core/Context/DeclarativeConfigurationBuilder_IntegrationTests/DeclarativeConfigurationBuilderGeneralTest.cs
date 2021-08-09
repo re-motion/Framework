@@ -15,20 +15,15 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.ComponentModel.Design;
 using System.IO;
 using System.Reflection;
 using NUnit.Framework;
-using Remotion.Design;
 using Remotion.Development.UnitTesting;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.UnitTests.Core.TestDomain;
-using Remotion.Reflection;
 using Remotion.Reflection.TypeDiscovery;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
-using Remotion.Utilities;
-using Rhino.Mocks;
 
 namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder_IntegrationTests
 {
@@ -177,39 +172,6 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
 
       Assert.That (filter.ShouldIncludeAssembly (typeof (DeclarativeConfigurationBuilderGeneralTest).Assembly), Is.True);
       Assert.That (filter.ShouldIncludeAssembly (typeof (DeclarativeConfigurationBuilder).Assembly), Is.True);
-    }
-
-    [Test]
-    public void DesignModeIsDetected ()
-    {
-      var service =
-          (ITypeDiscoveryService) PrivateInvoke.InvokeNonPublicStaticMethod (typeof (DeclarativeConfigurationBuilder), "GetTypeDiscoveryService");
-      Assert.That (service, Is.InstanceOf (typeof (AssemblyFinderTypeDiscoveryService)));
-
-      var repository = new MockRepository();
-      var designModeHelperMock = repository.StrictMock<IDesignModeHelper> ();
-      var designerHostMock = repository.StrictMock<IDesignerHost>();
-      var designerServiceMock = repository.StrictMock<ITypeDiscoveryService> ();
-
-      designModeHelperMock.Expect (mock => mock.DesignerHost).Return (designerHostMock);
-      designerHostMock.Expect (mock => mock.GetService (typeof (ITypeDiscoveryService))).Return (designerServiceMock);
-
-      repository.ReplayAll();
-      
-      DesignerUtility.SetDesignMode (designModeHelperMock);
-      try
-      {
-        service = (ITypeDiscoveryService) PrivateInvoke.InvokeNonPublicStaticMethod (typeof (DeclarativeConfigurationBuilder), "GetTypeDiscoveryService");
-
-        Assert.That (service, Is.Not.InstanceOf (typeof (AssemblyFinderTypeDiscoveryService)));
-        Assert.That (service, Is.SameAs (designerServiceMock));
-      }
-      finally
-      {
-        DesignerUtility.ClearDesignMode();
-      }
-
-      repository.VerifyAll ();
     }
 
     [Test]
