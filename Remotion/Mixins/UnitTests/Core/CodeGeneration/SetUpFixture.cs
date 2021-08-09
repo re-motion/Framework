@@ -21,7 +21,6 @@ using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.CodeGeneration.TypePipe;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
-using Remotion.TypePipe.Development;
 using Remotion.TypePipe.Implementation;
 using Remotion.Utilities;
 
@@ -31,10 +30,13 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
   public class SetUpFixture
   {
     private static IPipeline s_pipeline;
-    private static bool s_skipDeletion;
-
-    private static AssemblyTrackingCodeManager s_assemblyTrackingCodeManager;
     private ServiceLocatorScope s_serviceLocatorScope;
+
+#if FEATURE_ASSEMBLYBUILDER_SAVE
+    private static bool s_skipDeletion;
+    private static Remotion.TypePipe.Development.AssemblyTrackingCodeManager s_assemblyTrackingCodeManager;
+#endif
+
 
     public static IPipeline Pipeline
     {
@@ -52,7 +54,9 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     /// </summary>
     public static void SkipDeletion ()
     {
+#if FEATURE_ASSEMBLYBUILDER_SAVE
       s_skipDeletion = true;
+#endif
     }
 
     /// <summary>
@@ -61,7 +65,9 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     public static void AddSavedAssembly (string assemblyPath)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("assemblyPath", assemblyPath);
+#if FEATURE_ASSEMBLYBUILDER_SAVE
       s_assemblyTrackingCodeManager.AddSavedAssembly (assemblyPath);
+#endif
     }
 
     [OneTimeSetUp]
@@ -72,7 +78,6 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       // Force-initialize TestFactory to ensure it does not default onto the test pipeline.
       Dev.Null = TypeFactory.GetConcreteType (typeof (object));
 
-      var assemblyTrackingPipelineFactory = new AssemblyTrackingPipelineFactory();
       var settings = PipelineSettings.New().SetEnableSerializationWithoutAssemblySaving (true).SetAssemblyDirectory (TestContext.CurrentContext.TestDirectory).Build();
       var participants = new IParticipant[]
                          {
@@ -82,10 +87,16 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
                                SafeServiceLocator.Current.GetInstance<ITargetTypeModifier>(),
                                SafeServiceLocator.Current.GetInstance<IConcreteTypeMetadataImporter>())
                          };
+      var pipelineName = "re-mix-tests";
+#if FEATURE_ASSEMBLYBUILDER_SAVE
+      var assemblyTrackingPipelineFactory = new Remotion.TypePipe.Development.AssemblyTrackingPipelineFactory();
 
-      s_pipeline = assemblyTrackingPipelineFactory.Create ("re-mix-tests", settings, participants);
+      s_pipeline = assemblyTrackingPipelineFactory.Create (pipelineName, settings, participants);
       s_assemblyTrackingCodeManager = assemblyTrackingPipelineFactory.AssemblyTrackingCodeManager;
-
+#else
+      var defaultPipelineFactory = new DefaultPipelineFactory();
+      s_pipeline = defaultPipelineFactory.Create (pipelineName, settings, participants);
+#endif
       var pipelineRegistry = new DefaultPipelineRegistry (s_pipeline);
       var serviceLocator = DefaultServiceLocator.Create();
       serviceLocator.RegisterSingle<IPipelineRegistry> (() => pipelineRegistry);
@@ -95,7 +106,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     [OneTimeTearDown]
     public void OneTimeTearDown()
     {
-#if !NO_PEVERIFY
+#if FEATURE_ASSEMBLYBUILDER_SAVE
       try
       {
         s_assemblyTrackingCodeManager.FlushCodeToDisk();
@@ -105,6 +116,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
         Assert.Fail ("Error when saving assemblies: {0}", ex);
       }
 
+#if !NO_PEVERIFY
       s_assemblyTrackingCodeManager.PeVerifySavedAssemblies();
 #endif
 
@@ -118,7 +130,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
             "Assemblies saved to: " + Environment.NewLine
             + string.Join (Environment.NewLine, s_assemblyTrackingCodeManager.SavedAssemblies));
       }
-
+#endif
       s_serviceLocatorScope.Dispose();
     }
   }

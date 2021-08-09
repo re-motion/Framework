@@ -62,15 +62,20 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
           "Remotion.Reflection.CodeGeneration.Generated.Unsigned",
           Path.Combine (TestContext.CurrentContext.TestDirectory, "Remotion.Reflection.CodeGeneration.Generated.Unsigned.dll"));
       s_unsavedScope = new ModuleScope (true);
+#if FEATURE_ASSEMBLYBUILDER_SAVE
       DeleteIfExists (Path.Combine (s_scope.StrongNamedModuleDirectory ?? Environment.CurrentDirectory, s_scope.StrongNamedModuleName));
       DeleteIfExists (Path.Combine (s_scope.WeakNamedModuleDirectory ?? Environment.CurrentDirectory, s_scope.WeakNamedModuleName));
+#else
+      DeleteIfExists (Path.Combine (Environment.CurrentDirectory, s_scope.StrongNamedModuleName));
+      DeleteIfExists (Path.Combine (Environment.CurrentDirectory, s_scope.WeakNamedModuleName));
+#endif
     }
 
     [OneTimeTearDown]
     public virtual void OneTimeTearDown ()
     {
       Console.WriteLine ("Tearing down code generation tests");
-#if !NO_PEVERIFY
+#if FEATURE_ASSEMBLYBUILDER_SAVE && !NO_PEVERIFY
       string[] paths = AssemblySaver.SaveAssemblies (s_scope);
       s_scope = null;
       s_unsavedScope = null;
