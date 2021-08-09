@@ -22,6 +22,7 @@ using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoi
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Serialization
@@ -40,6 +41,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       _endPoint = (VirtualObjectEndPoint) 
           ((StateUpdateRaisingVirtualObjectEndPointDecorator) TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad (endPointID))
           .InnerEndPoint;
+
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
     }
 
     [Test]

@@ -18,6 +18,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.DomainObjects.Validation;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Validation
@@ -28,6 +29,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     [Test]
     public void Serialization ()
     {
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
+
       var domainObject = Order.NewObject();
       var inner = new InvalidOperationException ("Test");
       var exception = new MandatoryRelationNotSetException (domainObject, "xy", "Msg", inner);

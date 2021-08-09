@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Remotion.Utilities;
 
@@ -42,6 +43,8 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void Serializable ()
     {
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
+
       var comparer = new DelegateBasedComparer<List<int>> ((x, y) => x.Count.CompareTo (y.Count));
       var deserializedComparer = Serializer.SerializeAndDeserialize (comparer);
 

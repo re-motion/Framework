@@ -21,6 +21,7 @@ using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Serialization
@@ -36,6 +37,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       base.SetUp();
       var id = RelationEndPointID.Create(DomainObjectIDs.Computer1, ReflectionMappingHelper.GetPropertyName (typeof (Computer), "Employee"));
       _endPoint = new TestableRelationEndPoint (TestableClientTransaction, id);
+
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
     }
 
     [Test]

@@ -18,6 +18,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Remotion.TypePipe;
 
@@ -26,6 +27,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
   [TestFixture]
   public class SerializationCallbackTest : ClientTransactionBaseTest
   {
+    public override void SetUp ()
+    {
+      base.SetUp();
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
+    }
+
     [Test]
     public void SerializationEvents ()
     {

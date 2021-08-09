@@ -25,6 +25,7 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.Serialization;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Rhino.Mocks;
 
@@ -393,6 +394,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void FlattenedSerializable ()
     {
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
+
       var state = new CompleteVirtualObjectEndPointLoadState (
           new SerializableVirtualObjectEndPointDataManagerFake(),
           new SerializableRelationEndPointProviderFake(),

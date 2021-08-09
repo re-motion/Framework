@@ -30,6 +30,7 @@ using Remotion.Data.DomainObjects.UnitTests.Queries;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.UnitTests.UnitTesting;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.ObjectMothers;
 using Remotion.FunctionalProgramming;
@@ -792,6 +793,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void Serializable ()
     {
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
+
       var clientTransaction = ClientTransaction.CreateRootTransaction();
       var instance = new ClientTransactionEventBroker (clientTransaction);
       instance.AddListener (new SerializableClientTransactionListenerFake ());

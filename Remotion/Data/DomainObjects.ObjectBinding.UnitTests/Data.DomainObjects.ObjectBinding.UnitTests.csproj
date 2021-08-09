@@ -11,6 +11,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="Queries.xml" CopyToOutputDirectory="PreserveNewest" />
+    <Compile Include="..\..\..\SharedSource\Development\NUnit\UnitTesting\Assert2.cs" Link="SharedSource\NUnit\UnitTesting\Assert2.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />

@@ -19,6 +19,7 @@ using System.Runtime.Serialization;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Remotion.Mixins;
 using Remotion.ObjectBinding;
@@ -96,6 +97,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     [Test]
     public void SerializeAndDeserialize ()
     {
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
+
       Serializer.SerializeAndDeserialize (_instanceOverridingDisplayName);
     }
 

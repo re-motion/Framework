@@ -24,7 +24,7 @@ using Remotion.Development.UnitTesting.ObjectMothers;
 // ReSharper disable once CheckNamespace
 namespace Remotion.Development.UnitTests.Core.UnitTesting.ObjectMothers
 {
-  [NUnit.Framework.TestFixture]
+  [TestFixture]
   public class ObjectMotherTest
   {
     [Test]

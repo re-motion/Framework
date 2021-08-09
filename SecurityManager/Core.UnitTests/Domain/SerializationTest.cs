@@ -19,6 +19,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.DomainImplementation;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Remotion.ObjectBinding;
 using Remotion.SecurityManager.Domain.AccessControl;
@@ -34,6 +35,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain
     [Test]
     public void DomainObjectsAreSerializable ()
     {
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
+
       CheckDomainObjectSerializability (delegate { return AccessControlEntry.NewObject (); });
       CheckDomainObjectSerializability (delegate { return StatefulAccessControlList.NewObject (); });
       CheckDomainObjectSerializability (delegate { return Permission.NewObject (); });

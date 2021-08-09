@@ -19,17 +19,24 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
 using Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
 {
   [TestFixture]
-  public class SerializationTest : SerializationBaseTest
+  public class SerializationTest : ClientTransactionBaseTest
   {
     public override void OneTimeSetUp ()
     {
       base.OneTimeSetUp();
       SetDatabaseModifyable();
+    }
+    
+    public override void SetUp ()
+    {
+        base.SetUp();
+        Assert2.IgnoreIfFeatureSerializationIsDisabled();
     }
 
     [Test]
@@ -38,7 +45,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       var extension = new ClientTransactionExtensionWithQueryFiltering();
       ClientTransactionScope.CurrentTransaction.Extensions.Add (extension);
 
-      var deserializedClientTransaction = (ClientTransaction) SerializeAndDeserialize (ClientTransactionScope.CurrentTransaction);
+      var deserializedClientTransaction = Serializer.SerializeAndDeserialize (ClientTransactionScope.CurrentTransaction);
 
       Assert.That (deserializedClientTransaction, Is.Not.Null);
       Assert.That (deserializedClientTransaction.Extensions, Is.Not.Null);
@@ -92,7 +99,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       var eventReceiver = new SequenceEventReceiver (domainObjects, collections);
 
       var deserializedObjects =
-          (object[]) SerializeAndDeserialize (new object[] { domainObjects, collections, ClientTransactionScope.CurrentTransaction, eventReceiver });
+          Serializer.SerializeAndDeserialize (new object[] { domainObjects, collections, ClientTransactionScope.CurrentTransaction, eventReceiver });
 
       Assert.That (deserializedObjects.Length, Is.EqualTo (4));
 
