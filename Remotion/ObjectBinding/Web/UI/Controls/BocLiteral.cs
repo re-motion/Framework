@@ -153,10 +153,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       base.OnInit (e);
       EnsureChildControls ();
       _binding.EnsureDataSource ();
-      if (!IsDesignMode)
-      {
-        Page.RegisterRequiresControlState (this);
-      }
+      Page.RegisterRequiresControlState (this);
     }
 
     protected override void OnUnload (EventArgs e)
@@ -183,9 +180,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         if (!base.Visible)
           return false;
 
-        if (IsDesignMode)
-          return true;
-
         return HasValidBinding;
       }
       set { base.Visible = value; }
@@ -199,10 +193,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           writer.Write (_value);
         else
           HttpUtility.HtmlEncode (_value, writer);
-      }
-      else if (IsDesignMode)
-      {
-        writer.Write ("##");
       }
     }
 
@@ -357,13 +347,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     IPage IControl.Page
     {
       get { return PageWrapper.CastOrCreate (base.Page); }
-    }
-
-    /// <summary> Evalutes whether this control is in <b>Design Mode</b>. </summary>
-    [Browsable (false)]
-    protected bool IsDesignMode
-    {
-      get { return ControlHelper.IsDesignMode (this); }
     }
 
     [Category ("Behavior")]

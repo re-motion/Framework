@@ -105,8 +105,6 @@ public class WcagHelper
   public virtual void HandleWarning (int priority, Control control)
   {
     ArgumentUtility.CheckNotNull ("control", control);
-    if (ControlHelper.IsDesignModeForControl (control))
-      return;
 
     string message = string.Format (
        "{0} '{1}' on page '{2}' might not comply with a priority {3} checkpoint.", 
@@ -117,8 +115,6 @@ public class WcagHelper
   public virtual void HandleWarning (int priority, Control control, string property)
   {
     ArgumentUtility.CheckNotNull ("control", control);
-    if (ControlHelper.IsDesignModeForControl (control))
-      return;
 
     string message = string.Format (
         "The value of property '{0}' for {1} '{2}' on page '{3}' might not comply with a priority {4} checkpoint.", 
@@ -142,8 +138,6 @@ public class WcagHelper
   public virtual void HandleError (int priority, Control control)
   {
     ArgumentUtility.CheckNotNull ("control", control);
-    if (ControlHelper.IsDesignModeForControl (control))
-      return;
 
     string message = string.Format (
        "{0} '{1}' on page '{2}' does not comply with a priority {3} checkpoint.", 
@@ -154,8 +148,6 @@ public class WcagHelper
   public virtual void HandleError (int priority, Control control, string property)
   {
     ArgumentUtility.CheckNotNull ("control", control);
-    if (ControlHelper.IsDesignModeForControl (control))
-      return;
 
     string message = string.Format (
         "The value of property '{0}' for {1} '{2}' on page '{3}' does not comply with a priority {4} checkpoint.", 

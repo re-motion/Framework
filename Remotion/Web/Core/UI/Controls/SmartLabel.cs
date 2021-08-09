@@ -126,24 +126,18 @@ public class SmartLabel: WebControl, IControl
   {
     base.AddAttributesToRender (writer);
 
-    if (! ControlHelper.IsDesignMode (this))
-    {
-      var clientID = GetClientIDForTarget();
+    var clientID = GetClientIDForTarget();
 
-      if (!string.IsNullOrEmpty (clientID))
-        writer.AddAttribute (HtmlTextWriterAttribute.For, clientID);
+    if (!string.IsNullOrEmpty (clientID))
+      writer.AddAttribute (HtmlTextWriterAttribute.For, clientID);
 
-      // TODO: add <a href="ToName(target.ClientID)"> ...
-      // ToName: '.' -> '_'
-    }
+    // TODO: add <a href="ToName(target.ClientID)"> ...
+    // ToName: '.' -> '_'
   }
 
   protected virtual void LoadResources (IResourceManager resourceManager)
   {
     ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
-
-    if (ControlHelper.IsDesignMode (this))
-      return;
 
     string key = ResourceManagerUtility.GetGlobalResourceKey (Text);
     if (!string.IsNullOrEmpty (key))

@@ -84,13 +84,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     {
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
 
-      bool isDesignMode = ControlHelper.IsDesignMode (renderingContext.Control);
       bool isReadOnly = renderingContext.Control.IsReadOnly;
       bool showForEmptyList = isReadOnly && renderingContext.Control.ShowEmptyListReadOnlyMode
                               || !isReadOnly && renderingContext.Control.ShowEmptyListEditMode;
 
       if (!renderingContext.Control.HasValue && !showForEmptyList)
-        RenderTable (renderingContext, isDesignMode, false);
+        RenderTable (renderingContext, false, false);
       else
         RenderTable (renderingContext, true, true);
     }
@@ -261,16 +260,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       foreach (var columnRenderer in renderingContext.ColumnRenderers)
         columnRenderer.RenderDataColumnDeclaration (renderingContext, isTextXml);
-      
-      //  Design-mode and empty table
-      if (ControlHelper.IsDesignMode (renderingContext.Control) && renderingContext.ColumnRenderers.Length == 0)
-      {
-        for (int i = 0; i < BocRowRenderer.DesignModeDummyColumnCount; i++)
-        {
-          renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Col);
-          renderingContext.Writer.RenderEndTag();
-        }
-      }
 
       renderingContext.Writer.RenderEndTag();
     }

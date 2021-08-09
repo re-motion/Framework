@@ -107,14 +107,8 @@ public class DatePickerPage : Page
 
     base.OnInit(e);
 
-    if( !IsDesignMode )
-	    RegisterHtmlHeadContents(HtmlHeadAppender.Current);
+    RegisterHtmlHeadContents(HtmlHeadAppender.Current);
 	}
-
-  protected bool IsDesignMode
-  {
-    get { return ControlHelper.IsDesignMode (PageWrapper.CastOrCreate (this)); }
-  }
 
   private void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
   {

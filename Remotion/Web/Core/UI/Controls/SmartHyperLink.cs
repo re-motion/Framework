@@ -41,9 +41,8 @@ public class SmartHyperLink : HyperLink, IControl
   {
     string navigateUrlBackup = NavigateUrl;
     bool hasNavigateUrl = ! string.IsNullOrEmpty (NavigateUrl);
-    bool isDesignMode = ControlHelper.IsDesignMode (this);
 
-    if (! isDesignMode && Page is ISmartNavigablePage && hasNavigateUrl)
+    if (Page is ISmartNavigablePage && hasNavigateUrl)
       NavigateUrl = ((ISmartNavigablePage) Page).AppendNavigationUrlParameters (NavigateUrl);
 
     base.AddAttributesToRender (writer);

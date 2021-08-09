@@ -330,9 +330,6 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
 
-      if (ControlHelper.IsDesignMode (this))
-        return;
-
       //  Dispatch simple properties
       string key = ResourceManagerUtility.GetGlobalResourceKey (Text);
       if (!string.IsNullOrEmpty (key))

@@ -133,8 +133,7 @@ namespace Remotion.Web.ExecutionEngine
 
     protected override sealed void CreateChildControls ()
     {
-      if (ControlHelper.IsDesignMode (this))
-        _lazyContainer.Ensure (base.Controls);
+      // NOP
     }
 
     public void ExecuteFunction (WxeFunction function, Control sender, bool? usesEventTarget)

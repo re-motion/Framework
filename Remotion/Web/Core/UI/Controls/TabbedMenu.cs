@@ -334,7 +334,7 @@ namespace Remotion.Web.UI.Controls
 
     public virtual bool IsDesignMode
     {
-      get { return ControlHelper.IsDesignMode (this); }
+      get { return false; }
     }
 
     /// <summary> Gets the IDs of the tabs to be selected from the query string. </summary>

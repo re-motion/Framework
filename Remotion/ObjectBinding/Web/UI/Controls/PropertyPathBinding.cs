@@ -115,16 +115,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       else
       {
         if (BusinessObjectClass == null)
-        {
-          if (!Remotion.Web.Utilities.ControlHelper.IsDesignMode (OwnerControl))
-            throw new InvalidOperationException ("The property path could not be resolved because the Business Object Class is not set.");
-
-          return new NullBusinessObjectPropertyPath();
-        }
+          throw new InvalidOperationException ("The property path could not be resolved because the Business Object Class is not set.");
         else
-        {
           _propertyPath = BusinessObjectPropertyPath.CreateStatic (BusinessObjectClass, _propertyPathIdentifier);
-        }
       }
 
       return _propertyPath;

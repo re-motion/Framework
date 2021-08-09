@@ -78,16 +78,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       foreach (var columnRenderer in renderingContext.ColumnRenderers)
         columnRenderer.RenderTitleCell (renderingContext);
 
-      if (ControlHelper.IsDesignMode (renderingContext.Control) && renderingContext.ColumnRenderers.Length == 0)
-      {
-        for (int i = 0; i < DesignModeDummyColumnCount; i++)
-        {
-          renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Td);
-          renderingContext.Writer.Write (String.Format (DesignModeDummyColumnTitle, i + 1));
-          renderingContext.Writer.RenderEndTag();
-        }
-      }
-
       renderingContext.Writer.RenderEndTag();
     }
 

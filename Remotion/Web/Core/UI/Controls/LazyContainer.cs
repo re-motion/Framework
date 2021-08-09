@@ -124,7 +124,7 @@ namespace Remotion.Web.UI.Controls
 
     protected override void CreateChildControls ()
     {
-      if (! _isLazyLoadingEnabled || ControlHelper.IsDesignMode (this))
+      if (! _isLazyLoadingEnabled)
         Ensure ();
     }
 
@@ -133,10 +133,7 @@ namespace Remotion.Web.UI.Controls
       base.OnInit (e);
       EnsureChildControls ();
 
-      if (!ControlHelper.IsDesignMode (this))
-      {
-        Page.RegisterRequiresControlState (this);
-      }
+      Page.RegisterRequiresControlState (this);
     }
 
     protected override void LoadViewState (object savedState)

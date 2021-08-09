@@ -82,8 +82,6 @@ public class WebTab: IWebTab, IControlStateManager
 
   private void OwnerControl_PreRender(object sender, EventArgs e)
   {
-    if (Remotion.Web.Utilities.ControlHelper.IsDesignMode (_ownerControl))
-      return;
     PreRender();
   }
 

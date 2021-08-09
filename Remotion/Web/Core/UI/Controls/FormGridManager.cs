@@ -3029,8 +3029,7 @@ namespace Remotion.Web.UI.Controls
     {
       if (! _formGridListPopulated)
       {
-        if (! ControlHelper.IsDesignMode (this))
-          PopulateFormGridList (NamingContainer);
+        PopulateFormGridList (NamingContainer);
         _formGridListPopulated = true;
       }
     }

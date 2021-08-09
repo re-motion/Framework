@@ -22,7 +22,6 @@ using Remotion.ServiceLocation;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Globalization;
-using Remotion.Web.Utilities;
 
 namespace OBWTest
 {
@@ -37,21 +36,18 @@ public class SingleBocTestBasePage:
   protected override void OnInit(EventArgs e)
   {
     base.OnInit (e);
-    if (! ControlHelper.IsDesignMode (this))
+    try
     {
-      try
-      {
-        Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(Request.UserLanguages[0]);
-      }
-      catch (ArgumentException)
-      {}
-      try
-      {
-        Thread.CurrentThread.CurrentUICulture = new CultureInfo(Request.UserLanguages[0]);
-      }
-      catch (ArgumentException)
-      {}
+      Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(Request.UserLanguages[0]);
     }
+    catch (ArgumentException)
+    {}
+    try
+    {
+      Thread.CurrentThread.CurrentUICulture = new CultureInfo(Request.UserLanguages[0]);
+    }
+    catch (ArgumentException)
+    {}
   }
 
   protected override void OnPreRender(EventArgs e)

@@ -27,7 +27,6 @@ using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
-using Remotion.Web.Utilities;
 
 namespace Remotion.ObjectBinding.Sample
 {
@@ -453,8 +452,6 @@ namespace Remotion.ObjectBinding.Sample
     protected override void OnItemDataBound (RepeaterItemEventArgs e)
     {
       base.OnItemDataBound (e);
-      if (IsDesignMode)
-        return;
 
       IBusinessObject obj = (IBusinessObject) e.Item.DataItem;
 
@@ -557,12 +554,6 @@ namespace Remotion.ObjectBinding.Sample
       return true;
     }
 
-    /// <summary> Evalutes whether this control is in <b>Design Mode</b>. </summary>
-    protected bool IsDesignMode
-    {
-      get { return ControlHelper.IsDesignMode (this); }
-    }
-
     protected override void LoadViewState (object savedState)
     {
       object[] values = (object[]) savedState;
@@ -576,14 +567,6 @@ namespace Remotion.ObjectBinding.Sample
       values[0] = base.SaveViewState();
       values[1] = _isDirty;
       return values;
-    }
-
-    protected override void Render (HtmlTextWriter writer)
-    {
-      if (IsDesignMode)
-        return;
-
-      base.Render (writer);
     }
 
     void ISmartControl.RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)

@@ -220,7 +220,6 @@ public class TabbedMenuTest: WebControlTest
     NamingContainer.Controls.Add (_tabbedMenu);
 
     Assert.That (HtmlHeadAppender.Current, Is.Not.Null);
-    Assert.That (ControlHelper.IsDesignMode (_tabbedMenu), Is.False);
 
     NamingContainerInvoker.InitRecursive();
 

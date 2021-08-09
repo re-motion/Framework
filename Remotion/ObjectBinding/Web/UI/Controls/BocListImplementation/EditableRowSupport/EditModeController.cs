@@ -690,8 +690,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     {
       base.OnInit (e);
 
-      if (!ControlHelper.IsDesignMode (this))
-        Page.RegisterRequiresControlState (this);
+      Page.RegisterRequiresControlState (this);
     }
 
     protected override void LoadControlState (object savedState)

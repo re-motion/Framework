@@ -431,9 +431,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Evalutes whether this control is in <b>Design Mode</b>. </summary>
     /// <value><see langword="true"/> if the control is currently rendered by the Visual Studio Designer.</value>
     [Browsable (false)]
-    protected internal virtual bool IsDesignMode
+    protected virtual bool IsDesignMode
     {
-      get { return ControlHelper.IsDesignMode (this); }
+      get { return false; }
     }
 
     bool ISmartControl.IsRequired

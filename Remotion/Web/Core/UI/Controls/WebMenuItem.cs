@@ -105,8 +105,6 @@ namespace Remotion.Web.UI.Controls
 
     private void OwnerControl_PreRender (object sender, EventArgs e)
     {
-      if (ControlHelper.IsDesignMode (_ownerControl))
-        return;
       PreRender();
     }
 

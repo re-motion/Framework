@@ -119,9 +119,6 @@ namespace Remotion.Web.ExecutionEngine
 
       _wxeExecutor = new WxeExecutor (context, _page, this);
 
-      if (ControlHelper.IsDesignMode (_page))
-        return;
-
       _page.PreInit += HandlePagePreInit;
       _page.Init += HandlePageInit;
     }
@@ -183,8 +180,6 @@ namespace Remotion.Web.ExecutionEngine
 
     private HtmlForm FindHtmlForm ()
     {
-      bool isDesignMode = ControlHelper.IsDesignMode (_page);
-
       Control page = _page.WrappedInstance;
       MemberInfo[] fields;
       do
@@ -204,7 +199,7 @@ namespace Remotion.Web.ExecutionEngine
         }
       } while (fields.Length == 0 && page != null);
 
-      if (fields.Length == 0 && !isDesignMode)
+      if (fields.Length == 0)
       {
         throw new ApplicationException (
             message: "Page class " + _page.GetType().GetFullNameSafe() + " has no field of type HtmlForm. Please add a field or override property IWxePage.HtmlForm.");
@@ -508,9 +503,6 @@ namespace Remotion.Web.ExecutionEngine
     /// </remarks>
     public void Dispose ()
     {
-      if (ControlHelper.IsDesignMode (_page))
-        return;
-
       HttpContext httpContext = null;
       if (_wxeExecutor != null)
       {

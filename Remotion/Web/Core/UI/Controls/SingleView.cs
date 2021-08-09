@@ -279,7 +279,7 @@ namespace Remotion.Web.UI.Controls
 
     public bool IsDesignMode
     {
-      get { return ControlHelper.IsDesignMode(this); }
+      get { return false; }
     }
 
     string ISingleView.ViewClientID

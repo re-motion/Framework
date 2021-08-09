@@ -524,10 +524,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   protected override void OnInit (EventArgs e)
   {
     base.OnInit (e);
-    if (!ControlHelper.IsDesignMode (this))
-    {
-      RegisterRequiresControlState (this);
-    }
+    RegisterRequiresControlState (this);
   }
 
   protected override void LoadControlState(object savedState)
