@@ -19,7 +19,6 @@ using System.Collections;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.ExtensibleEnums;
@@ -59,7 +58,8 @@ namespace Remotion.Data.DomainObjects
     {
       ArgumentUtility.CheckNotNull ("assembly", assembly);
 
-      Uri codeBaseUri = new Uri (assembly.EscapedCodeBase);
+      var assemblyNameWithoutShadowCopy = assembly.GetName (copiedName: false);
+      var codeBaseUri = new Uri (assemblyNameWithoutShadowCopy.EscapedCodeBase);
       if (!codeBaseUri.IsFile)
         throw new InvalidOperationException (String.Format ("The assembly's code base '{0}' is not a local path.", codeBaseUri.OriginalString));
       return Path.GetDirectoryName (codeBaseUri.LocalPath);

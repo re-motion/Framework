@@ -69,9 +69,9 @@ namespace Remotion.Development.UnitTesting.Data.SqlClient
       _fileName = sqlFileName;
       if (!Path.IsPathRooted (sqlFileName))
       {
-        string assemblyUrl = typeof (DatabaseAgent).Assembly.CodeBase;
-        Uri uri = new Uri (assemblyUrl);
-        sqlFileName = Path.Combine (Path.GetDirectoryName (uri.LocalPath), sqlFileName);
+        var assemblyNameWithoutShadowCopy = typeof (DatabaseAgent).Assembly.GetName (copiedName: false);
+        var codeBaseUri = new Uri (assemblyNameWithoutShadowCopy.EscapedCodeBase);
+        sqlFileName = Path.Combine (Path.GetDirectoryName (codeBaseUri.LocalPath), sqlFileName);
       }
       return ExecuteBatchString (File.ReadAllText (sqlFileName, Encoding.UTF8), useTransaction, replacementDictionary);
     }

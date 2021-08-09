@@ -84,7 +84,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     {
       var origin = new MixinContextOrigin ("SomeKind", _someAssembly, "some location");
 
-      var expectedCodeBase = _someAssembly.CodeBase;
+      var expectedCodeBase = _someAssembly.GetName().CodeBase;
       var expected = string.Format (
           "SomeKind, Location: 'some location' (Assembly: 'Remotion.Mixins.UnitTests', code base: {0})", 
           expectedCodeBase);

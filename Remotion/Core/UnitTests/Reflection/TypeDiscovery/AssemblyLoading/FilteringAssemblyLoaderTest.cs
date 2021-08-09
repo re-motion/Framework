@@ -66,7 +66,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
       SetupFilterTrue();
 
       Assembly referenceAssembly = typeof (FilteringAssemblyLoaderTest).Assembly;
-      string path = new Uri (referenceAssembly.EscapedCodeBase).AbsolutePath;
+      string path = new Uri (referenceAssembly.GetName (copiedName: false).CodeBase).LocalPath;
       Assembly loadedAssembly = _loader.TryLoadAssembly (path);
       Assert.That (loadedAssembly, Is.SameAs (referenceAssembly));
     }
@@ -75,7 +75,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
     public void TryLoadAssembly_FilterConsiderTrue_IncludeTrue ()
     {
       Assembly referenceAssembly = typeof (FilteringAssemblyLoaderTest).Assembly;
-      string path = new Uri (referenceAssembly.EscapedCodeBase).AbsolutePath;
+      string path = new Uri (referenceAssembly.GetName (copiedName: false).CodeBase).LocalPath;
 
       _filterMock.Setup (_ => _.ShouldConsiderAssembly (It.Is<AssemblyName> (_ => _ != null && object.Equals (_.FullName, referenceAssembly.FullName))))
           .Returns (true)
@@ -93,7 +93,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
     public void TryLoadAssembly_FilterConsiderTrue_IncludeFalse ()
     {
       Assembly referenceAssembly = typeof (FilteringAssemblyLoaderTest).Assembly;
-      string path = new Uri (referenceAssembly.EscapedCodeBase).AbsolutePath;
+      string path = new Uri (referenceAssembly.GetName (copiedName: false).CodeBase).LocalPath;
 
       _filterMock.Setup (_ => _.ShouldConsiderAssembly (It.Is<AssemblyName> (_ => _ != null && object.Equals (_.FullName, referenceAssembly.FullName))))
           .Returns (true)
@@ -111,7 +111,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
     public void TryLoadAssembly_FilterConsiderFalse ()
     {
       Assembly referenceAssembly = typeof (FilteringAssemblyLoaderTest).Assembly;
-      string path = new Uri (referenceAssembly.EscapedCodeBase).AbsolutePath;
+      string path = new Uri (referenceAssembly.GetName (copiedName: false).CodeBase).LocalPath;
 
       _filterMock.Setup (_ => _.ShouldConsiderAssembly (It.Is<AssemblyName> (_ => _ != null && object.Equals (_.FullName, referenceAssembly.FullName))))
           .Returns (false)
