@@ -239,6 +239,21 @@ namespace Remotion.UnitTests.ServiceLocation
     }
 
     [Test]
+    public void GetDefaultConfiguration_WithTypeAsGenericInterface ()
+    {
+      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (typeof (ITestOpenGenericService<>), true))
+          .Returns (new ArrayList { typeof (TestOpenGenericIntImplementation), typeof (TestOpenGenericStringImplementation) });
+
+      var serviceConfigurationEntry = _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration (typeof (ITestOpenGenericService<int>));
+
+      Assert.That (serviceConfigurationEntry.ServiceType, Is.SameAs (typeof (ITestOpenGenericService<int>)));
+
+      Assert.That (serviceConfigurationEntry.ImplementationInfos.Count, Is.EqualTo (1));
+      Assert.That (serviceConfigurationEntry.ImplementationInfos[0].ImplementationType, Is.EqualTo (typeof (TestOpenGenericIntImplementation)));
+      Assert.That (serviceConfigurationEntry.ImplementationInfos[0].Lifetime, Is.EqualTo (LifetimeKind.InstancePerDependency));
+    }
+
+    [Test]
     public void GetDefaultConfiguration_WithNoImplementations ()
     {
       _typeDiscoveryServiceStub.Setup (_ => _.GetTypes (It.IsAny<Type>(), It.IsAny<bool>())).Returns (new Type[0]);

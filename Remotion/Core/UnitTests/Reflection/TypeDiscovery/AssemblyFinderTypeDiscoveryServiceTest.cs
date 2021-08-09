@@ -75,14 +75,31 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery
     {
       var service = new AssemblyFinderTypeDiscoveryService (_finderMock.Object);
 
-      _finderMock.Setup (mock => mock.FindAssemblies ()).Returns (new[] { _testAssembly, _mscorlibAssembly }).Verifiable();
+      var assemblies = new HashSet<Assembly>();
+      assemblies.Add (_coreAssembly);
+      assemblies.Add (_mscorlibAssembly);
+      assemblies.Add (typeof (CommonServiceLocator.IServiceLocator).Assembly);
+      assemblies.Add (typeof (log4net.ILog).Assembly);
+      assemblies.Add (typeof (System.Collections.Specialized.StringCollection).Assembly);
+      assemblies.Add (typeof (System.Collections.CollectionBase).Assembly);
+      assemblies.Add (typeof (System.IServiceProvider).Assembly);
+      assemblies.Add (typeof (System.ComponentModel.Component).Assembly);
+      assemblies.Add (typeof (System.ComponentModel.INotifyPropertyChanged).Assembly);
+      assemblies.Add (typeof (System.ComponentModel.TypeConverter).Assembly);
+      assemblies.Add (typeof (System.Configuration.Provider.ProviderBase).Assembly);
+      assemblies.Add (typeof (System.Diagnostics.TraceListener).Assembly);
+      assemblies.Add (typeof (System.Xml.XmlNode).Assembly);
+      var expectedTypes = new HashSet<Type> (assemblies.SelectMany (a => a.GetTypes()));
 
-      var allTypes = new List<Type> ();
-      allTypes.AddRange (_testAssembly.GetTypes ());
-      allTypes.AddRange (_mscorlibAssembly.GetTypes ());
+      _finderMock.Setup (mock => mock.FindAssemblies ()).Returns (assemblies).Verifiable();
 
       ICollection types = service.GetTypes (typeof (object), false);
-      Assert.That (types, Is.EquivalentTo (allTypes));
+
+      var missingTypes = expectedTypes.Except (types.Cast<Type>()).ToList();
+      var extraTypes = types.Cast<Type>().Except (expectedTypes).ToList();
+      Assert.That (Array.Empty<Type>(), Is.EquivalentTo (missingTypes));
+      Assert.That (extraTypes, Is.EquivalentTo (Array.Empty<Type>()));
+
       _finderMock.Verify();
     }
 
@@ -92,14 +109,31 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery
     {
       var service = new AssemblyFinderTypeDiscoveryService (_finderMock.Object);
 
-      _finderMock.Setup (mock => mock.FindAssemblies ()).Returns (new[] { _testAssembly, _mscorlibAssembly }).Verifiable();
+      var assemblies = new HashSet<Assembly>();
+      assemblies.Add (_coreAssembly);
+      assemblies.Add (_mscorlibAssembly);
+      assemblies.Add (typeof (CommonServiceLocator.IServiceLocator).Assembly);
+      assemblies.Add (typeof (log4net.ILog).Assembly);
+      assemblies.Add (typeof (System.Collections.Specialized.StringCollection).Assembly);
+      assemblies.Add (typeof (System.Collections.CollectionBase).Assembly);
+      assemblies.Add (typeof (System.IServiceProvider).Assembly);
+      assemblies.Add (typeof (System.ComponentModel.Component).Assembly);
+      assemblies.Add (typeof (System.ComponentModel.INotifyPropertyChanged).Assembly);
+      assemblies.Add (typeof (System.ComponentModel.TypeConverter).Assembly);
+      assemblies.Add (typeof (System.Configuration.Provider.ProviderBase).Assembly);
+      assemblies.Add (typeof (System.Diagnostics.TraceListener).Assembly);
+      assemblies.Add (typeof (System.Xml.XmlNode).Assembly);
+      var expectedTypes = new HashSet<Type> (assemblies.SelectMany (a => a.GetTypes()));
 
-      var allTypes = new List<Type> ();
-      allTypes.AddRange (_testAssembly.GetTypes ());
-      allTypes.AddRange (_mscorlibAssembly.GetTypes ());
+      _finderMock.Setup (mock => mock.FindAssemblies ()).Returns (assemblies).Verifiable();
 
       ICollection types = service.GetTypes (null, false);
-      Assert.That (types, Is.EquivalentTo (allTypes));
+
+      var missingTypes = expectedTypes.Except (types.Cast<Type>()).ToList();
+      var extraTypes = types.Cast<Type>().Except (expectedTypes).ToList();
+      Assert.That (Array.Empty<Type>(), Is.EquivalentTo (missingTypes));
+      Assert.That (extraTypes, Is.EquivalentTo (Array.Empty<Type>()));
+
       _finderMock.Verify();
     }
 
@@ -166,6 +200,58 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery
     }
 
     [Test]
+    public void GetTypes_WithOpenGenericType ()
+    {
+      var service = new AssemblyFinderTypeDiscoveryService (_finderMock.Object);
+
+      _finderMock.Setup (mock => mock.FindAssemblies ()).Returns (new[] { _testAssembly }).Verifiable();
+
+      ICollection types = service.GetTypes (typeof (OpenGenericBase<>), true);
+      Assert.That (types, Is.EquivalentTo (new[] { typeof (OpenGenericBase<>), typeof (OpenGenericDerived<>), typeof (ClosedGenericDerived) }));
+      _finderMock.Verify();
+    }
+
+    [Test]
+    public void GetTypes_WithClosedGenericType ()
+    {
+      var service = new AssemblyFinderTypeDiscoveryService (_finderMock.Object);
+
+      _finderMock.Setup (mock => mock.FindAssemblies ()).Returns (new[] { _testAssembly }).Verifiable ();
+
+      ICollection types = service.GetTypes (typeof (OpenGenericBase<int>), true);
+      Assert.That (types, Is.Empty);
+      _finderMock.Verify ();
+    }
+
+    [Test]
+    public void GetTypes_WithOpenGenericTypeFromGac ()
+    {
+      var service = new AssemblyFinderTypeDiscoveryService (_finderMock.Object);
+
+      _finderMock.Setup (mock => mock.FindAssemblies ()).Returns (new[] { _mscorlibAssembly }).Verifiable ();
+
+      ICollection types = service.GetTypes (typeof (IReadOnlyDictionary<,>), excludeGlobalTypes: false);
+      Assert.That (
+          types,
+          Is.SupersetOf (
+              new[] { typeof (IReadOnlyDictionary<,>), typeof (Dictionary<,>) }));
+      Assert.That (types.Cast<Type>().Where (t => t.IsConstructedGenericType), Is.Empty);
+      _finderMock.Verify ();
+    }
+
+    [Test]
+    public void GetTypes_WithClosedGenericTypeFromGac ()
+    {
+      var service = new AssemblyFinderTypeDiscoveryService (_finderMock.Object);
+
+      _finderMock.Setup (mock => mock.FindAssemblies ()).Returns (new[] { _mscorlibAssembly }).Verifiable ();
+
+      ICollection types = service.GetTypes (typeof (IReadOnlyDictionary<int, string>), excludeGlobalTypes: false);
+      Assert.That (types, Is.Empty);
+      _finderMock.Verify ();
+    }
+
+    [Test]
     public void GetTypes_WithSealedType ()
     {
       var finderMock = new Mock<IAssemblyFinder> (MockBehavior.Strict);
@@ -194,5 +280,8 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery
     public class Derived2 : Base { }
     public sealed class Sealed { }
     public struct ValueType { }
+    public class OpenGenericBase<T> { }
+    public class OpenGenericDerived<T> : OpenGenericBase<T> { }
+    public class ClosedGenericDerived : OpenGenericDerived<int> { }
   }
 }

@@ -29,7 +29,29 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery
     {
         typeof (Cat), typeof (Pet), typeof (Dog), typeof (MaineCoon), typeof (Ragdoll), typeof (Siberian),
         typeof (ILongHairedBreed), typeof (IHamster),
-        typeof (ValueTypeWithInterface), typeof (IInterfaceForValueType)
+        typeof (ValueTypeWithInterface), typeof (IInterfaceForValueType),
+    };
+
+    private readonly Type[] _genericsTestDomain =
+    {
+        typeof (NonGenericBase),
+        typeof (OpenGenericBase<>),
+        typeof (OpenGenericDerived<>),
+        typeof (ClosedGenericDerived),
+        typeof (ClosedGenericDerived2),
+        typeof (ClosedGenericDerivedDerived),
+        typeof (IOpenGenericInterface<>),
+        typeof (IOpenGenericInterface2<>),
+        typeof (IOpenGenericInterfaceExtended<>),
+        typeof (OpenGenericWithInterface<>),
+        typeof (OpenGenericDerivedWithInterface<>),
+        typeof (ClosedGenericDerivedWithInterface),
+        typeof (OpenGenericWithClosedInterface<>),
+        typeof (ClosedGenericDerivedWithClosedInterface<>),
+        typeof (OpenGenericWithInterface1AndInterface2<,>),
+        typeof (ClosedGenericDerivedWithInterface1AndInterface2),
+        typeof (OpenGenericDerivedWithInterfaceExtended<>),
+        typeof (NonGenericWithMultipleClosedGenericInterfaces)
     };
 
     [Test]
@@ -134,6 +156,80 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery
       var baseTypeCache = BaseTypeCache.Create (_testDomain);
 
       Assert.That (baseTypeCache.GetTypes (typeof (Decimal)), Is.Empty);
+    }
+
+    [Test]
+    public void GetTypes_ForOpenGenericBaseClass ()
+    {
+      var expected = new[]
+                     {
+                         typeof (OpenGenericBase<>), 
+                         typeof (OpenGenericDerived<>),
+                         typeof (ClosedGenericDerived),
+                         typeof (ClosedGenericDerived2),
+                         typeof (ClosedGenericDerivedDerived),
+                     };
+
+      var baseTypeCache = BaseTypeCache.Create (_genericsTestDomain);
+
+      Assert.That (baseTypeCache.GetTypes (typeof (OpenGenericBase<>)), Is.EquivalentTo (expected));
+    }
+    
+    [Test]
+    public void GetTypes_ForOpenGenericDerivedClass ()
+    {
+      var expected = new[]
+                     {
+                         typeof (OpenGenericDerived<>),
+                         typeof (ClosedGenericDerived),
+                         typeof (ClosedGenericDerived2),
+                         typeof (ClosedGenericDerivedDerived),
+                     };
+
+      var baseTypeCache = BaseTypeCache.Create (_genericsTestDomain);
+
+      Assert.That (baseTypeCache.GetTypes (typeof (OpenGenericDerived<>)), Is.EquivalentTo (expected));
+    }
+
+    [Test]
+    public void GetTypes_ForNonGenericBaseClass ()
+    {
+      var expected = new[]
+                     {
+                         typeof (NonGenericBase),
+                         typeof (OpenGenericBase<>), 
+                         typeof (OpenGenericDerived<>),
+                         typeof (ClosedGenericDerived),
+                         typeof (ClosedGenericDerived2),
+                         typeof (ClosedGenericDerivedDerived),
+                     };
+
+      var baseTypeCache = BaseTypeCache.Create (_genericsTestDomain);
+
+      Assert.That (baseTypeCache.GetTypes (typeof (NonGenericBase)), Is.EquivalentTo (expected));
+    }
+
+    [Test]
+    public void GetTypes_ForOpenGenericBaseInterface ()
+    {
+      var expected = new[]
+                     {
+                         typeof (IOpenGenericInterface<>),
+                         typeof (IOpenGenericInterfaceExtended<>),
+                         typeof (OpenGenericWithInterface<>),
+                         typeof (OpenGenericDerivedWithInterface<>),
+                         typeof (ClosedGenericDerivedWithInterface),
+                         typeof (OpenGenericWithClosedInterface<>),
+                         typeof (ClosedGenericDerivedWithClosedInterface<>),
+                         typeof (OpenGenericWithInterface1AndInterface2<,>),
+                         typeof (ClosedGenericDerivedWithInterface1AndInterface2),
+                         typeof (OpenGenericDerivedWithInterfaceExtended<>),
+                         typeof (NonGenericWithMultipleClosedGenericInterfaces),
+                     };
+
+      var baseTypeCache = BaseTypeCache.Create (_genericsTestDomain);
+
+      Assert.That (baseTypeCache.GetTypes (typeof (IOpenGenericInterface<>)), Is.EquivalentTo (expected));
     }
   }
 }

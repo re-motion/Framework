@@ -156,7 +156,7 @@ namespace Remotion.Reflection.TypeDiscovery
 
     private IEnumerable<Type> GetFilteredTypes (IEnumerable<Type> types, Type baseType)
     {
-      return types.Where (baseType.IsAssignableFrom);
+      return types.Where (type => baseType.IsAssignableFrom (type) || type.CanAscribeTo (baseType));
     }
   }
 }
