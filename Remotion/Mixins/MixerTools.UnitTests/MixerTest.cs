@@ -19,8 +19,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using NUnit.Framework;
 using Remotion.Mixins.Context;
-using Remotion.Mixins.MixerTools;
-using Remotion.Mixins.UnitTests.Core.TestDomain;
+using Remotion.Mixins.MixerTools.UnitTests.TestDomain;
 using Remotion.Mixins.Validation;
 using Remotion.Reflection.TypeDiscovery;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
@@ -28,9 +27,8 @@ using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
 using Remotion.TypePipe;
 using Remotion.TypePipe.Implementation;
 using Rhino.Mocks;
-using ErrorEventArgs = Remotion.Mixins.MixerTools.ErrorEventArgs;
 
-namespace Remotion.Mixins.UnitTests.Core.MixerTools
+namespace Remotion.Mixins.MixerTools.UnitTests
 {
   [Serializable]
   [TestFixture]

@@ -17,13 +17,12 @@
 using System;
 using System.IO;
 using NUnit.Framework;
-using Remotion.Mixins.MixerTools;
-using Remotion.Mixins.UnitTests.Core.TestDomain;
+using Remotion.Mixins.MixerTools.UnitTests.TestDomain;
 using Remotion.Reflection.TypeDiscovery;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 
-namespace Remotion.Mixins.UnitTests.Core.MixerTools
+namespace Remotion.Mixins.MixerTools.UnitTests
 {
   [TestFixture]
   public class MixerPipelineFactoryTest
@@ -114,8 +113,11 @@ namespace Remotion.Mixins.UnitTests.Core.MixerTools
 
     private void CheckRemotionPipelineFactoryWasUsedForCreation (IPipeline pipeline)
     {
-      var assembledType = pipeline.ReflectionService.GetAssembledType (typeof (TargetClassForGlobalMix));
+      var targetType = typeof (TargetClassForGlobalMix);
+      var assembledType = pipeline.ReflectionService.GetAssembledType (targetType);
       var assembly = assembledType.Assembly;
+
+      Assert.That (assembledType, Is.Not.EqualTo (targetType));
 
       // RemotionPipelineFactory will add the [NonApplicationAssemblyAttribute] to the generated assembly.
       Assert.That (assembly.IsDefined (typeof (NonApplicationAssemblyAttribute), inherit: false), Is.True);

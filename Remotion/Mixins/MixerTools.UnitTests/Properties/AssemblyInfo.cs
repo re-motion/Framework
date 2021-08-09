@@ -15,11 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Mixins.UnitTests.Core.TestDomain;
+using System.Reflection;
 
-namespace Remotion.Mixins.UnitTests.Core.MixerTools.TestDomain
-{
-  public interface IDerivedIBaseType2 : IBaseType2
-  {
-  }
-}
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyCulture ("")]
+

@@ -15,14 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Mixins.UnitTests.Core.TestDomain;
 
-namespace Remotion.Mixins.UnitTests.Core.MixerTools.TestDomain
+namespace Remotion.Mixins.MixerTools.UnitTests.TestDomain
 {
-  // ReSharper disable UnusedTypeParameter
-  public class GenericDerivedNullTarget<T> : NullTarget
+  public class GenericTargetClass<T>
   {
+    public virtual T VirtualMethod ()
+    {
+      return default (T);
+    }
   }
-
-  // ReSharper restore UnusedTypeParameter
 }
