@@ -64,10 +64,7 @@ namespace Remotion.Web.UI.Controls
     protected override void OnInit (EventArgs e)
     {
       base.OnInit (e);
-      if (!IsDesignMode)
-      {
-        RegisterHtmlHeadContents (HtmlHeadAppender.Current);
-      }
+      RegisterHtmlHeadContents (HtmlHeadAppender.Current);
     }
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
@@ -109,7 +106,7 @@ namespace Remotion.Web.UI.Controls
 
     public bool HasClientScript
     {
-      get { return !IsDesignMode && EnableClientScript; }
+      get { return EnableClientScript; }
     }
 
     /// <summary>

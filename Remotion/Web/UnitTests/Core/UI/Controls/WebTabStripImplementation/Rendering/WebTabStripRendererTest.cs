@@ -194,40 +194,6 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
     }
 
     [Test]
-    public void RenderEmptyListInDesignMode ()
-    {
-      _webTabStrip.Setup (stub => stub.IsDesignMode).Returns (true);
-
-      var renderingContext = new WebTabStripRenderingContext (
-          _httpContextStub.Object,
-          _htmlHelper.Writer,
-          _webTabStrip.Object,
-          new WebTabRendererAdapter[0]);
-
-      AssertControl (false, true, true, 0, renderingContext);
-    }
-
-    [Test]
-    public void RenderPopulatedListInDesignMode ()
-    {
-      _webTabStrip.Setup (stub => stub.IsDesignMode).Returns (true);
-      PopulateTabStrip();
-      var renderingContext = new WebTabStripRenderingContext (
-          _httpContextStub.Object,
-          _htmlHelper.Writer,
-          _webTabStrip.Object,
-          new[]
-          {
-              new WebTabRendererAdapter (CreateWebTabRenderer(), _tab0.Object, false, true, _style), 
-              new WebTabRendererAdapter (CreateWebTabRenderer(), _tab1.Object, false, true, _style),
-              new WebTabRendererAdapter (CreateWebTabRenderer(), _tab2.Object, false, true, _style), 
-              new WebTabRendererAdapter (CreateWebTabRenderer(), _tab3.Object, true, true, _style)
-          });
-
-      AssertControl (false, true, true, 4, renderingContext);
-    }
-
-    [Test]
     public void TestDiagnosticMetadataRendering ()
     {
       PopulateTabStrip();

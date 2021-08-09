@@ -54,8 +54,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     protected override void OnInit (EventArgs e)
     {
       base.OnInit (e);
-      if (!IsDesignMode)
-        Page.RegisterRequiresPostBack (this);
+      Page.RegisterRequiresPostBack (this);
     }
 
     /// <summary> Occurs when the <see cref="Value"/> property changes between postbacks. </summary>
@@ -315,11 +314,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     bool IBocBooleanValueBase.IsAutoPostBackEnabled
     {
       get { return IsAutoPostBackEnabled; }
-    }
-
-    bool IBocRenderableControl.IsDesignMode
-    {
-      get { return IsDesignMode; }
     }
 
     IEnumerable<string> IControlWithLabel.GetLabelIDs ()

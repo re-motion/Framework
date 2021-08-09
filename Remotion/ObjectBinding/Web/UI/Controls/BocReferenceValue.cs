@@ -30,7 +30,6 @@ using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Validation;
-using Remotion.ObjectBinding.Web.UI.Design;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Services;
@@ -47,7 +46,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   [ValidationProperty ("ValidationValue")]
   [DefaultEvent ("SelectionChanged")]
   [ToolboxItemFilter ("System.Web.UI")]
-  [Designer (typeof (BocReferenceValueDesigner))]
   public class BocReferenceValue
       :
           BocReferenceValueBase<IBocReferenceValueWebService>,
@@ -55,9 +53,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           IFocusableControl
   {
     // constants
-
-    /// <summary> The text displayed when control is displayed in desinger, is read-only, and has no contents. </summary>
-    private const string c_designModeEmptyLabelContents = "##";
 
     private const string c_dropDownListIDPostfix = "_Value";
 
@@ -233,9 +228,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
       ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
-
-      if (IsDesignMode)
-        return;
 
       base.LoadResources (resourceManager, globalizationService);
 
@@ -535,12 +527,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         text = _displayName;
       else
         text = String.Empty;
-      if (string.IsNullOrEmpty (text) && IsDesignMode)
-      {
-        text = c_designModeEmptyLabelContents;
-        //  Too long, can't resize in designer to less than the content's width
-        //  _label.Text = "[ " + this.GetType().Name + " \"" + this.ID + "\" ]";
-      }
       return text;
     }
 
@@ -723,12 +709,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       string nullDisplayName = _nullItemText;
       if (string.IsNullOrEmpty (nullDisplayName))
-      {
-        if (IsDesignMode)
-          nullDisplayName = "undefined";
-        else
-          nullDisplayName = GetResourceManager().GetString (ResourceIdentifier.NullItemText);
-      }
+        nullDisplayName = GetResourceManager().GetString (ResourceIdentifier.NullItemText);
       return nullDisplayName;
     }
 

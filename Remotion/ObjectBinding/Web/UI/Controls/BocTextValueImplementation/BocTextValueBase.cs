@@ -159,8 +159,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
     protected override void OnInit (EventArgs e)
     {
       base.OnInit (e);
-      if (!IsDesignMode)
-        Page.RegisterRequiresPostBack (this);
+      Page.RegisterRequiresPostBack (this);
     }
 
     public override void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
@@ -260,11 +259,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
     {
       add { Events.AddHandler (s_textChangedEvent, value); }
       remove { Events.RemoveHandler (s_textChangedEvent, value); }
-    }
-
-    bool IBocRenderableControl.IsDesignMode
-    {
-      get { return IsDesignMode; }
     }
 
     IEnumerable<string> IControlWithLabel.GetLabelIDs ()

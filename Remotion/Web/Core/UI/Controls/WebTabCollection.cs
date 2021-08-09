@@ -64,33 +64,9 @@ namespace Remotion.Web.UI.Controls
     protected override void ValidateNewValue (object value)
     {
       WebTab tab = ArgumentUtility.CheckNotNullAndType<WebTab> ("value", value);
-      EnsureDesignModeTabInitialized (tab);
       if (string.IsNullOrEmpty (tab.ItemID))
         throw new ArgumentException ("The tab does not have an 'ItemID'. It can therfor not be inserted into the collection.", "value");
       base.ValidateNewValue (value);
-    }
-
-    private void EnsureDesignModeTabInitialized (WebTab tab)
-    {
-      ArgumentUtility.CheckNotNull ("tab", tab);
-      if (! tab.HasItemID()
-          && (_tabStrip != null && ControlHelper.IsDesignMode (_tabStrip)
-              || OwnerControl != null && ControlHelper.IsDesignMode (OwnerControl)))
-      {
-        int index = InnerList.Count;
-        do
-        {
-          index++;
-          string itemID = "Tab" + index;
-          if (Find (itemID) == null)
-          {
-            tab.ItemID = itemID;
-            if (string.IsNullOrEmpty (tab.Text))
-              tab.Text = "Tab " + index;
-            break;
-          }
-        } while (true);
-      }
     }
 
     protected override void OnInsertComplete (int index, object value)

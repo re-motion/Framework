@@ -104,12 +104,6 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
 
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Div); // Begin Div
 
-      if (renderingContext.Control.IsDesignMode)
-      {
-        renderingContext.Writer.AddStyleAttribute ("list-style", "none");
-        renderingContext.Writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
-        renderingContext.Writer.AddStyleAttribute ("display", "inline");
-      }
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.None);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Ul); // Begin List
     }

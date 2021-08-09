@@ -16,16 +16,12 @@
 // 
 using System;
 using System.Collections;
-using System.ComponentModel;
-using System.Drawing.Design;
 using Remotion.Collections;
 using Remotion.Utilities;
-using Remotion.Web.UI.Design;
 
 namespace Remotion.Web.UI.Controls
 {
   /// <summary> A collection of <see cref="WebMenuItem"/> objects. </summary>
-  [Editor (typeof (WebMenuItemCollectionEditor), typeof (UITypeEditor))]
   public class WebMenuItemCollection : ControlItemCollection
   {
     /// <summary> Sorts the <paramref name="menuItems"/> by their categories." </summary>

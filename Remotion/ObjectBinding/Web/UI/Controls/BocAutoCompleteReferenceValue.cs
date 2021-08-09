@@ -29,7 +29,6 @@ using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Validation;
-using Remotion.ObjectBinding.Web.UI.Design;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Services;
@@ -45,7 +44,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   [ValidationProperty ("ValidationValue")]
   [DefaultEvent ("SelectionChanged")]
   [ToolboxItemFilter ("System.Web.UI")]
-  [Designer (typeof (BocDesigner))]
   public class BocAutoCompleteReferenceValue
       :
           BocReferenceValueBase<IBocAutoCompleteReferenceValueWebService>,
@@ -73,9 +71,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     #endregion
 
     // constants
-
-    /// <summary> The text displayed when control is displayed in desinger, is read-only, and has no contents. </summary>
-    private const string c_designModeEmptyLabelContents = "##";
 
     private const string c_textBoxIDPostfix = "_TextValue";
     private const string c_hiddenFieldIDPostfix = "_KeyValue";
@@ -247,9 +242,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private IBocAutoCompleteReferenceValueWebService GetSearchAvailableObjectService ()
     {
-      if (IsDesignMode)
-        return null;
-
       if (string.IsNullOrEmpty (ControlServicePath))
         throw new InvalidOperationException (string.Format ("BocAutoCompleteReferenceValue '{0}' does not have a ControlServicePath set.", ID));
 
@@ -433,13 +425,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override string GetLabelText ()
     {
-      if (IsDesignMode)
-      {
-        return c_designModeEmptyLabelContents;
-        //  Too long, can't resize in designer to less than the content's width
-        //  _label.Text = "[ " + this.GetType().Name + " \"" + this.ID + "\" ]";
-      }
-
       EnsureDisplayNameRefreshed();
       return InternalDisplayName;
     }

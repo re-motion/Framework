@@ -35,8 +35,8 @@ namespace Remotion.Configuration.TypeResolution
 
     /// <summary>
     /// Gets the current <see cref="TypeResolutionConfiguration"/> instance. This is used by 
-    /// <see cref="ContextAwareTypeUtility.GetTypeDiscoveryService"/> to retrieve a <see cref="ITypeDiscoveryService"/> instance if
-    /// <see cref="DesignerUtility.IsDesignMode"/> is not set to <see langword="true" />.
+    /// <see cref="ContextAwareTypeUtility.GetTypeDiscoveryService"/> to retrieve a <see cref="ITypeDiscoveryService"/> instance
+    /// if no <see cref="IDesignerHost"/> is available.
     /// </summary>
     /// <value>The current <see cref="TypeResolutionConfiguration"/>.</value>
     public static TypeResolutionConfiguration Current

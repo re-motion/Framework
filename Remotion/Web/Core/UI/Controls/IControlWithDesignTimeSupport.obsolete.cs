@@ -15,19 +15,21 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.ComponentModel;
-using System.Windows.Forms.Design;
-using Remotion.ObjectBinding.Design;
 
-namespace Remotion.ObjectBinding.UnitTests.Design
+namespace Remotion.Web.UI.Controls
 {
-  public abstract class MockDropDownEditorBase : DropDownEditorBase
-  {
-    public abstract EditorControlBase NewCreateEditorControl (ITypeDescriptorContext context, IWindowsFormsEditorService editorService);
 
-    protected override EditorControlBase CreateEditorControl (ITypeDescriptorContext context, IServiceProvider provider, IWindowsFormsEditorService editorService)
-    {
-      return NewCreateEditorControl (context, editorService);
-    }
-  }
+/// <summary>
+///   This interface contains all public members of System.Web.UI.Control. It is used to derive interfaces that will be
+///   implemented by deriving from System.Web.UI.Control.
+/// </summary>
+/// <remarks>
+///   The reason for providing this interface is that derived interfaces do not need to be casted to System.Web.UI.Control.
+/// </remarks>
+[Obsolete ("Removed design-time support. (Version: 3.0.0)", true)]
+public interface IControlWithDesignTimeSupport
+{
+  void PreRenderForDesignMode();
+}
+
 }

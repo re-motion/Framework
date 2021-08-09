@@ -22,8 +22,5 @@
     <ProjectReference Include="..\..\Mixins\Core\Mixins.Core.csproj" />
     <ProjectReference Include="..\Core\ObjectBinding.Core.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Windows.Forms" />
-  </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

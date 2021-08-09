@@ -259,22 +259,19 @@ namespace Remotion.Web.UI.SmartPageImplementation
           _page.Header.Controls.AddAt (0, new HtmlHeadContents());
       }
 
-      if (!ControlHelper.IsDesignMode (_page))
-      {
-        HtmlHeadAppender.Current.RegisterUtilitiesJavaScriptInclude ();
+      HtmlHeadAppender.Current.RegisterUtilitiesJavaScriptInclude();
 
-        var resourceUrlFactory = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory> ();
-        
-        var smartNavigationUrl = resourceUrlFactory.CreateResourceUrl (typeof (SmartPageInfo), ResourceType.Html, c_smartNavigationScriptFileUrl);
-        HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_smartNavigationScriptKey, smartNavigationUrl);
+      var resourceUrlFactory = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>();
 
-        var scriptUrl = resourceUrlFactory.CreateResourceUrl (typeof (SmartPageInfo), ResourceType.Html, c_scriptFileUrl);
-        HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_scriptFileKey, scriptUrl);
+      var smartNavigationUrl = resourceUrlFactory.CreateResourceUrl (typeof (SmartPageInfo), ResourceType.Html, c_smartNavigationScriptFileUrl);
+      HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_smartNavigationScriptKey, smartNavigationUrl);
 
-        var infrastructureResourceUrlFactory = SafeServiceLocator.Current.GetInstance<IInfrastructureResourceUrlFactory>();
-        var styleUrl = infrastructureResourceUrlFactory.CreateThemedResourceUrl (ResourceType.Html, c_styleFileUrl);
-        HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, styleUrl, HtmlHeadAppender.Priority.Library);
-      }
+      var scriptUrl = resourceUrlFactory.CreateResourceUrl (typeof (SmartPageInfo), ResourceType.Html, c_scriptFileUrl);
+      HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_scriptFileKey, scriptUrl);
+
+      var infrastructureResourceUrlFactory = SafeServiceLocator.Current.GetInstance<IInfrastructureResourceUrlFactory>();
+      var styleUrl = infrastructureResourceUrlFactory.CreateThemedResourceUrl (ResourceType.Html, c_styleFileUrl);
+      HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, styleUrl, HtmlHeadAppender.Priority.Library);
 
       var scriptManager = ScriptManager.GetCurrent (_page.WrappedInstance);
       if (scriptManager != null)

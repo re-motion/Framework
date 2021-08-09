@@ -59,36 +59,33 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
       ArgumentUtility.CheckNotNull ("bocList", bocList);
       ArgumentUtility.CheckNotNull ("newObjectFactory", newObjectFactory);
 
-      if (!ControlHelper.IsDesignMode (bocList))
-      {
-        bocList.FixedColumns.Insert (
-            0,
-            new BocRowEditModeColumnDefinition
-            {
-                Width = Unit.Pixel (40),
-                EditIcon = GetIcon ("EditItem.gif", GlobalResourcesHelper.GetString (_globalizationService, GlobalResources.Edit)),
-                SaveIcon = GetIcon("ApplyButton.gif", GlobalResourcesHelper.GetString (_globalizationService, GlobalResources.Apply)),
-                CancelIcon = GetIcon("CancelButton.gif", GlobalResourcesHelper.GetString (_globalizationService, GlobalResources.Cancel))
-            });
+      bocList.FixedColumns.Insert (
+          0,
+          new BocRowEditModeColumnDefinition
+          {
+              Width = Unit.Pixel (40),
+              EditIcon = GetIcon ("EditItem.gif", GlobalResourcesHelper.GetString (_globalizationService, GlobalResources.Edit)),
+              SaveIcon = GetIcon("ApplyButton.gif", GlobalResourcesHelper.GetString (_globalizationService, GlobalResources.Apply)),
+              CancelIcon = GetIcon("CancelButton.gif", GlobalResourcesHelper.GetString (_globalizationService, GlobalResources.Cancel))
+          });
 
-        bocList.EditableRowChangesCanceled += HandleEditableRowChangesCanceled;
+      bocList.EditableRowChangesCanceled += HandleEditableRowChangesCanceled;
 
-        bocList.ListMenuItems.Add (
-            new BocMenuItem
-            {
-                ItemID = "New",
-                Text = GlobalResourcesHelper.GetString (_globalizationService, GlobalResources.New),
-                Command = new InlineEditingNewItemMenuItemCommand<TBusinessObject> (newObjectFactory)
-            });
-        bocList.ListMenuItems.Add (
-            new BocMenuItem
-            {
-                ItemID = "Delete",
-                Text = GlobalResourcesHelper.GetString (_globalizationService, GlobalResources.Delete),
-                RequiredSelection = RequiredSelection.OneOrMore,
-                Command = new InlineEditingDeleteItemMenuItemCommand<TBusinessObject>()
-            });
-      }
+      bocList.ListMenuItems.Add (
+          new BocMenuItem
+          {
+              ItemID = "New",
+              Text = GlobalResourcesHelper.GetString (_globalizationService, GlobalResources.New),
+              Command = new InlineEditingNewItemMenuItemCommand<TBusinessObject> (newObjectFactory)
+          });
+      bocList.ListMenuItems.Add (
+          new BocMenuItem
+          {
+              ItemID = "Delete",
+              Text = GlobalResourcesHelper.GetString (_globalizationService, GlobalResources.Delete),
+              RequiredSelection = RequiredSelection.OneOrMore,
+              Command = new InlineEditingDeleteItemMenuItemCommand<TBusinessObject>()
+          });
     }
 
     private void HandleEditableRowChangesCanceled (object sender, BocListItemEventArgs e)

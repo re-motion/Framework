@@ -359,13 +359,11 @@ namespace Remotion.Web.UI.Controls
     protected override void OnInit (EventArgs e)
     {
       base.OnInit (e);
-      if (!IsDesignMode)
-        Page.RegisterRequiresControlState (this);
+      Page.RegisterRequiresControlState (this);
       if (Page != null && !Page.IsPostBack)
         _isLoadControlStateCompleted = true;
 
-      if (!IsDesignMode)
-        RegisterHtmlHeadContents (HtmlHeadAppender.Current, Context);
+      RegisterHtmlHeadContents (HtmlHeadAppender.Current, Context);
     }
 
 
@@ -466,9 +464,6 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
       ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
-
-      if (ControlHelper.IsDesignMode (this))
-        return;
 
       string key = ResourceManagerUtility.GetGlobalResourceKey (AccessKey);
       if (!string.IsNullOrEmpty (key))
@@ -601,8 +596,6 @@ namespace Remotion.Web.UI.Controls
         RenderNodes (writer, _nodes, true, nodeIDAlgorithm);
       }
       writer.RenderEndTag();
-      if (IsDesignMode && _nodes.Count == 0)
-        RenderDesignModeContents (writer);
       foreach (DropDownMenu menu in _menuPlaceHolder.Controls)
         menu.RenderAsContextMenu (writer);
     }
@@ -1181,13 +1174,6 @@ namespace Remotion.Web.UI.Controls
     {
       get { return _menuItemProvider; }
       set { _menuItemProvider = value; }
-    }
-
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
-    public bool IsDesignMode
-    {
-      get { return ControlHelper.IsDesignMode (this); }
     }
 
     IPage IControl.Page

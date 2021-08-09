@@ -30,8 +30,5 @@
     <ProjectReference Include="..\..\Web\Core\Web.Core.csproj" />
     <ProjectReference Include="..\Core\ObjectBinding.Core.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Design" />
-  </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

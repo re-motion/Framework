@@ -28,7 +28,6 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation
   public interface IWebTabStrip : IStyledControl, IControlWithDiagnosticMetadata
   {
     IList<IWebTab> GetVisibleTabs ();
-    bool IsDesignMode { get; }
     WebTabCollection Tabs { get; }
     WebTabStyle TabStyle { get; }
     WebTabStyle SelectedTabStyle { get; }

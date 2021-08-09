@@ -15,16 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.ComponentModel;
-using System.Drawing.Design;
 using Remotion.Utilities;
-using Remotion.Web.UI.Design;
 using Remotion.Web.Utilities;
 
 namespace Remotion.Web.UI.Controls
 {
   /// <summary> A collection of <see cref="WebTreeNode"/> objects. </summary>
-  [Editor (typeof (WebTreeNodeCollectionEditor), typeof (UITypeEditor))]
   public class WebTreeNodeCollection : ControlItemCollection
   {
     private WebTreeView _treeView;
@@ -53,33 +49,10 @@ namespace Remotion.Web.UI.Controls
     {
       WebTreeNode node = ArgumentUtility.CheckNotNullAndType<WebTreeNode> ("value", value);
 
-      EnsureDesignModeTreeNodeInitialized (node);
       if (string.IsNullOrEmpty (node.ItemID))
         throw new ArgumentException ("The node does not contain an 'ItemID' and can therfor not be inserted into the collection.", "value");
 
       base.ValidateNewValue (value);
-    }
-
-    private void EnsureDesignModeTreeNodeInitialized (WebTreeNode node)
-    {
-      ArgumentUtility.CheckNotNull ("node", node);
-      if (string.IsNullOrEmpty (node.ItemID)
-          && _treeView != null && ControlHelper.IsDesignMode (_treeView))
-      {
-        int index = InnerList.Count;
-        do
-        {
-          index++;
-          string itemID = "Node" + index;
-          if (Find (itemID) == null)
-          {
-            node.ItemID = itemID;
-            if (string.IsNullOrEmpty (node.Text))
-              node.Text = "Node " + index;
-            break;
-          }
-        } while (true);
-      }
     }
 
     protected override void OnInsertComplete (int index, object value)

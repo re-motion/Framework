@@ -26,8 +26,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 [ToolboxItem (false)]
 public class BocReferenceValueMock: BocReferenceValue
 {
-  private bool _isDesignMode = true;
-
   public BocReferenceValueMock (IWebServiceFactory webServiceFactory)
       : base (webServiceFactory)
   {
@@ -47,16 +45,6 @@ public class BocReferenceValueMock: BocReferenceValue
   public new bool HasOptionsMenu
   {
     get { return base.HasOptionsMenu; }
-  }
-
-  protected override bool IsDesignMode
-  {
-    get { return _isDesignMode; }
-  }
-
-  public void SetDesignMode (bool value)
-  {
-    _isDesignMode = value;
   }
 }
 

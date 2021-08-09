@@ -18,19 +18,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing.Design;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
-using Remotion.ObjectBinding.Design;
 using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.ObjectBinding.Web.UI.Design;
 using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
-using Remotion.Web.Utilities;
 
 namespace Remotion.ObjectBinding.Sample
 {
@@ -209,7 +205,6 @@ namespace Remotion.ObjectBinding.Sample
 
     [Category ("Data")]
     [Description ("The string representation of the Property.")]
-    [Editor (typeof (PropertyPickerEditor), typeof (UITypeEditor))]
     [DefaultValue ("")]
     [MergableProperty (false)]
     public string PropertyIdentifier
@@ -230,7 +225,6 @@ namespace Remotion.ObjectBinding.Sample
       set { _repeaterInternal.Property = value; }
     }
 
-    [TypeConverter (typeof (BusinessObjectDataSourceControlConverter))]
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Data")]
     [Description ("The ID of the BusinessObjectDataSourceControl control used as data source.")]
@@ -405,11 +399,6 @@ namespace Remotion.ObjectBinding.Sample
       return _repeaterInternal.SupportsProperty (property);
     }
 
-    void IControlWithDesignTimeSupport.PreRenderForDesignMode ()
-    {
-      ((IControlWithDesignTimeSupport) _repeaterInternal).PreRenderForDesignMode();
-    }
-
     #endregion
 
     private ObjectBoundRepeaterInternal _repeaterInternal;
@@ -463,8 +452,6 @@ namespace Remotion.ObjectBinding.Sample
     protected override void OnItemDataBound (RepeaterItemEventArgs e)
     {
       base.OnItemDataBound (e);
-      if (IsDesignMode)
-        return;
 
       IBusinessObject obj = (IBusinessObject) e.Item.DataItem;
 
@@ -567,12 +554,6 @@ namespace Remotion.ObjectBinding.Sample
       return true;
     }
 
-    /// <summary> Evalutes whether this control is in <b>Design Mode</b>. </summary>
-    protected bool IsDesignMode
-    {
-      get { return ControlHelper.IsDesignMode (this); }
-    }
-
     protected override void LoadViewState (object savedState)
     {
       object[] values = (object[]) savedState;
@@ -586,14 +567,6 @@ namespace Remotion.ObjectBinding.Sample
       values[0] = base.SaveViewState();
       values[1] = _isDirty;
       return values;
-    }
-
-    protected override void Render (HtmlTextWriter writer)
-    {
-      if (IsDesignMode)
-        return;
-
-      base.Render (writer);
     }
 
     void ISmartControl.RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)

@@ -75,25 +75,10 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMenuImplementation.Rende
     }
 
     [Test]
-    public void RenderEmptyMenuInDesignMode ()
-    {
-      _control.Setup (stub => stub.IsDesignMode).Returns (true);
-      AssertControl (true, false, false);
-    }
-
-    [Test]
     public void RenderEmptyMenuWithStatusText ()
     {
       _control.Setup (stub => stub.StatusText).Returns ("Status");
       AssertControl (false, true, false);
-    }
-
-    [Test]
-    public void RenderEmptyMenuWithStatusTextInDesignMode ()
-    {
-      _control.Setup (stub => stub.IsDesignMode).Returns (true);
-      _control.Setup (stub => stub.StatusText).Returns ("Status");
-      AssertControl (true, true, false);
     }
 
     [Test]

@@ -37,8 +37,6 @@ namespace Remotion.Web.UI.Controls
       _datePickerButtonStyle = new Style();
     }
 
-    public bool IsDesignMode { get; set; }
-
     public bool EnableClientScript { get; set; }
 
     public string AlternateText { get; set; }
@@ -55,8 +53,7 @@ namespace Remotion.Web.UI.Controls
     protected override void OnInit (EventArgs e)
     {
       base.OnInit (e);
-      if (!IsDesignMode)
-        RegisterHtmlHeadContents (HtmlHeadAppender.Current);
+      RegisterHtmlHeadContents (HtmlHeadAppender.Current);
     }
     
     protected override void Render (HtmlTextWriter writer)

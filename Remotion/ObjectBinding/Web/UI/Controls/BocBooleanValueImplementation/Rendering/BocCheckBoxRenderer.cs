@@ -168,7 +168,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
 
     private bool DetermineClientScriptLevel (BocCheckBoxRenderingContext renderingContext)
     {
-      return !renderingContext.Control.IsDesignMode;
+      return true;
     }
     
     private void PrepareScripts (BocCheckBoxRenderingContext renderingContext, HtmlInputCheckBox checkBoxControl, Label labelControl)

@@ -27,8 +27,5 @@
     <ProjectReference Include="..\Core\Web.Core.csproj" />
     <ProjectReference Include="..\Security\Web.Security.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Design" />
-  </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

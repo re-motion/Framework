@@ -26,7 +26,6 @@ using Remotion.Web.ExecutionEngine;
 using Remotion.Web.Resources;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Globalization;
-using Remotion.Web.Utilities;
 
 namespace OBWTest
 {
@@ -42,25 +41,22 @@ public class TestWxeBasePage:
 
   protected override void OnInit(EventArgs e)
   {
-    if (! ControlHelper.IsDesignMode (this))
+    try
     {
-      try
-      {
-        Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(Request.UserLanguages[0]);
-      }
-      catch (ArgumentException)
-      {}
-      try
-      {
-        Thread.CurrentThread.CurrentUICulture = new CultureInfo(Request.UserLanguages[0]);
-      }
-      catch (ArgumentException)
-      {}
-
-      _nextButton.ID = "NextButton";
-      _nextButton.Text = "Next";
-      WxeControls.AddAt (0, _nextButton);
+      Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(Request.UserLanguages[0]);
     }
+    catch (ArgumentException)
+    {}
+    try
+    {
+      Thread.CurrentThread.CurrentUICulture = new CultureInfo(Request.UserLanguages[0]);
+    }
+    catch (ArgumentException)
+    {}
+
+    _nextButton.ID = "NextButton";
+    _nextButton.Text = "Next";
+    WxeControls.AddAt (0, _nextButton);
 
     ShowAbortConfirmation = ShowAbortConfirmation.Always;
     EnableAbort = false;

@@ -122,9 +122,6 @@ public class ValidationStateViewer : WebControl, IControl
   {
     ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
 
-    if (ControlHelper.IsDesignMode (this))
-      return;
-
     string key = ResourceManagerUtility.GetGlobalResourceKey (NoticeText);
     if (!string.IsNullOrEmpty (key))
       NoticeText = resourceManager.GetString (key);
@@ -132,30 +129,27 @@ public class ValidationStateViewer : WebControl, IControl
 
   protected override void RenderContents (HtmlTextWriter writer)
   {
-    if (!ControlHelper.IsDesignMode (this))
+    switch (_validationErrorStyle)
     {
-      switch (_validationErrorStyle)
+      case ValidationErrorStyle.Notice:
       {
-        case ValidationErrorStyle.Notice:
-        {
-          RenderValidationNotice (writer);
-          break;
-        }
-        case ValidationErrorStyle.DetailedMessages:
-        {
-          RenderValidationMessages (writer);
-          break;
-        }
-        case ValidationErrorStyle.HideErrors:
-        {
-          //  Do nothing
-          break;
-        }
-        default:
-        {
-          //  Do nothing
-          break;
-        }
+        RenderValidationNotice (writer);
+        break;
+      }
+      case ValidationErrorStyle.DetailedMessages:
+      {
+        RenderValidationMessages (writer);
+        break;
+      }
+      case ValidationErrorStyle.HideErrors:
+      {
+        //  Do nothing
+        break;
+      }
+      default:
+      {
+        //  Do nothing
+        break;
       }
     }
   }

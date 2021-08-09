@@ -108,7 +108,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       pageStub.Setup (stub => stub.ClientScript).Returns (clientScriptManagerMock.Object);
 
       _booleanValue.SetupProperty (_ => _.Value);
-      _booleanValue.Setup (mock => mock.IsDesignMode).Returns (false);
       _booleanValue.Setup (mock => mock.ShowDescription).Returns (true);
 
       _booleanValue.Setup (mock => mock.Page).Returns (pageStub.Object);

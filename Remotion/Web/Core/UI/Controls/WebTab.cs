@@ -82,8 +82,6 @@ public class WebTab: IWebTab, IControlStateManager
 
   private void OwnerControl_PreRender(object sender, EventArgs e)
   {
-    if (Remotion.Web.Utilities.ControlHelper.IsDesignMode (_ownerControl))
-      return;
     PreRender();
   }
 
@@ -335,9 +333,6 @@ public class WebTab: IWebTab, IControlStateManager
   {
     try
     {
-      //  VS.NET Designer Bug: VS does is not able to determine whether _tabStrip is null.
-      if (_tabStrip.IsDesignMode)
-        return string.Empty;
       if (_tabStrip == null) 
         throw new InvalidOperationException ("The WebTab is not part of a WebTabStrip.");
       if (_tabStrip.Page == null) 

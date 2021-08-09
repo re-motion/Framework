@@ -39,29 +39,27 @@ namespace Remotion.Reflection
           LazyThreadSafetyMode.ExecutionAndPublication);
 
     /// <summary>
-    /// Gets the current context-specific <see cref="ITypeDiscoveryService"/>. If <see cref="DesignerUtility.IsDesignMode"/> is set to 
-    /// <see langword="true" />, the designer's <see cref="ITypeDiscoveryService"/> is returned. Otherwise, the <see cref="T:Remotion.Configuration.TypeDiscovery.TypeDiscoveryConfiguration"/> 
+    /// Gets the current context-specific <see cref="ITypeDiscoveryService"/>. If an <see cref="T:System.ComponentModel.Design.IDesignerHost"/> is available,
+    /// the designer's <see cref="ITypeDiscoveryService"/> is returned. Otherwise, the <see cref="T:Remotion.Configuration.TypeDiscovery.TypeDiscoveryConfiguration"/> 
     /// is used to create a new  <see cref="ITypeDiscoveryService"/> when the property is first retrieved. That instance is stored for later uses.
     /// </summary>
     /// <returns>The current context-specific <see cref="ITypeDiscoveryService"/>.</returns>
     public static ITypeDiscoveryService GetTypeDiscoveryService ()
     {
-      if (DesignerUtility.IsDesignMode)
-        return (ITypeDiscoveryService) DesignerUtility.DesignModeHelper.DesignerHost!.GetService (typeof (ITypeDiscoveryService))!;
+      // Here you could choose to get the ITypeDiscoveryService from IDesignerHost.GetService (typeof (ITypeDiscoveryService)) instead of the resolved one.
 
       return s_defaultTypeDiscoveryService.Value;
     }
 
     /// <summary>
-    /// Gets the current context-specific <see cref="ITypeResolutionService"/>. If <see cref="DesignerUtility.IsDesignMode"/> is set to 
-    /// <see langword="true" />, the designer's <see cref="ITypeResolutionService"/> is returned. Otherwise, the <see cref="T:Remotion.Configuration.TypeDiscovery.TypeDiscoveryConfiguration"/> 
+    /// Gets the current context-specific <see cref="ITypeResolutionService"/>. If an <see cref="T:System.ComponentModel.Design.IDesignerHost"/> is available,
+    /// the designer's <see cref="ITypeResolutionService"/> is returned. Otherwise, the <see cref="T:Remotion.Configuration.TypeDiscovery.TypeDiscoveryConfiguration"/> 
     /// is used to create a new  <see cref="ITypeResolutionService"/> when the property is first retrieved. That instance is stored for later uses.
     /// </summary>
     /// <returns>The current context-specific <see cref="ITypeResolutionService"/>.</returns>
     public static ITypeResolutionService GetTypeResolutionService ()
     {
-      if (DesignerUtility.IsDesignMode)
-        return (ITypeResolutionService) DesignerUtility.DesignModeHelper.DesignerHost.GetService (typeof (ITypeResolutionService))!;
+      // Here you could choose to get the ITypeResolutionService from IDesignerHost.GetService (typeof (ITypeResolutionService)) instead of the resolved one.
 
       return s_defaultTypeResolutionService.Value;
     }

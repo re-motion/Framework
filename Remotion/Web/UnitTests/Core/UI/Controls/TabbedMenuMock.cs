@@ -23,21 +23,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 [ToolboxItem (false)]
 public class TabbedMenuMock: TabbedMenu
 {
-  private bool _isDesignMode;
-
   public new void EvaluateWaiConformity ()
   {
     base.EvaluateWaiConformity ();
-  }
-
-  public override bool IsDesignMode
-  {
-    get{return _isDesignMode;}
-  }
-
-  public void SetDesignMode (bool value)
-  {
-    _isDesignMode = value;
   }
 }
 }

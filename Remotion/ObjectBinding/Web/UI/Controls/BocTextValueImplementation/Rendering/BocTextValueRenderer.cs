@@ -119,13 +119,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
         text = HttpUtility.HtmlEncode (renderingContext.Control.Text);
       }
 
-      if (string.IsNullOrEmpty (text) && renderingContext.Control.IsDesignMode)
-      {
-        text = c_designModeEmptyLabelContents;
-        //  Too long, can't resize in designer to less than the content's width
-        //  Label.Text = "[ " + this.GetType().Name + " \"" + this.ID + "\" ]";
-      }
-
       return text;
     }
 

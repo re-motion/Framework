@@ -96,8 +96,8 @@ namespace Remotion.Utilities
     /// </param>
     /// <returns>The type with the given name, retrieved either from the designer or via <see cref="Type.GetType(string,bool)"/>.</returns>
     /// <remarks>
-    /// By default, it will search all assemblies for the requested type using <see cref="Type.GetType(string,bool)"/>. In the designer context 
-    /// (<see cref="DesignerUtility.IsDesignMode"/> is set to <see langword="true" />), the designer services (<see cref="IDesignerHost"/>) are used for the lookup.
+    /// By default, it will search all assemblies for the requested type using <see cref="Type.GetType(string,bool)"/>. In the designer context, 
+    /// the designer services (<see cref="IDesignerHost"/>) are used for the lookup.
     /// </remarks>
     [CanBeNull]
     [ContractAnnotation ("throwOnError:true => notnull")]

@@ -422,8 +422,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       if (_textMode == BocTextBoxMode.MultiLine
           && MaxLength != null
-          && CheckClientSideMaxLength != false
-          && ! ControlHelper.IsDesignModeForControl (textBox))
+          && CheckClientSideMaxLength != false)
         textBox.Attributes.Add ("onkeydown", "return TextBoxStyle.OnKeyDown (this, " + MaxLength.Value + ");");
 
       textBox.TextMode = GetSystemWebTextMode();

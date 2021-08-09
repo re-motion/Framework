@@ -20,7 +20,6 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.Web.UI.Design;
 
 namespace Remotion.ObjectBinding.Sample
 {
@@ -59,27 +58,11 @@ namespace Remotion.ObjectBinding.Sample
     } 
 
     /// <summary> Gets or sets the input control to validate. </summary>
-    [TypeConverter (typeof (TestBocListControlToStringConverter))]
     public new string ControlToValidate
     {
       get { return base.ControlToValidate; }
       set { base.ControlToValidate = value; }
     }
 
-  }
-
-  /// <summary>
-  ///   Creates a VS.NET designer pick list for a property that references a 
-  ///   <see cref="TestBocList"/> control.
-  /// </summary>
-  /// <remarks>
-  ///   Use the <see cref="TypeConverter"/> attribute to assign this converter to a property.
-  /// </remarks>
-  public class TestBocListControlToStringConverter: ControlToStringConverter
-  {
-    public TestBocListControlToStringConverter ()
-        : base (typeof (TestBocList))
-    {
-    }
   }
 }

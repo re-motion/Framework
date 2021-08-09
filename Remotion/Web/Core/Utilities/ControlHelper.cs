@@ -176,12 +176,9 @@ namespace Remotion.Web.Utilities
     /// <returns> 
     ///   Returns <see langword="true"/> if the <paramref name="control"/> is in design mode.
     /// </returns>
+    [Obsolete ("Design-mode support has been removed, method always returns false. (Version: 3.0.0)", false)]
     public static bool IsDesignModeForControl (Control control)
     {
-      if (control.Site != null && control.Site.DesignMode)
-        return true;
-      if (control.Page != null && control.Page.Site != null && control.Page.Site.DesignMode)
-        return true;
       return false;
     }
 
@@ -198,14 +195,9 @@ namespace Remotion.Web.Utilities
     /// <returns> 
     ///   Returns <see langword="true"/> if the <paramref name="control"/> is in design mode.
     /// </returns>
+    [Obsolete ("Design-mode support has been removed, method always returns false. (Version: 3.0.0)", false)]
     public static bool IsDesignMode (IControl control)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
-
-      if (control.Site != null && control.Site.DesignMode)
-        return true;
-      if (control.Page != null && control.Page.Site != null && control.Page.Site.DesignMode)
-        return true;
       return false;
     }
 
@@ -224,7 +216,10 @@ namespace Remotion.Web.Utilities
       }
       catch (HttpException)
       {
-        if (IsDesignModeForControl (namingContainer))
+#pragma warning disable 618
+        var isDesignMode = IsDesignModeForControl (namingContainer);
+#pragma warning restore 618
+        if (isDesignMode)
           return namingContainer.FindControl (controlID);
         else
           throw;

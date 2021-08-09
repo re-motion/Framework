@@ -18,10 +18,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing.Design;
 using System.Linq;
 using System.Web.UI;
-using System.Web.UI.Design;
 using System.Web.UI.WebControls;
 using JetBrains.Annotations;
 using Remotion.Mixins;
@@ -164,11 +162,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         WcagHelper.Instance.HandleError (1, this);
     }
 
-    bool IBocRenderableControl.IsDesignMode
-    {
-      get { return IsDesignMode; }
-    }
-
     IEnumerable<string> IControlWithLabel.GetLabelIDs ()
     {
       return GetLabelIDs();
@@ -190,9 +183,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private void CheckControlService ()
     {
-      if (IsDesignMode)
-        return;
-
       if (string.IsNullOrEmpty (ControlServicePath))
         return;
 
@@ -781,7 +771,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return _treeView; }
     }
 
-    [Editor (typeof (UrlEditor), typeof (UITypeEditor))]
     [Category ("Behavior")]
     [DefaultValue ("")]
     public string ControlServicePath

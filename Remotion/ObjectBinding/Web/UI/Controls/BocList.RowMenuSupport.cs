@@ -56,8 +56,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       if (! AreRowMenusEnabled)
         return;
-      if (IsDesignMode)
-        return;
       if (!HasValue)
         return;
       EnsureChildControls();

@@ -32,6 +32,5 @@ namespace Remotion.Web.UI.Controls.TabbedMenuImplementation
     Color SubMenuBackgroundColor { get; }
     Style StatusStyle { get; }
     string StatusText { get; }
-    bool IsDesignMode { get; }
   }
 }

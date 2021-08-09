@@ -48,8 +48,7 @@ namespace Remotion.Web.UI.Controls
       var renderer = CreateRenderer();
       renderer.Render (renderingContext);
 
-      if (!ControlHelper.IsDesignMode (this))
-        htmlHeadAppender.SetAppended();
+      htmlHeadAppender.SetAppended();
     }
 
     protected virtual HtmlHeadContentsRenderingContext CreateRenderingContext (HtmlTextWriter writer, HtmlHeadElement[] htmlHeadElements)

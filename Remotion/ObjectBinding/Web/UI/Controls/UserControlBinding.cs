@@ -54,28 +54,25 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override void OnInit (EventArgs e)
     {
       base.OnInit (e);
-      if (! IsDesignMode)
+      TemplateControl control = (TemplateControl)Page.LoadControl (_userControlPath);
+      Controls.Add (control);
+      _userControl = control as IDataEditControl;
+
+      if (_userControl != null && DataSource != null)
       {
-        TemplateControl control = (TemplateControl) Page.LoadControl (_userControlPath);
-        Controls.Add (control);
-        _userControl = control as IDataEditControl;
-
-        if (_userControl != null && DataSource != null)
+        IBusinessObjectDataSource dataSourceControl = DataSource;
+        if (Property != null)
         {
-          IBusinessObjectDataSource dataSourceControl = DataSource;
-          if (Property != null)
-          {
-            _referenceDataSource = new BusinessObjectReferenceDataSourceControl();
-            _referenceDataSource.DataSource = DataSource;
-            _referenceDataSource.Property = Property;
-            _referenceDataSource.Mode = DataSource.Mode;
-            dataSourceControl = _referenceDataSource;
-            Controls.Add (_referenceDataSource);
-          }
-
-          _userControl.Mode = dataSourceControl.Mode;
-          _userControl.BusinessObject = dataSourceControl.BusinessObject;
+          _referenceDataSource = new BusinessObjectReferenceDataSourceControl();
+          _referenceDataSource.DataSource = DataSource;
+          _referenceDataSource.Property = Property;
+          _referenceDataSource.Mode = DataSource.Mode;
+          dataSourceControl = _referenceDataSource;
+          Controls.Add (_referenceDataSource);
         }
+
+        _userControl.Mode = dataSourceControl.Mode;
+        _userControl.BusinessObject = dataSourceControl.BusinessObject;
       }
     }
 
@@ -154,31 +151,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override IBusinessObjectConstraintVisitor CreateBusinessObjectConstraintVisitor ()
     {
       return NullBusinessObjectConstraintVisitor.Instance;
-    }
-
-    protected override void Render (HtmlTextWriter writer)
-    {
-      if (IsDesignMode)
-      {
-        string type = "Unknown";
-        IBusinessObjectReferenceProperty property = Property as IBusinessObjectReferenceProperty;
-        if (property != null && property.ReferenceClass != null)
-          type = property.ReferenceClass.Identifier;
-
-        writer.Write (
-            "<table style=\"font-family: arial; font-size: x-small; BORDER-RIGHT: gray 1px solid; BORDER-TOP: white 1px solid; BORDER-LEFT: white 1px solid; BORDER-BOTTOM: gray 1px solid; BACKGROUND-COLOR: #d4d0c8\">"
-            + "<tr><td colspan=\"2\"><b>User Control</b></td></tr>"
-            + "<tr><td>Data Source:</td><td>{0}</td></tr>"
-            + "<tr><td>Property:</td><td>{1}</td></tr>"
-            + "<tr><td>Type:</td><td>{2}</td></tr>"
-            + "<tr><td>User Control:</td><td>{3}</td></tr>",
-            DataSourceControl,
-            PropertyIdentifier,
-            type,
-            _userControlPath);
-      }
-
-      base.Render (writer);
     }
 
     /// <inheritdoc />

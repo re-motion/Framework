@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing.Design;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -27,8 +26,6 @@ using CommonServiceLocator;
 using Remotion.Collections;
 using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
-using Remotion.ObjectBinding.Design;
-using Remotion.ObjectBinding.Web.UI.Design;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
@@ -47,7 +44,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   /// <seealso cref="IBusinessObjectBoundWebControl"/>
   // It is required to use a Designer from the same assambly as is the control (or the GAC etc), 
   // otherwise the VS 2003 Toolbox will have trouble loading the assembly.
-  [Designer (typeof (BocDesigner))]
   public abstract class BusinessObjectBoundWebControl : WebControl, IBusinessObjectBoundWebControl
   {
     #region BusinessObjectBinding implementation
@@ -77,7 +73,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </value>
     [Category ("Data")]
     [Description ("The string representation of the Property.")]
-    [Editor (typeof (PropertyPickerEditor), typeof (UITypeEditor))]
     [DefaultValue ("")]
     [MergableProperty (false)]
     public string PropertyIdentifier
@@ -101,7 +96,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   this  <see cref="IBusinessObjectBoundWebControl"/> is bound to.
     /// </summary>
     /// <value>A string set to the <b>ID</b> of an <see cref="IBusinessObjectDataSourceControl"/> inside the current naming container.</value>
-    [TypeConverter (typeof (BusinessObjectDataSourceControlConverter))]
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Data")]
     [Description ("The ID of the BusinessObjectDataSourceControl control used as data source.")]
@@ -235,7 +229,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       base.OnInit (e);
       EnsureChildControls();
       _binding.EnsureDataSource();
-      if (!IsDesignMode && Page != null)
+      if (Page != null)
       {
         Page.RegisterRequiresControlState (this);
         RegisterHtmlHeadContents (HtmlHeadAppender.Current);
@@ -266,9 +260,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         if (!base.Visible)
           return false;
-
-        if (IsDesignMode)
-          return true;
 
         return HasValidBinding;
       }
@@ -310,16 +301,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </remarks>
     [Browsable (false)]
     public abstract bool HasValue { get; }
-
-    /// <summary> Calls <see cref="Control.OnPreRender"/> on every invocation. </summary>
-    /// <remarks> Used by the <see cref="BocDesigner"/>. </remarks>
-    void IControlWithDesignTimeSupport.PreRenderForDesignMode ()
-    {
-      if (!IsDesignMode)
-        throw new InvalidOperationException ("PreRenderChildControlsForDesignMode may only be called during design time.");
-      EnsureChildControls();
-      OnPreRender (EventArgs.Empty);
-    }
 
     /// <summary>
     /// Overrides the base method to temporarily enable the control before adding attributes.
@@ -444,12 +425,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return EnumerableUtility.Singleton (_assignedLabelID);
     }
 
-    /// <summary> Evalutes whether this control is in <b>Design Mode</b>. </summary>
+    /// <summary> Evaluates whether this control is in <b>Design Mode</b>. </summary>
     /// <value><see langword="true"/> if the control is currently rendered by the Visual Studio Designer.</value>
-    [Browsable (false)]
-    protected internal virtual bool IsDesignMode
+    [Obsolete ("Design-mode support has been removed, method always returns false. (Version: 3.0.0)", false)]
+    protected bool IsDesignMode
     {
-      get { return ControlHelper.IsDesignMode (this); }
+      get { return false; }
     }
 
     bool ISmartControl.IsRequired
@@ -509,9 +490,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
       ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
-      
-      if (IsDesignMode)
-        return;
 
       string key;
       key = ResourceManagerUtility.GetGlobalResourceKey (AccessKey);

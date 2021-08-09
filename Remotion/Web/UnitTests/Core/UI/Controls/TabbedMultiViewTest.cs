@@ -61,7 +61,6 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       NamingContainer.Controls.Add (_tabbedMultiView);
 
       Assert.That (HtmlHeadAppender.Current, Is.Not.Null);
-      Assert.That (ControlHelper.IsDesignMode (_tabbedMultiView), Is.False);
 
       NamingContainerInvoker.InitRecursive();
 

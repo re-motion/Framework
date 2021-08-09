@@ -16,8 +16,6 @@
 // 
 using System;
 using System.ComponentModel;
-using System.Drawing.Design;
-using Remotion.ObjectBinding.Design;
 using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding
@@ -96,7 +94,6 @@ namespace Remotion.ObjectBinding
     ///   the <see cref="IBusinessObjectReferenceProperty"/> returned by <see cref="ReferenceProperty"/>. 
     /// </value>
     [Category ("Data")]
-    [Editor (typeof (PropertyPickerEditor), typeof (UITypeEditor))]
     public string PropertyIdentifier
     {
       get { return _propertyIdentifier; }

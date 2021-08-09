@@ -27,9 +27,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   /// </summary>
   public interface IBocRenderableControl : IStyledControl, IControlWithDiagnosticMetadata, IControlWithLabel
   {
-    /// <summary>Evalutes whether this control is in <b>Design Mode</b>.</summary>
-    bool IsDesignMode { get; }
-
     /// <summary>
     /// <para>Gets whether the control currently accepts user input; useful for temporarily disabling input during ongoing interactions
     /// in other controls.</para>

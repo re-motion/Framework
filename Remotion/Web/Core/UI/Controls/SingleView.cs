@@ -16,7 +16,6 @@
 // 
 using System;
 using System.ComponentModel;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.ServiceLocation;
@@ -25,7 +24,6 @@ using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Controls.SingleViewImplementation;
 using Remotion.Web.UI.Controls.SingleViewImplementation.Rendering;
-using Remotion.Web.Utilities;
 
 namespace Remotion.Web.UI.Controls
 {
@@ -76,10 +74,7 @@ namespace Remotion.Web.UI.Controls
       //CreateTemplatedControls (DesignMode);
       EnsureChildControls();
 
-      if (!IsDesignMode )
-      {
-        RegisterHtmlHeadContents (HtmlHeadAppender.Current);
-      }
+      RegisterHtmlHeadContents (HtmlHeadAppender.Current);
     }
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
@@ -275,11 +270,6 @@ namespace Remotion.Web.UI.Controls
     public Style BottomControlsStyle
     {
       get { return _bottomControlsStyle; }
-    }
-
-    public bool IsDesignMode
-    {
-      get { return ControlHelper.IsDesignMode(this); }
     }
 
     string ISingleView.ViewClientID

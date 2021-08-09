@@ -62,9 +62,6 @@ public sealed class ResourceDispatcher
  
     const string prefix = "auto:";
 
-    if (ControlHelper.IsDesignModeForControl (control))
-      return;
-
     IDictionary autoElements = ResourceDispatcher.GetResources (resourceManager, prefix);
 
     ResourceDispatcher.Dispatch (control, autoElements, resourceManager.Name);
@@ -100,9 +97,6 @@ public sealed class ResourceDispatcher
   {
     ArgumentUtility.CheckNotNull ("control", control);
     ArgumentUtility.CheckNotNull ("elements", elements);
-
-    if (ControlHelper.IsDesignModeForControl (control))
-      return;
 
     //  Dispatch the resources to the controls
     foreach (DictionaryEntry elementsEntry in elements)

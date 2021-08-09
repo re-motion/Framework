@@ -103,8 +103,6 @@ namespace Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering
 
       AddStandardAttributesToRender (renderingContext);
 
-      if (renderingContext.Control.IsDesignMode)
-        renderingContext.Writer.AddStyleAttribute ("width", "100%");
       if (string.IsNullOrEmpty (renderingContext.Control.CssClass) && string.IsNullOrEmpty (renderingContext.Control.Attributes["class"]))
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassBase);
     }

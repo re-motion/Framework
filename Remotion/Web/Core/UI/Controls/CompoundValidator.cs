@@ -32,8 +32,7 @@ namespace Remotion.Web.UI.Controls
 ///     specific requirements of a target control.
 ///   </para><para>
 ///     Inheritors should override <see cref="CreateChildValidators"/> to create specific validators. Also,
-///     they can override <see cref="ControlToValidate"/> and decorate it with an attribute derived from
-///     <see cref="Remotion.Web.UI.Design.ControlToStringConverter"/> in order to provide a pick list in the VS.NET property editor.
+///     they can override <see cref="ControlToValidate"/>.
 ///   </para>
 /// </remarks>
 public abstract class CompoundValidator: WebControl, IBaseValidator

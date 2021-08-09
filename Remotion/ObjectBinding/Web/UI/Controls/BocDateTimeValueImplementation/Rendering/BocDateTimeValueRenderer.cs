@@ -43,9 +43,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
       Picker
     }
 
-    /// <summary> Text displayed when control is displayed in desinger and is read-only has no contents. </summary>
-    private const string c_designModeEmptyLabelContents = "##";
-
     private readonly ILabelReferenceRenderer _labelReferenceRenderer;
     private readonly IValidationErrorRenderer _validationErrorRenderer;
 
@@ -197,7 +194,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
 
       var datePickerButton = renderingContext.Control.DatePickerButton;
       datePickerButton.AlternateText = renderingContext.Control.GetDatePickerText();
-      datePickerButton.IsDesignMode = renderingContext.Control.IsDesignMode;
 
       if(IsDiagnosticMetadataRenderingEnabled)
       {
@@ -373,31 +369,22 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
                         AssociatedControlID = hasDateField ? renderingContext.Control.ClientID + "_TimeLabel" : null
                       };
 
-      if (renderingContext.Control.IsDesignMode && !renderingContext.Control.Value.HasValue)
+      if (renderingContext.Control.Value.HasValue)
       {
-        dateLabel.Text = c_designModeEmptyLabelContents;
-        //  Too long, can't resize in designer to less than the content's width
-        //  Control.label.Text = "[ " + this.GetType().Name + " \"" + this.ID + "\" ]";
-      }
-      else
-      {
-        if (renderingContext.Control.Value.HasValue)
+        var formatter = renderingContext.Control.DateTimeFormatter;
+
+        var dateTime = renderingContext.Control.Value.Value;
+
+        if (hasDateField)
         {
-          var formatter = renderingContext.Control.DateTimeFormatter;
+          dateLabel.Text = formatter.FormatDateValue (dateTime);
+          dateLabel.Attributes.Add ("data-value", dateTime.ToString ("yyyy-MM-dd"));
+        }
 
-          var dateTime = renderingContext.Control.Value.Value;
-
-          if (hasDateField)
-          {
-            dateLabel.Text = formatter.FormatDateValue (dateTime);
-            dateLabel.Attributes.Add ("data-value", dateTime.ToString ("yyyy-MM-dd"));
-          }
-
-          if (hasTimeField)
-          {
-            timeLabel.Text = formatter.FormatTimeValue (dateTime, renderingContext.Control.ShowSeconds);
-            timeLabel.Attributes.Add ("data-value", dateTime.ToString ("HH:mm:ss"));
-          }
+        if (hasTimeField)
+        {
+          timeLabel.Text = formatter.FormatTimeValue (dateTime, renderingContext.Control.ShowSeconds);
+          timeLabel.Attributes.Add ("data-value", dateTime.ToString ("HH:mm:ss"));
         }
       }
 

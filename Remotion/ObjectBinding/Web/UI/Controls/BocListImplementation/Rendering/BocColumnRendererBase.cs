@@ -43,8 +43,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <summary>Filename of the image used to indicate an descending sort order of the column in its title cell.</summary>
     protected const string c_sortDescendingIcon = "SortDescending.gif";
 
-    private const string c_designModeEmptyContents = "#";
-
     /// <summary>Entity definition for whitespace separating controls, e.g. icons from following text</summary>
     protected const string c_whiteSpace = "&nbsp;";
 
@@ -222,29 +220,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     {
       var columnTitle = StringUtility.NullToEmpty (renderingContext.ColumnDefinition.ColumnTitleDisplayValue);
 
-      bool hasVisibleColumnTitle = renderingContext.ColumnDefinition.ShowColumnTitle && !string.IsNullOrEmpty (columnTitle);
-
-      if (renderingContext.Control.IsDesignMode && !hasVisibleColumnTitle)
+      var columnTitleID = GetColumnTitleID (renderingContext);
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, columnTitleID);
+      if (!renderingContext.ColumnDefinition.ShowColumnTitle)
+        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, _cssClasses.CssClassScreenReaderText);
+      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      renderingContext.Writer.Write (columnTitle);
+      renderingContext.Writer.RenderEndTag();
+      if (!renderingContext.ColumnDefinition.ShowColumnTitle)
       {
-        renderingContext.Writer.Write (c_designModeEmptyContents);
-      }
-      else
-      {
-        var columnTitleID = GetColumnTitleID (renderingContext);
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, columnTitleID);
-        if (!renderingContext.ColumnDefinition.ShowColumnTitle)
-          renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, _cssClasses.CssClassScreenReaderText);
-        renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
-        renderingContext.Writer.Write (columnTitle);
-        renderingContext.Writer.RenderEndTag();
-        if (!renderingContext.ColumnDefinition.ShowColumnTitle)
-        {
-          // Render a non-breaking space to allow screen readers to highlight a visual cue for the current reading position.
-          // For sortable columns, this will push the sorting icon one space to the right, but given that a sortable should 
-          // always have a visible column title, this is can be regarded as a non-issue. The alternative of using CSS to
-          // generate a non-zero-width element does not help with screenreaders, at least JAWS 2019.
-          renderingContext.Writer.Write (c_whiteSpace);
-        }
+        // Render a non-breaking space to allow screen readers to highlight a visual cue for the current reading position.
+        // For sortable columns, this will push the sorting icon one space to the right, but given that a sortable should 
+        // always have a visible column title, this is can be regarded as a non-issue. The alternative of using CSS to
+        // generate a non-zero-width element does not help with screenreaders, at least JAWS 2019.
+        renderingContext.Writer.Write (c_whiteSpace);
       }
     }
 

@@ -24,8 +24,5 @@
     <ProjectReference Include="..\..\Globalization\Mixins\Globalization.Mixins.csproj" />
     <ProjectReference Include="..\..\Mixins\Core\Mixins.Core.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Windows.Forms" />
-  </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

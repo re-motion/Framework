@@ -85,7 +85,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       _enumValue.Object.Property = property;
       _enumValue.Setup (stub => stub.ClientID).Returns (c_clientID);
       _enumValue.Setup (stub => stub.ControlType).Returns ("BocEnumValue");
-      _enumValue.Setup (mock => mock.IsDesignMode).Returns (false);
       _enumValue.Setup (mock => mock.GetLabelIDs()).Returns (EnumerableUtility.Singleton (c_labelID));
 
       var pageStub = new Mock<IPage>();

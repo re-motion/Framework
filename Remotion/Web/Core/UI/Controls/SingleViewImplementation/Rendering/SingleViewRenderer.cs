@@ -67,11 +67,6 @@ namespace Remotion.Web.UI.Controls.SingleViewImplementation.Rendering
       AddStandardAttributesToRender (renderingContext);
       if (string.IsNullOrEmpty (renderingContext.Control.CssClass) && string.IsNullOrEmpty (renderingContext.Control.Attributes["class"]))
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassBase);
-      if (renderingContext.Control.IsDesignMode)
-      {
-        renderingContext.Writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
-        renderingContext.Writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "75%");
-      }
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Div);
 
       ScriptUtility.Instance.RegisterElementForBorderSpans (renderingContext.Control, "#" + renderingContext.Control.WrapperClientID);

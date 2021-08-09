@@ -15,15 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.ComponentModel;
-using System.Drawing.Design;
-using Remotion.ObjectBinding.Web.UI.Design;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
 
 /// <summary> A collection of <see cref="BocColumnDefinition"/> objects. </summary>
-[Editor (typeof (BocColumnDefinitionCollectionEditor), typeof (UITypeEditor))]
 public class BocColumnDefinitionCollection: BusinessObjectControlItemCollection
 {
   public BocColumnDefinitionCollection (IBusinessObjectBoundWebControl ownerControl)

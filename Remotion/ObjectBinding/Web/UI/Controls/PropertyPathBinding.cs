@@ -16,11 +16,9 @@
 // 
 using System;
 using System.ComponentModel;
-using System.Drawing.Design;
 using System.Web.UI;
 using JetBrains.Annotations;
 using Remotion.ObjectBinding.BusinessObjectPropertyPaths;
-using Remotion.ObjectBinding.Design;
 using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
@@ -117,16 +115,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       else
       {
         if (BusinessObjectClass == null)
-        {
-          if (!Remotion.Web.Utilities.ControlHelper.IsDesignMode (OwnerControl))
-            throw new InvalidOperationException ("The property path could not be resolved because the Business Object Class is not set.");
-
-          return new NullBusinessObjectPropertyPath();
-        }
+          throw new InvalidOperationException ("The property path could not be resolved because the Business Object Class is not set.");
         else
-        {
           _propertyPath = BusinessObjectPropertyPath.CreateStatic (BusinessObjectClass, _propertyPathIdentifier);
-        }
       }
 
       return _propertyPath;
@@ -164,7 +155,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <value> 
     ///   A <see cref="string"/> formatted as a valid property path. 
     /// </value>
-    [Editor (typeof (PropertyPathPickerEditor), typeof (UITypeEditor))]
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Data")]
     [Description ("A string representing a valid property path.")]

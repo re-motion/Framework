@@ -18,8 +18,6 @@ using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Drawing;
-using System.Drawing.Design;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
@@ -32,7 +30,6 @@ using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Controls.TabbedMenuImplementation;
 using Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering;
 using Remotion.Web.UI.Controls.WebTabStripImplementation;
-using Remotion.Web.UI.Design;
 using Remotion.Web.UI.Globalization;
 using Remotion.Web.Utilities;
 
@@ -42,7 +39,6 @@ namespace Remotion.Web.UI.Controls
   /// <summary>
   ///   The <b>TabbedMenu</b> can be used to provide a navigation menu.
   /// </summary>
-  [Designer (typeof (TabbedMenuDesigner))]
   public class TabbedMenu : WebControl, INavigationControl, ITabbedMenu
   {
     // constants
@@ -94,10 +90,7 @@ namespace Remotion.Web.UI.Controls
       }
       LoadSelection ();
 
-      if (!IsDesignMode)
-      {
-        RegisterHtmlHeadContents (HtmlHeadAppender.Current);
-      }
+      RegisterHtmlHeadContents (HtmlHeadAppender.Current);
     }
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
@@ -212,8 +205,6 @@ namespace Remotion.Web.UI.Controls
       ArgumentUtility.CheckNotNull ("writer", writer);
 
       base.AddAttributesToRender (writer);
-      if (IsDesignMode)
-        writer.AddStyleAttribute ("width", "100%");
       if (string.IsNullOrEmpty (CssClass) && string.IsNullOrEmpty (Attributes["class"]))
         writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassBase);
     }
@@ -334,11 +325,6 @@ namespace Remotion.Web.UI.Controls
       }
     }
 
-    public virtual bool IsDesignMode
-    {
-      get { return ControlHelper.IsDesignMode (this); }
-    }
-
     /// <summary> Gets the IDs of the tabs to be selected from the query string. </summary>
     /// <returns> 
     ///   A string array containing the ID of the <see cref="MainMenuTab"/> at index 0 and the ID of the 
@@ -348,16 +334,13 @@ namespace Remotion.Web.UI.Controls
     {
       string[] selection = null;
 
-      if (!IsDesignMode)
-      {
-        string value;
-        if (Page is IWxePage)
-          value = WxeContext.Current.QueryString[SelectionID];
-        else
-          value = Context.Request.QueryString[SelectionID];
-        if (value != null)
-          selection = (string[]) TypeConversionProvider.Convert (typeof (string), typeof (string[]), value);
-      }
+      string value;
+      if (Page is IWxePage)
+        value = WxeContext.Current.QueryString[SelectionID];
+      else
+        value = Context.Request.QueryString[SelectionID];
+      if (value != null)
+        selection = (string[])TypeConversionProvider.Convert (typeof (string), typeof (string[]), value);
 
       if (selection == null)
         selection = new string[0];
@@ -373,12 +356,9 @@ namespace Remotion.Web.UI.Controls
     {
       string[] selection = null;
 
-      if (!IsDesignMode)
-      {
-        IWindowStateManager windowStateManager = Page as IWindowStateManager;
-        if (windowStateManager != null)
-          selection = (string[]) windowStateManager.GetData (SelectionID);
-      }
+      IWindowStateManager windowStateManager = Page as IWindowStateManager;
+      if (windowStateManager != null)
+        selection = (string[])windowStateManager.GetData (SelectionID);
 
       if (selection == null)
         selection = new string[0];
@@ -565,9 +545,6 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
 
-      if (IsDesignMode)
-        return;
-
       string key = ResourceManagerUtility.GetGlobalResourceKey (StatusText);
       if (!string.IsNullOrEmpty (key))
         StatusText = resourceManager.GetString (key);
@@ -588,7 +565,6 @@ namespace Remotion.Web.UI.Controls
     [ListBindable (false)]
     [Description ("")]
     [DefaultValue ((string) null)]
-    [Editor (typeof (MainMenuTabCollectionEditor), typeof (UITypeEditor))]
     public MainMenuTabCollection Tabs
     {
       get

@@ -157,7 +157,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     private void CommonInitialize ()
     {
       List.Setup (list => list.IsSelectionEnabled).Returns (true);
-      List.Setup (mock => mock.IsDesignMode).Returns (false);
       var stubColumnDefinition1 = new StubColumnDefinition();
       var stubColumnDefinition2 = new StubColumnDefinition();
       var stubColumnDefinition3 = new StubColumnDefinition();

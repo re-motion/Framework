@@ -49,8 +49,6 @@ namespace Remotion.Web.ExecutionEngine
 
     public virtual void Initialize (HttpContext context)
     {
-      if (ControlHelper.IsDesignMode (_control))
-        return;
       ArgumentUtility.CheckNotNull ("context", context);
 
       if (_control is Page)

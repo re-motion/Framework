@@ -179,17 +179,15 @@ namespace Remotion.Web.ExecutionEngine
 
     protected override void Render (HtmlTextWriter writer)
     {
-      if (!ControlHelper.IsDesignMode (this))
+      var scriptManager = ScriptManager.GetCurrent (Page.WrappedInstance);
+      if (!Remotion.Web.UI.HtmlHeadAppender.Current.HasAppended && (scriptManager == null || !scriptManager.IsInAsyncPostBack))
       {
-        var scriptManager = ScriptManager.GetCurrent (Page.WrappedInstance);
-        if (!Remotion.Web.UI.HtmlHeadAppender.Current.HasAppended && (scriptManager == null || !scriptManager.IsInAsyncPostBack))
-        {
-          throw new WxeException ("The Remotion.Web.UI.Controls.HtmlHeadContents control is missing on the page. Please add this control to the 'head' section of the document or specify the runat=server attribute for the 'head' section to allow for an automatically generated HtmlHeadContents control.");
-        }
-
-        if (Page.MaintainScrollPositionOnPostBack)
-          throw new WxeException ("Enabling the ASP.NET smart navigation by setting System.Web.UI.Page.MaintainScrollPositionOnPostBack to true is not supported on WXE Pages. Use the smart navigation feature (SmartPage.EnableSmartScrolling, enabled by default) integrated into re-motion framework instead.");
+        throw new WxeException ("The Remotion.Web.UI.Controls.HtmlHeadContents control is missing on the page. Please add this control to the 'head' section of the document or specify the runat=server attribute for the 'head' section to allow for an automatically generated HtmlHeadContents control.");
       }
+
+      if (Page.MaintainScrollPositionOnPostBack)
+        throw new WxeException ("Enabling the ASP.NET smart navigation by setting System.Web.UI.Page.MaintainScrollPositionOnPostBack to true is not supported on WXE Pages. Use the smart navigation feature (SmartPage.EnableSmartScrolling, enabled by default) integrated into re-motion framework instead.");
+      
       base.Render (writer);
     }
 
