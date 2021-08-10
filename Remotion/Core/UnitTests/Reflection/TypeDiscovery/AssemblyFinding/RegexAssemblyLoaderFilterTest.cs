@@ -40,13 +40,13 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     public void RegexConsidering_FullName ()
     {
       var filter = new RegexAssemblyLoaderFilter (
-          typeof (object).Assembly.FullName,
+          typeof (TestAttribute).Assembly.FullName,
           RegexAssemblyLoaderFilter.MatchTargetKind.FullName);
-      Assert.That (filter.MatchExpressionString.StartsWith ("mscorlib"), Is.True);
+      Assert.That (filter.MatchExpressionString, Does.StartWith ("nunit.framework"));
       Assert.That (filter.ShouldConsiderAssembly (typeof (AttributeAssemblyLoaderFilterTest).Assembly.GetName()), Is.False);
-      Assert.That (filter.ShouldConsiderAssembly (typeof (TestFixtureAttribute).Assembly.GetName()), Is.False);
-      Assert.That (filter.ShouldConsiderAssembly (typeof (object).Assembly.GetName()), Is.True);
-      Assert.That (filter.ShouldConsiderAssembly (new AssemblyName ("this is not mscorlib")), Is.False);
+      Assert.That (filter.ShouldConsiderAssembly (typeof (TestFixtureAttribute).Assembly.GetName()), Is.True);
+      Assert.That (filter.ShouldConsiderAssembly (typeof (object).Assembly.GetName()), Is.False);
+      Assert.That (filter.ShouldConsiderAssembly (new AssemblyName ("this is not nunit")), Is.False);
     }
 
     [Test]

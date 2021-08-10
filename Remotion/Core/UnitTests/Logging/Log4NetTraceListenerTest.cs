@@ -13,7 +13,7 @@
 // 
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
-// 
+//
 using System;
 using System.Diagnostics;
 using System.Reflection;
@@ -110,7 +110,7 @@ namespace Remotion.UnitTests.Logging
     }
 #endif
 
-#if DEBUG
+#if NETFRAMEWORK && DEBUG
     [Test]
     public void Test_Write_WithDebug ()
     {

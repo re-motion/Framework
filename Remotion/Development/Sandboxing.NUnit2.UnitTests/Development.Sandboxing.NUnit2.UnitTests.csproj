@@ -5,6 +5,7 @@
   </PropertyGroup>
   <Import Project="..\..\..\Build\Shared.build.props" />
   <PropertyGroup>
+    <TargetFrameworks>net48</TargetFrameworks>
     <AssemblyTitle>re-motion Development Support Library for Partial Trust Sandboxing of NUnit2 Unit Tests</AssemblyTitle>
     <AssemblyName>Remotion.Development.Sandboxing.NUnit2.UnitTests</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>

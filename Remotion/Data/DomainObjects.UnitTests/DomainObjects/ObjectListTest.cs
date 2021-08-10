@@ -272,8 +272,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That (
           () => _orderItemListAsIList.CopyTo (destination, 5),
           Throws.ArgumentException
-              .With.Message.Contains (
-                  "Destination array was not long enough. Check destIndex and length, and the array's lower bounds."));
+#if NETFRAMEWORK
+              .With.Message.EqualTo (
+                  "Destination array was not long enough. Check destIndex and length, and the array's lower bounds.")
+#else
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Destination array was not long enough. Check the destination index, length, and the array's lower bounds.", "destinationArray")
+#endif
+          );
     }
 
     [Test]
@@ -283,8 +289,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That (
           () => _orderItemListAsIList.CopyTo (destination, 4),
           Throws.ArgumentException
-              .With.Message.Contains (
-                  "Destination array was not long enough. Check destIndex and length, and the array's lower bounds."));
+#if NETFRAMEWORK
+              .With.Message.EqualTo (
+                  "Destination array was not long enough. Check destIndex and length, and the array's lower bounds.")
+#else
+              .With.ArgumentExceptionMessageEqualTo (
+                  "Destination array was not long enough. Check the destination index, length, and the array's lower bounds.", "destinationArray")
+#endif
+          );
     }
 
     [Test]

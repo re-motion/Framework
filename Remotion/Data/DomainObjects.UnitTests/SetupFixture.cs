@@ -25,6 +25,7 @@ using Remotion.Data.DomainObjects.UnitTests.Database;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.Data.SqlClient;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests
 {
@@ -61,19 +62,19 @@ namespace Remotion.Data.DomainObjects.UnitTests
         _standardMappingDatabaseAgent.ExecuteBatchFile (sqlFileName1, true, DatabaseConfiguration.GetReplacementDictionary());
         _standardMappingDatabaseAgent.SetDatabaseReadOnly (DatabaseTest.DatabaseName);
 
-        // We don't want the tests to initialize a default mapping; therefore, modify MappingConfiguration.s_mappingConfiguration so that it will 
+        // We don't want the tests to initialize a default mapping; therefore, modify MappingConfiguration.s_fields.Current so that it will 
         // throw when asked to generate a new MappingConfiguration.
 
-        _previousMappingConfigurationContainer = (DoubleCheckedLockingContainer<IMappingConfiguration>) PrivateInvoke.GetNonPublicStaticField (
-            typeof (MappingConfiguration), 
-            "s_mappingConfiguration");
         var throwingMappingConfigurationContainer = new DoubleCheckedLockingContainer<IMappingConfiguration> (
             () =>
             {
               throw new InvalidOperationException (
                   "This test failed to setup the mapping configuration. Did you forget to derive from StandardMappingTest or to call base.SetUp?");
             });
-        PrivateInvoke.SetNonPublicStaticField (typeof (MappingConfiguration), "s_mappingConfiguration", throwingMappingConfigurationContainer);
+        var fields = PrivateInvoke.GetNonPublicStaticField (typeof (MappingConfiguration), "s_fields");
+        Assertion.IsNotNull (fields);
+        _previousMappingConfigurationContainer = (DoubleCheckedLockingContainer<IMappingConfiguration>) PrivateInvoke.GetPublicField (fields, "Current");
+        PrivateInvoke.SetPublicField (fields, "Current", throwingMappingConfigurationContainer);
       }
       catch (Exception ex)
       {
@@ -86,7 +87,9 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [OneTimeTearDown]
     public void OneTimeTearDown ()
     {
-      PrivateInvoke.SetNonPublicStaticField (typeof (MappingConfiguration), "s_mappingConfiguration", _previousMappingConfigurationContainer);
+      var fields = PrivateInvoke.GetNonPublicStaticField (typeof (MappingConfiguration), "s_fields");
+      Assertion.IsNotNull (fields);
+      PrivateInvoke.SetPublicField (fields, "Current", _previousMappingConfigurationContainer);
 
       _standardMappingDatabaseAgent.SetDatabaseReadWrite (DatabaseTest.DatabaseName);
       SqlConnection.ClearAllPools();

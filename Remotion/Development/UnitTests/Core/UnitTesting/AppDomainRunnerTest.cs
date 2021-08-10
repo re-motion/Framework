@@ -22,12 +22,12 @@ using Remotion.Tools;
 namespace Remotion.Development.UnitTests.Core.UnitTesting
 {
   [TestFixture]
+#if !NETFRAMEWORK
+  [Ignore ("TODO RM-7799: Create out-of-process test infrastructure to replace tests done with app domains")]
+#endif
   public class AppDomainRunnerTest
   {
     [Test]
-#if !NETFRAMEWORK
-    [Ignore ("TODO RM-7799: Create out-of-process test infrastructure to replace tests done with app domains")]
-#endif
     public void ArgumentsArePassedInCorrectly ()
     {
       AppDomainRunner.Run (delegate (object[] args)
@@ -86,9 +86,13 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
     [Test]
     public void DoesntChangeCurrentSetup ()
     {
+#if NETFRAMEWORK
       string dynamicBaseBefore = AppDomain.CurrentDomain.SetupInformation.DynamicBase;
       AppDomainRunner.Run (delegate { new AppDomainRunnerTest (); });
       Assert.That (AppDomain.CurrentDomain.SetupInformation.DynamicBase, Is.EqualTo (dynamicBaseBefore));
+#else
+      Assert.Ignore ("TODO RM-7799: Create out-of-process test infrastructure to replace tests done with app domains");
+#endif
     }
   }
 }

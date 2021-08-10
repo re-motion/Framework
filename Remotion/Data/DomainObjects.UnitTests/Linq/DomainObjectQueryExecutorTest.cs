@@ -29,6 +29,7 @@ using Remotion.Linq.Clauses;
 using Remotion.Linq.Clauses.ResultOperators;
 using Remotion.Linq.EagerFetching;
 using Rhino.Mocks;
+using List = Rhino.Mocks.Constraints.List;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Linq
 {
@@ -115,10 +116,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     {
       _queryGeneratorMock
           .Expect (mock => mock.CreateSequenceQuery<Order> (
-              "<dynamic query>",
-              TestDomainStorageProviderDefinition,
-              _someQueryModel,
-              Enumerable.Empty<FetchQueryModelBuilder>()))
+              Arg.Is ("<dynamic query>"),
+              Arg.Is (TestDomainStorageProviderDefinition),
+              Arg.Is (_someQueryModel),
+              Arg<IEnumerable<FetchQueryModelBuilder>>.List.Equal (Enumerable.Empty<FetchQueryModelBuilder>())))
           .Return (_collectionExecutableQueryMock);
 
       var fakeResult = new[] { _someOrder };
@@ -164,10 +165,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       _queryGeneratorMock
           .Expect (
               mock => mock.CreateSequenceQuery<Order> (
-                  "<dynamic query>",
-                  TestDomainStorageProviderDefinition,
-                  _someQueryModel,
-                  Enumerable.Empty<FetchQueryModelBuilder>()))
+                  Arg.Is ("<dynamic query>"),
+                  Arg.Is (TestDomainStorageProviderDefinition),
+                  Arg.Is (_someQueryModel),
+                  Arg<IEnumerable<FetchQueryModelBuilder>>.List.Equal (Enumerable.Empty<FetchQueryModelBuilder>())))
           .Return (_collectionExecutableQueryMock);
 
       var fakeResult = new[] { _someOrder };
@@ -185,10 +186,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     {
       _queryGeneratorMock
           .Expect (mock => mock.CreateSequenceQuery<Order> (
-              "<dynamic query>",
-              TestDomainStorageProviderDefinition,
-              _someQueryModel,
-              Enumerable.Empty<FetchQueryModelBuilder>()))
+              Arg.Is ("<dynamic query>"),
+              Arg.Is (TestDomainStorageProviderDefinition),
+              Arg.Is (_someQueryModel),
+              Arg<IEnumerable<FetchQueryModelBuilder>>.List.Equal (Enumerable.Empty<FetchQueryModelBuilder>())))
           .Return (_collectionExecutableQueryMock);
 
       var fakeResult = new[] { _someOrder, DomainObjectMother.CreateFakeObject<Order>() };
@@ -204,10 +205,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     {
       _queryGeneratorMock
           .Expect (mock => mock.CreateSequenceQuery<Order> (
-              "<dynamic query>",
-              TestDomainStorageProviderDefinition,
-              _someQueryModel,
-              Enumerable.Empty<FetchQueryModelBuilder>()))
+              Arg.Is ("<dynamic query>"),
+              Arg.Is (TestDomainStorageProviderDefinition),
+              Arg.Is (_someQueryModel),
+              Arg<IEnumerable<FetchQueryModelBuilder>>.List.Equal (Enumerable.Empty<FetchQueryModelBuilder>())))
           .Return (_collectionExecutableQueryMock);
 
       var fakeResult = new Order[0];
@@ -223,10 +224,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     {
        _queryGeneratorMock
           .Expect (mock => mock.CreateSequenceQuery<Order> (
-              "<dynamic query>",
-              TestDomainStorageProviderDefinition,
-              _someQueryModel,
-              Enumerable.Empty<FetchQueryModelBuilder>()))
+              Arg.Is ("<dynamic query>"),
+              Arg.Is (TestDomainStorageProviderDefinition),
+              Arg.Is (_someQueryModel),
+              Arg<IEnumerable<FetchQueryModelBuilder>>.List.Equal (Enumerable.Empty<FetchQueryModelBuilder>())))
           .Return (_collectionExecutableQueryMock);
 
       var fakeResult = new Order[0];

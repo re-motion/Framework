@@ -112,6 +112,7 @@ namespace Remotion.Development.UnitTesting
 
     public void CompileInSeparateAppDomain ()
     {
+#if NETFRAMEWORK
       AppDomain appDomain = null;
       try
       {
@@ -127,7 +128,10 @@ namespace Remotion.Development.UnitTesting
       {
         if (appDomain != null)
           AppDomain.Unload (appDomain);
-      }     
+      }
+#else
+      throw new PlatformNotSupportedException ("Compiling in a separate assembly is not supported in .NET 5.");
+#endif
     }
   }
 }

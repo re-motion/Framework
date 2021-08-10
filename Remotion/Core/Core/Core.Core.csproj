@@ -23,7 +23,7 @@
     <PackageReference Include="System.ValueTuple" Version="4.3.0" />
     <PackageReference Remove="JetBrains.Annotations" />
   </ItemGroup>
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />

@@ -44,6 +44,7 @@ namespace Remotion.Tools
 
     public void Run ()
     {
+#if NETFRAMEWORK
       AppDomain? appDomain = null;
 
       try
@@ -65,6 +66,9 @@ namespace Remotion.Tools
         if (Directory.Exists (_appDomainSetup.DynamicBase))
           Directory.Delete (_appDomainSetup.DynamicBase!, true);
       }
+#else
+      throw new PlatformNotSupportedException ("This API is not supported on the current platform.");
+#endif
     }
   }
 }

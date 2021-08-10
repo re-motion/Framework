@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
       // In theory, this might return invalid objects (in practice we won't be called with invalid IDs). 
       // TransferParentObject called by GetLoadedObjectDataForParentObject below will indirectly throw on invalid IDs.
-      var parentObject = Tuple.Create (id, _parentTransactionContext.TryGetObject (id));
+      var parentObject = ValueTuple.Create (id, _parentTransactionContext.TryGetObject (id));
 
       return GetLoadedObjectDataForParentObject (parentObject);
     }
@@ -79,7 +79,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
       // In theory, this might return invalid objects (in practice we won't be called with invalid IDs). 
       // TransferParentObject called by GetLoadedObjectDataForParentObject below will throw on invalid IDs.
-      var parentObjects = objectIDsAsCollection.Zip (_parentTransactionContext.TryGetObjects (objectIDsAsCollection));
+      var parentObjects = objectIDsAsCollection.Zip (_parentTransactionContext.TryGetObjects (objectIDsAsCollection), ValueTuple.Create);
 
       return parentObjects.Select (GetLoadedObjectDataForParentObject);
     }
@@ -178,7 +178,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       }
     }
 
-    private ILoadedObjectData GetLoadedObjectDataForParentObject (Tuple<ObjectID, DomainObject> parentObject)
+    private ILoadedObjectData GetLoadedObjectDataForParentObject (ValueTuple<ObjectID, DomainObject> parentObject)
     {
       if (parentObject.Item2 == null)
         return new NotFoundLoadedObjectData (parentObject.Item1);

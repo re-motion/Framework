@@ -135,8 +135,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     private Type GetRequiredItemType (Type collectionType)
     {
-      if (TypeExtensions.CanAscribeTo (collectionType, typeof (IEnumerable<>)))
-        return TypeExtensions.GetAscribedGenericArguments (collectionType, typeof (IEnumerable<>))[0];
+      if (collectionType.CanAscribeTo (typeof (IEnumerable<>)))
+        return collectionType.GetAscribedGenericArguments (typeof (IEnumerable<>))[0];
       else
         return null;
     }

@@ -69,6 +69,9 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
     [Test]
     public void VerifyPEFile_MSCorlib ()
     {
+#if !NETFRAMEWORK
+      Assert.Ignore ("PEVerify is not supported for .NET 5 assemblies.");
+#endif
       var verifier = PEVerifier.CreateDefault ();
       verifier.VerifyPEFile (typeof (object).Assembly);
     }

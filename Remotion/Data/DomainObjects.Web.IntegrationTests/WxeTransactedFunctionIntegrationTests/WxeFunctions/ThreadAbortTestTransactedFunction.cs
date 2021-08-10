@@ -17,6 +17,7 @@
 using System;
 using System.Threading;
 using NUnit.Framework;
+using Remotion.Development.Web.UnitTesting.ExecutionEngine;
 using Remotion.Web.ExecutionEngine;
 
 namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunctionIntegrationTests.WxeFunctions
@@ -66,7 +67,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
         TransactionScopeInSecondStepBeforeException = ClientTransactionScope.ActiveScope;
         Assert.That (TransactionScopeInSecondStepBeforeException, Is.SameAs (TransactionScopeInFirstStep));
         ThreadAborted = true;
-        Thread.CurrentThread.Abort();
+        WxeThreadAbortHelper.Abort();
       }
       TransactionScopeInSecondStepAfterException = ClientTransactionScope.ActiveScope;
       Assert.That (TransactionScopeInSecondStepAfterException, Is.Not.SameAs (TransactionScopeInFirstStep));

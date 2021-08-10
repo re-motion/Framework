@@ -13,7 +13,7 @@
 // 
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
-// 
+//
 using System;
 using Microsoft.Win32;
 using NUnit.Framework;
@@ -24,6 +24,14 @@ namespace Remotion.Extensions.UnitTests.Utilities
   [TestFixture]
   public class FrameworkVersionDetectorTest
   {
+    [SetUp]
+    public void SetUp ()
+    {
+#if !NETFRAMEWORK
+      Assert.Ignore ("FrameworkVersionDetector is not available on .NET.");
+#endif
+    }
+
     [Test]
     public void IsMinimumVersion_Net_4_0 ()
     {

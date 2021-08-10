@@ -18,7 +18,9 @@ using System;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.Configuration;
+using Remotion.Reflection;
 using Remotion.Security.Configuration;
+using Remotion.Utilities;
 
 namespace Remotion.Security.UnitTests.Configuration
 {
@@ -70,9 +72,11 @@ namespace Remotion.Security.UnitTests.Configuration
 
     private void ResetCurrentSecurityConfiguration ()
     {
-      PrivateInvoke.SetNonPublicStaticField (
-          typeof (SecurityConfiguration),
-          "s_current",
+      var fields = PrivateInvoke.GetNonPublicStaticField (typeof (SecurityConfiguration), "s_fields");
+      Assertion.IsNotNull (fields);
+      PrivateInvoke.SetPublicField (
+          fields,
+          "Current",
           new Lazy<SecurityConfiguration> (() => new SecurityConfiguration()));
     }
   }

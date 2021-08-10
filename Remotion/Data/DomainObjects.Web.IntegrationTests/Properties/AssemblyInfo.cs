@@ -23,5 +23,9 @@ using System.Reflection;
 // associated with an assembly.
 //
 
-[assembly: AssemblyCulture("")]		
+[assembly: AssemblyCulture("")]
+#if NETFRAMEWORK
 [assembly: CLSCompliant(true)]
+#else
+[assembly: CLSCompliant(false)]
+#endif

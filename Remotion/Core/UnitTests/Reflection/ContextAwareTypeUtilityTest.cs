@@ -16,6 +16,7 @@
 // 
 using System;
 using System.ComponentModel.Design;
+using System.Reflection;
 using Moq;
 using NUnit.Framework;
 using Remotion.Configuration.TypeDiscovery;
@@ -24,6 +25,7 @@ using Remotion.Development.UnitTesting;
 using Remotion.Reflection;
 using Remotion.Reflection.TypeResolution;
 using Remotion.UnitTests.Configuration.TypeDiscovery;
+using Remotion.Utilities;
 
 namespace Remotion.UnitTests.Reflection
 {
@@ -43,13 +45,15 @@ namespace Remotion.UnitTests.Reflection
       _oldTypeResolutionService = ContextAwareTypeUtility.GetTypeResolutionService();
       _oldTypeResolutionConfiguration = TypeResolutionConfiguration.Current;
 
-      PrivateInvoke.SetNonPublicStaticField (
-          typeof (ContextAwareTypeUtility),
-          "s_defaultTypeDiscoveryService",
+      var fields = PrivateInvoke.GetNonPublicStaticField (typeof (ContextAwareTypeUtility), "s_fields");
+      Assertion.IsNotNull (fields);
+      PrivateInvoke.SetPublicField (
+          fields,
+          "DefaultTypeDiscoveryService",
           new Lazy<ITypeDiscoveryService> (() => TypeDiscoveryConfiguration.Current.CreateTypeDiscoveryService()));
-      PrivateInvoke.SetNonPublicStaticField (
-          typeof (ContextAwareTypeUtility),
-          "s_defaultTypeResolutionService",
+      PrivateInvoke.SetPublicField (
+          fields,
+          "DefaultTypeResolutionService",
           new Lazy<ITypeResolutionService> (() => TypeResolutionConfiguration.Current.CreateTypeResolutionService()));
       TypeDiscoveryConfiguration.SetCurrent (new TypeDiscoveryConfiguration());
       TypeResolutionConfiguration.SetCurrent (new TypeResolutionConfiguration (new DefaultTypeResolutionService()));
@@ -58,13 +62,15 @@ namespace Remotion.UnitTests.Reflection
     [TearDown]
     public void TearDown ()
     {
-      PrivateInvoke.SetNonPublicStaticField (
-          typeof (ContextAwareTypeUtility),
-          "s_defaultTypeDiscoveryService",
+      var fields = PrivateInvoke.GetNonPublicStaticField (typeof (ContextAwareTypeUtility), "s_fields");
+      Assertion.IsNotNull (fields);
+      PrivateInvoke.SetPublicField (
+          fields,
+          "DefaultTypeDiscoveryService",
           new Lazy<ITypeDiscoveryService> (() => _oldTypeDiscoveryService));
-      PrivateInvoke.SetNonPublicStaticField (
-          typeof (ContextAwareTypeUtility),
-          "s_defaultTypeResolutionService",
+      PrivateInvoke.SetPublicField (
+          fields,
+          "DefaultTypeResolutionService",
           new Lazy<ITypeResolutionService> (() => _oldTypeResolutionService));
 
       TypeDiscoveryConfiguration.SetCurrent (_oldTypeDiscoveryConfiguration);

@@ -154,7 +154,7 @@ namespace Remotion.Data.DomainObjects
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
-      return TypeExtensions.CanAscribeTo (type, typeof (ObjectList<>));
+      return type.CanAscribeTo (typeof (ObjectList<>));
     }
 
     /// <summary>
@@ -262,7 +262,7 @@ namespace Remotion.Data.DomainObjects
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
-      var typeParameters = TypeExtensions.GetAscribedGenericArguments (type, typeof (ObjectList<>));
+      var typeParameters = type.GetAscribedGenericArguments (typeof (ObjectList<>));
       var typeParameter = typeParameters[0];
       if (typeParameter.IsGenericParameter)
         return null;
@@ -284,7 +284,7 @@ namespace Remotion.Data.DomainObjects
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
-      var typeParameters = TypeExtensions.GetAscribedGenericArguments (type, typeof (IObjectList<>));
+      var typeParameters = type.GetAscribedGenericArguments (typeof (IObjectList<>));
       var typeParameter = typeParameters[0];
       if (typeParameter.IsGenericParameter)
         return null;

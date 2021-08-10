@@ -5,6 +5,7 @@
   </PropertyGroup>
   <Import Project="..\..\..\Build\Shared.build.props" />
   <PropertyGroup>
+    <TargetFrameworks>net48</TargetFrameworks>
     <AssemblyTitle>re-motion Security Metadata Export MSBuild Tasks</AssemblyTitle>
     <Description>MSBuild tasks for extracting an assembly's security metadata.</Description>
     <AssemblyName>Remotion.Security.MSBuild.Tasks</AssemblyName>

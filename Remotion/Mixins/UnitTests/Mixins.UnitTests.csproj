@@ -3,6 +3,7 @@
   <PropertyGroup>
     <ProjectType>Test</ProjectType>
     <ProductType>Mixins</ProductType>
+    <UseWebForms>true</UseWebForms>
   </PropertyGroup>
   <Import Project="..\..\..\Build\Shared.build.props" />
   <PropertyGroup>
@@ -22,9 +23,6 @@
   <ItemGroup>
     <PackageReference Include="CoreRhinoMocks" Version="3.6.1.2" PrivateAssets="all" />
     <PackageReference Include="Remotion.TypePipe.Development" Version="3.0.0-alpha.1" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Web" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

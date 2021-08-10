@@ -34,6 +34,10 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
 #endif
   public class AssemblyFinderIntegrationTest
   {
+#if !NETFRAMEWORK
+    private delegate void CrossAppDomainDelegate();
+#endif
+
     private const string c_testAssemblySourceDirectoryRoot = @"Reflection\TypeDiscovery\TestAssemblies";
     private AssemblyCompilerBuildOutputManager _baseDirectoryBuildOutputManager;
     private AssemblyCompilerBuildOutputManager _dynamicDirectoryBuildOutputManager;
@@ -227,6 +231,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
 
     private void ExecuteInSeparateAppDomain (CrossAppDomainDelegate test)
     {
+#if NETFRAMEWORK
       AppDomain appDomain = null;
 
       try
@@ -247,6 +252,9 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
         if (appDomain != null)
           AppDomain.Unload (appDomain);
       }
+#else
+      throw new PlatformNotSupportedException ("This API is not supported on the current platform.");
+#endif
     }
 
     private void InitializeDynamicDirectory ()

@@ -18,8 +18,10 @@ using System;
 using System.Threading;
 using Moq;
 using NUnit.Framework;
+using Remotion.Development.Web.UnitTesting.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates;
 using Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates.ExecuteExternalByRedirect;
+using Remotion.Web.UnitTests.Core.Utilities;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStepExecutionStates.ExecuteExternalByRedirect
 {
@@ -46,7 +48,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
     public void ExecuteSubFunction_GoesToExecutingSubFunction ()
     {
       var sequence = new MockSequence();
-      ResponseMock.InSequence (sequence).Setup (mock => mock.Redirect ("~/destination.wxe")).Callback ((string url) => Thread.CurrentThread.Abort ()).Verifiable();
+      ResponseMock.InSequence (sequence).Setup (mock => mock.Redirect ("~/destination.wxe")).Callback ((string url) => WxeThreadAbortHelper.Abort ()).Verifiable();
       ExecutionStateContextMock.InSequence (sequence)
           .Setup (mock => mock.SetExecutionState (It.IsNotNull<PostProcessingSubFunctionState>()))
           .Callback ((IExecutionState executionState) => CheckExecutionState ((PostProcessingSubFunctionState) executionState))
@@ -59,7 +61,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
       }
       catch (ThreadAbortException)
       {
-        Thread.ResetAbort();
+        WxeThreadAbortHelper.ResetAbort();
       }
 
       VerifyAll();

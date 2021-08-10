@@ -89,10 +89,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       Assert.That (
           () => new PropertyValue (propertyDefinition, null),
           Throws.InstanceOf<NotSupportedException>()
-              .With.Message.Matches (
-                  @"The property 'test' \(declared on class 'ClassName'\) is invalid because its values cannot be copied\. "
+              .With.Message.EqualTo (
+                  @"The property 'test' (declared on class 'ClassName') is invalid because its values cannot be copied. "
                   + @"Only value types, strings, the Type type, byte arrays, types implementing IStructualEquatable, and ObjectIDs are currently supported, but the property's type is "
-                  + @"'System\.Collections\.Generic\.List`1\[\[System\.Object, mscorlib, Version=*"));
+                  + @"'System.Collections.Generic.List`1[[" + typeof (object).AssemblyQualifiedName + "]]'."));
     }
 
     [Test]
