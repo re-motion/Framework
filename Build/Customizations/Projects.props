@@ -229,14 +229,14 @@
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Validation.UnitTests\ObjectBinding.Web.Validation.UnitTests.csproj">
       <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
-    <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Development.WebTesting.IntegrationTests\ObjectBinding.Web.Development.WebTesting.IntegrationTests.csproj">
-      <TestConfiguration>$(WebtestingTestConfiguration)</TestConfiguration>
-      <TestSetupBuildFile>$(TestSetupBuildFileForWebTest)</TestSetupBuildFile>
-    </IntegrationTestProjectFiles>
-    <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.IntegrationTests\ObjectBinding.Web.IntegrationTests.csproj">
-      <TestConfiguration>$(WebtestingTestConfiguration)</TestConfiguration>
-      <TestSetupBuildFile>$(TestSetupBuildFileForWebTest)</TestSetupBuildFile>
-    </IntegrationTestProjectFiles>
+<!--    <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Development.WebTesting.IntegrationTests\ObjectBinding.Web.Development.WebTesting.IntegrationTests.csproj">-->
+<!--      <TestConfiguration>$(WebtestingTestConfiguration)</TestConfiguration>-->
+<!--      <TestSetupBuildFile>$(TestSetupBuildFileForWebTest)</TestSetupBuildFile>-->
+<!--    </IntegrationTestProjectFiles>-->
+<!--    <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.IntegrationTests\ObjectBinding.Web.IntegrationTests.csproj">-->
+<!--      <TestConfiguration>$(WebtestingTestConfiguration)</TestConfiguration>-->
+<!--      <TestSetupBuildFile>$(TestSetupBuildFileForWebTest)</TestSetupBuildFile>-->
+<!--    </IntegrationTestProjectFiles>-->
 
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Security\Core\Security.Core.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Security\Metadata.Extractor\Security.Metadata.Extractor.csproj"/>
@@ -262,15 +262,15 @@
       <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
 
-    <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.WebTesting.IntegrationTests\Web.Development.WebTesting.IntegrationTests.csproj">
-      <TestConfiguration>$(WebtestingTestConfiguration)</TestConfiguration>
-      <TestSetupBuildFile>$(TestSetupBuildFileForWebTest)</TestSetupBuildFile>
-    </IntegrationTestProjectFiles>
+<!--    <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.WebTesting.IntegrationTests\Web.Development.WebTesting.IntegrationTests.csproj">-->
+<!--      <TestConfiguration>$(WebtestingTestConfiguration)</TestConfiguration>-->
+<!--      <TestSetupBuildFile>$(TestSetupBuildFileForWebTest)</TestSetupBuildFile>-->
+<!--    </IntegrationTestProjectFiles>-->
 
-    <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\Web\IntegrationTests\Web.IntegrationTests.csproj">
-      <TestConfiguration>$(WebtestingTestConfiguration)</TestConfiguration>
-      <TestSetupBuildFile>$(TestSetupBuildFileForWebTest)</TestSetupBuildFile>
-    </IntegrationTestProjectFiles>
+<!--    <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\Web\IntegrationTests\Web.IntegrationTests.csproj">-->
+<!--      <TestConfiguration>$(WebtestingTestConfiguration)</TestConfiguration>-->
+<!--      <TestSetupBuildFile>$(TestSetupBuildFileForWebTest)</TestSetupBuildFile>-->
+<!--    </IntegrationTestProjectFiles>-->
 
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Integration\Domain\Integration.Domain.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Integration\Web\Integration.Web.csproj"/>
