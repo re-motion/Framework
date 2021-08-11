@@ -1,0 +1,14 @@
+<Project>
+
+  <Import Project="WebLibrary.props" />
+
+  <PropertyGroup>
+    <UseWebForms>true</UseWebForms>
+    <TargetFrameworks>net5.0-windows</TargetFrameworks>
+    <OutputPath>bin</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <IsPackable>false</IsPackable>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+</Project>
