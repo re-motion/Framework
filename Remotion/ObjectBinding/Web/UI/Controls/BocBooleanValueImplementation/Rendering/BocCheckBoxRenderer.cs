@@ -42,8 +42,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
     private readonly ILabelReferenceRenderer _labelReferenceRenderer;
     private readonly IValidationErrorRenderer _validationErrorRenderer;
 
-    private const string c_trueIcon = "CheckBoxTrue.gif";
-    private const string c_falseIcon = "CheckBoxFalse.gif";
+    private const string c_trueIcon = "sprite.svg#CheckBoxTrue";
+    private const string c_falseIcon = "sprite.svg#CheckBoxFalse";
 
     private static readonly string s_startUpScriptKey = typeof (BocCheckBoxRenderer).GetFullNameChecked() + "_Startup";
 

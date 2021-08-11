@@ -49,22 +49,22 @@ namespace Remotion.Web.UI.Controls
 
     #region private const string c_nodeIcon...
 
-    private const string c_nodeIconF = "TreeViewF.gif";
-    private const string c_nodeIconFMinus = "TreeViewFMinus.gif";
-    private const string c_nodeIconFPlus = "TreeViewFPlus.gif";
-    private const string c_nodeIconI = "TreeViewI.gif";
-    private const string c_nodeIconL = "TreeViewL.gif";
-    private const string c_nodeIconLMinus = "TreeViewLMinus.gif";
-    private const string c_nodeIconLPlus = "TreeViewLPlus.gif";
-    private const string c_nodeIconMinus = "TreeViewMinus.gif";
-    private const string c_nodeIconPlus = "TreeViewPlus.gif";
-    private const string c_nodeIconR = "TreeViewR.gif";
-    private const string c_nodeIconRMinus = "TreeViewRMinus.gif";
-    private const string c_nodeIconRPlus = "TreeViewRPlus.gif";
-    private const string c_nodeIconT = "TreeViewT.gif";
-    private const string c_nodeIconTMinus = "TreeViewTMinus.gif";
-    private const string c_nodeIconTPlus = "TreeViewTPlus.gif";
-    private const string c_nodeIconWhite = "TreeViewWhite.gif";
+    private const string c_nodeIconF = "sprite.svg#TreeViewF";
+    private const string c_nodeIconFMinus = "sprite.svg#TreeViewFMinus";
+    private const string c_nodeIconFPlus = "sprite.svg#TreeViewFPlus";
+    private const string c_nodeIconI = "sprite.svg#TreeViewI";
+    private const string c_nodeIconL = "sprite.svg#TreeViewL";
+    private const string c_nodeIconLMinus = "sprite.svg#TreeViewLMinus";
+    private const string c_nodeIconLPlus = "sprite.svg#TreeViewLPlus";
+    private const string c_nodeIconMinus = "sprite.svg#TreeViewMinus";
+    private const string c_nodeIconPlus = "sprite.svg#TreeViewPlus";
+    private const string c_nodeIconR = "sprite.svg#TreeViewR";
+    private const string c_nodeIconRMinus = "sprite.svg#TreeViewRMinus";
+    private const string c_nodeIconRPlus = "sprite.svg#TreeViewRPlus";
+    private const string c_nodeIconT = "sprite.svg#TreeViewT";
+    private const string c_nodeIconTMinus = "sprite.svg#TreeViewTMinus";
+    private const string c_nodeIconTPlus = "sprite.svg#TreeViewTPlus";
+    private const string c_nodeIconWhite = "sprite.svg#TreeViewWhite";
 
     #endregion
 

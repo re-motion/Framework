@@ -23,7 +23,8 @@ span.bocAutoCompleteReferenceValue input
 
 span.bocAutoCompleteReferenceValue input.error
 {
-  background-image: url('../Image/AutoCompleteReferenceValueErrorIndicator.gif');
+  background-image: url('../Image/sprite.svg#AutoCompleteReferenceValueErrorIndicator');
+  background-size: 16px 16px;
   background-position: right center;
   background-repeat: no-repeat;
 }
@@ -69,7 +70,8 @@ span.bocAutoCompleteReferenceValueButton img
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  background-image: url('../Image/AutoCompleteReferenceValueDropDownButtonFace.gif');
+  background-image: url('../Image/sprite.svg#AutoCompleteReferenceValueDropDownButtonFace');
+  background-size: 60px 99px;
   background-position: 0 center; /*-1px for border*/
   background-repeat: no-repeat;
 }

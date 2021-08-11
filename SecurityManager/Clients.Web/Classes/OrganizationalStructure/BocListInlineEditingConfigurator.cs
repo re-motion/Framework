@@ -64,9 +64,9 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
           new BocRowEditModeColumnDefinition
           {
               Width = Unit.Pixel (40),
-              EditIcon = GetIcon ("EditItem.gif", GlobalResourcesHelper.GetString (_globalizationService, GlobalResources.Edit)),
-              SaveIcon = GetIcon("ApplyButton.gif", GlobalResourcesHelper.GetString (_globalizationService, GlobalResources.Apply)),
-              CancelIcon = GetIcon("CancelButton.gif", GlobalResourcesHelper.GetString (_globalizationService, GlobalResources.Cancel))
+              EditIcon = GetIcon ("sprite.svg#EditItem", GlobalResourcesHelper.GetString (_globalizationService, GlobalResources.Edit)),
+              SaveIcon = GetIcon("sprite.svg#ApplyButton", GlobalResourcesHelper.GetString (_globalizationService, GlobalResources.Apply)),
+              CancelIcon = GetIcon("sprite.svg#CancelButton", GlobalResourcesHelper.GetString (_globalizationService, GlobalResources.Cancel))
           });
 
       bocList.EditableRowChangesCanceled += HandleEditableRowChangesCanceled;

@@ -56,7 +56,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
       base.OnInit (e);
 
       DeleteStateDefinitionButton.Icon = new IconInfo (
-          ResourceUrlFactory.CreateThemedResourceUrl (typeof (EditStateCombinationControl), ResourceType.Image, "DeleteItem.gif").GetUrl());
+          ResourceUrlFactory.CreateThemedResourceUrl (typeof (EditStateCombinationControl), ResourceType.Image, "sprite.svg#DeleteItem").GetUrl());
       DeleteStateDefinitionButton.Icon.AlternateText =
           GetResourceManager (typeof (ResourceIdentifier)).GetString (ResourceIdentifier.DeleteStateCombinationButtonText);
     }

@@ -38,10 +38,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       where TBocColumnDefinition : BocColumnDefinition
   {
     /// <summary>Filename of the image used to indicate an ascending sort order of the column in its title cell.</summary>
-    protected const string c_sortAscendingIcon = "SortAscending.gif";
+    protected const string c_sortAscendingIcon = "sprite.svg#SortAscending";
 
     /// <summary>Filename of the image used to indicate an descending sort order of the column in its title cell.</summary>
-    protected const string c_sortDescendingIcon = "SortDescending.gif";
+    protected const string c_sortDescendingIcon = "sprite.svg#SortDescending";
 
     /// <summary>Entity definition for whitespace separating controls, e.g. icons from following text</summary>
     protected const string c_whiteSpace = "&nbsp;";

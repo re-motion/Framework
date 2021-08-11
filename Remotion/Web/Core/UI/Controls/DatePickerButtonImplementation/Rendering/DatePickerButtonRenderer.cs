@@ -60,7 +60,7 @@ namespace Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering
 
 
     private const string c_datePickerPopupForm = "DatePickerForm.aspx";
-    private const string c_datePickerIcon = "DatePicker.gif";
+    private const string c_datePickerIcon = "sprite.svg#DatePicker";
 
     /// <summary>
     /// Renders a click-enabled image that shows a <see cref="DatePickerPage"/> on click, which puts the selected value

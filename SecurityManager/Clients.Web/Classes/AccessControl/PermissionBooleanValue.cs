@@ -31,9 +31,9 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
 
       return new BocBooleanValueResourceSet (
           "Permission",
-          resourceUrlFactory.CreateThemedResourceUrl (typeof (PermissionBooleanValue), ResourceType.Image, "PermissionGranted.gif").GetUrl(),
-          resourceUrlFactory.CreateThemedResourceUrl (typeof (PermissionBooleanValue), ResourceType.Image, "PermissionDenied.gif").GetUrl(),
-          resourceUrlFactory.CreateThemedResourceUrl (typeof (PermissionBooleanValue), ResourceType.Image, "PermissionUndefined.gif").GetUrl(),
+          resourceUrlFactory.CreateThemedResourceUrl (typeof (PermissionBooleanValue), ResourceType.Image, "sprite.svg#PermissionGranted").GetUrl(),
+          resourceUrlFactory.CreateThemedResourceUrl (typeof (PermissionBooleanValue), ResourceType.Image, "sprite.svg#PermissionDenied").GetUrl(),
+          resourceUrlFactory.CreateThemedResourceUrl (typeof (PermissionBooleanValue), ResourceType.Image, "sprite.svg#PermissionUndefined").GetUrl(),
           "Granted",
           "Denied",
           "Undefined"

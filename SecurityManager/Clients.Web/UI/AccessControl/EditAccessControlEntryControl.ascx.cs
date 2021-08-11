@@ -111,21 +111,21 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
           {
               ItemID = c_clearAllMenuItemID,
               Text = resourceManager.GetString (ResourceIdentifier.AllPermissionsMenu_ClearAllPermissions_Text),
-              Icon = new IconInfo (GetIconUrl ("PermissionUndefined.gif").GetUrl())
+              Icon = new IconInfo (GetIconUrl ("sprite.svg#PermissionUndefined").GetUrl())
           });
       AllPermisionsMenu.MenuItems.Add (
           new WebMenuItem
           {
               ItemID = c_grantAllMenuItemID,
               Text = resourceManager.GetString (ResourceIdentifier.AllPermissionsMenu_GrantAllPermissions_Text),
-              Icon = new IconInfo (GetIconUrl ("PermissionGranted.gif").GetUrl())
+              Icon = new IconInfo (GetIconUrl ("sprite.svg#PermissionGranted").GetUrl())
           });
       AllPermisionsMenu.MenuItems.Add (
           new WebMenuItem
           {
               ItemID = c_denyAllMenuItemID,
               Text = resourceManager.GetString (ResourceIdentifier.AllPermissionsMenu_DenyAllPermissions_Text),
-              Icon = new IconInfo (GetIconUrl ("PermissionDenied.gif").GetUrl())
+              Icon = new IconInfo (GetIconUrl ("sprite.svg#PermissionDenied").GetUrl())
           });
       AllPermisionsMenu.EventCommandClick += AllPermisionsMenu_EventCommandClick;
 
@@ -177,19 +177,19 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
       DetailsCell.Attributes.Add ("colspan", (4 + _permissionControls.Count + 3).ToString());
 
-      DeleteAccessControlEntryButton.Icon = new IconInfo (GetIconUrl ("DeleteItem.gif").GetUrl());
+      DeleteAccessControlEntryButton.Icon = new IconInfo (GetIconUrl ("sprite.svg#DeleteItem").GetUrl());
 
       DeleteAccessControlEntryButton.Icon.AlternateText = resourceManager.GetString (ResourceIdentifier.DeleteAccessControlEntryButtonText);
 
       if (IsCollapsed)
       {
-        ToggleAccessControlEntryButton.Icon.Url = GetIconUrl ("Expand.gif").GetUrl();
+        ToggleAccessControlEntryButton.Icon.Url = GetIconUrl ("sprite.svg#Expand").GetUrl();
         ToggleAccessControlEntryButton.Icon.AlternateText = resourceManager.GetString (ResourceIdentifier.ExpandAccessControlEntryButtonText);
         DetailsView.Visible = false;
       }
       else
       {
-        ToggleAccessControlEntryButton.Icon.Url = GetIconUrl ("Collapse.gif").GetUrl();
+        ToggleAccessControlEntryButton.Icon.Url = GetIconUrl ("sprite.svg#Collapse").GetUrl();
         ToggleAccessControlEntryButton.Icon.AlternateText = resourceManager.GetString (ResourceIdentifier.CollapseAccessControlEntryButtonText);
         DetailsView.Visible = true;
       }
