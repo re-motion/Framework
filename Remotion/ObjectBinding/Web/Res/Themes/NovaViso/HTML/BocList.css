@@ -75,6 +75,20 @@ div.bocListNavigator img
   vertical-align: -0.1em;
 }
 
+div.bocListNavigator a[id$="_First"] img,
+div.bocListNavigator a[id$="_Last"] img
+{
+  height: 13px;
+  width: 15px;
+}
+
+div.bocListNavigator a[id$="_Previous"] img,
+div.bocListNavigator a[id$="_Next"] img
+{
+  height: 13px;
+  width: 8px;
+}
+
 div.bocListNavigator a[href]:focus img,
 div.bocListNavigator a[href]:hover img,
 div.bocListNavigator a[href]:active img
@@ -275,6 +289,12 @@ th.bocListTitleCell > a[href]:active
   color: Black;
   border: solid 1px #569CE0;
   background-color: #C5E0FC;
+}
+
+th.bocListTitleCell .bocListSortingOrder img
+{
+  height: 8px;
+  width: 13px;
 }
 
 th.bocListTitleCell > a[href]:focus .bocListSortingOrder img,
@@ -510,11 +530,19 @@ span.bocListAvailableViewsListLabel
 .bocList .validationRequiredMarker
 {
   vertical-align: -0.3em;
+  height: 17px;
+  width: 12px;
 }
 
 .bocList .validationErrorMarker
 {
   padding-top: 0.1em;
+}
+
+.bocList .validationErrorMarker > img
+{
+  height: 17px;
+  width: 12px;
 }
 
 /*  Style applied to the validation messages, applied if the EditDetailsValidator has no style it self.  */

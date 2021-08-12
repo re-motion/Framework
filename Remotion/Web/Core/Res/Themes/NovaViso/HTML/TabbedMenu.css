@@ -79,7 +79,8 @@ div.tabbedMainMenu span.tabStripTab a
   border-bottom: 1px solid #AAAAAA;
   border-left: none;
   background-color: #DDDDDD;
-  background-image: url(../Image/TabbedMenuTabBackground.gif);
+  background-image: url(../Image/sprite.svg#TabbedMenuTabBackground);
+  background-size: 1px 33px;
   background-repeat: repeat-x;
   background-position: center;
   color: Black;
@@ -93,7 +94,8 @@ div.tabbedMainMenu span.tabStripTab a:hover,
 div.tabbedMainMenu span.tabStripTab a:active
 {
   background-color: #FEFFFF;
-  background-image: url(../Image/TabbedMenuTabBackgroundHover.gif);
+  background-image: url(../Image/sprite.svg#TabbedMenuTabBackgroundHover);
+  background-size: 1px 33px;
   background-repeat: repeat-x;
   background-position: top;
   color: Black;
