@@ -2,39 +2,70 @@
 
 .bocCheckBox
 {
-  margin-right: 0.5em;
-  vertical-align: middle;
-  display: inline-block;
+  margin-right: calc(1.25 * var(--remotion-themed-padding));
   white-space: nowrap;
-}
-
-.bocCheckBox.readOnly
-{
-}
-
-.bocCheckBox.disabled
-{
 }
 
 .bocCheckBox input
 {
-  margin-left: 4px;
-  margin-right: 3px;
-  padding: 0px;
-  vertical-align: -0.1em;
+  position: absolute;
+  z-index: -1;
 }
 
-.bocCheckBox span + span
+.bocCheckBox > span:last-child
 {
-  vertical-align: middle;
+  display: inline-flex;
+  align-items: center;
 }
 
-.bocCheckBox img
+.bocCheckBox img,
+.bocCheckBox input + span::before
 {
-  margin-left: 0px;
-  margin-right: 0;
-  padding: 0px;
+  margin: 2px;
   vertical-align: middle;
-  height: 16px;
-  width: 16px;
+  height: 1.5em;
+  width: 1.5em;
+}
+
+.bocCheckBox input + span::before
+{
+  visibility: visible;
+  background-image: url('../Image/sprite.svg#CheckBoxFalse');
+  display: inline-block;
+  content: "";
+  z-index: 1;
+  position: relative;
+}
+
+.bocCheckBox input[checked] + span::before
+{
+  background-image: url('../Image/sprite.svg#CheckBoxTrue');
+}
+
+.bocCheckBox,
+.bocCheckBox > input + span
+{
+  display: flex;
+  align-items: center;
+}
+
+/* Fixes for element focus */
+
+.bocCheckBox span[role=checkbox]:focus
+{
+  outline: none;
+}
+
+.blink .bocCheckBox span[role=checkbox]:focus > img,
+.blink .bocCheckBox input:focus + span::before
+{
+  box-shadow: var(--chromium-box-shadow);
+  border-radius: var(--chromium-border-radius);
+}
+
+.mozilla .bocCheckBox span[role=checkbox]:focus > img,
+.mozilla .bocCheckBox input:focus + span::before
+{
+  box-shadow: var(--mozilla-box-shadow);
+  border-radius: var(--mozilla-border-radius);
 }

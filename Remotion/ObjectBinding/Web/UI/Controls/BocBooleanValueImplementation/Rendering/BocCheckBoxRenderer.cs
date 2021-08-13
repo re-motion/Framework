@@ -128,6 +128,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
           PrepareLabel (renderingContext, description, labelControl);
           labelControl.RenderControl (renderingContext.Writer);
         }
+        else
+        {
+          renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+          renderingContext.Writer.RenderEndTag();
+        }
       }
       else
       {
@@ -153,6 +158,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
         {
           PrepareLabel (renderingContext, description, labelControl);
           labelControl.RenderControl (renderingContext.Writer);
+        }
+        else
+        {
+          renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+          renderingContext.Writer.RenderEndTag();
         }
       }
 
