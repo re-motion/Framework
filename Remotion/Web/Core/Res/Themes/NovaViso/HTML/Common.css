@@ -31,6 +31,11 @@
   --remotion-themed-min-height: calc(var(--remotion-themed-line-height) + 2 * var(--remotion-themed-padding));
   --remotion-themed-multiline-min-height: calc(2 * var(--remotion-themed-line-height) + 2 * var(--remotion-themed-padding));
   --remotion-themed-control-width: 16em;
+  --chromium-box-shadow: 0 0 0 2px black;
+  --chromium-border-radius: 1px;
+  --mozilla-box-shadow: 0 0 0 2px royalblue;
+  --mozilla-border-radius: 1px;
+  --z-index-hidden: -1;
 }
 
 select option
