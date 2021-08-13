@@ -1,0 +1,70 @@
+/* Style applied to the BocCheckBox. */
+
+.bocCheckBox
+{
+  display: inline-flex;
+  align-items: center;
+  border: var(--remotion-themed-border-placeholder);
+  border-radius: var(--remotion-themed-border-radius);
+  box-sizing: border-box;
+}
+
+.bocCheckBox:not(.readOnly) input + span,
+.bocCheckBox.readOnly span[role=checkbox]
+{
+  display: inline-flex;
+  align-items: center;
+  margin-left: var(--remotion-themed-spacing);
+  margin-right: var(--remotion-themed-spacing);
+}
+
+.bocCheckBox:not(.readOnly) input + span:before
+{
+  min-height: unset;
+  height: var(--remotion-themed-img-width);
+  width: var(--remotion-themed-img-width);
+  border: unset;
+}
+
+.bocCheckBox:not(.readOnly) input:focus + span:before
+{
+  border: unset;
+  box-shadow: unset;
+}
+
+.bocCheckBox.readOnly span[role=checkbox]:focus
+{
+  outline: none;
+}
+
+.bocCheckBox span.description
+{
+  display: inline-flex;
+  align-items: center;
+  margin-right: var(--remotion-themed-spacing);
+}
+
+.bocCheckBox img
+{
+  height: var(--remotion-themed-img-width);
+  width: var(--remotion-themed-img-width);
+}
+
+.bocCheckBox:not(.readOnly, .disabled):focus-within
+{
+  background-color: var(--remotion-themed-background-color-focus);
+  border: var(--remotion-themed-border-focus);
+  box-shadow: var(--remotion-themed-box-shadow-focus);
+}
+
+.bocCheckBox.readOnly:focus-within
+{
+  border: var(--remotion-themed-border-readonly-focus);
+  background-color: var(--remotion-themed-background-color-readonly-focus);
+  box-shadow: var(--remotion-themed-box-shadow-readonly-focus);
+}
+
+.bocCheckBox.disabled span.description
+{
+  color: var(--color-disabled-text);
+}
