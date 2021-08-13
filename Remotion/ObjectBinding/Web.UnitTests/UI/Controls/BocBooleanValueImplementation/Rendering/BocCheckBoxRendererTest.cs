@@ -285,31 +285,33 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
         Html.AssertAttribute (valueSpan, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
 
         CheckImage (value, valueSpan, spanText);
+        CheckCheckBoxVisualizer (outerSpan);
 
         AssertValidationErrors (outerSpan);
       }
       else
       {
         CheckInput (value, outerSpan);
+        CheckCheckBoxVisualizer (outerSpan);
 
         AssertValidationErrors (outerSpan);
       }
 
       if (_checkbox.Object.IsDescriptionEnabled)
       {
-        var label = Html.GetAssertedChildElement (outerSpan, "span", 1);
+        var label = Html.GetAssertedChildElement (outerSpan, "span", 2);
         Html.AssertAttribute (label, "id", c_clientID + "_Description");
         Html.AssertTextNode (label, spanText, 0);
       }
       else
       {
-        Html.AssertChildElementCount (outerSpan, 1);
+        Html.AssertChildElementCount (outerSpan, 2);
       }
     }
 
     private void AssertValidationErrors (XmlNode node)
     {
-      var validationErrorsSpan = node.GetAssertedChildElement ("fake", 2);
+      var validationErrorsSpan = node.GetAssertedChildElement ("fake", 3);
 
       Html.AssertAttribute (validationErrorsSpan, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
       Html.AssertAttribute (validationErrorsSpan, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
@@ -348,6 +350,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       Html.AssertNoAttribute (image, "id");
       Html.AssertAttribute (image, "src", string.Format ("/sprite.svg#CheckBox{0}", value), HtmlHelper.AttributeValueCompareMode.Contains);
       Html.AssertAttribute (image, "alt", altText);
+    }
+
+    private void CheckCheckBoxVisualizer (XmlNode outerSpan)
+    {
+      var checkBoxVisualizerSpan = outerSpan.GetAssertedChildElement ("span", 1);
+      checkBoxVisualizerSpan.AssertAttributeValueEquals ("class", "checkbox-visualizer");
     }
 
     private void CheckCssClass (XmlNode outerSpan)
