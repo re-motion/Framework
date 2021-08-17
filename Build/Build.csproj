@@ -90,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="GlobalFacetManifest.xml" />
+    <Content Include="GlobalFacetManifest.NetFramework.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\NuGet.for.MSBuild.1.4.3\build\NuGet.for.MSBuild.targets" Condition="Exists('..\packages\NuGet.for.MSBuild.1.4.3\build\NuGet.for.MSBuild.targets')" />
