@@ -1,0 +1,67 @@
+/* Style applied to the BocTextValue. */
+
+span.bocTextValue
+{
+  min-height: var(--remotion-themed-singleline-min-height);
+  width: var(--remotion-themed-control-width);
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+span.bocTextValue textarea
+{
+  resize: none;
+  /* Otherwise the textarea is slighty offset in Firefox since a margin is added there. */
+  margin: 0;
+}
+
+.bocTextValue.readOnly
+{
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+}
+
+span.bocTextValue .content,
+span.bocTextValue input,
+span.bocTextValue textarea
+{
+  box-sizing: border-box;
+  height: 100%;
+  width: 100%;
+}
+
+.bocTextValue.readOnly .content span[tabindex]
+{
+  min-height: var(--remotion-themed-singleline-min-height);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  padding: var(--remotion-themed-control-padding-readonly);
+  border: var(--remotion-themed-border-readonly);
+  border-radius: var(--remotion-themed-border-radius);
+}
+
+.bocTextValue.readOnly .content span[tabindex]:focus-visible
+{
+  outline: none;
+  border: var(--remotion-themed-border-readonly-focus);
+  background-color: var(--remotion-themed-background-color-readonly-focus);
+  box-shadow: var(--remotion-themed-box-shadow-readonly-focus);
+}
+
+.bocTextValue.readOnly .content span[tabindex]:empty
+{
+  /* Ensures that the keyboard focus of empty readonly values surrounds the entires width of the span. */
+  width: 100%;
+}
+
+.bocTextValue.readOnly .content span[tabindex]:empty:before
+{
+  /* Inserting a 'zero width space' unicode character as placeholder so that empty 
+    readonly values are not collapsed and can therefore visualize the keyboard focus. 
+    This also scales with the font size and min-height doesn't have to be set since
+    line height remains unchanged. */
+  content: "\200b";
+}
