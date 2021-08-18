@@ -3,90 +3,45 @@
 span.bocTextValue
 {
   width: 15em;
-  min-height: 1.7em;
   position: relative;
   display: inline-block;
   vertical-align: middle;
-  overflow: hidden;
-}
-
-.bocTextValue.readOnly
-{
-  min-height: 0;
-  /* Ensures that the outline is visible in Firefox. */
-  overflow: visible;
-}
-
-.bocTextValue.disabled
-{
-}
-
-span.bocTextValue .content
-{
-  position: absolute;
-  left: 0;
-  right: 6px;
-  width: auto;
-}
-
-.mozilla span.bocTextValue .content
-{
-  right: 8px;
-}
-
-.bocTextValue.readOnly .content
-{
-  position: static;
-}
-
-.bocTextValue.readOnly .content span[tabindex]
-{
-  /* Ensures that the outline is rendered outside of the space reserved for diacritic marks. */
-  display: inline-block;
-}
-
-.bocTextValue.readOnly .content span[tabindex]:first-child
-{
-  /* Ensures that diacritic marks can be rendered without being cut off. */
-  padding-top: 0.2em;
-}
-
-.bocTextValue.readOnly .content span[tabindex]:last-child
-{
-  /* Ensures that diacritic marks can be rendered without being cut off. */
-  padding-bottom: 0.2em;
-}
-
-.bocTextValue.readOnly .content span[tabindex]:empty
-{
-  /* Ensures that empty readonly values are not collapsed and can therefor visualize the keyboard focus */
-  width: calc(100% - 2px);
-  min-height: 1.5em;
-  padding-top: 0;
-  padding-bottom: 0;
-  vertical-align: -0.2em;
-}
-
-span.bocTextValue input
-{
-  width: 100%;
 }
 
 span.bocTextValue textarea
 {
-  width: 100%;
+  resize: none;
+  /* Otherwise the textarea is slighty offset in Firefox since a margin is added there. */
+  margin: 0;
+}
+
+.bocTextValue.readOnly span
+{
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+}
+
+span.bocTextValue .content,
+span.bocTextValue input,
+span.bocTextValue textarea
+{
+  box-sizing: border-box;
   height: 100%;
-  display: inline-block;
+  width: 100%;
 }
 
-span.bocTextValue input
+.bocTextValue.readOnly .content span[tabindex]:empty
 {
-  height: 1.2em;
-  line-height: 1em;
+  /* Ensures that the keyboard focus of empty readonly values surrounds the entires width of the span. */
+  width: 100%;
 }
 
-.blink span.bocTextValue input
+.bocTextValue.readOnly .content span[tabindex]:empty:before
 {
-  padding-left: 1px;
-  padding-right: 1px;
+  /* Inserting a 'zero width space' unicode character as placeholder so that empty 
+    readonly values are not collapsed and can therefore visualize the keyboard focus. 
+    This also scales with the font size and min-height doesn't have to be set since
+    line height remains unchanged. */
+  content: "\200b";
 }
