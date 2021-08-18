@@ -12,11 +12,9 @@
   --color-indicator-warning: #DFAF00;
   --color-indicator-success: #4AD439;
   --color-indicator-normal: #23ADF8;
-
   --color-popup-scrollbar-track: #E3E3E3;
   --color-standard-scrollbar-track: #D3D3D3D3;
   --color-standard-background: #FFFFFF;
-
   --remotion-themed-border-radius: 2px;
   --remotion-themed-border-width: 1px;
   --remotion-themed-border: var(--remotion-themed-border-width) solid var(--color-standard-border);
@@ -24,6 +22,25 @@
   --remotion-themed-dropdown-scrollbar-border-radius: 10px;
   --remotion-themed-dropdown-scrollbar-width: 10px;
   --remotion-themed-scrollbar-width: 14px;
+  --remotion-themed-line-height: 1.2em;
+  --remotion-themed-padding: 0.4em;
+  --remotion-themed-min-height: calc(var(--remotion-themed-line-height) + 2 * var(--remotion-themed-padding));
+  --remotion-themed-multiline-min-height: calc(2 * var(--remotion-themed-line-height) + 2 * var(--remotion-themed-padding));
+}
+
+select option
+{
+  background-color: var(--color-standard-background);
+}
+
+input.remotion-themed,
+select.remotion-themed,
+span.remotion-themed,
+.remotion-themed input,
+.remotion-themed select,
+.remotion-themed span
+{
+  min-height: var(--remotion-themed-min-height);
 }
 
 input.remotion-themed,
@@ -35,6 +52,29 @@ select.remotion-themed,
 {
   border: var(--remotion-themed-border);
   border-radius: var(--remotion-themed-border-radius);
+}
+
+textarea.remotion-themed,
+.remotion-themed textarea
+{
+  min-height: var(--remotion-themed-multiline-min-height);
+  padding: var(--remotion-themed-padding);
+}
+
+a.remotion-themed,
+.remotion-themed a
+{
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+input[type="text"].remotion-themed,
+input[type="password"].remotion-themed,
+.remotion-themed input[type="text"],
+.remotion-themed input[type="password"]
+{
+  padding-left: var(--remotion-themed-padding);
+  padding-right: var(--remotion-themed-padding);
 }
 
 input.remotion-themed:hover,
@@ -60,11 +100,6 @@ select.remotion-themed:focus,
   background-color: var(--color-highlight);
 }
 
-select option
-{
-  background-color: var(--color-standard-background);
-}
-
 input.remotion-themed:disabled,
 textarea.remotion-themed:disabled,
 select.remotion-themed:disabled,
@@ -74,13 +109,6 @@ select.remotion-themed:disabled,
 {
   border: var(--remotion-themed-border);
   outline-style: none;
-}
-
-a.remotion-themed,
-.remotion-themed a
-{
-  color: var(--color-primary);
-  text-decoration: none;
 }
 
 a.remotion-themed:hover,
