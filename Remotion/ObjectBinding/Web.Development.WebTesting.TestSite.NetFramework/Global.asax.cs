@@ -26,11 +26,11 @@ using Remotion.Web;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls.Rendering;
 
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
+namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.NetFramework
 {
   public class Global : HttpApplication
   {
-    private static ResourceVirtualPathProvider s_resourceVirtualPathProvider;
+    private static ResourceVirtualPathProvider _resourceVirtualPathProvider;
 
     protected void Application_Start (object sender, EventArgs e)
     {
@@ -47,24 +47,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
 
     protected void Application_BeginRequest (Object sender, EventArgs e)
     {
-      s_resourceVirtualPathProvider.HandleBeginRequest();
-    }
-
-    protected void Application_PostRequestHandlerExecute (Object sender, EventArgs e)
-    {
-      var mimeType = GetMimeType (Path.GetExtension ((ReadOnlySpan<char>) Request.PhysicalPath));
-
-      if (mimeType != null)
-        Response.ContentType = mimeType;
-
-      static string GetMimeType (ReadOnlySpan<char> extension)
-      {
-        var svg = (ReadOnlySpan<char>) ".svg";
-        if (extension.Equals (svg, StringComparison.OrdinalIgnoreCase))
-          return "image/svg+xml";
-
-        return null;
-      }
+      _resourceVirtualPathProvider.HandleBeginRequest();
     }
 
     private static void SetObjectStorageProvider (string objectPath)
@@ -101,22 +84,22 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
       const string configuration = "Release";
 #endif
 
-      s_resourceVirtualPathProvider = new ResourceVirtualPathProvider (
+      _resourceVirtualPathProvider = new ResourceVirtualPathProvider (
           new[]
           {
-              new ResourcePathMapping ("Remotion.ObjectBinding.Sample/Image", @$"..\..\ObjectBinding\Sample\res\Image"),
-              new ResourcePathMapping ("Remotion.ObjectBinding.Web/Html", @$"..\..\ObjectBinding\Web.ClientScript\bin\{configuration}\dist"),
-              new ResourcePathMapping ("Remotion.ObjectBinding.Web/Themes", @"..\..\ObjectBinding\Web\res\Themes"),
-              new ResourcePathMapping ("Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared", @"..\..\ObjectBinding\Web.Development.WebTesting.TestSite.Shared"),
               new ResourcePathMapping ("Remotion.Web/Html/jquery-1.6.4.js", @"..\..\Web\Core\res\Html\jquery-1.6.4.js"),
               new ResourcePathMapping ("Remotion.Web/Html/jquery.iFrameShim.js", @"..\..\Web\Core\res\Html\jquery.iFrameShim.js"),
               new ResourcePathMapping ("Remotion.Web/Html", @$"..\..\Web\ClientScript\bin\{configuration}\dist"),
               new ResourcePathMapping ("Remotion.Web/Image", @"..\..\Web\Core\res\Image"),
               new ResourcePathMapping ("Remotion.Web/Themes", @"..\..\Web\Core\res\Themes"),
               new ResourcePathMapping ("Remotion.Web/UI", @"..\..\Web\Core\res\UI"),
+              new ResourcePathMapping ("Remotion.ObjectBinding.Sample/Image", @$"..\..\ObjectBinding\Sample\res\Image"),
+              new ResourcePathMapping ("Remotion.ObjectBinding.Web/Html", @$"..\..\ObjectBinding\Web.ClientScript\bin\{configuration}\dist"),
+              new ResourcePathMapping ("Remotion.ObjectBinding.Web/Themes", @"..\..\ObjectBinding\Web\res\Themes"),
+              new ResourcePathMapping ("Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared", @"..\..\ObjectBinding\Web.Development.WebTesting.TestSite.Shared"),
           },
           FileExtensionHandlerMapping.Default);
-      s_resourceVirtualPathProvider.Register();
+      _resourceVirtualPathProvider.Register();
     }
 
     private void SetRenderingFeatures (IRenderingFeatures renderingFeatures)

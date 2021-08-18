@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<Person xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" LastName="G" DateOfBirth="0001-01-01T00:00:00.0000000+01:00" Height="0" Gender="Male" MarriageStatus="Married" DateOfDeath="0001-01-01">
+  <Income>1000.5</Income>
+  <PartnerID>00000000-0000-0000-0000-000000000000</PartnerID>
+  <Deceased>false</Deceased>
+</Person>
