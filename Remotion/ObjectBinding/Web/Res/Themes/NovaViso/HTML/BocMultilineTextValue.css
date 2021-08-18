@@ -1,0 +1,77 @@
+/* Style applied to the BocMultilineTextValue. */
+
+span.bocMultilineTextValue
+{
+  width: var(--remotion-themed-control-width);
+  min-height: calc(3 * var(--remotion-themed-line-height) + 3 * var(--remotion-themed-spacing));
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+span.bocMultilineTextValue textarea
+{
+  resize: none;
+  /* Otherwise the textarea is slighty offset in Firefox since a margin is added there. */
+  margin: 0;
+}
+
+.bocMultilineTextValue.readOnly
+{
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  min-height: 0;
+}
+
+span.bocMultilineTextValue .content,
+span.bocMultilineTextValue textarea
+{
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+}
+
+span.bocMultilineTextValue .content
+{
+  position: absolute;
+}
+
+.bocMultilineTextValue.readOnly .content
+{
+  position: static;
+}
+
+.bocMultilineTextValue.readOnly .content span[tabindex]
+{
+  min-height: var(--remotion-themed-singleline-min-height);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  padding: var(--remotion-themed-control-padding-readonly);
+  border: var(--remotion-themed-border-readonly);
+  border-radius: var(--remotion-themed-border-radius);
+}
+
+.bocMultilineTextValue.readOnly .content span[tabindex]:focus-visible
+{
+  outline: none;
+  border: var(--remotion-themed-border-readonly-focus);
+  background-color: var(--remotion-themed-background-color-readonly-focus);
+  box-shadow: var(--remotion-themed-box-shadow-readonly-focus);
+}
+
+.bocMultilineTextValue.readOnly .content span[tabindex]:empty
+{
+  /* Ensures that the keyboard focus of empty readonly values surrounds the entires width of the span. */
+  width: 100%;
+}
+
+.bocMultilineTextValue.readOnly .content span[tabindex]:empty:before
+{
+  /* Inserting a 'zero width space' unicode character as placeholder so that empty 
+    readonly values are not collapsed and can therefore visualize the keyboard focus. 
+    This also scales with the font size and min-height doesn't have to be set since
+    line height remains unchanged. */
+  content: "\200b";
+}
