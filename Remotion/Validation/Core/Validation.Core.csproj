@@ -17,8 +17,5 @@
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
     <ProjectReference Include="..\..\Core\Reflection\Core.Reflection.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="System.ValueTuple" Version="4.3.0" />
-  </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>
