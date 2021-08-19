@@ -206,7 +206,7 @@ namespace Remotion.Web.UI.Controls
       HtmlGenericControl genericControl = new HtmlGenericControl (tag);
       if (!string.IsNullOrEmpty (cssClass))
         genericControl.Attributes["class"] = cssClass;
-      genericControl.InnerHtml = HtmlUtility.HtmlEncode (ValidationMessage);
+      genericControl.InnerHtml = WebString.CreateFromText (ValidationMessage).ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
       return genericControl;
     }
   }

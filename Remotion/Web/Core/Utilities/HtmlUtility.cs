@@ -16,38 +16,38 @@
 // 
 using System;
 using System.Text.RegularExpressions;
-using System.Web;
 using System.Web.UI;
 using JetBrains.Annotations;
+using Remotion.Obsolete;
 using Remotion.Utilities;
 
 namespace Remotion.Web.Utilities
 {
   public class HtmlUtility
   {
+    [Obsolete ("HtmlUtility.Format(string, params string[]) is obsolete. (Version 3.0.0)")]
     public static string Format (string htmlFormatString, params object[] nonHtmlParameters)
     {
       string[] htmlParameters = new string[nonHtmlParameters.Length];
       for (int i = 0; i < nonHtmlParameters.Length; ++i)
-        htmlParameters[i] = HtmlEncode (nonHtmlParameters[i].ToString());
+        htmlParameters[i] = WebString.CreateFromText (nonHtmlParameters[i].ToString()).ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
       return string.Format (htmlFormatString, (object[]) htmlParameters);
     }
 
+#if !NETFRAMEWORK
+    [Obsolete (
+        "HtmlUtility.HtmlEncode(string) is obsolete. Use WebString.CreateFromText(string).ToString(WebStringEncoding.HtmlWithTransformedLineBreaks) instead. (Version 3.0.0)",
+        DiagnosticId = ObsoleteDiagnosticIDs.HtmlUtility)]
+#endif
     public static string HtmlEncode (string nonHtmlString)
     {
-      string html = HttpUtility.HtmlEncode (nonHtmlString);
-      if (html != null)
-      {
-        html = html.Replace ("\r\n", "<br />");
-        html = html.Replace ("\n", "<br />");
-        html = html.Replace ("\r", "<br />");
-      }
-      return html;
+      return WebString.CreateFromText (nonHtmlString).ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
     }
 
+    [Obsolete ("HtmlUtility.HtmlEncode(string, HtmlTextWriter) is obsolete. Use WebString.CreateFromText(string).Write(HtmlTextWriter) instead. (Version 3.0.0)")]
     public static void HtmlEncode (string nonHtmlString, HtmlTextWriter writer)
     {
-      writer.Write (HtmlEncode (nonHtmlString));
+      WebString.CreateFromText (nonHtmlString).Write (writer);
     }
 
     private static readonly Regex s_stripHtmlTagsRegex = new Regex ("<.*?>", RegexOptions.Compiled);

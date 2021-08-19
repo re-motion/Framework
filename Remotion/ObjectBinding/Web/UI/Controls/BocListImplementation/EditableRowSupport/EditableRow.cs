@@ -25,6 +25,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Remotion.Utilities;
+using Remotion.Web;
 using Remotion.Web.UI;
 using Remotion.Web.Utilities;
 
@@ -485,7 +486,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
           else
             writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassEditModeValidationMessage);
           writer.RenderBeginTag (HtmlTextWriterTag.Div);
-          HtmlUtility.HtmlEncode (validator.ErrorMessage, writer);
+          WebString.CreateFromText (validator.ErrorMessage).Write (writer);
           writer.RenderEndTag();
         }
       }
