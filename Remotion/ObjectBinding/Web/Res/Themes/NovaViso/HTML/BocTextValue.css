@@ -2,7 +2,7 @@
 
 span.bocTextValue
 {
-  width: 15em;
+  width: var(--remotion-themed-control-width);
   position: relative;
   display: inline-block;
   vertical-align: middle;
