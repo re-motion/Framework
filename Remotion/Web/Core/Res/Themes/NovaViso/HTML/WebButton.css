@@ -2,108 +2,50 @@
 
 button.webButton
 {
-  background-color: Transparent;
-  cursor: hand;
+  background-color: var(--color-standard-background);
+  border: var(--remotion-themed-border-width) solid var(--color-primary);
+  border-radius: var(--remotion-themed-border-radius);
+  padding: var(--remotion-themed-padding) calc(3 * var(--remotion-themed-padding));
+  box-sizing: border-box;
   cursor: pointer;
-  text-decoration: none !important;
-  border: none;
-  position: relative;
-  display: inline-block;
-  vertical-align: middle;
-  padding: 0px 2px;
-  -moz-padding-start: 0;
-  -moz-padding-end: 0;
-  outline: none;
 }
 
-button.webButton::-moz-focus-inner
-{ 
-  border: 0;
+button.webButton:hover,
+button.webButton:focus
+{
+  background-color: var(--color-highlight);
+}
+
+button.webButton[disabled]
+{
+  background-color: var(--color-disabled-background);
+  color: var(--color-disabled-text);
+  border-color: var(--color-disabled-border);
+  cursor: unset;
 }
 
 button.webButton span.buttonBody
 {
-  border: solid 1px #AAAAAA;
-  font-weight: bold;
-  background-image: url(../Image/sprite.svg#ButtonBackground);
-  background-size: 1px 20px;
-  background-color: #E6E5E7;
-  background-position: center top;
-  background-repeat: repeat-x;
-  
-  display: block;
-  position: relative;
-  top: 0px;
-  left: -2px;
-  
-  width: 100%;
-  white-space: nowrap;
-
-  padding-top: 2px;
-  padding-bottom: 2px;
-  padding-left: 1px;
-  padding-right: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-button.webButton span.buttonBody:first-child::before
+button.webButton.primary
 {
-  content: "";
-  height: 1.25em;
-  width: 0;
-  display: inline-block;
-  vertical-align: text-bottom;
-}
-
-button.webButton span.buttonBody img
-{
-  vertical-align: bottom;
+  background-color: var(--color-primary);
+  color: var(--color-primary-text);
   border: none;
 }
 
-button.webButton:focus span.buttonBody,
-button.webButton:hover span.buttonBody
+button.webButton.primary:hover,
+button.webButton.primary:focus
 {
-  background-image: url(../Image/sprite.svg#ButtonBackgroundHover);
-  background-size: 1px 20px;
-  background-color: #DEECFC;
-  border: 1px solid #7CB2E6;
+  background-color: var(--color-primary-highlight);
 }
 
-button.webButton:focus span.buttonBody
+button.webButton.secondary
 {
-  text-decoration: underline;
-}
-
-button.webButton:active span.buttonBody
-{
-  background-image: url(../Image/sprite.svg#ButtonBackgroundActive);
-  background-size: 1px 20px;
-  background-color: #C5E0FC;
-  border: 1px solid #569CE0;
-}
-
-button.webButton[disabled] span.buttonBody,
-button.webButton[disabled]:hover span.buttonBody,
-button.webButton[disabled]:active span.buttonBody
-{
-  color: Gray;
-  border: solid 1px #BCBCBC;
-  background: none;
-  background-color: #EFEFF0;
-  cursor: default;
-}
-
-button.webButton[disabled] span.buttonBody img
-{
-  opacity: 0.4;
-  filter: progid:DXImageTransform.Microsoft.BasicImage(opacity=0.40),
-          progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
-}
-
-.mozilla button.webButton span.buttonBody
-{
-  left: 0;
-  width: unset;
-  padding-left: 3px;
-  padding-right: 3px;
+  background-color: transparent;
+  border: none;
 }
