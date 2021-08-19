@@ -2,8 +2,8 @@
 
 .bocCheckBox
 {
-  margin-right: calc(1.25 * var(--remotion-themed-padding));
-  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
 }
 
 .bocCheckBox input
@@ -12,22 +12,22 @@
   z-index: -1;
 }
 
-.bocCheckBox > span:last-child
+.bocCheckBox span.description
 {
   display: inline-flex;
   align-items: center;
 }
 
 .bocCheckBox img,
-.bocCheckBox input + span::before
+.bocCheckBox input ~ span.image-visualizer::before
 {
-  margin: 2px;
+  margin: var(--remotion-themed-padding);
   vertical-align: middle;
   height: 1.5em;
   width: 1.5em;
 }
 
-.bocCheckBox input + span::before
+.bocCheckBox input ~ span.image-visualizer::before
 {
   visibility: visible;
   background-image: url('../Image/sprite.svg#CheckBoxFalse');
@@ -37,16 +37,9 @@
   position: relative;
 }
 
-.bocCheckBox input[checked] + span::before
+.bocCheckBox input[checked] ~ span.image-visualizer::before
 {
   background-image: url('../Image/sprite.svg#CheckBoxTrue');
-}
-
-.bocCheckBox,
-.bocCheckBox > input + span
-{
-  display: flex;
-  align-items: center;
 }
 
 /* Fixes for element focus */

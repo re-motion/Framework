@@ -123,15 +123,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
         imageControl.RenderControl (renderingContext.Writer);
         renderingContext.Writer.RenderEndTag();
 
+        renderingContext.Writer.AddAttribute ("class", "image-visualizer");
+        renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+        renderingContext.Writer.RenderEndTag();
+
         if (renderingContext.Control.IsDescriptionEnabled)
         {
           PrepareLabel (renderingContext, description, labelControl);
           labelControl.RenderControl (renderingContext.Writer);
-        }
-        else
-        {
-          renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
-          renderingContext.Writer.RenderEndTag();
         }
       }
       else
@@ -154,15 +153,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
 
         checkBoxControl.RenderControl (renderingContext.Writer);
 
+        renderingContext.Writer.AddAttribute ("class", "image-visualizer");
+        renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+        renderingContext.Writer.RenderEndTag();
+
         if (renderingContext.Control.IsDescriptionEnabled)
         {
           PrepareLabel (renderingContext, description, labelControl);
           labelControl.RenderControl (renderingContext.Writer);
-        }
-        else
-        {
-          renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
-          renderingContext.Writer.RenderEndTag();
         }
       }
 
@@ -246,6 +244,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
 
     private void PrepareLabel (BocCheckBoxRenderingContext renderingContext, string description, Label labelControl)
     {
+      labelControl.CssClass = "description";
       labelControl.Text = description;
       labelControl.Width = Unit.Empty;
       labelControl.Height = Unit.Empty;
