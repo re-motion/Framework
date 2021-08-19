@@ -1,0 +1,24 @@
+/* Style applied to the WebButton. */
+
+button.webButton,
+input.webButton
+{
+  min-height: var(--remotion-themed-singleline-min-height);
+  padding: calc(var(--remotion-themed-spacing) - 2 * var(--remotion-themed-border-width)) var(--remotion-themed-spacing-large);
+  box-sizing: border-box;
+}
+
+button.webButton span.buttonBody
+{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: var(--remotion-themed-text-alignment-fix);
+  gap: var(--remotion-themed-spacing);
+  text-align: left;
+}
+
+button.webButton span.buttonBody > img
+{
+  align-self: start;
+}
