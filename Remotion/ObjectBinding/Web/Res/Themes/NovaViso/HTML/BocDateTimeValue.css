@@ -1,0 +1,116 @@
+/* Style applied to the BocDateTimeValue. */
+
+span.bocDateTimeValue,
+span.bocDateValue
+{
+  min-height: var(--remotion-themed-singleline-min-height);
+  width: var(--remotion-themed-control-width);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--remotion-themed-spacing);
+}
+
+span.bocDateTimeValue.readOnly
+{
+  /* decrease the distance between date and time values */
+  gap: unset;
+}
+
+span.bocDateTimeValue
+{
+  min-width: var(--remotion-themed-control-width);
+}
+
+span.bocDateValue
+{
+  min-width: 8em;
+}
+
+span.bocDateInputWrapper
+{
+  width: 100%;
+}
+
+span.bocDateInputWrapper input,
+span.bocTimeInputWrapper input
+{
+  box-sizing: border-box;
+  width: 100%;
+}
+
+span.bocTimeInputWrapper.bocTime24HoursWithSeconds input,
+span.bocTimeInputWrapper.bocTime24Hours input
+{
+  width: calc(4.3em + var(--remotion-themed-spacing) * 2);
+}
+
+span.bocTimeInputWrapper.bocTime12HoursWithSeconds input,
+span.bocTimeInputWrapper.bocTime12Hours input
+{
+  width: calc(6em + var(--remotion-themed-spacing) * 2);
+}
+
+span.bocDateTimeValue a,
+span.bocDateValue a
+{
+  display: flex;
+  align-items: center;
+}
+
+span.bocDateTimeValue a img,
+span.bocDateValue a img
+{
+  text-decoration: none;
+  height: 1.25em;
+  width: 1.25em;
+}
+
+span.bocDateTimeValue.disabled a,
+span.bocDateValue.disabled a
+{
+  cursor: unset;
+}
+
+.bocDateValue.readOnly span[tabindex],
+.bocDateTimeValue.readOnly span[tabindex]
+{
+  min-height: var(--remotion-themed-singleline-min-height);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  padding: var(--remotion-themed-control-padding-readonly);
+  border: var(--remotion-themed-border-readonly);
+  border-radius: var(--remotion-themed-border-radius);
+}
+
+.bocDateValue.readOnly span[tabindex]:focus-visible,
+.bocDateTimeValue.readOnly span[tabindex]:focus-visible
+{
+  outline: none;
+  border: var(--remotion-themed-border-readonly-focus);
+  background-color: var(--remotion-themed-background-color-readonly-focus);
+  box-shadow: var(--remotion-themed-box-shadow-readonly-focus);
+}
+
+span.bocDateTimeValue.readOnly span[tabindex]:not(:first-child)
+{
+  /* decrease the distance between date and time values */
+  margin-left: calc(-1 * var(--remotion-themed-spacing));
+}
+
+span.bocDateValue.readOnly span[tabindex]:empty,
+span.bocDateTimeValue.readOnly span[tabindex]:empty
+{
+  /* Ensures that the keyboard focus of empty readonly values surrounds the entires width of the span. */
+  width: 100%;
+}
+
+span.bocDateValue.readOnly span[tabindex]:empty:before,
+span.bocDateTimeValue.readOnly span[tabindex]:empty:before
+{
+  /* Inserting a 'zero width space' unicode character as placeholder so that empty
+  readonly values are not collapsed and can therefore visualize the keyboard focus.
+  This also scales with the font size and min-height doesn't have to be set since
+  line height remains unchanged. */
+  content: "\200b";
+}
