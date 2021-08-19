@@ -2,12 +2,16 @@
 {
   --color-primary: #0C6594;
   --color-primary-highlight: #218FC9;
+  --color-primary-text: white;
   --color-highlight: #DEF3FE;
   --color-contrast-separator: #C4C4C4;
   --color-standard-separator: #E1E1E1;
   --color-contrast: #F2F2F2;
   --color-contrast-background: #F9F9F9;
   --color-standard-border: #979797;
+  --color-disabled-text: #979797;
+  --color-disabled-border: #979797;
+  --color-disabled-background: white;
   --color-indicator-error: #DA2222;
   --color-indicator-warning: #DFAF00;
   --color-indicator-success: #4AD439;
@@ -142,4 +146,14 @@ select.remotion-themed::-webkit-scrollbar-thumb,
 {
   background-color: var(--color-primary);
   border-radius: var(--remotion-themed-dropdown-scrollbar-border-radius);
+}
+
+button.remotion-themed:disabled img,
+.remotion-themed.disabled img,
+.remotion-themed button:disabled img,
+.remotion-themed .disabled img,
+.remotion-themed img.disabled
+{
+  opacity: 0.5;
+  filter: grayscale(100%);
 }
