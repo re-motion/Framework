@@ -30,6 +30,7 @@
   --remotion-themed-padding: 0.4em;
   --remotion-themed-min-height: calc(var(--remotion-themed-line-height) + 2 * var(--remotion-themed-padding));
   --remotion-themed-multiline-min-height: calc(2 * var(--remotion-themed-line-height) + 2 * var(--remotion-themed-padding));
+  --remotion-themed-control-width: 16em;
 }
 
 select option
@@ -153,6 +154,13 @@ button.remotion-themed:disabled img,
 .remotion-themed button:disabled img,
 .remotion-themed .disabled img,
 .remotion-themed img.disabled
+{
+  opacity: 0.5;
+  filter: grayscale(100%);
+}
+
+img.disabled,
+.disabled img
 {
   opacity: 0.5;
   filter: grayscale(100%);

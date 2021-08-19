@@ -116,14 +116,6 @@ a[href]
   cursor: default;
 }
 
-img.disabled,
-.disabled img
-{
-  opacity: 0.4;
-  filter: progid:DXImageTransform.Microsoft.BasicImage(opacity=0.40),
-          progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
-}
-
 img.Icon
 {
   vertical-align: top;
