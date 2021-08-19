@@ -75,6 +75,7 @@ namespace Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, renderingContext.Control.ClientID);
 
       string cssClass = string.IsNullOrEmpty (renderingContext.Control.CssClass) ? CssClassBase : renderingContext.Control.CssClass;
+      cssClass += " " + CssClassThemed;
       if (!renderingContext.Control.Enabled)
         cssClass += " " + CssClassDisabled;
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClass);
@@ -159,6 +160,11 @@ namespace Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering
     public string CssClassDisabled
     {
       get { return CssClassDefinition.Disabled; }
+    }
+
+    public string CssClassThemed
+    {
+      get { return CssClassDefinition.Themed; }
     }
 
     protected Unit PopUpWidth
