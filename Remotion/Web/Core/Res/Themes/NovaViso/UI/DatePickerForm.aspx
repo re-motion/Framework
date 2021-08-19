@@ -27,15 +27,15 @@
 <body>
   <form id="Form" method="post" runat="server">
   <asp:Calendar ID="Calendar" runat="server" Height="16em" Width="14em" Font-Size="100%" BackColor="White"
-    DayNameFormat="FirstLetter" ForeColor="Black" BorderColor="Black" CellPadding="4">
-    <TodayDayStyle ForeColor="Black" BackColor="#C5E0FC"></TodayDayStyle>
-    <SelectorStyle BackColor="#C5E0FC"></SelectorStyle>
+    DayNameFormat="FirstLetter" ForeColor="Black" BorderColor="#979797" CellPadding="4">
+    <TodayDayStyle ForeColor="Black" BackColor="#DEF3FE"></TodayDayStyle>
+    <SelectorStyle BackColor="#DEF3FE"></SelectorStyle>
     <NextPrevStyle ForeColor="Black" VerticalAlign="Bottom"></NextPrevStyle>
-    <DayHeaderStyle Font-Bold="True" BackColor="#F0F0F0"></DayHeaderStyle>
-    <SelectedDayStyle Font-Bold="True" Font-Underline="True" ForeColor="Black" BackColor="#C5E0FC"></SelectedDayStyle>
-    <TitleStyle ForeColor="Black" Font-Bold="True" BorderColor="Black" BackColor="#C5E0FC"></TitleStyle>
-    <WeekendDayStyle BackColor="#F0F0F0"></WeekendDayStyle>
-    <OtherMonthDayStyle ForeColor="Gray"></OtherMonthDayStyle>
+    <DayHeaderStyle Font-Bold="True" BackColor="#F2F2F2"></DayHeaderStyle>
+    <SelectedDayStyle Font-Bold="True" Font-Underline="True" ForeColor="White" BackColor="#0C6594"></SelectedDayStyle>
+    <TitleStyle ForeColor="Black" Font-Bold="True" BorderColor="Black" BackColor="#E1E1E1"></TitleStyle>
+    <WeekendDayStyle BackColor="#F2F2F2"></WeekendDayStyle>
+    <OtherMonthDayStyle ForeColor="#979797"></OtherMonthDayStyle>
   </asp:Calendar>
   </form>
 </body>
