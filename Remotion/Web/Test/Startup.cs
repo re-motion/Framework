@@ -22,8 +22,8 @@ namespace Remotion.Web.Test
         app.UseDeveloperExceptionPage();
       }
 
-      app.UseHsts();
-      app.UseHttpsRedirection();
+      //app.UseHsts();
+      //app.UseHttpsRedirection();
 
       app.UseRouting();
 

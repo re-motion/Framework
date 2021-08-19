@@ -40,12 +40,8 @@
     <None Include="Customizations\Local\Configuration.props" />
     <None Include="Customizations\Local\Configuration.targets" />
     <None Include="Customizations\Overrides.targets" />
-    <None Include="Customizations\Projects.props">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Customizations\Properties.props">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="Customizations\Projects.props" />
+    <None Include="Customizations\Properties.props" />
     <None Include="Customizations\Extensions.targets" />
     <None Include="Customizations\ReleaseProcessScript.config" />
     <None Include="Customizations\Server\Configuration.props" />
@@ -61,9 +57,10 @@
     <None Include="ProjectTypes\Library.props" />
     <None Include="ProjectTypes\Test.props" />
     <None Include="ProjectTypes\Test.targets" />
+    <None Include="ProjectTypes\WebApplication.props" />
+    <None Include="ProjectTypes\WebApplication.targets" />
     <None Include="ProjectTypes\WebLibrary.props" />
     <None Include="ProjectTypes\WebLibrary.targets" />
-    <None Include="ProjectTypes\WebProject.props" />
     <None Include="Remotion.build" />
     <None Include="Remotion.Local.build" />
     <None Include="Remotion.Server.build" />
