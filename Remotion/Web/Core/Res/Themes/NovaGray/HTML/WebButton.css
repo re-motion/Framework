@@ -25,7 +25,7 @@ button.webButton span.buttonBody
 {
   border: solid 1px #AAAAAA;
   font-weight: bold;
-  background-image: url(../Image/sprite.svg#ButtonBackground);
+  background-image: url(../Image/ButtonBackground.gif);
   background-size: 1px 20px;
   background-color: #E6E5E7;
   background-position: center top;
@@ -63,7 +63,7 @@ button.webButton span.buttonBody img
 button.webButton:focus span.buttonBody,
 button.webButton:hover span.buttonBody
 {
-  background-image: url(../Image/sprite.svg#ButtonBackgroundHover);
+  background-image: url(../Image/ButtonBackgroundHover.gif);
   background-size: 1px 20px;
   background-color: #DEECFC;
   border: 1px solid #7CB2E6;
@@ -76,7 +76,7 @@ button.webButton:focus span.buttonBody
 
 button.webButton:active span.buttonBody
 {
-  background-image: url(../Image/sprite.svg#ButtonBackgroundActive);
+  background-image: url(../Image/ButtonBackgroundActive.gif);
   background-size: 1px 20px;
   background-color: #C5E0FC;
   border: 1px solid #569CE0;

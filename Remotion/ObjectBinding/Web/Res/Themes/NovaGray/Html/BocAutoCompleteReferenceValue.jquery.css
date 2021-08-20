@@ -63,7 +63,7 @@
 
 .ac_loading
 {
-  background-image: url('../Image/sprite.svg#AutoCompleteReferenceValueRequestInProgressIndicator');
+  background-image: url('../Image/AutoCompleteReferenceValueRequestInProgressIndicator.gif');
   background-size: 16px 16px;
   background-position: right center;
   background-repeat: no-repeat;
