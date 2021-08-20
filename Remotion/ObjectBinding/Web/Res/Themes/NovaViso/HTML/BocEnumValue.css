@@ -3,18 +3,58 @@
 span.bocEnumValue,
 div.bocEnumValue.readOnly
 {
-  width: 15em;
+  width: var(--remotion-themed-control-width);
+  min-height: var(--remotion-themed-min-height);
   position: relative;
-  display: inline-block;
-  vertical-align: middle;
+  display: flex;
   overflow: hidden;
 }
 
-.bocEnumValue.readOnly
+div.bocEnumValue.readOnly span
 {
-  /* Ensures that the outline is visible in Firefox. */
-  overflow: visible;
+  /*box-sizing: border-box;*/
+  display: inline-flex;
+  align-items: center;
 }
+
+/*div.bocEnumValue table
+{
+  height: 100%;
+  box-sizing: border-box;
+}*/
+
+div.bocEnumValue td,
+div.bocEnumValue td span
+{
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  margin-right: 0.4em;
+}
+
+div.bocEnumValue input
+{
+  box-sizing: border-box;
+  /* Has to be set explicitely at the moment, since otherwise a top  
+     margin is applied I have not able to determine the source of. */
+  margin: 0 0.4em 0 0;
+}
+
+.bocEnumValue.readOnly span
+/*div.bocEnumValue.readOnly*/
+{
+  /*padding: var(--remotion-themed-padding);*/
+  box-sizing: border-box;
+  
+}
+
+span.bocEnumValue.readOnly span,
+div.bocEnumValue.readOnly span
+{
+  /*padding: var(--remotion-themed-padding);*/
+  min-height: var(--remotion-themed-min-height);
+}
+
 
 .bocEnumValue.disabled
 {
@@ -22,18 +62,53 @@ div.bocEnumValue.readOnly
 
 span.bocEnumValue select
 {
+  box-sizing: border-box;
   width: 100%;
-  height: 1.68em;
+  min-height: calc(var(--remotion-themed-min-height));
+  /*gap: 10em;*/
+
 }
+
+span.bocEnumValue option
+{
+  box-sizing: border-box;
+  padding: var(--remotion-themed-padding);
+  /*padding: calc(var(--remotion-themed-padding) * 0.75);*/
+  /*padding: calc(var(--remotion-themed-padding) * 0.5);*/
+  border-radius: calc(var(--remotion-themed-border-radius));
+  /*margin: calc(var(--remotion-themed-padding));*/
+  /*gap: 2em;*/
+  /*line-height: 3em;*/
+}
+
+
+span.bocEnumValue option:hover
+{
+  background-color: var(--color-highlight);
+  /*flex: 4;*/
+}
+
+span.bocEnumValue.disabled option
+{
+  background-color: var(--color-disabled-background);
+  text-decoration: none;
+  color: var(--color-disabled-text);
+}
+
+
+
+
 
 span.bocEnumValue select[size]
 {
-  height: auto;
+  /*height: auto;*/
 }
 
 span.bocEnumValue select[size="1"]
 {
-  height: 1.68em;
+  /*height: 1.68em;*/
+  /*height: var(--remotion-themed-line-height);*/
+  /*height: auto;*/
 }
 
 .bocEnumValue td
@@ -43,36 +118,20 @@ span.bocEnumValue select[size="1"]
 
 .bocEnumValue td label
 {
-  vertical-align: text-bottom;
-}
-
-.bocEnumValue.readOnly span[tabindex]
-{
-  /* Ensures that diacritic marks can be rendered without being cut off. 
-     Using line-height instead of padding works better with BocEnumValue. When using padding, the text is not aligned with the label. */
-  /*line-height: 1.5em;*/
-  /* Ensures that the outline is rendered outside of the space reserved for diacritic marks. */
-  display: inline-block;
-}
-
-.bocEnumValue.readOnly span[tabindex]:first-child
-{
-  /* Ensures that diacritic marks can be rendered without being cut off. */
-  padding-top: 0.2em;
-}
-
-.bocEnumValue.readOnly span[tabindex]:last-child
-{
-  /* Ensures that diacritic marks can be rendered without being cut off. */
-  padding-bottom: 0.2em;
+  /*vertical-align: text-bottom;*/
 }
 
 .bocEnumValue.readOnly span[tabindex]:empty
 {
-  /* Ensures that empty readonly values are not collapsed and can therefor visualize the keyboard focus */
+  /* Ensures that the keyboard focus of empty readonly values surrounds the entire width of the span. */
   width: 100%;
-  min-height: 1.5em;
-  padding-top: 0;
-  padding-bottom: 0;
-  vertical-align: -0.2em;
+}
+
+.bocEnumValue.readOnly span[tabindex]:empty:before
+{
+  /* Inserting a 'zero width space' unicode character as placeholder so that empty 
+    readonly values are not collapsed and can therefore visualize the keyboard focus. 
+    This also scales with the font size and min-height doesn't have to be set since
+    line height remains unchanged. */
+  content: "\200b";
 }
