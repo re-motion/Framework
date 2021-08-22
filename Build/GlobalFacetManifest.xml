@@ -59,8 +59,16 @@
            feature="Microsoft.AspNetCore"
            layer="WebCommon"/>
 
+  <package id="Microsoft.CSharp"
+           feature="Microsoft.DotNet"
+           layer="Core"/>
+
   <package id="Microsoft.Extensions.*"
            feature="Microsoft.Extensions"
+           layer="Core"/>
+
+  <package id="Microsoft.NETCore.Platforms"
+           feature="Microsoft.DotNet"
            layer="Core"/>
 
   <package id="Microsoft.Net.Http.Headers"
@@ -68,6 +76,14 @@
            layer="Core"/>
 
   <package id="Microsoft.Win32.*"
+           feature="Microsoft.DotNet"
+           layer="Core"/>
+
+  <package id="Microsoft.Windows.Compatibility"
+           feature="Microsoft.DotNet"
+           layer="Core"/>
+
+  <package id="NETStandard.Library"
            feature="Microsoft.DotNet"
            layer="Core"/>
 
@@ -96,6 +112,10 @@
            layer="Core"/>
 
   <package id="System.*"
+           feature="Microsoft.DotNet"
+           layer="Core"/>
+
+  <package id="runtime.native.*"
            feature="Microsoft.DotNet"
            layer="Core"/>
 
