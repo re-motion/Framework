@@ -92,7 +92,7 @@
            layer="Core"/>
 
   <package id="Newtonsoft.Json.Bson"
-           feature="Microsoft.AspNetCore"
+           feature="Newtonsoft.Json.Bson"
            layer="Core"/>
 
   <package id="Selenium.Support"
