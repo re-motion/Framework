@@ -29,7 +29,7 @@
 *.tabStripTab a
 {
   border: solid 1px #AAAAAA;
-  background-image: url(../Image/sprite.svg#ButtonBackground);
+  background-image: url(../Image/ButtonBackground.gif);
   background-size: 1px 20px;
   background-color: #E6E5E7;
   color: Black;
@@ -50,7 +50,7 @@
 {
   color: Black;
   border: solid 1px #7CB2E6;
-  background-image: url(../Image/sprite.svg#ButtonBackgroundHover);
+  background-image: url(../Image/ButtonBackgroundHover.gif);
   background-size: 1px 20px;
   background-color: #E5F0FC;
 }
@@ -78,7 +78,7 @@
 {
   color: Black;
   border: solid 1px #569CE0;
-  background-image: url(../Image/sprite.svg#ButtonBackgroundActive);
+  background-image: url(../Image/ButtonBackgroundActive.gif);
   background-size: 1px 20px;
   background-color: #C5E0FC;
 }

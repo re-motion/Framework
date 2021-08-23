@@ -108,7 +108,7 @@ span.DropDownMenuSelect.nestedHover:active a.DropDownMenuButton
 
 span.DropDownMenuSelect
 {
-  background-image: url(../Image/sprite.svg#ButtonBackground);
+  background-image: url(../Image/ButtonBackground.gif);
   background-size: 1px 20px;
   background-color: #E6E5E7;
   background-position: center top;
@@ -119,7 +119,7 @@ span.DropDownMenuSelect.focus,
 span.DropDownMenuSelect:hover
 {
   color: Black;
-  background-image: url(../Image/sprite.svg#ButtonBackgroundHover);
+  background-image: url(../Image/ButtonBackgroundHover.gif);
   background-size: 1px 20px;
   background-color: #DEECFC;
   border: 1px solid #7CB2E6;
@@ -127,7 +127,7 @@ span.DropDownMenuSelect:hover
 
 span.DropDownMenuSelect.nestedHover:hover
 {
-  background-image: url(../Image/sprite.svg#ButtonBackground);
+  background-image: url(../Image/ButtonBackground.gif);
   background-size: 1px 20px;
   background-color: #E6E5E7;
   border: solid 1px #AAAAAA;
@@ -135,7 +135,7 @@ span.DropDownMenuSelect.nestedHover:hover
 
 span.DropDownMenuSelect:active
 {
-  background-image: url(../Image/sprite.svg#ButtonBackgroundActive);
+  background-image: url(../Image/ButtonBackgroundActive.gif);
   background-size: 1px 20px;
   background-color: #C5E0FC;
   border: 1px solid #569CE0;
@@ -143,7 +143,7 @@ span.DropDownMenuSelect:active
 
 span.DropDownMenuSelect.disabled:hover
 {
-  background-image: url(../Image/sprite.svg#ButtonBackground);
+  background-image: url(../Image/ButtonBackground.gif);
   background-size: 1px 20px;
   background-color: #ECEEEC;
   border: solid 1px #BCBCBC;
@@ -169,7 +169,7 @@ span.DropDownMenuSelect.disabled a.DropDownMenuButton
 span.DropDownMenuSelect a.DropDownMenuButton img:hover
 {
   background-position: center;
-  background-image: url('../Image/sprite.svg#DropDownMenuButton');
+  background-image: url('../Image/DropDownMenuButton.gif');
   background-size: 32px 15px;
 }
 */
@@ -184,7 +184,7 @@ span.DropDownMenuSelect a.DropDownMenuButton img
   margin-left: 2px;
   margin-right: 2px;
   background-position: -2px center;
-  background-image: url('../Image/sprite.svg#DropDownMenuButton');
+  background-image: url('../Image/DropDownMenuButton.gif');
   background-size: 32px 15px;
   background-repeat: no-repeat;
 }
@@ -226,7 +226,7 @@ ul.DropDownMenuOptions
   padding: 0;
   list-style: none;
   background-color: White;
-  background-image: url('../Image/sprite.svg#DropDownMenuItemIconPane');
+  background-image: url('../Image/DropDownMenuItemIconPane.gif');
   background-size: 22px 1px;
   background-repeat: repeat-y;
   background-position: top left;
@@ -357,7 +357,7 @@ div.DropDownMenuStatus > div
 
 div.DropDownMenuStatus.loading > div
 {
-  background-image: url('../Image/sprite.svg#DropDownMenuRequestInProgressIndicator');
+  background-image: url('../Image/DropDownMenuRequestInProgressIndicator.gif');
   background-size: 16px 16px;
   background-repeat: no-repeat;
   background-position: 0.25em;
@@ -367,7 +367,7 @@ div.DropDownMenuStatus.loading > div
 
 div.DropDownMenuStatus.error > div
 {
-  background-image: url('../Image/sprite.svg#DropDownMenuErrorIndicator');
+  background-image: url('../Image/DropDownMenuErrorIndicator.gif');
   background-size: 16px 16px;
   background-repeat: no-repeat;
   background-position: 0.25em;

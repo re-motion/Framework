@@ -593,8 +593,10 @@ span.treeViewNode > a img
 
 span.treeViewNode > a img.Icon
 {
-  height: 22px;
-  width: 19px;
+  height: 20px;
+  width: 20px;
+  margin-right: -1px;
+  margin-bottom: 2px;
 }
 
 /* Applied to the node's head. */
