@@ -9,7 +9,6 @@
     <Description>Common APIs for data management used by re-motion.</Description>
     <AssemblyName>Remotion.Data</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
-    <Nullable>disable</Nullable>
   </PropertyGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>
