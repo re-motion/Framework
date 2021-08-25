@@ -285,19 +285,14 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
         Html.AssertAttribute (valueSpan, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
 
         CheckImage (value, valueSpan, spanText);
-
-        var imageVisualizerSpan = outerSpan.GetAssertedChildElement ("span", 1);
-        imageVisualizerSpan.AssertAttributeValueEquals ("class", "image-visualizer");
-
+        CheckCheckBoxVisualizer (outerSpan);
 
         AssertValidationErrors (outerSpan);
       }
       else
       {
         CheckInput (value, outerSpan);
-
-        var imageVisualizerSpan = outerSpan.GetAssertedChildElement ("span", 1);
-        imageVisualizerSpan.AssertAttributeValueEquals ("class", "image-visualizer");
+        CheckCheckBoxVisualizer (outerSpan);
 
         AssertValidationErrors (outerSpan);
       }
@@ -355,6 +350,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       Html.AssertNoAttribute (image, "id");
       Html.AssertAttribute (image, "src", string.Format ("/sprite.svg#CheckBox{0}", value), HtmlHelper.AttributeValueCompareMode.Contains);
       Html.AssertAttribute (image, "alt", altText);
+    }
+
+    private void CheckCheckBoxVisualizer (XmlNode outerSpan)
+    {
+      var imageVisualizerSpan = outerSpan.GetAssertedChildElement ("span", 1);
+      imageVisualizerSpan.AssertAttributeValueEquals ("class", "image-visualizer");
     }
 
     private void CheckCssClass (XmlNode outerSpan)
