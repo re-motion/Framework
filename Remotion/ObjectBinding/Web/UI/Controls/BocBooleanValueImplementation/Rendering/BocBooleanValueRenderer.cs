@@ -333,6 +333,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       labelControl.Width = Unit.Empty;
       labelControl.Height = Unit.Empty;
       labelControl.ApplyStyle (renderingContext.Control.LabelStyle);
+      labelControl.CssClass = "description";
     }
 
     public override string GetCssClassBase (IBocBooleanValue control)

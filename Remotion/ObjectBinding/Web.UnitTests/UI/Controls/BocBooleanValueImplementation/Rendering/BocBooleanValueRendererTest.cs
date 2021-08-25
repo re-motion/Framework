@@ -360,6 +360,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       var label = Html.GetAssertedChildElement (outerSpan, "span", 3);
       Html.AssertChildElementCount (label, 0);
       Html.AssertAttribute (label, "id", c_clientID + "_Description");
+      Html.AssertAttribute (label, "class", "description");
       Html.AssertTextNode (label, description, 0);
       if (_booleanValue.Object.ShowDescription)
         Html.AssertNoAttribute (label, "hidden");

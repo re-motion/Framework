@@ -2,48 +2,39 @@
 
 .bocBooleanValue
 {
-  margin-right: 0.5em;
-  vertical-align: middle;
-  display: inline-block;
-  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
 }
 
-.bocBooleanValue.readOnly
+.bocBooleanValue span.description
 {
-}
-
-.bocBooleanValue.disabled
-{
-}
-
-.bocBooleanValue span
-{
-  vertical-align: middle;
-}
-
-.bocBooleanValue a
-{
-  padding : 0;
-  border: none;
-  background-color: transparent;
-}
-
-.bocBooleanValue a[href]
-{
-  cursor: default;
+  display: inline-flex;
+  align-items: center;
 }
 
 .bocBooleanValue img
 {
+  margin: var(--remotion-themed-padding);
   vertical-align: middle;
-  border: none;
-  height: 16px;
-  width: 16px;
+  height: 1.5em;
+  width: 1.5em;
 }
 
-.bocBooleanValue.disabled img
+/* Fixes for element focus */
+
+.bocBooleanValue a[role=checkbox]:focus
 {
-  opacity: 0.4;
-  filter: progid:DXImageTransform.Microsoft.BasicImage(opacity=0.40), 
-          progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
+  outline: none;
+}
+
+.blink .bocBooleanValue a[role=checkbox]:focus > img
+{
+  box-shadow: var(--chromium-box-shadow);
+  border-radius: var(--chromium-border-radius);
+}
+
+.mozilla .bocBooleanValue a[role=checkbox]:focus > img
+{
+  box-shadow: var(--mozilla-box-shadow);
+  border-radius: var(--mozilla-border-radius);
 }
