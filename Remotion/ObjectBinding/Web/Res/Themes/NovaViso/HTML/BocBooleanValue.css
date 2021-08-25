@@ -1,0 +1,60 @@
+/* Style applied to the BocBooleanValue. */
+
+.bocBooleanValue
+{
+  display: inline-flex;
+  align-items: center;
+  border: var(--remotion-themed-border-placeholder);
+  border-radius: var(--remotion-themed-border-radius);
+  box-sizing: border-box;
+}
+
+.bocBooleanValue a[role=checkbox]
+{
+  display: inline-flex;
+  align-items: center;
+  margin-left: var(--remotion-themed-spacing);
+  margin-right: var(--remotion-themed-spacing);
+}
+
+.bocBooleanValue a[role=checkbox]:focus
+{
+  outline: none;
+}
+
+.bocBooleanValue a[role=checkbox]:hover
+{
+  cursor: default;
+}
+
+.bocBooleanValue span.description:not([hidden])
+{
+  display: inline-flex;
+  align-items: center;
+  margin-right: var(--remotion-themed-spacing);
+}
+
+.bocBooleanValue img
+{
+  height: var(--remotion-themed-img-width);
+  width: var(--remotion-themed-img-width);
+}
+
+.bocBooleanValue:not(.readOnly, .disabled):focus-within
+{
+  background-color: var(--remotion-themed-background-color-focus);
+  border: var(--remotion-themed-border-focus);
+  box-shadow: var(--remotion-themed-box-shadow-focus);
+}
+
+.bocBooleanValue.readOnly:focus-within
+{
+  border: var(--remotion-themed-border-readonly-focus);
+  background-color: var(--remotion-themed-background-color-readonly-focus);
+  box-shadow: var(--remotion-themed-box-shadow-readonly-focus);
+}
+
+.bocBooleanValue.disabled span.description
+{
+  color: var(--color-disabled-text);
+}
