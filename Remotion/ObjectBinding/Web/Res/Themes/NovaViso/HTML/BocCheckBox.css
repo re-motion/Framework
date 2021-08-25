@@ -9,7 +9,7 @@
 .bocCheckBox input
 {
   position: absolute;
-  z-index: -1;
+  z-index: var(--z-index-hidden);
 }
 
 .bocCheckBox span.description
