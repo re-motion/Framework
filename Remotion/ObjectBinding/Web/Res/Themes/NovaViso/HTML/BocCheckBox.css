@@ -32,7 +32,6 @@
   background-image: url('../Image/sprite.svg#CheckBoxFalse');
   display: inline-block;
   content: "";
-  z-index: 1;
   position: relative;
 }
 
