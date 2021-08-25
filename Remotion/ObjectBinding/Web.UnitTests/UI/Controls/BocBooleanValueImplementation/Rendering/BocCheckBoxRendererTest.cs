@@ -286,30 +286,37 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
 
         CheckImage (value, valueSpan, spanText);
 
+        var imageVisualizerSpan = outerSpan.GetAssertedChildElement ("span", 1);
+        imageVisualizerSpan.AssertAttributeValueEquals ("class", "image-visualizer");
+
+
         AssertValidationErrors (outerSpan);
       }
       else
       {
         CheckInput (value, outerSpan);
 
+        var imageVisualizerSpan = outerSpan.GetAssertedChildElement ("span", 1);
+        imageVisualizerSpan.AssertAttributeValueEquals ("class", "image-visualizer");
+
         AssertValidationErrors (outerSpan);
       }
 
       if (_checkbox.Object.IsDescriptionEnabled)
       {
-        var label = Html.GetAssertedChildElement (outerSpan, "span", 1);
+        var label = Html.GetAssertedChildElement (outerSpan, "span", 2);
         Html.AssertAttribute (label, "id", c_clientID + "_Description");
         Html.AssertTextNode (label, spanText, 0);
       }
       else
       {
-        Html.AssertChildElementCount (outerSpan, 1);
+        Html.AssertChildElementCount (outerSpan, 2);
       }
     }
 
     private void AssertValidationErrors (XmlNode node)
     {
-      var validationErrorsSpan = node.GetAssertedChildElement ("fake", 2);
+      var validationErrorsSpan = node.GetAssertedChildElement ("fake", 3);
 
       Html.AssertAttribute (validationErrorsSpan, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
       Html.AssertAttribute (validationErrorsSpan, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
