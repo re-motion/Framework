@@ -29,7 +29,6 @@
 
 .bocCheckBox input ~ span.checkbox-visualizer::before
 {
-  visibility: visible;
   background-image: url('../Image/sprite.svg#CheckBoxFalse');
   display: inline-block;
   content: "";
