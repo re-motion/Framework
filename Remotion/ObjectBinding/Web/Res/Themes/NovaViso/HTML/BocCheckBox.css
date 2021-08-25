@@ -19,7 +19,7 @@
 }
 
 .bocCheckBox img,
-.bocCheckBox input ~ span.checkbox-visualizer::before
+.bocCheckBox input + span.checkbox-visualizer::before
 {
   margin: var(--remotion-themed-padding);
   vertical-align: middle;
@@ -27,7 +27,7 @@
   width: 1.5em;
 }
 
-.bocCheckBox input ~ span.checkbox-visualizer::before
+.bocCheckBox input + span.checkbox-visualizer::before
 {
   background-image: url('../Image/sprite.svg#CheckBoxFalse');
   display: inline-block;
@@ -35,7 +35,7 @@
   position: relative;
 }
 
-.bocCheckBox input[checked] ~ span.checkbox-visualizer::before
+.bocCheckBox input[checked] + span.checkbox-visualizer::before
 {
   background-image: url('../Image/sprite.svg#CheckBoxTrue');
 }
@@ -48,14 +48,14 @@
 }
 
 .blink .bocCheckBox span[role=checkbox]:focus > img,
-.blink .bocCheckBox input:focus + span::before
+.blink .bocCheckBox input:focus + span.checkbox-visualizer::before
 {
   box-shadow: var(--chromium-box-shadow);
   border-radius: var(--chromium-border-radius);
 }
 
 .mozilla .bocCheckBox span[role=checkbox]:focus > img,
-.mozilla .bocCheckBox input:focus + span::before
+.mozilla .bocCheckBox input:focus + span.checkbox-visualizer::before
 {
   box-shadow: var(--mozilla-box-shadow);
   border-radius: var(--mozilla-border-radius);
