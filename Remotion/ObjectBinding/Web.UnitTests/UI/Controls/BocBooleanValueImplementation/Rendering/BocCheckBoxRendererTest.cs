@@ -355,7 +355,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     private void CheckCheckBoxVisualizer (XmlNode outerSpan)
     {
       var imageVisualizerSpan = outerSpan.GetAssertedChildElement ("span", 1);
-      imageVisualizerSpan.AssertAttributeValueEquals ("class", "image-visualizer");
+      imageVisualizerSpan.AssertAttributeValueEquals ("class", "checkbox-visualizer");
     }
 
     private void CheckCssClass (XmlNode outerSpan)

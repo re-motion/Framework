@@ -92,7 +92,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
 
       var checkBoxControl = new HtmlInputCheckBox { ID = renderingContext.Control.GetValueName(), ClientIDMode = ClientIDMode.Static };
       var labelControl = new Label { ID = renderingContext.Control.ClientID + "_Description", ClientIDMode = ClientIDMode.Static };
-      var imageVisualizerControl = new Label { ID = null, CssClass = "image-visualizer" };
+      var checkBoxVisualizerControl = new HtmlGenericControl { ID = null, TagName = "span" };
+      checkBoxVisualizerControl.Attributes.Add ("class", "checkbox-visualizer");
 
       string description = GetDescription (renderingContext);
       var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
@@ -124,7 +125,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
         imageControl.RenderControl (renderingContext.Writer);
         renderingContext.Writer.RenderEndTag();
 
-        imageVisualizerControl.RenderControl (renderingContext.Writer);
+        checkBoxVisualizerControl.RenderControl (renderingContext.Writer);
 
         if (renderingContext.Control.IsDescriptionEnabled)
         {
@@ -137,7 +138,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
         bool hasClientScript = DetermineClientScriptLevel (renderingContext);
         if (hasClientScript)
         {
-          PrepareScripts (renderingContext, checkBoxControl, labelControl, imageVisualizerControl);
+          PrepareScripts (renderingContext, checkBoxControl, labelControl, checkBoxVisualizerControl);
         }
 
         checkBoxControl.Checked = renderingContext.Control.Value.Value;
@@ -151,7 +152,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
         _validationErrorRenderer.SetValidationErrorsReferenceOnControl (checkBoxControl, validationErrorsID, validationErrors);
 
         checkBoxControl.RenderControl (renderingContext.Writer);
-        imageVisualizerControl.RenderControl (renderingContext.Writer);
+        checkBoxVisualizerControl.RenderControl (renderingContext.Writer);
 
         if (renderingContext.Control.IsDescriptionEnabled)
         {
@@ -177,7 +178,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       return true;
     }
     
-    private void PrepareScripts (BocCheckBoxRenderingContext renderingContext, HtmlInputCheckBox checkBoxControl, Label labelControl, Label imageVisualizerControl)
+    private void PrepareScripts (BocCheckBoxRenderingContext renderingContext, HtmlInputCheckBox checkBoxControl, Label labelControl, HtmlGenericControl imageVisualizerControl)
     {
       string checkBoxScript;
       string labelScript;
