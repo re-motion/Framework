@@ -178,7 +178,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       return true;
     }
     
-    private void PrepareScripts (BocCheckBoxRenderingContext renderingContext, HtmlInputCheckBox checkBoxControl, Label labelControl, HtmlGenericControl imageVisualizerControl)
+    private void PrepareScripts (BocCheckBoxRenderingContext renderingContext, HtmlInputCheckBox checkBoxControl, Label labelControl, HtmlGenericControl checkBoxVisualizerControl)
     {
       string checkBoxScript;
       string labelScript;
@@ -198,7 +198,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       }
       checkBoxControl.Attributes.Add ("onclick", checkBoxScript);
       labelControl.Attributes.Add ("onclick", labelScript);
-      imageVisualizerControl.Attributes.Add ("onclick", labelScript);
+      checkBoxVisualizerControl.Attributes.Add ("onclick", labelScript);
     }
 
     private string GetScriptParameters (BocCheckBoxRenderingContext renderingContext)
