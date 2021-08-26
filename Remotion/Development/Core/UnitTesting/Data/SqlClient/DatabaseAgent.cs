@@ -28,7 +28,7 @@ namespace Remotion.Development.UnitTesting.Data.SqlClient
   public class DatabaseAgent
   {
     private string _connectionString;
-    private string _fileName = null;
+    private string? _fileName = null;
 
     public DatabaseAgent (string connectionString)
     {
@@ -70,8 +70,8 @@ namespace Remotion.Development.UnitTesting.Data.SqlClient
       if (!Path.IsPathRooted (sqlFileName))
       {
         var assemblyNameWithoutShadowCopy = typeof (DatabaseAgent).Assembly.GetName (copiedName: false);
-        var codeBaseUri = new Uri (assemblyNameWithoutShadowCopy.EscapedCodeBase);
-        sqlFileName = Path.Combine (Path.GetDirectoryName (codeBaseUri.LocalPath), sqlFileName);
+        var codeBaseUri = new Uri (assemblyNameWithoutShadowCopy.EscapedCodeBase!);
+        sqlFileName = Path.Combine (Path.GetDirectoryName (codeBaseUri.LocalPath)!, sqlFileName);
       }
       return ExecuteBatchString (File.ReadAllText (sqlFileName, Encoding.UTF8), useTransaction, replacementDictionary);
     }
@@ -113,7 +113,7 @@ namespace Remotion.Development.UnitTesting.Data.SqlClient
       return new SqlConnection (_connectionString);
     }
 
-    protected virtual IDbCommand CreateCommand (IDbConnection connection, string commandText, IDbTransaction transaction)
+    protected virtual IDbCommand CreateCommand (IDbConnection connection, string commandText, IDbTransaction? transaction)
     {
       IDbCommand command = connection.CreateCommand ();
       command.CommandType = CommandType.Text;
@@ -133,7 +133,7 @@ namespace Remotion.Development.UnitTesting.Data.SqlClient
       }
     }
 
-    public object ExecuteScalarCommand (string commandText)
+    public object? ExecuteScalarCommand (string commandText)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("commandText", commandText);
 
@@ -144,7 +144,7 @@ namespace Remotion.Development.UnitTesting.Data.SqlClient
       }
     }
 
-    protected virtual int ExecuteBatchString (IDbConnection connection, string commandBatch, IDbTransaction transaction)
+    protected virtual int ExecuteBatchString (IDbConnection connection, string commandBatch, IDbTransaction? transaction)
     {
       ArgumentUtility.CheckNotNull ("connection", connection);
       ArgumentUtility.CheckNotNullOrEmpty ("commandBatch", commandBatch);
@@ -174,7 +174,7 @@ namespace Remotion.Development.UnitTesting.Data.SqlClient
       return count;
     }
 
-    protected virtual int ExecuteCommand (IDbConnection connection, string commandText, IDbTransaction transaction)
+    protected virtual int ExecuteCommand (IDbConnection connection, string commandText, IDbTransaction? transaction)
     {
       using (IDbCommand command = CreateCommand (connection, commandText, transaction))
       {
@@ -182,7 +182,7 @@ namespace Remotion.Development.UnitTesting.Data.SqlClient
       }
     }
 
-    protected virtual object ExecuteScalarCommand (IDbConnection connection, string commandText, IDbTransaction transaction)
+    protected virtual object? ExecuteScalarCommand (IDbConnection connection, string commandText, IDbTransaction? transaction)
     {
       using (IDbCommand command = CreateCommand (connection, commandText, transaction))
       {

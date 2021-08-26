@@ -445,7 +445,7 @@ namespace Remotion.Development.UnitTesting.Reflection
       public sealed override void FinalMethod () { }
 
       public override void Override () { }
-      public override string ToString () { return ""; }
+      public override string? ToString () { return ""; }
 
       private void PrivateMethod () { }
       protected void ProtectedMethod () { }

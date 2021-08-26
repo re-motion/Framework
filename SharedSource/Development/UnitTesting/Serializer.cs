@@ -37,7 +37,7 @@ namespace Remotion.Development.UnitTesting
       return (T) Serializer.Deserialize (Serializer.Serialize ((object) t));
     }
 
-    public static byte[] Serialize (object o)
+    public static byte[] Serialize (object? o)
     {
       if (o == null)
         throw new ArgumentNullException ("o");

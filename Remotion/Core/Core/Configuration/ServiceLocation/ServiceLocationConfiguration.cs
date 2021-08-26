@@ -52,7 +52,7 @@ namespace Remotion.Configuration.ServiceLocation
     private static ServiceLocationConfiguration GetServiceLocationConfiguration ()
     {
       return (ServiceLocationConfiguration) 
-             ConfigurationWrapper.Current.GetSection ("remotion.serviceLocation", false) ?? new ServiceLocationConfiguration();
+             (ConfigurationWrapper.Current.GetSection ("remotion.serviceLocation", false) ?? new ServiceLocationConfiguration());
     }
 
     /// <summary>

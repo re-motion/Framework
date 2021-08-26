@@ -22,10 +22,10 @@ namespace Remotion.Development.UnitTesting
   public class SerializationCallbackTester<T>
   {
     private readonly IMockRepository _mockRepository;
-    private readonly Action<ISerializationEventReceiver> _receiverSetter;
+    private readonly Action<ISerializationEventReceiver?> _receiverSetter;
     private readonly T _instance;
 
-    public SerializationCallbackTester (IMockRepository mockRepository, T instance, Action<ISerializationEventReceiver> receiverSetter)
+    public SerializationCallbackTester (IMockRepository mockRepository, T instance, Action<ISerializationEventReceiver?> receiverSetter)
     {
       _mockRepository = mockRepository;
       _instance = instance;

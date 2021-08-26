@@ -24,7 +24,7 @@ namespace Remotion.Development.UnitTesting
   {
     protected abstract ISerializationEventReceiver StaticReceiver { get; }
 
-    public void OnDeserialization (object sender)
+    public void OnDeserialization (object? sender)
     {
       if (StaticReceiver != null)
         StaticReceiver.OnDeserialization (sender);

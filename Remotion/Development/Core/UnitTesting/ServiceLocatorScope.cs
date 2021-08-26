@@ -38,7 +38,7 @@ namespace Remotion.Development.UnitTesting
       return defaultServiceLocator;
     }
 
-    private readonly ServiceLocatorProvider _previousLocatorProvider;
+    private readonly ServiceLocatorProvider? _previousLocatorProvider;
 
     public ServiceLocatorScope (IServiceLocator temporaryServiceLocator)
     {
