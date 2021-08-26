@@ -32,11 +32,19 @@ namespace Remotion.Reflection
     /// </summary>
     /// <param name="methodInfo">The method whose type should be returned. Must not be <see langword="null" />.</param>
     /// <returns>The <see cref="Type"/> where the method was declared for the first time.</returns>
+    /// <exception cref="InvalidOperationException">No declaring type could be found.</exception>
     public static Type GetOriginalDeclaringType (this MethodInfo methodInfo)
     {
       ArgumentUtility.CheckNotNull ("methodInfo", methodInfo);
-      // TODO RM-7755: DeclaringType possibly being null should be handled.
-      return methodInfo.GetBaseDefinition ().DeclaringType!;
+
+      var declaringType = methodInfo.GetBaseDefinition ().DeclaringType;
+      if (declaringType == null)
+      {
+        throw new InvalidOperationException (
+            $"Method '{methodInfo.Name}' does not have a declaring type. This could be due to the method being a global module method or a dynamic method.");
+      }
+
+      return declaringType;
     }
 
     /// <summary>
