@@ -3,112 +3,10 @@
 span.bocEnumValue,
 div.bocEnumValue.readOnly
 {
+  display: inline-flex;
+  align-items: center;
   width: var(--remotion-themed-control-width);
   min-height: var(--remotion-themed-min-height);
-  position: relative;
-  display: flex;
-  overflow: hidden;
-}
-
-div.bocEnumValue.readOnly span
-{
-  /*box-sizing: border-box;*/
-  display: inline-flex;
-  align-items: center;
-}
-
-/*div.bocEnumValue table
-{
-  height: 100%;
-  box-sizing: border-box;
-}*/
-
-div.bocEnumValue td,
-div.bocEnumValue td span
-{
-  box-sizing: border-box;
-  display: inline-flex;
-  align-items: center;
-  margin-right: 0.4em;
-}
-
-div.bocEnumValue input
-{
-  box-sizing: border-box;
-  /* Has to be set explicitely at the moment, since otherwise a top  
-     margin is applied I have not able to determine the source of. */
-  margin: 0 0.4em 0 0;
-}
-
-.bocEnumValue.readOnly span
-/*div.bocEnumValue.readOnly*/
-{
-  /*padding: var(--remotion-themed-padding);*/
-  box-sizing: border-box;
-  
-}
-
-span.bocEnumValue.readOnly span,
-div.bocEnumValue.readOnly span
-{
-  /*padding: var(--remotion-themed-padding);*/
-  min-height: var(--remotion-themed-min-height);
-}
-
-
-.bocEnumValue.disabled
-{
-}
-
-span.bocEnumValue select
-{
-  box-sizing: border-box;
-  width: 100%;
-  min-height: calc(var(--remotion-themed-min-height));
-  /*gap: 10em;*/
-
-}
-
-span.bocEnumValue option
-{
-  box-sizing: border-box;
-  padding: var(--remotion-themed-padding);
-  /*padding: calc(var(--remotion-themed-padding) * 0.75);*/
-  /*padding: calc(var(--remotion-themed-padding) * 0.5);*/
-  border-radius: calc(var(--remotion-themed-border-radius));
-  /*margin: calc(var(--remotion-themed-padding));*/
-  /*gap: 2em;*/
-  /*line-height: 3em;*/
-}
-
-
-span.bocEnumValue option:hover
-{
-  background-color: var(--color-highlight);
-  /*flex: 4;*/
-}
-
-span.bocEnumValue.disabled option
-{
-  background-color: var(--color-disabled-background);
-  text-decoration: none;
-  color: var(--color-disabled-text);
-}
-
-
-
-
-
-span.bocEnumValue select[size]
-{
-  /*height: auto;*/
-}
-
-span.bocEnumValue select[size="1"]
-{
-  /*height: 1.68em;*/
-  /*height: var(--remotion-themed-line-height);*/
-  /*height: auto;*/
 }
 
 .bocEnumValue td
@@ -118,7 +16,67 @@ span.bocEnumValue select[size="1"]
 
 .bocEnumValue td label
 {
-  /*vertical-align: text-bottom;*/
+  padding: var(--remotion-themed-padding);
+}
+
+div.bocEnumValue td,
+div.bocEnumValue td span
+{
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+div.bocEnumValue input
+{
+  /* Has to be set explicitely for input. */
+  margin: 0;
+}
+
+div.bocEnumValue input:focus
+{
+  /* In order to have an outline for the radio buttons as well. */
+  outline: auto;
+}
+
+div.bocEnumValue input:hover
+{
+  cursor: pointer;
+}
+
+div.bocEnumValue input:disabled
+{
+  cursor: default;
+}
+
+span.bocEnumValue select:hover,
+span.bocEnumValue option:hover
+{
+  background-color: var(--color-highlight);
+}
+
+span.bocEnumValue select
+{
+  width: 100%;
+}
+
+span.bocEnumValue option
+{
+  padding: calc(var(--remotion-themed-padding) * 0.75);
+  border-radius: var(--remotion-themed-border-radius);
+}
+
+span.bocEnumValue.disabled option
+{
+  background-color: var(--color-disabled-background);
+  color: var(--color-disabled-text);
+  text-decoration: none;
+}
+
+.bocEnumValue.readOnly span
+{
+  box-sizing: border-box;
+  padding: var(--remotion-themed-padding) 0;
 }
 
 .bocEnumValue.readOnly span[tabindex]:empty
