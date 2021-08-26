@@ -24,19 +24,19 @@ namespace Remotion.Development.Mixins.UnitTesting
   [Serializable]
   public class MixinWithSerializationCallbacks : Mixin<object>, IDeserializationCallback
   {
-    private static ISerializationEventReceiver s_receiver;
+    private static ISerializationEventReceiver? s_receiver;
 
     public static void SetStaticReceiver (ISerializationEventReceiver receiver)
     {
       s_receiver = receiver;
     }
 
-    protected virtual ISerializationEventReceiver StaticReceiver
+    protected virtual ISerializationEventReceiver? StaticReceiver
     {
       get { return s_receiver; }
     }
 
-    public void OnDeserialization (object sender)
+    public void OnDeserialization (object? sender)
     {
       if (StaticReceiver != null)
         StaticReceiver.OnDeserialization (sender);

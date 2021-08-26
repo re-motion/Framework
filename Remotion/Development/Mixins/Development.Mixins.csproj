@@ -9,7 +9,6 @@
     <Description>Library for unit testing, building, and other development-time activities in regards to Remotion.Mixins.</Description>
     <AssemblyName>Remotion.Development.Mixins</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
-    <Nullable>disable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
