@@ -56,8 +56,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var document = Html.GetResultDocument();
 
       var div = Html.GetAssertedChildElement (document, "div", 0);
-      Html.AssertStyleAttribute (div, "width", "100%");
-      Html.AssertStyleAttribute (div, "margin-bottom", "5pt");
 
       var span = Html.GetAssertedChildElement (div, "label", 0);
       Html.AssertAttribute (span, "for", "MockedDropDownListClientID");
@@ -80,7 +78,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       List.Setup (mock => mock.OptionsMenu).Returns (optionsMenu.Object);
       List.Setup (mock => mock.HasOptionsMenu).Returns (true);
       List.Setup (mock => mock.OptionsTitle).Returns ("Options Menu Title");
-      List.Setup (mock => mock.MenuBlockItemOffset).Returns (new Unit (7, UnitType.Pixel));
 
       optionsMenu.Setup (menuMock => menuMock.RenderControl (Html.Writer)).Callback (
           (HtmlTextWriter writer) => writer.Write ("mocked dropdown menu"));
@@ -97,18 +94,14 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       List.Setup (mock => mock.HasListMenu).Returns (true);
       List.Object.ListMenu.Visible = true;
 
-      Unit menuBlockOffset = new Unit (3, UnitType.Pixel);
-      List.Setup (mock => mock.MenuBlockItemOffset).Returns (menuBlockOffset);
-
       var renderer = new BocListMenuBlockRenderer (_bocListCssClassDefinition);
       renderer.Render (CreateRenderingContext());
 
       var document = Html.GetResultDocument();
 
       var div = Html.GetAssertedChildElement (document, "div", 0);
-      Html.AssertStyleAttribute (div, "width", "100%");
-      Html.AssertStyleAttribute (div, "margin-bottom", menuBlockOffset.ToString());
       Html.AssertChildElementCount (div, 0);
+      Html.AssertAttribute (div, "class", "bocListListMenuContainer");
     }
 
     private BocListRenderingContext CreateRenderingContext ()
