@@ -34,7 +34,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
   [SetUICulture ("en-US")]
   public class BocListRendererTest : BocListRendererTestBase
   {
-    private static readonly Unit s_menuBlockWidth = new Unit (123, UnitType.Pixel);
     private static readonly Unit s_menuBlockOffset = new Unit (12, UnitType.Pixel);
     private BocListCssClassDefinition _bocListCssClassDefinition;
 
@@ -85,8 +84,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     public void RenderWithMenuBlock ()
     {
       List.Setup (mock => mock.HasMenuBlock).Returns (true);
-      List.Setup (mock => mock.MenuBlockWidth).Returns (s_menuBlockWidth);
-      List.Setup (mock => mock.MenuBlockOffset).Returns (s_menuBlockOffset);
+      List.Setup (mock => mock.MenuBlockMinWidth).Returns (Unit.Parse ("15em"));
+      List.Setup (mock => mock.MenuBlockMaxWidth).Returns (Unit.Parse ("50%"));
 
       var renderer = new BocListRenderer (
           new FakeResourceUrlFactory(),
@@ -108,21 +107,19 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute (div, "role", "group");
       Html.AssertAttribute (div, StubLabelReferenceRenderer.LabelReferenceAttribute, "Label");
       Html.AssertAttribute (div, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, controlTypeLabelID);
+      Html.AssertStyleAttribute (div, "--boclist-menublock-minimum-width", "15em");
+      Html.AssertStyleAttribute (div, "--boclist-menublock-maximum-width", "50%");
 
       var controlTypeLabel = Html.GetAssertedChildElement (div, "span", 0);
       AssertControlTypeLabel(controlTypeLabel, controlTypeLabelID);
 
       var menuBlock = Html.GetAssertedChildElement (div, "div", 1);
       Html.AssertAttribute (menuBlock, "class", _bocListCssClassDefinition.MenuBlock);
-      Html.AssertStyleAttribute (menuBlock, "width", s_menuBlockWidth.ToString());
       var menuBlockContent = Html.GetAssertedChildElement (menuBlock, "div", 0);
-      Html.AssertStyleAttribute (menuBlockContent, "margin-left", s_menuBlockOffset.ToString());
       Html.GetAssertedChildElement (menuBlockContent, "menu", 0);
 
       var tableBlock = Html.GetAssertedChildElement (div, "div", 2);
       Html.AssertAttribute (tableBlock, "class", "bocListTableBlock hasMenuBlock");
-
-      Html.AssertStyleAttribute (tableBlock, "right", s_menuBlockWidth.ToString ());
 
       Html.GetAssertedChildElement (tableBlock, "table", 0);
     }

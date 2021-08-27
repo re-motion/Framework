@@ -250,6 +250,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           pageNumberField,
           "size",
           totalPageCount.ToString (CultureInfo.InvariantCulture).Length.ToString (CultureInfo.InvariantCulture));
+      Html.AssertStyleAttribute (
+          pageNumberField,
+          "--size",
+          totalPageCount.ToString (CultureInfo.InvariantCulture).Length.ToString (CultureInfo.InvariantCulture));
 
       Html.AssertTextNode (manualInputArea, c_totalPageCountText + " " + totalPageCount, 2);
     }

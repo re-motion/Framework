@@ -68,18 +68,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     {
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
 
-      string menuBlockItemOffset = c_defaultMenuBlockItemOffset;
-      if (!renderingContext.Control.MenuBlockItemOffset.IsEmpty)
-        menuBlockItemOffset = renderingContext.Control.MenuBlockItemOffset.ToString();
+      RenderAvailableViewsList (renderingContext);
 
-      RenderAvailableViewsList (renderingContext, menuBlockItemOffset);
+      RenderOptionsMenu (renderingContext);
 
-      RenderOptionsMenu (renderingContext, menuBlockItemOffset);
-
-      RenderListMenu (renderingContext, menuBlockItemOffset);
+      RenderListMenu (renderingContext);
     }
 
-    private void RenderListMenu (BocListRenderingContext renderingContext, string menuBlockItemOffset)
+    private void RenderListMenu (BocListRenderingContext renderingContext)
     {
       if (!renderingContext.Control.HasListMenu)
         return;
@@ -89,14 +85,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
           "BocList '{0}': The ListMenu must remain visible if BocList.HasListMenu is evaluates 'true'.",
           renderingContext.Control.ID);
 
-      renderingContext.Writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
-      renderingContext.Writer.AddStyleAttribute ("margin-bottom", menuBlockItemOffset);
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClasses.ListMenuContainer);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Div);
       renderingContext.Control.ListMenu.RenderControl (renderingContext.Writer);
       renderingContext.Writer.RenderEndTag();
     }
 
-    private void RenderOptionsMenu (BocListRenderingContext renderingContext, string menuBlockItemOffset)
+    private void RenderOptionsMenu (BocListRenderingContext renderingContext)
     {
       if (!renderingContext.Control.HasOptionsMenu)
         return;
@@ -124,20 +119,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
             stringValueParametersDictionary);
       }
 
-      renderingContext.Control.OptionsMenu.Style.Add ("margin-bottom", menuBlockItemOffset);
       renderingContext.Control.OptionsMenu.RenderControl (renderingContext.Writer);
     }
 
-    private void RenderAvailableViewsList (BocListRenderingContext renderingContext, string menuBlockItemOffset)
+    private void RenderAvailableViewsList (BocListRenderingContext renderingContext)
     {
       if (!renderingContext.Control.HasAvailableViewsList)
         return;
 
       var availableViewsList = renderingContext.Control.GetAvailableViewsList();
 
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClasses.Themed);
-      renderingContext.Writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
-      renderingContext.Writer.AddStyleAttribute ("margin-bottom", menuBlockItemOffset);
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, $"{CssClasses.Themed} {CssClasses.AvailableViewsList}");
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Div);
 
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClasses.AvailableViewsListLabel);
