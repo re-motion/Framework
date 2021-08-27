@@ -71,7 +71,6 @@ namespace Remotion.ObjectBinding.Sample
       writer.RenderBeginTag (HtmlTextWriterTag.A);
       writer.Write ("sync");
       writer.RenderEndTag();
-      writer.Write ("<br />");
     }
   }
 }
