@@ -96,16 +96,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
     /// <value> <see langref="true"/> to enable the client script. </value>
     bool EnableClientScript { get; }
 
-    /// <summary> Gets or sets the offset between the items in the <c>menu block</c>. </summary>
-    /// <remarks> The <see cref="MenuBlockOffset"/> is applied as a <c>margin</c> attribute. </remarks>
-    Unit MenuBlockItemOffset { get; }
+    /// <summary>
+    /// Gets or sets the minimum width reserved for the menu block.
+    /// </summary>
+    Unit MenuBlockMinWidth { get; }
 
-    /// <summary> Gets or sets the width reserved for the menu block. </summary>
-    Unit MenuBlockWidth { get; }
-
-    /// <summary> Gets or sets the offset between the <c>list block</c> and the <c>menu block</c>. </summary>
-    /// <remarks> The <see cref="MenuBlockOffset"/> is applied as a <c>padding</c> attribute. </remarks>
-    Unit MenuBlockOffset { get; }
+    /// <summary>
+    /// Gets or sets the maximum width reserved for the menu block.
+    /// </summary>
+    Unit MenuBlockMaxWidth { get; }
 
     /// <summary> Gets or sets the text that is rendered as a title for the drop list of additional columns. </summary>
     /// <remarks> The value will not be HTML encoded. </remarks>

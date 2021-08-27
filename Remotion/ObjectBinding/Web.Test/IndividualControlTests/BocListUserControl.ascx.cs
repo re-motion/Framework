@@ -275,7 +275,7 @@ public class BocListUserControl : BaseUserControl
     BocSimpleColumnDefinition birthdayColumnDefinition = new BocSimpleColumnDefinition();
     birthdayColumnDefinition.ColumnTitle = "Birthday";
     birthdayColumnDefinition.SetPropertyPath (BusinessObjectPropertyPath.CreateStatic (new []{dateOfBirth}));
-    birthdayColumnDefinition.Width = Unit.Parse ("14em");
+    birthdayColumnDefinition.Width = Unit.Parse ("17em");
     birthdayColumnDefinition.EnforceWidth = true;
 
     BocSimpleColumnDefinition dayofDeathColumnDefinition = new BocSimpleColumnDefinition();

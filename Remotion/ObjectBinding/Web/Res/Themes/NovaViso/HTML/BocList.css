@@ -1,231 +1,282 @@
-/* Style applied to the BocList. */
-
 div.bocList
 {
-  display: block;
+  --boclist-tablehead-background-color: var(--color-contrast);
+  --boclist-listmenu-background-color: var(--color-contrast);
+  --boclist-tablecell-border-color: var(--color-standard-separator);
+  --boclist-menublock-minimum-width: 10em;
+  --boclist-menublock-maximum-width: auto;
+}
+
+/*region root*/
+div.bocList
+{
+  display: grid;
+  grid-template-columns: 1fr minmax(var(--boclist-menublock-minimum-width), var(--boclist-menublock-maximum-width));
+  height: auto;
+}
+/*endregion*/
+
+/*region bocListTableContainer*/
+div.bocList div.bocListTableBlock.hasNavigator div.bocListTableContainer
+{
+  grid-row: 1;
+}
+
+div.bocList div.bocListTableBlock div.bocListTableContainer
+{
+  grid-row: 1 / span 2;
   position: relative;
-  zoom: 1;
-  height: auto;
-  width: auto; /* give it a value to make bocList scrollable, IE7 is buggy if you don't define height & width */
-}
-
-/* Style applied to the BocList in read-only mode. */
-.bocList.readOnly
-{
-}
-
-/*  Style applied to the BocList's navigator. */
-div.bocListNavigator
-{
-  white-space: nowrap;
-  overflow: hidden;
-  margin-top: 0.25em;
-}
-
-
-div.bocList.hasDimensions div.bocListNavigator
-{
-  position: absolute;
-  bottom: 0;
-}
-
-/*  Style applied to the BocList's navigator, page information. */
-div.bocListNavigator > span
-{
-  padding-right: 0.35em
-}
-
-div.bocListNavigator > span > input
-{
-  margin-left: 0.35em;
-  margin-right: 0.35em;
-}
-
-div.bocListNavigator a
-{
-  padding: 2px;
-}
-
-div.bocListNavigator a[href]
-{
-  color: #09457E;
-}
-
-div.bocListNavigator a[href]:focus,
-div.bocListNavigator a[href]:hover
-{
-  color: Black;
-  padding: 1px;
-  border: 1px solid #7CB2E6;
-  background-color: #E5F0FC;
-  outline: none;
-}
-
-div.bocListNavigator a[href]:active
-{
-  color: Black;
-  border: solid 1px #569CE0;
-  background-color: #C5E0FC;
-}
-
-div.bocListNavigator img
-{
-  padding-left: 0.35em;
-  padding-right: 0.35em;
-  vertical-align: -0.1em;
-}
-
-div.bocListNavigator a[id$="_First"] img,
-div.bocListNavigator a[id$="_Last"] img
-{
-  height: 16px;
-  width: 16px;
-}
-
-div.bocListNavigator a[id$="_Previous"] img,
-div.bocListNavigator a[id$="_Next"] img
-{
-  height: 16px;
-  width: 16px;
-}
-
-div.bocListNavigator a[href]:focus img,
-div.bocListNavigator a[href]:hover img,
-div.bocListNavigator a[href]:active img
-{
-  -webkit-filter: brightness(0);
-  filter: brightness(0);
-  filter: progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
-}
-
-/*  Style applied to the BocList's menu block. */
-div.bocListMenuBlock
-{
-  display: block;
-  float: right;
-  width: 10em;
-}
-
-div.bocListMenuBlock > div
-{
-  margin-left: 0.5em;
-}
-
-/*  Style applied to the list-area (table and navigation block) of the BocList.  */
-div.bocListTableBlock
-{
-  display: block;
-  width: auto;
+  background-color: var(--boclist-tablehead-background-color);
   overflow: hidden;
 }
 
-/* Style applied to the list-area (table and navigation block) of the BocList if there is a menu block. */
-div.bocListTableBlock.hasMenuBlock
+div.bocList.hasDimensions  div.bocListTableBlock div.bocListTableContainer
 {
-  border-right: 1px solid #AAAAAA;
+  background-color: var(--boclist-tablehead-background-color);
 }
+/*endregion*/
 
-/*  use JS to apply hasWidth and hasHeight depending on bocList-element on runtime */
-/*  Style applied to the list-area (table and navigation block) of the BocList when the BocList has a defined width or height.  */
-div.bocList.hasDimensions div.bocListTableBlock
+/*region bocListTableScrollContainer*/
+div.bocList div.bocListTableBlock div.bocListTableContainer div.bocListTableScrollContainer
 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-}
-
-/* Style applied to the list-area (table and navigation block) of the BocList if there is a menu block. */
-div.bocList.hasDimensions div.bocListTableBlock.hasMenuBlock
-{
-  right: 10em; /* width of BocList menu block + some space */
-}
-
-/* Style applied to the div surrounding the BocList's table. */
-div.bocListTableContainer
-{
+  background-color: var(--color-standard-background);
+  scrollbar-width: var(--remotion-themed-scrollbar-style);
+  scrollbar-color: var(--color-standard-scrollbar-track) transparent;
   display: block;
-  width: auto;
-  height: auto;
-  background-color: #F0F0F0;
-}
-
-div.bocList.hasDimensions div.bocListTableBlock div.bocListTableContainer
-{
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  overflow: hidden;
-}
-
-div.bocList.hasDimensions div.bocListTableBlock span:focus + div.bocListTableContainer
-{
-  outline: dotted black 1px;
-  outline: auto 5px -webkit-focus-ring-color;
-}
-
-/*  Style applied to the div surrounding the BocList's table when the BocList has a defined width or height and a navigation block.  */
-div.bocList.hasDimensions div.bocListTableBlock.hasNavigator div.bocListTableContainer
-{
-  bottom: 1.85em;
-}
-
-/* Style applied to the div allowing the BocList's table to scroll. */
-div.bocListTableScrollContainer
-{
-  display: block;
-  width: auto;
-  height: auto;
-  overflow-x: auto;
-  overflow-y: hidden;
-  background-color: White;
-}
-
-div.bocList.hasDimensions div.bocListTableScrollContainer
-{
-  position: absolute;
-  top: 1.9em;
-  left: 0;
-  bottom: 0;
-  right: 0;
   overflow: auto;
-  border-top: 1px solid #AAAAAA;
 }
 
-div.bocList.hasDimensions div.bocListTableScrollContainer table.bocListTable
+div.bocList.hasDimensions div.bocListTableBlock div.bocListTableContainer div.bocListTableScrollContainer
 {
-  margin-top: -1.9em;
-  position: relative;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  border-top: 1px solid var(--color-standard-border);
 }
 
+div.bocList div.bocListTableBlock div.bocListTableContainer div.bocListTableScrollContainer::-webkit-scrollbar-thumb
+{
+  background: var(--color-standard-scrollbar-track);
+}
 
-/* Style applied to the fake table head used for scrolling */
-div.bocListFakeTableHead
+div.bocList div.bocListTableBlock div.bocListTableContainer div.bocListTableScrollContainer::-webkit-scrollbar
+{
+  width: var(--remotion-themed-scrollbar-width);
+  height: var(--remotion-themed-scrollbar-height);
+}
+/*endregion*/
+
+/*#region bocListTableBody*/
+div.bocList:not(.hasDimensions) div.bocListTableBlock div.bocListTableContainer div.bocListTableScrollContainer table.bocListTable tbody.bocListTableBody
+{
+  border-top: 1px solid var(--color-standard-border);
+}
+/*#endregion*/
+
+/*region cells*/
+div.bocList table.bocListTable th.bocListTitleCell,
+div.bocList table.bocListTable td.bocListDataCell
+{
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  padding: var(--remotion-themed-spacing-half) var(--remotion-themed-spacing);
+}
+
+div.bocList table.bocListTable th.bocListTitleCell
+{
+  font-weight: normal;
+  text-align: left;
+  background-color: var(--boclist-tablehead-background-color);
+  white-space: nowrap;
+}
+
+div.bocList table.bocListTable th.bocListTitleCell > input[type=checkbox],
+div.bocList table.bocListTable td.bocListDataCellRowSelector > input
+{
+  margin: 0;
+}
+
+div.bocList table.bocListTable th.bocListTitleCell > span,
+div.bocList table.bocListTable th.bocListTitleCell > a
+{
+  display: inline-flex;
+  align-items: center;
+  height: var(--remotion-themed-min-height);
+}
+
+div.bocList table.bocListTable th.bocListTitleCell > a,
+div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell > a
+{
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+div.bocList table.bocListTable th.bocListTitleCell > a:active,
+div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell > a:active
+{
+  color: var(--color-standard-text);
+}
+
+div.bocList table.bocListTable th.bocListTitleCell > a:focus > :first-child,
+div.bocList table.bocListTable th.bocListTitleCell > a:hover > :first-child,
+div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell > a:focus,
+div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell > a:hover
+{
+  text-decoration: underline;
+}
+
+div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell
+{
+  background-color: var(--color-standard-background);
+}
+
+div.bocList table.bocListTable tr.bocListDataRow.selected td.bocListDataCell
+{
+  background-color: var(--color-highlight);
+}
+
+div.bocList table.bocListTable td.bocListDataCell
+{
+  border-bottom: 1px solid var(--boclist-tablecell-border-color);
+}
+
+div.bocList table.bocListTable td.bocListDataCellIndex
+{
+  text-align: right;
+}
+/*endregion*/
+
+/*region bocListTableBlock*/
+div.bocList div.bocListTableBlock
+{
+  grid-column: 1 / span 2;
+  grid-row: 1;
+  display: grid;
+  grid-template-rows: auto min-content;
+  height: 100%;
+}
+
+div.bocList div.bocListTableBlock.hasMenuBlock
+{
+  grid-column: 1;
+  border-right: 1px solid var(--boclist-tablecell-border-color);
+}
+/*endregion*/
+
+/*region bocListNavigator*/
+div.bocList div.bocListTableBlock div.bocListNavigator
+{
+  overflow: hidden;
+  padding: var(--remotion-themed-spacing-half);
+  display: flex;
+  align-items: center;
+  grid-row: 2;
+}
+
+div.bocList div.bocListTableBlock div.bocListNavigator > span
+{
+  margin-right: var(--remotion-themed-spacing);
+}
+
+div.bocList div.bocListTableBlock div.bocListNavigator > span > input
+{
+  min-height: unset;
+  height: var(--remotion-themed-line-height);
+  padding: var(--remotion-themed-spacing-half);
+  margin: var(--remotion-themed-spacing-half) var(--remotion-themed-spacing);
+  text-align: right;
+  width: calc(0.6em * var(--size));
+}
+
+div.bocList div.bocListTableBlock div.bocListNavigator img
+{
+  height: var(--remotion-themed-line-height);
+  width: var(--remotion-themed-line-height);
+}
+
+div.bocList div.bocListTableBlock div.bocListNavigator a
+{
+  border: var(--remotion-themed-border-width) solid transparent;
+  border-radius: 2px;
+  padding: var(--remotion-themed-spacing-half);
+  margin: 0 var(--remotion-themed-spacing-half);
+  background-color: var(--remotion-themed-control-background);
+}
+
+div.bocList div.bocListTableBlock div.bocListNavigator a[href]
+{
+  border-color: var(--color-standard-border);
+}
+
+div.bocList div.bocListTableBlock div.bocListNavigator a[href]:hover
+{
+  border-color: var(--color-primary);
+  background-color: var(--color-highlight);
+}
+
+div.bocList div.bocListTableBlock div.bocListNavigator a:not([href]) img
+{
+  filter: opacity(0.5);
+}
+/*endregion*/
+
+/*region bocListMenuBlock*/
+div.bocList div.bocListMenuBlock
+{
+  grid-column: 2;
+  grid-row: 1;
+  background-color: var(--boclist-listmenu-background-color);
+}
+
+div.bocList div.bocListMenuBlock > div
+{
+  margin: var(--remotion-themed-spacing);
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--remotion-themed-spacing) * 2);
+}
+
+div.bocList div.bocListMenuBlock div.bocListAvailableViewsList
+{
+  display: flex;
+  align-items: center;
+}
+
+div.bocList div.bocListMenuBlock div.bocListAvailableViewsList select.bocListAvailableViewsListDropDownList
+{
+  flex-grow: 1;
+}
+
+div.bocList div.bocListMenuBlock .DropDownMenuContainer
+{
+  width: 100%;
+}
+/*endregion*/
+
+/*region Fake table head*/
+div.bocList div.bocListTableBlock div.bocListTableContainer div.bocListFakeTableHead
 {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   margin: 0;
-  padding:0;
+  padding: 0;
   z-index: 1;
   overflow: hidden;
 }
 
-/* Style applied to the div used for definining the width of the fake table head */
-div.bocListFakeTableHead > div
+div.bocList div.bocListTableBlock div.bocListTableContainer div.bocListFakeTableHead > div
 {
-  /* Reserve space in case there is a scrollbar for the data-part of the table. 
+  /* Reserve space in case there is a scrollbar for the data-part of the table.
      Note that the actual max-width is not important so long as the scrollbar's max-width is covered. '*/
-  border-right: 100px solid #F0F0F0;
+  border-right: var(--remotion-themed-scrollbar-width) solid var(--boclist-tablehead-background-color);
 }
 
-/*  Style applied to the BocList's table's outer structure.  */
-table.bocListTable,
-div.bocListFakeTableHead table
+div.bocList div.bocListTableBlock div.bocListTableContainer div.bocListFakeTableHead table,
+div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable
 {
   width: 100%;
   border-spacing: 0;
@@ -233,362 +284,68 @@ div.bocListFakeTableHead table
   border-style: none;
 }
 
-/*  Style applied to the table head block of the BocList's table.  */
-tbody.bocListTableBody
-{
-}
-
-/*  Style applied to the cells in the BocList's title row.  */
-th.bocListTitleCell
-{
-  font-weight: bold;
-  text-align: left;
-
-  padding: 2px 2px 2px 2px;
-  border-top: none;
-  border-right: none;
-  border-left: none;
-  border-bottom: 1px solid #AAAAAA;
-  background-color: #F0F0F0;
-  white-space: nowrap;
-}
-
-thead.bocListTableHead[aria-hidden] > tr > th > *
+div.bocList div.bocListTableBlock div.bocListTableContainer thead.bocListTableHead[aria-hidden] > tr > th > *
 {
   visibility: hidden;
 }
+/*endregion*/
 
-div.bocList.hasDimensions th.bocListTitleCell
+/*region Sorting order*/
+div.bocList div.bocListTableBlock div.bocListTableContainer div.bocListFakeTableHead span.bocListSortingOrder
 {
-  border-bottom: none;
+  color: var(--color-standard-text);
+  display: inline-flex;
+  align-items: center;
 }
 
-th.bocListTitleCell > span
+div.bocList div.bocListTableBlock div.bocListTableContainer div.bocListFakeTableHead span.bocListSortingOrder img
 {
-  padding: 2px;
+  height: 1.2em;
+  width: 1.2em;
+  margin-right: -0.5em;
+  margin-bottom: 0.5em;
+}
+/*endregion*/
+
+/*region Editable cell*/
+div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable span.bocListEditableCell .control
+{
+  width: 100%;
+  display: block;
 }
 
-th.bocListTitleCell > a
+div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable span.bocListEditableCell .control > *
 {
-  color: #09457E;
-  padding: 2px;
+  width: 100%;
+}
+/*endregion*/
+
+/*region Validation markers*/
+div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable span.bocListEditableCell .validationErrorMarker > img,
+div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable .validationRequiredMarker
+{
+  height: 1.2em;
+  width: 1.2em;
+  margin-right: -0.5em;
 }
 
-th.bocListTitleCell > a[href]:focus,
-th.bocListTitleCell > a[href]:hover
+div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable span.bocListEditableCell .bocListEditModeValidationMessage
 {
-  color: Black;
-  padding: 1px;
-  border: 1px solid #7CB2E6;
-  background-color: #E5F0FC;
-  outline: none;
+  color: var(--color-validationerror-text);
 }
 
-th.bocListTitleCell > a[href]:active
-{
-  color: Black;
-  border: solid 1px #569CE0;
-  background-color: #C5E0FC;
-}
-
-th.bocListTitleCell .bocListSortingOrder img
-{
-  height: 16px;
-  width: 16px;
-}
-
-th.bocListTitleCell > a[href]:focus .bocListSortingOrder img,
-th.bocListTitleCell > a[href]:hover .bocListSortingOrder img,
-th.bocListTitleCell > a[href]:active .bocListSortingOrder img
-{
-  -webkit-filter: brightness(0);
-  filter: brightness(0);
-  filter: progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
-}
-
-/*  Style applied to the cells in the BocList's odd and even data rows. */
-td.bocListDataCell
-{
-  text-align: left;
-
-  padding: 2px 5px 2px 2px;
-  border-top: none;
-  border-right: none;
-  border-left: none;
-  border-bottom: 1px solid #C8C8C8;
-
-  cursor: default;
-}
-
-/*  Style applied to the cells in the BocList's not-selected odd and even data rows. */
-tr.bocListDataRow.odd td.bocListDataCell
-{
-  background-color: White;
-}
-
-tr.bocListDataRow.even td.bocListDataCell
-{
-  background-color: #F0F0F0;
-}
-
-/*  Style applied to the cells in the BocList's selected odd and even data rows. */
-tr.bocListDataRow.selected td.bocListDataCell
-{
-  background-color: #C5E0FC;
-}
-
-
-/*  Style applied to the cell in the BocList's data row that contains the index. */
-th.bocListTitleCellIndex
-{
-  text-align: center;
-}
-
-/*  Style applied to the cell in the BocList's data row that contains the index. */
-td.bocListDataCellIndex
-{
-  text-align: center;
-}
-
-/*  Style applied to the non-anchor content in the data rows.  */
-span.bocListContent,
-label.bocListContent
-{
-  padding: 2px;
-}
-
-/*  Style applied to the anchor tags in BocList's data rows.  */
-tr.bocListDataRow td.bocListDataCell a
-{
-  display: inline-block;
-  padding: 1px;
-  border: 1px solid transparent;
-}
-
-/*  Style applied to the anchor tags in BocList's selected data rows.  */
-tr.bocListDataRow.selected td.bocListDataCell a
-{
-}
-
-/*  Style applied to the anchor tags during hovering in BocList's data rows.  */
-tr.bocListDataRow td.bocListDataCell a:focus,
-tr.bocListDataRow td.bocListDataCell a:hover
-{
-  color: Black;
-  border: 1px solid #7CB2E6;
-  background-color: #E5F0FC;
-  outline: none;
-}
-
-tr.bocListDataRow td.bocListDataCell a:active
-{
-  color: Black;
-  border: solid 1px #569CE0;
-  background-color: #C5E0FC;
-}
-
-/* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
-body.msie tr.bocListDataRow td.bocListDataCell > a
+div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable span.bocListEditableCell .validationErrorMarker
 {
   position: relative;
 }
 
-/* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
-body.msie tr.bocListDataRow td.bocListDataCell > a::before
-{
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-}
-
-/*  Style applied to the disabled anchor tags during hovering in BocList's data rows.  */
-tr.bocListDataRow td.bocListDataCell a.disabled:hover,
-tr.bocListDataRow td.bocListDataCell a.disabled:active
-{
-  color: Gray;
-  border: 1px solid transparent;
-}
-
-/* Style applied to SPAN elements in command-enabled column cells */
-tr.bocListDataRow td.bocListDataCell span.CommandText
-{
-  vertical-align: middle;
-}
-
-
-/* Style to override the BocList's anchor style for drop down menus rendered inside a cell. */
-td.bocListDataCell div ul.DropDownMenuOptions li a
-{
-  display: block;
-}
-
-td.bocListDataCell div ul.DropDownMenuOptions li.DropDownMenuItemDisabled.selected a,
-td.bocListDataCell div ul.DropDownMenuOptions li.DropDownMenuItemDisabled a:active,
-td.bocListDataCell div ul.DropDownMenuOptions li.DropDownMenuItemDisabled a:focus,
-td.bocListDataCell div ul.DropDownMenuOptions li.DropDownMenuItemDisabled a:hover
-{
-  background-color: #ECEEEC;
-  border-style: none;
-  padding: 2px;
-  color: gray;
-}
-
-td.bocListDataCell div span.DropDownMenuSelect a.DropDownMenuLabel,
-td.bocListDataCell div span.DropDownMenuSelect:focus a.DropDownMenuLabel,
-td.bocListDataCell div span.DropDownMenuSelect:hover a.DropDownMenuLabel
-{
-  padding: 0;
-  border: none;
-  color: Black;
-  background-color: Transparent;
-}
-
-td.bocListDataCell div span.DropDownMenuSelect a.DropDownMenuButton
-{
-  padding: 0;
-  border: none;
-  border-left: solid 1px #AAAAAA;
-  background-color: Transparent;
-}
-
-td.bocListDataCell div span.DropDownMenuSelect:focus a.DropDownMenuButton,
-td.bocListDataCell div span.DropDownMenuSelect:hover a.DropDownMenuButton
-{
-  border-left: solid 1px #7CB2E6;
-}
-
-td.bocListDataCell div span.DropDownMenuSelect:active a.DropDownMenuButton
-{
-  border-left: 1px solid #569CE0;
-}
-
-td.bocListDataCell span.DropDownMenuSelect.disabled a.DropDownMenuLabel,
-td.bocListDataCell span.DropDownMenuSelect.disabled:hover a.DropDownMenuLabel
-{
-  padding: 0px;
-  border: none;
-  color: Gray;
-  background-color: Transparent;
-}
-
-td.bocListDataCell span.DropDownMenuSelect.disabled a.DropDownMenuButton,
-td.bocListDataCell span.DropDownMenuSelect.disabled:hover a.DropDownMenuButton
-{
-  padding: 0px;
-  border: none;
-  border-left: solid 1px #BCBCBC;
-  background-color: Transparent;
-}
-
-td.bocListDataCell span.bocDateValue a,
-td.bocListDataCell span.bocDateValue a:focus,
-td.bocListDataCell span.bocDateValue a:hover,
-td.bocListDataCell span.bocDateTimeValue a,
-td.bocListDataCell span.bocDateTimeValue a:focus,
-td.bocListDataCell span.bocDateTimeValue a:hover
-{
-  padding: 0px;
-  border-style: none;
-  background-color: Transparent;
-}
-
-td.bocListDataCell span.bocBooleanValue a,
-td.bocListDataCell span.bocBooleanValue a:focus,
-td.bocListDataCell span.bocBooleanValue a:hover
-{
-  border: none;
-  background-color: Transparent;
-}
-
-td.bocListDataCell span.bocBooleanValue a:focus
-{
-  outline: dotted black 1px;
-  outline: auto 5px -webkit-focus-ring-color;
-}
-
-/*  Style applied to the text providing the sorting order's index. */
-span.bocListSortingOrder
-{
-  color: Gray;
-  font-size: 80%;
-  font-weight: normal;
-}
-
-/*  Style applied to the BocList's list of available views. */
-select.bocListAvailableViewsListDropDownList
-{
-}
-
-/*  Style applied to the BocList's list of available views. */
-span.bocListAvailableViewsListLabel
-{
-}
-
-.bocList .validationRequiredMarker
-{
-  vertical-align: -0.3em;
-  height: 16px;
-  width: 16px;
-}
-
-.bocList .validationErrorMarker
-{
-  padding-top: 0.1em;
-}
-
-.bocList .validationErrorMarker > img
-{
-  height: 16px;
-  width: 16px;
-}
-
-/*  Style applied to the validation messages, applied if the EditDetailsValidator has no style it self.  */
-div.bocListEditModeValidationMessage
-{
-  color: Red;
-}
-
-span.bocListEditableCell
-{
-  display: inline-block;
-  width: 100%
-}
-
-span.bocListEditableCell .validationErrorMarker
-{
-  float: left;
-}
-
-span.bocListEditableCell .control
-{
-  width: 100%; 
-  display: block;
-}
-
-span.bocListEditableCell .validationErrorMarker + .control
-{
-  padding-left: 14px;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-span.bocListEditableCell .validationErrorMarker[aria-label]:not([title]):focus,
-span.bocListEditableCell .validationErrorMarker[aria-label]:not([title]):hover
-{
-  position: relative;
-}
-
-span.bocListEditableCell .validationErrorMarker[aria-label]:not([title])::after,
-span.bocListEditableCell .validationErrorMarker[aria-label]:not([title])::after
+div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable span.bocListEditableCell .validationErrorMarker[aria-label]:not([title])::after,
+div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable span.bocListEditableCell .validationErrorMarker[aria-label]:not([title])::after
 {
   visibility: hidden;
   transition-property: visibility;
-  transition-duration: 0;
-  transition-delay: 0;
+  transition-duration: 0ms;
+  transition-delay: 0ms;
   transition-timing-function: linear;
 
   content: attr(aria-label);
@@ -604,18 +361,51 @@ span.bocListEditableCell .validationErrorMarker[aria-label]:not([title])::after
   box-sizing: border-box;
 }
 
-span.bocListEditableCell .validationErrorMarker[aria-label]:not([title]):focus::after,
-span.bocListEditableCell .validationErrorMarker[aria-label]:not([title]):hover::after
+div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable span.bocListEditableCell .validationErrorMarker[aria-label]:not([title]):focus::after,
+div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable span.bocListEditableCell .validationErrorMarker[aria-label]:not([title]):hover::after
 {
   visibility: visible;
   transition-delay: 0.7s;
 }
+/*endregion*/
 
-span.bocListEditableCell .control > *
+/*region Validation layout*/
+div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable span.bocListEditableCell
 {
-  width: 100%;
-  vertical-align: middle;
+  display: inline-grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto auto;
 }
+
+div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable span.bocListEditableCell > .control
+{
+  grid-row: 1;
+  grid-column: 1 / span 2;
+}
+
+div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable span.bocListEditableCell > .validationMessages
+{
+  grid-row: 2;
+}
+
+div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable span.bocListEditableCell > .validationErrorMarker
+{
+  grid-row: 1;
+  grid-column: 1;
+  margin: auto var(--remotion-themed-spacing);
+}
+
+div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable span.bocListEditableCell > .validationErrorMarker + .control
+{
+  grid-column: 2;
+}
+
+div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable span.bocListEditableCell > .validationErrorMarker ~ .validationMessages
+{
+  grid-column: 2;
+  padding-top: var(--remotion-themed-spacing-half);
+}
+/*endregion*/
 
 /* Shared in other CSS files */
 .screenReaderText
