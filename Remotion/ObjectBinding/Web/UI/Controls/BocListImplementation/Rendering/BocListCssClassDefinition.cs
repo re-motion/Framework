@@ -183,6 +183,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     }
 
     /// <summary> Gets the CSS-Class applied to the <see cref="BocList"/>'s list of additional columns. </summary>
+    /// <remarks> Class: <c>bocListAvailableViewsList</c> </remarks>
+    public virtual string AvailableViewsList
+    {
+      get { return "bocListAvailableViewsList"; }
+    }
+
+    /// <summary> Gets the CSS-Class applied to the <see cref="BocList"/>'s dropdown list of additional columns. </summary>
     /// <remarks> Class: <c>bocListAvailableViewsListDropDownList</c> </remarks>
     public virtual string AvailableViewsListDropDownList
     {
@@ -194,6 +201,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     public virtual string AvailableViewsListLabel
     {
       get { return "bocListAvailableViewsListLabel"; }
+    }
+
+    public string ListMenuContainer
+    {
+      get { return "bocListListMenuContainer"; }
     }
 
     public string TableBlock

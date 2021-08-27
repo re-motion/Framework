@@ -198,7 +198,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Value, currentPageNumber);
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Size, currentPageNumberMaxLength);
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Maxlength, currentPageNumberMaxLength);
-      //renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Maxlength, "3");
+      renderingContext.Writer.AddStyleAttribute ("--size", currentPageNumberMaxLength);
 
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Input);
       renderingContext.Writer.RenderEndTag();

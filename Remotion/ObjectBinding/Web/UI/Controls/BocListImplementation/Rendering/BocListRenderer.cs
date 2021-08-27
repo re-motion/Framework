@@ -155,6 +155,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       RegisterInitializeGlobalsScript (renderingContext);
 
       AddAttributesToRender (renderingContext);
+
+      if (!renderingContext.Control.MenuBlockMinWidth.IsEmpty)
+        renderingContext.Writer.AddStyleAttribute ("--boclist-menublock-minimum-width", renderingContext.Control.MenuBlockMinWidth.ToString());
+
+      if (!renderingContext.Control.MenuBlockMaxWidth.IsEmpty)
+        renderingContext.Writer.AddStyleAttribute ("--boclist-menublock-maximum-width", renderingContext.Control.MenuBlockMaxWidth.ToString());
+
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Div);
 
       RenderContents (renderingContext);
@@ -207,14 +214,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       if (renderingContext.Control.HasMenuBlock)
       {
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClasses.MenuBlock);
-
-        if (!renderingContext.Control.MenuBlockWidth.IsEmpty)
-          renderingContext.Writer.AddStyleAttribute (HtmlTextWriterStyle.Width, renderingContext.Control.MenuBlockWidth.ToString());
-
         renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Div);
-        
-        if (!renderingContext.Control.MenuBlockOffset.IsEmpty)
-          renderingContext.Writer.AddStyleAttribute (HtmlTextWriterStyle.MarginLeft, renderingContext.Control.MenuBlockOffset.ToString());
         renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Div);
 
         MenuBlockRenderer.Render (renderingContext);
@@ -226,8 +226,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       //  Table Block
       renderingContext.Writer.AddAttribute (
           HtmlTextWriterAttribute.Class, CssClasses.GetTableBlock (renderingContext.Control.HasMenuBlock, renderingContext.Control.HasNavigator));
-      if (renderingContext.Control.HasMenuBlock && !renderingContext.Control.MenuBlockWidth.IsEmpty)
-        renderingContext.Writer.AddStyleAttribute ("right", renderingContext.Control.MenuBlockWidth.ToString());
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Div);
 
       TableBlockRenderer.Render (renderingContext);

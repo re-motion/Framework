@@ -71,6 +71,41 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       IPostBackDataHandler,
       IResourceDispatchTarget
   {
+    #region Obsolete
+
+    /// <summary> Gets or sets the offset between the items in the <c>menu block</c>. </summary>
+    /// <remarks> The <see cref="MenuBlockOffset"/> is applied as a <c>margin</c> attribute. </remarks>
+    [Obsolete ("Style via CSS instead. (Version 3.0.0)", true)]
+    public Unit MenuBlockItemOffset
+    {
+      get => throw new NotSupportedException ("Style via CSS instead.");
+      set => throw new NotSupportedException ("Style via CSS instead.");
+    }
+
+    /// <summary> Gets or sets the offset between the table and the menu block. </summary>
+    [Obsolete ("Style via CSS instead. (Version 3.0.0)", true)]
+    public Unit MenuBlockOffset
+    {
+      get => throw new NotSupportedException ("Style via CSS instead.");
+      set => throw new NotSupportedException ("Style via CSS instead.");
+    }
+
+    /// <summary> Gets or sets the width reserved for the menu block. </summary>
+    [Obsolete ("Use " + nameof (MenuBlockMinWidth) + " and " + nameof (MenuBlockMaxWidth) + " instead. (Version 3.0.0)", true)]
+    public Unit MenuBlockWidth
+    {
+      get => throw new NotSupportedException ($"Use {nameof (MenuBlockMinWidth)} and {nameof (MenuBlockMaxWidth)} instead.");
+      set => throw new NotSupportedException ($"Use {nameof (MenuBlockMinWidth)} and {nameof (MenuBlockMaxWidth)} instead.");
+    }
+
+    [Obsolete ("For DependDB only.", true)]
+    private new BaseValidator[] CreateValidators ()
+    {
+      throw new NotImplementedException ("For DependDB only.");
+    }
+
+    #endregion
+
     //  constants
     private const string c_currentPageControlName = "_Boc_CurrentPage";
     private const string c_availableViewsListIDSuffix = "_Boc_AvailableViewsList";
@@ -222,7 +257,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private RowMenuDisplay _rowMenuDisplay = RowMenuDisplay.Undefined;
     private string _optionsTitle;
     private string[] _hiddenMenuItems;
-    private Unit _menuBlockWidth = Unit.Empty;
     private Unit _menuBlockOffset = Unit.Empty;
     private Unit _menuBlockItemOffset = Unit.Empty;
     private readonly DropDownMenu _optionsMenu;
@@ -888,11 +922,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       remove { Events.RemoveHandler (s_sortingOrderChangedEvent, value); }
     }
 
-    [Obsolete ("For DependDB only.", true)]
-    private new BaseValidator[] CreateValidators ()
-    {
-      throw new NotImplementedException ("For DependDB only.");
-    }
+
 
     /// <summary>
     ///   Generates a <see cref="EditModeValidator"/>.
@@ -3395,17 +3425,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       remove { Events.RemoveHandler (s_menuItemClickEvent, value); }
     }
 
-    /// <summary> Gets or sets the offset between the items in the <c>menu block</c>. </summary>
-    /// <remarks> The <see cref="MenuBlockOffset"/> is applied as a <c>margin</c> attribute. </remarks>
-    [Category ("Menu")]
-    [Description ("The offset between the items in the menu section.")]
-    [DefaultValue (typeof (Unit), "")]
-    public Unit MenuBlockItemOffset
-    {
-      get { return _menuBlockItemOffset; }
-      set { _menuBlockItemOffset = value; }
-    }
-
     /// <summary> Gets the <see cref="BocMenuItem"/> objects displayed in the <see cref="BocList"/>'s options menu. </summary>
     [PersistenceMode (PersistenceMode.InnerProperty)]
     [ListBindable (false)]
@@ -3428,25 +3447,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return _listMenu.MenuItems; }
     }
 
-    /// <summary> Gets or sets the width reserved for the menu block. </summary>
+    /// <inheritdoc />
     [Category ("Menu")]
-    [Description ("The width reserved for the menu block.")]
+    [Description ("The minimum width reserved for the menu block.")]
     [DefaultValue (typeof (Unit), "")]
-    public Unit MenuBlockWidth
-    {
-      get { return _menuBlockWidth; }
-      set { _menuBlockWidth = value; }
-    }
+    public Unit MenuBlockMinWidth { get; set; }
 
-    /// <summary> Gets or sets the offset between the table and the menu block. </summary>
+    /// <inheritdoc />
     [Category ("Menu")]
-    [Description ("The offset between the table and the menu block.")]
+    [Description ("The maximum width reserved for the menu block.")]
     [DefaultValue (typeof (Unit), "")]
-    public Unit MenuBlockOffset
-    {
-      get { return _menuBlockOffset; }
-      set { _menuBlockOffset = value; }
-    }
+    public Unit MenuBlockMaxWidth { get; set; }
 
     /// <summary> Gets or sets the list of menu items to be hidden. </summary>
     /// <value> The <see cref="WebMenuItem.ItemID"/> values of the menu items to hide. </value>
