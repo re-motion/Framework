@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
       // NOP
     }
 
-    public override void UpdateTimestamps (IEnumerable<DataContainer> dataContainers)
+    public override void UpdateTimestamps (IReadOnlyCollection<DataContainer> dataContainers)
     {
       CheckDisposed();
       ArgumentUtility.CheckNotNull("dataContainers", dataContainers);

@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.TestDomain
     {
     }
 
-    public override void UpdateTimestamps (IEnumerable<DataContainer> dataContainers)
+    public override void UpdateTimestamps (IReadOnlyCollection<DataContainer> dataContainers)
     {
     }
 

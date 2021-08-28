@@ -83,7 +83,7 @@ namespace Remotion.Data.DomainObjects.Persistence
         RelationEndPointDefinition relationEndPointDefinition, SortExpressionDefinition sortExpressionDefinition, ObjectID relatedID);
 
     public abstract void Save (IEnumerable<DataContainer> dataContainers);
-    public abstract void UpdateTimestamps (IEnumerable<DataContainer> dataContainers);
+    public abstract void UpdateTimestamps (IReadOnlyCollection<DataContainer> dataContainers);
     public abstract void BeginTransaction ();
     public abstract void Commit ();
     public abstract void Rollback ();

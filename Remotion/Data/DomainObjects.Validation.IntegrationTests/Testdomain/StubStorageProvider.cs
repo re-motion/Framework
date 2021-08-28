@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain
     {
     }
 
-    public override void UpdateTimestamps (IEnumerable<DataContainer> dataContainers)
+    public override void UpdateTimestamps (IReadOnlyCollection<DataContainer> dataContainers)
     {
     }
 

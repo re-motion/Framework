@@ -492,7 +492,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
             .Expect(mock => mock.Save(Arg<IEnumerable<DataContainer>>.Is.NotNull))
             .WhenCalled(mi => Assert.That(mi.Arguments[0], Is.EquivalentTo(secondStorageProvider)));
         storageProviderMock
-            .Expect(mock => mock.UpdateTimestamps(Arg<IEnumerable<DataContainer>>.Is.NotNull))
+            .Expect(mock => mock.UpdateTimestamps(Arg<IReadOnlyCollection<DataContainer>>.Is.NotNull))
             .WhenCalled(mi => Assert.That(mi.Arguments[0], Is.EquivalentTo(secondStorageProvider)));
         storageProviderMock.Expect(mock => mock.Commit());
 
@@ -568,7 +568,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
             .Expect(mock => mock.Save(Arg<IEnumerable<DataContainer>>.Is.NotNull))
             .WhenCalled(mi => Assert.That(mi.Arguments[0], Is.EquivalentTo(secondStorageProvider)));
         storageProviderMock
-            .Expect(mock => mock.UpdateTimestamps(Arg<IEnumerable<DataContainer>>.Is.NotNull))
+            .Expect(mock => mock.UpdateTimestamps(Arg<IReadOnlyCollection<DataContainer>>.Is.NotNull))
             .WhenCalled(mi => Assert.That(mi.Arguments[0], Is.EquivalentTo(secondStorageProvider)));
         persistenceManager.CommitTransactionCallback = (providers, context) =>
         {
