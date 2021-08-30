@@ -2,7 +2,7 @@
 {
   --color-primary: #0C6594;
   --color-primary-highlight: #218FC9;
-  --color-primary-text: white;
+  --color-primary-text: #FFFFFF;
   --color-highlight: #DEF3FE;
   --color-contrast-separator: #C4C4C4;
   --color-standard-separator: #E1E1E1;
@@ -11,14 +11,18 @@
   --color-standard-border: #979797;
   --color-disabled-text: #979797;
   --color-disabled-border: #979797;
-  --color-disabled-background: white;
+  --color-disabled-background: #FFFFFF;
   --color-indicator-error: #DA2222;
   --color-indicator-warning: #DFAF00;
   --color-indicator-success: #4AD439;
   --color-indicator-normal: #23ADF8;
   --color-popup-scrollbar-track: #E3E3E3;
   --color-standard-scrollbar-track: #D3D3D3D3;
+  --color-standard-text: #000000;
   --color-standard-background: #FFFFFF;
+  --color-alert-background: Lightyellow;
+  --color-alert-border: #000000;
+  --color-alert-text: #000000;
   --remotion-themed-border-radius: 2px;
   --remotion-themed-border-width: 1px;
   --remotion-themed-border: var(--remotion-themed-border-width) solid var(--color-standard-border);
@@ -27,15 +31,22 @@
   --remotion-themed-dropdown-scrollbar-width: 10px;
   --remotion-themed-scrollbar-width: 14px;
   --remotion-themed-line-height: 1.2em;
-  --remotion-themed-padding: 0.4em;
-  --remotion-themed-min-height: calc(var(--remotion-themed-line-height) + 2 * var(--remotion-themed-padding));
-  --remotion-themed-multiline-min-height: calc(2 * var(--remotion-themed-line-height) + 2 * var(--remotion-themed-padding));
+  --remotion-themed-spacing: 0.4em;
+  --remotion-themed-padding: var(--remotion-themed-spacing);
+  --remotion-themed-singleline-min-height: calc(var(--remotion-themed-line-height) + 2 * var(--remotion-themed-spacing));
+  --remotion-themed-min-height: var(--remotion-themed-singleline-min-height);
+  --remotion-themed-multiline-min-height: calc(2 * var(--remotion-themed-line-height) + 2 * var(--remotion-themed-spacing));
   --remotion-themed-control-width: 16em;
+  --remotion-themed-popup-shadow: 0 var(--remotion-themed-spacing) calc(var(--remotion-themed-spacing) * 3) 0 rgba(0, 0, 0, 0.2), 0 0 calc(var(--remotion-themed-spacing) * 5) 0 rgba(0, 0, 0, 0.1);
+  --remotion-themed-alert-border: var(--remotion-themed-border-width) solid var(--color-alert-border);
+  --remotion-themed-img-width: 1.5em;
+  --z-index-max: 2147483647;
+  --z-index-hidden: -1;
+  --default-icon-size: 16px;
   --chromium-box-shadow: 0 0 0 2px black;
   --chromium-border-radius: 1px;
   --mozilla-box-shadow: 0 0 0 2px royalblue;
   --mozilla-border-radius: 1px;
-  --z-index-hidden: -1;
 }
 
 select option
@@ -68,7 +79,7 @@ textarea.remotion-themed,
 .remotion-themed textarea
 {
   min-height: var(--remotion-themed-multiline-min-height);
-  padding: var(--remotion-themed-padding);
+  padding: var(--remotion-themed-spacing);
 }
 
 a.remotion-themed,
@@ -83,8 +94,8 @@ input[type="password"].remotion-themed,
 .remotion-themed input[type="text"],
 .remotion-themed input[type="password"]
 {
-  padding-left: var(--remotion-themed-padding);
-  padding-right: var(--remotion-themed-padding);
+  padding-left: var(--remotion-themed-spacing);
+  padding-right: var(--remotion-themed-spacing);
 }
 
 input.remotion-themed:hover,
