@@ -106,7 +106,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
       bool isControlWidthEmpty = renderingContext.Control.Width.IsEmpty && string.IsNullOrEmpty (renderingContext.Control.Style["width"]);
       Label label = GetLabel (renderingContext);
       ListControl listControl = GetListControl (renderingContext);
-      
       WebControl innerControl = renderingContext.Control.IsReadOnly ? (WebControl) label : listControl;
       innerControl.Page = renderingContext.Control.Page.WrappedInstance;
 
@@ -129,20 +128,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
           }
         }
       }
-
-      //if (listControl.Enabled && !listControl.IsDisabled & listControl.SupportsDisabledAttribute)
-      //  renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Disabled, "disabled");
-      //if (listControl.SupportsDisabledAttribute && !listControl.Enabled)
-      //if (!listControl.Enabled && WebControl.DisabledCssClass.Equals ("aspNetDisabled"))
-      //if (innerControl.ClientID.Contains("body_DataEditControl_DisabledUnboundMarriageStatusField") && !listControl.Enabled)
-      //if (!listControl.Enabled && WebControl.DisabledCssClass.Equals("aspNetDisabled"))
-      //if (!listControl.Enabled)
-      //{
-      //    listControl.
-      //    listControl.Attributes.Add("disabled", "disabled");
-      //}
-
-
+      
       _validationErrorRenderer.SetValidationErrorsReferenceOnControl (innerControl, validationErrorsID, validationErrors);
 
       innerControl.RenderControl (renderingContext.Writer);
@@ -166,7 +152,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
 
       renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributesForObjectBinding.NullIdentifier, renderingContext.Control.NullIdentifier);
     }
-        
+
     private ListControl GetListControl (BocEnumValueRenderingContext renderingContext)
     {
       ListControl listControl = renderingContext.Control.ListControlStyle.Create (false);
@@ -248,13 +234,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
         radioButton.InputAttributes.Add (HtmlTextWriterAttribute2.AriaRequired, HtmlAriaRequiredAttributeValue.True);
       }
 
-
-
       return listControl;
     }
-
-
-
 
     private bool IsNullItemVisible (BocEnumValueRenderingContext renderingContext)
     {
