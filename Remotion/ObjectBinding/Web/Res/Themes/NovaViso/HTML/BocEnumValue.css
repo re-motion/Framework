@@ -4,7 +4,6 @@ span.bocEnumValue,
 div.bocEnumValue.readOnly
 {
   display: inline-flex;
-  align-items: center;
   width: var(--remotion-themed-control-width);
   min-height: var(--remotion-themed-min-height);
 }
