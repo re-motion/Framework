@@ -549,8 +549,6 @@
     <Content Include="Images\DeleteItemDisabled.gif" />
     <Content Include="Images\EditItem.gif" />
     <Content Include="Images\NullIcon.gif" />
-    <Content Include="Images\Remotion.ObjectBinding.Sample.Job.gif" />
-    <Content Include="Images\Remotion.ObjectBinding.Sample.Person.gif" />
     <Content Include="IndividualControlTests\BocBooleanValueUserControl.ascx">
       <SubType>UserControl</SubType>
     </Content>

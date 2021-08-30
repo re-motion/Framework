@@ -21,8 +21,11 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.ObjectBinding;
+using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ServiceLocation;
 using Remotion.Text;
+using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
 namespace OBWTest
@@ -47,13 +50,23 @@ public class ClientForm : TestWxeBasePage
 
 	private void Page_Load(object sender, EventArgs e)
 	{
+    var resourceUrlFactory = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>();
     List<IDataEditControl> dataEditControls = new List<IDataEditControl>();
     // load editor pages
     IDataEditControl dataEditControl;
-    dataEditControl = AddPage ("TestTabbedPersonDetailsUserControl", "Person Details", new IconInfo ("Images/Remotion.ObjectBinding.Sample.Person.gif"), "TestTabbedPersonDetailsUserControl.ascx");
+    dataEditControl = AddPage (
+        "TestTabbedPersonDetailsUserControl",
+        "Person Details",
+        new IconInfo (
+            resourceUrlFactory.CreateResourceUrl (typeof (Person), ResourceType.Image, "Remotion.ObjectBinding.Sample.Person.gif").GetUrl()),
+        "TestTabbedPersonDetailsUserControl.ascx");
     if (dataEditControl != null)
       dataEditControls.Add (dataEditControl);
-    dataEditControl = AddPage ("TestTabbedPersonJobsUserControl", "Jobs", new IconInfo ("Images/Remotion.ObjectBinding.Sample.Job.gif"), "TestTabbedPersonJobsUserControl.ascx");
+    dataEditControl = AddPage (
+        "TestTabbedPersonJobsUserControl",
+        "Jobs",
+        new IconInfo (resourceUrlFactory.CreateResourceUrl (typeof (Job), ResourceType.Image, "Remotion.ObjectBinding.Sample.Job.gif").GetUrl()),
+        "TestTabbedPersonJobsUserControl.ascx");
     if (dataEditControl != null)
       dataEditControls.Add (dataEditControl);
     _dataEditControls = (IDataEditControl[]) dataEditControls.ToArray();

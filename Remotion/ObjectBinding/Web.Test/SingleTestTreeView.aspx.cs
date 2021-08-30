@@ -19,6 +19,8 @@ using System.Web.UI.WebControls;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ServiceLocation;
+using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
 namespace OBWTest
@@ -73,20 +75,23 @@ namespace OBWTest
       InitializeComponent();
       base.OnInit (e);
 
+      var resourceUrlFactory = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>();
+      var jobIconUrl = resourceUrlFactory.CreateResourceUrl (typeof (Person), ResourceType.Image, "Remotion.ObjectBinding.Sample.Person.gif");
+      
       WebTreeNodeCollection nodes;
 
       // Use '|' in the tree node IDs to simulate serialized ObjectIDs and detect conflicts.
 
       nodes = WebTreeView.Nodes;
       nodes.Add (
-          new WebTreeNode ("node0|id", "Node 0", "Hello", new IconInfo ("Images/Remotion.ObjectBinding.Sample.Job.gif", "Icon", "ToolTip", Unit.Pixel (16), Unit.Pixel (16))));
+          new WebTreeNode ("node0|id", "Node 0", "Hello", new IconInfo (jobIconUrl.GetUrl(), "Icon", "ToolTip", Unit.Pixel (16), Unit.Pixel (16))));
       nodes.Add (new WebTreeNode ("node1|id", "Node 1"));
       nodes.Add (new WebTreeNode ("node2|id", "Node 2"));
       nodes.Add (new WebTreeNode ("node3|id", "Node 3"));
       nodes.Add (new WebTreeNode ("node4|id", "Node 4"));
 
       nodes = ((WebTreeNode) WebTreeView.Nodes[0]).Children;
-      nodes.Add (new WebTreeNode ("node00|id", "Node 0-0", "Images/Remotion.ObjectBinding.Sample.Job.gif"));
+      nodes.Add (new WebTreeNode ("node00|id", "Node 0-0", jobIconUrl.GetUrl()));
       nodes.Add (new WebTreeNode ("node01|id", "Node 0-1"));
       nodes.Add (new WebTreeNode ("node02|id", "Node 0-2"));
       nodes.Add (new WebTreeNode ("node03|id", "Node 0-3"));
@@ -94,10 +99,10 @@ namespace OBWTest
 
       nodes = ((WebTreeNode) ((WebTreeNode) WebTreeView.Nodes[0]).Children[0]).Children;
       nodes.Add (new WebTreeNode ("node000|id", "Node 0-0-0"));
-      nodes.Add (new WebTreeNode ("node001|id", "Node 0-0-1", "Hello", new IconInfo ("Images/Remotion.ObjectBinding.Sample.Job.gif")));
+      nodes.Add (new WebTreeNode ("node001|id", "Node 0-0-1", "Hello", new IconInfo (jobIconUrl.GetUrl())));
       nodes.Add (
-          new WebTreeNode ("node002|id", "Node 0-0-2", "Hello", new IconInfo ("Images/Remotion.ObjectBinding.Sample.Job.gif", "Icon", null, Unit.Pixel (16), Unit.Pixel (16))));
-      nodes.Add (new WebTreeNode ("node003|id", "Node 0-0-3", "Images/Remotion.ObjectBinding.Sample.Job.gif"));
+          new WebTreeNode ("node002|id", "Node 0-0-2", "Hello", new IconInfo (jobIconUrl.GetUrl(), "Icon", null, Unit.Pixel (16), Unit.Pixel (16))));
+      nodes.Add (new WebTreeNode ("node003|id", "Node 0-0-3", jobIconUrl.GetUrl()));
       ((WebTreeNode) ((WebTreeNode) WebTreeView.Nodes[0]).Children[0]).IsEvaluated = true;
 
       nodes = ((WebTreeNode) WebTreeView.Nodes[3]).Children;
