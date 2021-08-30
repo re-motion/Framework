@@ -74,5 +74,14 @@ namespace Remotion.Web.Development.WebTesting.TestSite {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.DropDownMenu MyDropDownMenu_Error;
+
+        /// <summary>
+        /// MyDropDownMenu_Wrapping control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.DropDownMenu MyDropDownMenu_Wrapping;
     }
 }
