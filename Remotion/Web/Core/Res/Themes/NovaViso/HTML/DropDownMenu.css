@@ -9,6 +9,11 @@ span.DropDownMenuContainer
 span.DropDownMenuSelect
 {
   display: inline-flex;
+  /* Relative positioning is required in order to prevent the DropDownMenuOptions 
+     from 'jumping' from their incorrect initial to their actual positions when 
+     expanded. This is currently prevented by positioning them absolutely within 
+     the relative DropDownMenuSelect. */
+  position: relative;
   align-items: center;
   min-height: var(--remotion-themed-singleline-min-height);
   line-height: var(--remotion-themed-line-height);
@@ -73,6 +78,11 @@ span.DropDownMenuSelect a.DropDownMenuButton img
 
 div.DropDownMenuOptions
 {
+  /* Absolute positioning is required in order to prevent the DropDownMenuOptions 
+     from 'jumping' from their incorrect initial to their actual positions when 
+     expanded. This is currently prevented by positioning them absolutely within 
+     the relative DropDownMenuSelect. */
+  position: absolute;
   z-index: var(--z-index-max);
 }
 
