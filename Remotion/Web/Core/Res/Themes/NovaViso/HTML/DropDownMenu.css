@@ -1,342 +1,148 @@
 /* Style applied to the DropDownMenu. */
 
-span.DropDownMenuContainer 
+span.DropDownMenuContainer
 {
-  display: block;
-  position: relative;
-  font-family: sans-serif;
-  width: 100%;
-  min-width: 18px;
-}
-
-tr.bocListDataRow span.DropDownMenuContainer,
-tr.bocListDataRowSelected span.DropDownMenuContainer
-{
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
 }
 
 span.DropDownMenuSelect
 {
-  display: block;
-  position: relative;
-  border: solid 1px #AAAAAA;
-  text-align: left;
-  vertical-align: top;
-  white-space: nowrap;
-  cursor: hand;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--remotion-themed-singleline-min-height);
+  line-height: var(--remotion-themed-line-height);
+  width: 100%;
+  border: var(--remotion-themed-border);
+  border-radius: var(--remotion-themed-border-radius);
   cursor: pointer;
-  line-height: 1.25em;
-  height: 1.4em;
-}
-
-td.buttonCell span.DropDownMenuSelect
-{
-  /* only when display just arrow */
-  display: inline-block;
 }
 
 span.DropDownMenuSelect.disabled
 {
   cursor: default;
-  border: 1px solid #BCBCBC;
 }
 
-span.DropDownMenuSelect span
+span.DropDownMenuSelect:hover:not(.disabled),
+span.DropDownMenuSelect:active:not(.disabled)
 {
-  left: 0;
-  vertical-align: middle;
+  border: var(--remotion-themed-border-focus);
+  background-color: var(--color-highlight);
+  outline: none;
+}
+
+span.DropDownMenuSelect.focus:not(.disabled),
+span.DropDownMenuSelect:focus-within:not(.disabled)
+{
+  border: var(--remotion-themed-border-focus);
+  background-color: var(--color-highlight);
+}
+
+span.DropDownMenuSelect a.DropDownMenuLabel img
+{
+  width: var(--remotion-themed-img-width);
+  padding-right: var(--remotion-themed-spacing);
+  background-repeat: no-repeat;
 }
 
 span.DropDownMenuSelect a.DropDownMenuLabel
 {
-  position: relative;
-  left: 0.1em;
-  top: 0.1em;
-  margin-right: 25px;
-  margin-right: calc(22px + 0.1em);
-  margin-left: 4px;
-  border-style: none;
-  background-color: Transparent;
-  color: Black;
-  font-weight: bold;
-  height: 1.2em !important;
-}
-
-span.DropDownMenuSelect a.DropDownMenuLabel:focus
-{
+  height: var(--remotion-themed-line-height);
+  width: 100%;
+  padding: var(--remotion-themed-spacing);
+  border-right: var(--remotion-themed-border-width) solid var(--color-contrast-separator);
   outline: none;
-  text-decoration: underline;
-}
-
-span.DropDownMenuContainer span.disabled a.DropDownMenuLabel
-{
-  color: Gray;
 }
 
 span.DropDownMenuSelect a.DropDownMenuButton
 {
-  display: inline-block;
-  position: absolute;
-  left: auto;
-  top: 0px;
-  bottom: 0;
-  right: 0px;
-  border-left: solid 1px #AAAAAA;
-  margin-right: 0;
-}
-
-span.DropDownMenuSelect.focus a.DropDownMenuButton,
-span.DropDownMenuSelect:hover a.DropDownMenuButton
-{
-  border-left: solid 1px #7CB2E6;
-}
-
-span.DropDownMenuSelect.nestedHover:hover a.DropDownMenuButton
-{
-  border-left: solid 1px #AAAAAA;
-}
-
-span.DropDownMenuSelect:active a.DropDownMenuButton
-{
-  border-left: 1px solid #569CE0;
-}
-
-span.DropDownMenuSelect.nestedHover:active a.DropDownMenuButton
-{
-  border-left: 1px solid #AAAAAA;
-}
-
-span.DropDownMenuSelect
-{
-  background-image: url(../Image/sprite.svg#ButtonBackground);
-  background-size: 1px 20px;
-  background-color: #E6E5E7;
-  background-position: center top;
-  background-repeat: repeat-x;
-}
-
-span.DropDownMenuSelect.focus,
-span.DropDownMenuSelect:hover
-{
-  color: Black;
-  background-image: url(../Image/sprite.svg#ButtonBackgroundHover);
-  background-size: 1px 20px;
-  background-color: #DEECFC;
-  border: 1px solid #7CB2E6;
-}
-
-span.DropDownMenuSelect.nestedHover:hover
-{
-  background-image: url(../Image/sprite.svg#ButtonBackground);
-  background-size: 1px 20px;
-  background-color: #E6E5E7;
-  border: solid 1px #AAAAAA;
-}
-
-span.DropDownMenuSelect:active
-{
-  background-image: url(../Image/sprite.svg#ButtonBackgroundActive);
-  background-size: 1px 20px;
-  background-color: #C5E0FC;
-  border: 1px solid #569CE0;
-}
-
-span.DropDownMenuSelect.disabled:hover
-{
-  background-image: url(../Image/sprite.svg#ButtonBackground);
-  background-size: 1px 20px;
-  background-color: #ECEEEC;
-  border: solid 1px #BCBCBC;
-}
-
-span.DropDownMenuSelect a.DropDownMenuButton:first-child
-{
-  width: 100%;
-  text-align: center;
-}
-
-span.DropDownMenuSelect a.DropDownMenuButton:focus
-{
   outline: none;
 }
 
-span.DropDownMenuSelect.disabled a.DropDownMenuButton
+span.DropDownMenuSelect:not(.disabled) a.DropDownMenuLabel
 {
-  border-left: solid 1px #BCBCBC;
+  color: var(--color-standard-text);
 }
 
-/*
-span.DropDownMenuSelect a.DropDownMenuButton img:hover
-{
-  background-position: center;
-  background-image: url('../Image/sprite.svg#DropDownMenuButton');
-  background-size: 32px 15px;
-}
-*/
 span.DropDownMenuSelect a.DropDownMenuButton img
 {
-  min-height: 12px;
-  height: 90%;
-  height: calc(100% - 4px);
-  margin-top: 2px;
-  margin-bottom: 2px;
-  width: 12px;
-  margin-left: 2px;
-  margin-right: 2px;
+  width: var(--remotion-themed-img-width);
   background-image: url('../Image/sprite.svg#DropDownMenuButton');
-  background-size: 32px 15px;
   background-repeat: no-repeat;
-}
-
-span.DropDownMenuSelect a.DropDownMenuButton:focus img
-{
-  outline: dotted black 1px;
-  outline: auto 5px -webkit-focus-ring-color;
-}
-
-span.DropDownMenuSelect.disabled a.DropDownMenuButton img
-{
-  opacity: 0.4;
-  filter: progid:DXImageTransform.Microsoft.BasicImage(opacity=0.40),
-          progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
-}
-
-span.DropDownMenuSelect img
-{
-  border: 0;
 }
 
 div.DropDownMenuOptions
 {
-  z-index: 2147483647;
-  position: absolute;
-  right: 0;
-  margin: 0;
-  padding: 0;
+  z-index: var(--z-index-max);
 }
 
 ul.DropDownMenuOptions
 {
-  border: solid 1px #AAAAAA;
-  left: 0;
-  right: 0;
-  margin: 0;
-  padding: 0;
   list-style: none;
-  background-color: White;
-  background-image: url('../Image/sprite.svg#DropDownMenuItemIconPane');
-  background-size: 22px 1px;
-  background-repeat: repeat-y;
-  background-position: top left;
+  margin: 0;
+  box-shadow: var(--remotion-themed-popup-shadow);
+  padding: var(--remotion-themed-spacing);
+  background-color: var(--color-standard-background);
 }
 
 ul.DropDownMenuOptions li a
 {
-  cursor: hand;
-  cursor: pointer;
-  text-decoration: none;
-  display: block;
-  margin: 1px;
-  padding: 1px 3px 3px 1px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas: "img span";
+  gap: calc(var(--remotion-themed-spacing) * 2);
+  padding: var(--remotion-themed-spacing);
+  color: var(--color-standard-text);
   white-space: nowrap;
-  color: Black;
   outline: none;
+  cursor: pointer;
 }
 
 ul.DropDownMenuOptions li.selected a
 {
-  color: Black;
-  border: solid 1px #7CB2E6;
-  background-color: #E5F0FC;
-  padding: 0 2px 2px 0;
-}
-
-ul.DropDownMenuOptions li.selected a:active,
-ul.DropDownMenuOptions li a:active
-{
-  color: Black;
-  border: solid 1px #569CE0;
-  background-color: #C5E0FC;
-  padding: 0 2px 2px 0;
-}
-
-/* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
-body.msie ul.DropDownMenuOptions li a
-{
-  position: relative;
-}
-
-/* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
-body.msie ul.DropDownMenuOptions li a::before
-{
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-}
-
-ul.DropDownMenuOptions li a img
-{
-  border: 0;
-  margin-right: 15px;
-  vertical-align: middle;
-}
-
-ul.DropDownMenuOptions li a span
-{
-  display: inline-block;
-  padding: 2px 0px;
+  color: var(--color-standard-text);
+  border-radius: var(--remotion-themed-border-radius);
 }
 
 ul.DropDownMenuOptions li.DropDownMenuItemDisabled a
 {
+  border-style: none;
+  color: var(--color-disabled-text);
   cursor: default;
-  border-style: none;
-  padding: 1px 3px 3px 3px;
-  color: gray;
 }
 
-ul.DropDownMenuOptions li.DropDownMenuItemDisabled.selected a
+ul.DropDownMenuOptions li a > img,
+ul.DropDownMenuOptions li a > span.DropDownMenuItemIcon
 {
-  background-color: #ECEEEC;
+  grid-area: img;
+  min-width: var(--default-icon-size);
 }
 
-ul.DropDownMenuOptions li.DropDownMenuItemDisabled a:active
+ul.DropDownMenuOptions li a > span:last-of-type
 {
-  background-color: transparent;
-  border-style: none;
-  padding: 1px 3px 3px 3px;
-  color: gray;
+  grid-area: span;
+  align-self: center;
 }
 
-ul.DropDownMenuOptions li.DropDownMenuItemDisabled.selected a:active
+ul.DropDownMenuOptions li a:focus:not(li.DropDownMenuItemDisabled a)
 {
-  background-color: #ECEEEC;
+  background-color: var(--color-highlight);
 }
 
 /* style separator */
 span.DropDownMenuSeparator
 {
-  display: block;
-  line-height: 1px;
-  margin-left: 30px;
-  border: 0;
-  background-color: #AAAAAA;
-}
-
-span.DropDownMenuItemIcon
-{
-  margin-right: 15px;
-  width: 16px;
-  padding: 0px;
+  display: grid;
+  line-height: var(--remotion-themed-border-width);
+  padding: var(--remotion-themed-spacing) 0;
+  background-color: var(--color-contrast-separator);
+  background-clip: content-box;
 }
 
 div.DropDownMenuStatus
 {
   overflow: hidden;
-  z-index: 2147483647;
+  z-index: var(--z-index-max);
   /* position and dimension are set via javascript */
   max-height: 4em;
   max-width: 30em;
@@ -344,31 +150,29 @@ div.DropDownMenuStatus
 
 div.DropDownMenuStatus > div
 {
-  width: 100%;
-  padding: 0.25em;
-  border: 1px solid Black;
-  background-color: Lightyellow;
   box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
+  height: calc(var(--remotion-themed-img-width) + 2 * var(--remotion-themed-spacing));
+  width: calc(var(--remotion-themed-img-width) + 2 * var(--remotion-themed-spacing));
+  padding: var(--remotion-themed-spacing);
+  color: var(--color-alert-text);
+  border: var(--remotion-themed-alert-border);
+  background-color: var(--color-alert-background);
+}
+
+div.DropDownMenuStatus.loading > div,
+div.DropDownMenuStatus.error > div
+{
+  background-size: var(--remotion-themed-line-height);
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 div.DropDownMenuStatus.loading > div
 {
   background-image: url('../Image/sprite.svg#DropDownMenuRequestInProgressIndicator');
-  background-size: 16px 16px;
-  background-repeat: no-repeat;
-  background-position: 0.25em;
-  padding-left: calc(16px + 0.25em);
-  min-height: 20px;
 }
 
 div.DropDownMenuStatus.error > div
 {
   background-image: url('../Image/sprite.svg#DropDownMenuErrorIndicator');
-  background-size: 16px 16px;
-  background-repeat: no-repeat;
-  background-position: 0.25em;
-  padding-left: calc(16px + 0.5em);
-  min-height: 20px;
 }
