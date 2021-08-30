@@ -1,0 +1,215 @@
+/* Style applied to the DropDownMenu. */
+
+span.DropDownMenuContainer
+{
+  display: inline-flex;
+  align-items: center;
+}
+
+span.DropDownMenuSelect
+{
+  display: inline-flex;
+  /* Relative positioning is required in order to prevent the DropDownMenuOptions 
+     from 'jumping' from their incorrect initial to their actual positions when 
+     expanded. This is currently prevented by positioning them absolutely within 
+     the relative DropDownMenuSelect. */
+  position: relative;
+  align-items: center;
+  height: var(--remotion-themed-singleline-min-height);
+  line-height: var(--remotion-themed-line-height);
+  width: 100%;
+  background-color: var(--remotion-themed-background-color-control);
+  border: var(--remotion-themed-border);
+  border-radius: var(--remotion-themed-border-radius);
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+span.DropDownMenuSelect.disabled
+{
+  cursor: default;
+  color: var(--color-disabled-text);
+  background-color: var(--remotion-themed-background-color-disabled);
+  border: var(--remotion-themed-border-disabled);
+}
+
+span.DropDownMenuSelect:not(.disabled):hover
+{
+  background-color: var(--remotion-themed-background-color-hover);
+  border: var(--remotion-themed-border-hover);
+  box-shadow: var(--remotion-themed-box-shadow-hover);
+}
+
+span.DropDownMenuSelect:not(.disabled):focus-within
+{
+  background-color: var(--remotion-themed-background-color-focus);
+  border: var(--remotion-themed-border-focus);
+  box-shadow: var(--remotion-themed-box-shadow-focus);
+}
+
+span.DropDownMenuSelect:not(.disabled):focus-within:hover
+{
+  background-color: var(--remotion-themed-background-color-focus-hover);
+  border: var(--remotion-themed-border-focus-hover);
+  box-shadow: var(--remotion-themed-box-shadow-focus-hover);
+}
+
+span.DropDownMenuSelect a.DropDownMenuLabel img
+{
+  width: var(--remotion-themed-img-width);
+  padding-right: var(--remotion-themed-spacing);
+  background-repeat: no-repeat;
+}
+
+span.DropDownMenuSelect a.DropDownMenuLabel
+{
+  height: 100%;
+  width: 100%;
+  padding: 0 var(--remotion-themed-spacing);
+  display: flex;
+  align-items: center;
+  border-right: var(--remotion-themed-border-width) solid var(--color-contrast-separator);
+  outline: none;
+  font: var(--remotion-themed-font-bold);
+  text-decoration: none;
+}
+
+span.DropDownMenuSelect.disabled a.DropDownMenuLabel
+{
+  border-right: var(--remotion-themed-border-disabled);
+}
+
+span.DropDownMenuSelect a.DropDownMenuButton
+{
+  outline: none;
+}
+
+span.DropDownMenuSelect:not(.disabled) a.DropDownMenuLabel
+{
+  color: var(--color-standard-text);
+}
+
+span.DropDownMenuSelect a.DropDownMenuButton img
+{
+  width: var(--remotion-themed-img-width);
+  background-image: url('../Image/sprite.svg#DropDownMenuButton');
+  background-size: var(--remotion-themed-img-width) var(--remotion-themed-img-width);
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+div.DropDownMenuOptions
+{
+  /* Absolute positioning is required in order to prevent the DropDownMenuOptions 
+     from 'jumping' from their incorrect initial to their actual positions when 
+     expanded. This is currently prevented by positioning them absolutely within 
+     the relative DropDownMenuSelect. */
+  position: absolute;
+  z-index: var(--z-index-max);
+}
+
+ul.DropDownMenuOptions
+{
+  list-style: none;
+  margin: 0;
+  box-shadow: var(--remotion-themed-popup-shadow);
+  padding: var(--remotion-themed-spacing);
+  background-color: var(--remotion-themed-background-color-control);
+}
+
+ul.DropDownMenuOptions li a
+{
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas: "img span";
+  gap: var(--remotion-themed-spacing);
+  padding: calc(var(--remotion-themed-spacing) - var(--remotion-themed-border-width));
+  border: var(--remotion-themed-border-placeholder);
+  border-radius: var(--remotion-themed-border-radius);
+  color: var(--color-standard-text);
+  text-decoration: none;
+  white-space: nowrap;
+  outline: none;
+  cursor: pointer;
+}
+
+ul.DropDownMenuOptions li.DropDownMenuItemDisabled a
+{
+  border-style: none;
+  color: var(--color-disabled-text);
+  cursor: default;
+}
+
+ul.DropDownMenuOptions li a > img,
+ul.DropDownMenuOptions li a > span.DropDownMenuItemIcon
+{
+  grid-area: img;
+  min-width: var(--default-icon-size);
+}
+
+ul.DropDownMenuOptions li a > span:last-of-type
+{
+  grid-area: span;
+  align-self: center;
+  padding-left: var(--remotion-themed-spacing);
+}
+
+ul.DropDownMenuOptions li a:hover:not(li.DropDownMenuItemDisabled a),
+ul.DropDownMenuOptions li a:focus:not(li.DropDownMenuItemDisabled a)
+{
+  /* Due to the implementation of the popup, the currently selected / hovered menu item has the focus.
+     Since this is an implementation detail and the popup will close once the focus is removed,
+     it is better to just show the hover effect. */
+
+  background-color: var(--remotion-themed-background-color-hover);
+  border: var(--remotion-themed-border-hover);
+  box-shadow: var(--remotion-themed-box-shadow-hover);
+}
+
+/* style separator */
+span.DropDownMenuSeparator
+{
+  display: grid;
+  line-height: var(--remotion-themed-border-width);
+  padding: var(--remotion-themed-spacing) 0;
+  background-color: var(--color-contrast-separator);
+  background-clip: content-box;
+}
+
+div.DropDownMenuStatus
+{
+  overflow: hidden;
+  z-index: var(--z-index-max);
+  /* position and dimension are set via javascript */
+  max-height: 4em;
+  max-width: 30em;
+}
+
+div.DropDownMenuStatus > div
+{
+  box-sizing: border-box;
+  height: calc(var(--remotion-themed-img-width) + 2 * var(--remotion-themed-spacing));
+  width: calc(var(--remotion-themed-img-width) + 2 * var(--remotion-themed-spacing));
+  padding: var(--remotion-themed-spacing);
+  color: var(--color-alert-text);
+  border: var(--remotion-themed-alert-border);
+  background-color: var(--color-alert-background);
+}
+
+div.DropDownMenuStatus.loading > div,
+div.DropDownMenuStatus.error > div
+{
+  background-size: var(--remotion-themed-line-height);
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+div.DropDownMenuStatus.loading > div
+{
+  background-image: url('../Image/sprite.svg#DropDownMenuRequestInProgressIndicator');
+}
+
+div.DropDownMenuStatus.error > div
+{
+  background-image: url('../Image/sprite.svg#DropDownMenuErrorIndicator');
+}
