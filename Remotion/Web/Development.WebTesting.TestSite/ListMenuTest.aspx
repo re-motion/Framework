@@ -41,7 +41,7 @@
               <remotion:Command Type="WxeFunction" WxeFunctionCommand-MappingID="ListMenuTest" />
             </PersistedCommand>
           </remotion:WebMenuItem>
-          <remotion:WebMenuItem Category="Category2" ItemID="ItemID5" Icon-Url="~/Images/SampleIcon.gif"></remotion:WebMenuItem>
+          <remotion:WebMenuItem Category="Category2" ItemID="ItemID5" Icon-Url="~/Images/SampleIcon.gif" Style="Icon"></remotion:WebMenuItem>
           <remotion:WebMenuItem Category="Category2" ItemID="ItemID6" Text="DisabledItem" IsDisabled="True">
             <PersistedCommand>
               <remotion:Command Type="Href" HrefCommand-Href="ListMenuTest.wxe" />
