@@ -4,6 +4,7 @@ span.DropDownMenuContainer
 {
   display: inline-flex;
   align-items: center;
+  background-color: white;
 }
 
 span.DropDownMenuSelect
