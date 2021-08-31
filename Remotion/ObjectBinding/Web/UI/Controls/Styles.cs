@@ -50,6 +50,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     PasswordNoRender
   }
 
+  class CompatibleListBox : ListBox
+  {
+      public override bool SupportsDisabledAttribute => true;
+  }
+
   public class ListControlStyle : Style
   {
     private ListControlType _controlType = ListControlType.DropDownList;
@@ -189,7 +194,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           control = new DropDownList();
           break;
         case ListControlType.ListBox:
-          control = new ListBox();
+          control = new CompatibleListBox();
           break;
         case ListControlType.RadioButtonList:
           control = new RadioButtonList();
