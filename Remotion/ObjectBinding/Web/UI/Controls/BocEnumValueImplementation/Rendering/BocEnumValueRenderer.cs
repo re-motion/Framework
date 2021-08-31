@@ -167,7 +167,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
 
       var isRadioButtonList = renderingContext.Control.ListControlStyle.ControlType == ListControlType.RadioButtonList;
       var isDropDownList = renderingContext.Control.ListControlStyle.ControlType == ListControlType.DropDownList;
-      var isListBox = renderingContext.Control.ListControlStyle.ControlType == ListControlType.ListBox;
 
       if (isRadioButtonList)
         listControl.Attributes.Add (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.RadioGroup);
