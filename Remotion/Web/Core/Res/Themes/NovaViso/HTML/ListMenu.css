@@ -2,103 +2,53 @@
 
 table.listMenu
 {
-  border: none;
   border-spacing: 0;
   border-collapse: collapse;
 }
 
 td.listMenuRow
 {
-  padding-left: 0;
-  padding-right: 0;
-  padding-top: 1px;
-  padding-bottom: 1px;
-  vertical-align: middle;
-  white-space: nowrap;
-}
-
-span.listMenuItem
-{
-  margin-right: 10pt;
-}
-
-span.listMenuItem a
-{
-  color: #09457E;
-  padding: 2px;
-  cursor: hand;
-  cursor: pointer;
-}
-
-span.listMenuItem a:focus,
-span.listMenuItem a:hover
-{
-  color: Black;
-  padding: 1px;
-  border-width: 1px;
-  border: solid 1px #7CB2E6;
-  background-color: #E5F0FC;
-  outline: none;
-}
-
-span.listMenuItem a:active
-{
-  color: Black;
-  padding: 1px;
-  border-width: 1px;
-  border: solid 1px #569CE0;
-  background-color: #C5E0FC;
-}
-
-/* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
-body.msie span.listMenuItem a
-{
-  position: relative;
-}
-
-/* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
-body.msie span.listMenuItem a::before
-{
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-}
-
-span.listMenuItemDisabled
-{
-  margin-right: 10pt;
-}
-
-span.listMenuItemDisabled a
-{
-  padding: 2px;
-  color: gray;
-  cursor: default;
+  display: flex;
+  gap: calc(2 * var(--remotion-themed-padding));
+  margin-bottom: var(--remotion-themed-padding);
 }
 
 span.listMenuItem a,
 span.listMenuItemDisabled a
 {
-  display: inline-block;
+  display: inline-flex;
+  text-decoration: none;
+  color: var(--color-primary);
+  gap: var(--remotion-themed-padding);
 }
 
-span.listMenuItem a img,
+span.listMenuItem a
+{
+  color: var(--default-text-color);
+  cursor: pointer;
+}
+
+span.listMenuItemDisabled a
+{
+  color: var(--color-disabled-text);
+  cursor: default;
+}
+
 span.listMenuItemDisabled a img
 {
-  vertical-align: middle;
+  opacity: 0.5;
+  filter: grayscale(100%);
 }
 
-span.listMenuItem a span,
-span.listMenuItemDisabled a span
+span.listMenuItem a:focus,
+span.listMenuItem a:hover
 {
-  vertical-align: middle;
+  outline: none;
+  text-decoration: underline;
 }
 
-span.listMenuItem a img + span,
-span.listMenuItemDisabled a img + span
+span.listMenuItemDisabled a:focus,
+span.listMenuItemDisabled a:hover
 {
-  padding-left: 0.25em;
+  outline: none;
 }
