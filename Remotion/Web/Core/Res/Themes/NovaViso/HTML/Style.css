@@ -95,15 +95,6 @@ h6
   font-size: 60%;
 }
 
-/*  All anchor elements on the page. */
-a[href]
-{
-  text-decoration: none;
-  color: #09457E;
-  cursor: hand;
-  cursor: pointer;
-}
-
 /*  All elements sporting the class "disabled". */
 .disabled,
 .disabled a[href],
