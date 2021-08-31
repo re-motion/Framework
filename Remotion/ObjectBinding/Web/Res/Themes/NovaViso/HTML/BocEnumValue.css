@@ -38,18 +38,13 @@ div.bocEnumValue input:focus
   outline: auto;
 }
 
-div.bocEnumValue input:hover
+div.bocEnumValue input:not([disabled]):hover
 {
   cursor: pointer;
 }
 
-div.bocEnumValue input:disabled
-{
-  cursor: default;
-}
-
-span.bocEnumValue select:hover,
-span.bocEnumValue option:hover
+span.bocEnumValue select:not([disabled]):hover,
+span.bocEnumValue:not(.disabled) option:hover
 {
   background-color: var(--color-highlight);
 }
@@ -63,13 +58,6 @@ span.bocEnumValue option
 {
   padding: calc(var(--remotion-themed-padding) * 0.75);
   border-radius: var(--remotion-themed-border-radius);
-}
-
-span.bocEnumValue.disabled option
-{
-  background-color: var(--color-disabled-background);
-  color: var(--color-disabled-text);
-  text-decoration: none;
 }
 
 .bocEnumValue.readOnly span

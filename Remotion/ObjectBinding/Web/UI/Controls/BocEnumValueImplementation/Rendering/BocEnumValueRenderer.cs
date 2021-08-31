@@ -172,9 +172,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
       if (isRadioButtonList)
         listControl.Attributes.Add (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.RadioGroup);
 
-      if (isListBox && !listControl.Enabled)
-        listControl.Attributes.Add ("disabled", "disabled");
-
       var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
       _labelReferenceRenderer.SetLabelReferenceOnControl (listControl, labelIDs);
 
