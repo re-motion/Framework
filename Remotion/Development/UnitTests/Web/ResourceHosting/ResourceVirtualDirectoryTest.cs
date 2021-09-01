@@ -42,6 +42,20 @@ namespace Remotion.Development.UnitTests.Web.ResourceHosting
     }
 
     [Test]
+    public void Initialize_WithVirtualDirectoryWithTrailingSlash_DoesNotChangeVirtualDirectory ()
+    {
+      var resourceVirtualDirectory = new ResourceVirtualDirectory ("~/res/test/", new DirectoryInfo (_testDirectory));
+      Assert.That (resourceVirtualDirectory.AppRelativeVirtualPath, Is.EqualTo ("~/res/test/"));
+    }
+
+    [Test]
+    public void Initialize_WithVirtualDirectoryWithoutTrailingSlash_AddsTrailingSlashToVirtualDirectory ()
+    {
+      var resourceVirtualDirectory = new ResourceVirtualDirectory ("~/res/test", new DirectoryInfo (_testDirectory));
+      Assert.That (resourceVirtualDirectory.AppRelativeVirtualPath, Is.EqualTo ("~/res/test/"));
+    }
+
+    [Test]
     public void Directories ()
     {
       var expectedDirectory1 = Directory.CreateDirectory (Path.Combine (_testDirectory, "subDirectory1"));
