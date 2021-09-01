@@ -50,13 +50,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     PasswordNoRender
   }
 
-  class CompatibleListBox : ListBox
-  {
-      public override bool SupportsDisabledAttribute => true;
-  }
-
   public class ListControlStyle : Style
   {
+    private class CompatibleListBox : ListBox
+    {
+      public override bool SupportsDisabledAttribute => true;
+    }
+
     private ListControlType _controlType = ListControlType.DropDownList;
     private bool? _autoPostBack;
     private int? _listBoxRows;
