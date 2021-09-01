@@ -55,6 +55,17 @@ namespace Remotion.Extensions.UnitTests.Reflection
     }
 
     [Test]
+    public void GetInstanceMethodDelegate_WithNonExistentMethodName_Throws ()
+    {
+      var lookupInfo = new MethodLookupInfo ("IDoNotExist");
+
+      Assert.That (
+          () => lookupInfo.GetInstanceMethodDelegate (typeof (Func<TestClass, DerivedDerived, Type>)),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("No method named 'IDoNotExist' could be found on 'Remotion.Extensions.UnitTests.Reflection.TestDomain.TestClass'."));
+    }
+
+    [Test]
     [Ignore ("TODO: Implement support for static methods.")]
     public void GetStaticMethodDelegate_WithExactMatchFromBase ()
     {

@@ -117,12 +117,10 @@ namespace Remotion.Reflection
     [CanBeNull]IPropertyInformation? FindInterfaceImplementation ([NotNull]Type implementationType);
 
     /// <summary>
-    /// Finds the interface declaration for this <see cref="IPropertyInformation"/>, returning <see langword="null" /> if this 
-    /// <see cref="IPropertyInformation"/> is not an implementation of an interface member.
+    /// Finds the interface declarations for this <see cref="IPropertyInformation"/>.
     /// </summary>
-    /// <returns>An <see cref="IPropertyInformation"/> for the interface member this <see cref="IPropertyInformation"/> implements, or 
-    /// <see langword="null" /> if this <see cref="IPropertyInformation"/> is not an implementation of an interface member.</returns>
-    /// <exception cref="InvalidOperationException">This <see cref="IPropertyInformation"/> is itself an interface member, so it cannot have an 
+    /// <returns>A sequence of <see cref="IPropertyInformation"/> instances for the interface members this <see cref="IPropertyInformation"/> implements.</returns>
+    /// <exception cref="InvalidOperationException">This <see cref="IPropertyInformation"/> is itself an interface member, so it cannot have an
     /// interface declaration.</exception>
     [NotNull]IEnumerable<IPropertyInformation> FindInterfaceDeclarations ();
 
