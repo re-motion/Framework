@@ -171,7 +171,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
       if (isRadioButtonList)
         listControl.Attributes.Add (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.RadioGroup);
 
-
       var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
       _labelReferenceRenderer.SetLabelReferenceOnControl (listControl, labelIDs);
 
@@ -332,7 +331,21 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
 
     public override string GetCssClassBase (IBocEnumValue control)
     {
-      return "bocEnumValue";
+      const string cssClassBase = "bocEnumValue";
+      if (control.IsReadOnly)
+        return cssClassBase;
+
+      switch (control.ListControlStyle.ControlType)
+      {
+        case ListControlType.DropDownList:
+          return cssClassBase + " dropDownList";
+        case ListControlType.ListBox:
+          return cssClassBase + " listBox";
+        case ListControlType.RadioButtonList:
+          return cssClassBase + " radioButtonList";
+        default:
+          throw new ArgumentOutOfRangeException();
+      }
     }
   }
 }

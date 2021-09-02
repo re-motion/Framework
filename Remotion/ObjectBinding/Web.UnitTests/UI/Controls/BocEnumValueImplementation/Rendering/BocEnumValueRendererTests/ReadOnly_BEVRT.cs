@@ -258,7 +258,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       if (string.IsNullOrEmpty (cssClass))
         cssClass = _enumValue.Object.Attributes["class"];
       if (string.IsNullOrEmpty (cssClass))
-        cssClass = renderer.GetCssClassBase(_enumValue.Object);
+        cssClass = "bocEnumValue";
 
       Html.AssertAttribute (div, "id", "MyEnumValue");
       Html.AssertAttribute (div, "class", cssClass, HtmlHelperBase.AttributeValueCompareMode.Contains);
