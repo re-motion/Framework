@@ -1,7 +1,7 @@
 /* Style applied to the BocEnumValue. */
 
-span.bocEnumValue,
-div.bocEnumValue.readOnly
+.bocEnumValue,
+.bocEnumValue.readOnly
 {
   display: inline-flex;
   width: var(--remotion-themed-control-width);
@@ -11,6 +11,9 @@ div.bocEnumValue.readOnly
 .bocEnumValue td
 {
   white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
 }
 
 .bocEnumValue td label
@@ -18,46 +21,44 @@ div.bocEnumValue.readOnly
   padding: var(--remotion-themed-padding);
 }
 
-div.bocEnumValue td,
-div.bocEnumValue td span
+.bocEnumValue td span
 {
   display: inline-flex;
   align-items: center;
   box-sizing: border-box;
 }
 
-div.bocEnumValue input
+.bocEnumValue input
 {
   /* Has to be set explicitely for input. */
   margin: 0;
 }
 
-div.bocEnumValue input:focus
+.bocEnumValue input:focus
 {
   /* In order to have an outline for the radio buttons as well. */
   outline: auto;
 }
 
-div.bocEnumValue input:not([disabled]):hover
+.bocEnumValue input:not([disabled]):hover
 {
   cursor: pointer;
 }
 
-span.bocEnumValue select:not([disabled]):hover,
-span.bocEnumValue:not(.disabled) option:hover
-{
-  background-color: var(--color-highlight);
-}
-
-span.bocEnumValue select
+.bocEnumValue select
 {
   width: 100%;
 }
 
-span.bocEnumValue option
+.bocEnumValue option
 {
   padding: calc(var(--remotion-themed-padding) * 0.75);
   border-radius: var(--remotion-themed-border-radius);
+}
+
+.bocEnumValue select:not([disabled]) option:hover
+{
+  background-color: var(--color-highlight);
 }
 
 .bocEnumValue.readOnly span
