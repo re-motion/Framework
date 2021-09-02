@@ -8,24 +8,32 @@
   min-height: var(--remotion-themed-min-height);
 }
 
-.bocEnumValue td
+.bocEnumValue.radioButtonList
 {
+  min-width: var(--remotion-themed-control-width);
+  width: auto;
+}
+
+.bocEnumValue table
+{
+  display: inline;
+}
+
+.bocEnumValue tr
+{
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: calc(var(--remotion-themed-spacing) * 2);
+}
+
+.bocEnumValue td,
+.bocEnumValue.disabled td > span
+{
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  gap: var(--remotion-themed-spacing);
   white-space: nowrap;
-  display: inline-flex;
-  align-items: center;
-  box-sizing: border-box;
-}
-
-.bocEnumValue td label
-{
-  padding: var(--remotion-themed-padding);
-}
-
-.bocEnumValue td span
-{
-  display: inline-flex;
-  align-items: center;
-  box-sizing: border-box;
 }
 
 .bocEnumValue input

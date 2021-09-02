@@ -331,7 +331,21 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
 
     public override string GetCssClassBase (IBocEnumValue control)
     {
-      return "bocEnumValue";
+      const string cssClassBase = "bocEnumValue";
+      if (control.IsReadOnly)
+        return cssClassBase;
+
+      switch (control.ListControlStyle.ControlType)
+      {
+        case ListControlType.DropDownList:
+          return cssClassBase + " dropDownList";
+        case ListControlType.ListBox:
+          return cssClassBase + " listBox";
+        case ListControlType.RadioButtonList:
+          return cssClassBase + " radioButtonList";
+        default:
+          throw new ArgumentOutOfRangeException();
+      }
     }
   }
 }
