@@ -1,192 +1,53 @@
 /* Style applied to the TabStrip. */
 
-/* Applied to the tab strip itself.*/
-*.tabStrip
+.tabStripTabsPane ul
 {
-}
-
-*.tabStripTabsPane
-{
-}
-
-*.tabStripTabsPane.empty
-{
-}
-
-*.tabStripTabsPane ul
-{
+  padding: 0;
   margin: 0;
-  padding: 0px;
   list-style: none;
-  width: auto;
+  display: flex;
+  flex-flow: wrap;
+  gap: calc(var(--remotion-themed-spacing) * 2);
+  box-sizing: border-box;
 }
 
-*.tabStripTabsPane ul li
+.tabStripTabWrapper .tabStripTab,
+.tabStripTabWrapper .tabStripTabSelected
 {
-  display: inline;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  height: calc(var(--remotion-themed-line-height) + var(--remotion-themed-spacing) * 2);
+  padding: 0 calc(var(--remotion-themed-spacing));
+  border: var(--remotion-themed-border);
+  border-radius: var(--remotion-themed-border-radius);
 }
 
-*.tabStripTab a
+.tabStripTabWrapper .tabStripTab:not(.disabled):hover,
+.tabStripTabWrapper .tabStripTabSelected
 {
-  border: solid 1px #AAAAAA;
-  background-image: url(../Image/sprite.svg#ButtonBackground);
-  background-size: 1px 20px;
-  background-color: #E6E5E7;
-  color: Black;
-  text-decoration: none;
-  cursor: default;
+  border-color: var(--color-highlight);
+  background-color: var(--color-highlight);
+  cursor: pointer;
 }
 
-*.tabStripTab a[href]
+.tabStripTabWrapper .tabStripTab a[href]
 {
-  color: Black;
-  cursor: hand;
+  color: var(--color-standard-text);
   cursor: pointer;
   outline: none;
-}
-
-*.tabStripTab a:focus,
-*.tabStripTab a:hover
-{
-  color: Black;
-  border: solid 1px #7CB2E6;
-  background-image: url(../Image/sprite.svg#ButtonBackgroundHover);
-  background-size: 1px 20px;
-  background-color: #E5F0FC;
-}
-
-*.tabStripTab a:focus,
-*.tabStripTabSelected a:focus
-{
-  outline: none;
-}
-
-*.tabStripTab a:focus span.anchorBody > img:only-child,
-*.tabStripTabSelected a:focus span.anchorBody > img:only-child
-{
-  outline: dotted black 1px;
-  outline: auto 5px -webkit-focus-ring-color;
-}
-
-*.tabStripTab a:focus span.anchorBody > span,
-*.tabStripTabSelected a:focus span.anchorBody > span
-{
-  text-decoration: underline;
-}
-
-*.tabStripTab a:active
-{
-  color: Black;
-  border: solid 1px #569CE0;
-  background-image: url(../Image/sprite.svg#ButtonBackgroundActive);
-  background-size: 1px 20px;
-  background-color: #C5E0FC;
-}
-
-*.tabStripTabSelected a
-{
-  border: solid 1px #AAAAAA;
-  background-image: none;
-  background-color: White;
-  color: Black;
   text-decoration: none;
 }
 
-/* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
-body.msie *.tabStripTab a,
-body.msie *.tabStripTabSelected a
+.tabStripTabWrapper .tabStripTab.disabled a
 {
-  position: relative;
+  color: var(--color-disabled-text);
+  background-color: var(--color-disabled-background);
 }
 
-/* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
-body.msie *.tabStripTab a::before,
-body.msie *.tabStripTabSelected a::before
+.tabStripTabWrapper .tabStripTab:not(.disabled) a:focus,
+.tabStripTabWrapper .tabStripTabSelected:not(.disabled) a:focus
 {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-}
-
-*.tabStripTab.disabled a,
-*.tabStripTab.disabled a:focus,
-*.tabStripTab.disabled a:hover
-{
-  color: Gray;
-  background-color: #EFEFF0;
-}
-
-*.tabStripTab.disabled > img
-{
-  opacity: 0.4;
-  filter: progid:DXImageTransform.Microsoft.BasicImage(opacity=0.40),
-          progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
-}
-
-/* Content area of the tab */
-*.tabStripTabsPane *.anchorBody
-{
-  padding-top: 0.2em; /* Value must also be set in the Non-IE browsers section as padding for the separator. */
-  padding-bottom: 0.2em; /* Value must also be set in the Non-IE browsers section as padding for the separator. */
-  padding-left: 0.2em;
-  padding-right: 0.2em;
-  white-space: nowrap;
-  display: block;
-}
-
-*.tabStripTabsPane *.anchorBody > img
-{
-  vertical-align: middle;
-}
-
-*.tabStripTabsPane *.anchorBody > span
-{
-}
-
-
-*.tabStripTabsPane ul *.tabStripTabWrapper
-{
-  float: left;
-  white-space: nowrap;
-}
-
-*.tabStripTabSeparator
-{
-  float: left;
-  width: 0.3em; /* Value must also be set in the Non-IE browsers section as left-margin of the tab. */
-  margin: 0;
-  display: inline-block;
-}
-
-*.tabStripTab,
-*.tabStripTabSelected
-{
-  position: relative;
-  display: inline-block;
-}
-
-*.tabStripTabSeparator span,
-*.tabStripTabsPane a
-{
-  display: block;
-}
-
-*.tabStripTabsPane *.last
-{
-  display: block;
-  clear: left;
-}
-
-*.tabStripTabSeparator span
-{
-  padding-top: 1px; /* The padding used for the content span. */
-  padding-bottom: 1px; /* The padding used for the content span. */
-}
-
-*.tabStrip div.clearingPane
-{
-  clear: both;
+  outline: none;
+  text-decoration: underline;
 }
