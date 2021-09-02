@@ -1,0 +1,131 @@
+.bocEnumValue
+{
+  display: inline-flex;
+  width: var(--remotion-themed-control-width);
+  min-height: var(--remotion-themed-singleline-min-height);
+  align-items: center;
+}
+
+.bocEnumValue.radioButtonList
+{
+  min-width: var(--remotion-themed-control-width);
+  width: auto;
+}
+
+.bocEnumValue select
+{
+  width: 100%;
+}
+
+.bocEnumValue table
+{
+  display: inline;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+.bocEnumValue tr
+{
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--remotion-themed-spacing);
+}
+
+.bocEnumValue td
+{
+  padding: 0;
+}
+
+.bocEnumValue:not(.disabled) td,
+.bocEnumValue.disabled td > span
+{
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  gap: var(--remotion-themed-spacing);
+  white-space: nowrap;
+}
+
+.bocEnumValue input:not([disabled]):hover,
+.bocEnumValue input:not([disabled]) + label:hover
+{
+  cursor: pointer;
+}
+
+.bocEnumValue input[type=radio] + label
+{
+  display: inline-flex;
+  gap: var(--remotion-themed-spacing);
+  align-items: center;
+  min-height: var(--remotion-themed-singleline-min-height);
+  border: var(--remotion-themed-border-placeholder);
+  border-radius: var(--remotion-themed-border-radius);
+  box-sizing: border-box;
+  padding-left: var(--remotion-themed-spacing);
+  padding-right: var(--remotion-themed-spacing);
+}
+
+.bocEnumValue input[type=radio] + label:before
+{
+  border: unset;
+  min-height: unset;
+  height: var(--remotion-themed-img-width);
+  width: var(--remotion-themed-img-width);
+}
+
+.bocEnumValue input[type=radio]:focus + label
+{
+  background-color: var(--remotion-themed-background-color-focus);
+  border: var(--remotion-themed-border-focus);
+  box-shadow: var(--remotion-themed-box-shadow-focus);
+}
+
+.bocEnumValue input[type=radio]:focus + label:before
+{
+  border: unset;
+  box-shadow: unset;
+}
+
+.bocEnumValue.readOnly
+{
+  width: fit-content;
+}
+
+.bocEnumValue.readOnly span[tabindex]
+{
+  min-height: var(--remotion-themed-singleline-min-height);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  padding: var(--remotion-themed-control-padding-readonly);
+  border: var(--remotion-themed-border-readonly);
+  border-radius: var(--remotion-themed-border-radius);
+}
+
+.bocEnumValue.readOnly span[tabindex]:focus-visible
+{
+  outline: none;
+  border: var(--remotion-themed-border-readonly-focus);
+  background-color: var(--remotion-themed-background-color-readonly-focus);
+  box-shadow: var(--remotion-themed-box-shadow-readonly-focus);
+}
+
+.bocEnumValue.readOnly span[tabindex]:empty
+{
+  /* Ensures that the keyboard focus of empty readonly values surrounds the entire width of the span. */
+  width: 100%;
+}
+
+.bocEnumValue.readOnly span[tabindex]:empty:before
+{
+  /* Inserting a 'zero width space' unicode character as placeholder so that empty 
+    readonly values are not collapsed and can therefore visualize the keyboard focus. 
+    This also scales with the font size and min-height doesn't have to be set since
+    line height remains unchanged. */
+  content: "\200b";
+}
+
+.bocEnumValue.disabled input[type=radio] + label
+{
+  color: var(--color-disabled-text);
+}
