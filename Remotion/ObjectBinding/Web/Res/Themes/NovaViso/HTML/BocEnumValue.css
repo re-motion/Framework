@@ -1,78 +1,91 @@
 /* Style applied to the BocEnumValue. */
 
-span.bocEnumValue,
-div.bocEnumValue.readOnly
-{
-  width: 15em;
-  position: relative;
-  display: inline-block;
-  vertical-align: middle;
-  overflow: hidden;
-}
-
+.bocEnumValue,
 .bocEnumValue.readOnly
 {
-  /* Ensures that the outline is visible in Firefox. */
-  overflow: visible;
+  display: inline-flex;
+  width: var(--remotion-themed-control-width);
+  min-height: var(--remotion-themed-min-height);
 }
 
-.bocEnumValue.disabled
+.bocEnumValue.radioButtonList
 {
+  min-width: var(--remotion-themed-control-width);
+  width: auto;
 }
 
-span.bocEnumValue select
+.bocEnumValue table
 {
-  width: 100%;
-  height: 1.68em;
+  display: inline;
 }
 
-span.bocEnumValue select[size]
+.bocEnumValue tr
 {
-  height: auto;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: calc(var(--remotion-themed-spacing) * 2);
 }
 
-span.bocEnumValue select[size="1"]
+.bocEnumValue td,
+.bocEnumValue.disabled td > span
 {
-  height: 1.68em;
-}
-
-.bocEnumValue td
-{
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  gap: var(--remotion-themed-spacing);
   white-space: nowrap;
 }
 
-.bocEnumValue td label
+.bocEnumValue input
 {
-  vertical-align: text-bottom;
+  /* Has to be set explicitely for input. */
+  margin: 0;
 }
 
-.bocEnumValue.readOnly span[tabindex]
+.bocEnumValue input:focus
 {
-  /* Ensures that diacritic marks can be rendered without being cut off. 
-     Using line-height instead of padding works better with BocEnumValue. When using padding, the text is not aligned with the label. */
-  /*line-height: 1.5em;*/
-  /* Ensures that the outline is rendered outside of the space reserved for diacritic marks. */
-  display: inline-block;
+  /* In order to have an outline for the radio buttons as well. */
+  outline: auto;
 }
 
-.bocEnumValue.readOnly span[tabindex]:first-child
+.bocEnumValue input:not([disabled]):hover
 {
-  /* Ensures that diacritic marks can be rendered without being cut off. */
-  padding-top: 0.2em;
+  cursor: pointer;
 }
 
-.bocEnumValue.readOnly span[tabindex]:last-child
+.bocEnumValue select
 {
-  /* Ensures that diacritic marks can be rendered without being cut off. */
-  padding-bottom: 0.2em;
+  width: 100%;
+}
+
+.bocEnumValue option
+{
+  padding: calc(var(--remotion-themed-padding) * 0.75);
+  border-radius: var(--remotion-themed-border-radius);
+}
+
+.bocEnumValue select:not([disabled]) option:hover
+{
+  background-color: var(--color-highlight);
+}
+
+.bocEnumValue.readOnly span
+{
+  box-sizing: border-box;
+  padding: var(--remotion-themed-padding) 0;
 }
 
 .bocEnumValue.readOnly span[tabindex]:empty
 {
-  /* Ensures that empty readonly values are not collapsed and can therefor visualize the keyboard focus */
+  /* Ensures that the keyboard focus of empty readonly values surrounds the entire width of the span. */
   width: 100%;
-  min-height: 1.5em;
-  padding-top: 0;
-  padding-bottom: 0;
-  vertical-align: -0.2em;
+}
+
+.bocEnumValue.readOnly span[tabindex]:empty:before
+{
+  /* Inserting a 'zero width space' unicode character as placeholder so that empty 
+    readonly values are not collapsed and can therefore visualize the keyboard focus. 
+    This also scales with the font size and min-height doesn't have to be set since
+    line height remains unchanged. */
+  content: "\200b";
 }
