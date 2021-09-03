@@ -560,13 +560,23 @@ namespace Remotion.Web.UI.Controls
     protected override void AddAttributesToRender (HtmlTextWriter writer)
     {
       base.AddAttributesToRender (writer);
-      if (_enableScrollBars)
-        writer.AddStyleAttribute ("overflow", "auto");
       if (_renderingFeatures.EnableDiagnosticMetadata)
       {
         IControlWithDiagnosticMetadata controlWithDiagnosticMetadata = this;
         writer.AddAttribute (DiagnosticMetadataAttributes.ControlType, controlWithDiagnosticMetadata.ControlType);
       }
+    }
+
+    protected override void Render (HtmlTextWriter writer)
+    {
+      var cssClassBackup = CssClass;
+
+      if (_enableScrollBars)
+        CssClass += " " + CssClassDefinition.Themed + " " + "scrollable";
+
+      base.Render (writer);
+
+      CssClass = cssClassBackup;
     }
 
     /// <summary> Overrides the parent control's <c>RenderContents</c> method. </summary>
@@ -582,7 +592,12 @@ namespace Remotion.Web.UI.Controls
           string.Format ("WebTreeView.Initialize ('#{0}');", ClientID));
 
       ResolveNodeIcons();
-      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassRoot);
+
+      var rootCssClass = CssClassRoot;
+      if (!_enableWordWrap)
+        rootCssClass += " whitespaceNoWrap";
+
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, rootCssClass);
       writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Tree);
 
       var labelIDs = GetLabelIDs().ToArray();
@@ -593,7 +608,7 @@ namespace Remotion.Web.UI.Controls
         _focusededNode = _selectedNode;
       using (var nodeIDAlgorithm = CreateNodeIDAlgorithm())
       {
-        RenderNodes (writer, _nodes, true, nodeIDAlgorithm);
+        RenderNodes (writer, _nodes, true, nodeIDAlgorithm, 0);
       }
       writer.RenderEndTag();
       foreach (DropDownMenu menu in _menuPlaceHolder.Controls)
@@ -601,7 +616,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Renders the <paremref name="nodes"/> onto the <paremref name="writer"/>. </summary>
-    private void RenderNodes (HtmlTextWriter writer, WebTreeNodeCollection nodes, bool isTopLevel, HashAlgorithm nodeIDAlgorithm)
+    private void RenderNodes (HtmlTextWriter writer, WebTreeNodeCollection nodes, bool isTopLevel, HashAlgorithm nodeIDAlgorithm, int nestingDepth)
     {
       for (int i = 0; i < nodes.Count; i++)
       {
@@ -646,9 +661,9 @@ namespace Remotion.Web.UI.Controls
         writer.AddAttribute ("tabindex", _focusededNode == node ? "0" : "-1");
         writer.RenderBeginTag (HtmlTextWriterTag.Li); // Begin node block
 
-        RenderNodeHead (writer, node, isFirstNode, isLastNode, hasExpander, node.IsSelected, nodePath, nodeID);
+        RenderNodeHead (writer, node, isFirstNode, isLastNode, hasExpander, node.IsSelected, nodePath, nodeID, nestingDepth);
         if (hasChildren && node.IsExpanded)
-          RenderNodeChildren (writer, node, isLastNode, hasExpander, nodeIDAlgorithm);
+          RenderNodeChildren (writer, node, isLastNode, hasExpander, nodeIDAlgorithm, nestingDepth);
 
         writer.RenderEndTag(); // End node block
       }
@@ -663,7 +678,8 @@ namespace Remotion.Web.UI.Controls
         bool hasExpander,
         bool isSelected,
         string nodePath,
-        string nodeID)
+        string nodeID,
+        int nestingDepth)
     {
       DropDownMenu menu;
       bool isMenuVisible = false;
@@ -682,10 +698,8 @@ namespace Remotion.Web.UI.Controls
         }
       }
 
-      if (!_enableWordWrap)
-        writer.AddStyleAttribute ("white-space", "nowrap");
-
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassNode);
+      writer.AddStyleAttribute ("--nesting-depth", nestingDepth.ToString());
       writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
       if (hasExpander)
@@ -791,7 +805,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Renders the <paramref name="node"/>'s children onto the <paremref name="writer"/>. </summary>
-    private void RenderNodeChildren (HtmlTextWriter writer, WebTreeNode node, bool isLastNode, bool hasExpander, HashAlgorithm nodeIDAlgorithm)
+    private void RenderNodeChildren (HtmlTextWriter writer, WebTreeNode node, bool isLastNode, bool hasExpander, HashAlgorithm nodeIDAlgorithm, int nestingDepth)
     {
       if (!hasExpander)
         writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTopLevelNodeChildren);
@@ -802,7 +816,7 @@ namespace Remotion.Web.UI.Controls
       writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Group);
       writer.RenderBeginTag (HtmlTextWriterTag.Ul); // Begin child nodes
 
-      RenderNodes (writer, node.Children, false, nodeIDAlgorithm);
+      RenderNodes (writer, node.Children, false, nodeIDAlgorithm, nestingDepth + 1);
 
       writer.RenderEndTag(); // End child nodes
     }
@@ -818,7 +832,7 @@ namespace Remotion.Web.UI.Controls
       nodes.Add (new WebTreeNode ("node2", "Node 2"));
       using (var nodeIDAlgorithm = MD5CryptoServiceProvider.Create())
       {
-        RenderNodes (writer, designModeNodes, true, nodeIDAlgorithm);
+        RenderNodes (writer, designModeNodes, true, nodeIDAlgorithm, 0);
       }
     }
 
