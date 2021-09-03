@@ -1,0 +1,127 @@
+ul.treeViewRoot
+{
+  --treeview-chevron-size: 1em;
+  --treeview-chevron-gap: 0.5em;
+  --treeview-padding: calc(var(--treeview-chevron-size) + var(--treeview-chevron-gap));
+
+  margin: 0;
+  min-width: 100%;
+  width: min-content;
+}
+
+ul.treeViewRoot.whitespaceNoWrap
+{
+  min-width: 100%;
+  width: max-content;
+}
+
+ul.treeViewRoot.whitespaceNoWrap span.treeViewNode
+{
+  white-space: nowrap;
+}
+
+ul.treeViewRoot a
+{
+  color: var(--color-standard-text);
+  text-decoration: none;
+}
+
+ul.treeViewRoot span.treeViewNode
+{
+  position: relative;
+}
+
+ul.treeViewRoot,
+ul.treeViewRoot ul.treeViewNodeChildren,
+ul.treeViewRoot ul.treeViewNodeChildrenNoLines,
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren
+{
+  padding: 0;
+  list-style: none;
+}
+
+ul.treeViewRoot span.treeViewNodeHeadSelected a:focus,
+ul.treeViewRoot li[role=treeitem]
+{
+  outline: none;
+}
+
+ul.treeViewRoot span.treeViewNodeHead:before,
+ul.treeViewRoot span.treeViewNodeHeadSelected:before
+{
+  content: " ";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  bottom: 0;
+  z-index: var(--z-index-hidden);
+  border: var(--remotion-themed-border-placeholder);
+  border-radius: var(--remotion-themed-border-radius);
+}
+
+ul.treeViewRoot span.treeViewNodeHeadSelected:before
+{
+  background-color: var(--color-highlight);
+  border-color: var(--color-highlight);
+}
+
+ul.treeViewRoot li > span.treeViewNode:hover span.treeViewNodeHead:before,
+ul.treeViewRoot li > span.treeViewNode:hover span.treeViewNodeHeadSelected:before
+{
+  background-color: var(--remotion-themed-background-color-hover);
+  border: var(--remotion-themed-border-hover);
+  box-shadow: var(--remotion-themed-box-shadow-hover);
+}
+
+ul.treeViewRoot li:focus > span.treeViewNode span.treeViewNodeHead:before
+{
+  background-color: var(--remotion-themed-background-color-focus);
+  border: var(--remotion-themed-border-focus);
+  box-shadow: var(--remotion-themed-box-shadow-focus);
+}
+
+ul.treeViewRoot li:focus > span.treeViewNode span.treeViewNodeHeadSelected:before
+{
+  background-color: var(--color-highlight);
+  border: var(--remotion-themed-border-focus);
+  box-shadow: var(--remotion-themed-box-shadow-focus);
+}
+
+ul.treeViewRoot span.treeViewNode,
+ul.treeViewRoot span.treeViewNodeHead > a,
+ul.treeViewRoot span.treeViewNodeHeadSelected > a
+{
+  display: flex;
+  align-items: center;
+  padding-top: calc(var(--remotion-themed-spacing-small) / 2);
+  padding-bottom: calc(var(--remotion-themed-spacing-small) / 2);
+}
+
+ul.treeViewRoot span.treeViewNode > a,
+ul.treeViewRoot span.treeViewNodeHead > a > img.Icon,
+ul.treeViewRoot span.treeViewNodeHeadSelected > a > img.Icon
+{
+  align-self: start;
+}
+
+ul.treeViewRoot span.treeViewNode > a img.Icon
+{
+  height: var(--treeview-chevron-size);
+  width: var(--treeview-chevron-size);
+  margin-right: var(--treeview-chevron-gap);
+}
+
+ul.treeViewRoot span.treeViewNode
+{
+  /* defined inline on the markup */
+  --nesting-depth: var(--nesting-depth, 0);
+
+  padding-left: calc(var(--treeview-padding) * var(--nesting-depth) + var(--remotion-themed-spacing-small));
+  padding-right: var(--remotion-themed-spacing-small);
+}
+
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren span.treeViewNode
+{
+  padding-left: calc(var(--treeview-padding) * (var(--nesting-depth) - 1) + var(--remotion-themed-spacing-small));
+}
