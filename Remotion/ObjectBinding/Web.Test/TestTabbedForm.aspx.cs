@@ -22,6 +22,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using OBWTest.IndividualControlTests;
 using Remotion.ObjectBinding;
+using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.Validation;
@@ -93,13 +94,22 @@ public class TestTabbedForm : TestWxeBasePage
     //    AddMainMenuTab ("6", "Main Tab 6 foo", null);
     //    AddMainMenuTab ("7", "Main Tab 7 foo foo bar", null);
 
+    var resourceUrlFactory = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>();
     List<IDataEditControl> dataEditControls = new List<IDataEditControl> ();
     // load editor pages
     IDataEditControl dataEditControl;
-    dataEditControl = AddPage ("TestTabbedPersonDetailsUserControl", "&Person Details", new IconInfo ("Images/Remotion.ObjectBinding.Sample.Person.gif"), "TestTabbedPersonDetailsUserControl.ascx");
+    dataEditControl = AddPage (
+        "TestTabbedPersonDetailsUserControl",
+        "&Person Details",
+        new IconInfo (resourceUrlFactory.CreateResourceUrl (typeof (Person), ResourceType.Image, "Remotion.ObjectBinding.Sample.Person.gif").GetUrl()),
+        "TestTabbedPersonDetailsUserControl.ascx");
     if (dataEditControl != null)
       dataEditControls.Add (dataEditControl);
-    dataEditControl = AddPage ("TestTabbedPersonJobsUserControl", "&Jobs", new IconInfo ("Images/Remotion.ObjectBinding.Sample.Job.gif"), "TestTabbedPersonJobsUserControl.ascx");
+    dataEditControl = AddPage (
+        "TestTabbedPersonJobsUserControl",
+        "&Jobs",
+        new IconInfo (resourceUrlFactory.CreateResourceUrl (typeof (Job), ResourceType.Image, "Remotion.ObjectBinding.Sample.Job.gif").GetUrl()),
+        "TestTabbedPersonJobsUserControl.ascx");
     if (dataEditControl != null)
       dataEditControls.Add (dataEditControl);
     _dataEditControls = (IDataEditControl[]) dataEditControls.ToArray ();

@@ -21,5 +21,8 @@
   <ItemGroup>
     <PackageReference Include="Remotion.TypePipe" Version="3.0.0-alpha.1" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="res" />
+  </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

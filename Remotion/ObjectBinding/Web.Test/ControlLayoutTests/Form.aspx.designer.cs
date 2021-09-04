@@ -17,7 +17,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::System.Web.UI.ScriptManager ScriptManager;
         
@@ -26,7 +26,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
         
@@ -35,7 +35,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.FormGridManager FormGridManager;
         
@@ -44,7 +44,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.SingleView OuterSingleView;
         
@@ -53,7 +53,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::OBWTest.UI.NavigationTabs NavigationTabs;
         
@@ -62,7 +62,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlTable FormGrid;
         
@@ -71,7 +71,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox Line01CheckBox01;
         
@@ -80,7 +80,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue Line01BooleanValue01;
         
@@ -89,7 +89,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocTextValue Line01TextValue01;
         
@@ -98,7 +98,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue Line01EnumValue01;
         
@@ -107,7 +107,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue Line01DateTimeValue01;
         
@@ -116,7 +116,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue Line01DateTimeValue02;
         
@@ -125,7 +125,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue Line01ReferenceValue01;
         
@@ -134,7 +134,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue Line01AutoCompleteReferenceValue01;
         
@@ -143,7 +143,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.WebButton Line01Button;
         
@@ -152,7 +152,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox Line02CheckBox01;
         
@@ -161,7 +161,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue Line02BooleanValue01;
         
@@ -170,7 +170,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocTextValue Line02TextValue01;
         
@@ -179,7 +179,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue Line02EnumValue01;
         
@@ -188,7 +188,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue Line02DateTimeValue01;
         
@@ -197,7 +197,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue Line02DateTimeValue02;
         
@@ -206,7 +206,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue Line02ReferenceValue01;
         
@@ -215,7 +215,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue Line02AutoCompleteReferenceValue01;
         
@@ -224,7 +224,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.WebButton Line02Button;
         
@@ -233,7 +233,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox Line03CheckBox01;
         
@@ -242,7 +242,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue Line03BooleanValue01;
         
@@ -251,7 +251,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocTextValue Line03TextValue01;
         
@@ -260,7 +260,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue Line03EnumValue01;
         
@@ -269,7 +269,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue Line03DateTimeValue01;
         
@@ -278,7 +278,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue Line03DateTimeValue02;
         
@@ -287,7 +287,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue Line03ReferenceValue01;
         
@@ -296,7 +296,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue Line03AutoCompleteReferenceValue01;
         
@@ -305,7 +305,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.WebButton Line03Button;
         
@@ -314,7 +314,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox Line04CheckBox01;
         
@@ -323,7 +323,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue Line04BooleanValue01;
         
@@ -332,7 +332,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocTextValue Line04TextValue01;
         
@@ -341,7 +341,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue Line04EnumValue01;
         
@@ -350,7 +350,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue Line04DateTimeValue01;
         
@@ -359,7 +359,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue Line04DateTimeValue02;
         
@@ -368,7 +368,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue Line04ReferenceValue01;
         
@@ -377,7 +377,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue Line04AutoCompleteReferenceValue01;
         
@@ -386,7 +386,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.WebButton Line04Button;
         
@@ -395,7 +395,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox CheckBox;
         
@@ -404,7 +404,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox CheckBoxReadOnly;
         
@@ -413,7 +413,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BooleanValue;
         
@@ -422,7 +422,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue BooleanValueReadOnly;
         
@@ -431,7 +431,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocTextValue TextValue;
         
@@ -440,7 +440,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocTextValue TextValueReadOnly;
         
@@ -449,7 +449,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue EnumValue;
         
@@ -458,7 +458,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue EnumValueReadOnly;
         
@@ -467,7 +467,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue DateTmeValue;
         
@@ -476,7 +476,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue DateTimeValueReadOnly;
         
@@ -485,7 +485,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue DateValue;
         
@@ -494,7 +494,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue DateValueReadOnly;
         
@@ -503,7 +503,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue ReferenceValue;
         
@@ -512,7 +512,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue ReferenceValueReadOnly;
         
@@ -521,7 +521,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue AutoCompleteReferenceValue;
         
@@ -530,7 +530,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue AutoCompleteReferenceValueReadOnly;
         
@@ -539,7 +539,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.WebButton WebButton;
         
@@ -548,7 +548,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.WebButton WebButtonWithImage;
         
@@ -557,7 +557,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.WebButton WebButtonDisabled;
         
@@ -566,7 +566,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocCheckBox Line11CheckBox01;
         
@@ -575,7 +575,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue Line11BooleanValue01;
         
@@ -584,7 +584,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocTextValue Line11TextValue01;
         
@@ -593,7 +593,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue Line11EnumValue01;
         
@@ -602,7 +602,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue Line11DateTimeValue01;
         
@@ -611,7 +611,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue Line11DateTimeValue02;
         
@@ -620,7 +620,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue Line11ReferenceValue01;
         
@@ -629,7 +629,7 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocAutoCompleteReferenceValue Line11AutoCompleteReferenceValue01;
         
@@ -638,8 +638,20 @@ namespace OBWTest.ControlLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.WebButton Line11Button;
+        
+        /// <summary>
+        /// Master property.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated property.
+        /// </remarks>
+        public new OBWTest.StandardMode Master {
+            get {
+                return ((OBWTest.StandardMode)(base.Master));
+            }
+        }
     }
 }

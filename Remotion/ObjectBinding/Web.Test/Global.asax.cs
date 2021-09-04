@@ -38,6 +38,7 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Validation;
 using Remotion.ServiceLocation;
+using Remotion.Web;
 using Remotion.Web.Configuration;
 using Remotion.Web.Infrastructure;
 
@@ -91,13 +92,14 @@ namespace OBWTest
             new InMemoryWithFileSystemReadFallbackReflectionBusinessObjectStorageProviderFactory (objectPath));
       }
 
+      var resourceUrlFactory = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>();
       XmlReflectionBusinessObjectStorageProvider provider = new XmlReflectionBusinessObjectStorageProvider (reflectionBusinessObjectStorageProvider);
       XmlReflectionBusinessObjectStorageProvider.SetCurrent (provider);
       BusinessObjectProvider.GetProvider<BindableObjectWithIdentityProviderAttribute>().AddService (typeof (IGetObjectService), provider);
       BusinessObjectProvider.GetProvider<BindableObjectWithIdentityProviderAttribute>()
                             .AddService (typeof (ISearchAvailableObjectsService), new BindableXmlObjectSearchService());
       BusinessObjectProvider.GetProvider<BindableObjectWithIdentityProviderAttribute>()
-                            .AddService (typeof (IBusinessObjectWebUIService), new ReflectionBusinessObjectWebUIService());
+                            .AddService (typeof (IBusinessObjectWebUIService), new ReflectionBusinessObjectWebUIService (resourceUrlFactory));
 
       BusinessObjectProvider.GetProvider<BindableObjectProviderAttribute>().AddService (new ReferenceDataSourceTestDefaultValueService());
       BusinessObjectProvider.GetProvider<BindableObjectProviderAttribute>().AddService (new ReferenceDataSourceTestDeleteObjectService());
@@ -120,6 +122,7 @@ namespace OBWTest
                 new ResourcePathMapping ("Remotion.Web/Image", @"..\..\Web\Core\res\Image"),
                 new ResourcePathMapping ("Remotion.Web/Themes", @"..\..\Web\Core\res\Themes"),
                 new ResourcePathMapping ("Remotion.Web/UI", @"..\..\Web\Core\res\UI"),
+                new ResourcePathMapping ("Remotion.ObjectBinding.Sample/Image", @"..\..\ObjectBinding\Sample\res\Image"),
                 new ResourcePathMapping ("Remotion.ObjectBinding.Web/Html", @$"..\..\ObjectBinding\Web.ClientScript\bin\{configuration}\dist"),
                 new ResourcePathMapping ("Remotion.ObjectBinding.Web/Themes", @"..\..\ObjectBinding\Web\res\Themes"),
                 new ResourcePathMapping ("Remotion.Web.Preview", @"..\..\Web\Preview\res"),

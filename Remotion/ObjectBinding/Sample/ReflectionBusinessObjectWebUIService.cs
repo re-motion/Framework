@@ -21,6 +21,7 @@ using Remotion.ObjectBinding.Web;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Reflection;
 using Remotion.Utilities;
+using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Sample
@@ -30,9 +31,18 @@ namespace Remotion.ObjectBinding.Sample
     private class ToolTipBasedHelpInfo : HelpInfo
     {
       public ToolTipBasedHelpInfo (string toolTip)
-          : base("#", null, toolTip,  "return false;")
+          : base ("#", null, toolTip, "return false;")
       {
       }
+    }
+
+    private readonly IResourceUrlFactory _resourceUrlFactory;
+
+    public ReflectionBusinessObjectWebUIService (IResourceUrlFactory resourceUrlFactory)
+    {
+      ArgumentUtility.CheckNotNull ("resourceUrlFactory", resourceUrlFactory);
+
+      _resourceUrlFactory = resourceUrlFactory;
     }
 
     public IconInfo GetIcon (IBusinessObject obj)
@@ -43,7 +53,9 @@ namespace Remotion.ObjectBinding.Sample
       }
       else
       {
-        string url = "~/Images/" + ((BindableObjectClass) obj.BusinessObjectClass).TargetType.GetFullNameChecked() + ".gif";
+        var targetType = ((BindableObjectClass) obj.BusinessObjectClass).TargetType;
+        var fileName = targetType.GetFullNameChecked() + ".gif";
+        string url = _resourceUrlFactory.CreateResourceUrl (targetType, ResourceType.Image, fileName).GetUrl();
         return new IconInfo (url, Unit.Pixel (16), Unit.Pixel (16));
       }
     }

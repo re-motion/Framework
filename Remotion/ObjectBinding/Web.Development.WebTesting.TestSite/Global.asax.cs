@@ -22,6 +22,7 @@ using Remotion.Development.Web.ResourceHosting;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ServiceLocation;
+using Remotion.Web;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls.Rendering;
 
@@ -37,11 +38,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
       if (!Directory.Exists (objectPath))
         Directory.CreateDirectory (objectPath);
 
+      SetRenderingFeatures (RenderingFeatures.WithDiagnosticMetadata);
       SetObjectStorageProvider (objectPath);
       RegisterAutoCompleteService();
       RegisterIconService();
       RegisterResourceVirtualPathProvider();
-      SetRenderingFeatures (RenderingFeatures.WithDiagnosticMetadata);
     }
 
     protected void Application_BeginRequest (Object sender, EventArgs e)
@@ -69,8 +70,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
 
     private static void RegisterIconService ()
     {
+      var resourceUrlFactory = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>();
+      var reflectionBusinessObjectWebUiService = new ReflectionBusinessObjectWebUIService (resourceUrlFactory);
       BusinessObjectProvider.GetProvider<BindableObjectWithIdentityProviderAttribute>()
-          .AddService (typeof (IBusinessObjectWebUIService), new ReflectionBusinessObjectWebUIService());
+          .AddService (typeof (IBusinessObjectWebUIService), reflectionBusinessObjectWebUiService);
     }
 
     private static void RegisterResourceVirtualPathProvider ()
@@ -90,6 +93,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
               new ResourcePathMapping ("Remotion.Web/Image", @"..\..\Web\Core\res\Image"),
               new ResourcePathMapping ("Remotion.Web/Themes", @"..\..\Web\Core\res\Themes"),
               new ResourcePathMapping ("Remotion.Web/UI", @"..\..\Web\Core\res\UI"),
+              new ResourcePathMapping ("Remotion.ObjectBinding.Sample/Image", @$"..\..\ObjectBinding\Sample\res\Image"),
               new ResourcePathMapping ("Remotion.ObjectBinding.Web/Html", @$"..\..\ObjectBinding\Web.ClientScript\bin\{configuration}\dist"),
               new ResourcePathMapping ("Remotion.ObjectBinding.Web/Themes", @"..\..\ObjectBinding\Web\res\Themes")
           },
