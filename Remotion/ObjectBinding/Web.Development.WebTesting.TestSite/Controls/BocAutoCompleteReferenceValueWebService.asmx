@@ -1,1 +1,0 @@
-<%@ WebService Language="C#" CodeBehind="BocAutoCompleteReferenceValueWebService.asmx.cs" Class="Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Controls.BocAutoCompleteReferenceValueWebService" %>

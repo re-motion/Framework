@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <ProjectType>WebLibrary</ProjectType>
+  </PropertyGroup>
+  <Import Project="..\..\..\Build\Shared.build.props" />
+  <PropertyGroup>
+    <AssemblyName>Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared</AssemblyName>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+    <Reference Include="System.Configuration" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
+    <ProjectReference Include="..\..\Development\Web\Development.Web.csproj" />
+    <ProjectReference Include="..\..\Web\Core\Web.Core.csproj" />
+    <ProjectReference Include="..\..\Web\Development.WebTesting.TestSite.Infrastructure\Web.Development.WebTesting.TestSite.Infrastructure.csproj" />
+    <ProjectReference Include="..\Core\ObjectBinding.Core.csproj" />
+    <ProjectReference Include="..\Sample\ObjectBinding.Sample.csproj" />
+    <ProjectReference Include="..\Web\ObjectBinding.Web.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Web.Development.WebTesting.IntegrationTests\ObjectBindingTestConstants.cs">
+      <Link>ObjectBindingTestConstants.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="UrlMapping.xml" />
+  </ItemGroup>
+  <Import Project="..\..\..\Build\Shared.build.targets" />
+</Project>

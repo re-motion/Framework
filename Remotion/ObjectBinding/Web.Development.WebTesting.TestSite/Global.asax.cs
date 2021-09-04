@@ -95,7 +95,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
               new ResourcePathMapping ("Remotion.Web/UI", @"..\..\Web\Core\res\UI"),
               new ResourcePathMapping ("Remotion.ObjectBinding.Sample/Image", @$"..\..\ObjectBinding\Sample\res\Image"),
               new ResourcePathMapping ("Remotion.ObjectBinding.Web/Html", @$"..\..\ObjectBinding\Web.ClientScript\bin\{configuration}\dist"),
-              new ResourcePathMapping ("Remotion.ObjectBinding.Web/Themes", @"..\..\ObjectBinding\Web\res\Themes")
+              new ResourcePathMapping ("Remotion.ObjectBinding.Web/Themes", @"..\..\ObjectBinding\Web\res\Themes"),
+              new ResourcePathMapping ("Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared", @"..\..\ObjectBinding\Web.Development.WebTesting.TestSite.Shared"),
           },
           FileExtensionHandlerMapping.Default);
       _resourceVirtualPathProvider.Register();
