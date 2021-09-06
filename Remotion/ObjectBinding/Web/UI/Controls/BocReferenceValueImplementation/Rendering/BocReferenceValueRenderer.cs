@@ -191,21 +191,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       return GetResourceManager (typeof (ResourceIdentifier), renderingContext.Control.GetResourceManager());
     }
 
-    protected override sealed void RenderEditModeValueWithSeparateOptionsMenu (BocRenderingContext<IBocReferenceValue> renderingContext)
+    protected override sealed void RenderEditModeValue (BocRenderingContext<IBocReferenceValue> renderingContext)
     {
       DropDownList dropDownList = GetDropDownList (renderingContext);
-      RenderEditModeValue (renderingContext, dropDownList);
-    }
-
-    protected override sealed void RenderEditModeValueWithIntegratedOptionsMenu (BocRenderingContext<IBocReferenceValue> renderingContext)
-    {
-      DropDownList dropDownList = GetDropDownList (renderingContext);
-      dropDownList.Attributes.Add ("onclick", DropDownMenu.OnHeadTitleClickScript);
-      RenderEditModeValue (renderingContext, dropDownList);
-    }
-
-    private void RenderEditModeValue (BocRenderingContext<IBocReferenceValue> renderingContext, DropDownList dropDownList)
-    {
       var validationErrors = GetValidationErrorsToRender (renderingContext).ToArray();
       var validationErrorsID = GetValidationErrorsID (renderingContext);
 

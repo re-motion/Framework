@@ -57,34 +57,10 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocAutoCompleteReferenceVa
     }
 
     [Test]
-    public void Normal_AlternativeRendering ()
-    {
-      var home = Start();
-      var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal_AlternativeRendering");
-      var analyzer = Helper.CreateAccessibilityAnalyzer();
-
-      var result = bocAutoComplete.Analyze (analyzer);
-
-      Assert.That (result.Violations, Is.Empty);
-    }
-
-    [Test]
     public void ReadOnly ()
     {
       var home = Start();
       var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_ReadOnly");
-      var analyzer = Helper.CreateAccessibilityAnalyzer();
-
-      var result = bocAutoComplete.Analyze (analyzer);
-
-      Assert.That (result.Violations, Is.Empty);
-    }
-
-    [Test]
-    public void ReadOnly_AlternativeRendering ()
-    {
-      var home = Start();
-      var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_ReadOnly_AlternativeRendering");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
       var result = bocAutoComplete.Analyze (analyzer);

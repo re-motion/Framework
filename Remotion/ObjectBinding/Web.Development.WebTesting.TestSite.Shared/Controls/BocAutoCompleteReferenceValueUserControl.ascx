@@ -61,44 +61,6 @@
   <tr>
     <td></td>
     <td>
-      <remotion:BocAutoCompleteReferenceValue ID="PartnerField_Normal_AlternativeRendering"
-                                              TextBoxStyle-AutoPostBack="true"
-                                              ReadOnly="False"
-                                              HasValueEmbeddedInsideOptionsMenu="True"
-                                              DataSourceControl="CurrentObject"
-                                              PropertyIdentifier="Partner"
-                                              CompletionSetCount="5"
-                                              ControlServicePath="BocAutoCompleteReferenceValueWebService.asmx"
-                                              runat="server">
-        
-        <PersistedCommand>
-          <remotion:BocCommand Type="Event"></remotion:BocCommand>
-        </PersistedCommand>
-
-        <OptionsMenuItems>
-          <remotion:BocMenuItem ItemID="OptCmd1" Text="My menu command">
-            <PersistedCommand>
-              <remotion:BocMenuItemCommand Type="Event"></remotion:BocMenuItemCommand>
-            </PersistedCommand>
-          </remotion:BocMenuItem>
-          <remotion:BocMenuItem ItemID="OptCmd2" Text="My menu command 2">
-            <PersistedCommand>
-              <remotion:BocMenuItemCommand Type="Event"></remotion:BocMenuItemCommand>
-            </PersistedCommand>
-          </remotion:BocMenuItem>
-          <remotion:BocMenuItem ItemID="OptCmd3" Text="My menu command 3">
-            <PersistedCommand>
-              <remotion:BocMenuItemCommand Type="Event"></remotion:BocMenuItemCommand>
-            </PersistedCommand>
-          </remotion:BocMenuItem>
-        </OptionsMenuItems>
-      </remotion:BocAutoCompleteReferenceValue>
-    </td>
-    <td>(normal, alternative rendering)</td>
-  </tr>
-  <tr>
-    <td></td>
-    <td>
       <remotion:BocAutoCompleteReferenceValue ID="PartnerField_ReadOnly"
                                               TextBoxStyle-AutoPostBack="true"
                                               ReadOnly="True"
@@ -132,44 +94,6 @@
       </remotion:BocAutoCompleteReferenceValue>
     </td>
     <td>(read-only)</td>
-  </tr>
-  <tr>
-    <td></td>
-    <td>
-      <remotion:BocAutoCompleteReferenceValue ID="PartnerField_ReadOnly_AlternativeRendering"
-                                              TextBoxStyle-AutoPostBack="true"
-                                              ReadOnly="True"
-                                              HasValueEmbeddedInsideOptionsMenu="False"
-                                              DataSourceControl="CurrentObject"
-                                              PropertyIdentifier="Partner"
-                                              CompletionSetCount="5"
-                                              ControlServicePath="BocAutoCompleteReferenceValueWebService.asmx"
-                                              runat="server">
-        
-        <PersistedCommand>
-          <remotion:BocCommand Type="Event"></remotion:BocCommand>
-        </PersistedCommand>
-
-        <OptionsMenuItems>
-          <remotion:BocMenuItem ItemID="OptCmd1" Text="My menu command">
-            <PersistedCommand>
-              <remotion:BocMenuItemCommand Type="Event"></remotion:BocMenuItemCommand>
-            </PersistedCommand>
-          </remotion:BocMenuItem>
-          <remotion:BocMenuItem ItemID="OptCmd2" Text="My menu command 2">
-            <PersistedCommand>
-              <remotion:BocMenuItemCommand Type="Event"></remotion:BocMenuItemCommand>
-            </PersistedCommand>
-          </remotion:BocMenuItem>
-          <remotion:BocMenuItem ItemID="OptCmd3" Text="My menu command 3">
-            <PersistedCommand>
-              <remotion:BocMenuItemCommand Type="Event"></remotion:BocMenuItemCommand>
-            </PersistedCommand>
-          </remotion:BocMenuItem>
-        </OptionsMenuItems>
-      </remotion:BocAutoCompleteReferenceValue>
-    </td>
-    <td>(read-only, alternative rendering)</td>
   </tr>
   <tr>
     <td></td>

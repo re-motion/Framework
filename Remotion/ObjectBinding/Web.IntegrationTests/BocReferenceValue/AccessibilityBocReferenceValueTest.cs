@@ -54,18 +54,6 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocReferenceValue
     }
 
     [Test]
-    public void NormalAlternativeRendering ()
-    {
-      var home = Start();
-      var bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_Normal_AlternativeRendering");
-      var analyzer = Helper.CreateAccessibilityAnalyzer();
-
-      var result = bocReferenceValue.Analyze (analyzer);
-
-      Assert.That (result.Violations, Is.Empty);
-    }
-
-    [Test]
     public void ReadOnly ()
     {
       var home = Start();
@@ -82,18 +70,6 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocReferenceValue
     {
       var home = Start();
       var bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_ReadOnlyWithoutSelectedValue");
-      var analyzer = Helper.CreateAccessibilityAnalyzer();
-
-      var result = bocReferenceValue.Analyze (analyzer);
-
-      Assert.That (result.Violations, Is.Empty);
-    }
-
-    [Test]
-    public void ReadOnly_AlternativeRendering ()
-    {
-      var home = Start();
-      var bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_ReadOnly_AlternativeRendering");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
       var result = bocReferenceValue.Analyze (analyzer);

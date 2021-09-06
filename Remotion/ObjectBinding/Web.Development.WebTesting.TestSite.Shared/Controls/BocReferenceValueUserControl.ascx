@@ -60,43 +60,6 @@
   <tr>
     <td></td>
     <td>
-      <remotion:BocReferenceValue ID="PartnerField_Normal_AlternativeRendering"
-                                  DropDownListStyle-AutoPostBack="true"
-                                  ReadOnly="False"
-                                  HasValueEmbeddedInsideOptionsMenu="True"
-                                  DataSourceControl="CurrentObject"
-                                  PropertyIdentifier="Partner"
-                                  ControlServicePath="BocReferenceValueWebService.asmx"
-                                  runat="server">
-        
-        <PersistedCommand>
-          <remotion:BocCommand Type="Event"></remotion:BocCommand>
-        </PersistedCommand>
-
-        <OptionsMenuItems>
-          <remotion:BocMenuItem ItemID="OptCmd1" Text="My menu command">
-            <PersistedCommand>
-              <remotion:BocMenuItemCommand Type="Event"></remotion:BocMenuItemCommand>
-            </PersistedCommand>
-          </remotion:BocMenuItem>
-          <remotion:BocMenuItem ItemID="OptCmd2" Text="My menu command 2">
-            <PersistedCommand>
-              <remotion:BocMenuItemCommand Type="Event"></remotion:BocMenuItemCommand>
-            </PersistedCommand>
-          </remotion:BocMenuItem>
-          <remotion:BocMenuItem ItemID="OptCmd3" Text="My menu command 3">
-            <PersistedCommand>
-              <remotion:BocMenuItemCommand Type="Event"></remotion:BocMenuItemCommand>
-            </PersistedCommand>
-          </remotion:BocMenuItem>
-        </OptionsMenuItems>
-      </remotion:BocReferenceValue>
-    </td>
-    <td>(normal, alternative rendering)</td>
-  </tr>
-  <tr>
-    <td></td>
-    <td>
       <remotion:BocReferenceValue ID="PartnerField_ReadOnly"
                                   DropDownListStyle-AutoPostBack="true"
                                   ReadOnly="True"
@@ -140,43 +103,6 @@
                                   runat="server"/>
     </td>
     <td>(read-only without selected value)</td>
-  </tr>
-  <tr>
-    <td></td>
-    <td>
-      <remotion:BocReferenceValue ID="PartnerField_ReadOnly_AlternativeRendering"
-                                  DropDownListStyle-AutoPostBack="true"
-                                  ReadOnly="True"
-                                  HasValueEmbeddedInsideOptionsMenu="False"
-                                  DataSourceControl="CurrentObject"
-                                  PropertyIdentifier="Partner"
-                                  ControlServicePath="BocReferenceValueWebService.asmx"
-                                  runat="server">
-        
-        <PersistedCommand>
-          <remotion:BocCommand Type="Event"></remotion:BocCommand>
-        </PersistedCommand>
-
-        <OptionsMenuItems>
-          <remotion:BocMenuItem ItemID="OptCmd1" Text="My menu command">
-            <PersistedCommand>
-              <remotion:BocMenuItemCommand Type="Event"></remotion:BocMenuItemCommand>
-            </PersistedCommand>
-          </remotion:BocMenuItem>
-          <remotion:BocMenuItem ItemID="OptCmd2" Text="My menu command 2">
-            <PersistedCommand>
-              <remotion:BocMenuItemCommand Type="Event"></remotion:BocMenuItemCommand>
-            </PersistedCommand>
-          </remotion:BocMenuItem>
-          <remotion:BocMenuItem ItemID="OptCmd3" Text="My menu command 3">
-            <PersistedCommand>
-              <remotion:BocMenuItemCommand Type="Event"></remotion:BocMenuItemCommand>
-            </PersistedCommand>
-          </remotion:BocMenuItem>
-        </OptionsMenuItems>
-      </remotion:BocReferenceValue>
-    </td>
-    <td>(read-only, alternative rendering)</td>
   </tr>
   <tr>
     <td></td>

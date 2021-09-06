@@ -305,21 +305,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       return GetResourceManager (typeof (ResourceIdentifier), renderingContext.Control.GetResourceManager());
     }
 
-    protected override sealed void RenderEditModeValueWithSeparateOptionsMenu (BocRenderingContext<IBocAutoCompleteReferenceValue> renderingContext)
+    protected override sealed void RenderEditModeValue (BocRenderingContext<IBocAutoCompleteReferenceValue> renderingContext)
     {
       TextBox textBox = GetTextBox (renderingContext);
-      RenderEditModeValue (renderingContext, textBox);
-    }
-
-    protected override sealed void RenderEditModeValueWithIntegratedOptionsMenu (BocRenderingContext<IBocAutoCompleteReferenceValue> renderingContext)
-    {
-      TextBox textBox = GetTextBox (renderingContext);
-      textBox.Attributes.Add ("onclick", DropDownMenu.OnHeadTitleClickScript);
-      RenderEditModeValue (renderingContext, textBox);
-    }
-
-    private void RenderEditModeValue (BocRenderingContext<IBocAutoCompleteReferenceValue> renderingContext, TextBox textBox)
-    {
       var validationErrors = GetValidationErrorsToRender (renderingContext).ToArray();
       var validationErrorsID = GetValidationErrorsID (renderingContext);
 
