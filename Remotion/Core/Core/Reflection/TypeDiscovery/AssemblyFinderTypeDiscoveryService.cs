@@ -178,7 +178,8 @@ namespace Remotion.Reflection.TypeDiscovery
     private IEnumerable<Type> GetFilteredTypes (IEnumerable<Type> types, Type baseType)
     {
 #if FEATURE_GAC
-      return types.Where (type => baseType.IsAssignableFrom (type) || type.CanAscribeTo (baseType));
+      var isBaseTypeAGenericTypeDefinition = baseType.IsGenericTypeDefinition;
+      return types.Where (type => baseType.IsAssignableFrom (type) || (isBaseTypeAGenericTypeDefinition && type.CanAscribeTo (baseType)));
 #else
       throw new PlatformNotSupportedException ($"{nameof (GetFilteredTypes)} is only used with GAC lookups but the GAC is not supported on this this platform.");
 #endif
