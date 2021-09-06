@@ -46,12 +46,6 @@ span.bocAutoCompleteReferenceValue.disabled span.bocAutoCompleteReferenceValueBu
   border: 1px solid #BCBCBC;
 }
 
-span.bocAutoCompleteReferenceValue span.embeddedOptionsMenu span.bocAutoCompleteReferenceValueButton
-{
-  right: 0.1em;
-  left: auto;
-}
-
 span.bocAutoCompleteReferenceValueButton:hover
 {
   border: 1px solid #7CB2E6;
@@ -70,8 +64,8 @@ span.bocAutoCompleteReferenceValueButton img
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  background-image: url('../Image/sprite.svg#AutoCompleteReferenceValueDropDownButtonFace');
-  background-size: 16px 16px;
+  background-image: url('../Image/AutoCompleteReferenceValueDropDownButtonFace.gif');
+  background-size: 60px 99px;
   background-position: 0 center; /*-1px for border*/
   background-repeat: no-repeat;
 }
@@ -190,24 +184,7 @@ span.bocAutoCompleteReferenceValue span.content.withoutOptionsMenu
   right: 0;
 }
 
-/* embeddedOptionsMenu */
-span.bocAutoCompleteReferenceValue span.DropDownMenuContainer span.DropDownMenuSelect,
-span.bocAutoCompleteReferenceValue.disabled span.DropDownMenuContainer span.DropDownMenuSelect
-{
-  height: 1.7em;
-}
-
-span.bocAutoCompleteReferenceValue.readOnly span.DropDownMenuContainer span.DropDownMenuSelect
-{
-  height: 1.6em;
-}
-
-span.bocAutoCompleteReferenceValue span.content.embeddedOptionsMenu
-{
-  right: 1.3em; /* width of span.DropDownMenuButton + desired space between */
-}
-
-/* separateOptionsMenu */
+/* hasOptionsMenu */
 span.bocAutoCompleteReferenceValue span.optionsMenu span.DropDownMenuSelect,
 span.bocAutoCompleteReferenceValue.disabled span.optionsMenu span.DropDownMenuSelect,
 span.bocAutoCompleteReferenceValue.readOnly span.optionsMenu span.DropDownMenuSelect
@@ -265,7 +242,7 @@ span.bocAutoCompleteReferenceValue.readOnly span.DropDownMenuContainer a.command
   width: calc(100% - 17px - 4px);
 }
 
-span.bocAutoCompleteReferenceValue.readOnly span.content.separateOptionsMenu span,
+span.bocAutoCompleteReferenceValue.readOnly span.content.hasOptionsMenu span,
 span.bocAutoCompleteReferenceValue.readOnly span.content.withoutOptionsMenu span
 {
   /* Ensures that diacritic marks can be rendered without being cut off. 
@@ -304,14 +281,13 @@ span.bocAutoCompleteReferenceValue span.optionsMenu
   width: 6.7em; /* Define width of span.optionsMenu */
 }
 
-span.bocAutoCompleteReferenceValue span.content.separateOptionsMenu
+span.bocAutoCompleteReferenceValue span.content.hasOptionsMenu
 {
   right: 7em; /* width of span.optionsMenu + desired space between */
 }
 
-span.content.separateOptionsMenu span.bocAutoCompleteReferenceValueInput,
-span.content.withoutOptionsMenu span.bocAutoCompleteReferenceValueInput,
-span.content.embeddedOptionsMenu span.bocAutoCompleteReferenceValueInput
+span.content.hasOptionsMenu span.bocAutoCompleteReferenceValueInput,
+span.content.withoutOptionsMenu span.bocAutoCompleteReferenceValueInput
 {
   display: inline-block;
   width: auto;
@@ -320,15 +296,8 @@ span.content.embeddedOptionsMenu span.bocAutoCompleteReferenceValueInput
   right: 24px;
 }
 
-.mozilla span.content.separateOptionsMenu span.bocAutoCompleteReferenceValueInput,
-.mozilla span.content.withoutOptionsMenu span.bocAutoCompleteReferenceValueInput,
-.mozilla span.content.embeddedOptionsMenu span.bocAutoCompleteReferenceValueInput
-{
-  right: 26px;
-}
-
-/* embeddedOptionsMenu */
-span.content.embeddedOptionsMenu span.bocAutoCompleteReferenceValueInput
+.mozilla span.content.hasOptionsMenu span.bocAutoCompleteReferenceValueInput,
+.mozilla span.content.withoutOptionsMenu span.bocAutoCompleteReferenceValueInput
 {
   right: 26px;
 }

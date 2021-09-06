@@ -132,7 +132,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     private string _optionsTitle;
     private bool _showOptionsMenu = true;
     private Unit _optionsMenuWidth = Unit.Empty;
-    private bool? _hasValueEmbeddedInsideOptionsMenu;
     private string[] _hiddenMenuItems;
     private string _controlServicePath;
     private string _controlServiceArguments;
@@ -351,11 +350,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     [Category ("Menu")]
     [Description ("Determines whether to use the value as the options menu's head.")]
     [DefaultValue (typeof (bool?), "")]
-    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
+    [Obsolete ("This feature has been removed. (Version 3.0.0)", true)]
     public bool? HasValueEmbeddedInsideOptionsMenu
     {
-      get { return _hasValueEmbeddedInsideOptionsMenu; }
-      set { _hasValueEmbeddedInsideOptionsMenu = value; }
+      get { throw new NotImplementedException ("This feature has been removed. (Version 3.0.0)"); }
+      set { throw new NotImplementedException ("This feature has been removed. (Version 3.0.0)"); }
     }
 
     /// <summary> Gets or sets the list of menu items to be hidden. </summary>

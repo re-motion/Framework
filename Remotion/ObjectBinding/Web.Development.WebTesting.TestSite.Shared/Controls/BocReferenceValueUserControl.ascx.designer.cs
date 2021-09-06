@@ -58,15 +58,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue PartnerField_Normal;
         
         /// <summary>
-        /// PartnerField_Normal_AlternativeRendering control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
-        /// </remarks>
-        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue PartnerField_Normal_AlternativeRendering;
-        
-        /// <summary>
         /// PartnerField_ReadOnly control.
         /// </summary>
         /// <remarks>
@@ -83,15 +74,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
         /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue PartnerField_ReadOnlyWithoutSelectedValue;
-        
-        /// <summary>
-        /// PartnerField_ReadOnly_AlternativeRendering control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
-        /// </remarks>
-        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValue PartnerField_ReadOnly_AlternativeRendering;
         
         /// <summary>
         /// PartnerField_Disabled control.

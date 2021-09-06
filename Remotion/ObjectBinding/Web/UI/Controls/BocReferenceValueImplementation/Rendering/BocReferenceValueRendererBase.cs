@@ -218,12 +218,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     {
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
 
-#pragma warning disable 618
-      if (IsEmbedInOptionsMenu (renderingContext))
-        RenderContentsWithIntegratedOptionsMenu (renderingContext);
-#pragma warning restore 618
-      else
-        RenderContentsWithSeparateOptionsMenu (renderingContext);
+      RenderContentsWithSeparateOptionsMenu (renderingContext);
     }
 
     [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
@@ -482,12 +477,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       return label;
     }
 
-    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
     private bool IsEmbedInOptionsMenu (BocRenderingContext<TControl> renderingContext)
     {
-      return renderingContext.Control.HasValueEmbeddedInsideOptionsMenu == true && renderingContext.Control.HasOptionsMenu
-             || renderingContext.Control.HasValueEmbeddedInsideOptionsMenu == null && renderingContext.Control.IsReadOnly
-             && renderingContext.Control.HasOptionsMenu;
+      return false;
     }
 
     protected IEnumerable<string> GetValidationErrorsToRender (BocRenderingContext<TControl> renderingContext)
@@ -510,12 +502,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
       if (!renderingContext.Control.HasOptionsMenu)
         cssClass += " " + CssClassWithoutOptionsMenu;
-#pragma warning disable 618
-      else if (IsEmbedInOptionsMenu (renderingContext))
-        cssClass += " " + CssClassEmbeddedOptionsMenu;
-#pragma warning restore 618
       else
-        cssClass += " " + CssClassSeparateOptionsMenu;
+        cssClass += " " + CssClassHasOptionsMenu;
 
       return cssClass;
     }
@@ -530,15 +518,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       get { return "content"; }
     }
 
-    private string CssClassSeparateOptionsMenu
+    private string CssClassHasOptionsMenu
     {
-      get { return "separateOptionsMenu"; }
-    }
-
-    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
-    private string CssClassEmbeddedOptionsMenu
-    {
-      get { return "embeddedOptionsMenu"; }
+      get { return "hasOptionsMenu"; }
     }
 
     private string CssClassWithoutOptionsMenu

@@ -55,8 +55,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     private enum OptionMenuConfiguration
     {
       NoOptionsMenu,
-      SeparateOptionsMenu,
-      EmbeddedOptionsMenu
+      HasOptionsMenu
     }
 
     private enum AutoPostBack
@@ -166,34 +165,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       Control.Setup (stub => stub.HasOptionsMenu).Returns (true);
 
       XmlNode containerDiv = GetAssertedContainerSpan (false);
-      AssertControl (containerDiv, OptionMenuConfiguration.SeparateOptionsMenu, AutoPostBack.Disabled);
-    }
-
-    [Test]
-    [Ignore ("Assertions for embedded menu are incorrect: COMMONS-2431")]
-    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
-    public void RenderNullReferenceValueWithEmbeddedOptionsMenu ()
-    {
-      Control.Setup (stub => stub.Enabled).Returns (true);
-      Control.Setup (stub => stub.HasValueEmbeddedInsideOptionsMenu).Returns (true);
-      Control.Setup (stub => stub.HasOptionsMenu).Returns (true);
-
-      XmlNode span = GetAssertedContainerSpan (false);
-      AssertControl (span, OptionMenuConfiguration.EmbeddedOptionsMenu, AutoPostBack.Disabled);
-    }
-
-    [Test]
-    [Ignore ("Assertions for embedded menu are incorrect: COMMONS-2431")]
-    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
-    public void RenderNullReferenceValueWithEmbeddedOptionsMenuAndStyle ()
-    {
-      Control.Setup (stub => stub.Enabled).Returns (true);
-      Control.Setup (stub => stub.HasValueEmbeddedInsideOptionsMenu).Returns (true);
-      Control.Setup (stub => stub.HasOptionsMenu).Returns (true);
-      AddStyle();
-
-      XmlNode span = GetAssertedContainerSpan (true);
-      AssertControl (span, OptionMenuConfiguration.EmbeddedOptionsMenu, AutoPostBack.Disabled);
+      AssertControl (containerDiv, OptionMenuConfiguration.HasOptionsMenu, AutoPostBack.Disabled);
     }
 
     [Test]
@@ -253,7 +225,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       AddStyle();
 
       XmlNode span = GetAssertedContainerSpan (true);
-      AssertControl (span, OptionMenuConfiguration.SeparateOptionsMenu, AutoPostBack.Disabled);
+      AssertControl (span, OptionMenuConfiguration.HasOptionsMenu, AutoPostBack.Disabled);
 
       Assert.That (OptionsMenu.Style["width"], Is.Null);
       Assert.That (OptionsMenu.Style["height"], Is.Null);
@@ -311,39 +283,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       Control.Setup (stub => stub.HasOptionsMenu).Returns (true);
 
       XmlNode span = GetAssertedContainerSpan (false);
-      AssertControl (span, OptionMenuConfiguration.SeparateOptionsMenu, AutoPostBack.Disabled);
+      AssertControl (span, OptionMenuConfiguration.HasOptionsMenu, AutoPostBack.Disabled);
 
       Assert.That (OptionsMenu.Style["width"], Is.Null);
       Assert.That (OptionsMenu.Style["height"], Is.Null);
-    }
-
-    [Test]
-    [Ignore ("Assertions for embedded menu are incorrect: COMMONS-2431")]
-    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
-    public void RenderReferenceValueWithEmbeddedOptionsMenu ()
-    {
-      Control.Setup (stub => stub.Enabled).Returns (true);
-      SetValue();
-      Control.Setup (stub => stub.HasValueEmbeddedInsideOptionsMenu).Returns (true);
-      Control.Setup (stub => stub.HasOptionsMenu).Returns (true);
-
-      XmlNode span = GetAssertedContainerSpan (false);
-      AssertControl (span, OptionMenuConfiguration.EmbeddedOptionsMenu, AutoPostBack.Disabled);
-    }
-
-    [Test]
-    [Ignore ("Assertions for embedded menu are incorrect: COMMONS-2431")]
-    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
-    public void RenderReferenceValueWithEmbeddedOptionsMenuAndStyle ()
-    {
-      Control.Setup (stub => stub.Enabled).Returns (true);
-      SetValue();
-      Control.Setup (stub => stub.HasValueEmbeddedInsideOptionsMenu).Returns (true);
-      Control.Setup (stub => stub.HasOptionsMenu).Returns (true);
-      AddStyle();
-
-      XmlNode span = GetAssertedContainerSpan (false);
-      AssertControl (span, OptionMenuConfiguration.EmbeddedOptionsMenu, AutoPostBack.Disabled);
     }
 
     [Test]
@@ -408,7 +351,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       AddStyle();
 
       XmlNode span = GetAssertedContainerSpan (true);
-      AssertControl (span, OptionMenuConfiguration.SeparateOptionsMenu, AutoPostBack.Disabled);
+      AssertControl (span, OptionMenuConfiguration.HasOptionsMenu, AutoPostBack.Disabled);
 
       Assert.That (OptionsMenu.Style["width"], Is.Null);
       Assert.That (OptionsMenu.Style["height"], Is.Null);
@@ -430,27 +373,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       var input = span.GetAssertedChildElement ("span", 0).GetAssertedChildElement ("span", 1).GetAssertedChildElement ("input", 2);
       input.AssertAttributeValueEquals ("id", c_keyValueName);
       input.AssertAttributeValueEquals ("name", c_keyValueName);
-    }
-
-    [Test]
-    [Ignore ("Assertions for embedded menu are incorrect: COMMONS-2431")]
-    public void RenderOptions ()
-    {
-      var renderer = new TestableBocAutoCompleteReferenceValueRenderer (
-          _resourceUrlFactory,
-          GlobalizationService,
-          RenderingFeatures.Default,
-          new StubLabelReferenceRenderer(),
-          new StubValidationErrorRenderer(),
-          () => new StubTextBox());
-
-      Html.Writer.AddAttribute (HtmlTextWriterAttribute.Class, "body");
-      Html.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
-      renderer.RenderOptionsMenuTitle (CreateRenderingContext());
-      Html.Writer.RenderEndTag();
-
-      var document = Html.GetResultDocument();
-      AssertControl (document, OptionMenuConfiguration.EmbeddedOptionsMenu, AutoPostBack.Disabled);
     }
 
     [Test]
@@ -671,17 +593,14 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
         case OptionMenuConfiguration.NoOptionsMenu:
           contentSpan.AssertAttributeValueEquals ("class", "content remotion-themed withoutOptionsMenu");
           break;
-        case OptionMenuConfiguration.SeparateOptionsMenu:
-          contentSpan.AssertAttributeValueEquals ("class", "content remotion-themed separateOptionsMenu");
-          break;
-        case OptionMenuConfiguration.EmbeddedOptionsMenu:
-          contentSpan.AssertAttributeValueEquals ("class", "content remotion-themed embeddedOptionsMenu");
+        case OptionMenuConfiguration.HasOptionsMenu:
+          contentSpan.AssertAttributeValueEquals ("class", "content remotion-themed hasOptionsMenu");
           break;
       }
 
       AssertDropDownListSpan (contentSpan, autoPostBack);
 
-      if (optionMenuConfiguration == OptionMenuConfiguration.SeparateOptionsMenu)
+      if (optionMenuConfiguration == OptionMenuConfiguration.HasOptionsMenu)
       {
         var optionsMenuDiv = contentDiv.GetAssertedChildElement ("span", 2);
         optionsMenuDiv.AssertAttributeValueEquals ("class", "optionsMenu");

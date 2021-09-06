@@ -65,7 +65,7 @@
     <td style="WIDTH: 20%"><asp:label id=ReadOnlyPartnerFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>
   <tr>
     <td><remotion:SmartLabel ID="UnboundPartnerFieldLabel" runat="server" ForControl="UnboundPartnerField" Text="Partner"/></td>
-    <td><remotion:bocAutoCompleteReferenceValue id=UnboundPartnerField runat="server" ControlServicePath="BocAutoCompleteReferenceValueWebService.asmx" DataSourceControl="PersonDataSource" required="True" hasvalueembeddedinsideoptionsmenu="False" showoptionsmenu="False"  ValidSearchStringRegex=".{1}" IgnoreSearchStringForDropDownUponValidInput="True">
+    <td><remotion:bocAutoCompleteReferenceValue id=UnboundPartnerField runat="server" ControlServicePath="BocAutoCompleteReferenceValueWebService.asmx" DataSourceControl="PersonDataSource" required="True" showoptionsmenu="False"  ValidSearchStringRegex=".{1}" IgnoreSearchStringForDropDownUponValidInput="True">
 <persistedcommand>
 <remotion:boccommand Type="Event"></remotion:boccommand>
 </PersistedCommand></remotion:bocAutoCompleteReferenceValue></td>
@@ -74,7 +74,7 @@
     <td style="WIDTH: 20%"><asp:label id=UnboundPartnerFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>
   <tr>
     <td><remotion:SmartLabel ID="UnboundReadOnlyPartnerFieldLabel" runat="server" ForControl="UnboundReadOnlyPartnerField" Text="Partner"/></td>
-    <td><remotion:bocAutoCompleteReferenceValue id=UnboundReadOnlyPartnerField runat="server" ControlServicePath="BocAutoCompleteReferenceValueWebService.asmx" readonly="True" enableicon="False" hasvalueembeddedinsideoptionsmenu="False" DataSourceControl="PersonDataSource">
+    <td><remotion:bocAutoCompleteReferenceValue id=UnboundReadOnlyPartnerField runat="server" ControlServicePath="BocAutoCompleteReferenceValueWebService.asmx" readonly="True" enableicon="False" DataSourceControl="PersonDataSource">
 <persistedcommand>
 <remotion:boccommand Type="Event"></remotion:boccommand>
 </PersistedCommand>
@@ -85,7 +85,7 @@
     <td style="WIDTH: 20%"><asp:label id=UnboundReadOnlyPartnerFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>
   <tr>
     <td></td>
-    <td><remotion:bocAutoCompleteReferenceValue id=DisabledPartnerField runat="server" ControlServicePath="BocAutoCompleteReferenceValueWebService.asmx" readonly="False" datasourcecontrol="CurrentObject" propertyidentifier="Partner" hasvalueembeddedinsideoptionsmenu="True" enabled="false">
+    <td><remotion:bocAutoCompleteReferenceValue id=DisabledPartnerField runat="server" ControlServicePath="BocAutoCompleteReferenceValueWebService.asmx" readonly="False" datasourcecontrol="CurrentObject" propertyidentifier="Partner" enabled="false">
 
 <persistedcommand>
 <remotion:boccommand Type="Event"></remotion:boccommand>
