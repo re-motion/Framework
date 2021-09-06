@@ -376,28 +376,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     }
 
     [Test]
-    public void RenderOptionsReadOnly ()
-    {
-      Control.Setup (stub => stub.IsIconEnabled()).Returns (true);
-      Control.Setup (stub => stub.IsReadOnly).Returns (true);
-
-      var renderer = new TestableBocAutoCompleteReferenceValueRenderer (
-          _resourceUrlFactory,
-          GlobalizationService,
-          RenderingFeatures.Default,
-          new StubLabelReferenceRenderer(),
-          new StubValidationErrorRenderer(),
-          () => new StubTextBox());
-      Html.Writer.AddAttribute (HtmlTextWriterAttribute.Class, "body");
-      Html.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
-      renderer.RenderOptionsMenuTitle (CreateRenderingContext());
-      Html.Writer.RenderEndTag();
-      
-      var document = Html.GetResultDocument();
-      AssertReadOnlyContent (document);
-    }
-
-    [Test]
     public void RenderDiagnosticMetadataAttributes ()
     {
       var renderer = new TestableBocAutoCompleteReferenceValueRenderer (
