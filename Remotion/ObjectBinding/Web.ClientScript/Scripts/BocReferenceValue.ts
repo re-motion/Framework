@@ -19,13 +19,13 @@ class BocReferenceValue //TODO RM-7715 - Make the TypeScript classes BocReferenc
 {
   public static Initialize (
     dropDownListOrSelector: CssSelectorOrElement<HTMLSelectElement>,
-    commandOrSelector: Nullable<CssSelectorOrElement<HTMLAnchorElement>>,
+    iconMarkerOrSelector: Nullable<CssSelectorOrElement<HTMLElement>>,
+    iconOrSelector: Nullable<CssSelectorOrElement<HTMLImageElement>>,
     nullValueString: string,
     isAutoPostBackEnabled: boolean,
     isIconUpdateEnabled: boolean,
     controlServiceUrl: Nullable<string>,
     iconContext: Nullable<BocReferenceValueBase_IconContext>,
-    commandInfo: Nullable<BocReferenceValueBase_CommandInfo>,
     resources: BocReferenceValueBase_Resources): void
   {
     ArgumentUtility.CheckNotNull('dropDownListOrSelector', dropDownListOrSelector);
@@ -33,37 +33,48 @@ class BocReferenceValue //TODO RM-7715 - Make the TypeScript classes BocReferenc
     ArgumentUtility.CheckNotNullAndTypeIsBoolean('isAutoPostBackEnabled', isAutoPostBackEnabled);
     ArgumentUtility.CheckNotNullAndTypeIsBoolean('isIconUpdateEnabled', isIconUpdateEnabled);
     if (isIconUpdateEnabled)
+    {
+      ArgumentUtility.CheckNotNull('iconMarkerOrSelector', iconMarkerOrSelector);
+      ArgumentUtility.CheckNotNull('iconOrSelector', iconOrSelector);
       ArgumentUtility.CheckNotNullAndTypeIsString('controlServiceUrl', controlServiceUrl);
-    if (isIconUpdateEnabled)
       ArgumentUtility.CheckNotNullAndTypeIsObject('iconContext', iconContext);
-    ArgumentUtility.CheckTypeIsObject('commandInfo', commandInfo);
+    }
     ArgumentUtility.CheckNotNullAndTypeIsObject('resources', resources);
 
     const dropDownList = ElementResolverUtility.ResolveSingle(dropDownListOrSelector);
-    let command = commandOrSelector != null
-      ? ElementResolverUtility.ResolveSingle(commandOrSelector)
+    let iconMarker = iconMarkerOrSelector != null
+        ? ElementResolverUtility.ResolveSingle(iconMarkerOrSelector)
+        : null;
+    let icon = iconOrSelector != null
+      ? ElementResolverUtility.ResolveSingle(iconOrSelector)
       : null;
 
     dropDownList.addEventListener('change', function ()
     {
       BocReferenceValue.ClearError(dropDownList);
 
-      if (command == null)
-        return;
+      if (isIconUpdateEnabled)
+      {
+        if (iconMarker == null)
+          return;
 
-      if (isAutoPostBackEnabled)
-      {
-        command = BocReferenceValueBase.UpdateCommand(command, null, false, null, null, null, function () { });
-      }
-      else
-      {
+        if (icon == null)
+          return;
+
         var errorHandler = function (error: Sys.Net.WebServiceError)
         {
           BocReferenceValue.SetError(dropDownList, resources.LoadIconFailedErrorMessage);
         };
 
-        var businessObject = BocReferenceValue.GetSelectedValue(dropDownList, nullValueString);
-        command = BocReferenceValueBase.UpdateCommand(command, businessObject, isIconUpdateEnabled, controlServiceUrl, iconContext, commandInfo, errorHandler);
+        if (isAutoPostBackEnabled)
+        {
+          icon = BocReferenceValueBase.UpdateIcon(iconMarker, icon, null, controlServiceUrl, iconContext, errorHandler);
+        }
+        else
+        {
+          var businessObject = BocReferenceValue.GetSelectedValue(dropDownList, nullValueString);
+          icon = BocReferenceValueBase.UpdateIcon(iconMarker, icon, businessObject, controlServiceUrl, iconContext, errorHandler);
+        }
       }
     });
   };

@@ -33,20 +33,10 @@
     <td></td>
     <td><remotion:bocreferencevalue id=PartnerField runat="server" DropDownListStyle-AutoPostBack="true" readonly="False" datasourcecontrol="CurrentObject" propertyidentifier="Partner" EnableSelectStatement="True"
     ControlServicePath="BocReferenceValueWebService.asmx" ControlServiceArguments="ControlServiceArgs">
-<PersistedCommand>
-<remotion:BocCommand Type="Event"></remotion:BocCommand>
-</PersistedCommand>
-
 <optionsmenuitems>
 <remotion:BocMenuItem Text="intern">
-<persistedcommand>
-<remotion:BocMenuItemCommand Type="Href" HrefCommand-Href="~/startForm.aspx"></remotion:BocMenuItemCommand>
-</PersistedCommand>
 </remotion:BocMenuItem>
 <remotion:BocMenuItem Text="extern">
-<persistedcommand>
-<remotion:BocMenuItemCommand Type="Href" HrefCommand-Target="_blank" HrefCommand-Href="~/startForm.aspx"></remotion:BocMenuItemCommand>
-</PersistedCommand>
 </remotion:BocMenuItem>
 </OptionsMenuItems>
 </remotion:bocreferencevalue></td>
@@ -55,10 +45,6 @@
   <tr>
     <td></td>
     <td><remotion:bocreferencevalue id=ReadOnlyPartnerField runat="server" readonly="True" datasourcecontrol="CurrentObject" propertyidentifier="Partner" >
-<PersistedCommand>
-<remotion:BocCommand WxeFunctionCommand-Parameters="id" WxeFunctionCommand-TypeName="OBWTest.ViewPersonDetailsWxeFunction,OBWTest" Type="Event"></remotion:BocCommand>
-</PersistedCommand>
-
 <labelstyle cssclass="MyLabelClass">
 </LabelStyle></remotion:bocreferencevalue></td>
     <td>bound, read-only</td>
@@ -66,9 +52,6 @@
   <tr>
     <td><remotion:SmartLabel ID="UnboundPartnerFieldLabel" runat="server" ForControl="UnboundPartnerField" Text="Partner"/></td>
     <td><remotion:bocreferencevalue id=UnboundPartnerField runat="server" ControlServicePath="BocReferenceValueWebService.asmx" DataSourceControl="PersonDataSource" required="True" showoptionsmenu="False" EnableSelectStatement="False">
-<PersistedCommand>
-<remotion:boccommand Type="Href" HrefCommand-Href="http://localhost/{0}" HrefCommand-Target="_blank" ToolTip="test&quot;test'test"></remotion:boccommand>
-</PersistedCommand>
 <DropDownListStyle NullValueTextVisible="True"/>
     </remotion:bocreferencevalue></td>
     <td>
@@ -77,10 +60,6 @@
   <tr>
     <td><remotion:SmartLabel ID="UnboundReadOnlyPartnerFieldLabel" runat="server" ForControl="UnboundReadOnlyPartnerField" Text="Partner"/></td>
     <td><remotion:bocreferencevalue id=UnboundReadOnlyPartnerField runat="server" readonly="True" EnableIcon="False" EnableSelectStatement="False" DataSourceControl="PersonDataSource">
-<PersistedCommand>
-<remotion:boccommand Type="Event"></remotion:boccommand>
-</PersistedCommand>
-
 </remotion:bocreferencevalue></td>
     <td>
       unbound, value set, read only</td>
@@ -88,37 +67,25 @@
   <tr>
     <td></td>
     <td><remotion:bocreferencevalue id=DisabledPartnerField runat="server" readonly="False" datasourcecontrol="CurrentObject" propertyidentifier="Partner" enabled="false" EnableSelectStatement="False">
-
-<PersistedCommand>
-<remotion:boccommand Type="Event"></remotion:boccommand>
-</PersistedCommand></remotion:bocreferencevalue></td>
+</remotion:bocreferencevalue></td>
     <td>disabled, bound</td>
     <td style="WIDTH: 20%"><asp:label id="DisabledPartnerFieldValueLabel" runat="server" enableviewstate="False">#</asp:label></td></tr>
   <tr>
     <td></td>
     <td><remotion:bocreferencevalue id=DisabledReadOnlyPartnerField runat="server" readonly="True" datasourcecontrol="CurrentObject" propertyidentifier="Partner" enabled="False" EnableSelectStatement="False">
-
-<PersistedCommand>
-<remotion:boccommand WxeFunctionCommand-Parameters="id" WxeFunctionCommand-TypeName="OBWTest.ViewPersonDetailsWxeFunction,OBWTest" Type="WxeFunction"></remotion:boccommand>
-</PersistedCommand></remotion:bocreferencevalue></td>
+</remotion:bocreferencevalue></td>
     <td>disabled, bound, read-only</td>
     <td style="WIDTH: 20%"><asp:label id="DisabledReadOnlyPartnerFieldValueLabel" runat="server" enableviewstate="False">#</asp:label></td></tr>
   <tr>
     <td><remotion:SmartLabel ID="DisabledUnboundPartnerFieldLabel" runat="server" ForControl="DisabledUnboundPartnerField" Text="Partner"/></td>
     <td><remotion:bocreferencevalue id=DisabledUnboundPartnerField runat="server" required="True" enabled="false" EnableSelectStatement="False" DataSourceControl="PersonDataSource">
-<PersistedCommand>
-<remotion:boccommand></remotion:boccommand>
-</PersistedCommand></remotion:bocreferencevalue></td>
+</remotion:bocreferencevalue></td>
     <td>
        disabled, unbound, value set</td>
     <td style="WIDTH: 20%"><asp:label id="DisabledUnboundPartnerFieldValueLabel" runat="server" enableviewstate="False">#</asp:label></td></tr>
   <tr>
     <td><remotion:SmartLabel ID="DisabledUnboundReadOnlyPartnerFieldLabel" runat="server" ForControl="DisabledUnboundReadOnlyPartnerField" Text="Partner"/></td>
     <td><remotion:bocreferencevalue id=DisabledUnboundReadOnlyPartnerField runat="server" readonly="True" EnableIcon="False" enabled="False" EnableSelectStatement="False" DataSourceControl="PersonDataSource">
-<PersistedCommand>
-<remotion:boccommand></remotion:boccommand>
-</PersistedCommand>
-
 </remotion:bocreferencevalue></td>
     <td>
       disabled, unbound, value set, read only</td>

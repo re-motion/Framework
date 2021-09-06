@@ -30,86 +30,38 @@ span.bocReferenceValue select.error
   background-repeat: no-repeat;
 }
 
-span.bocReferenceValue a.command
+span.bocReferenceValue span.body
 {
   display: inline-block;
   margin-top: 1px;
   margin-left: 1px;
-  border: solid 1px transparent;
-  height: 1.3em; 
+  padding: 1px;
 }
 
-span.bocReferenceValue a[href].command
-{
-  color: #09457E;
-  cursor: hand;
-  cursor: pointer;
-}
-
-span.bocReferenceValue.disabled a.command,
-span.bocReferenceValue .disabled a.command
+span.bocReferenceValue.disabled span.content,
+span.bocReferenceValue .disabled span.content
 {
   color: gray;
   cursor: default;
 }
 
-span.bocReferenceValue span.DropDownMenuContainer a.command
-{
-  margin-right: 17px;
-}
-
-span.bocReferenceValue span.body a.command
+span.bocReferenceValue span.content
 {
   margin-right: 1px;
 }
 
-span.bocReferenceValue a[href].command:focus,
-span.bocReferenceValue a[href].command:hover
-{
-  color: Black;
-  border: 1px solid #7CB2E6;
-  background-color: #E5F0FC;
-  padding: 0;
-  outline: none;
-}
-
-span.bocReferenceValue a[href].command:active
-{
-  color: Black;
-  border: solid 1px #569CE0;
-  background-color: #C5E0FC;
-  padding: 0;
-}
-
-/* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
-body.msie span.bocReferenceValue a[href].command
-{
-  position: relative;
-}
-
-/* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
-body.msie span.bocReferenceValue a[href].command::before
-{
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-}
-
-span.bocReferenceValue span.DropDownMenuContainer a.command span
+span.bocReferenceValue span.DropDownMenuContainer span.content span
 {
   vertical-align: top;
 }
 
-span.bocReferenceValue.readOnly a.command img
+span.bocReferenceValue.readOnly span.icon img
 {
   margin-right: 6px;
 }
 
-span.bocReferenceValue.disabled a.command img,
-span.bocReferenceValue .disabled a.command img
+span.bocReferenceValue.disabled span.icon img,
+span.bocReferenceValue .disabled span.icon img
 {
   opacity: 0.4;
   filter: progid:DXImageTransform.Microsoft.BasicImage(opacity=0.40),
@@ -161,21 +113,13 @@ span.bocReferenceValue.readOnly span.content span:empty
   vertical-align: -0.2em;
 }
 
-span.bocReferenceValue.readOnly a.command
+span.bocReferenceValue.readOnly span.body
 {
   /* Ensures that diacritic marks can be rendered without being cut off. 
      Using line-height instead of padding works better with BocReferenceValue. When using padding, the text is not aligned with the label. */
   height: 1.4em;
   /* Ensures that the outline is rendered outside of the space reserved for diacritic marks. */
   display: inline-block;
-}
-
-span.bocReferenceValue.readOnly span.DropDownMenuContainer a.command
-{
-  /* Reset becasue embedded options menus do not require special handling to show diacritical marks */
-  height: 1.3em;
-  /* Ensures that empty readonly values are not collapsed and can therefor visualize the keyboard focus */
-  width: calc(100% - 17px - 4px);
 }
 
 span.bocReferenceValue.readOnly span.content.hasOptionsMenu span,
@@ -189,19 +133,12 @@ span.bocReferenceValue.readOnly span.content.withoutOptionsMenu span
 }
 
 /* has Icon */
-span.bocReferenceValue a.command.hasIcon + span.content,
-span.bocReferenceValue.disabled a.command.hasIcon + span.content,
-span.bocReferenceValue.readOnly img > span.content
+span.bocReferenceValue span.content.hasIcon
 {
   left: 22px; /* width of a.command icon + desired space between */
 }
 
-span.bocReferenceValue a.command > img
-{
-  display: none;
-}
-
-span.bocReferenceValue a.command.hasIcon > img
+span.bocReferenceValue span.icon img
 {
   width: 16px;
   height: 16px;

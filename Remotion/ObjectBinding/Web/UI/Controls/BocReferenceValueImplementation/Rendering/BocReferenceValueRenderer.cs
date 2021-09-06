@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.UI;
@@ -148,9 +147,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       script.AppendFormat ("'#{0}', ", renderingContext.Control.GetValueName());
 
       if (renderingContext.Control.IsIconEnabled())
-        script.AppendFormat ("'#{0} .{1}', ", renderingContext.Control.ClientID, CssClassCommand);
+      {
+        script.AppendFormat ("'#{0} .{1}', ", renderingContext.Control.ClientID, CssClassInnerContent);
+        script.AppendFormat ("'#{0} .{1} img', ", renderingContext.Control.ClientID, CssClassIcon);
+      }
       else
+      {
         script.Append ("null, ");
+        script.Append ("null, ");
+      }
 
       script.AppendFormat ("'{0}', ", renderingContext.Control.NullValueString);
       AppendBooleanValueToScript (script, renderingContext.Control.DropDownListStyle.AutoPostBack ?? false);
@@ -161,10 +166,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       script.Append (", ");
       script.Append (isIconUpdateEnabled ? GetIconContextAsJson (renderingContext) : "null");
       script.Append (", ");
-#pragma warning disable 618
-      script.Append (GetCommandInfoAsJson (renderingContext) ?? "null");
-      script.Append (", ");
-#pragma warning restore 618
       script.Append (GetResourcesAsJson (renderingContext));
       script.Append (");");
 

@@ -31,13 +31,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
     {
       base.OnInit (e);
 
-#pragma warning disable 618
-      PartnerField_Normal.CommandClick += PartnerField_CommandClick;
-      PartnerField_ReadOnly.CommandClick += PartnerField_CommandClick;
-      PartnerField_Disabled.CommandClick += PartnerField_CommandClick;
-      PartnerField_NoAutoPostBack.CommandClick += PartnerField_CommandClick;
-      PartnerField_NoCommandNoMenu.CommandClick += PartnerField_CommandClick;
-#pragma warning restore 618
       PartnerField_Normal.MenuItemClick += MenuItemClickHandler;
       PartnerField_ReadOnly.MenuItemClick += MenuItemClickHandler;
       PartnerField_Disabled.MenuItemClick += MenuItemClickHandler;
@@ -49,11 +42,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
     {
       base.OnPreRender (e);
       SetTestOutput();
-    }
-
-    private void PartnerField_CommandClick (object sender, BocCommandClickEventArgs e)
-    {
-      TestOutput.SetActionPerformed ("CommandClick", "", e.Command.OwnerControl.ID);
     }
 
     private void MenuItemClickHandler (object sender, WebMenuItemClickEventArgs e)
