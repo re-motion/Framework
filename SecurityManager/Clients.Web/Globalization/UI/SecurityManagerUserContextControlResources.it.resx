@@ -107,10 +107,4 @@
   <data name="Remotion.SecurityManager.Clients.Web.UI.SecurityManagerUserContextControl.CurrentTenantLabelText" xml:space="preserve">
     <value>Tenant corrente</value>
   </data>
-  <data name="Remotion.SecurityManager.Clients.Web.UI.SecurityManagerUserContextControl.CurrentSubstitutionCommandTooltip" xml:space="preserve">
-    <value>Fare clic per abilitare il sostituto</value>
-  </data>
-  <data name="Remotion.SecurityManager.Clients.Web.UI.SecurityManagerUserContextControl.CurrentTenantCommandTooltip" xml:space="preserve">
-    <value>Fare clic per modificare il tenant</value>
-  </data>
 </root>
