@@ -116,48 +116,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
-    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
-    public void IsEventCommandDisabledWithWcagOverride ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
-      _control.Command.Type = CommandType.Event;
-      Assert.That (((IBocReferenceValueBase) _control).IsCommandEnabled(), Is.False);
-    }
-
-    [Test]
-    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
-    public void IsEventCommandEnabledWithoutWcagOverride ()
-    {
-      _businessObject.ReferenceValue = TypeWithReference.Create();
-      _control.DataSource = _dataSource;
-      _control.Property = _propertyReferenceValue;
-      WebConfigurationMock.Current = WebConfigurationFactory.GetLevelUndefined();
-      _control.Command.Type = CommandType.Event;
-      Assert.That (((IBocReferenceValueBase) _control).IsCommandEnabled(), Is.True);
-    }
-
-    [Test]
-    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
-    public void IsWxeFunctionCommandDisabledWithWcagOverride ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
-      _control.Command.Type = CommandType.WxeFunction;
-      Assert.That (((IBocReferenceValueBase) _control).IsCommandEnabled(), Is.False);
-    }
-
-    [Test]
-    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
-    public void IsWxeFunctionCommandEnabledWithoutWcagOverride ()
-    {
-      _businessObject.ReferenceValue = TypeWithReference.Create();
-      _control.DataSource = _dataSource;
-      _control.Property = _propertyReferenceValue;
-      WebConfigurationMock.Current = WebConfigurationFactory.GetLevelUndefined();
-      _control.Command.Type = CommandType.WxeFunction;
-      Assert.That (((IBocReferenceValueBase) _control).IsCommandEnabled(), Is.True);
-    }
-
-    [Test]
     public void GetTrackedClientIDsInReadOnlyMode ()
     {
       _control.ReadOnly = true;

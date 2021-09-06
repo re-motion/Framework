@@ -99,23 +99,54 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       set { throw new NotSupportedException ("Use ControlServiceArguments instead. (Version 1.21.3)"); }
     }
 
+    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Obsolete ("This feature has been removed. (Version 3.0.0)", true)]
+    public bool? HasValueEmbeddedInsideOptionsMenu
+    {
+      get { throw new NotSupportedException ("This feature has been removed. (Version 3.0.0)"); }
+      set { throw new NotSupportedException ("This feature has been removed. (Version 3.0.0)"); }
+    }
+
+    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Obsolete ("This feature has been removed. (Version 3.0.0)", true)]
+    public BocCommand Command
+    {
+      get { throw new NotSupportedException ("This feature has been removed. (Version 3.0.0)"); }
+      set { throw new NotSupportedException ("This feature has been removed. (Version 3.0.0)"); }
+    }
+
+    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Obsolete ("This feature has been removed. (Version 3.0.0)", true)]
+    public SingleControlItemCollection PersistedCommand
+    {
+      get { throw new NotSupportedException ("This feature has been removed. (Version 3.0.0)"); }
+    }
+
+    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Obsolete ("This feature has been removed. (Version 3.0.0)", true)]
+    public event BocCommandClickEventHandler CommandClick
+    {
+      add { throw new NotSupportedException ("This feature has been removed. (Version 3.0.0)"); }
+      remove { throw new NotSupportedException ("This feature has been removed. (Version 3.0.0)"); }
+    }
+
+    [Obsolete ("This feature has been removed. (Version 3.0.0)", true)]
+    protected virtual void OnCommandClick (IBusinessObjectWithIdentity businessObject)
+    {
+      throw new NotSupportedException ("This feature has been removed. (Version 3.0.0)");
+    }
+
     #endregion
 
-    public const string CommandArgumentName = "command";
-    
     protected const string c_nullIdentifier = "==null==";
     
     /// <summary> The key identifying a options menu item resource entry. </summary>
     private const string c_resourceKeyOptionsMenuItems = "OptionsMenuItems";
 
-    /// <summary> The key identifying the command resource entry. </summary>
-    private const string c_resourceKeyCommand = "Command";
-
     private static readonly Type[] s_supportedPropertyInterfaces = new[] { typeof (IBusinessObjectReferenceProperty) };
 
     private static readonly object SelectionChangedEvent = new object();
     private static readonly object MenuItemClickEvent = new object();
-    private static readonly object CommandClickEvent = new object();
 
     private static readonly ILog s_log = LogManager.GetLogger (MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -123,9 +154,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     /// <summary> The <see cref="IBusinessObjectWithIdentity.UniqueIdentifier"/> of the current object. </summary>
     private string _internalValue;
-
-    /// <summary> The command rendered for this reference value. </summary>
-    private readonly SingleControlItemCollection _command;
 
     private readonly Style _commonStyle;
     private readonly Style _labelStyle;
@@ -142,8 +170,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       ArgumentUtility.CheckNotNull ("webServiceFactory", webServiceFactory);
 
       _optionsMenu = new DropDownMenu (this);
-      _command = new SingleControlItemCollection (new BocCommand(), new[] { typeof (BocCommand) });
-      _command.OwnerControl = this;
+
       _commonStyle = new Style();
       _labelStyle = new Style();
       WebServiceFactory = webServiceFactory;
@@ -225,20 +252,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       get { return true; }
     }
 
-    /// <summary> Gets or sets the <see cref="BocCommand"/> for this control's <see cref="Value"/>. </summary>
-    /// <value> A <see cref="BocCommand"/>. </value>
-    /// <remarks> This property is used for accessing the <see cref="BocCommand"/> at run time and for Designer support. </remarks>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Category ("Menu")]
-    [Description ("The command rendered for this control's Value.")]
-    [NotifyParentProperty (true)]
-    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
-    public BocCommand Command
-    {
-      get { return (BocCommand) _command.ControlItem; }
-      set { _command.ControlItem = value; }
-    }
-
     /// <summary> Gets or sets the current value. </summary>
     /// <include file='..\..\..\doc\include\UI\Controls\BocReferenceValueBase.xml' path='BocReferenceValueBase/Value/*' />
     [Browsable (false)]
@@ -262,21 +275,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     {
       get { return Value; }
       set { Value = ArgumentUtility.CheckType<IBusinessObjectWithIdentity> ("value", value); }
-    }
-
-    /// <summary> Gets or sets the encapsulated <see cref="BocCommand"/> for this control's <see cref="Value"/>. </summary>
-    /// <value> 
-    ///   A <see cref="SingleControlItemCollection"/> containing a <see cref="BocCommand"/> in its 
-    ///   <see cref="SingleControlItemCollection.ControlItem"/> property.
-    /// </value>
-    /// <remarks> This property is used for persisting the <see cref="BocReferenceValueBase.Command"/> into the <b>ASPX</b> source code. </remarks>
-    [PersistenceMode (PersistenceMode.InnerProperty)]
-    [Browsable (false)]
-    [NotifyParentProperty (true)]
-    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
-    public SingleControlItemCollection PersistedCommand
-    {
-      get { return _command; }
     }
 
     /// <summary> Gets a flag describing whether the <see cref="OptionsMenu"/> is visible. </summary>
@@ -340,21 +338,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     {
       get { return _optionsMenuWidth; }
       set { _optionsMenuWidth = value; }
-    }
-
-    /// <summary> Gets or sets flag that determines whether to use the value as the <see cref="OptionsMenu"/>'s head. </summary>
-    /// <value> 
-    ///   <see langword="true"/> to embed the value inside the options menu's head. 
-    ///   The default value is <see langword="true"/>. 
-    /// </value>
-    [Category ("Menu")]
-    [Description ("Determines whether to use the value as the options menu's head.")]
-    [DefaultValue (typeof (bool?), "")]
-    [Obsolete ("This feature has been removed. (Version 3.0.0)", true)]
-    public bool? HasValueEmbeddedInsideOptionsMenu
-    {
-      get { throw new NotImplementedException ("This feature has been removed. (Version 3.0.0)"); }
-      set { throw new NotImplementedException ("This feature has been removed. (Version 3.0.0)"); }
     }
 
     /// <summary> Gets or sets the list of menu items to be hidden. </summary>
@@ -470,16 +453,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       Controls.Add (_optionsMenu);
       _optionsMenu.EventCommandClick += OptionsMenu_EventCommandClick;
       _optionsMenu.WxeFunctionCommandClick += OptionsMenu_WxeFunctionCommandClick;
-    }
-
-    /// <summary> This event is fired when the value's command is clicked. </summary>
-    [Category ("Action")]
-    [Description ("Fires when the value's command is clicked.")]
-    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
-    public event BocCommandClickEventHandler CommandClick
-    {
-      add { Events.AddHandler (CommandClickEvent, value); }
-      remove { Events.RemoveHandler (CommandClickEvent, value); }
     }
 
     /// <summary> Is raised when a menu item with a command of type <see cref="CommandType.Event"/> is clicked. </summary>
@@ -663,26 +636,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       }
     }
 
-    /// <summary> Fires the <see cref="CommandClick"/> event. </summary>
-    /// <param name="businessObject"> 
-    ///   The current <see cref="Value"/>, which corresponds to the clicked <see cref="IBusinessObjectWithIdentity"/>,
-    ///   unless somebody changed the <see cref="Value"/> in the code behind before the event fired.
-    /// </param>
-    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
-    protected virtual void OnCommandClick (IBusinessObjectWithIdentity businessObject)
-    {
-      if (Command != null)
-      {
-        Command.OnClick (businessObject);
-        BocCommandClickEventHandler commandClickHandler = (BocCommandClickEventHandler) Events[CommandClickEvent];
-        if (commandClickHandler != null)
-        {
-          BocCommandClickEventArgs e = new BocCommandClickEventArgs (Command, businessObject);
-          commandClickHandler (this, e);
-        }
-      }
-    }
-
     IBusinessObject[] IBocMenuItemContainer.GetSelectedBusinessObjects ()
     {
       return (Value == null) ? new IBusinessObject[0] : new IBusinessObject[] { Value };
@@ -747,11 +700,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       {
         OptionsMenu.Visible = false;
       }
-
-#pragma warning disable 618
-      if (Command != null)
-        Command.RegisterForSynchronousPostBackOnDemand (this, CommandArgumentName, string.Format ("{0} '{1}', Object Command", GetType().Name, ID));
-#pragma warning restore 618
     }
 
     /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
@@ -793,11 +741,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
           //  Switch to the right collection
           switch (elementID)
           {
-            case c_resourceKeyCommand:
-            {
-              commandValues.Add (property, entry.Value);
-              break;
-            }
             default:
             {
               //  Invalid collection property
@@ -866,12 +809,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       //  Dispatch simple properties
       ResourceDispatcher.DispatchGeneric (this, propertyValues);
 
-      //  Dispatch compound element properties
-#pragma warning disable 618
-      if (Command != null)
-        ResourceDispatcher.DispatchGeneric (Command, commandValues);
-#pragma warning restore 618
-
       //  Dispatch to collections
       OptionsMenuItems.Dispatch (optionsMenuItemValues, this, "OptionsMenuItems");
     }
@@ -891,11 +828,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       var key = ResourceManagerUtility.GetGlobalResourceKey (OptionsTitle);
       if (! string.IsNullOrEmpty (key))
         OptionsTitle = resourceManager.GetString (key);
-
-#pragma warning disable 618
-      if (Command != null)
-        Command.LoadResources (resourceManager, globalizationService);
-#pragma warning restore 618
 
       OptionsMenuItems.LoadResources (resourceManager, globalizationService);
     }
@@ -969,24 +901,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     bool IBocReferenceValueBase.HasOptionsMenu
     {
       get { return HasOptionsMenu; }
-    }
-
-    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
-    bool IBocReferenceValueBase.IsCommandEnabled ()
-    {
-      if (WcagHelper.Instance.IsWaiConformanceLevelARequired())
-        return false;
-
-      if (Command == null)
-        return false;
-
-      var isReadOnly = IsReadOnly;
-
-      bool isActive = Command.Show == CommandShow.Always
-                      || isReadOnly && Command.Show == CommandShow.ReadOnly
-                      || ! isReadOnly && Command.Show == CommandShow.EditMode;
-
-      return Enabled && isActive && Command.Type != CommandType.None;
     }
 
     DropDownMenu IBocReferenceValueBase.OptionsMenu

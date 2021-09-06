@@ -70,9 +70,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       Assert.That (control.IsDisabled(), Is.True);
       Assert.That (
-          () => control.ExecuteCommand(),
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "ExecuteCommand").Message));
-      Assert.That (
           () => control.SelectOption().WithDisplayText ("D, A"),
           Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "SelectOption.WithDisplayText").Message));
       Assert.That (
@@ -357,24 +354,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       bocReferenceValue.SelectOption (daValue);
       Assert.That (home.Scope.FindIdEndingWith ("BOUINormalLabel").Text, Is.EqualTo (daValue));
       Assert.That (home.Scope.FindIdEndingWith ("BOUINoAutoPostBackLabel").Text, Is.EqualTo (baValue));
-    }
-
-    [Test]
-    public void TestExecuteCommand ()
-    {
-      var home = Start();
-
-      var bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_Normal");
-      bocReferenceValue.ExecuteCommand();
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedSenderLabel").Text, Is.EqualTo ("PartnerField_Normal"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedLabel").Text, Is.EqualTo ("CommandClick"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedParameterLabel").Text, Is.Empty);
-
-      bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_ReadOnly");
-      bocReferenceValue.ExecuteCommand();
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedSenderLabel").Text, Is.EqualTo ("PartnerField_ReadOnly"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedLabel").Text, Is.EqualTo ("CommandClick"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedParameterLabel").Text, Is.Empty);
     }
 
     [Test]

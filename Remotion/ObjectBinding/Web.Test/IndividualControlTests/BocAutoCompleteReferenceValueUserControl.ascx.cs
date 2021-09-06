@@ -67,14 +67,8 @@ public class BocAutoCompleteReferenceValueUserControl : BaseUserControl
   {
     base.RegisterEventHandlers();
 
-#pragma warning disable 618
-    PartnerField.CommandClick += PartnerField_CommandClick;
-#pragma warning restore 618
     PartnerField.MenuItemClick += PartnerField_MenuItemClick;
     PartnerField.SelectionChanged += PartnerField_SelectionChanged;
-#pragma warning disable 618
-    ReadOnlyPartnerField.CommandClick += ReadOnlyPartnerField_CommandClick;
-#pragma warning restore 618
     PartnerTestSetNullButton.Click += PartnerTestSetNullButton_Click;
     PartnerTestSetNewItemButton.Click += PartnerTestSetNewItemButton_Click;
     ReadOnlyPartnerTestSetNullButton.Click += ReadOnlyPartnerTestSetNullButton_Click;
@@ -280,11 +274,6 @@ public class BocAutoCompleteReferenceValueUserControl : BaseUserControl
     ReadOnlyPartnerField.Value = (IBusinessObjectWithIdentity) person;
   }
 
-  private void PartnerField_CommandClick(object sender, BocCommandClickEventArgs e)
-  {
-    PartnerCommandClickLabel.Text = "PartnerField clicked";
-  }
-
   private void PartnerField_SelectionChanged(object sender, EventArgs e)
   {
     if (PartnerField.Value != null)
@@ -296,11 +285,6 @@ public class BocAutoCompleteReferenceValueUserControl : BaseUserControl
   private void PartnerField_MenuItemClick(object sender, WebMenuItemClickEventArgs e)
   {
     PartnerFieldMenuClickEventArgsLabel.Text = e.Item.Text;
-  }
-
-  private void ReadOnlyPartnerField_CommandClick(object sender, BocCommandClickEventArgs e)
-  {
-    PartnerCommandClickLabel.Text = "ReadOnlyPartnerField clicked";
   }
 
   #region Web Form Designer generated code

@@ -47,19 +47,13 @@
     <td></td>
     <td>
       <remotion:BocAutoCompleteReferenceValue ID="GroupTypeField" runat="server" DataSourceControl="CurrentObject" EnableOptionalValidators="true" PropertyIdentifier="GroupType">
-      <PersistedCommand>
-        <remotion:BocCommand />
-      </PersistedCommand>
-    </remotion:BocAutoCompleteReferenceValue>
+      </remotion:BocAutoCompleteReferenceValue>
     </td>
   </tr>
   <tr>
     <td></td>
     <td>
       <remotion:BocAutoCompleteReferenceValue ID="ParentField" runat="server" DataSourceControl="CurrentObject" EnableOptionalValidators="true" PropertyIdentifier="Parent">
-        <PersistedCommand>
-          <remotion:BocCommand />
-        </PersistedCommand>
       </remotion:BocAutoCompleteReferenceValue>
       <asp:CustomValidator ID="ParentValidator" runat="server" OnServerValidate="ParentValidator_ServerValidate" ControlToValidate="ParentField" Text="###" />
     </td>

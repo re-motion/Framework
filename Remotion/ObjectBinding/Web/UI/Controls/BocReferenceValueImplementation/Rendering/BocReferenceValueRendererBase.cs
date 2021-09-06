@@ -16,12 +16,12 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using JetBrains.Annotations;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.Mixins;
@@ -159,54 +159,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       return jsonBuilder.ToString();
     }
 
-    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
-    protected string GetCommandInfoAsJson (BocRenderingContext<TControl> renderingContext)
-    {
-      var command = renderingContext.Control.Command;
-      if (command == null)
-        return null;
-
-      if (command.Show == CommandShow.ReadOnly)
-        return null;
-
-      var postBackEvent = GetPostBackEvent (renderingContext);
-      var commandInfo = command.GetCommandInfo (postBackEvent, new[] { "-0-" }, "", null, new NameValueCollection(), true);
-
-      var jsonBuilder = new StringBuilder (1000);
-
-      jsonBuilder.Append ("{ ");
-
-      jsonBuilder.Append ("href : ");
-      string href;
-      if (commandInfo.Href != null)
-        href = commandInfo.Href.Replace ("-0-", "{0}");
-      else
-        href = null;
-      AppendStringValueOrNullToScript (jsonBuilder, href);
-
-      jsonBuilder.Append (", ");
-
-      jsonBuilder.Append ("target : ");
-      string target = commandInfo.Target;
-      AppendStringValueOrNullToScript (jsonBuilder, target);
-
-      jsonBuilder.Append (", ");
-
-      jsonBuilder.Append ("onClick : ");
-      string onClick = commandInfo.OnClick;
-      AppendStringValueOrNullToScript (jsonBuilder, onClick);
-
-      jsonBuilder.Append (", ");
-
-      jsonBuilder.Append ("title : ");
-      string title = commandInfo.Title;
-      AppendStringValueOrNullToScript (jsonBuilder, title);
-
-      jsonBuilder.Append (" }");
-
-      return jsonBuilder.ToString();
-    }
-
     [Obsolete ("Use RenderContents (BocReferenceValueBaseRenderingContext<>) instead. (Version 1.21.3)", false)]
     protected void RenderContents (BocRenderingContext<TControl> renderingContext)
     {
@@ -220,14 +172,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassContent);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
-      string postBackEvent = GetPostBackEvent (renderingContext);
-      string objectID = renderingContext.Control.BusinessObjectUniqueIdentifier ?? string.Empty;
+      RenderIcon (renderingContext);
 
       if (renderingContext.Control.IsReadOnly)
-        RenderReadOnlyValue (renderingContext, postBackEvent, string.Empty, objectID);
+      {
+        RenderReadOnlyValue (renderingContext);
+      }
       else
       {
-        RenderSeparateIcon (renderingContext, postBackEvent, string.Empty, objectID);
+        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, GetInnerContentID (renderingContext));
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, GetCssClassInnerContent (renderingContext));
         renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
@@ -269,81 +222,34 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       renderingContext.Writer.RenderEndTag();
     }
 
-    private string GetPostBackEvent (BocRenderingContext<TControl> renderingContext)
+    private void RenderIcon (BocRenderingContext<TControl> renderingContext)
     {
-      string argument = BocReferenceValueBase.CommandArgumentName;
-      return renderingContext.Control.Page.ClientScript.GetPostBackEventReference (renderingContext.Control, argument) + ";";
+      var icon = GetIcon (renderingContext);
+
+      if (icon == null && renderingContext.Control.IsReadOnly)
+        return;
+
+      if (icon == null)
+        icon = IconInfo.CreateSpacer (ResourceUrlFactory);
+
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassIcon);
+      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      icon.Render (renderingContext.Writer, renderingContext.Control);
+      renderingContext.Writer.RenderEndTag();
     }
 
-    private void RenderSeparateIcon (BocRenderingContext<TControl> renderingContext, string postBackEvent, string onClick, string objectID)
-    {
-      IconInfo icon = null;
-      var isIconEnabled = renderingContext.Control.IsIconEnabled();
-      if (isIconEnabled)
-        icon = GetIcon (renderingContext);
-
-      var anchorClass = CssClassCommand;
-      if (icon != null)
-        anchorClass += " " + CssClassHasIcon;
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, anchorClass);
-
-#pragma warning disable 618
-      var isCommandEnabled = isIconEnabled && IsCommandEnabled (renderingContext);
-#pragma warning restore 618
-
-      var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
-      LabelReferenceRenderer.AddLabelsReference (renderingContext.Writer, labelIDs);
-
-#pragma warning disable 618
-      var command = GetCommand (renderingContext, isCommandEnabled);
-#pragma warning restore 618
-      command.RenderBegin (renderingContext.Writer, RenderingFeatures, postBackEvent, onClick, objectID, null);
-
-      if (isIconEnabled)
-        icon = icon ?? IconInfo.CreateSpacer (ResourceUrlFactory);
-
-      if (icon != null)
-      {
-#pragma warning disable CS0618 // Type or member is obsolete
-        if (!string.IsNullOrEmpty (command.ToolTip))
-          icon.ToolTip = renderingContext.Control.Command.ToolTip;
-#pragma warning restore CS0618 // Type or member is obsolete
-        icon.Render (renderingContext.Writer, renderingContext.Control);
-      }
-
-#pragma warning disable 618
-      renderingContext.Control.Command.RenderEnd (renderingContext.Writer);
-#pragma warning restore 618
-    }
-
-    private void RenderReadOnlyValue (BocRenderingContext<TControl> renderingContext, string postBackEvent, string onClick, string objectID)
+    private void RenderReadOnlyValue (BocRenderingContext<TControl> renderingContext)
     {
       var validationErrors = GetValidationErrorsToRender (renderingContext).ToArray();
       var validationErrorsID = GetValidationErrorsID (renderingContext);
 
       Label label = GetLabel (renderingContext);
-      IconInfo icon = null;
-      var isIconEnabled = renderingContext.Control.IsIconEnabled();
-      if (isIconEnabled)
-        icon = GetIcon (renderingContext);
 
-#pragma warning disable 618
-      var isCommandEnabled = IsCommandEnabled (renderingContext);
-#pragma warning restore 618
-
-      var anchorClass = CssClassCommand;
-      if (icon != null)
-        anchorClass += " " + CssClassHasIcon;
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, anchorClass);
-
-      if (!isCommandEnabled)
-      {
-        renderingContext.Writer.AddAttribute ("tabindex", "0");
-        // Screenreaders (JAWS v18) will not read the contents of a span with role=combobox (at least in browse-mode),
-        // therefor we have to emulate the reading of the label + contents. Missing from this is "readonly" after the label is read.
-        //renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Combobox);
-        //renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaReadOnly, HtmlAriaReadOnlyAttributeValue.True);
-      }
+      renderingContext.Writer.AddAttribute ("tabindex", "0");
+      // Screenreaders (JAWS v18) will not read the contents of a span with role=combobox (at least in browse-mode),
+      // therefor we have to emulate the reading of the label + contents. Missing from this is "readonly" after the label is read.
+      //renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Combobox);
+      //renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaReadOnly, HtmlAriaReadOnlyAttributeValue.True);
 
       var labelIDs = renderingContext.Control.GetLabelIDs();
       LabelReferenceRenderer.AddLabelsReference (renderingContext.Writer, labelIDs.ToArray(), new[] { label.ClientID });
@@ -352,55 +258,28 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       ValidationErrorRenderer.AddValidationErrorsReference (attributeCollection, validationErrorsID, validationErrors);
       attributeCollection.AddAttributes (renderingContext.Writer);
 
-#pragma warning disable 618
-      var command = GetCommand (renderingContext, isCommandEnabled);
-#pragma warning restore 618
-      command.RenderBegin (renderingContext.Writer, RenderingFeatures, postBackEvent, onClick, objectID, null);
-
-      if (icon != null)
-        icon.Render (renderingContext.Writer, renderingContext.Control);
-
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, GetInnerContentID (renderingContext));
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, GetCssClassInnerContent (renderingContext));
-
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+
       label.RenderControl (renderingContext.Writer);
+
       renderingContext.Writer.RenderEndTag();
-#pragma warning disable 618
-      renderingContext.Control.Command.RenderEnd (renderingContext.Writer);
-#pragma warning restore 618
 
       ValidationErrorRenderer.RenderValidationErrors (renderingContext.Writer, validationErrorsID, validationErrors);
     }
 
-    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
-    private bool IsCommandEnabled (BocRenderingContext<TControl> renderingContext)
-    {
-      return renderingContext.Control.BusinessObjectUniqueIdentifier != null && renderingContext.Control.IsCommandEnabled();
-    }
-
-    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
-    private BocCommand GetCommand (BocRenderingContext<TControl> renderingContext, bool isCommandEnabled)
-    {
-      var command = isCommandEnabled
-                        ? renderingContext.Control.Command
-                        : new BocCommand (CommandType.None) { OwnerControl = renderingContext.Control };
-      command.ItemID = "Command";
-      return command;
-    }
-
+    [CanBeNull]
     private IconInfo GetIcon (BocRenderingContext<TControl> renderingContext)
     {
-      var iconInfo = renderingContext.Control.GetIcon();
+      if (!renderingContext.Control.IsIconEnabled())
+        return null;
 
-#pragma warning disable 618
-      if (iconInfo != null && renderingContext.Control.IsCommandEnabled())
-      {
-        if (string.IsNullOrEmpty (iconInfo.AlternateText))
-          iconInfo.AlternateText = renderingContext.Control.GetLabelText();
-      }
-#pragma warning restore 618
+      var icon = renderingContext.Control.GetIcon();
+      if (icon == null)
+        return null;
 
-      return iconInfo;
+      return icon;
     }
 
     private Label GetLabel (BocRenderingContext<TControl> renderingContext)
@@ -434,9 +313,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       return renderingContext.Control.ClientID + "_ValidationErrors";
     }
 
+    private string GetInnerContentID (BocRenderingContext<TControl> renderingContext)
+    {
+      return renderingContext.Control.ClientID + "_Content";
+    }
+
     private string GetCssClassInnerContent (BocRenderingContext<TControl> renderingContext)
     {
       string cssClass = CssClassInnerContent;
+
+      if (GetIcon (renderingContext) != null)
+        cssClass += " " + CssClassHasIcon;
 
       if (!renderingContext.Control.HasOptionsMenu)
         cssClass += " " + CssClassWithoutOptionsMenu;
@@ -451,7 +338,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       get { return "body"; }
     }
 
-    private string CssClassInnerContent
+    protected string CssClassInnerContent
     {
       get { return "content"; }
     }
@@ -471,14 +358,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       get { return "optionsMenu"; }
     }
 
-    protected string CssClassCommand
-    {
-      get { return "command"; }
-    }
-
     private string CssClassHasIcon
     {
       get { return "hasIcon"; }
+    }
+
+    protected string CssClassIcon
+    {
+      get { return "icon"; }
     }
   }
 }

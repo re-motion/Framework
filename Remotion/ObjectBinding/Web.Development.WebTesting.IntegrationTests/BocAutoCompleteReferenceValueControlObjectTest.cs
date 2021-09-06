@@ -82,7 +82,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
           {
             builder.AnnotateBox (target, Pens.Black, WebPadding.Inner);
 
-            builder.AnnotateBox (target.GetCommand(), Pens.Orange, WebPadding.Inner);
             builder.AnnotateBox (target.GetDropDownButton(), Pens.Red, WebPadding.Inner);
             builder.AnnotateBox (target.GetOptionsMenu(), Pens.Blue, WebPadding.Inner);
             builder.AnnotateBox (target.GetValue(), Pens.Green, WebPadding.Inner);
@@ -273,7 +272,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (fluentControlObject.GetSelectList(), Is.Not.Null);
       var fluentInformationPopup = fluentControlObject.GetInformationPopup();
       Assert.That (fluentInformationPopup, Is.Not.Null);
-      Assert.That (fluentControlObject.GetCommand(), Is.Not.Null);
       Assert.That (fluentControlObject.GetDropDownButton(), Is.Not.Null);
       Assert.That (fluentControlObject.GetOptionsMenu(), Is.Not.Null);
       Assert.That (fluentControlObject.GetValue(), Is.Not.Null);
@@ -318,9 +316,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (
           () => control.FillWith ("text", FinishInput.Promptly),
           Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "FillWith").Message));
-      Assert.That (
-          () => control.ExecuteCommand(), 
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "ExecuteCommand").Message));
       Assert.That (
           () => control.SelectFirstMatch ("DoesntMatter"), 
           Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "SelectFirstMatch").Message));
@@ -470,24 +465,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
           () => bocAutoComplete.SelectFirstMatch ("Invalid"),
           Throws.Exception.InstanceOf<WebTestException>()
               .With.Message.EqualTo (AssertionExceptionUtility.CreateExpectationException (Driver, "No matches were found for the specified filter: 'Invalid'.").Message));
-    }
-
-    [Test]
-    public void TestExecuteCommand ()
-    {
-      var home = Start();
-
-      var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal");
-      bocAutoComplete.ExecuteCommand();
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedSenderLabel").Text, Is.EqualTo ("PartnerField_Normal"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedLabel").Text, Is.EqualTo ("CommandClick"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedParameterLabel").Text, Is.Empty);
-
-      bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_ReadOnly");
-      bocAutoComplete.ExecuteCommand();
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedSenderLabel").Text, Is.EqualTo ("PartnerField_ReadOnly"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedLabel").Text, Is.EqualTo ("CommandClick"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedParameterLabel").Text, Is.Empty);
     }
 
     [Test]

@@ -138,13 +138,6 @@
             <para> e.g. auto:MyBocReferenceValue:OptionsMenuItems:MyItem:Text </para>
           </description>
         </item>
-        <item>
-          <term> <see cref="BocReferenceValueBase.Command"/>.ToolTip </term>
-          <description>
-            <para> &lt;BocReferenceValue Resource ID&gt;:Command:ToolTip </para>
-            <para> e.g. auto:MyBocReferenceValue:Command:ToolTip </para>
-          </description>
-        </item>
       </list>
       
       <h4 class="dtH4">Inner Workings</h4>
