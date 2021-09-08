@@ -11,10 +11,27 @@
   box-sizing: border-box;
 }
 
+.tabStripTabsPane ul::after
+{
+  content: "";
+  flex-grow: 99999;
+}
+
+.tabStripTabsPane ul li
+{
+  flex-grow: 1;
+}
+
+.tabStripTabWrapper .tabStripTab
+{
+  background-color: var(--color-standard-background);
+}
+
 .tabStripTabWrapper .tabStripTab,
 .tabStripTabWrapper .tabStripTabSelected
 {
   display: flex;
+  justify-content: center;
   align-items: center;
   box-sizing: border-box;
   height: calc(var(--remotion-themed-line-height) + var(--remotion-themed-spacing) * 2);
