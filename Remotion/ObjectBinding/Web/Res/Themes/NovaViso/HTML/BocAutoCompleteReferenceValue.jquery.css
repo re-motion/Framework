@@ -1,0 +1,130 @@
+﻿/* Style applied to the BocAutoCompleteReferenceValue's drop-down list. */
+
+.ac_results
+{
+  /* position and dimension are set via javascript */
+  max-height: 20em;
+  max-width: 30em;
+  overflow: hidden;
+  box-shadow: var(--remotion-themed-popup-shadow);
+  z-index: var(--z-index-max);
+  box-sizing: border-box;
+  padding: var(--remotion-themed-spacing);
+  background-color: var(--remotion-themed-background-color-control);
+}
+
+.ac_results > div
+{
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  scrollbar-width: var(--remotion-themed-dropdown-scrollbar-style);
+  scrollbar-color: var(--color-primary) transparent;
+}
+
+.ac_results > div::-webkit-scrollbar-thumb
+{
+  background-color: var(--color-primary);
+  border-radius: var(--remotion-themed-dropdown-scrollbar-border-radius);
+}
+
+.ac_results > div::-webkit-scrollbar
+{
+  background-color: transparent;
+  width: var(--remotion-themed-dropdown-scrollbar-width);
+  height: var(--remotion-themed-dropdown-scrollbar-height);
+}
+
+.ac_results ul
+{
+  list-style-position: outside;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  display: table;
+}
+
+.ac_results li
+{
+  display: table-row;
+  padding: var(--remotion-themed-spacing);
+  color: var(--color-standard-text);
+  cursor: default;
+}
+
+.ac_results li > div
+{
+  display: table-cell;
+  padding: var(--remotion-themed-spacing) var(--remotion-themed-spacing-small);
+  color: var(--color-standard-text);
+  vertical-align: middle;
+  white-space: nowrap;
+  outline: none;
+}
+
+.ac_results li > div:first-child
+{
+  width: var(--default-icon-size);
+  padding-left: var(--remotion-themed-spacing);
+  border-top-left-radius: var(--remotion-themed-border-radius);
+  border-bottom-left-radius: var(--remotion-themed-border-radius);
+}
+
+.ac_results li > div:last-child
+{
+  padding-right: var(--remotion-themed-spacing);
+  border-top-right-radius: var(--remotion-themed-border-radius);
+  border-bottom-right-radius: var(--remotion-themed-border-radius);
+}
+
+.ac_results li > div img
+{
+  display: block;
+  width: var(--default-icon-size);
+  height: var(--default-icon-size);
+}
+
+.ac_results li.ac_over:not(.ac_disabled) > div,
+.ac_results li:not(.ac_disabled):hover > div
+{
+  background-color: var(--color-highlight);
+}
+
+.ac_results li.ac_disabled > div span
+{
+  color: var(--color-disabled-text);
+}
+
+.ac_results li.ac_disabled > div img
+{
+  opacity: 0.5;
+  filter: grayscale(100%);
+}
+
+.ac_loading
+{
+  background-image: url('../Image/sprite.svg#AutoCompleteReferenceValueRequestInProgressIndicator');
+  background-size: var(--remotion-themed-line-height) var(--remotion-themed-line-height);
+  background-position: right var(--remotion-themed-img-width) center;
+  background-repeat: no-repeat;
+}
+
+.ac_informationPopUp
+{
+  /* position and dimension are set via javascript */
+  max-height: 4em;
+  max-width: 30em;
+  white-space: normal;
+  overflow: hidden;
+  z-index: var(--z-index-max);
+}
+
+.ac_informationPopUp > div
+{
+  width: 100%;
+  box-sizing: border-box;
+  padding: var(--remotion-themed-spacing);
+  border: var(--remotion-themed-border);
+  background-color: var(--color-alert-background);
+}
