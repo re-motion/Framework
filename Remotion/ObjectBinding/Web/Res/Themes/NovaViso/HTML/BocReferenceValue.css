@@ -1,160 +1,106 @@
 /* Style applied to the BocReferenceValue. */
 
-span.bocReferenceValue
+.bocReferenceValue
 {
-  width: 21.5em;
+  min-height: var(--remotion-themed-singleline-min-height);
+}
+
+.bocReferenceValue span.body
+{
+  display: inline-grid;
+  grid-template-areas: "icon content optionsMenu";
+  grid-template-columns: var(--default-icon-size) var(--remotion-themed-control-width) 1fr;
+  gap: var(--remotion-themed-spacing);
+  align-items: center;
+}
+
+.bocReferenceValue span.icon
+{
+  grid-area: icon;
+}
+
+.bocReferenceValue span.icon img
+{
   position: relative;
-  display: inline-block;
-  vertical-align: middle;
-  overflow: hidden;
-  min-height: 1.7em;
-}
+  width: var(--default-icon-size);
+  height: var(--default-icon-size);
+  padding-left: calc(var(--remotion-themed-spacing) + var(--remotion-themed-border-width));
+  pointer-events: none;
 
-span.bocReferenceValue span.body
-{
-  display: block;
-}
-
-span.bocReferenceValue select
-{
-  width: 100%;
-  display: inline-block;
-  height: 1.68em;
-}
-
-span.bocReferenceValue select.error
-{
-  background-image: url('../Image/sprite.svg#ReferenceValueErrorIndicator');
-  background-size: 16px 16px;
-  background-position: right center;
-  background-repeat: no-repeat;
-}
-
-span.bocReferenceValue span.body
-{
-  display: inline-block;
-  margin-top: 1px;
-  margin-left: 1px;
-  padding: 1px;
-}
-
-span.bocReferenceValue.disabled span.content,
-span.bocReferenceValue .disabled span.content
-{
-  color: gray;
-  cursor: default;
-}
-
-span.bocReferenceValue span.content
-{
-  margin-right: 1px;
-}
-
-span.bocReferenceValue span.DropDownMenuContainer span.content span
-{
+  /* Currently used for overriding img.Icon rule in Style.css. */
   vertical-align: top;
 }
 
-span.bocReferenceValue.readOnly span.icon img
+.bocReferenceValue span.content
 {
-  margin-right: 6px;
+  grid-row: 1;
+  grid-column: icon / content;
+  display: inline-flex;
 }
 
-span.bocReferenceValue.disabled span.icon img,
-span.bocReferenceValue .disabled span.icon img
+.bocReferenceValue span.content select
 {
-  opacity: 0.4;
-  filter: progid:DXImageTransform.Microsoft.BasicImage(opacity=0.40),
-          progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
+  width: 100%;
+  padding-left: var(--remotion-themed-spacing-small);
 }
 
-/* withoutOptionsMenu */
-span.bocReferenceValue span.content.withoutOptionsMenu
+.bocReferenceValue span.content.hasIcon select
 {
-  right: 0;
+  padding-left: calc(var(--default-icon-size) + var(--remotion-themed-spacing));
 }
 
-/* hasOptionsMenu */
-span.bocReferenceValue span.optionsMenu span.DropDownMenuSelect,
-span.bocReferenceValue.disabled span.optionsMenu span.DropDownMenuSelect,
-span.bocReferenceValue.readOnly span.optionsMenu span.DropDownMenuSelect
+.bocReferenceValue span.content select.error
 {
-  height: 1.5em;
-  top: 0;
+  background-image: url('../Image/sprite.svg#ReferenceValueErrorIndicator');
+  background-size: var(--remotion-themed-line-height) var(--remotion-themed-line-height);
+  background-position: right var(--remotion-themed-img-width) center;
+  background-repeat: no-repeat;
 }
 
-span.bocReferenceValue span.optionsMenu span.DropDownMenuSelect a.DropDownMenuLabel,
-span.bocReferenceValue.disabled span.optionsMenu span.DropDownMenuSelect a.DropDownMenuLabel,
-span.bocReferenceValue.readOnly span.optionsMenu span.DropDownMenuSelect a.DropDownMenuLabel
+.bocReferenceValue span.content select option
 {
-  top: 0.1em;
+  padding: var(--remotion-themed-spacing-small) auto;
 }
 
-span.bocReferenceValue span.content,
-span.bocReferenceValue.disabled span.content
+.bocReferenceValue.disabled span.content,
+.bocReferenceValue .disabled span.content
 {
-  position: absolute;
-  width: auto;
-  display: inline-block;
-  top: 0;
-  left: 0;
+  color: var(--color-disabled-text);
+  cursor: default;
 }
 
-span.bocReferenceValue.readOnly span.content
+.bocReferenceValue.readOnly span[tabindex]
 {
-  position: static;
+  min-height: var(--remotion-themed-singleline-min-height);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  padding: var(--remotion-themed-control-padding-readonly);
+  border: var(--remotion-themed-border-readonly);
+  border-radius: var(--remotion-themed-border-radius);
 }
 
-span.bocReferenceValue.readOnly span.content span:empty
+span.bocReferenceValue.readOnly span[tabindex]:empty
 {
-  /* Ensures that empty readonly values are not collapsed and can therefor visualize the keyboard focus */
-  min-width: 2em;
-  min-height: 1.5em;
-  vertical-align: -0.2em;
+  /* Ensures that the keyboard focus of empty readonly values surrounds the entires width of the span. */
+  width: 100%;
 }
 
-span.bocReferenceValue.readOnly span.body
+span.bocReferenceValue.readOnly span[tabindex]:empty:before
 {
-  /* Ensures that diacritic marks can be rendered without being cut off. 
-     Using line-height instead of padding works better with BocReferenceValue. When using padding, the text is not aligned with the label. */
-  height: 1.4em;
-  /* Ensures that the outline is rendered outside of the space reserved for diacritic marks. */
-  display: inline-block;
+  /* Inserting a 'zero width space' unicode character as placeholder so that empty
+  readonly values are not collapsed and can therefore visualize the keyboard focus.
+  This also scales with the font size and min-height doesn't have to be set since
+  line height remains unchanged. */
+  content: "\200b";
 }
 
-span.bocReferenceValue.readOnly span.content.hasOptionsMenu span,
-span.bocReferenceValue.readOnly span.content.withoutOptionsMenu span
+.bocReferenceValue.readOnly span.content.hasIcon span
 {
-  /* Ensures that diacritic marks can be rendered without being cut off. 
-     Using line-height instead of padding works better with BocReferenceValue. When using padding, the text is not aligned with the label. */
-  line-height: 1.4em;
-  /* Ensures that the outline is rendered outside of the space reserved for diacritic marks. */
-  display: inline-block;
+  padding-left: calc(var(--default-icon-size) + var(--remotion-themed-spacing));
 }
 
-/* has Icon */
-span.bocReferenceValue span.content.hasIcon
+.bocReferenceValue span.optionsMenu
 {
-  left: 22px; /* width of a.command icon + desired space between */
-}
-
-span.bocReferenceValue span.icon img
-{
-  width: 16px;
-  height: 16px;
-  display: inline;
-}
-
-span.bocReferenceValue span.optionsMenu
-{
-  position: absolute;
-  display: inline-block;
-  right: 0;
-  top: 0;
-  width: 6.7em; /* Define width of span.optionsMenu */
-}
-
-span.bocReferenceValue span.content.hasOptionsMenu
-{
-  right: 7em; /* width of span.optionsMenu + desired space between */
+  grid-area: optionsMenu;
 }

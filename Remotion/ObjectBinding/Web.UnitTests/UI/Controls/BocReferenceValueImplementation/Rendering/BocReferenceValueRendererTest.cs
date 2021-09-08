@@ -368,7 +368,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
           new StubValidationErrorRenderer());
       renderer.Render (CreateRenderingContext ());
       var document = Html.GetResultDocument ();
-      var span = document.GetAssertedChildElement ("span", 0).GetAssertedChildElement ("span", 0).GetAssertedChildElement ("span", 1);
+      var span = document.GetAssertedChildElement ("span", 0).GetAssertedChildElement ("span", 0).GetAssertedChildElement ("span", 0);
       var select = span.GetAssertedChildElement ("select", 0);
       select.AssertAttributeValueEquals ("id", c_valueName);
       select.AssertAttributeValueEquals ("name", c_valueName);
@@ -454,7 +454,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       var iconOffset = 1;
       var hasIconCssClass = hasIcon ? " hasIcon" : "";
 
-      var contentSpan = contentDiv.GetAssertedChildElement ("span", 0 + iconOffset);
+      var contentSpan = contentDiv.GetAssertedChildElement ("span", 0);
       contentSpan.AssertAttributeValueEquals ("id",  c_contentID);
       switch (optionMenuConfiguration)
       {
@@ -531,7 +531,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       if (Control.Object.IsReadOnly && Control.Object.GetIcon() == null)
         return false;
 
-      var iconParent = parent.GetAssertedChildElement ("span", 0);
+      var iconOffset = Control.Object.IsReadOnly ? 0 : 1;
+      var iconParent = parent.GetAssertedChildElement ("span", iconOffset);
 
       iconParent.AssertAttributeValueEquals ("class", "icon");
       iconParent.AssertChildElementCount (1);
