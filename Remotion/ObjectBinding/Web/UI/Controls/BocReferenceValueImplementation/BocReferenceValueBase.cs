@@ -160,6 +160,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     private string _optionsTitle;
     private bool _showOptionsMenu = true;
     private Unit _optionsMenuWidth = Unit.Empty;
+    private bool _reserveOptionsMenuWidth = false;
     private string[] _hiddenMenuItems;
     private string _controlServicePath;
     private string _controlServiceArguments;
@@ -338,6 +339,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     {
       get { return _optionsMenuWidth; }
       set { _optionsMenuWidth = value; }
+    }
+
+    /// <summary> Gets or sets a flag that determines whether to reserve the width of the <see cref="OptionsMenu"/> when calculating the control's width. </summary>
+    /// <value> <see langword="true"/> to include the width of the <see cref="OptionsMenu"/> in the calculation. The default value is <see langword="false"/>. </value>
+    [Category ("Menu")]
+    [Description ("Toggles if the option menu's width is including when performing the layout")]
+    [DefaultValue (false)]
+    public bool ReserveOptionsMenuWidth
+    {
+      get { return _reserveOptionsMenuWidth; }
+      set { _reserveOptionsMenuWidth = value; }
     }
 
     /// <summary> Gets or sets the list of menu items to be hidden. </summary>

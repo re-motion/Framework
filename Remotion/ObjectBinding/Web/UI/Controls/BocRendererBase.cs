@@ -205,7 +205,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       renderingContext.Control.Attributes["class"] = backUpAttributeCssClass;
     }
 
-    private string GetAdditionalCssClass (TControl control)
+    protected virtual string GetAdditionalCssClass (TControl control)
     {
       var isReadOnly = IsReadOnly (control);
       var isDisabled = !control.Enabled;

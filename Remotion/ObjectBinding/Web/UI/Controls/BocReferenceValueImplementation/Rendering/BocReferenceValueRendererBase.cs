@@ -93,6 +93,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     {
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
 
+      const string widthCssProperty = "--width";
+      var width = Unit.Empty;
+      if (!renderingContext.Control.Width.IsEmpty)
+        width = renderingContext.Control.Width;
+      else if (renderingContext.Control.Style[HtmlTextWriterStyle.Width] != null)
+        width = Unit.Parse (renderingContext.Control.Style[HtmlTextWriterStyle.Width]);
+      if (!width.IsEmpty)
+        renderingContext.Control.Style[widthCssProperty] = width.Type == UnitType.Percentage ? "100%" : width.ToString();
+
       AddAttributesToRender (renderingContext);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
@@ -110,6 +119,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
             renderingContext.Control.GetType().Name,
             renderingContext.Control.ID);
       }
+
+      if (!width.IsEmpty)
+        renderingContext.Control.Style[widthCssProperty] = null;
     }
 
     private void RegisterInitializationScript (BocRenderingContext<TControl> renderingContext)
@@ -172,10 +184,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassContent);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
-      RenderIcon (renderingContext);
-
       if (renderingContext.Control.IsReadOnly)
       {
+        RenderIcon (renderingContext);
         RenderReadOnlyValue (renderingContext);
       }
       else
@@ -187,6 +198,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         RenderEditModeValue (renderingContext);
 
         renderingContext.Writer.RenderEndTag();
+        RenderIcon (renderingContext);
       }
 
       bool hasOptionsMenu = renderingContext.Control.HasOptionsMenu;
@@ -318,6 +330,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       return renderingContext.Control.ClientID + "_Content";
     }
 
+    protected override string GetAdditionalCssClass (TControl control)
+    {
+      ArgumentUtility.CheckNotNull ("control", control);
+
+      var additionalCssClass = base.GetAdditionalCssClass (control);
+      if (control.HasOptionsMenu && control.ReserveOptionsMenuWidth)
+        additionalCssClass += " " + CssClassReserveOptionsMenuWidth;
+
+      return additionalCssClass;
+    }
+
     private string GetCssClassInnerContent (BocRenderingContext<TControl> renderingContext)
     {
       string cssClass = CssClassInnerContent + " " + CssClassThemed;
@@ -356,6 +379,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     private string CssClassOptionsMenu
     {
       get { return "optionsMenu"; }
+    }
+
+    private string CssClassReserveOptionsMenuWidth
+    {
+      get { return "reserveOptionsMenuWidth"; }
     }
 
     private string CssClassHasIcon
