@@ -104,6 +104,33 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    public void TestHasStandardButtonType()
+    {
+      var home = Start();
+
+      var webButton = home.WebButtons().GetByID ("body_MyWebButton1Sync");
+      Assert.That (webButton.GetButtonType(), Is.EqualTo (ButtonType.Standard));
+    }
+
+    [Test]
+    public void TestHasPrimaryButtonType ()
+    {
+      var home = Start();
+
+      var webButton = home.WebButtons().GetByID ("body_MyWebButtonPrimary1Sync");
+      Assert.That (webButton.GetButtonType(), Is.EqualTo (ButtonType.Primary));
+    }
+
+    [Test]
+    public void TestHasSupplementalButtonType ()
+    {
+      var home = Start();
+
+      var webButton = home.WebButtons().GetByID ("body_MyWebButtonSupplemental1Sync");
+      Assert.That (webButton.GetButtonType(), Is.EqualTo (ButtonType.Supplemental));
+    }
+
+    [Test]
     public void TestHasClass ()
     {
       var home = Start();
