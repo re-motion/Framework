@@ -33,6 +33,7 @@ namespace Remotion.Web.Contracts.DiagnosticMetadata
     public static readonly string TriggersNavigation = "data-triggers-navigation";
     public static readonly string TriggersPostBack = "data-triggers-postback";
 
+    public static readonly string ButtonType = "data-button-type";
 
     public static readonly string WebTreeViewBadgeValue = "data-webtreeview-badge-value";
     public static readonly string WebTreeViewBadgeDescription = "data-webtreeview-badge-description";

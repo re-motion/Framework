@@ -53,5 +53,29 @@ namespace Remotion.Web.UI.Controls
     {
       get { return "remotion-themed"; }
     }
+
+    /// <summary>
+    /// Gets the CSS-Class applied to a button when it should be styled to indicate a primary action.
+    /// </summary>
+    /// <remarks> 
+    ///   <para> Class: <c>primary</c>. </para>
+    ///   <para> Applied in addition to the regular CSS-Class.</para>
+    /// </remarks>
+    public static string ButtonTypePrimary
+    {
+      get { return "primary"; }
+    }
+
+    /// <summary>
+    /// Gets the CSS-Class applied to a button when it should be styled to indicate a supplemental action.
+    /// </summary>
+    /// <remarks> 
+    ///   <para> Class: <c>supplemental</c>. </para>
+    ///   <para> Applied in addition to the regular CSS-Class.</para>
+    /// </remarks>
+    public static string ButtonTypeSupplemental
+    {
+      get { return "supplemental"; }
+    }
   }
 }

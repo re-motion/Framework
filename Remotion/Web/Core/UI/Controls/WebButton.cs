@@ -62,6 +62,7 @@ namespace Remotion.Web.UI.Controls
     private bool _hasPagePreRenderCompleted;
 
     private TextWithHotkey _textWithHotkey;
+    private ButtonType _buttonType;
 
     public WebButton ()
     {
@@ -204,7 +205,13 @@ namespace Remotion.Web.UI.Controls
       var originalCssClass = (CssClass ?? "").Replace (DisabledCssClass, "").Trim();
       var isCssStyleOverridden = !string.IsNullOrEmpty (originalCssClass);
       var computedCssClass = isCssStyleOverridden ? originalCssClass : CssClassBase;
+      if (ButtonType == ButtonType.Primary)
+        computedCssClass += " " + CssClassPrimary;
+      else if (ButtonType == ButtonType.Supplemental)
+        computedCssClass += " " + CssClassSupplemental;
+
       computedCssClass += " " + CssClassThemed;
+
       ControlStyle.CssClass = computedCssClass;
 
       base.AddAttributesToRender (writer);
@@ -236,6 +243,8 @@ namespace Remotion.Web.UI.Controls
 
       var triggersPostBack = !OnClientClick.Contains (";return ");
       writer.AddAttribute (DiagnosticMetadataAttributes.TriggersPostBack, triggersPostBack.ToString().ToLower());
+
+      writer.AddAttribute (DiagnosticMetadataAttributes.ButtonType, ButtonType.ToString());
     }
 
     protected override PostBackOptions GetPostBackOptions ()
@@ -346,6 +355,21 @@ namespace Remotion.Web.UI.Controls
 
       if (Icon != null)
         Icon.LoadResources (resourceManager);
+    }
+
+    /// <summary>
+    /// Gets or sets the button type that determines how the button is displayed on the page.
+    /// </summary>
+    /// <remarks>
+    /// Depending on the button types the css classes <see cref="CssClassPrimary"/> or <see cref="CssClassSupplemental"/> will be applied to the button.
+    /// </remarks>
+    [Description ("Determines how the button is displayed on the page.")]
+    [Category ("Appearance")]
+    [DefaultValue (UI.Controls.ButtonType.Standard)]
+    public ButtonType ButtonType
+    {
+      get { return _buttonType; }
+      set { _buttonType = value; }
     }
 
     /// <summary> 
@@ -545,6 +569,30 @@ namespace Remotion.Web.UI.Controls
     public virtual string CssClassThemed
     {
       get { return CssClassDefinition.Themed; }
+    }
+
+    /// <summary>
+    /// Gets the CSS-Class applied to the <c>div</c> when the <see cref="ButtonType"/> is set to <see cref="Controls.ButtonType"/>.<see cref="Controls.ButtonType.Primary"/>.
+    /// </summary>
+    /// <remarks> 
+    ///   <para> Class: <c>primary</c>. </para>
+    ///   <para> Applied in addition to the regular CSS-Class.</para>
+    /// </remarks>
+    public virtual string CssClassPrimary
+    {
+      get { return CssClassDefinition.ButtonTypePrimary; }
+    }
+
+    /// <summary>
+    /// Gets the CSS-Class applied to the <c>div</c> when the <see cref="ButtonType"/> is set to <see cref="Controls.ButtonType"/>.<see cref="Controls.ButtonType.Supplemental"/>.
+    /// </summary>
+    /// <remarks> 
+    ///   <para> Class: <c>supplemental</c>. </para>
+    ///   <para> Applied in addition to the regular CSS-Class.</para>
+    /// </remarks>
+    public virtual string CssClassSupplemental
+    {
+      get { return CssClassDefinition.ButtonTypeSupplemental; }
     }
 
     /// <summary> Gets the CSS-Class applied when the section is empty. </summary>
