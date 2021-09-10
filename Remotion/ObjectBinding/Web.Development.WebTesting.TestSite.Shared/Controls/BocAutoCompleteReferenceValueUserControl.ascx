@@ -33,10 +33,6 @@
                                               ControlServicePath="BocAutoCompleteReferenceValueWebService.asmx"
                                               runat="server">
         
-        <PersistedCommand>
-          <remotion:BocCommand Type="Event"></remotion:BocCommand>
-        </PersistedCommand>
-
         <OptionsMenuItems>
           <remotion:BocMenuItem ItemID="OptCmd1" Text="My menu command">
             <PersistedCommand>
@@ -70,10 +66,6 @@
                                               ControlServicePath="BocAutoCompleteReferenceValueWebService.asmx"
                                               runat="server">
         
-        <PersistedCommand>
-          <remotion:BocCommand Type="Event"></remotion:BocCommand>
-        </PersistedCommand>
-
         <OptionsMenuItems>
           <remotion:BocMenuItem ItemID="OptCmd1" Text="My menu command">
             <PersistedCommand>
@@ -106,11 +98,6 @@
                                               CompletionSetCount="5"
                                               ControlServicePath="BocAutoCompleteReferenceValueWebService.asmx"
                                               runat="server">
-        
-        <PersistedCommand>
-          <remotion:BocCommand Type="Event"></remotion:BocCommand>
-        </PersistedCommand>
-
         <OptionsMenuItems>
           <remotion:BocMenuItem ItemID="OptCmd1" Text="My menu command">
             <PersistedCommand>
@@ -143,11 +130,6 @@
                                               CompletionSetCount="10"
                                               ControlServicePath="BocAutoCompleteReferenceValueWebService.asmx"
                                               runat="server">
-        
-        <PersistedCommand>
-          <remotion:BocCommand Type="Event"></remotion:BocCommand>
-        </PersistedCommand>
-
         <OptionsMenuItems>
           <remotion:BocMenuItem ItemID="OptCmd1" Text="My menu command">
             <PersistedCommand>
@@ -213,11 +195,6 @@
                                             
                                             Required="true"
                                             runat="server">
-    
-        <PersistedCommand>
-            <remotion:BocCommand Type="Event"></remotion:BocCommand>
-        </PersistedCommand>
-
         <OptionsMenuItems>
             <remotion:BocMenuItem ItemID="OptCmd1" Text="My menu command">
                 <PersistedCommand>

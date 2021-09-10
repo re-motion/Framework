@@ -21,9 +21,6 @@
 <div>
   <remotion:SmartLabel runat="server" ID="CurrentUserLabel" hidden="hidden" EnableViewState="False" ForControl="CurrentUserField" Text="###" />
   <remotion:BocReferenceValue ID="CurrentUserField" runat="server" ReadOnly="True" style="width:auto">
-    <PersistedCommand>
-      <remotion:BocCommand />
-    </PersistedCommand>
   </remotion:BocReferenceValue>
   &nbsp;
   <remotion:SmartLabel runat="server" ID="CurrentSubstitutionLabel" hidden="hidden" EnableViewState="False" ForControl="CurrentSubstitutionField" Text="###" />

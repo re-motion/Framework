@@ -52,10 +52,7 @@
 
 <dropdownliststyle autopostback="True">
 </DropDownListStyle>
-
-<PersistedCommand>
-<remotion:BocCommand Type="Event"></remotion:BocCommand>
-</PersistedCommand></remotion:bocreferencevalue></td></tr>
+</remotion:bocreferencevalue></td></tr>
   <tr>
     <td></td>
     <td><remotion:BocTextValue id="ParterFirstNameField" runat="server" DataSourceControl="PartnerDataSource" EnableOptionalValidators="true" propertyidentifier="FirstName" width="100%">

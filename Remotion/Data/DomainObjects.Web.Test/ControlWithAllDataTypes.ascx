@@ -19,8 +19,8 @@
 <remotion:formgridmanager id="FormGridManager" runat="server" visible="true"></remotion:formgridmanager>
 <remotion:BindableObjectDataSourceControl id="CurrentObject" runat="server" Type="Remotion.Data.DomainObjects.Web.Test.Domain.ClassWithAllDataTypes, Remotion.Data.DomainObjects.Web.Test"></remotion:BindableObjectDataSourceControl>
 <P><STRONG><FONT color="#ff3333">Achtung: Auf dieser Seite befinden sich Controls, 
-die mehrfach auf die gleiche Porperty gebunden sind. Dadurch überschreiben sich 
-diese gegenseitig beim Zurückspeichern der Werte. Dies bitte bei Tests 
+die mehrfach auf die gleiche Porperty gebunden sind. Dadurch ï¿½berschreiben sich 
+diese gegenseitig beim Zurï¿½ckspeichern der Werte. Dies bitte bei Tests 
 beachten!</FONT></STRONG></P>
 <TABLE id="FormGrid" cellSpacing="0" cellPadding="0" border="0" runat="server">
   <tr>
@@ -360,19 +360,13 @@ beachten!</FONT></STRONG></P>
     <TD></TD>
     <TD><remotion:bocreferencevalue id="BocReferenceValue1" runat="server" EnableOptionalValidators="true" DataSourceControl="CurrentObject" PropertyIdentifier="ClassForRelationTestMandatory"
         Select="GetAllRelatedObjects">
-        <PersistedCommand>
-          <remotion:BocCommand Type="None"></remotion:BocCommand>
-        </PersistedCommand>
-      </remotion:bocreferencevalue></TD>
+    </remotion:bocreferencevalue></TD>
   </TR>
   <TR>
     <TD></TD>
     <TD><remotion:bocreferencevalue id="BocReferenceValue2" runat="server" EnableOptionalValidators="true" DataSourceControl="CurrentObject" PropertyIdentifier="ClassForRelationTestOptional"
         Select="GetAllRelatedObjects">
-        <PersistedCommand>
-          <remotion:BocCommand Type="None"></remotion:BocCommand>
-        </PersistedCommand>
-      </remotion:bocreferencevalue></TD>
+    </remotion:bocreferencevalue></TD>
   </TR>
   <TR>
     <TD></TD>

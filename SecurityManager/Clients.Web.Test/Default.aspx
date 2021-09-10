@@ -37,9 +37,6 @@
     <p>
       <remotion:BindableObjectDataSourceControl ID="UserDataSource" runat="server" Type="Remotion.SecurityManager.Domain.OrganizationalStructure.User, Remotion.SecurityManager" />
       <remotion:BocReferenceValue runat="server" ID="UsersField" DataSourceControl="UserDataSource" OnSelectionChanged="UsersField_SelectionChanged">
-        <PersistedCommand>
-          <remotion:BocCommand />
-        </PersistedCommand>
         <DropDownListStyle AutoPostBack="True" />
       </remotion:BocReferenceValue>
     </p>
