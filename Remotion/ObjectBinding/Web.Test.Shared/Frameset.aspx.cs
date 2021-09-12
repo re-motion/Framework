@@ -23,7 +23,7 @@ namespace Remotion.ObjectBinding.Web.Test.Shared
 	/// <summary>
 	/// Summary description for Frameset.
 	/// </summary>
-	public class Frameset : Page
+	public partial class Frameset : Page
 	{
 		private void Page_Load (object sender, EventArgs e)
 		{
@@ -32,24 +32,10 @@ namespace Remotion.ObjectBinding.Web.Test.Shared
         Session["Global"] = new ArrayList();
 		}
 
-		#region Web Form Designer generated code
 		override protected void OnInit (EventArgs e)
 		{
-			//
-			// CODEGEN: This call is required by the ASP.NET Web Form Designer.
-			//
-			InitializeComponent();
+			this.Load += new System.EventHandler(this.Page_Load);
 			base.OnInit(e);
 		}
-
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
-		private void InitializeComponent ()
-		{
-			this.Load += new System.EventHandler(this.Page_Load);
-		}
-		#endregion
 	}
 }

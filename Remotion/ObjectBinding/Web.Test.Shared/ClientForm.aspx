@@ -16,7 +16,6 @@
 --%>
 <%@ Page language="c#" Codebehind="ClientForm.aspx.cs" AutoEventWireup="false" Inherits="Remotion.ObjectBinding.Web.Test.Shared.ClientForm" %>
 <%@ Register tagPrefix="remotion" Namespace="Remotion.Web.UI.Controls" Assembly="Remotion.Web" %>
-<%@ Register tagPrefix="remotion" Namespace="Remotion.ObjectBinding.Web.UI.Controls" Assembly="Remotion.ObjectBinding.Web" %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
@@ -156,7 +155,7 @@
 </script>
 </head>
 <body MS_POSITIONING="FlowLayout" onLoad="OnLoad();" onBeforeUnload="OnBeforeUnload();" onUnload="OnUnload();" >
-    <form id=Form method=post runat="server">
+    <form id=TheForm method=post runat="server">
 <p>
     <input type="hidden" id="smartNavigationScrollLeft">
     <input type="hidden" id="smartNavigationScrollTop">

@@ -18,7 +18,6 @@ using System;
 using System.Collections.Specialized;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
 using Remotion.Collections;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
@@ -28,7 +27,7 @@ using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.Test.Shared
 {
-public class CompleteBocUserControl :
+public partial class CompleteBocUserControl :
     UserControl,
     IFormGridRowProvider //  Provides new rows and rows to hide to the FormGridManager
 {
@@ -36,24 +35,8 @@ public class CompleteBocUserControl :
   private AutoInitDictionary<HtmlTable,FormGridRowInfoCollection> _listOfFormGridRowInfos = new AutoInitDictionary<HtmlTable,FormGridRowInfoCollection>();
   private AutoInitDictionary<HtmlTable,StringCollection> _listOfHiddenRows = new AutoInitDictionary<HtmlTable,StringCollection>();
 
-  protected BocTextValue FirstNameField;
-  protected BocTextValue LastNameField;
-  protected Button PostBackButton;
-  protected Button SaveButton;
-  protected BindableObjectDataSourceControl CurrentObject;
-  protected FormGridManager FormGridManager;
-  protected BocTextValue TextField;
-  protected BocDateTimeValue DateTimeField;
-  protected BocEnumValue EnumField;
-  protected BocReferenceValue ReferenceField;
-  protected BocList ListField;
-  protected BocBooleanValue BooleanField;
-  protected BocMultilineTextValue MultilineTextField;
-  protected TabbedMultiView MultiView;
-  protected HtmlTable FormGrid;
-
   private void Page_Load (object sender, EventArgs e)
-	{
+  {
     Guid personID = new Guid(0,0,0,0,0,0,0,0,0,0,1);
     Person person = Person.GetObject(personID);
     Person partner;
@@ -85,18 +68,16 @@ public class CompleteBocUserControl :
       ReferenceField.SetBusinessObjectList(objects);
     }
 
-	}
+  }
 
-	override protected void OnInit (EventArgs e)
-	{
-		//
-		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
-		//
-		InitializeComponent();
-		base.OnInit(e);
+  override protected void OnInit(EventArgs e)
+  {
+    this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
+    this.Load += new System.EventHandler(this.Page_Load);
+    base.OnInit(e);
 
-      if (!IsPostBack)
-    XmlReflectionBusinessObjectStorageProvider.Current.Reset();
+    if (!IsPostBack)
+      XmlReflectionBusinessObjectStorageProvider.Current.Reset();
 
     FormGridRowInfoCollection newRows = (FormGridRowInfoCollection)_listOfFormGridRowInfos[FormGrid];
 
@@ -186,19 +167,5 @@ public class CompleteBocUserControl :
   {
     return (FormGridRowInfoCollection)_listOfFormGridRowInfos[table];
   }
-
-	#region Web Form Designer generated code
-
-	/// <summary>
-	///		Required method for Designer support - do not modify
-	///		the contents of this method with the code editor.
-	/// </summary>
-	private void InitializeComponent ()
-	{
-    this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
-    this.Load += new System.EventHandler(this.Page_Load);
-
-  }
-	#endregion
-	}
+}
 }

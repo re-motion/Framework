@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Specialized;
 using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
 using Remotion.Collections;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
@@ -28,7 +27,7 @@ using Remotion.Web.UI.Controls;
 namespace Remotion.ObjectBinding.Web.Test.Shared
 {
 
-  public class CompleteBocForm :
+  public partial class CompleteBocForm :
       SingleBocTestWxeBasePage,
       IFormGridRowProvider //  Provides new rows and rows to hide to the FormGridManager
 {
@@ -36,24 +35,8 @@ namespace Remotion.ObjectBinding.Web.Test.Shared
   private AutoInitDictionary<HtmlTable,FormGridRowInfoCollection> _listOfFormGridRowInfos = new AutoInitDictionary<HtmlTable,FormGridRowInfoCollection>();
   private AutoInitDictionary<HtmlTable,StringCollection> _listOfHiddenRows = new AutoInitDictionary<HtmlTable,StringCollection>();
 
-    protected Button PostBackButton;
-    protected Button SaveButton;
-    protected BindableObjectDataSourceControl CurrentObject;
-    protected FormGridManager FormGridManager;
-    protected BocTextValue LastNameField;
-    protected BocTextValue FirstNameField;
-    protected BocTextValue TextField;
-    protected BocMultilineTextValue MultilineTextField;
-    protected BocDateTimeValue DateTimeField;
-    protected BocEnumValue EnumField;
-    protected BocReferenceValue ReferenceField;
-    protected BocBooleanValue BooleanField;
-    protected BocList ListField;
-    protected HtmlTable FormGrid;
-    protected HtmlHeadContents HtmlHeadContents;
-
   private void Page_Load (object sender, EventArgs e)
-	{
+  {
     Guid personID = new Guid(0,0,0,0,0,0,0,0,0,0,1);
     Person person = Person.GetObject(personID);
     Person partner;
@@ -85,15 +68,15 @@ namespace Remotion.ObjectBinding.Web.Test.Shared
           XmlReflectionBusinessObjectStorageProvider.Current.GetObjects(typeof(Person)), typeof(IBusinessObjectWithIdentity));
       ReferenceField.SetBusinessObjectList(objects);
     }
-	}
+  }
 
-	override protected void OnInit (EventArgs e)
-	{
-		//
-		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
-		//
-		InitializeComponent();
-		base.OnInit(e);
+  override protected void OnInit(EventArgs e)
+  {
+    //
+    // CODEGEN: This call is required by the ASP.NET Web Form Designer.
+    //
+    InitializeComponent();
+    base.OnInit(e);
 
     if (!IsPostBack)
       XmlReflectionBusinessObjectStorageProvider.Current.Reset();
@@ -113,9 +96,9 @@ namespace Remotion.ObjectBinding.Web.Test.Shared
         FormGridRowInfo.RowPosition.AfterRowWithID));
 
     InitalizeReferenceFieldMenuItems();
-	}
+  }
 
-	private void InitalizeReferenceFieldMenuItems ()
+  private void InitalizeReferenceFieldMenuItems()
   {
     BocMenuItem menuItem = null;
 
@@ -166,19 +149,19 @@ namespace Remotion.ObjectBinding.Web.Test.Shared
   }
 
 
-    #region Web Form Designer generated code
-
-	/// <summary>
-	/// Required method for Designer support - do not modify
-	/// the contents of this method with the code editor.
-	/// </summary>
-	private void InitializeComponent ()
-	{
+  #region Web Form Designer generated code
+  
+  /// <summary>
+  /// Required method for Designer support - do not modify
+  /// the contents of this method with the code editor.
+  /// </summary>
+  private void InitializeComponent()
+  {
     this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
     this.Load += new System.EventHandler(this.Page_Load);
 
   }
-	#endregion
+  #endregion
 
   private void SaveButton_Click (object sender, EventArgs e)
   {

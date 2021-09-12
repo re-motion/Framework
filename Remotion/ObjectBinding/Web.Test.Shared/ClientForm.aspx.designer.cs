@@ -13,12 +13,30 @@ namespace Remotion.ObjectBinding.Web.Test.Shared {
     public partial class ClientForm {
         
         /// <summary>
-        /// Form control.
+        /// HtmlHeadContents control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm Form;
+        protected global::Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+        
+        /// <summary>
+        /// TheForm control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlForm TheForm;
+        
+        /// <summary>
+        /// MultiView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.TabbedMultiView MultiView;
     }
 }

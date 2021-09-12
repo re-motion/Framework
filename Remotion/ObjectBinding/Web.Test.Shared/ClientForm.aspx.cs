@@ -29,14 +29,8 @@ using Remotion.Web.UI.Controls;
 namespace Remotion.ObjectBinding.Web.Test.Shared
 {
 
-public class ClientForm : TestWxeBasePage
+public partial class ClientForm : TestWxeBasePage
 {
-  protected HtmlHeadContents HtmlHeadContents;
-  protected WebTabStrip PagesTabStrip;
-  protected ValidationStateViewer ValidationStateViewer;
-  protected TabbedMultiView MultiView;
-  protected BocDateTimeValue BocDateTimeValue1;
-  protected BocBooleanValue BocBooleanValue1;
   private PlaceHolder _wxeControlsPlaceHolder;
   private IDataEditControl[] _dataEditControls;
   private DropDownMenu _ddm = new DropDownMenu();
@@ -88,7 +82,7 @@ public class ClientForm : TestWxeBasePage
     MultiView.Views.Add(view);
 
     UserControl control = (UserControl)this.LoadControl(path);
-    control.ID = IdentifierGenerator.HtmlStyle.GetValidIdentifier(Path.GetFileNameWithoutExtension(path));
+    control.ID = Path.GetFileNameWithoutExtension(path);
 
     //EgoFormPageUserControl formPageControl = control as EgoFormPageUserControl;
     //if (formPageControl != null)
@@ -113,7 +107,8 @@ public class ClientForm : TestWxeBasePage
 		//
 		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
 		//
-		InitializeComponent();
+    this.Unload += new System.EventHandler(this.Page_Unload);
+    this.Load += new System.EventHandler(this.Page_Load);
 
     _ddm.ID = "ddm";
     _ddm.Height = new Unit("1%");
@@ -141,20 +136,6 @@ public class ClientForm : TestWxeBasePage
 
     base.OnInit(e);
 	}
-	#region Web Form Designer generated code
-
-
-	/// <summary>
-	/// Required method for Designer support - do not modify
-	/// the contents of this method with the code editor.
-	/// </summary>
-	private void InitializeComponent ()
-	{
-    this.Unload += new System.EventHandler(this.Page_Unload);
-    this.Load += new System.EventHandler(this.Page_Load);
-
-  }
-	#endregion
 
   private void Page_Unload (object sender, EventArgs e)
   {

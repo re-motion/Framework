@@ -13,13 +13,22 @@ namespace Remotion.ObjectBinding.Web.Test.Shared {
     public partial class CompleteBocUserControlForm {
         
         /// <summary>
-        /// Form control.
+        /// HtmlHeadContents control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm Form;
+        protected global::Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+        
+        /// <summary>
+        /// TheForm control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlForm TheForm;
         
         /// <summary>
         /// CompleteBocTestUserControl control.
@@ -29,5 +38,14 @@ namespace Remotion.ObjectBinding.Web.Test.Shared {
         /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.Test.Shared.CompleteBocUserControl CompleteBocTestUserControl;
+        
+        /// <summary>
+        /// ValidationStateViewer1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.ValidationStateViewer ValidationStateViewer1;
     }
 }
