@@ -14,8 +14,11 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Register TagPrefix="uc1" TagName="TestTabbedPersonDetailsUserControl" Src="TestTabbedPersonDetailsUserControl.ascx" %>
 <%@ Page language="c#" Codebehind="RepeaterTest.aspx.cs" AutoEventWireup="false" Inherits="Remotion.ObjectBinding.Web.Test.Shared.RepeaterTest" %>
+<%@ Register tagPrefix="remotion" Namespace="Remotion.Web.UI.Controls" Assembly="Remotion.Web" %>
+<%@ Register tagPrefix="remotion" Namespace="Remotion.ObjectBinding.Web.UI.Controls" Assembly="Remotion.ObjectBinding.Web" %>
+<%@ Register TagPrefix="ros" Namespace="Remotion.ObjectBinding.Sample" Assembly="Remotion.ObjectBinding.Sample" %>
+<%@ Register TagPrefix="uc1" TagName="TestTabbedPersonDetailsUserControl" Src="TestTabbedPersonDetailsUserControl.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="TestTabbedPersonJobsUserControl" Src="TestTabbedPersonJobsUserControl.ascx" %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >

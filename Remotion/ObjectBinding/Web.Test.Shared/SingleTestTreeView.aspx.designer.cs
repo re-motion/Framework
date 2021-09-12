@@ -22,6 +22,69 @@ namespace Remotion.ObjectBinding.Web.Test.Shared {
         protected global::System.Web.UI.ScriptManager ScriptManager;
         
         /// <summary>
+        /// PersonTreeViewLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label PersonTreeViewLabel;
+        
+        /// <summary>
+        /// PersonTreeView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Sample.PersonTreeView PersonTreeView;
+        
+        /// <summary>
+        /// RefreshPesonTreeViewButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button RefreshPesonTreeViewButton;
+        
+        /// <summary>
+        /// WebTreeView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.WebTreeView WebTreeView;
+        
+        /// <summary>
+        /// PostBackButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button PostBackButton;
+        
+        /// <summary>
+        /// TreeViewLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label TreeViewLabel;
+        
+        /// <summary>
+        /// Node332Button control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button Node332Button;
+        
+        /// <summary>
         /// UpdatePanel control.
         /// </summary>
         /// <remarks>
@@ -29,6 +92,33 @@ namespace Remotion.ObjectBinding.Web.Test.Shared {
         /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel UpdatePanel;
+        
+        /// <summary>
+        /// PersonTreeViewWithMenus control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Sample.PersonTreeView PersonTreeViewWithMenus;
+        
+        /// <summary>
+        /// FormGridManager control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.FormGridManager FormGridManager;
+        
+        /// <summary>
+        /// CurrentObject control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
         
         /// <summary>
         /// Master property.

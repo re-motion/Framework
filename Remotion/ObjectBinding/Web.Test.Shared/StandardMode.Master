@@ -1,5 +1,7 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="StandardMode.master.cs"
   Inherits="Remotion.ObjectBinding.Web.Test.Shared.StandardMode" %>
+<%@ Register tagPrefix="remotion" namespace="Remotion.Web.UI.Controls" assembly="Remotion.Web" %>
+<%@ Register tagPrefix="remotion" namespace="Remotion.ObjectBinding.Web.UI.Controls" assembly="Remotion.ObjectBinding.Web" %>
 <%@ Import Namespace="System" %>
 
 <!DOCTYPE html>

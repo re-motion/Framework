@@ -19,7 +19,7 @@ using Remotion.Web.UI;
 
 namespace Remotion.ObjectBinding.Web.Test.Shared
 {
-  public class StartForm : SmartPage
+  public partial class StartForm : SmartPage
   {
   }
 }

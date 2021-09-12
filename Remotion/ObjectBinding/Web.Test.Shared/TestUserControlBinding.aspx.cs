@@ -17,23 +17,14 @@
 using System;
 using System.Web.UI;
 using Remotion.ObjectBinding.Sample;
-using Remotion.ObjectBinding.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.Test.Shared
 {
   /// <summary>
   /// Summary description for TestUserControlBinding.
   /// </summary>
-  public class TestUserControlBinding : Page
+  public partial class TestUserControlBinding : Page
   {
-    protected BindableObjectDataSourceControl CurrentObject;
-
-    protected override void OnPreInit (EventArgs e)
-    {
-      MasterPageFile = (Global.PreferQuirksModeRendering) ? "~/QuirksMode.Master" : "~/StandardMode.Master";
-      base.OnPreInit(e);
-    }
-
     protected override void OnLoad (EventArgs e)
     {
       base.OnLoad(e);

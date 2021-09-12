@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Mixins;
 using Remotion.ObjectBinding.Sample.ReferenceDataSourceTestDomain;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
@@ -41,6 +42,6 @@ namespace Remotion.ObjectBinding.Web.Test.Shared
       RootObject = ObjectFactory.Create<LevelOne>();
     }
 
-    private WxeStep Step2 = new WxePageStep("~/ReferenceDataSourceTestForm.aspx");
+    private WxeStep Step2 = new WxePageStep("~/ReferenceDataSourceTestForm.aspx"); //TODO
   }
 }

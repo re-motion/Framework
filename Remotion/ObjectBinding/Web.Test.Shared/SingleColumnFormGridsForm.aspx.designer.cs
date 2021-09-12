@@ -13,13 +13,22 @@ namespace Remotion.ObjectBinding.Web.Test.Shared {
     public partial class SingleColumnFormGridsForm {
         
         /// <summary>
-        /// Form control.
+        /// HtmlHeadContents control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm Form;
+        protected global::Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+        
+        /// <summary>
+        /// TheForm control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlForm TheForm;
         
         /// <summary>
         /// MainFormGrid control.
@@ -29,5 +38,95 @@ namespace Remotion.ObjectBinding.Web.Test.Shared {
         /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlTable MainFormGrid;
+        
+        /// <summary>
+        /// Smartlabel4 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.SmartLabel Smartlabel4;
+        
+        /// <summary>
+        /// LeftFormGrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTable LeftFormGrid;
+        
+        /// <summary>
+        /// SmartLabel1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.SmartLabel SmartLabel1;
+        
+        /// <summary>
+        /// BocTextValue1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocTextValue BocTextValue1;
+        
+        /// <summary>
+        /// Smartlabel3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.SmartLabel Smartlabel3;
+        
+        /// <summary>
+        /// BocList1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocList BocList1;
+        
+        /// <summary>
+        /// RightFormGrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTable RightFormGrid;
+        
+        /// <summary>
+        /// Smartlabel2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.SmartLabel Smartlabel2;
+        
+        /// <summary>
+        /// Boctextvalue2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocTextValue Boctextvalue2;
+        
+        /// <summary>
+        /// FormgridManager control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.FormGridManager FormgridManager;
     }
 }

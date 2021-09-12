@@ -15,7 +15,9 @@
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
 <%@ Page Title="" Language="C#" AutoEventWireup="true" CodeBehind="ReferenceDataSourceTestForm.aspx.cs"
-  Inherits="Remotion.ObjectBinding.Web.Test.Shared.ReferenceDataSourceTestForm" MasterPageFile="~/StandardMode.Master" %>
+  Inherits="Remotion.ObjectBinding.Web.Test.Shared.ReferenceDataSourceTestForm" MasterPageFile="StandardMode.Master" %>
+<%@ Register tagPrefix="remotion" Namespace="Remotion.Web.UI.Controls" Assembly="Remotion.Web" %>
+<%@ Register tagPrefix="remotion" Namespace="Remotion.ObjectBinding.Web.UI.Controls" Assembly="Remotion.ObjectBinding.Web" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>

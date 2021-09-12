@@ -16,6 +16,9 @@
 --%>
 
 <%@ Page language="c#" Codebehind="SingleColumnFormGridsForm.aspx.cs" AutoEventWireup="false" Inherits="Remotion.ObjectBinding.Web.Test.Shared.SingleColumnFormGridsForm" %><!doctype HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+<%@ Register tagPrefix="remotion" Namespace="Remotion.Web.UI.Controls" Assembly="Remotion.Web" %>
+<%@ Register tagPrefix="remotion" Namespace="Remotion.ObjectBinding.Web.UI.Controls" Assembly="Remotion.ObjectBinding.Web" %>
+
 <html>
   <head>
     <title>Singe Column Form Grids</title>
@@ -30,7 +33,7 @@
 </head>
   <body MS_POSITIONING="FlowLayout">
 	
-    <form id="Form" method="post" runat="server">
+    <form id="TheForm" method="post" runat="server">
 <table id="MainFormGrid" style="WIDTH: 100%" runat="server" >
 <tr>
 <td><remotion:smartlabel id="Smartlabel4" runat="server" forcontrol="BocTextValue1" width="100%"></remotion:SmartLabel></td>

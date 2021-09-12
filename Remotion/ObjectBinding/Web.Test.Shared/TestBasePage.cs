@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.Resources;
@@ -23,7 +24,7 @@ using Remotion.Web.UI.Globalization;
 
 namespace Remotion.ObjectBinding.Web.Test.Shared
 {
-  [MultiLingualResources("OBWTest.Globalization.TestBasePage")]
+  [MultiLingualResources("OBWTest.Globalization.TestBasePage")] //TODO
   public class TestBasePage<TFunction> :
       WxePage,
       Remotion.Web.UI.Controls.IControl,
@@ -36,7 +37,7 @@ namespace Remotion.ObjectBinding.Web.Test.Shared
 
     protected override void OnPreInit (EventArgs e)
     {
-      MasterPageFile = (Global.PreferQuirksModeRendering) ? "~/QuirksMode.Master" : "~/StandardMode.Master";
+      MasterPageFile = "StandardMode.Master"; //TODO
       base.OnPreInit(e);
     }
 
@@ -61,7 +62,7 @@ namespace Remotion.ObjectBinding.Web.Test.Shared
       var key = GetType().FullName + "_Global";
       if (! HtmlHeadAppender.Current.IsRegistered(key))
       {
-        string href = ResolveClientUrl("~/Html/global.css");
+        string href = ResolveClientUrl("~/Html/global.css"); //TODO
         HtmlHeadAppender.Current.RegisterStylesheetLink(key, new StaticResourceUrl(href));
       }
 

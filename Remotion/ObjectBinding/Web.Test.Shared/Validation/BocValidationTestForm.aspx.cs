@@ -17,14 +17,18 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Remotion.Collections;
 using Remotion.ObjectBinding.Sample;
+using Remotion.ObjectBinding.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Validation;
+using Remotion.Validation.Results;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.Test.Shared.Validation

@@ -15,6 +15,8 @@
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
 <%@ Page language="c#" Codebehind="PersonsForm.aspx.cs" AutoEventWireup="false" Inherits="Remotion.ObjectBinding.Web.Test.Shared.PersonsForm" %>
+<%@ Register tagPrefix="remotion" Namespace="Remotion.Web.UI.Controls" Assembly="Remotion.Web" %>
+<%@ Register tagPrefix="remotion" Namespace="Remotion.ObjectBinding.Web.UI.Controls" Assembly="Remotion.ObjectBinding.Web" %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
@@ -27,7 +29,7 @@
     <remotion:htmlheadcontents runat="server" id="HtmlHeadContents"></remotion:htmlheadcontents>
   </head>
   <body>
-    <form id=Form method=post runat="server"><h1>Persons Form</h1>
+    <form id=TheForm method=post runat="server"><h1>Persons Form</h1>
       <table id=FormGrid runat="server">
         <tr>
           <td colSpan=2>Persons</td></tr>

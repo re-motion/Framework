@@ -21,9 +21,12 @@ using System.IO;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Sample;
+using Remotion.ObjectBinding.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.ServiceLocation;
+using Remotion.Validation;
+using Remotion.Validation.Results;
 using Remotion.Web;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
@@ -31,27 +34,14 @@ using Remotion.Web.UI.Controls;
 namespace Remotion.ObjectBinding.Web.Test.Shared
 {
 
-public class TestTabbedForm : TestWxeBasePage
+public partial class TestTabbedForm : TestWxeBasePage
 {
-  protected HtmlHeadContents HtmlHeadContents;
-  private IDataEditControl[] _dataEditControls;
-  protected WebTabStrip PagesTabStrip;
-  protected TabbedMenu NavigationTabs;
-  protected ValidationStateViewer ValidationStateViewer;
-  protected TabbedMultiView MultiView;
   private PlaceHolder _wxeControlsPlaceHolder;
-  protected SmartHyperLink SmartHyperLink1;
+  private IDataEditControl[] _dataEditControls;
   private bool _currentObjectSaved = false;
-  protected WebUpdatePanel UpdatePanel;
 
   public TestTabbedForm ()
   {
-  }
-
-  protected override void OnPreInit (EventArgs e)
-  {
-    MasterPageFile = Global.PreferQuirksModeRendering ? "~/QuirksMode.Master" : "~/StandardMode.Master";
-    base.OnPreInit(e);
   }
 
   protected TestTabbedFormWxeFunction Function
@@ -135,7 +125,7 @@ public class TestTabbedForm : TestWxeBasePage
     view.Icon = icon;
 
     UserControl control = (UserControl)this.LoadControl(path);
-    control.ID = IdentifierGenerator.HtmlStyle.GetValidIdentifier(Path.GetFileNameWithoutExtension(path));
+    control.ID = Path.GetFileNameWithoutExtension(path);
 
     //EgoFormPageUserControl formPageControl = control as EgoFormPageUserControl;
     //if (formPageControl != null)

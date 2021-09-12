@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Specialized;
 using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
 using Remotion.Collections;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.Validation;
@@ -27,21 +26,9 @@ using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.Test.Shared
 {
-public class TestTabbedPersonDetailsUserControl :
+public partial class TestTabbedPersonDetailsUserControl :
     DataEditUserControl, IControl, IFormGridRowProvider
 {
-  protected BocTextValue FirstNameField;
-  protected BocTextValue LastNameField;
-  protected FormGridManager FormGridManager;
-  protected BindableObjectDataSourceControl CurrentObject;
-  protected BindableObjectDataSourceControlValidationResultDispatchingValidator CurrentObjectValidationResultDispatchingValidator;
-  protected BocDateTimeValue DateOfBirthField;
-  protected BocReferenceValue PartnerField;
-  protected BocBooleanValue DeceasedField;
-  protected BocDateTimeValue DateOfDeathField;
-  protected BocEnumValue MarriageStatusField;
-  protected HtmlTable FormGrid;
-  protected PlaceHolder ExtraFormGridPlaceHolder;
   private AutoInitDictionary<HtmlTable,FormGridRowInfoCollection> _listOfFormGridRowInfos = new AutoInitDictionary<HtmlTable,FormGridRowInfoCollection>();
   private AutoInitDictionary<HtmlTable,StringCollection> _listOfHiddenRows = new AutoInitDictionary<HtmlTable,StringCollection>();
 

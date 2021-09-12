@@ -20,6 +20,7 @@ using System.Text;
 using System.Threading;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Remotion.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.Resources;
@@ -29,7 +30,7 @@ using Remotion.Web.UI.Globalization;
 namespace Remotion.ObjectBinding.Web.Test.Shared
 {
 
-[MultiLingualResources("OBWTest.Globalization.TestBasePage")]
+[MultiLingualResources ("OBWTest.Globalization.TestBasePage")] //TODO
 public class TestWxeBasePage:
     WxePage,
     Remotion.Web.UI.Controls.IControl,
@@ -75,7 +76,7 @@ public class TestWxeBasePage:
     var key = GetType().FullName + "_Global";
     if (! HtmlHeadAppender.Current.IsRegistered(key))
     {
-      HtmlHeadAppender.Current.RegisterStylesheetLink(key, new StaticResourceUrl("Html/global.css"));
+      HtmlHeadAppender.Current.RegisterStylesheetLink(key, new StaticResourceUrl("Html/global.css")); //TODO
     }
 
 

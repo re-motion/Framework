@@ -15,7 +15,8 @@
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
 <%@ Control Language="c#" AutoEventWireup="false" Codebehind="NavigationTabs.ascx.cs" Inherits="Remotion.ObjectBinding.Web.Test.Shared.UI.NavigationTabs" TargetSchema="http://schemas.microsoft.com/intellisense/ie5"%>
-
+<%@ Register tagPrefix="remotion" Namespace="Remotion.Web.UI.Controls" Assembly="Remotion.Web" %>
+<%@ Register tagPrefix="remotion" Namespace="Remotion.ObjectBinding.Web.UI.Controls" Assembly="Remotion.ObjectBinding.Web" %>
 
 <remotion:TabbedMenu id="TabbedMenu" runat="server">
 <tabs>

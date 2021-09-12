@@ -16,6 +16,9 @@
 --%>
 
 <%@ Page language="c#" Codebehind="CompleteBocTestForm.aspx.cs" AutoEventWireup="false" Inherits="Remotion.ObjectBinding.Web.Test.Shared.CompleteBocForm" MasterPageFile="~/StandardMode.Master" %>
+<%@ Register tagPrefix="remotion" Namespace="Remotion.Web.UI.Controls" Assembly="Remotion.Web" %>
+<%@ Register tagPrefix="remotion" Namespace="Remotion.ObjectBinding.Web.UI.Controls" Assembly="Remotion.ObjectBinding.Web" %>
+
 <asp:Content ContentPlaceHolderID="head" runat="server">
 <h1>CompleteBocTest: Form, No UserControl</h1>
 </asp:Content>

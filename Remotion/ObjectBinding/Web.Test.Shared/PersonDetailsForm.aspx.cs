@@ -15,8 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Utilities;
@@ -26,29 +24,12 @@ using Remotion.Web.UI.Controls;
 namespace Remotion.ObjectBinding.Web.Test.Shared
 {
 
-public class PersonDetailsForm : SingleBocTestWxeBasePage
-
+public partial class PersonDetailsForm : SingleBocTestWxeBasePage
 {
-  protected HtmlTable FormGrid;
-  protected Button SaveButton;
-  protected FormGridManager FormGridManager;
-  protected BocTextValue FirstNameField;
-  protected BocEnumValue GenderField;
-  protected BocReferenceValue PartnerField;
-  protected BocDateTimeValue BirthdayField;
-  protected BocTextValue LastNameField;
-  protected BindableObjectDataSourceControl CurrentObject;
-  protected HtmlHeadContents HtmlHeadContents;
-  protected BocBooleanValue DeceasedField;
-  protected BocMultilineTextValue CVField;
-  protected BocList JobList;
-  protected BusinessObjectReferenceDataSourceControl PartnerDataSource;
-  protected BocTextValue ParterFirstNameField;
-  protected Button PostBackButton;
 
-	private void Page_Load (object sender, EventArgs e)
-	{
-	  var  personID = new Guid(((ViewPersonDetailsWxeFunction)CurrentFunction).ID);
+  private void Page_Load (object sender, EventArgs e)
+  {
+    var personID = new Guid(((ViewPersonDetailsWxeFunction)CurrentFunction).ID);
 
     Person person = Person.GetObject(personID);
 #pragma warning disable 219 // unused variable
@@ -66,22 +47,21 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
           XmlReflectionBusinessObjectStorageProvider.Current.GetObjects(typeof(Person)), typeof(IBusinessObjectWithIdentity));
       PartnerField.SetBusinessObjectList(objects);
     }
-	}
+  }
 
-	override protected void OnInit (EventArgs e)
-	{
-		//
-		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
-		//
-		InitializeComponent();
-		base.OnInit(e);
+  override protected void OnInit (EventArgs e)
+  {
+    this.PartnerField.SelectionChanged += new System.EventHandler(this.PartnerField_SelectionChanged);
+    this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
+    this.Load += new System.EventHandler(this.Page_Load);
+    base.OnInit(e);
 
     if (!IsPostBack)
       XmlReflectionBusinessObjectStorageProvider.Current.Reset();
 
     InitalizePartnerFieldMenuItems();
     InitalizeJobListMenuItems();
-	}
+  }
 
   private void InitalizePartnerFieldMenuItems ()
   {
@@ -217,21 +197,7 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
     JobList.OptionsMenuItems.Add(menuItem);
   }
 
-	#region Web Form Designer generated code
-
-	/// <summary>
-	/// Required method for Designer support - do not modify
-	/// the contents of this method with the code editor.
-	/// </summary>
-	private void InitializeComponent ()
-	{
-    this.PartnerField.SelectionChanged += new System.EventHandler(this.PartnerField_SelectionChanged);
-    this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
-    this.Load += new System.EventHandler(this.Page_Load);
-
-  }
-	#endregion
-
+  
   private void SaveButton_Click (object sender, EventArgs e)
   {
     bool isValid = FormGridManager.Validate();

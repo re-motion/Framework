@@ -24,28 +24,10 @@ using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.Test.Shared
 {
-  public class SingleTestTreeView : SingleBocTestBasePage
+  public partial class SingleTestTreeView : SingleBocTestBasePage
   {
-    protected Label TreeViewLabel;
-    protected Label PersonTreeViewLabel;
-    protected Button PostBackButton;
-    protected FormGridManager FormGridManager;
-    protected BindableObjectDataSourceControl CurrentObject;
-    protected WebTreeView WebTreeView;
-    protected PersonTreeView PersonTreeView;
-    protected PersonTreeView PersonTreeViewWithMenus;
-    protected Button RefreshPesonTreeViewButton;
-    protected Button Node332Button;
-    protected HtmlHeadContents HtmlHeadContents;
-
     public SingleTestTreeView ()
     {
-    }
-
-    protected override void OnPreInit (EventArgs e)
-    {
-      MasterPageFile = Global.PreferQuirksModeRendering ? "~/QuirksMode.Master" : "~/StandardMode.Master";
-      base.OnPreInit(e);
     }
 
     private void Page_Load (object sender, EventArgs e)

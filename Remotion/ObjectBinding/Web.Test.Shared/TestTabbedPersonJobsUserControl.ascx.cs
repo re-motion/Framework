@@ -26,16 +26,9 @@ using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.Test.Shared
 {
-public class TestTabbedPersonJobsUserControl :
+public partial class TestTabbedPersonJobsUserControl :
     DataEditUserControl, IControl, IFormGridRowProvider
 {
-  protected BocList ListField;
-  protected FormGridManager FormGridManager;
-  protected HtmlTable FormGrid;
-  protected BocMultilineTextValue MultilineTextField;
-
-  protected BindableObjectDataSourceControl CurrentObject;
-  protected BindableObjectDataSourceControlValidationResultDispatchingValidator CurrentObjectValidationResultDispatchingValidator;
   private AutoInitDictionary<HtmlTable,FormGridRowInfoCollection> _listOfFormGridRowInfos = new AutoInitDictionary<HtmlTable,FormGridRowInfoCollection>();
   private AutoInitDictionary<HtmlTable,StringCollection> _listOfHiddenRows = new AutoInitDictionary<HtmlTable,StringCollection>();
   private Control _incomeField;
@@ -66,13 +59,9 @@ public class TestTabbedPersonJobsUserControl :
     return (FormGridRowInfoCollection)_listOfFormGridRowInfos[table];
   }
 
-	override protected void OnInit (EventArgs e)
-	{
-		//
-		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
-		//
-		InitializeComponent();
-		base.OnInit(e);
+  override protected void OnInit (EventArgs e)
+  {
+    base.OnInit(e);
 
     PrepareAdditonalRows();
     InitalizeListFieldMenuItems();
@@ -200,17 +189,5 @@ public class TestTabbedPersonJobsUserControl :
         FormGridRowInfo.RowPosition.AfterRowWithID));
 
   }
-
-	#region Web Form Designer generated code
-
-	/// <summary>
-	///		Required method for Designer support - do not modify
-	///		the contents of this method with the code editor.
-	/// </summary>
-	private void InitializeComponent ()
-	{
-
   }
-	#endregion
-	}
 }

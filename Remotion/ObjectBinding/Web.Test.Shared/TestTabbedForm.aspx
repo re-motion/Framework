@@ -14,7 +14,8 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Page Language="c#" Codebehind="TestTabbedForm.aspx.cs" AutoEventWireup="false" Inherits="Remotion.ObjectBinding.Web.Test.Shared.TestTabbedForm" Title="Test TabbedMultiView" MasterPageFile="~/StandardMode.Master" %>
+<%@ Page Language="c#" Codebehind="TestTabbedForm.aspx.cs" AutoEventWireup="false" Inherits="Remotion.ObjectBinding.Web.Test.Shared.TestTabbedForm" Title="Test TabbedMultiView" MasterPageFile="StandardMode.Master" %>
+<%@ Register tagPrefix="remotion" Namespace="Remotion.Web.UI.Controls" Assembly="Remotion.Web" %>
 
 <asp:Content ContentPlaceHolderID="head" runat="server">
 </asp:Content>
@@ -98,7 +99,7 @@
           </Tabs>
         </remotion:TabbedMenu>
         <div>Test Tabbed Form</div>
-        <remotion:ValidationStateViewer ID="ValidationStateViewer"></remotion:ValidationStateViewer>
+        <remotion:ValidationStateViewer ID="ValidationStateViewer" runat="server"></remotion:ValidationStateViewer>
       </TopControls>
       <Views>
         <remotion:TabView ID="first" Title="First">
@@ -173,7 +174,7 @@
         </remotion:TabView>
       </Views>
       <BottomControls>
-        <remotion:SmartHyperLink ID="SmartHyperLink1" runat="server" NavigateUrl="~/Start.aspx">test</remotion:SmartHyperLink>
+        <remotion:SmartHyperLink ID="SmartHyperLink1" runat="server" NavigateUrl="Start.aspx">test</remotion:SmartHyperLink>
       </BottomControls>
     </remotion:TabbedMultiView>
     </contenttemplate>

@@ -20,13 +20,13 @@ using System.Web.UI;
 
 namespace Remotion.ObjectBinding.Web.Test.Shared
 {
-	/// <summary>
-	/// Summary description for LeftFrame.
-	/// </summary>
-	public class LeftFrame : Page
-	{
-		private void Page_Load (object sender, EventArgs e)
-		{
+  /// <summary>
+  /// Summary description for LeftFrame.
+  /// </summary>
+  public partial class LeftFrame : Page
+  {
+    private void Page_Load (object sender, EventArgs e)
+    {
       ArrayList global = (ArrayList)Session["Global"];
       int hashcode = global.GetHashCode();
       lock (global.SyncRoot)
@@ -35,24 +35,10 @@ namespace Remotion.ObjectBinding.Web.Test.Shared
       }
     }
 
-		#region Web Form Designer generated code
-		override protected void OnInit (EventArgs e)
-		{
-			//
-			// CODEGEN: This call is required by the ASP.NET Web Form Designer.
-			//
-			InitializeComponent();
-			base.OnInit(e);
-		}
-
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
-		private void InitializeComponent ()
-		{
-			this.Load += new System.EventHandler(this.Page_Load);
-		}
-		#endregion
-	}
+    override protected void OnInit (EventArgs e)
+    {
+      this.Load += new System.EventHandler(this.Page_Load);
+      base.OnInit(e);
+    }
+  }
 }

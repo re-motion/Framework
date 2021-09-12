@@ -17,6 +17,7 @@
 using System;
 using System.Globalization;
 using System.Threading;
+using Remotion.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
@@ -25,7 +26,7 @@ using Remotion.Web.UI.Globalization;
 namespace Remotion.ObjectBinding.Web.Test.Shared
 {
 
-[MultiLingualResources("OBWTest.Globalization.SingleBocTestBasePage")]
+[MultiLingualResources("OBWTest.Globalization.SingleBocTestBasePage")] //TODO
 public class SingleBocTestBasePage:
     SmartPage,
     IControl,

@@ -16,8 +16,10 @@
 --%>
 
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Form.aspx.cs" Inherits="Remotion.ObjectBinding.Web.Test.Shared.ControlLayoutTests.Form" MasterPageFile="~/StandardMode.Master" %>
-
+<%@ Register tagPrefix="remotion" Namespace="Remotion.Web.UI.Controls" Assembly="Remotion.Web" %>
+<%@ Register tagPrefix="remotion" Namespace="Remotion.ObjectBinding.Web.UI.Controls" Assembly="Remotion.ObjectBinding.Web" %>
 <%@ Register TagPrefix="obwt" TagName="NavigationTabs" Src="../UI/NavigationTabs.ascx" %>
+
 <asp:Content ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ContentPlaceHolderID="body" runat="server">

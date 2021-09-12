@@ -15,6 +15,9 @@
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
 <%@ Page Language="c#" Codebehind="SingleTestTreeView.aspx.cs" AutoEventWireup="false" Inherits="Remotion.ObjectBinding.Web.Test.Shared.SingleTestTreeView" Title="SingleTestTreeView" MasterPageFile="~/StandardMode.Master" %>
+<%@ Register tagPrefix="remotion" Namespace="Remotion.Web.UI.Controls" Assembly="Remotion.Web" %>
+<%@ Register tagPrefix="remotion" Namespace="Remotion.ObjectBinding.Web.UI.Controls" Assembly="Remotion.ObjectBinding.Web" %>
+<%@ Register TagPrefix="ros" Namespace="Remotion.ObjectBinding.Sample" Assembly="Remotion.ObjectBinding.Sample" %>
 
 <asp:Content ContentPlaceHolderID="head" runat="server">
 </asp:Content>

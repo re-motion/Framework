@@ -13,6 +13,15 @@ namespace Remotion.ObjectBinding.Web.Test.Shared {
     public partial class RepeaterTest {
         
         /// <summary>
+        /// HtmlHeadContents control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+        
+        /// <summary>
         /// Form1 control.
         /// </summary>
         /// <remarks>
@@ -22,21 +31,39 @@ namespace Remotion.ObjectBinding.Web.Test.Shared {
         protected global::System.Web.UI.HtmlControls.HtmlForm Form1;
         
         /// <summary>
-        /// TestTabbedPersonDetailsUserControl1 control.
+        /// SaveButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
-        protected global::Remotion.ObjectBinding.Web.Test.Shared.TestTabbedPersonDetailsUserControl TestTabbedPersonDetailsUserControl1;
+        protected global::Remotion.Web.UI.Controls.WebButton SaveButton;
         
         /// <summary>
-        /// TestTabbedPersonJobsUserControl1 control.
+        /// Repeater2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
-        protected global::Remotion.ObjectBinding.Web.Test.Shared.TestTabbedPersonJobsUserControl TestTabbedPersonJobsUserControl1;
+        protected global::Remotion.ObjectBinding.Sample.ObjectBoundRepeater Repeater2;
+        
+        /// <summary>
+        /// Repeater3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Sample.ObjectBoundRepeater Repeater3;
+        
+        /// <summary>
+        /// CurrentObject control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
     }
 }

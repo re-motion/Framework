@@ -20,7 +20,7 @@ using Remotion.Web.UI;
 
 namespace Remotion.ObjectBinding.Web.Test.Shared
 {
-  public class TestForm : Page
+  public partial class TestForm : Page
   {
     protected override void OnPreRender (EventArgs e)
     {

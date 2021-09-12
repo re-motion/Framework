@@ -17,6 +17,8 @@
 
 <%@ Page Language="c#" CodeBehind="TestUserControlBinding.aspx.cs" AutoEventWireup="false"
   Inherits="Remotion.ObjectBinding.Web.Test.Shared.TestUserControlBinding" MasterPageFile="~/StandardMode.Master" %>
+<%@ Register tagPrefix="remotion" Namespace="Remotion.Web.UI.Controls" Assembly="Remotion.Web" %>
+<%@ Register tagPrefix="remotion" Namespace="Remotion.ObjectBinding.Web.UI.Controls" Assembly="Remotion.ObjectBinding.Web" %>
 
 <asp:Content ContentPlaceHolderID="head" runat="server">
 </asp:Content>

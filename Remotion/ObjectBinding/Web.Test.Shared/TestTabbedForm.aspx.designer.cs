@@ -22,6 +22,51 @@ namespace Remotion.ObjectBinding.Web.Test.Shared {
         protected global::System.Web.UI.ScriptManager ScriptManager;
         
         /// <summary>
+        /// UpdatePanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.WebUpdatePanel UpdatePanel;
+        
+        /// <summary>
+        /// MultiView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.TabbedMultiView MultiView;
+        
+        /// <summary>
+        /// NavigationTabs control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.TabbedMenu NavigationTabs;
+        
+        /// <summary>
+        /// ValidationStateViewer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.ValidationStateViewer ValidationStateViewer;
+        
+        /// <summary>
+        /// PagesTabStrip control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.WebTabStrip PagesTabStrip;
+        
+        /// <summary>
         /// Literal control.
         /// </summary>
         /// <remarks>
@@ -29,6 +74,24 @@ namespace Remotion.ObjectBinding.Web.Test.Shared {
         /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal Literal;
+        
+        /// <summary>
+        /// SmartHyperLink1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.SmartHyperLink SmartHyperLink1;
+        
+        /// <summary>
+        /// DummyFormGridManager control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.FormGridManager DummyFormGridManager;
         
         /// <summary>
         /// Master property.

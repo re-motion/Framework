@@ -15,12 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Globalization;
 using Remotion.Web.UI;
 
 namespace Remotion.ObjectBinding.Web.Test.Shared
 {
 
-[MultiLingualResources("OBWTest.Globalization.SingleBocTestBasePage")]
+[MultiLingualResources("OBWTest.Globalization.SingleBocTestBasePage")] //TODO
 public class SingleBocTestWxeBasePage: TestWxeBasePage
 {
   protected override void OnInit (EventArgs e)

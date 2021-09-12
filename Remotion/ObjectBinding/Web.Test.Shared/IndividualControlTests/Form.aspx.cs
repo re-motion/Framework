@@ -17,8 +17,11 @@
 using System;
 using System.Text;
 using System.Web.UI;
+using Remotion.ObjectBinding.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ServiceLocation;
+using Remotion.Validation;
+using Remotion.Validation.Results;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Globalization;

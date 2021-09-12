@@ -13,6 +13,15 @@ namespace Remotion.ObjectBinding.Web.Test.Shared {
     public partial class TestForm {
         
         /// <summary>
+        /// HtmlHeadContents control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+        
+        /// <summary>
         /// form1 control.
         /// </summary>
         /// <remarks>

@@ -19,6 +19,6 @@ namespace Remotion.ObjectBinding.Web.Test.Shared {
         /// Auto-generated field.
         /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm Form;
+        protected global::System.Web.UI.HtmlControls.HtmlForm TheForm;
     }
 }
