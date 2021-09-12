@@ -69,8 +69,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       get { return _validationErrorRenderer; }
     }
 
-    protected abstract void RenderEditModeValueWithSeparateOptionsMenu (BocRenderingContext<TControl> renderingContext);
-    protected abstract void RenderEditModeValueWithIntegratedOptionsMenu (BocRenderingContext<TControl> renderingContext);
+    protected abstract void RenderEditModeValue (BocRenderingContext<TControl> renderingContext);
 
     protected virtual void RegisterJavaScriptFiles (HtmlHeadAppender htmlHeadAppender)
     {
@@ -218,46 +217,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     {
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
 
-#pragma warning disable 618
-      if (IsEmbedInOptionsMenu (renderingContext))
-        RenderContentsWithIntegratedOptionsMenu (renderingContext);
-#pragma warning restore 618
-      else
-        RenderContentsWithSeparateOptionsMenu (renderingContext);
-    }
-
-    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
-    private void RenderContentsWithIntegratedOptionsMenu (BocReferenceValueBaseRenderingContext<TControl> renderingContext)
-    {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
-
-      if (!string.IsNullOrEmpty (renderingContext.Control.ControlServicePath))
-      {
-        var stringValueParametersDictionary = new Dictionary<string, string>();
-        stringValueParametersDictionary.Add ("controlID", renderingContext.Control.ID);
-        stringValueParametersDictionary.Add (
-            "controlType",
-            TypeUtility.GetPartialAssemblyQualifiedName (MixinTypeUtility.GetUnderlyingTargetType (renderingContext.Control.GetType())));
-        stringValueParametersDictionary.Add ("businessObjectClass", renderingContext.BusinessObjectWebServiceContext.BusinessObjectClass);
-        stringValueParametersDictionary.Add ("businessObjectProperty", renderingContext.BusinessObjectWebServiceContext.BusinessObjectProperty);
-        stringValueParametersDictionary.Add ("businessObject", renderingContext.BusinessObjectWebServiceContext.BusinessObjectIdentifier);
-        stringValueParametersDictionary.Add ("arguments", renderingContext.BusinessObjectWebServiceContext.Arguments);
-
-        renderingContext.Control.OptionsMenu.SetLoadMenuItemStatus (
-            renderingContext.Control.ControlServicePath,
-            nameof (IBocReferenceValueWebService.GetMenuItemStatusForOptionsMenu),
-            stringValueParametersDictionary);
-      }
-
-      renderingContext.Control.OptionsMenu.SetRenderHeadTitleMethodDelegate (writer => RenderOptionsMenuTitle (renderingContext));
-      renderingContext.Control.OptionsMenu.RenderControl (renderingContext.Writer);
-      renderingContext.Control.OptionsMenu.SetRenderHeadTitleMethodDelegate (null);
-    }
-
-    private void RenderContentsWithSeparateOptionsMenu (BocReferenceValueBaseRenderingContext<TControl> renderingContext)
-    {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
-
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassContent);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
@@ -272,7 +231,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, GetCssClassInnerContent (renderingContext));
         renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
-        RenderEditModeValueWithSeparateOptionsMenu (renderingContext);
+        RenderEditModeValue (renderingContext);
 
         renderingContext.Writer.RenderEndTag();
       }
@@ -308,27 +267,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       }
 
       renderingContext.Writer.RenderEndTag();
-    }
-
-    public void RenderOptionsMenuTitle (BocRenderingContext<TControl> renderingContext)
-    {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
-
-      string postBackEvent = GetPostBackEvent (renderingContext);
-      string objectID = renderingContext.Control.BusinessObjectUniqueIdentifier ?? string.Empty;
-
-      if (renderingContext.Control.IsReadOnly)
-        RenderReadOnlyValue (renderingContext, postBackEvent, DropDownMenu.OnHeadTitleClickScript, objectID);
-      else
-      {
-        RenderSeparateIcon (renderingContext, postBackEvent, DropDownMenu.OnHeadTitleClickScript, objectID);
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, GetCssClassInnerContent (renderingContext));
-        renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
-
-        RenderEditModeValueWithIntegratedOptionsMenu (renderingContext);
-
-        renderingContext.Writer.RenderEndTag();
-      }
     }
 
     private string GetPostBackEvent (BocRenderingContext<TControl> renderingContext)
@@ -482,14 +420,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       return label;
     }
 
-    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
-    private bool IsEmbedInOptionsMenu (BocRenderingContext<TControl> renderingContext)
-    {
-      return renderingContext.Control.HasValueEmbeddedInsideOptionsMenu == true && renderingContext.Control.HasOptionsMenu
-             || renderingContext.Control.HasValueEmbeddedInsideOptionsMenu == null && renderingContext.Control.IsReadOnly
-             && renderingContext.Control.HasOptionsMenu;
-    }
-
     protected IEnumerable<string> GetValidationErrorsToRender (BocRenderingContext<TControl> renderingContext)
     {
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
@@ -510,12 +440,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
       if (!renderingContext.Control.HasOptionsMenu)
         cssClass += " " + CssClassWithoutOptionsMenu;
-#pragma warning disable 618
-      else if (IsEmbedInOptionsMenu (renderingContext))
-        cssClass += " " + CssClassEmbeddedOptionsMenu;
-#pragma warning restore 618
       else
-        cssClass += " " + CssClassSeparateOptionsMenu;
+        cssClass += " " + CssClassHasOptionsMenu;
 
       return cssClass;
     }
@@ -530,15 +456,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       get { return "content"; }
     }
 
-    private string CssClassSeparateOptionsMenu
+    private string CssClassHasOptionsMenu
     {
-      get { return "separateOptionsMenu"; }
-    }
-
-    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
-    private string CssClassEmbeddedOptionsMenu
-    {
-      get { return "embeddedOptionsMenu"; }
+      get { return "hasOptionsMenu"; }
     }
 
     private string CssClassWithoutOptionsMenu

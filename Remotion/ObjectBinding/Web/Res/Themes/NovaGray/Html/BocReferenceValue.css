@@ -122,24 +122,7 @@ span.bocReferenceValue span.content.withoutOptionsMenu
   right: 0;
 }
 
-/* embeddedOptionsMenu */
-span.bocReferenceValue span.DropDownMenuContainer span.DropDownMenuSelect,
-span.bocReferenceValue.disabled span.DropDownMenuContainer span.DropDownMenuSelect
-{
-  height: 1.7em;
-}
-
-span.bocReferenceValue.readOnly span.DropDownMenuContainer span.DropDownMenuSelect
-{
-  height: 1.6em;
-}
-
-span.bocReferenceValue span.content.embeddedOptionsMenu
-{
-  right: 1.3em; /* width of span.DropDownMenuButton + desired space between */
-}
-
-/* separateOptionsMenu */
+/* hasOptionsMenu */
 span.bocReferenceValue span.optionsMenu span.DropDownMenuSelect,
 span.bocReferenceValue.disabled span.optionsMenu span.DropDownMenuSelect,
 span.bocReferenceValue.readOnly span.optionsMenu span.DropDownMenuSelect
@@ -195,7 +178,7 @@ span.bocReferenceValue.readOnly span.DropDownMenuContainer a.command
   width: calc(100% - 17px - 4px);
 }
 
-span.bocReferenceValue.readOnly span.content.separateOptionsMenu span,
+span.bocReferenceValue.readOnly span.content.hasOptionsMenu span,
 span.bocReferenceValue.readOnly span.content.withoutOptionsMenu span
 {
   /* Ensures that diacritic marks can be rendered without being cut off. 
@@ -234,7 +217,7 @@ span.bocReferenceValue span.optionsMenu
   width: 6.7em; /* Define width of span.optionsMenu */
 }
 
-span.bocReferenceValue span.content.separateOptionsMenu
+span.bocReferenceValue span.content.hasOptionsMenu
 {
   right: 7em; /* width of span.optionsMenu + desired space between */
 }

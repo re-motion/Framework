@@ -54,8 +54,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     private enum OptionMenuConfiguration
     {
       NoOptionsMenu,
-      SeparateOptionsMenu,
-      EmbeddedOptionsMenu
+      HasOptionsMenu
     }
 
     private IBusinessObjectProvider _provider;
@@ -158,34 +157,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       Control.Setup (stub => stub.HasOptionsMenu).Returns (true);
 
       XmlNode containerDiv = GetAssertedContainerSpan (false);
-      AssertControl (containerDiv, OptionMenuConfiguration.SeparateOptionsMenu);
-    }
-
-    [Test]
-    [Ignore ("Assertions for embedded menu are incorrect: COMMONS-2431")]
-    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
-    public void RenderNullReferenceValueWithEmbeddedOptionsMenu ()
-    {
-      Control.Setup (stub => stub.Enabled).Returns (true);
-      Control.Setup (stub => stub.HasValueEmbeddedInsideOptionsMenu).Returns (true);
-      Control.Setup (stub => stub.HasOptionsMenu).Returns (true);
-
-      XmlNode span = GetAssertedContainerSpan (false);
-      AssertControl (span, OptionMenuConfiguration.EmbeddedOptionsMenu);
-    }
-
-    [Test]
-    [Ignore ("Assertions for embedded menu are incorrect: COMMONS-2431")]
-    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
-    public void RenderNullReferenceValueWithEmbeddedOptionsMenuAndStyle ()
-    {
-      Control.Setup (stub => stub.Enabled).Returns (true);
-      Control.Setup (stub => stub.HasValueEmbeddedInsideOptionsMenu).Returns (true);
-      Control.Setup (stub => stub.HasOptionsMenu).Returns (true);
-      AddStyle();
-
-      XmlNode span = GetAssertedContainerSpan (true);
-      AssertControl (span, OptionMenuConfiguration.EmbeddedOptionsMenu);
+      AssertControl (containerDiv, OptionMenuConfiguration.HasOptionsMenu);
     }
 
     [Test]
@@ -212,7 +184,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     }
 
     [Test]
-    [Ignore ("Assertions for embedded menu are incorrect: COMMONS-2431")]
     public void RenderNullReferenceValueReadOnlyWithOptionsMenu ()
     {
       Control.Setup (stub => stub.Enabled).Returns (true);
@@ -245,7 +216,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       AddStyle();
 
       XmlNode span = GetAssertedContainerSpan (true);
-      AssertControl (span, OptionMenuConfiguration.SeparateOptionsMenu);
+      AssertControl (span, OptionMenuConfiguration.HasOptionsMenu);
 
       Assert.That (OptionsMenu.Style["width"], Is.Null);
       Assert.That (OptionsMenu.Style["height"], Is.Null);
@@ -305,39 +276,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       Control.Setup (stub => stub.HasOptionsMenu).Returns (true);
 
       XmlNode span = GetAssertedContainerSpan (false);
-      AssertControl (span, OptionMenuConfiguration.SeparateOptionsMenu);
+      AssertControl (span, OptionMenuConfiguration.HasOptionsMenu);
 
       Assert.That (OptionsMenu.Style["width"], Is.Null);
       Assert.That (OptionsMenu.Style["height"], Is.Null);
-    }
-
-    [Test]
-    [Ignore ("Assertions for embedded menu are incorrect: COMMONS-2431")]
-    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
-    public void RenderReferenceValueWithEmbeddedOptionsMenu ()
-    {
-      Control.Setup (stub => stub.Enabled).Returns (true);
-      SetValue();
-      Control.Setup (stub => stub.HasValueEmbeddedInsideOptionsMenu).Returns (true);
-      Control.Setup (stub => stub.HasOptionsMenu).Returns (true);
-
-      XmlNode span = GetAssertedContainerSpan (false);
-      AssertControl (span, OptionMenuConfiguration.EmbeddedOptionsMenu);
-    }
-
-    [Test]
-    [Ignore ("Assertions for embedded menu are incorrect: COMMONS-2431")]
-    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
-    public void RenderReferenceValueWithEmbeddedOptionsMenuAndStyle ()
-    {
-      Control.Setup (stub => stub.Enabled).Returns (true);
-      SetValue();
-      Control.Setup (stub => stub.HasValueEmbeddedInsideOptionsMenu).Returns (true);
-      Control.Setup (stub => stub.HasOptionsMenu).Returns (true);
-      AddStyle();
-
-      XmlNode span = GetAssertedContainerSpan (false);
-      AssertControl (span, OptionMenuConfiguration.EmbeddedOptionsMenu);
     }
 
     [Test]
@@ -366,7 +308,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     }
 
     [Test]
-    [Ignore ("Assertions for embedded menu are incorrect: COMMONS-2431")]
     public void RenderReferenceValueReadOnlyWithOptionsMenu ()
     {
       Control.Setup (stub => stub.Enabled).Returns (true);
@@ -402,7 +343,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       AddStyle();
 
       XmlNode span = GetAssertedContainerSpan (true);
-      AssertControl (span, OptionMenuConfiguration.SeparateOptionsMenu);
+      AssertControl (span, OptionMenuConfiguration.HasOptionsMenu);
 
       Assert.That (OptionsMenu.Style["width"], Is.Null);
       Assert.That (OptionsMenu.Style["height"], Is.Null);
@@ -420,52 +361,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
 
       XmlNode span = GetAssertedContainerSpan (false);
       AssertControl (span, OptionMenuConfiguration.NoOptionsMenu);
-    }
-
-    [Test]
-    [Ignore ("Assertions for embedded menu are incorrect: COMMONS-2431")]
-    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
-    public void RenderOptions ()
-    {
-      var renderer = new TestableBocReferenceValueRenderer (
-          _resourceUrlFactoryStub,
-          GlobalizationService,
-          RenderingFeatures.Default,
-          new StubLabelReferenceRenderer(),
-          new StubValidationErrorRenderer(),
-          () => new StubDropDownList());
-      Control.Setup (stub => stub.HasValueEmbeddedInsideOptionsMenu).Returns (true);
-      Control.Setup (stub => stub.HasOptionsMenu).Returns (true);
-
-      Html.Writer.AddAttribute (HtmlTextWriterAttribute.Class, "body");
-      Html.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
-      renderer.RenderOptionsMenuTitle (CreateRenderingContext());
-      Html.Writer.RenderEndTag();
-
-      var document = Html.GetResultDocument();
-      AssertControl (document, OptionMenuConfiguration.EmbeddedOptionsMenu);
-    }
-
-    [Test]
-    public void RenderOptionsReadOnly ()
-    {
-      Control.Setup (stub => stub.IsIconEnabled()).Returns (true);
-      Control.Setup (stub => stub.IsReadOnly).Returns (true);
-
-      var renderer = new TestableBocReferenceValueRenderer (
-          _resourceUrlFactoryStub,
-          GlobalizationService,
-          RenderingFeatures.Default,
-          new StubLabelReferenceRenderer(),
-          new StubValidationErrorRenderer(),
-          () => new StubDropDownList());
-      Html.Writer.AddAttribute (HtmlTextWriterAttribute.Class, "body");
-      Html.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
-      renderer.RenderOptionsMenuTitle (CreateRenderingContext());
-      Html.Writer.RenderEndTag();
-      
-      var document = Html.GetResultDocument();
-      AssertReadOnlyContent (document);
     }
 
     [Test]
@@ -517,9 +412,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
 
     private void AssertReadOnlyContent (XmlNode parent)
     {
+      var hasOptionsMenu = Control.Object.HasOptionsMenu;
+      var optionsMenuOffset = hasOptionsMenu ? 1 : 0;
+      var hasOptionsMenuCssClass = hasOptionsMenu ? "hasOptionsMenu" : "withoutOptionsMenu";
+
       var span = parent.GetAssertedChildElement ("span", 0);
       span.AssertAttributeValueEquals ("class", "body");
-      span.AssertChildElementCount (Control.Object.HasOptionsMenu ? 3 : 2);
+      span.AssertChildElementCount (hasOptionsMenu ? 3 : 2);
 
       var commandLink = span.GetAssertedChildElement ("a", 0);
       commandLink.AssertAttributeValueEquals ("id", Control.Object.ClientID + "_Command");
@@ -535,7 +434,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       Html.AssertAttribute (validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
 
       var contentSpan = commandLink.GetAssertedChildElement ("span", 0);
-      contentSpan.AssertAttributeValueEquals ("class", "content withoutOptionsMenu");
+      contentSpan.AssertAttributeValueEquals ("class", "content " + hasOptionsMenuCssClass);
       contentSpan.AssertChildElementCount (1);
 
       var innerSpan = contentSpan.GetAssertedChildElement ("span", 0);
@@ -544,9 +443,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       innerSpan.AssertChildElementCount (0);
       innerSpan.AssertTextNode ("MyText", 0);
 
-      if (Control.Object.HasOptionsMenu)
+      if (hasOptionsMenu)
       {
-        var wrapperSpan = span.GetAssertedChildElement ("span", 1);
+        var wrapperSpan = span.GetAssertedChildElement ("span", 1 + optionsMenuOffset);
         wrapperSpan.AssertAttributeValueEquals ("class", "optionsMenu");
         wrapperSpan.AssertChildElementCount (0);
         wrapperSpan.AssertTextNode ("DropDownMenu", 0);
@@ -566,17 +465,14 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
         case OptionMenuConfiguration.NoOptionsMenu:
           contentSpan.AssertAttributeValueEquals ("class", "content withoutOptionsMenu");
           break;
-        case OptionMenuConfiguration.SeparateOptionsMenu:
-          contentSpan.AssertAttributeValueEquals ("class", "content separateOptionsMenu");
-          break;
-        case OptionMenuConfiguration.EmbeddedOptionsMenu:
-          contentSpan.AssertAttributeValueEquals ("class", "content embeddedOptionsMenu");
+        case OptionMenuConfiguration.HasOptionsMenu:
+          contentSpan.AssertAttributeValueEquals ("class", "content hasOptionsMenu");
           break;
       }
 
       contentSpan.AssertTextNode ("DropDownList", 0);
 
-      if (optionMenuConfiguration == OptionMenuConfiguration.SeparateOptionsMenu)
+      if (optionMenuConfiguration == OptionMenuConfiguration.HasOptionsMenu)
       {
         var optionsMenuDiv = contentDiv.GetAssertedChildElement ("span", 2);
         optionsMenuDiv.AssertAttributeValueEquals ("class", "optionsMenu");
