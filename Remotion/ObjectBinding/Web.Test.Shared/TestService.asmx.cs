@@ -20,7 +20,7 @@ using System.Threading;
 using System.Web.Script.Services;
 using System.Web.Services;
 
-namespace OBWTest
+namespace Remotion.ObjectBinding.Web.Test.Shared
 {
   [WebService(Namespace = "http://tempuri.org/")]
   [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]

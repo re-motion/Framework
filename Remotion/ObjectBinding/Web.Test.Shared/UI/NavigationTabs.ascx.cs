@@ -18,18 +18,16 @@ using System;
 using System.Reflection;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BindableObject.Properties;
 using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Web;
 using Remotion.Web.Configuration;
 using Remotion.Web.UI.Controls;
 
-namespace OBWTest.UI
+namespace Remotion.ObjectBinding.Web.Test.Shared.UI
 {
   /// <summary>
   ///		Summary description for NavigationTabs.

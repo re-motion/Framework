@@ -16,9 +16,8 @@
 // 
 using System;
 using System.Web.UI.WebControls;
-using Remotion.ObjectBinding;
 
-namespace OBWTest
+namespace Remotion.ObjectBinding.Web.Test.Shared
 {
   public partial class ReferenceDataSourceTestForm : TestBasePage<ReferenceDataSourceTestFunction>
   {

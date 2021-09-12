@@ -1,1 +1,1 @@
-﻿<%@ WebService Language="C#" CodeBehind="BocAutoCompleteReferenceValueWebService.asmx.cs" Class="OBWTest.IndividualControlTests.BocAutoCompleteReferenceValueWebService" %>
+﻿<%@ WebService Language="C#" CodeBehind="BocAutoCompleteReferenceValueWebService.asmx.cs" Class="Remotion.ObjectBinding.Web.Test.Shared.IndividualControlTests.BocAutoCompleteReferenceValueWebService" %>

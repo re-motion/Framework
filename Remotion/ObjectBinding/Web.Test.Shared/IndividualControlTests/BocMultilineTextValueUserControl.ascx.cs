@@ -19,14 +19,13 @@ using System.Linq;
 using System.Web;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 
-namespace OBWTest.IndividualControlTests
+namespace Remotion.ObjectBinding.Web.Test.Shared.IndividualControlTests
 {
 
 public class BocMultilineTextValueUserControl : BaseUserControl

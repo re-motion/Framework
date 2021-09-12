@@ -14,7 +14,7 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Control Language="c#" AutoEventWireup="True" Codebehind="BocLiteralUserControl.ascx.cs" Inherits="OBWTest.IndividualControlTests.BocLiteralUserControl" TargetSchema="http://schemas.microsoft.com/intellisense/ie5"%>
+<%@ Control Language="c#" AutoEventWireup="True" Codebehind="BocLiteralUserControl.ascx.cs" Inherits="Remotion.ObjectBinding.Web.Test.Shared.IndividualControlTests.BocLiteralUserControl" TargetSchema="http://schemas.microsoft.com/intellisense/ie5"%>
 
 
 

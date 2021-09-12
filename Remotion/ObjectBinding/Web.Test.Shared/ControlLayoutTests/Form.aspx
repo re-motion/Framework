@@ -15,7 +15,7 @@
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
 
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Form.aspx.cs" Inherits="OBWTest.ControlLayoutTests.Form" MasterPageFile="~/StandardMode.Master" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Form.aspx.cs" Inherits="Remotion.ObjectBinding.Web.Test.Shared.ControlLayoutTests.Form" MasterPageFile="~/StandardMode.Master" %>
 
 <%@ Register TagPrefix="obwt" TagName="NavigationTabs" Src="../UI/NavigationTabs.ascx" %>
 <asp:Content ContentPlaceHolderID="head" runat="server">

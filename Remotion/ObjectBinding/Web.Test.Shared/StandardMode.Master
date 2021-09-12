@@ -1,5 +1,5 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="StandardMode.master.cs"
-  Inherits="OBWTest.StandardMode" %>
+  Inherits="Remotion.ObjectBinding.Web.Test.Shared.StandardMode" %>
 <%@ Import Namespace="System" %>
 
 <!DOCTYPE html>

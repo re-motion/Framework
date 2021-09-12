@@ -15,14 +15,14 @@
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
 
-<%@ Control Language="c#" AutoEventWireup="false" Codebehind="BocBooleanValueUserControl.ascx.cs" Inherits="OBWTest.IndividualControlTests.BocBooleanValueUserControl" TargetSchema="http://schemas.microsoft.com/intellisense/ie5"%>
+<%@ Control Language="c#" AutoEventWireup="false" Codebehind="BocBooleanValueUserControl.ascx.cs" Inherits="Remotion.ObjectBinding.Web.Test.Shared.IndividualControlTests.BocBooleanValueUserControl" TargetSchema="http://schemas.microsoft.com/intellisense/ie5"%>
 
 <table id=FormGrid runat="server">
   <tr>
     <td colSpan=4><remotion:boctextvalue id=FirstNameField runat="server" PropertyIdentifier="FirstName" ReadOnly="True" datasourcecontrol="CurrentObject"></remotion:boctextvalue>&nbsp;<remotion:boctextvalue id=LastNameField runat="server" PropertyIdentifier="LastName" ReadOnly="True" datasourcecontrol="CurrentObject"></remotion:boctextvalue></td></tr>
   <tr>
     <td></td>
-    <td><remotion:bocbooleanvalue id="DeceasedField" runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Deceased" FalseDescription="nope" NullDescription="häh?" TrueDescription="sicha" AutoPostBack="true" ></remotion:bocbooleanvalue></td>
+    <td><remotion:bocbooleanvalue id="DeceasedField" runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Deceased" FalseDescription="nope" NullDescription="hÃ¤h?" TrueDescription="sicha" AutoPostBack="true" ></remotion:bocbooleanvalue></td>
     <td>bound, AutoPostBack</td>
     <td style="WIDTH: 20%"><asp:label id="DeceasedFieldValueLabel" runat="server" enableviewstate="False">#</asp:label></td>
   </tr>

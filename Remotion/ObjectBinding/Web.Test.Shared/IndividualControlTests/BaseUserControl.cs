@@ -16,13 +16,12 @@
 // 
 using System;
 using System.ComponentModel;
-using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.ServiceLocation;
 using Remotion.Web.UI.Globalization;
 
-namespace OBWTest.IndividualControlTests
+namespace Remotion.ObjectBinding.Web.Test.Shared.IndividualControlTests
 {
   public abstract class BaseUserControl
       :

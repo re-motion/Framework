@@ -20,15 +20,13 @@ using System.IO;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ServiceLocation;
-using Remotion.Text;
 using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
-namespace OBWTest
+namespace Remotion.ObjectBinding.Web.Test.Shared
 {
 
 public class ClientForm : TestWxeBasePage

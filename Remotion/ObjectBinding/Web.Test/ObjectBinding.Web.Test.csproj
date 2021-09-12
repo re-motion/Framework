@@ -216,6 +216,23 @@
       <SubType>Code</SubType>
     </Compile>
     <Content Include="index.html" />
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Job\0ba19f5c-f2a2-4c9f-83c9-e6d25b461d98" />
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Job\89dc8cd2-30e0-4bb3-92a0-4587f32492f5" />
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Person\00000000-0000-0000-0000-000000000001" />
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Person\00000000-0000-0000-0000-000000000009" />
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Person\00000000-0000-0000-0000-00000000000A" />
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Person\011ace7d-5149-4117-8ace-dd33d80b8f96" />
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Person\19214979-d614-4afa-b074-7b05fe37ea65" />
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Person\39aab7cd-9916-4549-a8ec-145fc9cfae2e" />
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Person\6866ca48-8957-4f26-ae5f-78a3f6dcc4de" />
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Person\88ca0bf3-2a08-4d93-bee7-0454052a922d" />
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Person\9e713934-1226-4669-880e-c07c22cdab19" />
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Person\a2752869-e46b-4cfa-b89f-0b824e42b250" />
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Person\a97d84b0-c1c9-4580-a6c1-1fed1ee8c041" />
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Person\c8ace752-55f6-4074-8890-130276ea6cd1" />
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Person\c93f1935-2d55-4b2a-9fd5-219739324cfb" />
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Person\eb94bfdb-1140-46f8-971f-e4b41dae13b8" />
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Person\ef898bb1-7095-46d2-872b-5f732a7c0036" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

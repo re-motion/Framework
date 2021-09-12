@@ -20,7 +20,7 @@ using System.Web.UI.HtmlControls;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Web.UI.Controls;
 
-namespace OBWTest
+namespace Remotion.ObjectBinding.Web.Test.Shared
 {
 public class SingleColumnFormGridsForm : Page
 {

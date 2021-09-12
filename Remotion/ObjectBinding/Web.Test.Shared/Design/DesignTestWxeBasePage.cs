@@ -18,7 +18,7 @@ using System;
 using Remotion.Web.Resources;
 using Remotion.Web.UI;
 
-namespace OBWTest.Design
+namespace Remotion.ObjectBinding.Web.Test.Shared.Design
 {
   public class DesignTestWxeBasePage : TestWxeBasePage
   {

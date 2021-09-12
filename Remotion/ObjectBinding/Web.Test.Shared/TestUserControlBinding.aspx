@@ -16,7 +16,7 @@
 --%>
 
 <%@ Page Language="c#" CodeBehind="TestUserControlBinding.aspx.cs" AutoEventWireup="false"
-  Inherits="OBWTest.TestUserControlBinding" MasterPageFile="~/StandardMode.Master" %>
+  Inherits="Remotion.ObjectBinding.Web.Test.Shared.TestUserControlBinding" MasterPageFile="~/StandardMode.Master" %>
 
 <asp:Content ContentPlaceHolderID="head" runat="server">
 </asp:Content>

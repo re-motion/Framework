@@ -18,7 +18,7 @@ using System;
 using System.Collections;
 using System.Web.UI;
 
-namespace OBWTest
+namespace Remotion.ObjectBinding.Web.Test.Shared
 {
 	/// <summary>
 	/// Summary description for LeftFrame.

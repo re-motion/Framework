@@ -16,14 +16,13 @@
 // 
 using System;
 using System.Web.UI.WebControls;
-using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ServiceLocation;
 using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
-namespace OBWTest
+namespace Remotion.ObjectBinding.Web.Test.Shared
 {
   public class SingleTestTreeView : SingleBocTestBasePage
   {

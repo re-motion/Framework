@@ -17,13 +17,12 @@
 using System;
 using System.Globalization;
 using System.Threading;
-using Remotion.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Globalization;
 
-namespace OBWTest
+namespace Remotion.ObjectBinding.Web.Test.Shared
 {
 
 [MultiLingualResources("OBWTest.Globalization.SingleBocTestBasePage")]

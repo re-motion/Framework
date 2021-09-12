@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace OBWTest.ControlLayoutTests {
+namespace Remotion.ObjectBinding.Web.Test.Shared.ControlLayoutTests {
     
     
     public partial class Form {
@@ -55,7 +55,7 @@ namespace OBWTest.ControlLayoutTests {
         /// Auto-generated field.
         /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
-        protected global::OBWTest.UI.NavigationTabs NavigationTabs;
+        protected global::Remotion.ObjectBinding.Web.Test.Shared.UI.NavigationTabs NavigationTabs;
         
         /// <summary>
         /// FormGrid control.
@@ -648,9 +648,9 @@ namespace OBWTest.ControlLayoutTests {
         /// <remarks>
         /// Auto-generated property.
         /// </remarks>
-        public new OBWTest.StandardMode Master {
+        public new Remotion.ObjectBinding.Web.Test.Shared.StandardMode Master {
             get {
-                return ((OBWTest.StandardMode)(base.Master));
+                return ((Remotion.ObjectBinding.Web.Test.Shared.StandardMode)(base.Master));
             }
         }
     }

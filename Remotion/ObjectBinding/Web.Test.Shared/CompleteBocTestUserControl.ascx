@@ -14,7 +14,7 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Control Language="c#" AutoEventWireup="false" Codebehind="CompleteBocTestUserControl.ascx.cs" Inherits="OBWTest.CompleteBocUserControl" TargetSchema="http://schemas.microsoft.com/intellisense/ie5" %>
+<%@ Control Language="c#" AutoEventWireup="false" Codebehind="CompleteBocTestUserControl.ascx.cs" Inherits="Remotion.ObjectBinding.Web.Test.Shared.CompleteBocUserControl" TargetSchema="http://schemas.microsoft.com/intellisense/ie5" %>
 
 
 
@@ -34,7 +34,7 @@
 </textBoxStyle></remotion:BocMultilineTextValue></td></tr>
   <tr>
     <td></td>
-    <td><remotion:BocDateTimeValue id="DateTimeField" runat="server" propertyidentifier="DateOfBirth" datasourcecontrol="CurrentObject" EnableOptionalValidators="true" incompleteerrormessage="Unvollständige Daten" ></remotion:BocDateTimeValue></td></tr>
+    <td><remotion:BocDateTimeValue id="DateTimeField" runat="server" propertyidentifier="DateOfBirth" datasourcecontrol="CurrentObject" EnableOptionalValidators="true" incompleteerrormessage="UnvollstÃ¤ndige Daten" ></remotion:BocDateTimeValue></td></tr>
   <tr>
     <td style="HEIGHT: 18px"></td>
     <td style="HEIGHT: 18px"><remotion:BocEnumValue id="EnumField" runat="server" propertyidentifier="MarriageStatus" datasourcecontrol="CurrentObject">

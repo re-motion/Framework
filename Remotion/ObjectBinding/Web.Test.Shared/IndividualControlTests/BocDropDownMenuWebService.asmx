@@ -1,1 +1,1 @@
-﻿<%@ WebService Language="C#" CodeBehind="BocDropDownMenuWebService.asmx.cs" Class="OBWTest.IndividualControlTests.BocDropDownMenuWebService" %>
+﻿<%@ WebService Language="C#" CodeBehind="BocDropDownMenuWebService.asmx.cs" Class="Remotion.ObjectBinding.Web.Test.Shared.IndividualControlTests.BocDropDownMenuWebService" %>

@@ -4,7 +4,7 @@ using System.Web.UI.HtmlControls;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Web.UI.Controls;
 
-namespace OBWTest.Validation
+namespace Remotion.ObjectBinding.Web.Test.Shared.Validation
 {
   public partial class TestUserControl : DataEditUserControl, IControl, IFormGridRowProvider
   {

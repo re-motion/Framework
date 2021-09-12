@@ -22,7 +22,6 @@ using System.Threading;
 using System.Web;
 using System.Web.Script.Services;
 using System.Web.Services;
-using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls;
@@ -32,7 +31,7 @@ using Remotion.Web.Services;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.Utilities;
 
-namespace OBWTest.IndividualControlTests
+namespace Remotion.ObjectBinding.Web.Test.Shared.IndividualControlTests
 {
   [WebService(Namespace = "http://re-motion.org/ObjectBinding.Web/")]
   [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]

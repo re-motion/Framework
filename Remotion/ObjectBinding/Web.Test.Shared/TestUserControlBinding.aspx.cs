@@ -16,11 +16,10 @@
 // 
 using System;
 using System.Web.UI;
-using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
 
-namespace OBWTest
+namespace Remotion.ObjectBinding.Web.Test.Shared
 {
   /// <summary>
   /// Summary description for TestUserControlBinding.

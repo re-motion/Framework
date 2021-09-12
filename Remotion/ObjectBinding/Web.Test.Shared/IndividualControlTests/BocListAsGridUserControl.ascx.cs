@@ -20,7 +20,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
@@ -29,7 +28,7 @@ using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
-namespace OBWTest.IndividualControlTests
+namespace Remotion.ObjectBinding.Web.Test.Shared.IndividualControlTests
 {
 
 public class BocListAsGridUserControl : BaseUserControl

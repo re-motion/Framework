@@ -17,32 +17,21 @@
 using System;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Web;
 using System.Web.Configuration;
 using CommonServiceLocator;
 using Remotion.Development.Web.ResourceHosting;
 using Remotion.Logging;
-using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Sample.ReferenceDataSourceTestDomain;
-using Remotion.ObjectBinding.Web;
-using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation;
-using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Validation;
-using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.Validation;
-using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Validation;
-using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation;
-using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Validation;
-using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Validation;
 using Remotion.ServiceLocation;
 using Remotion.Web;
 using Remotion.Web.Configuration;
 using Remotion.Web.Infrastructure;
 
-namespace OBWTest
+namespace Remotion.ObjectBinding.Web.Test.Shared
 {
   public class Global : HttpApplication
   {

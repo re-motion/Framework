@@ -20,21 +20,15 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using OBWTest.IndividualControlTests;
-using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
-using Remotion.ObjectBinding.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.ServiceLocation;
-using Remotion.Text;
-using Remotion.Validation;
-using Remotion.Validation.Results;
 using Remotion.Web;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 
-namespace OBWTest
+namespace Remotion.ObjectBinding.Web.Test.Shared
 {
 
 public class TestTabbedForm : TestWxeBasePage

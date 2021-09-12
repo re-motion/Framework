@@ -18,7 +18,7 @@ using System;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 
-namespace OBWTest.Design
+namespace Remotion.ObjectBinding.Web.Test.Shared.Design
 {
 
 [Serializable]

@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace OBWTest.ViewLayoutTests {
+namespace Remotion.ObjectBinding.Web.Test.Shared.ViewLayoutTests {
     
     
     public partial class Form {
@@ -17,7 +17,7 @@ namespace OBWTest.ViewLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::System.Web.UI.ScriptManager ScriptManager;
         
@@ -26,7 +26,7 @@ namespace OBWTest.ViewLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.SingleView OuterSingleView;
         
@@ -35,16 +35,16 @@ namespace OBWTest.ViewLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
-        protected global::OBWTest.UI.NavigationTabs NavigationTabs;
+        protected global::Remotion.ObjectBinding.Web.Test.Shared.UI.NavigationTabs NavigationTabs;
         
         /// <summary>
         /// InnerSingleView control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.SingleView InnerSingleView;
         
@@ -53,8 +53,20 @@ namespace OBWTest.ViewLayoutTests {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.TabbedMultiView InnerMultiView;
+        
+        /// <summary>
+        /// Master property.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated property.
+        /// </remarks>
+        public new Remotion.ObjectBinding.Web.Test.Shared.StandardMode Master {
+            get {
+                return ((Remotion.ObjectBinding.Web.Test.Shared.StandardMode)(base.Master));
+            }
+        }
     }
 }

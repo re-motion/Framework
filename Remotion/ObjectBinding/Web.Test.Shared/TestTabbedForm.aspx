@@ -14,7 +14,7 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Page Language="c#" Codebehind="TestTabbedForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.TestTabbedForm" Title="Test TabbedMultiView" MasterPageFile="~/StandardMode.Master" %>
+<%@ Page Language="c#" Codebehind="TestTabbedForm.aspx.cs" AutoEventWireup="false" Inherits="Remotion.ObjectBinding.Web.Test.Shared.TestTabbedForm" Title="Test TabbedMultiView" MasterPageFile="~/StandardMode.Master" %>
 
 <asp:Content ContentPlaceHolderID="head" runat="server">
 </asp:Content>

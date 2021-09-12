@@ -1,1 +1,1 @@
-﻿<%@ WebService Language="C#" CodeBehind="TestService.asmx.cs" Class="OBWTest.TestService" %>
+﻿<%@ WebService Language="C#" CodeBehind="TestService.asmx.cs" Class="Remotion.ObjectBinding.Web.Test.Shared.TestService" %>

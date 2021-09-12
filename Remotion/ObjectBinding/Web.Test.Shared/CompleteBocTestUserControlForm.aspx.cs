@@ -17,7 +17,7 @@
 using System;
 using Remotion.Web.UI.Controls;
 
-namespace OBWTest
+namespace Remotion.ObjectBinding.Web.Test.Shared
 {
 
   public class CompleteBocUserControlForm : SingleBocTestWxeBasePage

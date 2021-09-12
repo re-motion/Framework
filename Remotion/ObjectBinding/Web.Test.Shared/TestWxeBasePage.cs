@@ -20,14 +20,13 @@ using System.Text;
 using System.Threading;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Remotion.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.Resources;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Globalization;
 
-namespace OBWTest
+namespace Remotion.ObjectBinding.Web.Test.Shared
 {
 
 [MultiLingualResources("OBWTest.Globalization.TestBasePage")]

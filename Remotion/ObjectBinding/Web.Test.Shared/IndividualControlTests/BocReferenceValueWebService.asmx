@@ -1,1 +1,1 @@
-﻿<%@ WebService Language="C#" CodeBehind="BocReferenceValueWebService.asmx.cs" Class="OBWTest.IndividualControlTests.BocReferenceValueWebService" %>
+﻿<%@ WebService Language="C#" CodeBehind="BocReferenceValueWebService.asmx.cs" Class="Remotion.ObjectBinding.Web.Test.Shared.IndividualControlTests.BocReferenceValueWebService" %>

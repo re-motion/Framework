@@ -1,1 +1,1 @@
-﻿<%@ WebService Language="C#" CodeBehind="BocTreeViewWebService.asmx.cs" Class="OBWTest.IndividualControlTests.BocTreeViewWebService" %>
+﻿<%@ WebService Language="C#" CodeBehind="BocTreeViewWebService.asmx.cs" Class="Remotion.ObjectBinding.Web.Test.Shared.IndividualControlTests.BocTreeViewWebService" %>

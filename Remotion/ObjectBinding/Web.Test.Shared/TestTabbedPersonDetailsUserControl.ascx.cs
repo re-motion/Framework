@@ -25,7 +25,7 @@ using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
-namespace OBWTest
+namespace Remotion.ObjectBinding.Web.Test.Shared
 {
 public class TestTabbedPersonDetailsUserControl :
     DataEditUserControl, IControl, IFormGridRowProvider

@@ -14,7 +14,7 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Control Language="c#" AutoEventWireup="false" Codebehind="NavigationTabs.ascx.cs" Inherits="OBWTest.UI.NavigationTabs" TargetSchema="http://schemas.microsoft.com/intellisense/ie5"%>
+<%@ Control Language="c#" AutoEventWireup="false" Codebehind="NavigationTabs.ascx.cs" Inherits="Remotion.ObjectBinding.Web.Test.Shared.UI.NavigationTabs" TargetSchema="http://schemas.microsoft.com/intellisense/ie5"%>
 
 
 <remotion:TabbedMenu id="TabbedMenu" runat="server">

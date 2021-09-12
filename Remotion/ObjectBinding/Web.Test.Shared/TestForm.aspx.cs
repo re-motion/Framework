@@ -18,7 +18,7 @@ using System;
 using System.Web.UI;
 using Remotion.Web.UI;
 
-namespace OBWTest
+namespace Remotion.ObjectBinding.Web.Test.Shared
 {
   public class TestForm : Page
   {

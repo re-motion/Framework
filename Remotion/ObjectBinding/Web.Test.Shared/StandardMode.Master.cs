@@ -16,7 +16,7 @@
 // 
 using System;
 
-namespace OBWTest
+namespace Remotion.ObjectBinding.Web.Test.Shared
 {
   public partial class StandardMode : System.Web.UI.MasterPage
   {

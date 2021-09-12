@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="TestUserControl.ascx.cs" Inherits="OBWTest.Validation.TestUserControl" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="TestUserControl.ascx.cs" Inherits="Remotion.ObjectBinding.Web.Test.Shared.Validation.TestUserControl" %>
 <%@ Import Namespace="System" %>
 <table id="FormGrid" runat="server" style="margin-top: 0%">
   <tr>

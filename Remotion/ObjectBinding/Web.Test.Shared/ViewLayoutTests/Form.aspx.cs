@@ -17,7 +17,7 @@
 using System;
 using Remotion.Web.UI;
 
-namespace OBWTest.ViewLayoutTests
+namespace Remotion.ObjectBinding.Web.Test.Shared.ViewLayoutTests
 {
   public partial class Form : TestBasePage<TestFunction>
   {
