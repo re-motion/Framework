@@ -61,156 +61,81 @@ class BocReferenceValueBase //TODO RM-7715 - Make the TypeScript classes BocRefe
     BocReferenceValueBase._nullIconUrl = nullIconUrl;
   };
 
-  public static UpdateCommand (oldCommand: HTMLAnchorElement, businessObject: Nullable<string>, isIconUpdateEnabled: boolean, controlServiceUrl: Nullable<string>, iconContext: Nullable<BocReferenceValueBase_IconContext>, commandInfo: Nullable<BocReferenceValueBase_CommandInfo>, onFailure: BocReferenceValueBase_ErrorHandler): HTMLAnchorElement
+  public static UpdateIcon (iconMarker: HTMLElement, icon: HTMLImageElement, businessObject: Nullable<string>, controlServiceUrl: Nullable<string>, iconContext: Nullable<BocReferenceValueBase_IconContext>, onFailure: BocReferenceValueBase_ErrorHandler): Nullable<HTMLImageElement>
   {
-    ArgumentUtility.CheckNotNull('oldCommand', oldCommand);
+    ArgumentUtility.CheckNotNull('iconMarker', iconMarker);
+    ArgumentUtility.CheckNotNull('icon', icon);
     ArgumentUtility.CheckTypeIsString('businessObject', businessObject);
-    ArgumentUtility.CheckNotNullAndTypeIsBoolean('isIconUpdateEnabled', isIconUpdateEnabled);
-    if (isIconUpdateEnabled)
-      ArgumentUtility.CheckNotNullAndTypeIsString('controlServiceUrl', controlServiceUrl);
-    if (isIconUpdateEnabled)
-      ArgumentUtility.CheckNotNullAndTypeIsObject('iconContext', iconContext);
-    ArgumentUtility.CheckTypeIsObject('commandInfo', commandInfo);
+    ArgumentUtility.CheckNotNullAndTypeIsString('controlServiceUrl', controlServiceUrl);
+    ArgumentUtility.CheckNotNullAndTypeIsObject('iconContext', iconContext);
     ArgumentUtility.CheckTypeIsFunction('onFailure', onFailure);
 
-    var newCommand = BocReferenceValueBase.CreateCommand(oldCommand, commandInfo, businessObject);
+    var oldIcon = icon;
+    var newIcon = BocReferenceValueBase.CreateEmptyIcon(oldIcon);
 
-    var oldIcon = oldCommand.querySelector('img')!;
-    var newIcon = BocReferenceValueBase.CreateEmptyIcon(oldIcon, newCommand.title);
-    newCommand.appendChild(newIcon);
+    oldIcon.replaceWith(newIcon);
 
-    oldCommand.replaceWith(newCommand);
+    var pageRequestManager = Sys.WebForms.PageRequestManager.getInstance();
+    if (pageRequestManager.get_isInAsyncPostBack())
+      return oldIcon;
 
-    if (isIconUpdateEnabled)
-    {
-      var pageRequestManager = Sys.WebForms.PageRequestManager.getInstance();
-      if (pageRequestManager.get_isInAsyncPostBack())
-        return oldCommand;
+    var params: Dictionary<string> = { businessObject: businessObject! };
+    for (var propertyName in iconContext) // TODO RM-7714 - Simplify copiyng JavaScript properties in TypeScript files
+      params[propertyName] = (iconContext as any)[propertyName];
 
-      var params: Dictionary<string> = { businessObject: businessObject! };
-      for (var propertyName in iconContext) // TODO RM-7714 - Simplify copiyng JavaScript properties in TypeScript files
-        params[propertyName] = (iconContext as any)[propertyName];
+    WebServiceUtility.Execute<BocReferenceValueBase_IconInformation>(
+        controlServiceUrl!,
+        'GetIcon',
+        params,
+        function (result: BocReferenceValueBase_IconInformation): void
+        {
+          const hasUpdatedIcon = BocReferenceValueBase.UpdateIconFromWebService(newIcon, result);
+          if (hasUpdatedIcon)
+            iconMarker.classList.add('hasIcon');
+        },
+        function (err: Sys.Net.WebServiceError)
+        {
+          onFailure(err);
+          return
+        });
 
-      WebServiceUtility.Execute<BocReferenceValueBase_IconInformation>(
-          controlServiceUrl!,
-          'GetIcon',
-          params,
-          function (result: BocReferenceValueBase_IconInformation): void
-          {
-            BocReferenceValueBase.UpdateIconFromWebService(newCommand, newIcon, result);
-          },
-          function (err: Sys.Net.WebServiceError)
-          {
-            onFailure(err);
-            BocReferenceValueBase.ResetCommand(newCommand);
-          });
-    }
-
-    return newCommand;
+    iconMarker.classList.remove('hasIcon');
+    return newIcon;
   };
 
-  public static CreateCommand (oldCommand: HTMLAnchorElement, commandInfo: Nullable<BocReferenceValueBase_CommandInfo>, businessObject: Nullable<string>): HTMLAnchorElement
-  {
-    ArgumentUtility.CheckNotNull('oldCommand', oldCommand);
-    ArgumentUtility.CheckTypeIsObject('commandInfo', commandInfo);
-    ArgumentUtility.CheckTypeIsString('businessObject', businessObject);
-
-    var newCommand = document.createElement('a');
-
-    var tempCommandInfo: Dictionary<Nullable<string>> = {};
-    if (commandInfo != null)
-    {
-      tempCommandInfo = Object.assign({}, commandInfo);
-      if (businessObject == null)
-      {
-        tempCommandInfo.href = null;
-        tempCommandInfo.target = null;
-        tempCommandInfo.onClick = null;
-        tempCommandInfo.title = null;
-      }
-      else if (commandInfo.href != null)
-      {
-        tempCommandInfo.href = String.format(commandInfo.href, businessObject);
-      }
-    }
-
-    var oldCommandAttributes = oldCommand.attributes;
-
-    for (var i = 0; i < oldCommandAttributes.length; i++)
-    {
-      const value = oldCommandAttributes[i].nodeValue;
-      if (value != null && value != '')
-        newCommand.setAttribute(oldCommandAttributes[i].nodeName, value);
-    }
-
-    for (var property in tempCommandInfo)
-    {
-      const value = tempCommandInfo[property];
-      if (value == null)
-        newCommand.removeAttribute(property);
-      else
-        newCommand.setAttribute(property, value);
-    }
-
-    newCommand.classList.remove('hasIcon');
-
-    return newCommand;
-  };
-
-  public static CreateEmptyIcon (oldIcon: HTMLImageElement, title: Nullable<string>): HTMLImageElement
+  public static CreateEmptyIcon (oldIcon: HTMLImageElement): HTMLImageElement
   {
     ArgumentUtility.CheckNotNull('oldIcon', oldIcon);
-    ArgumentUtility.CheckTypeIsString('title', title);
-  
-    var newIcon = oldIcon.cloneNode(true) as HTMLImageElement;
-    
+
+    var newIcon = (window.document.createElement('img') as HTMLImageElement);
     newIcon.setAttribute('src', BocReferenceValueBase._nullIconUrl!);
-
     newIcon.setAttribute('alt', '');
-    newIcon.removeAttribute('title');
-    if (!StringUtility.IsNullOrEmpty(title))
-      newIcon.setAttribute('title', title);
-
     newIcon.style.width = LayoutUtility.GetWidth(oldIcon) + 'px';
     newIcon.style.height = LayoutUtility.GetHeight(oldIcon) + 'px';
   
     return newIcon;
   };
 
-  public static UpdateIconFromWebService (command: HTMLElement, icon: HTMLImageElement, iconInformation: Nullable<BocReferenceValueBase_IconInformation>): void
+  public static UpdateIconFromWebService (icon: HTMLImageElement, iconInformation: Nullable<BocReferenceValueBase_IconInformation>): boolean
   {
     ArgumentUtility.CheckNotNull('icon', icon);
     ArgumentUtility.CheckTypeIsObject('iconInformation', iconInformation);
-  
+
     if (iconInformation == null)
-      return;
-  
+      return false;
+
     icon.setAttribute('src', iconInformation.Url);
-  
+
     icon.setAttribute('alt', '');
     if (!StringUtility.IsNullOrEmpty(iconInformation.AlternateText))
       icon.setAttribute('alt', iconInformation.AlternateText);
   
-    if (!StringUtility.IsNullOrEmpty(iconInformation.ToolTip) && StringUtility.IsNullOrEmpty(icon.title))
+    if (!StringUtility.IsNullOrEmpty(iconInformation.ToolTip))
       icon.setAttribute('title', iconInformation.ToolTip);
-  
+
     icon.style.width = iconInformation.Width;
     icon.style.height = iconInformation.Height;
-  
-    command.classList.add('hasIcon');
-  };
 
-  public static ResetCommand (command: Nullable<HTMLElement>): void
-  {
-    ArgumentUtility.CheckTypeIsObject('command', command);
-
-    if (command === null)
-      return;
-
-    command.removeAttribute('href');
-    command.removeAttribute('onclick');
-    command.removeAttribute('title');
-    command.removeAttribute('target');
-    command.classList.remove('hasIcon');
+    return true;
   };
 }

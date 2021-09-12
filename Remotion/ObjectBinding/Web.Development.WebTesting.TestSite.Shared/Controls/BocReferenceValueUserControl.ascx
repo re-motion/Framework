@@ -32,10 +32,6 @@
                                   ControlServicePath="BocReferenceValueWebService.asmx"
                                   runat="server">
         
-        <PersistedCommand>
-          <remotion:BocCommand Type="Event"></remotion:BocCommand>
-        </PersistedCommand>
-
         <OptionsMenuItems>
           <remotion:BocMenuItem ItemID="OptCmd1" Text="My menu command">
             <PersistedCommand>
@@ -67,11 +63,6 @@
                                   PropertyIdentifier="Partner"
                                   ControlServicePath="BocReferenceValueWebService.asmx"
                                   runat="server">
-        
-        <PersistedCommand>
-          <remotion:BocCommand Type="Event"></remotion:BocCommand>
-        </PersistedCommand>
-
         <OptionsMenuItems>
           <remotion:BocMenuItem ItemID="OptCmd1" Text="My menu command">
             <PersistedCommand>
@@ -114,11 +105,6 @@
                                   PropertyIdentifier="Partner"
                                   ControlServicePath="BocReferenceValueWebService.asmx"
                                   runat="server">
-        
-        <PersistedCommand>
-          <remotion:BocCommand Type="Event"></remotion:BocCommand>
-        </PersistedCommand>
-
         <OptionsMenuItems>
           <remotion:BocMenuItem ItemID="OptCmd1" Text="My menu command">
             <PersistedCommand>
@@ -150,11 +136,6 @@
                                   PropertyIdentifier="Partner"
                                   ControlServicePath="BocReferenceValueWebService.asmx"
                                   runat="server">
-        
-        <PersistedCommand>
-          <remotion:BocCommand Type="Event"></remotion:BocCommand>
-        </PersistedCommand>
-
         <OptionsMenuItems>
           <remotion:BocMenuItem ItemID="OptCmd1" Text="My menu command">
             <PersistedCommand>

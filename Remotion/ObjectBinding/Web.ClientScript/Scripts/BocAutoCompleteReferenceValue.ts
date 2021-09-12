@@ -30,8 +30,9 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
 {
   private _itemBackUp: Nullable<BocAutoCompleteReferenceValue_Item>;
   private _isInvalidated: boolean;
-  private _command: Nullable<HTMLAnchorElement>;
-  private _commandBackUp: Nullable<HTMLAnchorElement>;
+  private _iconMarker: Nullable<HTMLElement>;
+  private _icon: Nullable<HTMLImageElement>;
+  private _iconBackUp: Nullable<HTMLImageElement>;
   private _selectListID: string;
   private _informationPopUpID: string;
   private _nullValueString: string;
@@ -39,20 +40,27 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
   private _isIconUpdateEnabled: boolean
   private _controlServiceUrl: string;
   private _iconContext: Nullable<BocReferenceValueBase_IconContext>;
-  private _commandInfo: Nullable<BocReferenceValueBase_CommandInfo>;
   private _textbox: HTMLInputElement;
 
   constructor (
     baseID: Nullable<string>,
-    comboboxOrSelector: CssSelectorOrElement<HTMLElement>, textboxOrSelector: CssSelectorOrElement<HTMLInputElement>, hiddenFieldOrSelector: CssSelectorOrElement<HTMLInputElement>, buttonOrSelector: CssSelectorOrElement<HTMLElement>, commandOrSelector: Nullable<CssSelectorOrElement<HTMLAnchorElement>>, controlServiceUrl: string,
-    completionSetCount: number, dropDownDisplayDelay: number, dropDownRefreshDelay: number, selectionUpdateDelay: number,
+    comboboxOrSelector: CssSelectorOrElement<HTMLElement>,
+    textboxOrSelector: CssSelectorOrElement<HTMLInputElement>,
+    hiddenFieldOrSelector: CssSelectorOrElement<HTMLInputElement>,
+    buttonOrSelector: CssSelectorOrElement<HTMLElement>,
+    iconMarkerOrSelector: Nullable<CssSelectorOrElement<HTMLElement>>,
+    iconOrSelector: Nullable<CssSelectorOrElement<HTMLImageElement>>,
+    controlServiceUrl: string,
+    completionSetCount: number,
+    dropDownDisplayDelay: number,
+    dropDownRefreshDelay: number,
+    selectionUpdateDelay: number,
     searchStringValidationInfo: BocReferenceValueBase_SearchStringValidationInfo,
     nullValueString: string,
     isAutoPostBackEnabled: boolean,
     searchContext: object,
     isIconUpdateEnabled: boolean,
     iconContext: Nullable<BocReferenceValueBase_IconContext>,
-    commandInfo: Nullable<BocReferenceValueBase_CommandInfo>,
     resources: BocReferenceValueBase_Resources)
   {
     ArgumentUtility.CheckTypeIsString('baseID', baseID);
@@ -71,23 +79,30 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
     ArgumentUtility.CheckNotNullAndTypeIsObject('searchContext', searchContext);
     ArgumentUtility.CheckNotNullAndTypeIsBoolean('isIconUpdateEnabled', isIconUpdateEnabled);
     if (isIconUpdateEnabled)
+    {
+      ArgumentUtility.CheckNotNull('iconMarkerOrSelector', iconMarkerOrSelector);
+      ArgumentUtility.CheckNotNull('iconOrSelector', iconOrSelector);
       ArgumentUtility.CheckNotNullAndTypeIsObject('iconContext', iconContext);
-    ArgumentUtility.CheckTypeIsObject('commandInfo', commandInfo);
+    }
     ArgumentUtility.CheckNotNullAndTypeIsObject('resources', resources);
 
     let combobox = ElementResolverUtility.ResolveSingle(comboboxOrSelector);
     const textbox = ElementResolverUtility.ResolveSingle(textboxOrSelector);
     const hiddenField = ElementResolverUtility.ResolveSingle(hiddenFieldOrSelector);
     const button = ElementResolverUtility.ResolveSingle(buttonOrSelector);
-    const command = commandOrSelector !== null
-      ? ElementResolverUtility.ResolveSingle(commandOrSelector)
-      : null;
+    const iconMarker = iconMarkerOrSelector != null
+        ? ElementResolverUtility.ResolveSingle(iconMarkerOrSelector)
+        : null;
+    const icon = iconOrSelector !== null
+        ? ElementResolverUtility.ResolveSingle(iconOrSelector)
+        : null;
 
     this._itemBackUp = null;
     this._isInvalidated = false;
     this.BackupItemData(hiddenField.value, textbox.value);
-    this._command = command;
-    this._commandBackUp = command;
+    this._iconMarker = iconMarker;
+    this._icon = icon;
+    this._iconBackUp = icon;
     this._selectListID = baseID + '_Results';
     this._informationPopUpID = baseID + '_Information';
     this._isAutoPostBackEnabled = isAutoPostBackEnabled;
@@ -95,7 +110,6 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
     this._isIconUpdateEnabled = isIconUpdateEnabled;
     this._controlServiceUrl = controlServiceUrl;
     this._iconContext = iconContext;
-    this._commandInfo = commandInfo;
     this._textbox = textbox;
 
     if (BrowserUtility.GetIEVersion() > 0)
@@ -251,7 +265,7 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
         this._isInvalidated = true;
 
       hiddenField.value = this._nullValueString;
-      this.UpdateCommand(this._nullValueString, errorHandler);
+      this.UpdateIcon(this._nullValueString, errorHandler);
       //Do not fire change-event
     }).updateResult((e: JQueryEventObject, item: BocAutoCompleteReferenceValue_Item, out: BocAutoCompleteReferenceValue_UpdateResult) =>
     {
@@ -278,13 +292,13 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
 
           if (hasChanged)
           {
-            this.UpdateCommand(actualItem.UniqueIdentifier, errorHandler);
-            this._commandBackUp = this._command;
+            this.UpdateIcon(actualItem.UniqueIdentifier, errorHandler);
+            this._iconBackUp = this._icon;
             hiddenField.dispatchEvent(new Event('change'));
           }
           else
           {
-            this.RestoreCommand();
+            this.RestoreIcon();
           }
         }
         out.Value = actualItem;
@@ -296,26 +310,35 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
     });
   };
 
-  private RestoreCommand(): void
+  private RestoreIcon(): void
   {
-    if (this._commandBackUp == null)
+    if (this._iconBackUp == null)
       return;
 
-    if (this._command == null)
+    if (this._icon == null)
       return;
 
-      this._command.replaceWith(this._commandBackUp);
-      this._command = this._commandBackUp;
+    this._icon.replaceWith(this._iconBackUp);
+    this._icon = this._iconBackUp;
+
+    if (this._iconMarker != null)
+      this._iconMarker.classList.add('hasIcon');
   }
 
-  private UpdateCommand (selectedValue: string, errorHandler: (error: Sys.Net.WebServiceError) => void): void
+  private UpdateIcon (selectedValue: string, errorHandler: (error: Sys.Net.WebServiceError) => void): void
   {
-    if (this._command == null)
+    if (!this._isIconUpdateEnabled)
+      return;
+
+    if (this._iconMarker == null)
+      return;
+
+    if (this._icon == null)
       return;
 
     if (this._isAutoPostBackEnabled)
     {
-      this._command = BocReferenceValueBase.UpdateCommand(this._command, null, false, null, null, null, function () { });
+      this._icon = BocReferenceValueBase.UpdateIcon(this._iconMarker, this._icon, null, this._controlServiceUrl, this._iconContext, errorHandler);
     }
     else
     {
@@ -323,7 +346,7 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
       if (selectedValue != this._nullValueString)
         businessObject = selectedValue;
 
-      this._command = BocReferenceValueBase.UpdateCommand(this._command, businessObject, this._isIconUpdateEnabled, this._controlServiceUrl, this._iconContext, this._commandInfo, errorHandler);
+      this._icon = BocReferenceValueBase.UpdateIcon(this._iconMarker, this._icon, businessObject, this._controlServiceUrl, this._iconContext, errorHandler);
     }
   }
 

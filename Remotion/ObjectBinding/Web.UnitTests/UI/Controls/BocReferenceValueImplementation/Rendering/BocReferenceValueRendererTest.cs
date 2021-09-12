@@ -45,6 +45,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
   public class BocReferenceValueRendererTest : RendererTestBase
   {
     private const string c_clientID = "MyReferenceValue";
+    private const string c_contentID = "MyReferenceValue_Content";
     private const string c_valueName = "MyReferenceValue_SelectedValue";
     private const string c_readOnlyTextValueName = "MyReferenceValue_Value";
     private const string c_uniqueIdentifier = "uniqueidentifiert";
@@ -84,11 +85,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       Control.Setup (mock => mock.GetLabelIDs()).Returns (EnumerableUtility.Singleton (c_labelID));
       Control.Setup (mock => mock.GetValidationErrors()).Returns (EnumerableUtility.Singleton (c_validationErrors));
       Control.Setup (stub => stub.BusinessObjectUniqueIdentifier).Returns (c_uniqueIdentifier);
-#pragma warning disable 618
-      Control.Setup (stub => stub.Command).Returns (new BocCommand());
-      Control.Object.Command.Type = CommandType.Event;
-      Control.Object.Command.Show = CommandShow.Always;
-#pragma warning restore 618
 
       Control.Setup (stub => stub.OptionsMenu).Returns (OptionsMenu);
 
@@ -153,7 +149,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     public void RenderNullReferenceValueWithOptionsMenu ()
     {
       Control.Setup (stub => stub.Enabled).Returns (true);
-      SetUpClientScriptExpectations();
       Control.Setup (stub => stub.HasOptionsMenu).Returns (true);
 
       XmlNode containerDiv = GetAssertedContainerSpan (false);
@@ -239,7 +234,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     public void RenderReferenceValue ()
     {
       Control.Setup (stub => stub.Enabled).Returns (true);
-      SetUpClientScriptExpectations();
       SetValue();
       XmlNode span = GetAssertedContainerSpan (false);
       AssertControl (span, OptionMenuConfiguration.NoOptionsMenu);
@@ -250,7 +244,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     {
       DropDownList.AutoPostBack = false;
       Control.Setup (stub => stub.Enabled).Returns (true);
-      SetUpClientScriptExpectations();
       SetValue();
 
       Control.Setup (stub => stub.DropDownListStyle).Returns (new DropDownListStyle());
@@ -271,7 +264,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     public void RenderReferenceValueWithOptionsMenu ()
     {
       Control.Setup (stub => stub.Enabled).Returns (true);
-      SetUpClientScriptExpectations();
       SetValue();
       Control.Setup (stub => stub.HasOptionsMenu).Returns (true);
 
@@ -418,23 +410,20 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
 
       var span = parent.GetAssertedChildElement ("span", 0);
       span.AssertAttributeValueEquals ("class", "body");
-      span.AssertChildElementCount (hasOptionsMenu ? 3 : 2);
 
-      var commandLink = span.GetAssertedChildElement ("a", 0);
-      commandLink.AssertAttributeValueEquals ("id", Control.Object.ClientID + "_Command");
-      commandLink.AssertAttributeValueEquals (StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
-      commandLink.AssertAttributeValueEquals (StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, c_readOnlyTextValueName);
-      commandLink.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
-      commandLink.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
-      commandLink.AssertAttributeValueEquals ("class", "command");
-      commandLink.AssertChildElementCount (1);
+      var hasIcon = AssertIcon (span);
+      var iconOffset = hasIcon ? 1 : 0;
+      var hasIconCssClass = hasIcon ? " hasIcon" : "";
 
-      var validationErrors = span.GetAssertedChildElement ("fake", 1);
-      Html.AssertAttribute (validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
-      Html.AssertAttribute (validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
+      span.AssertChildElementCount (2 + iconOffset + optionsMenuOffset);
 
-      var contentSpan = commandLink.GetAssertedChildElement ("span", 0);
-      contentSpan.AssertAttributeValueEquals ("class", "content " + hasOptionsMenuCssClass);
+      var contentSpan = span.GetAssertedChildElement ("span", 0 + iconOffset);
+      contentSpan.AssertAttributeValueEquals ("id",  c_contentID);
+      contentSpan.AssertAttributeValueEquals ("class", "content" + hasIconCssClass + " " + hasOptionsMenuCssClass);
+      contentSpan.AssertAttributeValueEquals (StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
+      contentSpan.AssertAttributeValueEquals (StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, c_readOnlyTextValueName);
+      contentSpan.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
+      contentSpan.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
       contentSpan.AssertChildElementCount (1);
 
       var innerSpan = contentSpan.GetAssertedChildElement ("span", 0);
@@ -443,9 +432,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       innerSpan.AssertChildElementCount (0);
       innerSpan.AssertTextNode ("MyText", 0);
 
+      var validationErrors = span.GetAssertedChildElement ("fake", 1 + iconOffset);
+      Html.AssertAttribute (validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
+      Html.AssertAttribute (validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
+
       if (hasOptionsMenu)
       {
-        var wrapperSpan = span.GetAssertedChildElement ("span", 1 + optionsMenuOffset);
+        var wrapperSpan = span.GetAssertedChildElement ("span", 2 + iconOffset);
         wrapperSpan.AssertAttributeValueEquals ("class", "optionsMenu");
         wrapperSpan.AssertChildElementCount (0);
         wrapperSpan.AssertTextNode ("DropDownMenu", 0);
@@ -457,16 +450,19 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       var contentDiv = containerDiv.GetAssertedChildElement ("span", 0);
       contentDiv.AssertAttributeValueEquals ("class", "body");
 
-      AssertIcon (contentDiv, true);
+      var hasIcon = AssertIcon (contentDiv);
+      var iconOffset = 1;
+      var hasIconCssClass = hasIcon ? " hasIcon" : "";
 
-      var contentSpan = contentDiv.GetAssertedChildElement ("span", 1);
+      var contentSpan = contentDiv.GetAssertedChildElement ("span", 0 + iconOffset);
+      contentSpan.AssertAttributeValueEquals ("id",  c_contentID);
       switch (optionMenuConfiguration)
       {
         case OptionMenuConfiguration.NoOptionsMenu:
-          contentSpan.AssertAttributeValueEquals ("class", "content withoutOptionsMenu");
+          contentSpan.AssertAttributeValueEquals ("class", "content" + hasIconCssClass + " withoutOptionsMenu");
           break;
         case OptionMenuConfiguration.HasOptionsMenu:
-          contentSpan.AssertAttributeValueEquals ("class", "content hasOptionsMenu");
+          contentSpan.AssertAttributeValueEquals ("class", "content" + hasIconCssClass + " hasOptionsMenu");
           break;
       }
 
@@ -474,7 +470,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
 
       if (optionMenuConfiguration == OptionMenuConfiguration.HasOptionsMenu)
       {
-        var optionsMenuDiv = contentDiv.GetAssertedChildElement ("span", 2);
+        var optionsMenuDiv = contentDiv.GetAssertedChildElement ("span", 1 + iconOffset);
         optionsMenuDiv.AssertAttributeValueEquals ("class", "optionsMenu");
         optionsMenuDiv.AssertTextNode ("DropDownMenu", 0);
       }
@@ -525,64 +521,25 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       Control.Setup (mock => mock.GetIcon ()).Returns (new IconInfo ("~/Images/NullIcon.gif")).Verifiable();
     }
 
-    protected void SetUpClientScriptExpectations ()
-    {
-      ClientScriptManagerMock.Setup (mock => mock.GetPostBackEventReference (Control.Object, BocReferenceValueBase.CommandArgumentName))
-                             .Returns ("PostBackEventReference")
-                             .Verifiable();
-    }
-
-    protected void AssertIcon (XmlNode parent, bool wrapNonCommandIcon)
+    private bool AssertIcon (XmlNode parent)
     {
       var isIconEnabled = Control.Object.IsIconEnabled();
-      var commandClass = "command";
-      if (isIconEnabled)
-        commandClass += " hasIcon";
 
-#pragma warning disable 618
-      if (Control.Object.IsCommandEnabled())
-#pragma warning restore 618
-      {
-        var link = parent.GetAssertedChildElement ("a", 0);
-        link.AssertAttributeValueEquals ("id", Control.Object.ClientID + "_Command");
-        link.AssertAttributeValueEquals ("class", commandClass);
-        link.AssertAttributeValueEquals ("href", "#");
-        link.AssertAttributeValueEquals ("onclick", "");
-        if (isIconEnabled)
-        {
-          link.AssertChildElementCount (1);
+      if (!isIconEnabled)
+        return false;
 
-          var icon = link.GetAssertedChildElement ("img", 0);
-          icon.AssertAttributeValueEquals ("src", "/Images/Remotion.ObjectBinding.UnitTests.Web.Domain.TypeWithReference.gif");
-        }
-        else
-        {
-          link.AssertChildElementCount (0);
-        }
-      }
-      else
-      {
-        var iconParent = parent;
-        if (wrapNonCommandIcon)
-        {
-          var anchor = parent.GetAssertedChildElement ("a", 0);
-          anchor.AssertAttributeValueEquals ("id", Control.Object.ClientID + "_Command");
-          anchor.AssertAttributeValueEquals ("class", commandClass);
+      if (Control.Object.IsReadOnly && Control.Object.GetIcon() == null)
+        return false;
 
-          iconParent = anchor;
-        }
+      var iconParent = parent.GetAssertedChildElement ("span", 0);
 
-        if (isIconEnabled)
-        {
-          iconParent.AssertChildElementCount (1);
-          var icon = iconParent.GetAssertedChildElement ("img", 0);
-          icon.AssertAttributeValueEquals ("src", "/Images/NullIcon.gif");
-        }
-        else
-        {
-          iconParent.AssertChildElementCount (0);
-        }
-      }
+      iconParent.AssertAttributeValueEquals ("class", "icon");
+      iconParent.AssertChildElementCount (1);
+
+      var icon = iconParent.GetAssertedChildElement ("img", 0);
+      icon.AssertAttributeValueEquals ("src", "/Images/NullIcon.gif");
+
+      return true;
     }
 
     private BocReferenceValueRenderingContext CreateRenderingContext ()

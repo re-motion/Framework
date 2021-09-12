@@ -72,10 +72,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _bocReferenceValue = new BocReferenceValueMock (_webServiceFactoryStub.Object);
       _bocReferenceValue.ID = "BocReferenceValue";
       _bocReferenceValue.ShowOptionsMenu = false;
-#pragma warning disable 618
-      _bocReferenceValue.Command.Type = CommandType.None;
-      _bocReferenceValue.Command.Show = CommandShow.Always;
-#pragma warning restore 618
       _bocReferenceValue.InternalValue = Guid.Empty.ToString();
       NamingContainer.Controls.Add (_bocReferenceValue);
 
@@ -163,103 +159,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _bocReferenceValue.ShowOptionsMenu = true;
       _bocReferenceValue.OptionsMenuItems.Add (new WebMenuItem());
       Assert.That (_bocReferenceValue.HasOptionsMenu, Is.True);
-    }
-
-
-    [Test]
-    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
-    public void EvaluateWaiConformityDebugLevelAWithEventCommand ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
-      _bocReferenceValue.Command.Type = CommandType.Event;
-      _bocReferenceValue.EvaluateWaiConformity();
-
-      Assert.That (WcagHelperMock.HasError, Is.True);
-      Assert.That (WcagHelperMock.Priority, Is.EqualTo (1));
-      Assert.That (WcagHelperMock.Control, Is.SameAs (_bocReferenceValue));
-      Assert.That (WcagHelperMock.Property, Is.EqualTo ("Command"));
-    }
-
-    [Test]
-    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
-    public void IsEventCommandDisabledWithWcagOverride ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
-      _bocReferenceValue.Command.Type = CommandType.Event;
-      Assert.That (((IBocReferenceValueBase) _bocReferenceValue).IsCommandEnabled(), Is.False);
-    }
-
-    [Test]
-    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
-    public void IsEventCommandEnabledWithoutWcagOverride ()
-    {
-      _businessObject.ReferenceValue = TypeWithReference.Create();
-      _bocReferenceValue.DataSource = _dataSource;
-      _bocReferenceValue.Property = _propertyReferenceValue;
-      WebConfigurationMock.Current = WebConfigurationFactory.GetLevelUndefined();
-      _bocReferenceValue.Command.Type = CommandType.Event;
-      Assert.That (((IBocReferenceValueBase) _bocReferenceValue).IsCommandEnabled(), Is.True);
-    }
-
-
-    [Test]
-    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
-    public void EvaluateWaiConformityDebugLevelAWithWxeFunctionCommand ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
-      _bocReferenceValue.Command.Type = CommandType.WxeFunction;
-      _bocReferenceValue.EvaluateWaiConformity();
-
-      Assert.That (WcagHelperMock.HasError, Is.True);
-      Assert.That (WcagHelperMock.Priority, Is.EqualTo (1));
-      Assert.That (WcagHelperMock.Control, Is.SameAs (_bocReferenceValue));
-      Assert.That (WcagHelperMock.Property, Is.EqualTo ("Command"));
-    }
-
-    [Test]
-    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
-    public void IsWxeFunctionCommandDisabledWithWcagOverride ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
-      _bocReferenceValue.Command.Type = CommandType.WxeFunction;
-      Assert.That (((IBocReferenceValueBase) _bocReferenceValue).IsCommandEnabled(), Is.False);
-    }
-
-    [Test]
-    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
-    public void IsWxeFunctionCommandEnabledWithoutWcagOverride ()
-    {
-      _businessObject.ReferenceValue = TypeWithReference.Create();
-      _bocReferenceValue.DataSource = _dataSource;
-      _bocReferenceValue.Property = _propertyReferenceValue;
-      WebConfigurationMock.Current = WebConfigurationFactory.GetLevelUndefined();
-      _bocReferenceValue.Command.Type = CommandType.WxeFunction;
-      Assert.That (((IBocReferenceValueBase) _bocReferenceValue).IsCommandEnabled(), Is.True);
-    }
-
-
-    [Test]
-    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
-    public void EvaluateWaiConformityDebugLevelAWithHrefCommand ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
-      _bocReferenceValue.Command.Type = CommandType.Href;
-      _bocReferenceValue.EvaluateWaiConformity();
-
-      Assert.That (WcagHelperMock.HasWarning, Is.False);
-      Assert.That (WcagHelperMock.HasError, Is.False);
-    }
-
-    [Test]
-    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
-    public void EvaluateWaiConformityDebugLevelAWithoutCommand ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
-      _bocReferenceValue.Command = null;
-      _bocReferenceValue.EvaluateWaiConformity();
-
-      Assert.That (WcagHelperMock.HasWarning, Is.False);
-      Assert.That (WcagHelperMock.HasError, Is.False);
     }
 
 

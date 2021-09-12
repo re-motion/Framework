@@ -48,10 +48,7 @@
     <td><remotion:bocreferencevalue id=ReferenceField runat="server" datasourcecontrol="CurrentObject" EnableOptionalValidators="true" propertyidentifier="Partner" NullItemErrorMessage="Fehler">
 <dropdownliststyle autopostback="True">
 </DropDownListStyle>
-
-<PersistedCommand>
-<remotion:BocCommand Type="None"></remotion:BocCommand>
-</PersistedCommand></remotion:bocreferencevalue></td></tr>
+</remotion:bocreferencevalue></td></tr>
   <tr>
     <td></td>
     <td><remotion:bocbooleanvalue id=BooleanField runat="server" datasourcecontrol="CurrentObject" EnableOptionalValidators="true" propertyidentifier="Deceased" errormessage="Fehler" AutoPostBack="True"></remotion:bocbooleanvalue></td></tr>

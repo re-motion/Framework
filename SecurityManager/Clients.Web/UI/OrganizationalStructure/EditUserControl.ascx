@@ -63,9 +63,6 @@
     <td>
       <remotion:BocAutoCompleteReferenceValue ID="OwningGroupField" runat="server" DataSourceControl="CurrentObject" EnableOptionalValidators="true"
         PropertyIdentifier="OwningGroup">
-        <PersistedCommand>
-          <remotion:BocCommand />
-        </PersistedCommand>
       </remotion:BocAutoCompleteReferenceValue>
     </td>
   </tr>

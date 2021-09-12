@@ -48,10 +48,7 @@
     <td><remotion:bocreferencevalue id="PartnerField" runat="server" propertyidentifier="Partner" datasourcecontrol="CurrentObject" >
 <dropdownliststyle autopostback="True">
 </DropDownListStyle>
-
-<PersistedCommand>
-<remotion:BocCommand WxeFunctionCommand-Parameters="id" WxeFunctionCommand-TypeName="OBWTest.ViewPersonDetailsWxeFunction,OBWTest" Type="WxeFunction"></remotion:BocCommand>
-</PersistedCommand></remotion:bocreferencevalue></td></tr>
+</remotion:bocreferencevalue></td></tr>
 </table>
 <table id="LabeltestFormGrid" runat="server">
   <tr>

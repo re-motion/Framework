@@ -21,25 +21,16 @@
 <div>
   <remotion:SmartLabel runat="server" ID="CurrentUserLabel" hidden="hidden" EnableViewState="False" ForControl="CurrentUserField" Text="###" />
   <remotion:BocReferenceValue ID="CurrentUserField" runat="server" ReadOnly="True" style="width:auto">
-    <PersistedCommand>
-      <remotion:BocCommand />
-    </PersistedCommand>
   </remotion:BocReferenceValue>
   &nbsp;
   <remotion:SmartLabel runat="server" ID="CurrentSubstitutionLabel" hidden="hidden" EnableViewState="False" ForControl="CurrentSubstitutionField" Text="###" />
-  <remotion:BocReferenceValue ID="CurrentSubstitutionField" runat="server" Required="False" OnSelectionChanged="CurrentSubstitutionField_SelectionChanged" OnCommandClick="CurrentSubstitutionField_CommandClick" >
-    <PersistedCommand>
-      <remotion:BocCommand Show="ReadOnly" Type="Event" ToolTip="###" />
-    </PersistedCommand>
+  <remotion:BocReferenceValue ID="CurrentSubstitutionField" runat="server" Required="False" OnSelectionChanged="CurrentSubstitutionField_SelectionChanged">
     <DropDownListStyle AutoPostBack="True" />
   </remotion:BocReferenceValue>
 </div>
 <div>
   <remotion:SmartLabel runat="server" ID="CurrentTenantLabel" hidden="hidden" EnableViewState="False" ForControl="CurrentTenantField" Text="###" />
-  <remotion:BocReferenceValue ID="CurrentTenantField" runat="server" Required="True" OnSelectionChanged="CurrentTenantField_SelectionChanged" OnCommandClick="CurrentTenantField_CommandClick">
-    <PersistedCommand>
-      <remotion:BocCommand Show="ReadOnly" Type="Event" ToolTip="###" />
-    </PersistedCommand>
+  <remotion:BocReferenceValue ID="CurrentTenantField" runat="server" Required="True" OnSelectionChanged="CurrentTenantField_SelectionChanged">
     <DropDownListStyle AutoPostBack="True" />
   </remotion:BocReferenceValue>
 </div>

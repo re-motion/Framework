@@ -95,86 +95,33 @@ span.bocAutoCompleteReferenceValueButton img:active
   background-color: #C5E0FC;
 }
 
-span.bocAutoCompleteReferenceValue a.command
+span.bocAutoCompleteReferenceValue span.body
 {
   display: inline-block;
   margin-top: 1px;
   margin-left: 1px;
-  border: solid 1px transparent;
-  height: 1.3em; 
+  padding: 1px;
 }
 
-span.bocAutoCompleteReferenceValue a[href].command
-{
-  color: #09457E;
-  cursor: hand;
-  cursor: pointer;
-}
-
-span.bocAutoCompleteReferenceValue.disabled a.command,
-span.bocAutoCompleteReferenceValue .disabled a.command
+span.bocAutoCompleteReferenceValue.disabled span.content,
+span.bocAutoCompleteReferenceValue .disabled span.content
 {
   color: gray;
   cursor: default;
 }
 
-span.bocAutoCompleteReferenceValue span.DropDownMenuContainer a.command
-{
-  margin-right: 17px;
-}
-
-span.bocAutoCompleteReferenceValue span.body a.command
+span.bocAutoCompleteReferenceValue span.body span.content
 {
   margin-right: 1px;
 }
 
-span.bocAutoCompleteReferenceValue a[href].command:focus,
-span.bocAutoCompleteReferenceValue a[href].command:hover
-{
-  color: Black;
-  border: 1px solid #7CB2E6;
-  background-color: #E5F0FC;
-  padding: 0;
-  outline: none;
-}
-
-span.bocAutoCompleteReferenceValue a[href].command:active
-{
-  color: Black;
-  border: solid 1px #569CE0;
-  background-color: #C5E0FC;
-  padding: 0;
-}
-
-/* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
-body.msie span.bocAutoCompleteReferenceValue a[href].command
-{
-  position: relative;
-}
-
-/* Workaround for IE-issue with a span inside an anchor tag blocking the :active pseudo class. */
-body.msie span.bocAutoCompleteReferenceValue a[href].command::before
-{
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-}
-
-span.bocAutoCompleteReferenceValue span.DropDownMenuContainer a.command span
-{
-  vertical-align: top;
-}
-
-span.bocAutoCompleteReferenceValue.readOnly a.command img
+span.bocAutoCompleteReferenceValue.readOnly span.icon img
 {
   margin-right: 6px;
 }
 
-span.bocAutoCompleteReferenceValue.disabled a.command img,
-span.bocAutoCompleteReferenceValue .disabled a.command img
+span.bocAutoCompleteReferenceValue.disabled span.icon img,
+span.bocAutoCompleteReferenceValue .disabled span.icon img
 {
   opacity: 0.4;
   filter: progid:DXImageTransform.Microsoft.BasicImage(opacity=0.40),
@@ -218,6 +165,7 @@ span.bocAutoCompleteReferenceValue.disabled span.content
 span.bocAutoCompleteReferenceValue.readOnly span.content
 {
   position: static;
+  height: auto;
 }
 
 span.bocAutoCompleteReferenceValue.readOnly span.content span:empty
@@ -228,21 +176,13 @@ span.bocAutoCompleteReferenceValue.readOnly span.content span:empty
   vertical-align: -0.2em;
 }
 
-span.bocAutoCompleteReferenceValue.readOnly a.command
+span.bocAutoCompleteReferenceValue.readOnly span.body
 {
   /* Ensures that diacritic marks can be rendered without being cut off. 
      Using line-height instead of padding works better with BocAutoCompleteReferenceValue. When using padding, the text is not aligned with the label. */
   height: 1.4em;
   /* Ensures that the outline is rendered outside of the space reserved for diacritic marks. */
   display: inline-block;
-}
-
-span.bocAutoCompleteReferenceValue.readOnly span.DropDownMenuContainer a.command
-{
-  /* Reset becasue embedded options menus do not require special handling to show diacritical marks */
-  height: 1.3em;
-  /* Ensures that empty readonly values are not collapsed and can therefor visualize the keyboard focus */
-  width: calc(100% - 17px - 4px);
 }
 
 span.bocAutoCompleteReferenceValue.readOnly span.content.hasOptionsMenu span,
@@ -256,19 +196,12 @@ span.bocAutoCompleteReferenceValue.readOnly span.content.withoutOptionsMenu span
 }
 
 /* has Icon */
-span.bocAutoCompleteReferenceValue a.command.hasIcon + span.content,
-span.bocAutoCompleteReferenceValue.disabled a.command.hasIcon + span.content,
-span.bocAutoCompleteReferenceValue.readOnly img > span.content
+span.bocAutoCompleteReferenceValue span.content.hasIcon
 {
   left: 22px; /* width of a.command icon + desired space between */
 }
 
-span.bocAutoCompleteReferenceValue a.command > img
-{
-  display: none;
-}
-
-span.bocAutoCompleteReferenceValue a.command.hasIcon > img
+span.bocAutoCompleteReferenceValue span.icon img
 {
   width: 16px;
   height: 16px;

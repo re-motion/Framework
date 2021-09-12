@@ -34,7 +34,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
   public class BocAutoCompleteReferenceValueControlObject
       : BocControlObject,
           IFillableControlObject,
-          ICommandHost,
           IDropDownMenuHost,
           IControlObjectWithFormElements,
           ISupportsValidationErrors,
@@ -146,22 +145,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    public CommandControlObject GetCommand ()
-    {
-      var commandScope = Scope.FindChild ("Command");
-      return new CommandControlObject (Context.CloneForControl (commandScope));
-    }
-
-    /// <inheritdoc/>
-    public UnspecifiedPageObject ExecuteCommand (IWebTestActionOptions actionOptions = null)
-    {
-      if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (Driver);
-
-      return GetCommand().Click (actionOptions);
-    }
-
-    /// <inheritdoc/>
     public DropDownMenuControlObject GetDropDownMenu ()
     {
       var dropDownMenuScope = Scope.FindChild ("Boc_OptionsMenu");
@@ -268,7 +251,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     protected override ElementScope GetLabeledElementScope ()
     {
       if (IsReadOnly())
-        return Scope.FindChild ("Command");
+        return Scope.FindChild ("Content");
 
 #pragma warning disable 618
       if (Scope.Browser.IsInternetExplorer())

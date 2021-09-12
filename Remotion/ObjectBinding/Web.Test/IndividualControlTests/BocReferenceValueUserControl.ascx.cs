@@ -67,14 +67,8 @@ public class BocReferenceValueUserControl : BaseUserControl
   {
     base.RegisterEventHandlers();
 
-#pragma warning disable 618
-    PartnerField.CommandClick += new BocCommandClickEventHandler (PartnerField_CommandClick);
-#pragma warning restore 618
     PartnerField.MenuItemClick += new WebMenuItemClickEventHandler (PartnerField_MenuItemClick);
     PartnerField.SelectionChanged += new EventHandler (PartnerField_SelectionChanged);
-#pragma warning disable 618
-    ReadOnlyPartnerField.CommandClick += new BocCommandClickEventHandler (ReadOnlyPartnerField_CommandClick);
-#pragma warning restore 618
     PartnerTestSetNullButton.Click += new EventHandler (PartnerTestSetNullButton_Click);
     PartnerTestSetNewItemButton.Click += new EventHandler (PartnerTestSetNewItemButton_Click);
     ReadOnlyPartnerTestSetNullButton.Click += new EventHandler (ReadOnlyPartnerTestSetNullButton_Click);
@@ -273,11 +267,6 @@ public class BocReferenceValueUserControl : BaseUserControl
     ReadOnlyPartnerField.Value = (IBusinessObjectWithIdentity) person;
   }
 
-  private void PartnerField_CommandClick(object sender, BocCommandClickEventArgs e)
-  {
-    PartnerCommandClickLabel.Text = "PartnerField clicked";
-  }
-
   private void PartnerField_SelectionChanged(object sender, EventArgs e)
   {
     if (PartnerField.Value != null)
@@ -289,11 +278,6 @@ public class BocReferenceValueUserControl : BaseUserControl
   private void PartnerField_MenuItemClick(object sender, WebMenuItemClickEventArgs e)
   {
     PartnerFieldMenuClickEventArgsLabel.Text = e.Item.Text;
-  }
-
-  private void ReadOnlyPartnerField_CommandClick(object sender, BocCommandClickEventArgs e)
-  {
-    PartnerCommandClickLabel.Text = "ReadOnlyPartnerField clicked";
   }
 
   #region Web Form Designer generated code

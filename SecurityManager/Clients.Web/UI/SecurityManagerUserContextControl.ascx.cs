@@ -22,7 +22,6 @@ using System.Web.UI;
 using CommonServiceLocator;
 using Remotion.Data.DomainObjects;
 using Remotion.Globalization;
-using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Reflection;
 using Remotion.SecurityManager.Clients.Web.Classes;
 using Remotion.SecurityManager.Domain;
@@ -30,7 +29,6 @@ using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Compilation;
-using Remotion.Web.UI.Controls;
 
 namespace Remotion.SecurityManager.Clients.Web.UI
 {
@@ -43,17 +41,13 @@ namespace Remotion.SecurityManager.Clients.Web.UI
     {
       CurrentUserLabelText,
       CurrentSubstitutionLabelText,
-      CurrentTenantLabelText,
-      CurrentSubstitutionCommandTooltip,
-      CurrentTenantCommandTooltip
+      CurrentTenantLabelText
     }
 
     private static readonly string s_isTenantSelectionEnabledKey = typeof (SecurityManagerUserContextControl).GetFullNameChecked() + "_IsTenantSelectionEnabled";
     private static readonly string s_enableAbstractTenantsKey = typeof (SecurityManagerUserContextControl).GetFullNameChecked() + "_EnableAbstractTenants";
     private static readonly string s_isSubstitutionSelectionEnabledKey = typeof (SecurityManagerUserContextControl).GetFullNameChecked() + "_IsSubstitutionSelectionEnabled";
 
-    private bool _isCurrentTenantFieldReadOnly = true;
-    private bool _isCurrentSubstitutionFieldReadOnly = true;
 
     [DefaultValue (true)]
     public bool EnableAbstractTenants
@@ -91,14 +85,6 @@ namespace Remotion.SecurityManager.Clients.Web.UI
         CurrentSubstitutionField.LoadUnboundValue (currentSubstitution, false);
         IsSubstitutionSelectionEnabled = substitutions.Length > 0;
       }
-
-#pragma warning disable 618
-      if (!IsTenantSelectionEnabled)
-        CurrentTenantField.Command.Type = CommandType.None;
-
-      if (!IsSubstitutionSelectionEnabled)
-        CurrentSubstitutionField.Command.Type = CommandType.None;
-#pragma warning restore 618
     }
 
     private TenantProxy[] GetPossibleTenants ()
@@ -120,7 +106,6 @@ namespace Remotion.SecurityManager.Clients.Web.UI
       if (!possibleTenants.Where (s=>s.UniqueIdentifier == tenantID).Any())
       {
         CurrentTenantField.Value = null;
-        _isCurrentTenantFieldReadOnly = false;
         return;
       }
 
@@ -131,7 +116,6 @@ namespace Remotion.SecurityManager.Clients.Web.UI
           oldSecurityManagerPrincipal.Substitution != null ? oldSecurityManagerPrincipal.Substitution.Handle : null);
       ApplicationInstance.SetCurrentPrincipal (newSecurityManagerPrincipal);
 
-      _isCurrentTenantFieldReadOnly = true;
       CurrentTenantField.IsDirty = false;
     }
 
@@ -143,7 +127,6 @@ namespace Remotion.SecurityManager.Clients.Web.UI
       if (substitutionID != null && !possibleSubstitutions.Where (s=>s.UniqueIdentifier == substitutionID).Any())
       {
         CurrentSubstitutionField.Value = null;
-        _isCurrentSubstitutionFieldReadOnly = false;
         return;
       }
 
@@ -154,22 +137,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI
           substitutionID != null ? ObjectID.Parse (substitutionID).GetHandle<Substitution>() : null);
       ApplicationInstance.SetCurrentPrincipal (newSecurityManagerPrincipal);
 
-      _isCurrentSubstitutionFieldReadOnly = true;
       CurrentSubstitutionField.IsDirty = false;
-    }
-
-    protected void CurrentTenantField_CommandClick (object sender, BocCommandClickEventArgs e)
-    {
-      _isCurrentTenantFieldReadOnly = false;
-      CurrentTenantField.SetBusinessObjectList (GetPossibleTenants());
-      CurrentTenantField.LoadUnboundValue (SecurityManagerPrincipal.Current.Tenant, false);
-    }
-
-    protected void CurrentSubstitutionField_CommandClick (object sender, BocCommandClickEventArgs e)
-    {
-      _isCurrentSubstitutionFieldReadOnly = false;
-      CurrentSubstitutionField.SetBusinessObjectList (GetPossibleSubstitutions());
-      CurrentSubstitutionField.LoadUnboundValue (SecurityManagerPrincipal.Current.Substitution, false);
     }
 
     protected override void OnPreRender (EventArgs e)
@@ -179,23 +147,12 @@ namespace Remotion.SecurityManager.Clients.Web.UI
       CurrentUserLabel.Text = resourceManager.GetString (ResourceIdentifier.CurrentUserLabelText);
       CurrentSubstitutionLabel.Text = resourceManager.GetString (ResourceIdentifier.CurrentSubstitutionLabelText);
       CurrentTenantLabel.Text = resourceManager.GetString (ResourceIdentifier.CurrentTenantLabelText);
-#pragma warning disable CS0618 // Type or member is obsolete
-      CurrentSubstitutionField.Command.ToolTip = resourceManager.GetString (ResourceIdentifier.CurrentSubstitutionCommandTooltip);
-      CurrentTenantField.Command.ToolTip  = resourceManager.GetString (ResourceIdentifier.CurrentTenantCommandTooltip);
-#pragma warning restore CS0618 // Type or member is obsolete
 
       base.OnPreRender (e);
 
-      if (_isCurrentTenantFieldReadOnly && !SecurityManagerPrincipal.Current.IsNull)
-        CurrentTenantField.ReadOnly = true;
-      else
-        CurrentTenantField.ReadOnly = false;
-
-      if (_isCurrentSubstitutionFieldReadOnly && !SecurityManagerPrincipal.Current.IsNull)
-        CurrentSubstitutionField.ReadOnly = true;
-      else
-        CurrentSubstitutionField.ReadOnly = false;
-      //For now: the subsitution is permanenty editable.
+      CurrentTenantField.ReadOnly = !IsTenantSelectionEnabled && !SecurityManagerPrincipal.Current.IsNull;
+      CurrentSubstitutionField.ReadOnly = !IsSubstitutionSelectionEnabled;
+      //For now: the substitution is permanently editable.
       CurrentSubstitutionField.ReadOnly = false;
 
       CurrentUserField.LoadUnboundValue (SecurityManagerPrincipal.Current.User, false);

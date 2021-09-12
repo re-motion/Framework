@@ -20,7 +20,6 @@ using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
-using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
@@ -191,9 +190,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       script.AppendFormat ("'#{0}',", GetDropDownButtonName(renderingContext));
 
       if (renderingContext.Control.IsIconEnabled())
-        script.AppendFormat ("'#{0} .{1}', ", renderingContext.Control.ClientID, CssClassCommand);
+      {
+        script.AppendFormat ("'#{0} .{1}', ", renderingContext.Control.ClientID, CssClassInnerContent);
+        script.AppendFormat ("'#{0} .{1} img', ", renderingContext.Control.ClientID, CssClassIcon);
+      }
       else
+      {
         script.Append ("null, ");
+        script.Append ("null, ");
+      }
 
       script.AppendFormat ("'{0}', ", controlServicePath);
 
@@ -214,10 +219,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       script.Append (", ");
       script.Append (isIconUpdateEnabled ? GetIconContextAsJson (renderingContext) : "null");
       script.Append (", ");
-#pragma warning disable 618
-      script.Append (GetCommandInfoAsJson (renderingContext) ?? "null");
-      script.Append (", ");
-#pragma warning restore 618
       script.Append (GetResourcesAsJson (renderingContext));
       script.Append (");");
 
