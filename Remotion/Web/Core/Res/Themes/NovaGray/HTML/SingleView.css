@@ -20,22 +20,27 @@ div.singleView > div.wrapper
   right: 0;
   width: auto;
   height: auto;
+
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: max-content auto max-content;
+  grid-template-areas: "topControls" "view" "bottomControls";
 }
 
 div.singleViewView
 {
-  height: 80%;
-  width: inherit;
+  grid-area: view;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 div.singleViewView > div.contentBorder
 {
-  position: relative;
   background-color: white;
   margin : 0;
   padding: 0.5em;
   overflow: auto;
-  height: 60%;
 }
 
 div.singleViewView > div.contentBorder > div.content
@@ -47,10 +52,10 @@ div.singleViewView > div.contentBorder > div.content
   height: 100%;
 }
 
-/* Applied to the top section of the multi view. Height cannot be provided in percent. */
+/* Applied to the top section of the multi view. */
 div.singleViewTopControls
 {
-  overflow: hidden;
+  grid-area: topControls;
   background-color: White;
 }
 
@@ -60,16 +65,14 @@ div.singleViewTopControls.empty
   background-color: White;
 }
 
-/* Applied to the bottom section of the multi view. Height cannot be provided in percent. */
+/* Applied to the bottom section of the multi view. */
 div.singleViewBottomControls
 {
-  position: absolute;
-  overflow: hidden;
+  grid-area: bottomControls;
   background-color: White;
-  margin-top: 0.5em;
-  left: 0.5em;
-  right: 0.5em;
-  bottom: 0.5em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  padding-bottom: 0.5em;
 }
 
 div.singleViewBottomControls.empty
