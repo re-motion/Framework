@@ -33,10 +33,5 @@ namespace Remotion.ObjectBinding.Web.Test.Shared.Design
       base.OnPreRender(e);
       HtmlHeadAppender.Current.RegisterStylesheetLink("design", new StaticResourceUrl("Html/Design.css"));
     }
-
-    protected override void OnInit (EventArgs e)
-    {
-      base.OnInit(e);
-    }
   }
 }

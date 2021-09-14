@@ -22,17 +22,17 @@ using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BindableObject.Properties;
 using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Web;
 using Remotion.Web.Configuration;
-using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.Test.Shared.UI
 {
   /// <summary>
   ///		Summary description for NavigationTabs.
   /// </summary>
-  public class NavigationTabs : UserControl
+  public partial class NavigationTabs : UserControl
   {
     private const string c_mainContentScrollableKey = "MainContentScrollableKey";
 
@@ -43,10 +43,6 @@ namespace Remotion.ObjectBinding.Web.Test.Shared.UI
       DoubleA = 3,
       TripleA = 7
     }
-
-    protected BocEnumValue WaiConformanceLevelField;
-    protected TabbedMenu TabbedMenu;
-    protected CheckBox MainContentScrollableCheckBox;
 
     public WaiConformanceLevel ConformanceLevel
     {
@@ -84,9 +80,8 @@ namespace Remotion.ObjectBinding.Web.Test.Shared.UI
     {
       base.OnPreRender(e);
 
-      string mode = Global.PreferQuirksModeRendering ? "Quirks" : "Standard";
-      string theme = Global.PreferQuirksModeRendering ? "" : SafeServiceLocator.Current.GetInstance<ResourceTheme>().Name;
-      TabbedMenu.StatusText = WebString.CreateFromText(mode + " " + theme);
+      string theme = SafeServiceLocator.Current.GetInstance<ResourceTheme>().Name;
+      TabbedMenu.StatusText = WebString.CreateFromText(theme);
 
       var mainContentScrollable = (bool?)Session[c_mainContentScrollableKey] ?? false;
       MainContentScrollableCheckBox.Checked = mainContentScrollable;

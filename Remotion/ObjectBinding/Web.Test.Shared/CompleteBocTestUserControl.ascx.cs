@@ -70,7 +70,7 @@ public partial class CompleteBocUserControl :
 
   }
 
-  override protected void OnInit(EventArgs e)
+  override protected void OnInit (EventArgs e)
   {
     this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
     this.Load += new System.EventHandler(this.Page_Load);

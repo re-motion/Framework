@@ -26,51 +26,8 @@ using Remotion.Web.UI.Controls;
 namespace Remotion.ObjectBinding.Web.Test.Shared.IndividualControlTests
 {
 
-public class BocTextValueUserControl : BaseUserControl
+public partial class BocTextValueUserControl : BaseUserControl
 {
-  protected HtmlGenericControl NonVisualControls;
-  protected FormGridManager FormGridManager;
-  protected BocTextValue FirstNameField;
-  protected Label FirstNameFieldValueLabel;
-  protected BocTextValue ReadOnlyFirstNameField;
-  protected Label ReadOnlyFirstNameFieldValueLabel;
-  protected BocTextValue UnboundFirstNameField;
-  protected Label UnboundFirstNameFieldValueLabel;
-  protected BocTextValue UnboundReadOnlyFirstNameField;
-  protected Label UnboundReadOnlyFirstNameFieldValueLabel;
-  protected BocTextValue IncomeField;
-  protected Label Label1;
-  protected BocTextValue HeightField;
-  protected Label Label4;
-  protected BocTextValue DateOfBirthField;
-  protected Label Label2;
-  protected BocTextValue DateOfDeathField;
-  protected Label Label3;
-  protected BocTextValue DisabledFirstNameField;
-  protected Label DisabledFirstNameFieldValueLabel;
-  protected BocTextValue DisabledReadOnlyFirstNameField;
-  protected Label DisabledReadOnlyFirstNameFieldValueLabel;
-  protected BocTextValue DisabledUnboundFirstNameField;
-  protected Label DisabledUnboundFirstNameFieldValueLabel;
-  protected BocTextValue DisabledUnboundReadOnlyFirstNameField;
-  protected Label DisabledUnboundReadOnlyFirstNameFieldValueLabel;
-  protected BocTextValue BocTextValue1;
-  protected BocTextValue BocTextValue2;
-  protected WebButton FirstNameTestSetNullButton;
-  protected WebButton FirstNameTestSetNewValueButton;
-  protected Label FirstNameFieldTextChangedLabel;
-  protected WebButton ReadOnlyFirstNameTestSetNullButton;
-  protected WebButton ReadOnlyFirstNameTestSetNewValueButton;
-  protected HtmlTable FormGrid;
-  protected BindableObjectDataSourceControl CurrentObject;
-  protected BindableObjectDataSourceControlValidationResultDispatchingValidator CurrentObjectValidationResultDispatchingValidator;
-  protected BocTextValue PasswordRenderMasked;
-  protected BocTextValue PasswordNoRender;
-  protected BocTextValue PasswordRenderMaskedReadOnly;
-  protected BocTextValue PasswordNoRenderReadOnly;
-  protected BocTextValue Multiline;
-  protected BocTextValue MultilineReadOnly;
-
   protected override void RegisterEventHandlers ()
   {
     base.RegisterEventHandlers();

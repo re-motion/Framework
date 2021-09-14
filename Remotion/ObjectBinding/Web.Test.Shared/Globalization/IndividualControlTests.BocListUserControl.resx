@@ -48,9 +48,6 @@
     <data name="auto:ChildrenList:FixedColumns:Edit:Text">
         <value>Bearbeiten</value>
     </data>
-    <data name="auto:ChildrenList:FixedColumns:LastName:ColumnTitle">
-        <value></value>
-    </data>
     <data name="auto:ChildrenList:FixedColumns:Name:ColumnTitle">
         <value>Voller Name</value>
     </data>

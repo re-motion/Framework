@@ -31,7 +31,7 @@ using Remotion.Web.UI.Controls;
 namespace Remotion.ObjectBinding.Web.Test.Shared.IndividualControlTests
 {
 
-public class BocListAsGridUserControl : BaseUserControl
+public partial class BocListAsGridUserControl : BaseUserControl
 {
   private class AllRequiredEditableRowControlFactory : EditableRowControlFactory
   {
@@ -42,32 +42,6 @@ public class BocListAsGridUserControl : BaseUserControl
       return control;
     }
   }
-
-  protected HtmlTable Table3;
-  protected BocTextValue FirstNameField;
-  protected BocTextValue LastNameField;
-  protected TestBocList ChildrenList;
-  protected TestBocList EmptyList;
-  protected CheckBox ChildrenListEventCheckBox;
-  protected Label ChildrenListEventArgsLabel;
-  protected FormGridManager FormGridManager;
-  protected BindableObjectDataSourceControl EmptyDataSourceControl;
-  protected HtmlTable FormGrid;
-  protected TestBocListValidator EmptyListValidator;
-  protected TestBocList Testboclist1;
-  protected BocList AllColumnsList;
-  protected HtmlGenericControl NonVisualControls;
-  protected WebButton SwitchToEditModeButton;
-  protected WebButton EndEditModeButton;
-  protected WebButton AddItemButton;
-  protected WebButton AddRowButton;
-  protected WebButton AddRowsButton;
-  protected BocTextValue NumberOfNewRowsField;
-  protected WebButton RemoveRowsButton;
-  protected WebButton RemoveItemsButton;
-  protected WebButton CancelEditModeButton;
-  protected BindableObjectDataSourceControl CurrentObject;
-  protected BindableObjectDataSourceControlValidationResultDispatchingValidator CurrentObjectValidationResultDispatchingValidator;
 
   protected override void RegisterEventHandlers ()
   {

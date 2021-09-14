@@ -15,48 +15,17 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.Web.UI;
-using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.Test.Shared.IndividualControlTests
 {
 
-public class BocBooleanValueUserControl : BaseUserControl
+public partial class BocBooleanValueUserControl : BaseUserControl
 {
-  protected HtmlGenericControl NonVisualControls;
-  protected FormGridManager FormGridManager;
-  protected Label DeceasedFieldValueLabel;
-  protected Label ReadOnlyDeceasedFieldValueLabel;
-  protected Label UnboundDeceasedFieldValueLabel;
-  protected Label UnboundReadOnlyDeceasedFieldValueLabel;
-  protected Label DisabledDeceasedFieldValueLabel;
-  protected Label DisabledReadOnlyDeceasedFieldValueLabel;
-  protected Label DisabledUnboundDeceasedFieldValueLabel;
-  protected Label DisabledUnboundReadOnlyDeceasedFieldValueLabel;
-  protected Label DeceasedFieldCheckedChangedLabel;
-  protected WebButton DeceasedTestSetNullButton;
-  protected WebButton DeceasedTestToggleValueButton;
-  protected WebButton ReadOnlyDeceasedTestSetNullButton;
-  protected WebButton ReadOnlyDeceasedTestToggleValueButton;
-  protected BocTextValue FirstNameField;
-  protected BocTextValue LastNameField;
-  protected BocBooleanValue DeceasedField;
-  protected BocBooleanValue ReadOnlyDeceasedField;
-  protected BocBooleanValue UnboundDeceasedField;
-  protected BocBooleanValue UnboundReadOnlyDeceasedField;
-  protected BocBooleanValue DisabledDeceasedField;
-  protected BocBooleanValue DisabledReadOnlyDeceasedField;
-  protected BocBooleanValue DisabledUnboundDeceasedField;
-  protected BocBooleanValue DisabledUnboundReadOnlyDeceasedField;
-  protected HtmlTable FormGrid;
-  protected BindableObjectDataSourceControl CurrentObject;
-  protected BindableObjectDataSourceControlValidationResultDispatchingValidator CurrentObjectValidationResultDispatchingValidator;
-
   protected override void RegisterEventHandlers ()
   {
     base.RegisterEventHandlers();

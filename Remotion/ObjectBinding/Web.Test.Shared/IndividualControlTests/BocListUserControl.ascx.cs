@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
@@ -29,31 +28,9 @@ namespace Remotion.ObjectBinding.Web.Test.Shared.IndividualControlTests
 {
 
 [WebMultiLingualResources("OBWTest.Globalization.IndividualControlTests.BocListUserControl")]
-public class BocListUserControl : BaseUserControl
+public partial class BocListUserControl : BaseUserControl
 {
   private const string c_deleteItemID = "Delete";
-  protected HtmlTable Table3;
-  protected BocTextValue FirstNameField;
-  protected BocTextValue LastNameField;
-  protected BocList JobList;
-  protected TestBocList ChildrenList;
-  protected TestBocList EmptyList;
-  protected Button ChildrenListEndEditModeButton;
-  protected Button ChildrenListAddAndEditButton;
-  protected Button ChildrenListSetPageButton;
-  protected Button ChildrenListAddRowButton;
-  protected Button ChildrenListRemoveRowsButton;
-  protected CheckBox ChildrenListEventCheckBox;
-  protected Label ChildrenListEventArgsLabel;
-  protected FormGridManager FormGridManager;
-  protected BindableObjectDataSourceControl EmptyDataSourceControl;
-  protected HtmlTable FormGrid;
-  protected TestBocListValidator EmptyListValidator;
-  protected TestBocList Testboclist1;
-  protected BocList AllColumnsList;
-  protected HtmlGenericControl NonVisualControls;
-  protected BindableObjectDataSourceControl CurrentObject;
-  protected BindableObjectDataSourceControlValidationResultDispatchingValidator CurrentObjectValidationResultDispatchingValidator;
 
   protected override void RegisterEventHandlers ()
   {

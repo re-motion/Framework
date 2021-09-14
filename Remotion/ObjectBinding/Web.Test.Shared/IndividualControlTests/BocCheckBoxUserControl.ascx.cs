@@ -26,38 +26,8 @@ using Remotion.Web.UI.Controls;
 namespace Remotion.ObjectBinding.Web.Test.Shared.IndividualControlTests
 {
 
-public class BocCheckBoxUserControl : BaseUserControl
+public partial class BocCheckBoxUserControl : BaseUserControl
 {
-  protected HtmlGenericControl NonVisualControls;
-  protected FormGridManager FormGridManager;
-  protected BocTextValue FirstNameField;
-  protected BocTextValue LastNameField;
-  protected BocCheckBox DeceasedField;
-  protected Label DeceasedFieldValueLabel;
-  protected BocCheckBox ReadOnlyDeceasedField;
-  protected Label ReadOnlyDeceasedFieldValueLabel;
-  protected BocCheckBox UnboundDeceasedField;
-  protected Label UnboundDeceasedFieldValueLabel;
-  protected BocCheckBox UnboundReadOnlyDeceasedField;
-  protected Label UnboundReadOnlyDeceasedFieldValueLabel;
-  protected BocCheckBox DisabledDeceasedField;
-  protected Label DisabledDeceasedFieldValueLabel;
-  protected BocCheckBox DisabledReadOnlyDeceasedField;
-  protected Label DisabledReadOnlyDeceasedFieldValueLabel;
-  protected BocCheckBox DisabledUnboundDeceasedField;
-  protected Label DisabledUnboundDeceasedFieldValueLabel;
-  protected BocCheckBox DisabledUnboundReadOnlyDeceasedField;
-  protected Label DisabledUnboundReadOnlyDeceasedFieldValueLabel;
-  protected Label DeceasedFieldCheckedChangedLabel;
-  protected Label UnboundDeceasedFieldCheckedChangedLabel;
-  protected WebButton DeceasedTestSetNullButton;
-  protected WebButton DeceasedTestToggleValueButton;
-  protected WebButton ReadOnlyDeceasedTestSetNullButton;
-  protected WebButton ReadOnlyDeceasedTestToggleValueButton;
-  protected HtmlTable FormGrid;
-  protected BindableObjectDataSourceControl CurrentObject;
-  protected BindableObjectDataSourceControlValidationResultDispatchingValidator CurrentObjectValidationResultDispatchingValidator;
-
   protected override void RegisterEventHandlers ()
   {
     base.RegisterEventHandlers();

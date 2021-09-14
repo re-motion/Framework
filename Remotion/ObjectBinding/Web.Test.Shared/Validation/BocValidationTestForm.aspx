@@ -14,9 +14,10 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="BocValidationTestForm.aspx.cs" Inherits="Remotion.ObjectBinding.Web.Test.Shared.Validation.BocValidationTestForm" MasterPageFile="~/StandardMode.Master" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="BocValidationTestForm.aspx.cs" Inherits="Remotion.ObjectBinding.Web.Test.Shared.Validation.BocValidationTestForm" MasterPageFile="../StandardMode.Master" %>
 <%@ Register tagPrefix="remotion" Namespace="Remotion.Web.UI.Controls" Assembly="Remotion.Web" %>
 <%@ Register tagPrefix="remotion" Namespace="Remotion.ObjectBinding.Web.UI.Controls" Assembly="Remotion.ObjectBinding.Web" %>
+<%@ Register TagPrefix="remotion" Namespace="Remotion.ObjectBinding.Web.UI.Controls.Validation" Assembly="Remotion.ObjectBinding.Web" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 <h1>BocValidationTest</h1>

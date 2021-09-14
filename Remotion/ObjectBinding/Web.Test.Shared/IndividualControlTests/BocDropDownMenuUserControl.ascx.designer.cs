@@ -22,6 +22,15 @@ namespace Remotion.ObjectBinding.Web.Test.Shared.IndividualControlTests {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl NonVisualControls;
         
         /// <summary>
+        /// FormGridManager control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.FormGridManager FormGridManager;
+        
+        /// <summary>
         /// FormGrid control.
         /// </summary>
         /// <remarks>
@@ -29,5 +38,23 @@ namespace Remotion.ObjectBinding.Web.Test.Shared.IndividualControlTests {
         /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlTable FormGrid;
+        
+        /// <summary>
+        /// FirstNameField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
+        
+        /// <summary>
+        /// LastNameField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
     }
 }

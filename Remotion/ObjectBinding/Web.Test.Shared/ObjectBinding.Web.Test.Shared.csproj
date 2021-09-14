@@ -14,6 +14,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
+    <ProjectReference Include="..\..\Core\Reflection\Core.Reflection.csproj" />
     <ProjectReference Include="..\..\Development\Web\Development.Web.csproj" />
     <ProjectReference Include="..\..\Globalization\Core\Globalization.Core.csproj" />
     <ProjectReference Include="..\..\Mixins\Core\Mixins.Core.csproj" />

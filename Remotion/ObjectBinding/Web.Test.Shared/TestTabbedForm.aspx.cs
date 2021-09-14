@@ -227,12 +227,8 @@ public partial class TestTabbedForm : TestWxeBasePage
   protected override void OnPreRender (EventArgs e)
   {
     base.OnPreRender(e);
-    string mode = Global.PreferQuirksModeRendering ? "Quirks" : "Standard";
-    string theme = Global.PreferQuirksModeRendering ? "" : SafeServiceLocator.Current.GetInstance<ResourceTheme>().Name;
-    NavigationTabs.StatusText = WebString.CreateFromText(mode + " " + theme);
-
-    if (Global.PreferQuirksModeRendering)
-      UpdatePanel.Style.Clear();
+    string theme = SafeServiceLocator.Current.GetInstance<ResourceTheme>().Name;
+    NavigationTabs.StatusText = WebString.CreateFromText(theme);
   }
 
   protected override object SaveControlState ()

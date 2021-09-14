@@ -70,7 +70,7 @@ namespace Remotion.ObjectBinding.Web.Test.Shared
     }
   }
 
-  override protected void OnInit(EventArgs e)
+  override protected void OnInit (EventArgs e)
   {
     //
     // CODEGEN: This call is required by the ASP.NET Web Form Designer.
@@ -98,7 +98,7 @@ namespace Remotion.ObjectBinding.Web.Test.Shared
     InitalizeReferenceFieldMenuItems();
   }
 
-  private void InitalizeReferenceFieldMenuItems()
+  private void InitalizeReferenceFieldMenuItems ()
   {
     BocMenuItem menuItem = null;
 
@@ -150,12 +150,12 @@ namespace Remotion.ObjectBinding.Web.Test.Shared
 
 
   #region Web Form Designer generated code
-  
+
   /// <summary>
   /// Required method for Designer support - do not modify
   /// the contents of this method with the code editor.
   /// </summary>
-  private void InitializeComponent()
+  private void InitializeComponent ()
   {
     this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
     this.Load += new System.EventHandler(this.Page_Load);

@@ -26,47 +26,8 @@ using Remotion.Web.UI.Controls;
 namespace Remotion.ObjectBinding.Web.Test.Shared.IndividualControlTests
 {
 
-public class BocEnumValueUserControl : BaseUserControl
+public partial class BocEnumValueUserControl : BaseUserControl
 {
-  protected HtmlGenericControl NonVisualControls;
-  protected FormGridManager FormGridManager;
-  protected BindableObjectDataSourceControl CurrentObject;
-  protected BindableObjectDataSourceControlValidationResultDispatchingValidator CurrentObjectValidationResultDispatchingValidator;
-  protected BindableObjectDataSourceControl EnumObject;
-  protected BocTextValue FirstNameField;
-  protected BocTextValue LastNameField;
-  protected BocEnumValue GenderField;
-  protected Label GenderFieldValueLabel;
-  protected BocEnumValue ReadOnlyGenderField;
-  protected Label ReadOnlyGenderFieldValueLabel;
-  protected BocEnumValue MarriageStatusField;
-  protected Label MarriageStatusFieldValueLabel;
-  protected BocEnumValue UnboundMarriageStatusField;
-  protected Label UnboundMarriageStatusFieldValueLabel;
-  protected BocEnumValue UnboundReadOnlyMarriageStatusField;
-  protected Label UnboundReadOnlyMarriageStatusFieldValueLabel;
-  protected BocEnumValue DeceasedAsEnumField;
-  protected Label DeceasedAsEnumFieldValueLabel;
-  protected BocEnumValue DisabledGenderField;
-  protected Label DisabledGenderFieldValueLabel;
-  protected BocEnumValue DisabledReadOnlyGenderField;
-  protected Label DisabledReadOnlyGenderFieldValueLabel;
-  protected BocEnumValue DisabledMarriageStatusField;
-  protected Label DisabledMarriageStatusFieldValueLabel;
-  protected BocEnumValue DisabledUnboundMarriageStatusField;
-  protected Label DisabledUnboundMarriageStatusFieldValueLabel;
-  protected BocEnumValue DisabledUnboundReadOnlyMarriageStatusField;
-  protected Label DisabledUnboundReadOnlyMarriageStatusFieldValueLabel;
-  protected BocEnumValue InstanceEnumField;
-  protected Label InstanceEnumFieldValueLabel;
-  protected Label GenderFieldSelectionChangedLabel;
-  protected WebButton GenderTestSetNullButton;
-  protected WebButton GenderTestSetDisabledGenderButton;
-  protected WebButton GenderTestSetMarriedButton;
-  protected WebButton ReadOnlyGenderTestSetNullButton;
-  protected WebButton ReadOnlyGenderTestSetNewItemButton;
-  protected HtmlTable FormGrid;
-
   private string _instanceEnum;
 
   public string InstanceEnum

@@ -13,6 +13,339 @@ namespace Remotion.ObjectBinding.Web.Test.Shared.IndividualControlTests {
     public partial class BocEnumValueUserControl {
         
         /// <summary>
+        /// NonVisualControls control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl NonVisualControls;
+        
+        /// <summary>
+        /// FormGridManager control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.FormGridManager FormGridManager;
+        
+        /// <summary>
+        /// CurrentObject control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
+        
+        /// <summary>
+        /// EnumObject control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl EnumObject;
+        
+        /// <summary>
+        /// CurrentObjectValidationResultDispatchingValidator control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.Validation.BindableObjectDataSourceControlValidationResultDispatchingValidator CurrentObjectValidationResultDispatchingValidator;
+        
+        /// <summary>
+        /// FormGrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTable FormGrid;
+        
+        /// <summary>
+        /// FirstNameField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
+        
+        /// <summary>
+        /// LastNameField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
+        
+        /// <summary>
+        /// GenderField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue GenderField;
+        
+        /// <summary>
+        /// GenderFieldValueLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label GenderFieldValueLabel;
+        
+        /// <summary>
+        /// ReadOnlyGenderField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue ReadOnlyGenderField;
+        
+        /// <summary>
+        /// ReadOnlyGenderFieldValueLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label ReadOnlyGenderFieldValueLabel;
+        
+        /// <summary>
+        /// MarriageStatusField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue MarriageStatusField;
+        
+        /// <summary>
+        /// MarriageStatusFieldValueLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label MarriageStatusFieldValueLabel;
+        
+        /// <summary>
+        /// UnboundMarriageStatusFieldLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.SmartLabel UnboundMarriageStatusFieldLabel;
+        
+        /// <summary>
+        /// UnboundMarriageStatusField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue UnboundMarriageStatusField;
+        
+        /// <summary>
+        /// UnboundMarriageStatusFieldValueLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label UnboundMarriageStatusFieldValueLabel;
+        
+        /// <summary>
+        /// UnboundReadOnlyMarriageStatusFieldLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.SmartLabel UnboundReadOnlyMarriageStatusFieldLabel;
+        
+        /// <summary>
+        /// UnboundReadOnlyMarriageStatusField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue UnboundReadOnlyMarriageStatusField;
+        
+        /// <summary>
+        /// UnboundReadOnlyMarriageStatusFieldValueLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label UnboundReadOnlyMarriageStatusFieldValueLabel;
+        
+        /// <summary>
+        /// DeceasedAsEnumField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue DeceasedAsEnumField;
+        
+        /// <summary>
+        /// DeceasedAsEnumFieldValueLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label DeceasedAsEnumFieldValueLabel;
+        
+        /// <summary>
+        /// DisabledGenderField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue DisabledGenderField;
+        
+        /// <summary>
+        /// DisabledGenderFieldValueLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label DisabledGenderFieldValueLabel;
+        
+        /// <summary>
+        /// DisabledReadOnlyGenderField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue DisabledReadOnlyGenderField;
+        
+        /// <summary>
+        /// DisabledReadOnlyGenderFieldValueLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label DisabledReadOnlyGenderFieldValueLabel;
+        
+        /// <summary>
+        /// DisabledMarriageStatusField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue DisabledMarriageStatusField;
+        
+        /// <summary>
+        /// DisabledMarriageStatusFieldValueLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label DisabledMarriageStatusFieldValueLabel;
+        
+        /// <summary>
+        /// DisabledUnboundMarriageStatusFieldLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.SmartLabel DisabledUnboundMarriageStatusFieldLabel;
+        
+        /// <summary>
+        /// DisabledUnboundMarriageStatusField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue DisabledUnboundMarriageStatusField;
+        
+        /// <summary>
+        /// DisabledUnboundMarriageStatusFieldValueLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label DisabledUnboundMarriageStatusFieldValueLabel;
+        
+        /// <summary>
+        /// DisabledUnboundReadOnlyMarriageStatusFieldLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.SmartLabel DisabledUnboundReadOnlyMarriageStatusFieldLabel;
+        
+        /// <summary>
+        /// DisabledUnboundReadOnlyMarriageStatusField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue DisabledUnboundReadOnlyMarriageStatusField;
+        
+        /// <summary>
+        /// DisabledUnboundReadOnlyMarriageStatusFieldValueLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label DisabledUnboundReadOnlyMarriageStatusFieldValueLabel;
+        
+        /// <summary>
+        /// InstanceEnumField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue InstanceEnumField;
+        
+        /// <summary>
+        /// InstanceEnumFieldValueLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label InstanceEnumFieldValueLabel;
+        
+        /// <summary>
+        /// EnumNotNullableDropDownField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue EnumNotNullableDropDownField;
+        
+        /// <summary>
         /// EnumNotNullableDropDownLabel control.
         /// </summary>
         /// <remarks>
@@ -20,6 +353,15 @@ namespace Remotion.ObjectBinding.Web.Test.Shared.IndividualControlTests {
         /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label EnumNotNullableDropDownLabel;
+        
+        /// <summary>
+        /// EnumNullableDropDownField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue EnumNullableDropDownField;
         
         /// <summary>
         /// EnumNullableDropDownLabel control.
@@ -31,6 +373,15 @@ namespace Remotion.ObjectBinding.Web.Test.Shared.IndividualControlTests {
         protected global::System.Web.UI.WebControls.Label EnumNullableDropDownLabel;
         
         /// <summary>
+        /// EnumUndefinedDropDownField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue EnumUndefinedDropDownField;
+        
+        /// <summary>
         /// EnumUndefinedDropDownLabel control.
         /// </summary>
         /// <remarks>
@@ -38,6 +389,15 @@ namespace Remotion.ObjectBinding.Web.Test.Shared.IndividualControlTests {
         /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label EnumUndefinedDropDownLabel;
+        
+        /// <summary>
+        /// EnumNotNullableRadioButtonField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue EnumNotNullableRadioButtonField;
         
         /// <summary>
         /// EnumNotNullableRadioButtonLabel control.
@@ -49,6 +409,15 @@ namespace Remotion.ObjectBinding.Web.Test.Shared.IndividualControlTests {
         protected global::System.Web.UI.WebControls.Label EnumNotNullableRadioButtonLabel;
         
         /// <summary>
+        /// EnumNullableRadioButtonField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue EnumNullableRadioButtonField;
+        
+        /// <summary>
         /// EnumNullableRadioButtonLabel control.
         /// </summary>
         /// <remarks>
@@ -56,6 +425,15 @@ namespace Remotion.ObjectBinding.Web.Test.Shared.IndividualControlTests {
         /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label EnumNullableRadioButtonLabel;
+        
+        /// <summary>
+        /// EnumUndefinedRadioButtonField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue EnumUndefinedRadioButtonField;
         
         /// <summary>
         /// EnumUndefinedRadioButtonLabel control.
@@ -67,6 +445,15 @@ namespace Remotion.ObjectBinding.Web.Test.Shared.IndividualControlTests {
         protected global::System.Web.UI.WebControls.Label EnumUndefinedRadioButtonLabel;
         
         /// <summary>
+        /// EnumNotNullableRadioButtonWithoutNullvalueField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue EnumNotNullableRadioButtonWithoutNullvalueField;
+        
+        /// <summary>
         /// EnumNotNullableRadioButtonWithoutNullvalueLabel control.
         /// </summary>
         /// <remarks>
@@ -74,6 +461,15 @@ namespace Remotion.ObjectBinding.Web.Test.Shared.IndividualControlTests {
         /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label EnumNotNullableRadioButtonWithoutNullvalueLabel;
+        
+        /// <summary>
+        /// EnumNullableRadioButtonWithoutNullvalueField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue EnumNullableRadioButtonWithoutNullvalueField;
         
         /// <summary>
         /// EnumNullableRadioButtonWithoutNullvalueLabel control.
@@ -85,6 +481,15 @@ namespace Remotion.ObjectBinding.Web.Test.Shared.IndividualControlTests {
         protected global::System.Web.UI.WebControls.Label EnumNullableRadioButtonWithoutNullvalueLabel;
         
         /// <summary>
+        /// EnumUndefinedRadioButtonWithoutNullvalueField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue EnumUndefinedRadioButtonWithoutNullvalueField;
+        
+        /// <summary>
         /// EnumUndefinedRadioButtonWithoutNullvalueLabel control.
         /// </summary>
         /// <remarks>
@@ -92,5 +497,59 @@ namespace Remotion.ObjectBinding.Web.Test.Shared.IndividualControlTests {
         /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label EnumUndefinedRadioButtonWithoutNullvalueLabel;
+        
+        /// <summary>
+        /// GenderFieldSelectionChangedLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label GenderFieldSelectionChangedLabel;
+        
+        /// <summary>
+        /// GenderTestSetNullButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.WebButton GenderTestSetNullButton;
+        
+        /// <summary>
+        /// GenderTestSetDisabledGenderButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.WebButton GenderTestSetDisabledGenderButton;
+        
+        /// <summary>
+        /// GenderTestSetMarriedButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.WebButton GenderTestSetMarriedButton;
+        
+        /// <summary>
+        /// ReadOnlyGenderTestSetNullButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.WebButton ReadOnlyGenderTestSetNullButton;
+        
+        /// <summary>
+        /// ReadOnlyGenderTestSetNewItemButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.WebButton ReadOnlyGenderTestSetNewItemButton;
     }
 }

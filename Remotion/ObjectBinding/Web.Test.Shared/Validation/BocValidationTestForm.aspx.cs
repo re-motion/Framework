@@ -19,12 +19,9 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
 using Remotion.Collections;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Validation;
-using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Validation;
@@ -33,7 +30,7 @@ using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.Test.Shared.Validation
 {
-  public class BocValidationTestForm
+  public partial class BocValidationTestForm
       : SingleBocTestWxeBasePage,
           IFormGridRowProvider //  Provides new rows and rows to hide to the FormGridManager
   {
@@ -41,26 +38,6 @@ namespace Remotion.ObjectBinding.Web.Test.Shared.Validation
         new AutoInitDictionary<HtmlTable, FormGridRowInfoCollection>();
 
     private AutoInitDictionary<HtmlTable, StringCollection> _listOfHiddenRows = new AutoInitDictionary<HtmlTable, StringCollection>();
-
-    protected Button PostBackButton;
-    protected Button SaveButton;
-    protected BindableObjectDataSourceControl CurrentObject;
-    protected BindableObjectDataSourceControlValidationResultDispatchingValidator DataSourceControlValidationResultDispatchingValidator;
-    protected FormGridManager FormGridManager;
-    protected BocTextValue LastNameField;
-    protected BocTextValue FirstNameField;
-    protected BocTextValue TextField;
-    protected BocMultilineTextValue MultilineTextField;
-    protected BocDateTimeValue DateTimeField;
-    protected BocEnumValue EnumField;
-    protected BocReferenceValue ReferenceField;
-    protected BocBooleanValue BooleanField;
-    protected BocList ListField;
-    protected BocList BocListRowEdit;
-    protected BocList GridBocList;
-    protected HtmlTable FormGrid;
-    protected HtmlHeadContents HtmlHeadContents;
-    protected UserControlBinding UserControlPartnerBinding;
 
     protected void Page_Load (object sender, EventArgs e)
     {

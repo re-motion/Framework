@@ -26,50 +26,8 @@ using Remotion.Web.UI.Controls;
 namespace Remotion.ObjectBinding.Web.Test.Shared.IndividualControlTests
 {
 
-public class BocDateTimeValueUserControl : BaseUserControl
+public partial class BocDateTimeValueUserControl : BaseUserControl
 {
-  protected HtmlGenericControl NonVisualControls;
-  protected FormGridManager FormGridManager;
-  protected BocTextValue FirstNameField;
-  protected BocTextValue LastNameField;
-  protected BocDateTimeValue BirthdayField;
-  protected Label BirthdayFieldValueLabel;
-  protected BocDateTimeValue ReadOnlyBirthdayField;
-  protected Label ReadOnlyBirthdayFieldValueLabel;
-  protected BocDateTimeValue UnboundBirthdayField;
-  protected Label UnboundBirthdayFieldValueLabel;
-  protected BocDateTimeValue UnboundRequiredBirthdayField;
-  protected Label UnboundRequiredBirthdayFieldValueLabel;
-  protected BocDateTimeValue UnboundReadOnlyBirthdayField;
-  protected Label UnboundReadOnlyBirthdayFieldValueLabel;
-  protected BocDateTimeValue DateOfDeathField;
-  protected Label DateOfDeathFieldValueLabel;
-  protected BocDateTimeValue ReadOnlyDateOfDeathField;
-  protected Label ReadOnlyDateOfDeathFieldValueLabel;
-  protected BocDateTimeValue UnboundDateOfDeathField;
-  protected Label UnboundDateOfDeathFieldValueLabel;
-  protected BocDateTimeValue UnboundReadOnlyDateOfDeathField;
-  protected Label UnboundReadOnlyDateOfDeathFieldValueLabel;
-  protected BocDateTimeValue DirectlySetBocDateTimeValueField;
-  protected Label DirectlySetBocDateTimeValueFieldValueLabel;
-  protected BocDateTimeValue ReadOnlyDirectlySetBocDateTimeValueField;
-  protected Label ReadOnlyDirectlySetBocDateTimeValueFieldValueLabel;
-  protected BocDateTimeValue DisabledBirthdayField;
-  protected Label DisabledBirthdayFieldValueLabel;
-  protected BocDateTimeValue DisabledReadOnlyBirthdayField;
-  protected Label DisabledReadOnlyBirthdayFieldValueLabel;
-  protected BocDateTimeValue DisabledUnboundBirthdayField;
-  protected Label DisabledUnboundBirthdayFieldValueLabel;
-  protected BocDateTimeValue DisabledUnboundReadOnlyBirthdayField;
-  protected Label DisabledUnboundReadOnlyBirthdayFieldValueLabel;
-  protected WebButton BirthdayTestSetNullButton;
-  protected WebButton BirthdayTestSetNewValueButton;
-  protected Label BirthdayFieldDateTimeChangedLabel;
-  protected WebButton ReadOnlyBirthdayTestSetNullButton;
-  protected WebButton ReadOnlyBirthdayTestSetNewValueButton;
-  protected HtmlTable FormGrid;
-  protected BindableObjectDataSourceControl CurrentObject;
-  protected BindableObjectDataSourceControlValidationResultDispatchingValidator CurrentObjectValidationResultDispatchingValidator;
 
   protected override void RegisterEventHandlers ()
   {

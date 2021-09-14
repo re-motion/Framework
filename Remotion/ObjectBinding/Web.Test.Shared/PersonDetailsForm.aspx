@@ -29,7 +29,7 @@
     <remotion:htmlheadcontents runat="server" id="HtmlHeadContents"></remotion:htmlheadcontents>
   </head>
   <body>
-    <form id=Form method=post runat="server"><h1>PersonDetails Form</h1>
+    <form id=TheForm method=post runat="server"><h1>PersonDetails Form</h1>
       <table id=FormGrid runat="server" width="100%">
         <tr>
           <td colSpan=2>Persondetails</td></tr>

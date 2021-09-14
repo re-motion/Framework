@@ -30,39 +30,8 @@ namespace Remotion.ObjectBinding.Web.Test.Shared.IndividualControlTests
 {
 
 [WebMultiLingualResources("OBWTest.Globalization.IndividualControlTests.BocReferenceValueUserControl")]
-public class BocReferenceValueUserControl : BaseUserControl
+public partial class BocReferenceValueUserControl : BaseUserControl
 {
-  protected HtmlGenericControl NonVisualControls;
-  protected FormGridManager FormGridManager;
-  protected BocTextValue FirstNameField;
-  protected BocTextValue LastNameField;
-  protected BocReferenceValue PartnerField;
-  protected Label PartnerFieldValueLabel;
-  protected BocReferenceValue ReadOnlyPartnerField;
-  protected Label ReadOnlyPartnerFieldValueLabel;
-  protected BocReferenceValue UnboundPartnerField;
-  protected Label UnboundPartnerFieldValueLabel;
-  protected BocReferenceValue UnboundReadOnlyPartnerField;
-  protected Label UnboundReadOnlyPartnerFieldValueLabel;
-  protected BocReferenceValue DisabledPartnerField;
-  protected Label DisabledPartnerFieldValueLabel;
-  protected BocReferenceValue DisabledReadOnlyPartnerField;
-  protected Label DisabledReadOnlyPartnerFieldValueLabel;
-  protected BocReferenceValue DisabledUnboundPartnerField;
-  protected Label DisabledUnboundPartnerFieldValueLabel;
-  protected BocReferenceValue DisabledUnboundReadOnlyPartnerField;
-  protected Label DisabledUnboundReadOnlyPartnerFieldValueLabel;
-  protected Label PartnerFieldSelectionChangedLabel;
-  protected Label PartnerFieldMenuClickEventArgsLabel;
-  protected WebButton PartnerTestSetNullButton;
-  protected WebButton PartnerTestSetNewItemButton;
-  protected WebButton ReadOnlyPartnerTestSetNullButton;
-  protected WebButton ReadOnlyPartnerTestSetNewItemButton;
-  protected HtmlTable FormGrid;
-  protected Label PartnerCommandClickLabel;
-  protected BindableObjectDataSourceControl CurrentObject;
-  protected BindableObjectDataSourceControlValidationResultDispatchingValidator CurrentObjectValidationResultDispatchingValidator;
-
   protected override void RegisterEventHandlers ()
   {
     base.RegisterEventHandlers();

@@ -15,21 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Web.UI.HtmlControls;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.Validation;
-using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.Test.Shared.IndividualControlTests
 {
 
-public class EmptyUserControl : BaseUserControl
+public partial class EmptyUserControl : BaseUserControl
 {
-  protected HtmlGenericControl NonVisualControls;
-  protected FormGridManager FormGridManager;
-  protected BindableObjectDataSourceControl CurrentObject;
-  protected BindableObjectDataSourceControlValidationResultDispatchingValidator CurrentObjectValidationResultDispatchingValidator;
-
   protected override void RegisterEventHandlers ()
   {
     base.RegisterEventHandlers();
@@ -44,26 +37,6 @@ public class EmptyUserControl : BaseUserControl
   {
     get { return CurrentObjectValidationResultDispatchingValidator; }
   }
-
-	#region Web Form Designer generated code
-	override protected void OnInit (EventArgs e)
-	{
-		//
-		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
-		//
-		InitializeComponent();
-		base.OnInit(e);
-	}
-
-	/// <summary>
-	///		Required method for Designer support - do not modify
-	///		the contents of this method with the code editor.
-	/// </summary>
-	private void InitializeComponent ()
-	{
-
-  }
-  #endregion
 }
 
 }

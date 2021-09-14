@@ -15,7 +15,7 @@
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
 <%@ Page Language="c#" Codebehind="Form.aspx.cs" AutoEventWireup="True" Inherits="Remotion.ObjectBinding.Web.Test.Shared.IndividualControlTests.Form" 
-  Title="IndividualControlTestForm" MasterPageFile="~/StandardMode.Master" %>
+  Title="IndividualControlTestForm" MasterPageFile="../StandardMode.Master" %>
 <%@ Register tagPrefix="remotion" Namespace="Remotion.Web.UI.Controls" Assembly="Remotion.Web" %>
 <%@ Register tagPrefix="remotion" Namespace="Remotion.ObjectBinding.Web.UI.Controls" Assembly="Remotion.ObjectBinding.Web" %>
 <%@ Register TagPrefix="obwt" TagName="NavigationTabs" Src="../UI/NavigationTabs.ascx" %>

@@ -17,6 +17,8 @@
 <%@ Control Language="c#" AutoEventWireup="false" Codebehind="BocListAsGridUserControl.ascx.cs" Inherits="Remotion.ObjectBinding.Web.Test.Shared.IndividualControlTests.BocListAsGridUserControl" TargetSchema="http://schemas.microsoft.com/intellisense/ie5"%>
 <%@ Register tagPrefix="remotion" Namespace="Remotion.Web.UI.Controls" Assembly="Remotion.Web" %>
 <%@ Register tagPrefix="remotion" Namespace="Remotion.ObjectBinding.Web.UI.Controls" Assembly="Remotion.ObjectBinding.Web" %>
+<%@ Register TagPrefix="remotion" Namespace="Remotion.ObjectBinding.Web.UI.Controls.Validation" Assembly="Remotion.ObjectBinding.Web" %>
+<%@ Register TagPrefix="ros" Namespace="Remotion.ObjectBinding.Sample" Assembly="Remotion.ObjectBinding.Sample" %>
 
 <table id=FormGrid width="80%" runat="server">
   <tr>

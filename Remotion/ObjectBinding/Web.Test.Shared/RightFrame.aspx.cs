@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.Web.Test.Shared
     override protected void OnInit (EventArgs e)
     {
       this.Load += new System.EventHandler(this.Page_Load);
-      base.OnInit (e);
+      base.OnInit(e);
     }
   }
 }

@@ -43,7 +43,7 @@
   </head>
 <body MS_POSITIONING="FlowLayout" onBeforeUnload="OnBeforeUnload();" onkeydown="OnKeyDown();">
 	
-    <form id="Form" method="post" runat="server">
+    <form id="TheForm" method="post" runat="server">
 <h1> Client Form has expired. </h1>
      </form>
 	

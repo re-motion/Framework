@@ -28,37 +28,8 @@ using Remotion.Web.UI.Controls;
 namespace Remotion.ObjectBinding.Web.Test.Shared.IndividualControlTests
 {
 
-public class BocMultilineTextValueUserControl : BaseUserControl
+public partial class BocMultilineTextValueUserControl : BaseUserControl
 {
-  protected HtmlGenericControl NonVisualControls;
-  protected FormGridManager FormGridManager;
-  protected BocTextValue FirstNameField;
-  protected BocTextValue LastNameField;
-  protected BocMultilineTextValue CVField;
-  protected Label CVFieldValueLabel;
-  protected BocMultilineTextValue ReadOnlyCVField;
-  protected Label ReadOnlyCVFieldValueLabel;
-  protected BocMultilineTextValue UnboundCVField;
-  protected Label UnboundCVFieldValueLabel;
-  protected BocMultilineTextValue UnboundReadOnlyCVField;
-  protected Label UnboundReadOnlyCVFieldValueLabel;
-  protected BocMultilineTextValue DisabledCVField;
-  protected Label DisabledCVFieldValueLabel;
-  protected BocMultilineTextValue DisabledReadOnlyCVField;
-  protected Label DisabledReadOnlyCVFieldValueLabel;
-  protected BocMultilineTextValue DisabledUnboundCVField;
-  protected Label DisabledUnboundCVFieldValueLabel;
-  protected BocMultilineTextValue DisabledUnboundReadOnlyCVField;
-  protected Label DisabledUnboundReadOnlyCVFieldValueLabel;
-  protected Label CVFieldTextChangedLabel;
-  protected WebButton CVTestSetNullButton;
-  protected WebButton CVTestSetNewValueButton;
-  protected WebButton ReadOnlyCVTestSetNullButton;
-  protected WebButton ReadOnlyCVTestSetNewValueButton;
-  protected HtmlTable FormGrid;
-  protected BindableObjectDataSourceControl CurrentObject;
-  protected BindableObjectDataSourceControlValidationResultDispatchingValidator CurrentObjectValidationResultDispatchingValidator;
-
   protected override void RegisterEventHandlers ()
   {
     base.RegisterEventHandlers();

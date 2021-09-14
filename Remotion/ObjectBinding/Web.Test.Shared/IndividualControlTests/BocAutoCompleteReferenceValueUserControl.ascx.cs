@@ -30,39 +30,8 @@ namespace Remotion.ObjectBinding.Web.Test.Shared.IndividualControlTests
 {
 
 [WebMultiLingualResources("OBWTest.Globalization.IndividualControlTests.BocAutoCompleteReferenceValueUserControl")]
-public class BocAutoCompleteReferenceValueUserControl : BaseUserControl
+public partial class BocAutoCompleteReferenceValueUserControl : BaseUserControl
 {
-  protected HtmlGenericControl NonVisualControls;
-  protected FormGridManager FormGridManager;
-  protected BocTextValue FirstNameField;
-  protected BocTextValue LastNameField;
-  protected BocAutoCompleteReferenceValue PartnerField;
-  protected Label PartnerFieldValueLabel;
-  protected BocAutoCompleteReferenceValue ReadOnlyPartnerField;
-  protected Label ReadOnlyPartnerFieldValueLabel;
-  protected BocAutoCompleteReferenceValue UnboundPartnerField;
-  protected Label UnboundPartnerFieldValueLabel;
-  protected BocAutoCompleteReferenceValue UnboundReadOnlyPartnerField;
-  protected Label UnboundReadOnlyPartnerFieldValueLabel;
-  protected BocAutoCompleteReferenceValue DisabledPartnerField;
-  protected Label DisabledPartnerFieldValueLabel;
-  protected BocAutoCompleteReferenceValue DisabledReadOnlyPartnerField;
-  protected Label DisabledReadOnlyPartnerFieldValueLabel;
-  protected BocAutoCompleteReferenceValue DisabledUnboundPartnerField;
-  protected Label DisabledUnboundPartnerFieldValueLabel;
-  protected BocAutoCompleteReferenceValue DisabledUnboundReadOnlyPartnerField;
-  protected Label DisabledUnboundReadOnlyPartnerFieldValueLabel;
-  protected Label PartnerFieldSelectionChangedLabel;
-  protected Label PartnerFieldMenuClickEventArgsLabel;
-  protected WebButton PartnerTestSetNullButton;
-  protected WebButton PartnerTestSetNewItemButton;
-  protected WebButton ReadOnlyPartnerTestSetNullButton;
-  protected WebButton ReadOnlyPartnerTestSetNewItemButton;
-  protected HtmlTable FormGrid;
-  protected Label PartnerCommandClickLabel;
-  protected BindableObjectDataSourceControl CurrentObject;
-  protected BindableObjectDataSourceControlValidationResultDispatchingValidator CurrentObjectValidationResultDispatchingValidator;
-
   protected override void RegisterEventHandlers ()
   {
     base.RegisterEventHandlers();
