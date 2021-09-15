@@ -9,6 +9,11 @@
         <polyline points="6.5 11 9.5 8 6.5 5" />
       </g>
     </g>
+    <g id="SingleChevronWhite">
+      <g stroke="#ffffff" stroke-width="1.2" fill="none" fill-rule="evenodd" stroke-linecap="square" stroke-linejoin="round">
+        <polyline points="6.5 11 9.5 8 6.5 5" />
+      </g>
+    </g>
     <g id="TreeViewOpen">
       <g transform="translate(16, 0) rotate(90)">
         <use href="#SingleChevron" />
@@ -32,6 +37,11 @@
   <svg class="sprite-part" id="DropDownMenuButton" width="16" height="16" viewBox="0 0 16 16">
     <g transform="translate(16, 0) rotate(90)">
       <use href="#SingleChevron" />
+    </g>
+  </svg>
+  <svg class="sprite-part" id="DropDownMenuButtonWhite" width="16" height="16" viewBox="0 0 16 16">
+    <g transform="translate(16, 0) rotate(90)">
+      <use href="#SingleChevronWhite" />
     </g>
   </svg>
   <svg class="sprite-part" id="DropDownMenuErrorIndicator" width="16" height="16" viewBox="0 0 16 16">

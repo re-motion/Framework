@@ -25,6 +25,42 @@ span.DropDownMenuSelect
   cursor: pointer;
 }
 
+span.DropDownMenuContainer.primary span.DropDownMenuSelect:not(.disabled)
+{
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+span.DropDownMenuContainer.primary span.DropDownMenuSelect:not(.disabled) a.DropDownMenuLabel
+{
+  color: var(--color-primary-text);
+  border-right-color: var(--color-primary-text);
+}
+
+span.DropDownMenuContainer.primary span.DropDownMenuSelect:not(.disabled):hover,
+span.DropDownMenuContainer.primary span.DropDownMenuSelect:not(.disabled):focus,
+span.DropDownMenuContainer.primary span.DropDownMenuSelect:not(.disabled).focus
+{
+  background-color: var(--color-primary-highlight);
+  border-color: var(--color-primary-highlight);
+}
+
+span.DropDownMenuContainer.primary span.DropDownMenuSelect:not(.disabled) a.DropDownMenuButton img
+{
+  background-image: url('../Image/sprite.svg#DropDownMenuButtonWhite');
+}
+
+span.DropDownMenuContainer.supplemental span.DropDownMenuSelect:not(:hover, :focus),
+span.DropDownMenuContainer.supplemental span.DropDownMenuSelect.disabled
+{
+  border-color: transparent;
+}
+
+span.DropDownMenuContainer.supplemental span.DropDownMenuSelect a.DropDownMenuLabel
+{
+  border-color: transparent;
+}
+
 span.DropDownMenuSelect.disabled
 {
   cursor: default;
