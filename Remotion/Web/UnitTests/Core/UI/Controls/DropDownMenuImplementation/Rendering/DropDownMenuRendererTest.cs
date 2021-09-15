@@ -31,6 +31,7 @@ using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.DropDownMenuImplementation;
 using Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering;
 using Remotion.Web.UI.Controls.Rendering;
+using ButtonType = Remotion.Web.UI.Controls.ButtonType;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Rendering
 {
@@ -134,6 +135,22 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
       containerDiv.AssertAttributeValueEquals (DiagnosticMetadataAttributes.IsDisabled, (!_control.Object.Enabled).ToString().ToLower());
     }
 
+    [Test]
+    public void RenderWithPrimaryButtonType ()
+    {
+      _control.Setup (stub => stub.ButtonType).Returns (ButtonType.Primary);
+
+      GetAssertedContainerSpan (ButtonType.Primary);
+    }
+
+    [Test]
+    public void RenderWithSupplementalButtonType ()
+    {
+      _control.Setup (stub => stub.ButtonType).Returns (ButtonType.Supplemental);
+
+      GetAssertedContainerSpan (ButtonType.Supplemental);
+    }
+
     private void AssertTitleSpan (XmlNode containerDiv, bool withTitle, bool withIcon)
     {
       var hasTitle = withTitle || withIcon;
@@ -190,14 +207,21 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
       }
     }
 
-    private XmlNode GetAssertedContainerSpan ()
+    private XmlNode GetAssertedContainerSpan (ButtonType buttonType = ButtonType.Standard)
     {
+      var buttonClass = buttonType switch {
+              ButtonType.Standard => "DropDownMenuContainer",
+              ButtonType.Primary => "DropDownMenuContainer primary",
+              ButtonType.Supplemental => "DropDownMenuContainer supplemental",
+              _ => throw new ArgumentOutOfRangeException (nameof (buttonType), buttonType, null)
+          };
+
       var renderer = new DropDownMenuRenderer (_resourceUrlFactory, GlobalizationService, RenderingFeatures.Default, new StubLabelReferenceRenderer());
       renderer.Render (new DropDownMenuRenderingContext (_httpContextStub.Object, _htmlHelper.Writer, _control.Object));
       var document = _htmlHelper.GetResultDocument();
       var containerDiv = document.GetAssertedChildElement ("span", 0);
       containerDiv.AssertAttributeValueEquals ("id", _control.Object.ClientID);
-      containerDiv.AssertAttributeValueEquals ("class", "DropDownMenuContainer");
+      containerDiv.AssertAttributeValueEquals ("class", buttonClass);
       containerDiv.AssertChildElementCount (1);
 
       return containerDiv;

@@ -34,6 +34,7 @@ namespace Remotion.Web.UI.Controls
 
     private static readonly Action<HtmlTextWriter> s_emptyTitleRenderer = writer => { };
 
+    private ButtonType _buttonType;
     private bool _showTitle = true;
     private string _titleText = "";
     private IconInfo _titleIcon;
@@ -168,6 +169,18 @@ namespace Remotion.Web.UI.Controls
     public void SetRenderHeadTitleMethodDelegate (Action<HtmlTextWriter> renderHeadTitleMethod)
     {
       _renderHeadTitleMethod = renderHeadTitleMethod;
+    }
+
+    /// <summary>
+    /// Gets or sets the button type that determines how the <see cref="DropDownMenu"/>'s button is displayed on the page.
+    /// </summary>
+    [Description ("Determines how the button is displayed on the page.")]
+    [Category ("Appearance")]
+    [DefaultValue (ButtonType.Standard)]
+    public ButtonType ButtonType
+    {
+      get { return _buttonType; }
+      set { _buttonType = value; }
     }
 
     [Description ("Set false to remove the title from the DropDownMenu's button when it is rendered.")]

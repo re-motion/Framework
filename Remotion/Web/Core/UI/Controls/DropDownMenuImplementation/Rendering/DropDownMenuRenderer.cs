@@ -236,11 +236,29 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
       get { return "DropDownMenuButton"; }
     }
 
+    protected string CssClassDropDownButtonPrimary
+    {
+      get { return CssClassDefinition.ButtonTypePrimary; }
+    }
+
+    protected string CssClassDropDownButtonSupplemental
+    {
+      get { return CssClassDefinition.ButtonTypeSupplemental; }
+    }
+
     private void AddAttributesToRender (DropDownMenuRenderingContext renderingContext)
     {
       AddStandardAttributesToRender (renderingContext);
       if (string.IsNullOrEmpty (renderingContext.Control.CssClass) && string.IsNullOrEmpty (renderingContext.Control.Attributes["class"]))
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassBase);
+      {
+        var cssClass = renderingContext.Control.ButtonType switch {
+                ButtonType.Primary => $"{CssClassBase} {CssClassDropDownButtonPrimary}",
+                ButtonType.Supplemental => $"{CssClassBase} {CssClassDropDownButtonSupplemental}",
+                _ => CssClassBase
+            };
+
+        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClass);
+      }
 
       if (renderingContext.Control.ControlStyle.Width.IsEmpty)
       {
@@ -255,6 +273,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
 
       renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags (renderingContext.Control.TitleText));
       renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributes.IsDisabled, (!renderingContext.Control.Enabled).ToString().ToLower());
+      renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributes.ButtonType, renderingContext.Control.ButtonType.ToString());
     }
 
     private void RegisterEventHandlerScripts (DropDownMenuRenderingContext renderingContext)

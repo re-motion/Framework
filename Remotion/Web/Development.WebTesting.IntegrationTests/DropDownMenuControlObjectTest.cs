@@ -264,6 +264,33 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       Assert.That (myDropDownMenu2.IsOpen(), Is.False);
     }
 
+    [Test]
+    public void TestHasStandardButtonType()
+    {
+      var home = Start();
+
+      var dropDownMenu = home.DropDownMenus().GetByLocalID ("MyDropDownMenu");
+      Assert.That (dropDownMenu.GetButtonType(), Is.EqualTo (ButtonType.Standard));
+    }
+
+    [Test]
+    public void TestHasPrimaryButtonType ()
+    {
+      var home = Start();
+
+      var dropDownMenu = home.DropDownMenus().GetByLocalID ("MyDropDownMenuPrimary");
+      Assert.That (dropDownMenu.GetButtonType(), Is.EqualTo (ButtonType.Primary));
+    }
+
+    [Test]
+    public void TestHasSupplementalButtonType ()
+    {
+      var home = Start();
+
+      var dropDownMenu = home.DropDownMenus().GetByLocalID ("MyDropDownMenuSupplemental");
+      Assert.That (dropDownMenu.GetButtonType(), Is.EqualTo (ButtonType.Supplemental));
+    }
+
     private WxePageObject Start ()
     {
       return Start<WxePageObject> ("DropDownMenuTest.wxe");
