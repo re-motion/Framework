@@ -1,4 +1,9 @@
-/* Style applied to the TabbedMenu. */
+.tabbedMenu
+{
+  --tabbedMenu-seperator: var(--remotion-themed-border-width) solid var(--color-contrast-separator);
+  --tabbedMenu-min-height: calc(var(--remotion-themed-spacing) * 7);
+}
+
 table.tabbedMenu
 {
   width: 100%;
@@ -6,314 +11,118 @@ table.tabbedMenu
   border-spacing: 0;
 }
 
+table.tabbedMenu tr
+{
+  border-top: var(--tabbedMenu-seperator);
+  border-bottom: var(--tabbedMenu-seperator);
+}
+
 td.tabbedMainMenuCell
 {
-  padding: 0;
-  padding-top: 0.25em;
-  background-color: White;
+  background-color: var(--color-contrast);
 }
 
+td.tabbedMainMenuCell,
 td.tabbedSubMenuCell
 {
-  background-color: White;
-  padding: 0.3em;
-  border-bottom: solid 1px #AAAAAA;
-}
-
-td.tabbedSubMenuCell ul
-{
-  overflow: hidden;
+  padding-top: var(--remotion-themed-spacing);
+  padding-bottom: 0;
+  padding-left: var(--remotion-themed-spacing-double);
+  padding-right: var(--remotion-themed-spacing-double);
 }
 
 td.tabbedMenuStatusCell
 {
-  background-color: White;
-  padding-top: 0.3em;
-  padding-bottom: 0.3em;
-  padding-left: 0.3em;
-  padding-right: 0.8em;
-  color: Black;
-  text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  box-sizing: border-box;
   white-space: nowrap;
-  border-bottom: solid 1px #AAAAAA;
-}
-
-/* Main Menu Tabstrip */
-div.tabbedMainMenu div.tabStripTabsPane
-{
-  border-bottom: solid 1px #AAAAAA;
-}
-
-div.tabbedMainMenu span.tabStripTabWrapper
-{
-  padding-top: 0.3em;
-  display: inline;
-  position: static;
-}
-
-div.tabbedMainMenu span.tabStripTabSeparator
-{
-  display: none; /* magin-left must be set to 0 in the Non-IE browsers section for tabStripTab and tabStripTabSelected. */
-}
-
-div.tabbedMainMenu span.tabStripTab a,
-div.tabbedMainMenu span.tabStripTabSelected a
-{
-  margin-bottom: -1px;
-  display: inline-block;
-  position: relative;
-}
-
-div.tabbedMainMenu span.tabStripTab a span.anchorBody > img,
-div.tabbedMainMenu span.tabStripTabSelected a span.anchorBody > img
-{
-  position: relative;
-  top: -0.1em;
-  vertical-align: middle;
-}
-
-div.tabbedMainMenu span.tabStripTab a
-{  
-  border-top: 1px solid #AAAAAA;
-  border-right: 1px solid #AAAAAA;
-  border-bottom: 1px solid #AAAAAA;
-  border-left: none;
-  background-color: #DDDDDD;
-  background-image: url(../Image/sprite.svg#TabbedMenuTabBackground);
-  background-size: 1px 33px;
-  background-repeat: repeat-x;
-  background-position: center;
-  color: Black;
-  font-size: 120%;
-  font-weight: bold;
-  text-decoration: none;
-}
-
-div.tabbedMainMenu span.tabStripTab a:focus,
-div.tabbedMainMenu span.tabStripTab a:hover,
-div.tabbedMainMenu span.tabStripTab a:active
-{
-  background-color: #FEFFFF;
-  background-image: url(../Image/sprite.svg#TabbedMenuTabBackgroundHover);
-  background-size: 1px 33px;
-  background-repeat: repeat-x;
-  background-position: top;
-  color: Black;
-  outline: none;
-}
-
-div.tabbedMainMenu span.tabStripTabSelected a
-{
-  border-top: 1px solid #AAAAAA;
-  border-right: 1px solid #AAAAAA;
-  border-bottom: none;
-  border-left: none;
-  background: none;
-  background-color: White;
-  color: Black;
-  font-size: 120%;
-  font-weight: bold;
-  text-decoration: none;
-}
-
-div.tabbedMainMenu span.tabStripTabSelected a:after
-{
-  content: '';
-  display: block;
-  /* Use a separate border element to ensure sharp corners instead of transitioning at the point where the border colors meet. */
-  border-bottom: solid 1px White;
-}
-
-div.tabbedMainMenu span.tabStripTabSelected a:focus,
-div.tabbedMainMenu span.tabStripTabSelected a:hover,
-div.tabbedMainMenu span.tabStripTabSelected a:active
-{
-  color: Black;
-  background: none;
-  background-color: White;
-  outline: none;
-}
-
-div.tabbedMainMenu span.tabStripTab.disabled a,
-div.tabbedMainMenu span.tabStripTab.disabled a:hover,
-div.tabbedMainMenu span.tabStripTab.disabled a:active
-{
-  color: #AAAAAA;
-  background: none;
-  background-color: #efefef;
-  text-decoration: none;
-}
-
-div.tabbedMainMenu span.tabStripTab.disabled img
-{
-  opacity: 0.4;
-  filter: progid:DXImageTransform.Microsoft.BasicImage(opacity=0.40),
-          progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
-}
-
-/* Content area of the tab */
-div.tabbedMainMenu li span.anchorBody
-{
-  padding-top: 0.3em;
-  padding-bottom: 0.3em;
-  padding-left: 0.6em;
-  padding-right: 0.6em;
-}
-
-div.tabbedMainMenu div.clearingPane
-{
-  clear: both;
-}
-
-/* Sub Menu Tabstrip */
-div.tabbedSubMenu div.tabStripTabsPane
-{
+  min-height: var(--tabbedMenu-min-height);
+  padding: 0 calc(var(--remotion-themed-spacing) * 3);
+  padding-top: var(--remotion-themed-spacing);
 }
 
 div.tabbedSubMenu div.tabStripTabsPane.empty
 {
-  padding-top: 0.4em; /* padding from tabStripTabWrapper, tabStripTab and content */
+  min-height: var(--tabbedMenu-min-height);
 }
 
+div.tabbedMainMenu span.tabStripTabSeparator,
 div.tabbedSubMenu span.tabStripTabSeparator
 {
-  display: none; /* magin-left must be set to 0 in the Non-IE browsers section for tabStripTab and tabStripTabSelected. */
+  display: none;
 }
 
+div.tabbedMainMenu span.tabStripTab,
+div.tabbedMainMenu span.tabStripTabSelected,
 div.tabbedSubMenu span.tabStripTab,
 div.tabbedSubMenu span.tabStripTabSelected
 {
-  border-right: solid 1px #AAAAAA;
-
-  padding-top: 0.1em;
-  padding-left: 0.2em;
-  padding-right: 0.2em;
-
-  min-height: 1.4em;
-  min-height: calc(16px + 0.2em);
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  align-items: center;
+  min-height: var(--tabbedMenu-min-height);
 }
 
-div.tabbedSubMenu div.tabStripTabsPane span.tabStripTabWrapper
+div.tabbedMainMenu span.tabStripTab:not(.disabled):hover,
+div.tabbedSubMenu span.tabStripTab:not(.disabled):hover
 {
-  /* Compensates for 1px offset due to rounding errors when calculating the height in Internet Explorer. 
-    This might only be an issue if the TabbedMenu is displayed at the top of the page and manifests itself by jumping when moving the keyboard focus out of the TabbedMenu. */
-  padding-top: 0.1em;
-  padding-bottom: 0.1em;
+  background-color: transparent;
 }
 
+div.tabbedMainMenu span.tabStripTab a,
+div.tabbedMainMenu span.tabStripTabSelected a,
 div.tabbedSubMenu span.tabStripTab a,
 div.tabbedSubMenu span.tabStripTabSelected a
 {
-  display: block;
-  position: relative;
-  min-height: 16px;
+  height: 100%;
+  width: 100%;
+  padding: 0 var(--remotion-themed-spacing-double);
+  background-color: transparent;
+  color: var(--color-standard-text);
+  text-decoration: none;
+  outline: none;
 }
 
+div.tabbedMainMenu span.tabStripTab:not(.disabled) a:focus,
+div.tabbedMainMenu span.tabStripTabSelected:not(.disabled) a:focus,
+div.tabbedSubMenu span.tabStripTab:not(.disabled) a:focus,
+div.tabbedSubMenu span.tabStripTabSelected:not(.disabled) a:focus
+{
+  text-decoration: none;
+}
+
+div.tabbedSubMenu span.tabStripTab.disabled a,
+div.tabbedMainMenu span.tabStripTab.disabled a
+{
+  background-color: transparent;
+}
+
+div.tabbedMainMenu span.tabStripTab a span.anchorBody,
+div.tabbedMainMenu span.tabStripTabSelected a span.anchorBody,
 div.tabbedSubMenu span.tabStripTab a span.anchorBody,
 div.tabbedSubMenu span.tabStripTabSelected a span.anchorBody
 {
-  /* Compensates the margin-top: -0.1em for the img-tag */
-  padding-top: 0.1em;
+  height: 100%;
+  border-bottom: solid 4px transparent;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
 }
 
-div.tabbedSubMenu span.tabStripTab a span.anchorBody > img,
-div.tabbedSubMenu span.tabStripTabSelected a span.anchorBody > img
+div.tabbedMainMenu span.tabStripTab:not(.disabled) a:hover span.anchorBody,
+div.tabbedMainMenu span.tabStripTab:not(.disabled) a:focus span.anchorBody,
+div.tabbedSubMenu span.tabStripTab:not(.disabled) a:hover span.anchorBody,
+div.tabbedSubMenu span.tabStripTab:not(.disabled) a:focus span.anchorBody,
+div.tabbedMainMenu span.tabStripTabSelected:not(.disabled) a span.anchorBody,
+div.tabbedSubMenu span.tabStripTabSelected:not(.disabled) a span.anchorBody
 {
-  position: relative;
-  top: -0.1em;
-  vertical-align: middle;
-}
-
-div.tabbedSubMenu span.tabStripTab a span.anchorBody > span,
-div.tabbedSubMenu span.tabStripTabSelected a span.anchorBody > span
-{
-}
-
-div.tabbedSubMenu span.tabStripTab a
-{
-  border: none;
-  background: none;
-  background-color: White;
-  color: Black;
-  text-decoration: none;
-}
-
-div.tabbedSubMenu span.tabStripTab a:focus,
-div.tabbedSubMenu span.tabStripTabSelected a:focus
-{
-  outline: dotted black 1px;
-  outline: auto 5px -webkit-focus-ring-color;
-}
-
-div.tabbedSubMenu span.tabStripTab a:focus,
-div.tabbedSubMenu span.tabStripTab a:hover,
-div.tabbedSubMenu span.tabStripTab a:active,
-div.tabbedSubMenu span.tabStripTabSelected a:focus,
-div.tabbedSubMenu span.tabStripTabSelected a:hover,
-div.tabbedSubMenu span.tabStripTabSelected a:active
-{
-  background-color: White;
-  color: Black;
-  text-decoration: none;
-}
-
-div.tabbedSubMenu span.tabStripTabSelected a,
-div.tabbedSubMenu span.tabStripTabSelected a:focus
-{
-  border: none;
-  background: none;
-  background-color: White;
-  color: Black;
+  border-bottom-color: var(--color-primary);
 }
 
 div.tabbedSubMenu span.tabStripTab a:focus span.anchorBody > img:only-child
 {
   outline: none;
-}
-
-div.tabbedSubMenu span.tabStripTab a:focus span.anchorBody > span
-{
-  text-decoration: none;
-}
-
-div.tabbedSubMenu span.tabStripTabSelected a span.anchorBody > span,
-div.tabbedSubMenu span.tabStripTabSelected a:focus span.anchorBody > span
-{
-  text-decoration: underline;
-}
-
-div.tabbedSubMenu span.tabStripTab.disabled a,
-div.tabbedSubMenu span.tabStripTab.disabled a:hover,
-div.tabbedSubMenu span.tabStripTab.disabled a:active
-{
-  color: #AAAAAA;
-  background: none;
-  background-color: White;
-  text-decoration: none;
-}
-
-div.tabbedSubMenu span.tabStripTab.disabled img
-{
-  opacity: 0.4;
-  filter: progid:DXImageTransform.Microsoft.BasicImage(opacity=0.40),
-          progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
-}
-
-/* Content area of the tab */
-div.tabbedSubMenu span.anchorBody
-{
-  padding-top: 0;
-  padding-bottom: 0;
-  padding-left: 0.3em;
-  padding-right: 0.3em;
-}
-
-div.tabbedSubMenu div.tabStripTabsPane.empty
-{
-  padding-top: 1.7em;
-}
-
-div.tabbedSubMenu div.clearingPane
-{
-  clear: both;
 }
