@@ -22,38 +22,53 @@
   flex-grow: 1;
 }
 
-.tabStripTabWrapper .tabStripTab
-{
-  background-color: var(--color-standard-background);
-}
-
 .tabStripTabWrapper .tabStripTab,
 .tabStripTabWrapper .tabStripTabSelected
 {
   display: flex;
   justify-content: center;
   align-items: center;
-  box-sizing: border-box;
   height: calc(var(--remotion-themed-line-height) + var(--remotion-themed-spacing) * 2);
-  padding: 0 calc(var(--remotion-themed-spacing));
-  border: var(--remotion-themed-border);
-  border-radius: var(--remotion-themed-border-radius);
 }
 
-.tabStripTabWrapper .tabStripTab:not(.disabled):hover,
-.tabStripTabWrapper .tabStripTabSelected
+.tabStripTabWrapper .tabStripTab a,
+.tabStripTabWrapper .tabStripTabSelected a
+{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  border: var(--remotion-themed-border);
+  border-radius: var(--remotion-themed-border-radius);
+  padding: 0 calc(var(--remotion-themed-spacing));
+  text-decoration: none;
+}
+
+.tabStripTabWrapper .tabStripTab a
+{
+  color: var(--color-standard-text);
+  background-color: var(--color-standard-background);
+}
+
+.tabStripTabWrapper .tabStripTab:not(.disabled) a:hover,
+.tabStripTabWrapper .tabStripTabSelected a
 {
   border-color: var(--color-highlight);
   background-color: var(--color-highlight);
+}
+
+.tabStripTabWrapper .tabStripTab:not(.disabled) a:hover,
+.tabStripTabWrapper .tabStripTabSelected:not(.disabled) a:hover
+{
   cursor: pointer;
 }
 
-.tabStripTabWrapper .tabStripTab a[href]
+.tabStripTabWrapper .tabStripTab:not(.disabled) a:focus,
+.tabStripTabWrapper .tabStripTabSelected:not(.disabled) a:focus
 {
-  color: var(--color-standard-text);
-  cursor: pointer;
   outline: none;
-  text-decoration: none;
+  text-decoration: underline;
 }
 
 .tabStripTabWrapper .tabStripTab.disabled a
@@ -62,9 +77,9 @@
   background-color: var(--color-disabled-background);
 }
 
-.tabStripTabWrapper .tabStripTab:not(.disabled) a:focus,
-.tabStripTabWrapper .tabStripTabSelected:not(.disabled) a:focus
+.tabStripTabWrapper .tabStripTabSelected.disabled a
 {
-  outline: none;
-  text-decoration: underline;
+  color: var(--color-disabled-text);
+  border-color: var(--color-disabled-border);
+  background-color: var(--color-disabled-background);
 }
