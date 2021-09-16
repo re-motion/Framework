@@ -35,6 +35,27 @@ Black
 
 /* Basic styles used to define the font, text-size, etc. */
 
+@font-face {
+  font-family: 'Roboto-Medium';
+  src: url('Roboto-Medium.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Roboto-Bold';
+  src: url('Roboto-Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Roboto-Regular';
+  src: url('Roboto-Regular.ttf') format('truetype');
+}
+
+:root {
+  --remotion-themed-font-heading: 100% 'Roboto-Bold', sans-serif;
+  --remotion-themed-font-bold: 100% 'Roboto-Medium', sans-serif;
+  --remotion-themed-font-standard: 100% 'Roboto-Regular', sans-serif;
+}
+
 body
 {
   overflow: auto;
@@ -42,7 +63,7 @@ body
 
 body, input, select, textarea, button
 {
-  font-family: 'Arial', 'Helvetica', sans-serif;
+  font: var(--remotion-themed-font-standard);
 }
 
 /*  Changes the font-size to 80%. 
