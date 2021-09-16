@@ -29,7 +29,6 @@ div.bocList div.bocListTableBlock div.bocListTableContainer
 {
   grid-row: 1 / span 2;
   position: relative;
-  background-color: var(--boclist-tablehead-background-color);
   overflow: hidden;
 }
 
