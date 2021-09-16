@@ -1,0 +1,151 @@
+/*  Style applied to the form grid table's outer structure  */
+.formGridTable
+{
+  --formgrid-border: var(--remotion-themed-border-width) solid var(--color-standard-separator);
+}
+
+.formGridTable
+{
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.formGridTitleCell,
+.formGridSubTitleCell
+{
+  padding: var(--remotion-themed-spacing-large) 0;
+}
+
+.formGridTitleCell
+{
+  font: var(--remotion-themed-font-heading);
+}
+
+.formGridSubTitleCell
+{
+  font: var(--remotion-themed-font-subheading);
+}
+
+.formGridLabelsCell,
+.formGridMarkersCell,
+.formGridControlsCell
+{
+  padding: var(--remotion-themed-spacing) calc(var(--remotion-themed-spacing) / 2);
+  border-bottom: var(--formgrid-border);
+  vertical-align: top;
+}
+
+.formGridLabelsCell
+{
+  width: 15%;
+  padding-top: calc(var(--remotion-themed-line-height) / 2 + var(--remotion-themed-spacing-small) + var(--remotion-themed-border-width));
+  font: var(--remotion-themed-font-bold);
+}
+
+.formGridLabelsCell:first-child
+{
+  padding-left: 0;
+}
+
+.formGridMarkersCell
+{
+  width: 1%;
+  padding-top: calc(var(--remotion-themed-line-height) / 2 + var(--remotion-themed-border-width));
+  white-space: nowrap;
+}
+
+.formGridControlsCell
+{
+  width: auto;
+}
+
+.formGridMarkersCell:first-child,
+.formGridControlsCell:first-child
+{
+  padding-left: 0;
+}
+
+.formGridMarkersCell:last-child,
+.formGridControlsCell:last-child
+{
+  padding-right: 0;
+}
+
+.formGridMarkersCell img
+{
+  height: var(--remotion-themed-img-width);
+  width: var(--remotion-themed-img-width);
+  padding: calc(var(--remotion-themed-spacing-small) - var(--remotion-themed-border-width));
+  border: var(--remotion-themed-border-placeholder);
+  border-radius: var(--remotion-themed-border-radius);
+}
+
+.formGridValidationMessagesCell
+{
+  padding: var(--remotion-themed-spacing) 0;
+  border-bottom: var(--formgrid-border);
+}
+
+.formGridTopDataRow
+{
+  border-top: var(--formgrid-border);
+}
+
+.formGridValidationMessage,
+.formGridValidator,
+.formGridValidationNotice
+{
+  padding-top: var(--remotion-themed-spacing);
+  color: var(--color-validationerror-text);
+}
+
+.formGridMarkersCell a[aria-label]:not([title]),
+.formGridMarkersCell a[aria-label]:not([title])
+{
+  position: relative;
+  outline: none;
+}
+
+.formGridMarkersCell a[aria-label]:not([title]):hover img
+{
+  background-color: var(--remotion-themed-background-color-hover);
+  border: var(--remotion-themed-border-hover);
+  box-shadow: var(--remotion-themed-box-shadow-hover);
+}
+
+.formGridMarkersCell a[aria-label]:not([title]):focus img,
+.formGridMarkersCell a[aria-label]:not([title]):focus img
+{
+  background-color: var(--remotion-themed-background-color-focus);
+  border: var(--remotion-themed-border-focus);
+  box-shadow: var(--remotion-themed-box-shadow-focus);
+}
+
+.formGridMarkersCell a[aria-label]:not([title])::after,
+.formGridMarkersCell a[aria-label]:not([title])::after
+{
+  visibility: hidden;
+  transition-property: visibility;
+  transition-duration: 0s;
+  transition-delay: 0s;
+  transition-timing-function: linear;
+  content: attr(aria-label);
+  white-space: pre;
+  display: inline-block;
+  position: absolute;
+  /* popup spawns at the bottom right corner of the icon's hover highlighting */
+  top: calc(var(--remotion-themed-spacing) * 2 - var(--remotion-themed-border-width) * 2 + var(--remotion-themed-spacing-small));
+  padding: var(--remotion-themed-spacing) calc(var(--remotion-themed-spacing) + var(--remotion-themed-spacing-small));
+  border: var(--remotion-themed-tooltip-border);
+  color: var(--color-tooltip-text);
+  background-color: var(--color-tooltip-background);
+  font: var(--tooltip-font);
+  z-index: var(--z-index-max);
+}
+
+.formGridMarkersCell a[aria-label]:not([title]):focus::after,
+.formGridMarkersCell a[aria-label]:not([title]):hover::after
+{
+  visibility: visible;
+  transition-delay: var(--transition-delay-tooltip);
+}
