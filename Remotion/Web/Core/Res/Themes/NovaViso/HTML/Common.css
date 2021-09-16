@@ -63,6 +63,9 @@
   --mozilla-border-radius: 1px;
   --transition-delay-tooltip: 0.7s;
   --tooltip-font: 90% sans-serif;
+  --remotion-themed-font-heading: 700 100% sans-serif;
+  --remotion-themed-font-bold: 500 100% sans-serif;
+  --remotion-themed-font-standard: 400 100% sans-serif;
 }
 
 select option
