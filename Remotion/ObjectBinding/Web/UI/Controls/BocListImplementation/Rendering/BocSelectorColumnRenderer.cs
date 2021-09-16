@@ -21,7 +21,6 @@ using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI;
-using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
@@ -140,6 +139,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Input);
       renderingContext.Writer.RenderEndTag(); // Input-checkbox
+      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      renderingContext.Writer.RenderEndTag();
     }
 
     private void RenderDataRowSelectorControl (BocListRenderingContext renderingContext, string id, string name, string value, bool isChecked)
@@ -167,6 +168,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Title, labelText);
 
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Input);
+      renderingContext.Writer.RenderEndTag();
+      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
       renderingContext.Writer.RenderEndTag();
     }
 
