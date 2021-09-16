@@ -1,105 +1,106 @@
 /*  Style applied to the form grid table's outer structure  */
-table.formGridTable
+.formGridTable
+{
+  --formgrid-border: var(--remotion-themed-border-width) solid var(--color-standard-separator);
+}
+
+.formGridTable
 {
   border-collapse: collapse;
-  border-width: 0;
   width: 100%;
 }
 
-td.formGridTitleCell,
-td.formGridSubTitleCell
+.formGridTitleCell,
+.formGridSubTitleCell
 {
-  font-weight: bold;
-  font-size: 125%;
-  padding: 2px 2px 2px 2px;
-  border: none;
+  padding: calc(var(--remotion-themed-spacing) * 2) 0;
 }
 
-td.formGridTitleCell h1
+.formGridTitleCell
 {
-  width: 100%;
-  border-bottom: solid 1px #AAAAAA;
-  color: Black;
+  font: var(--remotion-themed-font-heading);
 }
 
-/*  Style applied to the cells containing the labels  */
-td.formGridLabelsCell
+.formGridSubTitleCell
 {
-  background-color: #F0F0F0;
-  text-align: right;
-  padding: 0.3em 1em 0.3em 1em;
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  border-bottom: solid 1px #C8C8C8;
-  width: 17%;
+  font: var(--remotion-themed-font-subheading);
 }
 
-/*  Style applied to the cells containing the markers  */
-td.formGridMarkersCell
+.formGridLabelsCell,
+.formGridMarkersCell,
+.formGridControlsCell
 {
-  white-space: nowrap;
-  padding: 0.3em 0.5em 0.3em 0.5em;
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  border-bottom: solid 1px #C8C8C8;
+  padding: var(--remotion-themed-spacing) var(--remotion-themed-spacing-half);
+  border-bottom: var(--formgrid-border);
+  vertical-align: top;
+}
+
+.formGridLabelsCell
+{
+  width: 15%;
+  padding-top: calc(var(--remotion-themed-line-height) / 2 + var(--remotion-themed-spacing-half));
+  font: var(--remotion-themed-font-bold);
+}
+
+.formGridLabelsCell:first-child
+{
+  padding-left: 0;
+}
+
+.formGridMarkersCell
+{
   width: 1%;
+  padding-top: calc(var(--remotion-themed-line-height) / 2 - var(--remotion-themed-spacing-half) / 2);
+  white-space: nowrap;
 }
 
-td.formGridMarkersCell img
+.formGridControlsCell
 {
-  min-width: 12px;
-  border: none;
-  height: 16px;
-  width: 16px;
-}
-
-/*  Style applied to the cells containing the controls  */
-td.formGridControlsCell
-{
-  padding: 0.3em 1em 0.3em 0em;
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  border-bottom: solid 1px #C8C8C8;
   width: auto;
 }
 
-/*  Style applied to the cells containing the validation messages, 
-*   if a seperate column is specified  */
-td.formGridValidationMessagesCell
+.formGridMarkersCell:first-child,
+.formGridControlsCell:first-child
 {
-  padding: 2px 7px 2px 7px;
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  border-bottom: solid 1px #C8C8C8;
-  border-color: White;
+  padding-left: 0;
 }
 
-/*  Style applied to the cells in the first row after the title row  */
-td.formGridTopDataRow
+.formGridMarkersCell:last-child,
+.formGridControlsCell:last-child
 {
-  border-top: solid 1px #AAAAAA;
+  padding-right: 0;
 }
 
-/*  Style applied to the validation messages, additiv to formGridValidationMessagesCell  */
-.formGridValidationMessage
+.formGridMarkersCell img
 {
-  color: Red;
+  height: var(--default-icon-size);
+  width: var(--default-icon-size);
+  padding: var(--remotion-themed-spacing-half);
 }
 
-/*  Style applied to the validators created by FormGridManager  */
-.formGridValidator
+.formGridMarkersCell a img:hover
 {
-  color: Red;
+  border-radius: var(--remotion-themed-border-radius);
+  background-color: var(--color-highlight);
 }
 
-/*  Style applied to the validation notice that can be displayed by the ValidationStateViewer  */
+.formGridValidationMessagesCell
+{
+  padding: var(--remotion-themed-spacing) 0;
+  border-bottom: var(--formgrid-border);
+}
+
+.formGridTopDataRow
+{
+  border-top: var(--formgrid-border);
+}
+
+.formGridValidationMessage,
+.formGridValidator,
 .formGridValidationNotice
 {
-  color: Red;
+  padding-top: var(--remotion-themed-spacing);
+  color: var(--color-validationerror-text);
 }
 
 .formGridMarkersCell a[aria-label]:not([title]),
@@ -113,26 +114,26 @@ td.formGridTopDataRow
 {
   visibility: hidden;
   transition-property: visibility;
-  transition-duration: 0;
-  transition-delay: 0;
+  transition-duration: 0s;
+  transition-delay: 0s;
   transition-timing-function: linear;
-
   content: attr(aria-label);
   white-space: pre;
   display: inline-block;
   position: absolute;
-  left: 0;
-  top: 1.2em;
-  z-index: 1000;
-  padding: 0.25em;
-  border: 1px solid Black;
-  background-color: Lightyellow;
-  box-sizing: border-box;
+  /* popup spawns at the bottom right corner of the icon's hover highlighting */
+  top: calc(var(--remotion-themed-spacing) * 2 + var(--remotion-themed-spacing-half));
+  padding: var(--remotion-themed-spacing) calc(var(--remotion-themed-spacing) + var(--remotion-themed-spacing-half));
+  border: var(--remotion-themed-tooltip-border);
+  color: var(--color-tooltip-text);
+  background-color: var(--color-tooltip-background);
+  font: var(--tooltip-font);
+  z-index: var(--z-index-max);
 }
 
 .formGridMarkersCell a[aria-label]:not([title]):focus::after,
 .formGridMarkersCell a[aria-label]:not([title]):hover::after
 {
   visibility: visible;
-  transition-delay: 0.7s;
+  transition-delay: var(--transition-delay-tooltip);
 }

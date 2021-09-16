@@ -2314,23 +2314,7 @@ namespace Remotion.Web.UI.Controls
 
       ArgumentUtility.CheckNotNull ("dataRow.MarkersCell", dataRow.MarkersCell);
 
-      //  ValidationMarker and RequiredMarker share left-hand position
-      //  ValidationMarker takes precedence
-
-      if (ShowValidationMarkers && dataRow.ValidationMarker != null)
-      {
-        dataRow.MarkersCell.Controls.Add(dataRow.ValidationMarker);
-      }
-      else if (ShowRequiredMarkers && dataRow.RequiredMarker != null)
-      {
-        dataRow.MarkersCell.Controls.Add(dataRow.RequiredMarker);
-      }
-      else if (ShowValidationMarkers || ShowRequiredMarkers)
-      {
-        dataRow.MarkersCell.Controls.Add(CreateBlankMarker());
-      }
-
-      //  HelpProvider takes right-hand side in column
+      //  HelpProvider takes left-hand side in column
 
       if (ShowHelpProviders)
       {
@@ -2344,6 +2328,22 @@ namespace Remotion.Web.UI.Controls
         }
         else
           dataRow.MarkersCell.Controls.Add(CreateBlankMarker());
+      }
+
+      //  ValidationMarker and RequiredMarker share right-hand position
+      //  ValidationMarker takes precedence
+
+      if (ShowValidationMarkers && dataRow.ValidationMarker != null)
+      {
+        dataRow.MarkersCell.Controls.Add(dataRow.ValidationMarker);
+      }
+      else if (ShowRequiredMarkers && dataRow.RequiredMarker != null)
+      {
+        dataRow.MarkersCell.Controls.Add(dataRow.RequiredMarker);
+      }
+      else if (ShowValidationMarkers || ShowRequiredMarkers)
+      {
+        dataRow.MarkersCell.Controls.Add(CreateBlankMarker());
       }
     }
 
