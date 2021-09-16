@@ -59,6 +59,11 @@
           <remotion:NavigationCommand Type="None"/>
         </PersistedCommand>
       </remotion:MainMenuTab>
+      <remotion:MainMenuTab ItemID="VeryLongTab" Text="This is a very long text and should break if there is not enough space. But this text has to be reaaaaaaaaly long because it must be longer that the whole line of menu to break." Icon-Url="~/Images/SampleIcon.gif" IsDisabled="True">
+        <PersistedCommand>
+          <remotion:NavigationCommand Type="None"/>
+        </PersistedCommand>
+      </remotion:MainMenuTab>
     </Tabs>
   </remotion:TabbedMenu>
   <span>DoNotFindMe</span>  
