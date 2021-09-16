@@ -53,16 +53,12 @@ namespace Remotion.Web.UI.Controls.SingleViewImplementation.Rendering
       var styleSheetUrl = ResourceUrlFactory.CreateThemedResourceUrl (typeof (SingleViewRenderer), ResourceType.Html, "SingleView.css");
       htmlHeadAppender.RegisterStylesheetLink (keyStyle, styleSheetUrl, HtmlHeadAppender.Priority.Library);
 
-      htmlHeadAppender.RegisterViewLayoutScript();
-
       ScriptUtility.Instance.RegisterJavaScriptInclude (control, htmlHeadAppender);
     }
 
     public void Render (SingleViewRenderingContext renderingContext)
     {
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
-
-      RegisterAdjustViewScript (renderingContext);
 
       AddStandardAttributesToRender (renderingContext);
       if (string.IsNullOrEmpty (renderingContext.Control.CssClass) && string.IsNullOrEmpty (renderingContext.Control.Attributes["class"]))
@@ -156,17 +152,6 @@ namespace Remotion.Web.UI.Controls.SingleViewImplementation.Rendering
       renderingContext.Writer.RenderEndTag ();
       renderingContext.Writer.RenderEndTag ();
       renderingContext.Writer.RenderEndTag ();
-    }
-
-    private void RegisterAdjustViewScript (SingleViewRenderingContext renderingContext)
-    {
-      ScriptUtility.Instance.RegisterResizeOnElement (renderingContext.Control, string.Format ("'#{0}'", renderingContext.Control.ClientID), "ViewLayout.AdjustSingleView");
-
-      renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock (
-          renderingContext.Control,
-          typeof (SingleViewRenderer),
-          Guid.NewGuid ().ToString (),
-          string.Format ("ViewLayout.AdjustSingleView ('#{0}');", renderingContext.Control.ClientID));
     }
 
     #region protected virtual string CssClass...

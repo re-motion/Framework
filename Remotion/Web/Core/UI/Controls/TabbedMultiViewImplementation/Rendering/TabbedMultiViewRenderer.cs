@@ -60,16 +60,12 @@ namespace Remotion.Web.UI.Controls.TabbedMultiViewImplementation.Rendering
       var styleSheetUrl = ResourceUrlFactory.CreateThemedResourceUrl (typeof (TabbedMultiViewRenderer), ResourceType.Html, "TabbedMultiView.css");
       htmlHeadAppender.RegisterStylesheetLink (keyStyle, styleSheetUrl, HtmlHeadAppender.Priority.Library);
 
-      htmlHeadAppender.RegisterViewLayoutScript();
-
       ScriptUtility.Instance.RegisterJavaScriptInclude (control, htmlHeadAppender);
     }
 
     public void Render (TabbedMultiViewRenderingContext renderingContext)
     {
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
-
-      RegisterAdjustViewScript (renderingContext);
 
       AddAttributesToRender (renderingContext);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Div);
@@ -194,17 +190,6 @@ namespace Remotion.Web.UI.Controls.TabbedMultiViewImplementation.Rendering
 
       renderingContext.Writer.RenderEndTag ();
       renderingContext.Writer.RenderEndTag ();
-    }
-
-    private void RegisterAdjustViewScript (TabbedMultiViewRenderingContext renderingContext)
-    {
-      ScriptUtility.Instance.RegisterResizeOnElement (renderingContext.Control, string.Format ("'#{0}'", renderingContext.Control.ClientID), "ViewLayout.AdjustTabbedMultiView");
-
-      renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock (
-          renderingContext.Control,
-          typeof (TabbedMultiViewRenderer),
-          Guid.NewGuid ().ToString (),
-          string.Format ("ViewLayout.AdjustTabbedMultiView ('#{0}');", renderingContext.Control.ClientID));
     }
 
     #region protected virtual string CssClass...

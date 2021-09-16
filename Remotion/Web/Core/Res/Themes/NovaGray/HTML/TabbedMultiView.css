@@ -20,36 +20,39 @@ div.tabbedMultiView > div.wrapper
   right: 0;
   width: auto;
   height: auto;
+
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: max-content max-content auto max-content;
+  grid-template-areas: "topControls" "tabStrip" "view" "bottomControls";
 }
 
 div.tabbedMultiViewActiveView
 {
-  height: 80%;
-  width: inherit;
+  grid-area: view;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 div.tabbedMultiViewActiveView > div.contentBorder
 {
-  position: relative;
   background-color: white;
-  margin: 0; 
+  margin: 0;
   padding: 0.5em;
   overflow: auto;
-  height: 60%;
 }
 
 div.tabbedMultiViewActiveView > div.contentBorder > div.content
 {
-  position: relative;
-  left: 0;
-  top: 0;
   width: 100%;
   height: 100%;
 }
 
-/* Applied to the top section of the multi view. Height cannot be provided in percent. */
+/* Applied to the top section of the multi view. */
 div.tabbedMultiViewTopControls
 {
+  grid-area: topControls;
   overflow: hidden;
   background-color: White;
 }
@@ -60,16 +63,15 @@ div.tabbedMultiViewTopControls.empty
   background-color: White;
 }
 
-/* Applied to the bottom section of the multi view. Height cannot be provided in percent. */
+/* Applied to the bottom section of the multi view. */
 div.tabbedMultiViewBottomControls
 {
-  position: absolute;
+  grid-area: bottomControls;
   overflow: hidden;
   background-color: White;
-  margin-top: 0.5em;
-  left: 0.5em;
-  right: 0.5em;
-  bottom: 0.5em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  padding-bottom: 0.5em;
 }
 
 div.tabbedMultiViewBottomControls.empty
@@ -78,13 +80,10 @@ div.tabbedMultiViewBottomControls.empty
   background-color: White;
 }
 
-/* Tab Strip */
+/* Applied to the tab strip section of the multi view. */
 div.tabbedMultiViewTabStrip
 {
-  position: relative;
-  left: 0;
-  right: 0;
-  padding: 0;
+  grid-area: tabStrip;
   background-color: White;
   margin: 0;
   margin-top: 0.1em;
