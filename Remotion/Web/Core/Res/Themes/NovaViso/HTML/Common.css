@@ -23,6 +23,9 @@
   --color-alert-background: Lightyellow;
   --color-alert-border: #000000;
   --color-alert-text: #000000;
+  --color-tooltip-background: #FFFFFF;
+  --color-tooltip-border: #696969;
+  --color-tooltip-text: #000000;
   --color-validationerror-text: #AC1B1B;
   --remotion-themed-border-radius: 2px;
   --remotion-themed-border-width: 1px;
@@ -47,6 +50,7 @@
   --remotion-themed-control-background: var(--color-standard-background);
   --remotion-themed-popup-shadow: 0 var(--remotion-themed-spacing) calc(var(--remotion-themed-spacing) * 3) 0 rgba(0, 0, 0, 0.2), 0 0 calc(var(--remotion-themed-spacing) * 5) 0 rgba(0, 0, 0, 0.1);
   --remotion-themed-alert-border: var(--remotion-themed-border-width) solid var(--color-alert-border);
+  --remotion-themed-tooltip-border: var(--remotion-themed-border-width) solid var(--color-tooltip-border);
   --remotion-themed-img-width: 1.5em;
   --remotion-themed-layer-box-shadow: 0 -1px 4px 0 rgba(0, 0, 0, 0.2);
   --z-index-max: 2147483647;
@@ -56,6 +60,8 @@
   --chromium-border-radius: 1px;
   --mozilla-box-shadow: 0 0 0 2px royalblue;
   --mozilla-border-radius: 1px;
+  --transition-delay-tooltip: 0.7s;
+  --tooltip-font: 90% sans-serif;
 }
 
 select option
