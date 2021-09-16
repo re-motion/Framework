@@ -29,6 +29,7 @@ button.webButton span.buttonBody
   display: flex;
   align-items: center;
   justify-content: center;
+  font: var(--remotion-themed-font-bold);
 }
 
 button.webButton.primary
