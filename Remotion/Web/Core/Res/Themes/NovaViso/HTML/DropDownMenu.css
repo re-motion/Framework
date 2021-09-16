@@ -58,6 +58,7 @@ span.DropDownMenuSelect a.DropDownMenuLabel
   padding: var(--remotion-themed-spacing);
   border-right: var(--remotion-themed-border-width) solid var(--color-contrast-separator);
   outline: none;
+  font: var(--remotion-themed-font-bold);
 }
 
 span.DropDownMenuSelect a.DropDownMenuButton
