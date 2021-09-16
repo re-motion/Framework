@@ -1,5 +1,7 @@
 div.bocList
 {
+  --boclist-grid-row-template: auto;
+  --boclist-grid-row-placement: 1;
   --boclist-tablehead-background-color: var(--color-contrast);
   --boclist-listmenu-background-color: var(--color-contrast);
   --boclist-tablecell-border-color: var(--color-standard-separator);
@@ -11,6 +13,7 @@ div.bocList
 div.bocList
 {
   display: grid;
+  grid-template-rows: var(--boclist-grid-row-template);
   grid-template-columns: 1fr minmax(var(--boclist-menublock-minimum-width), var(--boclist-menublock-maximum-width));
   height: auto;
 }
@@ -152,7 +155,7 @@ div.bocList table.bocListTable td.bocListDataCellIndex
 div.bocList div.bocListTableBlock
 {
   grid-column: 1 / span 2;
-  grid-row: 1;
+  grid-row: var(--boclist-grid-row-placement);
   display: grid;
   grid-template-rows: auto min-content;
   height: 100%;
@@ -226,7 +229,7 @@ div.bocList div.bocListTableBlock div.bocListNavigator a:not([href]) img
 div.bocList div.bocListMenuBlock
 {
   grid-column: 2;
-  grid-row: 1;
+  grid-row: var(--boclist-grid-row-placement);
   background-color: var(--boclist-listmenu-background-color);
 }
 
