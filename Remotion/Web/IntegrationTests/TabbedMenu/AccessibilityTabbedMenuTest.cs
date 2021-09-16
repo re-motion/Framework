@@ -37,6 +37,7 @@ namespace Remotion.Web.IntegrationTests.TabbedMenu
 
       var violations = result.Violations
           .IgnoreByRuleIDAndXPath (AccessibilityRuleID.ColorContrast, "/a[@id='body_MyTabbedMenu_DisabledCommandTab_Command']/span/span")
+          .IgnoreByRuleIDAndXPath (AccessibilityRuleID.ColorContrast, "/a[@id='body_MyTabbedMenu_VeryLongTab_Command']/span/span")
           .IgnoreByRuleIDAndXPath (AccessibilityRuleID.AriaRequiredChildren, "/div[@id='body_MyTabbedMenu_MainMenuTabStrip']/div")
           .IgnoreByRuleIDAndXPath (AccessibilityRuleID.AriaRequiredChildren, "/div[@id='body_MyTabbedMenu_SubMenuTabStrip']/div");
       Assert.That (violations, Is.Empty);
