@@ -1,4 +1,9 @@
-/* Style applied to the BocEnumValue. */
+.bocEnumValue
+{
+  --label-alignment-margin: 0.125em;
+  --icon-alignment-margin: 0.25em;
+  --negative-icon-alignment-margin: -0.375em;
+}
 
 .bocEnumValue,
 .bocEnumValue.readOnly
@@ -6,6 +11,7 @@
   display: inline-flex;
   width: var(--remotion-themed-control-width);
   min-height: var(--remotion-themed-singleline-min-height);
+  align-items: center;
 }
 
 .bocEnumValue.radioButtonList
@@ -42,7 +48,8 @@
   margin: 0;
 }
 
-.bocEnumValue input:not([disabled]):hover
+.bocEnumValue input:not([disabled]):hover,
+.bocEnumValue input:not([disabled]) + label:hover
 {
   cursor: pointer;
 }
@@ -103,6 +110,7 @@
     line height remains unchanged. */
   content: "\200b";
 }
+
 .bocEnumValue.readOnly span[tabindex]:focus
 {
   outline: none;
@@ -123,5 +131,16 @@
   background-color: var(--remotion-themed-background-color-focus);
   border: var(--remotion-themed-border-focus);
   box-shadow: var(--remotion-themed-box-shadow-focus);
+}
+
+.bocEnumValue input[type=radio] + label
+{
+  margin-bottom: var(--label-alignment-margin);
+}
+
+.bocEnumValue input[type=radio] + label:before
+{
+  margin-bottom: var(--negative-icon-alignment-margin);
+  margin-right: var(--icon-alignment-margin);
 }
 

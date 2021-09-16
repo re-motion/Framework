@@ -285,14 +285,14 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
         Html.AssertAttribute (valueSpan, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
 
         CheckImage (value, valueSpan, spanText);
-        CheckCheckBoxVisualizer (outerSpan);
+        CheckOuterSpan (outerSpan);
 
         AssertValidationErrors (outerSpan);
       }
       else
       {
         CheckInput (value, outerSpan);
-        CheckCheckBoxVisualizer (outerSpan);
+        CheckOuterSpan (outerSpan);
 
         AssertValidationErrors (outerSpan);
       }
@@ -316,7 +316,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
 
       Html.AssertAttribute (validationErrorsSpan, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
       Html.AssertAttribute (validationErrorsSpan, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
-      
+
     }
 
     private void CheckInput (bool value, XmlNode outerSpan)
@@ -353,10 +353,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       Html.AssertAttribute (image, "alt", altText);
     }
 
-    private void CheckCheckBoxVisualizer (XmlNode outerSpan)
+    private void CheckOuterSpan (XmlNode outerSpan)
     {
-      var checkBoxVisualizerSpan = outerSpan.GetAssertedChildElement ("span", 1);
-      checkBoxVisualizerSpan.AssertAttributeValueEquals ("class", "checkbox-visualizer");
+      outerSpan.GetAssertedChildElement ("span", 1);
     }
 
     private void CheckCssClass (XmlNode outerSpan)

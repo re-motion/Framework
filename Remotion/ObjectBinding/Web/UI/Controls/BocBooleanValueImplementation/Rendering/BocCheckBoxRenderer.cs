@@ -93,7 +93,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       var checkBoxControl = new HtmlInputCheckBox { ID = renderingContext.Control.GetValueName(), ClientIDMode = ClientIDMode.Static };
       var labelControl = new Label { ID = renderingContext.Control.ClientID + "_Description", ClientIDMode = ClientIDMode.Static };
       var checkBoxVisualizerControl = new HtmlGenericControl { ID = null, TagName = "span" };
-      checkBoxVisualizerControl.Attributes.Add ("class", "checkbox-visualizer");
 
       string description = GetDescription (renderingContext);
       var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
@@ -231,7 +230,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
     private void PrepareImage (BocCheckBoxRenderingContext renderingContext, Image imageControl, string description)
     {
       var imageUrl = ResourceUrlFactory.CreateThemedResourceUrl (
-          typeof (BocCheckBox),
+          typeof (HtmlHeadAppenderExtensions),
           ResourceType.Image,
           renderingContext.Control.Value.Value ? c_trueIcon : c_falseIcon);
 
