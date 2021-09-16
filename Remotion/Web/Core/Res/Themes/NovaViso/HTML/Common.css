@@ -41,6 +41,7 @@
   --remotion-themed-line-height: 1.2em;
   --remotion-themed-spacing: 0.4em;
   --remotion-themed-spacing-half: calc(var(--remotion-themed-spacing) * 0.5);
+  --remotion-themed-spacing-double: calc(var(--remotion-themed-spacing) * 2);
   --remotion-themed-spacing-large: calc(var(--remotion-themed-spacing) * 3);
   --remotion-themed-padding: var(--remotion-themed-spacing);
   --remotion-themed-singleline-min-height: calc(var(--remotion-themed-line-height) + 2 * var(--remotion-themed-spacing));
