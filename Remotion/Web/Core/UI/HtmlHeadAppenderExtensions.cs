@@ -80,6 +80,18 @@ namespace Remotion.Web.UI
       var url = ResourceUrlFactory.CreateThemedResourceUrl (typeof (HtmlHeadContents), ResourceType.Html, "Common.css");
 
       htmlHeadAppender.RegisterStylesheetLink (key, url, HtmlHeadAppender.Priority.Library);
+
+      var robotoRegularKey = typeof (HtmlHeadContents).GetFullNameChecked() + "_RobotoRegular";
+      var robotoRegularUrl = ResourceUrlFactory.CreateThemedResourceUrl (typeof (HtmlHeadContents), ResourceType.Html, "Roboto-Regular.ttf");
+      htmlHeadAppender.RegisterHeadElement (robotoRegularKey, new FontPreloadLink (robotoRegularUrl, "font/ttf"), HtmlHeadAppender.Priority.Script);
+
+      var robotoMediumKey = typeof (HtmlHeadContents).GetFullNameChecked() + "_RobotoMedium";
+      var robotoMediumUrl = ResourceUrlFactory.CreateThemedResourceUrl (typeof (HtmlHeadContents), ResourceType.Html, "Roboto-Medium.ttf");
+      htmlHeadAppender.RegisterHeadElement (robotoMediumKey, new FontPreloadLink (robotoMediumUrl, "font/ttf"), HtmlHeadAppender.Priority.Script);
+
+      var robotoBoldKey = typeof (HtmlHeadContents).GetFullNameChecked() + "_RobotoBold";
+      var robotoBoldUrl = ResourceUrlFactory.CreateThemedResourceUrl (typeof (HtmlHeadContents), ResourceType.Html, "Roboto-Bold.ttf");
+      htmlHeadAppender.RegisterHeadElement (robotoBoldKey, new FontPreloadLink (robotoBoldUrl, "font/ttf"), HtmlHeadAppender.Priority.Script);
     }
 
     private static IResourceUrlFactory ResourceUrlFactory
@@ -90,6 +102,11 @@ namespace Remotion.Web.UI
     private static IInfrastructureResourceUrlFactory InfrastructureResourceUrlFactory
     {
       get { return SafeServiceLocator.Current.GetInstance<IInfrastructureResourceUrlFactory>(); }
+    }
+
+    private static ResourceTheme ResourceTheme
+    {
+      get { return SafeServiceLocator.Current.GetInstance<ResourceTheme>(); }
     }
   }
 }
