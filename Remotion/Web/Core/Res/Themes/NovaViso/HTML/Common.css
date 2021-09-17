@@ -1,3 +1,18 @@
+@font-face {
+  font-family: 'Roboto-Regular';
+  src: url('Roboto-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Roboto-Medium';
+  src: url('Roboto-Medium.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Roboto-Bold';
+  src: url('Roboto-Bold.ttf') format('truetype');
+}
+
 :root
 {
   --color-primary: #0C6594;
@@ -63,9 +78,9 @@
   --mozilla-border-radius: 1px;
   --transition-delay-tooltip: 0.7s;
   --tooltip-font: 90% sans-serif;
-  --remotion-themed-font-heading: 700 100% sans-serif;
-  --remotion-themed-font-bold: 500 100% sans-serif;
-  --remotion-themed-font-standard: 400 100% sans-serif;
+  --remotion-themed-font-standard: 100% 'Roboto-Regular', sans-serif;
+  --remotion-themed-font-bold: 100% 'Roboto-Medium', sans-serif;
+  --remotion-themed-font-heading: 100% 'Roboto-Bold', sans-serif;
 }
 
 select option
