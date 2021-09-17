@@ -59,17 +59,7 @@ div.tabbedMainMenu span.tabStripTabSelected,
 div.tabbedSubMenu span.tabStripTab,
 div.tabbedSubMenu span.tabStripTabSelected
 {
-  padding: 0;
-  border: none;
-  background-color: transparent;
-  align-items: center;
   min-height: var(--tabbedMenu-min-height);
-}
-
-div.tabbedMainMenu span.tabStripTab:not(.disabled):hover,
-div.tabbedSubMenu span.tabStripTab:not(.disabled):hover
-{
-  background-color: transparent;
 }
 
 div.tabbedMainMenu span.tabStripTab a,
@@ -77,13 +67,17 @@ div.tabbedMainMenu span.tabStripTabSelected a,
 div.tabbedSubMenu span.tabStripTab a,
 div.tabbedSubMenu span.tabStripTabSelected a
 {
-  height: 100%;
-  width: 100%;
+  border: none;
   padding: 0 var(--remotion-themed-spacing-double);
-  background-color: transparent;
   color: var(--color-standard-text);
+  background-color: transparent;
   text-decoration: none;
-  outline: none;
+}
+
+div.tabbedMainMenu span.tabStripTab:not(.disabled):hover a,
+div.tabbedSubMenu span.tabStripTab:not(.disabled):hover a
+{
+  background-color: transparent;
 }
 
 div.tabbedMainMenu span.tabStripTab:not(.disabled) a:focus,
