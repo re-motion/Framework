@@ -293,14 +293,14 @@ div.bocList div.bocListTableBlock div.bocListTableContainer thead.bocListTableHe
 /*endregion*/
 
 /*region Sorting order*/
-div.bocList div.bocListTableBlock div.bocListTableContainer div.bocListFakeTableHead span.bocListSortingOrder
+div.bocList div.bocListTableBlock div.bocListTableContainer span.bocListSortingOrder
 {
   color: var(--color-standard-text);
   display: inline-flex;
   align-items: center;
 }
 
-div.bocList div.bocListTableBlock div.bocListTableContainer div.bocListFakeTableHead span.bocListSortingOrder img
+div.bocList div.bocListTableBlock div.bocListTableContainer span.bocListSortingOrder img
 {
   height: 1.2em;
   width: 1.2em;
