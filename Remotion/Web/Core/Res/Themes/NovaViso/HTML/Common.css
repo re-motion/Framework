@@ -78,9 +78,10 @@
   --mozilla-border-radius: 1px;
   --transition-delay-tooltip: 0.7s;
   --tooltip-font: 90% sans-serif;
+  --remotion-themed-font-size: 87.5%;
   --remotion-themed-font-standard: 100% 'Roboto-Regular', sans-serif;
   --remotion-themed-font-bold: 100% 'Roboto-Medium', sans-serif;
-  --remotion-themed-font-heading: 100% 'Roboto-Bold', sans-serif;
+  --remotion-themed-font-heading: 128.5714% 'Roboto-Bold', sans-serif;
 }
 
 select option

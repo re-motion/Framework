@@ -1,40 +1,3 @@
-/*
-
-Structural element border
-Interactive element border: hover
-#AAAAAA
-
-Data item border
-#C8C8C8
-
-Structural element background-color
-Data item background-color
-#F0F0F0
-
-Interactive element border: hover
-#7CB2E6
-
-Interactive element background-color: hover
-#DEECFC
-
-Interactive element border: active
-Selected item border
-#569CE0
-
-Interactive element background-color: active
-Selected item background-color
-#C5E0FC
-
-Link text color:
-#09457E
-
-Active link text color:
-Black
-
-*/
-
-/* Basic styles used to define the font, text-size, etc. */
-
 body
 {
   overflow: auto;
@@ -45,22 +8,9 @@ body, input, select, textarea, button
   font: var(--remotion-themed-font-standard);
 }
 
-/*  Changes the font-size to 80%. 
-    Font-size is compatible with all browsers for pages displayed in standard mode. (The default for ASP.NET projects) */
-/*  Theoretically intended settings. */
 body
 {
-  /* Font-Size in body must be in percent. Otherwise IE has a cascading bug. */  
-  font-size: 80%; 
-}
-
-/* No scaling without a reference value */
-input,
-textarea,
-select,
-button
-{
-  font-size: 100%;
+  font-size: var(--remotion-themed-font-size);
 }
 
 /*  The headings do not automatically scale with the body's font-size. Now they do. 
