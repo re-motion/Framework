@@ -447,6 +447,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
             propertyNodeInfo.ToolTip,
             propertyNodeInfo.Icon,
             propertyNodeInfo.Property);
+        propertyNode.Badge = propertyNodeInfo.Badge;
         propertyNode.IsEvaluated = false;
         parentNode.Children.Add (propertyNode);
       }
@@ -461,6 +462,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       string toolTip = GetToolTip (businessObject);
       IconInfo icon = GetIcon (businessObject, businessObject.BusinessObjectClass.BusinessObjectProvider);
       BusinessObjectTreeNode node = new BusinessObjectTreeNode (id, text, toolTip, icon, property, businessObject);
+      node.Badge = GetBadge (businessObject);
       node.IsEvaluated = false;
       return node;
     }
@@ -469,6 +471,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override HtmlTextWriterTag TagKey
     {
       get { return HtmlTextWriterTag.Div; }
+    }
+
+    [CanBeNull]
+    protected virtual Badge GetBadge (IBusinessObjectProperty businessObjectProperty)
+    {
+      ArgumentUtility.CheckNotNull ("businessObjectProperty", businessObjectProperty);
+      return null;
+    }
+
+    [CanBeNull]
+    protected virtual Badge GetBadge (IBusinessObjectWithIdentity businessObject)
+    {
+      ArgumentUtility.CheckNotNull ("businessObject", businessObject);
+      return null;
     }
 
     protected virtual string GetText (IBusinessObjectWithIdentity businessObject)
@@ -518,14 +534,21 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
               && referenceProperty.IsList
               && referenceProperty.ReferenceClass is IBusinessObjectClassWithIdentity
               && referenceProperty.IsAccessible (parentBusinessObject))
-            referenceListPropertyInfos.Add (new BusinessObjectPropertyTreeNodeInfo (referenceProperty));
+            referenceListPropertyInfos.Add (CreateBusinessObjectPropertyTreeNodeInfo (referenceProperty));
         }
         return (BusinessObjectPropertyTreeNodeInfo[]) referenceListPropertyInfos.ToArray (typeof (BusinessObjectPropertyTreeNodeInfo));
       }
 
-      return new[] { new BusinessObjectPropertyTreeNodeInfo (Property) };
+      return new[] { CreateBusinessObjectPropertyTreeNodeInfo (Property) };
     }
 
+    private BusinessObjectPropertyTreeNodeInfo CreateBusinessObjectPropertyTreeNodeInfo (IBusinessObjectReferenceProperty property)
+    {
+      var businessObjectPropertyTreeNodeInfo = new BusinessObjectPropertyTreeNodeInfo (property);
+      businessObjectPropertyTreeNodeInfo.Badge = GetBadge (property);
+
+      return businessObjectPropertyTreeNodeInfo;
+    }
 
     /// <summary> Loads the <see cref="Value"/> from the bound <see cref="IBusinessObject"/>. </summary>
     /// <include file='..\..\doc\include\UI\Controls\BocTreeView.xml' path='BocTreeView/LoadValue/*' />
@@ -607,17 +630,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         string text = (string) values[5];
         string toolTip = (string) values[6];
         IconInfo icon = (IconInfo) values[7];
-        bool isBusinessObjectTreeNode = (bool) values[9];
+        Badge badge = (Badge) values[8];
+        bool isBusinessObjectTreeNode = (bool) values[10];
 
         WebTreeNode node;
         if (isBusinessObjectTreeNode)
         {
           node = new BusinessObjectTreeNode (itemID, text, toolTip, icon, null, null);
-          string propertyIdentifier = (string) values[8];
+          string propertyIdentifier = (string) values[9];
           ((BusinessObjectTreeNode) node).PropertyIdentifier = propertyIdentifier;
         }
         else
           node = new BusinessObjectPropertyTreeNode (itemID, text, toolTip, icon, null);
+        node.Badge = badge;
         node.IsExpanded = isExpanded;
         node.IsEvaluated = isEvaluated;
         if (isSelected)
@@ -637,7 +662,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         WebTreeNode node = (WebTreeNode) nodes[i];
         Pair nodeState = new Pair();
-        object[] values = new object[10];
+        object[] values = new object[11];
         values[0] = node.ItemID;
         values[1] = node.IsExpanded;
         values[2] = node.IsEvaluated;
@@ -646,13 +671,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         values[5] = node.Text;
         values[6] = node.ToolTip;
         values[7] = node.Icon;
+        values[8] = node.Badge;
         if (node is BusinessObjectTreeNode)
         {
-          values[8] = ((BusinessObjectTreeNode) node).PropertyIdentifier;
-          values[9] = true;
+          values[9] = ((BusinessObjectTreeNode) node).PropertyIdentifier;
+          values[10] = true;
         }
         else
-          values[9] = false;
+          values[10] = false;
         nodeState.First = values;
         nodeState.Second = SaveNodesStateRecursive (node.Children);
         nodesState[i] = nodeState;
@@ -963,6 +989,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private string _text;
     private string _toolTip;
     private IconInfo _icon;
+    private Badge _badge;
     private IBusinessObjectReferenceProperty _property;
 
     public BusinessObjectPropertyTreeNodeInfo (IBusinessObjectReferenceProperty property)
@@ -1003,6 +1030,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       get { return _icon; }
       set { _icon = value; }
+    }
+
+    public Badge Badge
+    {
+      get { return _badge; }
+      set { _badge = value; }
     }
 
     public IBusinessObjectReferenceProperty Property

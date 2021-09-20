@@ -35,6 +35,8 @@ namespace Remotion.Web.Contracts.DiagnosticMetadata
 
     public static readonly string ButtonType = "data-button-type";
 
+    public static readonly string WebTreeViewBadgeValue = "data-webtreeview-badge-value";
+    public static readonly string WebTreeViewBadgeDescription = "data-webtreeview-badge-description";
     public static readonly string WebTreeViewNumberOfChildren = "data-webtreeview-number-of-children";
     public static readonly string WebTreeViewIsSelectedNode = "data-webtreeview-is-selected-node";
     public static readonly string WebTreeViewIsExpanded = "data-webtreeview-is-expanded";

@@ -34,12 +34,16 @@ namespace Remotion.ObjectBinding.Sample
       BusinessObjectPropertyTreeNodeInfo[] nodeInfos;
       if (businessObject is Person)
       {
+        var childrenProperty = (IBusinessObjectReferenceProperty) businessObject.BusinessObjectClass.GetPropertyDefinition ("Children");
+        var childCount = ((IList) businessObject.GetProperty (childrenProperty)).Count;
+
         nodeInfos = new BusinessObjectPropertyTreeNodeInfo[2];
         nodeInfos[0] = new BusinessObjectPropertyTreeNodeInfo (
             "Children",
             "ToolTip: Children",
             new IconInfo (null, Unit.Empty, Unit.Empty),
-            (IBusinessObjectReferenceProperty) businessObject.BusinessObjectClass.GetPropertyDefinition ("Children"));
+            childrenProperty);
+        nodeInfos[0].Badge = new Badge ("" + childCount, childCount + " children");
         nodeInfos[1] = new BusinessObjectPropertyTreeNodeInfo (
             "Jobs",
             "ToolTip: Jobs",

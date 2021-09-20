@@ -71,5 +71,19 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
 
       return result.ForElementScopeScreenshot();
     }
+
+    /// <summary>
+    /// Returns the badge of the <see cref="WebTreeViewNodeControlObject"/>.
+    /// </summary>
+    public static FluentScreenshotElement<ElementScope> GetBadge (
+        [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocTreeViewNodeControlObject> fluentBocTreeView)
+    {
+      ArgumentUtility.CheckNotNull ("fluentBocTreeView", fluentBocTreeView);
+
+      var result = fluentBocTreeView.Target.BocTreeViewNode.Scope.FindCss ("span > .treeViewNodeBadge", Options.NoWait);
+      result.EnsureExistence();
+
+      return result.ForElementScopeScreenshot();
+    }
   }
 }

@@ -644,6 +644,12 @@ namespace Remotion.Web.UI.Controls
             writer.AddAttribute (DiagnosticMetadataAttributes.WebTreeViewNumberOfChildren, DiagnosticMetadataAttributes.Null);
           writer.AddAttribute (DiagnosticMetadataAttributes.WebTreeViewIsExpanded, node.IsExpanded ? "true" : "false");
           writer.AddAttribute (DiagnosticMetadataAttributes.IndexInCollection, (i + 1).ToString());
+          if (!string.IsNullOrEmpty (node.Badge?.Value))
+          {
+            writer.AddAttribute (DiagnosticMetadataAttributes.WebTreeViewBadgeValue, node.Badge.Value);
+            if (!string.IsNullOrEmpty (node.Badge.Description))
+              writer.AddAttribute (DiagnosticMetadataAttributes.WebTreeViewBadgeDescription, node.Badge.Description);
+          }
         }
 
         writer.AddAttribute (HtmlTextWriterAttribute.Id, "Node_" + nodeID);
@@ -723,6 +729,8 @@ namespace Remotion.Web.UI.Controls
         writer.RenderEndTag();
       }
 
+      RenderNodeBadge (writer, node);
+
       writer.RenderEndTag();
     }
 
@@ -797,6 +805,34 @@ namespace Remotion.Web.UI.Controls
       writer.RenderEndTag();
 
       writer.RenderEndTag();
+    }
+
+    /// <summary> Renders the <paramref name="node"/>'s badge (if there is one) onto the <paremref name="writer"/>. </summary>
+    private void RenderNodeBadge (HtmlTextWriter writer, WebTreeNode node)
+    {
+      var badge = node.Badge;
+      if (string.IsNullOrEmpty (badge?.Value))
+        return;
+
+      writer.AddAttribute (HtmlTextWriterAttribute.Title, badge.Description);
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassNodeBadge);
+      writer.AddAttribute (HtmlTextWriterAttribute2.AriaHidden, HtmlAriaHiddenAttributeValue.True);
+      writer.RenderBeginTag (HtmlTextWriterTag.Span);
+
+      writer.RenderBeginTag(HtmlTextWriterTag.Span);
+      writer.Write (badge.Value);
+      writer.RenderEndTag();
+
+      writer.RenderEndTag();
+
+      if (!string.IsNullOrEmpty (badge.Description))
+      {
+        writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassScreenReaderText);
+        writer.RenderBeginTag (HtmlTextWriterTag.Span);
+        writer.Write (".");
+        writer.Write (badge.Description);
+        writer.RenderEndTag();
+      }
     }
 
     private string GetClickCommandArgument (string nodePath)
@@ -1382,6 +1418,13 @@ namespace Remotion.Web.UI.Controls
     protected virtual string CssClassNodeHeadSelected
     {
       get { return "treeViewNodeHeadSelected"; }
+    }
+
+    /// <summary> Gets the CSS-Class applied to the <see cref="WebTreeView"/>'s node badge. </summary>
+    /// <remarks> Class: <c>treeViewNodeBadge</c> </remarks>
+    protected virtual string CssClassNodeBadge
+    {
+      get { return "treeViewNodeBadge"; }
     }
 
     /// <summary> Gets the CSS-Class applied to the <see cref="WebTreeView"/>'s node children. </summary>
