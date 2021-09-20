@@ -7,7 +7,7 @@
   list-style: none;
   display: flex;
   flex-flow: wrap;
-  gap: calc(var(--remotion-themed-spacing) * 2);
+  gap: var(--remotion-themed-spacing-double);
   box-sizing: border-box;
 }
 

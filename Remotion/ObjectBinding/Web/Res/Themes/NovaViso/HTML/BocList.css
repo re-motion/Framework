@@ -237,7 +237,7 @@ div.bocList div.bocListMenuBlock > div
   margin: var(--remotion-themed-spacing);
   display: flex;
   flex-direction: column;
-  gap: calc(var(--remotion-themed-spacing) * 2);
+  gap: var(--remotion-themed-spacing-double);
 }
 
 div.bocList div.bocListMenuBlock div.bocListAvailableViewsList

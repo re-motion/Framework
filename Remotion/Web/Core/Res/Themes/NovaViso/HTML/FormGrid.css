@@ -13,7 +13,7 @@
 .formGridTitleCell,
 .formGridSubTitleCell
 {
-  padding: calc(var(--remotion-themed-spacing) * 2) 0;
+  padding: var(--remotion-themed-spacing-double) 0;
 }
 
 .formGridTitleCell

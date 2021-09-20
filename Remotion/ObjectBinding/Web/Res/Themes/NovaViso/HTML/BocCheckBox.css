@@ -21,7 +21,7 @@
 .bocCheckBox img,
 .bocCheckBox input + span.checkbox-visualizer::before
 {
-  margin: var(--remotion-themed-padding);
+  margin: var(--remotion-themed-spacing);
   vertical-align: middle;
   height: 1.5em;
   width: 1.5em;

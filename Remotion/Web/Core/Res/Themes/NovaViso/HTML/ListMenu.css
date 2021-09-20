@@ -9,8 +9,8 @@ table.listMenu
 td.listMenuRow
 {
   display: flex;
-  gap: calc(2 * var(--remotion-themed-padding));
-  margin-bottom: var(--remotion-themed-padding);
+  gap: calc(2 * var(--remotion-themed-spacing));
+  margin-bottom: var(--remotion-themed-spacing);
 }
 
 span.listMenuItem a,
@@ -19,7 +19,7 @@ span.listMenuItemDisabled a
   display: inline-flex;
   text-decoration: none;
   color: var(--color-primary);
-  gap: var(--remotion-themed-padding);
+  gap: var(--remotion-themed-spacing);
 }
 
 span.listMenuItem a

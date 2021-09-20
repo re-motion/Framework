@@ -39,7 +39,7 @@ td.tabbedMenuStatusCell
   box-sizing: border-box;
   white-space: nowrap;
   min-height: var(--tabbedMenu-min-height);
-  padding: 0 calc(var(--remotion-themed-spacing) * 3);
+  padding: 0 var(--remotion-themed-spacing-large);
   padding-top: var(--remotion-themed-spacing);
   font: var(--remotion-themed-font-bold);
 }

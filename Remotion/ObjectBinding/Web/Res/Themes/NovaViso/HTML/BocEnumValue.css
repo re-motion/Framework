@@ -23,7 +23,7 @@
 {
   display: inline-flex;
   flex-wrap: wrap;
-  gap: calc(var(--remotion-themed-spacing) * 2);
+  gap: var(--remotion-themed-spacing-double);
 }
 
 .bocEnumValue td,
@@ -60,7 +60,7 @@
 
 .bocEnumValue option
 {
-  padding: calc(var(--remotion-themed-padding) * 0.75);
+  padding: calc(var(--remotion-themed-spacing) * 0.75);
   border-radius: var(--remotion-themed-border-radius);
 }
 
@@ -72,7 +72,7 @@
 .bocEnumValue.readOnly span
 {
   box-sizing: border-box;
-  padding: var(--remotion-themed-padding) 0;
+  padding: var(--remotion-themed-spacing) 0;
 }
 
 .bocEnumValue.readOnly span[tabindex]:empty

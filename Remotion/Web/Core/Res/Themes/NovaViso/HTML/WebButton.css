@@ -5,7 +5,7 @@ button.webButton
   background-color: var(--color-standard-background);
   border: var(--remotion-themed-border-width) solid var(--color-primary);
   border-radius: var(--remotion-themed-border-radius);
-  padding: var(--remotion-themed-padding) calc(3 * var(--remotion-themed-padding));
+  padding: var(--remotion-themed-spacing) var(--remotion-themed-spacing-large);
   box-sizing: border-box;
   cursor: pointer;
 }

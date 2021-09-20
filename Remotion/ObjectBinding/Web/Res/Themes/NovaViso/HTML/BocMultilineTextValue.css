@@ -43,8 +43,8 @@ span.bocMultilineTextValue .content
 {
   display: inline-block;
   /* Ensures that the outline is rendered outside of the space reserved for diacritic marks. */
-  padding-top: var(--remotion-themed-padding);
-  padding-bottom: var(--remotion-themed-padding);
+  padding-top: var(--remotion-themed-spacing);
+  padding-bottom: var(--remotion-themed-spacing);
 }
 
 .bocMultilineTextValue.readOnly .content span[tabindex]:empty
