@@ -18,6 +18,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
+using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
 
@@ -37,6 +38,50 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     public void TestControlSelectors (GenericSelectorTestAction<WebTreeViewSelector, WebTreeViewControlObject> testAction)
     {
       testAction (Helper, e => e.WebTreeViews(), "webTreeView");
+    }
+
+    [Test]
+    public void GetBadgeText ()
+    {
+      var home = Start();
+
+      var treeView = home.WebTreeViews().GetByLocalID ("MyWebTreeView3");
+      var treeViewNode = treeView.GetNode ("Node2");
+
+      Assert.That (treeViewNode.GetBadgeText(), Is.EqualTo ("1"));
+    }
+
+    [Test]
+    public void GetBadgeText_OnNodeWithoutBadge_ReturnsNull ()
+    {
+      var home = Start();
+
+      var treeView = home.WebTreeViews().GetByLocalID ("MyWebTreeView3");
+      var treeViewNode = treeView.GetNode ("Node1");
+
+      Assert.That (treeViewNode.GetBadgeText(), Is.Null);
+    }
+
+    [Test]
+    public void GetBadgeDescription ()
+    {
+      var home = Start();
+
+      var treeView = home.WebTreeViews().GetByLocalID ("MyWebTreeView3");
+      var treeViewNode = treeView.GetNode ("Node3");
+
+      Assert.That (treeViewNode.GetBadgeDescription(), Is.EqualTo ("2 description"));
+    }
+
+    [Test]
+    public void GetBadgeDescription_OnNodeWithoutBadge_ReturnsNull ()
+    {
+      var home = Start();
+
+      var treeView = home.WebTreeViews().GetByLocalID ("MyWebTreeView3");
+      var treeViewNode = treeView.GetNode ("Node2");
+
+      Assert.That (treeViewNode.GetBadgeDescription(), Is.Null);
     }
 
     // Exists as unused member for future WebTreeView tests.

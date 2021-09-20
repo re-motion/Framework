@@ -89,14 +89,39 @@ ul.treeViewRoot span.treeViewNode > a img.Icon
   margin-right: var(--treeview-chevron-gap);
 }
 
-ul.treeViewRoot span.treeViewNode
+ul.treeViewRoot span.treeViewNode::before
 {
+  content: "";
   padding-left: calc(var(--treeview-padding) * var(--nesting-depth));
 }
 
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren span.treeViewNode
+ul.treeViewRoot ul.treeViewTopLevelNodeChildren span.treeViewNode::before
 {
+  content: "";
   padding-left: calc(var(--treeview-padding) * (var(--nesting-depth) - 1));
+}
+
+ul.treeViewRoot span.treeViewNode span.treeViewNodeBadge
+{
+  position: sticky;
+  right: 0;
+  background-color: var(--color-standard-background);
+  align-self: stretch;
+  margin-left: auto;
+  padding: 0 var(--remotion-themed-spacing);
+  font: var(--remotion-themed-font-bold);
+  user-select: none;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+ul.treeViewRoot span.treeViewNode:hover span.treeViewNodeBadge,
+ul.treeViewRoot li:focus > span.treeViewNode span.treeViewNodeBadge,
+ul.treeViewRoot span.treeViewNodeHeadSelected ~ span.treeViewNodeBadge
+{
+  background-color: var(--color-highlight);
 }
 
 /* Shared in other CSS files */

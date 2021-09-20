@@ -82,6 +82,31 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
           test);
     }
 
+    [Category ("Screenshot")]
+    [Test]
+    public void WebTreeViewScreenshot_WithMarkedBadge ()
+    {
+      ScreenshotTestingDelegate<FluentScreenshotElement<ScreenshotBocTreeViewNodeControlObject>> test = (builder, target) =>
+      {
+        builder.AnnotateBox (target.GetBadge(), Pens.Blue, WebPadding.Inner);
+
+        builder.Crop (target, new WebPadding (1));
+      };
+
+      var home = Start();
+      var webTreeView = home.TreeViews().GetByLocalID ("ContextMenu_Person");
+      
+      var rootNode = webTreeView.GetNode().WithIndex (1);
+      rootNode.Expand();
+
+      var fluentNode = rootNode.GetNode (1).ForScreenshot();
+
+      Helper.RunScreenshotTest<FluentScreenshotElement<ScreenshotBocTreeViewNodeControlObject>, BocTreeViewControlObjectTest> (
+          fluentNode,
+          ScreenshotTestingType.Both,
+          test);
+    }
+
     [Test]
     public void WebTreeView_WithDerivedControlObject ()
     {

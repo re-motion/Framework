@@ -108,17 +108,11 @@ span.treeViewNodeHeadSelected
 span.treeViewNodeHead,
 span.treeViewNodeHeadSelected
 {
-  display: block;
+  display: inline-block;
   height: 1.7em;
 }
 
 /* Nodes with an expander icon */
-span.treeViewNode > a + span.treeViewNodeHead,
-span.treeViewNode > a + span.treeViewNodeHeadSelected
-{
-  margin-left: 19px;
-}
-
 span.treeViewNodeHead a,
 span.treeViewNodeHeadSelected a
 {
@@ -189,6 +183,15 @@ span.treeViewNode ul
   right: auto;
 }
 
+span.treeViewNodeBadge
+{
+  vertical-align: calc(-0.4em - 1px);
+  padding: 1em;
+  /* Synchronized with focus/hover */
+  padding-top: 3px;
+  padding-bottom: 3px;
+  user-select: none;
+}
 
 /* Shared in other CSS files */
 .screenReaderText
