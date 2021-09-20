@@ -42,6 +42,7 @@
   border: var(--remotion-themed-border);
   border-radius: var(--remotion-themed-border-radius);
   padding: 0 calc(var(--remotion-themed-spacing));
+  padding-top: var(--remotion-themed-text-alignment-fix);
   text-decoration: none;
 }
 

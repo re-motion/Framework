@@ -81,6 +81,7 @@
   --remotion-themed-font-standard: 100% 'Roboto-Regular', sans-serif;
   --remotion-themed-font-bold: 100% 'Roboto-Medium', sans-serif;
   --remotion-themed-font-heading: 128.5714% 'Roboto-Bold', sans-serif;
+  --remotion-themed-text-alignment-fix: 0.1em;
 }
 
 select option
