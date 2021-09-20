@@ -93,8 +93,7 @@ input.remotion-themed,
 select.remotion-themed,
 span.remotion-themed,
 .remotion-themed input,
-.remotion-themed select,
-.remotion-themed span
+.remotion-themed select
 {
   min-height: var(--remotion-themed-min-height);
 }
