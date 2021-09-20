@@ -59,7 +59,6 @@
   --remotion-themed-spacing-double: calc(var(--remotion-themed-spacing) * 2);
   --remotion-themed-spacing-large: calc(var(--remotion-themed-spacing) * 3);
   --remotion-themed-singleline-min-height: calc(var(--remotion-themed-line-height) + 2 * var(--remotion-themed-spacing));
-  --remotion-themed-min-height: var(--remotion-themed-singleline-min-height);
   --remotion-themed-multiline-min-height: calc(2 * var(--remotion-themed-line-height) + 2 * var(--remotion-themed-spacing));
   --remotion-themed-control-width: 16em;
   --remotion-themed-control-background: var(--color-standard-background);
@@ -95,7 +94,7 @@ span.remotion-themed,
 .remotion-themed input,
 .remotion-themed select
 {
-  min-height: var(--remotion-themed-min-height);
+  min-height: var(--remotion-themed-singleline-min-height);
 }
 
 input.remotion-themed,

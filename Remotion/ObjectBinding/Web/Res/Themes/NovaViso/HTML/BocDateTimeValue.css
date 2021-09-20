@@ -3,7 +3,7 @@
 span.bocDateTimeValue,
 span.bocDateValue
 {
-  min-height: var(--remotion-themed-min-height);
+  min-height: var(--remotion-themed-singleline-min-height);
   width: var(--remotion-themed-control-width);
   display: flex;
   align-items: center;

@@ -5,7 +5,7 @@
 {
   display: inline-flex;
   width: var(--remotion-themed-control-width);
-  min-height: var(--remotion-themed-min-height);
+  min-height: var(--remotion-themed-singleline-min-height);
 }
 
 .bocEnumValue.radioButtonList
