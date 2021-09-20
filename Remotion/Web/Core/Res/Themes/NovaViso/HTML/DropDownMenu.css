@@ -16,7 +16,7 @@ span.DropDownMenuSelect
      the relative DropDownMenuSelect. */
   position: relative;
   align-items: center;
-  min-height: var(--remotion-themed-singleline-min-height);
+  height: var(--remotion-themed-singleline-min-height);
   line-height: var(--remotion-themed-line-height);
   width: 100%;
   border: var(--remotion-themed-border);
@@ -53,9 +53,11 @@ span.DropDownMenuSelect a.DropDownMenuLabel img
 
 span.DropDownMenuSelect a.DropDownMenuLabel
 {
-  height: var(--remotion-themed-line-height);
+  height: 100%;
   width: 100%;
-  padding: var(--remotion-themed-spacing);
+  padding: 0 var(--remotion-themed-spacing);
+  display: flex;
+  align-items: center;
   border-right: var(--remotion-themed-border-width) solid var(--color-contrast-separator);
   outline: none;
   font: var(--remotion-themed-font-bold);
