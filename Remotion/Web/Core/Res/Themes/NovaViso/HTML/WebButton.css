@@ -30,6 +30,7 @@ button.webButton span.buttonBody
   align-items: center;
   justify-content: center;
   font: var(--remotion-themed-font-bold);
+  padding-top: var(--remotion-themed-text-alignment-fix);
 }
 
 button.webButton.primary
