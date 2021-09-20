@@ -3,7 +3,7 @@
 span.bocMultilineTextValue
 {
   width: var(--remotion-themed-control-width);
-  min-height: calc(3 * var(--remotion-themed-line-height) + 3 * var(--remotion-themed-padding));
+  min-height: calc(3 * var(--remotion-themed-line-height) + 3 * var(--remotion-themed-spacing));
   position: relative;
   display: inline-block;
   vertical-align: middle;

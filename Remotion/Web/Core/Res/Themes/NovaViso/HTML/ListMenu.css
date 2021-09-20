@@ -9,7 +9,7 @@ table.listMenu
 td.listMenuRow
 {
   display: flex;
-  gap: calc(2 * var(--remotion-themed-spacing));
+  gap: var(--remotion-themed-spacing-double);
   margin-bottom: var(--remotion-themed-spacing);
 }
 

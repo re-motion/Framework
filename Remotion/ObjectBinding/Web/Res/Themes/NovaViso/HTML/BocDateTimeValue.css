@@ -35,13 +35,13 @@ span.bocTimeInputWrapper input
 span.bocTimeInputWrapper.bocTime24HoursWithSeconds input,
 span.bocTimeInputWrapper.bocTime24Hours input
 {
-  width: calc(4.3em + 2 * var(--remotion-themed-spacing));
+  width: calc(4.3em + var(--remotion-themed-spacing-double));
 }
 
 span.bocTimeInputWrapper.bocTime12HoursWithSeconds input,
 span.bocTimeInputWrapper.bocTime12Hours input
 {
-  width: calc(6em + 2 * var(--remotion-themed-spacing));
+  width: calc(6em + var(--remotion-themed-spacing-double));
 }
 
 span.bocDateTimeValue a,
