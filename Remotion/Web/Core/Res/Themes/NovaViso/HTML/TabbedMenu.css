@@ -1,3 +1,7 @@
+:root
+{
+  --tabbedMenu-horizontal-padding: 0;
+}
 .tabbedMenu
 {
   --tabbedMenu-seperator: var(--remotion-themed-border-width) solid var(--color-contrast-separator);
@@ -27,8 +31,8 @@ td.tabbedSubMenuCell
 {
   padding-top: var(--remotion-themed-spacing);
   padding-bottom: 0;
-  padding-left: var(--remotion-themed-spacing-double);
-  padding-right: var(--remotion-themed-spacing-double);
+  padding-left: var(--tabbedMenu-horizontal-padding);
+  padding-right: var(--tabbedMenu-horizontal-padding);
 }
 
 td.tabbedMenuStatusCell
@@ -70,7 +74,7 @@ div.tabbedSubMenu span.tabStripTab a,
 div.tabbedSubMenu span.tabStripTabSelected a
 {
   border: none;
-  padding: 0 var(--remotion-themed-spacing-double);
+  padding: 0 var(--remotion-themed-spacing);
   color: var(--color-standard-text);
   background-color: transparent;
   text-decoration: none;

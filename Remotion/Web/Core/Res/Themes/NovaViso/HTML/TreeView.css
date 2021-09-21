@@ -78,8 +78,8 @@ ul.treeViewRoot span.treeViewNodeHeadSelected > a
 {
   display: flex;
   align-items: center;
-  padding-top: var(--remotion-themed-spacing-half);
-  padding-bottom: var(--remotion-themed-spacing-half);
+  padding-top: calc(var(--remotion-themed-spacing-small) / 2);
+  padding-bottom: calc(var(--remotion-themed-spacing-small) / 2);
 }
 
 ul.treeViewRoot span.treeViewNode > a img.Icon

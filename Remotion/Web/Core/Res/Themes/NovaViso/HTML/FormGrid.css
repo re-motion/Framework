@@ -13,7 +13,7 @@
 .formGridTitleCell,
 .formGridSubTitleCell
 {
-  padding: var(--remotion-themed-spacing-double) 0;
+  padding: var(--remotion-themed-spacing-large) 0;
 }
 
 .formGridTitleCell
@@ -30,7 +30,7 @@
 .formGridMarkersCell,
 .formGridControlsCell
 {
-  padding: var(--remotion-themed-spacing) var(--remotion-themed-spacing-half);
+  padding: var(--remotion-themed-spacing) calc(var(--remotion-themed-spacing) / 2);
   border-bottom: var(--formgrid-border);
   vertical-align: top;
 }
@@ -38,7 +38,7 @@
 .formGridLabelsCell
 {
   width: 15%;
-  padding-top: calc(var(--remotion-themed-line-height) / 2 + var(--remotion-themed-spacing-half));
+  padding-top: calc(var(--remotion-themed-line-height) / 2 + var(--remotion-themed-spacing-small));
   font: var(--remotion-themed-font-bold);
 }
 
@@ -50,7 +50,7 @@
 .formGridMarkersCell
 {
   width: 1%;
-  padding-top: calc(var(--remotion-themed-line-height) / 2 - var(--remotion-themed-spacing-half) / 2);
+  padding-top: calc(var(--remotion-themed-line-height) / 2 - var(--remotion-themed-spacing-small) / 2);
   white-space: nowrap;
 }
 
@@ -75,7 +75,7 @@
 {
   height: var(--default-icon-size);
   width: var(--default-icon-size);
-  padding: var(--remotion-themed-spacing-half);
+  padding: var(--remotion-themed-spacing-small);
 }
 
 .formGridMarkersCell a img:hover
@@ -122,8 +122,8 @@
   display: inline-block;
   position: absolute;
   /* popup spawns at the bottom right corner of the icon's hover highlighting */
-  top: calc(var(--remotion-themed-spacing) * 2 + var(--remotion-themed-spacing-half));
-  padding: var(--remotion-themed-spacing) calc(var(--remotion-themed-spacing) + var(--remotion-themed-spacing-half));
+  top: calc(var(--remotion-themed-spacing) * 2 + var(--remotion-themed-spacing-small));
+  padding: var(--remotion-themed-spacing) calc(var(--remotion-themed-spacing) + var(--remotion-themed-spacing-small));
   border: var(--remotion-themed-tooltip-border);
   color: var(--color-tooltip-text);
   background-color: var(--color-tooltip-background);

@@ -23,7 +23,7 @@
 {
   display: inline-flex;
   flex-wrap: wrap;
-  gap: var(--remotion-themed-spacing-double);
+  gap: var(--remotion-themed-spacing-large);
 }
 
 .bocEnumValue td,

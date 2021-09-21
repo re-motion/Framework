@@ -55,9 +55,8 @@
   --remotion-themed-scrollbar-height: 14px;
   --remotion-themed-scrollbar-style: auto;
   --remotion-themed-line-height: 1.2em;
-  --remotion-themed-spacing: 0.4em;
-  --remotion-themed-spacing-half: calc(var(--remotion-themed-spacing) * 0.5);
-  --remotion-themed-spacing-double: calc(var(--remotion-themed-spacing) * 2);
+  --remotion-themed-spacing: 0.4rem;
+  --remotion-themed-spacing-small: calc(var(--remotion-themed-spacing) * 0.5);
   --remotion-themed-spacing-large: calc(var(--remotion-themed-spacing) * 3);
   --remotion-themed-singleline-min-height: calc(var(--remotion-themed-line-height) + 2 * var(--remotion-themed-spacing));
   --remotion-themed-multiline-min-height: calc(2 * var(--remotion-themed-line-height) + 2 * var(--remotion-themed-spacing));

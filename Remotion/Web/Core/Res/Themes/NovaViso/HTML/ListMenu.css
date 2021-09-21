@@ -9,7 +9,7 @@ table.listMenu
 td.listMenuRow
 {
   display: flex;
-  gap: var(--remotion-themed-spacing-double);
+  gap: var(--remotion-themed-spacing-large);
   margin-bottom: var(--remotion-themed-spacing);
 }
 
@@ -24,7 +24,7 @@ span.listMenuItemDisabled a
 
 span.listMenuItem a
 {
-  color: var(--default-text-color);
+  color: var(--color-standard-text);
   cursor: pointer;
 }
 
