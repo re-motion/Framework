@@ -5,7 +5,7 @@ span.bocDateValue
 {
   min-height: var(--remotion-themed-singleline-min-height);
   width: var(--remotion-themed-control-width);
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: var(--remotion-themed-spacing);
 }
