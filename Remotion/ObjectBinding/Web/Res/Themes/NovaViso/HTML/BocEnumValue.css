@@ -42,12 +42,6 @@
   margin: 0;
 }
 
-.bocEnumValue input:focus
-{
-  /* In order to have an outline for the radio buttons as well. */
-  outline: auto;
-}
-
 .bocEnumValue input:not([disabled]):hover
 {
   cursor: pointer;
@@ -87,6 +81,14 @@
   border-radius: var(--remotion-themed-border-radius);
 }
 
+.bocEnumValue.readOnly span[tabindex]:focus-visible
+{
+  outline: none;
+  border: var(--remotion-themed-border-readonly-focus);
+  background-color: var(--remotion-themed-background-color-readonly-focus);
+  box-shadow: var(--remotion-themed-box-shadow-readonly-focus);
+}
+
 .bocEnumValue.readOnly span[tabindex]:empty
 {
   /* Ensures that the keyboard focus of empty readonly values surrounds the entire width of the span. */
@@ -101,3 +103,25 @@
     line height remains unchanged. */
   content: "\200b";
 }
+.bocEnumValue.readOnly span[tabindex]:focus
+{
+  outline: none;
+  border: var(--remotion-themed-border-readonly-focus);
+  background-color: var(--remotion-themed-background-color-readonly-focus);
+  box-shadow: var(--remotion-themed-box-shadow-readonly-focus);
+}
+
+.bocEnumValue.radioButtonList label
+{
+  padding: var(--remotion-themed-spacing-small);
+  border: var(--remotion-themed-border-placeholder);
+  border-radius: var(--remotion-themed-border-radius);
+}
+
+.bocEnumValue.radioButtonList input:focus + label
+{
+  background-color: var(--remotion-themed-background-color-focus);
+  border: var(--remotion-themed-border-focus);
+  box-shadow: var(--remotion-themed-box-shadow-focus);
+}
+

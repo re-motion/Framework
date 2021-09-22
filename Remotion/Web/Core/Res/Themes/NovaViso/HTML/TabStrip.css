@@ -52,24 +52,42 @@
   background-color: var(--color-standard-background);
 }
 
-.tabStripTabWrapper .tabStripTab:not(.disabled) a:hover,
 .tabStripTabWrapper .tabStripTabSelected a
 {
   border-color: var(--color-highlight);
   background-color: var(--color-highlight);
 }
 
+.tabStripTabWrapper .tabStripTab:not(.disabled) a,
+.tabStripTabWrapper .tabStripTabSelected:not(.disabled) a
+{
+  cursor: pointer;
+}
+
 .tabStripTabWrapper .tabStripTab:not(.disabled) a:hover,
 .tabStripTabWrapper .tabStripTabSelected:not(.disabled) a:hover
 {
-  cursor: pointer;
+  background-color: var(--remotion-themed-background-color-hover);
+  border: var(--remotion-themed-border-hover);
+  box-shadow: var(--remotion-themed-box-shadow-hover);
 }
 
 .tabStripTabWrapper .tabStripTab:not(.disabled) a:focus,
 .tabStripTabWrapper .tabStripTabSelected:not(.disabled) a:focus
 {
   outline: none;
-  text-decoration: underline;
+  border: var(--remotion-themed-border-focus);
+  box-shadow: var(--remotion-themed-box-shadow-focus);
+}
+
+.tabStripTabWrapper .tabStripTab:not(.disabled) a:focus
+{
+  background-color: var(--remotion-themed-background-color-focus);
+}
+
+.tabStripTabWrapper .tabStripTabSelected:not(.disabled) a:focus
+{
+  background-color: var(--color-highlight);
 }
 
 .tabStripTabWrapper .tabStripTab.disabled a

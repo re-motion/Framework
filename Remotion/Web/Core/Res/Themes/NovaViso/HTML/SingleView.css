@@ -40,7 +40,8 @@ div.singleViewView > div.contentBorder
 {
   padding: var(--singleview-view-padding);
   overflow: auto;
-  margin: 1px; /* for symmetry with TabbedMultiView */
+  /* for symmetry with TabbedMultiView */
+  border: var(--remotion-themed-border-placeholder);
   scrollbar-width: var(--remotion-themed-dropdown-scrollbar-style);
   scrollbar-color: var(--color-primary) transparent;
   height: 100%;

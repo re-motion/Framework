@@ -75,13 +75,9 @@
 {
   height: var(--default-icon-size);
   width: var(--default-icon-size);
-  padding: var(--remotion-themed-spacing-small);
-}
-
-.formGridMarkersCell a img:hover
-{
+  padding: calc(var(--remotion-themed-spacing-small) - var(--remotion-themed-border-width));
+  border: var(--remotion-themed-border-placeholder);
   border-radius: var(--remotion-themed-border-radius);
-  background-color: var(--color-highlight);
 }
 
 .formGridValidationMessagesCell
@@ -107,6 +103,22 @@
 .formGridMarkersCell a[aria-label]:not([title])
 {
   position: relative;
+  outline: none;
+}
+
+.formGridMarkersCell a[aria-label]:not([title]):hover img
+{
+  background-color: var(--remotion-themed-background-color-hover);
+  border: var(--remotion-themed-border-hover);
+  box-shadow: var(--remotion-themed-box-shadow-hover);
+}
+
+.formGridMarkersCell a[aria-label]:not([title]):focus img,
+.formGridMarkersCell a[aria-label]:not([title]):focus img
+{
+  background-color: var(--remotion-themed-background-color-focus);
+  border: var(--remotion-themed-border-focus);
+  box-shadow: var(--remotion-themed-box-shadow-focus);
 }
 
 .formGridMarkersCell a[aria-label]:not([title])::after,
@@ -122,7 +134,7 @@
   display: inline-block;
   position: absolute;
   /* popup spawns at the bottom right corner of the icon's hover highlighting */
-  top: calc(var(--remotion-themed-spacing) * 2 + var(--remotion-themed-spacing-small));
+  top: calc(var(--remotion-themed-spacing) * 2 - var(--remotion-themed-border-width) * 2 + var(--remotion-themed-spacing-small));
   padding: var(--remotion-themed-spacing) calc(var(--remotion-themed-spacing) + var(--remotion-themed-spacing-small));
   border: var(--remotion-themed-tooltip-border);
   color: var(--color-tooltip-text);

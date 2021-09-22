@@ -83,7 +83,9 @@ div.bocList table.bocListTable td.bocListDataCell
   border-top: none;
   border-right: none;
   border-left: none;
-  padding: calc(var(--remotion-themed-spacing) / 2) var(--remotion-themed-spacing);
+  /* vertical padding is required to add space above/below the focus border
+     horizontal padding is added by the nested elements */
+  padding: calc(var(--remotion-themed-spacing) / 2);
 }
 
 div.bocList table.bocListTable th.bocListTitleCell
@@ -100,33 +102,59 @@ div.bocList table.bocListTable td.bocListDataCellRowSelector > input
   margin: 0;
 }
 
+div.bocList table.bocListTable th.bocListTitleCell > a,
 div.bocList table.bocListTable th.bocListTitleCell > span,
-div.bocList table.bocListTable th.bocListTitleCell > a
+div.bocList table.bocListTable td.bocListDataCell > a,
+div.bocList table.bocListTable td.bocListDataCell > span
 {
   display: inline-flex;
   align-items: center;
+  padding: calc(var(--remotion-themed-spacing) / 2) var(--remotion-themed-spacing);
+}
+
+div.bocList table.bocListTable th.bocListTitleCell > span,
+div.bocList table.bocListTable th.bocListTitleCell > a
+{
   height: var(--remotion-themed-singleline-min-height);
 }
 
 div.bocList table.bocListTable th.bocListTitleCell > a,
-div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell > a
+div.bocList table.bocListTable td.bocListDataCell > a
 {
   color: var(--color-primary);
   text-decoration: none;
 }
 
-div.bocList table.bocListTable th.bocListTitleCell > a:active,
-div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell > a:active
+div.bocList table.bocListTable th.bocListTitleCell > a,
+div.bocList table.bocListTable td.bocListDataCell > a
 {
-  color: var(--color-standard-text);
+  border-radius: var(--remotion-themed-border-radius);
+  border: var(--remotion-themed-border-placeholder);
 }
 
-div.bocList table.bocListTable th.bocListTitleCell > a:focus > :first-child,
-div.bocList table.bocListTable th.bocListTitleCell > a:hover > :first-child,
-div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell > a:focus,
-div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell > a:hover
+div.bocList table.bocListTable th.bocListTitleCell > a:hover,
+div.bocList table.bocListTable td.bocListDataCell > a:hover
 {
-  text-decoration: underline;
+  background-color: var(--remotion-themed-background-color-hover);
+  border: var(--remotion-themed-border-hover);
+  box-shadow: var(--remotion-themed-box-shadow-hover);
+}
+
+div.bocList table.bocListTable th.bocListTitleCell > a:focus,
+div.bocList table.bocListTable td.bocListDataCell > a:focus
+{
+  outline: none;
+  background-color: var(--remotion-themed-background-color-focus);
+  border: var(--remotion-themed-border-focus);
+  box-shadow: var(--remotion-themed-box-shadow-focus);
+}
+
+div.bocList table.bocListTable th.bocListTitleCell > a:focus:hover,
+div.bocList table.bocListTable td.bocListDataCell > a:focus:hover
+{
+  background-color: var(--remotion-themed-background-color-focus-hover);
+  border: var(--remotion-themed-border-focus-hover);
+  box-shadow: var(--remotion-themed-box-shadow-focus-hover);
 }
 
 div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell
@@ -235,8 +263,24 @@ div.bocList div.bocListTableBlock div.bocListNavigator a[href]
 
 div.bocList div.bocListTableBlock div.bocListNavigator a[href]:hover
 {
-  border-color: var(--color-primary);
-  background-color: var(--color-highlight);
+  background-color: var(--remotion-themed-background-color-hover);
+  border: var(--remotion-themed-border-hover);
+  box-shadow: var(--remotion-themed-box-shadow-hover);
+}
+
+div.bocList div.bocListTableBlock div.bocListNavigator a[href]:focus
+{
+  outline: none;
+  background-color: var(--remotion-themed-background-color-focus);
+  border: var(--remotion-themed-border-focus);
+  box-shadow: var(--remotion-themed-box-shadow-focus);
+}
+
+div.bocList div.bocListTableBlock div.bocListNavigator a[href]:focus:hover
+{
+  background-color: var(--remotion-themed-background-color-focus-hover);
+  border: var(--remotion-themed-border-focus-hover);
+  box-shadow: var(--remotion-themed-box-shadow-focus-hover);
 }
 
 div.bocList div.bocListTableBlock div.bocListNavigator a:not([href]) img

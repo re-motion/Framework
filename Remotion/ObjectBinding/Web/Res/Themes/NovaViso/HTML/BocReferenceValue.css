@@ -62,8 +62,7 @@
   padding: var(--remotion-themed-spacing-small) auto;
 }
 
-.bocReferenceValue.disabled span.content,
-.bocReferenceValue .disabled span.content
+.bocReferenceValue.disabled:not(.readOnly) span.content
 {
   color: var(--color-disabled-text);
   cursor: default;
@@ -90,6 +89,14 @@
   border-radius: var(--remotion-themed-border-radius);
 }
 
+.bocReferenceValue.readOnly span[tabindex]:focus-visible
+{
+  outline: none;
+  border: var(--remotion-themed-border-readonly-focus);
+  background-color: var(--remotion-themed-background-color-readonly-focus);
+  box-shadow: var(--remotion-themed-box-shadow-readonly-focus);
+}
+
 span.bocReferenceValue.readOnly span[tabindex]:empty
 {
   /* Ensures that the keyboard focus of empty readonly values surrounds the entires width of the span. */
@@ -103,6 +110,14 @@ span.bocReferenceValue.readOnly span[tabindex]:empty:before
   This also scales with the font size and min-height doesn't have to be set since
   line height remains unchanged. */
   content: "\200b";
+}
+
+.bocReferenceValue.readOnly span[tabindex]:focus
+{
+  outline: none;
+  background-color: var(--remotion-themed-background-color-focus);
+  border: var(--remotion-themed-border-focus);
+  box-shadow: var(--remotion-themed-box-shadow-focus);
 }
 
 .bocReferenceValue.readOnly span.content.hasIcon span

@@ -43,6 +43,14 @@ span.bocTextValue textarea
   border-radius: var(--remotion-themed-border-radius);
 }
 
+.bocTextValue.readOnly .content span[tabindex]:focus-visible
+{
+  outline: none;
+  border: var(--remotion-themed-border-readonly-focus);
+  background-color: var(--remotion-themed-background-color-readonly-focus);
+  box-shadow: var(--remotion-themed-box-shadow-readonly-focus);
+}
+
 .bocTextValue.readOnly .content span[tabindex]:empty
 {
   /* Ensures that the keyboard focus of empty readonly values surrounds the entires width of the span. */

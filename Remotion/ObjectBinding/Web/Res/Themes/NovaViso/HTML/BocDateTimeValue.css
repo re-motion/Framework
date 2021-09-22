@@ -10,6 +10,12 @@ span.bocDateValue
   gap: var(--remotion-themed-spacing);
 }
 
+span.bocDateTimeValue.readOnly
+{
+  /* decrease the distance between date and time values */
+  gap: unset;
+}
+
 span.bocDateTimeValue
 {
   min-width: var(--remotion-themed-control-width);
@@ -69,6 +75,21 @@ span.bocDateValue a img
   padding: var(--remotion-themed-control-padding-readonly);
   border: var(--remotion-themed-border-readonly);
   border-radius: var(--remotion-themed-border-radius);
+}
+
+.bocDateValue.readOnly span[tabindex]:focus-visible,
+.bocDateTimeValue.readOnly span[tabindex]:focus-visible
+{
+  outline: none;
+  border: var(--remotion-themed-border-readonly-focus);
+  background-color: var(--remotion-themed-background-color-readonly-focus);
+  box-shadow: var(--remotion-themed-box-shadow-readonly-focus);
+}
+
+span.bocDateTimeValue.readOnly span[tabindex]:not(:first-child)
+{
+  /* decrease the distance between date and time values */
+  margin-left: calc(-1 * var(--remotion-themed-spacing));
 }
 
 span.bocDateValue.readOnly span[tabindex]:empty,

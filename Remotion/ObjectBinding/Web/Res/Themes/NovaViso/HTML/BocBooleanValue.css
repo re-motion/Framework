@@ -4,37 +4,40 @@
 {
   display: inline-flex;
   align-items: center;
+  border: var(--remotion-themed-border-placeholder);
+  border-radius: var(--remotion-themed-border-radius);
 }
 
 .bocBooleanValue span.description
 {
   display: inline-flex;
   align-items: center;
+  margin-right: var(--remotion-themed-spacing);
 }
 
 .bocBooleanValue img
 {
-  margin: var(--remotion-themed-spacing);
+  margin: var(--remotion-themed-spacing-small);
   vertical-align: middle;
   height: 1.5em;
   width: 1.5em;
 }
 
-/* Fixes for element focus */
+.bocBooleanValue:focus-within
+{
+  background-color: var(--remotion-themed-background-color-focus);
+  border: var(--remotion-themed-border-focus);
+  box-shadow: var(--remotion-themed-box-shadow-focus);
+}
+
+.bocBooleanValue.readOnly:focus-within
+{
+  border: var(--remotion-themed-border-readonly-focus);
+  background-color: var(--remotion-themed-background-color-readonly-focus);
+  box-shadow: var(--remotion-themed-box-shadow-readonly-focus);
+}
 
 .bocBooleanValue a[role=checkbox]:focus
 {
   outline: none;
-}
-
-.blink .bocBooleanValue a[role=checkbox]:focus > img
-{
-  box-shadow: var(--chromium-box-shadow);
-  border-radius: var(--chromium-border-radius);
-}
-
-.mozilla .bocBooleanValue a[role=checkbox]:focus > img
-{
-  box-shadow: var(--mozilla-box-shadow);
-  border-radius: var(--mozilla-border-radius);
 }

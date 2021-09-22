@@ -109,8 +109,7 @@
   background-repeat: no-repeat;
 }
 
-.bocAutoCompleteReferenceValue.disabled span.content,
-.bocAutoCompleteReferenceValue .disabled span.content
+.bocAutoCompleteReferenceValue.disabled:not(.readOnly) span.content
 {
   color: var(--color-disabled-text);
   cursor: default;
@@ -142,6 +141,14 @@
   padding: var(--remotion-themed-control-padding-readonly);
   border: var(--remotion-themed-border-readonly);
   border-radius: var(--remotion-themed-border-radius);
+}
+
+.bocAutoCompleteReferenceValue.readOnly span[tabindex]:focus-visible
+{
+  outline: none;
+  border: var(--remotion-themed-border-readonly-focus);
+  background-color: var(--remotion-themed-background-color-readonly-focus);
+  box-shadow: var(--remotion-themed-box-shadow-readonly-focus);
 }
 
 span.bocAutoCompleteReferenceValue.readOnly span[tabindex]:empty

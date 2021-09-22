@@ -4,6 +4,8 @@
 {
   display: inline-flex;
   align-items: center;
+  border: var(--remotion-themed-border-placeholder);
+  border-radius: var(--remotion-themed-border-radius);
 }
 
 .bocCheckBox input
@@ -16,12 +18,13 @@
 {
   display: inline-flex;
   align-items: center;
+  margin-right: var(--remotion-themed-spacing); 
 }
 
 .bocCheckBox img,
 .bocCheckBox input + span.checkbox-visualizer::before
 {
-  margin: var(--remotion-themed-spacing);
+  margin: var(--remotion-themed-spacing-small);
   vertical-align: middle;
   height: 1.5em;
   width: 1.5em;
@@ -39,7 +42,19 @@
   background-image: url('../Image/sprite.svg#CheckBoxTrue');
 }
 
-/* Fixes for element focus */
+.bocCheckBox:focus-within
+{
+  background-color: var(--remotion-themed-background-color-focus);
+  border: var(--remotion-themed-border-focus);
+  box-shadow: var(--remotion-themed-box-shadow-focus);
+}
+
+.bocCheckBox.readOnly:focus-within
+{
+  border: var(--remotion-themed-border-readonly-focus);
+  background-color: var(--remotion-themed-background-color-readonly-focus);
+  box-shadow: var(--remotion-themed-box-shadow-readonly-focus);
+}
 
 .bocCheckBox span[role=checkbox]:focus
 {

@@ -47,20 +47,6 @@ ul.treeViewRoot li[role=treeitem]
   outline: none;
 }
 
-ul.treeViewRoot li:focus > span.treeViewNode span.treeViewNodeHead a > span,
-ul.treeViewRoot li:focus > span.treeViewNode span.treeViewNodeHeadSelected a > span
-{
-  text-decoration: underline;
-}
-
-ul.treeViewRoot span.treeViewNode:hover span.treeViewNodeHead:before,
-ul.treeViewRoot span.treeViewNode span.treeViewNodeHeadSelected:before,
-ul.treeViewRoot li:focus > span.treeViewNode span.treeViewNodeHead:before,
-ul.treeViewRoot li:focus > span.treeViewNode span.treeViewNodeHeadSelected:before
-{
-  background-color: var(--color-highlight);
-}
-
 ul.treeViewRoot span.treeViewNodeHead:before,
 ul.treeViewRoot span.treeViewNodeHeadSelected:before
 {
@@ -71,6 +57,36 @@ ul.treeViewRoot span.treeViewNodeHeadSelected:before
   width: 100%;
   bottom: 0;
   z-index: var(--z-index-hidden);
+  border: var(--remotion-themed-border-placeholder);
+  border-radius: var(--remotion-themed-border-radius);
+}
+
+ul.treeViewRoot span.treeViewNodeHeadSelected:before
+{
+  background-color: var(--color-highlight);
+  border-color: var(--color-highlight);
+}
+
+ul.treeViewRoot li > span.treeViewNode:hover span.treeViewNodeHead:before,
+ul.treeViewRoot li > span.treeViewNode:hover span.treeViewNodeHeadSelected:before
+{
+  background-color: var(--remotion-themed-background-color-hover);
+  border: var(--remotion-themed-border-hover);
+  box-shadow: var(--remotion-themed-box-shadow-hover);
+}
+
+ul.treeViewRoot li:focus > span.treeViewNode span.treeViewNodeHead:before
+{
+  background-color: var(--remotion-themed-background-color-focus);
+  border: var(--remotion-themed-border-focus);
+  box-shadow: var(--remotion-themed-box-shadow-focus);
+}
+
+ul.treeViewRoot li:focus > span.treeViewNode span.treeViewNodeHeadSelected:before
+{
+  background-color: var(--color-highlight);
+  border: var(--remotion-themed-border-focus);
+  box-shadow: var(--remotion-themed-box-shadow-focus);
 }
 
 ul.treeViewRoot span.treeViewNode,
@@ -100,13 +116,14 @@ ul.treeViewRoot span.treeViewNode > a img.Icon
 ul.treeViewRoot span.treeViewNode::before
 {
   content: "";
-  padding-left: calc(var(--treeview-padding) * var(--nesting-depth));
+  padding-left: calc(var(--treeview-padding) * var(--nesting-depth) + var(--remotion-themed-spacing-small));
+  padding-right: var(--remotion-themed-spacing-small);
 }
 
 ul.treeViewRoot ul.treeViewTopLevelNodeChildren span.treeViewNode::before
 {
   content: "";
-  padding-left: calc(var(--treeview-padding) * (var(--nesting-depth) - 1));
+  padding-left: calc(var(--treeview-padding) * (var(--nesting-depth) - 1) + var(--remotion-themed-spacing-small));
 }
 
 ul.treeViewRoot span.treeViewNode span.treeViewNodeBadge

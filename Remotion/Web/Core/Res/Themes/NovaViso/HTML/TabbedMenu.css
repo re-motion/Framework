@@ -73,17 +73,21 @@ div.tabbedMainMenu span.tabStripTabSelected a,
 div.tabbedSubMenu span.tabStripTab a,
 div.tabbedSubMenu span.tabStripTabSelected a
 {
-  border: none;
+  border: unset;
+  background-color: unset;
   padding: 0 var(--remotion-themed-spacing);
   color: var(--color-standard-text);
-  background-color: transparent;
   text-decoration: none;
+  width: auto;
 }
 
 div.tabbedMainMenu span.tabStripTab:not(.disabled):hover a,
-div.tabbedSubMenu span.tabStripTab:not(.disabled):hover a
+div.tabbedMainMenu span.tabStripTabSelected:not(.disabled):hover a,
+div.tabbedSubMenu span.tabStripTab:not(.disabled):hover a,
+div.tabbedSubMenu span.tabStripTabSelected:not(.disabled):hover a
 {
-  background-color: transparent;
+  border: unset;
+  background-color: unset;
 }
 
 div.tabbedMainMenu span.tabStripTab:not(.disabled) a:focus,
@@ -91,13 +95,15 @@ div.tabbedMainMenu span.tabStripTabSelected:not(.disabled) a:focus,
 div.tabbedSubMenu span.tabStripTab:not(.disabled) a:focus,
 div.tabbedSubMenu span.tabStripTabSelected:not(.disabled) a:focus
 {
-  text-decoration: none;
+  border: unset;
+  box-shadow: unset;
+  background-color: unset;
 }
 
 div.tabbedSubMenu span.tabStripTab.disabled a,
 div.tabbedMainMenu span.tabStripTab.disabled a
 {
-  background-color: transparent;
+  background-color: unset;
 }
 
 div.tabbedMainMenu span.tabStripTab a span.anchorBody,
@@ -113,13 +119,28 @@ div.tabbedSubMenu span.tabStripTabSelected a span.anchorBody
 }
 
 div.tabbedMainMenu span.tabStripTab:not(.disabled) a:hover span.anchorBody,
-div.tabbedMainMenu span.tabStripTab:not(.disabled) a:focus span.anchorBody,
 div.tabbedSubMenu span.tabStripTab:not(.disabled) a:hover span.anchorBody,
-div.tabbedSubMenu span.tabStripTab:not(.disabled) a:focus span.anchorBody,
 div.tabbedMainMenu span.tabStripTabSelected:not(.disabled) a span.anchorBody,
 div.tabbedSubMenu span.tabStripTabSelected:not(.disabled) a span.anchorBody
 {
   border-bottom-color: var(--color-primary);
+}
+
+div.tabbedMainMenu span.tabStripTab a span.anchorBody > span,
+div.tabbedMainMenu span.tabStripTabSelected a span.anchorBody > span,
+div.tabbedSubMenu span.tabStripTab a span.anchorBody > span,
+div.tabbedSubMenu span.tabStripTabSelected a span.anchorBody > span
+{
+  border: var(--remotion-themed-border-placeholder);
+  padding: var(--remotion-themed-spacing-small) var(--remotion-themed-spacing);
+}
+
+div.tabbedMainMenu span.tabStripTab:not(.disabled) a:focus:not(:hover) span.anchorBody > span,
+div.tabbedSubMenu span.tabStripTab:not(.disabled) a:focus:not(:hover) span.anchorBody > span
+{
+  background-color: var(--color-standard-background);
+  border: var(--remotion-themed-border-focus);
+  box-shadow: var(--remotion-themed-box-shadow-focus);
 }
 
 div.tabbedSubMenu span.tabStripTab a:focus span.anchorBody > img:only-child

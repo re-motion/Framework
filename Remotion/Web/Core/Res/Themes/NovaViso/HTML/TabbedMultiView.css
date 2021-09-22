@@ -41,7 +41,8 @@ div.tabbedMultiViewActiveView > div.contentBorder
 {
   padding: var(--tabbedmultiview-view-padding);
   overflow: auto;
-  margin: 1px; /* this small margin is needed to correctly display the outline in FF */
+  /* Offset for focus-border */
+  border: var(--remotion-themed-border-placeholder);
   scrollbar-width: var(--remotion-themed-dropdown-scrollbar-style);
   scrollbar-color: var(--color-primary) transparent;
   height: 100%;
@@ -62,8 +63,8 @@ div.tabbedMultiViewActiveView > div.contentBorder::-webkit-scrollbar
 
 div.tabbedMultiViewActiveView > div.contentBorder:focus
 {
-  outline: dotted black 1px;
-  outline: auto 5px -webkit-focus-ring-color;
+  outline: none;
+  border: var(--remotion-themed-border-focus);
 }
 
 div.tabbedMultiViewActiveView > div.contentBorder > div.content

@@ -42,11 +42,23 @@
   --color-tooltip-border: #696969;
   --color-tooltip-text: #000000;
   --color-validationerror-text: #AC1B1B;
+  --remotion-themed-background-color-focus: var(--color-standard-background);
+  --remotion-themed-background-color-focus-hover: var(--remotion-themed-background-color-hover);
+  --remotion-themed-background-color-readonly-focus: var(--remotion-themed-background-color-focus);
+  --remotion-themed-background-color-hover: var(--color-highlight);
   --remotion-themed-border-radius: 2px;
   --remotion-themed-border-width: 1px;
   --remotion-themed-border: var(--remotion-themed-border-width) solid var(--color-standard-border);
-  --remotion-themed-border-focus: var(--remotion-themed-border-width) solid var(--color-primary);
   --remotion-themed-border-readonly: var(--remotion-themed-border-width) solid transparent;
+  --remotion-themed-border-placeholder: var(--remotion-themed-border-width) solid transparent;
+  --remotion-themed-border-focus: var(--remotion-themed-border-width) solid var(--color-primary);
+  --remotion-themed-border-focus-hover: var(--remotion-themed-border-focus);
+  --remotion-themed-border-readonly-focus: var(--remotion-themed-border-focus);
+  --remotion-themed-border-hover: var(--remotion-themed-border-width) solid var(--color-primary);
+  --remotion-themed-box-shadow-focus: 0 1px 5px 0 rgba(0, 0, 0, 0.3);
+  --remotion-themed-box-shadow-focus-hover: var(--remotion-themed-box-shadow-focus);
+  --remotion-themed-box-shadow-readonly-focus: var(--remotion-themed-box-shadow-focus);
+  --remotion-themed-box-shadow-hover: unset;
   --remotion-themed-dropdown-scrollbar-border-radius: 10px;
   --remotion-themed-dropdown-scrollbar-width: 10px;
   --remotion-themed-dropdown-scrollbar-height: 10px;
@@ -84,11 +96,6 @@
   --remotion-themed-text-alignment-fix: 0.1em;
 }
 
-select option
-{
-  background-color: var(--color-standard-background);
-}
-
 input.remotion-themed,
 select.remotion-themed,
 span.remotion-themed,
@@ -105,8 +112,15 @@ select.remotion-themed,
 .remotion-themed textarea,
 .remotion-themed select
 {
+  background-color: var(--color-standard-background);
   border: var(--remotion-themed-border);
   border-radius: var(--remotion-themed-border-radius);
+}
+
+select.remotion-themed option,
+.remotion-themed select option
+{
+  background-color: var(--color-standard-background);
 }
 
 textarea.remotion-themed,
@@ -132,27 +146,47 @@ input[type="password"].remotion-themed,
   padding-right: var(--remotion-themed-spacing);
 }
 
-input.remotion-themed:hover,
-textarea.remotion-themed:hover,
-select.remotion-themed:hover,
-.remotion-themed input:hover,
-.remotion-themed textarea:hover,
-.remotion-themed select:hover
+input:not(:disabled).remotion-themed:hover,
+textarea:not(:disabled).remotion-themed:hover,
+select:not(:disabled).remotion-themed:hover,
+button:not(:disabled).remotion-themed:hover,
+.remotion-themed input:not(:disabled):hover,
+.remotion-themed textarea:not(:disabled):hover,
+.remotion-themed select:not(:disabled):hover,
+.remotion-themed button:not(:disabled):hover
 {
-  border: var(--remotion-themed-border-focus);
-  outline-style: none;
+  background-color: var(--remotion-themed-background-color-hover);
+  border: var(--remotion-themed-border-hover);
+  box-shadow: var(--remotion-themed-box-shadow-hover);
 }
 
-input.remotion-themed:focus,
-textarea.remotion-themed:focus,
-select.remotion-themed:focus,
-.remotion-themed input:focus,
-.remotion-themed textarea:focus,
-.remotion-themed select:focus
+input:not(:disabled).remotion-themed:focus,
+textarea:not(:disabled).remotion-themed:focus,
+select:not(:disabled).remotion-themed:focus,
+button:not(:disabled).remotion-themed:focus,
+.remotion-themed input:not(:disabled):focus,
+.remotion-themed textarea:not(:disabled):focus,
+.remotion-themed select:not(:disabled):focus,
+.remotion-themed button:not(:disabled):focus
 {
+  outline: none;
+  background-color: var(--remotion-themed-background-color-focus);
   border: var(--remotion-themed-border-focus);
-  outline-style: none;
-  background-color: var(--color-highlight);
+  box-shadow: var(--remotion-themed-box-shadow-focus);
+}
+
+input:not(:disabled).remotion-themed:focus:hover,
+textarea:not(:disabled).remotion-themed:focus:hover,
+select:not(:disabled).remotion-themed:focus:hover,
+button:not(:disabled).remotion-themed:focus:hover,
+.remotion-themed input:not(:disabled):focus:hover,
+.remotion-themed textarea:not(:disabled):focus:hover,
+.remotion-themed select:not(:disabled):focus:hover,
+.remotion-themed button:not(:disabled):focus:hover
+{
+  background-color: var(--remotion-themed-background-color-focus-hover);
+  border: var(--remotion-themed-border-focus-hover);
+  box-shadow: var(--remotion-themed-box-shadow-focus-hover);
 }
 
 input.remotion-themed:disabled,

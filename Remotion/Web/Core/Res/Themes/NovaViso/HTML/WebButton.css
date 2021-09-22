@@ -10,10 +10,19 @@ button.webButton
   cursor: pointer;
 }
 
-button.webButton:hover,
+button.webButton:hover
+{
+  background-color: var(--remotion-themed-background-color-hover);
+  border: var(--remotion-themed-border-hover);
+  box-shadow: var(--remotion-themed-box-shadow-hover);
+}
+
 button.webButton:focus
 {
-  background-color: var(--color-highlight);
+  outline: none;
+  background-color: var(--remotion-themed-background-color-focus);
+  border: var(--remotion-themed-border-focus);
+  box-shadow: var(--remotion-themed-box-shadow-focus);
 }
 
 button.webButton[disabled]
@@ -40,27 +49,39 @@ button.webButton span.buttonBody > img
   align-self: start;
 }
 
-button.webButton.primary
+button.webButton.primary:not(:disabled)
 {
   background-color: var(--color-primary);
   color: var(--color-primary-text);
-  border: none;
+  border-color: var(--color-primary);
 }
 
-button.webButton.primary:not(:disabled):hover,
-button.webButton.primary:not(:disabled):focus
+button.webButton.primary:not(:disabled):hover
 {
   background-color: var(--color-primary-highlight);
+  border-color: var(--color-primary-highlight);
+}
+
+button.webButton.primary:not(:disabled):focus
+{
+  background-color: var(--color-primary);
+  border-color: white;
 }
 
 button.webButton.supplemental
 {
   background-color: transparent;
-  border: none;
+  border-color: transparent;
 }
 
-button.webButton.supplemental:not(:disabled):hover,
-button.webButton.supplemental:not(:disabled):focus
+button.webButton.supplemental:not(:disabled):hover
 {
   background-color: var(--color-highlight);
+  border-color: var(--color-primary);
+}
+
+button.webButton.supplemental:not(:disabled):focus
+{
+  background-color: transparent;
+  border-color: var(--color-primary);
 }
