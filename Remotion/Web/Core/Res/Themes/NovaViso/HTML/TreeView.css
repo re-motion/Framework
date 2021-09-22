@@ -83,6 +83,13 @@ ul.treeViewRoot span.treeViewNodeHeadSelected > a
   padding-bottom: calc(var(--remotion-themed-spacing-small) / 2);
 }
 
+ul.treeViewRoot span.treeViewNode > a,
+ul.treeViewRoot span.treeViewNodeHead > a > img.Icon,
+ul.treeViewRoot span.treeViewNodeHeadSelected > a > img.Icon
+{
+  align-self: start;
+}
+
 ul.treeViewRoot span.treeViewNode > a img.Icon
 {
   height: var(--treeview-chevron-size);

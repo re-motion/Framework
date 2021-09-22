@@ -134,6 +134,27 @@ div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell
   background-color: var(--color-standard-background);
 }
 
+div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell > span.bocListContent
+{
+  display: flex;
+}
+
+div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell > span.bocListContent > img
+{
+  align-self: start;
+}
+
+div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell > a
+{
+  display: flex;
+  gap: var(--remotion-themed-spacing);
+}
+
+div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell > a > img
+{
+  align-self: start;
+}
+
 div.bocList table.bocListTable tr.bocListDataRow.selected td.bocListDataCell
 {
   background-color: var(--color-highlight);
@@ -144,9 +165,9 @@ div.bocList table.bocListTable td.bocListDataCell
   border-bottom: 1px solid var(--boclist-tablecell-border-color);
 }
 
-div.bocList table.bocListTable td.bocListDataCellIndex
+div.bocList table.bocListTable td.bocListDataCellIndex > span.bocListContent
 {
-  text-align: right;
+  justify-content: end;
 }
 /*endregion*/
 

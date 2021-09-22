@@ -116,6 +116,16 @@
   cursor: default;
 }
 
+.bocAutoCompleteReferenceValue.readOnly span.body > span.icon
+{
+  align-self: start;
+  padding: var(--remotion-themed-control-padding-readonly);
+  padding-right: 0;
+  padding-bottom: 0;
+  padding-left: 0;
+  border: var(--remotion-themed-border-readonly);
+}
+
 .bocAutoCompleteReferenceValue.readOnly span.content
 {
   display: inline-flex;

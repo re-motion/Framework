@@ -26,9 +26,9 @@
   </remotion:WebTabStrip>
   <div id="scope">
     <h3>WebTabStrip2</h3>
-    <remotion:WebTabStrip ID="MyTabStrip2" runat="server">
+    <remotion:WebTabStrip ID="MyTabStrip2" Width="100px" runat="server">
       <Tabs>
-        <remotion:WebTab ItemID="Tab1" Text="Tab1Label"/>
+        <remotion:WebTab ItemID="Tab1" Icon-Url="~/Images/SampleIcon.gif" Text="This is a very long text that should wrap."/>
         <remotion:WebTab ItemID="Tab2" Text="Tab2Label"/>
       </Tabs>
     </remotion:WebTabStrip>

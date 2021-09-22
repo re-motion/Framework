@@ -130,6 +130,15 @@ namespace Remotion.Web.Development.WebTesting.TestSite {
         protected global::Remotion.Web.UI.Controls.WebButton MyDisabledWebButtonSupplemental;
         
         /// <summary>
+        /// MyWebButtonWithIcon control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.WebButton MyWebButtonWithIcon;
+        
+        /// <summary>
         /// Master property.
         /// </summary>
         /// <remarks>

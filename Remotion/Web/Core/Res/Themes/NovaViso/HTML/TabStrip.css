@@ -84,3 +84,16 @@
   border-color: var(--color-disabled-border);
   background-color: var(--color-disabled-background);
 }
+
+.tabStripTabWrapper .tabStripTab a span.anchorBody,
+.tabStripTabWrapper .tabStripTabSelected a span.anchorBody
+{
+  display: flex;
+  gap: var(--remotion-themed-spacing);
+}
+
+.tabStripTabWrapper .tabStripTab a span.anchorBody > img,
+.tabStripTabWrapper .tabStripTabSelected a span.anchorBody > img
+{
+  align-self: start;
+}

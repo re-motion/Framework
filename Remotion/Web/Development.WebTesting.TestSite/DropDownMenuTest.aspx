@@ -251,6 +251,12 @@
             <remotion:WebMenuItem Category="Category1" ItemID="ItemID1" Text="Item"/>
         </MenuItems>
       </remotion:DropDownMenu>
+	  <h3>DropDownMenu (wrapping)</h3>
+      <remotion:DropDownMenu ID="MyDropDownMenu_Wrapping" Mode="DropDownMenu" TitleText="Long text that should wrap correctly" Width="100px" runat="server">
+        <MenuItems>
+            <remotion:WebMenuItem Category="Category1" ItemID="ItemID1" Text="Very long text that is so big that the drop down menu overflows to the right out of the visible screen."/>
+        </MenuItems>
+      </remotion:DropDownMenu>
     </ContentTemplate>
   </asp:UpdatePanel>
 </asp:Content>

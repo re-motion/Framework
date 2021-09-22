@@ -26,6 +26,12 @@ namespace Remotion.Web.Development.WebTesting.TestSite
     {
       base.OnInit (e);
 
+      var node = new WebTreeNode (
+          "Item1",
+          "This is the beginning of very long text that should be placed correctly beside the icon",
+          "~/Images/SampleIcon.gif");
+      MyWebTreeView2.Nodes.Add (node);
+
       var webTreeNodeNoBadge = new WebTreeNode ("Node1", "No badge");
       MyWebTreeView3.Nodes.Add (webTreeNodeNoBadge);
 

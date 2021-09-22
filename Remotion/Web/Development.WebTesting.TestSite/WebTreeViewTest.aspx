@@ -20,7 +20,7 @@
   <remotion:WebTreeView ID="MyWebTreeView" runat="server"/>
   <div id="scope">
     <h3>WebTreeView2</h3>
-    <remotion:WebTreeView ID="MyWebTreeView2" runat="server"/>
+    <remotion:WebTreeView ID="MyWebTreeView2" EnableWordWrap="True" Width="100px" runat="server"/>
   </div>
   <h3>WebTreeView3</h3>
   <remotion:WebTreeView ID="MyWebTreeView3" runat="server"/>

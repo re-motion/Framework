@@ -28,6 +28,12 @@ span.listMenuItem a
   cursor: pointer;
 }
 
+span.listMenuItem a img,
+span.listMenuItemDisabled a img
+{
+  align-self: start;
+}
+
 span.listMenuItemDisabled a
 {
   color: var(--color-disabled-text);

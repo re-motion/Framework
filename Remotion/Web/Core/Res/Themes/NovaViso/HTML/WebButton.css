@@ -31,6 +31,13 @@ button.webButton span.buttonBody
   justify-content: center;
   font: var(--remotion-themed-font-bold);
   padding-top: var(--remotion-themed-text-alignment-fix);
+  gap: var(--remotion-themed-spacing);
+  text-align: left;
+}
+
+button.webButton span.buttonBody > img
+{
+  align-self: start;
 }
 
 button.webButton.primary

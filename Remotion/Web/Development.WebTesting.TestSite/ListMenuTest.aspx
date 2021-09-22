@@ -53,9 +53,13 @@
         <h3>ListMenu2</h3>
         <remotion:ListMenu ID="MyListMenu2" runat="server">
           <MenuItems>
-            <remotion:WebMenuItem Category="Category1" ItemID="ItemID1" Text="Item"/>
+            <remotion:WebMenuItem Category="Category1" Icon-Url="~/Images/SampleIcon.gif" ItemID="ItemID1" Text="This is a very long text that should wrap around into the next line and should be displayed to the right of the icon"/>
           </MenuItems>
         </remotion:ListMenu>
+        <style>
+          /* Limit the size of the list menu to test text wrapping */
+          #body_MyListMenu2_0 { width: 100px }
+        </style>
       </div>
       <h3>ListMenu3 - Disabled</h3>
       <remotion:ListMenu ID="MyListMenu_Disabled" runat="server" Enabled="False">
