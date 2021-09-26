@@ -21,6 +21,7 @@ span.DropDownMenuSelect
   width: 100%;
   border: var(--remotion-themed-border);
   border-radius: var(--remotion-themed-border-radius);
+  box-sizing: border-box;
   cursor: pointer;
 }
 
@@ -77,6 +78,8 @@ span.DropDownMenuSelect a.DropDownMenuButton img
 {
   width: var(--remotion-themed-img-width);
   background-image: url('../Image/sprite.svg#DropDownMenuButton');
+  background-size: var(--remotion-themed-img-width) var(--remotion-themed-img-width);
+  background-position: center;
   background-repeat: no-repeat;
 }
 
