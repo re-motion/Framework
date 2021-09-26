@@ -38,7 +38,7 @@
 .formGridLabelsCell
 {
   width: 15%;
-  padding-top: calc(var(--remotion-themed-line-height) / 2 + var(--remotion-themed-spacing-small));
+  padding-top: calc(var(--remotion-themed-line-height) / 2 + var(--remotion-themed-spacing-small) + var(--remotion-themed-border-width));
   font: var(--remotion-themed-font-bold);
 }
 
@@ -50,7 +50,7 @@
 .formGridMarkersCell
 {
   width: 1%;
-  padding-top: calc(var(--remotion-themed-line-height) / 2 - var(--remotion-themed-spacing-small) / 2);
+  padding-top: calc(var(--remotion-themed-line-height) / 2 + var(--remotion-themed-border-width));
   white-space: nowrap;
 }
 
