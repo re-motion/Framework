@@ -117,8 +117,8 @@ public sealed class ResourceDispatcher
       else
       {
         //  Pass the value to the control
-        IDictionary values = (IDictionary) elementsEntry.Value;
-        IResourceDispatchTarget resourceDispatchTarget = targetControl as IResourceDispatchTarget;
+        IDictionary? values = (IDictionary?) elementsEntry.Value;
+        IResourceDispatchTarget? resourceDispatchTarget = targetControl as IResourceDispatchTarget;
 
         if (resourceDispatchTarget != null) //  Control knows how to dispatch
           resourceDispatchTarget.Dispatch (values);       
@@ -140,9 +140,9 @@ public sealed class ResourceDispatcher
     foreach (DictionaryEntry entry in values)
     {
       string propertyName = (string) entry.Key;
-      string propertyValue = (string) entry.Value;
+      string? propertyValue = (string?) entry.Value;
 
-      PropertyInfo property = obj.GetType ().GetProperty (propertyName, typeof (string));
+      PropertyInfo? property = obj.GetType ().GetProperty (propertyName, typeof (string));
       if (property != null)
       {
         property.SetValue (obj, propertyValue, new object[0]); 
@@ -151,7 +151,7 @@ public sealed class ResourceDispatcher
       {
         Control control = (Control) obj;
         //  Test for HtmlControl, they can take anything
-        HtmlControl genericHtmlControl = control as HtmlControl;
+        HtmlControl? genericHtmlControl = control as HtmlControl;
         if (genericHtmlControl != null)
           genericHtmlControl.Attributes[propertyName] = propertyValue;
         else //  Non-HtmlControls require valid property
@@ -207,7 +207,7 @@ public sealed class ResourceDispatcher
         //  using the argument as key and the resources' value as the value.
 
         //  Get the dictonary for the current element
-        IDictionary elementValues = (IDictionary) elements[elementID];
+        IDictionary? elementValues = (IDictionary?) elements[elementID];
 
         //  If no dictonary exists, create it and insert it into the elements hashtable.
         if (elementValues == null)

@@ -114,7 +114,7 @@ namespace Remotion.Web.ExecutionEngine
     }
 
     /// <summary> The <see cref="WxeFunctionState"/> representing the <see cref="RootFunction"/> and its context. </summary>
-    private WxeFunctionState _currentFunctionState;
+    private WxeFunctionState? _currentFunctionState;
 
     /// <summary> The root function executed by the <b>WxeHanlder</b>. </summary>
     /// <value> The <see cref="WxeFunction"/> invoked by the <see cref="Parameters.WxeFunctionType"/> parameter. </value>
@@ -131,7 +131,7 @@ namespace Remotion.Web.ExecutionEngine
       ArgumentUtility.CheckNotNull ("context", context);
       CheckTimeoutConfiguration (context);
 
-      string functionToken = context.Request.Params[Parameters.WxeFunctionToken];
+      string? functionToken = context.Request.Params[Parameters.WxeFunctionToken];
       bool hasFunctionToken = ! string.IsNullOrEmpty (functionToken);
 
       if (! hasFunctionToken)
@@ -181,7 +181,7 @@ namespace Remotion.Web.ExecutionEngine
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
-      string typeName = context.Request.Params[Parameters.WxeFunctionType];
+      string? typeName = context.Request.Params[Parameters.WxeFunctionType];
       bool hasTypeName = ! string.IsNullOrEmpty (typeName);
       if (hasTypeName)
         return GetTypeByTypeName (typeName);
@@ -197,7 +197,7 @@ namespace Remotion.Web.ExecutionEngine
 
       string relativePath = VirtualPathUtility.ToAppRelative (absolutePath);
 
-      Type type = UrlMapping.UrlMappingConfiguration.Current.Mappings.FindType (relativePath);
+      Type? type = UrlMapping.UrlMappingConfiguration.Current.Mappings.FindType (relativePath);
       if (type == null)
         throw new WxeException (string.Format ("Could not map the path '{0}' to a WXE function.", absolutePath));
 
@@ -240,15 +240,15 @@ namespace Remotion.Web.ExecutionEngine
       WxeFunctionStateManager functionStates = WxeFunctionStateManager.Current;
       functionStates.CleanUpExpired();
 
-      WxeFunction function = (WxeFunction) Activator.CreateInstance (type);
+      WxeFunction? function = (WxeFunction?) Activator.CreateInstance (type);
 
       WxeFunctionState functionState = new WxeFunctionState (function, true);
       functionStates.Add (functionState);
 
       function.VariablesContainer.InitializeParameters (context.Request.QueryString);
 
-      string returnUrlArg = context.Request.QueryString[Parameters.ReturnUrl];
-      string returnToSelfArg = context.Request.QueryString[Parameters.WxeReturnToSelf];
+      string? returnUrlArg = context.Request.QueryString[Parameters.ReturnUrl];
+      string? returnToSelfArg = context.Request.QueryString[Parameters.WxeReturnToSelf];
       if (! string.IsNullOrEmpty (returnUrlArg))
       {
         function.ReturnUrl = returnUrlArg;
@@ -264,12 +264,12 @@ namespace Remotion.Web.ExecutionEngine
 
     /// <summary> Resumes an existing <see cref="WxeFunction"/>. </summary>
     /// <include file='..\doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/ResumeExistingFunctionState/*' />
-    protected WxeFunctionState ResumeExistingFunctionState (HttpContext context, string functionToken)
+    protected WxeFunctionState? ResumeExistingFunctionState (HttpContext context, string functionToken)
     {
       ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNullOrEmpty ("functionToken", functionToken);
 
-      string action = context.Request.Params[Parameters.WxeAction];
+      string? action = context.Request.Params[Parameters.WxeAction];
       bool isRefresh = StringUtility.AreEqual (action, Actions.Refresh, true);
       bool isAbort = StringUtility.AreEqual (action, Actions.Abort, true)
                      || StringUtility.AreEqual (action, Actions.Cancel, true);
@@ -369,8 +369,8 @@ namespace Remotion.Web.ExecutionEngine
 
       //  This point is only reached after the WxeFunction has completed execution.
 
-      string returnUrl = functionState.Function.ReturnUrl;
-      string executionCompletedScript = functionState.Function.ExecutionCompletedScript;
+      string? returnUrl = functionState.Function.ReturnUrl;
+      string? executionCompletedScript = functionState.Function.ExecutionCompletedScript;
 
       CleanUpFunctionState (functionState);
 

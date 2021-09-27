@@ -37,12 +37,12 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
       get { return true; }
     }
 
-    public IExecutionStateContext ExecutionStateContext
+    public IExecutionStateContext? ExecutionStateContext
     {
       get { return null; }
     }
 
-    public IExecutionStateParameters Parameters
+    public IExecutionStateParameters? Parameters
     {
       get { return null; }
     }

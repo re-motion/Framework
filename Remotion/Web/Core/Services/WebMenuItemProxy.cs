@@ -38,7 +38,7 @@ namespace Remotion.Web.Services
       return new WebMenuItemProxy (id, isDisabled);
     }
 
-    public string ID { get; }
+    public string? ID { get; }
 
     public bool IsDisabled { get; }
 

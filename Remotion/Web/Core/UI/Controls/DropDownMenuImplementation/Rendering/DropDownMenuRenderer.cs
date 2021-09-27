@@ -323,7 +323,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
         else
           menuItems = renderingContext.Control.MenuItems.ToArray();
 
-        string category = null;
+        string? category = null;
         bool isCategoryVisible = false;
         List<WebMenuItem> visibleMenuItems = new List<WebMenuItem>();
         for (int i = 0; i < menuItems.Length; i++)
@@ -459,7 +459,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
 
       if (showIcon && menuItem.Icon.HasRenderingInformation)
       {
-        string url = menuItem.Icon.Url;
+        string? url = menuItem.Icon.Url;
         icon = "'" + renderingContext.Control.ResolveClientUrl (url) + "'";
       }
       return icon;
@@ -470,7 +470,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
       string disabledIcon = "null";
       if (showIcon && menuItem.DisabledIcon.HasRenderingInformation)
       {
-        string url = menuItem.DisabledIcon.Url;
+        string? url = menuItem.DisabledIcon.Url;
         disabledIcon = "'" + renderingContext.Control.ResolveClientUrl (url) + "'";
       }
       return disabledIcon;

@@ -34,12 +34,12 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       return new WxeRepostOptions (sender, usesEventTarget);
     }
 
-    public static WxeRepostOptions DoRepost ([CanBeNull] Control sender)
+    public static WxeRepostOptions DoRepost ([CanBeNull] Control? sender)
     {
       return new WxeRepostOptions (sender);
     }
 
-    private readonly Control _sender;
+    private readonly Control? _sender;
     private readonly bool _usesEventTarget;
     private readonly bool _suppressesRepost;
 
@@ -58,14 +58,14 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       _suppressesRepost = true;
     }
 
-    private WxeRepostOptions (Control sender)
+    private WxeRepostOptions (Control? sender)
     {
       _sender = sender;
       _usesEventTarget = false;
       _suppressesRepost = false;
     }
 
-    public Control Sender
+    public Control? Sender
     {
       get { return _sender; }
     }

@@ -35,10 +35,10 @@ namespace Remotion.Web.ExecutionEngine
   {
     private readonly WxeTemplateControlInfo _wxeInfo;
     private readonly LazyInitializationContainer _lazyContainer;
-    private ControlReplacer _replacer;
+    private ControlReplacer? _replacer;
     private bool _executeNextStep;
     private bool _isWxeInfoInitialized;
-    private string _permanentUniqueID;
+    private string? _permanentUniqueID;
 
     public WxeUserControl ()
     {
@@ -75,7 +75,7 @@ namespace Remotion.Web.ExecutionEngine
         if (!userControlExecutor.IsNull && !userControlExecutor.IsReturningPostBack)
         {
           Assertion.IsTrue (userControlExecutor.UserControlID == _permanentUniqueID);
-          var currentUserControlStep = (WxeUserControlStep) userControlExecutor.Function.ExecutingStep;
+          var currentUserControlStep = (WxeUserControlStep?) userControlExecutor.Function.ExecutingStep;
           control = (WxeUserControl) Page.LoadControl (currentUserControlStep.UserControl);
 
           if (!currentUserControlStep.IsPostBack)
@@ -150,12 +150,12 @@ namespace Remotion.Web.ExecutionEngine
       return _replacer.SaveAllState();
     }
 
-    public WxePageStep CurrentPageStep
+    public WxePageStep? CurrentPageStep
     {
       get { return _wxeInfo.CurrentPageStep; }
     }
 
-    public WxeUserControlStep CurrentUserControlStep
+    public WxeUserControlStep? CurrentUserControlStep
     {
       get { return _wxeInfo.CurrentUserControlStep; }
     }
@@ -168,12 +168,12 @@ namespace Remotion.Web.ExecutionEngine
       return userControlExecutor;
     }
 
-    public WxeFunction CurrentFunction
+    public WxeFunction? CurrentFunction
     {
       get { return _wxeInfo.CurrentFunction; }
     }
 
-    public NameObjectCollection Variables
+    public NameObjectCollection? Variables
     {
       get { return _wxeInfo.Variables; }
     }
@@ -187,7 +187,7 @@ namespace Remotion.Web.ExecutionEngine
     {
       get { return CurrentUserControlStep != null ? CurrentUserControlStep.IsPostBack : CurrentPageStep.IsPostBack; }
     }
-    public string PermanentUniqueID
+    public string? PermanentUniqueID
     {
       get { return _permanentUniqueID; }
     }
@@ -216,7 +216,7 @@ namespace Remotion.Web.ExecutionEngine
       get { return _lazyContainer.IsInitialized; }
     }
 
-    ControlReplacer IReplaceableControl.Replacer
+    ControlReplacer? IReplaceableControl.Replacer
     {
       get { return _replacer; }
       set { _replacer = value; }

@@ -25,9 +25,9 @@ namespace Remotion.Web.UI.Controls.SingleViewImplementation
   /// </summary>
   public interface ISingleView : IStyledControl, IControlWithDiagnosticMetadata
   {
-    PlaceHolder TopControl { get; }
-    PlaceHolder View { get; }
-    PlaceHolder BottomControl { get; }
+    PlaceHolder? TopControl { get; }
+    PlaceHolder? View { get; }
+    PlaceHolder? BottomControl { get; }
     Style TopControlsStyle { get; }
     Style ViewStyle { get; }
     Style BottomControlsStyle { get; }

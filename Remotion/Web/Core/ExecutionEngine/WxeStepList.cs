@@ -124,7 +124,7 @@ namespace Remotion.Web.ExecutionEngine
       step.SetParentStep (this);
     }
 
-    public override WxeStep ExecutingStep
+    public override WxeStep? ExecutingStep
     {
       get
       {
@@ -135,7 +135,7 @@ namespace Remotion.Web.ExecutionEngine
       }
     }
 
-    public WxeStep LastExecutedStep
+    public WxeStep? LastExecutedStep
     {
       get
       {
@@ -165,7 +165,7 @@ namespace Remotion.Web.ExecutionEngine
         if (member is FieldInfo)
         {
           FieldInfo fieldInfo = (FieldInfo) member;
-          Add ((WxeStep) fieldInfo.GetValue (this));
+          Add ((WxeStep?) fieldInfo.GetValue (this));
         }
         else if (member is MethodInfo)
         {
@@ -174,9 +174,9 @@ namespace Remotion.Web.ExecutionEngine
         }
         else if (member is Type)
         {
-          Type subtype = member as Type;
+          Type? subtype = member as Type;
           if (typeof (WxeStep).IsAssignableFrom (subtype))
-            Add ((WxeStep) Activator.CreateInstance (subtype));
+            Add ((WxeStep?) Activator.CreateInstance (subtype));
         }
       }
     }

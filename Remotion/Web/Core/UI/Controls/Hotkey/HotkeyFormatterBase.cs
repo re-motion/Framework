@@ -33,10 +33,10 @@ namespace Remotion.Web.UI.Controls.Hotkey
     private struct TextParts
     {
       public readonly string BeforeHotkey;
-      public readonly string Hotkey;
-      public readonly string AfterHotkey;
+      public readonly string? Hotkey;
+      public readonly string? AfterHotkey;
 
-      public TextParts (string beforeHotkey, string hotkey, string afterHotkey)
+      public TextParts (string beforeHotkey, string? hotkey, string? afterHotkey)
       {
         BeforeHotkey = beforeHotkey;
         Hotkey = hotkey;
@@ -51,7 +51,7 @@ namespace Remotion.Web.UI.Controls.Hotkey
     protected abstract void AppendHotkeyBeginTag (StringBuilder stringBuilder, string hotkey);
     protected abstract void AppendHotkeyEndTag (StringBuilder stringBuilder);
 
-    public string FormatHotkey (TextWithHotkey textWithHotkey)
+    public string? FormatHotkey (TextWithHotkey textWithHotkey)
     {
       ArgumentUtility.CheckNotNull ("textWithHotkey", textWithHotkey);
 

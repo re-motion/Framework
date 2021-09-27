@@ -124,10 +124,10 @@ namespace Remotion.Web.Utilities
 
     public static bool ValidateOrder (BaseValidator smallerValidator, BaseValidator largerValidator, Type type)
     {
-      TextBox smallerField = smallerValidator.NamingContainer.FindControl (smallerValidator.ControlToValidate) as TextBox;
+      TextBox? smallerField = smallerValidator.NamingContainer.FindControl (smallerValidator.ControlToValidate) as TextBox;
       if (smallerField == null)
         throw new ArgumentException ("ControlToValidate must be TextBox", "smallerValidator");
-      TextBox largerField = largerValidator.NamingContainer.FindControl (largerValidator.ControlToValidate) as TextBox;
+      TextBox? largerField = largerValidator.NamingContainer.FindControl (largerValidator.ControlToValidate) as TextBox;
       if (largerField == null)
         throw new ArgumentException ("ControlToValidate must be TextBox", "largerValidator");
 
@@ -151,7 +151,7 @@ namespace Remotion.Web.Utilities
     /// <summary>
     ///   This method returns the nearest containing Template Control (i.e., Page or User Control).
     /// </summary>
-    public static TemplateControl GetParentTemplateControl (Control control)
+    public static TemplateControl? GetParentTemplateControl (Control control)
     {
       for (Control parent = control;
            parent != null;
@@ -201,7 +201,7 @@ namespace Remotion.Web.Utilities
       return false;
     }
 
-    public static Control FindControl (Control namingContainer, string controlID)
+    public static Control? FindControl (Control namingContainer, string? controlID)
     {
       ArgumentUtility.CheckNotNull ("namingContainer", namingContainer);
       if (string.IsNullOrEmpty (controlID))

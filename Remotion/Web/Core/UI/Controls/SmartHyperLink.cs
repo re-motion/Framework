@@ -51,7 +51,7 @@ public class SmartHyperLink : HyperLink, IControl
       NavigateUrl = navigateUrlBackup;
   }
 
-  public new IPage Page
+  public new IPage? Page
   {
     get { return PageWrapper.CastOrCreate (base.Page); }
   }

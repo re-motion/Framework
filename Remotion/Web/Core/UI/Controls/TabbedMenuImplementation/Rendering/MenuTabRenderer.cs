@@ -81,7 +81,7 @@ namespace Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering
       }
     }
 
-    private Command GetRenderingCommand (bool isEnabled, IMenuTab activeTab)
+    private Command? GetRenderingCommand (bool isEnabled, IMenuTab activeTab)
     {
       if (isEnabled && activeTab.EvaluateEnabled ())
         return activeTab.Command;

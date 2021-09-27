@@ -55,7 +55,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       return innerListener;
     }
 
-    public override TransactionStrategyBase CreateChildTransactionStrategy (bool autoCommit, IWxeFunctionExecutionContext executionContext, WxeContext wxeContext)
+    public override TransactionStrategyBase? CreateChildTransactionStrategy (bool autoCommit, IWxeFunctionExecutionContext executionContext, WxeContext wxeContext)
     {
       ArgumentUtility.CheckNotNull ("executionContext", executionContext);
 

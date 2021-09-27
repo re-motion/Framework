@@ -10,7 +10,6 @@
     <AssemblyName>Remotion.Web</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
     <NoWarn>$(NoWarn);0419</NoWarn>
-    <Nullable>disable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="UI\SmartPageImplementation\Generic_Error_Async_Remote.htm" />

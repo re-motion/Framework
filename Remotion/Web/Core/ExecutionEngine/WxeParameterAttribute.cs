@@ -24,11 +24,11 @@ namespace Remotion.Web.ExecutionEngine
   [AttributeUsage (AttributeTargets.Property, AllowMultiple = false)]
   public class WxeParameterAttribute : Attribute
   {
-    public static WxeParameterAttribute GetAttribute (PropertyInfo property)
+    public static WxeParameterAttribute? GetAttribute (PropertyInfo property)
     {
       ArgumentUtility.CheckNotNull ("property", property);
 
-      WxeParameterAttribute attribute = AttributeUtility.GetCustomAttribute<WxeParameterAttribute> (property, false);
+      WxeParameterAttribute? attribute = AttributeUtility.GetCustomAttribute<WxeParameterAttribute> (property, false);
       if (attribute == null)
         return null;
 

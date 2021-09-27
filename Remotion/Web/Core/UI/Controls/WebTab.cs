@@ -33,13 +33,13 @@ namespace Remotion.Web.UI.Controls
 public class WebTab: IWebTab, IControlStateManager
 {
   /// <summary> The control to which this object belongs. </summary>
-  private IControl _ownerControl;
+  private IControl? _ownerControl;
   private string _itemID = "";
   private string _text = "";
   private IconInfo _icon;
   private bool _isVisible = true;
   private bool _isDisabled;
-  private WebTabStrip _tabStrip;
+  private WebTabStrip? _tabStrip;
   private bool _isSelected;
   private int _selectDesired;
   private bool _isControlStateRestored;
@@ -91,7 +91,7 @@ public class WebTab: IWebTab, IControlStateManager
   }
 
   /// <summary> Sets this tab's <see cref="WebTabStrip"/>. </summary>
-  protected internal virtual void SetTabStrip (WebTabStrip tabStrip)
+  protected internal virtual void SetTabStrip (WebTabStrip? tabStrip)
   {
     _tabStrip = tabStrip; 
     if (_selectDesired == 1)
@@ -130,7 +130,7 @@ public class WebTab: IWebTab, IControlStateManager
   {
   }
 
-  public override string ToString()
+  public override string? ToString()
   {
     string displayName = ItemID;
     if (string.IsNullOrEmpty (displayName))
@@ -156,7 +156,7 @@ public class WebTab: IWebTab, IControlStateManager
       ArgumentUtility.CheckNotNullOrEmpty ("value", value);
       if (! string.IsNullOrEmpty (value))
       {
-        WebTabCollection tabs = null;
+        WebTabCollection? tabs = null;
         if (_tabStrip != null)
           tabs = _tabStrip.Tabs;
         if (tabs != null)
@@ -255,7 +255,7 @@ public class WebTab: IWebTab, IControlStateManager
   /// <summary> Gets the <see cref="WebTabStrip"/> to which this tab belongs. </summary>
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Browsable (false)]
-  public WebTabStrip TabStrip
+  public WebTabStrip? TabStrip
   {
     get { return _tabStrip; }
   }
@@ -291,13 +291,13 @@ public class WebTab: IWebTab, IControlStateManager
   /// <summary> Gets or sets the control to which this object belongs. </summary>
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Browsable (false)]
-  public IControl OwnerControl
+  public IControl? OwnerControl
   {
     get { return OwnerControlImplementation;  }
     set { OwnerControlImplementation = value; }
   }
 
-  protected virtual IControl OwnerControlImplementation
+  protected virtual IControl? OwnerControlImplementation
   {
     get { return _ownerControl;  }
     set
@@ -383,12 +383,12 @@ public class WebTab: IWebTab, IControlStateManager
     IsSelected = (bool) state;
   }
 
-  object IControlStateManager.SaveControlState ()
+  object? IControlStateManager.SaveControlState ()
   {
     return SaveControlState();
   }
 
-  protected virtual object SaveControlState()
+  protected virtual object? SaveControlState()
   {
     if (! IsSelected)
       return null;

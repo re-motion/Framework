@@ -31,7 +31,7 @@ namespace Remotion.Web.UI.Controls
   [ToolboxItem (false)]
   public class WebLinkButton : LinkButton, IControl
   {
-    private TextWithHotkey _textWithHotkey;
+    private TextWithHotkey? _textWithHotkey;
 
     protected override void Render (HtmlTextWriter writer)
     {
@@ -59,7 +59,7 @@ namespace Remotion.Web.UI.Controls
         writer.Write (HotkeyFormatter.FormatText (_textWithHotkey, false));
     }
 
-    public new IPage Page
+    public new IPage? Page
     {
       get { return PageWrapper.CastOrCreate (base.Page); }
     }

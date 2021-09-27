@@ -60,12 +60,12 @@ namespace Remotion.Web.UI.Controls
 
     // fields
     private readonly WebTabCollection _tabs;
-    private WebTab _selectedTab;
-    private string _selectedItemID;
-    private string _tabToBeSelected;
+    private WebTab? _selectedTab;
+    private string? _selectedItemID;
+    private string? _tabToBeSelected;
     private bool _hasTabsRestored;
     private bool _isRestoringTabs;
-    private object _tabsControlState;
+    private object? _tabsControlState;
     private bool _enableSelectedTab;
     private readonly WebTabStyle _tabStyle;
     private readonly WebTabStyle _selectedTabStyle;
@@ -133,7 +133,7 @@ namespace Remotion.Web.UI.Controls
 
     /// <summary> Handles the click event for a tab. </summary>
     /// <param name="itemID"> The id of the tab. </param>
-    private void HandleSelectionChangeEvent (string itemID)
+    private void HandleSelectionChangeEvent (string? itemID)
     {
       SetSelectedTab (itemID);
       OnSelectedIndexChanged();
@@ -141,7 +141,7 @@ namespace Remotion.Web.UI.Controls
 
     protected virtual void OnSelectedIndexChanged ()
     {
-      EventHandler handler = (EventHandler) Events[s_selectedIndexChangedEvent];
+      EventHandler? handler = (EventHandler?) Events[s_selectedIndexChangedEvent];
       if (handler != null)
         handler (this, EventArgs.Empty);
     }
@@ -155,7 +155,7 @@ namespace Remotion.Web.UI.Controls
     private void HandleClickEvent (string eventArgument)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
-      WebTab tab = Tabs.Find (eventArgument);
+      WebTab? tab = Tabs.Find (eventArgument);
       if (tab != null)
         OnClick (tab);
     }
@@ -164,7 +164,7 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("tab", tab);
       tab.OnClick();
-      WebTabClickEventHandler handler = (WebTabClickEventHandler) Events[s_clickEvent];
+      WebTabClickEventHandler? handler = (WebTabClickEventHandler?) Events[s_clickEvent];
       if (handler != null)
       {
         WebTabClickEventArgs e = new WebTabClickEventArgs (tab);
@@ -197,7 +197,7 @@ namespace Remotion.Web.UI.Controls
       }
     }
 
-    protected override object SaveControlState ()
+    protected override object? SaveControlState ()
     {
       object[] values = new object[3];
       values[0] = base.SaveControlState();
@@ -316,7 +316,7 @@ namespace Remotion.Web.UI.Controls
           string elementID = keyParts[1];
           string property = keyParts[2];
 
-          IDictionary currentCollection = null;
+          IDictionary? currentCollection = null;
 
           //  Switch to the right collection
           switch (collectionID)
@@ -340,7 +340,7 @@ namespace Remotion.Web.UI.Controls
           if (currentCollection != null)
           {
             //  Get the dictonary for the current element
-            IDictionary elementValues = (IDictionary) currentCollection[elementID];
+            IDictionary? elementValues = (IDictionary?) currentCollection[elementID];
 
             //  If no dictonary exists, create it and insert it into the elements hashtable.
             if (elementValues == null)
@@ -380,7 +380,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Sets the selected tab. </summary>
-    internal void SetSelectedTabInternal (WebTab tab)
+    internal void SetSelectedTabInternal (WebTab? tab)
     {
       if (! _isRestoringTabs)
         EnsureTabsRestored();
@@ -410,7 +410,7 @@ namespace Remotion.Web.UI.Controls
       ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
       if (_selectedTab == null || _selectedTab.ItemID != itemID)
       {
-        WebTab tab = Tabs.Find (itemID);
+        WebTab? tab = Tabs.Find (itemID);
         if (tab != _selectedTab)
           SetSelectedTabInternal (tab);
       }
@@ -419,7 +419,7 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Gets the currently selected tab. </summary>
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     [Browsable (false)]
-    public WebTab SelectedTab
+    public WebTab? SelectedTab
     {
       get
       {
@@ -439,7 +439,7 @@ namespace Remotion.Web.UI.Controls
     [MergableProperty (false)]
     //  Default category
     [Description ("The tabs displayed by this tab strip.")]
-    [DefaultValue ((string) null)]
+    [DefaultValue ((string?) null)]
     public WebTabCollection Tabs
     {
       get { return _tabs; }
@@ -501,7 +501,7 @@ namespace Remotion.Web.UI.Controls
       get { return _disabledTabStyle; }
     }
 
-    public new IPage Page
+    public new IPage? Page
     {
       get { return PageWrapper.CastOrCreate (base.Page); }
     }

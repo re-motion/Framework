@@ -49,7 +49,7 @@ namespace Remotion.Web.UI.Controls
     [Description ("Set this property to specify a format string to be used as ErrorMessage. Use '{0}' for the text fragment where the error occurred. Use '{1}' for the line position and '{2}' for the line number.")]
     [DefaultValue ("")]
 
-    public string ErrorMessageFormat { get; set; }
+    public string? ErrorMessageFormat { get; set; }
     
     /// <summary>
     /// Gets or sets length of the leading and trailing text sample to be included in the <see cref="BaseValidator.ErrorMessage"/>.

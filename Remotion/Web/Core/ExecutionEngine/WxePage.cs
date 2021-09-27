@@ -60,7 +60,7 @@ namespace Remotion.Web.ExecutionEngine
 
     /// <summary> Gets the WXE function that has been executed in the current page. </summary>
     [Browsable (false)]
-    public WxeFunction ReturningFunction
+    public WxeFunction? ReturningFunction
     {
       get { return _wxePageInfo.ReturningFunction; }
     }
@@ -126,7 +126,7 @@ namespace Remotion.Web.ExecutionEngine
     }
 
     /// <summary> Gets or sets the <see cref="WxeHandler"/> of the current request. </summary>
-    WxeHandler IWxePage.WxeHandler
+    WxeHandler? IWxePage.WxeHandler
     {
       get { return _wxePageInfo.WxeHandler; }
     }
@@ -135,7 +135,7 @@ namespace Remotion.Web.ExecutionEngine
 
     #region IWindowStateManager Implementation
 
-    object IWindowStateManager.GetData (string key)
+    object? IWindowStateManager.GetData (string key)
     {
       return _wxePageInfo.GetData (key);
     }
@@ -159,10 +159,10 @@ namespace Remotion.Web.ExecutionEngine
       _disposed = false;
     }
 
-    public override Control FindControl (string id)
+    public override Control? FindControl (string id)
     {
       bool callBaseMethod;
-      Control control = _wxePageInfo.FindControl (id, out callBaseMethod);
+      Control? control = _wxePageInfo.FindControl (id, out callBaseMethod);
       if (callBaseMethod)
         return base.FindControl (id);
       else
@@ -171,16 +171,16 @@ namespace Remotion.Web.ExecutionEngine
 
     /// <summary> Overrides <see cref="Page.DeterminePostBackMode"/>. </summary>
     /// <remarks> Uses <see cref="WxePageInfo.EnsurePostBackModeDetermined"/> determine the postback mode. </remarks>
-    protected override NameValueCollection DeterminePostBackMode ()
+    protected override NameValueCollection? DeterminePostBackMode ()
     {
-      NameValueCollection result = _wxePageInfo.EnsurePostBackModeDetermined (Context);
+      NameValueCollection? result = _wxePageInfo.EnsurePostBackModeDetermined (Context);
 
       return result;
     }
 
     /// <summary> Gets the post-back data for the page. </summary>
     /// <remarks> Application developers should only rely on this collection for accessing the post-back data. </remarks>
-    protected override NameValueCollection GetPostBackCollection ()
+    protected override NameValueCollection? GetPostBackCollection ()
     {
       return _wxePageInfo.EnsurePostBackModeDetermined (Context);
     }
@@ -192,7 +192,7 @@ namespace Remotion.Web.ExecutionEngine
     }
 
     /// <remarks> Uses <see cref="WxePageInfo.LoadPageStateFromPersistenceMedium"/> to load the viewstate. </remarks>
-    protected override object LoadPageStateFromPersistenceMedium ()
+    protected override object? LoadPageStateFromPersistenceMedium ()
     {
       object state = _wxePageInfo.LoadPageStateFromPersistenceMedium();
       PageStatePersister persister = this.PageStatePersister;
@@ -223,12 +223,12 @@ namespace Remotion.Web.ExecutionEngine
 
     /// <summary> Gets the <see cref="WxePageStep"/> that called this <see cref="WxePage"/>. </summary>
     [Browsable (false)]
-    public WxePageStep CurrentPageStep
+    public WxePageStep? CurrentPageStep
     {
       get { return _wxePageInfo.CurrentPageStep; }
     }
 
-    WxePageStep IWxeTemplateControl.CurrentPageStep
+    WxePageStep? IWxeTemplateControl.CurrentPageStep
     {
       get { return _wxePageInfo.CurrentPageStep; }
     }
@@ -239,7 +239,7 @@ namespace Remotion.Web.ExecutionEngine
     ///   <see cref="WxeFunction"/>.
     /// </value>
     [Browsable (false)]
-    public WxeFunction CurrentFunction
+    public WxeFunction? CurrentFunction
     {
       get { return _wxePageInfo.CurrentPageFunction; }
     }
@@ -250,14 +250,14 @@ namespace Remotion.Web.ExecutionEngine
     ///   <see cref="WxeFunction"/>
     /// </value>
     [Browsable (false)]
-    public NameObjectCollection Variables
+    public NameObjectCollection? Variables
     {
       get { return _wxePageInfo.PageVariables; }
     }
 
 
     /// <summary> Gets the <see cref="WxeForm"/> of this page. </summary>
-    protected WxeForm WxeForm
+    protected WxeForm? WxeForm
     {
       get { return _wxePageInfo.WxeForm; }
     }

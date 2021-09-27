@@ -31,7 +31,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     [NotNull]
     private ITransaction _transaction;
     [NonSerialized]
-    private ITransactionScope _scope;
+    private ITransactionScope? _scope;
     private readonly bool _autoCommit;
     private readonly IWxeFunctionExecutionContext _executionContext;
     private readonly TransactionStrategyBase _outerTransactionStrategy;
@@ -72,7 +72,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       get { return _transaction; }
     }
 
-    public ITransactionScope Scope
+    public ITransactionScope? Scope
     {
       get { return _scope; }
     }
@@ -235,7 +235,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       if (_scope == null)
         throw new InvalidOperationException ("OnExecutionPause may not be invoked unless OnExecutionPlay was called first.");
 
-      Exception innerException = null;
+      Exception? innerException = null;
       try
       {
         _child.OnExecutionPause (context, listener);
@@ -259,7 +259,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       if (_scope == null)
         throw new InvalidOperationException ("OnExecutionFail may not be invoked unless OnExecutionPlay was called first.");
 
-      Exception innerException = null;
+      Exception? innerException = null;
       try
       {
         _child.OnExecutionFail (context, listener, exception);
@@ -305,7 +305,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       return transaction;
     }
 
-    private void LeaveScope (Exception innerException)
+    private void LeaveScope (Exception? innerException)
     {
       bool isFatalExecutionException = innerException is WxeFatalExecutionException;
       if (!isFatalExecutionException)
@@ -315,7 +315,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       }
     }
 
-    private void LeaveScopeAndReleaseTransaction (Exception innerException)
+    private void LeaveScopeAndReleaseTransaction (Exception? innerException)
     {
       bool isFatalExecutionException = innerException is WxeFatalExecutionException;
       if (!isFatalExecutionException)
@@ -341,7 +341,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       return list;
     }
 
-    private void ExecuteAndWrapInnerException (Action action, Exception existingInnerException)
+    private void ExecuteAndWrapInnerException (Action action, Exception? existingInnerException)
     {
       try
       {

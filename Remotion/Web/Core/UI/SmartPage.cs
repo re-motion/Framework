@@ -46,7 +46,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
     get { return this; }
   }
 
-  HttpContextBase IPage.Context
+  HttpContextBase? IPage.Context
   {
     get { return _httpContext; }
   }
@@ -56,27 +56,27 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
     get { return _clientScriptManager; }
   }
 
-  HttpApplicationStateBase IPage.Application
+  HttpApplicationStateBase? IPage.Application
   {
     get { return _httpContext != null ?_httpContext.Application : null; }
   }
 
-  HttpRequestBase IPage.Request
+  HttpRequestBase? IPage.Request
   {
     get { return _httpContext != null ? _httpContext.Request : null; }
   }
 
-  HttpResponseBase IPage.Response
+  HttpResponseBase? IPage.Response
   {
     get { return _httpContext != null ? _httpContext.Response : null; }
   }
 
-  HttpServerUtilityBase IPage.Server
+  HttpServerUtilityBase? IPage.Server
   {
     get { return _httpContext != null ? _httpContext.Server : null; }
   }
 
-  HttpSessionStateBase IPage.Session
+  HttpSessionStateBase? IPage.Session
   {
     get { return _httpContext != null ? _httpContext.Session : null; }
   }
@@ -103,7 +103,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
     _smartPageInfo.RegisterClientSidePageEventHandler (pageEvent, key, function);
   }
 
-  string ISmartPage.CheckFormStateFunction
+  string? ISmartPage.CheckFormStateFunction
   {
     get { return _smartPageInfo.CheckFormStateFunction; }
     set { _smartPageInfo.CheckFormStateFunction = value; }
@@ -116,7 +116,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   [Description("The message displayed when the user attempts to leave the page.")]
   [Category ("Appearance")]
   [DefaultValue ("")]
-  public virtual string AbortMessage 
+  public virtual string? AbortMessage 
   {
     get { return _smartPageInfo.AbortMessage; }
     set { _smartPageInfo.AbortMessage = value; }
@@ -229,7 +229,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
 
   #endregion
 
-  private HttpContextBase _httpContext;
+  private HttpContextBase? _httpContext;
   private readonly SmartPageInfo _smartPageInfo;
   private readonly ValidatableControlInitializer _validatableControlInitializer;
   private readonly PostLoadInvoker _postLoadInvoker;
@@ -249,9 +249,9 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
     _clientScriptManager = new SmartPageClientScriptManager (base.ClientScript);
   }
 
-  protected override NameValueCollection DeterminePostBackMode()
+  protected override NameValueCollection? DeterminePostBackMode()
   {
-    NameValueCollection result = base.DeterminePostBackMode();
+    NameValueCollection? result = base.DeterminePostBackMode();
     return result;
   }
 
@@ -534,7 +534,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
     _isDirty = (bool)  values[1];
   }
 
-  protected override object SaveControlState()
+  protected override object? SaveControlState()
   {
     object[] values = new object[2];
     values[0] = base.SaveControlState();

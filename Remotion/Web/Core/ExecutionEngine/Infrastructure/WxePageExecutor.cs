@@ -45,7 +45,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
           url = url + queryString;
       }
 
-      WxeHandler wxeHandlerBackUp = context.HttpContext.Handler as WxeHandler;
+      WxeHandler? wxeHandlerBackUp = context.HttpContext.Handler as WxeHandler;
       Assertion.IsNotNull (wxeHandlerBackUp, "The HttpHandler must be of type WxeHandler.");
       try
       {

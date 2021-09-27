@@ -57,7 +57,7 @@ namespace Remotion.Web.UI.Controls.Hotkey
     /// An instance of <see cref="TextWithHotkey"/>. If <paramref name="value"/> is <see langword="null" />, 
     /// the resulting <see cref="TextWithHotkey"/> contains an empty <see cref="TextWithHotkey.Text"/>.
     /// </returns>
-    public static TextWithHotkey Parse ([CanBeNull]string value)
+    public static TextWithHotkey Parse ([CanBeNull]string? value)
     {
       if (String.IsNullOrEmpty (value))
         return new TextWithHotkey (String.Empty, null);
@@ -92,7 +92,7 @@ namespace Remotion.Web.UI.Controls.Hotkey
     /// </summary>
     /// <param name="value">The <see cref="string"/> to be escaped. Can be <see langword="null" />.</param>
     /// <returns>The escaped <see cref="string"/> or <see langword="null"/> if the <paramref name="value"/> was <see langword="null" />.</returns>
-    public static string Escape ([CanBeNull]string value)
+    public static string? Escape ([CanBeNull]string? value)
     {
       if (value == null)
         return null;

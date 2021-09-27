@@ -49,11 +49,11 @@ public class WxeParameterConverter
   ///   required.
   /// </returns>
   /// <exception cref="WxeException"> Thrown if the <paramref name="value"/> could not be converted. </exception>
-  public string ConvertToString (object value, NameObjectCollection callerVariables)
+  public string? ConvertToString (object? value, NameObjectCollection? callerVariables)
   {
     CheckForRequiredOutParameter();
 
-    WxeVariableReference varRef = value as WxeVariableReference;
+    WxeVariableReference? varRef = value as WxeVariableReference;
     if (varRef != null)
       return ConvertVarRefToString (varRef, callerVariables);
 
@@ -73,7 +73,7 @@ public class WxeParameterConverter
   ///   required.
   /// </returns>
   /// <exception cref="WxeException"> Thrown if the value referenced by the <paramref name="varRef"/> could not be converted. </exception>
-  protected string ConvertVarRefToString (WxeVariableReference varRef, NameObjectCollection callerVariables)
+  protected string? ConvertVarRefToString (WxeVariableReference varRef, NameObjectCollection? callerVariables)
   {
     ArgumentUtility.CheckNotNull ("varRef", varRef);
 
@@ -88,7 +88,7 @@ public class WxeParameterConverter
       return null;
     }
 
-    object value = callerVariables[_parameter.Name];
+    object? value = callerVariables[_parameter.Name];
     
     if (value is WxeVariableReference)
     {
@@ -111,7 +111,7 @@ public class WxeParameterConverter
   ///   required.
   /// </returns>
   /// <exception cref="WxeException"> Thrown if the <paramref name="value"/> could not be converted. </exception>
-  protected string ConvertObjectToString (object value)
+  protected string? ConvertObjectToString (object? value)
   {
     if (value != null && ! _parameter.Type.IsAssignableFrom (value.GetType()))
       throw ArgumentUtility.CreateArgumentTypeException ("value", value.GetType(), _parameter.Type);
@@ -135,7 +135,7 @@ public class WxeParameterConverter
   /// <summary> Tries to convert a parameter's value to its string representation. </summary>
   /// <param name="value"> The value to be converted. </param>
   /// <returns> A <see cref="string"/> or the <paramref name="value"/> if the conversion is not possible. </returns>
-  protected object TryConvertObjectToString (object value)
+  protected object? TryConvertObjectToString (object? value)
   {
     Type sourceType = _parameter.Type;
     Type destinationType = typeof (string);

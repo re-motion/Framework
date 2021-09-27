@@ -231,7 +231,7 @@ namespace Remotion.Web.Utilities
 
     /// <summary> Adds a <paramref name="name"/>/<paramref name="value"/> pair to the <paramref name="url"/>. </summary>
     /// <include file='..\doc\include\Utilities\UrlUtility.xml' path='UrlUtility/AddParameter/*' />
-    public static string AddParameter (string url, string name, string value, Encoding encoding)
+    public static string AddParameter (string url, string? name, string value, Encoding encoding)
     {
       ArgumentUtility.CheckNotNull ("url", url);
       ArgumentUtility.CheckNotEmpty ("name", name);
@@ -350,7 +350,7 @@ namespace Remotion.Web.Utilities
 
     /// <summary> Gets the decoded value of the parameter identified by <paramref name="name"/>. </summary>
     /// <include file='..\doc\include\Utilities\UrlUtility.xml' path='UrlUtility/GetParameter/*' />
-    public static string GetParameter (string url, string name, Encoding encoding)
+    public static string? GetParameter (string url, string name, Encoding encoding)
     {
       ArgumentUtility.CheckNotNull ("url", url);
       ArgumentUtility.CheckNotEmpty ("name", name);
@@ -366,7 +366,7 @@ namespace Remotion.Web.Utilities
     /// <summary> Gets the decoded value of the parameter identified by <paramref name="name"/>. </summary>
     /// <include file='..\doc\include\Utilities\UrlUtility.xml' path='UrlUtility/GetParameter/param[@name="url" or @name="name"]' />
     /// <include file='..\doc\include\Utilities\UrlUtility.xml' path='UrlUtility/GetParameter/returns' />
-    public static string GetParameter (string url, string name)
+    public static string? GetParameter (string url, string name)
     {
       return GetParameter (url, name, GetRequestEncoding());
     }

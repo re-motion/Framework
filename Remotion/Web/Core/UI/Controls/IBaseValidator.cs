@@ -47,7 +47,7 @@ public interface IBaseValidator: IValidator
 {
   bool EnableClientScript { get; set; }
 
-  string ControlToValidate { get; set; }
+  string? ControlToValidate { get; set; }
   ValidatorDisplay Display { get; set; }
 }
 

@@ -30,15 +30,15 @@ namespace Remotion.Web.ExecutionEngine
 
   public class WxeTemplateControlInfo
   {
-    private WxeHandler _wxeHandler;
-    private WxePageStep _currentPageStep;
-    private WxeUserControlStep _currentUserControlStep;
-    private WxeFunction _currentPageFunction;
-    private WxeFunction _currentUserControlFunction;
+    private WxeHandler? _wxeHandler;
+    private WxePageStep? _currentPageStep;
+    private WxeUserControlStep? _currentUserControlStep;
+    private WxeFunction? _currentPageFunction;
+    private WxeFunction? _currentUserControlFunction;
 
     private readonly IWxeTemplateControl _control;
     /// <summary> Caches the <see cref="ResourceManagerSet"/> for this control. </summary>
-    private ResourceManagerSet _cachedResourceManager;
+    private ResourceManagerSet? _cachedResourceManager;
     
     public WxeTemplateControlInfo (IWxeTemplateControl control)
     {
@@ -57,7 +57,7 @@ namespace Remotion.Web.ExecutionEngine
       }
       else
       {
-        IWxePage wxePage = _control.Page as IWxePage;
+        IWxePage? wxePage = _control.Page as IWxePage;
         if (wxePage == null)
           throw new InvalidOperationException (string.Format ("'{0}' can only be added to a Page implementing the IWxePage interface.", _control.GetType ().GetFullNameSafe()));
         _wxeHandler = wxePage.WxeHandler;
@@ -70,7 +70,7 @@ namespace Remotion.Web.ExecutionEngine
       }
 
 
-      WxeStep executingStep = _wxeHandler.RootFunction.ExecutingStep;
+      WxeStep? executingStep = _wxeHandler.RootFunction.ExecutingStep;
       if (executingStep is WxeUserControlStep)
       {
         _currentUserControlStep = (WxeUserControlStep) executingStep;
@@ -81,38 +81,38 @@ namespace Remotion.Web.ExecutionEngine
       {
         _currentUserControlStep = null;
         _currentUserControlFunction = null;
-        _currentPageStep = (WxePageStep) executingStep;
+        _currentPageStep = (WxePageStep?) executingStep;
       }
 
       _currentPageFunction = WxeStep.GetFunction (_currentPageStep);
     }
 
-    public WxeHandler WxeHandler
+    public WxeHandler? WxeHandler
     {
       get { return _wxeHandler; }
     }
 
-    public WxePageStep CurrentPageStep
+    public WxePageStep? CurrentPageStep
     {
       get { return _currentPageStep; }
     }
 
-    public WxeUserControlStep CurrentUserControlStep
+    public WxeUserControlStep? CurrentUserControlStep
     {
       get { return _currentUserControlStep; }
     }
 
-    public WxeFunction CurrentPageFunction
+    public WxeFunction? CurrentPageFunction
     {
       get { return _currentPageFunction; }
     }
 
-    public WxeFunction CurrentFunction
+    public WxeFunction? CurrentFunction
     {
       get { return _currentUserControlFunction ?? _currentPageFunction; }
     }
 
-    public NameObjectCollection PageVariables
+    public NameObjectCollection? PageVariables
     {
       get
       {
@@ -121,12 +121,12 @@ namespace Remotion.Web.ExecutionEngine
       }
     }
 
-    public NameObjectCollection Variables
+    public NameObjectCollection? Variables
     {
       get 
       {
         Assertion.IsNotNull (_currentPageStep);
-        return ((WxeStep) _currentUserControlStep ?? _currentPageStep).Variables;
+        return ((WxeStep?) _currentUserControlStep ?? _currentPageStep).Variables;
       }
     }
 

@@ -29,20 +29,20 @@ namespace Remotion.Web.Services
     /// </summary>
     /// <typeparam name="T">The <see cref="Type"/> of the instantiated web service. Can be an interface.</typeparam>
     /// <param name="virtualPath">The virtual path where the web service is located. Must not be <see langword="null" /> or empty.</param>
-    T CreateWebService<T> (string virtualPath) where T: class;
+    T? CreateWebService<T> (string virtualPath) where T: class;
 
     /// <summary>
     /// Instantiates the script web service located at the <paramref name="virtualPath"/>.
     /// </summary>
     /// <typeparam name="T">The <see cref="Type"/> of the instantiated script web service. Can be an interface.</typeparam>
     /// <param name="virtualPath">The virtual path where the web service is located. Must not be <see langword="null" /> or empty.</param>
-    T CreateScriptService<T> (string virtualPath) where T: class;
+    T? CreateScriptService<T> (string virtualPath) where T: class;
 
     /// <summary>
     /// Instantiates the JSON web service located at the <paramref name="virtualPath"/>.
     /// </summary>
     /// <typeparam name="T">The <see cref="Type"/> of the instantiated JSON web service. Can be an interface.</typeparam>
     /// <param name="virtualPath">The virtual path where the web service is located. Must not be <see langword="null" /> or empty.</param>
-    T CreateJsonService<T> (string virtualPath) where T: class;
+    T? CreateJsonService<T> (string virtualPath) where T: class;
   }
 }

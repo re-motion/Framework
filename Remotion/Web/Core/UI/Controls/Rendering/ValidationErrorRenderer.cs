@@ -34,8 +34,8 @@ namespace Remotion.Web.UI.Controls.Rendering
   {
     private struct ValidationErrorsAttributeData
     {
-      public string DescribedByAttributeValue;
-      public string ValidationErrorsIDIndex;
+      public string? DescribedByAttributeValue;
+      public string? ValidationErrorsIDIndex;
     }
 
     private readonly IRenderingFeatures _renderingFeatures;

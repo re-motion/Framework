@@ -28,9 +28,9 @@ namespace Remotion.Web.UI.Controls.DatePickerButtonImplementation
     new IControl Parent { get; }
     string AlternateText { get; set; }
     bool EnableClientScript { get; }
-    string TargetControlID { get; }
+    string? TargetControlID { get; }
     Style DatePickerButtonStyle { get; }
-    string ContainerControlID { get; }
+    string? ContainerControlID { get; }
     bool Enabled { get; }
   }
 }

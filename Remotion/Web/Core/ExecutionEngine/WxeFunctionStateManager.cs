@@ -95,7 +95,7 @@ namespace Remotion.Web.ExecutionEngine
 
     private readonly Dictionary<string, WxeFunctionStateMetaData> _functionStates;
     private readonly HttpSessionStateBase _session;
-    private readonly object _lockObject;
+    private readonly object? _lockObject;
 
     public WxeFunctionStateManager (HttpSessionStateBase session)
     {
@@ -161,7 +161,7 @@ namespace Remotion.Web.ExecutionEngine
     {
       ArgumentUtility.CheckNotNullOrEmpty ("functionToken", functionToken);
       
-      Stopwatch stopwatch = null;
+      Stopwatch? stopwatch = null;
       bool hasOutOfProcessSession = _session.Mode != SessionStateMode.Off && _session.Mode != SessionStateMode.InProc;
       if (hasOutOfProcessSession)
       {

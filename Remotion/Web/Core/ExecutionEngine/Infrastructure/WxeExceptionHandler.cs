@@ -25,10 +25,10 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
   public class WxeExceptionHandler
   {
     private bool _catchExceptions;
-    private Type[] _catchExceptionTypes;
-    private Exception _exception;
+    private Type[]? _catchExceptionTypes;
+    private Exception? _exception;
 
-    public Exception Exception
+    public Exception? Exception
     {
       get { return _exception; }
     }

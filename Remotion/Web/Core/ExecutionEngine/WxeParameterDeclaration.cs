@@ -42,7 +42,7 @@ public class WxeParameterDeclaration
   private readonly WxeParameterDirection _direction;
   private readonly Type _type;
   [NonSerialized]
-  private WxeParameterConverter _converter;
+  private WxeParameterConverter? _converter;
 
   public WxeParameterDeclaration (string name, bool required, WxeParameterDirection direction, Type type)
   {
@@ -89,23 +89,23 @@ public class WxeParameterDeclaration
   }
 
   /// <summary> Copy a single callee parameter back to a caller variable. </summary>
-  public void CopyToCaller (string actualParameterName, NameObjectCollection calleeVariables, NameObjectCollection callerVariables)
+  public void CopyToCaller (string actualParameterName, NameObjectCollection calleeVariables, NameObjectCollection? callerVariables)
   {
     if (_direction != WxeParameterDirection.In)
       CopyParameter (_name, calleeVariables, actualParameterName, callerVariables, false);
   }
 
   /// <summary> Copy fromVariables[fromName] to toVariables[toName]. </summary>
-  private void CopyParameter (string fromName, NameObjectCollection fromVariables, string toName, NameObjectCollection toVariables, bool required)
+  private void CopyParameter (string fromName, NameObjectCollection fromVariables, string toName, NameObjectCollection? toVariables, bool required)
   {
-    object value = fromVariables[fromName];
+    object? value = fromVariables[fromName];
     if (value == null && required)
       throw new ApplicationException ("Parameter '" + fromName + "' is missing.");
     SetParameter (toName, value, toVariables);
   }
 
   /// <summary> Set the parameter variables[parameterName] to the specified value. </summary>
-  private void SetParameter (string parameterName, object value, NameObjectCollection variables)
+  private void SetParameter (string parameterName, object? value, NameObjectCollection? variables)
   {
     if (value != null && _type != null && ! _type.IsAssignableFrom (value.GetType()))
       throw new ApplicationException ("Parameter '" + parameterName + "' has unexpected type " + value.GetType().GetFullNameSafe() + " (" + _type.GetFullNameSafe() + " was expected).");
@@ -116,7 +116,7 @@ public class WxeParameterDeclaration
   /// Gets the value of the parameter described by this declaration from a function's variable list.
   /// </summary>
   /// <param name="variables">The variable list to get the parameter value from.</param>
-  public object GetValue (NameObjectCollection variables)
+  public object? GetValue (NameObjectCollection variables)
   {
     ArgumentUtility.CheckNotNull ("variables", variables);
     return variables[_name];

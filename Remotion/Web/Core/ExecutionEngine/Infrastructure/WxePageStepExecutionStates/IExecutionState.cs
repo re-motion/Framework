@@ -24,10 +24,10 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
   public interface IExecutionState : INullObject
   {
     /// <summary> Gets the context of the execution. Use this member to transistion the <see cref="WxeStep"/> into the next state. </summary>
-    IExecutionStateContext ExecutionStateContext { get; }
+    IExecutionStateContext? ExecutionStateContext { get; }
 
     /// <summary> Gets a set of parameters common for all execution states, such as the executing <see cref="WxeFunction"/>. </summary>
-    IExecutionStateParameters Parameters { get; }
+    IExecutionStateParameters? Parameters { get; }
 
     /// <summary> Gets a flag that informs the observer whether the state is executing. This value is typically constant for a state implementation. </summary>
     bool IsExecuting { get; }

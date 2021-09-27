@@ -46,9 +46,9 @@ namespace Remotion.Web.UI.Controls
       get { return _datePickerButtonStyle; }
     }
 
-    public string ContainerControlID { get; set; }
+    public string? ContainerControlID { get; set; }
 
-    public string TargetControlID { get; set; }
+    public string? TargetControlID { get; set; }
 
     protected override void OnInit (EventArgs e)
     {
@@ -69,7 +69,7 @@ namespace Remotion.Web.UI.Controls
       get { return (IControl) Parent; }
     }
 
-    public new IPage Page
+    public new IPage? Page
     {
       get { return PageWrapper.CastOrCreate (base.Page); }
     }

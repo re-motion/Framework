@@ -30,7 +30,7 @@ namespace Remotion.Web.UI.Controls
 
   public abstract class MenuTab : WebTab, IMenuTab
   {
-    private SingleControlItemCollection _command;
+    private SingleControlItemCollection? _command;
     private MissingPermissionBehavior _missingPermissionBehavior;
 
     protected MenuTab (string itemID, string text, IconInfo icon)
@@ -54,9 +54,9 @@ namespace Remotion.Web.UI.Controls
       return (IWebTabRenderer) SafeServiceLocator.Current.GetInstance<IMenuTabRenderer> ();
     }
 
-    protected TabbedMenu TabbedMenu
+    protected TabbedMenu? TabbedMenu
     {
-      get { return (TabbedMenu) OwnerControl; }
+      get { return (TabbedMenu?) OwnerControl; }
     }
 
     public NameValueCollection GetUrlParameters ()
@@ -70,9 +70,9 @@ namespace Remotion.Web.UI.Controls
     [Category ("Behavior")]
     [Description ("The command rendered for this menu item.")]
     [NotifyParentProperty (true)]
-    public virtual NavigationCommand Command
+    public virtual NavigationCommand? Command
     {
-      get { return (NavigationCommand) _command.ControlItem; }
+      get { return (NavigationCommand?) _command.ControlItem; }
       set { _command.ControlItem = value; }
     }
 
@@ -96,14 +96,14 @@ namespace Remotion.Web.UI.Controls
     {
       if (Command != null)
       {
-        Command = (NavigationCommand) Activator.CreateInstance (Command.GetType ());
+        Command = (NavigationCommand?) Activator.CreateInstance (Command.GetType ());
         Command.Type = CommandType.None;
       }
     }
 
     [PersistenceMode (PersistenceMode.InnerProperty)]
     [Browsable (false)]
-    public SingleControlItemCollection PersistedCommand
+    public SingleControlItemCollection? PersistedCommand
     {
       get { return _command; }
     }

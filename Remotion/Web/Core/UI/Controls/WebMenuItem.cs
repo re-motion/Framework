@@ -39,33 +39,33 @@ namespace Remotion.Web.UI.Controls
     private string _itemID = string.Empty;
     private string _category = string.Empty;
     private string _text = string.Empty;
-    private IconInfo _icon;
-    private IconInfo _disabledIcon;
+    private IconInfo? _icon;
+    private IconInfo? _disabledIcon;
     private WebMenuItemStyle _style = WebMenuItemStyle.IconAndText;
     private RequiredSelection _requiredSelection = RequiredSelection.Any;
     private bool _isDisabled;
     private bool _isVisible = true;
     private MissingPermissionBehavior _missingPermissionBehavior;
-    private ISecurableObject _securableObject;
+    private ISecurableObject? _securableObject;
 
     /// <summary> The command rendered for this menu item. </summary>
     private readonly SingleControlItemCollection _command;
 
     /// <summary> The control to which this object belongs. </summary>
-    private IControl _ownerControl;
+    private IControl? _ownerControl;
 
     private readonly CommandClickEventHandler _commandClick;
 
     public WebMenuItem (
-        string itemID,
-        string category,
+        string? itemID,
+        string? category,
         string text,
         IconInfo icon,
         IconInfo disabledIcon,
         WebMenuItemStyle style,
         RequiredSelection requiredSelection,
         bool isDisabled,
-        Command command)
+        Command? command)
     {
       _itemID = itemID;
       _category = category;
@@ -125,7 +125,7 @@ namespace Remotion.Web.UI.Controls
 
     /// <summary> Returns a <see cref="string"/> that represents this <see cref="WebMenuItem"/>. </summary>
     /// <returns> Returns the <see cref="Text"/>, followed by the class name of the instance. </returns>
-    public override string ToString ()
+    public override string? ToString ()
     {
       string displayName = ItemID;
       if (string.IsNullOrEmpty (displayName))
@@ -191,7 +191,7 @@ namespace Remotion.Web.UI.Controls
     [Category ("Appearance")]
     [Description ("The image representing the menu item in the rendered page.")]
     [NotifyParentProperty (true)]
-    public IconInfo Icon
+    public IconInfo? Icon
     {
       get { return _icon; }
       set
@@ -220,7 +220,7 @@ namespace Remotion.Web.UI.Controls
     [Category ("Appearance")]
     [Description ("The image representing the disabled menu item in the rendered page.")]
     [NotifyParentProperty (true)]
-    public IconInfo DisabledIcon
+    public IconInfo? DisabledIcon
     {
       get { return _disabledIcon; }
       set
@@ -285,7 +285,7 @@ namespace Remotion.Web.UI.Controls
 
     [Browsable (false)]
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    public ISecurableObject SecurableObject
+    public ISecurableObject? SecurableObject
     {
       get { return _securableObject; }
       set { _securableObject = value; }
@@ -297,9 +297,9 @@ namespace Remotion.Web.UI.Controls
     [Category ("Behavior")]
     [Description ("The command rendered for this menu item.")]
     [NotifyParentProperty (true)]
-    public virtual Command Command
+    public virtual Command? Command
     {
-      get { return (Command) _command.ControlItem; }
+      get { return (Command?) _command.ControlItem; }
       set
       {
         if (Command != null)
@@ -341,7 +341,7 @@ namespace Remotion.Web.UI.Controls
     {
       if (Command != null)
       {
-        Command = (Command) Activator.CreateInstance (Command.GetType());
+        Command = (Command?) Activator.CreateInstance (Command.GetType());
         Command.Type = CommandType.None;
       }
     }
@@ -366,13 +366,13 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Gets or sets the control to which this object belongs. </summary>
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     [Browsable (false)]
-    public IControl OwnerControl
+    public IControl? OwnerControl
     {
       get { return OwnerControlImplementation; }
       set { OwnerControlImplementation = value; }
     }
 
-    protected virtual IControl OwnerControlImplementation
+    protected virtual IControl? OwnerControlImplementation
     {
       get { return _ownerControl; }
       set
@@ -423,7 +423,7 @@ namespace Remotion.Web.UI.Controls
       ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
       ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
       
-      string key = ResourceManagerUtility.GetGlobalResourceKey (Category);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey (Category);
       if (!string.IsNullOrEmpty (key))
         Category = resourceManager.GetString (key);
 
@@ -474,7 +474,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> The <see cref="Command"/> that caused the event. </summary>
-    public Command Command
+    public Command? Command
     {
       get { return _item.Command; }
     }

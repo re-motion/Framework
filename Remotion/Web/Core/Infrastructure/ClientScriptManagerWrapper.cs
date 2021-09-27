@@ -222,7 +222,7 @@ namespace Remotion.Web.Infrastructure
     /// </param><param name="argument">A string of optional arguments to pass to the control that processes the postback.
     /// </param><exception cref="T:System.ArgumentNullException">The specified <see cref="T:System.Web.UI.Control"/> is null.
     /// </exception>
-    public string GetPostBackEventReference (IControl control, string argument)
+    public string GetPostBackEventReference (IControl control, string? argument)
     {
       ArgumentUtility.CheckNotNullAndType<Control> ("control", control);
       return _clientScriptManager.GetPostBackEventReference ((Control) control, argument);
@@ -253,7 +253,7 @@ namespace Remotion.Web.Infrastructure
     /// </returns>
     /// <param name="options">A <see cref="T:System.Web.UI.PostBackOptions"/> that defines the postback.
     /// </param><exception cref="T:System.ArgumentNullException">The <see cref="T:System.Web.UI.PostBackOptions"/> parameter is null</exception>
-    public string GetPostBackEventReference (PostBackOptions options)
+    public string? GetPostBackEventReference (PostBackOptions options)
     {
       return _clientScriptManager.GetPostBackEventReference (options);
     }
@@ -268,7 +268,7 @@ namespace Remotion.Web.Infrastructure
     /// </param><param name="registerForEventValidation">true to register the event reference for validation; otherwise, false.
     /// </param><exception cref="T:System.ArgumentNullException">The <see cref="T:System.Web.UI.PostBackOptions"/> is null.
     /// </exception>
-    public string GetPostBackEventReference (PostBackOptions options, bool registerForEventValidation)
+    public string? GetPostBackEventReference (PostBackOptions options, bool registerForEventValidation)
     {
       return _clientScriptManager.GetPostBackEventReference (options, registerForEventValidation);
     }
@@ -481,7 +481,7 @@ namespace Remotion.Web.Infrastructure
     ///   <paramref name="hiddenFieldName"/> is null.
     /// </exception>
     /// <seealso cref="ScriptManager.RegisterHiddenField(System.Web.UI.Control,string,string)"/>
-    public void RegisterHiddenField (IControl control, string hiddenFieldName, string hiddenFieldInitialValue)
+    public void RegisterHiddenField (IControl control, string hiddenFieldName, string? hiddenFieldInitialValue)
     {
       ArgumentUtility.CheckNotNullAndType<Control> ("control", control);
       ScriptManager.RegisterHiddenField ((Control) control, hiddenFieldName, hiddenFieldInitialValue ?? string.Empty);

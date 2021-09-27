@@ -41,7 +41,7 @@ namespace Remotion.Web.UI.Controls
       return new IconInfo (url) { AlternateText = "" };
     }
 
-    public static bool ShouldSerialize (IconInfo icon)
+    public static bool ShouldSerialize (IconInfo? icon)
     {
       if (icon == null)
         return false;
@@ -55,9 +55,9 @@ namespace Remotion.Web.UI.Controls
         return true;
     }
 
-    private string _url;
-    private string _alternateText;
-    private string _toolTip;
+    private string? _url;
+    private string? _alternateText;
+    private string? _toolTip;
     private Unit _width;
     private Unit _height;
 
@@ -98,7 +98,7 @@ namespace Remotion.Web.UI.Controls
     [PersistenceMode (PersistenceMode.Attribute)]
     [DefaultValue ("")]
     [NotifyParentProperty (true)]
-    public string Url
+    public string? Url
     {
       get { return _url; }
       set { _url = value ?? string.Empty; }
@@ -107,7 +107,7 @@ namespace Remotion.Web.UI.Controls
     [PersistenceMode (PersistenceMode.Attribute)]
     [DefaultValue ("")]
     [NotifyParentProperty (true)]
-    public string AlternateText
+    public string? AlternateText
     {
       get { return _alternateText; }
       set { _alternateText = value ?? string.Empty; }
@@ -116,7 +116,7 @@ namespace Remotion.Web.UI.Controls
     [PersistenceMode (PersistenceMode.Attribute)]
     [DefaultValue ("")]
     [NotifyParentProperty (true)]
-    public string ToolTip
+    public string? ToolTip
     {
       get { return _toolTip; }
       set { _toolTip = value ?? string.Empty; }
@@ -140,7 +140,7 @@ namespace Remotion.Web.UI.Controls
       set { _height = value; }
     }
 
-    public override string ToString ()
+    public override string? ToString ()
     {
       return _url;
     }
@@ -246,7 +246,7 @@ namespace Remotion.Web.UI.Controls
       return base.CanConvertTo (context, destinationType);
     }
 
-    public override object ConvertFrom
+    public override object? ConvertFrom
         (ITypeDescriptorContext context, CultureInfo culture, object value)
     {
       if (value == null)
@@ -272,7 +272,7 @@ namespace Remotion.Web.UI.Controls
       return base.ConvertFrom (context, culture, value);
     }
 
-    public override object ConvertTo
+    public override object? ConvertTo
         (ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
     {
       if (destinationType == typeof (string))

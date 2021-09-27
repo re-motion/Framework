@@ -51,17 +51,17 @@ namespace Remotion.Web.UI.Controls
 
     private IconInfo _icon;
     private readonly IRenderingFeatures _renderingFeatures;
-    private PostBackOptions _options;
+    private PostBackOptions? _options;
 
     private bool _useLegacyButton;
     private bool _isDefaultButton;
 
-    private ISecurableObject _securableObject;
+    private ISecurableObject? _securableObject;
     private MissingPermissionBehavior _missingPermissionBehavior = MissingPermissionBehavior.Invisible;
     private bool _requiresSynchronousPostBack;
     private bool _hasPagePreRenderCompleted;
 
-    private TextWithHotkey _textWithHotkey;
+    private TextWithHotkey? _textWithHotkey;
     private ButtonType _buttonType;
 
     public WebButton ()
@@ -96,7 +96,7 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("postCollection", postCollection);
 
-      string eventTarget = postCollection[ControlHelper.PostEventSourceID];
+      string? eventTarget = postCollection[ControlHelper.PostEventSourceID];
       bool isScriptedPostBack = !string.IsNullOrEmpty (eventTarget);
       if (!isScriptedPostBack && IsLegacyButtonEnabled)
       {
@@ -279,7 +279,7 @@ namespace Remotion.Web.UI.Controls
       }
     }
 
-    protected override void RenderContents (HtmlTextWriter writer)
+    protected override void RenderContents (HtmlTextWriter? writer)
     {
       EvaluateWaiConformity();
 
@@ -343,7 +343,7 @@ namespace Remotion.Web.UI.Controls
       ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
 
       //  Dispatch simple properties
-      string key = ResourceManagerUtility.GetGlobalResourceKey (Text);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey (Text);
       if (!string.IsNullOrEmpty (key))
         Text = resourceManager.GetString (key);
 
@@ -422,7 +422,7 @@ namespace Remotion.Web.UI.Controls
       if (securityAdapter == null)
         return true;
 
-      EventHandler clickHandler = (EventHandler) Events[s_clickEvent];
+      EventHandler? clickHandler = (EventHandler?) Events[s_clickEvent];
       if (clickHandler == null)
         return true;
 
@@ -470,14 +470,14 @@ namespace Remotion.Web.UI.Controls
     {
       base.OnClick (e);
 
-      EventHandler clickHandler = (EventHandler) Events[s_clickEvent];
+      EventHandler? clickHandler = (EventHandler?) Events[s_clickEvent];
       if (clickHandler != null)
         clickHandler (this, e);
     }
 
     [Browsable (false)]
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    public ISecurableObject SecurableObject
+    public ISecurableObject? SecurableObject
     {
       get { return _securableObject; }
       set { _securableObject = value; }
@@ -513,7 +513,7 @@ namespace Remotion.Web.UI.Controls
       }
     }
 
-    public new IPage Page
+    public new IPage? Page
     {
       get { return PageWrapper.CastOrCreate (base.Page); }
     }
@@ -529,7 +529,7 @@ namespace Remotion.Web.UI.Controls
       get { return ServiceLocator.GetInstance<IHotkeyFormatter>(); }
     }
 
-    private IWebSecurityAdapter WebSecurityAdapter
+    private IWebSecurityAdapter? WebSecurityAdapter
     {
       get { return UI.Controls.Command.GetWebSecurityAdapter(); }
     }

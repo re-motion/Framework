@@ -29,7 +29,7 @@ namespace Remotion.Web.ExecutionEngine
   public sealed class WxeCallOptionsExternal : WxeCallOptionsBase
   {
     private readonly string _target;
-    private readonly string _features;
+    private readonly string? _features;
     private readonly bool _returningPostback;
 
     public WxeCallOptionsExternal (string target)
@@ -42,12 +42,12 @@ namespace Remotion.Web.ExecutionEngine
     {
     }
 
-    public WxeCallOptionsExternal (string target, string features, bool returningPostback)
+    public WxeCallOptionsExternal (string target, string? features, bool returningPostback)
         : this (target, features, returningPostback, WxePermaUrlOptions.Null)
     {
     }
 
-    public WxeCallOptionsExternal (string target, string features, bool returningPostback, WxePermaUrlOptions permaUrlOptions)
+    public WxeCallOptionsExternal (string target, string? features, bool returningPostback, WxePermaUrlOptions permaUrlOptions)
         : base (permaUrlOptions)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("target", target);
@@ -73,7 +73,7 @@ namespace Remotion.Web.ExecutionEngine
       get { return _target; }
     }
 
-    public string Features
+    public string? Features
     {
       get { return _features; }
     }

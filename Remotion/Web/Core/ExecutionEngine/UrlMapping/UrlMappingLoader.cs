@@ -34,9 +34,9 @@ namespace Remotion.Web.ExecutionEngine.UrlMapping
 
     // member fields
 
-    private string _configurationFile;
-    private Type _type;
-    private XmlSchemaSet _schemas;
+    private string? _configurationFile;
+    private Type? _type;
+    private XmlSchemaSet? _schemas;
 
     // construction and disposing
 
@@ -110,22 +110,22 @@ namespace Remotion.Web.ExecutionEngine.UrlMapping
       return schemaSet;
     }
 
-    public string ConfigurationFile
+    public string? ConfigurationFile
     {
       get { return _configurationFile; }
     }
 
-    public Type Type
+    public Type? Type
     {
       get { return _type; }
     }
 
-    public XmlSchemaSet Schemas
+    public XmlSchemaSet? Schemas
     {
       get { return _schemas; }
     }
 
-    private string GetExecutingAssemblyPath ()
+    private string? GetExecutingAssemblyPath ()
     {
       AssemblyName assemblyName = Assembly.GetExecutingAssembly ().GetName (copiedName: false);
 

@@ -31,19 +31,19 @@ namespace Remotion.Web.Infrastructure
     {
     }
 
-    public Type GetType (string typeName, bool throwOnError, bool ignoreCase)
+    public Type? GetType (string? typeName, bool throwOnError, bool ignoreCase)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("typeName", typeName);
 
       return Type.GetType (typeName, throwOnError: throwOnError, ignoreCase: ignoreCase);
     }
 
-    public Type GetCompiledType (string virtualPath)
+    public Type? GetCompiledType (string virtualPath)
     {
       return null;
     }
 
-    public IList CodeAssemblies
+    public IList? CodeAssemblies
     {
       get { return null; }
     }

@@ -90,7 +90,7 @@ namespace Remotion.Web.UI.Controls.SingleViewImplementation.Rendering
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
 
       Style style = renderingContext.Control.TopControlsStyle;
-      PlaceHolder placeHolder = renderingContext.Control.TopControl;
+      PlaceHolder? placeHolder = renderingContext.Control.TopControl;
       string cssClass = CssClassTopControls;
       RenderPlaceHolder (renderingContext, style, placeHolder, cssClass);
     }
@@ -100,12 +100,12 @@ namespace Remotion.Web.UI.Controls.SingleViewImplementation.Rendering
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
 
       Style style = renderingContext.Control.BottomControlsStyle;
-      PlaceHolder placeHolder = renderingContext.Control.BottomControl;
+      PlaceHolder? placeHolder = renderingContext.Control.BottomControl;
       string cssClass = CssClassBottomControls;
       RenderPlaceHolder (renderingContext, style, placeHolder, cssClass);
     }
 
-    private void RenderPlaceHolder (SingleViewRenderingContext renderingContext, Style style, PlaceHolder placeHolder, string defaultCssClass)
+    private void RenderPlaceHolder (SingleViewRenderingContext renderingContext, Style style, PlaceHolder? placeHolder, string defaultCssClass)
     {
       ScriptUtility.Instance.RegisterElementForBorderSpans (renderingContext.Control, "#" + placeHolder.ClientID);
 

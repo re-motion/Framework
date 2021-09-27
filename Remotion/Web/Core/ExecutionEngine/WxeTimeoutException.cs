@@ -23,7 +23,7 @@ namespace Remotion.Web.ExecutionEngine
 [Serializable]
 public class WxeTimeoutException: WxeException
 {
-  private string _functionToken;
+  private string? _functionToken;
 
   public WxeTimeoutException (string message, string functionToken)
     : this (message, functionToken, null)
@@ -41,7 +41,7 @@ public class WxeTimeoutException: WxeException
   {
   }
 
-  public string FunctionToken
+  public string? FunctionToken
   {
     get { return _functionToken; }
   }

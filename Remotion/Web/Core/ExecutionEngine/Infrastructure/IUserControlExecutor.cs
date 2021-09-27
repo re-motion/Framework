@@ -21,11 +21,11 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
   public interface IUserControlExecutor:INullObject
   {
     void Execute (WxeContext context);
-    WxeFunction Function { get; }
-    string BackedUpUserControlState { get; }
-    string UserControlID { get; }
+    WxeFunction? Function { get; }
+    string? BackedUpUserControlState { get; }
+    string? UserControlID { get; }
     bool IsReturningPostBack { get; }
-    string BackedUpUserControl { get; }
-    WxeStep ExecutingStep { get; }
+    string? BackedUpUserControl { get; }
+    WxeStep? ExecutingStep { get; }
   }
 }

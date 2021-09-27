@@ -92,7 +92,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <summary> Fires the <see cref="LoadPostData"/> event. </summary>
     protected virtual bool OnLoadPostData (string postDataKey, NameValueCollection postCollection)
     {
-      EventHandler eventHandler = (EventHandler) Events[s_loadPostDataEvent];
+      EventHandler? eventHandler = (EventHandler?) Events[s_loadPostDataEvent];
       if (eventHandler != null)
         eventHandler (this, EventArgs.Empty);
       return false;
@@ -203,7 +203,7 @@ namespace Remotion.Web.ExecutionEngine
 
     private void RegisterDefaultButtonScript (Control button, HtmlTextWriter writer, bool useAddAttribute)
     {
-      string dummy = Page.ClientScript.GetPostBackEventReference (new PostBackOptions (button));
+      string? dummy = Page.ClientScript.GetPostBackEventReference (new PostBackOptions (button));
       string script = "javascript:return WebForm_FireDefaultButton(event, '" + button.ClientID + "')";
       if (useAddAttribute)
         writer.AddAttribute ("onkeypress", script);
@@ -211,7 +211,7 @@ namespace Remotion.Web.ExecutionEngine
         writer.WriteAttribute ("onkeypress", script);
     }
 
-    public new IPage Page
+    public new IPage? Page
     {
       get { return PageWrapper.CastOrCreate (base.Page); }
     }

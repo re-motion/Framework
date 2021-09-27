@@ -36,7 +36,7 @@ namespace Remotion.Web.UI.Controls
     /// <summary>
     ///   Gets an instance of the <see cref="HelpInfo"/> type, which contains all information needed for rendering a help-link.
     /// </summary>
-    HelpInfo HelpInfo { get; }
+    HelpInfo? HelpInfo { get; }
 
     /// <summary>
     ///   Creates an appropriate validator for this control.

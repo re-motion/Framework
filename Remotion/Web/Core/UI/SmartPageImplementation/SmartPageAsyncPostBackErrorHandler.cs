@@ -77,7 +77,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
       return errorHtml;
     }
 
-    private static string ExtractBodyContent (string aspNetErrorPage)
+    private static string ExtractBodyContent (string? aspNetErrorPage)
     {
       var bodyBegin = @"<body bgcolor=""white"">";
       var bodyEnd = @"</body>";

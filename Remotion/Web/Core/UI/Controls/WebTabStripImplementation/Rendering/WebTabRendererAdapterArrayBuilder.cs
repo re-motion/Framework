@@ -36,8 +36,8 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
     }
 
     public bool EnableSelectedTab { get; set; }
-    public WebTabStyle SelectedTabStyle { get; set; }
-    public WebTabStyle TabStyle { get; set; }
+    public WebTabStyle? SelectedTabStyle { get; set; }
+    public WebTabStyle? TabStyle { get; set; }
 
     public WebTabRendererAdapter[] GetWebTabRenderers ()
     {

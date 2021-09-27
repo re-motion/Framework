@@ -50,7 +50,7 @@ namespace Remotion.Web
     /// <param name="resourceType"> The resource type (image, static html, etc.) Must not be <see langword="null"/>. </param>
     /// <param name="relativeUrl"> The resource file name. Must not be <see langword="null"/> or empty.</param>
     [Obsolete ("Use IResourceUrlFactory.CreateResourceUrl(...) instead. (Version 1.13.197)", true)]
-    public static string GetResourceUrl ([CanBeNull] IControl control, Type definingType, ResourceType resourceType, string relativeUrl)
+    public static string GetResourceUrl ([CanBeNull] IControl? control, Type definingType, ResourceType resourceType, string relativeUrl)
     {
       throw new NotSupportedException ("Use IResourceUrlFactory.CreateResourceUrl(...) instead. (Version 1.13.197)");
     }

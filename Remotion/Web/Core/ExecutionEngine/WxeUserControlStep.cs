@@ -29,11 +29,11 @@ namespace Remotion.Web.ExecutionEngine
     private bool _isExecutionStarted;
     private bool _isPostBack;
     private readonly ResourceObjectBase _userControl;
-    private WxePageStep _pageStep;
+    private WxePageStep? _pageStep;
     private IUserControlExecutor _userControlExecutor = NullUserControlExecutor.Null;
 
     [NonSerialized]
-    private WxeHandler _wxeHandler;
+    private WxeHandler? _wxeHandler;
 
     public WxeUserControlStep (string userControl)
       : this (new ResourceObject (ArgumentUtility.CheckNotNullOrEmpty ("userControl", userControl)))
@@ -131,7 +131,7 @@ namespace Remotion.Web.ExecutionEngine
       _userControlExecutor = userControlExecutor;
     }
 
-    public override string ToString ()
+    public override string? ToString ()
     {
       return "WxeUserControlStep: " + UserControl;
     }

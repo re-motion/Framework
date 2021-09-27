@@ -30,10 +30,10 @@ namespace Remotion.Web.UI.Controls.TabbedMultiViewImplementation
     string ActiveViewClientID { get; }
     Style ActiveViewStyle { get; }
     Style TopControlsStyle { get; }
-    PlaceHolder TopControl { get; }
+    PlaceHolder? TopControl { get; }
     Style BottomControlsStyle { get; }
-    PlaceHolder BottomControl { get; }
-    IWebTabStrip TabStrip { get; }
+    PlaceHolder? BottomControl { get; }
+    IWebTabStrip? TabStrip { get; }
     string ActiveViewContentClientID { get; }
     string WrapperClientID { get; }
     Control GetActiveView ();

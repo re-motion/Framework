@@ -102,29 +102,29 @@ namespace Remotion.Web.UI.Controls
 
     #region private IconInfo _resolvedNodeIcon...
 
-    private IconInfo _resolvedNodeIconF;
-    private IconInfo _resolvedNodeIconFMinus;
-    private IconInfo _resolvedNodeIconFPlus;
-    private IconInfo _resolvedNodeIconI;
-    private IconInfo _resolvedNodeIconL;
-    private IconInfo _resolvedNodeIconLMinus;
-    private IconInfo _resolvedNodeIconLPlus;
-    private IconInfo _resolvedNodeIconMinus;
-    private IconInfo _resolvedNodeIconPlus;
-    private IconInfo _resolvedNodeIconR;
-    private IconInfo _resolvedNodeIconRMinus;
-    private IconInfo _resolvedNodeIconRPlus;
-    private IconInfo _resolvedNodeIconT;
-    private IconInfo _resolvedNodeIconTMinus;
-    private IconInfo _resolvedNodeIconTPlus;
-    private IconInfo _resolvedNodeIconWhite;
+    private IconInfo? _resolvedNodeIconF;
+    private IconInfo? _resolvedNodeIconFMinus;
+    private IconInfo? _resolvedNodeIconFPlus;
+    private IconInfo? _resolvedNodeIconI;
+    private IconInfo? _resolvedNodeIconL;
+    private IconInfo? _resolvedNodeIconLMinus;
+    private IconInfo? _resolvedNodeIconLPlus;
+    private IconInfo? _resolvedNodeIconMinus;
+    private IconInfo? _resolvedNodeIconPlus;
+    private IconInfo? _resolvedNodeIconR;
+    private IconInfo? _resolvedNodeIconRMinus;
+    private IconInfo? _resolvedNodeIconRPlus;
+    private IconInfo? _resolvedNodeIconT;
+    private IconInfo? _resolvedNodeIconTMinus;
+    private IconInfo? _resolvedNodeIconTPlus;
+    private IconInfo? _resolvedNodeIconWhite;
 
     #endregion
 
     /// <summary> The nodes in this tree view. </summary>
     private readonly WebTreeNodeCollection _nodes;
 
-    private Triplet[] _nodesControlState;
+    private Triplet[]? _nodesControlState;
     private bool _isLoadControlStateCompleted;
     private bool _enableTopLevelExpander = true;
     private bool _enableLookAheadEvaluation;
@@ -136,14 +136,14 @@ namespace Remotion.Web.UI.Controls
     private bool _enableTreeNodeControlState = true;
     private bool _hasTreeNodesCreated;
     private bool _requiresSynchronousPostBack;
-    private WebTreeNode _selectedNode;
-    private WebTreeNode _focusededNode;
-    private WebTreeViewMenuItemProvider _menuItemProvider;
+    private WebTreeNode? _selectedNode;
+    private WebTreeNode? _focusededNode;
+    private WebTreeViewMenuItemProvider? _menuItemProvider;
     private readonly Dictionary<WebTreeNode, DropDownMenu> _menus = new Dictionary<WebTreeNode, DropDownMenu>();
     private readonly PlaceHolder _menuPlaceHolder;
     private bool _hasTreeNodeMenusCreated;
     private int _menuCounter;
-    private string _assignedLabelID;
+    private string? _assignedLabelID;
 
     private readonly IRenderingFeatures _renderingFeatures;
 
@@ -151,17 +151,17 @@ namespace Remotion.Web.UI.Controls
     ///   The delegate called before a node with <see cref="WebTreeNode.IsEvaluated"/> set to <see langword="false"/>
     ///   is expanded.
     /// </summary>
-    private EvaluateWebTreeNode _evaluateTreeNode;
+    private EvaluateWebTreeNode? _evaluateTreeNode;
 
-    private InitializeRootWebTreeNodes _initializeRootTreeNodes;
-    private WebTreeNodeRenderMethod _treeNodeRenderMethod;
-    private WebTreeNodeMenuRenderMethod _treeNodeMenuRenderMethod;
-    private IPage _page;
-    private IInfrastructureResourceUrlFactory _infrastructureResourceUrlFactory;
+    private InitializeRootWebTreeNodes? _initializeRootTreeNodes;
+    private WebTreeNodeRenderMethod? _treeNodeRenderMethod;
+    private WebTreeNodeMenuRenderMethod? _treeNodeMenuRenderMethod;
+    private IPage? _page;
+    private IInfrastructureResourceUrlFactory? _infrastructureResourceUrlFactory;
     private readonly ILabelReferenceRenderer _labelReferenceRenderer;
 
     /// <summary> Caches the <see cref="ResourceManagerSet"/> for this <see cref="WebTreeView"/>. </summary>
-    private ResourceManagerSet _cachedResourceManager;
+    private ResourceManagerSet? _cachedResourceManager;
 
     //  construction and destruction
 
@@ -223,7 +223,7 @@ namespace Remotion.Web.UI.Controls
     private void HandleExpansionCommandEvent (string eventArgument)
     {
       string[] pathSegments;
-      WebTreeNode clickedNode = ParseNodePath (eventArgument, out pathSegments);
+      WebTreeNode? clickedNode = ParseNodePath (eventArgument, out pathSegments);
       if (clickedNode != null)
       {
         _focusededNode = clickedNode;
@@ -250,7 +250,7 @@ namespace Remotion.Web.UI.Controls
     private void HandleClickCommandEvent (string eventArgument)
     {
       string[] pathSegments;
-      WebTreeNode clickedNode = ParseNodePath (eventArgument, out pathSegments);
+      WebTreeNode? clickedNode = ParseNodePath (eventArgument, out pathSegments);
       bool isSelectionChanged = _selectedNode != clickedNode;
       SetSelectedNode (clickedNode);
       OnClick (clickedNode, pathSegments);
@@ -259,9 +259,9 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Fires the <see cref="Click"/> event. </summary>
-    protected virtual void OnClick (WebTreeNode node, string[] path)
+    protected virtual void OnClick (WebTreeNode? node, string[] path)
     {
-      WebTreeNodeClickEventHandler handler = (WebTreeNodeClickEventHandler) Events[s_clickEvent];
+      WebTreeNodeClickEventHandler? handler = (WebTreeNodeClickEventHandler?) Events[s_clickEvent];
       if (handler != null)
       {
         WebTreeNodeClickEventArgs e = new WebTreeNodeClickEventArgs (node, path);
@@ -270,9 +270,9 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Fires the <see cref="SelectionChanged"/> event. </summary>
-    protected virtual void OnSelectionChanged (WebTreeNode node)
+    protected virtual void OnSelectionChanged (WebTreeNode? node)
     {
-      WebTreeNodeEventHandler handler = (WebTreeNodeEventHandler) Events[s_selectionChangedEvent];
+      WebTreeNodeEventHandler? handler = (WebTreeNodeEventHandler?) Events[s_selectionChangedEvent];
       if (handler != null)
       {
         WebTreeNodeEventArgs e = new WebTreeNodeEventArgs (node);
@@ -382,7 +382,7 @@ namespace Remotion.Web.UI.Controls
       _isLoadControlStateCompleted = true;
     }
 
-    protected override object SaveControlState ()
+    protected override object? SaveControlState ()
     {
       object[] values = new object[3];
 
@@ -401,7 +401,7 @@ namespace Remotion.Web.UI.Controls
       {
         Triplet nodeState = nodesState[i];
         string nodeID = (string) nodeState.First;
-        WebTreeNode node = nodes.Find (nodeID);
+        WebTreeNode? node = nodes.Find (nodeID);
         if (node != null)
         {
           object[] values = (object[]) nodeState.Second;
@@ -466,7 +466,7 @@ namespace Remotion.Web.UI.Controls
       ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
       ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
 
-      string key = ResourceManagerUtility.GetGlobalResourceKey (AccessKey);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey (AccessKey);
       if (!string.IsNullOrEmpty (key))
         AccessKey = resourceManager.GetString (key);
 
@@ -527,7 +527,7 @@ namespace Remotion.Web.UI.Controls
 
           if (hasUpdatePanelAsParent)
           {
-            ISmartPage smartPage = Page as ISmartPage;
+            ISmartPage? smartPage = Page as ISmartPage;
             if (smartPage == null)
             {
               throw new InvalidOperationException (
@@ -756,7 +756,7 @@ namespace Remotion.Web.UI.Controls
         bool isFirstNode,
         bool isLastNode)
     {
-      IconInfo nodeIcon = GetNodeIcon (node, isFirstNode, isLastNode);
+      IconInfo? nodeIcon = GetNodeIcon (node, isFirstNode, isLastNode);
       bool hasChildren = node.Children.Count > 0;
       bool isEvaluated = node.IsEvaluated;
       bool hasExpansionLink = hasChildren || !isEvaluated;
@@ -939,15 +939,15 @@ namespace Remotion.Web.UI.Controls
     /// <param name="path"> The path to be parsed. </param>
     /// <param name="pathSegments"> Returns the IDs that comprised the path. </param>
     /// <returns> The <see cref="WebTreeNode"/> to which <paramref name="path"/> pointed. </returns>
-    public WebTreeNode ParseNodePath (string path, out string[] pathSegments)
+    public WebTreeNode? ParseNodePath (string path, out string[] pathSegments)
     {
       pathSegments = path.Split (c_pathSeparator);
-      WebTreeNode currentNode = null;
+      WebTreeNode? currentNode = null;
       WebTreeNodeCollection currentNodes = _nodes;
       for (int i = 0; i < pathSegments.Length; i++)
       {
         string nodeID = pathSegments[i];
-        WebTreeNode node = currentNodes.Find (nodeID);
+        WebTreeNode? node = currentNodes.Find (nodeID);
         if (node == null)
           return currentNode;
         currentNode = node;
@@ -957,7 +957,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Returns the URL of the node icon for the <paramref name="node"/>. </summary>
-    private IconInfo GetNodeIcon (WebTreeNode node, bool isFirstNode, bool isLastNode)
+    private IconInfo? GetNodeIcon (WebTreeNode node, bool isFirstNode, bool isLastNode)
     {
       bool hasChildren = node.Children.Count > 0;
       bool hasParent = node.ParentNode != null;
@@ -1064,7 +1064,7 @@ namespace Remotion.Web.UI.Controls
       _resolvedNodeIconWhite = new IconInfo (InfrastructureResourceUrlFactory.CreateThemedResourceUrl (ResourceType.Image, c_nodeIconWhite).GetUrl());
     }
 
-    public new HttpContextBase Context
+    public new HttpContextBase? Context
     {
       get { return ((IControl) this).Page.Context; }
     }
@@ -1080,7 +1080,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Sets the selected tree node. </summary>
-    internal void SetSelectedNode (WebTreeNode node)
+    internal void SetSelectedNode (WebTreeNode? node)
     {
       if (node != null && node.TreeView != this)
         throw new InvalidOperationException ("Only tree nodes that are part of this tree can be selected.");
@@ -1100,7 +1100,7 @@ namespace Remotion.Web.UI.Controls
     [MergableProperty (false)]
     //  Default category
     [Description ("The tree nodes displayed by this tree view.")]
-    [DefaultValue ((string) null)]
+    [DefaultValue ((string?) null)]
     public virtual WebTreeNodeCollection Nodes
     {
       get
@@ -1232,7 +1232,7 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Gets the currently selected tree node. </summary>
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     [Browsable (false)]
-    public WebTreeNode SelectedNode
+    public WebTreeNode? SelectedNode
     {
       get
       {
@@ -1244,13 +1244,13 @@ namespace Remotion.Web.UI.Controls
 
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     [Browsable (false)]
-    public WebTreeViewMenuItemProvider MenuItemProvider
+    public WebTreeViewMenuItemProvider? MenuItemProvider
     {
       get { return _menuItemProvider; }
       set { _menuItemProvider = value; }
     }
 
-    IPage IControl.Page
+    IPage? IControl.Page
     {
       get
       {
@@ -1349,7 +1349,7 @@ namespace Remotion.Web.UI.Controls
     {
       string key = ClientID + "_BindContextMenus";
 
-      DropDownMenu anyNodeContextMenu = null;
+      DropDownMenu? anyNodeContextMenu = null;
       if (_menus.Values.Count > 0)
         anyNodeContextMenu = _menus.Values.First (menu => (menu != null), () => new Exception());
 

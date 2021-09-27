@@ -44,7 +44,7 @@ namespace Remotion.Web.UI.Controls
     private bool _isChanged;
 
     /// <summary> The event raised after the items contained in the collection has been changed. </summary>
-    public event CollectionChangeEventHandler CollectionChanged;
+    public event CollectionChangeEventHandler? CollectionChanged;
 
     /// <summary> Creates a new instance. </summary>
     /// <param name="ownerControl"> Owner control. </param>
@@ -98,7 +98,7 @@ namespace Remotion.Web.UI.Controls
         CollectionChanged (this, e);
     }
 
-    protected virtual void ValidateNewValue (object value)
+    protected virtual void ValidateNewValue (object? value)
     {
       IControlItem controlItem = ArgumentUtility.CheckNotNullAndType<IControlItem> ("value", value);
 
@@ -108,16 +108,16 @@ namespace Remotion.Web.UI.Controls
         throw new ArgumentException (string.Format ("The collection already contains an item with ItemID '{0}'.", controlItem.ItemID), "value");
     }
 
-    protected override void OnInsert (int index, object value)
+    protected override void OnInsert (int index, object? value)
     {
       ValidateNewValue (value);
 
       base.OnInsert (index, value);
-      IControlItem controlItem = (IControlItem) value;
+      IControlItem? controlItem = (IControlItem?) value;
       controlItem.OwnerControl = _ownerControl;
     }
 
-    protected override void OnInsertComplete (int index, object value)
+    protected override void OnInsertComplete (int index, object? value)
     {
       ArgumentUtility.CheckNotNull ("value", value);
 
@@ -126,16 +126,16 @@ namespace Remotion.Web.UI.Controls
       OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Add, value));
     }
 
-    protected override void OnSet (int index, object oldValue, object newValue)
+    protected override void OnSet (int index, object? oldValue, object? newValue)
     {
       ValidateNewValue (newValue);
 
       base.OnSet (index, oldValue, newValue);
-      IControlItem controlItem = (IControlItem) newValue;
+      IControlItem? controlItem = (IControlItem?) newValue;
       controlItem.OwnerControl = _ownerControl;
     }
 
-    protected override void OnSetComplete (int index, object oldValue, object newValue)
+    protected override void OnSetComplete (int index, object? oldValue, object? newValue)
     {
       ArgumentUtility.CheckNotNull ("oldValue", oldValue);
       ArgumentUtility.CheckNotNull ("newValue", newValue);
@@ -146,7 +146,7 @@ namespace Remotion.Web.UI.Controls
       OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Add, newValue));
     }
 
-    protected override void OnRemoveComplete (int index, object value)
+    protected override void OnRemoveComplete (int index, object? value)
     {
       ArgumentUtility.CheckNotNull ("value", value);
 
@@ -155,7 +155,7 @@ namespace Remotion.Web.UI.Controls
       OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Remove, value));
     }
 
-    public int Add (IControlItem value)
+    public int Add (IControlItem? value)
     {
       int count = List.Add (value);
       return count;
@@ -173,7 +173,7 @@ namespace Remotion.Web.UI.Controls
 
       BeginEdit();
       for (int i = 0; i < values.Count; i++)
-        Add ((IControlItem) values[i]);
+        Add ((IControlItem?) values[i]);
       EndEdit();
     }
 
@@ -211,14 +211,14 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Finds the <see cref="IControlItem"/> with an <see cref="IControlItem.ItemID"/> of <paramref name="id"/>. </summary>
     /// <param name="id"> The ID to look for. </param>
     /// <returns> An <see cref="IControlItem"/> or <see langword="null"/> if no matching item was found. </returns>
-    public IControlItem Find (string id)
+    public IControlItem? Find (string id)
     {
       if (string.IsNullOrEmpty (id))
         return null;
 
       for (int i = 0; i < InnerList.Count; i++)
       {
-        IControlItem item = (IControlItem) InnerList[i];
+        IControlItem? item = (IControlItem?) InnerList[i];
         if (item.ItemID == id)
           return item;
       }
@@ -262,7 +262,7 @@ namespace Remotion.Web.UI.Controls
         _ownerControl = value;
         for (int i = 0; i < InnerList.Count; i++)
         {
-          IControlItem controlItem = (IControlItem) InnerList[i];
+          IControlItem? controlItem = (IControlItem?) InnerList[i];
           controlItem.OwnerControl = _ownerControl;
         }
       }
@@ -282,9 +282,9 @@ namespace Remotion.Web.UI.Controls
       {
         string id = (string) entry.Key;
 
-        IControlItem item = Find (id);
+        IControlItem? item = Find (id);
         if (item != null)
-          ResourceDispatcher.DispatchGeneric (item, (IDictionary) entry.Value);
+          ResourceDispatcher.DispatchGeneric (item, (IDictionary?) entry.Value);
         else //  Invalid collection element
         {
           s_log.Debug (
@@ -301,7 +301,7 @@ namespace Remotion.Web.UI.Controls
       
       for (int i = 0; i < InnerList.Count; i++)
       {
-        IControlItem controlItem = (IControlItem) InnerList[i];
+        IControlItem? controlItem = (IControlItem?) InnerList[i];
         controlItem.LoadResources (resourceManager, globalizationService);
       }
     }

@@ -29,14 +29,14 @@ public static class ResourceManagerUtility
 {
   private const string c_globalResourceKeyPrefix = "$res:";
 
-  public static bool IsGlobalResourceKey (string elementValue)
+  public static bool IsGlobalResourceKey (string? elementValue)
   {
     if (string.IsNullOrEmpty (elementValue))
       return false;
     return elementValue.StartsWith (c_globalResourceKeyPrefix);
   }
 
-  public static string GetGlobalResourceKey (string elementValue)
+  public static string? GetGlobalResourceKey (string? elementValue)
   {
     if (IsGlobalResourceKey (elementValue))
       return elementValue.Substring (c_globalResourceKeyPrefix.Length);
@@ -78,7 +78,7 @@ public static class ResourceManagerUtility
   /// </returns>
   /// <remarks> Uses a cache for the individual <see cref="IResourceManager"/> instances. </remarks>
   [NotNull]
-  public static IResourceManager GetResourceManager ([CanBeNull]Control control, bool alwaysIncludeParents)
+  public static IResourceManager GetResourceManager ([CanBeNull]Control? control, bool alwaysIncludeParents)
   {
     if (control == null)
       return NullResourceManager.Instance;
@@ -94,7 +94,7 @@ public static class ResourceManagerUtility
       return new ResourceManagerSet (resourceManagers);
   }
 
-  private static void GetResourceManagersRecursive ([CanBeNull]Control control, List<IResourceManager> resourceManagers, bool alwaysIncludeParents)
+  private static void GetResourceManagersRecursive ([CanBeNull]Control? control, List<IResourceManager> resourceManagers, bool alwaysIncludeParents)
   {
     if (control == null)
       return;

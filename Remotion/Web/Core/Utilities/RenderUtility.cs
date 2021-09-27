@@ -67,7 +67,7 @@ namespace Remotion.Web.Utilities
     public static void WriteDictionaryAsJson (
           this StringBuilder stringBuilder,
           IReadOnlyDictionary<string, string> dictionaryOfStringValues,
-          IReadOnlyDictionary<string, IReadOnlyCollection<string>> dictionaryOfStringArrays = null)
+          IReadOnlyDictionary<string, IReadOnlyCollection<string>>? dictionaryOfStringArrays = null)
     {
       ArgumentUtility.CheckNotNull ("stringBuilder", stringBuilder);
       ArgumentUtility.CheckNotNull ("dictionaryOfStringValues", dictionaryOfStringValues);

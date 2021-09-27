@@ -27,9 +27,9 @@ namespace Remotion.Web.UI.Controls.ControlReplacing
   public sealed class ControlReplacer : Control, INamingContainer, IPostBackDataHandler
   {
     private readonly IInternalControlMemberCaller _memberCaller;
-    private Control _controlToWrap;
+    private Control? _controlToWrap;
     private bool _hasLoaded;
-    private IStateModificationStrategy _stateModificationStrategy;
+    private IStateModificationStrategy? _stateModificationStrategy;
 
     public ControlReplacer (IInternalControlMemberCaller memberCaller)
     {
@@ -38,18 +38,18 @@ namespace Remotion.Web.UI.Controls.ControlReplacing
       _memberCaller = memberCaller;
     }
 
-    public IStateModificationStrategy StateModificationStrategy
+    public IStateModificationStrategy? StateModificationStrategy
     {
       get { return _stateModificationStrategy; }
       set { _stateModificationStrategy = ArgumentUtility.CheckNotNull ("value", value); }
     }
 
-    public Control WrappedControl
+    public Control? WrappedControl
     {
       get { return Controls.Count == 1 ? Controls[0] : null; }
     }
 
-    public Control ControlToWrap
+    public Control? ControlToWrap
     {
       get { return _controlToWrap; }
     }
@@ -65,7 +65,7 @@ namespace Remotion.Web.UI.Controls.ControlReplacing
     {
     }
 
-    protected override object SaveControlState ()
+    protected override object? SaveControlState ()
     {
       return "value";
     }
@@ -74,7 +74,7 @@ namespace Remotion.Web.UI.Controls.ControlReplacing
     {
     }
 
-    protected override object SaveViewState ()
+    protected override object? SaveViewState ()
     {
       return "value";
     }

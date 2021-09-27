@@ -33,7 +33,7 @@ namespace Remotion.Web.UI.Controls
 
     // fields
 
-    private string _title;
+    private string? _title;
     private IconInfo _icon;
     private LazyContainer _lazyContainer;
 
@@ -114,7 +114,7 @@ namespace Remotion.Web.UI.Controls
     [Category ("Appearance")]
     [Description ("The title displayed in this view's tab.")]
     [NotifyParentProperty (true)]
-    public virtual string Title
+    public virtual string? Title
     {
       get { return _title; }
       set { _title = value; }

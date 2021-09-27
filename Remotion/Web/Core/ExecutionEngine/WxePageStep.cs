@@ -42,16 +42,16 @@ namespace Remotion.Web.ExecutionEngine
     private IWxePageExecutor _pageExecutor = new WxePageExecutor();
     private readonly ResourceObjectBase _page;
     private readonly string _pageToken;
-    private byte[] _pageState;
+    private byte[]? _pageState;
     private bool _isPostBack;
     private bool _isOutOfSequencePostBack;
     private bool _isExecutionStarted;
     private bool _isReturningPostBack;
-    private WxeFunction _returningFunction;
-    private NameValueCollection _postBackCollection;
+    private WxeFunction? _returningFunction;
+    private NameValueCollection? _postBackCollection;
 
     [NonSerialized]
-    private WxeHandler _wxeHandler;
+    private WxeHandler? _wxeHandler;
 
     private IExecutionState _executionState = NullExecutionState.Null;
     private IUserControlExecutor _userControlExecutor = NullUserControlExecutor.Null;
@@ -86,7 +86,7 @@ namespace Remotion.Web.ExecutionEngine
 
     /// <summary> Gets the currently executing <see cref="WxeStep"/>. </summary>
     /// <include file='..\doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/ExecutingStep/*' />
-    public override WxeStep ExecutingStep
+    public override WxeStep? ExecutingStep
     {
       get
       {
@@ -227,7 +227,7 @@ namespace Remotion.Web.ExecutionEngine
       get { return _isReturningPostBack; }
     }
 
-    public WxeFunction ReturningFunction
+    public WxeFunction? ReturningFunction
     {
       get { return _returningFunction; }
     }
@@ -248,7 +248,7 @@ namespace Remotion.Web.ExecutionEngine
     ///     integrated data handling features to access the data.
     ///   </para>
     /// </remarks>
-    public NameValueCollection PostBackCollection
+    public NameValueCollection? PostBackCollection
     {
       get { return _postBackCollection; }
     }
@@ -258,7 +258,7 @@ namespace Remotion.Web.ExecutionEngine
       _postBackCollection = postBackCollection;
     }
 
-    public void SetReturnState (WxeFunction returningFunction, bool isReturningPostBack, NameValueCollection previousPostBackCollection)
+    public void SetReturnState (WxeFunction returningFunction, bool isReturningPostBack, NameValueCollection? previousPostBackCollection)
     {
       ArgumentUtility.CheckNotNull ("returningFunction", returningFunction);
 
@@ -284,7 +284,7 @@ namespace Remotion.Web.ExecutionEngine
       _isOutOfSequencePostBack = false;
     }
 
-    public override string ToString ()
+    public override string? ToString ()
     {
       return "WxePageStep: " + Page;
     }

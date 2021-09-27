@@ -37,6 +37,6 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
     WxeStep CurrentStep { get; }
 
     //TODO: Refactor to get rid of this member
-    void SetReturnState (WxeFunction returningFunction, bool isReturningPostBack, NameValueCollection previousPostBackCollection);
+    void SetReturnState (WxeFunction returningFunction, bool isReturningPostBack, NameValueCollection? previousPostBackCollection);
   }
 }

@@ -47,7 +47,7 @@ public class WcagException: Exception
   {
   }
 
-  public WcagException (string message, Exception innerException)
+  public WcagException (string message, Exception? innerException)
     : base (message, innerException)
   {
   }

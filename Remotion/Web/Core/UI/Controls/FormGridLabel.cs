@@ -38,7 +38,7 @@ namespace Remotion.Web.UI.Controls
 public class FormGridLabel: Label, ISmartControl
 {
   private bool _required = false;
-  private string _helpUrl = null;
+  private string? _helpUrl = null;
 
   [Category("Behavior")]
   [DefaultValue (false)]
@@ -52,7 +52,7 @@ public class FormGridLabel: Label, ISmartControl
   [Category("Behavior")]
   [DefaultValue (null)]
   [Description ("Specifies the relative URL to the row's help text.")]
-  public string HelpUrl
+  public string? HelpUrl
   {
     get { return _helpUrl; }
     set { _helpUrl = value ?? string.Empty; }
@@ -64,7 +64,7 @@ public class FormGridLabel: Label, ISmartControl
     get { return _required; }
   }
 
-  HelpInfo ISmartControl.HelpInfo
+  HelpInfo? ISmartControl.HelpInfo
   {
     get { return (_helpUrl != null) ? new HelpInfo (_helpUrl) : null; }
   }
@@ -93,7 +93,7 @@ public class FormGridLabel: Label, ISmartControl
     get { return base.Text; }
   }
 
-  IPage IControl.Page
+  IPage? IControl.Page
   {
     get { return PageWrapper.CastOrCreate (base.Page); }
   }
@@ -120,7 +120,7 @@ public class FormGridLabel: Label, ISmartControl
   {
     ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
 
-    string key = ResourceManagerUtility.GetGlobalResourceKey (Text);
+    string? key = ResourceManagerUtility.GetGlobalResourceKey (Text);
     if (!string.IsNullOrEmpty (key))
       Text = resourceManager.GetString (key);
   }

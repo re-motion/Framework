@@ -27,11 +27,11 @@ namespace Remotion.Web.Services
   /// </summary>
   public sealed class IconProxy
   {
-    private readonly string _url;
-    private readonly string _alternateText;
-    private readonly string _toolTip;
-    private readonly string _height;
-    private readonly string _width;
+    private readonly string? _url;
+    private readonly string? _alternateText;
+    private readonly string? _toolTip;
+    private readonly string? _height;
+    private readonly string? _width;
 
     /// <summary>
     /// Creates an <see cref="IconProxy"/> from an <see cref="IconInfo"/>.
@@ -57,7 +57,7 @@ namespace Remotion.Web.Services
           StringUtility.EmptyToNull (iconInfo.Width.ToString()));
     }
 
-    private IconProxy (string url, string alternateText, string toolTip, string height, string width)
+    private IconProxy (string url, string? alternateText, string? toolTip, string? height, string? width)
     {
       _url = url;
       _alternateText = alternateText;
@@ -71,27 +71,27 @@ namespace Remotion.Web.Services
     {
     }
 
-    public string Url
+    public string? Url
     {
       get { return _url; }
     }
 
-    public string AlternateText
+    public string? AlternateText
     {
       get { return _alternateText; }
     }
 
-    public string ToolTip
+    public string? ToolTip
     {
       get { return _toolTip; }
     }
 
-    public string Height
+    public string? Height
     {
       get { return _height; }
     }
 
-    public string Width
+    public string? Width
     {
       get { return _width; }
     }

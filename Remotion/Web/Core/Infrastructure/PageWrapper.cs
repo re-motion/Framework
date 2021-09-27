@@ -32,7 +32,7 @@ namespace Remotion.Web.Infrastructure
   /// </summary>
   public class PageWrapper : ControlWrapper, IPage
   {
-    public static IPage CastOrCreate (Page page)
+    public static IPage? CastOrCreate (Page page)
     {
       if (page == null)
         return null;
@@ -43,13 +43,13 @@ namespace Remotion.Web.Infrastructure
     }
 
     private readonly Page _page;
-    private HttpContextWrapper _httpContext;
-    private HttpResponseWrapper _httpResponse;
-    private HttpRequestWrapper _httpRequest;
-    private HttpSessionStateWrapper _httpSessionState;
-    private HttpServerUtilityWrapper _httpServerUtility;
-    private HttpApplicationStateWrapper _httpApplicationState;
-    private ClientScriptManagerWrapper _clientScriptManager;
+    private HttpContextWrapper? _httpContext;
+    private HttpResponseWrapper? _httpResponse;
+    private HttpRequestWrapper? _httpRequest;
+    private HttpSessionStateWrapper? _httpSessionState;
+    private HttpServerUtilityWrapper? _httpServerUtility;
+    private HttpApplicationStateWrapper? _httpApplicationState;
+    private ClientScriptManagerWrapper? _clientScriptManager;
 
     private PageWrapper (Page page)
         : base (page)
@@ -289,7 +289,7 @@ namespace Remotion.Web.Infrastructure
     /// </returns>
     /// <param name="content">A string that contains a user control. 
     /// </param>
-    public Control ParseControl (string content)
+    public Control? ParseControl (string content)
     {
       return _page.ParseControl (content);
     }
@@ -303,7 +303,7 @@ namespace Remotion.Web.Infrastructure
     /// <param name="content">A string that contains a user control.
     /// </param><param name="ignoreParserFilter">A value that specifies whether to ignore the parser filter.
     /// </param>
-    public Control ParseControl (string content, bool ignoreParserFilter)
+    public Control? ParseControl (string content, bool ignoreParserFilter)
     {
       return _page.ParseControl (content, ignoreParserFilter);
     }
@@ -632,7 +632,7 @@ namespace Remotion.Web.Infrastructure
     /// <returns>
     /// The current data in the <see cref="T:System.Web.HttpApplicationState"/> class.
     /// </returns>
-    public HttpApplicationStateBase Application
+    public HttpApplicationStateBase? Application
     {
       get
       {
@@ -688,7 +688,7 @@ namespace Remotion.Web.Infrastructure
     /// <returns>
     /// An <see cref="HttpContext"/> wrapped in a class implementing <see cref="HttpContextBase"/>.
     /// </returns>
-    public HttpContextBase Context
+    public HttpContextBase? Context
     {
       get
       {
@@ -786,7 +786,7 @@ namespace Remotion.Web.Infrastructure
     /// <returns>
     /// The <see cref="T:System.Web.UI.MasterPage"/> associated with this page if it exists; otherwise, null. 
     /// </returns>
-    public MasterPage Master
+    public MasterPage? Master
     {
       get { return _page.Master; }
     }
@@ -849,7 +849,7 @@ namespace Remotion.Web.Infrastructure
     /// </returns>
     /// <exception cref="T:System.Web.HttpException">Occurs when the <see cref="T:System.Web.HttpRequest"/> object is not available. 
     /// </exception>
-    public HttpRequestBase Request
+    public HttpRequestBase? Request
     {
       get
       {
@@ -868,7 +868,7 @@ namespace Remotion.Web.Infrastructure
     /// </returns>
     /// <exception cref="T:System.Web.HttpException">The <see cref="T:System.Web.HttpResponse"/> object is not available. 
     /// </exception>
-    public HttpResponseBase Response
+    public HttpResponseBase? Response
     {
       get
       {
@@ -884,7 +884,7 @@ namespace Remotion.Web.Infrastructure
     /// <returns>
     /// The current Server object associated with the page.
     /// </returns>
-    public HttpServerUtilityBase Server
+    public HttpServerUtilityBase? Server
     {
       get
       {
@@ -915,7 +915,7 @@ namespace Remotion.Web.Infrastructure
     /// </returns>
     /// <exception cref="T:System.Web.HttpException">Occurs when the session information is set to null. 
     /// </exception>
-    public HttpSessionStateBase Session
+    public HttpSessionStateBase? Session
     {
       get
       {

@@ -198,10 +198,10 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       for (int i = 0; i < parameterDeclarations.Length; i++)
       {
         WxeParameterDeclaration parameterDeclaration = parameterDeclarations[i];
-        object parameterValue = null;
+        object? parameterValue = null;
         if (i < parameterValues.Length)
           parameterValue = parameterValues[i];
-        string serializedValue = parameterDeclaration.Converter.ConvertToString (parameterValue, null);
+        string? serializedValue = parameterDeclaration.Converter.ConvertToString (parameterValue, null);
         if (serializedValue != null)
           serializedParameters.Add (parameterDeclaration.Name, serializedValue);
       }
@@ -259,7 +259,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       for (int i = 0; i < _parameterDeclarations.Length; ++i)
       {
         WxeParameterDeclaration paramDeclaration = _parameterDeclarations[i];
-        string strval = parameters[paramDeclaration.Name];
+        string? strval = parameters[paramDeclaration.Name];
         if (strval != null)
         {
           try
@@ -298,12 +298,12 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     ///   Thrown if the <see cref="WxeFunction"/>'s parameters have already been initialized, either because 
     ///   execution has started or <b>InitializeParameters</b> has been called before.
     /// </exception>
-    public void InitializeParameters (string parameterString, NameObjectCollection additionalParameters)
+    public void InitializeParameters (string parameterString, NameObjectCollection? additionalParameters)
     {
       InitializeParameters (parameterString, additionalParameters, false);
     }
 
-    private void InitializeParameters (string parameterString, NameObjectCollection additionalParameters, bool delayInitialization)
+    private void InitializeParameters (string parameterString, NameObjectCollection? additionalParameters, bool delayInitialization)
     {
       CheckParametersNotInitialized();
 
@@ -314,12 +314,12 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     }
 
     /// <summary> Pass actualParameters to Variables. </summary>
-    public void EnsureParametersInitialized (NameObjectCollection additionalParameters)
+    public void EnsureParametersInitialized (NameObjectCollection? additionalParameters)
     {
       if (_parametersInitialized)
         return;
 
-      NameObjectCollection callerVariables = (_function.ParentStep != null) ? _function.ParentStep.Variables : null;
+      NameObjectCollection? callerVariables = (_function.ParentStep != null) ? _function.ParentStep.Variables : null;
       callerVariables = NameObjectCollection.Merge (callerVariables, additionalParameters);
 
       if (_actualParameters.Length > _parameterDeclarations.Length)
@@ -332,7 +332,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       {
         if (i < _actualParameters.Length && _actualParameters[i] != null)
         {
-          WxeVariableReference varRef = _actualParameters[i] as WxeVariableReference;
+          WxeVariableReference? varRef = _actualParameters[i] as WxeVariableReference;
           if (callerVariables != null && varRef != null)
             _parameterDeclarations[i].CopyToCallee (varRef.Name, callerVariables, _variables);
           else
@@ -347,13 +347,13 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     internal void ReturnParametersToCaller ()
     {
-      NameObjectCollection callerVariables = _function.ParentStep.Variables;
+      NameObjectCollection? callerVariables = _function.ParentStep.Variables;
 
       for (int i = 0; i < _parameterDeclarations.Length; ++i)
       {
         if (i < _actualParameters.Length)
         {
-          WxeVariableReference varRef = _actualParameters[i] as WxeVariableReference;
+          WxeVariableReference? varRef = _actualParameters[i] as WxeVariableReference;
           if (varRef != null)
             _parameterDeclarations[i].CopyToCaller (varRef.Name, _variables, callerVariables);
         }
@@ -370,7 +370,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     {
       NameValueCollection serializedParameters = new NameValueCollection();
       WxeParameterDeclaration[] parameterDeclarations = ParameterDeclarations;
-      NameObjectCollection callerVariables = null;
+      NameObjectCollection? callerVariables = null;
       if (_function.ParentStep != null)
         callerVariables = _function.ParentStep.Variables;
 
@@ -378,7 +378,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       for (int i = 0; i < parameterDeclarations.Length; i++)
       {
         WxeParameterDeclaration parameterDeclaration = parameterDeclarations[i];
-        object parameterValue = null;
+        object? parameterValue = null;
         if (hasActualParameters)
         {
           if (i < _actualParameters.Length)
@@ -386,7 +386,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
         }
         else
           parameterValue = _variables[parameterDeclaration.Name];
-        string serializedValue = parameterDeclaration.Converter.ConvertToString (parameterValue, callerVariables);
+        string? serializedValue = parameterDeclaration.Converter.ConvertToString (parameterValue, callerVariables);
         if (serializedValue != null)
           serializedParameters.Add (parameterDeclaration.Name, serializedValue);
       }

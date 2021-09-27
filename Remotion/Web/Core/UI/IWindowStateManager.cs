@@ -23,7 +23,7 @@ namespace Remotion.Web.UI
   /// </summary>
   public interface IWindowStateManager
   {
-    object GetData (string key);
+    object? GetData (string key);
     void SetData (string key, object value);
   }
 }

@@ -46,13 +46,13 @@ namespace Remotion.Web.ExecutionEngine
     }
 
     private IWxeFunctionExecutionListener _executionListener = NullExecutionListener.Null;
-    private TransactionStrategyBase _transactionStrategy;
+    private TransactionStrategyBase? _transactionStrategy;
     private ITransactionMode _transactionMode;
     private readonly WxeVariablesContainer _variablesContainer;
     private readonly WxeExceptionHandler _exceptionHandler = new WxeExceptionHandler ();
-    private string _functionToken;
-    private string _returnUrl;
-    private string _executionCompletedScript;
+    private string? _functionToken;
+    private string? _returnUrl;
+    private string? _executionCompletedScript;
 
     protected WxeFunction (ITransactionMode transactionMode, params object[] actualParameters)
     {
@@ -193,7 +193,7 @@ namespace Remotion.Web.ExecutionEngine
     /// If an <see cref="ExecutionCompletedScript"/> is set on the same <see cref="WxeFunction"/>, the <see cref="ReturnUrl"/> will not be used.
     /// </remarks>
     [CanBeNull]
-    public string ReturnUrl
+    public string? ReturnUrl
     {
       get { return _returnUrl; }
       set
@@ -210,7 +210,7 @@ namespace Remotion.Web.ExecutionEngine
     }
 
     [CanBeNull]
-    public string ExecutionCompletedScript
+    public string? ExecutionCompletedScript
     {
       get { return _executionCompletedScript; }
     }
@@ -248,7 +248,7 @@ namespace Remotion.Web.ExecutionEngine
       {
         if (_functionToken != null)
           return _functionToken;
-        WxeFunction rootFunction = RootFunction;
+        WxeFunction? rootFunction = RootFunction;
         if (rootFunction != null && rootFunction != this)
           return rootFunction.FunctionToken;
         throw new InvalidOperationException (
@@ -262,7 +262,7 @@ namespace Remotion.Web.ExecutionEngine
       _functionToken = functionToken;
     }
 
-    public override string ToString ()
+    public override string? ToString ()
     {
       StringBuilder sb = new StringBuilder ();
       sb.Append ("WxeFunction: ");
@@ -284,7 +284,7 @@ namespace Remotion.Web.ExecutionEngine
       return sb.ToString ();
     }
 
-    internal static IWxeSecurityAdapter GetWxeSecurityAdapter ()
+    internal static IWxeSecurityAdapter? GetWxeSecurityAdapter ()
     {
       return SafeServiceLocator.Current.GetAllInstances<IWxeSecurityAdapter>()
           .SingleOrDefault (() => new InvalidOperationException ("Only a single IWxeSecurityAdapter can be registered."));

@@ -24,7 +24,7 @@ public interface IFocusableControl
 {
   /// <summary> Gets the ID of the element to receive the focus when the page is loaded. </summary>
   /// <value> The ID of a focusable HTML element. </value>
-  [CanBeNull]string FocusID { get; }
+  [CanBeNull]string? FocusID { get; }
 }
 
 }

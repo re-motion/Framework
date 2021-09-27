@@ -34,8 +34,8 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     public abstract void EnsureCompatibility (IEnumerable objects);
     public abstract bool IsNull { get; }
 
-    public abstract TransactionStrategyBase OuterTransactionStrategy { get; }
-    public abstract TransactionStrategyBase CreateChildTransactionStrategy (bool autoCommit, IWxeFunctionExecutionContext executionContext, WxeContext wxeContext);
+    public abstract TransactionStrategyBase? OuterTransactionStrategy { get; }
+    public abstract TransactionStrategyBase? CreateChildTransactionStrategy (bool autoCommit, IWxeFunctionExecutionContext executionContext, WxeContext wxeContext);
     public abstract IWxeFunctionExecutionListener CreateExecutionListener (IWxeFunctionExecutionListener innerListener);
     public abstract void OnExecutionPlay (WxeContext context, IWxeFunctionExecutionListener listener);
     public abstract void OnExecutionStop (WxeContext context, IWxeFunctionExecutionListener listener);

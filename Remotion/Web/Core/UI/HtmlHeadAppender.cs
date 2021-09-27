@@ -70,7 +70,7 @@ namespace Remotion.Web.UI
     private bool _hasAppendExecuted;
 
     private WeakReference _handler = new WeakReference (null);
-    private TitleTag _title;
+    private TitleTag? _title;
 
     /// <remarks>
     ///   Factory pattern. No public construction.

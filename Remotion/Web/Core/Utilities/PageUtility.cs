@@ -42,7 +42,7 @@ namespace Remotion.Web.Utilities
     /// </returns>
     public static NameValueCollection GetPostBackCollection (IPage page)
     {
-      ISmartPage smartPage = page as ISmartPage;
+      ISmartPage? smartPage = page as ISmartPage;
       if (smartPage != null)
         return smartPage.GetPostBackCollection();
       else
@@ -58,7 +58,7 @@ namespace Remotion.Web.Utilities
     /// <returns> 
     ///   The item identified by <paramref name="name"/> or <see langword="null"/> if the item could not be found. 
     /// </returns>
-    public static string GetPostBackCollectionItem (IPage page, string name)
+    public static string? GetPostBackCollectionItem (IPage page, string name)
     {
       ArgumentUtility.CheckNotNull ("page", page);
       ArgumentUtility.CheckNotNullOrEmpty ("name", name);

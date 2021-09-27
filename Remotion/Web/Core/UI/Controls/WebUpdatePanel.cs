@@ -80,9 +80,9 @@ namespace Remotion.Web.UI.Controls
       }
     }
 
-    protected override object SaveViewState ()
+    protected override object? SaveViewState ()
     {
-      object baseViewState = base.SaveViewState();
+      object? baseViewState = base.SaveViewState();
 
       if ((baseViewState == null) && string.IsNullOrEmpty (_cssClass))
         return null;

@@ -41,8 +41,8 @@ namespace Remotion.Web.UI.Controls
 
     public NavigationCommand (
         CommandType defaultType,
-        [CanBeNull] IWebSecurityAdapter webSecurityAdapter,
-        [CanBeNull] IWxeSecurityAdapter wxeSecurityAdapter)
+        [CanBeNull] IWebSecurityAdapter? webSecurityAdapter,
+        [CanBeNull] IWxeSecurityAdapter? wxeSecurityAdapter)
         : base (defaultType, webSecurityAdapter, wxeSecurityAdapter)
     {
     }
@@ -77,7 +77,7 @@ namespace Remotion.Web.UI.Controls
     /// </exception> 
     protected override CommandInfo GetCommandInfoForWxeFunctionCommand (
         string postBackEvent,
-        string onClick,
+        string? onClick,
         NameValueCollection additionalUrlParameters,
         bool includeNavigationUrlParameters)
     {
@@ -125,7 +125,7 @@ namespace Remotion.Web.UI.Controls
       if (Type != CommandType.WxeFunction)
         throw new InvalidOperationException ("Call to ExecuteWxeFunction not allowed unless Type is set to CommandType.WxeFunction.");
 
-      Type functionType = WxeFunctionCommand.ResolveFunctionType();
+      Type? functionType = WxeFunctionCommand.ResolveFunctionType();
       WxeParameterDeclaration[] parameterDeclarations = WxeVariablesContainer.GetParameterDeclarations (functionType);
       object[] parameterValues = WxeVariablesContainer.ParseActualParameters (
           parameterDeclarations, WxeFunctionCommand.Parameters, CultureInfo.InvariantCulture);

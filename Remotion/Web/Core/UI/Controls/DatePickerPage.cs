@@ -54,14 +54,14 @@ public class DatePickerPage : Page
   public const string CultureParameterName = "Culture";
   public const string UICultureParameterName = "UICulture";
 
-  protected HtmlHeadContents HtmlHeadContents;
-  protected Calendar Calendar;
+  protected HtmlHeadContents? HtmlHeadContents;
+  protected Calendar? Calendar;
   /// <summary> Preserves the target control's ID during post backs. </summary>
-  private HtmlInputHidden TargetIDField;
+  private HtmlInputHidden? TargetIDField;
   /// <summary> Preserves the frame's ID in the parent page during post backs. </summary>
-  private HtmlInputHidden DatePickerIDField;
+  private HtmlInputHidden? DatePickerIDField;
   /// <summary> Contains the date to be selected in the calendar. </summary>
-  private HtmlInputHidden DateValueField;
+  private HtmlInputHidden? DateValueField;
 
   protected override void OnPreInit (EventArgs e)
   {

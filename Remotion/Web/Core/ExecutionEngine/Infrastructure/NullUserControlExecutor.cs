@@ -38,22 +38,22 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       //NOP
     }
 
-    public WxeFunction Function
+    public WxeFunction? Function
     {
       get { return null; }
     }
 
-    public string BackedUpUserControlState
+    public string? BackedUpUserControlState
     {
       get { return null; }
     }
 
-    public string BackedUpUserControl
+    public string? BackedUpUserControl
     {
       get { return null; }
     }
 
-    public string UserControlID
+    public string? UserControlID
     {
       get { return null; }
     }
@@ -68,7 +68,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       return Null;
     }
 
-    public WxeStep ExecutingStep
+    public WxeStep? ExecutingStep
     {
       get { return null; }
     }

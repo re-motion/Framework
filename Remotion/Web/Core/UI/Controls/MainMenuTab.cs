@@ -23,7 +23,7 @@ namespace Remotion.Web.UI.Controls
   public class MainMenuTab : MenuTab
   {
     private readonly SubMenuTabCollection _subMenuTabs;
-    private MenuTab _activeTab;
+    private MenuTab? _activeTab;
 
     public MainMenuTab (string itemID, string text, IconInfo icon)
         : base (itemID, text, icon)
@@ -50,7 +50,7 @@ namespace Remotion.Web.UI.Controls
     [ListBindable (false)]
     [Category ("Behavior")]
     [Description ("")]
-    [DefaultValue ((string) null)]
+    [DefaultValue ((string?) null)]
     public SubMenuTabCollection SubMenuTabs
     {
       get { return _subMenuTabs; }

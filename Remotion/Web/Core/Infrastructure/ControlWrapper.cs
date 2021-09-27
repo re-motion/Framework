@@ -498,7 +498,7 @@ namespace Remotion.Web.Infrastructure
       remove { _control.Unload -= value; }
     }
 
-    public override string ToString ()
+    public override string? ToString ()
     {
       return _control.ToString ();
     }

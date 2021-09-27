@@ -67,7 +67,7 @@ public class ValidatableControlInitializer
   {
     foreach (IValidator ivalidator in page.Validators)
     {
-      BaseValidator validator = ivalidator as BaseValidator;
+      BaseValidator? validator = ivalidator as BaseValidator;
       if (validator == null)
         continue;
 

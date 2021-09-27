@@ -59,7 +59,7 @@ namespace Remotion.Web.UI.Controls
 
   public class SubMenuTabCollection : WebTabCollection
   {
-    private MainMenuTab _parent;
+    private MainMenuTab? _parent;
 
     /// <summary> Initializes a new instance. </summary>
     public SubMenuTabCollection (IControl ownerControl, Type[] supportedTypes)
@@ -73,7 +73,7 @@ namespace Remotion.Web.UI.Controls
     {
     }
 
-    protected override void OnInsertComplete (int index, object value)
+    protected override void OnInsertComplete (int index, object? value)
     {
       SubMenuTab tab = ArgumentUtility.CheckNotNullAndType<SubMenuTab> ("value", value);
 
@@ -81,7 +81,7 @@ namespace Remotion.Web.UI.Controls
       tab.SetParent (_parent);
     }
 
-    protected override void OnSetComplete (int index, object oldValue, object newValue)
+    protected override void OnSetComplete (int index, object? oldValue, object? newValue)
     {
       SubMenuTab tab = ArgumentUtility.CheckNotNullAndType<SubMenuTab> ("newValue", newValue);
 
@@ -91,7 +91,7 @@ namespace Remotion.Web.UI.Controls
 
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     [Browsable (false)]
-    public MainMenuTab Parent
+    public MainMenuTab? Parent
     {
       get { return _parent; }
     }
@@ -101,7 +101,7 @@ namespace Remotion.Web.UI.Controls
       ArgumentUtility.CheckNotNull ("parent", parent);
       _parent = parent;
       for (int i = 0; i < InnerList.Count; i++)
-        ((SubMenuTab) InnerList[i]).SetParent (_parent);
+        ((SubMenuTab?) InnerList[i]).SetParent (_parent);
     }
 
     public int Add (SubMenuTab tab)

@@ -64,7 +64,7 @@ namespace Remotion.Web.UI.Controls
 
       /// <summary> Returns a string representation of this <see cref="NoneCommandInfo"/>. </summary>
       /// <returns> A <see cref="string"/>. </returns>
-      public override string ToString ()
+      public override string? ToString ()
       {
         if (_enableFocus)
           return "Focus enabled";
@@ -103,7 +103,7 @@ namespace Remotion.Web.UI.Controls
 
       /// <summary> Returns a string representation of this <see cref="EventCommandInfo"/>. </summary>
       /// <returns> A <see cref="string"/>. </returns>
-      public override string ToString ()
+      public override string? ToString ()
       {
         if (_requiresSynchronousPostBack)
           return "Synchronous Postback required";
@@ -127,7 +127,7 @@ namespace Remotion.Web.UI.Controls
       /// <summary> Returns a string representation of this <see cref="HrefCommandInfo"/>. </summary>
       /// <remarks> Format: Href, Target </remarks>
       /// <returns> A <see cref="string"/>. </returns>
-      public override string ToString ()
+      public override string? ToString ()
       {
         if (_href == string.Empty || _target == string.Empty)
           return _href;
@@ -203,7 +203,7 @@ namespace Remotion.Web.UI.Controls
       /// </summary>
       /// <remarks> Format: Href, Target </remarks>
       /// <returns> A <see cref="string"/>. </returns>
-      public override string ToString ()
+      public override string? ToString ()
       {
         if (_typeName == string.Empty)
           return string.Empty;
@@ -294,24 +294,24 @@ namespace Remotion.Web.UI.Controls
       }
 
 
-      public virtual WxeFunction InitializeFunction (NameObjectCollection additionalWxeParameters)
+      public virtual WxeFunction InitializeFunction (NameObjectCollection? additionalWxeParameters)
       {
-        Type functionType = ResolveFunctionType();
-        WxeFunction function = (WxeFunction) Activator.CreateInstance (functionType);
+        Type? functionType = ResolveFunctionType();
+        WxeFunction? function = (WxeFunction?) Activator.CreateInstance (functionType);
 
         function.VariablesContainer.InitializeParameters (_parameters, additionalWxeParameters);
 
         return function;
       }
 
-      public virtual Type ResolveFunctionType ()
+      public virtual Type? ResolveFunctionType ()
       {
-        UrlMappingEntry mapping = UrlMappingConfiguration.Current.Mappings.FindByID (_mappingID);
+        UrlMappingEntry? mapping = UrlMappingConfiguration.Current.Mappings.FindByID (_mappingID);
 
         bool hasMapping = mapping != null;
         bool hasTypeName = !string.IsNullOrEmpty (_typeName);
 
-        Type functionType = null;
+        Type? functionType = null;
         if (hasTypeName)
           functionType = WebTypeUtility.GetType (_typeName, true);
 
@@ -348,13 +348,13 @@ namespace Remotion.Web.UI.Controls
     private bool _hasClickFired;
     private string _itemID = string.Empty;
 
-    private IControl _ownerControl;
+    private IControl? _ownerControl;
 
     [Browsable (false)]
-    public CommandClickEventHandler Click;
+    public CommandClickEventHandler? Click;
 
-    private readonly IWxeSecurityAdapter _wxeSecurityAdapter;
-    private readonly IWebSecurityAdapter _webSecurityAdapter;
+    private readonly IWxeSecurityAdapter? _wxeSecurityAdapter;
+    private readonly IWebSecurityAdapter? _webSecurityAdapter;
 
     public Command ()
         : this (CommandType.None, GetWebSecurityAdapter(), GetWxeSecurityAdapter())
@@ -366,7 +366,7 @@ namespace Remotion.Web.UI.Controls
     {
     }
 
-    public Command (CommandType defaultType, [CanBeNull] IWebSecurityAdapter webSecurityAdapter, [CanBeNull] IWxeSecurityAdapter wxeSecurityAdapter)
+    public Command (CommandType defaultType, [CanBeNull] IWebSecurityAdapter? webSecurityAdapter, [CanBeNull] IWxeSecurityAdapter? wxeSecurityAdapter)
     {
       _defaultType = defaultType;
       _type = _defaultType;
@@ -414,10 +414,10 @@ namespace Remotion.Web.UI.Controls
     public virtual void RenderBegin (
         [NotNull] HtmlTextWriter writer,
         [NotNull] IRenderingFeatures renderingFeatures,
-        [CanBeNull] string postBackEvent,
-        [CanBeNull] string[] parameters,
-        [CanBeNull] string onClick,
-        [CanBeNull] ISecurableObject securableObject,
+        [CanBeNull] string? postBackEvent,
+        [CanBeNull] string[]? parameters,
+        [CanBeNull] string? onClick,
+        [CanBeNull] ISecurableObject? securableObject,
         [NotNull] NameValueCollection additionalUrlParameters,
         bool includeNavigationUrlParameters,
         [NotNull] Style style,
@@ -475,10 +475,10 @@ namespace Remotion.Web.UI.Controls
     public void RenderBegin (
         [NotNull] HtmlTextWriter writer,
         [NotNull] IRenderingFeatures renderingFeatures,
-        [CanBeNull] string postBackEvent,
-        [CanBeNull] string[] parameters,
-        [CanBeNull] string onClick,
-        [CanBeNull] ISecurableObject securableObject)
+        [CanBeNull] string? postBackEvent,
+        [CanBeNull] string[]? parameters,
+        [CanBeNull] string? onClick,
+        [CanBeNull] ISecurableObject? securableObject)
     {
       ArgumentUtility.CheckNotNull ("writer", writer);
       ArgumentUtility.CheckNotNull ("renderingFeatures", renderingFeatures);
@@ -520,10 +520,10 @@ namespace Remotion.Web.UI.Controls
     ///   <see langword="true"/> to include URL parameters provided by <see cref="ISmartNavigablePage"/>.
     /// </param>
     public CommandInfo GetCommandInfo (
-        [CanBeNull] string postBackEvent,
-        [CanBeNull] string[] parameters,
-        [CanBeNull] string onClick,
-        [CanBeNull] ISecurableObject securableObject,
+        [CanBeNull] string? postBackEvent,
+        [CanBeNull] string[]? parameters,
+        [CanBeNull] string? onClick,
+        [CanBeNull] ISecurableObject? securableObject,
         [NotNull] NameValueCollection additionalUrlParameters,
         bool includeNavigationUrlParameters)
     {
@@ -572,7 +572,7 @@ namespace Remotion.Web.UI.Controls
     /// </exception> 
     protected virtual CommandInfo GetCommandInfoForHrefCommand (
         [NotNull] string[] parameters,
-        [CanBeNull] string onClick,
+        [CanBeNull] string? onClick,
         [NotNull] NameValueCollection additionalUrlParameters,
         bool includeNavigationUrlParameters)
     {
@@ -584,7 +584,7 @@ namespace Remotion.Web.UI.Controls
       string href = HrefCommand.FormatHref (parameters);
       if (includeNavigationUrlParameters)
       {
-        ISmartNavigablePage page = null;
+        ISmartNavigablePage? page = null;
         if (OwnerControl != null)
           page = OwnerControl.Page as ISmartNavigablePage;
 
@@ -619,7 +619,7 @@ namespace Remotion.Web.UI.Controls
     /// <exception cref="InvalidOperationException">
     ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.Event"/>.
     /// </exception> 
-    protected virtual CommandInfo GetCommandInfoForEventCommand ([NotNull] string postBackEvent, [CanBeNull] string onClick)
+    protected virtual CommandInfo GetCommandInfoForEventCommand ([NotNull] string postBackEvent, [CanBeNull] string? onClick)
     {
       ArgumentUtility.CheckNotNull ("postBackEvent", postBackEvent);
       if (Type != CommandType.Event)
@@ -654,7 +654,7 @@ namespace Remotion.Web.UI.Controls
     /// </exception> 
     protected virtual CommandInfo GetCommandInfoForWxeFunctionCommand (
         [NotNull] string postBackEvent,
-        [CanBeNull] string onClick,
+        [CanBeNull] string? onClick,
         [NotNull] NameValueCollection additionalUrlParameters,
         bool includeNavigationUrlParameters)
     {
@@ -720,7 +720,7 @@ namespace Remotion.Web.UI.Controls
     ///   </list>
     /// </remarks>
     /// <returns> A <see cref="string"/>. </returns>
-    public override string ToString ()
+    public override string? ToString ()
     {
       StringBuilder stringBuilder = new StringBuilder (50);
 
@@ -771,7 +771,7 @@ namespace Remotion.Web.UI.Controls
     ///     specify different functions.
     ///   </para>
     /// </exception> 
-    public virtual void ExecuteWxeFunction (IWxePage wxePage, NameObjectCollection additionalWxeParameters)
+    public virtual void ExecuteWxeFunction (IWxePage wxePage, NameObjectCollection? additionalWxeParameters)
     {
       ArgumentUtility.CheckNotNull ("wxePage", wxePage);
 
@@ -786,7 +786,7 @@ namespace Remotion.Web.UI.Controls
 
         IWxeCallArguments callArguments;
         if (hasTarget)
-          callArguments = new WxeCallArguments ((Control) OwnerControl, new WxeCallOptionsExternal (target, null, false));
+          callArguments = new WxeCallArguments ((Control?) OwnerControl, new WxeCallOptionsExternal (target, null, false));
         else
           callArguments = WxeCallArguments.Default;
 
@@ -881,7 +881,7 @@ namespace Remotion.Web.UI.Controls
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Behavior")]
     [Description ("The properties when there is no command. Interpreted if Type is set to None.")]
-    [DefaultValue ((string) null)]
+    [DefaultValue ((string?) null)]
     [NotifyParentProperty (true)]
     public virtual NoneCommandInfo NoneCommand
     {
@@ -900,7 +900,7 @@ namespace Remotion.Web.UI.Controls
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Behavior")]
     [Description ("The properties of the event. Interpreted if Type is set to Event.")]
-    [DefaultValue ((string) null)]
+    [DefaultValue ((string?) null)]
     [NotifyParentProperty (true)]
     public virtual EventCommandInfo EventCommand
     {
@@ -919,7 +919,7 @@ namespace Remotion.Web.UI.Controls
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Behavior")]
     [Description ("The properties of the hyperlink. Interpreted if Type is set to Href.")]
-    [DefaultValue ((string) null)]
+    [DefaultValue ((string?) null)]
     [NotifyParentProperty (true)]
     public virtual HrefCommandInfo HrefCommand
     {
@@ -938,7 +938,7 @@ namespace Remotion.Web.UI.Controls
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Behavior")]
     [Description ("The properties of the WxeFunction. Interpreted if Type is set to WxeFunction.")]
-    [DefaultValue ((string) null)]
+    [DefaultValue ((string?) null)]
     [NotifyParentProperty (true)]
     public virtual WxeFunctionCommandInfo WxeFunctionCommand
     {
@@ -949,13 +949,13 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Gets or sets the control to which this object belongs. </summary>
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     [Browsable (false)]
-    public IControl OwnerControl
+    public IControl? OwnerControl
     {
       get { return OwnerControlImplementation; }
       set { OwnerControlImplementation = value; }
     }
 
-    protected virtual IControl OwnerControlImplementation
+    protected virtual IControl? OwnerControlImplementation
     {
       get { return _ownerControl; }
       set
@@ -1004,7 +1004,7 @@ namespace Remotion.Web.UI.Controls
 
       if (isSynchronousEventCommand)
       {
-        ISmartPage smartPage = control.Page as ISmartPage;
+        ISmartPage? smartPage = control.Page as ISmartPage;
         if (smartPage == null)
         {
           throw new InvalidOperationException (
@@ -1016,7 +1016,7 @@ namespace Remotion.Web.UI.Controls
       }
       else if (isSynchronousWxeFunctionCommand)
       {
-        ISmartPage smartPage = control.Page as ISmartPage;
+        ISmartPage? smartPage = control.Page as ISmartPage;
         if (smartPage == null)
         {
           throw new InvalidOperationException (
@@ -1028,7 +1028,7 @@ namespace Remotion.Web.UI.Controls
       }
     }
 
-    public virtual bool HasAccess (ISecurableObject securableObject)
+    public virtual bool HasAccess (ISecurableObject? securableObject)
     {
       switch (_type)
       {
@@ -1046,7 +1046,7 @@ namespace Remotion.Web.UI.Controls
       }
     }
 
-    private bool HasAccessForEventCommand (ISecurableObject securableObject)
+    private bool HasAccessForEventCommand (ISecurableObject? securableObject)
     {
       if (_webSecurityAdapter == null)
         return true;
@@ -1061,14 +1061,14 @@ namespace Remotion.Web.UI.Controls
     }
 
     [CanBeNull]
-    protected internal static IWebSecurityAdapter GetWebSecurityAdapter ()
+    protected internal static IWebSecurityAdapter? GetWebSecurityAdapter ()
     {
       return SafeServiceLocator.Current.GetAllInstances<IWebSecurityAdapter>()
           .SingleOrDefault (() => new InvalidOperationException ("Only a single IWebSecurityAdapter can be registered."));
     }
 
     [CanBeNull]
-    protected static IWxeSecurityAdapter GetWxeSecurityAdapter ()
+    protected static IWxeSecurityAdapter? GetWxeSecurityAdapter ()
     {
       return WxeFunction.GetWxeSecurityAdapter();
     }

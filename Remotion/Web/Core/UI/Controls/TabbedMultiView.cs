@@ -86,7 +86,7 @@ namespace Remotion.Web.UI.Controls
       {
         base.OnActiveViewChanged (e);
 
-        ISmartNavigablePage smartNavigablePage = Page as ISmartNavigablePage;
+        ISmartNavigablePage? smartNavigablePage = Page as ISmartNavigablePage;
         if (smartNavigablePage != null)
           smartNavigablePage.DiscardSmartNavigationData (SmartNavigationData.All & ~SmartNavigationData.Focus);
       }
@@ -102,7 +102,7 @@ namespace Remotion.Web.UI.Controls
 
     protected internal class MultiViewTab : WebTab
     {
-      private string _target;
+      private string? _target;
 
       /// <summary> Initalizes a new instance. </summary>
       public MultiViewTab (string itemID, string text, IconInfo icon)
@@ -127,7 +127,7 @@ namespace Remotion.Web.UI.Controls
       {
       }
 
-      public string Target
+      public string? Target
       {
         get { return _target; }
         set { _target = value; }
@@ -137,8 +137,8 @@ namespace Remotion.Web.UI.Controls
       {
         base.OnSelectionChanged();
 
-        TabbedMultiView multiView = ((TabbedMultiView) OwnerControl);
-        TabView view = null;
+        TabbedMultiView? multiView = ((TabbedMultiView?) OwnerControl);
+        TabView? view = null;
         //  Cannot use FindControl without a Naming Container. Only during initialization phase of aspx.
         if (multiView.NamingContainer != null)
         {
@@ -168,17 +168,17 @@ namespace Remotion.Web.UI.Controls
 
     private bool _enableLazyLoading;
     private bool _isInitialized;
-    private WebTabStrip _tabStrip;
-    private MultiView _multiViewInternal;
-    private PlaceHolder _topControl;
-    private PlaceHolder _bottomControl;
+    private WebTabStrip? _tabStrip;
+    private MultiView? _multiViewInternal;
+    private PlaceHolder? _topControl;
+    private PlaceHolder? _bottomControl;
 
     private readonly Style _activeViewStyle;
     private readonly Style _topControlsStyle;
     private readonly Style _bottomControlsStyle;
 
-    private TabView _newActiveTabAfterRemove;
-    private EmptyTabView _placeHolderTabView;
+    private TabView? _newActiveTabAfterRemove;
+    private EmptyTabView? _placeHolderTabView;
 
     // construction and destruction
     public TabbedMultiView ()
@@ -245,7 +245,7 @@ namespace Remotion.Web.UI.Controls
     protected override void OnLoad (EventArgs e)
     {
       base.OnLoad (e);
-      TabView view = (TabView) MultiViewInternal.GetActiveView();
+      TabView? view = (TabView?) MultiViewInternal.GetActiveView();
       if (view != null)
         view.EnsureLazyControls();
     }
@@ -272,7 +272,7 @@ namespace Remotion.Web.UI.Controls
     {
       EnsureChildControls();
 
-      TabView activeView = GetActiveView();
+      TabView? activeView = GetActiveView();
       if (view != null && view == activeView)
       {
         int index = MultiViewInternal.Controls.IndexOf (view);
@@ -295,7 +295,7 @@ namespace Remotion.Web.UI.Controls
     {
       EnsureChildControls();
 
-      WebTab tab = _tabStrip.Tabs.Find (view.ID + c_itemIDSuffix);
+      WebTab? tab = _tabStrip.Tabs.Find (view.ID + c_itemIDSuffix);
       if (tab == null)
         return;
 
@@ -314,8 +314,8 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("view", view);
       MultiViewInternal.SetActiveView (view);
-      TabView activeView = GetActiveView();
-      WebTab nextActiveTab = _tabStrip.Tabs.Find (activeView.ID + c_itemIDSuffix);
+      TabView? activeView = GetActiveView();
+      WebTab? nextActiveTab = _tabStrip.Tabs.Find (activeView.ID + c_itemIDSuffix);
       nextActiveTab.IsSelected = true;
     }
 
@@ -329,15 +329,15 @@ namespace Remotion.Web.UI.Controls
       get { return ClientID + "_Wrapper"; }
     }
 
-    public TabView GetActiveView ()
+    public TabView? GetActiveView ()
     {
-      TabView view = (TabView) MultiViewInternal.GetActiveView();
+      TabView? view = (TabView?) MultiViewInternal.GetActiveView();
       if (view != null && _isInitialized)
         view.EnsureLazyControls();
       return view;
     }
 
-    public new IPage Page
+    public new IPage? Page
     {
       get { return PageWrapper.CastOrCreate (base.Page); }
     }
@@ -396,7 +396,7 @@ namespace Remotion.Web.UI.Controls
       remove { MultiViewInternal.ActiveViewChanged -= value; }
     }
 
-    protected WebTabStrip TabStrip
+    protected WebTabStrip? TabStrip
     {
       get
       {
@@ -405,7 +405,7 @@ namespace Remotion.Web.UI.Controls
       }
     }
 
-    protected MultiView MultiViewInternal
+    protected MultiView? MultiViewInternal
     {
       get
       {
@@ -517,22 +517,22 @@ namespace Remotion.Web.UI.Controls
       get { return ActiveViewClientID; }
     }
 
-    PlaceHolder ITabbedMultiView.TopControl
+    PlaceHolder? ITabbedMultiView.TopControl
     {
       get { return _topControl; }
     }
 
-    PlaceHolder ITabbedMultiView.BottomControl
+    PlaceHolder? ITabbedMultiView.BottomControl
     {
       get { return _bottomControl; }
     }
 
-    IWebTabStrip ITabbedMultiView.TabStrip
+    IWebTabStrip? ITabbedMultiView.TabStrip
     {
       get { return TabStrip; }
     }
 
-    Control ITabbedMultiView.GetActiveView ()
+    Control? ITabbedMultiView.GetActiveView ()
     {
       return GetActiveView();
     }

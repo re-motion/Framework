@@ -178,7 +178,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       get { return false; }
     }
 
-    public WxeStep ExecutingStep
+    public WxeStep? ExecutingStep
     {
       get
       {

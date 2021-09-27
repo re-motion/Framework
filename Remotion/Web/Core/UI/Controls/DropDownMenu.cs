@@ -37,11 +37,11 @@ namespace Remotion.Web.UI.Controls
     private ButtonType _buttonType;
     private bool _showTitle = true;
     private string _titleText = "";
-    private IconInfo _titleIcon;
+    private IconInfo? _titleIcon;
     private bool _enableGrouping = true;
     private bool _isBrowserCapableOfScripting;
 
-    private Action<HtmlTextWriter> _renderHeadTitleMethod;
+    private Action<HtmlTextWriter>? _renderHeadTitleMethod;
     private string _getSelectionCount = "";
     private string _loadMenuItemStatus = "";
 
@@ -200,7 +200,7 @@ namespace Remotion.Web.UI.Controls
       set { _titleText = value; }
     }
 
-    Action<HtmlTextWriter> IDropDownMenu.RenderHeadTitleMethod
+    Action<HtmlTextWriter>? IDropDownMenu.RenderHeadTitleMethod
     {
       get
       {
@@ -215,7 +215,7 @@ namespace Remotion.Web.UI.Controls
       get { return ClientID + "_MenuDiv"; }
     }
 
-    public IconInfo TitleIcon
+    public IconInfo? TitleIcon
     {
       get { return _titleIcon; }
       set { _titleIcon = value; }

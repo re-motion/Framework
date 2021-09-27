@@ -38,11 +38,11 @@ namespace Remotion.Web.UI.Controls
     // member fields
 
     private bool _isEnsured;
-    private EmptyControlCollection _emptyControlCollection;
-    private PlaceHolder _placeHolder;
-    private IDictionary _childControlStatesBackUp;
+    private EmptyControlCollection? _emptyControlCollection;
+    private PlaceHolder? _placeHolder;
+    private IDictionary? _childControlStatesBackUp;
     private bool _hasControlStateLoaded;
-    private object _recursiveViewState;
+    private object? _recursiveViewState;
     private bool _isSavingViewStateRecursive;
     private bool _isLoadingViewStateRecursive;
     private bool _isLazyLoadingEnabled = true;
@@ -80,7 +80,7 @@ namespace Remotion.Web.UI.Controls
       set { _isLazyLoadingEnabled = value; }
     }
 
-    public new IPage Page
+    public new IPage? Page
     {
       get { return PageWrapper.CastOrCreate (base.Page); }
     }
@@ -156,7 +156,7 @@ namespace Remotion.Web.UI.Controls
       }
     }
 
-    protected override object SaveViewState ()
+    protected override object? SaveViewState ()
     {
       if (_isSavingViewStateRecursive)
         return null;
@@ -202,7 +202,7 @@ namespace Remotion.Web.UI.Controls
       _childControlStatesBackUp = MemberCaller.GetChildControlState (this);
     }
 
-    protected override object SaveControlState ()
+    protected override object? SaveControlState ()
     {
       bool hasChildControlStatesBackUp = _isLazyLoadingEnabled && !_isEnsured;
 

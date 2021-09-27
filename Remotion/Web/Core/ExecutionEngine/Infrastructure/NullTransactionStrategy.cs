@@ -34,7 +34,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       get { return true; }
     }
 
-    public override TransactionStrategyBase OuterTransactionStrategy
+    public override TransactionStrategyBase? OuterTransactionStrategy
     {
       get { return null; }
     }
@@ -44,7 +44,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       return default (TTransaction);
     }
 
-    public override TransactionStrategyBase CreateChildTransactionStrategy (bool autoCommit, IWxeFunctionExecutionContext executionContext, WxeContext wxeContext)
+    public override TransactionStrategyBase? CreateChildTransactionStrategy (bool autoCommit, IWxeFunctionExecutionContext executionContext, WxeContext wxeContext)
     {
       ArgumentUtility.CheckNotNull ("executionContext", executionContext);
       return null;
