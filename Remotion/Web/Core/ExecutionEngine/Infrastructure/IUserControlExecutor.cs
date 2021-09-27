@@ -15,15 +15,19 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Remotion.Web.ExecutionEngine.Infrastructure
 {
   public interface IUserControlExecutor:INullObject
   {
     void Execute (WxeContext context);
-    WxeFunction? Function { get; }
+    WxeFunction Function { get; }
     string? BackedUpUserControlState { get; }
-    string? UserControlID { get; }
+    string UserControlID { get; }
+
+    [MemberNotNullWhen (true, nameof (BackedUpUserControl))]
+    [MemberNotNullWhen (true, nameof (BackedUpUserControlState))]
     bool IsReturningPostBack { get; }
     string? BackedUpUserControl { get; }
     WxeStep? ExecutingStep { get; }

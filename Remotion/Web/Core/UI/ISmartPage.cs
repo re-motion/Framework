@@ -37,7 +37,7 @@ namespace Remotion.Web.UI
     new ISmartPageClientScriptManager ClientScript { get; }
 
     /// <summary> Gets the post back data for the page. </summary>
-    NameValueCollection GetPostBackCollection ();
+    NameValueCollection? GetPostBackCollection ();
 
     /// <summary>
     ///   Registers a control implementing <see cref="IEditableControl"/> for tracking of it's server- and client-side

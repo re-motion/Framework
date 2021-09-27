@@ -121,7 +121,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
 
       if (HasCustomTitle (renderingContext))
       {
-        renderingContext.Control.RenderHeadTitleMethod (renderingContext.Writer);
+        renderingContext.Control.RenderHeadTitleMethod! (renderingContext.Writer);
         RenderFallbackTitle (renderingContext);
       }
       else if (HasDefaultTitle (renderingContext))
@@ -150,7 +150,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.A);
 
       if (HasTitleIcon (renderingContext))
-        renderingContext.Control.TitleIcon.Render (renderingContext.Writer, renderingContext.Control);
+        renderingContext.Control.TitleIcon!.Render (renderingContext.Writer, renderingContext.Control);
 
       if (HasTitleText (renderingContext))
       {
@@ -172,7 +172,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
       }
       else if (HasTitleIcon (renderingContext))
       {
-        renderingContext.Writer.Write (renderingContext.Control.TitleIcon.AlternateText);
+        renderingContext.Writer.Write (renderingContext.Control.TitleIcon!.AlternateText);
       }
 
       renderingContext.Writer.RenderEndTag();
@@ -292,7 +292,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
           getSelectionCount,
           hasDedicatedDropDownMenuElement);
 
-      renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock (renderingContext.Control, typeof (ClientScriptBehavior), key, script);
+      renderingContext.Control.Page!.ClientScript.RegisterStartupScriptBlock (renderingContext.Control, typeof (ClientScriptBehavior), key, script);
 
       if (renderingContext.Control.Enabled && renderingContext.Control.Visible && renderingContext.Control.Mode == MenuMode.DropDownMenu)
       {
@@ -308,7 +308,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
     {
       string key = renderingContext.Control.UniqueID;
       if (renderingContext.Control.Enabled
-          && !renderingContext.Control.Page.ClientScript.IsStartupScriptRegistered (typeof (DropDownMenuRenderer), key))
+          && !renderingContext.Control.Page!.ClientScript.IsStartupScriptRegistered (typeof (DropDownMenuRenderer), key))
       {
         StringBuilder script = new StringBuilder();
         script.Append ("DropDownMenu.AddMenuInfo" + " (").AppendLine();
@@ -388,7 +388,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
             // Clientside script creates an anchor with href="#" and onclick=function
             // The function will be executed using eval(...) and must therefor not end with a return statement.
             string argument = menuItemIndex.ToString();
-            href = renderingContext.Control.Page.ClientScript.GetPostBackClientHyperlink (renderingContext.Control, argument);
+            href = renderingContext.Control.Page!.ClientScript.GetPostBackClientHyperlink (renderingContext.Control, argument);
             href = ScriptUtility.EscapeClientScript (href);
             href = "'" + href + "'";
 
@@ -459,7 +459,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
 
       if (showIcon && menuItem.Icon.HasRenderingInformation)
       {
-        string? url = menuItem.Icon.Url;
+        string url = menuItem.Icon.Url;
         icon = "'" + renderingContext.Control.ResolveClientUrl (url) + "'";
       }
       return icon;
@@ -470,7 +470,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
       string disabledIcon = "null";
       if (showIcon && menuItem.DisabledIcon.HasRenderingInformation)
       {
-        string? url = menuItem.DisabledIcon.Url;
+        string url = menuItem.DisabledIcon.Url;
         disabledIcon = "'" + renderingContext.Control.ResolveClientUrl (url) + "'";
       }
       return disabledIcon;

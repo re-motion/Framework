@@ -62,7 +62,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
         using (var reader = new StreamReader (
             Assembly.GetExecutingAssembly().GetManifestResourceStream (
                 typeof (SmartPageInfo),
-                "Generic_Error_Async_Remote.htm")))
+                "Generic_Error_Async_Remote.htm")!))
         {
           aspNetErrorPage = reader.ReadToEnd();
         }
@@ -71,13 +71,13 @@ namespace Remotion.Web.UI.SmartPageImplementation
       }
       else
       {
-        var aspNetErrorPage = new HttpUnhandledException ("Async Postback Error", exception).GetHtmlErrorMessage();
+        var aspNetErrorPage = new HttpUnhandledException ("Async Postback Error", exception).GetHtmlErrorMessage()!; // TODO RM-8118: not null assertion
         errorHtml = ExtractBodyContent (aspNetErrorPage);
       }
       return errorHtml;
     }
 
-    private static string ExtractBodyContent (string? aspNetErrorPage)
+    private static string ExtractBodyContent (string aspNetErrorPage)
     {
       var bodyBegin = @"<body bgcolor=""white"">";
       var bodyEnd = @"</body>";

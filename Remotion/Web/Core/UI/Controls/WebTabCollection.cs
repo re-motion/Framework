@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using System.Web.UI;
 using Remotion.Reflection;
 using Remotion.Utilities;
@@ -34,7 +35,7 @@ namespace Remotion.Web.UI.Controls
     ///   Supported types must either be <see cref="WebTab"/> or derived from <see cref="WebTab"/>. 
     ///   Must not be <see langword="null"/> or contain items that are <see langword="null"/>.
     /// </param>
-    public WebTabCollection (IControl ownerControl, Type[] supportedTypes)
+    public WebTabCollection (IControl? ownerControl, Type[] supportedTypes)
         : base (ownerControl, supportedTypes)
     {
       for (int i = 0; i < supportedTypes.Length; i++)
@@ -49,7 +50,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Initializes a new instance. </summary>
-    public WebTabCollection (IControl ownerControl)
+    public WebTabCollection (IControl? ownerControl)
         : this (ownerControl, new[] { typeof (WebTab) })
     {
     }
@@ -57,13 +58,13 @@ namespace Remotion.Web.UI.Controls
     //  Do NOT make this indexer public. Ever. Or ASP.net won't be able to de-serialize this property.
     protected internal new WebTab this [int index]
     {
-      get { return (WebTab) List[index]; }
+      get { return (WebTab) List[index]!; } // TODO RM-8118: Add not null assertion
       set { List[index] = value; }
     }
 
-    protected override void ValidateNewValue (object? value)
+    protected override void ValidateNewValue ([NotNull]object? value)
     {
-      WebTab tab = ArgumentUtility.CheckNotNullAndType<WebTab> ("value", value);
+      WebTab tab = ArgumentUtility.CheckNotNullAndType<WebTab> ("value", value!);
       if (string.IsNullOrEmpty (tab.ItemID))
         throw new ArgumentException ("The tab does not have an 'ItemID'. It can therfor not be inserted into the collection.", "value");
       base.ValidateNewValue (value);
@@ -71,7 +72,7 @@ namespace Remotion.Web.UI.Controls
 
     protected override void OnInsertComplete (int index, object? value)
     {
-      WebTab tab = ArgumentUtility.CheckNotNullAndType<WebTab> ("value", value);
+      WebTab tab = ArgumentUtility.CheckNotNullAndType<WebTab> ("value", value!);
       base.OnInsertComplete (index, value);
       tab.SetTabStrip (_tabStrip);
       InitalizeSelectedTab();
@@ -79,8 +80,8 @@ namespace Remotion.Web.UI.Controls
 
     protected override void OnSetComplete (int index, object? oldValue, object? newValue)
     {
-      WebTab oldTab = ArgumentUtility.CheckNotNullAndType<WebTab> ("oldValue", oldValue);
-      WebTab newTab = ArgumentUtility.CheckNotNullAndType<WebTab> ("newValue", newValue);
+      WebTab oldTab = ArgumentUtility.CheckNotNullAndType<WebTab> ("oldValue", oldValue!);
+      WebTab newTab = ArgumentUtility.CheckNotNullAndType<WebTab> ("newValue", newValue!);
 
       base.OnSetComplete (index, oldValue, newValue);
 
@@ -92,7 +93,7 @@ namespace Remotion.Web.UI.Controls
 
     protected override void OnRemoveComplete (int index, object? value)
     {
-      WebTab tab = ArgumentUtility.CheckNotNullAndType<WebTab> ("value", value);
+      WebTab tab = ArgumentUtility.CheckNotNullAndType<WebTab> ("value", value!);
 
       base.OnRemoveComplete (index, value);
 
@@ -104,7 +105,7 @@ namespace Remotion.Web.UI.Controls
         {
           if (InnerList.Count > 1)
           {
-            WebTab? lastTab = (WebTab?) InnerList[index - 1];
+            WebTab lastTab = (WebTab) InnerList[index - 1]!;
             _tabStrip.SetSelectedTabInternal (lastTab);
           }
           else
@@ -112,7 +113,7 @@ namespace Remotion.Web.UI.Controls
         }
         else
         {
-          WebTab? nextTab = (WebTab?) InnerList[index];
+          WebTab nextTab = (WebTab) InnerList[index]!;
           _tabStrip.SetSelectedTabInternal (nextTab);
         }
       }
@@ -123,7 +124,7 @@ namespace Remotion.Web.UI.Controls
       base.OnClear();
       for (int i = 0; i < InnerList.Count; i++)
       {
-        WebTab? tab = (WebTab?) InnerList[i];
+        WebTab tab = (WebTab) InnerList[i]!;
         tab.SetTabStrip (null);
       }
       if (_tabStrip != null)
@@ -151,7 +152,7 @@ namespace Remotion.Web.UI.Controls
         {
           if (InnerList.Count > 1)
           {
-            WebTab? penultimateTab = (WebTab?) InnerList[index - 1];
+            WebTab penultimateTab = (WebTab) InnerList[index - 1]!;
             _tabStrip.SetSelectedTabInternal (penultimateTab);
           }
           else
@@ -159,7 +160,7 @@ namespace Remotion.Web.UI.Controls
         }
         else
         {
-          WebTab? nextTab = (WebTab?) InnerList[index + 1];
+          WebTab nextTab = (WebTab) InnerList[index + 1]!;
           _tabStrip.SetSelectedTabInternal (nextTab);
         }
       }
@@ -176,7 +177,7 @@ namespace Remotion.Web.UI.Controls
 
       _tabStrip = tabStrip;
       for (int i = 0; i < InnerList.Count; i++)
-        ((WebTab?) InnerList[i]).SetTabStrip (_tabStrip);
+        ((WebTab) InnerList[i]!).SetTabStrip (_tabStrip);
       InitalizeSelectedTab();
     }
 
@@ -198,7 +199,7 @@ namespace Remotion.Web.UI.Controls
       {
         for (int i = 0; i < InnerList.Count; i++)
         {
-          WebTab? tab = (WebTab?) InnerList[i];
+          WebTab tab = (WebTab) InnerList[i]!;
           if (tab.IsVisible && ! tab.IsDisabled)
           {
             _tabStrip.SetSelectedTabInternal (tab);
@@ -208,12 +209,12 @@ namespace Remotion.Web.UI.Controls
       }
     }
 
-    void IControlStateManager.LoadControlState (object state)
+    void IControlStateManager.LoadControlState (object? state)
     {
       LoadControlState (state);
     }
 
-    protected virtual void LoadControlState (object state)
+    protected virtual void LoadControlState (object? state)
     {
       if (state == null)
         return;
@@ -222,6 +223,7 @@ namespace Remotion.Web.UI.Controls
       for (int i = 0; i < tabsState.Length; i++)
       {
         Pair pair = tabsState[i];
+        Assertion.DebugIsNotNull (pair.First, "pair.First must not be null.");
         string itemID = (string) pair.First;
         WebTab? tab = Find (itemID);
         if (tab != null)
@@ -239,8 +241,9 @@ namespace Remotion.Web.UI.Controls
       ArrayList tabsState = new ArrayList();
       for (int i = 0; i < InnerList.Count; i++)
       {
-        WebTab? tab = (WebTab?) InnerList[i];
-        object tabStateValue = ((IControlStateManager?) tab).SaveControlState();
+        // TODO RM-8118: Assert not null
+        WebTab tab = (WebTab) InnerList[i]!;
+        object? tabStateValue = ((IControlStateManager) tab).SaveControlState();
         if (tabStateValue != null)
         {
           Pair pair = new Pair();

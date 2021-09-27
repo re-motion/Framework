@@ -35,7 +35,7 @@ public class TabViewCollection: ViewCollection
   {
   }
 
-  public override void Add (Control? control)
+  public override void Add (Control control)
   {
     TabView view = ArgumentUtility.CheckNotNullAndType<TabView> ("control", control);
     base.Add (view);

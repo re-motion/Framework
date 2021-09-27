@@ -16,6 +16,7 @@
 // 
 using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.ServiceLocation;
@@ -31,11 +32,11 @@ namespace Remotion.Web.UI.Controls
   //[Designer( typeof (SingleViewDesigner))]
   public class SingleView : WebControl, ISingleView
   {
-    private PlaceHolder? _view;
+    private PlaceHolder _view;
     //private Control _viewTemplateContainer;
     //private ITemplate _viewTemplate;
-    private PlaceHolder? _topControl;
-    private PlaceHolder? _bottomControl;
+    private PlaceHolder _topControl;
+    private PlaceHolder _bottomControl;
 
     private readonly Style _viewStyle;
     private readonly Style _topControlsStyle;
@@ -49,6 +50,9 @@ namespace Remotion.Web.UI.Controls
       _bottomControlsStyle = new Style();
     }
 
+    [MemberNotNull (nameof (_view))]
+    [MemberNotNull (nameof (_topControl))]
+    [MemberNotNull (nameof (_bottomControl))]
     private void CreateControls ()
     {
       _view = new PlaceHolder();
@@ -141,7 +145,7 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("writer", writer);
 
-      return new SingleViewRenderingContext (Page.Context, writer, this);
+      return new SingleViewRenderingContext (Page!.Context!, writer, this); // TODO RM-8118: not null assertion
     }
 
     protected string ViewClientID
@@ -174,17 +178,17 @@ namespace Remotion.Web.UI.Controls
       }
     }
 
-    PlaceHolder? ISingleView.TopControl
+    PlaceHolder ISingleView.TopControl
     {
       get { return _topControl; }
     }
 
-    PlaceHolder? ISingleView.View
+    PlaceHolder ISingleView.View
     {
       get { return _view; }
     }
 
-    PlaceHolder? ISingleView.BottomControl
+    PlaceHolder ISingleView.BottomControl
     {
       get { return _bottomControl; }
     }

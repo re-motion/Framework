@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Web;
 using System.Web.UI;
@@ -64,7 +65,7 @@ namespace Remotion.Web.UI.Controls
 
       /// <summary> Returns a string representation of this <see cref="NoneCommandInfo"/>. </summary>
       /// <returns> A <see cref="string"/>. </returns>
-      public override string? ToString ()
+      public override string ToString ()
       {
         if (_enableFocus)
           return "Focus enabled";
@@ -103,7 +104,7 @@ namespace Remotion.Web.UI.Controls
 
       /// <summary> Returns a string representation of this <see cref="EventCommandInfo"/>. </summary>
       /// <returns> A <see cref="string"/>. </returns>
-      public override string? ToString ()
+      public override string ToString ()
       {
         if (_requiresSynchronousPostBack)
           return "Synchronous Postback required";
@@ -127,7 +128,7 @@ namespace Remotion.Web.UI.Controls
       /// <summary> Returns a string representation of this <see cref="HrefCommandInfo"/>. </summary>
       /// <remarks> Format: Href, Target </remarks>
       /// <returns> A <see cref="string"/>. </returns>
-      public override string? ToString ()
+      public override string ToString ()
       {
         if (_href == string.Empty || _target == string.Empty)
           return _href;
@@ -203,7 +204,7 @@ namespace Remotion.Web.UI.Controls
       /// </summary>
       /// <remarks> Format: Href, Target </remarks>
       /// <returns> A <see cref="string"/>. </returns>
-      public override string? ToString ()
+      public override string ToString ()
       {
         if (_typeName == string.Empty)
           return string.Empty;
@@ -296,15 +297,15 @@ namespace Remotion.Web.UI.Controls
 
       public virtual WxeFunction InitializeFunction (NameObjectCollection? additionalWxeParameters)
       {
-        Type? functionType = ResolveFunctionType();
-        WxeFunction? function = (WxeFunction?) Activator.CreateInstance (functionType);
+        Type functionType = ResolveFunctionType();
+        WxeFunction function = (WxeFunction) Activator.CreateInstance (functionType)!;
 
         function.VariablesContainer.InitializeParameters (_parameters, additionalWxeParameters);
 
         return function;
       }
 
-      public virtual Type? ResolveFunctionType ()
+      public virtual Type ResolveFunctionType ()
       {
         UrlMappingEntry? mapping = UrlMappingConfiguration.Current.Mappings.FindByID (_mappingID);
 
@@ -315,11 +316,11 @@ namespace Remotion.Web.UI.Controls
         if (hasTypeName)
           functionType = WebTypeUtility.GetType (_typeName, true);
 
-        if (hasMapping)
+        if (hasMapping) // TODO RM-8118: Inline mapping nullcheck
         {
           if (functionType == null)
-            functionType = mapping.FunctionType;
-          else if (mapping.FunctionType != functionType)
+            functionType = mapping!.FunctionType;
+          else if (mapping!.FunctionType != functionType)
           {
             throw new InvalidOperationException (
                 string.Format (
@@ -331,7 +332,7 @@ namespace Remotion.Web.UI.Controls
         else if (!hasTypeName)
           throw new InvalidOperationException ("The WxeFunctionCommand has no valid MappingID or FunctionTypeName specified.");
 
-        return functionType;
+        return functionType!;
       }
     }
 
@@ -412,23 +413,23 @@ namespace Remotion.Web.UI.Controls
     /// <param name="style"> The style applied to the opening tag. </param>
     /// <param name="attributes"> The list of attributes to be added to the rendering output. Must not be <see langword="null" />. </param>
     public virtual void RenderBegin (
-        [NotNull] HtmlTextWriter writer,
-        [NotNull] IRenderingFeatures renderingFeatures,
+        [JetBrains.Annotations.NotNull] HtmlTextWriter writer,
+        [JetBrains.Annotations.NotNull] IRenderingFeatures renderingFeatures,
         [CanBeNull] string? postBackEvent,
         [CanBeNull] string[]? parameters,
         [CanBeNull] string? onClick,
         [CanBeNull] ISecurableObject? securableObject,
-        [NotNull] NameValueCollection additionalUrlParameters,
+        [JetBrains.Annotations.NotNull] NameValueCollection additionalUrlParameters,
         bool includeNavigationUrlParameters,
-        [NotNull] Style style,
-        [NotNull] NameValueCollection attributes)
+        [JetBrains.Annotations.NotNull] Style style,
+        [JetBrains.Annotations.NotNull] NameValueCollection attributes)
     {
       ArgumentUtility.CheckNotNull ("writer", writer);
       ArgumentUtility.CheckNotNull ("renderingFeatures", renderingFeatures);
       if (_type == CommandType.Event || _type == CommandType.WxeFunction)
-        ArgumentUtility.CheckNotNull ("postBackEvent", postBackEvent);
+        ArgumentUtility.CheckNotNull ("postBackEvent", postBackEvent!);
       if (_type == CommandType.Href)
-        ArgumentUtility.CheckNotNull ("parameters", parameters);
+        ArgumentUtility.CheckNotNull ("parameters", parameters!);
       ArgumentUtility.CheckNotNull ("additionalUrlParameters", additionalUrlParameters);
       ArgumentUtility.CheckNotNull ("style", style);
       ArgumentUtility.CheckNotNull ("attributes", attributes);
@@ -446,8 +447,8 @@ namespace Remotion.Web.UI.Controls
 
       for (int i = 0; i < attributes.Count; i++)
       {
-        var attributeName = attributes.Keys[i];
-        var attributeValue = attributes[i];
+        var attributeName = attributes.Keys[i]!; // TODO RM-8118: not null assertion
+        var attributeValue = attributes[i]!; // TODO RM-8118: not null assertion
         writer.AddAttribute (attributeName, attributeValue);
       }
 
@@ -473,8 +474,8 @@ namespace Remotion.Web.UI.Controls
     ///   The <see cref="ISecurableObject"/> for which security is evaluated. Use <see landword="null"/> if security is stateless or not evaluated.
     /// </param>
     public void RenderBegin (
-        [NotNull] HtmlTextWriter writer,
-        [NotNull] IRenderingFeatures renderingFeatures,
+        [JetBrains.Annotations.NotNull] HtmlTextWriter writer,
+        [JetBrains.Annotations.NotNull] IRenderingFeatures renderingFeatures,
         [CanBeNull] string? postBackEvent,
         [CanBeNull] string[]? parameters,
         [CanBeNull] string? onClick,
@@ -524,13 +525,13 @@ namespace Remotion.Web.UI.Controls
         [CanBeNull] string[]? parameters,
         [CanBeNull] string? onClick,
         [CanBeNull] ISecurableObject? securableObject,
-        [NotNull] NameValueCollection additionalUrlParameters,
+        [JetBrains.Annotations.NotNull] NameValueCollection additionalUrlParameters,
         bool includeNavigationUrlParameters)
     {
       if (_type == CommandType.Event || _type == CommandType.WxeFunction)
-        ArgumentUtility.CheckNotNull ("postBackEvent", postBackEvent);
+        ArgumentUtility.CheckNotNull ("postBackEvent", postBackEvent!);
       if (_type == CommandType.Href)
-        ArgumentUtility.CheckNotNull ("parameters", parameters);
+        ArgumentUtility.CheckNotNull ("parameters", parameters!);
       ArgumentUtility.CheckNotNull ("additionalUrlParameters", additionalUrlParameters);
 
       if (!HasAccess (securableObject))
@@ -539,11 +540,11 @@ namespace Remotion.Web.UI.Controls
       switch (_type)
       {
         case CommandType.Href:
-          return GetCommandInfoForHrefCommand (parameters, onClick, additionalUrlParameters, includeNavigationUrlParameters);
+          return GetCommandInfoForHrefCommand (parameters!, onClick, additionalUrlParameters, includeNavigationUrlParameters);
         case CommandType.Event:
-          return GetCommandInfoForEventCommand (postBackEvent, onClick);
+          return GetCommandInfoForEventCommand (postBackEvent!, onClick);
         case CommandType.WxeFunction:
-          return GetCommandInfoForWxeFunctionCommand (postBackEvent, onClick, additionalUrlParameters, includeNavigationUrlParameters);
+          return GetCommandInfoForWxeFunctionCommand (postBackEvent!, onClick, additionalUrlParameters, includeNavigationUrlParameters);
         case CommandType.None:
           return GetCommandInfoForNoneCommand();
         default:
@@ -571,9 +572,9 @@ namespace Remotion.Web.UI.Controls
     ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.Href"/>.
     /// </exception> 
     protected virtual CommandInfo GetCommandInfoForHrefCommand (
-        [NotNull] string[] parameters,
+        [JetBrains.Annotations.NotNull] string[] parameters,
         [CanBeNull] string? onClick,
-        [NotNull] NameValueCollection additionalUrlParameters,
+        [JetBrains.Annotations.NotNull] NameValueCollection additionalUrlParameters,
         bool includeNavigationUrlParameters)
     {
       ArgumentUtility.CheckNotNull ("parameters", parameters);
@@ -619,7 +620,7 @@ namespace Remotion.Web.UI.Controls
     /// <exception cref="InvalidOperationException">
     ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.Event"/>.
     /// </exception> 
-    protected virtual CommandInfo GetCommandInfoForEventCommand ([NotNull] string postBackEvent, [CanBeNull] string? onClick)
+    protected virtual CommandInfo GetCommandInfoForEventCommand ([JetBrains.Annotations.NotNull] string postBackEvent, [CanBeNull] string? onClick)
     {
       ArgumentUtility.CheckNotNull ("postBackEvent", postBackEvent);
       if (Type != CommandType.Event)
@@ -653,9 +654,9 @@ namespace Remotion.Web.UI.Controls
     ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
     /// </exception> 
     protected virtual CommandInfo GetCommandInfoForWxeFunctionCommand (
-        [NotNull] string postBackEvent,
+        [JetBrains.Annotations.NotNull] string postBackEvent,
         [CanBeNull] string? onClick,
-        [NotNull] NameValueCollection additionalUrlParameters,
+        [JetBrains.Annotations.NotNull] NameValueCollection additionalUrlParameters,
         bool includeNavigationUrlParameters)
     {
       ArgumentUtility.CheckNotNull ("postBackEvent", postBackEvent);
@@ -720,7 +721,7 @@ namespace Remotion.Web.UI.Controls
     ///   </list>
     /// </remarks>
     /// <returns> A <see cref="string"/>. </returns>
-    public override string? ToString ()
+    public override string ToString ()
     {
       StringBuilder stringBuilder = new StringBuilder (50);
 
@@ -786,7 +787,7 @@ namespace Remotion.Web.UI.Controls
 
         IWxeCallArguments callArguments;
         if (hasTarget)
-          callArguments = new WxeCallArguments ((Control?) OwnerControl, new WxeCallOptionsExternal (target, null, false));
+          callArguments = new WxeCallArguments ((Control) OwnerControl!, new WxeCallOptionsExternal (target, null, false)); // TODO RM-8118: not null assertion
         else
           callArguments = WxeCallArguments.Default;
 
@@ -828,6 +829,7 @@ namespace Remotion.Web.UI.Controls
     [Description ("The AccessKey rendered in the anchor tag.")]
     [NotifyParentProperty (true)]
     [DefaultValue ("")]
+    [AllowNull]
     public string AccessKey
     {
       get { return _accessKey; }
@@ -987,7 +989,7 @@ namespace Remotion.Web.UI.Controls
         ToolTip = resourceManager.GetString (key);
     }
 
-    public void RegisterForSynchronousPostBackOnDemand ([NotNull]Control control, [NotNull]string argument, [NotNull]string commandID)
+    public void RegisterForSynchronousPostBackOnDemand ([JetBrains.Annotations.NotNull]Control control, [JetBrains.Annotations.NotNull]string argument, [JetBrains.Annotations.NotNull]string commandID)
     {
       ArgumentUtility.CheckNotNull ("control", control);
       ArgumentUtility.CheckNotNullOrEmpty ("argument", argument);
@@ -1102,7 +1104,7 @@ namespace Remotion.Web.UI.Controls
   ///   Represents the method that handles the <see cref="Command.Click"/> event
   ///   raised when clicking on a <see cref="Command"/> of type <see cref="CommandType.Event"/>.
   /// </summary>
-  public delegate void CommandClickEventHandler (object sender, CommandClickEventArgs e);
+  public delegate void CommandClickEventHandler (object? sender, CommandClickEventArgs e);
 
   /// <summary> Provides data for the <see cref="Remotion.Web.UI.Controls.Command.Click"/> event. </summary>
   public class CommandClickEventArgs : EventArgs

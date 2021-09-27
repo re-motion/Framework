@@ -40,13 +40,13 @@ namespace Remotion.Web.Utilities
     ///   <see cref="HttpRequest.Form"/> collection of the <see cref="Page.Request"/>, depending on whether or not the
     ///   <paramref name="page"/> implements <see cref="IWxePage"/>.
     /// </returns>
-    public static NameValueCollection GetPostBackCollection (IPage page)
+    public static NameValueCollection? GetPostBackCollection (IPage page)
     {
       ISmartPage? smartPage = page as ISmartPage;
       if (smartPage != null)
         return smartPage.GetPostBackCollection();
       else
-        return page.Request.Form;
+        return page.Request!.Form; // TODO RM-8118: not null assertion
     }
 
     /// <summary>
@@ -63,7 +63,7 @@ namespace Remotion.Web.Utilities
       ArgumentUtility.CheckNotNull ("page", page);
       ArgumentUtility.CheckNotNullOrEmpty ("name", name);
 
-      NameValueCollection collection = GetPostBackCollection (page);
+      NameValueCollection? collection = GetPostBackCollection (page);
       if (collection == null)
         return null;
       return collection[name];

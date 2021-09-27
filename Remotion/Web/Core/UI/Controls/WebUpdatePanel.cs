@@ -68,7 +68,7 @@ namespace Remotion.Web.UI.Controls
       }
     }
  
-    protected override void LoadViewState (object savedState)
+    protected override void LoadViewState (object? savedState)
     {
       if (savedState != null)
       {
@@ -76,7 +76,7 @@ namespace Remotion.Web.UI.Controls
 
         base.LoadViewState (pair.First);
 
-        _cssClass = (string) pair.Second ?? string.Empty;
+        _cssClass = (string) (pair.Second ?? string.Empty);
       }
     }
 

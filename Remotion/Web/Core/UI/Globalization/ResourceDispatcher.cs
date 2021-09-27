@@ -103,7 +103,7 @@ public sealed class ResourceDispatcher
     {
       string elementID = (string) elementsEntry.Key;
 
-      Control targetControl;
+      Control? targetControl;
 
       if (elementID == c_thisElementID)
         targetControl = (Control) control;
@@ -117,7 +117,7 @@ public sealed class ResourceDispatcher
       else
       {
         //  Pass the value to the control
-        IDictionary? values = (IDictionary?) elementsEntry.Value;
+        IDictionary values = (IDictionary) elementsEntry.Value!; // TODO RM-8118: not null assertion
         IResourceDispatchTarget? resourceDispatchTarget = targetControl as IResourceDispatchTarget;
 
         if (resourceDispatchTarget != null) //  Control knows how to dispatch
@@ -172,7 +172,7 @@ public sealed class ResourceDispatcher
   /// <returns>
   ///   Hashtable&lt;string elementID, IDictionary&lt;string property, string value&gt; elementValues&gt;
   /// </returns>
-  private static IDictionary GetResources (IResourceManager resourceManager, string prefix)
+  private static IDictionary GetResources (IResourceManager resourceManager, string? prefix)
   {
     ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
 

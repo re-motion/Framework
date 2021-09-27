@@ -132,9 +132,9 @@ namespace Remotion.Web.UI.SmartPageImplementation
       control.Unload += UnregisterControlForDirtyStateTracking;
     }
 
-    private void UnregisterControlForDirtyStateTracking (object sender, EventArgs args)
+    private void UnregisterControlForDirtyStateTracking (object? sender, EventArgs args)
     {
-      var control = ArgumentUtility.CheckNotNullAndType<IEditableControl> ("sender", sender);
+      var control = ArgumentUtility.CheckNotNullAndType<IEditableControl> ("sender", sender!);
 
       if (_isPreRenderComplete)
       {
@@ -242,7 +242,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
       return _cachedResourceManager;
     }
 
-    private void Page_Init (object sender, EventArgs e)
+    private void Page_Init (object? sender, EventArgs e)
     {
       if (_page.Header != null)
       {
@@ -278,7 +278,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
       var scriptManager = ScriptManager.GetCurrent (_page.WrappedInstance);
       if (scriptManager != null)
       {
-        var handler = new SmartPageAsyncPostBackErrorHandler (_page.Context);
+        var handler = new SmartPageAsyncPostBackErrorHandler (_page.Context!); // TODO RM-8118: Add not null assertion
         scriptManager.AsyncPostBackError += (o, args) => handler.HandleError (args.Exception);
       }
     }
@@ -288,7 +288,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
       get { return SafeServiceLocator.Current.GetInstance<ResourceTheme>(); }
     }
 
-    private void Page_PreRenderComplete (object sender, EventArgs eventArgs)
+    private void Page_PreRenderComplete (object? sender, EventArgs eventArgs)
     {
       PreRenderSmartPage();
       PreRenderSmartNavigation();
@@ -487,7 +487,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
         }
       }
 
-      foreach (string trackedID in _trackedControlsByID)
+      foreach (string? trackedID in _trackedControlsByID)
       {
         // IE 5.0.1 does not understand push
         script.Append ("  ");
@@ -514,7 +514,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
       if (smartNavigablePage == null)
         return;
 
-      NameValueCollection postBackCollection = _page.GetPostBackCollection();
+      NameValueCollection? postBackCollection = _page.GetPostBackCollection();
 
       if (smartNavigablePage.IsSmartScrollingEnabled)
       {
@@ -602,9 +602,9 @@ namespace Remotion.Web.UI.SmartPageImplementation
       control.Unload += UnregisterNavigationControl;
     }
 
-    private void UnregisterNavigationControl (object sender, EventArgs args)
+    private void UnregisterNavigationControl (object? sender, EventArgs args)
     {
-      var control = ArgumentUtility.CheckNotNullAndType<INavigationControl> ("sender", sender);
+      var control = ArgumentUtility.CheckNotNullAndType<INavigationControl> ("sender", sender!);
       _navigationControls.Remove (control);
       control.Unload -= UnregisterNavigationControl;
     }

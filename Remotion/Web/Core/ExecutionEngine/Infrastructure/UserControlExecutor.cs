@@ -30,8 +30,8 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     private readonly string _backedUpUserControlState;
     private readonly string _backedUpUserControl;
     private readonly string _userControlID;
-    private NameValueCollection _postBackCollection;
-    private NameValueCollection _backedUpPostBackData;
+    private NameValueCollection? _postBackCollection;
+    private NameValueCollection? _backedUpPostBackData;
     private bool _isReturningPostBack;
     private readonly WxePageStep _pageStep;
 
@@ -67,7 +67,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
       if (userControl.WxePage.IsPostBack)
       {
-        _postBackCollection = userControl.WxePage.GetPostBackCollection().Clone();
+        _postBackCollection = userControl.WxePage.GetPostBackCollection()!.Clone(); // TODO RM-8118: Debug assert not null
         _backedUpPostBackData = new NameValueCollection();
 
         if (usesEventTarget)
@@ -100,8 +100,8 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
           // _postBackCollection.Remove (sender.UniqueID);
         }
 
-        string uniqueIDPrefix = _userControlID + userControl.Page.IdSeparator;
-        foreach (var key in _postBackCollection.AllKeys.Where (s => s.StartsWith (uniqueIDPrefix)))
+        string uniqueIDPrefix = _userControlID + userControl.WxePage.IdSeparator;
+        foreach (var key in _postBackCollection.AllKeys.Where (s => s!.StartsWith (uniqueIDPrefix))) // TODO RM-8118: not null assertion
         {
           _backedUpPostBackData.Add (key, _postBackCollection[key]);
           _postBackCollection.Remove (key);

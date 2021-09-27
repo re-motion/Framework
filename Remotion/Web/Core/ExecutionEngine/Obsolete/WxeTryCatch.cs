@@ -16,7 +16,9 @@
 // 
 using System;
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 
 namespace Remotion.Web.ExecutionEngine.Obsolete
@@ -56,28 +58,31 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
     /// </summary>
     private int _executingCatchBlock = -1;
 
-    private WxeStepList? _trySteps;
+    private WxeStepList _trySteps;
 
     /// <summary> ArrayList&lt;WxeCatchBlock&gt; </summary>
-    private ArrayList? _catchBlocks;
+    private ArrayList _catchBlocks;
 
     private WxeStepList? _finallySteps;
 
-    public WxeTryCatch (Type tryStepListType, Type finallyStepListType, params Type[] catchBlockTypes)
+    public WxeTryCatch (Type tryStepListType, Type? finallyStepListType, params Type[]? catchBlockTypes)
     {
-      _trySteps = (WxeStepList?) Activator.CreateInstance (tryStepListType);
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("tryStepListType", tryStepListType, typeof (WxeStepList));
+      ArgumentUtility.CheckTypeIsAssignableFrom ("finallyStepListType", finallyStepListType, typeof (WxeStepList));
+
+      _trySteps = (WxeStepList) Activator.CreateInstance (tryStepListType)!;
       _trySteps.SetParentStep (this);
 
       _catchBlocks = new ArrayList();
       if (catchBlockTypes != null)
       {
         foreach (Type catchBlockType in catchBlockTypes)
-          Add ((WxeCatchBlock?) Activator.CreateInstance (catchBlockType));
+          Add ((WxeCatchBlock) Activator.CreateInstance (catchBlockType)!);
       }
 
       if (finallyStepListType != null)
       {
-        _finallySteps = (WxeStepList?) Activator.CreateInstance (finallyStepListType);
+        _finallySteps = (WxeStepList) Activator.CreateInstance (finallyStepListType)!; // TODO RM-8118: Add debug assertion
         _finallySteps.SetParentStep (this);
       }
       else
@@ -89,6 +94,8 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
       InitializeSteps();
     }
 
+    [MemberNotNull (nameof (_trySteps))]
+    [MemberNotNull (nameof (_catchBlocks))]
     private void InitializeSteps ()
     {
       Type type = this.GetType();
@@ -98,7 +105,7 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
         throw new WxeException ("Try/catch block type " + type.FullName + " has no nested type named \"Try\".");
       if (! typeof (WxeStepList).IsAssignableFrom (tryBlockType))
         throw new WxeException ("Type " + tryBlockType.FullName + " must be derived from WxeTryBlock.");
-      _trySteps = (WxeStepList?) Activator.CreateInstance (tryBlockType);
+      _trySteps = (WxeStepList) Activator.CreateInstance (tryBlockType)!;
       _trySteps.SetParentStep (this);
 
       Type? finallyBlockType = type.GetNestedType ("Finally", BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
@@ -106,7 +113,7 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
       {
         if (! typeof (WxeStepList).IsAssignableFrom (finallyBlockType))
           throw new WxeException ("Type " + finallyBlockType.FullName + " must be derived from WxeFinallyBlock.");
-        _finallySteps = (WxeStepList?) Activator.CreateInstance (finallyBlockType);
+        _finallySteps = (WxeStepList) Activator.CreateInstance (finallyBlockType)!;
         _finallySteps.SetParentStep (this);
       }
       else
@@ -123,7 +130,7 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
       {
         if (! typeof (WxeCatchBlock).IsAssignableFrom (catchBlockType))
           throw new WxeException ("Type " + catchBlockType.FullName + " must be derived from WxeCatchBlock.");
-        Add ((WxeCatchBlock?) Activator.CreateInstance (catchBlockType));
+        Add ((WxeCatchBlock) Activator.CreateInstance (catchBlockType)!);
       }
     }
 
@@ -144,7 +151,7 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
 
           for (int i = 0; i < _catchBlocks.Count; ++i)
           {
-            WxeCatchBlock? catchBlock = (WxeCatchBlock?) _catchBlocks[i];
+            WxeCatchBlock catchBlock = (WxeCatchBlock) _catchBlocks[i]!;
             if (catchBlock.ExceptionType.IsInstanceOfType (ex))
             {
               _executingCatchBlock = i;
@@ -162,20 +169,20 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
           if (_executingCatchBlock == -1)
             throw;
 
-          ExecutingStepList.Execute (context);
+          ExecutingStepList!.Execute (context);
         }
 
         if (_finallySteps != null)
         {
           _executingCatchBlock = -2;
-          ExecutingStepList.Execute (context);
+          ExecutingStepList!.Execute (context);
         }
       }
       else if (_executingCatchBlock == -2) // finallyBlock
-        _finallySteps.Execute (context);
+        _finallySteps!.Execute (context);
       else
       {
-        ExecutingStepList.Execute (context);
+        ExecutingStepList!.Execute (context);
         if (_finallySteps != null)
         {
           _executingCatchBlock = -2;
@@ -184,9 +191,9 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
       }
     }
 
-    public override WxeStep? ExecutingStep
+    public override WxeStep ExecutingStep
     {
-      get { return ExecutingStepList.ExecutingStep; }
+      get { return ExecutingStepList!.ExecutingStep; }  // TODO RM-8118: Add not null assertion
     }
 
     private WxeStepList? ExecutingStepList
@@ -200,12 +207,12 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
           case -2:
             return _finallySteps;
           default:
-            return (WxeCatchBlock?) _catchBlocks[_executingCatchBlock];
+            return (WxeCatchBlock) _catchBlocks[_executingCatchBlock]!;
         }
       }
     }
 
-    public void Add (WxeCatchBlock? catchBlock)
+    public void Add (WxeCatchBlock catchBlock)
     {
       _catchBlocks.Add (catchBlock);
       catchBlock.SetParentStep (this);

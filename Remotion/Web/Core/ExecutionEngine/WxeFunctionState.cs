@@ -37,7 +37,7 @@ namespace Remotion.Web.ExecutionEngine
     private bool _isCleanUpEnabled;
     private int _postBackID;
 
-    public WxeFunctionState (WxeFunction? function, bool enableCleanUp)
+    public WxeFunctionState (WxeFunction function, bool enableCleanUp)
         : this (
             function,
             WebConfiguration.Current.ExecutionEngine.FunctionTimeout,

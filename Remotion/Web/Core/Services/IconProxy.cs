@@ -27,7 +27,7 @@ namespace Remotion.Web.Services
   /// </summary>
   public sealed class IconProxy
   {
-    private readonly string? _url;
+    private readonly string _url;
     private readonly string? _alternateText;
     private readonly string? _toolTip;
     private readonly string? _height;
@@ -66,12 +66,14 @@ namespace Remotion.Web.Services
       _width = width;
     }
 
+#nullable disable
     [Obsolete ("Default ctor for ASMX WSDL page.", true)]
     private IconProxy ()
     {
     }
+#nullable restore
 
-    public string? Url
+    public string Url
     {
       get { return _url; }
     }

@@ -264,7 +264,7 @@ namespace Remotion.Web.UI.Controls
         //  Not found, append to form grid instead of inserting at position of related form grid row
         if (relatedRow == null)
         {
-          s_log.Warn ("Could not find control '" + relatedRowID + "' inside FormGrid (HtmlTable) '" + _table.ID + "' in naming container '" + _table.NamingContainer.GetType().GetFullNameSafe() + "' on page '" + _table.Page.ToString() + "'.");
+          s_log.Warn ("Could not find control '" + relatedRowID + "' inside FormGrid (HtmlTable) '" + _table.ID + "' in naming container '" + _table.NamingContainer.GetType().GetFullNameSafe() + "' on page '" + _table.Page!.ToString() + "'.");
 
           //  append html table rows
           for (int i = 0; i < newFormGridRow.HtmlTableRows.Count; i++)
@@ -408,7 +408,7 @@ namespace Remotion.Web.UI.Controls
         {
           if (index < 0 || index >= InnerList.Count) 
             throw new ArgumentOutOfRangeException ("index");
-          return (FormGridRow)InnerList[index];
+          return (FormGridRow)InnerList[index]!;
         }
       }
 
@@ -416,11 +416,11 @@ namespace Remotion.Web.UI.Controls
       /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRowCollection/OnInsert/*' />
       protected override void OnInsert(int index, object? value)
       {
-        ArgumentUtility.CheckNotNull ("value", value);
+        ArgumentUtility.CheckNotNull ("value", value!);
         FormGridRow formGridRow = ArgumentUtility.CheckType<FormGridRow> ("value", value);
 
         if (formGridRow.HtmlTableRows[0].Parent != _ownerFormGrid.Table)
-          throw new InvalidOperationException ("The FormGridRow that attempted to be inserted at position " + index + " contains HtmlTableRows belonging to the table '" + formGridRow.HtmlTableRows[0].Parent.ID + "', but the FormGrid encapsulates the table '" +_ownerFormGrid.Table.ID + "'.");
+          throw new InvalidOperationException ("The FormGridRow that attempted to be inserted at position " + index + " contains HtmlTableRows belonging to the table '" + formGridRow.HtmlTableRows[0].Parent!.ID + "', but the FormGrid encapsulates the table '" +_ownerFormGrid.Table.ID + "'."); // TODO RM-8118: not null assertion
         formGridRow._formGrid = _ownerFormGrid;
         base.OnInsert (index, value);
       }
@@ -452,7 +452,7 @@ namespace Remotion.Web.UI.Controls
     protected class FormGridRow
     {
       /// <summary> The <see cref="FormGrid"/> instance this <c>FormGridRow</c> is a part of. </summary>
-      internal FormGrid? _formGrid;
+      internal FormGrid _formGrid = null!;
 
       /// <summary> The <see cref="HtmlTableRow"/> collection for this <c>FormGridRow</c>. </summary>
       private ReadOnlyHtmlTableRowCollection _htmlTableRows;
@@ -605,14 +605,14 @@ namespace Remotion.Web.UI.Controls
         if (   rowIndex >= _htmlTableRows.Count
             && rowIndex < 0)
         {
-          string tableID = _formGrid.Table.ID;
+          string? tableID = _formGrid.Table.ID;
           throw new ArgumentOutOfRangeException ("rowIndex", rowIndex, string.Format ("Error while formatting HtmlTable '{0}': The rowIndex exceeds the number of rows in the row-group being formatted. Rows in the row-group:", tableID, _htmlTableRows.Count));
         }
 
         if (   cellIndex >= _htmlTableRows[rowIndex].Cells.Count
             || cellIndex < 0)
         {
-          string tableID = _formGrid.Table.ID;
+          string? tableID = _formGrid.Table.ID;
           int htmlRowIndex = _formGrid.Table.Controls.IndexOf (_htmlTableRows[rowIndex]);
           throw new ArgumentOutOfRangeException ("cellIndex", cellIndex, string.Format ("Error while formatting HtmlTable '{0}', row {1}: The row has no cell at index {2}.", tableID, htmlRowIndex, cellIndex));
         }
@@ -719,7 +719,7 @@ namespace Remotion.Web.UI.Controls
       /// <summary>
       ///   The <see cref="FormGrid"/> instance of which this <c>FormGridRow</c> is a part of.
       /// </summary>
-      public FormGrid? FormGrid
+      public FormGrid FormGrid
       {
         get { return _formGrid; }
       }
@@ -909,7 +909,7 @@ namespace Remotion.Web.UI.Controls
         {
           if (index < 0 || index >= InnerList.Count) 
             throw new ArgumentOutOfRangeException ("index");
-          return (HtmlTableRow)InnerList[index];
+          return (HtmlTableRow)InnerList[index]!;
         }
       }
     }
@@ -1147,14 +1147,16 @@ namespace Remotion.Web.UI.Controls
           }
           else
           {
+            // TODO RM-8118: not null assertion
             //  Not supported format
-            s_log.Warn ("FormGridManager '" + UniqueID + "' on page '" + Page.ToString() + "' received a resource with an invalid key '" + key + "'. Required format: 'tableUniqueID:controlUniqueID:property'.");
+            s_log.Warn ("FormGridManager '" + UniqueID + "' on page '" + Page!.ToString() + "' received a resource with an invalid key '" + key + "'. Required format: 'tableUniqueID:controlUniqueID:property'.");
           }
         }
         else
         {
+          // TODO RM-8118: not null assertion
           //  Invalid form grid
-          s_log.Warn ("FormGrid '" + tableID + "' is not managed by FormGridManager '" + UniqueID + "' on page '" + Page.ToString() + "'.");
+          s_log.Warn ("FormGrid '" + tableID + "' is not managed by FormGridManager '" + UniqueID + "' on page '" + Page!.ToString() + "'.");
         }
       }
 
@@ -1165,16 +1167,16 @@ namespace Remotion.Web.UI.Controls
         string tableID = (string)formGridEntry.Key;
         var formGrid = _formGrids[tableID];
       
-        Hashtable? controls = (Hashtable?)formGridEntry.Value;
+        Hashtable controls = (Hashtable)formGridEntry.Value!; // TODO RM-8118: not null assertion
 
         foreach (DictionaryEntry controlEntry in controls)
         {
           string controlID = (string)controlEntry.Key;
-          Control control = formGrid.Table.FindControl (controlID);
+          Control? control = formGrid.Table.FindControl (controlID);
 
           if (control != null)
           {
-            IDictionary? controlValues = (IDictionary?) controlEntry.Value;
+            IDictionary controlValues = (IDictionary) controlEntry.Value!; // TODO RM-8118: not null assertion
 
             //  Pass the values to the control
             IResourceDispatchTarget? resourceDispatchTarget = control as IResourceDispatchTarget;
@@ -1219,7 +1221,7 @@ namespace Remotion.Web.UI.Controls
           else
           {
             //  Invalid control
-            s_log.Warn ("FormGrid '" + tableID + "' in naming container '" + NamingContainer.GetType().GetFullNameSafe() + "' on page '" + Page.ToString() + "' does not contain a control with UniqueID '" + controlID + "'.");
+            s_log.Warn ("FormGrid '" + tableID + "' in naming container '" + NamingContainer.GetType().GetFullNameSafe() + "' on page '" + Page!.ToString() + "' does not contain a control with UniqueID '" + controlID + "'."); // TODO RM-8118: not null assertion
           }
         }
       }
@@ -1271,7 +1273,7 @@ namespace Remotion.Web.UI.Controls
       }
     }
 
-    private void NamingContainer_Load (object sender, EventArgs e)
+    private void NamingContainer_Load (object? sender, EventArgs e)
     {
       EnsureFormGridListPopulated();
     }
@@ -1280,9 +1282,9 @@ namespace Remotion.Web.UI.Controls
     ///   Calls <see cref="EnsureTransformationStep(FormGrid,TransformationStep)"/> with 
     ///   <see cref="TransformationStep.PreLoadViewStateTransformationCompleted"/>.
     /// </summary>
-    private void Table_Load (object sender, EventArgs e)
+    private void Table_Load (object? sender, EventArgs e)
     {
-      var formGrid = GetFormGrid ((HtmlTable) sender);
+      var formGrid = GetFormGrid ((HtmlTable) sender!); // TODO RM-8118: not null assertion
       EnsureTransformationStep (formGrid, TransformationStep.PreLoadViewStateTransformationCompleted);
     }
 
@@ -1298,11 +1300,11 @@ namespace Remotion.Web.UI.Controls
     ///   Calls <see cref="EnsureTransformationStep(FormGrid,TransformationStep)"/> with 
     ///   <see cref="TransformationStep.PostValidationTransformationCompleted"/>.
     /// </summary>
-    private void Table_PreRender (object sender, EventArgs e)
+    private void Table_PreRender (object? sender, EventArgs e)
     {
-      var formGrid = GetFormGrid ((HtmlTable) sender);
+      var formGrid = GetFormGrid ((HtmlTable) sender!); // TODO RM-8118: notnull assertion
       EnsureTransformationStep (formGrid, TransformationStep.PostValidationTransformationCompleted);
-      ((HtmlTable) sender).SetRenderMethodDelegate (Table_Render);
+      ((HtmlTable) sender!).SetRenderMethodDelegate (Table_Render);
     }
 
     private void Table_Render (HtmlTextWriter writer, Control table)
@@ -1315,7 +1317,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> This member overrides <see cref="Control.LoadViewState"/>. </summary>
-    protected override void LoadViewState (object savedState)
+    protected override void LoadViewState (object? savedState)
     {
       //  Get view state for the form grid manager
 
@@ -1323,31 +1325,31 @@ namespace Remotion.Web.UI.Controls
       {
         base.LoadViewState (savedState);
   
-        object labelsColumn = ViewState[c_viewStateIDLabelsColumn];
+        object? labelsColumn = ViewState[c_viewStateIDLabelsColumn];
         if (labelsColumn != null)
           _labelsColumn = (int)labelsColumn;
 
-        object controlsColumn = ViewState[c_viewStateIDControlsColumn];
+        object? controlsColumn = ViewState[c_viewStateIDControlsColumn];
         if (controlsColumn != null)
           _controlsColumn = (int)controlsColumn;
 
-        object formGridSuffix = ViewState[c_viewStateIDFormGridSuffix];
+        object? formGridSuffix = ViewState[c_viewStateIDFormGridSuffix];
         if (formGridSuffix != null)
           _formGridSuffix = (string)formGridSuffix;
 
-        object showValidationMarkers = ViewState[c_viewStateIDShowValidationMarkers];
+        object? showValidationMarkers = ViewState[c_viewStateIDShowValidationMarkers];
         if (showValidationMarkers != null)
           _showValidationMarkers = (bool)showValidationMarkers;
 
-        object showRequiredMarkers = ViewState[c_viewStateIDShowRequiredMarkers];
+        object? showRequiredMarkers = ViewState[c_viewStateIDShowRequiredMarkers];
         if (showRequiredMarkers != null)
           _showRequiredMarkers = (bool)showRequiredMarkers;
 
-        object showHelpProviders = ViewState[c_viewStateIDHelpProviders];
+        object? showHelpProviders = ViewState[c_viewStateIDHelpProviders];
         if (showHelpProviders != null)
           _showHelpProviders = (bool)showHelpProviders;
 
-        object validatorVisibility = ViewState[c_viewStateIDValidatorVisibility];
+        object? validatorVisibility = ViewState[c_viewStateIDValidatorVisibility];
         if (validatorVisibility != null)
           _validatorVisibility = (ValidatorVisibility)validatorVisibility;
       }
@@ -1359,7 +1361,7 @@ namespace Remotion.Web.UI.Controls
 
       //  Restore the view state to the form grids
 
-      Hashtable formGridViewStates = (Hashtable) ViewState[c_viewStateIDFormGrids];
+      Hashtable? formGridViewStates = (Hashtable?) ViewState[c_viewStateIDFormGrids];
 
       if (formGridViewStates != null)
       {
@@ -1551,7 +1553,7 @@ namespace Remotion.Web.UI.Controls
 
     private bool HasContents (HtmlTableCell? cell)
     {
-      if (cell.Controls.Count == 0)
+      if (cell!.Controls.Count == 0) // TODO RM-8118: return false on null?
         return false;
     
       if (cell.Controls.Count > 1)
@@ -1583,8 +1585,8 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("dataRow", dataRow);
       CheckFormGridRowType ("dataRow", dataRow, FormGridRowType.DataRow);
-      if (dataRow.ControlsCell == null)
-        return;
+
+      Assertion.IsNotNull (dataRow.ControlsCell, "dataRow.ControlsCell must not be null.");
 
       for (int i = 0; i < dataRow.ControlsCell.Controls.Count; i++)
       {
@@ -1621,8 +1623,8 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("dataRow", dataRow);
       CheckFormGridRowType ("dataRow", dataRow, FormGridRowType.DataRow);
-      if (dataRow.ControlsCell == null)
-        return true;
+
+      Assertion.IsNotNull (dataRow.ControlsCell, "dataRow.ControlsCell must not be null.");
 
       dataRow.ValidationMarker = null;
       ArrayList validationErrorList = new ArrayList();
@@ -1660,8 +1662,8 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("dataRow", dataRow);
       CheckFormGridRowType ("dataRow", dataRow, FormGridRowType.DataRow);
-      if (dataRow.ControlsCell == null)
-        return;
+
+      Assertion.IsNotNull (dataRow.ControlsCell, "dataRow.ControlsCell must not be null.");
 
       dataRow.ValidationMarker = null;
       ArrayList validationErrorList = new ArrayList();
@@ -1689,11 +1691,14 @@ namespace Remotion.Web.UI.Controls
         if (baseValidator != null)
           controlToValidate = control.NamingContainer.FindControl (baseValidator.ControlToValidate);
         else if (iBaseValidator != null)
-          controlToValidate = control.NamingContainer.FindControl (iBaseValidator.ControlToValidate);
+          controlToValidate = control.NamingContainer.FindControl (iBaseValidator.ControlToValidate!); // TODO RM-8118: not null assertion
 
         //  Only visible controls: Build ValidationError
         if (controlToValidate == null || controlToValidate.Visible)
+        {
+          Assertion.IsNotNull (dataRow.LabelsCell, "dataRow.LabelsCell must not be null.");
           validationErrorList.Add (new ValidationError (controlToValidate, validator, dataRow.LabelsCell.Controls));
+        }
       }
 
       bool hasValidationErrors = validationErrorList.Count > 0;
@@ -1703,7 +1708,7 @@ namespace Remotion.Web.UI.Controls
         var toolTip = new StringBuilder(validationErrorList.Count * 50);
         for (int i = 0; i < validationErrorList.Count; i++)
         {
-          ValidationError? validationError = (ValidationError?) validationErrorList[i];
+          ValidationError validationError = (ValidationError) validationErrorList[i]!;
           //  Get validation message
           string validationMessage = validationError.ValidationMessage;
           //  Get tool tip, tool tip is validation message
@@ -1949,7 +1954,7 @@ namespace Remotion.Web.UI.Controls
         FormGridRow? row = formGrid.GetRowForID (id);
 
         if (row != null)
-          formGrid.GetRowForID (id).Visible = false;
+          formGrid.GetRowForID (id)!.Visible = false;
       }
     }
 
@@ -2146,6 +2151,8 @@ namespace Remotion.Web.UI.Controls
       ArgumentUtility.CheckNotNull ("titleRow", titleRow);
       CheckFormGridRowType ("titleRow", titleRow, FormGridRowType.TitleRow);
 
+      Assertion.IsNotNull (titleRow.LabelsCell, "titleRow.LabelsCell must not be null.");
+
       //  Adapt ColSpan for added markers column
       if (HasMarkersColumn)
         titleRow.LabelsCell.ColSpan++;
@@ -2167,7 +2174,9 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("subTitleRow", subTitleRow);
       CheckFormGridRowType ("subTitleRow", subTitleRow, FormGridRowType.SubTitleRow);
-   
+
+      Assertion.IsNotNull (subTitleRow.LabelsCell, "subTitleRow.LabelsCell must not be null.");
+
       //  Adapt ColSpan for added markers column
       if (HasMarkersColumn)
         subTitleRow.LabelsCell.ColSpan++;
@@ -2263,6 +2272,8 @@ namespace Remotion.Web.UI.Controls
 
     private static void WrapDataRowCellControlsWrapper (FormGridRow dataRow)
     {
+      Assertion.IsNotNull (dataRow.ControlsCell, "dataRow.ControlsCell must not be null.");
+
       dataRow.ControlsCell.Controls.AddAt (0, new LiteralControl ("<div>"));
       dataRow.ControlsCell.Controls.Add (new LiteralControl ("</div>"));
     }
@@ -2304,6 +2315,8 @@ namespace Remotion.Web.UI.Controls
       //  Control cell in second data row spans labels column to the end of the controls columns
       if (HasSeperateControlsRow(dataRow))
       {
+        Assertion.IsNotNull (dataRow.ControlsCell, "dataRow.ControlsCell must not be null.");
+
         int colSpan = dataRow.ControlsColumn - dataRow.LabelsColumn + 1;
         dataRow.ControlsCell.ColSpan = colSpan;
       }
@@ -2323,7 +2336,7 @@ namespace Remotion.Web.UI.Controls
       if (!HasMarkersColumn)
         return;
 
-      ArgumentUtility.CheckNotNull ("dataRow.MarkersCell", dataRow.MarkersCell);
+      ArgumentUtility.CheckNotNull ("dataRow.MarkersCell", dataRow.MarkersCell!);
 
       //  HelpProvider takes left-hand side in column
 
@@ -2364,6 +2377,9 @@ namespace Remotion.Web.UI.Controls
 
     private void CreateDataRowCellWrappers (FormGridRow dataRow)
     {
+      Assertion.IsNotNull (dataRow.ControlsCell, "dataRow.ControlsCell must not be null.");
+      Assertion.IsNotNull (dataRow.LabelsCell, "dataRow.LabelsCell must not be null.");
+
       dataRow.LabelsCell.Controls.AddAt (0, new LiteralControl("<div>"));
       dataRow.LabelsCell.Controls.Add (new LiteralControl("</div>"));
 
@@ -2380,7 +2396,8 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("dataRow", dataRow);
       CheckFormGridRowType ("dataRow", dataRow, FormGridRowType.DataRow);
-      ArgumentUtility.CheckNotNull ("dataRow.ControlsCell", dataRow.ControlsCell);
+
+      Assertion.IsNotNull (dataRow.ControlsCell, "dataRow.ControlsCell must not be null.");
 
       for (int i = 0; i < dataRow.ControlsCell.Controls.Count; i++)
       {
@@ -2418,8 +2435,8 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("dataRow", dataRow);
       CheckFormGridRowType ("dataRow", dataRow, FormGridRowType.DataRow);
-      ArgumentUtility.CheckNotNull ("dataRow.LabelsCell", dataRow.LabelsCell);
-      ArgumentUtility.CheckNotNull ("dataRow.ControlsCell", dataRow.ControlsCell);
+
+      Assertion.IsNotNull (dataRow.ControlsCell, "dataRow.ControlsCell must not be null.");
 
       //  Already has labels
       if (HasContents (dataRow.LabelsCell))
@@ -2468,6 +2485,8 @@ namespace Remotion.Web.UI.Controls
 
         //  Add seperator if already a control in the cell
 
+        Assertion.IsNotNull (dataRow.LabelsCell, "dataRow.LabelsCell must not be null.");
+
         if (HasContents (dataRow.LabelsCell))
         {
           LiteralControl seperator = new LiteralControl(", ");
@@ -2512,7 +2531,8 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("dataRow", dataRow);
       CheckFormGridRowType ("dataRow", dataRow, FormGridRowType.DataRow);
-      ArgumentUtility.CheckNotNull ("dataRow.ControlsCell", dataRow.ControlsCell);
+
+      Assertion.IsNotNull (dataRow.ControlsCell, "dataRow.ControlsCell must not be null.");
 
       ArrayList smartControls = new ArrayList();
       //ArrayList validators = new ArrayList();
@@ -2529,7 +2549,7 @@ namespace Remotion.Web.UI.Controls
     
       for (int i = 0; i < smartControls.Count; i++)
       {
-        ISmartControl? smartControl = (ISmartControl?) smartControls[i];
+        ISmartControl? smartControl = (ISmartControl) smartControls[i]!;
         if (!smartControl.Visible)
           continue;
 
@@ -2564,8 +2584,9 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("dataRow", dataRow);
       CheckFormGridRowType ("dataRow", dataRow, FormGridRowType.DataRow);
-      ArgumentUtility.CheckNotNull ("dataRow.LabelsCell", dataRow.LabelsCell);
-      ArgumentUtility.CheckNotNull ("dataRow.ControlsCell", dataRow.ControlsCell);
+
+      Assertion.IsNotNull (dataRow.LabelsCell, "dataRow.LabelsCell must not be null.");
+      Assertion.IsNotNull (dataRow.ControlsCell, "dataRow.ControlsCell must not be null.");
 
       for (int i = 0; i < dataRow.LabelsCell.Controls.Count; i++)
       {
@@ -2615,8 +2636,9 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("dataRow", dataRow);
       CheckFormGridRowType ("dataRow", dataRow, FormGridRowType.DataRow);
-      ArgumentUtility.CheckNotNull ("dataRow.LabelsCell", dataRow.LabelsCell);
-      ArgumentUtility.CheckNotNull ("dataRow.ControlsCell", dataRow.ControlsCell);
+
+      Assertion.IsNotNull (dataRow.ControlsCell, "dataRow.ControlsCell must not be null.");
+      Assertion.IsNotNull (dataRow.LabelsCell, "dataRow.LabelsCell must not be null.");
 
       dataRow.HelpProvider = GetHelpProviderFromControlsCollection (dataRow.LabelsCell.Controls)
                              ?? GetHelpProviderFromControlsCollection (dataRow.ControlsCell.Controls);
@@ -2649,8 +2671,9 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("dataRow", dataRow);
       CheckFormGridRowType ("dataRow", dataRow, FormGridRowType.DataRow);
-      ArgumentUtility.CheckNotNull ("dataRow.LabelsCell", dataRow.LabelsCell);
-      ArgumentUtility.CheckNotNull ("dataRow.ControlCell", dataRow.ControlsCell);
+
+      Assertion.IsNotNull (dataRow.ControlsCell, "dataRow.ControlsCell must not be null.");
+      Assertion.IsNotNull (dataRow.LabelsCell, "dataRow.LabelsCell must not be null.");
 
       if (dataRow.LabelsCell.Controls.Count == 1 && dataRow.ControlsCell.Controls.Count == 1)
       {
@@ -2685,7 +2708,8 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("dataRow", dataRow);
       CheckFormGridRowType ("dataRow", dataRow, FormGridRowType.DataRow);
-      ArgumentUtility.CheckNotNull ("dataRow.ControlsCell", dataRow.ControlsCell);
+
+      Assertion.IsNotNull (dataRow.ControlsCell, "dataRow.ControlsCell must not be null.");
 
       for (int idxControl = 0; idxControl < dataRow.ControlsCell.Controls.Count; idxControl++)
       {
@@ -2725,7 +2749,6 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("dataRow", dataRow);
       CheckFormGridRowType ("dataRow", dataRow, FormGridRowType.DataRow);
-      ArgumentUtility.CheckNotNull ("dataRow.ControlsCell", dataRow.ControlsCell);
 
       //  Validation message cell
 
@@ -2761,7 +2784,7 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("dataRow", dataRow);
       CheckFormGridRowType ("dataRow", dataRow, FormGridRowType.DataRow);
-      ArgumentUtility.CheckNotNull ("dataRow.ValidationMessagesCell", dataRow.ValidationMessagesCell);
+      ArgumentUtility.CheckNotNull ("dataRow.ValidationMessagesCell", dataRow.ValidationMessagesCell!);
 
       if (dataRow.ValidationErrors != null)
       {
@@ -2785,8 +2808,9 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("dataRow", dataRow);
       CheckFormGridRowType ("dataRow", dataRow, FormGridRowType.DataRow);
-      ArgumentUtility.CheckNotNull ("dataRow.LabelsCell", dataRow.LabelsCell);
-      ArgumentUtility.CheckNotNull ("dataRow.ControlsCell", dataRow.ControlsCell);
+
+      Assertion.IsNotNull (dataRow.ControlsCell, "dataRow.ControlsCell must not be null.");
+      Assertion.IsNotNull (dataRow.LabelsCell, "dataRow.LabelsCell must not be null.");
 
       //  Label Cell
       if (dataRow.LabelsCell.Attributes["class"] == null)
@@ -2863,7 +2887,8 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("dataRow", dataRow);
       CheckFormGridRowType ("dataRow", dataRow, FormGridRowType.DataRow);
-      ArgumentUtility.CheckNotNull ("dataRow.ControlsCell", dataRow.ControlsCell);
+
+      Assertion.IsNotNull (dataRow.ControlsCell, "dataRow.ControlsCell must not be null.");
 
       for (int idxControl = 0; idxControl < dataRow.ControlsCell.Controls.Count; idxControl++)
       {
@@ -2899,7 +2924,8 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("dataRow", dataRow);
       CheckFormGridRowType ("dataRow", dataRow, FormGridRowType.DataRow);
-      ArgumentUtility.CheckNotNull ("dataRow.ControlsCell", dataRow.ControlsCell);
+
+      Assertion.IsNotNull (dataRow.ControlsCell, "dataRow.ControlsCell must not be null.");
 
       for (int i = 0; i < dataRow.ControlsCell.Controls.Count; i++)
       {
@@ -2919,7 +2945,7 @@ namespace Remotion.Web.UI.Controls
     /// </summary>
     /// <param name="cell"> The <see cref="HtmlTableCell"/> to be used. </param>
     /// <param name="cssClass"> The <c>CSS-class</c> to assign. </param> 
-    protected void AssignCssClassToCell (HtmlTableCell? cell, string cssClass)
+    protected void AssignCssClassToCell (HtmlTableCell cell, string cssClass) // TODO RM-8118: arg checks
     {
       if (cell.Attributes["class"] == null || cell.Attributes["class"] == string.Empty)
       {
@@ -3159,7 +3185,7 @@ namespace Remotion.Web.UI.Controls
 
     private bool IsParentControl (HtmlTable table)
     {
-      for (Control current = Parent; current != null; current = current.Parent)
+      for (Control? current = Parent; current != null; current = current.Parent)
       {
         if (current == table)
           return true;
@@ -3216,7 +3242,7 @@ namespace Remotion.Web.UI.Controls
       }
       set
       {
-        if (Page.IsPostBack)  throw new InvalidOperationException ("Setting 'LabelsColumn' is only allowed during the initial page load");
+        if (Page!.IsPostBack)  throw new InvalidOperationException ("Setting 'LabelsColumn' is only allowed during the initial page load");
         if (value >= _controlsColumn) throw new ArgumentOutOfRangeException ("'LabelsColumn' must be lower than 'ControlsColumn'");
       
         _labelsColumn = value;
@@ -3239,7 +3265,7 @@ namespace Remotion.Web.UI.Controls
       }
       set
       {
-        if (Page.IsPostBack)  throw new InvalidOperationException ("Setting 'ControlsColumn' is only allowed during the initial page load");
+        if (Page!.IsPostBack)  throw new InvalidOperationException ("Setting 'ControlsColumn' is only allowed during the initial page load");
         if (value <= _labelsColumn) throw new ArgumentOutOfRangeException ("'ControlsColumn' must be higher than 'LabelsColumn'");
       
         _controlsColumn = value;

@@ -47,7 +47,7 @@ public interface IResourceDispatchTarget
   /// <param name="values">
   ///   An <b>IDictonary</b>: &lt;string key, string value&gt;.
   /// </param>
-  void Dispatch (IDictionary? values);
+  void Dispatch (IDictionary values);
 }
 
 }

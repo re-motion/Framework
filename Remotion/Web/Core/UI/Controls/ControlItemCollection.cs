@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Web.UI;
 using Remotion.Globalization;
@@ -32,9 +33,9 @@ namespace Remotion.Web.UI.Controls
   /// </summary>
   public class ControlItemCollection : CollectionBase
   {
-    private static readonly ILog s_log = LogManager.GetLogger (MethodBase.GetCurrentMethod().DeclaringType);
+    private static readonly ILog s_log = LogManager.GetLogger (MethodBase.GetCurrentMethod()!.DeclaringType!);
 
-    private IControl _ownerControl;
+    private IControl? _ownerControl;
     private readonly Type[] _supportedTypes;
 
     /// <summary> true if BeginEdit was called. </summary>
@@ -52,7 +53,7 @@ namespace Remotion.Web.UI.Controls
     ///   Supported types must implement <see cref="IControlItem"/>. 
     ///   Must not be <see langword="null"/> or contain items that are <see langword="null"/>.
     /// </param>
-    public ControlItemCollection (IControl ownerControl, Type[] supportedTypes)
+    public ControlItemCollection (IControl? ownerControl, Type[] supportedTypes)
     {
       ArgumentUtility.CheckNotNullOrItemsNull ("supportedTypes", supportedTypes);
       for (int i = 0; i < supportedTypes.Length; i++)
@@ -98,9 +99,9 @@ namespace Remotion.Web.UI.Controls
         CollectionChanged (this, e);
     }
 
-    protected virtual void ValidateNewValue (object? value)
+    protected virtual void ValidateNewValue ([NotNull]object? value)
     {
-      IControlItem controlItem = ArgumentUtility.CheckNotNullAndType<IControlItem> ("value", value);
+      IControlItem controlItem = ArgumentUtility.CheckNotNullAndType<IControlItem> ("value", value!);
 
       if (! IsSupportedType (controlItem))
         throw ArgumentUtility.CreateArgumentTypeException ("value", controlItem.GetType(), null);
@@ -113,13 +114,13 @@ namespace Remotion.Web.UI.Controls
       ValidateNewValue (value);
 
       base.OnInsert (index, value);
-      IControlItem? controlItem = (IControlItem?) value;
+      IControlItem controlItem = (IControlItem) value;
       controlItem.OwnerControl = _ownerControl;
     }
 
     protected override void OnInsertComplete (int index, object? value)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
+      ArgumentUtility.CheckNotNull ("value", value!);
 
       base.OnInsertComplete (index, value);
       _isChanged |= _isEditing;
@@ -131,14 +132,14 @@ namespace Remotion.Web.UI.Controls
       ValidateNewValue (newValue);
 
       base.OnSet (index, oldValue, newValue);
-      IControlItem? controlItem = (IControlItem?) newValue;
+      IControlItem controlItem = (IControlItem) newValue;
       controlItem.OwnerControl = _ownerControl;
     }
 
     protected override void OnSetComplete (int index, object? oldValue, object? newValue)
     {
-      ArgumentUtility.CheckNotNull ("oldValue", oldValue);
-      ArgumentUtility.CheckNotNull ("newValue", newValue);
+      ArgumentUtility.CheckNotNull ("oldValue", oldValue!);
+      ArgumentUtility.CheckNotNull ("newValue", newValue!);
 
       base.OnSetComplete (index, oldValue, newValue);
       _isChanged |= _isEditing;
@@ -148,7 +149,7 @@ namespace Remotion.Web.UI.Controls
 
     protected override void OnRemoveComplete (int index, object? value)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
+      ArgumentUtility.CheckNotNull ("value", value!);
 
       base.OnRemoveComplete (index, value);
       _isChanged |= _isEditing;
@@ -218,7 +219,7 @@ namespace Remotion.Web.UI.Controls
 
       for (int i = 0; i < InnerList.Count; i++)
       {
-        IControlItem? item = (IControlItem?) InnerList[i];
+        IControlItem item = (IControlItem) InnerList[i]!;
         if (item.ItemID == id)
           return item;
       }
@@ -232,7 +233,7 @@ namespace Remotion.Web.UI.Controls
     /// </remarks>
     public IControlItem this [int index]
     {
-      get { return (IControlItem) List[index]; }
+      get { return (IControlItem) List[index]!; }
       set { List[index] = value; }
     }
 
@@ -254,7 +255,7 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Gets or sets the control to which this collection belongs. </summary>
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     [Browsable (false)]
-    public IControl OwnerControl
+    public IControl? OwnerControl
     {
       get { return _ownerControl; }
       set
@@ -262,20 +263,20 @@ namespace Remotion.Web.UI.Controls
         _ownerControl = value;
         for (int i = 0; i < InnerList.Count; i++)
         {
-          IControlItem? controlItem = (IControlItem?) InnerList[i];
+          IControlItem controlItem = (IControlItem) InnerList[i]!;
           controlItem.OwnerControl = _ownerControl;
         }
       }
     }
 
-    public void Dispatch (IDictionary values, Control parent, string collectionName)
+    public void Dispatch (IDictionary values, Control? parent, string collectionName)
     {
       string parentID = string.Empty;
       string page = string.Empty;
       if (parent != null)
       {
         parentID = parent.UniqueID;
-        page = parent.Page.ToString();
+        page = parent.Page!.ToString()!;
       }
 
       foreach (DictionaryEntry entry in values)
@@ -284,7 +285,7 @@ namespace Remotion.Web.UI.Controls
 
         IControlItem? item = Find (id);
         if (item != null)
-          ResourceDispatcher.DispatchGeneric (item, (IDictionary?) entry.Value);
+          ResourceDispatcher.DispatchGeneric (item, (IDictionary) entry.Value!); // TODO: not null assertion
         else //  Invalid collection element
         {
           s_log.Debug (
@@ -301,7 +302,7 @@ namespace Remotion.Web.UI.Controls
       
       for (int i = 0; i < InnerList.Count; i++)
       {
-        IControlItem? controlItem = (IControlItem?) InnerList[i];
+        IControlItem controlItem = (IControlItem) InnerList[i]!;
         controlItem.LoadResources (resourceManager, globalizationService);
       }
     }

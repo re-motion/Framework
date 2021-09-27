@@ -66,7 +66,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
 
     private NameValueCollection BackupPostBackCollection ()
     {
-      var postBackCollection = Parameters.Page.GetPostBackCollection().Clone();
+      var postBackCollection = Assertion.IsNotNull (Parameters.Page.GetPostBackCollection()).Clone();
 
       if (_repostOptions.SuppressesRepost)
       {
@@ -76,7 +76,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
           postBackCollection.Remove (ControlHelper.PostEventArgumentID);
         }
         else
-          postBackCollection.Remove (_repostOptions.Sender.UniqueID);
+          postBackCollection.Remove (_repostOptions.Sender!.UniqueID); // TODO RM-8118: not null assertion
       }
       return postBackCollection;
     }

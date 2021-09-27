@@ -16,6 +16,7 @@
 // 
 using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.ServiceLocation;
@@ -79,7 +80,7 @@ namespace Remotion.Web.UI.Controls
 
       protected new TabbedMultiView Parent
       {
-        get { return (TabbedMultiView) base.Parent; }
+        get { return (TabbedMultiView) Assertion.IsNotNull (base.Parent, "The current control must have a parent."); }
       }
 
       protected override void OnActiveViewChanged (EventArgs e)
@@ -137,16 +138,16 @@ namespace Remotion.Web.UI.Controls
       {
         base.OnSelectionChanged();
 
-        TabbedMultiView? multiView = ((TabbedMultiView?) OwnerControl);
+        TabbedMultiView multiView = ((TabbedMultiView) OwnerControl!); // TODO RM-8118: not null assertion
         TabView? view = null;
         //  Cannot use FindControl without a Naming Container. Only during initialization phase of aspx.
         if (multiView.NamingContainer != null)
         {
           bool isPlaceHolderTab = _target == null;
-          if (isPlaceHolderTab)
+          if (isPlaceHolderTab) // TODO RM-8118: inline
             view = multiView._placeHolderTabView;
           else
-            view = (TabView) multiView.MultiViewInternal.FindControl (_target);
+            view = (TabView?) multiView.MultiViewInternal.FindControl (_target!);
         }
         else
         {
@@ -159,7 +160,7 @@ namespace Remotion.Web.UI.Controls
             }
           }
         }
-        multiView.SetActiveView (view);
+        multiView.SetActiveView (view!); // TODO RM-8118: not null assertion
       }
     }
 
@@ -168,17 +169,17 @@ namespace Remotion.Web.UI.Controls
 
     private bool _enableLazyLoading;
     private bool _isInitialized;
-    private WebTabStrip? _tabStrip;
-    private MultiView? _multiViewInternal;
-    private PlaceHolder? _topControl;
-    private PlaceHolder? _bottomControl;
+    private WebTabStrip _tabStrip;
+    private MultiView _multiViewInternal;
+    private PlaceHolder _topControl;
+    private PlaceHolder _bottomControl;
 
     private readonly Style _activeViewStyle;
     private readonly Style _topControlsStyle;
     private readonly Style _bottomControlsStyle;
 
     private TabView? _newActiveTabAfterRemove;
-    private EmptyTabView? _placeHolderTabView;
+    private EmptyTabView _placeHolderTabView;
 
     // construction and destruction
     public TabbedMultiView ()
@@ -191,6 +192,11 @@ namespace Remotion.Web.UI.Controls
 
     // methods and properties
 
+    [MemberNotNull (nameof (_tabStrip))]
+    [MemberNotNull (nameof (_multiViewInternal))]
+    [MemberNotNull (nameof (_topControl))]
+    [MemberNotNull (nameof (_bottomControl))]
+    [MemberNotNull (nameof (_placeHolderTabView))]
     private void CreateControls ()
     {
       _tabStrip = new WebTabStrip (this);
@@ -239,7 +245,7 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("writer", writer);
 
-      return new TabbedMultiViewRenderingContext (Page.Context, writer, this);
+      return new TabbedMultiViewRenderingContext (Page!.Context!, writer, this); // TODO RM-8118: not null assertion
     }
 
     protected override void OnLoad (EventArgs e)
@@ -256,7 +262,7 @@ namespace Remotion.Web.UI.Controls
 
       MultiViewTab tab = new MultiViewTab();
       tab.ItemID = view.ID + c_itemIDSuffix;
-      tab.Text = view.Title;
+      tab.Text = view.Title!; // TODO RM-8118: Title should not be null or empty
       tab.Icon = view.Icon;
       tab.Target = view.ID;
       _tabStrip.Tabs.Add (tab);
@@ -314,8 +320,8 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("view", view);
       MultiViewInternal.SetActiveView (view);
-      TabView? activeView = GetActiveView();
-      WebTab? nextActiveTab = _tabStrip.Tabs.Find (activeView.ID + c_itemIDSuffix);
+      TabView activeView = GetActiveView()!; // TODO RM-8118: not null assertion
+      WebTab nextActiveTab = _tabStrip.Tabs.Find (activeView.ID + c_itemIDSuffix)!; // TODO RM-8118: not null assertion
       nextActiveTab.IsSelected = true;
     }
 
@@ -362,7 +368,7 @@ namespace Remotion.Web.UI.Controls
       EnsureChildControls();
 
       var renderer = CreateRenderer();
-      renderer.Render (new TabbedMultiViewRenderingContext(Page.Context, writer, this));
+      renderer.Render (new TabbedMultiViewRenderingContext(Page!.Context!, writer, this)); // TODO RM-8118: not null assertion
     }
 
     protected string ActiveViewClientID
@@ -396,7 +402,7 @@ namespace Remotion.Web.UI.Controls
       remove { MultiViewInternal.ActiveViewChanged -= value; }
     }
 
-    protected WebTabStrip? TabStrip
+    protected WebTabStrip TabStrip
     {
       get
       {
@@ -405,7 +411,7 @@ namespace Remotion.Web.UI.Controls
       }
     }
 
-    protected MultiView? MultiViewInternal
+    protected MultiView MultiViewInternal
     {
       get
       {
@@ -517,17 +523,17 @@ namespace Remotion.Web.UI.Controls
       get { return ActiveViewClientID; }
     }
 
-    PlaceHolder? ITabbedMultiView.TopControl
+    PlaceHolder ITabbedMultiView.TopControl
     {
       get { return _topControl; }
     }
 
-    PlaceHolder? ITabbedMultiView.BottomControl
+    PlaceHolder ITabbedMultiView.BottomControl
     {
       get { return _bottomControl; }
     }
 
-    IWebTabStrip? ITabbedMultiView.TabStrip
+    IWebTabStrip ITabbedMultiView.TabStrip
     {
       get { return TabStrip; }
     }

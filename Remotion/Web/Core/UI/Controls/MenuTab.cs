@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Web.UI;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
@@ -30,10 +31,10 @@ namespace Remotion.Web.UI.Controls
 
   public abstract class MenuTab : WebTab, IMenuTab
   {
-    private SingleControlItemCollection? _command;
+    private SingleControlItemCollection _command;
     private MissingPermissionBehavior _missingPermissionBehavior;
 
-    protected MenuTab (string itemID, string text, IconInfo icon)
+    protected MenuTab (string itemID, string text, IconInfo? icon)
       : base (itemID, text, icon)
     {
       Initialize ();
@@ -44,6 +45,7 @@ namespace Remotion.Web.UI.Controls
       Initialize ();
     }
 
+    [MemberNotNull (nameof (_command))]
     private void Initialize ()
     {
       _command = new SingleControlItemCollection (new NavigationCommand (), new[] { typeof (NavigationCommand) });
@@ -61,7 +63,7 @@ namespace Remotion.Web.UI.Controls
 
     public NameValueCollection GetUrlParameters ()
     {
-      return TabbedMenu.GetUrlParameters (this);
+      return TabbedMenu!.GetUrlParameters (this); // TODO RM-8118: not null assertion
     }
 
     /// <summary> Gets or sets the <see cref="NavigationCommand"/> rendered for this menu item. </summary>
@@ -96,14 +98,14 @@ namespace Remotion.Web.UI.Controls
     {
       if (Command != null)
       {
-        Command = (NavigationCommand?) Activator.CreateInstance (Command.GetType ());
+        Command = (NavigationCommand) Activator.CreateInstance (Command.GetType ())!;
         Command.Type = CommandType.None;
       }
     }
 
     [PersistenceMode (PersistenceMode.InnerProperty)]
     [Browsable (false)]
-    public SingleControlItemCollection? PersistedCommand
+    public SingleControlItemCollection PersistedCommand
     {
       get { return _command; }
     }

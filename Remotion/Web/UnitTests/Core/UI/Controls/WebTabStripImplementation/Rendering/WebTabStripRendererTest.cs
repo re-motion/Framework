@@ -248,7 +248,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
       _tab2 = new Mock<IMenuTab>();
       _tab2.Setup (stub => stub.ItemID).Returns ("Tab2");
       _tab2.Setup (stub => stub.Text).Returns ("Third Tab");
-      _tab2.Setup (stub => stub.Icon).Returns ((IconInfo) null);
+      _tab2.Setup (stub => stub.Icon).Returns (new IconInfo ());
       _tab2.Setup (stub => stub.EvaluateEnabled()).Returns (true);
       _tab2.Setup (stub => stub.GetPostBackClientEvent()).Returns (_pageStub.Object.ClientScript.GetPostBackClientHyperlink (_webTabStrip.Object, _tab2.Object.ItemID));
       _tab2.Setup (stub => stub.GetActiveTab()).Returns (_tab2.Object);
@@ -258,7 +258,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
       _tab3 = new Mock<IMenuTab>();
       _tab3.Setup (stub => stub.ItemID).Returns ("Tab3");
       _tab3.Setup (stub => stub.Text).Returns ((string) null);
-      _tab3.Setup (stub => stub.Icon).Returns ((IconInfo) null);
+      _tab3.Setup (stub => stub.Icon).Returns (new IconInfo ());
       _tab3.Setup (stub => stub.EvaluateEnabled()).Returns (true);
       _tab3.Setup (stub => stub.GetPostBackClientEvent()).Returns (_pageStub.Object.ClientScript.GetPostBackClientHyperlink (_webTabStrip.Object, _tab3.Object.ItemID));
       _tab3.Setup (stub => stub.GetActiveTab()).Returns (_tab3.Object);

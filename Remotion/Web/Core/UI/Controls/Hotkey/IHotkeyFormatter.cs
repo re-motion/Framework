@@ -37,6 +37,6 @@ namespace Remotion.Web.UI.Controls.Hotkey
     /// <summary>
     /// Formats the <see cref="TextWithHotkey.Text"/> and offers optional HTML encoding.
     /// </summary>
-    string FormatText (TextWithHotkey? textWithHotkey, bool encode);
+    string FormatText (TextWithHotkey textWithHotkey, bool encode);
   }
 }

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Web;
 using System.Web.UI;
 using Remotion.Collections;
@@ -47,6 +48,8 @@ namespace Remotion.Web.ExecutionEngine
       _control = control;
     }
 
+    [MemberNotNull (nameof (_wxeHandler))]
+    [MemberNotNull (nameof (_currentPageFunction))]
     public virtual void Initialize (HttpContext context)
     {
       ArgumentUtility.CheckNotNull ("context", context);
@@ -66,11 +69,11 @@ namespace Remotion.Web.ExecutionEngine
       {
         throw new HttpException (string.Format ("No current WxeHandler found. Most likely cause of the exception: "
             + "The page '{0}' has been called directly instead of using a WXE Handler to invoke the associated WXE Function.",
-            _control.Page.GetType ()));
+            _control.Page!.GetType ()));
       }
 
 
-      WxeStep? executingStep = _wxeHandler.RootFunction.ExecutingStep;
+      WxeStep executingStep = _wxeHandler.RootFunction.ExecutingStep;
       if (executingStep is WxeUserControlStep)
       {
         _currentUserControlStep = (WxeUserControlStep) executingStep;
@@ -81,20 +84,20 @@ namespace Remotion.Web.ExecutionEngine
       {
         _currentUserControlStep = null;
         _currentUserControlFunction = null;
-        _currentPageStep = (WxePageStep?) executingStep;
+        _currentPageStep = (WxePageStep) executingStep;
       }
 
-      _currentPageFunction = WxeStep.GetFunction (_currentPageStep);
+      _currentPageFunction = WxeStep.GetFunction (_currentPageStep)!; // TODO RM-8118: not null assertion
     }
 
-    public WxeHandler? WxeHandler
+    public WxeHandler WxeHandler
     {
-      get { return _wxeHandler; }
+      get { return Assertion.IsNotNull (_wxeHandler, "_wxeHandler must be initialized before accessing it."); }
     }
 
-    public WxePageStep? CurrentPageStep
+    public WxePageStep CurrentPageStep
     {
-      get { return _currentPageStep; }
+      get { return Assertion.IsNotNull (_currentPageStep, "_currentPageStep must be initialized before accessing it."); }
     }
 
     public WxeUserControlStep? CurrentUserControlStep
@@ -102,31 +105,32 @@ namespace Remotion.Web.ExecutionEngine
       get { return _currentUserControlStep; }
     }
 
-    public WxeFunction? CurrentPageFunction
+    public WxeFunction CurrentPageFunction
     {
-      get { return _currentPageFunction; }
+      get { return Assertion.IsNotNull (_currentPageFunction, "_currentPageFunction must be initialized before accessing it."); }
     }
 
-    public WxeFunction? CurrentFunction
+    public WxeFunction CurrentFunction
     {
-      get { return _currentUserControlFunction ?? _currentPageFunction; }
+      get { return _currentUserControlFunction ?? CurrentPageFunction; }
     }
 
-    public NameObjectCollection? PageVariables
+    public NameObjectCollection PageVariables
     {
       get
       {
         Assertion.IsNotNull (_currentPageStep);
-        return _currentPageStep.Variables;
+        return Assertion.IsNotNull (_currentPageStep.Variables, "_currentPageStep.Variables must not be null.");
       }
     }
 
-    public NameObjectCollection? Variables
+    public NameObjectCollection Variables
     {
       get 
       {
         Assertion.IsNotNull (_currentPageStep);
-        return ((WxeStep?) _currentUserControlStep ?? _currentPageStep).Variables;
+        var variables = ((WxeStep?) _currentUserControlStep ?? _currentPageStep).Variables;
+        return Assertion.IsNotNull (variables, "Variables of _currentUserControlStep or _currentPageStep must not be null.");
       }
     }
 

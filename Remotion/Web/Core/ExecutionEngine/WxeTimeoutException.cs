@@ -30,7 +30,7 @@ public class WxeTimeoutException: WxeException
   {
   }
 
-  public WxeTimeoutException (string message, string functionToken, Exception innerException)
+  public WxeTimeoutException (string message, string functionToken, Exception? innerException)
     : base (message, innerException)
   {
     _functionToken = functionToken;

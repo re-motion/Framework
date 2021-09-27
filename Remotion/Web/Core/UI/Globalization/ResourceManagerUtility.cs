@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Web.UI;
 using JetBrains.Annotations;
 using Remotion.Globalization;
@@ -29,7 +30,7 @@ public static class ResourceManagerUtility
 {
   private const string c_globalResourceKeyPrefix = "$res:";
 
-  public static bool IsGlobalResourceKey (string? elementValue)
+  public static bool IsGlobalResourceKey ([NotNullWhen (true)]string? elementValue)
   {
     if (string.IsNullOrEmpty (elementValue))
       return false;
@@ -77,7 +78,7 @@ public static class ResourceManagerUtility
   ///   one resource manager is found, an <see cref="ResourceManagerSet"/> is returned.
   /// </returns>
   /// <remarks> Uses a cache for the individual <see cref="IResourceManager"/> instances. </remarks>
-  [NotNull]
+  [JetBrains.Annotations.NotNull]
   public static IResourceManager GetResourceManager ([CanBeNull]Control? control, bool alwaysIncludeParents)
   {
     if (control == null)

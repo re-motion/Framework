@@ -16,6 +16,7 @@
 // 
 using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Web.UI;
 using Remotion.Globalization;
 using Remotion.Security;
@@ -39,8 +40,8 @@ namespace Remotion.Web.UI.Controls
     private string _itemID = string.Empty;
     private string _category = string.Empty;
     private string _text = string.Empty;
-    private IconInfo? _icon;
-    private IconInfo? _disabledIcon;
+    private IconInfo _icon;
+    private IconInfo _disabledIcon;
     private WebMenuItemStyle _style = WebMenuItemStyle.IconAndText;
     private RequiredSelection _requiredSelection = RequiredSelection.Any;
     private bool _isDisabled;
@@ -59,7 +60,7 @@ namespace Remotion.Web.UI.Controls
     public WebMenuItem (
         string? itemID,
         string? category,
-        string text,
+        string? text,
         IconInfo icon,
         IconInfo disabledIcon,
         WebMenuItemStyle style,
@@ -67,9 +68,9 @@ namespace Remotion.Web.UI.Controls
         bool isDisabled,
         Command? command)
     {
-      _itemID = itemID;
-      _category = category;
-      _text = text;
+      ItemID = itemID;
+      Category = category;
+      Text = text;
       Icon = icon;
       DisabledIcon = disabledIcon;
       _style = style;
@@ -103,7 +104,7 @@ namespace Remotion.Web.UI.Controls
         Command.OwnerControl = OwnerControl;
     }
 
-    private void OwnerControl_PreRender (object sender, EventArgs e)
+    private void OwnerControl_PreRender (object? sender, EventArgs e)
     {
       PreRender();
     }
@@ -113,7 +114,7 @@ namespace Remotion.Web.UI.Controls
     {
     }
 
-    private void Command_Click (object sender, CommandClickEventArgs e)
+    private void Command_Click (object? sender, CommandClickEventArgs e)
     {
       OnClick();
     }
@@ -125,7 +126,7 @@ namespace Remotion.Web.UI.Controls
 
     /// <summary> Returns a <see cref="string"/> that represents this <see cref="WebMenuItem"/>. </summary>
     /// <returns> Returns the <see cref="Text"/>, followed by the class name of the instance. </returns>
-    public override string? ToString ()
+    public override string ToString ()
     {
       string displayName = ItemID;
       if (string.IsNullOrEmpty (displayName))
@@ -147,6 +148,7 @@ namespace Remotion.Web.UI.Controls
     [NotifyParentProperty (true)]
     [ParenthesizePropertyName (true)]
     [DefaultValue ("")]
+    [AllowNull]
     public string ItemID
     {
       get { return _itemID; }
@@ -158,6 +160,7 @@ namespace Remotion.Web.UI.Controls
     [Description ("The category to which this menu item belongs. Items of the same category will be grouped in the UI.")]
     [NotifyParentProperty (true)]
     [DefaultValue ("")]
+    [AllowNull]
     public string Category
     {
       get { return _category; }
@@ -169,6 +172,7 @@ namespace Remotion.Web.UI.Controls
     [Description ("The text displayed in this menu item. Use '-' for a separator menu item. The value will not be HTML encoded.")]
     [NotifyParentProperty (true)]
     [DefaultValue ("")]
+    [AllowNull]
     public string Text
     {
       get { return _text; }
@@ -191,9 +195,10 @@ namespace Remotion.Web.UI.Controls
     [Category ("Appearance")]
     [Description ("The image representing the menu item in the rendered page.")]
     [NotifyParentProperty (true)]
-    public IconInfo? Icon
+    public IconInfo Icon
     {
       get { return _icon; }
+      [MemberNotNull (nameof (_icon))]
       set
       {
         ArgumentUtility.CheckNotNull ("Icon", value);
@@ -220,9 +225,10 @@ namespace Remotion.Web.UI.Controls
     [Category ("Appearance")]
     [Description ("The image representing the disabled menu item in the rendered page.")]
     [NotifyParentProperty (true)]
-    public IconInfo? DisabledIcon
+    public IconInfo DisabledIcon
     {
       get { return _disabledIcon; }
+      [MemberNotNull (nameof (_disabledIcon))]
       set
       {
         ArgumentUtility.CheckNotNull ("DisabledIcon", value);
@@ -341,7 +347,7 @@ namespace Remotion.Web.UI.Controls
     {
       if (Command != null)
       {
-        Command = (Command?) Activator.CreateInstance (Command.GetType());
+        Command = (Command) Activator.CreateInstance (Command.GetType())!;
         Command.Type = CommandType.None;
       }
     }

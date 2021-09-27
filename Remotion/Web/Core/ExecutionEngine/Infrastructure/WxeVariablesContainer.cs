@@ -63,10 +63,10 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
                            {
                                Type = t,
                                TypeIndex = i,
-                               ParameterIndex = _.Attribute.Index,
+                               ParameterIndex = _.Attribute!.Index,
                                Property = _.Property,
                                ParameterDeclaration =
-                                   new WxeParameterDeclaration (_.Property.Name, _.Attribute.Required, _.Attribute.Direction, _.Property.PropertyType)
+                                   new WxeParameterDeclaration (_.Property.Name, _.Attribute.Required ?? false, _.Attribute.Direction, _.Property.PropertyType)
                            }))
           .OrderBy (_ => _.TypeIndex)
           .ThenBy (_ => _.ParameterIndex)
@@ -171,7 +171,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
         }
       }
 
-      return arguments.ToArray();
+      return arguments.ToArray()!; // TODO RM-8118: Use generic collection
     }
 
     /// <summary>
@@ -347,7 +347,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     internal void ReturnParametersToCaller ()
     {
-      NameObjectCollection? callerVariables = _function.ParentStep.Variables;
+      NameObjectCollection callerVariables = _function.ParentStep!.Variables!; // TODO RM-8118: not null assertion
 
       for (int i = 0; i < _parameterDeclarations.Length; ++i)
       {

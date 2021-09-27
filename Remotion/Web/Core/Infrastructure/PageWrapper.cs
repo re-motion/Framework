@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Principal;
 using System.Web;
 using System.Web.Caching;
@@ -32,7 +33,8 @@ namespace Remotion.Web.Infrastructure
   /// </summary>
   public class PageWrapper : ControlWrapper, IPage
   {
-    public static IPage? CastOrCreate (Page page)
+    [return: NotNullIfNotNull ("page")]
+    public static IPage? CastOrCreate (Page? page)
     {
       if (page == null)
         return null;

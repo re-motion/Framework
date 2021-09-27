@@ -34,8 +34,8 @@ namespace Remotion.Web.UI.Controls
     private string _itemID = string.Empty;
     private string _text = string.Empty;
     private string _toolTip = string.Empty;
-    private IconInfo? _icon;
-    private Badge _badge;
+    private IconInfo _icon;
+    private Badge? _badge;
     private string _menuID = string.Empty;
     private string _category = string.Empty;
 
@@ -77,6 +77,7 @@ namespace Remotion.Web.UI.Controls
     {
     }
 
+#nullable disable
     /// <summary> Initalizes a new instance. For VS.NET Designer use only. </summary>
     /// <exclude/>
     [EditorBrowsable (EditorBrowsableState.Never)]
@@ -85,6 +86,7 @@ namespace Remotion.Web.UI.Controls
       _children = new WebTreeNodeCollection (null);
       _children.SetParent (null, this);
     }
+#nullable restore
 
     //  /// <summary> Collapses the current node. </summary>
     //  public void Collapse()
@@ -167,7 +169,7 @@ namespace Remotion.Web.UI.Controls
         _selectDesired = value ? 1 : -1;
     }
 
-    public override string? ToString ()
+    public override string ToString ()
     {
       string displayName = ItemID;
       if (string.IsNullOrEmpty (displayName))
@@ -249,7 +251,7 @@ namespace Remotion.Web.UI.Controls
     [Category ("Appearance")]
     [Description ("The icon displayed in this tree node.")]
     [NotifyParentProperty (true)]
-    public virtual IconInfo? Icon
+    public virtual IconInfo Icon
     {
       get { return _icon; }
       set { _icon = value; }
@@ -261,7 +263,7 @@ namespace Remotion.Web.UI.Controls
     [Category ("Appearance")]
     [Description ("The badge displayed besides this tree node.")]
     [NotifyParentProperty (true)]
-    public virtual Badge Badge
+    public virtual Badge? Badge
     {
       get { return _badge; }
       set { _badge = value; }

@@ -45,14 +45,14 @@ public class WebTab: IWebTab, IControlStateManager
   private bool _isControlStateRestored;
 
   /// <summary> Initalizes a new instance. </summary>
-  public WebTab (string itemID, string text, IconInfo icon)
+  public WebTab (string itemID, string text, IconInfo? icon)
   {
     ArgumentUtility.CheckNotNull ("itemID", itemID);
     ArgumentUtility.CheckNotNull ("text", text);
 
     _itemID = itemID;
     _text = text;
-    _icon = icon;
+    _icon = icon ?? new IconInfo (string.Empty);
   }
 
   /// <summary> Initalizes a new instance. </summary>
@@ -63,7 +63,7 @@ public class WebTab: IWebTab, IControlStateManager
 
   /// <summary> Initalizes a new instance. </summary>
   public WebTab (string itemID, string text)
-    : this (itemID, text, new IconInfo (string.Empty))
+    : this (itemID, text, (IconInfo?) null)
   {
   }
 
@@ -80,7 +80,7 @@ public class WebTab: IWebTab, IControlStateManager
   {
   }
 
-  private void OwnerControl_PreRender(object sender, EventArgs e)
+  private void OwnerControl_PreRender(object? sender, EventArgs e)
   {
     PreRender();
   }
@@ -130,7 +130,7 @@ public class WebTab: IWebTab, IControlStateManager
   {
   }
 
-  public override string? ToString()
+  public override string ToString()
   {
     string displayName = ItemID;
     if (string.IsNullOrEmpty (displayName))
@@ -367,7 +367,7 @@ public class WebTab: IWebTab, IControlStateManager
       Icon.LoadResources (resourceManager);
   }
 
-  void IControlStateManager.LoadControlState (object state)
+  void IControlStateManager.LoadControlState (object? state)
   {
     if (_isControlStateRestored)
       return;
@@ -375,7 +375,7 @@ public class WebTab: IWebTab, IControlStateManager
     LoadControlState (state);
   }
 
-  protected virtual void LoadControlState (object state)
+  protected virtual void LoadControlState (object? state)
   {
     if (state == null)
       return;

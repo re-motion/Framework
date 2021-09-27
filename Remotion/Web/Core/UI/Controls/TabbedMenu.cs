@@ -110,7 +110,7 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("writer", writer);
 
-      return new TabbedMenuRenderingContext (Page.Context, writer, this);
+      return new TabbedMenuRenderingContext (Page!.Context!, writer, this); //TODO RM-8118: not null assertion
     }
 
     /// <summary> Overrides the <see cref="Control.CreateChildControls"/> method. </summary>
@@ -311,7 +311,7 @@ namespace Remotion.Web.UI.Controls
       if (selectedTabIDs.Length > 0)
       {
         string selectedMainMenuItemID = selectedTabIDs[0];
-        WebTab? selectedMainMenuItem = _mainMenuTabStrip.Tabs.Find (selectedMainMenuItemID);
+        WebTab selectedMainMenuItem = _mainMenuTabStrip.Tabs.Find (selectedMainMenuItemID)!;
         if (selectedMainMenuItem.IsVisible)
           selectedMainMenuItem.IsSelected = true;
       }
@@ -319,7 +319,7 @@ namespace Remotion.Web.UI.Controls
       if (selectedTabIDs.Length > 1)
       {
         string selectedSubMenuItemID = selectedTabIDs[1];
-        WebTab? selectedSubMenuItem = _subMenuTabStrip.Tabs.Find (selectedSubMenuItemID);
+        WebTab selectedSubMenuItem = _subMenuTabStrip.Tabs.Find (selectedSubMenuItemID)!;
         if (selectedSubMenuItem.IsVisible)
           selectedSubMenuItem.IsSelected = true;
       }
@@ -334,9 +334,9 @@ namespace Remotion.Web.UI.Controls
     {
       string[]? selection = null;
 
-      string value;
+      string? value;
       if (Page is IWxePage)
-        value = WxeContext.Current.QueryString[SelectionID];
+        value = WxeContext.Current!.QueryString[SelectionID]; // TODO RM-8118: not null assertion
       else
         value = Context.Request.QueryString[SelectionID];
       if (value != null)
@@ -386,9 +386,9 @@ namespace Remotion.Web.UI.Controls
     NameValueCollection INavigationControl.GetNavigationUrlParameters ()
     {
       if (_subMenuTabStrip.SelectedTab != null)
-        return GetUrlParameters (SelectedSubMenuTab);
+        return GetUrlParameters (SelectedSubMenuTab!);
       else if (_mainMenuTabStrip.SelectedTab != null)
-        return GetUrlParameters (SelectedMainMenuTab);
+        return GetUrlParameters (SelectedMainMenuTab!);
       return new NameValueCollection ();
     }
 
@@ -434,9 +434,9 @@ namespace Remotion.Web.UI.Controls
       ArgumentUtility.CheckNotNullOrEmpty ("url", url);
 
       if (_subMenuTabStrip.SelectedTab != null)
-        return FormatUrl (url, SelectedSubMenuTab);
+        return FormatUrl (url, SelectedSubMenuTab!);
       else if (_mainMenuTabStrip.SelectedTab != null)
-        return FormatUrl (url, SelectedMainMenuTab);
+        return FormatUrl (url, SelectedMainMenuTab!);
       else
         return url;
     }
@@ -450,7 +450,7 @@ namespace Remotion.Web.UI.Controls
     ///   Must not be <see langword="null"/>.
     /// </param>
     /// <returns> The <paramref name="url"/> extended with the parameters required by this <see cref="TabbedMenu"/>. </returns>
-    public string FormatUrl (string url, MenuTab? menuTab)
+    public string FormatUrl (string url, MenuTab menuTab)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("url", url);
 
@@ -497,7 +497,7 @@ namespace Remotion.Web.UI.Controls
 
     /// <summary> Fires the <see cref="EventCommandClick"/> event. </summary>
     /// <param name="tab"> The <see cref="MenuTab"/> whose command was clicked. </param>
-    protected virtual void OnEventCommandClick (MenuTab tab)
+    protected virtual void OnEventCommandClick (MenuTab? tab)
     {
       if (tab != null && tab.Command != null)
         tab.Command.OnClick ();
@@ -505,7 +505,7 @@ namespace Remotion.Web.UI.Controls
       MenuTabClickEventHandler? handler = (MenuTabClickEventHandler?) Events[s_eventCommandClickEvent];
       if (handler != null)
       {
-        MenuTabClickEventArgs e = new MenuTabClickEventArgs (tab);
+        MenuTabClickEventArgs e = new MenuTabClickEventArgs (tab!); // TODO RM-8118: not null assertion
         handler (this, e);
       }
     }
@@ -514,7 +514,7 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Find the <see cref="IResourceManager"/> for this control. </summary>
     protected virtual IResourceManager GetResourceManager ()
     {
-      return GetResourceManager (null);
+      return GetResourceManager (null!); // TODO RM-8118: What's happening here?
     }
 
     /// <summary> Find the <see cref="IResourceManager"/> for this control. </summary>
@@ -522,7 +522,7 @@ namespace Remotion.Web.UI.Controls
     ///   A type with the <see cref="MultiLingualResourcesAttribute"/> applied to it.
     ///   Typically an <b>enum</b> or the derived class itself.
     /// </param>
-    protected IResourceManager GetResourceManager (Type? localResourcesType)
+    protected IResourceManager GetResourceManager (Type localResourcesType)
     {
       //Remotion.Utilities.ArgumentUtility.CheckNotNull ("localResourcesType", localResourcesType);
 

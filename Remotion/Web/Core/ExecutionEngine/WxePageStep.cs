@@ -81,12 +81,12 @@ namespace Remotion.Web.ExecutionEngine
     /// <summary> The URL of the page to be displayed by this <see cref="WxePageStep"/>. </summary>
     public string Page
     {
-      get { return _page.GetResourcePath (Variables); }
+      get { return _page.GetResourcePath (Variables!); } // TODO RM-8118: not null assertion
     }
 
     /// <summary> Gets the currently executing <see cref="WxeStep"/>. </summary>
     /// <include file='..\doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/ExecutingStep/*' />
-    public override WxeStep? ExecutingStep
+    public override WxeStep ExecutingStep
     {
       get
       {
@@ -181,7 +181,7 @@ namespace Remotion.Web.ExecutionEngine
       ArgumentUtility.CheckNotNull ("subFunction", subFunction);
       ArgumentUtility.CheckNotNull ("sender", sender);
 
-      IWxePage wxePage = userControl.WxePage;
+      IWxePage wxePage = userControl.WxePage!;
       _wxeHandler = wxePage.WxeHandler;
 
       _userControlExecutor = new UserControlExecutor (this, userControl, subFunction, sender, usesEventTarget);
@@ -253,7 +253,7 @@ namespace Remotion.Web.ExecutionEngine
       get { return _postBackCollection; }
     }
 
-    public void SetPostBackCollection (NameValueCollection postBackCollection)
+    public void SetPostBackCollection (NameValueCollection? postBackCollection)
     {
       _postBackCollection = postBackCollection;
     }
@@ -284,7 +284,7 @@ namespace Remotion.Web.ExecutionEngine
       _isOutOfSequencePostBack = false;
     }
 
-    public override string? ToString ()
+    public override string ToString ()
     {
       return "WxePageStep: " + Page;
     }
@@ -293,8 +293,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <param name="state"> An <b>ASP.NET</b> viewstate object. </param>
     public void SavePageStateToPersistenceMedium (object state)
     {
-      MemoryStream outputStream;
-      if (s_viewStateSerializationBufferPool.TryTake (out outputStream))
+      if (s_viewStateSerializationBufferPool.TryTake (out var outputStream))
       {
         outputStream.Position = 0;
       }
@@ -327,7 +326,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <returns> An <b>ASP.NET</b> viewstate object. </returns>
     public object LoadPageStateFromPersistenceMedium ()
     {
-      using (var inputStream = new MemoryStream (_pageState, writable: false))
+      using (var inputStream = new MemoryStream (_pageState!, writable: false)) // TODO RM-8118: not null assertion
       {
         var serializer = new ObjectStateFormatter();
         return serializer.Deserialize (inputStream);
@@ -376,7 +375,7 @@ namespace Remotion.Web.ExecutionEngine
 
     WxeFunction IExecutionStateContext.CurrentFunction
     {
-      get { return ParentFunction; }
+      get { return ParentFunction ?? throw new WxeException ("There must be a function associated to the current step while executing."); }
     }
 
     IExecutionState IExecutionStateContext.ExecutionState

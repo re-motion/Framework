@@ -172,8 +172,10 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
       if (renderingContext.Control.Enabled)
         attributes.Add ("tabindex", isFirst ? "0" : "-1");
 
+      var command = !menuItem.IsDisabled
+          ? Assertion.IsNotNull (menuItem.Command, "Command must not be null for an enabled menu item.")
+          : new Command (CommandType.None) { OwnerControl = menuItem.OwnerControl };
 
-      var command = !menuItem.IsDisabled ? menuItem.Command : new Command (CommandType.None) { OwnerControl = menuItem.OwnerControl };
       if (string.IsNullOrEmpty (command.ItemID))
         command.ItemID = "MenuItem_" + index + "_Command";
 
@@ -213,7 +215,7 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
       WebMenuItem[] groupedListMenuItems = renderingContext.Control.MenuItems.GroupMenuItems (false);
 
       string key = renderingContext.Control.UniqueID + "_MenuItems";
-      if (!renderingContext.Control.Page.ClientScript.IsStartupScriptRegistered (typeof (ListMenuRenderer), key))
+      if (!renderingContext.Control.Page!.ClientScript.IsStartupScriptRegistered (typeof (ListMenuRenderer), key))
       {
         StringBuilder script = new StringBuilder();
         script.AppendFormat ("ListMenu.Initialize ('#{0}');", renderingContext.Control.ClientID).AppendLine();
@@ -271,7 +273,7 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
             // Clientside script creates an anchor with href="#" and onclick=function
             // The function will be executed using eval(...) and must therefor not end with a return statement.
             string argument = menuItemIndex.ToString();
-            href = renderingContext.Control.Page.ClientScript.GetPostBackClientHyperlink (renderingContext.Control, argument);
+            href = renderingContext.Control.Page!.ClientScript.GetPostBackClientHyperlink (renderingContext.Control, argument);
             href = ScriptUtility.EscapeClientScript (href);
             href = "'" + href + "'";
 

@@ -16,6 +16,7 @@
 // 
 using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Web.UI;
 
 namespace Remotion.Web.UI.Controls
@@ -26,7 +27,7 @@ namespace Remotion.Web.UI.Controls
   [TypeConverter (typeof (BadgeConverter))]
   public class Badge
   {
-    public static bool ShouldSerialize (Badge badge)
+    public static bool ShouldSerialize (Badge? badge)
     {
       if (badge == null)
         return false;
@@ -60,6 +61,7 @@ namespace Remotion.Web.UI.Controls
     public string Value
     {
       get { return _value; }
+      [MemberNotNull (nameof (_value))]
       set { _value = value ?? string.Empty; }
     }
 
@@ -72,6 +74,7 @@ namespace Remotion.Web.UI.Controls
     public string Description
     {
       get { return _description; }
+      [MemberNotNull (nameof (_description))]
       set { _description = value ?? string.Empty; }
     }
 

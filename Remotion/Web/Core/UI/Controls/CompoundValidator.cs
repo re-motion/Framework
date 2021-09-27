@@ -47,7 +47,7 @@ public abstract class CompoundValidator: WebControl, IBaseValidator
   protected override void OnInit(EventArgs e)
   {
     base.OnInit (e);
-    this.Page.Validators.Add (this);
+    this.Page!.Validators.Add (this);
   }
 
   public CompoundValidator (Type targetControlType)
@@ -90,7 +90,7 @@ public abstract class CompoundValidator: WebControl, IBaseValidator
     EnsureChildValidatorsCreated ();
     foreach (Control control in Controls)
     {
-      BaseValidator? validator = control as BaseValidator;
+      BaseValidator validator = (control as BaseValidator)!; // TODO RM-8105: validator must not be null before accessing its setters
       validator.EnableClientScript = this.EnableClientScript;
       validator.Display = this.Display;
       if (validator != null)
@@ -109,7 +109,7 @@ public abstract class CompoundValidator: WebControl, IBaseValidator
       return;
     }
 
-    Control controlToValidate = NamingContainer.FindControl (ControlToValidate);
+    Control? controlToValidate = NamingContainer.FindControl (ControlToValidate!);
     if (controlToValidate == null)
       return;
 

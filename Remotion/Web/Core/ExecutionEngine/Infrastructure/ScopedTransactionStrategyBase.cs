@@ -310,7 +310,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       bool isFatalExecutionException = innerException is WxeFatalExecutionException;
       if (!isFatalExecutionException)
       {
-        ExecuteAndWrapInnerException (_scope.Leave, innerException);
+        ExecuteAndWrapInnerException (_scope!.Leave, innerException); // TODO RM-8118: debug not null assertion
         _scope = null;
       }
     }
@@ -320,7 +320,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       bool isFatalExecutionException = innerException is WxeFatalExecutionException;
       if (!isFatalExecutionException)
       {
-        ExecuteAndWrapInnerException (_scope.Leave, innerException);
+        ExecuteAndWrapInnerException (_scope!.Leave, innerException); // TODO RM-8118: debug not null assertion
         _scope = null;
         ExecuteAndWrapInnerException (ReleaseTransaction, innerException);
       }

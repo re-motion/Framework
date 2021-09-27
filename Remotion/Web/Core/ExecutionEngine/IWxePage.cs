@@ -109,6 +109,6 @@ namespace Remotion.Web.ExecutionEngine
 
     /// <summary> Gets or sets the <see cref="WxeHandler"/> of the current request. </summary>
     [EditorBrowsable (EditorBrowsableState.Never)]
-    WxeHandler? WxeHandler { get; }
+    WxeHandler WxeHandler { get; }
   }
 }

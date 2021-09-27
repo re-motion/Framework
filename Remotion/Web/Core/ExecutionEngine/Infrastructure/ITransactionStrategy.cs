@@ -22,7 +22,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
   //TODO: Doc
   public interface ITransactionStrategy : INullObject
   {
-    TTransaction GetNativeTransaction<TTransaction> ();
+    TTransaction? GetNativeTransaction<TTransaction> ();
     void Commit ();
     void Rollback ();
     void EnsureCompatibility (IEnumerable objects);

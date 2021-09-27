@@ -95,7 +95,7 @@ namespace Remotion.Web.UI.Controls
 
       foreach (string attribute in renderingContext.Control.Attributes.Keys)
       {
-        string value = renderingContext.Control.Attributes[attribute];
+        string? value = renderingContext.Control.Attributes[attribute];
         if (!string.IsNullOrEmpty (value))
           renderingContext.Writer.AddAttribute (attribute, value);
       }
@@ -128,7 +128,7 @@ namespace Remotion.Web.UI.Controls
       ArgumentUtility.CheckNotNullOrEmpty ("errorMessageFormat", errorMessageFormat);
       ArgumentUtility.CheckNotNull ("args", args);
 
-      var page = control.Page.WrappedInstance;
+      var page = control.Page?.WrappedInstance;
       if (page != null && ScriptManager.GetCurrent (page) == null)
         throw new InvalidOperationException (string.Format (errorMessageFormat, args));
     }

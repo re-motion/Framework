@@ -134,7 +134,7 @@ public class FormGridLabel: Label, ISmartControl
     string associatedControlID = AssociatedControlID;
     if (associatedControlID.Length != 0)
     {
-      Control control = this.FindControl (associatedControlID);
+      Control? control = this.FindControl (associatedControlID);
       if (control == null)
         throw new HttpException(string.Format("Unable to find the control with id '{0}' that is associated with the Label '{1}'.", associatedControlID, ID));
       writer.AddAttribute("for", control.ClientID);

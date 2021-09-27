@@ -96,11 +96,11 @@ namespace Remotion.Web.UI.Controls
       set { _lazyContainer.IsLazyLoadingEnabled = value; }
     }
 
-    internal TabbedMultiView.MultiView ParentMultiView
+    internal TabbedMultiView.MultiView? ParentMultiView
     {
       get
       {
-        return (TabbedMultiView.MultiView) Parent;
+        return (TabbedMultiView.MultiView?) Parent;
       }
     }
 
@@ -147,7 +147,7 @@ namespace Remotion.Web.UI.Controls
 
     internal void OverrideVisible ()
     {
-      bool isActive = ParentMultiView.GetActiveView () == this;
+      bool isActive = ParentMultiView!.GetActiveView () == this; // TODO RM-8118: not null assertion
       if (Visible != isActive)
       {
         _overrideVisible = true;

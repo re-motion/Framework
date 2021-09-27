@@ -52,7 +52,7 @@ namespace Remotion.Web.UI.Controls
     private const string c_resourceKeyTabs = "Tabs";
 
     // statics
-    private static readonly ILog s_log = LogManager.GetLogger (MethodBase.GetCurrentMethod().DeclaringType);
+    private static readonly ILog s_log = LogManager.GetLogger (MethodBase.GetCurrentMethod()!.DeclaringType!);
     private static readonly object s_selectedIndexChangedEvent = new object();
     private static readonly object s_clickEvent = new object();
 
@@ -81,12 +81,12 @@ namespace Remotion.Web.UI.Controls
       _disabledTabStyle = new WebTabStyle();
     }
 
-    public WebTabStrip (IControl ownerControl, Type[] supportedTabTypes)
+    public WebTabStrip (IControl? ownerControl, Type[] supportedTabTypes)
         : this (new WebTabCollection (ownerControl, supportedTabTypes))
     {
     }
 
-    public WebTabStrip (IControl ownerControl)
+    public WebTabStrip (IControl? ownerControl)
         : this (ownerControl, new[] { typeof (WebTab) })
     {
     }
@@ -100,7 +100,7 @@ namespace Remotion.Web.UI.Controls
     {
       base.OnInit (e);
 
-      RegisterHtmlHeadContents (Page.Context, HtmlHeadAppender.Current);
+      RegisterHtmlHeadContents (Page!.Context!, HtmlHeadAppender.Current); // TODO RM-8118: not null assertions
 
       Page.RegisterRequiresControlState (this);
       Page.RegisterRequiresPostBack (this);
@@ -118,7 +118,7 @@ namespace Remotion.Web.UI.Controls
       if (postCollection[ControlHelper.PostEventSourceID] == UniqueID)
       {
         _tabToBeSelected = postCollection[ControlHelper.PostEventArgumentID];
-        ArgumentUtility.CheckNotNullOrEmpty ("postCollection[\"__EVENTARGUMENT\"]", _tabToBeSelected);
+        ArgumentUtility.CheckNotNullOrEmpty ("postCollection[\"__EVENTARGUMENT\"]", _tabToBeSelected!);
         if (_tabToBeSelected != _selectedItemID)
           return true;
       }
@@ -128,12 +128,12 @@ namespace Remotion.Web.UI.Controls
     void IPostBackDataHandler.RaisePostDataChangedEvent ()
     {
       EnsureTabsRestored();
-      HandleSelectionChangeEvent (_tabToBeSelected);
+      HandleSelectionChangeEvent (_tabToBeSelected!); // TODO RM-8118: debug not null
     }
 
     /// <summary> Handles the click event for a tab. </summary>
     /// <param name="itemID"> The id of the tab. </param>
-    private void HandleSelectionChangeEvent (string? itemID)
+    private void HandleSelectionChangeEvent (string itemID)
     {
       SetSelectedTab (itemID);
       OnSelectedIndexChanged();
@@ -186,20 +186,20 @@ namespace Remotion.Web.UI.Controls
       _isRestoringTabs = false;
     }
 
-    protected override void LoadControlState (object savedState)
+    protected override void LoadControlState (object? savedState)
     {
       if (savedState != null)
       {
-        object[] values = (object[]) savedState;
+        object?[] values = (object?[]) savedState;
         base.LoadControlState (values[0]);
         _tabsControlState = values[1];
-        _selectedItemID = (string) values[2];
+        _selectedItemID = (string?) values[2];
       }
     }
 
     protected override object? SaveControlState ()
     {
-      object[] values = new object[3];
+      object?[] values = new object?[3];
       values[0] = base.SaveControlState();
       values[1] = SaveTabsControlState (_tabs);
       values[2] = _selectedItemID;
@@ -213,7 +213,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Saves the settings of the  <paramref name="tabs"/> and returns this view state </summary>
-    private object SaveTabsControlState (WebTabCollection tabs)
+    private object? SaveTabsControlState (WebTabCollection tabs)
     {
       EnsureTabsRestored();
       return ((IControlStateManager) tabs).SaveControlState();
@@ -251,14 +251,12 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("writer", writer);
 
-      var builder = new WebTabRendererAdapterArrayBuilder (GetVisibleTabs ().ToArray ());
+      var builder = new WebTabRendererAdapterArrayBuilder (GetVisibleTabs ().ToArray (), TabStyle, SelectedTabStyle);
       builder.EnableSelectedTab = EnableSelectedTab;
-      builder.SelectedTabStyle = SelectedTabStyle;
-      builder.TabStyle = TabStyle;
       
       var renderers = builder.GetWebTabRenderers();
 
-      return new WebTabStripRenderingContext (Page.Context, writer, this, renderers);
+      return new WebTabStripRenderingContext (Page!.Context!, writer, this, renderers); // TODO RM-8118: not null assertion
     }
 
     private List<WebTab> GetVisibleTabs ()

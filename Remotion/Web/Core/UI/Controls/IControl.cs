@@ -113,7 +113,7 @@ namespace Remotion.Web.UI.Controls
     /// <returns>
     /// The programmatic identifier assigned to the control.
     /// </returns>
-    string ID { get; set; }
+    string? ID { get; set; }
 
     /// <summary>
     /// Gets or sets a value indicating whether themes apply to this control.
@@ -189,7 +189,7 @@ namespace Remotion.Web.UI.Controls
     /// <returns>
     /// A reference to the server control's parent control.
     /// </returns>
-    Control Parent { get; }
+    Control? Parent { get; }
 
     /// <summary>
     /// Gets the virtual directory of the <see cref="T:System.Web.UI.Page"/> or <see cref="T:System.Web.UI.UserControl"/> that contains the current server control.

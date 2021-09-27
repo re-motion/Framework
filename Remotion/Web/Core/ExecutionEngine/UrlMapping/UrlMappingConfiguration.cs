@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using System.Xml.Serialization;
 using Remotion.Reflection;
 using Remotion.Utilities;
@@ -85,22 +86,22 @@ public class UrlMappingConfiguration: ConfigurationBase
 public class UrlMappingEntry
 {
   private string? _id  = null;
-  private string? _functionTypeName = null;
-  private Type? _functionType = null;
-  private string? _resource = null;
+  private string _functionTypeName = null!;
+  private Type _functionType = null!;
+  private string _resource = null!;
 
   public UrlMappingEntry()
   {
   }
 
-  public UrlMappingEntry (string id, Type functionType, string resource)
+  public UrlMappingEntry (string? id, Type functionType, string resource)
   {
     ID = id;
     FunctionType = functionType;
     Resource = resource;
   }
 
-  public UrlMappingEntry (string id, string functionTypeName, string resource)
+  public UrlMappingEntry (string? id, string functionTypeName, string resource)
   {
     ID = id;
     FunctionTypeName = functionTypeName;
@@ -143,7 +144,7 @@ public class UrlMappingEntry
   ///   assembly name.
   /// </remarks>
   [XmlAttribute ("type")]
-  public string? FunctionTypeName
+  public string FunctionTypeName
   {
     get 
     {
@@ -152,7 +153,7 @@ public class UrlMappingEntry
     set
     {
       ArgumentUtility.CheckNotNullOrEmpty ("FunctionTypeName", value);
-      FunctionType = WebTypeUtility.GetType (value, true);
+      FunctionType = WebTypeUtility.GetType (value, true)!;
     }
   }
 
@@ -162,7 +163,7 @@ public class UrlMappingEntry
   /// </summary>
   /// <value> A <see cref="Type"/> derived from the <see cref="WxeFunction"/> type. </value>
   [XmlIgnore]
-  public Type? FunctionType
+  public Type FunctionType
   {
     get
     {
@@ -183,7 +184,7 @@ public class UrlMappingEntry
   /// </summary>
   /// <value> A virtual path, relative to the application root. Will always start with <c>~/</c>. </value>
   [XmlAttribute ("resource")]
-  public string? Resource
+  public string Resource
   {
     get 
     { 
@@ -192,7 +193,7 @@ public class UrlMappingEntry
     set 
     {
       ArgumentUtility.CheckNotNull ("Resource", value);
-      value = value.Trim();
+      value = value!.Trim();
       ArgumentUtility.CheckNotNullOrEmpty ("Resource", value);
       if (value.StartsWith ("/") || value.IndexOf (":") != -1)
         throw new ArgumentException (string.Format ("No absolute paths are allowed. Resource: '{0}'", value), "Resource");
@@ -211,16 +212,16 @@ public class UrlMappingCollection: CollectionBase
 
   public UrlMappingEntry this[int index]
   {
-    get { return (UrlMappingEntry) List[index]; }
+    get { return (UrlMappingEntry) List[index]!; } // TODO RM-8118: not null assertion
     set { List[index] = value; }
   }
 
-  public UrlMappingEntry this[string path]
+  public UrlMappingEntry? this[string path]
   {
     get { return Find (path); }
   }
 
-  public UrlMappingEntry this[Type functionType]
+  public UrlMappingEntry? this[Type functionType]
   {
     get { return Find (functionType); }
   }
@@ -238,8 +239,8 @@ public class UrlMappingCollection: CollectionBase
 
   protected virtual void ValidateNewValue (object? value)
   {
-    UrlMappingEntry entry = ArgumentUtility.CheckNotNullAndType<UrlMappingEntry> ("value", value);
-    base.OnValidate (value);
+    UrlMappingEntry entry = ArgumentUtility.CheckNotNullAndType<UrlMappingEntry> ("value", value!);
+    base.OnValidate (entry);
     if (Find (entry.Resource) != null)
       throw new ArgumentException (string.Format ("The mapping already contains an entry for the following resource: '{0}'.", entry.Resource), "value");
     if (FindByID (entry.ID) != null)
@@ -295,7 +296,7 @@ public class UrlMappingCollection: CollectionBase
   {
     if (string.IsNullOrEmpty (typeName))
       return null;
-    Type? type = WebTypeUtility.GetType (typeName, true);
+    Type type = WebTypeUtility.GetType (typeName, throwOnError: true)!;
     return FindResource (type);
   }
 

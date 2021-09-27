@@ -35,7 +35,7 @@ namespace Remotion.Web.Infrastructure
     /// <param name="ignoreCase"><see langword="true" /> if typeName is case-sensitive; otherwise, <see langword="false" />.</param>
     /// <returns>A Type object that represents the requested typeName parameter, or <see langword="null" />.</returns>
     [CanBeNull]
-    Type? GetType (string? typeName, bool throwOnError, bool ignoreCase);
+    Type? GetType (string typeName, bool throwOnError, bool ignoreCase);
 
     /// <summary>
     /// Compiles a file, given its virtual path, and returns the compiled type.

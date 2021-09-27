@@ -27,7 +27,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     {
     }
 
-    public abstract TTransaction GetNativeTransaction<TTransaction> ();
+    public abstract TTransaction? GetNativeTransaction<TTransaction> ();
     public abstract void Commit ();
     public abstract void Rollback ();
     public abstract void Reset ();

@@ -48,7 +48,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
       {
         NameValueCollection callerUrlParameters = _returnOptions.CallerUrlParameters.Clone();
         callerUrlParameters.Set (WxeHandler.Parameters.WxeFunctionToken, context.FunctionToken);
-        Parameters.SubFunction.ReturnUrl = context.GetPermanentUrl (ExecutionStateContext.CurrentFunction.GetType (), callerUrlParameters);
+        Parameters.SubFunction.ReturnUrl = context.GetPermanentUrl (ExecutionStateContext.CurrentFunction.GetType (), callerUrlParameters); // TODO RM-8118: not null assertion
       }
 
       ExecutionStateContext.SetExecutionState (

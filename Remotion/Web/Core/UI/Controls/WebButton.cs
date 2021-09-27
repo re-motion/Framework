@@ -17,9 +17,9 @@
 using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using JetBrains.Annotations;
 using CommonServiceLocator;
 using Remotion.Globalization;
 using Remotion.Security;
@@ -104,7 +104,7 @@ namespace Remotion.Web.UI.Controls
         // A more general fallback is not possible becasue of compatibility issues with ExecuteFunctionNoRepost
         bool isSuccessfulControl = !string.IsNullOrEmpty (postCollection[postDataKey]);
         if (isSuccessfulControl)
-          Page.RegisterRequiresRaiseEvent (this);
+          Page!.RegisterRequiresRaiseEvent (this);
       }
       return false;
     }
@@ -123,17 +123,18 @@ namespace Remotion.Web.UI.Controls
         Page.PreRenderComplete += Page_PreRenderComplete;
     }
 
-    private void Page_PreRenderComplete (object sender, EventArgs e)
+    private void Page_PreRenderComplete (object? sender, EventArgs e)
     {
       if (_requiresSynchronousPostBack)
       {
-        var scriptManager = ScriptManager.GetCurrent (base.Page);
+        var scriptManager = ScriptManager.GetCurrent (base.Page!);
         if (scriptManager != null)
           scriptManager.RegisterPostBackControl (this);
       }
       _hasPagePreRenderCompleted = true;
     }
 
+    [MemberNotNull (nameof (_textWithHotkey))]
     protected override void Render (HtmlTextWriter writer)
     {
       _textWithHotkey = HotkeyParser.Parse (Text);
@@ -143,12 +144,12 @@ namespace Remotion.Web.UI.Controls
 
     protected override void AddAttributesToRender (HtmlTextWriter writer)
     {
-      if (string.IsNullOrEmpty (AccessKey) && _textWithHotkey.Hotkey.HasValue)
+      if (string.IsNullOrEmpty (AccessKey) && _textWithHotkey!.Hotkey.HasValue) // TODO RM-8118: Debug assert _textWithHotkey not null
         writer.AddAttribute (HtmlTextWriterAttribute.Accesskey, HotkeyFormatter.FormatHotkey (_textWithHotkey));
 
       if (IsLegacyButtonEnabled)
       {
-        if (!string.IsNullOrEmpty (_textWithHotkey.Text))
+        if (!string.IsNullOrEmpty (_textWithHotkey!.Text))
           Text = _textWithHotkey.Text;
         else if (_icon != null && _icon.HasRenderingInformation)
           Text = _icon.AlternateText;
@@ -162,7 +163,7 @@ namespace Remotion.Web.UI.Controls
         string onClick = EnsureEndWithSemiColon (OnClientClick);
         if (HasAttributes)
         {
-          string onClickAttribute = Attributes["onclick"];
+          string? onClickAttribute = Attributes["onclick"];
           if (onClickAttribute != null)
           {
             onClick += EnsureEndWithSemiColon (onClickAttribute);
@@ -279,7 +280,7 @@ namespace Remotion.Web.UI.Controls
       }
     }
 
-    protected override void RenderContents (HtmlTextWriter? writer)
+    protected override void RenderContents (HtmlTextWriter writer)
     {
       EvaluateWaiConformity();
 
@@ -295,13 +296,13 @@ namespace Remotion.Web.UI.Controls
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassButtonBody);
       writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
-      var text = HotkeyFormatter.FormatText (_textWithHotkey, false);
+      var text = HotkeyFormatter.FormatText (_textWithHotkey!, false); // TODO RM-8118: not null assertion
 
       if (HasControls())
         base.RenderContents (writer);
       else
       {
-        bool hasIcon = _icon != null && _icon.HasRenderingInformation;
+        bool hasIcon = _icon.HasRenderingInformation;
         bool hasText = !string.IsNullOrEmpty (text);
         if (hasIcon)
         {
@@ -402,7 +403,7 @@ namespace Remotion.Web.UI.Controls
       set { _isDefaultButton = value; }
     }
 
-    [NotNull]
+    [JetBrains.Annotations.NotNull]
     private string EnsureEndWithSemiColon (string value)
     {
       if (!string.IsNullOrEmpty (value))

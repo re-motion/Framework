@@ -36,7 +36,7 @@ public class EmailAddressValidator : BaseValidator
 
   // methods and properties
 
-  protected override void AddAttributesToRender(HtmlTextWriter? writer)
+  protected override void AddAttributesToRender(HtmlTextWriter writer)
   {
     base.AddAttributesToRender(writer);
     if (base.RenderUplevel)

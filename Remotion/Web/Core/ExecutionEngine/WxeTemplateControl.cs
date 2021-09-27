@@ -24,8 +24,8 @@ namespace Remotion.Web.ExecutionEngine
 public interface IWxeTemplateControl: ITemplateControl
 {
   NameObjectCollection? Variables { get; }
-  WxePageStep? CurrentPageStep { get; }
-  WxeFunction? CurrentFunction { get; }
+  WxePageStep CurrentPageStep { get; }
+  WxeFunction CurrentFunction { get; }
 }
 
 }

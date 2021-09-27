@@ -44,14 +44,14 @@ public abstract class WxeStep
   ///   The first <see cref="WxeStep"/> of the specified <typeparamref name="T"/> or <see langword="null"/> if the 
   ///   neither the <paramref name="step"/> nor it's parent steps are of a matching type. 
   /// </returns>
-  protected static T? GetStepByType<T> (WxeStep step)
+  protected static T? GetStepByType<T> (WxeStep? step)
       where T : WxeStep
   {
     for (;
           step != null;
           step = step.ParentStep)
     {
-      T expectedStep = step as T;
+      T? expectedStep = step as T;
       if (expectedStep != null)
         return expectedStep;
     }
@@ -88,7 +88,7 @@ public abstract class WxeStep
   [EditorBrowsable (EditorBrowsableState.Never)]
   public void Execute ()
   {
-    Execute (WxeContext.Current);
+    Execute (WxeContext.Current!); // TODO RM-8118: not null assertion
   }
 
   /// <summary> Executes the <see cref="WxeStep"/>. </summary>
@@ -127,7 +127,7 @@ public abstract class WxeStep
 
   /// <summary> Gets the step currently being executed. </summary>
   /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/ExecutingStep/*' />
-  public virtual WxeStep? ExecutingStep 
+  public virtual WxeStep ExecutingStep
   {
     get { return this; }
   }
@@ -147,7 +147,7 @@ public abstract class WxeStep
 
   /// <summary> Gets the parent <see cref="WxeFunction"/> for this <see cref="WxeStep"/>. </summary>
   /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/ParentFunction/*' />
-  public WxeFunction ParentFunction
+  public WxeFunction? ParentFunction
   {
     get { return WxeStep.GetFunction (ParentStep); }
   }
@@ -161,7 +161,7 @@ public abstract class WxeStep
   {
     get 
     {
-      for (WxeStep step = this;
+      for (WxeStep? step = this;
            step != null;
            step = step.ParentStep)
       {

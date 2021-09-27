@@ -16,6 +16,7 @@
 // 
 using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text;
 using System.Web.UI;
@@ -55,13 +56,13 @@ namespace Remotion.Web.UI.Controls
         return true;
     }
 
-    private string? _url;
-    private string? _alternateText;
-    private string? _toolTip;
+    private string _url;
+    private string _alternateText = string.Empty;
+    private string _toolTip = string.Empty;
     private Unit _width;
     private Unit _height;
 
-    public IconInfo (string url, string alternateText, string toolTip, Unit width, Unit height)
+    public IconInfo (string url, string? alternateText, string? toolTip, Unit width, Unit height)
     {
       Url = url;
       AlternateText = alternateText;
@@ -75,7 +76,7 @@ namespace Remotion.Web.UI.Controls
     {
     }
 
-    public IconInfo (string url, string alternateText, string toolTip, string width, string height)
+    public IconInfo (string url, string? alternateText, string? toolTip, string width, string height)
         : this (url, alternateText, toolTip, new Unit (width), new Unit (height))
     {
     }
@@ -98,16 +99,19 @@ namespace Remotion.Web.UI.Controls
     [PersistenceMode (PersistenceMode.Attribute)]
     [DefaultValue ("")]
     [NotifyParentProperty (true)]
-    public string? Url
+    [AllowNull]
+    public string Url
     {
       get { return _url; }
+      [MemberNotNull (nameof (_url))]
       set { _url = value ?? string.Empty; }
     }
 
     [PersistenceMode (PersistenceMode.Attribute)]
     [DefaultValue ("")]
     [NotifyParentProperty (true)]
-    public string? AlternateText
+    [AllowNull]
+    public string AlternateText
     {
       get { return _alternateText; }
       set { _alternateText = value ?? string.Empty; }
@@ -116,7 +120,8 @@ namespace Remotion.Web.UI.Controls
     [PersistenceMode (PersistenceMode.Attribute)]
     [DefaultValue ("")]
     [NotifyParentProperty (true)]
-    public string? ToolTip
+    [AllowNull]
+    public string ToolTip
     {
       get { return _toolTip; }
       set { _toolTip = value ?? string.Empty; }
@@ -140,7 +145,7 @@ namespace Remotion.Web.UI.Controls
       set { _height = value; }
     }
 
-    public override string? ToString ()
+    public override string ToString ()
     {
       return _url;
     }
@@ -188,12 +193,12 @@ namespace Remotion.Web.UI.Controls
       _height = Unit.Empty;
     }
 
-    public void LoadResources (IResourceManager resourceManager)
+    public void LoadResources (IResourceManager? resourceManager)
     {
       if (resourceManager == null)
         return;
 
-      string key;
+      string? key;
       key = ResourceManagerUtility.GetGlobalResourceKey (Url);
       if (! string.IsNullOrEmpty (key))
         Url = resourceManager.GetString (key);
@@ -231,7 +236,7 @@ namespace Remotion.Web.UI.Controls
 
   public class IconInfoConverter : ExpandableObjectConverter
   {
-    public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)
+    public override bool CanConvertFrom (ITypeDescriptorContext? context, Type sourceType)
     {
       if (context == null // Requried to circumvent the Designer
           && sourceType == typeof (string))
@@ -239,7 +244,7 @@ namespace Remotion.Web.UI.Controls
       return base.CanConvertFrom (context, sourceType);
     }
 
-    public override bool CanConvertTo (ITypeDescriptorContext context, Type destinationType)
+    public override bool CanConvertTo (ITypeDescriptorContext? context, Type destinationType)
     {
       if (destinationType == typeof (string))
         return true;
@@ -247,7 +252,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     public override object? ConvertFrom
-        (ITypeDescriptorContext context, CultureInfo culture, object value)
+        (ITypeDescriptorContext context, CultureInfo culture, object? value)
     {
       if (value == null)
         return null;
@@ -273,7 +278,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     public override object? ConvertTo
-        (ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+        (ITypeDescriptorContext? context, CultureInfo culture, object? value, Type destinationType)
     {
       if (destinationType == typeof (string))
       {

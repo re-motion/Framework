@@ -92,8 +92,8 @@ namespace Remotion.Web.ExecutionEngine
       ArgumentUtility.CheckNotNull ("subFunction", subFunction);
       ArgumentUtility.CheckNotNull ("sender", sender);
 
-      IWxePage wxePage = userControl.WxePage;
-      _wxeHandler = wxePage.WxeHandler;
+      IWxePage? wxePage = userControl.WxePage;
+      _wxeHandler = wxePage!.WxeHandler;
 
       _userControlExecutor = new UserControlExecutor (this, userControl, subFunction, sender, usesEventTarget);
 
@@ -116,7 +116,7 @@ namespace Remotion.Web.ExecutionEngine
 
     public string UserControl
     {
-      get { return _userControl.GetResourcePath (Variables); }
+      get { return _userControl.GetResourcePath (Variables!); } // TODO RM-8118: not null assertion
     }
 
     public IUserControlExecutor UserControlExecutor
@@ -131,7 +131,7 @@ namespace Remotion.Web.ExecutionEngine
       _userControlExecutor = userControlExecutor;
     }
 
-    public override string? ToString ()
+    public override string ToString ()
     {
       return "WxeUserControlStep: " + UserControl;
     }

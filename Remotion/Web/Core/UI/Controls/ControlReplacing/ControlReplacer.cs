@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Specialized;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Web.UI;
 using Remotion.Utilities;
@@ -38,10 +39,10 @@ namespace Remotion.Web.UI.Controls.ControlReplacing
       _memberCaller = memberCaller;
     }
 
-    public IStateModificationStrategy? StateModificationStrategy
+    public IStateModificationStrategy StateModificationStrategy
     {
-      get { return _stateModificationStrategy; }
-      set { _stateModificationStrategy = ArgumentUtility.CheckNotNull ("value", value); }
+      get { return _stateModificationStrategy!; } // TODO RM-8118: inline assertion
+      set { _stateModificationStrategy = ArgumentUtility.CheckNotNull ("value", value!); }
     }
 
     public Control? WrappedControl
@@ -57,11 +58,11 @@ namespace Remotion.Web.UI.Controls.ControlReplacing
     protected override void OnInit (EventArgs e)
     {
       base.OnInit (e);
-      Page.RegisterRequiresControlState (this);
+      Page!.RegisterRequiresControlState (this);
       Page.RegisterRequiresPostBack (this);
     }
 
-    protected override void LoadControlState (object savedState)
+    protected override void LoadControlState (object? savedState)
     {
     }
 
@@ -70,7 +71,7 @@ namespace Remotion.Web.UI.Controls.ControlReplacing
       return "value";
     }
 
-    protected override void LoadViewState (object savedState)
+    protected override void LoadViewState (object? savedState)
     {
     }
 
@@ -103,7 +104,7 @@ namespace Remotion.Web.UI.Controls.ControlReplacing
         _hasLoaded = true;
         Assertion.IsNotNull (_controlToWrap);
 
-        _stateModificationStrategy.LoadControlState (this, _memberCaller);
+        _stateModificationStrategy!.LoadControlState (this, _memberCaller); // TODO: not null assertion
         _stateModificationStrategy.LoadViewState (this, _memberCaller);
 
         _memberCaller.SetControlState (_controlToWrap, ControlState.Constructed);
@@ -122,6 +123,7 @@ namespace Remotion.Web.UI.Controls.ControlReplacing
       return writer.ToString();
     }
 
+    [MemberNotNull (nameof (_stateModificationStrategy))]
     public void ReplaceAndWrap<T> (T controlToReplace, T controlToWrap, IStateModificationStrategy stateModificationStrategy)
         where T : Control, IReplaceableControl
     {
@@ -139,7 +141,7 @@ namespace Remotion.Web.UI.Controls.ControlReplacing
 
       _stateModificationStrategy = stateModificationStrategy;
 
-      Control parent = controlToReplace.Parent;
+      Control parent = controlToReplace.Parent!; // TODO: debug not null
       int index = parent.Controls.IndexOf (controlToReplace);
 
       //Mark parent collection as modifiable
@@ -153,7 +155,7 @@ namespace Remotion.Web.UI.Controls.ControlReplacing
 
       _memberCaller.InitRecursive (this, parent);
 
-      if (!parent.Page.IsPostBack)
+      if (!parent.Page!.IsPostBack)
       {
         _hasLoaded = true;
         Controls.Add (controlToWrap);

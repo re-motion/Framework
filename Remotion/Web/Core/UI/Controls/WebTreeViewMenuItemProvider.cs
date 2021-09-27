@@ -32,18 +32,18 @@ namespace Remotion.Web.UI.Controls
     {
     }
 
-    public virtual void OnMenuItemEventCommandClick (WebMenuItem menuItem, WebTreeNode node)
+    public virtual void OnMenuItemEventCommandClick (WebMenuItem? menuItem, WebTreeNode node)
     {
       if (menuItem != null && menuItem.Command != null)
         menuItem.Command.OnClick();
     }
 
-    public virtual void OnMenuItemWxeFunctionCommandClick (WebMenuItem menuItem, WebTreeNode node)
+    public virtual void OnMenuItemWxeFunctionCommandClick (WebMenuItem? menuItem, WebTreeNode node)
     {
       if (menuItem != null && menuItem.Command != null)
       {
         Command command = menuItem.Command;
-        Page page = node.TreeView.Page;
+        Page? page = node.TreeView!.Page; // TODO RM-8118: not null assertion
         if (page is IWxePage)
           command.ExecuteWxeFunction ((IWxePage) page, null);
         //else

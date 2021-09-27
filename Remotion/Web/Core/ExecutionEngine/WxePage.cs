@@ -126,7 +126,7 @@ namespace Remotion.Web.ExecutionEngine
     }
 
     /// <summary> Gets or sets the <see cref="WxeHandler"/> of the current request. </summary>
-    WxeHandler? IWxePage.WxeHandler
+    WxeHandler IWxePage.WxeHandler
     {
       get { return _wxePageInfo.WxeHandler; }
     }
@@ -140,7 +140,7 @@ namespace Remotion.Web.ExecutionEngine
       return _wxePageInfo.GetData (key);
     }
 
-    void IWindowStateManager.SetData (string key, object value)
+    void IWindowStateManager.SetData (string key, object? value)
     {
       _wxePageInfo.SetData (key, value);
     }
@@ -199,8 +199,8 @@ namespace Remotion.Web.ExecutionEngine
       if (state is Pair)
       {
         Pair pair = (Pair) state;
-        persister.ControlState = pair.First;
-        persister.ViewState = pair.Second;
+        persister.ControlState = pair.First!;
+        persister.ViewState = pair.Second!;
       }
       else
       {
@@ -223,12 +223,12 @@ namespace Remotion.Web.ExecutionEngine
 
     /// <summary> Gets the <see cref="WxePageStep"/> that called this <see cref="WxePage"/>. </summary>
     [Browsable (false)]
-    public WxePageStep? CurrentPageStep
+    public WxePageStep CurrentPageStep
     {
       get { return _wxePageInfo.CurrentPageStep; }
     }
 
-    WxePageStep? IWxeTemplateControl.CurrentPageStep
+    WxePageStep IWxeTemplateControl.CurrentPageStep
     {
       get { return _wxePageInfo.CurrentPageStep; }
     }
@@ -239,7 +239,7 @@ namespace Remotion.Web.ExecutionEngine
     ///   <see cref="WxeFunction"/>.
     /// </value>
     [Browsable (false)]
-    public WxeFunction? CurrentFunction
+    public WxeFunction CurrentFunction
     {
       get { return _wxePageInfo.CurrentPageFunction; }
     }
@@ -250,7 +250,7 @@ namespace Remotion.Web.ExecutionEngine
     ///   <see cref="WxeFunction"/>
     /// </value>
     [Browsable (false)]
-    public NameObjectCollection? Variables
+    public NameObjectCollection Variables
     {
       get { return _wxePageInfo.PageVariables; }
     }

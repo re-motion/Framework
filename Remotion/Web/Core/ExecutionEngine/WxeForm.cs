@@ -51,7 +51,7 @@ namespace Remotion.Web.ExecutionEngine
       while (htmlForm.Controls.Count > 0)
         newForm.Controls.Add (htmlForm.Controls[0]);
 
-      Control parent = htmlForm.Parent;
+      Control? parent = htmlForm.Parent;
       if (parent != null)
       {
         int htmlFormIndex = parent.Controls.IndexOf (htmlForm);
@@ -74,7 +74,7 @@ namespace Remotion.Web.ExecutionEngine
     protected override void OnInit (EventArgs e)
     {
       base.OnInit (e);
-      Page.RegisterRequiresPostBack (this);
+      Page!.RegisterRequiresPostBack (this);
     }
 
     /// <summary> Calls the <see cref="OnLoadPostData"/> method. </summary>
@@ -120,7 +120,7 @@ namespace Remotion.Web.ExecutionEngine
     {
       writer.WriteAttribute ("onreset", "return false;");
 
-      string action = WxeContext.Current.GetPath (WxeContext.Current.QueryString);
+      string action = WxeContext.Current!.GetPath (WxeContext.Current.QueryString); // TODO RM-8118: not null assertion
       writer.WriteAttribute ("action", action, true);
       Attributes.Remove ("action");
 
@@ -156,7 +156,7 @@ namespace Remotion.Web.ExecutionEngine
       {
         if (((Page.Request != null) && (Page.Request.Browser.EcmaScriptVersion.Major > 0)) && ((Page.Request.Browser.W3CDomVersion.Major > 0) && (DefaultButton.Length > 0)))
         {
-          Control defaultButton = FindControl (DefaultButton);
+          Control? defaultButton = FindControl (DefaultButton);
           if (defaultButton == null)
           {
             char[] chArray1 = new char[] { '$', ':' };
@@ -166,7 +166,7 @@ namespace Remotion.Web.ExecutionEngine
             }
           }
           if (!(defaultButton is IButtonControl))
-            throw new InvalidOperationException (string.Format ("The DefaultButton of '{0}' must be the ID of a control of type IButtonControl.", new object[] { ID }));
+            throw new InvalidOperationException (string.Format ("The DefaultButton of '{0}' must be the ID of a control of type IButtonControl.", new object?[] { ID }));
 
           //Page.ClientScript.RegisterDefaultButtonScript (defaultButton, writer, false);
           RegisterDefaultButtonScript (defaultButton, writer, false);
@@ -179,7 +179,7 @@ namespace Remotion.Web.ExecutionEngine
 
     protected override void Render (HtmlTextWriter writer)
     {
-      var scriptManager = ScriptManager.GetCurrent (Page.WrappedInstance);
+      var scriptManager = ScriptManager.GetCurrent (Page!.WrappedInstance); // TODO RM-8118: not null assertion
       if (!Remotion.Web.UI.HtmlHeadAppender.Current.HasAppended && (scriptManager == null || !scriptManager.IsInAsyncPostBack))
       {
         throw new WxeException ("The Remotion.Web.UI.Controls.HtmlHeadContents control is missing on the page. Please add this control to the 'head' section of the document or specify the runat=server attribute for the 'head' section to allow for an automatically generated HtmlHeadContents control.");
@@ -203,7 +203,7 @@ namespace Remotion.Web.ExecutionEngine
 
     private void RegisterDefaultButtonScript (Control button, HtmlTextWriter writer, bool useAddAttribute)
     {
-      string? dummy = Page.ClientScript.GetPostBackEventReference (new PostBackOptions (button));
+      string? dummy = Page!.ClientScript.GetPostBackEventReference (new PostBackOptions (button));
       string script = "javascript:return WebForm_FireDefaultButton(event, '" + button.ClientID + "')";
       if (useAddAttribute)
         writer.AddAttribute ("onkeypress", script);

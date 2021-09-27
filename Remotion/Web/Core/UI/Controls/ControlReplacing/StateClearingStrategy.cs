@@ -28,7 +28,7 @@ namespace Remotion.Web.UI.Controls.ControlReplacing
   {
     private class ViewStateSink : Control
     {
-      protected override void LoadViewState (object savedState)
+      protected override void LoadViewState (object? savedState)
       {
       }
     }

@@ -36,10 +36,11 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public override TransactionStrategyBase? OuterTransactionStrategy
     {
+      // TODO RM-8108: This property should return the NullTransactionStrategy instance.
       get { return null; }
     }
 
-    public override TTransaction GetNativeTransaction<TTransaction> ()
+    public override TTransaction? GetNativeTransaction<TTransaction> () where TTransaction : default
     {
       return default (TTransaction);
     }

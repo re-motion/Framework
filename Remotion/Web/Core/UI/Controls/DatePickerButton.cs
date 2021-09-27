@@ -64,9 +64,9 @@ namespace Remotion.Web.UI.Controls
       renderer.Render (CreateRenderingContext(writer));
     }
 
-    IControl IDatePickerButton.Parent
+    IControl? IDatePickerButton.Parent
     {
-      get { return (IControl) Parent; }
+      get { return (IControl?) Parent; }
     }
 
     public new IPage? Page
@@ -91,7 +91,7 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("writer", writer);
 
-      return new DatePickerButtonRenderingContext (Page.Context, writer, this);
+      return new DatePickerButtonRenderingContext (Page!.Context!, writer, this); // TODO RM-8118: not null assertions
     }
 
     string IControlWithDiagnosticMetadata.ControlType

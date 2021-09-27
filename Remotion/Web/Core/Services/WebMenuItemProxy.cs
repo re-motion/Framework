@@ -38,7 +38,7 @@ namespace Remotion.Web.Services
       return new WebMenuItemProxy (id, isDisabled);
     }
 
-    public string? ID { get; }
+    public string ID { get; }
 
     public bool IsDisabled { get; }
 
@@ -48,9 +48,11 @@ namespace Remotion.Web.Services
       IsDisabled = isDisabled;
     }
 
+#nullable disable
     [Obsolete ("Default ctor for ASMX WSDL page.", true)]
     private WebMenuItemProxy ()
     {
     }
+#nullable restore
   }
 }

@@ -107,7 +107,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       ArgumentUtility.CheckNotNull ("sender", sender);
       ArgumentUtility.CheckNotNull ("options", options);
 
-      string functionToken = WxeContext.Current.GetFunctionTokenForExternalFunction (function, options.ReturningPostback);
+      string functionToken = WxeContext.Current!.GetFunctionTokenForExternalFunction (function, options.ReturningPostback); // TODO RM-8118: not null assertion
 
       string href = WxeContext.Current.GetDestinationUrlForExternalFunction (function, functionToken, options.PermaUrlOptions);
 
@@ -134,7 +134,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     {
       get
       {
-        NameValueCollection postBackCollection = _page.GetPostBackCollection();
+        NameValueCollection? postBackCollection = _page.GetPostBackCollection();
         if (postBackCollection == null)
         {
           if (_page.IsPostBack)
@@ -155,7 +155,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
       if (UsesEventTarget)
       {
-        NameValueCollection postBackCollection = _page.GetPostBackCollection();
+        NameValueCollection? postBackCollection = _page.GetPostBackCollection();
         if (postBackCollection == null)
           throw new InvalidOperationException ("The IWxePage has no PostBackCollection even though this is a post back.");
 

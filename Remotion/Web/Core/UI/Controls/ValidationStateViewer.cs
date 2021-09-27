@@ -98,7 +98,7 @@ public class ValidationStateViewer : WebControl, IControl
       FormGridManager? formGridManager = childControl as FormGridManager;
 
       if (formGridManager != null)
-        _formGridManagers.Add(formGridManager);
+        _formGridManagers!.Add(formGridManager); // TODO RM-8118: Debug not null assertion
 
       bool isChildNamingContainer = childControl is INamingContainer;
       PopulateFormGridManagerList (childControl);
@@ -158,7 +158,7 @@ public class ValidationStateViewer : WebControl, IControl
   protected virtual void RenderValidationNotice (HtmlTextWriter writer)
   {
     bool isPageValid = true;
-    for (int i = 0; i < Page.Validators.Count; i++)
+    for (int i = 0; i < Page!.Validators.Count; i++)
     {
       IValidator validator = (IValidator) Page.Validators[i];
       if (! validator.IsValid)
@@ -201,7 +201,7 @@ public class ValidationStateViewer : WebControl, IControl
     writer.RenderBeginTag (HtmlTextWriterTag.Table);
     for (int idxFormGridManagers = 0; idxFormGridManagers < _formGridManagers.Count; idxFormGridManagers++)
     {
-      FormGridManager? formGridManager = (FormGridManager?) _formGridManagers[idxFormGridManagers];
+      FormGridManager formGridManager = (FormGridManager) _formGridManagers[idxFormGridManagers]!; // TODO RM-8118: not null assertion
       ValidationError[] validationErrors = formGridManager.GetValidationErrors();
       //  Get validation messages
       for (int idxErrors = 0; idxErrors < validationErrors.Length; idxErrors++)

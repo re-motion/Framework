@@ -239,7 +239,7 @@ namespace Remotion.Web.Infrastructure
     /// </param><param name="registerForEventValidation">true to register the event reference for validation; otherwise, false.
     /// </param><exception cref="T:System.ArgumentNullException">The specified <see cref="T:System.Web.UI.Control"/> is null.
     /// </exception>
-    public string GetPostBackEventReference (IControl control, string argument, bool registerForEventValidation)
+    public string GetPostBackEventReference (IControl control, string? argument, bool registerForEventValidation)
     {
       ArgumentUtility.CheckNotNullAndType<Control> ("control", control);
       return _clientScriptManager.GetPostBackEventReference ((Control) control, argument, registerForEventValidation);

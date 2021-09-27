@@ -24,7 +24,7 @@ namespace Remotion.Web.UI.Controls
   {
     private MainMenuTab? _parent;
 
-    public SubMenuTab (string itemID, string text, IconInfo icon)
+    public SubMenuTab (string itemID, string text, IconInfo? icon)
         : base (itemID , text, icon)
     {
     }

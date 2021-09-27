@@ -215,7 +215,7 @@ namespace Remotion.Web.Utilities
     /// <summary>
     /// Formats a URL string with URL encoding. (The <c>format</c> argument is not encoded.)
     /// </summary>
-    public static string FormatUrl (string format, params object[] args)
+    public static string FormatUrl (string format, params object[]? args)
     {
       if (args == null)
         return format;
@@ -223,7 +223,7 @@ namespace Remotion.Web.Utilities
       string[] encodedArgs = new string[args.Length];
       Encoding encoding = GetResponseEncoding();
       for (int i = 0; i < args.Length; ++i)
-        encodedArgs[i] = HttpUtility.UrlEncode (args[i].ToString(), encoding);
+        encodedArgs[i] = HttpUtility.UrlEncode (args[i].ToString()!, encoding); // TODO RM-8118: not null assertion
 
       return string.Format (format, encodedArgs);
     }

@@ -61,11 +61,11 @@ namespace Remotion.Web.Utilities
     {
       ArgumentUtility.CheckNotNull ("child", child);
 
-      var scriptManager = ScriptManager.GetCurrent (child.Page);
+      var scriptManager = ScriptManager.GetCurrent (child.Page!);
       if (scriptManager == null)
         return false;
 
-      for (Control current = child; current != null && !(current is Page); current = current.Parent)
+      for (Control? current = child; current != null && !(current is Page); current = current.Parent)
       {
         if (current is UpdatePanel)
           return true;
@@ -153,7 +153,7 @@ namespace Remotion.Web.Utilities
     /// </summary>
     public static TemplateControl? GetParentTemplateControl (Control control)
     {
-      for (Control parent = control;
+      for (Control? parent = control;
            parent != null;
            parent = parent.Parent)
       {

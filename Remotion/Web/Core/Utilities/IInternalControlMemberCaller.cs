@@ -60,7 +60,7 @@ namespace Remotion.Web.Utilities
         where TNamingContainer : Control, INamingContainer;
 
     /// <summary>Sets the control states for the child control of the passed <see cref="Control"/>.</summary>
-    void SetChildControlState<TNamingContainer> (TNamingContainer control, IDictionary newControlState)
+    void SetChildControlState<TNamingContainer> (TNamingContainer control, IDictionary? newControlState)
         where TNamingContainer : Control, INamingContainer;
 
     /// <summary>Sets the control states for the child control of the passed <see cref="Control"/>.</summary>

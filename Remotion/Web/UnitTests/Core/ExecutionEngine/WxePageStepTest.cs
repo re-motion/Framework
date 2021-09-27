@@ -228,5 +228,15 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
 
       Assert.That (executionStateContext.CurrentFunction, Is.SameAs (_rootFunction));
     }
+
+    [Test]
+    public void IExecutionStateContext_GetCurrentFunction_WithNullParentFunction_ThrowsInvalidOperationException ()
+    {
+      IExecutionStateContext executionStateContext = _pageStep.Object;
+
+      Assert.That (
+          () => executionStateContext.CurrentFunction,
+          Throws.Exception.TypeOf<WxeException>().With.Message.EqualTo ("There must be a function associated to the current step while executing."));
+    }
   }
 }

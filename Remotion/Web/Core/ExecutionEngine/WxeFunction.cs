@@ -171,12 +171,12 @@ namespace Remotion.Web.ExecutionEngine
       _executionListener = executionListener;
     }
 
-    object[] IWxeFunctionExecutionContext.GetInParameters ()
+    object?[] IWxeFunctionExecutionContext.GetInParameters ()
     {
       return _variablesContainer.ParameterDeclarations.Where (p => p.IsIn).Select (p => p.GetValue (_variablesContainer.Variables)).ToArray();
     }
 
-    object[] IWxeFunctionExecutionContext.GetOutParameters ()
+    object?[] IWxeFunctionExecutionContext.GetOutParameters ()
     {
       return _variablesContainer.ParameterDeclarations.Where (p => p.IsOut).Select (p => p.GetValue (_variablesContainer.Variables)).ToArray ();
     }
@@ -262,7 +262,7 @@ namespace Remotion.Web.ExecutionEngine
       _functionToken = functionToken;
     }
 
-    public override string? ToString ()
+    public override string ToString ()
     {
       StringBuilder sb = new StringBuilder ();
       sb.Append ("WxeFunction: ");

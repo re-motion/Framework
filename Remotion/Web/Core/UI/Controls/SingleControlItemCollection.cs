@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Utilities;
 
 namespace Remotion.Web.UI.Controls
@@ -46,7 +47,7 @@ public class SingleControlItemCollection
   public IControlItem? ControlItem
   {
     get { return _controlItem; }
-    set 
+    set
     {
       if (value != null && ! IsSupportedType (value)) 
         throw ArgumentUtility.CreateArgumentTypeException ("value", value.GetType(), null);
@@ -109,7 +110,7 @@ public class SingleControlItemCollection
   /// <summary> For Designer Support. (VS2003, VS2005) </summary>
   /// <exclude/>
   [EditorBrowsable (EditorBrowsableState.Never)]
-  public IControlItem this[int index]
+  public IControlItem? this[int index]
   {
 	  get
 	  {

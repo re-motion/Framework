@@ -24,6 +24,6 @@ namespace Remotion.Web.UI
   public interface IWindowStateManager
   {
     object? GetData (string key);
-    void SetData (string key, object value);
+    void SetData (string key, object? value);
   }
 }

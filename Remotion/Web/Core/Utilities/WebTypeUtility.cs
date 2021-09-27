@@ -58,7 +58,7 @@ namespace Remotion.Web.Utilities
     public static Type? GetType (string abbreviatedTypeName, bool throwOnError, bool ignoreCase)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("abbreviatedTypeName", abbreviatedTypeName);
-      string? typeName = TypeUtility.ParseAbbreviatedTypeName (abbreviatedTypeName);
+      string typeName = TypeUtility.ParseAbbreviatedTypeName (abbreviatedTypeName);
       return BuildManager.GetType (typeName, throwOnError, ignoreCase);
     }
 

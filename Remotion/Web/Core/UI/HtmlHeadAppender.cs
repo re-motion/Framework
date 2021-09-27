@@ -62,7 +62,7 @@ namespace Remotion.Web.UI
       get { return s_current.Current; }
     }
 
-    private readonly Dictionary<string, object> _registeredKeys = new Dictionary<string, object>();
+    private readonly Dictionary<string, object?> _registeredKeys = new Dictionary<string, object?>();
 
     private readonly MultiDictionary<Priority, HtmlHeadElement> _prioritizedHeadElements = new MultiDictionary<Priority, HtmlHeadElement>();
 

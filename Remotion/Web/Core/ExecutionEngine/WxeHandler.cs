@@ -120,7 +120,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <value> The <see cref="WxeFunction"/> invoked by the <see cref="Parameters.WxeFunctionType"/> parameter. </value>
     public WxeFunction RootFunction
     {
-      get { return _currentFunctionState.Function; }
+      get { return _currentFunctionState!.Function; } // TODO RM-8118: not null assertion
     }
 
     /// <summary> Processes the requests associated with the <see cref="WxeHandler"/>. </summary>
@@ -132,9 +132,8 @@ namespace Remotion.Web.ExecutionEngine
       CheckTimeoutConfiguration (context);
 
       string? functionToken = context.Request.Params[Parameters.WxeFunctionToken];
-      bool hasFunctionToken = ! string.IsNullOrEmpty (functionToken);
 
-      if (! hasFunctionToken)
+      if (string.IsNullOrEmpty (functionToken))
       {
         _currentFunctionState = CreateNewFunctionState (context, GetType (context));
         ProcessFunctionState (context, _currentFunctionState, true);
@@ -182,11 +181,11 @@ namespace Remotion.Web.ExecutionEngine
       ArgumentUtility.CheckNotNull ("context", context);
 
       string? typeName = context.Request.Params[Parameters.WxeFunctionType];
-      bool hasTypeName = ! string.IsNullOrEmpty (typeName);
-      if (hasTypeName)
-        return GetTypeByTypeName (typeName);
-      else
+
+      if (string.IsNullOrEmpty (typeName))
         return GetTypeByPath (context.Request.Url.AbsolutePath);
+      else
+        return GetTypeByTypeName (typeName);
     }
 
     /// <summary> Gets the <see cref="Type"/> for the specified <paramref name="absolutePath"/>. </summary>
@@ -235,12 +234,12 @@ namespace Remotion.Web.ExecutionEngine
     protected WxeFunctionState CreateNewFunctionState (HttpContext context, Type type)
     {
       ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("type", type, typeof (WxeFunction));
 
       WxeFunctionStateManager functionStates = WxeFunctionStateManager.Current;
       functionStates.CleanUpExpired();
 
-      WxeFunction? function = (WxeFunction?) Activator.CreateInstance (type);
+      WxeFunction function = (WxeFunction) Activator.CreateInstance (type)!;
 
       WxeFunctionState functionState = new WxeFunctionState (function, true);
       functionStates.Add (functionState);
@@ -289,7 +288,7 @@ namespace Remotion.Web.ExecutionEngine
         if (isPostRequest)
         {
           s_log.Error (string.Format ("Error resuming WxeFunctionState {0}: The ASP.NET session has timed out.", functionToken));
-          throw new WxeTimeoutException ("Session Timeout.", functionToken); // TODO: display error message
+          throw new WxeTimeoutException ("Session Timeout.", functionToken); // TODO RM-8118: display error message
         }
         try
         {
@@ -298,7 +297,7 @@ namespace Remotion.Web.ExecutionEngine
         catch (WxeException e)
         {
           s_log.Error (string.Format ("Error resuming WxeFunctionState {0}: The ASP.NET session has timed out.", functionToken));
-          throw new WxeTimeoutException ("Session timeout.", functionToken, e); // TODO: display error message
+          throw new WxeTimeoutException ("Session timeout.", functionToken, e); // TODO RM-8118: display error message
         }
       }
 
@@ -315,7 +314,7 @@ namespace Remotion.Web.ExecutionEngine
         if (isPostRequest)
         {
           s_log.Error (string.Format ("Error resuming WxeFunctionState {0}: The function state has timed out or was aborted.", functionToken));
-          throw new WxeTimeoutException ("Function Timeout.", functionToken); // TODO: display error message
+          throw new WxeTimeoutException ("Function Timeout.", functionToken); // TODO RM-8118: display error message
         }
         try
         {
@@ -324,7 +323,7 @@ namespace Remotion.Web.ExecutionEngine
         catch (WxeException e)
         {
           s_log.Error (string.Format ("Error resuming WxeFunctionState {0}: The function state has timed out or was aborted.", functionToken));
-          throw new WxeTimeoutException ("Function Timeout.", functionToken, e); // TODO: display error message
+          throw new WxeTimeoutException ("Function Timeout.", functionToken, e); // TODO RM-8118: display error message
         }
       }
 

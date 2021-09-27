@@ -256,14 +256,14 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   }
 
   /// <summary> Gets the post back data for the page. </summary>
-  NameValueCollection ISmartPage.GetPostBackCollection ()
+  NameValueCollection? ISmartPage.GetPostBackCollection ()
   {
     return GetPostBackCollection();
   }
 
   /// <summary> Gets the post-back data for the page. </summary>
   /// <remarks> Application developers should only rely on this collection for accessing the post-back data. </remarks>
-  protected virtual NameValueCollection GetPostBackCollection ()
+  protected virtual NameValueCollection? GetPostBackCollection ()
   {
     if (string.Compare (Request.HttpMethod, "POST", true) == 0)
       return Request.Form;
@@ -527,16 +527,16 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
     RegisterRequiresControlState (this);
   }
 
-  protected override void LoadControlState(object savedState)
+  protected override void LoadControlState(object? savedState)
   {
-    object[] values = (object[]) savedState;
+    object?[] values = (object?[]) savedState!;
     base.LoadControlState (values[0]);
-    _isDirty = (bool)  values[1];
+    _isDirty = (bool) values[1]!;
   }
 
   protected override object? SaveControlState()
   {
-    object[] values = new object[2];
+    object?[] values = new object?[2];
     values[0] = base.SaveControlState();
     values[1] = _isDirty;
     return values;

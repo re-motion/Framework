@@ -71,7 +71,7 @@ public class ValidatableControlInitializer
       if (validator == null)
         continue;
 
-      Control validatedControl = validator.NamingContainer.FindControl (validator.ControlToValidate);
+      Control? validatedControl = validator.NamingContainer.FindControl (validator.ControlToValidate);
 
       if (validatedControl is IValidatableControl)
       {
@@ -82,7 +82,7 @@ public class ValidatableControlInitializer
       {
         // try to find a parent control that supports IValidatableControl and has validatedControl as TargetControl
         // (the validator may point to a child control of the control that should actually be validated)
-        for (Control parentControl = validatedControl;
+        for (Control? parentControl = validatedControl;
             parentControl != null;
             parentControl = parentControl.Parent)
         {

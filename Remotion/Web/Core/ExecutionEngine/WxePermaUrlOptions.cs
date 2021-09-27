@@ -31,7 +31,7 @@ namespace Remotion.Web.ExecutionEngine
 
     private readonly bool _usePermaUrl;
     private readonly bool _useParentPermaUrl;
-    private readonly NameValueCollection _urlParameters;
+    private readonly NameValueCollection? _urlParameters;
 
     public WxePermaUrlOptions ()
         : this (true, false, null)
@@ -48,7 +48,7 @@ namespace Remotion.Web.ExecutionEngine
     {
     }
 
-    private WxePermaUrlOptions (bool usePermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters)
+    private WxePermaUrlOptions (bool usePermaUrl, bool useParentPermaUrl, NameValueCollection? urlParameters)
     {
       _usePermaUrl = usePermaUrl;
       _useParentPermaUrl = useParentPermaUrl;
@@ -65,7 +65,7 @@ namespace Remotion.Web.ExecutionEngine
       get { return _useParentPermaUrl; }
     }
 
-    public NameValueCollection UrlParameters
+    public NameValueCollection? UrlParameters
     {
       get { return _urlParameters; }
     }

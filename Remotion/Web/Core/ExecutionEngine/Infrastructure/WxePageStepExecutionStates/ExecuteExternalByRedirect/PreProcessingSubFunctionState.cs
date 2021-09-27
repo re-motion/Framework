@@ -53,7 +53,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
 
     private NameValueCollection BackupPostBackCollection ()
     {
-      return Parameters.Page.GetPostBackCollection().Clone();
+      return Parameters.Page.GetPostBackCollection()!.Clone(); // TODO RM-8118: not null assertion
     }
   }
 }

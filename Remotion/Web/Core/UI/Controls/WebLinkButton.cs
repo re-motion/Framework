@@ -42,7 +42,7 @@ namespace Remotion.Web.UI.Controls
 
     protected override void AddAttributesToRender (HtmlTextWriter writer)
     {
-      if (string.IsNullOrEmpty (AccessKey) && _textWithHotkey.Hotkey.HasValue)
+      if (string.IsNullOrEmpty (AccessKey) && _textWithHotkey!.Hotkey.HasValue) // TODO RM-8118: not null assertion
         writer.AddAttribute (HtmlTextWriterAttribute.Accesskey, HotkeyFormatter.FormatHotkey (_textWithHotkey));
 
       base.AddAttributesToRender (writer);
@@ -56,7 +56,7 @@ namespace Remotion.Web.UI.Controls
       if (HasControls())
         base.RenderContents (writer);
       else
-        writer.Write (HotkeyFormatter.FormatText (_textWithHotkey, false));
+        writer.Write (HotkeyFormatter.FormatText (_textWithHotkey!, false)); // TODO RM-8118: not null assertion
     }
 
     public new IPage? Page

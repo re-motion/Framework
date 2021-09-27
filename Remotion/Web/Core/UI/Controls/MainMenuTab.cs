@@ -17,6 +17,7 @@
 using System;
 using System.ComponentModel;
 using System.Web.UI;
+using Remotion.Utilities;
 
 namespace Remotion.Web.UI.Controls
 {
@@ -25,7 +26,7 @@ namespace Remotion.Web.UI.Controls
     private readonly SubMenuTabCollection _subMenuTabs;
     private MenuTab? _activeTab;
 
-    public MainMenuTab (string itemID, string text, IconInfo icon)
+    public MainMenuTab (string itemID, string text, IconInfo? icon)
         : base (itemID, text, icon)
     {
       _subMenuTabs = new SubMenuTabCollection (OwnerControl);
@@ -65,7 +66,7 @@ namespace Remotion.Web.UI.Controls
     protected override void OnSelectionChanged ()
     {
       base.OnSelectionChanged();
-      TabbedMenu.RefreshSubMenuTabStrip();
+      TabbedMenu!.RefreshSubMenuTabStrip(); // TODO RM-8118: not null assertion
     }
 
     protected override MenuTab GetActiveTab ()
@@ -74,6 +75,9 @@ namespace Remotion.Web.UI.Controls
         return _activeTab;
 
       _activeTab = this;
+
+      Assertion.IsNotNull (Command, "Command must not be null.");
+
       if (Command.Type == CommandType.None)
       {
         foreach (SubMenuTab subMenuTab in _subMenuTabs)

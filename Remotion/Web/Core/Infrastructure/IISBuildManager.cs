@@ -32,7 +32,7 @@ namespace Remotion.Web.Infrastructure
     {
     }
 
-    public Type? GetType (string? typeName, bool throwOnError, bool ignoreCase)
+    public Type? GetType (string typeName, bool throwOnError, bool ignoreCase)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("typeName", typeName);
       return BuildManager.GetType (typeName, throwOnError: throwOnError, ignoreCase: ignoreCase);

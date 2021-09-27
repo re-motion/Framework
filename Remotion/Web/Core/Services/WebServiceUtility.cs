@@ -31,11 +31,11 @@ namespace Remotion.Web.Services
   /// </summary>
   public static class WebServiceUtility
   {
-    private static readonly ConcurrentDictionary<Tuple<MemberInfo, Type>, Attribute> s_attributeCache =
-        new ConcurrentDictionary<Tuple<MemberInfo, Type>, Attribute>();
+    private static readonly ConcurrentDictionary<Tuple<MemberInfo, Type>, Attribute?> s_attributeCache =
+        new ConcurrentDictionary<Tuple<MemberInfo, Type>, Attribute?>();
 
-    private static readonly ConcurrentDictionary<Tuple<Type, string>, MethodInfo> s_methodInfoCache =
-        new ConcurrentDictionary<Tuple<Type, string>, MethodInfo>();
+    private static readonly ConcurrentDictionary<Tuple<Type, string>, MethodInfo?> s_methodInfoCache =
+        new ConcurrentDictionary<Tuple<Type, string>, MethodInfo?>();
 
     /// <summary>
     /// Checks that <paramref name="type"/> and <paramref name="method"/> declare a valid web service.
@@ -185,11 +185,11 @@ namespace Remotion.Web.Services
       }
     }
 
-    private static T GetAttributeFromCache<T> (MemberInfo memberInfo)
+    private static T? GetAttributeFromCache<T> (MemberInfo memberInfo)
         where T: Attribute
     {
       // C# compiler 7.2 already provides caching for anonymous method.
-      return (T) s_attributeCache.GetOrAdd (
+      return (T?) s_attributeCache.GetOrAdd (
           Tuple.Create (memberInfo, typeof (T)),
           key => AttributeUtility.GetCustomAttribute<T> (key.Item1, true));
     }

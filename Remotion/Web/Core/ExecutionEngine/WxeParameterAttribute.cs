@@ -90,9 +90,9 @@ namespace Remotion.Web.ExecutionEngine
       get { return _index; }
     }
 
-    public bool Required
+    public bool? Required
     {
-      get { return _required.Value; }
+      get { return _required; }
     }
 
     public WxeParameterDirection Direction

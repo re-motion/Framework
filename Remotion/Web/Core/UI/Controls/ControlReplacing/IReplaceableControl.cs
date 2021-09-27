@@ -21,6 +21,6 @@ namespace Remotion.Web.UI.Controls.ControlReplacing
   public interface IReplaceableControl
   {
     bool IsInitialized { get; }
-    ControlReplacer? Replacer { get; set; }
+    ControlReplacer Replacer { get; set; }
   }
 }

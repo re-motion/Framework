@@ -79,7 +79,7 @@ public class WxeMethodStep: WxeStep
     ArgumentUtility.CheckNotNull ("method", method);
 
     Type targetType = target.GetType();
-    Type? declaringType = method.DeclaringType;
+    Type declaringType = method.DeclaringType!; // TODO RM-8118: not null assertion
     
     bool isAssignable = declaringType.IsAssignableFrom (targetType);
     if (! isAssignable || method.IsStatic)

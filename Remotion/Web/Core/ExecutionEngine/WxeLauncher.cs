@@ -39,9 +39,9 @@ public class WxeLauncher: IHttpHandler
   /// <param name="queryString"> The original query string. </param>
   /// <returns> The query string to pass on the <see cref="WxeHandler"/>. </returns>
   /// <remarks> Override this method to change the query string. </remarks>
-  protected virtual string? GetQueryString (NameValueCollection queryString)
+  protected virtual string GetQueryString (NameValueCollection queryString)
   {
-    return queryString.ToString();
+    return queryString.ToString()!;
   }
 
   /// <summary> Gets the name of the wxe handler. </summary>

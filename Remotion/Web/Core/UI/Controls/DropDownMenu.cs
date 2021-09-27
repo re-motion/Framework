@@ -45,13 +45,13 @@ namespace Remotion.Web.UI.Controls
     private string _getSelectionCount = "";
     private string _loadMenuItemStatus = "";
 
-    public DropDownMenu (IControl ownerControl, Type[] supportedMenuItemTypes)
+    public DropDownMenu (IControl? ownerControl, Type[] supportedMenuItemTypes)
       :base(ownerControl, supportedMenuItemTypes)
     {
       Mode = MenuMode.DropDownMenu;
     }
 
-    public DropDownMenu (IControl ownerControl)
+    public DropDownMenu (IControl? ownerControl)
         : this (ownerControl, new[] { typeof (WebMenuItem) })
     {
     }
@@ -64,7 +64,7 @@ namespace Remotion.Web.UI.Controls
     protected override void OnInit (EventArgs e)
     {
       var clientScriptBahavior = SafeServiceLocator.Current.GetInstance<IClientScriptBehavior>();
-      _isBrowserCapableOfScripting = clientScriptBahavior.IsBrowserCapableOfScripting (Page.Context, this);
+      _isBrowserCapableOfScripting = clientScriptBahavior.IsBrowserCapableOfScripting (Page!.Context, this);
       RegisterHtmlHeadContents (HtmlHeadAppender.Current);
     }
 
@@ -122,7 +122,7 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("writer", writer);
 
-      return new DropDownMenuRenderingContext (Page.Context, writer, this);
+      return new DropDownMenuRenderingContext (Page!.Context!, writer, this); // TODO RM-8118: Not null assertion
     }
 
     public string GetBindOpenEventScript (string elementReference, string menuIDReference, bool moveToMousePosition)

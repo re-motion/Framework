@@ -69,7 +69,7 @@ namespace Remotion.Web
     private readonly string? _value;
     private readonly WebStringType _type;
 
-    private WebString ([CanBeNull] string value, WebStringType type)
+    private WebString ([CanBeNull] string? value, WebStringType type)
     {
       _value = value;
       _type = type;
@@ -177,7 +177,7 @@ namespace Remotion.Web
     }
 
     /// <inheritdoc />
-    public bool Equals (WebString? other)
+    public bool Equals (WebString other)
     {
       return GetValue() == other.GetValue() && _type == other._type;
     }
@@ -201,7 +201,7 @@ namespace Remotion.Web
     /// Returns a HTML encoded string that represents the current <see cref="WebString"/>.
     /// </summary>
     /// <returns>A HTML encoded string that represents the current <see cref="WebString"/>.</returns>
-    public override string? ToString ()
+    public override string ToString ()
     {
       return ToString (WebStringEncoding.Html);
     }

@@ -31,7 +31,7 @@ namespace Remotion.Web.UI.Controls
     private readonly IControl _ownerControl;
     private bool _isReadOnly;
 
-    protected MenuBase (IControl ownerControl, Type[] supportedMenuItemTypes)
+    protected MenuBase (IControl? ownerControl, Type[] supportedMenuItemTypes)
     {
       if (ownerControl == null)
         ownerControl = this;

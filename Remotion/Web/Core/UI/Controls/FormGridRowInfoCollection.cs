@@ -54,7 +54,7 @@ public sealed class FormGridRowInfoCollection : CollectionBase
   /// <param name="value"> The new value of the element at index. </param>
   protected override void OnInsert (int index, object? value)
   {
-    ArgumentUtility.CheckNotNullAndType<FormGridRowInfo> ("value", value);
+    ArgumentUtility.CheckNotNullAndType<FormGridRowInfo> ("value", value!);
     base.OnInsert (index, value);
   }
 

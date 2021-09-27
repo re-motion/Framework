@@ -38,9 +38,10 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       //NOP
     }
 
-    public WxeFunction? Function
+    public WxeFunction Function
     {
-      get { return null; }
+      // TODO RM-8118: Check if this could be made conditional through NRT attributes instead of throwing an exception
+      get { throw new InvalidOperationException ("Function must not be accessed on the null object."); }
     }
 
     public string? BackedUpUserControlState
@@ -53,9 +54,10 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       get { return null; }
     }
 
-    public string? UserControlID
+    public string UserControlID
     {
-      get { return null; }
+      // TODO RM-8118: Check if this could be made conditional through NRT attributes instead of throwing an exception
+      get { throw new InvalidOperationException ("UserControlID must not be accessed on the null object."); }
     }
 
     public bool IsReturningPostBack
