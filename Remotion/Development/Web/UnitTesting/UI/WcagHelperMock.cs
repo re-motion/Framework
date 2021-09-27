@@ -26,8 +26,8 @@ namespace Remotion.Development.Web.UnitTesting.UI
     private bool _hasError;
     private bool _hasWarning;
     private int _priority;
-    private Control _control;
-    private string _property;
+    private Control? _control;
+    private string? _property;
 
     public WcagHelperMock()
     {
@@ -53,7 +53,7 @@ namespace Remotion.Development.Web.UnitTesting.UI
       HandleError (priority, control, null);
     }
 
-    public override void HandleError (int priority, Control control, string property)
+    public override void HandleError (int priority, Control? control, string? property)
     {
       _hasError = true;
       _hasWarning = false;
@@ -72,7 +72,7 @@ namespace Remotion.Development.Web.UnitTesting.UI
       HandleWarning (priority, control, null);
     }
 
-    public override void HandleWarning (int priority, Control control, string property)
+    public override void HandleWarning (int priority, Control? control, string? property)
     {
       _hasError = false;
       _hasWarning = true;
@@ -106,12 +106,12 @@ namespace Remotion.Development.Web.UnitTesting.UI
       get { return _priority; }
     }
 
-    public Control Control
+    public Control? Control
     {
       get { return _control; }
     }
 
-    public string Property
+    public string? Property
     {
       get { return _property; }
     }

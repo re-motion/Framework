@@ -62,7 +62,7 @@ namespace Remotion.Utilities
 #endif
     public static T CheckNotNull<T> (
         [InvokerParameterName] string argumentName,
-        [AssertionCondition (AssertionConditionType.IS_NOT_NULL), NoEnumeration] T actualValue)
+        [AssertionCondition (AssertionConditionType.IS_NOT_NULL), NoEnumeration, System.Diagnostics.CodeAnalysis.NotNull] T actualValue)
         where T : notnull
     {
       // ReSharper disable CompareNonConstrainedGenericWithNull

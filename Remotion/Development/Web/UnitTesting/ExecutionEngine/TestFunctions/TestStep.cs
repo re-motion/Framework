@@ -21,7 +21,7 @@ namespace Remotion.Development.Web.UnitTesting.ExecutionEngine.TestFunctions
 {
   public class TestStep: WxeStep
   {
-    public static new T GetStepByType<T> (WxeStep step)
+    public static new T? GetStepByType<T> (WxeStep step)
         where T: WxeStep
     {
       return WxeStep.GetStepByType<T> (step);
@@ -29,7 +29,7 @@ namespace Remotion.Development.Web.UnitTesting.ExecutionEngine.TestFunctions
 
     private bool _isExecuteCalled;
     private bool _isAbortRecursiveCalled;
-    private WxeContext _wxeContext;
+    private WxeContext? _wxeContext;
 
     public TestStep()
     {
@@ -57,7 +57,7 @@ namespace Remotion.Development.Web.UnitTesting.ExecutionEngine.TestFunctions
       get { return _isAbortRecursiveCalled; }
     }
 
-    public WxeContext WxeContext
+    public WxeContext? WxeContext
     {
       get { return _wxeContext; }
     }

@@ -68,34 +68,38 @@ namespace Remotion.Development.Web.ResourceHosting
       responseWriter.WriteBreak();
       responseWriter.WriteBreak();
 
-      var virtualDirectory = HostingEnvironment.VirtualPathProvider.GetDirectory (context.Request.AppRelativeCurrentExecutionFilePath);
+      var appRelativeCurrentExecutionFilePath = Assertion.IsNotNull (context.Request.AppRelativeCurrentExecutionFilePath);
+      var virtualDirectory = HostingEnvironment.VirtualPathProvider.GetDirectory (appRelativeCurrentExecutionFilePath);
 
       foreach (var item in virtualDirectory.Children.Cast<VirtualFileBase>().OrderBy (v => v.Name))
       {
         responseWriter.AddAttribute (HtmlTextWriterAttribute.Style, "display: table-row;");
         responseWriter.RenderBeginTag (HtmlTextWriterTag.Li);
         
-        if (item is ResourceVirtualDirectory)
+        if (item is ResourceVirtualDirectory directory)
         {
-          var info = new DirectoryInfo (((ResourceVirtualDirectory) item).PhysicalPath);
+          var directoryPath = Assertion.IsNotNull (directory.PhysicalPath);
+          var info = new DirectoryInfo (directoryPath);
           RenderCell(responseWriter, info.LastWriteTime.ToString());
           RenderCell(responseWriter, "<dir> ");
 
           responseWriter.AddAttribute (HtmlTextWriterAttribute.Href, item.VirtualPath);
           responseWriter.RenderBeginTag (HtmlTextWriterTag.A);
-          responseWriter.WriteEncodedText (item.Name);
+          responseWriter.WriteEncodedText (directory.Name);
           responseWriter.RenderEndTag();
         }
         else
         {
-          var info = new FileInfo (((ResourceVirtualFile) item).PhysicalPath);
+          var file = (ResourceVirtualFile) item;
+          var filePath = Assertion.IsNotNull (file.PhysicalPath);
+          var info = new FileInfo (filePath);
 
           RenderCell(responseWriter, info.LastWriteTime.ToString());
           RenderCell(responseWriter, info.Length.ToString());
 
           responseWriter.AddAttribute (HtmlTextWriterAttribute.Href, item.VirtualPath);
           responseWriter.RenderBeginTag (HtmlTextWriterTag.A);
-          responseWriter.WriteEncodedText (item.Name);
+          responseWriter.WriteEncodedText (file.Name);
           responseWriter.RenderEndTag();
         }
       }

@@ -28,8 +28,8 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
 
     // member fields
 
-    private string _valueInViewState;
-    private string _valueInControlState;
+    private string? _valueInViewState;
+    private string? _valueInControlState;
 
     // construction and disposing
 
@@ -43,28 +43,28 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
     {
       base.OnInit (e);
 
-      Assertion.IsNotNull (Page, "Page is null for control '{0}'", ID);
+      Assertion.IsNotNull (Page, "Page is null for control '{0}'", ID!);
       Page.RegisterRequiresControlState (this);
     }
 
-    public string ValueInViewState
+    public string? ValueInViewState
     {
       get { return _valueInViewState; }
       set { _valueInViewState = value; }
     }
 
-    public string ValueInControlState
+    public string? ValueInControlState
     {
       get { return _valueInControlState; }
       set { _valueInControlState = value; }
     }
     
-    protected override void LoadViewState (object savedState)
+    protected override void LoadViewState (object? savedState)
     {
-      _valueInViewState = (string) savedState;
+      _valueInViewState = (string?) savedState;
     }
 
-    protected override object SaveViewState()
+    protected override object? SaveViewState()
     {
       return _valueInViewState;
     }
@@ -74,7 +74,7 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
       _valueInControlState = (string) savedState;
     }
   
-    protected override object SaveControlState ()
+    protected override object? SaveControlState ()
     {
       return _valueInControlState;
     }

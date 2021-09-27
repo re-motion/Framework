@@ -41,19 +41,19 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
       get { return _tag; }
     }
 
-    public override void AddAttribute (HtmlTextWriterAttribute key, string value, bool fEncode)
+    public override void AddAttribute (HtmlTextWriterAttribute key, string? value, bool fEncode)
     {
       base.AddAttribute (key, value, fEncode);
       _attributes[key] = value;
     }
 
-    public override void AddAttribute (HtmlTextWriterAttribute key, string value)
+    public override void AddAttribute (HtmlTextWriterAttribute key, string? value)
     {
       base.AddAttribute (key, value);
       _attributes[key] = value;
     }
 
-    protected override void AddAttribute (string name, string value, HtmlTextWriterAttribute key)
+    protected override void AddAttribute (string name, string? value, HtmlTextWriterAttribute key)
     {
       base.AddAttribute (name, value, key);
       _attributes[key] = value;

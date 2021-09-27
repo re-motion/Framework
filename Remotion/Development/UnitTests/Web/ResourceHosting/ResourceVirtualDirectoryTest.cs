@@ -112,5 +112,15 @@ namespace Remotion.Development.UnitTests.Web.ResourceHosting
       Assert.That (actual.OfType<ResourceVirtualFile>().Single().PhysicalPath, Is.EqualTo (expectedFile1));
       Assert.That (actual.OfType<ResourceVirtualDirectory>().Single().PhysicalPath, Is.EqualTo (expectedDirectory1.FullName));
     }
+
+    [Test]
+    public void Name_WithRootDirectory_ReturnsNotNull ()
+    {
+      var resourceVirtualDirectory = new ResourceVirtualDirectory ("/", new DirectoryInfo ("/"));
+
+      var name = resourceVirtualDirectory.Name;
+
+      Assert.That (name, Is.EqualTo (""));
+    }
   }
 }

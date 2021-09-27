@@ -30,9 +30,9 @@ namespace Remotion.Development.Web.ResourceHosting
   {
     private readonly string _virtualPath;
     private readonly DirectoryInfo _physicalDirectory;
-    private readonly string _displayName;
+    private readonly string? _displayName;
 
-    public ResourceVirtualDirectory (string virtualPath, DirectoryInfo physicalDirectory, string displayName = null)
+    public ResourceVirtualDirectory (string virtualPath, DirectoryInfo physicalDirectory, string? displayName = null)
         : base (virtualPath)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("virtualPath", virtualPath);
@@ -48,7 +48,7 @@ namespace Remotion.Development.Web.ResourceHosting
       get { return _virtualPath;  }
     }
     
-    public virtual string PhysicalPath
+    public virtual string? PhysicalPath
     {
       get
       {
@@ -65,7 +65,7 @@ namespace Remotion.Development.Web.ResourceHosting
 
     public override string Name
     {
-      get { return _displayName ?? base.Name; }
+      get { return _displayName ?? base.Name!; }
     }
 
     public override IEnumerable Directories

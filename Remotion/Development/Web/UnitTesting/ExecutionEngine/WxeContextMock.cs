@@ -49,7 +49,7 @@ namespace Remotion.Development.Web.UnitTesting.ExecutionEngine
             new HttpContextWrapper (context),
             new WxeFunctionStateManager (new HttpSessionStateWrapper (context.Session)),
             new WxeFunctionState (new TestFunction(), false),
-            null)
+            null!)
     {
     }
 

@@ -38,7 +38,7 @@ namespace Remotion.Development.Web.UnitTesting.Configuration
     public static WebConfiguration GetExecutionEngineMappingWithNoFilename ()
     {
       WebConfigurationMock config = new WebConfigurationMock ();
-      config.ExecutionEngine.UrlMappingFile = null;
+      config.ExecutionEngine.UrlMappingFile = null!;
       return config;
     }
 

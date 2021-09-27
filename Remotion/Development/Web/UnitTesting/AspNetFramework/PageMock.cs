@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Specialized;
+using System.Diagnostics.CodeAnalysis;
 using System.Web.UI;
 using Remotion.Development.UnitTesting;
 using Remotion.Utilities;
@@ -30,7 +31,7 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
 
     // member fields
 
-    private PageStatePersister _pageStatePersister;
+    private PageStatePersister? _pageStatePersister;
 
     // construction and disposing
 
@@ -43,9 +44,9 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
 
     // methods and properties
 
-    public NameValueCollection RequestValueCollection
+    public NameValueCollection? RequestValueCollection
     {
-      get { return (NameValueCollection) PrivateInvoke.GetNonPublicField (this,"_requestValueCollection"); }
+      get { return (NameValueCollection?) PrivateInvoke.GetNonPublicField (this,"_requestValueCollection"); }
     }
 
     public void SetRequestValueCollection (NameValueCollection requestValueCollection)
@@ -78,6 +79,7 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
       _pageStatePersister = pageStatePersister;
     }
 
+    [MemberNotNull (nameof (_pageStatePersister))]
     private void EnsurePageStatePersister ()
     {
       if (_pageStatePersister == null)
