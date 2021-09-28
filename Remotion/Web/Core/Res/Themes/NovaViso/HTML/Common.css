@@ -77,6 +77,7 @@
   --remotion-themed-singleline-min-height: calc(var(--remotion-themed-line-height) + 2 * var(--remotion-themed-spacing));
   --remotion-themed-multiline-min-height: calc(2 * var(--remotion-themed-line-height) + 2 * var(--remotion-themed-spacing));
   --remotion-themed-control-width: 16em;
+  --remotion-themed-control-width-half: calc(var(--remotion-themed-control-width) * 0.5);
   --remotion-themed-control-padding-readonly: calc(var(--remotion-themed-spacing) - var(--remotion-themed-border-width) * 2) var(--remotion-themed-spacing);
   --remotion-themed-popup-shadow: 0 var(--remotion-themed-spacing) calc(var(--remotion-themed-spacing) * 3) 0 rgba(0, 0, 0, 0.2), 0 0 calc(var(--remotion-themed-spacing) * 5) 0 rgba(0, 0, 0, 0.1);
   --remotion-themed-alert-border: var(--remotion-themed-border-width) solid var(--color-alert-border);

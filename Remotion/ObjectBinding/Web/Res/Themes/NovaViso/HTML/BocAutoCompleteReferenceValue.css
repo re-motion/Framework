@@ -3,14 +3,17 @@
 .bocAutoCompleteReferenceValue
 {
   --bocautocomplete-input-spacing-offset: calc(var(--remotion-themed-spacing) - 0.25em);
+  --bocautocomplete-input-width: 100%;
+  --bocautocomplete-options-menu-width: 100%;
   min-height: var(--remotion-themed-singleline-min-height);
+  display: flex;
 }
 
 .bocAutoCompleteReferenceValue span.body
 {
   display: inline-grid;
   grid-template-areas: "content optionsMenu";
-  grid-template-columns: var(--remotion-themed-control-width) 1fr;
+  grid-template-columns: minmax(var(--remotion-themed-control-width-half), var(--remotion-themed-control-width)) 1fr;
   gap: var(--remotion-themed-spacing);
   align-items: center;
 }
@@ -55,7 +58,7 @@
 {
   box-sizing: border-box;
   height: 100%;
-  width: 100%;
+  width: var(--bocautocomplete-input-width);
 }
 
 .bocAutoCompleteReferenceValue span.content span.bocAutoCompleteReferenceValueInput input
@@ -174,4 +177,9 @@ span.bocAutoCompleteReferenceValue.readOnly span[tabindex]:empty:before
 .bocAutoCompleteReferenceValue span.optionsMenu
 {
   grid-area: optionsMenu;
+}
+
+.bocAutoCompleteReferenceValue span.optionsMenu span span.DropDownMenuSelect
+{
+  width: var(--bocautocomplete-options-menu-width);
 }

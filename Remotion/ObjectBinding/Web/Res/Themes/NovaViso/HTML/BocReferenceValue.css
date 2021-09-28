@@ -2,14 +2,17 @@
 
 .bocReferenceValue
 {
+  --bocReferenceValue-input-width: 100%;
+  --bocReferenceValue-options-menu-width: 100%;
   min-height: var(--remotion-themed-singleline-min-height);
+  display: flex;
 }
 
 .bocReferenceValue span.body
 {
   display: inline-grid;
   grid-template-areas: "content optionsMenu";
-  grid-template-columns: var(--remotion-themed-control-width) 1fr;
+  grid-template-columns: minmax(var(--remotion-themed-control-width-half), var(--remotion-themed-control-width)) 1fr;
   gap: var(--remotion-themed-spacing);
   align-items: center;
 }
@@ -40,7 +43,7 @@
 
 .bocReferenceValue span.content select
 {
-  width: 100%;
+  width: var(--bocReferenceValue-input-width);
 }
 
 .mozilla .bocReferenceValue span.content select
@@ -124,4 +127,9 @@ span.bocReferenceValue.readOnly span[tabindex]:empty:before
 .bocReferenceValue span.optionsMenu
 {
   grid-area: optionsMenu;
+}
+
+.bocReferenceValue span.optionsMenu span span.DropDownMenuSelect
+{
+  width: var(--bocReferenceValue-options-menu-width);
 }
