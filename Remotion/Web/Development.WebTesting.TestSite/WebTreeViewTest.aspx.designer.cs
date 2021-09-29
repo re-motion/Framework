@@ -38,6 +38,42 @@ namespace Remotion.Web.Development.WebTesting.TestSite {
         /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.WebTreeView MyWebTreeView3;
+
+        /// <summary>
+        /// MyOrderedWebTreeView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.WebTreeView MyOrderedWebTreeView;
+
+        /// <summary>
+        /// MyUnorderedWebTreeView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.WebTreeView MyUnorderedWebTreeView;
+
+        /// <summary>
+        /// MyWebTreeViewWithCategories control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.WebTreeView MyWebTreeViewWithCategories;
+        
+        /// <summary>
+        /// MyWebTreeViewWithoutCategories control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.WebTreeView MyWebTreeViewWithoutCategories;
         
         /// <summary>
         /// Master property.

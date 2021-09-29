@@ -128,6 +128,7 @@ namespace Remotion.Web.UI.Controls
     private bool _isLoadControlStateCompleted;
     private bool _enableTopLevelExpander = true;
     private bool _enableLookAheadEvaluation;
+    private bool _enableTopLevelGrouping;
 
     private bool _enableScrollBars;
     private bool _enableWordWrap;
@@ -606,8 +607,12 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Renders the <paremref name="nodes"/> onto the <paremref name="writer"/>. </summary>
-    private void RenderNodes (HtmlTextWriter writer, WebTreeNodeCollection nodes, bool isTopLevel, HashAlgorithm nodeIDAlgorithm, int nestingDepth)
+    private void RenderNodes (HtmlTextWriter writer, WebTreeNodeCollection webTreeNodes, bool isTopLevel, HashAlgorithm nodeIDAlgorithm, int nestingDepth)
     {
+      var nodes = EnableTopLevelGrouping && isTopLevel
+          ? WebTreeNodeCollection.GroupByCategory (webTreeNodes)
+          : webTreeNodes.Cast<WebTreeNode>().ToArray();
+
       for (int i = 0; i < nodes.Count; i++)
       {
         WebTreeNode node = nodes[i];
@@ -640,6 +645,8 @@ namespace Remotion.Web.UI.Controls
             if (!string.IsNullOrEmpty (node.Badge.Description))
               writer.AddAttribute (DiagnosticMetadataAttributes.WebTreeViewBadgeDescription, node.Badge.Description);
           }
+          if (!string.IsNullOrEmpty (node.Category))
+            writer.AddAttribute (DiagnosticMetadataAttributes.WebTreeViewNodeCategory, node.Category);
         }
 
         writer.AddAttribute (HtmlTextWriterAttribute.Id, "Node_" + nodeID);
@@ -655,7 +662,13 @@ namespace Remotion.Web.UI.Controls
           writer.AddAttribute (HtmlTextWriterAttribute2.AriaSelected, HtmlAriaSelectedAttributeValue.True);
         }
         writer.AddAttribute ("tabindex", _focusededNode == node ? "0" : "-1");
+        if (EnableTopLevelGrouping && isTopLevel && !isLastNode && nodes[i].Category != nodes[i + 1].Category)
+          writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassNodeCategorySeparator);
+
         writer.RenderBeginTag (HtmlTextWriterTag.Li); // Begin node block
+
+        if (!isTopLevel && !string.IsNullOrEmpty (node.Category))
+          throw new InvalidOperationException ("Only root nodes may have a category set.");
 
         RenderNodeHead (writer, node, isFirstNode, isLastNode, hasExpander, node.IsSelected, nodePath, nodeID, nestingDepth);
         if (hasChildren && node.IsExpanded)
@@ -1113,6 +1126,17 @@ namespace Remotion.Web.UI.Controls
       set { _enableLookAheadEvaluation = value; }
     }
 
+    /// <summary> Gets or sets a flag that determines whether to group the root nodes by their category. </summary>
+    [PersistenceMode (PersistenceMode.Attribute)]
+    [Category ("Behavior")]
+    [Description ("If set, the root nodes will be grouped by their category attribute. The order of the child nodes will remains unchanged.")]
+    [DefaultValue (false)]
+    public bool EnableTopLevelGrouping
+    {
+      get { return _enableTopLevelGrouping; }
+      set { _enableTopLevelGrouping = value; }
+    }
+
     /// <summary> 
     ///   Gets or sets a flag that determines whether to show scroll bars. Requires also a width for the tree view.
     /// </summary>
@@ -1429,6 +1453,13 @@ namespace Remotion.Web.UI.Controls
     protected virtual string CssClassNodeChildrenNoLines
     {
       get { return "treeViewNodeChildrenNoLines"; }
+    }
+
+    /// <summary> Gets the CSS-Class applied to the <see cref="WebTreeView"/>'s last node in a category. </summary>
+    /// <remarks> Class: <c>treeViewNodeCategorySeparator</c> </remarks>
+    protected virtual string CssClassNodeCategorySeparator
+    {
+      get { return "treeViewNodeCategorySeparator"; }
     }
 
     /// <summary> 
