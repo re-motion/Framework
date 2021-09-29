@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
@@ -52,14 +53,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    public void GetBadgeText_OnNodeWithoutBadge_ReturnsNull ()
+    public void GetBadgeText_OnNodeWithoutBadge_ReturnsEmpty ()
     {
       var home = Start();
 
       var treeView = home.WebTreeViews().GetByLocalID ("MyWebTreeView3");
       var treeViewNode = treeView.GetNode ("Node1");
 
-      Assert.That (treeViewNode.GetBadgeText(), Is.Null);
+      Assert.That (treeViewNode.GetBadgeText(), Is.Empty);
     }
 
     [Test]
@@ -74,14 +75,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    public void GetBadgeDescription_OnNodeWithoutBadge_ReturnsNull ()
+    public void GetBadgeDescription_OnNodeWithoutBadge_ReturnsEmpty ()
     {
       var home = Start();
 
       var treeView = home.WebTreeViews().GetByLocalID ("MyWebTreeView3");
       var treeViewNode = treeView.GetNode ("Node2");
 
-      Assert.That (treeViewNode.GetBadgeDescription(), Is.Null);
+      Assert.That (treeViewNode.GetBadgeDescription(), Is.Empty);
     }
 
     // Exists as unused member for future WebTreeView tests.
@@ -89,6 +90,60 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     private WebFormsTestPageObject Start ()
     {
       return Start<WebFormsTestPageObject> ("WebTreeViewTest.aspx");
+    }
+
+    [Test]
+    public void OrderedWebTree_Does_Order_Nodes_By_Category ()
+    {
+      var home = Start();
+
+      var treeView = home.WebTreeViews().GetByLocalID ("MyOrderedWebTreeView");
+      var nodeTexts = new List<string>();
+      for (var i = 1; i <= 7; i++)
+      {
+        nodeTexts.Add (treeView.GetNode (i).GetText());
+      }
+
+      var expectedNodeTexts = new[] { "1", "7", "2", "4", "3", "5", "6" };
+      Assert.That (nodeTexts, Is.EqualTo (expectedNodeTexts));
+    }
+
+    [Test]
+    public void UnorderedWebTree_Does_Not_Order_Nodes_By_Category ()
+    {
+      var home = Start();
+
+      var treeView = home.WebTreeViews().GetByLocalID ("MyUnorderedWebTreeView");
+      var nodeTexts = new List<string>();
+      for (var i = 1; i <= 7; i++)
+      {
+        nodeTexts.Add (treeView.GetNode (i).GetText());
+      }
+
+      var expectedNodeTexts = new[] { "1", "2", "3", "4", "5", "6", "7" };
+      Assert.That (nodeTexts, Is.EqualTo (expectedNodeTexts));
+    }
+
+    [Test]
+    public void GetCategory_OnNodeWithCategory_ReturnsCategory ()
+    {
+      var home = Start();
+
+      var treeView = home.WebTreeViews().GetByLocalID ("MyWebTreeViewWithCategories");
+      var treeViewNode = treeView.GetNode (1);
+
+      Assert.That (treeViewNode.GetCategory(), Is.EqualTo ("a category"));
+    }
+
+    [Test]
+    public void GetCategory_OnNodeWithOutCategory_ReturnsEmpty ()
+    {
+      var home = Start();
+
+      var treeView = home.WebTreeViews().GetByLocalID ("MyWebTreeViewWithoutCategories");
+      var treeViewNode = treeView.GetNode (1);
+
+      Assert.That (treeViewNode.GetCategory(), Is.Empty);
     }
   }
 }

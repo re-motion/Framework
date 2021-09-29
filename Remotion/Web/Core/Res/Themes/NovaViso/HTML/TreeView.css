@@ -3,6 +3,7 @@ ul.treeViewRoot
   --treeview-chevron-size: 1em;
   --treeview-chevron-gap: 0.5em;
   --treeview-padding: calc(var(--treeview-chevron-size) + var(--treeview-chevron-gap));
+  --treeview-category-separator: var(--remotion-themed-border-width) solid var(--color-standard-separator);
 
   margin: 0;
   min-width: 100%;
@@ -122,6 +123,14 @@ ul.treeViewRoot li:focus > span.treeViewNode span.treeViewNodeBadge,
 ul.treeViewRoot span.treeViewNodeHeadSelected ~ span.treeViewNodeBadge
 {
   background-color: var(--color-highlight);
+}
+
+li.treeViewNodeCategorySeparator
+{
+  margin-bottom: var(--remotion-themed-spacing);
+  padding-bottom: var(--remotion-themed-spacing);
+  border-bottom: var(--treeview-category-separator);
+  box-sizing: border-box;
 }
 
 /* Shared in other CSS files */

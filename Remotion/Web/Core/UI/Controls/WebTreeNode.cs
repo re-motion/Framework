@@ -37,6 +37,7 @@ namespace Remotion.Web.UI.Controls
     private IconInfo _icon;
     private Badge _badge;
     private string _menuID = string.Empty;
+    private string _category = string.Empty;
 
     private readonly WebTreeNodeCollection _children;
     private WebTreeView _treeView;
@@ -282,6 +283,17 @@ namespace Remotion.Web.UI.Controls
     {
       get { return _menuID; }
       set { _menuID = value; }
+    }
+
+    [PersistenceMode (PersistenceMode.Attribute)]
+    [Category ("Appearance")]
+    [Description ("The category to which this node belongs. Root nodes of the same category can be grouped in the UI.")]
+    [NotifyParentProperty (true)]
+    [DefaultValue ("")]
+    public string Category
+    {
+      get { return _category; }
+      set { _category = value ?? string.Empty; }
     }
 
     /// <summary> 

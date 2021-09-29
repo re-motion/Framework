@@ -24,4 +24,12 @@
   </div>
   <h3>WebTreeView3</h3>
   <remotion:WebTreeView ID="MyWebTreeView3" runat="server"/>
+  <h3>MyOrderedWebTreeView</h3>
+  <remotion:WebTreeView ID="MyOrderedWebTreeView" EnableTopLevelGrouping="True" runat="server"/>
+  <h3>MyUnorderedWebTreeView</h3>
+  <remotion:WebTreeView ID="MyUnorderedWebTreeView" EnableTopLevelGrouping="False" runat="server"/>
+  <h3>MyWebTreeViewWithCategories</h3>
+  <remotion:WebTreeView ID="MyWebTreeViewWithCategories" runat="server"/>
+  <h3>MyWebTreeViewWithoutCategories</h3>
+  <remotion:WebTreeView ID="MyWebTreeViewWithoutCategories" runat="server"/>
 </asp:Content>

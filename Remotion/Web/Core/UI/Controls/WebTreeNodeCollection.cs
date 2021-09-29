@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Remotion.Utilities;
 using Remotion.Web.Utilities;
 
@@ -23,6 +25,18 @@ namespace Remotion.Web.UI.Controls
   /// <summary> A collection of <see cref="WebTreeNode"/> objects. </summary>
   public class WebTreeNodeCollection : ControlItemCollection
   {
+    /// <summary>
+    /// Groups the top level <see cref="WebTreeNode"/>s by their <see cref="WebTreeNode.Category"/>
+    /// </summary>
+    /// <param name="nodes">The nodes of the <see cref="WebTreeView"/></param>
+    /// <returns>A list of <see cref="WebTreeNode"/>s grouped by their category.</returns>
+    public static IReadOnlyList<WebTreeNode> GroupByCategory (WebTreeNodeCollection nodes)
+    {
+      ArgumentUtility.CheckNotNull ("nodes", nodes);
+
+      return nodes.Cast<WebTreeNode>().GroupBy (node => node.Category).SelectMany (node => node).ToArray();
+    }
+
     private WebTreeView _treeView;
     private WebTreeNode _parentNode;
 

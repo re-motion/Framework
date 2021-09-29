@@ -166,7 +166,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public string GetBadgeText ()
     {
-      return Scope[DiagnosticMetadataAttributes.WebTreeViewBadgeValue];
+      return Scope[DiagnosticMetadataAttributes.WebTreeViewBadgeValue] ?? string.Empty;
     }
 
     /// <summary>
@@ -174,7 +174,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public string GetBadgeDescription ()
     {
-      return Scope[DiagnosticMetadataAttributes.WebTreeViewBadgeDescription];
+      return Scope[DiagnosticMetadataAttributes.WebTreeViewBadgeDescription] ?? string.Empty;
     }
 
     /// <inheritdoc/>
@@ -308,6 +308,14 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       var contextMenuScope = Scope.FindXPath ("./span/span");
 
       return new ContextMenuControlObject (Context.CloneForControl (contextMenuScope));
+    }
+
+    /// <summary>
+    /// Returns the category of a node
+    /// </summary>
+    public string GetCategory ()
+    {
+      return Scope[DiagnosticMetadataAttributes.WebTreeViewNodeCategory] ?? string.Empty;
     }
 
     private void ToggleExpansion ()
