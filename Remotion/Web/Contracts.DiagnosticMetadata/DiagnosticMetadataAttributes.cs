@@ -40,6 +40,7 @@ namespace Remotion.Web.Contracts.DiagnosticMetadata
     public static readonly string WebTreeViewNumberOfChildren = "data-webtreeview-number-of-children";
     public static readonly string WebTreeViewIsSelectedNode = "data-webtreeview-is-selected-node";
     public static readonly string WebTreeViewIsExpanded = "data-webtreeview-is-expanded";
+    public static readonly string WebTreeViewNodeCategory = "data-webtreeview-node-category";
 
     public static readonly string ValidationErrorIDIndex = "data-validation-error-id-index";
     public static readonly string LabelIDIndex = "data-label-id-index";
