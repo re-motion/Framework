@@ -228,8 +228,6 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
       bool hasText = !string.IsNullOrEmpty (tab.Text);
       if (hasIcon)
         tab.Icon.Render (renderingContext.Writer, renderingContext.Control);
-      if (hasIcon && hasText)
-        renderingContext.Writer.Write ("&nbsp;");
       if (hasText)
       {
         renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin text span

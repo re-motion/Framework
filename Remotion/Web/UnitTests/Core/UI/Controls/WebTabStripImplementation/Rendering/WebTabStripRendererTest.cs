@@ -422,12 +422,6 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
         childIndex++;
       }
 
-      if (hasIcon || string.IsNullOrEmpty (text))
-      {
-        anchorBody.AssertTextNode (HtmlHelper.WhiteSpace, childIndex);
-        childIndex++;
-      }
-
       if (!string.IsNullOrEmpty (text))
       {
         var textBody = anchorBody.GetAssertedChildElement ("span", childIndex);
