@@ -60,6 +60,11 @@ button.webButton span.buttonBody img
   border: none;
 }
 
+button.webButton span.buttonBody > img + span
+{
+  margin-left: 0.3em;
+}
+
 button.webButton:focus span.buttonBody,
 button.webButton:hover span.buttonBody
 {

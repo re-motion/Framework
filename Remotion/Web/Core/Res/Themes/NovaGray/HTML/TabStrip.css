@@ -142,6 +142,11 @@ body.msie *.tabStripTabSelected a::before
   vertical-align: middle;
 }
 
+*.tabStripTabsPane *.anchorBody > img + span
+{
+  margin-left: 0.3em;
+}
+
 *.tabStripTabsPane *.anchorBody > span
 {
 }
