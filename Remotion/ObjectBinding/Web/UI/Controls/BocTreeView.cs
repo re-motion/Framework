@@ -545,7 +545,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private BusinessObjectPropertyTreeNodeInfo CreateBusinessObjectPropertyTreeNodeInfo (IBusinessObjectReferenceProperty property)
     {
       var businessObjectPropertyTreeNodeInfo = new BusinessObjectPropertyTreeNodeInfo (property);
-      businessObjectPropertyTreeNodeInfo.Badge = GetBadge (Property);
+      businessObjectPropertyTreeNodeInfo.Badge = GetBadge (property);
 
       return businessObjectPropertyTreeNodeInfo;
     }
