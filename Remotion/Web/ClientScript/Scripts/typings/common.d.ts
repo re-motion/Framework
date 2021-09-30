@@ -35,6 +35,13 @@ type NotUndefined = NotNullNorUndefined | null;
 type CssSelectorOrElement<TElement extends Element> = string | TElement;
 type CssSelectorOrElements<TElement extends Element> = string | TElement | TElement[];
 
+type DeepPartial<T> = {
+  [P in keyof T]?: DeepPartial<T[P]>;
+};
+type PartialWithRequiredProperties<T, K extends keyof T> = Omit<T, Exclude<keyof T, K>> & Partial<Pick<T, Exclude<keyof T, K>>>;
+
+type OutBox<T> = { Value: Nullable<T> };
+
 declare namespace Remotion
 {
   export var jQuery: JQueryStatic;
