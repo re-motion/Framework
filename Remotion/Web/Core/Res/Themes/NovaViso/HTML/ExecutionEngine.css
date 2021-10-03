@@ -1,0 +1,22 @@
+/* Style applied to the WxePage. */
+
+#WxeStatusIsAbortingMessage,
+#WxeStatusIsCachedMessage
+{
+  background-color: var(--remotion-themed-background-color-page);
+  box-sizing: border-box;
+  box-shadow: var(--remotion-themed-popup-shadow);
+  z-index: var(--z-index-max);
+}
+
+#WxeStatusIsAbortingMessage
+{
+  font: var(--remotion-themed-font-bold);
+  color: var(--color-disabled-text);
+}
+
+#WxeStatusIsCachedMessage
+{
+  font: var(--remotion-themed-font-bold);
+  color: var(--color-standard-text);
+}
