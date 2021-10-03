@@ -223,7 +223,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
     private void PrepareImage (BocCheckBoxRenderingContext renderingContext, Image imageControl, string description)
     {
       var imageUrl = ResourceUrlFactory.CreateThemedResourceUrl (
-          typeof (BocCheckBox),
+          typeof (HtmlHeadAppenderExtensions),
           ResourceType.Image,
           renderingContext.Control.Value.Value ? c_trueIcon : c_falseIcon);
 
