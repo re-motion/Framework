@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Mixins;
 using Remotion.ObjectBinding.BindableObject;
@@ -216,6 +218,15 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
 
       Assert.That (businessObjectProperty, Is.TypeOf (typeof (StringProperty)));
       Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("String"));
+    }
+    
+    [Test]
+    public void GetMetadata_WithIEnumerable ()
+    {
+      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("IEnumerable");
+
+      Assert.That (businessObjectProperty, Is.TypeOf (typeof (NotSupportedProperty)));
+      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("IEnumerable"));
     }
 
     [Test]

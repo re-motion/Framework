@@ -28,8 +28,6 @@ namespace Remotion.ObjectBinding.BindableObject
     public static BindableObjectWithIdentityBaseImplementation Create (BindableObjectWithIdentityBase wrapper)
     {
       ArgumentUtility.CheckNotNull ("wrapper", wrapper);
-      Assertion.DebugAssert (!TypeExtensions.CanAscribeTo (typeof (BindableObjectWithIdentityBaseImplementation), typeof (Mixin<,>)),
-          "we assume the mixin does not have a base object");
       var impl = new BindableObjectWithIdentityBaseImplementation (wrapper);
       ((IInitializableMixin) impl).Initialize (wrapper, null, false);
       return impl;
@@ -50,8 +48,6 @@ namespace Remotion.ObjectBinding.BindableObject
 
     void IDeserializationCallback.OnDeserialization (object? sender)
     {
-      Assertion.DebugAssert (!TypeExtensions.CanAscribeTo (typeof (BindableObjectWithIdentityBaseImplementation), typeof (Mixin<,>)),
-          "we assume the mixin does not have a base object");
       MixinTargetMockUtility.MockMixinTargetAfterDeserialization (this, _wrapper);
     }
 

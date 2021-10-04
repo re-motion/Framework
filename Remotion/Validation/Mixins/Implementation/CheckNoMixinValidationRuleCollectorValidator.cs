@@ -40,7 +40,7 @@ namespace Remotion.Validation.Mixins.Implementation
     {
       ArgumentUtility.CheckNotNull ("collector", collector);
 
-      if (TypeExtensions.CanAscribeTo (collector.ValidatedType, typeof (Mixin<>)))
+      if (Remotion.Mixins.Utilities.ReflectionUtility.IsMixinType (collector.ValidatedType))
       {
         throw new NotSupportedException (
               string.Format (

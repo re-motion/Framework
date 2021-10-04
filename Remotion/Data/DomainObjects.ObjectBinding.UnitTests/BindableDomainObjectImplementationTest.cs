@@ -19,7 +19,9 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain;
 using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
+using Remotion.Mixins;
 using Remotion.ObjectBinding;
+using Remotion.Reflection;
 
 namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 {
@@ -93,6 +95,12 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       var wrapper = SampleBindableDomainObjectWithOverriddenDisplayName.NewObject ();
       var implementation = BindableDomainObjectImplementation.Create (wrapper);
       Assert.That (implementation.DisplayName, Is.EqualTo ("TheDisplayName"));
+    }
+
+    [Test]
+    public void BindableDomainObjectMixin_ImplementsMixinWithoutBaseObjectDependency ()
+    {
+      Assert.That (typeof (BindableDomainObjectImplementation).CanAscribeTo (typeof (Mixin<,>)), Is.False);
     }
   }
 }
