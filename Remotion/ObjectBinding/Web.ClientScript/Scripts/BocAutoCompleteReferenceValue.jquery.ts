@@ -137,7 +137,6 @@ interface JQuery {
 
     bind(ev: "invalidateResult", handler: BocAutoCompleteReferenceValue_InvalidateResultEventHandler): JQuery;
     bind(ev: "updateResult", handler: BocAutoCompleteReferenceValue_UpdateResultEventHandler): JQuery;
-    bind(ev: "search", handler: BocAutoCompleteReferenceValue_SearchEventHandler): JQuery;
     bind(ev: "flushCache", handler: BocAutoCompleteReferenceValue_FlushCacheEventHandler): JQuery;
     bind(ev: "collectOptions", handler: BocAutoCompleteReferenceValue_CollectOptionsEventHandler): JQuery;
     bind(ev: "setOptions", handler: BocAutoCompleteReferenceValue_SetOptionsEventHandler): JQuery;
@@ -148,7 +147,6 @@ interface JQuery {
 
     trigger(ev: "invalidateResult", args: EventParameters<BocAutoCompleteReferenceValue_InvalidateResultEventHandler>): JQuery;
     trigger(ev: "updateResult", args: EventParameters<BocAutoCompleteReferenceValue_UpdateResultEventHandler>): JQuery;
-    trigger(ev: "search", args: EventParameters<BocAutoCompleteReferenceValue_SearchEventHandler>): JQuery;
     trigger(ev: "flushCache", args: EventParameters<BocAutoCompleteReferenceValue_FlushCacheEventHandler>): JQuery;
     trigger(ev: "collectOptions", args: EventParameters<BocAutoCompleteReferenceValue_CollectOptionsEventHandler>): JQuery;
     trigger(ev: "setOptions", args: EventParameters<BocAutoCompleteReferenceValue_SetOptionsEventHandler>): JQuery;
@@ -160,7 +158,6 @@ interface JQuery {
 
 type BocAutoCompleteReferenceValue_InvalidateResultEventHandler = (ev: JQueryEventObject) => void;
 type BocAutoCompleteReferenceValue_UpdateResultEventHandler = (ev: JQueryEventObject, item: BocAutoCompleteReferenceValue_UpdateResult, out: OutBox<BocAutoCompleteReferenceValue_UpdateResult>) => void;
-type BocAutoCompleteReferenceValue_SearchEventHandler = (ev: JQueryEventObject, fn?: (result: Optional<Autocomplete_Cache_RowEntry>) => void) => void;
 type BocAutoCompleteReferenceValue_FlushCacheEventHandler = (ev: JQueryEventObject) => void;
 type BocAutoCompleteReferenceValue_CollectOptionsEventHandler = (ev: JQueryEventObject, options: Partial<BocAutoCompleteReferenceValue_CollectedOptions>) => void;
 type BocAutoCompleteReferenceValue_SetOptionsEventHandler = (ev: JQueryEventObject, options: Partial<BocAutoCompleteReferenceValue_Options>) => void;
@@ -589,23 +586,6 @@ interface HTMLTextAreaElement {
             }
         }).click(function() {
 
-        }).bind("search", function (eventTarget, eventArguments) {
-            var fn = eventArguments;
-            function findValueCallback(q: string, data?: Nullable<Autocomplete_Cache_Row>) {
-                var result;
-                if (data && data.length) {
-                    for (var i = 0; i < data.length; i++) {
-                        if (data[i].result.toLowerCase() == q.toLowerCase()) {
-                            result = data[i];
-                            break;
-                        }
-                    }
-                }
-                if (typeof fn == "function") fn(result);
-                else updateResult(result.data); // todo dead code?
-            }
-            var value = $.trim($input.val());
-            requestData(value, findValueCallback, findValueCallback);
         }).bind("flushCache", function() {
             cache.flush();
         }).bind("collectOptions", function (eventTarget, eventArguments) {
@@ -955,7 +935,7 @@ interface HTMLTextAreaElement {
                 executingRequest = Sys.Net.WebServiceProxy.invoke(options.serviceUrl, options.serviceMethodSearch, false, params,
                                           function(result: BocAutoCompleteReferenceValue_Item[]) {
                                               executingRequest = null;
-                                              const parsed = options.parse && options.parse(result) || parse(result);
+                                              const parsed = options.parse(result);
                                               cache.add(term, parsed);
                                               success(term, parsed);
                                           } as any,
@@ -1002,7 +982,7 @@ interface HTMLTextAreaElement {
                                                       let parsed: Nullable<BocAutoCompleteReferenceValue_CacheRowEntry> = null;
                                                       if (result != null) {
                                                           const resultArray = new Array ( result );
-                                                          const parsedArray = options.parse && options.parse(resultArray) || parse(resultArray);
+                                                          const parsedArray = options.parse(resultArray);
                                                           parsed = parsedArray[0];
                                                       }
                                                       success(term, parsed);
@@ -1028,23 +1008,6 @@ interface HTMLTextAreaElement {
                 }
                 executingRequest = null;
             }
-        };
-
-        function parse(data: string): Autocomplete_Cache_Row<string[]> {
-            const parsed: Autocomplete_Cache_Row<string[]> = [];
-            const rows = data.split("\n");
-            for (var i = 0; i < rows.length; i++) {
-                var row = $.trim(rows[i]);
-                if (row) {
-                    const rowParts = row.split("|");
-                    parsed[parsed.length] = {
-                        data: rowParts,
-                        value: rowParts[0],
-                        result: options.formatResult && options.formatResult(rowParts, rowParts[0]) || rowParts[0]
-                    };
-                }
-            }
-            return parsed;
         };
 
         function startLoading(): void {
@@ -1098,8 +1061,6 @@ class BocAutoCompleteReferenceValue_Cache {
         // loop through the array and create a lookup structure
         for (let i = 0, ol = this.options.data.length; i < ol; i++) {
             let rawValue = this.options.data[i];
-            // if rawValue is a string, make an array otherwise just reference the array
-            rawValue = (typeof rawValue == "string") ? [rawValue] : rawValue;
 
             const value = this.options.formatMatch(rawValue, i + 1, this.options.data.length);
             if (value === false)
@@ -1759,12 +1720,12 @@ Remotion.jQuery.Autocompleter.applyPositionToPopUp = function (reference: JQuery
     }
 
     const popUpDiv = popUp.children ('div');
-    let contentHeight = Math.max(0, Math.max(popUpDiv.children().map(function (this: HTMLElement) { return this.offsetHeight + this.offsetTop; }).get()));
+    let contentHeight = Math.max(0, Math.max(...popUpDiv.children().map(function (this: HTMLElement) { return this.offsetHeight + this.offsetTop; }).get()));
 
     let contentWidth = popUp.data('popUpContentWidth');
     if (!isVisibe)
     {
-        contentWidth = Math.max(0, Math.max(popUpDiv.children().map(function (this: HTMLElement) { return this.offsetWidth + this.offsetLeft; }).get()));
+        contentWidth = Math.max(0, Math.max(...popUpDiv.children().map(function (this: HTMLElement) { return this.offsetWidth + this.offsetLeft; }).get()));
         popUp.data('popUpContentWidth', contentWidth);
     }
 
