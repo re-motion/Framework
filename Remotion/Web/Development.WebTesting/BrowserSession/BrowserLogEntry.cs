@@ -61,7 +61,7 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
     /// <summary>
     /// Returns a string that represents the current <see cref="BrowserLogEntry"/>.
     /// </summary>
-    public override string ToString ()
+    public override string? ToString ()
     {
       return string.Format (CultureInfo.InvariantCulture, "[{0:yyyy-MM-ddTHH:mm:ssZ}] [{1}] {2}", Timestamp, Level, Message);
     }

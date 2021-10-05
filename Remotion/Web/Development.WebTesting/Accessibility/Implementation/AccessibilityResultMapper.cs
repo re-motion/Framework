@@ -72,7 +72,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation
           violations: ParseViolations (axeResult).ToList());
     }
 
-    private DateTime ParseTimestamp (string timestampAsString)
+    private DateTime ParseTimestamp (string? timestampAsString)
     {
       return DateTime.ParseExact (
           timestampAsString,
@@ -123,7 +123,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation
       return new AccessibilityRuleResult (accessibilityRule, targets, htmlElementResult.Html, allRequirements, anyRequirements, noneRequirements);
     }
 
-    private IEnumerable<AccessibilityTestSuccessCriteria> GetSuccessCriteria (string[] ruleTags)
+    private IEnumerable<AccessibilityTestSuccessCriteria> GetSuccessCriteria (string[]? ruleTags)
     {
       return ruleTags
           .Where (t => !AccessibilityConformanceLevelConverter.IsValid (t))
@@ -139,7 +139,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation
       return ToEnum<AccessibilityTestSuccessCriteria> (transformedTag);
     }
 
-    private IEnumerable<AccessibilityRequirement> GetAccessibilityRequirements (IEnumerable<AxeRuleCheckResult> ruleCheckResults)
+    private IEnumerable<AccessibilityRequirement> GetAccessibilityRequirements (IEnumerable<AxeRuleCheckResult>? ruleCheckResults)
     {
       foreach (var check in ruleCheckResults)
       {

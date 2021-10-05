@@ -96,9 +96,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     /// Clones the current process overriding all specified properties.
     /// </summary>
     public ScreenshotTransformationContext<T> CloneWith (
-        IScreenshotElementResolver<T> resolver = null,
+        IScreenshotElementResolver<T>? resolver = null,
         OptionalParameter<T> target = default(OptionalParameter<T>),
-        ResolvedScreenshotElement resolvedElement = null)
+        ResolvedScreenshotElement? resolvedElement = null)
     {
       if (target.HasValue && target.Value == null)
         throw new ArgumentNullException ("target", "Value of optional parameter cannot be null.");

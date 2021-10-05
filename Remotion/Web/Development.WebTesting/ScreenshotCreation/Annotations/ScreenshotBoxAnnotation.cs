@@ -26,11 +26,11 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
   /// </summary>
   public class ScreenshotBoxAnnotation : IScreenshotAnnotation
   {
-    private readonly Brush _backgroundBrush;
+    private readonly Brush? _backgroundBrush;
     private readonly WebPadding _padding;
     private readonly Pen _pen;
 
-    public ScreenshotBoxAnnotation ([NotNull] Pen pen, WebPadding padding, [CanBeNull] Brush backgroundBrush)
+    public ScreenshotBoxAnnotation ([NotNull] Pen pen, WebPadding padding, [CanBeNull] Brush? backgroundBrush)
     {
       ArgumentUtility.CheckNotNull ("pen", pen);
 
@@ -44,7 +44,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     /// or <see langword="null" /> if the inside of the box should not be filled.
     /// </summary>
     [CanBeNull]
-    public Brush BackgroundBrush
+    public Brush? BackgroundBrush
     {
       get { return _backgroundBrush; }
     }

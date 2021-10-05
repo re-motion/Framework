@@ -117,13 +117,13 @@ namespace Remotion.Web.Development.WebTesting
     private readonly DriverConfiguration _driverConfiguration;
     private readonly ITestInfrastructureConfiguration _testInfrastructureConfiguration;
     private readonly List<IBrowserSession> _browserSessions = new List<IBrowserSession>();
-    private IBrowserSession _mainBrowserSession;
+    private IBrowserSession? _mainBrowserSession;
     private readonly IAccessibilityConfiguration _accessibilityConfiguration;
 
     /// <summary>
     /// Name of the current web test.
     /// </summary>
-    private string _testName;
+    private string? _testName;
 
     [PublicAPI]
     protected WebTestHelper ([NotNull] WebTestConfigurationFactory webTestConfigurationFactory)
@@ -155,7 +155,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <summary>
     /// Coypu main browser session for the web test.
     /// </summary>
-    public IBrowserSession MainBrowserSession
+    public IBrowserSession? MainBrowserSession
     {
       get { return _mainBrowserSession; }
     }
@@ -165,7 +165,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     /// <param name="maximizeWindow">Specifies whether the main browser session's window should be maximized.</param>
     /// <param name="configurationOverride">Specifies additional options applied when creating the browser.</param>
-    public void OnFixtureSetUp (bool maximizeWindow = true, [CanBeNull] DriverConfigurationOverride configurationOverride = null)
+    public void OnFixtureSetUp (bool maximizeWindow = true, [CanBeNull] DriverConfigurationOverride? configurationOverride = null)
     {
       s_log.InfoFormat ("WebTestHelper.OnFixtureSetup() has been called.");
       s_log.InfoFormat ("Remotion version: " + typeof (WebTestHelper).Assembly.GetName().Version);
@@ -208,7 +208,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <param name="maximizeWindow">Specified whether the new browser session's window should be maximized.</param>
     /// <param name="configurationOverride">Specifies additional options applied when creating the browser.</param>
     /// <returns>The new browser session.</returns>
-    public IBrowserSession CreateNewBrowserSession (bool maximizeWindow = true, [CanBeNull] DriverConfigurationOverride configurationOverride = null)
+    public IBrowserSession CreateNewBrowserSession (bool maximizeWindow = true, [CanBeNull] DriverConfigurationOverride? configurationOverride = null)
     {
       using (new PerformanceTimer (s_log, string.Format ("Created new {0} browser session.", _browserConfiguration.BrowserName)))
       {
@@ -227,7 +227,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <summary>
     /// Returns a new <typeparamref name="TPageObject"/> for the initial page displayed by <paramref name="browser"/>.
     /// </summary>
-    public TPageObject CreateInitialPageObject<TPageObject> ([NotNull] IBrowserSession browser)
+    public TPageObject? CreateInitialPageObject<TPageObject> ([NotNull] IBrowserSession browser)
         where TPageObject : PageObject
     {
       ArgumentUtility.CheckNotNull ("browser", browser);
@@ -238,7 +238,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <summary>
     /// Returns a new <typeparamref name="TPageObject"/> for the initial page displayed by <paramref name="browser"/> with a <see cref="NullRequestErrorDetectionStrategy"/>.
     /// </summary>
-    public TPageObject CreateInitialPageObjectWithoutRequestErrorDetection<TPageObject> ([NotNull] IBrowserSession browser)
+    public TPageObject? CreateInitialPageObjectWithoutRequestErrorDetection<TPageObject> ([NotNull] IBrowserSession browser)
         where TPageObject : PageObject
     {
       ArgumentUtility.CheckNotNull ("browser", browser);
@@ -246,14 +246,14 @@ namespace Remotion.Web.Development.WebTesting
       return CreateInitialPageObject<TPageObject> (browser, new NullRequestErrorDetectionStrategy());
     }
 
-    private TPageObject CreateInitialPageObject<TPageObject> (IBrowserSession browser, IRequestErrorDetectionStrategy requestErrorDetectionStrategy)
+    private TPageObject? CreateInitialPageObject<TPageObject> (IBrowserSession browser, IRequestErrorDetectionStrategy requestErrorDetectionStrategy)
         where TPageObject : PageObject
     {
       s_log.InfoFormat ("WebTestHelper.CreateInitialPageObject<" + typeof (TPageObject).FullName + "> has been called.");
       var context = PageObjectContext.New (browser, requestErrorDetectionStrategy);
       s_log.InfoFormat ("New PageObjectContext has been created.");
 
-      var pageObject = (TPageObject) Activator.CreateInstance (typeof (TPageObject), new object[] { context });
+      var pageObject = (TPageObject?) Activator.CreateInstance (typeof (TPageObject), new object[] { context });
       s_log.InfoFormat ("Initial PageObject has been created.");
       return pageObject;
     }
@@ -297,7 +297,7 @@ namespace Remotion.Web.Development.WebTesting
       return new ScreenshotBuilder (Screenshot.TakeDesktopScreenshot(), BrowserConfiguration.Locator);
     }
 
-    public ScreenshotBuilder CreateBrowserScreenshot (IBrowserSession browserSession = null)
+    public ScreenshotBuilder CreateBrowserScreenshot (IBrowserSession? browserSession = null)
     {
       if (browserSession == null)
         browserSession = MainBrowserSession;
@@ -352,7 +352,7 @@ namespace Remotion.Web.Development.WebTesting
       Cursor.Position = new Point (0, 0);
     }
 
-    private DriverConfiguration MergeDriverConfiguration (DriverConfiguration configuration, DriverConfigurationOverride configurationOverride)
+    private DriverConfiguration MergeDriverConfiguration (DriverConfiguration configuration, DriverConfigurationOverride? configurationOverride)
     {
       if (configurationOverride == null)
         return configuration;

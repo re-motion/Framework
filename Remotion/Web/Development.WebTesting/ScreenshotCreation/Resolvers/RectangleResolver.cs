@@ -32,7 +32,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
     /// </summary>
     public static readonly RectangleResolver Instance = new RectangleResolver();
 
-    private readonly IWebDriver _driver;
+    private readonly IWebDriver? _driver;
     private readonly bool _relative;
 
     private RectangleResolver ()

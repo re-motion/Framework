@@ -83,7 +83,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
       }
     }
 
-    private static string GetProgramFilesPath (ProcessStartInfo startInfo)
+    private static string? GetProgramFilesPath (ProcessStartInfo startInfo)
     {
       return string.IsNullOrEmpty (startInfo.EnvironmentVariables["ProgramFiles"])
           ? startInfo.EnvironmentVariables["ProgramFiles(x86)"]

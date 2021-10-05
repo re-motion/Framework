@@ -34,7 +34,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
 
     private readonly IDockerClient _docker;
     private readonly IisDockerContainerConfigurationParameters _configurationParameters;
-    private string _containerName;
+    private string? _containerName;
 
     public IisDockerContainerWrapper (
         [NotNull] IDockerClient docker,

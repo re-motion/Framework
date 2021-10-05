@@ -60,7 +60,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     /// <summary>
     /// Orientation type of the screen (eg. landscape, portrait).
     /// </summary>
-    public string OrientationType { get; }
+    public string? OrientationType { get; }
 
     /// <summary>
     /// User agent that was used.
@@ -93,7 +93,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
         int windowWidth,
         int windowHeight,
         int orientationAngle,
-        [CanBeNull] string orientationType,
+        [CanBeNull] string? orientationType,
         [NotNull] string userAgent,
         bool includeIFrames,
         AccessibilityConformanceLevel conformanceLevel,
@@ -122,7 +122,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     /// <summary>
     /// Creates a string containing the applied tag and the violations.
     /// </summary>
-    public override string ToString ()
+    public override string? ToString ()
     {
       var violations = string.Join (", ", Violations.Select (x => "<" + x.ToString() + ">"));
       return $"Tag: <{ConformanceLevel}>, Violations: <{violations}>";

@@ -27,6 +27,6 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.AxeJsonResultDtos
   {
     /// <summary>Name of the test runner.</summary>
     [DataMember (Name = "name")]
-    public string Name { get; set; }
+    public string? Name { get; set; }
   }
 }

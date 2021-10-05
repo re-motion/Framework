@@ -35,7 +35,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
     /// </summary>
     public static FluentScreenshotElement<AutomationElement> ForAutomationElementScreenshot (
         [NotNull] this AutomationElement automationElement,
-        [CanBeNull] IFluentScreenshotElement parent = null,
+        [CanBeNull] IFluentScreenshotElement? parent = null,
         [CanBeNull] Rectangle? parentContainer = null)
     {
       ArgumentUtility.CheckNotNull ("automationElement", automationElement);
@@ -48,7 +48,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
     /// </summary>
     public static FluentScreenshotElement<T> ForControlObjectScreenshot<T> (
         [NotNull] this T controlObject,
-        [CanBeNull] IFluentScreenshotElement parent = null,
+        [CanBeNull] IFluentScreenshotElement? parent = null,
         [CanBeNull] Rectangle? parentContainer = null)
         where T : ControlObject
     {
@@ -62,7 +62,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
     /// </summary>
     public static FluentScreenshotElement<ElementScope> ForElementScopeScreenshot (
         [NotNull] this ElementScope elementScope,
-        [CanBeNull] IFluentScreenshotElement parent = null,
+        [CanBeNull] IFluentScreenshotElement? parent = null,
         [CanBeNull] Rectangle? parentContainer = null)
     {
       ArgumentUtility.CheckNotNull ("elementScope", elementScope);
@@ -75,7 +75,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
     /// </summary>
     public static FluentScreenshotElement<IWebElement> ForWebElementScreenshot (
         [NotNull] this IWebElement webElement,
-        [CanBeNull] IFluentScreenshotElement parent = null,
+        [CanBeNull] IFluentScreenshotElement? parent = null,
         [CanBeNull] Rectangle? parentContainer = null)
     {
       ArgumentUtility.CheckNotNull ("webElement", webElement);
@@ -119,9 +119,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
     public static void AnnotateBox<T> (
         [NotNull] this ScreenshotBuilder builder,
         [NotNull] IFluentScreenshotElement<T> fluentTarget,
-        [CanBeNull] Pen pen = null,
+        [CanBeNull] Pen? pen = null,
         [CanBeNull] WebPadding? padding = null,
-        [CanBeNull] Brush brush = null)
+        [CanBeNull] Brush? brush = null)
     {
       ArgumentUtility.CheckNotNull ("builder", builder);
       ArgumentUtility.CheckNotNull ("fluentTarget", fluentTarget);
@@ -142,10 +142,10 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
         [NotNull] IFluentScreenshotElement<T> fluentTarget,
         [NotNull] string content,
         [CanBeNull] WebPadding? contentPadding = null,
-        [CanBeNull] Font font = null,
-        [CanBeNull] Brush contentBrush = null,
-        [CanBeNull] Pen borderPen = null,
-        [CanBeNull] Brush backgroundBrush = null,
+        [CanBeNull] Font? font = null,
+        [CanBeNull] Brush? contentBrush = null,
+        [CanBeNull] Pen? borderPen = null,
+        [CanBeNull] Brush? backgroundBrush = null,
         [CanBeNull] Size? translation = null,
         [CanBeNull] bool? forceCircle = null)
     {
@@ -173,10 +173,10 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
         [NotNull] this ScreenshotBuilder builder,
         [NotNull] IFluentScreenshotElement<T> fluentTarget,
         [NotNull] string content,
-        [CanBeNull] Font font = null,
-        [CanBeNull] Brush foregroundBrush = null,
-        [CanBeNull] Brush backgroundBrush = null,
-        [CanBeNull] StringFormat stringFormat = null,
+        [CanBeNull] Font? font = null,
+        [CanBeNull] Brush? foregroundBrush = null,
+        [CanBeNull] Brush? backgroundBrush = null,
+        [CanBeNull] StringFormat? stringFormat = null,
         [CanBeNull] ContentAlignment? contentAlignment = null,
         [CanBeNull] WebPadding? padding = null,
         [CanBeNull] float? maxWidth = null,

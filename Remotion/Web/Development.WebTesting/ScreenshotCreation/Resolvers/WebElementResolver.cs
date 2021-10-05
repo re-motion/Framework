@@ -36,10 +36,10 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
     private class ResultDto
     {
       [DataMember]
-      public RectangleDto ElementBounds;
+      public RectangleDto? ElementBounds;
 
       [DataMember]
-      public RectangleDto ParentBounds;
+      public RectangleDto? ParentBounds;
 
       public Rectangle GetElementBounds ()
       {
@@ -71,7 +71,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
 
     private static class ScriptLoader
     {
-      private static string s_script;
+      private static string? s_script;
 
       public static string Script
       {

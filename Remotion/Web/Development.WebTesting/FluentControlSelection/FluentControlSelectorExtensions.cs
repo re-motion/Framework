@@ -55,7 +55,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// Uses the <see cref="HtmlIDControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
     [CanBeNull]
-    public static TControlObject GetByIDOrNull<TControlSelector, TControlObject> (
+    public static TControlObject? GetByIDOrNull<TControlSelector, TControlObject> (
         [NotNull] this IFluentControlSelector<TControlSelector, TControlObject> fluentControlSelector,
         [NotNull] string id)
         where TControlSelector : IHtmlIDControlSelector<TControlObject>
@@ -115,7 +115,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// Uses the <see cref="IndexControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
     [CanBeNull]
-    public static TControlObject GetByIndexOrNull<TControlSelector, TControlObject> (
+    public static TControlObject? GetByIndexOrNull<TControlSelector, TControlObject> (
         [NotNull] this IFluentControlSelector<TControlSelector, TControlObject> fluentControlSelector,
         int oneBasedIndex)
         where TControlSelector : IIndexControlSelector<TControlObject>
@@ -178,7 +178,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// Uses the <see cref="LocalIDControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
     [CanBeNull]
-    public static TControlObject GetByLocalIDOrNull<TControlSelector, TControlObject> (
+    public static TControlObject? GetByLocalIDOrNull<TControlSelector, TControlObject> (
         [NotNull] this IFluentControlSelector<TControlSelector, TControlObject> fluentControlSelector,
         [NotNull] string localID)
         where TControlSelector : ILocalIDControlSelector<TControlObject>
@@ -241,7 +241,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// Uses the <see cref="TitleControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
     [CanBeNull]
-    public static TControlObject GetByTitleOrNull<TControlSelector, TControlObject> (
+    public static TControlObject? GetByTitleOrNull<TControlSelector, TControlObject> (
         [NotNull] this IFluentControlSelector<TControlSelector, TControlObject> fluentControlSelector,
         [NotNull] string title)
         where TControlSelector : ITitleControlSelector<TControlObject>
@@ -300,7 +300,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// Uses the <see cref="FirstControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
     [CanBeNull]
-    public static TControlObject FirstOrNull<TControlSelector, TControlObject> (
+    public static TControlObject? FirstOrNull<TControlSelector, TControlObject> (
         [NotNull] this IFluentControlSelector<TControlSelector, TControlObject> fluentControlSelector)
         where TControlSelector : IFirstControlSelector<TControlObject>
         where TControlObject : ControlObject
@@ -339,7 +339,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// Uses the <see cref="SingleControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
     [CanBeNull]
-    public static TControlObject SingleOrNull<TControlSelector, TControlObject> (
+    public static TControlObject? SingleOrNull<TControlSelector, TControlObject> (
         [NotNull] this IFluentControlSelector<TControlSelector, TControlObject> fluentControlSelector)
         where TControlSelector : ISingleControlSelector<TControlObject>
         where TControlObject : ControlObject
@@ -378,7 +378,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// Uses the <see cref="TextContentControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
     [CanBeNull]
-    public static TControlObject GetByTextContentOrNull<TControlSelector, TControlObject> (
+    public static TControlObject? GetByTextContentOrNull<TControlSelector, TControlObject> (
         [NotNull] this IFluentControlSelector<TControlSelector, TControlObject> fluentControlSelector,
         [NotNull] string text)
         where TControlSelector : ITextContentControlSelector<TControlObject>

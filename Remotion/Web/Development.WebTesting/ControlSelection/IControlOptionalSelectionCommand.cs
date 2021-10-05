@@ -33,6 +33,6 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// <returns>The <see cref="ControlObject"/> for the selected control, or <see langword="null"/> if no control could be found.</returns>
     /// <exception cref="WebTestException">If multiple matching controls are found but the specific implementation of <see cref="IControlOptionalSelectionCommand{TControlObject}"/> requires an exact match.</exception>
     [CanBeNull]
-    TControlObject SelectOptional ([NotNull] ControlSelectionContext context);
+    TControlObject? SelectOptional ([NotNull] ControlSelectionContext context);
   }
 }

@@ -93,7 +93,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
         [NotNull] T target,
         [NotNull] IScreenshotElementResolver<T> resolver,
         [NotNull] IScreenshotAnnotation annotation,
-        [CanBeNull] IScreenshotTransformation<T> transformation = null,
+        [CanBeNull] IScreenshotTransformation<T>? transformation = null,
         [CanBeNull] ElementVisibility? minimumElementVisibility = null)
     {
       ArgumentUtility.CheckNotNull ("target", target);
@@ -113,7 +113,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
         [NotNull] T target,
         [NotNull] IScreenshotElementResolver<T> resolver,
         [NotNull] IScreenshotCropping cropping,
-        [CanBeNull] IScreenshotTransformation<T> transformation = null,
+        [CanBeNull] IScreenshotTransformation<T>? transformation = null,
         [CanBeNull] ElementVisibility? minimumElementVisibility = null)
     {
       ArgumentUtility.CheckNotNull ("target", target);

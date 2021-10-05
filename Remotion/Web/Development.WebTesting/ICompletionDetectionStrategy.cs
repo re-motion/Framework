@@ -37,7 +37,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     /// <param name="context">The reloading page's <see cref="PageObjectContext"/>.</param>
     /// <returns>A state object which is subsequently passed to <see cref="WaitForCompletion"/>. May be null.</returns>
-    object PrepareWaitForCompletion ([NotNull] PageObjectContext context);
+    object? PrepareWaitForCompletion ([NotNull] PageObjectContext context);
 
     /// <summary>
     /// Called immediately after the action has been performed. This method should block until the DOM fulfills certain characteristics (i.e. a page
@@ -45,6 +45,6 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     /// <param name="context">The reloading page's <see cref="PageObjectContext"/>.</param>
     /// <param name="state">The state object obtained from <see cref="PrepareWaitForCompletion"/>.</param>
-    void WaitForCompletion ([NotNull] PageObjectContext context, [CanBeNull] object state);
+    void WaitForCompletion ([NotNull] PageObjectContext context, [CanBeNull] object? state);
   }
 }

@@ -27,22 +27,22 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.AxeJsonResultDtos
   {
     /// <summary>ID of the check.</summary>
     [DataMember (Name = "id")]
-    public string ID { get; set; }
+    public string? ID { get; set; }
 
     /// <summary>How big the impact of the check is.</summary>
     [DataMember (Name = "impact")]
-    public string Impact { get; set; }
+    public string? Impact { get; set; }
 
     /// <summary>Message of the check.</summary>
     [DataMember (Name = "message")]
-    public string Message { get; set; }
+    public string? Message { get; set; }
 
     /// <summary>Data of the check.</summary>
     [DataMember (Name = "data")]
-    public object Data { get; set; }
+    public object? Data { get; set; }
 
     /// <summary>Nodes related to the check.</summary>
     [DataMember (Name = "relatedNodes")]
-    public AxeRelatedHtmlElement[] RelatedNodes { get; set; }
+    public AxeRelatedHtmlElement[]? RelatedNodes { get; set; }
   }
 }

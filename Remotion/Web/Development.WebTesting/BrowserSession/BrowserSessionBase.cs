@@ -67,7 +67,7 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
       get { return _browserConfiguration; }
     }
 
-    public void AcceptModalDialog (Options options = null)
+    public void AcceptModalDialog (Options? options = null)
     {
       _value.AcceptModalDialog (options);
     }
@@ -82,7 +82,7 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
       get { return _value; }
     }
 
-    public BrowserWindow FindWindow (string locator, Options options = null)
+    public BrowserWindow FindWindow (string locator, Options? options = null)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("locator", locator);
 
@@ -127,7 +127,7 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
     /// Returns a <see cref="Process"/> representing the driver process.
     /// </summary>
     [CanBeNull]
-    private Process FindDriverProcess ()
+    private Process? FindDriverProcess ()
     {
       var processes = Process.GetProcesses();
 
@@ -138,7 +138,7 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
     /// Returns a <see cref="Process"/> representing the main browser process.
     /// </summary>
     [CanBeNull]
-    private Process FindBrowserProcess ()
+    private Process? FindBrowserProcess ()
     {
       var processes = Process.GetProcesses();
 

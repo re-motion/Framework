@@ -45,7 +45,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <returns>The specified child <see cref="ControlObject"/> or <see langword="null"/> if no <see cref="ControlObject"/> could be found.</returns>
     /// <exception cref="WebTestException">If the selection command cannot unambiguously identify the child control.</exception>
     [CanBeNull]
-    TControlObject GetControlOrNull<TControlObject> ([NotNull] IControlOptionalSelectionCommand<TControlObject> controlSelectionCommand)
+    TControlObject? GetControlOrNull<TControlObject> ([NotNull] IControlOptionalSelectionCommand<TControlObject> controlSelectionCommand)
         where TControlObject : ControlObject;
 
     /// <summary>

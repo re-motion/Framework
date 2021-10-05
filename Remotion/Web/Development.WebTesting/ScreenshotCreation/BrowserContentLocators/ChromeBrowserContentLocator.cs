@@ -79,7 +79,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
       var results = windows.Where (w => w.Key == highestRating).Take (2).ToArray();
 
       // If the result are ambiguous we try to find the browser by changing the window title 
-      AutomationElement automationElement = null;
+      AutomationElement? automationElement = null;
       if (results.Length == 2)
         automationElement = ResolveByChangingWindowTitle (driver);
 
@@ -90,7 +90,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
     }
 
     [CanBeNull]
-    private AutomationElement ResolveByChangingWindowTitle (IWebDriver driver)
+    private AutomationElement? ResolveByChangingWindowTitle (IWebDriver driver)
     {
       var id = Guid.NewGuid().ToString();
 
@@ -106,7 +106,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
 
     private Rectangle ResolveBoundsFromWindow (AutomationElement window)
     {
-      AutomationElement element = null;
+      AutomationElement? element = null;
       const int retryCount = 5;
 
       // Sometimes we do not find a window on the first try

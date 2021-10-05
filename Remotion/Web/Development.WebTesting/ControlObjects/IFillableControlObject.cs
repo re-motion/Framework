@@ -37,7 +37,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <param name="actionOptions">See <see cref="IWebTestActionOptions"/> for more information.</param>
     /// <returns>An unspecified page object, may be used in case a new page is expected after clicking the control object.</returns>
     /// <exception cref="WebTestException">The element is currently disabled.</exception>
-    UnspecifiedPageObject FillWith ([NotNull] string text, [CanBeNull] IWebTestActionOptions actionOptions = null);
+    UnspecifiedPageObject FillWith ([NotNull] string text, [CanBeNull] IWebTestActionOptions? actionOptions = null);
 
     /// <summary>
     /// Fills the control with the given <paramref name="text"/> and afterwards executes the given <paramref name="finishInputWith"/> action.
@@ -50,6 +50,6 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     UnspecifiedPageObject FillWith (
         [NotNull] string text,
         [NotNull] FinishInputWithAction finishInputWith,
-        [CanBeNull] IWebTestActionOptions actionOptions = null);
+        [CanBeNull] IWebTestActionOptions? actionOptions = null);
   }
 }

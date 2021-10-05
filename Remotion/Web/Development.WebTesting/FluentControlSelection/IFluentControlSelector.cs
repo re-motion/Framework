@@ -45,7 +45,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// <returns>The <see cref="ControlObject"/> for the selected control, or <see langword="null"/> if no control could be found.</returns>
     /// <exception cref="WebTestException">If multiple matching controls are found but the specific <typeparamref name="TControlSelector"/> requires an exact match.</exception>
     [CanBeNull]
-    TControlObject GetControlOrNull ([NotNull] IControlOptionalSelectionCommandBuilder<TControlSelector, TControlObject> selectionCommandBuilder);
+    TControlObject? GetControlOrNull ([NotNull] IControlOptionalSelectionCommandBuilder<TControlSelector, TControlObject> selectionCommandBuilder);
     
     /// <summary>
     /// Tries to find the control and returns <see langword="true" /> if it exists.

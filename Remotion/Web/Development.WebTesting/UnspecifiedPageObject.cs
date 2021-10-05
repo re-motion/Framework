@@ -38,7 +38,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     /// <typeparam name="TPageObject">Expected page type.</typeparam>
     /// <returns>A page object of the expected type.</returns>
-    public TPageObject Expect<TPageObject> () where TPageObject : PageObject
+    public TPageObject? Expect<TPageObject> () where TPageObject : PageObject
     {
       return Expect<TPageObject> (poc => { });
     }
@@ -50,7 +50,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <typeparam name="TPageObject">Expected page type.</typeparam>
     /// <param name="actualMatchesExpectedPageAssertion">Assertion which determines whether the correct page is shown.</param>
     /// <returns>A page object of the expected type.</returns>
-    public TPageObject Expect<TPageObject> ([NotNull] Action<PageObjectContext> actualMatchesExpectedPageAssertion) where TPageObject : PageObject
+    public TPageObject? Expect<TPageObject> ([NotNull] Action<PageObjectContext> actualMatchesExpectedPageAssertion) where TPageObject : PageObject
     {
       ArgumentUtility.CheckNotNull ("actualMatchesExpectedPageAssertion", actualMatchesExpectedPageAssertion);
 
@@ -65,7 +65,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <typeparam name="TPageObject">Expected page type.</typeparam>
     /// <param name="windowLocator">Title of the new window (or a uniquely identifying part of the title).</param>
     /// <returns>A page object of the expected type.</returns>
-    public TPageObject ExpectNewWindow<TPageObject> ([NotNull] string windowLocator)
+    public TPageObject? ExpectNewWindow<TPageObject> ([NotNull] string windowLocator)
         where TPageObject : PageObject
     {
       ArgumentUtility.CheckNotNullOrEmpty ("windowLocator", windowLocator);
@@ -82,7 +82,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <param name="windowLocator">Title of the new window (or a uniquely identifying part of the title).</param>
     /// <param name="actualMatchesExpectedPageAssertion">Assertion which determines whether the correct page is shown.</param>
     /// <returns>A page object of the expected type.</returns>
-    public TPageObject ExpectNewWindow<TPageObject> (
+    public TPageObject? ExpectNewWindow<TPageObject> (
         [NotNull] string windowLocator,
         [NotNull] Action<PageObjectContext> actualMatchesExpectedPageAssertion)
         where TPageObject : PageObject
@@ -101,7 +101,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <typeparam name="TPageObject">Expected page type.</typeparam>
     /// <param name="windowLocator">Title of the new popup window (or a uniquely identifying part of the title).</param>
     /// <returns>A page object of the expected type.</returns>
-    public TPageObject ExpectNewPopupWindow<TPageObject> ([NotNull] string windowLocator) where TPageObject : PageObject
+    public TPageObject? ExpectNewPopupWindow<TPageObject> ([NotNull] string windowLocator) where TPageObject : PageObject
     {
       ArgumentUtility.CheckNotNullOrEmpty ("windowLocator", windowLocator);
 
@@ -117,7 +117,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <param name="windowLocator">Title of the new popup window (or a uniquely identifying part of the title).</param>
     /// <param name="actualMatchesExpectedPageAssertion">Assertion which determines whether the correct page is shown.</param>
     /// <returns>A page object of the expected type.</returns>
-    public TPageObject ExpectNewPopupWindow<TPageObject> (
+    public TPageObject? ExpectNewPopupWindow<TPageObject> (
         [NotNull] string windowLocator,
         [NotNull] Action<PageObjectContext> actualMatchesExpectedPageAssertion)
         where TPageObject : PageObject
@@ -129,13 +129,13 @@ namespace Remotion.Web.Development.WebTesting
       return AssertActualMatchesExpectedPageAndReturnNewPageObject<TPageObject> (newContext, actualMatchesExpectedPageAssertion);
     }
 
-    private static TPageObject AssertActualMatchesExpectedPageAndReturnNewPageObject<TPageObject> (
+    private static TPageObject? AssertActualMatchesExpectedPageAndReturnNewPageObject<TPageObject> (
         PageObjectContext newPageObjectContext,
         Action<PageObjectContext> actualMatchesExpectedPageAssertion)
         where TPageObject : PageObject
     {
       actualMatchesExpectedPageAssertion (newPageObjectContext);
-      return (TPageObject) Activator.CreateInstance (typeof (TPageObject), new object[] { newPageObjectContext });
+      return (TPageObject?) Activator.CreateInstance (typeof (TPageObject), new object[] { newPageObjectContext });
     }
   }
 }

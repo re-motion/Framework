@@ -42,6 +42,6 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// <returns>The <see cref="ControlObject"/> for the selected control, or <see langword="null"/> if no control could be found.</returns>
     /// <exception cref="WebTestException">If multiple controls of type <typeparamref name="TControlObject"/> are found.</exception>
     [CanBeNull]
-    TControlObject SelectSingleOrNull ([NotNull] ControlSelectionContext context);
+    TControlObject? SelectSingleOrNull ([NotNull] ControlSelectionContext context);
   }
 }

@@ -55,10 +55,10 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
         IDictionary<int, int> ports,
         IDictionary<string, string> mounts,
         string imageName,
-        string hostname,
+        string? hostname,
         bool remove,
-        string entryPoint,
-        string args)
+        string? entryPoint,
+        string? args)
     {
       ArgumentUtility.CheckNotNull ("ports", ports);
       ArgumentUtility.CheckNotNull ("mounts", mounts);
@@ -147,7 +147,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
       RunDockerCommand (command);
     }
 
-    private string RunDockerCommand (string dockerCommand, string workingDirectory = null, TimeSpan? timeout = null)
+    private string RunDockerCommand (string dockerCommand, string? workingDirectory = null, TimeSpan? timeout = null)
     {
       s_log.Info ($"Running: 'docker {dockerCommand}'");
 

@@ -27,7 +27,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.AxeJsonResultDtos
   {
     /// <summary>Limit which rules are executed, based on names or tags.</summary>
     [DataMember (Name = "runOnly")]
-    public AxeExecutionConstraint RunOnly { get; set; }
+    public AxeExecutionConstraint? RunOnly { get; set; }
 
     /// <summary>Whether <see cref="IAccessibilityConfiguration.IncludeIFrames" /> were allowed during the test.</summary>
     [DataMember (Name = "iframes")]

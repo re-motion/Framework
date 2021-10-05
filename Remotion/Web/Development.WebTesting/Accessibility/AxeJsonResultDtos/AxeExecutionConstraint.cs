@@ -27,7 +27,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.AxeJsonResultDtos
   {
     /// <summary>Either <c>tag</c> or <c>rule</c>.</summary>
     [DataMember (Name = "type")]
-    public string Type { get; set; }
+    public string? Type { get; set; }
 
     /// <summary>Defined tag or rule names.</summary>
     [DataMember (Name = "values")]

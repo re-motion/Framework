@@ -82,7 +82,7 @@ namespace Remotion.Web.Development.WebTesting
       return _red == other._red && _green == other._green && _blue == other._blue && _isTransparent == other._isTransparent;
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
       if (ReferenceEquals (null, obj))
         return false;
@@ -111,7 +111,7 @@ namespace Remotion.Web.Development.WebTesting
       return !left.Equals (right);
     }
 
-    public override string ToString ()
+    public override string? ToString ()
     {
       if (IsTransparent)
         return "Transparent";

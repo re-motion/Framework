@@ -58,7 +58,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
     public static FluentScreenshotElement<T> CloneWith<T> (
         [NotNull] IFluentScreenshotElement<T> fluentTarget,
         OptionalParameter<T> target = default(OptionalParameter<T>),
-        [CanBeNull] IScreenshotElementResolver<T> resolver = null,
+        [CanBeNull] IScreenshotElementResolver<T>? resolver = null,
         [CanBeNull] ElementVisibility? minimumElementVisibility = null)
     {
       ArgumentUtility.CheckNotNull ("fluentTarget", fluentTarget);

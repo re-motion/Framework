@@ -52,7 +52,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
         [NotNull] ScreenshotBuilder builder,
         [NotNull] IBrowserSession browserSession,
         [NotNull] string content,
-        ScreenshotTooltipStyle style = null,
+        ScreenshotTooltipStyle? style = null,
         WebPadding? padding = null,
         TooltipPositioning? positioning = null,
         bool? wrapLines = null,
@@ -86,7 +86,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     public IFluentScreenshotElement<Rectangle> DrawTooltip (
         [NotNull] ScreenshotBuilder builder,
         [NotNull] ControlObject controlObject,
-        ScreenshotTooltipStyle style = null,
+        ScreenshotTooltipStyle? style = null,
         WebPadding? padding = null,
         TooltipPositioning? positioning = null,
         bool? wrapLines = null,
@@ -104,7 +104,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     public IFluentScreenshotElement<Rectangle> DrawTooltip (
         [NotNull] ScreenshotBuilder builder,
         [NotNull] ElementScope element,
-        ScreenshotTooltipStyle style = null,
+        ScreenshotTooltipStyle? style = null,
         WebPadding? padding = null,
         TooltipPositioning? positioning = null,
         bool? wrapLines = null,
@@ -122,7 +122,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     public IFluentScreenshotElement<Rectangle> DrawTooltip (
         [NotNull] ScreenshotBuilder builder,
         [NotNull] IWebElement webElement,
-        ScreenshotTooltipStyle style = null,
+        ScreenshotTooltipStyle? style = null,
         WebPadding? padding = null,
         TooltipPositioning? positioning = null,
         bool? wrapLines = null,

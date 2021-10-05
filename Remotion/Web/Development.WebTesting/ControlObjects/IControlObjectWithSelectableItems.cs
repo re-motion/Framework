@@ -44,7 +44,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// Short for explicitly implemented <see cref="IFluentControlObjectWithSelectableItems.WithItemID"/>.
     /// </summary>
     /// <exception cref="WebTestException">The element is currently disabled.</exception>
-    UnspecifiedPageObject SelectItem ([NotNull] string itemID, [CanBeNull] IWebTestActionOptions actionOptions = null);
+    UnspecifiedPageObject SelectItem ([NotNull] string itemID, [CanBeNull] IWebTestActionOptions? actionOptions = null);
   }
 
   /// <summary>
@@ -56,30 +56,30 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// Selects the item using the given <paramref name="itemID"/>.
     /// </summary>
     /// <exception cref="WebTestException">The element is currently disabled.</exception>
-    UnspecifiedPageObject WithItemID ([NotNull] string itemID, [CanBeNull] IWebTestActionOptions actionOptions = null);
+    UnspecifiedPageObject WithItemID ([NotNull] string itemID, [CanBeNull] IWebTestActionOptions? actionOptions = null);
 
     /// <summary>
     /// Selects item row using the given <paramref name="oneBasedIndex"/>.
     /// </summary>
     /// <exception cref="WebTestException">The element is currently disabled.</exception>
-    UnspecifiedPageObject WithIndex (int oneBasedIndex, [CanBeNull] IWebTestActionOptions actionOptions = null);
+    UnspecifiedPageObject WithIndex (int oneBasedIndex, [CanBeNull] IWebTestActionOptions? actionOptions = null);
 
     /// <summary>
     /// Selects item row using the given <paramref name="htmlID"/>.
     /// </summary>
     /// <exception cref="WebTestException">The element is currently disabled.</exception>
-    UnspecifiedPageObject WithHtmlID ([NotNull] string htmlID, [CanBeNull] IWebTestActionOptions actionOptions = null);
+    UnspecifiedPageObject WithHtmlID ([NotNull] string htmlID, [CanBeNull] IWebTestActionOptions? actionOptions = null);
 
     /// <summary>
     /// Selects item row using the given <paramref name="displayText"/>.
     /// </summary>
     /// <exception cref="WebTestException">The element is currently disabled.</exception>
-    UnspecifiedPageObject WithDisplayText ([NotNull] string displayText, [CanBeNull] IWebTestActionOptions actionOptions = null);
+    UnspecifiedPageObject WithDisplayText ([NotNull] string displayText, [CanBeNull] IWebTestActionOptions? actionOptions = null);
 
     /// <summary>
     /// Selects item row using the given <paramref name="containsDisplayText"/>.
     /// </summary>
     /// <exception cref="WebTestException">The element is currently disabled.</exception>
-    UnspecifiedPageObject WithDisplayTextContains ([NotNull] string containsDisplayText, [CanBeNull] IWebTestActionOptions actionOptions = null);
+    UnspecifiedPageObject WithDisplayTextContains ([NotNull] string containsDisplayText, [CanBeNull] IWebTestActionOptions? actionOptions = null);
   }
 }

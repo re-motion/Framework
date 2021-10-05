@@ -75,7 +75,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     /// <summary>
     /// Creates a string containing the rule ID, the CSS selector and the checks.
     /// </summary>
-    public override string ToString ()
+    public override string? ToString ()
     {
       var xPaths = string.Join (",", TargetPath.Select (p => p.XPath).Select (p => $"\"{p}\""));
 

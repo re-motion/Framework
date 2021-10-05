@@ -76,10 +76,10 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
     }
 
     [CanBeNull]
-    private AutomationElement FindTopMostWindow (AutomationElement element)
+    private AutomationElement? FindTopMostWindow (AutomationElement element)
     {
       var walker = TreeWalker.ControlViewWalker;
-      AutomationElement result = null, current = element;
+      AutomationElement? result = null, current = element;
       do
       {
         current = walker.GetParent (current);

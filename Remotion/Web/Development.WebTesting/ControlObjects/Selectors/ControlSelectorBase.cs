@@ -40,7 +40,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     }
 
     /// <inheritdoc/>
-    public TControlObject SelectOptionalPerHtmlID (ControlSelectionContext context, string htmlID)
+    public TControlObject? SelectOptionalPerHtmlID (ControlSelectionContext context, string htmlID)
     {
       ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNullOrEmpty ("htmlID", htmlID);
@@ -78,7 +78,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     }
 
     /// <inheritdoc/>
-    public TControlObject SelectOptionalPerLocalID (ControlSelectionContext context, string localID)
+    public TControlObject? SelectOptionalPerLocalID (ControlSelectionContext context, string localID)
     {
       ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNullOrEmpty ("localID", localID);

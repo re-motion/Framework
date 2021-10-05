@@ -38,7 +38,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
         int port,
         [NotNull] string dockerImageName,
         TimeSpan dockerPullTimeout,
-        [CanBeNull] string hostname)
+        [CanBeNull] string? hostname)
     {
       ArgumentUtility.CheckNotNull ("testSiteLayoutConfiguration", testSiteLayoutConfiguration);
       ArgumentUtility.CheckNotNullOrEmpty ("dockerImageName", dockerImageName);

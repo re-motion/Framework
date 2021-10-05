@@ -101,7 +101,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
       var downloadTimeWithoutUpdate = Stopwatch.StartNew();
       var startedDownloadHandlingUtc = DateTime.UtcNow;
       var currentStateTimeout = downloadStartedTimeout;
-      PartialFileState partialFileStateOfCurrentDownload = null;
+      PartialFileState? partialFileStateOfCurrentDownload = null;
       var zeroLengthFileWasFoundInPreviousIteration = false;
       while (downloadTimeWithoutUpdate.ElapsedMilliseconds < currentStateTimeout.TotalMilliseconds)
       {

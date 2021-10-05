@@ -48,7 +48,7 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
     /// Only used internally.
     /// API access via <see cref="ControlObjectContext" />.<see cref="ControlObjectContext.CloneForNewPopupWindow" /> and <see cref="ControlObjectContext" />.<see cref="ControlObjectContext.CloneForNewWindow" />.
     /// </remarks>
-    BrowserWindow FindWindow (string locator, Options options = null);
+    BrowserWindow FindWindow (string locator, Options? options = null);
 
     /// <summary>
     /// Deletes all Cookies of this <see cref="IBrowserSession"/>.

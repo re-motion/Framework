@@ -25,26 +25,26 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.AxeJsonResultDtos
   {
     /// <summary>Html snippet of the node.</summary>
     [DataMember (Name = "html")]
-    public string Html { get; set; }
+    public string? Html { get; set; }
 
     /// <summary>Target of the node.</summary>
     [DataMember (Name = "target")]
-    public string[] Target { get; set; }
+    public string[]? Target { get; set; }
 
     /// <summary>XPath to the node.</summary>
     [DataMember (Name = "xpath")]
-    public string[] XPaths { get; set; }
+    public string[]? XPaths { get; set; }
 
     /// <summary>List of checks where at least one has passed.</summary>
     [DataMember (Name = "any")]
-    public AxeRuleCheckResult[] Any { get; set; }
+    public AxeRuleCheckResult[]? Any { get; set; }
 
     /// <summary>List of checks where none have passed.</summary>
     [DataMember (Name = "none")]
-    public AxeRuleCheckResult[] None { get; set; }
+    public AxeRuleCheckResult[]? None { get; set; }
 
     /// <summary>List of checks where all have passed.</summary>
     [DataMember (Name = "all")]
-    public AxeRuleCheckResult[] All { get; set; }
+    public AxeRuleCheckResult[]? All { get; set; }
   }
 }

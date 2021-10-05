@@ -29,6 +29,6 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
     /// The user directory of this <see cref="EdgeOptions"/>.
     /// </summary>
     [CanBeNull]
-    public string UserDirectory { get; set; }
+    public string? UserDirectory { get; set; }
   }
 }

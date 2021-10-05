@@ -77,7 +77,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     }
 
     /// <inheritdoc />
-    public override bool Equals (object other)
+    public override bool Equals (object? other)
     {
       if (!_hasValue)
         return other == null;
@@ -95,7 +95,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     }
 
     /// <inheritdoc />
-    public override string ToString ()
+    public override string? ToString ()
     {
       if (_hasValue)
         return _value.ToString();

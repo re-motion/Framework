@@ -54,7 +54,7 @@ namespace Remotion.Web.Development.WebTesting.CompletionDetectionStrategies
     }
 
     /// <inheritdoc/>
-    public void WaitForCompletion (PageObjectContext context, object state)
+    public void WaitForCompletion (PageObjectContext context, object? state)
     {
       ArgumentUtility.CheckNotNull ("context", context);
       var states = ArgumentUtility.CheckNotNullAndType<List<object>> ("state", state);

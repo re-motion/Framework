@@ -31,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting
     private readonly IBrowserSession _browser;
     private readonly BrowserWindow _window;
     private readonly IRequestErrorDetectionStrategy _requestErrorDetectionStrategy;
-    private readonly PageObjectContext _parentContext;
+    private readonly PageObjectContext? _parentContext;
 
     /// <summary>
     /// Private constructor, use <see cref="New"/> to create a new root <see cref="PageObjectContext"/>.
@@ -46,7 +46,7 @@ namespace Remotion.Web.Development.WebTesting
         [NotNull] BrowserWindow window,
         [NotNull] IRequestErrorDetectionStrategy requestErrorDetectionStrategy,
         [NotNull] ElementScope scope,
-        [CanBeNull] PageObjectContext parentContext)
+        [CanBeNull] PageObjectContext? parentContext)
         : base (scope)
     {
       ArgumentUtility.CheckNotNull ("browser", browser);
@@ -99,7 +99,7 @@ namespace Remotion.Web.Development.WebTesting
     /// Returns the <see cref="PageObject"/>'s parent context, e.g. a <see cref="PageObject"/> representing the parent frame or the parent window.
     /// This property returns <see langword="null"/> for root contexts.
     /// </summary>
-    public PageObjectContext ParentContext
+    public PageObjectContext? ParentContext
     {
       get { return _parentContext; }
     }

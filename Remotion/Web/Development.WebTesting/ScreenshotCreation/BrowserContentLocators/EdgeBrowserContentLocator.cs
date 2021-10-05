@@ -78,7 +78,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
     }
 
     [CanBeNull]
-    private AutomationElement ResolveByChangingWindowTitle (IWebDriver driver, IReadOnlyCollection<AutomationElement> windows)
+    private AutomationElement? ResolveByChangingWindowTitle (IWebDriver driver, IReadOnlyCollection<AutomationElement> windows)
     {
       var id = Guid.NewGuid().ToString();
 
@@ -105,7 +105,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
       return result;
     }
 
-    private Rectangle ResolveBoundsFromWindow (AutomationElement window)
+    private Rectangle ResolveBoundsFromWindow (AutomationElement? window)
     {
       var contentElement = RetryUntilValueChanges (
           () => GetContentElement (window),
@@ -129,7 +129,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
           (int) Math.Round (rawBounds.Height));
     }
 
-    private AutomationElement GetContentElement (AutomationElement window)
+    private AutomationElement GetContentElement (AutomationElement? window)
     {
       return window.FindAll (
               TreeScope.Subtree,

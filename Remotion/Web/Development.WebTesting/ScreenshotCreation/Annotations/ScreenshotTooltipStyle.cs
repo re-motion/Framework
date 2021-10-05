@@ -73,7 +73,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
 
     private readonly Font _font;
     private readonly Brush _foregroundBrush;
-    private readonly Brush _backgroundBrush;
+    private readonly Brush? _backgroundBrush;
     private readonly Pen _border;
     private readonly TooltipPositioning _positioning;
     private readonly WebPadding _contentPadding;
@@ -84,7 +84,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     public ScreenshotTooltipStyle (
         [NotNull] Font font,
         [NotNull] Brush foregroundBrush,
-        [CanBeNull] Brush backgroundBrush,
+        [CanBeNull] Brush? backgroundBrush,
         [NotNull] Pen border,
         TooltipPositioning positioning,
         WebPadding contentPadding,
@@ -127,7 +127,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     /// The <see cref="Brush"/> that will be used to fill the background of the tooltip, or <see langword="null" /> if the background should not be filled.
     /// </summary>
     [CanBeNull]
-    public Brush BackgroundBrush
+    public Brush? BackgroundBrush
     {
       get { return _backgroundBrush; }
     }
@@ -185,10 +185,10 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     /// Clones the <see cref="ScreenshotTooltipStyle"/> overriding the specified members.
     /// </summary>
     public ScreenshotTooltipStyle Clone (
-        Font font = null,
-        Brush foregroundBrush = null,
+        Font? font = null,
+        Brush? foregroundBrush = null,
         OptionalParameter<Brush> backgroundBrush = default(OptionalParameter<Brush>),
-        Pen border = null,
+        Pen? border = null,
         TooltipPositioning? positioning = null,
         WebPadding? contentPadding = null,
         bool? wrapLines = null,

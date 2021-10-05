@@ -39,7 +39,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     private readonly string _outputDirectory;
 
     private bool _isCursorCaptured;
-    private CursorInformation _cursorInformation;
+    private CursorInformation? _cursorInformation;
 
     public TestExecutionScreenshotRecorder ([NotNull] string outputDirectory)
     {
@@ -210,7 +210,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       }
     }
 
-    private CursorInformation GetCursorInformation ()
+    private CursorInformation? GetCursorInformation ()
     {
       if (_isCursorCaptured)
         return _cursorInformation;

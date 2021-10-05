@@ -47,7 +47,7 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     }
 
     /// <inheritdoc/>
-    public TControlObject SelectOptional (ControlSelectionContext context)
+    public TControlObject? SelectOptional (ControlSelectionContext context)
     {
       ArgumentUtility.CheckNotNull ("context", context);
 

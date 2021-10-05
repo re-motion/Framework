@@ -44,7 +44,7 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// <param name="localID">The local ID of the <see cref="ControlObject"/>. Must not be <see langword="null"/> or empty.</param>
     /// <returns>The <see cref="ControlObject"/> for the selected control, or <see langword="null"/> if no control could be found.</returns>
     [CanBeNull]
-    TControlObject SelectOptionalPerLocalID ([NotNull] ControlSelectionContext context, [NotNull] string localID);
+    TControlObject? SelectOptionalPerLocalID ([NotNull] ControlSelectionContext context, [NotNull] string localID);
 
     /// <summary>
     /// Checks if a control within the given <paramref name="context"/> using the given <paramref name="localID"/> exists.
