@@ -32,7 +32,7 @@ namespace Remotion.Development.UnitTesting.PEVerifyPathSources
       _path = path;
     }
 
-    public string? GetPEVerifyPath (PEVerifyVersion version)
+    public string GetPEVerifyPath (PEVerifyVersion version)
     {
       return  _path;
     }
