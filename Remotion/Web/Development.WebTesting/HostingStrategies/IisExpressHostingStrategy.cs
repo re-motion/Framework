@@ -46,8 +46,9 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
     /// <param name="properties">The configuration properties.</param>
     [UsedImplicitly]
     public IisExpressHostingStrategy ([NotNull] TestSiteLayoutConfiguration testSiteLayoutConfiguration, [NotNull] NameValueCollection properties)
-        : this (testSiteLayoutConfiguration, int.Parse (ArgumentUtility.CheckNotNull ("properties", properties)["port"]))
+        : this (testSiteLayoutConfiguration, int.Parse (ArgumentUtility.CheckNotNull ("properties", properties)["port"]!))
     {
+      // TODO RM-8113: Guard used properties against null values.
     }
 
     /// <inheritdoc/>

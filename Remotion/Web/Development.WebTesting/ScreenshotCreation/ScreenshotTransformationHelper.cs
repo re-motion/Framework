@@ -21,6 +21,7 @@ using Remotion.Utilities;
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 {
   internal class ScreenshotTransformationHelper<T> : IDisposable
+      where T : notnull
   {
     private readonly ScreenshotTransformationContext<T> _context;
     private readonly IScreenshotTransformation<T> _transformation;

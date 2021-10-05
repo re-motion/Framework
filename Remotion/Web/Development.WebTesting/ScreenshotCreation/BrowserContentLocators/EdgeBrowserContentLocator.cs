@@ -78,14 +78,16 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
     }
 
     [CanBeNull]
-    private AutomationElement? ResolveByChangingWindowTitle (IWebDriver driver, IReadOnlyCollection<AutomationElement> windows)
+    private AutomationElement ResolveByChangingWindowTitle (IWebDriver driver, IReadOnlyCollection<AutomationElement> windows)
     {
       var id = Guid.NewGuid().ToString();
 
       var executor = (IJavaScriptExecutor) driver;
-      var previousTitle = JavaScriptExecutor.ExecuteStatement<string> (executor, c_setWindowTitle, id);
+      var previousTitle = Assertion.IsNotNull (
+          JavaScriptExecutor.ExecuteStatement<string> (executor, c_setWindowTitle, id),
+          "The Javascript code changing and fetching the window title must not return null.");
 
-      AutomationElement result;
+      AutomationElement? result;
       try
       {
         result = RetryUntilValueChanges (
@@ -105,9 +107,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
       return result;
     }
 
-    private Rectangle ResolveBoundsFromWindow (AutomationElement? window)
+    private Rectangle ResolveBoundsFromWindow (AutomationElement window)
     {
-      var contentElement = RetryUntilValueChanges (
+      var contentElement = RetryUntilValueChanges<AutomationElement?> (
           () => GetContentElement (window),
           null,
           5,
@@ -129,7 +131,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
           (int) Math.Round (rawBounds.Height));
     }
 
-    private AutomationElement GetContentElement (AutomationElement? window)
+    private AutomationElement GetContentElement (AutomationElement window)
     {
       return window.FindAll (
               TreeScope.Subtree,

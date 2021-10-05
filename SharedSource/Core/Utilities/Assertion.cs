@@ -55,7 +55,7 @@ namespace Remotion.Utilities
     [Conditional ("DEBUG")]
     [AssertionMethod]
     [StringFormatMethod("message")]
-    public static void DebugAssert ([AssertionCondition (AssertionConditionType.IS_TRUE), DoesNotReturnIf (false)] bool assertion, string message, params object[] arguments)
+    public static void DebugAssert ([AssertionCondition (AssertionConditionType.IS_TRUE), DoesNotReturnIf (false)] bool assertion, string message, params object?[] arguments)
     {
       IsTrue (assertion, message, arguments);
     }
@@ -77,7 +77,7 @@ namespace Remotion.Utilities
     [Conditional ("TRACE")]
     [AssertionMethod]
     [StringFormatMethod ("message")]
-    public static void TraceAssert ([AssertionCondition (AssertionConditionType.IS_TRUE), DoesNotReturnIf (false)] bool assertion, string message, params object[] arguments)
+    public static void TraceAssert ([AssertionCondition (AssertionConditionType.IS_TRUE), DoesNotReturnIf (false)] bool assertion, string message, params object?[] arguments)
     {
       IsTrue (assertion, message, arguments);
     }
@@ -97,7 +97,7 @@ namespace Remotion.Utilities
 
     [AssertionMethod]
     [StringFormatMethod("message")]
-    public static void IsTrue ([AssertionCondition (AssertionConditionType.IS_TRUE), DoesNotReturnIf (false)] bool assertion, string message, params object[] arguments)
+    public static void IsTrue ([AssertionCondition (AssertionConditionType.IS_TRUE), DoesNotReturnIf (false)] bool assertion, string message, params object?[] arguments)
     {
       if (!assertion)
         throw new InvalidOperationException (string.Format (message, arguments));
@@ -123,7 +123,7 @@ namespace Remotion.Utilities
 
     [AssertionMethod]
     [StringFormatMethod ("message")]
-    public static void IsFalse ([AssertionCondition (AssertionConditionType.IS_FALSE), DoesNotReturnIf (true)] bool expression, string message, params object[] arguments)
+    public static void IsFalse ([AssertionCondition (AssertionConditionType.IS_FALSE), DoesNotReturnIf (true)] bool expression, string message, params object?[] arguments)
     {
       if (expression)
         throw new InvalidOperationException (string.Format (message, arguments));
@@ -139,7 +139,7 @@ namespace Remotion.Utilities
     [Conditional ("DEBUG")]
     [AssertionMethod]
     [StringFormatMethod ("message")]
-    public static void DebugIsNotNull<T> ([AssertionCondition (AssertionConditionType.IS_NOT_NULL), System.Diagnostics.CodeAnalysis.NotNull] T obj, string message, params object[] arguments)
+    public static void DebugIsNotNull<T> ([AssertionCondition (AssertionConditionType.IS_NOT_NULL), System.Diagnostics.CodeAnalysis.NotNull] T obj, string message, params object?[] arguments)
     {
       IsNotNull (obj, message, arguments);
     }
@@ -161,7 +161,7 @@ namespace Remotion.Utilities
     [AssertionMethod]
     [StringFormatMethod ("message")]
     [return: System.Diagnostics.CodeAnalysis.NotNull]
-    public static T IsNotNull<T> ([AssertionCondition (AssertionConditionType.IS_NOT_NULL), System.Diagnostics.CodeAnalysis.NotNull] T obj, string message, params object[] arguments)
+    public static T IsNotNull<T> ([AssertionCondition (AssertionConditionType.IS_NOT_NULL), System.Diagnostics.CodeAnalysis.NotNull] T obj, string message, params object?[] arguments)
     {
       // ReSharper disable CompareNonConstrainedGenericWithNull
       if (obj == null)
@@ -185,7 +185,7 @@ namespace Remotion.Utilities
 
     [AssertionMethod]
     [StringFormatMethod("message")]
-    public static void IsNull ([AssertionCondition (AssertionConditionType.IS_NULL)] object? obj, string message, params object[] arguments)
+    public static void IsNull ([AssertionCondition (AssertionConditionType.IS_NULL)] object? obj, string message, params object?[] arguments)
     {
       if (obj != null)
         throw new InvalidOperationException (string.Format (message, arguments));

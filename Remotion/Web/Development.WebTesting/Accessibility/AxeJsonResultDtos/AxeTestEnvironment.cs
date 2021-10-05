@@ -27,7 +27,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.AxeJsonResultDtos
   {
     /// <summary>Webdriver that was used.</summary>
     [DataMember (Name = "userAgent")]
-    public string? UserAgent { get; set; }
+    public string UserAgent { get; set; } = null!;
 
     /// <summary>Width of the window.</summary>
     [DataMember (Name = "windowWidth")]
@@ -43,6 +43,6 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.AxeJsonResultDtos
 
     /// <summary>Orientation type of the screen.</summary>
     [DataMember (Name = "orientationType")]
-    public string? OrientationType { get; set; }
+    public string OrientationType { get; set; } = null!;
   }
 }

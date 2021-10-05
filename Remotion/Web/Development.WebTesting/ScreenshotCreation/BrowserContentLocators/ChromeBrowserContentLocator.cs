@@ -95,7 +95,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
       var id = Guid.NewGuid().ToString();
 
       var executor = (IJavaScriptExecutor) driver;
-      var previousTitle = JavaScriptExecutor.ExecuteStatement<string> (executor, c_setWindowTitle, id);
+      var previousTitle = Assertion.IsNotNull (
+          JavaScriptExecutor.ExecuteStatement<string> (executor, c_setWindowTitle, id),
+          "The Javascript code changing and fetching the window title must not return null.");
 
       var result = AutomationElement.RootElement.FindFirst (TreeScope.Children, new PropertyCondition (AutomationElement.NameProperty, id));
 

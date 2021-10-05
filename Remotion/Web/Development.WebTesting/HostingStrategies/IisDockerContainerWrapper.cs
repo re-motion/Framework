@@ -81,12 +81,14 @@ C:\ServiceMonitor.exe w3svc;
     /// <inheritdoc />
     public void Dispose ()
     {
+      Assertion.DebugIsNotNull (_containerName, "No container was started.");
       _docker.Stop (_containerName);
       var isContainerRemovedAfterStop = IsContainerRemoved (retries: 15, interval: TimeSpan.FromMilliseconds (100));
 
       if (isContainerRemovedAfterStop)
         return;
 
+      Assertion.DebugIsNotNull (_containerName, "No container was started.");
       _docker.Remove (_containerName, true);
       var isContainerRemovedAfterForceRemove = IsContainerRemoved (retries: 15, interval: TimeSpan.FromMilliseconds (100));
 
@@ -98,6 +100,8 @@ C:\ServiceMonitor.exe w3svc;
 
     private bool IsContainerRemoved (int retries, TimeSpan interval)
     {
+      Assertion.DebugIsNotNull (_containerName, "No container was started.");
+
       for (var i = 0; i <= retries; i++)
       {
         if (!_docker.ContainerExists (_containerName))

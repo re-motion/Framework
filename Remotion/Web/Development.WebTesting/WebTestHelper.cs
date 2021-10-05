@@ -155,9 +155,9 @@ namespace Remotion.Web.Development.WebTesting
     /// <summary>
     /// Coypu main browser session for the web test.
     /// </summary>
-    public IBrowserSession? MainBrowserSession
+    public IBrowserSession MainBrowserSession
     {
-      get { return _mainBrowserSession; }
+      get { return Assertion.IsNotNull (_mainBrowserSession, "OnFixtureSetup must be called before accessing MainBrowserSession."); }
     }
 
     /// <summary>
@@ -227,7 +227,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <summary>
     /// Returns a new <typeparamref name="TPageObject"/> for the initial page displayed by <paramref name="browser"/>.
     /// </summary>
-    public TPageObject? CreateInitialPageObject<TPageObject> ([NotNull] IBrowserSession browser)
+    public TPageObject CreateInitialPageObject<TPageObject> ([NotNull] IBrowserSession browser)
         where TPageObject : PageObject
     {
       ArgumentUtility.CheckNotNull ("browser", browser);
@@ -238,7 +238,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <summary>
     /// Returns a new <typeparamref name="TPageObject"/> for the initial page displayed by <paramref name="browser"/> with a <see cref="NullRequestErrorDetectionStrategy"/>.
     /// </summary>
-    public TPageObject? CreateInitialPageObjectWithoutRequestErrorDetection<TPageObject> ([NotNull] IBrowserSession browser)
+    public TPageObject CreateInitialPageObjectWithoutRequestErrorDetection<TPageObject> ([NotNull] IBrowserSession browser)
         where TPageObject : PageObject
     {
       ArgumentUtility.CheckNotNull ("browser", browser);
@@ -246,14 +246,14 @@ namespace Remotion.Web.Development.WebTesting
       return CreateInitialPageObject<TPageObject> (browser, new NullRequestErrorDetectionStrategy());
     }
 
-    private TPageObject? CreateInitialPageObject<TPageObject> (IBrowserSession browser, IRequestErrorDetectionStrategy requestErrorDetectionStrategy)
+    private TPageObject CreateInitialPageObject<TPageObject> (IBrowserSession browser, IRequestErrorDetectionStrategy requestErrorDetectionStrategy)
         where TPageObject : PageObject
     {
       s_log.InfoFormat ("WebTestHelper.CreateInitialPageObject<" + typeof (TPageObject).FullName + "> has been called.");
       var context = PageObjectContext.New (browser, requestErrorDetectionStrategy);
       s_log.InfoFormat ("New PageObjectContext has been created.");
 
-      var pageObject = (TPageObject?) Activator.CreateInstance (typeof (TPageObject), new object[] { context });
+      var pageObject = (TPageObject) Activator.CreateInstance (typeof (TPageObject), new object[] { context })!;
       s_log.InfoFormat ("Initial PageObject has been created.");
       return pageObject;
     }
@@ -265,6 +265,7 @@ namespace Remotion.Web.Development.WebTesting
     {
       try
       {
+        Assertion.IsNotNull (_mainBrowserSession, "'_mainBrowserSession' must not be null.");
         _mainBrowserSession.Window.AcceptModalDialog (Options.NoWait);
       }
       catch (MissingDialogException)
@@ -281,6 +282,7 @@ namespace Remotion.Web.Development.WebTesting
     {
       if (!hasSucceeded && ShouldTakeScreenshots())
       {
+        Assertion.IsNotNull (_testName, "'{0}' should be set by the test infrastructure calling '{1}'", nameof (_testName), nameof (OnSetUp));
         var screenshotRecorder = new TestExecutionScreenshotRecorder (_testInfrastructureConfiguration.ScreenshotDirectory);
         screenshotRecorder.CaptureCursor();
         screenshotRecorder.TakeDesktopScreenshot (_testName);
@@ -387,6 +389,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <returns>Initialized instance of AccessibilityAnalyzer</returns>
     public AccessibilityAnalyzer CreateAccessibilityAnalyzer ()
     {
+      Assertion.IsNotNull (_mainBrowserSession, "No MainBrowserSession is available.");
       return CreateAccessibilityAnalyzer (_mainBrowserSession);
     }
   }

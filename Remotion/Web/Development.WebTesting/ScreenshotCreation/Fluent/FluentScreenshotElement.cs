@@ -32,6 +32,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
   /// </list>
   /// </remarks>
   public class FluentScreenshotElement<T> : IFluentScreenshotElement<T>, IFluentScreenshotElementWithCovariance<T>
+      where T : notnull
   {
     private readonly IScreenshotElementResolver<T> _resolver;
     private readonly T _target;

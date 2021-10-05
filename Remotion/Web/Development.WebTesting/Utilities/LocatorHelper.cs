@@ -77,6 +77,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
         [NotNull] IScreenshotElementResolver<T> resolver,
         [NotNull] T target,
         CoordinateSystem coordinateSystem)
+        where T : notnull
     {
       ArgumentUtility.CheckNotNull ("resolver", resolver);
       ArgumentUtility.CheckNotNull ("target", target);
@@ -96,6 +97,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// Resolves <paramref name="target"/> using the specified <paramref name="resolver"/> for the browser <see cref="CoordinateSystem"/>.
     /// </summary>
     public ResolvedScreenshotElement ResolveBrowser<T> ([NotNull] IScreenshotElementResolver<T> resolver, [NotNull] T target)
+        where T : notnull
     {
       ArgumentUtility.CheckNotNull ("resolver", resolver);
       ArgumentUtility.CheckNotNull ("target", target);
@@ -107,6 +109,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// Resolves <paramref name="target"/> using the specified <paramref name="resolver"/> for the desktop <see cref="CoordinateSystem"/>.
     /// </summary>
     public ResolvedScreenshotElement ResolveDesktop<T> ([NotNull] IScreenshotElementResolver<T> resolver, [NotNull] T target)
+        where T : notnull
     {
       ArgumentUtility.CheckNotNull ("resolver", resolver);
       ArgumentUtility.CheckNotNull ("target", target);

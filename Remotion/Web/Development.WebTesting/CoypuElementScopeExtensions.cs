@@ -243,11 +243,11 @@ namespace Remotion.Web.Development.WebTesting
     /// Returns the <see cref="IDriver"/> object of an <see cref="ElementScope"/> instance.
     /// </summary>
     /// <returns>The <see cref="IDriver"/> instance held by <paramref name="scope"/>.</returns>
-    internal static IDriver? GetDriver ([NotNull] this ElementScope scope)
+    internal static IDriver GetDriver ([NotNull] this ElementScope scope)
     {
       ArgumentUtility.CheckNotNull ("scope", scope);
 
-      return (IDriver?) s_driverFieldInfo.Value.GetValue (scope);
+      return (IDriver) s_driverFieldInfo.Value.GetValue (scope)!;
     }
 
     private static bool IsTransparent ([NotNull] string color)

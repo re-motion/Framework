@@ -17,10 +17,10 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Utilities;
 
@@ -73,10 +73,10 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
     /// Specifies the <see cref="IDownloadFileFinderStrategy"/>.
     /// </param>
     public DownloadedFileFinder (
-      [NotNull] string downloadDirectory,
-      [NotNull] string partialFileExtension,
+      [JetBrains.Annotations.NotNull] string downloadDirectory,
+      [JetBrains.Annotations.NotNull] string partialFileExtension,
       TimeSpan downloadStartedGracePeriod,
-      [NotNull] IDownloadFileFinderStrategy downloadFileFinderStrategy)
+      [JetBrains.Annotations.NotNull] IDownloadFileFinderStrategy downloadFileFinderStrategy)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("downloadDirectory", downloadDirectory);
       ArgumentUtility.CheckNotNullOrEmpty ("partialFileExtension", partialFileExtension);
@@ -91,7 +91,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
     public DownloadedFile WaitForDownloadCompleted (
         TimeSpan downloadStartedTimeout,
         TimeSpan downloadUpdatedTimeout,
-        [NotNull] IReadOnlyCollection<string> filesInDownloadDirectoryBeforeDownload)
+        [JetBrains.Annotations.NotNull] IReadOnlyCollection<string> filesInDownloadDirectoryBeforeDownload)
     {
       ArgumentUtility.CheckNotNull ("filesInDownloadDirectoryBeforeDownload", filesInDownloadDirectoryBeforeDownload);
 
@@ -154,7 +154,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
               downloadUpdatedTimeout),
           unmatchedFiles);
 
-      static bool PartialFileWasFoundInPreviousIteration (PartialFileState partialFileState) => partialFileState != null;
+      static bool PartialFileWasFoundInPreviousIteration ([NotNullWhen (true)] PartialFileState? partialFileState) => partialFileState != null;
     }
 
     private bool TemporaryFilesExist (List<string> newFiles)
@@ -166,12 +166,12 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
     {
       return Directory.GetFiles (_downloadDirectory)
           .Where (file => FileGotCreatedAfterDownloadHandlingStarted (file, startedDownloadHandling))
-          .Select (Path.GetFileName)
+          .Select (s => Path.GetFileName (s))
           .Except (filesInDownloadDirectoryBeforeDownload)
           .ToList();
     }
 
-    private bool TryGetFileInformation (string fileName, out FileInformationTuple fileInformation)
+    private bool TryGetFileInformation (string fileName, [MaybeNullWhen (false)] out FileInformationTuple fileInformation)
     {
       var fileInfo = new FileInfo (Path.Combine (_downloadDirectory, fileName));
 
@@ -223,7 +223,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
       }
     }
 
-    private bool TryGetPartialFile (IEnumerable<string> newFiles, out string partialFile)
+    private bool TryGetPartialFile (IEnumerable<string> newFiles, [MaybeNullWhen (false)] out string partialFile)
     {
       partialFile = newFiles.SingleOrDefault (file => file.EndsWith (_partialFileExtension));
 

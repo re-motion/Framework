@@ -25,27 +25,27 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.AxeJsonResultDtos
   {
     /// <summary>Timestamp of analysis.</summary>
     [DataMember (Name = "timestamp")]
-    public string? Timestamp { get; set; }
+    public string Timestamp { get; set; } = null!;
 
     /// <summary>Engine the test ran on.</summary>
     [DataMember (Name = "testEngine")]
-    public AxeTestEngine? TestEngine { get; set; }
+    public AxeTestEngine TestEngine { get; set; } = null!;
 
     /// <summary>Name of the test runner.</summary>
     [DataMember (Name = "testRunner")]
-    public AxeTestRunner? TestRunner { get; set; }
+    public AxeTestRunner TestRunner { get; set; } = null!;
 
     /// <summary>Test environment the test ran in.</summary>
     [DataMember (Name = "testEnvironment")]
-    public AxeTestEnvironment? TestEnvironment { get; set; }
+    public AxeTestEnvironment TestEnvironment { get; set; } = null!;
 
     /// <summary>Url of the website that was tested.</summary>
     [DataMember (Name = "url")]
-    public string? Url { get; set; }
+    public string Url { get; set; } = null!;
 
     /// <summary>The options the test ran with.</summary>
     [DataMember (Name = "toolOptions")]
-    public AxeToolOptions? ToolOptions { get; set; }
+    public AxeToolOptions ToolOptions { get; set; } = null!;
 
     /// <summary>Contains elements that violated the rules.</summary>
     [DataMember (Name = "violations")]

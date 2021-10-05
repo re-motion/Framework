@@ -26,6 +26,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
   /// A context for <see cref="IScreenshotTransformation{T}"/> to apply their transformations on.
   /// </summary>
   public class ScreenshotTransformationContext<T>
+      where T : notnull
   {
     private readonly ScreenshotManipulation _manipulation;
     private readonly Graphics _graphics;

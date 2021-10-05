@@ -24,6 +24,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
   /// Resolves <see cref="IFluentScreenshotElement{T}"/>s for screenshot annotations.
   /// </summary>
   public class FluentResolver<T> : IScreenshotElementResolver<IFluentScreenshotElement<T>>
+      where T : notnull
   {
     /// <summary>
     /// Singleton instance of <see cref="FluentResolver{T}"/>.

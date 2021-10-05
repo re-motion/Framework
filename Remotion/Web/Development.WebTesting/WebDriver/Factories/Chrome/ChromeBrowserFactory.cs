@@ -67,7 +67,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome
           new[]
           {
               _registryCleanUpStrategy,
-              new ChromiumUserDirectoryCleanUpStrategy (_chromeConfiguration.UserDirectoryRoot, _extendedChromeOptions.UserDirectory)
+              new ChromiumUserDirectoryCleanUpStrategy (_chromeConfiguration.UserDirectoryRoot, _extendedChromeOptions.UserDirectory!)
           });
     }
 

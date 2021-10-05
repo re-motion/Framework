@@ -36,10 +36,10 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
     private class ResultDto
     {
       [DataMember]
-      public RectangleDto? ElementBounds;
+      public RectangleDto ElementBounds = null!;
 
       [DataMember]
-      public RectangleDto? ParentBounds;
+      public RectangleDto ParentBounds = null!;
 
       public Rectangle GetElementBounds ()
       {
@@ -92,7 +92,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
 
           using (var reader = new StreamReader (stream))
           {
-            string line;
+            string? line;
             while ((line = reader.ReadLine()) != null)
               if (!line.StartsWith ("//"))
                 scriptBuilder.Append (line);
@@ -121,6 +121,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
       var executor = JavaScriptExecutor.GetJavaScriptExecutor (target);
       var rawResult = JavaScriptExecutor.ExecuteStatement<string> (executor, ScriptLoader.Script, target);
       var result = DataContractJsonSerializationUtility.Deserialize<ResultDto> (rawResult);
+      Assertion.IsNotNull (result, "Could not deserialize javascript result '{0}'.", rawResult);
 
       var elementBounds = result.GetElementBounds();
       var parentBounds = result.GetParentBounds();
@@ -147,6 +148,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
       var executor = JavaScriptExecutor.GetJavaScriptExecutor (target);
       var rawResult = JavaScriptExecutor.ExecuteStatement<string> (executor, ScriptLoader.Script, target);
       var result = DataContractJsonSerializationUtility.Deserialize<ResultDto> (rawResult);
+      Assertion.IsNotNull (result, "Could not deserialize javascript result '{0}'.", rawResult);
 
       var elementBounds = result.GetElementBounds();
       var unresolvedBounds = elementBounds;

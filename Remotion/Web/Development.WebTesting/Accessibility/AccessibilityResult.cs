@@ -122,7 +122,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     /// <summary>
     /// Creates a string containing the applied tag and the violations.
     /// </summary>
-    public override string? ToString ()
+    public override string ToString ()
     {
       var violations = string.Join (", ", Violations.Select (x => "<" + x.ToString() + ">"));
       return $"Tag: <{ConformanceLevel}>, Violations: <{violations}>";

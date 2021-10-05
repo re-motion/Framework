@@ -106,6 +106,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
         [NotNull] IScreenshotAnnotation annotation,
         [CanBeNull] IScreenshotTransformation<T>? transformation = null,
         ElementVisibility? minimumElementVisibility = null)
+        where T : notnull
     {
       ArgumentUtility.CheckNotNull ("target", target);
       ArgumentUtility.CheckNotNull ("resolver", resolver);
@@ -130,6 +131,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
         [NotNull] IScreenshotCropping cropping,
         [CanBeNull] IScreenshotTransformation<T>? transformation = null,
         ElementVisibility? minimumElementVisibility = null)
+        where T : notnull
     {
       ArgumentUtility.CheckNotNull ("target", target);
       ArgumentUtility.CheckNotNull ("resolver", resolver);
@@ -232,6 +234,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
         IScreenshotElementResolver<T> resolver,
         T target,
         [CanBeNull] IScreenshotTransformation<T>? transformation)
+        where T : notnull
     {
       return new ScreenshotTransformationHelper<T> (
           manipulation,

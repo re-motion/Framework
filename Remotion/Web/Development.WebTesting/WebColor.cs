@@ -111,7 +111,7 @@ namespace Remotion.Web.Development.WebTesting
       return !left.Equals (right);
     }
 
-    public override string? ToString ()
+    public override string ToString ()
     {
       if (IsTransparent)
         return "Transparent";

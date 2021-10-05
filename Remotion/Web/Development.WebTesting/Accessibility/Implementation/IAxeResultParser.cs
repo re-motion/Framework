@@ -30,6 +30,6 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation
     /// Parses the JSON created by AXE into a <see cref="AxeResult"/>.
     /// </summary>
     [NotNull]
-    AxeResult? Parse ([NotNull] string rawJson);
+    AxeResult Parse ([NotNull] string rawJson);
   }
 }

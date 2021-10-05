@@ -75,11 +75,12 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
     public DockerHostingStrategy ([NotNull] TestSiteLayoutConfiguration testSiteLayoutConfiguration, [NotNull] NameValueCollection properties)
         : this (
             testSiteLayoutConfiguration,
-            int.Parse (ArgumentUtility.CheckNotNull ("properties", properties)["port"]),
-            properties["dockerImageName"],
-            TimeSpan.Parse (properties["dockerPullTimeout"]),
+            int.Parse (ArgumentUtility.CheckNotNull ("properties", properties)["port"]!),
+            properties["dockerImageName"]!,
+            TimeSpan.Parse (properties["dockerPullTimeout"]!),
             properties["hostname"])
     {
+      // TODO RM-8113: Guard used properties against null values.
     }
 
     /// <inheritdoc />

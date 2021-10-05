@@ -87,6 +87,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
     /// Returns the target element of the specified <paramref name="fluentElement"/>.
     /// </summary>
     public static T GetTarget<T> ([NotNull] this IFluentScreenshotElement<T> fluentElement)
+        where T : notnull
     {
       ArgumentUtility.CheckNotNull ("fluentElement", fluentElement);
 
@@ -97,6 +98,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
     /// Returns the target element of the specified <paramref name="fluentElement"/>.
     /// </summary>
     public static T GetTarget<T> ([NotNull] this IFluentScreenshotElementWithCovariance<T> fluentElement)
+        where T : notnull
     {
       ArgumentUtility.CheckNotNull ("fluentElement", fluentElement);
 
@@ -107,6 +109,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
     /// Returns the target element of the specified <paramref name="fluentElement"/>.
     /// </summary>
     public static T GetTarget<T> ([NotNull] this FluentScreenshotElement<T> fluentElement)
+        where T : notnull
     {
       ArgumentUtility.CheckNotNull ("fluentElement", fluentElement);
 
@@ -122,6 +125,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
         [CanBeNull] Pen? pen = null,
         [CanBeNull] WebPadding? padding = null,
         [CanBeNull] Brush? brush = null)
+        where T : notnull
     {
       ArgumentUtility.CheckNotNull ("builder", builder);
       ArgumentUtility.CheckNotNull ("fluentTarget", fluentTarget);
@@ -148,6 +152,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
         [CanBeNull] Brush? backgroundBrush = null,
         [CanBeNull] Size? translation = null,
         [CanBeNull] bool? forceCircle = null)
+        where T : notnull
     {
       ArgumentUtility.CheckNotNull ("builder", builder);
       ArgumentUtility.CheckNotNull ("fluentTarget", fluentTarget);
@@ -181,6 +186,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
         [CanBeNull] WebPadding? padding = null,
         [CanBeNull] float? maxWidth = null,
         [CanBeNull] float? maxHeight = null)
+        where T : notnull
     {
       ArgumentUtility.CheckNotNull ("builder", builder);
       ArgumentUtility.CheckNotNull ("fluentTarget", fluentTarget);
@@ -207,6 +213,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
         [NotNull] this ScreenshotBuilder builder,
         [NotNull] IFluentScreenshotElement<T> fluentTarget,
         [CanBeNull] WebPadding? padding = null)
+        where T : notnull
     {
       ArgumentUtility.CheckNotNull ("builder", builder);
       ArgumentUtility.CheckNotNull ("fluentTarget", fluentTarget);
@@ -232,6 +239,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
         [NotNull] this ScreenshotBuilder builder,
         [NotNull] IFluentScreenshotElement<T> fluentTarget,
         [NotNull] Action<Graphics, ResolvedScreenshotElement> drawAction)
+        where T : notnull
     {
       ArgumentUtility.CheckNotNull ("builder", builder);
       ArgumentUtility.CheckNotNull ("fluentTarget", fluentTarget);

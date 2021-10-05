@@ -83,11 +83,13 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
       }
     }
 
-    private static string? GetProgramFilesPath (ProcessStartInfo startInfo)
+    private static string GetProgramFilesPath (ProcessStartInfo startInfo)
     {
-      return string.IsNullOrEmpty (startInfo.EnvironmentVariables["ProgramFiles"])
+      var programFilesPath = string.IsNullOrEmpty (startInfo.EnvironmentVariables["ProgramFiles"])
           ? startInfo.EnvironmentVariables["ProgramFiles(x86)"]
           : startInfo.EnvironmentVariables["ProgramFiles"];
+
+      return Assertion.IsNotNull (programFilesPath, "Could not fetch the program files path from either environment variable 'ProgramFiles(x86)' and 'ProgramFiles'.");
     }
   }
 }

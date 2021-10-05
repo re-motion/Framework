@@ -27,6 +27,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
   /// A collection of <see cref="IScreenshotTransformation{T}"/>s that can be applied as a <see cref="IScreenshotTransformation{T}"/>.
   /// </summary>
   public class ScreenshotTransformationCollection<T> : ICollection<IScreenshotTransformation<T>>, IScreenshotTransformation<T>
+      where T : notnull
   {
     private class TransformationComparer : IComparer<int>
     {

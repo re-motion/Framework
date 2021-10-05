@@ -70,14 +70,14 @@ namespace Remotion.Web.Development.WebTesting.Configuration
       get { return _requestErrorDetectionStrategy; }
     }
 
-    private IRequestErrorDetectionStrategy? GetRequestErrorDetectionConfiguration (string requestErrorDetectionStrategyName)
+    private IRequestErrorDetectionStrategy GetRequestErrorDetectionConfiguration (string requestErrorDetectionStrategyName)
     {
       var requestErrorStrategyType = GetRequestErrorDetectionStrategyType (requestErrorDetectionStrategyName);
       Assertion.IsNotNull (
           requestErrorStrategyType,
           string.Format ("Request Error Detection strategy '{0}' could not be loaded.", requestErrorDetectionStrategyName));
 
-      return (IRequestErrorDetectionStrategy?) Activator.CreateInstance (requestErrorStrategyType);
+      return (IRequestErrorDetectionStrategy) Activator.CreateInstance (requestErrorStrategyType)!;
     }
 
     [CanBeNull]

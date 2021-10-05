@@ -35,13 +35,13 @@ namespace Remotion.Web.Development.WebTesting.Utilities
   {
     private static readonly ILog s_log = LogManager.GetLogger (typeof (RetryUntilTimeout));
 
-    private readonly RetryUntilTimeout<object> _retryUntilTimeout;
+    private readonly RetryUntilTimeout<object?> _retryUntilTimeout;
 
     public RetryUntilTimeout ([NotNull] Action action, TimeSpan timeout, TimeSpan retryInterval)
     {
       ArgumentUtility.CheckNotNull ("action", action);
 
-      _retryUntilTimeout = new RetryUntilTimeout<object> (
+      _retryUntilTimeout = new RetryUntilTimeout<object?> (
           () =>
           {
             action();

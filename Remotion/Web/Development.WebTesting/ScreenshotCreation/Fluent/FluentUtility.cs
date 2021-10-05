@@ -39,6 +39,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
         [NotNull] ScreenshotBuilder builder,
         [NotNull] IFluentScreenshotElement<T> fluentTarget,
         [NotNull] IScreenshotAnnotation annotation)
+        where T : notnull
     {
       ArgumentUtility.CheckNotNull ("builder", builder);
       ArgumentUtility.CheckNotNull ("fluentTarget", fluentTarget);
@@ -60,6 +61,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
         OptionalParameter<T> target = default(OptionalParameter<T>),
         [CanBeNull] IScreenshotElementResolver<T>? resolver = null,
         [CanBeNull] ElementVisibility? minimumElementVisibility = null)
+        where T : notnull
     {
       ArgumentUtility.CheckNotNull ("fluentTarget", fluentTarget);
       if (target.HasValue && target.Value == null)
@@ -80,6 +82,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
         [NotNull] TTarget target,
         [NotNull] IScreenshotElementResolver<TTarget> resolver,
         [CanBeNull] ElementVisibility? minimumElementVisibility = null)
+        where TSource : notnull
+        where TTarget : notnull
     {
       ArgumentUtility.CheckNotNull ("fluentTarget", fluentTarget);
       ArgumentUtility.CheckNotNull ("target", target);
@@ -157,6 +161,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
         [NotNull] ScreenshotBuilder builder,
         [NotNull] IFluentScreenshotElement<T> fluentTarget,
         [NotNull] IScreenshotCropping cropping)
+        where T : notnull
     {
       ArgumentUtility.CheckNotNull ("builder", builder);
       ArgumentUtility.CheckNotNull ("fluentTarget", fluentTarget);

@@ -122,7 +122,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
 
     private void DisableSpecCompliance (ExtendedEdgeOptions edgeOptions)
     {
-      var knownCapabilityNames = (Dictionary<string, string>?) s_knownCapabilityNamesField.Value.GetValue (edgeOptions);
+      var knownCapabilityNames = (Dictionary<string, string>) s_knownCapabilityNamesField.Value.GetValue (edgeOptions)!;
       knownCapabilityNames.Remove ("w3c");
 
       edgeOptions.AddAdditionalCapability ("w3c", false);

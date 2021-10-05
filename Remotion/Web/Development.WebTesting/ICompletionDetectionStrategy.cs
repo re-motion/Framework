@@ -31,6 +31,8 @@ namespace Remotion.Web.Development.WebTesting
   /// </remarks>
   public interface ICompletionDetectionStrategy
   {
+    // TODO RM-8106: Improve nullability of completion detection strategy API's
+
     /// <summary>
     /// Called immediately before the action is performed. This method should capture all state (e.g. a page sequence number) required for
     /// subsequently determining whether the action has completed.

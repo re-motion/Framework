@@ -49,8 +49,10 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// Ensures that the result is not <see langword="null" />.
     /// </summary>
     /// <exception cref="InvalidOperationException"></exception>
-    public static T ExecuteStatement<T> ([NotNull] IJavaScriptExecutor executor, [NotNull] string statement, [NotNull] params object[] args)
+    public static T? ExecuteStatement<T> ([NotNull] IJavaScriptExecutor executor, [NotNull] string statement, [NotNull] params object[] args)
     {
+      // TODO RM-8107: Improve null safety.
+
       ArgumentUtility.CheckNotNull ("executor", executor);
       ArgumentUtility.CheckNotNullOrEmpty ("statement", statement);
       ArgumentUtility.CheckNotNull ("args", args);
@@ -62,7 +64,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
             string.Format ("The JavaScript statement returned null which is incompatible with the specified type '{0}'.", typeof (T).Name));
       }
 
-      return (T) result;
+      return (T?) result;
     }
 
     /// <summary>
