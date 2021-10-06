@@ -43,7 +43,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
           IFluentControlObjectWithRows<TRowControlObject>,
           ISupportsValidationErrors,
           ISupportsValidationErrorsForReadOnly
-      where TRowControlObject : ControlObject
+      where TRowControlObject : ControlObject, IBocListRowControlObject<TCellControlObject>
       where TCellControlObject : ControlObject
   {
     private class BocListRowControlObjectHostAccessor : IBocListRowControlObjectHostAccessor
