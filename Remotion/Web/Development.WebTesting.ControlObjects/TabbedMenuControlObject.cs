@@ -60,7 +60,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    public UnspecifiedPageObject SelectItem (string itemID, IWebTestActionOptions actionOptions = null)
+    public UnspecifiedPageObject SelectItem (string itemID, IWebTestActionOptions? actionOptions = null)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
 
@@ -82,7 +82,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithItemID (string itemID, IWebTestActionOptions actionOptions)
+    UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithItemID (string itemID, IWebTestActionOptions? actionOptions)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
 
@@ -96,7 +96,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithIndex (int oneBasedIndex, IWebTestActionOptions actionOptions)
+    UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithIndex (int oneBasedIndex, IWebTestActionOptions? actionOptions)
     {
       var menuItemScope = GetMainMenuScope().FindXPath (string.Format ("(.//li/span/span[2])[{0}]", oneBasedIndex));
       var menuItemCommand = FindMenuItemCommand (menuItemScope);
@@ -108,7 +108,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithHtmlID (string htmlID, IWebTestActionOptions actionOptions)
+    UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithHtmlID (string htmlID, IWebTestActionOptions? actionOptions)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("htmlID", htmlID);
 
@@ -122,7 +122,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithDisplayText (string displayText, IWebTestActionOptions actionOptions)
+    UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithDisplayText (string displayText, IWebTestActionOptions? actionOptions)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("displayText", displayText);
 
@@ -138,7 +138,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithDisplayTextContains (
         string containsDisplayText,
-        IWebTestActionOptions actionOptions)
+        IWebTestActionOptions? actionOptions)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("containsDisplayText", containsDisplayText);
 
@@ -169,7 +169,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
                       .ToList());
     }
 
-    private UnspecifiedPageObject SelectMenuItem (CommandControlObject itemCommand, IWebTestActionOptions actionOptions)
+    private UnspecifiedPageObject SelectMenuItem (CommandControlObject itemCommand, IWebTestActionOptions? actionOptions)
     {
       try
       {
@@ -212,7 +212,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
         return this;
       }
 
-      public UnspecifiedPageObject SelectItem (string itemID, IWebTestActionOptions actionOptions = null)
+      public UnspecifiedPageObject SelectItem (string itemID, IWebTestActionOptions? actionOptions = null)
       {
         ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
 
@@ -225,7 +225,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
         return SelectMenuItem (itemCommand, actionOptions);
       }
 
-      UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithItemID (string itemID, IWebTestActionOptions actionOptions)
+      UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithItemID (string itemID, IWebTestActionOptions? actionOptions)
       {
         ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
 
@@ -238,7 +238,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
         return SelectMenuItem (itemCommand, actionOptions);
       }
 
-      UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithIndex (int oneBasedIndex, IWebTestActionOptions actionOptions)
+      UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithIndex (int oneBasedIndex, IWebTestActionOptions? actionOptions)
       {
         var menuItemScope = GetSubMenuScope().FindXPath (string.Format ("(.//li/span/span[2])[{0}]", oneBasedIndex));
         var itemCommand = FindItemCommand (menuItemScope);
@@ -249,7 +249,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
         return SelectMenuItem (itemCommand, actionOptions);
       }
 
-      UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithHtmlID (string htmlID, IWebTestActionOptions actionOptions)
+      UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithHtmlID (string htmlID, IWebTestActionOptions? actionOptions)
       {
         ArgumentUtility.CheckNotNullOrEmpty ("htmlID", htmlID);
 
@@ -262,7 +262,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
         return SelectMenuItem (itemCommand, actionOptions);
       }
 
-      UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithDisplayText (string displayText, IWebTestActionOptions actionOptions)
+      UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithDisplayText (string displayText, IWebTestActionOptions? actionOptions)
       {
         ArgumentUtility.CheckNotNullOrEmpty ("displayText", displayText);
 
@@ -277,7 +277,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
 
       UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithDisplayTextContains (
           string containsDisplayText,
-          IWebTestActionOptions actionOptions)
+          IWebTestActionOptions? actionOptions)
       {
         ArgumentUtility.CheckNotNullOrEmpty ("containsDisplayText", containsDisplayText);
 
@@ -297,7 +297,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
 
       private UnspecifiedPageObject SelectMenuItem (
           CommandControlObject itemCommand,
-          IWebTestActionOptions actionOptions)
+          IWebTestActionOptions? actionOptions)
       {
         try
         {

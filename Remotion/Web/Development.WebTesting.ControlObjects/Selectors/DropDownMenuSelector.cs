@@ -45,7 +45,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     }
 
     /// <inheritdoc/>
-    public DropDownMenuControlObject SelectOptionalPerTextContent (ControlSelectionContext context, string textContent)
+    public DropDownMenuControlObject? SelectOptionalPerTextContent (ControlSelectionContext context, string textContent)
     {
       ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNullOrEmpty ("textContent", textContent);

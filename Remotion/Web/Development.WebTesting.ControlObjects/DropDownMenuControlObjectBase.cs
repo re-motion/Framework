@@ -103,7 +103,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    public UnspecifiedPageObject SelectItem (string itemID, IWebTestActionOptions actionOptions = null)
+    public UnspecifiedPageObject SelectItem (string itemID, IWebTestActionOptions? actionOptions = null)
     {
       const string operationName = "SelectItem(itemID)";
 
@@ -121,7 +121,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithItemID (string itemID, IWebTestActionOptions actionOptions)
+    UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithItemID (string itemID, IWebTestActionOptions? actionOptions)
     {
       const string operationName = "SelectItem.WithItemID";
 
@@ -139,7 +139,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithIndex (int oneBasedIndex, IWebTestActionOptions actionOptions)
+    UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithIndex (int oneBasedIndex, IWebTestActionOptions? actionOptions)
     {
       const string operationName = "SelectItem.WithIndex";
 
@@ -155,7 +155,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithHtmlID (string htmlID, IWebTestActionOptions actionOptions)
+    UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithHtmlID (string htmlID, IWebTestActionOptions? actionOptions)
     {
       const string operationName = "SelectItem.WithHtmlID";
 
@@ -173,7 +173,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithDisplayText (string displayText, IWebTestActionOptions actionOptions)
+    UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithDisplayText (string displayText, IWebTestActionOptions? actionOptions)
     {
       const string operationName = "SelectItem.WithDisplayText";
 
@@ -193,7 +193,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithDisplayTextContains (
         string containsDisplayText,
-        IWebTestActionOptions actionOptions)
+        IWebTestActionOptions? actionOptions)
     {
       const string operationName = "SelectItem.WithDisplayTextContains";
 
@@ -302,7 +302,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       return dropDownMenuOptionsScope;
     }
 
-    private UnspecifiedPageObject ClickItem (CommandControlObject itemCommand, IWebTestActionOptions actionOptions)
+    private UnspecifiedPageObject ClickItem (CommandControlObject itemCommand, IWebTestActionOptions? actionOptions)
     {
       try
       {

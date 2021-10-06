@@ -35,6 +35,6 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// </summary>
     /// <param name="actionOptions">See <see cref="IWebTestActionOptions"/> for more information.</param>
     /// <exception cref="WebTestException">The element is currently disabled.</exception>
-    UnspecifiedPageObject ExecuteCommand ([CanBeNull] IWebTestActionOptions actionOptions = null);
+    UnspecifiedPageObject ExecuteCommand ([CanBeNull] IWebTestActionOptions? actionOptions = null);
   }
 }

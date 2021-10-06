@@ -45,7 +45,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     }
 
     /// <inheritdoc/>
-    public FormGridControlObject SelectOptionalPerTitle (ControlSelectionContext context, string title)
+    public FormGridControlObject? SelectOptionalPerTitle (ControlSelectionContext context, string title)
     {
       ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNullOrEmpty ("title", title);

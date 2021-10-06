@@ -65,7 +65,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     }
 
     /// <inheritdoc/>
-    public TControlObject SelectFirstOrNull (ControlSelectionContext context)
+    public TControlObject? SelectFirstOrNull (ControlSelectionContext context)
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
@@ -90,7 +90,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     }
 
     /// <inheritdoc/>
-    public TControlObject SelectSingleOrNull (ControlSelectionContext context)
+    public TControlObject? SelectSingleOrNull (ControlSelectionContext context)
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
@@ -113,7 +113,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     }
 
     /// <inheritdoc/>
-    public TControlObject SelectOptionalPerIndex (ControlSelectionContext context, int oneBasedIndex)
+    public TControlObject? SelectOptionalPerIndex (ControlSelectionContext context, int oneBasedIndex)
     {
       ArgumentUtility.CheckNotNull ("context", context);
 

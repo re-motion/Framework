@@ -280,7 +280,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <summary>
     /// Selects the node by clicking on it, returns the node.
     /// </summary>
-    public WebTreeViewNodeControlObject Select ([CanBeNull] IWebTestActionOptions actionOptions = null)
+    public WebTreeViewNodeControlObject Select ([CanBeNull] IWebTestActionOptions? actionOptions = null)
     {
       ClickNode (actionOptions);
       return this;
@@ -289,13 +289,13 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <summary>
     /// Selects the node by clicking on it, returns the following page.
     /// </summary>
-    public UnspecifiedPageObject Click ([CanBeNull] IWebTestActionOptions actionOptions = null)
+    public UnspecifiedPageObject Click ([CanBeNull] IWebTestActionOptions? actionOptions = null)
     {
       ClickNode (actionOptions);
       return UnspecifiedPage();
     }
 
-    private void ClickNode (IWebTestActionOptions actionOptions)
+    private void ClickNode (IWebTestActionOptions? actionOptions)
     {
       var selectAnchorScope = Scope.FindCss ("span > span > a");
 

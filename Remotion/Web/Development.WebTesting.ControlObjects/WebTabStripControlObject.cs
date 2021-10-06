@@ -70,7 +70,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    public UnspecifiedPageObject SwitchTo (string itemID, IWebTestActionOptions actionOptions = null)
+    public UnspecifiedPageObject SwitchTo (string itemID, IWebTestActionOptions? actionOptions = null)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
 
@@ -84,7 +84,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    UnspecifiedPageObject IFluentControlObjectWithTabs.WithItemID (string itemID, IWebTestActionOptions actionOptions)
+    UnspecifiedPageObject IFluentControlObjectWithTabs.WithItemID (string itemID, IWebTestActionOptions? actionOptions)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
 
@@ -98,7 +98,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    UnspecifiedPageObject IFluentControlObjectWithTabs.WithIndex (int oneBasedIndex, IWebTestActionOptions actionOptions)
+    UnspecifiedPageObject IFluentControlObjectWithTabs.WithIndex (int oneBasedIndex, IWebTestActionOptions? actionOptions)
     {
       var xPathSelector = string.Format (
           "(.//span{0})[{1}]",
@@ -114,7 +114,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    UnspecifiedPageObject IFluentControlObjectWithTabs.WithHtmlID (string htmlID, IWebTestActionOptions actionOptions)
+    UnspecifiedPageObject IFluentControlObjectWithTabs.WithHtmlID (string htmlID, IWebTestActionOptions? actionOptions)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("htmlID", htmlID);
 
@@ -128,7 +128,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    UnspecifiedPageObject IFluentControlObjectWithTabs.WithDisplayText (string displayText, IWebTestActionOptions actionOptions)
+    UnspecifiedPageObject IFluentControlObjectWithTabs.WithDisplayText (string displayText, IWebTestActionOptions? actionOptions)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("displayText", displayText);
 
@@ -142,7 +142,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    UnspecifiedPageObject IFluentControlObjectWithTabs.WithDisplayTextContains (string containsDisplayText, IWebTestActionOptions actionOptions)
+    UnspecifiedPageObject IFluentControlObjectWithTabs.WithDisplayTextContains (string containsDisplayText, IWebTestActionOptions? actionOptions)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("containsDisplayText", containsDisplayText);
 
@@ -159,7 +159,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       return SwitchTo (itemCommand, actionOptions);
     }
 
-    private UnspecifiedPageObject SwitchTo (CommandControlObject itemCommand, IWebTestActionOptions actionOptions)
+    private UnspecifiedPageObject SwitchTo (CommandControlObject itemCommand, IWebTestActionOptions? actionOptions)
     {
       return itemCommand.Click (actionOptions);
     }
