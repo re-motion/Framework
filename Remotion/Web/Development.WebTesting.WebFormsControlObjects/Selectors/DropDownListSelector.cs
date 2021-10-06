@@ -43,7 +43,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     }
 
     /// <inheritdoc/>
-    public DropDownListControlObject SelectFirstOrNull (ControlSelectionContext context)
+    public DropDownListControlObject? SelectFirstOrNull (ControlSelectionContext context)
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
@@ -65,7 +65,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     }
 
     /// <inheritdoc/>
-    public DropDownListControlObject SelectSingleOrNull (ControlSelectionContext context)
+    public DropDownListControlObject? SelectSingleOrNull (ControlSelectionContext context)
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
@@ -88,7 +88,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     }
 
     /// <inheritdoc/>
-    public DropDownListControlObject SelectOptionalPerIndex (ControlSelectionContext context, int oneBasedIndex)
+    public DropDownListControlObject? SelectOptionalPerIndex (ControlSelectionContext context, int oneBasedIndex)
     {
       ArgumentUtility.CheckNotNull ("context", context);
 

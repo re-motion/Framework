@@ -76,7 +76,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     }
 
     /// <inheritdoc/>
-    public UnspecifiedPageObject SelectOption (string value, IWebTestActionOptions actionOptions = null)
+    public UnspecifiedPageObject SelectOption (string value, IWebTestActionOptions? actionOptions = null)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("value", value);
 
@@ -87,7 +87,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     }
 
     /// <inheritdoc/>
-    UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithItemID (string value, IWebTestActionOptions actionOptions)
+    UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithItemID (string value, IWebTestActionOptions? actionOptions)
     {
       ArgumentUtility.CheckNotNull ("value", value);
 
@@ -99,7 +99,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     }
 
     /// <inheritdoc/>
-    UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithIndex (int oneBasedIndex, IWebTestActionOptions actionOptions)
+    UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithIndex (int oneBasedIndex, IWebTestActionOptions? actionOptions)
     {
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException (Driver, operationName: "SelectOption.WithIndex");
@@ -109,7 +109,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     }
 
     /// <inheritdoc/>
-    UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithDisplayText (string displayText, IWebTestActionOptions actionOptions)
+    UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithDisplayText (string displayText, IWebTestActionOptions? actionOptions)
     {
       ArgumentUtility.CheckNotNull ("displayText", displayText);
 
@@ -126,7 +126,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
       return new[] { Scope.Name };
     }
 
-    private UnspecifiedPageObject SelectOption ([NotNull] Action<ElementScope> selectAction, IWebTestActionOptions actionOptions = null)
+    private UnspecifiedPageObject SelectOption ([NotNull] Action<ElementScope> selectAction, IWebTestActionOptions? actionOptions = null)
     {
       ArgumentUtility.CheckNotNull ("selectAction", selectAction);
 

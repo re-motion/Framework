@@ -177,7 +177,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     /// <summary>
     /// Expands the node.
     /// </summary>
-    public TreeViewNodeControlObject Expand ([CanBeNull] IWebTestActionOptions actionOptions = null)
+    public TreeViewNodeControlObject Expand ([CanBeNull] IWebTestActionOptions? actionOptions = null)
     {
       var actualCompletionDetector = MergeWithDefaultActionOptions (Scope, actionOptions);
 
@@ -190,7 +190,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     /// <summary>
     /// Collapses the node.
     /// </summary>
-    public TreeViewNodeControlObject Collapse ([CanBeNull] IWebTestActionOptions actionOptions = null)
+    public TreeViewNodeControlObject Collapse ([CanBeNull] IWebTestActionOptions? actionOptions = null)
     {
       return Expand (actionOptions);
     }
@@ -198,7 +198,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     /// <summary>
     /// Checks the node's checkbox.
     /// </summary>
-    public UnspecifiedPageObject Check ([CanBeNull] IWebTestActionOptions actionOptions = null)
+    public UnspecifiedPageObject Check ([CanBeNull] IWebTestActionOptions? actionOptions = null)
     {
       var actualCompletionDetector = actionOptions ?? Opt.ContinueImmediately();
       ExecuteAction (new CheckAction (this, GetCheckboxScope()), actualCompletionDetector);
@@ -208,7 +208,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     /// <summary>
     /// Unchecks the node's checkbox.
     /// </summary>
-    public UnspecifiedPageObject Uncheck ([CanBeNull] IWebTestActionOptions actionOptions = null)
+    public UnspecifiedPageObject Uncheck ([CanBeNull] IWebTestActionOptions? actionOptions = null)
     {
       var actualCompletionDetector = actionOptions ?? Opt.ContinueImmediately();
       ExecuteAction (new UncheckAction (this, GetCheckboxScope()), actualCompletionDetector);
@@ -218,7 +218,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     /// <summary>
     /// Selects the node by clicking on it, returns the node.
     /// </summary>
-    public TreeViewNodeControlObject Select ([CanBeNull] IWebTestActionOptions actionOptions = null)
+    public TreeViewNodeControlObject Select ([CanBeNull] IWebTestActionOptions? actionOptions = null)
     {
       ClickNode (actionOptions);
       return this;
@@ -227,13 +227,13 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     /// <summary>
     /// Selects the node by clicking on it, returns the following page.
     /// </summary>
-    public UnspecifiedPageObject Click ([CanBeNull] IWebTestActionOptions actionOptions = null)
+    public UnspecifiedPageObject Click ([CanBeNull] IWebTestActionOptions? actionOptions = null)
     {
       ClickNode (actionOptions);
       return UnspecifiedPage();
     }
 
-    private void ClickNode (IWebTestActionOptions actionOptions)
+    private void ClickNode (IWebTestActionOptions? actionOptions)
     {
       var actualCompletionDetector = MergeWithDefaultActionOptions (Scope, actionOptions);
       const string nodeClickScopeXpath = "./tbody/tr/td[a[contains(@onclick, 'TreeView_SelectNode')]][last()]/a[last()]";

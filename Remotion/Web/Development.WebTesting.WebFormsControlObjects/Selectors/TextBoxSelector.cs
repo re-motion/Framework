@@ -44,7 +44,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     }
 
     /// <inheritdoc/>
-    public TextBoxControlObject SelectFirstOrNull (ControlSelectionContext context)
+    public TextBoxControlObject? SelectFirstOrNull (ControlSelectionContext context)
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
@@ -67,7 +67,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     }
 
     /// <inheritdoc/>
-    public TextBoxControlObject SelectSingleOrNull (ControlSelectionContext context)
+    public TextBoxControlObject? SelectSingleOrNull (ControlSelectionContext context)
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
@@ -91,7 +91,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     }
 
     /// <inheritdoc/>
-    public TextBoxControlObject SelectOptionalPerIndex (ControlSelectionContext context, int oneBasedIndex)
+    public TextBoxControlObject? SelectOptionalPerIndex (ControlSelectionContext context, int oneBasedIndex)
     {
       ArgumentUtility.CheckNotNull ("context", context);
 

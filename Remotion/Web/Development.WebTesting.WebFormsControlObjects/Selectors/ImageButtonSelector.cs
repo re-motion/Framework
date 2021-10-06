@@ -44,7 +44,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     }
 
     /// <inheritdoc/>
-    public ImageButtonControlObject SelectFirstOrNull (ControlSelectionContext context)
+    public ImageButtonControlObject? SelectFirstOrNull (ControlSelectionContext context)
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
@@ -67,7 +67,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     }
 
     /// <inheritdoc/>
-    public ImageButtonControlObject SelectSingleOrNull (ControlSelectionContext context)
+    public ImageButtonControlObject? SelectSingleOrNull (ControlSelectionContext context)
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
@@ -91,7 +91,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     }
 
     /// <inheritdoc/>
-    public ImageButtonControlObject SelectOptionalPerIndex (ControlSelectionContext context, int oneBasedIndex)
+    public ImageButtonControlObject? SelectOptionalPerIndex (ControlSelectionContext context, int oneBasedIndex)
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
