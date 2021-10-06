@@ -40,7 +40,7 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
     }
 
     /// <inheritdoc/>
-    public object PrepareWaitForCompletion (PageObjectContext context)
+    public object? PrepareWaitForCompletion (PageObjectContext context)
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
@@ -48,7 +48,7 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
     }
 
     /// <inheritdoc/>
-    public void WaitForCompletion (PageObjectContext context, object state)
+    public void WaitForCompletion (PageObjectContext context, object? state)
     {
       ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNull ("state", state);

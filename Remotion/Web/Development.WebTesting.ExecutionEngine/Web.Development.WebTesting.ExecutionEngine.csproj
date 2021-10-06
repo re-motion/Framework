@@ -10,7 +10,6 @@
     <AssemblyName>Remotion.Web.Development.WebTesting.ExecutionEngine</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
     <SignAssembly>False</SignAssembly>
-    <Nullable>disable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Development.WebTesting\Web.Development.WebTesting.csproj" />
