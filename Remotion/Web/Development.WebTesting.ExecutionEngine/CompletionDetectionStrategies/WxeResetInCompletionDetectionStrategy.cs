@@ -51,7 +51,7 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
     public void WaitForCompletion (PageObjectContext context, object? state)
     {
       ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("state", state);
+      ArgumentUtility.CheckNotNull ("state", state!);
 
       var oldWxeFunctionToken = (string) state;
       WxeCompletionDetectionHelpers.WaitForNewWxeFunctionToken (s_log, _context, oldWxeFunctionToken, _timeout);
