@@ -44,10 +44,11 @@ namespace Remotion.Web.Security
       var httpContext = _httpContextProvider.GetCurrentHttpContext();
       Assertion.IsNotNull (httpContext, "IHttpContextProvider.GetCurrentHttpContext() evaludated and returned null.");
 
-      var identity = httpContext.User.Identity;
+      var identity = Assertion.IsNotNull (httpContext.User.Identity, "Current principal has no identity.");
       if (!identity.IsAuthenticated)
         return s_nullSecurityPrincipal;
 
+      Assertion.IsNotNull (identity.Name, "Current user has no name.");
       return new SecurityPrincipal (identity.Name, null, null, null);
     }
 

@@ -56,12 +56,16 @@ namespace Remotion.Web.Security.ExecutionEngine
       switch (helper.MethodType)
       {
         case MethodType.Instance:
+          Assertion.IsNotNull (helper.MethodName, "MethodName must not be null.");
           securityClient.CheckMethodAccess (helper.GetSecurableObject (function), helper.MethodName);
           break;
         case MethodType.Static:
+          Assertion.IsNotNull (helper.MethodName, "MethodName must not be null.");
+          Assertion.IsNotNull (helper.SecurableClass, "SecurableClass must not be null.");
           securityClient.CheckStaticMethodAccess (helper.SecurableClass, helper.MethodName);
           break;
         case MethodType.Constructor:
+          Assertion.IsNotNull (helper.SecurableClass, "SecurableClass must not be null.");
           securityClient.CheckConstructorAccess (helper.SecurableClass);
           break;
         default:
@@ -88,10 +92,14 @@ namespace Remotion.Web.Security.ExecutionEngine
       switch (helper.MethodType)
       {
         case MethodType.Instance:
+          Assertion.IsNotNull (helper.MethodName, "MethodName must not be null.");
           return securityClient.HasMethodAccess (helper.GetSecurableObject (function), helper.MethodName);
         case MethodType.Static:
+          Assertion.IsNotNull (helper.MethodName, "MethodName must not be null.");
+          Assertion.IsNotNull (helper.SecurableClass, "SecurableClass must not be null.");
           return securityClient.HasStaticMethodAccess (helper.SecurableClass, helper.MethodName);
         case MethodType.Constructor:
+          Assertion.IsNotNull (helper.SecurableClass, "SecurableClass must not be null.");
           return securityClient.HasConstructorAccess (helper.SecurableClass);
         default:
           throw new InvalidOperationException (string.Format (
@@ -117,10 +125,14 @@ namespace Remotion.Web.Security.ExecutionEngine
       switch (helper.MethodType)
       {
         case MethodType.Instance:
+          Assertion.IsNotNull (helper.MethodName, "MethodName must not be null.");
           return securityClient.HasStatelessMethodAccess (helper.GetTypeOfSecurableObject(), helper.MethodName);
         case MethodType.Static:
+          Assertion.IsNotNull (helper.MethodName, "MethodName must not be null.");
+          Assertion.IsNotNull (helper.SecurableClass, "SecurableClass must not be null.");
           return securityClient.HasStaticMethodAccess (helper.SecurableClass, helper.MethodName);
         case MethodType.Constructor:
+          Assertion.IsNotNull (helper.SecurableClass, "SecurableClass must not be null.");
           return securityClient.HasConstructorAccess (helper.SecurableClass);
         default:
           throw new InvalidOperationException (string.Format (

@@ -110,7 +110,7 @@ namespace Remotion.Web.Security.ExecutionEngine
       CheckDeclaringTypeOfMethodNameEnum (enumValue);
 
       Type enumType = enumValue.GetType ();
-      if (!enumType.DeclaringType.IsAssignableFrom (securableClass))
+      if (!enumType.DeclaringType!.IsAssignableFrom (securableClass))
       {
         throw new ArgumentException (
             string.Format ("Type '{0}' cannot be assigned to the declaring type of enumerated type '{1}'.", securableClass, enumType),
