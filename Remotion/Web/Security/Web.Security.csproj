@@ -10,7 +10,6 @@
     <Description>Internal: Integrates Remotion.Security and Remotion.Web assemblies.</Description>
     <AssemblyName>Remotion.Web.Security</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
-    <Nullable>disable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />

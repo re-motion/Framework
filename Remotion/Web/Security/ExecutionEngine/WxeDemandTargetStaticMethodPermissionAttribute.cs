@@ -66,7 +66,7 @@ namespace Remotion.Web.Security.ExecutionEngine
 
     // methods and properties
 
-    private void Initialize (string methodName, Type securableClass)
+    private void Initialize (string methodName, Type? securableClass)
     {
       SecurableClass = securableClass;
       MethodName = methodName;

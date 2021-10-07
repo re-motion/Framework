@@ -73,12 +73,12 @@ namespace Remotion.Web.Security.ExecutionEngine
       get { return _attribute.MethodType; }
     }
 
-    public string MethodName
+    public string? MethodName
     {
       get { return _attribute.MethodName; }
     }
 
-    public Type SecurableClass
+    public Type? SecurableClass
     {
       get { return _attribute.SecurableClass; }
     }
@@ -120,7 +120,7 @@ namespace Remotion.Web.Security.ExecutionEngine
            _attribute.GetType ().Name, parameterDeclaration.Name, _functionType.GetFullNameSafe()));
       }
 
-      ISecurableObject securableObject = parameterValue as ISecurableObject;
+      ISecurableObject? securableObject = parameterValue as ISecurableObject;
       if (securableObject == null)
       {
         throw new WxeException (string.Format (
@@ -201,10 +201,10 @@ namespace Remotion.Web.Security.ExecutionEngine
       return declaredParameterType;
     }
 
-    private static Tuple<Type, object> GetActualParameterTypeAndValue (Type declaredParameterType, object parameterValue)
+    private static Tuple<Type, object> GetActualParameterTypeAndValue (Type declaredParameterType, object? parameterValue)
     {
       if (parameterValue == null)
-        return Tuple.Create (declaredParameterType, (object) null);
+        return Tuple.Create (declaredParameterType, (object?) null);
         
       var handleAttribute = GetHandleAttribute (declaredParameterType);
       if (handleAttribute != null)
@@ -213,7 +213,7 @@ namespace Remotion.Web.Security.ExecutionEngine
       return Tuple.Create (declaredParameterType, parameterValue);
     }
 
-    private static IHandleAttribute GetHandleAttribute (Type declaredParameterType)
+    private static IHandleAttribute? GetHandleAttribute (Type declaredParameterType)
     {
       return ((IHandleAttribute[]) declaredParameterType.GetCustomAttributes (typeof (IHandleAttribute), true)).FirstOrDefault ();
     }

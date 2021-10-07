@@ -46,7 +46,7 @@ namespace Remotion.Web.Security.ExecutionEngine
       if (SecurityFreeSection.IsActive)
         return;
 
-      WxeDemandTargetPermissionAttribute attribute = GetPermissionAttribute (function.GetType ());
+      WxeDemandTargetPermissionAttribute? attribute = GetPermissionAttribute (function.GetType ());
       if (attribute == null)
         return;
 
@@ -78,7 +78,7 @@ namespace Remotion.Web.Security.ExecutionEngine
       if (SecurityFreeSection.IsActive)
         return true;
 
-      WxeDemandTargetPermissionAttribute attribute = GetPermissionAttribute (function.GetType ());
+      WxeDemandTargetPermissionAttribute? attribute = GetPermissionAttribute (function.GetType ());
       if (attribute == null)
         return true;
 
@@ -107,7 +107,7 @@ namespace Remotion.Web.Security.ExecutionEngine
       if (SecurityFreeSection.IsActive)
         return true;
 
-      WxeDemandTargetPermissionAttribute attribute = GetPermissionAttribute (functionType);
+      WxeDemandTargetPermissionAttribute? attribute = GetPermissionAttribute (functionType);
       if (attribute == null)
         return true;
 
@@ -129,9 +129,9 @@ namespace Remotion.Web.Security.ExecutionEngine
       }
     }
 
-    private WxeDemandTargetPermissionAttribute GetPermissionAttribute (Type functionType)
+    private WxeDemandTargetPermissionAttribute? GetPermissionAttribute (Type functionType)
     {
-      return (WxeDemandTargetPermissionAttribute) Attribute.GetCustomAttribute (functionType, typeof (WxeDemandTargetPermissionAttribute), true);
+      return (WxeDemandTargetPermissionAttribute?) Attribute.GetCustomAttribute (functionType, typeof (WxeDemandTargetPermissionAttribute), true);
     }
   }
 }

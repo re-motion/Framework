@@ -38,9 +38,9 @@ namespace Remotion.Web.Security.UI
     // member fields
 
     private PermissionSource _permissionSource;
-    private Type _functionType;
-    private string _methodName;
-    private Type _securableClass;
+    private Type? _functionType;
+    private string? _methodName;
+    private Type? _securableClass;
 
     // construction and disposing
 
@@ -99,17 +99,17 @@ namespace Remotion.Web.Security.UI
       get { return _permissionSource; }
     }
 	
-    public Type FunctionType
+    public Type? FunctionType
     {
       get { return _functionType; }
     }
 
-    public string MethodName
+    public string? MethodName
     {
       get { return _methodName; }
     }
   
-    public Type SecurableClass
+    public Type? SecurableClass
     {
       get { return _securableClass; }
     }

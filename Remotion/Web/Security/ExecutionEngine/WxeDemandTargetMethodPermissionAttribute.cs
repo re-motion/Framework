@@ -74,7 +74,7 @@ namespace Remotion.Web.Security.ExecutionEngine
 
     // methods and properties
 
-    public new string ParameterName
+    public new string? ParameterName
     {
       get { return base.ParameterName; }
       set { base.ParameterName = value; }

@@ -43,9 +43,9 @@ namespace Remotion.Web.Security.ExecutionEngine
     // member fields
 
     private MethodType _methodType;
-    private Type _securableClass;
-    private string _parameterName;
-    private string _methodName;
+    private Type? _securableClass;
+    private string? _parameterName;
+    private string? _methodName;
 
     // construction and disposing
 
@@ -61,7 +61,7 @@ namespace Remotion.Web.Security.ExecutionEngine
       get { return _methodType; }
     }
 
-    public Type SecurableClass
+    public Type? SecurableClass
     {
       get
       {
@@ -74,13 +74,13 @@ namespace Remotion.Web.Security.ExecutionEngine
       }
     }
 
-    public string ParameterName
+    public string? ParameterName
     {
       get { return _parameterName; }
       protected set { _parameterName = value; }
     }
 
-    public string MethodName
+    public string? MethodName
     {
       get { return _methodName; }
       protected set { _methodName = value; }

@@ -40,7 +40,7 @@ namespace Remotion.Web.Security.UI
 
     // methods and properties
 
-    public bool HasAccess (ISecurableObject securableObject, Delegate handler)
+    public bool HasAccess (ISecurableObject? securableObject, Delegate? handler)
     {
       if (handler == null)
         return true;
@@ -88,7 +88,7 @@ namespace Remotion.Web.Security.UI
       List<DemandTargetPermissionAttribute> attributes = new List<DemandTargetPermissionAttribute> ();
       foreach (Delegate handler in delegates)
       {
-        DemandTargetPermissionAttribute attribute = (DemandTargetPermissionAttribute) Attribute.GetCustomAttribute (
+        DemandTargetPermissionAttribute? attribute = (DemandTargetPermissionAttribute?) Attribute.GetCustomAttribute (
             handler.Method,
             typeof (DemandTargetPermissionAttribute),
             false);
