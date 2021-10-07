@@ -119,9 +119,6 @@ type BocAutoCompleteReferenceValue_PositioningOptions = {
 
 interface JQueryStatic {
     Autocompleter: BocAutoCompleteReferenceValue_AutocompleterStatic;
-
-    data(el: Element, key: "ac_data"): BocAutoCompleteReferenceValue_CacheRowEntry;
-    data(el: Element, key: "ac_data", value: BocAutoCompleteReferenceValue_CacheRowEntry): void;
 }
 
 interface JQuery {
@@ -175,9 +172,9 @@ type BocAutoCompleteReferenceValue_AutocompleterStatic = {
     Cache: typeof BocAutoCompleteReferenceValue_Cache;
     Select: typeof BocAutoCompleteReferenceValue_Select;
     InformationPopUp: typeof BocAutoCompleteReferenceValue_InformationPopUp;
-    Selection(field: HTMLTextAreaElement, start: number, end: number, focusInputAfterSelection: boolean): void;
-    calculateSpaceAround(element: JQuery): BocAutoCompleteReferenceValue_SpaceAround;
-    applyPositionToPopUp(reference: JQuery, popUp: JQuery, options: BocAutoCompleteReferenceValue_PositioningOptions): void;
+    Selection(field: HTMLInputElement, start: number, end: number, focusInputAfterSelection: boolean): void;
+    calculateSpaceAround(element: HTMLElement): BocAutoCompleteReferenceValue_SpaceAround;
+    applyPositionToPopUp(reference: HTMLElement, popUp: HTMLElement, options: BocAutoCompleteReferenceValue_PositioningOptions): void;
 };
 
 type BocAutoCompleteReferenceValue_CollectedElements = {
@@ -243,7 +240,6 @@ function NotNullAssert(v: unknown): asserts v is NotNull {}
             serviceMethodSearch: string,
             serviceMethodSearchExact: string,
             initialOptions: PartialWithRequiredProperties<BocAutoCompleteReferenceValue_Options, keyof BocAutoCompleteReferenceValue_RequiredOptions>): JQuery {
-            const $input = $(this);
             // This assignment builds the final options object and also ensures that all the option types are set up correctly
             const options: BocAutoCompleteReferenceValue_Options = Object.assign({}, defaultOptions, {
                 // re-motion: instead of a single URL property, use separate service URL and service method properties. 
@@ -309,7 +305,7 @@ function NotNullAssert(v: unknown): asserts v is NotNull {}
         }
     });
 
-    $.Autocompleter = <any>function(input: HTMLTextAreaElement, options: BocAutoCompleteReferenceValue_Options) {
+    $.Autocompleter = <any>function(input: HTMLInputElement, options: BocAutoCompleteReferenceValue_Options) {
 
       const KEY = {
             SHIFT: 16,
@@ -331,7 +327,7 @@ function NotNullAssert(v: unknown): asserts v is NotNull {}
         };
 
         // Create $ object for input element
-        const $input = Remotion.jQuery (input).addClass(options.inputClass);
+        input.classList.add(options.inputClass);
         //aria-controls has been removed since it does not provide a meaningful assistance at this point in time (IE 11 / JAWS 18)
         //$input.attr ({ "aria-controls" : options.selectListID });
 
@@ -359,7 +355,7 @@ function NotNullAssert(v: unknown): asserts v is NotNull {}
             mouseDownOnSelect: false,
             // holds the last text the user entered into the input element
             previousValue: '',
-            lastKeyPressValue: null
+            lastKeyPressValue: null as Nullable<string>
         };
 
         const select = new BocAutoCompleteReferenceValue_Select(options, input, selectCurrent, state);
@@ -371,17 +367,17 @@ function NotNullAssert(v: unknown): asserts v is NotNull {}
         const informationPopUp = new BocAutoCompleteReferenceValue_InformationPopUp(options, input);
         let blockSubmit: Optional<boolean>;
 
-        $input.bind("keydown.autocomplete", function(event) {
+        $(input).bind("keydown.autocomplete", function(event) {
             // track last key pressed
             state.lastKeyPressCode = event.keyCode;
             clearTimeout(timeout);
             // re-motion: cancel an already running request
             stopLoading();
             abortRequest();
-            if (state.lastKeyPressValue !== null && state.lastKeyPressValue != $input.val()) {
+            if (state.lastKeyPressValue !== null && state.lastKeyPressValue != input.value) {
                 invalidateResult();
             }
-            state.lastKeyPressValue = $input.val();
+            state.lastKeyPressValue = input.value;
 
             switch (event.keyCode)
             {
@@ -393,7 +389,7 @@ function NotNullAssert(v: unknown): asserts v is NotNull {}
                         options.clearRequestError();
                         select.prev();
                     } else {
-                        onChange(true, $input.val());
+                        onChange(true, input.value);
                     }
                     return;
 
@@ -405,7 +401,7 @@ function NotNullAssert(v: unknown): asserts v is NotNull {}
                         options.clearRequestError();
                         select.next();
                     } else {
-                        onChange(true, $input.val());
+                        onChange(true, input.value);
                     }
                     return;
 
@@ -417,7 +413,7 @@ function NotNullAssert(v: unknown): asserts v is NotNull {}
                         options.clearRequestError();
                         select.pageUp();
                     } else {
-                        onChange(true, $input.val());
+                        onChange(true, input.value);
                     }
                     return;
 
@@ -429,7 +425,7 @@ function NotNullAssert(v: unknown): asserts v is NotNull {}
                         options.clearRequestError();
                         select.pageDown();
                     } else {
-                        onChange(true, $input.val());
+                        onChange(true, input.value);
                     }
                     return;
 
@@ -476,7 +472,7 @@ function NotNullAssert(v: unknown): asserts v is NotNull {}
         }).bind ('keyup paste', function(event) { // re-motion
             const handleInput = function() {
                 informationPopUp.hide();
-                const currentValue = $input.val();
+                const currentValue = input.value;
                 const dropDownDelay = select.visible() ? options.dropDownRefreshDelay : options.dropDownDisplayDelay;
 
                 timeout = setTimeout(
@@ -486,7 +482,7 @@ function NotNullAssert(v: unknown): asserts v is NotNull {}
                     dropDownDelay);
             };
 
-            state.lastKeyPressValue = $input.val();
+            state.lastKeyPressValue = input.value;
 
             if (event.type == 'keyup') {
                 const isTextChangeKey =
@@ -495,7 +491,7 @@ function NotNullAssert(v: unknown): asserts v is NotNull {}
                     || event.keyCode == KEY.DEL
                     || event.keyCode == KEY.SPACE;
 
-                const hasValueChanged = $input.val() != state.previousValue;
+                const hasValueChanged = input.value != state.previousValue;
 
                 if (isTextChangeKey) {
                     clearTimeout(timeout);
@@ -527,9 +523,9 @@ function NotNullAssert(v: unknown): asserts v is NotNull {}
                             return;
                         
                         let index = -1;
-                        if ($input.val() != '')
+                        if (input.value != '')
                         {
-                          index = select.findItem($input.val());
+                          index = select.findItem(input.value);
                         }
                         else
                         {
@@ -542,7 +538,7 @@ function NotNullAssert(v: unknown): asserts v is NotNull {}
                         select.selectItem (index);
                         
                         if (index != -1)
-                          autoFill($input.val(), select.selected(true)!.result);
+                          autoFill(input.value, select.selected(true)!.result);
                 }, options.selectionUpdateDelay);
             }
         }).focus(function() {
@@ -553,7 +549,7 @@ function NotNullAssert(v: unknown): asserts v is NotNull {}
             hasFocus = false;
             if (!select.visible()) {
                 clearTimeout(timeout);
-                if ($input.val() == '')  {
+                if (input.value == '')  {
                     options.clearRequestError();
                 }
             }
@@ -564,8 +560,8 @@ function NotNullAssert(v: unknown): asserts v is NotNull {}
                 const focusInputAfterSelection = false;
                 const isLastKeyPressBeforeBlurHandled = state.lastKeyPressCode == -1;
                 if (isLastKeyPressBeforeBlurHandled) {
-                    closeDropDownListAndSetValue($input.val(), focusInputAfterSelection);
-                    updateResult ({ DisplayName : $input.val(), UniqueIdentifier : options.nullValue });
+                    closeDropDownListAndSetValue(input.value, focusInputAfterSelection);
+                    updateResult ({ DisplayName : input.value, UniqueIdentifier : options.nullValue });
                 } else {
                     clearTimeout(timeout);
                     const lastKeyPressCode = state.lastKeyPressCode;
@@ -588,9 +584,9 @@ function NotNullAssert(v: unknown): asserts v is NotNull {}
             for (const propName in options.extraParams)
               publicOptions.params![propName] = options.extraParams[propName];
             
-            $.extend(eventArguments, publicOptions);
+            Object.assign(eventArguments, publicOptions);
         }).bind("setOptions", function (eventTarget, eventArguments) {
-            $.extend(options, eventArguments);
+            Object.assign(options, eventArguments);
             // if we've updated the data, repopulate
             if ("data" in eventArguments)
               cache.populate();
@@ -604,30 +600,30 @@ function NotNullAssert(v: unknown): asserts v is NotNull {}
         }).bind("unautocomplete", function() {
             informationPopUp.unbind();
             select.unbind();
-            $input.unbind();
+            $(input).unbind();
             $(input.form!).unbind(".autocomplete");
         });
 
         // re-motion: bind onChange to the dropDownButton's click event
-        const dropdownButton = $('#' + options.dropDownButtonID);
-        if (dropdownButton.length > 0) {
-            dropdownButton.mousedown(function() {
+        const dropdownButton = document.getElementById(options.dropDownButtonID);
+        if (dropdownButton) {
+            dropdownButton.addEventListener('mousedown', function() {
                 state.mouseDownOnSelect = true;
             });
 
-            dropdownButton.mouseup(function() {
+            dropdownButton.addEventListener('mouseup', function() {
                 state.mouseDownOnSelect = false;
             });
 
-            dropdownButton.click(function(event) {
+            dropdownButton.addEventListener('click', function(event) {
                 // re-motion: block event bubbling
                 event.stopPropagation();
 
                 if (select.visible()) {
                     acceptInput (state.lastKeyPressCode, true);
                 } else {
-                    $input.focus();
-                    onChange(true, $input.val());
+                    input.focus();
+                    onChange(true, input.value);
                     clearTimeout(timeout);
                 }
             });
@@ -647,7 +643,7 @@ function NotNullAssert(v: unknown): asserts v is NotNull {}
                     break;
             }
 
-            const term = $input.val();
+            const term = input.value;
             if (isLastKeyPressedNavigationKey) {
                 let index = -1;
                 if (term != '')
@@ -667,7 +663,7 @@ function NotNullAssert(v: unknown): asserts v is NotNull {}
 
         // re-motion: allows empty input and invalid input
         function acceptCurrent(confirmValue: boolean, focusInputAfterSelection: boolean): void {
-            const term = $input.val();
+            const term = input.value;
             let selectedItem = null;
             if (confirmValue && term != '' && select.visible())
             {
@@ -683,7 +679,7 @@ function NotNullAssert(v: unknown): asserts v is NotNull {}
             if (state.previousValue == term && selectedItem != null) {
 
                 if (confirmValue)
-                  $input.val(selectedItem.result);
+                  input.value = selectedItem.result;
 
                 updateResult(selectedItem.data);
                 return;
@@ -697,7 +693,7 @@ function NotNullAssert(v: unknown): asserts v is NotNull {}
 
             if (selectedItem != null) {
 
-                $input.val(selectedItem.result);
+                input.value = selectedItem.result;
                 updateResult(selectedItem.data);
 
             } else if (confirmValue && term != '' && !options.isAutoPostBackEnabled) {
@@ -705,8 +701,8 @@ function NotNullAssert(v: unknown): asserts v is NotNull {}
                 const successHandler = function(term: string, data: Nullable<BocAutoCompleteReferenceValue_CacheRowEntry>) {
                   stopLoading();
                   if (data != null) {
-                      if ($input.val().toLowerCase() == term.toLowerCase()) {
-                          $input.val(data.result);
+                      if (input.value.toLowerCase() == term.toLowerCase()) {
+                          input.value = data.result;
                           updateResult(data.data);
                       }
                   } else {
@@ -733,7 +729,7 @@ function NotNullAssert(v: unknown): asserts v is NotNull {}
 
         function updateResult(item: BocAutoCompleteReferenceValue_UpdateResult): void {
             const out: OutBox<BocAutoCompleteReferenceValue_Item> = { Value: null };
-            $input.trigger("updateResult", [item, out]);
+            $(input).trigger("updateResult", [item, out]);
             if (out.Value === null) {
               // When combining an auto-postback with a button click, it is possible that $input no longer points to a textfield that is still
               // part of the page. In this event, the 'updateResult' operation is not wired up, resulting in a NOP and out.Value will not have
@@ -746,7 +742,7 @@ function NotNullAssert(v: unknown): asserts v is NotNull {}
           };
 
         function invalidateResult(): void {
-            $input.trigger("invalidateResult");
+            $(input).trigger("invalidateResult");
             isInvalidated = true;
         }
 
@@ -819,7 +815,7 @@ function NotNullAssert(v: unknown): asserts v is NotNull {}
                 return;
 
             // autofill in the complete box w/the first match as long as the user hasn't entered in more data
-            if ($input.val().toLowerCase() != query.toLowerCase())
+            if (input.value.toLowerCase() != query.toLowerCase())
                 return;
 
             //sValue completely matches the user's input, don't autofill needed
@@ -831,7 +827,7 @@ function NotNullAssert(v: unknown): asserts v is NotNull {}
               return;
 
             // fill in the value (keep the case the user has typed)
-            $input.val($input.val() + sValue.substring(query.length));
+            input.value = input.value + sValue.substring(query.length);
             // select the portion of the value not typed by the user (so the next character will erase)
             $.Autocompleter.Selection(input, query.length, query.length + sValue.length, false);
         };
@@ -845,7 +841,7 @@ function NotNullAssert(v: unknown): asserts v is NotNull {}
 
             informationPopUp.hide();
             hideResults(focusInputAfterSelection);
-            $input.val(value);
+            input.value = value;
             resetState();
         }
 
@@ -859,7 +855,7 @@ function NotNullAssert(v: unknown): asserts v is NotNull {}
             stopLoading();
             if (wasVisible) {
                 // position cursor at end of input field
-                $.Autocompleter.Selection(input, $input.val().length, $input.val().length, focusInputAfterSelection);
+                $.Autocompleter.Selection(input, input.value.length, input.value.length, focusInputAfterSelection);
             }
         };
 
@@ -876,7 +872,7 @@ function NotNullAssert(v: unknown): asserts v is NotNull {}
                 if (data.length) {
                     autoFill(q, data[0].result);
                     select.show();
-                    if (options.selectFirst ($input.val(), q)) {
+                    if (options.selectFirst (input.value, q)) {
                       select.selectItem (0);
                     }
                 } else {
@@ -1000,11 +996,11 @@ function NotNullAssert(v: unknown): asserts v is NotNull {}
         };
 
         function startLoading(): void {
-            $input.addClass(options.loadingClass);
+            input.classList.add(options.loadingClass);
         };
 
         function stopLoading(): void {
-            $input.removeClass(options.loadingClass);
+            input.classList.remove(options.loadingClass);
         };
 
     };
@@ -1119,11 +1115,13 @@ type BocAutoCompleteReferenceValue_SelectConfig = {
 
 class BocAutoCompleteReferenceValue_Select {
     private readonly options: BocAutoCompleteReferenceValue_Options;
-    private readonly input: HTMLElement;
+    private readonly input: HTMLInputElement;
     private readonly select: (value: boolean) => void;
     private readonly config: BocAutoCompleteReferenceValue_SelectConfig;
 
-    constructor(options: BocAutoCompleteReferenceValue_Options, input: HTMLElement, select: (value: boolean) => void, config: BocAutoCompleteReferenceValue_SelectConfig) {
+    private readonly ac_data: WeakMap<HTMLElement, BocAutoCompleteReferenceValue_CacheRowEntry> = new WeakMap();
+
+    constructor(options: BocAutoCompleteReferenceValue_Options, input: HTMLInputElement, select: (value: boolean) => void, config: BocAutoCompleteReferenceValue_SelectConfig) {
         this.options = options;
         this.input = input;
         this.select = select;
@@ -1134,24 +1132,27 @@ class BocAutoCompleteReferenceValue_Select {
         ACTIVE: "ac_over"
     };
 
-    private listItems: JQuery = undefined!;
+    private listItems: HTMLElement[] = undefined!;
     private active: number = -1;
     private data: Nullable<BocAutoCompleteReferenceValue_CacheRow> = null;
     private term: string = "";
     private needsInit: boolean = true;
-    private element: Nullable<JQuery> = undefined!;
-    private list: JQuery = undefined!;
+    private element: Nullable<HTMLElement> = undefined!;
+    private list: HTMLElement = undefined!;
 
     // Create results
     public init() {
         if (!this.needsInit)
             return;
-        this.element = Remotion.jQuery("<div role='listbox' />")
-        .hide()
-        .attr("id", this.options.selectListID)
-        .addClass(this.options.resultsClass)
-        .css("position", "fixed")
-        .appendTo(Remotion.jQuery(this.input).closest('div, td, th, body'));
+
+        this.element = document.createElement("div");
+        this.element.setAttribute('role', 'listbox');
+        this.element.setAttribute('id', this.options.selectListID);
+        this.element.setAttribute('class', this.options.resultsClass);
+        this.element.style.position = 'fixed';
+        LayoutUtility.Hide(this.element);
+
+        this.input.closest('div, td, th, body')!.appendChild(this.element);
 
         this.options.combobox.attr('aria-owns', this.options.selectListID);
         const isAria11 = this.options.combobox[0] !== this.input;
@@ -1159,53 +1160,71 @@ class BocAutoCompleteReferenceValue_Select {
             this.options.combobox.attr('aria-controls', this.options.selectListID);
         }
 
-        this.element.data('originalMaxHeight', parseInt(this.element.css('max-height'), 10));
-        this.element.data('originalMaxWidth', parseInt(this.element.css('max-width'), 10));
+        const elementStyle = window.getComputedStyle(this.element);
+        this.element.dataset['originalMaxHeight'] = "" + parseInt(elementStyle.maxHeight, 10);
+        this.element.dataset['originalMaxWidth'] = "" + parseInt(elementStyle.maxWidth, 10);
 
         //re-motion: block blur bind as long we scroll dropDown list 
         let revertInputStatusTimeout: Nullable<number> = null;
         const revertInputStatus = () => {
             if (this.config.mouseDownOnSelect) {
                 this.config.mouseDownOnSelect = false;
-                Remotion.jQuery(this.input).focus();
+                this.input.focus();
             }
         }
 
-        const innerDiv = Remotion.jQuery("<div/>").appendTo (this.element);
-        innerDiv.scroll(() => {
+        const innerDiv = document.createElement("div");
+        this.element.appendChild(innerDiv);
+        innerDiv.addEventListener('scroll', () => {
             this.config.mouseDownOnSelect = true;
             if (revertInputStatusTimeout) 
                 clearTimeout(revertInputStatusTimeout);
             revertInputStatusTimeout = setTimeout(revertInputStatus, 200);
-        }).mousedown(() => {
+        });
+        innerDiv.addEventListener('mousedown', () => {
             this.config.mouseDownOnSelect = true;
             if (revertInputStatusTimeout) 
                 clearTimeout(revertInputStatusTimeout);
             revertInputStatusTimeout = setTimeout(revertInputStatus, 200);
         });
 
-        this.list = Remotion.jQuery("<ul/>")
-        .appendTo(innerDiv)
-        .mouseover((event) => {
+        this.list = document.createElement("ul");
+        innerDiv.appendChild(this.list);
+
+        this.list.addEventListener('mouseover', (event) => {
             if (this.target(event).nodeName && this.target(event).nodeName.toUpperCase() === 'LI')
             {
-                this.active = Remotion.jQuery("li", this.list).removeClass(this.CLASSES.ACTIVE).index(this.target(event));
-                const activeItem = Remotion.jQuery(this.target (event));
-                activeItem.addClass(this.CLASSES.ACTIVE);
+                const listElements = Array.from(this.list.querySelectorAll<HTMLElement>("li"));
+                for (const listElement of listElements)
+                    listElement.classList.remove(this.CLASSES.ACTIVE);
+
+                const activeItem = this.target(event);
+                this.active = listElements.indexOf(activeItem);
+                activeItem.classList.add(this.CLASSES.ACTIVE);
                 // do not mark as selected.
             }
-        }).click((event) => {
-            this.active = Remotion.jQuery("li", this.list).removeClass(this.CLASSES.ACTIVE).attr("aria-selected", "false").index(this.target(event));
-            const activeItem = Remotion.jQuery(this.target (event));
-            activeItem.addClass (this.CLASSES.ACTIVE);
-            activeItem.attr("aria-selected", "true");
+        });
+        this.list.addEventListener('click', (event) => {
+            const listElements = Array.from(this.list.querySelectorAll<HTMLElement>("li"));
+            for (const listElement of listElements)
+            {
+                listElement.classList.remove(this.CLASSES.ACTIVE);
+                listElement.setAttribute('aria-selected', 'false');
+            }
+
+            const activeItem = this.target (event);
+            this.active = listElements.indexOf(activeItem);
+            activeItem.classList.add(this.CLASSES.ACTIVE);
+            activeItem.setAttribute('aria-selected', 'true');
 
             this.select(true);
 
             return false;
-        }).mousedown(() => {
+        });
+        this.list.addEventListener('mousedown', () => {
             this.config.mouseDownOnSelect = true;
-        }).mouseup(() => {
+        });
+        this.list.addEventListener('mouseup', () => {
             this.config.mouseDownOnSelect = false;
         });
 
@@ -1237,36 +1256,41 @@ class BocAutoCompleteReferenceValue_Select {
     };
 
     private setSelect(position: number, updateInput: boolean): void {
-        this.listItems.removeClass(this.CLASSES.ACTIVE).attr("aria-selected", "false");
+        for (const listItem of this.listItems)
+        {
+            listItem.classList.remove(this.CLASSES.ACTIVE);
+            listItem.setAttribute('aria-selected', 'false');
+        }
+
         this.setPosition (position);
-        const activeItem = this.listItems.slice(this.active, this.active + 1);
-        activeItem.attr("aria-selected", "true");
-        activeItem.addClass(this.CLASSES.ACTIVE);
         if (this.active >= 0) {
-            const result = Remotion.jQuery.data(activeItem[0], "ac_data").result;
-            const $input = Remotion.jQuery(this.input);
-            $input.attr ("aria-activedescendant", activeItem.attr("id"));
+            const activeItem = this.listItems[this.active];
+            activeItem.setAttribute("aria-selected", "true");
+            activeItem.classList.add(this.CLASSES.ACTIVE);
+
+            const result = this.ac_data.get(activeItem)!.result;
+            this.input.setAttribute ("aria-activedescendant", activeItem.id);
 
             if (updateInput)
-                $input.val(result);
+                this.input.value = result;
 
             // re-motion: do not select the text in the input element when moving the drop-down selection 
             //$.Autocompleter.Selection(input, 0, input.value.length);
 
-            const resultsElement = this.element!.children('div');
+            const resultsElement = this.element!.querySelector(':scope > div')!;
 
             if (this.options.scroll) {
                 let offset = 0;
-                this.listItems.slice(0, this.active).each(function (this: HTMLElement) {
-                    offset += this.offsetHeight;
+                this.listItems.slice(0, this.active).forEach(function (el) {
+                    offset += el.offsetHeight;
                 });
 
                 // Calculate the offset for the current item, but use twice the item-height for the scroll's top position.
                 // This will mitigate the risk of cutting off the current item while at the same time offering a bit of a preview for the next item.
-                if ((offset + 2 * activeItem[0].offsetHeight - resultsElement.scrollTop()) > resultsElement[0].clientHeight) {
-                    resultsElement.scrollTop(offset + 2 * activeItem[0].offsetHeight - resultsElement[0].clientHeight);
-                } else if (offset < resultsElement.scrollTop()) {
-                    resultsElement.scrollTop(offset);
+                if ((offset + 2 * activeItem.offsetHeight - resultsElement.scrollTop) > resultsElement.clientHeight) {
+                    resultsElement.scrollTop = offset + 2 * activeItem.offsetHeight - resultsElement.clientHeight;
+                } else if (offset < resultsElement.scrollTop) {
+                    resultsElement.scrollTop = offset;
                 }
             }
         }
@@ -1300,8 +1324,11 @@ class BocAutoCompleteReferenceValue_Select {
 
     private applyPositionToDropDown(): void {
         NotNullAssert(this.element);
-        const reference = Remotion.jQuery(this.input).closest('.' + this.options.inputAreaClass);
-        const positionOptions: BocAutoCompleteReferenceValue_PositioningOptions = { maxWidth: this.element.data('originalMaxWidth'), maxHeight: this.element.data('originalMaxHeight') };
+        const reference = this.input.closest('.' + this.options.inputAreaClass) as HTMLElement;
+        const positionOptions: BocAutoCompleteReferenceValue_PositioningOptions = {
+            maxWidth: parseInt(this.element.dataset['originalMaxWidth']!),
+            maxHeight: parseInt(this.element.dataset['originalMaxHeight']!)
+        };
         Remotion.jQuery.Autocompleter.applyPositionToPopUp(reference, this.element, positionOptions);
     }
 
@@ -1309,7 +1336,7 @@ class BocAutoCompleteReferenceValue_Select {
         NotNullAssert(this.data);
         NotNullAssert(this.element);
 
-        this.list.empty();
+        this.list.innerHTML = '';
         const max = this.data.length;
         for (let i = 0; i < max; i++) {
             if (!this.data[i])
@@ -1318,28 +1345,32 @@ class BocAutoCompleteReferenceValue_Select {
             const termElement = document.createElement("div");
             termElement.innerText = this.term;
             const termAsHtml = termElement.innerHTML;
-            const li = Remotion.jQuery ("<li role='option' aria-selected='false' />")
-                .html (this.options.highlight (item.html, termAsHtml))
-                .attr ("id", this.options.selectListID + "_" + i)
-                .attr("aria-setsize", max)
-                .attr("aria-posinset", i + 1)
-                .addClass (i % 2 === 0 ? "ac_even" : "ac_odd");
+
+            const li = document.createElement("li");
+            li.setAttribute("role", "option");
+            li.setAttribute("aria-selected", "false");
+            li.setAttribute("id", this.options.selectListID + "_" + i);
+            li.setAttribute("aria-setsize", "" + max);
+            li.setAttribute("aria-posinset", "" + (i + 1));
+
+            li.innerHTML = this.options.highlight (item.html, termAsHtml);
+            li.classList.add(i % 2 === 0 ? "ac_even" : "ac_odd")
+
             if (item.class != null)
-                li.addClass(item.class);
+                li.classList.add(item.class);
             if (item.isAnnotation) {
-                li.data ('isAnnotation', 'true');
-                li.addClass ('ac_disabled');
+                li.dataset['isAnnotation'] = 'true';
+                li.classList.add('ac_disabled');
             }
-            li.appendTo (this.list);
-            Remotion.jQuery.data(li[0], "ac_data", this.data[i]);
+            this.list.appendChild(li);
+            this.ac_data.set(li, this.data[i]);
         }
-        this.listItems = this.list.find("li");
-        const $input = Remotion.jQuery(this.input);
-        if (this.options.selectFirst($input.val(), this.term)) {
-            const activeItem = this.listItems.slice(0, 1);
-            $input.attr("aria-activedescendant", activeItem.attr("id"));
-            activeItem.addClass (this.CLASSES.ACTIVE);
-            activeItem.attr ("aria-selected", "true");
+        this.listItems = Array.from(this.list.querySelectorAll("li"));
+        if (this.options.selectFirst(this.input.value, this.term) && this.listItems.length > 0) {
+            const activeItem = this.listItems[0];
+            this.input.setAttribute("aria-activedescendant", activeItem.id);
+            activeItem.classList.add (this.CLASSES.ACTIVE);
+            activeItem.setAttribute ("aria-selected", "true");
             this.active = 0;
         }
     }
@@ -1395,7 +1426,7 @@ class BocAutoCompleteReferenceValue_Select {
     }
 
     public getElement(): Nullable<HTMLElement> {
-        return this.element && this.element[0];
+        return this.element;
     }
 
     public next(): void {
@@ -1426,18 +1457,23 @@ class BocAutoCompleteReferenceValue_Select {
         if (this.repositionTimer) 
             clearTimeout(this.repositionTimer);
         this.options.combobox.attr("aria-expanded", "false");
-        Remotion.jQuery(this.input).removeAttr("aria-activedescendant");
-        this.element && this.element.hide();
-        this.listItems && this.listItems.removeClass(this.CLASSES.ACTIVE).attr("aria-selected", "false");
+        this.input.removeAttribute("aria-activedescendant");
+        this.element && LayoutUtility.Hide(this.element);
+        if (this.listItems) {
+            for (const listItem of this.listItems) {
+                listItem.classList.remove(this.CLASSES.ACTIVE);
+                listItem.setAttribute("aria-selected", "false")
+            }
+        }
         this.active = -1;
     }
 
     public visible(): boolean {
-        return (this.element && this.element.is(":visible")) ? true : false;
+        return (this.element && LayoutUtility.IsVisible(this.element)) ? true : false;
     }
 
     public current(): HTMLElement | false {
-        return this.visible() && (this.listItems.filter(".[aria-selected=true]")[0] || this.options.selectFirst(Remotion.jQuery(this.input).val(), null) && this.listItems[0]);
+        return this.visible() && (this.listItems.filter(e => e.getAttribute("aria-selected") === "true")[0] || this.options.selectFirst(this.input.value, null) && this.listItems[0]);
     }
 
     public show(): void {
@@ -1445,10 +1481,10 @@ class BocAutoCompleteReferenceValue_Select {
 
         // re-motion: scroll dropDown list to value from input
         let selectedItemIndex = -1;
-        const inputValue = Remotion.jQuery(this.input).val().toLowerCase();
+        const inputValue = this.input.value.toLowerCase();
         if (inputValue.length > 0) {
-            this.listItems.each(function(this: HTMLElement, i) {
-                const textValue: string = Remotion.jQuery.data(this, "ac_data").result;
+            this.listItems.forEach((el, i) => {
+                const textValue: string = this.ac_data.get(el)!.result;
                 if (textValue.toLowerCase().startsWith (inputValue)) {
                     selectedItemIndex = i;
                     return false;
@@ -1459,7 +1495,7 @@ class BocAutoCompleteReferenceValue_Select {
         // re-motion: reposition element 
         this.applyPositionToDropDown();
         
-        this.element.show();
+        LayoutUtility.Show(this.element);
         this.options.combobox.attr("aria-expanded", "true");
         
         // re-motion: reposition element 
@@ -1469,7 +1505,7 @@ class BocAutoCompleteReferenceValue_Select {
             if (this.repositionTimer) {
                 clearTimeout(this.repositionTimer);
             }
-            if (this.element && this.element.is(':visible')) {
+            if (this.element && LayoutUtility.IsVisible(this.element)) {
                 this.applyPositionToDropDown();
                 this.repositionTimer = setTimeout(repositionHandler, this.options.repositionInterval);
             }
@@ -1482,10 +1518,10 @@ class BocAutoCompleteReferenceValue_Select {
         if (this.options.scroll) {
             if (selectedItemIndex >= 0) {
                 const selectedItem = this.listItems[selectedItemIndex];
-                this.list.scrollTop(selectedItem.offsetTop);
+                this.list.scrollTop = selectedItem.offsetTop;
             }
             else {
-                this.list.scrollTop(0);
+                this.list.scrollTop = 0;
             }
         }
 
@@ -1495,17 +1531,19 @@ class BocAutoCompleteReferenceValue_Select {
         // re-motion: removing the CSS class does not provide any benefits, but prevents us from highlighting the currently selected value
         // on dropDownButton Click
         // Original: const selected = listItems && listItems.filter("." + CLASSES.ACTIVE).removeClass(CLASSES.ACTIVE);
-        const selected = this.listItems && this.listItems.filter(".[aria-selected=true]");
+        const selected = this.listItems && this.listItems.filter(e => e.getAttribute("aria-selected") === "true");
         if (!selected || !selected.length && selected.length === 0)
             return null;
         const selectedItem = selected[0];
-        if (!includeAnnoations && Remotion.jQuery.data(selectedItem, 'isAnnotation') === 'true')
+        if (!includeAnnoations && selectedItem.dataset['isAnnotation'] === 'true')
             return null;
-        return Remotion.jQuery.data(selectedItem, "ac_data");
+        return this.ac_data.get(selectedItem) || null;
     }
 
     public emptyList(): void {
-        this.list && this.list.empty();
+        if (this.list) {
+            this.list.innerHTML = '';
+        }
     }
 
     // re-motion: returns the index of the item
@@ -1539,24 +1577,30 @@ class BocAutoCompleteReferenceValue_InformationPopUp {
     }
 
     private needsInit: boolean = true;
-    private element: Nullable<JQuery> = null!;
+    private element: Nullable<HTMLDivElement> = null!;
     private repositionTimer: Nullable<number> = null;
 
     private init(): void {
         if (!this.needsInit)
             return;
-        this.element = Remotion.jQuery("<div role='alert' aria-atomic='true' />")
-        .hide()
-        .attr("id", this.options.informationPopUpID)
-        .addClass(this.options.informationPopUpClass)
-        .css("position", "fixed")
-        .appendTo(Remotion.jQuery(this.input).closest('div, td, th, body'));
+
+        this.element = document.createElement('div') as HTMLDivElement;
+        this.element.setAttribute('role', 'alert');
+        this.element.setAttribute('aria-atomic', 'true');
+        this.element.setAttribute('id', this.options.informationPopUpID);
+        this.element.setAttribute('class', this.options.informationPopUpClass);
+        this.element.style.position = 'fixed';
+
+        LayoutUtility.Hide(this.element);
+        this.input.closest('div, td, th, body')!.appendChild(this.element);
+
         if (this.options.combobox.attr('aria-labelledby') !== undefined) {
-            this.element.attr("aria-labelledby", this.options.combobox.attr('aria-labelledby'));
+            this.element.setAttribute("aria-labelledby", this.options.combobox.attr('aria-labelledby'));
         }
 
-        this.element.data('originalMaxHeight', parseInt(this.element.css('max-height'), 10));
-        this.element.data('originalMaxWidth', parseInt(this.element.css('max-width'), 10));
+        const elementStyle = window.getComputedStyle(this.element);
+        this.element.dataset['originalMaxHeight'] = "" + parseInt(elementStyle.maxHeight, 10);
+        this.element.dataset['originalMaxWidth'] = "" + parseInt(elementStyle.maxWidth, 10);
 
         const beginRequestHandler = () => {
             Sys.WebForms.PageRequestManager.getInstance().remove_beginRequest(beginRequestHandler);
@@ -1573,7 +1617,7 @@ class BocAutoCompleteReferenceValue_InformationPopUp {
         NotNullAssert(this.element);
 
         this.applyPositionToPopUp();
-        this.element.show();
+        LayoutUtility.Show(this.element);
             
         if (this.repositionTimer) 
             clearTimeout(this.repositionTimer);
@@ -1581,7 +1625,7 @@ class BocAutoCompleteReferenceValue_InformationPopUp {
             if (this.repositionTimer) {
                 clearTimeout(this.repositionTimer);
             }
-            if (this.element && this.element.is(':visible')) {
+            if (this.element && LayoutUtility.IsVisible(this.element)) {
                 this.applyPositionToPopUp();
                 this.repositionTimer = setTimeout(repositionHandler, this.options.repositionInterval);
             }
@@ -1592,32 +1636,39 @@ class BocAutoCompleteReferenceValue_InformationPopUp {
     private applyPositionToPopUp(): void {
         NotNullAssert(this.element);
 
-        const reference = Remotion.jQuery(this.input).closest('.' + this.options.inputAreaClass);
-        const positionOptions = { maxWidth: this.element.data('originalMaxWidth'), maxHeight: this.element.data('originalMaxHeight') };
+        const reference = this.input.closest('.' + this.options.inputAreaClass) as HTMLElement;
+        const positionOptions = {
+            maxWidth: parseInt(this.element.dataset['originalMaxWidth']!, 10),
+            maxHeight: parseInt(this.element.dataset['originalMaxHeight']!, 10)
+        };
         Remotion.jQuery.Autocompleter.applyPositionToPopUp(reference, this.element, positionOptions);
     }
 
     public getElement (): Nullable<HTMLElement> {
-        return this.element && this.element[0];
+        return this.element;
     }
 
     public visible (): boolean {
-        return (this.element && this.element.is (":visible")) ? true : false;
+        return (this.element && LayoutUtility.IsVisible(this.element)) ? true : false;
     }
 
     public show(message: string): void {
         NotNullAssert(this.element);
 
         this.init();
-        this.element.empty();
-        this.element.append(Remotion.jQuery('<div/>').html (message));
+        this.element.innerHTML = '';
+
+        const messageDiv = document.createElement("div");
+        messageDiv.innerHTML = message;
+
+        this.element.appendChild(messageDiv);
         this.showPopUp();
     }
 
     public hide(): void {
         if (this.repositionTimer) 
             clearTimeout(this.repositionTimer);
-        this.element && this.element.hide();
+        this.element && LayoutUtility.Hide(this.element);
     }
 
     public unbind(): void {
@@ -1626,7 +1677,7 @@ class BocAutoCompleteReferenceValue_InformationPopUp {
 };
 Remotion.jQuery.Autocompleter.InformationPopUp = BocAutoCompleteReferenceValue_InformationPopUp;
 
-Remotion.jQuery.Autocompleter.Selection = function(field: HTMLTextAreaElement, start: number, end: number, focusInputAfterSelection: boolean): void {
+Remotion.jQuery.Autocompleter.Selection = function(field: HTMLInputElement, start: number, end: number, focusInputAfterSelection: boolean): void {
     if (field.value.length < 2)
         return;
 
@@ -1654,20 +1705,20 @@ type BocAutoCompleteReferenceValue_SpaceAround = {
     space: string;
 };
 
-Remotion.jQuery.Autocompleter.calculateSpaceAround = function(element: JQuery): BocAutoCompleteReferenceValue_SpaceAround {
+Remotion.jQuery.Autocompleter.calculateSpaceAround = function(element: HTMLElement): BocAutoCompleteReferenceValue_SpaceAround {
     // re-motion: make sure CSS values are allways numbers, IE can return 'auto'
     function number(num: number | string) {
         return parseInt(num as string) || 0;
     };
 
-    const width = element.outerWidth();
-    const height = element.outerHeight();
-    const offset = element.offset();
+    const width = LayoutUtility.GetOuterWidth(element);
+    const height = LayoutUtility.GetOuterHeight(element);
+    const offset = LayoutUtility.GetOffset(element);
 
-    const scrollTop = number(Remotion.jQuery(document).scrollTop());
-    const scrollLeft = number(Remotion.jQuery(document).scrollLeft());
-    const documentWidth = number(Remotion.jQuery(window).width());
-    const documentHeight = number(Remotion.jQuery(window).height());
+    const scrollTop = number(window.pageYOffset);
+    const scrollLeft = number(window.pageXOffset);
+    const documentWidth = number(document.documentElement.clientWidth);
+    const documentHeight = number(document.documentElement.clientHeight);
 
     const space: Partial<BocAutoCompleteReferenceValue_SpaceAround> = new Object();
     space.top = offset.top - scrollTop;
@@ -1682,62 +1733,62 @@ Remotion.jQuery.Autocompleter.calculateSpaceAround = function(element: JQuery): 
     return space as BocAutoCompleteReferenceValue_SpaceAround;
 };
 
-Remotion.jQuery.Autocompleter.applyPositionToPopUp = function (reference: JQuery, popUp: JQuery, options: BocAutoCompleteReferenceValue_PositioningOptions): void
+Remotion.jQuery.Autocompleter.applyPositionToPopUp = function (reference: HTMLElement, popUp: HTMLElement, options: BocAutoCompleteReferenceValue_PositioningOptions): void
 {
-    const offset = reference.offset();
+    const offset = LayoutUtility.GetOffset(reference);
     const position = Remotion.jQuery.Autocompleter.calculateSpaceAround(reference);
 
-    const isVisibe = popUp.is (':visible');
+    const isVisibe = LayoutUtility.IsVisible(popUp);
     if (!isVisibe)
     {
-        popUp.css('width', 'auto'); // clear the width before showing the popUp, otherwise, the popUp expands to 100%
-        popUp.show(); // provide initial dimensions to popUp
+        popUp.style.width = 'auto'; // clear the width before showing the popUp, otherwise, the popUp expands to 100%
+        LayoutUtility.Show(popUp); // provide initial dimensions to popUp
     }
 
-    const popUpDiv = popUp.children ('div');
-    let contentHeight = Math.max(0, Math.max(...popUpDiv.children().map(function (this: HTMLElement) { return this.offsetHeight + this.offsetTop; }).get()));
+    const popUpDiv = popUp.querySelector (':scope > div')!;
+    let contentHeight = Math.max(0, Math.max(...(Array.from(popUpDiv.children) as HTMLElement[]).map(function (el) { return el.offsetHeight + el.offsetTop; })));
 
-    let contentWidth = popUp.data('popUpContentWidth');
+    let contentWidth = parseInt(popUp.dataset['popUpContentWidth']!, 10);
     if (!isVisibe)
     {
-        contentWidth = Math.max(0, Math.max(...popUpDiv.children().map(function (this: HTMLElement) { return this.offsetWidth + this.offsetLeft; }).get()));
-        popUp.data('popUpContentWidth', contentWidth);
+        contentWidth = Math.max(0, Math.max(...(Array.from(popUpDiv.children) as HTMLElement[]).map(function (el) { return el.offsetWidth + el.offsetLeft; })));
+        popUp.dataset['popUpContentWidth'] = '' + contentWidth;
     }
 
     if (!isVisibe)
-        popUp.hide();
+        LayoutUtility.Hide(popUp);
 
     const maxHeightSafe = isNaN(options.maxHeight) ? (position.spaceVertical == 'T' ? position.top : position.bottom) : options.maxHeight;
 
-    const requiredHeight = Math.min(contentHeight == 0 ? popUp.outerHeight() : contentHeight, maxHeightSafe);
+    const requiredHeight = Math.min(contentHeight == 0 ? LayoutUtility.GetOuterHeight(popUp) : contentHeight, maxHeightSafe);
     let topPosition;
     let bottomPosition;
     let maxHeight;
     if (position.spaceVertical == 'T' && requiredHeight > position.bottom)
     {
         topPosition = 'auto';
-        bottomPosition = Math.max(0, position.bottom + reference.outerHeight());
+        bottomPosition = Math.max(0, position.bottom + LayoutUtility.GetOuterHeight(reference));
         maxHeight = Math.min(position.top, maxHeightSafe);
     }
     else
     {
-        topPosition = Math.max(0, (offset.top - Remotion.jQuery(document).scrollTop()) + reference.outerHeight());
+        topPosition = Math.max(0, (offset.top - window.pageYOffset) + LayoutUtility.GetOuterHeight(reference));
         bottomPosition = 'auto';
         maxHeight = Math.min(position.bottom, maxHeightSafe);
     }
 
-    const popUpOuterHeight = popUp.outerHeight();
-    const popUpInnerHeight = popUpDiv.innerHeight();
+    const popUpOuterHeight = LayoutUtility.GetOuterHeight(popUp);
+    const popUpInnerHeight = LayoutUtility.GetInnerHeight(popUpDiv);
 
-    const scrollLeft = popUpDiv[0].scrollLeft;
-    const scrollTop = popUpDiv[0].scrollTop;
+    const scrollLeft = popUpDiv.scrollLeft;
+    const scrollTop = popUpDiv.scrollTop;
 
     if (requiredHeight > popUpOuterHeight || requiredHeight < popUpInnerHeight)
     {
         //Reset height if content has changed to calculate new height
-        popUp.css ({ height : 'auto' });
+        popUp.style.height = 'auto';
     }
-    let elementHeight: number | string = popUp.outerHeight();
+    let elementHeight: number | string = LayoutUtility.GetOuterHeight(popUp);
 
     if (requiredHeight < maxHeightSafe)
     {
@@ -1745,25 +1796,23 @@ Remotion.jQuery.Autocompleter.applyPositionToPopUp = function (reference: JQuery
         maxHeight = '';
     }
 
-    const availableWidth = position.left + reference.outerWidth();
-    const minWidth = reference.outerWidth();
-    const maxWidth = Math.min (isNaN (options.maxWidth) ? reference.outerWidth() : options.maxWidth, availableWidth);
+    const availableWidth = position.left + LayoutUtility.GetOuterWidth(reference);
+    const minWidth = LayoutUtility.GetOuterWidth(reference);
+    const maxWidth = Math.min (isNaN (options.maxWidth) ? LayoutUtility.GetOuterWidth(reference) : options.maxWidth, availableWidth);
     const requiredWidth = contentWidth + 30;
     const elementWidth = Math.max (Math.min (requiredWidth, maxWidth), minWidth);
 
     const rightPosition = position.right;
 
-    popUp.css ({
-        height : elementHeight,
-        'max-height' : maxHeight,
-        top : topPosition,
-        bottom : bottomPosition,
-        left : 'auto',
-        right : rightPosition,
-        width : elementWidth,
-        'max-width' : 'none'
-    });
+    popUp.style.height = LayoutUtility.FormatPixelProperty(elementHeight);
+    popUp.style.maxHeight =  LayoutUtility.FormatPixelProperty(maxHeight);
+    popUp.style.top =  LayoutUtility.FormatPixelProperty(topPosition);
+    popUp.style.bottom =  LayoutUtility.FormatPixelProperty(bottomPosition);
+    popUp.style.left = 'auto';
+    popUp.style.right = LayoutUtility.FormatPixelProperty(rightPosition);
+    popUp.style.width = LayoutUtility.FormatPixelProperty(elementWidth);
+    popUp.style.maxWidth = 'none';
 
-    popUpDiv[0].scrollLeft = scrollLeft;
-    popUpDiv[0].scrollTop = scrollTop;
+    popUpDiv.scrollLeft = scrollLeft;
+    popUpDiv.scrollTop = scrollTop;
 };

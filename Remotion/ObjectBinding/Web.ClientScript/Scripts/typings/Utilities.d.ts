@@ -61,11 +61,17 @@ declare class ElementResolverUtility {
 }
 declare class LayoutUtility {
     static GetHeight(element: Element): number;
+    static GetInnerHeight(element: Element): number;
     static GetWidth(element: Element): number;
+    static GetInnerWidth(element: Element): number;
     static GetOffset(element: HTMLElement): {
         left: number;
         top: number;
     };
     static GetOuterHeight(element: HTMLElement): number;
+    static GetOuterWidth(element: HTMLElement): number;
     static IsVisible(element: HTMLElement): boolean;
+    static Hide(element: HTMLElement): void;
+    static Show(element: HTMLElement): void;
+    static FormatPixelProperty(value: string | number): string
 }
