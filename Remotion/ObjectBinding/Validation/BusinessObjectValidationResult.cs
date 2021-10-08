@@ -72,7 +72,7 @@ namespace Remotion.ObjectBinding.Validation
     }
 
     [CanBeNull]
-    private static IBusinessObjectProperty GetBusinessObjectProperty (IBusinessObject businessObject, IPropertyInformation property)
+    private static IBusinessObjectProperty? GetBusinessObjectProperty (IBusinessObject businessObject, IPropertyInformation property)
     {
       var businessObjectClass = businessObject.BusinessObjectClass;
       Assertion.IsNotNull (businessObjectClass, "The business object's BusinessObjectClass-property evaluated and returned null.");
