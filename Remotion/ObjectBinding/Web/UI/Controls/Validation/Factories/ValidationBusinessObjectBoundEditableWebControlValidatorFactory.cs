@@ -132,7 +132,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation.Factories
       return CreateBocValidator (control.ID, isReadOnly);
     }
 
-    private IEnumerable<BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator> CreateBocValidator (string id, bool isReadonly)
+    private IEnumerable<BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator> CreateBocValidator (string? id, bool isReadonly)
     {
       if (isReadonly)
         yield break;

@@ -23,7 +23,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 /// <summary> A collection of <see cref="PropertyPathBinding"/> objects. </summary>
 public class PropertyPathBindingCollection : BusinessObjectControlItemCollection
 {
-  public PropertyPathBindingCollection (IBusinessObjectBoundWebControl ownerControl)
+  public PropertyPathBindingCollection (IBusinessObjectBoundWebControl? ownerControl)
     : base (ownerControl, new Type[] {typeof (PropertyPathBinding)})
   {
   }

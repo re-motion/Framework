@@ -31,7 +31,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   //public class DataEditUserControl : UserControl, IDataEditControl
   public abstract class DataEditUserControl : UserControl, IDataEditControl
   {
-    public IBusinessObject BusinessObject
+    public IBusinessObject? BusinessObject
     {
       get { return DataSource.BusinessObject; }
       set { DataSource.BusinessObject = value; }

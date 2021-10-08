@@ -33,7 +33,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     Unit OptionsMenuWidth { get; }
 
     bool IsIconEnabled ();
-    new IBusinessObjectReferenceProperty Property { get; }
+    new IBusinessObjectReferenceProperty? Property { get; }
     new IBusinessObjectWithIdentity Value { get; }
 
     IconInfo GetIcon ();
@@ -57,13 +57,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     Style LabelStyle { get; }
 
     string NullValueString { get; }
-    string BusinessObjectUniqueIdentifier { get; }
+    string? BusinessObjectUniqueIdentifier { get; }
 
     /// <summary>
     /// Gets the list of validation errors for this control.
     /// </summary>
     IEnumerable<string> GetValidationErrors ();
 
-    string ControlServicePath { get; }
+    string? ControlServicePath { get; }
   }
 }

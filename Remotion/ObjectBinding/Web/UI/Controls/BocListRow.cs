@@ -54,7 +54,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return _businessObject; }
     }
 
-    public bool Equals (BocListRow other)
+    public bool Equals (BocListRow? other)
     {
       if (other == null)
         return false;
@@ -62,7 +62,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return this._index == other._index && this._businessObject.Equals (other._businessObject);
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
       return Equals (obj as BocListRow);
     }

@@ -157,7 +157,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     private void ApplyStyleDefaults (Control control)
     {
       bool isControlWidthEmpty;
-      CssStyleCollection controlStyle = GetControlStyle (control, out isControlWidthEmpty);
+      CssStyleCollection? controlStyle = GetControlStyle (control, out isControlWidthEmpty);
       if (controlStyle == null)
         return;
 
@@ -167,9 +167,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         controlStyle["vertical-align"] = "middle";
     }
 
-    private CssStyleCollection GetControlStyle (Control control, out bool isControlWidthEmpty)
+    private CssStyleCollection? GetControlStyle (Control control, out bool isControlWidthEmpty)
     {
-      CssStyleCollection controlStyle = null;
+      CssStyleCollection? controlStyle = null;
       isControlWidthEmpty = true;
       if (control is WebControl)
       {

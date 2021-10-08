@@ -11,7 +11,6 @@
     <AssemblyName>Remotion.ObjectBinding.Web</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
     <NoWarn>$(NoWarn);0419</NoWarn>
-    <Nullable>disable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="..\Web.ClientScript\bin\$(Configuration)\dist\*" LinkBase="Res.ClientScript\HTML" CopyToOutputDirectory="Never">

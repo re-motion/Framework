@@ -91,16 +91,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   The object returned by <see cref="BocReferenceValue"/>. 
     ///   Does not require <see cref="System.Runtime.Serialization.ISerializable"/>. 
     /// </summary>
-    private IBusinessObjectWithIdentity _value;
+    private IBusinessObjectWithIdentity? _value;
 
-    private string _displayName;
+    private string? _displayName;
     private readonly ListItemCollection _listItems;
 
     private string _nullItemText = string.Empty;
     private string _select = String.Empty;
     private bool? _enableSelectStatement;
-    private string _nullItemErrorMessage;
-    private ReadOnlyCollection<BaseValidator> _validators;
+    private string? _nullItemErrorMessage;
+    private ReadOnlyCollection<BaseValidator>? _validators;
 
     // construction and disposing
 
@@ -140,7 +140,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Description ("Validation message displayed if the value is not set but the control is required.")]
     [Category ("Validator")]
     [DefaultValue ("")]
-    public string NullItemErrorMessage
+    public string? NullItemErrorMessage
     {
       get { return _nullItemErrorMessage; }
       set
@@ -348,10 +348,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (DataSource == null)
         return;
 
-      IBusinessObjectWithIdentity value = null;
+      IBusinessObjectWithIdentity? value = null;
 
       if (DataSource.BusinessObject != null)
-        value = (IBusinessObjectWithIdentity) DataSource.BusinessObject.GetProperty (Property);
+        value = (IBusinessObjectWithIdentity?) DataSource.BusinessObject.GetProperty (Property);
 
       LoadValueInternal (value, false);
     }
@@ -364,7 +364,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Performs the actual loading for <see cref="LoadValue"/> and <see cref="LoadUnboundValue"/>. </summary>
-    protected virtual void LoadValueInternal (IBusinessObjectWithIdentity value, bool interim)
+    protected virtual void LoadValueInternal (IBusinessObjectWithIdentity? value, bool interim)
     {
       if (interim)
         return;
@@ -485,7 +485,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (Property == null)
         return;
 
-      IBusinessObject[] businessObjects = null;
+      IBusinessObject[]? businessObjects = null;
 
       //  Get all matching business objects
       if (DataSource != null)
@@ -500,7 +500,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   <see cref="DropDownList"/>. Use <see langword="null"/> to clear the list.
     /// </param>
     /// <remarks> This method controls the actual refilling of the <see cref="DropDownList"/>. </remarks>
-    protected virtual void RefreshBusinessObjectList (IList businessObjects)
+    protected virtual void RefreshBusinessObjectList (IList? businessObjects)
     {
       _isBusinessObejectListPopulated = true;
       _listItems.Clear();
@@ -515,7 +515,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
-    protected override string GetLabelText ()
+    protected override string? GetLabelText ()
     {
       string text;
       if (InternalValue != null)
@@ -525,7 +525,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return text;
     }
 
-    protected override sealed IBusinessObjectWithIdentity GetValue ()
+    protected override sealed IBusinessObjectWithIdentity? GetValue ()
     {
       if (InternalValue == null)
         _value = null;
@@ -540,7 +540,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return _value;
     }
 
-    protected override sealed void SetValue (IBusinessObjectWithIdentity value)
+    protected override sealed void SetValue (IBusinessObjectWithIdentity? value)
     {
       _value = value;
 
@@ -582,7 +582,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </value>
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     [Browsable (false)]
-    public string FocusID
+    public string? FocusID
     {
       get { return IsReadOnly ? null : GetValueName(); }
     }
@@ -634,7 +634,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set { _enableSelectStatement = value; }
     }
 
-    public override string ValidationValue
+    public override string? ValidationValue
     {
       get { return InternalValue; }
     }

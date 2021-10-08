@@ -82,10 +82,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private BocTextValueType _valueType = BocTextValueType.Undefined;
     private BocTextValueType _actualValueType = BocTextValueType.Undefined;
 
-    private string _format;
+    private string? _format;
     private string _text = string.Empty;
-    private string _errorMessage;
-    private ReadOnlyCollection<BaseValidator> _validators;
+    private string? _errorMessage;
+    private ReadOnlyCollection<BaseValidator>? _validators;
 
     public BocTextValue ()
     {
@@ -104,7 +104,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (DataSource == null)
         return;
 
-      object value = null;
+      object? value = null;
 
       if (DataSource.BusinessObject != null)
         value = DataSource.BusinessObject.GetProperty (Property);
@@ -149,7 +149,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Performs the actual loading for <see cref="LoadValue"/> and <see cref="O:Remotion.ObjectBinding.Web.UI.Controls.BocTextValue.LoadUnboundValue"/>. </summary>
-    protected virtual void LoadValueInternal (object value, bool interim)
+    protected virtual void LoadValueInternal (object? value, bool interim)
     {
       if (interim)
         return;
@@ -245,7 +245,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// Gets the value from the backing field.
     /// </summary>
     /// <remarks>Override this member to modify the storage of the value. </remarks>
-    protected virtual object GetValue ()
+    protected virtual object? GetValue ()
     {
       string text = _text;
       if (text != null)
@@ -297,7 +297,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <para>Setting the value via this method does not affect the control's dirty state.</para>
     /// <para>Override this member to modify the storage of the value.</para>
     /// </remarks>
-    protected virtual void SetValue (object value)
+    protected virtual void SetValue (object? value)
     {
       if (value == null)
       {
@@ -305,10 +305,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         return;
       }
 
-      IFormattable formattable = value as IFormattable;
+      IFormattable? formattable = value as IFormattable;
       if (formattable != null)
       {
-        string format = Format;
+        string? format = Format;
         if (format == null)
         {
           if (ActualValueType == BocTextValueType.Date)
@@ -416,7 +416,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
                   "Format must be parsable by the value's type if the control is in edit mode.")]
     [Category ("Style")]
     [DefaultValue ("")]
-    public string Format
+    public string? Format
     {
       get { return StringUtility.EmptyToNull (_format); }
       set { _format = value; }
@@ -430,7 +430,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Description ("Validation message displayed if there is an error.")]
     [Category ("Validator")]
     [DefaultValue ("")]
-    public string ErrorMessage
+    public string? ErrorMessage
     {
       get { return _errorMessage; }
       set
@@ -518,7 +518,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       base.LoadResources (resourceManager, globalizationService);
 
       //  Dispatch simple properties
-      string key = ResourceManagerUtility.GetGlobalResourceKey (ErrorMessage);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey (ErrorMessage);
       if (! string.IsNullOrEmpty (key))
         ErrorMessage = resourceManager.GetString (key);
     }
@@ -650,7 +650,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         if (_valueType == BocTextValueType.Undefined)
           _actualValueType = GetBocTextValueType (Property);
 
-        IBusinessObjectStringProperty stringProperty = Property as IBusinessObjectStringProperty;
+        IBusinessObjectStringProperty? stringProperty = Property as IBusinessObjectStringProperty;
         if (stringProperty != null)
         {
           if (TextBoxStyle.MaxLength == null)

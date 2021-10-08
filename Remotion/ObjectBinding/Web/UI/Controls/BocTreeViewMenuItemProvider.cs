@@ -23,13 +23,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   public abstract class BocTreeViewMenuItemProvider : WebTreeViewMenuItemProvider
   {
-    private BocTreeView _ownerControl;
+    private BocTreeView? _ownerControl;
 
     public BocTreeViewMenuItemProvider ()
     {
     }
 
-    public override void OnMenuItemEventCommandClick (WebMenuItem menuItem, WebTreeNode node)
+    public override void OnMenuItemEventCommandClick (WebMenuItem? menuItem, WebTreeNode node)
     {
       if (menuItem != null && menuItem.Command != null)
       {
@@ -40,14 +40,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
-    public override void OnMenuItemWxeFunctionCommandClick (WebMenuItem menuItem, WebTreeNode node)
+    public override void OnMenuItemWxeFunctionCommandClick (WebMenuItem? menuItem, WebTreeNode node)
     {
       if (menuItem != null && menuItem.Command != null)
       {
         if (menuItem is BocMenuItem)
         {
           BocMenuItemCommand command = (BocMenuItemCommand) menuItem.Command;
-          IBusinessObject businessObject = null;
+          IBusinessObject? businessObject = null;
           if (node is BusinessObjectTreeNode)
             businessObject = ((BusinessObjectTreeNode) node).BusinessObject;
 
@@ -64,7 +64,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
-    public BocTreeView OwnerControl
+    public BocTreeView? OwnerControl
     {
       get { return _ownerControl; }
       set { _ownerControl = value; }

@@ -30,8 +30,8 @@ namespace Remotion.ObjectBinding.Web.Services
   /// </remarks>
   public sealed class BusinessObjectWithIdentityProxy
   {
-    private string _uniqueIdentifier;
-    private string _displayName;
+    private string? _uniqueIdentifier;
+    private string? _displayName;
     private string _iconUrl = "";
 
     public BusinessObjectWithIdentityProxy ()
@@ -46,13 +46,13 @@ namespace Remotion.ObjectBinding.Web.Services
       _displayName = obj.GetAccessibleDisplayName();
     }
 
-    public string UniqueIdentifier
+    public string? UniqueIdentifier
     {
       get { return _uniqueIdentifier; }
       set { _uniqueIdentifier = ArgumentUtility.CheckNotNullOrEmpty ("value", value); }
     }
 
-    public string DisplayName
+    public string? DisplayName
     {
       get { return _displayName; }
       set { _displayName = ArgumentUtility.CheckNotNullOrEmpty ("value", value); }

@@ -64,7 +64,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       int originalRowIndex = dataRowRenderEventArgs.ListIndex;
       IBusinessObject businessObject = dataRowRenderEventArgs.BusinessObject;
 
-      IEditableRow editableRow = renderingContext.Control.EditModeController.GetEditableRow (originalRowIndex);
+      IEditableRow? editableRow = renderingContext.Control.EditModeController.GetEditableRow (originalRowIndex);
 
       bool hasEditModeControl = editableRow != null && editableRow.HasEditControl (renderingContext.ColumnIndex);
 

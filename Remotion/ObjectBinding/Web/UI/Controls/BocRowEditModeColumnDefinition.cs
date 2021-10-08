@@ -215,7 +215,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       
       base.LoadResources (resourceManager, globalizationService);
 
-      string key = ResourceManagerUtility.GetGlobalResourceKey (EditText);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey (EditText);
       if (!string.IsNullOrEmpty (key))
         EditText = resourceManager.GetString (key);
 

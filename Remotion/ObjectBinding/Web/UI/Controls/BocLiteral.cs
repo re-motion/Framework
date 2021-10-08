@@ -49,7 +49,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <value> An <see cref="IBusinessObjectDataSource"/> providing the current <see cref="IBusinessObject"/>. </value>
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     [Browsable (false)]
-    public IBusinessObjectDataSource DataSource
+    public IBusinessObjectDataSource? DataSource
     {
       get { return _binding.DataSource; }
       set { _binding.DataSource = value; }
@@ -64,7 +64,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Description ("The string representation of the Property.")]
     [DefaultValue ("")]
     [MergableProperty (false)]
-    public string PropertyIdentifier
+    public string? PropertyIdentifier
     {
       get { return _binding.PropertyIdentifier; }
       set { _binding.PropertyIdentifier = value; }
@@ -74,7 +74,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <value>An <see cref="IBusinessObjectProperty"/> that is part of the bound <see cref="IBusinessObject"/>'s <see cref="IBusinessObjectClass"/>.</value>
     [Browsable (false)]
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    public IBusinessObjectProperty Property
+    public IBusinessObjectProperty? Property
     {
       get { return _binding.Property; }
       set { _binding.Property = value; }
@@ -89,7 +89,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Category ("Data")]
     [Description ("The ID of the BusinessObjectDataSourceControl control used as data source.")]
     [DefaultValue ("")]
-    public string DataSourceControl
+    public string? DataSourceControl
     {
       get { return _binding.DataSourceControl; }
       set { _binding.DataSourceControl = value; }
@@ -222,10 +222,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (DataSource == null)
         return;
       
-      string value = null;
+      string? value = null;
 
       if (DataSource.BusinessObject != null)
-        value = (string) DataSource.BusinessObject.GetProperty (Property);
+        value = (string?) DataSource.BusinessObject.GetProperty (Property);
 
       LoadValueInternal (value, interim);
     }
@@ -240,7 +240,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Performs the actual loading for <see cref="LoadValue"/> and <see cref="LoadUnboundValue"/>. </summary>
-    protected virtual void LoadValueInternal (string value, bool interim)
+    protected virtual void LoadValueInternal (string? value, bool interim)
     {
       Value = value;
     }
@@ -303,7 +303,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Gets the text to be written into the label for this control. </summary>
     /// <value> <see langword="null"/> for the default implementation. </value>
     [Browsable (false)]
-    public virtual string DisplayName
+    public virtual string? DisplayName
     {
       get { return (Property != null) ? Property.DisplayName : null; }
     }

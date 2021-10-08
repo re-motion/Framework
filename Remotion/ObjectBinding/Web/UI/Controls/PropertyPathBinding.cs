@@ -34,12 +34,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   The <see cref="IBusinessObjectPropertyPath"/> mananged by this 
     ///   <see cref="PropertyPathBinding"/>.
     /// </summary>
-    private IBusinessObjectPropertyPath _propertyPath;
+    private IBusinessObjectPropertyPath? _propertyPath;
     /// <summary> 
     ///   The <see cref="string"/> representing the <see cref="IBusinessObjectPropertyPath"/> mananged 
     ///   by this <see cref="PropertyPathBinding"/>.
     /// </summary>
-    private string _propertyPathIdentifier;
+    private string? _propertyPathIdentifier;
 
     private bool _isDynamic;
 
@@ -73,7 +73,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <returns>
     ///   Returns the class name of the instance.
     /// </returns>
-    public override string ToString ()
+    public override string? ToString ()
     {
       return GetType ().Name;
     }
@@ -84,7 +84,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </summary>
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     [Browsable (false)]
-    public IBusinessObjectDataSource DataSource
+    public IBusinessObjectDataSource? DataSource
     {
       get
       {
@@ -159,7 +159,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Category ("Data")]
     [Description ("A string representing a valid property path.")]
     //  No default value
-    public string PropertyPathIdentifier
+    public string? PropertyPathIdentifier
     {
       get
       {
@@ -174,11 +174,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     [Browsable (false)]
-    public IBusinessObjectClass BusinessObjectClass
+    public IBusinessObjectClass? BusinessObjectClass
     {
       get
       {
-        IBusinessObjectReferenceProperty property = null;
+        IBusinessObjectReferenceProperty? property = null;
         if (OwnerControl != null)
           property = OwnerControl.Property as IBusinessObjectReferenceProperty;
         if (property != null)

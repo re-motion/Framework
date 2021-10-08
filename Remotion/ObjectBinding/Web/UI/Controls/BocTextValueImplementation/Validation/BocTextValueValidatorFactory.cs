@@ -62,7 +62,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
         yield return typeValidator;
     }
 
-    private RequiredFieldValidator CreateRequiredFieldValidator (IBocTextValue control, IResourceManager resourceManager)
+    private RequiredFieldValidator? CreateRequiredFieldValidator (IBocTextValue control, IResourceManager resourceManager)
     {
       var areOptionalValidatorsEnabled = control.AreOptionalValidatorsEnabled;
       var isPropertyTypeRequired = !areOptionalValidatorsEnabled && control.DataSource?.BusinessObject != null && control.Property?.IsNullable == false;
@@ -84,7 +84,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
       }
     }
 
-    private LengthValidator CreateLengthValidator (IBocTextValue control, IResourceManager resourceManager)
+    private LengthValidator? CreateLengthValidator (IBocTextValue control, IResourceManager resourceManager)
     {
       var maxLength = control.TextBoxStyle.MaxLength;
       var hasControlMaxLength = control.AreOptionalValidatorsEnabled && maxLength.HasValue;
@@ -109,7 +109,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
     }
 
     [CanBeNull]
-    private BaseValidator CreateTypeValidator (IBocTextValue control, IResourceManager resourceManager)
+    private BaseValidator? CreateTypeValidator (IBocTextValue control, IResourceManager resourceManager)
     {
       BocTextValueType valueType = control.ActualValueType;
       switch (valueType)

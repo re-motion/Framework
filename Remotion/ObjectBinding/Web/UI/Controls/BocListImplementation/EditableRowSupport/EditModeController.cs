@@ -50,7 +50,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     private readonly IEditModeHost _editModeHost;
 
     private EditMode _editMode = EditMode.None;
-    private List<string> _editedRowIDs;
+    private List<string>? _editedRowIDs;
     private bool _isEditNewRow;
 
     private bool _isEditModeRestored;
@@ -68,7 +68,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
     // methods and properties
 
-    public IEditableRow GetEditableRow (int index)
+    public IEditableRow? GetEditableRow (int index)
     {
       if (_editModeHost.Value == null || index >= _editModeHost.Value.Count)
         throw new ArgumentOutOfRangeException ("index", "The index must not point to an object past the elements in the Value collection");
@@ -76,7 +76,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       if (_editMode == EditMode.None)
         return null;
 
-      var editedRowID = _editModeHost.RowIDProvider.GetItemRowID (new BocListRow (index, (IBusinessObject) _editModeHost.Value[index]));
+      var editedRowID = _editModeHost.RowIDProvider.GetItemRowID (new BocListRow (index, (IBusinessObject?) _editModeHost.Value[index]));
       var editedIndex = _editedRowIDs.IndexOf (editedRowID);
       if (editedIndex == -1)
       {
@@ -126,7 +126,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
         return;
 
       _editedRowIDs =
-          new List<string> { _editModeHost.RowIDProvider.GetItemRowID (new BocListRow (index, (IBusinessObject) _editModeHost.Value[index])) };
+          new List<string> { _editModeHost.RowIDProvider.GetItemRowID (new BocListRow (index, (IBusinessObject?) _editModeHost.Value[index])) };
       _editMode = EditMode.RowEditMode;
       CreateEditModeControls (columns);
       LoadValues (false, new List<BocListRow>());

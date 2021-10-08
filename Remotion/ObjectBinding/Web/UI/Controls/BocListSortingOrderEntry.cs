@@ -32,7 +32,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private readonly bool _isEmpty;
 
     [NonSerialized]
-    private readonly IBocSortableColumnDefinition _column;
+    private readonly IBocSortableColumnDefinition? _column;
 
     public BocListSortingOrderEntry (IBocSortableColumnDefinition column, SortingDirection direction)
     {
@@ -60,7 +60,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets the column to sort by. </summary>
-    public IBocSortableColumnDefinition Column
+    public IBocSortableColumnDefinition? Column
     {
       get { return _column; }
     }

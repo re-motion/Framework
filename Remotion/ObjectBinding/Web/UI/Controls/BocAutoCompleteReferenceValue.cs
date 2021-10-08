@@ -107,16 +107,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   The object returned by <see cref="BocReferenceValue"/>. 
     ///   Does not require <see cref="System.Runtime.Serialization.ISerializable"/>. 
     /// </summary>
-    private IBusinessObjectWithIdentity _value;
+    private IBusinessObjectWithIdentity? _value;
 
-    private string _displayName;
+    private string? _displayName;
     private bool _isDisplayNameRefreshed;
 
-    private string _invalidItemErrorMessage;
+    private string? _invalidItemErrorMessage;
 
-    private string _validSearchStringRegex;
-    private string _validSearchStringForDropDownRegex;
-    private string _searchStringForDropDownDoesNotMatchRegexMessage;
+    private string? _validSearchStringRegex;
+    private string? _validSearchStringForDropDownRegex;
+    private string? _searchStringForDropDownDoesNotMatchRegexMessage;
     private bool _ignoreSearchStringForDropDownUponValidInput;
     private int _completionSetCount = 10;
     private int _dropDownDisplayDelay = 1000;
@@ -124,8 +124,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private int _selectionUpdateDelay = 200;
     private BusinessObjectWebServiceContext _businessObjectWebServiceContextFromPreviousLifeCycle;
 
-    private string _nullItemErrorMessage;
-    private ReadOnlyCollection<BaseValidator> _validators;
+    private string? _nullItemErrorMessage;
+    private ReadOnlyCollection<BaseValidator>? _validators;
     // construction and disposing
 
     public BocAutoCompleteReferenceValue ()
@@ -150,7 +150,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Description ("Validation message displayed if the value is not set but the control is required.")]
     [Category ("Validator")]
     [DefaultValue ("")]
-    public string NullItemErrorMessage
+    public string? NullItemErrorMessage
     {
       get { return _nullItemErrorMessage; }
       set
@@ -180,7 +180,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       var isDataChanged = base.LoadPostData (postDataKey, postCollection);
 
-      string newValue = PageUtility.GetPostBackCollectionItem (Page, GetTextValueName());
+      string? newValue = PageUtility.GetPostBackCollectionItem (Page, GetTextValueName());
       if (newValue != null)
       {
         if (InternalDisplayName == null && !string.IsNullOrEmpty (newValue))
@@ -240,7 +240,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       GetSearchAvailableObjectService();
     }
 
-    private IBocAutoCompleteReferenceValueWebService GetSearchAvailableObjectService ()
+    private IBocAutoCompleteReferenceValueWebService? GetSearchAvailableObjectService ()
     {
       if (string.IsNullOrEmpty (ControlServicePath))
         throw new InvalidOperationException (string.Format ("BocAutoCompleteReferenceValue '{0}' does not have a ControlServicePath set.", ID));
@@ -361,10 +361,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (DataSource == null)
         return;
 
-      IBusinessObjectWithIdentity value = null;
+      IBusinessObjectWithIdentity? value = null;
 
       if (DataSource.BusinessObject != null)
-        value = (IBusinessObjectWithIdentity) DataSource.BusinessObject.GetProperty (Property);
+        value = (IBusinessObjectWithIdentity?) DataSource.BusinessObject.GetProperty (Property);
 
       LoadValueInternal (value, false);
     }
@@ -377,7 +377,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Performs the actual loading for <see cref="LoadValue"/> and <see cref="LoadUnboundValue"/>. </summary>
-    protected virtual void LoadValueInternal (IBusinessObjectWithIdentity value, bool interim)
+    protected virtual void LoadValueInternal (IBusinessObjectWithIdentity? value, bool interim)
     {
       if (interim)
         return;
@@ -423,13 +423,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         NullItemErrorMessage = resourceManager.GetString (key);
     }
 
-    protected override string GetLabelText ()
+    protected override string? GetLabelText ()
     {
       EnsureDisplayNameRefreshed();
       return InternalDisplayName;
     }
 
-    protected override sealed IBusinessObjectWithIdentity GetValue ()
+    protected override sealed IBusinessObjectWithIdentity? GetValue ()
     {
       if (InternalValue == null)
         _value = null;
@@ -443,7 +443,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return _value;
     }
 
-    protected override sealed void SetValue (IBusinessObjectWithIdentity value)
+    protected override sealed void SetValue (IBusinessObjectWithIdentity? value)
     {
       _value = value;
 
@@ -493,7 +493,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </value>
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     [Browsable (false)]
-    public string FocusID
+    public string? FocusID
     {
       get { return IsReadOnly ? null : GetTextValueName(); }
     }
@@ -518,7 +518,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Description ("Validation message displayed if the entered text does not identify an item.")]
     [Category ("Validator")]
     [DefaultValue ("")]
-    public string InvalidItemErrorMessage
+    public string? InvalidItemErrorMessage
     {
       get { return _invalidItemErrorMessage; }
       set
@@ -595,7 +595,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Description ("A Javascript regular expression the user input must match in order for the search to performed upon input. "
                   + "If the expression is empty, the control defaults to matching all input. "
                   + "Note: The expression does not constrain the search for an exact match.")]
-    public string ValidSearchStringRegex
+    public string? ValidSearchStringRegex
     {
       get { return _validSearchStringRegex; }
       set { _validSearchStringRegex = StringUtility.EmptyToNull (value); }
@@ -619,7 +619,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         "A Javascript regular expression the user input must match in order for the search to performed when manually opening the drop-down-list. "
         + "If the expression is empty, the ValidSearchStringRegex is used. "
         + "If the fallback is also empty the control defaults to always openng the drop-down list.")]
-    public string ValidSearchStringForDropDownRegex
+    public string? ValidSearchStringForDropDownRegex
     {
       get { return _validSearchStringForDropDownRegex; }
       set { _validSearchStringForDropDownRegex = StringUtility.EmptyToNull (value); }
@@ -631,7 +631,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Category ("AutoComplete")]
     [DefaultValue ("")]
     [Description ("The message displayed when the user input does not match the required format when manually opening the drop-down-list.")]
-    public string SearchStringForDropDownDoesNotMatchRegexMessage
+    public string? SearchStringForDropDownDoesNotMatchRegexMessage
     {
       get { return _searchStringForDropDownDoesNotMatchRegexMessage; }
       set { _searchStringForDropDownDoesNotMatchRegexMessage = StringUtility.EmptyToNull (value); }
@@ -651,7 +651,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set { _ignoreSearchStringForDropDownUponValidInput = value; }
     }
 
-    public override string ValidationValue
+    public override string? ValidationValue
     {
       get
       {
@@ -698,7 +698,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return "function() { return BocAutoCompleteReferenceValue.GetSelectionCount ('" + GetKeyValueName() + "', '" + c_nullIdentifier + "'); }";
     }
 
-    private string InternalDisplayName
+    private string? InternalDisplayName
     {
       get { return _displayName; }
       set

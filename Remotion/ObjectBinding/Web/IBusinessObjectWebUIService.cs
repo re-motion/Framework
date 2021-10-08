@@ -44,7 +44,7 @@ namespace Remotion.ObjectBinding.Web
     HelpInfo GetHelpInfo (
         IBusinessObjectBoundWebControl control,
         IBusinessObjectClass businessObjectClass,
-        IBusinessObjectProperty businessObjectProperty,
-        IBusinessObject businessObject);
+        IBusinessObjectProperty? businessObjectProperty,
+        IBusinessObject? businessObject);
   }
 }

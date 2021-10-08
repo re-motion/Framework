@@ -75,9 +75,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     // member fields
 
-    private object _value;
-    private string _internalValue;
-    private IEnumerationValueInfo _enumerationValueInfo;
+    private object? _value;
+    private string? _internalValue;
+    private IEnumerationValueInfo? _enumerationValueInfo;
 
     private readonly Style _commonStyle;
     private readonly ListControlStyle _listControlStyle;
@@ -85,8 +85,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private string _undefinedItemText = string.Empty;
 
-    private string _errorMessage;
-    private ReadOnlyCollection<BaseValidator> _validators;
+    private string? _errorMessage;
+    private ReadOnlyCollection<BaseValidator>? _validators;
 
     // construction and disposing
 
@@ -143,7 +143,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (DataSource == null)
         return;
 
-      object value = null;
+      object? value = null;
 
       if (DataSource.BusinessObject != null)
         value = DataSource.BusinessObject.GetProperty (Property);
@@ -285,9 +285,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <value> An <see cref="IBusinessObjectEnumerationProperty"/> object. </value>
     [Browsable (false)]
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    public new IBusinessObjectEnumerationProperty Property
+    public new IBusinessObjectEnumerationProperty? Property
     {
-      get { return (IBusinessObjectEnumerationProperty) base.Property; }
+      get { return (IBusinessObjectEnumerationProperty?) base.Property; }
       set { base.Property = ArgumentUtility.CheckType<IBusinessObjectEnumerationProperty> ("value", value); }
     }
 
@@ -310,7 +310,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary>
     /// Gets the value from the backing field.
     /// </summary>
-    protected object GetValue ()
+    protected object? GetValue ()
     {
       EnsureValue();
       return _value;
@@ -322,7 +322,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <remarks>
     /// <para>Setting the value via this method does not affect the control's dirty state.</para>
     /// </remarks>
-    protected void SetValue (object value)
+    protected void SetValue (object? value)
     {
       _value = value;
 
@@ -356,7 +356,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   or <see langword="null"/> if no item / the null item is selected.
     /// </value>
     /// <remarks> Used to identify the currently selected item. </remarks>
-    protected virtual string InternalValue
+    protected virtual string? InternalValue
     {
       get
       {
@@ -425,7 +425,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </value>
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     [Browsable (false)]
-    public string FocusID
+    public string? FocusID
     {
       get { return IsReadOnly ? null : GetValueName (); }
     }
@@ -496,7 +496,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Description ("Validation message displayed if there is an error.")]
     [Category ("Validator")]
     [DefaultValue ("")]
-    public string ErrorMessage
+    public string? ErrorMessage
     {
       get { return _errorMessage; }
       set
@@ -546,7 +546,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <include file='..\..\doc\include\UI\Controls\BocEnumValue.xml' path='BocEnumValue/LoadPostData/*' />
     protected virtual bool LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
-      string newValue = PageUtility.GetPostBackCollectionItem (Page, GetValueName());
+      string? newValue = PageUtility.GetPostBackCollectionItem (Page, GetValueName());
       bool isDataChanged = false;
       if (newValue != null)
       {
@@ -577,7 +577,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Fires the <see cref="SelectionChanged"/> event. </summary>
     protected virtual void OnSelectionChanged ()
     {
-      EventHandler eventHandler = (EventHandler) Events[s_selectionChangedEvent];
+      EventHandler? eventHandler = (EventHandler?) Events[s_selectionChangedEvent];
       if (eventHandler != null)
         eventHandler (this, EventArgs.Empty);
     }
@@ -610,7 +610,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Performs the actual loading for <see cref="LoadValue"/> and <see cref="O:Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue.LoadUnboundValue"/>. </summary>
-    protected virtual void LoadValueInternal (object value, bool interim)
+    protected virtual void LoadValueInternal (object? value, bool interim)
     {
       if (interim)
         return;
@@ -634,7 +634,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       base.LoadResources (resourceManager, globalizationService);
 
       //  Dispatch simple properties
-      string key = ResourceManagerUtility.GetGlobalResourceKey (ErrorMessage);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey (ErrorMessage);
       if (! string.IsNullOrEmpty (key))
         ErrorMessage = resourceManager.GetString (key);
 
@@ -650,7 +650,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   or the <see cref="Property"/> is <see langword="null"/>.
     /// </value>
     /// <remarks> Only used to simplify access to the <see cref="IEnumerationValueInfo"/>. </remarks>
-    protected IEnumerationValueInfo EnumerationValueInfo
+    protected IEnumerationValueInfo? EnumerationValueInfo
     {
       get
       {
@@ -686,7 +686,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return Property.GetEnabledValues (GetBusinessObject());
     }
 
-    private IBusinessObject GetBusinessObject ()
+    private IBusinessObject? GetBusinessObject ()
     {
       return (Property != null && DataSource != null) ? DataSource.BusinessObject : null;
     }
@@ -725,7 +725,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return GetEnabledValues();
     }
 
-    IEnumerationValueInfo IBocEnumValue.EnumerationValueInfo
+    IEnumerationValueInfo? IBocEnumValue.EnumerationValueInfo
     {
       get { return EnumerationValueInfo; }
     }

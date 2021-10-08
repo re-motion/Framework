@@ -35,25 +35,25 @@ public abstract class BocTreeNode: WebTreeNode
     get { return base.Children; }
   }
 
-  protected BocTreeView BocTreeView
+  protected BocTreeView? BocTreeView
   {
-    get { return (BocTreeView) OwnerControl; }
+    get { return (BocTreeView?) OwnerControl; }
   }
 }
 
 public class BusinessObjectTreeNode: BocTreeNode
 {
-  IBusinessObjectWithIdentity _businessObject;
-  IBusinessObjectReferenceProperty _property;
+  IBusinessObjectWithIdentity? _businessObject;
+  IBusinessObjectReferenceProperty? _property;
   string _propertyIdentifier;
 
   public BusinessObjectTreeNode (
       string itemID, 
-      string text, 
-      string toolTip,
-      IconInfo icon, 
-      IBusinessObjectReferenceProperty property,
-      IBusinessObjectWithIdentity businessObject)
+      string? text, 
+      string? toolTip,
+      IconInfo? icon, 
+      IBusinessObjectReferenceProperty? property,
+      IBusinessObjectWithIdentity? businessObject)
     : base (itemID, text, toolTip, icon)
   {
     Property = property;
@@ -74,7 +74,7 @@ public class BusinessObjectTreeNode: BocTreeNode
   /// <summary>
   ///   The <see cref="IBusinessObjectWithIdentity"/> of this <see cref="BusinessObjectTreeNode"/>.
   /// </summary>
-  public IBusinessObjectWithIdentity BusinessObject
+  public IBusinessObjectWithIdentity? BusinessObject
   {
     get 
     {
@@ -91,7 +91,7 @@ public class BusinessObjectTreeNode: BocTreeNode
   ///   The <see cref="IBusinessObjectReferenceProperty"/> that was used to access the 
   ///   <see cref="IBusinessObjectWithIdentity"/> of this <see cref="BusinessObjectTreeNode"/>.
   /// </summary>
-  public IBusinessObjectReferenceProperty Property
+  public IBusinessObjectReferenceProperty? Property
   {
     get 
     {
@@ -137,7 +137,7 @@ public class BusinessObjectTreeNode: BocTreeNode
 
       for (int i = 0; i < BocTreeView.Value.Count; i++)
       {
-        IBusinessObjectWithIdentity businessObject = (IBusinessObjectWithIdentity) BocTreeView.Value[i];
+        IBusinessObjectWithIdentity? businessObject = (IBusinessObjectWithIdentity?) BocTreeView.Value[i];
         if (ItemID == businessObject.UniqueIdentifier)
         {
           BusinessObject = businessObject;
@@ -163,7 +163,7 @@ public class BusinessObjectTreeNode: BocTreeNode
     }
     else
     {
-      IBusinessObjectReferenceProperty property = Property;
+      IBusinessObjectReferenceProperty? property = Property;
       string businessObjectID = ItemID;
       BusinessObject = ((IBusinessObjectClassWithIdentity) property.ReferenceClass).GetObject (businessObjectID);
     }
@@ -174,14 +174,14 @@ public class BusinessObjectTreeNode: BocTreeNode
     if (_property != null)
       return;
 
-    BusinessObjectTreeNode businessObjectParentNode = ParentNode as BusinessObjectTreeNode;
-    BusinessObjectPropertyTreeNode propertyParentNode = ParentNode as BusinessObjectPropertyTreeNode;
+    BusinessObjectTreeNode? businessObjectParentNode = ParentNode as BusinessObjectTreeNode;
+    BusinessObjectPropertyTreeNode? propertyParentNode = ParentNode as BusinessObjectPropertyTreeNode;
     
     if (businessObjectParentNode != null)
     {
-      IBusinessObjectProperty property = 
+      IBusinessObjectProperty? property = 
           businessObjectParentNode.BusinessObject.BusinessObjectClass.GetPropertyDefinition (_propertyIdentifier);
-      Property = (IBusinessObjectReferenceProperty) property;
+      Property = (IBusinessObjectReferenceProperty?) property;
 
       if (_property == null) // This test could be omitted if graceful recovery is wanted.
         throw new InvalidOperationException ("Could not find IBusinessObjectReferenceProperty '" + _propertyIdentifier + "'.");
@@ -196,14 +196,14 @@ public class BusinessObjectTreeNode: BocTreeNode
 
 public class BusinessObjectPropertyTreeNode: BocTreeNode
 {
-  IBusinessObjectReferenceProperty _property;
+  IBusinessObjectReferenceProperty? _property;
 
   public BusinessObjectPropertyTreeNode (
       string itemID, 
       string text, 
       string toolTip,
-      IconInfo icon, 
-      IBusinessObjectReferenceProperty property)
+      IconInfo? icon, 
+      IBusinessObjectReferenceProperty? property)
     : base (itemID, text, toolTip, icon)
   {
     Property = property;
@@ -220,7 +220,7 @@ public class BusinessObjectPropertyTreeNode: BocTreeNode
   /// <summary>
   ///   The <see cref="IBusinessObjectReferenceProperty"/> of this <see cref="BusinessObjectPropertyTreeNode"/>.
   /// </summary>
-  public IBusinessObjectReferenceProperty Property
+  public IBusinessObjectReferenceProperty? Property
   {
     get 
     {
@@ -244,12 +244,12 @@ public class BusinessObjectPropertyTreeNode: BocTreeNode
     if (_property != null)
       return;
 
-    BusinessObjectTreeNode parentNode = (BusinessObjectTreeNode) ParentNode;
+    BusinessObjectTreeNode? parentNode = (BusinessObjectTreeNode?) ParentNode;
     if (parentNode == null)
       throw new InvalidOperationException ("BusinessObjectPropertyTreeNode with ItemID '" + ItemID + "' has no parent node but property nodes cannot be used as root nodes.");
 
-    IBusinessObjectProperty property = parentNode.BusinessObject.BusinessObjectClass.GetPropertyDefinition (ItemID);
-    Property = (IBusinessObjectReferenceProperty) property;
+    IBusinessObjectProperty? property = parentNode.BusinessObject.BusinessObjectClass.GetPropertyDefinition (ItemID);
+    Property = (IBusinessObjectReferenceProperty?) property;
   }
 }
 

@@ -186,7 +186,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   <see cref="Controls.RowMenuDisplay.Automatic"/>.
     /// </summary>
     /// <returns> A <see cref="BocDropDownMenuColumnDefinition"/> instance or <see langword="null"/>. </returns>
-    private BocDropDownMenuColumnDefinition GetRowMenuColumn ()
+    private BocDropDownMenuColumnDefinition? GetRowMenuColumn ()
     {
       if (_rowMenuDisplay == RowMenuDisplay.Automatic)
       {

@@ -49,7 +49,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected abstract IBocColumnRenderer GetRendererInternal (IServiceLocator locator);
     
 
-    public override string ToString ()
+    public override string? ToString ()
     {
       string displayName = ItemID;
       if (string.IsNullOrEmpty (displayName))
@@ -156,7 +156,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       
       base.LoadResources (resourceManager, globalizationService);
 
-      string key = ResourceManagerUtility.GetGlobalResourceKey (ColumnTitle);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey (ColumnTitle);
       if (!string.IsNullOrEmpty (key))
         ColumnTitle = resourceManager.GetString (key);
     }

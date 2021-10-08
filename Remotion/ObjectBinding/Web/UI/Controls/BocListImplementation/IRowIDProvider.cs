@@ -26,8 +26,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
   public interface IRowIDProvider
   {
     string GetControlRowID (BocListRow row);
-    string GetItemRowID (BocListRow row);
-    BocListRow GetRowFromItemRowID (IReadOnlyList<IBusinessObject> rows, string rowID);
+    string GetItemRowID (BocListRow? row);
+    BocListRow? GetRowFromItemRowID (IReadOnlyList<IBusinessObject> rows, string rowID);
     void AddRow (BocListRow row);
     void RemoveRow (BocListRow row);
   }

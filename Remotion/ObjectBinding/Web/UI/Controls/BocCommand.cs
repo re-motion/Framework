@@ -105,7 +105,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     [Browsable (false)]
-    public new BocCommandClickEventHandler Click;
+    public new BocCommandClickEventHandler? Click;
 
     private bool _hasClickFired;
     private BocHrefCommandInfo _hrefCommand;
@@ -123,8 +123,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public BocCommand (
         CommandType defaultType,
-        [CanBeNull] IWebSecurityAdapter webSecurityAdapter,
-        [CanBeNull] IWxeSecurityAdapter wxeSecurityAdapter)
+        [CanBeNull] IWebSecurityAdapter? webSecurityAdapter,
+        [CanBeNull] IWxeSecurityAdapter? wxeSecurityAdapter)
         : base (defaultType, webSecurityAdapter, wxeSecurityAdapter)
     {
       _hrefCommand = new BocHrefCommandInfo();
@@ -132,7 +132,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Fires the <see cref="Click"/> event. </summary>
-    public virtual void OnClick (IBusinessObject businessObject)
+    public virtual void OnClick (IBusinessObject? businessObject)
     {
       base.OnClick();
       if (_hasClickFired)
@@ -180,7 +180,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <param name="businessObject">
     ///   The <see cref="IBusinessObject"/> in the row where the command was clicked.
     /// </param>
-    public void ExecuteWxeFunction (IWxePage wxePage, IBusinessObject businessObject)
+    public void ExecuteWxeFunction (IWxePage wxePage, IBusinessObject? businessObject)
     {
       ArgumentUtility.CheckNotNull ("wxePage", wxePage);
       if (! wxePage.IsReturningPostBack)
@@ -190,7 +190,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
-    private NameObjectCollection PrepareWxeFunctionParameters (IBusinessObject businessObject)
+    private NameObjectCollection PrepareWxeFunctionParameters (IBusinessObject? businessObject)
     {
       NameObjectCollection parameters = new NameObjectCollection();
 
@@ -231,16 +231,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Gets or sets the <see cref="IBusinessObjectBoundWebControl"/> to which this object belongs. </summary>
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     [Browsable (false)]
-    public new IBusinessObjectBoundWebControl OwnerControl
+    public new IBusinessObjectBoundWebControl? OwnerControl
     {
-      get { return (IBusinessObjectBoundWebControl) base.OwnerControlImplementation; }
+      get { return (IBusinessObjectBoundWebControl?) base.OwnerControlImplementation; }
       set { base.OwnerControlImplementation = value; }
     }
 
-    protected override IControl OwnerControlImplementation
+    protected override IControl? OwnerControlImplementation
     {
       get { return OwnerControl; }
-      set { OwnerControl = (IBusinessObjectBoundWebControl) value; }
+      set { OwnerControl = (IBusinessObjectBoundWebControl?) value; }
     }
   }
 
@@ -253,9 +253,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   /// <summary> Provides data for the <see cref="BocCommand.Click"/> event. </summary>
   public class BocCommandClickEventArgs : CommandClickEventArgs
   {
-    private readonly IBusinessObject _businessObject;
+    private readonly IBusinessObject? _businessObject;
 
-    public BocCommandClickEventArgs (BocCommand command, IBusinessObject businessObject)
+    public BocCommandClickEventArgs (BocCommand command, IBusinessObject? businessObject)
         : base (command)
     {
       _businessObject = businessObject;
@@ -270,7 +270,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary>
     ///   The <see cref="IBusinessObject"/> on which the rendered command is applied on.
     /// </summary>
-    public IBusinessObject BusinessObject
+    public IBusinessObject? BusinessObject
     {
       get { return _businessObject; }
     }

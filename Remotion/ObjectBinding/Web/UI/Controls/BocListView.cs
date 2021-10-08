@@ -25,7 +25,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 [ParseChildren (true, "ColumnDefinitionCollection")]
 public class BocListView: BusinessObjectControlItem
 {
-  private string _itemID;
+  private string? _itemID;
   private object _title;
   /// <summary> 
   ///   The <see cref="BocColumnDefinition"/> objects stored in the <see cref="BocListView"/>. 
@@ -64,9 +64,9 @@ public class BocListView: BusinessObjectControlItem
     _columnDefinitions.OwnerControl = OwnerControl;
   }
 
-  public override string ToString()
+  public override string? ToString()
   {
-    string displayName = ItemID;
+    string? displayName = ItemID;
     if (string.IsNullOrEmpty (displayName))
       displayName = Title;
     if (string.IsNullOrEmpty (displayName))
@@ -84,7 +84,7 @@ public class BocListView: BusinessObjectControlItem
   [NotifyParentProperty (true)]
   [Browsable (true)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Visible)]
-  public override string ItemID
+  public override string? ItemID
   {
     get { return _itemID; }
     set { _itemID = value; }
@@ -96,7 +96,7 @@ public class BocListView: BusinessObjectControlItem
   [Category ("Appearance")]
   [DefaultValue("")]
   [NotifyParentProperty (true)]
-  public string Title
+  public string? Title
   {
     get { return (_title != null) ? _title.ToString() : string.Empty; }
     set { _title = value; }
@@ -110,7 +110,7 @@ public class BocListView: BusinessObjectControlItem
   /// </value>
   [PersistenceMode (PersistenceMode.InnerDefaultProperty)]
   [Category ("Data")]
-  [DefaultValue((string) null)]
+  [DefaultValue((string?) null)]
   [NotifyParentProperty (true)]
   public BocColumnDefinitionCollection ColumnDefinitions
   {

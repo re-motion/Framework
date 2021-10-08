@@ -118,7 +118,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Description ("The string representation of the Property Path. Must not be emtpy.")]
     //  No default value
     [NotifyParentProperty (true)]
-    public string PropertyPathIdentifier
+    public string? PropertyPathIdentifier
     {
       get { return _propertyPathBinding.PropertyPathIdentifier; }
       set { _propertyPathBinding.PropertyPathIdentifier = value; }
@@ -128,12 +128,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Returns an instance the class specified by the <see cref="EditModeControlType"/> property, which will then be used for editing this 
     ///   column during edit mode.
     /// </summary>
-    public IBusinessObjectBoundEditableWebControl CreateEditModeControl ()
+    public IBusinessObjectBoundEditableWebControl? CreateEditModeControl ()
     {
       if (string.IsNullOrEmpty (_editModeControlType))
         return null;
 
-      Type type = WebTypeUtility.GetType (_editModeControlType, true);
+      Type? type = WebTypeUtility.GetType (_editModeControlType, true);
       return (IBusinessObjectBoundEditableWebControl) ObjectFactory.Create (type, ParamList.Empty);
     }
 
@@ -232,7 +232,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return GetPropertyPath().CreateComparer();
     }
 
-    IBusinessObjectClass IBusinessObjectClassSource.BusinessObjectClass
+    IBusinessObjectClass? IBusinessObjectClassSource.BusinessObjectClass
     {
       get { return _propertyPathBinding.BusinessObjectClass; }
     }

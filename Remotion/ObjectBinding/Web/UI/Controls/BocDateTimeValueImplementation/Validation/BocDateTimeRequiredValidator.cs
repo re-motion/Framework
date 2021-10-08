@@ -31,10 +31,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
       MissingTime,
     }
 
-    private string _missingDateOrTimeErrorMessage;
-    private string _missingDateAndTimeErrorMessage;
-    private string _missingDateErrorMessage;
-    private string _missingTimeErrorMessage;
+    private string? _missingDateOrTimeErrorMessage;
+    private string? _missingDateAndTimeErrorMessage;
+    private string? _missingDateErrorMessage;
+    private string? _missingTimeErrorMessage;
 
     private ValidationError _error;
 
@@ -42,7 +42,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
     {
       Control control = NamingContainer.FindControl (ControlToValidate);
 
-      BocDateTimeValue dateTimeValueControl = control as BocDateTimeValue;
+      BocDateTimeValue? dateTimeValueControl = control as BocDateTimeValue;
 
       if (dateTimeValueControl == null)
         throw new InvalidOperationException ("BocDateTimeValueValidatorBase may only be applied to controls of type BocDateTimeValue");
@@ -152,7 +152,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
     /// <summary>
     ///   Message returned by <see cref="BaseValidator.ErrorMessage"/> if the date value is Missing.
     /// </summary>
-    public string MissingDateErrorMessage
+    public string? MissingDateErrorMessage
     {
       get { return _missingDateErrorMessage; }
       set
@@ -166,7 +166,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
     /// <summary>
     ///   Message returned by <see cref="BaseValidator.ErrorMessage"/> if the time value is Missing.
     /// </summary>
-    public string MissingTimeErrorMessage
+    public string? MissingTimeErrorMessage
     {
       get { return _missingTimeErrorMessage; }
       set
@@ -180,7 +180,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
     /// <summary>
     ///   Message returned by <see cref="BaseValidator.ErrorMessage"/> if the date and time values are Missing.
     /// </summary>
-    public string MissingDateAndTimeErrorMessage
+    public string? MissingDateAndTimeErrorMessage
     {
       get { return _missingDateAndTimeErrorMessage; }
       set
@@ -194,7 +194,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
     /// <summary>
     ///   Message returned by <see cref="BaseValidator.ErrorMessage"/> if the date or time values are Missing.
     /// </summary>
-    public string MissingDateOrTimeErrorMessage
+    public string? MissingDateOrTimeErrorMessage
     {
       get { return _missingDateOrTimeErrorMessage; }
       set

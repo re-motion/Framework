@@ -114,7 +114,7 @@ public class BocListDataRowRenderEventArgs: BocListItemEventArgs
 {
   private bool _isEditableRow;
   private readonly bool _isOddRow;
-  private string _additionalCssClassForDataRow;
+  private string? _additionalCssClassForDataRow;
 
   public BocListDataRowRenderEventArgs (int listIndex, IBusinessObject businessObject, bool isEditableRow, bool isOddRow)
     : base (listIndex, businessObject)
@@ -133,7 +133,7 @@ public class BocListDataRowRenderEventArgs: BocListItemEventArgs
     get { return _isOddRow; }
   }
 
-  public string AdditionalCssClassForDataRow
+  public string? AdditionalCssClassForDataRow
   {
     get { return _additionalCssClassForDataRow; }
   }

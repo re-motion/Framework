@@ -24,13 +24,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 {
   public interface IEditModeHost
   {
-    IReadOnlyList<IBusinessObject> Value { get; }
+    IReadOnlyList<IBusinessObject>? Value { get; }
     string ID { get; }
     bool IsReadOnly { get; }
     bool IsDirty { get; set; }
     EditableRowDataSourceFactory EditModeDataSourceFactory { get; }
     EditableRowControlFactory EditModeControlFactory { get; }
-    string ErrorMessage { get; }
+    string? ErrorMessage { get; }
     bool DisableEditModeValidationMessages { get; }
     bool ShowEditModeValidationMarkers { get; }
     bool ShowEditModeRequiredMarkers { get; }

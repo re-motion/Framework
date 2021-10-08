@@ -64,9 +64,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private static readonly Type[] s_supportedPropertyInterfaces = new[] { typeof (IBusinessObjectStringProperty) };
 
-    private string[] _text = null;
-    private string _errorMessage;
-    private ReadOnlyCollection<BaseValidator> _validators;
+    private string[]? _text = null;
+    private string? _errorMessage;
+    private ReadOnlyCollection<BaseValidator>? _validators;
 
     // construction and disposing
 
@@ -98,10 +98,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (DataSource == null)
         return;
 
-      string[] value = null;
+      string[]? value = null;
 
       if (DataSource.BusinessObject != null)
-        value = (string[]) DataSource.BusinessObject.GetProperty (Property);
+        value = (string[]?) DataSource.BusinessObject.GetProperty (Property);
 
       LoadValueInternal (value, false);
     }
@@ -116,7 +116,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Performs the actual loading for <see cref="LoadValue"/> and <see cref="LoadUnboundValue"/>. </summary>
-    protected virtual void LoadValueInternal (string[] value, bool interim)
+    protected virtual void LoadValueInternal (string[]? value, bool interim)
     {
       if (interim)
         return;
@@ -176,9 +176,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <value> An <see cref="IBusinessObjectStringProperty"/> object. </value>
     [Browsable (false)]
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    public new IBusinessObjectStringProperty Property
+    public new IBusinessObjectStringProperty? Property
     {
-      get { return (IBusinessObjectStringProperty) base.Property; }
+      get { return (IBusinessObjectStringProperty?) base.Property; }
       set { base.Property = value; }
     }
 
@@ -226,7 +226,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Description ("Validation message displayed if there is an error.")]
     [Category ("Validator")]
     [DefaultValue ("")]
-    public string ErrorMessage
+    public string? ErrorMessage
     {
       get { return _errorMessage; }
       set
@@ -242,7 +242,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// Gets the value from the backing field.
     /// </summary>
     /// <remarks>Override this member to modify the storage of the value. </remarks>
-    protected virtual string[] GetValue ()
+    protected virtual string[]? GetValue ()
     {
       if (_text == null)
         return null;
@@ -271,7 +271,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <para>Setting the value via this method does not affect the control's dirty state.</para>
     /// <para>Override this member to modify the storage of the value.</para>
     /// </remarks>
-    protected virtual void SetValue (string[] value)
+    protected virtual void SetValue (string[]? value)
     {
       _text = value;
     }
@@ -331,7 +331,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       base.LoadResources (resourceManager, globalizationService);
 
       //  Dispatch simple properties
-      string key = ResourceManagerUtility.GetGlobalResourceKey (ErrorMessage);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey (ErrorMessage);
       if (! string.IsNullOrEmpty (key))
         ErrorMessage = resourceManager.GetString (key);
     }

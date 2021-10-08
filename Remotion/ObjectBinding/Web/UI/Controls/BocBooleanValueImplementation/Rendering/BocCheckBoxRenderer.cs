@@ -94,7 +94,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       var labelControl = new Label { ID = renderingContext.Control.ClientID + "_Description", ClientIDMode = ClientIDMode.Static };
       var checkBoxVisualizerControl = new HtmlGenericControl { ID = null, TagName = "span" };
 
-      string description = GetDescription (renderingContext);
+      string? description = GetDescription (renderingContext);
       var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
 
       if (renderingContext.Control.IsReadOnly)
@@ -227,7 +227,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock (renderingContext.Control, typeof (BocCheckBoxRenderer), s_startUpScriptKey, startupScript);
     }
 
-    private void PrepareImage (BocCheckBoxRenderingContext renderingContext, Image imageControl, string description)
+    private void PrepareImage (BocCheckBoxRenderingContext renderingContext, Image imageControl, string? description)
     {
       var imageUrl = ResourceUrlFactory.CreateThemedResourceUrl (
           typeof (HtmlHeadAppenderExtensions),
@@ -239,7 +239,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       imageControl.GenerateEmptyAlternateText = true;
     }
 
-    private void PrepareLabel (BocCheckBoxRenderingContext renderingContext, string description, Label labelControl)
+    private void PrepareLabel (BocCheckBoxRenderingContext renderingContext, string? description, Label labelControl)
     {
       labelControl.CssClass = "description";
       labelControl.Text = description;
@@ -248,10 +248,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       labelControl.ApplyStyle (renderingContext.Control.LabelStyle);
     }
 
-    private string GetDescription (BocCheckBoxRenderingContext renderingContext)
+    private string? GetDescription (BocCheckBoxRenderingContext renderingContext)
     {
-      string trueDescription = null;
-      string falseDescription = null;
+      string? trueDescription = null;
+      string? falseDescription = null;
       if (renderingContext.Control.IsDescriptionEnabled)
       {
         string defaultTrueDescription = renderingContext.Control.DefaultTrueDescription;

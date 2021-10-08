@@ -79,6 +79,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
     ]
     [Category ("Style")]
     [DefaultValue ("")]
-    string Format { get; set; }
+    string? Format { get; set; }
   }
 }

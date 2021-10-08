@@ -55,7 +55,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
       yield return CreateTypeIsStringValidator (control, resourceManager);
     }
 
-    private RequiredFieldValidator CreateRequiredFieldValidator (IBocMultilineTextValue control, IResourceManager resourceManager)
+    private RequiredFieldValidator? CreateRequiredFieldValidator (IBocMultilineTextValue control, IResourceManager resourceManager)
     {
       var areOptionalValidatorsEnabled = control.AreOptionalValidatorsEnabled;
       var isPropertyTypeRequired = !areOptionalValidatorsEnabled && control.DataSource?.BusinessObject != null && control.Property?.IsNullable == false;
@@ -77,7 +77,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
       }
     }
 
-    private LengthValidator CreateLengthValidator (IBocMultilineTextValue control, IResourceManager resourceManager)
+    private LengthValidator? CreateLengthValidator (IBocMultilineTextValue control, IResourceManager resourceManager)
     {
       var maxLength = control.TextBoxStyle.MaxLength;
       var hasControlMaxLength = control.AreOptionalValidatorsEnabled && maxLength.HasValue;

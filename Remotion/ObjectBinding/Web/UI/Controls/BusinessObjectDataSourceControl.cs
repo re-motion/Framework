@@ -145,7 +145,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </remarks>
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     [Browsable (false)]
-    public virtual IBusinessObject BusinessObject
+    public virtual IBusinessObject? BusinessObject
     {
       get { return InnerDataSource.BusinessObject; }
       set { InnerDataSource.BusinessObject = value; }
@@ -166,7 +166,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </remarks>
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     [Browsable (false)]
-    public virtual IBusinessObjectClass BusinessObjectClass
+    public virtual IBusinessObjectClass? BusinessObjectClass
     {
       get { return InnerDataSource.BusinessObjectClass; }
     }
@@ -180,7 +180,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </remarks>
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     [Browsable (false)]
-    public virtual IBusinessObjectProvider BusinessObjectProvider
+    public virtual IBusinessObjectProvider? BusinessObjectProvider
     {
       get { return InnerDataSource.BusinessObjectProvider; }
     }

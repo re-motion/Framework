@@ -36,6 +36,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
         int columnIndex,
         string columnTitleID);
 
-    IBusinessObjectBoundEditableWebControl GetEditControl (int index);
+    IBusinessObjectBoundEditableWebControl? GetEditControl (int index);
   }
 }

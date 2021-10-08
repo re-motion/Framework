@@ -36,12 +36,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
       throw new NotSupportedException ("The operation is not supported because the value is not set.");
     }
 
-    public string GetItemRowID (BocListRow row)
+    public string GetItemRowID (BocListRow? row)
     {
       throw new NotSupportedException ("The operation is not supported because the value is not set.");
     }
 
-    public BocListRow GetRowFromItemRowID (IReadOnlyList<IBusinessObject> rows, string rowID)
+    public BocListRow? GetRowFromItemRowID (IReadOnlyList<IBusinessObject> rows, string rowID)
     {
       throw new NotSupportedException ("The operation is not supported because the value is not set.");
     }

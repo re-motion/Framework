@@ -99,7 +99,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       
       base.LoadResources (resourceManager, globalizationService);
 
-      string key = ResourceManagerUtility.GetGlobalResourceKey (MenuTitleText);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey (MenuTitleText);
       if (!string.IsNullOrEmpty (key))
         MenuTitleText = resourceManager.GetString (key);
 

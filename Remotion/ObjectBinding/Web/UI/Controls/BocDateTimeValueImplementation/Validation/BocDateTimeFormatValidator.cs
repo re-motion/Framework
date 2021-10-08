@@ -33,9 +33,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
     }
 
 
-    private string _invalidDateAndTimeErrorMessage;
-    private string _invalidDateErrorMessage;
-    private string _invalidTimeErrorMessage;
+    private string? _invalidDateAndTimeErrorMessage;
+    private string? _invalidDateErrorMessage;
+    private string? _invalidTimeErrorMessage;
 
     private ValidationError _error;
 
@@ -43,7 +43,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
     {
       Control control = NamingContainer.FindControl (ControlToValidate);
 
-      BocDateTimeValue dateTimeValueControl = control as BocDateTimeValue;
+      BocDateTimeValue? dateTimeValueControl = control as BocDateTimeValue;
 
       if (dateTimeValueControl == null)
         throw new InvalidOperationException ("BocDateTimeValueValidatorBase may only be applied to controls of type BocDateTimeValue");
@@ -78,7 +78,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
       if (!isValidDateRequired)
         return true;
 
-      string dateValue = control.DateString;
+      string? dateValue = control.DateString;
 
       if (string.IsNullOrWhiteSpace (dateValue))
         return true;
@@ -119,7 +119,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
       if (!isValidTimeRequired)
         return true;
 
-      string timeValue = control.TimeString;
+      string? timeValue = control.TimeString;
 
       if (string.IsNullOrWhiteSpace (timeValue))
         return true;
@@ -167,7 +167,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
     /// <summary>
     ///   Message returned by <see cref="BaseValidator.ErrorMessage"/> if the date value is invalid.
     /// </summary>
-    public string InvalidDateErrorMessage
+    public string? InvalidDateErrorMessage
     {
       get { return _invalidDateErrorMessage; }
       set
@@ -181,7 +181,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
     /// <summary>
     ///   Message returned by <see cref="BaseValidator.ErrorMessage"/> if the time value is invalid.
     /// </summary>
-    public string InvalidTimeErrorMessage
+    public string? InvalidTimeErrorMessage
     {
       get { return _invalidTimeErrorMessage; }
       set
@@ -195,7 +195,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
     /// <summary>
     ///   Message returned by <see cref="BaseValidator.ErrorMessage"/> if the date and time values are invalid.
     /// </summary>
-    public string InvalidDateAndTimeErrorMessage
+    public string? InvalidDateAndTimeErrorMessage
     {
       get { return _invalidDateAndTimeErrorMessage; }
       set

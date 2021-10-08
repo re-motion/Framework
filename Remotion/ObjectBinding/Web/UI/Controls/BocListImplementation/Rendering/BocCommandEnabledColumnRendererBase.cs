@@ -46,7 +46,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
       ArgumentUtility.CheckNotNull ("businessObject", businessObject);
 
-      IconInfo icon = BusinessObjectBoundWebControl.GetIcon (businessObject, businessObject.BusinessObjectClass.BusinessObjectProvider);
+      IconInfo? icon = BusinessObjectBoundWebControl.GetIcon (businessObject, businessObject.BusinessObjectClass.BusinessObjectProvider);
 
       if (icon != null)
       {
@@ -63,7 +63,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
       ArgumentUtility.CheckNotNull ("businessObject", businessObject);
 
-      BocListItemCommand command = renderingContext.ColumnDefinition.Command;
+      BocListItemCommand? command = renderingContext.ColumnDefinition.Command;
       if (command == null)
         return false;
 
@@ -81,8 +81,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       bool isCommandWaiCompliant = (!WcagHelper.Instance.IsWaiConformanceLevelARequired() || command.Type == CommandType.Href);
       if (isActive && isCommandAllowed && isCommandEnabled && isCommandWaiCompliant)
       {
-        string objectID = null;
-        IBusinessObjectWithIdentity businessObjectWithIdentity = businessObject as IBusinessObjectWithIdentity;
+        string? objectID = null;
+        IBusinessObjectWithIdentity? businessObjectWithIdentity = businessObject as IBusinessObjectWithIdentity;
         if (businessObjectWithIdentity != null)
           objectID = businessObjectWithIdentity.UniqueIdentifier;
 

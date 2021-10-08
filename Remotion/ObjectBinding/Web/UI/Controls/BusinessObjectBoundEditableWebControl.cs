@@ -39,7 +39,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private bool? _required;
     private bool? _readOnly;
     private bool? _enableOptionalValidators;
-    private HashSet<BaseValidator> _validators;
+    private HashSet<BaseValidator>? _validators;
     private bool _isDirty;
     private bool _hasBeenRenderedInPreviousLifecycle;
     private bool _isRenderedInCurrentLifecycle;
@@ -385,7 +385,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       get
       {
-        IWxePage wxePage = Page as IWxePage;
+        IWxePage? wxePage = Page as IWxePage;
         if (wxePage != null)
           return _hasBeenRenderedInPreviousLifecycle || wxePage.IsOutOfSequencePostBack;
 

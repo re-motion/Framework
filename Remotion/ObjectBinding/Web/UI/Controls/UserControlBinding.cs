@@ -34,9 +34,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   public class UserControlBinding : BusinessObjectBoundEditableWebControl, IControlWithResourceManager
   {
     private string _userControlPath = string.Empty;
-    private IDataEditControl _userControl;
-    private BusinessObjectReferenceDataSourceControl _referenceDataSource;
-    private ReadOnlyCollection<BaseValidator> _validators;
+    private IDataEditControl? _userControl;
+    private BusinessObjectReferenceDataSourceControl? _referenceDataSource;
+    private ReadOnlyCollection<BaseValidator>? _validators;
 
     public string UserControlPath
     {
@@ -46,7 +46,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     [Browsable (false)]
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    public IDataEditControl UserControl
+    public IDataEditControl? UserControl
     {
       get { return _userControl; }
     }
@@ -107,7 +107,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return _referenceDataSource.SaveValue (interim);
     }
 
-    protected override sealed object ValueImplementation
+    protected override sealed object? ValueImplementation
     {
       get
       {

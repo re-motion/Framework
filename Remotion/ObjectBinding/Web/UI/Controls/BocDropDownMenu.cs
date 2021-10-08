@@ -49,11 +49,11 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   // member fields
 
   private DropDownMenu _dropDownMenu;
-  private IBusinessObject _value;
+  private IBusinessObject? _value;
   private bool _enableIcon = true;
-  private string[] _hiddenMenuItems;
-  private string _controlServicePath;
-  private string _controlServiceArguments;
+  private string[]? _hiddenMenuItems;
+  private string? _controlServicePath;
+  private string? _controlServiceArguments;
 
   // contruction and destruction
 
@@ -140,7 +140,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
         continue;
 
       bool isSuffix = itemID.IndexOf (".") == -1;
-      string itemIDSuffix = null;
+      string? itemIDSuffix = null;
       if (isSuffix)
         itemIDSuffix = "." + itemID;
 
@@ -202,7 +202,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
     }
   }
 
-  protected virtual string GetTitleText (IBusinessObject businessObject)
+  protected virtual string? GetTitleText (IBusinessObject businessObject)
   {
     ArgumentUtility.CheckNotNull ("businessObject", businessObject);
     
@@ -254,11 +254,11 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
     if (DataSource == null)
       return;
 
-    IBusinessObject value = null;
+    IBusinessObject? value = null;
     if (Property == null)
       value = DataSource.BusinessObject;
     else if (DataSource.BusinessObject != null)
-      value = (IBusinessObject) DataSource.BusinessObject.GetProperty (Property);
+      value = (IBusinessObject?) DataSource.BusinessObject.GetProperty (Property);
 
     LoadValueInternal (value, interim);
   }
@@ -274,7 +274,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   }
 
   /// <summary> Performs the actual loading for <see cref="LoadValue"/> and <see cref="LoadUnboundValue"/>. </summary>
-  protected virtual void LoadValueInternal (IBusinessObject value, bool interim)
+  protected virtual void LoadValueInternal (IBusinessObject? value, bool interim)
   {
     Value = value;
   }
@@ -282,7 +282,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   /// <summary> Gets or sets the current value. </summary>
   /// <value> An object implementing <see cref="IBusinessObject"/>. </value>
   [Browsable (false)]
-  public new IBusinessObject Value
+  public new IBusinessObject? Value
   {
     get { return _value; }
     set { _value = value; }
@@ -290,10 +290,10 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
 
   /// <summary> Gets or sets the current value when <see cref="Value"/> through polymorphism. </summary>
   /// <value> The value must be of type <see cref="IList"/> or <see cref="IBusinessObject"/>. </value>
-  protected override sealed object ValueImplementation
+  protected override sealed object? ValueImplementation
   {
     get { return Value; }
-    set { Value = (IBusinessObject) value; }
+    set { Value = (IBusinessObject?) value; }
   }
 
   /// <summary>Gets a flag indicating whether the <see cref="BocDropDownMenu"/> contains a value. </summary>
@@ -314,10 +314,10 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   /// </value>
   [Browsable (false)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  public new IBusinessObjectReferenceProperty Property
+  public new IBusinessObjectReferenceProperty? Property
   {
-    get { return (IBusinessObjectReferenceProperty) base.Property; }
-    set { base.Property = (IBusinessObjectReferenceProperty) value; }
+    get { return (IBusinessObjectReferenceProperty?) base.Property; }
+    set { base.Property = (IBusinessObjectReferenceProperty?) value; }
   }
 
   /// <summary> The <see cref="BocDropDownMenu"/> supports only scalar properties. </summary>
@@ -360,7 +360,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   [ListBindable (false)]
   [Category ("Menu")]
   [Description ("The menu items displayed by the menu.")]
-  [DefaultValue ((string) null)]
+  [DefaultValue ((string?) null)]
   public WebMenuItemCollection MenuItems
   {
     get { return _dropDownMenu.MenuItems; }
@@ -375,7 +375,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
 
   [Category ("Behavior")]
   [DefaultValue ("")]
-  public string ControlServicePath
+  public string? ControlServicePath
   {
     get { return _controlServicePath; }
     set { _controlServicePath = value ?? string.Empty; }
@@ -384,7 +384,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   [Category ("Behavior")]
   [DefaultValue ("")]
   [Description ("Additional arguments passed to the control service.")]
-  public string ControlServiceArguments
+  public string? ControlServiceArguments
   {
     get { return _controlServiceArguments; }
     set { _controlServiceArguments = StringUtility.EmptyToNull (value); }
@@ -409,7 +409,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   /// <remarks> Only called for commands of type <see cref="CommandType.Event"/>. </remarks>
   protected virtual void OnMenuItemEventCommandClick (WebMenuItem menuItem)
   {
-    WebMenuItemClickEventHandler menuItemClickHandler = (WebMenuItemClickEventHandler) Events[s_menuItemClickEvent];
+    WebMenuItemClickEventHandler? menuItemClickHandler = (WebMenuItemClickEventHandler?) Events[s_menuItemClickEvent];
     if (menuItem != null && menuItem.Command != null)
     {
       if (menuItem is BocMenuItem)
@@ -508,7 +508,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   /// <value> The <see cref="WebMenuItem.ItemID"/> values of the menu items to hide. </value>
   [Category ("Menu")]
   [Description ("The list of menu items to be hidden, identified by their ItemIDs.")]
-  [DefaultValue ((string) null)]
+  [DefaultValue ((string?) null)]
   [PersistenceMode (PersistenceMode.Attribute)]
   public string[] HiddenMenuItems
   {

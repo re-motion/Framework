@@ -268,7 +268,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.RenderEndTag();
     }
 
-    private IResourceUrl GetImageUrl (SortingDirection sortingDirection)
+    private IResourceUrl? GetImageUrl (SortingDirection sortingDirection)
     {
       //  Button Asc -> Button Desc -> No Button
       switch (sortingDirection)

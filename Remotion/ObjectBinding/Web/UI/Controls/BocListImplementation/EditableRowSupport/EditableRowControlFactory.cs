@@ -34,13 +34,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     {
     }
 
-    public virtual IBusinessObjectBoundEditableWebControl Create (BocSimpleColumnDefinition column, int columnIndex)
+    public virtual IBusinessObjectBoundEditableWebControl? Create (BocSimpleColumnDefinition column, int columnIndex)
     {
       ArgumentUtility.CheckNotNull ("column", column);
       if (columnIndex < 0)
         throw new ArgumentOutOfRangeException ("columnIndex");
 
-      IBusinessObjectBoundEditableWebControl control = column.CreateEditModeControl();
+      IBusinessObjectBoundEditableWebControl? control = column.CreateEditModeControl();
 
       if (control == null)
         control = CreateFromPropertyPath (column.GetPropertyPath());
@@ -48,11 +48,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       return control;
     }
 
-    protected virtual IBusinessObjectBoundEditableWebControl CreateFromPropertyPath (IBusinessObjectPropertyPath propertyPath)
+    protected virtual IBusinessObjectBoundEditableWebControl? CreateFromPropertyPath (IBusinessObjectPropertyPath propertyPath)
     {
       ArgumentUtility.CheckNotNull ("propertyPath", propertyPath);
 
-      return (IBusinessObjectBoundEditableWebControl) ControlFactory.CreateControl (propertyPath.Properties.Last(), ControlFactory.EditMode.InlineEdit);
+      return (IBusinessObjectBoundEditableWebControl?) ControlFactory.CreateControl (propertyPath.Properties.Last(), ControlFactory.EditMode.InlineEdit);
     }
 
     public virtual void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)

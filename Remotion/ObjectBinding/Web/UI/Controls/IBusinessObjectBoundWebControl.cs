@@ -45,13 +45,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <remarks>
     ///   The value of this property is used to find the <see cref="IBusinessObjectDataSourceControl"/> in the controls collection.
     /// </remarks>
-    string DataSourceControl { get; set; }
+    string? DataSourceControl { get; set; }
 
     /// <summary>
     ///   Gets the interfaces derived from <see cref="IBusinessObjectProperty"/> supported by this control, or <see langword="null"/> if no 
     ///   restrictions are made.
     /// </summary>
-    Type[] SupportedPropertyInterfaces { get; }
+    Type[]? SupportedPropertyInterfaces { get; }
 
     /// <summary> Indicates whether properties with the specified multiplicity are supported. </summary>
     /// <param name="isList"> <see langword="true"/> if the property is a list property. </param>

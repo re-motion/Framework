@@ -79,9 +79,9 @@ namespace Remotion.ObjectBinding.Web.Services
     /// </remarks>
     BusinessObjectWithIdentityProxy SearchExact (
         string searchString,
-        string businessObjectClass,
-        string businessObjectProperty,
-        string businessObject,
-        string args);
+        string? businessObjectClass,
+        string? businessObjectProperty,
+        string? businessObject,
+        string? args);
   }
 }

@@ -118,8 +118,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
 
-    public new BocListItemCommandClickEventHandler Click;
-    private IBocListItemCommandState _commandState;
+    public new BocListItemCommandClickEventHandler? Click;
+    private IBocListItemCommandState? _commandState;
     private string _commandStateType = string.Empty;
     private ListItemHrefCommandInfo _hrefCommand;
     private ListItemWxeFunctionCommandInfo _wxeFunctionCommand;
@@ -136,8 +136,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public BocListItemCommand (
         CommandType defaultType,
-        [CanBeNull] IWebSecurityAdapter webSecurityAdapter,
-        [CanBeNull] IWxeSecurityAdapter wxeSecurityAdapter)
+        [CanBeNull] IWebSecurityAdapter? webSecurityAdapter,
+        [CanBeNull] IWxeSecurityAdapter? wxeSecurityAdapter)
         : base (defaultType, webSecurityAdapter, wxeSecurityAdapter)
     {
       _hrefCommand = new ListItemHrefCommandInfo();
@@ -180,8 +180,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         string postBackLink,
         string onClick,
         int listIndex,
-        string businessObjectID,
-        ISecurableObject securableObject)
+        string? businessObjectID,
+        ISecurableObject? securableObject)
     {
       base.RenderBegin (writer, renderingFeatures, postBackLink, new string[] { listIndex.ToString(), businessObjectID }, onClick, securableObject);
     }
@@ -250,14 +250,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> The <see cref="IBocListItemCommandState"/> to be used for evaluating whether to render the command. </summary>
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     [Browsable (false)]
-    public IBocListItemCommandState CommandState
+    public IBocListItemCommandState? CommandState
     {
       get
       {
         if (_commandState == null && !string.IsNullOrEmpty (_commandStateType))
         {
-          Type type = WebTypeUtility.GetType (_commandStateType, true);
-          _commandState = (IBocListItemCommandState) Activator.CreateInstance (type, null);
+          Type? type = WebTypeUtility.GetType (_commandStateType, true);
+          _commandState = (IBocListItemCommandState?) Activator.CreateInstance (type, null);
         }
         return _commandState;
       }

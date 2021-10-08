@@ -45,7 +45,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Returns a <see cref="string"/> that represents this <see cref="BocColumnDefinition"/>. </summary>
     /// <returns> Returns <see cref="Text"/>, followed by the the class name of the instance.  </returns>
-    public override string ToString ()
+    public override string? ToString ()
     {
       string displayName = ItemID;
       if (string.IsNullOrEmpty (displayName))
@@ -114,7 +114,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       
       base.LoadResources (resourceManager, globalizationService);
 
-      string key = ResourceManagerUtility.GetGlobalResourceKey (Text);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey (Text);
       if (!string.IsNullOrEmpty (key))
         Text = resourceManager.GetString (key);
 

@@ -77,7 +77,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private readonly Style _labelStyle;
 
     private bool? _showDescription;
-    private ReadOnlyCollection<BaseValidator> _validators;
+    private ReadOnlyCollection<BaseValidator>? _validators;
 
     // construction and disposing
 
@@ -135,7 +135,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (! _isActive)
         return false;
 
-      string newValue = PageUtility.GetPostBackCollectionItem (Page, GetValueName());
+      string? newValue = PageUtility.GetPostBackCollectionItem (Page, GetValueName());
       bool newBooleanValue = ! string.IsNullOrEmpty (newValue);
       bool isDataChanged = _value != newBooleanValue;
       if (isDataChanged)
@@ -269,7 +269,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </value>
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     [Browsable (false)]
-    public override string FocusID
+    public override string? FocusID
     {
       get { return IsReadOnly ? null : GetValueName(); }
     }

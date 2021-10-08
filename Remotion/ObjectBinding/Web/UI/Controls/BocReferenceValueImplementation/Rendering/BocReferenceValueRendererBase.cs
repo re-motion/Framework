@@ -142,7 +142,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
           renderingContext.Control, typeof (BocReferenceValueRendererBase<>), key, script.ToString());
     }
 
-    protected string GetControlServicePath (RenderingContext<TControl> renderingContext)
+    protected string? GetControlServicePath (RenderingContext<TControl> renderingContext)
     {
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
 
@@ -282,7 +282,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     }
 
     [CanBeNull]
-    private IconInfo GetIcon (BocRenderingContext<TControl> renderingContext)
+    private IconInfo? GetIcon (BocRenderingContext<TControl> renderingContext)
     {
       if (!renderingContext.Control.IsIconEnabled())
         return null;

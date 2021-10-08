@@ -143,7 +143,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     
     /// <summary> See <see cref="BusinessObjectBoundWebControl.Value"/> for details on this property. </summary>
     /// <value>The control's current value, which is a nullable boolean.</value>
-    protected override sealed object ValueImplementation
+    protected override sealed object? ValueImplementation
     {
       get { return Value; }
       set { Value = ArgumentUtility.CheckType<bool?> ("value", value); }
@@ -168,9 +168,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     /// <value> An instance of type <see cref="IBusinessObjectBooleanProperty"/>. </value>
     [Browsable (false)]
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    public new IBusinessObjectBooleanProperty Property
+    public new IBusinessObjectBooleanProperty? Property
     {
-      get { return (IBusinessObjectBooleanProperty) base.Property; }
+      get { return (IBusinessObjectBooleanProperty?) base.Property; }
       set { base.Property = value; }
     }
 
@@ -181,7 +181,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     /// </value>
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     [Browsable (false)]
-    public abstract string FocusID { get; }
+    public abstract string? FocusID { get; }
 
     /// <summary>
     ///   Gets the <see cref="Style"/> that you want to apply to the <see cref="Label"/> used for displaying the 
@@ -283,7 +283,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     /// <summary> Fires the <see cref="CheckedChanged"/> event. </summary>
     protected virtual void OnCheckedChanged ()
     {
-      EventHandler eventHandler = (EventHandler) Events[s_checkedChangedEvent];
+      EventHandler? eventHandler = (EventHandler?) Events[s_checkedChangedEvent];
       if (eventHandler != null)
         eventHandler (this, EventArgs.Empty);
     }

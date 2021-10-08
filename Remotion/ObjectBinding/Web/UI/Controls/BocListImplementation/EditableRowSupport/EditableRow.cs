@@ -42,16 +42,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
     private readonly IEditModeHost _editModeHost;
 
-    private EditableRowDataSourceFactory _dataSourceFactory;
-    private EditableRowControlFactory _controlFactory;
+    private EditableRowDataSourceFactory? _dataSourceFactory;
+    private EditableRowControlFactory? _controlFactory;
   
-    private IBusinessObjectReferenceDataSource _dataSource;
+    private IBusinessObjectReferenceDataSource? _dataSource;
 
-    private PlaceHolder _editControls;
-    private PlaceHolder _validatorControls;
+    private PlaceHolder? _editControls;
+    private PlaceHolder? _validatorControls;
 
     private bool _isRowEditModeValidatorsRestored;
-    private IBusinessObjectBoundEditableWebControl[] _rowEditModeControls;
+    private IBusinessObjectBoundEditableWebControl[]? _rowEditModeControls;
 
     // construction and disposing
 
@@ -64,7 +64,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
     // methods and properties
 
-    public EditableRowDataSourceFactory DataSourceFactory
+    public EditableRowDataSourceFactory? DataSourceFactory
     {
       get 
       {
@@ -77,7 +77,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       }
     }
 
-    public EditableRowControlFactory ControlFactory
+    public EditableRowControlFactory? ControlFactory
     {
       get 
       {
@@ -115,11 +115,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
       for (int idxColumns = 0; idxColumns < columns.Length; idxColumns++)
       {
-        BocSimpleColumnDefinition simpleColumn = columns[idxColumns] as BocSimpleColumnDefinition;
+        BocSimpleColumnDefinition? simpleColumn = columns[idxColumns] as BocSimpleColumnDefinition;
 
         if (IsColumnEditable (simpleColumn))
         {
-          IBusinessObjectBoundEditableWebControl control = _controlFactory.Create (simpleColumn, idxColumns);
+          IBusinessObjectBoundEditableWebControl? control = _controlFactory.Create (simpleColumn, idxColumns);
 
           if (control != null)
           {
@@ -156,7 +156,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       }
     }
 
-    protected bool IsColumnEditable (BocSimpleColumnDefinition column)
+    protected bool IsColumnEditable (BocSimpleColumnDefinition? column)
     {
       if (column == null)
         return false;
@@ -183,7 +183,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       _validatorControls = null;
     }
 
-    public IBusinessObjectReferenceDataSource GetDataSource()
+    public IBusinessObjectReferenceDataSource? GetDataSource()
     {
       return _dataSource;
     }
@@ -204,7 +204,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       return _editControls.Controls[columnIndex].Controls;
     }
 
-    public IBusinessObjectBoundEditableWebControl GetEditControl (int columnIndex)
+    public IBusinessObjectBoundEditableWebControl? GetEditControl (int columnIndex)
     {
       if (HasEditControl (columnIndex))
       {
@@ -234,12 +234,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     {
       ArgumentUtility.CheckNotNull ("validators", validators);
 
-      ControlCollection cellValidators = GetValidators (columnIndex);
+      ControlCollection? cellValidators = GetValidators (columnIndex);
       foreach (var validator in validators)
         cellValidators.Add (validator);
     }
 
-    public ControlCollection GetValidators (int columnIndex)
+    public ControlCollection? GetValidators (int columnIndex)
     {
       if (columnIndex < 0 || columnIndex >= _validatorControls.Controls.Count) throw new ArgumentOutOfRangeException ("columnIndex");
     
@@ -283,7 +283,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     {
       if (HasEditControl (columnIndex))
       {
-        IBusinessObjectBoundEditableWebControl editControl = GetEditControl (columnIndex);
+        IBusinessObjectBoundEditableWebControl? editControl = GetEditControl (columnIndex);
         var validators = editControl.CreateValidators();
         AddToValidators (columnIndex, validators);
       }
@@ -302,7 +302,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     {
       if (HasEditControl (columnIndex))
       {
-        IBusinessObjectBoundEditableWebControl editControl = GetEditControl (columnIndex);
+        IBusinessObjectBoundEditableWebControl? editControl = GetEditControl (columnIndex);
         editControl.PrepareValidation ();
       }
     }
@@ -326,7 +326,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
       if (HasValidators (columnIndex))
       {
-        ControlCollection cellValidators = GetValidators (columnIndex);
+        ControlCollection? cellValidators = GetValidators (columnIndex);
         for (int i = 0; i < cellValidators.Count; i++)
         {
           BaseValidator validator = (BaseValidator) cellValidators[i];
@@ -410,7 +410,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       if (! HasEditControl (columnIndex))
         return;
   
-      ControlCollection validators = GetValidators (columnIndex);
+      ControlCollection? validators = GetValidators (columnIndex);
 
       IBusinessObjectBoundEditableWebControl editModeControl = _rowEditModeControls[columnIndex];
 
