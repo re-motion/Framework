@@ -71,9 +71,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
 
-      string backUpCssClass;
-      string backUpAttributeCssClass;
-      OverrideCssClass (renderingContext, out backUpCssClass, out backUpAttributeCssClass);
+      OverrideCssClass (renderingContext, out var backUpCssClass, out var backUpAttributeCssClass);
 
       AddStandardAttributesToRender (renderingContext);
 
@@ -132,6 +130,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       // Try dynamic bound type first, afterwards static bound type. Order due to behavioral uniformity.
 
+      Assertion.IsNotNull (control.DataSource, "control.DataSource must not be null.");
+
       if (control.DataSource.BusinessObject != null)
         return control.DataSource.BusinessObject.BusinessObjectClass.Identifier;
 
@@ -183,7 +183,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return false; }
     }
 
-    private void OverrideCssClass (RenderingContext<TControl> renderingContext, out string backUpCssClass, out string backUpAttributeCssClass)
+    private void OverrideCssClass (RenderingContext<TControl> renderingContext, out string backUpCssClass, out string? backUpAttributeCssClass)
     {
       backUpCssClass = renderingContext.Control.CssClass;
       bool hasCssClass = !string.IsNullOrEmpty (backUpCssClass);
@@ -199,7 +199,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         renderingContext.Control.CssClass = GetCssClassBase (renderingContext.Control) + GetAdditionalCssClass (renderingContext.Control);
     }
 
-    private void RestoreClass (RenderingContext<TControl> renderingContext, string backUpCssClass, string backUpAttributeCssClass)
+    private void RestoreClass (RenderingContext<TControl> renderingContext, string backUpCssClass, string? backUpAttributeCssClass)
     {
       renderingContext.Control.CssClass = backUpCssClass;
       renderingContext.Control.Attributes["class"] = backUpAttributeCssClass;

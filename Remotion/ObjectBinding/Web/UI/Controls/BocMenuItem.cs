@@ -50,9 +50,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     public BocMenuItem (
-        string id,
-        string category,
-        string text,
+        string? id,
+        string? category,
+        string? text,
         IconInfo icon,
         IconInfo disabledIcon,
         WebMenuItemStyle style,
@@ -86,7 +86,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public override Command? Command
     {
       get { return base.Command; }
-      set { base.Command = (BocCommand) value; }
+      set { base.Command = (BocCommand?) value; }
     }
 
     /// <summary> Gets or sets the <see cref="IBusinessObjectBoundWebControl"/> to which this object belongs. </summary>
@@ -107,7 +107,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override void OnOwnerControlChanged ()
     {
       base.OnOwnerControlChanged();
-      ArgumentUtility.CheckNotNullAndType<IBocMenuItemContainer> ("OwnerControl", OwnerControl);
+      ArgumentUtility.CheckNotNullAndType<IBocMenuItemContainer> ("OwnerControl", OwnerControl!);
     }
 
     protected IBocMenuItemContainer? BocMenuItemContainer
@@ -119,6 +119,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       if (! base.EvaluateVisible())
         return false;
+
+      Assertion.IsNotNull (BocMenuItemContainer, "BocMenuItemContainer must not be null.");
 
       bool isReadOnly = BocMenuItemContainer.IsReadOnly;
       bool isSelectionEnabled = BocMenuItemContainer.IsSelectionEnabled;

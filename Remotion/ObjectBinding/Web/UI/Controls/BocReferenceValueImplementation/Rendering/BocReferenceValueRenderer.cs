@@ -169,7 +169,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       script.Append (GetResourcesAsJson (renderingContext));
       script.Append (");");
 
-      renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock (
+      renderingContext.Control.Page!.ClientScript.RegisterStartupScriptBlock (
           renderingContext.Control,
           typeof (IBocReferenceValue),
           key,
@@ -213,7 +213,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       dropDownList.ClientIDMode = ClientIDMode.Static;
       dropDownList.ID = renderingContext.Control.GetValueName();
       dropDownList.EnableViewState = false;
-      dropDownList.Page = renderingContext.Control.Page.WrappedInstance;
+      dropDownList.Page = renderingContext.Control.Page!.WrappedInstance;
       renderingContext.Control.PopulateDropDownList (dropDownList);
 
       dropDownList.Enabled = renderingContext.Control.Enabled;

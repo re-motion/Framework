@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
@@ -54,6 +55,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> <see langword="true"/> if this sorting order entry is empty. </summary>
+    [MemberNotNullWhen (false, nameof (Column))]
     public bool IsEmpty
     {
       get { return _isEmpty; }

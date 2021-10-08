@@ -37,7 +37,7 @@ public class PropertyPathBindingCollection : BusinessObjectControlItemCollection
   //  Do NOT make this indexer public. Ever. Or ASP.net won't be able to de-serialize this property.
   protected internal new PropertyPathBinding this[int index]
   {
-    get { return (PropertyPathBinding) List[index]; }
+    get { return (PropertyPathBinding) List[index]!; }
     set { List[index] = value; }
   }
 }

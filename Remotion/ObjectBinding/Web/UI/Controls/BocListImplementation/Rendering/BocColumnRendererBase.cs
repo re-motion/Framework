@@ -201,7 +201,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
           renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, sortCommandID);
 
           string argument = BocList.SortCommandPrefix + renderingContext.ColumnIndex;
-          string postBackEvent = renderingContext.Control.Page.ClientScript.GetPostBackEventReference (renderingContext.Control, argument);
+          string postBackEvent = renderingContext.Control.Page!.ClientScript.GetPostBackEventReference (renderingContext.Control, argument);
           postBackEvent += "; return false;";
           renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent);
 

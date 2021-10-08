@@ -49,7 +49,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public T this [int index]
     {
-      get { return (T) _list[index]; }
+      get { return (T) _list[index]!; }
     }
 
     public IEnumerator<T> GetEnumerator ()
@@ -77,7 +77,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return _list.SyncRoot; }
     }
 
-    int IList.Add (object value)
+    int IList.Add (object? value)
     {
       return _list.Add (value);
     }
@@ -87,22 +87,22 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       _list.Clear();
     }
 
-    bool IList.Contains (object value)
+    bool IList.Contains (object? value)
     {
       return _list.Contains (value);
     }
 
-    int IList.IndexOf (object value)
+    int IList.IndexOf (object? value)
     {
       return _list.IndexOf (value);
     }
 
-    void IList.Insert (int index, object value)
+    void IList.Insert (int index, object? value)
     {
       _list.Insert (index, value);
     }
 
-    void IList.Remove (object value)
+    void IList.Remove (object? value)
     {
       _list.Remove (value);
     }
@@ -122,7 +122,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return _list.IsReadOnly; }
     }
 
-    object IList.this [int index]
+    object? IList.this [int index]
     {
       get { return _list[index]; }
       set { _list[index] = value; }

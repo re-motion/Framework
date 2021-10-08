@@ -103,7 +103,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       if (!string.IsNullOrEmpty (renderingContext.Control.ControlServicePath))
       {
-        var stringValueParametersDictionary = new Dictionary<string, string>();
+        var stringValueParametersDictionary = new Dictionary<string, string?>();
         stringValueParametersDictionary.Add ("controlID", renderingContext.Control.ID);
         stringValueParametersDictionary.Add (
             "controlType",
@@ -128,6 +128,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         return;
 
       var availableViewsList = renderingContext.Control.GetAvailableViewsList();
+      Assertion.DebugIsNotNull (availableViewsList, "GetAvailableViewsList() must not return null when HasAvailableViewsList is true.");
 
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, $"{CssClasses.Themed} {CssClasses.AvailableViewsList}");
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Div);

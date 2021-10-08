@@ -25,8 +25,8 @@ namespace Remotion.ObjectBinding.Web
   /// </summary>
   public interface IBusinessObjectWebUIService : IBusinessObjectService
   {
-    IconInfo GetIcon (IBusinessObject obj);
-    string GetToolTip (IBusinessObject obj);
+    IconInfo? GetIcon (IBusinessObject? obj);
+    string? GetToolTip (IBusinessObject? obj);
 
     /// <summary>
     /// Returns a <see cref="HelpInfo"/> object for the specified parameters.
@@ -41,7 +41,7 @@ namespace Remotion.ObjectBinding.Web
     /// Can be <see langword="null" /> if the control's datasource has no value.
     /// </param>
     /// <returns>An instance of the <see cref="HelpInfo"/> type or <see langword="null" /> to not generate a help-link.</returns>
-    HelpInfo GetHelpInfo (
+    HelpInfo? GetHelpInfo (
         IBusinessObjectBoundWebControl control,
         IBusinessObjectClass businessObjectClass,
         IBusinessObjectProperty? businessObjectProperty,

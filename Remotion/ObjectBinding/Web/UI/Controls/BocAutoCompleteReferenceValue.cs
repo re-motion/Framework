@@ -180,7 +180,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       var isDataChanged = base.LoadPostData (postDataKey, postCollection);
 
-      string? newValue = PageUtility.GetPostBackCollectionItem (Page, GetTextValueName());
+      string? newValue = PageUtility.GetPostBackCollectionItem (Page!, GetTextValueName());
       if (newValue != null)
       {
         if (InternalDisplayName == null && !string.IsNullOrEmpty (newValue))
@@ -240,7 +240,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       GetSearchAvailableObjectService();
     }
 
-    private IBocAutoCompleteReferenceValueWebService? GetSearchAvailableObjectService ()
+    private IBocAutoCompleteReferenceValueWebService GetSearchAvailableObjectService ()
     {
       if (string.IsNullOrEmpty (ControlServicePath))
         throw new InvalidOperationException (string.Format ("BocAutoCompleteReferenceValue '{0}' does not have a ControlServicePath set.", ID));
@@ -302,11 +302,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         UpdateValidtaorErrorMessages<RequiredFieldValidator> (NullItemErrorMessage);
     }
 
-    private void UpdateValidtaorErrorMessages<T> (string errorMessage) where T : BaseValidator
+    private void UpdateValidtaorErrorMessages<T> (string? errorMessage) where T : BaseValidator
     {
       var validator = _validators.GetValidator<T>();
       if (validator != null)
-        validator.ErrorMessage = errorMessage;
+        validator.ErrorMessage = errorMessage!;
     }
 
     protected virtual IBocAutoCompleteReferenceValueRenderer CreateRenderer ()
@@ -318,6 +318,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("writer", writer);
 
+      Assertion.IsNotNull (Context, "Context must not be null.");
+
       return new BocAutoCompleteReferenceValueRenderingContext (
           Context,
           writer,
@@ -325,19 +327,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           CreateBusinessObjectWebServiceContext());
     }
 
-    protected override void LoadControlState (object savedState)
+    protected override void LoadControlState (object? savedState)
     {
-      object[] values = (object[]) savedState;
+      object?[] values = (object?[]) savedState!;
 
       base.LoadControlState (values[0]);
-      InternalValue = (string) values[1];
-      _displayName = (string) values[2];
-      _businessObjectWebServiceContextFromPreviousLifeCycle = (BusinessObjectWebServiceContext) values[3];
+      InternalValue = (string?) values[1];
+      _displayName = (string?) values[2];
+      _businessObjectWebServiceContextFromPreviousLifeCycle = (BusinessObjectWebServiceContext) values[3]!;
     }
 
     protected override object SaveControlState ()
     {
-      object[] values = new object[4];
+      object?[] values = new object?[4];
 
       values[0] = base.SaveControlState();
       values[1] = InternalValue;

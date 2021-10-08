@@ -18,6 +18,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
@@ -114,7 +115,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
     string? OptionsTitle { get; }
 
     bool HasClientScript { get; }
-    DropDownList GetAvailableViewsList ();
+    DropDownList? GetAvailableViewsList ();
     IDropDownMenu OptionsMenu { get; }
 
     IEditModeController EditModeController { get; }

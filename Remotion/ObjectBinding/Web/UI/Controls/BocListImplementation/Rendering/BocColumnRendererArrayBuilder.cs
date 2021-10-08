@@ -95,6 +95,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     {
       if (IsClientSideSortingEnabled || HasSortingKeys)
       {
+        Assertion.IsNotNull (SortingOrder, "SortingOrder must not be null.");
+
         foreach (var entry in SortingOrder)
         {
           var columnIndex = Array.IndexOf (_columnDefinitions, entry.Column);
@@ -147,6 +149,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     private bool IsColumnVisibleForBocCommandColumnDefinition (BocCommandColumnDefinition columnAsCommandColumn)
     {
       if (_wcagHelper.IsWaiConformanceLevelARequired ()
+          && columnAsCommandColumn.Command != null
           && (columnAsCommandColumn.Command.Type == CommandType.Event || columnAsCommandColumn.Command.Type == CommandType.WxeFunction))
         return false;
       return true;

@@ -72,13 +72,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           .Select ((column, index) => new { Column = column as BocCustomColumnDefinition, Index = index })
           .Where (d => d.Column != null)
           .Where (
-              d => d.Column.Mode == BocCustomColumnDefinitionMode.ControlsInAllRows
+              d => d.Column!.Mode == BocCustomColumnDefinitionMode.ControlsInAllRows
                    || d.Column.Mode == BocCustomColumnDefinitionMode.ControlInEditedRow)
           .ToArray();
 
       foreach (var customColumnData in controlEnabledCustomColumns)
       {
-        var customColumn = customColumnData.Column;
+        var customColumn = customColumnData.Column!;
         var placeHolder = new PlaceHolder();
 
         var customColumnTuples = new List<BocListCustomColumnTuple>();

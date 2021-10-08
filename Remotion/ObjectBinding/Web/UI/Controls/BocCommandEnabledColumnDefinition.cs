@@ -70,7 +70,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       if (Command != null)
       {
-        Command = (BocListItemCommand?) Activator.CreateInstance (Command.GetType());
+        Command = (BocListItemCommand) Activator.CreateInstance (Command.GetType())!;
         Command.Type = CommandType.None;
       }
     }

@@ -150,7 +150,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <param name="businessObjectProvider"> 
     ///   The <see cref="IBusinessObjectProvider"/> to be used to get the <see cref="IconInfo"/> object. Must not be <see langowrd="null"/>. 
     /// </param>
-    public static IconInfo? GetIcon (IBusinessObject businessObject, IBusinessObjectProvider businessObjectProvider)
+    public static IconInfo? GetIcon (IBusinessObject? businessObject, IBusinessObjectProvider businessObjectProvider)
     {
       ArgumentUtility.CheckNotNull ("businessObjectProvider", businessObjectProvider);
 
@@ -443,7 +443,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return Enumerable.Empty<BaseValidator>();
     }
 
-    public new IPage Page
+    public new IPage? Page
     {
       get { return PageWrapper.CastOrCreate (base.Page); }
     }
@@ -479,7 +479,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return ServiceLocator.GetInstance<IGlobalizationService> (); }
     }
 
-    protected override void LoadControlState (object savedState)
+    protected override void LoadControlState (object? savedState)
     {
       base.LoadControlState (savedState);
       _controlExistedInPreviousRequest = true;
@@ -491,7 +491,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
       ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
 
-      string key;
+      string? key;
       key = ResourceManagerUtility.GetGlobalResourceKey (AccessKey);
       if (!string.IsNullOrEmpty (key))
         AccessKey = resourceManager.GetString (key);

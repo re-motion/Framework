@@ -84,7 +84,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     public abstract IBusinessObjectDataSourceControl DataSource { get; }
 
-    IPage IControl.Page
+    IPage? IControl.Page
     {
       get { return PageWrapper.CastOrCreate (base.Page); }
     }

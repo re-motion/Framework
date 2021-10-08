@@ -24,6 +24,7 @@ using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.ServiceLocation;
+using Remotion.Utilities;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
@@ -54,7 +55,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override void OnInit (EventArgs e)
     {
       base.OnInit (e);
-      TemplateControl control = (TemplateControl)Page.LoadControl (_userControlPath);
+      TemplateControl control = (TemplateControl)Page!.LoadControl (_userControlPath);
       Controls.Add (control);
       _userControl = control as IDataEditControl;
 
@@ -78,6 +79,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override void OnLoad (EventArgs e)
     {
+      Assertion.IsNotNull (DataSource, "DataSource must not be null.");
+      Assertion.IsNotNull (_userControl, "_userControl must not be null.");
+
       base.OnLoad (e);
       if (_referenceDataSource != null)
         _referenceDataSource.Mode = DataSource.Mode;
@@ -87,6 +91,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public override void LoadValue (bool interim)
     {
+      Assertion.IsNotNull (_userControl, "_userControl must not be null.");
+
       if (_referenceDataSource == null)
         throw new NotImplementedException();
 
@@ -97,6 +103,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public override bool SaveValue (bool interim)
     {
+      Assertion.IsNotNull (_userControl, "_userControl must not be null.");
+      Assertion.IsNotNull (_referenceDataSource, "_referenceDataSource must not be null.");
+
       // Validate to keep things consistent, i.e. all validators have executed during the save-operation.
       // Do not abort the save-operation because the value of the ReferenceDataSource should always be allowed to be written back into the parent.
       Validate();
@@ -135,7 +144,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public override bool IsDirty
     {
-      get { return _userControl.DataSource.GetBoundControlsWithValidBinding().OfType<IBusinessObjectBoundEditableWebControl>().Any (control => control.IsDirty); }
+      get
+      {
+        Assertion.IsNotNull (_userControl, "_userControl must not be null.");
+
+        return _userControl.DataSource.GetBoundControlsWithValidBinding().OfType<IBusinessObjectBoundEditableWebControl>().Any (control => control.IsDirty);
+      }
     }
 
     public override string[] GetTrackedClientIDs ()
@@ -163,6 +177,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public override void PrepareValidation ()
     {
+      Assertion.IsNotNull (_userControl, "_userControl must not be null.");
+
       _userControl.PrepareValidation();
     }
 

@@ -73,7 +73,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <returns>
     ///   Returns the class name of the instance.
     /// </returns>
-    public override string? ToString ()
+    public override string ToString ()
     {
       return GetType ().Name;
     }

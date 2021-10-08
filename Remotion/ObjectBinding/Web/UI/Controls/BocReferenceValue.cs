@@ -97,7 +97,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private readonly ListItemCollection _listItems;
 
     private string _nullItemText = string.Empty;
-    private string _select = String.Empty;
+    private string? _select = String.Empty;
     private bool? _enableSelectStatement;
     private string? _nullItemErrorMessage;
     private ReadOnlyCollection<BaseValidator>? _validators;
@@ -168,6 +168,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected virtual BocReferenceValueRenderingContext CreateRenderingContext (HtmlTextWriter writer)
     {
       ArgumentUtility.CheckNotNull ("writer", writer);
+
+      Assertion.IsNotNull (Context, "Context must not be null.");
 
       return new BocReferenceValueRenderingContext (Context, writer, this, CreateBusinessObjectWebServiceContext());
     }
@@ -289,11 +291,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       UpdateValidtaorErrorMessages<RequiredFieldValidator> (NullItemErrorMessage);
     }
 
-    private void UpdateValidtaorErrorMessages<T> (string errorMessage) where T : BaseValidator
+    private void UpdateValidtaorErrorMessages<T> (string? errorMessage) where T : BaseValidator
     {
       var validator = _validators.GetValidator<T>();
       if (validator != null)
-        validator.ErrorMessage = errorMessage;
+        validator.ErrorMessage = errorMessage!;
     }
 
     protected override IBusinessObjectConstraintVisitor CreateBusinessObjectConstraintVisitor ()
@@ -311,20 +313,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       renderer.Render (CreateRenderingContext (writer));
     }
 
-    protected override void LoadControlState (object savedState)
+    protected override void LoadControlState (object? savedState)
     {
-      object[] values = (object[]) savedState;
+      object?[] values = (object?[]) savedState!;
 
       base.LoadControlState (values[0]);
       if (values[1] != null)
-        InternalValue = (string) values[1];
-      _displayName = (string) values[2];
+        InternalValue = (string?) values[1];
+      _displayName = (string?) values[2];
       ((IStateManager) _listItems).LoadViewState (values[3]);
     }
 
     protected override object SaveControlState ()
     {
-      object[] values = new object[4];
+      object?[] values = new object?[4];
 
       values[0] = base.SaveControlState();
       values[1] = InternalValue;
@@ -517,7 +519,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override string? GetLabelText ()
     {
-      string text;
+      string? text;
       if (InternalValue != null)
         text = _displayName;
       else
@@ -605,7 +607,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Category ("Data")]
     [Description ("Set the search expression for populating the selection list.")]
     [DefaultValue ("")]
-    public string Select
+    public string? Select
     {
       get { return _select; }
       set
@@ -668,8 +670,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         dropDownList.SelectedValue = c_nullIdentifier;
       else
       {
-        if (dropDownList.Items.FindByValue (InternalValue) != null)
-          dropDownList.SelectedValue = InternalValue;
+        if (dropDownList.Items.FindByValue (InternalValue!) != null)
+          dropDownList.SelectedValue = InternalValue!;
         else if (Value != null)
         {
           //  Item not yet in the list but is a valid item.
@@ -678,7 +680,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           var item = new ListItem (GetDisplayName (businessObject), businessObject.UniqueIdentifier);
           dropDownList.Items.Add (item);
 
-          dropDownList.SelectedValue = InternalValue;
+          dropDownList.SelectedValue = InternalValue!;
         }
       }
     }

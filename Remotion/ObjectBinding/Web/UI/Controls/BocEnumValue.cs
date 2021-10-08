@@ -127,6 +127,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("writer", writer);
 
+      Assertion.IsNotNull (Context, "Context must not be null.");
+
       return new BocEnumValueRenderingContext(Context, writer, this);
     }
 
@@ -227,11 +229,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         UpdateValidtaorErrorMessages<RequiredFieldValidator> (_errorMessage);
     }
 
-    private void UpdateValidtaorErrorMessages<T> (string errorMessage) where T : BaseValidator
+    private void UpdateValidtaorErrorMessages<T> (string? errorMessage) where T : BaseValidator
     {
       var validator = _validators.GetValidator<T>();
       if (validator != null)
-        validator.ErrorMessage = errorMessage;
+        validator.ErrorMessage = errorMessage!;
     }
 
     /// <summary> 
@@ -294,7 +296,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Gets or sets the current value. </summary>
     /// <include file='..\..\doc\include\UI\Controls\BocEnumValue.xml' path='BocEnumValue/Value/*' />
     [Browsable (false)]
-    public new object Value
+    public new object? Value
     {
       get
       {
@@ -327,9 +329,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       _value = value;
 
       if (Property != null && _value != null)
+      {
         _enumerationValueInfo = Property.GetValueInfoByValue (_value, GetBusinessObject());
+      }
       else
+      {
         _enumerationValueInfo = null;
+      }
 
       if (_enumerationValueInfo != null)
         InternalValue = _enumerationValueInfo.Identifier;
@@ -338,7 +344,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> See <see cref="BusinessObjectBoundWebControl.Value"/> for details on this property. </summary>
-    protected override sealed object ValueImplementation
+    protected override sealed object? ValueImplementation
     {
       get { return Value; }
       set { Value = value; }
@@ -389,6 +395,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         //  Can get a new EnumerationValueInfo
         _enumerationValueInfo = Property.GetValueInfoByIdentifier (_internalValue, GetBusinessObject());
+        Assertion.IsNotNull (_enumerationValueInfo, "_enumerationValueInfo is null for identifier '{0}'.", _internalValue);
         _value = _enumerationValueInfo.Value;
       }
       else if (_internalValue == null)
@@ -515,22 +522,22 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override void OnInit (EventArgs e)
     {
       base.OnInit (e);
-      Page.RegisterRequiresPostBack (this);
+      Page!.RegisterRequiresPostBack (this);
     }
 
-    protected override void LoadControlState (object savedState)
+    protected override void LoadControlState (object? savedState)
     {
-      object[] values = (object[]) savedState;
+      object?[] values = (object?[]) savedState!;
 
       base.LoadControlState (values[0]);
       _value = values[1];
       if (values[2] != null)
-        _internalValue = (string) values[2];
+        _internalValue = (string?) values[2];
     }
 
     protected override object SaveControlState ()
     {
-      object[] values = new object[5];
+      object?[] values = new object?[5];
 
       values[0] = base.SaveControlState();
       values[1] = _value;
@@ -546,7 +553,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <include file='..\..\doc\include\UI\Controls\BocEnumValue.xml' path='BocEnumValue/LoadPostData/*' />
     protected virtual bool LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
-      string? newValue = PageUtility.GetPostBackCollectionItem (Page, GetValueName());
+      string? newValue = PageUtility.GetPostBackCollectionItem (Page!, GetValueName());
       bool isDataChanged = false;
       if (newValue != null)
       {
@@ -683,6 +690,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       if (Property == null)
         return new IEnumerationValueInfo[0];
+
       return Property.GetEnabledValues (GetBusinessObject());
     }
 

@@ -125,7 +125,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         listIndex = -1;
       }
-      else if (Value[rowMenu.Row.Index].Equals (rowMenu.Row.BusinessObject))
+      else if (Assertion.IsNotNull (Value[rowMenu.Row.Index]).Equals (rowMenu.Row.BusinessObject))
       {
         listIndex = rowMenu.Row.Index;
       }

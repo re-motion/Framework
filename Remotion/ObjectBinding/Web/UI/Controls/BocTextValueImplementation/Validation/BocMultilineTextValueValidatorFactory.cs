@@ -87,7 +87,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
         LengthValidator lengthValidator = new LengthValidator();
         lengthValidator.ID = control.ID + "_ValidatorMaxLength";
         lengthValidator.ControlToValidate = control.TargetControl.ID;
-        lengthValidator.MaximumLength = maxLength.Value;
+        lengthValidator.MaximumLength = maxLength!.Value;
         lengthValidator.ErrorMessage = string.Format (
             resourceManager.GetString (BocMultilineTextValue.ResourceIdentifier.MaxLengthValidationMessage),
             maxLength.Value);

@@ -89,7 +89,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         string argument = renderingContext.Control.GetListItemCommandArgument (
             renderingContext.ColumnIndex,
             new BocListRow (originalRowIndex, businessObject));
-        string postBackEvent = renderingContext.Control.Page.ClientScript.GetPostBackEventReference (renderingContext.Control, argument) + ";";
+        string postBackEvent = renderingContext.Control.Page!.ClientScript.GetPostBackEventReference (renderingContext.Control, argument) + ";";
         string onClick = renderingContext.Control.HasClientScript ? c_onCommandClickScript : string.Empty;
         if (command.Type == CommandType.None)
           renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClasses.Disabled);
@@ -119,6 +119,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     protected void RenderEndTagDataCellCommand (BocColumnRenderingContext<TBocColumnDefinition> renderingContext)
     {
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+
+      Assertion.IsNotNull (renderingContext.ColumnDefinition.Command, "renderingContext.ColumnDefinition.Command must not be null.");
+
       renderingContext.ColumnDefinition.Command.RenderEnd (renderingContext.Writer);
     }
   }

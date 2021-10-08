@@ -54,7 +54,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     protected override void OnInit (EventArgs e)
     {
       base.OnInit (e);
-      Page.RegisterRequiresPostBack (this);
+      Page!.RegisterRequiresPostBack (this);
     }
 
     /// <summary> Occurs when the <see cref="Value"/> property changes between postbacks. </summary>

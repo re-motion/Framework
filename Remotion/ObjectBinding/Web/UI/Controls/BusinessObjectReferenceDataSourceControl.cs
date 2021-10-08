@@ -97,7 +97,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override sealed object? ValueImplementation
     {
       get { return _internalDataSource.BusinessObject; }
-      set { _internalDataSource.BusinessObject = (IBusinessObject) value; }
+      set { _internalDataSource.BusinessObject = (IBusinessObject?) value; }
     }
 
     public override bool HasValue

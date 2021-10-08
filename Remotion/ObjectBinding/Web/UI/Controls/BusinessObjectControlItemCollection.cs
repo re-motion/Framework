@@ -24,7 +24,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   /// <summary> A collection of <see cref="BusinessObjectControlItem"/> objects. </summary>
   public abstract class BusinessObjectControlItemCollection : ControlItemCollection
   {
-    protected BusinessObjectControlItemCollection (IBusinessObjectBoundWebControl ownerControl, Type[] supportedTypes)
+    protected BusinessObjectControlItemCollection (IBusinessObjectBoundWebControl? ownerControl, Type[] supportedTypes)
         : base (ownerControl, supportedTypes)
     {
     }

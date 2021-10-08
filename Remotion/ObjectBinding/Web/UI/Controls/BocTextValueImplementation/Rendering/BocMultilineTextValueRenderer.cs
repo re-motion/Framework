@@ -76,7 +76,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
       label.ID = renderingContext.Control.GetValueName();
       label.EnableViewState = false;
 
-      string[] lines = renderingContext.Control.Value;
+      string[]? lines = renderingContext.Control.Value;
       string text = RenderUtility.JoinLinesWithEncoding (lines ?? Enumerable.Empty<string>());
 
       label.Text = text;

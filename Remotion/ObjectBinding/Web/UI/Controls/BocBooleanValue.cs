@@ -121,6 +121,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("writer", writer);
 
+      Assertion.IsNotNull (Context, "Context must not be null.");
+
       return new BocBooleanValueRenderingContext (Context, writer, this);
     }
 
@@ -156,11 +158,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         UpdateValidtaorErrorMessages<CompareValidator> (_errorMessage);
     }
 
-    private void UpdateValidtaorErrorMessages<T> (string errorMessage) where T : BaseValidator
+    private void UpdateValidtaorErrorMessages<T> (string? errorMessage) where T : BaseValidator
     {
       var validator = _validators.GetValidator<T>();
       if (validator != null)
-        validator.ErrorMessage = errorMessage;
+        validator.ErrorMessage = errorMessage!;
     }
 
     public override void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
@@ -323,7 +325,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <include file='..\..\doc\include\UI\Controls\BocBooleanValue.xml' path='BocBooleanValue/LoadPostData/*' />
     protected override bool LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
-      string? newValueAsString = PageUtility.GetPostBackCollectionItem (Page, GetValueName());
+      string? newValueAsString = PageUtility.GetPostBackCollectionItem (Page!, GetValueName());
       bool? newValue = null;
       bool isDataChanged = false;
       if (newValueAsString != null)
@@ -365,9 +367,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// Loads the value in addition to the base state.
     /// </summary>
     /// <param name="savedState">The state object created by <see cref="SaveControlState"/>.</param>
-    protected override void LoadControlState (object savedState)
+    protected override void LoadControlState (object? savedState)
     {
-      object[] values = (object[]) savedState;
+      object?[] values = (object?[]) savedState!;
 
       base.LoadControlState (values[0]);
       _value = (bool?) values[1];
@@ -379,7 +381,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <returns>An object containing the state to load in the next lifecycle.</returns>
     protected override object SaveControlState ()
     {
-      object[] values = new object[2];
+      object?[] values = new object?[2];
 
       values[0] = base.SaveControlState();
       values[1] = _value;
@@ -416,7 +418,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       base.LoadResources (resourceManager, globalizationService);
 
-      string key;
+      string? key;
       key = ResourceManagerUtility.GetGlobalResourceKey (TrueDescription);
       if (! string.IsNullOrEmpty (key))
         TrueDescription = resourceManager.GetString (key);

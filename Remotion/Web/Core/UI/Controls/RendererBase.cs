@@ -108,7 +108,7 @@ namespace Remotion.Web.UI.Controls
       renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributes.ControlType, renderingContext.Control.ControlType);
     }
 
-    protected void AppendStringValueOrNullToScript (StringBuilder scriptBuilder, string stringValue)
+    protected void AppendStringValueOrNullToScript (StringBuilder scriptBuilder, string? stringValue)
     {
       if (string.IsNullOrEmpty (stringValue))
         scriptBuilder.Append ("null");

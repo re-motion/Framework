@@ -143,7 +143,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       base.OnInit (e);
       Binding.BindingChanged += Binding_BindingChanged;
-      Page.RegisterRequiresPostBack (this);
+      Page!.RegisterRequiresPostBack (this);
     }
 
     public override void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
@@ -182,7 +182,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       //  Date input field
 
-      string? newDateValue = PageUtility.GetPostBackCollectionItem (Page, GetDateValueName());
+      string? newDateValue = PageUtility.GetPostBackCollectionItem (Page!, GetDateValueName());
       bool isDateChanged = newDateValue != null
                            && (_internalDateValue ?? string.Empty) != newDateValue;
       if (isDateChanged)
@@ -197,7 +197,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       //  Time input field
 
-      string? newTimeValue = PageUtility.GetPostBackCollectionItem (Page, GetTimeValueName());
+      string? newTimeValue = PageUtility.GetPostBackCollectionItem (Page!, GetTimeValueName());
       bool isTimeChanged = newTimeValue != null
                            && (_internalTimeValue ?? string.Empty) != newTimeValue;
       if (isTimeChanged)
@@ -290,29 +290,31 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("writer", writer);
 
+      Assertion.IsNotNull (Context, "Context must not be null.");
+
       return new BocDateTimeValueRenderingContext (Context, writer, this);
     }
 
-    protected override void LoadControlState (object savedState)
+    protected override void LoadControlState (object? savedState)
     {
-      object[] values = (object[]) savedState;
+      object?[] values = (object?[]) savedState!;
 
-      base.LoadControlState (values[0]);
+      base.LoadControlState (values[0]!);
 
       if (values[1] != null)
-        _internalDateValue = (string) values[1];
+        _internalDateValue = (string) values[1]!;
       if (values[2] != null)
-        _internalTimeValue = (string) values[2];
-      _valueType = (BocDateTimeValueType) values[3];
-      _actualValueType = (BocDateTimeValueType) values[4];
-      _showSeconds = (bool) values[5];
-      _provideMaxLength = (bool) values[6];
+        _internalTimeValue = (string) values[2]!;
+      _valueType = (BocDateTimeValueType) values[3]!;
+      _actualValueType = (BocDateTimeValueType) values[4]!;
+      _showSeconds = (bool) values[5]!;
+      _provideMaxLength = (bool) values[6]!;
       _savedDateTimeValue = (DateTime?) values[7];
     }
 
     protected override object SaveControlState ()
     {
-      object[] values = new object[8];
+      object?[] values = new object?[8];
 
       values[0] = base.SaveControlState();
       values[1] = _internalDateValue;
@@ -440,17 +442,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         UpdateValidtaorErrorMessages<BocDateTimeValueValidatorBase> (_errorMessage);
     }
 
-    private void UpdateValidtaorErrorMessages<T> (string errorMessage) where T : BaseValidator
+    private void UpdateValidtaorErrorMessages<T> (string? errorMessage) where T : BaseValidator
     {
       var validator = _validators.GetValidator<T>();
       if (validator != null)
-        validator.ErrorMessage = errorMessage;
+        validator.ErrorMessage = errorMessage!;
     }
 
     /// <summary> Handles refreshing the bound control. </summary>
     /// <param name="sender"> The source of the event. </param>
     /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
-    private void Binding_BindingChanged (object sender, EventArgs e)
+    private void Binding_BindingChanged (object? sender, EventArgs e)
     {
       RefreshPropertiesFromObjectModel();
     }
@@ -524,6 +526,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         return null;
       }
 
+      Assertion.IsNotNull (InternalDateValue, "InternalDateValue must not be null.");
       try
       {
         dateTimeValue = DateTime.Parse (InternalDateValue).Date;
@@ -596,7 +599,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
       catch (InvalidCastException e)
       {
-        throw new ArgumentException ("Expected type '" + _actualValueType + "', but was '" + value.GetType().GetFullNameSafe() + "'.", "value", e);
+        throw new ArgumentException ("Expected type '" + _actualValueType + "', but was '" + value!.GetType().GetFullNameSafe() + "'.", "value", e);
       }
 
       if (ActualValueType == BocDateTimeValueType.DateTime
@@ -609,7 +612,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         catch (InvalidCastException e)
         {
           throw new ArgumentException (
-              "Expected type '" + _actualValueType + "', but was '" + value.GetType().GetFullNameSafe() + "'.",
+              "Expected type '" + _actualValueType + "', but was '" + value!.GetType().GetFullNameSafe() + "'.",
               "value",
               e);
         }

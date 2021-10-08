@@ -40,6 +40,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting
 
     private static IComparer<BocListRow> CreateComparer (BocListSortingOrderEntry entry)
     {
+      Assertion.DebugIsNotNull (entry.Column, "entry.Column != null");
       var baseComparer = entry.Column.CreateCellValueComparer();
 
       if (entry.Direction == SortingDirection.Descending)

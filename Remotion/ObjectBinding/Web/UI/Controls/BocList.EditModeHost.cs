@@ -35,12 +35,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         _bocList = bocList;
       }
 
-      public IReadOnlyList<IBusinessObject> Value
+      public IReadOnlyList<IBusinessObject>? Value
       {
         get { return _bocList.Value; }
       }
 
-      public string ID
+      public string? ID
       {
         get { return _bocList.ID; }
       }

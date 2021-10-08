@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Web.UI;
+using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UI.Controls;
 
@@ -51,7 +52,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           if (node is BusinessObjectTreeNode)
             businessObject = ((BusinessObjectTreeNode) node).BusinessObject;
 
-          Page page = node.TreeView.Page;
+          Assertion.DebugIsNotNull (node.TreeView, "node.TreeView must not be null.");
+          Page? page = node.TreeView.Page;
           if (page is IWxePage)
             command.ExecuteWxeFunction ((IWxePage) page, businessObject);
           //else

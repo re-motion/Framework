@@ -34,11 +34,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     bool IsIconEnabled ();
     new IBusinessObjectReferenceProperty? Property { get; }
-    new IBusinessObjectWithIdentity Value { get; }
+    new IBusinessObjectWithIdentity? Value { get; }
 
-    IconInfo GetIcon ();
+    IconInfo? GetIcon ();
 
-    string GetLabelText ();
+    string? GetLabelText ();
 
     /// <summary>
     ///   Gets the style that you want to apply to the text box (edit mode) 

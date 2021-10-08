@@ -111,8 +111,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
       {
         foreach (var obj in values)
         {
-          BocListRow row;
-          if (indicesMap.TryGetValue (obj, out row))
+          if (indicesMap.TryGetValue (obj, out var row))
           {
             yield return row;
           }
@@ -148,7 +147,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
       if (createListMethod != null)
         return createListMethod (size);
       else if (template is Array)
-        return Array.CreateInstance (template.GetType().GetElementType(), size);
+        return Array.CreateInstance (template.GetType().GetElementType()!, size);
       else 
         throw new NotSupportedException ("Cannot create instance if argument 'createListMethod' is null and 'template' is not an array.");
     }

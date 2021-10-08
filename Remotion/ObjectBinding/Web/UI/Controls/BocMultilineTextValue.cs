@@ -169,6 +169,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("writer", writer);
 
+      Assertion.IsNotNull (Context, "Context must not be null.");
+
       return new BocMultilineTextValueRenderingContext (Context, writer, this);
     }
 
@@ -186,7 +188,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <value> The <see cref="String"/> array currently displayed or <see langword="null"/> if no text is entered. </value>
     /// <remarks> The dirty state is reset when the value is set. </remarks>
     [Browsable (false)]
-    public new string[] Value
+    public new string[]? Value
     {
       get
       {
@@ -278,7 +280,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> See <see cref="BusinessObjectBoundWebControl.Value"/> for details on this property. </summary>
     /// <value> The value must be of type <b>string[]</b>. </value>
-    protected override sealed object ValueImplementation
+    protected override sealed object? ValueImplementation
     {
       get { return Value; }
       set { Value = ArgumentUtility.CheckType<string[]> ("value", value); }
@@ -294,12 +296,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// Loads <see cref="Text"/> in addition to the base state.
     /// </summary>
     /// <param name="savedState">The state object created by <see cref="SaveControlState"/>.</param>
-    protected override void LoadControlState (object savedState)
+    protected override void LoadControlState (object? savedState)
     {
-      object[] values = (object[]) savedState;
+      object?[] values = (object?[]) savedState!;
 
       base.LoadControlState (values[0]);
-      _text = (string[]) values[1];
+      _text = (string[]?) values[1];
     }
 
     /// <summary>
@@ -308,7 +310,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <returns>An object containing the state to be loaded in the control's next lifecycle.</returns>
     protected override object SaveControlState ()
     {
-      object[] values = new object[2];
+      object?[] values = new object?[2];
 
       values[0] = base.SaveControlState();
       values[1] = _text;
@@ -380,11 +382,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       UpdateValidtaorErrorMessages<LengthValidator> (_errorMessage);
     }
 
-    private void UpdateValidtaorErrorMessages<T> (string errorMessage) where T : BaseValidator
+    private void UpdateValidtaorErrorMessages<T> (string? errorMessage) where T : BaseValidator
     {
       var validator = _validators.GetValidator<T>();
       if (validator != null)
-        validator.ErrorMessage = errorMessage;
+        validator.ErrorMessage = errorMessage!;
     }
 
     /// <summary>

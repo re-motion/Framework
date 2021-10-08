@@ -49,9 +49,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected abstract IBocColumnRenderer GetRendererInternal (IServiceLocator locator);
     
 
-    public override string? ToString ()
+    public override string ToString ()
     {
-      string displayName = ItemID;
+      string? displayName = ItemID;
       if (string.IsNullOrEmpty (displayName))
         displayName = ColumnTitle;
       if (string.IsNullOrEmpty (displayName))
@@ -70,7 +70,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [ParenthesizePropertyName (true)]
     [Browsable (true)]
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Visible)]
-    public override string ItemID
+    public override string? ItemID
     {
       get { return _itemID; }
       set { _itemID = value ?? string.Empty; }

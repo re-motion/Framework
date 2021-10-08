@@ -139,7 +139,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     // fields
 
     private BusinessObjectBinding _binding;
-    private string _value = string.Empty;
+    private string? _value = string.Empty;
     private LiteralMode _mode = LiteralMode.Transform;
 
     public BocLiteral ()
@@ -153,7 +153,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       base.OnInit (e);
       EnsureChildControls ();
       _binding.EnsureDataSource ();
-      Page.RegisterRequiresControlState (this);
+      Page!.RegisterRequiresControlState (this);
     }
 
     protected override void OnUnload (EventArgs e)
@@ -196,16 +196,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
-    protected override void LoadControlState (object savedState)
+    protected override void LoadControlState (object? savedState)
     {
-      object[] values = (object[]) savedState;
+      object?[] values = (object[]?) savedState!;
       base.LoadControlState (values[0]);
-      _mode = (LiteralMode) values[1];
+      _mode = (LiteralMode) values[1]!;
     }
 
     protected override object SaveControlState ()
     {
-      object[] values = new object[4];
+      object?[] values = new object?[4];
       values[0] = base.SaveControlState ();
       values[1] = _mode;
       return values;
@@ -249,7 +249,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Description ("The text to be shown in for the BocLiteral.")]
     [Category ("Data")]
     [DefaultValue ("")]
-    public string Value
+    public string? Value
     {
       get { return _value; }
       set { _value = value; }
@@ -261,17 +261,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return _value != null && _value.Trim ().Length > 0; }
     }
 
-    object IBusinessObjectBoundControl.Value
+    object? IBusinessObjectBoundControl.Value
     {
       get { return ValueImplementation; }
       set { ValueImplementation = value; }
     }
 
     /// <summary> See <see cref="BusinessObjectBoundWebControl.Value"/> for details on this property. </summary>
-    protected virtual object ValueImplementation
+    protected virtual object? ValueImplementation
     {
       get { return Value; }
-      set { Value = (string) value; }
+      set { Value = (string?) value; }
     }
 
     bool IBusinessObjectBoundWebControl.SupportsPropertyMultiplicity (bool isList)
@@ -312,7 +312,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
     }
 
-    HelpInfo ISmartControl.HelpInfo
+    HelpInfo? ISmartControl.HelpInfo
     {
       get { return BusinessObjectBoundWebControl.GetHelpInfo (this); }
     }
@@ -344,7 +344,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return Enumerable.Empty<BaseValidator>();
     }
 
-    IPage IControl.Page
+    IPage? IControl.Page
     {
       get { return PageWrapper.CastOrCreate (base.Page); }
     }

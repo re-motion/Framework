@@ -183,7 +183,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         string? businessObjectID,
         ISecurableObject? securableObject)
     {
-      base.RenderBegin (writer, renderingFeatures, postBackLink, new string[] { listIndex.ToString(), businessObjectID }, onClick, securableObject);
+      base.RenderBegin (writer, renderingFeatures, postBackLink, new string?[] { listIndex.ToString(), businessObjectID }, onClick, securableObject);
     }
 
     /// <summary>
@@ -256,8 +256,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         if (_commandState == null && !string.IsNullOrEmpty (_commandStateType))
         {
-          Type? type = WebTypeUtility.GetType (_commandStateType, true);
-          _commandState = (IBocListItemCommandState?) Activator.CreateInstance (type, null);
+          Type type = WebTypeUtility.GetType (_commandStateType, true)!;
+          _commandState = (IBocListItemCommandState) Activator.CreateInstance (type, null)!;
         }
         return _commandState;
       }
@@ -287,7 +287,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   ///   Represents the method that handles the <see cref="BocListItemCommand.Click"/> event
   ///   raised when clicking on a <see cref="Command"/> of type <see cref="CommandType.Event"/>.
   /// </summary>
-  public delegate void BocListItemCommandClickEventHandler (object sender, BocListItemCommandClickEventArgs e);
+  public delegate void BocListItemCommandClickEventHandler (object? sender, BocListItemCommandClickEventArgs e);
 
   /// <summary> Provides data for the <see cref="BocListItemCommand.Click"/> event. </summary>
   public class BocListItemCommandClickEventArgs : BocCommandClickEventArgs

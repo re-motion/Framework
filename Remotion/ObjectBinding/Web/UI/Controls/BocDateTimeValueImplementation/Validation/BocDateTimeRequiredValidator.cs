@@ -40,7 +40,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
 
     protected override bool EvaluateIsValid ()
     {
-      Control control = NamingContainer.FindControl (ControlToValidate);
+      Control? control = NamingContainer.FindControl (ControlToValidate);
 
       BocDateTimeValue? dateTimeValueControl = control as BocDateTimeValue;
 

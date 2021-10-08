@@ -16,6 +16,7 @@
 // 
 using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Web.UI;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
@@ -26,7 +27,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 public class BocListView: BusinessObjectControlItem
 {
   private string? _itemID;
-  private object _title;
+  private object? _title;
   /// <summary> 
   ///   The <see cref="BocColumnDefinition"/> objects stored in the <see cref="BocListView"/>. 
   /// </summary>
@@ -34,9 +35,9 @@ public class BocListView: BusinessObjectControlItem
 
   /// <summary> Initialize a new instance. </summary>
   public BocListView (
-      IBusinessObjectBoundWebControl ownerControl, 
+      IBusinessObjectBoundWebControl? ownerControl,
       object title, 
-      BocColumnDefinition[] columnDefinitions)
+      BocColumnDefinition[]? columnDefinitions)
   {
     _title = title;
     _columnDefinitions = new BocColumnDefinitionCollection (
@@ -64,7 +65,7 @@ public class BocListView: BusinessObjectControlItem
     _columnDefinitions.OwnerControl = OwnerControl;
   }
 
-  public override string? ToString()
+  public override string ToString()
   {
     string? displayName = ItemID;
     if (string.IsNullOrEmpty (displayName))
@@ -96,9 +97,10 @@ public class BocListView: BusinessObjectControlItem
   [Category ("Appearance")]
   [DefaultValue("")]
   [NotifyParentProperty (true)]
-  public string? Title
+  [AllowNull]
+  public string Title
   {
-    get { return (_title != null) ? _title.ToString() : string.Empty; }
+    get { return (_title != null) ? _title.ToString()! : string.Empty; }
     set { _title = value; }
   }
 

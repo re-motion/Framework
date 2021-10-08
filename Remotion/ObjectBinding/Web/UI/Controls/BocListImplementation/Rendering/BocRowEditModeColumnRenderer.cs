@@ -155,7 +155,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       ArgumentUtility.CheckNotNull ("icon", icon);
 
       string argument = renderingContext.Control.GetRowEditCommandArgument (new BocListRow (originalRowIndex, businessObject), command);
-      string postBackEvent = renderingContext.Control.Page.ClientScript.GetPostBackEventReference (renderingContext.Control, argument) + ";";
+      string postBackEvent = renderingContext.Control.Page!.ClientScript.GetPostBackEventReference (renderingContext.Control, argument) + ";";
       var commandItemID = "Column_" + renderingContext.ColumnIndex + "_RowEditCommand_" + command + "_Row_" + originalRowIndex;
 
       Command c;

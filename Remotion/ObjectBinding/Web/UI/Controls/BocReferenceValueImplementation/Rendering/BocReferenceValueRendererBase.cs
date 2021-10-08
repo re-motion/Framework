@@ -98,7 +98,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       if (!renderingContext.Control.Width.IsEmpty)
         width = renderingContext.Control.Width;
       else if (renderingContext.Control.Style[HtmlTextWriterStyle.Width] != null)
-        width = Unit.Parse (renderingContext.Control.Style[HtmlTextWriterStyle.Width]);
+        width = Unit.Parse (renderingContext.Control.Style[HtmlTextWriterStyle.Width]!);
       if (!width.IsEmpty)
         renderingContext.Control.Style[widthCssProperty] = width.Type == UnitType.Percentage ? "100%" : width.ToString();
 
@@ -128,7 +128,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     {
       string key = typeof (BocReferenceValueRendererBase<>).GetFullNameChecked() + "_InitializeGlobals";
 
-      if (renderingContext.Control.Page.ClientScript.IsClientScriptBlockRegistered (typeof (BocReferenceValueRendererBase<>), key))
+      if (renderingContext.Control.Page!.ClientScript.IsClientScriptBlockRegistered (typeof (BocReferenceValueRendererBase<>), key))
         return;
 
       var nullIcon = IconInfo.CreateSpacer (ResourceUrlFactory);
@@ -209,7 +209,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
         if (!string.IsNullOrEmpty (renderingContext.Control.ControlServicePath))
         {
-          var stringValueParametersDictionary = new Dictionary<string, string>();
+          var stringValueParametersDictionary = new Dictionary<string, string?>();
           stringValueParametersDictionary.Add ("controlID", renderingContext.Control.ID);
           stringValueParametersDictionary.Add (
               "controlType",

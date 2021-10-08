@@ -118,7 +118,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     private void RenderCustomCellInnerControls (BocColumnRenderingContext<BocCustomColumnDefinition> renderingContext, int originalRowIndex, int rowIndex)
     {
       BocListCustomColumnTuple[] customColumnTuples = renderingContext.Control.CustomColumns[renderingContext.ColumnDefinition];
-      BocListCustomColumnTuple customColumnTuple;
+      BocListCustomColumnTuple? customColumnTuple;
       if (customColumnTuples.Length > rowIndex && customColumnTuples[rowIndex].Item2 == originalRowIndex)
         customColumnTuple = customColumnTuples[rowIndex];
       else

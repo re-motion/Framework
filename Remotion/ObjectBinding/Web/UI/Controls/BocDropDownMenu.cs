@@ -161,7 +161,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
           }
           else
           {
-            if (menuItem.ItemID.EndsWith (itemIDSuffix))
+            if (menuItem.ItemID.EndsWith (itemIDSuffix!))
               menuItem.IsVisible = false;
           }
         }
@@ -202,14 +202,14 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
     }
   }
 
-  protected virtual string? GetTitleText (IBusinessObject businessObject)
+  protected virtual string GetTitleText (IBusinessObject businessObject)
   {
     ArgumentUtility.CheckNotNull ("businessObject", businessObject);
     
     if (businessObject is IBusinessObjectWithIdentity)
       return ((IBusinessObjectWithIdentity) businessObject).GetAccessibleDisplayName();
     else
-      return businessObject.ToString();
+      return businessObject.ToString()!;
   }
 
   protected override void Render (HtmlTextWriter writer)
@@ -220,7 +220,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
     {
       var businessObjectWebServiceContext = CreateBusinessObjectWebServiceContext();
 
-      var stringValueParametersDictionary = new Dictionary<string, string>();
+      var stringValueParametersDictionary = new Dictionary<string, string?>();
       stringValueParametersDictionary.Add ("controlID", ID);
       stringValueParametersDictionary.Add (
           "controlType",
@@ -410,7 +410,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   protected virtual void OnMenuItemEventCommandClick (WebMenuItem menuItem)
   {
     WebMenuItemClickEventHandler? menuItemClickHandler = (WebMenuItemClickEventHandler?) Events[s_menuItemClickEvent];
-    if (menuItem != null && menuItem.Command != null)
+    if (menuItem.Command != null)
     {
       if (menuItem is BocMenuItem)
         ((BocMenuItemCommand) menuItem.Command).OnClick ((BocMenuItem) menuItem);

@@ -57,7 +57,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       IEditableRow? editableRow = renderingContext.Control.EditModeController.GetEditableRow (originalRowIndex);
 
       bool hasEditModeControl = editableRow != null && editableRow.HasEditControl (renderingContext.ColumnIndex);
-      bool showEditModeControl = hasEditModeControl && !editableRow.GetEditControl (renderingContext.ColumnIndex).IsReadOnly;
+      bool showEditModeControl = hasEditModeControl && !editableRow!.GetEditControl (renderingContext.ColumnIndex)!.IsReadOnly;
 
       string? valueColumnText = null;
       if (!showEditModeControl)
@@ -74,16 +74,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         RenderOtherIcons (renderingContext, businessObject);
       }
       if (showEditModeControl)
-        RenderCellDataForEditMode (renderingContext, businessObject, editableRow);
+        RenderCellDataForEditMode (renderingContext, businessObject, editableRow!);
       else
-        RenderValueColumnCellText (renderingContext, valueColumnText);
+        RenderValueColumnCellText (renderingContext, valueColumnText!);
 
       RenderEndTag (renderingContext, isCommandEnabled);
       RenderCropSpanEndTag (renderingContext, enforceWidth);
     }
 
     protected abstract void RenderCellDataForEditMode (
-        BocColumnRenderingContext<TBocColumnDefinition> renderingContext, IBusinessObject businessObject, IEditableRow? editableRow);
+        BocColumnRenderingContext<TBocColumnDefinition> renderingContext, IBusinessObject businessObject, IEditableRow editableRow);
 
     /// <summary>
     /// Used by <see cref="RenderCellContents"/> to render icons in addition to the <paramref name="businessObject"/>'s icon.

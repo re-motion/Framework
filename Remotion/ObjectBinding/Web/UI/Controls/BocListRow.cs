@@ -21,12 +21,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   public sealed class BocListRow : IEquatable<BocListRow>
   {
-    public static bool operator== (BocListRow row1, BocListRow row2)
+    public static bool operator== (BocListRow? row1, BocListRow? row2)
     {
       return Equals (row1, row2);
     }
 
-    public static bool operator!= (BocListRow row1, BocListRow row2)
+    public static bool operator!= (BocListRow? row1, BocListRow? row2)
     {
       return !(row1 == row2);
     }

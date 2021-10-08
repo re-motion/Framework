@@ -22,7 +22,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 /// <summary> A collection of <see cref="BocColumnDefinition"/> objects. </summary>
 public class BocColumnDefinitionCollection: BusinessObjectControlItemCollection
 {
-  public BocColumnDefinitionCollection (IBusinessObjectBoundWebControl ownerControl)
+  public BocColumnDefinitionCollection (IBusinessObjectBoundWebControl? ownerControl)
     : base (ownerControl, new Type[] {typeof (BocColumnDefinition)})
   {
   }
@@ -35,7 +35,7 @@ public class BocColumnDefinitionCollection: BusinessObjectControlItemCollection
   //  Do NOT make this indexer public. Ever. Or ASP.net won't be able to de-serialize this property.
   protected internal new BocColumnDefinition this[int index]
   {
-    get { return (BocColumnDefinition) List[index]; }
+    get { return (BocColumnDefinition) List[index]!; }
     set { List[index] = value; }
   }
 }

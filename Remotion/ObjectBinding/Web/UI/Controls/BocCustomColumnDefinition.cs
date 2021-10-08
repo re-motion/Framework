@@ -57,7 +57,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Gets or sets the <see cref="BocCustomColumnDefinitionCell"/> to be used for rendering. </summary>
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     [Browsable (false)]
-    public BocCustomColumnDefinitionCell? CustomCell
+    public BocCustomColumnDefinitionCell CustomCell
     {
       get
       {
@@ -69,10 +69,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
                 string.Format (
                     "Neither a CustomCell nor a CustomCellType has been specified for BocCustomColumnDefinition '{0}' in BocList '{1}'.",
                     ItemID,
-                    OwnerControl.ID));
+                    OwnerControl!.ID));
           }
-          Type? type = WebTypeUtility.GetType (_customCellType, true);
-          _customCell = (BocCustomColumnDefinitionCell?) Activator.CreateInstance (type);
+          Type type = WebTypeUtility.GetType (_customCellType, true)!;
+          _customCell = (BocCustomColumnDefinitionCell) Activator.CreateInstance (type)!;
         }
         return _customCell;
       }
@@ -225,7 +225,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     IComparer<BocListRow> IBocSortableColumnDefinition.CreateCellValueComparer ()
     {
-      var args = new BocCustomCellArguments ((IBocList?) OwnerControl, this);
+      Assertion.IsNotNull (OwnerControl, "OwnerControl must not be null.");
+
+      var args = new BocCustomCellArguments ((IBocList) OwnerControl, this);
       return CustomCell.CreateCellValueComparerInternal (args);
     }
   }
@@ -321,7 +323,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (preRenderArguments == null)
         throw new InvalidOperationException ("RegisterForSynchronousPostBack can only be called from OnPreRender method.");
 
-      _arguments.List.RegisterCustomCellForSynchronousPostBack (preRenderArguments.ColumnIndex, row, eventArgument);
+      _arguments!.List.RegisterCustomCellForSynchronousPostBack (preRenderArguments.ColumnIndex, row, eventArgument);
     }
 
     internal Control CreateControlInternal (BocCustomCellArguments arguments)
@@ -510,11 +512,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   /// </summary>
   public class BocCustomCellArguments
   {
-    private readonly IBocList? _list;
+    private readonly IBocList _list;
     private readonly BocCustomColumnDefinition _columnDefinition;
 
     public BocCustomCellArguments (
-        IBocList? list,
+        IBocList list,
         BocCustomColumnDefinition columnDefinition)
     {
       _list = list;
@@ -522,7 +524,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets the <see cref="BocList"/> containing the column. </summary>
-    public IBocList? List
+    public IBocList List
     {
       get { return _list; }
     }

@@ -139,6 +139,7 @@ public class BocMenuItemCommand: BocCommand
     _hasClickFired = true;
     if (Click != null)
     {
+      Assertion.IsNotNull (OwnerControl, "OwnerControl must not be null.");
       WebMenuItemClickEventArgs e = new WebMenuItemClickEventArgs (menuItem);
       Click (OwnerControl, e);
     }

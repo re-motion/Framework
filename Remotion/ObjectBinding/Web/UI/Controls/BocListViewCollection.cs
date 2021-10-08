@@ -35,7 +35,7 @@ public class BocListViewCollection: BusinessObjectControlItemCollection
   //  Do NOT make this indexer public. Ever. Or ASP.net won't be able to de-serialize this property.
   protected internal new BocListView this[int index]
   {
-    get { return (BocListView) List[index]; }
+    get { return (BocListView) List[index]!; }
     set { List[index] = value; }
   }
 }

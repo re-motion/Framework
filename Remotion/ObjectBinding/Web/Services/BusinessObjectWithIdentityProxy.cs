@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Utilities;
 
@@ -46,12 +47,14 @@ namespace Remotion.ObjectBinding.Web.Services
       _displayName = obj.GetAccessibleDisplayName();
     }
 
+    [DisallowNull]
     public string? UniqueIdentifier
     {
       get { return _uniqueIdentifier; }
       set { _uniqueIdentifier = ArgumentUtility.CheckNotNullOrEmpty ("value", value); }
     }
 
+    [DisallowNull]
     public string? DisplayName
     {
       get { return _displayName; }
@@ -61,7 +64,7 @@ namespace Remotion.ObjectBinding.Web.Services
     public string IconUrl
     {
       get { return _iconUrl; }
-      set { _iconUrl = value ?? string.Empty; }
+      set { _iconUrl = ArgumentUtility.CheckNotNull ("value", value); }
     }
   }
 }

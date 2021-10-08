@@ -232,7 +232,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return isValid;
     }
 
-    IPage IControl.Page
+    IPage? IControl.Page
     {
       get { return PageWrapper.CastOrCreate (base.Page); }
     }

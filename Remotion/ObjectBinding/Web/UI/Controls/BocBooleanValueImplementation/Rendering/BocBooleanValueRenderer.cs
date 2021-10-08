@@ -140,7 +140,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
 
       if (!renderingContext.Control.IsReadOnly)
       {
-        hiddenFieldControl.Value = renderingContext.Control.Value.HasValue ? renderingContext.Control.Value.ToString() : c_nullString;
+        hiddenFieldControl.Value = renderingContext.Control.Value.HasValue ? renderingContext.Control.Value.ToString()! : c_nullString;
         hiddenFieldControl.Visible = true;
         hiddenFieldControl.RenderControl (renderingContext.Writer);
       }
@@ -215,7 +215,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
     private void RegisterStarupScriptIfNeeded (BocBooleanValueRenderingContext renderingContext, BocBooleanValueResourceSet resourceSet)
     {
       string startUpScriptKey = s_startUpScriptKeyPrefix + resourceSet.ResourceKey;
-      if (!renderingContext.Control.Page.ClientScript.IsStartupScriptRegistered (typeof (BocBooleanValueRenderer), startUpScriptKey))
+      if (!renderingContext.Control.Page!.ClientScript.IsStartupScriptRegistered (typeof (BocBooleanValueRenderer), startUpScriptKey))
       {
         string trueValue = true.ToString();
         string falseValue = false.ToString();
@@ -277,7 +277,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       scriptBuilder.Append (");");
 
       if (renderingContext.Control.IsAutoPostBackEnabled)
-        scriptBuilder.Append (renderingContext.Control.Page.ClientScript.GetPostBackEventReference (renderingContext.Control, "")).Append (";");
+        scriptBuilder.Append (renderingContext.Control.Page!.ClientScript.GetPostBackEventReference (renderingContext.Control, "")).Append (";");
       scriptBuilder.Append ("return false;");
       return scriptBuilder.ToString();
     }

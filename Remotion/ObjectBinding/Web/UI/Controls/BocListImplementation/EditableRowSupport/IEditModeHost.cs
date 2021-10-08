@@ -25,7 +25,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
   public interface IEditModeHost
   {
     IReadOnlyList<IBusinessObject>? Value { get; }
-    string ID { get; }
+    string? ID { get; }
     bool IsReadOnly { get; }
     bool IsDirty { get; set; }
     EditableRowDataSourceFactory EditModeDataSourceFactory { get; }
@@ -49,7 +49,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     void OnEditableRowChangesCanceled (int index, IBusinessObject businessObject);
     Image GetRequiredMarker ();
     Control GetValidationErrorMarker ();
-    EditModeValidator GetEditModeValidator ();
+    EditModeValidator? GetEditModeValidator ();
     void SetFocus (IFocusableControl control);
   }
 }

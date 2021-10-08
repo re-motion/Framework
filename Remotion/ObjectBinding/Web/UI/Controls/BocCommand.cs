@@ -248,7 +248,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   ///   Represents the method that handles the <see cref="BocCommand.Click"/> event
   ///   raised when clicking on a <see cref="Command"/> of type <see cref="CommandType.Event"/>.
   /// </summary>
-  public delegate void BocCommandClickEventHandler (object sender, BocCommandClickEventArgs e);
+  public delegate void BocCommandClickEventHandler (object? sender, BocCommandClickEventArgs e);
 
   /// <summary> Provides data for the <see cref="BocCommand.Click"/> event. </summary>
   public class BocCommandClickEventArgs : CommandClickEventArgs
