@@ -101,7 +101,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public PropertyBase GetMetadata ()
     {
-      Type underlyingType = GetUnderlyingType();
+      Type? underlyingType = GetUnderlyingType();
       PropertyBase.Parameters parameters = CreateParameters (underlyingType);
 
       if (underlyingType == typeof (Boolean))
@@ -159,12 +159,12 @@ namespace Remotion.ObjectBinding.BindableObject
       return new Lazy<Type> (() => BindableObjectProvider.GetConcreteTypeForBindableObjectImplementation (type));
     }
 
-    protected virtual Type GetUnderlyingType ()
+    protected virtual Type? GetUnderlyingType ()
     {
       return Nullable.GetUnderlyingType (GetItemType()) ?? GetItemType();
     }
 
-    protected virtual Type GetItemType ()
+    protected virtual Type? GetItemType ()
     {
       if (_propertyInfo.PropertyType.IsArray)
         return _propertyInfo.PropertyType.GetElementType();
@@ -181,7 +181,7 @@ namespace Remotion.ObjectBinding.BindableObject
       return _propertyInfo.PropertyType;
     }
 
-    protected virtual IListInfo GetListInfo ()
+    protected virtual IListInfo? GetListInfo ()
     {
       if (IsListProperty())
         return new ListInfo (_propertyInfo.PropertyType, GetItemType());
@@ -206,7 +206,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     protected virtual bool GetIsReadOnly ()
     {
-      ObjectBindingAttribute attribute = _propertyInfo.GetCustomAttribute<ObjectBindingAttribute> (true);
+      ObjectBindingAttribute? attribute = _propertyInfo.GetCustomAttribute<ObjectBindingAttribute> (true);
       if (attribute != null && attribute.ReadOnly)
         return true;
 
@@ -242,7 +242,7 @@ namespace Remotion.ObjectBinding.BindableObject
       return _defaultValueStrategy;
     }
 
-    private PropertyBase.Parameters CreateParameters (Type underlyingType)
+    private PropertyBase.Parameters CreateParameters (Type? underlyingType)
     {
       return new PropertyBase.Parameters (
           _businessObjectProvider,
@@ -262,7 +262,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     private Type GetItemTypeFromAttribute ()
     {
-      ItemTypeAttribute itemTypeAttribute = _propertyInfo.GetCustomAttribute<ItemTypeAttribute> (true);
+      ItemTypeAttribute? itemTypeAttribute = _propertyInfo.GetCustomAttribute<ItemTypeAttribute> (true);
       if (itemTypeAttribute == null)
         throw new Exception ("ItemTypeAttribute is required for properties of type IList.");
 

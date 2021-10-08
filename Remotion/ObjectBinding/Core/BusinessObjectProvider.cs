@@ -79,7 +79,7 @@ namespace Remotion.ObjectBinding
 
       if (provider != null)
       {
-        BusinessObjectProviderAttribute attribute = CreateBusinessObjectProviderAttribute (businessObjectProviderAttributeType);
+        BusinessObjectProviderAttribute? attribute = CreateBusinessObjectProviderAttribute (businessObjectProviderAttributeType);
         if (!TypeExtensions.CanAscribeTo (provider.GetType(), attribute.BusinessObjectProviderType))
         {
           throw new ArgumentException (
@@ -114,7 +114,7 @@ namespace Remotion.ObjectBinding
 
     private static IBusinessObjectProvider CreateBusinessObjectProviderFromAttribute (Type businessObjectProviderAttributeType)
     {
-      BusinessObjectProviderAttribute attribute = CreateBusinessObjectProviderAttribute (businessObjectProviderAttributeType);
+      BusinessObjectProviderAttribute? attribute = CreateBusinessObjectProviderAttribute (businessObjectProviderAttributeType);
       IBusinessObjectProvider provider = CreateBusinessObjectProvider (attribute.BusinessObjectProviderType);
       
       if (provider is BusinessObjectProvider)
@@ -123,9 +123,9 @@ namespace Remotion.ObjectBinding
       return provider;
     }
 
-    private static BusinessObjectProviderAttribute CreateBusinessObjectProviderAttribute (Type businessObjectProviderAttributeType)
+    private static BusinessObjectProviderAttribute? CreateBusinessObjectProviderAttribute (Type businessObjectProviderAttributeType)
     {
-      return (BusinessObjectProviderAttribute) Activator.CreateInstance (businessObjectProviderAttributeType);
+      return (BusinessObjectProviderAttribute?) Activator.CreateInstance (businessObjectProviderAttributeType);
     }
 
     private static IBusinessObjectProvider CreateBusinessObjectProvider (Type businessObjectProviderType)
@@ -134,8 +134,8 @@ namespace Remotion.ObjectBinding
     }
 
     private readonly IBusinessObjectServiceFactory _serviceFactory;
-    private BusinessObjectProviderAttribute _providerAttribute;
-    private Func<Type, IBusinessObjectService> _getServiceStoreValueFactory;
+    private BusinessObjectProviderAttribute? _providerAttribute;
+    private Func<Type, IBusinessObjectService>? _getServiceStoreValueFactory;
 
     protected BusinessObjectProvider (IBusinessObjectServiceFactory serviceFactory)
     {
@@ -159,7 +159,7 @@ namespace Remotion.ObjectBinding
       get { return _serviceFactory; }
     }
 
-    public BusinessObjectProviderAttribute ProviderAttribute
+    public BusinessObjectProviderAttribute? ProviderAttribute
     {
       get { return _providerAttribute; }
     }

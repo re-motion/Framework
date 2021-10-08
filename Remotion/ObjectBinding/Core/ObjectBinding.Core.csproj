@@ -9,7 +9,6 @@
     <Description>Generic interfaces and classes for business objects and data binding.</Description>
     <AssemblyName>Remotion.ObjectBinding</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
-    <Nullable>disable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="Design\BindableObject\*.bmp" />

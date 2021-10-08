@@ -25,6 +25,6 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyConstraints
     IEnumerable<IBusinessObjectPropertyConstraint> GetPropertyConstraints (
         [NotNull] IBusinessObjectClass businessObjectClass,
         [NotNull] IBusinessObjectProperty businessObjectProperty,
-        [CanBeNull] IBusinessObject businessObject);
+        [CanBeNull] IBusinessObject? businessObject);
   }
 }

@@ -24,9 +24,9 @@ namespace Remotion.ObjectBinding.Globalization {
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class BindableObjectGlobalizationService {
         
-        private static global::System.Resources.ResourceManager resourceMan;
+        private static global::System.Resources.ResourceManager? resourceMan;
         
-        private static global::System.Globalization.CultureInfo resourceCulture;
+        private static global::System.Globalization.CultureInfo? resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal BindableObjectGlobalizationService() {
@@ -51,7 +51,7 @@ namespace Remotion.ObjectBinding.Globalization {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo? Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace Remotion.ObjectBinding.Globalization {
         /// <summary>
         ///   Looks up a localized string similar to No.
         /// </summary>
-        internal static string Remotion_ObjectBinding_BindableObject_BindableObjectGlobalizationService_False {
+        internal static string? Remotion_ObjectBinding_BindableObject_BindableObjectGlobalizationService_False {
             get {
                 return ResourceManager.GetString("Remotion.ObjectBinding.BindableObject.BindableObjectGlobalizationService.False", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace Remotion.ObjectBinding.Globalization {
         /// <summary>
         ///   Looks up a localized string similar to Yes.
         /// </summary>
-        internal static string Remotion_ObjectBinding_BindableObject_BindableObjectGlobalizationService_True {
+        internal static string? Remotion_ObjectBinding_BindableObject_BindableObjectGlobalizationService_True {
             get {
                 return ResourceManager.GetString("Remotion.ObjectBinding.BindableObject.BindableObjectGlobalizationService.True", resourceCulture);
             }

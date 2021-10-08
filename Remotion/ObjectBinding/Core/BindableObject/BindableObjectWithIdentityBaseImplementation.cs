@@ -48,7 +48,7 @@ namespace Remotion.ObjectBinding.BindableObject
       get { return ((BindableObjectWithIdentityBase) Target).UniqueIdentifier; }
     }
 
-    void IDeserializationCallback.OnDeserialization (object sender)
+    void IDeserializationCallback.OnDeserialization (object? sender)
     {
       Assertion.DebugAssert (!TypeExtensions.CanAscribeTo (typeof (BindableObjectWithIdentityBaseImplementation), typeof (Mixin<,>)),
           "we assume the mixin does not have a base object");

@@ -52,7 +52,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
           .ToArray();
     }
 
-    public IEnumerationValueInfo GetValueInfoByValue (object value, IBusinessObject businessObject)
+    public IEnumerationValueInfo? GetValueInfoByValue (object? value, IBusinessObject businessObject)
     {
       var enumValue = value as IExtensibleEnum;
       if (enumValue == null)
@@ -65,7 +65,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
       return CreateEnumerationValueInfo (extensibleEnumInfo, businessObject);
     }
 
-    public IEnumerationValueInfo GetValueInfoByIdentifier (string identifier, IBusinessObject businessObject)
+    public IEnumerationValueInfo? GetValueInfoByIdentifier (string identifier, IBusinessObject businessObject)
     {
       if (string.IsNullOrEmpty (identifier))
         return null;

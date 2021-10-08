@@ -57,7 +57,7 @@ namespace Remotion.ObjectBinding
     ///   Usually identical to <see cref="IBusinessObjectBoundControl.Property"/>, i.e. <b>ReferenceProperty</b>
     ///   gets or sets the current value of <see cref="IBusinessObjectBoundControl.Property"/>.
     /// </remarks>
-    IBusinessObjectReferenceProperty ReferenceProperty { get; }
+    IBusinessObjectReferenceProperty? ReferenceProperty { get; }
 
     /// <summary>
     ///   Gets the <see cref="IBusinessObjectDataSource"/> providing the <see cref="IBusinessObject"/> 
@@ -71,6 +71,6 @@ namespace Remotion.ObjectBinding
     ///   Usually identical to <see cref="IBusinessObjectBoundControl.DataSource"/>, i.e. <b>ReferencedDataSource</b>
     ///   gets the current value of <see cref="IBusinessObjectBoundControl.DataSource"/>.
     /// </remarks>
-    IBusinessObjectDataSource ReferencedDataSource { get; }
+    IBusinessObjectDataSource? ReferencedDataSource { get; }
   }
 }

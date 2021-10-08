@@ -74,7 +74,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     /// <param name="value"> The enumeration value to return the <see cref="IEnumerationValueInfo"/> for. </param>
     /// <param name="businessObject"> The <see cref="IBusinessObject"/> used to determine whether the enum value is enabled. </param>
     /// <returns> The <see cref="IEnumerationValueInfo"/> object for the provided <paramref name="value"/>. </returns>
-    public IEnumerationValueInfo GetValueInfoByValue (object value, IBusinessObject businessObject)
+    public IEnumerationValueInfo? GetValueInfoByValue (object? value, IBusinessObject businessObject)
     {
       return _booleanToEnumPropertyConverter.GetValueInfoByValue (value);
     }
@@ -83,7 +83,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     /// <param name="identifier">The string identifying the  enumeration value to return the <see cref="IEnumerationValueInfo"/> for.</param>
     /// <param name="businessObject"> The <see cref="IBusinessObject"/> used to determine whether the enum value is enabled. </param>
     /// <returns> The <see cref="IEnumerationValueInfo"/> object for the provided <paramref name="identifier"/>. </returns>
-    public IEnumerationValueInfo GetValueInfoByIdentifier (string identifier, IBusinessObject businessObject)
+    public IEnumerationValueInfo? GetValueInfoByIdentifier (string identifier, IBusinessObject businessObject)
     {
       return _booleanToEnumPropertyConverter.GetValueInfoByIdentifier (identifier);
     }

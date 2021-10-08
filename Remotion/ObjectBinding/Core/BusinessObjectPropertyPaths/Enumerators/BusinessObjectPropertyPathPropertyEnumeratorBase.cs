@@ -28,7 +28,7 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths.Enumerators
   {
     private string _remainingPropertyPathIdentifier;
     private bool _isEnumerationFinished;
-    private IBusinessObjectProperty _currentProperty;
+    private IBusinessObjectProperty? _currentProperty;
     private bool _isEnumerationStarted;
 
     protected BusinessObjectPropertyPathPropertyEnumeratorBase (string propertyPathIdentifier)
@@ -46,7 +46,7 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths.Enumerators
         IBusinessObjectClass businessObjectClass,
         IBusinessObjectProperty property);
 
-    public IBusinessObjectProperty Current
+    public IBusinessObjectProperty? Current
     {
       get
       {

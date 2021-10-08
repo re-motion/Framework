@@ -57,12 +57,12 @@ namespace Remotion.ObjectBinding.BindableObject
       get { return _implementationPropertyInfo.Name; }
     }
 
-    public ITypeInformation DeclaringType
+    public ITypeInformation? DeclaringType
     {
       get { return _implementationPropertyInfo.DeclaringType; }
     }
 
-    public ITypeInformation GetOriginalDeclaringType ()
+    public ITypeInformation? GetOriginalDeclaringType ()
     {
       return _implementationPropertyInfo.GetOriginalDeclaringType();
     }
@@ -72,7 +72,7 @@ namespace Remotion.ObjectBinding.BindableObject
       return _implementationPropertyInfo.GetOriginalDeclaration();
     }
 
-    public T GetCustomAttribute<T> (bool inherited) where T: class
+    public T? GetCustomAttribute<T> (bool inherited) where T: class
     {
       return _implementationPropertyInfo.GetCustomAttribute<T> (inherited);
     }
@@ -87,7 +87,7 @@ namespace Remotion.ObjectBinding.BindableObject
       return _implementationPropertyInfo.IsDefined<T> (inherited);
     }
 
-    public IPropertyInformation FindInterfaceImplementation (Type implementationType)
+    public IPropertyInformation? FindInterfaceImplementation (Type implementationType)
     {
       ArgumentUtility.CheckNotNull ("implementationType", implementationType);
 
@@ -119,14 +119,14 @@ namespace Remotion.ObjectBinding.BindableObject
       get { return GetSetMethod (false) != null; }
     }
 
-    public object GetValue (object instance, object[] indexParameters)
+    public object? GetValue (object? instance, object[]? indexParameters)
     {
       ArgumentUtility.CheckNotNull ("instance", instance);
 
       return GetGetMethod (true).Invoke (instance, indexParameters);
     }
 
-    public void SetValue (object instance, object value, object[] indexParameters)
+    public void SetValue (object? instance, object? value, object[]? indexParameters)
     {
       ArgumentUtility.CheckNotNull ("instance", instance);
 
@@ -157,7 +157,7 @@ namespace Remotion.ObjectBinding.BindableObject
     /// Otherwise, an instance of <see cref="IMethodInformation"/> for the get method on the implementation type, or <see langword="null" /> if 
     /// there is no such method or its visibility does not match the <paramref name="nonPublic"/> flag.
     /// </returns>
-    public IMethodInformation GetGetMethod (bool nonPublic)
+    public IMethodInformation? GetGetMethod (bool nonPublic)
     {
       var interfaceAccessor = _declarationPropertyInfo.GetGetMethod (nonPublic);
 
@@ -180,7 +180,7 @@ namespace Remotion.ObjectBinding.BindableObject
     /// Otherwise, an instance of <see cref="IMethodInformation"/> for the set method on the implementation type, or <see langword="null" /> if 
     /// there is no such method or its visibility does not match the <paramref name="nonPublic"/> flag.
     /// </returns>
-    public IMethodInformation GetSetMethod (bool nonPublic)
+    public IMethodInformation? GetSetMethod (bool nonPublic)
     {
       var interfaceAccessor = _declarationPropertyInfo.GetSetMethod (nonPublic);
 
@@ -190,7 +190,7 @@ namespace Remotion.ObjectBinding.BindableObject
         return _implementationPropertyInfo.GetSetMethod (nonPublic);
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
       if (obj == null)
         return false;
@@ -206,7 +206,7 @@ namespace Remotion.ObjectBinding.BindableObject
       return _implementationPropertyInfo.GetHashCode() ^ _declarationPropertyInfo.GetHashCode();
     }
 
-    public override string ToString ()
+    public override string? ToString ()
     {
       return string.Format ("{0} (impl of '{1}')", _implementationPropertyInfo.Name, _declarationPropertyInfo.DeclaringType.Name);
     }

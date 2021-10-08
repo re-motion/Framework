@@ -33,7 +33,7 @@ namespace Remotion.ObjectBinding.BindableObject
     /// <param name="bindableProperty">The <see cref="PropertyBase"/> for which the check will be performed. Must not be <see langword="null" />.</param>
     /// <returns><see langword="true" /> if the <paramref name="bindableProperty"/> can be set.</returns>
     /// <remarks>If setting the property is not supported, the property is displayed as read-only in the UI.</remarks>
-    bool CanWrite ([CanBeNull] IBusinessObject businessObject, [NotNull] PropertyBase bindableProperty);
+    bool CanWrite ([CanBeNull] IBusinessObject? businessObject, [NotNull] PropertyBase bindableProperty);
 
     /// <summary>
     /// Checks if the <paramref name="exception"/> that has occured while accessing the <paramref name="bindableProperty"/> 
@@ -57,5 +57,5 @@ namespace Remotion.ObjectBinding.BindableObject
         [NotNull] IBusinessObject businessObject,
         [NotNull] PropertyBase bindableProperty,
         [NotNull] Exception exception,
-        [CanBeNull] out BusinessObjectPropertyAccessException propertyAccessException);  }
+        [CanBeNull] out BusinessObjectPropertyAccessException? propertyAccessException);  }
 }

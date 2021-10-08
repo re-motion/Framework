@@ -112,7 +112,7 @@ namespace Remotion.ObjectBinding
     ///   Usually set before the an <see cref="IBusinessObject"/> is connected to the 
     ///   <see cref="IBusinessObjectDataSource"/>. 
     /// </remarks>
-    IBusinessObjectClass BusinessObjectClass { get; }
+    IBusinessObjectClass? BusinessObjectClass { get; }
 
     /// <summary>
     ///   Gets the <see cref="IBusinessObjectProvider"/> used for accessing supplementary information on the connected
@@ -124,7 +124,7 @@ namespace Remotion.ObjectBinding
     ///     Must not return <see langword="null"/> if the <see cref="BusinessObjectClass"/> is set.
     ///   </note>
     /// </remarks>
-    IBusinessObjectProvider BusinessObjectProvider { get; }
+    IBusinessObjectProvider? BusinessObjectProvider { get; }
 
     /// <summary>
     ///   Gets or sets the <see cref="IBusinessObject"/> connected to this <see cref="IBusinessObjectDataSource"/>.
@@ -133,7 +133,7 @@ namespace Remotion.ObjectBinding
     ///   An <see cref="IBusinessObject"/> or <see langword="null"/>. Must be compatible with
     ///   the <see cref="BusinessObjectClass"/> assigned to this <see cref="IBusinessObjectDataSource"/>.
     /// </value>
-    IBusinessObject BusinessObject { get; set; }
+    IBusinessObject? BusinessObject { get; set; }
 
     /// <summary>Gets the <see cref="IBusinessObjectBoundControl"/> objects bound to this <see cref="IBusinessObjectDataSource"/>.</summary>
     /// <returns> A read-only collection of <see cref="IBusinessObjectBoundControl"/> objects. </returns>

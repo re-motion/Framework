@@ -46,17 +46,17 @@ namespace Remotion.ObjectBinding.BindableObject
       get { return _implementationMethodInfo.Name; }
     }
 
-    public ITypeInformation DeclaringType
+    public ITypeInformation? DeclaringType
     {
       get { return _implementationMethodInfo.DeclaringType; }
     }
 
-    public ITypeInformation GetOriginalDeclaringType ()
+    public ITypeInformation? GetOriginalDeclaringType ()
     {
       return _implementationMethodInfo.GetOriginalDeclaringType();
     }
 
-    public T GetCustomAttribute<T> (bool inherited) where T: class
+    public T? GetCustomAttribute<T> (bool inherited) where T: class
     {
       return _implementationMethodInfo.GetCustomAttribute<T>(inherited);
     }
@@ -71,7 +71,7 @@ namespace Remotion.ObjectBinding.BindableObject
       return _implementationMethodInfo.IsDefined<T> (inherited);
     }
 
-    public IMethodInformation FindInterfaceImplementation (Type implementationType)
+    public IMethodInformation? FindInterfaceImplementation (Type implementationType)
     {
       ArgumentUtility.CheckNotNull ("implementationType", implementationType);
       
@@ -105,7 +105,7 @@ namespace Remotion.ObjectBinding.BindableObject
       return _implementationMethodInfo.GetOriginalDeclaration();
     }
 
-    public IPropertyInformation FindDeclaringProperty ()
+    public IPropertyInformation? FindDeclaringProperty ()
     {
       return _implementationMethodInfo.FindDeclaringProperty();
     }
@@ -115,14 +115,14 @@ namespace Remotion.ObjectBinding.BindableObject
       get { return _implementationMethodInfo.ReturnType; }
     }
 
-    public object Invoke (object instance, object[] parameters)
+    public object? Invoke (object? instance, object[]? parameters)
     {
       ArgumentUtility.CheckNotNull ("instance", instance);
       
       return _declarationMethodInfo.Invoke (instance, parameters);
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
       if (obj == null)
         return false;
@@ -138,7 +138,7 @@ namespace Remotion.ObjectBinding.BindableObject
       return _implementationMethodInfo.GetHashCode() ^ _declarationMethodInfo.GetHashCode();
     }
 
-    public override string ToString ()
+    public override string? ToString ()
     {
       return string.Format ("{0} (impl of '{1}')", _implementationMethodInfo.Name, _declarationMethodInfo.DeclaringType.Name);
     }

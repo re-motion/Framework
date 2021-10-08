@@ -23,7 +23,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
   //TODO: doc
   public class EnumerationProperty : PropertyBase, IBusinessObjectEnumerationProperty
   {
-    private readonly Enum _undefinedValue;
+    private readonly Enum? _undefinedValue;
     private readonly IEnumerationValueFilter _enumerationValueFilter;
 
     /// <exception cref="InvalidOperationException">
@@ -59,7 +59,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
       var valueInfos = new List<IEnumerationValueInfo>();
       foreach (Enum value in Enum.GetValues (UnderlyingType))
       {
-        IEnumerationValueInfo enumerationValueInfo = GetValueInfoByValue (value, businessObject);
+        IEnumerationValueInfo? enumerationValueInfo = GetValueInfoByValue (value, businessObject);
         if (enumerationValueInfo != null)
           valueInfos.Add (enumerationValueInfo);
       }
@@ -83,7 +83,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     /// The <see cref="IEnumerationValueInfo"/> object for the provided <paramref name="value"/> or <see langword="null"/> if the 
     /// <paramref name="value"/> represents <see langword="null"/>. 
     /// </returns>
-    public IEnumerationValueInfo GetValueInfoByValue (object value, IBusinessObject businessObject)
+    public IEnumerationValueInfo? GetValueInfoByValue (object? value, IBusinessObject businessObject)
     {
       if (value == null)
         return null;
@@ -102,7 +102,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     /// The <see cref="IEnumerationValueInfo"/> object for the provided <paramref name="identifier"/> or <see langword="null"/> if the 
     /// <paramref name="identifier"/> represents <see langword="null"/>. 
     /// </returns>
-    public IEnumerationValueInfo GetValueInfoByIdentifier (string identifier, IBusinessObject businessObject)
+    public IEnumerationValueInfo? GetValueInfoByIdentifier (string identifier, IBusinessObject businessObject)
     {
       if (string.IsNullOrEmpty (identifier))
         return null;
@@ -110,7 +110,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
       return GetValueInfoByValue (StringUtility.Parse (UnderlyingType, identifier, null), businessObject);
     }
 
-    public override object ConvertFromNativePropertyType (object nativeValue)
+    public override object? ConvertFromNativePropertyType (object? nativeValue)
     {
       if (nativeValue != null)
       {
@@ -121,7 +121,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
       return base.ConvertFromNativePropertyType (nativeValue);
     }
 
-    public override object ConvertToNativePropertyType (object publicValue)
+    public override object? ConvertToNativePropertyType (object? publicValue)
     {
       if (publicValue == null && _undefinedValue != null)
         return base.ConvertToNativePropertyType (_undefinedValue);
@@ -152,7 +152,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
       return value.Equals (_undefinedValue);
     }
 
-    private Enum GetUndefinedValue ()
+    private Enum? GetUndefinedValue ()
     {
       var undefinedEnumValueAttribute = AttributeUtility.GetCustomAttribute<UndefinedEnumValueAttribute> (UnderlyingType, false);
 
