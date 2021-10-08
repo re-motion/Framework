@@ -72,7 +72,7 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths
         catch (BusinessObjectPropertyAccessException)
         {
           HandlePropertyAccessDenied (unreachableValueBehavior, propertyIndex);
-          return new NotAccessibleBusinessObjectPropertyPathResult (currentObject.BusinessObjectClass.BusinessObjectProvider);
+          return new NotAccessibleBusinessObjectPropertyPathResult (currentObject!.BusinessObjectClass.BusinessObjectProvider);
         }
 
         if (currentObject == null)
@@ -87,7 +87,7 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths
       throw new InvalidOperationException ("Property path enumeration can never fall through.");
     }
 
-    public override string? ToString ()
+    public override string ToString ()
     {
       return Identifier;
     }
@@ -107,7 +107,8 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths
         }
 
         var list = (IList?) currentObject.GetProperty (currentProperty);
-        if (list.Count > 0)
+
+        if (list is { Count: >0 })
           return (IBusinessObject?) list[0];
         else
           return null;

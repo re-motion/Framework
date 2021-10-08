@@ -37,7 +37,7 @@ namespace Remotion.ObjectBinding.BindableObject
       get { return _disabledEnumValues; }
     }
 
-    public bool IsEnabled (IEnumerationValueInfo value, IBusinessObject businessObject, IBusinessObjectEnumerationProperty property)
+    public bool IsEnabled (IEnumerationValueInfo value, IBusinessObject? businessObject, IBusinessObjectEnumerationProperty property)
     {
       ArgumentUtility.CheckNotNull ("value", value);
       ArgumentUtility.CheckNotNull ("property", property);

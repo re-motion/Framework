@@ -45,7 +45,7 @@ namespace Remotion.ObjectBinding
     /// <exception cref="Exception">
     ///   Thrown if the <paramref name="property"/> is not part of this business object's class. 
     /// </exception>
-    object? GetProperty (IBusinessObjectProperty? property);
+    object? GetProperty (IBusinessObjectProperty property);
 
     /// <overloads> Sets the value accessed through the specified property. </overloads>
     /// <summary> Sets the value accessed through the specified <see cref="IBusinessObjectProperty"/>. </summary>
@@ -59,7 +59,7 @@ namespace Remotion.ObjectBinding
     /// <exception cref="Exception"> 
     ///   Thrown if the <paramref name="property"/> is not part of this business object's class. 
     /// </exception>
-    void SetProperty (IBusinessObjectProperty? property, object? value);
+    void SetProperty (IBusinessObjectProperty property, object? value);
 
     /// <summary> 
     ///   Gets the formatted string representation of the value accessed through the specified 
@@ -76,7 +76,7 @@ namespace Remotion.ObjectBinding
     /// <exception cref="Exception"> 
     ///   Thrown if the <paramref name="property"/> is not part of this business object's class. 
     /// </exception>
-    string? GetPropertyString (IBusinessObjectProperty property, string? format);
+    string GetPropertyString (IBusinessObjectProperty property, string? format);
 
     /// <summary> Gets the <see cref="IBusinessObjectClass"/> of this business object. </summary>
     /// <value> An <see cref="IBusinessObjectClass"/> instance acting as the business object's type. </value>

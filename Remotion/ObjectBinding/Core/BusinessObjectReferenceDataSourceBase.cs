@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Remotion.Utilities;
 
@@ -292,6 +293,8 @@ namespace Remotion.ObjectBinding
       }
     }
 
+    [MemberNotNullWhen (true, nameof (ReferencedDataSource))]
+    [MemberNotNullWhen (true, nameof (ReferenceProperty))]
     private bool HasValidBinding
     {
       get { return ReferencedDataSource != null && ReferenceProperty != null; }
@@ -299,12 +302,12 @@ namespace Remotion.ObjectBinding
 
     private bool RequiresWriteBack
     {
-      get { return (HasBusinessObjectChanged || HasBusinessObjectCreated || ReferenceProperty.ReferenceClass.RequiresWriteBack); }
+      get { return (HasBusinessObjectChanged || HasBusinessObjectCreated || (ReferenceProperty?.ReferenceClass.RequiresWriteBack ?? false)); }
     }
 
     private bool SupportsDefaultValueSemantics
     {
-      get { return (Mode == DataSourceMode.Edit && ReferenceProperty.SupportsDefaultValue); }
+      get { return (Mode == DataSourceMode.Edit && (ReferenceProperty?.SupportsDefaultValue ?? false)); }
     }
 
     private bool IsBusinessObjectSetToDefaultValue ()
@@ -314,7 +317,7 @@ namespace Remotion.ObjectBinding
         if (GetBoundControlsWithValidBinding().Any (c => c.HasValue))
           return false;
 
-        var properties = GetBoundControlsWithValidBinding().Select (c => c.Property).Distinct ().ToArray ();
+        var properties = GetBoundControlsWithValidBinding().Select (c => c.Property!).Distinct ().ToArray ();
         return ReferenceProperty.IsDefaultValue (ReferencedDataSource.BusinessObject, BusinessObject, properties);
       }
       else
@@ -326,6 +329,8 @@ namespace Remotion.ObjectBinding
     private void DeleteBusinessObject ()
     {
       Assertion.IsNotNull (BusinessObject, "The business object of this reference data source cannot be null when invoking DeleteBusinessObject().");
+      Assertion.IsNotNull (ReferenceProperty, "The reference property must not be null.");
+      Assertion.IsNotNull (ReferencedDataSource, "The referenced data source must not be null.");
       if (ReferenceProperty.SupportsDelete)
         ReferenceProperty.Delete (ReferencedDataSource.BusinessObject, BusinessObject);
     }

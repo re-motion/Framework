@@ -98,7 +98,7 @@ namespace Remotion.ObjectBinding
     ///   The <see cref="IBusinessObjectProperty"/> identified through the <paramref name="propertyIdentifier"/> is not part of this 
     ///   <paramref name="businessObject"/>'s <see cref="IBusinessObject.BusinessObjectClass"/>.
     /// </exception>
-    public static string? GetPropertyString (this IBusinessObject businessObject, string propertyIdentifier)
+    public static string GetPropertyString (this IBusinessObject businessObject, string propertyIdentifier)
     {
       ArgumentUtility.CheckNotNull ("businessObject", businessObject);
       ArgumentUtility.CheckNotNullOrEmpty ("propertyIdentifier", propertyIdentifier);
@@ -116,7 +116,7 @@ namespace Remotion.ObjectBinding
     /// Getting the <see cref="IBusinessObjectWithIdentity.DisplayName"/> can still fail with an exception if the exception is not part of the 
     /// property access contract, i.e. the exception is not of type <see cref="BusinessObjectPropertyAccessException"/>.
     /// </remarks>
-    public static string? GetAccessibleDisplayName (this IBusinessObjectWithIdentity businessObject)
+    public static string GetAccessibleDisplayName (this IBusinessObjectWithIdentity businessObject)
     {
       ArgumentUtility.CheckNotNull ("businessObject", businessObject);
 
@@ -135,7 +135,7 @@ namespace Remotion.ObjectBinding
       {
         try
         {
-          return (string?) businessObject.GetProperty (displayNameProperty);
+          return (string?) businessObject.GetProperty (displayNameProperty) ?? string.Empty;
         }
         catch (BusinessObjectPropertyAccessException)
         {

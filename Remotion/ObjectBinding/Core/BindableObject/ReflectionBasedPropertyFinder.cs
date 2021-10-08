@@ -88,8 +88,21 @@ namespace Remotion.ObjectBinding.BindableObject
       if (introducedMemberAttributes.Length > 0)
       {
         var introducedMemberAttribute = (IntroducedMemberAttribute) introducedMemberAttributes[0];
-        var interfaceProperty = PropertyInfoAdapter.Create(introducedMemberAttribute.IntroducedInterface.GetProperty (introducedMemberAttribute.InterfaceMemberName));
+        var interfacePropertyInfo = introducedMemberAttribute.IntroducedInterface.GetProperty (introducedMemberAttribute.InterfaceMemberName);
+        Assertion.IsNotNull (
+            interfacePropertyInfo,
+            "Could not find property '{0}' on introduced interface '{1}'.",
+            introducedMemberAttribute.InterfaceMemberName,
+            introducedMemberAttribute.IntroducedInterface.GetFullNameSafe());
+
+        var interfaceProperty = PropertyInfoAdapter.Create(interfacePropertyInfo);
         var mixinProperty = interfaceProperty.FindInterfaceImplementation (introducedMemberAttribute.Mixin);
+        Assertion.IsNotNull (
+            mixinProperty,
+            "Could not find implementation of property '{0}' on mixin '{1}'.",
+            interfaceProperty.Name,
+            introducedMemberAttribute.Mixin.GetFullNameSafe());
+
         var interfaceImplementation = new InterfaceImplementationPropertyInformation (mixinProperty, interfaceProperty);
 
         return new MixinIntroducedPropertyInformation (interfaceImplementation);
@@ -110,7 +123,7 @@ namespace Remotion.ObjectBinding.BindableObject
       return _concreteType.CreateSequence (c => c.BaseType);
     }
 
-    protected virtual bool PropertyFilter (MemberInfo memberInfo, object filterCriteria)
+    protected virtual bool PropertyFilter (MemberInfo memberInfo, object? filterCriteria)
     {
       // properties explicitly marked invisible are ignored
       var attribute = AttributeUtility.GetCustomAttribute<ObjectBindingAttribute> (memberInfo, true);
@@ -137,6 +150,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     protected virtual bool IsInfrastructureProperty (PropertyInfo propertyInfo, MethodInfo accessorDeclaration)
     {
+      Assertion.IsNotNull (accessorDeclaration.DeclaringType, "Could not get the declaring type of '{0}'.", accessorDeclaration.Name);
       return accessorDeclaration.DeclaringType.Assembly == typeof (IBusinessObject).Assembly
           || accessorDeclaration.DeclaringType.Assembly == typeof (BindableObjectClass).Assembly
           || accessorDeclaration.DeclaringType.Assembly == typeof (IMixinTarget).Assembly;

@@ -60,6 +60,7 @@ namespace Remotion.Reflection
     /// <exception cref="TargetInvocationException">The property's get method throw an exception, see the <see cref="Exception.InnerException"/>
     /// property.</exception>
     /// <exception cref="MethodAccessException">The accessor was private or protected and could not be executed.</exception>
+    /// <exception cref="InvalidOperationException">The property does not declare a getter.</exception>
     object? GetValue ([CanBeNull]object? instance, [CanBeNull]object[]? indexParameters);
 
     /// <summary>
@@ -84,6 +85,7 @@ namespace Remotion.Reflection
     /// <exception cref="TargetInvocationException">The property's get method throw an exception, see the <see cref="Exception.InnerException"/>
     /// property.</exception>
     /// <exception cref="MethodAccessException">The accessor was private or protected and could not be executed.</exception>
+    /// <exception cref="InvalidOperationException">The property does not declare a setter.</exception>
     void SetValue ([CanBeNull]object? instance, [CanBeNull]object? value, [CanBeNull]object[]? indexParameters);
 
     /// <summary>

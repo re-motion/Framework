@@ -33,11 +33,11 @@ namespace Remotion.ObjectBinding.BindableObject
       where TBindableObject: class
   {
     [NonSerialized]
-    private MixinConfiguration? _mixinConfigurationAtInstantiationTime;
+    private MixinConfiguration _mixinConfigurationAtInstantiationTime = null!;
     [NonSerialized]
-    private BindableObjectProvider? _bindableObjectProvider;
+    private BindableObjectProvider _bindableObjectProvider = null!;
     [NonSerialized]
-    private DoubleCheckedLockingContainer<BindableObjectClass>? _bindableObjectClass;
+    private DoubleCheckedLockingContainer<BindableObjectClass> _bindableObjectClass = null!;
 
     protected abstract Type GetTypeForBindableObjectClass ();
 
@@ -48,7 +48,7 @@ namespace Remotion.ObjectBinding.BindableObject
     /// <exception cref="Exception">
     ///   Thrown if the <paramref name="property"/> is not part of this business object's class. 
     /// </exception>
-    public object? GetProperty (IBusinessObjectProperty? property)
+    public object? GetProperty (IBusinessObjectProperty property)
     {
       var propertyBase = ArgumentUtility.CheckNotNullAndType<PropertyBase> ("property", property);
       
@@ -69,7 +69,7 @@ namespace Remotion.ObjectBinding.BindableObject
     /// <exception cref="Exception"> 
     ///   Thrown if the <paramref name="property"/> is not part of this business object's class. 
     /// </exception>
-    public void SetProperty (IBusinessObjectProperty? property, object? value)
+    public void SetProperty (IBusinessObjectProperty property, object? value)
     {
       var propertyBase = ArgumentUtility.CheckNotNullAndType<PropertyBase> ("property", property);
       
@@ -90,11 +90,14 @@ namespace Remotion.ObjectBinding.BindableObject
     /// <exception cref="Exception"> 
     ///   Thrown if the <paramref name="property"/> is not part of this business object's class. 
     /// </exception>
-    public string? GetPropertyString (IBusinessObjectProperty property, string? format)
+    public string GetPropertyString (IBusinessObjectProperty property, string? format)
     {
       var stringFormatterService =
-          (IBusinessObjectStringFormatterService)
+          (IBusinessObjectStringFormatterService?)
           BusinessObjectClass.BusinessObjectProvider.GetService (typeof (IBusinessObjectStringFormatterService));
+
+      Assertion.IsNotNull (stringFormatterService, "An implementation of {0} must be available.", nameof (IBusinessObjectStringFormatterService));
+
       return stringFormatterService.GetPropertyString ((IBusinessObject) Target, property, format);
     }
 

@@ -45,7 +45,7 @@ namespace Remotion.ObjectBinding.BindableObject
       set { _mode = value; }
     }
 
-    public override IBusinessObjectClass BusinessObjectClass
+    public override IBusinessObjectClass? BusinessObjectClass
     {
       get { return GetBindableObjectClass(); }
     }

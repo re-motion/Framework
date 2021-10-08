@@ -42,7 +42,7 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths.Results
     /// or an empty string if there is no value.
     /// </returns>
     [NotNull]
-    string? GetString (string? format);
+    string GetString (string? format);
 
     /// <summary>
     /// Gets the last property of the property path, i.e. the property used to access the value.

@@ -20,14 +20,14 @@ namespace Remotion.ObjectBinding
 {
   public class DefaultSearchArguments: ISearchAvailableObjectsArguments
   {
-    private readonly string _searchStatement;
+    private readonly string? _searchStatement;
 
-    public DefaultSearchArguments (string searchStatement)
+    public DefaultSearchArguments (string? searchStatement)
     {
       _searchStatement = searchStatement;
     }
 
-    public string SearchStatement
+    public string? SearchStatement
     {
       get { return _searchStatement; }
     }

@@ -52,7 +52,7 @@ namespace Remotion.ObjectBinding
     ///     provide an overload, and document that getting the list of available objects is only possible during runtime.
     ///   </note>
     /// </remarks>
-    IBusinessObject[] SearchAvailableObjects (IBusinessObject referencingObject, ISearchAvailableObjectsArguments searchArguments);
+    IBusinessObject[] SearchAvailableObjects (IBusinessObject? referencingObject, ISearchAvailableObjectsArguments? searchArguments);
 
     /// <summary>
     ///   Gets a flag indicating if <see cref="CreateDefaultValue"/> and <see cref="IsDefaultValue"/> may be called

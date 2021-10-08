@@ -146,7 +146,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     /// <seealso cref="SearchAvailableObjectsServiceTypeAttribute"/>
     /// <seealso cref="ISearchAvailableObjectsService"/>
     /// <seealso cref="SupportsSearchAvailableObjects"/>
-    public IBusinessObject[] SearchAvailableObjects (IBusinessObject referencingObject, ISearchAvailableObjectsArguments searchArguments)
+    public IBusinessObject[] SearchAvailableObjects (IBusinessObject? referencingObject, ISearchAvailableObjectsArguments? searchArguments)
     {
       if (!SupportsSearchAvailableObjects)
       {
@@ -465,7 +465,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     [NotNull]
     private IBusinessObjectClassService GetBusinessObjectClassService ()
     {
-      IBusinessObjectClassService service = BusinessObjectProvider.GetService<IBusinessObjectClassService>();
+      IBusinessObjectClassService? service = BusinessObjectProvider.GetService<IBusinessObjectClassService>();
       if (service == null)
       {
         throw new InvalidOperationException (
@@ -506,7 +506,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
           throw new InvalidOperationException();
       }
 
-      return (TService) provider.GetService (serviceDefinition.Item2);
+      return (TService?) provider.GetService (serviceDefinition.Item2);
     }
 
     [NotNull]

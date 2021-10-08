@@ -39,7 +39,7 @@ namespace Remotion.ObjectBinding
     /// <summary> Gets the string presented to the user. </summary>
     /// <value> The human readable value of the encapsulated enumeration value. </value>
     /// <remarks> The value of this property may depend on the current culture. </remarks>
-    string? DisplayName { get; }
+    string DisplayName { get; }
 
     /// <summary>
     ///   Gets a flag indicating whether this value should be presented as an option to the user. 

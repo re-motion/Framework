@@ -101,7 +101,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public PropertyBase GetMetadata ()
     {
-      Type? underlyingType = GetUnderlyingType();
+      Type underlyingType = GetUnderlyingType();
       PropertyBase.Parameters parameters = CreateParameters (underlyingType);
 
       if (underlyingType == typeof (Boolean))
@@ -159,15 +159,15 @@ namespace Remotion.ObjectBinding.BindableObject
       return new Lazy<Type> (() => BindableObjectProvider.GetConcreteTypeForBindableObjectImplementation (type));
     }
 
-    protected virtual Type? GetUnderlyingType ()
+    protected virtual Type GetUnderlyingType ()
     {
       return Nullable.GetUnderlyingType (GetItemType()) ?? GetItemType();
     }
 
-    protected virtual Type? GetItemType ()
+    protected virtual Type GetItemType ()
     {
       if (_propertyInfo.PropertyType.IsArray)
-        return _propertyInfo.PropertyType.GetElementType();
+        return _propertyInfo.PropertyType.GetElementType()!;
 
       if (TypeExtensions.CanAscribeTo (_propertyInfo.PropertyType, typeof (IReadOnlyCollection<>)))
         return TypeExtensions.GetAscribedGenericArguments (_propertyInfo.PropertyType, typeof (IReadOnlyCollection<>))[0];
@@ -242,7 +242,7 @@ namespace Remotion.ObjectBinding.BindableObject
       return _defaultValueStrategy;
     }
 
-    private PropertyBase.Parameters CreateParameters (Type? underlyingType)
+    private PropertyBase.Parameters CreateParameters (Type underlyingType)
     {
       return new PropertyBase.Parameters (
           _businessObjectProvider,

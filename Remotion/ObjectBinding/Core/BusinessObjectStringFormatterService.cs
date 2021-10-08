@@ -100,14 +100,14 @@ namespace Remotion.ObjectBinding
     /// <exception cref="Exception"> 
     ///   Thrown if the <paramref name="property"/> is not part of <paramref name="businessObject"/>'s class. 
     /// </exception>
-    public string? GetPropertyString (IBusinessObject businessObject, IBusinessObjectProperty property, string? format)
+    public string GetPropertyString (IBusinessObject businessObject, IBusinessObjectProperty property, string? format)
     {
       ArgumentUtility.CheckNotNull ("businessObject", businessObject);
       ArgumentUtility.CheckNotNull ("property", property);
       
       if (property.IsList)
       {
-        Tuple<int, string> result = GetLineCountAndFormatString (format);
+        Tuple<int, string?> result = GetLineCountAndFormatString (format);
         return GetStringValues (businessObject, property, result.Item2, result.Item1);
       }
       else
@@ -116,7 +116,7 @@ namespace Remotion.ObjectBinding
       }
     }
 
-    private string GetStringValues (IBusinessObject businessObject, IBusinessObjectProperty property, string format, int lines)
+    private string GetStringValues (IBusinessObject businessObject, IBusinessObjectProperty property, string? format, int lines)
     {
       IList? list = (IList?) businessObject.GetProperty (property);
       if (list == null)
@@ -139,30 +139,30 @@ namespace Remotion.ObjectBinding
       return sb.ToString();
     }
 
-    private Tuple<int, string> GetLineCountAndFormatString (string? format)
+    private Tuple<int, string?> GetLineCountAndFormatString (string? format)
     {
-      Tuple<string, string> formatStrings = GetFormatStrings (format);
-      return new Tuple<int, string> (ParseLineCount(formatStrings.Item1), formatStrings.Item2);
+      Tuple<string?, string?> formatStrings = GetFormatStrings (format);
+      return new Tuple<int, string?> (ParseLineCount(formatStrings.Item1), formatStrings.Item2);
     }
 
-    private Tuple<string, string> GetFormatStrings (string? format)
+    private Tuple<string?, string?> GetFormatStrings (string? format)
     {
       if (format == null)
-        return new Tuple<string, string> (null, null);
+        return new Tuple<string?, string?> (null, null);
 
       const string lineCountPrefix = "lines=";
       if (format.StartsWith (lineCountPrefix))
       {
         string[] formatStrings = format.Split (new char[] {'|'}, 2);
-        return new Tuple<string, string> (
+        return new Tuple<string?, string?> (
             formatStrings[0].Substring (lineCountPrefix.Length), 
             (formatStrings.Length == 2) ? formatStrings[1] : null);
       }
 
-      return new Tuple<string, string> (null, format);
+      return new Tuple<string?, string?> (null, format);
     }
 
-    private int ParseLineCount (string linesString)
+    private int ParseLineCount (string? linesString)
     {
       if (linesString == "all")
         return -1;
@@ -174,7 +174,7 @@ namespace Remotion.ObjectBinding
       return 1;
     }
 
-    private string? GetStringValue (IBusinessObject businessObject, object? value, IBusinessObjectProperty property, string? format)
+    private string GetStringValue (IBusinessObject businessObject, object? value, IBusinessObjectProperty property, string? format)
     {
       if (property is IBusinessObjectBooleanProperty)
         return GetStringValueForBooleanProperty (value, (IBusinessObjectBooleanProperty) property);
@@ -189,7 +189,7 @@ namespace Remotion.ObjectBinding
       if (property is IBusinessObjectStringProperty)
         return GetStringValueForStringProperty (value);
 
-      return (value != null) ? value.ToString() : string.Empty;
+      return value?.ToString() ?? string.Empty;
     }
 
     private string GetStringValueForDateTimeProperty (object? value, IBusinessObjectDateTimeProperty property, string? format)
@@ -213,7 +213,7 @@ namespace Remotion.ObjectBinding
         return string.Empty;
     }
 
-    private string? GetStringValueForEnumerationProperty (object? value, IBusinessObjectEnumerationProperty property, IBusinessObject businessObject)
+    private string GetStringValueForEnumerationProperty (object? value, IBusinessObjectEnumerationProperty property, IBusinessObject businessObject)
     {
       IEnumerationValueInfo? enumValueInfo = property.GetValueInfoByValue (value, businessObject);
       if (enumValueInfo == null)
@@ -226,7 +226,7 @@ namespace Remotion.ObjectBinding
       return GetStringValueForFormattableValue ((IFormattable?) value, format);
     }
 
-    private string? GetStringValueForReferenceProperty (object? value)
+    private string GetStringValueForReferenceProperty (object? value)
     {
       if (value == null)
         return string.Empty;
@@ -237,7 +237,7 @@ namespace Remotion.ObjectBinding
       if (value is IBusinessObjectWithIdentity)
         return ((IBusinessObjectWithIdentity) value).GetAccessibleDisplayName();
 
-      return value.ToString();
+      return value.ToString() ?? string.Empty;
     }
 
     private string GetStringValueForStringProperty (object? value)

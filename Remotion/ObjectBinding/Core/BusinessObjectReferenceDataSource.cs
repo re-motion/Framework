@@ -16,6 +16,7 @@
 // 
 using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding

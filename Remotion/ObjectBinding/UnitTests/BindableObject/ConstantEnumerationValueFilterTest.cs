@@ -61,7 +61,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
 
       IEnumerationValueFilter filter = new ConstantEnumerationValueFilter (new Enum[] { TestEnum.Value1, TestEnum.Value4 });
 
-      bool actual = filter.IsEnabled (new EnumerationValueInfo (TestEnum.Value1, "Value1", null, true), mockBusinessObject.Object, mockProperty.Object);
+      bool actual = filter.IsEnabled (new EnumerationValueInfo (TestEnum.Value1, "Value1", string.Empty, true), mockBusinessObject.Object, mockProperty.Object);
 
       mockBusinessObject.Verify();
       mockProperty.Verify();
@@ -76,7 +76,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
 
       IEnumerationValueFilter filter = new ConstantEnumerationValueFilter (new Enum[] { TestEnum.Value1, TestEnum.Value4 });
 
-      bool actual = filter.IsEnabled (new EnumerationValueInfo (TestEnum.Value2, "Value2", null, true), mockBusinessObject.Object, mockProperty.Object);
+      bool actual = filter.IsEnabled (new EnumerationValueInfo (TestEnum.Value2, "Value2", string.Empty, true), mockBusinessObject.Object, mockProperty.Object);
 
       mockBusinessObject.Verify();
       mockProperty.Verify();
