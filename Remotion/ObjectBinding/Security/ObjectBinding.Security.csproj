@@ -9,7 +9,6 @@
     <Description>Internal: Integrates Remotion.Security and Remotion.ObjectBinding assemblies.</Description>
     <AssemblyName>Remotion.ObjectBinding.Security</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
-    <Nullable>disable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
@@ -17,6 +16,9 @@
     <ProjectReference Include="..\..\Mixins\Core\Mixins.Core.csproj" />
     <ProjectReference Include="..\..\Security\Core\Security.Core.csproj" />
     <ProjectReference Include="..\Core\ObjectBinding.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\SharedSource\Core\RoslynAnnotations\NullableAnnotations.cs" Link="SharedSource\RoslynAnnotations\NullableAnnotations.cs" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>
