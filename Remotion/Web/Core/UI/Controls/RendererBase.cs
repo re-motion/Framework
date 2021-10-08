@@ -121,7 +121,7 @@ namespace Remotion.Web.UI.Controls
       scriptBuilder.Append (booleanValue ? "true" : "false");
     }
 
-    protected void CheckScriptManager (IControl control, string errorMessageFormat, params object[] args)
+    protected void CheckScriptManager (IControl control, string errorMessageFormat, params object?[] args)
     {
       ArgumentUtility.CheckNotNull ("control", control);
       ArgumentUtility.CheckNotNullOrEmpty ("errorMessageFormat", errorMessageFormat);

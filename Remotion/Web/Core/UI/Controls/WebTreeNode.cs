@@ -48,7 +48,7 @@ namespace Remotion.Web.UI.Controls
     private int _selectDesired;
 
     /// <summary> Initalizes a new instance. </summary>
-    public WebTreeNode (string itemID, string text, string toolTip, IconInfo icon)
+    public WebTreeNode (string itemID, string? text, string? toolTip, IconInfo icon)
     {
       ValidateItemId (itemID);
       _itemID = itemID;

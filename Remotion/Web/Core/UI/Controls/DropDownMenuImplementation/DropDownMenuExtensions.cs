@@ -12,7 +12,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation
         this IDropDownMenu dropDownMenu,
         string servicePath,
         string serviceMethodName,
-        Dictionary<string, string> stringValueParametersDictionary)
+        Dictionary<string, string?> stringValueParametersDictionary)
     {
       var resolvedServicePath = dropDownMenu.ResolveClientUrl (servicePath);
 
@@ -20,7 +20,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation
           .Where (m => m.IsVisible)
           .Where (m => !string.IsNullOrEmpty (m.ItemID))
           .Select (m => m.ItemID);
-      var stringArrayParametersDictionary = new Dictionary<string, IReadOnlyCollection<string>>();
+      var stringArrayParametersDictionary = new Dictionary<string, IReadOnlyCollection<string>?>();
       stringArrayParametersDictionary.Add ("itemIDs", visibleMenuItemIDs.ToArray());
 
 

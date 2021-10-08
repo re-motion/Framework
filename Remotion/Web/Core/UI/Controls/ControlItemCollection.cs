@@ -212,7 +212,7 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Finds the <see cref="IControlItem"/> with an <see cref="IControlItem.ItemID"/> of <paramref name="id"/>. </summary>
     /// <param name="id"> The ID to look for. </param>
     /// <returns> An <see cref="IControlItem"/> or <see langword="null"/> if no matching item was found. </returns>
-    public IControlItem? Find (string id)
+    public IControlItem? Find (string? id)
     {
       if (string.IsNullOrEmpty (id))
         return null;

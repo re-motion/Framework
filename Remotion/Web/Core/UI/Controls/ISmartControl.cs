@@ -75,7 +75,7 @@ namespace Remotion.Web.UI.Controls
     //  bool UseInputControlCSS { get; }
 
     /// <summary> Gets the text to be written into the label for this control. </summary>
-    string DisplayName { get; }
+    string? DisplayName { get; }
 
     /// <summary>Regsiteres stylesheet and script files with the <see cref="HtmlHeadAppender"/>.</summary>
     void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender);
