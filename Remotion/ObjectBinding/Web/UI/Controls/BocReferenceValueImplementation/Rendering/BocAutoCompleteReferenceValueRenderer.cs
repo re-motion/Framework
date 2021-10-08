@@ -60,8 +60,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       SearchStringForDropDownDoesNotMatchRegexMessage,
       /// <summary> The message displayed when the user input does not result in a result.</summary>
       NoDataFoundMessage,
-      /// <summary> Additional text for improved screen reader support in Internet Explorer.</summary>
-      InternetExplorerScreenReaderLabelText
     }
 
     private readonly Func<TextBox> _textBoxFactory;
@@ -293,9 +291,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       jsonBuilder.Append (", ");
       jsonBuilder.Append ("NoDataFoundMessage : ");
       AppendStringValueOrNullToScript (jsonBuilder, resourceManager.GetString (ResourceIdentifier.NoDataFoundMessage));
-      jsonBuilder.Append (", ");
-      jsonBuilder.Append ("InternetExplorerScreenReaderLabelText : ");
-      AppendStringValueOrNullToScript (jsonBuilder, resourceManager.GetString (ResourceIdentifier.InternetExplorerScreenReaderLabelText));
       jsonBuilder.Append (" }");
 
       return jsonBuilder.ToString();

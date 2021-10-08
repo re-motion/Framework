@@ -58,7 +58,6 @@ namespace Remotion.Data.DomainObjects.Web.Test
           new[]
           {
               new ResourcePathMapping ("Remotion.Web/Html/jquery-1.6.4.js", @"..\..\Web\Core\res\Html\jquery-1.6.4.js"),
-              new ResourcePathMapping ("Remotion.Web/Html/jquery.iFrameShim.js", @"..\..\Web\Core\res\Html\jquery.iFrameShim.js"),
               new ResourcePathMapping ("Remotion.Web/Html", @$"..\..\Web\ClientScript\bin\{configuration}\dist"),
               new ResourcePathMapping ("Remotion.Web/Image", @"..\..\Web\Core\res\Image"),
               new ResourcePathMapping ("Remotion.Web/Themes", @"..\..\Web\Core\res\Themes"),

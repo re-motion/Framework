@@ -197,17 +197,6 @@ type BocAutoCompleteReferenceValue_CollectedOptions = {
 // This is used to tell the type checker that a certain variable cannot be null at a certain point
 function NotNullAssert(v: unknown): asserts v is NotNull {}
 
-// The following type declarations are fixed for IE
-// If support for IE is removed also remove all "todo IE"s
-interface HTMLTextAreaElement {
-    createTextRange?(): {
-        collapse(toStart?: boolean): void;
-        moveStart(unit: "character" | "sentence" | "textedit" | "word", numberOfUnits?: number): number;
-        moveEnd(unit: "character" | "sentence" | "textedit" | "word", numberOfUnits?: number): number;
-        select(): void;
-    };
-}
-
 ; (function($) {
     // This is not typed against BocAutoCompleteReferenceValue_Options because otherwise the default
     // applying in .autocomplete() would not work correctly. Regardless, incorrect typing will raise an error.
@@ -1236,10 +1225,7 @@ class BocAutoCompleteReferenceValue_Select {
         let element = event.target as Nullable<HTMLElement>;
         while (element && element.tagName != "LI")
             element = element.parentNode as Nullable<HTMLElement>;
-        // more fun with IE, sometimes event.target is empty, just ignore it then
-        if (!element)
-            return [] as any; // todo IE
-        return element;
+        return element!;
     }
 
     private moveSelect(step: number, updateInput: boolean): void {
@@ -1356,7 +1342,6 @@ class BocAutoCompleteReferenceValue_Select {
             activeItem.attr ("aria-selected", "true");
             this.active = 0;
         }
-        this.element.iFrameShim({top: '0px', left: '0px', width: '100%', height: '100%'});
     }
 
     // re-motion: Gets the index of first item matching the term. The lookup starts with the active item, 
@@ -1587,7 +1572,6 @@ class BocAutoCompleteReferenceValue_InformationPopUp {
     private showPopUp(): void {
         NotNullAssert(this.element);
 
-        this.element.iFrameShim({ top: '0px', left: '0px', width: '100%', height: '100%' });
         this.applyPositionToPopUp();
         this.element.show();
             
@@ -1643,19 +1627,10 @@ class BocAutoCompleteReferenceValue_InformationPopUp {
 Remotion.jQuery.Autocompleter.InformationPopUp = BocAutoCompleteReferenceValue_InformationPopUp;
 
 Remotion.jQuery.Autocompleter.Selection = function(field: HTMLTextAreaElement, start: number, end: number, focusInputAfterSelection: boolean): void {
-    if (BrowserUtility.GetIEVersion() > 0 && field !== document.activeElement && !focusInputAfterSelection)
-        return;
-
     if (field.value.length < 2)
         return;
 
-    if (field.createTextRange) {
-        const selRange = field.createTextRange();
-        selRange.collapse(true);
-        selRange.moveStart("character", start);
-        selRange.moveEnd("character", end);
-        selRange.select();
-    } else if (field.setSelectionRange) {
+    if (field.setSelectionRange) {
         field.setSelectionRange(start, end);
     } else {
         if (field.selectionStart) {

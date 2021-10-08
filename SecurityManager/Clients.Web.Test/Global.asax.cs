@@ -57,7 +57,6 @@ namespace Remotion.SecurityManager.Clients.Web.Test
           new[]
           {
               new ResourcePathMapping ("Remotion.Web/Html/jquery-1.6.4.js", @"..\..\Remotion\Web\Core\res\Html\jquery-1.6.4.js"),
-              new ResourcePathMapping ("Remotion.Web/Html/jquery.iFrameShim.js", @"..\..\Remotion\Web\Core\res\Html\jquery.iFrameShim.js"),
               new ResourcePathMapping ("Remotion.Web/Html", @$"..\..\Remotion\Web\ClientScript\bin\{configuration}\dist"),
               new ResourcePathMapping ("Remotion.Web/Image", @"..\..\Remotion\Web\Core\res\Image"),
               new ResourcePathMapping ("Remotion.Web/Themes", @"..\..\Remotion\Web\Core\res\Themes"),

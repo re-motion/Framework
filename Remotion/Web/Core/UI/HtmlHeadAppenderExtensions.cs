@@ -39,10 +39,6 @@ namespace Remotion.Web.UI
       var jqueryFileUrl = ResourceUrlFactory.CreateResourceUrl (typeof (HtmlHeadContents), ResourceType.Html, "jquery-1.6.4.js");
       htmlHeadAppender.RegisterJavaScriptInclude (jqueryKey, jqueryFileUrl);
 
-      string jQueryIframeShimScriptKey = typeof (HtmlHeadContents).GetFullNameChecked() + "_JQueryBgiFrames";
-      var href = ResourceUrlFactory.CreateResourceUrl (typeof (HtmlHeadContents), ResourceType.Html, "jquery.IFrameShim.js");
-      htmlHeadAppender.RegisterJavaScriptInclude (jQueryIframeShimScriptKey, href);
-
       string utilitiesKey = typeof (HtmlHeadContents).GetFullNameChecked() + "_Utilities";
       var utilitiesScripFileUrl = ResourceUrlFactory.CreateResourceUrl (typeof (HtmlHeadContents), ResourceType.Html, "Utilities.js");
       htmlHeadAppender.RegisterJavaScriptInclude (utilitiesKey, utilitiesScripFileUrl);

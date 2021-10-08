@@ -108,55 +108,6 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
     this._iconContext = iconContext;
     this._textbox = textbox;
 
-    if (BrowserUtility.GetIEVersion() > 0)
-    {
-      // For Internet Explorer + JAWS, we must use the ARIA 1.0 combobox pattern.
-      // The remaining browsers support ARIA 1.1 with NVDA.
-
-      var internetExplorerScreenReaderLabelID = baseID + '_InternetExplorerScreenReaderLabel';
-      var screenReaderLabel = document.createElement('span');
-      screenReaderLabel.hidden = true;
-      screenReaderLabel.id = internetExplorerScreenReaderLabelID;
-      screenReaderLabel.innerHTML = resources.InternetExplorerScreenReaderLabelText;
-      combobox.appendChild(screenReaderLabel);
-
-      this._textbox.setAttribute('role', combobox.getAttribute('role')!);
-      combobox.removeAttribute('role');
-
-      this._textbox.setAttribute('aria-haspopup', combobox.getAttribute('aria-haspopup')!);
-      combobox.removeAttribute('aria-haspopup');
-    
-      this._textbox.setAttribute('aria-expanded', combobox.getAttribute('aria-expanded')!);
-      combobox.removeAttribute('aria-expanded');
-
-      const comboboxAriaLabeledBy = combobox.getAttribute('aria-labelledby');
-      if (comboboxAriaLabeledBy !== null)
-      {
-        this._textbox.setAttribute('aria-labelledby', comboboxAriaLabeledBy + ' ' + internetExplorerScreenReaderLabelID);
-        combobox.removeAttribute('aria-labelledby');
-
-        const comboboxDataLabelIDIndex = combobox.getAttribute('data-label-id-index');
-        if (comboboxDataLabelIDIndex !== null)
-        {
-          this._textbox.setAttribute('data-label-id-index', comboboxDataLabelIDIndex);
-          combobox.removeAttribute('data-label-id-index');
-        }
-      }
-      else
-      {
-        this._textbox.setAttribute('aria-labelledby', internetExplorerScreenReaderLabelID);
-      }
-
-      const comboboxAriaDescribedBy = combobox.getAttribute('aria-describedby');
-      if (comboboxAriaDescribedBy != null)
-      {
-        this._textbox.setAttribute('aria-describedby', comboboxAriaDescribedBy);
-        combobox.removeAttribute('aria-describedby');
-      }
-
-      combobox = this._textbox;
-    }
-
     const errorHandler = (error: Sys.Net.WebServiceError) =>
     {
       this.SetError(resources.LoadIconFailedErrorMessage);
