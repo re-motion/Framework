@@ -15,10 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
-type BocAutoCompleteReferenceValue_UpdateResult = { Value: Nullable<BocAutoCompleteReferenceValue_Item> }
-
-type BocAutoCompleteReferenceValue_Item = { UniqueIdentifier: string, DisplayName: string, IconUrl: string, IsAnnotation: boolean }
-
 interface BocAutoCompleteReferenceValueJQueryContract {
   hideInformationPopUp: void;
   showInformationPopUp: { message: string };
@@ -58,7 +54,7 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
     searchStringValidationInfo: BocReferenceValueBase_SearchStringValidationInfo,
     nullValueString: string,
     isAutoPostBackEnabled: boolean,
-    searchContext: object,
+    searchContext: Dictionary<unknown>,
     isIconUpdateEnabled: boolean,
     iconContext: Nullable<BocReferenceValueBase_IconContext>,
     resources: BocReferenceValueBase_Resources)
@@ -193,7 +189,7 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
         combobox: Remotion.jQuery(combobox),
         selectListID: this._selectListID,
         informationPopUpID: this._informationPopUpID,
-        dropDownButtonID: button.getAttribute('id'),
+        dropDownButtonID: button.getAttribute('id')!,
         inputAreaClass: 'content',
         // this can be set to true/removed once the problem is fixed that an empty this.textbox still selects the first element, making it impossible to clear the selection
         selectFirst: function (inputValue: string, searchTerm: string)
@@ -267,7 +263,7 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
       hiddenField.value = this._nullValueString;
       this.UpdateIcon(this._nullValueString, errorHandler);
       //Do not fire change-event
-    }).updateResult((e: JQueryEventObject, item: BocAutoCompleteReferenceValue_Item, out: BocAutoCompleteReferenceValue_UpdateResult) =>
+    }).updateResult((e: JQueryEventObject, item: BocAutoCompleteReferenceValue_UpdateResult, out: OutBox<BocAutoCompleteReferenceValue_UpdateResult>) =>
     {
       try
       {
