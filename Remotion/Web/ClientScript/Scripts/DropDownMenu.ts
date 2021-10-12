@@ -890,10 +890,7 @@ class DropDownMenu
     var element: Nullable<Element> = event.target as Element;
     while (element && element.tagName != tagName)
       element = element.parentNode as Nullable<Element>;
-    // more fun with IE, sometimes event.target is empty, just ignore it then
-    if (!element)
-      return [] as unknown as Element;
-    return element;
+    return element!;
   }
 
   private static FocusHandler (): void

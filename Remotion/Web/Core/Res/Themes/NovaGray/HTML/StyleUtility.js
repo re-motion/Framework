@@ -25,18 +25,7 @@ StyleUtility.CreateBorderSpans = function (selector)
 StyleUtility.AddBrowserSwitch = function ()
 {
   var browser;
-  var majorIEVersion = BrowserUtility.GetIEVersion();
-  if (!isNaN (majorIEVersion))
-  {
-    var majorVersion = majorIEVersion;
-    if (majorVersion < 9)
-      browser = 'msie' + majorVersion;
-    else if (majorVersion < 11)
-      browser = 'msie msie' + majorVersion;
-    else
-      browser = 'msie';
-  }
-  else if (navigator.appVersion.indexOf ('Edge') !== -1)
+  if (navigator.appVersion.indexOf ('Edge') !== -1)
   {
     browser = 'edge';
   }

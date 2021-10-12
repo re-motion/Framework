@@ -181,27 +181,6 @@ class ArgumentUtility
   };
 }
 
-class BrowserUtility
-{
-  public static GetIEVersion(): number
-  {
-    var isIE8OrLater = TypeUtility.IsDefined (window.document.documentMode);
-    if (isIE8OrLater)
-    {
-      var majorVersion = parseInt (window.document.documentMode as any as string); // TODO RM-7631: window.document.documentMode does not need to be converted to a number
-      return majorVersion;
-    }
-    else if (navigator.appVersion.indexOf ('MSIE 7.0;') !== -1)
-    {
-      return 7;
-    }
-    else
-    {
-      return Number.NaN;
-    }
-  }
-}
-
 class PageUtility
 {
   public static Instance: PageUtility;

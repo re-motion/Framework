@@ -503,20 +503,6 @@ class BocList
 
   private static CreateFakeTableHead(tableContainer: HTMLElement, scrollableContainer: HTMLElement, bocList: HTMLElement): void
   {
-    if (BrowserUtility.GetIEVersion() > 0)
-    {
-      // For Internet Explorer + JAWS 2018ff, the tabindex-attribute on the table root will break a table with a scrollable header part.
-      tableContainer.removeAttribute('tabindex');
-      var captionLabelIDs = bocList.getAttribute('aria-labelledby')!;
-      var lastCaptionLabelID = captionLabelIDs.split(' ').slice(-1)[0];
-      var captionElement = document.getElementById (lastCaptionLabelID)!;
-      var tableCaption = document.createElement('span');
-      tableCaption.setAttribute('tabindex', '0')
-      tableCaption.setAttribute('aria-label', captionElement.innerText)
-      tableCaption.setAttribute('aria-hidden', 'true')
-      tableCaption.classList.add('screenReaderText')
-      tableContainer.before (tableCaption);
-    }
     // Add diganostic metadata for web testing framework (actually: should only be rendered with IRenderingFeatures.EnableDiagnosticMetadata on)
     tableContainer.setAttribute('data-boclist-has-fake-table-head', 'true');
   

@@ -58,8 +58,6 @@ class DatePicker
     var targetDocument = null;
     if (TypeUtility.IsDefined(target.ownerDocument))
       targetDocument = target.ownerDocument;
-    else if (TypeUtility.IsDefined(target.document))
-      targetDocument = target.document;
     var clickHandler: Nullable<EventHandler<MouseEvent>> = null;
     if (targetDocument != null)
     {

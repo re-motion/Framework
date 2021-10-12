@@ -34,9 +34,6 @@ declare class ArgumentUtility {
     static CheckTypeIsFunction(name: string, value: unknown): asserts value is Nullable<AnyFunction>;
     static CheckNotNullAndTypeIsFunction(name: string, value: unknown): asserts value is AnyFunction;
 }
-declare class BrowserUtility {
-    static GetIEVersion(): number;
-}
 declare class PageUtility {
     static Instance: PageUtility;
     private _resizeHandlers;

@@ -129,7 +129,4 @@
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering.BocAutoCompleteReferenceValueRenderer.SearchStringForDropDownDoesNotMatchRegexMessage" xml:space="preserve">
     <value>L'input non corrisponde al formato predefinito.</value>
   </data>
-  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering.BocAutoCompleteReferenceValueRenderer.InternetExplorerScreenReaderLabelText" xml:space="preserve">
-    <value>Casella combinata</value>
-  </data>
 </root>
