@@ -248,36 +248,9 @@ class SmartPage_Context
     var pageRequestManager = this.GetPageRequestManager();
     if (pageRequestManager != null)
     {
-      (Sys.WebForms.PageRequestManager.prototype as unknown as Sys.WebForms.PageRequestManagerInternalPrototype)._updatePanel = this.Sys$WebForms$PageRequestManager$_updatePanel;
       pageRequestManager.add_endRequest(this.SmartPage_PageRequestManager_endRequest);
     }
   };
-
-  // Replacement for Sys.WebForms.PageRequestManager.prototype._updatePanel
-  private Sys$WebForms$PageRequestManager$_updatePanel = function (this: Sys.WebForms.PageRequestManagerInternals, updatePanelElement: HTMLElement, rendering: string): void
-  {
-    for (var updatePanelID in this._scriptDisposes)
-    {
-      if (this._elementContains(updatePanelElement, document.getElementById(updatePanelID)!))
-      {
-        var disposeScripts = this._scriptDisposes[updatePanelID];
-        for (var i = 0, l = disposeScripts.length; i < l; i++)
-        {
-          eval(disposeScripts[i]);
-        }
-        delete this._scriptDisposes[updatePanelID];
-      }
-    }
-    if (TypeUtility.IsDefined(Sys.Application.disposeElement)) // .NET 4.0 AJAX library
-    {
-      Sys.Application.disposeElement(updatePanelElement, true);
-    }
-    else
-    {
-      throw "Unsupported AJAX library detected.";
-    }
-    updatePanelElement.innerHTML = rendering;
-  }
 
   public SmartPage_PageRequestManager_endRequest = function (sender: unknown, args: Sys.WebForms.EndRequestEventArgs)
   {
