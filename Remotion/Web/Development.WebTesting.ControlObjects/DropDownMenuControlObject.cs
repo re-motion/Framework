@@ -17,6 +17,7 @@
 using System;
 using Coypu;
 using JetBrains.Annotations;
+using Remotion.Web.Contracts.DiagnosticMetadata;
 
 namespace Remotion.Web.Development.WebTesting.ControlObjects
 {
@@ -28,6 +29,14 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     public DropDownMenuControlObject ([NotNull] ControlObjectContext context)
         : base (context)
     {
+    }
+
+    /// <summary>
+    /// Returns the button type of the DropDownMenu's button.
+    /// </summary>
+    public ButtonType GetButtonType ()
+    {
+      return (ButtonType) Enum.Parse (typeof (ButtonType), Scope[DiagnosticMetadataAttributes.ButtonType]);
     }
 
     [Obsolete ("Use the Open() method instead. (Version 1.17.15.0)", false)]

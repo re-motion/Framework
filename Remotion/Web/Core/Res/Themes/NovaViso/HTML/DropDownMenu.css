@@ -54,6 +54,73 @@ span.DropDownMenuSelect:not(.disabled):focus-within:hover
   box-shadow: var(--remotion-themed-box-shadow-focus-hover);
 }
 
+span.DropDownMenuContainer.primary span.DropDownMenuSelect:not(.disabled)
+{
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+span.DropDownMenuContainer.primary span.DropDownMenuSelect.disabled
+{
+  background-color: var(--color-disabled-border);
+  border-color: var(--color-disabled-border);
+}
+
+span.DropDownMenuContainer.primary span.DropDownMenuSelect:not(.disabled) a.DropDownMenuLabel
+{
+  color: var(--color-primary-text);
+  border-right-color: var(--color-primary-text);
+}
+
+span.DropDownMenuContainer.primary span.DropDownMenuSelect.disabled a.DropDownMenuLabel
+{
+  color: var(--color-disabled-background);
+  border-right-color: var(--color-disabled-background);
+}
+
+span.DropDownMenuContainer.primary span.DropDownMenuSelect:not(.disabled):hover
+{
+  background-color: var(--color-primary-highlight);
+  border-color: var(--color-primary-highlight);
+}
+
+span.DropDownMenuContainer.primary span.DropDownMenuSelect:not(.disabled):focus,
+span.DropDownMenuContainer.primary span.DropDownMenuSelect:not(.disabled):focus-within
+{
+  background-color: var(--color-primary);
+  border-color: var(--color-primary-text);
+}
+
+span.DropDownMenuContainer.primary span.DropDownMenuSelect:not(.disabled):focus:hover,
+span.DropDownMenuContainer.primary span.DropDownMenuSelect:not(.disabled):focus-within:hover
+{
+  background-color: var(--color-primary-highlight);
+  border-color: var(--color-primary-text);
+}
+
+span.DropDownMenuContainer.primary span.DropDownMenuSelect:not(.disabled) a.DropDownMenuButton img
+{
+  background-image: url('../Image/sprite.svg#DropDownMenuButtonWhite');
+}
+
+span.DropDownMenuContainer.primary span.DropDownMenuSelect.disabled a.DropDownMenuButton img
+{
+  background-image: url('../Image/sprite.svg#DropDownMenuButtonWhite');
+  filter: unset;
+  opacity: unset;
+}
+
+span.DropDownMenuContainer.supplemental span.DropDownMenuSelect:not(:hover, :focus, :focus-within),
+span.DropDownMenuContainer.supplemental span.DropDownMenuSelect.disabled
+{
+  border-color: transparent;
+}
+
+span.DropDownMenuContainer.supplemental span.DropDownMenuSelect a.DropDownMenuLabel
+{
+  border-color: transparent;
+}
+
 span.DropDownMenuSelect a.DropDownMenuLabel img
 {
   width: var(--remotion-themed-img-width);

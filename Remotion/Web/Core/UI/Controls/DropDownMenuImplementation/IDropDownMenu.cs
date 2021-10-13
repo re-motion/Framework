@@ -34,6 +34,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation
     Action<HtmlTextWriter> RenderHeadTitleMethod { get; }
     IconInfo TitleIcon { get; }
     string TitleText { get; }
+    ButtonType ButtonType { get; }
     Unit Width { get; }
     string GetSelectionCount { get; }
     string LoadMenuItemStatus { get; }
