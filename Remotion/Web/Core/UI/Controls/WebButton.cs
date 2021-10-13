@@ -304,10 +304,12 @@ namespace Remotion.Web.UI.Controls
           writer.RenderBeginTag (HtmlTextWriterTag.Img);
           writer.RenderEndTag();
         }
-        if (hasIcon && hasText)
-          writer.Write ("&nbsp;");
         if (hasText)
+        {
+          writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin text span
           writer.Write (text); // Do not HTML enocde
+          writer.RenderEndTag(); // End text span
+        }
       }
 
       writer.RenderEndTag(); // End acnhorBody span
