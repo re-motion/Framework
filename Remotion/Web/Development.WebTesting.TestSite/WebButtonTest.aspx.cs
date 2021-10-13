@@ -27,7 +27,11 @@ namespace Remotion.Web.Development.WebTesting.TestSite
       base.OnInit (e);
 
       MyWebButton1Sync.Command += Command;
+      MyWebButtonPrimary1Sync.Command += Command;
+      MyWebButtonSupplemental1Sync.Command += Command;
       MyWebButton2Async.Command += Command;
+      MyWebButtonPrimary2Async.Command += Command;
+      MyWebButtonSupplemental2Async.Command += Command;
     }
 
     private void Command (object sender, CommandEventArgs e)

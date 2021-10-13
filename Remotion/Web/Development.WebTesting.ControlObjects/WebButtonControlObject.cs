@@ -16,6 +16,7 @@
 // 
 using System;
 using JetBrains.Annotations;
+using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebTestActions;
 
@@ -48,6 +49,14 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     public string GetText ()
     {
       return Scope.Text.Trim();
+    }
+
+    /// <summary>
+    /// Returns the button type of the button.
+    /// </summary>
+    public ButtonType GetButtonType ()
+    {
+      return (ButtonType) Enum.Parse (typeof (ButtonType), Scope[DiagnosticMetadataAttributes.ButtonType]);
     }
 
     [Obsolete ("Use IsDisabled instead. (Version 1.17.5)")]
