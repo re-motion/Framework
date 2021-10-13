@@ -161,6 +161,22 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       return int.Parse (numberChildren);
     }
 
+    /// <summary>
+    /// Returns the 
+    /// </summary>
+    public string GetBadgeText ()
+    {
+      return Scope[DiagnosticMetadataAttributes.WebTreeViewBadgeValue];
+    }
+
+    /// <summary>
+    /// Returns the number of child nodes.
+    /// </summary>
+    public string GetBadgeDescription ()
+    {
+      return Scope[DiagnosticMetadataAttributes.WebTreeViewBadgeDescription];
+    }
+
     /// <inheritdoc/>
     public IFluentControlObjectWithNodes<WebTreeViewNodeControlObject> GetNode ()
     {

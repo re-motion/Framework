@@ -17,6 +17,7 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="BocTreeViewUserControl.ascx.cs" Inherits="Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls.BocTreeViewUserControl" %>
 <%@ Register tagPrefix="remotion" namespace="Remotion.Web.UI.Controls" assembly="Remotion.Web" %>
 <%@ Register tagPrefix="remotion" namespace="Remotion.ObjectBinding.Web.UI.Controls" assembly="Remotion.ObjectBinding.Web" %>
+<%@ Register TagPrefix="ros" Namespace="Remotion.ObjectBinding.Sample" Assembly="Remotion.ObjectBinding.Sample" %>
 <remotion:FormGridManager ID="FormGridManager" runat="server" />
 <remotion:BindableObjectDataSourceControl ID="CurrentObject" runat="server" Type="Remotion.ObjectBinding.Sample::Person" />
 <table id="FormGrid" runat="server">
@@ -129,5 +130,22 @@
       </remotion:BocTreeView>
     </td>
     <td>(context menu with error)</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>
+      <ros:PersonTreeView
+        ID="ContextMenu_Person"
+        DataSourceControl="CurrentObject"
+        PropertyIdentifier="Children"
+        ShowLines="True"
+        EnableTopLevelExpander="True"
+        EnableLookAheadEvaluation="True"
+        ControlServicePath="BocTreeViewWebService.asmx"
+        ControlServiceArguments="error"
+        runat="server">
+      </ros:PersonTreeView>
+    </td>
+    <td>(person tree view)</td>
   </tr>
 </table>

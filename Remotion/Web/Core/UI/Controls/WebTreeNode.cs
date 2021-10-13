@@ -35,6 +35,7 @@ namespace Remotion.Web.UI.Controls
     private string _text = string.Empty;
     private string _toolTip = string.Empty;
     private IconInfo _icon;
+    private Badge _badge;
     private string _menuID = string.Empty;
 
     private readonly WebTreeNodeCollection _children;
@@ -251,6 +252,18 @@ namespace Remotion.Web.UI.Controls
     {
       get { return _icon; }
       set { _icon = value; }
+    }
+
+    /// <summary> Gets or sets the badge displayed besides this tree node. </summary>
+    [PersistenceMode (PersistenceMode.Attribute)]
+    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
+    [Category ("Appearance")]
+    [Description ("The badge displayed besides this tree node.")]
+    [NotifyParentProperty (true)]
+    public virtual Badge Badge
+    {
+      get { return _badge; }
+      set { _badge = value; }
     }
 
     private bool ShouldSerializeIcon ()

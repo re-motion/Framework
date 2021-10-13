@@ -146,3 +146,36 @@ ul.treeViewRoot ul.treeViewTopLevelNodeChildren span.treeViewNode
 {
   padding-left: calc(var(--treeview-padding) * (var(--nesting-depth) - 1) + var(--remotion-themed-spacing-small));
 }
+
+ul.treeViewRoot span.treeViewNode span.treeViewNodeBadge
+{
+  position: sticky;
+  right: 0;
+  background-color: var(--treeview-background-color);
+  margin-left: auto;
+  padding: var(--treeview-node-padding-vertical) var(--remotion-themed-spacing-small) 0 var(--remotion-themed-spacing);
+  font: var(--remotion-themed-font-bold);
+  user-select: none;
+  align-self: start;
+}
+
+ul.treeViewRoot li[aria-selected=true] > span.treeViewNode span.treeViewNodeBadge,
+ul.treeViewRoot li[aria-selected=true]:focus > span.treeViewNode span.treeViewNodeBadge
+{
+  background-color: var(--color-highlight);
+}
+
+ul.treeViewRoot span.treeViewNode:hover span.treeViewNodeBadge
+{
+  background-color: var(--remotion-themed-background-color-hover);
+}
+
+ul.treeViewRoot li:focus > span.treeViewNode span.treeViewNodeBadge
+{
+  background-color: var(--remotion-themed-background-color-focus);
+}
+
+ul.treeViewRoot li:focus > span.treeViewNode:hover span.treeViewNodeBadge
+{
+  background-color: var(--remotion-themed-background-color-focus-hover);
+}

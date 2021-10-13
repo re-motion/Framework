@@ -31,6 +31,17 @@ namespace Remotion.Web.Development.WebTesting.TestSite
           "This is the beginning of very long text that should be placed correctly beside the icon",
           "~/Images/SampleIcon.gif");
       MyWebTreeView2.Nodes.Add (node);
+
+      var webTreeNodeNoBadge = new WebTreeNode ("Node1", "No badge");
+      MyWebTreeView3.Nodes.Add (webTreeNodeNoBadge);
+
+      var webTreeNodeBadgeNoDescription = new WebTreeNode ("Node2", "Badge with value");
+      webTreeNodeBadgeNoDescription.Badge = new Badge ("1", string.Empty);
+      MyWebTreeView3.Nodes.Add (webTreeNodeBadgeNoDescription);
+
+      var webTreeNodeBadge = new WebTreeNode ("Node3", "Badge with value and description");
+      webTreeNodeBadge.Badge = new Badge ("2", "2 description");
+      MyWebTreeView3.Nodes.Add (webTreeNodeBadge);
     }
   }
 }

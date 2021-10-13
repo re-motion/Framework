@@ -17,7 +17,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.WebTreeView MyWebTreeView;
         
@@ -26,8 +26,29 @@ namespace Remotion.Web.Development.WebTesting.TestSite {
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.WebTreeView MyWebTreeView2;
+        
+        /// <summary>
+        /// MyWebTreeView3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.WebTreeView MyWebTreeView3;
+        
+        /// <summary>
+        /// Master property.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated property.
+        /// </remarks>
+        public new Remotion.Web.Development.WebTesting.TestSite.Layout Master {
+            get {
+                return ((Remotion.Web.Development.WebTesting.TestSite.Layout)(base.Master));
+            }
+        }
     }
 }
