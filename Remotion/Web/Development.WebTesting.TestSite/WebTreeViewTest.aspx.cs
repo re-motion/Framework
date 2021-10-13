@@ -42,6 +42,22 @@ namespace Remotion.Web.Development.WebTesting.TestSite
       var webTreeNodeBadge = new WebTreeNode ("Node3", "Badge with value and description");
       webTreeNodeBadge.Badge = new Badge ("2", "2 description");
       MyWebTreeView3.Nodes.Add (webTreeNodeBadge);
+
+      var treeViewNodes = new IControlItem[]
+                          {
+                              new WebTreeNode ("Node1", "1") { Category = "first category" },
+                              new WebTreeNode ("Node2", "2") { Category = "second category" },
+                              new WebTreeNode ("Node3", "3") { Category = "third category" },
+                              new WebTreeNode ("Node4", "4") { Category = "second category" },
+                              new WebTreeNode ("Node5", "5") { Category = "third category" },
+                              new WebTreeNode ("Node6", "6") { Category = "third category" },
+                              new WebTreeNode ("Node7", "7") { Category = "first category" }
+                          };
+
+      MyOrderedWebTreeView.Nodes.AddRange (treeViewNodes);
+      MyUnorderedWebTreeView.Nodes.AddRange (treeViewNodes);
+      MyWebTreeViewWithCategories.Nodes.Add (new WebTreeNode ("Node1", "1") { Category = "a category" });
+      MyWebTreeViewWithoutCategories.Nodes.Add (new WebTreeNode ("Node1", "1"));
     }
   }
 }

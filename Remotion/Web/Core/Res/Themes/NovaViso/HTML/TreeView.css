@@ -9,6 +9,7 @@ ul.treeViewRoot
   --treeview-chevron-gap: var(--remotion-themed-spacing);
   --treeview-padding: calc(var(--treeview-chevron-size) + var(--treeview-chevron-gap));
   --treeview-node-padding-vertical: calc(var(--remotion-themed-spacing-small) / 2);
+  --treeview-category-separator: var(--remotion-themed-border-width) solid var(--color-standard-separator);
 
   margin: 0;
   min-width: 100%;
@@ -179,3 +180,12 @@ ul.treeViewRoot li:focus > span.treeViewNode:hover span.treeViewNodeBadge
 {
   background-color: var(--remotion-themed-background-color-focus-hover);
 }
+
+li.treeViewNodeCategorySeparator
+{
+  margin-bottom: var(--remotion-themed-spacing);
+  padding-bottom: var(--remotion-themed-spacing);
+  border-bottom: var(--treeview-category-separator);
+  box-sizing: border-box;
+}
+

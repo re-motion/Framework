@@ -84,11 +84,11 @@ namespace OBWTest
 
       nodes = WebTreeView.Nodes;
       nodes.Add (
-          new WebTreeNode ("node0|id", "Node 0", "Hello", new IconInfo (jobIconUrl.GetUrl(), "Icon", "ToolTip", Unit.Pixel (16), Unit.Pixel (16))));
-      nodes.Add (new WebTreeNode ("node1|id", "Node 1"));
-      nodes.Add (new WebTreeNode ("node2|id", "Node 2"));
-      nodes.Add (new WebTreeNode ("node3|id", "Node 3"));
-      nodes.Add (new WebTreeNode ("node4|id", "Node 4"));
+          new WebTreeNode ("node0|id", "Node 0", "Hello", new IconInfo (jobIconUrl.GetUrl(), "Icon", "ToolTip", Unit.Pixel (16), Unit.Pixel (16))) { Category = "test category 0" });
+      nodes.Add (new WebTreeNode ("node1|id", "Node 1 Category 1") { Category = "test category 1" });
+      nodes.Add (new WebTreeNode ("node2|id", "Node 2 Category 3") { Category = "test category 3" });
+      nodes.Add (new WebTreeNode ("node3|id", "Node 3 Category 2") { Category = "test category 2" });
+      nodes.Add (new WebTreeNode ("node4|id", "Node 4 Category 0") { Category = "test category 0" });
 
       nodes = ((WebTreeNode) WebTreeView.Nodes[0]).Children;
       nodes.Add (new WebTreeNode ("node00|id", "Node 0-0", jobIconUrl.GetUrl()));
@@ -137,6 +137,12 @@ namespace OBWTest
       for (int i = 0; i < 55; i++)
       {
         WebTreeNode node = new WebTreeNode ("nodeNestingLevel" + i, "Node with nesting level " + i);
+        if (i == 0)
+        {
+          node = new WebTreeNode ("nodeNestingLevel" + i, "Node with nesting level " + i + " Category 2");
+          node.Category = "test category 2";
+        }
+
         node.IsEvaluated = true;
         node.IsExpanded = true;
         currentNodes.Add (node);

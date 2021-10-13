@@ -852,6 +852,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set { _treeView.EnableScrollBars = value; }
     }
 
+    /// <summary> Gets or sets a flag that determines whether to group the root nodes by their category. </summary>
+    [PersistenceMode (PersistenceMode.Attribute)]
+    [Category ("Behavior")]
+    [Description ("If set, the root nodes will be grouped by their category attribute. The order of the child nodes remians unchanged.")]
+    [DefaultValue (false)]
+    public bool EnableTopLevelGrouping
+    {
+      get { return _treeView.EnableTopLevelGrouping; }
+      set { _treeView.EnableTopLevelGrouping = value; }
+    }
+
     /// <summary> Gets or sets a flag that determines whether to enable word wrapping. </summary>
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Appearance")]
