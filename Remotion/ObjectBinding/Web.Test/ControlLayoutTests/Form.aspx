@@ -42,13 +42,13 @@
               <remotion:BocEnumValue ID="Line01EnumValue01" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="MarriageStatus" Width="8em" />
               <remotion:BocDateTimeValue ID="Line01DateTimeValue01" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="DateOfBirth" Width="15em" />
               <remotion:BocDateTimeValue ID="Line01DateTimeValue02" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="DateOfDeath" Width="10em" />
-              <remotion:BocReferenceValue ID="Line01ReferenceValue01" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Partner" Width="15em">
+              <remotion:BocReferenceValue ID="Line01ReferenceValue01" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Partner" Width="15em" ReserveOptionsMenuWidth="true">
                 <OptionsMenuItems>
                   <remotion:WebMenuItem ItemID="Item1" Text="Item 1" />
                 </OptionsMenuItems>
               </remotion:BocReferenceValue>
               <remotion:BocAutoCompleteReferenceValue ID="Line01AutoCompleteReferenceValue01" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Partner"
-                Width="15em" ControlServicePath="~/IndividualControlTests/BocAutoCompleteReferenceValueWebService.asmx">
+                Width="15em" ReserveOptionsMenuWidth="true" ControlServicePath="~/IndividualControlTests/BocAutoCompleteReferenceValueWebService.asmx">
                 <OptionsMenuItems>
                   <remotion:WebMenuItem ItemID="Item1" Text="Item 1" />
                 </OptionsMenuItems>
@@ -70,13 +70,13 @@
               <remotion:BocEnumValue ID="Line02EnumValue01" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="MarriageStatus" Width="8em" ReadOnly="true" />
               <remotion:BocDateTimeValue ID="Line02DateTimeValue01" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="DateOfBirth" Width="15em" ReadOnly="true" />
               <remotion:BocDateTimeValue ID="Line02DateTimeValue02" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="DateOfDeath" Width="10em" ReadOnly="true" />
-              <remotion:BocReferenceValue ID="Line02ReferenceValue01" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Partner" Width="15em" ReadOnly="true">
+              <remotion:BocReferenceValue ID="Line02ReferenceValue01" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Partner" Width="15em" ReserveOptionsMenuWidth="true" ReadOnly="true">
                 <OptionsMenuItems>
                   <remotion:WebMenuItem ItemID="Item1" Text="Item 1" />
                 </OptionsMenuItems>
               </remotion:BocReferenceValue>
               <remotion:BocAutoCompleteReferenceValue ID="Line02AutoCompleteReferenceValue01" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Partner"
-                Width="15em" ReadOnly="true" ControlServicePath="~/IndividualControlTests/BocAutoCompleteReferenceValueWebService.asmx">
+                Width="15em" ReserveOptionsMenuWidth="true" ReadOnly="true" ControlServicePath="~/IndividualControlTests/BocAutoCompleteReferenceValueWebService.asmx">
                 <OptionsMenuItems>
                   <remotion:WebMenuItem ItemID="Item1" Text="Item 1" />
                 </OptionsMenuItems>
@@ -105,14 +105,14 @@
               M
               <remotion:BocDateTimeValue ID="Line03DateTimeValue02" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="DateOfDeath" Width="10em" />
               M
-              <remotion:BocReferenceValue ID="Line03ReferenceValue01" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Partner" Width="15em">
+              <remotion:BocReferenceValue ID="Line03ReferenceValue01" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Partner" Width="15em" ReserveOptionsMenuWidth="true">
                 <OptionsMenuItems>
                   <remotion:WebMenuItem ItemID="Item1" Text="Item 1" />
                 </OptionsMenuItems>
               </remotion:BocReferenceValue>
               M
               <remotion:BocAutoCompleteReferenceValue ID="Line03AutoCompleteReferenceValue01" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Partner"
-                Width="15em" ControlServicePath="~/IndividualControlTests/BocAutoCompleteReferenceValueWebService.asmx">
+                Width="15em" ReserveOptionsMenuWidth="true" ControlServicePath="~/IndividualControlTests/BocAutoCompleteReferenceValueWebService.asmx">
                 <OptionsMenuItems>
                   <remotion:WebMenuItem ItemID="Item1" Text="Item 1" />
                 </OptionsMenuItems>
@@ -143,14 +143,14 @@
               M
               <remotion:BocDateTimeValue ID="Line04DateTimeValue02" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="DateOfDeath" Width="10em" ReadOnly="true" />
               M
-              <remotion:BocReferenceValue ID="Line04ReferenceValue01" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Partner" Width="15em" ReadOnly="true">
+              <remotion:BocReferenceValue ID="Line04ReferenceValue01" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Partner" Width="15em" ReserveOptionsMenuWidth="true" ReadOnly="true">
                 <OptionsMenuItems>
                   <remotion:WebMenuItem ItemID="Item1" Text="Item 1" />
                 </OptionsMenuItems>
               </remotion:BocReferenceValue>
               M
               <remotion:BocAutoCompleteReferenceValue ID="Line04AutoCompleteReferenceValue01" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Partner"
-                Width="15em" ReadOnly="true" ControlServicePath="~/IndividualControlTests/BocAutoCompleteReferenceValueWebService.asmx">
+                Width="15em" ReserveOptionsMenuWidth="true" ReadOnly="true" ControlServicePath="~/IndividualControlTests/BocAutoCompleteReferenceValueWebService.asmx">
                 <OptionsMenuItems>
                   <remotion:WebMenuItem ItemID="Item1" Text="Item 1" />
                 </OptionsMenuItems>
@@ -324,14 +324,14 @@
           M
           <remotion:BocDateTimeValue ID="Line11DateTimeValue02" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="DateOfDeath" Width="10em" />
           M
-          <remotion:BocReferenceValue ID="Line11ReferenceValue01" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Partner" Width="15em">
+          <remotion:BocReferenceValue ID="Line11ReferenceValue01" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Partner" Width="15em" ReserveOptionsMenuWidth="true">
             <OptionsMenuItems>
               <remotion:WebMenuItem ItemID="Item1" Text="Item 1" />
             </OptionsMenuItems>
           </remotion:BocReferenceValue>
           M
           <remotion:BocAutoCompleteReferenceValue ID="Line11AutoCompleteReferenceValue01" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Partner"
-            Width="15em" ControlServicePath="~/IndividualControlTests/BocAutoCompleteReferenceValueWebService.asmx">
+            Width="15em" ReserveOptionsMenuWidth="true" ControlServicePath="~/IndividualControlTests/BocAutoCompleteReferenceValueWebService.asmx">
             <OptionsMenuItems>
               <remotion:WebMenuItem ItemID="Item1" Text="Item 1" />
             </OptionsMenuItems>

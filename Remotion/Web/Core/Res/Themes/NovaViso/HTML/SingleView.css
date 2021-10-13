@@ -1,0 +1,89 @@
+/* Style applied to the SingleView. */
+
+:root
+{
+  --singleview-topcontrols-padding: var(--remotion-themed-spacing) var(--remotion-themed-spacing-large);
+  --singleview-view-padding: 0 var(--remotion-themed-spacing-large);
+  --singleview-bottomcontrols-padding: var(--remotion-themed-spacing) var(--remotion-themed-spacing-large);
+}
+
+div.singleView
+{
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+div.singleView > div.wrapper
+{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: max-content auto max-content;
+  grid-template-areas: "topControls" "view" "bottomControls";
+}
+
+div.singleViewView
+{
+  grid-area: view;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+div.singleViewView > div.contentBorder
+{
+  padding: var(--singleview-view-padding);
+  overflow: auto;
+  /* for symmetry with TabbedMultiView */
+  border: var(--remotion-themed-border-placeholder);
+  scrollbar-width: var(--remotion-themed-scrollbar-style);
+  scrollbar-color: var(--remotion-themed-scrollbar-color);
+  height: 100%;
+}
+
+div.singleViewView > div.contentBorder::-webkit-scrollbar-thumb
+{
+  background-color: var(--remotion-themed-scrollbar-color-thumb);
+  border-radius: var(--remotion-themed-scrollbar-border-radius);
+}
+
+div.singleViewView > div.contentBorder::-webkit-scrollbar
+{
+  background-color: var(--remotion-themed-scrollbar-color-track);
+  width: var(--remotion-themed-scrollbar-width);
+  height: var(--remotion-themed-scrollbar-width);
+}
+
+div.singleViewView > div.contentBorder > div.content
+{
+  height: 100%;
+  box-sizing: border-box;
+  scrollbar-color: initial; /* Stop inheriting the scrollbar color to child elements */
+  scrollbar-width: initial; /* Stop inheriting the scrollbar width to child elements */
+}
+
+/* Applied to the top section of the single view. */
+div.singleViewTopControls
+{
+  grid-area: topControls;
+  padding: var(--singleview-topcontrols-padding);
+}
+
+/* Applied to the bottom section of the single view. */
+div.singleViewBottomControls
+{
+  grid-area: bottomControls;
+  padding: var(--singleview-bottomcontrols-padding);
+  box-shadow: var(--remotion-themed-layer-box-shadow);
+}
+
+div.singleViewBottomControls.empty
+{
+  box-shadow: none;
+}

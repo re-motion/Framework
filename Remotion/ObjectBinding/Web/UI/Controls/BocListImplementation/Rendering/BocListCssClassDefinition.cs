@@ -17,6 +17,7 @@
 using System;
 using System.Web.UI.WebControls;
 using Remotion.ServiceLocation;
+using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 {
@@ -43,7 +44,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// </remarks>
     public virtual string ReadOnly
     {
-      get { return "readOnly"; }
+      get { return CssClassDefinition.ReadOnly; }
     }
 
     /// <summary> Gets the CSS-Class applied to the <see cref="IBocRenderableControl"/> when it is displayed disabled. </summary>
@@ -53,7 +54,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// </remarks>
     public virtual string Disabled
     {
-      get { return "disabled"; }
+      get { return CssClassDefinition.Disabled; }
+    }
+
+    /// <summary>
+    /// Gets the CSS-Class applied to the <see cref="IBocRenderableControl"/> when itself and child elements
+    /// that are standard browser controls (e.g. input elements) should be styled in the current theme.
+    /// </summary>
+    /// <remarks> 
+    ///   <para> Class: <c>remotion-themed</c>. </para>
+    ///   <para> Applied in addition to the regular CSS-Class.</para>
+    /// </remarks>
+    public virtual string Themed
+    {
+      get { return CssClassDefinition.Themed; }
     }
 
     /// <summary> Gets the CSS-Class applied to the <see cref="BocList"/>'s <c>table</c> tag. </summary>
@@ -169,6 +183,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     }
 
     /// <summary> Gets the CSS-Class applied to the <see cref="BocList"/>'s list of additional columns. </summary>
+    /// <remarks> Class: <c>bocListAvailableViewsList</c> </remarks>
+    public virtual string AvailableViewsList
+    {
+      get { return "bocListAvailableViewsList"; }
+    }
+
+    /// <summary> Gets the CSS-Class applied to the <see cref="BocList"/>'s dropdown list of additional columns. </summary>
     /// <remarks> Class: <c>bocListAvailableViewsListDropDownList</c> </remarks>
     public virtual string AvailableViewsListDropDownList
     {
@@ -180,6 +201,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     public virtual string AvailableViewsListLabel
     {
       get { return "bocListAvailableViewsListLabel"; }
+    }
+
+    public string ListMenuContainer
+    {
+      get { return "bocListListMenuContainer"; }
     }
 
     public string TableBlock

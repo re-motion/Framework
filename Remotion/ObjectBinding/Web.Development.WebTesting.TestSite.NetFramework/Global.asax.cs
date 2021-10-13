@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.NetFramewor
       if (!Directory.Exists (objectPath))
         Directory.CreateDirectory (objectPath);
 
-      SetRenderingFeatures (RenderingFeatures.WithDiagnosticMetadata);
+      SetRenderingFeatures (RenderingFeatures.WithDiagnosticMetadata, new ResourceTheme.NovaGray());
       SetObjectStorageProvider (objectPath);
       RegisterAutoCompleteService();
       RegisterIconService();
@@ -101,10 +101,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.NetFramewor
       _resourceVirtualPathProvider.Register();
     }
 
-    private void SetRenderingFeatures (IRenderingFeatures renderingFeatures)
+    private void SetRenderingFeatures (IRenderingFeatures renderingFeatures, ResourceTheme resourceTheme)
     {
       var serviceLocator = DefaultServiceLocator.Create();
       serviceLocator.RegisterSingle (() => renderingFeatures);
+      serviceLocator.RegisterSingle (() => resourceTheme);
       ServiceLocator.SetLocatorProvider (() => serviceLocator);
     }
   }

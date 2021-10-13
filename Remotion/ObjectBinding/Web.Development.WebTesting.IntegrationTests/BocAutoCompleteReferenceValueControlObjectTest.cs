@@ -501,7 +501,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (searchResults[0].IconUrl, Does.EndWith ("/Remotion.ObjectBinding.Sample.Person.gif"));
 
       searchResults = bocAutoComplete.GetSearchServiceResults ("D", 5);
-      Assert.That (searchResults.Count, Is.EqualTo (3));
+      Assert.That (searchResults.Count, Is.EqualTo (4));
       Assert.That (searchResults[0].DisplayName, Is.EqualTo ("D, "));
 
       searchResults = bocAutoComplete.GetSearchServiceResults ("unexistentValue", 5);

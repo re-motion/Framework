@@ -1,0 +1,91 @@
+﻿/* Style applied to the ListMenu. */
+
+table.listMenu
+{
+  border-spacing: 0;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td.listMenuRow
+{
+  display: flex;
+  gap: var(--remotion-themed-spacing-small);
+}
+
+span.listMenuItem,
+span.listMenuItemDisabled
+{
+  display: block;
+  width: 100%;
+}
+
+span.listMenuItem a,
+span.listMenuItemDisabled a
+{
+  box-sizing: border-box;
+  padding: calc(var(--remotion-themed-spacing-small) - var(--remotion-themed-border-width)) calc(var(--remotion-themed-spacing) - var(--remotion-themed-border-width));
+  border: var(--remotion-themed-border-placeholder);
+  border-radius: var(--remotion-themed-border-radius);
+  display: inline-flex;
+  text-decoration: none;
+  color: var(--color-primary);
+  gap: var(--remotion-themed-spacing);
+}
+
+span:only-child.listMenuItem a,
+span:only-child.listMenuItemDisabled a
+{
+  width: 100%;
+}
+
+span.listMenuItem a
+{
+  color: var(--color-standard-text);
+  cursor: pointer;
+}
+
+span.listMenuItem a img,
+span.listMenuItemDisabled a img
+{
+  align-self: start;
+}
+
+span.listMenuItemDisabled a
+{
+  color: var(--color-disabled-text);
+  cursor: default;
+}
+
+span.listMenuItemDisabled a img
+{
+  opacity: 0.5;
+  filter: grayscale(100%);
+}
+
+span.listMenuItem a:hover
+{
+  background-color: var(--remotion-themed-background-color-hover);
+  border: var(--remotion-themed-border-hover);
+  box-shadow: var(--remotion-themed-box-shadow-hover);
+}
+
+span.listMenuItem a:focus
+{
+  outline: none;
+  background-color: var(--remotion-themed-background-color-focus);
+  border: var(--remotion-themed-border-focus);
+  box-shadow: var(--remotion-themed-box-shadow-focus);
+}
+
+span.listMenuItem a:focus:hover
+{
+  background-color: var(--remotion-themed-background-color-focus-hover);
+  border: var(--remotion-themed-border-focus-hover);
+  box-shadow: var(--remotion-themed-box-shadow-focus-hover);
+}
+
+span.listMenuItemDisabled a:focus
+{
+  outline: none;
+}

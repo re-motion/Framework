@@ -46,6 +46,8 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
       ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
       ArgumentUtility.CheckNotNull ("control", control);
 
+      htmlHeadAppender.RegisterCommonStyleSheet();
+
       string key = typeof (WebTabStripRenderer).GetFullNameChecked() + "_Style";
       var styleSheetUrl = ResourceUrlFactory.CreateThemedResourceUrl (typeof (WebTabStripRenderer), ResourceType.Html, "TabStrip.css");
       htmlHeadAppender.RegisterStylesheetLink (key, styleSheetUrl, HtmlHeadAppender.Priority.Library);
@@ -215,7 +217,7 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
     /// </remarks>
     public virtual string CssClassDisabled
     {
-      get { return "disabled"; }
+      get { return CssClassDefinition.Disabled; }
     }
 
     /// <summary> Gets the CSS-Class applied to the div used to clear the flow-layout at the end of the tab-strip. </summary>

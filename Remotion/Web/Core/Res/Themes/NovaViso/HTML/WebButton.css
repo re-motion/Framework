@@ -1,0 +1,33 @@
+/* Style applied to the WebButton. */
+:root
+{
+  --webbutton-min-height-standard: calc(var(--remotion-themed-singleline-min-height));
+  --webbutton-min-height-large: calc(var(--remotion-themed-singleline-min-height) + 2 * var(--remotion-themed-spacing));
+  --webbutton-min-height: var(--webbutton-min-height-standard);
+}
+
+button.webButton,
+input.webButton
+{
+  min-height: var(--webbutton-min-height);
+  padding: 0;
+  box-sizing: border-box;
+  display: inline-block;
+}
+
+button.webButton span.buttonBody
+{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: calc(var(--remotion-themed-spacing) / 2 - var(--remotion-themed-border-width)) var(--remotion-themed-spacing-large);
+  gap: var(--remotion-themed-spacing);
+  text-align: left;
+  vertical-align: middle;
+}
+
+button.webButton span.buttonBody > img
+{
+  align-self: flex-start;
+}

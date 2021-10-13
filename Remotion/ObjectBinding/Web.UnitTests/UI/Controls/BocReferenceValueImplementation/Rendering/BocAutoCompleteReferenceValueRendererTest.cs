@@ -276,6 +276,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       Control.Setup (stub => stub.Enabled).Returns (true);
       SetValue();
       Control.Setup (stub => stub.HasOptionsMenu).Returns (true);
+      Control.Setup (stub => stub.ReserveOptionsMenuWidth).Returns (true);
 
       XmlNode span = GetAssertedContainerSpan (false);
       AssertControl (span, OptionMenuConfiguration.HasOptionsMenu, AutoPostBack.Disabled);
@@ -364,7 +365,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       XmlNode span = GetAssertedContainerSpan (false);
       AssertControl (span, OptionMenuConfiguration.NoOptionsMenu, AutoPostBack.Disabled);
 
-      var input = span.GetAssertedChildElement ("span", 0).GetAssertedChildElement ("span", 1).GetAssertedChildElement ("input", 2);
+      var input = span.GetAssertedChildElement ("span", 0).GetAssertedChildElement ("span", 0).GetAssertedChildElement ("input", 2);
       input.AssertAttributeValueEquals ("id", c_keyValueName);
       input.AssertAttributeValueEquals ("name", c_keyValueName);
     }
@@ -435,7 +436,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       if (Control.Object.IsReadOnly && Control.Object.GetIcon() == null)
         return false;
 
-      var iconParent = parent.GetAssertedChildElement ("span", 0);
+      var iconOffset = Control.Object.IsReadOnly ? 0 : 1;
+      var iconParent = parent.GetAssertedChildElement ("span", iconOffset);
 
       iconParent.AssertAttributeValueEquals ("class", "icon");
       iconParent.AssertChildElementCount (1);
@@ -463,7 +465,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
 
       var contentSpan = span.GetAssertedChildElement ("span", 0 + iconOffset);
       contentSpan.AssertAttributeValueEquals ("id",  c_contentID);
-      contentSpan.AssertAttributeValueEquals ("class", "content" + hasIconCssClass + " " + hasOptionsMenuCssClass);
+      contentSpan.AssertAttributeValueEquals ("class", "content remotion-themed" + hasIconCssClass + " " + hasOptionsMenuCssClass);
       contentSpan.AssertAttributeValueEquals (StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
       contentSpan.AssertAttributeValueEquals (StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, c_readOnlyTextValueName);
       contentSpan.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsIDAttribute, Control.Object.ClientID + "_ValidationErrors");
@@ -534,15 +536,15 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       var iconOffset = 1;
       var hasIconCssClass = hasIcon ? " hasIcon" : "";
 
-      var contentSpan = contentDiv.GetAssertedChildElement ("span", 0 + iconOffset);
+      var contentSpan = contentDiv.GetAssertedChildElement ("span", 0);
       contentSpan.AssertAttributeValueEquals ("id",  c_contentID);
       switch (optionMenuConfiguration)
       {
         case OptionMenuConfiguration.NoOptionsMenu:
-          contentSpan.AssertAttributeValueEquals ("class", "content" + hasIconCssClass + " withoutOptionsMenu");
+          contentSpan.AssertAttributeValueEquals ("class", "content remotion-themed" + hasIconCssClass + " withoutOptionsMenu");
           break;
         case OptionMenuConfiguration.HasOptionsMenu:
-          contentSpan.AssertAttributeValueEquals ("class", "content" + hasIconCssClass + " hasOptionsMenu");
+          contentSpan.AssertAttributeValueEquals ("class", "content remotion-themed" + hasIconCssClass + " hasOptionsMenu");
           break;
       }
 
@@ -580,6 +582,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
         containerDiv.AssertAttributeValueContains ("class", "readOnly");
       if (!Control.Object.Enabled)
         containerDiv.AssertAttributeValueContains ("class", "disabled");
+      if (Control.Object.HasOptionsMenu && Control.Object.ReserveOptionsMenuWidth)
+        containerDiv.AssertAttributeValueContains ("class", "reserveOptionsMenuWidth");
 
       // containerDiv.AssertChildElementCount (1);
 

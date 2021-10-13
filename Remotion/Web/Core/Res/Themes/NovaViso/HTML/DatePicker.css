@@ -1,0 +1,19 @@
+﻿/* Style applied to the DatePicker. */
+
+a.DatePickerButton
+{
+  padding: 0;
+  border-style: none;
+  background-color: Transparent;
+}
+
+a.DatePickerButton img
+{
+  border-style: none;
+}
+
+div.DatePicker
+{
+  z-index: var(--z-index-max);
+  position: fixed;
+}

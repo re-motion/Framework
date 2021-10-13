@@ -16,10 +16,21 @@
 // 
 using System;
 using Remotion.Web.UI;
+using Remotion.Web.UI.Controls;
 
 namespace Remotion.Web.Development.WebTesting.TestSite
 {
   public partial class WebTreeViewTest : SmartPage
   {
+    protected override void OnInit (EventArgs e)
+    {
+      base.OnInit (e);
+
+      var node = new WebTreeNode (
+          "Item1",
+          "This is the beginning of very long text that should be placed correctly beside the icon",
+          "~/Images/SampleIcon.gif");
+      MyWebTreeView2.Nodes.Add (node);
+    }
   }
 }

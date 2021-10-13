@@ -208,7 +208,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_Normal");
       
       var options = bocReferenceValue.GetOptionDefinitions();
-      Assert.That (options.Count, Is.EqualTo (16));
+      Assert.That (options.Count, Is.EqualTo (17));
       
       Assert.That (options[0].ItemID, Is.EqualTo ("==null=="));
       Assert.That (options[0].Index, Is.EqualTo (1));
@@ -218,11 +218,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (options[2].Text, Is.EqualTo ("D, A"));
       Assert.That (options[2].IsSelected, Is.True);
 
-      Assert.That (options[15].ItemID, Is.EqualTo (fValue));
-      Assert.That (options[15].Index, Is.EqualTo (16));
+      Assert.That (options[16].ItemID, Is.EqualTo (fValue));
+      Assert.That (options[16].Index, Is.EqualTo (17));
 
-      Assert.That (options[15].Text, Is.EqualTo ("F,"));
-      Assert.That (options[15].IsSelected, Is.False);
+      Assert.That (options[16].Text, Is.EqualTo ("F,"));
+      Assert.That (options[16].IsSelected, Is.False);
     }
 
     [Test]

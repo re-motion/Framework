@@ -471,6 +471,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
       writer.RenderEndTag(); // Span Control
 
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, "validationMessages");
+      writer.RenderBeginTag (HtmlTextWriterTag.Div);
+
       foreach (BaseValidator validator in validators)
       {
         writer.RenderBeginTag (HtmlTextWriterTag.Div);
@@ -490,6 +493,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
           writer.RenderEndTag();
         }
       }
+
+      writer.RenderEndTag(); // validationMessages Div container
 
       writer.RenderEndTag(); // Span Container
     }

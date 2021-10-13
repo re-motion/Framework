@@ -123,6 +123,16 @@ class BocList
       selectedRows.SelectAllSelectorControls = document.querySelectorAll<HTMLInputElement>('input[name="' + selectAllSelectorControlName + '"]')!;
       selectedRows.OnSelectionChanged = onSelectionChangedHandler;
 
+      var visualizer = document.querySelectorAll('input[name="' + selectAllSelectorControlName + '"] + span')!;
+      visualizer.forEach(checkbox =>
+      {
+        checkbox.addEventListener('click', function (evt)
+        {
+          evt.stopPropagation();
+          selectedRows.SelectAllSelectorControls![0]!.click();
+        });
+      });
+
       selectedRows.SelectRowSelectorControls.forEach (checkBox =>
       {
         selectedRows.DataRowCount++;

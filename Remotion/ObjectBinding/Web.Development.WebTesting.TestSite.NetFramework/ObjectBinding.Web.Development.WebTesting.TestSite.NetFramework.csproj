@@ -116,6 +116,7 @@
     <Content Include="objects\Remotion.ObjectBinding.Sample.Person\00000000-0000-0000-0000-000000000001" />
     <Content Include="objects\Remotion.ObjectBinding.Sample.Person\00000000-0000-0000-0000-000000000009" />
     <Content Include="objects\Remotion.ObjectBinding.Sample.Person\00000000-0000-0000-0000-00000000000A" />
+    <Content Include="objects\Remotion.ObjectBinding.Sample.Person\00000000-0000-0000-0000-00000000000F" />
     <Content Include="objects\Remotion.ObjectBinding.Sample.Person\011ace7d-5149-4117-8ace-dd33d80b8f96" />
     <Content Include="objects\Remotion.ObjectBinding.Sample.Person\19214979-d614-4afa-b074-7b05fe37ea65" />
     <Content Include="objects\Remotion.ObjectBinding.Sample.Person\39aab7cd-9916-4549-a8ec-145fc9cfae2e" />

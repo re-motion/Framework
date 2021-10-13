@@ -90,6 +90,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       var scriptUrl = ResourceUrlFactory.CreateResourceUrl (typeof (BocBooleanValueRenderer), ResourceType.Html, "BocBooleanValue.js");
       htmlHeadAppender.RegisterJavaScriptInclude (scriptFileKey, scriptUrl);
 
+      htmlHeadAppender.RegisterCommonStyleSheet();
+
       string styleFileKey = typeof (BocBooleanValueRenderer).GetFullNameChecked() + "_Style";
       var styleUrl = ResourceUrlFactory.CreateThemedResourceUrl (typeof (BocBooleanValueRenderer), ResourceType.Html, "BocBooleanValue.css");
       htmlHeadAppender.RegisterStylesheetLink (styleFileKey, styleUrl, HtmlHeadAppender.Priority.Library);
@@ -331,6 +333,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       labelControl.Width = Unit.Empty;
       labelControl.Height = Unit.Empty;
       labelControl.ApplyStyle (renderingContext.Control.LabelStyle);
+      labelControl.CssClass = "description";
     }
 
     public override string GetCssClassBase (IBocBooleanValue control)

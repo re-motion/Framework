@@ -28,6 +28,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
   public interface IBocReferenceValueBase : IBusinessObjectBoundEditableWebControl, IBocRenderableControl, IControlWithResourceManager
   {
     bool HasOptionsMenu { get; }
+    bool ReserveOptionsMenuWidth { get; }
     DropDownMenu OptionsMenu { get; }
     Unit OptionsMenuWidth { get; }
 

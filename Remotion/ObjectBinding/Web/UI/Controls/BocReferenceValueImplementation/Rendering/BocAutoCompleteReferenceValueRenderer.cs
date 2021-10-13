@@ -144,6 +144,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     private void RegisterStylesheets (HtmlHeadAppender htmlHeadAppender)
     {
+      htmlHeadAppender.RegisterCommonStyleSheet();
+
       string styleKey = typeof (BocAutoCompleteReferenceValueRenderer).GetFullNameChecked() + "_Style";
       htmlHeadAppender.RegisterStylesheetLink (
           styleKey,
@@ -309,7 +311,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
       ValidationErrorRenderer.SetValidationErrorsReferenceOnControl (textBox, validationErrorsID, validationErrors);
 
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassInput);
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassInput + " " + CssClassThemed);
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Combobox);
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaHasPopup, HtmlAriaHasPopupAttributeValue.Listbox);
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaExpanded, HtmlAriaExpandedAttributeValue.False);

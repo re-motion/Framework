@@ -1,3 +1,23 @@
+:root
+{
+  --singleview-topcontrols-padding: 0 0 var(--remotion-themed-spacing) 0;
+  --tabbedmultiview-topcontrols-padding: 0 0 var(--remotion-themed-spacing) 0;
+  --tabbedMenu-horizontal-padding: calc(var(--remotion-themed-spacing-large) - var(--remotion-themed-spacing));
+}
+
+div.singleViewTopControls .content > *:not(div):not(.tabbedMenu),
+div.tabbedMultiViewTopControls .content > *:not(div):not(.tabbedMenu)
+{
+  margin: 0 var(--remotion-themed-spacing-large);
+}
+
+div.singleViewTopControls .content > div:not(.tabbedMenu),
+div.tabbedMultiViewTopControls .content > div:not(.tabbedMenu)
+{
+  padding: 0 var(--remotion-themed-spacing-large);
+  box-sizing: border-box;
+}
+
 .bocBooleanValue.readOnly,
 .bocCheckboxValue.readOnly,
 .bocDateTimeValue.readOnly,

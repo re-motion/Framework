@@ -96,7 +96,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var tabbedMenu = home.TabbedMenus().GetByLocalID ("MyTabbedMenu");
 
       var items = tabbedMenu.GetItemDefinitions();
-      Assert.That (items.Count, Is.EqualTo (6));
+      Assert.That (items.Count, Is.EqualTo (7));
       
       Assert.That (items[0].ItemID, Is.EqualTo ("EventCommandTab"));
       Assert.That (items[0].Index, Is.EqualTo (1));

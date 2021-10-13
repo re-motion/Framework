@@ -29,6 +29,8 @@
       </div>
       <h3>Disabled WebButton</h3>
       <remotion:WebButton ID="MyDisabledWebButton" Text="DisabledWebButton" CommandName="Disabled" Enabled="False" runat="server"/>
+      <h3>WebButton with icon</h3>
+      <remotion:WebButton ID="MyWebButtonWithIcon" Text="This text should wrap correctly because it is too long to fit" Width="100px" Icon-Url="Images/SampleIcon.gif" CommandName="Disabled" runat="server"/>
     </ContentTemplate>
   </asp:UpdatePanel>
 </asp:Content>

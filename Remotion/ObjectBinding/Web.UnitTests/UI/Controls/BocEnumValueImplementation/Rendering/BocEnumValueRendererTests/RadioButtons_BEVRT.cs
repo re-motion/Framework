@@ -320,7 +320,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       if (string.IsNullOrEmpty (cssClass))
         cssClass = _enumValue.Object.Attributes["class"];
       if (string.IsNullOrEmpty (cssClass))
-        cssClass = renderer.GetCssClassBase(_enumValue.Object);
+        cssClass = "bocEnumValue radioButtonList";
 
       Html.AssertAttribute (div, "id", c_clientID);
       Html.AssertAttribute (div, "class", cssClass, HtmlHelperBase.AttributeValueCompareMode.Contains);

@@ -63,9 +63,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
       _validationErrorRenderer = validationErrorRenderer;
     }
 
+    /// <inheritdoc />
+    protected override bool UseThemingContext
+    {
+      get { return true; }
+    }
+
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
       ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+
+      htmlHeadAppender.RegisterCommonStyleSheet();
 
       string key = typeof (BocEnumValueRenderer).GetFullNameChecked() + "_Style";
       var url = ResourceUrlFactory.CreateThemedResourceUrl (typeof (BocEnumValueRenderer), ResourceType.Html, "BocEnumValue.css");
@@ -163,7 +171,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
       if (isRadioButtonList)
         listControl.Attributes.Add (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.RadioGroup);
 
-
       var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
       _labelReferenceRenderer.SetLabelReferenceOnControl (listControl, labelIDs);
 
@@ -177,9 +184,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
         if (isDropDownList && !renderingContext.Control.ListControlStyle.DropDownListNullValueTextVisible)
         {
           nullItem.Attributes[HtmlTextWriterAttribute2.AriaLabel] = nullItemText;
+          char nbsp = (char) 160;
           // By setting the label to a single whitespace, we can convince the HTML validator that the element is valid,
-          // while preventing text from being displayed in the UI.
-          nullItem.Attributes[HtmlTextWriterAttribute2.Label] = " ";
+          // while preventing text from being displayed in the UI. the NBSP is required in Firefox to prevent the dropdown icon from minimzing.
+          nullItem.Attributes[HtmlTextWriterAttribute2.Label] = new string (nbsp, 1);
           nullItem.Text = string.Empty;
         }
 
@@ -324,7 +332,21 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
 
     public override string GetCssClassBase (IBocEnumValue control)
     {
-      return "bocEnumValue";
+      const string cssClassBase = "bocEnumValue";
+      if (control.IsReadOnly)
+        return cssClassBase;
+
+      switch (control.ListControlStyle.ControlType)
+      {
+        case ListControlType.DropDownList:
+          return cssClassBase + " dropDownList";
+        case ListControlType.ListBox:
+          return cssClassBase + " listBox";
+        case ListControlType.RadioButtonList:
+          return cssClassBase + " radioButtonList";
+        default:
+          throw new ArgumentOutOfRangeException();
+      }
     }
   }
 }
