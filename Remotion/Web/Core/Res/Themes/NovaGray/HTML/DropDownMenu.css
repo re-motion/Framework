@@ -197,7 +197,6 @@ span.DropDownMenuSelect a.DropDownMenuButton:focus img
 
 span.DropDownMenuSelect.disabled a.DropDownMenuButton img
 {
-  background-position: -18px center;
   opacity: 0.4;
   filter: progid:DXImageTransform.Microsoft.BasicImage(opacity=0.40),
           progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
