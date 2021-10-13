@@ -21,6 +21,7 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Rende
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
+using Remotion.Web.UI;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.Factories
 {
@@ -70,7 +71,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Factories
 
     private string GetResourceUrl (string icon)
     {
-      return _resourceUrlFactory.CreateThemedResourceUrl (typeof (BocBooleanValueResourceSetFactory), ResourceType.Image, icon).GetUrl();
+      return _resourceUrlFactory.CreateThemedResourceUrl (typeof (HtmlHeadAppenderExtensions), ResourceType.Image, icon).GetUrl();
     }
   }
 }
