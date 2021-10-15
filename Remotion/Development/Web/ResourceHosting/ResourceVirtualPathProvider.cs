@@ -42,8 +42,8 @@ namespace Remotion.Development.Web.ResourceHosting
   
     static ResourceVirtualPathProvider ()
     {
-      var staticFileHandlerType = typeof (HttpApplication).Assembly.GetType ("System.Web.StaticFileHandler", true);
-      s_staticFileHandler = (IHttpHandler) Activator.CreateInstance (staticFileHandlerType, true);
+      var staticFileHandlerType = typeof (HttpApplication).Assembly.GetType ("System.Web.StaticFileHandler", true)!;
+      s_staticFileHandler = (IHttpHandler) Activator.CreateInstance (staticFileHandlerType, true)!;
     }
     
     public static IHttpHandler StaticFileHandler
@@ -55,7 +55,7 @@ namespace Remotion.Development.Web.ResourceHosting
     private readonly Dictionary<string, ResourcePathMapping> _resourcePathMappings;
     private readonly Dictionary<string, FileExtensionHandlerMapping> _fileExtensionHandlerMappings;
 
-    public ResourceVirtualPathProvider (ResourcePathMapping[] mappings, FileExtensionHandlerMapping[] fileExtensionHandlerMappings = null)
+    public ResourceVirtualPathProvider (ResourcePathMapping[] mappings, FileExtensionHandlerMapping[]? fileExtensionHandlerMappings = null)
     {
       ArgumentUtility.CheckNotNull ("mappings", mappings);
 
@@ -76,13 +76,15 @@ namespace Remotion.Development.Web.ResourceHosting
 
     public void HandleBeginRequest ()
     {
+      Assertion.IsNotNull (HttpContext.Current.Request.AppRelativeCurrentExecutionFilePath);
+
       if (IsMappedPath (HttpContext.Current.Request.AppRelativeCurrentExecutionFilePath))
       {
         if (DirectoryExists (HttpContext.Current.Request.AppRelativeCurrentExecutionFilePath))
           HttpContext.Current.RemapHandler (new DirectoryListingHandler());
         else
         {
-          var extension = VirtualPathUtility.GetExtension (HttpContext.Current.Request.AppRelativeCurrentExecutionFilePath).TrimStart('.');
+          var extension = VirtualPathUtility.GetExtension (HttpContext.Current.Request.AppRelativeCurrentExecutionFilePath)?.TrimStart('.') ?? string.Empty;
           if (_fileExtensionHandlerMappings.ContainsKey(extension))
             HttpContext.Current.RemapHandler (_fileExtensionHandlerMappings[extension].Handler);
         }
@@ -150,7 +152,7 @@ namespace Remotion.Development.Web.ResourceHosting
       return Previous.GetDirectory (virtualDir);
     }
 
-    public override CacheDependency GetCacheDependency (string virtualPath, IEnumerable virtualPathDependencies, DateTime utcStart)
+    public override CacheDependency? GetCacheDependency (string virtualPath, IEnumerable virtualPathDependencies, DateTime utcStart)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("virtualPath", virtualPath);
 
@@ -160,11 +162,11 @@ namespace Remotion.Development.Web.ResourceHosting
       //based on MapPathBasedVirtualPathProvider:
 
       if (virtualPathDependencies == null)
-        return (CacheDependency) null;
-      StringCollection stringCollection = (StringCollection) null;
+        return (CacheDependency?) null;
+      StringCollection? stringCollection = (StringCollection?) null;
       foreach (string virtualPath1 in virtualPathDependencies)
       {
-        string str;
+        string? str;
 
         var appRelative = ToAppRelativeVirtualPath (virtualPath1);
         if (IsMappedPath (appRelative))
@@ -179,12 +181,14 @@ namespace Remotion.Development.Web.ResourceHosting
         else
           str = HostingEnvironment.MapPath (virtualPath1);
 
+        Assertion.IsNotNull (str, "The physical path of '{0}' must not be null.", appRelative);
+
         if (stringCollection == null)
           stringCollection = new StringCollection();
         stringCollection.Add (str);
       }
       if (stringCollection == null)
-        return (CacheDependency) null;
+        return (CacheDependency?) null;
       string[] strArray = new string[stringCollection.Count];
       stringCollection.CopyTo (strArray, 0);
       return new CacheDependency (strArray, new string[0], utcStart);
@@ -195,7 +199,7 @@ namespace Remotion.Development.Web.ResourceHosting
       var appRelativeVirtualPath = ToAppRelativeVirtualPath (virtualPath);
       var mapping = GetResourcePathMapping (appRelativeVirtualPath);
 
-      FileInfo physicalFile = null;
+      FileInfo? physicalFile = null;
       if (mapping != null)
       {
         var resourceRootPath = CombineVirtualPath (_resourceRoot, mapping.VirtualPath);
@@ -224,8 +228,8 @@ namespace Remotion.Development.Web.ResourceHosting
 
       var mapping = GetResourcePathMapping (appRelativeVirtualPath);
 
-      DirectoryInfo directoryInfo = null;
-      string displayName = null;
+      DirectoryInfo? directoryInfo = null;
+      string? displayName = null;
       if (mapping != null)
       {
         displayName = mapping.VirtualPath.TrimEnd('/');
@@ -236,11 +240,15 @@ namespace Remotion.Development.Web.ResourceHosting
 
         directoryInfo = new DirectoryInfo (absolutePath);
       }
+      else
+      {
+        throw new InvalidOperationException (string.Format ("No resource path mapping for '{0}' exists.", appRelativeVirtualPath));
+      }
 
       return new ResourceVirtualDirectory (virtualDir, directoryInfo, displayName);
     }
 
-    private ResourcePathMapping GetResourcePathMapping (string appRelativePath)
+    private ResourcePathMapping? GetResourcePathMapping (string appRelativePath)
     {
       var rootPath = VirtualPathUtility.AppendTrailingSlash (appRelativePath);
       if (_resourcePathMappings.ContainsKey (rootPath))

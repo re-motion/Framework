@@ -56,17 +56,17 @@ namespace Remotion.Configuration
     {
     }
 
-    public abstract object GetSection (string sectionName);
+    public abstract object? GetSection (string sectionName);
 
     public abstract ConnectionStringSettings GetConnectionString (string name);
 
     public abstract string? GetAppSetting (string name);
 
-    public object GetSection (string sectionName, bool throwIfNotFound)
+    public object? GetSection (string sectionName, bool throwIfNotFound)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("sectionName", sectionName);
 
-      object section = GetSection (sectionName);
+      object? section = GetSection (sectionName);
       if (throwIfNotFound && section == null)
         throw new ConfigurationErrorsException (string.Format ("Required section '{0}' does not exist in the configuration.", sectionName));
 

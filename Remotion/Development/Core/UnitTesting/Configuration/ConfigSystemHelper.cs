@@ -34,15 +34,15 @@ namespace Remotion.Development.UnitTesting.Configuration
   /// </remarks>
   public class ConfigSystemHelper
   {
-    private Enum _notStarted;
-    private Enum _usable;
-    private FakeInternalConfigSystem _fakeConfigSystem;
+    private Enum? _notStarted;
+    private Enum? _usable;
+    private FakeInternalConfigSystem? _fakeConfigSystem;
     private ConnectionStringsSection _connectionStringsSection = new ConnectionStringsSection ();
     private NameValueCollection _appSettings = new NameValueCollection();
 
     public void SetUpConfigSystem()
     {
-      Type initStateType = typeof (ConfigurationElement).Assembly.GetType ("System.Configuration.ConfigurationManager+InitState", true, false);
+      Type initStateType = typeof (ConfigurationElement).Assembly.GetType ("System.Configuration.ConfigurationManager+InitState", true, false)!;
       _notStarted = (Enum) Enum.Parse (initStateType, "NotStarted");
       _usable = (Enum) Enum.Parse (initStateType, "Usable");
 

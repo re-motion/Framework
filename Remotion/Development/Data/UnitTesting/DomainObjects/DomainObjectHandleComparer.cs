@@ -37,7 +37,7 @@ namespace Remotion.Development.Data.UnitTesting.DomainObjects
     {
     }
 
-    public new bool Equals (object x, object y)
+    public new bool Equals (object? x, object? y)
     {
       if (x == null && y == null)
         return true;

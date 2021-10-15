@@ -48,7 +48,7 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls
 
     public void InitRecursive ()
     {
-      PrivateInvoke.InvokeNonPublicMethod (_control, typeof (Control), "InitRecursive", new object[] { null });
+      PrivateInvoke.InvokeNonPublicMethod (_control, typeof (Control), "InitRecursive", new object?[] { null });
     }
 
     public void LoadRecursive ()
@@ -66,7 +66,7 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls
       PrivateInvoke.InvokeNonPublicMethod (_control, typeof (Control), "LoadViewStateRecursive", new object[] { viewState });
     }
 
-    public object SaveViewStateRecursive (ViewStateMode mode)
+    public object? SaveViewStateRecursive (ViewStateMode mode)
     {
       return PrivateInvoke.InvokeNonPublicMethod (_control, typeof (Control), "SaveViewStateRecursive", new object[]{ mode });
     }
@@ -76,7 +76,7 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls
       PrivateInvoke.InvokeNonPublicMethod (_control, typeof (Control), "LoadViewState", new object[] { viewState });
     }
 
-    public object SaveViewState ()
+    public object? SaveViewState ()
     {
       return PrivateInvoke.InvokeNonPublicMethod (_control, typeof (Control), "SaveViewState", new object[0]);
     }
@@ -91,12 +91,12 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls
       PrivateInvoke.InvokeNonPublicMethod (_control, typeof (Control), "LoadControlStateInternal", new object[] { controlState });
     }
 
-    public object SaveControlState ()
+    public object? SaveControlState ()
     {
       return PrivateInvoke.InvokeNonPublicMethod (_control, typeof (Control), "SaveControlState", new object[0]);
     }
 
-    public object SaveControlStateInternal ()
+    public object? SaveControlStateInternal ()
     {
       return PrivateInvoke.InvokeNonPublicMethod (_control, typeof (Control), "SaveControlStateInternal", new object[0]);
     }

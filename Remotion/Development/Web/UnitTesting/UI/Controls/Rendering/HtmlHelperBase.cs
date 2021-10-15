@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
 using System.Web.UI;
@@ -33,9 +34,9 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
   /// </remarks>
   public abstract class HtmlHelperBase : IDisposable
   {
-    public delegate void BinaryAssertDelegate (IComparable actual, IComparable expected, string message, params object[] args);
+    public delegate void BinaryAssertDelegate (IComparable? actual, IComparable? expected, string message, params object[] args);
 
-    public delegate void UnaryAssertDelegate (object actual, string message, params object[] args);
+    public delegate void UnaryAssertDelegate ([NotNull]object? actual, string message, params object[] args);
 
     public delegate void ConditionAssertDelegate (bool condition, string message, params object[] args);
 
@@ -115,6 +116,8 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
     /// </summary>
     public void AssertChildElementCount (XmlNode parent, int count)
     {
+      ArgumentUtility.CheckNotNull ("parent", parent);
+
       int elementCount = 0;
       foreach (XmlNode node in parent.ChildNodes)
       {
@@ -131,6 +134,9 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
     /// <returns>The specified child element.</returns>
     public XmlNode GetAssertedChildElement (XmlNode parent, string tag, int index)
     {
+      ArgumentUtility.CheckNotNull ("parent", parent);
+      ArgumentUtility.CheckNotNullOrEmpty ("tag", tag);
+
       AssertGreaterThan (
           parent.ChildNodes.Count,
           index,
@@ -139,7 +145,9 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
           parent.ChildNodes.Count,
           index);
 
-      XmlNode node = parent.ChildNodes[index];
+      XmlNode? node = parent.ChildNodes[index];
+
+      AssertNotNull (node, "The child node at index {0} is null.", index);
 
       AssertAreEqual (
           XmlNodeType.Element,
@@ -147,7 +155,7 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
           "{0}.ChildNodes[{1}].NodeType is {2}, not {3}.",
           parent.Name,
           index,
-          parent.ChildNodes[index].NodeType,
+          node.NodeType,
           XmlNodeType.Element);
 
       AssertAreEqual (tag, node.Name, "Unexpected element tag.");
@@ -160,19 +168,24 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
     /// </summary>
     public void AssertTextNode (XmlNode parent, string content, int index)
     {
+      ArgumentUtility.CheckNotNull ("parent", parent);
+      ArgumentUtility.CheckNotNull ("content", content);
+
       AssertGreaterThan (
           parent.ChildNodes.Count, index, "Node {0} has only {1} children - index {2} out of range.", parent.Name, parent.ChildNodes.Count, index);
 
+      var childNode = Assertion.IsNotNull (parent.ChildNodes[index]);
+
       AssertAreEqual (
           XmlNodeType.Text,
-          parent.ChildNodes[index].NodeType,
+          childNode.NodeType,
           "{0}.ChildNodes[{1}].NodeType is {2}, not {3}.",
           parent.Name,
           index,
-          parent.ChildNodes[index].NodeType,
+          childNode.NodeType,
           XmlNodeType.Text);
 
-      var node = (XmlText) parent.ChildNodes[index];
+      var node = (XmlText) childNode;
 
       AssertAreEqual (content, node.InnerText.Trim(), "Unexpected text node content.");
     }
@@ -180,8 +193,11 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
     /// <summary>
     /// Asserts that <paramref name="node"/> has an attribute named <paramref name="attributeName"/> with value <paramref name="attributeValue"/>.
     /// </summary>
-    public void AssertAttribute (XmlNode node, string attributeName, string attributeValue)
+    public void AssertAttribute (XmlNode node, string attributeName, string? attributeValue)
     {
+      ArgumentUtility.CheckNotNull ("node", node);
+      ArgumentUtility.CheckNotNullOrEmpty ("attributeName", attributeName);
+
       AssertAttribute (node, attributeName, attributeValue, AttributeValueCompareMode.Equal);
     }
 
@@ -190,9 +206,13 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
     /// and that the attribute's value is equal to or contains <paramref name="attributeValue"/>, 
     /// depending on <paramref name="mode"/>.
     /// </summary>
-    public void AssertAttribute (XmlNode node, string attributeName, string attributeValue, AttributeValueCompareMode mode)
+    public void AssertAttribute (XmlNode node, string attributeName, string? attributeValue, AttributeValueCompareMode mode)
     {
-      XmlAttribute attribute = node.Attributes[attributeName];
+      ArgumentUtility.CheckNotNull ("node", node);
+      ArgumentUtility.CheckNotNullOrEmpty ("attributeName", attributeName);
+
+      AssertNotNull (node.Attributes, "Node {0} has 'null' as Attributes value.", node.Name);
+      XmlAttribute? attribute = node.Attributes[attributeName];
       AssertNotNull (attribute, "Attribute {0}.{1} does not exist.", node.Name, attributeName);
 
       if (attributeValue != null)
@@ -221,7 +241,13 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
     /// </summary>
     public void AssertStyleAttribute (XmlNode node, string cssProperty, string cssValue)
     {
-      XmlAttribute attribute = node.Attributes["style"];
+      ArgumentUtility.CheckNotNull ("node", node);
+      ArgumentUtility.CheckNotNullOrEmpty ("cssProperty", cssProperty);
+      ArgumentUtility.CheckNotNullOrEmpty ("cssProperty", cssProperty);
+
+      AssertNotNull (node.Attributes, "Node {0} has 'null' as Attributes value.", node.Name);
+
+      XmlAttribute? attribute = node.Attributes["style"];
       AssertNotNull (attribute, "Attribute {0}.{1}", node.Name, "style");
 
       string stylePart = string.Format ("{0}:{1};", cssProperty, cssValue);
@@ -241,6 +267,11 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
     /// <param name="attributeName"></param>
     public void AssertNoAttribute (XmlNode node, string attributeName)
     {
+      ArgumentUtility.CheckNotNull ("node", node);
+      ArgumentUtility.CheckNotNullOrEmpty ("attributeName", attributeName);
+
+      AssertNotNull (node.Attributes, "Node {0} has 'null' as Attributes value.", node.Name);
+
       AssertIsNull (node.Attributes[attributeName], "Attribute '{0}' is present although it should not be.", attributeName);
     }
 

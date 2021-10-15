@@ -36,13 +36,13 @@ namespace Remotion.Web.UnitTests.Core.UI.SmartPageImplementation
       protected override void OnInit (EventArgs e)
       {
         Assertion.IsFalse (DesignMode);
-        Assertion.IsTrue (Page.IsPostBack);
+        Assertion.IsTrue (Page?.IsPostBack ?? false);
 
-        var pageRequestManagerType = typeof (ScriptManager).Assembly.GetType ("System.Web.UI.PageRequestManager", true, false);
+        var pageRequestManagerType = typeof (ScriptManager).Assembly.GetType ("System.Web.UI.PageRequestManager", true, false)!;
         var isAsyncPostBackRequest = (bool) PrivateInvoke.InvokeNonPublicStaticMethod (
             pageRequestManagerType,
             "IsAsyncPostBackRequest",
-            new HttpRequestWrapper (Context.Request));
+            new HttpRequestWrapper (Context.Request))!;
         Assertion.IsTrue (isAsyncPostBackRequest);
 
         base.OnInit (e);
@@ -73,7 +73,7 @@ namespace Remotion.Web.UnitTests.Core.UI.SmartPageImplementation
       base.ProcessRequest (context);
     }
 
-    protected override NameValueCollection DeterminePostBackMode ()
+    protected override NameValueCollection? DeterminePostBackMode ()
     {
       return new NameValueCollection();
     }

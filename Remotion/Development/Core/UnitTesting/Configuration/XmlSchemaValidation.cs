@@ -70,7 +70,7 @@ namespace Remotion.Development.UnitTesting.Configuration
             {
               var message = string.Format ("Schema is invalid: {0}", args.Message);
               throw new XmlSchemaException (message, args.Exception);
-            });
+            })!;
       }
       settings.Schemas.Add (xmlSchema);
 

@@ -43,7 +43,7 @@ namespace Remotion.Development.UnitTesting.Data.SqlClient
       get { return _lineCount == 0 ? 0 : _startRowNumber + _lineCount - 1; }
     }
 
-    public string Content
+    public string? Content
     {
       get
       {

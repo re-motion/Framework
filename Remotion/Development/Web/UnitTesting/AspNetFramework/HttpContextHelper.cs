@@ -41,20 +41,20 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
       HttpContext.Current = context;
     }
 
-    public static HttpContext CreateHttpContext (string httpMethod, string page, string query)
+    public static HttpContext CreateHttpContext (string httpMethod, string page, string? query)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("httpMethod", httpMethod);
       ArgumentUtility.CheckNotNullOrEmpty ("page", page);
 
-
       SimpleWorkerRequest workerRequest =
           new SimpleWorkerRequest (s_appVirtualDir, s_appPhysicalDir, page, query, new System.IO.StringWriter());
 
-      object httpRuntime = PrivateInvoke.GetNonPublicStaticField (typeof (HttpRuntime), "_theRuntime");
+      object? httpRuntime = PrivateInvoke.GetNonPublicStaticField (typeof (HttpRuntime), "_theRuntime");
+      Assertion.DebugIsNotNull (httpRuntime, "'_theRuntime' must not be null.");
       PrivateInvoke.SetNonPublicField (httpRuntime, "_appDomainAppPath", s_appPhysicalDir);
       string assemblyName = typeof (HttpApplication).Assembly.GetFullNameChecked();
-      Type virtualPathType = Type.GetType ("System.Web.VirtualPath, " + assemblyName, true);
-      object virtualPath = PrivateInvoke.InvokePublicStaticMethod (virtualPathType, "Create", s_appVirtualDir);
+      Type virtualPathType = Type.GetType ("System.Web.VirtualPath, " + assemblyName, true)!;
+      object virtualPath = PrivateInvoke.InvokePublicStaticMethod (virtualPathType, "Create", s_appVirtualDir)!;
       PrivateInvoke.SetNonPublicField (httpRuntime, "_appDomainAppVPath", virtualPath);
       PrivateInvoke.SetNonPublicField (httpRuntime, "_appDomainAppId", "Remotion.Web.UnitTests");
       Type buildManagerType = typeof (System.Web.Compilation.BuildManager);

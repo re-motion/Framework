@@ -33,7 +33,7 @@ namespace Remotion.Development.UnitTesting
     }
     
     private readonly string _sourceDirectory;
-    private CompilerResults _results;
+    private CompilerResults? _results;
     private readonly CompilerParameters _compilerParameters;
 
     public AssemblyCompiler (string sourceDirectory, string outputAssembly, params string[] referencedAssemblies)
@@ -72,12 +72,12 @@ namespace Remotion.Development.UnitTesting
       get { return _compilerParameters; }
     }
 
-    public Assembly CompiledAssembly
+    public Assembly? CompiledAssembly
     {
       get { return _results != null ? _results.CompiledAssembly : null; }
     }
 
-    public CompilerResults Results
+    public CompilerResults? Results
     {
       get { return _results; }
     }

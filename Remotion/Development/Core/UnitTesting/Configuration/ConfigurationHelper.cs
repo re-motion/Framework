@@ -45,7 +45,7 @@ namespace Remotion.Development.UnitTesting.Configuration
     /// <param name="configurationSection">The configuration to populate from the fragment.</param>
     /// <param name="xmlFragment">The XML fragment.</param>
     /// <param name="xsdContent">The content of the XSD, or <see langword="null"/> for no validation.</param>
-    public static void DeserializeSection (ConfigurationSection configurationSection, string xmlFragment, string xsdContent = null)
+    public static void DeserializeSection (ConfigurationSection configurationSection, string xmlFragment, string? xsdContent = null)
     {
       ArgumentUtility.CheckNotNull ("configurationSection", configurationSection);
       ArgumentUtility.CheckNotNullOrEmpty ("xmlFragment", xmlFragment);

@@ -25,8 +25,8 @@ namespace Remotion.Development.Web.UnitTesting.ExecutionEngine.TestFunctions
     public static readonly string Parameter1Name = "Parameter1";
     public static readonly string ReturnUrlValue = "DefaultReturn.html";
 
-    private WxeContext _wxeContextStep2;
-    private string _lastExecutedStepID;
+    private WxeContext? _wxeContextStep2;
+    private string? _lastExecutedStepID;
     private string _executionOrder = string.Empty;
 
     public TestFunction ()
@@ -42,9 +42,9 @@ namespace Remotion.Development.Web.UnitTesting.ExecutionEngine.TestFunctions
     }
 
     [WxeParameter (1, false, WxeParameterDirection.In)]
-    public string Parameter1
+    public string? Parameter1
     {
-      get { return (string) Variables["Parameter1"]; }
+      get { return (string?) Variables["Parameter1"]; }
       set { Variables["Parameter1"] = value; }
     }
 
@@ -76,7 +76,7 @@ namespace Remotion.Development.Web.UnitTesting.ExecutionEngine.TestFunctions
       Step2 (context);
     }
 
-    public string LastExecutedStepID
+    public string? LastExecutedStepID
     {
       get { return _lastExecutedStepID; }
     }
@@ -91,7 +91,7 @@ namespace Remotion.Development.Web.UnitTesting.ExecutionEngine.TestFunctions
       get { return Step3; }
     }
 
-    public WxeContext WxeContextStep2
+    public WxeContext? WxeContextStep2
     {
       get { return _wxeContextStep2; }
     }

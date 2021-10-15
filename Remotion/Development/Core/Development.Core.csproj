@@ -10,12 +10,12 @@
     <Description>Library for unit testing, building, and other development-time activities.</Description>
     <AssemblyName>Remotion.Development</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
-    <Nullable>disable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\..\..\SharedSource\Development\UnitTesting\**\*"
              Link="SharedSource\UnitTesting\%(RecursiveDir)%(Filename)%(Extension)"
              Exclude="**\PEVerifyVersion.cs;**\NUnit\**" />
+    <Compile Include="..\..\..\SharedSource\Core\RoslynAnnotations\NullableAnnotations.cs" Link="SharedSource\RoslynAnnotations\NullableAnnotations.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Tools\Core.Tools.csproj" />

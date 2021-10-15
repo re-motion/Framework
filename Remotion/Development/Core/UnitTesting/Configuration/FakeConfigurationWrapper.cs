@@ -61,12 +61,11 @@ namespace Remotion.Development.UnitTesting.Configuration
       _appSettings.Add (name, value);
     }
 
-    public override object GetSection (string sectionName)
+    public override object? GetSection (string sectionName)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("sectionName", sectionName);
 
-      object value;
-      if (_sections.TryGetValue (sectionName, out value))
+      if (_sections.TryGetValue (sectionName, out var value))
         return value;
       return null;
     }
@@ -78,7 +77,7 @@ namespace Remotion.Development.UnitTesting.Configuration
       return _connectionStringsSection.ConnectionStrings[name];
     }
 
-    public override string GetAppSetting (string name)
+    public override string? GetAppSetting (string name)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("name", name);
 

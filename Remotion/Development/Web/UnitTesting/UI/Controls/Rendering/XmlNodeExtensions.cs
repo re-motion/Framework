@@ -22,7 +22,7 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
 {
   public static class XmlNodeExtensions
   {
-    private static HtmlHelperBase s_helper;
+    private static HtmlHelperBase? s_helper;
 
     public static HtmlHelperBase Helper
     {
@@ -35,7 +35,7 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
       Helper.AssertChildElementCount (element, childElementCount);
     }
 
-    public static void AssertAttributeValueEquals (this XmlNode element, string attributeName, string attributeValue)
+    public static void AssertAttributeValueEquals (this XmlNode element, string attributeName, string? attributeValue)
     {
       Helper.AssertAttribute (element, attributeName, attributeValue, HtmlHelperBase.AttributeValueCompareMode.Equal);
     }

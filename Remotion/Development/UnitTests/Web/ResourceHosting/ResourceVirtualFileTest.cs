@@ -48,5 +48,15 @@ namespace Remotion.Development.UnitTests.Web.ResourceHosting
 
       Assert.That (resourceVirtualFile.Exists, Is.False);
     }
+
+    [Test]
+    public void Name_WithOnlyRootDirectory_ReturnsNotNull ()
+    {
+      var resourceVirtualFile = new ResourceVirtualFile ("/", new FileInfo("/something"));
+
+      var name = resourceVirtualFile.Name;
+
+      Assert.That (name, Is.EqualTo (string.Empty));
+    }
   }
 }
