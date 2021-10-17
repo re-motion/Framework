@@ -32,16 +32,6 @@ span.bocMultilineTextValue textarea
   height: 100%;
 }
 
-span.bocMultilineTextValue .content
-{
-  position: absolute;
-}
-
-.bocMultilineTextValue.readOnly .content
-{
-  position: static;
-}
-
 .bocMultilineTextValue.readOnly .content span[tabindex]
 {
   min-height: var(--remotion-themed-singleline-min-height);
