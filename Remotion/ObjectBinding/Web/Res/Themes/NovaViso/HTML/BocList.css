@@ -502,6 +502,7 @@ div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable s
 div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable span.bocListEditableCell > .validationMessages
 {
   grid-row: 2;
+  grid-column: 1 / span 2;
 }
 
 div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable span.bocListEditableCell > .validationErrorMarker
