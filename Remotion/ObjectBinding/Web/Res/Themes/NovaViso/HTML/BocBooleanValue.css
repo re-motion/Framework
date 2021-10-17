@@ -7,6 +7,7 @@
   border: var(--remotion-themed-border-placeholder);
   border-radius: var(--remotion-themed-border-radius);
   box-sizing: border-box;
+  vertical-align: middle;
 }
 
 .bocBooleanValue a[role=checkbox]
