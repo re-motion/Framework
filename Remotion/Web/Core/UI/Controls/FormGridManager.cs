@@ -2231,6 +2231,9 @@ namespace Remotion.Web.UI.Controls
         RegisterValidationErrors (dataRow);
 
         LoadMarkersIntoCell (dataRow);
+
+        WrapDataRowCellControlsWrapper (dataRow);
+
         if (ValidatorVisibility == ValidatorVisibility.ValidationMessageInControlsColumn
             || ValidatorVisibility == ValidatorVisibility.ValidationMessageAfterControlsColumn)
         {
@@ -2254,6 +2257,14 @@ namespace Remotion.Web.UI.Controls
       //
       //    //  Add name to controls
       //  }
+
+      CreateDataRowCellWrappers (dataRow);
+    }
+
+    private static void WrapDataRowCellControlsWrapper (FormGridRow dataRow)
+    {
+      dataRow.ControlsCell.Controls.AddAt (0, new LiteralControl ("<div>"));
+      dataRow.ControlsCell.Controls.Add (new LiteralControl ("</div>"));
     }
 
     /// <summary>
@@ -2316,6 +2327,10 @@ namespace Remotion.Web.UI.Controls
 
       //  HelpProvider takes left-hand side in column
 
+      var markersCellControlsWrapper = new HtmlGenericControl ("div");
+      dataRow.MarkersCell.Controls.Add (markersCellControlsWrapper);
+      var markersCellControls = markersCellControlsWrapper.Controls;
+
       if (ShowHelpProviders)
       {
         if (dataRow.HelpProvider != null)
@@ -2324,10 +2339,10 @@ namespace Remotion.Web.UI.Controls
           var namingContainer = new FormGridCellNamingContainer();
           namingContainer.ID = dataRow.FormGrid.Table.ID + "_HelpProvider_" + formGridRowIndex;
           namingContainer.Controls.Add (dataRow.HelpProvider);
-          dataRow.MarkersCell.Controls.Add (namingContainer);
+          markersCellControls.Add (namingContainer);
         }
         else
-          dataRow.MarkersCell.Controls.Add(CreateBlankMarker());
+          markersCellControls.Add(CreateBlankMarker());
       }
 
       //  ValidationMarker and RequiredMarker share right-hand position
@@ -2335,16 +2350,25 @@ namespace Remotion.Web.UI.Controls
 
       if (ShowValidationMarkers && dataRow.ValidationMarker != null)
       {
-        dataRow.MarkersCell.Controls.Add(dataRow.ValidationMarker);
+        markersCellControls.Add(dataRow.ValidationMarker);
       }
       else if (ShowRequiredMarkers && dataRow.RequiredMarker != null)
       {
-        dataRow.MarkersCell.Controls.Add(dataRow.RequiredMarker);
+        markersCellControls.Add(dataRow.RequiredMarker);
       }
       else if (ShowValidationMarkers || ShowRequiredMarkers)
       {
-        dataRow.MarkersCell.Controls.Add(CreateBlankMarker());
+        markersCellControls.Add(CreateBlankMarker());
       }
+    }
+
+    private void CreateDataRowCellWrappers (FormGridRow dataRow)
+    {
+      dataRow.LabelsCell.Controls.AddAt (0, new LiteralControl("<div>"));
+      dataRow.LabelsCell.Controls.Add (new LiteralControl("</div>"));
+
+      dataRow.ControlsCell.Controls.AddAt (0, new LiteralControl("<div>"));
+      dataRow.ControlsCell.Controls.Add (new LiteralControl("</div>"));
     }
 
     /// <summary>
@@ -2741,6 +2765,7 @@ namespace Remotion.Web.UI.Controls
 
       if (dataRow.ValidationErrors != null)
       {
+        var validationMessages = new HtmlGenericControl ("div");
         //  Get validation messages
         for (int i = 0; i < dataRow.ValidationErrors.Length; i++)
         {
@@ -2748,8 +2773,9 @@ namespace Remotion.Web.UI.Controls
           if (validationError == null)
             continue;
 
-          dataRow.ValidationMessagesCell.Controls.Add (validationError.ToDiv (CssClassValidationMessage));
+          validationMessages.Controls.Add (validationError.ToDiv (CssClassValidationMessage));
         }
+        dataRow.ValidationMessagesCell.Controls.Add (validationMessages);
       }
     }
 
