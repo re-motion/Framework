@@ -40,6 +40,30 @@
   vertical-align: top;
 }
 
+.formGridLabelsCell > div
+{
+  display: flex;
+  flex-direction: column;
+}
+
+.formGridMarkersCell > div
+{
+  display: flex;
+  flex-direction: row;
+}
+
+.formGridControlsCell > div
+{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.formGridControlsCell > div > div:first-child
+{
+  height: 100%;
+}
+
 .formGridLabelsCell
 {
   width: 15%;

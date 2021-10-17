@@ -79,6 +79,18 @@ td.formGridControlsCell
   width: auto;
 }
 
+.formGridControlsCell > div
+{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.formGridControlsCell > div > div:first-child
+{
+  height: 100%;
+}
+
 /*  Style applied to the cells containing the validation messages, 
 *   if a seperate column is specified  */
 td.formGridValidationMessagesCell
