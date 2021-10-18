@@ -31,8 +31,15 @@ namespace Remotion.Web.UI.Controls
   {
     /// <summary> Only used by control developers. </summary>
     public static readonly string OnHeadTitleClickScript = "DropDownMenu.OnHeadControlClick();";
+    #region Obsolete
 
-    private static readonly Action<HtmlTextWriter> s_emptyTitleRenderer = writer => { };
+    [Obsolete ("This feature has removed. (Version 3.0.0)", true)]
+    public void SetRenderHeadTitleMethodDelegate (Action<HtmlTextWriter> renderHeadTitleMethod)
+    {
+      throw new NotSupportedException ("This feature has removed. (Version 3.0.0)");
+    }
+
+    #endregion
 
     private ButtonType _buttonType;
     private bool _showTitle = true;
@@ -41,7 +48,6 @@ namespace Remotion.Web.UI.Controls
     private bool _enableGrouping = true;
     private bool _isBrowserCapableOfScripting;
 
-    private Action<HtmlTextWriter>? _renderHeadTitleMethod;
     private string _getSelectionCount = "";
     private string _loadMenuItemStatus = "";
 
@@ -163,14 +169,6 @@ namespace Remotion.Web.UI.Controls
       return NullResourceManager.Instance;
     }
 
-    /// <summary> Only used by control developers. </summary>
-    /// <remarks>Note that setting the <see cref="ShowTitle"/> flag will override the <paramref name="renderHeadTitleMethod"/>.</remarks>
-    [Obsolete ("This feature has been deprecated and will be removed in version 1.22.0. (Version 1.21.3)", false)]
-    public void SetRenderHeadTitleMethodDelegate (Action<HtmlTextWriter> renderHeadTitleMethod)
-    {
-      _renderHeadTitleMethod = renderHeadTitleMethod;
-    }
-
     /// <summary>
     /// Gets or sets the button type that determines how the <see cref="DropDownMenu"/>'s button is displayed on the page.
     /// </summary>
@@ -198,16 +196,6 @@ namespace Remotion.Web.UI.Controls
     {
       get { return _titleText; }
       set { _titleText = value; }
-    }
-
-    Action<HtmlTextWriter>? IDropDownMenu.RenderHeadTitleMethod
-    {
-      get
-      {
-        if (!_showTitle)
-          return s_emptyTitleRenderer;
-        return _renderHeadTitleMethod;
-      }
     }
 
     string IDropDownMenu.MenuHeadClientID

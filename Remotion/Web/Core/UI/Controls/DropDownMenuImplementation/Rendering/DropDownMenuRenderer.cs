@@ -115,16 +115,9 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
       if (!renderingContext.Control.Enabled)
         cssClass += " " + CssClassDisabled;
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClass);
-      if (HasCustomTitle (renderingContext) && HasTitleText (renderingContext))
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Title, renderingContext.Control.TitleText);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
-      if (HasCustomTitle (renderingContext))
-      {
-        renderingContext.Control.RenderHeadTitleMethod! (renderingContext.Writer);
-        RenderFallbackTitle (renderingContext);
-      }
-      else if (HasDefaultTitle (renderingContext))
+      if (HasDefaultTitle (renderingContext))
       {
         RenderDefaultTitle (renderingContext);
       }
@@ -181,7 +174,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
     private void RenderDropdownButton (DropDownMenuRenderingContext renderingContext)
     {
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassDropDownButton);
-      if (!HasDefaultTitle (renderingContext) || HasCustomTitle (renderingContext))
+      if (!HasDefaultTitle (renderingContext))
       {
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, renderingContext.Control.ClientID + "_DropDownMenuButton");
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Button);
@@ -204,11 +197,6 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
       IconInfo.CreateSpacer (ResourceUrlFactory).Render (renderingContext.Writer, renderingContext.Control);
 
       renderingContext.Writer.RenderEndTag();
-    }
-
-    private bool HasCustomTitle (DropDownMenuRenderingContext renderingContext)
-    {
-      return renderingContext.Control.RenderHeadTitleMethod != null;
     }
 
     private bool HasDefaultTitle (DropDownMenuRenderingContext renderingContext)
