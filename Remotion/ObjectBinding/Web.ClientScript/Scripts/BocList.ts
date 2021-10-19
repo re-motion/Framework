@@ -613,7 +613,7 @@ class BocList
   {
     var fakeTableHeadContainer = tableContainer.querySelector(':scope > div.bocListFakeTableHead')!;
     var scrollLeft = scrollableContainer.scrollLeft;
-    var previousScrollLeft = parseInt(scrollableContainer.dataset.bocListPreviousScrollLeft!)
+    var previousScrollLeft = parseFloat(scrollableContainer.dataset.bocListPreviousScrollLeft!)
     var fakeTableHeadScrollLeft = fakeTableHeadContainer.scrollLeft;
 
     var hasScrollMoveFromScrollbar = previousScrollLeft !== scrollLeft;
