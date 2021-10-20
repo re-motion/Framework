@@ -70,7 +70,9 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
       var finderSpecs = CheckCombinedFinderAndGetSpecifications(finder);
 
       Assert.That (finderSpecs, Is.EquivalentTo (new[] { 
+#if NETFRAMEWORK
           new FilePatternSpecification ("*.exe", FilePatternSpecificationKind.IncludeFollowReferences), 
+#endif
           new FilePatternSpecification ("*.dll", FilePatternSpecificationKind.IncludeFollowReferences) }));
     }
 
@@ -102,7 +104,9 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
 
       Assert.That (finderDirectories, Has.Member("dynamicDirectory"));
       Assert.That (finderSpecs, Is.EquivalentTo (new[] { 
+#if NETFRAMEWORK
           new FilePatternSpecification ("*.exe", FilePatternSpecificationKind.IncludeFollowReferences), 
+#endif
           new FilePatternSpecification ("*.dll", FilePatternSpecificationKind.IncludeFollowReferences) }));
       Assert.That (finderService, Is.InstanceOf (typeof (FileSystemSearchService)));
     }
