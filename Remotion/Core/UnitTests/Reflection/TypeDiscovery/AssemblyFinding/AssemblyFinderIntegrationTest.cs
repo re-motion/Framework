@@ -259,7 +259,13 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
 
     private void InitializeDynamicDirectory ()
     {
-      _dynamicDirectoryBuildOutputManager.CopyAllGeneratedAssembliesToNewDirectory (AppDomain.CurrentDomain.DynamicDirectory);
+      _dynamicDirectoryBuildOutputManager.CopyAllGeneratedAssembliesToNewDirectory (
+#if NETFRAMEWORK
+          AppDomain.CurrentDomain.DynamicDirectory
+#else
+          null
+#endif
+      );
     }
 
     private Assembly CompileTestAssemblyInMemory (string assemblyName, params string[] referencedAssemblies)
