@@ -45,11 +45,19 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
     {
       ArgumentUtility.CheckNotNull ("assemblyLoader", assemblyLoader);
 
+#if NETFRAMEWORK
+      var relativeSearchPath = AppDomain.CurrentDomain.RelativeSearchPath;
+      var dynamicDirectory = AppDomain.CurrentDomain.DynamicDirectory;
+#else 
+      string? relativeSearchPath = null;
+      string? dynamicDirectory = null;
+#endif
+
       var searchPathRootAssemblyFinder = new SearchPathRootAssemblyFinder (
           AppContext.BaseDirectory,
-          AppDomain.CurrentDomain.RelativeSearchPath,
+          relativeSearchPath,
           considerDynamicDirectory,
-          AppDomain.CurrentDomain.DynamicDirectory,
+          dynamicDirectory,
           assemblyLoader);
       return searchPathRootAssemblyFinder;
     }
