@@ -120,7 +120,9 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
     {
       var fileSearchService = new FileSystemSearchService ();
       var specifications = new[] { 
+#if NETFRAMEWORK
           new FilePatternSpecification ("*.exe", FilePatternSpecificationKind.IncludeFollowReferences), 
+#endif
           new FilePatternSpecification ("*.dll", FilePatternSpecificationKind.IncludeFollowReferences) 
       };
 
