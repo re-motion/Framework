@@ -47,7 +47,7 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
       ArgumentUtility.CheckNotNullOrEmpty ("page", page);
 
       SimpleWorkerRequest workerRequest =
-          new SimpleWorkerRequest (s_appVirtualDir, s_appPhysicalDir, page, query, new System.IO.StringWriter());
+          new SimpleWorkerRequest (s_appVirtualDir, s_appPhysicalDir, page, query!, new System.IO.StringWriter());
 
       object? httpRuntime = PrivateInvoke.GetNonPublicStaticField (typeof (HttpRuntime), "_theRuntime");
       Assertion.DebugIsNotNull (httpRuntime, "'_theRuntime' must not be null.");
