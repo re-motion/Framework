@@ -1,9 +1,9 @@
 <Project>
 
   <ItemGroup Condition="'$(TargetFramework)' != 'net48'">
-    <PackageReference Include="CoreForms.Web" Version="5.0.0-alpha.3" />
-    <PackageReference Include="CoreForms.Web.Extensions" Version="5.0.0-alpha.3" />
-    <PackageReference Include="CoreForms.Web.Services" Version="5.0.0-alpha.3" />
+    <PackageReference Include="CoreForms.Web" Version="5.0.0-alpha.4" />
+    <PackageReference Include="CoreForms.Web.Extensions" Version="5.0.0-alpha.4" />
+    <PackageReference Include="CoreForms.Web.Services" Version="5.0.0-alpha.4" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net48'">

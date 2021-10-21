@@ -11,4 +11,9 @@
     <Nullable>disable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="CoreForms.Web.Infrastructure.MachineConfig" Version="5.0.0-alpha.4" />
+    <PackageReference Include="CoreForms.Web.Infrastructure.Roslyn" Version="5.0.0-alpha.4" />
+  </ItemGroup>
+
 </Project>
