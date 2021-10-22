@@ -17,8 +17,12 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using NUnit.Framework;
 using Remotion.Context;
+#if NETFRAMEWORK
+using System.Runtime.Remoting.Messaging;
+#endif
 
 namespace Remotion.UnitTests.Context
 {
@@ -26,6 +30,7 @@ namespace Remotion.UnitTests.Context
   public class AsyncLocalStorageProviderTest
   {
     private const string c_testKey = "Foo";
+    private const string c_testKey2 = "Foo2";
     private AsyncLocalStorageProvider _provider;
 
     [SetUp]
@@ -33,12 +38,22 @@ namespace Remotion.UnitTests.Context
     {
       _provider = new();
       _provider.FreeData (c_testKey);
+      _provider.FreeData (c_testKey2);
+#if NETFRAMEWORK
+      CallContext.FreeNamedDataSlot (c_testKey);
+      CallContext.FreeNamedDataSlot (c_testKey2);
+#endif
     }
 
     [TearDown]
     public void TearDown ()
     {
       _provider.FreeData (c_testKey);
+      _provider.FreeData (c_testKey2);
+#if NETFRAMEWORK
+      CallContext.FreeNamedDataSlot (c_testKey);
+      CallContext.FreeNamedDataSlot (c_testKey2);
+#endif
     }
 
     [Test]
@@ -96,7 +111,7 @@ namespace Remotion.UnitTests.Context
       t.Start();
       t.Join();
 
-      Assert.That (_provider.GetData (c_testKey), Is.EqualTo("1"));
+      Assert.That (_provider.GetData (c_testKey), Is.EqualTo ("1"));
     }
 
     [Test]
@@ -138,8 +153,216 @@ namespace Remotion.UnitTests.Context
       Assert.That (result, Is.Null);
     }
 
-#if NETFRAMEWORK && DEBUG
+    [Test]
+    public void SetValuesAreRestoredWhenReturningToExecutionContext ()
+    {
+      _provider.SetData (c_testKey, 34);
+#if NETFRAMEWORK
+      CallContext.SetData (c_testKey, 34);
+#endif
 
+      var ec = ExecutionContext.Capture();
+      Assert.That (ec, Is.Not.Null);
+
+      ExecutionContext.Run (
+          ec,
+          _ =>
+          {
+            // difference: In CallContext this would be a new scope but we cannot differentiate as there is no event fired
+            Assert.That (_provider.GetData (c_testKey), Is.EqualTo (34));
+#if NETFRAMEWORK
+            Assert.That (CallContext.GetData (c_testKey), Is.Null);
+#endif
+
+            _provider.SetData (c_testKey, 123);
+          },
+          null);
+
+      // difference: In CallContext this would restore the original context but since we got no notification for the initial change
+      // we cannot detect that we are restoring an old the data is now inaccessible
+      Assert.That (_provider.GetData (c_testKey)!, Is.Null);
+#if NETFRAMEWORK
+      Assert.That (CallContext.GetData (c_testKey), Is.EqualTo (34));
+#endif
+    }
+
+    [Test]
+    public void SetValuesAreRestoredInRunExecutionContext ()
+    {
+      _provider.SetData (c_testKey, 34);
+#if NETFRAMEWORK
+      CallContext.SetData (c_testKey, 34);
+#endif
+
+      var ec = ExecutionContext.Capture();
+      Assert.That (ec, Is.Not.Null);
+
+#if NETFRAMEWORK
+#endif
+      ExecutionContext.Run (
+          ec,
+          _ =>
+          {
+            // difference: In CallContext the delegate would run in a new context, but this is not possibles
+            // as there is notification indicating a context switch
+            Assert.That (_provider.GetData (c_testKey), Is.EqualTo (34));
+#if NETFRAMEWORK
+            Assert.That (CallContext.GetData (c_testKey), Is.Null);
+#endif
+          },
+          null);
+    }
+
+    [Test]
+    public void SetDataInExecutionContextRunDoesNotAffectOuterScope ()
+    {
+      var ec = ExecutionContext.Capture().CreateCopy();
+
+      _provider.SetData (c_testKey, "1");
+#if NETFRAMEWORK
+      CallContext.SetData (c_testKey, "1");
+#endif
+
+      ExecutionContext.Run (
+          ec,
+          _ =>
+          {
+            _provider.SetData (c_testKey, "2");
+#if NETFRAMEWORK
+            CallContext.SetData (c_testKey, "2");
+#endif
+          },
+          null);
+
+      Assert.That (_provider.GetData (c_testKey), Is.EqualTo ("1"));
+#if NETFRAMEWORK
+      Assert.That (CallContext.GetData (c_testKey), Is.EqualTo ("1"));
+#endif
+    }
+
+    [Test]
+    public void SuppressFlowWorksCorrectly ()
+    {
+      var ec = ExecutionContext.Capture().CreateCopy();
+
+      try
+      {
+        ExecutionContext.SuppressFlow();
+
+        _provider.SetData (c_testKey, "1");
+#if NETFRAMEWORK
+        CallContext.SetData (c_testKey, "1");
+#endif
+
+        ExecutionContext.Run (
+            ec,
+            _ =>
+            {
+              Assert.That (_provider.GetData (c_testKey), Is.Null);
+#if NETFRAMEWORK
+              Assert.That (CallContext.GetData (c_testKey), Is.Null);
+#endif
+            },
+            null);
+      }
+      finally
+      {
+        ExecutionContext.RestoreFlow();
+      }
+
+      Assert.That (_provider.GetData (c_testKey), Is.EqualTo ("1"));
+#if NETFRAMEWORK
+      Assert.That (CallContext.GetData (c_testKey), Is.EqualTo ("1"));
+#endif
+    }
+
+    [Test]
+    public void FlowsToThread ()
+    {
+      _provider.SetData (c_testKey, 34);
+
+      object result = null;
+#if NETFRAMEWORK
+      object result2 = null;
+#endif
+      var thread = new Thread (
+          _ =>
+          {
+            result = _provider.GetData (c_testKey);
+#if NETFRAMEWORK
+            result2 = CallContext.GetData (c_testKey);
+#endif
+          });
+      thread.Start();
+      thread.Join();
+
+      Assert.That (result, Is.Null);
+#if NETFRAMEWORK
+      Assert.That (result2, Is.Null);
+#endif
+    }
+
+    [Test]
+    public void FlowsWithTaskRun ()
+    {
+      _provider.SetData (c_testKey, 34);
+
+      object result = null;
+#if NETFRAMEWORK
+      object result2 = null;
+#endif
+
+      Task.Run (
+          () =>
+          {
+            result = _provider.GetData (c_testKey);
+#if NETFRAMEWORK
+            result2 = CallContext.GetData (c_testKey);
+#endif
+          }).GetAwaiter().GetResult();
+
+      Assert.That (result, Is.Null);
+#if NETFRAMEWORK
+      Assert.That (result2, Is.Null);
+#endif
+    }
+
+    [Test]
+    public async Task Async ()
+    {
+      _provider.SetData (c_testKey, "1");
+#if NETFRAMEWORK
+      CallContext.SetData (c_testKey, "1");
+#endif
+
+      await AsyncTask();
+
+      Assert.That (_provider.GetData (c_testKey), Is.Null);
+#if NETFRAMEWORK
+      Assert.That (CallContext.GetData (c_testKey), Is.Null);
+#endif
+    }
+
+    private async Task AsyncTask ()
+    {
+      Assert.That (_provider.GetData (c_testKey), Is.EqualTo ("1"));
+#if NETFRAMEWORK
+      Assert.That (CallContext.GetData (c_testKey), Is.EqualTo ("1"));
+#endif
+
+      _provider.SetData (c_testKey, "2");
+
+      await Task.Delay(10);
+
+      Assert.That (_provider.GetData (c_testKey), Is.Null);
+#if NETFRAMEWORK
+      Assert.That (CallContext.GetData (c_testKey), Is.Null);
+#endif
+
+      _provider.SetData (c_testKey, "3");
+    }
+
+#if NETFRAMEWORK && DEBUG
     [Test]
     public void SetData_WithClassImplementingILogicalThreadAffinative_ThrowsPlatformNotSupportedException ()
     {
@@ -152,7 +375,6 @@ namespace Remotion.UnitTests.Context
     private class ClassImplementingILogicalThreadAffinative : System.Runtime.Remoting.Messaging.ILogicalThreadAffinative
     {
     }
-
 #endif
   }
 }
