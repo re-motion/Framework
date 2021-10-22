@@ -35,6 +35,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium
 
     public ChromiumUserDirectoryCleanUpStrategy ([NotNull] string userDirectoryRoot, [NotNull] string userDirectory)
     {
+      // TODO RM-8117: userDirectory should be nullable.
       ArgumentUtility.CheckNotNullOrEmpty ("userDirectoryRoot", userDirectoryRoot);
       ArgumentUtility.CheckNotNullOrEmpty ("userDirectory", userDirectory);
 

@@ -33,7 +33,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     /// Removes elements with matching CSS selector from the given violations.
     /// </summary>
     public static IEnumerable<AccessibilityRuleResult> IgnoreByCssSelector (
-        [NotNull] this IEnumerable<AccessibilityRuleResult> violations,
+        [NotNull] this IReadOnlyCollection<AccessibilityRuleResult> violations,
         [NotNull] params string[] cssSelector)
     {
       ArgumentUtility.CheckNotNull ("violations", violations);
@@ -46,7 +46,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     /// Removes elements where the rule impact matches the given impact.
     /// </summary>
     public static IEnumerable<AccessibilityRuleResult> IgnoreByImpact (
-        [NotNull] this IEnumerable<AccessibilityRuleResult> violations,
+        [NotNull] this IReadOnlyCollection<AccessibilityRuleResult> violations,
         AccessibilityTestImpact ruleImpact)
     {
       ArgumentUtility.CheckNotNullOrItemsNull ("violations", violations);
@@ -58,7 +58,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     /// Removes elements where the rule ID matches the given rule ID.
     /// </summary>
     public static IEnumerable<AccessibilityRuleResult> IgnoreByRuleID (
-        [NotNull] this IEnumerable<AccessibilityRuleResult> violations,
+        [NotNull] this IReadOnlyCollection<AccessibilityRuleResult> violations,
         AccessibilityRuleID ruleID)
     {
       ArgumentUtility.CheckNotNullOrItemsNull ("violations", violations);
@@ -70,7 +70,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     /// Removes elements where the success criteria tag matches the given success criteria.
     /// </summary>
     public static IEnumerable<AccessibilityRuleResult> IgnoreBySuccessCriteria (
-        [NotNull] this IEnumerable<AccessibilityRuleResult> violations,
+        [NotNull] this IReadOnlyCollection<AccessibilityRuleResult> violations,
         AccessibilityTestSuccessCriteria successCriteria)
     {
       ArgumentUtility.CheckNotNullOrItemsNull ("violations", violations);
@@ -82,7 +82,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     /// Removes elements with checks that match the given checkIDs.
     /// </summary>
     public static IEnumerable<AccessibilityRuleResult> IgnoreByCheckID (
-        [NotNull] this IEnumerable<AccessibilityRuleResult> violations,
+        [NotNull] this IReadOnlyCollection<AccessibilityRuleResult> violations,
         [NotNull] params AccessibilityRequirementID[] checkIDs)
     {
       ArgumentUtility.CheckNotNullOrItemsNull ("violations", violations);
@@ -98,7 +98,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     /// Filters violations by filter options.
     /// </summary>
     public static IEnumerable<AccessibilityRuleResult> Filter (
-        [NotNull] this IEnumerable<AccessibilityRuleResult> violations,
+        [NotNull] this IReadOnlyCollection<AccessibilityRuleResult> violations,
         [NotNull] AccessibilityResultFilter filter)
     {
       ArgumentUtility.CheckNotNullOrItemsNull ("violations", violations);
@@ -115,16 +115,15 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     /// <summary>
     /// Removes elements with the given rule ID and xpath.
     /// </summary>
-    public static IEnumerable<AccessibilityRuleResult> IgnoreByRuleIDAndXPath (
-        [NotNull] this IEnumerable<AccessibilityRuleResult> violations,
+    public static IReadOnlyCollection<AccessibilityRuleResult> IgnoreByRuleIDAndXPath (
+        [NotNull] this IReadOnlyCollection<AccessibilityRuleResult> violations,
         AccessibilityRuleID ruleID,
         params string[] xPath)
     {
       ArgumentUtility.CheckNotNullOrItemsNull ("violations", violations);
-
       ArgumentUtility.CheckNotNullOrEmpty ("xPath", xPath);
 
-      return violations.Where (v => v.Rule.ID != ruleID || !ArrayEquals (v.TargetPath.Select (p => p.XPath).ToArray(), xPath));
+      return violations.Where (v => v.Rule.ID != ruleID || !ArrayEquals (v.TargetPath.Select (p => p.XPath).ToArray(), xPath)).ToArray();
     }
 
     private static bool ArrayEquals (string[] arrayA, string[] arrayB)

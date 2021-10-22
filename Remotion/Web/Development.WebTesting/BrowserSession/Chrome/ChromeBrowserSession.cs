@@ -35,7 +35,7 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession.Chrome
         [NotNull] Coypu.BrowserSession value,
         [NotNull] IChromeConfiguration configuration,
         int driverProcessID,
-        [CanBeNull] [ItemNotNull] IReadOnlyCollection<IBrowserSessionCleanUpStrategy> cleanUpStrategies = null)
+        [CanBeNull] [ItemNotNull] IReadOnlyCollection<IBrowserSessionCleanUpStrategy>? cleanUpStrategies = null)
         : base (value, configuration, driverProcessID)
     {
       _cleanUpStrategies = cleanUpStrategies ?? new IBrowserSessionCleanUpStrategy[0];

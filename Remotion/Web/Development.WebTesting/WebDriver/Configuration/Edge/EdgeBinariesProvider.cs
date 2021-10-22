@@ -20,6 +20,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Net;
 using JetBrains.Annotations;
+using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
 {
@@ -97,7 +98,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
 
     private Version GetFileVersion (string filePath)
     {
-      var fileVersion = FileVersionInfo.GetVersionInfo (filePath).FileVersion;
+      var fileVersion = Assertion.IsNotNull (FileVersionInfo.GetVersionInfo (filePath).FileVersion, "File version could not be read from '{0}'.", filePath);
       return Version.Parse (fileVersion);
     }
 

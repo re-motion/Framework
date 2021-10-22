@@ -77,11 +77,11 @@ namespace Remotion.Web.Development.WebTesting.Configuration
           requestErrorStrategyType,
           string.Format ("Request Error Detection strategy '{0}' could not be loaded.", requestErrorDetectionStrategyName));
 
-      return (IRequestErrorDetectionStrategy) Activator.CreateInstance (requestErrorStrategyType);
+      return (IRequestErrorDetectionStrategy) Activator.CreateInstance (requestErrorStrategyType)!;
     }
 
     [CanBeNull]
-    private Type GetRequestErrorDetectionStrategyType (string requestErrorDetectionStrategyTypeName)
+    private Type? GetRequestErrorDetectionStrategyType (string requestErrorDetectionStrategyTypeName)
     {
       if (s_wellKnownRequestErrorDetectionStrategyTypes.ContainsKey (requestErrorDetectionStrategyTypeName))
         return s_wellKnownRequestErrorDetectionStrategyTypes [requestErrorDetectionStrategyTypeName];

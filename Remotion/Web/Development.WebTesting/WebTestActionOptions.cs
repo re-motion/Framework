@@ -26,11 +26,11 @@ namespace Remotion.Web.Development.WebTesting
     /// <summary>
     /// The <see cref="ICompletionDetectionStrategy"/> to use.
     /// </summary>
-    public ICompletionDetectionStrategy CompletionDetectionStrategy { get; set; }
+    public ICompletionDetectionStrategy? CompletionDetectionStrategy { get; set; }
 
     /// <summary>
     /// The <see cref="IModalDialogHandler"/> to use.
     /// </summary>
-    public IModalDialogHandler ModalDialogHandler { get; set; }
+    public IModalDialogHandler? ModalDialogHandler { get; set; }
   }
 }

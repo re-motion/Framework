@@ -48,7 +48,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     }
 
     /// <inheritdoc/>
-    public WebButtonControlObject SelectOptionalPerTextContent (ControlSelectionContext context, string textContent)
+    public WebButtonControlObject? SelectOptionalPerTextContent (ControlSelectionContext context, string textContent)
     {
       ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNullOrEmpty ("textContent", textContent);
@@ -84,7 +84,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     }
 
     /// <inheritdoc/>
-    public WebButtonControlObject SelectOptionalPerItemID (ControlSelectionContext context, string itemID)
+    public WebButtonControlObject? SelectOptionalPerItemID (ControlSelectionContext context, string itemID)
     {
       ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);

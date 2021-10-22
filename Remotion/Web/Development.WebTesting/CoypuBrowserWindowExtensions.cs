@@ -68,7 +68,7 @@ namespace Remotion.Web.Development.WebTesting
       var driverFieldInfo = typeof (BrowserWindow).GetField ("_driver", BindingFlags.NonPublic | BindingFlags.Instance);
       Assertion.IsNotNull (driverFieldInfo, "Coypu has changed, please update CoypuBrowserWindowExtensions.GetWebDriver() method.");
 
-      var driver = (IDriver) driverFieldInfo.GetValue (window);
+      var driver = (IDriver) driverFieldInfo.GetValue (window)!;
       return (IWebDriver) driver.Native;
     }
 
@@ -79,6 +79,7 @@ namespace Remotion.Web.Development.WebTesting
     private static void EnsureParentWindowIsActive ([NotNull] this PageObjectContext context)
     {
       ArgumentUtility.CheckNotNull ("context", context);
+      Assertion.IsNotNull (context.ParentContext);
 
       context.ParentContext.Window.EnsureWindowIsActive();
     }

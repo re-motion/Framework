@@ -117,13 +117,13 @@ namespace Remotion.Web.Development.WebTesting
     private readonly DriverConfiguration _driverConfiguration;
     private readonly ITestInfrastructureConfiguration _testInfrastructureConfiguration;
     private readonly List<IBrowserSession> _browserSessions = new List<IBrowserSession>();
-    private IBrowserSession _mainBrowserSession;
+    private IBrowserSession? _mainBrowserSession;
     private readonly IAccessibilityConfiguration _accessibilityConfiguration;
 
     /// <summary>
     /// Name of the current web test.
     /// </summary>
-    private string _testName;
+    private string? _testName;
 
     [PublicAPI]
     protected WebTestHelper ([NotNull] WebTestConfigurationFactory webTestConfigurationFactory)
@@ -157,7 +157,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     public IBrowserSession MainBrowserSession
     {
-      get { return _mainBrowserSession; }
+      get { return Assertion.IsNotNull (_mainBrowserSession, "OnFixtureSetup must be called before accessing MainBrowserSession."); }
     }
 
     /// <summary>
@@ -165,7 +165,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     /// <param name="maximizeWindow">Specifies whether the main browser session's window should be maximized.</param>
     /// <param name="configurationOverride">Specifies additional options applied when creating the browser.</param>
-    public void OnFixtureSetUp (bool maximizeWindow = true, [CanBeNull] DriverConfigurationOverride configurationOverride = null)
+    public void OnFixtureSetUp (bool maximizeWindow = true, [CanBeNull] DriverConfigurationOverride? configurationOverride = null)
     {
       s_log.InfoFormat ("WebTestHelper.OnFixtureSetup() has been called.");
       s_log.InfoFormat ("Remotion version: " + typeof (WebTestHelper).Assembly.GetName().Version);
@@ -208,7 +208,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <param name="maximizeWindow">Specified whether the new browser session's window should be maximized.</param>
     /// <param name="configurationOverride">Specifies additional options applied when creating the browser.</param>
     /// <returns>The new browser session.</returns>
-    public IBrowserSession CreateNewBrowserSession (bool maximizeWindow = true, [CanBeNull] DriverConfigurationOverride configurationOverride = null)
+    public IBrowserSession CreateNewBrowserSession (bool maximizeWindow = true, [CanBeNull] DriverConfigurationOverride? configurationOverride = null)
     {
       using (new PerformanceTimer (s_log, string.Format ("Created new {0} browser session.", _browserConfiguration.BrowserName)))
       {
@@ -253,7 +253,7 @@ namespace Remotion.Web.Development.WebTesting
       var context = PageObjectContext.New (browser, requestErrorDetectionStrategy);
       s_log.InfoFormat ("New PageObjectContext has been created.");
 
-      var pageObject = (TPageObject) Activator.CreateInstance (typeof (TPageObject), new object[] { context });
+      var pageObject = (TPageObject) Activator.CreateInstance (typeof (TPageObject), new object[] { context })!;
       s_log.InfoFormat ("Initial PageObject has been created.");
       return pageObject;
     }
@@ -265,6 +265,7 @@ namespace Remotion.Web.Development.WebTesting
     {
       try
       {
+        Assertion.IsNotNull (_mainBrowserSession, "'_mainBrowserSession' must not be null.");
         _mainBrowserSession.Window.AcceptModalDialog (Options.NoWait);
       }
       catch (MissingDialogException)
@@ -281,6 +282,7 @@ namespace Remotion.Web.Development.WebTesting
     {
       if (!hasSucceeded && ShouldTakeScreenshots())
       {
+        Assertion.IsNotNull (_testName, "'{0}' should be set by the test infrastructure calling '{1}'", nameof (_testName), nameof (OnSetUp));
         var screenshotRecorder = new TestExecutionScreenshotRecorder (_testInfrastructureConfiguration.ScreenshotDirectory);
         screenshotRecorder.CaptureCursor();
         screenshotRecorder.TakeDesktopScreenshot (_testName);
@@ -297,7 +299,7 @@ namespace Remotion.Web.Development.WebTesting
       return new ScreenshotBuilder (Screenshot.TakeDesktopScreenshot(), BrowserConfiguration.Locator);
     }
 
-    public ScreenshotBuilder CreateBrowserScreenshot (IBrowserSession browserSession = null)
+    public ScreenshotBuilder CreateBrowserScreenshot (IBrowserSession? browserSession = null)
     {
       if (browserSession == null)
         browserSession = MainBrowserSession;
@@ -352,7 +354,7 @@ namespace Remotion.Web.Development.WebTesting
       Cursor.Position = new Point (0, 0);
     }
 
-    private DriverConfiguration MergeDriverConfiguration (DriverConfiguration configuration, DriverConfigurationOverride configurationOverride)
+    private DriverConfiguration MergeDriverConfiguration (DriverConfiguration configuration, DriverConfigurationOverride? configurationOverride)
     {
       if (configurationOverride == null)
         return configuration;
@@ -387,6 +389,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <returns>Initialized instance of AccessibilityAnalyzer</returns>
     public AccessibilityAnalyzer CreateAccessibilityAnalyzer ()
     {
+      Assertion.IsNotNull (_mainBrowserSession, "No MainBrowserSession is available.");
       return CreateAccessibilityAnalyzer (_mainBrowserSession);
     }
   }

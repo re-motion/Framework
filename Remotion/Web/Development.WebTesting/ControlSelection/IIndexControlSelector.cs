@@ -40,7 +40,7 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// </summary>
     /// <returns>The <see cref="ControlObject"/> for the selected control, or <see langword="null"/> if no control could be found.</returns>
     [CanBeNull]
-    TControlObject SelectOptionalPerIndex ([NotNull] ControlSelectionContext context, int oneBasedIndex);
+    TControlObject? SelectOptionalPerIndex ([NotNull] ControlSelectionContext context, int oneBasedIndex);
 
     /// <summary>
     /// Checks if a control within the given <paramref name="context"/> using the given <paramref name="oneBasedIndex"/> exists.

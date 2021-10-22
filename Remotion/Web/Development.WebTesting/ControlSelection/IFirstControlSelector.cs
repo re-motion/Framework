@@ -40,6 +40,6 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// </summary>
     /// <returns>The <see cref="ControlObject"/> for the selected control, or <see langword="null"/> if no control could be found.</returns>
     [CanBeNull]
-    TControlObject SelectFirstOrNull ([NotNull] ControlSelectionContext context);
+    TControlObject? SelectFirstOrNull ([NotNull] ControlSelectionContext context);
   }
 }

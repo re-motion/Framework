@@ -26,7 +26,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
   /// </summary>
   public class ScreenshotBadgeAnnotation : IScreenshotAnnotation
   {
-    private readonly Brush _backgroundBrush;
+    private readonly Brush? _backgroundBrush;
     private readonly Pen _borderPen;
     private readonly string _content;
     private readonly Brush _contentBrush;
@@ -41,7 +41,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
         [NotNull] Font font,
         [NotNull] Brush contentBrush,
         [NotNull] Pen borderPen,
-        [CanBeNull] Brush backgroundBrush,
+        [CanBeNull] Brush? backgroundBrush,
         Size translation,
         bool forceCircle)
     {
@@ -65,7 +65,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     /// or <see langword="null" /> if the background should not be filled.
     /// </summary>
     [CanBeNull]
-    public Brush BackgroundBrush
+    public Brush? BackgroundBrush
     {
       get { return _backgroundBrush; }
     }

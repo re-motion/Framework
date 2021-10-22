@@ -28,7 +28,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
   {
     private const float c_maxLayoutMeasure = 5000f;
 
-    private readonly Brush _backgroundBrush;
+    private readonly Brush? _backgroundBrush;
     private readonly string _content;
     private readonly ContentAlignment _contentAlignment;
     private readonly Font _font;
@@ -42,7 +42,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
         [NotNull] string content,
         [NotNull] Font font,
         [NotNull] Brush foregroundBrush,
-        [CanBeNull] Brush backgroundBrush,
+        [CanBeNull] Brush? backgroundBrush,
         [NotNull] StringFormat stringFormat,
         ContentAlignment contentAlignment,
         WebPadding padding,
@@ -70,7 +70,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     /// or <see langword="null" /> if the background should not be filled.
     /// </summary>
     [CanBeNull]
-    public Brush BackgroundBrush
+    public Brush? BackgroundBrush
     {
       get { return _backgroundBrush; }
     }

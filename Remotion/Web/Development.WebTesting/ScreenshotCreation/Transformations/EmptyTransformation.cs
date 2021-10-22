@@ -23,6 +23,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Transformations
   /// Empty <see cref="IScreenshotTransformation{T}"/> that does no transformation.
   /// </summary>
   public class EmptyTransformation<T> : IScreenshotTransformation<T>
+      where T : notnull
   {
     public static readonly EmptyTransformation<T> Instance = new EmptyTransformation<T>();
 

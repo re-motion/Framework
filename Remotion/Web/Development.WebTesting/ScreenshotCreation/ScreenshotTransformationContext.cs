@@ -26,6 +26,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
   /// A context for <see cref="IScreenshotTransformation{T}"/> to apply their transformations on.
   /// </summary>
   public class ScreenshotTransformationContext<T>
+      where T : notnull
   {
     private readonly ScreenshotManipulation _manipulation;
     private readonly Graphics _graphics;
@@ -96,9 +97,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     /// Clones the current process overriding all specified properties.
     /// </summary>
     public ScreenshotTransformationContext<T> CloneWith (
-        IScreenshotElementResolver<T> resolver = null,
+        IScreenshotElementResolver<T>? resolver = null,
         OptionalParameter<T> target = default(OptionalParameter<T>),
-        ResolvedScreenshotElement resolvedElement = null)
+        ResolvedScreenshotElement? resolvedElement = null)
     {
       if (target.HasValue && target.Value == null)
         throw new ArgumentNullException ("target", "Value of optional parameter cannot be null.");

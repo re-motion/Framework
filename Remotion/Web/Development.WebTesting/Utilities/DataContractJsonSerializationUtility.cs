@@ -48,7 +48,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// <summary>
     /// Deserializes the specified JSON string into the specified data contract type.
     /// </summary>
-    public static T Deserialize<T> ([CanBeNull] string serializedData)
+    public static T? Deserialize<T> ([CanBeNull] string? serializedData)
         where T : class
     {
       if (string.IsNullOrEmpty (serializedData))
@@ -57,7 +57,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       using (var dataStream = new MemoryStream (Encoding.UTF8.GetBytes (serializedData)))
       {
         var serializer = new DataContractJsonSerializer (typeof (T));
-        return (T) serializer.ReadObject (dataStream);
+        return (T?) serializer.ReadObject (dataStream);
       }
     }
   }

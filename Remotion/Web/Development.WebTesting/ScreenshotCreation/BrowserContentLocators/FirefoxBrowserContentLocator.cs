@@ -91,7 +91,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
     }
 
     [CanBeNull]
-    private AutomationElement GetFirefoxDocumentControl (AutomationElement firefoxWindow)
+    private AutomationElement? GetFirefoxDocumentControl (AutomationElement firefoxWindow)
     {
       return firefoxWindow.FindFirst (
           TreeScope.Subtree,

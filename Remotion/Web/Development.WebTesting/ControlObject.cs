@@ -29,7 +29,7 @@ namespace Remotion.Web.Development.WebTesting
   /// </summary>
   public abstract class ControlObject : WebTestObject<ControlObjectContext>, IControlObjectNotifier
   {
-    private event Action<WebTestAction, IWebTestActionOptions> _actionExecuteEvent;
+    private event Action<WebTestAction, IWebTestActionOptions>? _actionExecuteEvent;
 
     protected ControlObject ([NotNull] ControlObjectContext context)
         : base (context)
@@ -67,7 +67,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <param name="userDefinedWebTestActionOptions">User-defined <see cref="IWebTestActionOptions"/>.</param>
     protected IWebTestActionOptions MergeWithDefaultActionOptions (
         [NotNull] ElementScope scope,
-        [CanBeNull] IWebTestActionOptions userDefinedWebTestActionOptions)
+        [CanBeNull] IWebTestActionOptions? userDefinedWebTestActionOptions)
     {
       ArgumentUtility.CheckNotNull ("scope", scope);
 

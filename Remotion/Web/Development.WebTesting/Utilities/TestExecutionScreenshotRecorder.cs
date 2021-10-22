@@ -15,11 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
-using JetBrains.Annotations;
 using log4net;
 using OpenQA.Selenium;
 using Remotion.Utilities;
@@ -39,9 +39,9 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     private readonly string _outputDirectory;
 
     private bool _isCursorCaptured;
-    private CursorInformation _cursorInformation;
+    private CursorInformation? _cursorInformation;
 
-    public TestExecutionScreenshotRecorder ([NotNull] string outputDirectory)
+    public TestExecutionScreenshotRecorder ([JetBrains.Annotations.NotNull] string outputDirectory)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("outputDirectory", outputDirectory);
 
@@ -79,7 +79,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// <exception cref="PathTooLongException">
     /// If the resulting file path would be longer than 260 characters (despite shortening of the <paramref name="testName"/>).
     /// </exception>
-    public void TakeDesktopScreenshot ([NotNull] string testName)
+    public void TakeDesktopScreenshot ([JetBrains.Annotations.NotNull] string testName)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("testName", testName);
 
@@ -122,9 +122,9 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// If the resulting file path would be longer than 260 characters (despite shortening of the <paramref name="testName"/>).
     /// </exception>
     public void TakeBrowserScreenshot (
-        [NotNull] string testName,
-        [NotNull] IBrowserSession[] browserSessions,
-        [NotNull] IBrowserContentLocator locator)
+        [JetBrains.Annotations.NotNull] string testName,
+        [JetBrains.Annotations.NotNull] IBrowserSession[] browserSessions,
+        [JetBrains.Annotations.NotNull] IBrowserContentLocator locator)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("testName", testName);
       ArgumentUtility.CheckNotNullOrItemsNull ("browserSessions", browserSessions);
@@ -213,7 +213,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     private CursorInformation GetCursorInformation ()
     {
       if (_isCursorCaptured)
-        return _cursorInformation;
+        return _cursorInformation!;
       return CaptureCursorInformationWithLog();
     }
 

@@ -38,7 +38,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation
       var serializer = new DataContractJsonSerializer (typeof (AxeResult));
       using (var stream = new MemoryStream (Encoding.UTF8.GetBytes (rawJson)))
       {
-        return (AxeResult) serializer.ReadObject (stream);
+        return (AxeResult) Assertion.IsNotNull (serializer.ReadObject (stream), "Axe result could not be deserialized.");
       }
     }
   }

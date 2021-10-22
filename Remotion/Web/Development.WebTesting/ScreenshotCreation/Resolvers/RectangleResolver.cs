@@ -32,7 +32,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
     /// </summary>
     public static readonly RectangleResolver Instance = new RectangleResolver();
 
-    private readonly IWebDriver _driver;
+    private readonly IWebDriver? _driver;
     private readonly bool _relative;
 
     private RectangleResolver ()
@@ -61,6 +61,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
     public ResolvedScreenshotElement ResolveDesktopCoordinates (Rectangle target, IBrowserContentLocator locator)
     {
       ArgumentUtility.CheckNotNull ("locator", locator);
+      Assertion.IsNotNull (_driver, "'{0}' must not be null when resolving the desktop coordinates.", nameof (_driver));
 
       var unresolvedBounds = target;
 

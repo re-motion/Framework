@@ -57,7 +57,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// Uses the <see cref="ItemIDControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
     [CanBeNull]
-    public static TControlObject GetByItemIDOrNull<TControlSelector, TControlObject> (
+    public static TControlObject? GetByItemIDOrNull<TControlSelector, TControlObject> (
         [NotNull] this IFluentControlSelector<TControlSelector, TControlObject> fluentControlSelector,
         [NotNull] string itemID)
         where TControlSelector : IItemIDControlSelector<TControlObject>

@@ -247,7 +247,7 @@ namespace Remotion.Web.Development.WebTesting
     {
       ArgumentUtility.CheckNotNull ("scope", scope);
 
-      return (IDriver) s_driverFieldInfo.Value.GetValue (scope);
+      return (IDriver) s_driverFieldInfo.Value.GetValue (scope)!;
     }
 
     private static bool IsTransparent ([NotNull] string color)

@@ -30,6 +30,6 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <param name="actionOptions">See <see cref="IWebTestActionOptions"/> for more information.</param>
     /// <returns>An unspecified page object, may be used in case a new page is expected after clicking the control object.</returns>
     /// <exception cref="WebTestException">The element is currently disabled.</exception>
-    UnspecifiedPageObject Click ([CanBeNull] IWebTestActionOptions actionOptions = null);
+    UnspecifiedPageObject Click ([CanBeNull] IWebTestActionOptions? actionOptions = null);
   }
 }

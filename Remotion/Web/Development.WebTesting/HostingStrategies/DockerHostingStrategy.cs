@@ -38,7 +38,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
         int port,
         [NotNull] string dockerImageName,
         TimeSpan dockerPullTimeout,
-        [CanBeNull] string hostname)
+        [CanBeNull] string? hostname)
     {
       ArgumentUtility.CheckNotNull ("testSiteLayoutConfiguration", testSiteLayoutConfiguration);
       ArgumentUtility.CheckNotNullOrEmpty ("dockerImageName", dockerImageName);
@@ -75,11 +75,12 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
     public DockerHostingStrategy ([NotNull] TestSiteLayoutConfiguration testSiteLayoutConfiguration, [NotNull] NameValueCollection properties)
         : this (
             testSiteLayoutConfiguration,
-            int.Parse (ArgumentUtility.CheckNotNull ("properties", properties)["port"]),
-            properties["dockerImageName"],
-            TimeSpan.Parse (properties["dockerPullTimeout"]),
+            int.Parse (ArgumentUtility.CheckNotNull ("properties", properties)["port"]!),
+            properties["dockerImageName"]!,
+            TimeSpan.Parse (properties["dockerPullTimeout"]!),
             properties["hostname"])
     {
+      // TODO RM-8113: Guard used properties against null values.
     }
 
     /// <inheritdoc />

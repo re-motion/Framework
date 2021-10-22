@@ -60,7 +60,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     /// <summary>
     /// Orientation type of the screen (eg. landscape, portrait).
     /// </summary>
-    public string OrientationType { get; }
+    public string? OrientationType { get; }
 
     /// <summary>
     /// User agent that was used.
@@ -93,7 +93,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
         int windowWidth,
         int windowHeight,
         int orientationAngle,
-        [CanBeNull] string orientationType,
+        [CanBeNull] string? orientationType,
         [NotNull] string userAgent,
         bool includeIFrames,
         AccessibilityConformanceLevel conformanceLevel,

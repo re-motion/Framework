@@ -83,9 +83,11 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
       var id = Guid.NewGuid().ToString();
 
       var executor = (IJavaScriptExecutor) driver;
-      var previousTitle = JavaScriptExecutor.ExecuteStatement<string> (executor, c_setWindowTitle, id);
+      var previousTitle = Assertion.IsNotNull (
+          JavaScriptExecutor.ExecuteStatement<string> (executor, c_setWindowTitle, id),
+          "The Javascript code changing and fetching the window title must not return null.");
 
-      AutomationElement result;
+      AutomationElement? result;
       try
       {
         result = RetryUntilValueChanges (
@@ -107,7 +109,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
 
     private Rectangle ResolveBoundsFromWindow (AutomationElement window)
     {
-      var contentElement = RetryUntilValueChanges (
+      var contentElement = RetryUntilValueChanges<AutomationElement?> (
           () => GetContentElement (window),
           null,
           5,

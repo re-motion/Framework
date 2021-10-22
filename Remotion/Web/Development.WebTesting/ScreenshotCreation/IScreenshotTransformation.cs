@@ -27,6 +27,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
   /// that will be used to draw the annotation. For a full list of what is available see <see cref="ScreenshotTransformationContext{T}"/>.
   /// </summary>
   public interface IScreenshotTransformation<T>
+      where T : notnull
   {
     /// <summary>
     /// A <see cref="IScreenshotTransformation{T}"/> with a higher <see cref="ZIndex"/> will be applied 

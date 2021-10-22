@@ -47,7 +47,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
     /// Gets the hostname by which the container can be accessed.
     /// </summary>
     [CanBeNull]
-    public string Hostname { get; }
+    public string? Hostname { get; }
 
     /// <summary>
     /// Gets a flag indicating whether the application should be hosted in 32-bit mode.
@@ -64,7 +64,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
         [NotNull] string absoluteWebApplicationPath,
         int webApplicationPort,
         [NotNull] string dockerImageName,
-        [CanBeNull] string hostname,
+        [CanBeNull] string? hostname,
         bool is32BitProcess,
         IReadOnlyCollection<string> mounts)
     {

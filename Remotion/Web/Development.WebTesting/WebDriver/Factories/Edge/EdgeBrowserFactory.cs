@@ -67,7 +67,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Edge
           new[]
           {
               _registryCleanUpStrategy,
-              new ChromiumUserDirectoryCleanUpStrategy (_edgeConfiguration.UserDirectoryRoot, _extendedEdgeOptions.UserDirectory)
+              new ChromiumUserDirectoryCleanUpStrategy (_edgeConfiguration.UserDirectoryRoot, _extendedEdgeOptions.UserDirectory!)
           });
     }
 

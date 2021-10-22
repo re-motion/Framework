@@ -67,12 +67,12 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.Configuration
       var hostingStrategyType = GetHostingStrategyType (hostingStrategyTypeName);
       Assertion.IsNotNull (hostingStrategyType, string.Format ("Hosting strategy '{0}' could not be loaded.", hostingStrategyTypeName));
 
-      var hostingStrategy = (IHostingStrategy) Activator.CreateInstance (hostingStrategyType, new object[] { _testSiteLayoutConfiguration, _hostingProviderSettings.Parameters });
+      var hostingStrategy = (IHostingStrategy) Activator.CreateInstance (hostingStrategyType, new object[] { _testSiteLayoutConfiguration, _hostingProviderSettings.Parameters })!;
       return hostingStrategy;
     }
 
     [CanBeNull]
-    private Type GetHostingStrategyType (string hostingStrategyTypeName)
+    private Type? GetHostingStrategyType (string hostingStrategyTypeName)
     {
       if (s_wellKnownHostingStrategyTypes.ContainsKey (hostingStrategyTypeName))
         return s_wellKnownHostingStrategyTypes [hostingStrategyTypeName];

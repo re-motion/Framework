@@ -53,10 +53,10 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
         [NotNull] IDictionary<int, int> ports,
         [NotNull] IDictionary<string, string> mounts,
         [NotNull] string imageName,
-        [CanBeNull] string hostname,
+        [CanBeNull] string? hostname,
         bool remove,
-        [CanBeNull] string entryPoint,
-        [CanBeNull] string args);
+        [CanBeNull] string? entryPoint,
+        [CanBeNull] string? args);
 
     /// <summary>
     /// Checks if a container with the specified ID exists.

@@ -45,7 +45,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     }
 
     /// <inheritdoc/>
-    public AnchorControlObject SelectFirstOrNull (ControlSelectionContext context)
+    public AnchorControlObject? SelectFirstOrNull (ControlSelectionContext context)
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
@@ -67,7 +67,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     }
 
     /// <inheritdoc/>
-    public AnchorControlObject SelectSingleOrNull (ControlSelectionContext context)
+    public AnchorControlObject? SelectSingleOrNull (ControlSelectionContext context)
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
@@ -89,7 +89,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     }
 
     /// <inheritdoc/>
-    public AnchorControlObject SelectOptionalPerIndex (ControlSelectionContext context, int oneBasedIndex)
+    public AnchorControlObject? SelectOptionalPerIndex (ControlSelectionContext context, int oneBasedIndex)
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
@@ -123,7 +123,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     }
 
     /// <inheritdoc/>
-    public AnchorControlObject SelectOptionalPerTextContent (ControlSelectionContext context, string textContent)
+    public AnchorControlObject? SelectOptionalPerTextContent (ControlSelectionContext context, string textContent)
     {
       ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNullOrEmpty ("textContent", textContent);

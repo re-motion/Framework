@@ -44,7 +44,7 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// <param name="htmlID">The HTML ID of the <see cref="ControlObject"/>. Must not be <see langword="null"/> or empty.</param>
     /// <returns>The <see cref="ControlObject"/> for the selected control, or <see langword="null"/> if no control could be found.</returns>
     [CanBeNull]
-    TControlObject SelectOptionalPerHtmlID ([NotNull] ControlSelectionContext context, [NotNull] string htmlID);
+    TControlObject? SelectOptionalPerHtmlID ([NotNull] ControlSelectionContext context, [NotNull] string htmlID);
 
     /// <summary>
     /// Checks if a control within the given <paramref name="context"/> using the given <paramref name="htmlID"/> exists.

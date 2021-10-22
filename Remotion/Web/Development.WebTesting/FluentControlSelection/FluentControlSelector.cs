@@ -62,7 +62,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     }
 
     /// <inheritdoc />
-    TControlObject IFluentControlSelector<TControlSelector, TControlObject>.GetControlOrNull (
+    TControlObject? IFluentControlSelector<TControlSelector, TControlObject>.GetControlOrNull (
         IControlOptionalSelectionCommandBuilder<TControlSelector, TControlObject> selectionCommandBuilder)
     {
       ArgumentUtility.CheckNotNull ("selectionCommandBuilder", selectionCommandBuilder);

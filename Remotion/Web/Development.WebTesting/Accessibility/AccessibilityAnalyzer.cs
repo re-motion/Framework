@@ -195,7 +195,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
       return result;
     }
 
-    private AccessibilityResult GetAccessibilityResult (string cssSelector, TimeSpan timeout)
+    private AccessibilityResult GetAccessibilityResult (string? cssSelector, TimeSpan timeout)
     {
       var source = AxeSourceProvider.GetSource();
 
@@ -263,7 +263,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
         InjectIntoIFrames (source, timeout);
     }
 
-    private string BuildAxeRunFunctionCall (string cssToInclude)
+    private string BuildAxeRunFunctionCall (string? cssToInclude)
     {
       var stringBuilder = new StringBuilder();
 
@@ -285,7 +285,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
       stringBuilder.Append ("}}");
     }
 
-    private void AppendAxeRunFunctionCallContext (StringBuilder stringBuilder, string cssToInclude)
+    private void AppendAxeRunFunctionCallContext (StringBuilder stringBuilder, string? cssToInclude)
     {
       if (cssToInclude == null && !ExcludedElements.Any())
       {
@@ -300,13 +300,13 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
       }
     }
 
-    private void AppendAxeRunFunctionCallContextInclude (StringBuilder stringBuilder, string cssToInclude)
+    private void AppendAxeRunFunctionCallContextInclude (StringBuilder stringBuilder, string? cssToInclude)
     {
       if (cssToInclude != null)
         stringBuilder.Append ($"include: [['{cssToInclude}']]");
     }
 
-    private void AppendAxeRunFunctionCallContextExclude (StringBuilder stringBuilder, string cssToInclude)
+    private void AppendAxeRunFunctionCallContextExclude (StringBuilder stringBuilder, string? cssToInclude)
     {
       if (ExcludedElements.Count != 0)
       {

@@ -25,7 +25,7 @@ namespace Remotion.Web.Development.WebTesting.CompletionDetectionStrategies
   public class NullCompletionDetectionStrategy : ICompletionDetectionStrategy
   {
     /// <inheritdoc/>
-    public object PrepareWaitForCompletion (PageObjectContext context)
+    public object? PrepareWaitForCompletion (PageObjectContext context)
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
@@ -33,7 +33,7 @@ namespace Remotion.Web.Development.WebTesting.CompletionDetectionStrategies
     }
 
     /// <inheritdoc/>
-    public void WaitForCompletion (PageObjectContext context, object state)
+    public void WaitForCompletion (PageObjectContext context, object? state)
     {
       ArgumentUtility.CheckNotNull ("context", context);
     }

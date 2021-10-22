@@ -74,7 +74,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
       var installedFirefoxRegistryKey = localMachine64BitViewKey.OpenSubKey (Path.Combine (c_firefoxRegistryPath, latestFirefoxSubKeyName, "Main"));
       Assertion.IsNotNull (installedFirefoxRegistryKey, errorMessage, c_firefoxRegistryPath);
 
-      return installedFirefoxRegistryKey.GetValue ("PathToExe").ToString();
+      return Assertion.IsNotNull (installedFirefoxRegistryKey.GetValue ("PathToExe"), errorMessage, c_firefoxRegistryPath).ToString()!;
     }
 
     private string GetDriverPathAndDownloadIfMissing (string firefoxPath)
@@ -114,7 +114,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
       var driverDownloadUrl = driverReleaseInfo.Assets
           .Select (asset => asset.BrowserDownloadUrl)
           .Where (url => url != null)
-          .SingleOrDefault (url => url.Contains ($"win{c_driverBitness}"));
+          .SingleOrDefault (url => url!.Contains ($"win{c_driverBitness}"));
 
       return Assertion.IsNotNull (
           driverDownloadUrl,
@@ -144,7 +144,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
         var serializer = new DataContractJsonSerializer (typeof (GithubResponse));
         using (var stream = new MemoryStream (Encoding.UTF8.GetBytes (githubResponseJson)))
         {
-          var githubResponse = (GithubResponse) serializer.ReadObject (stream);
+          var githubResponse = (GithubResponse?) serializer.ReadObject (stream);
           Assertion.IsNotNull (githubResponse, "Could not parse the result of the GitHub API. The API might have changed.");
           return githubResponse;
         }
@@ -176,7 +176,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
 
     private Version GetFileVersion (string filePath)
     {
-      var fileVersion = FileVersionInfo.GetVersionInfo (filePath).FileVersion;
+      var fileVersion = Assertion.IsNotNull (FileVersionInfo.GetVersionInfo (filePath).FileVersion, "File version could not be read from '{0}'.", filePath);
       return Version.Parse (fileVersion);
     }
 
@@ -206,7 +206,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
     {
       return Path.Combine (Path.GetTempPath(), c_driverFolderName);
     }
-
+#nullable disable
     [DataContract]
     private class GithubResponse
     {
@@ -223,5 +223,6 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
         public string BrowserDownloadUrl { get; set; }
       }
     }
+#nullable restore
   }
 }

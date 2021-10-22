@@ -33,7 +33,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    public UnspecifiedPageObject Click (IWebTestActionOptions actionOptions = null)
+    public UnspecifiedPageObject Click (IWebTestActionOptions? actionOptions = null)
     {
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateCommandDisabledException (Driver);

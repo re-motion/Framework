@@ -252,7 +252,7 @@ namespace Remotion.Utilities
 
     [AssertionMethod]
     [return: NotNullIfNotNull ("collection")]
-    public static T CheckNotEmpty<T> ([InvokerParameterName] string argumentName, T collection)
+    public static T? CheckNotEmpty<T> ([InvokerParameterName] string argumentName, T collection)
         where T: ICollection?
     {
       if (collection != null && collection.Count == 0)
@@ -448,7 +448,7 @@ namespace Remotion.Utilities
     /// <summary>Checks whether all items in <paramref name="collection"/> are of type <paramref name="itemType"/> or a null reference.</summary>
     /// <exception cref="ArgumentException"> If at least one element is not of the specified type or a derived type. </exception>
     [return: NotNullIfNotNull ("collection")]
-    public static T CheckItemsType<T> ([InvokerParameterName] string argumentName, T collection, Type itemType)
+    public static T? CheckItemsType<T> ([InvokerParameterName] string argumentName, T collection, Type itemType)
         where T: ICollection?
     {
       // ReSharper disable CompareNonConstrainedGenericWithNull
@@ -474,7 +474,7 @@ namespace Remotion.Utilities
     /// <exception cref="ArgumentException"> If at least one element is not of the specified type or a derived type. </exception>
     /// <exception cref="ArgumentNullException"> If at least one element is a null reference. </exception>
     [return: NotNullIfNotNull ("collection")]
-    public static T CheckItemsNotNullAndType<T> ([InvokerParameterName] string argumentName, T collection, Type itemType)
+    public static T? CheckItemsNotNullAndType<T> ([InvokerParameterName] string argumentName, T collection, Type itemType)
         where T: ICollection?
     {
       // ReSharper disable CompareNonConstrainedGenericWithNull

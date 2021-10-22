@@ -161,14 +161,14 @@ namespace Remotion.Web.Development.WebTesting
     }
 
     /// <inheritdoc/>
-    ICompletionDetectionStrategy IWebTestActionOptions.CompletionDetectionStrategy
+    ICompletionDetectionStrategy? IWebTestActionOptions.CompletionDetectionStrategy
     {
       get { return _actionOptions.CompletionDetectionStrategy; }
       set { _actionOptions.CompletionDetectionStrategy = value; }
     }
 
     /// <inheritdoc/>
-    IModalDialogHandler IWebTestActionOptions.ModalDialogHandler
+    IModalDialogHandler? IWebTestActionOptions.ModalDialogHandler
     {
       get { return _actionOptions.ModalDialogHandler; }
       set { _actionOptions.ModalDialogHandler = value; }

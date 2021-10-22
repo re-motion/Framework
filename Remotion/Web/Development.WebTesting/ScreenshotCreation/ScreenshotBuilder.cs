@@ -93,8 +93,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
         [NotNull] T target,
         [NotNull] IScreenshotElementResolver<T> resolver,
         [NotNull] IScreenshotAnnotation annotation,
-        [CanBeNull] IScreenshotTransformation<T> transformation = null,
+        [CanBeNull] IScreenshotTransformation<T>? transformation = null,
         [CanBeNull] ElementVisibility? minimumElementVisibility = null)
+        where T : notnull
     {
       ArgumentUtility.CheckNotNull ("target", target);
       ArgumentUtility.CheckNotNull ("resolver", resolver);
@@ -113,8 +114,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
         [NotNull] T target,
         [NotNull] IScreenshotElementResolver<T> resolver,
         [NotNull] IScreenshotCropping cropping,
-        [CanBeNull] IScreenshotTransformation<T> transformation = null,
+        [CanBeNull] IScreenshotTransformation<T>? transformation = null,
         [CanBeNull] ElementVisibility? minimumElementVisibility = null)
+        where T : notnull
     {
       ArgumentUtility.CheckNotNull ("target", target);
       ArgumentUtility.CheckNotNull ("resolver", resolver);
@@ -142,7 +144,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
         s_log.InfoFormat ("Overwriting existing screenshot with file name '{0}'.", path);
 
       var directory = Path.GetDirectoryName (path);
-      Directory.CreateDirectory (directory);
+      if (directory != null)
+        Directory.CreateDirectory (directory);
 
       using (var annotationImage = AnnotationLayer.CloneImage())
       using (var outputImage = BaseLayer.CloneImage())

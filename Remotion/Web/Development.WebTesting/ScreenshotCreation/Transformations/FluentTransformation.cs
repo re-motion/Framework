@@ -25,6 +25,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Transformations
   /// A transformation that applies the <see cref="ScreenshotTransformationCollection{T}"/> of the target <see cref="IFluentScreenshotElement{T}"/>.
   /// </summary>
   public class FluentTransformation<T> : IScreenshotTransformation<IFluentScreenshotElement<T>>
+      where T : notnull
   {
     private readonly ScreenshotTransformationCollection<T> _transformations;
 

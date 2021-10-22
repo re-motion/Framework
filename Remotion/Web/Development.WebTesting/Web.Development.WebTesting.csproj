@@ -13,7 +13,6 @@
     <AssemblyName>Remotion.Web.Development.WebTesting</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
     <SignAssembly>False</SignAssembly>
-    <Nullable>disable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="ScreenshotCreation\Resolvers\WebElementResolverScript.js" />
@@ -31,6 +30,12 @@
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
     <Reference Include="System.Configuration" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\SharedSource\Core\Utilities\ArgumentUtility.cs" Link="SharedSource\Utilities\ArgumentUtility.cs" />
+    <Compile Include="..\..\..\SharedSource\Core\Utilities\Assertion.cs" Link="SharedSource\Utilities\Assertion.cs" />
+    <Compile Include="..\..\..\SharedSource\Core\Utilities\NullableTypeUtility.cs" Link="SharedSource\Utilities\NullableTypeUtility.cs" />
+    <Compile Include="..\..\..\SharedSource\Core\RoslynAnnotations\NullableAnnotations.cs" Link="SharedSource\RoslynAnnotations\NullableAnnotations.cs" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>
