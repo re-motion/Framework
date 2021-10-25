@@ -110,7 +110,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     {
       using (_transportTransaction.EnterNonDiscardingScope())
       {
-        DomainObject domainObject = LifetimeService.NewObject(ClientTransaction.Current, type, constructorParameters);
+        DomainObject domainObject = LifetimeService.NewObject(_transportTransaction, type, constructorParameters);
         Load(domainObject.ID);
         return domainObject;
       }
