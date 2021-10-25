@@ -119,13 +119,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
           new[]
           {
               _property3.ColumnDefinition,
+              null,
               _property1.ColumnDefinition,
               ColumnDefinitionObjectMother.CreateColumn()
           };
 
       var adjustedColumnList = _tableDefinition.CalculateAdjustedColumnList(fullColumnList);
 
-      Assert.That(adjustedColumnList, Is.EqualTo(new[] { _property3.ColumnDefinition, _property1.ColumnDefinition, null }));
+      Assert.That(adjustedColumnList, Is.EqualTo(new[] { _property3.ColumnDefinition, null, _property1.ColumnDefinition, null }));
     }
   }
 }
