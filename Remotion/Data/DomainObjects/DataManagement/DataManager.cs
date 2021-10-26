@@ -458,11 +458,20 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     protected DataManager (SerializationInfo info, StreamingContext context)
     {
-      _deserializedData = (object[])info.GetValue("doInfo.GetData", typeof(object[]));
+      _deserializedData = (object[])info.GetValue("doInfo.GetData", typeof(object[]))!;
+      _clientTransaction = null!;
+      _transactionEventSink = null!;
+      _dataContainerEventListener = null!;
+      _dataContainerMap = null!;
+      _relationEndPointManager = null!;
+      _domainObjectStateCache = null!;
+      _invalidDomainObjectManager = null!;
+      _objectLoader = null!;
     }
 
-    void IDeserializationCallback.OnDeserialization (object sender)
+    void IDeserializationCallback.OnDeserialization (object? sender)
     {
+      Assertion.IsNotNull(_deserializedData, "_deserializedData != null");
       var doInfo = new FlattenedDeserializationInfo(_deserializedData);
       _clientTransaction = doInfo.GetValueForHandle<ClientTransaction>();
       _transactionEventSink = doInfo.GetValueForHandle<IClientTransactionEventSink>();

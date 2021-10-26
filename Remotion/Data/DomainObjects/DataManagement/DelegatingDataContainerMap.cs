@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     private DelegatingDataContainerMap (FlattenedDeserializationInfo info)
     {
-      InnerDataContainerMap = info.GetValueForHandle<DataContainerMap>();
+      InnerDataContainerMap = info.GetNullableValueForHandle<DataContainerMap>();
     }
 
     void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)

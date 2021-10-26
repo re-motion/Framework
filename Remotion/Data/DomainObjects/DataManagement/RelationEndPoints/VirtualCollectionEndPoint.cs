@@ -458,7 +458,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       _transactionEventSink = info.GetValueForHandle<IClientTransactionEventSink>();
       _dataManagerFactory = info.GetValueForHandle<IVirtualCollectionEndPointDataManagerFactory>();
 
-      _dataManager = info.GetValueForHandle<IVirtualCollectionEndPointDataManager>();
+      _dataManager = info.GetNullableValueForHandle<IVirtualCollectionEndPointDataManager>();
       _hasBeenTouched = info.GetBoolValue();
 
       _addedDomainObjects = new HashSet<ObjectID>();

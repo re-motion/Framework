@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   public abstract class CompleteVirtualEndPointLoadStateBase<TEndPoint, TData, TDataManager>
       : IVirtualEndPointLoadState<TEndPoint, TData, TDataManager>
       where TEndPoint : IVirtualEndPoint<TData>
-      where TDataManager : IVirtualEndPointDataManager
+      where TDataManager : class, IVirtualEndPointDataManager
   {
     private static readonly ILog s_log = LogManager.GetLogger(typeof(CompleteVirtualEndPointLoadStateBase<TEndPoint, TData, TDataManager>));
 

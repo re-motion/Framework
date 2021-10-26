@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.Serialization;
@@ -32,7 +33,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
 
     public event EventHandler? DeserializationFinished;
 
-    private readonly FlattenedSerializationReader<object> _objectReader;
+    private readonly FlattenedSerializationReader<object?> _objectReader;
     private readonly FlattenedSerializationReader<int> _intReader;
     private readonly FlattenedSerializationReader<bool> _boolReader;
     private readonly Dictionary<int, object> _handleMap = new Dictionary<int, object>();
@@ -40,11 +41,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
     public FlattenedDeserializationInfo (object[] data)
     {
       ArgumentUtility.CheckNotNull("data", data);
-      object[] objects = ArgumentUtility.CheckType<object[]>("data[0]", data[0]);
+      object?[] objects = ArgumentUtility.CheckType<object?[]>("data[0]", data[0]);
       int[] ints = ArgumentUtility.CheckType<int[]>("data[1]", data[1]);
       bool[] bools = ArgumentUtility.CheckType<bool[]>("data[2]", data[2]);
 
-      _objectReader = new FlattenedSerializationReader<object>(objects);
+      _objectReader = new FlattenedSerializationReader<object?>(objects);
       _intReader = new FlattenedSerializationReader<int>(ints);
       _boolReader = new FlattenedSerializationReader<bool>(bools);
     }
@@ -61,16 +62,30 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
 
     public T GetValue<T> ()
     {
+      return GetValue<T>(allowNull: false)!;
+    }
+
+    public T? GetNullableValue<T> ()
+    {
+      return GetValue<T>(allowNull: true);
+    }
+
+    [return: MaybeNull]
+    private T GetValue<T> (bool allowNull)
+    {
       if (typeof(IFlattenedSerializable).IsAssignableFrom(typeof(T)))
-        return GetFlattenedSerializable<T>();
+      {
+        return GetFlattenedSerializable<T>(allowNull: allowNull);
+      }
       else
       {
         var originalPosition = _objectReader.ReadPosition;
         var o = GetValue(_objectReader);
-        return CastValue<T>(o, originalPosition, "Object");
+        return CastValue<T>(o, originalPosition, "Object", allowNull : allowNull);
       }
     }
 
+    [return: MaybeNull]
     private T GetValue<T> (FlattenedSerializationReader<T> reader)
     {
       try
@@ -83,17 +98,18 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
       }
     }
 
-    private T GetFlattenedSerializable<T> ()
+    [return: MaybeNull]
+    private T GetFlattenedSerializable<T> (bool allowNull)
     {
-      var typeName = GetValueForHandle<string>();
+      var typeName = allowNull ? GetNullableValueForHandle<string>() : GetValueForHandle<string>();
       if (typeName == null)
         return default(T);
 
+      var originalPosition = _objectReader.ReadPosition;
       // C# compiler 7.2 does not provide caching for delegate but during serialization there is already a significant amount of GC pressure so the delegate creation does not matter
       var instanceFactory = s_instanceFactoryCache.GetOrAdd(typeName, GetInstanceFactory);
       object instance = instanceFactory(this);
-      var originalPosition = _objectReader.ReadPosition;
-      return CastValue<T>(instance, originalPosition, "Object");
+      return CastValue<T>(instance, originalPosition, "Object", allowNull: false);
     }
 
     private Func<FlattenedDeserializationInfo, object> GetInstanceFactory (string typeName)
@@ -118,17 +134,18 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
       return factoryLambda.Compile();
     }
 
-    private T CastValue<T> (object uncastValue, int originalPosition, string streamName)
+    [return: MaybeNull]
+    private T CastValue<T> (object? uncastValue, int originalPosition, string streamName, bool allowNull)
     {
-      T value;
+      T? value;
       try
       {
-        value = (T)uncastValue;
+        value = (T?)uncastValue;
       }
       catch (InvalidCastException ex)
       {
         string message = string.Format("{0} stream: The serialization stream contains an object of type {1} at position {2}, but an object of "
-            + "type {3} was expected.", streamName, uncastValue.GetType().GetFullNameSafe(), originalPosition, typeof(T).GetFullNameSafe());
+            + "type {3} was expected.", streamName, uncastValue?.GetType().GetFullNameSafe(), originalPosition, typeof(T).GetFullNameSafe());
         throw new SerializationException(message, ex);
       }
       catch (NullReferenceException ex)
@@ -137,6 +154,14 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
             + "expected.", streamName, originalPosition, typeof(T).GetFullNameSafe());
         throw new SerializationException(message, ex);
       }
+
+      if (!allowNull && value == null)
+      {
+        string message = string.Format("{0} stream: The serialization stream contains a null value at position {1}, but an object of type {2} was "
+                                        + "expected.", streamName, originalPosition, typeof(T).GetFullNameSafe());
+        throw new SerializationException(message);
+      }
+
       return value;
     }
 
@@ -157,10 +182,20 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
     }
 
     public T GetValueForHandle<T> ()
+        where T: class
+    {
+      var value = GetNullableValueForHandle<T>();
+      if (value == null)
+        throw new SerializationException("Null value was found for handle.");
+      return value;
+    }
+
+    public T? GetNullableValueForHandle<T> ()
+        where T: class
     {
       int handle = GetIntValue();
       if (handle == -1)
-        return (T)(object?)null;
+        return null;
       else
       {
         if (!_handleMap.TryGetValue(handle, out var objectValue))
@@ -173,7 +208,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
           return value;
         }
         else
-          return CastValue<T>(objectValue, _objectReader.ReadPosition, "Object");
+          return CastValue<T>(objectValue, _objectReader.ReadPosition, "Object", allowNull: false);
       }
     }
 

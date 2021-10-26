@@ -19,11 +19,12 @@ using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Serialization
 {
+#nullable enable
   public class FlattenedSerializableStub : IFlattenedSerializable
   {
     public readonly string Data1;
     public readonly int Data2;
-    public FlattenedSerializableStub Data3;
+    public FlattenedSerializableStub? Data3;
 
     public FlattenedSerializableStub (string data1, int data2)
     {
@@ -35,7 +36,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     {
       Data1 = info.GetValue<string>();
       Data2 = info.GetIntValue();
-      Data3 = info.GetValueForHandle<FlattenedSerializableStub>();
+      Data3 = info.GetNullableValueForHandle<FlattenedSerializableStub>();
     }
 
     public void SerializeIntoFlatStructure (FlattenedSerializationInfo info)

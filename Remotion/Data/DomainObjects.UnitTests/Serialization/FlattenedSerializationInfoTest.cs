@@ -18,11 +18,11 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Serialization
 {
+#nullable enable
   [TestFixture]
   public class FlattenedSerializationInfoTest
   {
@@ -35,9 +35,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       serializationInfo.AddIntValue(2);
       serializationInfo.AddBoolValue(false);
       serializationInfo.AddValue(new DateTime(2007, 1, 2));
-      serializationInfo.AddValue("Foo");
       serializationInfo.AddValue<object>(null);
       serializationInfo.AddValue<int?>(null);
+      serializationInfo.AddValue("Foo");
       object[] data = serializationInfo.GetData();
 
       FlattenedDeserializationInfo deserializationInfo = new FlattenedDeserializationInfo(data);
@@ -46,8 +46,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       Assert.That(deserializationInfo.GetIntValue(), Is.EqualTo(2));
       Assert.That(deserializationInfo.GetBoolValue(), Is.EqualTo(false));
       Assert.That(deserializationInfo.GetValue<DateTime>(), Is.EqualTo(new DateTime(2007, 1, 2)));
+      Assert.That(deserializationInfo.GetNullableValue<object>(), Is.EqualTo(null));
+      Assert.That(deserializationInfo.GetNullableValue<int?>(), Is.EqualTo(null));
       Assert.That(deserializationInfo.GetValue<string>(), Is.EqualTo("Foo"));
-      Assert.That(deserializationInfo.GetValue<int?>(), Is.EqualTo(null));
     }
 
     [Test]
@@ -207,8 +208,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void Handles ()
     {
-      DateTime dt1 = DateTime.MinValue;
-      DateTime dt2 = DateTime.MaxValue;
+      Tuple<DateTime> dt1 = Tuple.Create(DateTime.MinValue);
+      Tuple<DateTime> dt2 = Tuple.Create(DateTime.MaxValue);
 
       string s1 = "Foo";
       string s2 = "Fox";
@@ -229,10 +230,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
 
       FlattenedDeserializationInfo deserializationInfo = new FlattenedDeserializationInfo(data);
 
-      Assert.That(deserializationInfo.GetValueForHandle<DateTime>(), Is.EqualTo(dt1));
-      Assert.That(deserializationInfo.GetValueForHandle<DateTime>(), Is.EqualTo(dt2));
-      Assert.That(deserializationInfo.GetValueForHandle<DateTime>(), Is.EqualTo(dt1));
-      Assert.That(deserializationInfo.GetValueForHandle<DateTime>(), Is.EqualTo(dt1));
+      Assert.That(deserializationInfo.GetValueForHandle<Tuple<DateTime>>(), Is.EqualTo(dt1));
+      Assert.That(deserializationInfo.GetValueForHandle<Tuple<DateTime>>(), Is.EqualTo(dt2));
+      Assert.That(deserializationInfo.GetValueForHandle<Tuple<DateTime>>(), Is.EqualTo(dt1));
+      Assert.That(deserializationInfo.GetValueForHandle<Tuple<DateTime>>(), Is.EqualTo(dt1));
       Assert.That(deserializationInfo.GetValueForHandle<string>(), Is.EqualTo(s1));
       Assert.That(deserializationInfo.GetValueForHandle<string>(), Is.EqualTo(s2));
       Assert.That(deserializationInfo.GetValueForHandle<string>(), Is.EqualTo(s1));
@@ -246,35 +247,35 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       FlattenedSerializationInfo serializationInfo = new FlattenedSerializationInfo();
 
       serializationInfo.AddHandle<string>(null);
-      serializationInfo.AddHandle<int?>(null);
+      serializationInfo.AddHandle<Tuple<DateTime>>(null);
 
       object[] data = serializationInfo.GetData();
 
       FlattenedDeserializationInfo deserializationInfo = new FlattenedDeserializationInfo(data);
 
-      Assert.That(deserializationInfo.GetValueForHandle<string>(), Is.EqualTo(null));
-      Assert.That(deserializationInfo.GetValueForHandle<int?>(), Is.EqualTo(null));
+      Assert.That(deserializationInfo.GetNullableValueForHandle<string>(), Is.EqualTo(null));
+      Assert.That(deserializationInfo.GetNullableValueForHandle<Tuple<DateTime>>(), Is.EqualTo(null));
     }
 
     [Test]
     public void HandlesWithInvalidType ()
     {
-      DateTime dt1 = DateTime.MinValue;
+      object valueForHandle = new object();
 
       FlattenedSerializationInfo serializationInfo = new FlattenedSerializationInfo();
-      serializationInfo.AddHandle(dt1);
-      serializationInfo.AddHandle(dt1);
+      serializationInfo.AddHandle(valueForHandle);
+      serializationInfo.AddHandle(valueForHandle);
 
       object[] data = serializationInfo.GetData();
 
       FlattenedDeserializationInfo deserializationInfo = new FlattenedDeserializationInfo(data);
-      deserializationInfo.GetValueForHandle<DateTime>();
+      deserializationInfo.GetValueForHandle<object>();
       Assert.That(
           () => deserializationInfo.GetValueForHandle<string>(),
           Throws.InstanceOf<SerializationException>()
               .With.Message.EqualTo(
                   "Object stream: The serialization stream contains an object of type "
-                  + "System.DateTime at position 1, but an object of type System.String was expected."));
+                  + "System.Object at position 1, but an object of type System.String was expected."));
     }
 
     [Test]
@@ -300,7 +301,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       object[] data = serializationInfo.GetData();
 
       FlattenedDeserializationInfo deserializationInfo = new FlattenedDeserializationInfo(data);
-      FlattenedSerializableStub deserializedStub = deserializationInfo.GetValue<FlattenedSerializableStub>();
+      FlattenedSerializableStub? deserializedStub = deserializationInfo.GetNullableValue<FlattenedSerializableStub>();
 
       Assert.That(deserializedStub, Is.Null);
     }
@@ -339,16 +340,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
 
       FlattenedDeserializationInfo deserializationInfo = new FlattenedDeserializationInfo(data);
       FlattenedSerializableStub deserializedStub1 = deserializationInfo.GetValueForHandle<FlattenedSerializableStub>();
-      FlattenedSerializableStub deserializedStub2 = deserializedStub1.Data3;
+      FlattenedSerializableStub? deserializedStub2 = deserializedStub1.Data3;
 
-      Assert.That(deserializedStub2, Is.Not.SameAs(deserializedStub1));
+      Assert.That(deserializedStub2, Is.Not.Null);
+      Assert.That(deserializedStub2!, Is.Not.SameAs(deserializedStub1));
       Assert.That(deserializedStub1.Data1, Is.EqualTo("begone, foul fiend"));
       Assert.That(deserializedStub1.Data2, Is.EqualTo(123));
-      Assert.That(deserializedStub1.Data3, Is.SameAs(deserializedStub2));
+      Assert.That(deserializedStub1.Data3, Is.SameAs(deserializedStub2!));
 
-      Assert.That(deserializedStub2.Data1, Is.EqualTo("befoul, gone fiend"));
-      Assert.That(deserializedStub2.Data2, Is.EqualTo(125));
-      Assert.That(deserializedStub2.Data3, Is.Null);
+      Assert.That(deserializedStub2!.Data1, Is.EqualTo("befoul, gone fiend"));
+      Assert.That(deserializedStub2!.Data2, Is.EqualTo(125));
+      Assert.That(deserializedStub2!.Data3, Is.Null);
     }
 
     [Test]
@@ -432,7 +434,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       serializationInfo.AddValue("three");
 
       bool deserializationFinishedCalled = false;
-      object deserializationFinishedSender = null;
+      object? deserializationFinishedSender = null;
 
       var deserializationInfo = new FlattenedDeserializationInfo(serializationInfo.GetData());
       deserializationInfo.DeserializationFinished += (sender, args) => { deserializationFinishedCalled = true; deserializationFinishedSender = sender; };

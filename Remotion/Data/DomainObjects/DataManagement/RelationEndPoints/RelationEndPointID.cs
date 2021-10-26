@@ -238,7 +238,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     {
       var classDefinitionID = info.GetValueForHandle<string>();
       var propertyName = info.GetValueForHandle<string>();
-      var objectID = info.GetValueForHandle<ObjectID>();
+      var objectID = info.GetNullableValueForHandle<ObjectID>();
 
       var classDefinition = MappingConfiguration.Current.GetClassDefinition(classDefinitionID);
       var relationEndPointDefinition = classDefinition.GetMandatoryRelationEndPointDefinition(propertyName);

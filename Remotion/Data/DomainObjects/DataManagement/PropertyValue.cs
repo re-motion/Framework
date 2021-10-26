@@ -237,9 +237,9 @@ namespace Remotion.Data.DomainObjects.DataManagement
     internal void DeserializeFromFlatStructure (FlattenedDeserializationInfo info)
     {
       _hasBeenTouched = info.GetBoolValue();
-      _value = info.GetValue<object>();
+      _value = info.GetNullableValue<object>();
       if (_hasBeenTouched)
-        _originalValue = info.GetValue<object>();
+        _originalValue = info.GetNullableValue<object>();
       else
         _originalValue = _value;
     }

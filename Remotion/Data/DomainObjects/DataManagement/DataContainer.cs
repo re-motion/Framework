@@ -663,7 +663,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       ArgumentUtility.CheckNotNull("info", info);
 
       _id = info.GetValueForHandle<ObjectID>();
-      _timestamp = info.GetValue<object>();
+      _timestamp = info.GetNullableValue<object>();
       _isDiscarded = info.GetBoolValue();
 
       _propertyValues = new Dictionary<PropertyDefinition, PropertyValue>();
@@ -680,12 +680,12 @@ namespace Remotion.Data.DomainObjects.DataManagement
         }
       }
 
-      _clientTransaction = info.GetValueForHandle<ClientTransaction>();
-      _eventListener = info.GetValueForHandle<IDataContainerEventListener>();
+      _clientTransaction = info.GetNullableValueForHandle<ClientTransaction>();
+      _eventListener = info.GetNullableValueForHandle<IDataContainerEventListener>();
       _state = (DataContainerStateType)info.GetIntValue();
-      _domainObject = info.GetValueForHandle<DomainObject>();
+      _domainObject = info.GetNullableValueForHandle<DomainObject>();
       _hasBeenMarkedChanged = info.GetBoolValue();
-      _hasBeenChanged = info.GetValue<bool?>();
+      _hasBeenChanged = info.GetNullableValue<bool?>();
     }
     // ReSharper restore UnusedMember.Local
 

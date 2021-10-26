@@ -211,10 +211,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ArgumentUtility.CheckNotNull("info", info);
 
       _endPointID = info.GetValueForHandle<RelationEndPointID>();
-      _originalOppositeEndPoint = info.GetValue<IRealObjectEndPoint>();
-      _originalOppositeObject = info.GetValueForHandle<DomainObject>();
-      _currentOppositeEndPoint = info.GetValue<IRealObjectEndPoint>();
-      _currentOppositeObject = info.GetValueForHandle<DomainObject>();
+      _originalOppositeEndPoint = info.GetNullableValue<IRealObjectEndPoint>();
+      _originalOppositeObject = info.GetNullableValueForHandle<DomainObject>();
+      _currentOppositeEndPoint = info.GetNullableValue<IRealObjectEndPoint>();
+      _currentOppositeObject = info.GetNullableValueForHandle<DomainObject>();
     }
 
     public void SerializeIntoFlatStructure (FlattenedSerializationInfo info)
