@@ -62,7 +62,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       get { return _httpContext; }
     }
 
-    public void ExecuteFunction (WxeFunction function, Control sender, WxeCallOptions options)
+    public void ExecuteFunction (WxeFunction function, Control? sender, WxeCallOptions options)
     {
       ArgumentUtility.CheckNotNull ("function", function);
       // sender can be null
@@ -107,7 +107,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       ArgumentUtility.CheckNotNull ("sender", sender);
       ArgumentUtility.CheckNotNull ("options", options);
 
-      string functionToken = WxeContext.Current.GetFunctionTokenForExternalFunction (function, options.ReturningPostback);
+      string functionToken = WxeContext.Current!.GetFunctionTokenForExternalFunction (function, options.ReturningPostback); // TODO RM-8118: not null assertion
 
       string href = WxeContext.Current.GetDestinationUrlForExternalFunction (function, functionToken, options.PermaUrlOptions);
 
@@ -134,7 +134,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     {
       get
       {
-        NameValueCollection postBackCollection = _page.GetPostBackCollection();
+        NameValueCollection? postBackCollection = _page.GetPostBackCollection();
         if (postBackCollection == null)
         {
           if (_page.IsPostBack)
@@ -155,12 +155,12 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
       if (UsesEventTarget)
       {
-        NameValueCollection postBackCollection = _page.GetPostBackCollection();
+        NameValueCollection? postBackCollection = _page.GetPostBackCollection();
         if (postBackCollection == null)
           throw new InvalidOperationException ("The IWxePage has no PostBackCollection even though this is a post back.");
 
-        string eventTarget = postBackCollection[ControlHelper.PostEventSourceID];
-        string eventArgument = postBackCollection[ControlHelper.PostEventArgumentID];
+        string? eventTarget = postBackCollection[ControlHelper.PostEventSourceID];
+        string? eventArgument = postBackCollection[ControlHelper.PostEventArgumentID];
         return FormatDoPostBackClientScript (functionToken, _page.CurrentPageStep.PageToken, sender.ClientID, eventTarget, eventArgument);
       }
       else
@@ -178,7 +178,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     ///   Gets the client script used to execute <c>__dopostback</c> in the parent form before closing the window of the 
     ///   external function.
     /// </summary>
-    private string FormatDoPostBackClientScript (string functionToken, string pageToken, string senderID, string eventTarget, string eventArgument)
+    private string FormatDoPostBackClientScript (string functionToken, string pageToken, string senderID, string? eventTarget, string? eventArgument)
     {
       return string.Format (
 @"

@@ -34,17 +34,18 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       get { return true; }
     }
 
-    public override TransactionStrategyBase OuterTransactionStrategy
+    public override TransactionStrategyBase? OuterTransactionStrategy
     {
+      // TODO RM-8108: This property should return the NullTransactionStrategy instance.
       get { return null; }
     }
 
-    public override TTransaction GetNativeTransaction<TTransaction> ()
+    public override TTransaction? GetNativeTransaction<TTransaction> () where TTransaction : default
     {
       return default (TTransaction);
     }
 
-    public override TransactionStrategyBase CreateChildTransactionStrategy (bool autoCommit, IWxeFunctionExecutionContext executionContext, WxeContext wxeContext)
+    public override TransactionStrategyBase? CreateChildTransactionStrategy (bool autoCommit, IWxeFunctionExecutionContext executionContext, WxeContext wxeContext)
     {
       ArgumentUtility.CheckNotNull ("executionContext", executionContext);
       return null;

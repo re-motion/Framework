@@ -26,7 +26,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
   public sealed class WxeHttpExceptionPreservingException : WxeException
   {
     [CanBeNull]
-    public static Exception GetUnwrappedException ([NotNull] Exception exception)
+    public static Exception? GetUnwrappedException ([NotNull] Exception exception)
     {
       ArgumentUtility.CheckNotNull ("exception", exception);
       
@@ -46,9 +46,9 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     {
     }
 
-    public HttpException HttpException
+    public HttpException? HttpException
     {
-      get { return (HttpException) InnerException; }
+      get { return (HttpException?) InnerException; }
     }
   }
 }

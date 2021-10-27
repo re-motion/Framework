@@ -215,7 +215,7 @@ namespace Remotion.Web.Utilities
     /// <summary>
     /// Formats a URL string with URL encoding. (The <c>format</c> argument is not encoded.)
     /// </summary>
-    public static string FormatUrl (string format, params object[] args)
+    public static string FormatUrl (string format, params object[]? args)
     {
       if (args == null)
         return format;
@@ -223,7 +223,7 @@ namespace Remotion.Web.Utilities
       string[] encodedArgs = new string[args.Length];
       Encoding encoding = GetResponseEncoding();
       for (int i = 0; i < args.Length; ++i)
-        encodedArgs[i] = HttpUtility.UrlEncode (args[i].ToString(), encoding);
+        encodedArgs[i] = HttpUtility.UrlEncode (args[i].ToString()!, encoding); // TODO RM-8118: not null assertion
 
       return string.Format (format, encodedArgs);
     }
@@ -231,7 +231,7 @@ namespace Remotion.Web.Utilities
 
     /// <summary> Adds a <paramref name="name"/>/<paramref name="value"/> pair to the <paramref name="url"/>. </summary>
     /// <include file='..\doc\include\Utilities\UrlUtility.xml' path='UrlUtility/AddParameter/*' />
-    public static string AddParameter (string url, string name, string value, Encoding encoding)
+    public static string AddParameter (string url, string? name, string value, Encoding encoding)
     {
       ArgumentUtility.CheckNotNull ("url", url);
       ArgumentUtility.CheckNotEmpty ("name", name);
@@ -350,7 +350,7 @@ namespace Remotion.Web.Utilities
 
     /// <summary> Gets the decoded value of the parameter identified by <paramref name="name"/>. </summary>
     /// <include file='..\doc\include\Utilities\UrlUtility.xml' path='UrlUtility/GetParameter/*' />
-    public static string GetParameter (string url, string name, Encoding encoding)
+    public static string? GetParameter (string url, string name, Encoding encoding)
     {
       ArgumentUtility.CheckNotNull ("url", url);
       ArgumentUtility.CheckNotEmpty ("name", name);
@@ -366,7 +366,7 @@ namespace Remotion.Web.Utilities
     /// <summary> Gets the decoded value of the parameter identified by <paramref name="name"/>. </summary>
     /// <include file='..\doc\include\Utilities\UrlUtility.xml' path='UrlUtility/GetParameter/param[@name="url" or @name="name"]' />
     /// <include file='..\doc\include\Utilities\UrlUtility.xml' path='UrlUtility/GetParameter/returns' />
-    public static string GetParameter (string url, string name)
+    public static string? GetParameter (string url, string name)
     {
       return GetParameter (url, name, GetRequestEncoding());
     }

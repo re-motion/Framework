@@ -46,7 +46,7 @@ namespace Remotion.Web.UI.Controls
     /// <param name="target">The target for the <paramref name="navigateUrl"/>.</param>
     /// <param name="toolTip">The tool-tip to be displayed when hovering over the help-link.</param>
     /// <param name="onClick">The javascript to be executed for the <c>OnClick</c> event on the client.</param>
-    public HelpInfo (string navigateUrl, string target, string toolTip, string onClick)
+    public HelpInfo (string navigateUrl, string? target, string? toolTip, string? onClick)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("navigateUrl", navigateUrl);
 
@@ -64,16 +64,16 @@ namespace Remotion.Web.UI.Controls
     /// <summary>
     /// Gets the target for the <see cref="NavigateUrl"/>.
     /// </summary>
-    public string Target { get; private set; }
+    public string? Target { get; private set; }
 
     /// <summary>
     /// Gets the javascript to be executed for the <c>OnClick</c> event on the client.
     /// </summary>
-    public string OnClick { get; private set; }
+    public string? OnClick { get; private set; }
 
     /// <summary>
     /// Gets the tool-tip to be displayed when hovering over the help-link.
     /// </summary>
-    public string ToolTip { get; private set; }
+    public string? ToolTip { get; private set; }
   }
 }

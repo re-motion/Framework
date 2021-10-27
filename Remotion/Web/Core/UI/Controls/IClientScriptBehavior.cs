@@ -25,6 +25,6 @@ namespace Remotion.Web.UI.Controls
   /// </summary>
  public interface IClientScriptBehavior
   {
-    bool IsBrowserCapableOfScripting (HttpContextBase httpContext, IControl control);
+    bool IsBrowserCapableOfScripting (HttpContextBase? httpContext, IControl control);
   }
 }

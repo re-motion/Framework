@@ -16,9 +16,9 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Remotion.Utilities;
-using Remotion.Web.Utilities;
 
 namespace Remotion.Web.UI.Controls
 {
@@ -37,17 +37,17 @@ namespace Remotion.Web.UI.Controls
       return nodes.Cast<WebTreeNode>().GroupBy (node => node.Category).SelectMany (node => node).ToArray();
     }
 
-    private WebTreeView _treeView;
-    private WebTreeNode _parentNode;
+    private WebTreeView? _treeView;
+    private WebTreeNode? _parentNode;
 
     /// <summary> Initializes a new instance. </summary>
-    public WebTreeNodeCollection (IControl ownerControl, Type[] supportedTypes)
+    public WebTreeNodeCollection (IControl? ownerControl, Type[] supportedTypes)
         : base (ownerControl, supportedTypes)
     {
     }
 
     /// <summary> Initializes a new instance. </summary>
-    public WebTreeNodeCollection (IControl ownerControl)
+    public WebTreeNodeCollection (IControl? ownerControl)
         : this (ownerControl, new[] { typeof (WebTreeNode) })
     {
     }
@@ -55,13 +55,13 @@ namespace Remotion.Web.UI.Controls
     //  Do NOT make this indexer public. Ever. Or ASP.net won't be able to de-serialize this property.
     protected internal new WebTreeNode this [int index]
     {
-      get { return (WebTreeNode) List[index]; }
+      get { return (WebTreeNode) List[index]!; }
       set { List[index] = value; }
     }
 
-    protected override void ValidateNewValue (object value)
+    protected override void ValidateNewValue ([NotNull]object? value)
     {
-      WebTreeNode node = ArgumentUtility.CheckNotNullAndType<WebTreeNode> ("value", value);
+      WebTreeNode node = ArgumentUtility.CheckNotNullAndType<WebTreeNode> ("value", value!);
 
       if (string.IsNullOrEmpty (node.ItemID))
         throw new ArgumentException ("The node does not contain an 'ItemID' and can therfor not be inserted into the collection.", "value");
@@ -69,29 +69,29 @@ namespace Remotion.Web.UI.Controls
       base.ValidateNewValue (value);
     }
 
-    protected override void OnInsertComplete (int index, object value)
+    protected override void OnInsertComplete (int index, object? value)
     {
-      WebTreeNode node = ArgumentUtility.CheckNotNullAndType<WebTreeNode> ("value", value);
+      WebTreeNode node = ArgumentUtility.CheckNotNullAndType<WebTreeNode> ("value", value!);
 
       base.OnInsertComplete (index, value);
       node.SetParent (_treeView, _parentNode);
     }
 
-    protected override void OnSetComplete (int index, object oldValue, object newValue)
+    protected override void OnSetComplete (int index, object? oldValue, object? newValue)
     {
-      WebTreeNode node = ArgumentUtility.CheckNotNullAndType<WebTreeNode> ("newValue", newValue);
+      WebTreeNode node = ArgumentUtility.CheckNotNullAndType<WebTreeNode> ("newValue", newValue!);
 
       base.OnSetComplete (index, oldValue, newValue);
       node.SetParent (_treeView, _parentNode);
     }
 
-    protected internal void SetParent (WebTreeView treeView, WebTreeNode parentNode)
+    protected internal void SetParent (WebTreeView? treeView, WebTreeNode? parentNode)
     {
       _treeView = treeView;
       _parentNode = parentNode;
       for (int i = 0; i < InnerList.Count; i++)
       {
-        WebTreeNode node = (WebTreeNode) InnerList[i];
+        WebTreeNode node = (WebTreeNode) InnerList[i]!;
         node.SetParent (_treeView, parentNode);
       }
     }
@@ -101,9 +101,9 @@ namespace Remotion.Web.UI.Controls
     /// </summary>
     /// <param name="id"> The ID to look for. </param>
     /// <returns> A <see cref="WebTreeNode"/> or <see langword="null"/> if no mathcing node was found. </returns>
-    public new WebTreeNode Find (string id)
+    public new WebTreeNode? Find (string id)
     {
-      return (WebTreeNode) base.Find (id);
+      return (WebTreeNode?) base.Find (id);
     }
 
     //  /// <summary>

@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Utilities;
 
 namespace Remotion.Web.UI.Controls
@@ -26,13 +27,13 @@ public class SingleControlItemCollection
   : ICollection // For Designer Support. (VS2003, VS2005)
 {
   private readonly Type[] _supportedTypes;
-  private IControlItem _controlItem;
-  private IControl _ownerControl;
+  private IControlItem? _controlItem;
+  private IControl? _ownerControl;
 
   /// <summary> Creates a new instance. </summary>
   /// <param name="controlItem">The <see cref="IControlItem"/> to be stored in this instance.</param>
   /// <param name="supportedTypes"> Supported types must implement <see cref="IControlItem"/>. </param>
-  public SingleControlItemCollection (IControlItem controlItem, Type[] supportedTypes)
+  public SingleControlItemCollection (IControlItem? controlItem, Type[] supportedTypes)
   {
     _supportedTypes = supportedTypes;
     ControlItem = controlItem;
@@ -43,10 +44,10 @@ public class SingleControlItemCollection
   {
   }
 
-  public IControlItem ControlItem
+  public IControlItem? ControlItem
   {
     get { return _controlItem; }
-    set 
+    set
     {
       if (value != null && ! IsSupportedType (value)) 
         throw ArgumentUtility.CreateArgumentTypeException ("value", value.GetType(), null);
@@ -56,7 +57,7 @@ public class SingleControlItemCollection
     }
   }
 
-  public IControl OwnerControl
+  public IControl? OwnerControl
   {
     get { return _ownerControl; }
     set
@@ -109,7 +110,7 @@ public class SingleControlItemCollection
   /// <summary> For Designer Support. (VS2003, VS2005) </summary>
   /// <exclude/>
   [EditorBrowsable (EditorBrowsableState.Never)]
-  public IControlItem this[int index]
+  public IControlItem? this[int index]
   {
 	  get
 	  {
@@ -135,11 +136,11 @@ public class SingleControlItemCollection
 
 public class SingleControlItemCollectionEnumerator: IEnumerator
 {
-  private readonly IControlItem _controlItem;
+  private readonly IControlItem? _controlItem;
   bool _isMoved;
   bool _isEnd;
 
-  internal SingleControlItemCollectionEnumerator (IControlItem controlItem)
+  internal SingleControlItemCollectionEnumerator (IControlItem? controlItem)
   {
     _controlItem = controlItem;
     _isMoved = false;
@@ -152,7 +153,7 @@ public class SingleControlItemCollectionEnumerator: IEnumerator
     _isEnd = false;
   }
 
-  public object Current
+  public object? Current
   {
     get
     {

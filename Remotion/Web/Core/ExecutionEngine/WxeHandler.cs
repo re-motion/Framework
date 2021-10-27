@@ -114,13 +114,13 @@ namespace Remotion.Web.ExecutionEngine
     }
 
     /// <summary> The <see cref="WxeFunctionState"/> representing the <see cref="RootFunction"/> and its context. </summary>
-    private WxeFunctionState _currentFunctionState;
+    private WxeFunctionState? _currentFunctionState;
 
     /// <summary> The root function executed by the <b>WxeHanlder</b>. </summary>
     /// <value> The <see cref="WxeFunction"/> invoked by the <see cref="Parameters.WxeFunctionType"/> parameter. </value>
     public WxeFunction RootFunction
     {
-      get { return _currentFunctionState.Function; }
+      get { return _currentFunctionState!.Function; } // TODO RM-8118: not null assertion
     }
 
     /// <summary> Processes the requests associated with the <see cref="WxeHandler"/>. </summary>
@@ -131,10 +131,9 @@ namespace Remotion.Web.ExecutionEngine
       ArgumentUtility.CheckNotNull ("context", context);
       CheckTimeoutConfiguration (context);
 
-      string functionToken = context.Request.Params[Parameters.WxeFunctionToken];
-      bool hasFunctionToken = ! string.IsNullOrEmpty (functionToken);
+      string? functionToken = context.Request.Params[Parameters.WxeFunctionToken];
 
-      if (! hasFunctionToken)
+      if (string.IsNullOrEmpty (functionToken))
       {
         _currentFunctionState = CreateNewFunctionState (context, GetType (context));
         ProcessFunctionState (context, _currentFunctionState, true);
@@ -181,12 +180,12 @@ namespace Remotion.Web.ExecutionEngine
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
-      string typeName = context.Request.Params[Parameters.WxeFunctionType];
-      bool hasTypeName = ! string.IsNullOrEmpty (typeName);
-      if (hasTypeName)
-        return GetTypeByTypeName (typeName);
-      else
+      string? typeName = context.Request.Params[Parameters.WxeFunctionType];
+
+      if (string.IsNullOrEmpty (typeName))
         return GetTypeByPath (context.Request.Url.AbsolutePath);
+      else
+        return GetTypeByTypeName (typeName);
     }
 
     /// <summary> Gets the <see cref="Type"/> for the specified <paramref name="absolutePath"/>. </summary>
@@ -197,7 +196,7 @@ namespace Remotion.Web.ExecutionEngine
 
       string relativePath = VirtualPathUtility.ToAppRelative (absolutePath);
 
-      Type type = UrlMapping.UrlMappingConfiguration.Current.Mappings.FindType (relativePath);
+      Type? type = UrlMapping.UrlMappingConfiguration.Current.Mappings.FindType (relativePath);
       if (type == null)
         throw new WxeException (string.Format ("Could not map the path '{0}' to a WXE function.", absolutePath));
 
@@ -235,20 +234,20 @@ namespace Remotion.Web.ExecutionEngine
     protected WxeFunctionState CreateNewFunctionState (HttpContext context, Type type)
     {
       ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("type", type, typeof (WxeFunction));
 
       WxeFunctionStateManager functionStates = WxeFunctionStateManager.Current;
       functionStates.CleanUpExpired();
 
-      WxeFunction function = (WxeFunction) Activator.CreateInstance (type);
+      WxeFunction function = (WxeFunction) Activator.CreateInstance (type)!;
 
       WxeFunctionState functionState = new WxeFunctionState (function, true);
       functionStates.Add (functionState);
 
       function.VariablesContainer.InitializeParameters (context.Request.QueryString);
 
-      string returnUrlArg = context.Request.QueryString[Parameters.ReturnUrl];
-      string returnToSelfArg = context.Request.QueryString[Parameters.WxeReturnToSelf];
+      string? returnUrlArg = context.Request.QueryString[Parameters.ReturnUrl];
+      string? returnToSelfArg = context.Request.QueryString[Parameters.WxeReturnToSelf];
       if (! string.IsNullOrEmpty (returnUrlArg))
       {
         function.ReturnUrl = returnUrlArg;
@@ -264,12 +263,12 @@ namespace Remotion.Web.ExecutionEngine
 
     /// <summary> Resumes an existing <see cref="WxeFunction"/>. </summary>
     /// <include file='..\doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/ResumeExistingFunctionState/*' />
-    protected WxeFunctionState ResumeExistingFunctionState (HttpContext context, string functionToken)
+    protected WxeFunctionState? ResumeExistingFunctionState (HttpContext context, string functionToken)
     {
       ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNullOrEmpty ("functionToken", functionToken);
 
-      string action = context.Request.Params[Parameters.WxeAction];
+      string? action = context.Request.Params[Parameters.WxeAction];
       bool isRefresh = StringUtility.AreEqual (action, Actions.Refresh, true);
       bool isAbort = StringUtility.AreEqual (action, Actions.Abort, true)
                      || StringUtility.AreEqual (action, Actions.Cancel, true);
@@ -289,7 +288,7 @@ namespace Remotion.Web.ExecutionEngine
         if (isPostRequest)
         {
           s_log.Error (string.Format ("Error resuming WxeFunctionState {0}: The ASP.NET session has timed out.", functionToken));
-          throw new WxeTimeoutException ("Session Timeout.", functionToken); // TODO: display error message
+          throw new WxeTimeoutException ("Session Timeout.", functionToken); // TODO RM-8118: display error message
         }
         try
         {
@@ -298,7 +297,7 @@ namespace Remotion.Web.ExecutionEngine
         catch (WxeException e)
         {
           s_log.Error (string.Format ("Error resuming WxeFunctionState {0}: The ASP.NET session has timed out.", functionToken));
-          throw new WxeTimeoutException ("Session timeout.", functionToken, e); // TODO: display error message
+          throw new WxeTimeoutException ("Session timeout.", functionToken, e); // TODO RM-8118: display error message
         }
       }
 
@@ -315,7 +314,7 @@ namespace Remotion.Web.ExecutionEngine
         if (isPostRequest)
         {
           s_log.Error (string.Format ("Error resuming WxeFunctionState {0}: The function state has timed out or was aborted.", functionToken));
-          throw new WxeTimeoutException ("Function Timeout.", functionToken); // TODO: display error message
+          throw new WxeTimeoutException ("Function Timeout.", functionToken); // TODO RM-8118: display error message
         }
         try
         {
@@ -324,7 +323,7 @@ namespace Remotion.Web.ExecutionEngine
         catch (WxeException e)
         {
           s_log.Error (string.Format ("Error resuming WxeFunctionState {0}: The function state has timed out or was aborted.", functionToken));
-          throw new WxeTimeoutException ("Function Timeout.", functionToken, e); // TODO: display error message
+          throw new WxeTimeoutException ("Function Timeout.", functionToken, e); // TODO RM-8118: display error message
         }
       }
 
@@ -369,8 +368,8 @@ namespace Remotion.Web.ExecutionEngine
 
       //  This point is only reached after the WxeFunction has completed execution.
 
-      string returnUrl = functionState.Function.ReturnUrl;
-      string executionCompletedScript = functionState.Function.ExecutionCompletedScript;
+      string? returnUrl = functionState.Function.ReturnUrl;
+      string? executionCompletedScript = functionState.Function.ExecutionCompletedScript;
 
       CleanUpFunctionState (functionState);
 

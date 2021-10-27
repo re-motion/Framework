@@ -38,8 +38,8 @@ namespace Remotion.Web.UI.Controls.ControlReplacing
       var formatter = new LosFormatter ();
       var state = (Pair) formatter.Deserialize (serializedState);
 
-      _controlState = (IDictionary) state.First;
-      _viewState = state.Second;
+      _controlState = (IDictionary) state.First!; // TODO RM-8118: not null assertion
+      _viewState = state.Second!; // TODO RM-8118: not null assertion
     }
 
     public IDictionary ControlState

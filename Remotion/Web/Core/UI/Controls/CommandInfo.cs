@@ -44,7 +44,7 @@ namespace Remotion.Web.UI.Controls
     /// <param name="href">The url to be opened when the command is clicked. Must not be <see langword="null" /> or empty.</param>
     /// <param name="target">The target where the url is opened.  Must not be empty.</param>
     /// <param name="onClick">An optional javascript hooked up to the click event. The script is only allowed to do housekeeping. Must not be empty.</param>
-    public static CommandInfo CreateForLink (string title, string accessKey, string href, string target, string onClick)
+    public static CommandInfo CreateForLink (string? title, string? accessKey, string href, string? target, string? onClick)
     {
       ArgumentUtility.CheckNotEmpty ("title", title);
       ArgumentUtility.CheckNotNullOrEmpty ("href", href);
@@ -60,7 +60,7 @@ namespace Remotion.Web.UI.Controls
     /// <param name="title">The <see cref="string"/> displayed as the commands title. Must not be empty.</param>
     /// <param name="accessKey">The <see cref="char"/> to use for keyboard-shortcut navigation.</param>
     /// <param name="onClick">The javascript hooked up to the click event. Must not be <see langword="null" /> or empty.</param>
-    public static CommandInfo CreateForPostBack (string title, string accessKey, string onClick)
+    public static CommandInfo CreateForPostBack (string? title, string? accessKey, string onClick)
     {
       ArgumentUtility.CheckNotEmpty ("title", title);
       ArgumentUtility.CheckNotNullOrEmpty ("onClick", onClick);
@@ -68,14 +68,14 @@ namespace Remotion.Web.UI.Controls
       return new CommandInfo (title, accessKey, "#", null, onClick, null);
     }
 
-    private readonly string _title;
-    private readonly string _accessKey;
-    private readonly string _href;
-    private readonly string _target;
-    private readonly string _onClick;
+    private readonly string? _title;
+    private readonly string? _accessKey;
+    private readonly string? _href;
+    private readonly string? _target;
+    private readonly string? _onClick;
     private readonly int? _tabIndex;
 
-    private CommandInfo (string title, string accessKey, string href, string target, string onClick, int? tabIndex)
+    private CommandInfo (string? title, string? accessKey, string? href, string? target, string? onClick, int? tabIndex)
     {
       _title = title;
       _accessKey = accessKey;
@@ -85,27 +85,27 @@ namespace Remotion.Web.UI.Controls
       _tabIndex = tabIndex;
     }
 
-    public string Href
+    public string? Href
     {
       get { return _href; }
     }
 
-    public string Target
+    public string? Target
     {
       get { return _target; }
     }
 
-    public string OnClick
+    public string? OnClick
     {
       get { return _onClick; }
     }
 
-    public string Title
+    public string? Title
     {
       get { return _title; }
     }
 
-    public string AccessKey
+    public string? AccessKey
     {
       get { return _accessKey; }
     }
@@ -162,7 +162,7 @@ namespace Remotion.Web.UI.Controls
 
     private bool IsTriggeringPostBack()
     {
-      return !IsTriggeringNavigation() && _onClick.Contains ("__doPostBack");
+      return !IsTriggeringNavigation() && _onClick!.Contains ("__doPostBack"); // TODO RM-8104: Guard _onClick
     }
   }
 }

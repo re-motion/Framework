@@ -111,7 +111,7 @@ namespace Remotion.Web.ExecutionEngine
       // WxeFunctionStateManager must be synchronized accross access from multiple requests in case the WxeFunctionStateManager is accessed from a ReadOnlySession.
       // Note that this will not guard against access from ReadOnlySessions that use serialization, but this is not an issue as a ReadOnlySession 
       // does include a write-back.
-      _lockObject = _session.SyncRoot;
+      _lockObject = _session.SyncRoot!;
     }
 
     /// <summary> Cleans up expired <see cref="WxeFunctionState"/> objects in the collection. </summary>
@@ -161,7 +161,7 @@ namespace Remotion.Web.ExecutionEngine
     {
       ArgumentUtility.CheckNotNullOrEmpty ("functionToken", functionToken);
       
-      Stopwatch stopwatch = null;
+      Stopwatch? stopwatch = null;
       bool hasOutOfProcessSession = _session.Mode != SessionStateMode.Off && _session.Mode != SessionStateMode.InProc;
       if (hasOutOfProcessSession)
       {
@@ -177,7 +177,7 @@ namespace Remotion.Web.ExecutionEngine
 
       if (hasOutOfProcessSession)
       {
-        stopwatch.Stop();
+        stopwatch!.Stop();
         s_log.DebugFormat ("Deserialized WxeFunctionState {0} in {1} ms.", functionToken, stopwatch.ElapsedMilliseconds);
       }
 
@@ -221,8 +221,7 @@ namespace Remotion.Web.ExecutionEngine
 
       lock (_lockObject)
       {
-        WxeFunctionStateMetaData functionStateMetaData;
-        if (_functionStates.TryGetValue (functionToken, out functionStateMetaData))
+        if (_functionStates.TryGetValue (functionToken, out var functionStateMetaData))
           return functionStateMetaData.LastAccessUtc.AddMinutes (functionStateMetaData.LifetimeInMinutes) < DateTime.UtcNow;
 
         return true;

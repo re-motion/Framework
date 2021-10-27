@@ -52,7 +52,7 @@ namespace Remotion.Utilities
     /// <returns> A standard type name as expected by <see cref="Type.GetType(string)"/>. </returns>
     [CanBeNull]
     [ContractAnnotation ("typeName:notnull => notnull;typeName:null => null")]
-    [return: NotNullIfNotNull ("typename")]
+    [return: NotNullIfNotNull ("typeName")]
     public static string? ParseAbbreviatedTypeName ([CanBeNull]string? typeName)
     {
       if (typeName == null)

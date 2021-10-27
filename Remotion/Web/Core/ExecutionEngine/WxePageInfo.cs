@@ -70,13 +70,13 @@ namespace Remotion.Web.ExecutionEngine
     private static readonly string s_styleFileKeyForIE = typeof (WxePageInfo).GetFullNameChecked() + "_StyleIE";
 
     private readonly IWxePage _page;
-    private WxeForm _wxeForm;
-    private WxeExecutor _wxeExecutor;
+    private WxeForm? _wxeForm;
+    private WxeExecutor? _wxeExecutor;
     private bool _postbackCollectionInitialized = false;
     private bool _isPostDataHandled = false;
-    private NameValueCollection _postbackCollection = null;
+    private NameValueCollection? _postbackCollection = null;
     /// <summary> The <see cref="WxeFunctionState"/> designated by <b>WxeForm.ReturningToken</b>. </summary>
-    private WxeFunctionState _returningFunctionState = null;
+    private WxeFunctionState? _returningFunctionState = null;
 
     private bool _executeNextStep = false;
 
@@ -98,7 +98,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <summary>
     /// Finds the control if it is the page's form. Otherwise, call the find method of the page's base class.
     /// </summary>
-    public Control FindControl (string id, out bool callBaseMethod)
+    public Control? FindControl (string id, out bool callBaseMethod)
     {
       if (_wxeForm != null && !string.IsNullOrEmpty (_wxeForm.ID) && id == _wxeForm.UniqueID)
       {
@@ -123,7 +123,7 @@ namespace Remotion.Web.ExecutionEngine
       _page.Init += HandlePageInit;
     }
 
-    public NameValueCollection EnsurePostBackModeDetermined (HttpContext context)
+    public NameValueCollection? EnsurePostBackModeDetermined (HttpContext context)
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
@@ -139,9 +139,9 @@ namespace Remotion.Web.ExecutionEngine
       return _postbackCollection;
     }
 
-    private NameValueCollection DeterminePostBackMode (HttpContext httpContext)
+    private NameValueCollection? DeterminePostBackMode (HttpContext httpContext)
     {
-      WxeContext wxeContext = WxeContext.Current;
+      WxeContext? wxeContext = WxeContext.Current;
       if (wxeContext == null)
         return null;
       if (!CurrentPageStep.IsPostBack)
@@ -163,7 +163,7 @@ namespace Remotion.Web.ExecutionEngine
         return collection;
     }
 
-    private void HandlePagePreInit (object sender, EventArgs eventArgs)
+    private void HandlePagePreInit (object? sender, EventArgs eventArgs)
     {
       var existingForm = FindHtmlForm();
       // Can only be NULL without an exception during design mode
@@ -178,9 +178,9 @@ namespace Remotion.Web.ExecutionEngine
       _wxeForm.LoadPostData += Form_LoadPostData;
     }
 
-    private HtmlForm FindHtmlForm ()
+    private HtmlForm? FindHtmlForm ()
     {
-      Control page = _page.WrappedInstance;
+      Control? page = _page.WrappedInstance;
       MemberInfo[] fields;
       do
       {
@@ -212,16 +212,16 @@ namespace Remotion.Web.ExecutionEngine
       }
 
       if (fields.Length == 1) // Can only be 0 without an exception during design mode
-        return (HtmlForm) ((FieldInfo) fields[0]).GetValue (page);
+        return (HtmlForm?) ((FieldInfo) fields[0]).GetValue (page);
       else
         return null;
     }
 
-    private bool FindHtmlFormControlFilter (MemberInfo member, object filterCriteria)
+    private bool FindHtmlFormControlFilter (MemberInfo member, object? filterCriteria)
     {
       return (member is FieldInfo && ((FieldInfo) member).FieldType == typeof (HtmlForm));
     }
-    private void HandlePageInit (object sender, EventArgs e)
+    private void HandlePageInit (object? sender, EventArgs e)
     {
       var resourceUrlFactory = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory> ();
       var scriptUrl = resourceUrlFactory.CreateResourceUrl (typeof (WxePageInfo), ResourceType.Html, c_scriptFileUrl);
@@ -232,11 +232,11 @@ namespace Remotion.Web.ExecutionEngine
       HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, styleUrl, HtmlHeadAppender.Priority.Library);
     }
 
-    private void Form_LoadPostData (object sender, EventArgs e)
+    private void Form_LoadPostData (object? sender, EventArgs e)
     {
       _page.Visible = true;
 
-      NameValueCollection postBackCollection = _page.GetPostBackCollection ();
+      NameValueCollection? postBackCollection = _page.GetPostBackCollection ();
       if (postBackCollection == null)
         throw new InvalidOperationException ("The IWxePage has no PostBackCollection even though this is a post back.");
       EnsurePostDataHandled (postBackCollection);
@@ -261,17 +261,17 @@ namespace Remotion.Web.ExecutionEngine
     {
       ArgumentUtility.CheckNotNull ("postBackCollection", postBackCollection);
 
-      WxeContext wxeContext = WxeContext.Current;
+      WxeContext? wxeContext = WxeContext.Current;
 
-      int postBackID = int.Parse (postBackCollection[WxePageInfo.PostBackSequenceNumberID]);
-      if (postBackID != wxeContext.PostBackID)
+      int postBackID = int.Parse (postBackCollection[WxePageInfo.PostBackSequenceNumberID]!); // TODO RM-8118: debug not null assertion
+      if (postBackID != wxeContext!.PostBackID) // TODO RM-8118: not null assertion
         CurrentPageStep.SetIsOutOfSequencePostBack (true);
 
-      string returningToken = postBackCollection[WxePageInfo.ReturningTokenID];
+      string? returningToken = postBackCollection[WxePageInfo.ReturningTokenID];
       if (!string.IsNullOrEmpty (returningToken))
       {
         WxeFunctionStateManager functionStates = WxeFunctionStateManager.Current;
-        WxeFunctionState functionState = functionStates.GetItem (returningToken);
+        WxeFunctionState? functionState = functionStates.GetItem (returningToken);
         if (functionState != null)
         {
           CurrentPageStep.SetReturnState (functionState.Function, true, null);
@@ -282,9 +282,11 @@ namespace Remotion.Web.ExecutionEngine
 
     public void OnPreRenderComplete ()
     {
-      WxeContext wxeContext = WxeContext.Current;
+      Assertion.DebugIsNotNull (_wxeForm, "_wxeForm must not be null.");
 
-      _page.ClientScript.RegisterHiddenField (_page, WxeHandler.Parameters.WxeFunctionToken, wxeContext.FunctionToken);
+      WxeContext? wxeContext = WxeContext.Current;
+
+      _page.ClientScript.RegisterHiddenField (_page, WxeHandler.Parameters.WxeFunctionToken, wxeContext!.FunctionToken); // TODO RM-8118: not null assertion
       _page.ClientScript.RegisterHiddenField (_page, WxePageInfo.ReturningTokenID, null);
       int currentPostBackID = wxeContext.PostBackID;
       int nextPostBackID = currentPostBackID + 1;
@@ -315,7 +317,7 @@ namespace Remotion.Web.ExecutionEngine
 
     private void SetCacheSettings ()
     {
-      WxeContext.Current.HttpContext.Response.Cache.SetCacheability (HttpCacheability.Private);
+      WxeContext.Current!.HttpContext.Response.Cache.SetCacheability (HttpCacheability.Private); // TODO RM-8118: not null assertion
     }
 
     private void RegisterWxeInitializationScript ()
@@ -323,7 +325,7 @@ namespace Remotion.Web.ExecutionEngine
       IResourceManager resourceManager = GetResourceManager ();
 
       string temp;
-      WxeContext wxeContext = WxeContext.Current;
+      WxeContext wxeContext = WxeContext.Current!; // TODO RM-8118: not null assertion
 
       int refreshInterval = 0;
       string refreshPath = "null";
@@ -423,7 +425,7 @@ namespace Remotion.Web.ExecutionEngine
     {
       NameValueCollection urlParameters = CurrentPageFunction.VariablesContainer.SerializeParametersForQueryString ();
 
-      ISmartNavigablePage smartNavigablePage = _page as ISmartNavigablePage;
+      ISmartNavigablePage? smartNavigablePage = _page as ISmartNavigablePage;
       if (smartNavigablePage != null)
         NameValueCollectionUtility.Append (urlParameters, smartNavigablePage.GetNavigationUrlParameters ());
 
@@ -451,7 +453,7 @@ namespace Remotion.Web.ExecutionEngine
     /// </summary>
     public string GetPermanentUrl (Type functionType, NameValueCollection urlParameters)
     {
-      return WxeContext.Current.GetPermanentUrl (functionType, urlParameters);
+      return WxeContext.Current!.GetPermanentUrl (functionType, urlParameters); // TODO RM-8118: not null assertion
     }
 
     /// <summary> Implements <see cref="IWxePage.IsOutOfSequencePostBack">IWxePage.IsOutOfSequencePostBack</see>. </summary>
@@ -467,7 +469,7 @@ namespace Remotion.Web.ExecutionEngine
     }
 
     /// <summary> Implements <see cref="IWxePage.ReturningFunction">IWxePage.ReturningFunction</see>. </summary>
-    public WxeFunction ReturningFunction
+    public WxeFunction? ReturningFunction
     {
       get { return CurrentPageStep.ReturningFunction; }
     }
@@ -503,7 +505,7 @@ namespace Remotion.Web.ExecutionEngine
     /// </remarks>
     public void Dispose ()
     {
-      HttpContext httpContext = null;
+      HttpContext? httpContext = null;
       if (_wxeExecutor != null)
       {
         httpContext = _wxeExecutor.HttpContext;
@@ -536,7 +538,7 @@ namespace Remotion.Web.ExecutionEngine
       return new WxeHttpExceptionPreservingException (exception);
     }
 
-    public WxeForm WxeForm
+    public WxeForm? WxeForm
     {
       get { return _wxeForm; }
     }
@@ -553,8 +555,8 @@ namespace Remotion.Web.ExecutionEngine
     {
       get
       {
-        NameObjectCollection windowState =
-            (NameObjectCollection) CurrentPageFunction.RootFunction.Variables["WxeWindowState"];
+        NameObjectCollection? windowState =
+            (NameObjectCollection?) CurrentPageFunction.RootFunction!.Variables["WxeWindowState"];
         if (windowState == null)
         {
           windowState = new NameObjectCollection ();
@@ -567,7 +569,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <summary>
     ///   Implements <see cref="Remotion.Web.UI.IWindowStateManager.GetData">Remotion.Web.UI.IWindowStateManager.GetData</see>.
     /// </summary>
-    public object GetData (string key)
+    public object? GetData (string key)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("key", key);
       return WindowState[key];
@@ -576,7 +578,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <summary>
     ///   Implements <see cref="Remotion.Web.UI.IWindowStateManager.SetData">Remotion.Web.UI.IWindowStateManager.SetData</see>.
     /// </summary>
-    public void SetData (string key, object value)
+    public void SetData (string key, object? value)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("key", key);
       WindowState[key] = value;
@@ -584,7 +586,7 @@ namespace Remotion.Web.ExecutionEngine
 
     public WxeExecutor Executor
     {
-      get { return _wxeExecutor; }
+      get { return _wxeExecutor!; } // TODO RM-8118: debug not null
     }
   }
 }

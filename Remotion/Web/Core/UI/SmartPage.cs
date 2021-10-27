@@ -46,7 +46,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
     get { return this; }
   }
 
-  HttpContextBase IPage.Context
+  HttpContextBase? IPage.Context
   {
     get { return _httpContext; }
   }
@@ -56,27 +56,27 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
     get { return _clientScriptManager; }
   }
 
-  HttpApplicationStateBase IPage.Application
+  HttpApplicationStateBase? IPage.Application
   {
     get { return _httpContext != null ?_httpContext.Application : null; }
   }
 
-  HttpRequestBase IPage.Request
+  HttpRequestBase? IPage.Request
   {
     get { return _httpContext != null ? _httpContext.Request : null; }
   }
 
-  HttpResponseBase IPage.Response
+  HttpResponseBase? IPage.Response
   {
     get { return _httpContext != null ? _httpContext.Response : null; }
   }
 
-  HttpServerUtilityBase IPage.Server
+  HttpServerUtilityBase? IPage.Server
   {
     get { return _httpContext != null ? _httpContext.Server : null; }
   }
 
-  HttpSessionStateBase IPage.Session
+  HttpSessionStateBase? IPage.Session
   {
     get { return _httpContext != null ? _httpContext.Session : null; }
   }
@@ -103,7 +103,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
     _smartPageInfo.RegisterClientSidePageEventHandler (pageEvent, key, function);
   }
 
-  string ISmartPage.CheckFormStateFunction
+  string? ISmartPage.CheckFormStateFunction
   {
     get { return _smartPageInfo.CheckFormStateFunction; }
     set { _smartPageInfo.CheckFormStateFunction = value; }
@@ -116,7 +116,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   [Description("The message displayed when the user attempts to leave the page.")]
   [Category ("Appearance")]
   [DefaultValue ("")]
-  public virtual string AbortMessage 
+  public virtual string? AbortMessage 
   {
     get { return _smartPageInfo.AbortMessage; }
     set { _smartPageInfo.AbortMessage = value; }
@@ -229,7 +229,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
 
   #endregion
 
-  private HttpContextBase _httpContext;
+  private HttpContextBase? _httpContext;
   private readonly SmartPageInfo _smartPageInfo;
   private readonly ValidatableControlInitializer _validatableControlInitializer;
   private readonly PostLoadInvoker _postLoadInvoker;
@@ -249,21 +249,21 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
     _clientScriptManager = new SmartPageClientScriptManager (base.ClientScript);
   }
 
-  protected override NameValueCollection DeterminePostBackMode()
+  protected override NameValueCollection? DeterminePostBackMode()
   {
-    NameValueCollection result = base.DeterminePostBackMode();
+    NameValueCollection? result = base.DeterminePostBackMode();
     return result;
   }
 
   /// <summary> Gets the post back data for the page. </summary>
-  NameValueCollection ISmartPage.GetPostBackCollection ()
+  NameValueCollection? ISmartPage.GetPostBackCollection ()
   {
     return GetPostBackCollection();
   }
 
   /// <summary> Gets the post-back data for the page. </summary>
   /// <remarks> Application developers should only rely on this collection for accessing the post-back data. </remarks>
-  protected virtual NameValueCollection GetPostBackCollection ()
+  protected virtual NameValueCollection? GetPostBackCollection ()
   {
     if (string.Compare (Request.HttpMethod, "POST", true) == 0)
       return Request.Form;
@@ -527,16 +527,16 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
     RegisterRequiresControlState (this);
   }
 
-  protected override void LoadControlState(object savedState)
+  protected override void LoadControlState(object? savedState)
   {
-    object[] values = (object[]) savedState;
+    object?[] values = (object?[]) savedState!;
     base.LoadControlState (values[0]);
-    _isDirty = (bool)  values[1];
+    _isDirty = (bool) values[1]!;
   }
 
-  protected override object SaveControlState()
+  protected override object? SaveControlState()
   {
-    object[] values = new object[2];
+    object?[] values = new object?[2];
     values[0] = base.SaveControlState();
     values[1] = _isDirty;
     return values;

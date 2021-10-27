@@ -37,9 +37,9 @@ namespace Remotion.Web.ExecutionEngine
       get { return _name; }
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
-      WxeVariableReference other = obj as WxeVariableReference;
+      WxeVariableReference? other = obj as WxeVariableReference;
       if (other == null)
         return false;
     

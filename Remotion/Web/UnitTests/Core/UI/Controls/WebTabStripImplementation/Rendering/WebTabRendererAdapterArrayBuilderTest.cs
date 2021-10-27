@@ -34,7 +34,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
     {
       var webTabMock = new Mock<IWebTab>();
       var fakeWebTabRenderer = CreateWebTabRenderer();
-      var builder = new WebTabRendererAdapterArrayBuilder (new[] { webTabMock.Object });
+      var styleStub = new Mock<WebTabStyle>().Object;
+      var builder = new WebTabRendererAdapterArrayBuilder (new[] { webTabMock.Object }, styleStub, styleStub);
       
       webTabMock.Setup (mock => mock.GetRenderer()).Returns (fakeWebTabRenderer).Verifiable();
 
@@ -55,7 +56,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
       var webTabMock2 = new Mock<IWebTab>();
       var webTabMock3 = new Mock<IWebTab>();
       var fakeWebTabRenderer = CreateWebTabRenderer();
-      var builder = new WebTabRendererAdapterArrayBuilder (new[] { webTabMock1.Object, webTabMock2.Object, webTabMock3.Object });
+      var styleStub = new Mock<WebTabStyle>().Object;
+      var builder = new WebTabRendererAdapterArrayBuilder (new[] { webTabMock1.Object, webTabMock2.Object, webTabMock3.Object }, styleStub, styleStub);
 
       webTabMock1.Setup (mock => mock.GetRenderer ()).Returns (fakeWebTabRenderer).Verifiable();
       webTabMock2.Setup (mock => mock.GetRenderer ()).Returns (fakeWebTabRenderer).Verifiable();

@@ -127,8 +127,8 @@ namespace Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering
       {
         const string pickerActionButton = "this";
 
-        string pickerActionContainer = "document.getElementById ('" + renderingContext.Control.ContainerControlID.Replace ('$', '_') + "')";
-        string pickerActionTarget = "document.getElementById ('" + renderingContext.Control.TargetControlID.Replace ('$', '_') + "')";
+        string pickerActionContainer = "document.getElementById ('" + renderingContext.Control.ContainerControlID!.Replace ('$', '_') + "')"; // TODO RM-8118: not null assertion
+        string pickerActionTarget = "document.getElementById ('" + renderingContext.Control.TargetControlID!.Replace ('$', '_') + "')"; // TODO RM-8118: not null assertion
 
         string pickerUrl = "'" + GetDatePickerUrl().GetUrl() + "'";
 

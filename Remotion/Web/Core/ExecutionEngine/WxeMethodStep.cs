@@ -66,10 +66,10 @@ public class WxeMethodStep: WxeStep
   private bool _hasContext;
   /// <summary> The cached <see cref="WxeMethod"/> delegate used during execution of this <b>WxeMethodStep</b>. </summary>
   [NonSerialized]
-  private WxeMethod _method;
+  private WxeMethod? _method;
   /// <summary> The cached <see cref="WxeMethodWithContext"/> delegate used during execution of this <b>WxeMethodStep</b>. </summary>
   [NonSerialized]
-  private WxeMethodWithContext _methodWithContext;
+  private WxeMethodWithContext? _methodWithContext;
 
   /// <summary> Initalizes a new instance of the <b>WxeMethodStep</b> type. </summary>
   /// <include file='..\doc\include\ExecutionEngine\WxeMethodStep.xml' path='WxeMethodStep/Ctor/*' />
@@ -79,7 +79,7 @@ public class WxeMethodStep: WxeStep
     ArgumentUtility.CheckNotNull ("method", method);
 
     Type targetType = target.GetType();
-    Type declaringType = method.DeclaringType;
+    Type declaringType = method.DeclaringType!; // TODO RM-8118: not null assertion
     
     bool isAssignable = declaringType.IsAssignableFrom (targetType);
     if (! isAssignable || method.IsStatic)

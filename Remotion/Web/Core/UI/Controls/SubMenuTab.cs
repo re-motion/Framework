@@ -22,9 +22,9 @@ namespace Remotion.Web.UI.Controls
 {
   public class SubMenuTab : MenuTab
   {
-    private MainMenuTab _parent;
+    private MainMenuTab? _parent;
 
-    public SubMenuTab (string itemID, string text, IconInfo icon)
+    public SubMenuTab (string itemID, string text, IconInfo? icon)
         : base (itemID , text, icon)
     {
     }
@@ -43,7 +43,7 @@ namespace Remotion.Web.UI.Controls
 
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     [Browsable (false)]
-    public MainMenuTab Parent
+    public MainMenuTab? Parent
     {
       get { return _parent; }
     }

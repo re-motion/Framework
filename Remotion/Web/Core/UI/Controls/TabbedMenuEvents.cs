@@ -37,7 +37,7 @@ public class MenuTabClickEventArgs: WebTabClickEventArgs
   }
 
   /// <summary> The <see cref="Command"/> that caused the event. </summary>
-  public Command Command
+  public Command? Command
   {
     get { return Tab.Command; }
   }

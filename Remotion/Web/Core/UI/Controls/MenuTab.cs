@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Web.UI;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
@@ -33,7 +34,7 @@ namespace Remotion.Web.UI.Controls
     private SingleControlItemCollection _command;
     private MissingPermissionBehavior _missingPermissionBehavior;
 
-    protected MenuTab (string itemID, string text, IconInfo icon)
+    protected MenuTab (string itemID, string text, IconInfo? icon)
       : base (itemID, text, icon)
     {
       Initialize ();
@@ -44,6 +45,7 @@ namespace Remotion.Web.UI.Controls
       Initialize ();
     }
 
+    [MemberNotNull (nameof (_command))]
     private void Initialize ()
     {
       _command = new SingleControlItemCollection (new NavigationCommand (), new[] { typeof (NavigationCommand) });
@@ -54,14 +56,14 @@ namespace Remotion.Web.UI.Controls
       return (IWebTabRenderer) SafeServiceLocator.Current.GetInstance<IMenuTabRenderer> ();
     }
 
-    protected TabbedMenu TabbedMenu
+    protected TabbedMenu? TabbedMenu
     {
-      get { return (TabbedMenu) OwnerControl; }
+      get { return (TabbedMenu?) OwnerControl; }
     }
 
     public NameValueCollection GetUrlParameters ()
     {
-      return TabbedMenu.GetUrlParameters (this);
+      return TabbedMenu!.GetUrlParameters (this); // TODO RM-8118: not null assertion
     }
 
     /// <summary> Gets or sets the <see cref="NavigationCommand"/> rendered for this menu item. </summary>
@@ -70,9 +72,9 @@ namespace Remotion.Web.UI.Controls
     [Category ("Behavior")]
     [Description ("The command rendered for this menu item.")]
     [NotifyParentProperty (true)]
-    public virtual NavigationCommand Command
+    public virtual NavigationCommand? Command
     {
-      get { return (NavigationCommand) _command.ControlItem; }
+      get { return (NavigationCommand?) _command.ControlItem; }
       set { _command.ControlItem = value; }
     }
 
@@ -96,7 +98,7 @@ namespace Remotion.Web.UI.Controls
     {
       if (Command != null)
       {
-        Command = (NavigationCommand) Activator.CreateInstance (Command.GetType ());
+        Command = (NavigationCommand) Activator.CreateInstance (Command.GetType ())!;
         Command.Type = CommandType.None;
       }
     }

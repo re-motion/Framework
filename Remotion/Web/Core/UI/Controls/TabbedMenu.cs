@@ -53,11 +53,11 @@ namespace Remotion.Web.UI.Controls
     private readonly Style _statusStyle;
     private readonly WebTabStrip _mainMenuTabStrip;
     private readonly WebTabStrip _subMenuTabStrip;
-    private string _statusText;
+    private string? _statusText;
     private bool _isSubMenuTabStripRefreshed;
     private bool _isPastInitialization;
     private Color _subMenuBackgroundColor;
-    private ResourceManagerSet _cachedResourceManager;
+    private ResourceManagerSet? _cachedResourceManager;
 
     // construction and destruction
     public TabbedMenu ()
@@ -110,7 +110,7 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("writer", writer);
 
-      return new TabbedMenuRenderingContext (Page.Context, writer, this);
+      return new TabbedMenuRenderingContext (Page!.Context!, writer, this); //TODO RM-8118: not null assertion
     }
 
     /// <summary> Overrides the <see cref="Control.CreateChildControls"/> method. </summary>
@@ -150,7 +150,7 @@ namespace Remotion.Web.UI.Controls
     private void PopulateSubMenuTabStrip ()
     {
       _isSubMenuTabStripRefreshed = true;
-      MainMenuTab selectedMainMenuItem = SelectedMainMenuTab;
+      MainMenuTab? selectedMainMenuItem = SelectedMainMenuTab;
       if (selectedMainMenuItem != null)
         _subMenuTabStrip.Tabs.AddRange (selectedMainMenuItem.SubMenuTabs);
       if (_subMenuTabStrip.SelectedTab == null && _subMenuTabStrip.Tabs.Count > 0)
@@ -280,7 +280,7 @@ namespace Remotion.Web.UI.Controls
     /// </param>
     /// <param name="subMenuTab"> The <see cref="SubMenuTab"/>. </param>
     /// <returns> A string array. </returns>
-    private string[] ConvertTabIDsToArray (MainMenuTab mainMenuTab, SubMenuTab subMenuTab)
+    private string[] ConvertTabIDsToArray (MainMenuTab? mainMenuTab, SubMenuTab? subMenuTab)
     {
       string[] tabIDs;
       if (mainMenuTab == null)
@@ -311,7 +311,7 @@ namespace Remotion.Web.UI.Controls
       if (selectedTabIDs.Length > 0)
       {
         string selectedMainMenuItemID = selectedTabIDs[0];
-        WebTab selectedMainMenuItem = _mainMenuTabStrip.Tabs.Find (selectedMainMenuItemID);
+        WebTab selectedMainMenuItem = _mainMenuTabStrip.Tabs.Find (selectedMainMenuItemID)!;
         if (selectedMainMenuItem.IsVisible)
           selectedMainMenuItem.IsSelected = true;
       }
@@ -319,7 +319,7 @@ namespace Remotion.Web.UI.Controls
       if (selectedTabIDs.Length > 1)
       {
         string selectedSubMenuItemID = selectedTabIDs[1];
-        WebTab selectedSubMenuItem = _subMenuTabStrip.Tabs.Find (selectedSubMenuItemID);
+        WebTab selectedSubMenuItem = _subMenuTabStrip.Tabs.Find (selectedSubMenuItemID)!;
         if (selectedSubMenuItem.IsVisible)
           selectedSubMenuItem.IsSelected = true;
       }
@@ -332,15 +332,15 @@ namespace Remotion.Web.UI.Controls
     /// </returns>
     private string[] GetSelectionFromQueryString ()
     {
-      string[] selection = null;
+      string[]? selection = null;
 
-      string value;
+      string? value;
       if (Page is IWxePage)
-        value = WxeContext.Current.QueryString[SelectionID];
+        value = WxeContext.Current!.QueryString[SelectionID]; // TODO RM-8118: not null assertion
       else
         value = Context.Request.QueryString[SelectionID];
       if (value != null)
-        selection = (string[])TypeConversionProvider.Convert (typeof (string), typeof (string[]), value);
+        selection = (string[]?)TypeConversionProvider.Convert (typeof (string), typeof (string[]), value);
 
       if (selection == null)
         selection = new string[0];
@@ -354,11 +354,11 @@ namespace Remotion.Web.UI.Controls
     /// </returns>
     private string[] GetSelectionFromWindowState ()
     {
-      string[] selection = null;
+      string[]? selection = null;
 
-      IWindowStateManager windowStateManager = Page as IWindowStateManager;
+      IWindowStateManager? windowStateManager = Page as IWindowStateManager;
       if (windowStateManager != null)
-        selection = (string[])windowStateManager.GetData (SelectionID);
+        selection = (string[]?)windowStateManager.GetData (SelectionID);
 
       if (selection == null)
         selection = new string[0];
@@ -368,7 +368,7 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Saves the selected tabs into the window state. </summary>
     private void SaveSelection ()
     {
-      IWindowStateManager windowStateManager = Page as IWindowStateManager;
+      IWindowStateManager? windowStateManager = Page as IWindowStateManager;
       if (windowStateManager == null)
         return;
 
@@ -386,9 +386,9 @@ namespace Remotion.Web.UI.Controls
     NameValueCollection INavigationControl.GetNavigationUrlParameters ()
     {
       if (_subMenuTabStrip.SelectedTab != null)
-        return GetUrlParameters (SelectedSubMenuTab);
+        return GetUrlParameters (SelectedSubMenuTab!);
       else if (_mainMenuTabStrip.SelectedTab != null)
-        return GetUrlParameters (SelectedMainMenuTab);
+        return GetUrlParameters (SelectedMainMenuTab!);
       return new NameValueCollection ();
     }
 
@@ -405,8 +405,8 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("menuTab", menuTab);
 
-      MainMenuTab mainMenuTab = menuTab as MainMenuTab;
-      SubMenuTab subMenuTab = menuTab as SubMenuTab;
+      MainMenuTab? mainMenuTab = menuTab as MainMenuTab;
+      SubMenuTab? subMenuTab = menuTab as SubMenuTab;
 
       string[] tabIDs;
       if (mainMenuTab != null)
@@ -416,7 +416,7 @@ namespace Remotion.Web.UI.Controls
       else
         throw new NotSupportedException (string.Format ("menuTab is of unsupported type '{0}'.", menuTab.GetType().GetFullNameSafe()));
 
-      string value = (string) TypeConversionProvider.Convert (typeof (string[]), typeof (string), tabIDs);
+      string? value = (string?) TypeConversionProvider.Convert (typeof (string[]), typeof (string), tabIDs);
 
       NameValueCollection urlParameters = new NameValueCollection ();
       urlParameters.Add (SelectionID, value);
@@ -434,9 +434,9 @@ namespace Remotion.Web.UI.Controls
       ArgumentUtility.CheckNotNullOrEmpty ("url", url);
 
       if (_subMenuTabStrip.SelectedTab != null)
-        return FormatUrl (url, SelectedSubMenuTab);
+        return FormatUrl (url, SelectedSubMenuTab!);
       else if (_mainMenuTabStrip.SelectedTab != null)
-        return FormatUrl (url, SelectedMainMenuTab);
+        return FormatUrl (url, SelectedMainMenuTab!);
       else
         return url;
     }
@@ -497,15 +497,15 @@ namespace Remotion.Web.UI.Controls
 
     /// <summary> Fires the <see cref="EventCommandClick"/> event. </summary>
     /// <param name="tab"> The <see cref="MenuTab"/> whose command was clicked. </param>
-    protected virtual void OnEventCommandClick (MenuTab tab)
+    protected virtual void OnEventCommandClick (MenuTab? tab)
     {
       if (tab != null && tab.Command != null)
         tab.Command.OnClick ();
 
-      MenuTabClickEventHandler handler = (MenuTabClickEventHandler) Events[s_eventCommandClickEvent];
+      MenuTabClickEventHandler? handler = (MenuTabClickEventHandler?) Events[s_eventCommandClickEvent];
       if (handler != null)
       {
-        MenuTabClickEventArgs e = new MenuTabClickEventArgs (tab);
+        MenuTabClickEventArgs e = new MenuTabClickEventArgs (tab!); // TODO RM-8118: not null assertion
         handler (this, e);
       }
     }
@@ -514,7 +514,7 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Find the <see cref="IResourceManager"/> for this control. </summary>
     protected virtual IResourceManager GetResourceManager ()
     {
-      return GetResourceManager (null);
+      return GetResourceManager (null!); // TODO RM-8118: What's happening here?
     }
 
     /// <summary> Find the <see cref="IResourceManager"/> for this control. </summary>
@@ -545,7 +545,7 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
 
-      string key = ResourceManagerUtility.GetGlobalResourceKey (StatusText);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey (StatusText);
       if (!string.IsNullOrEmpty (key))
         StatusText = resourceManager.GetString (key);
     }
@@ -564,7 +564,7 @@ namespace Remotion.Web.UI.Controls
     [PersistenceMode (PersistenceMode.InnerProperty)]
     [ListBindable (false)]
     [Description ("")]
-    [DefaultValue ((string) null)]
+    [DefaultValue ((string?) null)]
     public MainMenuTabCollection Tabs
     {
       get
@@ -581,7 +581,7 @@ namespace Remotion.Web.UI.Controls
     /// </remarks>
     [Description ("The text displayed in the status area. The value will not be HTML encoded.")]
     [DefaultValue ("")]
-    public string StatusText
+    public string? StatusText
     {
       get { return _statusText; }
       set { _statusText = value; }
@@ -599,22 +599,22 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Gets the selected <see cref="MainMenuTab"/>. </summary>
     [Browsable (false)]
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    public MainMenuTab SelectedMainMenuTab
+    public MainMenuTab? SelectedMainMenuTab
     {
       get
       {
-        return (MainMenuTab) _mainMenuTabStrip.SelectedTab;
+        return (MainMenuTab?) _mainMenuTabStrip.SelectedTab;
       }
     }
 
     /// <summary> Gets the selected <see cref="SubMenuTab"/>. </summary>
     [Browsable (false)]
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    public SubMenuTab SelectedSubMenuTab
+    public SubMenuTab? SelectedSubMenuTab
     {
       get
       {
-        return (SubMenuTab) _subMenuTabStrip.SelectedTab;
+        return (SubMenuTab?) _subMenuTabStrip.SelectedTab;
       }
     }
 
@@ -723,7 +723,7 @@ namespace Remotion.Web.UI.Controls
       get { return SubMenuTabStrip; }
     }
 
-    public new IPage Page
+    public new IPage? Page
     {
       get { return PageWrapper.CastOrCreate (base.Page); }
     }

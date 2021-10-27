@@ -33,7 +33,7 @@ namespace Remotion.Web.ExecutionEngine
     {
     }
 
-    public WxeException (string message, Exception innerException)
+    public WxeException (string message, Exception? innerException)
         : base (message, innerException)
     {
     }

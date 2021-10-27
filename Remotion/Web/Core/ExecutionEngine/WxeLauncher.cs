@@ -41,7 +41,7 @@ public class WxeLauncher: IHttpHandler
   /// <remarks> Override this method to change the query string. </remarks>
   protected virtual string GetQueryString (NameValueCollection queryString)
   {
-    return queryString.ToString();
+    return queryString.ToString()!;
   }
 
   /// <summary> Gets the name of the wxe handler. </summary>

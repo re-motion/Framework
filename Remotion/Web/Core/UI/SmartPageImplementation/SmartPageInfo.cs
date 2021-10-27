@@ -66,8 +66,8 @@ namespace Remotion.Web.UI.SmartPageImplementation
     private readonly ISmartPage _page;
 
     private SmartNavigationData _smartNavigationDataToBeDisacarded;
-    private string _smartFocusID;
-    private string _abortMessage;
+    private string? _smartFocusID;
+    private string? _abortMessage;
     private string _statusIsSubmittingMessage = string.Empty;
 
     private bool _isPreRenderComplete;
@@ -75,13 +75,13 @@ namespace Remotion.Web.UI.SmartPageImplementation
     private readonly AutoInitDictionary<SmartPageEvents, NameValueCollection> _clientSideEventHandlers =
         new AutoInitDictionary<SmartPageEvents, NameValueCollection>();
 
-    private string _checkFormStateFunction;
+    private string? _checkFormStateFunction;
     private readonly Hashtable _trackedControls = new Hashtable();
     private readonly StringCollection _trackedControlsByID = new StringCollection();
     private readonly Hashtable _navigationControls = new Hashtable();
     private readonly List<Tuple<Control, string>> _synchronousPostBackCommands = new List<Tuple<Control, string>>();
 
-    private ResourceManagerSet _cachedResourceManager;
+    private ResourceManagerSet? _cachedResourceManager;
 
     public SmartPageInfo (ISmartPage page)
     {
@@ -132,9 +132,9 @@ namespace Remotion.Web.UI.SmartPageImplementation
       control.Unload += UnregisterControlForDirtyStateTracking;
     }
 
-    private void UnregisterControlForDirtyStateTracking (object sender, EventArgs args)
+    private void UnregisterControlForDirtyStateTracking (object? sender, EventArgs args)
     {
-      var control = ArgumentUtility.CheckNotNullAndType<IEditableControl> ("sender", sender);
+      var control = ArgumentUtility.CheckNotNullAndType<IEditableControl> ("sender", sender!);
 
       if (_isPreRenderComplete)
       {
@@ -174,7 +174,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     }
 
 
-    public string CheckFormStateFunction
+    public string? CheckFormStateFunction
     {
       get { return _checkFormStateFunction; }
       set { _checkFormStateFunction = StringUtility.EmptyToNull (value); }
@@ -242,7 +242,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
       return _cachedResourceManager;
     }
 
-    private void Page_Init (object sender, EventArgs e)
+    private void Page_Init (object? sender, EventArgs e)
     {
       if (_page.Header != null)
       {
@@ -278,7 +278,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
       var scriptManager = ScriptManager.GetCurrent (_page.WrappedInstance);
       if (scriptManager != null)
       {
-        var handler = new SmartPageAsyncPostBackErrorHandler (_page.Context);
+        var handler = new SmartPageAsyncPostBackErrorHandler (_page.Context!); // TODO RM-8118: Add not null assertion
         scriptManager.AsyncPostBackError += (o, args) => handler.HandleError (args.Exception);
       }
     }
@@ -288,7 +288,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
       get { return SafeServiceLocator.Current.GetInstance<ResourceTheme>(); }
     }
 
-    private void Page_PreRenderComplete (object sender, EventArgs eventArgs)
+    private void Page_PreRenderComplete (object? sender, EventArgs eventArgs)
     {
       PreRenderSmartPage();
       PreRenderSmartNavigation();
@@ -320,7 +320,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
       string smartScrollingFieldID = "null";
       string smartFocusFieldID = "null";
 
-      ISmartNavigablePage smartNavigablePage = _page as ISmartNavigablePage;
+      ISmartNavigablePage? smartNavigablePage = _page as ISmartNavigablePage;
       if (smartNavigablePage != null)
       {
         if (smartNavigablePage.IsSmartScrollingEnabled)
@@ -487,7 +487,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
         }
       }
 
-      foreach (string trackedID in _trackedControlsByID)
+      foreach (string? trackedID in _trackedControlsByID)
       {
         // IE 5.0.1 does not understand push
         script.Append ("  ");
@@ -510,15 +510,15 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
     private void PreRenderSmartNavigation ()
     {
-      ISmartNavigablePage smartNavigablePage = _page as ISmartNavigablePage;
+      ISmartNavigablePage? smartNavigablePage = _page as ISmartNavigablePage;
       if (smartNavigablePage == null)
         return;
 
-      NameValueCollection postBackCollection = _page.GetPostBackCollection();
+      NameValueCollection? postBackCollection = _page.GetPostBackCollection();
 
       if (smartNavigablePage.IsSmartScrollingEnabled)
       {
-        string smartScrollingValue = null;
+        string? smartScrollingValue = null;
         if (postBackCollection != null && (_smartNavigationDataToBeDisacarded & SmartNavigationData.ScrollPosition) == SmartNavigationData.None)
           smartScrollingValue = postBackCollection[c_smartScrollingID];
         _page.ClientScript.RegisterHiddenField (_page, c_smartScrollingID, smartScrollingValue);
@@ -526,7 +526,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
       if (smartNavigablePage.IsSmartFocusingEnabled)
       {
-        string smartFocusValue = null;
+        string? smartFocusValue = null;
         if (postBackCollection != null && (_smartNavigationDataToBeDisacarded & SmartNavigationData.Focus) == SmartNavigationData.None)
           smartFocusValue = postBackCollection[c_smartFocusID];
         if (! string.IsNullOrEmpty (_smartFocusID))
@@ -555,7 +555,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     /// <summary>
     ///   Implements <see cref="ISmartPage.AbortMessage">ISmartPage.AbortMessage</see>.
     /// </summary>
-    public string AbortMessage
+    public string? AbortMessage
     {
       get { return _abortMessage; }
       set { _abortMessage = value ?? string.Empty; }
@@ -602,9 +602,9 @@ namespace Remotion.Web.UI.SmartPageImplementation
       control.Unload += UnregisterNavigationControl;
     }
 
-    private void UnregisterNavigationControl (object sender, EventArgs args)
+    private void UnregisterNavigationControl (object? sender, EventArgs args)
     {
-      var control = ArgumentUtility.CheckNotNullAndType<INavigationControl> ("sender", sender);
+      var control = ArgumentUtility.CheckNotNullAndType<INavigationControl> ("sender", sender!);
       _navigationControls.Remove (control);
       control.Unload -= UnregisterNavigationControl;
     }

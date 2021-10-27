@@ -171,7 +171,7 @@ namespace Remotion.Web.Infrastructure
     /// </param><param name="argument">A string of optional arguments to pass to the control that processes the postback.
     /// </param><exception cref="T:System.ArgumentNullException">The specified <see cref="T:System.Web.UI.Control"/> is null.
     /// </exception>
-    string GetPostBackEventReference (IControl control, string argument);
+    string GetPostBackEventReference (IControl control, string? argument);
 
     /// <summary>
     /// Returns a string to use in a client event to cause postback to the server. The reference string is defined by the specified control that handles the postback and a string argument of additional event information. Optionally, registers the event reference for validation.
@@ -184,7 +184,7 @@ namespace Remotion.Web.Infrastructure
     /// </param><param name="registerForEventValidation">true to register the event reference for validation; otherwise, false.
     /// </param><exception cref="T:System.ArgumentNullException">The specified <see cref="T:System.Web.UI.Control"/> is null.
     /// </exception>
-    string GetPostBackEventReference (IControl control, string argument, bool registerForEventValidation);
+    string GetPostBackEventReference (IControl control, string? argument, bool registerForEventValidation);
 
     /// <summary>
     /// Returns a string that can be used in a client event to cause postback to the server. The reference string is defined by the specified <see cref="T:System.Web.UI.PostBackOptions"/> instance.
@@ -194,7 +194,7 @@ namespace Remotion.Web.Infrastructure
     /// </returns>
     /// <param name="options">A <see cref="T:System.Web.UI.PostBackOptions"/> that defines the postback.
     /// </param><exception cref="T:System.ArgumentNullException">The <see cref="T:System.Web.UI.PostBackOptions"/> parameter is null</exception>
-    string GetPostBackEventReference (PostBackOptions options);
+    string? GetPostBackEventReference (PostBackOptions options);
 
     /// <summary>
     /// Returns a string that can be used in a client event to cause postback to the server. The reference string is defined by the specified <see cref="T:System.Web.UI.PostBackOptions"/> object. Optionally, registers the event reference for validation.
@@ -206,7 +206,7 @@ namespace Remotion.Web.Infrastructure
     /// </param><param name="registerForEventValidation">true to register the event reference for validation; otherwise, false.
     /// </param><exception cref="T:System.ArgumentNullException">The <see cref="T:System.Web.UI.PostBackOptions"/> is null.
     /// </exception>
-    string GetPostBackEventReference (PostBackOptions options, bool registerForEventValidation);
+    string? GetPostBackEventReference (PostBackOptions options, bool registerForEventValidation);
 
     /// <summary>
     /// Gets a URL reference to a resource in an assembly.
@@ -385,7 +385,7 @@ namespace Remotion.Web.Infrastructure
     ///   <para>- or -</para>
     ///   <paramref name="hiddenFieldName"/> is null.
     /// </exception>
-    void RegisterHiddenField (IControl control, string hiddenFieldName, string hiddenFieldInitialValue);
+    void RegisterHiddenField (IControl control, string hiddenFieldName, string? hiddenFieldInitialValue);
 
 
     /// <summary>

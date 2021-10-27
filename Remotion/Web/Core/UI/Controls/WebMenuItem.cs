@@ -16,6 +16,7 @@
 // 
 using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Web.UI;
 using Remotion.Globalization;
 using Remotion.Security;
@@ -46,30 +47,30 @@ namespace Remotion.Web.UI.Controls
     private bool _isDisabled;
     private bool _isVisible = true;
     private MissingPermissionBehavior _missingPermissionBehavior;
-    private ISecurableObject _securableObject;
+    private ISecurableObject? _securableObject;
 
     /// <summary> The command rendered for this menu item. </summary>
     private readonly SingleControlItemCollection _command;
 
     /// <summary> The control to which this object belongs. </summary>
-    private IControl _ownerControl;
+    private IControl? _ownerControl;
 
     private readonly CommandClickEventHandler _commandClick;
 
     public WebMenuItem (
-        string itemID,
-        string category,
-        string text,
+        string? itemID,
+        string? category,
+        string? text,
         IconInfo icon,
         IconInfo disabledIcon,
         WebMenuItemStyle style,
         RequiredSelection requiredSelection,
         bool isDisabled,
-        Command command)
+        Command? command)
     {
-      _itemID = itemID;
-      _category = category;
-      _text = text;
+      ItemID = itemID;
+      Category = category;
+      Text = text;
       Icon = icon;
       DisabledIcon = disabledIcon;
       _style = style;
@@ -103,7 +104,7 @@ namespace Remotion.Web.UI.Controls
         Command.OwnerControl = OwnerControl;
     }
 
-    private void OwnerControl_PreRender (object sender, EventArgs e)
+    private void OwnerControl_PreRender (object? sender, EventArgs e)
     {
       PreRender();
     }
@@ -113,7 +114,7 @@ namespace Remotion.Web.UI.Controls
     {
     }
 
-    private void Command_Click (object sender, CommandClickEventArgs e)
+    private void Command_Click (object? sender, CommandClickEventArgs e)
     {
       OnClick();
     }
@@ -147,6 +148,7 @@ namespace Remotion.Web.UI.Controls
     [NotifyParentProperty (true)]
     [ParenthesizePropertyName (true)]
     [DefaultValue ("")]
+    [AllowNull]
     public string ItemID
     {
       get { return _itemID; }
@@ -158,6 +160,7 @@ namespace Remotion.Web.UI.Controls
     [Description ("The category to which this menu item belongs. Items of the same category will be grouped in the UI.")]
     [NotifyParentProperty (true)]
     [DefaultValue ("")]
+    [AllowNull]
     public string Category
     {
       get { return _category; }
@@ -169,6 +172,7 @@ namespace Remotion.Web.UI.Controls
     [Description ("The text displayed in this menu item. Use '-' for a separator menu item. The value will not be HTML encoded.")]
     [NotifyParentProperty (true)]
     [DefaultValue ("")]
+    [AllowNull]
     public string Text
     {
       get { return _text; }
@@ -194,6 +198,7 @@ namespace Remotion.Web.UI.Controls
     public IconInfo Icon
     {
       get { return _icon; }
+      [MemberNotNull (nameof (_icon))]
       set
       {
         ArgumentUtility.CheckNotNull ("Icon", value);
@@ -223,6 +228,7 @@ namespace Remotion.Web.UI.Controls
     public IconInfo DisabledIcon
     {
       get { return _disabledIcon; }
+      [MemberNotNull (nameof (_disabledIcon))]
       set
       {
         ArgumentUtility.CheckNotNull ("DisabledIcon", value);
@@ -285,7 +291,7 @@ namespace Remotion.Web.UI.Controls
 
     [Browsable (false)]
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    public ISecurableObject SecurableObject
+    public ISecurableObject? SecurableObject
     {
       get { return _securableObject; }
       set { _securableObject = value; }
@@ -297,9 +303,9 @@ namespace Remotion.Web.UI.Controls
     [Category ("Behavior")]
     [Description ("The command rendered for this menu item.")]
     [NotifyParentProperty (true)]
-    public virtual Command Command
+    public virtual Command? Command
     {
-      get { return (Command) _command.ControlItem; }
+      get { return (Command?) _command.ControlItem; }
       set
       {
         if (Command != null)
@@ -341,7 +347,7 @@ namespace Remotion.Web.UI.Controls
     {
       if (Command != null)
       {
-        Command = (Command) Activator.CreateInstance (Command.GetType());
+        Command = (Command) Activator.CreateInstance (Command.GetType())!;
         Command.Type = CommandType.None;
       }
     }
@@ -366,13 +372,13 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Gets or sets the control to which this object belongs. </summary>
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     [Browsable (false)]
-    public IControl OwnerControl
+    public IControl? OwnerControl
     {
       get { return OwnerControlImplementation; }
       set { OwnerControlImplementation = value; }
     }
 
-    protected virtual IControl OwnerControlImplementation
+    protected virtual IControl? OwnerControlImplementation
     {
       get { return _ownerControl; }
       set
@@ -423,7 +429,7 @@ namespace Remotion.Web.UI.Controls
       ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
       ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
       
-      string key = ResourceManagerUtility.GetGlobalResourceKey (Category);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey (Category);
       if (!string.IsNullOrEmpty (key))
         Category = resourceManager.GetString (key);
 
@@ -474,7 +480,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> The <see cref="Command"/> that caused the event. </summary>
-    public Command Command
+    public Command? Command
     {
       get { return _item.Command; }
     }

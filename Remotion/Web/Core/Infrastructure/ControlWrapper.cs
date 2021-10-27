@@ -238,7 +238,7 @@ namespace Remotion.Web.Infrastructure
     /// </returns>
     /// <param name="id">The identifier for the control to be found. 
     /// </param>
-    public Control FindControl (string id)
+    public Control? FindControl (string id)
     {
       return _control.FindControl (id);
     }
@@ -281,7 +281,7 @@ namespace Remotion.Web.Infrastructure
     /// <returns>
     /// The programmatic identifier assigned to the control.
     /// </returns>
-    public string ID
+    public string? ID
     {
       get { return _control.ID; }
       set { _control.ID = value; }
@@ -363,7 +363,7 @@ namespace Remotion.Web.Infrastructure
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">The control is a <see cref="T:System.Web.UI.WebControls.Substitution"/> control.
     /// </exception>
-    public virtual IPage Page
+    public virtual IPage? Page
     {
       get { return PageWrapper.CastOrCreate (_control.Page); }
     }
@@ -386,7 +386,7 @@ namespace Remotion.Web.Infrastructure
     /// <returns>
     /// A reference to the server control's parent control.
     /// </returns>
-    public Control Parent
+    public Control? Parent
     {
       get { return _control.Parent; }
     }
@@ -422,7 +422,7 @@ namespace Remotion.Web.Infrastructure
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">The control is a <see cref="T:System.Web.UI.WebControls.Substitution"/> control.
     /// </exception>
-    public ISite Site
+    public ISite? Site
     {
       get { return _control.Site; }
       set { _control.Site = value; }
@@ -462,7 +462,7 @@ namespace Remotion.Web.Infrastructure
       get { return _control.Controls; }
     }
 
-    public event EventHandler Disposed
+    public event EventHandler? Disposed
     {
       add { _control.Disposed += value; }
       remove { _control.Disposed -= value; }
@@ -498,7 +498,7 @@ namespace Remotion.Web.Infrastructure
       remove { _control.Unload -= value; }
     }
 
-    public override string ToString ()
+    public override string? ToString ()
     {
       return _control.ToString ();
     }

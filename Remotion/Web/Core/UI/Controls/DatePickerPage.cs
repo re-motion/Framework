@@ -21,6 +21,7 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
+using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering;
 using Remotion.Web.Utilities;
@@ -54,14 +55,14 @@ public class DatePickerPage : Page
   public const string CultureParameterName = "Culture";
   public const string UICultureParameterName = "UICulture";
 
-  protected HtmlHeadContents HtmlHeadContents;
-  protected Calendar Calendar;
+  protected HtmlHeadContents HtmlHeadContents = null!;
+  protected Calendar Calendar = null!;
   /// <summary> Preserves the target control's ID during post backs. </summary>
-  private HtmlInputHidden TargetIDField;
+  private HtmlInputHidden TargetIDField = null!;
   /// <summary> Preserves the frame's ID in the parent page during post backs. </summary>
-  private HtmlInputHidden DatePickerIDField;
+  private HtmlInputHidden DatePickerIDField = null!;
   /// <summary> Contains the date to be selected in the calendar. </summary>
-  private HtmlInputHidden DateValueField;
+  private HtmlInputHidden DateValueField = null!;
 
   protected override void OnPreInit (EventArgs e)
   {
@@ -77,7 +78,9 @@ public class DatePickerPage : Page
   }
 
   override protected void OnInit(EventArgs e)
-	{
+  {
+    Assertion.DebugIsNotNull (Page, "Page must not be null.");
+
     if (Form == null)
       throw new HttpException (this.GetType().GetFullNameSafe() + " does not initialize field 'Form'.");
     if (HtmlHeadContents == null)
@@ -125,9 +128,9 @@ public class DatePickerPage : Page
     }
     else
     {
-      dateValue = Request.Params["DateValueField"];
-      TargetIDField.Value = Request.Params["TargetIDField"];
-      DatePickerIDField.Value = Request.Params["DatePickerIDField"];
+      dateValue = Request.Params["DateValueField"]!; // TODO RM-8118: not null assertion
+      TargetIDField.Value = Request.Params["TargetIDField"]!; // TODO RM-8118: not null assertion
+      DatePickerIDField.Value = Request.Params["DatePickerIDField"]!; // TODO RM-8118: not null assertion
     }
 
     //  Initalize the calendar
@@ -148,8 +151,10 @@ public class DatePickerPage : Page
     base.OnLoad (e);
   }
 
-  private void Calendar_SelectionChanged(object sender, EventArgs e)
+  private void Calendar_SelectionChanged(object? sender, EventArgs e)
   {
+    Assertion.DebugIsNotNull (Page, "Page must not be null.");
+
     string key = "Calendar_SelectionChanged";
     string script = "DatePickerFrame.Calendar_SelectionChanged ('" + Calendar.SelectedDate.ToShortDateString () + "');\r\n";
     if (!Page.ClientScript.IsStartupScriptRegistered (key))

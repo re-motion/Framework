@@ -30,8 +30,8 @@ namespace Remotion.Web.UI.Controls
 [ToolboxItemFilter("System.Web.UI")]
 public class SmartLabel: WebControl, IControl
 {
-  private string _forControl = null;
-  private string _text = null;
+  private string? _forControl = null;
+  private string? _text = null;
 
   public SmartLabel()
   {
@@ -41,7 +41,7 @@ public class SmartLabel: WebControl, IControl
   ///   The ID of the control to display a label for.
   /// </summary>
   [Category ("Behavior")]
-  public string ForControl
+  public string? ForControl
   {
     get { return _forControl; }
     set { _forControl = value; }
@@ -55,7 +55,7 @@ public class SmartLabel: WebControl, IControl
   [Category ("Appearance")]
   [Description ("The text displayed if the SmartLabel is not bound to an ISmartControl or the ISmartControl does provide a DisplayName.")]
   [DefaultValue (null)]
-  public string Text
+  public string? Text
   {
     get { return _text; }
     set { _text = value; }
@@ -102,7 +102,7 @@ public class SmartLabel: WebControl, IControl
     if (! string.IsNullOrEmpty (_text))
       return _text;
 
-    string forControlBackUp = ForControl;
+    string? forControlBackUp = ForControl;
     ForControl = ForControl ?? string.Empty;
     string text = string.Empty;
 
@@ -112,7 +112,7 @@ public class SmartLabel: WebControl, IControl
     }
     else
     {
-      ISmartControl smartControl = NamingContainer.FindControl (ForControl) as ISmartControl;
+      ISmartControl? smartControl = NamingContainer.FindControl (ForControl) as ISmartControl;
       if (smartControl != null && smartControl.DisplayName != null)
         text = smartControl.DisplayName;
       else
@@ -139,14 +139,14 @@ public class SmartLabel: WebControl, IControl
   {
     ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
 
-    string key = ResourceManagerUtility.GetGlobalResourceKey (Text);
+    string? key = ResourceManagerUtility.GetGlobalResourceKey (Text);
     if (!string.IsNullOrEmpty (key))
       Text = resourceManager.GetString (key);
   }
 
-  private string GetClientIDForTarget ()
+  private string? GetClientIDForTarget ()
   {
-    Control target = ControlHelper.FindControl (NamingContainer, ForControl);
+    Control? target = ControlHelper.FindControl (NamingContainer, ForControl);
     if (target is ISmartControl && target is IFocusableControl)
     {
       if (((ISmartControl) target).UseLabel)
@@ -163,7 +163,7 @@ public class SmartLabel: WebControl, IControl
     return null;
   }
 
-  public new IPage Page
+  public new IPage? Page
   {
     get { return PageWrapper.CastOrCreate (base.Page); }
   }

@@ -33,7 +33,7 @@ namespace Remotion.Web.UI.Controls
 
     // fields
 
-    private string _title;
+    private string? _title;
     private IconInfo _icon;
     private LazyContainer _lazyContainer;
 
@@ -96,11 +96,11 @@ namespace Remotion.Web.UI.Controls
       set { _lazyContainer.IsLazyLoadingEnabled = value; }
     }
 
-    internal TabbedMultiView.MultiView ParentMultiView
+    internal TabbedMultiView.MultiView? ParentMultiView
     {
       get
       {
-        return (TabbedMultiView.MultiView) Parent;
+        return (TabbedMultiView.MultiView?) Parent;
       }
     }
 
@@ -114,7 +114,7 @@ namespace Remotion.Web.UI.Controls
     [Category ("Appearance")]
     [Description ("The title displayed in this view's tab.")]
     [NotifyParentProperty (true)]
-    public virtual string Title
+    public virtual string? Title
     {
       get { return _title; }
       set { _title = value; }
@@ -147,7 +147,7 @@ namespace Remotion.Web.UI.Controls
 
     internal void OverrideVisible ()
     {
-      bool isActive = ParentMultiView.GetActiveView () == this;
+      bool isActive = ParentMultiView!.GetActiveView () == this; // TODO RM-8118: not null assertion
       if (Visible != isActive)
       {
         _overrideVisible = true;

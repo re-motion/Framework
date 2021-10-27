@@ -36,6 +36,6 @@ namespace Remotion.Web.UI.Controls.TabbedMultiViewImplementation
     IWebTabStrip TabStrip { get; }
     string ActiveViewContentClientID { get; }
     string WrapperClientID { get; }
-    Control GetActiveView ();
+    Control? GetActiveView ();
   }
 }

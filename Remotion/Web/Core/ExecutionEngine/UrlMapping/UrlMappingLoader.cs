@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Reflection;
 using System.Web;
@@ -34,9 +35,9 @@ namespace Remotion.Web.ExecutionEngine.UrlMapping
 
     // member fields
 
-    private string _configurationFile;
-    private Type _type;
-    private XmlSchemaSet _schemas;
+    private string? _configurationFile;
+    private Type? _type;
+    private XmlSchemaSet? _schemas;
 
     // construction and disposing
 
@@ -49,9 +50,12 @@ namespace Remotion.Web.ExecutionEngine.UrlMapping
 
     public UrlMappingConfiguration CreateUrlMappingConfiguration ()
     {
-      return (UrlMappingConfiguration) LoadConfiguration (_configurationFile, _type, _schemas);
+      return (UrlMappingConfiguration) LoadConfiguration (_configurationFile!, _type!, _schemas!);
     }
 
+    [MemberNotNull (nameof (_configurationFile))]
+    [MemberNotNull (nameof (_type))]
+    [MemberNotNull (nameof (_schemas))]
     protected void Initialize (string configurationFile, Type type, params SchemaLoaderBase[] schemas)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("configurationFile", configurationFile);
@@ -110,17 +114,17 @@ namespace Remotion.Web.ExecutionEngine.UrlMapping
       return schemaSet;
     }
 
-    public string ConfigurationFile
+    public string? ConfigurationFile
     {
       get { return _configurationFile; }
     }
 
-    public Type Type
+    public Type? Type
     {
       get { return _type; }
     }
 
-    public XmlSchemaSet Schemas
+    public XmlSchemaSet? Schemas
     {
       get { return _schemas; }
     }
@@ -129,8 +133,8 @@ namespace Remotion.Web.ExecutionEngine.UrlMapping
     {
       AssemblyName assemblyName = Assembly.GetExecutingAssembly ().GetName (copiedName: false);
 
-      Uri codeBaseUri = new Uri (assemblyName.EscapedCodeBase);
-      return Path.GetDirectoryName (codeBaseUri.LocalPath);
+      Uri codeBaseUri = new Uri (assemblyName.EscapedCodeBase!);
+      return Path.GetDirectoryName (codeBaseUri.LocalPath)!; // TODO RM-8118: Add notnull assertion
     }
   }
 }

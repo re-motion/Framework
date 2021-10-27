@@ -30,9 +30,9 @@ namespace Remotion.Web.UI.Controls.PostBackTargets
     {
     }
 
-    public event EventHandler DataChanged;
+    public event EventHandler? DataChanged;
 
-    public string Value { get; set; }
+    public string? Value { get; set; }
 
     public bool LoadPostData (string postDataKey, NameValueCollection postCollection)
     {

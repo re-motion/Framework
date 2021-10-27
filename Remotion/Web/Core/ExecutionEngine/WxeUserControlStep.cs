@@ -29,11 +29,11 @@ namespace Remotion.Web.ExecutionEngine
     private bool _isExecutionStarted;
     private bool _isPostBack;
     private readonly ResourceObjectBase _userControl;
-    private WxePageStep _pageStep;
+    private WxePageStep? _pageStep;
     private IUserControlExecutor _userControlExecutor = NullUserControlExecutor.Null;
 
     [NonSerialized]
-    private WxeHandler _wxeHandler;
+    private WxeHandler? _wxeHandler;
 
     public WxeUserControlStep (string userControl)
       : this (new ResourceObject (ArgumentUtility.CheckNotNullOrEmpty ("userControl", userControl)))
@@ -92,8 +92,8 @@ namespace Remotion.Web.ExecutionEngine
       ArgumentUtility.CheckNotNull ("subFunction", subFunction);
       ArgumentUtility.CheckNotNull ("sender", sender);
 
-      IWxePage wxePage = userControl.WxePage;
-      _wxeHandler = wxePage.WxeHandler;
+      IWxePage? wxePage = userControl.WxePage;
+      _wxeHandler = wxePage!.WxeHandler;
 
       _userControlExecutor = new UserControlExecutor (this, userControl, subFunction, sender, usesEventTarget);
 
@@ -116,7 +116,7 @@ namespace Remotion.Web.ExecutionEngine
 
     public string UserControl
     {
-      get { return _userControl.GetResourcePath (Variables); }
+      get { return _userControl.GetResourcePath (Variables!); } // TODO RM-8118: not null assertion
     }
 
     public IUserControlExecutor UserControlExecutor

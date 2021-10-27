@@ -33,7 +33,7 @@ namespace Remotion.Web.Utilities
     ///   <see cref="TypeUtility.ParseAbbreviatedTypeName"/>. Does not throw on error. Does not ignore casing.
     /// </summary>
     [CanBeNull]
-    public static Type GetType (string abbreviatedTypeName)
+    public static Type? GetType (string abbreviatedTypeName)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("abbreviatedTypeName", abbreviatedTypeName);
       return GetType (abbreviatedTypeName, false, false);
@@ -44,7 +44,7 @@ namespace Remotion.Web.Utilities
     ///   <see cref="TypeUtility.ParseAbbreviatedTypeName"/>. Does not ignore casing.
     /// </summary>
     [CanBeNull]
-    public static Type GetType (string abbreviatedTypeName, bool throwOnError)
+    public static Type? GetType (string abbreviatedTypeName, bool throwOnError)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("abbreviatedTypeName", abbreviatedTypeName);
       return GetType (abbreviatedTypeName, throwOnError, false);
@@ -55,7 +55,7 @@ namespace Remotion.Web.Utilities
     ///   <see cref="TypeUtility.ParseAbbreviatedTypeName"/>.
     /// </summary>
     [CanBeNull]
-    public static Type GetType (string abbreviatedTypeName, bool throwOnError, bool ignoreCase)
+    public static Type? GetType (string abbreviatedTypeName, bool throwOnError, bool ignoreCase)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("abbreviatedTypeName", abbreviatedTypeName);
       string typeName = TypeUtility.ParseAbbreviatedTypeName (abbreviatedTypeName);
@@ -73,7 +73,7 @@ namespace Remotion.Web.Utilities
     public static bool IsCompiledType (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
-      IList codeAssemblies = BuildManager.CodeAssemblies;
+      IList? codeAssemblies = BuildManager.CodeAssemblies;
       if (codeAssemblies == null)
         return false;
 

@@ -37,15 +37,15 @@ namespace Remotion.Web.UI.Controls
     // member fields
 
     /// <summary> The control with an invalid state. </summary>
-    private Control _validatedControl;
+    private Control? _validatedControl;
 
-    private ControlCollection _labels;
+    private ControlCollection? _labels;
 
     /// <summary> The message to be displayed to the user. </summary>
-    private string _validationMessage;
+    private string? _validationMessage;
 
     /// <summary> The validator used to validate the <see cref="_validatedControl"/>. </summary>
-    private IValidator _validator;
+    private IValidator? _validator;
 
     // construction and disposing
 
@@ -58,7 +58,7 @@ namespace Remotion.Web.UI.Controls
     /// <param name="validatedControl"> The control with an invalid state. </param>
     /// <param name="validator"> The validator used to validate the <paramref name="validatedControl"/>.  Must not be <see langword="null"/>. </param>
     /// <param name="labels">The labels containing the control's headings.</param>
-    public ValidationError (Control validatedControl, IValidator validator, ControlCollection labels)
+    public ValidationError (Control? validatedControl, IValidator validator, ControlCollection? labels)
     {
       ArgumentUtility.CheckNotNull ("validator", validator);
 
@@ -81,7 +81,7 @@ namespace Remotion.Web.UI.Controls
     /// <param name="validatedControl"> The control with an invalid state. </param>
     /// <param name="validationMessage"> The message to be displayed to the user. Must not be <see langword="null"/> or empty. </param>
     /// <param name="labels">The labels containing the control's headings.</param>
-    public ValidationError (Control validatedControl, string validationMessage, ControlCollection labels)
+    public ValidationError (Control validatedControl, string validationMessage, ControlCollection? labels)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("validationMessage", validationMessage);
 
@@ -100,12 +100,12 @@ namespace Remotion.Web.UI.Controls
 
     /// <summary> Gets the control with an invalid state. </summary>
     /// <value> The validated <see cref="Control"/>. </value>
-    public Control ValidatedControl
+    public Control? ValidatedControl
     {
       get { return _validatedControl; }
     }
 
-    public ControlCollection Labels
+    public ControlCollection? Labels
     {
       get { return _labels; }
     }
@@ -117,7 +117,7 @@ namespace Remotion.Web.UI.Controls
       get
       {
         if (_validationMessage == null)
-          return _validator.ErrorMessage;
+          return _validator!.ErrorMessage;
         else
           return _validationMessage;
       }
@@ -125,7 +125,7 @@ namespace Remotion.Web.UI.Controls
 
     /// <summary> Gets the validator used to validate the <see cref="ValidatedControl"/>. </summary>
     /// <value> A <see cref="IValidator"/> instance or <see langname="null" />. </value>
-    public IValidator Validator
+    public IValidator? Validator
     {
       get { return _validator; }
     }

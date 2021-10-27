@@ -23,9 +23,9 @@ namespace Remotion.Web.ExecutionEngine
   [Serializable]
   public class WxeFatalExecutionException:WxeException
   {
-    private readonly Exception _outerException;
+    private readonly Exception? _outerException;
 
-    public WxeFatalExecutionException (Exception innerExcection, Exception outerException)
+    public WxeFatalExecutionException (Exception innerExcection, Exception? outerException)
       : base ("Execution failed.\r\n" + innerExcection.Message + (outerException != null ? ("\r\n" + outerException.Message) : string.Empty), innerExcection)
     {
       _outerException = outerException;
@@ -36,7 +36,7 @@ namespace Remotion.Web.ExecutionEngine
     {
     }
 
-    public Exception OuterException
+    public Exception? OuterException
     {
       get { return _outerException; }
     }

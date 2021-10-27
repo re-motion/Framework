@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using JetBrains.Annotations;
 using Remotion.Reflection;
@@ -73,12 +74,12 @@ namespace Remotion.Web.Security.ExecutionEngine
       get { return _attribute.MethodType; }
     }
 
-    public string MethodName
+    public string? MethodName
     {
       get { return _attribute.MethodName; }
     }
 
-    public Type SecurableClass
+    public Type? SecurableClass
     {
       get { return _attribute.SecurableClass; }
     }
@@ -120,7 +121,7 @@ namespace Remotion.Web.Security.ExecutionEngine
            _attribute.GetType ().Name, parameterDeclaration.Name, _functionType.GetFullNameSafe()));
       }
 
-      ISecurableObject securableObject = parameterValue as ISecurableObject;
+      ISecurableObject? securableObject = parameterValue as ISecurableObject;
       if (securableObject == null)
       {
         throw new WxeException (string.Format (
@@ -156,7 +157,7 @@ namespace Remotion.Web.Security.ExecutionEngine
           _attribute.GetType ().Name, _attribute.ParameterName, _functionType.GetFullNameSafe()));
     }
 
-    private void CheckMethodNameNotNullOrEmpty (Type functionType, string methodName)
+    private void CheckMethodNameNotNullOrEmpty (Type functionType, [System.Diagnostics.CodeAnalysis.NotNull] string? methodName)
     {
       if (string.IsNullOrEmpty (methodName))
       {
@@ -167,7 +168,7 @@ namespace Remotion.Web.Security.ExecutionEngine
     }
 
     [AssertionMethod]
-    private void CheckSecurabeClassNotNull (Type functionType, Type securableClass)
+    private void CheckSecurabeClassNotNull (Type functionType, [System.Diagnostics.CodeAnalysis.NotNull] Type? securableClass)
     {
       if (securableClass == null)
       {
@@ -188,7 +189,7 @@ namespace Remotion.Web.Security.ExecutionEngine
                 parameterName,
                 _functionType.GetFullNameSafe(),
                 parameterType.GetFullNameSafe(),
-                SecurableClass.GetFullNameSafe()));
+                SecurableClass?.GetFullNameSafe() ?? "<null>"));
       }
     }
 
@@ -201,19 +202,19 @@ namespace Remotion.Web.Security.ExecutionEngine
       return declaredParameterType;
     }
 
-    private static Tuple<Type, object> GetActualParameterTypeAndValue (Type declaredParameterType, object parameterValue)
+    private static Tuple<Type, object?> GetActualParameterTypeAndValue (Type declaredParameterType, object? parameterValue)
     {
       if (parameterValue == null)
-        return Tuple.Create (declaredParameterType, (object) null);
+        return Tuple.Create<Type, object?> (declaredParameterType, (object?) null);
         
       var handleAttribute = GetHandleAttribute (declaredParameterType);
       if (handleAttribute != null)
-        return Tuple.Create (handleAttribute.GetReferencedType (declaredParameterType), handleAttribute.GetReferencedInstance (parameterValue));
+        return Tuple.Create<Type, object?> (handleAttribute.GetReferencedType (declaredParameterType), handleAttribute.GetReferencedInstance (parameterValue));
 
-      return Tuple.Create (declaredParameterType, parameterValue);
+      return Tuple.Create<Type, object?> (declaredParameterType, parameterValue);
     }
 
-    private static IHandleAttribute GetHandleAttribute (Type declaredParameterType)
+    private static IHandleAttribute? GetHandleAttribute (Type declaredParameterType)
     {
       return ((IHandleAttribute[]) declaredParameterType.GetCustomAttributes (typeof (IHandleAttribute), true)).FirstOrDefault ();
     }

@@ -37,7 +37,7 @@ namespace Remotion.Web.UI.Controls
 /// </remarks>
 public abstract class CompoundValidator: WebControl, IBaseValidator
 {
-  private string _controlToValidate;
+  private string? _controlToValidate;
   private Type _targetControlType;
   private bool _childValidatorsCreated = false;
   private Style _validatorStyle = new Style();
@@ -47,7 +47,7 @@ public abstract class CompoundValidator: WebControl, IBaseValidator
   protected override void OnInit(EventArgs e)
   {
     base.OnInit (e);
-    this.Page.Validators.Add (this);
+    this.Page!.Validators.Add (this);
   }
 
   public CompoundValidator (Type targetControlType)
@@ -57,7 +57,7 @@ public abstract class CompoundValidator: WebControl, IBaseValidator
   }
 
   [Category("Behavior")]
-  public virtual string ControlToValidate
+  public virtual string? ControlToValidate
   {
     get { return _controlToValidate; }
     set { _controlToValidate = value; }
@@ -90,7 +90,7 @@ public abstract class CompoundValidator: WebControl, IBaseValidator
     EnsureChildValidatorsCreated ();
     foreach (Control control in Controls)
     {
-      BaseValidator validator = control as BaseValidator;
+      BaseValidator validator = (control as BaseValidator)!; // TODO RM-8105: validator must not be null before accessing its setters
       validator.EnableClientScript = this.EnableClientScript;
       validator.Display = this.Display;
       if (validator != null)
@@ -109,7 +109,7 @@ public abstract class CompoundValidator: WebControl, IBaseValidator
       return;
     }
 
-    Control controlToValidate = NamingContainer.FindControl (ControlToValidate);
+    Control? controlToValidate = NamingContainer.FindControl (ControlToValidate!);
     if (controlToValidate == null)
       return;
 
@@ -158,7 +158,7 @@ public abstract class CompoundValidator: WebControl, IBaseValidator
     EnsureChildValidatorsCreated();
     foreach (Control control in Controls)
     {
-      IValidator validator = control as IValidator;
+      IValidator? validator = control as IValidator;
       if (validator != null)
         validator.Validate();
     }    
@@ -172,7 +172,7 @@ public abstract class CompoundValidator: WebControl, IBaseValidator
       EnsureChildValidatorsCreated();
       foreach (Control control in Controls)
       {
-        IValidator validator = control as IValidator;
+        IValidator? validator = control as IValidator;
         if (validator != null && ! validator.IsValid)
           return false;
       }    
@@ -187,7 +187,7 @@ public abstract class CompoundValidator: WebControl, IBaseValidator
     ArrayList list = new ArrayList (Controls.Count);
     foreach (Control control in Controls)
     {
-      IValidator validator = control as IValidator;
+      IValidator? validator = control as IValidator;
       if (validator != null && ! validator.IsValid)
         list.Add (validator.ErrorMessage);
     }    

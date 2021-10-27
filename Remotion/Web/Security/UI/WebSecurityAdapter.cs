@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using Remotion.Security;
 using Remotion.ServiceLocation;
+using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UI;
 
@@ -40,7 +41,7 @@ namespace Remotion.Web.Security.UI
 
     // methods and properties
 
-    public bool HasAccess (ISecurableObject securableObject, Delegate handler)
+    public bool HasAccess (ISecurableObject? securableObject, Delegate? handler)
     {
       if (handler == null)
         return true;
@@ -56,14 +57,22 @@ namespace Remotion.Web.Security.UI
         switch (attribute.PermissionSource)
         {
           case PermissionSource.WxeFunction:
+            Assertion.IsNotNull (attribute.FunctionType, "FunctionType must not be null.");
             hasAccess &= WxeFunction.HasAccess (attribute.FunctionType);
             break;
           case PermissionSource.SecurableObject:
+            Assertion.IsNotNull (attribute.MethodName, "MethodName must not be null.");
             SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
             if (securableObject == null)
+            {
+              Assertion.IsNotNull (attribute.SecurableClass, "SecurableClass must not be null.");
               hasAccess &= securityClient.HasStatelessMethodAccess (attribute.SecurableClass, attribute.MethodName);
+            }
             else
+            {
               hasAccess &= securityClient.HasMethodAccess (securableObject, attribute.MethodName);
+            }
+
             break;
           default:
             throw new InvalidOperationException (string.Format (
@@ -88,7 +97,7 @@ namespace Remotion.Web.Security.UI
       List<DemandTargetPermissionAttribute> attributes = new List<DemandTargetPermissionAttribute> ();
       foreach (Delegate handler in delegates)
       {
-        DemandTargetPermissionAttribute attribute = (DemandTargetPermissionAttribute) Attribute.GetCustomAttribute (
+        DemandTargetPermissionAttribute? attribute = (DemandTargetPermissionAttribute?) Attribute.GetCustomAttribute (
             handler.Method,
             typeof (DemandTargetPermissionAttribute),
             false);

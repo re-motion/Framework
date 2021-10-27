@@ -21,7 +21,7 @@ namespace Remotion.Web
     /// </summary>
     /// <param name="html">The HTML from which a <see cref="WebString"/> is created.</param>
     /// <returns>The newly created <see cref="WebString"/> containing the <paramref name="html"/>.</returns>
-    public static WebString CreateFromHtml ([CanBeNull] string html)
+    public static WebString CreateFromHtml ([CanBeNull] string? html)
     {
       return new WebString (html, WebStringType.Encoded);
     }
@@ -32,7 +32,7 @@ namespace Remotion.Web
     /// </summary>
     /// <param name="text">The text from which a <see cref="WebString"/> is created.</param>
     /// <returns>The newly created <see cref="WebString"/> containing the <paramref name="text"/>.</returns>
-    public static WebString CreateFromText ([CanBeNull] string text)
+    public static WebString CreateFromText ([CanBeNull] string? text)
     {
       return new WebString (text, WebStringType.PlainText);
     }
@@ -66,10 +66,10 @@ namespace Remotion.Web
     }
 
     [CanBeNull]
-    private readonly string _value;
+    private readonly string? _value;
     private readonly WebStringType _type;
 
-    private WebString ([CanBeNull] string value, WebStringType type)
+    private WebString ([CanBeNull] string? value, WebStringType type)
     {
       _value = value;
       _type = type;
@@ -183,7 +183,7 @@ namespace Remotion.Web
     }
 
     /// <inheritdoc />
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
       return obj is WebString other && Equals (other);
     }

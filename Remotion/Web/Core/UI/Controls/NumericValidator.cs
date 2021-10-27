@@ -26,7 +26,7 @@ namespace Remotion.Web.UI.Controls
   /// <remarks> Validation is performed using the respective data type's <b>Parse</b> method. </remarks>
   public class NumericValidator : BaseValidator
   {
-    private delegate bool TryParseWithNumberStyleDelegate<T> (string s, NumberStyles numberStyle, IFormatProvider formatProvider, out T result)
+    private delegate bool TryParseWithNumberStyleDelegate<T> (string s, NumberStyles numberStyle, IFormatProvider? formatProvider, out T result)
         where T: struct;
 
     private delegate bool TryParseDelegate<T> (string s, out T result) where T: struct;

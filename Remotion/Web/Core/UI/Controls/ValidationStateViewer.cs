@@ -65,18 +65,18 @@ public class ValidationStateViewer : WebControl, IControl
   // member fields
 
   /// <summary> Collection of <see cref="FormGridManager" /> instances in the page. </summary>
-  private ArrayList _formGridManagers;
+  private ArrayList? _formGridManagers;
 
   /// <summary>
   ///   The Text displayed if <see cref="ValidationStateViewer.ValidationErrorStyle"/> is set to 
   ///   <see cref="Remotion.Web.UI.Controls.ValidationErrorStyle.Notice"/>.
   /// </summary>
-  private string _noticeText;
+  private string? _noticeText;
   /// <summary> The style in which the validation errors should be displayed on the page. </summary>
   private ValidationErrorStyle _validationErrorStyle = ValidationErrorStyle.Notice;
   private bool _showLabels = true;
   /// <summary> Caches the <see cref="ResourceManagerSet"/> for this <see cref="ValidationStateViewer"/>. </summary>
-  private ResourceManagerSet _cachedResourceManager;
+  private ResourceManagerSet? _cachedResourceManager;
 
   // construction and disposing
 
@@ -95,10 +95,10 @@ public class ValidationStateViewer : WebControl, IControl
     for (int i = 0; i < parent.Controls.Count; i++)
     {
       Control childControl = (Control) parent.Controls[i];
-      FormGridManager formGridManager = childControl as FormGridManager;
+      FormGridManager? formGridManager = childControl as FormGridManager;
 
       if (formGridManager != null)
-        _formGridManagers.Add(formGridManager);
+        _formGridManagers!.Add(formGridManager); // TODO RM-8118: Debug not null assertion
 
       bool isChildNamingContainer = childControl is INamingContainer;
       PopulateFormGridManagerList (childControl);
@@ -122,7 +122,7 @@ public class ValidationStateViewer : WebControl, IControl
   {
     ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
 
-    string key = ResourceManagerUtility.GetGlobalResourceKey (NoticeText);
+    string? key = ResourceManagerUtility.GetGlobalResourceKey (NoticeText);
     if (!string.IsNullOrEmpty (key))
       NoticeText = resourceManager.GetString (key);
   }
@@ -158,7 +158,7 @@ public class ValidationStateViewer : WebControl, IControl
   protected virtual void RenderValidationNotice (HtmlTextWriter writer)
   {
     bool isPageValid = true;
-    for (int i = 0; i < Page.Validators.Count; i++)
+    for (int i = 0; i < Page!.Validators.Count; i++)
     {
       IValidator validator = (IValidator) Page.Validators[i];
       if (! validator.IsValid)
@@ -201,7 +201,7 @@ public class ValidationStateViewer : WebControl, IControl
     writer.RenderBeginTag (HtmlTextWriterTag.Table);
     for (int idxFormGridManagers = 0; idxFormGridManagers < _formGridManagers.Count; idxFormGridManagers++)
     {
-      FormGridManager formGridManager = (FormGridManager) _formGridManagers[idxFormGridManagers];
+      FormGridManager formGridManager = (FormGridManager) _formGridManagers[idxFormGridManagers]!; // TODO RM-8118: not null assertion
       ValidationError[] validationErrors = formGridManager.GetValidationErrors();
       //  Get validation messages
       for (int idxErrors = 0; idxErrors < validationErrors.Length; idxErrors++)
@@ -289,7 +289,7 @@ public class ValidationStateViewer : WebControl, IControl
   [Category("Appearance")]
   [Description("Sets the Text to be displayed if ValidationErrorStyle is set to Notice.")]
   [DefaultValue("")]
-  public string NoticeText
+  public string? NoticeText
   {
     get { return _noticeText; }
     set { _noticeText = value; }
@@ -320,7 +320,7 @@ public class ValidationStateViewer : WebControl, IControl
     set { _showLabels = value; }
   }
 
-  IPage IControl.Page
+  IPage? IControl.Page
   {
     get { return PageWrapper.CastOrCreate (base.Page); }
   }

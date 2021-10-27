@@ -27,7 +27,7 @@ namespace Remotion.Web.Context
   {
     private readonly AsyncLocalStorageProvider _fallbackProvider = new();
 
-    public object GetData (string key)
+    public object? GetData (string key)
     {
       ArgumentUtility.CheckNotNull ("key", key);
 
@@ -38,7 +38,7 @@ namespace Remotion.Web.Context
         return _fallbackProvider.GetData (key);
     }
 
-    public void SetData (string key, object value)
+    public void SetData (string key, object? value)
     {
       ArgumentUtility.CheckNotNull ("key", key);
 

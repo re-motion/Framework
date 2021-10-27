@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using System.Xml.Serialization;
 using Remotion.Reflection;
 using Remotion.Utilities;
@@ -84,23 +85,23 @@ public class UrlMappingConfiguration: ConfigurationBase
 [XmlType ("add", Namespace = UrlMappingConfiguration.SchemaUri)]
 public class UrlMappingEntry
 {
-  private string _id  = null;
-  private string _functionTypeName = null;
-  private Type _functionType = null;
-  private string _resource = null;
+  private string? _id  = null;
+  private string _functionTypeName = null!;
+  private Type _functionType = null!;
+  private string _resource = null!;
 
   public UrlMappingEntry()
   {
   }
 
-  public UrlMappingEntry (string id, Type functionType, string resource)
+  public UrlMappingEntry (string? id, Type functionType, string resource)
   {
     ID = id;
     FunctionType = functionType;
     Resource = resource;
   }
 
-  public UrlMappingEntry (string id, string functionTypeName, string resource)
+  public UrlMappingEntry (string? id, string functionTypeName, string resource)
   {
     ID = id;
     FunctionTypeName = functionTypeName;
@@ -119,7 +120,7 @@ public class UrlMappingEntry
 
   /// <summary> An optional ID for the <see cref="UrlMappingEntry"/>. </summary>
   [XmlAttribute ("id")]
-  public string ID
+  public string? ID
   {
     get
     {
@@ -152,7 +153,7 @@ public class UrlMappingEntry
     set
     {
       ArgumentUtility.CheckNotNullOrEmpty ("FunctionTypeName", value);
-      FunctionType = WebTypeUtility.GetType (value, true);
+      FunctionType = WebTypeUtility.GetType (value, true)!;
     }
   }
 
@@ -192,7 +193,7 @@ public class UrlMappingEntry
     set 
     {
       ArgumentUtility.CheckNotNull ("Resource", value);
-      value = value.Trim();
+      value = value!.Trim();
       ArgumentUtility.CheckNotNullOrEmpty ("Resource", value);
       if (value.StartsWith ("/") || value.IndexOf (":") != -1)
         throw new ArgumentException (string.Format ("No absolute paths are allowed. Resource: '{0}'", value), "Resource");
@@ -211,16 +212,16 @@ public class UrlMappingCollection: CollectionBase
 
   public UrlMappingEntry this[int index]
   {
-    get { return (UrlMappingEntry) List[index]; }
+    get { return (UrlMappingEntry) List[index]!; } // TODO RM-8118: not null assertion
     set { List[index] = value; }
   }
 
-  public UrlMappingEntry this[string path]
+  public UrlMappingEntry? this[string path]
   {
     get { return Find (path); }
   }
 
-  public UrlMappingEntry this[Type functionType]
+  public UrlMappingEntry? this[Type functionType]
   {
     get { return Find (functionType); }
   }
@@ -236,23 +237,23 @@ public class UrlMappingCollection: CollectionBase
       List.Remove (entry);
   }
 
-  protected virtual void ValidateNewValue (object value)
+  protected virtual void ValidateNewValue (object? value)
   {
-    UrlMappingEntry entry = ArgumentUtility.CheckNotNullAndType<UrlMappingEntry> ("value", value);
-    base.OnValidate (value);
+    UrlMappingEntry entry = ArgumentUtility.CheckNotNullAndType<UrlMappingEntry> ("value", value!);
+    base.OnValidate (entry);
     if (Find (entry.Resource) != null)
       throw new ArgumentException (string.Format ("The mapping already contains an entry for the following resource: '{0}'.", entry.Resource), "value");
     if (FindByID (entry.ID) != null)
       throw new ArgumentException (string.Format ("The mapping already contains an entry for the following ID: '{0}'.", entry.ID), "value");
   }
 
-  protected override void OnInsert(int index, object value)
+  protected override void OnInsert(int index, object? value)
   {
     ValidateNewValue (value);
     base.OnInsert (index, value);
   }
 
-  protected override void OnSet(int index, object oldValue, object newValue)
+  protected override void OnSet(int index, object? oldValue, object? newValue)
   {
     ValidateNewValue (newValue);
     base.OnSet (index, oldValue, newValue);
@@ -264,9 +265,9 @@ public class UrlMappingCollection: CollectionBase
   ///   A <see cref="Type"/> or <see langword="null"/> if the <paramref name="path"/> does not map to a 
   ///   <see cref="WxeFunction"/>.
   /// </returns>
-  public Type FindType (string path)
+  public Type? FindType (string path)
   {
-    UrlMappingEntry entry = Find (path);
+    UrlMappingEntry? entry = Find (path);
     if (entry == null)
       return null;
     return entry.FunctionType;
@@ -277,9 +278,9 @@ public class UrlMappingCollection: CollectionBase
   /// <returns> 
   ///   A <see cref="string"/> or <see langword="null"/> if the <paramref name="type"/> is not mapped to a path.
   /// </returns>
-  public string FindResource (Type type)
+  public string? FindResource (Type? type)
   {
-    UrlMappingEntry entry = Find (type);
+    UrlMappingEntry? entry = Find (type);
     if (entry == null)
       return null;
     return entry.Resource;
@@ -291,11 +292,11 @@ public class UrlMappingCollection: CollectionBase
   ///   A <see cref="string"/> or <see langword="null"/> if the <paramref name="typeName"/> is not mapped
   ///   to a path.
   /// </returns>
-  public string FindResource (string typeName)
+  public string? FindResource (string typeName)
   {
     if (string.IsNullOrEmpty (typeName))
       return null;
-    Type type = WebTypeUtility.GetType (typeName, true);
+    Type type = WebTypeUtility.GetType (typeName, throwOnError: true)!;
     return FindResource (type);
   }
 
@@ -305,7 +306,7 @@ public class UrlMappingCollection: CollectionBase
   ///   A <see cref="UrlMappingEntry"/> or <see langword="null"/> if the <paramref name="path"/> does not map to a 
   ///   <see cref="WxeFunction"/>.
   /// </returns>
-  public UrlMappingEntry Find (string path)
+  public UrlMappingEntry? Find (string? path)
   {
     if (string.IsNullOrEmpty (path))
       return null;
@@ -323,7 +324,7 @@ public class UrlMappingCollection: CollectionBase
   ///   A <see cref="UrlMappingEntry"/> or <see langword="null"/> if the <paramref name="functionType"/> is not mapped
   ///   to a path.
   /// </returns>
-  public UrlMappingEntry Find (Type functionType)
+  public UrlMappingEntry? Find (Type? functionType)
   {
     if (functionType == null)
       return null;
@@ -340,7 +341,7 @@ public class UrlMappingCollection: CollectionBase
   /// <returns> 
   ///   A <see cref="UrlMappingEntry"/> or <see langword="null"/> if the <paramref name="id"/> could not be found.
   /// </returns>
-  public UrlMappingEntry FindByID (string id)
+  public UrlMappingEntry? FindByID (string? id)
   {
     if (string.IsNullOrEmpty (id))
       return null;

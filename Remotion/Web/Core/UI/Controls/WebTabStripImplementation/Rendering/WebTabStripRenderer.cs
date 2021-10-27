@@ -63,7 +63,7 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
     {
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
 
-      renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock (
+      renderingContext.Control.Page!.ClientScript.RegisterStartupScriptBlock (
           renderingContext.Control,
           typeof (WebTabStrip),
           Guid.NewGuid ().ToString (),

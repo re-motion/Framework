@@ -132,7 +132,7 @@ namespace Remotion.Web.UI.Globalization
         : base (baseName)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("baseName", baseName);
-      Type type = BuildManager.GetType (baseName, throwOnError: false, ignoreCase: false);
+      Type? type = BuildManager.GetType (baseName, throwOnError: false, ignoreCase: false);
       if (type != null)
         SetResourceAssembly (type.Assembly);
     }

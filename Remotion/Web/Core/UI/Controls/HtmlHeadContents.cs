@@ -55,7 +55,7 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("writer", writer);
 
-      var renderingContext = new HtmlHeadContentsRenderingContext (Page.Context, writer, this, htmlHeadElements);
+      var renderingContext = new HtmlHeadContentsRenderingContext (Page!.Context!, writer, this, htmlHeadElements); // TODO RM-8118: not null assertion
       return renderingContext;
     }
 
@@ -64,7 +64,7 @@ namespace Remotion.Web.UI.Controls
       return SafeServiceLocator.Current.GetInstance<IHtmlHeadContentsRenderer> ();
     }
 
-    public new IPage Page
+    public new IPage? Page
     {
       get { return PageWrapper.CastOrCreate (base.Page); }
     }

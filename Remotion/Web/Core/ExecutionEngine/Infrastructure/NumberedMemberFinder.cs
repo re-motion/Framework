@@ -51,7 +51,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       _prefix = prefix;
     }
 
-    private bool PrefixMemberFilter (MemberInfo member, object param)
+    private bool PrefixMemberFilter (MemberInfo member, object? param)
     {
       return GetStepNumber (member.Name) != -1;
     }

@@ -25,7 +25,7 @@ namespace Remotion.Web.UI.Controls.TabbedMenuImplementation
   /// </summary>
   public interface IMenuTab : IWebTab
   {
-    NavigationCommand Command { get; }
+    NavigationCommand? Command { get; }
     NameValueCollection GetUrlParameters ();
     IMenuTab GetActiveTab ();
   }

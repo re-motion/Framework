@@ -113,7 +113,7 @@ namespace Remotion.Web.UI.Controls.Rendering
       htmlTextWriter.RenderEndTag();
     }
 
-    private ValidationErrorsAttributeData GetValidationErrorsAttributeData (string attributeValue, string validationErrorsID)
+    private ValidationErrorsAttributeData GetValidationErrorsAttributeData (string? attributeValue, string validationErrorsID)
     {
       if (string.IsNullOrEmpty (attributeValue))
       {

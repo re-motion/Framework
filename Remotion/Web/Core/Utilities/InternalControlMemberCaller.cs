@@ -35,10 +35,10 @@ namespace Remotion.Web.Utilities
   public class InternalControlMemberCaller : IInternalControlMemberCaller
   {
     private const BindingFlags c_bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic;
-    public static readonly Type InternalControlStateType = typeof (Control).Assembly.GetType ("System.Web.UI.ControlState", true, false);
+    public static readonly Type InternalControlStateType = typeof (Control).Assembly.GetType ("System.Web.UI.ControlState", true, false)!;
 
     //  private System.Web.UI.UpdatePanel._rendered
-    private static readonly FieldInfo s_updatePanelRenderedFieldInfo = typeof (UpdatePanel).GetField ("_rendered", c_bindingFlags);
+    private static readonly FieldInfo s_updatePanelRenderedFieldInfo = typeof (UpdatePanel).GetField ("_rendered", c_bindingFlags)!;
 
     private static readonly Lazy<Action<Control, object>> s_set_ControlState = new Lazy<Action<Control, object>> (
         () =>
@@ -48,7 +48,7 @@ namespace Remotion.Web.Utilities
               c_bindingFlags,
               null,
               new[] { InternalControlStateType },
-              new ParameterModifier[0]);
+              new ParameterModifier[0])!;
           return MethodInfoAdapter.Create (methodInfo).GetFastInvoker<Action<Control, object>>();
         });
 
@@ -70,8 +70,8 @@ namespace Remotion.Web.Utilities
     private static readonly Lazy<Func<Page, PageStatePersister>> s_get_PageStatePersister =
         GetLazyMethod<Func<Page, PageStatePersister>> ("get_PageStatePersister");
 
-    private static readonly Lazy<Func<ControlCollection, string, string>> s_SetCollectionReadOnly =
-        GetLazyMethod<Func<ControlCollection, string, string>> ("SetCollectionReadOnly");
+    private static readonly Lazy<Func<ControlCollection, string?, string>> s_SetCollectionReadOnly =
+        GetLazyMethod<Func<ControlCollection, string?, string>> ("SetCollectionReadOnly");
 
     private static readonly Lazy<Action<Control, HtmlTextWriter, ICollection>> s_RenderChildrenInternal =
         GetLazyMethod<Action<Control, HtmlTextWriter, ICollection>> ("RenderChildrenInternal");
@@ -138,14 +138,14 @@ namespace Remotion.Web.Utilities
 
     /// <summary>Encapsulates the invocation of <see cref="Control"/>'s SaveChildControlState method.</summary>
     /// <param name="control">The <see cref="Control"/> for which SaveChildControlState will be invoked. Must not be <see langword="null" />.</param>
-    public IDictionary SaveChildControlState<TNamingContainer> (TNamingContainer control)
+    public IDictionary? SaveChildControlState<TNamingContainer> (TNamingContainer control)
         where TNamingContainer: Control, INamingContainer
     {
       ArgumentUtility.CheckNotNull ("control", control);
 
       //  private ControlSet System.Web.UI.Page._registeredControlsRequiringControlState
-      var registeredControlsRequiringControlStateFieldInfo = typeof (Page).GetField ("_registeredControlsRequiringControlState", c_bindingFlags);
-      var registeredControlsRequiringControlState = (ICollection) registeredControlsRequiringControlStateFieldInfo.GetValue (control.Page);
+      var registeredControlsRequiringControlStateFieldInfo = typeof (Page).GetField ("_registeredControlsRequiringControlState", c_bindingFlags)!; // TODO RM-8118: not null assertion
+      var registeredControlsRequiringControlState = (ICollection?) registeredControlsRequiringControlStateFieldInfo.GetValue (control.Page);
 
       //LosFormatter only supports Hashtable and HybridDictionary without using native serialization
       var dictionary = new HybridDictionary ();
@@ -176,7 +176,7 @@ namespace Remotion.Web.Utilities
     }
 
     /// <summary>Returns the control states for all controls that are child-controls of the passed <see cref="Control"/>.</summary>
-    public IDictionary GetChildControlState<TNamingContainer> (TNamingContainer control)
+    public IDictionary? GetChildControlState<TNamingContainer> (TNamingContainer control)
         where TNamingContainer: Control, INamingContainer
     {
       ArgumentUtility.CheckNotNull ("control", control);
@@ -184,10 +184,10 @@ namespace Remotion.Web.Utilities
       //LosFormatter only supports Hashtable and HybridDictionary without using native serialization
       var childControlState = new HybridDictionary ();
 
-      var pageStatePersister = GetPageStatePersister (control.Page);
+      var pageStatePersister = GetPageStatePersister (control.Page!);
       var controlStates = (IDictionary) pageStatePersister.ControlState;
 
-      var parentPrefix = control.UniqueID + control.Page.IdSeparator;
+      var parentPrefix = control.UniqueID + control.Page!.IdSeparator;
       foreach (string key in controlStates.Keys)
       {
         if (key.StartsWith (parentPrefix))
@@ -200,7 +200,7 @@ namespace Remotion.Web.Utilities
     }
 
     /// <summary>Sets the control states for the child control of the passed <see cref="Control"/>.</summary>
-    public void SetChildControlState<TNamingContainer> (TNamingContainer control, IDictionary newControlState)
+    public void SetChildControlState<TNamingContainer> (TNamingContainer control, IDictionary? newControlState)
         where TNamingContainer: Control, INamingContainer
     {
       ArgumentUtility.CheckNotNull ("control", control);
@@ -208,7 +208,7 @@ namespace Remotion.Web.Utilities
       if (newControlState == null)
         return;
 
-      var pageStatePersister = GetPageStatePersister (control.Page);
+      var pageStatePersister = GetPageStatePersister (control.Page!);
       var controlState = (IDictionary) pageStatePersister.ControlState;
 
       foreach (string key in newControlState.Keys)
@@ -234,7 +234,7 @@ namespace Remotion.Web.Utilities
       return s_get_PageStatePersister.Value (page);
     }
 
-    public string SetCollectionReadOnly (ControlCollection collection, string exceptionMessage)
+    public string SetCollectionReadOnly (ControlCollection collection, string? exceptionMessage)
     {
       ArgumentUtility.CheckNotNull ("collection", collection);
 
@@ -275,7 +275,7 @@ namespace Remotion.Web.Utilities
       return new Lazy<T> (
           () =>
           {
-            var invokeMethod = typeof (T).GetMethod ("Invoke");
+            var invokeMethod = typeof (T).GetMethod ("Invoke")!; // TODO RM-8118: not null assertion
             var targetType = invokeMethod.GetParameters().First().ParameterType;
             var parameterTypes = invokeMethod.GetParameters().Skip (1).Select (p => p.ParameterType).ToArray();
 

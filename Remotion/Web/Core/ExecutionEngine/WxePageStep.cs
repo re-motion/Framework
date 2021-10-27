@@ -42,16 +42,16 @@ namespace Remotion.Web.ExecutionEngine
     private IWxePageExecutor _pageExecutor = new WxePageExecutor();
     private readonly ResourceObjectBase _page;
     private readonly string _pageToken;
-    private byte[] _pageState;
+    private byte[]? _pageState;
     private bool _isPostBack;
     private bool _isOutOfSequencePostBack;
     private bool _isExecutionStarted;
     private bool _isReturningPostBack;
-    private WxeFunction _returningFunction;
-    private NameValueCollection _postBackCollection;
+    private WxeFunction? _returningFunction;
+    private NameValueCollection? _postBackCollection;
 
     [NonSerialized]
-    private WxeHandler _wxeHandler;
+    private WxeHandler? _wxeHandler;
 
     private IExecutionState _executionState = NullExecutionState.Null;
     private IUserControlExecutor _userControlExecutor = NullUserControlExecutor.Null;
@@ -81,7 +81,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <summary> The URL of the page to be displayed by this <see cref="WxePageStep"/>. </summary>
     public string Page
     {
-      get { return _page.GetResourcePath (Variables); }
+      get { return _page.GetResourcePath (Variables!); } // TODO RM-8118: not null assertion
     }
 
     /// <summary> Gets the currently executing <see cref="WxeStep"/>. </summary>
@@ -181,7 +181,7 @@ namespace Remotion.Web.ExecutionEngine
       ArgumentUtility.CheckNotNull ("subFunction", subFunction);
       ArgumentUtility.CheckNotNull ("sender", sender);
 
-      IWxePage wxePage = userControl.WxePage;
+      IWxePage wxePage = userControl.WxePage!;
       _wxeHandler = wxePage.WxeHandler;
 
       _userControlExecutor = new UserControlExecutor (this, userControl, subFunction, sender, usesEventTarget);
@@ -227,7 +227,7 @@ namespace Remotion.Web.ExecutionEngine
       get { return _isReturningPostBack; }
     }
 
-    public WxeFunction ReturningFunction
+    public WxeFunction? ReturningFunction
     {
       get { return _returningFunction; }
     }
@@ -248,17 +248,17 @@ namespace Remotion.Web.ExecutionEngine
     ///     integrated data handling features to access the data.
     ///   </para>
     /// </remarks>
-    public NameValueCollection PostBackCollection
+    public NameValueCollection? PostBackCollection
     {
       get { return _postBackCollection; }
     }
 
-    public void SetPostBackCollection (NameValueCollection postBackCollection)
+    public void SetPostBackCollection (NameValueCollection? postBackCollection)
     {
       _postBackCollection = postBackCollection;
     }
 
-    public void SetReturnState (WxeFunction returningFunction, bool isReturningPostBack, NameValueCollection previousPostBackCollection)
+    public void SetReturnState (WxeFunction returningFunction, bool isReturningPostBack, NameValueCollection? previousPostBackCollection)
     {
       ArgumentUtility.CheckNotNull ("returningFunction", returningFunction);
 
@@ -293,8 +293,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <param name="state"> An <b>ASP.NET</b> viewstate object. </param>
     public void SavePageStateToPersistenceMedium (object state)
     {
-      MemoryStream outputStream;
-      if (s_viewStateSerializationBufferPool.TryTake (out outputStream))
+      if (s_viewStateSerializationBufferPool.TryTake (out var outputStream))
       {
         outputStream.Position = 0;
       }
@@ -327,7 +326,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <returns> An <b>ASP.NET</b> viewstate object. </returns>
     public object LoadPageStateFromPersistenceMedium ()
     {
-      using (var inputStream = new MemoryStream (_pageState, writable: false))
+      using (var inputStream = new MemoryStream (_pageState!, writable: false)) // TODO RM-8118: not null assertion
       {
         var serializer = new ObjectStateFormatter();
         return serializer.Deserialize (inputStream);
@@ -376,7 +375,7 @@ namespace Remotion.Web.ExecutionEngine
 
     WxeFunction IExecutionStateContext.CurrentFunction
     {
-      get { return ParentFunction; }
+      get { return ParentFunction ?? throw new WxeException ("There must be a function associated to the current step while executing."); }
     }
 
     IExecutionState IExecutionStateContext.ExecutionState

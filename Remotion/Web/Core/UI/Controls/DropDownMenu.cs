@@ -37,21 +37,21 @@ namespace Remotion.Web.UI.Controls
     private ButtonType _buttonType;
     private bool _showTitle = true;
     private string _titleText = "";
-    private IconInfo _titleIcon;
+    private IconInfo? _titleIcon;
     private bool _enableGrouping = true;
     private bool _isBrowserCapableOfScripting;
 
-    private Action<HtmlTextWriter> _renderHeadTitleMethod;
+    private Action<HtmlTextWriter>? _renderHeadTitleMethod;
     private string _getSelectionCount = "";
     private string _loadMenuItemStatus = "";
 
-    public DropDownMenu (IControl ownerControl, Type[] supportedMenuItemTypes)
+    public DropDownMenu (IControl? ownerControl, Type[] supportedMenuItemTypes)
       :base(ownerControl, supportedMenuItemTypes)
     {
       Mode = MenuMode.DropDownMenu;
     }
 
-    public DropDownMenu (IControl ownerControl)
+    public DropDownMenu (IControl? ownerControl)
         : this (ownerControl, new[] { typeof (WebMenuItem) })
     {
     }
@@ -64,7 +64,7 @@ namespace Remotion.Web.UI.Controls
     protected override void OnInit (EventArgs e)
     {
       var clientScriptBahavior = SafeServiceLocator.Current.GetInstance<IClientScriptBehavior>();
-      _isBrowserCapableOfScripting = clientScriptBahavior.IsBrowserCapableOfScripting (Page.Context, this);
+      _isBrowserCapableOfScripting = clientScriptBahavior.IsBrowserCapableOfScripting (Page!.Context, this);
       RegisterHtmlHeadContents (HtmlHeadAppender.Current);
     }
 
@@ -122,7 +122,7 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("writer", writer);
 
-      return new DropDownMenuRenderingContext (Page.Context, writer, this);
+      return new DropDownMenuRenderingContext (Page!.Context!, writer, this); // TODO RM-8118: Not null assertion
     }
 
     public string GetBindOpenEventScript (string elementReference, string menuIDReference, bool moveToMousePosition)
@@ -200,7 +200,7 @@ namespace Remotion.Web.UI.Controls
       set { _titleText = value; }
     }
 
-    Action<HtmlTextWriter> IDropDownMenu.RenderHeadTitleMethod
+    Action<HtmlTextWriter>? IDropDownMenu.RenderHeadTitleMethod
     {
       get
       {
@@ -215,7 +215,7 @@ namespace Remotion.Web.UI.Controls
       get { return ClientID + "_MenuDiv"; }
     }
 
-    public IconInfo TitleIcon
+    public IconInfo? TitleIcon
     {
       get { return _titleIcon; }
       set { _titleIcon = value; }

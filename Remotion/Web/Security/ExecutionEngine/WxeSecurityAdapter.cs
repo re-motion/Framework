@@ -46,7 +46,7 @@ namespace Remotion.Web.Security.ExecutionEngine
       if (SecurityFreeSection.IsActive)
         return;
 
-      WxeDemandTargetPermissionAttribute attribute = GetPermissionAttribute (function.GetType ());
+      WxeDemandTargetPermissionAttribute? attribute = GetPermissionAttribute (function.GetType ());
       if (attribute == null)
         return;
 
@@ -56,12 +56,16 @@ namespace Remotion.Web.Security.ExecutionEngine
       switch (helper.MethodType)
       {
         case MethodType.Instance:
+          Assertion.IsNotNull (helper.MethodName, "MethodName must not be null.");
           securityClient.CheckMethodAccess (helper.GetSecurableObject (function), helper.MethodName);
           break;
         case MethodType.Static:
+          Assertion.IsNotNull (helper.MethodName, "MethodName must not be null.");
+          Assertion.IsNotNull (helper.SecurableClass, "SecurableClass must not be null.");
           securityClient.CheckStaticMethodAccess (helper.SecurableClass, helper.MethodName);
           break;
         case MethodType.Constructor:
+          Assertion.IsNotNull (helper.SecurableClass, "SecurableClass must not be null.");
           securityClient.CheckConstructorAccess (helper.SecurableClass);
           break;
         default:
@@ -78,7 +82,7 @@ namespace Remotion.Web.Security.ExecutionEngine
       if (SecurityFreeSection.IsActive)
         return true;
 
-      WxeDemandTargetPermissionAttribute attribute = GetPermissionAttribute (function.GetType ());
+      WxeDemandTargetPermissionAttribute? attribute = GetPermissionAttribute (function.GetType ());
       if (attribute == null)
         return true;
 
@@ -88,10 +92,14 @@ namespace Remotion.Web.Security.ExecutionEngine
       switch (helper.MethodType)
       {
         case MethodType.Instance:
+          Assertion.IsNotNull (helper.MethodName, "MethodName must not be null.");
           return securityClient.HasMethodAccess (helper.GetSecurableObject (function), helper.MethodName);
         case MethodType.Static:
+          Assertion.IsNotNull (helper.MethodName, "MethodName must not be null.");
+          Assertion.IsNotNull (helper.SecurableClass, "SecurableClass must not be null.");
           return securityClient.HasStaticMethodAccess (helper.SecurableClass, helper.MethodName);
         case MethodType.Constructor:
+          Assertion.IsNotNull (helper.SecurableClass, "SecurableClass must not be null.");
           return securityClient.HasConstructorAccess (helper.SecurableClass);
         default:
           throw new InvalidOperationException (string.Format (
@@ -107,7 +115,7 @@ namespace Remotion.Web.Security.ExecutionEngine
       if (SecurityFreeSection.IsActive)
         return true;
 
-      WxeDemandTargetPermissionAttribute attribute = GetPermissionAttribute (functionType);
+      WxeDemandTargetPermissionAttribute? attribute = GetPermissionAttribute (functionType);
       if (attribute == null)
         return true;
 
@@ -117,10 +125,14 @@ namespace Remotion.Web.Security.ExecutionEngine
       switch (helper.MethodType)
       {
         case MethodType.Instance:
+          Assertion.IsNotNull (helper.MethodName, "MethodName must not be null.");
           return securityClient.HasStatelessMethodAccess (helper.GetTypeOfSecurableObject(), helper.MethodName);
         case MethodType.Static:
+          Assertion.IsNotNull (helper.MethodName, "MethodName must not be null.");
+          Assertion.IsNotNull (helper.SecurableClass, "SecurableClass must not be null.");
           return securityClient.HasStaticMethodAccess (helper.SecurableClass, helper.MethodName);
         case MethodType.Constructor:
+          Assertion.IsNotNull (helper.SecurableClass, "SecurableClass must not be null.");
           return securityClient.HasConstructorAccess (helper.SecurableClass);
         default:
           throw new InvalidOperationException (string.Format (
@@ -129,9 +141,9 @@ namespace Remotion.Web.Security.ExecutionEngine
       }
     }
 
-    private WxeDemandTargetPermissionAttribute GetPermissionAttribute (Type functionType)
+    private WxeDemandTargetPermissionAttribute? GetPermissionAttribute (Type functionType)
     {
-      return (WxeDemandTargetPermissionAttribute) Attribute.GetCustomAttribute (functionType, typeof (WxeDemandTargetPermissionAttribute), true);
+      return (WxeDemandTargetPermissionAttribute?) Attribute.GetCustomAttribute (functionType, typeof (WxeDemandTargetPermissionAttribute), true);
     }
   }
 }

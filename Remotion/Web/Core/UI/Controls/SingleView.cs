@@ -16,6 +16,7 @@
 // 
 using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.ServiceLocation;
@@ -49,6 +50,9 @@ namespace Remotion.Web.UI.Controls
       _bottomControlsStyle = new Style();
     }
 
+    [MemberNotNull (nameof (_view))]
+    [MemberNotNull (nameof (_topControl))]
+    [MemberNotNull (nameof (_bottomControl))]
     private void CreateControls ()
     {
       _view = new PlaceHolder();
@@ -141,7 +145,7 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("writer", writer);
 
-      return new SingleViewRenderingContext (Page.Context, writer, this);
+      return new SingleViewRenderingContext (Page!.Context!, writer, this); // TODO RM-8118: not null assertion
     }
 
     protected string ViewClientID
@@ -159,7 +163,7 @@ namespace Remotion.Web.UI.Controls
       get { return ClientID + "_Wrapper"; }
     }
 
-    public new IPage Page
+    public new IPage? Page
     {
       get { return PageWrapper.CastOrCreate (base.Page); }
     }

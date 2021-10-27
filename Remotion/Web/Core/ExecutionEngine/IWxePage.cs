@@ -42,7 +42,7 @@ namespace Remotion.Web.ExecutionEngine
     bool IsReturningPostBack { get; }
 
     /// <summary> Gets the WXE function that has been executed in the current page. </summary>
-    WxeFunction ReturningFunction { get; }
+    WxeFunction? ReturningFunction { get; }
 
     /// <summary>
     ///   Gets a flag that determines whether to abort the session upon closing the window. 

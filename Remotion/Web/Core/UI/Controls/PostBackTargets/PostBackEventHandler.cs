@@ -30,7 +30,7 @@ namespace Remotion.Web.UI.Controls.PostBackTargets
   /// </remarks>
   public class PostBackEventHandler : Control, IPostBackEventHandler
   {
-    public event EventHandler<PostBackEventHandlerEventArgs> PostBack;
+    public event EventHandler<PostBackEventHandlerEventArgs>? PostBack;
 
     public void RaisePostBackEvent (string eventArgument)
     {

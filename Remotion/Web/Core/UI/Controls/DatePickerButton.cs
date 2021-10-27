@@ -46,9 +46,9 @@ namespace Remotion.Web.UI.Controls
       get { return _datePickerButtonStyle; }
     }
 
-    public string ContainerControlID { get; set; }
+    public string? ContainerControlID { get; set; }
 
-    public string TargetControlID { get; set; }
+    public string? TargetControlID { get; set; }
 
     protected override void OnInit (EventArgs e)
     {
@@ -64,12 +64,12 @@ namespace Remotion.Web.UI.Controls
       renderer.Render (CreateRenderingContext(writer));
     }
 
-    IControl IDatePickerButton.Parent
+    IControl? IDatePickerButton.Parent
     {
-      get { return (IControl) Parent; }
+      get { return (IControl?) Parent; }
     }
 
-    public new IPage Page
+    public new IPage? Page
     {
       get { return PageWrapper.CastOrCreate (base.Page); }
     }
@@ -91,7 +91,7 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("writer", writer);
 
-      return new DatePickerButtonRenderingContext (Page.Context, writer, this);
+      return new DatePickerButtonRenderingContext (Page!.Context!, writer, this); // TODO RM-8118: not null assertions
     }
 
     string IControlWithDiagnosticMetadata.ControlType

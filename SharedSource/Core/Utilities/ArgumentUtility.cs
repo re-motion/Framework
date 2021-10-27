@@ -89,7 +89,7 @@ namespace Remotion.Utilities
 #endif
     public static string CheckNotNullOrEmpty (
         [InvokerParameterName] string argumentName,
-        [AssertionCondition (AssertionConditionType.IS_NOT_NULL)] string actualValue)
+        [AssertionCondition (AssertionConditionType.IS_NOT_NULL), System.Diagnostics.CodeAnalysis.NotNull] string actualValue)
     {
       if (actualValue == null)
         throw new ArgumentNullException (argumentName);
@@ -320,7 +320,7 @@ namespace Remotion.Utilities
     /// <exception cref="ArgumentException">The <paramref name="actualValue"/> is an instance of another type.</exception>
     public static TExpected CheckNotNullAndType<TExpected> (
         [InvokerParameterName] string argumentName,
-        [AssertionCondition (AssertionConditionType.IS_NOT_NULL)] [NoEnumeration] object actualValue)
+        [AssertionCondition (AssertionConditionType.IS_NOT_NULL)] [NoEnumeration] [System.Diagnostics.CodeAnalysis.NotNull] object actualValue)
         where TExpected : notnull
     {
       if (actualValue == null)
@@ -505,7 +505,7 @@ namespace Remotion.Utilities
     }
 
     [MustUseReturnValue]
-    public static ArgumentException CreateArgumentTypeException ([InvokerParameterName] string argumentName, Type? actualType, Type expectedType)
+    public static ArgumentException CreateArgumentTypeException ([InvokerParameterName] string argumentName, Type? actualType, Type? expectedType)
     {
       string actualTypeName = actualType != null ? actualType.ToString() : "<null>";
       if (expectedType == null)

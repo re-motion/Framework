@@ -28,9 +28,9 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     private readonly WxeFunction _function;
     private readonly IWxeFunctionExecutionListener _innerListener;
     [NonSerialized]
-    private IWxeSecurityAdapter _wxeSecurityAdapter;
+    private IWxeSecurityAdapter? _wxeSecurityAdapter;
 
-    public SecurityExecutionListener (WxeFunction function, IWxeFunctionExecutionListener innerListener, [CanBeNull] IWxeSecurityAdapter wxeSecurityAdapter)
+    public SecurityExecutionListener (WxeFunction function, IWxeFunctionExecutionListener innerListener, [CanBeNull] IWxeSecurityAdapter? wxeSecurityAdapter)
     {
       ArgumentUtility.CheckNotNull ("function", function);
       ArgumentUtility.CheckNotNull ("innerListener", innerListener);
@@ -96,7 +96,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       _innerListener.OnExecutionFail (context, exception);
     }
 
-    public void OnDeserialization (object sender)
+    public void OnDeserialization (object? sender)
     {
       _wxeSecurityAdapter = WxeFunction.GetWxeSecurityAdapter();
     }

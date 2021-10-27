@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Web;
 using System.Web.UI;
 using Remotion.Collections;
@@ -30,15 +31,15 @@ namespace Remotion.Web.ExecutionEngine
 
   public class WxeTemplateControlInfo
   {
-    private WxeHandler _wxeHandler;
-    private WxePageStep _currentPageStep;
-    private WxeUserControlStep _currentUserControlStep;
-    private WxeFunction _currentPageFunction;
-    private WxeFunction _currentUserControlFunction;
+    private WxeHandler? _wxeHandler;
+    private WxePageStep? _currentPageStep;
+    private WxeUserControlStep? _currentUserControlStep;
+    private WxeFunction? _currentPageFunction;
+    private WxeFunction? _currentUserControlFunction;
 
     private readonly IWxeTemplateControl _control;
     /// <summary> Caches the <see cref="ResourceManagerSet"/> for this control. </summary>
-    private ResourceManagerSet _cachedResourceManager;
+    private ResourceManagerSet? _cachedResourceManager;
     
     public WxeTemplateControlInfo (IWxeTemplateControl control)
     {
@@ -47,6 +48,8 @@ namespace Remotion.Web.ExecutionEngine
       _control = control;
     }
 
+    [MemberNotNull (nameof (_wxeHandler))]
+    [MemberNotNull (nameof (_currentPageFunction))]
     public virtual void Initialize (HttpContext context)
     {
       ArgumentUtility.CheckNotNull ("context", context);
@@ -57,7 +60,7 @@ namespace Remotion.Web.ExecutionEngine
       }
       else
       {
-        IWxePage wxePage = _control.Page as IWxePage;
+        IWxePage? wxePage = _control.Page as IWxePage;
         if (wxePage == null)
           throw new InvalidOperationException (string.Format ("'{0}' can only be added to a Page implementing the IWxePage interface.", _control.GetType ().GetFullNameSafe()));
         _wxeHandler = wxePage.WxeHandler;
@@ -66,7 +69,7 @@ namespace Remotion.Web.ExecutionEngine
       {
         throw new HttpException (string.Format ("No current WxeHandler found. Most likely cause of the exception: "
             + "The page '{0}' has been called directly instead of using a WXE Handler to invoke the associated WXE Function.",
-            _control.Page.GetType ()));
+            _control.Page!.GetType ()));
       }
 
 
@@ -84,32 +87,32 @@ namespace Remotion.Web.ExecutionEngine
         _currentPageStep = (WxePageStep) executingStep;
       }
 
-      _currentPageFunction = WxeStep.GetFunction (_currentPageStep);
+      _currentPageFunction = WxeStep.GetFunction (_currentPageStep)!; // TODO RM-8118: not null assertion
     }
 
     public WxeHandler WxeHandler
     {
-      get { return _wxeHandler; }
+      get { return Assertion.IsNotNull (_wxeHandler, "_wxeHandler must be initialized before accessing it."); }
     }
 
     public WxePageStep CurrentPageStep
     {
-      get { return _currentPageStep; }
+      get { return Assertion.IsNotNull (_currentPageStep, "_currentPageStep must be initialized before accessing it."); }
     }
 
-    public WxeUserControlStep CurrentUserControlStep
+    public WxeUserControlStep? CurrentUserControlStep
     {
       get { return _currentUserControlStep; }
     }
 
     public WxeFunction CurrentPageFunction
     {
-      get { return _currentPageFunction; }
+      get { return Assertion.IsNotNull (_currentPageFunction, "_currentPageFunction must be initialized before accessing it."); }
     }
 
     public WxeFunction CurrentFunction
     {
-      get { return _currentUserControlFunction ?? _currentPageFunction; }
+      get { return _currentUserControlFunction ?? CurrentPageFunction; }
     }
 
     public NameObjectCollection PageVariables
@@ -117,7 +120,7 @@ namespace Remotion.Web.ExecutionEngine
       get
       {
         Assertion.IsNotNull (_currentPageStep);
-        return _currentPageStep.Variables;
+        return Assertion.IsNotNull (_currentPageStep.Variables, "_currentPageStep.Variables must not be null.");
       }
     }
 
@@ -126,7 +129,8 @@ namespace Remotion.Web.ExecutionEngine
       get 
       {
         Assertion.IsNotNull (_currentPageStep);
-        return ((WxeStep) _currentUserControlStep ?? _currentPageStep).Variables;
+        var variables = ((WxeStep?) _currentUserControlStep ?? _currentPageStep).Variables;
+        return Assertion.IsNotNull (variables, "Variables of _currentUserControlStep or _currentPageStep must not be null.");
       }
     }
 

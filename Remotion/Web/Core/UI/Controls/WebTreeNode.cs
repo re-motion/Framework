@@ -29,19 +29,19 @@ namespace Remotion.Web.UI.Controls
   public class WebTreeNode : IControlItem
   {
     /// <summary> The control to which this object belongs. </summary>
-    private IControl _ownerControl;
+    private IControl? _ownerControl;
 
     private string _itemID = string.Empty;
     private string _text = string.Empty;
     private string _toolTip = string.Empty;
     private IconInfo _icon;
-    private Badge _badge;
+    private Badge? _badge;
     private string _menuID = string.Empty;
     private string _category = string.Empty;
 
     private readonly WebTreeNodeCollection _children;
-    private WebTreeView _treeView;
-    private WebTreeNode _parentNode;
+    private WebTreeView? _treeView;
+    private WebTreeNode? _parentNode;
     private bool _isExpanded;
     private bool _isEvaluated;
     private bool _isSelected;
@@ -77,6 +77,7 @@ namespace Remotion.Web.UI.Controls
     {
     }
 
+#nullable disable
     /// <summary> Initalizes a new instance. For VS.NET Designer use only. </summary>
     /// <exclude/>
     [EditorBrowsable (EditorBrowsableState.Never)]
@@ -85,6 +86,7 @@ namespace Remotion.Web.UI.Controls
       _children = new WebTreeNodeCollection (null);
       _children.SetParent (null, this);
     }
+#nullable restore
 
     //  /// <summary> Collapses the current node. </summary>
     //  public void Collapse()
@@ -139,7 +141,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Sets this node's <see cref="WebTreeView"/> and parent <see cref="WebTreeNode"/>. </summary>
-    protected internal void SetParent (WebTreeView treeView, WebTreeNode parentNode)
+    protected internal void SetParent (WebTreeView? treeView, WebTreeNode? parentNode)
     {
       _treeView = treeView;
       if (_selectDesired == 1)
@@ -200,7 +202,7 @@ namespace Remotion.Web.UI.Controls
       ArgumentUtility.CheckNotNullOrEmpty ("value", value);
       if (! string.IsNullOrEmpty (value))
       {
-        WebTreeNodeCollection nodes = null;
+        WebTreeNodeCollection? nodes = null;
         if (ParentNode != null)
           nodes = ParentNode.Children;
         else if (TreeView != null)
@@ -261,7 +263,7 @@ namespace Remotion.Web.UI.Controls
     [Category ("Appearance")]
     [Description ("The badge displayed besides this tree node.")]
     [NotifyParentProperty (true)]
-    public virtual Badge Badge
+    public virtual Badge? Badge
     {
       get { return _badge; }
       set { _badge = value; }
@@ -304,7 +306,7 @@ namespace Remotion.Web.UI.Controls
     [MergableProperty (false)]
     //  Default category
     [Description ("The child nodes contained in this tree node.")]
-    [DefaultValue ((string) null)]
+    [DefaultValue ((string?) null)]
     public virtual WebTreeNodeCollection Children
     {
       get { return _children; }
@@ -313,7 +315,7 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Gets the <see cref="WebTreeView"/> to which this node belongs. </summary>
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     [Browsable (false)]
-    public WebTreeView TreeView
+    public WebTreeView? TreeView
     {
       get { return _treeView; }
     }
@@ -321,7 +323,7 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Gets the parent <see cref="WebTreeNode"/> of this node. </summary>
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     [Browsable (false)]
-    public WebTreeNode ParentNode
+    public WebTreeNode? ParentNode
     {
       get { return _parentNode; }
     }
@@ -373,13 +375,13 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Gets or sets the control to which this object belongs. </summary>
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     [Browsable (false)]
-    public IControl OwnerControl
+    public IControl? OwnerControl
     {
       get { return OwnerControlImplementation; }
       set { OwnerControlImplementation = value; }
     }
 
-    protected virtual IControl OwnerControlImplementation
+    protected virtual IControl? OwnerControlImplementation
     {
       get { return _ownerControl; }
       set
@@ -399,7 +401,7 @@ namespace Remotion.Web.UI.Controls
       ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
       ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
 
-      string key = ResourceManagerUtility.GetGlobalResourceKey (Text);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey (Text);
       if (! string.IsNullOrEmpty (key))
         Text = resourceManager.GetString (key);
 

@@ -230,7 +230,7 @@ namespace Remotion.Utilities
     /// <summary>
     /// Compares two strings using the invariant culture.
     /// </summary>
-    public static bool AreEqual (string strA, string strB)
+    public static bool AreEqual (string? strA, string? strB)
     {
       return AreEqual (strA, strB, false);
     }
@@ -238,7 +238,7 @@ namespace Remotion.Utilities
     /// <summary>
     /// Compares two strings using the invariant culture.
     /// </summary>
-    public static bool AreEqual (string strA, string strB, bool ignoreCase)
+    public static bool AreEqual (string? strA, string? strB, bool ignoreCase)
     {
       return 0 == String.Compare (strA, strB, ignoreCase, CultureInfo.InvariantCulture);
     }

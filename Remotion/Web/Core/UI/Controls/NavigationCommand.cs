@@ -41,8 +41,8 @@ namespace Remotion.Web.UI.Controls
 
     public NavigationCommand (
         CommandType defaultType,
-        [CanBeNull] IWebSecurityAdapter webSecurityAdapter,
-        [CanBeNull] IWxeSecurityAdapter wxeSecurityAdapter)
+        [CanBeNull] IWebSecurityAdapter? webSecurityAdapter,
+        [CanBeNull] IWxeSecurityAdapter? wxeSecurityAdapter)
         : base (defaultType, webSecurityAdapter, wxeSecurityAdapter)
     {
     }
@@ -77,7 +77,7 @@ namespace Remotion.Web.UI.Controls
     /// </exception> 
     protected override CommandInfo GetCommandInfoForWxeFunctionCommand (
         string postBackEvent,
-        string onClick,
+        string? onClick,
         NameValueCollection additionalUrlParameters,
         bool includeNavigationUrlParameters)
     {

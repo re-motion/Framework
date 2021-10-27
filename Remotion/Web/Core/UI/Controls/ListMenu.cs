@@ -28,13 +28,13 @@ namespace Remotion.Web.UI.Controls
   {
     private ListMenuLineBreaks _lineBreaks = ListMenuLineBreaks.All;
 
-    public ListMenu (IControl ownerControl, Type[] supportedWebMenuItemTypes)
+    public ListMenu (IControl? ownerControl, Type[] supportedWebMenuItemTypes)
         : base (ownerControl, supportedWebMenuItemTypes)
     {
       EnableClientScript = true;
     }
 
-    public ListMenu (IControl ownerControl)
+    public ListMenu (IControl? ownerControl)
         : this (ownerControl, new[] { typeof (WebMenuItem) })
     {
     }
@@ -84,7 +84,7 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("writer", writer);
 
-      return new ListMenuRenderingContext (Page.Context, writer, this);
+      return new ListMenuRenderingContext (Page!.Context!, writer, this); // TODO RM-8118: not null assertion
     }
 
     protected override void OnPreRender (EventArgs e)

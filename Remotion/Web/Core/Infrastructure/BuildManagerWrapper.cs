@@ -40,19 +40,19 @@ namespace Remotion.Web.Infrastructure
         _innerBuildManager = new NonHostedBuildManager();
     }
 
-    public Type GetType (string typeName, bool throwOnError, bool ignoreCase)
+    public Type? GetType (string typeName, bool throwOnError, bool ignoreCase)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("typeName", typeName);
       return _innerBuildManager.GetType (typeName, throwOnError, ignoreCase);
     }
 
-    public Type GetCompiledType (string virtualPath)
+    public Type? GetCompiledType (string virtualPath)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("virtualPath", virtualPath);
       return _innerBuildManager.GetCompiledType (virtualPath);
     }
 
-    public IList CodeAssemblies
+    public IList? CodeAssemblies
     {
       get { return _innerBuildManager.CodeAssemblies; }
     }

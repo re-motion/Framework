@@ -31,7 +31,7 @@ namespace Remotion.Web.UI.Controls
     private readonly IControl _ownerControl;
     private bool _isReadOnly;
 
-    protected MenuBase (IControl ownerControl, Type[] supportedMenuItemTypes)
+    protected MenuBase (IControl? ownerControl, Type[] supportedMenuItemTypes)
     {
       if (ownerControl == null)
         ownerControl = this;
@@ -49,7 +49,7 @@ namespace Remotion.Web.UI.Controls
     [ListBindable (false)]
     [Category ("Behavior")]
     [Description ("The menu items displayed by this drop down menu.")]
-    [DefaultValue ((string) null)]
+    [DefaultValue ((string?) null)]
     public WebMenuItemCollection MenuItems
     {
       get { return _menuItems; }
@@ -117,12 +117,12 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Occurs when a command of type <see cref="CommandType.Event"/> is clicked. </summary>
     [Category ("Action")]
     [Description ("Occurs when a command of type Event is clicked.")]
-    public virtual event WebMenuItemClickEventHandler EventCommandClick;
+    public virtual event WebMenuItemClickEventHandler? EventCommandClick;
 
     /// <summary> Occurs when a command of type <see cref="CommandType.WxeFunction"/> is clicked. </summary>
     [Category ("Action")]
     [Description ("Occurs when a command of type WxeFunction is clicked.")]
-    public virtual event WebMenuItemClickEventHandler WxeFunctionCommandClick;
+    public virtual event WebMenuItemClickEventHandler? WxeFunctionCommandClick;
 
     /// <summary> Fires the <see cref="MenuBase.EventCommandClick"/> event. </summary>
     protected virtual void OnEventCommandClick (WebMenuItem item)
@@ -149,7 +149,7 @@ namespace Remotion.Web.UI.Controls
       }
     }
 
-    public new IPage Page
+    public new IPage? Page
     {
       get { return PageWrapper.CastOrCreate (base.Page); }
     }

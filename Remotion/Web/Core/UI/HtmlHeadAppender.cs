@@ -62,7 +62,7 @@ namespace Remotion.Web.UI
       get { return s_current.Current; }
     }
 
-    private readonly Dictionary<string, object> _registeredKeys = new Dictionary<string, object>();
+    private readonly Dictionary<string, object?> _registeredKeys = new Dictionary<string, object?>();
 
     private readonly MultiDictionary<Priority, HtmlHeadElement> _prioritizedHeadElements = new MultiDictionary<Priority, HtmlHeadElement>();
 
@@ -70,7 +70,7 @@ namespace Remotion.Web.UI
     private bool _hasAppendExecuted;
 
     private WeakReference _handler = new WeakReference (null);
-    private TitleTag _title;
+    private TitleTag? _title;
 
     /// <remarks>
     ///   Factory pattern. No public construction.

@@ -30,7 +30,7 @@ public abstract class WxeStep
 {
   /// <summary> Gets the <see cref="WxeFunction"/> for the passed <see cref="WxeStep"/>. </summary>
   /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/GetFunction/*' />
-  public static WxeFunction GetFunction (WxeStep step)
+  public static WxeFunction? GetFunction (WxeStep? step)
   {
     return WxeStep.GetStepByType<WxeFunction> (step);
   }
@@ -44,14 +44,14 @@ public abstract class WxeStep
   ///   The first <see cref="WxeStep"/> of the specified <typeparamref name="T"/> or <see langword="null"/> if the 
   ///   neither the <paramref name="step"/> nor it's parent steps are of a matching type. 
   /// </returns>
-  protected static T GetStepByType<T> (WxeStep step)
+  protected static T? GetStepByType<T> (WxeStep? step)
       where T : WxeStep
   {
     for (;
           step != null;
           step = step.ParentStep)
     {
-      T expectedStep = step as T;
+      T? expectedStep = step as T;
       if (expectedStep != null)
         return expectedStep;
     }
@@ -65,7 +65,7 @@ public abstract class WxeStep
     return new WxeVariableReference (localVariable);
   }
 
-  private WxeStep _parentStep = null;
+  private WxeStep? _parentStep = null;
   private bool _isAborted = false;
   /// <summary> 
   ///   <see langword="true"/> during the execution of <see cref="Abort"/>. Used to prevent circular aborting.
@@ -88,7 +88,7 @@ public abstract class WxeStep
   [EditorBrowsable (EditorBrowsableState.Never)]
   public void Execute ()
   {
-    Execute (WxeContext.Current);
+    Execute (WxeContext.Current!); // TODO RM-8118: not null assertion
   }
 
   /// <summary> Executes the <see cref="WxeStep"/>. </summary>
@@ -104,14 +104,14 @@ public abstract class WxeStep
 
   /// <summary> Gets the scope's variables collection. </summary>
   /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/Variables/*' />
-  public virtual NameObjectCollection Variables
+  public virtual NameObjectCollection? Variables
   {
     get { return (_parentStep == null) ? null : _parentStep.Variables; }
   }
 
   /// <summary> Gets the parent step of the the <see cref="WxeStep"/>. </summary>
   /// <value> The <see cref="WxeStep"/> assigned using <see cref="SetParentStep"/>. </value>
-  public WxeStep ParentStep
+  public WxeStep? ParentStep
   {
     get { return _parentStep; }
   }
@@ -127,14 +127,14 @@ public abstract class WxeStep
 
   /// <summary> Gets the step currently being executed. </summary>
   /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/ExecutingStep/*' />
-  public virtual WxeStep ExecutingStep 
+  public virtual WxeStep ExecutingStep
   {
     get { return this; }
   }
 
   /// <summary> Gets the root <see cref="WxeFunction"/> of the execution hierarchy. </summary>
   /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/RootFunction/*' />
-  public WxeFunction RootFunction
+  public WxeFunction? RootFunction
   {
     get
     {
@@ -147,7 +147,7 @@ public abstract class WxeStep
 
   /// <summary> Gets the parent <see cref="WxeFunction"/> for this <see cref="WxeStep"/>. </summary>
   /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/ParentFunction/*' />
-  public WxeFunction ParentFunction
+  public WxeFunction? ParentFunction
   {
     get { return WxeStep.GetFunction (ParentStep); }
   }
@@ -157,11 +157,11 @@ public abstract class WxeStep
   ///   <see cref="WxeStep"/>.
   /// </summary>
   /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/CurrentException/*' />
-  protected Exception CurrentException
+  protected Exception? CurrentException
   {
     get 
     {
-      for (WxeStep step = this;
+      for (WxeStep? step = this;
            step != null;
            step = step.ParentStep)
       {
