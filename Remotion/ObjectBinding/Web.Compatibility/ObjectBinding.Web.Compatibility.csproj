@@ -9,7 +9,6 @@
     <Description>Contains infrastructure for backwards-compatibility of 2-way databinding with business objects.</Description>
     <AssemblyName>Remotion.ObjectBinding.Web.Compatibility</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
-    <Nullable>disable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
