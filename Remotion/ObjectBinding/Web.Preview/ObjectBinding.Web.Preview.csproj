@@ -10,7 +10,6 @@
     <Description>Contains pre-release versions of new web controls for 2-way databinding with business objects.</Description>
     <AssemblyName>Remotion.ObjectBinding.Web.Preview</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
-    <Nullable>disable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
