@@ -46,7 +46,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    protected override TRowControlObject? CreateRowControlObject (
+    protected override TRowControlObject CreateRowControlObject (
         string id,
         ElementScope rowScope,
         IBocListRowControlObjectHostAccessor accessor)
@@ -55,7 +55,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       ArgumentUtility.CheckNotNull ("rowScope", rowScope);
       ArgumentUtility.CheckNotNull ("accessor", accessor);
 
-      return (TRowControlObject?) Activator.CreateInstance (typeof (TRowControlObject), accessor, Context.CloneForControl (rowScope));
+      return (TRowControlObject) Activator.CreateInstance (typeof (TRowControlObject), accessor, Context.CloneForControl (rowScope))!;
     }
 
     /// <inheritdoc/>
