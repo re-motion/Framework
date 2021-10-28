@@ -53,7 +53,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    public UnspecifiedPageObject ExecuteCommand (IWebTestActionOptions actionOptions = null)
+    public UnspecifiedPageObject ExecuteCommand (IWebTestActionOptions? actionOptions = null)
     {
       return _impl.ExecuteCommand (actionOptions);
     }

@@ -58,7 +58,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// Sets the state of the <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValue"/> to <paramref name="newState"/>.
     /// </summary>
     /// <exception cref="WebTestException">The element is currently disabled.</exception>
-    public UnspecifiedPageObject SetTo (bool? newState, [CanBeNull] IWebTestActionOptions actionOptions = null)
+    public UnspecifiedPageObject SetTo (bool? newState, [CanBeNull] IWebTestActionOptions? actionOptions = null)
     {
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException (Driver);
@@ -115,7 +115,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       return new[] { string.Format ("{0}_Value", GetHtmlID()) };
     }
 
-    private UnspecifiedPageObject Click (int numberOfClicks, IWebTestActionOptions actionOptions)
+    private UnspecifiedPageObject Click (int numberOfClicks, IWebTestActionOptions? actionOptions)
     {
       var linkScope = GetLinkScope();
 

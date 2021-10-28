@@ -41,14 +41,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
     }
 
     /// <inheritdoc/>
-    protected override TBocListControlObject CreateControlObject (
+    protected override TBocListControlObject? CreateControlObject (
         ControlObjectContext newControlObjectContext,
         ControlSelectionContext controlSelectionContext)
     {
       ArgumentUtility.CheckNotNull ("controlSelectionContext", controlSelectionContext);
       ArgumentUtility.CheckNotNull ("newControlObjectContext", newControlObjectContext);
 
-      return (TBocListControlObject) Activator.CreateInstance (typeof (TBocListControlObject), newControlObjectContext);
+      return (TBocListControlObject?) Activator.CreateInstance (typeof (TBocListControlObject), newControlObjectContext);
     }
   }
 }

@@ -68,7 +68,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    TRowControlObject IFluentControlObjectWithRowsWhereColumnContains<TRowControlObject>.ColumnWithItemIDContainsExactly (
+    TRowControlObject? IFluentControlObjectWithRowsWhereColumnContains<TRowControlObject>.ColumnWithItemIDContainsExactly (
         string itemID,
         string cellText)
     {
@@ -80,7 +80,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    TRowControlObject IFluentControlObjectWithRowsWhereColumnContains<TRowControlObject>.ColumnWithItemIDContains (
+    TRowControlObject? IFluentControlObjectWithRowsWhereColumnContains<TRowControlObject>.ColumnWithItemIDContains (
         string itemID,
         string containsCellText)
     {
@@ -92,7 +92,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    TRowControlObject IFluentControlObjectWithRowsWhereColumnContains<TRowControlObject>.ColumnWithIndexContainsExactly (
+    TRowControlObject? IFluentControlObjectWithRowsWhereColumnContains<TRowControlObject>.ColumnWithIndexContainsExactly (
         int oneBasedIndex,
         string cellText)
     {
@@ -103,7 +103,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    TRowControlObject IFluentControlObjectWithRowsWhereColumnContains<TRowControlObject>.ColumnWithIndexContains (
+    TRowControlObject? IFluentControlObjectWithRowsWhereColumnContains<TRowControlObject>.ColumnWithIndexContains (
         int oneBasedIndex,
         string containsCellText)
     {
@@ -114,7 +114,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    TRowControlObject IFluentControlObjectWithRowsWhereColumnContains<TRowControlObject>.ColumnWithTitleContainsExactly (
+    TRowControlObject? IFluentControlObjectWithRowsWhereColumnContains<TRowControlObject>.ColumnWithTitleContainsExactly (
         string title,
         string cellText)
     {
@@ -126,7 +126,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    TRowControlObject IFluentControlObjectWithRowsWhereColumnContains<TRowControlObject>.ColumnWithTitleContains (
+    TRowControlObject? IFluentControlObjectWithRowsWhereColumnContains<TRowControlObject>.ColumnWithTitleContains (
         string title,
         string containsCellText)
     {
@@ -137,7 +137,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       return GetRowFromCell (cell);
     }
 
-    private TRowControlObject GetRowFromCell (BocListCellControlObject cell)
+    private TRowControlObject? GetRowFromCell (BocListCellControlObject cell)
     {
       var rowScope = cell.Scope.FindXPath ("..");
       return CreateRowControlObject (GetHtmlID(), rowScope, Accessor);
@@ -326,7 +326,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <summary>
     /// Changes the list's view to the view given by <paramref name="itemID"/>.
     /// </summary>
-    public void ChangeViewTo ([NotNull] string itemID, [CanBeNull] IWebTestActionOptions actionOptions = null)
+    public void ChangeViewTo ([NotNull] string itemID, [CanBeNull] IWebTestActionOptions? actionOptions = null)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
 
@@ -336,7 +336,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <summary>
     /// Changes the list's view to the view given by <paramref name="oneBasedIndex"/>.
     /// </summary>
-    public void ChangeViewTo (int oneBasedIndex, [CanBeNull] IWebTestActionOptions actionOptions = null)
+    public void ChangeViewTo (int oneBasedIndex, [CanBeNull] IWebTestActionOptions? actionOptions = null)
     {
       ChangeViewTo (scope => scope.SelectOptionByIndex (oneBasedIndex), actionOptions);
     }
@@ -344,14 +344,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <summary>
     /// Changes the list's view to the view given by <paramref name="label"/>.
     /// </summary>
-    public void ChangeViewToByLabel ([NotNull] string label, [CanBeNull] IWebTestActionOptions actionOptions = null)
+    public void ChangeViewToByLabel ([NotNull] string label, [CanBeNull] IWebTestActionOptions? actionOptions = null)
     {
       ArgumentUtility.CheckNotNull ("label", label);
 
       ChangeViewTo (scope => scope.SelectOption (label), actionOptions);
     }
 
-    private void ChangeViewTo ([NotNull] Action<ElementScope> selectAction, [CanBeNull] IWebTestActionOptions actionOptions)
+    private void ChangeViewTo ([NotNull] Action<ElementScope> selectAction, [CanBeNull] IWebTestActionOptions? actionOptions)
     {
       ArgumentUtility.CheckNotNull ("selectAction", selectAction);
 
@@ -370,7 +370,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       ArgumentUtility.CheckNotNull ("rowScope", rowScope);
       ArgumentUtility.CheckNotNull ("accessor", accessor);
 
-      return (TRowControlObject) Activator.CreateInstance (typeof (TRowControlObject), accessor, Context.CloneForControl (rowScope));
+      return (TRowControlObject?) Activator.CreateInstance (typeof (TRowControlObject), accessor, Context.CloneForControl (rowScope));
     }
 
     /// <inheritdoc/>

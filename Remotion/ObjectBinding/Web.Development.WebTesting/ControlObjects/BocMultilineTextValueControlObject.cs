@@ -49,7 +49,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    public UnspecifiedPageObject FillWith (string text, IWebTestActionOptions actionOptions = null)
+    public UnspecifiedPageObject FillWith (string text, IWebTestActionOptions? actionOptions = null)
     {
       ArgumentUtility.CheckNotNull ("text", text);
 
@@ -65,7 +65,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <summary>
     /// Calls <see cref="FillWith(string,IWebTestActionOptions)"/> by joining the given lines with new line characters.
     /// </summary>
-    public UnspecifiedPageObject FillWith ([NotNull] string[] lines, IWebTestActionOptions actionOptions = null)
+    public UnspecifiedPageObject FillWith ([NotNull] string[] lines, IWebTestActionOptions? actionOptions = null)
     {
       ArgumentUtility.CheckNotNull ("lines", lines);
 
@@ -79,7 +79,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    public UnspecifiedPageObject FillWith (string text, FinishInputWithAction finishInputWith, IWebTestActionOptions actionOptions = null)
+    public UnspecifiedPageObject FillWith (string text, FinishInputWithAction finishInputWith, IWebTestActionOptions? actionOptions = null)
     {
       ArgumentUtility.CheckNotNull ("text", text);
       ArgumentUtility.CheckNotNull ("finishInputWith", finishInputWith);
@@ -102,7 +102,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public UnspecifiedPageObject FillWith (
         [NotNull] string[] lines,
         FinishInputWithAction finishInputWith,
-        IWebTestActionOptions actionOptions = null)
+        IWebTestActionOptions? actionOptions = null)
     {
       ArgumentUtility.CheckNotNull ("lines", lines);
 
@@ -144,7 +144,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     private IWebTestActionOptions MergeWithDefaultActionOptions (
-        IWebTestActionOptions userDefinedActionOptions,
+        IWebTestActionOptions? userDefinedActionOptions,
         FinishInputWithAction finishInputWith)
     {
       if (finishInputWith == FinishInput.Promptly)

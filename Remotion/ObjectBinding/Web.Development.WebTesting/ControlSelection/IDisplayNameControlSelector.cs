@@ -46,7 +46,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlSelection
     /// <param name="displayName">The display name of the <see cref="ControlObject"/>. Must not be <see langword="null"/> or empty.</param>
     /// <returns>The <see cref="ControlObject"/> for the selected control, or <see langword="null"/> if no control could be found.</returns>
     [CanBeNull]
-    TControlObject SelectOptionalPerDisplayName ([NotNull] ControlSelectionContext context, [NotNull] string displayName);
+    TControlObject? SelectOptionalPerDisplayName ([NotNull] ControlSelectionContext context, [NotNull] string displayName);
     
     /// <summary>
     /// Checks if a control within the given <paramref name="context"/> using the given <paramref name="displayName"/> exists.

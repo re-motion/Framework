@@ -35,12 +35,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlSelection
   {
     private readonly IDomainPropertyControlSelector<TControlObject> _controlSelector;
     private readonly string _domainProperty;
-    private readonly string _domainClass;
+    private readonly string? _domainClass;
 
     public DomainPropertyControlSelectionCommand (
         [NotNull] IDomainPropertyControlSelector<TControlObject> controlSelector,
         [NotNull] string domainProperty,
-        [CanBeNull] string domainClass = null)
+        [CanBeNull] string? domainClass = null)
     {
       ArgumentUtility.CheckNotNull ("controlSelector", controlSelector);
       ArgumentUtility.CheckNotNullOrEmpty ("domainProperty", domainProperty);
@@ -60,7 +60,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlSelection
     }
 
     /// <inheritdoc/>
-    public TControlObject SelectOptional (ControlSelectionContext context)
+    public TControlObject? SelectOptional (ControlSelectionContext context)
     {
       ArgumentUtility.CheckNotNull ("context", context);
 

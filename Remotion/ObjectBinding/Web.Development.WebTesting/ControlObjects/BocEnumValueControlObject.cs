@@ -84,7 +84,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    public UnspecifiedPageObject SelectOption (string itemID, IWebTestActionOptions actionOptions = null)
+    public UnspecifiedPageObject SelectOption (string itemID, IWebTestActionOptions? actionOptions = null)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
 
@@ -95,7 +95,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithItemID (string itemID, IWebTestActionOptions actionOptions)
+    UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithItemID (string itemID, IWebTestActionOptions? actionOptions)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
 
@@ -110,7 +110,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithIndex (int oneBasedIndex, IWebTestActionOptions actionOptions)
+    UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithIndex (int oneBasedIndex, IWebTestActionOptions? actionOptions)
     {
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException (Driver, operationName: "SelectOption.WithIndex");
@@ -123,7 +123,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithDisplayText (string displayText, IWebTestActionOptions actionOptions)
+    UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithDisplayText (string displayText, IWebTestActionOptions? actionOptions)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("displayText", displayText);
 
@@ -201,9 +201,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       OptionDefinition GetSelectedOption ();
       IReadOnlyList<OptionDefinition> GetOptionDefinitions ();
         
-      UnspecifiedPageObject SelectOption ([NotNull] string itemID, IWebTestActionOptions actionOptions);
-      UnspecifiedPageObject SelectOption (int oneBasedIndex, IWebTestActionOptions actionOptions);
-      UnspecifiedPageObject SelectOptionByText ([NotNull] string text, IWebTestActionOptions actionOptions);
+      UnspecifiedPageObject SelectOption ([NotNull] string itemID, IWebTestActionOptions? actionOptions);
+      UnspecifiedPageObject SelectOption (int oneBasedIndex, IWebTestActionOptions? actionOptions);
+      UnspecifiedPageObject SelectOptionByText ([NotNull] string text, IWebTestActionOptions? actionOptions);
       bool HasNullOptionDefinition ();
     }
 
@@ -214,7 +214,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     private class BocEnumValueSelectBasedControlObjectVariant : IBocEnumValueControlObjectVariant
     {
-      public event Action<WebTestAction, IWebTestActionOptions> ActionExecute;
+      public event Action<WebTestAction, IWebTestActionOptions>? ActionExecute;
 
       private readonly BocEnumValueControlObject _controlObject;
 
@@ -243,7 +243,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
                 .ToList());
       }
 
-      public UnspecifiedPageObject SelectOption (string itemID, IWebTestActionOptions actionOptions)
+      public UnspecifiedPageObject SelectOption (string itemID, IWebTestActionOptions? actionOptions)
       {
         ArgumentUtility.CheckNotNull ("itemID", itemID);
 
@@ -251,13 +251,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         return SelectOption (selectAction, actionOptions);
       }
 
-      public UnspecifiedPageObject SelectOption (int oneBasedIndex, IWebTestActionOptions actionOptions)
+      public UnspecifiedPageObject SelectOption (int oneBasedIndex, IWebTestActionOptions? actionOptions)
       {
         Action<ElementScope> selectAction = s => s.SelectOptionByIndex (oneBasedIndex);
         return SelectOption (selectAction, actionOptions);
       }
 
-      public UnspecifiedPageObject SelectOptionByText (string text, IWebTestActionOptions actionOptions)
+      public UnspecifiedPageObject SelectOptionByText (string text, IWebTestActionOptions? actionOptions)
       {
         ArgumentUtility.CheckNotNull ("text", text);
 
@@ -265,7 +265,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         return SelectOption (selectAction, actionOptions);
       }
 
-      private UnspecifiedPageObject SelectOption ([NotNull] Action<ElementScope> selectAction, IWebTestActionOptions actionOptions)
+      private UnspecifiedPageObject SelectOption ([NotNull] Action<ElementScope> selectAction, IWebTestActionOptions? actionOptions)
       {
         ArgumentUtility.CheckNotNull ("selectAction", selectAction);
 
@@ -291,7 +291,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     private class BocEnumValueRadioButtonBasedControlObjectVariant : IBocEnumValueControlObjectVariant
     {
-      public event Action<WebTestAction, IWebTestActionOptions> ActionExecute;
+      public event Action<WebTestAction, IWebTestActionOptions>? ActionExecute;
 
       private readonly BocEnumValueControlObject _controlObject;
 
@@ -333,7 +333,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         return new OptionDefinition (radioScope.Value, oneBasedIndex, text, isSelected);
       }
 
-      public UnspecifiedPageObject SelectOption (string itemID, IWebTestActionOptions actionOptions)
+      public UnspecifiedPageObject SelectOption (string itemID, IWebTestActionOptions? actionOptions)
       {
         ArgumentUtility.CheckNotNull ("itemID", itemID);
 
@@ -341,14 +341,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         return CheckScope (scope, actionOptions);
       }
 
-      public UnspecifiedPageObject SelectOption (int oneBasedIndex, IWebTestActionOptions actionOptions)
+      public UnspecifiedPageObject SelectOption (int oneBasedIndex, IWebTestActionOptions? actionOptions)
       {
         var scope =
             _controlObject.Scope.FindTagWithAttribute ("span", DiagnosticMetadataAttributes.IndexInCollection, oneBasedIndex.ToString()).FindCss ("input");
         return CheckScope (scope, actionOptions);
       }
 
-      public UnspecifiedPageObject SelectOptionByText (string text, IWebTestActionOptions actionOptions)
+      public UnspecifiedPageObject SelectOptionByText (string text, IWebTestActionOptions? actionOptions)
       {
         ArgumentUtility.CheckNotNull ("text", text);
 
@@ -356,7 +356,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         return CheckScope (scope, actionOptions);
       }
 
-      private UnspecifiedPageObject CheckScope ([NotNull] ElementScope scope, IWebTestActionOptions actionOptions)
+      private UnspecifiedPageObject CheckScope ([NotNull] ElementScope scope, IWebTestActionOptions? actionOptions)
       {
         ArgumentUtility.CheckNotNull ("scope", scope);
 
