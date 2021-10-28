@@ -139,7 +139,7 @@ class DatePicker
 
     var frame = window.document.createElement("iframe");
     datePicker.append(frame);
-    var queryStringConcatenator = src.indexOf ('?') as unknown === '-1' ? '?' : '&'; // TODO RM-7646: IndexOf comparison in DatePicker.DatePicker_Create will always yield false due to type mismatch
+    var queryStringConcatenator = src.indexOf ('?') === -1 ? '?' : (src.endsWith('?') ? '' : '&');
     frame.src = src + queryStringConcatenator + 'DateValueField=' + target.value;
     frame.frameBorder = 'no';
     frame.scrolling = 'no';
