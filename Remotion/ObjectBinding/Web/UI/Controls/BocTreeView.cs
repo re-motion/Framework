@@ -59,7 +59,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private WebTreeView _treeView;
 
     /// <summary> The <see cref="IBusinessObject"/> displayed by the <see cref="BocTreeView"/>. </summary>
-    private IList _value = null;
+    private IReadOnlyList<IBusinessObjectWithIdentity> _value = null;
 
     private bool _enableTreeNodeCaching = true;
     private Pair[] _nodesControlState;
@@ -566,13 +566,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
-    /// <param name="value"> 
-    ///   The <see cref="Array"/> of objects implementing <see cref="IBusinessObjectWithIdentity"/> to load,
-    ///   or <see langword="null"/>. 
+    /// <param name="value">
+    ///   The <see cref="IReadOnlyList{IBusinessObjectWithIdentity}"/> of objects to load,
+    ///   or <see langword="null"/>.
     /// </param>
     /// <param name="interim"> Not used. </param>
     /// <include file='..\..\doc\include\UI\Controls\BocTreeView.xml' path='BocTreeView/LoadUnboundValue/*' />
-    public void LoadUnboundValue (IBusinessObjectWithIdentity[] value, bool interim)
+    public void LoadUnboundValue (IReadOnlyList<IBusinessObjectWithIdentity> value, bool interim)
     {
       LoadValueInternal (value, interim);
     }
@@ -584,7 +584,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </param>
     /// <param name="interim"> Not used. </param>
     /// <include file='..\..\doc\include\UI\Controls\BocTreeView.xml' path='BocTreeView/LoadUnboundValue/*' />
-    public void LoadUnboundValue (IList value, bool interim)
+    public void LoadUnboundValueAsList (IList value, bool interim)
     {
       LoadValueInternal (value, interim);
     }
@@ -749,30 +749,88 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Gets or sets the current value. </summary>
     /// <value> A list of <see cref="IBusinessObjectWithIdentity"/> implementations or <see langword="null"/>. </value>
     [Browsable (false)]
-    public new IList Value
+    public new IReadOnlyList<IBusinessObjectWithIdentity> Value
     {
-      get { return _value; }
+      get
+      {
+        return _value;
+      }
       set
       {
         if (value != null)
-          ArgumentUtility.CheckItemsNotNullAndType ("value", value, typeof (IBusinessObjectWithIdentity));
+          ArgumentUtility.CheckNotNullOrItemsNull ("value", value);
+
         _value = value;
       }
     }
 
-    /// <summary> Gets or sets the current value when <see cref="Value"/> through polymorphism. </summary>
-    /// <value> The value must be of type <see cref="IList"/> or <see cref="IBusinessObjectWithIdentity"/>. </value>
-    protected override sealed object ValueImplementation
+    /// <summary> Gets or sets the current value. </summary>
+    /// <value> A list of <see cref="IBusinessObjectWithIdentity"/> implementations or <see langword="null"/>. </value>
+    [Browsable (false)]
+    public IList ValueAsList
     {
-      get { return Value; }
+      get
+      {
+        var value = Value;
+
+        if (value == null)
+          return null;
+        else if (value is BusinessObjectListAdapter<IBusinessObjectWithIdentity>)
+          return ((BusinessObjectListAdapter<IBusinessObjectWithIdentity>) value).WrappedList;
+        else if (value is IList)
+          return (IList) value;
+        else
+          throw new InvalidOperationException ("The value only implements the IReadOnlyList<IBusinessObjectWithIdentity> interface. Use the Value property to access the value.");
+      }
       set
       {
         if (value == null)
           Value = null;
-        else if (value is IList)
-          Value = (IList) value;
+        else if (value is IReadOnlyList<IBusinessObjectWithIdentity>)
+          Value = (IReadOnlyList<IBusinessObjectWithIdentity>) value;
         else
+          Value = new BusinessObjectListAdapter<IBusinessObjectWithIdentity> (value);
+      }
+    }
+
+    /// <summary> Gets or sets the current value when <see cref="Value"/> through polymorphism. </summary>
+    /// <value> The value must be of type <see cref="IReadOnlyList{IBusinessObjectWithIdentity}"/>, <see cref="IList"/> or <see cref="IBusinessObjectWithIdentity"/>. </value>
+    protected sealed override object ValueImplementation
+    {
+      get
+      {
+        var value = Value;
+        if (value is BusinessObjectListAdapter<IBusinessObjectWithIdentity>)
+          return ((BusinessObjectListAdapter<IBusinessObjectWithIdentity>) value).WrappedList;
+        else
+          return value;
+      }
+      set
+      {
+        if (value == null)
+        {
+          Value = null;
+        }
+        else if (value is IBusinessObjectWithIdentity)
+        {
           Value = new[] { (IBusinessObjectWithIdentity) value };
+        }
+        else if (value is IReadOnlyList<IBusinessObjectWithIdentity>)
+        {
+          Value = (IReadOnlyList<IBusinessObjectWithIdentity>) value;
+        }
+        else if (value is IList)
+        {
+          Value = new BusinessObjectListAdapter<IBusinessObjectWithIdentity> ((IList) value);
+        }
+        else
+        {
+          throw new ArgumentException (
+              string.Format (
+                  "Parameter type '{0}' is not supported. Parameters must implement interface IBusinessObjectWithIdentity, IReadOnlyList<IBusinessObjectWithIdentity>, or IList.",
+                  value.GetType()),
+              "value");
+        }
       }
     }
 
