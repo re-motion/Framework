@@ -99,13 +99,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
       }
     }
 
-    public static IEnumerable<BocListRow> IndicesOf (IList list, IEnumerable<IBusinessObject> values)
+    public static IEnumerable<BocListRow> IndicesOf (IEnumerable<IBusinessObject> list, IEnumerable<IBusinessObject> values)
     {
       ArgumentUtility.CheckNotNull ("list", list);
       ArgumentUtility.CheckNotNull ("values", values);
 
       var indicesMap = new Dictionary<IBusinessObject, BocListRow>();
-      var listEnumerator = list.Cast<IBusinessObject>().Select ((o, i) => new BocListRow (i, o)).GetEnumerator();
+      var listEnumerator = list.Select ((o, i) => new BocListRow (i, o)).GetEnumerator();
 
       try
       {

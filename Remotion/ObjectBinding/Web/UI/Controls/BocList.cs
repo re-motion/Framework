@@ -230,8 +230,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private bool _isSelectedViewIndexSet;
 
-    /// <summary> The <see cref="IList"/> displayed by the <see cref="BocList"/>. </summary>
-    private IList _value;
+    /// <summary> The <see cref="IReadOnlyList{IBusinessObject}"/> displayed by the <see cref="BocList"/>. Can additionally implement <see cref="IList"/> for modification.</summary>
+    private IReadOnlyList<IBusinessObject> _value;
 
     /// <summary> The user independent column definitions. </summary>
     private readonly BocColumnDefinitionCollection _fixedColumns;
@@ -1438,40 +1438,61 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (DataSource == null)
         return;
 
-      IList value = null;
+      IReadOnlyList<IBusinessObject> valueAsList;
 
       if (DataSource.BusinessObject != null)
-        value = (IList) DataSource.BusinessObject.GetProperty (Property);
+      {
+        var value = DataSource.BusinessObject.GetProperty (Property);
+        if (value == null)
+          valueAsList = null;
+        else if (value is IReadOnlyList<IBusinessObject>)
+          valueAsList = (IReadOnlyList<IBusinessObject>) value;
+        else if (value is IList)
+          valueAsList = new BusinessObjectListAdapter<IBusinessObject> ((IList) value);
+        else
+          throw new InvalidCastException (string.Format ("Cannot cast '{0}' to type IReadOnlyList<IBusinessObject> or IList.", value.GetType()));
+      }
+      else
+      {
+        valueAsList = null;
+      }
 
-      LoadValueInternal (value, interim);
+      LoadValueInternal (valueAsList, interim);
     }
 
     /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
     /// <param name="value"> 
-    ///   The <see cref="Array"/> of objects implementing <see cref="IBusinessObject"/> to load,
-    ///   or <see langword="null"/>. 
+    ///   The <see cref="IReadOnlyList{IBusinessObject}"/> of objects to load, or <see langword="null"/>.
     /// </param>
     /// <param name="interim"> Specifies whether this is the initial loading, or an interim loading. </param>
     /// <include file='..\..\doc\include\UI\Controls\BocList.xml' path='BocList/LoadUnboundValue/*' />
-    public void LoadUnboundValue (IBusinessObject[] value, bool interim)
+    public void LoadUnboundValue (IReadOnlyList<IBusinessObject> value, bool interim)
     {
       LoadValueInternal (value, interim);
     }
 
     /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
-    /// <param name="value"> 
-    ///   The <see cref="IList"/> of objects implementing <see cref="IBusinessObject"/> to load,
-    ///   or <see langword="null"/>. 
+    /// <param name="value">
+    ///   The <see cref="IList"/> of objects to load, or <see langword="null"/>.
     /// </param>
     /// <param name="interim"> Specifies whether this is the initial loading, or an interim loading. </param>
     /// <include file='..\..\doc\include\UI\Controls\BocList.xml' path='BocList/LoadUnboundValue/*' />
-    public void LoadUnboundValue (IList value, bool interim)
+    public void LoadUnboundValueAsList (IList value, bool interim)
     {
-      LoadValueInternal (value, interim);
+      IReadOnlyList<IBusinessObject> valueAsList;
+
+      if (value == null)
+        valueAsList = null;
+      else if (value is IReadOnlyList<IBusinessObject>)
+        valueAsList = (IReadOnlyList<IBusinessObject>) value;
+      else
+        valueAsList = new BusinessObjectListAdapter<IBusinessObject> (value);
+
+      LoadValueInternal (valueAsList, interim);
     }
 
     /// <summary> Performs the actual loading for <see cref="LoadValue"/> and <see cref="O:Remotion.ObjectBinding.Web.UI.Controls.BocList.LoadUnboundValue"/>. </summary>
-    protected virtual void LoadValueInternal (IList value, bool interim)
+    protected virtual void LoadValueInternal (IReadOnlyList<IBusinessObject> value, bool interim)
     {
       if (! interim)
       {
@@ -2101,7 +2122,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <value> An object implementing <see cref="IList"/>. </value>
     /// <remarks> The dirty state is reset when the value is set. </remarks>
     [Browsable (false)]
-    public new IList Value
+    public new IReadOnlyList<IBusinessObject> Value
     {
       get { return GetValue(); }
       set
@@ -2112,10 +2133,39 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
+    /// <summary> Gets or sets the current value. </summary>
+    /// <value> A list of <see cref="IBusinessObject"/> implementations or <see langword="null"/>. </value>
+    [Browsable (false)]
+    public IList ValueAsList
+    {
+      get
+      {
+        var value = Value;
+
+        if (value == null)
+          return null;
+        else if (value is BusinessObjectListAdapter<IBusinessObject>)
+          return ((BusinessObjectListAdapter<IBusinessObject>) value).WrappedList;
+        else if (value is IList)
+          return (IList) value;
+        else
+          throw new InvalidOperationException ("The value only implements the IReadOnlyList<IBusinessObject> interface. Use the Value property to access the value.");
+      }
+      set
+      {
+        if (value == null)
+          Value = null;
+        else if (value is IReadOnlyList<IBusinessObject>)
+          Value = (IReadOnlyList<IBusinessObject>) value;
+        else
+          Value = new BusinessObjectListAdapter<IBusinessObject> (value);
+      }
+    }
+
     /// <summary>
     /// Gets the value from the backing field.
     /// </summary>
-    private IList GetValue()
+    private IReadOnlyList<IBusinessObject> GetValue()
     {
       return _value;
     }
@@ -2126,7 +2176,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <remarks>
     /// <para>Setting the value via this method does not affect the control's dirty state.</para>
     /// </remarks>
-    private void SetValue (IList value, ValueMode mode)
+    private void SetValue (IReadOnlyList<IBusinessObject> value, ValueMode mode)
     {
       _value = value;
       OnSortedRowsChanged();
@@ -2140,10 +2190,39 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets or sets the current value when <see cref="Value"/> through polymorphism. </summary>
     /// <value> The value must be of type <see cref="IList"/>. </value>
-    protected override sealed object ValueImplementation
+    protected sealed override object ValueImplementation
     {
-      get { return Value; }
-      set { Value = ArgumentUtility.CheckType<IList> ("value", value); }
+      get
+      {
+        var value = Value;
+        if (value is BusinessObjectListAdapter<IBusinessObject>)
+          return ((BusinessObjectListAdapter<IBusinessObject>) value).WrappedList;
+        else
+          return value;
+      }
+      set
+      {
+        if (value == null)
+        {
+          Value = null;
+        }
+        else if (value is IReadOnlyList<IBusinessObject>)
+        {
+          Value = (IReadOnlyList<IBusinessObject>) value;
+        }
+        else if (value is IList)
+        {
+          Value = new BusinessObjectListAdapter<IBusinessObject> ((IList) value);
+        }
+        else
+        {
+          throw new ArgumentException (
+              string.Format (
+                  "Parameter type '{0}' is not supported. Parameters must implement interface IReadOnlyList<IBusinessObject> or IList.",
+                  value.GetType()),
+              "value");
+        }
+      }
     }
 
     /// <summary>Gets a flag indicating whether the <see cref="BocList"/> contains a value. </summary>
@@ -2389,20 +2468,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Sets the <see cref="IBusinessObject"/> objects selected in the <see cref="BocList"/>. </summary>
-    /// <param name="selectedObjects"> An <see cref="IList"/> of <see cref="IBusinessObject"/> objects. </param>>
+    /// <param name="selectedObjects"> An <see cref="IReadOnlyList{IBusinessObject}"/> of objects. </param>>
     /// <exception cref="InvalidOperationException"> 
     ///   Thrown if the number of rows do not match the <see cref="Selection"/> mode 
     ///   or the <see cref="Value"/> is <see langword="null"/>.
     /// </exception>
-    public void SetSelectedBusinessObjects (IList selectedObjects)
+    public void SetSelectedBusinessObjects (IReadOnlyList<IBusinessObject> selectedObjects)
     {
-      ArgumentUtility.CheckNotNull ("selectedObjects", selectedObjects);
-      ArgumentUtility.CheckItemsNotNullAndType ("selectedObjects", selectedObjects, typeof (IBusinessObject));
+      ArgumentUtility.CheckNotNullOrItemsNull ("selectedObjects", selectedObjects);
 
       if (Value == null)
         throw new InvalidOperationException (string.Format ("The BocList '{0}' does not have a Value.", ID));
 
-      var selectedRows = ListUtility.IndicesOf (Value, selectedObjects.Cast<IBusinessObject>());
+      var selectedRows = ListUtility.IndicesOf (Value, selectedObjects);
       SetSelectedRows (selectedRows.ToArray());
     }
 
@@ -2431,7 +2509,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         }
       }
 
-      SetSelectedRows (selectedRows.Select (rowIndex => new BocListRow (rowIndex, (IBusinessObject) Value[rowIndex])).ToArray());
+      SetSelectedRows (selectedRows.Select (rowIndex => new BocListRow (rowIndex, Value[rowIndex])).ToArray());
     }
 
     private void SetSelectedRows (BocListRow[] selectedRows)
@@ -2516,14 +2594,27 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (index > Value.Count)
         throw new ArgumentOutOfRangeException ("index");
 
-      RemoveRow ((IBusinessObject) Value[index]);
+      RemoveRow (Value[index]);
     }
 
     private BocListRow[] AddRowsImplementation (IBusinessObject[] businessObjects)
     {
       ArgumentUtility.CheckNotNull ("businessObjects", businessObjects);
 
-      var newValue = ListUtility.AddRange (Value, businessObjects, Property, false, true);
+      IList valueAsList;
+      try
+      {
+        valueAsList = ValueAsList;
+      }
+      catch (InvalidOperationException ex)
+      {
+        throw new InvalidOperationException (
+            "The BocList is bound to a collection that does not implement the IList interface. "
+            + "Add and remove rows is not supported for collections that do not implement the IList interface.",
+            ex);
+      }
+
+      var newValue = ListUtility.AddRange (valueAsList, businessObjects, Property, false, true);
 
       if (newValue == null)
       {
@@ -2532,10 +2623,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
       else
       {
-        SetValue (newValue, ValueMode.Complete);
+        IReadOnlyList<IBusinessObject> newValueAsReadOnlyList;
+        if (newValue is IReadOnlyList<IBusinessObject>)
+          newValueAsReadOnlyList = (IReadOnlyList<IBusinessObject>) newValue;
+        else
+          newValueAsReadOnlyList = new BusinessObjectListAdapter<IBusinessObject> (newValue);
+
+        SetValue (newValueAsReadOnlyList, ValueMode.Complete);
         IsDirty = true;
 
-        var rows = ListUtility.IndicesOf (newValue, businessObjects).ToArray();
+        var rows = ListUtility.IndicesOf (newValueAsReadOnlyList, businessObjects).ToArray();
         foreach (var row in rows.OrderBy (r => r.Index))
           RowIDProvider.AddRow (row);
 
@@ -2547,11 +2644,24 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("businessObjects", businessObjects);
 
-      if (Value == null)
+      IList valueAsList;
+      try
+      {
+        valueAsList = ValueAsList;
+      }
+      catch (InvalidOperationException ex)
+      {
+        throw new InvalidOperationException (
+            "The BocList is bound to a collection that does not implement the IList interface. "
+            + "Add and remove rows is not supported for collections that do not implement the IList interface.",
+            ex);
+      }
+
+      if (valueAsList == null)
         return new BocListRow[0];
 
-      var rows = ListUtility.IndicesOf (Value, businessObjects).ToArray();
-      var newValue = ListUtility.Remove (Value, rows.Select (r => r.BusinessObject).ToArray(), Property, false);
+      var rows = ListUtility.IndicesOf (valueAsList.Cast<IBusinessObject>(), businessObjects).ToArray();
+      var newValue = ListUtility.Remove (valueAsList, rows.Select (r => r.BusinessObject).ToArray(), Property, false);
 
       if (newValue == null)
       {
@@ -2560,7 +2670,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
       else
       {
-        SetValue (newValue, ValueMode.Complete);
+        IReadOnlyList<IBusinessObject> newValueAsReadOnlyList;
+        if (newValue is IReadOnlyList<IBusinessObject>)
+          newValueAsReadOnlyList = (IReadOnlyList<IBusinessObject>) newValue;
+        else
+          newValueAsReadOnlyList = new BusinessObjectListAdapter<IBusinessObject> (newValue);
+
+        SetValue (newValueAsReadOnlyList, ValueMode.Complete);
         IsDirty = true;
 
         foreach (var row in rows.OrderByDescending (r => r.Index))
@@ -3682,7 +3798,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       else if (GetBusinessObjectClass() is IBusinessObjectClassWithIdentity)
         _rowIDProvider = new UniqueIdentifierBasedRowIDProvider();
       else
-        _rowIDProvider = new IndexBasedRowIDProvider (Value.Cast<IBusinessObject>());
+        _rowIDProvider = new IndexBasedRowIDProvider (Value);
     }
 
     protected IBusinessObjectClass GetBusinessObjectClass ()

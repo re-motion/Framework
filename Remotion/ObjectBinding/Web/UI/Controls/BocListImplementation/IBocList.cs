@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
   {
     new bool IsReadOnly { get; }
 
-    new IList Value { get; }
+    new IReadOnlyList<IBusinessObject> Value { get; }
 
     bool HasNavigator { get; }
 

@@ -15,6 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.Web.UI.Controls;
@@ -37,6 +40,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 
     private BocSimpleColumnDefinition _typeWithStringFirstValueSimpleColumn;
     private BocSimpleColumnDefinition _typeWithStringSecondValueSimpleColumn;
+    private Mock<IReadOnlyList<IBusinessObject>> _valuesAsIReadOnlyListStub;
 
     [SetUp]
     public override void SetUp ()
@@ -54,6 +58,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _newValues[0] = (IBusinessObject) TypeWithString.Create ("5", "C");
       _newValues[1] = (IBusinessObject) TypeWithString.Create ("6", "D");
 
+      _valuesAsIReadOnlyListStub = new Mock<IReadOnlyList<IBusinessObject>>();
+      _valuesAsIReadOnlyListStub.Setup (_ => _.GetEnumerator()).Returns (((IEnumerable<IBusinessObject>) _values).GetEnumerator());
+      _valuesAsIReadOnlyListStub.Setup (_ => _.Count).Returns (_values.Length);
+      _valuesAsIReadOnlyListStub.Setup (_ => _[It.IsAny<int>()]).Returns ((int i) => _values[i]);
+
       _typeWithStringClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof (TypeWithString));
 
       _typeWithStringFirstValuePath = BusinessObjectPropertyPath.CreateStatic (_typeWithStringClass, "FirstValue");
@@ -68,13 +77,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _bocList = new BocListMock();
       _bocList.ID = "BocList";
       NamingContainer.Controls.Add (_bocList);
-
-      _bocList.LoadUnboundValue (_values, false);
     }
 
     [Test]
     public void AddRow ()
     {
+      _bocList.LoadUnboundValue (_values, false);
+
       int index = _bocList.AddRow (_newValues[0]);
 
       Assert.That (ReferenceEquals (_values, _bocList.Value), Is.False);
@@ -92,6 +101,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     [Test]
     public void AddRowWithoutValue ()
     {
+      _bocList.LoadUnboundValue (_values, false);
+
       _bocList.LoadUnboundValue (null, false);
       Assert.That (
           () => _bocList.AddRow (_newValues[0]),
@@ -99,8 +110,23 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
+    public void AddRowWithValueAsIReadOnlyList ()
+    {
+      _bocList.LoadUnboundValue (_valuesAsIReadOnlyListStub.Object, false);
+
+      Assert.That (
+          () => _bocList.AddRow (_newValues[0]),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The BocList is bound to a collection that does not implement the IList interface. "
+                  + "Add and remove rows is not supported for collections that do not implement the IList interface."));
+    }
+
+    [Test]
     public void AddRows ()
     {
+      _bocList.LoadUnboundValue (_values, false);
+
       _bocList.AddRows (_newValues);
 
       Assert.That (ReferenceEquals (_values, _bocList.Value), Is.False);
@@ -118,6 +144,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     [Test]
     public void AddRowsWithoutValue ()
     {
+      _bocList.LoadUnboundValue (_values, false);
+
       _bocList.LoadUnboundValue (null, false);
       Assert.That (
           () => _bocList.AddRows (_newValues),
@@ -125,8 +153,23 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
+    public void AddRowsWithValueAsIReadOnlyList ()
+    {
+      _bocList.LoadUnboundValue (_valuesAsIReadOnlyListStub.Object, false);
+
+      Assert.That (
+          () => _bocList.AddRows (_newValues),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The BocList is bound to a collection that does not implement the IList interface. "
+                  + "Add and remove rows is not supported for collections that do not implement the IList interface."));
+    }
+
+    [Test]
     public void RemoveRowWithIndex ()
     {
+      _bocList.LoadUnboundValue (_values, false);
+
       _bocList.RemoveRow (2);
 
       Assert.That (ReferenceEquals (_values, _bocList.Value), Is.False);
@@ -138,8 +181,23 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
+    public void RowRowWithIndexAndWithValueAsIReadOnlyList ()
+    {
+      _bocList.LoadUnboundValue (_valuesAsIReadOnlyListStub.Object, false);
+
+      Assert.That (
+          () => _bocList.RemoveRow (2),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The BocList is bound to a collection that does not implement the IList interface. "
+                  + "Add and remove rows is not supported for collections that do not implement the IList interface."));
+    }
+
+    [Test]
     public void RemoveRowWithBusinessObject ()
     {
+      _bocList.LoadUnboundValue (_values, false);
+
       _bocList.RemoveRow (_values[2]);
 
       Assert.That (ReferenceEquals (_values, _bocList.Value), Is.False);
@@ -151,8 +209,23 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
+    public void RowRowWithValueAsIReadOnlyList ()
+    {
+      _bocList.LoadUnboundValue (_valuesAsIReadOnlyListStub.Object, false);
+
+      Assert.That (
+          () => _bocList.RemoveRow (_values[2]),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The BocList is bound to a collection that does not implement the IList interface. "
+                  + "Add and remove rows is not supported for collections that do not implement the IList interface."));
+    }
+
+    [Test]
     public void RemoveRowsWithNoRows ()
     {
+      _bocList.LoadUnboundValue (_values, false);
+
       _bocList.RemoveRows (new IBusinessObject[0]);
 
       Assert.That (ReferenceEquals (_values, _bocList.Value), Is.False);
@@ -167,6 +240,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     [Test]
     public void RemoveRowsWithSingleRow ()
     {
+      _bocList.LoadUnboundValue (_values, false);
+
       _bocList.RemoveRows (new IBusinessObject[] {_values[2]});
 
       Assert.That (ReferenceEquals (_values, _bocList.Value), Is.False);
@@ -180,6 +255,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     [Test]
     public void RemoveRowsWithMultipleRows ()
     {
+      _bocList.LoadUnboundValue (_values, false);
+
       _bocList.RemoveRows (new IBusinessObject[] {_values[1], _values[3]});
 
       Assert.That (ReferenceEquals (_values, _bocList.Value), Is.False);
@@ -187,6 +264,19 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       Assert.That (_bocList.Value[0], Is.SameAs (_values[0]));
       Assert.That (_bocList.Value[1], Is.SameAs (_values[2]));
       Assert.That (_bocList.Value[2], Is.SameAs (_values[4]));
+    }
+
+    [Test]
+    public void RowRowsWithValueAsIReadOnlyList ()
+    {
+      _bocList.LoadUnboundValue (_valuesAsIReadOnlyListStub.Object, false);
+
+      Assert.That (
+          () => _bocList.RemoveRows (new IBusinessObject[] {_values[1], _values[3]}),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "The BocList is bound to a collection that does not implement the IList interface. "
+                  + "Add and remove rows is not supported for collections that do not implement the IList interface."));
     }
   }
 }

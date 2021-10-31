@@ -54,7 +54,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
       return GetRowID(row);
     }
 
-    public BocListRow GetRowFromItemRowID (IList values, string rowID)
+    public BocListRow GetRowFromItemRowID (IReadOnlyList<IBusinessObject> values, string rowID)
     {
       ArgumentUtility.CheckNotNull ("values", values);
       ArgumentUtility.CheckNotNull ("rowID", rowID);
@@ -62,7 +62,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
       var rowIndex = ParseRowID(rowID);
 
       if (values.Count == _rowIDs.Count && rowIndex < _rowIDs.Count)
-        return new BocListRow (rowIndex, (IBusinessObject) values[rowIndex]);
+        return new BocListRow (rowIndex, values[rowIndex]);
       else
         return null;
     }

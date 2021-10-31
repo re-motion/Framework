@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections;
 using Remotion.Mixins;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.TypePipe;
@@ -41,6 +42,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.Domain
 
     private TypeWithReference _referenceValue;
     private TypeWithReference[] _referenceList;
+    private IList _referenceListAsList;
     private TypeWithReference _firstValue;
     private TypeWithReference _secondValue;
     private string _displayName;
@@ -71,6 +73,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.Domain
     {
       get { return _referenceList; }
       set { _referenceList = value; }
+    }
+
+    [ItemType(typeof (TypeWithReference))]
+    public IList ReferenceListAsList
+    {
+      get { return _referenceListAsList; }
+      set { _referenceListAsList = value; }
     }
 
     public TypeWithReference FirstValue

@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Web.UI.Controls;
@@ -24,7 +24,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 {
   public interface IEditModeHost
   {
-    IList Value { get; }
+    IReadOnlyList<IBusinessObject> Value { get; }
     string ID { get; }
     bool IsReadOnly { get; }
     bool IsDirty { get; set; }

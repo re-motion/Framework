@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -44,7 +45,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     public bool AreCustomCellsValid { private get; set; }
     public IFocusableControl FocusedControl { get; set; }
 
-    public IList Value { get; set; }
+    public IReadOnlyList<IBusinessObject> Value { get; set; }
     public string ID { get; set; }
     public bool IsReadOnly { get; set; }
     public bool IsDirty { get; set; }
