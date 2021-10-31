@@ -16,12 +16,13 @@
 // 
 using System;
 using Remotion.Mixins;
+using Remotion.ObjectBinding.BindableObject;
 using Remotion.TypePipe;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.Domain
 {
   [BindableObjectWithIdentity]
-  public class TypeWithReference
+  public class TypeWithReference : IBusinessObjectWithIdentity
   {
     public static TypeWithReference Create ()
     {
@@ -94,6 +95,26 @@ namespace Remotion.ObjectBinding.Web.UnitTests.Domain
     public string UniqueIdentifier
     {
       get { return _id.ToString(); }
+    }
+
+    IBusinessObjectClass IBusinessObject.BusinessObjectClass
+    {
+      get { return Mixin.Get<BindableObjectWithIdentityMixin> (this).BusinessObjectClass; }
+    }
+
+    object IBusinessObject.GetProperty (IBusinessObjectProperty property)
+    {
+      return Mixin.Get<BindableObjectWithIdentityMixin> (this).GetProperty (property);
+    }
+
+    string IBusinessObject.GetPropertyString (IBusinessObjectProperty property, string format)
+    {
+      return Mixin.Get<BindableObjectWithIdentityMixin> (this).GetPropertyString (property, format);
+    }
+
+    void IBusinessObject.SetProperty (IBusinessObjectProperty property, object value)
+    {
+      Mixin.Get<BindableObjectWithIdentityMixin> (this).SetProperty (property, value);
     }
   }
 }
