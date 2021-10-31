@@ -17,6 +17,7 @@
 // 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Remotion.Data.DomainObjects;
 using Remotion.Globalization;
@@ -84,7 +85,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
       HandleNewButtonClick (GroupList);
     }
 
-    protected override IList GetValues ()
+    protected override IReadOnlyList<Group> GetValues ()
     {
       return Group.FindByTenant (CurrentFunction.TenantHandle).ToArray();
     }
