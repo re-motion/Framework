@@ -31,6 +31,7 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
     private List<SimpleReferenceType> _readOnlyListOfT = new List<SimpleReferenceType> ();
     private ArrayList _arrayList = new ArrayList ();
     private ArrayList _readOnlyArrayList = new ArrayList ();
+    private List<SimpleValueType> _listOfTForValueType = new List<SimpleValueType>();
 
     public ClassWithListProperties ()
     {
@@ -59,6 +60,11 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
       get { return _listOfT; }
     }
 
+    public List<SimpleValueType> ListOfTForValueType
+    {
+      get { return _listOfTForValueType; }
+    }
+
     [ObjectBinding (ReadOnly = true)]
     public List<SimpleReferenceType> ReadOnlyListOfT
     {
@@ -76,14 +82,14 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
       set { ; }
     }
 
-    public IListAndIReadOnlyCollection<SimpleReferenceType> IReadOnlyCollectionOfT
+    public IReadOnlyList<SimpleReferenceType> IReadOnlyListOfT
     {
-      get { return null; } // TODO: RM-7294: update to use only IReadOnlyCollection<T>
+      get { return _listOfT.AsReadOnly(); }
     }
 
-    public IListAndIReadOnlyList<SimpleReferenceType> IReadOnlyListOfT
+    public IReadOnlyList<SimpleValueType> IReadOnlyListOfTForValueType
     {
-      get { return null; } // TODO: RM-7294: update to use only IReadOnlyList<T>
+      get { return _listOfTForValueType.AsReadOnly(); }
     }
 
     [ItemType (typeof (SimpleReferenceType))]
