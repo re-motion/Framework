@@ -46,7 +46,7 @@ public class SearchObjectPage : WxePage
 
   private void Page_Load(object sender, System.EventArgs e)
 	{
-    ResultList.Value = MyFunction.Result;
+    ResultList.ValueAsList = MyFunction.Result;
 
     CurrentSearchObject.BusinessObject = (IBusinessObject) MyFunction.SearchObject;
     CurrentSearchObject.LoadValues (IsPostBack);
@@ -82,7 +82,7 @@ public class SearchObjectPage : WxePage
       CurrentSearchObject.SaveValues (false);
       
       MyFunction.Requery ();
-      ResultList.Value = MyFunction.Result;
+      ResultList.ValueAsList = MyFunction.Result;
       ResultList.LoadValue (false);
     }
   }
