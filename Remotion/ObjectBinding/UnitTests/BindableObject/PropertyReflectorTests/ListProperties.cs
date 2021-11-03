@@ -174,7 +174,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
       Assert.That (businessObjectProperty.ListInfo.ItemType, Is.SameAs (typeof (SimpleReferenceType)));
       Assert.That (businessObjectProperty.IsNullable, Is.True);
       Assert.That (businessObjectProperty.IsRequired, Is.False);
-      Assert.That (businessObjectProperty.IsReadOnly (null), Is.False); // TODO: RM-7294: make this readonly when we support IReadOnlyList<T> without the IList interface
+      Assert.That (businessObjectProperty.IsReadOnly (null), Is.False); // TODO: RM-7294: Consider new logic for IsReadOnly on IReadOnlyList properties
     }
 
     [Test]
@@ -196,7 +196,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
       Assert.That (businessObjectProperty.ListInfo.ItemType, Is.SameAs (typeof (SimpleValueType)));
       Assert.That (businessObjectProperty.IsNullable, Is.True);
       Assert.That (businessObjectProperty.IsRequired, Is.False);
-      Assert.That (businessObjectProperty.IsReadOnly (null), Is.False); // TODO: RM-7294: make this readonly when we support IReadOnlyList<T> without the IList interface
+      Assert.That (businessObjectProperty.IsReadOnly (null), Is.False); // TODO: RM-7294: Consider new logic for IsReadOnly on IReadOnlyList properties
     }
 
     [Test]
