@@ -10,8 +10,13 @@
     <AssemblyName>Remotion.ObjectBinding.Web.Development.WebTesting</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
     <SignAssembly>False</SignAssembly>
-    <Nullable>disable</Nullable>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\SharedSource\Core\Utilities\ArgumentUtility.cs" Link="SharedSource\Utilities\ArgumentUtility.cs" />
+    <Compile Include="..\..\..\SharedSource\Core\Utilities\Assertion.cs" Link="SharedSource\Utilities\Assertion.cs" />
+    <Compile Include="..\..\..\SharedSource\Core\Utilities\NullableTypeUtility.cs" Link="SharedSource\Utilities\NullableTypeUtility.cs" />
+    <Compile Include="..\..\..\SharedSource\Core\RoslynAnnotations\NullableAnnotations.cs" Link="SharedSource\RoslynAnnotations\NullableAnnotations.cs" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Web\Contracts.DiagnosticMetadata\Web.Contracts.DiagnosticMetadata.csproj" />
     <ProjectReference Include="..\..\Web\Development.WebTesting.ControlObjects\Web.Development.WebTesting.ControlObjects.csproj" />

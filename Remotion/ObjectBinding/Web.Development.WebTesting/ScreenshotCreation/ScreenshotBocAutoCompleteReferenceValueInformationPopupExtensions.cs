@@ -54,6 +54,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
           c_getElementScript,
           fluentInformationPopup.GetInputField());
 
+      Assertion.IsNotNull (result, "The result of the executed statement must not be null.");
+
       return result.ForWebElementScreenshot();
     }
 

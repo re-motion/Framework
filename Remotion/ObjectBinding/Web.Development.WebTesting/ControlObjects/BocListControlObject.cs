@@ -326,7 +326,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <summary>
     /// Changes the list's view to the view given by <paramref name="itemID"/>.
     /// </summary>
-    public void ChangeViewTo ([NotNull] string itemID, [CanBeNull] IWebTestActionOptions actionOptions = null)
+    public void ChangeViewTo ([NotNull] string itemID, [CanBeNull] IWebTestActionOptions? actionOptions = null)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
 
@@ -336,7 +336,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <summary>
     /// Changes the list's view to the view given by <paramref name="oneBasedIndex"/>.
     /// </summary>
-    public void ChangeViewTo (int oneBasedIndex, [CanBeNull] IWebTestActionOptions actionOptions = null)
+    public void ChangeViewTo (int oneBasedIndex, [CanBeNull] IWebTestActionOptions? actionOptions = null)
     {
       ChangeViewTo (scope => scope.SelectOptionByIndex (oneBasedIndex), actionOptions);
     }
@@ -344,14 +344,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <summary>
     /// Changes the list's view to the view given by <paramref name="label"/>.
     /// </summary>
-    public void ChangeViewToByLabel ([NotNull] string label, [CanBeNull] IWebTestActionOptions actionOptions = null)
+    public void ChangeViewToByLabel ([NotNull] string label, [CanBeNull] IWebTestActionOptions? actionOptions = null)
     {
       ArgumentUtility.CheckNotNull ("label", label);
 
       ChangeViewTo (scope => scope.SelectOption (label), actionOptions);
     }
 
-    private void ChangeViewTo ([NotNull] Action<ElementScope> selectAction, [CanBeNull] IWebTestActionOptions actionOptions)
+    private void ChangeViewTo ([NotNull] Action<ElementScope> selectAction, [CanBeNull] IWebTestActionOptions? actionOptions)
     {
       ArgumentUtility.CheckNotNull ("selectAction", selectAction);
 
@@ -370,7 +370,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       ArgumentUtility.CheckNotNull ("rowScope", rowScope);
       ArgumentUtility.CheckNotNull ("accessor", accessor);
 
-      return (TRowControlObject) Activator.CreateInstance (typeof (TRowControlObject), accessor, Context.CloneForControl (rowScope));
+      return (TRowControlObject) Activator.CreateInstance (typeof (TRowControlObject), accessor, Context.CloneForControl (rowScope))!;
     }
 
     /// <inheritdoc/>

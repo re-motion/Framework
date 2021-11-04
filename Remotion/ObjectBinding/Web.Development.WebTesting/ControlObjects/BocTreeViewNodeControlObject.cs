@@ -183,7 +183,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <summary>
     /// Selects the node by clicking on it, returns the node.
     /// </summary>
-    public BocTreeViewNodeControlObject Select ([CanBeNull] IWebTestActionOptions actionOptions = null)
+    public BocTreeViewNodeControlObject Select ([CanBeNull] IWebTestActionOptions? actionOptions = null)
     {
       var webTreeViewNode = _webTreeViewNode.Select (actionOptions);
       return new BocTreeViewNodeControlObject (webTreeViewNode);
@@ -192,7 +192,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <summary>
     /// Selects the node by clicking on it, returns the following page.
     /// </summary>
-    public UnspecifiedPageObject Click ([CanBeNull] IWebTestActionOptions actionOptions = null)
+    public UnspecifiedPageObject Click ([CanBeNull] IWebTestActionOptions? actionOptions = null)
     {
       return _webTreeViewNode.Click (actionOptions);
     }

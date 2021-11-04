@@ -51,7 +51,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    public UnspecifiedPageObject ExecuteCommand (IWebTestActionOptions actionOptions = null)
+    public UnspecifiedPageObject ExecuteCommand (IWebTestActionOptions? actionOptions = null)
     {
       return _impl.ExecuteCommand(actionOptions);
     }
@@ -66,7 +66,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    public TControlObject GetControlOrNull<TControlObject> (IControlOptionalSelectionCommand<TControlObject> controlSelectionCommand)
+    public TControlObject? GetControlOrNull<TControlObject> (IControlOptionalSelectionCommand<TControlObject> controlSelectionCommand)
         where TControlObject : ControlObject
     {
       ArgumentUtility.CheckNotNull ("controlSelectionCommand", controlSelectionCommand);

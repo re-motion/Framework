@@ -43,7 +43,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlSelection
     TControlObject SelectPerDomainProperty (
         [NotNull] ControlSelectionContext context,
         [NotNull] string domainProperty,
-        [CanBeNull] string domainClass);
+        [CanBeNull] string? domainClass);
 
     /// <summary>
     /// Selects the control, if it exists, within the given <paramref name="context"/> using the given <paramref name="domainProperty"/> and
@@ -55,10 +55,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlSelection
     /// <param name="domainClass">The class of the domain property represented by the <see cref="ControlObject"/>. Must not be empty.</param>
     /// <returns>The <see cref="ControlObject"/> for the selected control, or <see langword="null"/> if no control could be found.</returns>
     [CanBeNull]
-    TControlObject SelectOptionalPerDomainProperty (
+    TControlObject? SelectOptionalPerDomainProperty (
         [NotNull] ControlSelectionContext context,
         [NotNull] string domainProperty,
-        [CanBeNull] string domainClass);
+        [CanBeNull] string? domainClass);
     
     /// <summary>
     /// Checks if a control within the given <paramref name="context"/> using the given <paramref name="domainProperty"/> and
@@ -72,6 +72,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlSelection
     bool ExistsPerDomainProperty (
         [NotNull] ControlSelectionContext context,
         [NotNull] string domainProperty,
-        [CanBeNull] string domainClass);
+        [CanBeNull] string? domainClass);
   }
 }

@@ -54,7 +54,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
     }
 
     /// <inheritdoc/>
-    public TControlObject SelectOptionalPerDisplayName (ControlSelectionContext context, string displayName)
+    public TControlObject? SelectOptionalPerDisplayName (ControlSelectionContext context, string displayName)
     {
       ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNullOrEmpty ("displayName", displayName);
@@ -79,7 +79,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
     }
 
     /// <inheritdoc/>
-    public TControlObject SelectPerDomainProperty (ControlSelectionContext context, string domainProperty, string domainClass)
+    public TControlObject SelectPerDomainProperty (ControlSelectionContext context, string domainProperty, string? domainClass)
     {
       ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNullOrEmpty ("domainProperty", domainProperty);
@@ -91,7 +91,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
     }
 
     /// <inheritdoc/>
-    public TControlObject SelectOptionalPerDomainProperty (ControlSelectionContext context, string domainProperty, string domainClass)
+    public TControlObject? SelectOptionalPerDomainProperty (ControlSelectionContext context, string domainProperty, string? domainClass)
     {
       ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNullOrEmpty ("domainProperty", domainProperty);
@@ -106,7 +106,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
     }
 
     /// <inheritdoc/>
-    public bool ExistsPerDomainProperty (ControlSelectionContext context, string domainProperty, string domainClass)
+    public bool ExistsPerDomainProperty (ControlSelectionContext context, string domainProperty, string? domainClass)
     {
       ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNullOrEmpty ("domainProperty", domainProperty);
@@ -128,7 +128,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
       return context.Scope.FindTagWithAttributes ("*", diagnosticMetadata);
     }
 
-    private ElementScope FindScopePerDomainProperty (ControlSelectionContext context, string domainProperty, string domainClass)
+    private ElementScope FindScopePerDomainProperty (ControlSelectionContext context, string domainProperty, string? domainClass)
     {
       var diagnosticMetadata = new Dictionary<string, string>
                                {

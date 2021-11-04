@@ -58,7 +58,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelecti
     /// Uses the <see cref="DisplayNameControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
     [CanBeNull]
-    public static TControlObject GetByDisplayNameOrNull<TControlSelector, TControlObject> (
+    public static TControlObject? GetByDisplayNameOrNull<TControlSelector, TControlObject> (
         [NotNull] this IFluentControlSelector<TControlSelector, TControlObject> fluentControlSelector,
         [NotNull] string displayName)
         where TControlSelector : IDisplayNameControlSelector<TControlObject>
@@ -101,7 +101,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelecti
     public static TControlObject GetByDomainProperty<TControlSelector, TControlObject> (
         [NotNull] this IFluentControlSelector<TControlSelector, TControlObject> fluentControlSelector,
         [NotNull] string domainProperty,
-        [CanBeNull] string domainClass = null)
+        [CanBeNull] string? domainClass = null)
         where TControlSelector : IDomainPropertyControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
@@ -121,10 +121,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelecti
     /// Uses the <see cref="DomainPropertyControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
     [CanBeNull]
-    public static TControlObject GetByDomainPropertyOrNull<TControlSelector, TControlObject> (
+    public static TControlObject? GetByDomainPropertyOrNull<TControlSelector, TControlObject> (
         [NotNull] this IFluentControlSelector<TControlSelector, TControlObject> fluentControlSelector,
         [NotNull] string domainProperty,
-        [CanBeNull] string domainClass = null)
+        [CanBeNull] string? domainClass = null)
         where TControlSelector : IDomainPropertyControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
@@ -146,7 +146,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelecti
     public static bool ExistsByDomainProperty<TControlSelector, TControlObject> (
         [NotNull] this IFluentControlSelector<TControlSelector, TControlObject> fluentControlSelector,
         [NotNull] string domainProperty,
-        [CanBeNull] string domainClass = null)
+        [CanBeNull] string? domainClass = null)
         where TControlSelector : IDomainPropertyControlSelector<TControlObject>
         where TControlObject : ControlObject
     {

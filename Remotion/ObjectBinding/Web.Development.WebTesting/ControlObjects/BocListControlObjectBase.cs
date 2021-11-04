@@ -246,11 +246,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
               .Select (
                   (s, i) =>
                       new BocListColumnDefinition<TRowControlObject, TCellControlObject> (
-                          s[DiagnosticMetadataAttributes.ItemID],
+                          s[DiagnosticMetadataAttributes.ItemID] ?? string.Empty,
                           i + 1,
-                          s[DiagnosticMetadataAttributes.Content],
+                          s[DiagnosticMetadataAttributes.Content] ?? string.Empty,
                           s[DiagnosticMetadataAttributesForObjectBinding.HasPropertyPaths] == "true",
-                          s[DiagnosticMetadataAttributesForObjectBinding.BoundPropertyPaths]?.Split ('\u001e'),
+                          s[DiagnosticMetadataAttributesForObjectBinding.BoundPropertyPaths]?.Split ('\u001e') ?? Array.Empty<string>(),
                           ColumnHasContentAttribute (s)))
               .ToList());
     }

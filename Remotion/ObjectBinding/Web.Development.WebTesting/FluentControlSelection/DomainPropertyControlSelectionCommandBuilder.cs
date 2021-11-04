@@ -37,9 +37,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelecti
       where TControlObject : ControlObject
   {
     private readonly string _domainProperty;
-    private readonly string _domainClass;
+    private readonly string? _domainClass;
 
-    public DomainPropertyControlSelectionCommandBuilder ([NotNull] string domainProperty, [CanBeNull] string domainClass = null)
+    public DomainPropertyControlSelectionCommandBuilder ([NotNull] string domainProperty, [CanBeNull] string? domainClass = null)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("domainProperty", domainProperty);
       ArgumentUtility.CheckNotEmpty ("domainClass", domainClass);

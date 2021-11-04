@@ -54,7 +54,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    public UnspecifiedPageObject FillWith (string text, IWebTestActionOptions actionOptions = null)
+    public UnspecifiedPageObject FillWith (string text, IWebTestActionOptions? actionOptions = null)
     {
       ArgumentUtility.CheckNotNull ("text", text);
 
@@ -68,7 +68,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    public UnspecifiedPageObject FillWith (string text, FinishInputWithAction finishInputWith, IWebTestActionOptions actionOptions = null)
+    public UnspecifiedPageObject FillWith (string text, FinishInputWithAction finishInputWith, IWebTestActionOptions? actionOptions = null)
     {
       ArgumentUtility.CheckNotNull ("text", text);
       ArgumentUtility.CheckNotNull ("finishInputWith", finishInputWith);
@@ -113,7 +113,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     private IWebTestActionOptions MergeWithDefaultActionOptions (
-        IWebTestActionOptions userDefinedActionOptions,
+        IWebTestActionOptions? userDefinedActionOptions,
         FinishInputWithAction finishInputWith)
     {
       if (finishInputWith == FinishInput.Promptly)
