@@ -49,6 +49,6 @@ namespace Remotion.ObjectBinding.BindableObject
     /// The <see cref="IBusinessObjectReferenceProperty"/> that holds the reference to the <paramref name="value"/>. Must not be <see langword="null" />.
     /// </param>
     /// <param name="value">The <see cref="IBusinessObject"/> instance to be deleted. Must not be <see langword="null" />..</param>
-    void Delete ([CanBeNull] IBusinessObject referencingObject, [NotNull] IBusinessObjectReferenceProperty property, [NotNull] IBusinessObject value);
+    void Delete ([CanBeNull] IBusinessObject? referencingObject, [NotNull] IBusinessObjectReferenceProperty property, [NotNull] IBusinessObject value);
   }
 }

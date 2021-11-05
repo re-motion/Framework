@@ -35,7 +35,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
       get { return 38; }
     }
 
-    public override object ConvertFromNativePropertyType (object nativeValue)
+    public override object? ConvertFromNativePropertyType (object? nativeValue)
     {
       if (IsList)
         return ConvertFromGuidListToStringArray (nativeValue);
@@ -43,7 +43,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
         return ConvertFromGuidToString (nativeValue);
     }
 
-    public override object ConvertToNativePropertyType (object publicValue)
+    public override object? ConvertToNativePropertyType (object? publicValue)
     {
       if (IsList)
         return ConvertFromStringListToGuidList (publicValue);
@@ -51,7 +51,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
         return ConvertFromStringToGuid (publicValue);
     }
 
-    private string ConvertFromGuidToString (object nativeValue)
+    private string? ConvertFromGuidToString (object? nativeValue)
     {
       Guid? guid = ArgumentUtility.CheckType<Guid?> ("nativeValue", nativeValue);
       if (guid == null)
@@ -59,18 +59,18 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
       return guid.ToString();
     }
 
-    private string[] ConvertFromGuidListToStringArray (object nativeValue)
+    private string?[]? ConvertFromGuidListToStringArray (object? nativeValue)
     {
       if (nativeValue == null)
         return null;
       IList nativeValueList = ArgumentUtility.CheckType<IList> ("nativeValue", nativeValue);
-      string[] publicValueList = new string[nativeValueList.Count];
+      string?[] publicValueList = new string?[nativeValueList.Count];
       for (int i = 0; i < nativeValueList.Count; i++)
         publicValueList[i] = ConvertFromGuidToString (nativeValueList[i]);
       return publicValueList;
     }
 
-    private Guid? ConvertFromStringToGuid (object publicValue)
+    private Guid? ConvertFromStringToGuid (object? publicValue)
     {
       string stringValue = ArgumentUtility.CheckType<string> ("publicValue", publicValue);
       if (stringValue == null)
@@ -80,7 +80,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
       return new Guid (stringValue);
     }
 
-    private IList ConvertFromStringListToGuidList (object publicValue)
+    private IList? ConvertFromStringListToGuidList (object? publicValue)
     {
       if (publicValue == null)
         return null;

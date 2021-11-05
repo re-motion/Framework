@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Remotion.Utilities;
 
@@ -37,7 +38,7 @@ namespace Remotion.ObjectBinding
     ///   The <see cref="IBusinessObject"/> accessed through <see cref="ReferenceProperty"/> and provided as 
     ///   the <see cref="BusinessObject"/>.
     /// </summary>
-    private IBusinessObject _businessObject;
+    private IBusinessObject? _businessObject;
 
     /// <summary>
     ///   A flag that is cleared when the <see cref="BusinessObject"/> is loaded from or saved to the
@@ -55,13 +56,13 @@ namespace Remotion.ObjectBinding
     ///   See <see cref="IBusinessObjectReferenceDataSource.ReferenceProperty">IBusinessObjectReferenceDataSource.ReferenceProperty</see>
     ///   for information on how to implement this <see langword="abstract"/> property.
     /// </summary>
-    public abstract IBusinessObjectReferenceProperty ReferenceProperty { get; }
+    public abstract IBusinessObjectReferenceProperty? ReferenceProperty { get; }
 
     /// <summary>
     ///   See <see cref="IBusinessObjectReferenceDataSource.ReferencedDataSource">IBusinessObjectReferenceDataSource.ReferencedDataSource</see>
     ///   for information on how to implement this <see langword="abstract"/> property.
     /// </summary>
-    public abstract IBusinessObjectDataSource ReferencedDataSource { get; }
+    public abstract IBusinessObjectDataSource? ReferencedDataSource { get; }
 
     /// <summary>
     /// Returns a meaningful identifier for the data source to be used in exception messages, etc.
@@ -104,7 +105,7 @@ namespace Remotion.ObjectBinding
 
           if (ReferencedDataSource.BusinessObject != null)
           {
-            _businessObject = (IBusinessObject) ReferencedDataSource.BusinessObject.GetProperty (ReferenceProperty);
+            _businessObject = (IBusinessObject?) ReferencedDataSource.BusinessObject.GetProperty (ReferenceProperty);
             if (_businessObject == null && SupportsDefaultValueSemantics)
             {
               _businessObject = ReferenceProperty.CreateDefaultValue (ReferencedDataSource.BusinessObject);
@@ -249,7 +250,7 @@ namespace Remotion.ObjectBinding
     ///   Gets or sets the <see cref="IBusinessObject"/> accessed through the <see cref="ReferenceProperty"/>.
     /// </summary>
     /// <value> An <see cref="IBusinessObject"/> or <see langword="null"/>. </value>
-    public override sealed IBusinessObject BusinessObject
+    public override sealed IBusinessObject? BusinessObject
     {
       get { return _businessObject; }
       set
@@ -270,11 +271,11 @@ namespace Remotion.ObjectBinding
     /// <value> 
     ///   An <see cref="IBusinessObjectClass"/> or <see langword="null"/> if no <see cref="ReferenceProperty"/> is set.
     /// </value>
-    public override IBusinessObjectClass BusinessObjectClass
+    public override IBusinessObjectClass? BusinessObjectClass
     {
       get
       {
-        IBusinessObjectReferenceProperty property = ReferenceProperty;
+        IBusinessObjectReferenceProperty? property = ReferenceProperty;
         return (property == null) ? null : property.ReferenceClass;
       }
     }
@@ -292,6 +293,8 @@ namespace Remotion.ObjectBinding
       }
     }
 
+    [MemberNotNullWhen (true, nameof (ReferencedDataSource))]
+    [MemberNotNullWhen (true, nameof (ReferenceProperty))]
     private bool HasValidBinding
     {
       get { return ReferencedDataSource != null && ReferenceProperty != null; }
@@ -299,12 +302,12 @@ namespace Remotion.ObjectBinding
 
     private bool RequiresWriteBack
     {
-      get { return (HasBusinessObjectChanged || HasBusinessObjectCreated || ReferenceProperty.ReferenceClass.RequiresWriteBack); }
+      get { return (HasBusinessObjectChanged || HasBusinessObjectCreated || (ReferenceProperty?.ReferenceClass.RequiresWriteBack ?? false)); }
     }
 
     private bool SupportsDefaultValueSemantics
     {
-      get { return (Mode == DataSourceMode.Edit && ReferenceProperty.SupportsDefaultValue); }
+      get { return (Mode == DataSourceMode.Edit && (ReferenceProperty?.SupportsDefaultValue ?? false)); }
     }
 
     private bool IsBusinessObjectSetToDefaultValue ()
@@ -314,7 +317,7 @@ namespace Remotion.ObjectBinding
         if (GetBoundControlsWithValidBinding().Any (c => c.HasValue))
           return false;
 
-        var properties = GetBoundControlsWithValidBinding().Select (c => c.Property).Distinct ().ToArray ();
+        var properties = GetBoundControlsWithValidBinding().Select (c => c.Property!).Distinct ().ToArray ();
         return ReferenceProperty.IsDefaultValue (ReferencedDataSource.BusinessObject, BusinessObject, properties);
       }
       else
@@ -326,6 +329,8 @@ namespace Remotion.ObjectBinding
     private void DeleteBusinessObject ()
     {
       Assertion.IsNotNull (BusinessObject, "The business object of this reference data source cannot be null when invoking DeleteBusinessObject().");
+      Assertion.IsNotNull (ReferenceProperty, "The reference property must not be null.");
+      Assertion.IsNotNull (ReferencedDataSource, "The referenced data source must not be null.");
       if (ReferenceProperty.SupportsDelete)
         ReferenceProperty.Delete (ReferencedDataSource.BusinessObject, BusinessObject);
     }

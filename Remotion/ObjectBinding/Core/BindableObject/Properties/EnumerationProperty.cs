@@ -23,7 +23,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
   //TODO: doc
   public class EnumerationProperty : PropertyBase, IBusinessObjectEnumerationProperty
   {
-    private readonly Enum _undefinedValue;
+    private readonly Enum? _undefinedValue;
     private readonly IEnumerationValueFilter _enumerationValueFilter;
 
     /// <exception cref="InvalidOperationException">
@@ -54,12 +54,12 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     /// <returns> 
     ///   A list of <see cref="IEnumerationValueInfo"/> objects encapsulating the values defined in the enumeration. 
     /// </returns>
-    public IEnumerationValueInfo[] GetAllValues (IBusinessObject businessObject)
+    public IEnumerationValueInfo[] GetAllValues (IBusinessObject? businessObject)
     {
       var valueInfos = new List<IEnumerationValueInfo>();
       foreach (Enum value in Enum.GetValues (UnderlyingType))
       {
-        IEnumerationValueInfo enumerationValueInfo = GetValueInfoByValue (value, businessObject);
+        IEnumerationValueInfo? enumerationValueInfo = GetValueInfoByValue (value, businessObject);
         if (enumerationValueInfo != null)
           valueInfos.Add (enumerationValueInfo);
       }
@@ -70,7 +70,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     /// <param name="businessObject"> The <see cref="IBusinessObject"/> used to determine the enabled enum values. </param>
     /// <returns> A list of <see cref="IEnumerationValueInfo"/> objects encapsulating the enabled values in the enumeration. </returns>
     /// <remarks> CLS type enums do not inherently support the disabling of its values. </remarks>
-    public IEnumerationValueInfo[] GetEnabledValues (IBusinessObject businessObject)
+    public IEnumerationValueInfo[] GetEnabledValues (IBusinessObject? businessObject)
     {
       return Array.FindAll (GetAllValues (businessObject), current => current.IsEnabled);
     }
@@ -83,7 +83,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     /// The <see cref="IEnumerationValueInfo"/> object for the provided <paramref name="value"/> or <see langword="null"/> if the 
     /// <paramref name="value"/> represents <see langword="null"/>. 
     /// </returns>
-    public IEnumerationValueInfo GetValueInfoByValue (object value, IBusinessObject businessObject)
+    public IEnumerationValueInfo? GetValueInfoByValue (object? value, IBusinessObject? businessObject)
     {
       if (value == null)
         return null;
@@ -102,7 +102,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     /// The <see cref="IEnumerationValueInfo"/> object for the provided <paramref name="identifier"/> or <see langword="null"/> if the 
     /// <paramref name="identifier"/> represents <see langword="null"/>. 
     /// </returns>
-    public IEnumerationValueInfo GetValueInfoByIdentifier (string identifier, IBusinessObject businessObject)
+    public IEnumerationValueInfo? GetValueInfoByIdentifier (string? identifier, IBusinessObject? businessObject)
     {
       if (string.IsNullOrEmpty (identifier))
         return null;
@@ -110,7 +110,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
       return GetValueInfoByValue (StringUtility.Parse (UnderlyingType, identifier, null), businessObject);
     }
 
-    public override object ConvertFromNativePropertyType (object nativeValue)
+    public override object? ConvertFromNativePropertyType (object? nativeValue)
     {
       if (nativeValue != null)
       {
@@ -121,7 +121,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
       return base.ConvertFromNativePropertyType (nativeValue);
     }
 
-    public override object ConvertToNativePropertyType (object publicValue)
+    public override object? ConvertToNativePropertyType (object? publicValue)
     {
       if (publicValue == null && _undefinedValue != null)
         return base.ConvertToNativePropertyType (_undefinedValue);
@@ -139,12 +139,12 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
       return BindableObjectGlobalizationService.GetEnumerationValueDisplayName (value);
     }
 
-    private bool IsEnabled (Enum value, IBusinessObject businessObject)
+    private bool IsEnabled (Enum value, IBusinessObject? businessObject)
     {
       if (!Enum.IsDefined (UnderlyingType, value))
         return false;
 
-      return _enumerationValueFilter.IsEnabled (new EnumerationValueInfo (value, GetIdenfier (value), null, true), businessObject, this);
+      return _enumerationValueFilter.IsEnabled (new EnumerationValueInfo (value, GetIdenfier (value), string.Empty, true), businessObject, this);
     }
 
     private bool IsUndefinedValue (Enum value)
@@ -152,7 +152,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
       return value.Equals (_undefinedValue);
     }
 
-    private Enum GetUndefinedValue ()
+    private Enum? GetUndefinedValue ()
     {
       var undefinedEnumValueAttribute = AttributeUtility.GetCustomAttribute<UndefinedEnumValueAttribute> (UnderlyingType, false);
 

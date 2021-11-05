@@ -30,7 +30,7 @@ public interface IBusinessObjectClassSource
   ///   Gets the <see cref="IBusinessObjectClass"/> of an <see cref="IBusinessObjectReferenceProperty"/>
   ///   or an <see cref="IBusinessObjectDataSource"/>, respectively.
   /// </summary>
-  IBusinessObjectClass BusinessObjectClass { get; }
+  IBusinessObjectClass? BusinessObjectClass { get; }
 }
 
 }

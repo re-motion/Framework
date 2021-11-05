@@ -9,7 +9,6 @@
     <Description>Generic interfaces and classes for business objects and data binding.</Description>
     <AssemblyName>Remotion.ObjectBinding</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
-    <Nullable>disable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="Design\BindableObject\*.bmp" />
@@ -23,6 +22,9 @@
     <ProjectReference Include="..\..\Globalization\ExtensibleEnums\Globalization.ExtensibleEnums.csproj" />
     <ProjectReference Include="..\..\Globalization\Mixins\Globalization.Mixins.csproj" />
     <ProjectReference Include="..\..\Mixins\Core\Mixins.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\SharedSource\Core\RoslynAnnotations\NullableAnnotations.cs" Link="SharedSource\RoslynAnnotations\NullableAnnotations.cs" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

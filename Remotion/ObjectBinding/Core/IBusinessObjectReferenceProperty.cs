@@ -52,7 +52,7 @@ namespace Remotion.ObjectBinding
     ///     provide an overload, and document that getting the list of available objects is only possible during runtime.
     ///   </note>
     /// </remarks>
-    IBusinessObject[] SearchAvailableObjects (IBusinessObject referencingObject, ISearchAvailableObjectsArguments searchArguments);
+    IBusinessObject[] SearchAvailableObjects (IBusinessObject? referencingObject, ISearchAvailableObjectsArguments? searchArguments);
 
     /// <summary>
     ///   Gets a flag indicating if <see cref="CreateDefaultValue"/> and <see cref="IsDefaultValue"/> may be called
@@ -109,7 +109,7 @@ namespace Remotion.ObjectBinding
     ///   </para>
     /// </remarks>
     [Obsolete ("The default value feature is not supported. (Version 1.13.142)")]
-    bool IsDefaultValue (IBusinessObject referencingObject, IBusinessObject value, IBusinessObjectProperty[] emptyProperties);
+    bool IsDefaultValue (IBusinessObject? referencingObject, IBusinessObject value, IBusinessObjectProperty[] emptyProperties);
 
     /// <summary>
     ///   Gets a flag indicating if <see cref="Delete"/> may be called to automatically delete the current value of this object reference.
@@ -130,6 +130,6 @@ namespace Remotion.ObjectBinding
     ///   Thrown if this method is called although <see cref="SupportsDefaultValue"/> evaluated <see langword="false"/>. 
     /// </exception>
     [Obsolete ("The delete-object feature is not supported. (Version 1.13.142)")]
-    void Delete (IBusinessObject referencingObject, IBusinessObject value);
+    void Delete (IBusinessObject? referencingObject, IBusinessObject value);
   }
 }

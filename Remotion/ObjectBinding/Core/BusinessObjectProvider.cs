@@ -19,6 +19,7 @@ using System.Collections.Concurrent;
 using Remotion.Collections;
 using Remotion.Collections.DataStore;
 using Remotion.Mixins;
+using Remotion.Reflection;
 using Remotion.TypePipe;
 using Remotion.Utilities;
 using TypeExtensions = Remotion.Reflection.TypeExtensions;
@@ -114,7 +115,7 @@ namespace Remotion.ObjectBinding
 
     private static IBusinessObjectProvider CreateBusinessObjectProviderFromAttribute (Type businessObjectProviderAttributeType)
     {
-      BusinessObjectProviderAttribute attribute = CreateBusinessObjectProviderAttribute (businessObjectProviderAttributeType);
+      BusinessObjectProviderAttribute? attribute = CreateBusinessObjectProviderAttribute (businessObjectProviderAttributeType);
       IBusinessObjectProvider provider = CreateBusinessObjectProvider (attribute.BusinessObjectProviderType);
       
       if (provider is BusinessObjectProvider)
@@ -125,7 +126,7 @@ namespace Remotion.ObjectBinding
 
     private static BusinessObjectProviderAttribute CreateBusinessObjectProviderAttribute (Type businessObjectProviderAttributeType)
     {
-      return (BusinessObjectProviderAttribute) Activator.CreateInstance (businessObjectProviderAttributeType);
+      return (BusinessObjectProviderAttribute) Activator.CreateInstance (businessObjectProviderAttributeType)!; // TODO: Not null assertion
     }
 
     private static IBusinessObjectProvider CreateBusinessObjectProvider (Type businessObjectProviderType)
@@ -134,8 +135,8 @@ namespace Remotion.ObjectBinding
     }
 
     private readonly IBusinessObjectServiceFactory _serviceFactory;
-    private BusinessObjectProviderAttribute _providerAttribute;
-    private Func<Type, IBusinessObjectService> _getServiceStoreValueFactory;
+    private BusinessObjectProviderAttribute? _providerAttribute;
+    private Func<Type, IBusinessObjectService?>? _getServiceStoreValueFactory;
 
     protected BusinessObjectProvider (IBusinessObjectServiceFactory serviceFactory)
     {
@@ -151,7 +152,7 @@ namespace Remotion.ObjectBinding
     ///    If your object model does not support services, this property should return an instance of type <see cref="NullDataStore{TKey,TValue}"/>.
     ///   </note>
     /// </remarks>
-    protected abstract IDataStore<Type, IBusinessObjectService> ServiceStore { get; }
+    protected abstract IDataStore<Type, IBusinessObjectService?> ServiceStore { get; }
 
     /// <summary>Gets the <see cref="IBusinessObjectServiceFactory"/> passed during construction.</summary>
     public IBusinessObjectServiceFactory ServiceFactory
@@ -159,30 +160,32 @@ namespace Remotion.ObjectBinding
       get { return _serviceFactory; }
     }
 
-    public BusinessObjectProviderAttribute ProviderAttribute
+    public BusinessObjectProviderAttribute? ProviderAttribute
     {
       get { return _providerAttribute; }
     }
 
     /// <summary> Retrieves the requested <see cref="IBusinessObjectService"/>. Must not be <see langword="null" />.</summary>
-    public IBusinessObjectService GetService (Type serviceType)
+    public IBusinessObjectService? GetService (Type serviceType)
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("serviceType", serviceType, typeof (IBusinessObjectService));
 
-      IDataStore<Type, IBusinessObjectService> serviceStore = ServiceStore;
+      IDataStore<Type, IBusinessObjectService?> serviceStore = ServiceStore;
       Assertion.IsNotNull (serviceStore, "The ServiceStore evaluated and returned null. It should return a null object instead.");
 
       // Optimized for memory allocations
       if (_getServiceStoreValueFactory == null)
+      {
         _getServiceStoreValueFactory = type => _serviceFactory.CreateService (this, type);
+      }
 
       return serviceStore.GetOrCreateValue (serviceType, _getServiceStoreValueFactory);
     }
 
     /// <summary> Retrieves the requested <see cref="IBusinessObjectService"/>. </summary>
-    public T GetService<T> () where T: IBusinessObjectService
+    public T? GetService<T> () where T: IBusinessObjectService
     {
-      return (T) GetService (typeof (T));
+      return (T?) GetService (typeof (T));
     }
 
     /// <summary> Registers a new <see cref="IBusinessObjectService"/> with this <see cref="BusinessObjectProvider"/>. </summary>
@@ -193,7 +196,7 @@ namespace Remotion.ObjectBinding
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("serviceType", serviceType, typeof (IBusinessObjectService));
       ArgumentUtility.CheckNotNull ("service", service);
 
-      IDataStore<Type, IBusinessObjectService> serviceStore = ServiceStore;
+      IDataStore<Type, IBusinessObjectService?> serviceStore = ServiceStore;
       Assertion.IsNotNull (serviceStore, "The ServiceStore evaluated and returned null. It should return a non-null object instead.");
 
       serviceStore[serviceType] = service;
@@ -219,7 +222,7 @@ namespace Remotion.ObjectBinding
     /// <returns> A <see cref="String"/> that can be easily distinguished from typical property values. </returns>
     public virtual string GetNotAccessiblePropertyStringPlaceHolder ()
     {
-      return "×";
+      return "Ã—";
     }
   }
 }

@@ -32,6 +32,7 @@ namespace Remotion.ObjectBinding
     {
       ArgumentUtility.CheckNotNull ("value", value);
       ArgumentUtility.CheckNotNullOrEmpty ("identifier", identifier);
+      ArgumentUtility.CheckNotNull ("displayName", displayName);
 
       _value = value;
       _identifier = identifier;

@@ -104,7 +104,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               It.Is<IEnumerationValueInfo> (
                   i => i.Value.Equals (extensibleEnumInfo.Value)
                        && i.Identifier == extensibleEnumInfo.Value.ID
-                       && i.DisplayName == null
+                       && i.DisplayName == string.Empty
                        && i.IsEnabled),
               businessObjectStub.Object,
               property))

@@ -33,7 +33,7 @@ namespace Remotion.ObjectBinding.BindableObject
     private readonly Type _concreteType;
     private readonly BindableObjectProvider _businessObjectProvider;
     private readonly PropertyCollection _properties;
-    private readonly BusinessObjectProviderAttribute _businessObjectProviderAttribute;
+    private readonly BusinessObjectProviderAttribute? _businessObjectProviderAttribute;
     private readonly BindableObjectGlobalizationService _bindableObjectGlobalizationService;
 
     protected BindableObjectClass (
@@ -84,7 +84,7 @@ namespace Remotion.ObjectBinding.BindableObject
     ///   Returns the <see cref="IBusinessObjectProperty"/> 
     ///   or <see langword="null" /> if the <see cref="IBusinessObjectProperty"/> does not exist on this <see cref="BindableObjectClass"/>. 
     /// </returns>
-    public IBusinessObjectProperty GetPropertyDefinition (string propertyIdentifier)
+    public IBusinessObjectProperty? GetPropertyDefinition (string propertyIdentifier)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("propertyIdentifier", propertyIdentifier);
 
@@ -149,7 +149,7 @@ namespace Remotion.ObjectBinding.BindableObject
       get { return _concreteType; }
     }
 
-    public BusinessObjectProviderAttribute BusinessObjectProviderAttribute
+    public BusinessObjectProviderAttribute? BusinessObjectProviderAttribute
     {
       get { return _businessObjectProviderAttribute; }
     }

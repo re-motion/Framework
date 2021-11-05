@@ -16,6 +16,7 @@
 // 
 using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding
@@ -35,9 +36,9 @@ namespace Remotion.ObjectBinding
   /// <seealso cref="IBusinessObjectBoundEditableControl"/>
   public class BusinessObjectReferenceDataSource : BusinessObjectReferenceDataSourceBase, IBusinessObjectBoundEditableControl
   {
-    private IBusinessObjectDataSource _dataSource;
-    private string _propertyIdentifier;
-    private IBusinessObjectReferenceProperty _property;
+    private IBusinessObjectDataSource? _dataSource;
+    private string? _propertyIdentifier;
+    private IBusinessObjectReferenceProperty? _property;
     private bool _propertyDirty = true;
     private DataSourceMode _mode = DataSourceMode.Edit;
 
@@ -50,7 +51,7 @@ namespace Remotion.ObjectBinding
     ///   <see cref="IBusinessObjectReferenceDataSource"/> connects.
     ///  </value>
     [Category ("Data")]
-    public IBusinessObjectDataSource DataSource
+    public IBusinessObjectDataSource? DataSource
     {
       get { return _dataSource; }
       set
@@ -75,7 +76,7 @@ namespace Remotion.ObjectBinding
     ///   <see cref="IBusinessObjectReferenceDataSource"/> connects.
     ///  </value>
     /// <remarks> Identical to <see cref="DataSource"/>. </remarks>
-    public override sealed IBusinessObjectDataSource ReferencedDataSource
+    public override sealed IBusinessObjectDataSource? ReferencedDataSource
     {
       get { return _dataSource; }
     }
@@ -94,7 +95,7 @@ namespace Remotion.ObjectBinding
     ///   the <see cref="IBusinessObjectReferenceProperty"/> returned by <see cref="ReferenceProperty"/>. 
     /// </value>
     [Category ("Data")]
-    public string PropertyIdentifier
+    public string? PropertyIdentifier
     {
       get { return _propertyIdentifier; }
       set
@@ -113,10 +114,10 @@ namespace Remotion.ObjectBinding
     ///   <see cref="IBusinessObjectDataSource.BusinessObjectClass"/>.
     /// </value>
     /// <remarks> Identical to <see cref="ReferenceProperty"/>. </remarks>
-    IBusinessObjectProperty IBusinessObjectBoundControl.Property
+    IBusinessObjectProperty? IBusinessObjectBoundControl.Property
     {
       get { return ReferenceProperty; }
-      set { _property = (IBusinessObjectReferenceProperty) value; }
+      set { _property = (IBusinessObjectReferenceProperty?) value; }
     }
 
     /// <summary>
@@ -128,14 +129,14 @@ namespace Remotion.ObjectBinding
     ///   <see cref="IBusinessObjectDataSource.BusinessObjectClass"/>.
     /// </value>
     [Browsable (false)]
-    public override sealed IBusinessObjectReferenceProperty ReferenceProperty
+    public override sealed IBusinessObjectReferenceProperty? ReferenceProperty
     {
       get
       {
         if (_propertyDirty)
         {
           if (_dataSource != null && _dataSource.BusinessObjectClass != null && _propertyIdentifier != null)
-            _property = (IBusinessObjectReferenceProperty) _dataSource.BusinessObjectClass.GetPropertyDefinition (_propertyIdentifier);
+            _property = (IBusinessObjectReferenceProperty?) _dataSource.BusinessObjectClass.GetPropertyDefinition (_propertyIdentifier);
           else
             _property = null;
           _propertyDirty = false;
@@ -151,7 +152,7 @@ namespace Remotion.ObjectBinding
 
     /// <summary> Gets or sets the value provided by the <see cref="BusinessObjectReferenceDataSource"/>. </summary>
     /// <value> The <see cref="IBusinessObject"/> accessed using <see cref="IBusinessObjectBoundControl.Property"/>. </value>
-    object IBusinessObjectBoundControl.Value
+    object? IBusinessObjectBoundControl.Value
     {
       get { return BusinessObject; }
       set { BusinessObject = ArgumentUtility.CheckType<IBusinessObject> ("value", value); }

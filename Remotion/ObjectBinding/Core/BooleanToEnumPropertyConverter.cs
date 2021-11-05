@@ -78,7 +78,7 @@ namespace Remotion.ObjectBinding
     /// </summary>
     /// <param name="value">Can be any object that equals to <see langword="true"/> or <see langword="false"/> and <see langword="null"/>.</param>
     /// <returns> An <see cref="IEnumerationValueInfo"/> or <see langword="null"/>. </returns>
-    public IEnumerationValueInfo GetValueInfoByValue (object value)
+    public IEnumerationValueInfo? GetValueInfoByValue (object? value)
     {
       if (value == null)
         return null;
@@ -96,7 +96,7 @@ namespace Remotion.ObjectBinding
     /// </summary>
     /// <param name="identifier"> Can be <see langword="true"/>, <see langword="false"/>, or an empty string or <see langword="null"/>. </param>
     /// <returns> An <see cref="IEnumerationValueInfo"/> or <see langword="null"/>. </returns>
-    public IEnumerationValueInfo GetValueInfoByIdentifier (string identifier)
+    public IEnumerationValueInfo? GetValueInfoByIdentifier (string? identifier)
     {
       if (string.IsNullOrEmpty (identifier))
         return null;

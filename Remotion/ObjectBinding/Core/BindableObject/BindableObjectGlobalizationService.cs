@@ -133,20 +133,19 @@ namespace Remotion.ObjectBinding.BindableObject
         // Then, the MultiLingualResourcesBasedMemberInformationGlobalizationService will be able to implement the look of the localization 
         // from the class-qualified name, then the interfaces-qualified names, and finally, the unqualified name.
         var interfaceImplementationPropertyInfo = mixinIntroducedPropertyInformation.InterfaceImplementationPropertyInfo;
-        string displayNameFromInterface;
+
         if (_memberInformationGlobalizationService.TryGetPropertyDisplayName (
             interfaceImplementationPropertyInfo.DeclarationPropertyInfo,
             typeInformationForResourceResolution,
-            out displayNameFromInterface))
+            out var displayNameFromInterface))
         {
           return displayNameFromInterface;
         }
 
-        string displayNameFromImplementation;
         if (_memberInformationGlobalizationService.TryGetPropertyDisplayName (
             interfaceImplementationPropertyInfo.ImplementationPropertyInfo,
             typeInformationForResourceResolution,
-            out displayNameFromImplementation))
+            out var displayNameFromImplementation))
         {
           return displayNameFromImplementation;
         }

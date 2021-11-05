@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BindableObject.Properties;
 using Remotion.Reflection;
@@ -45,7 +46,7 @@ namespace Remotion.ObjectBinding.Security.BindableObject
       _securityClient = SecurityClient.CreateSecurityClientFromConfiguration();
     }
 
-    public bool CanRead (IBusinessObject businessObject, PropertyBase bindableProperty)
+    public bool CanRead (IBusinessObject? businessObject, PropertyBase bindableProperty)
     {
       // businessObject can be null
       ArgumentUtility.DebugCheckNotNull ("bindableProperty", bindableProperty);
@@ -62,7 +63,7 @@ namespace Remotion.ObjectBinding.Security.BindableObject
         IBusinessObject businessObject,
         PropertyBase bindableProperty,
         Exception exception,
-        out BusinessObjectPropertyAccessException propertyAccessException)
+        [MaybeNullWhen (false)] out BusinessObjectPropertyAccessException propertyAccessException)
     {
       ArgumentUtility.DebugCheckNotNull ("businessObject", businessObject);
       ArgumentUtility.DebugCheckNotNull ("bindableProperty", bindableProperty);

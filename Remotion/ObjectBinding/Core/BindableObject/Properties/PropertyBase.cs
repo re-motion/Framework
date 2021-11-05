@@ -42,7 +42,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
       public readonly Lazy<Type> ConcreteType;
 
       [CanBeNull]
-      public readonly IListInfo ListInfo;
+      public readonly IListInfo? ListInfo;
 
       public readonly bool IsNullable;
 
@@ -70,7 +70,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
           [NotNull] IPropertyInformation propertyInfo,
           [NotNull] Type underlyingType,
           [NotNull] Lazy<Type> concreteType,
-          [CanBeNull] IListInfo listInfo,
+          [CanBeNull] IListInfo? listInfo,
           bool isNullable,
           bool isRequired,
           bool isReadOnly,
@@ -122,16 +122,16 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
 
     private readonly BindableObjectProvider _businessObjectProvider;
     private readonly IPropertyInformation _propertyInfo;
-    private readonly IListInfo _listInfo;
+    private readonly IListInfo? _listInfo;
     private readonly bool _isNullable;
     private readonly bool _isRequired;
     private readonly Type _underlyingType;
     private readonly bool _isReadOnly;
     private readonly bool _isNullableDotNetType;
-    private BindableObjectClass _reflectedClass;
+    private BindableObjectClass? _reflectedClass;
     private readonly IDefaultValueStrategy _defaultValueStrategy;
-    private readonly Func<object, object> _valueGetter;
-    private readonly Action<object, object> _valueSetter;
+    private readonly Func<object, object>? _valueGetter;
+    private readonly Action<object, object?>? _valueSetter;
     private readonly IBindablePropertyReadAccessStrategy _bindablePropertyReadAccessStrategy;
     private readonly IBindablePropertyWriteAccessStrategy _bindablePropertyWriteAccessStrategy;
     private readonly BindableObjectGlobalizationService _bindableObjectGlobalizationService;
@@ -158,7 +158,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
       _businessObjectPropertyConstraintProvider = parameters.BusinessObjectPropertyConstraintProvider;
       _isNullableDotNetType = GetNullabilityForDotNetType();
       _valueGetter = _propertyInfo.GetGetMethod (true)?.GetFastInvoker<Func<object, object>>();
-      _valueSetter = _propertyInfo.GetSetMethod (true)?.GetFastInvoker<Action<object, object>>();
+      _valueSetter = _propertyInfo.GetSetMethod (true)?.GetFastInvoker<Action<object, object?>>();
     }
 
     /// <summary> Gets a flag indicating whether this property contains multiple values. </summary>
@@ -220,7 +220,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
         if (_reflectedClass == null)
         {
           throw new InvalidOperationException (
-              string.Format ("The reflected class for the property '{0}.{1}' is not set.", _propertyInfo.DeclaringType.Name, _propertyInfo.Name));
+              string.Format ("The reflected class for the property '{0}.{1}' is not set.", _propertyInfo.DeclaringType!.Name, _propertyInfo.Name));
         }
 
         return _bindableObjectGlobalizationService.GetPropertyDisplayName (_propertyInfo, TypeAdapter.Create(_reflectedClass.TargetType));
@@ -247,7 +247,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     /// <param name="obj"> The object to evaluate this property for, or <see langword="null"/>. </param>
     /// <returns> <see langword="true"/> if the user can access this property. </returns>
     /// <remarks> The result may depend on the class, the user's authorization and/or the instance value. </remarks>
-    public bool IsAccessible (IBusinessObject obj)
+    public bool IsAccessible (IBusinessObject? obj)
     {
       // obj can be null
 
@@ -267,14 +267,13 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
       }
       catch (Exception ex)
       {
-        BusinessObjectPropertyAccessException propertyAccessException;
-        if (_bindablePropertyReadAccessStrategy.IsPropertyAccessException (obj, this, ex, out propertyAccessException))
+        if (_bindablePropertyReadAccessStrategy.IsPropertyAccessException (obj, this, ex, out var propertyAccessException))
           throw propertyAccessException;
         throw;
       }
     }
 
-    public void SetValue (IBusinessObject obj, object value)
+    public void SetValue (IBusinessObject obj, object? value)
     {
       ArgumentUtility.CheckNotNull ("obj", obj);
 
@@ -287,8 +286,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
       }
       catch (Exception ex)
       {
-        BusinessObjectPropertyAccessException propertyAccessException;
-        if (_bindablePropertyWriteAccessStrategy.IsPropertyAccessException (obj, this, ex, out propertyAccessException))
+        if (_bindablePropertyWriteAccessStrategy.IsPropertyAccessException (obj, this, ex, out var propertyAccessException))
           throw propertyAccessException;
         throw;
       }
@@ -305,7 +303,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     /// <param name="obj"> The object to evaluate this property for, or <see langword="null"/>. </param>
     /// <returns> <see langword="true"/> if the user can set this property. </returns>
     /// <remarks> The result may depend on the user's authorization and/or the object. </remarks>
-    public bool IsReadOnly (IBusinessObject obj)
+    public bool IsReadOnly (IBusinessObject? obj)
     {
       // obj can be null
 
@@ -315,7 +313,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
       return !_bindablePropertyWriteAccessStrategy.CanWrite (obj, this);
     }
 
-    public IEnumerable<IBusinessObjectPropertyConstraint> GetConstraints (IBusinessObject obj)
+    public IEnumerable<IBusinessObjectPropertyConstraint> GetConstraints (IBusinessObject? obj)
     {
       // obj can be null
 
@@ -366,12 +364,12 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
       get { return _propertyInfo; }
     }
 
-    public virtual object ConvertFromNativePropertyType (object nativeValue)
+    public virtual object? ConvertFromNativePropertyType (object? nativeValue)
     {
       return nativeValue;
     }
 
-    public virtual object ConvertToNativePropertyType (object publicValue)
+    public virtual object? ConvertToNativePropertyType (object? publicValue)
     {
       return publicValue;
     }

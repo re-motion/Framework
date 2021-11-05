@@ -167,7 +167,7 @@ namespace Remotion.ObjectBinding.BindableObject
     protected virtual Type GetItemType ()
     {
       if (_propertyInfo.PropertyType.IsArray)
-        return _propertyInfo.PropertyType.GetElementType();
+        return _propertyInfo.PropertyType.GetElementType()!;
 
       if (TypeExtensions.CanAscribeTo (_propertyInfo.PropertyType, typeof (IReadOnlyCollection<>)))
         return TypeExtensions.GetAscribedGenericArguments (_propertyInfo.PropertyType, typeof (IReadOnlyCollection<>))[0];
@@ -181,7 +181,7 @@ namespace Remotion.ObjectBinding.BindableObject
       return _propertyInfo.PropertyType;
     }
 
-    protected virtual IListInfo GetListInfo ()
+    protected virtual IListInfo? GetListInfo ()
     {
       if (IsListProperty())
         return new ListInfo (_propertyInfo.PropertyType, GetItemType());
@@ -206,7 +206,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     protected virtual bool GetIsReadOnly ()
     {
-      ObjectBindingAttribute attribute = _propertyInfo.GetCustomAttribute<ObjectBindingAttribute> (true);
+      ObjectBindingAttribute? attribute = _propertyInfo.GetCustomAttribute<ObjectBindingAttribute> (true);
       if (attribute != null && attribute.ReadOnly)
         return true;
 
@@ -262,7 +262,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     private Type GetItemTypeFromAttribute ()
     {
-      ItemTypeAttribute itemTypeAttribute = _propertyInfo.GetCustomAttribute<ItemTypeAttribute> (true);
+      ItemTypeAttribute? itemTypeAttribute = _propertyInfo.GetCustomAttribute<ItemTypeAttribute> (true);
       if (itemTypeAttribute == null)
         throw new Exception ("ItemTypeAttribute is required for properties of type IList.");
 

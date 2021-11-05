@@ -37,7 +37,7 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyConstraints
     public IEnumerable<IBusinessObjectPropertyConstraint> GetPropertyConstraints (
         IBusinessObjectClass businessObjectClass,
         IBusinessObjectProperty businessObjectProperty,
-        IBusinessObject businessObject)
+        IBusinessObject? businessObject)
     {
       ArgumentUtility.CheckNotNull ("businessObjectClass", businessObjectClass);
       ArgumentUtility.CheckNotNull ("businessObjectProperty", businessObjectProperty);

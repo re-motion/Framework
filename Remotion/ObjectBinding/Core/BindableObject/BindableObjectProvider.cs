@@ -132,8 +132,8 @@ namespace Remotion.ObjectBinding.BindableObject
 
     private readonly ConcurrentDictionary<Type, BindableObjectClass> _businessObjectClassStore =
         new ConcurrentDictionary<Type, BindableObjectClass>();
-    private readonly IDataStore<Type, IBusinessObjectService> _serviceStore =
-        DataStoreFactory.CreateWithSynchronization<Type, IBusinessObjectService>();
+    private readonly IDataStore<Type, IBusinessObjectService?> _serviceStore =
+        DataStoreFactory.CreateWithSynchronization<Type, IBusinessObjectService?>();
     private readonly IMetadataFactory _metadataFactory;
     private readonly Func<Type, BindableObjectClass> _createBindableObjectClassFunc;
 
@@ -169,7 +169,7 @@ namespace Remotion.ObjectBinding.BindableObject
     }
 
     /// <summary> The <see cref="IDictionary"/> used to store the references to the registered servies. </summary>
-    protected override IDataStore<Type, IBusinessObjectService> ServiceStore
+    protected override IDataStore<Type, IBusinessObjectService?> ServiceStore
     {
       get { return _serviceStore; }
     }

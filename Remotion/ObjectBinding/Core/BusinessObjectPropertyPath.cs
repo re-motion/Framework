@@ -110,7 +110,7 @@ namespace Remotion.ObjectBinding
         _path = path;
       }
 
-      public string ToString (string format, IFormatProvider formatProvider)
+      public string ToString (string? format, IFormatProvider? formatProvider)
       {
         var result = _path.GetResult (_object, UnreachableValueBehavior.ReturnNullForUnreachableValue, ListValueBehavior.GetResultForFirstListEntry);
         return result.GetString (format);

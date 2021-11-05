@@ -32,7 +32,7 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths.Results
     /// or <see langword="null" /> if there is no value.
     /// </returns>
     [CanBeNull]
-    object GetValue ();
+    object? GetValue ();
 
     /// <summary>
     /// Gets the string-representation of value of the property path.
@@ -42,18 +42,18 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths.Results
     /// or an empty string if there is no value.
     /// </returns>
     [NotNull]
-    string GetString (string format);
+    string GetString (string? format);
 
     /// <summary>
     /// Gets the last property of the property path, i.e. the property used to access the value.
     /// </summary>
     [CanBeNull]
-    IBusinessObjectProperty ResultProperty { get; }
+    IBusinessObjectProperty? ResultProperty { get; }
     
     /// <summary>
     /// Gets the <see cref="IBusinessObject"/> that holds the value of the property path.
     /// </summary>
     [CanBeNull]
-    IBusinessObject ResultObject { get; }
+    IBusinessObject? ResultObject { get; }
   }
 }

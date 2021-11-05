@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
 using Remotion.ObjectBinding.BindableObject.Properties;
 
@@ -33,7 +34,7 @@ namespace Remotion.ObjectBinding.BindableObject
     /// <param name="bindableProperty">The <see cref="PropertyBase"/> for which the check will be performed. Must not be <see langword="null" />.</param>
     /// <returns><see langword="true" /> if the <paramref name="bindableProperty"/> can be gotten.</returns>
     /// <remarks>If getting the property is not supported, the property is hidden in the UI.</remarks>
-    bool CanRead ([CanBeNull] IBusinessObject businessObject, [NotNull] PropertyBase bindableProperty);
+    bool CanRead ([CanBeNull] IBusinessObject? businessObject, [JetBrains.Annotations.NotNull] PropertyBase bindableProperty);
 
     /// <summary>
     /// Checks if the <paramref name="exception"/> that has occured while accessing the <paramref name="bindableProperty"/> 
@@ -54,9 +55,9 @@ namespace Remotion.ObjectBinding.BindableObject
     /// </returns>
     [ContractAnnotation ("=>true, propertyAccessException:notnull; =>false, propertyAccessException:null")]
     bool IsPropertyAccessException (
-        [NotNull] IBusinessObject businessObject,
-        [NotNull] PropertyBase bindableProperty,
-        [NotNull] Exception exception,
-        [CanBeNull] out BusinessObjectPropertyAccessException propertyAccessException);
+        [JetBrains.Annotations.NotNull] IBusinessObject businessObject,
+        [JetBrains.Annotations.NotNull] PropertyBase bindableProperty,
+        [JetBrains.Annotations.NotNull] Exception exception,
+        [CanBeNull, MaybeNullWhen (false)] out BusinessObjectPropertyAccessException propertyAccessException);
   }
 }

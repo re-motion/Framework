@@ -42,7 +42,7 @@ namespace Remotion.ObjectBinding.BindableObject
     /// <returns>
     /// 	<see langword="true" /> if the specified value is enabled; otherwise, <see langword="false" />.
     /// </returns>
-    public bool IsEnabled (IEnumerationValueInfo value, IBusinessObject businessObject, IBusinessObjectEnumerationProperty property)
+    public bool IsEnabled (IEnumerationValueInfo value, IBusinessObject? businessObject, IBusinessObjectEnumerationProperty property)
     {
       ArgumentUtility.CheckNotNull ("value", value);
       ArgumentUtility.CheckNotNull ("property", property);

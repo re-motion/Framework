@@ -46,7 +46,7 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths.Results
       get { return false; }
     }
 
-    public object GetValue ()
+    public object? GetValue ()
     {
       if (!_resultProperty.IsAccessible (_resultObject))
         return null;
@@ -61,7 +61,7 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths.Results
       }
     }
 
-    public string GetString (string format)
+    public string GetString (string? format)
     {
       if (!_resultProperty.IsAccessible (_resultObject))
         return _resultObject.BusinessObjectClass.BusinessObjectProvider.GetNotAccessiblePropertyStringPlaceHolder();

@@ -56,15 +56,15 @@ namespace Remotion.ObjectBinding.Validation
     public string ErrorMessage { get; }
 
     [CanBeNull]
-    public IBusinessObject ValidatedObject { get; }
+    public IBusinessObject? ValidatedObject { get; }
 
     [CanBeNull]
-    public IBusinessObjectProperty ValidatedProperty { get; }
+    public IBusinessObjectProperty? ValidatedProperty { get; }
 
     private BusinessObjectValidationFailure (
         [NotNull] string errorMessage,
-        [CanBeNull] IBusinessObject validatedObject,
-        [CanBeNull] IBusinessObjectProperty validatedProperty)
+        [CanBeNull] IBusinessObject? validatedObject,
+        [CanBeNull] IBusinessObjectProperty? validatedProperty)
     {
       // Additional properties are possible, e.g. indicating if the message is needed or obvious (required field)
 

@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Remotion.Collections;
 using Remotion.ObjectBinding.BindableObject.Properties;
@@ -47,7 +48,7 @@ namespace Remotion.ObjectBinding.BindableObject
     }
 
 
-    public bool CanRead (IBusinessObject businessObject, PropertyBase bindableProperty)
+    public bool CanRead (IBusinessObject? businessObject, PropertyBase bindableProperty)
     {
       // businessObject can be null
       ArgumentUtility.DebugCheckNotNull ("bindableProperty", bindableProperty);
@@ -69,7 +70,7 @@ namespace Remotion.ObjectBinding.BindableObject
         IBusinessObject businessObject,
         PropertyBase bindableProperty,
         Exception exception,
-        out BusinessObjectPropertyAccessException propertyAccessException)
+        [MaybeNullWhen (false)] out BusinessObjectPropertyAccessException propertyAccessException)
     {
       ArgumentUtility.DebugCheckNotNull ("businessObject", businessObject);
       ArgumentUtility.DebugCheckNotNull ("bindableProperty", bindableProperty);

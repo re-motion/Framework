@@ -16,6 +16,7 @@
 // 
 using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Remotion.ObjectBinding
 {
@@ -38,7 +39,7 @@ namespace Remotion.ObjectBinding
     ///   <see cref="IBusinessObjectBoundControl"/> is bound.
     /// </summary>
     /// <value> An <see cref="IBusinessObjectDataSource"/> providing the current <see cref="IBusinessObject"/>. </value>
-    IBusinessObjectDataSource DataSource { get; set; }
+    IBusinessObjectDataSource? DataSource { get; set; }
 
     /// <summary>
     ///   Gets or sets the <see cref="IBusinessObjectProperty"/> used for accessing the data to be loaded into 
@@ -48,11 +49,11 @@ namespace Remotion.ObjectBinding
     ///   An <see cref="IBusinessObjectProperty"/> that is part of the bound <see cref="IBusinessObject"/>'s
     ///   <see cref="IBusinessObjectClass"/>
     /// </value>
-    IBusinessObjectProperty Property { get; set; }
+    IBusinessObjectProperty? Property { get; set; }
 
     /// <summary> Gets or sets the value provided by the <see cref="IBusinessObjectBoundControl"/>. </summary>
     /// <value> An object or boxed value. </value>
-    object Value { get; set; }
+    object? Value { get; set; }
 
     /// <summary>Gets a flag indicating whether the <see cref="IBusinessObjectBoundControl"/> contains a value. </summary>
     /// <value><see langword="true" /> if the <see cref="IBusinessObjectBoundControl"/> contains a value. </value>
@@ -60,6 +61,7 @@ namespace Remotion.ObjectBinding
     /// The flag only specifies the presense of data. It does not specify whether the data is in a format compatible with the <see cref="Property"/>.
     /// For this, a separate validation step is required.
     /// </remarks>
+    [MemberNotNullWhen (true, nameof (Value))]
     bool HasValue { get; }
 
     /// <summary> 
