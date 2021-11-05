@@ -210,14 +210,17 @@ class DatePickerFrame
 {
   public static Calendar_SelectionChanged (value: string): void
   {
-    if (window.parent !== window)
+    if (window.parent === window)
     {
-      window.parent.DatePickerFrame.Calendar_SelectionChanged(value);
+      // DatePicker popup is opened directly.
     }
-    else
-    {
-      DatePicker.UpdateValue(value);
-    }
+
+    window.parent.DatePickerFrame.UpdateDatePickerValue(value);
+  }
+
+  public static UpdateDatePickerValue (value: string): void
+  {
+    DatePicker.UpdateValue(value);
   }
 }
 window.DatePickerFrame = DatePickerFrame;
