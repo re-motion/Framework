@@ -17,6 +17,7 @@
 using System;
 using System.ComponentModel.Design;
 using System.Reflection;
+using System.IO;
 using Moq;
 using NUnit.Framework;
 using Remotion.Configuration.TypeDiscovery;
@@ -120,5 +121,24 @@ namespace Remotion.UnitTests.Reflection
 
       Assert.That (defaultService, Is.SameAs (defaultService2));
     }
+
+#if NETFRAMEWORK
+    [Test]
+    public void GetTypeDiscoveryService_WithCustomImplementation_DoesNotThrowOnInitialization ()
+    {
+      var relativePath = @"Reflection\TestDomain\ContextAwareTypeUtilityTest\app.config";
+      var fullPath = Path.Combine (TestContext.CurrentContext.TestDirectory, relativePath);
+      Assert.That (File.Exists (fullPath));
+
+      var appDomainSetup = AppDomain.CurrentDomain.SetupInformation;
+      appDomainSetup.ConfigurationFile = fullPath;
+
+      var appDomainRunner = new AppDomainRunner (
+          appDomainSetup,
+          objects => { ContextAwareTypeUtility.GetTypeDiscoveryService(); });
+
+      Assert.That (() => appDomainRunner.Run(), Throws.Nothing);
+    }
+#endif
   }
 }
