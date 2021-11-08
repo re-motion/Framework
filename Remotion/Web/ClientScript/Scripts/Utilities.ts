@@ -377,47 +377,117 @@ class LayoutUtility
 {
   public static GetHeight(element: Element)
   {
-    return LayoutUtility.GetElementDimension(element, "height");
+    return LayoutUtility.GetElementDimensionShowingElementIfNecessary(element, "height");
+  }
+
+  public static GetInnerHeight(element: Element)
+  {
+    return LayoutUtility.GetElementDimensionShowingElementIfNecessary(element, "height", "padding");
   }
 
   public static GetWidth(element: Element)
   {
-    return LayoutUtility.GetElementDimension(element, "width");
+    return LayoutUtility.GetElementDimensionShowingElementIfNecessary(element, "width");
   }
 
-  private static GetElementDimension(element: Element, dimension: "width" | "height")
+  public static GetInnerWidth(element: Element)
+  {
+    return LayoutUtility.GetElementDimensionShowingElementIfNecessary(element, "width", "padding");
+  }
+
+  public static GetOuterHeight(element: HTMLElement)
+  {
+    return this.GetElementDimensionShowingElementIfNecessary(element, "height", "border");
+  }
+
+  public static GetOuterWidth(element: HTMLElement)
+  {
+    return this.GetElementDimensionShowingElementIfNecessary(element, "width", "border");
+  }
+
+  private static GetElementDimensionShowingElementIfNecessary(element: Element, dimension: "width" | "height", extra?: "padding" | "border")
+  {
+    const htmlElement = element as HTMLElement;
+    const offsetValue = dimension === "width" ? htmlElement.offsetWidth : htmlElement.offsetHeight;
+    if (offsetValue !== 0)
+      return this.GetElementDimension(htmlElement, dimension, extra);
+
+    const previousPosition = htmlElement.style.position;
+    const previousVisibility = htmlElement.style.visibility;
+    const previousDisplay = htmlElement.style.display;
+
+    htmlElement.style.position = "absolute";
+    htmlElement.style.visibility = "hidden";
+    htmlElement.style.display = "block";
+
+    const result = this.GetElementDimension(htmlElement, dimension, extra);
+
+    htmlElement.style.position = previousPosition;
+    htmlElement.style.visibility = previousVisibility;
+    htmlElement.style.display = previousDisplay;
+
+    return result;
+  }
+
+  private static GetElementDimension(element: HTMLElement, dimension: "width" | "height", extra?: "padding" | "border")
   {
     const style = window.getComputedStyle(element);
 
-    // jQuery 1.6.4 uses the offsetWidth/offsetHeight properties to calculate element dimensions.
-    // The offsetXXX properties are rounded, while the style properties are not.
-    // We round here to make sure that we are compatible with the original behavior, but we do
-    // not use the offsetXXX properties for the calculation because they introduce unnecessary
-    // complexity for backwards compatibility that we don't need (IE).
-    const value = Math.round(parseFloat(style[dimension])) || 0;
-    
-    // For content-box: value is already correct
-    // For border-box: we need to remove padding and border from the value
-    if (style.boxSizing !== "border-box")
-      return value;
-    
     const orientations: CssOrientation[] = dimension === "width"
       ? ["Left", "Right"]
       : ["Top", "Bottom"];
 
-    let adjustment = 0.0;
-    for (const orientation of orientations)
+    const offsetValue = dimension === "width" ? element.offsetWidth : element.offsetHeight;
+    // If an element is not visible its offsetXXX value will return 0 and we have to use the style instead
+    const hasOffsetValue = offsetValue > 0;
+
+    const value = hasOffsetValue ? offsetValue : (parseFloat(style[dimension]) || 0);
+    if (hasOffsetValue || style.boxSizing === "border-box") 
     {
-      // Subtract padding
-      const paddingProperty = `padding${orientation}` as `padding${CssOrientation}`;
-      adjustment -= parseFloat(style[paddingProperty]) || 0;
+      // For border-box or offsetValue > 0: value is with the padding/border so we remove it if necessary
+      if (extra === "border")
+        return value;
 
-      // Subtract border
-      const borderProperty = `border${orientation}Width` as `border${CssOrientation}Width`;
-      adjustment -= parseFloat(style[borderProperty]) || 0;
+      let adjustment = 0;
+      for (const orientation of orientations)
+      {
+        if (extra === undefined)
+        {
+          // Subtract padding
+          const paddingProperty = `padding${orientation}` as `padding${CssOrientation}`;
+          adjustment -= parseFloat(style[paddingProperty]) || 0;
+        }
+
+        // Subtract border
+        const borderProperty = `border${orientation}Width` as `border${CssOrientation}Width`;
+        adjustment -= parseFloat(style[borderProperty]) || 0;
+      }
+
+      return value + adjustment;
     }
+    else
+    {
+      // For content-box: value is without the padding/border so we add it if necessary
+      let adjustment = 0.0;
+      if (extra === undefined)
+        return value;
 
-    return value + adjustment;
+      for (const orientation of orientations)
+      {
+        // Add padding
+        const paddingProperty = `padding${orientation}` as `padding${CssOrientation}`;
+        adjustment += parseFloat(style[paddingProperty]) || 0;
+
+        if (extra === "border")
+        {
+          // Add border
+          const borderProperty = `border${orientation}Width` as `border${CssOrientation}Width`;
+          adjustment += parseFloat(style[borderProperty]) || 0;
+        }
+      }
+
+      return value + adjustment;
+    }
   }
 
   public static GetOffset(element: HTMLElement)
@@ -430,17 +500,23 @@ class LayoutUtility
     }
   }
 
-  public static GetOuterHeight(element: HTMLElement)
-  {
-    const style = window.getComputedStyle(element);
-
-    // Margins on the style are always in px e.g. "34px"
-    // parseInt ignores the "px" suffix so we do not have to remove here
-    return element.offsetHeight + parseInt(style.marginTop) + parseInt(style.marginBottom);
-  }
-
   public static IsVisible(element: HTMLElement)
   {
     return element.offsetWidth !== 0 || element.offsetHeight !== 0 || element.getClientRects().length !== 0;
+  }
+
+  public static Hide(element: HTMLElement)
+  {
+    element.style.display = "none";
+  }
+
+  public static Show(element: HTMLElement)
+  {
+    element.style.display = "";
+  }
+
+  public static FormatPixelProperty(value: string | number): string
+  {
+    return typeof value === "number" ? value + "px" : value;
   }
 }
