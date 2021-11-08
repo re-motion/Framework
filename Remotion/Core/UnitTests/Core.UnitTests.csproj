@@ -24,5 +24,10 @@
     <ProjectReference Include="..\..\Development\Core\Development.Core.csproj" />
     <ProjectReference Include="..\Core\Core.Core.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="Reflection\TestDomain\ContextAwareTypeUtilityTest\app.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>
