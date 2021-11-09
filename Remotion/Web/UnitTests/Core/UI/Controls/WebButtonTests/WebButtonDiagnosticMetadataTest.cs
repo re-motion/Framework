@@ -34,7 +34,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebButtonTests
     [Test]
     public void RenderDiagnosticMetadataAttributes ()
     {
-      var webButton = new TestWebButton { ID = "WebButton", Text = "My Button" };
+      var webButton = new TestWebButton { ID = "WebButton", Text = WebString.CreateFromText("My Button") };
 
       var renderedText = RenderControl(webButton);
 
@@ -43,6 +43,16 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebButtonTests
       Assert.That(renderedText, Does.Contain(DiagnosticMetadataAttributes.Content + "=\"" + webButton.Text + "\""));
       Assert.That(renderedText, Does.Not.Contains(DiagnosticMetadataAttributes.CommandName));
       Assert.That(renderedText, Does.Contain(DiagnosticMetadataAttributes.TriggersPostBack + "=\"true\""));
+    }
+
+    [Test]
+    public void RenderDiagnosticMetadataAttributes_WithHtmlText_StripsTagsInContent ()
+    {
+      var webButton = new TestWebButton { ID = "WebButton", Text = WebString.CreateFromHtml("<p>My Button</p>") };
+
+      var renderedText = RenderControl(webButton);
+
+      Assert.That(renderedText, Does.Contain(DiagnosticMetadataAttributes.Content + "=\"My Button\""));
     }
 
     [Test]

@@ -29,6 +29,7 @@ using Remotion.SecurityManager.Configuration;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
+using Remotion.Web.Globalization;
 
 namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 {
@@ -67,7 +68,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
     {
       var resourceManager = GetResourceManager(typeof(ResourceIdentifier));
       PositionListLabel.Text = resourceManager.GetString(ResourceIdentifier.PositionListLabelText);
-      NewPositionButton.Text = resourceManager.GetString(ResourceIdentifier.NewPositionButtonText);
+      NewPositionButton.Text = resourceManager.GetText(ResourceIdentifier.NewPositionButtonText);
 
       base.OnPreRender(e);
 
