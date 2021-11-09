@@ -74,6 +74,24 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    public void TestGetAccessKey ()
+    {
+      var home = Start();
+
+      var webButton = home.WebButtons().GetByLocalID ("MyWebButton1Sync");
+      Assert.That (webButton.GetAccessKey(), Is.EqualTo ("A"));
+    }
+
+    [Test]
+    public void TestGetAccessKey_AccessKeyNotSet ()
+    {
+      var home = Start();
+
+      var webButton = home.WebButtons().GetByLocalID ("MyWebButtonPrimary1Sync");
+      Assert.That (webButton.GetAccessKey(), Is.Null);
+    }
+
+    [Test]
     public void TestClick ()
     {
       var home = Start();

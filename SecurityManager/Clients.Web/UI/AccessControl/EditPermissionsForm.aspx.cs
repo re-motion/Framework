@@ -29,6 +29,7 @@ using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.SecurityManager.Domain.Metadata;
 using Remotion.Web;
 using Remotion.Web.ExecutionEngine;
+using Remotion.Web.Globalization;
 using Remotion.Web.UI;
 
 namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
@@ -289,14 +290,12 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
       DuplicateStateCombinationsValidator.ErrorMessage = resourceManager.GetString (
           ResourceIdentifier.DuplicateStateCombinationsValidatorErrorMessage);
 
-      NewStatefulAccessControlListButton.Text = resourceManager.GetString (
-          ResourceIdentifier.NewStatefulAccessControlListButtonText);
+      NewStatefulAccessControlListButton.Text = resourceManager.GetText (ResourceIdentifier.NewStatefulAccessControlListButtonText);
 
-      NewStatelessAccessControlListButton.Text = resourceManager.GetString (
-          ResourceIdentifier.NewStatelessAccessControlListButtonText);
+      NewStatelessAccessControlListButton.Text = resourceManager.GetText (ResourceIdentifier.NewStatelessAccessControlListButtonText);
 
-      SaveButton.Text = GlobalResourcesHelper.GetString (GlobalResources.Save);
-      CancelButton.Text = GlobalResourcesHelper.GetString (GlobalResources.Cancel);
+      SaveButton.Text = GlobalResourcesHelper.GetText (GlobalResources.Save);
+      CancelButton.Text = GlobalResourcesHelper.GetText (GlobalResources.Cancel);
 
       base.OnPreRender (e);
 

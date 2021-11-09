@@ -29,7 +29,7 @@
           <div>
             <remotion:WebButton ID="PostBackButton" runat="server" Text="Post Back" />&nbsp;
             <remotion:WebButton ID="SaveButton" runat="server" Width="10em" Text="Save" />&nbsp;
-            <remotion:WebButton ID="SaveAndRestartButton" runat="server" Width="10em" Text="Save &&amp;amp; Restart" />&nbsp;
+            <remotion:WebButton ID="SaveAndRestartButton" runat="server" Width="10em" Text="Save &amp; Restart" />&nbsp;
             <remotion:WebButton ID="CancelButton" runat="server" Width="10em" Text="Cancel" />
           </div>
         </asp:PlaceHolder>

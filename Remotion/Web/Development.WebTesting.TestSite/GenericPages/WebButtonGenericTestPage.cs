@@ -33,7 +33,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.GenericPages
     public override WebButton CreateControl (GenericTestOptions options)
     {
       var control = base.CreateControl (options);
-      control.Text = options.TextContent;
+      control.Text = WebString.CreateFromText (options.TextContent);
       return control;
     }
   }
