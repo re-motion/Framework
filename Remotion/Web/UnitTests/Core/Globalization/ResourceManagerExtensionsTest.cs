@@ -244,5 +244,235 @@ namespace Remotion.Web.UnitTests.Core.Globalization
 
       Assert.That (result.HasValue, Is.False);
     }
+
+    [Test]
+    public void GetHtml_WithExistingResource_ReturnsWebString ()
+    {
+      const string resourceID = "resourceID";
+      var outValue = "Test";
+
+      _resourceManagerMock
+          .Setup (mock => mock.TryGetString (resourceID, out outValue))
+          .Returns (true)
+          .Verifiable();
+
+      var result = _resourceManagerMock.Object.GetHtml (resourceID);
+
+      _resourceManagerMock.Verify();
+      Assert.That (result.GetValue(), Is.EqualTo ("Test"));
+      Assert.That (result.Type, Is.EqualTo (WebStringType.Encoded));
+    }
+
+    [Test]
+    public void GetText_WithExistingResource_ReturnsWebString ()
+    {
+      const string resourceID = "resourceID";
+      var outValue = "Test";
+
+      _resourceManagerMock
+          .Setup (mock => mock.TryGetString (resourceID, out outValue))
+          .Returns (true)
+          .Verifiable();
+
+      var result = _resourceManagerMock.Object.GetText (resourceID);
+
+      _resourceManagerMock.Verify();
+      Assert.That (result.GetValue(), Is.EqualTo ("Test"));
+      Assert.That (result.Type, Is.EqualTo (WebStringType.PlainText));
+    }
+
+    [Test]
+    public void GetHtml_WithNonExistingResource_ReturnsWebStringWithResourceIDAsValue ()
+    {
+      var result = _resourceManagerMock.Object.GetHtml (c_fakeResourceID);
+
+      Assert.That (result.GetValue(), Is.EqualTo ("fake"));
+      Assert.That (result.Type, Is.EqualTo (WebStringType.Encoded));
+    }
+
+    [Test]
+    public void GetText_WithNonExistingResource_ReturnsWebStringWithResourceIDAsValue ()
+    {
+      var result = _resourceManagerMock.Object.GetText (c_fakeResourceID);
+
+      Assert.That (result.GetValue(), Is.EqualTo ("fake"));
+      Assert.That (result.Type, Is.EqualTo (WebStringType.PlainText));
+    }
+
+    [Test]
+    public void GetHtmlOrDefault_WithExistingResource_ReturnsWebString ()
+    {
+      const string resourceID = "resourceID";
+      var outValue = "Test";
+
+      _resourceManagerMock
+          .Setup (mock => mock.TryGetString (resourceID, out outValue))
+          .Returns (true)
+          .Verifiable();
+
+      var result = _resourceManagerMock.Object.GetHtmlOrDefault (resourceID);
+
+      _resourceManagerMock.Verify();
+      Assert.That (result.HasValue, Is.True);
+      Assert.That (result.Value.GetValue(), Is.EqualTo ("Test"));
+      Assert.That (result.Value.Type, Is.EqualTo (WebStringType.Encoded));
+    }
+
+    [Test]
+    public void GetTextOrDefault_WithExistingResource_ReturnsWebString ()
+    {
+      const string resourceID = "resourceID";
+      var outValue = "Test";
+
+      _resourceManagerMock
+          .Setup (mock => mock.TryGetString (resourceID, out outValue))
+          .Returns (true)
+          .Verifiable();
+
+      var result = _resourceManagerMock.Object.GetTextOrDefault (resourceID);
+
+      _resourceManagerMock.Verify();
+      Assert.That (result.HasValue, Is.True);
+      Assert.That (result.Value.GetValue(), Is.EqualTo ("Test"));
+      Assert.That (result.Value.Type, Is.EqualTo (WebStringType.PlainText));
+    }
+
+    [Test]
+    public void GetHtmlOrDefault_WithNonExistingResource_ReturnsNull ()
+    {
+      var result = _resourceManagerMock.Object.GetHtmlOrDefault (c_fakeResourceID);
+
+      Assert.That (result.HasValue, Is.False);
+    }
+
+    [Test]
+    public void GetTextOrDefault_WithNonExistingResource_ReturnsNull ()
+    {
+      var result = _resourceManagerMock.Object.GetTextOrDefault (c_fakeResourceID);
+
+      Assert.That (result.HasValue, Is.False);
+    }
+
+    [Test]
+    public void GetHtml_Enum_WithExistingResource_ReturnsWebString ()
+    {
+      var enumValue = EnumWithMultiLingualNameAttribute.ValueWithLocalizedName;
+      var enumResourceID = ResourceIdentifiersAttribute.GetResourceIdentifier (enumValue);
+      var outValue = "Test";
+
+      _resourceManagerMock
+          .Setup (mock => mock.TryGetString (enumResourceID, out outValue))
+          .Returns (true)
+          .Verifiable();
+
+      var result = _resourceManagerMock.Object.GetHtml (enumValue);
+
+      _resourceManagerMock.Verify();
+      Assert.That (result.GetValue(), Is.EqualTo ("Test"));
+      Assert.That (result.Type, Is.EqualTo (WebStringType.Encoded));
+    }
+
+    [Test]
+    public void GetText_Enum_WithExistingResource_ReturnsWebString ()
+    {
+      var enumValue = EnumWithMultiLingualNameAttribute.ValueWithLocalizedName;
+      var enumResourceID = ResourceIdentifiersAttribute.GetResourceIdentifier (enumValue);
+      var outValue = "Test";
+
+      _resourceManagerMock
+          .Setup (mock => mock.TryGetString (enumResourceID, out outValue))
+          .Returns (true)
+          .Verifiable();
+
+      var result = _resourceManagerMock.Object.GetText (enumValue);
+
+      _resourceManagerMock.Verify();
+      Assert.That (result.GetValue(), Is.EqualTo ("Test"));
+      Assert.That (result.Type, Is.EqualTo (WebStringType.PlainText));
+    }
+
+    [Test]
+    public void GetText_Enum_WithNonExistingResource_ReturnsWebStringWithResourceIDAsValue ()
+    {
+      var enumValue = EnumWithMultiLingualNameAttribute.ValueWithLocalizedName;
+      var enumResourceID = ResourceIdentifiersAttribute.GetResourceIdentifier (enumValue);
+
+      var result = _resourceManagerMock.Object.GetText (enumValue);
+
+      Assert.That (result.GetValue(), Is.EqualTo (enumResourceID));
+      Assert.That (result.Type, Is.EqualTo (WebStringType.PlainText));
+    }
+
+    [Test]
+    public void GetHtml_Enum_WithNonExistingResource_ReturnsWebStringWithResourceIDAsValue ()
+    {
+      var enumValue = EnumWithMultiLingualNameAttribute.ValueWithLocalizedName;
+      var enumResourceID = ResourceIdentifiersAttribute.GetResourceIdentifier (enumValue);
+
+      var result = _resourceManagerMock.Object.GetHtml (enumValue);
+
+      Assert.That (result.GetValue(), Is.EqualTo (enumResourceID));
+      Assert.That (result.Type, Is.EqualTo (WebStringType.Encoded));
+    }
+
+    [Test]
+    public void GetHtmlOrDefault_Enum_WithExistingResource_ReturnsWebString ()
+    {
+      var enumValue = EnumWithMultiLingualNameAttribute.ValueWithLocalizedName;
+      var enumResourceID = ResourceIdentifiersAttribute.GetResourceIdentifier (enumValue);
+      var outValue = "Test";
+
+      _resourceManagerMock
+          .Setup (mock => mock.TryGetString (enumResourceID, out outValue))
+          .Returns (true)
+          .Verifiable();
+
+      var result = _resourceManagerMock.Object.GetHtmlOrDefault (enumValue);
+
+      _resourceManagerMock.Verify();
+      Assert.That (result.HasValue, Is.True);
+      Assert.That (result.Value.GetValue(), Is.EqualTo ("Test"));
+      Assert.That (result.Value.Type, Is.EqualTo (WebStringType.Encoded));
+    }
+
+    [Test]
+    public void GetTextOrDefault_Enum_WithExistingResource_ReturnsWebString ()
+    {
+      var enumValue = EnumWithMultiLingualNameAttribute.ValueWithLocalizedName;
+      var enumResourceID = ResourceIdentifiersAttribute.GetResourceIdentifier (enumValue);
+      var outValue = "Test";
+
+      _resourceManagerMock
+          .Setup (mock => mock.TryGetString (enumResourceID, out outValue))
+          .Returns (true)
+          .Verifiable();
+
+      var result = _resourceManagerMock.Object.GetTextOrDefault (enumValue);
+
+      _resourceManagerMock.Verify();
+      Assert.That (result.HasValue, Is.True);
+      Assert.That (result.Value.GetValue(), Is.EqualTo ("Test"));
+      Assert.That (result.Value.Type, Is.EqualTo (WebStringType.PlainText));
+    }
+
+    [Test]
+    public void GetHtmlOrDefault_Enum_WithNonExistingResource_ReturnsNull ()
+    {
+      var enumValue = EnumWithMultiLingualNameAttribute.ValueWithLocalizedName;
+
+      var result = _resourceManagerMock.Object.GetHtmlOrDefault (enumValue);
+
+      Assert.That (result.HasValue, Is.False);
+    }
+
+    [Test]
+    public void GetTextOrDefault_Enum_WithNonExistingResource_ReturnsNull ()
+    {
+      var enumValue = EnumWithMultiLingualNameAttribute.ValueWithLocalizedName;
+
+      var result = _resourceManagerMock.Object.GetTextOrDefault (enumValue);
+
+      Assert.That (result.HasValue, Is.False);
+    }
   }
 }
