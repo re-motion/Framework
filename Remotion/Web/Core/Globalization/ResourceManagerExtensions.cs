@@ -109,6 +109,88 @@ namespace Remotion.Web.Globalization
       return CreateWebStringOfType (webStringType, resourceString);
     }
 
+    /// <summary>
+    /// Gets the value of the specified String resource as <see cref="WebString"/> of type <see cref="WebStringType.PlainText"/>.
+    /// </summary>
+    /// <param name="resourceManager">The <see cref="IResourceManager"/> that is used for the resource lookup. Must not be <see langword="null"/>.</param>
+    /// <param name="id">The ID of the resource to get. Must not be <see langword="null"/>.</param>
+    /// <returns>
+    /// The value of the resource as <see cref="WebString"/> of type <see cref="WebStringType.PlainText"/>. If no match is possible, the identifier is returned.
+    /// </returns>
+    public static WebString GetText (this IResourceManager resourceManager, string id) => GetWebString (resourceManager, id, WebStringType.PlainText);
+
+    /// <summary>
+    /// Gets the value of the specified String resource as <see cref="WebString"/> of type <see cref="WebStringType.Encoded"/>.
+    /// </summary>
+    /// <param name="resourceManager">The <see cref="IResourceManager"/> that is used for the resource lookup. Must not be <see langword="null"/>.</param>
+    /// <param name="id">The ID of the resource to get. Must not be <see langword="null"/>.</param>
+    /// <returns>
+    /// The value of the resource as <see cref="WebString"/> of type <see cref="WebStringType.Encoded"/>. If no match is possible, the identifier is returned.
+    /// </returns>
+    public static WebString GetHtml (this IResourceManager resourceManager, string id) => GetWebString (resourceManager, id, WebStringType.Encoded);
+
+    /// <summary>
+    /// Gets the value of the specified String resource as <see cref="WebString"/> of type <see cref="WebStringType.PlainText"/>.
+    /// </summary>
+    /// <param name="resourceManager">The <see cref="IResourceManager"/> that is used for the resource lookup. Must not be <see langword="null"/>.</param>
+    /// <param name="enumValue">The ID of the resource to get. Must not be <see langword="null"/>.</param>
+    /// <returns>
+    /// The value of the resource as <see cref="WebString"/> of type <see cref="WebStringType.PlainText"/>. If no match is possible, the identifier is returned.
+    /// </returns>
+    public static WebString GetText (this IResourceManager resourceManager, Enum enumValue) => GetWebString (resourceManager, enumValue, WebStringType.PlainText);
+
+    /// <summary>
+    /// Gets the value of the specified String resource as <see cref="WebString"/> of type <see cref="WebStringType.Encoded"/>.
+    /// </summary>
+    /// <param name="resourceManager">The <see cref="IResourceManager"/> that is used for the resource lookup. Must not be <see langword="null"/>.</param>
+    /// <param name="enumValue">The ID of the resource to get. Must not be <see langword="null"/>.</param>
+    /// <returns>
+    /// The value of the resource as <see cref="WebString"/> of type <see cref="WebStringType.Encoded"/>. If no match is possible, the identifier is returned.
+    /// </returns>
+    public static WebString GetHtml (this IResourceManager resourceManager, Enum enumValue) => GetWebString (resourceManager, enumValue, WebStringType.Encoded);
+
+    /// <summary>
+    /// Gets the value of the specified String resource as <see cref="WebString"/> of type <see cref="WebStringType.PlainText"/>.
+    /// </summary>
+    /// <param name="resourceManager">The <see cref="IResourceManager"/> that is used for the resource lookup. Must not be <see langword="null"/>.</param>
+    /// <param name="id">The ID of the resource to get. Must not be <see langword="null"/>.</param>
+    /// <returns>
+    /// The value of the resource as <see cref="WebString"/> of type <see cref="WebStringType.PlainText"/>. If no match is possible, <see langword="null"/> is returned.
+    /// </returns>
+    public static WebString? GetTextOrDefault (this IResourceManager resourceManager, string id) => GetWebStringOrDefault (resourceManager, id, WebStringType.PlainText);
+
+    /// <summary>
+    /// Gets the value of the specified String resource as <see cref="WebString"/> of type <see cref="WebStringType.Encoded"/>.
+    /// </summary>
+    /// <param name="resourceManager">The <see cref="IResourceManager"/> that is used for the resource lookup. Must not be <see langword="null"/>.</param>
+    /// <param name="id">The ID of the resource to get. Must not be <see langword="null"/>.</param>
+    /// <returns>
+    /// The value of the resource as <see cref="WebString"/> of type <see cref="WebStringType.Encoded"/>. If no match is possible, <see langword="null"/> is returned.
+    /// </returns>
+    public static WebString? GetHtmlOrDefault (this IResourceManager resourceManager, string id) => GetWebStringOrDefault (resourceManager, id, WebStringType.Encoded);
+
+    /// <summary>
+    /// Gets the value of the specified String resource as <see cref="WebString"/> of type <see cref="WebStringType.PlainText"/>.
+    /// </summary>
+    /// <param name="resourceManager">The <see cref="IResourceManager"/> that is used for the resource lookup. Must not be <see langword="null"/>.</param>
+    /// <param name="enumValue">The ID of the resource to get. Must not be <see langword="null"/>.</param>
+    /// <returns>
+    /// The value of the resource as <see cref="WebString"/> of type <see cref="WebStringType.PlainText"/>. If no match is possible, <see langword="null"/> is returned.
+    /// </returns>
+    public static WebString? GetTextOrDefault (this IResourceManager resourceManager, Enum enumValue) =>
+        GetWebStringOrDefault (resourceManager, enumValue, WebStringType.PlainText);
+
+    /// <summary>
+    /// Gets the value of the specified String resource as <see cref="WebString"/> of type <see cref="WebStringType.Encoded"/>.
+    /// </summary>
+    /// <param name="resourceManager">The <see cref="IResourceManager"/> that is used for the resource lookup. Must not be <see langword="null"/>.</param>
+    /// <param name="enumValue">The ID of the resource to get. Must not be <see langword="null"/>.</param>
+    /// <returns>
+    /// The value of the resource as <see cref="WebString"/> of type <see cref="WebStringType.Encoded"/>. If no match is possible, <see langword="null"/> is returned.
+    /// </returns>
+    public static WebString? GetHtmlOrDefault (this IResourceManager resourceManager, Enum enumValue) =>
+        GetWebStringOrDefault (resourceManager, enumValue, WebStringType.Encoded);
+
     private static WebString CreateWebStringOfType (WebStringType webStringType, string value) =>
         webStringType switch
         {
