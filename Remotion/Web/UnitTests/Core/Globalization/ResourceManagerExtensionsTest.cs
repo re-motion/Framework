@@ -24,7 +24,7 @@ namespace Remotion.Web.UnitTests.Core.Globalization
 {
   public class ResourceManagerExtensionsTest
   {
-    private const string c_fakeResourceId = "fake";
+    private const string c_fakeResourceID = "fake";
     private Mock<IResourceManager> _resourceManagerMock;
 
     [SetUp]
@@ -36,15 +36,15 @@ namespace Remotion.Web.UnitTests.Core.Globalization
     [Test]
     public void GetWebString_WithExistingResourceAndWebStringTypeEncoded_ReturnsWebString ()
     {
-      const string resourceId = "resourceId";
+      const string resourceID = "resourceID";
       var outValue = "Test";
 
       _resourceManagerMock
-          .Setup (mock => mock.TryGetString (resourceId, out outValue))
+          .Setup (mock => mock.TryGetString (resourceID, out outValue))
           .Returns (true)
           .Verifiable();
 
-      var result = _resourceManagerMock.Object.GetWebString (resourceId, WebStringType.Encoded);
+      var result = _resourceManagerMock.Object.GetWebString (resourceID, WebStringType.Encoded);
 
       _resourceManagerMock.Verify();
       Assert.That (result.GetValue(), Is.EqualTo ("Test"));
@@ -54,15 +54,15 @@ namespace Remotion.Web.UnitTests.Core.Globalization
     [Test]
     public void GetWebString_WithExistingResourceAndWebStringTypePlaintext_ReturnsWebString ()
     {
-      const string resourceId = "resourceId";
+      const string resourceID = "resourceID";
       var outValue = "Test";
 
       _resourceManagerMock
-          .Setup (mock => mock.TryGetString (resourceId, out outValue))
+          .Setup (mock => mock.TryGetString (resourceID, out outValue))
           .Returns (true)
           .Verifiable();
 
-      var result = _resourceManagerMock.Object.GetWebString (resourceId, WebStringType.PlainText);
+      var result = _resourceManagerMock.Object.GetWebString (resourceID, WebStringType.PlainText);
 
       _resourceManagerMock.Verify();
       Assert.That (result.GetValue(), Is.EqualTo ("Test"));
@@ -70,18 +70,18 @@ namespace Remotion.Web.UnitTests.Core.Globalization
     }
 
     [Test]
-    public void GetWebString_WithNonExistingResourceAndWebStringTypeEncoded_ReturnsWebStringWithResourceIdAsValue ()
+    public void GetWebString_WithNonExistingResourceAndWebStringTypeEncoded_ReturnsWebStringWithResourceIDAsValue ()
     {
-      var result = _resourceManagerMock.Object.GetWebString (c_fakeResourceId, WebStringType.Encoded);
+      var result = _resourceManagerMock.Object.GetWebString (c_fakeResourceID, WebStringType.Encoded);
 
       Assert.That (result.GetValue(), Is.EqualTo ("fake"));
       Assert.That (result.Type, Is.EqualTo (WebStringType.Encoded));
     }
 
     [Test]
-    public void GetWebString_WithNonExistingResourceAndWebStringTypePlainText_ReturnsWebStringWithResourceIdAsValue ()
+    public void GetWebString_WithNonExistingResourceAndWebStringTypePlainText_ReturnsWebStringWithResourceIDAsValue ()
     {
-      var result = _resourceManagerMock.Object.GetWebString (c_fakeResourceId, WebStringType.PlainText);
+      var result = _resourceManagerMock.Object.GetWebString (c_fakeResourceID, WebStringType.PlainText);
 
       Assert.That (result.GetValue(), Is.EqualTo ("fake"));
       Assert.That (result.Type, Is.EqualTo (WebStringType.PlainText));
@@ -90,15 +90,15 @@ namespace Remotion.Web.UnitTests.Core.Globalization
     [Test]
     public void GetWebStringOrDefault_WithExistingResourceAndWebStringTypeEncoded_ReturnsWebString ()
     {
-      const string resourceId = "resourceId";
+      const string resourceID = "resourceID";
       var outValue = "Test";
 
       _resourceManagerMock
-          .Setup (mock => mock.TryGetString (resourceId, out outValue))
+          .Setup (mock => mock.TryGetString (resourceID, out outValue))
           .Returns (true)
           .Verifiable();
 
-      var result = _resourceManagerMock.Object.GetWebStringOrDefault (resourceId, WebStringType.Encoded);
+      var result = _resourceManagerMock.Object.GetWebStringOrDefault (resourceID, WebStringType.Encoded);
 
       _resourceManagerMock.Verify();
       Assert.That (result.HasValue, Is.True);
@@ -109,15 +109,15 @@ namespace Remotion.Web.UnitTests.Core.Globalization
     [Test]
     public void GetWebStringOrDefault_WithExistingResourceAndWebStringTypePlaintext_ReturnsWebString ()
     {
-      const string resourceId = "resourceId";
+      const string resourceID = "resourceID";
       var outValue = "Test";
 
       _resourceManagerMock
-          .Setup (mock => mock.TryGetString (resourceId, out outValue))
+          .Setup (mock => mock.TryGetString (resourceID, out outValue))
           .Returns (true)
           .Verifiable();
 
-      var result = _resourceManagerMock.Object.GetWebStringOrDefault (resourceId, WebStringType.PlainText);
+      var result = _resourceManagerMock.Object.GetWebStringOrDefault (resourceID, WebStringType.PlainText);
 
       _resourceManagerMock.Verify();
       Assert.That (result.HasValue, Is.True);
@@ -128,7 +128,7 @@ namespace Remotion.Web.UnitTests.Core.Globalization
     [Test]
     public void GetWebStringOrDefault_WithNonExistingResource_ReturnsNull ()
     {
-      var result = _resourceManagerMock.Object.GetWebStringOrDefault (c_fakeResourceId, WebStringType.PlainText);
+      var result = _resourceManagerMock.Object.GetWebStringOrDefault (c_fakeResourceID, WebStringType.PlainText);
 
       Assert.That (result.HasValue, Is.False);
     }
@@ -172,7 +172,7 @@ namespace Remotion.Web.UnitTests.Core.Globalization
     }
 
     [Test]
-    public void GetWebString_Enum_WithNonExistingResourceAndWebStringTypePlaintext_ReturnsWebStringWithResourceIdAsValue ()
+    public void GetWebString_Enum_WithNonExistingResourceAndWebStringTypePlaintext_ReturnsWebStringWithResourceIDAsValue ()
     {
       var enumValue = EnumWithMultiLingualNameAttribute.ValueWithLocalizedName;
       var enumResourceID = ResourceIdentifiersAttribute.GetResourceIdentifier (enumValue);
@@ -184,7 +184,7 @@ namespace Remotion.Web.UnitTests.Core.Globalization
     }
 
     [Test]
-    public void GetWebString_Enum_WithNonExistingResourceAndWebStringTypeEncoded_ReturnsWebStringWithResourceIdAsValue ()
+    public void GetWebString_Enum_WithNonExistingResourceAndWebStringTypeEncoded_ReturnsWebStringWithResourceIDAsValue ()
     {
       var enumValue = EnumWithMultiLingualNameAttribute.ValueWithLocalizedName;
       var enumResourceID = ResourceIdentifiersAttribute.GetResourceIdentifier (enumValue);
