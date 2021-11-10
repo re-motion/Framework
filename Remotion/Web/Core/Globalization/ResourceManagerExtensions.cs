@@ -20,13 +20,19 @@ using Remotion.Utilities;
 
 namespace Remotion.Web.Globalization
 {
+  /// <summary>
+  /// Provides extension methods for <see cref="IResourceManager"/>, returning <see cref="WebString"/> instances.
+  /// </summary>
   public static class ResourceManagerExtensions
   {
     /// <summary>
-    ///   Gets the value of the specified String resource.
+    /// Gets the value of the specified String resource.
     /// </summary>
+    /// <param name="resourceManager">The <see cref="IResourceManager"/> that is used for the resource lookup. Must not be <see langword="null"/>.</param>
+    /// <param name="id">The ID of the resource to get. Must not be <see langword="null"/>.</param>
+    /// <param name="webStringType">The type of <see cref="WebString"/> to return.</param>
     /// <returns>
-    ///   The value of the resource as <see cref="WebString"/>. If no match is possible, the identifier is returned.
+    /// The value of the resource as <see cref="WebString"/>. If no match is possible, the identifier is returned.
     /// </returns>
     public static WebString GetWebString (this IResourceManager resourceManager, string id, WebStringType webStringType)
     {
@@ -39,10 +45,13 @@ namespace Remotion.Web.Globalization
     }
 
     /// <summary>
-    ///   Gets the value of the specified String resource.
+    /// Gets the value of the specified String resource.
     /// </summary>
+    /// <param name="resourceManager">The <see cref="IResourceManager"/> that is used for the resource lookup. Must not be <see langword="null"/>.</param>
+    /// <param name="id">The ID of the resource to get. Must not be <see langword="null"/>.</param>
+    /// <param name="webStringType">The type of <see cref="WebString"/> to return.</param>
     /// <returns>
-    ///   The value of the resource as <see cref="WebString"/>. If no match is possible, <see langword="null"/> is returned.
+    /// The value of the resource as <see cref="WebString"/>. If no match is possible, <see langword="null"/> is returned.
     /// </returns>
     public static WebString? GetWebStringOrDefault (this IResourceManager resourceManager, string id, WebStringType webStringType)
     {
@@ -58,12 +67,14 @@ namespace Remotion.Web.Globalization
     }
 
     /// <summary>
-    ///   Gets the value of the specified string resource. The resource is identified by
-    ///   concatenating type and value name.
+    /// Gets the value of the specified string resource. The resource is identified by concatenating type and value name.
     /// </summary>
+    /// <param name="resourceManager">The <see cref="IResourceManager"/> that is used for the resource lookup. Must not be <see langword="null"/>.</param>
+    /// <param name="enumValue">The ID of the resource to get. Must not be <see langword="null"/>.</param>
+    /// <param name="webStringType">The type of <see cref="WebString"/> to return.</param>
     /// <remarks> See <see cref="ResourceIdentifiersAttribute.GetResourceIdentifier"/> for resource identifier syntax. </remarks>
     /// <returns>
-    ///   The value of the resource as <see cref="WebString"/>. If no match is possible, the identifier is returned.
+    /// The value of the resource as <see cref="WebString"/>. If no match is possible, the identifier is returned.
     /// </returns>
     public static WebString GetWebString (this IResourceManager resourceManager, Enum enumValue, WebStringType webStringType)
     {
@@ -76,12 +87,14 @@ namespace Remotion.Web.Globalization
     }
 
     /// <summary>
-    ///   Gets the value of the specified string resource. The resource is identified by
-    ///   concatenating type and value name.
+    /// Gets the value of the specified string resource. The resource is identified by concatenating type and value name.
     /// </summary>
+    /// <param name="resourceManager">The <see cref="IResourceManager"/> that is used for the resource lookup. Must not be <see langword="null"/>.</param>
+    /// <param name="enumValue">The ID of the resource to get. Must not be <see langword="null"/>.</param>
+    /// <param name="webStringType">The type of <see cref="WebString"/> to return.</param>
     /// <remarks> See <see cref="ResourceIdentifiersAttribute.GetResourceIdentifier"/> for resource identifier syntax. </remarks>
     /// <returns>
-    ///   The value of the resource as <see cref="WebString"/>. If no match is possible, null is returned.
+    /// The value of the resource as <see cref="WebString"/>. If no match is possible, <see langword="null"/> is returned.
     /// </returns>
     public static WebString? GetWebStringOrDefault (this IResourceManager resourceManager, Enum enumValue, WebStringType webStringType)
     {
