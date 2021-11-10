@@ -116,6 +116,14 @@ namespace Remotion.Web.UI.Controls
         scriptBuilder.Append("'").Append(ScriptUtility.EscapeClientScript(stringValue)).Append("'");
     }
 
+    protected void AppendStringValueOrNullToScript (StringBuilder scriptBuilder, WebString? stringValue)
+    {
+      if (stringValue is { IsEmpty: false })
+        scriptBuilder.Append("'").Append(ScriptUtility.EscapeClientScript(stringValue.Value)).Append("'");
+      else
+        scriptBuilder.Append("null");
+    }
+
     protected void AppendBooleanValueToScript (StringBuilder scriptBuilder, bool booleanValue)
     {
       scriptBuilder.Append(booleanValue ? "true" : "false");
