@@ -32,10 +32,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
   /// </summary>
   public static class ScreenshotBocAutoCompleteReferenceValueInformationPopupExtensions
   {
-    private const string c_getElementScript = "return Remotion.jQuery(arguments[0]).getAutoCompleteInformationPopUp().getElement();";
-    private const string c_hideScript = "Remotion.jQuery(arguments[0]).getAutoCompleteInformationPopUp().hide();";
-    private const string c_showScript = "Remotion.jQuery(arguments[0]).getAutoCompleteInformationPopUp().show (arguments[1]);";
-    private const string c_isVisibleScript = "return Remotion.jQuery(arguments[0]).getAutoCompleteInformationPopUp().visible();";
+    private const string c_getElementScript = "return arguments[0].getAutoCompleteInformationPopUp().getElement();";
+    private const string c_hideScript = "arguments[0].getAutoCompleteInformationPopUp().hide();";
+    private const string c_showScript = "arguments[0].getAutoCompleteInformationPopUp().show (arguments[1]);";
+    private const string c_isVisibleScript = "return arguments[0].getAutoCompleteInformationPopUp().visible();";
 
     /// <summary>
     /// Returns a fluent <see cref="IWebElement"/> representing the popup DOM element.

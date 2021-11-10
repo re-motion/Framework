@@ -42,11 +42,6 @@ type PartialWithRequiredProperties<T, K extends keyof T> = Omit<T, Exclude<keyof
 
 type OutBox<T> = { Value: Nullable<T> };
 
-declare namespace Remotion
-{
-  export var jQuery: JQueryStatic;
-}
-
 // Enhance the ASP.NET typings
 declare namespace Sys.WebForms
 { 

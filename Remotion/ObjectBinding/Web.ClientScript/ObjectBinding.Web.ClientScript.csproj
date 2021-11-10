@@ -16,9 +16,6 @@
     <Content Include="tsconfig\release\tsconfig.json" Condition="'$(Configuration)' == 'Release'" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="jquery.TypeScript.DefinitelyTyped" Version="1.6.4">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="microsoft-ajax.TypeScript.DefinitelyTyped" Version="0.1.4">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>

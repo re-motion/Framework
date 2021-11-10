@@ -15,16 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
-interface BocAutoCompleteReferenceValueJQueryContract {
-  hideInformationPopUp: void;
-  showInformationPopUp: { message: string };
-}
-type BocAutoCompleteReferenceValueJQueryContractParameters<K extends keyof BocAutoCompleteReferenceValueJQueryContract> 
-  = BocAutoCompleteReferenceValueJQueryContract[K] extends void ? [] : [BocAutoCompleteReferenceValueJQueryContract[K]];
-
 class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes BocReferenceValue and BocAutoCompleteReferenceValue inherit from BocReferenceValueBase
 {
-  private _itemBackUp: Nullable<BocAutoCompleteReferenceValue_Item>;
+  private _itemBackUp: Nullable<Remotion.BocAutoCompleteReferenceValue.Item>;
   private _isInvalidated: boolean;
   private _iconMarker: Nullable<HTMLElement>;
   private _icon: Nullable<HTMLImageElement>;
@@ -36,7 +29,7 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
   private _isIconUpdateEnabled: boolean
   private _controlServiceUrl: string;
   private _iconContext: Nullable<BocReferenceValueBase_IconContext>;
-  private _textbox: HTMLInputElement;
+  private _textbox: Remotion.BocAutoCompleteReferenceValue.AutoCompleteHTMLElement;
 
   constructor (
     baseID: Nullable<string>,
@@ -106,14 +99,13 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
     this._isIconUpdateEnabled = isIconUpdateEnabled;
     this._controlServiceUrl = controlServiceUrl;
     this._iconContext = iconContext;
-    this._textbox = textbox;
 
     const errorHandler = (error: Sys.Net.WebServiceError) =>
     {
       this.SetError(resources.LoadIconFailedErrorMessage);
     };
 
-    Remotion.jQuery(this._textbox).autocomplete(this._controlServiceUrl, 'Search', 'SearchExact',
+    this._textbox = Remotion.BocAutoCompleteReferenceValue.createAutoComplete(textbox, this._controlServiceUrl, 'Search', 'SearchExact',
       {
         extraParams: searchContext,
         isAutoPostBackEnabled: this._isAutoPostBackEnabled,
@@ -137,7 +129,7 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
         noDataFoundMessage: resources.NoDataFoundMessage,
         autoFill: true,
         matchContains: true,
-        combobox: Remotion.jQuery(combobox),
+        combobox: combobox,
         selectListID: this._selectListID,
         informationPopUpID: this._informationPopUpID,
         dropDownButtonID: button.getAttribute('id')!,
@@ -148,7 +140,7 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
           return inputValue.length > 0;
         },
         dataType: 'json',
-        parse: function (data: BocAutoCompleteReferenceValue_Item[])
+        parse: function (data: Remotion.BocAutoCompleteReferenceValue.Item[])
         {
           return data.map(function (row)
           {
@@ -161,7 +153,7 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
             };
           });
         },
-        formatItem: function (item: BocAutoCompleteReferenceValue_Item) //What we display on input box
+        formatItem: function (item: Remotion.BocAutoCompleteReferenceValue.Item) //What we display on input box
         {
           var row = document.createElement('li');
 
@@ -191,7 +183,7 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
             isAnnotation: item.IsAnnotation
           };
         },
-        formatMatch: function (item: BocAutoCompleteReferenceValue_Item) //The value used by the cache
+        formatMatch: function (item: Remotion.BocAutoCompleteReferenceValue.Item) //The value used by the cache
         {
           return item.DisplayName;
         },
@@ -214,7 +206,7 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
       hiddenField.value = this._nullValueString;
       this.UpdateIcon(this._nullValueString, errorHandler);
       //Do not fire change-event
-    }).updateResult((e: JQueryEventObject, item: BocAutoCompleteReferenceValue_UpdateResult, out: OutBox<BocAutoCompleteReferenceValue_UpdateResult>) =>
+    }).updateResult((item: Remotion.BocAutoCompleteReferenceValue.UpdateResult, out: OutBox<Remotion.BocAutoCompleteReferenceValue.UpdateResult>) =>
     {
       try
       {
@@ -302,14 +294,14 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
     if (this._textbox.classList.contains('error'))
     {
       this._textbox.classList.remove('error');
-      this.dispatchTextBoxEvent('hideInformationPopUp');
+      this._textbox.hideInformationPopUp();
     }
   }
 
   private SetError (message: string): void
   {
     this._textbox.classList.add('error');
-    this.dispatchTextBoxEvent('showInformationPopUp', { message: message });
+    this._textbox.showInformationPopUp(message);
   }
 
   private BackupItemData(uniqueIdentifier: string, displayName: string): void
@@ -323,18 +315,6 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
     if (this._itemBackUp!.UniqueIdentifier != this._nullValueString && searchString.toLowerCase() == this._itemBackUp!.DisplayName.toLowerCase())
       return '';
     return searchString;
-  }
-
-  private dispatchTextBoxEvent<K extends keyof BocAutoCompleteReferenceValueJQueryContract>(name: K, ...parameters: BocAutoCompleteReferenceValueJQueryContractParameters<K>): void
-  {
-    if (parameters.length > 0)
-    {
-      Remotion.jQuery(this._textbox).trigger(name, parameters[0] as any);
-    }
-    else
-    {
-      Remotion.jQuery(this._textbox).trigger(name);
-    }
   }
 
   //  Returns the number of rows selected for the specified ReferenceValue

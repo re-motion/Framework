@@ -32,15 +32,15 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
   /// </summary>
   public static class ScreenshotBocAutoCompleteReferenceValueSelectListExtensions
   {
-    private const string c_currentItemScript = "return Remotion.jQuery(arguments[0]).getAutoCompleteSelectList().current();";
-    private const string c_getElementScript = "return Remotion.jQuery(arguments[0]).getAutoCompleteSelectList().getElement();";
-    private const string c_hideScript = "return Remotion.jQuery(arguments[0]).getAutoCompleteSelectList().hide();";
-    private const string c_nextScript = "return Remotion.jQuery(arguments[0]).getAutoCompleteSelectList().next();";
-    private const string c_pageDownScript = "return Remotion.jQuery(arguments[0]).getAutoCompleteSelectList().pageDown();";
-    private const string c_pageUpScript = "return Remotion.jQuery(arguments[0]).getAutoCompleteSelectList().pageUp();";
-    private const string c_previousScript = "return Remotion.jQuery(arguments[0]).getAutoCompleteSelectList().prev();";
-    private const string c_showScript = "return Remotion.jQuery(arguments[0]).getAutoCompleteSelectList().show();";
-    private const string c_isVisibleScript = "return Remotion.jQuery(arguments[0]).getAutoCompleteSelectList().visible();";
+    private const string c_currentItemScript = "return arguments[0].getAutoCompleteSelectList().current();";
+    private const string c_getElementScript = "return arguments[0].getAutoCompleteSelectList().getElement();";
+    private const string c_hideScript = "return arguments[0].getAutoCompleteSelectList().hide();";
+    private const string c_nextScript = "return arguments[0].getAutoCompleteSelectList().next();";
+    private const string c_pageDownScript = "return arguments[0].getAutoCompleteSelectList().pageDown();";
+    private const string c_pageUpScript = "return arguments[0].getAutoCompleteSelectList().pageUp();";
+    private const string c_previousScript = "return arguments[0].getAutoCompleteSelectList().prev();";
+    private const string c_showScript = "return arguments[0].getAutoCompleteSelectList().show();";
+    private const string c_isVisibleScript = "return arguments[0].getAutoCompleteSelectList && arguments[0].getAutoCompleteSelectList().visible();";
 
     /// <summary>
     /// Returns an <see cref="IWebElement"/> representing the select-list.
