@@ -1,5 +1,6 @@
 <Project>
 
+  <!-- Settings for projects that continue to use classic csproj files (WebForms projects) -->
   <PropertyGroup>
     <LangVersion>9</LangVersion>
   </PropertyGroup>
