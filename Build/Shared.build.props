@@ -23,6 +23,8 @@
 
   <PropertyGroup>
     <LangVersion>9</LangVersion>
+    <DebugType Condition="'$(TargetFramework)' == 'net48'">full</DebugType>
+    <DebugType Condition="'$(TargetFramework)' != 'net48'">portable</DebugType>
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)..\remotion.snk</AssemblyOriginatorKeyFile>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
