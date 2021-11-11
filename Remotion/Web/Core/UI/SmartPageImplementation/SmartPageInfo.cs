@@ -112,7 +112,10 @@ namespace Remotion.Web.UI.SmartPageImplementation
 #pragma warning restore 618
 
       NameValueCollection eventHandlers = _clientSideEventHandlers[pageEvent];
-      eventHandlers[key] = function;
+      var value = eventHandlers[key];
+
+      if (value is null)
+        eventHandlers[key] = function;
     }
 
 
