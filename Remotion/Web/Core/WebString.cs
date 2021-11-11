@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
+using System.ComponentModel;
 using System.IO;
 using System.Web;
 using System.Web.UI;
@@ -27,6 +28,7 @@ namespace Remotion.Web
   /// The <see cref="WebString"/> structure represents encoded or unencoded HTML strings that are rendered onto a web page.
   /// Its <see cref="Type"/> determines if and how a <see cref="WebString"/> is encoded before being rendered.
   /// </summary>
+  [TypeConverter (typeof (WebStringConverter))]
   public readonly struct WebString : IEquatable<WebString>
   {
     private static readonly string[] s_newlineSplitSeparators = { "\r\n", "\r", "\n" };
