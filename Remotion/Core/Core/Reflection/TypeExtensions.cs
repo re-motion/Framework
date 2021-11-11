@@ -24,17 +24,6 @@ namespace Remotion.Reflection
 {
   public static partial class TypeExtensions
   {
-    private static readonly ConcurrentDictionary<Tuple<Type, Type>, bool> s_canAscribeCache = 
-        new ConcurrentDictionary<Tuple<Type, Type>, bool>();
-    private static readonly ConcurrentDictionary<Tuple<Type, Type>, bool> s_canAscribeInternalCache =
-        new ConcurrentDictionary<Tuple<Type, Type>, bool>();
-    private static readonly ConcurrentDictionary<Tuple<Type, Type>, IReadOnlyList<Type>> s_ascribedGenericArgumentsCache =
-        new ConcurrentDictionary<Tuple<Type, Type>, IReadOnlyList<Type>>();
-    private static readonly ConcurrentDictionary<Tuple<Type, Type, Type>, bool> s_canDirectlyAscribeToGenericTypeInternalCache =
-        new ConcurrentDictionary<Tuple<Type, Type, Type>, bool>();
-
-    private static Func<Tuple<Type, Type>, bool>? s_canAscribeCacheValueFactory;
-
     /// <summary>
     /// Evaluates whether the <paramref name="type"/> can be ascribed to the <paramref name="ascribeeType"/>.
     /// </summary>
@@ -49,28 +38,13 @@ namespace Remotion.Reflection
       ArgumentUtility.CheckNotNull ("type", type);
       ArgumentUtility.CheckNotNull ("ascribeeType", ascribeeType);
 
-      // C# compiler 7.2 does not provide caching for this anonymous method or local function.
-      bool ValueFactory (Tuple<Type, Type> key)
-      {
-        var type1 = key.Item1;
-        var ascribeeeType1 = key.Item2;
-        if (ascribeeeType1.IsInterface)
-        {
-          if (type1.IsInterface && CanAscribeInternalFromCache (type1, ascribeeeType1))
-            return true;
+      if (!ascribeeType.IsInterface)
+        return CanAscribeInternal (type, ascribeeType);
 
-          return Array.Exists (type1.GetInterfaces(), current => CanAscribeInternalFromCache (current, ascribeeeType1));
-        }
-        else
-        {
-          return CanAscribeInternalFromCache (type1, ascribeeeType1);
-        }
-      }
+      if (type.IsInterface && CanAscribeInternal (type, ascribeeType))
+        return true;
 
-      if (s_canAscribeCacheValueFactory == null)
-        s_canAscribeCacheValueFactory = ValueFactory;
-
-      return s_canAscribeCache.GetOrAdd (Tuple.Create (type, ascribeeType), s_canAscribeCacheValueFactory);
+      return Array.Exists (type.GetInterfaces(), current => CanAscribeInternal (current, ascribeeType));
     }
 
     /// <summary>
@@ -93,33 +67,6 @@ namespace Remotion.Reflection
       ArgumentUtility.CheckNotNull ("type", type);
       ArgumentUtility.CheckNotNull ("ascribeeType", ascribeeType);
 
-      // C# compiler 7.2 already provides caching for anonymous method.
-      return s_ascribedGenericArgumentsCache.GetOrAdd (
-          Tuple.Create (type, ascribeeType), key => GetAscribedGenericArgumentsWithoutCache (key.Item1, key.Item2));
-    }
-
-    private static bool CanAscribeInternalFromCache (Type type, Type ascribeeType)
-    {
-      // C# compiler 7.2 already provides caching for anonymous method.
-      return s_canAscribeInternalCache.GetOrAdd (Tuple.Create (type, ascribeeType), key => CanAscribeInternal (key.Item1, key.Item2));
-    }
-
-    private static bool CanAscribeInternal (Type type, Type ascribeeType)
-    {
-      if (!ascribeeType.IsGenericType)
-        return ascribeeType.IsAssignableFrom (type);
-
-      Type ascribeeGenericTypeDefinition = ascribeeType.GetGenericTypeDefinition();
-      for (Type? currentType = type; currentType != null; currentType = currentType.BaseType)
-      {
-        if (CanDirectlyAscribeToGenericTypeInternalFromCache (currentType, ascribeeType, ascribeeGenericTypeDefinition))
-          return true;
-      }
-      return false;
-    }
-
-    private static IReadOnlyList<Type> GetAscribedGenericArgumentsWithoutCache (Type type, Type ascribeeType)
-    {
       if (!ascribeeType.IsGenericType)
       {
         if (ascribeeType.IsAssignableFrom (type))
@@ -133,24 +80,38 @@ namespace Remotion.Reflection
         return GetAscribedGenericClassArgumentsInternal (type, ascribeeType);
     }
 
+    private static bool CanAscribeInternal (Type type, Type ascribeeType)
+    {
+      if (!ascribeeType.IsGenericType)
+        return ascribeeType.IsAssignableFrom (type);
+
+      Type ascribeeGenericTypeDefinition = ascribeeType.GetGenericTypeDefinition();
+      for (Type? currentType = type; currentType != null; currentType = currentType.BaseType)
+      {
+        if (CanDirectlyAscribeToGenericTypeInternal (currentType, ascribeeType, ascribeeGenericTypeDefinition))
+          return true;
+      }
+      return false;
+    }
+
     private static IReadOnlyList<Type> GetAscribedGenericInterfaceArgumentsInternal (Type type, Type ascribeeType)
     {
       Assertion.IsTrue (ascribeeType.IsGenericType);
       Assertion.IsTrue (ascribeeType.IsInterface);
 
-      Type ascribeeGenericTypeDefinition = ascribeeType.GetGenericTypeDefinition ();
+      Type ascribeeGenericTypeDefinition = ascribeeType.GetGenericTypeDefinition();
 
       Type? conreteSpecialization; // concrete specialization of ascribeeType implemented by type
       // is type itself a specialization of ascribeeType?
-      if (type.IsInterface && CanDirectlyAscribeToGenericTypeInternalFromCache (type, ascribeeType, ascribeeGenericTypeDefinition))
+      if (type.IsInterface && CanDirectlyAscribeToGenericTypeInternal (type, ascribeeType, ascribeeGenericTypeDefinition))
         conreteSpecialization = type;
       else
       {
         // Type.GetInterfaces will return all interfaces inherited by type. We will filter it to those that are directly ascribable
         // to ascribeeType. Since interfaces have no base types, these can only be closed or constructed specializations of ascribeeType.
         Type[] ascribableInterfaceTypes = Array.FindAll (
-            type.GetInterfaces (),
-            current => CanDirectlyAscribeToGenericTypeInternalFromCache (current, ascribeeType, ascribeeGenericTypeDefinition));
+            type.GetInterfaces(),
+            current => CanDirectlyAscribeToGenericTypeInternal (current, ascribeeType, ascribeeGenericTypeDefinition));
 
         if (ascribableInterfaceTypes.Length == 0)
           conreteSpecialization = null;
@@ -158,7 +119,7 @@ namespace Remotion.Reflection
           conreteSpecialization = ascribableInterfaceTypes[0];
         else
         {
-          string message = 
+          string message =
               String.Format ("The type {0} implements the given interface type {1} more than once.", type.GetFullNameSafe(), ascribeeType.GetFullNameSafe());
           throw new AmbiguousMatchException (message);
         }
@@ -167,7 +128,7 @@ namespace Remotion.Reflection
       if (conreteSpecialization == null)
         throw ArgumentUtility.CreateArgumentTypeException ("type", type, ascribeeType);
 
-      Assertion.IsTrue (conreteSpecialization.GetGenericTypeDefinition () == ascribeeType.GetGenericTypeDefinition ());
+      Assertion.IsTrue (conreteSpecialization.GetGenericTypeDefinition() == ascribeeType.GetGenericTypeDefinition());
       return Array.AsReadOnly (conreteSpecialization.GetGenericArguments());
     }
 
@@ -176,11 +137,11 @@ namespace Remotion.Reflection
       Assertion.IsTrue (ascribeeType.IsGenericType);
       Assertion.IsTrue (!ascribeeType.IsInterface);
 
-      Type ascribeeGenericTypeDefinition = ascribeeType.GetGenericTypeDefinition ();
+      Type ascribeeGenericTypeDefinition = ascribeeType.GetGenericTypeDefinition();
 
       // Search via base type until we find a type that is directly ascribable to the base type. That's the type whose generic arguments we want
       Type? currentType = type;
-      while (currentType != null && !CanDirectlyAscribeToGenericTypeInternalFromCache (currentType, ascribeeType, ascribeeGenericTypeDefinition))
+      while (currentType != null && !CanDirectlyAscribeToGenericTypeInternal (currentType, ascribeeType, ascribeeGenericTypeDefinition))
         currentType = currentType.BaseType;
 
       if (currentType != null)
@@ -189,25 +150,17 @@ namespace Remotion.Reflection
         throw ArgumentUtility.CreateArgumentTypeException ("type", type, ascribeeType);
     }
 
-    private static bool CanDirectlyAscribeToGenericTypeInternalFromCache (Type type, Type ascribeeType, Type ascribeeGenericTypeDefinition)
-    {
-      // C# compiler 7.2 already provides caching for anonymous method.
-      return s_canDirectlyAscribeToGenericTypeInternalCache.GetOrAdd (
-        Tuple.Create (type, ascribeeType, ascribeeGenericTypeDefinition),
-        key => CanDirectlyAscribeToGenericTypeInternal (key.Item1, key.Item2, key.Item3));
-    }
-
     private static bool CanDirectlyAscribeToGenericTypeInternal (Type type, Type ascribeeType, Type ascribeeGenericTypeDefinition)
     {
       Assertion.IsNotNull (ascribeeType);
 
-      if (!type.IsGenericType || type.GetGenericTypeDefinition () != ascribeeGenericTypeDefinition)
+      if (!type.IsGenericType || type.GetGenericTypeDefinition() != ascribeeGenericTypeDefinition)
         return false;
 
       if (ascribeeType != ascribeeGenericTypeDefinition)
         return ascribeeType.IsAssignableFrom (type);
       else
-        return ascribeeType.IsAssignableFrom (type.GetGenericTypeDefinition ());
+        return ascribeeType.IsAssignableFrom (type.GetGenericTypeDefinition());
     }
   }
 }

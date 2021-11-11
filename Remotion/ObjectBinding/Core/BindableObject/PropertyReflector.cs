@@ -161,11 +161,15 @@ namespace Remotion.ObjectBinding.BindableObject
 
     protected virtual Type GetUnderlyingType ()
     {
-      return Nullable.GetUnderlyingType (GetItemType()) ?? GetItemType();
+      var itemType = GetItemType();
+      return Nullable.GetUnderlyingType (itemType) ?? itemType;
     }
 
     protected virtual Type GetItemType ()
     {
+      if (!typeof (IEnumerable).IsAssignableFrom (_propertyInfo.PropertyType))
+        return _propertyInfo.PropertyType;
+
       if (_propertyInfo.PropertyType.IsArray)
         return _propertyInfo.PropertyType.GetElementType()!;
 

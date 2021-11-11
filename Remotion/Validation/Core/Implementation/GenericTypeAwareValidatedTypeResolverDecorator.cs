@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
@@ -28,6 +30,7 @@ namespace Remotion.Validation.Implementation
   [ImplementationFor (typeof (IValidatedTypeResolver), Position = 0, RegistrationType = RegistrationType.Decorator)]
   public class GenericTypeAwareValidatedTypeResolverDecorator : IValidatedTypeResolver
   {
+    private static readonly ConcurrentDictionary<Type, (bool CanAscribeTo, Type? ItemType)> s_genericValidationRuleCollectorTypeCache = new();
     private readonly IValidatedTypeResolver _validatedTypeResolver;
 
     public GenericTypeAwareValidatedTypeResolverDecorator (IValidatedTypeResolver validatedTypeResolver)
@@ -46,8 +49,22 @@ namespace Remotion.Validation.Implementation
     {
       ArgumentUtility.CheckNotNull ("collectorType", collectorType);
 
-      if (TypeExtensions.CanAscribeTo (collectorType, typeof(IValidationRuleCollector<>)))
-        return TypeExtensions.GetAscribedGenericArguments (collectorType, typeof(IValidationRuleCollector<>)).Single();
+      var itemType = s_genericValidationRuleCollectorTypeCache.GetOrAdd (
+              collectorType,
+              static t =>
+              {
+                var canAscribeTo = typeof (IValidationRuleCollector).IsAssignableFrom (t) && t.CanAscribeTo (typeof (IValidationRuleCollector<>));
+                return ValueTuple.Create (
+                    canAscribeTo,
+                    canAscribeTo
+                        ? t.GetAscribedGenericArguments (typeof (IValidationRuleCollector<>))[0]
+                        : null);
+              })
+          .ItemType;
+
+      if (itemType != null)
+        return itemType; 
+
       return _validatedTypeResolver.GetValidatedType (collectorType);
     }
   }

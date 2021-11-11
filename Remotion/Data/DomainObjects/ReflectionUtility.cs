@@ -16,6 +16,8 @@
 // 
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -37,6 +39,18 @@ namespace Remotion.Data.DomainObjects
     private static readonly Type s_binaryPropertyValueType = typeof (byte[]);
     private static readonly Type s_typePropertyValueType = typeof (Type);
     private static readonly Type s_objectIDPropertyValueType = typeof (ObjectID);
+    private static readonly ConcurrentDictionary<Type, (bool CanAscribeTo, Type ItemType)> s_objectListTypeCache = new();
+
+    private static readonly Func<Type, ValueTuple<bool, Type>> s_objectListTypeCacheValueFactory =
+        static t =>
+        {
+          var canAscribeTo = typeof (IReadOnlyList<DomainObject>).IsAssignableFrom (t) && t.CanAscribeTo (typeof (ObjectList<>));
+          return ValueTuple.Create (
+              canAscribeTo,
+              canAscribeTo
+                  ? t.GetAscribedGenericArguments (typeof (ObjectList<>))[0]
+                  : null);
+        };
 
     /// <summary>
     /// Returns the directory of the current executing assembly.
@@ -154,7 +168,7 @@ namespace Remotion.Data.DomainObjects
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
-      return type.CanAscribeTo (typeof (ObjectList<>));
+      return s_objectListTypeCache.GetOrAdd (type, s_objectListTypeCacheValueFactory).CanAscribeTo;
     }
 
     /// <summary>
@@ -262,10 +276,14 @@ namespace Remotion.Data.DomainObjects
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
-      var typeParameters = type.GetAscribedGenericArguments (typeof (ObjectList<>));
-      var typeParameter = typeParameters[0];
+      var typeParameter = s_objectListTypeCache.GetOrAdd (type, s_objectListTypeCacheValueFactory).ItemType;
+
+      if (typeParameter is null)
+        throw ArgumentUtility.CreateArgumentTypeException ("type", type, typeof (ObjectList<>));
+
       if (typeParameter.IsGenericParameter)
         return null;
+
       return typeParameter;
     }
 

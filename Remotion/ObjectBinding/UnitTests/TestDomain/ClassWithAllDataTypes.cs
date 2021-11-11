@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections;
 
 namespace Remotion.ObjectBinding.UnitTests.TestDomain
 {
@@ -57,5 +58,7 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
     public float Single { get; set; }
 
     public string String { get; set; }
+
+    public IEnumerable IEnumerable { get; set; }
   }
 }

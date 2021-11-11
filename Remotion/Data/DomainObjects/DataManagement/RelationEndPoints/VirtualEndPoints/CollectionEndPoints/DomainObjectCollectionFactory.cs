@@ -15,7 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Reflection;
@@ -30,6 +32,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   /// <seealso cref="ObjectListFactory"/>
   public class DomainObjectCollectionFactory
   {
+    private static readonly ConcurrentDictionary<Type, (bool CanAscribe, Type ItemType)> s_genericEnumerableTypeCache = new();
+
     public static readonly DomainObjectCollectionFactory Instance = new DomainObjectCollectionFactory ();
 
     private DomainObjectCollectionFactory ()
@@ -135,10 +139,18 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     private Type GetRequiredItemType (Type collectionType)
     {
-      if (collectionType.CanAscribeTo (typeof (IEnumerable<>)))
-        return collectionType.GetAscribedGenericArguments (typeof (IEnumerable<>))[0];
-      else
-        return null;
+      return s_genericEnumerableTypeCache.GetOrAdd (
+               collectionType,
+               static type =>
+               {
+                 var canAscribeTo = type.CanAscribeTo (typeof (IEnumerable<>));
+                 return ValueTuple.Create (
+                     canAscribeTo,
+                     canAscribeTo
+                         ? type.GetAscribedGenericArguments (typeof (IEnumerable<>))[0]
+                         : null);
+               })
+             .ItemType;
     }
 
     private MissingMethodException CreateMissingConstructorException (Type collectionType)

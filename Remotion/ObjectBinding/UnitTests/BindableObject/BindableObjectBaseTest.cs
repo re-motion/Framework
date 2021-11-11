@@ -18,8 +18,11 @@ using System;
 using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
+using Remotion.Mixins;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.UnitTests.TestDomain;
+using Remotion.Reflection;
+using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject
 {
@@ -102,6 +105,12 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
 
       Assert.That (_instance.GetPropertyString (_propertyFake.Object, "gj"), Is.EqualTo ("yay"));
       _implementationMock.Verify(); 
+    }
+
+    [Test]
+    public void BindableObjectMixin_ImplementsMixinWithoutBaseObjectDependency ()
+    {
+      Assert.That (typeof (BindableObjectMixin).CanAscribeTo (typeof (Mixin<,>)), Is.False);
     }
   }
 }

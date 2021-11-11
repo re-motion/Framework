@@ -27,12 +27,15 @@ namespace Remotion.Mixins.Utilities
   public static class ReflectionUtility
   {
     private static readonly ConcurrentDictionary<Assembly, bool> s_isAssemblySignedCache = new ConcurrentDictionary<Assembly, bool>();
+    private static readonly ConcurrentDictionary<Type, bool> s_mixinTypeCache = new();
 
     public static bool IsMixinType (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
-      
-      return Reflection.TypeExtensions.CanAscribeTo (type, typeof (Mixin<>));
+      if (!typeof (IInitializableMixin).IsAssignableFrom (type))
+        return false;
+
+      return s_mixinTypeCache.GetOrAdd (type, static t => t.CanAscribeTo (typeof (Mixin<>)));
     }
 
     public static bool IsEqualOrInstantiationOf (Type typeToCheck, Type expectedType)

@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.Mapping
     {
       ArgumentUtility.CheckNotNull ("mixinType", mixinType);
 
-      return TypeExtensions.CanAscribeTo (mixinType, typeof (DomainObjectMixin<,>));
+      return typeof (IDomainObjectMixin).IsAssignableFrom (mixinType);
     }
 
     private static ClassContext CreateEmptyClassContext (Type type)

@@ -17,8 +17,10 @@
 using System;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
+using Remotion.Mixins;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.UnitTests.TestDomain;
+using Remotion.Reflection;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject
 {
@@ -75,6 +77,12 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       var wrapper = new ClassDerivedFromBindableObjectWithIdentityBaseOverridingDisplayName ();
       var implementation = BindableObjectWithIdentityBaseImplementation.Create (wrapper);
       Assert.That (implementation.DisplayName, Is.EqualTo ("Overrotten!"));
+    }
+
+    [Test]
+    public void BindableObjectWithIdentityMixin_ImplementsMixinWithoutBaseObjectDependency ()
+    {
+      Assert.That (typeof (BindableObjectWithIdentityBaseImplementation).CanAscribeTo (typeof (Mixin<,>)), Is.False);
     }
   }
 }
