@@ -16,8 +16,8 @@
 // 
 using System;
 using System.Collections.Concurrent;
+using System.Runtime.CompilerServices;
 using System.Text;
-using System.Threading;
 using System.Web.UI;
 using Remotion.Globalization;
 using Remotion.Utilities;
@@ -34,8 +34,7 @@ namespace Remotion.Web.UI.Controls
   public abstract class RendererBase<TControl>
       where TControl : IStyledControl, IControlWithDiagnosticMetadata
   {
-    private readonly ConcurrentDictionary<Tuple<Type, IResourceManager>, Lazy<IResourceManager>> _resourceManagerCache =
-        new ConcurrentDictionary<Tuple<Type, IResourceManager>, Lazy<IResourceManager>>();
+    private readonly ConcurrentDictionary<Type, ConditionalWeakTable<IResourceManager, Lazy<IResourceManager>>> _resourceManagerCache = new();
 
     private readonly IResourceUrlFactory _resourceUrlFactory;
     private readonly IGlobalizationService _globalizationService;
@@ -144,13 +143,19 @@ namespace Remotion.Web.UI.Controls
       ArgumentUtility.CheckNotNull ("localResourcesType", localResourcesType);
       ArgumentUtility.CheckNotNull ("controlResourceManager", controlResourceManager);
 
-      var cachedResourceManager = _resourceManagerCache.GetOrAdd (
-          Tuple.Create (localResourcesType, controlResourceManager),
-          key => new Lazy<IResourceManager> (
-              () => ResourceManagerSet.Create (key.Item2, _globalizationService.GetResourceManager (key.Item1)),
-              LazyThreadSafetyMode.ExecutionAndPublication));
+      var table = _resourceManagerCache
+          .GetOrAdd (
+              localResourcesType,
+              _ => new ConditionalWeakTable<IResourceManager, Lazy<IResourceManager>>());
 
-      return cachedResourceManager.Value;
+      if (table.TryGetValue (controlResourceManager, out var cachedResult))
+        return cachedResult.Value;
+
+      var result = table.GetValue (
+          controlResourceManager,
+          mgr => new Lazy<IResourceManager> (() => ResourceManagerSet.Create (mgr, _globalizationService.GetResourceManager (localResourcesType))));
+
+      return result.Value;
     }
   }
 }
