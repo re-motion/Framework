@@ -44,11 +44,19 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     }
 
     /// <summary>
-    /// Returns the text diplayed on the button.
+    /// Returns the text displayed on the button.
     /// </summary>
     public string GetText ()
     {
       return Scope.Text.Trim();
+    }
+
+    /// <summary>
+    /// Returns the set access key. <see langword="null" /> if missing.
+    /// </summary>
+    public string? GetAccessKey ()
+    {
+      return Scope["accesskey"];
     }
 
     /// <summary>

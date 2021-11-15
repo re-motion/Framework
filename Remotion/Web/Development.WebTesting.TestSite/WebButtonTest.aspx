@@ -19,7 +19,7 @@
   <asp:UpdatePanel ID="UpdatePanel" runat="server">
     <ContentTemplate>
       <h3>WebButton1</h3>
-      <remotion:WebButton ID="MyWebButton1Sync" Text="SyncButton" CommandName="Sync" RequiresSynchronousPostBack="true" runat="server" />
+      <remotion:WebButton ID="MyWebButton1Sync" Text="SyncButton" AccessKey="A" CommandName="Sync" RequiresSynchronousPostBack="true" runat="server" />
       <remotion:WebButton ID="MyWebButtonPrimary1Sync" Text="SyncButton" ButtonType="Primary" CommandName="Sync" RequiresSynchronousPostBack="true" runat="server" />
       <remotion:WebButton ID="MyWebButtonSupplemental1Sync" Text="SyncButton" ButtonType="Supplemental" CommandName="Sync" RequiresSynchronousPostBack="true" runat="server" />
       <h3>WebButton2</h3>

@@ -29,6 +29,7 @@ using Remotion.SecurityManager.Configuration;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
+using Remotion.Web.Globalization;
 
 namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 {
@@ -67,7 +68,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
     {
       var resourceManager = GetResourceManager (typeof (ResourceIdentifier));
       TenantListLabel.Text = resourceManager.GetString (ResourceIdentifier.TenantListLabelText);
-      NewTenantButton.Text = resourceManager.GetString (ResourceIdentifier.NewTenantButtonText);
+      NewTenantButton.Text = resourceManager.GetText (ResourceIdentifier.NewTenantButtonText);
 
       base.OnPreRender (e);
 

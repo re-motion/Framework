@@ -23,6 +23,7 @@ using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.SecurityManager.Clients.Web.Classes.AccessControl;
 using Remotion.SecurityManager.Domain.AccessControl;
+using Remotion.Web.Globalization;
 
 namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 {
@@ -63,15 +64,15 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
     {
       { // Base
         var resourceManager = GetResourceManager (typeof (ResourceIdentifier));
-        DeleteAccessControlListButton.Text = resourceManager.GetString (ResourceIdentifier.DeleteAccessControlListButtonText);
-        NewAccessControlEntryButton.Text = resourceManager.GetString (ResourceIdentifier.NewAccessControlEntryButtonText);
+        DeleteAccessControlListButton.Text = resourceManager.GetText (ResourceIdentifier.DeleteAccessControlListButtonText);
+        NewAccessControlEntryButton.Text = resourceManager.GetText (ResourceIdentifier.NewAccessControlEntryButtonText);
       }
 
       {// This
         var resourceManager = GetResourceManager (typeof (StatefulAccessResourceIdentifier));
         MissingStateCombinationsValidator.ErrorMessage =
             resourceManager.GetString (StatefulAccessResourceIdentifier.MissingStateCombinationsValidatorErrorMessage);
-        NewStateCombinationButton.Text = resourceManager.GetString (StatefulAccessResourceIdentifier.NewStateCombinationButtonText);
+        NewStateCombinationButton.Text = resourceManager.GetText (StatefulAccessResourceIdentifier.NewStateCombinationButtonText);
       }
 
       base.OnPreRender (e);

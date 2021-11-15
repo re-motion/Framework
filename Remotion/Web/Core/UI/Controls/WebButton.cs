@@ -26,8 +26,8 @@ using Remotion.Security;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
+using Remotion.Web.Globalization;
 using Remotion.Web.Infrastructure;
-using Remotion.Web.UI.Controls.Hotkey;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Controls.WebButtonImplementation;
 using Remotion.Web.UI.Controls.WebButtonImplementation.Rendering;
@@ -49,6 +49,9 @@ namespace Remotion.Web.UI.Controls
   {
     private static readonly object s_clickEvent = new object();
 
+    private const string c_textViewStateKey = nameof (Text);
+    private const string c_textWebStringViewStateKey = c_textViewStateKey + "_" + nameof (WebStringType);
+
     private IconInfo _icon;
     private readonly IRenderingFeatures _renderingFeatures;
     private PostBackOptions? _options;
@@ -61,13 +64,37 @@ namespace Remotion.Web.UI.Controls
     private bool _requiresSynchronousPostBack;
     private bool _hasPagePreRenderCompleted;
 
-    private TextWithHotkey? _textWithHotkey;
     private ButtonType _buttonType;
 
     public WebButton ()
     {
       _icon = new IconInfo();
       _renderingFeatures = SafeServiceLocator.Current.GetInstance<IRenderingFeatures>();
+    }
+
+    [Category ("Appearance")]
+    [Description ("The text to be shown on the button.")]
+    [DefaultValue (typeof (WebString), "")]
+    public new WebString Text
+    {
+      get
+      {
+        var value = (string?) ViewState[c_textViewStateKey];
+        var type = (WebStringType?) ViewState[c_textWebStringViewStateKey] ?? WebStringType.PlainText;
+
+        return type switch
+        {
+            WebStringType.PlainText => WebString.CreateFromText (value),
+            WebStringType.Encoded => WebString.CreateFromHtml (value),
+            _ => throw new InvalidOperationException (
+                $"The value for key '{c_textWebStringViewStateKey}' in the ViewState contains invalid data '{type}'."),
+        };
+      }
+      set
+      {
+        ViewState[c_textViewStateKey] = value.GetValue();
+        ViewState[c_textWebStringViewStateKey] = value.Type;
+      }
     }
 
     protected override void OnInit (EventArgs e)
@@ -134,27 +161,8 @@ namespace Remotion.Web.UI.Controls
       _hasPagePreRenderCompleted = true;
     }
 
-    [MemberNotNull (nameof (_textWithHotkey))]
-    protected override void Render (HtmlTextWriter writer)
-    {
-      _textWithHotkey = HotkeyParser.Parse (Text);
-
-      base.Render (writer);
-    }
-
     protected override void AddAttributesToRender (HtmlTextWriter writer)
     {
-      if (string.IsNullOrEmpty (AccessKey) && _textWithHotkey!.Hotkey.HasValue) // TODO RM-8118: Debug assert _textWithHotkey not null
-        writer.AddAttribute (HtmlTextWriterAttribute.Accesskey, HotkeyFormatter.FormatHotkey (_textWithHotkey));
-
-      if (IsLegacyButtonEnabled)
-      {
-        if (!string.IsNullOrEmpty (_textWithHotkey!.Text))
-          Text = _textWithHotkey.Text;
-        else if (_icon != null && _icon.HasRenderingInformation)
-          Text = _icon.AlternateText;
-      }
-
       if (Page != null)
         Page.VerifyRenderingInServerForm (this);
 
@@ -215,7 +223,15 @@ namespace Remotion.Web.UI.Controls
 
       ControlStyle.CssClass = computedCssClass;
 
+      var currentText = Text;
+      if (Text.IsEmpty && IsLegacyButtonEnabled && _icon != null && _icon.HasRenderingInformation)
+        base.Text = _icon.AlternateText;
+      else
+        base.Text = Text.GetValue();
+
       base.AddAttributesToRender (writer);
+
+      Text = currentText;
 
       ControlStyle.CssClass = cssClassBackup;
 
@@ -233,8 +249,14 @@ namespace Remotion.Web.UI.Controls
       IControlWithDiagnosticMetadata controlWithDiagnosticMetadata = this;
       writer.AddAttribute (DiagnosticMetadataAttributes.ControlType, controlWithDiagnosticMetadata.ControlType);
 
-      if (!string.IsNullOrEmpty (Text))
-        writer.AddAttribute (DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags (Text));
+      if (!Text.IsEmpty)
+      {
+        writer.AddAttribute (
+            DiagnosticMetadataAttributes.Content,
+            Text.Type == WebStringType.Encoded
+                ? HtmlUtility.StripHtmlTags (Text.GetValue())
+                : Text.GetValue());
+      }
 
       if (!string.IsNullOrEmpty (CommandName))
         writer.AddAttribute (DiagnosticMetadataAttributes.CommandName, CommandName);
@@ -296,14 +318,12 @@ namespace Remotion.Web.UI.Controls
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassButtonBody);
       writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
-      var text = HotkeyFormatter.FormatText (_textWithHotkey!, false); // TODO RM-8118: not null assertion
-
       if (HasControls())
         base.RenderContents (writer);
       else
       {
         bool hasIcon = _icon.HasRenderingInformation;
-        bool hasText = !string.IsNullOrEmpty (text);
+        bool hasText = !Text.IsEmpty;
         if (hasIcon)
         {
           writer.AddAttribute (HtmlTextWriterAttribute.Src, _icon.Url);
@@ -318,7 +338,7 @@ namespace Remotion.Web.UI.Controls
         if (hasText)
         {
           writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin text span
-          writer.Write (text); // Do not HTML enocde
+          Text.Write (writer);
           writer.RenderEndTag(); // End text span
         }
       }
@@ -344,9 +364,9 @@ namespace Remotion.Web.UI.Controls
       ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
 
       //  Dispatch simple properties
-      string? key = ResourceManagerUtility.GetGlobalResourceKey (Text);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey (Text.GetValue());
       if (!string.IsNullOrEmpty (key))
-        Text = resourceManager.GetString (key);
+        Text = resourceManager.GetWebString (key, Text.Type);
 
       key = ResourceManagerUtility.GetGlobalResourceKey (AccessKey);
       if (!string.IsNullOrEmpty (key))
@@ -523,11 +543,6 @@ namespace Remotion.Web.UI.Controls
     protected virtual IServiceLocator ServiceLocator
     {
       get { return SafeServiceLocator.Current; }
-    }
-
-    private IHotkeyFormatter HotkeyFormatter
-    {
-      get { return ServiceLocator.GetInstance<IHotkeyFormatter>(); }
     }
 
     private IWebSecurityAdapter? WebSecurityAdapter
