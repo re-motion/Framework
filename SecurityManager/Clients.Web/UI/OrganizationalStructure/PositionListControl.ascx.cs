@@ -16,7 +16,7 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Remotion.Data.DomainObjects;
 using Remotion.Globalization;
@@ -84,7 +84,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
       HandleNewButtonClick (PositionList);
     }
 
-    protected override IList GetValues ()
+    protected override IReadOnlyList<Position> GetValues ()
     {
       return Position.FindAll().ToArray();
     }

@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
@@ -35,7 +35,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         _bocList = bocList;
       }
 
-      public IList Value
+      public IReadOnlyList<IBusinessObject> Value
       {
         get { return _bocList.Value; }
       }

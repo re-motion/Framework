@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Remotion.ObjectBinding;
@@ -377,7 +378,8 @@ public class BocListUserControl : BaseUserControl
     Person person = Person.CreateObject (Guid.NewGuid());
     person.LastName = "X";
 
-    ChildrenList.Value.Add (person);
+    // Exercise IList<T> in BocList.Value
+    ((IList<Person>) ChildrenList.Value).Add (person);
     ChildrenList.SynchronizeRows();
   }
 
@@ -385,7 +387,7 @@ public class BocListUserControl : BaseUserControl
   {
     IBusinessObject[] selectedBusinessObjects = ChildrenList.GetSelectedBusinessObjects();
     foreach (var obj in selectedBusinessObjects)
-      ChildrenList.Value.Remove (obj);
+      ((IList<Person>) ChildrenList.Value).Remove ((Person) obj);
     ChildrenList.SynchronizeRows();
   }
 

@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Remotion.ExtensibleEnums;
@@ -26,7 +27,6 @@ using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 using Remotion.Utilities;
-using TypeExtensions = Remotion.Reflection.TypeExtensions;
 
 namespace Remotion.ObjectBinding.BindableObject
 {
@@ -36,6 +36,23 @@ namespace Remotion.ObjectBinding.BindableObject
   /// </summary>
   public class PropertyReflector
   {
+    private static readonly ConcurrentDictionary<Type, (bool CanAscribeTo, Type? ItemType)> s_readOnlyListTypeCache = new();
+    private static readonly ConcurrentDictionary<Type, bool> s_readOnlyCollectionTypeCache = new();
+
+    private static readonly Func<Type, (bool CanAscribeTo, Type? ItemType)> s_readOnlyListTypeCacheValueFactory =
+        static t =>
+        {
+          var canAscribeTo = typeof (IEnumerable).IsAssignableFrom (t) && t.CanAscribeTo (typeof (IReadOnlyList<>));
+          return (
+              CanAscribeTo: canAscribeTo,
+              ItemType: canAscribeTo
+                  ? t.GetAscribedGenericArguments (typeof (IReadOnlyList<>))[0]
+                  : null);
+        };
+
+    private static readonly Func<Type, bool> s_readOnlyCollectionTypeCacheValueFactory =
+        static t => typeof (IEnumerable).IsAssignableFrom (t) && t.CanAscribeTo (typeof (ReadOnlyCollection<>));
+
     public static PropertyReflector Create (IPropertyInformation propertyInfo, BindableObjectProvider businessObjectProvider)
     {
       return ObjectFactory.Create<PropertyReflector> (true,ParamList.Create (propertyInfo,businessObjectProvider));
@@ -167,21 +184,36 @@ namespace Remotion.ObjectBinding.BindableObject
 
     protected virtual Type GetItemType ()
     {
+      // Statement order based on performance and syntax requirements.
+
       if (!typeof (IEnumerable).IsAssignableFrom (_propertyInfo.PropertyType))
         return _propertyInfo.PropertyType;
+
+      if (typeof (IReadOnlyList<object>).IsAssignableFrom (_propertyInfo.PropertyType))
+      {
+        var cachedObjectPropertyType = s_readOnlyListTypeCache.GetOrAdd (_propertyInfo.PropertyType, s_readOnlyListTypeCacheValueFactory);
+        Assertion.DebugIsNotNull (cachedObjectPropertyType.ItemType, "cachedObjectPropertyType.ItemType != null when cachedObjectPropertyType.CanAscribeTo == true");
+        return cachedObjectPropertyType.ItemType;
+      }
 
       if (_propertyInfo.PropertyType.IsArray)
         return _propertyInfo.PropertyType.GetElementType()!;
 
-      if (TypeExtensions.CanAscribeTo (_propertyInfo.PropertyType, typeof (IReadOnlyCollection<>)))
-        return TypeExtensions.GetAscribedGenericArguments (_propertyInfo.PropertyType, typeof (IReadOnlyCollection<>))[0];
+      Assertion.DebugAssert (typeof (IEnumerable).IsAssignableFrom (_propertyInfo.PropertyType), "typeof (IEnumerable).IsAssignableFrom (_propertyInfo.PropertyType)");
 
-      if (TypeExtensions.CanAscribeTo (_propertyInfo.PropertyType, typeof (IList<>)))
-        return TypeExtensions.GetAscribedGenericArguments (_propertyInfo.PropertyType, typeof (IList<>))[0];
+      // Cover IReadOnlyList<T> for value types. Realistically, after testing for IList, there should not be many cases left that support IEnumerable but not IList.
+      var cachedPropertyType = s_readOnlyListTypeCache.GetOrAdd (_propertyInfo.PropertyType, s_readOnlyListTypeCacheValueFactory);
+      if (cachedPropertyType.CanAscribeTo)
+      {
+        Assertion.DebugIsNotNull (cachedPropertyType.ItemType, "cachedPropertyType.ItemType != null when cachedPropertyType.CanAscribeTo == true");
+        return cachedPropertyType.ItemType;
+      }
 
       if (typeof (IList).IsAssignableFrom (_propertyInfo.PropertyType))
         return GetItemTypeFromAttribute();
 
+      // Covers remaining types that implement IEnumerable but not IList or IReadOnlyList<T>
+      // e.g. IEnumerable<T>, IReadOnlyCollection<T>, ICollection
       return _propertyInfo.PropertyType;
     }
 
@@ -214,8 +246,12 @@ namespace Remotion.ObjectBinding.BindableObject
       if (attribute != null && attribute.ReadOnly)
         return true;
 
-      if (TypeExtensions.CanAscribeTo (_propertyInfo.PropertyType, typeof (ReadOnlyCollection<>)))
+      //TODO RM-7831: rework readonly detection
+      if (s_readOnlyListTypeCache.GetOrAdd (_propertyInfo.PropertyType, s_readOnlyListTypeCacheValueFactory).CanAscribeTo &&
+          s_readOnlyCollectionTypeCache.GetOrAdd (_propertyInfo.PropertyType, s_readOnlyCollectionTypeCacheValueFactory))
+      {
         return true;
+      }
 
       if (_propertyInfo.CanBeSetFromOutside)
         return false;
@@ -238,7 +274,21 @@ namespace Remotion.ObjectBinding.BindableObject
 
     protected virtual bool IsListProperty ()
     {
-      return typeof (IList).IsAssignableFrom (_propertyInfo.PropertyType);
+      // Statement order based on performance, first type assignments, then generics.
+
+      if (typeof (IReadOnlyList<object>).IsAssignableFrom (_propertyInfo.PropertyType))
+        return true;
+
+      if (typeof (IList).IsAssignableFrom (_propertyInfo.PropertyType))
+        return true;
+
+      Assertion.DebugAssert (_propertyInfo.PropertyType.IsArray == false, "_propertyInfo.PropertyType.IsArray == false");
+
+      // Cover IReadOnlyList<T> for value types. Realistically, after testing for IList, there should not be many cases left that support IEnumerable but not IList.
+      if (s_readOnlyListTypeCache.GetOrAdd (_propertyInfo.PropertyType, s_readOnlyListTypeCacheValueFactory).CanAscribeTo)
+        return true;
+
+      return false;
     }
 
     protected IDefaultValueStrategy GetDefaultValueStrategy ()

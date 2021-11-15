@@ -17,13 +17,14 @@
 using System;
 using System.Xml.Serialization;
 using Remotion.Mixins;
+using Remotion.ObjectBinding.BindableObject;
 using Remotion.Reflection;
 
 namespace Remotion.ObjectBinding.Sample
 {
   [Serializable]
   [BindableObjectWithIdentity]
-  public class BindableXmlObject
+  public class BindableXmlObject : IBusinessObjectWithIdentity
   {
     protected static T GetObject<T> (Guid id)
       where T:BindableXmlObject
@@ -74,6 +75,26 @@ namespace Remotion.ObjectBinding.Sample
     public void SaveObject ()
     {
       XmlReflectionBusinessObjectStorageProvider.Current.SaveObject (this);
+    }
+
+    IBusinessObjectClass IBusinessObject.BusinessObjectClass
+    {
+      get { return Mixin.Get<BindableObjectWithIdentityMixin> (this).BusinessObjectClass; }
+    }
+
+    object IBusinessObject.GetProperty (IBusinessObjectProperty property)
+    {
+      return Mixin.Get<BindableObjectWithIdentityMixin> (this).GetProperty (property);
+    }
+
+    string IBusinessObject.GetPropertyString (IBusinessObjectProperty property, string format)
+    {
+      return Mixin.Get<BindableObjectWithIdentityMixin> (this).GetPropertyString (property, format);
+    }
+
+    void IBusinessObject.SetProperty (IBusinessObjectProperty property, object value)
+    {
+      Mixin.Get<BindableObjectWithIdentityMixin> (this).SetProperty (property, value);
     }
   }
 }

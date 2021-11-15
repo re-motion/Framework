@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
 {
@@ -40,7 +41,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
       throw new NotSupportedException ("The operation is not supported because the value is not set.");
     }
 
-    public BocListRow GetRowFromItemRowID (IList rows, string rowID)
+    public BocListRow GetRowFromItemRowID (IReadOnlyList<IBusinessObject> rows, string rowID)
     {
       throw new NotSupportedException ("The operation is not supported because the value is not set.");
     }

@@ -16,7 +16,7 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using JetBrains.Annotations;
 using Remotion.Data.DomainObjects;
 using Remotion.ObjectBinding.Web.UI.Controls;
@@ -30,7 +30,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
   public abstract class BaseListControl<T> : BaseControl
       where T : BaseSecurityManagerObject, ISupportsGetObject
   {
-    protected abstract IList GetValues ();
+    protected abstract IReadOnlyList<T> GetValues ();
 
     protected abstract FormFunction<T> CreateEditFunction (ITransactionMode transactionMode, [CanBeNull] IDomainObjectHandle<T> editedObject);
 

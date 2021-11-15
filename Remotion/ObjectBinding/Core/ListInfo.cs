@@ -27,7 +27,7 @@ namespace Remotion.ObjectBinding
 
     public ListInfo (Type propertyType, Type itemType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("propertyType", propertyType, typeof (IList));
+      ArgumentUtility.CheckNotNull ("propertyType", propertyType);
       ArgumentUtility.CheckNotNull ("itemType", itemType);
     
       _propertyType = propertyType;
