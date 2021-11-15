@@ -134,7 +134,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
           ResourceUrlFactory.CreateResourceUrl (
               typeof (BocAutoCompleteReferenceValueRenderer),
               ResourceType.Html,
-              "BocAutoCompleteReferenceValue.jquery.js"));
+              "BocAutoCompleteReferenceValue.UI.js"));
 
       string scriptKey = typeof (BocAutoCompleteReferenceValueRenderer).GetFullNameChecked() + "_Script";
       htmlHeadAppender.RegisterJavaScriptInclude (
@@ -161,7 +161,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
           ResourceUrlFactory.CreateThemedResourceUrl (
               typeof (BocAutoCompleteReferenceValueRenderer),
               ResourceType.Html,
-              "BocAutoCompleteReferenceValue.jquery.css"),
+              "BocAutoCompleteReferenceValue.UI.css"),
           HtmlHeadAppender.Priority.Library);
     }
 
