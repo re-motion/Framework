@@ -23,9 +23,9 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.Utilities;
+using Remotion.Web.Globalization;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Globalization;
-using Remotion.Web.Utilities;
 
 namespace Remotion.Web.UI.Controls
 {
@@ -37,8 +37,36 @@ namespace Remotion.Web.UI.Controls
 [ToolboxItemFilter("System.Web.UI")]
 public class FormGridLabel: Label, ISmartControl
 {
+  private const string c_textViewStateKey = nameof (Text);
+  private const string c_textWebStringViewStateKey = c_textViewStateKey + "_" + nameof (WebStringType);
+
   private bool _required = false;
   private string? _helpUrl = null;
+
+  [Category ("Appearance")]
+  [Description ("The text to be shown for the Label.")]
+  [DefaultValue (typeof (WebString), "")]
+  public new WebString Text
+  {
+    get
+    {
+      var value = (string?) ViewState[c_textViewStateKey];
+      var type = (WebStringType?) ViewState[c_textWebStringViewStateKey] ?? WebStringType.PlainText;
+
+      return type switch
+      {
+          WebStringType.PlainText => WebString.CreateFromText (value),
+          WebStringType.Encoded => WebString.CreateFromHtml (value),
+          _ => throw new InvalidOperationException (
+              $"The value for key '{c_textWebStringViewStateKey}' in the ViewState contains invalid data '{type}'."),
+      };
+    }
+    set
+    {
+      ViewState[c_textViewStateKey] = value.GetValue();
+      ViewState[c_textWebStringViewStateKey] = value.Type;
+    }
+  }
 
   [Category("Behavior")]
   [DefaultValue (false)]
@@ -120,9 +148,9 @@ public class FormGridLabel: Label, ISmartControl
   {
     ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
 
-    string? key = ResourceManagerUtility.GetGlobalResourceKey (Text);
+    string? key = ResourceManagerUtility.GetGlobalResourceKey (Text.GetValue());
     if (!string.IsNullOrEmpty (key))
-      Text = resourceManager.GetString (key);
+      Text = resourceManager.GetWebString (key, Text.Type);
   }
 
   void ISmartControl.RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
@@ -143,8 +171,14 @@ public class FormGridLabel: Label, ISmartControl
     base.AddAttributesToRender(writer);
     AssociatedControlID = associatedControlID;
   }
- 
 
+  protected override void RenderContents (HtmlTextWriter writer)
+  {
+    if (HasControls())
+      base.RenderContents (writer);
+    else
+      Text.Write (writer);
+  }
 }
 
 }
