@@ -33,7 +33,6 @@ using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls.FormGridManagerImplementation;
-using Remotion.Web.UI.Controls.Hotkey;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Globalization;
 using Remotion.Web.Utilities;
@@ -1097,8 +1096,6 @@ namespace Remotion.Web.UI.Controls
 
       //  Parse the values
 
-      var hotkeyFormatter = HotkeyFormatter;
-
       foreach (DictionaryEntry entry in values)
       {
         //  Compound key: "tableUniqueID:controlUniqueID:property"
@@ -1185,38 +1182,6 @@ namespace Remotion.Web.UI.Controls
               resourceDispatchTarget.Dispatch (controlValues);       
             else
               ResourceDispatcher.DispatchGeneric (control, controlValues);
-
-            //  Access key support for Labels
-            Label? label = control as Label;
-            if (label != null)
-            {
-#pragma warning disable 184
-              Assertion.IsFalse (label is SmartLabel);
-#pragma warning restore 184
-
-              var textWithHotkey = HotkeyParser.Parse (label.Text);
-
-              //  Label has associated control
-              if (!string.IsNullOrEmpty (label.AssociatedControlID))
-              {
-                ISmartControl? smartControl = control as ISmartControl;
-                if (smartControl != null && smartControl.UseLabel)
-                {
-                  label.Text = hotkeyFormatter.FormatText (textWithHotkey, false);
-                  label.AccessKey = hotkeyFormatter.FormatHotkey (textWithHotkey);
-                }
-                else
-                {
-                  label.Text = hotkeyFormatter.FormatText (textWithHotkey, false);
-                  label.AccessKey = hotkeyFormatter.FormatHotkey (textWithHotkey);
-                }
-              }
-              else
-              {
-                label.Text = textWithHotkey.Text;
-                label.AccessKey = "";
-              }
-            }
           }
           else
           {
@@ -3346,11 +3311,6 @@ namespace Remotion.Web.UI.Controls
     protected virtual IServiceLocator ServiceLocator
     {
       get { return SafeServiceLocator.Current; }
-    }
-
-    private IHotkeyFormatter HotkeyFormatter
-    {
-      get { return ServiceLocator.GetInstance<IHotkeyFormatter>(); }
     }
 
     private IInternalControlMemberCaller MemberCaller
