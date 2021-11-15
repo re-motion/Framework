@@ -22,6 +22,7 @@ using Remotion.SecurityManager.Clients.Web.Classes;
 using Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure;
 using Remotion.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructure;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.Web.Globalization;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
@@ -92,7 +93,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     protected override void OnPreRender (EventArgs e)
     {
-      UserLabel.Text = GetResourceManager(typeof(ResourceIdentifier)).GetString(ResourceIdentifier.UserLabelText);
+      UserLabel.Text = GetResourceManager(typeof(ResourceIdentifier)).GetText(ResourceIdentifier.UserLabelText);
 
       base.OnPreRender(e);
 

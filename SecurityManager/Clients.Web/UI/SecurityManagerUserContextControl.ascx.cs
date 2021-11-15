@@ -29,6 +29,7 @@ using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Compilation;
+using Remotion.Web.Globalization;
 
 namespace Remotion.SecurityManager.Clients.Web.UI
 {
@@ -144,9 +145,9 @@ namespace Remotion.SecurityManager.Clients.Web.UI
     {
       var resourceManager = GetResourceManager(typeof(ResourceIdentifier));
 
-      CurrentUserLabel.Text = resourceManager.GetString(ResourceIdentifier.CurrentUserLabelText);
-      CurrentSubstitutionLabel.Text = resourceManager.GetString(ResourceIdentifier.CurrentSubstitutionLabelText);
-      CurrentTenantLabel.Text = resourceManager.GetString(ResourceIdentifier.CurrentTenantLabelText);
+      CurrentUserLabel.Text = resourceManager.GetText(ResourceIdentifier.CurrentUserLabelText);
+      CurrentSubstitutionLabel.Text = resourceManager.GetText(ResourceIdentifier.CurrentSubstitutionLabelText);
+      CurrentTenantLabel.Text = resourceManager.GetText(ResourceIdentifier.CurrentTenantLabelText);
 
       base.OnPreRender(e);
 

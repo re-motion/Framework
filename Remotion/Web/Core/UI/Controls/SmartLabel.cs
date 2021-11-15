@@ -20,6 +20,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.Utilities;
+using Remotion.Web.Globalization;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Globalization;
 using Remotion.Web.Utilities;
@@ -31,7 +32,7 @@ namespace Remotion.Web.UI.Controls
 public class SmartLabel: WebControl, IControl
 {
   private string? _forControl = null;
-  private string? _text = null;
+  private WebString _text;
 
   public SmartLabel ()
   {
@@ -55,7 +56,7 @@ public class SmartLabel: WebControl, IControl
   [Category("Appearance")]
   [Description("The text displayed if the SmartLabel is not bound to an ISmartControl or the ISmartControl does provide a DisplayName.")]
   [DefaultValue(null)]
-  public string? Text
+  public WebString Text
   {
     get { return _text; }
     set { _text = value; }
@@ -91,15 +92,15 @@ public class SmartLabel: WebControl, IControl
   protected override void Render (HtmlTextWriter writer)
   {
     RenderBeginTag(writer);
-    string text = GetText();
+    var text = GetText();
     // Do not HTML encode
-    writer.Write(text);
+    text.WriteTo(writer);
     RenderEndTag(writer);
   }
 
-  public string GetText ()
+  public WebString GetText ()
   {
-    if (! string.IsNullOrEmpty(_text))
+    if (!_text.IsEmpty)
       return _text;
 
     string? forControlBackUp = ForControl;
@@ -119,7 +120,7 @@ public class SmartLabel: WebControl, IControl
         text = "[Label for " + ForControl + "]";
     }
     ForControl = forControlBackUp;
-    return text;
+    return WebString.CreateFromText(text);
   }
 
   protected override void AddAttributesToRender (HtmlTextWriter writer)
@@ -139,9 +140,9 @@ public class SmartLabel: WebControl, IControl
   {
     ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
 
-    string? key = ResourceManagerUtility.GetGlobalResourceKey(Text);
+    string? key = ResourceManagerUtility.GetGlobalResourceKey(Text.GetValue());
     if (!string.IsNullOrEmpty(key))
-      Text = resourceManager.GetString(key);
+      Text = resourceManager.GetWebString(key, Text.Type);
   }
 
   private string? GetClientIDForTarget ()
