@@ -67,7 +67,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
     protected override void OnPreRender (EventArgs e)
     {
       var resourceManager = GetResourceManager (typeof (ResourceIdentifier));
-      UserListLabel.Text = resourceManager.GetString (ResourceIdentifier.UserListLabelText);
+      UserListLabel.Text = resourceManager.GetText (ResourceIdentifier.UserListLabelText);
       NewUserButton.Text = resourceManager.GetText (ResourceIdentifier.NewUserButtonText);
 
       base.OnPreRender (e);

@@ -221,7 +221,7 @@ public class ValidationStateViewer : WebControl, IControl
             Control control = (Control) validationError.Labels[idxErrorLabels];
             string text = string.Empty;
             if (control is SmartLabel)
-              text = ((SmartLabel) control).GetText();
+              text = ((SmartLabel) control).GetText().ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
             else if (control is FormGridLabel)
               text = ((FormGridLabel) control).Text.ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
             else if (control is Label)
