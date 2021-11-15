@@ -20,7 +20,9 @@ using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
+using Remotion.Web.Globalization;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.Utilities;
@@ -100,16 +102,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       if (_renderingFeatures.EnableDiagnosticMetadata)
       {
         var columnTitle = renderingContext.Control.IndexColumnTitle;
-        if (!string.IsNullOrEmpty (columnTitle))
+        if (!columnTitle.IsEmpty)
           renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags (columnTitle));
 
         AddDiagnosticMetadataListCellIndex (renderingContext);
       }
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Th);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
-      string indexColumnTitle = renderingContext.Control.IndexColumnTitle;
-      if (string.IsNullOrEmpty (renderingContext.Control.IndexColumnTitle))
-        indexColumnTitle = renderingContext.Control.GetResourceManager().GetString (BocList.ResourceIdentifier.IndexColumnTitle);
+      WebString indexColumnTitle = renderingContext.Control.IndexColumnTitle;
+      if (indexColumnTitle.IsEmpty)
+        indexColumnTitle = renderingContext.Control.GetResourceManager().GetText (BocList.ResourceIdentifier.IndexColumnTitle);
 
       // Do not HTML encode.
       renderingContext.Writer.Write (indexColumnTitle);

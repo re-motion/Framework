@@ -47,7 +47,7 @@
               <remotion:BocListItemCommand HrefCommand-Href="edit.aspx?ID={1}&amp;Index={0}" Type="Href"></remotion:BocListItemCommand>
             </PersistedCommand>
           </remotion:BocCommandColumnDefinition>
-          <remotion:BocSimpleColumnDefinition ItemID="LastName" PropertyPathIdentifier="LastName" IsDynamic="True">
+          <remotion:BocSimpleColumnDefinition ItemID="LastName" PropertyPathIdentifier="LastName" IsDynamic="True" ColumnTitle="TODO RM-8137">
             <persistedcommand>
               <remotion:BocListItemCommand WxeFunctionCommand-TypeName="OBWTest.ViewPersonDetailsWxeFunction,OBWTest" WxeFunctionCommand-Parameters="id" Type="WxeFunction"></remotion:BocListItemCommand>
             </PersistedCommand>

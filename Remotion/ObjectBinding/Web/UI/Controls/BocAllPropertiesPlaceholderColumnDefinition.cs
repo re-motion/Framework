@@ -20,6 +20,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using CommonServiceLocator;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
+using Remotion.Web;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
@@ -41,7 +42,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     [Browsable (false)]
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    public override string ColumnTitle
+    public override WebString ColumnTitle
     {
       get { return base.ColumnTitle; }
       set { base.ColumnTitle = value; }
