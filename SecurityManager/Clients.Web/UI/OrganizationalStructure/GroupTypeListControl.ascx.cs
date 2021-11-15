@@ -65,7 +65,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
     protected override void OnPreRender (EventArgs e)
     {
       var resourceManager = GetResourceManager (typeof (ResourceIdentifier));
-      GroupTypeListLabel.Text = resourceManager.GetString(ResourceIdentifier.GroupTypeListLabelText);
+      GroupTypeListLabel.Text = resourceManager.GetText (ResourceIdentifier.GroupTypeListLabelText);
       NewGroupTypeButton.Text = resourceManager.GetText (ResourceIdentifier.NewGroupTypeButtonText);
 
       base.OnPreRender (e);
