@@ -59,9 +59,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       bool hasEditModeControl = editableRow != null && editableRow.HasEditControl(renderingContext.ColumnIndex);
       bool showEditModeControl = hasEditModeControl && !editableRow!.GetEditControl(renderingContext.ColumnIndex)!.IsReadOnly;
 
-      string? valueColumnText = null;
+      PlainTextString valueColumnText = PlainTextString.Empty;
       if (!showEditModeControl)
-        valueColumnText = renderingContext.ColumnDefinition.GetStringValue(businessObject);
+        valueColumnText = PlainTextString.CreateFromText(renderingContext.ColumnDefinition.GetStringValue(businessObject));
 
       bool enforceWidth = RenderCropSpanBeginTag(renderingContext, showEditModeControl, valueColumnText);
       bool isCommandEnabled = RenderBeginTag(renderingContext, originalRowIndex, businessObject, valueColumnText);
@@ -96,20 +96,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     {
     }
 
-    protected void RenderValueColumnCellText (BocColumnRenderingContext<TBocColumnDefinition> renderingContext, string contents)
+    protected void RenderValueColumnCellText (BocColumnRenderingContext<TBocColumnDefinition> renderingContext, PlainTextString contents)
     {
       ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNull("contents", contents);
 
       renderingContext.Writer.AddAttribute("class", CssClasses.CommandText);
       if (RenderingFeatures.EnableDiagnosticMetadata)
-        renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.BocListCellContents, contents);
+        contents.AddAttributeTo(renderingContext.Writer, DiagnosticMetadataAttributesForObjectBinding.BocListCellContents);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
-      if (string.IsNullOrWhiteSpace(contents))
-        renderingContext.Writer.Write("&nbsp;");
+      if (contents.IsEmpty)
+        renderingContext.Writer.Write(c_whiteSpace);
       else
-        renderingContext.Writer.WriteEncodedLines(StringUtility.ParseNewLineSeparatedString(contents));
+        contents.WriteTo(renderingContext.Writer);
 
       renderingContext.Writer.RenderEndTag();
     }
@@ -121,7 +120,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <param name="showEditModeControl">Specifies if the cell contains edit mode controls.</param>
     /// <param name="spanTitle">Specifies the text to be written to the 'title' attribute.</param>
     /// <returns><see langword="true"/> if the crop span begin tag has been rendered, <see langword="false"/> otherwise.</returns>
-    private bool RenderCropSpanBeginTag (BocColumnRenderingContext<TBocColumnDefinition> renderingContext, bool showEditModeControl, string? spanTitle)
+    private bool RenderCropSpanBeginTag (BocColumnRenderingContext<TBocColumnDefinition> renderingContext, bool showEditModeControl, PlainTextString spanTitle)
     {
       bool enforceWidth =
           renderingContext.ColumnDefinition.EnforceWidth
@@ -135,7 +134,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         renderingContext.Writer.AddStyleAttribute("overflow", "hidden");
         renderingContext.Writer.AddStyleAttribute("white-space", "nowrap");
         renderingContext.Writer.AddStyleAttribute("display", "block");
-        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Title, spanTitle);
+        spanTitle.AddAttributeTo(renderingContext.Writer, HtmlTextWriterAttribute.Title);
         renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
       }
       return enforceWidth;
@@ -154,10 +153,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
 
     private bool RenderBeginTag (
-        BocColumnRenderingContext<TBocColumnDefinition> renderingContext, int originalRowIndex, IBusinessObject businessObject, string? valueColumnText)
+        BocColumnRenderingContext<TBocColumnDefinition> renderingContext, int originalRowIndex, IBusinessObject businessObject, PlainTextString valueColumnText)
     {
       bool isCommandEnabled = false;
-      if (!string.IsNullOrEmpty(valueColumnText))
+      if (!valueColumnText.IsEmpty)
         isCommandEnabled = RenderBeginTagDataCellCommand(renderingContext, businessObject, originalRowIndex);
       if (!isCommandEnabled)
       {

@@ -83,12 +83,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
     int? IndexOffset { get; }
 
     /// <summary> Gets or sets the text that is displayed in the index column's title row. </summary>
-    /// <remarks> The value will not be HTML encoded. </remarks>
-    string? IndexColumnTitle { get; }
+    WebString IndexColumnTitle { get; }
 
     /// <summary> Gets or sets the text rendered if the list is empty. </summary>
-    /// <remarks> The value will not be HTML encoded. </remarks>
-    string? EmptyListMessage { get; }
+    WebString EmptyListMessage { get; }
 
     /// <summary> Gets or sets a flag whether to render the <see cref="BocList.EmptyListMessage"/>. </summary>
     bool ShowEmptyListMessage { get; }
@@ -109,8 +107,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
     Unit MenuBlockMaxWidth { get; }
 
     /// <summary> Gets or sets the text that is rendered as a title for the drop list of additional columns. </summary>
-    /// <remarks> The value will not be HTML encoded. </remarks>
-    string? AvailableViewsListTitle { get; }
+    WebString AvailableViewsListTitle { get; }
 
     /// <summary> Gets or sets the text that is rendered as a label for the <c>options menu</c>. </summary>
     WebString OptionsTitle { get; }

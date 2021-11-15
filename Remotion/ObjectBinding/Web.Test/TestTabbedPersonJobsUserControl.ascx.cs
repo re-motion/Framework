@@ -169,7 +169,7 @@ public class TestTabbedPersonJobsUserControl :
     IBusinessObjectProperty endDate = ListField.Property.ReferenceClass.GetPropertyDefinition("EndDate");
 
     BocSimpleColumnDefinition endDateColumnDefinition = new BocSimpleColumnDefinition();
-    endDateColumnDefinition.ColumnTitle = "EndDate";
+    endDateColumnDefinition.ColumnTitle = WebString.CreateFromText("EndDate");
     endDateColumnDefinition.SetPropertyPath(BusinessObjectPropertyPath.CreateStatic(new[] { endDate }));
 
     BocListView emptyView = new BocListView();

@@ -154,11 +154,11 @@ public class BocListAsGridUserControl : BaseUserControl
     //  Additional columns, in-code generated
 
     BocSimpleColumnDefinition birthdayColumnDefinition = new BocSimpleColumnDefinition();
-    birthdayColumnDefinition.ColumnTitle = "Birthday";
+    birthdayColumnDefinition.ColumnTitle = WebString.CreateFromText("Birthday");
     birthdayColumnDefinition.SetPropertyPath(BusinessObjectPropertyPath.CreateStatic(new []{dateOfBirth}));
 
     BocSimpleColumnDefinition dayofDeathColumnDefinition = new BocSimpleColumnDefinition();
-    dayofDeathColumnDefinition.ColumnTitle = "Day of Death";
+    dayofDeathColumnDefinition.ColumnTitle = WebString.CreateFromText("Day of Death");
     dayofDeathColumnDefinition.SetPropertyPath(BusinessObjectPropertyPath.CreateStatic(new [] { dateOfDeath }));
     dayofDeathColumnDefinition.Width = Unit.Parse("9.1em", CultureInfo.InvariantCulture);
     dayofDeathColumnDefinition.EnforceWidth = true;

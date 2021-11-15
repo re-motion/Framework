@@ -21,6 +21,8 @@ using CommonServiceLocator;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.Utilities;
+using Remotion.Web;
+using Remotion.Web.Globalization;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Globalization;
 
@@ -29,7 +31,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   /// <summary> A column definition containing no data, only the <see cref="BocListItemCommand"/>. </summary>
   public class BocCommandColumnDefinition : BocCommandEnabledColumnDefinition
   {
-    private string _text = string.Empty;
+    private WebString _text = WebString.Empty;
     private IconInfo _icon = new IconInfo();
 
     public BocCommandColumnDefinition ()
@@ -49,9 +51,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       string? displayName = ItemID;
       if (string.IsNullOrEmpty(displayName))
-        displayName = ColumnTitle;
+        displayName = ColumnTitle.ToString();
       if (string.IsNullOrEmpty(displayName))
-        displayName = Text;
+        displayName = Text.ToString();
       if (string.IsNullOrEmpty(displayName))
         return DisplayedTypeName;
       else
@@ -59,17 +61,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets or sets the text representing the command in the rendered page. </summary>
-    /// <value> A <see cref="string"/> representing the command. </value>
-    /// <remarks> The value will not be HTML encoded. </remarks>
+    /// <value>A <see cref="WebString"/> representing the command.</value>
     [PersistenceMode(PersistenceMode.Attribute)]
     [Category("Appearance")]
-    [Description("The text representing the command in the rendered page. The value will not be HTML encoded.")]
-    [DefaultValue("")]
+    [Description("The text representing the command in the rendered page.")]
+    [DefaultValue(typeof(WebString), "")]
     [NotifyParentProperty(true)]
-    public string Text
+    public WebString Text
     {
       get { return _text; }
-      set { _text = value ?? string.Empty; }
+      set { _text = value; }
     }
 
     /// <summary> 
@@ -114,9 +115,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       base.LoadResources(resourceManager, globalizationService);
 
-      string? key = ResourceManagerUtility.GetGlobalResourceKey(Text);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey(Text.GetValue());
       if (!string.IsNullOrEmpty(key))
-        Text = resourceManager.GetString(key);
+        Text = resourceManager.GetWebString(key, Text.Type);
 
       Icon.LoadResources(resourceManager);
     }

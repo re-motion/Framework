@@ -25,6 +25,8 @@ using Remotion.Mixins;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Web;
+using Remotion.Web.Globalization;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.DropDownMenuImplementation;
 using Remotion.Web.Utilities;
@@ -137,13 +139,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.For, availableViewsList.ClientID);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Label);
 
-      string availableViewsListTitle;
-      if (string.IsNullOrEmpty(renderingContext.Control.AvailableViewsListTitle))
-        availableViewsListTitle = renderingContext.Control.GetResourceManager().GetString(Controls.BocList.ResourceIdentifier.AvailableViewsListTitle);
+      WebString availableViewsListTitle;
+      if (renderingContext.Control.AvailableViewsListTitle.IsEmpty)
+      {
+        availableViewsListTitle = renderingContext.Control.GetResourceManager().GetText(Controls.BocList.ResourceIdentifier.AvailableViewsListTitle);
+      }
       else
+      {
         availableViewsListTitle = renderingContext.Control.AvailableViewsListTitle;
-      // Do not HTML encode.
-      renderingContext.Writer.Write(availableViewsListTitle);
+      }
+
+      availableViewsListTitle.WriteTo(renderingContext.Writer);
       renderingContext.Writer.RenderEndTag();
 
       renderingContext.Writer.Write(c_whiteSpace);

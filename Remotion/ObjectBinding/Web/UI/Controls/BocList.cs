@@ -213,7 +213,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private readonly PlaceHolder _availableViewsListPlaceHolder;
 
-    private string? _availableViewsListTitle;
+    private WebString _availableViewsListTitle;
 
     /// <summary> The predefined column definition sets that the user can choose from at run-time. </summary>
     private readonly BocListViewCollection _availableViews;
@@ -271,7 +271,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private bool _showMenuForEmptyListEditMode = true;
     private bool _showEmptyListReadOnlyMode;
     private bool _showMenuForEmptyListReadOnlyMode;
-    private string? _emptyListMessage;
+    private WebString _emptyListMessage;
     private bool _showEmptyListMessage;
 
     /// <summary> Determines whether to generate columns for all properties. </summary>
@@ -301,7 +301,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private HashSet<string> _selectorControlCheckedState = new HashSet<string>();
 
     private RowIndex _index = RowIndex.Undefined;
-    private string? _indexColumnTitle;
+    private WebString _indexColumnTitle;
     private int? _indexOffset;
 
     /// <summary> Null, 0: show all objects, > 0: show n objects per page. </summary>
@@ -1644,7 +1644,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         IBusinessObjectProperty property = properties[i];
         BocSimpleColumnDefinition column = new BocSimpleColumnDefinition();
         column.ItemID = property.Identifier;
-        column.ColumnTitle = property.DisplayName;
+        column.ColumnTitle = WebString.CreateFromText(property.DisplayName);
         column.SetPropertyPath(BusinessObjectPropertyPath.CreateStatic(new[] { property }));
         column.OwnerControl = this;
         _allPropertyColumns[i] = column;
@@ -2095,21 +2095,21 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       base.LoadResources(resourceManager, globalizationService);
 
       string? key;
-      key = ResourceManagerUtility.GetGlobalResourceKey(IndexColumnTitle);
+      key = ResourceManagerUtility.GetGlobalResourceKey(IndexColumnTitle.GetValue());
       if (! string.IsNullOrEmpty(key))
-        IndexColumnTitle = resourceManager.GetString(key);
+        IndexColumnTitle = resourceManager.GetWebString(key, IndexColumnTitle.Type);
 
-      key = ResourceManagerUtility.GetGlobalResourceKey(EmptyListMessage);
+      key = ResourceManagerUtility.GetGlobalResourceKey(EmptyListMessage.GetValue());
       if (! string.IsNullOrEmpty(key))
-        EmptyListMessage = resourceManager.GetString(key);
+        EmptyListMessage = resourceManager.GetWebString(key, EmptyListMessage.Type);
 
       key = ResourceManagerUtility.GetGlobalResourceKey(OptionsTitle.GetValue());
       if (! string.IsNullOrEmpty(key))
         OptionsTitle = resourceManager.GetWebString(key, OptionsTitle.Type);
 
-      key = ResourceManagerUtility.GetGlobalResourceKey(AvailableViewsListTitle);
+      key = ResourceManagerUtility.GetGlobalResourceKey(AvailableViewsListTitle.GetValue());
       if (! string.IsNullOrEmpty(key))
-        AvailableViewsListTitle = resourceManager.GetString(key);
+        AvailableViewsListTitle = resourceManager.GetWebString(key, AvailableViewsListTitle.Type);
 
       key = ResourceManagerUtility.GetGlobalResourceKey(ErrorMessage);
       if (! string.IsNullOrEmpty(key))
@@ -3431,11 +3431,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
 
     /// <summary> Gets or sets the text that is displayed in the index column's title row. </summary>
-    /// <remarks> The value will not be HTML encoded. </remarks>
     [Category("Appearance")]
-    [Description("The text that is displayed in the index column's title row. The value will not be HTML encoded.")]
-    [DefaultValue(null)]
-    public string? IndexColumnTitle
+    [Description("The text that is displayed in the index column's title row.")]
+    [DefaultValue(typeof(WebString), "")]
+    public WebString IndexColumnTitle
     {
       get { return _indexColumnTitle; }
       set { _indexColumnTitle = value; }
@@ -3507,11 +3506,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets or sets the text rendered if the list is empty. </summary>
-    /// <remarks> The value will not be HTML encoded. </remarks>
     [Category("Appearance")]
-    [Description("The text if the list is empty. The value will not be HTML encoded.")]
-    [DefaultValue(null)]
-    public string? EmptyListMessage
+    [Description("The text if the list is empty.")]
+    [DefaultValue(typeof(WebString), "")]
+    public WebString EmptyListMessage
     {
       get { return _emptyListMessage; }
       set { _emptyListMessage = value; }
@@ -3632,11 +3630,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets or sets the text that is rendered as a title for the drop list of additional columns. </summary>
-    /// <remarks> The value will not be HTML encoded. </remarks>
     [Category("Menu")]
-    [Description("The text that is rendered as a title for the list of available views. The value will not be HTML encoded.")]
-    [DefaultValue("")]
-    public string? AvailableViewsListTitle
+    [Description("The text that is rendered as a title for the list of available views.")]
+    [DefaultValue(typeof(WebString), "")]
+    public WebString AvailableViewsListTitle
     {
       get { return _availableViewsListTitle; }
       set { _availableViewsListTitle = value; }

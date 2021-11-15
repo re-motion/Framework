@@ -23,6 +23,7 @@ using CommonServiceLocator;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting;
 using Remotion.Utilities;
+using Remotion.Web;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
@@ -109,17 +110,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return serviceLocator.GetInstance<IBocCompoundColumnRenderer>();
     }
 
-    /// <summary> Gets or sets the text displayed in the column title. Must not be empty or <see langword="null"/>. </summary>
-    /// <value> A <see cref="string"/> representing the title of this column. </value>
+    /// <summary>Gets or sets the text displayed in the column title. Must not be empty.</summary>
+    /// <value>A <see cref="WebString"/> representing the title of this column.</value>
     [Description("The assigned value of the column title, must not be empty.")]
-    [DefaultValue("")]
+    [DefaultValue(typeof(WebString), "")]
     [NotifyParentProperty(true)]
-    public override string ColumnTitle
+    public override WebString ColumnTitle
     {
       get { return base.ColumnTitle; }
       set
       {
-        ArgumentUtility.CheckNotNullOrEmpty("ColumnTitle", value);
+        ArgumentUtility.CheckNotNullOrEmpty("ColumnTitle.Value", value.GetValue());
         base.ColumnTitle = value;
       }
     }

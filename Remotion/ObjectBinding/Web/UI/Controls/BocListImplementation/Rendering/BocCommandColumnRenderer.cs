@@ -81,8 +81,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       if (renderingContext.ColumnDefinition.Icon.HasRenderingInformation)
         renderingContext.ColumnDefinition.Icon.Render(renderingContext.Writer, renderingContext.Control);
 
-      if (!string.IsNullOrEmpty(renderingContext.ColumnDefinition.Text))
-        renderingContext.Writer.Write(renderingContext.ColumnDefinition.Text); // Do not HTML encode
+      if (!renderingContext.ColumnDefinition.Text.IsEmpty)
+        renderingContext.ColumnDefinition.Text.WriteTo(renderingContext.Writer);
     }
 
     private void RenderCellIcon (

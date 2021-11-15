@@ -66,7 +66,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
       ArgumentUtility.CheckNotNull("businessObject", businessObject);
 
-      RenderValueColumnCellText(renderingContext, renderingContext.ColumnDefinition.GetStringValue(businessObject));
+      RenderValueColumnCellText(renderingContext, PlainTextString.CreateFromText(renderingContext.ColumnDefinition.GetStringValue(businessObject)));
     }
 
     /// <summary>

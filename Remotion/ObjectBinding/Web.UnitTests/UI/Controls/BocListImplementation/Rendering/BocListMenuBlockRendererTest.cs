@@ -45,7 +45,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var dropDownList = new Mock<DropDownList>();
       List.Setup(mock => mock.GetAvailableViewsList()).Returns(dropDownList.Object);
       List.Setup(mock => mock.HasAvailableViewsList).Returns(true);
-      List.Setup(mock => mock.AvailableViewsListTitle).Returns("Views List Title");
+      List.Setup(mock => mock.AvailableViewsListTitle).Returns(WebString.CreateFromText("Views List Title"));
 
       dropDownList.Setup(mock => mock.ClientID).Returns("MockedDropDownListClientID");
       dropDownList.Setup(mock => mock.RenderControl(Html.Writer)).Callback(

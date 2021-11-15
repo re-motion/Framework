@@ -134,12 +134,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <param name="renderingContext">The <see cref="BocColumnRenderingContext{BocColumnDefinition}"/>.</param>
     /// <param name="originalRowIndex">The zero-based index of the current row in <see cref="IBocList"/></param>
     /// <param name="businessObject">The <see cref="IBusinessObject"/> associated with the current row.</param>
-    /// <param name="command">The <see cref="Remotion.ObjectBinding.Web.UI.Controls.BocList.RowEditModeCommand"/> that is issued 
-    /// when the control is clicked. Must not be <see langword="null" />.</param>
-    /// <param name="alternateText">The <see cref="Remotion.ObjectBinding.Web.UI.Controls.BocList.ResourceIdentifier"/> 
-    /// specifying which resource to load as alternate text to the icon.</param>
-    /// <param name="icon">The icon to render; must not be <see langword="null"/>. 
-    /// To skip the icon, set <see cref="IconInfo.Url"/> to <see langword="null" />.</param>
+    /// <param name="command">The <see cref="Remotion.ObjectBinding.Web.UI.Controls.BocList.RowEditModeCommand"/> that is issued
+    ///   when the control is clicked. Must not be <see langword="null" />.</param>
+    /// <param name="alternateText">The <see cref="Remotion.ObjectBinding.Web.UI.Controls.BocList.ResourceIdentifier"/>
+    ///   specifying which resource to load as alternate text to the icon.</param>
+    /// <param name="icon">The icon to render; must not be <see langword="null"/>.
+    ///   To skip the icon, set <see cref="IconInfo.Url"/> to <see langword="null" />.</param>
     /// <param name="text">The text to render after the icon. May be <see langword="null"/>, in which case no text is rendered.</param>
     protected virtual void RenderCommandControl (
         BocColumnRenderingContext<BocRowEditModeColumnDefinition> renderingContext,
@@ -148,7 +148,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         BocList.RowEditModeCommand command,
         BocList.ResourceIdentifier alternateText,
         IconInfo icon,
-        string text)
+        WebString text)
     {
       ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
       ArgumentUtility.CheckNotNull("businessObject", businessObject);
@@ -170,7 +170,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       c.RenderBegin(renderingContext.Writer, RenderingFeatures, postBackEvent, new string[0], c_onCommandClickScript, null);
 
       bool hasIcon = icon.HasRenderingInformation;
-      bool hasText = !string.IsNullOrEmpty(text);
+      bool hasText = !text.IsEmpty;
 
       if (hasIcon && hasText)
       {
@@ -186,7 +186,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         icon.Render(renderingContext.Writer, renderingContext.Control);
       }
       if (hasText)
-        renderingContext.Writer.Write(text); // Do not HTML encode.
+        text.WriteTo(renderingContext.Writer);
 
       c.RenderEnd(renderingContext.Writer);
     }
