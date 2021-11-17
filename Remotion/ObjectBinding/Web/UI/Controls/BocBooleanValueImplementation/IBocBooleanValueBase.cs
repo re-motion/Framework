@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
+using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
@@ -25,24 +26,24 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
   {
     /// <summary> Gets or sets the description displayed when the checkbox is set to <see langword="true"/>. </summary>
     /// <value> 
-    ///   The text displayed for <see langword="true"/>. The default value is an empty <see cref="string"/>.
+    ///   The text displayed for <see langword="true"/>. The default value is an empty <see cref="WebString"/>.
     ///   In case of the default value, the text is read from the resources for this control.
     /// </value>
-    string TrueDescription { get; set; }
+    WebString TrueDescription { get; set; }
 
     /// <summary> Gets or sets the description displayed when the checkbox is set to <see langword="false"/>. </summary>
     /// <value> 
-    ///   The text displayed for <see langword="false"/>. The default value is an empty <see cref="string"/>.
+    ///   The text displayed for <see langword="false"/>. The default value is an empty <see cref="WebString"/>.
     ///   In case of the default value, the text is read from the resources for this control.
     /// </value>
-    string FalseDescription { get; set; }
+    WebString FalseDescription { get; set; }
 
     /// <summary> Gets or sets the description displayed when the checkbox is set to <see langword="null"/>. </summary>
     /// <value> 
-    ///   The text displayed for <see langword="null"/>. The default value is an empty <see cref="string"/>.
+    ///   The text displayed for <see langword="null"/>. The default value is an empty <see cref="WebString"/>.
     ///   In case of the default value, the text is read from the resources for this control.
     /// </value>
-    string NullDescription { get; set; }
+    WebString NullDescription { get; set; }
 
     /// <summary> Gets or sets the current value. </summary>
     new bool? Value { get; set; }
