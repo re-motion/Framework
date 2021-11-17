@@ -21,6 +21,7 @@ using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.SecurityManager.Domain.Metadata;
 using Remotion.Utilities;
+using Remotion.Web;
 
 namespace Remotion.SecurityManager.Clients.Web.Classes
 {
@@ -44,11 +45,11 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
       return GetResourceManager(typeof(ResourceIdentifier));
     }
 
-    protected override string GetText (IBusinessObjectWithIdentity businessObject)
+    protected override WebString GetText (IBusinessObjectWithIdentity businessObject)
     {
       ArgumentUtility.CheckNotNull("businessObject", businessObject);
 
-      string text = base.GetText(businessObject);
+      WebString text = base.GetText(businessObject);
 
       SecurableClassDefinition classDefinition = businessObject as SecurableClassDefinition;
       if (classDefinition == null)
@@ -61,11 +62,11 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
 
       var resourceManager = GetResourceManager(typeof(ResourceIdentifier));
       if (aclCount == 0)
-        return string.Format(resourceManager.GetString(ResourceIdentifier.NoAclsText), text);
+        return WebString.CreateFromText(string.Format(resourceManager.GetString(ResourceIdentifier.NoAclsText), text));
       if (aclCount == 1)
-        return string.Format(resourceManager.GetString(ResourceIdentifier.SingleAclText), text);
+        return WebString.CreateFromText(string.Format(resourceManager.GetString(ResourceIdentifier.SingleAclText), text));
       else
-        return string.Format(resourceManager.GetString(ResourceIdentifier.MultipleAclsText), text, aclCount);
+        return WebString.CreateFromText(string.Format(resourceManager.GetString(ResourceIdentifier.MultipleAclsText), text, aclCount));
     }
   }
 }

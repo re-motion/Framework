@@ -26,11 +26,11 @@ namespace Remotion.Web.Development.WebTesting.TestSite
     {
       base.OnInit(e);
 
-      var node = new WebTreeNode("ItemA", "A", "~/Images/SampleIcon.gif") { IsEvaluated = true, IsExpanded = true };
-      node.Children.Add(new WebTreeNode("ItemA1", "A1"));
-      node.Children.Add(new WebTreeNode("ItemA2", "A2"));
-      node.Children.Add(new WebTreeNode("ItemA3", "A3"));
-      node.Children.Add(new WebTreeNode("ItemA4", "A4"));
+      var node = new WebTreeNode("ItemA", WebString.CreateFromText("A"), "~/Images/SampleIcon.gif") { IsEvaluated = true, IsExpanded = true };
+      node.Children.Add(new WebTreeNode("ItemA1", WebString.CreateFromText("A1")));
+      node.Children.Add(new WebTreeNode("ItemA2", WebString.CreateFromText("A2")));
+      node.Children.Add(new WebTreeNode("ItemA3", WebString.CreateFromText("A3")));
+      node.Children.Add(new WebTreeNode("ItemA4", WebString.CreateFromText("A4")));
 
       MyWebTreeView.Nodes.Add(node);
     }

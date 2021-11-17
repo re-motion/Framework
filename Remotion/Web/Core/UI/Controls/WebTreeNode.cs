@@ -20,6 +20,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.Utilities;
+using Remotion.Web.Globalization;
 using Remotion.Web.UI.Globalization;
 
 namespace Remotion.Web.UI.Controls
@@ -32,8 +33,8 @@ namespace Remotion.Web.UI.Controls
     private IControl? _ownerControl;
 
     private string _itemID = string.Empty;
-    private string _text = string.Empty;
-    private string _toolTip = string.Empty;
+    private WebString _text;
+    private WebString _toolTip;
     private IconInfo _icon;
     private Badge? _badge;
     private string _menuID = string.Empty;
@@ -48,31 +49,31 @@ namespace Remotion.Web.UI.Controls
     private int _selectDesired;
 
     /// <summary> Initalizes a new instance. </summary>
-    public WebTreeNode (string itemID, string? text, string? toolTip, IconInfo icon)
+    public WebTreeNode (string itemID, WebString text, WebString toolTip, IconInfo icon)
     {
       ValidateItemId(itemID);
       _itemID = itemID;
-      _text = text ?? string.Empty;
-      _toolTip = toolTip ?? string.Empty;
+      _text = text;
+      _toolTip = toolTip;
       _icon = icon;
       _children = new WebTreeNodeCollection(null);
       _children.SetParent(null, this);
     }
 
     /// <summary> Initalizes a new instance. </summary>
-    public WebTreeNode (string itemID, string text, IconInfo icon)
-        : this(itemID, text, string.Empty, icon)
+    public WebTreeNode (string itemID, WebString text, IconInfo icon)
+        : this(itemID, text, WebString.Empty, icon)
     {
     }
 
     /// <summary> Initalizes a new instance. </summary>
-    public WebTreeNode (string itemID, string text, string iconUrl)
+    public WebTreeNode (string itemID, WebString text, string iconUrl)
         : this(itemID, text, new IconInfo(iconUrl, Unit.Empty, Unit.Empty))
     {
     }
 
     /// <summary> Initalizes a new instance. </summary>
-    public WebTreeNode (string itemID, string text)
+    public WebTreeNode (string itemID, WebString text)
         : this(itemID, text, string.Empty)
     {
     }
@@ -173,7 +174,7 @@ namespace Remotion.Web.UI.Controls
     {
       string displayName = ItemID;
       if (string.IsNullOrEmpty(displayName))
-        displayName = Text;
+        displayName = Text.ToString();
       if (string.IsNullOrEmpty(displayName))
         return DisplayedTypeName;
       else
@@ -221,12 +222,12 @@ namespace Remotion.Web.UI.Controls
     [Description("The text displayed in this node.")]
     //No Default value
     [NotifyParentProperty(true)]
-    public virtual string Text
+    public virtual WebString Text
     {
       get { return _text; }
       set
       {
-        _text = value ?? string.Empty;
+        _text = value;
       }
     }
 
@@ -235,13 +236,13 @@ namespace Remotion.Web.UI.Controls
     [Category("Appearance")]
     [Description("The tool-tip displayed in this node.")]
     [NotifyParentProperty(true)]
-    [DefaultValue("")]
-    public string ToolTip
+    [DefaultValue(typeof(WebString), "")]
+    public WebString ToolTip
     {
       get { return _toolTip; }
       set
       {
-        _toolTip = value ?? string.Empty;
+        _toolTip = value;
       }
     }
 
@@ -401,9 +402,9 @@ namespace Remotion.Web.UI.Controls
       ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
       ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
 
-      string? key = ResourceManagerUtility.GetGlobalResourceKey(Text);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey(Text.GetValue());
       if (! string.IsNullOrEmpty(key))
-        Text = resourceManager.GetString(key);
+        Text = resourceManager.GetWebString(key, Text.Type);
 
       if (Icon != null)
         Icon.LoadResources(resourceManager);
