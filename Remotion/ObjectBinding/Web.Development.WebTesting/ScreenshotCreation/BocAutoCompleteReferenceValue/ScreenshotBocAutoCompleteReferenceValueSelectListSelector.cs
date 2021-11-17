@@ -30,9 +30,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
   /// </summary>
   public class ScreenshotBocAutoCompleteReferenceValueSelectListSelector : IFluentDisplayTextSelector, IFluentIndexSelector
   {
-    private const string c_selectWithIndex = "Remotion.jQuery(arguments[0]).getAutoCompleteSelectList().selectItem (arguments[1] - 1);";
+    private const string c_selectWithIndex = "arguments[0].getAutoCompleteSelectList().selectItem (arguments[1] - 1);";
 
-    private const string c_selectWithDisplayText = @"var a = Remotion.jQuery(arguments[0]).getAutoCompleteSelectList();
+    private const string c_selectWithDisplayText = @"var a = arguments[0].getAutoCompleteSelectList();
 var text = arguments[1]; 
 var predicate = (function (data) 
 { 

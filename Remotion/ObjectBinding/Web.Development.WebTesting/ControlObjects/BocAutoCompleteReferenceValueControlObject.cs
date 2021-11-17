@@ -53,7 +53,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
     private class SelectAutoCompleteAction : WebTestAction
     {
-      private const string c_updateResultScript = "Remotion.jQuery(arguments[0]).trigger('updateResult', [{{DisplayName: '{0}', UniqueIdentifier: '{1}' }}, {{ Value: null }}]);";
+      private const string c_updateResultScript = "arguments[0].__getUpdateResultHandler({{DisplayName: '{0}', UniqueIdentifier: '{1}' }}, {{ Value: null }});";
 
       private string _actionName = "BocAutoCompleteReferenceValueControlObject_SelectAutoCompleteAction";
 
@@ -319,48 +319,49 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
           ? string.Format ("data['completionSetCount'] = {0};", completionSetCount.Value)
           : string.Empty;
 
-      return string.Format (
-          @"
+      return $@"
 CallWebService = function() {{
-  var input = Remotion.jQuery('#{0}');
-  var options = input.getAutoCompleteSearchParameters('{1}');
+  var input = document.getElementById('{autoCompleteTextValueInputFieldId}');
+  var options = input.getAutoCompleteSearchParameters('{searchText}');
   
   var data = options.params;
   data['searchString'] = options.searchString;
-  {2}
+  {setCompletionSetCountScriptPart}
 
   data = Sys.Serialization.JavaScriptSerializer.serialize(data);
 
   var returnValue = null;
-  var request = {{
-    async:false,
-    type:'POST',
-    contentType:'application/json; charset=utf-8',
-    url:options.serviceUrl + '/' + options.{3},
-    data:data,
-    dataType:'json',
-    success:function(result, context, methodName){{ returnValue = {{ {4}:'{6}', {5}:result.d }}; }},
-    error:function(error, context, methodName){{ returnValue = {{ {4}:'{7}', {5}:error }}; }}
+  // We use XMLHttpRequest here instead of Sys.Net.WebServiceProxy.invoke because we want sync execution of the web request
+  var request = new XMLHttpRequest();
+  request.open('POST', options.serviceUrl + '/' + options.{searchMethod}, false);
+  request.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+  var failedHandler = function() {{ 
+    returnValue = {{ 
+      {AutoCompleteSearchService.State}:'{AutoCompleteSearchService.Error}',
+      {AutoCompleteSearchService.Data}: {{
+        readyState: request.readyState,
+        responseText: request.responseText,
+        status: request.status,
+        statusText: request.statusText
+      }}
+    }};
+  }}
+  request.onload = function() {{
+    if (request.status >= 200 && request.status <= 299)
+      returnValue = {{ {AutoCompleteSearchService.State}:'{AutoCompleteSearchService.Success}', {AutoCompleteSearchService.Data}: JSON.parse(request.response).d }};
+    else
+      failedHandler();
   }};
-
-  Remotion.jQuery.ajax(request);
+  request.onerror = failedHandler;
+  request.send(data);
 
   // Normalize communication between JS and C# API: always return an array if succeeded.
-  if(returnValue.state === 'success' && !Array.isArray(returnValue.data))
-    returnValue.data = [ returnValue.data ];
+  if(returnValue.{AutoCompleteSearchService.State} === '{AutoCompleteSearchService.Success}' && !Array.isArray(returnValue.{AutoCompleteSearchService.Data}))
+    returnValue.data = [ returnValue.{AutoCompleteSearchService.Data} ];
 
-  // Strip methods from return object to prevent unwanted errors from Firefox Marionette.
-  return JSON.parse(JSON.stringify(returnValue));
+  return returnValue;
 }};
-return CallWebService();",
-          autoCompleteTextValueInputFieldId,
-          searchText,
-          setCompletionSetCountScriptPart,
-          searchMethod,
-          AutoCompleteSearchService.State,
-          AutoCompleteSearchService.Data,
-          AutoCompleteSearchService.Success,
-          AutoCompleteSearchService.Error);
+return CallWebService();";
     }
 
     private IReadOnlyList<SearchServiceResultItem> ParseSearchServiceResponse ([NotNull] IReadOnlyDictionary<string, object> response)
