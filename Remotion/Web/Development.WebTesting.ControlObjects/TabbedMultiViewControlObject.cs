@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.UI;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ControlSelection;
@@ -82,7 +83,8 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
           tabDefinition.ItemID.Substring(0, tabDefinition.ItemID.Length - "_Tab".Length),
           tabDefinition.Index,
           tabDefinition.Title,
-          tabDefinition.IsDisabled);
+          tabDefinition.IsDisabled,
+          tabDefinition.AccessKey);
     }
 
     /// <inheritdoc/>

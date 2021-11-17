@@ -21,7 +21,6 @@ using System.Web.UI.WebControls;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
-using Remotion.Web.UI.Controls.Hotkey;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.Utilities;
 
@@ -33,21 +32,13 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
   [ImplementationFor(typeof(IWebTabRenderer), Lifetime = LifetimeKind.Singleton)]
   public class WebTabRenderer : IWebTabRenderer
   {
-    private readonly IHotkeyFormatter _hotkeyFormatter;
     private readonly IRenderingFeatures _renderingFeatures;
 
-    public WebTabRenderer (IHotkeyFormatter hotkeyFormatter, IRenderingFeatures renderingFeatures)
+    public WebTabRenderer (IRenderingFeatures renderingFeatures)
     {
-      ArgumentUtility.CheckNotNull("hotkeyFormatter", hotkeyFormatter);
       ArgumentUtility.CheckNotNull("renderingFeatures", renderingFeatures);
 
-      _hotkeyFormatter = hotkeyFormatter;
       _renderingFeatures = renderingFeatures;
-    }
-
-    public IHotkeyFormatter HotkeyFormatter
-    {
-      get { return _hotkeyFormatter; }
     }
 
     /// <summary>
@@ -113,7 +104,7 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
         if (!string.IsNullOrEmpty(tab.ItemID))
           renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.ItemID, tab.ItemID);
 
-        if (!string.IsNullOrEmpty(tab.Text))
+        if (!tab.Text.IsEmpty)
           renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags(tab.Text));
 
         renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.IsDisabled, (isDisabled).ToString().ToLower());
@@ -155,10 +146,7 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
       if (isEnabled && tab.EvaluateEnabled())
       {
         command.Type = CommandType.Event;
-
-        var textWithHotkey = HotkeyParser.Parse(tab.Text);
-        if (textWithHotkey.Hotkey.HasValue)
-          command.AccessKey = _hotkeyFormatter.FormatHotkey(textWithHotkey);
+        command.AccessKey = tab.AccessKey;
 
         if (tab.IsSelected)
         {
@@ -225,14 +213,13 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span); // Begin anchor body span
 
       bool hasIcon = tab.Icon.HasRenderingInformation;
-      bool hasText = !string.IsNullOrEmpty(tab.Text);
+      bool hasText = !tab.Text.IsEmpty;
       if (hasIcon)
         tab.Icon.Render(renderingContext.Writer, renderingContext.Control);
       if (hasText)
       {
         renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span); // Begin text span
-        var textWithHotkey = HotkeyParser.Parse(tab.Text);
-        renderingContext.Writer.Write(_hotkeyFormatter.FormatText(textWithHotkey, false)); // Do not HTML encode
+        tab.Text.WriteTo(renderingContext.Writer);
         renderingContext.Writer.RenderEndTag(); // End text span
       }
       if (!hasIcon && !hasText)

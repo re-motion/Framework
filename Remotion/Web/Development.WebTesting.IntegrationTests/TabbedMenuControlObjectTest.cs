@@ -135,6 +135,28 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    public void TestMenuItem_WithValidAccessKey ()
+    {
+      var home = Start();
+
+      var tabbedMenu = home.TabbedMenus().Single();
+
+      var itemDefinition = tabbedMenu.GetItemDefinitions()[1];
+      Assert.That(itemDefinition.AccessKey, Is.EqualTo("A"));
+    }
+
+    [Test]
+    public void TestMenuItem_EmptyAccessKey ()
+    {
+      var home = Start();
+
+      var tabbedMenu = home.TabbedMenus().Single();
+
+      var itemDefinition = tabbedMenu.GetItemDefinitions()[3];
+      Assert.That(itemDefinition.AccessKey, Is.EqualTo(string.Empty));
+    }
+
+    [Test]
     public void TestSelectMenuItemCommand ()
     {
       var home = Start();

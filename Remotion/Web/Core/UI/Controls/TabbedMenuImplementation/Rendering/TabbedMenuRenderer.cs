@@ -90,10 +90,10 @@ namespace Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassStatusCell);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Td); // Begin status cell
 
-      if (string.IsNullOrEmpty(renderingContext.Control.StatusText))
+      if (renderingContext.Control.StatusText.IsEmpty)
         renderingContext.Writer.Write("&nbsp;");
       else
-        renderingContext.Writer.Write(renderingContext.Control.StatusText); // Do not HTML encode
+        renderingContext.Control.StatusText.WriteTo(renderingContext.Writer);
 
       renderingContext.Writer.RenderEndTag(); // End status cell
       renderingContext.Writer.RenderEndTag(); // End sub menu row

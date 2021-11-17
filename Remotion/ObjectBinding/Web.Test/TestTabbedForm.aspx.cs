@@ -118,7 +118,7 @@ public class TestTabbedForm : TestWxeBasePage
   private void AddTab (string id, string text, IconInfo icon)
   {
     WebTab tab = new WebTab();
-    tab.Text = text;
+    tab.Text = WebString.CreateFromText("text");
     tab.ItemID = id ;
     tab.Icon = icon;
     PagesTabStrip.Tabs.Add(tab);
@@ -127,7 +127,7 @@ public class TestTabbedForm : TestWxeBasePage
   private void AddMainMenuTab (string id, string text, IconInfo icon)
   {
     WebTab tab = new WebTab();
-    tab.Text = text;
+    tab.Text = WebString.CreateFromText("text");
     tab.ItemID = id ;
     tab.Icon = icon;
     NavigationTabs.Tabs.Add(tab);
@@ -245,7 +245,7 @@ public class TestTabbedForm : TestWxeBasePage
     base.OnPreRender(e);
     string mode = Global.PreferQuirksModeRendering ? "Quirks" : "Standard";
     string theme = Global.PreferQuirksModeRendering ? "" : SafeServiceLocator.Current.GetInstance<ResourceTheme>().Name;
-    NavigationTabs.StatusText = mode + " " + theme;
+    NavigationTabs.StatusText = WebString.CreateFromText(mode + " " + theme);
 
     if (Global.PreferQuirksModeRendering)
       UpdatePanel.Style.Clear();
