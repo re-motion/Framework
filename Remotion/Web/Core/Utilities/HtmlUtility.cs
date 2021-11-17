@@ -59,6 +59,13 @@ namespace Remotion.Web.Utilities
       return s_stripHtmlTagsRegex.Replace (text, string.Empty);
     }
 
+    public static string StripHtmlTags (WebString text)
+    {
+      return text.Type == WebStringType.Encoded
+          ? StripHtmlTags (text.GetValue())
+          : text.GetValue();
+    }
+
     private HtmlUtility ()
     {
     }
