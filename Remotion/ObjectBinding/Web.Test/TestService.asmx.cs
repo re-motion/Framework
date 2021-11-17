@@ -32,6 +32,9 @@ namespace OBWTest
     [ScriptMethod (UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
     public string DoStuff (string stringValue, int intValue)
     {
+      if (stringValue == "throw")
+        throw new InvalidOperationException();
+
       Thread.Sleep (3000);
       return stringValue + " " + intValue * 2;
     }

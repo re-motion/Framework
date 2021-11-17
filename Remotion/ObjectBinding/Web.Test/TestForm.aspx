@@ -45,32 +45,31 @@
                                           });
 
     }
-    function DoJQueryAjaxCall()
+    function DoXmlHttpRequestCall()
     {
       document.getElementById("Result").textContent = "";
 
       var intValueAsString = document.getElementById("IntField").value;
       intValueAsString = intValueAsString == '' ? 0 : intValueAsString;
       var params = {
-        stringValue: document.getElementById("#StringField").value,
+        stringValue: document.getElementById("StringField").value,
         intValue: parseInt(intValueAsString)
       };
-      Remotion.jQuery.ajax({
-        type: "POST",
-        data: "{ stringValue: '" + params.stringValue + "', intValue: " + params.intValue + "}",
-        dataType: "json",
-        url: "TestService.asmx/DoStuff",
-        contentType: "application/json; charset=utf-8",
-        async: false,
-        success: function (result)
-        {
-          document.getElementById("Result").textContent = result.d;
-        },
-        error: function (err)
-        {
-          document.getElementById("Result").textContent = err.responseText;
-        }
-      });
+
+      var request = new XMLHttpRequest();
+      request.open('POST', "TestService.asmx/DoStuff", false);
+      request.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+      var failedHandler = function() { 
+        document.getElementById("Result").textContent = request.responseText;
+      }
+      request.onload = function() {
+        if (request.status >= 200 && request.status <= 299)
+          document.getElementById("Result").textContent = JSON.parse(request.response).d;
+        else
+          failedHandler();
+      };
+      request.onerror = failedHandler;
+      request.send("{ stringValue: '" + params.stringValue + "', intValue: " + params.intValue + "}");
     }
   </script>
 </head>
@@ -78,10 +77,10 @@
   <form id="form1" runat="server">
   <asp:ScriptManager ID="ScriptManager" runat="server" EnablePartialRendering="true"
     AsyncPostBackTimeout="3600" />
-  <input id="StringField" type="text" />
-  <input id="IntField" type="text" />
+  <input id="StringField" type="text" placeholder="String to be mirrored | throw"/>
+  <input id="IntField" type="text" placeholder="Number" />
   <input type="button" value="ASP.NET Ajax" onclick="DoAspNetAjaxCall()" />
-  <input type="button" value="jQuery Ajax" onclick="DoJQueryAjaxCall()" />
+  <input type="button" value="XMLHttpRequest Ajax" onclick="DoXmlHttpRequestCall()" />
   <div id="Result">
   </div>
   </form>
@@ -92,7 +91,7 @@
       event.stopPropagation();
       if (event.keyCode == 9) // TAB
       {
-        DoJQueryAjaxCall();
+        DoXmlHttpRequestCall();
       } 
     });
   </script>

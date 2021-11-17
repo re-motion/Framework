@@ -87,7 +87,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.NetFramewor
       _resourceVirtualPathProvider = new ResourceVirtualPathProvider (
           new[]
           {
-              new ResourcePathMapping ("Remotion.Web/Html/jquery-1.6.4.js", @"..\..\Web\Core\res\Html\jquery-1.6.4.js"),
               new ResourcePathMapping ("Remotion.Web/Html", @$"..\..\Web\ClientScript\bin\{configuration}\dist"),
               new ResourcePathMapping ("Remotion.Web/Image", @"..\..\Web\Core\res\Image"),
               new ResourcePathMapping ("Remotion.Web/Themes", @"..\..\Web\Core\res\Themes"),

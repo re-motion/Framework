@@ -29,15 +29,11 @@ namespace Remotion.Web.UI
   public static class HtmlHeadAppenderExtensions
   {
     /// <summary>
-    /// Registers jquery and Utilities.js in non-themed HTML folder of Remotion.Web.dll.
+    /// Registers Utilities.js in non-themed HTML folder of Remotion.Web.dll.
     /// </summary>
     public static void RegisterUtilitiesJavaScriptInclude (this HtmlHeadAppender htmlHeadAppender)
     {
       ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
-
-      string jqueryKey = typeof (HtmlHeadContents).GetFullNameChecked() + "_JQuery";
-      var jqueryFileUrl = ResourceUrlFactory.CreateResourceUrl (typeof (HtmlHeadContents), ResourceType.Html, "jquery-1.6.4.js");
-      htmlHeadAppender.RegisterJavaScriptInclude (jqueryKey, jqueryFileUrl);
 
       string utilitiesKey = typeof (HtmlHeadContents).GetFullNameChecked() + "_Utilities";
       var utilitiesScripFileUrl = ResourceUrlFactory.CreateResourceUrl (typeof (HtmlHeadContents), ResourceType.Html, "Utilities.js");
