@@ -77,5 +77,21 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     {
       Assert.That(HtmlUtility.StripHtmlTags("Simple<br/>Stri<img src=\"WithAttributes.html\"/>ng"), Is.EqualTo("SimpleString"));
     }
+
+    [Test]
+    public void StripHtmlTags_WithEncodedWebString_StripsHtmlTags ()
+    {
+      Assert.That(
+          HtmlUtility.StripHtmlTags(WebString.CreateFromHtml("<span>SimpleS<i>tr<b>i</b>n</i></span>g")),
+          Is.EqualTo("SimpleString"));
+    }
+
+    [Test]
+    public void StripHtmlTags_WithPlainTextWebString_DoesNotStripsHtmlTags ()
+    {
+      Assert.That(
+          HtmlUtility.StripHtmlTags(WebString.CreateFromText("<span>SimpleS<i>tr<b>i</b>n</i></span>g")),
+          Is.EqualTo("<span>SimpleS<i>tr<b>i</b>n</i></span>g"));
+    }
   }
 }
