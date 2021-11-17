@@ -17,6 +17,7 @@
 using System;
 using System.ComponentModel;
 using Remotion.Utilities;
+using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
@@ -39,7 +40,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public BocMenuItem (
         string id,
         string category,
-        string text,
+        WebString text,
         IconInfo icon,
         IconInfo disabledIcon,
         RequiredSelection requiredSelection,
@@ -52,7 +53,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public BocMenuItem (
         string id,
         string category,
-        string text,
+        WebString text,
         IconInfo icon,
         IconInfo disabledIcon,
         WebMenuItemStyle style,
@@ -67,7 +68,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         : this (
             null,
             null,
-            null,
+            WebString.Empty,
             new IconInfo(),
             new IconInfo(),
             WebMenuItemStyle.IconAndText,

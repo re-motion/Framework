@@ -161,6 +161,41 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
     }
 
     [Test]
+    public void RenderWithEncodedWebString ()
+    {
+      SetUpGetPostBackLinkExpectations (true);
+      _control.Setup (stub => stub.LineBreaks).Returns (ListMenuLineBreaks.None);
+
+      _control.Object.MenuItems.Clear();
+      var textItemContent = WebString.CreateFromText ("this should be <b>text</b>");
+      AddMenuItem ("item text", "category 1", textItemContent, WebMenuItemStyle.Text, RequiredSelection.Any, CommandType.None);
+      var htmlItemContent = WebString.CreateFromHtml ("this should be <b>text</b>");
+      AddMenuItem ("item html", "category 1", htmlItemContent, WebMenuItemStyle.Text, RequiredSelection.Any, CommandType.None);
+
+      var table = GetAssertedTable();
+      var tr = table.GetAssertedChildElement ("tr", 0);
+      tr.AssertChildElementCount (1);
+
+      var td = GetAssertedCell (tr, 0, 2);
+      for (int iColumn = 0; iColumn < 2; iColumn++)
+      {
+        XmlNode a = GetAssertedItemLink (td, iColumn, iColumn, iColumn == 0 ? "0" : "-1");
+        var span = a.GetAssertedChildElement ("span", 0);
+        if (iColumn == 0)
+        {
+          span.AssertTextNode (textItemContent.GetValue(), 0);
+        }
+        else
+        {
+          span.AssertChildElementCount (1);
+          span.AssertTextNode ("this should be", 0);
+          var b = span.GetAssertedChildElement ("b", 1);
+          b.AssertTextNode ("text", 0);
+        }
+      }
+    }
+
+    [Test]
     public void RenderDiagnosticMetadataAttributes ()
     {
       SetUpGetPostBackLinkExpectations (true);
@@ -222,7 +257,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
     {
       XmlNode a = GetAssertedItemLink (parent, itemIndex, nodeIndex, tabIndex);
       var span = a.GetAssertedChildElement ("span", 0);
-      span.AssertTextNode (item.Text, 0);
+      span.AssertTextNode (item.Text.ToString (WebStringEncoding.HtmlWithTransformedLineBreaks), 0);
     }
 
     private void AssertIconAndText (int itemIndex, XmlNode td, WebMenuItem item, int nodeIndex, string tabIndex)
@@ -231,7 +266,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
       AssertIcon (a);
 
       var span = a.GetAssertedChildElement ("span", 1);
-      span.AssertTextNode (item.Text, 0);
+      span.AssertTextNode (item.Text.ToString (WebStringEncoding.HtmlWithTransformedLineBreaks), 0);
     }
 
     private void AssertIcon (XmlNode parent)
@@ -254,14 +289,14 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
 
     private void PopulateMenu ()
     {
-      AddMenuItem ("item 1", "category 1", "Event", WebMenuItemStyle.IconAndText, RequiredSelection.Any, CommandType.Event);
-      AddMenuItem ("item 2", "category 1", "WxeFunction", WebMenuItemStyle.Text, RequiredSelection.OneOrMore, CommandType.WxeFunction);
-      AddMenuItem ("item 3", "category 2", "Href", WebMenuItemStyle.Icon, RequiredSelection.ExactlyOne, CommandType.Href);
+      AddMenuItem ("item 1", "category 1", WebString.CreateFromText ("Event"), WebMenuItemStyle.IconAndText, RequiredSelection.Any, CommandType.Event);
+      AddMenuItem ("item 2", "category 1", WebString.CreateFromText ("WxeFunction"), WebMenuItemStyle.Text, RequiredSelection.OneOrMore, CommandType.WxeFunction);
+      AddMenuItem ("item 3", "category 2", WebString.CreateFromText ("Href"), WebMenuItemStyle.Icon, RequiredSelection.ExactlyOne, CommandType.Href);
       ((WebMenuItem) _control.Object.MenuItems[2]).Command.HrefCommand.Href = "/LinkedPage.html";
       ((WebMenuItem) _control.Object.MenuItems[2]).Command.HrefCommand.Target = "_blank";
-      AddMenuItem ("invisible item", "category 2", "Href", WebMenuItemStyle.IconAndText, RequiredSelection.ExactlyOne, CommandType.Href);
+      AddMenuItem ("invisible item", "category 2", WebString.CreateFromText ("Href"), WebMenuItemStyle.IconAndText, RequiredSelection.ExactlyOne, CommandType.Href);
       ((WebMenuItem) _control.Object.MenuItems[3]).IsVisible = false;
-      AddMenuItem ("disabled item", "category 2", "Href", WebMenuItemStyle.IconAndText, RequiredSelection.ExactlyOne, CommandType.Href);
+      AddMenuItem ("disabled item", "category 2", WebString.CreateFromText ("Href"), WebMenuItemStyle.IconAndText, RequiredSelection.ExactlyOne, CommandType.Href);
       ((WebMenuItem) _control.Object.MenuItems[4]).IsDisabled = true;
     }
 
@@ -276,7 +311,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
     private void AddMenuItem (
         string itemID,
         string category,
-        string text,
+        WebString text,
         WebMenuItemStyle style,
         RequiredSelection selection,
         CommandType commandType)

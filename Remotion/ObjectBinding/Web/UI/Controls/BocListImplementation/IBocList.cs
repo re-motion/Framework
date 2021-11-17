@@ -23,6 +23,7 @@ using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
+using Remotion.Web;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.DropDownMenuImplementation;
 using Remotion.Web.UI.Controls.ListMenuImplementation;
@@ -111,7 +112,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
     string AvailableViewsListTitle { get; }
 
     /// <summary> Gets or sets the text that is rendered as a label for the <c>options menu</c>. </summary>
-    string OptionsTitle { get; }
+    WebString OptionsTitle { get; }
 
     bool HasClientScript { get; }
     DropDownList GetAvailableViewsList ();

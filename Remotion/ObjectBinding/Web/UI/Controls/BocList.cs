@@ -43,6 +43,7 @@ using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.ExecutionEngine;
+using Remotion.Web.Globalization;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.Services;
 using Remotion.Web.UI;
@@ -255,7 +256,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private bool _showListMenu = true;
 
     private RowMenuDisplay _rowMenuDisplay = RowMenuDisplay.Undefined;
-    private string _optionsTitle;
+    private WebString _optionsTitle;
     private string[] _hiddenMenuItems;
     private Unit _menuBlockOffset = Unit.Empty;
     private Unit _menuBlockItemOffset = Unit.Empty;
@@ -2061,9 +2062,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (! string.IsNullOrEmpty (key))
         EmptyListMessage = resourceManager.GetString (key);
 
-      key = ResourceManagerUtility.GetGlobalResourceKey (OptionsTitle);
+      key = ResourceManagerUtility.GetGlobalResourceKey (OptionsTitle.GetValue());
       if (! string.IsNullOrEmpty (key))
-        OptionsTitle = resourceManager.GetString (key);
+        OptionsTitle = resourceManager.GetWebString (key, OptionsTitle.Type);
 
       key = ResourceManagerUtility.GetGlobalResourceKey (AvailableViewsListTitle);
       if (! string.IsNullOrEmpty (key))
@@ -3504,8 +3505,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Gets or sets the text that is rendered as a label for the <c>options menu</c>. </summary>
     [Category ("Menu")]
     [Description ("The text that is rendered as a label for the options menu.")]
-    [DefaultValue ("")]
-    public string OptionsTitle
+    [DefaultValue (typeof (WebString), "")]
+    public WebString OptionsTitle
     {
       get { return _optionsTitle; }
       set { _optionsTitle = value; }
@@ -3575,8 +3576,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       get
       {
-        if (string.IsNullOrEmpty (OptionsTitle))
-          _optionsMenu.TitleText = GetResourceManager().GetString (ResourceIdentifier.OptionsTitle);
+        if (OptionsTitle.IsEmpty)
+          _optionsMenu.TitleText = GetResourceManager().GetText (ResourceIdentifier.OptionsTitle);
         else
           _optionsMenu.TitleText = OptionsTitle;
 

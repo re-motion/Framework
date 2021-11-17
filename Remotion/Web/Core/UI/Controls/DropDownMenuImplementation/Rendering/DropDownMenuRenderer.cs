@@ -116,7 +116,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
         cssClass += " " + CssClassDisabled;
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClass);
       if (HasCustomTitle (renderingContext) && HasTitleText (renderingContext))
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Title, renderingContext.Control.TitleText);
+        renderingContext.Control.TitleText.AddAttribute (renderingContext.Writer, HtmlTextWriterAttribute.Title);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
       if (HasCustomTitle (renderingContext))
@@ -218,7 +218,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
 
     private bool HasTitleText (DropDownMenuRenderingContext renderingContext)
     {
-      return !string.IsNullOrEmpty (renderingContext.Control.TitleText);
+      return !renderingContext.Control.TitleText.IsEmpty;
     }
 
     private bool HasTitleIcon (DropDownMenuRenderingContext renderingContext)
@@ -410,15 +410,17 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
 
       string icon = GetIconUrl (renderingContext, menuItem, showIcon);
       string disabledIcon = GetDisabledIconUrl (renderingContext, menuItem, showIcon);
-      string text = showText ? "'" + menuItem.Text + "'" : "null";
-      string diagnosticMetadataText = showText ? menuItem.Text : "";
+      string text = showText
+          ? "'" + ScriptUtility.EscapeClientScript (menuItem.Text.ToString (WebStringEncoding.HtmlWithTransformedLineBreaks)) + "'"
+          : "null";
+      WebString diagnosticMetadataText = showText ? menuItem.Text : default;
 
       bool isDisabled = !menuItem.EvaluateEnabled() || !isCommandEnabled;
 
       stringBuilder.AppendFormat (
           "\t\tnew DropDownMenu_ItemInfo ({0}, '{1}', {2}, {3}, {4}, {5}, {6}, {7}, {8}, ",
           string.IsNullOrEmpty (menuItem.ItemID) ? "null" : "'" + menuItem.ItemID + "'",
-          menuItem.Category,
+          ScriptUtility.EscapeClientScript (menuItem.Category),
           text,
           icon,
           disabledIcon,
@@ -433,7 +435,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
         var diagnosticMetadataDictionary = new Dictionary<string, string>();
         diagnosticMetadataDictionary.Add (HtmlTextWriterAttribute.Id.ToString(), htmlID);
         diagnosticMetadataDictionary.Add (DiagnosticMetadataAttributes.ItemID, menuItem.ItemID);
-        diagnosticMetadataDictionary.Add (DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags (diagnosticMetadataText ?? ""));
+        diagnosticMetadataDictionary.Add (DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags (diagnosticMetadataText));
 
         stringBuilder.WriteDictionaryAsJson (diagnosticMetadataDictionary);
 

@@ -17,6 +17,7 @@
 using System;
 using System.ComponentModel;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
@@ -69,7 +70,7 @@ public class BocListMock: BocList
                new WebMenuItem (
                    "item0",
                    null,
-                   "WebMenuItem1",
+                   WebString.CreateFromText ( "WebMenuItem1"),
                    new IconInfo ("~/Images/RowMenuItem.gif", 16, 16),
                    new IconInfo ("~/Images/RowMenuItemDisabled.gif", 16, 16),
                    WebMenuItemStyle.Text,

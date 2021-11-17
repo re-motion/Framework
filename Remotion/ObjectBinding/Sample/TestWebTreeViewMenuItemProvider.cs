@@ -16,6 +16,7 @@
 // 
 using System;
 using Remotion.Utilities;
+using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Sample
@@ -31,11 +32,11 @@ namespace Remotion.ObjectBinding.Sample
       ArgumentUtility.CheckNotNull ("node", node);
 
       WebMenuItem eventMenuItem = new WebMenuItem();
-      eventMenuItem.Text = "Event";
+      eventMenuItem.Text = WebString.CreateFromText ("Event");
       eventMenuItem.Command.Type = CommandType.Event;
 
       WebMenuItem wxeMenuItem = new WebMenuItem();
-      wxeMenuItem.Text = "WXE";
+      wxeMenuItem.Text = WebString.CreateFromText ("WXE");
       wxeMenuItem.Command.Type = CommandType.WxeFunction;
       wxeMenuItem.Command.WxeFunctionCommand.TypeName = TypeUtility.GetPartialAssemblyQualifiedName (typeof (TestWxeFunction));
 

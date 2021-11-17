@@ -16,6 +16,7 @@
 // 
 using System;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls
@@ -28,7 +29,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
                      {
                          ItemID = "MenuItem",
                          RequiredSelection = RequiredSelection.Any,
-                         Text = "Event",
+                         Text = WebString.CreateFromText ("Event"),
                          Command = { Type = CommandType.Event }
                      };
 

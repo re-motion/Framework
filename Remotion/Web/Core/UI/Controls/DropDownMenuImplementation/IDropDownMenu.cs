@@ -33,7 +33,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation
     bool IsReadOnly { get; }
     Action<HtmlTextWriter>? RenderHeadTitleMethod { get; }
     IconInfo? TitleIcon { get; }
-    string TitleText { get; }
+    WebString TitleText { get; }
     ButtonType ButtonType { get; }
     Unit Width { get; }
     string GetSelectionCount { get; }

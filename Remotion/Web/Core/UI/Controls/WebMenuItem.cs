@@ -21,8 +21,8 @@ using System.Web.UI;
 using Remotion.Globalization;
 using Remotion.Security;
 using Remotion.Utilities;
+using Remotion.Web.Globalization;
 using Remotion.Web.UI.Globalization;
-using Remotion.Web.Utilities;
 
 namespace Remotion.Web.UI.Controls
 {
@@ -34,12 +34,20 @@ namespace Remotion.Web.UI.Controls
     public static WebMenuItem GetSeparator ()
     {
       return new WebMenuItem (
-          null, null, c_separator, new IconInfo(), new IconInfo(), WebMenuItemStyle.IconAndText, RequiredSelection.Any, false, null);
+          null,
+          null,
+          WebString.CreateFromText (c_separator),
+          new IconInfo(),
+          new IconInfo(),
+          WebMenuItemStyle.IconAndText,
+          RequiredSelection.Any,
+          false,
+          null);
     }
 
     private string _itemID = string.Empty;
     private string _category = string.Empty;
-    private string _text = string.Empty;
+    private WebString _text;
     private IconInfo _icon;
     private IconInfo _disabledIcon;
     private WebMenuItemStyle _style = WebMenuItemStyle.IconAndText;
@@ -60,7 +68,7 @@ namespace Remotion.Web.UI.Controls
     public WebMenuItem (
         string? itemID,
         string? category,
-        string? text,
+        WebString text,
         IconInfo icon,
         IconInfo disabledIcon,
         WebMenuItemStyle style,
@@ -87,7 +95,7 @@ namespace Remotion.Web.UI.Controls
         : this (
             null,
             null,
-            null,
+            WebString.Empty,
             new IconInfo(),
             new IconInfo(),
             WebMenuItemStyle.IconAndText,
@@ -130,7 +138,7 @@ namespace Remotion.Web.UI.Controls
     {
       string displayName = ItemID;
       if (string.IsNullOrEmpty (displayName))
-        displayName = Text;
+        displayName = Text.ToString();
       if (string.IsNullOrEmpty (displayName))
         return DisplayedTypeName;
       else
@@ -169,21 +177,20 @@ namespace Remotion.Web.UI.Controls
 
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Appearance")]
-    [Description ("The text displayed in this menu item. Use '-' for a separator menu item. The value will not be HTML encoded.")]
+    [Description ("The text displayed in this menu item. Use '-' for a separator menu item.")]
     [NotifyParentProperty (true)]
-    [DefaultValue ("")]
-    [AllowNull]
-    public string Text
+    [DefaultValue (typeof (WebString), "")]
+    public WebString Text
     {
       get { return _text; }
-      set { _text = value ?? string.Empty; }
+      set { _text = value; }
     }
 
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     [Browsable (false)]
     public bool IsSeparator
     {
-      get { return _text == c_separator; }
+      get { return _text.GetValue() == c_separator; }
     }
 
     /// <summary> 
@@ -433,9 +440,9 @@ namespace Remotion.Web.UI.Controls
       if (!string.IsNullOrEmpty (key))
         Category = resourceManager.GetString (key);
 
-      key = ResourceManagerUtility.GetGlobalResourceKey (Text);
+      key = ResourceManagerUtility.GetGlobalResourceKey (Text.GetValue());
       if (!string.IsNullOrEmpty (key))
-        Text = resourceManager.GetString (key);
+        Text = resourceManager.GetWebString (key, Text.Type);
 
       Icon.LoadResources (resourceManager);
       DisabledIcon.LoadResources (resourceManager);

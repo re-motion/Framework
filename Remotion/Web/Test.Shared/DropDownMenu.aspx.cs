@@ -35,7 +35,7 @@ namespace Remotion.Web.Test.Shared
           new WebMenuItem (
               "First",
               "FirstCategory",
-              "The first item",
+              WebString.CreateFromText ("The first item"),
               new IconInfo ("~/res/Remotion.Web/Image/Help.gif"),
               new IconInfo ("~/res/Remotion.Web/Image/Help.gif"),
               WebMenuItemStyle.Text,
