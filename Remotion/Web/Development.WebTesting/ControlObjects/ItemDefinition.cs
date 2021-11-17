@@ -29,16 +29,19 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     private readonly int _oneBasedIndex;
     private readonly string _text;
     private readonly bool _isDisabled;
+    private readonly string _accessKey;
 
-    public ItemDefinition ([NotNull] string itemID, int oneBasedIndex, [NotNull] string text, bool isDisabled)
+    public ItemDefinition ([NotNull] string itemID, int oneBasedIndex, [NotNull] string text, bool isDisabled, [NotNull] string accessKey)
     {
       ArgumentUtility.CheckNotNull ("itemID", itemID);
+      ArgumentUtility.CheckNotNull ("text", text);
       ArgumentUtility.CheckNotNull ("text", text);
 
       _itemID = itemID;
       _oneBasedIndex = oneBasedIndex;
       _text = text;
       _isDisabled = isDisabled;
+      _accessKey = accessKey;
     }
 
     public string ItemID
@@ -65,6 +68,11 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     public bool IsDisabled
     {
       get { return _isDisabled; }
+    }
+    
+    public string AccessKey
+    {
+      get { return _accessKey; }
     }
   }
 }

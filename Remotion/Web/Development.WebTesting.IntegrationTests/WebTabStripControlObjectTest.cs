@@ -98,6 +98,26 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       Assert.That (tabs[1].IsDisabled, Is.False);
       Assert.That (tabs[2].IsDisabled, Is.True);
     }
+    
+    [Test]
+    public void TestGetAccessKey_EmptyAccessKey ()
+    {
+      var home = Start();
+
+      var tabStrip = home.WebTabStrips().First();
+      var tab = tabStrip.GetSelectedTab();
+      Assert.That (tab.AccessKey,Is.Empty);
+    }
+    
+    [Test]
+    public void TestGetAccessKey_ValidAccessKey ()
+    {
+      var home = Start();
+
+      var tabStrip = home.WebTabStrips().First();
+      var tab = tabStrip.GetTabDefinitions()[1];
+      Assert.That (tab.AccessKey, Is.EqualTo ("B"));
+    }
 
     [Test]
     public void TestSwitchTo ()

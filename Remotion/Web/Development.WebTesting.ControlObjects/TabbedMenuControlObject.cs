@@ -165,7 +165,8 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
                                   itemScope[DiagnosticMetadataAttributes.ItemID],
                                   i + 1,
                                   itemScope.Text.Trim(),
-                                  itemScope[DiagnosticMetadataAttributes.IsDisabled] == "true"))
+                                  itemScope[DiagnosticMetadataAttributes.IsDisabled] == "true",
+                                  itemScope.FindCss("a")?["accesskey"] ?? string.Empty))
                       .ToList());
     }
 

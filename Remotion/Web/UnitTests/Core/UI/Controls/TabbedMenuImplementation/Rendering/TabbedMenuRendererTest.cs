@@ -77,7 +77,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMenuImplementation.Rende
     [Test]
     public void RenderEmptyMenuWithStatusText ()
     {
-      _control.Setup (stub => stub.StatusText).Returns ("Status");
+      _control.Setup (stub => stub.StatusText).Returns (WebString.CreateFromText("Status"));
       AssertControl (false, true, false);
     }
 

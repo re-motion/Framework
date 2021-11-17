@@ -43,7 +43,8 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
           tabScope[DiagnosticMetadataAttributes.ItemID],
           -1,
           tabScope[DiagnosticMetadataAttributes.Content],
-          tabScope[DiagnosticMetadataAttributes.IsDisabled] == "true");
+          tabScope[DiagnosticMetadataAttributes.IsDisabled] == "true",
+          tabScope.FindCss ("a")?["accesskey"] ?? string.Empty);
     }
 
     /// <inheritdoc/>
@@ -59,7 +60,8 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
                               tabScope[DiagnosticMetadataAttributes.ItemID],
                               i + 1,
                               tabScope[DiagnosticMetadataAttributes.Content],
-                              tabScope[DiagnosticMetadataAttributes.IsDisabled] == "true"))
+                              tabScope[DiagnosticMetadataAttributes.IsDisabled] == "true",
+                              tabScope.FindCss ("a")?["accesskey"] ?? string.Empty))
                   .ToList());
     }
 
