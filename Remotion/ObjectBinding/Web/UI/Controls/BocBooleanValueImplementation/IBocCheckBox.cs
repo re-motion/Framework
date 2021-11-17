@@ -15,14 +15,15 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Web;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
 {
   public interface IBocCheckBox : IBocBooleanValueBase
   {
     bool IsDescriptionEnabled { get; }
-    string DefaultTrueDescription { get; }
-    string DefaultFalseDescription { get; }
+    WebString DefaultTrueDescription { get; }
+    WebString DefaultFalseDescription { get; }
     string GetValueName ();
   }
 }

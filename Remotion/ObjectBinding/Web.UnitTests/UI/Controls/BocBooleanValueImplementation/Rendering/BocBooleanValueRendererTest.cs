@@ -29,6 +29,7 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.Factories;
 using Remotion.Utilities;
+using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
@@ -69,10 +70,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
           "TrueIconUrl",
           "FalseIconUrl",
           "NullIconUrl",
-          "DefaultTrueDescription",
-          "DefaultFalseDescription",
-          "DefaultNullDescription"
-          );
+          WebString.CreateFromText("DefaultTrueDescription"),
+          WebString.CreateFromText("DefaultFalseDescription"),
+          WebString.CreateFromText("DefaultNullDescription"));
 
       _booleanValue = new Mock<IBocBooleanValue>();
 
@@ -111,9 +111,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       _booleanValue.Setup(mock => mock.ShowDescription).Returns(true);
 
       _booleanValue.Setup(mock => mock.Page).Returns(pageStub.Object);
-      _booleanValue.Setup(mock => mock.TrueDescription).Returns(c_trueDescription);
-      _booleanValue.Setup(mock => mock.FalseDescription).Returns(c_falseDescription);
-      _booleanValue.Setup(mock => mock.NullDescription).Returns(c_nullDescription);
+      _booleanValue.Setup(mock => mock.TrueDescription).Returns(WebString.CreateFromText(c_trueDescription));
+      _booleanValue.Setup(mock => mock.FalseDescription).Returns(WebString.CreateFromText(c_falseDescription));
+      _booleanValue.Setup(mock => mock.NullDescription).Returns(WebString.CreateFromText(c_nullDescription));
 
       _booleanValue.SetupProperty(_ => _.CssClass);
 
@@ -322,7 +322,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       Html.AssertAttribute(outerSpan, DiagnosticMetadataAttributesForObjectBinding.BocBooleanValueIsTriState, "true");
     }
 
-    private void CheckRendering (string checkedState, string value, string iconUrl, string description)
+    private void CheckRendering (string checkedState, string value, string iconUrl, WebString description)
     {
       var resourceUrlFactory = new FakeResourceUrlFactory();
       _renderer = new BocBooleanValueRenderer(
@@ -361,7 +361,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       Html.AssertChildElementCount(label, 0);
       Html.AssertAttribute(label, "id", c_clientID + "_Description");
       Html.AssertAttribute(label, "class", "description");
-      Html.AssertTextNode(label, description, 0);
+      Html.AssertTextNode(label, description.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks), 0);
       if (_booleanValue.Object.ShowDescription)
         Html.AssertNoAttribute(label, "hidden");
       else

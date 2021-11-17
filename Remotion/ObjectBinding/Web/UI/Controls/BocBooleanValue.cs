@@ -29,6 +29,7 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Rende
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Validation;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Web.Globalization;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Globalization;
@@ -419,17 +420,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       base.LoadResources(resourceManager, globalizationService);
 
       string? key;
-      key = ResourceManagerUtility.GetGlobalResourceKey(TrueDescription);
+      key = ResourceManagerUtility.GetGlobalResourceKey(TrueDescription.GetValue());
       if (! string.IsNullOrEmpty(key))
-        TrueDescription = resourceManager.GetString(key);
+        TrueDescription = resourceManager.GetWebString(key, TrueDescription.Type);
 
-      key = ResourceManagerUtility.GetGlobalResourceKey(FalseDescription);
+      key = ResourceManagerUtility.GetGlobalResourceKey(FalseDescription.GetValue());
       if (! string.IsNullOrEmpty(key))
-        FalseDescription = resourceManager.GetString(key);
+        FalseDescription = resourceManager.GetWebString(key, FalseDescription.Type);
 
-      key = ResourceManagerUtility.GetGlobalResourceKey(NullDescription);
+      key = ResourceManagerUtility.GetGlobalResourceKey(NullDescription.GetValue());
       if (! string.IsNullOrEmpty(key))
-        NullDescription = resourceManager.GetString(key);
+        NullDescription = resourceManager.GetWebString(key, NullDescription.Type);
 
       key = ResourceManagerUtility.GetGlobalResourceKey(ErrorMessage);
       if (! string.IsNullOrEmpty(key))

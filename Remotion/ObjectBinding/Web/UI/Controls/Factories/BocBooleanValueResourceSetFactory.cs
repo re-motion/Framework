@@ -21,6 +21,7 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Rende
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
+using Remotion.Web.Globalization;
 using Remotion.Web.UI;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.Factories
@@ -61,9 +62,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Factories
           GetResourceUrl(c_trueIcon),
           GetResourceUrl(c_falseIcon),
           GetResourceUrl(c_nullIcon),
-          resourceManager.GetString(BocBooleanValue.ResourceIdentifier.TrueDescription),
-          resourceManager.GetString(BocBooleanValue.ResourceIdentifier.FalseDescription),
-          resourceManager.GetString(BocBooleanValue.ResourceIdentifier.NullDescription)
+          resourceManager.GetText(BocBooleanValue.ResourceIdentifier.TrueDescription),
+          resourceManager.GetText(BocBooleanValue.ResourceIdentifier.FalseDescription),
+          resourceManager.GetText(BocBooleanValue.ResourceIdentifier.NullDescription)
           );
 
       return resourceSet;

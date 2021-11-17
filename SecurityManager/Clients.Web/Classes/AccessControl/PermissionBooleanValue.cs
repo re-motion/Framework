@@ -34,10 +34,9 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
           resourceUrlFactory.CreateThemedResourceUrl(typeof(PermissionBooleanValue), ResourceType.Image, "sprite.svg#PermissionGranted").GetUrl(),
           resourceUrlFactory.CreateThemedResourceUrl(typeof(PermissionBooleanValue), ResourceType.Image, "sprite.svg#PermissionDenied").GetUrl(),
           resourceUrlFactory.CreateThemedResourceUrl(typeof(PermissionBooleanValue), ResourceType.Image, "sprite.svg#PermissionUndefined").GetUrl(),
-          "Granted",
-          "Denied",
-          "Undefined"
-          );
+          WebString.CreateFromText("Granted"),
+          WebString.CreateFromText("Denied"),
+          WebString.CreateFromText("Undefined"));
     }
   }
 }

@@ -291,13 +291,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
     {
       string checkedState;
       string imageUrl;
-      string description;
+      WebString description;
 
       if (!renderingContext.Control.Value.HasValue)
       {
         checkedState = HtmlAriaCheckedAttributeValue.Mixed;
         imageUrl = resourceSet.NullIconUrl;
-        description = string.IsNullOrEmpty(renderingContext.Control.NullDescription)
+        description = renderingContext.Control.NullDescription.IsEmpty
             ? resourceSet.DefaultNullDescription
             : renderingContext.Control.NullDescription;
       }
@@ -305,7 +305,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       {
         checkedState = HtmlAriaCheckedAttributeValue.True;
         imageUrl = resourceSet.TrueIconUrl;
-        description = string.IsNullOrEmpty(renderingContext.Control.TrueDescription)
+        description = renderingContext.Control.TrueDescription.IsEmpty
             ? resourceSet.DefaultTrueDescription
             : renderingContext.Control.TrueDescription;
       }
@@ -313,7 +313,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       {
         checkedState = HtmlAriaCheckedAttributeValue.False;
         imageUrl = resourceSet.FalseIconUrl;
-        description = string.IsNullOrEmpty(renderingContext.Control.FalseDescription)
+        description = renderingContext.Control.FalseDescription.IsEmpty
             ? resourceSet.DefaultFalseDescription
             : renderingContext.Control.FalseDescription;
       }
@@ -323,10 +323,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       imageControl.ImageUrl = imageUrl;
       imageControl.GenerateEmptyAlternateText = true;
 
-      labelControl.Text = description;
+      labelControl.Text = description.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks);
       if (!renderingContext.Control.ShowDescription)
       {
-        linkControl.ToolTip = description;
+        linkControl.ToolTip = description.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks);
         labelControl.Attributes.Add(HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
       }
 
