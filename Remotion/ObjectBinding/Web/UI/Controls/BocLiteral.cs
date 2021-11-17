@@ -22,6 +22,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Utilities;
+using Remotion.Web;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
@@ -301,11 +302,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets the text to be written into the label for this control. </summary>
-    /// <value> <see langword="null"/> for the default implementation. </value>
+    /// <value> <see cref="WebString.Empty"/> for the default implementation. </value>
     [Browsable (false)]
-    public virtual string DisplayName
+    public virtual WebString DisplayName
     {
-      get { return (Property != null) ? Property.DisplayName : null; }
+      get { return (Property != null) ? WebString.CreateFromText (Property.DisplayName) : WebString.Empty; }
     }
 
     void ISmartControl.RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)

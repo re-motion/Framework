@@ -116,9 +116,9 @@ public class FormGridLabel: Label, ISmartControl
   {
   }
 
-  string ISmartControl.DisplayName
+  WebString ISmartControl.DisplayName
   {
-    get { return base.Text; }
+    get { return Text; }
   }
 
   IPage? IControl.Page
