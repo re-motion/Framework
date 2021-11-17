@@ -75,14 +75,14 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
           new BocMenuItem
           {
               ItemID = "New",
-              Text = GlobalResourcesHelper.GetString(_globalizationService, GlobalResources.New),
+              Text = GlobalResourcesHelper.GetText(_globalizationService, GlobalResources.New),
               Command = new InlineEditingNewItemMenuItemCommand<TBusinessObject>(newObjectFactory)
           });
       bocList.ListMenuItems.Add(
           new BocMenuItem
           {
               ItemID = "Delete",
-              Text = GlobalResourcesHelper.GetString(_globalizationService, GlobalResources.Delete),
+              Text = GlobalResourcesHelper.GetText(_globalizationService, GlobalResources.Delete),
               RequiredSelection = RequiredSelection.OneOrMore,
               Command = new InlineEditingDeleteItemMenuItemCommand<TBusinessObject>()
           });

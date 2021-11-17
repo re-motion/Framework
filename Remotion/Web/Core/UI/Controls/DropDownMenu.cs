@@ -41,7 +41,7 @@ namespace Remotion.Web.UI.Controls
 
     private ButtonType _buttonType;
     private bool _showTitle = true;
-    private string _titleText = "";
+    private WebString _titleText;
     private IconInfo? _titleIcon;
     private bool _enableGrouping = true;
     private bool _isBrowserCapableOfScripting;
@@ -187,10 +187,7 @@ namespace Remotion.Web.UI.Controls
       set { _showTitle = value; }
     }
 
-    /// <remarks>
-    ///   The value will not be HTML encoded.
-    /// </remarks>
-    public string TitleText
+    public WebString TitleText
     {
       get { return _titleText; }
       set { _titleText = value; }

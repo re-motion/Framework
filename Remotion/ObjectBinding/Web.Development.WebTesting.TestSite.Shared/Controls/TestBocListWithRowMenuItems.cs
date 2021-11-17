@@ -17,6 +17,7 @@
 using System;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Utilities;
+using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls
@@ -28,8 +29,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
       var baseRowMenuItems = base.InitializeRowMenuItems(businessObject, listIndex);
 
       var rowMenuItems = new WebMenuItem[2];
-      rowMenuItems[0] = new WebMenuItem { ItemID = "RowMenuItemCmd1", Text = "Row menu 1" };
-      rowMenuItems[1] = new WebMenuItem { ItemID = "RowMenuItemCmd2", Text = "Row menu 2" };
+      rowMenuItems[0] = new WebMenuItem { ItemID = "RowMenuItemCmd1", Text = WebString.CreateFromText("Row menu 1") };
+      rowMenuItems[1] = new WebMenuItem { ItemID = "RowMenuItemCmd2", Text = WebString.CreateFromText("Row menu 2") };
 
       return ArrayUtility.Combine(baseRowMenuItems, rowMenuItems);
     }

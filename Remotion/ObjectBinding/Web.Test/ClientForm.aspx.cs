@@ -120,7 +120,7 @@ public class ClientForm : TestWxeBasePage
     _ddm.ID = "ddm";
     _ddm.Height = new Unit("1%");
     _ddm.Width = new Unit("1%");
-    _ddm.TitleText = "Options Menu";
+    _ddm.TitleText = WebString.CreateFromText("Options Menu");
     MultiView.TopControls.Add(_ddm);
 
     WebButton saveButton = new WebButton();

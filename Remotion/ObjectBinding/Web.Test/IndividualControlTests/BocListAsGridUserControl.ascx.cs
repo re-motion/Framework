@@ -26,6 +26,7 @@ using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
 using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.Utilities;
+using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
 namespace OBWTest.IndividualControlTests
@@ -121,7 +122,7 @@ public class BocListAsGridUserControl : BaseUserControl
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Copy";
     menuItem.Category = "Edit";
-    menuItem.Text = "Copy";
+    menuItem.Text = WebString.CreateFromText("Copy");
     menuItem.Icon.Url = "~/Images/CopyItem.gif";
     menuItem.RequiredSelection = RequiredSelection.ExactlyOne;
     menuItem.Command.Type = CommandType.Event;
@@ -131,7 +132,7 @@ public class BocListAsGridUserControl : BaseUserControl
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Paste";
     menuItem.Category = "Edit";
-    menuItem.Text = "Paste";
+    menuItem.Text = WebString.CreateFromText("Paste");
     menuItem.IsDisabled = false;
     menuItem.Command.Type = CommandType.Event;
     ChildrenList.ListMenuItems.Add(menuItem);

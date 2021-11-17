@@ -22,6 +22,7 @@ using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
+using Remotion.Web.Globalization;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 
@@ -192,7 +193,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         BocDropDownMenuColumnDefinition dropDownMenuColumn = new BocDropDownMenuColumnDefinition();
         dropDownMenuColumn.Width = Unit.Percentage(0);
-        dropDownMenuColumn.MenuTitleText = GetResourceManager().GetString(ResourceIdentifier.RowMenuTitle);
+        dropDownMenuColumn.MenuTitleText = GetResourceManager().GetText(ResourceIdentifier.RowMenuTitle);
         return dropDownMenuColumn;
       }
       return null;

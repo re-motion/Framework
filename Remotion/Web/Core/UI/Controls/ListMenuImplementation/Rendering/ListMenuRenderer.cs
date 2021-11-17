@@ -199,7 +199,7 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
       if (showText)
       {
         renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
-        renderingContext.Writer.Write(menuItem.Text); // Do not HTML encode.
+        menuItem.Text.WriteTo(renderingContext.Writer);
         renderingContext.Writer.RenderEndTag();
       }
 
@@ -298,7 +298,9 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
       string disabledIcon = "null";
       if (showIcon && menuItem.DisabledIcon.HasRenderingInformation)
         disabledIcon = "'" + renderingContext.Control.ResolveClientUrl(menuItem.DisabledIcon.Url) + "'";
-      string text = showText ? "'" + menuItem.Text + "'" : "null";
+      string text = showText
+          ? "'" + ScriptUtility.EscapeClientScript(menuItem.Text) + "'"
+          : "null";
 
       bool isDisabled = !renderingContext.Control.Enabled
                         || !menuItem.EvaluateEnabled()
@@ -307,7 +309,7 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
       stringBuilder.AppendFormat(
           "\t\tnew ListMenuItemInfo ('{0}', '{1}', {2}, {3}, {4}, {5}, {6}, {7}, {8}, ",
           GetMenuItemClientID(renderingContext, menuItemIndex),
-          menuItem.Category,
+          ScriptUtility.EscapeClientScript(menuItem.Category),
           text,
           icon,
           disabledIcon,
@@ -323,7 +325,7 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
         if (!string.IsNullOrEmpty(menuItem.ItemID))
           diagnosticMetadataDictionary.Add(DiagnosticMetadataAttributes.ItemID, menuItem.ItemID);
 
-        if (!string.IsNullOrEmpty(menuItem.Text))
+        if (!menuItem.Text.IsEmpty)
           diagnosticMetadataDictionary.Add(DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags(menuItem.Text));
 
         stringBuilder.WriteDictionaryAsJson(diagnosticMetadataDictionary);

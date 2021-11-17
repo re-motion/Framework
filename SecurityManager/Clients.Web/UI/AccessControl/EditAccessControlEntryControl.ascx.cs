@@ -29,6 +29,7 @@ using Remotion.SecurityManager.Clients.Web.Classes.AccessControl;
 using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.Utilities;
 using Remotion.Web;
+using Remotion.Web.Globalization;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls;
 
@@ -110,21 +111,21 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
           new WebMenuItem
           {
               ItemID = c_clearAllMenuItemID,
-              Text = resourceManager.GetString(ResourceIdentifier.AllPermissionsMenu_ClearAllPermissions_Text),
+              Text = resourceManager.GetText(ResourceIdentifier.AllPermissionsMenu_ClearAllPermissions_Text),
               Icon = new IconInfo(GetIconUrl("sprite.svg#PermissionUndefined").GetUrl())
           });
       AllPermisionsMenu.MenuItems.Add(
           new WebMenuItem
           {
               ItemID = c_grantAllMenuItemID,
-              Text = resourceManager.GetString(ResourceIdentifier.AllPermissionsMenu_GrantAllPermissions_Text),
+              Text = resourceManager.GetText(ResourceIdentifier.AllPermissionsMenu_GrantAllPermissions_Text),
               Icon = new IconInfo(GetIconUrl("sprite.svg#PermissionGranted").GetUrl())
           });
       AllPermisionsMenu.MenuItems.Add(
           new WebMenuItem
           {
               ItemID = c_denyAllMenuItemID,
-              Text = resourceManager.GetString(ResourceIdentifier.AllPermissionsMenu_DenyAllPermissions_Text),
+              Text = resourceManager.GetText(ResourceIdentifier.AllPermissionsMenu_DenyAllPermissions_Text),
               Icon = new IconInfo(GetIconUrl("sprite.svg#PermissionDenied").GetUrl())
           });
       AllPermisionsMenu.EventCommandClick += AllPermisionsMenu_EventCommandClick;
