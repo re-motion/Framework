@@ -41,7 +41,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     public override void SetUp ()
     {
       Column = new BocDropDownMenuColumnDefinition();
-      Column.ColumnTitle = "FirstColumn";
+      Column.ColumnTitle = WebString.CreateFromText ("FirstColumn");
       Column.MenuTitleText = WebString.CreateFromText ("Menu Title");
       Column.MenuTitleIcon = new IconInfo ("~/Images/MenuTitleIcon.gif", 16, 16);
 

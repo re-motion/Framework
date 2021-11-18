@@ -25,6 +25,7 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSu
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation;
 using Remotion.ObjectBinding.Web.UnitTests.Domain;
+using Remotion.Web;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 
@@ -43,7 +44,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Column.Command = null;
       Column.IsDynamic = false;
       Column.IsReadOnly = false;
-      Column.ColumnTitle = "FirstColumn";
+      Column.ColumnTitle = WebString.CreateFromText ("FirstColumn");
       Column.PropertyPathIdentifier = "DisplayName";
       Column.FormatString = "unusedWithReferenceValue";
 

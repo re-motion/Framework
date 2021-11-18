@@ -25,6 +25,7 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting;
 using Remotion.TypePipe;
 using Remotion.Utilities;
+using Remotion.Web;
 using Remotion.Web.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
@@ -193,13 +194,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   the <c>DisplayName</c> of the <see cref="IBusinessObjectProperty"/> is returned.
     /// </remarks>
     /// <value> A <see cref="string"/> representing this column's title row contents. </value>
-    public override string ColumnTitleDisplayValue
+    public override WebString ColumnTitleDisplayValue
     {
       get
       {
-        bool isTitleEmpty = string.IsNullOrEmpty (ColumnTitle);
-
-        if (!isTitleEmpty)
+        if (!ColumnTitle.IsEmpty)
           return ColumnTitle;
 
         IBusinessObjectPropertyPath propertyPath;
@@ -210,14 +209,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         catch (ParseException)
         {
           // gracefully recover in column header
-          return string.Empty;
+          return WebString.Empty;
         }
 
         var lastProperty = propertyPath.Properties.LastOrDefault();
         if (lastProperty == null)
-          return string.Empty;
+          return WebString.Empty;
 
-        return lastProperty.DisplayName;
+        return WebString.CreateFromText (lastProperty.DisplayName);
       }
     }
 

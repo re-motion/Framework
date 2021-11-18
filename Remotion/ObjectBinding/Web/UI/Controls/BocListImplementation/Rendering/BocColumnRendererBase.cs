@@ -124,7 +124,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         if (!string.IsNullOrEmpty (columnItemID))
           renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributes.ItemID, columnItemID);
 
-        var columnTitle = StringUtility.NullToEmpty (renderingContext.ColumnDefinition.ColumnTitleDisplayValue);
+        var columnTitle = renderingContext.ColumnDefinition.ColumnTitleDisplayValue;
         renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags (columnTitle));
 
         var oneBasedCellIndex = renderingContext.VisibleColumnIndex + 1;
@@ -218,14 +218,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     private void RenderTitleCellText (BocColumnRenderingContext<TBocColumnDefinition> renderingContext)
     {
-      var columnTitle = StringUtility.NullToEmpty (renderingContext.ColumnDefinition.ColumnTitleDisplayValue);
-
+      var columnTitle = renderingContext.ColumnDefinition.ColumnTitleDisplayValue;
       var columnTitleID = GetColumnTitleID (renderingContext);
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, columnTitleID);
       if (!renderingContext.ColumnDefinition.ShowColumnTitle)
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, _cssClasses.CssClassScreenReaderText);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
-      renderingContext.Writer.Write (columnTitle);
+      columnTitle.Write (renderingContext.Writer);
       renderingContext.Writer.RenderEndTag();
       if (!renderingContext.ColumnDefinition.ShowColumnTitle)
       {

@@ -21,6 +21,8 @@ using CommonServiceLocator;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.Utilities;
+using Remotion.Web;
+using Remotion.Web.Globalization;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Globalization;
 
@@ -29,11 +31,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   /// <summary> A column definition used for switching between edit mode and returning from it via save and cancel. </summary>
   public class BocRowEditModeColumnDefinition : BocColumnDefinition
   {
-    private string _editText = string.Empty;
+    private WebString _editText = WebString.Empty;
     private IconInfo _editIcon = new IconInfo ();
-    private string _saveText = string.Empty;
+    private WebString _saveText = WebString.Empty;
     private IconInfo _saveIcon = new IconInfo ();
-    private string _cancelText = string.Empty;
+    private WebString _cancelText = WebString.Empty;
     private IconInfo _cancelIcon = new IconInfo ();
     private BocRowEditColumnDefinitionShow _show = BocRowEditColumnDefinitionShow.EditMode;
 
@@ -60,17 +62,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets or sets the text representing the edit command in the rendered page. </summary>
-    /// <value> A <see cref="string"/> representing the edit command. </value>
-    /// <remarks> The value will not be HTML encoded. </remarks>
+    /// <value>A <see cref="WebString"/> representing the edit command.</value>
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Appearance")]
     [Description ("The text representing the edit command in the rendered page. The value will not be HTML encoded.")]
-    [DefaultValue ("")]
+    [DefaultValue (typeof (WebString), "")]
     [NotifyParentProperty (true)]
-    public string EditText
+    public WebString EditText
     {
       get { return _editText; }
-      set { _editText = value ?? string.Empty; }
+      set { _editText = value; }
     }
 
     /// <summary>
@@ -104,19 +105,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
 
     /// <summary> Gets or sets the text representing the save command in the rendered page. </summary>
-    /// <value> A <see cref="string"/> representing the save command. </value>
-    /// <remarks> The value will not be HTML encoded. </remarks>
+    /// <value>A <see cref="WebString"/> representing the save command.</value>
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Appearance")]
     [Description ("The text representing the save command in the rendered page. The value will not be HTML encoded.")]
-    [DefaultValue ("")]
+    [DefaultValue (typeof (WebString), "")]
     [NotifyParentProperty (true)]
-    public string SaveText
+    public WebString SaveText
     {
       get { return _saveText; }
       set
       {
-        _saveText = value ?? string.Empty;
+        _saveText = value;
       }
     }
 
@@ -150,19 +150,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets or sets the text representing the cancel command in the rendered page. </summary>
-    /// <value> A <see cref="string"/> representing the cancel command. </value>
-    /// <remarks> The value will not be HTML encoded. </remarks>
+    /// <value>A <see cref="WebString"/> representing the cancel command.</value>
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Appearance")]
     [Description ("The text representing the cancel command in the rendered page. The value will not be HTML encoded.")]
-    [DefaultValue ("")]
+    [DefaultValue (typeof (WebString), "")]
     [NotifyParentProperty (true)]
-    public string CancelText
+    public WebString CancelText
     {
       get { return _cancelText; }
       set
       {
-        _cancelText = value ?? string.Empty;
+        _cancelText = value;
       }
     }
 
@@ -215,17 +214,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       
       base.LoadResources (resourceManager, globalizationService);
 
-      string key = ResourceManagerUtility.GetGlobalResourceKey (EditText);
+      string key = ResourceManagerUtility.GetGlobalResourceKey (EditText.GetValue());
       if (!string.IsNullOrEmpty (key))
-        EditText = resourceManager.GetString (key);
+        EditText = resourceManager.GetWebString (key, EditText.Type);
 
-      key = ResourceManagerUtility.GetGlobalResourceKey (SaveText);
+      key = ResourceManagerUtility.GetGlobalResourceKey (SaveText.GetValue());
       if (!string.IsNullOrEmpty (key))
-        SaveText = resourceManager.GetString (key);
+        SaveText = resourceManager.GetWebString (key, SaveText.Type);
 
-      key = ResourceManagerUtility.GetGlobalResourceKey (CancelText);
+      key = ResourceManagerUtility.GetGlobalResourceKey (CancelText.GetValue());
       if (!string.IsNullOrEmpty (key))
-        CancelText = resourceManager.GetString (key);
+        CancelText = resourceManager.GetWebString (key, CancelText.Type);
 
       if (EditIcon != null)
         EditIcon.LoadResources (resourceManager);

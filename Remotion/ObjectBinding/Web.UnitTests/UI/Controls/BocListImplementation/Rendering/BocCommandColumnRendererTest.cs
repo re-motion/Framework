@@ -22,6 +22,7 @@ using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
+using Remotion.Web;
 using Remotion.Web.Configuration;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
@@ -41,8 +42,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Column.Command = new BocListItemCommand (CommandType.Event);
       Column.Command.EventCommand = new Command.EventCommandInfo();
       Column.Command.EventCommand.RequiresSynchronousPostBack = true;
-      Column.Text = "TestCommand";
-      Column.ColumnTitle = "FirstColumn";
+      Column.Text = WebString.CreateFromText ("TestCommand");
+      Column.ColumnTitle = WebString.CreateFromText ("FirstColumn");
 
       _bocListCssClassDefinition = new BocListCssClassDefinition();
 

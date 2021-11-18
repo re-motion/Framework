@@ -22,6 +22,7 @@ using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
+using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.UI.Controls.Rendering;
 
@@ -82,7 +83,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     public void TestDiagnosticMetadataRenderingInTitleCell ()
     {
       List.Setup (mock => mock.Index).Returns (RowIndex.InitialOrder);
-      List.Setup (mock => mock.IndexColumnTitle).Returns ("My_IndexColumn");
+      List.Setup (mock => mock.IndexColumnTitle).Returns (WebString.CreateFromText ("My_IndexColumn"));
 
       IBocIndexColumnRenderer renderer = new BocIndexColumnRenderer (RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition);
       renderer.RenderTitleCell (CreateRenderingContext());

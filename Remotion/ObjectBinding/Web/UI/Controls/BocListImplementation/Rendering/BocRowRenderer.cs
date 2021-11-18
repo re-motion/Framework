@@ -20,7 +20,9 @@ using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
+using Remotion.Web.Globalization;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
@@ -100,11 +102,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Colspan, columnCount.ToString());
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Td);
 
-      string emptyListMessage;
-      if (string.IsNullOrEmpty (renderingContext.Control.EmptyListMessage))
-        emptyListMessage = renderingContext.Control.GetResourceManager().GetString (BocList.ResourceIdentifier.EmptyListMessage);
+      WebString emptyListMessage;
+      if (renderingContext.Control.EmptyListMessage.IsEmpty)
+        emptyListMessage = renderingContext.Control.GetResourceManager().GetText (BocList.ResourceIdentifier.EmptyListMessage);
       else
         emptyListMessage = renderingContext.Control.EmptyListMessage;
+
       // Do not HTML encode
       renderingContext.Writer.Write (emptyListMessage);
 

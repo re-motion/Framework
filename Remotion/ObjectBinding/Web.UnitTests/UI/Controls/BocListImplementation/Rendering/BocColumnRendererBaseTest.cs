@@ -26,6 +26,7 @@ using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ServiceLocation;
+using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.UI.Controls.Rendering;
 
@@ -45,7 +46,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     public void SetUp ()
     {
       Column = new BocSimpleColumnDefinition();
-      Column.ColumnTitle = "TestColumn1";
+      Column.ColumnTitle = WebString.CreateFromText ("TestColumn1");
       Column.CssClass = c_columnCssClass;
 
       Initialize();
@@ -113,7 +114,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var titleSpan = Html.GetAssertedChildElement (sortCommandLink, "span", 0);
       Html.AssertAttribute (titleSpan, "id", List.Object.ClientID + "_0_Title");
-      Html.AssertTextNode (titleSpan, Column.ColumnTitleDisplayValue, 0);
+      Html.AssertTextNode (titleSpan, Column.ColumnTitleDisplayValue.ToString (WebStringEncoding.HtmlWithTransformedLineBreaks), 0);
       Html.AssertChildElementCount (titleSpan, 0);
     }
 
@@ -137,7 +138,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var titleSpan = Html.GetAssertedChildElement (sortCommandLink, "span", 0);
       Html.AssertAttribute (titleSpan, "class", c_screenReaderText, HtmlHelperBase.AttributeValueCompareMode.Equal);
       Html.AssertAttribute (titleSpan, "id", List.Object.ClientID + "_0_Title");
-      Html.AssertTextNode (titleSpan, Column.ColumnTitleDisplayValue, 0);
+      Html.AssertTextNode (titleSpan, Column.ColumnTitleDisplayValue.ToString (WebStringEncoding.HtmlWithTransformedLineBreaks), 0);
       Html.AssertChildElementCount (titleSpan, 0);
 
       Html.AssertTextNode (sortCommandLink, c_whitespace, 1);
@@ -164,7 +165,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var titleSpan = Html.GetAssertedChildElement (cellBody, "span", 0);
       Html.AssertAttribute (titleSpan, "class", c_screenReaderText, HtmlHelperBase.AttributeValueCompareMode.Equal);
       Html.AssertAttribute (titleSpan, "id", List.Object.ClientID + "_0_Title");
-      Html.AssertTextNode (titleSpan, Column.ColumnTitleDisplayValue, 0);
+      Html.AssertTextNode (titleSpan, Column.ColumnTitleDisplayValue.ToString (WebStringEncoding.HtmlWithTransformedLineBreaks), 0);
       Html.AssertChildElementCount (titleSpan, 0);
 
       Html.AssertTextNode (cellBody, c_whitespace, 1);
@@ -204,7 +205,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var document = Html.GetResultDocument();
       var th = Html.GetAssertedChildElement (document, "th", 0);
       Html.AssertAttribute (th, DiagnosticMetadataAttributes.ItemID, Column.ItemID);
-      Html.AssertAttribute (th, DiagnosticMetadataAttributes.Content, Column.ColumnTitleDisplayValue);
+      Html.AssertAttribute (th, DiagnosticMetadataAttributes.Content, Column.ColumnTitleDisplayValue.GetValue());
       Html.AssertAttribute (th, DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex, 7.ToString());
       Html.AssertAttribute (th, DiagnosticMetadataAttributesForObjectBinding.BocListColumnHasContentAttribute, "true");
     }
@@ -213,29 +214,14 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     public void TestDiagnosticMetadataRenderingWithTitleIsEmpty ()
     {
       IBocColumnRenderer renderer = new BocSimpleColumnRenderer (new FakeResourceUrlFactory(), RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition);
-      Column.ColumnTitle = "";
+      Column.ColumnTitle = WebString.Empty;
       var renderingContext = CreateRenderingContext();
 
       renderer.RenderTitleCell (renderingContext, SortingDirection.None, 0);
 
       var document = Html.GetResultDocument();
       var th = Html.GetAssertedChildElement (document, "th", 0);
-      Assert.That (Column.ColumnTitleDisplayValue, Is.Empty);
-      Html.AssertAttribute (th, DiagnosticMetadataAttributes.Content, string.Empty);
-    }
-
-    [Test]
-    public void TestDiagnosticMetadataRenderingInTitleWithTitleIsNull ()
-    {
-      IBocColumnRenderer renderer = new BocSimpleColumnRenderer (new FakeResourceUrlFactory(), RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition);
-      Column.ColumnTitle = null;
-      var renderingContext = CreateRenderingContext();
-
-      renderer.RenderTitleCell (renderingContext, SortingDirection.None, 0);
-
-      var document = Html.GetResultDocument();
-      var th = Html.GetAssertedChildElement (document, "th", 0);
-      Assert.That (Column.ColumnTitleDisplayValue, Is.Empty);
+      Assert.That (Column.ColumnTitleDisplayValue.ToString(), Is.Empty);
       Html.AssertAttribute (th, DiagnosticMetadataAttributes.Content, string.Empty);
     }
 
@@ -263,7 +249,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var titleSpan = Html.GetAssertedChildElement (sortCommandLink, "span", 0);
       Html.AssertAttribute (titleSpan, "id", List.Object.ClientID + "_0_Title");
-      Html.AssertTextNode (titleSpan, Column.ColumnTitleDisplayValue, 0);
+      Html.AssertTextNode (titleSpan, Column.ColumnTitleDisplayValue.ToString (WebStringEncoding.HtmlWithTransformedLineBreaks), 0);
 
       Html.AssertTextNode (sortCommandLink, HtmlHelper.WhiteSpace, 1);
 
