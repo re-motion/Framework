@@ -264,7 +264,7 @@ namespace Remotion.Web.UnitTests.Core.Globalization
     }
 
     [Test]
-    public void GetText_WithExistingResource_ReturnsWebString ()
+    public void GetText_WithExistingResource_ReturnsPlainTextString ()
     {
       const string resourceID = "resourceID";
       var outValue = "Test";
@@ -274,11 +274,10 @@ namespace Remotion.Web.UnitTests.Core.Globalization
           .Returns(true)
           .Verifiable();
 
-      var result = _resourceManagerMock.Object.GetText(resourceID);
+      PlainTextString result = _resourceManagerMock.Object.GetText(resourceID);
 
       _resourceManagerMock.Verify();
       Assert.That(result.GetValue(), Is.EqualTo("Test"));
-      Assert.That(result.Type, Is.EqualTo(WebStringType.PlainText));
     }
 
     [Test]
@@ -293,10 +292,9 @@ namespace Remotion.Web.UnitTests.Core.Globalization
     [Test]
     public void GetText_WithNonExistingResource_ReturnsWebStringWithResourceIDAsValue ()
     {
-      var result = _resourceManagerMock.Object.GetText(c_fakeResourceID);
+      PlainTextString result = _resourceManagerMock.Object.GetText(c_fakeResourceID);
 
       Assert.That(result.GetValue(), Is.EqualTo("fake"));
-      Assert.That(result.Type, Is.EqualTo(WebStringType.PlainText));
     }
 
     [Test]
@@ -329,12 +327,11 @@ namespace Remotion.Web.UnitTests.Core.Globalization
           .Returns(true)
           .Verifiable();
 
-      var result = _resourceManagerMock.Object.GetTextOrDefault(resourceID);
+      PlainTextString? result = _resourceManagerMock.Object.GetTextOrDefault(resourceID);
 
       _resourceManagerMock.Verify();
       Assert.That(result.HasValue, Is.True);
       Assert.That(result.Value.GetValue(), Is.EqualTo("Test"));
-      Assert.That(result.Value.Type, Is.EqualTo(WebStringType.PlainText));
     }
 
     [Test]
@@ -384,11 +381,10 @@ namespace Remotion.Web.UnitTests.Core.Globalization
           .Returns(true)
           .Verifiable();
 
-      var result = _resourceManagerMock.Object.GetText(enumValue);
+      PlainTextString result = _resourceManagerMock.Object.GetText(enumValue);
 
       _resourceManagerMock.Verify();
       Assert.That(result.GetValue(), Is.EqualTo("Test"));
-      Assert.That(result.Type, Is.EqualTo(WebStringType.PlainText));
     }
 
     [Test]
@@ -397,10 +393,9 @@ namespace Remotion.Web.UnitTests.Core.Globalization
       var enumValue = EnumWithMultiLingualNameAttribute.ValueWithLocalizedName;
       var enumResourceID = ResourceIdentifiersAttribute.GetResourceIdentifier(enumValue);
 
-      var result = _resourceManagerMock.Object.GetText(enumValue);
+      PlainTextString result = _resourceManagerMock.Object.GetText(enumValue);
 
       Assert.That(result.GetValue(), Is.EqualTo(enumResourceID));
-      Assert.That(result.Type, Is.EqualTo(WebStringType.PlainText));
     }
 
     [Test]
@@ -447,12 +442,11 @@ namespace Remotion.Web.UnitTests.Core.Globalization
           .Returns(true)
           .Verifiable();
 
-      var result = _resourceManagerMock.Object.GetTextOrDefault(enumValue);
+      PlainTextString? result = _resourceManagerMock.Object.GetTextOrDefault(enumValue);
 
       _resourceManagerMock.Verify();
       Assert.That(result.HasValue, Is.True);
       Assert.That(result.Value.GetValue(), Is.EqualTo("Test"));
-      Assert.That(result.Value.Type, Is.EqualTo(WebStringType.PlainText));
     }
 
     [Test]

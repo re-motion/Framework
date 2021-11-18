@@ -112,12 +112,18 @@ namespace Remotion.Web.Globalization
     /// <summary>
     /// Gets the value of the specified String resource as <see cref="WebString"/> of type <see cref="WebStringType.PlainText"/>.
     /// </summary>
+    /// <remarks>
+    /// Note that this methods can be used to assign <see cref="WebString"/> as <see cref="PlainTextString"/> implicitly converts to <see cref="WebString"/>.
+    /// </remarks>
     /// <param name="resourceManager">The <see cref="IResourceManager"/> that is used for the resource lookup. Must not be <see langword="null"/>.</param>
     /// <param name="id">The ID of the resource to get. Must not be <see langword="null"/>.</param>
     /// <returns>
     /// The value of the resource as <see cref="WebString"/> of type <see cref="WebStringType.PlainText"/>. If no match is possible, the identifier is returned.
     /// </returns>
-    public static WebString GetText (this IResourceManager resourceManager, string id) => GetWebString(resourceManager, id, WebStringType.PlainText);
+    public static PlainTextString GetText (this IResourceManager resourceManager, string id)
+    {
+      return resourceManager.GetWebString(id, WebStringType.PlainText).ToPlainTextString();
+    }
 
     /// <summary>
     /// Gets the value of the specified String resource as <see cref="WebString"/> of type <see cref="WebStringType.Encoded"/>.
@@ -132,12 +138,18 @@ namespace Remotion.Web.Globalization
     /// <summary>
     /// Gets the value of the specified String resource as <see cref="WebString"/> of type <see cref="WebStringType.PlainText"/>.
     /// </summary>
+    /// <remarks>
+    /// Note that this methods can be used to assign <see cref="WebString"/> as <see cref="PlainTextString"/> implicitly converts to <see cref="WebString"/>.
+    /// </remarks>
     /// <param name="resourceManager">The <see cref="IResourceManager"/> that is used for the resource lookup. Must not be <see langword="null"/>.</param>
     /// <param name="enumValue">The ID of the resource to get. Must not be <see langword="null"/>.</param>
     /// <returns>
     /// The value of the resource as <see cref="WebString"/> of type <see cref="WebStringType.PlainText"/>. If no match is possible, the identifier is returned.
     /// </returns>
-    public static WebString GetText (this IResourceManager resourceManager, Enum enumValue) => GetWebString(resourceManager, enumValue, WebStringType.PlainText);
+    public static PlainTextString GetText (this IResourceManager resourceManager, Enum enumValue)
+    {
+      return resourceManager.GetWebString(enumValue, WebStringType.PlainText).ToPlainTextString();
+    }
 
     /// <summary>
     /// Gets the value of the specified String resource as <see cref="WebString"/> of type <see cref="WebStringType.Encoded"/>.
@@ -152,12 +164,18 @@ namespace Remotion.Web.Globalization
     /// <summary>
     /// Gets the value of the specified String resource as <see cref="WebString"/> of type <see cref="WebStringType.PlainText"/>.
     /// </summary>
+    /// <remarks>
+    /// Note that this methods can be used to assign <see cref="WebString"/> as <see cref="PlainTextString"/> implicitly converts to <see cref="WebString"/>.
+    /// </remarks>
     /// <param name="resourceManager">The <see cref="IResourceManager"/> that is used for the resource lookup. Must not be <see langword="null"/>.</param>
     /// <param name="id">The ID of the resource to get. Must not be <see langword="null"/>.</param>
     /// <returns>
     /// The value of the resource as <see cref="WebString"/> of type <see cref="WebStringType.PlainText"/>. If no match is possible, <see langword="null"/> is returned.
     /// </returns>
-    public static WebString? GetTextOrDefault (this IResourceManager resourceManager, string id) => GetWebStringOrDefault(resourceManager, id, WebStringType.PlainText);
+    public static PlainTextString? GetTextOrDefault (this IResourceManager resourceManager, string id)
+    {
+      return resourceManager.GetWebStringOrDefault(id, WebStringType.PlainText)?.ToPlainTextString();
+    }
 
     /// <summary>
     /// Gets the value of the specified String resource as <see cref="WebString"/> of type <see cref="WebStringType.Encoded"/>.
@@ -172,13 +190,18 @@ namespace Remotion.Web.Globalization
     /// <summary>
     /// Gets the value of the specified String resource as <see cref="WebString"/> of type <see cref="WebStringType.PlainText"/>.
     /// </summary>
+    /// <remarks>
+    /// Note that this methods can be used to assign <see cref="WebString"/> as <see cref="PlainTextString"/> implicitly converts to <see cref="WebString"/>.
+    /// </remarks>
     /// <param name="resourceManager">The <see cref="IResourceManager"/> that is used for the resource lookup. Must not be <see langword="null"/>.</param>
     /// <param name="enumValue">The ID of the resource to get. Must not be <see langword="null"/>.</param>
     /// <returns>
     /// The value of the resource as <see cref="WebString"/> of type <see cref="WebStringType.PlainText"/>. If no match is possible, <see langword="null"/> is returned.
     /// </returns>
-    public static WebString? GetTextOrDefault (this IResourceManager resourceManager, Enum enumValue) =>
-        GetWebStringOrDefault(resourceManager, enumValue, WebStringType.PlainText);
+    public static PlainTextString? GetTextOrDefault (this IResourceManager resourceManager, Enum enumValue)
+    {
+      return resourceManager.GetWebStringOrDefault(enumValue, WebStringType.PlainText)?.ToPlainTextString();
+    }
 
     /// <summary>
     /// Gets the value of the specified String resource as <see cref="WebString"/> of type <see cref="WebStringType.Encoded"/>.
