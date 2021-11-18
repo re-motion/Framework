@@ -66,6 +66,7 @@ namespace Remotion.Web.UnitTests.Core
         new object[] { WebString.CreateFromText (string.Empty), string.Empty },
         new object[] { WebString.CreateFromText ("test"), "test" },
         new object[] { WebString.CreateFromText ("(html)test"), "(text)(html)test" },
+        new object[] { WebString.CreateFromText ("(text)test"), "(text)(text)test" },
         new object[] { WebString.CreateFromText ("test"), "test" },
         new object[] { WebString.CreateFromHtml ("test"), "(html)test" },
     };

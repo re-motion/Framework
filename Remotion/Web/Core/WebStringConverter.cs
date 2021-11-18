@@ -100,7 +100,7 @@ namespace Remotion.Web
 
       if (input.Type == WebStringType.PlainText)
       {
-        if (rawString.StartsWith (c_htmlPrefix))
+        if (rawString.StartsWith (c_htmlPrefix) || rawString.StartsWith (c_textPrefix))
           return c_textPrefix + rawString;
 
         return rawString;
