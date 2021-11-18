@@ -105,22 +105,22 @@ public class SmartLabel: WebControl, IControl
 
     string? forControlBackUp = ForControl;
     ForControl = ForControl ?? string.Empty;
-    string text = string.Empty;
+    WebString text;
 
     if (ForControl == string.Empty)
     {
-      text = "[Label]";
+      text = WebString.CreateFromText ("[Label]");
     }
     else
     {
       ISmartControl? smartControl = NamingContainer.FindControl (ForControl) as ISmartControl;
-      if (smartControl != null && smartControl.DisplayName != null)
+      if (smartControl != null && !smartControl.DisplayName.IsEmpty)
         text = smartControl.DisplayName;
       else
-        text = "[Label for " + ForControl + "]";
+        text = WebString.CreateFromText ("[Label for " + ForControl + "]");
     }
     ForControl = forControlBackUp;
-    return WebString.CreateFromText (text);
+    return text;
   }
 
   protected override void AddAttributesToRender(HtmlTextWriter writer)
