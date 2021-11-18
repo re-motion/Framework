@@ -255,6 +255,23 @@ namespace Remotion.Web.UnitTests.Core
       Assert.That (WebString.CreateFromText ("aoe   \" & ' < > é \r \n \r\n").ToString (WebStringEncoding.HtmlWithTransformedLineBreaks), Is.EqualTo ("aoe &#160; &quot; &amp; &#39; &lt; &gt; &#233; <br /> <br /> <br />"));
     }
 
+    [Test]
+    public void ToPlainTextString_WithPlainTextText_Succeeds ()
+    {
+      var plainTextString = WebString.CreateFromText ("test").ToPlainTextString();
+
+      Assert.That (plainTextString.GetValue(), Is.EqualTo ("test"));
+    }
+
+    [Test]
+    public void ToPlainTextString_WithEncodedText_ThrowsInvalidOperationException ()
+    {
+      Assert.That(
+          () => WebString.CreateFromHtml ("test").ToPlainTextString(),
+          Throws.TypeOf<InvalidOperationException>()
+              .And.Message.EqualTo ("Cannot convert to PlainTextString as the WebString is not of type 'PlainText'."));
+    }
+
     private string ExecuteWithHtmlTextWriter (Action<HtmlTextWriter> action)
     {
       var stringWriter = new StringWriter();
