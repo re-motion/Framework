@@ -22,6 +22,7 @@ using Remotion.Collections;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.Validation;
+using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
 namespace OBWTest
@@ -85,7 +86,7 @@ public class TestTabbedPersonJobsUserControl :
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Paste";
-    menuItem.Text = "Paste";
+    menuItem.Text = WebString.CreateFromText ("Paste");
     menuItem.Category = "Edit";
     menuItem.IsDisabled = true;
     menuItem.Command.Type = CommandType.Event;
@@ -93,7 +94,7 @@ public class TestTabbedPersonJobsUserControl :
   
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Delete";
-    menuItem.Text = "Delete";
+    menuItem.Text = WebString.CreateFromText ("Delete");
     menuItem.Category = "Edit";
     menuItem.Icon.Url = "Images/DeleteItem.gif";
     menuItem.DisabledIcon.Url = "Images/DeleteItemDisabled.gif";
@@ -112,7 +113,7 @@ public class TestTabbedPersonJobsUserControl :
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Open";
-    menuItem.Text = "Open";
+    menuItem.Text = WebString.CreateFromText ("Open");
     menuItem.Category = "Object";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Command.Type = CommandType.WxeFunction;
@@ -122,7 +123,7 @@ public class TestTabbedPersonJobsUserControl :
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Copy";
-    menuItem.Text = "Copy";
+    menuItem.Text = WebString.CreateFromText ("Copy");
     menuItem.Category = "Edit";
     menuItem.Icon.Url = "Images/CopyItem.gif";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
@@ -131,7 +132,7 @@ public class TestTabbedPersonJobsUserControl :
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Cut";
-    menuItem.Text = "Cut";
+    menuItem.Text = WebString.CreateFromText ("Cut");
     menuItem.Category = "Edit";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Command.Type = CommandType.Event;
@@ -139,21 +140,21 @@ public class TestTabbedPersonJobsUserControl :
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Paste";
-    menuItem.Text = "Paste";
+    menuItem.Text = WebString.CreateFromText ("Paste");
     menuItem.Category = "Edit";
     menuItem.Command.Type = CommandType.Event;
     ListField.OptionsMenuItems.Add (menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Duplicate";
-    menuItem.Text = "Duplicate";
+    menuItem.Text = WebString.CreateFromText ("Duplicate");
     menuItem.Category = "Edit";
     menuItem.Command.Type = CommandType.Event;
     ListField.OptionsMenuItems.Add (menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Delete";
-    menuItem.Text = "Delete";
+    menuItem.Text = WebString.CreateFromText ("Delete");
     menuItem.Category = "Edit";
     menuItem.Icon.Url = "Images/DeleteItem.gif";
     menuItem.DisabledIcon.Url = "Images/DeleteItemDisabled.gif";

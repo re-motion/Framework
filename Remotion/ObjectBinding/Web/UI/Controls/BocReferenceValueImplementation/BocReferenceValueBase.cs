@@ -30,7 +30,9 @@ using Remotion.ObjectBinding.Web.Services;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Web;
 using Remotion.Web.ExecutionEngine;
+using Remotion.Web.Globalization;
 using Remotion.Web.Services;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
@@ -157,7 +159,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     private readonly Style _commonStyle;
     private readonly Style _labelStyle;
-    private string _optionsTitle;
+    private WebString _optionsTitle;
     private bool _showOptionsMenu = true;
     private Unit _optionsMenuWidth = Unit.Empty;
     private bool _reserveOptionsMenuWidth = false;
@@ -206,7 +208,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     protected abstract string GetNullItemErrorMessage ();
 
-    protected abstract string GetOptionsMenuTitle ();
+    protected abstract WebString GetOptionsMenuTitle ();
 
     protected abstract string GetSelectionCountScript ();
 
@@ -312,8 +314,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     /// </value>
     [Category ("Menu")]
     [Description ("The text that is rendered as a label for the options menu.")]
-    [DefaultValue ("")]
-    public string OptionsTitle
+    [DefaultValue (typeof (WebString), "")]
+    public WebString OptionsTitle
     {
       get { return _optionsTitle; }
       set { _optionsTitle = value; }
@@ -837,9 +839,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       //if (!string.IsNullOrEmpty (key))
       //  NullItemErrorMessage = resourceManager.GetString (key);
   
-      var key = ResourceManagerUtility.GetGlobalResourceKey (OptionsTitle);
+      var key = ResourceManagerUtility.GetGlobalResourceKey (OptionsTitle.GetValue());
       if (! string.IsNullOrEmpty (key))
-        OptionsTitle = resourceManager.GetString (key);
+        OptionsTitle = resourceManager.GetWebString (key, OptionsTitle.Type);
 
       OptionsMenuItems.LoadResources (resourceManager, globalizationService);
     }
@@ -854,7 +856,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     {
       OptionsMenu.Enabled = Enabled;
       OptionsMenu.IsReadOnly = IsReadOnly;
-      if (string.IsNullOrEmpty (OptionsTitle))
+      if (OptionsTitle.IsEmpty)
       {
         OptionsMenu.TitleText = GetOptionsMenuTitle();
       }

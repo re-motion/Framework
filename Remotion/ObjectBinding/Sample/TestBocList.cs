@@ -17,6 +17,7 @@
 using System;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Utilities;
+using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Sample
@@ -38,28 +39,28 @@ namespace Remotion.ObjectBinding.Sample
       WebMenuItem[] menuItems = new WebMenuItem[5];
       var menuItem0 = new WebMenuItem();
       menuItem0.ItemID = listIndex.ToString() + "_0";
-      menuItem0.Text = menuItem0.ItemID;
+      menuItem0.Text = WebString.CreateFromText (menuItem0.ItemID);
       menuItems[0] = menuItem0;
 
       var menuItem1 = new TestBocMenuItem (businessObject);
       menuItem1.ItemID = listIndex.ToString() + "_1";
-      menuItem1.Text = menuItem1.ItemID;
+      menuItem1.Text = WebString.CreateFromText (menuItem1.ItemID);
       menuItems[1] = menuItem1;
 
       var menuItem2 = new WebMenuItem();
       menuItem2.ItemID = listIndex.ToString() + "_2";
-      menuItem2.Text =  menuItem2.ItemID;
+      menuItem2.Text =  WebString.CreateFromText (menuItem2.ItemID);
       menuItems[2] = menuItem2;
 
       var menuItem3 = new WebMenuItem();
       menuItem3.ItemID = "FilterByService";
-      menuItem3.Text = "Should be filtered";
+      menuItem3.Text = WebString.CreateFromText ("Should be filtered");
       menuItem3.IsVisible = true;
       menuItems[3] = menuItem3;
 
       var menuItem4 = new WebMenuItem();
       menuItem4.ItemID = "DisabledByService";
-      menuItem4.Text = "Should be disabled";
+      menuItem4.Text = WebString.CreateFromText ("Should be disabled");
       menuItem4.IsDisabled = false;
       menuItems[4] = menuItem4;
 

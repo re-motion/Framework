@@ -24,6 +24,7 @@ using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Utilities;
+using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
 namespace OBWTest
@@ -121,7 +122,7 @@ public class CompleteBocUserControl :
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Open";
-    menuItem.Text = "Open";
+    menuItem.Text = WebString.CreateFromText ("Open");
     menuItem.Category = "Object";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Command.Type = CommandType.WxeFunction;
@@ -131,7 +132,7 @@ public class CompleteBocUserControl :
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Copy";
-    menuItem.Text = "Copy";
+    menuItem.Text = WebString.CreateFromText ("Copy");
     menuItem.Category = "Edit";
     menuItem.Icon.Url = "Images/CopyItem.gif";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
@@ -140,7 +141,7 @@ public class CompleteBocUserControl :
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Cut";
-    menuItem.Text = "Cut";
+    menuItem.Text = WebString.CreateFromText ("Cut");
     menuItem.Category = "Edit";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Command.Type = CommandType.Event;
@@ -148,14 +149,14 @@ public class CompleteBocUserControl :
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Paste";
-    menuItem.Text = "Paste";
+    menuItem.Text = WebString.CreateFromText ("Paste");
     menuItem.Category = "Edit";
     menuItem.Command.Type = CommandType.Event;
     ReferenceField.OptionsMenuItems.Add (menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Delete";
-    menuItem.Text = "Delete";
+    menuItem.Text = WebString.CreateFromText ("Delete");
     menuItem.Category = "Edit";
     menuItem.Icon.Url = "Images/DeleteItem.gif";
     menuItem.DisabledIcon.Url = "Images/DeleteItemDisabled.gif";

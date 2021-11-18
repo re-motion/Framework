@@ -22,6 +22,7 @@ using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.Utilities;
+using Remotion.Web;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Globalization;
@@ -93,7 +94,7 @@ public class BocReferenceValueUserControl : BaseUserControl
 
     WebMenuItem menuItem = new WebMenuItem();
     menuItem.ItemID = "webmenuitem";
-    menuItem.Text = "webmenuitem";
+    menuItem.Text = WebString.CreateFromText ("webmenuitem");
     PartnerField.OptionsMenuItems.Add (menuItem);
 
     InitalizeReferenceValueMenuItems (PartnerField);
@@ -110,13 +111,13 @@ public class BocReferenceValueUserControl : BaseUserControl
     BocMenuItem menuItem = null;
 
     menuItem = new BocMenuItem();
-    menuItem.Text = "Invisible Item";
+    menuItem.Text = WebString.CreateFromText ("Invisible Item");
     menuItem.IsVisible = false;
     referenceValue.OptionsMenuItems.Add (menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Open";
-    menuItem.Text = "Open";
+    menuItem.Text = WebString.CreateFromText ("Open");
     menuItem.Category = "Object";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Command.Type = CommandType.WxeFunction;
@@ -126,7 +127,7 @@ public class BocReferenceValueUserControl : BaseUserControl
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Copy";
-    menuItem.Text = "Copy";
+    menuItem.Text = WebString.CreateFromText ("Copy");
     menuItem.Category = "Edit";
     menuItem.Icon.Url = "~/Images/CopyItem.gif";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
@@ -135,7 +136,7 @@ public class BocReferenceValueUserControl : BaseUserControl
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Cut";
-    menuItem.Text = "Cut";
+    menuItem.Text = WebString.CreateFromText ("Cut");
     menuItem.Category = "Edit";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Command.Type = CommandType.Event;
@@ -143,14 +144,14 @@ public class BocReferenceValueUserControl : BaseUserControl
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Paste";
-    menuItem.Text = "Paste";
+    menuItem.Text = WebString.CreateFromText ("Paste");
     menuItem.Category = "Edit";
     menuItem.Command.Type = CommandType.Event;
     referenceValue.OptionsMenuItems.Add (menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Delete";
-    menuItem.Text = "Delete";
+    menuItem.Text = WebString.CreateFromText ("Delete");
     menuItem.Category = "Edit";
     menuItem.Icon.Url = "~/Images/DeleteItem.gif";
     menuItem.DisabledIcon.Url = "~/Images/DeleteItemDisabled.gif";
@@ -160,7 +161,7 @@ public class BocReferenceValueUserControl : BaseUserControl
     referenceValue.OptionsMenuItems.Add (menuItem);
 
     menuItem = new BocMenuItem();
-    menuItem.Text = "Invisible Item";
+    menuItem.Text = WebString.CreateFromText ("Invisible Item");
     menuItem.IsVisible = false;
     referenceValue.OptionsMenuItems.Add (menuItem);
 
@@ -170,7 +171,7 @@ public class BocReferenceValueUserControl : BaseUserControl
 
       menuItem = new BocMenuItem();
       menuItem.ItemID = "FilterByService";
-      menuItem.Text = "Should be filtered";
+      menuItem.Text = WebString.CreateFromText ("Should be filtered");
       menuItem.IsVisible = true;
       referenceValue.OptionsMenuItems.Add (menuItem);
 
@@ -178,7 +179,7 @@ public class BocReferenceValueUserControl : BaseUserControl
 
       menuItem = new BocMenuItem();
       menuItem.ItemID = "DisabledByService";
-      menuItem.Text = "Should be disabled";
+      menuItem.Text = WebString.CreateFromText ("Should be disabled");
       menuItem.IsDisabled = false;
       referenceValue.OptionsMenuItems.Add (menuItem);
     }
@@ -277,7 +278,7 @@ public class BocReferenceValueUserControl : BaseUserControl
 
   private void PartnerField_MenuItemClick(object sender, WebMenuItemClickEventArgs e)
   {
-    PartnerFieldMenuClickEventArgsLabel.Text = e.Item.Text;
+    PartnerFieldMenuClickEventArgsLabel.Text = e.Item.Text.ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
   }
 
   #region Web Form Designer generated code

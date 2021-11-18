@@ -24,6 +24,7 @@ using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
+using Remotion.Web;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 
@@ -41,7 +42,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       Column = new BocDropDownMenuColumnDefinition();
       Column.ColumnTitle = "FirstColumn";
-      Column.MenuTitleText = "Menu Title";
+      Column.MenuTitleText = WebString.CreateFromText ("Menu Title");
       Column.MenuTitleIcon = new IconInfo ("~/Images/MenuTitleIcon.gif", 16, 16);
 
       _bocListCssClassDefinition = new BocListCssClassDefinition();
@@ -69,7 +70,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           new WebMenuItem (
               "itemId",
               "category",
-              "text",
+              WebString.CreateFromText ("text"),
               new IconInfo ("~/Images/NullImage.gif"),
               new IconInfo ("~/Images/NullImage.gif"),
               WebMenuItemStyle.Text,

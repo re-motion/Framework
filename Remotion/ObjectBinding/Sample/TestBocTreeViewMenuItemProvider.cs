@@ -17,6 +17,7 @@
 using System;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Utilities;
+using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Sample
@@ -32,22 +33,22 @@ namespace Remotion.ObjectBinding.Sample
       ArgumentUtility.CheckNotNull ("node", node);
 
       WebMenuItem eventMenuItem = new WebMenuItem();
-      eventMenuItem.Text = "Event";
+      eventMenuItem.Text = WebString.CreateFromText ("Event");
       eventMenuItem.Command.Type = CommandType.Event;
 
       WebMenuItem wxeMenuItem = new WebMenuItem();
-      wxeMenuItem.Text = "WXE";
+      wxeMenuItem.Text = WebString.CreateFromText ("WXE");
       wxeMenuItem.Command.Type = CommandType.WxeFunction;
       wxeMenuItem.Command.WxeFunctionCommand.TypeName = TypeUtility.GetPartialAssemblyQualifiedName (typeof (TestWxeFunction));
 
       WebMenuItem filteredByServiceMenuItem = new WebMenuItem();
       filteredByServiceMenuItem.ItemID = "FilterByService";
-      filteredByServiceMenuItem.Text = "Should be filtered";
+      filteredByServiceMenuItem.Text = WebString.CreateFromText ("Should be filtered");
       filteredByServiceMenuItem.IsVisible = true;
 
       WebMenuItem disabledByServiceMenuItem = new WebMenuItem();
       disabledByServiceMenuItem.ItemID = "DisabledByService";
-      disabledByServiceMenuItem.Text = "Should be disabled";
+      disabledByServiceMenuItem.Text = WebString.CreateFromText ("Should be disabled");
       disabledByServiceMenuItem.IsDisabled = false;
 
       WebMenuItem[] menuItems = new WebMenuItem[]

@@ -32,6 +32,8 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Ren
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Validation;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Web;
+using Remotion.Web.Globalization;
 using Remotion.Web.Services;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
@@ -406,9 +408,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return GetResourceManager().GetString (ResourceIdentifier.NullItemErrorMessage);
     }
 
-    protected override sealed string GetOptionsMenuTitle ()
+    protected override sealed WebString GetOptionsMenuTitle ()
     {
-      return GetResourceManager().GetString (ResourceIdentifier.OptionsTitle);
+      return GetResourceManager().GetText (ResourceIdentifier.OptionsTitle);
     }
 
     protected override sealed string GetSelectionCountScript ()

@@ -70,7 +70,7 @@ namespace Remotion.Web.Test.Shared.UpdatePanelTests
 
       WebMenuItem menuItem = new WebMenuItem ();
       menuItem.ItemID = "Item" + PostBackCount;
-      menuItem.Text = "Item " + PostBackCount;
+      menuItem.Text = WebString.CreateFromText ("Item " + PostBackCount);
       DropDownMenuInsideUpdatePanel.MenuItems.Add (menuItem);
     }
 
