@@ -29,6 +29,7 @@ using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
+using Remotion.Web.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Rendering
 {
@@ -94,7 +95,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       var labelControl = new Label { ID = renderingContext.Control.ClientID + "_Description", ClientIDMode = ClientIDMode.Static };
       var checkBoxVisualizerControl = new HtmlGenericControl { ID = null, TagName = "span" };
 
-      string description = GetDescription (renderingContext);
+      WebString description = GetDescription (renderingContext);
       var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
 
       if (renderingContext.Control.IsReadOnly)
@@ -207,8 +208,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       string script = " ("
                       + checkBox + ", "
                       + label + ", "
-                      + (string.IsNullOrEmpty (renderingContext.Control.TrueDescription) ? "null" : "'" + renderingContext.Control.TrueDescription + "'") + ", "
-                      + (string.IsNullOrEmpty (renderingContext.Control.FalseDescription) ? "null" : "'" + renderingContext.Control.FalseDescription + "'") + ");";
+                      + (renderingContext.Control.TrueDescription.IsEmpty
+                          ? "null"
+                          : "'" + ScriptUtility.EscapeClientScript (renderingContext.Control.TrueDescription.ToString (WebStringEncoding.HtmlWithTransformedLineBreaks)) + "'") + ", "
+                      + (renderingContext.Control.FalseDescription.IsEmpty
+                          ? "null"
+                          : "'" + ScriptUtility.EscapeClientScript (renderingContext.Control.FalseDescription.ToString (WebStringEncoding.HtmlWithTransformedLineBreaks)) + "'") + ");";
 
       if (renderingContext.Control.IsAutoPostBackEnabled)
         script += renderingContext.Control.Page.ClientScript.GetPostBackEventReference (renderingContext.Control, "") + ";";
@@ -222,12 +227,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
 
       string startupScript = string.Format (
           "BocCheckBox.InitializeGlobals ('{0}', '{1}');",
-          renderingContext.Control.DefaultTrueDescription,
-          renderingContext.Control.DefaultFalseDescription);
+          ScriptUtility.EscapeClientScript (renderingContext.Control.DefaultTrueDescription.ToString (WebStringEncoding.HtmlWithTransformedLineBreaks)),
+          ScriptUtility.EscapeClientScript (renderingContext.Control.DefaultFalseDescription.ToString (WebStringEncoding.HtmlWithTransformedLineBreaks)));
       renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock (renderingContext.Control, typeof (BocCheckBoxRenderer), s_startUpScriptKey, startupScript);
     }
 
-    private void PrepareImage (BocCheckBoxRenderingContext renderingContext, Image imageControl, string description)
+    private void PrepareImage (BocCheckBoxRenderingContext renderingContext, Image imageControl, WebString description)
     {
       var imageUrl = ResourceUrlFactory.CreateThemedResourceUrl (
           typeof (HtmlHeadAppenderExtensions),
@@ -235,31 +240,37 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
           renderingContext.Control.Value.Value ? c_trueIcon : c_falseIcon);
 
       imageControl.ImageUrl = imageUrl.GetUrl();
-      imageControl.AlternateText = description ?? string.Empty;
+      imageControl.AlternateText = description.GetValue();
       imageControl.GenerateEmptyAlternateText = true;
     }
 
-    private void PrepareLabel (BocCheckBoxRenderingContext renderingContext, string description, Label labelControl)
+    private void PrepareLabel (BocCheckBoxRenderingContext renderingContext, WebString description, Label labelControl)
     {
       labelControl.CssClass = "description";
-      labelControl.Text = description;
+      labelControl.Text = description.ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
       labelControl.Width = Unit.Empty;
       labelControl.Height = Unit.Empty;
       labelControl.ApplyStyle (renderingContext.Control.LabelStyle);
     }
 
-    private string GetDescription (BocCheckBoxRenderingContext renderingContext)
+    private WebString GetDescription (BocCheckBoxRenderingContext renderingContext)
     {
-      string trueDescription = null;
-      string falseDescription = null;
+      WebString trueDescription = WebString.Empty;
+      WebString falseDescription = WebString.Empty;
       if (renderingContext.Control.IsDescriptionEnabled)
       {
-        string defaultTrueDescription = renderingContext.Control.DefaultTrueDescription;
-        string defaultFalseDescription = renderingContext.Control.DefaultFalseDescription;
+        WebString defaultTrueDescription = renderingContext.Control.DefaultTrueDescription;
+        WebString defaultFalseDescription = renderingContext.Control.DefaultFalseDescription;
 
-        trueDescription = (string.IsNullOrEmpty (renderingContext.Control.TrueDescription) ? defaultTrueDescription : renderingContext.Control.TrueDescription);
-        falseDescription = (string.IsNullOrEmpty (renderingContext.Control.FalseDescription) ? defaultFalseDescription : renderingContext.Control.FalseDescription);
+        trueDescription = renderingContext.Control.TrueDescription.IsEmpty
+            ? defaultTrueDescription
+            : renderingContext.Control.TrueDescription;
+
+        falseDescription = renderingContext.Control.FalseDescription.IsEmpty
+            ? defaultFalseDescription
+            : renderingContext.Control.FalseDescription;
       }
+
       return renderingContext.Control.Value.Value ? trueDescription : falseDescription;
     }
 

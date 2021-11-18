@@ -29,6 +29,8 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Rende
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Validation;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Web;
+using Remotion.Web.Globalization;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Globalization;
@@ -220,13 +222,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       base.LoadResources (resourceManager, globalizationService);
 
       string key;
-      key = ResourceManagerUtility.GetGlobalResourceKey (TrueDescription);
+      key = ResourceManagerUtility.GetGlobalResourceKey (TrueDescription.GetValue());
       if (! string.IsNullOrEmpty (key))
-        TrueDescription = resourceManager.GetString (key);
+        TrueDescription = resourceManager.GetWebString (key, TrueDescription.Type);
 
-      key = ResourceManagerUtility.GetGlobalResourceKey (FalseDescription);
+      key = ResourceManagerUtility.GetGlobalResourceKey (FalseDescription.GetValue());
       if (! string.IsNullOrEmpty (key))
-        FalseDescription = resourceManager.GetString (key);
+        FalseDescription = resourceManager.GetWebString (key, FalseDescription.Type);
     }
 
     /// <summary> 
@@ -432,14 +434,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return IsDescriptionEnabled; }
     }
 
-    string IBocCheckBox.DefaultTrueDescription
+    WebString IBocCheckBox.DefaultTrueDescription
     {
-      get { return GetResourceManager().GetString (ResourceIdentifier.TrueDescription); }
+      get { return GetResourceManager().GetText (ResourceIdentifier.TrueDescription); }
     }
 
-    string IBocCheckBox.DefaultFalseDescription
+    WebString IBocCheckBox.DefaultFalseDescription
     {
-      get { return GetResourceManager().GetString (ResourceIdentifier.FalseDescription); }
+      get { return GetResourceManager().GetText (ResourceIdentifier.FalseDescription); }
     }
 
     protected override string ControlType

@@ -23,6 +23,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.Utilities;
+using Remotion.Web;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 
@@ -35,9 +36,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
   public abstract class BocBooleanValueBase : BusinessObjectBoundEditableWebControl, IBocBooleanValueBase, IPostBackDataHandler, IFocusableControl
   {
     private bool? _autoPostBack;
-    private string _trueDescription = string.Empty;
-    private string _falseDescription = string.Empty;
-    private string _nullDescription = string.Empty;
+    private WebString _trueDescription = WebString.Empty;
+    private WebString _falseDescription = WebString.Empty;
+    private WebString _nullDescription = WebString.Empty;
 
     /// <summary> Flag that determines whether the client script will be rendered. </summary>
 
@@ -220,13 +221,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
 
     /// <summary> Gets or sets the description displayed when the checkbox is set to <see langword="true"/>. </summary>
     /// <value> 
-    ///   The text displayed for <see langword="true"/>. The default value is an empty <see cref="String"/>.
+    ///   The text displayed for <see langword="true"/>. The default value is an empty <see cref="WebString"/>.
     ///   In case of the default value, the text is read from the resources for this control.
     /// </value>
     [Description ("The description displayed when the checkbox is set to True.")]
     [Category ("Appearance")]
-    [DefaultValue ("")]
-    public string TrueDescription
+    [DefaultValue (typeof (WebString), "")]
+    public WebString TrueDescription
     {
       get { return _trueDescription; }
       set { _trueDescription = value; }
@@ -234,13 +235,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
 
     /// <summary> Gets or sets the description displayed when the checkbox is set to <see langword="false"/>. </summary>
     /// <value> 
-    ///   The text displayed for <see langword="false"/>. The default value is an empty <see cref="String"/>.
+    ///   The text displayed for <see langword="false"/>. The default value is an empty <see cref="WebString"/>.
     ///   In case of the default value, the text is read from the resources for this control.
     /// </value>
     [Description ("The description displayed when the checkbox is set to False.")]
     [Category ("Appearance")]
-    [DefaultValue ("")]
-    public string FalseDescription
+    [DefaultValue (typeof (WebString), "")]
+    public WebString FalseDescription
     {
       get { return _falseDescription; }
       set { _falseDescription = value; }
@@ -248,13 +249,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
 
     /// <summary> Gets or sets the description displayed when the checkbox is set to <see langword="null"/>. </summary>
     /// <value> 
-    ///   The text displayed for <see langword="null"/>. The default value is an empty <see cref="String"/>.
+    ///   The text displayed for <see langword="null"/>. The default value is an empty <see cref="WebString"/>.
     ///   In case of the default value, the text is read from the resources for this control.
     /// </value>
     [Description ("The description displayed when the checkbox is set to null.")]
     [Category ("Appearance")]
-    [DefaultValue ("")]
-    public string NullDescription
+    [DefaultValue (typeof (WebString), "")]
+    public WebString NullDescription
     {
       get { return _nullDescription; }
       set { _nullDescription = value; }
