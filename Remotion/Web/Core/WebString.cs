@@ -176,6 +176,20 @@ namespace Remotion.Web
       }
     }
 
+    /// <summary>
+    /// Converts this <see cref="WebString"/> into a <see cref="PlainTextString"/> if <see cref="Type"/> is <see cref="WebStringType.PlainText"/>.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">
+    ///   The <see cref="WebString"/> does not have the type <see cref="WebStringType.PlainText"/>
+    /// </exception>
+    /// <returns>Returns the created <see cref="PlainTextString"/>.</returns>
+    public PlainTextString ToPlainTextString ()
+    {
+      return Type == WebStringType.PlainText
+          ? PlainTextString.CreateFromText (_value)
+          : throw new InvalidOperationException ("Cannot convert to PlainTextString as the WebString is not of type 'PlainText'.");
+    }
+
     /// <inheritdoc />
     public bool Equals (WebString other)
     {
