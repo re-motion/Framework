@@ -691,11 +691,6 @@ class DropDownMenu
     return item;
   }
 
-  public static OnHeadControlClick(): void
-  {
-    DropDownMenu._itemClicked = true;
-  }
-
   private static OnItemClick (this: HTMLAnchorElement): boolean
   {
     if (this.href == null || this.href === '')
