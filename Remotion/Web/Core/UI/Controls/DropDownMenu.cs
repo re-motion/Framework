@@ -29,8 +29,6 @@ namespace Remotion.Web.UI.Controls
   /// <include file='..\..\doc\include\UI\Controls\DropDownMenu.xml' path='DropDownMenu/Class/*' />
   public class DropDownMenu : MenuBase, IDropDownMenu
   {
-    /// <summary> Only used by control developers. </summary>
-    public static readonly string OnHeadTitleClickScript = "DropDownMenu.OnHeadControlClick();";
     #region Obsolete
 
     [Obsolete ("This feature has removed. (Version 3.0.0)", true)]
