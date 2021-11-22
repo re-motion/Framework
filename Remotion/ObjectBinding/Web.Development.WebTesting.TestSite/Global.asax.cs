@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
       if (!Directory.Exists(objectPath))
         Directory.CreateDirectory(objectPath);
 
-      SetRenderingFeatures(RenderingFeatures.WithDiagnosticMetadata, new ResourceTheme.NovaGray());
+      SetRenderingFeatures(RenderingFeatures.WithDiagnosticMetadata, new ResourceTheme.NovaViso());
       SetObjectStorageProvider(objectPath);
       RegisterAutoCompleteService();
       RegisterIconService();

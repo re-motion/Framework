@@ -30,7 +30,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
     protected void Application_Start (object sender, EventArgs e)
     {
       RegisterResourceVirtualPathProvider();
-      SetRenderingFeatures(RenderingFeatures.WithDiagnosticMetadata, new ResourceTheme.NovaGray());
+      SetRenderingFeatures(RenderingFeatures.WithDiagnosticMetadata, new ResourceTheme.NovaViso());
     }
 
     protected void Application_BeginRequest (Object sender, EventArgs e)
