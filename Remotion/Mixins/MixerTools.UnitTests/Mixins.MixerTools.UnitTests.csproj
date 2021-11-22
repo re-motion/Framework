@@ -25,7 +25,6 @@
     <ProjectReference Include="..\MixerTools\Mixins.MixerTools.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CoreRhinoMocks" Version="3.6.1.2" PrivateAssets="all" />
     <PackageReference Include="Remotion.TypePipe.Development" Version="3.0.0-alpha.1" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />

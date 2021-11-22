@@ -15,10 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Mixins.Definitions;
 using Remotion.Mixins.UnitTests.Core.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Mixins.UnitTests.Core.Definitions
 {
@@ -28,12 +28,12 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions
     [Test]
     public void ChildSpecificAccept_CallsVisitForClass ()
     {
-      var visitorMock = MockRepository.GenerateMock<IDefinitionVisitor>();
+      var visitorMock = new Mock<IDefinitionVisitor>();
       var targetClassDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof(BaseType1));
 
-      targetClassDefinition.Accept(visitorMock);
+      targetClassDefinition.Accept(visitorMock.Object);
 
-      visitorMock.AssertWasCalled(mock => mock.Visit(targetClassDefinition));
+      visitorMock.Verify(mock => mock.Visit(targetClassDefinition), Times.AtLeastOnce());
     }
 
     [Test]
@@ -46,33 +46,29 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions
       var requiredMixinTypeDefinition = DefinitionObjectMother.CreateRequiredMixinTypeDefinition(targetClassDefinition, typeof(BT1Mixin2));
       var composedInterfaceDependencyDefinition = DefinitionObjectMother.CreateComposedInterfaceDependencyDefinition(targetClassDefinition);
 
-      var visitorMock = MockRepository.GenerateMock<IDefinitionVisitor>();
-      using (visitorMock.GetMockRepository().Ordered())
-      {
-        visitorMock.Expect(mock => mock.Visit(targetClassDefinition));
-        visitorMock.Expect(mock => mock.Visit(mixinDefinition));
-        visitorMock.Expect(mock => mock.Visit(requiredTargetCallTypeDefinition));
-        visitorMock.Expect(mock => mock.Visit(requiredNextCallTypeDefinition));
-        visitorMock.Expect(mock => mock.Visit(requiredMixinTypeDefinition));
-        visitorMock.Expect(mock => mock.Visit(composedInterfaceDependencyDefinition));
-      }
+      var visitorMock = new Mock<IDefinitionVisitor>();
+      var sequence = new MockSequence();
+      visitorMock.InSequence(sequence).Setup(mock => mock.Visit(targetClassDefinition)).Verifiable();
+      visitorMock.InSequence(sequence).Setup(mock => mock.Visit(mixinDefinition)).Verifiable();
+      visitorMock.InSequence(sequence).Setup(mock => mock.Visit(requiredTargetCallTypeDefinition)).Verifiable();
+      visitorMock.InSequence(sequence).Setup(mock => mock.Visit(requiredNextCallTypeDefinition)).Verifiable();
+      visitorMock.InSequence(sequence).Setup(mock => mock.Visit(requiredMixinTypeDefinition)).Verifiable();
+      visitorMock.InSequence(sequence).Setup(mock => mock.Visit(composedInterfaceDependencyDefinition)).Verifiable();
 
-      visitorMock.Replay();
+      targetClassDefinition.Accept(visitorMock.Object);
 
-      targetClassDefinition.Accept(visitorMock);
-
-      visitorMock.VerifyAllExpectations();
+      visitorMock.Verify();
     }
 
     [Test]
     public void ChildSpecificAccept_CallsVisitForMixins ()
     {
-      var visitorMock = MockRepository.GenerateMock<IDefinitionVisitor>();
+      var visitorMock = new Mock<IDefinitionVisitor>();
       var targetClassDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof(BaseType1), typeof(BT1Mixin1));
 
-      targetClassDefinition.Accept(visitorMock);
+      targetClassDefinition.Accept(visitorMock.Object);
 
-      visitorMock.AssertWasCalled(mock => mock.Visit(targetClassDefinition.Mixins[0]));
+      visitorMock.Verify(mock => mock.Visit(targetClassDefinition.Mixins[0]), Times.AtLeastOnce());
     }
 
     [Test]

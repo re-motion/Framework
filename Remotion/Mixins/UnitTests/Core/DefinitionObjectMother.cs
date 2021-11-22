@@ -17,6 +17,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Mixins.Context;
@@ -24,7 +25,6 @@ using Remotion.Mixins.Definitions;
 using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Remotion.TypePipe.MutableReflection.Implementation;
 using Remotion.Utilities;
-using Rhino.Mocks;
 
 namespace Remotion.Mixins.UnitTests.Core
 {
@@ -143,7 +143,7 @@ namespace Remotion.Mixins.UnitTests.Core
       ArgumentUtility.CheckNotNull("definition", definition);
 
       var attributeDefinitionFake = CreateAttributeDefinition(definition);
-      var suppressedAttributeIntroduction = new SuppressedAttributeIntroductionDefinition(MockRepository.GenerateMock<IAttributeIntroductionTarget>(), attributeDefinitionFake, attributeDefinitionFake);
+      var suppressedAttributeIntroduction = new SuppressedAttributeIntroductionDefinition(new Mock<IAttributeIntroductionTarget>().Object, attributeDefinitionFake, attributeDefinitionFake);
       PrivateInvoke.InvokeNonPublicMethod(definition.SuppressedAttributeIntroductions, "Add", suppressedAttributeIntroduction);
       return suppressedAttributeIntroduction;
     }
@@ -163,7 +163,7 @@ namespace Remotion.Mixins.UnitTests.Core
       ArgumentUtility.CheckNotNull("definition", definition);
 
       var attributeDefinitionFake = CreateAttributeDefinition(definition);
-      var attributeIntroduction = new AttributeIntroductionDefinition(MockRepository.GenerateMock<IAttributeIntroductionTarget>(), attributeDefinitionFake);
+      var attributeIntroduction = new AttributeIntroductionDefinition(new Mock<IAttributeIntroductionTarget>().Object, attributeDefinitionFake);
       PrivateInvoke.InvokeNonPublicMethod(definition.AttributeIntroductions, "Add", attributeIntroduction);
       return attributeIntroduction;
     }

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Mixins.Samples.CompositionPattern.Core.Domain;
 using Remotion.Mixins.Samples.CompositionPattern.Core.ExternalDomainMixins;
@@ -26,7 +27,7 @@ namespace Remotion.Mixins.Samples.CompositionPattern.UnitTests.ExternalDomainMix
   public class MunicipalDocumentMixinTest
   {
     private MunicipalDocumentMixin _mixin;
-    private ITarget _targetStub;
+    private Mock<ITarget> _targetStub;
 
     public interface ITarget : ITenantBoundObject, IMunicipalSettlement
     {
@@ -43,7 +44,9 @@ namespace Remotion.Mixins.Samples.CompositionPattern.UnitTests.ExternalDomainMix
     {
       Assert.That(_mixin.Title, Is.Null);
 
-      _targetStub.MunicipalityID = 13;
+      _targetStub.SetupProperty(_ => _.MunicipalityID);
+
+      _targetStub.Object.MunicipalityID = 13;
       _mixin.Title = "Test";
 
       Assert.That(_mixin.Title, Is.EqualTo("Test (for municipality 13)"));
@@ -52,8 +55,11 @@ namespace Remotion.Mixins.Samples.CompositionPattern.UnitTests.ExternalDomainMix
     [Test]
     public void TargetCommitting_ReplacesNullTitle ()
     {
-      _targetStub.Tenant = "TheTenant";
-      _targetStub.MunicipalityID = 13;
+      _targetStub.SetupProperty(_ => _.Tenant);
+      _targetStub.SetupProperty(_ => _.MunicipalityID);
+
+      _targetStub.Object.Tenant = "TheTenant";
+      _targetStub.Object.MunicipalityID = 13;
       Assert.That(_mixin.Title, Is.Null);
 
       _mixin.TargetEvents.OnCommitting();
@@ -64,7 +70,9 @@ namespace Remotion.Mixins.Samples.CompositionPattern.UnitTests.ExternalDomainMix
     [Test]
     public void TargetCommitting_LeavesNonEmptyTitle ()
     {
-      _targetStub.MunicipalityID = 13;
+      _targetStub.SetupProperty(_ => _.MunicipalityID);
+
+      _targetStub.Object.MunicipalityID = 13;
       _mixin.Title = "Blah";
 
       _mixin.TargetEvents.OnCommitting();

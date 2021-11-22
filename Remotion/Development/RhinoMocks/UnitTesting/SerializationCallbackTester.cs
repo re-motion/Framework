@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Runtime.Serialization;
+using Remotion.Development.RhinoMocks.UnitTesting;
 
 namespace Remotion.Development.UnitTesting
 {

@@ -19,33 +19,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using Moq;
 using NUnit.Framework;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Context.FluentBuilders;
 using Remotion.Mixins.Context.Suppression;
 using Remotion.Mixins.UnitTests.Core.TestDomain;
-using Rhino.Mocks;
-using Rhino.Mocks.Interfaces;
 
 namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
 {
   [TestFixture]
   public class ClassContextBuilderTest
   {
-    private MockRepository _mockRepository;
-    private MixinConfigurationBuilder _parentBuilderMock;
+    private Mock<MixinConfigurationBuilder> _parentBuilderMock;
     private ClassContextBuilder _classBuilder;
-    private ClassContextBuilder _classBuilderMock;
-    private MixinContextBuilder _mixinBuilderMock;
+    private Mock<ClassContextBuilder> _classBuilderMock;
+    private Mock<MixinContextBuilder> _mixinBuilderMock;
 
     [SetUp]
     public void SetUp ()
     {
-      _mockRepository = new MockRepository();
-      _parentBuilderMock = _mockRepository.StrictMock<MixinConfigurationBuilder>((MixinConfiguration)null);
-      _classBuilder = new ClassContextBuilder(_parentBuilderMock, typeof(BaseType2));
-      _classBuilderMock = _mockRepository.StrictMock<ClassContextBuilder>(_parentBuilderMock, typeof(BaseType2));
-      _mixinBuilderMock = _mockRepository.StrictMock<MixinContextBuilder>(_classBuilderMock, typeof(BT2Mixin1), MixinContextOriginObjectMother.Create());
+      _parentBuilderMock = new Mock<MixinConfigurationBuilder>(MockBehavior.Strict, (MixinConfiguration)null);
+      _classBuilder = new ClassContextBuilder(_parentBuilderMock.Object, typeof(BaseType2));
+      _classBuilderMock = new Mock<ClassContextBuilder>(MockBehavior.Strict, _parentBuilderMock.Object, typeof(BaseType2));
+      _mixinBuilderMock = new Mock<MixinContextBuilder>(
+          MockBehavior.Strict,
+          _classBuilderMock.Object,
+          typeof(BT2Mixin1),
+          MixinContextOriginObjectMother.Create());
     }
 
     private Type[] GetMixinTypes ()
@@ -76,7 +77,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     public void Initialization_WithNoParentContext ()
     {
       Assert.That(_classBuilder.TargetType, Is.SameAs(typeof(BaseType2)));
-      Assert.That(_classBuilder.Parent, Is.SameAs(_parentBuilderMock));
+      Assert.That(_classBuilder.Parent, Is.SameAs(_parentBuilderMock.Object));
       Assert.That(_classBuilder.MixinContextBuilders, Is.Empty);
       Assert.That(_classBuilder.ComposedInterfaces.ToArray(), Is.Empty);
 
@@ -88,7 +89,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     [Test]
     public void Clear ()
     {
-      var classBuilder = new ClassContextBuilder(_parentBuilderMock, typeof(BaseType1));
+      var classBuilder = new ClassContextBuilder(_parentBuilderMock.Object, typeof(BaseType1));
       classBuilder.AddMixin<BT1Mixin2>();
       classBuilder.AddComposedInterface<IBaseType31>();
 
@@ -120,11 +121,10 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     {
       var expectedOrigin = MixinContextOrigin.CreateForMethod(MethodBase.GetCurrentMethod());
 
-      _classBuilderMock.Expect(mock => mock.AddMixin(typeof(BT2Mixin1), expectedOrigin)).Return(_mixinBuilderMock);
+      _classBuilderMock.Setup(mock => mock.AddMixin(typeof(BT2Mixin1), expectedOrigin)).Returns(_mixinBuilderMock.Object).Verifiable();
 
-      _mockRepository.Replay(_classBuilderMock);
-      Assert.That(_classBuilderMock.AddMixin(typeof(BT2Mixin1)), Is.SameAs(_mixinBuilderMock));
-      _mockRepository.Verify(_classBuilderMock);
+      Assert.That(_classBuilderMock.Object.AddMixin(typeof(BT2Mixin1)), Is.SameAs(_mixinBuilderMock.Object));
+      _classBuilderMock.Verify();
     }
 
     [Test]
@@ -187,12 +187,11 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     {
       var origin = MixinContextOriginObjectMother.Create();
 
-      _classBuilderMock.Expect(mock => mock.AddMixin<BT2Mixin1>(origin)).CallOriginalMethod(OriginalCallOptions.CreateExpectation);
-      _classBuilderMock.Expect(mock => mock.AddMixin(typeof(BT2Mixin1), origin)).Return(_mixinBuilderMock);
+      _classBuilderMock.Setup(mock => mock.AddMixin<BT2Mixin1>(origin)).CallBase().Verifiable();
+      _classBuilderMock.Setup(mock => mock.AddMixin(typeof(BT2Mixin1), origin)).Returns(_mixinBuilderMock.Object).Verifiable();
 
-      _mockRepository.Replay(_classBuilderMock);
-      Assert.That(_classBuilderMock.AddMixin<BT2Mixin1>(origin), Is.SameAs(_mixinBuilderMock));
-      _mockRepository.Verify(_classBuilderMock);
+      Assert.That(_classBuilderMock.Object.AddMixin<BT2Mixin1>(origin), Is.SameAs(_mixinBuilderMock.Object));
+      _classBuilderMock.Verify();
     }
 
     [Test]
@@ -201,11 +200,10 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     {
       var expectedOrigin = MixinContextOrigin.CreateForMethod(MethodBase.GetCurrentMethod());
 
-      _classBuilderMock.Expect(mock => mock.AddMixin<BT2Mixin1>(expectedOrigin)).Return(_mixinBuilderMock);
+      _classBuilderMock.Setup(mock => mock.AddMixin<BT2Mixin1>(expectedOrigin)).Returns(_mixinBuilderMock.Object).Verifiable();
 
-      _mockRepository.Replay(_classBuilderMock);
-      Assert.That(_classBuilderMock.AddMixin<BT2Mixin1>(), Is.SameAs(_mixinBuilderMock));
-      _mockRepository.Verify(_classBuilderMock);
+      Assert.That(_classBuilderMock.Object.AddMixin<BT2Mixin1>(), Is.SameAs(_mixinBuilderMock.Object));
+      _classBuilderMock.Verify();
     }
 
     [Test]
@@ -213,17 +211,17 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     {
       var origin = MixinContextOriginObjectMother.Create();
 
-      _classBuilderMock.Expect(mock => mock.AddMixins(origin, typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2)))
-          .CallOriginalMethod(OriginalCallOptions.CreateExpectation);
-      _classBuilderMock.Expect(mock => mock.AddMixin(typeof(BT2Mixin1), origin)).Return(_mixinBuilderMock);
-      _classBuilderMock.Expect(mock => mock.AddMixin(typeof(BT3Mixin1), origin)).Return(_mixinBuilderMock);
-      _classBuilderMock.Expect(mock => mock.AddMixin(typeof(BT3Mixin2), origin)).Return(_mixinBuilderMock);
+      _classBuilderMock.Setup(mock => mock.AddMixins(origin, typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2)))
+          .CallBase()
+          .Verifiable();
+      _classBuilderMock.Setup(mock => mock.AddMixin(typeof(BT2Mixin1), origin)).Returns(_mixinBuilderMock.Object).Verifiable();
+      _classBuilderMock.Setup(mock => mock.AddMixin(typeof(BT3Mixin1), origin)).Returns(_mixinBuilderMock.Object).Verifiable();
+      _classBuilderMock.Setup(mock => mock.AddMixin(typeof(BT3Mixin2), origin)).Returns(_mixinBuilderMock.Object).Verifiable();
 
-      _mockRepository.Replay(_classBuilderMock);
-      var result = _classBuilderMock.AddMixins(origin, typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2));
-      _mockRepository.Verify(_classBuilderMock);
+      var result = _classBuilderMock.Object.AddMixins(origin, typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2));
+      _classBuilderMock.Verify();
 
-      Assert.That(result, Is.SameAs(_classBuilderMock));
+      Assert.That(result, Is.SameAs(_classBuilderMock.Object));
     }
 
     [Test]
@@ -232,13 +230,12 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     {
       var expectedOrigin = MixinContextOrigin.CreateForMethod(MethodBase.GetCurrentMethod());
 
-      _classBuilderMock.Expect(mock => mock.AddMixins(expectedOrigin, typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2))).Return(_classBuilderMock);
+      _classBuilderMock.Setup(mock => mock.AddMixins(expectedOrigin, typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2))).Returns(_classBuilderMock.Object).Verifiable();
 
-      _mockRepository.Replay(_classBuilderMock);
-      var result = _classBuilderMock.AddMixins(typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2));
-      _mockRepository.Verify(_classBuilderMock);
+      var result = _classBuilderMock.Object.AddMixins(typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2));
+      _classBuilderMock.Verify();
 
-      Assert.That(result, Is.SameAs(_classBuilderMock));
+      Assert.That(result, Is.SameAs(_classBuilderMock.Object));
     }
 
     [Test]
@@ -246,13 +243,13 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     {
       var origin = MixinContextOriginObjectMother.Create();
 
-      _classBuilderMock.Expect(mock => mock.AddMixins<BT2Mixin1, BT3Mixin1>(origin))
-           .CallOriginalMethod(OriginalCallOptions.CreateExpectation);
-      _classBuilderMock.Expect(mock => mock.AddMixins(origin, typeof(BT2Mixin1), typeof(BT3Mixin1))).Return(_classBuilderMock);
+      _classBuilderMock.Setup(mock => mock.AddMixins<BT2Mixin1, BT3Mixin1>(origin))
+           .CallBase()
+           .Verifiable();
+      _classBuilderMock.Setup(mock => mock.AddMixins(origin, typeof(BT2Mixin1), typeof(BT3Mixin1))).Returns(_classBuilderMock.Object).Verifiable();
 
-      _mockRepository.Replay(_classBuilderMock);
-      Assert.That(_classBuilderMock.AddMixins<BT2Mixin1, BT3Mixin1>(origin), Is.SameAs(_classBuilderMock));
-      _mockRepository.Verify(_classBuilderMock);
+      Assert.That(_classBuilderMock.Object.AddMixins<BT2Mixin1, BT3Mixin1>(origin), Is.SameAs(_classBuilderMock.Object));
+      _classBuilderMock.Verify();
     }
 
     [Test]
@@ -261,11 +258,10 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     {
       var expectedOrigin = MixinContextOrigin.CreateForMethod(MethodBase.GetCurrentMethod());
 
-      _classBuilderMock.Expect(mock => mock.AddMixins<BT2Mixin1, BT3Mixin1>(expectedOrigin)).Return(_classBuilderMock);
+      _classBuilderMock.Setup(mock => mock.AddMixins<BT2Mixin1, BT3Mixin1>(expectedOrigin)).Returns(_classBuilderMock.Object).Verifiable();
 
-      _mockRepository.Replay(_classBuilderMock);
-      Assert.That(_classBuilderMock.AddMixins<BT2Mixin1, BT3Mixin1>(), Is.SameAs(_classBuilderMock));
-      _mockRepository.Verify(_classBuilderMock);
+      Assert.That(_classBuilderMock.Object.AddMixins<BT2Mixin1, BT3Mixin1>(), Is.SameAs(_classBuilderMock.Object));
+      _classBuilderMock.Verify();
     }
 
     [Test]
@@ -273,13 +269,14 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     {
       var origin = MixinContextOriginObjectMother.Create();
 
-      _classBuilderMock.Expect(mock => mock.AddMixins<BT2Mixin1, BT3Mixin1, BT3Mixin2>(origin))
-          .CallOriginalMethod(OriginalCallOptions.CreateExpectation);
-      _classBuilderMock.Expect(mock => mock.AddMixins(origin, typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2))).Return(_classBuilderMock);
+      _classBuilderMock
+          .Setup(mock => mock.AddMixins<BT2Mixin1, BT3Mixin1, BT3Mixin2>(origin))
+          .CallBase()
+          .Verifiable();
+      _classBuilderMock.Setup(mock => mock.AddMixins(origin, typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2))).Returns(_classBuilderMock.Object).Verifiable();
 
-      _mockRepository.Replay(_classBuilderMock);
-      Assert.That(_classBuilderMock.AddMixins<BT2Mixin1, BT3Mixin1, BT3Mixin2>(origin), Is.SameAs(_classBuilderMock));
-      _mockRepository.Verify(_classBuilderMock);
+      Assert.That(_classBuilderMock.Object.AddMixins<BT2Mixin1, BT3Mixin1, BT3Mixin2>(origin), Is.SameAs(_classBuilderMock.Object));
+      _classBuilderMock.Verify();
     }
 
     [Test]
@@ -288,11 +285,10 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     {
       var expectedOrigin = MixinContextOrigin.CreateForMethod(MethodBase.GetCurrentMethod());
 
-      _classBuilderMock.Expect(mock => mock.AddMixins<BT2Mixin1, BT3Mixin1, BT3Mixin2>(expectedOrigin)).Return(_classBuilderMock);
+      _classBuilderMock.Setup(mock => mock.AddMixins<BT2Mixin1, BT3Mixin1, BT3Mixin2>(expectedOrigin)).Returns(_classBuilderMock.Object).Verifiable();
 
-      _mockRepository.Replay(_classBuilderMock);
-      Assert.That(_classBuilderMock.AddMixins<BT2Mixin1, BT3Mixin1, BT3Mixin2>(), Is.SameAs(_classBuilderMock));
-      _mockRepository.Verify(_classBuilderMock);
+      Assert.That(_classBuilderMock.Object.AddMixins<BT2Mixin1, BT3Mixin1, BT3Mixin2>(), Is.SameAs(_classBuilderMock.Object));
+      _classBuilderMock.Verify();
     }
 
     [Test]
@@ -321,14 +317,14 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     {
       var expectedOrigin = MixinContextOrigin.CreateForMethod(MethodBase.GetCurrentMethod());
 
-      _classBuilderMock.Expect(mock => mock.AddOrderedMixins(expectedOrigin, typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2))).Return(_classBuilderMock);
+      _classBuilderMock.Setup(mock => mock.AddOrderedMixins(expectedOrigin, typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2))).Returns(_classBuilderMock.Object).Verifiable();
 
-      _mockRepository.ReplayAll();
+      var result = _classBuilderMock.Object.AddOrderedMixins(typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2));
 
-      var result = _classBuilderMock.AddOrderedMixins(typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2));
-
-      _mockRepository.VerifyAll();
-      Assert.That(result, Is.SameAs(_classBuilderMock));
+      _parentBuilderMock.Verify();
+      _classBuilderMock.Verify();
+      _mixinBuilderMock.Verify();
+      Assert.That(result, Is.SameAs(_classBuilderMock.Object));
     }
 
     [Test]
@@ -354,14 +350,14 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     {
       var expectedOrigin = MixinContextOrigin.CreateForMethod(MethodBase.GetCurrentMethod());
 
-      _classBuilderMock.Expect(mock => mock.AddOrderedMixins <BT2Mixin1, BT3Mixin1>(expectedOrigin)).Return(_classBuilderMock);
+      _classBuilderMock.Setup(mock => mock.AddOrderedMixins <BT2Mixin1, BT3Mixin1>(expectedOrigin)).Returns(_classBuilderMock.Object).Verifiable();
 
-      _mockRepository.ReplayAll();
+      var result = _classBuilderMock.Object.AddOrderedMixins<BT2Mixin1, BT3Mixin1>();
 
-      var result = _classBuilderMock.AddOrderedMixins<BT2Mixin1, BT3Mixin1>();
-
-      _mockRepository.VerifyAll();
-      Assert.That(result, Is.SameAs(_classBuilderMock));
+      _parentBuilderMock.Verify();
+      _classBuilderMock.Verify();
+      _mixinBuilderMock.Verify();
+      Assert.That(result, Is.SameAs(_classBuilderMock.Object));
     }
 
     [Test]
@@ -390,14 +386,14 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     {
       var expectedOrigin = MixinContextOrigin.CreateForMethod(MethodBase.GetCurrentMethod());
 
-      _classBuilderMock.Expect(mock => mock.AddOrderedMixins<BT2Mixin1, BT3Mixin1, BT3Mixin2>(expectedOrigin)).Return(_classBuilderMock);
+      _classBuilderMock.Setup(mock => mock.AddOrderedMixins<BT2Mixin1, BT3Mixin1, BT3Mixin2>(expectedOrigin)).Returns(_classBuilderMock.Object).Verifiable();
 
-      _mockRepository.ReplayAll();
+      var result = _classBuilderMock.Object.AddOrderedMixins<BT2Mixin1, BT3Mixin1, BT3Mixin2>();
 
-      var result = _classBuilderMock.AddOrderedMixins<BT2Mixin1, BT3Mixin1, BT3Mixin2>();
-
-      _mockRepository.VerifyAll();
-      Assert.That(result, Is.SameAs(_classBuilderMock));
+      _parentBuilderMock.Verify();
+      _classBuilderMock.Verify();
+      _mixinBuilderMock.Verify();
+      Assert.That(result, Is.SameAs(_classBuilderMock.Object));
     }
 
     [Test]
@@ -425,14 +421,14 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     {
       var expectedOrigin = MixinContextOrigin.CreateForMethod(MethodBase.GetCurrentMethod());
 
-      _classBuilderMock.Expect(mock => mock.EnsureMixin(typeof(BT2Mixin1), expectedOrigin)).Return(_mixinBuilderMock);
+      _classBuilderMock.Setup(mock => mock.EnsureMixin(typeof(BT2Mixin1), expectedOrigin)).Returns(_mixinBuilderMock.Object).Verifiable();
 
-      _mockRepository.ReplayAll();
+      var result = _classBuilderMock.Object.EnsureMixin(typeof(BT2Mixin1));
 
-      var result = _classBuilderMock.EnsureMixin(typeof(BT2Mixin1));
-
-      _mockRepository.VerifyAll();
-      Assert.That(result, Is.SameAs(_mixinBuilderMock));
+      _parentBuilderMock.Verify();
+      _classBuilderMock.Verify();
+      _mixinBuilderMock.Verify();
+      Assert.That(result, Is.SameAs(_mixinBuilderMock.Object));
     }
 
     [Test]
@@ -456,12 +452,11 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     {
       var origin = MixinContextOriginObjectMother.Create();
 
-      _classBuilderMock.Expect(mock => mock.EnsureMixin<BT2Mixin1>(origin)).CallOriginalMethod(OriginalCallOptions.CreateExpectation);
-      _classBuilderMock.Expect(mock => mock.EnsureMixin(typeof(BT2Mixin1), origin)).Return(_mixinBuilderMock);
+      _classBuilderMock.Setup(mock => mock.EnsureMixin<BT2Mixin1>(origin)).CallBase().Verifiable();
+      _classBuilderMock.Setup(mock => mock.EnsureMixin(typeof(BT2Mixin1), origin)).Returns(_mixinBuilderMock.Object).Verifiable();
 
-      _mockRepository.Replay(_classBuilderMock);
-      Assert.That(_classBuilderMock.EnsureMixin<BT2Mixin1>(origin), Is.SameAs(_mixinBuilderMock));
-      _mockRepository.Verify(_classBuilderMock);
+      Assert.That(_classBuilderMock.Object.EnsureMixin<BT2Mixin1>(origin), Is.SameAs(_mixinBuilderMock.Object));
+      _classBuilderMock.Verify();
     }
 
     [Test]
@@ -470,11 +465,10 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     {
       var expectedOrigin = MixinContextOrigin.CreateForMethod(MethodBase.GetCurrentMethod());
 
-      _classBuilderMock.Expect(mock => mock.EnsureMixin<BT2Mixin1>(expectedOrigin)).Return(_mixinBuilderMock);
+      _classBuilderMock.Setup(mock => mock.EnsureMixin<BT2Mixin1>(expectedOrigin)).Returns(_mixinBuilderMock.Object).Verifiable();
 
-      _mockRepository.Replay(_classBuilderMock);
-      Assert.That(_classBuilderMock.EnsureMixin<BT2Mixin1>(), Is.SameAs(_mixinBuilderMock));
-      _mockRepository.Verify(_classBuilderMock);
+      Assert.That(_classBuilderMock.Object.EnsureMixin<BT2Mixin1>(), Is.SameAs(_mixinBuilderMock.Object));
+      _classBuilderMock.Verify();
     }
 
     [Test]
@@ -483,15 +477,15 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
       var origin = MixinContextOriginObjectMother.Create();
 
       _classBuilderMock
-          .Expect(mock => mock.EnsureMixins(origin, typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2)))
-          .CallOriginalMethod(OriginalCallOptions.CreateExpectation);
-      _classBuilderMock.Expect(mock => mock.EnsureMixin(typeof(BT2Mixin1), origin)).Return(_mixinBuilderMock);
-      _classBuilderMock.Expect(mock => mock.EnsureMixin(typeof(BT3Mixin1), origin)).Return(_mixinBuilderMock);
-      _classBuilderMock.Expect(mock => mock.EnsureMixin(typeof(BT3Mixin2), origin)).Return(_mixinBuilderMock);
+          .Setup(mock => mock.EnsureMixins(origin, typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2)))
+          .CallBase()
+          .Verifiable();
+      _classBuilderMock.Setup(mock => mock.EnsureMixin(typeof(BT2Mixin1), origin)).Returns(_mixinBuilderMock.Object).Verifiable();
+      _classBuilderMock.Setup(mock => mock.EnsureMixin(typeof(BT3Mixin1), origin)).Returns(_mixinBuilderMock.Object).Verifiable();
+      _classBuilderMock.Setup(mock => mock.EnsureMixin(typeof(BT3Mixin2), origin)).Returns(_mixinBuilderMock.Object).Verifiable();
 
-      _mockRepository.Replay(_classBuilderMock);
-      Assert.That(_classBuilderMock.EnsureMixins(origin, typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2)), Is.SameAs(_classBuilderMock));
-      _mockRepository.Verify(_classBuilderMock);
+      Assert.That(_classBuilderMock.Object.EnsureMixins(origin, typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2)), Is.SameAs(_classBuilderMock.Object));
+      _classBuilderMock.Verify();
     }
 
     [Test]
@@ -501,12 +495,12 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
       var expectedOrigin = MixinContextOrigin.CreateForMethod(MethodBase.GetCurrentMethod());
 
       _classBuilderMock
-          .Expect(mock => mock.EnsureMixins(expectedOrigin, typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2)))
-          .Return(_classBuilderMock);
+          .Setup(mock => mock.EnsureMixins(expectedOrigin, typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2)))
+          .Returns(_classBuilderMock.Object)
+          .Verifiable();
 
-      _mockRepository.Replay(_classBuilderMock);
-      Assert.That(_classBuilderMock.EnsureMixins(typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2)), Is.SameAs(_classBuilderMock));
-      _mockRepository.Verify(_classBuilderMock);
+      Assert.That(_classBuilderMock.Object.EnsureMixins(typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2)), Is.SameAs(_classBuilderMock.Object));
+      _classBuilderMock.Verify();
     }
 
     [Test]
@@ -514,13 +508,13 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     {
       var origin = MixinContextOriginObjectMother.Create();
 
-      _classBuilderMock.Expect(mock => mock.EnsureMixins<BT2Mixin1, BT3Mixin1>(origin))
-           .CallOriginalMethod(OriginalCallOptions.CreateExpectation);
-      _classBuilderMock.Expect(mock => mock.EnsureMixins(origin, typeof(BT2Mixin1), typeof(BT3Mixin1))).Return(_classBuilderMock);
+      _classBuilderMock.Setup(mock => mock.EnsureMixins<BT2Mixin1, BT3Mixin1>(origin))
+           .CallBase()
+           .Verifiable();
+      _classBuilderMock.Setup(mock => mock.EnsureMixins(origin, typeof(BT2Mixin1), typeof(BT3Mixin1))).Returns(_classBuilderMock.Object).Verifiable();
 
-      _mockRepository.Replay(_classBuilderMock);
-      Assert.That(_classBuilderMock.EnsureMixins<BT2Mixin1, BT3Mixin1>(origin), Is.SameAs(_classBuilderMock));
-      _mockRepository.Verify(_classBuilderMock);
+      Assert.That(_classBuilderMock.Object.EnsureMixins<BT2Mixin1, BT3Mixin1>(origin), Is.SameAs(_classBuilderMock.Object));
+      _classBuilderMock.Verify();
     }
 
     [Test]
@@ -529,11 +523,10 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     {
       var expectedOrigin = MixinContextOrigin.CreateForMethod(MethodBase.GetCurrentMethod());
 
-      _classBuilderMock.Expect(mock => mock.EnsureMixins<BT2Mixin1, BT3Mixin1>(expectedOrigin)).Return(_classBuilderMock);
+      _classBuilderMock.Setup(mock => mock.EnsureMixins<BT2Mixin1, BT3Mixin1>(expectedOrigin)).Returns(_classBuilderMock.Object).Verifiable();
 
-      _mockRepository.Replay(_classBuilderMock);
-      Assert.That(_classBuilderMock.EnsureMixins<BT2Mixin1, BT3Mixin1>(), Is.SameAs(_classBuilderMock));
-      _mockRepository.Verify(_classBuilderMock);
+      Assert.That(_classBuilderMock.Object.EnsureMixins<BT2Mixin1, BT3Mixin1>(), Is.SameAs(_classBuilderMock.Object));
+      _classBuilderMock.Verify();
     }
 
     [Test]
@@ -541,13 +534,13 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     {
       var origin = MixinContextOriginObjectMother.Create();
 
-      _classBuilderMock.Expect(mock => mock.EnsureMixins<BT2Mixin1, BT3Mixin1, BT3Mixin2>(origin))
-          .CallOriginalMethod(OriginalCallOptions.CreateExpectation);
-      _classBuilderMock.Expect(mock => mock.EnsureMixins(origin, typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2))).Return(_classBuilderMock);
+      _classBuilderMock.Setup(mock => mock.EnsureMixins<BT2Mixin1, BT3Mixin1, BT3Mixin2>(origin))
+          .CallBase()
+          .Verifiable();
+      _classBuilderMock.Setup(mock => mock.EnsureMixins(origin, typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2))).Returns(_classBuilderMock.Object).Verifiable();
 
-      _mockRepository.Replay(_classBuilderMock);
-      Assert.That(_classBuilderMock.EnsureMixins<BT2Mixin1, BT3Mixin1, BT3Mixin2>(origin), Is.SameAs(_classBuilderMock));
-      _mockRepository.Verify(_classBuilderMock);
+      Assert.That(_classBuilderMock.Object.EnsureMixins<BT2Mixin1, BT3Mixin1, BT3Mixin2>(origin), Is.SameAs(_classBuilderMock.Object));
+      _classBuilderMock.Verify();
     }
 
     [Test]
@@ -556,11 +549,10 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     {
       var expectedOrigin = MixinContextOrigin.CreateForMethod(MethodBase.GetCurrentMethod());
 
-      _classBuilderMock.Expect(mock => mock.EnsureMixins<BT2Mixin1, BT3Mixin1, BT3Mixin2>(expectedOrigin)).Return(_classBuilderMock);
+      _classBuilderMock.Setup(mock => mock.EnsureMixins<BT2Mixin1, BT3Mixin1, BT3Mixin2>(expectedOrigin)).Returns(_classBuilderMock.Object).Verifiable();
 
-      _mockRepository.Replay(_classBuilderMock);
-      Assert.That(_classBuilderMock.EnsureMixins<BT2Mixin1, BT3Mixin1, BT3Mixin2>(), Is.SameAs(_classBuilderMock));
-      _mockRepository.Verify(_classBuilderMock);
+      Assert.That(_classBuilderMock.Object.EnsureMixins<BT2Mixin1, BT3Mixin1, BT3Mixin2>(), Is.SameAs(_classBuilderMock.Object));
+      _classBuilderMock.Verify();
     }
 
     [Test]
@@ -584,60 +576,59 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     [Test]
     public void AddComposedInterface_Generic ()
     {
-      _classBuilderMock.Expect(mock => mock.AddComposedInterface<BT2Mixin1>()).CallOriginalMethod(OriginalCallOptions.CreateExpectation);
-      _classBuilderMock.Expect(mock => mock.AddComposedInterface(typeof(BT2Mixin1))).Return(_classBuilderMock);
+      _classBuilderMock.Setup(mock => mock.AddComposedInterface<BT2Mixin1>()).CallBase().Verifiable();
+      _classBuilderMock.Setup(mock => mock.AddComposedInterface(typeof(BT2Mixin1))).Returns(_classBuilderMock.Object).Verifiable();
 
-      _mockRepository.Replay(_classBuilderMock);
-      Assert.That(_classBuilderMock.AddComposedInterface<BT2Mixin1>(), Is.SameAs(_classBuilderMock));
-      _mockRepository.Verify(_classBuilderMock);
+      Assert.That(_classBuilderMock.Object.AddComposedInterface<BT2Mixin1>(), Is.SameAs(_classBuilderMock.Object));
+      _classBuilderMock.Verify();
     }
 
     [Test]
     public void AddComposedInterfaces_NonGeneric ()
     {
-      _classBuilderMock.Expect(mock => mock.AddComposedInterfaces(typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2)))
-          .CallOriginalMethod(OriginalCallOptions.CreateExpectation);
-      _classBuilderMock.Expect(mock => mock.AddComposedInterface(typeof(BT2Mixin1))).Return(_classBuilderMock);
-      _classBuilderMock.Expect(mock => mock.AddComposedInterface(typeof(BT3Mixin1))).Return(_classBuilderMock);
-      _classBuilderMock.Expect(mock => mock.AddComposedInterface(typeof(BT3Mixin2))).Return(_classBuilderMock);
+      _classBuilderMock.Setup(mock => mock.AddComposedInterfaces(typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2)))
+          .CallBase()
+          .Verifiable();
+      _classBuilderMock.Setup(mock => mock.AddComposedInterface(typeof(BT2Mixin1))).Returns(_classBuilderMock.Object).Verifiable();
+      _classBuilderMock.Setup(mock => mock.AddComposedInterface(typeof(BT3Mixin1))).Returns(_classBuilderMock.Object).Verifiable();
+      _classBuilderMock.Setup(mock => mock.AddComposedInterface(typeof(BT3Mixin2))).Returns(_classBuilderMock.Object).Verifiable();
 
-      _mockRepository.Replay(_classBuilderMock);
-      Assert.That(_classBuilderMock.AddComposedInterfaces(typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2)), Is.SameAs(_classBuilderMock));
-      _mockRepository.Verify(_classBuilderMock);
+      Assert.That(_classBuilderMock.Object.AddComposedInterfaces(typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2)), Is.SameAs(_classBuilderMock.Object));
+      _classBuilderMock.Verify();
     }
 
     [Test]
     public void AddComposedInterfaces_Generic2 ()
     {
-      _classBuilderMock.Expect(mock => mock.AddComposedInterfaces<BT2Mixin1, BT3Mixin1>())
-           .CallOriginalMethod(OriginalCallOptions.CreateExpectation);
-      _classBuilderMock.Expect(mock => mock.AddComposedInterfaces(typeof(BT2Mixin1), typeof(BT3Mixin1))).Return(_classBuilderMock);
+      _classBuilderMock.Setup(mock => mock.AddComposedInterfaces<BT2Mixin1, BT3Mixin1>())
+           .CallBase()
+           .Verifiable();
+      _classBuilderMock.Setup(mock => mock.AddComposedInterfaces(typeof(BT2Mixin1), typeof(BT3Mixin1))).Returns(_classBuilderMock.Object).Verifiable();
 
-      _mockRepository.Replay(_classBuilderMock);
-      Assert.That(_classBuilderMock.AddComposedInterfaces<BT2Mixin1, BT3Mixin1>(), Is.SameAs(_classBuilderMock));
-      _mockRepository.Verify(_classBuilderMock);
+      Assert.That(_classBuilderMock.Object.AddComposedInterfaces<BT2Mixin1, BT3Mixin1>(), Is.SameAs(_classBuilderMock.Object));
+      _classBuilderMock.Verify();
     }
 
     [Test]
     public void AddComposedInterfaces_Generic3 ()
     {
-      _classBuilderMock.Expect(mock => mock.AddComposedInterfaces<BT2Mixin1, BT3Mixin1, BT3Mixin2>())
-          .CallOriginalMethod(OriginalCallOptions.CreateExpectation);
-      _classBuilderMock.Expect(mock => mock.AddComposedInterfaces(typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2))).Return(_classBuilderMock);
+      _classBuilderMock.Setup(mock => mock.AddComposedInterfaces<BT2Mixin1, BT3Mixin1, BT3Mixin2>())
+          .CallBase()
+          .Verifiable();
+      _classBuilderMock.Setup(mock => mock.AddComposedInterfaces(typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2))).Returns(_classBuilderMock.Object).Verifiable();
 
-      _mockRepository.Replay(_classBuilderMock);
-      Assert.That(_classBuilderMock.AddComposedInterfaces<BT2Mixin1, BT3Mixin1, BT3Mixin2>(), Is.SameAs(_classBuilderMock));
-      _mockRepository.Verify(_classBuilderMock);
+      Assert.That(_classBuilderMock.Object.AddComposedInterfaces<BT2Mixin1, BT3Mixin1, BT3Mixin2>(), Is.SameAs(_classBuilderMock.Object));
+      _classBuilderMock.Verify();
     }
 
     [Test]
     public void SuppressMixin_Rule ()
     {
-      var ruleStub = MockRepository.GenerateStub<IMixinSuppressionRule>();
+      var ruleStub = new Mock<IMixinSuppressionRule>();
 
       Assert.That(_classBuilder.SuppressedMixins, Is.Empty);
-      _classBuilder.SuppressMixin(ruleStub);
-      Assert.That(_classBuilder.SuppressedMixins, Is.EquivalentTo(new[] { ruleStub }));
+      _classBuilder.SuppressMixin(ruleStub.Object);
+      Assert.That(_classBuilder.SuppressedMixins, Is.EquivalentTo(new[] { ruleStub.Object }));
     }
 
     [Test]
@@ -654,50 +645,49 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     [Test]
     public void SuppressMixin_Generic ()
     {
-      _classBuilderMock.Expect(mock => mock.SuppressMixin<BT2Mixin1>()).CallOriginalMethod(OriginalCallOptions.CreateExpectation);
-      _classBuilderMock.Expect(mock => mock.SuppressMixin(typeof(BT2Mixin1))).Return(_classBuilderMock);
+      _classBuilderMock.Setup(mock => mock.SuppressMixin<BT2Mixin1>()).CallBase().Verifiable();
+      _classBuilderMock.Setup(mock => mock.SuppressMixin(typeof(BT2Mixin1))).Returns(_classBuilderMock.Object).Verifiable();
 
-      _mockRepository.Replay(_classBuilderMock);
-      Assert.That(_classBuilderMock.SuppressMixin<BT2Mixin1>(), Is.SameAs(_classBuilderMock));
-      _mockRepository.Verify(_classBuilderMock);
+      Assert.That(_classBuilderMock.Object.SuppressMixin<BT2Mixin1>(), Is.SameAs(_classBuilderMock.Object));
+      _classBuilderMock.Verify();
     }
 
     [Test]
     public void SuppressMixins_NonGeneric ()
     {
-      _classBuilderMock.Expect(mock => mock.SuppressMixins(typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2)))
-          .CallOriginalMethod(OriginalCallOptions.CreateExpectation);
-      _classBuilderMock.Expect(mock => mock.SuppressMixin(typeof(BT2Mixin1))).Return(_classBuilderMock);
-      _classBuilderMock.Expect(mock => mock.SuppressMixin(typeof(BT3Mixin1))).Return(_classBuilderMock);
-      _classBuilderMock.Expect(mock => mock.SuppressMixin(typeof(BT3Mixin2))).Return(_classBuilderMock);
+      _classBuilderMock.Setup(mock => mock.SuppressMixins(typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2)))
+          .CallBase()
+          .Verifiable();
+      _classBuilderMock.Setup(mock => mock.SuppressMixin(typeof(BT2Mixin1))).Returns(_classBuilderMock.Object).Verifiable();
+      _classBuilderMock.Setup(mock => mock.SuppressMixin(typeof(BT3Mixin1))).Returns(_classBuilderMock.Object).Verifiable();
+      _classBuilderMock.Setup(mock => mock.SuppressMixin(typeof(BT3Mixin2))).Returns(_classBuilderMock.Object).Verifiable();
 
-      _mockRepository.Replay(_classBuilderMock);
-      Assert.That(_classBuilderMock.SuppressMixins(typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2)), Is.SameAs(_classBuilderMock));
-      _mockRepository.Verify(_classBuilderMock);
+      Assert.That(_classBuilderMock.Object.SuppressMixins(typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2)), Is.SameAs(_classBuilderMock.Object));
+      _classBuilderMock.Verify();
     }
 
     [Test]
     public void SuppressMixins_Generic2 ()
     {
-      _classBuilderMock.Expect(mock => mock.SuppressMixins<BT2Mixin1, BT3Mixin1>())
-           .CallOriginalMethod(OriginalCallOptions.CreateExpectation);
-      _classBuilderMock.Expect(mock => mock.SuppressMixins(typeof(BT2Mixin1), typeof(BT3Mixin1))).Return(_classBuilderMock);
+      _classBuilderMock.Setup(mock => mock.SuppressMixins<BT2Mixin1, BT3Mixin1>())
+           .CallBase()
+           .Verifiable();
+      _classBuilderMock.Setup(mock => mock.SuppressMixins(typeof(BT2Mixin1), typeof(BT3Mixin1))).Returns(_classBuilderMock.Object).Verifiable();
 
-      _mockRepository.Replay(_classBuilderMock);
-      Assert.That(_classBuilderMock.SuppressMixins<BT2Mixin1, BT3Mixin1>(), Is.SameAs(_classBuilderMock));
-      _mockRepository.Verify(_classBuilderMock);
+      Assert.That(_classBuilderMock.Object.SuppressMixins<BT2Mixin1, BT3Mixin1>(), Is.SameAs(_classBuilderMock.Object));
+      _classBuilderMock.Verify();
     }
 
     [Test]
     public void SuppressMixins_Generic3 ()
     {
-      _classBuilderMock.Expect(mock => mock.SuppressMixins<BT2Mixin1, BT3Mixin1, BT3Mixin2>())
-          .CallOriginalMethod(OriginalCallOptions.CreateExpectation);
-      _classBuilderMock.Expect(mock => mock.SuppressMixins(typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2))).Return(_classBuilderMock);
+      _classBuilderMock.Setup(mock => mock.SuppressMixins<BT2Mixin1, BT3Mixin1, BT3Mixin2>())
+          .CallBase()
+          .Verifiable();
+      _classBuilderMock.Setup(mock => mock.SuppressMixins(typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2))).Returns(_classBuilderMock.Object).Verifiable();
 
-      _mockRepository.Replay(_classBuilderMock);
-      Assert.That(_classBuilderMock.SuppressMixins<BT2Mixin1, BT3Mixin1, BT3Mixin2>(), Is.SameAs(_classBuilderMock));
-      _mockRepository.Verify(_classBuilderMock);
+      Assert.That(_classBuilderMock.Object.SuppressMixins<BT2Mixin1, BT3Mixin1, BT3Mixin2>(), Is.SameAs(_classBuilderMock.Object));
+      _classBuilderMock.Verify();
     }
 
     [Test]
@@ -721,12 +711,11 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     [Test]
     public void AddMixinDependency_Generic ()
     {
-      _classBuilderMock.Expect(mock => mock.AddMixinDependency<BT2Mixin1, int>()).CallOriginalMethod(OriginalCallOptions.CreateExpectation);
-      _classBuilderMock.Expect(mock => mock.AddMixinDependency(typeof(BT2Mixin1), typeof(int))).Return(_classBuilderMock);
+      _classBuilderMock.Setup(mock => mock.AddMixinDependency<BT2Mixin1, int>()).CallBase().Verifiable();
+      _classBuilderMock.Setup(mock => mock.AddMixinDependency(typeof(BT2Mixin1), typeof(int))).Returns(_classBuilderMock.Object).Verifiable();
 
-      _mockRepository.Replay(_classBuilderMock);
-      Assert.That(_classBuilderMock.AddMixinDependency<BT2Mixin1, int>(), Is.SameAs(_classBuilderMock));
-      _mockRepository.Verify(_classBuilderMock);
+      Assert.That(_classBuilderMock.Object.AddMixinDependency<BT2Mixin1, int>(), Is.SameAs(_classBuilderMock.Object));
+      _classBuilderMock.Verify();
     }
 
     [Test]
@@ -796,7 +785,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     [Test]
     public void BuildContext_ExtendParentContext ()
     {
-      var classContextBuilder = new ClassContextBuilder(_parentBuilderMock, typeof(BaseType2));
+      var classContextBuilder = new ClassContextBuilder(_parentBuilderMock.Object, typeof(BaseType2));
       classContextBuilder.AddMixins<BT1Mixin1, BT1Mixin2>();
 
       var parentContext = ClassContextObjectMother.Create(typeof(BaseType2), typeof(BT2Mixin1));
@@ -811,7 +800,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     [Test]
     public void BuildContext_ReplaceParentContext ()
     {
-      var classContextBuilder = new ClassContextBuilder(_parentBuilderMock, typeof(BaseType2));
+      var classContextBuilder = new ClassContextBuilder(_parentBuilderMock.Object, typeof(BaseType2));
       classContextBuilder.Clear().AddMixins<BT1Mixin1, BT1Mixin2>();
 
       var parentContext = ClassContextObjectMother.Create(typeof(BaseType2), typeof(BT2Mixin1));
@@ -825,7 +814,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     [Test]
     public void BuildContext_Suppression ()
     {
-      var classContextBuilder = new ClassContextBuilder(_parentBuilderMock, typeof(BaseType2));
+      var classContextBuilder = new ClassContextBuilder(_parentBuilderMock.Object, typeof(BaseType2));
       classContextBuilder.AddMixins<BT1Mixin1, BT1Mixin2>();
 
       classContextBuilder.SuppressMixins(typeof(IBT1Mixin1), typeof(BT5Mixin1), typeof(BT3Mixin3<,>));
@@ -898,28 +887,30 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     [Test]
     public void ParentMembers ()
     {
-      _mockRepository.BackToRecordAll();
+      _mixinBuilderMock.Reset();
+      _classBuilderMock.Reset();
+      _parentBuilderMock.Reset();
 
       var r1 = new ClassContextBuilder(new MixinConfigurationBuilder(null), typeof(object));
       var r2 = new MixinConfiguration();
-      var r3 = _mockRepository.StrictMock<IDisposable>();
+      var r3 = new Mock<IDisposable>(MockBehavior.Strict);
 
-      using (_mockRepository.Ordered())
-      {
-        _parentBuilderMock.Expect(mock => mock.ForClass<object>()).Return(r1);
-        _parentBuilderMock.Expect(mock => mock.ForClass<string>()).Return(r1);
-        _parentBuilderMock.Expect(mock => mock.BuildConfiguration()).Return(r2);
-        _parentBuilderMock.Expect(mock => mock.EnterScope()).Return(r3);
-      }
+      var sequence = new MockSequence();
+      _parentBuilderMock.InSequence(sequence).Setup(mock => mock.ForClass<object>()).Returns(r1).Verifiable();
+      _parentBuilderMock.InSequence(sequence).Setup(mock => mock.ForClass<string>()).Returns(r1).Verifiable();
+      _parentBuilderMock.InSequence(sequence).Setup(mock => mock.BuildConfiguration()).Returns(r2).Verifiable();
+      _parentBuilderMock.InSequence(sequence).Setup(mock => mock.EnterScope()).Returns(r3.Object).Verifiable();
 
-      _mockRepository.ReplayAll();
 
       Assert.That(_classBuilder.ForClass<object>(), Is.SameAs(r1));
       Assert.That(_classBuilder.ForClass<string>(), Is.SameAs(r1));
       Assert.That(_classBuilder.BuildConfiguration(), Is.SameAs(r2));
-      Assert.That(_classBuilder.EnterScope(), Is.SameAs(r3));
+      Assert.That(_classBuilder.EnterScope(), Is.SameAs(r3.Object));
 
-      _mockRepository.VerifyAll();
+      _parentBuilderMock.Verify();
+      _classBuilderMock.Verify();
+      _mixinBuilderMock.Verify();
+      r3.Verify();
     }
   }
 }

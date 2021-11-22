@@ -18,11 +18,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Moq;
 using NUnit.Framework;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Context.Serialization;
 using Remotion.Mixins.UnitTests.Core.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Mixins.UnitTests.Core.Context
 {
@@ -231,14 +231,14 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     {
       var context = MixinContextObjectMother.Create();
 
-      var serializer = MockRepository.GenerateMock<IMixinContextSerializer>();
-      context.Serialize(serializer);
+      var serializer = new Mock<IMixinContextSerializer>();
+      context.Serialize(serializer.Object);
 
-      serializer.AssertWasCalled(mock => mock.AddMixinKind(context.MixinKind));
-      serializer.AssertWasCalled(mock => mock.AddMixinType(context.MixinType));
-      serializer.AssertWasCalled(mock => mock.AddIntroducedMemberVisibility(context.IntroducedMemberVisibility));
-      serializer.AssertWasCalled(mock => mock.AddExplicitDependencies(Arg<IEnumerable<Type>>.List.Equal(context.ExplicitDependencies)));
-      serializer.AssertWasCalled(mock => mock.AddOrigin(context.Origin));
+      serializer.Verify(mock => mock.AddMixinKind(context.MixinKind), Times.AtLeastOnce());
+      serializer.Verify(mock => mock.AddMixinType(context.MixinType), Times.AtLeastOnce());
+      serializer.Verify(mock => mock.AddIntroducedMemberVisibility(context.IntroducedMemberVisibility), Times.AtLeastOnce());
+      serializer.Verify(mock => mock.AddExplicitDependencies(context.ExplicitDependencies), Times.AtLeastOnce());
+      serializer.Verify(mock => mock.AddOrigin(context.Origin), Times.AtLeastOnce());
     }
 
     [Test]
@@ -246,16 +246,16 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     {
       var expectedContext = MixinContextObjectMother.Create();
 
-      var deserializer = MockRepository.GenerateStrictMock<IMixinContextDeserializer>();
-      deserializer.Expect(mock => mock.GetMixinType()).Return(expectedContext.MixinType);
-      deserializer.Expect(mock => mock.GetMixinKind()).Return(expectedContext.MixinKind);
-      deserializer.Expect(mock => mock.GetIntroducedMemberVisibility()).Return(expectedContext.IntroducedMemberVisibility);
-      deserializer.Expect(mock => mock.GetExplicitDependencies()).Return(expectedContext.ExplicitDependencies);
-      deserializer.Expect(mock => mock.GetOrigin()).Return(expectedContext.Origin);
+      var deserializer = new Mock<IMixinContextDeserializer>(MockBehavior.Strict);
+      deserializer.Setup(mock => mock.GetMixinType()).Returns(expectedContext.MixinType).Verifiable();
+      deserializer.Setup(mock => mock.GetMixinKind()).Returns(expectedContext.MixinKind).Verifiable();
+      deserializer.Setup(mock => mock.GetIntroducedMemberVisibility()).Returns(expectedContext.IntroducedMemberVisibility).Verifiable();
+      deserializer.Setup(mock => mock.GetExplicitDependencies()).Returns(expectedContext.ExplicitDependencies).Verifiable();
+      deserializer.Setup(mock => mock.GetOrigin()).Returns(expectedContext.Origin).Verifiable();
 
-      var context = MixinContext.Deserialize(deserializer);
+      var context = MixinContext.Deserialize(deserializer.Object);
 
-      deserializer.VerifyAllExpectations();
+      deserializer.Verify();
       Assert.That(context, Is.EqualTo(expectedContext));
     }
 

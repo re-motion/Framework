@@ -17,11 +17,12 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.CodeGeneration.Serialization;
 using Remotion.Mixins.UnitTests.Core.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 {
@@ -186,13 +187,13 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       var overridden = new HashSet<MethodInfo> { _overridden1, _overridden2 };
 
       var identifier = new ConcreteMixinTypeIdentifier(typeof(BT1Mixin1), overriders, overridden);
-      var serializerMock = MockRepository.GenerateMock<IConcreteMixinTypeIdentifierSerializer>();
+      var serializerMock = new Mock<IConcreteMixinTypeIdentifierSerializer>();
 
-      identifier.Serialize(serializerMock);
+      identifier.Serialize(serializerMock.Object);
 
-      serializerMock.AssertWasCalled(mock => mock.AddMixinType(typeof(BT1Mixin1)));
-      serializerMock.AssertWasCalled(mock => mock.AddOverriders(overriders));
-      serializerMock.AssertWasCalled(mock => mock.AddOverridden(overridden));
+      serializerMock.Verify(mock => mock.AddMixinType(typeof(BT1Mixin1)), Times.AtLeastOnce());
+      serializerMock.Verify(mock => mock.AddOverriders(overriders), Times.AtLeastOnce());
+      serializerMock.Verify(mock => mock.AddOverridden(overridden), Times.AtLeastOnce());
     }
 
     [Test]
@@ -200,17 +201,15 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     {
       var overriders = new HashSet<MethodInfo> { _overrider1, _overrider2 };
       var overridden = new HashSet<MethodInfo> { _overridden1, _overridden2 };
-      var deserializerMock = MockRepository.GenerateMock<IConcreteMixinTypeIdentifierDeserializer>();
+      var deserializerMock = new Mock<IConcreteMixinTypeIdentifierDeserializer>();
 
-      deserializerMock.Expect(mock => mock.GetMixinType()).Return(typeof(BT1Mixin1));
-      deserializerMock.Expect(mock => mock.GetOverriders()).Return(overriders);
-      deserializerMock.Expect(mock => mock.GetOverridden()).Return(overridden);
+      deserializerMock.Setup(mock => mock.GetMixinType()).Returns(typeof(BT1Mixin1)).Verifiable();
+      deserializerMock.Setup(mock => mock.GetOverriders()).Returns(overriders).Verifiable();
+      deserializerMock.Setup(mock => mock.GetOverridden()).Returns(overridden).Verifiable();
 
-      deserializerMock.Replay();
+      var identifier = ConcreteMixinTypeIdentifier.Deserialize(deserializerMock.Object);
 
-      var identifier = ConcreteMixinTypeIdentifier.Deserialize(deserializerMock);
-
-      deserializerMock.VerifyAllExpectations();
+      deserializerMock.Verify();
       Assert.That(identifier.MixinType, Is.SameAs(typeof(BT1Mixin1)));
       Assert.That(identifier.Overriders, Is.SameAs(overriders));
       Assert.That(identifier.Overridden, Is.SameAs(overridden));

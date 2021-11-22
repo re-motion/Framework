@@ -15,10 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Mixins.Definitions;
 using Remotion.Mixins.UnitTests.Core.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Mixins.UnitTests.Core.Definitions
 {
@@ -32,11 +32,11 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions
       var requiredTargetCallTypeDefinition = DefinitionObjectMother.CreateRequiredTargetCallTypeDefinition(targetClass, typeof(ISimpleInterface));
       var dependency = new ComposedInterfaceDependencyDefinition(requiredTargetCallTypeDefinition, typeof(ISimpleInterface), null);
 
-      var visitorMock = MockRepository.GenerateMock<IDefinitionVisitor>();
+      var visitorMock = new Mock<IDefinitionVisitor>();
 
-      dependency.Accept(visitorMock);
+      dependency.Accept(visitorMock.Object);
 
-      visitorMock.AssertWasCalled(mock => mock.Visit(dependency));
+      visitorMock.Verify(mock => mock.Visit(dependency), Times.AtLeastOnce());
     }
   }
 }

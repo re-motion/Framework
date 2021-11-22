@@ -17,11 +17,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Context.FluentBuilders;
 using Remotion.Mixins.UnitTests.Core.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
 {
@@ -38,7 +38,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
 
     private Dictionary<Type, Tuple<ClassContextBuilder, ClassContext>> _buildersWithParentContexts;
 
-    private IMixinInheritancePolicy _inheritancePolicyMock;
+    private Mock<IMixinInheritancePolicy> _inheritancePolicyMock;
     private ClassContext _inheritedContext;
 
     private InheritanceResolvingClassContextBuilder _builder;
@@ -62,11 +62,11 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
       _parentContextWithoutBuilder = ClassContextObjectMother.Create(typeof(BaseType1));
       _parentContexts = new ClassContextCollection(_parentContextWithoutBuilder, _parentContextWithBuilder);
 
-      _inheritancePolicyMock = MockRepository.GenerateMock<IMixinInheritancePolicy>();
+      _inheritancePolicyMock = new Mock<IMixinInheritancePolicy>();
       _inheritedContext = ClassContextObjectMother.Create(typeof(object), typeof(NullMixin));
 
       var classContextBuilders = new[] { _classContextBuilderWithoutParent, _classContextBuilderWithIndirectParent, _classContextBuilderWithParent };
-      _builder = new InheritanceResolvingClassContextBuilder(classContextBuilders, _parentContexts, _inheritancePolicyMock);
+      _builder = new InheritanceResolvingClassContextBuilder(classContextBuilders, _parentContexts, _inheritancePolicyMock.Object);
     }
 
     [Test]
@@ -81,16 +81,15 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     {
       var BuildMethod = typeof(InheritanceResolvingClassContextBuilder).GetMethod("Build");
       _inheritancePolicyMock
-          .Expect(mock => mock.GetClassContextsToInheritFrom(
-              Arg.Is(typeof(BaseType2)),
-              Arg<Func<Type, ClassContext>>.Matches(func => func.Method.Equals(BuildMethod))))
-          .Return(new ClassContext[0]);
-
-      _inheritancePolicyMock.Replay();
+          .Setup(mock => mock.GetClassContextsToInheritFrom(
+              typeof(BaseType2),
+              It.Is<Func<Type, ClassContext>>(func => func.Method.Equals(BuildMethod))))
+          .Returns(new ClassContext[0])
+          .Verifiable();
 
       _builder.Build(typeof(BaseType2));
 
-      _inheritancePolicyMock.VerifyAllExpectations();
+      _inheritancePolicyMock.Verify();
     }
 
     [Test]
@@ -100,9 +99,9 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
       var classContext2 = ClassContextObjectMother.Create(typeof(BaseType2), typeof(NullMixin));
 
       _inheritancePolicyMock
-          .Expect(mock => mock.GetClassContextsToInheritFrom(Arg<Type>.Is.Anything, Arg<Func<Type, ClassContext>>.Is.Anything))
-          .Return(new[] { classContext1, classContext2 } );
-      _inheritancePolicyMock.Replay();
+          .Setup(mock => mock.GetClassContextsToInheritFrom(It.IsAny<Type>(), It.IsAny<Func<Type, ClassContext>>()))
+          .Returns(new[] { classContext1, classContext2 } )
+          .Verifiable();
 
       var result = _builder.Build(typeof(BaseType2));
       Assert.That(result, Is.EqualTo(ClassContextObjectMother.Create(typeof(BaseType2), typeof(BT2Mixin1), typeof(NullMixin))));
@@ -112,9 +111,9 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     public void Build_WithoutCachedContext_NoBuilder_WithoutInherited ()
     {
       _inheritancePolicyMock
-          .Expect(mock => mock.GetClassContextsToInheritFrom(Arg<Type>.Is.Anything, Arg<Func<Type, ClassContext>>.Is.Anything))
-          .Return(new ClassContext[0]);
-      _inheritancePolicyMock.Replay();
+          .Setup(mock => mock.GetClassContextsToInheritFrom(It.IsAny<Type>(), It.IsAny<Func<Type, ClassContext>>()))
+          .Returns(new ClassContext[0])
+          .Verifiable();
 
       var result = _builder.Build(typeof(BaseType2));
       Assert.That(result, Is.EqualTo(ClassContextObjectMother.Create(typeof(BaseType2))));
@@ -124,9 +123,9 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     public void Build_WithoutCachedContext_WithBuilder ()
     {
       _inheritancePolicyMock
-          .Expect(mock => mock.GetClassContextsToInheritFrom(Arg<Type>.Is.Anything, Arg<Func<Type, ClassContext>>.Is.Anything))
-          .Return(new ClassContext[0]);
-      _inheritancePolicyMock.Replay();
+          .Setup(mock => mock.GetClassContextsToInheritFrom(It.IsAny<Type>(), It.IsAny<Func<Type, ClassContext>>()))
+          .Returns(new ClassContext[0])
+          .Verifiable();
 
       var result = _builder.Build(_classContextBuilderWithoutParent.TargetType);
       Assert.That(result, Is.EqualTo(_classContextBuilderWithoutParent.BuildClassContext()));
@@ -136,9 +135,9 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     public void Build_WithoutCachedContext_WithBuilder_WithParent ()
     {
       _inheritancePolicyMock
-          .Expect(mock => mock.GetClassContextsToInheritFrom(Arg<Type>.Is.Anything, Arg<Func<Type, ClassContext>>.Is.Anything))
-          .Return(new ClassContext[0]);
-      _inheritancePolicyMock.Replay();
+          .Setup(mock => mock.GetClassContextsToInheritFrom(It.IsAny<Type>(), It.IsAny<Func<Type, ClassContext>>()))
+          .Returns(new ClassContext[0])
+          .Verifiable();
 
       var result = _builder.Build(_classContextBuilderWithParent.TargetType);
       Assert.That(result, Is.EqualTo(_classContextBuilderWithParent.BuildClassContext(new[] { _parentContextWithBuilder })));
@@ -148,9 +147,9 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     public void Build_WithoutCachedContext_WithBuilder_WithIndirectParent ()
     {
       _inheritancePolicyMock
-          .Expect(mock => mock.GetClassContextsToInheritFrom(Arg<Type>.Is.Anything, Arg<Func<Type, ClassContext>>.Is.Anything))
-          .Return(new ClassContext[0]);
-      _inheritancePolicyMock.Replay();
+          .Setup(mock => mock.GetClassContextsToInheritFrom(It.IsAny<Type>(), It.IsAny<Func<Type, ClassContext>>()))
+          .Returns(new ClassContext[0])
+          .Verifiable();
 
       var result = _builder.Build(_classContextBuilderWithIndirectParent.TargetType);
       Assert.That(result, Is.EqualTo(_classContextBuilderWithIndirectParent.BuildClassContext(new[] { _parentContextWithBuilder })));
@@ -160,9 +159,9 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     public void Build_WithoutCachedContext_WithBuilder_WithInherited ()
     {
       _inheritancePolicyMock
-          .Expect(mock => mock.GetClassContextsToInheritFrom(Arg<Type>.Is.Anything, Arg<Func<Type, ClassContext>>.Is.Anything))
-          .Return(new[] { _inheritedContext } );
-      _inheritancePolicyMock.Replay();
+          .Setup(mock => mock.GetClassContextsToInheritFrom(It.IsAny<Type>(), It.IsAny<Func<Type, ClassContext>>()))
+          .Returns(new[] { _inheritedContext } )
+          .Verifiable();
 
       var result = _builder.Build(_classContextBuilderWithoutParent.TargetType);
       Assert.That(result, Is.EqualTo(_classContextBuilderWithoutParent.BuildClassContext(new[] { _inheritedContext })));
@@ -172,9 +171,9 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     public void Build_WithoutCachedContext_WithBuilder_WithInherited_AndParent ()
     {
       _inheritancePolicyMock
-          .Expect(mock => mock.GetClassContextsToInheritFrom(Arg<Type>.Is.Anything, Arg<Func<Type, ClassContext>>.Is.Anything))
-          .Return(new[] { _inheritedContext });
-      _inheritancePolicyMock.Replay();
+          .Setup(mock => mock.GetClassContextsToInheritFrom(It.IsAny<Type>(), It.IsAny<Func<Type, ClassContext>>()))
+          .Returns(new[] { _inheritedContext })
+          .Verifiable();
 
       var result = _builder.Build(_classContextBuilderWithParent.TargetType);
       Assert.That(result, Is.EqualTo(_classContextBuilderWithParent.BuildClassContext(new[] { _inheritedContext, _parentContextWithBuilder })));
@@ -184,9 +183,9 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     public void Build_WithoutCachedContext_CachesResult ()
     {
       _inheritancePolicyMock
-          .Expect(mock => mock.GetClassContextsToInheritFrom(Arg<Type>.Is.Anything, Arg<Func<Type, ClassContext>>.Is.Anything))
-          .Return(new ClassContext[0]);
-      _inheritancePolicyMock.Replay();
+          .Setup(mock => mock.GetClassContextsToInheritFrom(It.IsAny<Type>(), It.IsAny<Func<Type, ClassContext>>()))
+          .Returns(new ClassContext[0])
+          .Verifiable();
 
       var result1 = _builder.Build(_classContextBuilderWithoutParent.TargetType);
       var result2 = _builder.Build(_classContextBuilderWithoutParent.TargetType);
@@ -197,10 +196,9 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     public void BuildAll ()
     {
       _inheritancePolicyMock
-          .Expect(mock => mock.GetClassContextsToInheritFrom(Arg<Type>.Is.Anything, Arg<Func<Type, ClassContext>>.Is.Anything))
-          .Return(new ClassContext[0])
-          .Repeat.Any();
-      _inheritancePolicyMock.Replay();
+          .Setup(mock => mock.GetClassContextsToInheritFrom(It.IsAny<Type>(), It.IsAny<Func<Type, ClassContext>>()))
+          .Returns(new ClassContext[0])
+          .Verifiable();
 
       var result = _builder.BuildAll();
 
@@ -214,10 +212,9 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     public void BuildAllAndCombineWithParentContexts ()
     {
       _inheritancePolicyMock
-          .Expect(mock => mock.GetClassContextsToInheritFrom(Arg<Type>.Is.Anything, Arg<Func<Type, ClassContext>>.Is.Anything))
-          .Return(new ClassContext[0])
-          .Repeat.Any();
-      _inheritancePolicyMock.Replay();
+          .Setup(mock => mock.GetClassContextsToInheritFrom(It.IsAny<Type>(), It.IsAny<Func<Type, ClassContext>>()))
+          .Returns(new ClassContext[0])
+          .Verifiable();
 
       var result = _builder.BuildAllAndCombineWithParentContexts();
 

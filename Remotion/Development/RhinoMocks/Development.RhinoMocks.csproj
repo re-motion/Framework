@@ -14,13 +14,14 @@
     <Compile Include="..\..\..\SharedSource\Core\FunctionalProgramming\*.cs" Link="SharedSource\FunctionalProgramming\%(Filename)%(Extension)" />
     <Compile Include="..\..\..\SharedSource\Core\Utilities\*.cs" Link="SharedSource\Utilities\%(Filename)%(Extension).cs" />
     <Compile Include="..\..\..\SharedSource\Development\RhinoMocks\UnitTesting\**\*.cs" Link="SharedSource\RhinoMocks\UnitTesting\%(RecursiveDir)%(Filename)%(Extension).cs" />
-    <Compile Include="..\..\..\SharedSource\Development\UnitTesting\PrivateInvoke.cs" Link="SharedSource\UnitTesting\PrivateInvoke.cs" />
-    <Compile Include="..\..\..\SharedSource\Development\UnitTesting\ThreadRunner.cs" Link="SharedSource\UnitTesting\ThreadRunner.cs" />
     <Compile Include="..\..\..\SharedSource\Core\RoslynAnnotations\NullableAnnotations.cs" Link="SharedSource\RoslynAnnotations\NullableAnnotations.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CoreRhinoMocks" Version="3.6.1.2" />
     <PackageReference Include="NUnit" Version="3.12.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Development.Core.csproj" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>
