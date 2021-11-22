@@ -42,7 +42,7 @@ namespace Remotion.Web.UI.Controls
     private ControlCollection? _labels;
 
     /// <summary> The message to be displayed to the user. </summary>
-    private string? _validationMessage;
+    private PlainTextString _validationMessage;
 
     /// <summary> The validator used to validate the <see cref="_validatedControl"/>. </summary>
     private IValidator? _validator;
@@ -63,7 +63,7 @@ namespace Remotion.Web.UI.Controls
       ArgumentUtility.CheckNotNull ("validator", validator);
 
       _validatedControl = validatedControl;
-      _validationMessage = null;
+      _validationMessage = PlainTextString.Empty;
       _validator = validator;
       _labels = labels;
     }
@@ -81,9 +81,9 @@ namespace Remotion.Web.UI.Controls
     /// <param name="validatedControl"> The control with an invalid state. </param>
     /// <param name="validationMessage"> The message to be displayed to the user. Must not be <see langword="null"/> or empty. </param>
     /// <param name="labels">The labels containing the control's headings.</param>
-    public ValidationError (Control validatedControl, string validationMessage, ControlCollection? labels)
+    public ValidationError (Control validatedControl, PlainTextString validationMessage, ControlCollection? labels)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("validationMessage", validationMessage);
+      ArgumentUtility.CheckNotNullOrEmpty ("validationMessage", validationMessage.GetValue()); 
 
       _validatedControl = validatedControl;
       _validationMessage = validationMessage;
@@ -91,7 +91,7 @@ namespace Remotion.Web.UI.Controls
       _labels = labels;
     }
 
-    public ValidationError (Control validatedControl, string validationMessage)
+    public ValidationError (Control validatedControl, PlainTextString validationMessage)
         : this (validatedControl, validationMessage, null)
     {
     }
@@ -112,12 +112,12 @@ namespace Remotion.Web.UI.Controls
 
     /// <summary> The message to be displayed to the user. </summary>
     /// <value> A string containing the message. </value>
-    public string ValidationMessage
+    public PlainTextString ValidationMessage
     {
       get
       {
-        if (_validationMessage == null)
-          return _validator!.ErrorMessage;
+        if (_validationMessage.IsEmpty)
+          return PlainTextString.CreateFromText (_validator!.ErrorMessage);
         else
           return _validationMessage;
       }
@@ -144,7 +144,7 @@ namespace Remotion.Web.UI.Controls
     {
       HtmlGenericControl label = new HtmlGenericControl ("label");
 
-      label.Controls.Add (ToSpan (ValidationMessage));
+      label.Controls.Add (ToSpan (ValidationMessage.GetValue()));
       if (_validatedControl != null)
         label.Attributes["for"] = _validatedControl.ClientID;
 
@@ -164,7 +164,7 @@ namespace Remotion.Web.UI.Controls
     {
       HyperLink hyperLink = new HyperLink();
 
-      hyperLink.Controls.Add (ToSpan (ValidationMessage));
+      hyperLink.Controls.Add (ToSpan (ValidationMessage.GetValue()));
       if (_validatedControl != null)
         hyperLink.Attributes.Add ("href", "#" + _validatedControl.ClientID);
 
@@ -206,7 +206,7 @@ namespace Remotion.Web.UI.Controls
       HtmlGenericControl genericControl = new HtmlGenericControl (tag);
       if (!string.IsNullOrEmpty (cssClass))
         genericControl.Attributes["class"] = cssClass;
-      genericControl.InnerHtml = WebString.CreateFromText (ValidationMessage).ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
+      genericControl.InnerHtml = ValidationMessage.ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
       return genericControl;
     }
   }

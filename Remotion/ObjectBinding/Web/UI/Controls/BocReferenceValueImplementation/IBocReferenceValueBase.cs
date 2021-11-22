@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
+using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
@@ -62,7 +63,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     /// <summary>
     /// Gets the list of validation errors for this control.
     /// </summary>
-    IEnumerable<string> GetValidationErrors ();
+    IEnumerable<PlainTextString> GetValidationErrors ();
 
     string ControlServicePath { get; }
   }

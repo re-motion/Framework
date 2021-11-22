@@ -416,7 +416,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
         Label label,
         BocDateTimeValueRenderingContext renderingContext,
         string validationErrorsID,
-        IReadOnlyCollection<string> validationErrors)
+        IReadOnlyCollection<PlainTextString> validationErrors)
     {
       label.Height = Unit.Empty;
       label.Width = Unit.Empty;
@@ -464,7 +464,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
       _validationErrorRenderer.RenderValidationErrors (renderingContext.Writer, validationErrorsID, validationErrors);
     }
 
-    private IEnumerable<string> GetDateValueValidationErrorsToRender (BocRenderingContext<IBocDateTimeValue> renderingContext)
+    private IEnumerable<PlainTextString> GetDateValueValidationErrorsToRender (BocRenderingContext<IBocDateTimeValue> renderingContext)
     {
       return renderingContext.Control.GetDateValueValidationErrors();
     }
@@ -474,7 +474,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
       return renderingContext.Control.ClientID + "_DateValueValidationErrors";
     }
 
-    private IEnumerable<string> GetTimeValueValidationErrorsToRender (BocRenderingContext<IBocDateTimeValue> renderingContext)
+    private IEnumerable<PlainTextString> GetTimeValueValidationErrorsToRender (BocRenderingContext<IBocDateTimeValue> renderingContext)
     {
       return renderingContext.Control.GetTimeValueValidationErrors();
     }

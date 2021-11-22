@@ -964,9 +964,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       return GetLabelText();
     }
 
-    IEnumerable<string> IBocReferenceValueBase.GetValidationErrors ()
+    IEnumerable<PlainTextString> IBocReferenceValueBase.GetValidationErrors ()
     {
-      return GetRegisteredValidators().Where (v => !v.IsValid).Select (v => v.ErrorMessage).Distinct();
+      return GetRegisteredValidators()
+          .Where (v => !v.IsValid)
+          .Select (v => v.ErrorMessage)
+          .Select (PlainTextString.CreateFromText)
+          .Distinct();
     }
 
     /// <summary>

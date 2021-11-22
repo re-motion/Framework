@@ -17,6 +17,7 @@
 using System;
 using System.Xml;
 using Remotion.Utilities;
+using Remotion.Web;
 
 namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
 {
@@ -35,9 +36,19 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
       Helper.AssertChildElementCount (element, childElementCount);
     }
 
+    public static void AssertAttributeValueEquals (this XmlNode element, string attributeName, WebString attributeValue)
+    {
+      Helper.AssertAttribute (element, attributeName, attributeValue, HtmlHelperBase.AttributeValueCompareMode.Equal);
+    }
+
     public static void AssertAttributeValueEquals (this XmlNode element, string attributeName, string? attributeValue)
     {
       Helper.AssertAttribute (element, attributeName, attributeValue, HtmlHelperBase.AttributeValueCompareMode.Equal);
+    }
+
+    public static void AssertAttributeValueContains (this XmlNode element, string attributeName, WebString attributeValuePart)
+    {
+      Helper.AssertAttribute (element, attributeName, attributeValuePart, HtmlHelperBase.AttributeValueCompareMode.Contains);
     }
 
     public static void AssertAttributeValueContains (this XmlNode element, string attributeName, string attributeValuePart)

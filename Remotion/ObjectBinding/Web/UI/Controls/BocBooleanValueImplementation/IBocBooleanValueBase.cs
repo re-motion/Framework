@@ -59,6 +59,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     /// <summary>
     /// Gets the list of validation errors for this control.
     /// </summary>
-    IEnumerable<string> GetValidationErrors ();
+    IEnumerable<PlainTextString> GetValidationErrors ();
   }
 }
