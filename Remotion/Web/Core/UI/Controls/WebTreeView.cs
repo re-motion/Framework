@@ -833,7 +833,7 @@ namespace Remotion.Web.UI.Controls
       writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
       writer.RenderBeginTag(HtmlTextWriterTag.Span);
-      writer.Write (badge.Value);
+      badge.Value.Write (writer);
       writer.RenderEndTag();
 
       writer.RenderEndTag();
@@ -843,7 +843,7 @@ namespace Remotion.Web.UI.Controls
         writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassScreenReaderText);
         writer.RenderBeginTag (HtmlTextWriterTag.Span);
         writer.Write (".");
-        writer.Write (badge.Description);
+        badge.Description.Write (writer);
         writer.RenderEndTag();
       }
     }
