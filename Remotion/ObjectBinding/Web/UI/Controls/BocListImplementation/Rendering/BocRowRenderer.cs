@@ -108,8 +108,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       else
         emptyListMessage = renderingContext.Control.EmptyListMessage;
 
-      // Do not HTML encode
-      renderingContext.Writer.Write (emptyListMessage);
+      emptyListMessage.Write (renderingContext.Writer);
 
       renderingContext.Writer.RenderEndTag();
       renderingContext.Writer.RenderEndTag();
