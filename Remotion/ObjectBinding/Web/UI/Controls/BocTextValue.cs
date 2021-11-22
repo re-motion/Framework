@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+// this file is part of the re-motion core framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -28,6 +28,8 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Validation;
 using Remotion.Utilities;
+using Remotion.Web;
+using Remotion.Web.Globalization;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Globalization;
@@ -84,7 +86,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private string? _format;
     private string? _text = string.Empty;
-    private string? _errorMessage;
+    private PlainTextString _errorMessage;
     private ReadOnlyCollection<BaseValidator>? _validators;
 
     public BocTextValue ()
@@ -429,20 +431,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </value>
     [Description("Validation message displayed if there is an error.")]
     [Category("Validator")]
-    [DefaultValue("")]
-    public string? ErrorMessage
+    [DefaultValue(typeof(PlainTextString), "")]
+    public PlainTextString ErrorMessage
     {
       get { return _errorMessage; }
       set
       {
         _errorMessage = value;
 
-        UpdateValidtaorErrorMessages<RequiredFieldValidator>(_errorMessage);
-        UpdateValidtaorErrorMessages<LengthValidator>(_errorMessage);
+        UpdateValidatorErrorMessages<RequiredFieldValidator>(_errorMessage);
+        UpdateValidatorErrorMessages<LengthValidator>(_errorMessage);
 
-        UpdateValidtaorErrorMessages<DateTimeValidator>(_errorMessage);
-        UpdateValidtaorErrorMessages<CompareValidator>(_errorMessage);
-        UpdateValidtaorErrorMessages<NumericValidator>(_errorMessage);
+        UpdateValidatorErrorMessages<DateTimeValidator>(_errorMessage);
+        UpdateValidatorErrorMessages<CompareValidator>(_errorMessage);
+        UpdateValidatorErrorMessages<NumericValidator>(_errorMessage);
       }
     }
 
@@ -520,9 +522,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       base.LoadResources(resourceManager, globalizationService);
 
       //  Dispatch simple properties
-      string? key = ResourceManagerUtility.GetGlobalResourceKey(ErrorMessage);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey(ErrorMessage.GetValue());
       if (! string.IsNullOrEmpty(key))
-        ErrorMessage = resourceManager.GetString(key);
+        ErrorMessage = resourceManager.GetText(key);
     }
 
     [Obsolete("For DependDB only.", true)]
@@ -575,22 +577,22 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private void OverrideValidatorErrorMessages ()
     {
 
-      if (string.IsNullOrEmpty(_errorMessage))
+      if (_errorMessage.IsEmpty)
         return;
 
-      UpdateValidtaorErrorMessages<RequiredFieldValidator>(_errorMessage);
-      UpdateValidtaorErrorMessages<LengthValidator>(_errorMessage);
+      UpdateValidatorErrorMessages<RequiredFieldValidator>(_errorMessage);
+      UpdateValidatorErrorMessages<LengthValidator>(_errorMessage);
 
-      UpdateValidtaorErrorMessages<DateTimeValidator>(_errorMessage);
-      UpdateValidtaorErrorMessages<CompareValidator>(_errorMessage);
-      UpdateValidtaorErrorMessages<NumericValidator>(_errorMessage);
+      UpdateValidatorErrorMessages<DateTimeValidator>(_errorMessage);
+      UpdateValidatorErrorMessages<CompareValidator>(_errorMessage);
+      UpdateValidatorErrorMessages<NumericValidator>(_errorMessage);
     }
 
-    private void UpdateValidtaorErrorMessages<T> (string? errorMessage) where T : BaseValidator
+    private void UpdateValidatorErrorMessages<T> (PlainTextString errorMessage) where T : BaseValidator
     {
       var validator = _validators.GetValidator<T>();
       if (validator != null)
-        validator.ErrorMessage = errorMessage!;
+        validator.ErrorMessage = errorMessage.GetValue();
     }
 
     /// <summary> The <see cref="BocTextValue"/> supports only scalar properties. </summary>

@@ -27,6 +27,8 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Validation;
 using Remotion.Utilities;
+using Remotion.Web;
+using Remotion.Web.Globalization;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Globalization;
@@ -65,7 +67,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private static readonly Type[] s_supportedPropertyInterfaces = new[] { typeof(IBusinessObjectStringProperty) };
 
     private string[]? _text = null;
-    private string? _errorMessage;
+    private PlainTextString _errorMessage;
     private ReadOnlyCollection<BaseValidator>? _validators;
 
     // construction and disposing
@@ -227,16 +229,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </value>
     [Description("Validation message displayed if there is an error.")]
     [Category("Validator")]
-    [DefaultValue("")]
-    public string? ErrorMessage
+    [DefaultValue(typeof(PlainTextString), "")]
+    public PlainTextString ErrorMessage
     {
       get { return _errorMessage; }
       set
       {
         _errorMessage = value;
 
-        UpdateValidtaorErrorMessages<RequiredFieldValidator>(_errorMessage);
-        UpdateValidtaorErrorMessages<LengthValidator>(_errorMessage);
+        UpdateValidatorErrorMessages<RequiredFieldValidator>(_errorMessage);
+        UpdateValidatorErrorMessages<LengthValidator>(_errorMessage);
       }
     }
 
@@ -333,9 +335,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       base.LoadResources(resourceManager, globalizationService);
 
       //  Dispatch simple properties
-      string? key = ResourceManagerUtility.GetGlobalResourceKey(ErrorMessage);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey(ErrorMessage.GetValue());
       if (! string.IsNullOrEmpty(key))
-        ErrorMessage = resourceManager.GetString(key);
+        ErrorMessage = resourceManager.GetText(key);
     }
 
     [Obsolete("For DependDB only.", true)]
@@ -375,18 +377,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private void OverrideValidatorErrorMessages ()
     {
-      if (string.IsNullOrEmpty(_errorMessage))
+      if (_errorMessage.IsEmpty)
         return;
 
-      UpdateValidtaorErrorMessages<RequiredFieldValidator>(_errorMessage);
-      UpdateValidtaorErrorMessages<LengthValidator>(_errorMessage);
+      UpdateValidatorErrorMessages<RequiredFieldValidator>(_errorMessage);
+      UpdateValidatorErrorMessages<LengthValidator>(_errorMessage);
     }
 
-    private void UpdateValidtaorErrorMessages<T> (string? errorMessage) where T : BaseValidator
+    private void UpdateValidatorErrorMessages<T> (PlainTextString errorMessage) where T : BaseValidator
     {
       var validator = _validators.GetValidator<T>();
       if (validator != null)
-        validator.ErrorMessage = errorMessage!;
+        validator.ErrorMessage = errorMessage.GetValue();
     }
 
     /// <summary>

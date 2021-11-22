@@ -101,7 +101,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private string _nullItemText = string.Empty;
     private string? _select = String.Empty;
     private bool? _enableSelectStatement;
-    private string? _nullItemErrorMessage;
+    private PlainTextString _nullItemErrorMessage;
     private ReadOnlyCollection<BaseValidator>? _validators;
 
     // construction and disposing
@@ -141,14 +141,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </value>
     [Description("Validation message displayed if the value is not set but the control is required.")]
     [Category("Validator")]
-    [DefaultValue("")]
-    public string? NullItemErrorMessage
+    [DefaultValue(typeof(PlainTextString), "")]
+    public PlainTextString NullItemErrorMessage
     {
       get { return _nullItemErrorMessage; }
       set
       {
         _nullItemErrorMessage = value;
-        UpdateValidtaorErrorMessages<RequiredFieldValidator>(_nullItemErrorMessage);
+        UpdateValidatorErrorMessages<RequiredFieldValidator>(_nullItemErrorMessage);
       }
     }
 
@@ -239,9 +239,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (! string.IsNullOrEmpty(key))
         NullItemText = resourceManager.GetString(key);
 
-      key = ResourceManagerUtility.GetGlobalResourceKey(NullItemErrorMessage);
+      key = ResourceManagerUtility.GetGlobalResourceKey(NullItemErrorMessage.GetValue());
       if (!string.IsNullOrEmpty(key))
-        NullItemErrorMessage = resourceManager.GetString(key);
+        NullItemErrorMessage = resourceManager.GetText(key);
 
       key = ResourceManagerUtility.GetGlobalResourceKey(Select);
       if (!string.IsNullOrEmpty(key))
@@ -287,17 +287,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private void OverrideValidatorErrorMessages ()
     {
-      if (string.IsNullOrEmpty(NullItemErrorMessage))
+      if (NullItemErrorMessage.IsEmpty)
         return;
 
-      UpdateValidtaorErrorMessages<RequiredFieldValidator>(NullItemErrorMessage);
+      UpdateValidatorErrorMessages<RequiredFieldValidator>(NullItemErrorMessage);
     }
 
-    private void UpdateValidtaorErrorMessages<T> (string? errorMessage) where T : BaseValidator
+    private void UpdateValidatorErrorMessages<T> (PlainTextString errorMessage) where T : BaseValidator
     {
       var validator = _validators.GetValidator<T>();
       if (validator != null)
-        validator.ErrorMessage = errorMessage!;
+        validator.ErrorMessage = errorMessage.GetValue();
     }
 
     protected override IBusinessObjectConstraintVisitor CreateBusinessObjectConstraintVisitor ()
@@ -403,11 +403,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override IResourceManager GetResourceManager ()
     {
       return GetResourceManager(typeof(ResourceIdentifier));
-    }
-
-    protected override sealed string GetNullItemErrorMessage ()
-    {
-      return GetResourceManager().GetString(ResourceIdentifier.NullItemErrorMessage);
     }
 
     protected override sealed WebString GetOptionsMenuTitle ()
