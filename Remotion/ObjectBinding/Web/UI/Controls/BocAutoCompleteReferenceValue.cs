@@ -114,7 +114,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private string _displayName;
     private bool _isDisplayNameRefreshed;
 
-    private string _invalidItemErrorMessage;
+    private PlainTextString _invalidItemErrorMessage;
 
     private string _validSearchStringRegex;
     private string _validSearchStringForDropDownRegex;
@@ -126,7 +126,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private int _selectionUpdateDelay = 200;
     private BusinessObjectWebServiceContext _businessObjectWebServiceContextFromPreviousLifeCycle;
 
-    private string _nullItemErrorMessage;
+    private PlainTextString _nullItemErrorMessage;
     private ReadOnlyCollection<BaseValidator> _validators;
     // construction and disposing
 
@@ -151,15 +151,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </value>
     [Description ("Validation message displayed if the value is not set but the control is required.")]
     [Category ("Validator")]
-    [DefaultValue ("")]
-    public string NullItemErrorMessage
+    [DefaultValue (typeof (PlainTextString), "")]
+    public PlainTextString NullItemErrorMessage
     {
       get { return _nullItemErrorMessage; }
       set
       {
         _nullItemErrorMessage = value;
 
-        UpdateValidtaorErrorMessages<RequiredFieldValidator> (_nullItemErrorMessage);
+        UpdateValidatorErrorMessages<RequiredFieldValidator> (_nullItemErrorMessage);
       }
     }
 
@@ -297,18 +297,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private void OverrideValidatorErrorMessages ()
     {
-      if (!string.IsNullOrEmpty (InvalidItemErrorMessage))
-        UpdateValidtaorErrorMessages<BocAutoCompleteReferenceValueInvalidDisplayNameValidator> (InvalidItemErrorMessage);
+      if (!InvalidItemErrorMessage.IsEmpty)
+        UpdateValidatorErrorMessages<BocAutoCompleteReferenceValueInvalidDisplayNameValidator> (InvalidItemErrorMessage);
 
-      if (!string.IsNullOrEmpty (NullItemErrorMessage))
-        UpdateValidtaorErrorMessages<RequiredFieldValidator> (NullItemErrorMessage);
+      if (!NullItemErrorMessage.IsEmpty)
+        UpdateValidatorErrorMessages<RequiredFieldValidator> (NullItemErrorMessage);
     }
 
-    private void UpdateValidtaorErrorMessages<T> (string errorMessage) where T : BaseValidator
+    private void UpdateValidatorErrorMessages<T> (PlainTextString errorMessage) where T : BaseValidator
     {
       var validator = _validators.GetValidator<T>();
       if (validator != null)
-        validator.ErrorMessage = errorMessage;
+        validator.ErrorMessage = errorMessage.GetValue();
     }
 
     protected virtual IBocAutoCompleteReferenceValueRenderer CreateRenderer ()
@@ -420,9 +420,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       base.LoadResources (resourceManager, globalizationService);
 
-      var key = ResourceManagerUtility.GetGlobalResourceKey (NullItemErrorMessage);
+      var key = ResourceManagerUtility.GetGlobalResourceKey (NullItemErrorMessage.GetValue());
       if (!string.IsNullOrEmpty (key))
-        NullItemErrorMessage = resourceManager.GetString (key);
+        NullItemErrorMessage = resourceManager.GetText (key);
     }
 
     protected override string GetLabelText ()
@@ -519,14 +519,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </value>
     [Description ("Validation message displayed if the entered text does not identify an item.")]
     [Category ("Validator")]
-    [DefaultValue ("")]
-    public string InvalidItemErrorMessage
+    [DefaultValue (typeof (PlainTextString), "")]
+    public PlainTextString InvalidItemErrorMessage
     {
       get { return _invalidItemErrorMessage; }
       set
       {
         _invalidItemErrorMessage = value;
-        UpdateValidtaorErrorMessages<BocAutoCompleteReferenceValueInvalidDisplayNameValidator>(_invalidItemErrorMessage);
+        UpdateValidatorErrorMessages<BocAutoCompleteReferenceValueInvalidDisplayNameValidator>(_invalidItemErrorMessage);
       }
     }
 

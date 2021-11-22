@@ -18,6 +18,7 @@ using System;
 using System.Collections;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport
@@ -30,7 +31,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     bool IsDirty { get; set; }
     EditableRowDataSourceFactory EditModeDataSourceFactory { get; }
     EditableRowControlFactory EditModeControlFactory { get; }
-    string ErrorMessage { get; }
+    PlainTextString ErrorMessage { get; }
     bool DisableEditModeValidationMessages { get; }
     bool ShowEditModeValidationMarkers { get; }
     bool ShowEditModeRequiredMarkers { get; }
