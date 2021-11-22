@@ -299,7 +299,7 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
       if (showIcon && menuItem.DisabledIcon.HasRenderingInformation)
         disabledIcon = "'" + renderingContext.Control.ResolveClientUrl (menuItem.DisabledIcon.Url) + "'";
       string text = showText
-          ? "'" + ScriptUtility.EscapeClientScript (menuItem.Text.ToString (WebStringEncoding.HtmlWithTransformedLineBreaks)) + "'"
+          ? "'" + ScriptUtility.EscapeClientScript (menuItem.Text) + "'"
           : "null";
 
       bool isDisabled = !renderingContext.Control.Enabled

@@ -411,7 +411,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
       string icon = GetIconUrl (renderingContext, menuItem, showIcon);
       string disabledIcon = GetDisabledIconUrl (renderingContext, menuItem, showIcon);
       string text = showText
-          ? "'" + ScriptUtility.EscapeClientScript (menuItem.Text.ToString (WebStringEncoding.HtmlWithTransformedLineBreaks)) + "'"
+          ? "'" + ScriptUtility.EscapeClientScript (menuItem.Text) + "'"
           : "null";
       WebString diagnosticMetadataText = showText ? menuItem.Text : default;
 
