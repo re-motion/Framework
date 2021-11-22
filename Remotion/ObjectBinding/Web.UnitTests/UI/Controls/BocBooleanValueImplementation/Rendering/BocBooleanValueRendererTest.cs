@@ -92,9 +92,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
           "true",
           "false",
           "null",
-          ScriptUtility.EscapeClientScript (_resourceSet.DefaultTrueDescription.ToString (WebStringEncoding.HtmlWithTransformedLineBreaks)),
-          ScriptUtility.EscapeClientScript (_resourceSet.DefaultFalseDescription.ToString (WebStringEncoding.HtmlWithTransformedLineBreaks)),
-          ScriptUtility.EscapeClientScript (_resourceSet.DefaultNullDescription.ToString (WebStringEncoding.HtmlWithTransformedLineBreaks)),
+          ScriptUtility.EscapeClientScript (_resourceSet.DefaultTrueDescription),
+          ScriptUtility.EscapeClientScript (_resourceSet.DefaultFalseDescription),
+          ScriptUtility.EscapeClientScript (_resourceSet.DefaultNullDescription),
           _resourceSet.TrueIconUrl,
           _resourceSet.FalseIconUrl,
           _resourceSet.NullIconUrl);

@@ -227,9 +227,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
             trueValue,
             falseValue,
             nullValue,
-            ScriptUtility.EscapeClientScript (resourceSet.DefaultTrueDescription.ToString (WebStringEncoding.HtmlWithTransformedLineBreaks)),
-            ScriptUtility.EscapeClientScript (resourceSet.DefaultFalseDescription.ToString (WebStringEncoding.HtmlWithTransformedLineBreaks)),
-            ScriptUtility.EscapeClientScript (resourceSet.DefaultNullDescription.ToString (WebStringEncoding.HtmlWithTransformedLineBreaks)),
+            ScriptUtility.EscapeClientScript (resourceSet.DefaultTrueDescription),
+            ScriptUtility.EscapeClientScript (resourceSet.DefaultFalseDescription),
+            ScriptUtility.EscapeClientScript (resourceSet.DefaultNullDescription),
             resourceSet.TrueIconUrl,
             resourceSet.FalseIconUrl,
             resourceSet.NullIconUrl);

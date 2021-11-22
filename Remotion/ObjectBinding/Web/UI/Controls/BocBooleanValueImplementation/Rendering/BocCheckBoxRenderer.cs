@@ -210,10 +210,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
                       + label + ", "
                       + (renderingContext.Control.TrueDescription.IsEmpty
                           ? "null"
-                          : "'" + ScriptUtility.EscapeClientScript (renderingContext.Control.TrueDescription.ToString (WebStringEncoding.HtmlWithTransformedLineBreaks)) + "'") + ", "
+                          : "'" + ScriptUtility.EscapeClientScript (renderingContext.Control.TrueDescription) + "'") + ", "
                       + (renderingContext.Control.FalseDescription.IsEmpty
                           ? "null"
-                          : "'" + ScriptUtility.EscapeClientScript (renderingContext.Control.FalseDescription.ToString (WebStringEncoding.HtmlWithTransformedLineBreaks)) + "'") + ");";
+                          : "'" + ScriptUtility.EscapeClientScript (renderingContext.Control.FalseDescription) + "'") + ");";
 
       if (renderingContext.Control.IsAutoPostBackEnabled)
         script += renderingContext.Control.Page.ClientScript.GetPostBackEventReference (renderingContext.Control, "") + ";";
@@ -227,8 +227,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
 
       string startupScript = string.Format (
           "BocCheckBox.InitializeGlobals ('{0}', '{1}');",
-          ScriptUtility.EscapeClientScript (renderingContext.Control.DefaultTrueDescription.ToString (WebStringEncoding.HtmlWithTransformedLineBreaks)),
-          ScriptUtility.EscapeClientScript (renderingContext.Control.DefaultFalseDescription.ToString (WebStringEncoding.HtmlWithTransformedLineBreaks)));
+          ScriptUtility.EscapeClientScript (renderingContext.Control.DefaultTrueDescription),
+          ScriptUtility.EscapeClientScript (renderingContext.Control.DefaultFalseDescription));
       renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock (renderingContext.Control, typeof (BocCheckBoxRenderer), s_startUpScriptKey, startupScript);
     }
 
