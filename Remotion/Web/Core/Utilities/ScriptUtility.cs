@@ -36,6 +36,18 @@ namespace Remotion.Web.Utilities
       get { return SafeServiceLocator.Current.GetInstance<IScriptUtility>(); }
     }
 
+    /// <summary>Escapes special characters (e.g. <c>\n</c>) in the passed <see cref="WebString"/>.</summary>
+    /// <param name="input">The unescaped input.</param>
+    /// <returns>The string with special characters escaped.</returns>
+    /// <remarks>
+    /// This is required when adding client script to the page containing special characters. ASP.NET automatically
+    /// escapes client scripts created by <see cref="O:System.Web.UI.ClientScriptManager.GetPostBackEventReference">ClientScript.GetPostBackEventReference.</see>.
+    /// </remarks>
+    public static string EscapeClientScript (WebString input)
+    {
+      return EscapeClientScript(input.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks));
+    }
+
     /// <summary> Escapes special characters (e.g. <c>\n</c>) in the passed string. </summary>
     /// <param name="input"> The unescaped string. Must not be <see langword="null"/>. </param>
     /// <returns> The string with special characters escaped. </returns>
