@@ -1675,16 +1675,16 @@ namespace Remotion.Web.UI.Controls
         {
           ValidationError validationError = (ValidationError)validationErrorList[i]!;
           //  Get validation message
-          string validationMessage = validationError.ValidationMessage;
+          PlainTextString validationMessage = validationError.ValidationMessage;
           //  Get tool tip, tool tip is validation message
-          if (!string.IsNullOrEmpty(validationMessage))
+          if (!validationMessage.IsEmpty)
           {
             if (toolTip.Length > 0)
               toolTip.AppendLine();
-            toolTip.Append(validationMessage);
+            toolTip.Append(validationMessage.GetValue());
           }
         }
-        dataRow.ValidationMarker = CreateValidationMarker(toolTip.ToString());
+        dataRow.ValidationMarker = CreateValidationMarker(PlainTextString.CreateFromText(toolTip.ToString()));
       }
 
       dataRow.ValidationErrors = (ValidationError[])validationErrorList.ToArray(typeof(ValidationError));
@@ -2987,7 +2987,7 @@ namespace Remotion.Web.UI.Controls
 
     /// <summary> Builds a new marker for validation errors. </summary>
     /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/CreateValidationMarker/*' />
-    protected virtual Control CreateValidationMarker (string toolTip)
+    protected virtual Control CreateValidationMarker (PlainTextString toolTip)
     {
       Image validationErrorIcon = new Image();
       validationErrorIcon.ImageUrl = GetImageUrl(FormGridImage.ValidationError);
@@ -3001,7 +3001,7 @@ namespace Remotion.Web.UI.Controls
       validationAnchor.Controls.Add(validationErrorIcon);
       if (ValidatorVisibility == ValidatorVisibility.HideValidators)
       {
-        validationAnchor.Attributes.Add(HtmlTextWriterAttribute2.AriaLabel, toolTip);
+        validationAnchor.Attributes.Add(HtmlTextWriterAttribute2.AriaLabel, toolTip.GetValue());
         validationAnchor.Attributes["tabindex"] = "0";
       }
       else

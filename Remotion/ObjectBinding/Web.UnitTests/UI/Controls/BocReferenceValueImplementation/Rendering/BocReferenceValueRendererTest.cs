@@ -50,7 +50,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     private const string c_readOnlyTextValueName = "MyReferenceValue_Value";
     private const string c_uniqueIdentifier = "uniqueidentifiert";
     private const string c_labelID = "Label";
-    private const string c_validationErrors = "ValidationError";
+    private static readonly PlainTextString s_validationErrors = PlainTextString.CreateFromText("ValidationError");
 
     private enum OptionMenuConfiguration
     {
@@ -83,7 +83,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       Control.Setup(stub => stub.ClientID).Returns(c_clientID);
       Control.Setup(stub => stub.ControlType).Returns("BocReferenceValue");
       Control.Setup(mock => mock.GetLabelIDs()).Returns(EnumerableUtility.Singleton(c_labelID));
-      Control.Setup(mock => mock.GetValidationErrors()).Returns(EnumerableUtility.Singleton(c_validationErrors));
+      Control.Setup(mock => mock.GetValidationErrors()).Returns(EnumerableUtility.Singleton(s_validationErrors));
       Control.Setup(stub => stub.BusinessObjectUniqueIdentifier).Returns(c_uniqueIdentifier);
 
       Control.Setup(stub => stub.OptionsMenu).Returns(OptionsMenu);
@@ -376,11 +376,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       Html.AssertAttribute(select, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
       Html.AssertAttribute(select, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
       Html.AssertAttribute(select, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
-      Html.AssertAttribute(select, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
+      Html.AssertAttribute(select, StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
 
       var validationErrors = span.GetAssertedChildElement("fake", 1);
       Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
-      Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
+      Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
     }
 
     [Test]
@@ -424,7 +424,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       contentSpan.AssertAttributeValueEquals(StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
       contentSpan.AssertAttributeValueEquals(StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, c_readOnlyTextValueName);
       contentSpan.AssertAttributeValueEquals(StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
-      contentSpan.AssertAttributeValueEquals(StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
+      contentSpan.AssertAttributeValueEquals(StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
       contentSpan.AssertChildElementCount(1);
 
       var innerSpan = contentSpan.GetAssertedChildElement("span", 0);
@@ -435,7 +435,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
 
       var validationErrors = span.GetAssertedChildElement("fake", 1 + iconOffset);
       Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
-      Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
+      Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
 
       if (hasOptionsMenu)
       {

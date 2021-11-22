@@ -147,7 +147,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
     /// <returns>A <see cref="Label"/> control with all relevant properties set and all appropriate styles applied to it.</returns>
     protected abstract Label GetLabel (BocRenderingContext<T> renderingContext);
 
-    private IEnumerable<string> GetValidationErrorsToRender (BocRenderingContext<T> renderingContext)
+    private IEnumerable<PlainTextString> GetValidationErrorsToRender (BocRenderingContext<T> renderingContext)
     {
       return renderingContext.Control.GetValidationErrors();
     }

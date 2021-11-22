@@ -36,6 +36,7 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Renderin
 using Remotion.ObjectBinding.Web.UnitTests.Domain;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
+using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls.Rendering;
@@ -50,7 +51,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
     private const string c_clientID = "MyEnumValue";
     private const string c_valueName = "ListControlClientID";
     private const string c_labelID = "Label";
-    private const string c_validationErrors = "ValidationError";
+
+    private static readonly PlainTextString s_validationErrors = PlainTextString.CreateFromText("ValidationError");
+
     private Mock<IBocEnumValue> _enumValue;
     private readonly Unit _width = Unit.Point(173);
     private readonly Unit _height = Unit.Point(17);
@@ -88,7 +91,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       _enumValue.Setup(stub => stub.ClientID).Returns(c_clientID);
       _enumValue.Setup(stub => stub.ControlType).Returns("BocEnumValue");
       _enumValue.Setup(mock => mock.GetLabelIDs()).Returns(EnumerableUtility.Singleton(c_labelID));
-      _enumValue.Setup(mock => mock.GetValidationErrors()).Returns(EnumerableUtility.Singleton(c_validationErrors));
+      _enumValue.Setup(mock => mock.GetValidationErrors()).Returns(EnumerableUtility.Singleton(s_validationErrors));
 
       var pageStub = new Mock<IPage>();
       pageStub.Setup(stub => stub.WrappedInstance).Returns(new PageMock());
@@ -225,7 +228,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       Html.AssertAttribute(span, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
       Html.AssertAttribute(span, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, c_valueName);
       Html.AssertAttribute(span, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
-      Html.AssertAttribute(span, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
+      Html.AssertAttribute(span, StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
       Html.AssertAttribute(span, "tabindex", "0");
       //Html.AssertAttribute (span, "role", "combobox");
       //Html.AssertAttribute (span, "aria-readonly", "true");
@@ -248,7 +251,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
 
       var validationErrors = Html.GetAssertedChildElement(div, "fake", 1);
       Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
-      Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
+      Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
     }
 
     private XmlNode GetAssertedSpan (XmlDocument document, bool withStyle, BocEnumValueRenderer renderer)

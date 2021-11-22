@@ -36,6 +36,7 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Renderin
 using Remotion.ObjectBinding.Web.UnitTests.Domain;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
+using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls.Rendering;
@@ -109,7 +110,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       _enumValue.Setup(mock => mock.ControlStyle).Returns(new Style(stateBag));
       _enumValue.Setup(mock => mock.Enabled).Returns(false);
 
-      _enumValue.Setup(mock => mock.GetValidationErrors()).Returns(Enumerable.Empty<string>());
+      _enumValue.Setup(mock => mock.GetValidationErrors()).Returns(Enumerable.Empty<PlainTextString>());
 
       _internalControlMemberCaller = SafeServiceLocator.Current.GetInstance<IInternalControlMemberCaller>();
     }

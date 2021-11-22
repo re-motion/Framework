@@ -21,6 +21,7 @@
     <ProjectReference Include="..\..\Core\Tools\Core.Tools.csproj" />
     <ProjectReference Include="..\..\Data\DomainObjects\Data.DomainObjects.csproj" />
     <ProjectReference Include="..\..\Mixins\Core\Mixins.Core.csproj" />
+    <ProjectReference Include="..\..\Web\Core\Web.Core.csproj" />
     <ProjectReference Include="..\Core\Development.Core.csproj" />
     <ProjectReference Include="..\Data\Development.Data.csproj" />
     <ProjectReference Include="..\RhinoMocks\Development.RhinoMocks.csproj" />

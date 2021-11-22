@@ -3745,9 +3745,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return new ReadOnlyDictionary<BocCustomColumnDefinition, BocListCustomColumnTuple[]>(_customColumnControls); }
     }
 
-    IEnumerable<string> IBocList.GetValidationErrors ()
+    IEnumerable<PlainTextString> IBocList.GetValidationErrors ()
     {
-      return GetRegisteredValidators().Where(v => !v.IsValid).Select(v => v.ErrorMessage).Distinct();
+      return GetRegisteredValidators()
+          .Where(v => !v.IsValid)
+          .Select(v => v.ErrorMessage)
+          .Select(PlainTextString.CreateFromText)
+          .Distinct();
     }
 
     IEnumerable<string> IControlWithLabel.GetLabelIDs ()

@@ -322,9 +322,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
       return GetLabelIDs();
     }
 
-    IEnumerable<string> IBocBooleanValueBase.GetValidationErrors ()
+    IEnumerable<PlainTextString> IBocBooleanValueBase.GetValidationErrors ()
     {
-      return GetRegisteredValidators().Where(v => !v.IsValid).Select(v => v.ErrorMessage).Distinct();
+      return GetRegisteredValidators()
+          .Where(v => !v.IsValid)
+          .Select(v => v.ErrorMessage)
+          .Select(PlainTextString.CreateFromText)
+          .Distinct();
     }
 
     protected abstract string ControlType { get; }

@@ -25,6 +25,7 @@ using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
 using Remotion.ObjectBinding.Web.UnitTests.Domain;
+using Remotion.Web;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
@@ -77,7 +78,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       List.Setup(mock => mock.ControlType).Returns("BocList");
       List.Setup(list => list.HasClientScript).Returns(true);
       List.Setup(mock => mock.GetLabelIDs()).Returns(EnumerableUtility.Singleton("Label"));
-      List.Setup(mock => mock.GetValidationErrors()).Returns(EnumerableUtility.Singleton("ValidationError"));
+      List.Setup(mock => mock.GetValidationErrors())
+          .Returns(EnumerableUtility.Singleton(PlainTextString.CreateFromText("ValidationError")));
 
       var dataSourceMock = new Mock<IBusinessObjectDataSource>();
       dataSourceMock.SetupProperty(_ => _.BusinessObject);

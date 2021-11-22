@@ -51,7 +51,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     private const string c_keyValueName = "MyBooleanValue_Value";
     private const string c_displayValueName = "MyBooleanValue_DisplayValue";
     private const string c_labelID = "Label";
-    private const string c_validationErrors = "ValidationError";
+
+    private static readonly PlainTextString s_validationErrors = PlainTextString.CreateFromText("ValidationError");
 
     private string _startupScript;
     private string _keyDownScript;
@@ -83,7 +84,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       _booleanValue.Setup(mock => mock.GetValueName()).Returns(c_keyValueName);
       _booleanValue.Setup(mock => mock.GetDisplayValueName()).Returns(c_displayValueName);
       _booleanValue.Setup(mock => mock.GetLabelIDs()).Returns(EnumerableUtility.Singleton(c_labelID));
-      _booleanValue.Setup(mock => mock.GetValidationErrors()).Returns(EnumerableUtility.Singleton(c_validationErrors));
+      _booleanValue.Setup(mock => mock.GetValidationErrors()).Returns(EnumerableUtility.Singleton(s_validationErrors));
 
       string startupScriptKey = typeof(BocBooleanValueRenderer).FullName + "_Startup_" + _resourceSet.ResourceKey;
       _startupScript = string.Format(
@@ -435,7 +436,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     private void AssertValidationErrors (XmlNode node)
     {
       Html.AssertAttribute(node, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
-      Html.AssertAttribute(node, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
+      Html.AssertAttribute(node, StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
     }
 
     private void CheckHiddenField (XmlNode outerSpan, string value)

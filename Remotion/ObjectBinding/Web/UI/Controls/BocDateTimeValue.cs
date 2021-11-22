@@ -1000,14 +1000,22 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return InternalTimeValue; }
     }
 
-    IEnumerable<string> IBocDateTimeValue.GetDateValueValidationErrors ()
+    IEnumerable<PlainTextString> IBocDateTimeValue.GetDateValueValidationErrors ()
     {
-      return GetRegisteredValidators().Where(v => !v.IsValid).Select(v => v.ErrorMessage).Distinct();
+      return GetRegisteredValidators()
+          .Where(v => !v.IsValid)
+          .Select(v => v.ErrorMessage)
+          .Select(PlainTextString.CreateFromText)
+          .Distinct();
     }
 
-    IEnumerable<string> IBocDateTimeValue.GetTimeValueValidationErrors ()
+    IEnumerable<PlainTextString> IBocDateTimeValue.GetTimeValueValidationErrors ()
     {
-      return GetRegisteredValidators().Where(v => !v.IsValid).Select(v => v.ErrorMessage).Distinct();
+      return GetRegisteredValidators()
+          .Where(v => !v.IsValid)
+          .Select(v => v.ErrorMessage)
+          .Select(PlainTextString.CreateFromText)
+          .Distinct();
     }
 
     string IControlWithDiagnosticMetadata.ControlType
