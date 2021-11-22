@@ -154,7 +154,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
 
       if (HasTitleText (renderingContext))
       {
-        renderingContext.Writer.Write (renderingContext.Control.TitleText);
+        renderingContext.Control.TitleText.Write (renderingContext.Writer);
       }
 
       renderingContext.Writer.RenderEndTag();
@@ -168,7 +168,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
 
       if (HasTitleText (renderingContext))
       {
-        renderingContext.Writer.Write (renderingContext.Control.TitleText);
+        renderingContext.Control.TitleText.Write (renderingContext.Writer);
       }
       else if (HasTitleIcon (renderingContext))
       {
