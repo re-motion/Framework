@@ -26,12 +26,12 @@
       </remotion:MainMenuTab>
       <remotion:MainMenuTab ItemID="HrefCommandTab" Text="HrefCommandTabTitle">
         <PersistedCommand>
-          <remotion:NavigationCommand Type="Href" HrefCommand-Href="TabbedMenuTest.wxe"/>
+          <remotion:NavigationCommand Type="Href" HrefCommand-Href="TabbedMenuTest.wxe" AccessKey="A"/>
         </PersistedCommand>
       </remotion:MainMenuTab>
       <remotion:MainMenuTab ItemID="WxeFunctionCommandTab" Text="WxeFunctionCommandTabTitle">
         <PersistedCommand>
-          <remotion:NavigationCommand Type="WxeFunction" WxeFunctionCommand-MappingID="TabbedMenuTest"/>
+          <remotion:NavigationCommand Type="WxeFunction" WxeFunctionCommand-MappingID="TabbedMenuTest" AccessKey="B"/>
         </PersistedCommand>
       </remotion:MainMenuTab>
       <remotion:MainMenuTab ItemID="NoneCommandTab" Text="NoneCommandTabTitle">

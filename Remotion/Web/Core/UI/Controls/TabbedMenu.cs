@@ -25,6 +25,7 @@ using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
+using Remotion.Web.Globalization;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Controls.TabbedMenuImplementation;
@@ -53,7 +54,7 @@ namespace Remotion.Web.UI.Controls
     private readonly Style _statusStyle;
     private readonly WebTabStrip _mainMenuTabStrip;
     private readonly WebTabStrip _subMenuTabStrip;
-    private string? _statusText;
+    private WebString _statusText;
     private bool _isSubMenuTabStripRefreshed;
     private bool _isPastInitialization;
     private Color _subMenuBackgroundColor;
@@ -545,9 +546,9 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
 
-      string? key = ResourceManagerUtility.GetGlobalResourceKey (StatusText);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey (StatusText.GetValue());
       if (!string.IsNullOrEmpty (key))
-        StatusText = resourceManager.GetString (key);
+        StatusText = resourceManager.GetWebString(key, StatusText.Type);
     }
 
     protected IGlobalizationService GlobalizationService
@@ -579,9 +580,9 @@ namespace Remotion.Web.UI.Controls
     /// <remarks>
     ///   The value will not be HTML encoded.
     /// </remarks>
-    [Description ("The text displayed in the status area. The value will not be HTML encoded.")]
-    [DefaultValue ("")]
-    public string? StatusText
+    [Description ("The text displayed in the status area.")]
+    [DefaultValue (typeof (WebString), "")]
+    public WebString StatusText
     {
       get { return _statusText; }
       set { _statusText = value; }

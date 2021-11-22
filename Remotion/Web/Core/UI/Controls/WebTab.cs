@@ -16,12 +16,14 @@
 // 
 using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Web.Globalization;
 using Remotion.Web.UI.Controls.WebTabStripImplementation;
 using Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering;
 using Remotion.Web.UI.Globalization;
@@ -35,7 +37,7 @@ public class WebTab: IWebTab, IControlStateManager
   /// <summary> The control to which this object belongs. </summary>
   private IControl? _ownerControl;
   private string _itemID = "";
-  private string _text = "";
+  private WebString _text = WebString.Empty;
   private IconInfo _icon;
   private bool _isVisible = true;
   private bool _isDisabled;
@@ -43,6 +45,7 @@ public class WebTab: IWebTab, IControlStateManager
   private bool _isSelected;
   private int _selectDesired;
   private bool _isControlStateRestored;
+  private string _accessKey = string.Empty;
 
   /// <summary> Initalizes a new instance. </summary>
   public WebTab (string itemID, string text, IconInfo? icon)
@@ -51,7 +54,7 @@ public class WebTab: IWebTab, IControlStateManager
     ArgumentUtility.CheckNotNull ("text", text);
 
     _itemID = itemID;
-    _text = text;
+    _text = WebString.CreateFromText(text);
     _icon = icon ?? new IconInfo (string.Empty);
   }
 
@@ -134,7 +137,7 @@ public class WebTab: IWebTab, IControlStateManager
   {
     string displayName = ItemID;
     if (string.IsNullOrEmpty (displayName))
-      displayName = Text;
+      displayName = Text.ToString();
     if (string.IsNullOrEmpty (displayName))
       return DisplayedTypeName;
     else
@@ -179,15 +182,15 @@ public class WebTab: IWebTab, IControlStateManager
   /// <remarks> Must not be <see langword="null"/> or emtpy. The value will not be HTML encoded. </remarks>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Appearance")]
-  [Description ("The text displayed in this tab. Use '-' for a separator tab. The value will not be HTML encoded.")]
+  [Description ("The text displayed in this tab. Use '-' for a separator tab.")]
   //No Default value
   [NotifyParentProperty (true)]
-  public virtual string Text
+  public virtual WebString Text
   {
     get { return _text; }
     set 
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("value", value);
+      ArgumentUtility.CheckNotNullOrEmpty ("value", value.GetValue());
       _text = value; 
     }
   }
@@ -297,6 +300,16 @@ public class WebTab: IWebTab, IControlStateManager
     set { OwnerControlImplementation = value; }
   }
 
+  [Category ("Accessibility")]
+  [Description ("The AccessKey rendered in the anchor tag.")]
+  [DefaultValue ("")]
+  [AllowNull]
+  public string AccessKey
+  {
+    get { return _accessKey; }
+    set { _accessKey = value ?? string.Empty; }
+  }
+
   protected virtual IControl? OwnerControlImplementation
   {
     get { return _ownerControl;  }
@@ -359,9 +372,9 @@ public class WebTab: IWebTab, IControlStateManager
     ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
     ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
     
-    var key = ResourceManagerUtility.GetGlobalResourceKey (Text);
+    var key = ResourceManagerUtility.GetGlobalResourceKey (Text.GetValue());
     if (! string.IsNullOrEmpty (key))
-      Text = resourceManager.GetString (key);
+      Text = resourceManager.GetWebString(key, Text.Type);
     
     if (Icon != null)
       Icon.LoadResources (resourceManager);

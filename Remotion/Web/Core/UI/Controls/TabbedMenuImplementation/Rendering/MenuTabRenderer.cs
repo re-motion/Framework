@@ -16,9 +16,9 @@
 // 
 using System;
 using System.Collections.Specialized;
+using System.Web.UI;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
-using Remotion.Web.UI.Controls.Hotkey;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Controls.WebTabStripImplementation;
 using Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering;
@@ -32,8 +32,8 @@ namespace Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering
   [ImplementationFor (typeof (IMenuTabRenderer), Lifetime = LifetimeKind.Singleton)]
   public class MenuTabRenderer : WebTabRenderer, IMenuTabRenderer
   {
-    public MenuTabRenderer (IHotkeyFormatter hotkeyFormatter, IRenderingFeatures renderingFeatures)
-        : base (hotkeyFormatter, renderingFeatures)
+    public MenuTabRenderer (IRenderingFeatures renderingFeatures)
+        : base (renderingFeatures)
     {
     }
 
@@ -46,19 +46,15 @@ namespace Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering
 
       var additionalUrlParameters = menuTab.GetUrlParameters();
       var backupID = command.ItemID;
-      var backupAccessKey = command.AccessKey;
 
       try
       {
         if (string.IsNullOrEmpty (command.ItemID) && !string.IsNullOrEmpty (tab.ItemID))
           command.ItemID = tab.ItemID + "_Command";
 
-        if (string.IsNullOrEmpty (command.AccessKey))
-        {
-          var textWithHotkey = HotkeyParser.Parse (tab.Text);
-          if (textWithHotkey.Hotkey.HasValue)
-            command.AccessKey = HotkeyFormatter.FormatHotkey (textWithHotkey);
-        }
+        var attributes = new NameValueCollection();
+        if (!string.IsNullOrEmpty (command.AccessKey))
+          attributes.Add (nameof(HtmlTextWriterAttribute.Accesskey), command.AccessKey);
 
         command.RenderBegin (
             renderingContext.Writer,
@@ -70,14 +66,13 @@ namespace Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering
             additionalUrlParameters,
             false,
             style, 
-            new NameValueCollection (0));
+            attributes);
 
         return command;
       }
       finally
       {
         command.ItemID = backupID;
-        command.AccessKey = backupAccessKey;
       }
     }
 
