@@ -186,6 +186,7 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Analyzer Include="..\..\..\packages\Remotion.Infrastructure.Styles.Analyzer.1.1.3\analyzers\dotnet\cs\Remotion.Infrastructure.Styles.Analyzer.dll" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
