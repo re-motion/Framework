@@ -269,11 +269,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       scriptBuilder.Append (", ");
       scriptBuilder.Append (requiredFlag);
       scriptBuilder.Append (", ");
-      AppendStringValueOrNullToScript (scriptBuilder, renderingContext.Control.TrueDescription.ToString (WebStringEncoding.HtmlWithTransformedLineBreaks));
+      AppendStringValueOrNullToScript (scriptBuilder, renderingContext.Control.TrueDescription);
       scriptBuilder.Append (", ");
-      AppendStringValueOrNullToScript (scriptBuilder, renderingContext.Control.FalseDescription.ToString (WebStringEncoding.HtmlWithTransformedLineBreaks));
+      AppendStringValueOrNullToScript (scriptBuilder, renderingContext.Control.FalseDescription);
       scriptBuilder.Append (", ");
-      AppendStringValueOrNullToScript (scriptBuilder, renderingContext.Control.NullDescription.ToString (WebStringEncoding.HtmlWithTransformedLineBreaks));
+      AppendStringValueOrNullToScript (scriptBuilder, renderingContext.Control.NullDescription);
       scriptBuilder.Append (");");
 
       if (renderingContext.Control.IsAutoPostBackEnabled)
