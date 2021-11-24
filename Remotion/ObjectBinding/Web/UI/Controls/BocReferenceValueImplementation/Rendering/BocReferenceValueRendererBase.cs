@@ -184,9 +184,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassContent);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
+      RenderIcon (renderingContext);
+
       if (renderingContext.Control.IsReadOnly)
       {
-        RenderIcon (renderingContext);
         RenderReadOnlyValue (renderingContext);
       }
       else
@@ -198,7 +199,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         RenderEditModeValue (renderingContext);
 
         renderingContext.Writer.RenderEndTag();
-        RenderIcon (renderingContext);
       }
 
       bool hasOptionsMenu = renderingContext.Control.HasOptionsMenu;

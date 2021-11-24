@@ -365,7 +365,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       XmlNode span = GetAssertedContainerSpan (false);
       AssertControl (span, OptionMenuConfiguration.NoOptionsMenu, AutoPostBack.Disabled);
 
-      var input = span.GetAssertedChildElement ("span", 0).GetAssertedChildElement ("span", 0).GetAssertedChildElement ("input", 2);
+      var input = span.GetAssertedChildElement ("span", 0).GetAssertedChildElement ("span", 1).GetAssertedChildElement ("input", 2);
       input.AssertAttributeValueEquals ("id", c_keyValueName);
       input.AssertAttributeValueEquals ("name", c_keyValueName);
     }
@@ -436,7 +436,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       if (Control.Object.IsReadOnly && Control.Object.GetIcon() == null)
         return false;
 
-      var iconOffset = Control.Object.IsReadOnly ? 0 : 1;
+      var iconOffset = 0;
       var iconParent = parent.GetAssertedChildElement ("span", iconOffset);
 
       iconParent.AssertAttributeValueEquals ("class", "icon");
@@ -536,7 +536,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       var iconOffset = 1;
       var hasIconCssClass = hasIcon ? " hasIcon" : "";
 
-      var contentSpan = contentDiv.GetAssertedChildElement ("span", 0);
+      var contentSpan = contentDiv.GetAssertedChildElement ("span", iconOffset);
       contentSpan.AssertAttributeValueEquals ("id",  c_contentID);
       switch (optionMenuConfiguration)
       {
