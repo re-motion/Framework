@@ -47,7 +47,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <returns> Returns <see cref="Text"/>, followed by the the class name of the instance.  </returns>
     public override string ToString ()
     {
-      string displayName = ItemID;
+      string? displayName = ItemID;
       if (string.IsNullOrEmpty (displayName))
         displayName = ColumnTitle;
       if (string.IsNullOrEmpty (displayName))
@@ -114,7 +114,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       
       base.LoadResources (resourceManager, globalizationService);
 
-      string key = ResourceManagerUtility.GetGlobalResourceKey (Text);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey (Text);
       if (!string.IsNullOrEmpty (key))
         Text = resourceManager.GetString (key);
 

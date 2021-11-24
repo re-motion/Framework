@@ -35,8 +35,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation
     IDatePickerButton DatePickerButton { get; }
     bool ShowSeconds { get; }
     SingleRowTextBoxStyle DateTimeTextBoxStyle { get; }
-    string DateString { get; }
-    string TimeString { get; }
+    string? DateString { get; }
+    string? TimeString { get; }
     string GetDateValueName ();
     string GetTimeValueName ();
     string GetDatePickerText ();

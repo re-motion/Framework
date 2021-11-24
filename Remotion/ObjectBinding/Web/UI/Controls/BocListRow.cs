@@ -21,12 +21,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   public sealed class BocListRow : IEquatable<BocListRow>
   {
-    public static bool operator== (BocListRow row1, BocListRow row2)
+    public static bool operator== (BocListRow? row1, BocListRow? row2)
     {
       return Equals (row1, row2);
     }
 
-    public static bool operator!= (BocListRow row1, BocListRow row2)
+    public static bool operator!= (BocListRow? row1, BocListRow? row2)
     {
       return !(row1 == row2);
     }
@@ -54,7 +54,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return _businessObject; }
     }
 
-    public bool Equals (BocListRow other)
+    public bool Equals (BocListRow? other)
     {
       if (other == null)
         return false;
@@ -62,7 +62,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return this._index == other._index && this._businessObject.Equals (other._businessObject);
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
       return Equals (obj as BocListRow);
     }

@@ -108,7 +108,7 @@ public class BocMenuItemCommand: BocCommand
   private MenuItemWxeFunctionCommandInfo _wxeFunctionCommand;
 
   [Browsable (false)]
-  public new WebMenuItemClickEventHandler Click;
+  public new WebMenuItemClickEventHandler? Click;
 
   public BocMenuItemCommand ()
       : this (CommandType.Event, GetWebSecurityAdapter(), GetWxeSecurityAdapter())
@@ -122,8 +122,8 @@ public class BocMenuItemCommand: BocCommand
 
   public BocMenuItemCommand (
       CommandType defaultType,
-      [CanBeNull] IWebSecurityAdapter webSecurityAdapter,
-      [CanBeNull] IWxeSecurityAdapter wxeSecurityAdapter)
+      [CanBeNull] IWebSecurityAdapter? webSecurityAdapter,
+      [CanBeNull] IWxeSecurityAdapter? wxeSecurityAdapter)
       : base (defaultType, webSecurityAdapter, wxeSecurityAdapter)
   {
     _hrefCommand = new MenuItemHrefCommandInfo();
@@ -139,6 +139,7 @@ public class BocMenuItemCommand: BocCommand
     _hasClickFired = true;
     if (Click != null)
     {
+      Assertion.IsNotNull (OwnerControl, "OwnerControl must not be null.");
       WebMenuItemClickEventArgs e = new WebMenuItemClickEventArgs (menuItem);
       Click (OwnerControl, e);
     }

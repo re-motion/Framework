@@ -37,7 +37,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
     /// </exception>
     [Description ("Gets or sets the current value.")]
     [Browsable (false)]
-    new object Value { get; set; }
+    new object? Value { get; set; }
 
     /// <summary>
     ///   Gets a flag describing whether it is save (i.e. accessing <see cref="Value"/> does not throw a 
@@ -79,6 +79,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
     ]
     [Category ("Style")]
     [DefaultValue ("")]
-    string Format { get; set; }
+    string? Format { get; set; }
   }
 }

@@ -54,12 +54,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       int originalRowIndex = dataRowRenderEventArgs.ListIndex;
       IBusinessObject businessObject = dataRowRenderEventArgs.BusinessObject;
 
-      IEditableRow editableRow = renderingContext.Control.EditModeController.GetEditableRow (originalRowIndex);
+      IEditableRow? editableRow = renderingContext.Control.EditModeController.GetEditableRow (originalRowIndex);
 
       bool hasEditModeControl = editableRow != null && editableRow.HasEditControl (renderingContext.ColumnIndex);
-      bool showEditModeControl = hasEditModeControl && !editableRow.GetEditControl (renderingContext.ColumnIndex).IsReadOnly;
+      bool showEditModeControl = hasEditModeControl && !editableRow!.GetEditControl (renderingContext.ColumnIndex)!.IsReadOnly;
 
-      string valueColumnText = null;
+      string? valueColumnText = null;
       if (!showEditModeControl)
         valueColumnText = renderingContext.ColumnDefinition.GetStringValue (businessObject);
 
@@ -74,9 +74,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         RenderOtherIcons (renderingContext, businessObject);
       }
       if (showEditModeControl)
-        RenderCellDataForEditMode (renderingContext, businessObject, editableRow);
+        RenderCellDataForEditMode (renderingContext, businessObject, editableRow!);
       else
-        RenderValueColumnCellText (renderingContext, valueColumnText);
+        RenderValueColumnCellText (renderingContext, valueColumnText!);
 
       RenderEndTag (renderingContext, isCommandEnabled);
       RenderCropSpanEndTag (renderingContext, enforceWidth);
@@ -121,7 +121,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <param name="showEditModeControl">Specifies if the cell contains edit mode controls.</param>
     /// <param name="spanTitle">Specifies the text to be written to the 'title' attribute.</param>
     /// <returns><see langword="true"/> if the crop span begin tag has been rendered, <see langword="false"/> otherwise.</returns>
-    private bool RenderCropSpanBeginTag (BocColumnRenderingContext<TBocColumnDefinition> renderingContext, bool showEditModeControl, string spanTitle)
+    private bool RenderCropSpanBeginTag (BocColumnRenderingContext<TBocColumnDefinition> renderingContext, bool showEditModeControl, string? spanTitle)
     {
       bool enforceWidth =
           renderingContext.ColumnDefinition.EnforceWidth
@@ -154,7 +154,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
 
     private bool RenderBeginTag (
-        BocColumnRenderingContext<TBocColumnDefinition> renderingContext, int originalRowIndex, IBusinessObject businessObject, string valueColumnText)
+        BocColumnRenderingContext<TBocColumnDefinition> renderingContext, int originalRowIndex, IBusinessObject businessObject, string? valueColumnText)
     {
       bool isCommandEnabled = false;
       if (!string.IsNullOrEmpty (valueColumnText))

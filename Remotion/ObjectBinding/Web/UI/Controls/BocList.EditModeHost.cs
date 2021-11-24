@@ -35,12 +35,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         _bocList = bocList;
       }
 
-      public IReadOnlyList<IBusinessObject> Value
+      public IReadOnlyList<IBusinessObject>? Value
       {
         get { return _bocList.Value; }
       }
 
-      public string ID
+      public string? ID
       {
         get { return _bocList.ID; }
       }
@@ -72,7 +72,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         get { return _bocList.EditModeControlFactory; }
       }
 
-      public string ErrorMessage
+      public string? ErrorMessage
       {
         get { return _bocList.ErrorMessage; }
       }
@@ -117,7 +117,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         return _bocList.GetValidationErrorMarker();
       }
 
-      public EditModeValidator GetEditModeValidator ()
+      public EditModeValidator? GetEditModeValidator ()
       {
         return _bocList.GetEditModeValidator();
       }

@@ -51,7 +51,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public override string ToString ()
     {
-      string displayName = ItemID;
+      string? displayName = ItemID;
       if (string.IsNullOrEmpty (displayName))
         displayName = ColumnTitle;
       if (string.IsNullOrEmpty (displayName))
@@ -70,7 +70,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [ParenthesizePropertyName (true)]
     [Browsable (true)]
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Visible)]
-    public override string ItemID
+    public override string? ItemID
     {
       get { return _itemID; }
       set { _itemID = value ?? string.Empty; }
@@ -156,7 +156,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       
       base.LoadResources (resourceManager, globalizationService);
 
-      string key = ResourceManagerUtility.GetGlobalResourceKey (ColumnTitle);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey (ColumnTitle);
       if (!string.IsNullOrEmpty (key))
         ColumnTitle = resourceManager.GetString (key);
     }

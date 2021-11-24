@@ -44,7 +44,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
       return FormatItemRowID (row.Index, ((IBusinessObjectWithIdentity) row.BusinessObject).UniqueIdentifier);
     }
 
-    public BocListRow GetRowFromItemRowID (IReadOnlyList<IBusinessObject> values, string rowID)
+    public BocListRow? GetRowFromItemRowID (IReadOnlyList<IBusinessObject> values, string rowID)
     {
       ArgumentUtility.CheckNotNull ("values", values);
       ArgumentUtility.CheckNotNull ("rowID", rowID);

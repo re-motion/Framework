@@ -51,12 +51,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         _owner = owner;
       }
 
-      public override IBusinessObjectReferenceProperty ReferenceProperty
+      public override IBusinessObjectReferenceProperty? ReferenceProperty
       {
-        get { return (IBusinessObjectReferenceProperty) _owner.Property; }
+        get { return (IBusinessObjectReferenceProperty?) _owner.Property; }
       }
 
-      public override IBusinessObjectDataSource ReferencedDataSource
+      public override IBusinessObjectDataSource? ReferencedDataSource
       {
         get { return _owner.DataSource; }
       }
@@ -75,7 +75,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     private readonly InternalBusinessObjectReferenceDataSource _internalDataSource;
-    private ReadOnlyCollection<BaseValidator> _validators;
+    private ReadOnlyCollection<BaseValidator>? _validators;
 
     /// <summary>
     ///   <see cref="BusinessObjectReferenceDataSourceControl"/> supports properties of type
@@ -94,10 +94,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> See <see cref="BusinessObjectBoundWebControl.Value"/> for details on this property. </summary>
     /// <value> The value must be of type <see cref="IBusinessObject"/>. </value>
-    protected override sealed object ValueImplementation
+    protected override sealed object? ValueImplementation
     {
       get { return _internalDataSource.BusinessObject; }
-      set { _internalDataSource.BusinessObject = (IBusinessObject) value; }
+      set { _internalDataSource.BusinessObject = (IBusinessObject?) value; }
     }
 
     public override bool HasValue
@@ -208,9 +208,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <remarks> Identical to <see cref="BusinessObjectBoundWebControl.Property"/>. </remarks>
     [Browsable (false)]
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    public IBusinessObjectReferenceProperty ReferenceProperty
+    public IBusinessObjectReferenceProperty? ReferenceProperty
     {
-      get { return (IBusinessObjectReferenceProperty) Property; }
+      get { return (IBusinessObjectReferenceProperty?) Property; }
     }
 
     /// <summary>
@@ -224,7 +224,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <remarks> Identical to <see cref="BusinessObjectBoundWebControl.DataSource"/>. </remarks>
     [Browsable (false)]
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    public IBusinessObjectDataSource ReferencedDataSource
+    public IBusinessObjectDataSource? ReferencedDataSource
     {
       get { return _internalDataSource.ReferencedDataSource; }
     }
@@ -236,7 +236,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <value> An <see cref="IBusinessObject"/> or <see langword="null"/>. </value>
     [Browsable (false)]
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    public IBusinessObject BusinessObject
+    public IBusinessObject? BusinessObject
     {
       get { return _internalDataSource.BusinessObject; }
       set { _internalDataSource.BusinessObject = value; }
@@ -250,7 +250,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </value>
     [Browsable (false)]
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    public IBusinessObjectClass BusinessObjectClass
+    public IBusinessObjectClass? BusinessObjectClass
     {
       get { return _internalDataSource.BusinessObjectClass; }
     }
@@ -261,7 +261,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <value> The <see cref="IBusinessObjectProvider"/> for the current <see cref="BusinessObjectClass"/>. </value>
     [Browsable (false)]
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    public IBusinessObjectProvider BusinessObjectProvider
+    public IBusinessObjectProvider? BusinessObjectProvider
     {
       get { return _internalDataSource.BusinessObjectProvider; }
     }

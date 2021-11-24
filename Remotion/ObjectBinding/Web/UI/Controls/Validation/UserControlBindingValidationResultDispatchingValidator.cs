@@ -37,6 +37,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 
       var control = GetControlToValidate();
 
+      Assertion.IsNotNull (control.UserControl, "control.UserControl must not be null.");
+
       var namingContainer = control.UserControl.DataSource.NamingContainer;
       var validator = EnumerableUtility.SelectRecursiveDepthFirst (
               namingContainer,

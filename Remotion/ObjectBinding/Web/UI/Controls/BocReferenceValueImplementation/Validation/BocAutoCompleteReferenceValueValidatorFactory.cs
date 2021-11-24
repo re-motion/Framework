@@ -51,7 +51,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       yield return CreateInvalidDisplayNameValidator (control, resourceManager);
     }
 
-    private RequiredFieldValidator CreateRequiredFieldValidator (IBocAutoCompleteReferenceValue control, IResourceManager resourceManage)
+    private RequiredFieldValidator? CreateRequiredFieldValidator (IBocAutoCompleteReferenceValue control, IResourceManager resourceManage)
     {
       var areOptionalValidatorsEnabled = control.AreOptionalValidatorsEnabled;
       var isPropertyTypeRequired = !areOptionalValidatorsEnabled && control.DataSource?.BusinessObject != null && control.Property?.IsNullable == false;

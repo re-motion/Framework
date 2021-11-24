@@ -125,7 +125,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         listIndex = -1;
       }
-      else if (Value[rowMenu.Row.Index].Equals (rowMenu.Row.BusinessObject))
+      else if (Assertion.IsNotNull (Value[rowMenu.Row.Index]).Equals (rowMenu.Row.BusinessObject))
       {
         listIndex = rowMenu.Row.Index;
       }
@@ -186,7 +186,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   <see cref="Controls.RowMenuDisplay.Automatic"/>.
     /// </summary>
     /// <returns> A <see cref="BocDropDownMenuColumnDefinition"/> instance or <see langword="null"/>. </returns>
-    private BocDropDownMenuColumnDefinition GetRowMenuColumn ()
+    private BocDropDownMenuColumnDefinition? GetRowMenuColumn ()
     {
       if (_rowMenuDisplay == RowMenuDisplay.Automatic)
       {

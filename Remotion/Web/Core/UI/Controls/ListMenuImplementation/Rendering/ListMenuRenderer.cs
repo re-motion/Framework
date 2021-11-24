@@ -318,7 +318,7 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
 
       if (IsDiagnosticMetadataRenderingEnabled)
       {
-        var diagnosticMetadataDictionary = new Dictionary<string, string>();
+        var diagnosticMetadataDictionary = new Dictionary<string, string?>();
 
         if (!string.IsNullOrEmpty(menuItem.ItemID))
           diagnosticMetadataDictionary.Add(DiagnosticMetadataAttributes.ItemID, menuItem.ItemID);
@@ -330,7 +330,7 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
 
         stringBuilder.Append (", ");
 
-        var diagnosticMetadataDictionaryForCommand = new Dictionary<string, string>();
+        var diagnosticMetadataDictionaryForCommand = new Dictionary<string, string?>();
         diagnosticMetadataDictionaryForCommand.Add (DiagnosticMetadataAttributes.IsDisabled, isDisabled.ToString().ToLower());
         diagnosticMetadataDictionaryForCommand.Add (DiagnosticMetadataAttributes.TriggersNavigation, diagnosticMetadataTriggersNavigation.ToString().ToLower());
         diagnosticMetadataDictionaryForCommand.Add (DiagnosticMetadataAttributes.TriggersPostBack, diagnosticMetadataTriggersPostBack.ToString().ToLower());

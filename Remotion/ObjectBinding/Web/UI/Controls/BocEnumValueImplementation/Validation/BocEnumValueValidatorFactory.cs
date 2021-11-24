@@ -50,7 +50,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Vali
         yield return requiredFieldValidator;
     }
 
-    private RequiredFieldValidator CreateRequiredFieldValidator (IBocEnumValue control, IResourceManager resourceManager)
+    private RequiredFieldValidator? CreateRequiredFieldValidator (IBocEnumValue control, IResourceManager resourceManager)
     {
       var areOptionalValidatorsEnabled = control.AreOptionalValidatorsEnabled;
       var isPropertyTypeRequired = !areOptionalValidatorsEnabled && control.DataSource?.BusinessObject != null && control.Property?.IsNullable == false;

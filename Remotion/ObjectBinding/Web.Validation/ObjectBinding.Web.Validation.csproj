@@ -10,7 +10,6 @@
     <Description>Internal: Integrates Remotion.Validation and Remotion.ObjectBinding.Web assemblies.</Description>
     <AssemblyName>Remotion.ObjectBinding.Web.Validation</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
-    <Nullable>disable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Reflection\Core.Reflection.csproj" />

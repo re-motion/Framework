@@ -32,11 +32,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
     /// <summary>
     ///   Adds a range of objects to a list. The original list may be modified.
     /// </summary>
-    public static IList AddRange (IList list, IList objects, IBusinessObjectReferenceProperty property, bool mustCreateCopy, bool createIfNull)
+    public static IList AddRange (IList? list, IList objects, IBusinessObjectReferenceProperty? property, bool mustCreateCopy, bool createIfNull)
     {
       ArgumentUtility.CheckNotNull ("objects", objects);
 
-      CreateListMethod createListMethod = GetCreateListMethod (property);
+      CreateListMethod? createListMethod = GetCreateListMethod (property);
       if (list == null)
       {
         if (! createIfNull)
@@ -70,7 +70,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
     /// <summary>
     ///    Removes a range of values from a list and returns the resulting list. The original list may be modified.
     /// </summary>
-    public static IList Remove (IList list, IList objects, IBusinessObjectReferenceProperty property, bool mustCreateCopy)
+    public static IList? Remove (IList list, IList objects, IBusinessObjectReferenceProperty? property, bool mustCreateCopy)
     {
       ArgumentUtility.CheckNotNull ("objects", objects);
 
@@ -111,8 +111,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
       {
         foreach (var obj in values)
         {
-          BocListRow row;
-          if (indicesMap.TryGetValue (obj, out row))
+          if (indicesMap.TryGetValue (obj, out var row))
           {
             yield return row;
           }
@@ -134,7 +133,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
       }
     }
 
-    private static CreateListMethod GetCreateListMethod (IBusinessObjectProperty property)
+    private static CreateListMethod? GetCreateListMethod (IBusinessObjectProperty? property)
     {
       if (property == null)
         return null;
@@ -143,12 +142,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
       return property.ListInfo.CreateList;
     }
 
-    private static IList CreateList (CreateListMethod createListMethod, IList template, int size)
+    private static IList CreateList (CreateListMethod? createListMethod, IList? template, int size)
     {
       if (createListMethod != null)
         return createListMethod (size);
       else if (template is Array)
-        return Array.CreateInstance (template.GetType().GetElementType(), size);
+        return Array.CreateInstance (template.GetType().GetElementType()!, size);
       else 
         throw new NotSupportedException ("Cannot create instance if argument 'createListMethod' is null and 'template' is not an array.");
     }

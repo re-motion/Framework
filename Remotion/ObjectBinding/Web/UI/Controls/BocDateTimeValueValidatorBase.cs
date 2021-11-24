@@ -16,6 +16,7 @@
 // 
 using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -45,7 +46,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (!base.ControlPropertiesValid())
         return false;
 
-      Control control = NamingContainer.FindControl (ControlToValidate);
+      Control? control = NamingContainer.FindControl (ControlToValidate);
 
       if (!(control is BocDateTimeValue))
         throw new HttpException ("Control '" + ControlToValidate + "' is not of type '" + typeof (BocDateTimeValue) + "'");
@@ -54,6 +55,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets or sets the input control to validate. </summary>
+    [AllowNull]
     public new string ControlToValidate
     {
       get { return base.ControlToValidate; }
@@ -63,6 +65,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Gets or sets the text for the error message. </summary>
     /// <remarks> Will be set to one of the more specific error messages, if they are provided. </remarks>
     [Browsable (false)]
+    [AllowNull]
     public new string ErrorMessage
     {
       get

@@ -9,7 +9,6 @@
     <Description>Internal: Defines the contract shared between control rendering and web testing framework in object binding web controls library.</Description>
     <AssemblyName>Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
-    <Nullable>disable</Nullable>
   </PropertyGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

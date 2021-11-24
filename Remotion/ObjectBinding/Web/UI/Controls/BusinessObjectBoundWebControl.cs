@@ -60,7 +60,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <value> An <see cref="IBusinessObjectDataSource"/> providing the current <see cref="IBusinessObject"/>. </value>
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     [Browsable (false)]
-    public IBusinessObjectDataSource DataSource
+    public IBusinessObjectDataSource? DataSource
     {
       get { return _binding.DataSource; }
       set { _binding.DataSource = value; }
@@ -75,7 +75,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Description ("The string representation of the Property.")]
     [DefaultValue ("")]
     [MergableProperty (false)]
-    public string PropertyIdentifier
+    public string? PropertyIdentifier
     {
       get { return _binding.PropertyIdentifier; }
       set { _binding.PropertyIdentifier = value; }
@@ -85,7 +85,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <value>An <see cref="IBusinessObjectProperty"/> that is part of the bound <see cref="IBusinessObject"/>'s <see cref="IBusinessObjectClass"/>.</value>
     [Browsable (false)]
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    public IBusinessObjectProperty Property
+    public IBusinessObjectProperty? Property
     {
       get { return _binding.Property; }
       set { _binding.Property = value; }
@@ -100,7 +100,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Category ("Data")]
     [Description ("The ID of the BusinessObjectDataSourceControl control used as data source.")]
     [DefaultValue ("")]
-    public string DataSourceControl
+    public string? DataSourceControl
     {
       get { return _binding.DataSourceControl; }
       set { _binding.DataSourceControl = value; }
@@ -150,7 +150,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <param name="businessObjectProvider"> 
     ///   The <see cref="IBusinessObjectProvider"/> to be used to get the <see cref="IconInfo"/> object. Must not be <see langowrd="null"/>. 
     /// </param>
-    public static IconInfo GetIcon (IBusinessObject businessObject, IBusinessObjectProvider businessObjectProvider)
+    public static IconInfo? GetIcon (IBusinessObject? businessObject, IBusinessObjectProvider businessObjectProvider)
     {
       ArgumentUtility.CheckNotNull ("businessObjectProvider", businessObjectProvider);
 
@@ -173,7 +173,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <param name="businessObjectProvider"> 
     ///   The <see cref="IBusinessObjectProvider"/> to be used to get the <see cref="IconInfo"/> object. Must not be <see langowrd="null"/>. 
     /// </param>
-    public static string GetToolTip (IBusinessObject businessObject, IBusinessObjectProvider businessObjectProvider)
+    public static string? GetToolTip (IBusinessObject businessObject, IBusinessObjectProvider businessObjectProvider)
     {
       ArgumentUtility.CheckNotNull ("businessObjectProvider", businessObjectProvider);
 
@@ -185,7 +185,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return null;
     }
 
-    public static HelpInfo GetHelpInfo (IBusinessObjectBoundWebControl control)
+    public static HelpInfo? GetHelpInfo (IBusinessObjectBoundWebControl control)
     {
       ArgumentUtility.CheckNotNull ("control", control);
 
@@ -215,7 +215,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private bool _controlExistedInPreviousRequest;
 
-    private string _assignedLabelID;
+    private string? _assignedLabelID;
     
     /// <summary> Creates a new instance of the BusinessObjectBoundWebControl type. </summary>
     protected BusinessObjectBoundWebControl ()
@@ -281,7 +281,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   </para>
     /// </remarks>
     [Browsable (false)]
-    public object Value
+    public object? Value
     {
       get { return ValueImplementation; }
       set { ValueImplementation = value; }
@@ -291,7 +291,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <value> An object or boxed value. </value>
     /// <remarks>The implementation should be <see langword="sealed"/> since it is only possible to do one meaningful re-definition of <see cref="Value"/>.</remarks>
     [Browsable (false)]
-    protected abstract object ValueImplementation { get; set; }
+    protected abstract object? ValueImplementation { get; set; }
 
     /// <summary>Gets a flag indicating whether the <see cref="BusinessObjectBoundWebControl"/> contains a value. </summary>
     /// <value><see langword="true" /> if the <see cref="BusinessObjectBoundWebControl"/> contains a value. </value>
@@ -328,7 +328,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
-    Type[] IBusinessObjectBoundWebControl.SupportedPropertyInterfaces
+    Type[]? IBusinessObjectBoundWebControl.SupportedPropertyInterfaces
     {
       get { return SupportedPropertyInterfaces; }
     }
@@ -340,7 +340,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <value> <see langword="null"/> in the default implementation. </value>
     /// <remarks> Used by <see cref="SupportsProperty"/>. </remarks>
     [Browsable (false)]
-    protected virtual Type[] SupportedPropertyInterfaces
+    protected virtual Type[]? SupportedPropertyInterfaces
     {
       get { return null; }
     }
@@ -382,7 +382,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Gets the text to be written into the label for this control. </summary>
     /// <value> <see langword="null"/> for the default implementation. </value>
     [Browsable (false)]
-    public virtual string DisplayName
+    public virtual string? DisplayName
     {
       get { return (Property != null) ? Property.DisplayName : null; }
     }
@@ -394,7 +394,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary>Gets an instance of the <see cref="HelpInfo"/> type, which contains all information needed for rendering a help-link.</summary>
     [Browsable (false)]
-    public virtual HelpInfo HelpInfo
+    public virtual HelpInfo? HelpInfo
     {
       get { return GetHelpInfo (this); }
     }
@@ -443,7 +443,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return Enumerable.Empty<BaseValidator>();
     }
 
-    public new IPage Page
+    public new IPage? Page
     {
       get { return PageWrapper.CastOrCreate (base.Page); }
     }
@@ -464,7 +464,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return SafeServiceLocator.Current; }
     }
 
-    protected new HttpContextBase Context
+    protected new HttpContextBase? Context
     {
       get { return Page != null ? Page.Context : null; }
     }
@@ -479,7 +479,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return ServiceLocator.GetInstance<IGlobalizationService> (); }
     }
 
-    protected override void LoadControlState (object savedState)
+    protected override void LoadControlState (object? savedState)
     {
       base.LoadControlState (savedState);
       _controlExistedInPreviousRequest = true;
@@ -491,7 +491,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
       ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
 
-      string key;
+      string? key;
       key = ResourceManagerUtility.GetGlobalResourceKey (AccessKey);
       if (!string.IsNullOrEmpty (key))
         AccessKey = resourceManager.GetString (key);

@@ -61,7 +61,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <param name="businessObject">The <see cref="IBusinessObject"/> whose property will be rendered.</param>
     /// <param name="editableRow">Ignored.</param>
     protected override void RenderCellDataForEditMode (
-        BocColumnRenderingContext<BocCompoundColumnDefinition> renderingContext, IBusinessObject businessObject, IEditableRow editableRow)
+        BocColumnRenderingContext<BocCompoundColumnDefinition> renderingContext, IBusinessObject businessObject, IEditableRow? editableRow)
     {
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
       ArgumentUtility.CheckNotNull ("businessObject", businessObject);

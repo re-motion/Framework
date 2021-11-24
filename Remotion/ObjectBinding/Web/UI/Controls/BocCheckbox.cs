@@ -77,7 +77,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private readonly Style _labelStyle;
 
     private bool? _showDescription;
-    private ReadOnlyCollection<BaseValidator> _validators;
+    private ReadOnlyCollection<BaseValidator>? _validators;
 
     // construction and disposing
 
@@ -122,6 +122,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("writer", writer);
 
+      Assertion.IsNotNull (Context, "Context must not be null.");
+
       return new BocCheckBoxRenderingContext (Context, writer, this);
     }
 
@@ -135,7 +137,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (! _isActive)
         return false;
 
-      string newValue = PageUtility.GetPostBackCollectionItem (Page, GetValueName());
+      string? newValue = PageUtility.GetPostBackCollectionItem (Page!, GetValueName());
       bool newBooleanValue = ! string.IsNullOrEmpty (newValue);
       bool isDataChanged = _value != newBooleanValue;
       if (isDataChanged)
@@ -181,13 +183,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// Loads the control's value and a flag determining whether the value can be changed in addition to the base state.
     /// </summary>
     /// <param name="savedState">The state object created by <see cref="SaveControlState"/>.</param>
-    protected override void LoadControlState (object savedState)
+    protected override void LoadControlState (object? savedState)
     {
-      object[] values = (object[]) savedState;
+      object?[] values = (object?[]) savedState!;
 
       base.LoadControlState (values[0]);
-      _value = (bool) values[1];
-      _isActive = (bool) values[2];
+      _value = (bool) values[1]!;
+      _isActive = (bool) values[2]!;
     }
 
     /// <summary>
@@ -219,7 +221,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       base.LoadResources (resourceManager, globalizationService);
 
-      string key;
+      string? key;
       key = ResourceManagerUtility.GetGlobalResourceKey (TrueDescription);
       if (! string.IsNullOrEmpty (key))
         TrueDescription = resourceManager.GetString (key);
@@ -269,7 +271,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </value>
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     [Browsable (false)]
-    public override string FocusID
+    public override string? FocusID
     {
       get { return IsReadOnly ? null : GetValueName(); }
     }
@@ -285,7 +287,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Browsable (false)]
     public bool ValidationValue
     {
-      get { return Value.Value; }
+      get { return Value!.Value; }
     }
 
 

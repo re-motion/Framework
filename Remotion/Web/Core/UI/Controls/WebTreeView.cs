@@ -918,7 +918,7 @@ namespace Remotion.Web.UI.Controls
 
     /// <summary> Generates the string representation of the <paramref name="node"/>'s path. </summary>
     /// <remarks> ...&lt;node.Parent.Parent.ItemID&gt;|&lt;node.Parent.ItemID&gt;|&lt;ItemID&gt; </remarks>
-    public string FormatNodePath (WebTreeNode node)
+    public string FormatNodePath (WebTreeNode? node)
     {
       if (node == null)
         return string.Empty;

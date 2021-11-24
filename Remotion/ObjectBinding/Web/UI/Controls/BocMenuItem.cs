@@ -50,9 +50,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     public BocMenuItem (
-        string id,
-        string category,
-        string text,
+        string? id,
+        string? category,
+        string? text,
         IconInfo icon,
         IconInfo disabledIcon,
         WebMenuItemStyle style,
@@ -83,42 +83,44 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return "BocMenuItem"; }
     }
 
-    public override Command Command
+    public override Command? Command
     {
       get { return base.Command; }
-      set { base.Command = (BocCommand) value; }
+      set { base.Command = (BocCommand?) value; }
     }
 
     /// <summary> Gets or sets the <see cref="IBusinessObjectBoundWebControl"/> to which this object belongs. </summary>
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     [Browsable (false)]
-    public new IBusinessObjectBoundWebControl OwnerControl
+    public new IBusinessObjectBoundWebControl? OwnerControl
     {
-      get { return (IBusinessObjectBoundWebControl) base.OwnerControlImplementation; }
+      get { return (IBusinessObjectBoundWebControl?) base.OwnerControlImplementation; }
       set { base.OwnerControlImplementation = value; }
     }
 
-    protected override IControl OwnerControlImplementation
+    protected override IControl? OwnerControlImplementation
     {
       get { return OwnerControl; }
-      set { OwnerControl = (IBusinessObjectBoundWebControl) value; }
+      set { OwnerControl = (IBusinessObjectBoundWebControl?) value; }
     }
 
     protected override void OnOwnerControlChanged ()
     {
       base.OnOwnerControlChanged();
-      ArgumentUtility.CheckNotNullAndType<IBocMenuItemContainer> ("OwnerControl", OwnerControl);
+      ArgumentUtility.CheckNotNullAndType<IBocMenuItemContainer> ("OwnerControl", OwnerControl!);
     }
 
-    protected IBocMenuItemContainer BocMenuItemContainer
+    protected IBocMenuItemContainer? BocMenuItemContainer
     {
-      get { return (IBocMenuItemContainer) OwnerControl; }
+      get { return (IBocMenuItemContainer?) OwnerControl; }
     }
 
     public override bool EvaluateVisible ()
     {
       if (! base.EvaluateVisible())
         return false;
+
+      Assertion.IsNotNull (BocMenuItemContainer, "BocMenuItemContainer must not be null.");
 
       bool isReadOnly = BocMenuItemContainer.IsReadOnly;
       bool isSelectionEnabled = BocMenuItemContainer.IsSelectionEnabled;

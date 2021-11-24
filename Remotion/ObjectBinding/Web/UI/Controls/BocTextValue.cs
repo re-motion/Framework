@@ -82,10 +82,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private BocTextValueType _valueType = BocTextValueType.Undefined;
     private BocTextValueType _actualValueType = BocTextValueType.Undefined;
 
-    private string _format;
-    private string _text = string.Empty;
-    private string _errorMessage;
-    private ReadOnlyCollection<BaseValidator> _validators;
+    private string? _format;
+    private string? _text = string.Empty;
+    private string? _errorMessage;
+    private ReadOnlyCollection<BaseValidator>? _validators;
 
     public BocTextValue ()
     {
@@ -104,7 +104,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (DataSource == null)
         return;
 
-      object value = null;
+      object? value = null;
 
       if (DataSource.BusinessObject != null)
         value = DataSource.BusinessObject.GetProperty (Property);
@@ -149,7 +149,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Performs the actual loading for <see cref="LoadValue"/> and <see cref="O:Remotion.ObjectBinding.Web.UI.Controls.BocTextValue.LoadUnboundValue"/>. </summary>
-    protected virtual void LoadValueInternal (object value, bool interim)
+    protected virtual void LoadValueInternal (object? value, bool interim)
     {
       if (interim)
         return;
@@ -209,7 +209,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </exception>
     [Description ("Gets or sets the current value.")]
     [Browsable (false)]
-    public new object Value
+    public new object? Value
     {
       get
       {
@@ -245,9 +245,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// Gets the value from the backing field.
     /// </summary>
     /// <remarks>Override this member to modify the storage of the value. </remarks>
-    protected virtual object GetValue ()
+    protected virtual object? GetValue ()
     {
-      string text = _text;
+      string? text = _text;
       if (text != null)
         text = text.Trim();
 
@@ -297,7 +297,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <para>Setting the value via this method does not affect the control's dirty state.</para>
     /// <para>Override this member to modify the storage of the value.</para>
     /// </remarks>
-    protected virtual void SetValue (object value)
+    protected virtual void SetValue (object? value)
     {
       if (value == null)
       {
@@ -305,10 +305,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         return;
       }
 
-      IFormattable formattable = value as IFormattable;
+      IFormattable? formattable = value as IFormattable;
       if (formattable != null)
       {
-        string format = Format;
+        string? format = Format;
         if (format == null)
         {
           if (ActualValueType == BocTextValueType.Date)
@@ -323,7 +323,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> See <see cref="BusinessObjectBoundWebControl.Value"/> for details on this property. </summary>
-    protected override sealed object ValueImplementation
+    protected override sealed object? ValueImplementation
     {
       get { return Value; }
       set { Value = value; }
@@ -416,7 +416,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
                   "Format must be parsable by the value's type if the control is in edit mode.")]
     [Category ("Style")]
     [DefaultValue ("")]
-    public string Format
+    public string? Format
     {
       get { return StringUtility.EmptyToNull (_format); }
       set { _format = value; }
@@ -430,7 +430,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Description ("Validation message displayed if there is an error.")]
     [Category ("Validator")]
     [DefaultValue ("")]
-    public string ErrorMessage
+    public string? ErrorMessage
     {
       get { return _errorMessage; }
       set
@@ -473,6 +473,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("writer", writer);
 
+      Assertion.IsNotNull (Context, "Context must not be null.");
+
       return new BocTextValueRenderingContext (Context, writer, this);
     }
 
@@ -480,13 +482,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// Loads <see cref="Text"/>, <see cref="ValueType"/> and <see cref="ActualValueType"/> in addition to the base state.
     /// </summary>
     /// <param name="savedState">The control state object created by <see cref="SaveControlState"/>.</param>
-    protected override void LoadControlState (object savedState)
+    protected override void LoadControlState (object? savedState)
     {
-      object[] values = (object[]) savedState;
+      object?[] values = (object?[]) savedState!;
       base.LoadControlState (values[0]);
-      _text = (string) values[1];
-      _valueType = (BocTextValueType) values[2];
-      _actualValueType = (BocTextValueType) values[3];
+      _text = (string) values[1]!;
+      _valueType = (BocTextValueType) values[2]!;
+      _actualValueType = (BocTextValueType) values[3]!;
     }
 
     /// <summary>
@@ -495,7 +497,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <returns>An object containing the state to be loaded in the next lifecycle.</returns>
     protected override object SaveControlState ()
     {
-      object[] values = new object[4];
+      object?[] values = new object?[4];
       values[0] = base.SaveControlState();
       values[1] = _text;
       values[2] = _valueType;
@@ -518,7 +520,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       base.LoadResources (resourceManager, globalizationService);
 
       //  Dispatch simple properties
-      string key = ResourceManagerUtility.GetGlobalResourceKey (ErrorMessage);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey (ErrorMessage);
       if (! string.IsNullOrEmpty (key))
         ErrorMessage = resourceManager.GetString (key);
     }
@@ -584,11 +586,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       UpdateValidtaorErrorMessages<NumericValidator> (_errorMessage);
     }
 
-    private void UpdateValidtaorErrorMessages<T> (string errorMessage) where T : BaseValidator
+    private void UpdateValidtaorErrorMessages<T> (string? errorMessage) where T : BaseValidator
     {
       var validator = _validators.GetValidator<T>();
       if (validator != null)
-        validator.ErrorMessage = errorMessage;
+        validator.ErrorMessage = errorMessage!;
     }
 
     /// <summary> The <see cref="BocTextValue"/> supports only scalar properties. </summary>
@@ -634,7 +636,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Handles refreshing the bound control. </summary>
     /// <param name="sender"> The source of the event. </param>
     /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
-    private void Binding_BindingChanged (object sender, EventArgs e)
+    private void Binding_BindingChanged (object? sender, EventArgs e)
     {
       RefreshPropertiesFromObjectModel();
     }
@@ -650,7 +652,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         if (_valueType == BocTextValueType.Undefined)
           _actualValueType = GetBocTextValueType (Property);
 
-        IBusinessObjectStringProperty stringProperty = Property as IBusinessObjectStringProperty;
+        IBusinessObjectStringProperty? stringProperty = Property as IBusinessObjectStringProperty;
         if (stringProperty != null)
         {
           if (TextBoxStyle.MaxLength == null)

@@ -34,7 +34,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Category ("Data")]
     [DefaultValue (null)]
     [TypeConverter (typeof (TypeNameConverter))]
-    public Type Type
+    public Type? Type
     {
       get { return _dataSource.Type; }
       set { _dataSource.Type = value; }

@@ -247,7 +247,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         return;
 
       string startUpScriptKey = typeof (BocListRenderer).GetFullNameChecked() + "_Startup";
-      if (!renderingContext.Control.Page.ClientScript.IsStartupScriptRegistered (typeof (BocListRenderer), startUpScriptKey))
+      if (!renderingContext.Control.Page!.ClientScript.IsStartupScriptRegistered (typeof (BocListRenderer), startUpScriptKey))
       {
         string script = "BocList.InitializeGlobals ();";
         renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock (
@@ -274,7 +274,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
             hasClickSensitiveRows ? "true" : "false",
             renderingContext.Control.GetSelectionChangedHandlerScript());
 
-        renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock (
+        renderingContext.Control.Page!.ClientScript.RegisterStartupScriptBlock (
             renderingContext.Control,
             typeof (BocListTableBlockRenderer),
             typeof (BocList).GetFullNameChecked() + "_" + renderingContext.Control.ClientID + "_InitializeListScript",

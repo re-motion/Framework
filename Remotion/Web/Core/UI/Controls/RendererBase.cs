@@ -108,7 +108,7 @@ namespace Remotion.Web.UI.Controls
       renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributes.ControlType, renderingContext.Control.ControlType);
     }
 
-    protected void AppendStringValueOrNullToScript (StringBuilder scriptBuilder, string stringValue)
+    protected void AppendStringValueOrNullToScript (StringBuilder scriptBuilder, string? stringValue)
     {
       if (string.IsNullOrEmpty (stringValue))
         scriptBuilder.Append ("null");
@@ -121,7 +121,7 @@ namespace Remotion.Web.UI.Controls
       scriptBuilder.Append (booleanValue ? "true" : "false");
     }
 
-    protected void CheckScriptManager (IControl control, string errorMessageFormat, params object[] args)
+    protected void CheckScriptManager (IControl control, string errorMessageFormat, params object?[] args)
     {
       ArgumentUtility.CheckNotNull ("control", control);
       ArgumentUtility.CheckNotNullOrEmpty ("errorMessageFormat", errorMessageFormat);

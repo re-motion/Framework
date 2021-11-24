@@ -39,7 +39,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private bool? _required;
     private bool? _readOnly;
     private bool? _enableOptionalValidators;
-    private HashSet<BaseValidator> _validators;
+    private HashSet<BaseValidator>? _validators;
     private bool _isDirty;
     private bool _hasBeenRenderedInPreviousLifecycle;
     private bool _isRenderedInCurrentLifecycle;
@@ -385,7 +385,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       get
       {
-        IWxePage wxePage = Page as IWxePage;
+        IWxePage? wxePage = Page as IWxePage;
         if (wxePage != null)
           return _hasBeenRenderedInPreviousLifecycle || wxePage.IsOutOfSequencePostBack;
 
@@ -398,12 +398,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// has been rendered in the previous lifecycle in addition to the state loaded by <see cref="BusinessObjectBoundWebControl.LoadControlState"/>.
     /// </summary>
     /// <param name="savedState">The object saved by <see cref="SaveControlState"/>.</param>
-    protected override void LoadControlState (object savedState)
+    protected override void LoadControlState (object? savedState)
     {
-      object[] values = (object[]) savedState;
+      object?[] values = (object?[]) savedState!;
       base.LoadControlState (values[0]);
-      _isDirty = (bool) values[1];
-      _hasBeenRenderedInPreviousLifecycle = (bool) values[2];
+      _isDirty = (bool) values[1]!;
+      _hasBeenRenderedInPreviousLifecycle = (bool) values[2]!;
     }
 
     /// <summary>
@@ -413,7 +413,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <returns>An object containing the state required to be loaded in the next lifecycle.</returns>
     protected override object SaveControlState ()
     {
-      object[] values = new object[3];
+      object?[] values = new object?[3];
       values[0] = base.SaveControlState();
       values[1] = _isDirty;
       values[2] = _isRenderedInCurrentLifecycle;

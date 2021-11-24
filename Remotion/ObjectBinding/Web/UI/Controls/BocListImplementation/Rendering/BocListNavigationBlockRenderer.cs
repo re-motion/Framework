@@ -211,7 +211,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
           "BocList.InitializeNavigationBlock ('#{0}', '#{1}')",
           currentPageNumberTextBoxID,
           GetCurrentPageIndexControlID (renderingContext));
-      renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock (
+      renderingContext.Control.Page!.ClientScript.RegisterStartupScriptBlock (
           renderingContext.Control,
           typeof (BocListNavigationBlockRenderer),
           "Initialize_" + renderingContext.Control.ClientID,
@@ -248,7 +248,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       var postBackOptions = new PostBackOptions (new Control { ID = renderingContext.Control.GetCurrentPageControlName() }, "");
       renderingContext.Writer.AddAttribute (
           HtmlTextWriterAttribute.Onchange,
-          renderingContext.Control.Page.ClientScript.GetPostBackEventReference (postBackOptions));
+          renderingContext.Control.Page!.ClientScript.GetPostBackEventReference (postBackOptions));
 
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Input);
       renderingContext.Writer.RenderEndTag();

@@ -16,6 +16,7 @@
 // 
 using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Web.UI;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
@@ -25,8 +26,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 [ParseChildren (true, "ColumnDefinitionCollection")]
 public class BocListView: BusinessObjectControlItem
 {
-  private string _itemID;
-  private object _title;
+  private string? _itemID;
+  private object? _title;
   /// <summary> 
   ///   The <see cref="BocColumnDefinition"/> objects stored in the <see cref="BocListView"/>. 
   /// </summary>
@@ -34,9 +35,9 @@ public class BocListView: BusinessObjectControlItem
 
   /// <summary> Initialize a new instance. </summary>
   public BocListView (
-      IBusinessObjectBoundWebControl ownerControl, 
+      IBusinessObjectBoundWebControl? ownerControl,
       object title, 
-      BocColumnDefinition[] columnDefinitions)
+      BocColumnDefinition[]? columnDefinitions)
   {
     _title = title;
     _columnDefinitions = new BocColumnDefinitionCollection (
@@ -66,7 +67,7 @@ public class BocListView: BusinessObjectControlItem
 
   public override string ToString()
   {
-    string displayName = ItemID;
+    string? displayName = ItemID;
     if (string.IsNullOrEmpty (displayName))
       displayName = Title;
     if (string.IsNullOrEmpty (displayName))
@@ -84,7 +85,7 @@ public class BocListView: BusinessObjectControlItem
   [NotifyParentProperty (true)]
   [Browsable (true)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Visible)]
-  public override string ItemID
+  public override string? ItemID
   {
     get { return _itemID; }
     set { _itemID = value; }
@@ -96,9 +97,10 @@ public class BocListView: BusinessObjectControlItem
   [Category ("Appearance")]
   [DefaultValue("")]
   [NotifyParentProperty (true)]
+  [AllowNull]
   public string Title
   {
-    get { return (_title != null) ? _title.ToString() : string.Empty; }
+    get { return (_title != null) ? _title.ToString()! : string.Empty; }
     set { _title = value; }
   }
 
@@ -110,7 +112,7 @@ public class BocListView: BusinessObjectControlItem
   /// </value>
   [PersistenceMode (PersistenceMode.InnerDefaultProperty)]
   [Category ("Data")]
-  [DefaultValue((string) null)]
+  [DefaultValue((string?) null)]
   [NotifyParentProperty (true)]
   public BocColumnDefinitionCollection ColumnDefinitions
   {

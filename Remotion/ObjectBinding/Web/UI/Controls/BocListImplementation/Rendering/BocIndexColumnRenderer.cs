@@ -107,8 +107,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       }
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Th);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
-      string indexColumnTitle = renderingContext.Control.IndexColumnTitle;
-      if (string.IsNullOrEmpty (renderingContext.Control.IndexColumnTitle))
+      string? indexColumnTitle = renderingContext.Control.IndexColumnTitle;
+      if (string.IsNullOrEmpty (indexColumnTitle))
         indexColumnTitle = renderingContext.Control.GetResourceManager().GetString (BocList.ResourceIdentifier.IndexColumnTitle);
 
       // Do not HTML encode.

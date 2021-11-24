@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Utilities;
 
@@ -30,8 +31,8 @@ namespace Remotion.ObjectBinding.Web.Services
   /// </remarks>
   public sealed class BusinessObjectWithIdentityProxy
   {
-    private string _uniqueIdentifier;
-    private string _displayName;
+    private string? _uniqueIdentifier;
+    private string? _displayName;
     private string _iconUrl = "";
 
     public BusinessObjectWithIdentityProxy ()
@@ -46,13 +47,15 @@ namespace Remotion.ObjectBinding.Web.Services
       _displayName = obj.GetAccessibleDisplayName();
     }
 
-    public string UniqueIdentifier
+    [DisallowNull]
+    public string? UniqueIdentifier
     {
       get { return _uniqueIdentifier; }
       set { _uniqueIdentifier = ArgumentUtility.CheckNotNullOrEmpty ("value", value); }
     }
 
-    public string DisplayName
+    [DisallowNull]
+    public string? DisplayName
     {
       get { return _displayName; }
       set { _displayName = ArgumentUtility.CheckNotNullOrEmpty ("value", value); }
@@ -61,7 +64,7 @@ namespace Remotion.ObjectBinding.Web.Services
     public string IconUrl
     {
       get { return _iconUrl; }
-      set { _iconUrl = value ?? string.Empty; }
+      set { _iconUrl = ArgumentUtility.CheckNotNull ("value", value); }
     }
   }
 }

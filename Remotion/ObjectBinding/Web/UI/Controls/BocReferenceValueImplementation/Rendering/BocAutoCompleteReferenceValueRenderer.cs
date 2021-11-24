@@ -222,7 +222,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       script.Append (GetResourcesAsJson (renderingContext));
       script.Append (");");
 
-      renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock (
+      renderingContext.Control.Page!.ClientScript.RegisterStartupScriptBlock (
           renderingContext.Control, typeof (IBocAutoCompleteReferenceValue), key, script.ToString());
     }
 
@@ -338,7 +338,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
             options.PerformValidation = true;
             options.ValidationGroup = textBox.ValidationGroup;
         }
-        if (renderingContext.Control.Page.Form != null)
+        if (renderingContext.Control.Page!.Form != null)
             options.AutoPostBack = true;
         var postBackEventReference = renderingContext.Control.Page.ClientScript.GetPostBackEventReference (options, true);
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Onchange, postBackEventReference);
@@ -365,7 +365,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       {
         ClientIDMode = ClientIDMode.Static,
         ID = renderingContext.Control.GetKeyValueName(),
-        Page = renderingContext.Control.Page.WrappedInstance,
+        Page = renderingContext.Control.Page!.WrappedInstance,
         EnableViewState = true,
         Value = renderingContext.Control.BusinessObjectUniqueIdentifier ?? renderingContext.Control.NullValueString        
       };
@@ -379,7 +379,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       textBox.Text = renderingContext.Control.GetLabelText ();
       textBox.Enabled = renderingContext.Control.Enabled;
       textBox.EnableViewState = false;
-      textBox.Page = renderingContext.Control.Page.WrappedInstance;
+      textBox.Page = renderingContext.Control.Page!.WrappedInstance;
       textBox.ApplyStyle (renderingContext.Control.CommonStyle);
       renderingContext.Control.TextBoxStyle.ApplyStyle (textBox);
       textBox.Attributes.Add (HtmlTextWriterAttribute2.AriaAutoComplete, HtmlAriaAutoCompleteAttributeValue.Both);

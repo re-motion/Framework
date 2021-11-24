@@ -416,7 +416,7 @@ namespace Remotion.Web.UI.Controls
         [JetBrains.Annotations.NotNull] HtmlTextWriter writer,
         [JetBrains.Annotations.NotNull] IRenderingFeatures renderingFeatures,
         [CanBeNull] string? postBackEvent,
-        [CanBeNull] string[]? parameters,
+        [CanBeNull] string?[]? parameters,
         [CanBeNull] string? onClick,
         [CanBeNull] ISecurableObject? securableObject,
         [JetBrains.Annotations.NotNull] NameValueCollection additionalUrlParameters,
@@ -477,7 +477,7 @@ namespace Remotion.Web.UI.Controls
         [JetBrains.Annotations.NotNull] HtmlTextWriter writer,
         [JetBrains.Annotations.NotNull] IRenderingFeatures renderingFeatures,
         [CanBeNull] string? postBackEvent,
-        [CanBeNull] string[]? parameters,
+        [CanBeNull] string?[]? parameters,
         [CanBeNull] string? onClick,
         [CanBeNull] ISecurableObject? securableObject)
     {
@@ -522,7 +522,7 @@ namespace Remotion.Web.UI.Controls
     /// </param>
     public CommandInfo GetCommandInfo (
         [CanBeNull] string? postBackEvent,
-        [CanBeNull] string[]? parameters,
+        [CanBeNull] string?[]? parameters,
         [CanBeNull] string? onClick,
         [CanBeNull] ISecurableObject? securableObject,
         [JetBrains.Annotations.NotNull] NameValueCollection additionalUrlParameters,

@@ -89,7 +89,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       if (!string.IsNullOrEmpty (renderingContext.Control.ControlServicePath))
       {
-        var stringValueParametersDictionary = new Dictionary<string, string>();
+        var stringValueParametersDictionary = new Dictionary<string, string?>();
         stringValueParametersDictionary.Add ("controlID", renderingContext.Control.ID);
         stringValueParametersDictionary.Add (
             "controlType",

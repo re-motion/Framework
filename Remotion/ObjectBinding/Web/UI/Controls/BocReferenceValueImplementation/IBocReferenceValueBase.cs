@@ -33,12 +33,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     Unit OptionsMenuWidth { get; }
 
     bool IsIconEnabled ();
-    new IBusinessObjectReferenceProperty Property { get; }
-    new IBusinessObjectWithIdentity Value { get; }
+    new IBusinessObjectReferenceProperty? Property { get; }
+    new IBusinessObjectWithIdentity? Value { get; }
 
-    IconInfo GetIcon ();
+    IconInfo? GetIcon ();
 
-    string GetLabelText ();
+    string? GetLabelText ();
 
     /// <summary>
     ///   Gets the style that you want to apply to the text box (edit mode) 
@@ -57,13 +57,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     Style LabelStyle { get; }
 
     string NullValueString { get; }
-    string BusinessObjectUniqueIdentifier { get; }
+    string? BusinessObjectUniqueIdentifier { get; }
 
     /// <summary>
     /// Gets the list of validation errors for this control.
     /// </summary>
     IEnumerable<string> GetValidationErrors ();
 
-    string ControlServicePath { get; }
+    string? ControlServicePath { get; }
   }
 }

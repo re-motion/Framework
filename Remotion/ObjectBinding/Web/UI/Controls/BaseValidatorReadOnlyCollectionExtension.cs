@@ -11,7 +11,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// Gets the validator of the given type of T or null if no validator was found.
     /// </summary>
     /// <typeparam name="T">Type of the validator.</typeparam>
-    internal static T GetValidator<T> (this IReadOnlyCollection<BaseValidator> value) where T : BaseValidator
+    internal static T? GetValidator<T> (this IReadOnlyCollection<BaseValidator>? value) where T : BaseValidator
     {
       if (value == null || !value.Any ())
         return null;

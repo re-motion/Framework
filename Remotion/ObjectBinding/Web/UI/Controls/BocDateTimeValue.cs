@@ -100,8 +100,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private readonly SingleRowTextBoxStyle _timeTextBoxStyle;
     private readonly Style _labelStyle;
 
-    private string _internalDateValue;
-    private string _internalTimeValue;
+    private string? _internalDateValue;
+    private string? _internalTimeValue;
 
     /// <summary> A backup of the <see cref="DateTime"/> value. </summary>
     private DateTime? _savedDateTimeValue;
@@ -113,8 +113,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private bool _provideMaxLength = true;
     private bool _enableClientScript = true;
 
-    private string _errorMessage;
-    private ReadOnlyCollection<BaseValidator> _validators;
+    private string? _errorMessage;
+    private ReadOnlyCollection<BaseValidator>? _validators;
     private const string c_dateTextBoxIDPostfix = "_DateValue";
     private const string c_timeTextBoxIDPostfix = "_TimeValue";
 
@@ -143,7 +143,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       base.OnInit (e);
       Binding.BindingChanged += Binding_BindingChanged;
-      Page.RegisterRequiresPostBack (this);
+      Page!.RegisterRequiresPostBack (this);
     }
 
     public override void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
@@ -182,7 +182,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       //  Date input field
 
-      string newDateValue = PageUtility.GetPostBackCollectionItem (Page, GetDateValueName());
+      string? newDateValue = PageUtility.GetPostBackCollectionItem (Page!, GetDateValueName());
       bool isDateChanged = newDateValue != null
                            && (_internalDateValue ?? string.Empty) != newDateValue;
       if (isDateChanged)
@@ -197,7 +197,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       //  Time input field
 
-      string newTimeValue = PageUtility.GetPostBackCollectionItem (Page, GetTimeValueName());
+      string? newTimeValue = PageUtility.GetPostBackCollectionItem (Page!, GetTimeValueName());
       bool isTimeChanged = newTimeValue != null
                            && (_internalTimeValue ?? string.Empty) != newTimeValue;
       if (isTimeChanged)
@@ -227,7 +227,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Fires the <see cref="DateTimeChanged"/> event. </summary>
     protected virtual void OnDateTimeChanged ()
     {
-      EventHandler eventHandler = (EventHandler) Events[s_dateTimeChangedEvent];
+      EventHandler? eventHandler = (EventHandler?) Events[s_dateTimeChangedEvent];
       if (eventHandler != null)
         eventHandler (this, EventArgs.Empty);
     }
@@ -290,29 +290,31 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("writer", writer);
 
+      Assertion.IsNotNull (Context, "Context must not be null.");
+
       return new BocDateTimeValueRenderingContext (Context, writer, this);
     }
 
-    protected override void LoadControlState (object savedState)
+    protected override void LoadControlState (object? savedState)
     {
-      object[] values = (object[]) savedState;
+      object?[] values = (object?[]) savedState!;
 
-      base.LoadControlState (values[0]);
+      base.LoadControlState (values[0]!);
 
       if (values[1] != null)
-        _internalDateValue = (string) values[1];
+        _internalDateValue = (string) values[1]!;
       if (values[2] != null)
-        _internalTimeValue = (string) values[2];
-      _valueType = (BocDateTimeValueType) values[3];
-      _actualValueType = (BocDateTimeValueType) values[4];
-      _showSeconds = (bool) values[5];
-      _provideMaxLength = (bool) values[6];
+        _internalTimeValue = (string) values[2]!;
+      _valueType = (BocDateTimeValueType) values[3]!;
+      _actualValueType = (BocDateTimeValueType) values[4]!;
+      _showSeconds = (bool) values[5]!;
+      _provideMaxLength = (bool) values[6]!;
       _savedDateTimeValue = (DateTime?) values[7];
     }
 
     protected override object SaveControlState ()
     {
-      object[] values = new object[8];
+      object?[] values = new object?[8];
 
       values[0] = base.SaveControlState();
       values[1] = _internalDateValue;
@@ -404,7 +406,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       base.LoadResources (resourceManager, globalizationService);
 
-      string key = ResourceManagerUtility.GetGlobalResourceKey (ErrorMessage);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey (ErrorMessage);
       if (!string.IsNullOrEmpty (key))
         ErrorMessage = resourceManager.GetString (key);
     }
@@ -440,17 +442,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         UpdateValidtaorErrorMessages<BocDateTimeValueValidatorBase> (_errorMessage);
     }
 
-    private void UpdateValidtaorErrorMessages<T> (string errorMessage) where T : BaseValidator
+    private void UpdateValidtaorErrorMessages<T> (string? errorMessage) where T : BaseValidator
     {
       var validator = _validators.GetValidator<T>();
       if (validator != null)
-        validator.ErrorMessage = errorMessage;
+        validator.ErrorMessage = errorMessage!;
     }
 
     /// <summary> Handles refreshing the bound control. </summary>
     /// <param name="sender"> The source of the event. </param>
     /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
-    private void Binding_BindingChanged (object sender, EventArgs e)
+    private void Binding_BindingChanged (object? sender, EventArgs e)
     {
       RefreshPropertiesFromObjectModel();
     }
@@ -478,7 +480,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (property == null)
         return BocDateTimeValueType.Undefined;
 
-      IBusinessObjectDateTimeProperty dateTimeProperty = property as IBusinessObjectDateTimeProperty;
+      IBusinessObjectDateTimeProperty? dateTimeProperty = property as IBusinessObjectDateTimeProperty;
       if (dateTimeProperty == null)
         throw new NotSupportedException ("BocDateTimeValue does not support property type " + property.GetType());
 
@@ -524,6 +526,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         return null;
       }
 
+      Assertion.IsNotNull (InternalDateValue, "InternalDateValue must not be null.");
       try
       {
         dateTimeValue = DateTime.Parse (InternalDateValue).Date;
@@ -596,7 +599,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
       catch (InvalidCastException e)
       {
-        throw new ArgumentException ("Expected type '" + _actualValueType + "', but was '" + value.GetType().GetFullNameSafe() + "'.", "value", e);
+        throw new ArgumentException ("Expected type '" + _actualValueType + "', but was '" + value!.GetType().GetFullNameSafe() + "'.", "value", e);
       }
 
       if (ActualValueType == BocDateTimeValueType.DateTime
@@ -609,7 +612,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         catch (InvalidCastException e)
         {
           throw new ArgumentException (
-              "Expected type '" + _actualValueType + "', but was '" + value.GetType().GetFullNameSafe() + "'.",
+              "Expected type '" + _actualValueType + "', but was '" + value!.GetType().GetFullNameSafe() + "'.",
               "value",
               e);
         }
@@ -619,7 +622,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> See <see cref="BusinessObjectBoundWebControl.Value"/> for details on this property. </summary>
-    protected override sealed object ValueImplementation
+    protected override sealed object? ValueImplementation
     {
       get { return Value; }
       set { Value = ArgumentUtility.CheckType<DateTime?> ("value", value); }
@@ -635,9 +638,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <value> An instance of type <see cref="IBusinessObjectDateTimeProperty"/>. </value>
     [Browsable (false)]
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    public new IBusinessObjectDateTimeProperty Property
+    public new IBusinessObjectDateTimeProperty? Property
     {
-      get { return (IBusinessObjectDateTimeProperty) base.Property; }
+      get { return (IBusinessObjectDateTimeProperty?) base.Property; }
       set { base.Property = value; }
     }
 
@@ -647,14 +650,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets or sets the displayed date string. </summary>
-    protected virtual string InternalDateValue
+    protected virtual string? InternalDateValue
     {
       get { return _internalDateValue; }
       set { _internalDateValue = value; }
     }
 
     /// <summary> Gets or sets the displayed time string. </summary>
-    protected virtual string InternalTimeValue
+    protected virtual string? InternalTimeValue
     {
       get { return _internalTimeValue; }
       set { _internalTimeValue = value; }
@@ -731,7 +734,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </value>
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     [Browsable (false)]
-    public string FocusID
+    public string? FocusID
     {
       get { return IsReadOnly ? null : GetDateValueName(); }
     }
@@ -965,7 +968,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Description ("Validation message displayed if there is an error.")]
     [Category ("Validator")]
     [DefaultValue ("")]
-    public string ErrorMessage
+    public string? ErrorMessage
     {
       get { return _errorMessage; }
       set
@@ -985,12 +988,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return ServiceLocator.GetInstance<IDateTimeFormatter>(); }
     }
 
-    public string DateString
+    public string? DateString
     {
       get { return InternalDateValue; }
     }
 
-    public string TimeString
+    public string? TimeString
     {
       get { return InternalTimeValue; }
     }

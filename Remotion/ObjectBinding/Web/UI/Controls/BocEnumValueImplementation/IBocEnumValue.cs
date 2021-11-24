@@ -23,7 +23,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation
 {
   public interface IBocEnumValue : IBusinessObjectBoundEditableWebControl, IBocRenderableControl, IControlWithResourceManager
   {
-    IEnumerationValueInfo EnumerationValueInfo { get; }
+    IEnumerationValueInfo? EnumerationValueInfo { get; }
     Style CommonStyle { get; }
     Style LabelStyle { get; }
     ListControlStyle ListControlStyle { get; }

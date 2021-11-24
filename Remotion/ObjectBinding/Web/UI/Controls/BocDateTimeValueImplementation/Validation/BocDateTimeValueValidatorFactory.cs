@@ -53,7 +53,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
       yield return CreateFormatValidator (control, resourceManager);
     }
 
-    private BocDateTimeRequiredValidator CreateRequiredValidator (IBocDateTimeValue control, IResourceManager resourceManager)
+    private BocDateTimeRequiredValidator? CreateRequiredValidator (IBocDateTimeValue control, IResourceManager resourceManager)
     {
       var areOptionalValidatorsEnabled = control.AreOptionalValidatorsEnabled;
       var isPropertyTypeRequired = !areOptionalValidatorsEnabled && control.DataSource?.BusinessObject != null && control.Property?.IsNullable == false;

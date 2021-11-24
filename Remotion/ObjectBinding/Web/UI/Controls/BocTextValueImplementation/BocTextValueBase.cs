@@ -92,7 +92,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
     /// </value>
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     [Browsable (false)]
-    public string FocusID
+    public string? FocusID
     {
       get { return IsReadOnly ? null : GetValueName(); }
     }
@@ -159,7 +159,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
     protected override void OnInit (EventArgs e)
     {
       base.OnInit (e);
-      Page.RegisterRequiresPostBack (this);
+      Page!.RegisterRequiresPostBack (this);
     }
 
     public override void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
@@ -193,7 +193,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
     /// <include file='..\..\..\doc\include\UI\Controls\BocTextValue.xml' path='BocTextValue/LoadPostData/*' />
     protected virtual bool LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
-      string newValue = PageUtility.GetPostBackCollectionItem (Page, GetValueName());
+      string? newValue = PageUtility.GetPostBackCollectionItem (Page!, GetValueName());
       if (newValue == null)
         return false;
 
@@ -222,7 +222,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
     /// <summary> Fires the <see cref="TextChanged"/> event. </summary>
     protected virtual void OnTextChanged ()
     {
-      EventHandler eventHandler = (EventHandler) Events[s_textChangedEvent];
+      EventHandler? eventHandler = (EventHandler?) Events[s_textChangedEvent];
       if (eventHandler != null)
         eventHandler (this, EventArgs.Empty);
     }

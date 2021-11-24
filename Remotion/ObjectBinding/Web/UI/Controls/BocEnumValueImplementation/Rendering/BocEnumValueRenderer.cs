@@ -92,6 +92,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
     public void Render (BocEnumValueRenderingContext renderingContext)
     {
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull ("renderingContext.Control.Page", renderingContext.Control.Page!);
 
       AddAttributesToRender (renderingContext);
       var tag = renderingContext.Control.ListControlStyle.ControlType == ListControlType.RadioButtonList
@@ -276,7 +277,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
     private Label GetLabel (BocEnumValueRenderingContext renderingContext)
     {
       Label label = new Label { ID = renderingContext.Control.GetValueName(), ClientIDMode = ClientIDMode.Static };
-      string text;
+      string? text;
       if (renderingContext.Control.EnumerationValueInfo == null)
       {
         text = null;

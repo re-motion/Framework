@@ -64,9 +64,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private static readonly Type[] s_supportedPropertyInterfaces = new[] { typeof (IBusinessObjectStringProperty) };
 
-    private string[] _text = null;
-    private string _errorMessage;
-    private ReadOnlyCollection<BaseValidator> _validators;
+    private string[]? _text = null;
+    private string? _errorMessage;
+    private ReadOnlyCollection<BaseValidator>? _validators;
 
     // construction and disposing
 
@@ -98,10 +98,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (DataSource == null)
         return;
 
-      string[] value = null;
+      string[]? value = null;
 
       if (DataSource.BusinessObject != null)
-        value = (string[]) DataSource.BusinessObject.GetProperty (Property);
+        value = (string[]?) DataSource.BusinessObject.GetProperty (Property);
 
       LoadValueInternal (value, false);
     }
@@ -116,7 +116,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Performs the actual loading for <see cref="LoadValue"/> and <see cref="LoadUnboundValue"/>. </summary>
-    protected virtual void LoadValueInternal (string[] value, bool interim)
+    protected virtual void LoadValueInternal (string[]? value, bool interim)
     {
       if (interim)
         return;
@@ -169,6 +169,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("writer", writer);
 
+      Assertion.IsNotNull (Context, "Context must not be null.");
+
       return new BocMultilineTextValueRenderingContext (Context, writer, this);
     }
 
@@ -176,9 +178,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <value> An <see cref="IBusinessObjectStringProperty"/> object. </value>
     [Browsable (false)]
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    public new IBusinessObjectStringProperty Property
+    public new IBusinessObjectStringProperty? Property
     {
-      get { return (IBusinessObjectStringProperty) base.Property; }
+      get { return (IBusinessObjectStringProperty?) base.Property; }
       set { base.Property = value; }
     }
 
@@ -186,7 +188,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <value> The <see cref="String"/> array currently displayed or <see langword="null"/> if no text is entered. </value>
     /// <remarks> The dirty state is reset when the value is set. </remarks>
     [Browsable (false)]
-    public new string[] Value
+    public new string[]? Value
     {
       get
       {
@@ -226,7 +228,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Description ("Validation message displayed if there is an error.")]
     [Category ("Validator")]
     [DefaultValue ("")]
-    public string ErrorMessage
+    public string? ErrorMessage
     {
       get { return _errorMessage; }
       set
@@ -242,7 +244,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// Gets the value from the backing field.
     /// </summary>
     /// <remarks>Override this member to modify the storage of the value. </remarks>
-    protected virtual string[] GetValue ()
+    protected virtual string[]? GetValue ()
     {
       if (_text == null)
         return null;
@@ -271,14 +273,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <para>Setting the value via this method does not affect the control's dirty state.</para>
     /// <para>Override this member to modify the storage of the value.</para>
     /// </remarks>
-    protected virtual void SetValue (string[] value)
+    protected virtual void SetValue (string[]? value)
     {
       _text = value;
     }
 
     /// <summary> See <see cref="BusinessObjectBoundWebControl.Value"/> for details on this property. </summary>
     /// <value> The value must be of type <b>string[]</b>. </value>
-    protected override sealed object ValueImplementation
+    protected override sealed object? ValueImplementation
     {
       get { return Value; }
       set { Value = ArgumentUtility.CheckType<string[]> ("value", value); }
@@ -294,12 +296,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// Loads <see cref="Text"/> in addition to the base state.
     /// </summary>
     /// <param name="savedState">The state object created by <see cref="SaveControlState"/>.</param>
-    protected override void LoadControlState (object savedState)
+    protected override void LoadControlState (object? savedState)
     {
-      object[] values = (object[]) savedState;
+      object?[] values = (object?[]) savedState!;
 
       base.LoadControlState (values[0]);
-      _text = (string[]) values[1];
+      _text = (string[]?) values[1];
     }
 
     /// <summary>
@@ -308,7 +310,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <returns>An object containing the state to be loaded in the control's next lifecycle.</returns>
     protected override object SaveControlState ()
     {
-      object[] values = new object[2];
+      object?[] values = new object?[2];
 
       values[0] = base.SaveControlState();
       values[1] = _text;
@@ -331,7 +333,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       base.LoadResources (resourceManager, globalizationService);
 
       //  Dispatch simple properties
-      string key = ResourceManagerUtility.GetGlobalResourceKey (ErrorMessage);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey (ErrorMessage);
       if (! string.IsNullOrEmpty (key))
         ErrorMessage = resourceManager.GetString (key);
     }
@@ -380,11 +382,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       UpdateValidtaorErrorMessages<LengthValidator> (_errorMessage);
     }
 
-    private void UpdateValidtaorErrorMessages<T> (string errorMessage) where T : BaseValidator
+    private void UpdateValidtaorErrorMessages<T> (string? errorMessage) where T : BaseValidator
     {
       var validator = _validators.GetValidator<T>();
       if (validator != null)
-        validator.ErrorMessage = errorMessage;
+        validator.ErrorMessage = errorMessage!;
     }
 
     /// <summary>

@@ -18,6 +18,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
@@ -38,7 +39,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
   {
     new bool IsReadOnly { get; }
 
-    new IReadOnlyList<IBusinessObject> Value { get; }
+    new IReadOnlyList<IBusinessObject>? Value { get; }
 
     bool HasNavigator { get; }
 
@@ -82,11 +83,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
 
     /// <summary> Gets or sets the text that is displayed in the index column's title row. </summary>
     /// <remarks> The value will not be HTML encoded. </remarks>
-    string IndexColumnTitle { get; }
+    string? IndexColumnTitle { get; }
 
     /// <summary> Gets or sets the text rendered if the list is empty. </summary>
     /// <remarks> The value will not be HTML encoded. </remarks>
-    string EmptyListMessage { get; }
+    string? EmptyListMessage { get; }
 
     /// <summary> Gets or sets a flag whether to render the <see cref="BocList.EmptyListMessage"/>. </summary>
     bool ShowEmptyListMessage { get; }
@@ -108,13 +109,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
 
     /// <summary> Gets or sets the text that is rendered as a title for the drop list of additional columns. </summary>
     /// <remarks> The value will not be HTML encoded. </remarks>
-    string AvailableViewsListTitle { get; }
+    string? AvailableViewsListTitle { get; }
 
     /// <summary> Gets or sets the text that is rendered as a label for the <c>options menu</c>. </summary>
-    string OptionsTitle { get; }
+    string? OptionsTitle { get; }
 
     bool HasClientScript { get; }
-    DropDownList GetAvailableViewsList ();
+    DropDownList? GetAvailableViewsList ();
     IDropDownMenu OptionsMenu { get; }
 
     IEditModeController EditModeController { get; }
@@ -181,6 +182,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
     /// Gets the list of validation errors for this control.
     /// </summary>
     IEnumerable<string> GetValidationErrors ();
-    string ControlServicePath { get; }
+    string? ControlServicePath { get; }
   }
 }

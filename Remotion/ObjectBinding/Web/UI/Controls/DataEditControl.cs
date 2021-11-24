@@ -31,7 +31,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   //public class DataEditUserControl : UserControl, IDataEditControl
   public abstract class DataEditUserControl : UserControl, IDataEditControl
   {
-    public IBusinessObject BusinessObject
+    public IBusinessObject? BusinessObject
     {
       get { return DataSource.BusinessObject; }
       set { DataSource.BusinessObject = value; }
@@ -84,7 +84,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     public abstract IBusinessObjectDataSourceControl DataSource { get; }
 
-    IPage IControl.Page
+    IPage? IControl.Page
     {
       get { return PageWrapper.CastOrCreate (base.Page); }
     }

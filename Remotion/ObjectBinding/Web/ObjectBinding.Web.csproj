@@ -11,7 +11,6 @@
     <AssemblyName>Remotion.ObjectBinding.Web</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
     <NoWarn>$(NoWarn);0419</NoWarn>
-    <Nullable>disable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="..\Web.ClientScript\bin\$(Configuration)\dist\*" LinkBase="Res.ClientScript\HTML" CopyToOutputDirectory="Never">
@@ -29,6 +28,9 @@
     <ProjectReference Include="..\..\Web\Contracts.DiagnosticMetadata\Web.Contracts.DiagnosticMetadata.csproj" />
     <ProjectReference Include="..\..\Web\Core\Web.Core.csproj" />
     <ProjectReference Include="..\Core\ObjectBinding.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\SharedSource\Core\RoslynAnnotations\NullableAnnotations.cs" Link="SharedSource\RoslynAnnotations\NullableAnnotations.cs" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

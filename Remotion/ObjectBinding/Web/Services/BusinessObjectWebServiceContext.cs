@@ -28,9 +28,9 @@ namespace Remotion.ObjectBinding.Web.Services
   public class BusinessObjectWebServiceContext
   {
     public static BusinessObjectWebServiceContext Create (
-        [CanBeNull] IBusinessObjectDataSource dataSource,
-        [CanBeNull] IBusinessObjectProperty property,
-        [CanBeNull] string arguments)
+        [CanBeNull] IBusinessObjectDataSource? dataSource,
+        [CanBeNull] IBusinessObjectProperty? property,
+        [CanBeNull] string? arguments)
     {
       return new BusinessObjectWebServiceContext (
           dataSource?.BusinessObject?.BusinessObjectClass?.Identifier ?? dataSource?.BusinessObjectClass?.Identifier,
@@ -43,30 +43,30 @@ namespace Remotion.ObjectBinding.Web.Services
     /// Gets the <see cref="IBusinessObjectClass.Identifier"/> of the <see cref="IBusinessObjectClass"/> 
     /// the <see cref="BusinessObjectBoundWebControl"/> is bound to.
     /// </summary>
-    public string BusinessObjectClass { get; }
+    public string? BusinessObjectClass { get; }
 
     /// <summary>
     /// Gets the <see cref="IBusinessObjectProperty.Identifier"/> of the <see cref="IBusinessObjectReferenceProperty"/> 
     /// the <see cref="BusinessObjectBoundWebControl"/> is bound to.
     /// </summary>
-    public string BusinessObjectProperty { get; }
+    public string? BusinessObjectProperty { get; }
 
     /// <summary>
     /// Gets the <see cref="IBusinessObjectWithIdentity.UniqueIdentifier"/> of the <see cref="IBusinessObjectWithIdentity"/> 
     /// the <see cref="BusinessObjectBoundWebControl"/> is bound to.
     /// </summary>
-    public string BusinessObjectIdentifier { get; }
+    public string? BusinessObjectIdentifier { get; }
 
     /// <summary>
     /// Gets the additional arguments specified.
     /// </summary>
-    public string Arguments { get; }
+    public string? Arguments { get; }
 
     private BusinessObjectWebServiceContext (
-        string businessObjectClass,
-        string businessObjectProperty,
-        string businessObjectIdentifier,
-        string arguments)
+        string? businessObjectClass,
+        string? businessObjectProperty,
+        string? businessObjectIdentifier,
+        string? arguments)
     {
       BusinessObjectClass = businessObjectClass;
       BusinessObjectProperty = businessObjectProperty;

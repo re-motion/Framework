@@ -32,12 +32,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   {
     private readonly IBusinessObjectBoundWebControl _control;
 
-    private IBusinessObjectDataSource _dataSource;
-    private string _dataSourceControl;
+    private IBusinessObjectDataSource? _dataSource;
+    private string? _dataSourceControl;
     private bool _dataSourceChanged = false;
 
-    private IBusinessObjectProperty _property;
-    private string _propertyIdentifier;
+    private IBusinessObjectProperty? _property;
+    private string? _propertyIdentifier;
     private bool _bindingChanged = false;
 
     public BusinessObjectBinding (IBusinessObjectBoundWebControl control)
@@ -58,7 +58,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Unless an <b>DataSource</b> is set, <see cref="DataSourceControl"/> is used to identify the data source.
     /// </remarks>
     /// <exception cref="ArgumentException"> Thrown if an attempt is made to set a self reference. </exception>
-    public virtual IBusinessObjectDataSource DataSource
+    public virtual IBusinessObjectDataSource? DataSource
     {
       get
       {
@@ -69,7 +69,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         SetDataSource (value);
 
-        Control dataSourceControl = value as Control;
+        Control? dataSourceControl = value as Control;
         if (dataSourceControl != null)
           _dataSourceControl = dataSourceControl.ID;
         else
@@ -103,11 +103,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           if (namingContainer == null)
             throw new HttpException (string.Format ("Cannot evaluate data source because control {0} has no naming container.", _control.ID));
 
-          Control control = ControlHelper.FindControl (namingContainer, _dataSourceControl);
+          Control? control = ControlHelper.FindControl (namingContainer, _dataSourceControl);
           if (control == null)
             throw new HttpException (string.Format ("Unable to find control id '{0}' referenced by the DataSourceControl property of '{1}'.", _dataSourceControl, _control.ID));
 
-          IBusinessObjectDataSourceControl dataSource = control as IBusinessObjectDataSourceControl;
+          IBusinessObjectDataSourceControl? dataSource = control as IBusinessObjectDataSourceControl;
           if (dataSource == null)
             throw new HttpException (string.Format ("The control with the id '{0}' referenced by the DataSourceControl property of '{1}' does not identify a control of type '{2}'.", _dataSourceControl, _control.ID, typeof (IBusinessObjectDataSourceControl)));
 
@@ -129,7 +129,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Sets the new value of the <see cref="DataSource"/> property. </summary>
     /// <param name="dataSource"> The new <see cref="IBusinessObjectDataSource"/>. Can be <see langword="null"/>. </param>
-    private void SetDataSource (IBusinessObjectDataSource dataSource)
+    private void SetDataSource (IBusinessObjectDataSource? dataSource)
     {
       if (_control == dataSource && _control is IBusinessObjectReferenceDataSource)
         throw new ArgumentException ("Assigning a reference data source as its own data source is not allowed.", "value");
@@ -150,7 +150,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> The <b>ID</b> of the <see cref="DataSource"/>. </summary>
     /// <value> A string or <see langword="null"/> if no <see cref="DataSource"/> is set. </value>
     /// <exception cref="ArgumentException"> Thrown if an attempt is made to set a self reference. </exception>
-    public string DataSourceControl
+    public string? DataSourceControl
     {
       get { return _dataSourceControl; }
 
@@ -173,7 +173,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </remarks>
     /// <exception cref="ArgumentException"> Thrown if the <see cref="Control"/> does not support the <b>Property</b>. </exception>
     /// <exception cref="InvalidOperationException"> Thrown if an invalid <b>Property</b> has been specifed by the <see cref="PropertyIdentifier"/>. </exception>
-    public IBusinessObjectProperty Property
+    public IBusinessObjectProperty? Property
     {
       get
       {
@@ -185,7 +185,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
               && DataSource.BusinessObjectClass != null
               && !string.IsNullOrEmpty (_propertyIdentifier))
           {
-            IBusinessObjectProperty property =
+            IBusinessObjectProperty? property =
                 DataSource.BusinessObjectClass.GetPropertyDefinition (_propertyIdentifier);
             if (property == null)
             {
@@ -238,7 +238,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   A string that can be used to query the <see cref="IBusinessObjectClass.GetPropertyDefinition"/> method for
     ///   the <see cref="IBusinessObjectProperty"/>. 
     /// </value>
-    public string PropertyIdentifier
+    public string? PropertyIdentifier
     {
       get { return _propertyIdentifier; }
 
@@ -261,7 +261,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <remarks> 
     ///   Register for this event to execute code updating the <see cref="Control"/>'s state for the new binding.
     /// </remarks>
-    public event EventHandler BindingChanged;
+    public event EventHandler? BindingChanged;
 
     /// <summary>Tests whether this <see cref="BusinessObjectBoundWebControl"/> can be bound to the <paramref name="property"/>.</summary>
     /// <param name="property">The <see cref="IBusinessObjectProperty"/> to be tested. Must not be <see langword="null"/>.</param>
@@ -333,8 +333,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       get
       {
-        IBusinessObjectDataSource dataSource = DataSource;
-        IBusinessObjectProperty property = Property;
+        IBusinessObjectDataSource? dataSource = DataSource;
+        IBusinessObjectProperty? property = Property;
         if (dataSource == null || property == null)
           return true;
 

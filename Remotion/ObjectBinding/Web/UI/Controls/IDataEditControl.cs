@@ -28,7 +28,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <remarks>
     ///   If the control uses multiple business objects, only one can be exposed using this property.
     /// </remarks>
-    IBusinessObject BusinessObject { get; set; }
+    IBusinessObject? BusinessObject { get; set; }
 
     /// <summary>
     ///   Load the values into bound controls. 

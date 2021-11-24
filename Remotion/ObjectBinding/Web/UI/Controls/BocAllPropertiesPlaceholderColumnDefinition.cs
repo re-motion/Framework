@@ -33,7 +33,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     [Browsable (false)]
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    public override string ItemID
+    public override string? ItemID
     {
       get { return base.ItemID; }
       set { base.ItemID = value; }

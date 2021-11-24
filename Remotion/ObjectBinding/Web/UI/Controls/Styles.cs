@@ -328,7 +328,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public override void CopyFrom (Style s)
     {
       base.CopyFrom (s);
-      SingleRowTextBoxStyle ts = s as SingleRowTextBoxStyle;
+      SingleRowTextBoxStyle? ts = s as SingleRowTextBoxStyle;
       if (ts != null)
       {
         if (_checkClientSideMaxLength != false)
@@ -461,7 +461,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public override void CopyFrom (Style s)
     {
       base.CopyFrom (s);
-      TextBoxStyle ts = s as TextBoxStyle;
+      TextBoxStyle? ts = s as TextBoxStyle;
       if (ts != null)
       {
         Rows = ts.Rows;

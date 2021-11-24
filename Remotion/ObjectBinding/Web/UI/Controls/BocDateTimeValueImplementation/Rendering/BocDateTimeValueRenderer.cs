@@ -153,7 +153,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
           renderingContext.Control.DateTextBoxStyle,
           formatter.GetDateMaxLength());
       dateTextBox.Text = renderingContext.Control.DateString;
-      dateTextBox.Page = renderingContext.Control.Page.WrappedInstance;
+      dateTextBox.Page = renderingContext.Control.Page!.WrappedInstance;
 
       var controlDateLabelIDs = renderingContext.Control.GetLabelIDs().ToArray();
       var accessibilityAnnotationIDsCollectionForDateTextBox = new List<string>();
@@ -360,14 +360,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
                       {
                         ID = renderingContext.Control.GetDateValueName(),
                         ClientIDMode = ClientIDMode.Static,
-                        ToolTip = hasTimeField ? resourceManager.GetString (BocDateTimeValue.ResourceIdentifier.DateLabelText) : null,
+                        ToolTip = hasTimeField ? resourceManager.GetString (BocDateTimeValue.ResourceIdentifier.DateLabelText) : null!,
                         AssociatedControlID = hasTimeField ? renderingContext.Control.ClientID + "_DateLabel" : null
                       };
       var timeLabel = new Label
                       {
                         ID = renderingContext.Control.GetTimeValueName(),
                         ClientIDMode = ClientIDMode.Static,
-                        ToolTip = hasDateField ? resourceManager.GetString (BocDateTimeValue.ResourceIdentifier.TimeLabelText) : null,
+                        ToolTip = hasDateField ? resourceManager.GetString (BocDateTimeValue.ResourceIdentifier.TimeLabelText) : null!,
                         AssociatedControlID = hasDateField ? renderingContext.Control.ClientID + "_TimeLabel" : null
                       };
 

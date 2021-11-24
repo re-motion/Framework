@@ -49,7 +49,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <value> An <see cref="IBusinessObjectDataSource"/> providing the current <see cref="IBusinessObject"/>. </value>
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     [Browsable (false)]
-    public IBusinessObjectDataSource DataSource
+    public IBusinessObjectDataSource? DataSource
     {
       get { return _binding.DataSource; }
       set { _binding.DataSource = value; }
@@ -64,7 +64,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Description ("The string representation of the Property.")]
     [DefaultValue ("")]
     [MergableProperty (false)]
-    public string PropertyIdentifier
+    public string? PropertyIdentifier
     {
       get { return _binding.PropertyIdentifier; }
       set { _binding.PropertyIdentifier = value; }
@@ -74,7 +74,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <value>An <see cref="IBusinessObjectProperty"/> that is part of the bound <see cref="IBusinessObject"/>'s <see cref="IBusinessObjectClass"/>.</value>
     [Browsable (false)]
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    public IBusinessObjectProperty Property
+    public IBusinessObjectProperty? Property
     {
       get { return _binding.Property; }
       set { _binding.Property = value; }
@@ -89,7 +89,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Category ("Data")]
     [Description ("The ID of the BusinessObjectDataSourceControl control used as data source.")]
     [DefaultValue ("")]
-    public string DataSourceControl
+    public string? DataSourceControl
     {
       get { return _binding.DataSourceControl; }
       set { _binding.DataSourceControl = value; }
@@ -139,7 +139,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     // fields
 
     private BusinessObjectBinding _binding;
-    private string _value = string.Empty;
+    private string? _value = string.Empty;
     private LiteralMode _mode = LiteralMode.Transform;
 
     public BocLiteral ()
@@ -153,7 +153,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       base.OnInit (e);
       EnsureChildControls ();
       _binding.EnsureDataSource ();
-      Page.RegisterRequiresControlState (this);
+      Page!.RegisterRequiresControlState (this);
     }
 
     protected override void OnUnload (EventArgs e)
@@ -196,16 +196,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
-    protected override void LoadControlState (object savedState)
+    protected override void LoadControlState (object? savedState)
     {
-      object[] values = (object[]) savedState;
+      object?[] values = (object[]?) savedState!;
       base.LoadControlState (values[0]);
-      _mode = (LiteralMode) values[1];
+      _mode = (LiteralMode) values[1]!;
     }
 
     protected override object SaveControlState ()
     {
-      object[] values = new object[4];
+      object?[] values = new object?[4];
       values[0] = base.SaveControlState ();
       values[1] = _mode;
       return values;
@@ -222,10 +222,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (DataSource == null)
         return;
       
-      string value = null;
+      string? value = null;
 
       if (DataSource.BusinessObject != null)
-        value = (string) DataSource.BusinessObject.GetProperty (Property);
+        value = (string?) DataSource.BusinessObject.GetProperty (Property);
 
       LoadValueInternal (value, interim);
     }
@@ -240,7 +240,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Performs the actual loading for <see cref="LoadValue"/> and <see cref="LoadUnboundValue"/>. </summary>
-    protected virtual void LoadValueInternal (string value, bool interim)
+    protected virtual void LoadValueInternal (string? value, bool interim)
     {
       Value = value;
     }
@@ -249,7 +249,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Description ("The text to be shown in for the BocLiteral.")]
     [Category ("Data")]
     [DefaultValue ("")]
-    public string Value
+    public string? Value
     {
       get { return _value; }
       set { _value = value; }
@@ -261,17 +261,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return _value != null && _value.Trim ().Length > 0; }
     }
 
-    object IBusinessObjectBoundControl.Value
+    object? IBusinessObjectBoundControl.Value
     {
       get { return ValueImplementation; }
       set { ValueImplementation = value; }
     }
 
     /// <summary> See <see cref="BusinessObjectBoundWebControl.Value"/> for details on this property. </summary>
-    protected virtual object ValueImplementation
+    protected virtual object? ValueImplementation
     {
       get { return Value; }
-      set { Value = (string) value; }
+      set { Value = (string?) value; }
     }
 
     bool IBusinessObjectBoundWebControl.SupportsPropertyMultiplicity (bool isList)
@@ -303,7 +303,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Gets the text to be written into the label for this control. </summary>
     /// <value> <see langword="null"/> for the default implementation. </value>
     [Browsable (false)]
-    public virtual string DisplayName
+    public virtual string? DisplayName
     {
       get { return (Property != null) ? Property.DisplayName : null; }
     }
@@ -312,7 +312,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
     }
 
-    HelpInfo ISmartControl.HelpInfo
+    HelpInfo? ISmartControl.HelpInfo
     {
       get { return BusinessObjectBoundWebControl.GetHelpInfo (this); }
     }
@@ -344,7 +344,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return Enumerable.Empty<BaseValidator>();
     }
 
-    IPage IControl.Page
+    IPage? IControl.Page
     {
       get { return PageWrapper.CastOrCreate (base.Page); }
     }

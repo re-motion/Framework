@@ -418,7 +418,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
       if (IsDiagnosticMetadataRenderingEnabled)
       {
         var htmlID = renderingContext.Control.ClientID + "_" + menuItemIndex;
-        var diagnosticMetadataDictionary = new Dictionary<string, string>();
+        var diagnosticMetadataDictionary = new Dictionary<string, string?>();
         diagnosticMetadataDictionary.Add (HtmlTextWriterAttribute.Id.ToString(), htmlID);
         diagnosticMetadataDictionary.Add (DiagnosticMetadataAttributes.ItemID, menuItem.ItemID);
         diagnosticMetadataDictionary.Add (DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags (diagnosticMetadataText ?? ""));
@@ -427,7 +427,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
 
         stringBuilder.Append (", ");
 
-        var diagnosticMetadataDictionaryForCommand = new Dictionary<string, string>();
+        var diagnosticMetadataDictionaryForCommand = new Dictionary<string, string?>();
         diagnosticMetadataDictionaryForCommand.Add (DiagnosticMetadataAttributes.IsDisabled, isDisabled.ToString().ToLower());
         diagnosticMetadataDictionaryForCommand.Add (DiagnosticMetadataAttributes.TriggersNavigation, diagnosticMetadataTriggersNavigation.ToString().ToLower());
         diagnosticMetadataDictionaryForCommand.Add (DiagnosticMetadataAttributes.TriggersPostBack, diagnosticMetadataTriggersPostBack.ToString().ToLower());

@@ -17,6 +17,7 @@
 using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
@@ -24,13 +25,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   {
     protected override bool EvaluateIsValid ()
     {
-      Control control = NamingContainer.FindControl (ControlToValidate);
+      Control? control = NamingContainer.FindControl (ControlToValidate);
 
       var userControlBindingControl = control as UserControlBinding;
       if (userControlBindingControl == null)
         throw new InvalidOperationException ("UserControlBindingValidator may only be applied to controls of type UserControlBinding");
 
-      return userControlBindingControl.UserControl.Validate();
+      var userControl = Assertion.IsNotNull (userControlBindingControl.UserControl, "userControlBindingControl.UserControl must not be null");
+      return userControl.Validate();
     }
 
     protected override bool ControlPropertiesValid ()

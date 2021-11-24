@@ -66,8 +66,8 @@ namespace Remotion.Web.Utilities
     /// </summary>
     public static void WriteDictionaryAsJson (
           this StringBuilder stringBuilder,
-          IReadOnlyDictionary<string, string> dictionaryOfStringValues,
-          IReadOnlyDictionary<string, IReadOnlyCollection<string>>? dictionaryOfStringArrays = null)
+          IReadOnlyDictionary<string, string?> dictionaryOfStringValues,
+          IReadOnlyDictionary<string, IReadOnlyCollection<string>?>? dictionaryOfStringArrays = null)
     {
       ArgumentUtility.CheckNotNull ("stringBuilder", stringBuilder);
       ArgumentUtility.CheckNotNull ("dictionaryOfStringValues", dictionaryOfStringValues);
@@ -98,7 +98,7 @@ namespace Remotion.Web.Utilities
       stringBuilder.Append ('}');
     }
 
-    private static StringBuilder AppendFormattedString (this StringBuilder stringBuilder, string value)
+    private static StringBuilder AppendFormattedString (this StringBuilder stringBuilder, string? value)
     {
       if (value == null)
       {
@@ -116,7 +116,7 @@ namespace Remotion.Web.Utilities
       return stringBuilder;
     }
 
-    private static StringBuilder AppendStringCollection (this StringBuilder stringBuilder, IReadOnlyCollection<string> value)
+    private static StringBuilder AppendStringCollection (this StringBuilder stringBuilder, IReadOnlyCollection<string>? value)
     {
       if (value == null)
       {
