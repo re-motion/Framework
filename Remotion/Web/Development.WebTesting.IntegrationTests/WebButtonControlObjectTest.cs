@@ -158,6 +158,15 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       Assert.That (webButton.StyleInfo.GetTextColor(), Is.EqualTo (WebColor.Black));
     }
 
+    [Test]
+    public void TestGetTextWithUseLegacyButton ()
+    {
+      var home = Start();
+
+      var webButton = home.WebButtons().GetByItemID ("MyWebButtonWithUseLegacyButton");
+      Assert.That (webButton.GetText(), Is.EqualTo ("LegacyButton"));
+    }
+
     private WxePageObject Start ()
     {
       return Start<WxePageObject> ("WebButtonTest.wxe");

@@ -139,6 +139,15 @@ namespace Remotion.Web.Development.WebTesting.TestSite {
         protected global::Remotion.Web.UI.Controls.WebButton MyWebButtonWithIcon;
         
         /// <summary>
+        /// MyWebButtonWithUseLegacyButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.WebButton MyWebButtonWithUseLegacyButton;
+        
+        /// <summary>
         /// Master property.
         /// </summary>
         /// <remarks>

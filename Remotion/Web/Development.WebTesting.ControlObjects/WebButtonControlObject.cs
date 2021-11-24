@@ -48,7 +48,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public string GetText ()
     {
-      return Scope.Text.Trim();
+      return Scope[DiagnosticMetadataAttributes.Content];
     }
 
     /// <summary>
