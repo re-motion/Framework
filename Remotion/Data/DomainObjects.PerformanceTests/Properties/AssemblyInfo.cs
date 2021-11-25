@@ -28,4 +28,3 @@ using Remotion.ObjectBinding.Security;
 [assembly: CLSCompliant(true)]
 
 [assembly: EnsureSecuritySupportForObjectBinding]
-

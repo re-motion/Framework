@@ -805,4 +805,3 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
   }
 
 }
-
