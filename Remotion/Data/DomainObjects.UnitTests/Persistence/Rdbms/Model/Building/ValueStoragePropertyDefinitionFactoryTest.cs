@@ -122,9 +122,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
       _storageNameProviderStub.Stub(stub => stub.GetColumnName(Arg<PropertyDefinition>.Is.Anything)).Return("FakeColumnName");
 
       var resultNotNullable =
-          (SimpleStoragePropertyDefinition) _factory.CreateStoragePropertyDefinition(propertyDefinitionNotNullable);
+          (SimpleStoragePropertyDefinition)_factory.CreateStoragePropertyDefinition(propertyDefinitionNotNullable);
       var resultNullable =
-          (SimpleStoragePropertyDefinition) _factory.CreateStoragePropertyDefinition(propertyDefinitionNullable);
+          (SimpleStoragePropertyDefinition)_factory.CreateStoragePropertyDefinition(propertyDefinitionNullable);
 
       _storageTypeInformationProviderMock.VerifyAllExpectations();
 
@@ -155,9 +155,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
       _storageNameProviderStub.Stub(stub => stub.GetColumnName(Arg<PropertyDefinition>.Is.Anything)).Return("FakeColumnName");
 
       var resultNotNullable =
-          (SimpleStoragePropertyDefinition) _factory.CreateStoragePropertyDefinition(propertyDefinitionNotNullable);
+          (SimpleStoragePropertyDefinition)_factory.CreateStoragePropertyDefinition(propertyDefinitionNotNullable);
       var resultNullable =
-          (SimpleStoragePropertyDefinition) _factory.CreateStoragePropertyDefinition(propertyDefinitionNullable);
+          (SimpleStoragePropertyDefinition)_factory.CreateStoragePropertyDefinition(propertyDefinitionNullable);
 
       Assert.That(resultNotNullable.ColumnDefinition.StorageTypeInfo, Is.SameAs(_fakeStorageTypeInformation1));
       Assert.That(resultNullable.ColumnDefinition.StorageTypeInfo, Is.SameAs(_fakeStorageTypeInformation2));
@@ -186,9 +186,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
       _storageNameProviderStub.Stub(stub => stub.GetColumnName(Arg<PropertyDefinition>.Is.Anything)).Return("FakeColumnName");
 
       var resultNotNullable =
-          (SimpleStoragePropertyDefinition) _factory.CreateStoragePropertyDefinition(propertyDefinitionNotNullable);
+          (SimpleStoragePropertyDefinition)_factory.CreateStoragePropertyDefinition(propertyDefinitionNotNullable);
       var resultNullable =
-          (SimpleStoragePropertyDefinition) _factory.CreateStoragePropertyDefinition(propertyDefinitionNullable);
+          (SimpleStoragePropertyDefinition)_factory.CreateStoragePropertyDefinition(propertyDefinitionNullable);
 
       _storageTypeInformationProviderMock.VerifyAllExpectations();
 
@@ -222,9 +222,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
       _storageNameProviderStub.Stub(stub => stub.GetColumnName(Arg<PropertyDefinition>.Is.Anything)).Return("FakeColumnName");
 
       var resultNotNullable =
-          (SimpleStoragePropertyDefinition) _factory.CreateStoragePropertyDefinition(propertyDefinitionNotNullable);
+          (SimpleStoragePropertyDefinition)_factory.CreateStoragePropertyDefinition(propertyDefinitionNotNullable);
       var resultNullable =
-          (SimpleStoragePropertyDefinition) _factory.CreateStoragePropertyDefinition(propertyDefinitionNullable);
+          (SimpleStoragePropertyDefinition)_factory.CreateStoragePropertyDefinition(propertyDefinitionNullable);
 
       _storageTypeInformationProviderMock.VerifyAllExpectations();
       Assert.That(resultNotNullable.ColumnDefinition.StorageTypeInfo, Is.SameAs(_fakeStorageTypeInformation1));
@@ -254,7 +254,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     {
       var exception = new NotSupportedException("Msg.");
       _storageTypeInformationProviderMock
-          .Expect(mock => mock.GetStorageType((object) null))
+          .Expect(mock => mock.GetStorageType((object)null))
           .Throw(exception);
 
       var result = _factory.CreateStoragePropertyDefinition(null, "Column");
@@ -271,7 +271,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     public void CreateStoragePropertyDefinition_ForValue_Null ()
     {
       _storageTypeInformationProviderMock
-          .Expect(mock => mock.GetStorageType((object) null))
+          .Expect(mock => mock.GetStorageType((object)null))
           .Return(_fakeStorageTypeInformation1);
 
       var result = _factory.CreateStoragePropertyDefinition(null, "Column");

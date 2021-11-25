@@ -87,14 +87,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       _invalidObjectEventReceiverMock = _mockRepository.StrictMock<DomainObjectMockEventReceiver>(_invalidDomainObject);
 
       _unloadEventReceiverMock = _mockRepository.StrictMock<IUnloadEventReceiver>();
-      ((TestDomainBase) _domainObject1).SetUnloadEventReceiver(_unloadEventReceiverMock);
-      ((TestDomainBase) _domainObject2).SetUnloadEventReceiver(_unloadEventReceiverMock);
+      ((TestDomainBase)_domainObject1).SetUnloadEventReceiver(_unloadEventReceiverMock);
+      ((TestDomainBase)_domainObject2).SetUnloadEventReceiver(_unloadEventReceiverMock);
 
       _transactionEventReceiverMock = _mockRepository.StrictMock<ClientTransactionMockEventReceiver>(_clientTransaction);
 
       _loadEventReceiverMock = _mockRepository.StrictMock<ILoadEventReceiver>();
-      ((TestDomainBase) _domainObject1).SetLoadEventReceiver(_loadEventReceiverMock);
-      ((TestDomainBase) _domainObject2).SetLoadEventReceiver(_loadEventReceiverMock);
+      ((TestDomainBase)_domainObject1).SetLoadEventReceiver(_loadEventReceiverMock);
+      ((TestDomainBase)_domainObject2).SetLoadEventReceiver(_loadEventReceiverMock);
 
       _extensionMock = _mockRepository.StrictMock<IClientTransactionExtension>();
       _extensionMock.Stub(stub => stub.Key).Return("extension");
@@ -437,9 +437,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       var endPointDefinition = GetSomeEndPointDefinition();
 
       CheckEventWithListenersLast(
-          s => s.RaiseRelationReadEvent(_domainObject1, endPointDefinition, (DomainObject) null, ValueAccess.Current),
-          l => l.RelationRead(_clientTransaction, _domainObject1, endPointDefinition, (DomainObject) null, ValueAccess.Current),
-          x => x.RelationRead(_clientTransaction, _domainObject1, endPointDefinition, (DomainObject) null, ValueAccess.Current));
+          s => s.RaiseRelationReadEvent(_domainObject1, endPointDefinition, (DomainObject)null, ValueAccess.Current),
+          l => l.RelationRead(_clientTransaction, _domainObject1, endPointDefinition, (DomainObject)null, ValueAccess.Current),
+          x => x.RelationRead(_clientTransaction, _domainObject1, endPointDefinition, (DomainObject)null, ValueAccess.Current));
     }
 
     [Test]

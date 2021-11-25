@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
       Assert.That(result.Count(), Is.EqualTo(1));
       var clientTransactionExtension = result.First();
       Assert.That(clientTransactionExtension, Is.TypeOf<ValidationClientTransactionExtension>());
-      Assert.That(((ValidationClientTransactionExtension) clientTransactionExtension).ValidatorProvider, Is.EqualTo(validatorProviderStub));
+      Assert.That(((ValidationClientTransactionExtension)clientTransactionExtension).ValidatorProvider, Is.EqualTo(validatorProviderStub));
     }
 
     [Test]

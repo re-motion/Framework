@@ -44,7 +44,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
 
     public static void AreEqual (AccessTypeDefinition expected, AccessTypeDefinition actual, string message)
     {
-      AreEqual((EnumValueDefinition) expected, (EnumValueDefinition) actual, message);
+      AreEqual((EnumValueDefinition)expected, (EnumValueDefinition)actual, message);
     }
 
 

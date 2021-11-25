@@ -32,7 +32,7 @@ namespace OBWTest
 
     public LevelOne RootObject
     {
-      get { return (LevelOne) Variables["RootObject"]; }
+      get { return (LevelOne)Variables["RootObject"]; }
       set { Variables["RootObject"] = value; }
     }
 

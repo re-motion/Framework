@@ -58,7 +58,7 @@ namespace Remotion.Configuration
 
     public Type? Type
     {
-      get { return (Type?) base[_typeProperty]; }
+      get { return (Type?)base[_typeProperty]; }
       set { base[_typeProperty] = value; }
     }
 
@@ -67,7 +67,7 @@ namespace Remotion.Configuration
       if (Type == null)
         return null;
 
-      return (TBase?) Activator.CreateInstance(Type);
+      return (TBase?)Activator.CreateInstance(Type);
     }
   }
 

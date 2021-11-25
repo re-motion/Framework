@@ -39,7 +39,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyConstraints
 
       Assert.That(instance, Is.InstanceOf<CompoundBusinessObjectPropertyConstraintProvider>());
 
-      var compound = (CompoundBusinessObjectPropertyConstraintProvider) instance;
+      var compound = (CompoundBusinessObjectPropertyConstraintProvider)instance;
       Assert.That(compound.BusinessObjectConstraintProviders, Is.Empty);
     }
 

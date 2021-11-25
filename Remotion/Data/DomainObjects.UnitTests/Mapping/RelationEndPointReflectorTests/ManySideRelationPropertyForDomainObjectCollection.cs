@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
 
       Assert.IsInstanceOf(typeof(RelationEndPointDefinition), actual);
-      RelationEndPointDefinition relationEndPointDefinition = (RelationEndPointDefinition) actual;
+      RelationEndPointDefinition relationEndPointDefinition = (RelationEndPointDefinition)actual;
       Assert.That(relationEndPointDefinition.ClassDefinition, Is.SameAs(_classDefinition));
       Assert.That(relationEndPointDefinition.PropertyDefinition, Is.SameAs(GetPropertyDefinition("Unidirectional")));
       Assert.That(relationEndPointDefinition.RelationDefinition, Is.Null);
@@ -99,7 +99,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
 
       Assert.IsInstanceOf(typeof(RelationEndPointDefinition), actual);
-      RelationEndPointDefinition relationEndPointDefinition = (RelationEndPointDefinition) actual;
+      RelationEndPointDefinition relationEndPointDefinition = (RelationEndPointDefinition)actual;
       Assert.That(relationEndPointDefinition.ClassDefinition, Is.SameAs(_classDefinition));
       Assert.That(relationEndPointDefinition.PropertyDefinition, Is.SameAs(GetPropertyDefinition("BidirectionalOneToOne")));
       Assert.That(relationEndPointDefinition.RelationDefinition, Is.Null);
@@ -117,7 +117,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
 
       Assert.IsInstanceOf(typeof(RelationEndPointDefinition), actual);
-      RelationEndPointDefinition relationEndPointDefinition = (RelationEndPointDefinition) actual;
+      RelationEndPointDefinition relationEndPointDefinition = (RelationEndPointDefinition)actual;
       Assert.That(relationEndPointDefinition.ClassDefinition, Is.SameAs(_classDefinition));
       Assert.That(relationEndPointDefinition.PropertyDefinition, Is.SameAs(GetPropertyDefinition("BidirectionalOneToManyForDomainObjectCollection")));
       Assert.That(relationEndPointDefinition.RelationDefinition, Is.Null);

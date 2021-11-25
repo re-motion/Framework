@@ -42,8 +42,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
       var proxy = RoleProxy.Create(role);
 
       Assert.That(proxy.ID, Is.EqualTo(role.ID));
-      Assert.That(proxy.UniqueIdentifier, Is.EqualTo(((IBusinessObjectWithIdentity) role).UniqueIdentifier));
-      Assert.That(proxy.DisplayName, Is.EqualTo(((IBusinessObjectWithIdentity) role).DisplayName));
+      Assert.That(proxy.UniqueIdentifier, Is.EqualTo(((IBusinessObjectWithIdentity)role).UniqueIdentifier));
+      Assert.That(proxy.DisplayName, Is.EqualTo(((IBusinessObjectWithIdentity)role).DisplayName));
     }
 
     [Test]

@@ -60,7 +60,7 @@ namespace Remotion.Reflection
 
     public TDelegate GetDelegate<TDelegate> ()
     {
-      return (TDelegate) (object) GetDelegate(typeof(TDelegate));
+      return (TDelegate)(object)GetDelegate(typeof(TDelegate));
     }
 
     public Delegate GetDelegate (Type delegateType)
@@ -292,7 +292,7 @@ namespace Remotion.Reflection
 
     public TDelegate GetDelegate<TDelegate> ()
     {
-      return (TDelegate) (object) GetDelegate(typeof(TDelegate));
+      return (TDelegate)(object)GetDelegate(typeof(TDelegate));
     }
 
     public Delegate GetDelegate (Type delegateType)
@@ -526,7 +526,7 @@ namespace Remotion.Reflection
 
     public TDelegate GetDelegate<TDelegate> ()
     {
-      return (TDelegate) (object) GetDelegate(typeof(TDelegate));
+      return (TDelegate)(object)GetDelegate(typeof(TDelegate));
     }
 
     public Delegate GetDelegate (Type delegateType)
@@ -762,7 +762,7 @@ namespace Remotion.Reflection
 
     public TDelegate GetDelegate<TDelegate> ()
     {
-      return (TDelegate) (object) GetDelegate(typeof(TDelegate));
+      return (TDelegate)(object)GetDelegate(typeof(TDelegate));
     }
 
     public Delegate GetDelegate (Type delegateType)

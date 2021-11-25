@@ -68,7 +68,7 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
     {
       if (control is HyperLink)
       {
-        HyperLink hyperLink = (HyperLink) control;
+        HyperLink hyperLink = (HyperLink)control;
         if (hyperLink.NavigateUrl == "#" && hyperLink.Attributes["onclick"].Contains("alert"))
           return true;
         if (hyperLink.NavigateUrl.Contains("alert"))
@@ -80,10 +80,10 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
 
     public bool IsEnabled (Control control)
     {
-      if (control is WebControl && ((WebControl) control).Enabled)
+      if (control is WebControl && ((WebControl)control).Enabled)
         return true;
 
-      if (control is HtmlControl && string.IsNullOrEmpty(((HtmlControl) control).Attributes["disabled"]))
+      if (control is HtmlControl && string.IsNullOrEmpty(((HtmlControl)control).Attributes["disabled"]))
         return true;
 
       return false;
@@ -91,7 +91,7 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
 
     private void OnClick (object sender, EventArgs e)
     {
-      Control control = (Control) sender;
+      Control control = (Control)sender;
       if (Click != null)
         Click(this, new IDEventArgs(control.ID));
     }

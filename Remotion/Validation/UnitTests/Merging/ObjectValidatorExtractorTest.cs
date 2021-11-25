@@ -60,10 +60,10 @@ namespace Remotion.Validation.UnitTests.Merging
       _stubObjectValidator4 = new Mock<IObjectValidator>(); //extracted
       _stubObjectValidator5 = new Mock<IObjectValidator>(); //extracted
 
-      var registration1A = new {ValidatorType = typeof(FakeCustomerValidator), CollectorTypeToRemoveFrom = (Type) null };
+      var registration1A = new {ValidatorType = typeof(FakeCustomerValidator), CollectorTypeToRemoveFrom = (Type)null };
       var registration2A = new {ValidatorType = typeof(StubObjectValidator), CollectorTypeToRemoveFrom = typeof(CustomerValidationRuleCollector1) };
       var registration2B = new {ValidatorType = typeof(StubObjectValidator), CollectorTypeToRemoveFrom = typeof(CustomerValidationRuleCollector2) };
-      var registration2C = new {ValidatorType = typeof(StubObjectValidator), CollectorTypeToRemoveFrom = (Type) null };
+      var registration2C = new {ValidatorType = typeof(StubObjectValidator), CollectorTypeToRemoveFrom = (Type)null };
 
       _removingObjectValidationRuleCollectorStub1 = new Mock<IRemovingObjectValidationRuleCollector>();
       _removingObjectValidationRuleCollectorStub1.Setup(stub => stub.ValidatedType).Returns(TypeAdapter.Create(typeof(Customer)));

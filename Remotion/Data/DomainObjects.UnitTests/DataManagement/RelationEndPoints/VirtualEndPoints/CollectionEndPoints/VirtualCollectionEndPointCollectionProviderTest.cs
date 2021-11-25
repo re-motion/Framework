@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var virtualCollectionData = VirtualCollectionDataTestHelper.GetDataStrategy(result);
       Assert.That(virtualCollectionData, Is.TypeOf<EndPointDelegatingVirtualCollectionData>());
       Assert.That(
-          ((EndPointDelegatingVirtualCollectionData) virtualCollectionData).VirtualEndPointProvider,
+          ((EndPointDelegatingVirtualCollectionData)virtualCollectionData).VirtualEndPointProvider,
           Is.SameAs(_virtualEndPointProviderMock));
       Assert.That(virtualCollectionData.AssociatedEndPointID, Is.SameAs(_endPointID));
 

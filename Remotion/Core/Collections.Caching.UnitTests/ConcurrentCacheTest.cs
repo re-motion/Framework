@@ -503,7 +503,7 @@ namespace Remotion.Collections.Caching.UnitTests
             _cache.GetOrCreateValue("key", k => "value");
             _cache.TryGetValue("key", out var value);
 
-            var stopwatch = (Stopwatch) arg;
+            var stopwatch = (Stopwatch)arg;
             stopwatch.Start();
 
             for (int i = 0; i < 1000; i++)

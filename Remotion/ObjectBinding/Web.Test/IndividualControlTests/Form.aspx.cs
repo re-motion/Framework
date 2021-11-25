@@ -117,18 +117,18 @@ namespace OBWTest.IndividualControlTests
 
     private void LoadUserControl ()
     {
-      _dataEditControl = (IDataEditControl) LoadControl(CurrentFunction.UserControl);
+      _dataEditControl = (IDataEditControl)LoadControl(CurrentFunction.UserControl);
       if (_dataEditControl == null)
         throw new InvalidOperationException(string.Format("IDataEditControl '{0}' could not be loaded.", CurrentFunction.UserControl));
       _dataEditControl.ID = "DataEditControl";
-      UserControlPlaceHolder.Controls.Add((Control) _dataEditControl);
+      UserControlPlaceHolder.Controls.Add((Control)_dataEditControl);
     }
 
     private void PopulateDataSources ()
     {
-      CurrentObject.BusinessObject = (IBusinessObject) CurrentFunction.Person;
+      CurrentObject.BusinessObject = (IBusinessObject)CurrentFunction.Person;
       if (_dataEditControl != null)
-        _dataEditControl.BusinessObject = (IBusinessObject) CurrentFunction.Person;
+        _dataEditControl.BusinessObject = (IBusinessObject)CurrentFunction.Person;
     }
 
     private void LoadValues (bool interim)

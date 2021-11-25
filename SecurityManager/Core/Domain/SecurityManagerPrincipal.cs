@@ -286,7 +286,7 @@ namespace Remotion.SecurityManager.Domain
       if (_substitutionHandle == null)
         return null;
 
-      return (Substitution) LifetimeService.GetObject(transaction, _substitutionHandle.ObjectID, false);
+      return (Substitution)LifetimeService.GetObject(transaction, _substitutionHandle.ObjectID, false);
     }
 
     private User GetSubstitutedUser (ClientTransaction transaction)

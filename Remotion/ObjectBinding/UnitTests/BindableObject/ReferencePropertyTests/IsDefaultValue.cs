@@ -85,7 +85,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     [Test]
     public void IsDefaultValue_WithDefaultValueNotSupported ()
     {
-      IBusinessObject businessObject = (IBusinessObject) ObjectFactory.Create<ClassWithBusinessObjectProperties>(ParamList.Empty);
+      IBusinessObject businessObject = (IBusinessObject)ObjectFactory.Create<ClassWithBusinessObjectProperties>(ParamList.Empty);
       var mockService = new Mock<IDefaultValueServiceOnProperty>(MockBehavior.Strict);
       IBusinessObjectReferenceProperty property = CreateProperty("DefaultValueServiceFromPropertyDeclaration");
       var value = new Mock<IBusinessObject>();

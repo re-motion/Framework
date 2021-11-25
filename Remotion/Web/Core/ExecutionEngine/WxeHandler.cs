@@ -239,7 +239,7 @@ namespace Remotion.Web.ExecutionEngine
       WxeFunctionStateManager functionStates = WxeFunctionStateManager.Current;
       functionStates.CleanUpExpired();
 
-      WxeFunction function = (WxeFunction) Activator.CreateInstance(type)!;
+      WxeFunction function = (WxeFunction)Activator.CreateInstance(type)!;
 
       WxeFunctionState functionState = new WxeFunctionState(function, true);
       functionStates.Add(functionState);

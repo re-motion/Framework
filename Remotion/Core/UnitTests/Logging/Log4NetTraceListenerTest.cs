@@ -335,7 +335,7 @@ namespace Remotion.UnitTests.Logging
     public void Test_ConvertInvalid ()
     {
       Assert.That(
-          () => Log4NetTraceListener.Convert((TraceEventType) 10000),
+          () => Log4NetTraceListener.Convert((TraceEventType)10000),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "LogLevel does not support value 10000.", "logLevel"));

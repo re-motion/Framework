@@ -107,7 +107,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         _extensionMock.Stub(stub => stub.Key).Return("test");
         _extensionMock
             .Expect(mock => mock.TransactionInitialize(Arg<ClientTransaction>.Is.Anything))
-            .WhenCalled(mi => inititalizedTransaction = (ClientTransaction) mi.Arguments[0]);
+            .WhenCalled(mi => inititalizedTransaction = (ClientTransaction)mi.Arguments[0]);
         _extensionMock.Replay();
 
         var result = ClientTransaction.CreateRootTransaction();
@@ -785,7 +785,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       using (_transaction.EnterNonDiscardingScope())
       {
         originalOrderTicket =
-            (OrderTicket) _order1.GetOriginalRelatedObject("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
+            (OrderTicket)_order1.GetOriginalRelatedObject("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
       }
       _mockRepository.BackToRecord(_extensionMock);
 
@@ -820,7 +820,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       {
         _extensionMock.RelationReading(
             _transaction, _order1, GetEndPointDefinition(typeof(Order), "OrderItems"), ValueAccess.Current);
-        _extensionMock.RelationRead(null, null, null, (IReadOnlyCollectionData<DomainObject>) null, ValueAccess.Current);
+        _extensionMock.RelationRead(null, null, null, (IReadOnlyCollectionData<DomainObject>)null, ValueAccess.Current);
         LastCall.Constraints(
             Rhino_Is.Same(_transaction),
             Rhino_Is.Same(_order1),
@@ -916,7 +916,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         _extensionMock.ObjectsLoaded(null, null);
         LastCall.Constraints(Rhino_Is.Same(_transaction), Property.Value("Count", 1));
 
-        _extensionMock.RelationRead(null, null, null, (DomainObject) null, ValueAccess.Current);
+        _extensionMock.RelationRead(null, null, null, (DomainObject)null, ValueAccess.Current);
         LastCall.Constraints(
             Rhino_Is.Same(_transaction),
             Rhino_Is.Same(_order1),
@@ -940,7 +940,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       {
         _extensionMock.RelationReading(
             _transaction, _order1, GetEndPointDefinition(typeof(Order), "OrderItems"), ValueAccess.Current);
-        _extensionMock.RelationRead(null, null, null, (IReadOnlyCollectionData<DomainObject>) null, ValueAccess.Current);
+        _extensionMock.RelationRead(null, null, null, (IReadOnlyCollectionData<DomainObject>)null, ValueAccess.Current);
         LastCall.Constraints(
             Rhino_Is.Same(_transaction),
             Rhino_Is.Same(_order1),
@@ -978,7 +978,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
         _extensionMock.ObjectsLoaded(null, null);
         LastCall.Constraints(Rhino_Is.Same(_transaction), Property.Value("Count", 1));
-        _extensionMock.RelationRead(null, null, null, (DomainObject) null, ValueAccess.Current);
+        _extensionMock.RelationRead(null, null, null, (DomainObject)null, ValueAccess.Current);
         LastCall.Constraints(
             Rhino_Is.Same(_transaction),
             Rhino_Is.Same(_order1),
@@ -1010,7 +1010,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
         _extensionMock.ObjectsLoaded(null, null);
         LastCall.Constraints(Rhino_Is.Same(_transaction), Property.Value("Count", 2));
-        _extensionMock.RelationRead(null, null, null, (IReadOnlyCollectionData<DomainObject>) null, ValueAccess.Current);
+        _extensionMock.RelationRead(null, null, null, (IReadOnlyCollectionData<DomainObject>)null, ValueAccess.Current);
         LastCall.Constraints(
             Rhino_Is.Same(_transaction),
             Rhino_Is.Same(_order1),
@@ -1358,7 +1358,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
             .WhenCalled(
                 mi =>
                 {
-                  initializedTransaction = (ClientTransaction) mi.Arguments[1];
+                  initializedTransaction = (ClientTransaction)mi.Arguments[1];
                   initializedTransaction.Extensions.Add(subExtenstionMock);
             });
         subExtenstionMock.Stub(stub => stub.Key).Return("inner");
@@ -1435,7 +1435,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       using (_mockRepository.Ordered())
       {
         // loading of main object
-        _extensionMock.ObjectsLoading(Arg.Is((ClientTransaction) _transaction), Arg<ReadOnlyCollection<ObjectID>>.List.Equal(new[] { expectedMainObjectID }));
+        _extensionMock.ObjectsLoading(Arg.Is((ClientTransaction)_transaction), Arg<ReadOnlyCollection<ObjectID>>.List.Equal(new[] { expectedMainObjectID }));
         _extensionMock.ObjectsLoaded(null, null);
         LastCall.Constraints(Rhino_Is.Same(_transaction), Rhino_Is.NotNull());
 
@@ -1444,12 +1444,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         _extensionMock.RelationReading(null, null, null, ValueAccess.Current);
         LastCall.IgnoreArguments();
 
-        _extensionMock.RelationRead(_transaction, null, null, (IReadOnlyCollectionData<DomainObject>) null, ValueAccess.Current);
+        _extensionMock.RelationRead(_transaction, null, null, (IReadOnlyCollectionData<DomainObject>)null, ValueAccess.Current);
         LastCall.IgnoreArguments();
 
         if (expectLoadEventsForRelatedObjects)
         {
-          _extensionMock.ObjectsLoading(Arg.Is((ClientTransaction) _transaction), Arg<ReadOnlyCollection<ObjectID>>.List.Equal(expectedRelatedIDs));
+          _extensionMock.ObjectsLoading(Arg.Is((ClientTransaction)_transaction), Arg<ReadOnlyCollection<ObjectID>>.List.Equal(expectedRelatedIDs));
           _extensionMock.ObjectsLoaded(_transaction, null);
           LastCall.IgnoreArguments();
         }
@@ -1461,7 +1461,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         _extensionMock.RelationReading(_transaction, null, null, ValueAccess.Current);
         LastCall.IgnoreArguments();
 
-        _extensionMock.RelationRead(_transaction, null, null, (IReadOnlyCollectionData<DomainObject>) null, ValueAccess.Current);
+        _extensionMock.RelationRead(_transaction, null, null, (IReadOnlyCollectionData<DomainObject>)null, ValueAccess.Current);
         LastCall.IgnoreArguments();
       }
 
@@ -1486,7 +1486,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       using (_mockRepository.Ordered())
       {
         // loading of main object
-        _extensionMock.ObjectsLoading(Arg.Is((ClientTransaction) _transaction), Arg<ReadOnlyCollection<ObjectID>>.List.Equal(new[] { expectedMainObjectID }));
+        _extensionMock.ObjectsLoading(Arg.Is((ClientTransaction)_transaction), Arg<ReadOnlyCollection<ObjectID>>.List.Equal(new[] { expectedMainObjectID }));
         _extensionMock.ObjectsLoaded(null, null);
         LastCall.Constraints(Rhino_Is.Same(_transaction), Rhino_Is.NotNull());
 
@@ -1497,7 +1497,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
         if (expectLoadEventsForRelatedObject)
         {
-          _extensionMock.ObjectsLoading(Arg.Is((ClientTransaction) _transaction), Arg<ReadOnlyCollection<ObjectID>>.List.Equal(new[] { expectedRelatedID }));
+          _extensionMock.ObjectsLoading(Arg.Is((ClientTransaction)_transaction), Arg<ReadOnlyCollection<ObjectID>>.List.Equal(new[] { expectedRelatedID }));
         }
 
         if (expectLoadEventsForRelatedObject)
@@ -1506,7 +1506,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
           LastCall.IgnoreArguments();
         }
 
-        _extensionMock.RelationRead(_transaction, null, null, (DomainObject) null, ValueAccess.Current);
+        _extensionMock.RelationRead(_transaction, null, null, (DomainObject)null, ValueAccess.Current);
         LastCall.IgnoreArguments();
 
         // loading of main object a second time
@@ -1516,7 +1516,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         _extensionMock.RelationReading(_transaction, null, null, ValueAccess.Current);
         LastCall.IgnoreArguments();
 
-        _extensionMock.RelationRead(_transaction, null, null, (DomainObject) null, ValueAccess.Current);
+        _extensionMock.RelationRead(_transaction, null, null, (DomainObject)null, ValueAccess.Current);
         LastCall.IgnoreArguments();
       }
 

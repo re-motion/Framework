@@ -93,7 +93,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void CreateForRelationLookup ()
     {
-      var relationEndPointDefinition = (RelationEndPointDefinition) GetEndPointDefinition(typeof(OrderItem), "Order");
+      var relationEndPointDefinition = (RelationEndPointDefinition)GetEndPointDefinition(typeof(OrderItem), "Order");
 
       var result = _factory.CreateForRelationLookup(relationEndPointDefinition, DomainObjectIDs.Order1, null);
 

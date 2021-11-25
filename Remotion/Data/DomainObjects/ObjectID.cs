@@ -335,7 +335,7 @@ namespace Remotion.Data.DomainObjects
         rightValue = other.ClassID;
       }
 
-      return ((IComparable) leftValue).CompareTo(rightValue);
+      return ((IComparable)leftValue).CompareTo(rightValue);
     }
 
     /// <summary>
@@ -351,7 +351,7 @@ namespace Remotion.Data.DomainObjects
       if (GetType() != obj.GetType())
         return false;
 
-      var other = (ObjectID) obj;
+      var other = (ObjectID)obj;
       if (!Equals(ClassID, other.ClassID))
         return false;
       if (!Equals(Value, other.Value))
@@ -368,7 +368,7 @@ namespace Remotion.Data.DomainObjects
         throw CreateArgumentException(argumentName, "Remotion.Data.DomainObjects.ObjectID does not support values of type '{0}'.", valueType);
 
       if (valueType == typeof(string))
-        ArgumentUtility.CheckNotEmpty(argumentName, (string) value);
+        ArgumentUtility.CheckNotEmpty(argumentName, (string)value);
 
       if (valueType == typeof(Guid))
         ArgumentUtility.CheckNotEmpty(argumentName, (Guid)value);

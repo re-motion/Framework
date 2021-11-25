@@ -49,7 +49,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public T this [int index]
     {
-      get { return (T) _list[index]!; }
+      get { return (T)_list[index]!; }
     }
 
     public IEnumerator<T> GetEnumerator ()

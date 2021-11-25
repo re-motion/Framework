@@ -189,7 +189,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
       typeValidator.ID = control.ID + "_ValidatorType";
       typeValidator.ControlToValidate = control.TargetControl.ID;
       if (control.Property != null)
-        typeValidator.AllowNegative = ((IBusinessObjectNumericProperty) control.Property).AllowNegative;
+        typeValidator.AllowNegative = ((IBusinessObjectNumericProperty)control.Property).AllowNegative;
       typeValidator.DataType = GetNumericValidatorDataType(valueType);
       typeValidator.NumberStyle = GetNumberStyle(valueType);
       typeValidator.ErrorMessage = resourceManager.GetString(GetNumericValidatorErrorMessage(GetNumericValidatorDataType(valueType)));

@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     public void TestPropertyAccess ()
     {
       SampleBindableMixinDomainObject instance = SampleBindableMixinDomainObject.NewObject();
-      var instanceAsIBusinessObject = (IBusinessObject) instance;
+      var instanceAsIBusinessObject = (IBusinessObject)instance;
 
       Assert.That(instanceAsIBusinessObject.GetProperty("Int32"), Is.Null);
 

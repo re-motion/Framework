@@ -71,8 +71,8 @@ public class IdentityTypeNotSupportedException : StorageProviderConfigurationExc
 
   protected IdentityTypeNotSupportedException (SerializationInfo info, StreamingContext context) : base(info, context)
   {
-    _storageProviderDefinitionType = (Type) info.GetValue("StorageProviderDefinitionType", typeof(Type));
-    _invalidIdentityType = (Type) info.GetValue("InvalidIdentityType", typeof(Type));
+    _storageProviderDefinitionType = (Type)info.GetValue("StorageProviderDefinitionType", typeof(Type));
+    _invalidIdentityType = (Type)info.GetValue("InvalidIdentityType", typeof(Type));
   }
 
   // methods and properties

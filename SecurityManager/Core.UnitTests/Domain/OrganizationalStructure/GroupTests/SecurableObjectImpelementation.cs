@@ -34,7 +34,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
       IObjectSecurityStrategy objectSecurityStrategy = group.GetSecurityStrategy();
       Assert.That(objectSecurityStrategy, Is.Not.Null);
       Assert.IsInstanceOf(typeof(DomainObjectSecurityStrategyDecorator), objectSecurityStrategy);
-      DomainObjectSecurityStrategyDecorator domainObjectSecurityStrategyDecorator = (DomainObjectSecurityStrategyDecorator) objectSecurityStrategy;
+      DomainObjectSecurityStrategyDecorator domainObjectSecurityStrategyDecorator = (DomainObjectSecurityStrategyDecorator)objectSecurityStrategy;
       Assert.That(domainObjectSecurityStrategyDecorator.RequiredSecurityForStates, Is.EqualTo(RequiredSecurityForStates.None));
     }
 
@@ -75,7 +75,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
       Group group = CreateGroup();
       group.Parent = TestHelper.CreateGroup("ParentGroup", "UID: ParentGroup", null, group.Tenant);
 
-      ISecurityContext securityContext = ((ISecurityContextFactory) group).CreateSecurityContext();
+      ISecurityContext securityContext = ((ISecurityContextFactory)group).CreateSecurityContext();
       Assert.That(Type.GetType(securityContext.Class), Is.EqualTo(@group.GetPublicDomainObjectType()));
       Assert.That(securityContext.Owner, Is.Null);
       Assert.That(securityContext.OwnerGroup, Is.EqualTo(@group.UniqueIdentifier));
@@ -90,7 +90,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
       Group group = CreateGroup();
       group.Tenant = null;
 
-      ISecurityContext securityContext = ((ISecurityContextFactory) group).CreateSecurityContext();
+      ISecurityContext securityContext = ((ISecurityContextFactory)group).CreateSecurityContext();
       Assert.That(Type.GetType(securityContext.Class), Is.EqualTo(@group.GetPublicDomainObjectType()));
       Assert.That(securityContext.Owner, Is.Null);
       Assert.That(securityContext.OwnerGroup, Is.EqualTo(@group.UniqueIdentifier));
@@ -105,7 +105,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
       Group group = CreateGroup();
       group.Parent = null;
 
-      ISecurityContext securityContext = ((ISecurityContextFactory) group).CreateSecurityContext();
+      ISecurityContext securityContext = ((ISecurityContextFactory)group).CreateSecurityContext();
       Assert.That(Type.GetType(securityContext.Class), Is.EqualTo(@group.GetPublicDomainObjectType()));
       Assert.That(securityContext.Owner, Is.Null);
       Assert.That(securityContext.OwnerGroup, Is.EqualTo(@group.UniqueIdentifier));

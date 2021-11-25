@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 
     public new IRdbmsStorageObjectFactory Factory
     {
-      get { return (IRdbmsStorageObjectFactory) base.Factory; }
+      get { return (IRdbmsStorageObjectFactory)base.Factory; }
     }
 
     public string ConnectionString

@@ -28,25 +28,25 @@ public class StubStringUtility
 {
   public static MethodInfo GetParseMethod (Type type, bool throwIfNotFound)
   {
-    return (MethodInfo) PrivateInvoke.InvokeNonPublicStaticMethod(
+    return (MethodInfo)PrivateInvoke.InvokeNonPublicStaticMethod(
         typeof(StringUtility), "GetParseMethod", new object[]{type, throwIfNotFound});
   }
 
   public static MethodInfo GetParseMethodWithFormatProviderFromType (Type type)
   {
-    return (MethodInfo) PrivateInvoke.InvokeNonPublicStaticMethod(
+    return (MethodInfo)PrivateInvoke.InvokeNonPublicStaticMethod(
         typeof(StringUtility), "GetParseMethodWithFormatProviderFromType", new object[]{type});
   }
 
   public static MethodInfo GetParseMethodFromType (Type type)
   {
-    return (MethodInfo) PrivateInvoke.InvokeNonPublicStaticMethod(
+    return (MethodInfo)PrivateInvoke.InvokeNonPublicStaticMethod(
         typeof(StringUtility), "GetParseMethodFromType", new object[]{type});
   }
 
   public static void ClearCache ()
   {
-    var cache = (ConcurrentDictionary<Type, MethodInfo>) PrivateInvoke.GetNonPublicStaticField(typeof(StringUtility), "s_parseMethods");
+    var cache = (ConcurrentDictionary<Type, MethodInfo>)PrivateInvoke.GetNonPublicStaticField(typeof(StringUtility), "s_parseMethods");
     cache.Clear();
   }
 }

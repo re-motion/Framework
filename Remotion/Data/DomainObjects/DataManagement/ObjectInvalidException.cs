@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     protected ObjectInvalidException (SerializationInfo info, StreamingContext context)
         : base(info, context)
     {
-      _id = (ObjectID) info.GetValue("ID", typeof(ObjectID));
+      _id = (ObjectID)info.GetValue("ID", typeof(ObjectID));
     }
 
     public ObjectInvalidException (ObjectID id)

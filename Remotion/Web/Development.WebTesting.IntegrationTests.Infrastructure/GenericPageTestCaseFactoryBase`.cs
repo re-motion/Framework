@@ -76,7 +76,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 
       var url = string.Concat(
           s_webApplicationRoot.Value.ToString(),
-          string.Format(TestConstants.GenericPageUrlTemplate, control, (int) attribute.PageType));
+          string.Format(TestConstants.GenericPageUrlTemplate, control, (int)attribute.PageType));
 
       base.PrepareTest(attribute, helper, url);
 
@@ -133,7 +133,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
       ArgumentUtility.CheckNotNull("method", method);
 
       return new TestCaseData(
-          (GenericTestSetupAction) ((helper, control) =>
+          (GenericTestSetupAction)((helper, control) =>
           {
             PrepareTest(attribute, helper, control);
             RunTest(method);

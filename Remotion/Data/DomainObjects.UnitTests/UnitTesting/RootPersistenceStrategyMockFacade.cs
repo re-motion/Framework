@@ -68,7 +68,7 @@ namespace Remotion.Data.UnitTests.UnitTesting
     {
       return Mock
           .Expect(mock => mock.LoadObjectData(Arg<IEnumerable<ObjectID>>.List.Equal(loadedObjectIDs)))
-          .Return(loadedObjectIDs.Select(id => (ILoadedObjectData) new FreshlyLoadedObjectData(DataContainerObjectMother.CreateExisting(id))));
+          .Return(loadedObjectIDs.Select(id => (ILoadedObjectData)new FreshlyLoadedObjectData(DataContainerObjectMother.CreateExisting(id))));
     }
 
     public class RootClientTransactionComponentFactoryMixin : Mixin<RootClientTransactionComponentFactory>

@@ -350,10 +350,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof(byte[]), false);
 
       var propertyValue = new PropertyValue(definition, new byte[0]);
-      ResourceManager.IsEmptyImage((byte[]) propertyValue.Value);
+      ResourceManager.IsEmptyImage((byte[])propertyValue.Value);
 
       propertyValue.Value = ResourceManager.GetImage1();
-      ResourceManager.IsEqualToImage1((byte[]) propertyValue.Value);
+      ResourceManager.IsEqualToImage1((byte[])propertyValue.Value);
     }
 
     [Test]
@@ -511,7 +511,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var propertyValue = new PropertyValue(definition, DayOfWeek.Monday);
 
       Assert.That(
-          () => propertyValue.Value = (DayOfWeek) 17420,
+          () => propertyValue.Value = (DayOfWeek)17420,
           Throws.TypeOf<InvalidEnumValueException>()
               .With.Message.EqualTo("Value '17420' for property 'test' is not defined by enum type 'System.DayOfWeek'."));
     }
@@ -533,7 +533,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var propertyValue = new PropertyValue(definition, AttributeTargets.Method);
 
       Assert.That(
-          () => propertyValue.Value = (AttributeTargets) (-1),
+          () => propertyValue.Value = (AttributeTargets)(-1),
           Throws.TypeOf<InvalidEnumValueException>()
               .With.Message.EqualTo("Value '-1' for property 'test' is not defined by enum type 'System.AttributeTargets'."));
     }
@@ -557,7 +557,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var propertyValue = new PropertyValue(definition, DayOfWeek.Monday);
 
       Assert.That(
-          () => propertyValue.Value = (DayOfWeek) 17420,
+          () => propertyValue.Value = (DayOfWeek)17420,
           Throws.TypeOf<InvalidEnumValueException>()
               .With.Message.EqualTo("Value '17420' for property 'test' is not defined by enum type 'System.DayOfWeek'."));
     }
@@ -580,7 +580,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof(DayOfWeek));
 
       Assert.That(
-          () => new PropertyValue(definition, (DayOfWeek) 17420),
+          () => new PropertyValue(definition, (DayOfWeek)17420),
           Throws.TypeOf<InvalidEnumValueException>()
               .With.Message.EqualTo("Value '17420' for property 'test' is not defined by enum type 'System.DayOfWeek'."));
     }
@@ -725,22 +725,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("testProperty2", typeof(byte[]), true);
       var propertyValue = new PropertyValue(definition, new byte[] { 1, 2, 3 });
 
-      ((byte[]) propertyValue.Value)[0] = 7;
+      ((byte[])propertyValue.Value)[0] = 7;
       Assert.That(propertyValue.HasChanged, Is.True);
-      Assert.That(((byte[]) propertyValue.Value)[0], Is.EqualTo(7));
-      Assert.That(((byte[]) propertyValue.OriginalValue)[0], Is.EqualTo(1));
+      Assert.That(((byte[])propertyValue.Value)[0], Is.EqualTo(7));
+      Assert.That(((byte[])propertyValue.OriginalValue)[0], Is.EqualTo(1));
 
       propertyValue.RollbackState();
       Assert.That(propertyValue.HasChanged, Is.False);
-      Assert.That(((byte[]) propertyValue.Value)[0], Is.EqualTo(1));
+      Assert.That(((byte[])propertyValue.Value)[0], Is.EqualTo(1));
 
-      ((byte[]) propertyValue.Value)[0] = 7;
+      ((byte[])propertyValue.Value)[0] = 7;
       Assert.That(propertyValue.HasChanged, Is.True);
-      Assert.That(((byte[]) propertyValue.Value)[0], Is.EqualTo(7));
+      Assert.That(((byte[])propertyValue.Value)[0], Is.EqualTo(7));
 
       propertyValue.CommitState();
       Assert.That(propertyValue.HasChanged, Is.False);
-      Assert.That(((byte[]) propertyValue.Value)[0], Is.EqualTo(7));
+      Assert.That(((byte[])propertyValue.Value)[0], Is.EqualTo(7));
     }
 
     [Test]

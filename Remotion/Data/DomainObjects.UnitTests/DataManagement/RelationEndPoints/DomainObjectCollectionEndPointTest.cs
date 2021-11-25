@@ -103,9 +103,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var loadState = DomainObjectCollectionEndPointTestHelper.GetLoadState(endPoint);
       Assert.That(loadState, Is.TypeOf(typeof(IncompleteDomainObjectCollectionEndPointLoadState)));
-      Assert.That(((IncompleteDomainObjectCollectionEndPointLoadState) loadState).DataManagerFactory, Is.SameAs(_dataManagerFactoryStub));
+      Assert.That(((IncompleteDomainObjectCollectionEndPointLoadState)loadState).DataManagerFactory, Is.SameAs(_dataManagerFactoryStub));
       Assert.That(
-          ((IncompleteDomainObjectCollectionEndPointLoadState) loadState).EndPointLoader,
+          ((IncompleteDomainObjectCollectionEndPointLoadState)loadState).EndPointLoader,
           Is.TypeOf<DomainObjectCollectionEndPoint.EndPointLoader>().With.Property<DomainObjectCollectionEndPoint.EndPointLoader>(l => l.LazyLoader).SameAs(_lazyLoaderMock));
     }
 
@@ -352,7 +352,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _loadStateMock
           .Expect(mock => mock.MarkDataComplete(Arg.Is(_endPoint), Arg.Is(items), Arg<Action<IDomainObjectCollectionEndPointDataManager>>.Is.Anything))
-          .WhenCalled(mi => { stateSetter = (Action<IDomainObjectCollectionEndPointDataManager>) mi.Arguments[2]; });
+          .WhenCalled(mi => { stateSetter = (Action<IDomainObjectCollectionEndPointDataManager>)mi.Arguments[2]; });
       _loadStateMock.Replay();
 
       _endPoint.MarkDataComplete(items);
@@ -367,9 +367,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var newLoadState = DomainObjectCollectionEndPointTestHelper.GetLoadState(_endPoint);
       Assert.That(newLoadState, Is.TypeOf(typeof(CompleteDomainObjectCollectionEndPointLoadState)));
 
-      Assert.That(((CompleteDomainObjectCollectionEndPointLoadState) newLoadState).DataManager, Is.SameAs(dataManagerStub));
-      Assert.That(((CompleteDomainObjectCollectionEndPointLoadState) newLoadState).TransactionEventSink, Is.SameAs(_transactionEventSinkStub));
-      Assert.That(((CompleteDomainObjectCollectionEndPointLoadState) newLoadState).EndPointProvider, Is.SameAs(_endPointProviderStub));
+      Assert.That(((CompleteDomainObjectCollectionEndPointLoadState)newLoadState).DataManager, Is.SameAs(dataManagerStub));
+      Assert.That(((CompleteDomainObjectCollectionEndPointLoadState)newLoadState).TransactionEventSink, Is.SameAs(_transactionEventSinkStub));
+      Assert.That(((CompleteDomainObjectCollectionEndPointLoadState)newLoadState).EndPointProvider, Is.SameAs(_endPointProviderStub));
     }
 
     [Test]
@@ -379,7 +379,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _loadStateMock
           .Expect(mock => mock.MarkDataIncomplete(Arg.Is(_endPoint), Arg<Action>.Is.Anything))
-          .WhenCalled(mi => { stateSetter = (Action) mi.Arguments[1]; });
+          .WhenCalled(mi => { stateSetter = (Action)mi.Arguments[1]; });
       _loadStateMock.Replay();
 
       _endPoint.MarkDataIncomplete();
@@ -393,7 +393,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var newLoadState = DomainObjectCollectionEndPointTestHelper.GetLoadState(_endPoint);
       Assert.That(newLoadState, Is.TypeOf(typeof(IncompleteDomainObjectCollectionEndPointLoadState)));
       Assert.That(
-          ((IncompleteDomainObjectCollectionEndPointLoadState) newLoadState).EndPointLoader,
+          ((IncompleteDomainObjectCollectionEndPointLoadState)newLoadState).EndPointLoader,
           Is.TypeOf<DomainObjectCollectionEndPoint.EndPointLoader>().With.Property<DomainObjectCollectionEndPoint.EndPointLoader>(l => l.LazyLoader).SameAs(_lazyLoaderMock));
     }
 

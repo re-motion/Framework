@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     public void PropertyDeclaredByMixin_AppliedToSameObject ()
     {
       var mixins = (from t in QueryFactory.CreateLinqQuery<TargetClassForPersistentMixin>()
-                    where ((IMixinAddingPersistentProperties) t).PersistentProperty == 99
+                    where ((IMixinAddingPersistentProperties)t).PersistentProperty == 99
                     select t);
 
       CheckQueryResult(mixins, DomainObjectIDs.TargetClassForPersistentMixins1);
@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     public void PropertyDeclaredByMixin_AppliedToBaseObject ()
     {
       var mixins = (from m in QueryFactory.CreateLinqQuery<DerivedTargetClassForPersistentMixin>()
-                    where ((IMixinAddingPersistentProperties) m).PersistentProperty == 199
+                    where ((IMixinAddingPersistentProperties)m).PersistentProperty == 199
                     select m);
 
       CheckQueryResult(mixins, DomainObjectIDs.DerivedTargetClassForPersistentMixin1);
@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     public void PropertyDeclaredByMixin_AppliedToBaseObject_WithInterfaceIntroducedByTwoMixins ()
     {
       var mixins = (from m in QueryFactory.CreateLinqQuery<DerivedTargetClassWithDerivedMixinWithInterface>()
-                    where ((IMixinAddingPersistentProperties) m).PersistentProperty == 199
+                    where ((IMixinAddingPersistentProperties)m).PersistentProperty == 199
                     select m);
 
       CheckQueryResult(mixins, DomainObjectIDs.DerivedTargetClassWithDerivedMixinWithInterface1);
@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     public void PropertyDeclaredByMixin_AppliedToBaseBaseObject ()
     {
       var mixins = (from m in QueryFactory.CreateLinqQuery<DerivedDerivedTargetClassForPersistentMixin>()
-                    where ((IMixinAddingPersistentProperties) m).PersistentProperty == 299
+                    where ((IMixinAddingPersistentProperties)m).PersistentProperty == 299
                     select m);
 
       CheckQueryResult(mixins, DomainObjectIDs.DerivedDerivedTargetClassForPersistentMixin1);
@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     {
       var query =
           from o in QueryFactory.CreateLinqQuery<TargetClassForPersistentMixin>()
-          where ((IMixinAddingPersistentProperties) o).RelationProperty != null
+          where ((IMixinAddingPersistentProperties)o).RelationProperty != null
           select o;
       CheckQueryResult(query, DomainObjectIDs.TargetClassForPersistentMixins2);
     }
@@ -80,7 +80,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     {
       var query =
           from o in QueryFactory.CreateLinqQuery<TargetClassForPersistentMixin>()
-          where ((IMixinAddingPersistentProperties) o).VirtualRelationProperty != null
+          where ((IMixinAddingPersistentProperties)o).VirtualRelationProperty != null
           select o;
       CheckQueryResult(query, DomainObjectIDs.TargetClassForPersistentMixins2);
     }
@@ -90,7 +90,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     {
       var query =
           from o in QueryFactory.CreateLinqQuery<TargetClassForPersistentMixin>()
-          where ((IMixinAddingPersistentProperties) o).RelationProperty.ID != null
+          where ((IMixinAddingPersistentProperties)o).RelationProperty.ID != null
           select o;
       CheckQueryResult(query, DomainObjectIDs.TargetClassForPersistentMixins2);
     }
@@ -100,7 +100,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     {
       var query =
           from o in QueryFactory.CreateLinqQuery<TargetClassForPersistentMixin>()
-          where ((IMixinAddingPersistentProperties) o).VirtualRelationProperty.ID != null
+          where ((IMixinAddingPersistentProperties)o).VirtualRelationProperty.ID != null
           select o;
       CheckQueryResult(query, DomainObjectIDs.TargetClassForPersistentMixins2);
     }
@@ -110,7 +110,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     {
       var query =
           from o in QueryFactory.CreateLinqQuery<TargetClassForPersistentMixin>()
-          from related in ((IMixinAddingPersistentProperties) o).CollectionProperty1Side
+          from related in ((IMixinAddingPersistentProperties)o).CollectionProperty1Side
           select related;
       CheckQueryResult(query, DomainObjectIDs.RelationTargetForPersistentMixin3);
     }

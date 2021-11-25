@@ -51,7 +51,7 @@ namespace Remotion.UnitTests.Logging
       logMock.Setup(mock => mock.IsEnabled(LogLevel.Debug)).Returns(true).Verifiable();
 
       "test".LogAndReturnValue(logMock.Object, LogLevel.Debug, value => string.Format("x{0}y", value));
-      logMock.Verify(mock => mock.Log(LogLevel.Debug, (int?) null, "xtesty", (Exception) null), Times.AtLeastOnce());
+      logMock.Verify(mock => mock.Log(LogLevel.Debug, (int?)null, "xtesty", (Exception)null), Times.AtLeastOnce());
     }
 
     [Test]

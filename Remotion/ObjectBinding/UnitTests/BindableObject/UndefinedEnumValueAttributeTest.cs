@@ -41,7 +41,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void InitializeWithInvalidValue ()
     {
-      TestEnum invalidValue = (TestEnum) (-1);
+      TestEnum invalidValue = (TestEnum)(-1);
       Assert.That(
           () => new UndefinedEnumValueAttribute(invalidValue),
           Throws.InstanceOf<ArgumentOutOfRangeException>());

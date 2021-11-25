@@ -97,7 +97,7 @@ namespace Remotion.Validation.UnitTests.Providers
             _validationPropertyRuleReflectorMocks[type]
                 .InSequence(sequence1)
                 .Setup(mock => mock.GetValidatedPropertyFunc(typeof(Employee)))
-                .Returns(e => ((Employee) e).Position)
+                .Returns(e => ((Employee)e).Position)
                 .Verifiable();
             _validationPropertyRuleReflectorMocks[type]
                 .InSequence(sequence2)
@@ -125,7 +125,7 @@ namespace Remotion.Validation.UnitTests.Providers
             _validationPropertyRuleReflectorMocks[type]
                 .InSequence(sequence1)
                 .Setup(mock => mock.GetValidatedPropertyFunc(typeof(Employee)))
-                .Returns(e => ((Employee) e).Notes)
+                .Returns(e => ((Employee)e).Notes)
                 .Verifiable();
             _validationPropertyRuleReflectorMocks[type]
                 .InSequence(sequence2)
@@ -153,7 +153,7 @@ namespace Remotion.Validation.UnitTests.Providers
             _validationPropertyRuleReflectorMocks[type]
                 .InSequence(sequence1)
                 .Setup(mock => mock.GetValidatedPropertyFunc(typeof(SpecialCustomer1)))
-                .Returns(c => ((SpecialCustomer1) c).LastName)
+                .Returns(c => ((SpecialCustomer1)c).LastName)
                 .Verifiable();
             _validationPropertyRuleReflectorMocks[type]
                 .InSequence(sequence2)
@@ -181,7 +181,7 @@ namespace Remotion.Validation.UnitTests.Providers
             _validationPropertyRuleReflectorMocks[type]
                 .InSequence(sequence1)
                 .Setup(mock => mock.GetValidatedPropertyFunc(typeof(SpecialCustomer1)))
-                .Returns(c => ((SpecialCustomer1) c).UserName)
+                .Returns(c => ((SpecialCustomer1)c).UserName)
                 .Verifiable();
             _validationPropertyRuleReflectorMocks[type]
                 .InSequence(sequence2)

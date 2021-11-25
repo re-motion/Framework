@@ -67,7 +67,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
 
     private BocEnumValueUserControlTestOutput TestOutput
     {
-      get { return (BocEnumValueUserControlTestOutput) ((Layout) Page.Master).GetTestOutputControl(); }
+      get { return (BocEnumValueUserControlTestOutput)((Layout)Page.Master).GetTestOutputControl(); }
     }
   }
 }

@@ -66,7 +66,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
               new PropertyCondition(AutomationElement.ControlTypeProperty, ControlType.Pane),
               new PropertyCondition(AutomationElement.ClassNameProperty, "Chrome_WidgetWin_1")))
           .Cast<AutomationElement>()
-          .Select(w => RateWindow(driver, w, (int) processID))
+          .Select(w => RateWindow(driver, w, (int)processID))
           .ToArray();
 
       if (windows.Length == 1)
@@ -94,7 +94,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
     {
       var id = Guid.NewGuid().ToString();
 
-      var executor = (IJavaScriptExecutor) driver;
+      var executor = (IJavaScriptExecutor)driver;
       var previousTitle = Assertion.IsNotNull(
           JavaScriptExecutor.ExecuteStatement<string>(executor, c_setWindowTitle, id),
           "The Javascript code changing and fetching the window title must not return null.");
@@ -129,10 +129,10 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
 
       var rawBounds = element.Current.BoundingRectangle;
       return new Rectangle(
-          (int) Math.Round(rawBounds.X),
-          (int) Math.Round(rawBounds.Y),
-          (int) Math.Round(rawBounds.Width),
-          (int) Math.Round(rawBounds.Height));
+          (int)Math.Round(rawBounds.X),
+          (int)Math.Round(rawBounds.Y),
+          (int)Math.Round(rawBounds.Width),
+          (int)Math.Round(rawBounds.Height));
     }
 
     private KeyValuePair<int, AutomationElement> RateWindow (IWebDriver driver, AutomationElement automationWindow, int processID)
@@ -149,10 +149,10 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
       // Check if the bounds match the ones specified by the driver
       var rawBounds = automationWindow.Current.BoundingRectangle;
       var bounds = new Rectangle(
-          (int) Math.Round(rawBounds.X),
-          (int) Math.Round(rawBounds.Y),
-          (int) Math.Round(rawBounds.Width),
-          (int) Math.Round(rawBounds.Height));
+          (int)Math.Round(rawBounds.X),
+          (int)Math.Round(rawBounds.Y),
+          (int)Math.Round(rawBounds.Width),
+          (int)Math.Round(rawBounds.Height));
 
       var window = driver.Manage().Window;
       var windowBounds = new Rectangle(window.Position, window.Size);

@@ -75,7 +75,7 @@ namespace Remotion.ObjectBinding.Security.BindableObject
         ArgumentUtility.CheckNotNull("bindableProperty", bindableProperty);
 
         var classOrInstance = businessObject is IBusinessObjectWithIdentity
-            ? string.Format("for business object with ID '{0}'", ((IBusinessObjectWithIdentity) businessObject).UniqueIdentifier)
+            ? string.Format("for business object with ID '{0}'", ((IBusinessObjectWithIdentity)businessObject).UniqueIdentifier)
             : string.Format("for business object type '{0}'", businessObject.BusinessObjectClass.Identifier);
 
         var message = string.Format(

@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
       ArgumentUtility.CheckNotNull("formatter", formatter);
 
 #pragma warning disable SYSLIB0011
-      return (KeyValuePair<string, Dictionary<string, object>>[]) formatter.Deserialize(stream);
+      return (KeyValuePair<string, Dictionary<string, object>>[])formatter.Deserialize(stream);
 #pragma warning restore SYSLIB0011
     }
 

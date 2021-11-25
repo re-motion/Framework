@@ -156,9 +156,9 @@ namespace OBWTest.IndividualControlTests
     {
       base.OnLoad(e);
 
-      Person person = (Person) CurrentObject.BusinessObject;
+      Person person = (Person)CurrentObject.BusinessObject;
 
-      UnboundField.LoadUnboundValue((IBusinessObject) person, IsPostBack);
+      UnboundField.LoadUnboundValue((IBusinessObject)person, IsPostBack);
     }
 
     override protected void OnPreRender (EventArgs e)

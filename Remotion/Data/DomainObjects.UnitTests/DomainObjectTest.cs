@@ -166,7 +166,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void Initialize_WithUninitializedObject_SetsIDAndRootTransaction ()
     {
       var type = GetConcreteType(typeof(OrderItem));
-      var orderItem = (OrderItem) FormatterServices.GetSafeUninitializedObject(type);
+      var orderItem = (OrderItem)FormatterServices.GetSafeUninitializedObject(type);
       orderItem.Initialize(DomainObjectIDs.OrderItem1, _transaction);
 
       Assert.That(orderItem.ID, Is.EqualTo(DomainObjectIDs.OrderItem1));
@@ -177,7 +177,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void Initialize_ThrowsForNonRootTransaction ()
     {
       var type = GetConcreteType(typeof(OrderItem));
-      var orderItem = (OrderItem) FormatterServices.GetSafeUninitializedObject(type);
+      var orderItem = (OrderItem)FormatterServices.GetSafeUninitializedObject(type);
       Assert.That(
           () => orderItem.Initialize(DomainObjectIDs.OrderItem1, _transaction.CreateSubTransaction()),
           Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
@@ -198,7 +198,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
         Assert.That(_transaction.ActiveTransaction, Is.Not.SameAs(_transaction));
 
         // Note that GetObjectReference makes _transaction the active transaction.
-        var objectReference = (Order) LifetimeService.GetObjectReference(_transaction, DomainObjectIDs.Order1);
+        var objectReference = (Order)LifetimeService.GetObjectReference(_transaction, DomainObjectIDs.Order1);
         Assert.That(objectReference.OnReferenceInitializingCalled, Is.True);
         Assert.That(objectReference.OnReferenceInitializingID, Is.EqualTo(objectReference.ID));
         Assert.That(objectReference.OnReferenceInitializingActiveTx, Is.SameAs(_transaction));
@@ -261,7 +261,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void RaiseReferenceInitializatingEvent_InvokesMixinHook_WhilePropertyAccessForbidden ()
     {
       var mixinInstance = new HookedDomainObjectMixin();
-      mixinInstance.InitializationHandler += (sender, args) => Dev.Null = ((HookedDomainObjectMixin) sender).Target.Property;
+      mixinInstance.InitializationHandler += (sender, args) => Dev.Null = ((HookedDomainObjectMixin)sender).Target.Property;
 
       using (new MixedObjectInstantiationScope(mixinInstance))
       {
@@ -326,7 +326,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void OnLoaded_CanAccessPropertyValues ()
     {
       Order order = _transaction.ExecuteInScope(() => DomainObjectIDs.Order1.GetObjectReference<Order>());
-      order.ProtectedLoaded += ((sender, e) => Assert.That(((Order) sender).OrderNumber, Is.EqualTo(1)));
+      order.ProtectedLoaded += ((sender, e) => Assert.That(((Order)sender).OrderNumber, Is.EqualTo(1)));
 
       Assert.That(order.OnLoadedCalled, Is.False);
 
@@ -462,14 +462,14 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void NeedsLoadModeDataContainerOnly_False_BeforeGetObject ()
     {
-      var order = (Order) LifetimeService.GetObjectReference(_transaction, DomainObjectIDs.Order1);
+      var order = (Order)LifetimeService.GetObjectReference(_transaction, DomainObjectIDs.Order1);
       Assert.That(order.NeedsLoadModeDataContainerOnly, Is.False);
     }
 
     [Test]
     public void NeedsLoadModeDataContainerOnly_True_AfterOnLoaded ()
     {
-      var order = (Order) LifetimeService.GetObjectReference(_transaction, DomainObjectIDs.Order1);
+      var order = (Order)LifetimeService.GetObjectReference(_transaction, DomainObjectIDs.Order1);
       Assert.That(order.NeedsLoadModeDataContainerOnly, Is.False);
 
       PrivateInvoke.InvokeNonPublicMethod(order, typeof(DomainObject), "OnLoaded");
@@ -494,7 +494,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       Assert2.IgnoreIfFeatureSerializationIsDisabled();
 
-      var order = (Order) LifetimeService.GetObjectReference(_transaction, DomainObjectIDs.Order1);
+      var order = (Order)LifetimeService.GetObjectReference(_transaction, DomainObjectIDs.Order1);
 
       Assert.That(order.NeedsLoadModeDataContainerOnly, Is.False);
 
@@ -519,7 +519,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       Assert2.IgnoreIfFeatureSerializationIsDisabled();
 
-      var classWithAllDataTypes = (ClassWithAllDataTypes) LifetimeService.GetObjectReference(_transaction, DomainObjectIDs.ClassWithAllDataTypes1);
+      var classWithAllDataTypes = (ClassWithAllDataTypes)LifetimeService.GetObjectReference(_transaction, DomainObjectIDs.ClassWithAllDataTypes1);
 
       Assert.That(classWithAllDataTypes.NeedsLoadModeDataContainerOnly, Is.False);
 
@@ -559,12 +559,12 @@ namespace Remotion.Data.DomainObjects.UnitTests
       var transactionContextIndexer = order.TransactionContext;
 
       Assert.That(transactionContextIndexer, Is.InstanceOf(typeof(DomainObjectTransactionContextIndexer)));
-      Assert.That(((DomainObjectTransactionContext) transactionContextIndexer[_transaction]).DomainObject, Is.SameAs(order));
+      Assert.That(((DomainObjectTransactionContext)transactionContextIndexer[_transaction]).DomainObject, Is.SameAs(order));
     }
 
     private Type GetConcreteType (Type requestedType)
     {
-      var pipeline = ((DomainObjectCreator) GetTypeDefinition(requestedType).InstanceCreator).PipelineRegistry.DefaultPipeline;
+      var pipeline = ((DomainObjectCreator)GetTypeDefinition(requestedType).InstanceCreator).PipelineRegistry.DefaultPipeline;
       var type = pipeline.ReflectionService.GetAssembledType(requestedType);
       return type;
     }

@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var dataContainer = DataContainer.CreateForExisting(DomainObjectIDs.Order1, null, pd => pd.DefaultValue);
 
-      var result = (IEnumerable<RelationEndPointID>) PrivateInvoke.InvokeNonPublicMethod(_agent, "GetOwnedEndPointIDs", dataContainer);
+      var result = (IEnumerable<RelationEndPointID>)PrivateInvoke.InvokeNonPublicMethod(_agent, "GetOwnedEndPointIDs", dataContainer);
 
       Assert.That(
           result,
@@ -71,7 +71,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       endPointStub.Stub(stub => stub.HasChanged).Return(true);
       endPointStub.Stub(stub => stub.ID).Return(RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "Customer"));
 
-      var result = (string) PrivateInvoke.InvokeNonPublicMethod(_agent, "GetUnregisterProblem", endPointStub, _map);
+      var result = (string)PrivateInvoke.InvokeNonPublicMethod(_agent, "GetUnregisterProblem", endPointStub, _map);
 
       Assert.That(result, Is.EqualTo(
           "Relation end-point 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' "
@@ -96,7 +96,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       oppositeEndPointStub.Stub(stub => stub.HasChanged).Return(true);
       _map.AddEndPoint(oppositeEndPointStub);
 
-      var result = (string) PrivateInvoke.InvokeNonPublicMethod(_agent, "GetUnregisterProblem", endPointStub, _map);
+      var result = (string)PrivateInvoke.InvokeNonPublicMethod(_agent, "GetUnregisterProblem", endPointStub, _map);
 
       Assert.That(result, Is.EqualTo(
           "The opposite relation property "
@@ -121,7 +121,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       oppositeEndPointStub.Stub(stub => stub.HasChanged).Return(false);
       _map.AddEndPoint(oppositeEndPointStub);
 
-      var result = (string) PrivateInvoke.InvokeNonPublicMethod(_agent, "GetUnregisterProblem", endPointStub, _map);
+      var result = (string)PrivateInvoke.InvokeNonPublicMethod(_agent, "GetUnregisterProblem", endPointStub, _map);
 
       Assert.That(result, Is.Null);
     }
@@ -137,7 +137,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       endPointStub.Stub(stub => stub.Definition).Return(relationEndPointID.Definition);
       endPointStub.Stub(stub => stub.OppositeObjectID).Return(DomainObjectIDs.Customer1);
 
-      var result = (string) PrivateInvoke.InvokeNonPublicMethod(_agent, "GetUnregisterProblem", endPointStub, _map);
+      var result = (string)PrivateInvoke.InvokeNonPublicMethod(_agent, "GetUnregisterProblem", endPointStub, _map);
 
       Assert.That(result, Is.Null);
     }
@@ -153,7 +153,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       endPointStub.Stub(stub => stub.Definition).Return(relationEndPointID.Definition);
       endPointStub.Stub(stub => stub.OppositeObjectID).Return(DomainObjectIDs.OrderTicket1);
 
-      var result = (string) PrivateInvoke.InvokeNonPublicMethod(_agent, "GetUnregisterProblem", endPointStub, _map);
+      var result = (string)PrivateInvoke.InvokeNonPublicMethod(_agent, "GetUnregisterProblem", endPointStub, _map);
 
       Assert.That(result, Is.Null);
     }

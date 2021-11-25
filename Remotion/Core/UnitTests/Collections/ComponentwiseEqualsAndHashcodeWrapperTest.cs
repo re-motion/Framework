@@ -127,7 +127,7 @@ namespace Remotion.UnitTests.Collections
     {
       if (obj is ComparableTestClass_EnumerableEqualsWrapper)
       {
-        if (Object.Equals(((ComparableTestClass_EnumerableEqualsWrapper) obj).Number, Number))
+        if (Object.Equals(((ComparableTestClass_EnumerableEqualsWrapper)obj).Number, Number))
         {
           return true;
         }

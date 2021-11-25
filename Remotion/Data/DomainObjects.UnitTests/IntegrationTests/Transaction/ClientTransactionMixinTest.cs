@@ -79,11 +79,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       using (MixinConfiguration.BuildFromActive().ForClass(typeof(ClientTransaction)).Clear().AddMixins(typeof(ClientTransactionWithIDMixin)).EnterScope())
       {
-        IClientTransactionWithID transactionWithID = (IClientTransactionWithID) ClientTransaction.CreateRootTransaction();
+        IClientTransactionWithID transactionWithID = (IClientTransactionWithID)ClientTransaction.CreateRootTransaction();
         Assert.That(transactionWithID.ToString(), Is.EqualTo(transactionWithID.ID.ToString()));
-        IClientTransactionWithID subTransactionWithID = (IClientTransactionWithID) transactionWithID.AsClientTransaction.CreateSubTransaction();
+        IClientTransactionWithID subTransactionWithID = (IClientTransactionWithID)transactionWithID.AsClientTransaction.CreateSubTransaction();
         Assert.That(subTransactionWithID.ID, Is.Not.EqualTo(transactionWithID.ID));
-        Assert.That(((IClientTransactionWithID) subTransactionWithID.AsClientTransaction.ParentTransaction).ID, Is.EqualTo(transactionWithID.ID));
+        Assert.That(((IClientTransactionWithID)subTransactionWithID.AsClientTransaction.ParentTransaction).ID, Is.EqualTo(transactionWithID.ID));
       }
     }
   }

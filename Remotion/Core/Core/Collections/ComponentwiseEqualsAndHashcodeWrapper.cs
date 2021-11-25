@@ -59,7 +59,7 @@ namespace Remotion.Collections
       }
       else if (obj is ComponentwiseEqualsAndHashcodeWrapper<TElement>)
       {
-        var enumerableEqualsWrapper = (ComponentwiseEqualsAndHashcodeWrapper<TElement>) obj;
+        var enumerableEqualsWrapper = (ComponentwiseEqualsAndHashcodeWrapper<TElement>)obj;
         return enumerableEqualsWrapper.Enumerable.Cast<object>().SequenceEqual(Enumerable.Cast<object>());
       }
       else

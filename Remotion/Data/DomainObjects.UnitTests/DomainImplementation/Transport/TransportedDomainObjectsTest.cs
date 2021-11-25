@@ -178,7 +178,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       transportedObjects.FinishTransport(transportedObject =>
           {
             Assert.That(transportedObject.State.IsNew);
-            return ((ClassWithAllDataTypes) transportedObject).Int32Property < 0;
+            return ((ClassWithAllDataTypes)transportedObject).Int32Property < 0;
           });
 
       using (ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope())
@@ -211,7 +211,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       transportedObjects.FinishTransport(transportedObject =>
       {
         Assert.That(transportedObject.State.IsChanged);
-        return ((ClassWithAllDataTypes) transportedObject).BooleanProperty;
+        return ((ClassWithAllDataTypes)transportedObject).BooleanProperty;
       });
 
       using (ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope())

@@ -105,25 +105,25 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     private bool AddCalled (object instance)
     {
       FieldInfo field = instance.GetType().GetField("AddCalled", BindingFlags.NonPublic | BindingFlags.Instance);
-      return (bool) field.GetValue(instance);
+      return (bool)field.GetValue(instance);
     }
 
     private bool AddCalled (Type type)
     {
       FieldInfo field = type.GetField("AddCalled", BindingFlags.NonPublic | BindingFlags.Static);
-      return (bool) field.GetValue(null);
+      return (bool)field.GetValue(null);
     }
 
     private bool RemoveCalled (object instance)
     {
       FieldInfo field = instance.GetType().GetField("RemoveCalled", BindingFlags.NonPublic | BindingFlags.Instance);
-      return (bool) field.GetValue(instance);
+      return (bool)field.GetValue(instance);
     }
 
     private bool RemoveCalled (Type type)
     {
       FieldInfo field = type.GetField("RemoveCalled", BindingFlags.NonPublic | BindingFlags.Static);
-      return (bool) field.GetValue(null);
+      return (bool)field.GetValue(null);
     }
 
     [Test]
@@ -142,12 +142,12 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
       Assert.That(AddCalled(instance), Is.False);
       Assert.That(RemoveCalled(instance), Is.False);
 
-      AddEventMethod(instance, eventEmitter, (EventHandler) delegate { });
+      AddEventMethod(instance, eventEmitter, (EventHandler)delegate { });
 
       Assert.That(AddCalled(instance), Is.True);
       Assert.That(RemoveCalled(instance), Is.False);
 
-      RemoveEventMethod(instance, eventEmitter, (EventHandler) delegate { });
+      RemoveEventMethod(instance, eventEmitter, (EventHandler)delegate { });
 
       Assert.That(AddCalled(instance), Is.True);
       Assert.That(RemoveCalled(instance), Is.True);
@@ -170,12 +170,12 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
       Assert.That(AddCalled(type), Is.False);
       Assert.That(RemoveCalled(type), Is.False);
 
-      AddEventMethod(type, eventEmitter, (Func<string>) delegate { return null; });
+      AddEventMethod(type, eventEmitter, (Func<string>)delegate { return null; });
 
       Assert.That(AddCalled(type), Is.True);
       Assert.That(RemoveCalled(type), Is.False);
 
-      RemoveEventMethod(type, eventEmitter, (Func<string>) delegate { return null; });
+      RemoveEventMethod(type, eventEmitter, (Func<string>)delegate { return null; });
 
       Assert.That(AddCalled(type), Is.True);
       Assert.That(RemoveCalled(type), Is.True);

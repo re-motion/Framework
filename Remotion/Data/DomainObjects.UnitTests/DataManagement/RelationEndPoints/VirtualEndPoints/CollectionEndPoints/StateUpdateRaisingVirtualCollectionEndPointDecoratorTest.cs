@@ -293,7 +293,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
                     .With.Property<VirtualEndPointStateUpdatedRaisingCommandDecorator>(d => d.DecoratedCommand).SameAs(fakeCommand)
                     .With.Property<VirtualEndPointStateUpdatedRaisingCommandDecorator>(d => d.ModifiedEndPointID).EqualTo(_endPointID)
                     .And.Property<VirtualEndPointStateUpdatedRaisingCommandDecorator>(d => d.Listener).SameAs(_listenerMock));
-            var changeStateProvider = ((VirtualEndPointStateUpdatedRaisingCommandDecorator) result).ChangeStateProvider;
+            var changeStateProvider = ((VirtualEndPointStateUpdatedRaisingCommandDecorator)result).ChangeStateProvider;
 
             _innerEndPointMock.BackToRecord();
             _innerEndPointMock.Stub(stub => stub.ID).Return(_endPointID);

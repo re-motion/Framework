@@ -92,7 +92,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
         AppDomainRunner.Run(
             delegate (object[] args)
             {
-              var path = (string) args[0];
+              var path = (string)args[0];
 
               ApplicationAssemblyLoaderFilter filter = ApplicationAssemblyLoaderFilter.Instance;
               Assert.That(filter.ShouldIncludeAssembly(typeof(AttributeAssemblyLoaderFilterTest).Assembly), Is.True);

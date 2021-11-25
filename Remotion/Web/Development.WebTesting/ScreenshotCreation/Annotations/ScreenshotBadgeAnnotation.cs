@@ -142,7 +142,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
           elementBounds.Y + elementBounds.Height / 2 + _translation.Height);
 
       var textSizeF = graphics.MeasureString(Content, Font);
-      var textSize = new Size((int) Math.Ceiling(textSizeF.Width), (int) Math.Ceiling(textSizeF.Height));
+      var textSize = new Size((int)Math.Ceiling(textSizeF.Width), (int)Math.Ceiling(textSizeF.Height));
 
       var textBound = new Rectangle(centerPoint.X - textSize.Width / 2, centerPoint.Y - textSize.Height / 2, textSize.Width, textSize.Height);
       var ellipseBounds = ContentPadding.Apply(textBound);

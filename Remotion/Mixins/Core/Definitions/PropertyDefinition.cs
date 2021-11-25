@@ -43,7 +43,7 @@ namespace Remotion.Mixins.Definitions
 
     public PropertyInfo PropertyInfo
     {
-      get { return (PropertyInfo) MemberInfo; }
+      get { return (PropertyInfo)MemberInfo; }
     }
 
     public MethodDefinition? GetMethod
@@ -63,7 +63,7 @@ namespace Remotion.Mixins.Definitions
       {
         if (value == null || value is PropertyDefinition)
         {
-          _base = (PropertyDefinition?) value;
+          _base = (PropertyDefinition?)value;
           if (GetMethod != null)
             GetMethod.Base = _base == null ? null : _base.GetMethod;
           if (SetMethod != null)

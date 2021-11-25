@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
   {
     public static T CreateObjectInTransaction<T> (ClientTransaction transaction) where T : DomainObject
     {
-      return (T) LifetimeService.NewObject(transaction, typeof(T), ParamList.Empty);
+      return (T)LifetimeService.NewObject(transaction, typeof(T), ParamList.Empty);
     }
 
     public static T CreateObjectInOtherTransaction<T> () where T : DomainObject
@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     public static T GetObjectInTransaction<T> (ClientTransaction transaction, ObjectID objectID) where T : DomainObject
     {
-      return (T) LifetimeService.GetObject(transaction, objectID, true);
+      return (T)LifetimeService.GetObject(transaction, objectID, true);
     }
 
     public static T CreateFakeObject<T> () where T: DomainObject
@@ -63,7 +63,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     public static T GetObjectReference<T> (ClientTransaction clientTransaction, ObjectID objectID) where T : DomainObject
     {
-      return (T) LifetimeService.GetObjectReference(clientTransaction, objectID);
+      return (T)LifetimeService.GetObjectReference(clientTransaction, objectID);
     }
 
     public static DomainObject GetObjectReference (ClientTransaction clientTransaction, ObjectID objectID)

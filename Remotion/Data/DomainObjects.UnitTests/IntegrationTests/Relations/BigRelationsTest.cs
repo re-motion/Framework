@@ -47,8 +47,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
 
       Assert.That(orderItems.Count, Is.EqualTo(4002));
 
-      var loadedIDs = orderItems.Select(oi => (Guid) oi.ID.Value);
-      var expectedIDs = insertedIDs.Concat(new[] { (Guid) DomainObjectIDs.OrderItem1.Value, (Guid) DomainObjectIDs.OrderItem2.Value });
+      var loadedIDs = orderItems.Select(oi => (Guid)oi.ID.Value);
+      var expectedIDs = insertedIDs.Concat(new[] { (Guid)DomainObjectIDs.OrderItem1.Value, (Guid)DomainObjectIDs.OrderItem2.Value });
       Assert.That(loadedIDs.SetEquals(expectedIDs), Is.True);
     }
 
@@ -74,8 +74,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
       var fileSystemItems = folder.FileSystemItems;
 
       Assert.That(fileSystemItems.Count, Is.EqualTo(4001));
-      var loadedIDs = fileSystemItems.Select(oi => (Guid) oi.ID.Value);
-      var expectedIDs = insertedIDs.Concat(new[] { (Guid) domainObjectIDs.File1.Value });
+      var loadedIDs = fileSystemItems.Select(oi => (Guid)oi.ID.Value);
+      var expectedIDs = insertedIDs.Concat(new[] { (Guid)domainObjectIDs.File1.Value });
       Assert.That(loadedIDs.SetEquals(expectedIDs), Is.True);
     }
   }

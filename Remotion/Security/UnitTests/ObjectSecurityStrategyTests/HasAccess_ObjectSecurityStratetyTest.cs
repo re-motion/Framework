@@ -106,7 +106,7 @@ namespace Remotion.Security.UnitTests.ObjectSecurityStrategyTests
     [Test]
     public void HasAccess_WithAllowedAccessTypesAreNull_ThrowsInvalidOperationException ()
     {
-      _securityProviderMock.Setup(_ => _.GetAccess(_context, _principalStub.Object)).Returns((AccessType[]) null).Verifiable();
+      _securityProviderMock.Setup(_ => _.GetAccess(_context, _principalStub.Object)).Returns((AccessType[])null).Verifiable();
 
       Assert.That(
           () => _strategy.HasAccess(

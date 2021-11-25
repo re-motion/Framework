@@ -87,7 +87,7 @@ namespace Remotion.Web.UI
       if (_title != null)
         yield return _title;
 
-      foreach (var priority in _prioritizedHeadElements.Keys.OrderBy(priority => (int) priority))
+      foreach (var priority in _prioritizedHeadElements.Keys.OrderBy(priority => (int)priority))
       {
         foreach (var element in TransformHtmlHeadElements(_prioritizedHeadElements[priority]))
           yield return element;
@@ -102,9 +102,9 @@ namespace Remotion.Web.UI
       foreach (var element in elements)
       {
         if (element is StyleSheetImportRule)
-          styleSheetImportRules.Add((StyleSheetImportRule) element);
+          styleSheetImportRules.Add((StyleSheetImportRule)element);
         else if (element is StyleSheetElement)
-          styleSheetElements.Add((StyleSheetElement) element);
+          styleSheetElements.Add((StyleSheetElement)element);
         else
           yield return element;
       }

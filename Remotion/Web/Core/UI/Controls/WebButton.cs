@@ -423,7 +423,7 @@ namespace Remotion.Web.UI.Controls
       if (securityAdapter == null)
         return true;
 
-      EventHandler? clickHandler = (EventHandler?) Events[s_clickEvent];
+      EventHandler? clickHandler = (EventHandler?)Events[s_clickEvent];
       if (clickHandler == null)
         return true;
 
@@ -471,7 +471,7 @@ namespace Remotion.Web.UI.Controls
     {
       base.OnClick(e);
 
-      EventHandler? clickHandler = (EventHandler?) Events[s_clickEvent];
+      EventHandler? clickHandler = (EventHandler?)Events[s_clickEvent];
       if (clickHandler != null)
         clickHandler(this, e);
     }

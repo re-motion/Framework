@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       Assert.That(_commandBuilder.GetInMemoryProjectionBody().NodeType, Is.EqualTo(ExpressionType.Call));
       var getObjectIDOrNullMethod =
           MemberInfoFromExpressionUtility.GetMethod(() => ExtendedSqlGeneratingOuterSelectExpressionVisitor.GetObjectIDOrNull(null, null));
-      Assert.That(((MethodCallExpression) _commandBuilder.GetInMemoryProjectionBody()).Method, Is.EqualTo(getObjectIDOrNullMethod));
+      Assert.That(((MethodCallExpression)_commandBuilder.GetInMemoryProjectionBody()).Method, Is.EqualTo(getObjectIDOrNullMethod));
     }
 
     [Test]

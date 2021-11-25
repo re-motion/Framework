@@ -127,7 +127,7 @@ public class QueryParameterCollection : CommonCollection
   /// </summary>
   public QueryParameter this [int index]
   {
-    get { return (QueryParameter) BaseGetObject(index); }
+    get { return (QueryParameter)BaseGetObject(index); }
   }
 
   /// <summary>
@@ -136,7 +136,7 @@ public class QueryParameterCollection : CommonCollection
   /// <remarks>The indexer returns <see langword="null"/> if the given <paramref name="name"/> was not found.</remarks>
   public QueryParameter this [string name]
   {
-    get { return (QueryParameter) BaseGetObject(name); }
+    get { return (QueryParameter)BaseGetObject(name); }
   }
 
   /// <summary>

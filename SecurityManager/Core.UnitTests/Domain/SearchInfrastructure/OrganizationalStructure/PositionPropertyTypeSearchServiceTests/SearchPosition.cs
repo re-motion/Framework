@@ -38,7 +38,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Organiz
 
       _searchService = new PositionPropertyTypeSearchService();
       IBusinessObjectClass roleClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(Role));
-      _property = (IBusinessObjectReferenceProperty) roleClass.GetPropertyDefinition("Position");
+      _property = (IBusinessObjectReferenceProperty)roleClass.GetPropertyDefinition("Position");
       Assert.That(_property, Is.Not.Null);
     }
 

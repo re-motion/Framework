@@ -71,7 +71,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That(modificationCheckingDecorator.RequiredItemType, Is.SameAs(typeof(Order)));
 
       var eventRaisingDecorator = DomainObjectCollectionDataTestHelper.GetWrappedDataAndCheckType<EventRaisingDomainObjectCollectionDataDecorator>(
-          (ModificationCheckingDomainObjectCollectionDataDecorator) modificationCheckingDecorator);
+          (ModificationCheckingDomainObjectCollectionDataDecorator)modificationCheckingDecorator);
       Assert.That(eventRaisingDecorator.EventRaiser, Is.SameAs(eventRaiserStub));
 
       var dataStore = DomainObjectCollectionDataTestHelper.GetWrappedDataAndCheckType<IDomainObjectCollectionData>(eventRaisingDecorator);
@@ -245,7 +245,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void IndexOf_Object_Null ()
     {
-      Assert.That(_collection.IndexOf((DomainObject) null), Is.EqualTo(-1));
+      Assert.That(_collection.IndexOf((DomainObject)null), Is.EqualTo(-1));
     }
 
     [Test]
@@ -270,7 +270,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void IndexOf_ID_Null ()
     {
-      Assert.That(_collection.IndexOf((ObjectID) null), Is.EqualTo(-1));
+      Assert.That(_collection.IndexOf((ObjectID)null), Is.EqualTo(-1));
     }
 
     [Test]
@@ -527,7 +527,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     public void Clone_BecomesStandAlone ()
     {
       OrderCollection associatedCollection = CreateAssociatedCollectionWithEndPointStub();
-      var clonedCollection = (DomainObjectCollection) associatedCollection.Clone();
+      var clonedCollection = (DomainObjectCollection)associatedCollection.Clone();
 
       // clone is always stand-alone, even when source is associated with end point
       DomainObjectCollectionDataTestHelper.CheckStandAloneCollectionStrategy(clonedCollection, associatedCollection.RequiredItemType);
@@ -538,7 +538,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     {
       var orderCollection = new OrderCollection();
 
-      var clone = (OrderCollection) orderCollection.Clone();
+      var clone = (OrderCollection)orderCollection.Clone();
 
       Assert.That(clone.GetType(), Is.EqualTo(typeof(OrderCollection)));
       Assert.That(clone.RequiredItemType, Is.EqualTo(orderCollection.RequiredItemType));
@@ -579,7 +579,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     {
       var orderCollection = new OrderCollection();
 
-      var clone = (OrderCollection) orderCollection.Clone(true);
+      var clone = (OrderCollection)orderCollection.Clone(true);
 
       Assert.That(clone.GetType(), Is.EqualTo(typeof(OrderCollection)));
       Assert.That(clone.RequiredItemType, Is.Null);
@@ -592,10 +592,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       var originalCollectionDataStrategy = DomainObjectCollectionDataTestHelper.GetDataStrategy(_collection);
       var originalCollectionContents = _collection.Cast<DomainObject>().ToArray();
       var originalEndPointContents =
-          ((IDomainObjectCollectionEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad(endPointID)).GetData().ToArray();
+          ((IDomainObjectCollectionEndPoint)TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad(endPointID)).GetData().ToArray();
       var associatedCollectionDataStrategyFactory = new AssociatedDomainObjectCollectionDataStrategyFactory(TestableClientTransaction.DataManager);
 
-      var result = ((IAssociatableDomainObjectCollection) _collection).TransformToAssociated(endPointID, associatedCollectionDataStrategyFactory);
+      var result = ((IAssociatableDomainObjectCollection)_collection).TransformToAssociated(endPointID, associatedCollectionDataStrategyFactory);
 
       DomainObjectCollectionDataTestHelper.CheckAssociatedCollectionStrategy(_collection, typeof(Order), endPointID);
       Assert.That(result, Is.SameAs(originalCollectionDataStrategy));
@@ -611,7 +611,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       var originalCollectionDataStrategy = DomainObjectCollectionDataTestHelper.GetDataStrategy(collection);
       var originalCollectionContents = collection.Cast<DomainObject>().ToArray();
 
-      var result = ((IAssociatableDomainObjectCollection) collection).TransformToStandAlone();
+      var result = ((IAssociatableDomainObjectCollection)collection).TransformToStandAlone();
 
       DomainObjectCollectionDataTestHelper.CheckStandAloneCollectionStrategy(collection, typeof(Order));
       Assert.That(collection, Is.EqualTo(originalCollectionContents));
@@ -680,10 +680,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
     private void CheckSameEventHandlers (DomainObjectCollection source, DomainObjectCollection destination, string eventName)
     {
-      var sourceEvent = ((Delegate) PrivateInvoke.GetNonPublicField(source, eventName));
+      var sourceEvent = ((Delegate)PrivateInvoke.GetNonPublicField(source, eventName));
       Delegate[] sourceInvocationList = sourceEvent.GetInvocationList();
 
-      var destinationEvent = ((Delegate) PrivateInvoke.GetNonPublicField(destination, eventName));
+      var destinationEvent = ((Delegate)PrivateInvoke.GetNonPublicField(destination, eventName));
       Assert.That(destinationEvent, Is.Not.Null, eventName + " event handlers not copied");
       Delegate[] destinationInvocationList = destinationEvent.GetInvocationList();
 

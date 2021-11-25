@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void GetIDOrNull ()
     {
-      Assert.That(((IDomainObject) null).GetSafeID(), Is.Null);
+      Assert.That(((IDomainObject)null).GetSafeID(), Is.Null);
 
       var domainObject = DomainObjectMother.CreateFakeObject<Order>();
       Assert.That(domainObject.GetSafeID(), Is.EqualTo(domainObject.ID));
@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
       var handle = domainObject.GetHandle();
       var domainObjectTypedObjectID1 = domainObject.GetHandle<IDomainObject>();
-      var domainObjectTypedObjectID2 = ((IDomainObject) domainObject).GetHandle();
+      var domainObjectTypedObjectID2 = ((IDomainObject)domainObject).GetHandle();
 
       Assert.That(handle, Is.TypeOf<DomainObjectHandle<Order>>().And.Property("ObjectID").EqualTo(domainObject.ID));
       Assert.That(domainObjectTypedObjectID1, Is.TypeOf<DomainObjectHandle<Order>>().And.Property("ObjectID").EqualTo(domainObject.ID));
@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
       var handle = domainObject.GetSafeHandle();
       var domainObjectTypedObjectID1 = domainObject.GetSafeHandle<IDomainObject>();
-      var domainObjectTypedObjectID2 = ((IDomainObject) domainObject).GetSafeHandle();
+      var domainObjectTypedObjectID2 = ((IDomainObject)domainObject).GetSafeHandle();
 
       Assert.That(handle, Is.TypeOf<DomainObjectHandle<Order>>().And.Property("ObjectID").EqualTo(domainObject.ID));
       Assert.That(domainObjectTypedObjectID1, Is.TypeOf<DomainObjectHandle<Order>>().And.Property("ObjectID").EqualTo(domainObject.ID));
@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void GetSafeHandle_Null ()
     {
-      var handle = ((IDomainObject) null).GetSafeHandle();
+      var handle = ((IDomainObject)null).GetSafeHandle();
       Assert.That(handle, Is.Null);
     }
 
@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       var actualTransactionContext = (DomainObjectTransactionContext)domainObject.GetDefaultTransactionContext();
 
       var expectedTransactionContext =
-          (DomainObjectTransactionContext) domainObject.TransactionContext[domainObject.RootTransaction.ActiveTransaction];
+          (DomainObjectTransactionContext)domainObject.TransactionContext[domainObject.RootTransaction.ActiveTransaction];
 
       Assert.That(actualTransactionContext.ClientTransaction, Is.EqualTo(expectedTransactionContext.ClientTransaction));
       Assert.That(actualTransactionContext.DomainObject, Is.EqualTo(expectedTransactionContext.DomainObject));

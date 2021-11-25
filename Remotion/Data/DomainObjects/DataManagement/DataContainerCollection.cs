@@ -100,7 +100,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     {
       // Use non-generic base implementation
 // ReSharper disable LoopCanBeConvertedToQuery
-      foreach (DataContainer dataContainer in (IEnumerable) this)
+      foreach (DataContainer dataContainer in (IEnumerable)this)
 // ReSharper restore LoopCanBeConvertedToQuery
         yield return dataContainer;
     }
@@ -138,7 +138,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public DataContainer this [int index]
     {
-      get { return (DataContainer) BaseGetObject(index); }
+      get { return (DataContainer)BaseGetObject(index); }
     }
 
     DataContainer IList<DataContainer>.this[int index]
@@ -149,7 +149,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public DataContainer this [ObjectID id]
     {
-      get { return (DataContainer) BaseGetObject(id); }
+      get { return (DataContainer)BaseGetObject(id); }
     }
 
     public int Add (DataContainer value)

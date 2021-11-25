@@ -31,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
 
     private void MyTabbedMenuOnEventCommandClick (object sender, MenuTabClickEventArgs menuTabClickEventArgs)
     {
-      ((Layout) Master).SetTestOutput(menuTabClickEventArgs.Tab.ItemID + "|" + menuTabClickEventArgs.Command.Type);
+      ((Layout)Master).SetTestOutput(menuTabClickEventArgs.Tab.ItemID + "|" + menuTabClickEventArgs.Command.Type);
     }
   }
 }

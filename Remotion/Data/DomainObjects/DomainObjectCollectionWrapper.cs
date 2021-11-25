@@ -71,7 +71,7 @@ namespace Remotion.Data.DomainObjects
 
     public T this[int index]
     {
-      get { return (T) _wrappedCollection[index]; }
+      get { return (T)_wrappedCollection[index]; }
       set { _wrappedCollection[index] = value; }
     }
 

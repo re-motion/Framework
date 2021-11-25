@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     public void Adding (object sender, DomainObject domainObject)
     {
-      Adding(null, (DomainObjectCollectionChangeEventArgs) null);
+      Adding(null, (DomainObjectCollectionChangeEventArgs)null);
       LastCall.Constraints(Mocks_Is.Same(sender), Mocks_Property.Value("DomainObject", domainObject));
     }
 
@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     public void Added (object sender, DomainObject domainObject)
     {
-      Added(null, (DomainObjectCollectionChangeEventArgs) null);
+      Added(null, (DomainObjectCollectionChangeEventArgs)null);
       LastCall.Constraints(Mocks_Is.Same(sender), Mocks_Property.Value("DomainObject", domainObject));
     }
 
@@ -91,7 +91,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     public void Removing (object sender, DomainObject domainObject)
     {
-      Removing(null, (DomainObjectCollectionChangeEventArgs) null);
+      Removing(null, (DomainObjectCollectionChangeEventArgs)null);
       LastCall.Constraints(Mocks_Is.Same(sender), Mocks_Property.Value("DomainObject", domainObject));
     }
 
@@ -107,7 +107,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     public void Removed (object sender, DomainObject domainObject)
     {
-      Removed(null, (DomainObjectCollectionChangeEventArgs) null);
+      Removed(null, (DomainObjectCollectionChangeEventArgs)null);
       LastCall.Constraints(Mocks_Is.Same(sender), Mocks_Property.Value("DomainObject", domainObject));
     }
 

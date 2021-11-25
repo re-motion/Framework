@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
           .Expect(mock => mock.GenerateTextForOuterSqlStatement(Arg<SqlCommandBuilder>.Is.TypeOf, Arg.Is(fakeResolutionResult)))
           .WhenCalled(mi =>
           {
-            var sqlCommandBuilder = ((SqlCommandBuilder) mi.Arguments[0]);
+            var sqlCommandBuilder = ((SqlCommandBuilder)mi.Arguments[0]);
             sqlCommandBuilder.Append("TestTest");
             sqlCommandBuilder.SetInMemoryProjectionBody(Expression.Constant(null));
           });
@@ -190,7 +190,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
           .Stub(mock => mock.GenerateTextForOuterSqlStatement(Arg<SqlCommandBuilder>.Is.TypeOf, Arg<SqlStatement>.Is.Anything))
           .WhenCalled(mi =>
           {
-            var sqlCommandBuilder = ((SqlCommandBuilder) mi.Arguments[0]);
+            var sqlCommandBuilder = ((SqlCommandBuilder)mi.Arguments[0]);
             sqlCommandBuilder.Append("TestTest");
             sqlCommandBuilder.SetInMemoryProjectionBody(Expression.Constant(null));
           });

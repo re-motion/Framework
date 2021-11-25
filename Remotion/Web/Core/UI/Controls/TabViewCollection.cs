@@ -26,7 +26,7 @@ namespace Remotion.Web.UI.Controls
 public class TabViewCollection: ViewCollection
 {
   public TabViewCollection (Control owner)
-    : this((TabbedMultiView.MultiView) owner)
+    : this((TabbedMultiView.MultiView)owner)
   {
   }
 
@@ -61,7 +61,7 @@ public class TabViewCollection: ViewCollection
   {
     if (index < 0 || index > this.Count)
       throw new ArgumentOutOfRangeException("index");
-    TabView view = (TabView) this[index];
+    TabView view = (TabView)this[index];
     Owner.OnTabViewRemove(view);
     base.RemoveAt(index);
     Owner.OnTabViewRemoved(view);
@@ -70,12 +70,12 @@ public class TabViewCollection: ViewCollection
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public new TabView this[int index]
   {
-    get { return (TabView) base[index]; }
+    get { return (TabView)base[index]; }
   }
 
   private new TabbedMultiView.MultiView Owner
   {
-    get { return (TabbedMultiView.MultiView) base.Owner; }
+    get { return (TabbedMultiView.MultiView)base.Owner; }
   }
 }
 

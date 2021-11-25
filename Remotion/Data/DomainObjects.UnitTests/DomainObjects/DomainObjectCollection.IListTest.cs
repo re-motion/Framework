@@ -96,13 +96,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void IList_IsFixedSize ()
     {
-      Assert.That(((IList) _collection).IsFixedSize, Is.False);
+      Assert.That(((IList)_collection).IsFixedSize, Is.False);
     }
 
     [Test]
     public void IList_IsSynchronized ()
     {
-      Assert.That(((IList) _collection).IsSynchronized, Is.False);
+      Assert.That(((IList)_collection).IsSynchronized, Is.False);
     }
   }
 }

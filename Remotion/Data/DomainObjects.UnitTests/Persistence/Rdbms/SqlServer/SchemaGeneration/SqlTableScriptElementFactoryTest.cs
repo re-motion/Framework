@@ -93,7 +93,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           + ")";
 
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
-      Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
+      Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
@@ -113,7 +113,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           + ")";
 
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
-      Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
+      Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
@@ -133,7 +133,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           + ")";
 
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
-      Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
+      Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
@@ -146,7 +146,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           + "  DROP TABLE [SchemaName].[EntityName]";
 
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
-      Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
+      Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
@@ -159,7 +159,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           + "  DROP TABLE [dbo].[EntityName]";
 
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
-      Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
+      Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
     }
   }
 }

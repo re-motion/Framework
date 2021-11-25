@@ -306,7 +306,7 @@ namespace Remotion.Web.UI.Controls
     [MergableProperty (false)]
     //  Default category
     [Description ("The child nodes contained in this tree node.")]
-    [DefaultValue ((string?) null)]
+    [DefaultValue ((string?)null)]
     public virtual WebTreeNodeCollection Children
     {
       get { return _children; }

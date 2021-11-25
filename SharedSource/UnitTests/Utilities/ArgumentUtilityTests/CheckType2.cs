@@ -47,14 +47,14 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     [Test]
     public void Succeed_Int_NullableInt ()
     {
-      int result = ArgumentUtility.CheckType<int>("arg", (int?) 1);
+      int result = ArgumentUtility.CheckType<int>("arg", (int?)1);
       Assert.That(result, Is.EqualTo(1));
     }
 
     [Test]
     public void Succeed_NullableInt ()
     {
-      int? result = ArgumentUtility.CheckType<int?>("arg", (int?) 1);
+      int? result = ArgumentUtility.CheckType<int?>("arg", (int?)1);
       Assert.That(result, Is.EqualTo(1));
     }
 

@@ -34,8 +34,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       _relation = FakeMappingConfiguration.Current.RelationDefinitions[
         "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Location:Remotion.Data.DomainObjects.UnitTests.Mapping."
         +"TestDomain.Integration.Location.Client"];
-      _clientEndPoint = (AnonymousRelationEndPointDefinition) _relation.EndPointDefinitions[0];
-      _locationEndPoint = (RelationEndPointDefinition) _relation.EndPointDefinitions[1];
+      _clientEndPoint = (AnonymousRelationEndPointDefinition)_relation.EndPointDefinitions[0];
+      _locationEndPoint = (RelationEndPointDefinition)_relation.EndPointDefinitions[1];
     }
 
     [Test]

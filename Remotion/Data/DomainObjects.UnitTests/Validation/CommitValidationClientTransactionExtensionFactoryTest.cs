@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       Assert.That(result.Count(), Is.EqualTo(1));
       var clientTransactionExtension = result.First();
       Assert.That(clientTransactionExtension, Is.TypeOf<CommitValidationClientTransactionExtension>());
-      Assert.That(((CommitValidationClientTransactionExtension) clientTransactionExtension).Validator, Is.SameAs(persistableDataValidatorStub));
+      Assert.That(((CommitValidationClientTransactionExtension)clientTransactionExtension).Validator, Is.SameAs(persistableDataValidatorStub));
     }
 
     [Test]

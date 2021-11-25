@@ -37,7 +37,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
       var instance = serviceLocator.GetInstance<ITestType>();
 
       Assert.That(instance, Is.TypeOf<TestImplementationWithOneConstructorParameter>());
-      Assert.That(((TestImplementationWithOneConstructorParameter) instance).InstanceService, Is.TypeOf<InstanceService>());
+      Assert.That(((TestImplementationWithOneConstructorParameter)instance).InstanceService, Is.TypeOf<InstanceService>());
     }
 
     [Test]
@@ -56,7 +56,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
       var instance = serviceLocator.GetInstance<ITestType>();
 
       Assert.That(instance, Is.TypeOf<TestImplementationWithMultipleConstructorParameters>());
-      var typedInstance = (TestImplementationWithMultipleConstructorParameters) instance;
+      var typedInstance = (TestImplementationWithMultipleConstructorParameters)instance;
 
       Assert.That(typedInstance.InstanceService1, Is.TypeOf<InstanceService>());
       Assert.That(typedInstance.InstanceService2, Is.TypeOf<InstanceService>());
@@ -80,7 +80,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
       var instance = serviceLocator.GetInstance<ITestType>();
 
       Assert.That(instance, Is.TypeOf<TestImplementationWithRecursiceConstructorParameter>());
-      var typedInstance = (TestImplementationWithRecursiceConstructorParameter) instance;
+      var typedInstance = (TestImplementationWithRecursiceConstructorParameter)instance;
       Assert.That(typedInstance.ParameterizedService, Is.TypeOf<ParameterizedService>());
       Assert.That(typedInstance.ParameterizedService.SingleService, Is.TypeOf<SingleService>());
     }
@@ -103,8 +103,8 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
 
       Assert.That(instance1, Is.Not.SameAs(instance2));
       Assert.That(instance1, Is.TypeOf<TestImplementationWithMultipleConstructorParameters>());
-      var typedInstance1 = (TestImplementationWithMultipleConstructorParameters) instance1;
-      var typedInstance2 = (TestImplementationWithMultipleConstructorParameters) instance2;
+      var typedInstance1 = (TestImplementationWithMultipleConstructorParameters)instance1;
+      var typedInstance2 = (TestImplementationWithMultipleConstructorParameters)instance2;
 
       Assert.That(typedInstance1.InstanceService1, Is.TypeOf(typedInstance1.InstanceService2.GetType()));
       Assert.That(typedInstance1.InstanceService1, Is.Not.SameAs(typedInstance1.InstanceService2));
@@ -130,8 +130,8 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
 
       Assert.That(instance1, Is.Not.SameAs(instance2));
       Assert.That(instance1, Is.TypeOf<TestImplementationWithMultipleConstructorParameters>());
-      var typedInstance1 = (TestImplementationWithMultipleConstructorParameters) instance1;
-      var typedInstance2 = (TestImplementationWithMultipleConstructorParameters) instance2;
+      var typedInstance1 = (TestImplementationWithMultipleConstructorParameters)instance1;
+      var typedInstance2 = (TestImplementationWithMultipleConstructorParameters)instance2;
 
       Assert.That(typedInstance1.SingletonService, Is.SameAs(typedInstance2.SingletonService));
     }
@@ -152,7 +152,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
       var instance = serviceLocator.GetInstance(typeof(ITestType));
 
       Assert.That(instance, Is.TypeOf<TestCompoundWithAdditionalConstructorParameters>());
-      var compoundInstance = (TestCompoundWithAdditionalConstructorParameters) instance;
+      var compoundInstance = (TestCompoundWithAdditionalConstructorParameters)instance;
       Assert.That(compoundInstance.InnerObjects, Is.Not.Empty);
 
       Assert.That(compoundInstance.SingleService, Is.TypeOf<SingleService>());
@@ -177,7 +177,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
       var instance = serviceLocator.GetInstance(typeof(ITestType));
 
       Assert.That(instance, Is.TypeOf<TestDecoratorWithAdditionalConstructorParameters>());
-      var decoratorInstance = (TestDecoratorWithAdditionalConstructorParameters) instance;
+      var decoratorInstance = (TestDecoratorWithAdditionalConstructorParameters)instance;
       Assert.That(decoratorInstance.DecoratedObject, Is.TypeOf<TestImplementation1>());
 
       Assert.That(decoratorInstance.SingleService, Is.TypeOf<SingleService>());

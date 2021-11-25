@@ -82,7 +82,7 @@ namespace Remotion.Collections.Caching
       // Sequence must be evaluated while inside the lock
       lock (_lock)
       {
-        return ((IEnumerable<KeyValuePair<TKey, TValue>>) _innerCache.ToArray()).GetEnumerator();
+        return ((IEnumerable<KeyValuePair<TKey, TValue>>)_innerCache.ToArray()).GetEnumerator();
       }
     }
 

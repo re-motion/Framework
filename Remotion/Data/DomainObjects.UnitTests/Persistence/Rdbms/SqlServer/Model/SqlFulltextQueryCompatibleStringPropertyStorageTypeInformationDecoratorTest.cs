@@ -261,10 +261,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
       Assert.That(unifiedResult, Is.Not.SameAs(source));
       Assert.That(unifiedResult, Is.InstanceOf<SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator>());
       Assert.That(
-          ((SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator) unifiedResult).InnerStorageTypeInformation,
+          ((SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator)unifiedResult).InnerStorageTypeInformation,
           Is.SameAs(innerStorageTypeInformationStubUnified));
       Assert.That(
-          ((SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator) unifiedResult).FulltextCompatibleMaxLength,
+          ((SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator)unifiedResult).FulltextCompatibleMaxLength,
           Is.EqualTo(fulltextCompatibleMaxLength));
     }
 

@@ -29,7 +29,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
       Assert.That(instance, Is.InstanceOf<CompoundValidatorFactory<BusinessObjectReferenceDataSourceControl>>());
 
       var factories =
-          ((CompoundValidatorFactory<BusinessObjectReferenceDataSourceControl>) instance).VlidatorFactories.Select(f => f.GetType()).ToList();
+          ((CompoundValidatorFactory<BusinessObjectReferenceDataSourceControl>)instance).VlidatorFactories.Select(f => f.GetType()).ToList();
       Assert.That(factories, Has.Member(typeof(ValidationBocReferenceDataSourceValidatorFactory)));
       Assert.That(factories.Count, Is.EqualTo(1));
     }

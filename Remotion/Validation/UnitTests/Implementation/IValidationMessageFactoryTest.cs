@@ -41,7 +41,7 @@ namespace Remotion.Validation.UnitTests.Implementation
       Assert.That(factory, Is.Not.Null);
       Assert.That(factory, Is.TypeOf<CompoundValidationMessageFactory>());
       Assert.That(
-          ((CompoundValidationMessageFactory) factory).ValidationMessageFactories.Select(f => f.GetType()),
+          ((CompoundValidationMessageFactory)factory).ValidationMessageFactories.Select(f => f.GetType()),
           Is.EqualTo(new[] { typeof(FallbackValidationMessageFactory) }));
     }
 

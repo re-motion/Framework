@@ -51,7 +51,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     {
       var instance = new ClassDerivedFromBindableObjectWithIdentityBase();
       instance.SetUniqueIdentifier("uniqueID");
-      var mixin = (BindableObjectWithIdentityMixin) PrivateInvoke.GetNonPublicField(instance, "_implementation");
+      var mixin = (BindableObjectWithIdentityMixin)PrivateInvoke.GetNonPublicField(instance, "_implementation");
       Assert.That(mixin.UniqueIdentifier, Is.EqualTo("uniqueID"));
     }
 

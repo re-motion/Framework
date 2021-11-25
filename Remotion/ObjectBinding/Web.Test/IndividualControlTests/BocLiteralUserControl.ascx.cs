@@ -47,7 +47,7 @@ namespace OBWTest.IndividualControlTests
     {
       base.OnLoad(e);
 
-      Person person = (Person) CurrentObject.BusinessObject;
+      Person person = (Person)CurrentObject.BusinessObject;
 
       UnboundCVField.LoadUnboundValue(person.CVStringLiteral, IsPostBack);
     }

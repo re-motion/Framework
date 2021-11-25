@@ -67,7 +67,7 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths
 
         try
         {
-          currentObject = GetPropertyValue(currentObject, (IBusinessObjectReferenceProperty) currentProperty, listValueBehavior, propertyIndex);
+          currentObject = GetPropertyValue(currentObject, (IBusinessObjectReferenceProperty)currentProperty, listValueBehavior, propertyIndex);
         }
         catch (BusinessObjectPropertyAccessException)
         {
@@ -106,16 +106,16 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths
               string.Format("Property #{0} of property path '{1}' is not a single-value property.", propertyIndex, Identifier));
         }
 
-        var list = (IList?) currentObject.GetProperty(currentProperty);
+        var list = (IList?)currentObject.GetProperty(currentProperty);
 
         if (list is { Count: >0 })
-          return (IBusinessObject?) list[0];
+          return (IBusinessObject?)list[0];
         else
           return null;
       }
       else
       {
-        return (IBusinessObject?) currentObject.GetProperty(currentProperty);
+        return (IBusinessObject?)currentObject.GetProperty(currentProperty);
       }
     }
 

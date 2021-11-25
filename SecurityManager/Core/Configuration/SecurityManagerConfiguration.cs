@@ -29,7 +29,7 @@ namespace Remotion.SecurityManager.Configuration
     static SecurityManagerConfiguration ()
     {
       s_current = new DoubleCheckedLockingContainer<SecurityManagerConfiguration>(
-          delegate { return (SecurityManagerConfiguration) ConfigurationManager.GetSection("remotion.securityManager") ?? new SecurityManagerConfiguration(); });
+          delegate { return (SecurityManagerConfiguration)ConfigurationManager.GetSection("remotion.securityManager") ?? new SecurityManagerConfiguration(); });
     }
 
     public static SecurityManagerConfiguration Current
@@ -85,12 +85,12 @@ namespace Remotion.SecurityManager.Configuration
 
     protected TypeElement<IOrganizationalStructureFactory> OrganizationalStructureFactoryElement
     {
-      get { return (TypeElement<IOrganizationalStructureFactory>) this[_organizationalStructureFactoryProperty]; }
+      get { return (TypeElement<IOrganizationalStructureFactory>)this[_organizationalStructureFactoryProperty]; }
     }
 
     public AccessControlElement AccessControl
     {
-      get { return (AccessControlElement) this[_accessControlProperty]; }
+      get { return (AccessControlElement)this[_accessControlProperty]; }
     }
   }
 }

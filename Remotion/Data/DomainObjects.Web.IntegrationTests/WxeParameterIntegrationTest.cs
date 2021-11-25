@@ -106,7 +106,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests
       function.VariablesContainer.InitializeParameters(new NameValueCollection { { "name", objectID.ToString() } });
 
       Assert.That(function.Variables["name"], Is.InstanceOf<IDomainObjectHandle<SampleObject>>());
-      Assert.That(((IDomainObjectHandle<SampleObject>) function.Variables["name"]).ObjectID, Is.EqualTo(objectID));
+      Assert.That(((IDomainObjectHandle<SampleObject>)function.Variables["name"]).ObjectID, Is.EqualTo(objectID));
     }
 
     [Test]

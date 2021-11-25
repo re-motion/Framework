@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
     protected BindableDomainObject (SerializationInfo info, StreamingContext context)
       : base(info, context)
     {
-      _implementation = (IBindableDomainObjectImplementation) info.GetValue("BDO._implementation", typeof(IBindableDomainObjectImplementation));
+      _implementation = (IBindableDomainObjectImplementation)info.GetValue("BDO._implementation", typeof(IBindableDomainObjectImplementation));
     }
 
     protected new void BaseGetObjectData (SerializationInfo info, StreamingContext context)

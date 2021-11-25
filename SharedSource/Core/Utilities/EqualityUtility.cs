@@ -200,7 +200,7 @@ namespace Remotion.Utilities
       if (a == null)
         return (b == null);
       else
-        return a.Equals((T) b!);
+        return a.Equals((T)b!);
     }
 
     /// <summary>
@@ -224,7 +224,7 @@ namespace Remotion.Utilities
       where T : struct, IEquatable<T>
     {
       if (b is T) // ignore incorrect ReSharper warning
-        return a.Equals((T) b);
+        return a.Equals((T)b);
       else
         return false;
     }
@@ -247,7 +247,7 @@ namespace Remotion.Utilities
       if (a == null)
         return (b == null);
       else
-        return a.Equals((object?) b);
+        return a.Equals((object?)b);
     }
 
   }

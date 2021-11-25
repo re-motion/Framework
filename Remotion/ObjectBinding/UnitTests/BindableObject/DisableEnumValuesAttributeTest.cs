@@ -93,7 +93,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     private void CheckConstantEnumerationValueFilter (IEnumerationValueFilter filter, params Enum[] expectedDisabledEnumValues)
     {
       Assert.That(filter, Is.TypeOf(typeof(ConstantEnumerationValueFilter)));
-      Assert.That(((ConstantEnumerationValueFilter) filter).DisabledEnumValues, Is.EqualTo(expectedDisabledEnumValues));
+      Assert.That(((ConstantEnumerationValueFilter)filter).DisabledEnumValues, Is.EqualTo(expectedDisabledEnumValues));
     }
   }
 }

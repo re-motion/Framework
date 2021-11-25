@@ -38,7 +38,7 @@ namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
     {
       var typeConverter = _factory.CreateTypeConverterOrDefault(typeof(Color));
       Assert.That(typeConverter, Is.TypeOf<ExtensibleEnumConverter>());
-      Assert.That(((ExtensibleEnumConverter) typeConverter).ExtensibleEnumType, Is.EqualTo(typeof(Color)));
+      Assert.That(((ExtensibleEnumConverter)typeConverter).ExtensibleEnumType, Is.EqualTo(typeof(Color)));
     }
 
     [Test]

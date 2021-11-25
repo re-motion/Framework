@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
     {
       base.SetUp();
 
-      _order1 = (Order) LifetimeService.GetObjectReference(WriteableSubTransaction, DomainObjectIDs.Order1);
+      _order1 = (Order)LifetimeService.GetObjectReference(WriteableSubTransaction, DomainObjectIDs.Order1);
     }
 
     [Test]

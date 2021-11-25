@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     public void InitializeWithQueryID ()
     {
       var parameters = new QueryParameterCollection();
-      var query = (Query) QueryFactory.CreateQueryFromConfiguration("OrderQuery", parameters);
+      var query = (Query)QueryFactory.CreateQueryFromConfiguration("OrderQuery", parameters);
 
       QueryDefinition definition = DomainObjectsConfiguration.Current.Query.QueryDefinitions["OrderQuery"];
       Assert.That(query.Definition, Is.SameAs(definition));

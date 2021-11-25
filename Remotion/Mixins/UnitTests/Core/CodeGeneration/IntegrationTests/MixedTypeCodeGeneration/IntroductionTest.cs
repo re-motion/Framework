@@ -63,12 +63,12 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     public void InheritedIntroducedInterfaces ()
     {
       var bt1 = CreateMixedObject<BaseType1>(typeof(MixinIntroducingInheritedInterface));
-      Assert.That(((IMixinIII1) bt1).Method1(), Is.EqualTo("MixinIntroducingInheritedInterface.Method1"));
-      Assert.That(((IMixinIII2) bt1).Method1(), Is.EqualTo("MixinIntroducingInheritedInterface.Method1"));
-      Assert.That(((IMixinIII2) bt1).Method2(), Is.EqualTo("MixinIntroducingInheritedInterface.Method2"));
-      Assert.That(((IMixinIII3) bt1).Method3(), Is.EqualTo("MixinIntroducingInheritedInterface.Method3"));
-      Assert.That(((IMixinIII4) bt1).Method4(), Is.EqualTo("MixinIntroducingInheritedInterface.Method4"));
-      Assert.That(((IMixinIII4) bt1).Method2(), Is.EqualTo("MixinIntroducingInheritedInterface.Method2"));
+      Assert.That(((IMixinIII1)bt1).Method1(), Is.EqualTo("MixinIntroducingInheritedInterface.Method1"));
+      Assert.That(((IMixinIII2)bt1).Method1(), Is.EqualTo("MixinIntroducingInheritedInterface.Method1"));
+      Assert.That(((IMixinIII2)bt1).Method2(), Is.EqualTo("MixinIntroducingInheritedInterface.Method2"));
+      Assert.That(((IMixinIII3)bt1).Method3(), Is.EqualTo("MixinIntroducingInheritedInterface.Method3"));
+      Assert.That(((IMixinIII4)bt1).Method4(), Is.EqualTo("MixinIntroducingInheritedInterface.Method4"));
+      Assert.That(((IMixinIII4)bt1).Method2(), Is.EqualTo("MixinIntroducingInheritedInterface.Method2"));
     }
 
     [Test]
@@ -169,7 +169,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
       Type t = CreateMixedType(typeof(NullTarget), typeof(MixinIntroducingMembersWithDifferentVisibilities));
 
       MethodInfo methodInfo = t.GetMethod("MethodWithPublicVisibility", BindingFlags.Public | BindingFlags.Instance);
-      var methodAttribute = (IntroducedMemberAttribute) methodInfo.GetCustomAttributes(typeof(IntroducedMemberAttribute), false).Single();
+      var methodAttribute = (IntroducedMemberAttribute)methodInfo.GetCustomAttributes(typeof(IntroducedMemberAttribute), false).Single();
 
       Assert.That(methodAttribute.Mixin, Is.SameAs(typeof(MixinIntroducingMembersWithDifferentVisibilities)));
       Assert.That(methodAttribute.MixinMemberName, Is.EqualTo("MethodWithPublicVisibility"));
@@ -183,7 +183,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
       Type t = CreateMixedType(typeof(NullTarget), typeof(MixinIntroducingMembersWithDifferentVisibilities));
 
       PropertyInfo propertyInfo = t.GetProperty("PropertyWithPublicVisibility", BindingFlags.Public | BindingFlags.Instance);
-      var propertyAttribute = (IntroducedMemberAttribute) propertyInfo.GetCustomAttributes(typeof(IntroducedMemberAttribute), false).Single();
+      var propertyAttribute = (IntroducedMemberAttribute)propertyInfo.GetCustomAttributes(typeof(IntroducedMemberAttribute), false).Single();
 
       Assert.That(propertyAttribute.Mixin, Is.SameAs(typeof(MixinIntroducingMembersWithDifferentVisibilities)));
       Assert.That(propertyAttribute.MixinMemberName, Is.EqualTo("PropertyWithPublicVisibility"));
@@ -197,7 +197,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
       Type t = CreateMixedType(typeof(NullTarget), typeof(MixinIntroducingMembersWithDifferentVisibilities));
 
       EventInfo eventInfo = t.GetEvent("EventWithPublicVisibility", BindingFlags.Public | BindingFlags.Instance);
-      var eventAttribute = (IntroducedMemberAttribute) eventInfo.GetCustomAttributes(typeof(IntroducedMemberAttribute), false).Single();
+      var eventAttribute = (IntroducedMemberAttribute)eventInfo.GetCustomAttributes(typeof(IntroducedMemberAttribute), false).Single();
 
       Assert.That(eventAttribute.Mixin, Is.SameAs(typeof(MixinIntroducingMembersWithDifferentVisibilities)));
       Assert.That(eventAttribute.MixinMemberName, Is.EqualTo("EventWithPublicVisibility"));
@@ -211,7 +211,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
       Type t = CreateMixedType(typeof(NullTarget), typeof(MixinWithExplicitImplementation));
 
       MethodInfo methodInfo = t.GetMethod(typeof(IExplicit).FullName + ".Explicit", c_nonPublicFlags);
-      var methodAttribute = (IntroducedMemberAttribute) methodInfo.GetCustomAttributes(typeof(IntroducedMemberAttribute), false).Single();
+      var methodAttribute = (IntroducedMemberAttribute)methodInfo.GetCustomAttributes(typeof(IntroducedMemberAttribute), false).Single();
 
       Assert.That(methodAttribute.Mixin, Is.SameAs(typeof(MixinWithExplicitImplementation)));
       Assert.That(methodAttribute.MixinMemberName, Is.EqualTo(typeof(IExplicit).FullName + ".Explicit"));

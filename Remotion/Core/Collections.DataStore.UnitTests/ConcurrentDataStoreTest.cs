@@ -37,7 +37,7 @@ namespace Remotion.Collections.DataStore.UnitTests
     [Test]
     public void IsNull ()
     {
-      Assert.That(((INullObject) _store).IsNull, Is.False);
+      Assert.That(((INullObject)_store).IsNull, Is.False);
     }
 
     [Test]
@@ -657,7 +657,7 @@ namespace Remotion.Collections.DataStore.UnitTests
             _store.GetOrCreateValue("key", k => "value");
             _store.TryGetValue("key", out var value);
 
-            var stopwatch = (Stopwatch) arg;
+            var stopwatch = (Stopwatch)arg;
             stopwatch.Start();
 
             for (int i = 0; i < 1000; i++)

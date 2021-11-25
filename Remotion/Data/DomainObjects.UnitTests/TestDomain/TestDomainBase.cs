@@ -118,43 +118,43 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 
     public DataContainer GetInternalDataContainerForTransaction (ClientTransaction transaction)
     {
-      var dataManager = (DataManager) PrivateInvoke.GetNonPublicProperty(transaction, "DataManager");
+      var dataManager = (DataManager)PrivateInvoke.GetNonPublicProperty(transaction, "DataManager");
       return dataManager.GetDataContainerWithLazyLoad(ID, true);
     }
 
     public DomainObject GetRelatedObject (string propertyName)
     {
-      return (DomainObject) Properties[propertyName].GetValueWithoutTypeCheck();
+      return (DomainObject)Properties[propertyName].GetValueWithoutTypeCheck();
     }
 
     public IEnumerable GetRelatedObjects (string propertyName)
     {
-      return (IEnumerable) Properties[propertyName].GetValueWithoutTypeCheck();
+      return (IEnumerable)Properties[propertyName].GetValueWithoutTypeCheck();
     }
 
     public DomainObjectCollection GetRelatedObjectsAsDomainObjectCollection (string propertyName)
     {
-      return (DomainObjectCollection) Properties[propertyName].GetValueWithoutTypeCheck();
+      return (DomainObjectCollection)Properties[propertyName].GetValueWithoutTypeCheck();
     }
 
     public IReadOnlyList<DomainObject> GetRelatedObjectsAsVirtualCollection (string propertyName)
     {
-      return (IReadOnlyList<DomainObject>) Properties[propertyName].GetValueWithoutTypeCheck();
+      return (IReadOnlyList<DomainObject>)Properties[propertyName].GetValueWithoutTypeCheck();
     }
 
     public DomainObject GetOriginalRelatedObject (string propertyName)
     {
-      return (DomainObject) Properties[propertyName].GetOriginalValueWithoutTypeCheck();
+      return (DomainObject)Properties[propertyName].GetOriginalValueWithoutTypeCheck();
     }
 
     public DomainObjectCollection GetOriginalRelatedObjectsAsDomainObjectCollection (string propertyName)
     {
-      return (DomainObjectCollection) Properties[propertyName].GetOriginalValueWithoutTypeCheck();
+      return (DomainObjectCollection)Properties[propertyName].GetOriginalValueWithoutTypeCheck();
     }
 
     public IReadOnlyList<DomainObject> GetOriginalRelatedObjectsAsVirtualCollection (string propertyName)
     {
-      return (IReadOnlyList<DomainObject>) Properties[propertyName].GetOriginalValueWithoutTypeCheck();
+      return (IReadOnlyList<DomainObject>)Properties[propertyName].GetOriginalValueWithoutTypeCheck();
     }
 
     public void SetRelatedObject (string propertyName, DomainObject newRelatedObject)
@@ -176,7 +176,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
     [StorageClassNone]
     public bool NeedsLoadModeDataContainerOnly
     {
-      get { return (bool) PrivateInvoke.GetNonPublicField(this, typeof(DomainObject), "_needsLoadModeDataContainerOnly"); }
+      get { return (bool)PrivateInvoke.GetNonPublicField(this, typeof(DomainObject), "_needsLoadModeDataContainerOnly"); }
     }
 
     protected override void OnReferenceInitializing ()

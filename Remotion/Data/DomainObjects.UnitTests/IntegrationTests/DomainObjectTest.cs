@@ -578,14 +578,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
             Arg.Is(ClientTransactionScope.CurrentTransaction),
             Arg<OrderTicket>.Is.TypeOf,
             Arg.Is(GetEndPointDefinition(typeof(OrderTicket), "Order")),
-            Arg.Is((DomainObject) null),
+            Arg.Is((DomainObject)null),
             Arg.Is(newOrder1));
 
         extension.RelationChanging(
             Arg.Is(ClientTransactionScope.CurrentTransaction),
             Arg.Is(newOrder1),
             Arg.Is(GetEndPointDefinition(typeof(Order), "OrderTicket")),
-            Arg.Is((DomainObject) null),
+            Arg.Is((DomainObject)null),
             Arg<OrderTicket>.Is.TypeOf);
         newOrder1EventReceiver.RelationChanging(
             Arg.Is(newOrder1),
@@ -605,14 +605,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
             Arg.Is(ClientTransactionScope.CurrentTransaction),
             Arg.Is(newOrder1),
             Arg.Is(GetEndPointDefinition(typeof(Order), "OrderTicket")),
-            Arg.Is((DomainObject) null),
+            Arg.Is((DomainObject)null),
             Arg<OrderTicket>.Is.TypeOf);
 
         extension.RelationChanged(
             Arg.Is(ClientTransactionScope.CurrentTransaction),
             Arg<OrderTicket>.Is.TypeOf,
             Arg.Is(GetEndPointDefinition(typeof(OrderTicket), "Order")),
-            Arg.Is((DomainObject) null),
+            Arg.Is((DomainObject)null),
             Arg.Is(newOrder1));
       }
 

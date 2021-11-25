@@ -61,10 +61,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
         businessObject = TypeWithReference.Create();
         businessObject.ReferenceList = new TypeWithReference[0];
       }
-      BusinessObject = (IBusinessObject) businessObject;
+      BusinessObject = (IBusinessObject)businessObject;
       BusinessObject.BusinessObjectClass.BusinessObjectProvider.AddService<IBusinessObjectWebUIService>(new ReflectionBusinessObjectWebUIService());
 
-      EventArgs = new BocListDataRowRenderEventArgs(10, (IBusinessObject) businessObject.FirstValue, false, true);
+      EventArgs = new BocListDataRowRenderEventArgs(10, (IBusinessObject)businessObject.FirstValue, false, true);
 
       InitializeMockList();
     }
@@ -85,7 +85,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       List.Object.DataSource.BusinessObject = BusinessObject;
       List.Setup(list => list.Property).Returns(BusinessObject.BusinessObjectClass.GetPropertyDefinition("ReferenceList"));
 
-      var value = ((TypeWithReference) BusinessObject).ReferenceList;
+      var value = ((TypeWithReference)BusinessObject).ReferenceList;
       List.Setup(list => list.Value).Returns(value);
       List.Setup(list => list.HasValue).Returns(value != null && value.Length > 0);
 

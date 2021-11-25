@@ -104,7 +104,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var result = _agentPartialMock.CreateUnregisterEndPointsCommand(_orderDataContainer, _map);
 
       Assert.That(result, Is.TypeOf<UnregisterEndPointsCommand>());
-      Assert.That(((UnregisterEndPointsCommand) result).EndPoints, Is.Empty);
+      Assert.That(((UnregisterEndPointsCommand)result).EndPoints, Is.Empty);
     }
 
     [Test]
@@ -124,7 +124,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _agentPartialMock.VerifyAllExpectations();
       Assert.That(result, Is.TypeOf<UnregisterEndPointsCommand>());
       Assert.That(
-          ((UnregisterEndPointsCommand) result).EndPoints, Is.EqualTo(new IRelationEndPoint[] { _orderTicketEndPointMock, _customerEndPointStub }));
+          ((UnregisterEndPointsCommand)result).EndPoints, Is.EqualTo(new IRelationEndPoint[] { _orderTicketEndPointMock, _customerEndPointStub }));
     }
 
     [Test]
@@ -144,7 +144,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _agentPartialMock.VerifyAllExpectations();
       Assert.That(result, Is.TypeOf<ExceptionCommand>());
       Assert.That(
-          ((ExceptionCommand) result).Exception.Message,
+          ((ExceptionCommand)result).Exception.Message,
           Is.EqualTo(
               "The relations of object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be unloaded.\r\nOh no!\r\nOh no 2!"));
     }
@@ -166,7 +166,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _agentPartialMock.VerifyAllExpectations();
       Assert.That(result, Is.TypeOf<ExceptionCommand>());
       Assert.That(
-          ((ExceptionCommand) result).Exception.Message, Is.EqualTo(
+          ((ExceptionCommand)result).Exception.Message, Is.EqualTo(
             "The relations of object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be unloaded.\r\nOh no!"));
     }
   }

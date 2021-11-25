@@ -39,7 +39,7 @@ public class WxeTestPageFunction : WxeFunction
 
   public ClientTransaction CurrentClientTransaction
   {
-    get { return (ClientTransaction) Variables["CurrentClientTransaction"]; }
+    get { return (ClientTransaction)Variables["CurrentClientTransaction"]; }
     set { Variables["CurrentClientTransaction"] = value;}
   }
 

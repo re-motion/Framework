@@ -69,7 +69,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     public static T CreateWithComponents<T> (IClientTransactionComponentFactory componentFactory) where T : ClientTransaction
     {
-      return (T) PrivateInvoke.CreateInstanceNonPublicCtor(typeof(T), componentFactory);
+      return (T)PrivateInvoke.CreateInstanceNonPublicCtor(typeof(T), componentFactory);
     }
 
     public static T CreateWithComponents<T> (

@@ -35,7 +35,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       propertyInformationStub.Setup(stub => stub.PropertyType).Returns(typeof(bool));
       propertyInformationStub.Setup(stub => stub.GetIndexParameters()).Returns(new ParameterInfo[0]);
       var property = CreateProperty(propertyInformationStub.Object);
-      var strategy = (IDefaultValueStrategy) new BindableObjectDefaultValueStrategy();
+      var strategy = (IDefaultValueStrategy)new BindableObjectDefaultValueStrategy();
 
       Assert.That(strategy.IsDefaultValue(businessObjectStub.Object, property), Is.False);
     }

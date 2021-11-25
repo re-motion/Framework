@@ -27,7 +27,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests.Val
 
       Assert.That(instance, Is.InstanceOf<CompoundValidatorFactory<IBocMultilineTextValue>>());
 
-      var factories = ((CompoundValidatorFactory<IBocMultilineTextValue>) instance).VlidatorFactories;
+      var factories = ((CompoundValidatorFactory<IBocMultilineTextValue>)instance).VlidatorFactories;
       Assert.That(
           factories.Select(f => f.GetType()),
           Is.EqualTo(new[] { typeof(BocMultilineTextValueValidatorFactory), typeof(ValidationBusinessObjectBoundEditableWebControlValidatorFactory) }));

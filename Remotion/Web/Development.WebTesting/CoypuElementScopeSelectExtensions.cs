@@ -54,7 +54,7 @@ namespace Remotion.Web.Development.WebTesting
       return RetryUntilTimeout.Run(
           () =>
           {
-            var webElement = (IWebElement) scope.Native;
+            var webElement = (IWebElement)scope.Native;
 
             var select = new SelectElement(webElement);
             var selectedOption = select.SelectedOption;

@@ -365,13 +365,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       var result = typeInfo1.UnifyForEquivalentProperties(new[] { typeInfo2, typeInfo3 });
 
       Assert.That(result, Is.TypeOf<StorageTypeInformation>());
-      Assert.That(((StorageTypeInformation) result).StorageType, Is.SameAs(typeof(string)));
-      Assert.That(((StorageTypeInformation) result).StorageTypeName, Is.EqualTo("X"));
-      Assert.That(((StorageTypeInformation) result).StorageDbType, Is.EqualTo(DbType.Int32));
-      Assert.That(((StorageTypeInformation) result).IsStorageTypeNullable, Is.False);
-      Assert.That(((StorageTypeInformation) result).StorageTypeLength, Is.EqualTo(5));
-      Assert.That(((StorageTypeInformation) result).DotNetType, Is.SameAs(typeof(int)));
-      Assert.That(((StorageTypeInformation) result).DotNetTypeConverter, Is.SameAs(typeInfo1.DotNetTypeConverter));
+      Assert.That(((StorageTypeInformation)result).StorageType, Is.SameAs(typeof(string)));
+      Assert.That(((StorageTypeInformation)result).StorageTypeName, Is.EqualTo("X"));
+      Assert.That(((StorageTypeInformation)result).StorageDbType, Is.EqualTo(DbType.Int32));
+      Assert.That(((StorageTypeInformation)result).IsStorageTypeNullable, Is.False);
+      Assert.That(((StorageTypeInformation)result).StorageTypeLength, Is.EqualTo(5));
+      Assert.That(((StorageTypeInformation)result).DotNetType, Is.SameAs(typeof(int)));
+      Assert.That(((StorageTypeInformation)result).DotNetTypeConverter, Is.SameAs(typeInfo1.DotNetTypeConverter));
     }
 
     [Test]
@@ -384,7 +384,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       var result = typeInfo1.UnifyForEquivalentProperties(new[] { typeInfo2, typeInfo3 });
 
       Assert.That(result, Is.TypeOf<StorageTypeInformation>());
-      Assert.That(((StorageTypeInformation) result).IsStorageTypeNullable, Is.True);
+      Assert.That(((StorageTypeInformation)result).IsStorageTypeNullable, Is.True);
     }
 
     [Test]
@@ -397,7 +397,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       var result = typeInfo1.UnifyForEquivalentProperties(new[] { typeInfo2, typeInfo3 });
 
       Assert.That(result, Is.TypeOf<StorageTypeInformation>());
-      Assert.That(((StorageTypeInformation) result).IsStorageTypeNullable, Is.True);
+      Assert.That(((StorageTypeInformation)result).IsStorageTypeNullable, Is.True);
     }
 
     [Test]

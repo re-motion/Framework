@@ -190,7 +190,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
       Assert.That(functionState.FunctionToken, Is.Not.Null);
       Assert.That(functionState.Function, Is.Not.Null);
       Assert.That(functionState.Function.GetType(), Is.EqualTo(_functionType));
-      TestFunction testFunction = (TestFunction) functionState.Function;
+      TestFunction testFunction = (TestFunction)functionState.Function;
       Assert.That(testFunction.Parameter1, Is.EqualTo(agrumentValue));
 
       WxeFunctionState expiredFunctionState = WxeFunctionStateManager.Current.GetItem(c_functionTokenForExpiredFunctionState);
@@ -544,7 +544,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     {
       CurrentHttpContext.Items["Test"] = new object();
       _wxeHandler.ExecuteFunctionState(CurrentHttpContext, _functionStateWithEnabledCleanUp, true);
-      TestFunction function = (TestFunction) _functionStateWithEnabledCleanUp.Function;
+      TestFunction function = (TestFunction)_functionStateWithEnabledCleanUp.Function;
 
       WxeContext wxeContext = function.TestStep.WxeContext;
       Assert.That(wxeContext, Is.SameAs(WxeContext.Current));
@@ -564,7 +564,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     [Test]
     public void ExecuteFunction ()
     {
-      TestFunction function = (TestFunction) _functionStateWithEnabledCleanUp.Function;
+      TestFunction function = (TestFunction)_functionStateWithEnabledCleanUp.Function;
       _wxeHandler.ExecuteFunction(function, CurrentWxeContext, true);
 
       WxeContext wxeContext = function.TestStep.WxeContext;
@@ -580,7 +580,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     [Test]
     public void ExecuteAbortedFunction ()
     {
-      TestFunction function = (TestFunction) _functionStateAborted.Function;
+      TestFunction function = (TestFunction)_functionStateAborted.Function;
       Assert.That(
           () => _wxeHandler.ExecuteFunction(function, CurrentWxeContext, true),
           Throws.ArgumentException);

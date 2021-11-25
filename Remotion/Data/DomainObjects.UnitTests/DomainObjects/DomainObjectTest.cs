@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       ResourceManager.IsEqualToImage1(classWithAllDataTypes.BinaryProperty, "BinaryProperty");
 
       Assert.That(classWithAllDataTypes.NaBooleanProperty, Is.EqualTo(true), "NaBooleanProperty");
-      Assert.That(classWithAllDataTypes.NaByteProperty, Is.EqualTo((byte) 78), "NaByteProperty");
+      Assert.That(classWithAllDataTypes.NaByteProperty, Is.EqualTo((byte)78), "NaByteProperty");
       Assert.That(classWithAllDataTypes.NaDateProperty, Is.EqualTo(new DateTime(2005, 2, 1)), "NaDateProperty");
       Assert.That(classWithAllDataTypes.NaDateTimeProperty, Is.EqualTo(new DateTime(2005, 2, 1, 5, 0, 0)), "NaDateTimeProperty");
       Assert.That(classWithAllDataTypes.NaDecimalProperty, Is.EqualTo(765.098m), "NaDecimalProperty");
@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That(classWithAllDataTypes.NaEnumProperty, Is.EqualTo(ClassWithAllDataTypes.EnumType.Value2), "NaEnumProperty");
       Assert.That(classWithAllDataTypes.NaFlagsProperty, Is.EqualTo(ClassWithAllDataTypes.FlagsType.Flag1 | ClassWithAllDataTypes.FlagsType.Flag2), "NaFlagsProperty");
       Assert.That(classWithAllDataTypes.NaGuidProperty, Is.EqualTo(new Guid("{19B2DFBE-B7BB-448e-8002-F4DBF6032AE8}")), "NaGuidProperty");
-      Assert.That(classWithAllDataTypes.NaInt16Property, Is.EqualTo((short) 12000), "NaInt16Property");
+      Assert.That(classWithAllDataTypes.NaInt16Property, Is.EqualTo((short)12000), "NaInt16Property");
       Assert.That(classWithAllDataTypes.NaInt32Property, Is.EqualTo(-2147483647), "NaInt32Property");
       Assert.That(classWithAllDataTypes.NaInt64Property, Is.EqualTo(3147483647L), "NaInt64Property");
       Assert.That(classWithAllDataTypes.NaSingleProperty, Is.EqualTo(12.456F), "NaSingleProperty");
@@ -112,7 +112,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That(company, Is.Not.Null);
 
       Assert.That(company, Is.InstanceOf(typeof(Partner)));
-      var partner = (Partner) company;
+      var partner = (Partner)company;
 
       Assert.That(partner.ID, Is.EqualTo(DomainObjectIDs.Partner2), "ID");
       Assert.That(partner.Name, Is.EqualTo("Partner 2"), "Name");
@@ -127,7 +127,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That(company, Is.Not.Null);
 
       Assert.That(company, Is.InstanceOf(typeof(Supplier)));
-      var supplier = (Supplier) company;
+      var supplier = (Supplier)company;
 
       Assert.That(supplier.ID, Is.EqualTo(DomainObjectIDs.Supplier1));
       Assert.That(supplier.Name, Is.EqualTo("Lieferant 1"), "Name");
@@ -661,7 +661,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void MultiplePropertiesWithSameShortName ()
     {
-      var derivedClass = (DerivedClassWithDifferentProperties) LifetimeService.NewObject(TestableClientTransaction, typeof(DerivedClassWithDifferentProperties), ParamList.Empty);
+      var derivedClass = (DerivedClassWithDifferentProperties)LifetimeService.NewObject(TestableClientTransaction, typeof(DerivedClassWithDifferentProperties), ParamList.Empty);
       ClassWithDifferentProperties baseClass = derivedClass;
 
       derivedClass.String = "Derived";

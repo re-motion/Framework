@@ -209,7 +209,7 @@ namespace Remotion.Utilities
         case TypeCode.Int16:
         case TypeCode.Int32:
         case TypeCode.Int64:
-          return (ulong) Convert.ToInt64(value, CultureInfo.InvariantCulture);
+          return (ulong)Convert.ToInt64(value, CultureInfo.InvariantCulture);
 
         case TypeCode.Byte:
         case TypeCode.UInt16:

@@ -341,7 +341,7 @@ public class StringUtilityTest
     object value = StringUtility.Parse(_doubleArray, @"6\,543.123,5\,432.123,4\,321.123", CultureInfo.InvariantCulture);
     Assert.That(value, Is.Not.Null);
     Assert.That(value.GetType(), Is.EqualTo(_doubleArray));
-    double[] values = (double[]) value;
+    double[] values = (double[])value;
     Assert.That(values.Length, Is.EqualTo(3));
     Assert.That(values[0], Is.EqualTo(6543.123));
     Assert.That(values[1], Is.EqualTo(5432.123));
@@ -355,7 +355,7 @@ public class StringUtilityTest
     object value = StringUtility.Parse(_doubleArray, @"6543.123,5432.123,4321.123", CultureInfo.InvariantCulture);
     Assert.That(value, Is.Not.Null);
     Assert.That(value.GetType(), Is.EqualTo(_doubleArray));
-    double[] values = (double[]) value;
+    double[] values = (double[])value;
     Assert.That(values.Length, Is.EqualTo(3));
     Assert.That(values[0], Is.EqualTo(6543.123));
     Assert.That(values[1], Is.EqualTo(5432.123));
@@ -370,7 +370,7 @@ public class StringUtilityTest
     object value = StringUtility.Parse(_doubleArray, @"6\,543.123,5\,432.123,4\,321.123", _cultureEnUs);
     Assert.That(value, Is.Not.Null);
     Assert.That(value.GetType(), Is.EqualTo(_doubleArray));
-    double[] values = (double[]) value;
+    double[] values = (double[])value;
     Assert.That(values.Length, Is.EqualTo(3));
     Assert.That(values[0], Is.EqualTo(6543.123));
     Assert.That(values[1], Is.EqualTo(5432.123));
@@ -384,7 +384,7 @@ public class StringUtilityTest
     object value = StringUtility.Parse(_doubleArray, @"6543.123,5432.123,4321.123", _cultureEnUs);
     Assert.That(value, Is.Not.Null);
     Assert.That(value.GetType(), Is.EqualTo(_doubleArray));
-    double[] values = (double[]) value;
+    double[] values = (double[])value;
     Assert.That(values.Length, Is.EqualTo(3));
     Assert.That(values[0], Is.EqualTo(6543.123));
     Assert.That(values[1], Is.EqualTo(5432.123));
@@ -399,7 +399,7 @@ public class StringUtilityTest
     object value = StringUtility.Parse(_doubleArray, @"6.543\,123,5.432\,123,4.321\,123", _cultureDeDe);
     Assert.That(value, Is.Not.Null);
     Assert.That(value.GetType(), Is.EqualTo(_doubleArray));
-    double[] values = (double[]) value;
+    double[] values = (double[])value;
     Assert.That(values.Length, Is.EqualTo(3));
     Assert.That(values[0], Is.EqualTo(6543.123));
     Assert.That(values[1], Is.EqualTo(5432.123));
@@ -412,7 +412,7 @@ public class StringUtilityTest
     object value = StringUtility.Parse(_stringArray, "\"a\",\"b\",\"c\",\"d\"", null);
     Assert.That(value, Is.Not.Null);
     Assert.That(value.GetType(), Is.EqualTo(_stringArray));
-    string[] values = (string[]) value;
+    string[] values = (string[])value;
     Assert.That(values.Length, Is.EqualTo(4));
     Assert.That(values[0], Is.EqualTo("a"));
     Assert.That(values[1], Is.EqualTo("b"));

@@ -164,9 +164,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       var result = property1.UnifyWithEquivalentProperties(new[] { property2, property3 });
 
       Assert.That(result, Is.TypeOf<SimpleStoragePropertyDefinition>().With.Property("PropertyType").SameAs(typeof(int)));
-      Assert.That(((SimpleStoragePropertyDefinition) result).ColumnDefinition.Name, Is.EqualTo("Col"));
-      Assert.That(((SimpleStoragePropertyDefinition) result).ColumnDefinition.StorageTypeInfo.IsStorageTypeNullable, Is.True);
-      Assert.That(((SimpleStoragePropertyDefinition) result).ColumnDefinition.IsPartOfPrimaryKey, Is.EqualTo(isPartOfPrimaryKey));
+      Assert.That(((SimpleStoragePropertyDefinition)result).ColumnDefinition.Name, Is.EqualTo("Col"));
+      Assert.That(((SimpleStoragePropertyDefinition)result).ColumnDefinition.StorageTypeInfo.IsStorageTypeNullable, Is.True);
+      Assert.That(((SimpleStoragePropertyDefinition)result).ColumnDefinition.IsPartOfPrimaryKey, Is.EqualTo(isPartOfPrimaryKey));
     }
 
     [Test]

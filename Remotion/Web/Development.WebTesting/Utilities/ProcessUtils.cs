@@ -149,7 +149,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     {
       ArgumentUtility.CheckNotNullOrItemsNull(nameof(processes), processes);
 
-      var timeoutInMilliseconds = (int) timeout.TotalMilliseconds;
+      var timeoutInMilliseconds = (int)timeout.TotalMilliseconds;
       if (timeoutInMilliseconds < 0)
         throw new ArgumentOutOfRangeException("timeout", "Timeout can not be smaller that zero.");
 
@@ -228,7 +228,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
         var timeToTimeoutEnd = sharedTimeout - stopwatch.Elapsed;
 
         // Use 0 (process.WaitForExit returns instantly) if we exceeded our timeout, otherwise use the remaining timeout
-        var remainingTimeoutInMilliseconds = Math.Max((int) timeToTimeoutEnd.TotalMilliseconds, 0);
+        var remainingTimeoutInMilliseconds = Math.Max((int)timeToTimeoutEnd.TotalMilliseconds, 0);
         if (!process.WaitForExit(remainingTimeoutInMilliseconds))
           remainingProcesses.Add(process);
       }

@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     [WxeParameter (1, false, WxeParameterDirection.In)]
     public IDomainObjectHandle<SecurableDomainObject> SecurableParameter
     {
-      get { return (IDomainObjectHandle<SecurableDomainObject>) Variables["SecurableParameter"]; }
+      get { return (IDomainObjectHandle<SecurableDomainObject>)Variables["SecurableParameter"]; }
       set { Variables["SecurableParameter"] = value; }
     }
 

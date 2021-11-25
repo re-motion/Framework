@@ -105,7 +105,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
       Type generatedType = TypeFactory.GetConcreteType(typeof(BaseType3));
       Assert.That(generatedType.IsDefined(typeof(ConcreteMixedTypeAttribute), false), Is.True);
 
-      var attributes = (ConcreteMixedTypeAttribute[]) generatedType.GetCustomAttributes(typeof(ConcreteMixedTypeAttribute), false);
+      var attributes = (ConcreteMixedTypeAttribute[])generatedType.GetCustomAttributes(typeof(ConcreteMixedTypeAttribute), false);
       Assert.That(attributes.Length, Is.EqualTo(1));
     }
 
@@ -115,7 +115,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
       Type generatedType = TypeFactory.GetConcreteType(typeof(BaseType3));
       Assert.That(generatedType.IsDefined(typeof(DebuggerDisplayAttribute), false), Is.True);
 
-      var attributes = (DebuggerDisplayAttribute[]) generatedType.GetCustomAttributes(typeof(DebuggerDisplayAttribute), false);
+      var attributes = (DebuggerDisplayAttribute[])generatedType.GetCustomAttributes(typeof(DebuggerDisplayAttribute), false);
       Assert.That(attributes.Length, Is.EqualTo(1));
     }
 
@@ -123,7 +123,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     public void DebuggerDisplayAttribute_NotAddedIfExistsViaMixin ()
     {
       Type generatedType = CreateMixedType(typeof(NullTarget), typeof(MixinAddingDebuggerDisplay));
-      var attributes = (DebuggerDisplayAttribute[]) generatedType.GetCustomAttributes(typeof(DebuggerDisplayAttribute), false);
+      var attributes = (DebuggerDisplayAttribute[])generatedType.GetCustomAttributes(typeof(DebuggerDisplayAttribute), false);
       Assert.That(attributes.Length, Is.EqualTo(1));
       Assert.That(attributes[0].Value, Is.EqualTo("Y"));
     }
@@ -132,10 +132,10 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     public void DebuggerDisplayAttribute_NotAddedIfAlreadyExistsOnTargetClass ()
     {
       Type generatedType = CreateMixedType(typeof(ClassWithDebuggerDisplay), typeof(NullMixin));
-      var attributes = (DebuggerDisplayAttribute[]) generatedType.GetCustomAttributes(typeof(DebuggerDisplayAttribute), false);
+      var attributes = (DebuggerDisplayAttribute[])generatedType.GetCustomAttributes(typeof(DebuggerDisplayAttribute), false);
       Assert.That(attributes.Length, Is.EqualTo(0));
 
-      attributes = (DebuggerDisplayAttribute[]) generatedType.GetCustomAttributes(typeof(DebuggerDisplayAttribute), true);
+      attributes = (DebuggerDisplayAttribute[])generatedType.GetCustomAttributes(typeof(DebuggerDisplayAttribute), true);
       Assert.That(attributes.Length, Is.EqualTo(1));
       Assert.That(attributes[0].Value, Is.EqualTo("On Target"));
     }
@@ -144,10 +144,10 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     public void DebuggerDisplayAttribute_NotAddedIfAlreadyExistsOnTargetClassBase ()
     {
       Type generatedType = CreateMixedType(typeof(ClassInheritingDebuggerDisplay), typeof(NullMixin));
-      var attributes = (DebuggerDisplayAttribute[]) generatedType.GetCustomAttributes(typeof(DebuggerDisplayAttribute), false);
+      var attributes = (DebuggerDisplayAttribute[])generatedType.GetCustomAttributes(typeof(DebuggerDisplayAttribute), false);
       Assert.That(attributes.Length, Is.EqualTo(0));
 
-      attributes = (DebuggerDisplayAttribute[]) generatedType.GetCustomAttributes(typeof(DebuggerDisplayAttribute), true);
+      attributes = (DebuggerDisplayAttribute[])generatedType.GetCustomAttributes(typeof(DebuggerDisplayAttribute), true);
       Assert.That(attributes.Length, Is.EqualTo(1));
       Assert.That(attributes[0].Value, Is.EqualTo("On Target"));
     }
@@ -156,7 +156,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     public void MixedTypeAttribute_GetsClassContext ()
     {
       Type generatedType = TypeFactory.GetConcreteType(typeof(BaseType3));
-      var attributes = (ConcreteMixedTypeAttribute[]) generatedType.GetCustomAttributes(typeof(ConcreteMixedTypeAttribute), false);
+      var attributes = (ConcreteMixedTypeAttribute[])generatedType.GetCustomAttributes(typeof(ConcreteMixedTypeAttribute), false);
       ClassContext context = attributes[0].GetClassContext();
       Assert.That(context, Is.EqualTo(MixinConfiguration.ActiveConfiguration.GetContext(typeof(BaseType3))));
     }
@@ -165,7 +165,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     public void MixedTypeAttribute_GetsOrderedMixinTypes ()
     {
       Type generatedType = TypeFactory.GetConcreteType(typeof(BaseType7));
-      var attributes = (ConcreteMixedTypeAttribute[]) generatedType.GetCustomAttributes(typeof(ConcreteMixedTypeAttribute), false);
+      var attributes = (ConcreteMixedTypeAttribute[])generatedType.GetCustomAttributes(typeof(ConcreteMixedTypeAttribute), false);
 
       Assert.That(attributes[0].OrderedMixinTypes, Is.EqualTo(BigTestDomainScenarioTest.ExpectedBaseType7OrderedMixinTypesSmall));
     }
@@ -174,7 +174,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     public void MixedTypeAttribute_GetsClosedGenericMixinTypes ()
     {
       Type generatedType = TypeFactory.GetConcreteType(typeof(BaseType3));
-      var attributes = (ConcreteMixedTypeAttribute[]) generatedType.GetCustomAttributes(typeof(ConcreteMixedTypeAttribute), false);
+      var attributes = (ConcreteMixedTypeAttribute[])generatedType.GetCustomAttributes(typeof(ConcreteMixedTypeAttribute), false);
 
       Assert.That(attributes[0].OrderedMixinTypes, Has.Member(typeof(BT3Mixin3<BaseType3, IBaseType33>)));
     }
@@ -239,7 +239,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void IMixinTarget ()
     {
-      var mixinTarget = (IMixinTarget) ObjectFactory.Create<BaseType1>(ParamList.Empty);
+      var mixinTarget = (IMixinTarget)ObjectFactory.Create<BaseType1>(ParamList.Empty);
 
       var expectedClassContext = MixinConfiguration.ActiveConfiguration.GetContext(typeof(BaseType1));
       Assert.That(mixinTarget.ClassContext, Is.Not.Null);

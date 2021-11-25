@@ -76,7 +76,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     void IDomainObjectCollectionData.EnsureDataComplete ()
     {
-      Assertion.IsTrue(((IDomainObjectCollectionData) this).IsDataComplete);
+      Assertion.IsTrue(((IDomainObjectCollectionData)this).IsDataComplete);
     }
 
     public bool ContainsObjectID (ObjectID objectID)

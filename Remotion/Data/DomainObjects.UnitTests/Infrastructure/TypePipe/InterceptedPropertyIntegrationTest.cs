@@ -169,7 +169,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     public void WrongConstructorCannotBeInstantiated ()
     {
       Assert.That(
-          () => LifetimeService.NewObject(TestableClientTransaction, typeof(Order), ParamList.Create("foo", "bar", "foobar", (object) null)),
+          () => LifetimeService.NewObject(TestableClientTransaction, typeof(Order), ParamList.Create("foo", "bar", "foobar", (object)null)),
           NUnit.Framework.Throws.InstanceOf<MissingMethodException>()
               .With.Message.EqualTo(
                   "Type 'Remotion.Data.DomainObjects.UnitTests.TestDomain."
@@ -411,7 +411,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     public void AccessingInterceptedProperties_ViaReflection_GetProperty ()
     {
       Order order = DomainObjectIDs.Order1.GetObject<Order>();
-      var propertyInfo = ((object) order).GetType().GetProperty("OrderNumber");
+      var propertyInfo = ((object)order).GetType().GetProperty("OrderNumber");
       Assert.That(propertyInfo, Is.Not.Null);
       Assert.That(propertyInfo.GetValue(order, null), Is.EqualTo(1));
     }
@@ -420,7 +420,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     public void AccessingInterceptedProperties_ViaReflection_GetProperties ()
     {
       Order order = DomainObjectIDs.Order1.GetObject<Order>();
-      var propertyInfos = ((object) order).GetType().GetProperties();
+      var propertyInfos = ((object)order).GetType().GetProperties();
       var orderNumberProperty = propertyInfos.SingleOrDefault(pi => pi.Name == "OrderNumber");
 
       Assert.That(orderNumberProperty, Is.Not.Null);
@@ -428,7 +428,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
 
     private bool WasCreatedByFactory (object o)
     {
-      var pipeline = ((DomainObjectCreator) DomainObjectIDs.Order1.ClassDefinition.InstanceCreator).PipelineRegistry.DefaultPipeline;
+      var pipeline = ((DomainObjectCreator)DomainObjectIDs.Order1.ClassDefinition.InstanceCreator).PipelineRegistry.DefaultPipeline;
       return pipeline.ReflectionService.IsAssembledType(o.GetType());
     }
 

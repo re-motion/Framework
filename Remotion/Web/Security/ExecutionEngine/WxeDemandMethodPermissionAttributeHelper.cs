@@ -205,7 +205,7 @@ namespace Remotion.Web.Security.ExecutionEngine
     private static Tuple<Type, object?> GetActualParameterTypeAndValue (Type declaredParameterType, object? parameterValue)
     {
       if (parameterValue == null)
-        return Tuple.Create<Type, object?>(declaredParameterType, (object?) null);
+        return Tuple.Create<Type, object?>(declaredParameterType, (object?)null);
 
       var handleAttribute = GetHandleAttribute(declaredParameterType);
       if (handleAttribute != null)
@@ -216,7 +216,7 @@ namespace Remotion.Web.Security.ExecutionEngine
 
     private static IHandleAttribute? GetHandleAttribute (Type declaredParameterType)
     {
-      return ((IHandleAttribute[]) declaredParameterType.GetCustomAttributes(typeof(IHandleAttribute), true)).FirstOrDefault();
+      return ((IHandleAttribute[])declaredParameterType.GetCustomAttributes(typeof(IHandleAttribute), true)).FirstOrDefault();
     }
   }
 }

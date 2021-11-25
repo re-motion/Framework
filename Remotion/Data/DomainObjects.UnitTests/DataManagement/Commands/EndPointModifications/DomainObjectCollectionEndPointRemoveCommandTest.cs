@@ -119,7 +119,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     public void ExpandToAllRelatedObjects ()
     {
       var removedEndPointID = RelationEndPointObjectMother.CreateRelationEndPointID(_removedRelatedObject.ID, "Customer");
-      var removedEndPoint = (IObjectEndPoint) DataManager.GetRelationEndPointWithoutLoading(removedEndPointID);
+      var removedEndPoint = (IObjectEndPoint)DataManager.GetRelationEndPointWithoutLoading(removedEndPointID);
       Assert.That(removedEndPoint, Is.Not.Null);
 
       EndPointProviderStub.Stub(stub => stub.GetRelationEndPointWithLazyLoad(removedEndPoint.ID)).Return(removedEndPoint);
@@ -132,7 +132,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
 
       // _removedRelatedObject.Customer = null
       Assert.That(steps[0], Is.InstanceOf(typeof(RealObjectEndPointRegistrationCommandDecorator)));
-      var setCustomerCommand = ((ObjectEndPointSetCommand) ((RealObjectEndPointRegistrationCommandDecorator) steps[0]).DecoratedCommand);
+      var setCustomerCommand = ((ObjectEndPointSetCommand)((RealObjectEndPointRegistrationCommandDecorator)steps[0]).DecoratedCommand);
       Assert.That(setCustomerCommand.ModifiedEndPoint, Is.SameAs(removedEndPoint));
       Assert.That(setCustomerCommand.OldRelatedObject, Is.SameAs(DomainObject));
       Assert.That(setCustomerCommand.NewRelatedObject, Is.Null);

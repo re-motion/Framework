@@ -274,7 +274,7 @@ namespace Remotion.Web.ExecutionEngine
           sb.Append(", ");
         object value = _variablesContainer.ActualParameters[i];
         if (value is WxeVariableReference)
-          sb.Append("@" + ((WxeVariableReference) value).Name);
+          sb.Append("@" + ((WxeVariableReference)value).Name);
         else if (value is string)
           sb.AppendFormat("\"{0}\"", value);
         else

@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     {
       var instance = SampleBindableDomainObject.NewObject();
       var property = GetProperty(instance);
-      var strategy = (IBindablePropertyWriteAccessStrategy) new BindableDomainObjectPropertyWriteAccessStrategy();
+      var strategy = (IBindablePropertyWriteAccessStrategy)new BindableDomainObjectPropertyWriteAccessStrategy();
 
       Assert.That(instance.State.IsNew, Is.True);
 
@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     {
       var instance = SampleBindableDomainObject.NewObject();
       var property = GetProperty(instance);
-      var strategy = (IBindablePropertyWriteAccessStrategy) new BindableDomainObjectPropertyWriteAccessStrategy();
+      var strategy = (IBindablePropertyWriteAccessStrategy)new BindableDomainObjectPropertyWriteAccessStrategy();
 
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
@@ -76,7 +76,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     {
       var instance = SampleBindableDomainObject.NewObject();
       var property = GetProperty(instance);
-      var strategy = (IBindablePropertyWriteAccessStrategy) new BindableDomainObjectPropertyWriteAccessStrategy();
+      var strategy = (IBindablePropertyWriteAccessStrategy)new BindableDomainObjectPropertyWriteAccessStrategy();
 
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
@@ -93,7 +93,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     {
       var instance = SampleBindableDomainObject.NewObject();
       var property = GetProperty(instance);
-      var strategy = (IBindablePropertyWriteAccessStrategy) new BindableDomainObjectPropertyWriteAccessStrategy();
+      var strategy = (IBindablePropertyWriteAccessStrategy)new BindableDomainObjectPropertyWriteAccessStrategy();
 
       LifetimeService.DeleteObject(instance.DefaultTransactionContext.ClientTransaction, instance);
       Assert.That(instance.State.IsInvalid, Is.True);
@@ -108,7 +108,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     {
       var instance = SampleBindableDomainObject.NewObject();
       var property = GetProperty(instance);
-      var strategy = (IBindablePropertyWriteAccessStrategy) new BindableDomainObjectPropertyWriteAccessStrategy();
+      var strategy = (IBindablePropertyWriteAccessStrategy)new BindableDomainObjectPropertyWriteAccessStrategy();
 
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
@@ -126,7 +126,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     {
       var instance = SampleBindableDomainObject.NewObject();
       var property = GetProperty(instance);
-      var strategy = (IBindablePropertyWriteAccessStrategy) new BindableDomainObjectPropertyWriteAccessStrategy();
+      var strategy = (IBindablePropertyWriteAccessStrategy)new BindableDomainObjectPropertyWriteAccessStrategy();
 
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
@@ -142,12 +142,12 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     [Test]
     public void CanWrite_NotLoadedObject_LoadsNonExistentObject_ReturnsFalse ()
     {
-      var instance = (SampleBindableDomainObject) LifetimeService.GetObjectReference(
+      var instance = (SampleBindableDomainObject)LifetimeService.GetObjectReference(
           ClientTransaction.Current,
           new ObjectID(typeof(SampleBindableDomainObject), Guid.NewGuid()));
 
       var property = GetProperty(instance);
-      var strategy = (IBindablePropertyWriteAccessStrategy) new BindableDomainObjectPropertyWriteAccessStrategy();
+      var strategy = (IBindablePropertyWriteAccessStrategy)new BindableDomainObjectPropertyWriteAccessStrategy();
 
       Assert.That(instance.State.IsNotLoadedYet, Is.True);
 
@@ -163,7 +163,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       var instance = MockRepository.GenerateStub<IBusinessObject>();
       var property = GetProperty(SampleBindableDomainObject.NewObject());
 
-      var strategy = (IBindablePropertyWriteAccessStrategy) new BindableDomainObjectPropertyWriteAccessStrategy();
+      var strategy = (IBindablePropertyWriteAccessStrategy)new BindableDomainObjectPropertyWriteAccessStrategy();
       var result = strategy.CanWrite(instance, property);
 
       Assert.That(result, Is.True);
@@ -174,7 +174,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     {
       var property = GetProperty(SampleBindableDomainObject.NewObject());
 
-      var strategy = (IBindablePropertyWriteAccessStrategy) new BindableDomainObjectPropertyWriteAccessStrategy();
+      var strategy = (IBindablePropertyWriteAccessStrategy)new BindableDomainObjectPropertyWriteAccessStrategy();
       var result = strategy.CanWrite(null, property);
 
       Assert.That(result, Is.True);
@@ -185,7 +185,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     {
       var instance = SampleBindableDomainObject.NewObject();
       var property = GetProperty(instance);
-      var strategy = (IBindablePropertyWriteAccessStrategy) new BindableDomainObjectPropertyWriteAccessStrategy();
+      var strategy = (IBindablePropertyWriteAccessStrategy)new BindableDomainObjectPropertyWriteAccessStrategy();
       var originalException = new ObjectInvalidException("The Message");
 
       BusinessObjectPropertyAccessException actualException;
@@ -205,7 +205,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     {
       var instance = SampleBindableDomainObject.NewObject();
       var property = GetProperty(instance);
-      var strategy = (IBindablePropertyWriteAccessStrategy) new BindableDomainObjectPropertyWriteAccessStrategy();
+      var strategy = (IBindablePropertyWriteAccessStrategy)new BindableDomainObjectPropertyWriteAccessStrategy();
       var originalException = new ObjectDeletedException("The Message");
 
       BusinessObjectPropertyAccessException actualException;
@@ -225,7 +225,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     {
       var instance = SampleBindableDomainObject.NewObject();
       var property = GetProperty(instance);
-      var strategy = (IBindablePropertyWriteAccessStrategy) new BindableDomainObjectPropertyWriteAccessStrategy();
+      var strategy = (IBindablePropertyWriteAccessStrategy)new BindableDomainObjectPropertyWriteAccessStrategy();
       var originalException = new ObjectsNotFoundException("The Message", new ObjectID[0], null);
 
       BusinessObjectPropertyAccessException actualException;
@@ -242,7 +242,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 
     private PropertyBase GetProperty (IBusinessObject instance)
     {
-      return (PropertyBase) instance.BusinessObjectClass.GetPropertyDefinition("Name");
+      return (PropertyBase)instance.BusinessObjectClass.GetPropertyDefinition("Name");
     }
   }
 }

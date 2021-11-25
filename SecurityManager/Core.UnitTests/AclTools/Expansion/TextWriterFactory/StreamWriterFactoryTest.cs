@@ -33,9 +33,9 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion.TextWriterFactor
       string directory = Path.Combine(Path.GetTempPath(), "StreamWriterFactoryTest_DirectoryTest");
       const string extension = "xyz";
       const string fileName = "someFile";
-      using (StreamWriter streamWriter = (StreamWriter) streamWriterFactory.CreateTextWriter(directory, fileName, extension))
+      using (StreamWriter streamWriter = (StreamWriter)streamWriterFactory.CreateTextWriter(directory, fileName, extension))
       {
-        var fileStream = (FileStream) streamWriter.BaseStream;
+        var fileStream = (FileStream)streamWriter.BaseStream;
         string filePathExpected = Path.Combine(directory, fileName + "." + extension);
         Assert.That(fileStream.Name, Is.EqualTo(filePathExpected));
       }

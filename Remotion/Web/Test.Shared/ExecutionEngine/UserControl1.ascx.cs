@@ -38,7 +38,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
         ++ s_counter;
         ViewState["Counter"] = s_counter.ToString();
       }
-      Label1.Text = (string) ViewState["Counter"];
+      Label1.Text = (string)ViewState["Counter"];
     }
 
     #region Web Form Designer generated code
@@ -73,7 +73,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
     private void Sub_Click (object sender, System.EventArgs e)
     {
       ViewState["Counter"] += " Sub_Click";
-      WxePage.ExecuteFunctionNoRepost(new WebForm1.SubFunction("usercontrol var1", "usercontrol var2"), (Control) sender);
+      WxePage.ExecuteFunctionNoRepost(new WebForm1.SubFunction("usercontrol var1", "usercontrol var2"), (Control)sender);
     }
 
     private void Next_Click (object sender, System.EventArgs e)

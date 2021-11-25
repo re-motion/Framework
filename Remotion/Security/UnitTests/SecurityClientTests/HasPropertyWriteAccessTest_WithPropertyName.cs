@@ -146,7 +146,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     public void Test_WithPermissionProviderReturnedNull_ShouldThrowInvalidOperationException ()
     {
       _testHelper.ExpectMemberResolverGetMethodInformation("set_InstanceProperty", MemberAffiliation.Instance, _methodInformation.Object);
-      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_methodInformation.Object, (Enum[]) null);
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_methodInformation.Object, (Enum[])null);
       Assert.That(
           () => _securityClient.HasPropertyWriteAccess(_testHelper.SecurableObject, "InstanceProperty"),
           Throws.InvalidOperationException
@@ -160,7 +160,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     public void Test_WithPermissionProviderReturnedNullAndWithinSecurityFreeSection_ShouldThrowInvalidOperationException ()
     {
       _testHelper.ExpectMemberResolverGetMethodInformation("set_InstanceProperty", MemberAffiliation.Instance, _methodInformation.Object);
-      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_methodInformation.Object, (Enum[]) null);
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_methodInformation.Object, (Enum[])null);
 
       using (SecurityFreeSection.Activate())
       {

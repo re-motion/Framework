@@ -178,7 +178,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     {
       if (_cachedDomainObjects == null)
       {
-        var foreignKeyRelationEndPointDefinition = (RelationEndPointDefinition) _associatedEndPointID.Definition.GetOppositeEndPointDefinition();
+        var foreignKeyRelationEndPointDefinition = (RelationEndPointDefinition)_associatedEndPointID.Definition.GetOppositeEndPointDefinition();
         var foreignKeyPropertyDefinition = foreignKeyRelationEndPointDefinition.PropertyDefinition;
         var requiredClassDefinition = foreignKeyRelationEndPointDefinition.ClassDefinition;
         var requiredItemType = requiredClassDefinition.ClassType;
@@ -192,7 +192,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
             // Only in debug builds for performance reasons. The .NET type comparison is sufficient for filtering the types until interface support is added.
             .Where(dc => requiredClassDefinition.IsSameOrBaseClassOf(dc.ClassDefinition))
 #endif
-            .Where(dc => (ObjectID) dc.GetValueWithoutEvents(foreignKeyPropertyDefinition, _valueAccess) == foreignKeyValue)
+            .Where(dc => (ObjectID)dc.GetValueWithoutEvents(foreignKeyPropertyDefinition, _valueAccess) == foreignKeyValue)
             .ToDictionary(dc => dc.ID, dc => dc.DomainObject);
       }
 
@@ -209,7 +209,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     private IComparer<DomainObject> GetDomainObjectComparer ()
     {
       var idComparer = new DelegateBasedComparer<DomainObject>((left, right) => left.ID.CompareTo(right.ID));
-      var sortExpression = ((VirtualCollectionRelationEndPointDefinition) _associatedEndPointID.Definition).GetSortExpression();
+      var sortExpression = ((VirtualCollectionRelationEndPointDefinition)_associatedEndPointID.Definition).GetSortExpression();
       if (sortExpression != null)
       {
         var propertyComparer = SortedPropertyComparer.CreateCompoundComparer(sortExpression.SortedProperties, _dataContainerMap, _valueAccess);
@@ -227,7 +227,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     {
       _associatedEndPointID = info.GetValueForHandle<RelationEndPointID>();
       _dataContainerMap = info.GetValueForHandle<IDataContainerMapReadOnlyView>();
-      _valueAccess = (ValueAccess) info.GetIntValue();
+      _valueAccess = (ValueAccess)info.GetIntValue();
       var hasCachedDomainObjects = info.GetBoolValue();
       if (hasCachedDomainObjects)
       {
@@ -241,11 +241,11 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     {
       info.AddHandle(_associatedEndPointID);
       info.AddHandle(_dataContainerMap);
-      info.AddIntValue((int) _valueAccess);
+      info.AddIntValue((int)_valueAccess);
       var hasCachedDomainObjects = _cachedDomainObjects != null;
       info.AddBoolValue(hasCachedDomainObjects);
       if (hasCachedDomainObjects)
-        info.AddCollection((ICollection<DomainObject>) _cachedDomainObjects.Values);
+        info.AddCollection((ICollection<DomainObject>)_cachedDomainObjects.Values);
     }
 
     #endregion

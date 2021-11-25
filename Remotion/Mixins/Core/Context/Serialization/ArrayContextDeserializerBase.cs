@@ -57,7 +57,7 @@ namespace Remotion.Mixins.Context.Serialization
         throw new SerializationException(message);
       }
 
-      return (T) value;
+      return (T)value;
     }
   }
 }

@@ -89,8 +89,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     private void CheckQueryResultRow (IQueryResultRow result)
     {
       Assert.That(result, Is.TypeOf(typeof(QueryResultRow)));
-      Assert.That(((QueryResultRow) result).StorageTypeInformationProvider, Is.SameAs(_storageTypeInformationProviderStub));
-      Assert.That(((QueryResultRow) result).DataReader, Is.SameAs(_dataReaderStrictMock));
+      Assert.That(((QueryResultRow)result).StorageTypeInformationProvider, Is.SameAs(_storageTypeInformationProviderStub));
+      Assert.That(((QueryResultRow)result).DataReader, Is.SameAs(_dataReaderStrictMock));
     }
 
   }

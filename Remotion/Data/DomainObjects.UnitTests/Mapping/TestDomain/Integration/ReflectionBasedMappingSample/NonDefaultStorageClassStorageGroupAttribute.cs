@@ -21,7 +21,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.R
 {
   public class NonDefaultStorageClassStorageGroupAttribute : StorageGroupAttribute
   {
-    public const DefaultStorageClass NonDefaultStorageClass = (DefaultStorageClass) (-15);
+    public const DefaultStorageClass NonDefaultStorageClass = (DefaultStorageClass)(-15);
 
     public NonDefaultStorageClassStorageGroupAttribute ()
         : base(NonDefaultStorageClass)

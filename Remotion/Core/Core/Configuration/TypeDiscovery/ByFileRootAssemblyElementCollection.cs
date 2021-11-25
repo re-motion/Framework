@@ -59,14 +59,14 @@ namespace Remotion.Configuration.TypeDiscovery
 
     protected override object GetElementKey (ConfigurationElement element)
     {
-      return ((ByFileRootAssemblyElementBase) element).GetKey();
+      return ((ByFileRootAssemblyElementBase)element).GetKey();
     }
 
     public new IEnumerator<ByFileRootAssemblyElementBase> GetEnumerator ()
     {
-      foreach (var item in (IEnumerable) this)
+      foreach (var item in (IEnumerable)this)
       {
-        yield return (ByFileRootAssemblyElementBase) item;
+        yield return (ByFileRootAssemblyElementBase)item;
       }
     }
 

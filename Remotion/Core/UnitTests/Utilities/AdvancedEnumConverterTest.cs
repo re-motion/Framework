@@ -166,7 +166,7 @@ namespace Remotion.UnitTests.Utilities
     public void ConvertFromInt32_WithInvalidDataType ()
     {
       Assert.That(
-          () => _int32EnumConverter.ConvertFrom((short) -1),
+          () => _int32EnumConverter.ConvertFrom((short)-1),
           Throws.InstanceOf<NotSupportedException>());
     }
 
@@ -225,8 +225,8 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void ConvertFromInt16 ()
     {
-      Assert.That(_int16EnumConverter.ConvertFrom((Int16) 0), Is.EqualTo(Int16Enum.ValueA));
-      Assert.That(_int16EnumConverter.ConvertFrom((Int16) 1), Is.EqualTo(Int16Enum.ValueB));
+      Assert.That(_int16EnumConverter.ConvertFrom((Int16)0), Is.EqualTo(Int16Enum.ValueA));
+      Assert.That(_int16EnumConverter.ConvertFrom((Int16)1), Is.EqualTo(Int16Enum.ValueB));
     }
 
     [Test]
@@ -234,8 +234,8 @@ namespace Remotion.UnitTests.Utilities
     {
       Type destinationType = typeof(Int16);
 
-      Assert.That(_int16EnumConverter.ConvertTo(Int16Enum.ValueA, destinationType), Is.EqualTo((Int16) 0));
-      Assert.That(_int16EnumConverter.ConvertTo(Int16Enum.ValueB, destinationType), Is.EqualTo((Int16) 1));
+      Assert.That(_int16EnumConverter.ConvertTo(Int16Enum.ValueA, destinationType), Is.EqualTo((Int16)0));
+      Assert.That(_int16EnumConverter.ConvertTo(Int16Enum.ValueB, destinationType), Is.EqualTo((Int16)1));
     }
   }
 }

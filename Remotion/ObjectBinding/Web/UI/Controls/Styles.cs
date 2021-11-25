@@ -217,11 +217,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public void ApplyStyle (ListControl listControl)
     {
       if (listControl is ListBox)
-        ApplyStyle((ListBox) listControl);
+        ApplyStyle((ListBox)listControl);
       else if (listControl is DropDownList)
-        ApplyStyle((DropDownList) listControl);
+        ApplyStyle((DropDownList)listControl);
       else if (listControl is RadioButtonList)
-        ApplyStyle((RadioButtonList) listControl);
+        ApplyStyle((RadioButtonList)listControl);
       else
         ApplyCommonStyle(listControl);
     }

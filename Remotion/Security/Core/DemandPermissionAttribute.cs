@@ -68,7 +68,7 @@ namespace Remotion.Security
 
     public Enum[] GetAccessTypes ()
     {
-      return (Enum[]) _accessTypes;
+      return (Enum[])_accessTypes;
     }
 
     private Enum GetAccessType (object accessType)
@@ -82,7 +82,7 @@ namespace Remotion.Security
         throw new ArgumentException(message, "accessType");
       }
 
-      return (Enum) accessType;
+      return (Enum)accessType;
     }
   }
 }

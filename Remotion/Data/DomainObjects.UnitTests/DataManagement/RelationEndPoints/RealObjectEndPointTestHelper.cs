@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
     public static IRealObjectEndPointSyncState GetSyncState (RealObjectEndPoint objectEndPoint)
     {
-      return (IRealObjectEndPointSyncState) PrivateInvoke.GetNonPublicField(objectEndPoint, "_syncState");
+      return (IRealObjectEndPointSyncState)PrivateInvoke.GetNonPublicField(objectEndPoint, "_syncState");
     }
 
     public static object GetValueViaDataContainer (RealObjectEndPoint realObjectEndPoint)

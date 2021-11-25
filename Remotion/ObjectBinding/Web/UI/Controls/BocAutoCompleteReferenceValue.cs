@@ -329,12 +329,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override void LoadControlState (object? savedState)
     {
-      object?[] values = (object?[]) savedState!;
+      object?[] values = (object?[])savedState!;
 
       base.LoadControlState(values[0]);
-      InternalValue = (string?) values[1];
-      _displayName = (string?) values[2];
-      _businessObjectWebServiceContextFromPreviousLifeCycle = (BusinessObjectWebServiceContext) values[3]!;
+      InternalValue = (string?)values[1];
+      _displayName = (string?)values[2];
+      _businessObjectWebServiceContextFromPreviousLifeCycle = (BusinessObjectWebServiceContext)values[3]!;
     }
 
     protected override object SaveControlState ()
@@ -366,7 +366,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       IBusinessObjectWithIdentity? value = null;
 
       if (DataSource.BusinessObject != null)
-        value = (IBusinessObjectWithIdentity?) DataSource.BusinessObject.GetProperty(Property);
+        value = (IBusinessObjectWithIdentity?)DataSource.BusinessObject.GetProperty(Property);
 
       LoadValueInternal(value, false);
     }

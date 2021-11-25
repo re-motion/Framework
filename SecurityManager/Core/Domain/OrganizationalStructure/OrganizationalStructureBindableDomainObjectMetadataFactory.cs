@@ -78,7 +78,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
           && TypeAdapter.Create(typeof(Position)).Equals(propertyInfo.GetOriginalDeclaringType()))
       {
         var delegatedPropertyInfo = propertyInfo.GetOriginalDeclaration();
-        var targetPropertyInfo = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty(() => ((Position) null).Delegation));
+        var targetPropertyInfo = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty(() => ((Position)null).Delegation));
         var targetProperty = Next.CreatePropertyReflector(concreteType, targetPropertyInfo, businessObjectProvider).GetMetadata();
 
         return BindableDomainObjectPropertyReflector.Create(

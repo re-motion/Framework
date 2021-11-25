@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.Validation
 
     protected MandatoryRelationNotSetException (SerializationInfo info, StreamingContext context) : base(info, context)
     {
-      _domainObject = (DomainObject) info.GetValue("_domainObject", typeof(DomainObject));
+      _domainObject = (DomainObject)info.GetValue("_domainObject", typeof(DomainObject));
       _propertyName = info.GetString("_propertyName");
     }
 

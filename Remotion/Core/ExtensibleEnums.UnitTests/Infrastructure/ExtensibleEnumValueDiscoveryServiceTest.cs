@@ -87,7 +87,7 @@ namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
       var expected = new[] {
           new { Value = Color.Values.Red(), DeclaringMethod = _redMethod },
           new { Value = Color.Values.Green(), DeclaringMethod = _greenMethod },
-          new { Value = (Color) Color.Values.RedMetallic(), DeclaringMethod = _redMetallicMethod }, };
+          new { Value = (Color)Color.Values.RedMetallic(), DeclaringMethod = _redMetallicMethod }, };
 
       Assert.That(result.Select(info => new { info.Value, DeclaringMethod = info.DefiningMethod }).ToArray(), Is.EquivalentTo(expected));
     }

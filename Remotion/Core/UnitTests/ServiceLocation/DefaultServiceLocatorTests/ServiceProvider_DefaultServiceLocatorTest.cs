@@ -34,7 +34,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
       var serviceLocator = CreateServiceLocator();
       serviceLocator.Register(serviceConfigurationEntry);
 
-      var result = ((IServiceLocator) serviceLocator).GetService(typeof(ITestType));
+      var result = ((IServiceLocator)serviceLocator).GetService(typeof(ITestType));
 
       Assert.That(result, Is.TypeOf<TestImplementation1>());
     }
@@ -49,7 +49,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
       serviceConfigurationDiscoveryServiceMock.Setup(_ => _.GetDefaultConfiguration(typeof(ITestType))).Returns(serviceConfigurationEntry);
       var serviceLocator = CreateServiceLocator(serviceConfigurationDiscoveryServiceMock.Object);
 
-      var result = ((IServiceLocator) serviceLocator).GetService(typeof(ITestType));
+      var result = ((IServiceLocator)serviceLocator).GetService(typeof(ITestType));
 
       Assert.That(result, Is.Null);
     }

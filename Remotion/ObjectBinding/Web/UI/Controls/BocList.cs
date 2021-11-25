@@ -397,7 +397,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       Controls.Add(_currentPagePostBackTarget);
 
       _editModeController.ID = ID + "_EditModeController";
-      Controls.Add((Control) _editModeController);
+      Controls.Add((Control)_editModeController);
 
       CreateChildControlsForRowMenus();
       CreateChildControlsForCustomColumns();
@@ -500,7 +500,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (!RequiresLoadPostData)
         return;
 
-      var value = ((ScalarLoadPostDataTarget) sender).Value;
+      var value = ((ScalarLoadPostDataTarget)sender).Value;
       Assertion.IsNotNull(value, "sender.Value != null");
       SelectedViewIndex = int.Parse(value);
     }
@@ -515,7 +515,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (!IsPagingEnabled)
         return;
 
-      var value = ((ScalarLoadPostDataTarget) sender).Value;
+      var value = ((ScalarLoadPostDataTarget)sender).Value;
       Assertion.IsNotNull(value, "sender.Value != null");
       _newPageIndex = int.Parse(value);
     }
@@ -524,7 +524,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       _selectorControlCheckedState.Clear();
 
-      string dataRowSelectorControlFilter = ((IBocList) this).GetSelectorControlName();
+      string dataRowSelectorControlFilter = ((IBocList)this).GetSelectorControlName();
       var values = postCollection.GetValues(dataRowSelectorControlFilter);
       if (values == null)
         return;
@@ -575,10 +575,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         throw new ArgumentOutOfRangeException(
             "Column index of argument 'eventargument' was out of the range of valid values. Index must be less than the number of displayed columns.'",
-            (Exception?) null);
+            (Exception?)null);
       }
 
-      BocCommandEnabledColumnDefinition column = (BocCommandEnabledColumnDefinition) columns[columnIndex];
+      BocCommandEnabledColumnDefinition column = (BocCommandEnabledColumnDefinition)columns[columnIndex];
       if (column.Command == null)
       {
         throw new ArgumentOutOfRangeException(
@@ -611,7 +611,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         case CommandType.WxeFunction:
         {
           if (Page is IWxePage)
-            command.ExecuteWxeFunction((IWxePage) Page, row.Index, row.BusinessObject);
+            command.ExecuteWxeFunction((IWxePage)Page, row.Index, row.BusinessObject);
           //else
           //  command.ExecuteWxeFunction (Page, row.Index, row.BusinessObject);
           break;
@@ -655,7 +655,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         throw new ArgumentOutOfRangeException(
             "Column index of argument 'eventargument' was out of the range of valid values. Index must be less than the number of displayed columns.'",
-            (Exception?) null);
+            (Exception?)null);
       }
 
       //  Second part: list index
@@ -682,7 +682,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (row == null)
         return;
 
-      BocCustomColumnDefinition column = (BocCustomColumnDefinition) columns[columnIndex];
+      BocCustomColumnDefinition column = (BocCustomColumnDefinition)columns[columnIndex];
       OnCustomCellClick(column, row.BusinessObject, customCellArgument);
     }
 
@@ -719,7 +719,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       eventArgumentParts[1] = eventArgumentParts[1].Trim();
       try
       {
-        command = (RowEditModeCommand) Enum.Parse(typeof(RowEditModeCommand), eventArgumentParts[1]);
+        command = (RowEditModeCommand)Enum.Parse(typeof(RowEditModeCommand), eventArgumentParts[1]);
       }
       catch (Exception ex)
       {
@@ -765,7 +765,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         column.Command.OnClick(column, listIndex, businessObject);
         BocListItemCommandClickEventHandler? commandClickHandler =
-            (BocListItemCommandClickEventHandler?) Events[s_listItemCommandClickEvent];
+            (BocListItemCommandClickEventHandler?)Events[s_listItemCommandClickEvent];
         if (commandClickHandler != null)
         {
           BocListItemCommandClickEventArgs e =
@@ -783,7 +783,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       BocCustomCellClickArguments args = new BocCustomCellClickArguments(this, businessObject, column);
       column.CustomCell.Click(args, argument);
       BocCustomCellClickEventHandler? clickHandler =
-          (BocCustomCellClickEventHandler?) Events[s_customCellClickEvent];
+          (BocCustomCellClickEventHandler?)Events[s_customCellClickEvent];
       if (clickHandler != null)
       {
         BocCustomCellClickEventArgs e = new BocCustomCellClickEventArgs(column, businessObject, argument);
@@ -820,7 +820,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
             "Column index was out of the range of valid values. Index must be less than the number of displayed columns.'");
       }
       var column = columns[columnIndex];
-      if (!(column is IBocSortableColumnDefinition && ((IBocSortableColumnDefinition) column).IsSortable))
+      if (!(column is IBocSortableColumnDefinition && ((IBocSortableColumnDefinition)column).IsSortable))
         throw new ArgumentOutOfRangeException("The BocList '" + ID + "' does not sortable column at index" + columnIndex + ".");
 
       var oldSortingOrder = GetSortingOrder();
@@ -858,7 +858,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
       else
       {
-        newSortingOrderEntry = new BocListSortingOrderEntry((IBocSortableColumnDefinition) column, SortingDirection.Ascending);
+        newSortingOrderEntry = new BocListSortingOrderEntry((IBocSortableColumnDefinition)column, SortingDirection.Ascending);
       }
 
       if (newSortingOrderEntry.IsEmpty)
@@ -889,7 +889,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         BocListSortingOrderEntry[] oldSortingOrder, BocListSortingOrderEntry[] newSortingOrder)
     {
       BocListSortingOrderChangeEventHandler? handler =
-          (BocListSortingOrderChangeEventHandler?) Events[s_sortingOrderChangingEvent];
+          (BocListSortingOrderChangeEventHandler?)Events[s_sortingOrderChangingEvent];
       if (handler != null)
       {
         BocListSortingOrderChangeEventArgs e =
@@ -902,7 +902,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         BocListSortingOrderEntry[] oldSortingOrder, BocListSortingOrderEntry[] newSortingOrder)
     {
       BocListSortingOrderChangeEventHandler? handler =
-          (BocListSortingOrderChangeEventHandler?) Events[s_sortingOrderChangedEvent];
+          (BocListSortingOrderChangeEventHandler?)Events[s_sortingOrderChangedEvent];
       if (handler != null)
       {
         BocListSortingOrderChangeEventArgs e =
@@ -1116,7 +1116,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         if (newPageIndex.HasValue)
           _currentPageIndex = newPageIndex.Value;
 
-        _pageCount = (int) Math.Ceiling((double) Value.Count / _pageSize.Value);
+        _pageCount = (int)Math.Ceiling((double)Value.Count / _pageSize.Value);
         if (_currentPageIndex >= _pageCount)
           _currentPageIndex = _pageCount - 1;
 
@@ -1344,7 +1344,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected virtual void OnDataRowRendering (BocListDataRowRenderEventArgs e)
     {
-      BocListDataRowRenderEventHandler? handler = (BocListDataRowRenderEventHandler?) Events[s_dataRowRenderEvent];
+      BocListDataRowRenderEventHandler? handler = (BocListDataRowRenderEventHandler?)Events[s_dataRowRenderEvent];
       if (handler != null)
         handler(this, e);
     }
@@ -1411,15 +1411,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override void LoadControlState (object? savedState)
     {
-      object?[] values = (object?[]) savedState!;
+      object?[] values = (object?[])savedState!;
 
       base.LoadControlState(values[0]);
-      _selectedViewIndex = (int?) values[1];
-      _availableViewsListPlaceHolder.Controls.Cast<ScalarLoadPostDataTarget>().Single().Value = (string?) values[2];
-      _currentPageIndex = (int) values[3]!;
-      _sortingOrder = (BocListSortingOrderEntry[]) values[4]!;
-      _selectorControlCheckedState = (HashSet<string>) values[5]!;
-      _rowIDProvider = (IRowIDProvider) values[6]!;
+      _selectedViewIndex = (int?)values[1];
+      _availableViewsListPlaceHolder.Controls.Cast<ScalarLoadPostDataTarget>().Single().Value = (string?)values[2];
+      _currentPageIndex = (int)values[3]!;
+      _sortingOrder = (BocListSortingOrderEntry[])values[4]!;
+      _selectorControlCheckedState = (HashSet<string>)values[5]!;
+      _rowIDProvider = (IRowIDProvider)values[6]!;
 
       Assertion.IsNotNull(_currentPagePostBackTarget, "_currentPagePostBackTarget must not be null.");
 
@@ -1459,9 +1459,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         if (value == null)
           valueAsList = null;
         else if (value is IReadOnlyList<IBusinessObject>)
-          valueAsList = (IReadOnlyList<IBusinessObject>) value;
+          valueAsList = (IReadOnlyList<IBusinessObject>)value;
         else if (value is IList)
-          valueAsList = new BusinessObjectListAdapter<IBusinessObject>((IList) value);
+          valueAsList = new BusinessObjectListAdapter<IBusinessObject>((IList)value);
         else
           throw new InvalidCastException(string.Format("Cannot cast '{0}' to type IReadOnlyList<IBusinessObject> or IList.", value.GetType()));
       }
@@ -1497,7 +1497,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (value == null)
         valueAsList = null;
       else if (value is IReadOnlyList<IBusinessObject>)
-        valueAsList = (IReadOnlyList<IBusinessObject>) value;
+        valueAsList = (IReadOnlyList<IBusinessObject>)value;
       else
         valueAsList = new BusinessObjectListAdapter<IBusinessObject>(value);
 
@@ -1713,7 +1713,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         if (columnDefinition is BocAllPropertiesPlaceholderColumnDefinition)
         {
           EnsureAllPropertyColumnsDefinitionsAppended(
-              (BocAllPropertiesPlaceholderColumnDefinition) columnDefinition, columnDefinitionList);
+              (BocAllPropertiesPlaceholderColumnDefinition)columnDefinition, columnDefinitionList);
         }
         else
           columnDefinitionList.Add(columnDefinition);
@@ -1738,7 +1738,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         if (columnDefinition is BocAllPropertiesPlaceholderColumnDefinition)
         {
           EnsureAllPropertyColumnsDefinitionsAppended(
-              (BocAllPropertiesPlaceholderColumnDefinition) columnDefinition, columnDefinitionList);
+              (BocAllPropertiesPlaceholderColumnDefinition)columnDefinition, columnDefinitionList);
         }
         else
           columnDefinitionList.Add(columnDefinition);
@@ -1860,7 +1860,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           {
             if (entry.Column == null)
             {
-              var newEntry = new BocListSortingOrderEntry((IBocSortableColumnDefinition) columns[entry.ColumnIndex], entry.Direction);
+              var newEntry = new BocListSortingOrderEntry((IBocSortableColumnDefinition)columns[entry.ColumnIndex], entry.Direction);
               newEntry.SetColumnIndex(entry.ColumnIndex);
               return newEntry;
             }
@@ -1878,7 +1878,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
               }
               else
               {
-                var newEntry = new BocListSortingOrderEntry((IBocSortableColumnDefinition) columns[entry.ColumnIndex], entry.Direction);
+                var newEntry = new BocListSortingOrderEntry((IBocSortableColumnDefinition)columns[entry.ColumnIndex], entry.Direction);
                 newEntry.SetColumnIndex(entry.ColumnIndex);
                 return newEntry;
               }
@@ -1977,7 +1977,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         var staticColumns = new HashSet<BocColumnDefinition?>(_fixedColumns.Cast<BocColumnDefinition>().Concat(GetAllPropertyColumns()));
         var oldSortingOrder = GetSortingOrder();
         var oldCount = oldSortingOrder.Length;
-        _sortingOrder = oldSortingOrder.Where(entry => staticColumns.Contains((BocColumnDefinition?) entry.Column)).ToArray();
+        _sortingOrder = oldSortingOrder.Where(entry => staticColumns.Contains((BocColumnDefinition?)entry.Column)).ToArray();
       }
     }
 
@@ -2002,7 +2002,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       foreach (DictionaryEntry entry in values)
       {
-        string key = (string) entry.Key;
+        string key = (string)entry.Key;
         string[] keyParts = key.Split(new[] { ':' }, 3);
 
         //  Is a property/value entry?
@@ -2053,7 +2053,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           if (currentCollection != null)
           {
             //  Get the dictonary for the current element
-            IDictionary? elementValues = (IDictionary?) currentCollection[elementID];
+            IDictionary? elementValues = (IDictionary?)currentCollection[elementID];
 
             //  If no dictonary exists, create it and insert it into the elements hashtable.
             if (elementValues == null)
@@ -2134,7 +2134,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     public new IBusinessObjectReferenceProperty? Property
     {
-      get { return (IBusinessObjectReferenceProperty?) base.Property; }
+      get { return (IBusinessObjectReferenceProperty?)base.Property; }
       set { base.Property = ArgumentUtility.CheckType<IBusinessObjectReferenceProperty>("value", value); }
     }
 
@@ -2165,9 +2165,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         if (value == null)
           return null;
         else if (value is BusinessObjectListAdapter<IBusinessObject>)
-          return ((BusinessObjectListAdapter<IBusinessObject>) value).WrappedList;
+          return ((BusinessObjectListAdapter<IBusinessObject>)value).WrappedList;
         else if (value is IList)
-          return (IList) value;
+          return (IList)value;
         else
           throw new InvalidOperationException("The value only implements the IReadOnlyList<IBusinessObject> interface. Use the Value property to access the value.");
       }
@@ -2176,7 +2176,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         if (value == null)
           Value = null;
         else if (value is IReadOnlyList<IBusinessObject>)
-          Value = (IReadOnlyList<IBusinessObject>) value;
+          Value = (IReadOnlyList<IBusinessObject>)value;
         else
           Value = new BusinessObjectListAdapter<IBusinessObject>(value);
       }
@@ -2216,7 +2216,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         var value = Value;
         if (value is BusinessObjectListAdapter<IBusinessObject>)
-          return ((BusinessObjectListAdapter<IBusinessObject>) value).WrappedList;
+          return ((BusinessObjectListAdapter<IBusinessObject>)value).WrappedList;
         else
           return value;
       }
@@ -2228,11 +2228,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         }
         else if (value is IReadOnlyList<IBusinessObject>)
         {
-          Value = (IReadOnlyList<IBusinessObject>) value;
+          Value = (IReadOnlyList<IBusinessObject>)value;
         }
         else if (value is IList)
         {
-          Value = new BusinessObjectListAdapter<IBusinessObject>((IList) value);
+          Value = new BusinessObjectListAdapter<IBusinessObject>((IList)value);
         }
         else
         {
@@ -2327,7 +2327,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [ListBindable (false)]
     //  Default category
     [Description ("The user independent column definitions.")]
-    [DefaultValue ((string?) null)]
+    [DefaultValue ((string?)null)]
     public BocColumnDefinitionCollection FixedColumns
     {
       get { return _fixedColumns; }
@@ -2565,7 +2565,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public void SynchronizeRows ()
     {
       OnSortedRowsChanged();
-      ((EditModeController) _editModeController).SynchronizeEditModeControls(EnsureColumnsGot());
+      ((EditModeController)_editModeController).SynchronizeEditModeControls(EnsureColumnsGot());
     }
 
     /// <summary> Adds the <paramref name="businessObjects"/> to the <see cref="Value"/> collection. </summary>
@@ -2647,7 +2647,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         IReadOnlyList<IBusinessObject> newValueAsReadOnlyList;
         if (newValue is IReadOnlyList<IBusinessObject>)
-          newValueAsReadOnlyList = (IReadOnlyList<IBusinessObject>) newValue;
+          newValueAsReadOnlyList = (IReadOnlyList<IBusinessObject>)newValue;
         else
           newValueAsReadOnlyList = new BusinessObjectListAdapter<IBusinessObject>(newValue);
 
@@ -2694,7 +2694,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         IReadOnlyList<IBusinessObject> newValueAsReadOnlyList;
         if (newValue is IReadOnlyList<IBusinessObject>)
-          newValueAsReadOnlyList = (IReadOnlyList<IBusinessObject>) newValue;
+          newValueAsReadOnlyList = (IReadOnlyList<IBusinessObject>)newValue;
         else
           newValueAsReadOnlyList = new BusinessObjectListAdapter<IBusinessObject>(newValue);
 
@@ -3020,7 +3020,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       ArgumentUtility.CheckNotNull("controls", controls);
 
       BocListEditableRowChangesEventHandler? handler =
-          (BocListEditableRowChangesEventHandler?) Events[s_editableRowChangesSavingEvent];
+          (BocListEditableRowChangesEventHandler?)Events[s_editableRowChangesSavingEvent];
       if (handler != null)
       {
         BocListEditableRowChangesEventArgs e =
@@ -3033,7 +3033,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull("businessObject", businessObject);
 
-      BocListItemEventHandler? handler = (BocListItemEventHandler?) Events[s_editableRowChangesSavedEvent];
+      BocListItemEventHandler? handler = (BocListItemEventHandler?)Events[s_editableRowChangesSavedEvent];
       if (handler != null)
       {
         BocListItemEventArgs e = new BocListItemEventArgs(index, businessObject);
@@ -3052,7 +3052,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       ArgumentUtility.CheckNotNull("controls", controls);
 
       BocListEditableRowChangesEventHandler? handler =
-          (BocListEditableRowChangesEventHandler?) Events[s_editableRowChangesCancelingEvent];
+          (BocListEditableRowChangesEventHandler?)Events[s_editableRowChangesCancelingEvent];
       if (handler != null)
       {
         BocListEditableRowChangesEventArgs e =
@@ -3065,7 +3065,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull("businessObject", businessObject);
 
-      BocListItemEventHandler? handler = (BocListItemEventHandler?) Events[s_editableRowChangesCanceledEvent];
+      BocListItemEventHandler? handler = (BocListItemEventHandler?)Events[s_editableRowChangesCanceledEvent];
       if (handler != null)
       {
         BocListItemEventArgs e = new BocListItemEventArgs(index, businessObject);
@@ -3104,9 +3104,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         menuItem.Command.OnClick();
 
       if (menuItem is BocMenuItem && menuItem.Command is BocMenuItemCommand)
-        ((BocMenuItemCommand) menuItem.Command).OnClick((BocMenuItem) menuItem);
+        ((BocMenuItemCommand)menuItem.Command).OnClick((BocMenuItem)menuItem);
 
-      WebMenuItemClickEventHandler? menuItemClickHandler = (WebMenuItemClickEventHandler?) Events[s_menuItemClickEvent];
+      WebMenuItemClickEventHandler? menuItemClickHandler = (WebMenuItemClickEventHandler?)Events[s_menuItemClickEvent];
       if (menuItemClickHandler != null)
       {
         WebMenuItemClickEventArgs e = new WebMenuItemClickEventArgs(menuItem);
@@ -3130,9 +3130,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       if (menuItem is BocMenuItem)
       {
-        BocMenuItemCommand command = (BocMenuItemCommand) menuItem.Command;
+        BocMenuItemCommand command = (BocMenuItemCommand)menuItem.Command;
         if (Page is IWxePage)
-          command.ExecuteWxeFunction((IWxePage) Page, GetSelectedRows(), GetSelectedBusinessObjects());
+          command.ExecuteWxeFunction((IWxePage)Page, GetSelectedRows(), GetSelectedBusinessObjects());
         //else
         //  command.ExecuteWxeFunction (Page, GetSelectedRows(), GetSelectedBusinessObjects());
       }
@@ -3140,7 +3140,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         Command command = menuItem.Command;
         if (Page is IWxePage)
-          command.ExecuteWxeFunction((IWxePage) Page, null);
+          command.ExecuteWxeFunction((IWxePage)Page, null);
         //else
         //  command.ExecuteWxeFunction (Page, null, new NameValueCollection (0));
       }
@@ -3570,7 +3570,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [ListBindable (false)]
     [Category ("Menu")]
     [Description ("The menu items displayed by options menu.")]
-    [DefaultValue ((string?) null)]
+    [DefaultValue ((string?)null)]
     public WebMenuItemCollection OptionsMenuItems
     {
       get { return _optionsMenu.MenuItems; }
@@ -3581,7 +3581,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [ListBindable (false)]
     [Category ("Menu")]
     [Description ("The menu items displayed in the list's menu area.")]
-    [DefaultValue ((string?) null)]
+    [DefaultValue ((string?)null)]
     public WebMenuItemCollection ListMenuItems
     {
       get { return _listMenu.MenuItems; }
@@ -3603,7 +3603,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <value> The <see cref="WebMenuItem.ItemID"/> values of the menu items to hide. </value>
     [Category ("Menu")]
     [Description ("The list of menu items to be hidden, identified by their ItemIDs.")]
-    [DefaultValue ((string?) null)]
+    [DefaultValue ((string?)null)]
     [PersistenceMode (PersistenceMode.Attribute)]
     [TypeConverter (typeof(StringArrayConverter))]
     public string[] HiddenMenuItems

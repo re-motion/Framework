@@ -60,7 +60,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Organiz
       _searchService = new RolePropertiesSearchService();
 
       IBusinessObjectClass roleClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(Role));
-      _positionProperty = (IBusinessObjectReferenceProperty) roleClass.GetPropertyDefinition("Position");
+      _positionProperty = (IBusinessObjectReferenceProperty)roleClass.GetPropertyDefinition("Position");
       Assert.That(_positionProperty, Is.Not.Null);
     }
 
@@ -84,7 +84,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Organiz
       {
         Assert.IsTrue(
 // ReSharper disable AccessToModifiedClosure
-            Array.Exists(positions, current => positionName == ((Position) current).Name),
+            Array.Exists(positions, current => positionName == ((Position)current).Name),
 // ReSharper restore AccessToModifiedClosure
             "Position '{0}' was not found.",
             positionName);

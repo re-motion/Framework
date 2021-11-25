@@ -37,7 +37,7 @@ public class BocListAsGridUserControl : BaseUserControl
   {
     public override IBusinessObjectBoundEditableWebControl Create (BocSimpleColumnDefinition column, int columnIndex)
     {
-      var control =(BusinessObjectBoundEditableWebControl) base.Create(column, columnIndex);
+      var control =(BusinessObjectBoundEditableWebControl)base.Create(column, columnIndex);
       control.Required = true;
       return control;
     }
@@ -258,7 +258,7 @@ public class BocListAsGridUserControl : BaseUserControl
     Person person = Person.CreateObject(Guid.NewGuid());
     person.LastName = "X";
 
-    ChildrenList.AddRow((IBusinessObject) person);
+    ChildrenList.AddRow((IBusinessObject)person);
   }
 
   private void AddRowsButton_Click (object sender, EventArgs e)
@@ -266,13 +266,13 @@ public class BocListAsGridUserControl : BaseUserControl
     int count = 0;
 
     if (NumberOfNewRowsField.Validate())
-      count = (int) NumberOfNewRowsField.Value;
+      count = (int)NumberOfNewRowsField.Value;
 
     Person[] persons = new Person[count];
     for (int i = 0; i < count; i++)
       persons[i] = Person.CreateObject(Guid.NewGuid());
 
-    ChildrenList.AddRows((IBusinessObjectWithIdentity[]) ArrayUtility.Convert(persons, typeof(IBusinessObjectWithIdentity)));
+    ChildrenList.AddRows((IBusinessObjectWithIdentity[])ArrayUtility.Convert(persons, typeof(IBusinessObjectWithIdentity)));
   }
 
   private void RemoveRowsButton_Click (object sender, EventArgs e)
@@ -285,7 +285,7 @@ public class BocListAsGridUserControl : BaseUserControl
   {
     IBusinessObject[] selectedBusinessObjects = ChildrenList.GetSelectedBusinessObjects();
     foreach (var obj in selectedBusinessObjects)
-      ChildrenList.ValueAsList.Remove((Person) obj);
+      ChildrenList.ValueAsList.Remove((Person)obj);
     ChildrenList.SynchronizeRows();
   }
 
@@ -294,7 +294,7 @@ public class BocListAsGridUserControl : BaseUserControl
     ChildrenListEventCheckBox.Checked = true;
     ChildrenListEventArgsLabel.Text += string.Format("ColumnID: {0}<br />", e.Column.ItemID);
     if (e.BusinessObject is IBusinessObjectWithIdentity)
-      ChildrenListEventArgsLabel.Text += string.Format("BusinessObjectID: {0}<br />", ((IBusinessObjectWithIdentity) e.BusinessObject).UniqueIdentifier);
+      ChildrenListEventArgsLabel.Text += string.Format("BusinessObjectID: {0}<br />", ((IBusinessObjectWithIdentity)e.BusinessObject).UniqueIdentifier);
     ChildrenListEventArgsLabel.Text += string.Format("ListIndex: {0}<br />", e.ListIndex);
   }
 

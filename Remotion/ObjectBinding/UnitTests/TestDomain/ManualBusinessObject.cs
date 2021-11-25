@@ -40,7 +40,7 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
     public void SetProperty (IBusinessObjectProperty property, object value)
     {
       if (property.Identifier == "StringProperty")
-        StringProperty = (string) value;
+        StringProperty = (string)value;
       else
         throw new NotSupportedException();
     }

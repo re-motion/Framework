@@ -43,7 +43,7 @@ namespace Remotion.UnitTests.Utilities
     {
       var typeConverter = _factory.CreateTypeConverterOrDefault(typeof(Int32Enum));
       Assert.That(typeConverter, Is.TypeOf<AdvancedEnumConverter>());
-      Assert.That(((AdvancedEnumConverter) typeConverter).EnumType, Is.EqualTo(typeof(Int32Enum)));
+      Assert.That(((AdvancedEnumConverter)typeConverter).EnumType, Is.EqualTo(typeof(Int32Enum)));
     }
 
     [Test]
@@ -51,7 +51,7 @@ namespace Remotion.UnitTests.Utilities
     {
       var typeConverter = _factory.CreateTypeConverterOrDefault(typeof(Int32Enum?));
       Assert.That(typeConverter, Is.TypeOf<AdvancedEnumConverter>());
-      Assert.That(((AdvancedEnumConverter) typeConverter).EnumType, Is.EqualTo(typeof(Int32Enum?)));
+      Assert.That(((AdvancedEnumConverter)typeConverter).EnumType, Is.EqualTo(typeof(Int32Enum?)));
     }
 
     [Test]

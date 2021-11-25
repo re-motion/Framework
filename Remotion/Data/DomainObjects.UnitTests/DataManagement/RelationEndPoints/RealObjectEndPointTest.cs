@@ -86,7 +86,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var syncState = RealObjectEndPointTestHelper.GetSyncState(endPoint);
       Assert.That(syncState, Is.TypeOf(typeof(UnknownRealObjectEndPointSyncState)));
-      Assert.That(((UnknownRealObjectEndPointSyncState) syncState).VirtualEndPointProvider, Is.SameAs(_endPointProviderStub));
+      Assert.That(((UnknownRealObjectEndPointSyncState)syncState).VirtualEndPointProvider, Is.SameAs(_endPointProviderStub));
     }
 
     [Test]
@@ -271,7 +271,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       RealObjectEndPointTestHelper.SetOppositeObjectID(_endPoint, DomainObjectIDs.Order1);
       _foreignKeyDataContainer.CommitState();
-      var originalOppositeObject = (Order) _endPoint.GetOppositeObject();
+      var originalOppositeObject = (Order)_endPoint.GetOppositeObject();
       originalOppositeObject.Delete();
 
       Assert.That(originalOppositeObject.State.IsDeleted, Is.True);
@@ -334,7 +334,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var syncState = RealObjectEndPointTestHelper.GetSyncState(_endPoint);
       Assert.That(syncState, Is.TypeOf(typeof(UnknownRealObjectEndPointSyncState)));
-      Assert.That(((UnknownRealObjectEndPointSyncState) syncState).VirtualEndPointProvider, Is.SameAs(_endPointProviderStub));
+      Assert.That(((UnknownRealObjectEndPointSyncState)syncState).VirtualEndPointProvider, Is.SameAs(_endPointProviderStub));
     }
 
     [Test]
@@ -348,7 +348,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _syncStateMock
           .Expect(mock => mock.CreateSetCommand(Arg.Is(_endPoint), Arg.Is(relatedObject), Arg<Action<DomainObject>>.Is.Anything))
           .Return(fakeResult)
-          .WhenCalled(mi => { oppositeObjectSetter = (Action<DomainObject>) mi.Arguments[2]; });
+          .WhenCalled(mi => { oppositeObjectSetter = (Action<DomainObject>)mi.Arguments[2]; });
       _syncStateMock.Replay();
 
       var result = _endPoint.CreateSetCommand(relatedObject);
@@ -371,7 +371,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _syncStateMock
           .Expect(mock => mock.CreateDeleteCommand(Arg.Is(_endPoint), Arg<Action>.Is.Anything))
           .Return(fakeResult)
-          .WhenCalled(mi => { oppositeObjectSetter = (Action) mi.Arguments[1]; });
+          .WhenCalled(mi => { oppositeObjectSetter = (Action)mi.Arguments[1]; });
       _syncStateMock.Replay();
 
       var result = _endPoint.CreateDeleteCommand();

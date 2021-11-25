@@ -146,7 +146,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
 
       for (int idxItems = 0; idxItems < menuItems.Count; idxItems++)
       {
-        WebMenuItem menuItem = (WebMenuItem) menuItems[idxItems];
+        WebMenuItem menuItem = (WebMenuItem)menuItems[idxItems];
         if (! menuItem.IsVisible)
           continue;
         if (string.IsNullOrEmpty(menuItem.ItemID))
@@ -207,7 +207,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
     ArgumentUtility.CheckNotNull("businessObject", businessObject);
 
     if (businessObject is IBusinessObjectWithIdentity)
-      return ((IBusinessObjectWithIdentity) businessObject).GetAccessibleDisplayName();
+      return ((IBusinessObjectWithIdentity)businessObject).GetAccessibleDisplayName();
     else
       return businessObject.ToString()!;
   }
@@ -258,7 +258,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
     if (Property == null)
       value = DataSource.BusinessObject;
     else if (DataSource.BusinessObject != null)
-      value = (IBusinessObject?) DataSource.BusinessObject.GetProperty(Property);
+      value = (IBusinessObject?)DataSource.BusinessObject.GetProperty(Property);
 
     LoadValueInternal(value, interim);
   }
@@ -293,7 +293,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   protected override sealed object? ValueImplementation
   {
     get { return Value; }
-    set { Value = (IBusinessObject?) value; }
+    set { Value = (IBusinessObject?)value; }
   }
 
   /// <summary>Gets a flag indicating whether the <see cref="BocDropDownMenu"/> contains a value. </summary>
@@ -316,8 +316,8 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public new IBusinessObjectReferenceProperty? Property
   {
-    get { return (IBusinessObjectReferenceProperty?) base.Property; }
-    set { base.Property = (IBusinessObjectReferenceProperty?) value; }
+    get { return (IBusinessObjectReferenceProperty?)base.Property; }
+    set { base.Property = (IBusinessObjectReferenceProperty?)value; }
   }
 
   /// <summary> The <see cref="BocDropDownMenu"/> supports only scalar properties. </summary>
@@ -353,14 +353,14 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   /// </summary>
   public override Control TargetControl
   {
-    get { return (Control) _dropDownMenu; }
+    get { return (Control)_dropDownMenu; }
   }
 
   [PersistenceMode (PersistenceMode.InnerProperty)]
   [ListBindable (false)]
   [Category ("Menu")]
   [Description ("The menu items displayed by the menu.")]
-  [DefaultValue ((string?) null)]
+  [DefaultValue ((string?)null)]
   public WebMenuItemCollection MenuItems
   {
     get { return _dropDownMenu.MenuItems; }
@@ -409,11 +409,11 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   /// <remarks> Only called for commands of type <see cref="CommandType.Event"/>. </remarks>
   protected virtual void OnMenuItemEventCommandClick (WebMenuItem menuItem)
   {
-    WebMenuItemClickEventHandler? menuItemClickHandler = (WebMenuItemClickEventHandler?) Events[s_menuItemClickEvent];
+    WebMenuItemClickEventHandler? menuItemClickHandler = (WebMenuItemClickEventHandler?)Events[s_menuItemClickEvent];
     if (menuItem.Command != null)
     {
       if (menuItem is BocMenuItem)
-        ((BocMenuItemCommand) menuItem.Command).OnClick((BocMenuItem) menuItem);
+        ((BocMenuItemCommand)menuItem.Command).OnClick((BocMenuItem)menuItem);
       else
         menuItem.Command.OnClick();
     }
@@ -464,9 +464,9 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
         else
           businessObjects = new IBusinessObject[0];
 
-        BocMenuItemCommand command = (BocMenuItemCommand) menuItem.Command;
+        BocMenuItemCommand command = (BocMenuItemCommand)menuItem.Command;
         if (Page is IWxePage)
-          command.ExecuteWxeFunction((IWxePage) Page, indices, businessObjects);
+          command.ExecuteWxeFunction((IWxePage)Page, indices, businessObjects);
         //else
         //  command.ExecuteWxeFunction (Page, indices, businessObjects);
       }
@@ -474,7 +474,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
       {
         Command command = menuItem.Command;
         if (Page is IWxePage)
-          command.ExecuteWxeFunction((IWxePage) Page, null);
+          command.ExecuteWxeFunction((IWxePage)Page, null);
         //else
         //  command.ExecuteWxeFunction (Page, null, new NameValueCollection (0));
       }
@@ -508,7 +508,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   /// <value> The <see cref="WebMenuItem.ItemID"/> values of the menu items to hide. </value>
   [Category ("Menu")]
   [Description ("The list of menu items to be hidden, identified by their ItemIDs.")]
-  [DefaultValue ((string?) null)]
+  [DefaultValue ((string?)null)]
   [PersistenceMode (PersistenceMode.Attribute)]
   public string[] HiddenMenuItems
   {

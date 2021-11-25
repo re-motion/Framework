@@ -84,7 +84,7 @@ namespace Remotion.UnitTests.Collections
     [Test]
     public void GetEnumerator_NonGeneric ()
     {
-      var enumerator = ((IEnumerable) _adapter).GetEnumerator();
+      var enumerator = ((IEnumerable)_adapter).GetEnumerator();
 
       Assert.That(enumerator.MoveNext(), Is.True);
       Assert.That(enumerator.Current, Is.EqualTo("1"));

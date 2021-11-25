@@ -117,7 +117,7 @@ namespace Remotion.ObjectBinding
     IBusinessObjectProperty? IBusinessObjectBoundControl.Property
     {
       get { return ReferenceProperty; }
-      set { _property = (IBusinessObjectReferenceProperty?) value; }
+      set { _property = (IBusinessObjectReferenceProperty?)value; }
     }
 
     /// <summary>
@@ -136,7 +136,7 @@ namespace Remotion.ObjectBinding
         if (_propertyDirty)
         {
           if (_dataSource != null && _dataSource.BusinessObjectClass != null && _propertyIdentifier != null)
-            _property = (IBusinessObjectReferenceProperty?) _dataSource.BusinessObjectClass.GetPropertyDefinition(_propertyIdentifier);
+            _property = (IBusinessObjectReferenceProperty?)_dataSource.BusinessObjectClass.GetPropertyDefinition(_propertyIdentifier);
           else
             _property = null;
           _propertyDirty = false;

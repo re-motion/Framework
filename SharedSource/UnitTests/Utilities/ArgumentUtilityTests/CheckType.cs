@@ -40,7 +40,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     public void Fail_ValueType ()
     {
       Assert.That(
-          () => ArgumentUtility.CheckType<int>("arg", (object?) null),
+          () => ArgumentUtility.CheckType<int>("arg", (object?)null),
           Throws.InstanceOf<ArgumentNullException>());
     }
 
@@ -61,7 +61,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     [Test]
     public void Succeed_BaseType ()
     {
-      string result = (string) ArgumentUtility.CheckType<object>("arg", "test");
+      string result = (string)ArgumentUtility.CheckType<object>("arg", "test");
       Assert.That(result, Is.EqualTo("test"));
     }
   }

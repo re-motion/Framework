@@ -43,8 +43,8 @@ namespace Remotion.Web.Development.WebTesting
       RetryUntilTimeout.Run(
           () =>
           {
-            var webDriver = (IWebDriver) context.Browser.Driver.Native;
-            var nativeScope = (IWebElement) scope.Native;
+            var webDriver = (IWebDriver)context.Browser.Driver.Native;
+            var nativeScope = (IWebElement)scope.Native;
 
             var actions = new Actions(webDriver);
             actions.ContextClick(nativeScope);

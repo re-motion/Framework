@@ -91,17 +91,17 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       if (expectedProperty.IsList)
         Assert.That(expectedProperty.ListInfo.ItemType, Is.EqualTo(actualProperty.ListInfo.ItemType), "ListInfo.ItemType");
       Assert.That(expectedProperty.IsRequired, Is.EqualTo(actualProperty.IsRequired), "IsRequired");
-      Assert.That(((PropertyBase) actualProperty).ReflectedClass, Is.Not.Null);
+      Assert.That(((PropertyBase)actualProperty).ReflectedClass, Is.Not.Null);
 
       if (typeof(IBusinessObjectStringProperty).IsAssignableFrom(actualProperty.GetType()))
-        CheckStringProperty((IBusinessObjectStringProperty) actualProperty, expectedProperty);
+        CheckStringProperty((IBusinessObjectStringProperty)actualProperty, expectedProperty);
     }
 
     private void CheckStringProperty (IBusinessObjectStringProperty expectedProperty, IBusinessObjectProperty actualProperty)
     {
       Assert.That(
           expectedProperty.MaxLength,
-          Is.EqualTo(((IBusinessObjectStringProperty) actualProperty).MaxLength),
+          Is.EqualTo(((IBusinessObjectStringProperty)actualProperty).MaxLength),
           "MaxLength");
     }
 
@@ -330,7 +330,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
 
       Assert.That(actualProperties, Is.EqualTo(expectedProperties));
       foreach (IBusinessObjectProperty actualProperty in actualProperties)
-        Assert.That(((PropertyBase) actualProperty).ReflectedClass, Is.SameAs(bindableObjectClass));
+        Assert.That(((PropertyBase)actualProperty).ReflectedClass, Is.SameAs(bindableObjectClass));
     }
 
     private StubBindableObjectClass CreateStubBindableObjectClass (PropertyBase property)

@@ -42,7 +42,7 @@ namespace Remotion.Mixins.CodeGeneration
       ArgumentUtility.CheckNotNull("concreteMixedType", concreteMixedType);
 
       var attribute =
-          (ConcreteMixedTypeAttribute?) concreteMixedType.GetCustomAttributes(typeof(ConcreteMixedTypeAttribute), false).SingleOrDefault();
+          (ConcreteMixedTypeAttribute?)concreteMixedType.GetCustomAttributes(typeof(ConcreteMixedTypeAttribute), false).SingleOrDefault();
       if (attribute != null)
         return attribute.GetClassContext();
       else
@@ -55,7 +55,7 @@ namespace Remotion.Mixins.CodeGeneration
       ArgumentUtility.CheckNotNull("concreteMixinType", concreteMixinType);
 
       var attribute =
-          (ConcreteMixinTypeAttribute?) concreteMixinType.GetCustomAttributes(typeof(ConcreteMixinTypeAttribute), false).SingleOrDefault();
+          (ConcreteMixinTypeAttribute?)concreteMixinType.GetCustomAttributes(typeof(ConcreteMixinTypeAttribute), false).SingleOrDefault();
       if (attribute != null)
         return attribute.GetIdentifier();
       else
@@ -68,7 +68,7 @@ namespace Remotion.Mixins.CodeGeneration
       var wrappers = from potentialWrapper in concreteMixinType.GetMethods(BindingFlags.Instance | BindingFlags.Public)
                      let wrappedMethod = GetWrappedMethod(potentialWrapper)
                      where wrappedMethod != null
-                     select new { Method = (MethodInfo) wrappedMethod, Wrapper = potentialWrapper };
+                     select new { Method = (MethodInfo)wrappedMethod, Wrapper = potentialWrapper };
       return wrappers.ToDictionary(pair => pair.Method, pair => pair.Wrapper);
     }
 
@@ -80,7 +80,7 @@ namespace Remotion.Mixins.CodeGeneration
     {
       var mixinMethodsWithInterfaceMethods =
           from interfaceMethod in interfaceType.GetMethods()
-          let attribute = (OverrideInterfaceMappingAttribute) interfaceMethod.GetCustomAttributes(typeof(OverrideInterfaceMappingAttribute), false)
+          let attribute = (OverrideInterfaceMappingAttribute)interfaceMethod.GetCustomAttributes(typeof(OverrideInterfaceMappingAttribute), false)
               .Single()
           let resolvedMethod = attribute.ResolveReferencedMethod()
           select new { resolvedMethod, interfaceMethod };

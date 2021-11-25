@@ -62,7 +62,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTy
       var serializedData = Serializer.Serialize(mixedInstance);
 
       _savedPipeline.CodeManager.FlushCodeToDisk();
-      var mixedInstanceA = (ClassOverridingMixinMembers) Serializer.Deserialize(serializedData);
+      var mixedInstanceA = (ClassOverridingMixinMembers)Serializer.Deserialize(serializedData);
       var mixinA = Mixin.Get<MixinWithAbstractMembers>(mixedInstance);
 
       Assert.That(mixedInstanceA.GetType(), Is.SameAs(mixedInstance.GetType()));
@@ -155,7 +155,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTy
     private ConcreteMixinTypeIdentifier GetConcreteMixinIdentifier (MixinWithAbstractMembers mixin)
     {
       Assert.That(mixin, Is.AssignableTo<IGeneratedMixinType>());
-      var attribute = (ConcreteMixinTypeAttribute) mixin.GetType().GetCustomAttributes(typeof(ConcreteMixinTypeAttribute), false).Single();
+      var attribute = (ConcreteMixinTypeAttribute)mixin.GetType().GetCustomAttributes(typeof(ConcreteMixinTypeAttribute), false).Single();
 
       return attribute.GetIdentifier();
     }

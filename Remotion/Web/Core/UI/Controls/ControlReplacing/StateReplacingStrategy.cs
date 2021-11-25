@@ -36,9 +36,9 @@ namespace Remotion.Web.UI.Controls.ControlReplacing
       ArgumentUtility.CheckNotNullOrEmpty("serializedState", serializedState);
 
       var formatter = new LosFormatter();
-      var state = (Pair) formatter.Deserialize(serializedState);
+      var state = (Pair)formatter.Deserialize(serializedState);
 
-      _controlState = (IDictionary) state.First!; // TODO RM-8118: not null assertion
+      _controlState = (IDictionary)state.First!; // TODO RM-8118: not null assertion
       _viewState = state.Second!; // TODO RM-8118: not null assertion
     }
 

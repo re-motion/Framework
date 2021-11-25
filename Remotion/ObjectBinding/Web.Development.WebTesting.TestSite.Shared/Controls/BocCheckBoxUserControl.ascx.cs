@@ -47,7 +47,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
 
     private BocCheckBoxUserControlTestOutput TestOutput
     {
-      get { return (BocCheckBoxUserControlTestOutput) ((Layout) Page.Master).GetTestOutputControl(); }
+      get { return (BocCheckBoxUserControlTestOutput)((Layout)Page.Master).GetTestOutputControl(); }
     }
   }
 }

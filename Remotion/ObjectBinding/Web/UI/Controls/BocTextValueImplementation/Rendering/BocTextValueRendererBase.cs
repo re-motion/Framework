@@ -87,7 +87,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
 
       bool isControlHeightEmpty = renderingContext.Control.Height.IsEmpty && string.IsNullOrEmpty(renderingContext.Control.Style["height"]);
 
-      WebControl innerControl = renderingContext.Control.IsReadOnly ? (WebControl) GetLabel(renderingContext) : GetTextBox(renderingContext);
+      WebControl innerControl = renderingContext.Control.IsReadOnly ? (WebControl)GetLabel(renderingContext) : GetTextBox(renderingContext);
       innerControl.Page = renderingContext.Control.Page!.WrappedInstance;
 
       bool isInnerControlHeightEmpty = innerControl.Height.IsEmpty && string.IsNullOrEmpty(innerControl.Style["height"]);

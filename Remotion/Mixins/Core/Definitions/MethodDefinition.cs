@@ -34,7 +34,7 @@ namespace Remotion.Mixins.Definitions
 
     public MethodInfo MethodInfo
     {
-      get { return (MethodInfo) MemberInfo; }
+      get { return (MethodInfo)MemberInfo; }
     }
 
     public override MemberDefinitionBase? BaseAsMember
@@ -43,7 +43,7 @@ namespace Remotion.Mixins.Definitions
       protected internal set
       {
         if (value == null || value is MethodDefinition)
-          _base = (MethodDefinition?) value;
+          _base = (MethodDefinition?)value;
         else
           throw new ArgumentException("Base must be MethodDefinition or null.", "value");
       }

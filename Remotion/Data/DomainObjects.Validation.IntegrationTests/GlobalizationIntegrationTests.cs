@@ -38,8 +38,8 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
         var customer = Customer.NewObject();
-        ((ICustomerIntroduced) customer).Address = Address.NewObject();
-        ((ICustomerIntroduced) customer).Title = "Chef1";
+        ((ICustomerIntroduced)customer).Address = Address.NewObject();
+        ((ICustomerIntroduced)customer).Title = "Chef1";
 
         var validator = ValidationProvider.GetValidator(typeof(Customer));
 

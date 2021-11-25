@@ -78,7 +78,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
           if (!isRegistered)
             exceptionTypeList.Add(exceptionTypes[idxNewTypes]);
         }
-        exceptionTypes = (Type[]) exceptionTypeList.ToArray(typeof(Type));
+        exceptionTypes = (Type[])exceptionTypeList.ToArray(typeof(Type));
       }
       SetCatchExceptionTypes(exceptionTypes);
     }
@@ -87,7 +87,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     {
       if (_catchExceptionTypes == null)
         return new Type[0];
-      return (Type[]) _catchExceptionTypes.Clone();
+      return (Type[])_catchExceptionTypes.Clone();
     }
 
     public bool Catch (Exception exception)

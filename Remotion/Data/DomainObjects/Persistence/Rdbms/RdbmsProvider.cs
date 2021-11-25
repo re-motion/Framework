@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       get
       {
         // CheckDisposed is not necessary here, because StorageProvider.StorageProviderDefinition already checks this.
-        return (RdbmsProviderDefinition) base.StorageProviderDefinition;
+        return (RdbmsProviderDefinition)base.StorageProviderDefinition;
       }
     }
 

@@ -167,7 +167,7 @@ namespace Remotion.ExtensibleEnums
                        select attribute;
       var list = attributes.ToList();
 
-      var array = (object[]) Array.CreateInstance(attributeType, list.Count);
+      var array = (object[])Array.CreateInstance(attributeType, list.Count);
       list.CopyTo(array);
       return array;
     }
@@ -175,7 +175,7 @@ namespace Remotion.ExtensibleEnums
     /// <inheritdoc cref="IExtensibleEnumDefinition.GetCustomAttributes{TAttribute}" />
     public TAttribute[] GetCustomAttributes<TAttribute> () where TAttribute : class
     {
-      return (TAttribute[]) GetCustomAttributes(typeof(TAttribute));
+      return (TAttribute[])GetCustomAttributes(typeof(TAttribute));
     }
 
     private CacheItem RetrieveValues ()

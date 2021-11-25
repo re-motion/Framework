@@ -35,7 +35,7 @@ namespace Remotion.Mixins.Definitions
 
     public new RequiredNextCallTypeDefinition RequiredType
     {
-      get { return (RequiredNextCallTypeDefinition) base.RequiredType; }
+      get { return (RequiredNextCallTypeDefinition)base.RequiredType; }
     }
 
     public override IVisitableDefinition Depender

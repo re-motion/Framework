@@ -142,7 +142,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
 
     private MethodInfo GetInterceptedAccessorMethod (IAccessorInterceptor accessorInterceptor)
     {
-      return (MethodInfo) PrivateInvoke.GetNonPublicField(accessorInterceptor, "_interceptedAccessorMethod");
+      return (MethodInfo)PrivateInvoke.GetNonPublicField(accessorInterceptor, "_interceptedAccessorMethod");
     }
 
     [DBTable]

@@ -38,7 +38,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTy
       Type generatedType = CodeGenerationTypeMother.GetGeneratedMixinType(typeof(ClassOverridingMixinMembers), typeof(MixinWithAbstractMembers));
       Assert.That(generatedType.IsDefined(typeof(ConcreteMixinTypeAttribute), false), Is.True);
 
-      var attributes = (ConcreteMixinTypeAttribute[]) generatedType.GetCustomAttributes(typeof(ConcreteMixinTypeAttribute), false);
+      var attributes = (ConcreteMixinTypeAttribute[])generatedType.GetCustomAttributes(typeof(ConcreteMixinTypeAttribute), false);
       Assert.That(attributes.Length, Is.EqualTo(1));
     }
 
@@ -53,7 +53,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTy
       Type generatedType = CodeGenerationTypeMother.GetGeneratedMixinType(requestingClass, typeof(MixinWithAbstractMembers));
       Assert.That(generatedType.IsDefined(typeof(ConcreteMixinTypeAttribute), false), Is.True);
 
-      var attributes = (ConcreteMixinTypeAttribute[]) generatedType.GetCustomAttributes(typeof(ConcreteMixinTypeAttribute), false);
+      var attributes = (ConcreteMixinTypeAttribute[])generatedType.GetCustomAttributes(typeof(ConcreteMixinTypeAttribute), false);
       Assert.That(attributes[0].GetIdentifier(), Is.EqualTo(mixinDefinition.GetConcreteMixinTypeIdentifier()));
     }
 

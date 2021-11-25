@@ -34,7 +34,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Tena
       IObjectSecurityStrategy objectSecurityStrategy = tenant.GetSecurityStrategy();
       Assert.That(objectSecurityStrategy, Is.Not.Null);
       Assert.IsInstanceOf(typeof(DomainObjectSecurityStrategyDecorator), objectSecurityStrategy);
-      DomainObjectSecurityStrategyDecorator domainObjectSecurityStrategyDecorator = (DomainObjectSecurityStrategyDecorator) objectSecurityStrategy;
+      DomainObjectSecurityStrategyDecorator domainObjectSecurityStrategyDecorator = (DomainObjectSecurityStrategyDecorator)objectSecurityStrategy;
       Assert.That(domainObjectSecurityStrategyDecorator.RequiredSecurityForStates, Is.EqualTo(RequiredSecurityForStates.None));
     }
 
@@ -75,7 +75,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Tena
       Tenant tenant = TestHelper.CreateTenant("Tenant", "UID: Tenant");
       tenant.Parent = TestHelper.CreateTenant("ParentTenant", "UID: ParentTenant");
 
-      ISecurityContext securityContext = ((ISecurityContextFactory) tenant).CreateSecurityContext();
+      ISecurityContext securityContext = ((ISecurityContextFactory)tenant).CreateSecurityContext();
       Assert.That(Type.GetType(securityContext.Class), Is.EqualTo(tenant.GetPublicDomainObjectType()));
       Assert.That(securityContext.Owner, Is.Null);
       Assert.That(securityContext.OwnerGroup, Is.Null);
@@ -89,7 +89,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Tena
     {
       Tenant tenant = TestHelper.CreateTenant("Tenant", "UID: Tenant");
 
-      ISecurityContext securityContext = ((ISecurityContextFactory) tenant).CreateSecurityContext();
+      ISecurityContext securityContext = ((ISecurityContextFactory)tenant).CreateSecurityContext();
       Assert.That(Type.GetType(securityContext.Class), Is.EqualTo(tenant.GetPublicDomainObjectType()));
       Assert.That(securityContext.Owner, Is.Null);
       Assert.That(securityContext.OwnerGroup, Is.Null);

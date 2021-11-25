@@ -43,7 +43,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
       executionContextStub.Setup(stub => stub.GetInParameters()).Returns(new object[0]);
 
       _transactionStrategyMock = new Mock<RootTransactionStrategy>(
-          false, (Func<ITransaction>) (() => transactionMock.Object), outerTransactionStrategyStub.Object, executionContextStub.Object);
+          false, (Func<ITransaction>)(() => transactionMock.Object), outerTransactionStrategyStub.Object, executionContextStub.Object);
 
       _innerListenerStub = new Mock<IWxeFunctionExecutionListener>();
       _transactionListener = new RootTransactionExecutionListener(_transactionStrategyMock.Object, _innerListenerStub.Object);

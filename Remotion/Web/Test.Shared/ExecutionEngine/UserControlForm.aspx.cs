@@ -102,7 +102,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
     {
       try
       {
-        SecondControl.Call(this, TheUserControl, (Control) sender);
+        SecondControl.Call(this, TheUserControl, (Control)sender);
       }
       catch (WxeUserCancelException)
       {
@@ -111,7 +111,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
 
     protected override void LoadControlState (object savedState)
     {
-      var controlState = (Tuple<object, int>) savedState;
+      var controlState = (Tuple<object, int>)savedState;
       base.LoadControlState(controlState.Item1);
       ControlStateValue = controlState.Item2;
     }
@@ -123,7 +123,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
 
     private int ViewStateValue
     {
-      get { return (int?) ViewState["Value"] ?? 0; }
+      get { return (int?)ViewState["Value"] ?? 0; }
       set { ViewState["Value"] = value; }
     }
 

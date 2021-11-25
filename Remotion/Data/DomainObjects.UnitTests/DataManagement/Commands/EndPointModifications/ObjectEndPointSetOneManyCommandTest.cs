@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       _newRelatedObject = DomainObjectIDs.Order3.GetObject<Order>();
 
       _endPointID = RelationEndPointID.Resolve(_domainObject, oi => oi.Order);
-      _endPoint = (RealObjectEndPoint) RelationEndPointObjectMother.CreateObjectEndPoint(_endPointID, _oldRelatedObject.ID);
+      _endPoint = (RealObjectEndPoint)RelationEndPointObjectMother.CreateObjectEndPoint(_endPointID, _oldRelatedObject.ID);
 
       _command = new ObjectEndPointSetOneManyCommand(_endPoint, _newRelatedObject, OppositeObjectSetter, EndPointProviderStub, TransactionEventSinkWithMock);
     }
@@ -80,8 +80,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       var definition = MappingConfiguration.Current.GetTypeDefinition(typeof(Client))
           .GetMandatoryRelationEndPointDefinition(typeof(Client).FullName + ".ParentClient");
       var relationEndPointID = RelationEndPointID.Create(DomainObjectIDs.Client1.GetObject<Client>().ID, definition);
-      var endPoint = (IRealObjectEndPoint)
-                     TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad(relationEndPointID);
+      var endPoint = (IRealObjectEndPoint)TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad(relationEndPointID);
       Assert.That(
           () => new ObjectEndPointSetOneManyCommand(endPoint, Client.NewObject(), mi => { }, EndPointProviderStub, TransactionEventSinkWithMock),
           Throws.ArgumentException
@@ -98,7 +97,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       var definition = MappingConfiguration.Current.GetTypeDefinition(typeof(OrderTicket))
           .GetMandatoryRelationEndPointDefinition(typeof(OrderTicket).FullName + ".Order");
       var relationEndPointID = RelationEndPointID.Create(DomainObjectIDs.OrderTicket1.GetObject<OrderTicket>().ID, definition);
-      var endPoint = (IRealObjectEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad(relationEndPointID);
+      var endPoint = (IRealObjectEndPoint)TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad(relationEndPointID);
       Assert.That(
           () => new ObjectEndPointSetOneManyCommand(endPoint, Order.NewObject(), mi => { }, EndPointProviderStub, TransactionEventSinkWithMock),
           Throws.ArgumentException
@@ -112,7 +111,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     [Test]
     public void Initialization_Same ()
     {
-      var endPoint = (IRealObjectEndPoint) RelationEndPointObjectMother.CreateObjectEndPoint(_endPointID, _oldRelatedObject.ID);
+      var endPoint = (IRealObjectEndPoint)RelationEndPointObjectMother.CreateObjectEndPoint(_endPointID, _oldRelatedObject.ID);
       Assert.That(
           () => new ObjectEndPointSetOneManyCommand(endPoint, _oldRelatedObject, mi => { }, EndPointProviderStub, TransactionEventSinkWithMock),
           Throws.ArgumentException

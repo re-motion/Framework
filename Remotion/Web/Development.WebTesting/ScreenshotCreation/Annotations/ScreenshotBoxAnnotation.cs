@@ -80,7 +80,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
         graphics.FillRectangle(_backgroundBrush, annotationBounds);
 
       // Apply the padding for the border
-      var border = (int) Math.Floor(_pen.Width);
+      var border = (int)Math.Floor(_pen.Width);
       var xyOffset = (border - 1) / 2;
       var whOffset = border / 2;
       var borderBounds = new WebPadding(xyOffset + 1, xyOffset + 1, whOffset, whOffset).Apply(annotationBounds);

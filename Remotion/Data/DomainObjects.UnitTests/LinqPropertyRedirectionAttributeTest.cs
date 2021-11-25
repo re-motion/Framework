@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       var transformer = attribute.GetExpressionTransformer(null);
 
       Assert.That(transformer, Is.TypeOf(typeof(LinqPropertyRedirectionAttribute.MethodCallTransformer)));
-      Assert.That(((LinqPropertyRedirectionAttribute.MethodCallTransformer) transformer).MappedProperty,
+      Assert.That(((LinqPropertyRedirectionAttribute.MethodCallTransformer)transformer).MappedProperty,
           Is.SameAs(typeof(Order).GetProperty("OrderNumber")));
     }
 

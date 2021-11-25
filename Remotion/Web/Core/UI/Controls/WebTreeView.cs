@@ -262,7 +262,7 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Fires the <see cref="Click"/> event. </summary>
     protected virtual void OnClick (WebTreeNode? node, string[] path)
     {
-      WebTreeNodeClickEventHandler? handler = (WebTreeNodeClickEventHandler?) Events[s_clickEvent];
+      WebTreeNodeClickEventHandler? handler = (WebTreeNodeClickEventHandler?)Events[s_clickEvent];
       if (handler != null)
       {
         WebTreeNodeClickEventArgs e = new WebTreeNodeClickEventArgs(node, path);
@@ -273,7 +273,7 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Fires the <see cref="SelectionChanged"/> event. </summary>
     protected virtual void OnSelectionChanged (WebTreeNode? node)
     {
-      WebTreeNodeEventHandler? handler = (WebTreeNodeEventHandler?) Events[s_selectionChangedEvent];
+      WebTreeNodeEventHandler? handler = (WebTreeNodeEventHandler?)Events[s_selectionChangedEvent];
       if (handler != null)
       {
         WebTreeNodeEventArgs e = new WebTreeNodeEventArgs(node);
@@ -371,14 +371,14 @@ namespace Remotion.Web.UI.Controls
 
     protected override void LoadControlState (object? savedState)
     {
-      object?[] values = (object?[]) savedState!;
+      object?[] values = (object?[])savedState!;
 
       base.LoadControlState(values[0]);
       if (_enableTreeNodeControlState)
-        _nodesControlState = (Triplet[]) values[1]!;
+        _nodesControlState = (Triplet[])values[1]!;
       else
         _nodesControlState = null;
-      _menuCounter = (int) values[2]!;
+      _menuCounter = (int)values[2]!;
 
       _isLoadControlStateCompleted = true;
     }
@@ -401,23 +401,23 @@ namespace Remotion.Web.UI.Controls
       for (int i = 0; i < nodesState.Length; i++)
       {
         Triplet nodeState = nodesState[i];
-        string nodeID = (string) nodeState.First!; // TODO RM-8118: not null assertion
+        string nodeID = (string)nodeState.First!; // TODO RM-8118: not null assertion
         WebTreeNode? node = nodes.Find(nodeID);
         if (node != null)
         {
-          object[] values = (object[]) nodeState.Second!; // TODO RM-8118: not null assertion
-          node.IsExpanded = (bool) values[0];
+          object[] values = (object[])nodeState.Second!; // TODO RM-8118: not null assertion
+          node.IsExpanded = (bool)values[0];
           if (!node.IsEvaluated)
           {
-            bool isEvaluated = (bool) values[1];
+            bool isEvaluated = (bool)values[1];
             if (isEvaluated)
               EvaluateTreeNodeInternal(node);
           }
-          bool isSelected = (bool) values[2];
+          bool isSelected = (bool)values[2];
           if (isSelected)
             node.IsSelected = true;
-          node.MenuID = (string) values[3];
-          LoadNodesControlStateRecursive((Triplet[]) nodeState.Third!, node.Children); // TODO RM-8118: not null assertion
+          node.MenuID = (string)values[3];
+          LoadNodesControlStateRecursive((Triplet[])nodeState.Third!, node.Children); // TODO RM-8118: not null assertion
         }
       }
     }
@@ -587,7 +587,7 @@ namespace Remotion.Web.UI.Controls
       if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
         WcagHelper.Instance.HandleError(1, this);
 
-      ((IControl) this).Page!.ClientScript.RegisterStartupScriptBlock(
+      ((IControl)this).Page!.ClientScript.RegisterStartupScriptBlock(
           this,
           typeof(WebTreeView),
           Guid.NewGuid().ToString(),
@@ -1082,7 +1082,7 @@ namespace Remotion.Web.UI.Controls
 
     public new HttpContextBase? Context
     {
-      get { return ((IControl) this).Page!.Context; }
+      get { return ((IControl)this).Page!.Context; }
     }
 
     private IInfrastructureResourceUrlFactory InfrastructureResourceUrlFactory
@@ -1116,7 +1116,7 @@ namespace Remotion.Web.UI.Controls
     [MergableProperty (false)]
     //  Default category
     [Description ("The tree nodes displayed by this tree view.")]
-    [DefaultValue ((string?) null)]
+    [DefaultValue ((string?)null)]
     public virtual WebTreeNodeCollection Nodes
     {
       get
@@ -1382,7 +1382,7 @@ namespace Remotion.Web.UI.Controls
 );",
                 ClientID,
                 anyNodeContextMenu.GetBindOpenEventScript("el", "menuID", true));
-        ((IControl) this).Page!.ClientScript.RegisterStartupScriptBlock(this, typeof(WebTreeView), key, script);
+        ((IControl)this).Page!.ClientScript.RegisterStartupScriptBlock(this, typeof(WebTreeView), key, script);
       }
 
       List<WebTreeNode> unreachableNodes = new List<WebTreeNode>();
@@ -1408,7 +1408,7 @@ namespace Remotion.Web.UI.Controls
 
     private void Menu_EventCommandClick (object sender, WebMenuItemClickEventArgs e)
     {
-      DropDownMenu menu = (DropDownMenu) sender;
+      DropDownMenu menu = (DropDownMenu)sender;
       foreach (KeyValuePair<WebTreeNode, DropDownMenu> entry in _menus)
       {
         if (entry.Value == menu)
@@ -1421,7 +1421,7 @@ namespace Remotion.Web.UI.Controls
 
     private void Menu_WxeFunctionCommandClick (object sender, WebMenuItemClickEventArgs e)
     {
-      DropDownMenu menu = (DropDownMenu) sender;
+      DropDownMenu menu = (DropDownMenu)sender;
       foreach (KeyValuePair<WebTreeNode, DropDownMenu> entry in _menus)
       {
         if (entry.Value == menu)

@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
 
       Assert.That(queryableWithOrder.Provider, Is.Not.Null);
       Assert.That(queryableWithOrder.Provider, Is.InstanceOf(typeof(DefaultQueryProvider)));
-      Assert.That(((DefaultQueryProvider) queryableWithOrder.Provider).QueryableType, Is.SameAs(typeof(DomainObjectQueryable<>)));
+      Assert.That(((DefaultQueryProvider)queryableWithOrder.Provider).QueryableType, Is.SameAs(typeof(DomainObjectQueryable<>)));
       Assert.That(queryableWithOrder.Provider.Executor, Is.SameAs(_executorStub));
       Assert.That(queryableWithOrder.Provider.QueryParser, Is.SameAs(_queryParserStub));
     }

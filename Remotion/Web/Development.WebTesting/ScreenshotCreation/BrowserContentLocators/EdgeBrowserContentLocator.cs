@@ -82,7 +82,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
     {
       var id = Guid.NewGuid().ToString();
 
-      var executor = (IJavaScriptExecutor) driver;
+      var executor = (IJavaScriptExecutor)driver;
       var previousTitle = Assertion.IsNotNull(
           JavaScriptExecutor.ExecuteStatement<string>(executor, c_setWindowTitle, id),
           "The Javascript code changing and fetching the window title must not return null.");
@@ -125,10 +125,10 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
         throw new InvalidOperationException("Could not resolve the bounds of the Edge browser window.");
 
       return new Rectangle(
-          (int) Math.Round(rawBounds.X),
-          (int) Math.Round(rawBounds.Y),
-          (int) Math.Round(rawBounds.Width),
-          (int) Math.Round(rawBounds.Height));
+          (int)Math.Round(rawBounds.X),
+          (int)Math.Round(rawBounds.Y),
+          (int)Math.Round(rawBounds.Width),
+          (int)Math.Round(rawBounds.Height));
     }
 
     private AutomationElement GetContentElement (AutomationElement window)

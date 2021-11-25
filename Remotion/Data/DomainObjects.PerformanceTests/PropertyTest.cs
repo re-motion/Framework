@@ -95,7 +95,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
       Trace.WriteLine(value);
 
-      double averageMilliSeconds = ((double) stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
+      double averageMilliSeconds = ((double)stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
       Console.WriteLine("String_GetProperty ((executed {0:N0}x): Average duration: {1:N} 탎", TestRepititions, averageMilliSeconds);
       gcCounter.PrintCount(Console.Out);
 
@@ -129,7 +129,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
       Trace.WriteLine(value);
 
-      double averageMilliSeconds = ((double) stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
+      double averageMilliSeconds = ((double)stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
       Console.WriteLine("Unidirectional_GetProperty ((executed {0:N0}x): Average duration: {1:N} 탎", TestRepititions, averageMilliSeconds);
       gcCounter.PrintCount(Console.Out);
 
@@ -163,7 +163,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
       Trace.WriteLine(value);
 
-      double averageMilliSeconds = ((double) stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
+      double averageMilliSeconds = ((double)stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
       Console.WriteLine("Bidirectional_OneToOne_RealEndPoint_GetProperty ((executed {0:N0}x): Average duration: {1:N} 탎", TestRepititions, averageMilliSeconds);
       gcCounter.PrintCount(Console.Out);
 
@@ -197,7 +197,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
       Trace.WriteLine(value);
 
-      double averageMilliSeconds = ((double) stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
+      double averageMilliSeconds = ((double)stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
       Console.WriteLine("Bidirectional_OneToOne_VirtualEndPoint_GetProperty ((executed {0:N0}x): Average duration: {1:N} 탎", TestRepititions, averageMilliSeconds);
       gcCounter.PrintCount(Console.Out);
 
@@ -233,7 +233,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
       Trace.WriteLine(value);
 
-      double averageMilliSeconds = ((double) stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
+      double averageMilliSeconds = ((double)stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
       Console.WriteLine("Bidirectional_OneToMany_RealEndPoint_GetProperty ((executed {0:N0}x): Average duration: {1:N} 탎", TestRepititions, averageMilliSeconds);
       gcCounter.PrintCount(Console.Out);
 
@@ -267,7 +267,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
       Trace.WriteLine(value);
 
-      double averageMilliSeconds = ((double) stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
+      double averageMilliSeconds = ((double)stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
       Console.WriteLine("Bidirectional_OneToMany_CollectionEndPoint_GetProperty ((executed {0:N0}x): Average duration: {1:N} 탎", TestRepititions, averageMilliSeconds);
       gcCounter.PrintCount(Console.Out);
 
@@ -297,7 +297,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
       Trace.WriteLine(obj.StringProperty1);
 
-      double averageMilliSeconds = ((double) stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
+      double averageMilliSeconds = ((double)stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
       Console.WriteLine("String_SetProperty ((executed {0:N0}x): Average duration: {1:N} 탎", TestRepititions, averageMilliSeconds);
       gcCounter.PrintCount(Console.Out);
 
@@ -327,7 +327,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
       Trace.WriteLine(obj.Unary1);
 
-      double averageMilliSeconds = ((double) stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
+      double averageMilliSeconds = ((double)stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
       Console.WriteLine("Unidirectional_SetProperty ((executed {0:N0}x): Average duration: {1:N} 탎", TestRepititions, averageMilliSeconds);
       gcCounter.PrintCount(Console.Out);
 
@@ -357,7 +357,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
       Trace.WriteLine(obj.Real1);
 
-      double averageMilliSeconds = ((double) stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
+      double averageMilliSeconds = ((double)stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
       Console.WriteLine("Bidirectional_OneToOne_RealEndPoint_SetProperty ((executed {0:N0}x): Average duration: {1:N} 탎", TestRepititions, averageMilliSeconds);
       gcCounter.PrintCount(Console.Out);
 
@@ -387,7 +387,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
       Trace.WriteLine(obj.Virtual1);
 
-      double averageMilliSeconds = ((double) stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
+      double averageMilliSeconds = ((double)stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
       Console.WriteLine("Bidirectional_OneToOne_VirtualEndPoint_SetProperty ((executed {0:N0}x): Average duration: {1:N} 탎", TestRepititions, averageMilliSeconds);
       gcCounter.PrintCount(Console.Out);
 
@@ -417,7 +417,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
       Trace.WriteLine(obj.EndOfCollection);
 
-      double averageMilliSeconds = ((double) stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
+      double averageMilliSeconds = ((double)stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
       Console.WriteLine("Bidirectional_OneToMany_RealEndPoint_SetProperty ((executed {0:N0}x): Average duration: {1:N} 탎", TestRepititions, averageMilliSeconds);
       gcCounter.PrintCount(Console.Out);
 
@@ -450,7 +450,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
       Trace.WriteLine(obj.Collection);
 
-      double averageMilliSeconds = ((double) stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
+      double averageMilliSeconds = ((double)stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
       Console.WriteLine("Bidirectional_OneToMany_CollectionEndPoint_SetProperty ((executed {0:N0}x): Average duration: {1:N} 탎", TestRepititions, averageMilliSeconds);
       gcCounter.PrintCount(Console.Out);
 

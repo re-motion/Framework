@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       _transaction = ClientTransaction.CreateRootTransaction();
 
       var dataManager = ClientTransactionTestHelper.GetDataManager(_transaction);
-      _relationEndPointManager = (RelationEndPointManager) DataManagerTestHelper.GetRelationEndPointManager(dataManager);
+      _relationEndPointManager = (RelationEndPointManager)DataManagerTestHelper.GetRelationEndPointManager(dataManager);
     }
 
     [Test]

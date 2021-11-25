@@ -145,7 +145,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
       {
         if (id.StorageProviderDefinition != _storageProviderDefinition)
           throw new NotSupportedException("Multi-ID lookups can only be performed for ObjectIDs from this storage provider.");
-        return (object) id;
+        return (object)id;
       }).ToList();
 
       if (checkedCastObjectIDs.Count == 1)

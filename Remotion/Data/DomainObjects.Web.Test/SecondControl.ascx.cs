@@ -36,14 +36,14 @@ namespace Remotion.Data.DomainObjects.Web.Test
       {
         var function = new ShowSecondUserControlFunction(transactionMode, inParameter);
         function.ExceptionHandler.SetCatchExceptionTypes(typeof(System.Exception));
-        var actualUserControl = (WxeUserControl) page.FindControl(userControl.PermanentUniqueID);
+        var actualUserControl = (WxeUserControl)page.FindControl(userControl.PermanentUniqueID);
         Assertion.IsNotNull(actualUserControl);
         actualUserControl.ExecuteFunction(function, sender, null);
         throw new Exception("(Unreachable code)");
       }
       else
       {
-        var function = (ShowSecondUserControlFunction) page.ReturningFunction;
+        var function = (ShowSecondUserControlFunction)page.ReturningFunction;
         if (function.ExceptionHandler.Exception != null)
           throw function.ExceptionHandler.Exception;
         return function.ReturnedObjectWithAllDataTypes;
@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.Web.Test
     {
       get
       {
-        return (ShowSecondUserControlFunction) CurrentFunction;
+        return (ShowSecondUserControlFunction)CurrentFunction;
       }
     }
 

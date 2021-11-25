@@ -44,7 +44,7 @@ namespace Remotion.SecurityManager.Persistence
               storageProviderDefinition,
               persistenceExtension,
               commandFactory,
-              (Func<IDbConnection>) (() => new SqlConnection())));
+              (Func<IDbConnection>)(() => new SqlConnection())));
     }
   }
 }

@@ -47,8 +47,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectDataSour
     public void GetAndSetBusinessObject ()
     {
       var businessObject = new Mock<IBusinessObject>();
-      ((IBusinessObjectDataSource) _dataSource).BusinessObject = businessObject.Object;
-      Assert.That(((IBusinessObjectDataSource) _dataSource).BusinessObject, Is.SameAs(businessObject.Object));
+      ((IBusinessObjectDataSource)_dataSource).BusinessObject = businessObject.Object;
+      Assert.That(((IBusinessObjectDataSource)_dataSource).BusinessObject, Is.SameAs(businessObject.Object));
     }
 
     [Test]

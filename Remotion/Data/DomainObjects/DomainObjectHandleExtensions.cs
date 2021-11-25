@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects
         where T : DomainObject, ISupportsGetObject
     {
       ArgumentUtility.CheckNotNull("handle", handle);
-      return (T) LifetimeService.GetObject(GetMandatoryClientTransaction(clientTransaction), handle.ObjectID, includeDeleted);
+      return (T)LifetimeService.GetObject(GetMandatoryClientTransaction(clientTransaction), handle.ObjectID, includeDeleted);
     }
 
     /// <summary>
@@ -86,7 +86,7 @@ namespace Remotion.Data.DomainObjects
         where T : DomainObject, ISupportsGetObject
     {
       ArgumentUtility.CheckNotNull("handle", handle);
-      return (T) LifetimeService.TryGetObject(GetMandatoryClientTransaction(clientTransaction), handle.ObjectID);
+      return (T)LifetimeService.TryGetObject(GetMandatoryClientTransaction(clientTransaction), handle.ObjectID);
     }
 
     /// <summary>
@@ -116,7 +116,7 @@ namespace Remotion.Data.DomainObjects
         where T : DomainObject, ISupportsGetObject
     {
       ArgumentUtility.CheckNotNull("handle", handle);
-      return (T) LifetimeService.GetObjectReference(GetMandatoryClientTransaction(clientTransaction), handle.ObjectID);
+      return (T)LifetimeService.GetObjectReference(GetMandatoryClientTransaction(clientTransaction), handle.ObjectID);
     }
 
     /// <summary>

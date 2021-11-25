@@ -63,7 +63,7 @@ namespace Remotion.Web
       if (value == null)
         return null;
 
-      var plainTextString = (PlainTextString) value;
+      var plainTextString = (PlainTextString)value;
 
       if (destinationType == typeof(string))
         return plainTextString.GetValue();

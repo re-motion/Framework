@@ -29,7 +29,7 @@ namespace Remotion.Security.Configuration
     {
       // ReSharper disable once MemberHidesStaticFromOuterClass
       public readonly Lazy<SecurityConfiguration> Current = new Lazy<SecurityConfiguration>(
-          () => (SecurityConfiguration) ConfigurationManager.GetSection("remotion.security") ?? new SecurityConfiguration());
+          () => (SecurityConfiguration)ConfigurationManager.GetSection("remotion.security") ?? new SecurityConfiguration());
     }
 
     private static readonly Fields s_fields = new Fields();
@@ -62,7 +62,7 @@ namespace Remotion.Security.Configuration
     /// </summary>
     public bool DisableAccessChecks
     {
-      get { return (bool) this[_disableAccessChecksProperty]; }
+      get { return (bool)this[_disableAccessChecksProperty]; }
       set { this[_disableAccessChecksProperty] = value; }
     }
   }

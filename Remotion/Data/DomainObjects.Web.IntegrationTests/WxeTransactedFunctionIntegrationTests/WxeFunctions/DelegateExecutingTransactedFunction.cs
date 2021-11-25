@@ -46,13 +46,13 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
 
     private List<Action<WxeContext, DelegateExecutingTransactedFunction>> DelegateBatch
     {
-      get { return (List<Action<WxeContext, DelegateExecutingTransactedFunction>>) Variables["DelegateBatch"]; }
+      get { return (List<Action<WxeContext, DelegateExecutingTransactedFunction>>)Variables["DelegateBatch"]; }
       set { Variables["DelegateBatch"] = value; }
     }
 
     private int CurrentDelegateIndex
     {
-      get { return (int) Variables["CurrentDelegateIndex"]; }
+      get { return (int)Variables["CurrentDelegateIndex"]; }
       set { Variables["CurrentDelegateIndex"] = value; }
     }
 

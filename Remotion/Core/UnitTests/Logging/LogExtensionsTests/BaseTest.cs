@@ -35,7 +35,7 @@ namespace Remotion.UnitTests.Logging.LogExtensionsTests
     {
       _memoryAppender = new MemoryAppender();
       var hierarchy = new Hierarchy();
-      ((IBasicRepositoryConfigurator) hierarchy).Configure(_memoryAppender);
+      ((IBasicRepositoryConfigurator)hierarchy).Configure(_memoryAppender);
       _logger = hierarchy.GetLogger("The Name");
       _log = new Log4NetLog(_logger);
     }

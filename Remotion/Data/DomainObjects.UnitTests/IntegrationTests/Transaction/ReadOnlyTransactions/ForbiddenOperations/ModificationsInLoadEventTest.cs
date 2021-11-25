@@ -43,13 +43,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
     {
       base.SetUp();
 
-      _order = (Order) LifetimeService.GetObjectReference(WriteableSubTransaction, DomainObjectIDs.Order1);
-      _location = (Location) LifetimeService.GetObjectReference(WriteableSubTransaction, DomainObjectIDs.Location1);
-      _client1 = (Client) LifetimeService.GetObject(WriteableSubTransaction, DomainObjectIDs.Client1, false);
-      _client2 = (Client) LifetimeService.GetObject(WriteableSubTransaction, DomainObjectIDs.Client2, false);
-      _client3 = (Client) LifetimeService.GetObject(WriteableSubTransaction, DomainObjectIDs.Client3, false);
-      _client4 = (Client) LifetimeService.NewObject(WriteableSubTransaction, typeof(Client), ParamList.Empty);
-      _orderTicket1 = (OrderTicket) LifetimeService.GetObject(WriteableSubTransaction, DomainObjectIDs.OrderTicket1, false);
+      _order = (Order)LifetimeService.GetObjectReference(WriteableSubTransaction, DomainObjectIDs.Order1);
+      _location = (Location)LifetimeService.GetObjectReference(WriteableSubTransaction, DomainObjectIDs.Location1);
+      _client1 = (Client)LifetimeService.GetObject(WriteableSubTransaction, DomainObjectIDs.Client1, false);
+      _client2 = (Client)LifetimeService.GetObject(WriteableSubTransaction, DomainObjectIDs.Client2, false);
+      _client3 = (Client)LifetimeService.GetObject(WriteableSubTransaction, DomainObjectIDs.Client3, false);
+      _client4 = (Client)LifetimeService.NewObject(WriteableSubTransaction, typeof(Client), ParamList.Empty);
+      _orderTicket1 = (OrderTicket)LifetimeService.GetObject(WriteableSubTransaction, DomainObjectIDs.OrderTicket1, false);
 
       _loadEventReceiverMock = MockRepository.GenerateStrictMock<ILoadEventReceiver>();
       _order.SetLoadEventReceiver(_loadEventReceiverMock);

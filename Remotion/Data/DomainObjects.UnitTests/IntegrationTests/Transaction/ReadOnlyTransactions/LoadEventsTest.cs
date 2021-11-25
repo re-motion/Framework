@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
     {
       base.SetUp();
 
-      _order = (Order) LifetimeService.GetObjectReference(WriteableSubTransaction, DomainObjectIDs.Order1);
+      _order = (Order)LifetimeService.GetObjectReference(WriteableSubTransaction, DomainObjectIDs.Order1);
 
       InstallExtensionMock();
     }

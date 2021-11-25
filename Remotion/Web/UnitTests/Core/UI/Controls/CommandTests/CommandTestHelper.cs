@@ -166,7 +166,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
 
     public Mock<Command> CreateHrefCommandAsPartialMock ()
     {
-      var command = new Mock<Command>(CommandType.Href, (IWebSecurityAdapter) null, (IWxeSecurityAdapter) null) { CallBase = true };
+      var command = new Mock<Command>(CommandType.Href, (IWebSecurityAdapter)null, (IWxeSecurityAdapter)null) { CallBase = true };
 
       InitializeHrefCommand(command.Object);
 
@@ -193,7 +193,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
 
     public Mock<Command> CreateEventCommandAsPartialMock ()
     {
-      var command = new Mock<Command>(CommandType.Event, (IWebSecurityAdapter) null, (IWxeSecurityAdapter) null) { CallBase = true };
+      var command = new Mock<Command>(CommandType.Event, (IWebSecurityAdapter)null, (IWxeSecurityAdapter)null) { CallBase = true };
       InitializeEventCommand(command.Object);
 
       return command;
@@ -217,7 +217,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
 
     public Mock<Command> CreateWxeFunctionCommandAsPartialMock ()
     {
-      var command = new Mock<Command>(CommandType.WxeFunction, (IWebSecurityAdapter) null, (IWxeSecurityAdapter) null) { CallBase = true };
+      var command = new Mock<Command>(CommandType.WxeFunction, (IWebSecurityAdapter)null, (IWxeSecurityAdapter)null) { CallBase = true };
 
       InitializeWxeFunctionCommand(command.Object);
 
@@ -245,7 +245,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
 
     public Mock<Command> CreateNoneCommandAsPartialMock ()
     {
-      var command = new Mock<Command>(CommandType.None, (IWebSecurityAdapter) null, (IWxeSecurityAdapter) null) { CallBase = true };
+      var command = new Mock<Command>(CommandType.None, (IWebSecurityAdapter)null, (IWxeSecurityAdapter)null) { CallBase = true };
       InitializeNoneCommand(command.Object);
 
       return command;

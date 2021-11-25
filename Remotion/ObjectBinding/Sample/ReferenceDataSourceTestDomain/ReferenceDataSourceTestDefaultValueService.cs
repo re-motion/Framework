@@ -34,7 +34,7 @@ namespace Remotion.ObjectBinding.Sample.ReferenceDataSourceTestDomain
     {
       ArgumentUtility.CheckNotNull("property", property);
 
-      return (IBusinessObject) ObjectFactory.Create(property.PropertyType);
+      return (IBusinessObject)ObjectFactory.Create(property.PropertyType);
     }
 
     public bool IsDefaultValue (IBusinessObject referencingObject, IBusinessObjectReferenceProperty property, IBusinessObject value, IBusinessObjectProperty[] emptyProperties)

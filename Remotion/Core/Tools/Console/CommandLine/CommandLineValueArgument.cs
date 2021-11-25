@@ -106,7 +106,7 @@ public class CommandLineInt32Argument: CommandLineValueArgument
       double result;
       if (! double.TryParse(value, NumberStyles.Integer, null, out result))
         throw new InvalidCommandLineArgumentValueException(this, "Specify a valid integer number.");
-      _value = (int) result;
+      _value = (int)result;
     }
 
     base.SetStringValue(value);

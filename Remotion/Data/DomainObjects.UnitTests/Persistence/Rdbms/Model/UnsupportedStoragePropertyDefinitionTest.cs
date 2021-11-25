@@ -126,8 +126,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 
       Assert.That(
           result, Is.TypeOf<UnsupportedStoragePropertyDefinition>().With.Property("PropertyType").SameAs(typeof(int)));
-      Assert.That(((UnsupportedStoragePropertyDefinition) result).Message, Is.EqualTo("x"));
-      Assert.That(((UnsupportedStoragePropertyDefinition) result).InnerException, Is.SameAs(property1.InnerException));
+      Assert.That(((UnsupportedStoragePropertyDefinition)result).Message, Is.EqualTo("x"));
+      Assert.That(((UnsupportedStoragePropertyDefinition)result).InnerException, Is.SameAs(property1.InnerException));
     }
 
     [Test]

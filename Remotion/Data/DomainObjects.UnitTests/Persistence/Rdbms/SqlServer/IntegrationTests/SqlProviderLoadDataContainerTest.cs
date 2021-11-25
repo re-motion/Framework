@@ -203,7 +203,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void LoadDataContainerWithObjectIDWithWrongStorageProviderID ()
     {
-      ObjectID invalidID = new ObjectID(DomainObjectIDs.Official1.ClassID, (int) DomainObjectIDs.Official1.Value);
+      ObjectID invalidID = new ObjectID(DomainObjectIDs.Official1.ClassID, (int)DomainObjectIDs.Official1.Value);
       Assert.That(
           () => Provider.LoadDataContainer(invalidID),
           Throws.ArgumentException
@@ -224,7 +224,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void LoadDataContainer_WithInvalidClassID ()
     {
-      ObjectID id = new ObjectID("Distributor", (Guid) DomainObjectIDs.Partner1.Value);
+      ObjectID id = new ObjectID("Distributor", (Guid)DomainObjectIDs.Partner1.Value);
       Assert.That(
           () => Provider.LoadDataContainer(id),
           Throws.InstanceOf<PersistenceException>()

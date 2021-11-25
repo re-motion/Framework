@@ -84,14 +84,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       }
 
       var info = new SerializationInfo(typeof(DataManager), new FormatterConverter());
-      ((ISerializable) dataManager).GetObjectData(info, new StreamingContext());
-      var data = (object[]) info.GetValue("doInfo.GetData", typeof(object[]));
+      ((ISerializable)dataManager).GetObjectData(info, new StreamingContext());
+      var data = (object[])info.GetValue("doInfo.GetData", typeof(object[]));
       Console.WriteLine("Object stream:");
-      Dump((object[]) data[0]);
+      Dump((object[])data[0]);
       Console.WriteLine("Int stream:");
-      Dump((int[]) data[1]);
+      Dump((int[])data[1]);
       Console.WriteLine("Bool stream:");
-      Dump((bool[]) data[2]);
+      Dump((bool[])data[2]);
     }
 
     private void Dump<T> (T[] data)

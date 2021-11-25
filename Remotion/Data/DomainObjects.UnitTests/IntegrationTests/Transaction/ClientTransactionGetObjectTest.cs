@@ -375,7 +375,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     public void ClientTransactionGetObjectIsIndependentOfCurrentTransaction ()
     {
       var clientTransactionMock = new TestableClientTransaction();
-      var order = (Order) clientTransactionMock.GetObject(DomainObjectIDs.Order1, false);
+      var order = (Order)clientTransactionMock.GetObject(DomainObjectIDs.Order1, false);
       Assert.That(ClientTransactionScope.CurrentTransaction.IsEnlisted(order), Is.False);
       Assert.That(clientTransactionMock.IsEnlisted(order), Is.True);
 

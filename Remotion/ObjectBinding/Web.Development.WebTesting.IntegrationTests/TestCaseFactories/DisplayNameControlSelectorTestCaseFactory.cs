@@ -55,7 +55,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
     public void Get_Throws_WebTestException ()
     {
       Assert.That(
-          (TestDelegate) (() => Selector.GetByDisplayName(Parameter.HiddenDisplayName)),
+          (TestDelegate)(() => Selector.GetByDisplayName(Parameter.HiddenDisplayName)),
           Throws.InstanceOf<WebTestException>());
     }
 

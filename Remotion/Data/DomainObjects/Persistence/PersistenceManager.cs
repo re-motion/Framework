@@ -328,7 +328,7 @@ namespace Remotion.Data.DomainObjects.Persistence
         sortExpression = null;
 
       var oppositeDataContainers = oppositeProvider.LoadDataContainersByRelatedID(
-          (RelationEndPointDefinition) oppositeEndPointDefinition,
+          (RelationEndPointDefinition)oppositeEndPointDefinition,
           sortExpression,
           relationEndPointID.ObjectID);
 
@@ -345,8 +345,8 @@ namespace Remotion.Data.DomainObjects.Persistence
         RelationEndPointID relationEndPointID,
         DataContainer oppositeDataContainer)
     {
-      var oppositeEndPointDefinition = (RelationEndPointDefinition) relationEndPointID.Definition.GetOppositeEndPointDefinition();
-      var objectID = (ObjectID) oppositeDataContainer.GetValueWithoutEvents(oppositeEndPointDefinition.PropertyDefinition, ValueAccess.Current);
+      var oppositeEndPointDefinition = (RelationEndPointDefinition)relationEndPointID.Definition.GetOppositeEndPointDefinition();
+      var objectID = (ObjectID)oppositeDataContainer.GetValueWithoutEvents(oppositeEndPointDefinition.PropertyDefinition, ValueAccess.Current);
 
       if (relationEndPointID.ObjectID.ClassID != objectID.ClassID)
       {

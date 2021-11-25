@@ -40,10 +40,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _businessObject = TypeWithString.Create();
 
       _propertyStringValue =
-          (IBusinessObjectStringProperty) ((IBusinessObject) _businessObject).BusinessObjectClass.GetPropertyDefinition("StringValue");
+          (IBusinessObjectStringProperty)((IBusinessObject)_businessObject).BusinessObjectClass.GetPropertyDefinition("StringValue");
 
       _dataSource = new BusinessObjectReferenceDataSource();
-      _dataSource.BusinessObject = (IBusinessObject) _businessObject;
+      _dataSource.BusinessObject = (IBusinessObject)_businessObject;
     }
 
 

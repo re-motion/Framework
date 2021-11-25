@@ -35,13 +35,13 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
 
     public string Var1
     {
-      get { return (string) Variables["Var1"]; }
+      get { return (string)Variables["Var1"]; }
       set { Variables["Var1"] = value; }
     }
 
     public string Var2
     {
-      get { return (string) Variables["Var2"]; }
+      get { return (string)Variables["Var2"]; }
       set { Variables["Var2"] = value; }
     }
 
@@ -81,14 +81,14 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
     [WxeParameter (1, true, WxeParameterDirection.InOut)]
     public string Var1
     {
-      get { return (string) Variables["Var1"]; }
+      get { return (string)Variables["Var1"]; }
       set { Variables["Var1"] = value; }
     }
 
     [WxeParameter (2, true, WxeParameterDirection.In)]
     public string Var2
     {
-      get { return (string) Variables["Var2"]; }
+      get { return (string)Variables["Var2"]; }
       set { Variables["Var2"] = value; }
     }
 
@@ -102,7 +102,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
       {
         private SampleWxeSubFunction Function
         {
-          get { return (SampleWxeSubFunction) ParentFunction; }
+          get { return (SampleWxeSubFunction)ParentFunction; }
         }
 
         private void Step1 (WxeContext context)
@@ -131,7 +131,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
       {
         private SampleWxeSubFunction Function
         {
-          get { return (SampleWxeSubFunction) ParentFunction; }
+          get { return (SampleWxeSubFunction)ParentFunction; }
         }
 
         [Serializable]
@@ -139,7 +139,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
         {
           private SampleWxeSubFunction Function
           {
-            get { return (SampleWxeSubFunction) ParentFunction; }
+            get { return (SampleWxeSubFunction)ParentFunction; }
           }
 
           private bool If ()
@@ -152,7 +152,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
           {
             private SampleWxeSubFunction Function
             {
-              get { return (SampleWxeSubFunction) ParentFunction; }
+              get { return (SampleWxeSubFunction)ParentFunction; }
             }
 
             private void Step1 ()
@@ -177,7 +177,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
       {
         private SampleWxeSubFunction Function
         {
-          get { return (SampleWxeSubFunction) ParentFunction; }
+          get { return (SampleWxeSubFunction)ParentFunction; }
         }
 
         private void Step1 ()

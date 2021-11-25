@@ -44,7 +44,7 @@ namespace Remotion.Collections.DataStore.UnitTests
     [Test]
     public void IsNull ()
     {
-      Assert.That(((INullObject) _store).IsNull, Is.False);
+      Assert.That(((INullObject)_store).IsNull, Is.False);
     }
 
     [Test]
@@ -161,7 +161,7 @@ namespace Remotion.Collections.DataStore.UnitTests
     {
       _innerDataStoreMock
           .Setup(mock => mock.GetValueOrDefault("test"))
-          .Returns((Lazy<Wrapper>) null)
+          .Returns((Lazy<Wrapper>)null)
           .Callback((string key) => CheckInnerDataStoreIsProtected())
           .Verifiable();
 
@@ -181,7 +181,7 @@ namespace Remotion.Collections.DataStore.UnitTests
           .Setup(mock => mock.TryGetValue("key", out doubleCheckedLockingContainer))
           .Returns(true)
           .Callback(
-              (OutDelegate) ((string key, out Lazy<Wrapper> value) =>
+              (OutDelegate)((string key, out Lazy<Wrapper> value) =>
               {
                 value = doubleCheckedLockingContainer;
                 CheckInnerDataStoreIsProtected();
@@ -205,7 +205,7 @@ namespace Remotion.Collections.DataStore.UnitTests
           .Setup(mock => mock.TryGetValue("key", out outResult))
           .Returns(false)
           .Callback(
-              (OutDelegate) ((string key, out Lazy<Wrapper> value) =>
+              (OutDelegate)((string key, out Lazy<Wrapper> value) =>
               {
                 value = null;
                 CheckInnerDataStoreIsProtected();
@@ -231,7 +231,7 @@ namespace Remotion.Collections.DataStore.UnitTests
           .Setup(mock => mock.TryGetValue("key", out outResult))
           .Returns(false)
           .Callback(
-              (OutDelegate) ((string key, out Lazy<Wrapper> value) =>
+              (OutDelegate)((string key, out Lazy<Wrapper> value) =>
               {
                 value = null;
                 CheckInnerDataStoreIsProtected();
@@ -262,7 +262,7 @@ namespace Remotion.Collections.DataStore.UnitTests
               mock => mock.TryGetValue("key", out doubleCheckedLockingContainer))
           .Returns(true)
           .Callback(
-              (OutDelegate) ((string key, out Lazy<Wrapper> value) =>
+              (OutDelegate)((string key, out Lazy<Wrapper> value) =>
               {
                 value = doubleCheckedLockingContainer;
                 CheckInnerDataStoreIsProtected();
@@ -376,8 +376,7 @@ namespace Remotion.Collections.DataStore.UnitTests
     private LockingDataStoreDecorator<string, Lazy<Wrapper>> GetLockingDataStoreDecorator (
         LazyLockingDataStoreAdapter<string, object> lazyLockingDataStoreAdapter)
     {
-      return (LockingDataStoreDecorator<string, Lazy<Wrapper>>)
-          PrivateInvoke.GetNonPublicField(lazyLockingDataStoreAdapter, "_innerDataStore");
+      return (LockingDataStoreDecorator<string, Lazy<Wrapper>>)PrivateInvoke.GetNonPublicField(lazyLockingDataStoreAdapter, "_innerDataStore");
     }
 
     private delegate void OutDelegate (string name, out Lazy<Wrapper> outParam);

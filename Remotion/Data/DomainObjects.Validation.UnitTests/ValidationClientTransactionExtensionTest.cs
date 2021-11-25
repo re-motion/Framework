@@ -217,7 +217,7 @@ Object 'TestDomainObject' with ID '.*':
 
         var propertyRule = new PropertyValidationRule<DomainObjectWithoutAnnotatedProperties, string>(
             PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((DomainObjectWithoutAnnotatedProperties p) => p.Name)),
-            o => ((DomainObjectWithoutAnnotatedProperties) o).Name,
+            o => ((DomainObjectWithoutAnnotatedProperties)o).Name,
             _ => true,
             new[] { new NotNullValidator(validationMessageStub) });
 
@@ -251,7 +251,7 @@ Object 'DomainObjectWithoutAnnotatedProperties' with ID '.*':
 
           var validationFailures = exception.ValidationFailures.ToArray();
           Assert.That(validationFailures, Is.All.InstanceOf<PropertyValidationFailure>());
-          Assert.That(((PropertyValidationFailure) validationFailures[0]).ValidatedProperty.Name, Is.EqualTo("Name"));
+          Assert.That(((PropertyValidationFailure)validationFailures[0]).ValidatedProperty.Name, Is.EqualTo("Name"));
           Assert.That(validationFailures[0].ErrorMessage, Is.EqualTo("The value must not be null."));
           Assert.That(validationFailures[0].LocalizedValidationMessage, Is.EqualTo("Localized Message (uiCulture: it, culture: fr)"));
         }

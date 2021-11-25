@@ -73,7 +73,7 @@ namespace Remotion.Security.Metadata
       {
         info = new SecurableClassInfo();
         info.Name = TypeUtility.GetPartialAssemblyQualifiedName(type);
-        PermanentGuidAttribute? guidAttribute = (PermanentGuidAttribute?) Attribute.GetCustomAttribute(type, typeof(PermanentGuidAttribute), true);
+        PermanentGuidAttribute? guidAttribute = (PermanentGuidAttribute?)Attribute.GetCustomAttribute(type, typeof(PermanentGuidAttribute), true);
         if (guidAttribute != null)
           info.ID = guidAttribute.Value.ToString();
         info.Properties.AddRange(GetProperties(type, cache));

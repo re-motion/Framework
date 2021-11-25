@@ -40,7 +40,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
     {
       if (value is string)
       {
-        return new NonSerializeableObject((string) value);
+        return new NonSerializeableObject((string)value);
       }
       return base.ConvertFrom(context, culture, value);
     }

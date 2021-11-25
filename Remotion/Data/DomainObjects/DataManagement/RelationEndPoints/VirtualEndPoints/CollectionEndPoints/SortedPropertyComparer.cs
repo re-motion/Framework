@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ArgumentUtility.CheckNotNull("sortedPropertySpecifications", sortedPropertySpecifications);
       ArgumentUtility.CheckNotNull("dataManager", dataManager);
 
-      var comparers = sortedPropertySpecifications.Select(sp => (IComparer<DomainObject>) new SortedPropertyComparer(sp, dataManager, valueAccess));
+      var comparers = sortedPropertySpecifications.Select(sp => (IComparer<DomainObject>)new SortedPropertyComparer(sp, dataManager, valueAccess));
       return new CompoundComparer<DomainObject>(comparers);
     }
 

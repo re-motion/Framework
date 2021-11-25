@@ -55,7 +55,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths
       IBusinessObjectPropertyPath path = DynamicBusinessObjectPropertyPath.Create("TypeTwoValue.TypeThreeValue.TypeFourValue.IntValue");
 
       var result = path.GetResult(
-          (IBusinessObject) root,
+          (IBusinessObject)root,
           BusinessObjectPropertyPath.UnreachableValueBehavior.FailForUnreachableValue,
           BusinessObjectPropertyPath.ListValueBehavior.FailForListProperties);
 
@@ -64,7 +64,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths
       Assert.That(result.ResultObject, Is.SameAs(root.TypeTwoValue.TypeThreeValue.TypeFourValue));
       Assert.That(
           result.ResultProperty,
-          Is.SameAs(((IBusinessObject) root.TypeTwoValue.TypeThreeValue.TypeFourValue).BusinessObjectClass.GetPropertyDefinition("IntValue")));
+          Is.SameAs(((IBusinessObject)root.TypeTwoValue.TypeThreeValue.TypeFourValue).BusinessObjectClass.GetPropertyDefinition("IntValue")));
     }
 
     [Test]
@@ -74,7 +74,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths
       var path = DynamicBusinessObjectPropertyPath.Create("TypeTwoValue.TypeThreeValue.TypeFourValue");
 
       var result = path.GetResult(
-          (IBusinessObject) root,
+          (IBusinessObject)root,
           BusinessObjectPropertyPath.UnreachableValueBehavior.FailForUnreachableValue,
           BusinessObjectPropertyPath.ListValueBehavior.FailForListProperties);
 
@@ -91,7 +91,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths
       var path = DynamicBusinessObjectPropertyPath.Create("TypeTwoValue.TypeThreeValue.TypeFourValue1.IntValue");
 
       var result = path.GetResult(
-          (IBusinessObject) root,
+          (IBusinessObject)root,
           BusinessObjectPropertyPath.UnreachableValueBehavior.FailForUnreachableValue,
           BusinessObjectPropertyPath.ListValueBehavior.FailForListProperties);
 
@@ -106,7 +106,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths
       var path = DynamicBusinessObjectPropertyPath.Create("TypeTwoValue.IntValue.TypeFourValue");
 
       var result = path.GetResult(
-          (IBusinessObject) root,
+          (IBusinessObject)root,
           BusinessObjectPropertyPath.UnreachableValueBehavior.FailForUnreachableValue,
           BusinessObjectPropertyPath.ListValueBehavior.FailForListProperties);
 

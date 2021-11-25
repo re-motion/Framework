@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
 
     public void CommandDurationAndRowCount (Guid sessionID, long milliseconds, int? rowCount)
     {
-      _log.AppendFormat("CommandDurationAndRowCount ({0}, {1}, {2})", sessionID, milliseconds, (object) rowCount ?? "<null>");
+      _log.AppendFormat("CommandDurationAndRowCount ({0}, {1}, {2})", sessionID, milliseconds, (object)rowCount ?? "<null>");
       _log.AppendLine();
     }
 

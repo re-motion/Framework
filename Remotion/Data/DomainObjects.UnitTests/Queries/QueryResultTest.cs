@@ -106,9 +106,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     [Test]
     public void AsEnumerable_Interface ()
     {
-      Assert.That(((IQueryResult) _result).AsEnumerable().ToArray(), Is.EqualTo(new[] { _order1, _order3, _order4 }));
-      Assert.That(((IQueryResult) _resultWithDuplicates).AsEnumerable().ToArray(), Is.EqualTo(new[] { _order1, _order3, _order4, _order1 }));
-      Assert.That(((IQueryResult) _resultWithNulls).AsEnumerable().ToArray(), Is.EqualTo(new[] { _order1, _order3, _order4, null }));
+      Assert.That(((IQueryResult)_result).AsEnumerable().ToArray(), Is.EqualTo(new[] { _order1, _order3, _order4 }));
+      Assert.That(((IQueryResult)_resultWithDuplicates).AsEnumerable().ToArray(), Is.EqualTo(new[] { _order1, _order3, _order4, _order1 }));
+      Assert.That(((IQueryResult)_resultWithNulls).AsEnumerable().ToArray(), Is.EqualTo(new[] { _order1, _order3, _order4, null }));
     }
 
     [Test]
@@ -134,9 +134,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     [Test]
     public void ToArray_Interface ()
     {
-      Assert.That(((IQueryResult) _result).ToArray(), Is.EqualTo(new[] { _order1, _order3, _order4 }));
-      Assert.That(((IQueryResult) _resultWithDuplicates).ToArray(), Is.EqualTo(new[] { _order1, _order3, _order4, _order1 }));
-      Assert.That(((IQueryResult) _resultWithNulls).ToArray(), Is.EqualTo(new[] { _order1, _order3, _order4, null }));
+      Assert.That(((IQueryResult)_result).ToArray(), Is.EqualTo(new[] { _order1, _order3, _order4 }));
+      Assert.That(((IQueryResult)_resultWithDuplicates).ToArray(), Is.EqualTo(new[] { _order1, _order3, _order4, _order1 }));
+      Assert.That(((IQueryResult)_resultWithNulls).ToArray(), Is.EqualTo(new[] { _order1, _order3, _order4, null }));
     }
 
     [Test]
@@ -173,7 +173,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     [Test]
     public void Interface_ToObjectList ()
     {
-      var list = ((IQueryResult) _result).ToObjectList();
+      var list = ((IQueryResult)_result).ToObjectList();
       Assert.That(list, Is.EqualTo(new[] { _order1, _order3, _order4 }));
       Assert.That(list.IsReadOnly, Is.False);
     }

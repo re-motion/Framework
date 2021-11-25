@@ -410,7 +410,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
           text,
           icon,
           disabledIcon,
-          (int) menuItem.RequiredSelection,
+          (int)menuItem.RequiredSelection,
           isDisabled ? "true" : "false",
           href,
           target);

@@ -97,7 +97,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       if (!relationEndPointID.Definition.IsVirtual || relationEndPointID.Definition.Cardinality != CardinalityType.One)
         throw new ArgumentException("EndPoint ID must denote a virtual relation end-point with cardinality one.", "relationEndPointID");
 
-      var endPoint = (IVirtualObjectEndPoint) _parentTransaction.DataManager.GetRelationEndPointWithLazyLoad(relationEndPointID);
+      var endPoint = (IVirtualObjectEndPoint)_parentTransaction.DataManager.GetRelationEndPointWithLazyLoad(relationEndPointID);
       return endPoint.GetData();
     }
 
@@ -107,7 +107,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       if (!relationEndPointID.Definition.IsVirtual || relationEndPointID.Definition.Cardinality != CardinalityType.Many)
         throw new ArgumentException("EndPoint ID must denote a virtual relation end-point with cardinality many.", "relationEndPointID");
 
-      var endPoint = (ICollectionEndPoint<ICollectionEndPointData>) _parentTransaction.DataManager.GetRelationEndPointWithLazyLoad(relationEndPointID);
+      var endPoint = (ICollectionEndPoint<ICollectionEndPointData>)_parentTransaction.DataManager.GetRelationEndPointWithLazyLoad(relationEndPointID);
       return endPoint.GetData();
     }
 

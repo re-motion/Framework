@@ -60,11 +60,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       var transactionHierarchyManager = _factory.CreateTransactionHierarchyManager(_fakeConstructedTransaction, eventSink);
 
       Assert.That(transactionHierarchyManager, Is.TypeOf<TransactionHierarchyManager>());
-      Assert.That(((TransactionHierarchyManager) transactionHierarchyManager).ThisTransaction, Is.SameAs(_fakeConstructedTransaction));
-      Assert.That(((TransactionHierarchyManager) transactionHierarchyManager).ThisEventSink, Is.SameAs(eventSink));
-      Assert.That(((TransactionHierarchyManager) transactionHierarchyManager).ParentTransaction, Is.Null);
-      Assert.That(((TransactionHierarchyManager) transactionHierarchyManager).ParentHierarchyManager, Is.Null);
-      Assert.That(((TransactionHierarchyManager) transactionHierarchyManager).ParentEventSink, Is.Null);
+      Assert.That(((TransactionHierarchyManager)transactionHierarchyManager).ThisTransaction, Is.SameAs(_fakeConstructedTransaction));
+      Assert.That(((TransactionHierarchyManager)transactionHierarchyManager).ThisEventSink, Is.SameAs(eventSink));
+      Assert.That(((TransactionHierarchyManager)transactionHierarchyManager).ParentTransaction, Is.Null);
+      Assert.That(((TransactionHierarchyManager)transactionHierarchyManager).ParentHierarchyManager, Is.Null);
+      Assert.That(((TransactionHierarchyManager)transactionHierarchyManager).ParentEventSink, Is.Null);
     }
 
     [Test]
@@ -89,8 +89,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       var eventSink = MockRepository.GenerateStub<IClientTransactionEventSink>();
       var manager = _factory.CreateInvalidDomainObjectManager(_fakeConstructedTransaction, eventSink);
       Assert.That(manager, Is.TypeOf(typeof(InvalidDomainObjectManager)));
-      Assert.That(((InvalidDomainObjectManager) manager).InvalidObjectCount, Is.EqualTo(0));
-      Assert.That(((InvalidDomainObjectManager) manager).TransactionEventSink, Is.SameAs(eventSink));
+      Assert.That(((InvalidDomainObjectManager)manager).InvalidObjectCount, Is.EqualTo(0));
+      Assert.That(((InvalidDomainObjectManager)manager).TransactionEventSink, Is.SameAs(eventSink));
     }
 
     [Test]
@@ -99,7 +99,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       var result = _factory.CreatePersistenceStrategy(_fakeConstructedTransaction);
 
       Assert.That(result, Is.TypeOf<RootPersistenceStrategy>());
-      Assert.That(((RootPersistenceStrategy) result).TransactionID, Is.EqualTo(_fakeConstructedTransaction.ID));
+      Assert.That(((RootPersistenceStrategy)result).TransactionID, Is.EqualTo(_fakeConstructedTransaction.ID));
     }
 
     [Test]
@@ -142,7 +142,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     public void CreateListeners ()
     {
       var listeners =
-          ((IEnumerable<IClientTransactionListener>) PrivateInvoke.InvokeNonPublicMethod(_factory, "CreateListeners", _fakeConstructedTransaction))
+          ((IEnumerable<IClientTransactionListener>)PrivateInvoke.InvokeNonPublicMethod(_factory, "CreateListeners", _fakeConstructedTransaction))
           .ToArray();
       Assert.That(
           listeners,
@@ -161,7 +161,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       var dataContainerMap = MockRepository.GenerateStub<IDataContainerMapReadOnlyView>();
 
       var relationEndPointManager =
-          (RelationEndPointManager) PrivateInvoke.InvokeNonPublicMethod(
+          (RelationEndPointManager)PrivateInvoke.InvokeNonPublicMethod(
               _factory,
               "CreateRelationEndPointManager",
               _fakeConstructedTransaction,
@@ -176,36 +176,36 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 
       Assert.That(RelationEndPointManagerTestHelper.GetMap(relationEndPointManager).TransactionEventSink, Is.SameAs(eventSink));
 
-      var stateUpdateRaisingFactory = (StateUpdateRaisingRelationEndPointFactoryDecorator) relationEndPointManager.EndPointFactory;
+      var stateUpdateRaisingFactory = (StateUpdateRaisingRelationEndPointFactoryDecorator)relationEndPointManager.EndPointFactory;
       Assert.That(
           stateUpdateRaisingFactory.Listener,
           Is.TypeOf<VirtualEndPointStateUpdateListener>()
               .With.Property<VirtualEndPointStateUpdateListener>(l => l.TransactionEventSink).SameAs(eventSink));
       Assert.That(stateUpdateRaisingFactory.InnerFactory, Is.TypeOf<RelationEndPointFactory>());
-      var endPointFactory = ((RelationEndPointFactory) stateUpdateRaisingFactory.InnerFactory);
+      var endPointFactory = ((RelationEndPointFactory)stateUpdateRaisingFactory.InnerFactory);
       Assert.That(endPointFactory.ClientTransaction, Is.SameAs(_fakeConstructedTransaction));
       Assert.That(endPointFactory.LazyLoader, Is.SameAs(lazyLoader));
       Assert.That(endPointFactory.EndPointProvider, Is.SameAs(endPointProvider));
       Assert.That(endPointFactory.TransactionEventSink, Is.SameAs(eventSink));
 
       Assert.That(endPointFactory.DomainObjectCollectionEndPointDataManagerFactory, Is.TypeOf(typeof(DomainObjectCollectionEndPointDataManagerFactory)));
-      var domainObjectCollectionEndPointDataManagerFactory = ((DomainObjectCollectionEndPointDataManagerFactory) endPointFactory.DomainObjectCollectionEndPointDataManagerFactory);
+      var domainObjectCollectionEndPointDataManagerFactory = ((DomainObjectCollectionEndPointDataManagerFactory)endPointFactory.DomainObjectCollectionEndPointDataManagerFactory);
       Assert.That(domainObjectCollectionEndPointDataManagerFactory.ChangeDetectionStrategy, Is.TypeOf<RootDomainObjectCollectionEndPointChangeDetectionStrategy>());
       Assert.That(endPointFactory.VirtualObjectEndPointDataManagerFactory, Is.TypeOf<VirtualObjectEndPointDataManagerFactory>());
 
       Assert.That(endPointFactory.DomainObjectCollectionEndPointCollectionProvider, Is.TypeOf<DomainObjectCollectionEndPointCollectionProvider>());
-      var domainObjectCollectionEndPointCollectionProvider = (DomainObjectCollectionEndPointCollectionProvider) endPointFactory.DomainObjectCollectionEndPointCollectionProvider;
+      var domainObjectCollectionEndPointCollectionProvider = (DomainObjectCollectionEndPointCollectionProvider)endPointFactory.DomainObjectCollectionEndPointCollectionProvider;
       Assert.That(
           domainObjectCollectionEndPointCollectionProvider.DataStrategyFactory,
           Is.TypeOf<AssociatedDomainObjectCollectionDataStrategyFactory>()
               .With.Property((AssociatedDomainObjectCollectionDataStrategyFactory f) => f.VirtualEndPointProvider).SameAs(endPointProvider));
 
       Assert.That(endPointFactory.VirtualCollectionEndPointDataManagerFactory, Is.TypeOf(typeof(VirtualCollectionEndPointDataManagerFactory)));
-      var virtualCollectionEndPointDataManagerFactory = (VirtualCollectionEndPointDataManagerFactory) endPointFactory.VirtualCollectionEndPointDataManagerFactory;
+      var virtualCollectionEndPointDataManagerFactory = (VirtualCollectionEndPointDataManagerFactory)endPointFactory.VirtualCollectionEndPointDataManagerFactory;
       Assert.That(virtualCollectionEndPointDataManagerFactory.DataContainerMap, Is.SameAs(dataContainerMap));
 
       Assert.That(endPointFactory.VirtualCollectionEndPointCollectionProvider, Is.TypeOf<VirtualCollectionEndPointCollectionProvider>());
-      var virtualCollectionEndPointCollectionProvider = (VirtualCollectionEndPointCollectionProvider) endPointFactory.VirtualCollectionEndPointCollectionProvider;
+      var virtualCollectionEndPointCollectionProvider = (VirtualCollectionEndPointCollectionProvider)endPointFactory.VirtualCollectionEndPointCollectionProvider;
       Assert.That(virtualCollectionEndPointCollectionProvider.VirtualEndPointProvider, Is.SameAs(endPointProvider));
     }
 
@@ -229,7 +229,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
           hierarchyManager);
 
       Assert.That(result, Is.TypeOf(typeof(FetchEnabledObjectLoader)));
-      var objectLoader = (FetchEnabledObjectLoader) result;
+      var objectLoader = (FetchEnabledObjectLoader)result;
       Assert.That(objectLoader.PersistenceStrategy, Is.SameAs(persistenceStrategy));
       Assert.That(
           objectLoader.LoadedObjectDataRegistrationAgent,
@@ -237,29 +237,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
               .With.Property((LoadedObjectDataRegistrationAgent agent) => agent.ClientTransaction).SameAs(_fakeConstructedTransaction)
               .With.Property((LoadedObjectDataRegistrationAgent agent) => agent.DataManager).SameAs(dataManager));
 
-      var registrationListener = ((LoadedObjectDataRegistrationAgent) objectLoader.LoadedObjectDataRegistrationAgent).RegistrationListener;
+      var registrationListener = ((LoadedObjectDataRegistrationAgent)objectLoader.LoadedObjectDataRegistrationAgent).RegistrationListener;
       Assert.That(registrationListener, Is.TypeOf<LoadedObjectDataRegistrationListener>());
-      Assert.That(((LoadedObjectDataRegistrationListener) registrationListener).EventSink, Is.SameAs(eventSink));
-      Assert.That(((LoadedObjectDataRegistrationListener) registrationListener).HierarchyManager, Is.SameAs(hierarchyManager));
+      Assert.That(((LoadedObjectDataRegistrationListener)registrationListener).EventSink, Is.SameAs(eventSink));
+      Assert.That(((LoadedObjectDataRegistrationListener)registrationListener).HierarchyManager, Is.SameAs(hierarchyManager));
 
       Assert.That(objectLoader.LoadedObjectDataProvider, Is.TypeOf<LoadedObjectDataProvider>());
-      var loadedObjectDataProvider = (LoadedObjectDataProvider) objectLoader.LoadedObjectDataProvider;
+      var loadedObjectDataProvider = (LoadedObjectDataProvider)objectLoader.LoadedObjectDataProvider;
       Assert.That(loadedObjectDataProvider.LoadedDataContainerProvider, Is.SameAs(dataManager));
       Assert.That(loadedObjectDataProvider.InvalidDomainObjectManager, Is.SameAs(invalidDomainObjectManager));
 
       Assert.That(objectLoader.EagerFetcher, Is.TypeOf<EagerFetcher>());
 
-      var eagerFetcher = (EagerFetcher) objectLoader.EagerFetcher;
+      var eagerFetcher = (EagerFetcher)objectLoader.EagerFetcher;
       Assert.That(eagerFetcher.RegistrationAgent, Is.TypeOf<DelegatingFetchedRelationDataRegistrationAgent>());
       Assert.That(
-          ((DelegatingFetchedRelationDataRegistrationAgent) eagerFetcher.RegistrationAgent).RealObjectDataRegistrationAgent,
+          ((DelegatingFetchedRelationDataRegistrationAgent)eagerFetcher.RegistrationAgent).RealObjectDataRegistrationAgent,
           Is.TypeOf<FetchedRealObjectRelationDataRegistrationAgent>());
       Assert.That(
-          ((DelegatingFetchedRelationDataRegistrationAgent) eagerFetcher.RegistrationAgent).VirtualObjectDataRegistrationAgent,
+          ((DelegatingFetchedRelationDataRegistrationAgent)eagerFetcher.RegistrationAgent).VirtualObjectDataRegistrationAgent,
           Is.TypeOf<FetchedVirtualObjectRelationDataRegistrationAgent>()
               .With.Property<FetchedCollectionRelationDataRegistrationAgent>(a => a.VirtualEndPointProvider).SameAs(dataManager));
       Assert.That(
-          ((DelegatingFetchedRelationDataRegistrationAgent) eagerFetcher.RegistrationAgent).CollectionDataRegistrationAgent,
+          ((DelegatingFetchedRelationDataRegistrationAgent)eagerFetcher.RegistrationAgent).CollectionDataRegistrationAgent,
           Is.TypeOf<FetchedCollectionRelationDataRegistrationAgent>()
               .With.Property<FetchedCollectionRelationDataRegistrationAgent>(a => a.VirtualEndPointProvider).SameAs(dataManager));
     }

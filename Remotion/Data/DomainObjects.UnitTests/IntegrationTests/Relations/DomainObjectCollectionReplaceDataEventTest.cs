@@ -143,7 +143,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
 
     private Order PrepareUnsynchronizedOrder (ObjectID orderID, ObjectID relatedCustomerID)
     {
-      var unsynchronizedOrder = (Order) LifetimeService.GetObjectReference(TestableClientTransaction, orderID);
+      var unsynchronizedOrder = (Order)LifetimeService.GetObjectReference(TestableClientTransaction, orderID);
       var dataContainer = DataContainer.CreateForExisting(
           unsynchronizedOrder.ID,
           null,
@@ -152,7 +152,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
       TestableClientTransaction.DataManager.RegisterDataContainer(dataContainer);
 
       var endPointID = RelationEndPointID.Resolve(unsynchronizedOrder, o => o.Customer);
-      var endPoint = (IRealObjectEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading(endPointID);
+      var endPoint = (IRealObjectEndPoint)TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading(endPointID);
 
       var oppositeID = RelationEndPointID.CreateOpposite(endPoint.Definition, relatedCustomerID);
       var oppositeEndPoint = TestableClientTransaction.DataManager.GetOrCreateVirtualEndPoint(oppositeID);

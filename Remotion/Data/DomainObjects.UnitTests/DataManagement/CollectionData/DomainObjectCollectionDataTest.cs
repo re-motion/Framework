@@ -70,27 +70,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     [Test]
     public void IsDataComplete ()
     {
-      Assert.That(((IDomainObjectCollectionData) _data).IsDataComplete, Is.True);
+      Assert.That(((IDomainObjectCollectionData)_data).IsDataComplete, Is.True);
     }
 
     [Test]
     public void EnsureDataComplete ()
     {
-      Assert.That(((IDomainObjectCollectionData) _data).IsDataComplete, Is.True);
-      ((IDomainObjectCollectionData) _data).EnsureDataComplete();
-      Assert.That(((IDomainObjectCollectionData) _data).IsDataComplete, Is.True);
+      Assert.That(((IDomainObjectCollectionData)_data).IsDataComplete, Is.True);
+      ((IDomainObjectCollectionData)_data).EnsureDataComplete();
+      Assert.That(((IDomainObjectCollectionData)_data).IsDataComplete, Is.True);
     }
 
     [Test]
     public void AssociatedEndPoint ()
     {
-      Assert.That(((IDomainObjectCollectionData) _data).AssociatedEndPointID, Is.Null);
+      Assert.That(((IDomainObjectCollectionData)_data).AssociatedEndPointID, Is.Null);
     }
 
     [Test]
     public void RequiredItemType ()
     {
-      Assert.That(((IDomainObjectCollectionData) _data).RequiredItemType, Is.Null);
+      Assert.That(((IDomainObjectCollectionData)_data).RequiredItemType, Is.Null);
     }
 
     [Test]

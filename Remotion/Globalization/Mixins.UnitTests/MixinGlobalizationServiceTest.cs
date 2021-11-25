@@ -69,7 +69,7 @@ namespace Remotion.Globalization.Mixins.UnitTests
       {
         var typeInformation = TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes));
 
-        var result = (ResourceManagerSet) _globalizationService.GetResourceManager(typeInformation);
+        var result = (ResourceManagerSet)_globalizationService.GetResourceManager(typeInformation);
 
         Assert.That(result.ResourceManagers.Any(), Is.False);
       }
@@ -85,7 +85,7 @@ namespace Remotion.Globalization.Mixins.UnitTests
       {
         var typeInformation = TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes));
 
-        var result = (ResourceManagerSet) _globalizationService.GetResourceManager(typeInformation);
+        var result = (ResourceManagerSet)_globalizationService.GetResourceManager(typeInformation);
 
         var innerResourceManager = result.ResourceManagers.Single();
         Assert.That(innerResourceManager, Is.InstanceOf<ResourceManagerWrapper>());
@@ -103,7 +103,7 @@ namespace Remotion.Globalization.Mixins.UnitTests
       {
         var typeInformation = TypeAdapter.Create(typeof(InheritedClassWithoutMultiLingualResourcesAttributes));
 
-        var result = (ResourceManagerSet) _globalizationService.GetResourceManager(typeInformation);
+        var result = (ResourceManagerSet)_globalizationService.GetResourceManager(typeInformation);
 
         var innerResourceManager = result.ResourceManagers.Single();
         Assert.That(innerResourceManager, Is.InstanceOf<ResourceManagerWrapper>());
@@ -121,8 +121,8 @@ namespace Remotion.Globalization.Mixins.UnitTests
       {
         var typeInformation = TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes));
 
-        var result1 = (ResourceManagerSet) _globalizationService.GetResourceManager(typeInformation);
-        var result2 = (ResourceManagerSet) _globalizationService.GetResourceManager(typeInformation);
+        var result1 = (ResourceManagerSet)_globalizationService.GetResourceManager(typeInformation);
+        var result2 = (ResourceManagerSet)_globalizationService.GetResourceManager(typeInformation);
 
         Assert.That(result1, Is.Not.SameAs(result2));
         Assert.That(result1.Name, Is.EqualTo(result2.Name));
@@ -167,13 +167,13 @@ namespace Remotion.Globalization.Mixins.UnitTests
 
       using (mixinConfiguration.EnterScope())
       {
-        result1 = (ResourceManagerSet) _globalizationService.GetResourceManager(typeInformation);
+        result1 = (ResourceManagerSet)_globalizationService.GetResourceManager(typeInformation);
       }
 
       ResourceManagerSet result2;
       using (mixinConfiguration.EnterScope())
       {
-        result2 = (ResourceManagerSet) _globalizationService.GetResourceManager(typeInformation);
+        result2 = (ResourceManagerSet)_globalizationService.GetResourceManager(typeInformation);
       }
 
       Assert.That(result1, Is.Not.SameAs(result2));
@@ -231,7 +231,7 @@ namespace Remotion.Globalization.Mixins.UnitTests
       {
         var typeInformation = TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes));
 
-        var result = (ResourceManagerSet) _globalizationService.GetResourceManager(typeInformation);
+        var result = (ResourceManagerSet)_globalizationService.GetResourceManager(typeInformation);
 
         var innerResourceManager = result.ResourceManagers.Single();
         Assert.That(innerResourceManager, Is.InstanceOf<ResourceManagerWrapper>());
@@ -252,7 +252,7 @@ namespace Remotion.Globalization.Mixins.UnitTests
       {
         var typeInformation = TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes));
 
-        var result = (ResourceManagerSet) _globalizationService.GetResourceManager(typeInformation);
+        var result = (ResourceManagerSet)_globalizationService.GetResourceManager(typeInformation);
 
         Assert.That(result.ResourceManagers.Count(), Is.EqualTo(2));
       }
@@ -268,7 +268,7 @@ namespace Remotion.Globalization.Mixins.UnitTests
       {
         var typeInformation = TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes));
 
-        var result = (ResourceManagerSet) _globalizationService.GetResourceManager(typeInformation);
+        var result = (ResourceManagerSet)_globalizationService.GetResourceManager(typeInformation);
 
         Assert.That(result.ResourceManagers.Count(), Is.EqualTo(2));
       }
@@ -287,7 +287,7 @@ namespace Remotion.Globalization.Mixins.UnitTests
       {
         var typeInformation = TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes));
 
-        var result = (ResourceManagerSet) _globalizationService.GetResourceManager(typeInformation);
+        var result = (ResourceManagerSet)_globalizationService.GetResourceManager(typeInformation);
 
         Assert.That(result.ResourceManagers.First().Name, Is.EqualTo(NamedResources.MixinOfMixinWithResources));
       }
@@ -303,7 +303,7 @@ namespace Remotion.Globalization.Mixins.UnitTests
         var typeInformation1 = TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes));
         var typeInformation2 = TypeAdapter.Create(typeof(InheritedClassWithoutMultiLingualResourcesAttributes));
         var resourceManagerCache =
-            (ConcurrentDictionary<ITypeInformation, IResourceManager>) PrivateInvoke.GetNonPublicField(_globalizationService, "_resourceManagerCache");
+            (ConcurrentDictionary<ITypeInformation, IResourceManager>)PrivateInvoke.GetNonPublicField(_globalizationService, "_resourceManagerCache");
         IResourceManager outValue;
 
         var newMasterConfiguration = MixinConfiguration.BuildNew().BuildConfiguration();
@@ -359,7 +359,7 @@ namespace Remotion.Globalization.Mixins.UnitTests
         var typeInformation1 = TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes));
         var typeInformation2 = TypeAdapter.Create(typeof(InheritedClassWithoutMultiLingualResourcesAttributes));
         var resourceManagerCache =
-            (ConcurrentDictionary<ITypeInformation, IResourceManager>) PrivateInvoke.GetNonPublicField(_globalizationService, "_resourceManagerCache");
+            (ConcurrentDictionary<ITypeInformation, IResourceManager>)PrivateInvoke.GetNonPublicField(_globalizationService, "_resourceManagerCache");
         IResourceManager outValue;
 
         var newMasterConfiguration = MixinConfiguration.BuildNew().BuildConfiguration();

@@ -55,8 +55,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
     protected ObjectCleanupException ([NotNull] SerializationInfo info, StreamingContext context)
         : base(info, context)
     {
-      _objectID = (ObjectID) info.GetValue("_objectID", typeof(ObjectID));
-      _cleanupException = (Exception) info.GetValue("_cleanupException", typeof(Exception));
+      _objectID = (ObjectID)info.GetValue("_objectID", typeof(ObjectID));
+      _cleanupException = (Exception)info.GetValue("_cleanupException", typeof(Exception));
     }
 
     public ObjectID ObjectID

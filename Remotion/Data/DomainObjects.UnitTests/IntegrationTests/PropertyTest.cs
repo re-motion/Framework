@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     {
       var instance = ClassWithAllDataTypes.NewObject();
       Assert.That(
-          () => instance.EnumProperty = (ClassWithAllDataTypes.EnumType) (-1),
+          () => instance.EnumProperty = (ClassWithAllDataTypes.EnumType)(-1),
           Throws.InstanceOf<InvalidEnumValueException>());
     }
 

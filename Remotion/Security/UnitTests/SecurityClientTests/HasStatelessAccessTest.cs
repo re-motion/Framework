@@ -64,7 +64,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
 
       bool hasAccess = _securityClient.HasStatelessAccess(
           typeof(SecurableObject),
-          (IReadOnlyList<AccessType>) new[] { AccessType.Get(TestAccessTypes.First) });
+          (IReadOnlyList<AccessType>)new[] { AccessType.Get(TestAccessTypes.First) });
 
       _testHelper.VerifyAll();
       Assert.That(hasAccess, Is.EqualTo(true));
@@ -77,7 +77,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
 
       bool hasAccess = _securityClient.HasStatelessAccess(
           typeof(SecurableObject),
-          (IReadOnlyList<AccessType>) new[] { AccessType.Get(TestAccessTypes.First) });
+          (IReadOnlyList<AccessType>)new[] { AccessType.Get(TestAccessTypes.First) });
 
       _testHelper.VerifyAll();
       Assert.That(hasAccess, Is.EqualTo(false));
@@ -91,7 +91,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
       {
         hasAccess = _securityClient.HasStatelessAccess(
             typeof(SecurableObject),
-            (IReadOnlyList<AccessType>) new[] { AccessType.Get(TestAccessTypes.First) });
+            (IReadOnlyList<AccessType>)new[] { AccessType.Get(TestAccessTypes.First) });
       }
 
       _testHelper.VerifyAll();

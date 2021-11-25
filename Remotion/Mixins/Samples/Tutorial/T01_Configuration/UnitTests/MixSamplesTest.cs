@@ -27,9 +27,9 @@ namespace Remotion.Mixins.Samples.Tutorial.T01_Configuration.UnitTests
     [Test]
     public void File_HasID ()
     {
-      var numberedFile = (IIdentifiedObject) ObjectFactory.Create<File>(ParamList.Empty);
-      var numberedCarFile = (IIdentifiedObject) ObjectFactory.Create<CarFile>(ParamList.Empty);
-      var numberedPersonFile = (IIdentifiedObject) ObjectFactory.Create<PersonFile>(ParamList.Empty);
+      var numberedFile = (IIdentifiedObject)ObjectFactory.Create<File>(ParamList.Empty);
+      var numberedCarFile = (IIdentifiedObject)ObjectFactory.Create<CarFile>(ParamList.Empty);
+      var numberedPersonFile = (IIdentifiedObject)ObjectFactory.Create<PersonFile>(ParamList.Empty);
 
       Assert.That(numberedFile.GetObjectID(), Does.Match("........-....-....-....-............"));
       Assert.That(numberedCarFile.GetObjectID(), Does.Match("........-....-....-....-............"));

@@ -51,7 +51,7 @@ namespace Remotion.Validation.UnitTests.Merging
     {
       _memoryAppender = new MemoryAppender();
       var hierarchy = new Hierarchy();
-      ((IBasicRepositoryConfigurator) hierarchy).Configure(_memoryAppender);
+      ((IBasicRepositoryConfigurator)hierarchy).Configure(_memoryAppender);
       var logger = hierarchy.GetLogger("The Name");
       var log = new Log4NetLog(logger);
       var logManagerStub = new Mock<ILogManager>();

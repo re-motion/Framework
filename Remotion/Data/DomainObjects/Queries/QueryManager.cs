@@ -191,7 +191,7 @@ namespace Remotion.Data.DomainObjects.Queries
     private T ConvertLoadedDomainObject<T> (DomainObject domainObject) where T : DomainObject
     {
       if (domainObject == null || domainObject is T)
-        return (T) domainObject;
+        return (T)domainObject;
       else
       {
         var message = string.Format(

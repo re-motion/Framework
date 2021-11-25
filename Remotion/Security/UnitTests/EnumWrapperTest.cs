@@ -69,7 +69,7 @@ namespace Remotion.Security.UnitTests
     [Test]
     public void Equals_False ()
     {
-      Assert.That(EnumWrapper.Get("123").Equals((object) EnumWrapper.Get("321")), Is.False);
+      Assert.That(EnumWrapper.Get("123").Equals((object)EnumWrapper.Get("321")), Is.False);
     }
 
     [Test]

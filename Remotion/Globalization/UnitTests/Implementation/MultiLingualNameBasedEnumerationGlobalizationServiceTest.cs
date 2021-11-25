@@ -112,7 +112,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
       var service = new MultiLingualNameBasedEnumerationGlobalizationService();
 
       var testEnumType = TestAssemblies.En.Value.GetType("TestEnum", true, false);
-      var enumValue = (Enum) Enum.Parse(testEnumType, "ValueWithInvariantAndEn");
+      var enumValue = (Enum)Enum.Parse(testEnumType, "ValueWithInvariantAndEn");
 
       using (new CultureScope("", ""))
       {
@@ -134,7 +134,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
       var service = new MultiLingualNameBasedEnumerationGlobalizationService();
 
       var testEnumType = TestAssemblies.En.Value.GetType("TestEnum", true, false);
-      var enumValue = (Enum) Enum.Parse(testEnumType, "ValueWithEnAndEnUS");
+      var enumValue = (Enum)Enum.Parse(testEnumType, "ValueWithEnAndEnUS");
 
       using (new CultureScope("", ""))
       {
@@ -156,7 +156,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
       var service = new MultiLingualNameBasedEnumerationGlobalizationService();
 
       var testEnumType = TestAssemblies.En.Value.GetType("TestEnum", true, false);
-      var enumValue = (Enum) Enum.Parse(testEnumType, "ValueWithInvariantAndEn");
+      var enumValue = (Enum)Enum.Parse(testEnumType, "ValueWithInvariantAndEn");
 
       using (new CultureScope("", ""))
       {
@@ -178,7 +178,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
       var service = new MultiLingualNameBasedEnumerationGlobalizationService();
 
       var testEnumType = TestAssemblies.En.Value.GetType("TestEnum", true, false);
-      var enumValue = (Enum) Enum.Parse(testEnumType, "ValueWithEnAndEnUS");
+      var enumValue = (Enum)Enum.Parse(testEnumType, "ValueWithEnAndEnUS");
 
       using (new CultureScope("en-GB", "en-GB"))
       {
@@ -200,7 +200,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
       var service = new MultiLingualNameBasedEnumerationGlobalizationService();
 
       var testEnumType = TestAssemblies.En.Value.GetType("TestEnum", true, false);
-      var enumValue = (Enum) Enum.Parse(testEnumType, "ValueWithEnAndEnUS");
+      var enumValue = (Enum)Enum.Parse(testEnumType, "ValueWithEnAndEnUS");
 
       using (new CultureScope("en-US", "en-US"))
       {
@@ -222,7 +222,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
       var service = new MultiLingualNameBasedEnumerationGlobalizationService();
 
       var testEnumType = TestAssemblies.EnUS.Value.GetType("TestEnum", true, false);
-      var enumValue = (Enum) Enum.Parse(testEnumType, "ValueWithEnAndEnUS");
+      var enumValue = (Enum)Enum.Parse(testEnumType, "ValueWithEnAndEnUS");
 
       using (new CultureScope("", ""))
       {
@@ -244,7 +244,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
       var service = new MultiLingualNameBasedEnumerationGlobalizationService();
 
       var testEnumType = TestAssemblies.EnUS.Value.GetType("TestEnum", true, false);
-      var enumValue = (Enum) Enum.Parse(testEnumType, "ValueWithEnAndEnUS");
+      var enumValue = (Enum)Enum.Parse(testEnumType, "ValueWithEnAndEnUS");
 
       using (new CultureScope("en-GB", "en-GB"))
       {
@@ -266,7 +266,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
       var service = new MultiLingualNameBasedEnumerationGlobalizationService();
 
       var testEnumType = TestAssemblies.EnUS.Value.GetType("TestEnum", true, false);
-      var enumValue = (Enum) Enum.Parse(testEnumType, "ValueWithEnAndEnUSAndEnGB");
+      var enumValue = (Enum)Enum.Parse(testEnumType, "ValueWithEnAndEnUSAndEnGB");
 
       using (new CultureScope("en-GB", "en-GB"))
       {
@@ -352,7 +352,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
 
       string multiLingualName;
 
-      var result = service.TryGetEnumerationValueDisplayName((TestEnum) 100, out multiLingualName);
+      var result = service.TryGetEnumerationValueDisplayName((TestEnum)100, out multiLingualName);
 
       Assert.That(result, Is.False);
       Assert.That(multiLingualName, Is.Null);

@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     public void CreateNoneTransactionMode_FunctionCannotUseParametersNotFromOuterTransaction ()
     {
       var objectFromOtherTransaction =
-          (SampleObject) LifetimeService.GetObject(ClientTransaction.CreateRootTransaction(), DomainObjectIDs.ClassWithAllDataTypes1, true);
+          (SampleObject)LifetimeService.GetObject(ClientTransaction.CreateRootTransaction(), DomainObjectIDs.ClassWithAllDataTypes1, true);
 
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {

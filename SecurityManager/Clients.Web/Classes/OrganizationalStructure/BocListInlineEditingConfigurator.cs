@@ -93,7 +93,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
       ArgumentUtility.CheckNotNull("sender", sender);
       ArgumentUtility.CheckNotNull("e", e);
 
-      var businessObject = (BaseSecurityManagerObject) e.BusinessObject;
+      var businessObject = (BaseSecurityManagerObject)e.BusinessObject;
       if (businessObject.State.IsNew)
         businessObject.Delete();
     }

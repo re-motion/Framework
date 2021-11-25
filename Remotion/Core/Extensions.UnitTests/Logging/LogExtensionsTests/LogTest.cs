@@ -55,7 +55,7 @@ namespace Remotion.Extensions.UnitTests.Logging.LogExtensionsTests
       LoggingEvent loggingEvent = events[0];
       Assert.That(loggingEvent.Level, Is.EqualTo(Level.Info));
       Assert.That(loggingEvent.MessageObject.ToString(), Is.EqualTo("The message with First and Second."));
-      Assert.That(loggingEvent.Properties["EventID"], Is.EqualTo((int) LogMessages.TheMessage));
+      Assert.That(loggingEvent.Properties["EventID"], Is.EqualTo((int)LogMessages.TheMessage));
       Assert.That(loggingEvent.ExceptionObject, Is.Null);
       Assert.That(loggingEvent.Repository, Is.SameAs(Logger.Repository));
       Assert.That(loggingEvent.LoggerName, Is.EqualTo(Logger.Name));

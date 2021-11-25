@@ -38,8 +38,8 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
       return new TenantProxy(
           tenant.GetHandle(),
-          ((IBusinessObjectWithIdentity) tenant).UniqueIdentifier,
-          ((IBusinessObjectWithIdentity) tenant).DisplayName);
+          ((IBusinessObjectWithIdentity)tenant).UniqueIdentifier,
+          ((IBusinessObjectWithIdentity)tenant).DisplayName);
     }
 
     private TenantProxy (IDomainObjectHandle<Tenant> handle, string uniqueIdentifier, string displayName)

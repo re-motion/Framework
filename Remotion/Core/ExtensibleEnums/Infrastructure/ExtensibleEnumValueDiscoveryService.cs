@@ -92,7 +92,7 @@ namespace Remotion.ExtensibleEnums.Infrastructure
       var extensionMethods = GetValueExtensionMethods(typeof(T), methods);
 
       return from mi in extensionMethods
-             let value = (T) mi.Invoke(null, new object[] { definition })!
+             let value = (T)mi.Invoke(null, new object[] { definition })!
              let positionAttribute = AttributeUtility.GetCustomAttribute<ExtensibleEnumPositionAttribute>(mi, true)
              let positionalKey = positionAttribute != null ? positionAttribute.PositionalKey : 0.0
              select new ExtensibleEnumInfo<T>(value, mi, positionalKey);

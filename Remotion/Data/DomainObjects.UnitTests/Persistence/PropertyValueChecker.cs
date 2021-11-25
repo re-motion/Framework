@@ -78,7 +78,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
       if (expected == null || expected.GetType() != typeof(byte[]))
         Assert.AreEqual(expected, actual, message);
       else
-        ResourceManager.AreEqual((byte[]) expected, (byte[]) actual, message);
+        ResourceManager.AreEqual((byte[])expected, (byte[])actual, message);
     }
   }
 }

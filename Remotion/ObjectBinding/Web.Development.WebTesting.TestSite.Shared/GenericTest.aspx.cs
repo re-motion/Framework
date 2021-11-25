@@ -107,7 +107,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
     {
       base.OnLoad(e);
 
-      DataSource.BusinessObject = (IBusinessObject) ((GenericTestFunction) CurrentFunction).Person;
+      DataSource.BusinessObject = (IBusinessObject)((GenericTestFunction)CurrentFunction).Person;
       DataSource.LoadValues(IsReturningPostBack);
     }
 

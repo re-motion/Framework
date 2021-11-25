@@ -64,7 +64,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     {
       // C# compiler 7.2 does not provide caching for delegate but during query execution there is already a significant amount of GC pressure so the delegate creation does not matter
       var executableQuery =
-          (IExecutableQuery<IEnumerable<T>>) s_queryCache.GetOrAdd(caller.Name, key => CreateExecutableQuery(key, queryCreator));
+          (IExecutableQuery<IEnumerable<T>>)s_queryCache.GetOrAdd(caller.Name, key => CreateExecutableQuery(key, queryCreator));
 
       return executableQuery.Execute(ClientTransaction.Current.QueryManager);
     }
@@ -77,7 +77,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       // about the cost associated with this part of the cache initialization.
       using (CreateStopwatchScopeForQueryParsing(key))
       {
-        var queryable = (DomainObjectQueryable<T>) queryCreator();
+        var queryable = (DomainObjectQueryable<T>)queryCreator();
         var queryExecutor = queryable.GetExecutor();
         var queryModel = queryable.Provider.GenerateQueryModel(queryable.Expression);
         return queryExecutor.QueryGenerator.CreateSequenceQuery<T>(

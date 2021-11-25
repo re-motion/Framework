@@ -93,7 +93,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
 
       Action<object[]> testAction = delegate (object[] args)
       {
-        var outputManagerWithoutClosure = (AssemblyCompilerBuildOutputManager) args[0];
+        var outputManagerWithoutClosure = (AssemblyCompilerBuildOutputManager)args[0];
 
         // dependency chain: mixinSamples -> remotion -> log4net
         var log4NetAssembly = typeof(log4net.LogManager).Assembly;
@@ -147,7 +147,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
           .Verifiable();
       loaderMock
           .Setup(mock => mock.TryLoadAssembly(ArgReferenceMatchesDefinition(_assembly1), _assembly3.FullName)) // load _assembly1 via _assembly3
-          .Returns((Assembly) null)
+          .Returns((Assembly)null)
           .Verifiable();
       loaderMock
           .Setup(mock => mock.TryLoadAssembly(ArgReferenceMatchesDefinition(_assembly1), _assembly2.FullName)) // _assembly1 already loaded, no second time

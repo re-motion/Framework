@@ -79,7 +79,7 @@ namespace Remotion.Data.DomainObjects.Validation
       if (propertyValue == null)
         return;
 
-      if (propertyType == typeof(byte[]) && ((byte[]) propertyValue).Length > maxLength.Value)
+      if (propertyType == typeof(byte[]) && ((byte[])propertyValue).Length > maxLength.Value)
       {
         string message = string.Format(
             "Value for property '{0}' of domain object '{1}' is too large. Maximum size: {2}.",

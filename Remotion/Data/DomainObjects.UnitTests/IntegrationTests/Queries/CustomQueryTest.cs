@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
               new
               {
                   StringValue = "üäöfedcba",
-                  Int16Value = (Int16) (-32767),
+                  Int16Value = (Int16)(-32767),
                   BoolValue = true,
                   EnumValue = ClassWithAllDataTypes.EnumType.Value0,
                   ExtensibleEnumValue = Color.Values.Blue()
@@ -83,7 +83,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
               new
               {
                   StringValue = "abcdeföäü",
-                  Int16Value = (Int16) 32767,
+                  Int16Value = (Int16)32767,
                   BoolValue = false,
                   EnumValue = ClassWithAllDataTypes.EnumType.Value1,
                   ExtensibleEnumValue = Color.Values.Red()

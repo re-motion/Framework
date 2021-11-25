@@ -41,7 +41,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 
       Assert.That(instance, Is.InstanceOf<CompoundValidatorFactory<UserControlBinding>>());
 
-      var factories = ((CompoundValidatorFactory<UserControlBinding>) instance).VlidatorFactories;
+      var factories = ((CompoundValidatorFactory<UserControlBinding>)instance).VlidatorFactories;
       Assert.That(
           factories.Select(f => f.GetType()),
           Is.EqualTo(new[] { typeof(UserControlBindingValidatorFactory), typeof(ValidationUserControlBindingValidatorFactory)}));

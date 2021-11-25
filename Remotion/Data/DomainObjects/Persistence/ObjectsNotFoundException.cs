@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.Persistence
     protected ObjectsNotFoundException (SerializationInfo info, StreamingContext context)
         : base(info, context)
     {
-      _ids = (ObjectID[]) info.GetValue("_ids", typeof(ObjectID[]));
+      _ids = (ObjectID[])info.GetValue("_ids", typeof(ObjectID[]));
     }
 
     public ReadOnlyCollection<ObjectID> IDs

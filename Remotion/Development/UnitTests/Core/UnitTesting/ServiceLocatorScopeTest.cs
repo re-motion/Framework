@@ -91,7 +91,7 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
       ServiceLocator.SetLocatorProvider(() => _locator1);
       Assert.That(ServiceLocator.Current, Is.SameAs(_locator1));
 
-      using (new ServiceLocatorScope((IServiceLocator) null))
+      using (new ServiceLocatorScope((IServiceLocator)null))
       {
         Assert.That(ServiceLocator.Current, Is.Null);
       }

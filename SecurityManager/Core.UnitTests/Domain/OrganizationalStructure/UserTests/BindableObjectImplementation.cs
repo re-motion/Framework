@@ -78,7 +78,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.User
       BusinessObjectProvider.GetProvider<BindableDomainObjectProviderAttribute>()
           .AddService(typeof(GroupPropertyTypeSearchService), searchServiceStub.Object);
       IBusinessObjectClass userClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(User));
-      IBusinessObjectReferenceProperty owningGroupProperty = (IBusinessObjectReferenceProperty) userClass.GetPropertyDefinition("OwningGroup");
+      IBusinessObjectReferenceProperty owningGroupProperty = (IBusinessObjectReferenceProperty)userClass.GetPropertyDefinition("OwningGroup");
       Assert.That(owningGroupProperty, Is.Not.Null);
 
       User user = CreateUser();

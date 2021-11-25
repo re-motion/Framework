@@ -63,7 +63,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting
     public void Run_CallsJoin ()
     {
       TimeSpan timeout = TimeSpan.FromSeconds(1.0);
-      var threadRunnerMock = _mockRepository.PartialMock<ThreadRunner>((ThreadStart) delegate { }, timeout);
+      var threadRunnerMock = _mockRepository.PartialMock<ThreadRunner>((ThreadStart)delegate { }, timeout);
       threadRunnerMock.Expect(mock => PrivateInvoke.InvokeNonPublicMethod(mock, "JoinThread", Arg<Thread>.Is.Anything)).Return(true);
 
       threadRunnerMock.Replay();
@@ -77,7 +77,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting
       using (var waitHandle = new ManualResetEvent(false))
       {
         Thread? threadRunnerThread = null;
-        var threadMethod = (ThreadStart) delegate { threadRunnerThread = Thread.CurrentThread; waitHandle.Set(); };
+        var threadMethod = (ThreadStart)delegate { threadRunnerThread = Thread.CurrentThread; waitHandle.Set(); };
 
         TimeSpan timeout = TimeSpan.MaxValue;
         var threadRunnerMock = _mockRepository.PartialMock<ThreadRunner>(threadMethod, timeout);

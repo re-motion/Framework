@@ -115,7 +115,7 @@ namespace Remotion.Utilities
     public override object? ConvertFrom (ITypeDescriptorContext? context, CultureInfo? culture, object? value)
     {
       // ReSharper disable ConditionIsAlwaysTrueOrFalse
-      if (_isNullable && (value == null || (value is string) && string.IsNullOrEmpty((string) value)))
+      if (_isNullable && (value == null || (value is string) && string.IsNullOrEmpty((string)value)))
         return null;
 
       if (!(value is string))
@@ -123,7 +123,7 @@ namespace Remotion.Utilities
         if (value != null && _underlyingType == value.GetType())
         {
           if (!EnumUtility.IsValidEnumValue(UnderlyingEnumType, value))
-            throw new ArgumentOutOfRangeException(string.Format("The value {0} is not supported for enumeration '{1}'.", value, UnderlyingEnumType.GetFullNameSafe()), (Exception?) null);
+            throw new ArgumentOutOfRangeException(string.Format("The value {0} is not supported for enumeration '{1}'.", value, UnderlyingEnumType.GetFullNameSafe()), (Exception?)null);
 
           return Enum.ToObject(UnderlyingEnumType, value);
         }

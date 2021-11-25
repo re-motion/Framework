@@ -342,7 +342,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
         EntityNameDefinition[] expectedSynonyms)
     {
       Assert.That(actualEntityDefinition, Is.TypeOf(typeof(TableDefinition)));
-      Assert.That(((TableDefinition) actualEntityDefinition).TableName, Is.EqualTo(new EntityNameDefinition(null, expectedTableName)));
+      Assert.That(((TableDefinition)actualEntityDefinition).TableName, Is.EqualTo(new EntityNameDefinition(null, expectedTableName)));
       CheckEntityDefinition(
           actualEntityDefinition,
           expectedStorageProviderID,
@@ -351,7 +351,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
           expectedIndexDefinitions,
           expectedSynonyms);
 
-      var tableConstraints = ((TableDefinition) actualEntityDefinition).Constraints;
+      var tableConstraints = ((TableDefinition)actualEntityDefinition).Constraints;
       Assert.That(tableConstraints.Count, Is.EqualTo(expectedTableConstraintDefinitions.Length));
 
       for (var i = 0; i < expectedTableConstraintDefinitions.Length; i++)
@@ -368,8 +368,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     {
       Assert.That(expected.ConstraintName, Is.EqualTo(actual.ConstraintName));
       Assert.That(actual, Is.TypeOf(typeof(PrimaryKeyConstraintDefinition)));
-      Assert.That(((PrimaryKeyConstraintDefinition) actual).IsClustered, Is.EqualTo(expected.IsClustered));
-      Assert.That(((PrimaryKeyConstraintDefinition) actual).Columns, Is.EqualTo(expected.Columns));
+      Assert.That(((PrimaryKeyConstraintDefinition)actual).IsClustered, Is.EqualTo(expected.IsClustered));
+      Assert.That(((PrimaryKeyConstraintDefinition)actual).Columns, Is.EqualTo(expected.Columns));
     }
 
     private void CheckFilterViewDefinition (
@@ -383,8 +383,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
         EntityNameDefinition[] expectedSynonyms)
     {
       Assert.That(actualEntityDefinition, Is.TypeOf(typeof(FilterViewDefinition)));
-      Assert.That(((FilterViewDefinition) actualEntityDefinition).BaseEntity, Is.SameAs(expectedBaseEntity));
-      Assert.That(((FilterViewDefinition) actualEntityDefinition).ClassIDs, Is.EqualTo(expectedClassIDs));
+      Assert.That(((FilterViewDefinition)actualEntityDefinition).BaseEntity, Is.SameAs(expectedBaseEntity));
+      Assert.That(((FilterViewDefinition)actualEntityDefinition).ClassIDs, Is.EqualTo(expectedClassIDs));
 
       CheckEntityDefinition(
           actualEntityDefinition,
@@ -405,7 +405,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
         EntityNameDefinition[] expectedSynonyms)
     {
       Assert.That(actualEntityDefinition, Is.TypeOf(typeof(UnionViewDefinition)));
-      Assert.That(((UnionViewDefinition) actualEntityDefinition).UnionedEntities, Is.EqualTo(expectedStorageEntityDefinitions));
+      Assert.That(((UnionViewDefinition)actualEntityDefinition).UnionedEntities, Is.EqualTo(expectedStorageEntityDefinitions));
 
       CheckEntityDefinition(
           actualEntityDefinition,

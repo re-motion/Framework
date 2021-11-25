@@ -70,7 +70,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
           .Callback(
               (IExecutionState executionState) =>
               {
-                var nextState = CheckExecutionState((ExecutingSubFunctionWithoutPermaUrlState) executionState);
+                var nextState = CheckExecutionState((ExecutingSubFunctionWithoutPermaUrlState)executionState);
                 Assert.That(nextState.Parameters.PostBackCollection, Is.Not.SameAs(PostBackCollection));
                 Assert.That(
                     nextState.Parameters.PostBackCollection.AllKeys,
@@ -101,7 +101,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
           .Callback(
               (IExecutionState executionState) =>
               {
-                var nextState = CheckExecutionState((PreparingRedirectToSubFunctionState) executionState);
+                var nextState = CheckExecutionState((PreparingRedirectToSubFunctionState)executionState);
                 Assert.That(nextState.Parameters.PostBackCollection, Is.Not.SameAs(PostBackCollection));
                 Assert.That(
                     nextState.Parameters.PostBackCollection.AllKeys,
@@ -123,7 +123,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
       var senderMock = new Mock<Control>(MockBehavior.Strict);
       senderMock.Setup(stub => stub.UniqueID).Returns(c_senderUniqueID);
 
-      IExecutionState executionState = CreateExecutionStateForSupressRepost((Control) senderMock.As<IPostBackDataHandler>().Object);
+      IExecutionState executionState = CreateExecutionStateForSupressRepost((Control)senderMock.As<IPostBackDataHandler>().Object);
 
       var sequence = new MockSequence();
 
@@ -135,7 +135,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
           .Callback(
               (IExecutionState executionState) =>
               {
-                var nextState = CheckExecutionState((ExecutingSubFunctionWithoutPermaUrlState) executionState);
+                var nextState = CheckExecutionState((ExecutingSubFunctionWithoutPermaUrlState)executionState);
                 Assert.That(nextState.Parameters.PostBackCollection, Is.Not.SameAs(PostBackCollection));
                 Assert.That(
                     nextState.Parameters.PostBackCollection.AllKeys,
@@ -155,7 +155,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
       var senderMock = new Mock<Control>(MockBehavior.Strict);
       senderMock.Setup(stub => stub.UniqueID).Returns(c_senderUniqueID);
 
-      IExecutionState executionState = CreateExecutionStateForSupressRepost((Control) senderMock.As<IPostBackDataHandler>().Object);
+      IExecutionState executionState = CreateExecutionStateForSupressRepost((Control)senderMock.As<IPostBackDataHandler>().Object);
 
       var sequence = new MockSequence();
 
@@ -167,7 +167,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
           .Callback(
               (IExecutionState executionState) =>
               {
-                var nextState = CheckExecutionState((ExecutingSubFunctionWithoutPermaUrlState) executionState);
+                var nextState = CheckExecutionState((ExecutingSubFunctionWithoutPermaUrlState)executionState);
                 Assert.That(nextState.Parameters.PostBackCollection, Is.Not.SameAs(PostBackCollection));
                 Assert.That(
                     nextState.Parameters.PostBackCollection.AllKeys,
@@ -196,7 +196,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
           .Callback(
               (IExecutionState executionState) =>
               {
-                var nextState = CheckExecutionState((ExecutingSubFunctionWithoutPermaUrlState) executionState);
+                var nextState = CheckExecutionState((ExecutingSubFunctionWithoutPermaUrlState)executionState);
                 Assert.That(nextState.Parameters.PostBackCollection.AllKeys, Is.EquivalentTo(new[] { "Key", c_senderUniqueID }));
               })
           .Verifiable();
@@ -228,7 +228,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
           .Callback(
               (IExecutionState executionState) =>
               {
-                var nextState = CheckExecutionState((ExecutingSubFunctionWithoutPermaUrlState) executionState);
+                var nextState = CheckExecutionState((ExecutingSubFunctionWithoutPermaUrlState)executionState);
                 Assert.That(nextState.Parameters.PostBackCollection.AllKeys, Is.EquivalentTo(new[] { "Key", c_senderUniqueID }));
               })
           .Verifiable();
@@ -246,7 +246,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
       senderMock.Setup(stub => stub.UniqueID).Returns(c_senderUniqueID);
       PostBackCollection.Remove(c_senderUniqueID);
 
-      IExecutionState executionState = CreateExecutionStateForDoRepost((Control) senderMock.As<IPostBackDataHandler>().Object, WxePermaUrlOptions.Null);
+      IExecutionState executionState = CreateExecutionStateForDoRepost((Control)senderMock.As<IPostBackDataHandler>().Object, WxePermaUrlOptions.Null);
 
       var sequence = new MockSequence();
 
@@ -257,7 +257,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
 
       ExecutionStateContextMock.InSequence(sequence)
                                .Setup(mock => mock.SetExecutionState(It.IsNotNull<ExecutingSubFunctionWithoutPermaUrlState>()))
-                               .Callback((IExecutionState executionState) => CheckExecutionState((ExecutingSubFunctionWithoutPermaUrlState) executionState))
+                               .Callback((IExecutionState executionState) => CheckExecutionState((ExecutingSubFunctionWithoutPermaUrlState)executionState))
                                .Verifiable();
 
       executionState.ExecuteSubFunction(WxeContext);

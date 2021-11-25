@@ -169,7 +169,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
           .WhenCalled(mi =>
           {
             // Pretend an object was registered, then throw an exception - that way, the registered object needs to be cleaned up
-            FakeRegisteredObject((NewObjectInitializationContext) mi.Arguments[0], _domainObject1);
+            FakeRegisteredObject((NewObjectInitializationContext)mi.Arguments[0], _domainObject1);
             throw exception;
           })
           .Return(null);
@@ -199,7 +199,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
           .WhenCalled(mi =>
           {
             // Pretend an object was registered, then throw an exception - that way, the registered object needs to be cleaned up
-            FakeRegisteredObject((NewObjectInitializationContext) mi.Arguments[0], _domainObject1);
+            FakeRegisteredObject((NewObjectInitializationContext)mi.Arguments[0], _domainObject1);
             throw exceptionInCreate;
           })
           .Return(null);

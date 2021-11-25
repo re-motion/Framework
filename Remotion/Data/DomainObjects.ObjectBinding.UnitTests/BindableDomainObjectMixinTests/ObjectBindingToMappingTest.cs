@@ -110,7 +110,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     {
       IBusinessObjectProperty property = _classWithPropertiesMixinInstanceAsBusinessObjectClass.GetPropertyDefinition("RequiredStringPropertyExplicitInInterface");
       string propertyValue = "test";
-      ((IBindableDomainObjectWithProperties) _classWithPropertiesInstance).RequiredStringPropertyExplicitInInterface = propertyValue;
+      ((IBindableDomainObjectWithProperties)_classWithPropertiesInstance).RequiredStringPropertyExplicitInInterface = propertyValue;
       Assert.That(_classWithPropertiesMixinInstanceAsBusinessObject.GetProperty(property), Is.EqualTo(propertyValue));
     }
 
@@ -118,8 +118,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     public void ExplicitInterfaceProperty_NonDefaultValue_WithUnchangedValue ()
     {
       IBusinessObjectProperty property = _classWithPropertiesMixinInstanceAsBusinessObjectClass.GetPropertyDefinition("RequiredStringPropertyExplicitInInterface");
-      var propertyValue = ((IBindableDomainObjectWithProperties) _classWithPropertiesInstance).RequiredStringPropertyExplicitInInterface;
-      ((IBindableDomainObjectWithProperties) _classWithPropertiesInstance).RequiredStringPropertyExplicitInInterface = propertyValue;
+      var propertyValue = ((IBindableDomainObjectWithProperties)_classWithPropertiesInstance).RequiredStringPropertyExplicitInInterface;
+      ((IBindableDomainObjectWithProperties)_classWithPropertiesInstance).RequiredStringPropertyExplicitInInterface = propertyValue;
       Assert.That(_classWithPropertiesMixinInstanceAsBusinessObject.GetProperty(property), Is.EqualTo(propertyValue));
     }
 
@@ -135,7 +135,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     {
       IBusinessObjectProperty mixedProperty = _classWithMixedPropertiesInstanceAsBusinessObjectClass.GetPropertyDefinition("PublicMixedProperty");
       var dateTime = new DateTime(2008, 08, 01);
-      ((IMixinAddingPersistentProperties) _classWithMixedPropertiesInstance).PublicMixedProperty = dateTime;
+      ((IMixinAddingPersistentProperties)_classWithMixedPropertiesInstance).PublicMixedProperty = dateTime;
       Assert.That(_classWithMixedPropertiesInstanceAsBusinessObject.GetProperty(mixedProperty), Is.EqualTo(dateTime));
     }
 
@@ -143,8 +143,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     public void MixedPublicProperty_NonDefaultValue_WithUnchangedValue ()
     {
       IBusinessObjectProperty mixedProperty = _classWithMixedPropertiesInstanceAsBusinessObjectClass.GetPropertyDefinition("PublicMixedProperty");
-      var dateTime = ((IMixinAddingPersistentProperties) _classWithMixedPropertiesInstance).PublicMixedProperty;
-      ((IMixinAddingPersistentProperties) _classWithMixedPropertiesInstance).PublicMixedProperty = dateTime;
+      var dateTime = ((IMixinAddingPersistentProperties)_classWithMixedPropertiesInstance).PublicMixedProperty;
+      ((IMixinAddingPersistentProperties)_classWithMixedPropertiesInstance).PublicMixedProperty = dateTime;
       Assert.That(_classWithMixedPropertiesInstanceAsBusinessObject.GetProperty(mixedProperty), Is.EqualTo(dateTime));
     }
 
@@ -160,7 +160,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     {
       IBusinessObjectProperty mixedProperty = _classWithMixedPropertiesInstanceAsBusinessObjectClass.GetPropertyDefinition("PrivateMixedProperty");
       var dateTime = new DateTime(2008, 08, 01);
-      ((IMixinAddingPersistentProperties) _classWithMixedPropertiesInstance).PrivateMixedProperty = dateTime;
+      ((IMixinAddingPersistentProperties)_classWithMixedPropertiesInstance).PrivateMixedProperty = dateTime;
       Assert.That(_classWithMixedPropertiesInstanceAsBusinessObject.GetProperty(mixedProperty), Is.EqualTo(dateTime));
     }
 
@@ -168,8 +168,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     public void MixedPrivateProperty_NonDefaultValue_WithUnchangedValue ()
     {
       IBusinessObjectProperty mixedProperty = _classWithMixedPropertiesInstanceAsBusinessObjectClass.GetPropertyDefinition("PrivateMixedProperty");
-      var dateTime = ((IMixinAddingPersistentProperties) _classWithMixedPropertiesInstance).PrivateMixedProperty;
-      ((IMixinAddingPersistentProperties) _classWithMixedPropertiesInstance).PrivateMixedProperty = dateTime;
+      var dateTime = ((IMixinAddingPersistentProperties)_classWithMixedPropertiesInstance).PrivateMixedProperty;
+      ((IMixinAddingPersistentProperties)_classWithMixedPropertiesInstance).PrivateMixedProperty = dateTime;
       Assert.That(_classWithMixedPropertiesInstanceAsBusinessObject.GetProperty(mixedProperty), Is.EqualTo(dateTime));
     }
 
@@ -185,16 +185,16 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     {
       IBusinessObjectProperty mixedProperty = _classWithMixedPropertiesInstanceAsBusinessObjectClass.GetPropertyDefinition("ExplicitMixedProperty");
       var dateTime = new DateTime(2008, 08, 01);
-      ((IMixinAddingPersistentProperties) _classWithMixedPropertiesInstance).ExplicitMixedProperty = dateTime;
+      ((IMixinAddingPersistentProperties)_classWithMixedPropertiesInstance).ExplicitMixedProperty = dateTime;
       Assert.That(_classWithMixedPropertiesInstanceAsBusinessObject.GetProperty(mixedProperty), Is.EqualTo(dateTime));
     }
 
     [Test]
     public void MixedExplicitProperty_NonDefaultValue_WithUnchangedValue ()
     {
-      var property = (PropertyBase) _classWithMixedPropertiesInstanceAsBusinessObjectClass.GetPropertyDefinition("ExplicitMixedProperty");
-      var dateTime = ((IMixinAddingPersistentProperties) _classWithMixedPropertiesInstance).ExplicitMixedProperty;
-      ((IMixinAddingPersistentProperties) _classWithMixedPropertiesInstance).ExplicitMixedProperty = dateTime;
+      var property = (PropertyBase)_classWithMixedPropertiesInstanceAsBusinessObjectClass.GetPropertyDefinition("ExplicitMixedProperty");
+      var dateTime = ((IMixinAddingPersistentProperties)_classWithMixedPropertiesInstance).ExplicitMixedProperty;
+      ((IMixinAddingPersistentProperties)_classWithMixedPropertiesInstance).ExplicitMixedProperty = dateTime;
       Assert.That(_classWithMixedPropertiesInstanceAsBusinessObject.GetProperty(property), Is.EqualTo(dateTime));
     }
 

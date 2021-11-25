@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.Performance
     protected override void OnLoad (EventArgs e)
     {
       base.OnLoad(e);
-      var items = ((PerformanceFunction) CurrentFunction).Items;
+      var items = ((PerformanceFunction)CurrentFunction).Items;
       ItemList.LoadUnboundValue(items, IsPostBack);
     }
 

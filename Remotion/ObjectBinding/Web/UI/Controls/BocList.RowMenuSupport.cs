@@ -134,7 +134,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         listIndex = Value
             .Select((obj, i) => (BusinessObject: obj, Index: i))
             .Where(row => row.BusinessObject.Equals(rowMenu.Row.BusinessObject))
-            .Select(row => (int?) row.Index)
+            .Select(row => (int?)row.Index)
             .FirstOrDefault() ?? -1;
       }
 
@@ -150,7 +150,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (menuItem != null && menuItem.Command != null)
       {
         if (menuItem is BocMenuItem)
-          ((BocMenuItemCommand) menuItem.Command).OnClick((BocMenuItem) menuItem);
+          ((BocMenuItemCommand)menuItem.Command).OnClick((BocMenuItem)menuItem);
         else
           menuItem.Command.OnClick();
       }
@@ -164,9 +164,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         if (menuItem is BocMenuItem)
         {
-          BocMenuItemCommand command = (BocMenuItemCommand) menuItem.Command;
+          BocMenuItemCommand command = (BocMenuItemCommand)menuItem.Command;
           if (Page is IWxePage)
-            command.ExecuteWxeFunction((IWxePage) Page, new[] { listIndex }, new[] { businessObject });
+            command.ExecuteWxeFunction((IWxePage)Page, new[] { listIndex }, new[] { businessObject });
           //else
           //  command.ExecuteWxeFunction (Page, new int[1] {listIndex}, new IBusinessObject[1] {businessObject});
         }
@@ -174,7 +174,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         {
           Command command = menuItem.Command;
           if (Page is IWxePage)
-            command.ExecuteWxeFunction((IWxePage) Page, null);
+            command.ExecuteWxeFunction((IWxePage)Page, null);
           //else
           //  command.ExecuteWxeFunction (Page, null, new NameValueCollection (0));
         }

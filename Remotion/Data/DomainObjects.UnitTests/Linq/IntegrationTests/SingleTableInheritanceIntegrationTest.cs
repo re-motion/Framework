@@ -175,13 +175,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     {
       var partnerIDs = new[]
                        {
-                           (Guid) DomainObjectIDs.Partner1.Value,
-                           (Guid) DomainObjectIDs.Distributor1.Value,
-                           (Guid) DomainObjectIDs.Supplier1.Value,
-                           (Guid) DomainObjectIDs.Company1.Value,
-                           (Guid) DomainObjectIDs.Customer1.Value
+                           (Guid)DomainObjectIDs.Partner1.Value,
+                           (Guid)DomainObjectIDs.Distributor1.Value,
+                           (Guid)DomainObjectIDs.Supplier1.Value,
+                           (Guid)DomainObjectIDs.Company1.Value,
+                           (Guid)DomainObjectIDs.Customer1.Value
                        };
-      var query = QueryFactory.CreateLinqQuery<Company>().OfType<Partner>().Where(p => partnerIDs.Contains((Guid) p.ID.Value));
+      var query = QueryFactory.CreateLinqQuery<Company>().OfType<Partner>().Where(p => partnerIDs.Contains((Guid)p.ID.Value));
 
       CheckQueryResult(
           query,
@@ -195,13 +195,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     {
       var partnerIDs = new[]
                        {
-                           (Guid) DomainObjectIDs.Partner1.Value,
-                           (Guid) DomainObjectIDs.Distributor1.Value,
-                           (Guid) DomainObjectIDs.Supplier1.Value,
-                           (Guid) DomainObjectIDs.Company1.Value,
-                           (Guid) DomainObjectIDs.Customer1.Value
+                           (Guid)DomainObjectIDs.Partner1.Value,
+                           (Guid)DomainObjectIDs.Distributor1.Value,
+                           (Guid)DomainObjectIDs.Supplier1.Value,
+                           (Guid)DomainObjectIDs.Company1.Value,
+                           (Guid)DomainObjectIDs.Customer1.Value
                        };
-      var query = QueryFactory.CreateLinqQuery<Company>().Where(c => c is Partner).Where(p => partnerIDs.Contains((Guid) p.ID.Value));
+      var query = QueryFactory.CreateLinqQuery<Company>().Where(c => c is Partner).Where(p => partnerIDs.Contains((Guid)p.ID.Value));
 
       CheckQueryResult(
           query,

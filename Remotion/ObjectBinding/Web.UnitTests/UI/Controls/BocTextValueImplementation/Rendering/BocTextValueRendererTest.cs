@@ -460,7 +460,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       Html.AssertChildElementCount(content, 2);
 
       var labelSpan = Html.GetAssertedChildElement(content, "span", 0);
-      Html.AssertTextNode(labelSpan, new string((char) 9679, 5), 0);
+      Html.AssertTextNode(labelSpan, new string((char)9679, 5), 0);
 
       var validationErrors = Html.GetAssertedChildElement(content, "fake", 1);
       Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");

@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
         productReference.Product = product;
 
         var customer = Customer.NewObject();
-        ((ICustomerIntroduced) customer).Address = Address.NewObject();
+        ((ICustomerIntroduced)customer).Address = Address.NewObject();
 
         ClientTransaction.Current.Commit();
       }
@@ -66,8 +66,8 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
         productReference.Product = product;
 
         var customer = Customer.NewObject();
-        ((ICustomerIntroduced) customer).Address = Address.NewObject();
-        ((ICustomerIntroduced) customer).Title = "Chef1";
+        ((ICustomerIntroduced)customer).Address = Address.NewObject();
+        ((ICustomerIntroduced)customer).Title = "Chef1";
 
         using (new CultureScope("de-AT"))
         {

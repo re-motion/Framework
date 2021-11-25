@@ -45,13 +45,13 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls.Rendering
           invocation =>
           {
             if (invocation.Arguments[0] == null)
-              throw new Exception(string.Format((string) invocation.Arguments[1], (object[]) invocation.Arguments[2]));
+              throw new Exception(string.Format((string)invocation.Arguments[1], (object[])invocation.Arguments[2]));
           });
       _asserter.Stub(stub => stub.IsNull(null, null, null)).IgnoreArguments().WhenCalled(
           invocation =>
           {
             if (invocation.Arguments[0] != null)
-              throw new Exception(string.Format((string) invocation.Arguments[1], (object[]) invocation.Arguments[2]));
+              throw new Exception(string.Format((string)invocation.Arguments[1], (object[])invocation.Arguments[2]));
           });
       _asserter.Stub(stub => stub.AreEqual(null, null, null, null)).IgnoreArguments().WhenCalled(
           invocation =>
@@ -59,25 +59,25 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls.Rendering
             if (invocation.Arguments[0] != null)
             {
               if (!invocation.Arguments[0].Equals(invocation.Arguments[1]))
-                throw new Exception(string.Format((string) invocation.Arguments[2], (object[]) invocation.Arguments[3]));
+                throw new Exception(string.Format((string)invocation.Arguments[2], (object[])invocation.Arguments[3]));
             }
             else if (invocation.Arguments[1] != null)
-              throw new Exception(string.Format((string) invocation.Arguments[2], (object[]) invocation.Arguments[3]));
+              throw new Exception(string.Format((string)invocation.Arguments[2], (object[])invocation.Arguments[3]));
           });
       _asserter.Stub(stub => stub.GreaterThan(null, null, null, null)).IgnoreArguments().WhenCalled(
           invocation =>
           {
             if (invocation.Arguments[0] != null)
             {
-              if (((IComparable) invocation.Arguments[0]).CompareTo(invocation.Arguments[1]) <= 0)
-                throw new Exception(string.Format((string) invocation.Arguments[2], (object[]) invocation.Arguments[3]));
+              if (((IComparable)invocation.Arguments[0]).CompareTo(invocation.Arguments[1]) <= 0)
+                throw new Exception(string.Format((string)invocation.Arguments[2], (object[])invocation.Arguments[3]));
             }
           });
       _asserter.Stub(stub => stub.IsTrue(true, null, new object[3])).IgnoreArguments().WhenCalled(
           invocation =>
           {
-            if (!((bool) invocation.Arguments[0]))
-              throw new Exception(string.Format((string) invocation.Arguments[1], (object[]) invocation.Arguments[2]));
+            if (!((bool)invocation.Arguments[0]))
+              throw new Exception(string.Format((string)invocation.Arguments[1], (object[])invocation.Arguments[2]));
           })
           ;
 

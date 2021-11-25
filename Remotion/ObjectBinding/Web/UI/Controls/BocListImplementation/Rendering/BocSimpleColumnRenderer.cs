@@ -90,7 +90,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
         if (result.ResultProperty is IBusinessObjectReferenceProperty && !result.ResultProperty.IsList)
         {
-          var value = (IBusinessObject?) result.GetValue();
+          var value = (IBusinessObject?)result.GetValue();
           if (value != null)
             RenderCellIcon(renderingContext, value);
         }

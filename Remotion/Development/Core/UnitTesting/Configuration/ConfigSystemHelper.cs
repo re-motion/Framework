@@ -43,8 +43,8 @@ namespace Remotion.Development.UnitTesting.Configuration
     public void SetUpConfigSystem ()
     {
       Type initStateType = typeof(ConfigurationElement).Assembly.GetType("System.Configuration.ConfigurationManager+InitState", true, false)!;
-      _notStarted = (Enum) Enum.Parse(initStateType, "NotStarted");
-      _usable = (Enum) Enum.Parse(initStateType, "Usable");
+      _notStarted = (Enum)Enum.Parse(initStateType, "NotStarted");
+      _usable = (Enum)Enum.Parse(initStateType, "Usable");
 
       _fakeConfigSystem = new FakeInternalConfigSystem();
       PrivateInvoke.SetNonPublicStaticField(typeof(ConfigurationManager), "s_configSystem", _fakeConfigSystem);

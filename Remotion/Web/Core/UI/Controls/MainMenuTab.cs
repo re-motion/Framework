@@ -51,7 +51,7 @@ namespace Remotion.Web.UI.Controls
     [ListBindable (false)]
     [Category ("Behavior")]
     [Description ("")]
-    [DefaultValue ((string?) null)]
+    [DefaultValue ((string?)null)]
     public SubMenuTabCollection SubMenuTabs
     {
       get { return _subMenuTabs; }

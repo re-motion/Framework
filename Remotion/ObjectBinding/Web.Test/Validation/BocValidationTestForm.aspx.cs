@@ -72,14 +72,14 @@ namespace OBWTest.Validation
     {
 
       base.OnLoad(e);
-      CurrentObject.BusinessObject = (IBusinessObject) ((BocValidationTestWxeFunction)CurrentFunction).Person;
+      CurrentObject.BusinessObject = (IBusinessObject)((BocValidationTestWxeFunction)CurrentFunction).Person;
       CurrentObject.LoadValues(IsPostBack);
 
 
       if (!IsPostBack)
       {
         GridBocList.SwitchListIntoEditMode();
-        IBusinessObjectWithIdentity[] objects = (IBusinessObjectWithIdentity[]) ArrayUtility.Convert(
+        IBusinessObjectWithIdentity[] objects = (IBusinessObjectWithIdentity[])ArrayUtility.Convert(
             XmlReflectionBusinessObjectStorageProvider.Current.GetObjects(typeof(Person)),
             typeof(IBusinessObjectWithIdentity));
         ReferenceField.SetBusinessObjectList(objects);
@@ -117,7 +117,7 @@ namespace OBWTest.Validation
       //FormGridManager.Validate ();
       if (CurrentObject.SaveValues(false))
       {
-        var person = (Person) CurrentObject.BusinessObject;
+        var person = (Person)CurrentObject.BusinessObject;
         var validationResult = ValidatorProvider.GetValidator(typeof(Person)).Validate(person);
         ValidationResult validationResultPartner = new ValidationResult();
 
@@ -156,12 +156,12 @@ namespace OBWTest.Validation
 
     public virtual StringCollection GetHiddenRows (HtmlTable table)
     {
-      return (StringCollection) _listOfHiddenRows[table];
+      return (StringCollection)_listOfHiddenRows[table];
     }
 
     public virtual FormGridRowInfoCollection GetAdditionalRows (HtmlTable table)
     {
-      return (FormGridRowInfoCollection) _listOfFormGridRowInfos[table];
+      return (FormGridRowInfoCollection)_listOfFormGridRowInfos[table];
     }
 
     public IValidatorProvider ValidatorProvider

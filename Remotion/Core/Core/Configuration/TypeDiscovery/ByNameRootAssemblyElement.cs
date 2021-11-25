@@ -29,14 +29,14 @@ namespace Remotion.Configuration.TypeDiscovery
     [ConfigurationProperty ("name", IsRequired = true, IsKey = true)]
     public string Name
     {
-      get { return (string) this["name"]; }
+      get { return (string)this["name"]; }
       set { this["name"] = value; }
     }
 
     [ConfigurationProperty ("includeReferencedAssemblies", DefaultValue = "false", IsRequired = false)]
     public bool IncludeReferencedAssemblies
     {
-      get { return (bool) this["includeReferencedAssemblies"]; }
+      get { return (bool)this["includeReferencedAssemblies"]; }
       set { this["includeReferencedAssemblies"] = value; }
     }
 

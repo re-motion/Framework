@@ -31,7 +31,7 @@ namespace Remotion.ObjectBinding.BindableObject
       Assertion.DebugAssert(!TypeExtensions.CanAscribeTo(typeof(BindableObjectBaseImplementation), typeof(Mixin<,>)),
           "we assume the mixin does not have a base object");
       var impl = new BindableObjectBaseImplementation(wrapper);
-      ((IInitializableMixin) impl).Initialize(wrapper, null, false);
+      ((IInitializableMixin)impl).Initialize(wrapper, null, false);
       return impl;
     }
 
@@ -47,7 +47,7 @@ namespace Remotion.ObjectBinding.BindableObject
     {
       Assertion.DebugAssert(!TypeExtensions.CanAscribeTo(typeof(BindableObjectMixin), typeof(Mixin<,>)),
           "we assume the mixin does not have a base object");
-      ((IInitializableMixin) this).Initialize(_wrapper, null, true);
+      ((IInitializableMixin)this).Initialize(_wrapper, null, true);
     }
   }
 }

@@ -219,15 +219,15 @@ namespace Remotion.Validation.UnitTests.Implementation
       _objectMetaValidationRuleValidatorMock.Verify();
       _memberInformationNameResolverMock.Verify();
       Assert.That(result, Is.TypeOf(typeof(Validator)));
-      var validator = (Validator) result;
+      var validator = (Validator)result;
       var validationRules = validator.ValidationRules.ToArray();
       Assert.That(validationRules.Length, Is.EqualTo(8));
       Assert.That(validationRules[0], Is.SameAs(validationRuleStub1.Object));
       Assert.That(validationRules[1], Is.SameAs(validationRuleStub2.Object));
       Assert.That(validationRules[2], Is.InstanceOf<PropertyValidationRule<Customer, string>>());
-      Assert.That(((IPropertyValidationRule) validationRules[2]).Property, Is.SameAs(_addingPropertyValidationRuleCollectorStub3.Property));
+      Assert.That(((IPropertyValidationRule)validationRules[2]).Property, Is.SameAs(_addingPropertyValidationRuleCollectorStub3.Property));
       Assert.That(validationRules[3], Is.InstanceOf<PropertyValidationRule<Customer, string>>());
-      Assert.That(((IPropertyValidationRule) validationRules[3]).Property, Is.SameAs(_addingPropertyValidationRuleCollectorStub4.Property));
+      Assert.That(((IPropertyValidationRule)validationRules[3]).Property, Is.SameAs(_addingPropertyValidationRuleCollectorStub4.Property));
       Assert.That(validationRules[4], Is.SameAs(validationRuleStub4.Object));
       Assert.That(validationRules[5], Is.SameAs(validationRuleStub5.Object));
       Assert.That(validationRules[6], Is.InstanceOf<ObjectValidationRule<Customer>>());

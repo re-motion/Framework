@@ -73,7 +73,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
     private IBusinessObject CreateObject (string value)
     {
-      var businessObject = (IBusinessObject) Domain.TypeWithString.Create(value, null);
+      var businessObject = (IBusinessObject)Domain.TypeWithString.Create(value, null);
       return businessObject;
     }
   }

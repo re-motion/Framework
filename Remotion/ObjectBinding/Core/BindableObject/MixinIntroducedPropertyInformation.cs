@@ -157,7 +157,7 @@ namespace Remotion.ObjectBinding.BindableObject
         return false;
       if (obj.GetType() != GetType())
         return false;
-      var other = (MixinIntroducedPropertyInformation) obj;
+      var other = (MixinIntroducedPropertyInformation)obj;
 
       return _interfaceImplementationPropertyInfo.Equals(other._interfaceImplementationPropertyInfo);
     }

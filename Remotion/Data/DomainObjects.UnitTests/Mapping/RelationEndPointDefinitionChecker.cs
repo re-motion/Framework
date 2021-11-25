@@ -95,8 +95,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       if (expectedEndPointDefinition is DomainObjectCollectionRelationEndPointDefinition)
       {
-        var expectedCollectionRelationEndPointDefinition = (DomainObjectCollectionRelationEndPointDefinition) expectedEndPointDefinition;
-        var actualCollectionEndPointDefinition = (DomainObjectCollectionRelationEndPointDefinition) actualEndPointDefinition;
+        var expectedCollectionRelationEndPointDefinition = (DomainObjectCollectionRelationEndPointDefinition)expectedEndPointDefinition;
+        var actualCollectionEndPointDefinition = (DomainObjectCollectionRelationEndPointDefinition)actualEndPointDefinition;
 
         var expectedSortExpressionDefinition = expectedCollectionRelationEndPointDefinition.GetSortExpression();
         var actualSortExpressionDefinition = actualCollectionEndPointDefinition.GetSortExpression();
@@ -109,8 +109,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       if (expectedEndPointDefinition is VirtualCollectionRelationEndPointDefinition)
       {
-        var expectedCollectionRelationEndPointDefinition = (VirtualCollectionRelationEndPointDefinition) expectedEndPointDefinition;
-        var actualCollectionEndPointDefinition = (VirtualCollectionRelationEndPointDefinition) actualEndPointDefinition;
+        var expectedCollectionRelationEndPointDefinition = (VirtualCollectionRelationEndPointDefinition)expectedEndPointDefinition;
+        var actualCollectionEndPointDefinition = (VirtualCollectionRelationEndPointDefinition)actualEndPointDefinition;
 
         var expectedSortExpressionDefinition = expectedCollectionRelationEndPointDefinition.GetSortExpression();
         var actualSortExpressionDefinition = actualCollectionEndPointDefinition.GetSortExpression();

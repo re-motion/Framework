@@ -32,7 +32,7 @@ public class ArrayUtilityTest
     string[] s3 = {};
     string[] s4 = { "e", "f" };
 
-    string[] res = (string[]) ArrayUtility.Combine(s1, s2, s3, s4);
+    string[] res = (string[])ArrayUtility.Combine(s1, s2, s3, s4);
     Assert.That(string.Concat(res), Is.EqualTo("abcdef"));
   }
 

@@ -167,8 +167,8 @@ namespace Remotion.ObjectBinding.Sample
               {
                 _childIDs =
                     (_childIDs ?? Enumerable.Empty<Guid>())
-                        .Except((args.OldItems ?? (IList) Enumerable.Empty<Person>()).Cast<Person>().Select(i => i.ID))
-                        .Concat((args.NewItems ?? (IList) Enumerable.Empty<Person>()).Cast<Person>().Select(i => i.ID))
+                        .Except((args.OldItems ?? (IList)Enumerable.Empty<Person>()).Cast<Person>().Select(i => i.ID))
+                        .Concat((args.NewItems ?? (IList)Enumerable.Empty<Person>()).Cast<Person>().Select(i => i.ID))
                         .ToArray();
               };
         }
@@ -187,7 +187,7 @@ namespace Remotion.ObjectBinding.Sample
       {
         Children.Clear();
         foreach (var item in value)
-          Children.Add((Person) item);
+          Children.Add((Person)item);
       }
     }
 

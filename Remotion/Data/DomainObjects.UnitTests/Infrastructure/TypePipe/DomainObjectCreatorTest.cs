@@ -79,13 +79,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     {
       var order = _domainObjectCreator.CreateObjectReference(_order1InitializationContext, _transaction);
 
-      Assert.That(_pipeline.ReflectionService.IsAssembledType(((object) order).GetType()), Is.True);
+      Assert.That(_pipeline.ReflectionService.IsAssembledType(((object)order).GetType()), Is.True);
     }
 
     [Test]
     public void CreateObjectReference_CallsNoCtor ()
     {
-      var order = (Order) _domainObjectCreator.CreateObjectReference(_order1InitializationContext, _transaction);
+      var order = (Order)_domainObjectCreator.CreateObjectReference(_order1InitializationContext, _transaction);
 
       Assert.That(order.CtorCalled, Is.False);
     }
@@ -115,7 +115,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
       initializationContextMock.Stub(stub => stub.RootTransaction).Return(_transaction);
       initializationContextMock
           .Expect(mock => mock.RegisterObject(Arg<DomainObject>.Matches(obj => obj.ID == DomainObjectIDs.Order1)))
-          .WhenCalled(mi => registeredObject = (DomainObject) mi.Arguments[0]);
+          .WhenCalled(mi => registeredObject = (DomainObject)mi.Arguments[0]);
 
       var instance = _domainObjectCreator.CreateObjectReference(initializationContextMock, _transaction);
 
@@ -138,14 +138,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     [Test]
     public void CreateObjectReference_CallsReferenceInitializing ()
     {
-      var domainObject = (Order) _domainObjectCreator.CreateObjectReference(_order1InitializationContext, _transaction);
+      var domainObject = (Order)_domainObjectCreator.CreateObjectReference(_order1InitializationContext, _transaction);
       Assert.That(domainObject.OnReferenceInitializingCalled, Is.True);
     }
 
     [Test]
     public void CreateObjectReference_CallsReferenceInitializing_InRightTransaction ()
     {
-      var domainObject = (Order) _domainObjectCreator.CreateObjectReference(_order1InitializationContext, _transaction);
+      var domainObject = (Order)_domainObjectCreator.CreateObjectReference(_order1InitializationContext, _transaction);
       Assert.That(domainObject.OnReferenceInitializingTx, Is.SameAs(_transaction));
     }
 
@@ -154,7 +154,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     {
       using (ClientTransactionTestHelper.MakeInactive(_transaction))
       {
-        var domainObject = (Order) _domainObjectCreator.CreateObjectReference(_order1InitializationContext, _transaction);
+        var domainObject = (Order)_domainObjectCreator.CreateObjectReference(_order1InitializationContext, _transaction);
         Assert.That(domainObject.OnReferenceInitializingTx, Is.SameAs(_transaction));
         Assert.That(domainObject.OnReferenceInitializingActiveTx, Is.SameAs(_transaction));
       }
@@ -166,13 +166,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
       var initializationContext = CreateNewObjectInitializationContext(DomainObjectIDs.OrderItem1, _transaction);
       var result = _domainObjectCreator.CreateNewObject(initializationContext, ParamList.Create("A product"), _transaction);
 
-      Assert.That(_pipeline.ReflectionService.IsAssembledType(((object) result).GetType()), Is.True);
+      Assert.That(_pipeline.ReflectionService.IsAssembledType(((object)result).GetType()), Is.True);
       Assert.That(result, Is.AssignableTo<OrderItem>());
       Assert.That(result.ID, Is.EqualTo(DomainObjectIDs.OrderItem1));
       Assert.That(result.RootTransaction, Is.SameAs(_transaction));
       Assert.That(_transaction.IsDiscarded, Is.False);
       Assert.That(_transaction.IsEnlisted(result), Is.True);
-      Assert.That(_transaction.ExecuteInScope(() => ((OrderItem) result).Product), Is.EqualTo("A product"));
+      Assert.That(_transaction.ExecuteInScope(() => ((OrderItem)result).Product), Is.EqualTo("A product"));
       Assert.That(ObjectInititalizationContextScope.CurrentObjectInitializationContext, Is.Null);
     }
 

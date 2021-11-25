@@ -156,7 +156,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
         securableObject = CreateSecurableObject(_securityContextFactoryStub);
       }
 
-      Dev.Null = ((ISecurableObjectMixin) securableObject).MixedPropertyWithDefaultPermission;
+      Dev.Null = ((ISecurableObjectMixin)securableObject).MixedPropertyWithDefaultPermission;
     }
 
     [Test]
@@ -172,7 +172,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
         securableObject = CreateSecurableObject(_securityContextFactoryStub);
       }
 
-      Dev.Null = ((ISecurableObjectMixin) securableObject).MixedPropertyWithCustomPermission;
+      Dev.Null = ((ISecurableObjectMixin)securableObject).MixedPropertyWithCustomPermission;
     }
 
     [Test]
@@ -186,7 +186,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
         securableObject = CreateSecurableObject(_securityContextFactoryStub);
       }
       Assert.That(
-          () => ((ISecurableObjectMixin) securableObject).MixedPropertyWithDefaultPermission,
+          () => ((ISecurableObjectMixin)securableObject).MixedPropertyWithDefaultPermission,
           Throws.InstanceOf<PermissionDeniedException>()
               .With.Message.EqualTo(
                   "Access to method 'get_MixedPropertyWithDefaultPermission' on type 'Remotion.Data.DomainObjects.Security.UnitTests.TestDomain.SecurableObject' has been denied."));
@@ -203,7 +203,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
         securableObject = CreateSecurableObject(_securityContextFactoryStub);
       }
       Assert.That(
-          () => ((ISecurableObjectMixin) securableObject).MixedPropertyWithCustomPermission,
+          () => ((ISecurableObjectMixin)securableObject).MixedPropertyWithCustomPermission,
           Throws.InstanceOf<PermissionDeniedException>()
               .With.Message.EqualTo(
                   "Access to method 'get_MixedPropertyWithCustomPermission' on type 'Remotion.Data.DomainObjects.Security.UnitTests.TestDomain.SecurableObject' has been denied."));

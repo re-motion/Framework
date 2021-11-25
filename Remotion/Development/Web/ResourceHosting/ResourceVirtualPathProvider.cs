@@ -43,7 +43,7 @@ namespace Remotion.Development.Web.ResourceHosting
     static ResourceVirtualPathProvider ()
     {
       var staticFileHandlerType = typeof(HttpApplication).Assembly.GetType("System.Web.StaticFileHandler", true)!;
-      s_staticFileHandler = (IHttpHandler) Activator.CreateInstance(staticFileHandlerType, true)!;
+      s_staticFileHandler = (IHttpHandler)Activator.CreateInstance(staticFileHandlerType, true)!;
     }
 
     public static IHttpHandler StaticFileHandler
@@ -162,8 +162,8 @@ namespace Remotion.Development.Web.ResourceHosting
       //based on MapPathBasedVirtualPathProvider:
 
       if (virtualPathDependencies == null)
-        return (CacheDependency?) null;
-      StringCollection? stringCollection = (StringCollection?) null;
+        return (CacheDependency?)null;
+      StringCollection? stringCollection = (StringCollection?)null;
       foreach (string virtualPath1 in virtualPathDependencies)
       {
         string? str;
@@ -188,7 +188,7 @@ namespace Remotion.Development.Web.ResourceHosting
         stringCollection.Add(str);
       }
       if (stringCollection == null)
-        return (CacheDependency?) null;
+        return (CacheDependency?)null;
       string[] strArray = new string[stringCollection.Count];
       stringCollection.CopyTo(strArray, 0);
       return new CacheDependency(strArray, new string[0], utcStart);

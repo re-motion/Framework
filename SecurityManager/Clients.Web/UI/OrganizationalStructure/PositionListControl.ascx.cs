@@ -54,7 +54,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
       if (!IsPostBack)
       {
         PositionList.SetSortingOrder(
-            new BocListSortingOrderEntry((IBocSortableColumnDefinition) PositionList.FixedColumns[0], SortingDirection.Ascending));
+            new BocListSortingOrderEntry((IBocSortableColumnDefinition)PositionList.FixedColumns[0], SortingDirection.Ascending));
       }
       PositionList.LoadUnboundValue(GetValues(), false);
 

@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 
       IBusinessObjectProperty mixedProperty = boClass.GetPropertyDefinition("MixedProperty");
       var dateTime = new DateTime(2008, 08, 01);
-      ((IMixinAddingPersistentProperties) instance).MixedProperty = dateTime;
+      ((IMixinAddingPersistentProperties)instance).MixedProperty = dateTime;
       Assert.That(instanceAsBusinessObject.GetProperty(mixedProperty), Is.EqualTo(dateTime));
     }
 
@@ -68,8 +68,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       var boClass = instanceAsBusinessObject.BusinessObjectClass;
 
       IBusinessObjectProperty mixedProperty = boClass.GetPropertyDefinition("MixedProperty");
-      var dateTime = ((IMixinAddingPersistentProperties) instance).MixedProperty;
-      ((IMixinAddingPersistentProperties) instance).MixedProperty = dateTime;
+      var dateTime = ((IMixinAddingPersistentProperties)instance).MixedProperty;
+      ((IMixinAddingPersistentProperties)instance).MixedProperty = dateTime;
       Assert.That(instanceAsBusinessObject.GetProperty(mixedProperty), Is.EqualTo(dateTime));
     }
   }

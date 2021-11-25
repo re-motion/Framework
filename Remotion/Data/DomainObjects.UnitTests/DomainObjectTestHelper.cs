@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public static T ExecuteInReferenceInitializing_NewObject<T> (Func<Order, T> func)
     {
       T result = default(T);
-      EventHandler handler = (sender, args) => result = func((Order) sender);
+      EventHandler handler = (sender, args) => result = func((Order)sender);
 
       Order.StaticInitializationHandler += handler;
       try
@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public static T ExecuteInReferenceInitializing_LoadedObject<T> (Func<Order, T> func)
     {
       T result = default(T);
-      EventHandler handler = (sender, args) => result = func((Order) sender);
+      EventHandler handler = (sender, args) => result = func((Order)sender);
 
       Order.StaticInitializationHandler += handler;
       try

@@ -36,7 +36,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Organiz
 
       _searchService = new SubstitutionPropertiesSearchService();
       IBusinessObjectClass substitutionClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(Substitution));
-      _otherProperty = (IBusinessObjectReferenceProperty) substitutionClass.GetPropertyDefinition("SubstitutedUser");
+      _otherProperty = (IBusinessObjectReferenceProperty)substitutionClass.GetPropertyDefinition("SubstitutedUser");
       Assert.That(_otherProperty, Is.Not.Null);
     }
 

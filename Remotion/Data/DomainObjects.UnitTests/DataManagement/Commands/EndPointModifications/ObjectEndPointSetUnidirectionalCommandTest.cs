@@ -80,7 +80,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       var orderItem = DomainObjectIDs.OrderItem1.GetObject<OrderItem>();
       var id = RelationEndPointID.Create(orderItem.ID, definition);
 
-      var endPoint = (IObjectEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad(id);
+      var endPoint = (IObjectEndPoint)TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad(id);
       Assert.That(
           () => new ObjectEndPointSetUnidirectionalCommand(endPoint, Order.NewObject(), mi => { }, TransactionEventSinkWithMock),
           Throws.ArgumentException
@@ -95,7 +95,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       var definition = MappingConfiguration.Current.GetTypeDefinition(typeof(OrderTicket))
           .GetMandatoryRelationEndPointDefinition(typeof(OrderTicket).FullName + ".Order");
       var relationEndPointID = RelationEndPointID.Create(DomainObjectIDs.OrderTicket1.GetObject<OrderTicket>().ID, definition);
-      var endPoint = (IObjectEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad(relationEndPointID);
+      var endPoint = (IObjectEndPoint)TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad(relationEndPointID);
       Assert.That(
           () => new ObjectEndPointSetUnidirectionalCommand(endPoint, Order.NewObject(), mi => { }, TransactionEventSinkWithMock),
           Throws.ArgumentException

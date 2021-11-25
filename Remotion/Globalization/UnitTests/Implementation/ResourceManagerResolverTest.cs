@@ -97,7 +97,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
       Assert.That(result.ResourceManager, Is.InstanceOf<ResourceManagerSet>());
       Assert.That(result.DefinedResourceManager, Is.SameAs(resourceManagerOnDerivedClassStub.Object));
       Assert.That(result.InheritedResourceManager, Is.InstanceOf<ResourceManagerSet>());
-      var inheritedResourceManagerSet = (ResourceManagerSet) result.InheritedResourceManager;
+      var inheritedResourceManagerSet = (ResourceManagerSet)result.InheritedResourceManager;
       Assert.That(inheritedResourceManagerSet.ResourceManagers, Is.EqualTo(new[] { resourceManagerOnClassStub.Object, resourceManagerOnBaseClassStub.Object }));
     }
 

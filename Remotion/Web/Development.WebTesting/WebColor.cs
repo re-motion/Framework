@@ -86,7 +86,7 @@ namespace Remotion.Web.Development.WebTesting
     {
       if (ReferenceEquals(null, obj))
         return false;
-      return obj is WebColor && Equals((WebColor) obj);
+      return obj is WebColor && Equals((WebColor)obj);
     }
 
     public override int GetHashCode ()

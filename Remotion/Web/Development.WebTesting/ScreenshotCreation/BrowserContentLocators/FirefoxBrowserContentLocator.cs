@@ -54,10 +54,10 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
       var firefoxContentBounds = firefoxContentElement.Current.BoundingRectangle;
 
       var result = new Rectangle(
-          (int) Math.Round(firefoxContentBounds.X),
-          (int) Math.Round(firefoxContentBounds.Y),
-          (int) Math.Round(firefoxContentBounds.Width),
-          (int) Math.Round(firefoxContentBounds.Height));
+          (int)Math.Round(firefoxContentBounds.X),
+          (int)Math.Round(firefoxContentBounds.Y),
+          (int)Math.Round(firefoxContentBounds.Width),
+          (int)Math.Round(firefoxContentBounds.Height));
 
       return result;
     }
@@ -125,10 +125,10 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
 
       var windowBoundingRectangle = window.Current.BoundingRectangle;
       var windowBounds = new Rectangle(
-          (int) Math.Round(windowBoundingRectangle.X),
-          (int) Math.Round(windowBoundingRectangle.Y),
-          (int) Math.Round(windowBoundingRectangle.Width),
-          (int) Math.Round(windowBoundingRectangle.Height));
+          (int)Math.Round(windowBoundingRectangle.X),
+          (int)Math.Round(windowBoundingRectangle.Y),
+          (int)Math.Round(windowBoundingRectangle.Width),
+          (int)Math.Round(windowBoundingRectangle.Height));
 
       if (driverWindowBounds == windowBounds)
         return 2;

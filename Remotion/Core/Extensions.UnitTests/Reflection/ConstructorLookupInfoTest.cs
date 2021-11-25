@@ -29,7 +29,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
     public void GetDelegate_WithExactMatchFromBase ()
     {
       ConstructorLookupInfo lookupInfo = new ConstructorLookupInfo(typeof(TestClass));
-      var actual = (Func<Base, TestClass>) lookupInfo.GetDelegate(typeof(Func<Base, TestClass>));
+      var actual = (Func<Base, TestClass>)lookupInfo.GetDelegate(typeof(Func<Base, TestClass>));
 
       TestClass instance = actual(null);
       Assert.That(instance.InvocationType, Is.SameAs(typeof(Base)));
@@ -39,7 +39,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
     public void GetDelegate_WithExactMatchFromDerived ()
     {
       ConstructorLookupInfo lookupInfo = new ConstructorLookupInfo(typeof(TestClass));
-      var actual = (Func<Derived, TestClass>) lookupInfo.GetDelegate(typeof(Func<Derived, TestClass>));
+      var actual = (Func<Derived, TestClass>)lookupInfo.GetDelegate(typeof(Func<Derived, TestClass>));
 
       TestClass instance = actual(null);
       Assert.That(instance.InvocationType, Is.SameAs(typeof(Derived)));
@@ -49,7 +49,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
     public void GetDelegate_WithExactMatchFromDerivedDerived ()
     {
       ConstructorLookupInfo lookupInfo = new ConstructorLookupInfo(typeof(TestClass));
-      var actual = (Func<DerivedDerived, TestClass>) lookupInfo.GetDelegate(typeof(Func<DerivedDerived, TestClass>));
+      var actual = (Func<DerivedDerived, TestClass>)lookupInfo.GetDelegate(typeof(Func<DerivedDerived, TestClass>));
 
       TestClass instance = actual(null);
       Assert.That(instance.InvocationType, Is.SameAs(typeof(Derived)));
@@ -69,7 +69,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
     public void GetDelegate_ImplicitConversion ()
     {
       ConstructorLookupInfo lookupInfo = new ConstructorLookupInfo(typeof(TestClass));
-      var actual = (Func<Base, object>) lookupInfo.GetDelegate(typeof(Func<Base, object>));
+      var actual = (Func<Base, object>)lookupInfo.GetDelegate(typeof(Func<Base, object>));
 
       var instance = actual(null);
       Assert.That(instance, Is.TypeOf<TestClass>());
@@ -79,7 +79,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
     public void GetDelegate_ValueType_DefaultCtor ()
     {
       var info = new ConstructorLookupInfo(typeof(int));
-      var actual = (Func<int>) info.GetDelegate(typeof(Func<int>));
+      var actual = (Func<int>)info.GetDelegate(typeof(Func<int>));
       var instance = actual();
 
       Assert.That(instance, Is.EqualTo(new int()));
@@ -89,7 +89,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
     public void GetDelegate_ValueType_DefaultCtor_Boxing ()
     {
       var info = new ConstructorLookupInfo(typeof(int));
-      var actual = (Func<object>) info.GetDelegate(typeof(Func<object>));
+      var actual = (Func<object>)info.GetDelegate(typeof(Func<object>));
       var instance = actual();
 
       Assert.That(instance, Is.EqualTo(new int()));
@@ -99,7 +99,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
     public void GetDelegate_ValueType_DefaultCtor_BoxingInterface ()
     {
       var info = new ConstructorLookupInfo(typeof(int));
-      var actual = (Func<IComparable>) info.GetDelegate(typeof(Func<IComparable>));
+      var actual = (Func<IComparable>)info.GetDelegate(typeof(Func<IComparable>));
       var instance = actual();
 
       Assert.That(instance, Is.EqualTo(new int()));
@@ -109,7 +109,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
     public void GetDelegate_ValueType_NonDefaultCtor ()
     {
       var info = new ConstructorLookupInfo(typeof(DateTime));
-      var actual = (Func<int, int, int, DateTime>) info.GetDelegate(typeof(Func<int, int, int, DateTime>));
+      var actual = (Func<int, int, int, DateTime>)info.GetDelegate(typeof(Func<int, int, int, DateTime>));
       var instance = actual(2012, 01, 02);
 
       Assert.That(instance, Is.EqualTo(new DateTime(2012, 01, 02)));
@@ -119,7 +119,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
     public void GetDelegate_ValueType_NonDefaultCtor_Boxing ()
     {
       var info = new ConstructorLookupInfo(typeof(DateTime));
-      var actual = (Func<int, int, int, object>) info.GetDelegate(typeof(Func<int, int, int, object>));
+      var actual = (Func<int, int, int, object>)info.GetDelegate(typeof(Func<int, int, int, object>));
       var instance = actual(2012, 01, 02);
 
       Assert.That(instance, Is.EqualTo(new DateTime(2012, 01, 02)));
@@ -129,7 +129,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
     public void GetDelegate_ValueType_NonDefaultCtor_BoxingInterface ()
     {
       var info = new ConstructorLookupInfo(typeof(DateTime));
-      var actual = (Func<int, int, int, IComparable>) info.GetDelegate(typeof(Func<int, int, int, IComparable>));
+      var actual = (Func<int, int, int, IComparable>)info.GetDelegate(typeof(Func<int, int, int, IComparable>));
       var instance = actual(2012, 01, 02);
 
       Assert.That(instance, Is.EqualTo(new DateTime(2012, 01, 02)));

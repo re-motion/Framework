@@ -41,10 +41,10 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       _persistenceStrategyStub
           .Stub(stub => stub.CreateNewObjectID(Arg<ClassDefinition>.Is.Anything))
           .Return(null)
-          .WhenCalled(mi => { mi.ReturnValue = new ObjectID((ClassDefinition) mi.Arguments[0], Guid.NewGuid()); });
+          .WhenCalled(mi => { mi.ReturnValue = new ObjectID((ClassDefinition)mi.Arguments[0], Guid.NewGuid()); });
 
       IClientTransactionComponentFactory componentFactory = new ComponentFactoryWithSpecificPersistenceStrategy(_persistenceStrategyStub);
-      return (T) PrivateInvoke.CreateInstanceNonPublicCtor(typeof(T), componentFactory);
+      return (T)PrivateInvoke.CreateInstanceNonPublicCtor(typeof(T), componentFactory);
     }
 
     public void StubQueryResult (string queryID, ILoadedObjectData[] fakeResult)
@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 
     public void StubSearchAllObjectsQueryResult (Type domainObjectType, params ILoadedObjectData[] fakeResult)
     {
-      var query = (IQuery) PrivateInvoke.InvokeNonPublicMethod(new BindableDomainObjectSearchAllService(), "GetQuery", domainObjectType);
+      var query = (IQuery)PrivateInvoke.InvokeNonPublicMethod(new BindableDomainObjectSearchAllService(), "GetQuery", domainObjectType);
 
       StubQueryResult(query.ID, fakeResult);
     }

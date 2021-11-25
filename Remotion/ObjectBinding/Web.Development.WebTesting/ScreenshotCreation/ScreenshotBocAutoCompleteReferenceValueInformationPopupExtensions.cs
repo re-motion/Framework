@@ -131,7 +131,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     private static IWebElement GetInputField (
         this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueInformationPopup> fluentInformationPopup)
     {
-      return (IWebElement) fluentInformationPopup.Target.AutoComplete.ForControlObjectScreenshot().GetValue().GetTarget().Native;
+      return (IWebElement)fluentInformationPopup.Target.AutoComplete.ForControlObjectScreenshot().GetValue().GetTarget().Native;
     }
   }
 }

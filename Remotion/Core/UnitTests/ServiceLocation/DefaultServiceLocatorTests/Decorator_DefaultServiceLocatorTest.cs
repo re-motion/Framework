@@ -40,7 +40,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
       var instance = serviceLocator.GetInstance(typeof(ITestType));
 
       Assert.That(instance, Is.TypeOf<TestDecorator1>());
-      var decoratorInstance = (TestDecorator1) instance;
+      var decoratorInstance = (TestDecorator1)instance;
       Assert.That(decoratorInstance.DecoratedObject, Is.TypeOf<TestImplementation1>());
     }
 
@@ -58,10 +58,10 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
       var instance = serviceLocator.GetInstance(typeof(ITestType));
 
       Assert.That(instance, Is.TypeOf<TestDecorator2>());
-      var decoratorInstance2 = (TestDecorator2) instance;
+      var decoratorInstance2 = (TestDecorator2)instance;
 
       Assert.That(decoratorInstance2.DecoratedObject, Is.TypeOf<TestDecorator1>());
-      var decoratorInstance1 = (TestDecorator1) decoratorInstance2.DecoratedObject;
+      var decoratorInstance1 = (TestDecorator1)decoratorInstance2.DecoratedObject;
 
       Assert.That(decoratorInstance1.DecoratedObject, Is.TypeOf<TestImplementation1>());
     }
@@ -80,7 +80,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
       var instance2 = serviceLocator.GetInstance(typeof(ITestType));
 
       Assert.That(instance1, Is.SameAs(instance2));
-      Assert.That(((TestDecorator1) instance1).DecoratedObject, Is.SameAs(((TestDecorator1) instance2).DecoratedObject));
+      Assert.That(((TestDecorator1)instance1).DecoratedObject, Is.SameAs(((TestDecorator1)instance2).DecoratedObject));
     }
 
     [Test]
@@ -99,7 +99,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
       var instance2 = serviceLocator.GetInstance(typeof(ITestType));
 
       Assert.That(instance1, Is.Not.SameAs(instance2));
-      Assert.That(((TestDecorator1) instance1).DecoratedObject, Is.Not.SameAs(((TestDecorator1) instance2).DecoratedObject));
+      Assert.That(((TestDecorator1)instance1).DecoratedObject, Is.Not.SameAs(((TestDecorator1)instance2).DecoratedObject));
     }
 
     [Test]
@@ -115,12 +115,12 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
 
       var instance1 = serviceLocator.GetInstance(typeof(ITestType));
       Assert.That(expectedInstance, Is.Not.Null);
-      Assert.That(((TestDecorator1) instance1).DecoratedObject, Is.SameAs(expectedInstance));
+      Assert.That(((TestDecorator1)instance1).DecoratedObject, Is.SameAs(expectedInstance));
 
       var instance2 = serviceLocator.GetInstance(typeof(ITestType));
       Assert.That(instance1, Is.Not.SameAs(instance2));
 
-      Assert.That(((TestDecorator1) instance1).DecoratedObject, Is.Not.SameAs(((TestDecorator1) instance2).DecoratedObject));
+      Assert.That(((TestDecorator1)instance1).DecoratedObject, Is.Not.SameAs(((TestDecorator1)instance2).DecoratedObject));
     }
 
     [Test]
@@ -136,12 +136,12 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
 
       var instance1 = serviceLocator.GetInstance(typeof(ITestType));
       Assert.That(expectedInstance, Is.Not.Null);
-      Assert.That(((TestDecorator1) instance1).DecoratedObject, Is.SameAs(expectedInstance));
+      Assert.That(((TestDecorator1)instance1).DecoratedObject, Is.SameAs(expectedInstance));
 
       var instance2 = serviceLocator.GetInstance(typeof(ITestType));
       Assert.That(instance1, Is.SameAs(instance2));
 
-      Assert.That(((TestDecorator1) instance1).DecoratedObject, Is.SameAs(((TestDecorator1) instance2).DecoratedObject));
+      Assert.That(((TestDecorator1)instance1).DecoratedObject, Is.SameAs(((TestDecorator1)instance2).DecoratedObject));
     }
 
     [Test]
@@ -159,10 +159,10 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
 
       Assert.That(instances, Has.All.TypeOf<TestDecorator1>());
 
-      var decoratorInstance1 = (TestDecorator1) instances[0];
+      var decoratorInstance1 = (TestDecorator1)instances[0];
       Assert.That(decoratorInstance1.DecoratedObject, Is.TypeOf<TestImplementation1>());
 
-      var decoratorInstance2 = (TestDecorator1) instances[1];
+      var decoratorInstance2 = (TestDecorator1)instances[1];
       Assert.That(decoratorInstance2.DecoratedObject, Is.TypeOf<TestImplementation2>());
     }
 
@@ -181,10 +181,10 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
       var instance = serviceLocator.GetInstance(typeof(ITestType));
 
       Assert.That(instance, Is.TypeOf<TestDecorator1>());
-      var decoratorInstance = (TestDecorator1) instance;
+      var decoratorInstance = (TestDecorator1)instance;
 
       Assert.That(decoratorInstance.DecoratedObject, Is.TypeOf<TestCompound>());
-      var compoundInstance = (TestCompound) decoratorInstance.DecoratedObject;
+      var compoundInstance = (TestCompound)decoratorInstance.DecoratedObject;
 
       Assert.That(compoundInstance.InnerObjects, Is.Not.Empty);
       Assert.That(

@@ -144,7 +144,7 @@ namespace Remotion.Web.Development.WebTesting
 
       var stopwatch = Stopwatch.StartNew();
 
-      var webRequest = (HttpWebRequest) HttpWebRequest.Create(resolvedUri);
+      var webRequest = (HttpWebRequest)HttpWebRequest.Create(resolvedUri);
       webRequest.Method = WebRequestMethods.Http.Head;
       webRequest.AllowAutoRedirect = true;
       webRequest.Host = webApplicationRoot.Host;
@@ -157,10 +157,10 @@ namespace Remotion.Web.Development.WebTesting
       {
         try
         {
-          var remainingTimeout = (int) (applicationPingTimeout.TotalMilliseconds - stopwatch.Elapsed.TotalMilliseconds);
+          var remainingTimeout = (int)(applicationPingTimeout.TotalMilliseconds - stopwatch.Elapsed.TotalMilliseconds);
           webRequest.Timeout = Math.Max(remainingTimeout, 0);
 
-          using (var response = (HttpWebResponse) webRequest.GetResponse())
+          using (var response = (HttpWebResponse)webRequest.GetResponse())
           {
             statusCode = response.StatusCode;
           }

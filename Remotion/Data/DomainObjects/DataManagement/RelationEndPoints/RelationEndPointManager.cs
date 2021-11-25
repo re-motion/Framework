@@ -144,7 +144,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
           throw new ArgumentException(message, "endPointIDs");
         }
 
-        var virtualEndPoint = (IVirtualEndPoint) GetRelationEndPointWithoutLoading(endPointID);
+        var virtualEndPoint = (IVirtualEndPoint)GetRelationEndPointWithoutLoading(endPointID);
         if (virtualEndPoint != null)
         {
           if (!virtualEndPoint.CanBeMarkedIncomplete)
@@ -209,7 +209,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       if (!endPointID.Definition.IsVirtual)
         throw new ArgumentException("GetOrCreateVirtualEndPoint cannot be called for non-virtual end points.", "endPointID");
 
-      return (IVirtualEndPoint) GetRelationEndPointWithoutLoading(endPointID) ?? RegisterVirtualEndPoint(endPointID);
+      return (IVirtualEndPoint)GetRelationEndPointWithoutLoading(endPointID) ?? RegisterVirtualEndPoint(endPointID);
     }
 
     public void CommitAllEndPoints ()

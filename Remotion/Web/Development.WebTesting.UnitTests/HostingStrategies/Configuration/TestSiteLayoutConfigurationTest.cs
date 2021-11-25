@@ -59,7 +59,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.HostingStrategies.Config
     public void CreateFromWebTestConfigurationSection_WithRelativePaths ()
     {
       var currentBasePath = AppContext.BaseDirectory;
-      var configurationSection = (WebTestConfigurationSection) Activator.CreateInstance(typeof(WebTestConfigurationSection), true);
+      var configurationSection = (WebTestConfigurationSection)Activator.CreateInstance(typeof(WebTestConfigurationSection), true);
       ConfigurationHelper.DeserializeSection(configurationSection, c_configurationXmlWithRelativePaths);
 
       var testSiteLayoutConfiguration = new TestSiteLayoutConfiguration(configurationSection);
@@ -72,7 +72,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.HostingStrategies.Config
     [Test]
     public void CreateFromWebTestConfigurationSection_WithAbsolutePaths ()
     {
-      var configurationSection = (WebTestConfigurationSection) Activator.CreateInstance(typeof(WebTestConfigurationSection), true);
+      var configurationSection = (WebTestConfigurationSection)Activator.CreateInstance(typeof(WebTestConfigurationSection), true);
       ConfigurationHelper.DeserializeSection(configurationSection, c_configurationXmlWithAbsolutePaths);
 
       var testSiteLayoutConfiguration = new TestSiteLayoutConfiguration(configurationSection);

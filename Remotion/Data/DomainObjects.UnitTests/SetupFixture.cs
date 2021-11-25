@@ -73,7 +73,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
             });
         var fields = PrivateInvoke.GetNonPublicStaticField(typeof(MappingConfiguration), "s_fields");
         Assertion.IsNotNull(fields);
-        _previousMappingConfigurationContainer = (DoubleCheckedLockingContainer<IMappingConfiguration>) PrivateInvoke.GetPublicField(fields, "Current");
+        _previousMappingConfigurationContainer = (DoubleCheckedLockingContainer<IMappingConfiguration>)PrivateInvoke.GetPublicField(fields, "Current");
         PrivateInvoke.SetPublicField(fields, "Current", throwingMappingConfigurationContainer);
       }
       catch (Exception ex)

@@ -50,8 +50,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       _searchServiceTestHelper.StubQueryResult(_stubbedQueryID, new[] { fakeResultDataContainer });
 
       var referencingObject = SampleBindableMixinDomainObject.NewObject();
-      _referencingBusinessObject = (IBusinessObject) referencingObject;
-      _property = (IBusinessObjectReferenceProperty) _referencingBusinessObject.BusinessObjectClass.GetPropertyDefinition("Relation");
+      _referencingBusinessObject = (IBusinessObject)referencingObject;
+      _property = (IBusinessObjectReferenceProperty)_referencingBusinessObject.BusinessObjectClass.GetPropertyDefinition("Relation");
     }
 
     public override void TearDown ()
@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     public void SearchViaReferencePropertyWithIdentity ()
     {
       Assert.That(_property.SupportsSearchAvailableObjects, Is.True);
-      var results = (IBusinessObjectWithIdentity[]) _property.SearchAvailableObjects(_referencingBusinessObject, new DefaultSearchArguments(_stubbedQueryID));
+      var results = (IBusinessObjectWithIdentity[])_property.SearchAvailableObjects(_referencingBusinessObject, new DefaultSearchArguments(_stubbedQueryID));
       Assert.That(results, Is.EqualTo(ClientTransaction.Current.QueryManager.GetCollection(QueryFactory.CreateQueryFromConfiguration(_stubbedQueryID)).ToArray()));
     }
 
@@ -89,7 +89,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
         Assert.That(results, Is.Not.Null);
         Assert.That(results.Length > 0, Is.True);
 
-        var resultDomainObject = (DomainObject) results[0];
+        var resultDomainObject = (DomainObject)results[0];
         Assert.That(outerTransaction.IsEnlisted(resultDomainObject), Is.False);
         Assert.That(ClientTransaction.Current.IsEnlisted(resultDomainObject), Is.True);
       }
@@ -104,13 +104,13 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       using (transaction.EnterDiscardingScope())
       {
         var nonDomainObject = new BindableNonDomainObjectReferencingDomainObject();
-        var property = (IBusinessObjectReferenceProperty) nonDomainObject.BusinessObjectClass.GetPropertyDefinition("OppositeSampleMixinObject");
+        var property = (IBusinessObjectReferenceProperty)nonDomainObject.BusinessObjectClass.GetPropertyDefinition("OppositeSampleMixinObject");
         IBusinessObject[] results = _service.Search(nonDomainObject, property, new DefaultSearchArguments(_stubbedQueryID));
 
         Assert.That(results, Is.Not.Null);
         Assert.That(results.Length > 0, Is.True);
 
-        var resultDomainObject = (DomainObject) results[0];
+        var resultDomainObject = (DomainObject)results[0];
         Assert.That(outerTransaction.IsEnlisted(resultDomainObject), Is.False);
         Assert.That(ClientTransaction.Current.IsEnlisted(resultDomainObject), Is.True);
       }
@@ -121,13 +121,13 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     {
       var transaction = _searchServiceTestHelper.CreateTransactionWithStubbedQuery<ClientTransaction>(_stubbedQueryID);
 
-      IBusinessObject boundObject = (IBusinessObject) transaction.ExecuteInScope(() => SampleBindableMixinDomainObject.NewObject());
+      IBusinessObject boundObject = (IBusinessObject)transaction.ExecuteInScope(() => SampleBindableMixinDomainObject.NewObject());
 
       IBusinessObject[] results = _property.SearchAvailableObjects(boundObject, new DefaultSearchArguments(_stubbedQueryID));
       Assert.That(results, Is.Not.Null);
       Assert.That(results.Length > 0, Is.True);
 
-      var resultDomainObject = (DomainObject) results[0];
+      var resultDomainObject = (DomainObject)results[0];
       Assert.That(ClientTransaction.Current.IsEnlisted(resultDomainObject), Is.False);
       Assert.That(transaction.IsEnlisted(resultDomainObject), Is.True);
     }

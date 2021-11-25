@@ -134,7 +134,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         return null;
 
       Type type = WebTypeUtility.GetType(_editModeControlType, true)!;
-      return (IBusinessObjectBoundEditableWebControl) ObjectFactory.Create(type, ParamList.Empty);
+      return (IBusinessObjectBoundEditableWebControl)ObjectFactory.Create(type, ParamList.Empty);
     }
 
     /// <summary>

@@ -370,7 +370,7 @@ namespace Remotion.Security.UnitTests
       SecurityContext left = SecurityContext.CreateStateless(typeof(SecurableObject));
       SecurityContext right = SecurityContext.CreateStateless(typeof(SecurableObject));
 
-      Assert.That(left.Equals((object) right), Is.True);
+      Assert.That(left.Equals((object)right), Is.True);
     }
 
     [Test]
@@ -378,7 +378,7 @@ namespace Remotion.Security.UnitTests
     {
       SecurityContext context = SecurityContext.CreateStateless(typeof(SecurableObject));
 
-      Assert.That(context.Equals((object) null), Is.False);
+      Assert.That(context.Equals((object)null), Is.False);
     }
 
     [Test]

@@ -48,7 +48,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
       ArgumentUtility.CheckNotNull("controlSelectionContext", controlSelectionContext);
       ArgumentUtility.CheckNotNull("newControlObjectContext", newControlObjectContext);
 
-      return (TBocListControlObject) Activator.CreateInstance(typeof(TBocListControlObject), newControlObjectContext)!;
+      return (TBocListControlObject)Activator.CreateInstance(typeof(TBocListControlObject), newControlObjectContext)!;
     }
   }
 }

@@ -42,10 +42,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests
       _businessObject = TypeWithString.Create();
 
       _propertyStringValue =
-          (IBusinessObjectStringProperty) ((IBusinessObject) _businessObject).BusinessObjectClass.GetPropertyDefinition("StringValue");
+          (IBusinessObjectStringProperty)((IBusinessObject)_businessObject).BusinessObjectClass.GetPropertyDefinition("StringValue");
 
-      _dataSource = new StubDataSource(((IBusinessObject) _businessObject).BusinessObjectClass);
-      _dataSource.BusinessObject = (IBusinessObject) _businessObject;
+      _dataSource = new StubDataSource(((IBusinessObject)_businessObject).BusinessObjectClass);
+      _dataSource.BusinessObject = (IBusinessObject)_businessObject;
     }
 
 

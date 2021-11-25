@@ -49,13 +49,13 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     [Test]
     public void Succeed_Int_NullableInt ()
     {
-      ArgumentUtility.DebugCheckNotNullAndType("arg", (int?) 1, typeof(int));
+      ArgumentUtility.DebugCheckNotNullAndType("arg", (int?)1, typeof(int));
     }
 
     [Test]
     public void Succeed_NullableInt ()
     {
-      ArgumentUtility.DebugCheckNotNullAndType("arg", (int?) 1, typeof(int?));
+      ArgumentUtility.DebugCheckNotNullAndType("arg", (int?)1, typeof(int?));
     }
 
     [Test]

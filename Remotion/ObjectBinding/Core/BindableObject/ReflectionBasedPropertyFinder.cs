@@ -87,7 +87,7 @@ namespace Remotion.ObjectBinding.BindableObject
       var introducedMemberAttributes = propertyInfo.GetCustomAttributes(typeof(IntroducedMemberAttribute), true);
       if (introducedMemberAttributes.Length > 0)
       {
-        var introducedMemberAttribute = (IntroducedMemberAttribute) introducedMemberAttributes[0];
+        var introducedMemberAttribute = (IntroducedMemberAttribute)introducedMemberAttributes[0];
         var interfacePropertyInfo = introducedMemberAttribute.IntroducedInterface.GetProperty(introducedMemberAttribute.InterfaceMemberName);
         Assertion.IsNotNull(
             interfacePropertyInfo,
@@ -130,7 +130,7 @@ namespace Remotion.ObjectBinding.BindableObject
       if (attribute != null && !attribute.Visible)
         return false;
 
-      var propertyInfo = (PropertyInfo) memberInfo;
+      var propertyInfo = (PropertyInfo)memberInfo;
 
       // indexed properties are ignored
       if (propertyInfo.GetIndexParameters().Length > 0)

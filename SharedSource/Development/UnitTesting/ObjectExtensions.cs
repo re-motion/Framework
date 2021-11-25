@@ -31,13 +31,13 @@ namespace Remotion.Development.UnitTesting
     [DebuggerStepThrough]
     public static T As<T> (this object obj)
     {
-      return (T) obj;
+      return (T)obj;
     }
 
     [DebuggerStepThrough]
     public static T Invoke<T> (this object target, string method, params object?[]? args)
     {
-      return (T) PrivateInvoke.InvokeNonPublicMethod(target, method, args)!;
+      return (T)PrivateInvoke.InvokeNonPublicMethod(target, method, args)!;
     }
 
     [DebuggerStepThrough]
@@ -55,7 +55,7 @@ namespace Remotion.Development.UnitTesting
     [DebuggerStepThrough]
     public static T Invoke<T> (this object target, MethodInfo method, params object?[]? args)
     {
-      return (T) method.Invoke(target, args)!;
+      return (T)method.Invoke(target, args)!;
     }
   }
 }

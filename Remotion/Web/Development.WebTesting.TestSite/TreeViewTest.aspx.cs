@@ -42,19 +42,19 @@ namespace Remotion.Web.Development.WebTesting.TestSite
 
     private void MyTreeViewOnSelectedNodeChanged (object sender, EventArgs eventArgs)
     {
-      ((Layout) Master).SetTestOutput(
+      ((Layout)Master).SetTestOutput(
           "Selected: " + MyTreeView.SelectedNode.Text + "|" + MyTreeView.SelectedNode.Value + " (" + GetCheckedNodes() + ")");
     }
 
     private void MyTreeViewOnTreeNodeExpanded (object sender, TreeNodeEventArgs treeNodeEventArgs)
     {
-      ((Layout) Master).SetTestOutput(
+      ((Layout)Master).SetTestOutput(
           "Expanded: " + treeNodeEventArgs.Node.Text + "|" + treeNodeEventArgs.Node.Value + " (" + GetCheckedNodes() + ")");
     }
 
     private void MyTreeViewOnTreeNodeCollapsed (object sender, TreeNodeEventArgs treeNodeEventArgs)
     {
-      ((Layout) Master).SetTestOutput(
+      ((Layout)Master).SetTestOutput(
           "Collapsed: " + treeNodeEventArgs.Node.Text + "|" + treeNodeEventArgs.Node.Value + " (" + GetCheckedNodes() + ")");
     }
 

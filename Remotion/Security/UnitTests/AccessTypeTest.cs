@@ -86,13 +86,13 @@ namespace Remotion.Security.UnitTests
     [Test]
     public void Equals_True ()
     {
-      Assert.That(AccessType.Get(EnumWrapper.Get(TestAccessTypes.Second)).Equals((object) AccessType.Get(TestAccessTypes.Second)), Is.True);
+      Assert.That(AccessType.Get(EnumWrapper.Get(TestAccessTypes.Second)).Equals((object)AccessType.Get(TestAccessTypes.Second)), Is.True);
     }
 
     [Test]
     public void Equals_False ()
     {
-      Assert.That(AccessType.Get(EnumWrapper.Get(TestAccessTypes.Second)).Equals((object) AccessType.Get(TestAccessTypes.Fourth)), Is.False);
+      Assert.That(AccessType.Get(EnumWrapper.Get(TestAccessTypes.Second)).Equals((object)AccessType.Get(TestAccessTypes.Fourth)), Is.False);
     }
 
     [Test]

@@ -55,7 +55,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
     public void Get_Throws_WebTestException ()
     {
       Assert.That(
-          (TestDelegate) (() => Selector.GetByDomainProperty(Parameter.HiddenDomainProperty)),
+          (TestDelegate)(() => Selector.GetByDomainProperty(Parameter.HiddenDomainProperty)),
           Throws.InstanceOf<WebTestException>());
     }
 
@@ -72,13 +72,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
     public void Get_WithClass_Throws_WebTestException ()
     {
       Assert.That(
-          (TestDelegate) (() => Selector.GetByDomainProperty(Parameter.VisibleDomainProperty, Parameter.IncorrectDomainClass)),
+          (TestDelegate)(() => Selector.GetByDomainProperty(Parameter.VisibleDomainProperty, Parameter.IncorrectDomainClass)),
           Throws.InstanceOf<WebTestException>());
       Assert.That(
-          (TestDelegate) (() => Selector.GetByDomainProperty(Parameter.HiddenDomainProperty, Parameter.IncorrectDomainClass)),
+          (TestDelegate)(() => Selector.GetByDomainProperty(Parameter.HiddenDomainProperty, Parameter.IncorrectDomainClass)),
           Throws.InstanceOf<WebTestException>());
       Assert.That(
-          (TestDelegate) (() => Selector.GetByDomainProperty(Parameter.HiddenDomainProperty, Parameter.CorrectDomainClass)),
+          (TestDelegate)(() => Selector.GetByDomainProperty(Parameter.HiddenDomainProperty, Parameter.CorrectDomainClass)),
           Throws.InstanceOf<WebTestException>());
     }
 

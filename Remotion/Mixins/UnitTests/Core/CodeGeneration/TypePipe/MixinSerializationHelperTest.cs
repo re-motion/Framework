@@ -110,7 +110,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       CallGetObjectDataForGeneratedTypes(true);
 
       var helper = new MixinSerializationHelper(_serializationInfo, _context);
-      var deserializedObject = (FakeConcreteMixinType) helper.GetRealObject(_context);
+      var deserializedObject = (FakeConcreteMixinType)helper.GetRealObject(_context);
 
       Assert.That(deserializedObject.OnDeserializingCalled, Is.True);
     }
@@ -121,7 +121,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       CallGetObjectDataForGeneratedTypes(true);
 
       var helper = new MixinSerializationHelper(_serializationInfo, _context);
-      var deserializedObject = (FakeConcreteMixinType) helper.GetRealObject(_context);
+      var deserializedObject = (FakeConcreteMixinType)helper.GetRealObject(_context);
 
       Assert.That(deserializedObject.CtorCalled, Is.False);
     }
@@ -132,7 +132,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       CallGetObjectDataForGeneratedTypes(false);
 
       var helper = new MixinSerializationHelper(_serializationInfo, _context);
-      var deserializedObject = (FakeConcreteMixinType) helper.GetRealObject(_context);
+      var deserializedObject = (FakeConcreteMixinType)helper.GetRealObject(_context);
 
       Assert.That(deserializedObject.CtorCalled, Is.True);
       Assert.That(deserializedObject.SerializationCtorCalled, Is.True);
@@ -156,7 +156,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       CallGetObjectDataForGeneratedTypes(true);
       var helper = new MixinSerializationHelper(_serializationInfo, _context);
 
-      var deserializedObject = (MixinWithAbstractMembers) helper.GetRealObject(_context);
+      var deserializedObject = (MixinWithAbstractMembers)helper.GetRealObject(_context);
       Assert.That(deserializedObject.I, Is.EqualTo(0));
 
       helper.OnDeserialization(null);
@@ -170,7 +170,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       CallGetObjectDataForGeneratedTypes(false);
       var helper = new MixinSerializationHelper(_serializationInfo, _context);
 
-      var deserializedObject = (MixinWithAbstractMembers) helper.GetRealObject(_context);
+      var deserializedObject = (MixinWithAbstractMembers)helper.GetRealObject(_context);
       Assert.That(deserializedObject.I, Is.EqualTo(0));
 
       helper.OnDeserialization(null);
@@ -183,7 +183,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       CallGetObjectDataForGeneratedTypes(true);
       var helper = new MixinSerializationHelper(_serializationInfo, _context);
 
-      var deserializedObject = (FakeConcreteMixinType) helper.GetRealObject(_context);
+      var deserializedObject = (FakeConcreteMixinType)helper.GetRealObject(_context);
       Assert.That(deserializedObject.OnDeserializedCalled, Is.False);
       Assert.That(deserializedObject.OnDeserializationCalled, Is.False);
 

@@ -37,7 +37,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests
       _bocTextValue.ID = "BocTextValue";
       NamingContainer.Controls.Add(_bocTextValue);
 
-      _businessObject = (IBusinessObject) TypeWithAllDataTypes.Create();
+      _businessObject = (IBusinessObject)TypeWithAllDataTypes.Create();
 
       _dataSource = new BindableObjectDataSourceControl();
       _dataSource.Type = typeof(TypeWithAllDataTypes);
@@ -61,25 +61,25 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests
     [Test]
     public void LoadAndSaveValue_WithByte ()
     {
-      LoadAndSaveValue("Byte", (Byte) 1, (Byte) 2);
+      LoadAndSaveValue("Byte", (Byte)1, (Byte)2);
     }
 
     [Test]
     public void LoadAndSaveValue_WithByte_NumberFormat ()
     {
-      LoadAndSaveValue("Byte", (Byte) 1, (Byte) 100, " +100 ");
+      LoadAndSaveValue("Byte", (Byte)1, (Byte)100, " +100 ");
     }
 
     [Test]
     public void LoadAndSaveValue_WithInt16 ()
     {
-      LoadAndSaveValue("Int16", (Int16) 1, (Int16) 2);
+      LoadAndSaveValue("Int16", (Int16)1, (Int16)2);
     }
 
     [Test]
     public void LoadAndSaveValue_WithInt16_NumberFormat ()
     {
-      LoadAndSaveValue("Int16", (Int16) 1, (Int16) 20000, " +20,000 ");
+      LoadAndSaveValue("Int16", (Int16)1, (Int16)20000, " +20,000 ");
     }
 
     [Test]

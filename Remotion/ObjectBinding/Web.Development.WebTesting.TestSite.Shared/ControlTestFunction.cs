@@ -36,7 +36,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
     [WxeParameter (1, false, WxeParameterDirection.In)]
     public string UserControl
     {
-      get { return (string) Variables["UserControl"]; }
+      get { return (string)Variables["UserControl"]; }
       set
       {
         ArgumentUtility.CheckNotNullOrEmpty("UserControl", value);

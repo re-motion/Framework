@@ -26,7 +26,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
 
     private new ControlTestFunction CurrentFunction
     {
-      get { return (ControlTestFunction) base.CurrentFunction; }
+      get { return (ControlTestFunction)base.CurrentFunction; }
     }
 
     protected override void OnInit (EventArgs e)
@@ -50,7 +50,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
     private void LoadUserControl ()
     {
       var control = LoadControl(CurrentFunction.UserControl);
-      _dataEditControl = (IDataEditControl) control;
+      _dataEditControl = (IDataEditControl)control;
       _dataEditControl.ID = "DataEditControl";
 
       ControlPlaceHolder.Controls.Add(control);
@@ -72,7 +72,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
     private void PopulateDataSources ()
     {
       if (_dataEditControl != null)
-        _dataEditControl.BusinessObject = (IBusinessObject) CurrentFunction.Person;
+        _dataEditControl.BusinessObject = (IBusinessObject)CurrentFunction.Person;
     }
 
     private void LoadValues (bool interim)

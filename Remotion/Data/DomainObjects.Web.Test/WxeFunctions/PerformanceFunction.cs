@@ -33,13 +33,13 @@ namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
     [WxeParameter(0, true)]
     public int ItemCount
     {
-      get { return (int) Variables["ItemCount"]; }
+      get { return (int)Variables["ItemCount"]; }
       set { Variables["ItemCount"] = value; }
     }
 
     public ClassForRelationTest[] Items
     {
-      get { return (ClassForRelationTest[]) Variables["Items"]; }
+      get { return (ClassForRelationTest[])Variables["Items"]; }
       set { Variables["Items"] = value; }
     }
 

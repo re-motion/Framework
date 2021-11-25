@@ -26,7 +26,7 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion.TestClasses
   {
     public static IUserRoleAclAceCombinationFinder GetUserRoleAclAceCombinationFinder (AclExpander instance)
     {
-      return (IUserRoleAclAceCombinationFinder) PrivateInvoke.GetNonPublicField(instance, "_userRoleAclAceCombinationFinder");
+      return (IUserRoleAclAceCombinationFinder)PrivateInvoke.GetNonPublicField(instance, "_userRoleAclAceCombinationFinder");
     }
   }
 }

@@ -201,7 +201,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     private void StubInnerData (params DomainObject[] contents)
     {
       _wrappedDataStub.Stub(stub => stub.Count).Return(contents.Length);
-      _wrappedDataStub.Stub(stub => stub.GetEnumerator()).Return(((IEnumerable<DomainObject>) contents).GetEnumerator());
+      _wrappedDataStub.Stub(stub => stub.GetEnumerator()).Return(((IEnumerable<DomainObject>)contents).GetEnumerator());
 
       for (int i = 0; i < contents.Length; i++)
       {

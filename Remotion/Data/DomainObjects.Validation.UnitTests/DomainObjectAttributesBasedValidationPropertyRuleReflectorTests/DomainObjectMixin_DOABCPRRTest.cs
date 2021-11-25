@@ -168,16 +168,16 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     public void Initialize ()
     {
       Assert.That(
-          ((PropertyInfoAdapter) _propertyWithoutAttributeReflector.ValidatedProperty).PropertyInfo,
+          ((PropertyInfoAdapter)_propertyWithoutAttributeReflector.ValidatedProperty).PropertyInfo,
           Is.EqualTo(_interfacePropertyWithoutAttribute));
       Assert.That(
-          ((PropertyInfoAdapter) _propertyWithMandatoryAttributeReflector.ValidatedProperty).PropertyInfo,
+          ((PropertyInfoAdapter)_propertyWithMandatoryAttributeReflector.ValidatedProperty).PropertyInfo,
           Is.EqualTo(_interfacePropertyWithMandatoryAttribute));
       Assert.That(
-          ((PropertyInfoAdapter) _propertyWithNullableStringPropertyAttributeReflector.ValidatedProperty).PropertyInfo,
+          ((PropertyInfoAdapter)_propertyWithNullableStringPropertyAttributeReflector.ValidatedProperty).PropertyInfo,
           Is.EqualTo(_interfacePropertyWithNullableStringPropertyAttribute));
       Assert.That(
-          ((PropertyInfoAdapter) _propertyWithMandatoryStringPropertyAttributeReflector.ValidatedProperty).PropertyInfo,
+          ((PropertyInfoAdapter)_propertyWithMandatoryStringPropertyAttributeReflector.ValidatedProperty).PropertyInfo,
           Is.EqualTo(_interfacePropertyWithMandatoryStringPropertyAttribute));
     }
 
@@ -191,7 +191,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
       {
         var obj = MixinTarget_AnnotatedPropertiesPartOfInterface.NewObject();
         var propertyValue = "test";
-        ((IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface) obj).PropertyWithMandatoryStringPropertyAttribute = propertyValue;
+        ((IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface)obj).PropertyWithMandatoryStringPropertyAttribute = propertyValue;
         var result = propertyAccessor(obj);
         Assert.That(result, Is.SameAs(propertyValue));
       }
@@ -207,7 +207,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
       {
         var obj = MixinTarget_AnnotatedPropertiesPartOfInterface.NewObject();
         var propertyValue = 10;
-        ((IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface) obj).IntProperty = propertyValue;
+        ((IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface)obj).IntProperty = propertyValue;
         var result = propertyAccessor(obj);
         Assert.That(result, Is.EqualTo(propertyValue));
       }
@@ -223,7 +223,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
       {
         var obj = MixinTarget_AnnotatedPropertiesPartOfInterface.NewObject();
         var propertyValue = TestDomainObject.NewObject();
-        ((IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface) obj).PropertyWithMandatoryAttribute = propertyValue;
+        ((IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface)obj).PropertyWithMandatoryAttribute = propertyValue;
         var result = propertyAccessor(obj);
         Assert.That(result, Is.SameAs(propertyValue));
       }
@@ -239,7 +239,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
       {
         var obj = MixinTarget_AnnotatedPropertiesPartOfInterface.NewObject();
         var propertyValue = TestDomainObject.NewObject();
-        ((IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface) obj).BidirectionalPropertyWithMandatoryAttribute = propertyValue;
+        ((IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface)obj).BidirectionalPropertyWithMandatoryAttribute = propertyValue;
         var result = propertyAccessor(obj);
         Assert.That(result, Is.SameAs(propertyValue));
       }
@@ -255,7 +255,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
       {
         var obj = MixinTarget_AnnotatedPropertiesPartOfInterface.NewObject();
         var propertyValue = TestDomainObject.NewObject();
-        ((IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface) obj).BidirectionalDomainObjectCollectionPropertyWithMandatoryAttribute.Add(propertyValue);
+        ((IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface)obj).BidirectionalDomainObjectCollectionPropertyWithMandatoryAttribute.Add(propertyValue);
         var result = propertyAccessor(obj);
         Assert.That(result, Is.EqualTo(new[] { propertyValue }));
       }
@@ -285,7 +285,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
 
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var obj = (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface) MixinTarget_AnnotatedPropertiesPartOfInterface.NewObject();
+        var obj = (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface)MixinTarget_AnnotatedPropertiesPartOfInterface.NewObject();
         using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
         {
           var result = propertyAccessor(obj);
@@ -304,7 +304,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
 
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var obj = (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface) MixinTarget_AnnotatedPropertiesPartOfInterface.NewObject();
+        var obj = (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface)MixinTarget_AnnotatedPropertiesPartOfInterface.NewObject();
         using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
         {
           var result = propertyAccessor(obj) as IEnumerable<object>;
@@ -323,7 +323,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
 
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var obj = (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface) MixinTarget_AnnotatedPropertiesPartOfInterface.NewObject();
+        var obj = (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface)MixinTarget_AnnotatedPropertiesPartOfInterface.NewObject();
         using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
         {
           var result = propertyAccessor(obj) as IEnumerable<object>;
@@ -359,7 +359,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
       validationMessageStub.Stub(_ => _.ToString()).Return("Stub Message");
       Assert.That(result.Count(), Is.EqualTo(1));
       Assert.That(result[0], Is.TypeOf(typeof(NotNullValidator)));
-      Assert.That(((NotNullValidator) result[0]).ValidationMessage.ToString, Is.EqualTo("Stub Message"));
+      Assert.That(((NotNullValidator)result[0]).ValidationMessage.ToString, Is.EqualTo("Stub Message"));
     }
 
     [Test]
@@ -384,8 +384,8 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
       validationMessageStub.Stub(_ => _.ToString()).Return("Stub Message");
       Assert.That(result.Count(), Is.EqualTo(1));
       Assert.That(result[0], Is.TypeOf(typeof(MaximumLengthValidator)));
-      Assert.That(((MaximumLengthValidator) result[0]).Max, Is.EqualTo(10));
-      Assert.That(((MaximumLengthValidator) result[0]).ValidationMessage.ToString, Is.EqualTo("Stub Message"));
+      Assert.That(((MaximumLengthValidator)result[0]).Max, Is.EqualTo(10));
+      Assert.That(((MaximumLengthValidator)result[0]).ValidationMessage.ToString, Is.EqualTo("Stub Message"));
     }
 
     [Test]
@@ -418,12 +418,12 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
       lengthValidationMessageStub.Stub(_ => _.ToString()).Return("Stub Message for Length");
       Assert.That(result.Count(), Is.EqualTo(2));
       Assert.That(result[0], Is.TypeOf(typeof(MaximumLengthValidator)));
-      Assert.That(((MaximumLengthValidator) result[0]).Max, Is.EqualTo(20));
-      Assert.That(((MaximumLengthValidator) result[0]).ValidationMessage.ToString, Is.EqualTo("Stub Message for Length"));
+      Assert.That(((MaximumLengthValidator)result[0]).Max, Is.EqualTo(20));
+      Assert.That(((MaximumLengthValidator)result[0]).ValidationMessage.ToString, Is.EqualTo("Stub Message for Length"));
 
       notEmptyValidationMessageStub.Stub(_ => _.ToString()).Return("Stub Message for NotEmpty");
       Assert.That(result[1], Is.TypeOf(typeof(NotEmptyValidator)));
-      Assert.That(((NotEmptyValidator) result[1]).ValidationMessage.ToString, Is.EqualTo("Stub Message for NotEmpty"));
+      Assert.That(((NotEmptyValidator)result[1]).ValidationMessage.ToString, Is.EqualTo("Stub Message for NotEmpty"));
     }
 
     [Test]
@@ -456,7 +456,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
       validationMessageStub.Stub(_ => _.ToString()).Return("Stub Message");
       Assert.That(result.Count(), Is.EqualTo(1));
       Assert.That(result[0], Is.TypeOf(typeof(NotNullValidator)));
-      Assert.That(((NotNullValidator) result[0]).ValidationMessage.ToString, Is.EqualTo("Stub Message"));
+      Assert.That(((NotNullValidator)result[0]).ValidationMessage.ToString, Is.EqualTo("Stub Message"));
     }
 
     [Test]
@@ -482,7 +482,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
 
       Assert.That(result.Count(), Is.EqualTo(1));
       Assert.That(result[0], Is.TypeOf(typeof(RemotionMaxLengthPropertyMetaValidationRule)));
-      Assert.That(((RemotionMaxLengthPropertyMetaValidationRule) result[0]).MaxLength, Is.EqualTo(10));
+      Assert.That(((RemotionMaxLengthPropertyMetaValidationRule)result[0]).MaxLength, Is.EqualTo(10));
     }
 
     [Test]

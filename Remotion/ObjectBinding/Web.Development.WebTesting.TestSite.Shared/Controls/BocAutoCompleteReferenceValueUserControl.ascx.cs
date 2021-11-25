@@ -57,7 +57,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
 
     private BocAutoCompleteReferenceValueUserControlTestOutput TestOutput
     {
-      get { return (BocAutoCompleteReferenceValueUserControlTestOutput) ((Layout) Page.Master).GetTestOutputControl(); }
+      get { return (BocAutoCompleteReferenceValueUserControlTestOutput)((Layout)Page.Master).GetTestOutputControl(); }
     }
   }
 }

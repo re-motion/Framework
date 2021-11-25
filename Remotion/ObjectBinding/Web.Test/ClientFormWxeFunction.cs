@@ -35,14 +35,14 @@ public class ClientFormWxeFunction: WxeFunction
   // parameters
   public BindableXmlObject Object
   {
-    get { return (BindableXmlObject) Variables["Object"]; }
+    get { return (BindableXmlObject)Variables["Object"]; }
     set { Variables["Object"] = value; }
   }
 
   [WxeParameter (1, true)]
   public bool ReadOnly
   {
-    get { return (bool) Variables["ReadOnly"]; }
+    get { return (bool)Variables["ReadOnly"]; }
     set { Variables["ReadOnly"] = value; }
   }
 
@@ -55,13 +55,13 @@ public class ClientFormWxeFunction: WxeFunction
 
   class Step2: WxeStepList
   {
-    ClientFormWxeFunction Function { get { return (ClientFormWxeFunction) ParentFunction; } }
+    ClientFormWxeFunction Function { get { return (ClientFormWxeFunction)ParentFunction; } }
     WxeStep Step1_ = new WxePageStep("ClientForm.aspx");
   }
 
   class Step3: WxeStepList
   {
-    ClientFormWxeFunction Function { get { return (ClientFormWxeFunction) ParentFunction; } }
+    ClientFormWxeFunction Function { get { return (ClientFormWxeFunction)ParentFunction; } }
     WxeStep Step1_ = new WxePageStep("ClientForm.aspx");
   }
 }
@@ -78,7 +78,7 @@ public class ClientFormClosingWxeFunction: WxeFunction
     object val = HttpContext.Current.Session["key"];
     if (val != null)
     {
-      int i = (int) val;
+      int i = (int)val;
     }
   }
 }
@@ -95,7 +95,7 @@ public class ClientFormKeepAliveWxeFunction: WxeFunction
     object val = HttpContext.Current.Session["key"];
     if (val != null)
     {
-      int i = (int) val;
+      int i = (int)val;
     }
   }
 }

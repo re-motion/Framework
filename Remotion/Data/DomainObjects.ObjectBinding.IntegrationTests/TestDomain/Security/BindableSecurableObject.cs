@@ -67,7 +67,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain.
 
     public DataContainer GetDataContainer (ClientTransaction transaction)
     {
-      var dataManager = (DataManager) PrivateInvoke.GetNonPublicProperty(transaction, "DataManager");
+      var dataManager = (DataManager)PrivateInvoke.GetNonPublicProperty(transaction, "DataManager");
       return dataManager.GetDataContainerWithLazyLoad(ID, true);
     }
 

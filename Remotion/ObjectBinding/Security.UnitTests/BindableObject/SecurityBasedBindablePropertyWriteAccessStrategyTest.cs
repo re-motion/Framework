@@ -75,7 +75,7 @@ namespace Remotion.ObjectBinding.Security.UnitTests.BindableObject
     [Test]
     public void CanWrite_WithBusinessObjectIsNull_ReturnsTrue ()
     {
-      var bindableProperty = CreateBindableProperty((() => ((ClassWithReferenceType<string>) null).Scalar));
+      var bindableProperty = CreateBindableProperty((() => ((ClassWithReferenceType<string>)null).Scalar));
 
       var result = _strategy.CanWrite(null, bindableProperty);
 
@@ -85,7 +85,7 @@ namespace Remotion.ObjectBinding.Security.UnitTests.BindableObject
     [Test]
     public void CanWrite_WithNonSecurableObject_ReturnsTrue ()
     {
-      var bindableProperty = CreateBindableProperty((() => ((ClassWithReferenceType<string>) null).Scalar));
+      var bindableProperty = CreateBindableProperty((() => ((ClassWithReferenceType<string>)null).Scalar));
 
       var result = _strategy.CanWrite(new ClassWithReferenceType<string>(), bindableProperty);
 
@@ -98,7 +98,7 @@ namespace Remotion.ObjectBinding.Security.UnitTests.BindableObject
       var expectedResult = BooleanObjectMother.GetRandomBoolean();
       ExpectHasAccessOnObjectSecurityStrategy(expectedResult, TestAccessTypes.TestEdit);
 
-      var bindableProperty = CreateBindableProperty(() => ((SecurableClassWithReferenceType<string>) null).CustomPermissisons);
+      var bindableProperty = CreateBindableProperty(() => ((SecurableClassWithReferenceType<string>)null).CustomPermissisons);
 
       var actualResult = _strategy.CanWrite(_securableObject, bindableProperty);
 
@@ -112,7 +112,7 @@ namespace Remotion.ObjectBinding.Security.UnitTests.BindableObject
       var expectedResult = BooleanObjectMother.GetRandomBoolean();
       ExpectHasAccessOnObjectSecurityStrategy(expectedResult, GeneralAccessTypes.Edit);
 
-      var bindableProperty = CreateBindableProperty((() => ((ClassWithReferenceType<string>) null).PropertyWithNoSetter));
+      var bindableProperty = CreateBindableProperty((() => ((ClassWithReferenceType<string>)null).PropertyWithNoSetter));
 
       var actualResult = _strategy.CanWrite(_securableObject, bindableProperty);
 
@@ -123,7 +123,7 @@ namespace Remotion.ObjectBinding.Security.UnitTests.BindableObject
     [Test]
     public void IsPropertyAccessException_WithPermissionDeniedException_WithIBusinessObject_ReturnsTrue ()
     {
-      var bindableProperty = CreateBindableProperty((() => ((ClassWithReferenceType<string>) null).Scalar));
+      var bindableProperty = CreateBindableProperty((() => ((ClassWithReferenceType<string>)null).Scalar));
 
       var businessObjectClassStub = new Mock<IBusinessObjectClass>();
       businessObjectClassStub.Setup(_ => _.Identifier).Returns("TheClass");
@@ -152,7 +152,7 @@ namespace Remotion.ObjectBinding.Security.UnitTests.BindableObject
     [Test]
     public void IsPropertyAccessException_WithPermissionDeniedException_WithIBusinessObjectWithIdentity_ReturnsTrue ()
     {
-      var bindableProperty = CreateBindableProperty((() => ((ClassWithReferenceType<string>) null).Scalar));
+      var bindableProperty = CreateBindableProperty((() => ((ClassWithReferenceType<string>)null).Scalar));
 
       var businessObjectStub = new Mock<IBusinessObjectWithIdentity>();
       businessObjectStub.Setup(_ => _.UniqueIdentifier).Returns("TheIdentifier");
@@ -178,7 +178,7 @@ namespace Remotion.ObjectBinding.Security.UnitTests.BindableObject
     [Test]
     public void IsPropertyAccessException_WithOtherException_ReturnsFalse ()
     {
-      var bindableProperty = CreateBindableProperty((() => ((ClassWithReferenceType<string>) null).Scalar));
+      var bindableProperty = CreateBindableProperty((() => ((ClassWithReferenceType<string>)null).Scalar));
 
       var businessObjectStub = new Mock<IBusinessObject>();
 

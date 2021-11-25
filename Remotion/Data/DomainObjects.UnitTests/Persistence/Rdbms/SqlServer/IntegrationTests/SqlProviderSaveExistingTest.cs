@@ -72,22 +72,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "StringProperty"), Is.EqualTo("abcdeföäü"));
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "StringPropertyWithoutMaxLength"), Is.EqualTo("12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"));
       ResourceManager.IsEqualToImage1(
-          (byte[]) GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "BinaryProperty"));
+          (byte[])GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "BinaryProperty"));
 
       SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "BooleanProperty", true);
-      SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "ByteProperty", (byte) 42);
+      SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "ByteProperty", (byte)42);
       SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "DateProperty", new DateTime(1972, 10, 26));
       SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "DateTimeProperty", new DateTime(
           1974, 10, 26, 15, 17, 19));
-      SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "DecimalProperty", (decimal) 564.956);
+      SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "DecimalProperty", (decimal)564.956);
       SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "DoubleProperty", 5334.2456);
       SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "EnumProperty", ClassWithAllDataTypes.EnumType.Value0);
       SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "ExtensibleEnumProperty", Color.Values.Green());
       SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "GuidProperty", new Guid("{98E0FE88-7DB4-4f6c-A1C1-86682D5C95C9}"));
-      SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "Int16Property", (short) 67);
+      SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "Int16Property", (short)67);
       SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "Int32Property", 42424242);
       SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "Int64Property", 424242424242424242);
-      SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "SingleProperty", (float) 42.42);
+      SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "SingleProperty", (float)42.42);
       SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "StringProperty", "zyxwvuZaphodBeeblebrox");
       SetPropertyValue(
           savedClassWithAllDataTypes,
@@ -116,7 +116,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "StringProperty"), Is.EqualTo("zyxwvuZaphodBeeblebrox"));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "StringPropertyWithoutMaxLength"), Is.EqualTo("123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876"));
       ResourceManager.IsEqualToImage2(
-          (byte[]) GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "BinaryProperty"));
+          (byte[])GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "BinaryProperty"));
     }
 
     [Test]
@@ -125,21 +125,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       DataContainer savedClassWithAllDataTypes = LoadDataContainer(DomainObjectIDs.ClassWithAllDataTypes1);
 
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaBooleanProperty"), Is.EqualTo(true));
-      Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaByteProperty"), Is.EqualTo((byte) 78));
+      Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaByteProperty"), Is.EqualTo((byte)78));
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDateProperty"), Is.EqualTo(new DateTime(2005, 2, 1)));
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDateTimeProperty"), Is.EqualTo(new DateTime(2005, 2, 1, 5, 0, 0)));
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDecimalProperty"), Is.EqualTo(765.098m));
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDoubleProperty"), Is.EqualTo(654321.789d));
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaEnumProperty"), Is.EqualTo(ClassWithAllDataTypes.EnumType.Value2));
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaGuidProperty"), Is.EqualTo(new Guid("{19B2DFBE-B7BB-448e-8002-F4DBF6032AE8}")));
-      Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaInt16Property"), Is.EqualTo((short) 12000));
+      Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaInt16Property"), Is.EqualTo((short)12000));
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaInt32Property"), Is.EqualTo(-2147483647));
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaInt64Property"), Is.EqualTo(3147483647L));
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaSingleProperty"), Is.EqualTo(12.456F));
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NullableBinaryProperty"), Is.Null);
 
       SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaBooleanProperty", false);
-      SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaByteProperty", (byte) 100);
+      SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaByteProperty", (byte)100);
       SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDateProperty", new DateTime(2007, 1, 18));
       SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDateTimeProperty", new DateTime(
           2005, 1, 18, 10, 10, 10));
@@ -147,7 +147,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDoubleProperty", 56.87d);
       SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaEnumProperty", ClassWithAllDataTypes.EnumType.Value0);
       SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaGuidProperty", new Guid("{10FD9EDE-F3BB-4bb9-9434-9B121C6733A0}"));
-      SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaInt16Property", (short) -43);
+      SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaInt16Property", (short)-43);
       SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaInt32Property", -42);
       SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaInt64Property", -41L);
       SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaSingleProperty", -40F);
@@ -158,14 +158,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       DataContainer reloadedClassWithAllDataTypes = ReloadDataContainer(DomainObjectIDs.ClassWithAllDataTypes1);
 
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaBooleanProperty"), Is.EqualTo(false));
-      Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaByteProperty"), Is.EqualTo((byte) 100));
+      Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaByteProperty"), Is.EqualTo((byte)100));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDateProperty"), Is.EqualTo(new DateTime(2007, 1, 18)));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDateTimeProperty"), Is.EqualTo(new DateTime(2005, 1, 18, 10, 10, 10)));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDecimalProperty"), Is.EqualTo(20.123m));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDoubleProperty"), Is.EqualTo(56.87d));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaEnumProperty"), Is.EqualTo(ClassWithAllDataTypes.EnumType.Value0));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaGuidProperty"), Is.EqualTo(new Guid("{10FD9EDE-F3BB-4bb9-9434-9B121C6733A0}")));
-      Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaInt16Property"), Is.EqualTo((short) -43));
+      Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaInt16Property"), Is.EqualTo((short)-43));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaInt32Property"), Is.EqualTo(-42));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaInt64Property"), Is.EqualTo(-41L));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaSingleProperty"), Is.EqualTo(-40F));
@@ -183,19 +183,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       var savedClassWithAllDataTypes = LoadDataContainer(DomainObjectIDs.ClassWithAllDataTypes1);
 
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaBooleanProperty"), Is.EqualTo(true));
-      Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaByteProperty"), Is.EqualTo((byte) 78));
+      Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaByteProperty"), Is.EqualTo((byte)78));
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDateProperty"), Is.EqualTo(new DateTime(2005, 2, 1)));
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDateTimeProperty"), Is.EqualTo(new DateTime(2005, 2, 1, 5, 0, 0)));
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDecimalProperty"), Is.EqualTo(765.098m));
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDoubleProperty"), Is.EqualTo(654321.789d));
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaEnumProperty"), Is.EqualTo(ClassWithAllDataTypes.EnumType.Value2));
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaGuidProperty"), Is.EqualTo(new Guid("{19B2DFBE-B7BB-448e-8002-F4DBF6032AE8}")));
-      Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaInt16Property"), Is.EqualTo((short) 12000));
+      Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaInt16Property"), Is.EqualTo((short)12000));
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaInt32Property"), Is.EqualTo(-2147483647));
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaInt64Property"), Is.EqualTo(3147483647L));
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaSingleProperty"), Is.EqualTo(12.456F));
       ResourceManager.IsEqualToImage1(
-          (byte[]) GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NullableBinaryProperty"));
+          (byte[])GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NullableBinaryProperty"));
 
       SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaBooleanProperty", null);
       SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaByteProperty", null);
@@ -386,7 +386,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
       var relationEndPointDefinition = GetEndPointDefinition(typeof(OrderTicket), "Order");
       var orderTicketContainers = Provider.LoadDataContainersByRelatedID(
-          (RelationEndPointDefinition) relationEndPointDefinition,
+          (RelationEndPointDefinition)relationEndPointDefinition,
           null,
           DomainObjectIDs.Order1).ToList();
 

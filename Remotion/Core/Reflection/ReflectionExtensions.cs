@@ -64,7 +64,7 @@ namespace Remotion.Reflection
                 typeInformation.GetType()));
       }
 
-      return (Type) s_typeConversionProvider.Convert(typeInformation.GetType(), typeof(Type), typeInformation)!;
+      return (Type)s_typeConversionProvider.Convert(typeInformation.GetType(), typeof(Type), typeInformation)!;
     }
 
     [CanBeNull]

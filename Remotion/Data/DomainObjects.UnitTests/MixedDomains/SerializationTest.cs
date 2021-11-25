@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
     public void MixedTypesAreSerializable ()
     {
       var instance = TargetClassForMixinWithState.NewObject();
-      Assert.That(((object) instance).GetType().IsSerializable, Is.True);
+      Assert.That(((object)instance).GetType().IsSerializable, Is.True);
     }
 
     [Test]
@@ -88,12 +88,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
       Assert.That(Mixin.Get<MixinWithState>(instance), Is.Not.Null);
       byte[] serializedData = Serializer.Serialize(instance);
 
-      var deserializedInstance1 = (TargetClassForMixinWithState) Serializer.Deserialize(serializedData);
+      var deserializedInstance1 = (TargetClassForMixinWithState)Serializer.Deserialize(serializedData);
       Assert.That(Mixin.Get<MixinWithState>(deserializedInstance1), Is.Not.Null);
 
       using (MixinConfiguration.BuildNew().ForClass(typeof(TargetClassForMixinWithState)).AddMixins(typeof(NullMixin)).EnterScope())
       {
-        var deserializedInstance2 = (TargetClassForMixinWithState) Serializer.Deserialize(serializedData);
+        var deserializedInstance2 = (TargetClassForMixinWithState)Serializer.Deserialize(serializedData);
 
         Assert.That(Mixin.Get<MixinWithState>(deserializedInstance2), Is.Not.Null);
         Assert.That(Mixin.Get<NullMixin>(deserializedInstance2), Is.Null);

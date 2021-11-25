@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
     }
 
     public ExpandedCommand (params IDataManagementCommand[] commands)
-        : this((IEnumerable<IDataManagementCommand>) commands)
+        : this((IEnumerable<IDataManagementCommand>)commands)
     {
     }
 
@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
 
     public ExpandedCommand CombineWith (params IDataManagementCommand[] commands)
     {
-      return CombineWith((IEnumerable<IDataManagementCommand>) commands);
+      return CombineWith((IEnumerable<IDataManagementCommand>)commands);
     }
   }
 }

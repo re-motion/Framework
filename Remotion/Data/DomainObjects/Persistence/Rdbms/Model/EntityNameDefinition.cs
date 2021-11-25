@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       if (obj.GetType() != GetType())
         return false;
 
-      var other = (EntityNameDefinition) obj;
+      var other = (EntityNameDefinition)obj;
       return other.SchemaName == SchemaName && other.EntityName == EntityName;
     }
 

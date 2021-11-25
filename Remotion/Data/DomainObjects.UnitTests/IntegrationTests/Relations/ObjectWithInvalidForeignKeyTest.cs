@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     public void AccessInvalidForeignKeyRelation ()
     {
       var id = new ObjectID(typeof(ClassWithInvalidRelation), new Guid("{AFA9CF46-8E77-4da8-9793-53CAA86A277C}"));
-      var objectWithInvalidRelation = (ClassWithInvalidRelation) id.GetObject<TestDomainBase>();
+      var objectWithInvalidRelation = (ClassWithInvalidRelation)id.GetObject<TestDomainBase>();
 
       Assert.That(objectWithInvalidRelation.ClassWithGuidKey.State.IsInvalid, Is.False);
 
@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
 
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var reloadedObject = (ClassWithInvalidRelation) id.GetObject<TestDomainBase>();
+        var reloadedObject = (ClassWithInvalidRelation)id.GetObject<TestDomainBase>();
         reloadedObject.ClassWithGuidKey.EnsureDataAvailable();
         Assert.That(reloadedObject.ClassWithGuidKey.State.IsInvalid, Is.False);
       }

@@ -86,7 +86,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public override Command? Command
     {
       get { return base.Command; }
-      set { base.Command = (BocCommand?) value; }
+      set { base.Command = (BocCommand?)value; }
     }
 
     /// <summary> Gets or sets the <see cref="IBusinessObjectBoundWebControl"/> to which this object belongs. </summary>
@@ -94,14 +94,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Browsable (false)]
     public new IBusinessObjectBoundWebControl? OwnerControl
     {
-      get { return (IBusinessObjectBoundWebControl?) base.OwnerControlImplementation; }
+      get { return (IBusinessObjectBoundWebControl?)base.OwnerControlImplementation; }
       set { base.OwnerControlImplementation = value; }
     }
 
     protected override IControl? OwnerControlImplementation
     {
       get { return OwnerControl; }
-      set { OwnerControl = (IBusinessObjectBoundWebControl?) value; }
+      set { OwnerControl = (IBusinessObjectBoundWebControl?)value; }
     }
 
     protected override void OnOwnerControlChanged ()
@@ -112,7 +112,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected IBocMenuItemContainer? BocMenuItemContainer
     {
-      get { return (IBocMenuItemContainer?) OwnerControl; }
+      get { return (IBocMenuItemContainer?)OwnerControl; }
     }
 
     public override bool EvaluateVisible ()

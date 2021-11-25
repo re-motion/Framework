@@ -44,12 +44,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _order2 = DomainObjectIDs.Order2.GetObject<Order>();
       _order3 = DomainObjectIDs.Order3.GetObject<Order>();
 
-      var stateUpdateRaisingEndPointDecorator = (StateUpdateRaisingDomainObjectCollectionEndPointDecorator)
-          TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad(
+      var stateUpdateRaisingEndPointDecorator = (StateUpdateRaisingDomainObjectCollectionEndPointDecorator)TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad(
             RelationEndPointID.Create(DomainObjectIDs.Customer1,
             typeof(Customer),
             "Orders"));
-      _customerEndPoint = (DomainObjectCollectionEndPoint) stateUpdateRaisingEndPointDecorator.InnerEndPoint;
+      _customerEndPoint = (DomainObjectCollectionEndPoint)stateUpdateRaisingEndPointDecorator.InnerEndPoint;
     }
 
     [Test]

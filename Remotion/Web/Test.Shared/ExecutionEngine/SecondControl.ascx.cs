@@ -34,14 +34,14 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
       {
         function = new ShowSecondUserControlFormFunction();
         function.ExceptionHandler.SetCatchExceptionTypes(typeof(System.Exception));
-        WxeUserControl actualUserControl = (WxeUserControl) page.FindControl(userControl.PermanentUniqueID);
+        WxeUserControl actualUserControl = (WxeUserControl)page.FindControl(userControl.PermanentUniqueID);
         Assertion.IsNotNull(actualUserControl);
         actualUserControl.ExecuteFunction(function, sender, null);
         throw new System.Exception("(Unreachable code)");
       }
       else
       {
-        function = ((ShowSecondUserControlFormFunction) (page.ReturningFunction));
+        function = ((ShowSecondUserControlFormFunction)(page.ReturningFunction));
         if ((function.ExceptionHandler.Exception != null))
         {
           throw function.ExceptionHandler.Exception;
@@ -70,7 +70,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
       if (!WxePage.IsReturningPostBack)
       {
         ControlLabel.Text = DateTime.Now.ToString("HH:mm:ss") + ": Executed";
-        ExecuteFunction(new ShowThirdUserControlFormFunction(), (Control) sender, null);
+        ExecuteFunction(new ShowThirdUserControlFormFunction(), (Control)sender, null);
       }
       else
       {
@@ -147,7 +147,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
 
     protected override void LoadControlState (object savedState)
     {
-      var controlState = (Tuple<object, int, Type>) savedState;
+      var controlState = (Tuple<object, int, Type>)savedState;
       base.LoadControlState(controlState.Item1);
       ControlStateValue = controlState.Item2;
       Assertion.IsTrue(controlState.Item3 == typeof(SecondControl), "Expected ControlState from 'SecondControl' but was '{0}'.", controlState.Item3.Name);
@@ -162,7 +162,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
     {
       Assertion.IsNotNull(savedState, "Missing ViewState.");
 
-      var  statePair =  (Tuple<object, Type>) savedState;
+      var  statePair =  (Tuple<object, Type>)savedState;
       base.LoadViewState(statePair.Item1);
 
       Assertion.IsTrue(statePair.Item2 == typeof(SecondControl), "Expected ViewState from 'SecondControl' but was '{0}'.", statePair.Item2.Name);
@@ -175,7 +175,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
 
     private int ViewStateValue
     {
-      get { return (int?) ViewState["Value"] ?? 0; }
+      get { return (int?)ViewState["Value"] ?? 0; }
       set { ViewState["Value"] = value; }
     }
 

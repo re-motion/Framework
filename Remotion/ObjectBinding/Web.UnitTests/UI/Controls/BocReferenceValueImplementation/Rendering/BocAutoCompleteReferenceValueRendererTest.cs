@@ -116,9 +116,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
                                      };
 
       _dataSource = new BusinessObjectReferenceDataSource();
-      _dataSource.BusinessObject = (IBusinessObject) BusinessObject;
+      _dataSource.BusinessObject = (IBusinessObject)BusinessObject;
 
-      _provider = ((IBusinessObject) BusinessObject).BusinessObjectClass.BusinessObjectProvider;
+      _provider = ((IBusinessObject)BusinessObject).BusinessObjectClass.BusinessObjectProvider;
       _provider.AddService<IBusinessObjectWebUIService>(new ReflectionBusinessObjectWebUIService());
 
       DataSource = new BindableObjectDataSource { Type = typeof(TypeWithReference) };
@@ -232,7 +232,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       Control.Setup(stub => stub.Enabled).Returns(true);
       Control.Setup(stub => stub.IsIconEnabled()).Returns(true);
       Control.Setup(stub => stub.Property).Returns(
-          (IBusinessObjectReferenceProperty) ((IBusinessObject) BusinessObject).BusinessObjectClass.GetPropertyDefinition("ReferenceValue"));
+          (IBusinessObjectReferenceProperty)((IBusinessObject)BusinessObject).BusinessObjectClass.GetPropertyDefinition("ReferenceValue"));
       SetUpGetIconExpectations();
 
       XmlNode span = GetAssertedContainerSpan(false);
@@ -267,7 +267,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     private void SetValue ()
     {
       BusinessObject.ReferenceValue = BusinessObject.ReferenceList[0];
-      Control.Setup(stub => stub.Value).Returns((IBusinessObjectWithIdentity) BusinessObject.ReferenceValue);
+      Control.Setup(stub => stub.Value).Returns((IBusinessObjectWithIdentity)BusinessObject.ReferenceValue);
     }
 
     [Test]
@@ -359,7 +359,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       SetValue();
       Control.Setup(stub => stub.IsIconEnabled()).Returns(true);
       Control.Setup(stub => stub.Property).Returns(
-          (IBusinessObjectReferenceProperty) ((IBusinessObject) BusinessObject).BusinessObjectClass.GetPropertyDefinition("ReferenceValue"));
+          (IBusinessObjectReferenceProperty)((IBusinessObject)BusinessObject).BusinessObjectClass.GetPropertyDefinition("ReferenceValue"));
       SetUpGetIconExpectations();
 
       XmlNode span = GetAssertedContainerSpan(false);

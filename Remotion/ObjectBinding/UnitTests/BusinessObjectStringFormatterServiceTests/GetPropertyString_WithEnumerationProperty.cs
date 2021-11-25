@@ -55,8 +55,8 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectStringFormatterServiceT
     public void Scalar_WithNull ()
     {
       _mockProperty.Setup(_ => _.IsList).Returns(false).Verifiable();
-      _mockBusinessObject.Setup(_ => _.GetProperty(_mockProperty.Object)).Returns((object) null).Verifiable();
-      _mockProperty.Setup(_ => _.GetValueInfoByValue(null, _mockBusinessObject.Object)).Returns((IEnumerationValueInfo) null).Verifiable();
+      _mockBusinessObject.Setup(_ => _.GetProperty(_mockProperty.Object)).Returns((object)null).Verifiable();
+      _mockProperty.Setup(_ => _.GetValueInfoByValue(null, _mockBusinessObject.Object)).Returns((IEnumerationValueInfo)null).Verifiable();
 
       string actual = _stringFormatterService.GetPropertyString(_mockBusinessObject.Object, _mockProperty.Object, null);
 
@@ -70,7 +70,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectStringFormatterServiceT
     {
       _mockProperty.Setup(_ => _.IsList).Returns(false).Verifiable();
       _mockBusinessObject.Setup(_ => _.GetProperty(_mockProperty.Object)).Returns(TestEnum.Value5).Verifiable();
-      _mockProperty.Setup(_ => _.GetValueInfoByValue(TestEnum.Value5, _mockBusinessObject.Object)).Returns((IEnumerationValueInfo) null).Verifiable();
+      _mockProperty.Setup(_ => _.GetValueInfoByValue(TestEnum.Value5, _mockBusinessObject.Object)).Returns((IEnumerationValueInfo)null).Verifiable();
 
       string actual = _stringFormatterService.GetPropertyString(_mockBusinessObject.Object, _mockProperty.Object, null);
 

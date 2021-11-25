@@ -59,12 +59,12 @@ namespace Remotion.Validation.UnitTests.Attributes.Validation
 
       Assert.That(result.Length, Is.EqualTo(1));
       Assert.That(result[0], Is.TypeOf(typeof(LengthValidator)));
-      Assert.That(((LengthValidator) result[0]).Min, Is.EqualTo(10));
-      Assert.That(((LengthValidator) result[0]).Max, Is.EqualTo(20));
-      Assert.That(((LengthValidator) result[0]).ValidationMessage, Is.Not.Null);
+      Assert.That(((LengthValidator)result[0]).Min, Is.EqualTo(10));
+      Assert.That(((LengthValidator)result[0]).Max, Is.EqualTo(20));
+      Assert.That(((LengthValidator)result[0]).ValidationMessage, Is.Not.Null);
 
       validationMessageStub.Setup(_ => _.ToString()).Returns("Stub Message");
-      Assert.That(((LengthValidator) result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message"));
+      Assert.That(((LengthValidator)result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message"));
 
     }
 
@@ -77,8 +77,8 @@ namespace Remotion.Validation.UnitTests.Attributes.Validation
       var result = _attribute.GetPropertyValidators(propertyInformation, _validationMessageFactoryStub.Object).ToArray();
 
       Assert.That(result.Length, Is.EqualTo(1));
-      Assert.That(((LengthValidator) result[0]).ValidationMessage, Is.InstanceOf<InvariantValidationMessage>());
-      Assert.That(((LengthValidator) result[0]).ValidationMessage.ToString(), Is.EqualTo("CustomMessage"));
+      Assert.That(((LengthValidator)result[0]).ValidationMessage, Is.InstanceOf<InvariantValidationMessage>());
+      Assert.That(((LengthValidator)result[0]).ValidationMessage.ToString(), Is.EqualTo("CustomMessage"));
     }
 
     [Test]

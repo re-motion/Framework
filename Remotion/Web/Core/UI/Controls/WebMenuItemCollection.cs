@@ -43,7 +43,7 @@ namespace Remotion.Web.UI.Controls
         string category = menuItem.Category ?? string.Empty;
         ArrayList menuItemsForCategory;
         if (groupedMenuItems.Contains(category))
-          menuItemsForCategory = (ArrayList) groupedMenuItems[category]!;
+          menuItemsForCategory = (ArrayList)groupedMenuItems[category]!;
         else
         {
           menuItemsForCategory = new ArrayList();
@@ -57,7 +57,7 @@ namespace Remotion.Web.UI.Controls
       bool isFirst = true;
       for (int i = 0; i < categories.Count; i++)
       {
-        string category = (string) categories[i]!;
+        string category = (string)categories[i]!;
         if (generateSeparators)
         {
           if (isFirst)
@@ -65,9 +65,9 @@ namespace Remotion.Web.UI.Controls
           else
             arrayList.Add(WebMenuItem.GetSeparator());
         }
-        arrayList.AddRange((ArrayList) groupedMenuItems[category]!);
+        arrayList.AddRange((ArrayList)groupedMenuItems[category]!);
       }
-      return (WebMenuItem[]) arrayList.ToArray(typeof(WebMenuItem));
+      return (WebMenuItem[])arrayList.ToArray(typeof(WebMenuItem));
     }
 
     /// <summary> Initializes a new instance. </summary>
@@ -84,13 +84,13 @@ namespace Remotion.Web.UI.Controls
 
     public new WebMenuItem[] ToArray ()
     {
-      return (WebMenuItem[]) InnerList.ToArray(typeof(WebMenuItem));
+      return (WebMenuItem[])InnerList.ToArray(typeof(WebMenuItem));
     }
 
     //  Do NOT make this indexer public. Ever. Or ASP.net won't be able to de-serialize this property.
     protected internal new WebMenuItem this [int index]
     {
-      get { return (WebMenuItem) List[index]!; }
+      get { return (WebMenuItem)List[index]!; }
       set { List[index] = value; }
     }
 

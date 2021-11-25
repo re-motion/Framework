@@ -40,7 +40,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     public new TBocColumnDefinition ColumnDefinition
     {
-      get { return (TBocColumnDefinition) base.ColumnDefinition; }
+      get { return (TBocColumnDefinition)base.ColumnDefinition; }
     }
   }
 }

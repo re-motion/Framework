@@ -83,7 +83,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Organiz
       _searchService = new RolePropertiesSearchService();
 
       IBusinessObjectClass roleClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(Role));
-      _positionProperty = (IBusinessObjectReferenceProperty) roleClass.GetPropertyDefinition("Position");
+      _positionProperty = (IBusinessObjectReferenceProperty)roleClass.GetPropertyDefinition("Position");
       Assert.That(_positionProperty, Is.Not.Null);
     }
 
@@ -113,7 +113,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Organiz
       {
         Assert.IsTrue(
 // ReSharper disable AccessToModifiedClosure
-            Array.Exists(positions, current => positionName == ((Position) current).Name),
+            Array.Exists(positions, current => positionName == ((Position)current).Name),
 // ReSharper restore AccessToModifiedClosure
             "Position '{0}' was not found.",
             positionName);
@@ -135,7 +135,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Organiz
       _stubFunctionalSecurityStrategy.Verify();
       _mockPrincipalProvider.Verify();
       Assert.That(positions.Length, Is.EqualTo(1));
-      Assert.That(((Position) positions[0]).Name, Is.EqualTo("Official"));
+      Assert.That(((Position)positions[0]).Name, Is.EqualTo("Official"));
     }
 
     [Test]
@@ -159,7 +159,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Organiz
       ClientTransaction.Current.Extensions.Remove(new SecurityClientTransactionExtension().Key);
 
       Assert.That(positions.Length, Is.EqualTo(1));
-      Assert.That(((Position) positions[0]).Name, Is.EqualTo("Official"));
+      Assert.That(((Position)positions[0]).Name, Is.EqualTo("Official"));
     }
 
     private void SetupResultSecurityProviderGetAccessForPosition (Delegation delegation, ISecurityPrincipal principal, params Enum[] returnedAccessTypeEnums)
@@ -180,7 +180,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Organiz
 
     private void SetupResultSecurityProviderGetAccessForGroup (Group group, ISecurityPrincipal principal, params Enum[] returnedAccessTypeEnums)
     {
-      ISecurityContext securityContext = ((IDomainObjectSecurityContextFactory) group).CreateSecurityContext();
+      ISecurityContext securityContext = ((IDomainObjectSecurityContextFactory)group).CreateSecurityContext();
 
       AccessType[] returnedAccessTypes = Array.ConvertAll(returnedAccessTypeEnums, AccessType.Get);
 

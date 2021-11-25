@@ -62,7 +62,7 @@ public class TestTabbedForm : TestWxeBasePage
 
   protected TestTabbedFormWxeFunction Function
   {
-    get { return (TestTabbedFormWxeFunction) CurrentFunction; }
+    get { return (TestTabbedFormWxeFunction)CurrentFunction; }
   }
 
   protected override void OnLoad (EventArgs e)
@@ -70,7 +70,7 @@ public class TestTabbedForm : TestWxeBasePage
     base.OnLoad(e);
 
     int activeViewIndex = 0;
-    TabView activeView = (TabView) MultiView.Views[activeViewIndex];
+    TabView activeView = (TabView)MultiView.Views[activeViewIndex];
     if (activeViewIndex > 0)
       MultiView.SetActiveView(activeView);
   }
@@ -112,7 +112,7 @@ public class TestTabbedForm : TestWxeBasePage
         "TestTabbedPersonJobsUserControl.ascx");
     if (dataEditControl != null)
       dataEditControls.Add(dataEditControl);
-    _dataEditControls = (IDataEditControl[]) dataEditControls.ToArray();
+    _dataEditControls = (IDataEditControl[])dataEditControls.ToArray();
   }
 
   private void AddTab (string id, string text, IconInfo icon)
@@ -140,7 +140,7 @@ public class TestTabbedForm : TestWxeBasePage
     view.Title = title;
     view.Icon = icon;
 
-    UserControl control = (UserControl) this.LoadControl(path);
+    UserControl control = (UserControl)this.LoadControl(path);
     control.ID = IdentifierGenerator.HtmlStyle.GetValidIdentifier(Path.GetFileNameWithoutExtension(path));
 
     //EgoFormPageUserControl formPageControl = control as EgoFormPageUserControl;
@@ -159,8 +159,8 @@ public class TestTabbedForm : TestWxeBasePage
 
   private void DataEditControl_Load (object sender, EventArgs e)
   {
-    IDataEditControl dataEditControl = (IDataEditControl) sender;
-    dataEditControl.BusinessObject = (IBusinessObject) Function.Object;
+    IDataEditControl dataEditControl = (IDataEditControl)sender;
+    dataEditControl.BusinessObject = (IBusinessObject)Function.Object;
     dataEditControl.LoadValues(IsPostBackAfterEnsure(dataEditControl.ID));
     dataEditControl.Mode = Function.ReadOnly ? DataSourceMode.Read : DataSourceMode.Edit;
   }
@@ -168,7 +168,7 @@ public class TestTabbedForm : TestWxeBasePage
   private bool IsPostBackAfterEnsure (string id)
   {
     const string key = "EnsuredPostBacks";
-    StringCollection ensuredPostBacks = (StringCollection) ViewState[key];
+    StringCollection ensuredPostBacks = (StringCollection)ViewState[key];
     if (ensuredPostBacks == null)
     {
       ensuredPostBacks = new StringCollection();

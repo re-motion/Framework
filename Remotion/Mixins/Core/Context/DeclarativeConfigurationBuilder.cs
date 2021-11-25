@@ -51,7 +51,7 @@ namespace Remotion.Mixins.Context
     {
       ArgumentUtility.CheckNotNull("assemblies", assemblies);
 
-      return BuildConfigurationFromAssemblies(null, (IEnumerable<Assembly>) assemblies);
+      return BuildConfigurationFromAssemblies(null, (IEnumerable<Assembly>)assemblies);
     }
 
     /// <summary>
@@ -66,7 +66,7 @@ namespace Remotion.Mixins.Context
     {
       ArgumentUtility.CheckNotNull("assemblies", assemblies);
 
-      return BuildConfigurationFromAssemblies(parentConfiguration, (IEnumerable<Assembly>) assemblies);
+      return BuildConfigurationFromAssemblies(parentConfiguration, (IEnumerable<Assembly>)assemblies);
     }
 
     /// <summary>
@@ -239,7 +239,7 @@ namespace Remotion.Mixins.Context
         where T : ICustomAttributeProvider
     {
       var customAttributes =
-          (IMixinConfigurationAttribute<T>[]) attributeProvider.GetCustomAttributes(typeof(IMixinConfigurationAttribute<T>), false);
+          (IMixinConfigurationAttribute<T>[])attributeProvider.GetCustomAttributes(typeof(IMixinConfigurationAttribute<T>), false);
 
       foreach (var attribute in customAttributes)
       {

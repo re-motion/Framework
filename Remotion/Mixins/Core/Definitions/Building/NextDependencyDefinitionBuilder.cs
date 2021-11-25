@@ -61,21 +61,21 @@ namespace Remotion.Mixins.Definitions.Building
     {
       ArgumentUtility.CheckNotNull("requirement", requirement);
 
-      _mixin.TargetClass.RequiredNextCallTypes.Add((RequiredNextCallTypeDefinition) requirement);
+      _mixin.TargetClass.RequiredNextCallTypes.Add((RequiredNextCallTypeDefinition)requirement);
     }
 
     protected override DependencyDefinitionBase CreateDependency (RequirementDefinitionBase requirement, DependencyDefinitionBase? aggregator)
     {
       ArgumentUtility.CheckNotNull("requirement", requirement);
 
-      return new NextCallDependencyDefinition((RequiredNextCallTypeDefinition) requirement, _mixin, (NextCallDependencyDefinition?)aggregator);
+      return new NextCallDependencyDefinition((RequiredNextCallTypeDefinition)requirement, _mixin, (NextCallDependencyDefinition?)aggregator);
     }
 
     protected override void AddDependency (DependencyDefinitionBase dependency)
     {
       ArgumentUtility.CheckNotNull("dependency", dependency);
       if (!_mixin.NextCallDependencies.ContainsKey(dependency.RequiredType.Type))
-        _mixin.NextCallDependencies.Add((NextCallDependencyDefinition) dependency);
+        _mixin.NextCallDependencies.Add((NextCallDependencyDefinition)dependency);
     }
   }
 }

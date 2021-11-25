@@ -47,8 +47,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
 
       Assert.That(securableClassDefinition.AccessTypes, Is.EqualTo(new[] { accessType0, accessType1 }));
       var references = new SecurableClassDefinitionWrapper(securableClassDefinition).AccessTypeReferences;
-      Assert.That(((AccessTypeReference) references[0]).Index, Is.EqualTo(0));
-      Assert.That(((AccessTypeReference) references[1]).Index, Is.EqualTo(1));
+      Assert.That(((AccessTypeReference)references[0]).Index, Is.EqualTo(0));
+      Assert.That(((AccessTypeReference)references[1]).Index, Is.EqualTo(1));
     }
 
     [Test]

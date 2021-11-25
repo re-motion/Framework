@@ -103,26 +103,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
 
       Assert.That(deserializedObjects.Length, Is.EqualTo(4));
 
-      var deserializedDomainObjects = (DomainObject[]) deserializedObjects[0];
-      var deserializedCollections = (DomainObjectCollection[]) deserializedObjects[1];
-      var deserializedClientTransaction = (ClientTransaction) deserializedObjects[2];
+      var deserializedDomainObjects = (DomainObject[])deserializedObjects[0];
+      var deserializedCollections = (DomainObjectCollection[])deserializedObjects[1];
+      var deserializedClientTransaction = (ClientTransaction)deserializedObjects[2];
 
       using (deserializedClientTransaction.EnterDiscardingScope())
       {
-        var deserializedEventReceiver = (SequenceEventReceiver) deserializedObjects[3];
+        var deserializedEventReceiver = (SequenceEventReceiver)deserializedObjects[3];
 
         Assert.That(deserializedDomainObjects.Length, Is.EqualTo(9));
         Assert.That(deserializedCollections.Length, Is.EqualTo(5));
 
-        var desNewCustomer1 = (Customer) deserializedDomainObjects[0];
-        var desNewCustomer2 = (Customer) deserializedDomainObjects[1];
-        var desOfficial2 = (Official) deserializedDomainObjects[2];
-        var desNewCeo1 = (Ceo) deserializedDomainObjects[3];
-        var desNewCeo2 = (Ceo) deserializedDomainObjects[4];
-        var desNewOrder1 = (Order) deserializedDomainObjects[5];
-        var desNewOrder2 = (Order) deserializedDomainObjects[6];
-        var desNewOrderItem1 = (OrderItem) deserializedDomainObjects[7];
-        var desNewOrderItem2 = (OrderItem) deserializedDomainObjects[8];
+        var desNewCustomer1 = (Customer)deserializedDomainObjects[0];
+        var desNewCustomer2 = (Customer)deserializedDomainObjects[1];
+        var desOfficial2 = (Official)deserializedDomainObjects[2];
+        var desNewCeo1 = (Ceo)deserializedDomainObjects[3];
+        var desNewCeo2 = (Ceo)deserializedDomainObjects[4];
+        var desNewOrder1 = (Order)deserializedDomainObjects[5];
+        var desNewOrder2 = (Order)deserializedDomainObjects[6];
+        var desNewOrderItem1 = (OrderItem)deserializedDomainObjects[7];
+        var desNewOrderItem2 = (OrderItem)deserializedDomainObjects[8];
 
         //1
         desNewCeo1.Company = desNewCustomer1;
@@ -786,8 +786,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       var employees = new[] { employee1, employee2, employee3, employee4, employee5, employee6, employee7 };
 
       object[] deserializedItems = Serializer.SerializeAndDeserialize(new object[] { ClientTransactionScope.CurrentTransaction, employees });
-      var deserializedTransaction = (ClientTransaction) deserializedItems[0];
-      var deserializedEmployees = (Employee[]) deserializedItems[1];
+      var deserializedTransaction = (ClientTransaction)deserializedItems[0];
+      var deserializedEmployees = (Employee[])deserializedItems[1];
 
       Employee deserializedEmployee1 = deserializedEmployees[0];
       Employee deserializedEmployee2 = deserializedEmployees[1];
@@ -858,8 +858,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       var locations = new[] { location1, location2, location3 };
 
       object[] deserializedItems = Serializer.SerializeAndDeserialize(new object[] { ClientTransactionScope.CurrentTransaction, locations });
-      var deserializedTransaction = (ClientTransaction) deserializedItems[0];
-      var deserializedLocations = (Location[]) deserializedItems[1];
+      var deserializedTransaction = (ClientTransaction)deserializedItems[0];
+      var deserializedLocations = (Location[])deserializedItems[1];
 
       Location deserializedLocation1 = deserializedLocations[0];
       Location deserializedLocation2 = deserializedLocations[1];

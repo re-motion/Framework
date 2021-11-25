@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     {
       base.Check(expectedState);
 
-      CollectionChangeState collectionChangeState = (CollectionChangeState) expectedState;
+      CollectionChangeState collectionChangeState = (CollectionChangeState)expectedState;
 
       if (!ReferenceEquals(_domainObject, collectionChangeState.DomainObject))
       {

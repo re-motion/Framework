@@ -27,14 +27,14 @@ namespace Remotion.Data.DomainObjects.UnitTests
   {
     public static IDomainObjectCollectionData GetDataStrategy (DomainObjectCollection collection)
     {
-      return (IDomainObjectCollectionData) PrivateInvoke.GetNonPublicField(collection, "_dataStrategy");
+      return (IDomainObjectCollectionData)PrivateInvoke.GetNonPublicField(collection, "_dataStrategy");
     }
 
     public static T GetDataStrategyAndCheckType<T> (DomainObjectCollection collection) where T : IDomainObjectCollectionData
     {
       var data = GetDataStrategy(collection);
       Assert.That(data, Is.InstanceOf(typeof(T)));
-      return (T) data;
+      return (T)data;
     }
 
     public static void SetDataStrategy (DomainObjectCollection collection, IDomainObjectCollectionData dataStrategy)
@@ -46,12 +46,12 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       object data = GetWrappedData(decorator);
       Assert.That(data, Is.InstanceOf(typeof(T)));
-      return (T) data;
+      return (T)data;
     }
 
     public static IDomainObjectCollectionData GetWrappedData (DomainObjectCollectionDataDecoratorBase decorator)
     {
-      return (IDomainObjectCollectionData) PrivateInvoke.GetNonPublicField(decorator, "_wrappedData");
+      return (IDomainObjectCollectionData)PrivateInvoke.GetNonPublicField(decorator, "_wrappedData");
     }
 
     public static void CheckAssociatedCollectionStrategy (DomainObjectCollection collection, Type expectedRequiredItemType, RelationEndPointID expectedEndPointID)
@@ -67,7 +67,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
         RelationEndPointID expectedEndPointID)
     {
       Assert.That(domainObjectCollectionData, Is.TypeOf<ModificationCheckingDomainObjectCollectionDataDecorator>());
-      var checkingDecorator = (ModificationCheckingDomainObjectCollectionDataDecorator) domainObjectCollectionData;
+      var checkingDecorator = (ModificationCheckingDomainObjectCollectionDataDecorator)domainObjectCollectionData;
       Assert.That(checkingDecorator.RequiredItemType, Is.SameAs(expectedRequiredItemType));
 
       var delegator = GetWrappedDataAndCheckType<EndPointDelegatingDomainObjectCollectionData>(checkingDecorator);
@@ -125,7 +125,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       var checkingDecorator = GetDataStrategyAndCheckType<ModificationCheckingDomainObjectCollectionDataDecorator>(collection);
       var originalStrategy = GetWrappedData(checkingDecorator);
       if (originalStrategy is EventRaisingDomainObjectCollectionDataDecorator)
-        originalStrategy = GetWrappedData((EventRaisingDomainObjectCollectionDataDecorator) originalStrategy);
+        originalStrategy = GetWrappedData((EventRaisingDomainObjectCollectionDataDecorator)originalStrategy);
 
       var newStrategy = new ReadOnlyDomainObjectCollectionDataDecorator(originalStrategy);
       SetDataStrategy(collection, newStrategy);

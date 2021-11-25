@@ -41,7 +41,7 @@ namespace Remotion.Security.UnitTests
     [Test]
     public void IsNull_ReturnsTrue ()
     {
-      Assert.That(((IFunctionalSecurityStrategy) new NullFunctionalSecurityStrategy()).IsNull, Is.True);
+      Assert.That(((IFunctionalSecurityStrategy)new NullFunctionalSecurityStrategy()).IsNull, Is.True);
     }
   }
 }

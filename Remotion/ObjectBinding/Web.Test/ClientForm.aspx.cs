@@ -45,7 +45,7 @@ public class ClientForm : TestWxeBasePage
 
   protected ClientFormWxeFunction Function
   {
-    get { return (ClientFormWxeFunction) CurrentFunction; }
+    get { return (ClientFormWxeFunction)CurrentFunction; }
   }
 
 	private void Page_Load (object sender, EventArgs e)
@@ -69,7 +69,7 @@ public class ClientForm : TestWxeBasePage
         "TestTabbedPersonJobsUserControl.ascx");
     if (dataEditControl != null)
       dataEditControls.Add(dataEditControl);
-    _dataEditControls = (IDataEditControl[]) dataEditControls.ToArray();
+    _dataEditControls = (IDataEditControl[])dataEditControls.ToArray();
 
     Response.Cache.SetMaxAge(TimeSpan.Zero);
     Response.Cache.SetCacheability(HttpCacheability.NoCache);
@@ -89,7 +89,7 @@ public class ClientForm : TestWxeBasePage
     view.Icon = icon;
     MultiView.Views.Add(view);
 
-    UserControl control = (UserControl) this.LoadControl(path);
+    UserControl control = (UserControl)this.LoadControl(path);
     control.ID = IdentifierGenerator.HtmlStyle.GetValidIdentifier(Path.GetFileNameWithoutExtension(path));
 
     //EgoFormPageUserControl formPageControl = control as EgoFormPageUserControl;
@@ -101,7 +101,7 @@ public class ClientForm : TestWxeBasePage
     IDataEditControl dataEditControl = control as IDataEditControl;
     if (dataEditControl != null)
     {
-      dataEditControl.BusinessObject = (IBusinessObject) Function.Object;
+      dataEditControl.BusinessObject = (IBusinessObject)Function.Object;
       dataEditControl.LoadValues(IsPostBack);
       dataEditControl.Mode = Function.ReadOnly ? DataSourceMode.Read : DataSourceMode.Edit;
       return dataEditControl;

@@ -82,7 +82,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest
       if (IsReturningPostBack)
         return;
 
-      this.ExecuteFunctionExternal(new WindowFunction(), "_blank", WindowOpenFeatures, (Control) sender, true, false, false);
+      this.ExecuteFunctionExternal(new WindowFunction(), "_blank", WindowOpenFeatures, (Control)sender, true, false, false);
     }
   }
 }

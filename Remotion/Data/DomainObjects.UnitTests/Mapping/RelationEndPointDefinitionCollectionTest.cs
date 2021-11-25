@@ -167,7 +167,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void ContainsNullRelationEndPointDefinitions ()
     {
       Assert.That(
-          () => _collection.Contains((IRelationEndPointDefinition) null),
+          () => _collection.Contains((IRelationEndPointDefinition)null),
           Throws.InstanceOf<ArgumentNullException>());
     }
 

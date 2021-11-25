@@ -41,7 +41,7 @@ namespace Remotion.Utilities
       if (methodInfo == null)
         throw new InvalidOperationException("Type 'System.Exception' does not contain method InternalPreserveStackTrace().");
 
-      return (Action<Exception>) methodInfo.CreateDelegate(typeof(Action<Exception>));
+      return (Action<Exception>)methodInfo.CreateDelegate(typeof(Action<Exception>));
     }
   }
 }

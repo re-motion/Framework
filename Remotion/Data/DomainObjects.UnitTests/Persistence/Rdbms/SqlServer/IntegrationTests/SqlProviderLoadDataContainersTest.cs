@@ -74,9 +74,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void LoadDataContainers_WithInvalidClassID ()
     {
-      ObjectID id1 = new ObjectID("Distributor", (Guid) DomainObjectIDs.Partner1.Value);
-      ObjectID id2 = new ObjectID("Distributor", (Guid) DomainObjectIDs.Partner2.Value);
-      ObjectID id3 = new ObjectID("Distributor", (Guid) DomainObjectIDs.Customer1.Value);
+      ObjectID id1 = new ObjectID("Distributor", (Guid)DomainObjectIDs.Partner1.Value);
+      ObjectID id2 = new ObjectID("Distributor", (Guid)DomainObjectIDs.Partner2.Value);
+      ObjectID id3 = new ObjectID("Distributor", (Guid)DomainObjectIDs.Customer1.Value);
       Assert.That(
           () => Provider.LoadDataContainers(new[] { id1, id2, id3 }).ToList(),
           Throws.InstanceOf<PersistenceException>()

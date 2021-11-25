@@ -144,7 +144,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
         var serializer = new DataContractJsonSerializer(typeof(GithubResponse));
         using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(githubResponseJson)))
         {
-          var githubResponse = (GithubResponse?) serializer.ReadObject(stream);
+          var githubResponse = (GithubResponse?)serializer.ReadObject(stream);
           Assertion.IsNotNull(githubResponse, "Could not parse the result of the GitHub API. The API might have changed.");
           return githubResponse;
         }

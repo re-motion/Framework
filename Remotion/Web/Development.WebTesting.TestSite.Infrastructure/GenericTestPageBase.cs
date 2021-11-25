@@ -97,7 +97,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.Infrastructure
       int typeInt;
       GenericTestPageType pageType;
       if (type != null && int.TryParse(type, out typeInt))
-        pageType = (GenericTestPageType) typeInt;
+        pageType = (GenericTestPageType)typeInt;
       else
         pageType = GenericTestPageType.Default;
 

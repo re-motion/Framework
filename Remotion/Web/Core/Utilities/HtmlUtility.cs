@@ -31,7 +31,7 @@ namespace Remotion.Web.Utilities
       string[] htmlParameters = new string[nonHtmlParameters.Length];
       for (int i = 0; i < nonHtmlParameters.Length; ++i)
         htmlParameters[i] = WebString.CreateFromText(nonHtmlParameters[i].ToString()).ToString(WebStringEncoding.HtmlWithTransformedLineBreaks);
-      return string.Format(htmlFormatString, (object[]) htmlParameters);
+      return string.Format(htmlFormatString, (object[])htmlParameters);
     }
 
 #if !NETFRAMEWORK

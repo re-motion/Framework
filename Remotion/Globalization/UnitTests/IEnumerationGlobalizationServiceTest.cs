@@ -41,7 +41,7 @@ namespace Remotion.Globalization.UnitTests
       Assert.That(service, Is.Not.Null);
       Assert.That(service, Is.TypeOf(typeof(CompoundEnumerationGlobalizationService)));
       Assert.That(
-          ((CompoundEnumerationGlobalizationService) service).EnumerationGlobalizationServices.Select(s => s.GetType()),
+          ((CompoundEnumerationGlobalizationService)service).EnumerationGlobalizationServices.Select(s => s.GetType()),
           Is.EqualTo(
               new[]
               {

@@ -438,7 +438,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       ITransaction transaction = TestableClientTransaction.ToITransaction();
 
-      Assert.That(((ClientTransactionWrapper) transaction).WrappedInstance, Is.SameAs(TestableClientTransaction));
+      Assert.That(((ClientTransactionWrapper)transaction).WrappedInstance, Is.SameAs(TestableClientTransaction));
     }
 
     [Test]

@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects
       {
         ArgumentUtility.CheckNotNullOrEmpty("key", key);
 
-        return (IClientTransactionExtension) BaseGetObject(key);
+        return (IClientTransactionExtension)BaseGetObject(key);
       }
     }
 
@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects
     /// <returns>The <see cref="IClientTransactionExtension"/> of the given <paramref name="index"/>.</returns>
     public IClientTransactionExtension this[int index]
     {
-      get { return (IClientTransactionExtension) BaseGetObject(index); }
+      get { return (IClientTransactionExtension)BaseGetObject(index); }
     }
 
     string IClientTransactionExtension.Key

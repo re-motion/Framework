@@ -109,7 +109,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
     {
       ArgumentUtility.CheckNotNull("dataReader", dataReader);
 
-      var id = (ObjectID) _idProperty.CombineValue(columnValueReader);
+      var id = (ObjectID)_idProperty.CombineValue(columnValueReader);
       if (id == null)
         return null;
 

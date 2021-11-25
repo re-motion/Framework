@@ -45,7 +45,7 @@ namespace Remotion.Reflection
       ArgumentUtility.CheckNotNullOrEmpty("signature", signature);
 
       const BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
-      var candidates = (MethodInfo[]) declaringType.GetMember(name, MemberTypes.Method, flags);
+      var candidates = (MethodInfo[])declaringType.GetMember(name, MemberTypes.Method, flags);
       if (candidates.Length == 1)
       {
         return candidates[0];

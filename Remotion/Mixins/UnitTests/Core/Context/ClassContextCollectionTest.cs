@@ -59,7 +59,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     [Test]
     public void Initialization_Enumerable ()
     {
-      var collection = new ClassContextCollection(((IEnumerable<ClassContext>) new[] { _ccObjectWithMixin, _ccString }));
+      var collection = new ClassContextCollection(((IEnumerable<ClassContext>)new[] { _ccObjectWithMixin, _ccString }));
       Assert.That(collection, Is.EquivalentTo(new[] { _ccObjectWithMixin, _ccString }));
     }
 
@@ -213,14 +213,14 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     [Test]
     public void GetEnumerator ()
     {
-      var enumerable = (IEnumerable<ClassContext>) _collectionWithObjectAndString;
+      var enumerable = (IEnumerable<ClassContext>)_collectionWithObjectAndString;
       Assert.That(enumerable.ToArray(), Is.EquivalentTo(new[] { _ccObjectWithMixin, _ccString }));
     }
 
     [Test]
     public void NonGeneric_GetEnumerator ()
     {
-      var enumerable = (IEnumerable) _collectionWithObjectAndString;
+      var enumerable = (IEnumerable)_collectionWithObjectAndString;
       var enumerator = enumerable.GetEnumerator();
       Assert.That(enumerator.MoveNext(), Is.True);
     }
@@ -240,26 +240,26 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     public void NonGeneric_CopyTo ()
     {
       var classContexts = new object[5];
-      ((ICollection) _collectionWithObjectAndString).CopyTo(classContexts, 1);
+      ((ICollection)_collectionWithObjectAndString).CopyTo(classContexts, 1);
       Assert.That(classContexts, Is.EquivalentTo(new[] { _ccObjectWithMixin, _ccString, null, null, null }));
     }
 
     [Test]
     public void SyncRoot ()
     {
-      Assert.That(((ICollection) _collectionWithObjectAndString).SyncRoot, Is.Not.Null);
+      Assert.That(((ICollection)_collectionWithObjectAndString).SyncRoot, Is.Not.Null);
     }
 
     [Test]
     public void IsSynchronized ()
     {
-      Assert.That(((ICollection) _collectionWithObjectAndString).IsSynchronized, Is.False);
+      Assert.That(((ICollection)_collectionWithObjectAndString).IsSynchronized, Is.False);
     }
 
     [Test]
     public void IsReadOnly ()
     {
-      Assert.That(((ICollection<ClassContext>) _collectionWithObjectAndString).IsReadOnly, Is.True);
+      Assert.That(((ICollection<ClassContext>)_collectionWithObjectAndString).IsReadOnly, Is.True);
     }
 
     [Test]

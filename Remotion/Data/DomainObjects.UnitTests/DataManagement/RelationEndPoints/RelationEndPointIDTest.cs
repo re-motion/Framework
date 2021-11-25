@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void Create_WithPropertyIdentifier_NullPropertyName ()
     {
       Assert.That(
-          () => RelationEndPointID.Create(_objectID, (string) null),
+          () => RelationEndPointID.Create(_objectID, (string)null),
           Throws.InstanceOf<ArgumentNullException>());
     }
 
@@ -142,7 +142,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var instance = DomainObjectMother.CreateFakeObject<TargetClassForPersistentMixin>();
 // ReSharper disable SuspiciousTypeConversion.Global
-      var endPointID1 = RelationEndPointID.Resolve(instance, t => ((IMixinAddingPersistentProperties) t).RelationProperty);
+      var endPointID1 = RelationEndPointID.Resolve(instance, t => ((IMixinAddingPersistentProperties)t).RelationProperty);
 // ReSharper restore SuspiciousTypeConversion.Global
       var endPointID2 = RelationEndPointID.Resolve(instance, t => Mixin.Get<MixinAddingPersistentProperties>(t).RelationProperty);
 
@@ -158,7 +158,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void Resolve_Expression_Interface ()
     {
       var instance = DomainObjectMother.CreateFakeObject<Order>(_objectID);
-      var endPointID = RelationEndPointID.Resolve(instance, o => ((IOrder) o).OrderTicket);
+      var endPointID = RelationEndPointID.Resolve(instance, o => ((IOrder)o).OrderTicket);
 
       Assert.That(endPointID.Definition, Is.EqualTo(_endPointDefinition));
       Assert.That(endPointID.ObjectID, Is.EqualTo(_objectID));
@@ -169,7 +169,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var instance = DomainObjectMother.CreateFakeObject<Order>(_objectID);
       Assert.That(
-          () => RelationEndPointID.Resolve(instance, o => ((OrderItem) (object) o).Product),
+          () => RelationEndPointID.Resolve(instance, o => ((OrderItem)(object)o).Product),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
 #if NETFRAMEWORK
@@ -368,8 +368,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void EqualityOperatorWithBothNull ()
     {
-      var nullID1 = (RelationEndPointID) null;
-      var nullID2 = (RelationEndPointID) null;
+      var nullID1 = (RelationEndPointID)null;
+      var nullID2 = (RelationEndPointID)null;
       Assert.That(nullID1 == nullID2, Is.True);
       Assert.That(nullID1 != nullID2, Is.False);
     }

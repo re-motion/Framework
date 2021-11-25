@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope();
 
       _folder1.FileSystemItems.EnsureDataComplete();
-      _collectionEndPoint = (DomainObjectCollectionEndPoint) GetEndPoint<StateUpdateRaisingDomainObjectCollectionEndPointDecorator>(RelationEndPointID.Resolve(_folder1, o => o.FileSystemItems)).InnerEndPoint;
+      _collectionEndPoint = (DomainObjectCollectionEndPoint)GetEndPoint<StateUpdateRaisingDomainObjectCollectionEndPointDecorator>(RelationEndPointID.Resolve(_folder1, o => o.FileSystemItems)).InnerEndPoint;
 
       _fileSystemItem1EndPoint = GetEndPoint<RealObjectEndPoint>(RelationEndPointID.Resolve(_fileSystemItem1, oi => oi.ParentFolder));
       _fileSystemItem2EndPoint = GetEndPoint<RealObjectEndPoint>(RelationEndPointID.Resolve(_fileSystemItem2, oi => oi.ParentFolder));
@@ -326,7 +326,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
     private T GetEndPoint<T> (RelationEndPointID endPointID) where T : IRelationEndPoint
     {
       var relationEndPointID = endPointID;
-      return (T) ClientTransactionTestHelper.GetDataManager(ClientTransaction.Current).GetRelationEndPointWithLazyLoad(relationEndPointID);
+      return (T)ClientTransactionTestHelper.GetDataManager(ClientTransaction.Current).GetRelationEndPointWithLazyLoad(relationEndPointID);
     }
 
     private void CheckOriginalData (params FileSystemItem[] expected)
@@ -341,15 +341,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
 
     private void CheckOriginalOppositeEndPoints (params RealObjectEndPoint[] expected)
     {
-      var loadState = (CompleteDomainObjectCollectionEndPointLoadState) DomainObjectCollectionEndPointTestHelper.GetLoadState(_collectionEndPoint);
-      var dataManager = (DomainObjectCollectionEndPointDataManager) loadState.DataManager;
+      var loadState = (CompleteDomainObjectCollectionEndPointLoadState)DomainObjectCollectionEndPointTestHelper.GetLoadState(_collectionEndPoint);
+      var dataManager = (DomainObjectCollectionEndPointDataManager)loadState.DataManager;
       Assert.That(dataManager.OriginalOppositeEndPoints, Is.EquivalentTo(expected));
     }
 
     private void CheckCurrentOppositeEndPoints (params RealObjectEndPoint[] expected)
     {
-      var loadState = (CompleteDomainObjectCollectionEndPointLoadState) DomainObjectCollectionEndPointTestHelper.GetLoadState(_collectionEndPoint);
-      var dataManager = (DomainObjectCollectionEndPointDataManager) loadState.DataManager;
+      var loadState = (CompleteDomainObjectCollectionEndPointLoadState)DomainObjectCollectionEndPointTestHelper.GetLoadState(_collectionEndPoint);
+      var dataManager = (DomainObjectCollectionEndPointDataManager)loadState.DataManager;
       Assert.That(dataManager.CurrentOppositeEndPoints, Is.EquivalentTo(expected));
     }
 

@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Cloning
     public virtual T GetCloneFor<T> (T domainObject)
         where T : DomainObject
     {
-      return (T) _clones.GetOrCreateValue(domainObject, _getCloneInternalFunc);
+      return (T)_clones.GetOrCreateValue(domainObject, _getCloneInternalFunc);
     }
 
     private DomainObject GetCloneInternal (DomainObject cloneTemplate)

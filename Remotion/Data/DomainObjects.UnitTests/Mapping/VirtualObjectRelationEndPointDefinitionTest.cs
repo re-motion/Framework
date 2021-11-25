@@ -78,7 +78,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       ClassDefinition employeeClassDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Employee));
       VirtualObjectRelationEndPointDefinition relationEndPointDefinition =
-          (VirtualObjectRelationEndPointDefinition) employeeClassDefinition.GetRelationEndPointDefinition(typeof(Employee) + ".Computer");
+          (VirtualObjectRelationEndPointDefinition)employeeClassDefinition.GetRelationEndPointDefinition(typeof(Employee) + ".Computer");
       Assert.That(relationEndPointDefinition.PropertyInfo, Is.EqualTo(PropertyInfoAdapter.Create(typeof(Employee).GetProperty("Computer"))));
     }
 

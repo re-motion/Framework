@@ -77,21 +77,21 @@ namespace Remotion.Data.DomainObjects.Configuration
     private MappingLoaderConfiguration GetMappingLoaderConfiguration ()
     {
       return
-          (MappingLoaderConfiguration) ConfigurationWrapper.Current.GetSection(ConfigKey + "/" + MappingLoaderPropertyName, false)
+          (MappingLoaderConfiguration)ConfigurationWrapper.Current.GetSection(ConfigKey + "/" + MappingLoaderPropertyName, false)
           ?? new MappingLoaderConfiguration();
     }
 
     private StorageConfiguration GetPersistenceConfiguration ()
     {
       return
-          (StorageConfiguration) ConfigurationWrapper.Current.GetSection(ConfigKey + "/" + StoragePropertyName, false)
+          (StorageConfiguration)ConfigurationWrapper.Current.GetSection(ConfigKey + "/" + StoragePropertyName, false)
           ?? new StorageConfiguration();
     }
 
     private QueryConfiguration GetQueryConfiguration ()
     {
       return
-          (QueryConfiguration) ConfigurationWrapper.Current.GetSection(ConfigKey + "/" + QueryPropertyName, false)
+          (QueryConfiguration)ConfigurationWrapper.Current.GetSection(ConfigKey + "/" + QueryPropertyName, false)
           ?? new QueryConfiguration();
     }
 

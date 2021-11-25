@@ -730,7 +730,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       Assert.That(_orderClass.DerivedClasses, Is.Not.Null);
       Assert.That(_orderClass.DerivedClasses.Count, Is.EqualTo(0));
-      Assert.That(((ICollection<ClassDefinition>) _orderClass.DerivedClasses).IsReadOnly, Is.True);
+      Assert.That(((ICollection<ClassDefinition>)_orderClass.DerivedClasses).IsReadOnly, Is.True);
     }
 
     [Test]
@@ -742,7 +742,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       Assert.That(companyDefinition.DerivedClasses.Count, Is.EqualTo(2));
       Assert.That(companyDefinition.DerivedClasses.Any(cd => cd.ID == "Customer"), Is.True);
       Assert.That(companyDefinition.DerivedClasses.Any(cd => cd.ID == "Partner"), Is.True);
-      Assert.That(((ICollection<ClassDefinition>) companyDefinition.DerivedClasses).IsReadOnly, Is.True);
+      Assert.That(((ICollection<ClassDefinition>)companyDefinition.DerivedClasses).IsReadOnly, Is.True);
     }
 
     [Test]
@@ -760,7 +760,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Client));
       var relationDefinition = classDefinition.GetRelationEndPointDefinition(typeof(Client).FullName + ".ParentClient").RelationDefinition;
-      var anonymousEndPointDefinition = (AnonymousRelationEndPointDefinition) relationDefinition.GetEndPointDefinition("Client", null);
+      var anonymousEndPointDefinition = (AnonymousRelationEndPointDefinition)relationDefinition.GetEndPointDefinition("Client", null);
 
       Assert.That(classDefinition.IsRelationEndPoint(anonymousEndPointDefinition), Is.False);
     }

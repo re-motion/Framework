@@ -29,7 +29,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
       var type = TypeFactory.GetConcreteType(typeof(ClassWithComposedInterface));
       Assert.That(type.GetInterfaces(), Has.Member(typeof(ClassWithComposedInterface.IComposedInterface)));
 
-      var instance = (ClassWithComposedInterface.IComposedInterface) ObjectFactory.Create<ClassWithComposedInterface>();
+      var instance = (ClassWithComposedInterface.IComposedInterface)ObjectFactory.Create<ClassWithComposedInterface>();
       Assert.That(instance.M1(), Is.EqualTo("ClassWithComposedInterface.M1"));
       Assert.That(instance.Method(), Is.EqualTo("MixinImplementingSimpleInterface.Method"));
     }
@@ -40,7 +40,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
       var type = TypeFactory.GetConcreteType(typeof(DerivedClassWithComposedInterface));
       Assert.That(type.GetInterfaces(), Has.Member(typeof(ClassWithComposedInterface.IComposedInterface)));
 
-      var instance = (ClassWithComposedInterface.IComposedInterface) ObjectFactory.Create<DerivedClassWithComposedInterface>();
+      var instance = (ClassWithComposedInterface.IComposedInterface)ObjectFactory.Create<DerivedClassWithComposedInterface>();
       Assert.That(instance.M1(), Is.EqualTo("ClassWithComposedInterface.M1"));
       Assert.That(instance.Method(), Is.EqualTo("MixinImplementingSimpleInterface.Method"));
     }
@@ -51,7 +51,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
       var type = TypeFactory.GetConcreteType(typeof(ClassDerivedFromBaseClassWithHasComleteInterface));
       Assert.That(type.GetInterfaces(), Has.Member(typeof(ClassDerivedFromBaseClassWithHasComleteInterface.IComposedInterface)));
 
-      var instance = (ClassDerivedFromBaseClassWithHasComleteInterface.IComposedInterface) ObjectFactory.Create<ClassDerivedFromBaseClassWithHasComleteInterface>();
+      var instance = (ClassDerivedFromBaseClassWithHasComleteInterface.IComposedInterface)ObjectFactory.Create<ClassDerivedFromBaseClassWithHasComleteInterface>();
       Assert.That(instance.M1(), Is.EqualTo("ClassDerivedFromBaseClassWithHasComleteInterface.M1"));
       Assert.That(instance.Method(), Is.EqualTo("MixinImplementingSimpleInterface.Method"));
     }
@@ -62,7 +62,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
       var type = TypeFactory.GetConcreteType(typeof(DerivedClassDerivedFromBaseClassWithHasComleteInterface));
       Assert.That(type.GetInterfaces(), Has.Member(typeof(ClassDerivedFromBaseClassWithHasComleteInterface.IComposedInterface)));
 
-      var instance = (ClassDerivedFromBaseClassWithHasComleteInterface.IComposedInterface) ObjectFactory.Create<DerivedClassDerivedFromBaseClassWithHasComleteInterface>();
+      var instance = (ClassDerivedFromBaseClassWithHasComleteInterface.IComposedInterface)ObjectFactory.Create<DerivedClassDerivedFromBaseClassWithHasComleteInterface>();
       Assert.That(instance.M1(), Is.EqualTo("ClassDerivedFromBaseClassWithHasComleteInterface.M1"));
       Assert.That(instance.Method(), Is.EqualTo("MixinImplementingSimpleInterface.Method"));
     }
@@ -86,7 +86,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
       var type = TypeFactory.GetConcreteType(typeof(GenericClassWithMembersWithComposedInterface<string>));
       Assert.That(type.GetInterfaces(), Has.Member(typeof(IComposedInterfaceForGenericClassWithMembersWithComposedInterface<string>)));
 
-      var instance = (IComposedInterfaceForGenericClassWithMembersWithComposedInterface<string>) ObjectFactory.Create<GenericClassWithComposedInterface<string>>();
+      var instance = (IComposedInterfaceForGenericClassWithMembersWithComposedInterface<string>)ObjectFactory.Create<GenericClassWithComposedInterface<string>>();
       Assert.That(instance.M1("v"), Is.EqualTo("GenericClassWithMembersWithComposedInterface.M1"));
       Assert.That(instance.Method("v"), Is.EqualTo("GenericMixinImplementingGenericInterfaceWithMembers.Method"));
     }
@@ -109,7 +109,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
       var type = TypeFactory.GetConcreteType(typeof(GenericClassWithMembersWithComposedInterfaceWithHasComposedInterface<string>));
       Assert.That(type.GetInterfaces(), Has.Member(typeof(IComposedInterfaceForGenericClassWithMembersWithComposedInterfaceHasComposedInterface<string>)));
 
-      var instance = (IComposedInterfaceForGenericClassWithMembersWithComposedInterfaceHasComposedInterface<string>) ObjectFactory.Create<GenericClassWithMembersWithComposedInterfaceWithHasComposedInterface<string>>();
+      var instance = (IComposedInterfaceForGenericClassWithMembersWithComposedInterfaceHasComposedInterface<string>)ObjectFactory.Create<GenericClassWithMembersWithComposedInterfaceWithHasComposedInterface<string>>();
       Assert.That(instance.M1("v"), Is.EqualTo("GenericClassWithMembersWithComposedInterfaceWithHasComposedInterface.M1"));
       Assert.That(instance.Method("v"), Is.EqualTo("GenericMixinImplementingGenericInterfaceWithMembers.Method"));
     }

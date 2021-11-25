@@ -164,19 +164,19 @@ namespace Remotion.Web.ExecutionEngine
       {
         if (member is FieldInfo)
         {
-          FieldInfo fieldInfo = (FieldInfo) member;
-          Add((WxeStep) fieldInfo.GetValue(this)!);
+          FieldInfo fieldInfo = (FieldInfo)member;
+          Add((WxeStep)fieldInfo.GetValue(this)!);
         }
         else if (member is MethodInfo)
         {
-          MethodInfo methodInfo = (MethodInfo) member;
+          MethodInfo methodInfo = (MethodInfo)member;
           Add(this, methodInfo);
         }
         else if (member is Type)
         {
-          Type subtype = (Type) member;
+          Type subtype = (Type)member;
           if (typeof(WxeStep).IsAssignableFrom(subtype))
-            Add((WxeStep) Activator.CreateInstance(subtype)!);
+            Add((WxeStep)Activator.CreateInstance(subtype)!);
         }
       }
     }

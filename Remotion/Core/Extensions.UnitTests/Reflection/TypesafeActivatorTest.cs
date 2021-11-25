@@ -63,7 +63,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
     public void TestWithUntypedANull ()
     {
       Base a = null;
-      TestClass testObject = (TestClass) TypesafeActivator.CreateInstance(typeof(TestClass)).With(a);
+      TestClass testObject = (TestClass)TypesafeActivator.CreateInstance(typeof(TestClass)).With(a);
       Assert.That(testObject.InvocationType, Is.EqualTo(typeof(Base)));
     }
 

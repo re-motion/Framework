@@ -48,7 +48,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest
 
     private void SimplePostBackOnClick (object sender, EventArgs eventArgs)
     {
-      var frameFunction = ((FrameFunction) CurrentFunction);
+      var frameFunction = ((FrameFunction)CurrentFunction);
       if (frameFunction.AlwaysRefreshMain)
         RefreshMainFrame();
     }
@@ -61,7 +61,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest
     private void LoadWindowFunctionInNewWindowOnClick (object sender, EventArgs eventArgs)
     {
       if (!IsReturningPostBack)
-        this.ExecuteFunctionExternal(new WindowFunction(), "_blank", WindowOpenFeatures, (Control) sender, true, false, false);
+        this.ExecuteFunctionExternal(new WindowFunction(), "_blank", WindowOpenFeatures, (Control)sender, true, false, false);
       else if (ReturningFunction.Variables["Refresh"] != null)
         RefreshMainFrame();
     }

@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     [Test]
     public void ExpandToAllRelatedObjects ()
     {
-      var result = ((IDataManagementCommand) _command).ExpandToAllRelatedObjects();
+      var result = ((IDataManagementCommand)_command).ExpandToAllRelatedObjects();
       Assert.That(result.GetNestedCommands(), Is.EqualTo(new[] { _command }));
     }
   }

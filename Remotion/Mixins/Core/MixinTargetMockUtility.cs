@@ -75,7 +75,7 @@ namespace Remotion.Mixins
       ArgumentUtility.CheckNotNull("mixin", mixin);
       ArgumentUtility.CheckNotNull("targetMock", targetMock);
 
-      ((IInitializableMixin) mixin).Initialize(targetMock, null, false);
+      ((IInitializableMixin)mixin).Initialize(targetMock, null, false);
     }
 
     /// <summary>
@@ -153,7 +153,7 @@ namespace Remotion.Mixins
         where TTarget : class
     {
       ArgumentUtility.CheckNotNull("mixin", mixin);
-      ((IInitializableMixin) mixin).Initialize(targetMock, null, true);
+      ((IInitializableMixin)mixin).Initialize(targetMock, null, true);
     }
 
     /// <summary>
@@ -170,7 +170,7 @@ namespace Remotion.Mixins
         where TNext : class
     {
       ArgumentUtility.CheckNotNull("mixin", mixin);
-      ((IInitializableMixin) mixin).Initialize(targetMock, nextMock, true);
+      ((IInitializableMixin)mixin).Initialize(targetMock, nextMock, true);
     }
   }
 }

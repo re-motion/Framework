@@ -154,7 +154,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
     [Test]
     public void GetStoredProcedureResult ()
     {
-      var orders = (OrderCollection) QueryManager.GetCollection(QueryFactory.CreateQueryFromConfiguration("StoredProcedureQuery")).ToCustomCollection();
+      var orders = (OrderCollection)QueryManager.GetCollection(QueryFactory.CreateQueryFromConfiguration("StoredProcedureQuery")).ToCustomCollection();
 
       Assert.IsNotNull(orders, "OrderCollection is null");
       Assert.AreEqual(2, orders.Count, "Order count");
@@ -167,7 +167,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
     {
       var query = QueryFactory.CreateQueryFromConfiguration("StoredProcedureQueryWithParameter");
       query.Parameters.Add("@customerID", DomainObjectIDs.Customer1.Value);
-      var orders = (OrderCollection) QueryManager.GetCollection(query).ToCustomCollection();
+      var orders = (OrderCollection)QueryManager.GetCollection(query).ToCustomCollection();
 
       Assert.IsNotNull(orders, "OrderCollection is null");
       Assert.AreEqual(2, orders.Count, "Order count");
@@ -180,7 +180,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
     {
       DomainObjectIDs.Order1.GetObject<Order>(); // ensure Order1 already exists in transaction
 
-      var orders = (OrderCollection) QueryManager.GetCollection(QueryFactory.CreateQueryFromConfiguration("StoredProcedureQuery")).ToCustomCollection();
+      var orders = (OrderCollection)QueryManager.GetCollection(QueryFactory.CreateQueryFromConfiguration("StoredProcedureQuery")).ToCustomCollection();
       Assert.AreEqual(2, orders.Count, "Order count");
 
       foreach (Order order in orders)

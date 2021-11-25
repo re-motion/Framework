@@ -75,8 +75,8 @@ namespace Remotion.Data.DomainObjects.UnitTests
         AppDomainRunner.Run(
             delegate (object[] args)
             {
-              string directory = (string) args[0];
-              string assemblyPath = (string) args[1];
+              string directory = (string)args[0];
+              string assemblyPath = (string)args[1];
 
               Assembly assembly = Assembly.LoadFile(assemblyPath);
               Assert.That(Path.GetDirectoryName(assembly.Location), Is.EqualTo(directory));

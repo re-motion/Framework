@@ -145,7 +145,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
       IBusinessObjectReferenceProperty property = DeletePropertyWithoutMixing("NoDeleteObjectService");
 
       businessObjectClassWithIdentityMock.Setup(_ => _.BusinessObjectProvider).Returns(businessObjectProviderMock.Object).Verifiable();
-      businessObjectProviderMock.Setup(_ => _.GetService(typeof(IDeleteObjectService))).Returns((IBusinessObjectService) null).Verifiable();
+      businessObjectProviderMock.Setup(_ => _.GetService(typeof(IDeleteObjectService))).Returns((IBusinessObjectService)null).Verifiable();
       businessObjectClassServiceMock.Setup(_ => _.GetBusinessObjectClass(typeof(ClassFromOtherBusinessObjectImplementation)))
           .Returns(businessObjectClassWithIdentityMock.Object)
           .Verifiable();

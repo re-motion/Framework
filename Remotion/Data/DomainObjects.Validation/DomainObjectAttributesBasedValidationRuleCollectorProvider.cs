@@ -100,12 +100,12 @@ namespace Remotion.Data.DomainObjects.Validation
                   Assertion.IsTrue(t.IsInterface);
                   return t.GetProperties();
                 })
-            .Select(p => (IPropertyInformation) PropertyInfoAdapter.Create(p))
+            .Select(p => (IPropertyInformation)PropertyInfoAdapter.Create(p))
             .Select(p => new { InterfaceProperty = p, ImplementationProperty = Assertion.IsNotNull(p.FindInterfaceImplementation(annotatedType)) })
             .ToList();
 
         var annotatedProperties = annotatedType.GetProperties(PropertyBindingFlags | BindingFlags.DeclaredOnly)
-            .Select(p => (IPropertyInformation) PropertyInfoAdapter.Create(p))
+            .Select(p => (IPropertyInformation)PropertyInfoAdapter.Create(p))
             .Where(p => p.IsOriginalDeclaration())
             .Where(p => HasValidationRulesOnProperty(p.AsRuntimePropertyInfo()));
         var annotatedPropertiesSet = new HashSet<IPropertyInformation>(annotatedProperties);

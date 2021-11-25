@@ -257,7 +257,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
 
       _tab3 = new Mock<IMenuTab>();
       _tab3.Setup(stub => stub.ItemID).Returns("Tab3");
-      _tab3.Setup(stub => stub.Text).Returns((string) null);
+      _tab3.Setup(stub => stub.Text).Returns((string)null);
       _tab3.Setup(stub => stub.Icon).Returns(new IconInfo());
       _tab3.Setup(stub => stub.EvaluateEnabled()).Returns(true);
       _tab3.Setup(stub => stub.GetPostBackClientEvent()).Returns(_pageStub.Object.ClientScript.GetPostBackClientHyperlink(_webTabStrip.Object, _tab3.Object.ItemID));
@@ -290,7 +290,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
 
       for (int i = 0; i < itemCount; i++)
       {
-        IMenuTab tab = (IMenuTab) tabs[i];
+        IMenuTab tab = (IMenuTab)tabs[i];
         bool isLastItem = (i == itemCount - 1);
 
         var item = list.GetAssertedChildElement("li", i);

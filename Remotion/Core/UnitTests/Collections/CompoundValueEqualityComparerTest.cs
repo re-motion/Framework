@@ -62,9 +62,9 @@ namespace Remotion.UnitTests.Collections
 
       Assert.That(comparer.Equals(testClass, objNull), Is.False);
       Assert.That(comparer.Equals(testClass, obj), Is.False);
-      Assert.That(comparer.Equals(testClass, (object) testClass), Is.True);
-      Assert.That(comparer.Equals(testClass, (object) testClassCopy), Is.True);
-      Assert.That(comparer.Equals(testClass, (object) testClass2), Is.False);
+      Assert.That(comparer.Equals(testClass, (object)testClass), Is.True);
+      Assert.That(comparer.Equals(testClass, (object)testClassCopy), Is.True);
+      Assert.That(comparer.Equals(testClass, (object)testClass2), Is.False);
     }
 
 
@@ -115,7 +115,7 @@ namespace Remotion.UnitTests.Collections
     {
       if(obj is ComparableTestClass)
       {
-        if(Object.Equals(((ComparableTestClass) obj).Number,Number))
+        if(Object.Equals(((ComparableTestClass)obj).Number,Number))
         {
           return true;
         }

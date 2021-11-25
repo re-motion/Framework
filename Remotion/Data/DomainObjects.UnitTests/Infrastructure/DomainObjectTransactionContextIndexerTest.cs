@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 
       var item = indexer[tx];
       Assert.That(item, Is.InstanceOf(typeof(DomainObjectTransactionContext)));
-      Assert.That(((DomainObjectTransactionContext) item).DomainObject, Is.SameAs(order));
+      Assert.That(((DomainObjectTransactionContext)item).DomainObject, Is.SameAs(order));
       Assert.That(item.ClientTransaction, Is.SameAs(tx));
     }
 

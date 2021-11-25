@@ -51,7 +51,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
       ResponseMock.InSequence(sequence).Setup(mock => mock.Redirect("~/destination.wxe")).Callback((string url) => WxeThreadAbortHelper.Abort()).Verifiable();
       ExecutionStateContextMock.InSequence(sequence)
           .Setup(mock => mock.SetExecutionState(It.IsNotNull<PostProcessingSubFunctionState>()))
-          .Callback((IExecutionState executionState) => CheckExecutionState((PostProcessingSubFunctionState) executionState))
+          .Callback((IExecutionState executionState) => CheckExecutionState((PostProcessingSubFunctionState)executionState))
           .Verifiable();
 
       try

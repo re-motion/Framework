@@ -109,7 +109,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
 
       using (var p = Process.Start(_dockerExeFullPath, $"inspect {containerName}"))
       {
-        p.WaitForExit((int) _commandTimeout.TotalMilliseconds);
+        p.WaitForExit((int)_commandTimeout.TotalMilliseconds);
 
         return p.ExitCode == 0;
       }

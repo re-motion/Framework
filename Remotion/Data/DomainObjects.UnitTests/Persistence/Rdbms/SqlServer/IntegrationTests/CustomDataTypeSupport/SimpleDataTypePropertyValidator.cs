@@ -71,7 +71,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       if (propertyValue == null)
         return;
 
-      if (((SimpleDataType) propertyValue).StringValue.Length > maxLength.Value)
+      if (((SimpleDataType)propertyValue).StringValue.Length > maxLength.Value)
       {
         string message = string.Format(
             "Value for property '{0}' of domain object '{1}' is too long. Maximum number of characters: {2}.",

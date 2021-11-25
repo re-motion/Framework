@@ -75,7 +75,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
         classDefinition.Committing += (sender, e) =>
         {
           commitOnClassWasCalled = true;
-          Assert.That(GetDataContainer((DomainObject) sender).HasBeenMarkedChanged, Is.True);
+          Assert.That(GetDataContainer((DomainObject)sender).HasBeenMarkedChanged, Is.True);
         };
         combination.AttachState(state);
 
@@ -99,7 +99,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
         classDefinition.Committing += (sender, e) =>
         {
           commitOnClassWasCalled = true;
-          Assert.That(GetDataContainer((DomainObject) sender).HasBeenMarkedChanged, Is.True);
+          Assert.That(GetDataContainer((DomainObject)sender).HasBeenMarkedChanged, Is.True);
         };
         combination.ClearStates();
         combination.AttachState(property[EnumWrapper.Get(PaymentState.None).Name]);

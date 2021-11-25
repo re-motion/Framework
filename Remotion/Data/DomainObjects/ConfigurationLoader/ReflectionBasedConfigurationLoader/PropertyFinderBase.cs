@@ -189,14 +189,14 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
           FindPropertiesFilter,
           null);
 
-      var propertyInfos = Array.ConvertAll(memberInfos, input => PropertyInfoAdapter.Create((PropertyInfo) input));
+      var propertyInfos = Array.ConvertAll(memberInfos, input => PropertyInfoAdapter.Create((PropertyInfo)input));
 
       return propertyInfos;
     }
 
     private bool FindPropertiesFilter (MemberInfo member, object filterCriteria)
     {
-      return FindPropertiesFilter(PropertyInfoAdapter.Create((PropertyInfo) member));
+      return FindPropertiesFilter(PropertyInfoAdapter.Create((PropertyInfo)member));
     }
 
     private static HashSet<IMethodInformation> GetExplicitInterfaceImplementations (Type type)

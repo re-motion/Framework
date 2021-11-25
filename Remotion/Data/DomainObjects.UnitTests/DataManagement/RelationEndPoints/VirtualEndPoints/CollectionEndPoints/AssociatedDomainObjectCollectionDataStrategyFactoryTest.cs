@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var result = _factory.CreateDataStrategyForEndPoint(ordersEndPointID);
 
       Assert.That(result, Is.TypeOf<ModificationCheckingDomainObjectCollectionDataDecorator>());
-      var checkingDecorator = (ModificationCheckingDomainObjectCollectionDataDecorator) result;
+      var checkingDecorator = (ModificationCheckingDomainObjectCollectionDataDecorator)result;
       Assert.That(checkingDecorator.RequiredItemType, Is.SameAs(typeof(Order)));
 
       var delegator = DomainObjectCollectionDataTestHelper.GetWrappedDataAndCheckType<EndPointDelegatingDomainObjectCollectionData>(checkingDecorator);

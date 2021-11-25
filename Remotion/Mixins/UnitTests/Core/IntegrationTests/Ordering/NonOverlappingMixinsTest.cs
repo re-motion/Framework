@@ -29,7 +29,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
 
       Assert.That(instance.Method1(), Is.EqualTo("MixinA.Method1 - C.Method1"));
       Assert.That(instance.Method2(), Is.EqualTo("MixinB.Method2 - C.Method2"));
-      Assert.That(actual: ((IMixinC) instance).Method3(), expression: Is.EqualTo("MixinC.Method3"));
+      Assert.That(actual: ((IMixinC)instance).Method3(), expression: Is.EqualTo("MixinC.Method3"));
 
       CheckOrderedMixinTypes(instance, typeof(MixinA), typeof(MixinB), typeof(MixinC));
     }
@@ -43,7 +43,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
 
       Assert.That(instance1.Method1(), Is.EqualTo("MixinA.Method1 - C.Method1"));
       Assert.That(instance1.Method2(), Is.EqualTo("MixinB.Method2 - C.Method2"));
-      Assert.That(((IMixinC) instance1).Method3(), Is.EqualTo("MixinC.Method3"));
+      Assert.That(((IMixinC)instance1).Method3(), Is.EqualTo("MixinC.Method3"));
 
       CheckOrderedMixinTypes(instance1, typeof(MixinB), typeof(MixinA), typeof(MixinC));
 
@@ -62,7 +62,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
 
       Assert.That(instance.Method1(), Is.EqualTo("MixinA.Method1 - C.Method1"));
       Assert.That(instance.Method2(), Is.EqualTo("MixinB.Method2 - C.Method2"));
-      Assert.That(((IMixinC) instance).Method3(), Is.EqualTo("MixinC.Method3"));
+      Assert.That(((IMixinC)instance).Method3(), Is.EqualTo("MixinC.Method3"));
 
       CheckOrderedMixinTypes(instance, typeof(MixinC), typeof(MixinA), typeof(MixinB));
 

@@ -57,7 +57,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     {
       var cursorInformation = new CursorInfoDto
                               {
-                                  Size = (uint) Marshal.SizeOf(typeof(CursorInfoDto))
+                                  Size = (uint)Marshal.SizeOf(typeof(CursorInfoDto))
                               };
 
       if (!GetCursorInfo(ref cursorInformation))

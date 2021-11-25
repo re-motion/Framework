@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
       base.SetUp();
 
       _transaction = new TestableClientTransaction();
-      _order1 = (Order) LifetimeService.GetObject(_transaction, DomainObjectIDs.Order1, false);
+      _order1 = (Order)LifetimeService.GetObject(_transaction, DomainObjectIDs.Order1, false);
       _transactionEventSinkWithMock = MockRepository.GenerateStrictMock<IClientTransactionEventSink>();
 
       _deleteOrder1Command = new DeleteCommand(_transaction, _order1, _transactionEventSinkWithMock);
@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
 
       mockRepository.ReplayAll();
 
-      var compositeCommand = (CompositeCommand) PrivateInvoke.GetNonPublicField(_deleteOrder1Command, "_endPointDeleteCommands");
+      var compositeCommand = (CompositeCommand)PrivateInvoke.GetNonPublicField(_deleteOrder1Command, "_endPointDeleteCommands");
       var compositeCommandWithMockStep = compositeCommand.CombineWith(endPointCommandMock);
       PrivateInvoke.SetNonPublicField(_deleteOrder1Command, "_endPointDeleteCommands", compositeCommandWithMockStep);
 
@@ -119,7 +119,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
 
       mockRepository.ReplayAll();
 
-      var compositeCommand = (CompositeCommand) PrivateInvoke.GetNonPublicField(_deleteOrder1Command, "_endPointDeleteCommands");
+      var compositeCommand = (CompositeCommand)PrivateInvoke.GetNonPublicField(_deleteOrder1Command, "_endPointDeleteCommands");
       var compositeCommandWithMockStep = compositeCommand.CombineWith(endPointCommandMock);
       PrivateInvoke.SetNonPublicField(_deleteOrder1Command, "_endPointDeleteCommands", compositeCommandWithMockStep);
 
@@ -202,9 +202,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
     private IDataManagementCommand UnwrapCommand (IDataManagementCommand c)
     {
       if (c is RealObjectEndPointRegistrationCommandDecorator)
-        return ((RealObjectEndPointRegistrationCommandDecorator) c).DecoratedCommand;
+        return ((RealObjectEndPointRegistrationCommandDecorator)c).DecoratedCommand;
       else if (c is VirtualEndPointStateUpdatedRaisingCommandDecorator)
-        return ((VirtualEndPointStateUpdatedRaisingCommandDecorator) c).DecoratedCommand;
+        return ((VirtualEndPointStateUpdatedRaisingCommandDecorator)c).DecoratedCommand;
       else
         return c;
     }

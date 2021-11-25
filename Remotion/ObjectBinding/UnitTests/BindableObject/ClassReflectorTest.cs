@@ -52,8 +52,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     {
       IClassReflector classReflector = new ClassReflector(_type, _businessObjectProvider, _metadataFactory, _bindableObjectGlobalizationService);
       Assert.That(classReflector.TargetType, Is.SameAs(_type));
-      Assert.That(((ClassReflector) classReflector).ConcreteType, Is.Not.SameAs(_type));
-      Assert.That(((ClassReflector) classReflector).ConcreteType, Is.SameAs(MixinTypeUtility.GetConcreteMixedType(_type)));
+      Assert.That(((ClassReflector)classReflector).ConcreteType, Is.Not.SameAs(_type));
+      Assert.That(((ClassReflector)classReflector).ConcreteType, Is.SameAs(MixinTypeUtility.GetConcreteMixedType(_type)));
       Assert.That(classReflector.BusinessObjectProvider, Is.SameAs(_businessObjectProvider));
     }
 
@@ -68,7 +68,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       Assert.That(bindableObjectClass.GetPropertyDefinitions().Length, Is.EqualTo(1));
       Assert.That(bindableObjectClass.GetPropertyDefinitions()[0].Identifier, Is.EqualTo("Public"));
       Assert.That(
-          ((PropertyBase) bindableObjectClass.GetPropertyDefinitions()[0]).PropertyInfo.DeclaringType,
+          ((PropertyBase)bindableObjectClass.GetPropertyDefinitions()[0]).PropertyInfo.DeclaringType,
           Is.SameAs(TypeAdapter.Create(_type)));
       Assert.That(bindableObjectClass.GetPropertyDefinitions()[0].BusinessObjectProvider, Is.SameAs(_businessObjectProvider));
     }
@@ -226,9 +226,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       var bindableObjectClass = classReflector.GetMetadata();
       var derivedBusinessObject = ObjectFactory.Create<DerivedBusinessObjectClass>(ParamList.Empty);
 
-      ((BaseBusinessObjectClass) derivedBusinessObject).Public = "p";
+      ((BaseBusinessObjectClass)derivedBusinessObject).Public = "p";
       var propertyDefinition = bindableObjectClass.GetPropertyDefinition("Public");
-      var businessObject = (IBusinessObject) derivedBusinessObject;
+      var businessObject = (IBusinessObject)derivedBusinessObject;
       Assert.That(businessObject.GetProperty(propertyDefinition), Is.EqualTo("p"));
     }
 
@@ -250,9 +250,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
 
         Assert.That(derivedBusinessObject, Is.InstanceOf(typeof(IMixinAddingProperty)));
 
-        ((BaseBusinessObjectClass) derivedBusinessObject).Public = "p";
+        ((BaseBusinessObjectClass)derivedBusinessObject).Public = "p";
         var propertyDefinition = bindableObjectClass.GetPropertyDefinition("Public");
-        var businessObject = (IBusinessObject) derivedBusinessObject;
+        var businessObject = (IBusinessObject)derivedBusinessObject;
         Assert.That(businessObject.GetProperty(propertyDefinition), Is.EqualTo("p"));
       }
     }
@@ -273,11 +273,11 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
         var bindableObjectClass = classReflector.GetMetadata();
         var derivedBusinessObject = ObjectFactory.Create<DerivedBusinessObjectClass>(ParamList.Empty);
 
-        ((IMixinAddingProperty) derivedBusinessObject).MixedProperty = "p";
+        ((IMixinAddingProperty)derivedBusinessObject).MixedProperty = "p";
         var propertyDefinition = bindableObjectClass.GetPropertyDefinition("MixedProperty");
         Assert.That(propertyDefinition, Is.Not.Null);
 
-        var businessObject = (IBusinessObject) derivedBusinessObject;
+        var businessObject = (IBusinessObject)derivedBusinessObject;
         Assert.That(businessObject.GetProperty(propertyDefinition), Is.EqualTo("p"));
       }
     }
@@ -305,7 +305,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
         var propertyDefinition = bindableObjectClass.GetPropertyDefinition("Public");
         Assert.That(propertyDefinition, Is.Not.Null);
 
-        var businessObject = (IBusinessObject) derivedBusinessObject;
+        var businessObject = (IBusinessObject)derivedBusinessObject;
         Assert.That(businessObject.GetProperty(propertyDefinition), Is.EqualTo("pq"));
       }
     }

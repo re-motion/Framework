@@ -110,7 +110,7 @@ namespace Remotion.Web.UnitTests.Core.UI.SmartPageImplementation
       var page = new FakePageForAsyncPostBack();
       page.Load += delegate { throw expectedException; };
 
-      page.ScriptManager.AsyncPostBackError += (sender, e) => { ((ScriptManager) sender).AsyncPostBackErrorMessage = e.Exception.Message; };
+      page.ScriptManager.AsyncPostBackError += (sender, e) => { ((ScriptManager)sender).AsyncPostBackErrorMessage = e.Exception.Message; };
 
       Assert.That(() => page.ProcessRequest(), Throws.TypeOf<HttpUnhandledException>().With.InnerException.SameAs(expectedException));
       Assert.That(page.Context.Items[ControlHelper.AsyncPostBackErrorKey], Is.True);

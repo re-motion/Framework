@@ -40,7 +40,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
       var instance = serviceLocator.GetInstance(typeof(ITestType));
 
       Assert.That(instance, Is.TypeOf<TestCompound>());
-      var compoundInstance = (TestCompound) instance;
+      var compoundInstance = (TestCompound)instance;
       Assert.That(
           compoundInstance.InnerObjects.Select(c => c.GetType()),
           Is.EqualTo(new[] { typeof(TestImplementation1), typeof(TestImplementation2) }));
@@ -60,7 +60,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
       var instance = serviceLocator.GetInstance(typeof(ITestType));
 
       Assert.That(instance, Is.TypeOf<TestCompound>());
-      var compoundInstance = (TestCompound) instance;
+      var compoundInstance = (TestCompound)instance;
       Assert.That(compoundInstance.InnerObjects, Is.Empty);
     }
 
@@ -78,7 +78,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
       var instance2 = serviceLocator.GetInstance(typeof(ITestType));
 
       Assert.That(instance1, Is.Not.SameAs(instance2));
-      Assert.That(((TestCompound) instance1).InnerObjects, Is.EqualTo(((TestCompound) instance2).InnerObjects));
+      Assert.That(((TestCompound)instance1).InnerObjects, Is.EqualTo(((TestCompound)instance2).InnerObjects));
     }
 
     [Test]
@@ -95,7 +95,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
       var instance2 = serviceLocator.GetInstance(typeof(ITestType));
 
       Assert.That(instance1, Is.SameAs(instance2));
-      Assert.That(((TestCompound) instance1).InnerObjects, Is.EqualTo(((TestCompound) instance2).InnerObjects));
+      Assert.That(((TestCompound)instance1).InnerObjects, Is.EqualTo(((TestCompound)instance2).InnerObjects));
     }
 
     [Test]

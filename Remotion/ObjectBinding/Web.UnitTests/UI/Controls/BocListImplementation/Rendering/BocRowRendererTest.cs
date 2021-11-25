@@ -209,7 +209,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var document = Html.GetResultDocument();
 
       var tr = Html.GetAssertedChildElement(document, "tr", 0);
-      Html.AssertAttribute(tr, DiagnosticMetadataAttributes.ItemID, ((IBusinessObjectWithIdentity) BusinessObject).UniqueIdentifier);
+      Html.AssertAttribute(tr, DiagnosticMetadataAttributes.ItemID, ((IBusinessObjectWithIdentity)BusinessObject).UniqueIdentifier);
       Html.AssertAttribute(tr, DiagnosticMetadataAttributesForObjectBinding.BocListRowIndex, 1.ToString());
     }
 

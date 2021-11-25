@@ -101,7 +101,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
 
       Assert.That(result, Is.TypeOf<SimpleStoragePropertyDefinition>());
       Assert.That(result.PropertyType, Is.SameAs(typeof(object)));
-      var column = ((SimpleStoragePropertyDefinition) result).ColumnDefinition;
+      var column = ((SimpleStoragePropertyDefinition)result).ColumnDefinition;
       Assert.That(column.Name, Is.EqualTo("Timestamp"));
       Assert.That(column.StorageTypeInfo, Is.SameAs(_timestampStorageTypeInformation));
       Assert.That(column.IsPartOfPrimaryKey, Is.False);

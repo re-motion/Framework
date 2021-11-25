@@ -88,7 +88,7 @@ namespace Remotion.Web.Utilities
     public ControlState GetControlState (Control control)
     {
       int internalValue = s_get_ControlState.Value(control);
-      return (ControlState) internalValue;
+      return (ControlState)internalValue;
     }
 
     public void InitRecursive (Control control, Control namingContainer)
@@ -119,7 +119,7 @@ namespace Remotion.Web.Utilities
       ArgumentUtility.CheckNotNull("target", target);
 
       var inheritedViewState = target.CreateSequence(c => c.Parent)
-                                     .Select(c => (ViewStateMode?) c.ViewStateMode)
+                                     .Select(c => (ViewStateMode?)c.ViewStateMode)
                                      .FirstOrDefault(m => m != ViewStateMode.Inherit) ?? ViewStateMode.Enabled;
 
       //  internal object System.Web.UI.Control.SaveViewStateRecursive(ViewStateMode)
@@ -145,7 +145,7 @@ namespace Remotion.Web.Utilities
 
       //  private ControlSet System.Web.UI.Page._registeredControlsRequiringControlState
       var registeredControlsRequiringControlStateFieldInfo = typeof(Page).GetField("_registeredControlsRequiringControlState", c_bindingFlags)!; // TODO RM-8118: not null assertion
-      var registeredControlsRequiringControlState = (ICollection?) registeredControlsRequiringControlStateFieldInfo.GetValue(control.Page);
+      var registeredControlsRequiringControlState = (ICollection?)registeredControlsRequiringControlStateFieldInfo.GetValue(control.Page);
 
       //LosFormatter only supports Hashtable and HybridDictionary without using native serialization
       var dictionary = new HybridDictionary();
@@ -185,7 +185,7 @@ namespace Remotion.Web.Utilities
       var childControlState = new HybridDictionary();
 
       var pageStatePersister = GetPageStatePersister(control.Page!);
-      var controlStates = (IDictionary) pageStatePersister.ControlState;
+      var controlStates = (IDictionary)pageStatePersister.ControlState;
 
       var parentPrefix = control.UniqueID + control.Page!.IdSeparator;
       foreach (string key in controlStates.Keys)
@@ -209,7 +209,7 @@ namespace Remotion.Web.Utilities
         return;
 
       var pageStatePersister = GetPageStatePersister(control.Page!);
-      var controlState = (IDictionary) pageStatePersister.ControlState;
+      var controlState = (IDictionary)pageStatePersister.ControlState;
 
       foreach (string key in newControlState.Keys)
         controlState[key] = newControlState[key];
@@ -287,7 +287,7 @@ namespace Remotion.Web.Utilities
                 name,
                 string.Join<Type>(",", parameterTypes));
 
-            return (T) (object) methodInfo.CreateDelegate(typeof(T));
+            return (T)(object)methodInfo.CreateDelegate(typeof(T));
           });
     }
   }

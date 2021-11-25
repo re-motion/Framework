@@ -42,8 +42,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
       var proxy = TenantProxy.Create(tenant);
 
       Assert.That(proxy.ID, Is.EqualTo(tenant.ID));
-      Assert.That(proxy.UniqueIdentifier, Is.EqualTo(((IBusinessObjectWithIdentity) tenant).UniqueIdentifier));
-      Assert.That(proxy.DisplayName, Is.EqualTo(((IBusinessObjectWithIdentity) tenant).DisplayName));
+      Assert.That(proxy.UniqueIdentifier, Is.EqualTo(((IBusinessObjectWithIdentity)tenant).UniqueIdentifier));
+      Assert.That(proxy.DisplayName, Is.EqualTo(((IBusinessObjectWithIdentity)tenant).DisplayName));
     }
 
     [Test]

@@ -30,7 +30,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
       var ace = CreateAceForStateless();
       var property = GetPropertyDefinition(ace, "GroupHierarchyCondition");
       Assert.That(
-          () => Filter.IsEnabled(CreateEnumValueInfo((GroupHierarchyCondition) 1000), ace, property),
+          () => Filter.IsEnabled(CreateEnumValueInfo((GroupHierarchyCondition)1000), ace, property),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
                   "The property 'GroupHierarchyCondition' is not supported by the "

@@ -71,10 +71,10 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths
       var root = TypeOne.Create();
       IBusinessObjectPropertyPath path = StaticBusinessObjectPropertyPath.Parse(
           "TypeTwoValue.TypeThreeValue.TypeFourValue.IntValue",
-          ((IBusinessObject) root).BusinessObjectClass);
+          ((IBusinessObject)root).BusinessObjectClass);
 
       var result = path.GetResult(
-          (IBusinessObject) root,
+          (IBusinessObject)root,
           BusinessObjectPropertyPath.UnreachableValueBehavior.FailForUnreachableValue,
           BusinessObjectPropertyPath.ListValueBehavior.FailForListProperties);
 
@@ -83,7 +83,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths
       Assert.That(result.ResultObject, Is.SameAs(root.TypeTwoValue.TypeThreeValue.TypeFourValue));
       Assert.That(
           result.ResultProperty,
-          Is.SameAs(((IBusinessObject) root.TypeTwoValue.TypeThreeValue.TypeFourValue).BusinessObjectClass.GetPropertyDefinition("IntValue")));
+          Is.SameAs(((IBusinessObject)root.TypeTwoValue.TypeThreeValue.TypeFourValue).BusinessObjectClass.GetPropertyDefinition("IntValue")));
     }
 
     [Test]
@@ -92,10 +92,10 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths
       var root = TypeOne.Create();
       var path = StaticBusinessObjectPropertyPath.Parse(
           "TypeTwoValue.TypeThreeValue.TypeFourValue",
-          ((IBusinessObject) root).BusinessObjectClass);
+          ((IBusinessObject)root).BusinessObjectClass);
 
       var result = path.GetResult(
-          (IBusinessObject) root,
+          (IBusinessObject)root,
           BusinessObjectPropertyPath.UnreachableValueBehavior.FailForUnreachableValue,
           BusinessObjectPropertyPath.ListValueBehavior.FailForListProperties);
 
@@ -110,7 +110,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths
     {
       var root = TypeOne.Create();
       Assert.That(
-          () => StaticBusinessObjectPropertyPath.Parse("TypeTwoValue.TypeThreeValue.TypeFourValue1", ((IBusinessObject) root).BusinessObjectClass),
+          () => StaticBusinessObjectPropertyPath.Parse("TypeTwoValue.TypeThreeValue.TypeFourValue1", ((IBusinessObject)root).BusinessObjectClass),
           Throws.TypeOf<ParseException>());
     }
 
@@ -119,7 +119,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths
     {
       var root = TypeOne.Create();
       Assert.That(
-          () => StaticBusinessObjectPropertyPath.Parse("TypeTwoValue.IntValue.TypeFourValue", ((IBusinessObject) root).BusinessObjectClass),
+          () => StaticBusinessObjectPropertyPath.Parse("TypeTwoValue.IntValue.TypeFourValue", ((IBusinessObject)root).BusinessObjectClass),
           Throws.TypeOf<ParseException>());
     }
 

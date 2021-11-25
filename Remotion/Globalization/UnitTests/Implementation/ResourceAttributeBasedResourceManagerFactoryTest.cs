@@ -52,7 +52,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
       Assert.That(result.IsNull, Is.False);
       Assert.That(result, Is.InstanceOf<ResourceManagerSet>());
 
-      var resourceManagerSet = (ResourceManagerSet) result;
+      var resourceManagerSet = (ResourceManagerSet)result;
 
       Assert.That(
           resourceManagerSet.ResourceManagers.Select(rm => rm.Name),
@@ -77,8 +77,8 @@ namespace Remotion.Globalization.UnitTests.Implementation
       Assert.That(resourceManagers1, Is.InstanceOf<ResourceManagerSet>());
       Assert.That(resourceManagers2, Is.InstanceOf<ResourceManagerSet>());
       Assert.That(
-          ((ResourceManagerWrapper)((ResourceManagerSet) resourceManagers2).ResourceManagers[0]).ResourceManager,
-          Is.SameAs(((ResourceManagerWrapper)((ResourceManagerSet) resourceManagers1).ResourceManagers[0]).ResourceManager));
+          ((ResourceManagerWrapper)((ResourceManagerSet)resourceManagers2).ResourceManagers[0]).ResourceManager,
+          Is.SameAs(((ResourceManagerWrapper)((ResourceManagerSet)resourceManagers1).ResourceManagers[0]).ResourceManager));
     }
 
     [Test]

@@ -62,12 +62,12 @@ namespace Remotion.Validation.UnitTests.Merging
       _stubPropertyValidator4 = new LengthValidator(0, 10, new InvariantValidationMessage("Fake Message")); //not extracted
       _stubPropertyValidator5 = new StubPropertyValidator(); //extracted
 
-      var registration1 = new {ValidatorType = typeof(NotEmptyValidator), CollectorTypeToRemoveFrom = (Type) null };
+      var registration1 = new {ValidatorType = typeof(NotEmptyValidator), CollectorTypeToRemoveFrom = (Type)null };
       var registration2 = new {ValidatorType = typeof(NotEqualValidator), CollectorTypeToRemoveFrom = typeof(CustomerValidationRuleCollector1) };
-      var registration3 = new {ValidatorType = typeof(NotNullValidator), CollectorTypeToRemoveFrom = (Type) null };
+      var registration3 = new {ValidatorType = typeof(NotNullValidator), CollectorTypeToRemoveFrom = (Type)null };
       var registration4 = new {ValidatorType = typeof(LengthValidator), CollectorTypeToRemoveFrom = typeof(CustomerValidationRuleCollector2) };
       var registration5 = new {ValidatorType = typeof(NotEqualValidator), CollectorTypeToRemoveFrom = typeof(CustomerValidationRuleCollector2) };
-      var registration6 = new {ValidatorType = typeof(LengthValidator), CollectorTypeToRemoveFrom = (Type) null };
+      var registration6 = new {ValidatorType = typeof(LengthValidator), CollectorTypeToRemoveFrom = (Type)null };
 
       _removingPropertyValidationRuleCollectorStub1 = new Mock<IRemovingPropertyValidationRuleCollector>();
       _removingPropertyValidationRuleCollectorStub1.Setup(stub => stub.Property).Returns(PropertyInfoAdapter.Create(typeof(Customer).GetProperty("LastName")));

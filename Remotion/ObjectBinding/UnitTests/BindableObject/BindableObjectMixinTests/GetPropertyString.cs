@@ -40,7 +40,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectMixinTes
       provider.AddService(typeof(IBusinessObjectStringFormatterService), _mockStringFormatterService.Object);
       BusinessObjectProvider.SetProvider(typeof(BindableObjectProviderAttribute), provider);
 
-      _businessObject = (IBusinessObject) ObjectFactory.Create<SimpleBusinessObjectClass>(ParamList.Empty);
+      _businessObject = (IBusinessObject)ObjectFactory.Create<SimpleBusinessObjectClass>(ParamList.Empty);
 
       _property = _businessObject.BusinessObjectClass.GetPropertyDefinition("String");
       Assert.That(

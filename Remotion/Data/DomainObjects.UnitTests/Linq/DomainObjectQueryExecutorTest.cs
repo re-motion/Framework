@@ -272,7 +272,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
           {
             Assert.That(queryModel.ResultOperators, Is.EqualTo(new[] { nonTrailingFetchRequest, someResultOperator }));
 
-            var builders = ((IEnumerable<FetchQueryModelBuilder>) mi.Arguments[3]).ToArray();
+            var builders = ((IEnumerable<FetchQueryModelBuilder>)mi.Arguments[3]).ToArray();
             Assert.That(builders, Has.Length.EqualTo(2));
             CheckFetchQueryModelBuilder(builders[0], trailingFetchRequest2, queryModel, 3);
             CheckFetchQueryModelBuilder(builders[1], trailingFetchRequest1, queryModel, 2);

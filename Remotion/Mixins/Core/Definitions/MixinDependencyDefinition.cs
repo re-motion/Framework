@@ -35,7 +35,7 @@ namespace Remotion.Mixins.Definitions
 
     public new RequiredMixinTypeDefinition RequiredType
     {
-      get { return (RequiredMixinTypeDefinition) base.RequiredType; }
+      get { return (RequiredMixinTypeDefinition)base.RequiredType; }
     }
 
     public override IVisitableDefinition Depender

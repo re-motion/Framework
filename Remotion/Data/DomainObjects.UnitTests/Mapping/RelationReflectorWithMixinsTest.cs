@@ -105,7 +105,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       RelationDefinition actualRelationDefinition = relationReflector.GetMetadata(_classDefinitions);
       Assert.That(actualRelationDefinition.EndPointDefinitions[0], Is.InstanceOf(typeof(RelationEndPointDefinition)));
 
-      var endPointDefinition = (RelationEndPointDefinition) actualRelationDefinition.EndPointDefinitions[0];
+      var endPointDefinition = (RelationEndPointDefinition)actualRelationDefinition.EndPointDefinitions[0];
 
       Assert.That(endPointDefinition.PropertyDefinition, Is.EqualTo(_mixinTargetClassDefinition.MyPropertyDefinitions[0]));
       Assert.That(endPointDefinition.ClassDefinition, Is.SameAs(_mixinTargetClassDefinition));
@@ -121,7 +121,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       RelationDefinition actualRelationDefinition = relationReflector.GetMetadata(_classDefinitions);
       Assert.That(actualRelationDefinition.EndPointDefinitions[1], Is.InstanceOf(typeof(AnonymousRelationEndPointDefinition)));
-      var oppositeEndPointDefinition = (AnonymousRelationEndPointDefinition) actualRelationDefinition.EndPointDefinitions[1];
+      var oppositeEndPointDefinition = (AnonymousRelationEndPointDefinition)actualRelationDefinition.EndPointDefinitions[1];
 
       Assert.That(oppositeEndPointDefinition.ClassDefinition, Is.SameAs(_relatedClassDefinition));
     }
@@ -138,7 +138,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       RelationDefinition actualRelationDefinition = relationReflector.GetMetadata(_classDefinitions);
       Assert.That(actualRelationDefinition.EndPointDefinitions[0], Is.InstanceOf(typeof(RelationEndPointDefinition)));
 
-      var endPointDefinition = (RelationEndPointDefinition) actualRelationDefinition.EndPointDefinitions[0];
+      var endPointDefinition = (RelationEndPointDefinition)actualRelationDefinition.EndPointDefinitions[0];
 
       Assert.That(endPointDefinition.PropertyDefinition, Is.EqualTo(_mixinTargetClassDefinition.MyPropertyDefinitions[0]));
       Assert.That(endPointDefinition.ClassDefinition, Is.SameAs(_mixinTargetClassDefinition));
@@ -155,7 +155,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       RelationDefinition actualRelationDefinition = relationReflector.GetMetadata(_classDefinitions);
       Assert.That(actualRelationDefinition.EndPointDefinitions[1], Is.InstanceOf(typeof(VirtualObjectRelationEndPointDefinition)));
-      var oppositeEndPointDefinition = (VirtualObjectRelationEndPointDefinition) actualRelationDefinition.EndPointDefinitions[1];
+      var oppositeEndPointDefinition = (VirtualObjectRelationEndPointDefinition)actualRelationDefinition.EndPointDefinitions[1];
 
       Assert.That(oppositeEndPointDefinition.ClassDefinition, Is.SameAs(_relatedClassDefinition));
       Assert.That(
@@ -176,7 +176,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       RelationDefinition actualRelationDefinition = relationReflector.GetMetadata(_classDefinitions);
       Assert.That(actualRelationDefinition.EndPointDefinitions[0], Is.InstanceOf(typeof(RelationEndPointDefinition)));
 
-      var endPointDefinition = (RelationEndPointDefinition) actualRelationDefinition.EndPointDefinitions[0];
+      var endPointDefinition = (RelationEndPointDefinition)actualRelationDefinition.EndPointDefinitions[0];
 
       Assert.That(endPointDefinition.PropertyDefinition, Is.EqualTo(_mixinTargetClassDefinition.MyPropertyDefinitions[0]));
       Assert.That(endPointDefinition.ClassDefinition, Is.SameAs(_mixinTargetClassDefinition));
@@ -193,7 +193,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       RelationDefinition actualRelationDefinition = relationReflector.GetMetadata(_classDefinitions);
       Assert.That(actualRelationDefinition.EndPointDefinitions[1], Is.InstanceOf(typeof(DomainObjectCollectionRelationEndPointDefinition)));
-      var oppositeEndPointDefinition = (DomainObjectCollectionRelationEndPointDefinition) actualRelationDefinition.EndPointDefinitions[1];
+      var oppositeEndPointDefinition = (DomainObjectCollectionRelationEndPointDefinition)actualRelationDefinition.EndPointDefinitions[1];
       Assert.That(oppositeEndPointDefinition.ClassDefinition, Is.SameAs(_relatedClassDefinition));
       Assert.That(
           oppositeEndPointDefinition.PropertyName,
@@ -263,7 +263,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var propertyDefinition = propertyReflector.GetMetadata();
       var properties = new List<PropertyDefinition>();
       properties.Add(propertyDefinition);
-      var propertyDefinitionsOfClass = (PropertyDefinitionCollection) PrivateInvoke.GetNonPublicField(classDefinition, "_propertyDefinitions");
+      var propertyDefinitionsOfClass = (PropertyDefinitionCollection)PrivateInvoke.GetNonPublicField(classDefinition, "_propertyDefinitions");
       PrivateInvoke.SetNonPublicField(classDefinition, "_propertyDefinitions", null);
       if (propertyDefinitionsOfClass != null)
         properties.AddRange(propertyDefinitionsOfClass);
@@ -272,7 +272,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var endPoint = MappingObjectFactory.CreateRelationEndPointDefinition(classDefinition, propertyInfo);
       var endPoints = new List<IRelationEndPointDefinition>();
       endPoints.Add(endPoint);
-      var endPointDefinitionsOfClass = (RelationEndPointDefinitionCollection) PrivateInvoke.GetNonPublicField(classDefinition, "_relationEndPoints");
+      var endPointDefinitionsOfClass = (RelationEndPointDefinitionCollection)PrivateInvoke.GetNonPublicField(classDefinition, "_relationEndPoints");
       PrivateInvoke.SetNonPublicField(classDefinition, "_relationEndPoints", null);
       if (endPointDefinitionsOfClass != null)
         endPoints.AddRange(endPointDefinitionsOfClass);

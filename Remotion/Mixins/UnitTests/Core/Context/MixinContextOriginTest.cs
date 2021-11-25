@@ -128,7 +128,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context
       var origin2 = new MixinContextOrigin("some kind", GetType().Assembly, "some location");
 
       Assert.That(origin1.Equals(origin2), Is.True);
-      Assert.That(origin1.Equals((object) origin2), Is.True);
+      Assert.That(origin1.Equals((object)origin2), Is.True);
     }
 
     [Test]
@@ -144,10 +144,10 @@ namespace Remotion.Mixins.UnitTests.Core.Context
       Assert.That(origin.Equals(originWithDifferentLocation), Is.False);
       Assert.That(origin.Equals(null), Is.False);
 
-      Assert.That(origin.Equals((object) originWithDifferentKind), Is.False);
-      Assert.That(origin.Equals((object) originWithDifferentAssembly), Is.False);
-      Assert.That(origin.Equals((object) originWithDifferentLocation), Is.False);
-      Assert.That(origin.Equals((object) null), Is.False);
+      Assert.That(origin.Equals((object)originWithDifferentKind), Is.False);
+      Assert.That(origin.Equals((object)originWithDifferentAssembly), Is.False);
+      Assert.That(origin.Equals((object)originWithDifferentLocation), Is.False);
+      Assert.That(origin.Equals((object)null), Is.False);
       Assert.That(origin.Equals("some other object"), Is.False);
     }
 

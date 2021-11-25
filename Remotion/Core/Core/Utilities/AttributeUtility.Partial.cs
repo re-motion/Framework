@@ -61,7 +61,7 @@ namespace Remotion.Utilities
       ArgumentUtility.CheckNotNull("element", element);
       CheckAttributeType(typeof(T), "T");
 
-      return (T?) (object?) GetCustomAttribute(element, typeof(T), inherit);
+      return (T?)(object?)GetCustomAttribute(element, typeof(T), inherit);
     }
 
     public static Attribute? GetCustomAttribute (MemberInfo element, Type attributeType, bool inherit)
@@ -159,7 +159,7 @@ namespace Remotion.Utilities
       {
         arrayList.Add(attributeInstance);
       }
-      return (object[]) arrayList.ToArray(elementType);
+      return (object[])arrayList.ToArray(elementType);
     }
 
     private static IReadOnlyCollection<AttributeWithMetadata> GetCachedSuppressAttributes (Type type, bool inherit)

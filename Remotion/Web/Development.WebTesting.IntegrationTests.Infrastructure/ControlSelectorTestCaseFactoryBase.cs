@@ -68,7 +68,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
       ArgumentUtility.CheckNotNull("method", method);
 
       var testCaseData = new TestCaseData(
-          (GenericSelectorTestAction<TControlSelector, TControl>) ((helper, factory, control) =>
+          (GenericSelectorTestAction<TControlSelector, TControl>)((helper, factory, control) =>
           {
             PrepareTest(attribute, helper, control);
 

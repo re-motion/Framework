@@ -64,7 +64,7 @@ namespace Remotion.Collections.DataStore.UnitTests
     [Test]
     public void IsNull ()
     {
-      Assert.That(((INullObject) _dataStore).IsNull, Is.False);
+      Assert.That(((INullObject)_dataStore).IsNull, Is.False);
     }
 
     [Test]
@@ -514,7 +514,7 @@ namespace Remotion.Collections.DataStore.UnitTests
 
     private SimpleDataStore<string, Tuple<object, DateTime>> GetInnerDataStore (ExpiringDataStore<string, object, DateTime, DateTime> expiringDataStore)
     {
-      return (SimpleDataStore<string, Tuple<object, DateTime>>) PrivateInvoke.GetNonPublicField(expiringDataStore, "_innerDataStore");
+      return (SimpleDataStore<string, Tuple<object, DateTime>>)PrivateInvoke.GetNonPublicField(expiringDataStore, "_innerDataStore");
     }
 
     private void StubShouldScanForExpiredItems_False (DateTime nextScanInfo)

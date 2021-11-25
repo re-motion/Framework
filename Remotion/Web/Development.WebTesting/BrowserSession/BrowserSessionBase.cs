@@ -91,7 +91,7 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
 
     public virtual void DeleteAllCookies ()
     {
-      var webDriver = (IWebDriver) _value.Driver.Native;
+      var webDriver = (IWebDriver)_value.Driver.Native;
       webDriver.Manage().Cookies.DeleteAllCookies();
     }
 

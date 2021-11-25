@@ -73,7 +73,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
           .Expect(mock => mock.RegisterDataContainer(Arg<DataContainer>.Is.Anything))
           .WhenCalled(mi =>
           {
-            var dc = (DataContainer) mi.Arguments[0];
+            var dc = (DataContainer)mi.Arguments[0];
             Assert.That(dc.ID, Is.EqualTo(_objectID));
             Assert.That(dc.DomainObject, Is.SameAs(_domainObject));
           })

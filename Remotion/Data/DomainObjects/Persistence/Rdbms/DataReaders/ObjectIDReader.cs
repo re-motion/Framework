@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
       ArgumentUtility.CheckNotNull("dataReader", dataReader);
 
       if (dataReader.Read())
-        return (ObjectID) _idProperty.CombineValue(new ColumnValueReader(dataReader, _columnOrdinalProvider));
+        return (ObjectID)_idProperty.CombineValue(new ColumnValueReader(dataReader, _columnOrdinalProvider));
       else
         return null;
     }
@@ -67,7 +67,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
       var columnValueReader = new ColumnValueReader(dataReader, _columnOrdinalProvider);
 
       while (dataReader.Read())
-        yield return (ObjectID) _idProperty.CombineValue(columnValueReader);
+        yield return (ObjectID)_idProperty.CombineValue(columnValueReader);
     }
   }
 }

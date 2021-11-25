@@ -77,7 +77,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
     {
       ArgumentUtility.CheckNotNull("locator", locator);
 
-      var window = locator.GetBrowserContentBounds(((IWrapsDriver) _fluentList.Target.List.Scope.Native).WrappedDriver);
+      var window = locator.GetBrowserContentBounds(((IWrapsDriver)_fluentList.Target.List.Scope.Native).WrappedDriver);
       return ResolveInformation(CoordinateSystem.Desktop, window.Location);
     }
 
@@ -85,13 +85,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
     {
       var container = _fluentList.GetTableContainer();
 
-      var firstElement = ((IFluentScreenshotElement) container.GetRow(1).GetCell(_columnIndex)).ResolveBrowserCoordinates();
+      var firstElement = ((IFluentScreenshotElement)container.GetRow(1).GetCell(_columnIndex)).ResolveBrowserCoordinates();
       ResolvedScreenshotElement from;
       Rectangle? parent;
       if (_includeHeader)
       {
-        from = ((IFluentScreenshotElement) container.GetHeaderRow().GetCell(_columnIndex)).ResolveBrowserCoordinates();
-        parent = ((IFluentScreenshotElement) container).ResolveBrowserCoordinates().ElementBounds;
+        from = ((IFluentScreenshotElement)container.GetHeaderRow().GetCell(_columnIndex)).ResolveBrowserCoordinates();
+        parent = ((IFluentScreenshotElement)container).ResolveBrowserCoordinates().ElementBounds;
       }
       else
       {
@@ -99,7 +99,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
         parent = from.ParentBounds;
       }
 
-      var to = ((IFluentScreenshotElement) container.GetRow(container.GetRowCount()).GetCell(_columnIndex)).ResolveBrowserCoordinates();
+      var to = ((IFluentScreenshotElement)container.GetRow(container.GetRowCount()).GetCell(_columnIndex)).ResolveBrowserCoordinates();
 
       ElementVisibility visibility;
       if (firstElement.ElementVisibility == ElementVisibility.FullyVisible && from.ElementVisibility == ElementVisibility.FullyVisible)

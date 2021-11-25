@@ -124,7 +124,7 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceFactoryTests
     [Test]
     public void Test_VirtualPathCannotBeCompiled ()
     {
-      _buildManagerStub.Setup(stub => stub.GetCompiledType("~/VirtualServicePath")).Returns((Type) null);
+      _buildManagerStub.Setup(stub => stub.GetCompiledType("~/VirtualServicePath")).Returns((Type)null);
 
       Assert.That(
           () => _webServiceFactory.CreateWebService<IInvalidInterface>("~/VirtualServicePath"),

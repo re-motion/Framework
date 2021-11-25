@@ -65,7 +65,7 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
     [Test]
     public void Initialization_PropertyDeclaredInSameClass ()
     {
-      var propertyInfo = ((PropertyInfoAdapter) _addingPropertyValidationRuleCollector.Property).PropertyInfo;
+      var propertyInfo = ((PropertyInfoAdapter)_addingPropertyValidationRuleCollector.Property).PropertyInfo;
       Assert.That(_addingPropertyValidationRuleCollector.Property.Equals(_property), Is.True);
       Assert.That(_addingPropertyValidationRuleCollector.Property, Is.EqualTo(_property));
       Assert.That(propertyInfo.DeclaringType, Is.EqualTo(typeof(Customer)));
@@ -95,7 +95,7 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
     public void Create_PropertyDeclaredInBaseClass ()
     {
       var componentPropertyRule = AddingPropertyValidationRuleCollector.Create(_lastNameExpression, typeof(CustomerValidationRuleCollector1));
-      var propertyInfo = ((PropertyInfoAdapter) componentPropertyRule.Property).PropertyInfo;
+      var propertyInfo = ((PropertyInfoAdapter)componentPropertyRule.Property).PropertyInfo;
 
       //TODO-5906 simplify assertion with PropertyInfoAdapter compare
       Assert.That(

@@ -54,7 +54,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
 
     private ISampleFunctionVariables Function
     {
-      get { return (ISampleFunctionVariables) CurrentFunction; }
+      get { return (ISampleFunctionVariables)CurrentFunction; }
     }
 
     private void Page_Load (object sender, System.EventArgs e)
@@ -127,7 +127,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
       }
       else
       {
-        var subFunction = (SampleWxeSubFunction) ReturningFunction;
+        var subFunction = (SampleWxeSubFunction)ReturningFunction;
         RetValLabel.Text = subFunction.Var1;
       }
     }
@@ -151,31 +151,31 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
             subFunction,
             "_blank",
             "width=700,height=500,top=100,left=100,resizable=yes,location=no,menubar=no,status=no,toolbar=no,scrollbars=no",
-            (Control) sender,
+            (Control)sender,
             true);
       }
       else
       {
-        SubFunction subFunction = (SubFunction) ReturningFunction;
+        SubFunction subFunction = (SubFunction)ReturningFunction;
         RetValLabel.Text = subFunction.Var1;
       }
     }
 
     private void SubNoReturnButton_Click (object sender, System.EventArgs e)
     {
-      this.ExecuteFunctionNoRepost(new SubFunction("v1", "button"), (Control) sender);
+      this.ExecuteFunctionNoRepost(new SubFunction("v1", "button"), (Control)sender);
     }
 
     private void SubNoReturnField_TextChanged (object sender, System.EventArgs e)
     {
-      this.ExecuteFunctionNoRepost(new SubFunction("v1", "textbox"), (Control) sender);
+      this.ExecuteFunctionNoRepost(new SubFunction("v1", "textbox"), (Control)sender);
     }
 
     private void Calendar1_SelectionChanged (object sender, System.EventArgs e)
     {
       if (! IsReturningPostBack)
       {
-        this.ExecuteFunctionExternal(new SubFunction("v1", "calendar"), "_blank", (Control) sender, true);
+        this.ExecuteFunctionExternal(new SubFunction("v1", "calendar"), "_blank", (Control)sender, true);
       }
       else
       {
@@ -199,14 +199,14 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
       [WxeParameter (1, true, WxeParameterDirection.InOut)]
       public string Var1
       {
-        get { return (string) Variables["Var1"]; }
+        get { return (string)Variables["Var1"]; }
         set { Variables["Var1"] = value; }
       }
 
       [WxeParameter (2, WxeParameterDirection.InOut)]
       public string Var2
       {
-        get { return (string) Variables["Var2"]; }
+        get { return (string)Variables["Var2"]; }
         set { Variables["Var2"] = value; }
       }
 

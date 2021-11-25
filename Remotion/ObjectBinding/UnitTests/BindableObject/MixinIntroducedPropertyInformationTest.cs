@@ -148,7 +148,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void CanBeSetFromOutside_IsBasedOnGetSetMethod_FalseForNoPropertySetter ()
     {
-      _implementationPropertyInformationStub.Setup(stub => stub.GetSetMethod(false)).Returns((IMethodInformation) null);
+      _implementationPropertyInformationStub.Setup(stub => stub.GetSetMethod(false)).Returns((IMethodInformation)null);
 
       Assert.That(_mixinIntroducedPropertyInformation.CanBeSetFromOutside, Is.False);
     }
@@ -169,7 +169,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetGetMethod_ReturnsNull ()
     {
-      _implementationPropertyInformationStub.Setup(stub => stub.GetGetMethod(false)).Returns((IMethodInformation) null);
+      _implementationPropertyInformationStub.Setup(stub => stub.GetGetMethod(false)).Returns((IMethodInformation)null);
 
       Assert.That(_mixinIntroducedPropertyInformation.GetGetMethod(false), Is.Null);
     }
@@ -190,7 +190,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetSetMethod_ReturnsNull ()
     {
-      _implementationPropertyInformationStub.Setup(stub => stub.GetSetMethod(false)).Returns((IMethodInformation) null);
+      _implementationPropertyInformationStub.Setup(stub => stub.GetSetMethod(false)).Returns((IMethodInformation)null);
 
       Assert.That(_mixinIntroducedPropertyInformation.GetSetMethod(false), Is.Null);
     }
@@ -201,7 +201,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       var instance = new ClassWithReferenceType<SimpleReferenceType>();
       var value = new SimpleReferenceType();
 
-      _declarationPropertyInformationStub.Setup(stub => stub.GetSetMethod(true)).Returns((IMethodInformation) null);
+      _declarationPropertyInformationStub.Setup(stub => stub.GetSetMethod(true)).Returns((IMethodInformation)null);
       _implementationPropertyInformationStub.Setup(stub => stub.GetSetMethod(true)).Returns(
           MethodInfoAdapter.Create(typeof(ClassWithReferenceType<SimpleReferenceType>).GetProperty("ImplicitInterfaceScalar").GetSetMethod(true)));
 
@@ -217,7 +217,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       var value = new SimpleReferenceType();
       instance.ImplicitInterfaceScalar = value;
 
-      _declarationPropertyInformationStub.Setup(stub => stub.GetGetMethod(true)).Returns((IMethodInformation) null);
+      _declarationPropertyInformationStub.Setup(stub => stub.GetGetMethod(true)).Returns((IMethodInformation)null);
       _implementationPropertyInformationStub.Setup(stub => stub.GetGetMethod(true)).Returns(
           MethodInfoAdapter.Create(typeof(ClassWithReferenceType<SimpleReferenceType>).GetProperty("ImplicitInterfaceScalar").GetGetMethod(true)));
 
@@ -281,7 +281,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void IsNull ()
     {
-      Assert.That(((IPropertyInformation) _mixinIntroducedPropertyInformation).IsNull, Is.False);
+      Assert.That(((IPropertyInformation)_mixinIntroducedPropertyInformation).IsNull, Is.False);
     }
   }
 }

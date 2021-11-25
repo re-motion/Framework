@@ -55,7 +55,7 @@ namespace Remotion.Web.UI.Controls
     //  Do NOT make this indexer public. Ever. Or ASP.net won't be able to de-serialize this property.
     protected internal new WebTreeNode this [int index]
     {
-      get { return (WebTreeNode) List[index]!; }
+      get { return (WebTreeNode)List[index]!; }
       set { List[index] = value; }
     }
 
@@ -91,7 +91,7 @@ namespace Remotion.Web.UI.Controls
       _parentNode = parentNode;
       for (int i = 0; i < InnerList.Count; i++)
       {
-        WebTreeNode node = (WebTreeNode) InnerList[i]!;
+        WebTreeNode node = (WebTreeNode)InnerList[i]!;
         node.SetParent(_treeView, parentNode);
       }
     }
@@ -103,7 +103,7 @@ namespace Remotion.Web.UI.Controls
     /// <returns> A <see cref="WebTreeNode"/> or <see langword="null"/> if no mathcing node was found. </returns>
     public new WebTreeNode? Find (string id)
     {
-      return (WebTreeNode?) base.Find(id);
+      return (WebTreeNode?)base.Find(id);
     }
 
     //  /// <summary>

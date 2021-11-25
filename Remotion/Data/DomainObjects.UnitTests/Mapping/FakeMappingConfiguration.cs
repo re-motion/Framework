@@ -175,7 +175,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var classesByBaseClass = (from classDefinition in classDefinitions
                                 where classDefinition.BaseClass != null
                                 group classDefinition by classDefinition.BaseClass)
-          .ToDictionary(grouping => grouping.Key, grouping => (IEnumerable<ClassDefinition>) grouping);
+          .ToDictionary(grouping => grouping.Key, grouping => (IEnumerable<ClassDefinition>)grouping);
 
       foreach (var classDefinition in classDefinitions)
       {
@@ -1033,7 +1033,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
                               from endPoint in relationDefinition.EndPointDefinitions
                               where !endPoint.IsAnonymous
                               group endPoint by endPoint.ClassDefinition)
-                             .ToDictionary(grouping => grouping.Key, grouping => (IEnumerable<IRelationEndPointDefinition>) grouping);
+                             .ToDictionary(grouping => grouping.Key, grouping => (IEnumerable<IRelationEndPointDefinition>)grouping);
 
       foreach (var classDefinition in _typeDefinitions.Values)
       {

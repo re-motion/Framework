@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
     {
       var domainObject = TargetClassForBehavioralMixin.NewObject();
       Assert.That(domainObject is IInterfaceAddedByMixin, Is.True);
-      Assert.That(((IInterfaceAddedByMixin) domainObject).GetGreetings(), Is.EqualTo("Hello, my ID is " + domainObject.ID));
+      Assert.That(((IInterfaceAddedByMixin)domainObject).GetGreetings(), Is.EqualTo("Hello, my ID is " + domainObject.ID));
     }
 
     [Test]

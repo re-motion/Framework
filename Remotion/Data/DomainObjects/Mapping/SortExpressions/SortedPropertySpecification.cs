@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.Mapping.SortExpressions
       if (obj.GetType() != GetType())
         return false;
 
-      var other = (SortedPropertySpecification) obj;
+      var other = (SortedPropertySpecification)obj;
       return PropertyDefinition == other.PropertyDefinition && Order == other.Order;
     }
 

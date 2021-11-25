@@ -209,7 +209,7 @@ namespace Remotion.Utilities
 
       if (current.Length > 0)
         items.Add(new ParsedItem(current.ToString(), isQuoted));
-      return (ParsedItem[]) items.ToArray();
+      return (ParsedItem[])items.ToArray();
     }
 
     /// <summary>
@@ -350,14 +350,14 @@ namespace Remotion.Utilities
       if (elementType == typeof(float) || elementType == typeof(double))
         format = "R";
 #pragma warning disable 618
-      return ConcatWithSeparator((IList) value, ",", format, formatProvider);
+      return ConcatWithSeparator((IList)value, ",", format, formatProvider);
 #pragma warning restore 618
     }
 
     private static string FormatScalarValue (object value, IFormatProvider? formatProvider)
     {
       if (value is string)
-        return (string) value;
+        return (string)value;
       IFormattable? formattable = value as IFormattable;
       if (formattable != null)
       {

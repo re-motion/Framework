@@ -64,7 +64,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion
     public IList<StateCombination> GetStateCombinations ()
     {
       if (AccessControlList is StatefulAccessControlList)
-        return ((StatefulAccessControlList) AccessControlList).StateCombinations;
+        return ((StatefulAccessControlList)AccessControlList).StateCombinations;
       else
       {
         // Throw exception (instead of returning e.g. new StateCombination[0]) in case of StatelessAccessControlList, 

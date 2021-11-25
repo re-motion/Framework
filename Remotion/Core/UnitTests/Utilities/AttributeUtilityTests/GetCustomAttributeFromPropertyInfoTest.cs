@@ -46,7 +46,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     public void Test_FromBaseWithAttribute ()
     {
       InheritedAttribute attribute =
-          (InheritedAttribute) AttributeUtility.GetCustomAttribute(_basePropertyWithSingleAttribute, typeof(InheritedAttribute), true);
+          (InheritedAttribute)AttributeUtility.GetCustomAttribute(_basePropertyWithSingleAttribute, typeof(InheritedAttribute), true);
       Assert.That(attribute, Is.Not.Null);
     }
 
@@ -71,7 +71,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     public void Test_FromBaseWithInterface ()
     {
       ICustomAttribute attribute =
-          (ICustomAttribute) AttributeUtility.GetCustomAttribute(_basePropertyWithSingleAttribute, typeof(ICustomAttribute), true);
+          (ICustomAttribute)AttributeUtility.GetCustomAttribute(_basePropertyWithSingleAttribute, typeof(ICustomAttribute), true);
       Assert.That(attribute, Is.Not.Null);
     }
 

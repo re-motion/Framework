@@ -81,7 +81,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
       {
         var instance = ObjectFactory.Create<C_Shadow>();
         Assert.That(instance.M(), Is.EqualTo("C_Shadow.M"));
-        Assert.That(((C) instance).M(), Is.EqualTo(expectedMethodOutput));
+        Assert.That(((C)instance).M(), Is.EqualTo(expectedMethodOutput));
       }
     }
 
@@ -95,7 +95,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
       {
         var instance = ObjectFactory.Create<D1_Shadow>();
         Assert.That(instance.M(), Is.EqualTo("D1_Shadow.M"));
-        Assert.That(((C) instance).M(), Is.EqualTo(expectedMethodOutput));
+        Assert.That(((C)instance).M(), Is.EqualTo(expectedMethodOutput));
       }
     }
 
@@ -109,7 +109,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
       {
         var instance = ObjectFactory.Create<D2_Shadow>();
         Assert.That(instance.M(), Is.EqualTo("D2_Shadow.M"));
-        Assert.That(((C) instance).M(), Is.EqualTo(expectedMethodOutput));
+        Assert.That(((C)instance).M(), Is.EqualTo(expectedMethodOutput));
       }
     }
 
@@ -123,7 +123,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
       {
         var instance = ObjectFactory.Create<E_Shadow>();
         Assert.That(instance.M(), Is.EqualTo("E_Shadow.M"));
-        Assert.That(((C) instance).M(), Is.EqualTo(expectedMethodOutput));
+        Assert.That(((C)instance).M(), Is.EqualTo(expectedMethodOutput));
       }
     }
 

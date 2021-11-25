@@ -113,7 +113,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
     {
       ArgumentUtility.CheckNotNull("fluentElement", fluentElement);
 
-      return GetTarget((IFluentScreenshotElementWithCovariance<T>) fluentElement);
+      return GetTarget((IFluentScreenshotElementWithCovariance<T>)fluentElement);
     }
 
     /// <summary>

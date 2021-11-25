@@ -136,7 +136,7 @@ namespace Remotion.Web.UI.Controls
 
         for (int i = 0; i < _rows.Count; i++)
         {
-          FormGridRow row = (FormGridRow) _rows[i];
+          FormGridRow row = (FormGridRow)_rows[i];
           if (row.Type == FormGridRowType.DataRow)
             validationErrorList.AddRange(row.ValidationErrors);
         }
@@ -152,7 +152,7 @@ namespace Remotion.Web.UI.Controls
       {
         for (int i = 0; i < _rows.Count; i++)
         {
-          FormGridRow row = (FormGridRow) _rows[i];
+          FormGridRow row = (FormGridRow)_rows[i];
           if (    row.Type == FormGridRowType.DataRow
               &&  row.ValidationErrors.Length > 0)
           {
@@ -171,7 +171,7 @@ namespace Remotion.Web.UI.Controls
       {
         for (int i = 0; i < _rows.Count; i++)
         {
-          FormGridRow row = (FormGridRow) _rows[i];
+          FormGridRow row = (FormGridRow)_rows[i];
           if (    row.Type == FormGridRowType.DataRow
               &&  row.ValidationMarker != null)
           {
@@ -190,7 +190,7 @@ namespace Remotion.Web.UI.Controls
       {
         for (int i = 0; i < _rows.Count; i++)
         {
-          FormGridRow row = (FormGridRow) _rows[i];
+          FormGridRow row = (FormGridRow)_rows[i];
           if (    row.Type == FormGridRowType.DataRow
               &&  row.RequiredMarker != null)
           {
@@ -207,7 +207,7 @@ namespace Remotion.Web.UI.Controls
       {
         for (int i = 0; i < _rows.Count; i++)
         {
-          FormGridRow row = (FormGridRow) _rows[i];
+          FormGridRow row = (FormGridRow)_rows[i];
           if (    row.Type == FormGridRowType.DataRow
               &&  row.HelpProvider != null)
           {
@@ -223,7 +223,7 @@ namespace Remotion.Web.UI.Controls
       {
         for (int i = 0; i < _rows.Count; i++)
         {
-          FormGridRow row = (FormGridRow) _rows[i];
+          FormGridRow row = (FormGridRow)_rows[i];
           row.BuildIDCollection();
         }
       }
@@ -239,7 +239,7 @@ namespace Remotion.Web.UI.Controls
 
         for (int i = 0; i < _rows.Count; i++)
         {
-          FormGridRow row = (FormGridRow) _rows[i];
+          FormGridRow row = (FormGridRow)_rows[i];
           if (row.ContainsControlWithID(id))
             return row;
         }
@@ -269,7 +269,7 @@ namespace Remotion.Web.UI.Controls
           //  append html table rows
           for (int i = 0; i < newFormGridRow.HtmlTableRows.Count; i++)
           {
-            HtmlTableRow newHtmlTableRow = (HtmlTableRow) newFormGridRow.HtmlTableRows[i];
+            HtmlTableRow newHtmlTableRow = (HtmlTableRow)newFormGridRow.HtmlTableRows[i];
             _table.Rows.Add(newHtmlTableRow);
           }
           //  append form grid row
@@ -299,7 +299,7 @@ namespace Remotion.Web.UI.Controls
           //  Insert the new html table rows
           for (int i = 0; i < newFormGridRow.HtmlTableRows.Count; i++)
           {
-            HtmlTableRow newHtmlTableRow = (HtmlTableRow) newFormGridRow.HtmlTableRows[i];
+            HtmlTableRow newHtmlTableRow = (HtmlTableRow)newFormGridRow.HtmlTableRows[i];
             _table.Rows.Insert(idxHtmlTableRow, newHtmlTableRow);
             idxHtmlTableRow++;
           }
@@ -330,7 +330,7 @@ namespace Remotion.Web.UI.Controls
           //  Insert the new html table rows
           for (int i = 0; i < newFormGridRow.HtmlTableRows.Count; i++)
           {
-            HtmlTableRow newHtmlTableRow = (HtmlTableRow) newFormGridRow.HtmlTableRows[i];
+            HtmlTableRow newHtmlTableRow = (HtmlTableRow)newFormGridRow.HtmlTableRows[i];
             _table.Rows.Insert(idxHtmlTableRow, newHtmlTableRow);
             idxHtmlTableRow++;
           }
@@ -630,13 +630,13 @@ namespace Remotion.Web.UI.Controls
 
         for (int idxRows = 0; idxRows < _htmlTableRows.Count; idxRows++)
         {
-          HtmlTableRow row = (HtmlTableRow) _htmlTableRows[idxRows];
+          HtmlTableRow row = (HtmlTableRow)_htmlTableRows[idxRows];
           for (int idxCells = 0; idxCells < row.Cells.Count; idxCells++)
           {
-            HtmlTableCell cell = (HtmlTableCell) row.Cells[idxCells];
+            HtmlTableCell cell = (HtmlTableCell)row.Cells[idxCells];
             for (int idxControls = 0; idxControls < cell.Controls.Count; idxControls++)
             {
-              Control control = (Control) cell.Controls[idxControls];
+              Control control = (Control)cell.Controls[idxControls];
               if (control.ID != null && control.ID != string.Empty)
                 _controls[control.ID] = control;
             }
@@ -696,7 +696,7 @@ namespace Remotion.Web.UI.Controls
 
         for (int i = 0; i < _htmlTableRows.Count; i++)
         {
-          HtmlTableRow row = (HtmlTableRow) _htmlTableRows[i];
+          HtmlTableRow row = (HtmlTableRow)_htmlTableRows[i];
           row.Visible = false;
         }
       }
@@ -711,7 +711,7 @@ namespace Remotion.Web.UI.Controls
 
         for (int i = 0; i < _htmlTableRows.Count; i++)
         {
-          HtmlTableRow row = (HtmlTableRow) _htmlTableRows[i];
+          HtmlTableRow row = (HtmlTableRow)_htmlTableRows[i];
           row.Visible = true;
         }
       }
@@ -1113,7 +1113,7 @@ namespace Remotion.Web.UI.Controls
         if (_formGrids.ContainsKey(tableID))
         {
           //  Get the controls for the current FormGrid
-          Hashtable? controls = (Hashtable?) formGridControls[tableID];
+          Hashtable? controls = (Hashtable?)formGridControls[tableID];
 
           //  If no hashtable exists, create it and insert it into the formGridControls hashtable.
           if (controls == null)
@@ -1133,7 +1133,7 @@ namespace Remotion.Web.UI.Controls
             string property = elementIDProperty.Substring(posColon + 1);
 
             //  Get the dictonary for the current element
-            IDictionary? controlValues = (IDictionary?) controls[controlID];
+            IDictionary? controlValues = (IDictionary?)controls[controlID];
 
             //  If no dictonary exists, create it and insert it into the elements hashtable.
             if (controlValues == null)
@@ -1176,7 +1176,7 @@ namespace Remotion.Web.UI.Controls
 
           if (control != null)
           {
-            IDictionary controlValues = (IDictionary) controlEntry.Value!; // TODO RM-8118: not null assertion
+            IDictionary controlValues = (IDictionary)controlEntry.Value!; // TODO RM-8118: not null assertion
 
             //  Pass the values to the control
             IResourceDispatchTarget? resourceDispatchTarget = control as IResourceDispatchTarget;
@@ -1284,7 +1284,7 @@ namespace Remotion.Web.UI.Controls
     /// </summary>
     private void Table_Load (object? sender, EventArgs e)
     {
-      var formGrid = GetFormGrid((HtmlTable) sender!); // TODO RM-8118: not null assertion
+      var formGrid = GetFormGrid((HtmlTable)sender!); // TODO RM-8118: not null assertion
       EnsureTransformationStep(formGrid, TransformationStep.PreLoadViewStateTransformationCompleted);
     }
 
@@ -1302,14 +1302,14 @@ namespace Remotion.Web.UI.Controls
     /// </summary>
     private void Table_PreRender (object? sender, EventArgs e)
     {
-      var formGrid = GetFormGrid((HtmlTable) sender!); // TODO RM-8118: notnull assertion
+      var formGrid = GetFormGrid((HtmlTable)sender!); // TODO RM-8118: notnull assertion
       EnsureTransformationStep(formGrid, TransformationStep.PostValidationTransformationCompleted);
-      ((HtmlTable) sender!).SetRenderMethodDelegate(Table_Render);
+      ((HtmlTable)sender!).SetRenderMethodDelegate(Table_Render);
     }
 
     private void Table_Render (HtmlTextWriter writer, Control table)
     {
-      var formGrid = GetFormGrid((HtmlTable) table);
+      var formGrid = GetFormGrid((HtmlTable)table);
       EnsureTransformationStep(formGrid, TransformationStep.RenderTransformationCompleted);
 
       foreach (Control row in table.Controls)
@@ -1361,7 +1361,7 @@ namespace Remotion.Web.UI.Controls
 
       //  Restore the view state to the form grids
 
-      Hashtable? formGridViewStates = (Hashtable?) ViewState[c_viewStateIDFormGrids];
+      Hashtable? formGridViewStates = (Hashtable?)ViewState[c_viewStateIDFormGrids];
 
       if (formGridViewStates != null)
       {
@@ -1573,7 +1573,7 @@ namespace Remotion.Web.UI.Controls
     {
       for (int i = 0; i < formGrid.Rows.Count; i++)
       {
-        FormGridRow formGridRow = (FormGridRow) formGrid.Rows[i];
+        FormGridRow formGridRow = (FormGridRow)formGrid.Rows[i];
         if (formGridRow.Type != FormGridRowType.DataRow)
           continue;
 
@@ -1608,7 +1608,7 @@ namespace Remotion.Web.UI.Controls
       bool isValid = true;
       for (int i = 0; i < formGrid.Rows.Count; i++)
       {
-        FormGridRow formGridRow = (FormGridRow) formGrid.Rows[i];
+        FormGridRow formGridRow = (FormGridRow)formGrid.Rows[i];
         if (formGridRow.Type != FormGridRowType.DataRow)
           continue;
 
@@ -1639,7 +1639,7 @@ namespace Remotion.Web.UI.Controls
       bool isValid = true;
       for (int i = 0; i < dataRow.ControlsCell.Controls.Count; i++)
       {
-        Control control = (Control) dataRow.ControlsCell.Controls[i];
+        Control control = (Control)dataRow.ControlsCell.Controls[i];
         IValidator? validator = control as IValidator;
 
         //  Only for validators
@@ -1677,7 +1677,7 @@ namespace Remotion.Web.UI.Controls
 
       for (int i = 0; i < dataRow.ControlsCell.Controls.Count; i++)
       {
-        Control control = (Control) dataRow.ControlsCell.Controls[i];
+        Control control = (Control)dataRow.ControlsCell.Controls[i];
         IValidator? validator = control as IValidator;
         if (validator == null || validator.IsValid)
           continue;
@@ -1708,7 +1708,7 @@ namespace Remotion.Web.UI.Controls
         var toolTip = new StringBuilder(validationErrorList.Count * 50);
         for (int i = 0; i < validationErrorList.Count; i++)
         {
-          ValidationError validationError = (ValidationError) validationErrorList[i]!;
+          ValidationError validationError = (ValidationError)validationErrorList[i]!;
           //  Get validation message
           string validationMessage = validationError.ValidationMessage;
           //  Get tool tip, tool tip is validation message
@@ -1738,7 +1738,7 @@ namespace Remotion.Web.UI.Controls
       object? boxedCompletedStep = _completedTransformationStep [formGrid];
       TransformationStep completedStep = TransformationStep.TransformationNotStarted;
       if (boxedCompletedStep != null)
-        completedStep = (TransformationStep) boxedCompletedStep;
+        completedStep = (TransformationStep)boxedCompletedStep;
 
       if (   completedStep < TransformationStep.PreLoadViewStateTransformationCompleted
           && completedStep < stepToBeCompleted)
@@ -1780,7 +1780,7 @@ namespace Remotion.Web.UI.Controls
     {
       for (int i = 0; i < formGrid.Rows.Count; i++)
       {
-        FormGridRow formGridRow = (FormGridRow) formGrid.Rows[i];
+        FormGridRow formGridRow = (FormGridRow)formGrid.Rows[i];
         if (formGridRow.Type == FormGridRowType.DataRow)
         {
           CreateValidators(formGridRow);
@@ -1797,7 +1797,7 @@ namespace Remotion.Web.UI.Controls
     {
       for (int i = 0; i < formGrid.Rows.Count; i++)
       {
-        FormGridRow formGridRow = (FormGridRow) formGrid.Rows[i];
+        FormGridRow formGridRow = (FormGridRow)formGrid.Rows[i];
         if (formGridRow.IsGenerated)
           UpdateGeneratedRowsVisibility(formGridRow);
       }
@@ -1834,7 +1834,7 @@ namespace Remotion.Web.UI.Controls
 
       for (int i = 0; i < formGrid.Rows.Count; i++)
       {
-        FormGridRow formGridRow = (FormGridRow) formGrid.Rows[i];
+        FormGridRow formGridRow = (FormGridRow)formGrid.Rows[i];
         switch (formGridRow.Type)
         {
           case FormGridRowType.TitleRow:
@@ -2019,7 +2019,7 @@ namespace Remotion.Web.UI.Controls
 
       for (int i = 0; i < formGrid.Rows.Count; i++)
       {
-        FormGridRow formGridRow = (FormGridRow) formGrid.Rows[i];
+        FormGridRow formGridRow = (FormGridRow)formGrid.Rows[i];
         if (formGridRow.Type != FormGridRowType.DataRow)
           continue;
 
@@ -2046,7 +2046,7 @@ namespace Remotion.Web.UI.Controls
       ArgumentUtility.CheckNotNull("formGrid", formGrid);
       for (int i = 0; i < formGrid.Rows.Count; i++)
       {
-        FormGridRow formGridRow = (FormGridRow) formGrid.Rows[i];
+        FormGridRow formGridRow = (FormGridRow)formGrid.Rows[i];
         switch (formGridRow.Type)
         {
           case FormGridRowType.TitleRow:
@@ -2401,7 +2401,7 @@ namespace Remotion.Web.UI.Controls
 
       for (int i = 0; i < dataRow.ControlsCell.Controls.Count; i++)
       {
-        Control control = (Control) dataRow.ControlsCell.Controls[i];
+        Control control = (Control)dataRow.ControlsCell.Controls[i];
         BaseValidator? baseValidator = control as BaseValidator;
         IBaseValidator? iBaseValidator = control as IBaseValidator;
 
@@ -2444,7 +2444,7 @@ namespace Remotion.Web.UI.Controls
 
       for (int i = 0; i < dataRow.ControlsCell.Controls.Count; i++)
       {
-        Control control = (Control) dataRow.ControlsCell.Controls[i];
+        Control control = (Control)dataRow.ControlsCell.Controls[i];
         if (! control.Visible)
           continue;
 
@@ -2540,7 +2540,7 @@ namespace Remotion.Web.UI.Controls
       //  Split into smart controls and validators
       for (int i = 0; i < dataRow.ControlsCell.Controls.Count; i++)
       {
-        Control control = (Control) dataRow.ControlsCell.Controls[i];
+        Control control = (Control)dataRow.ControlsCell.Controls[i];
         if (control is ISmartControl)
           smartControls.Add(control);
         //else if (control is BaseValidator || control is IBaseValidator)
@@ -2549,7 +2549,7 @@ namespace Remotion.Web.UI.Controls
 
       for (int i = 0; i < smartControls.Count; i++)
       {
-        ISmartControl? smartControl = (ISmartControl) smartControls[i]!;
+        ISmartControl? smartControl = (ISmartControl)smartControls[i]!;
         if (!smartControl.Visible)
           continue;
 
@@ -2590,7 +2590,7 @@ namespace Remotion.Web.UI.Controls
 
       for (int i = 0; i < dataRow.LabelsCell.Controls.Count; i++)
       {
-        Control control = (Control) dataRow.LabelsCell.Controls[i];
+        Control control = (Control)dataRow.LabelsCell.Controls[i];
         if (!control.Visible)
           continue;
 
@@ -2609,7 +2609,7 @@ namespace Remotion.Web.UI.Controls
 
       for (int i = 0; i < dataRow.ControlsCell.Controls.Count; i++)
       {
-        Control control = (Control) dataRow.ControlsCell.Controls[i];
+        Control control = (Control)dataRow.ControlsCell.Controls[i];
         if (!control.Visible)
           continue;
 
@@ -2684,7 +2684,7 @@ namespace Remotion.Web.UI.Controls
         bool isControlVisible = false;
         for (int i = 0; i < dataRow.ControlsCell.Controls.Count; i++)
         {
-          Control control = (Control) dataRow.ControlsCell.Controls[i];
+          Control control = (Control)dataRow.ControlsCell.Controls[i];
           if (control.Visible)
           {
             isControlVisible = true;
@@ -2695,7 +2695,7 @@ namespace Remotion.Web.UI.Controls
         {
           for (int i = 0; i < dataRow.LabelsCell.Controls.Count; i++)
           {
-            Control label = (Control) dataRow.LabelsCell.Controls[i];
+            Control label = (Control)dataRow.LabelsCell.Controls[i];
             label.Visible = false;
           }
         }
@@ -2792,7 +2792,7 @@ namespace Remotion.Web.UI.Controls
         //  Get validation messages
         for (int i = 0; i < dataRow.ValidationErrors.Length; i++)
         {
-          ValidationError validationError = (ValidationError) dataRow.ValidationErrors[i];
+          ValidationError validationError = (ValidationError)dataRow.ValidationErrors[i];
           if (validationError == null)
             continue;
 
@@ -2929,7 +2929,7 @@ namespace Remotion.Web.UI.Controls
 
       for (int i = 0; i < dataRow.ControlsCell.Controls.Count; i++)
       {
-        Control control = (Control) dataRow.ControlsCell.Controls[i];
+        Control control = (Control)dataRow.ControlsCell.Controls[i];
         BaseValidator? validator = control as BaseValidator;
         if (   validator != null
             && ! string.IsNullOrEmpty(validator.CssClass))
@@ -3211,7 +3211,7 @@ namespace Remotion.Web.UI.Controls
         ArrayList tables = new ArrayList();
         foreach (FormGrid grid in _formGrids.Values)
           tables.Add(grid.Table);
-        return (HtmlTable[]) tables.ToArray(typeof(HtmlTable));
+        return (HtmlTable[])tables.ToArray(typeof(HtmlTable));
       }
     }
 

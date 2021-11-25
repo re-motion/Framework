@@ -92,7 +92,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public T GetFastInvoker<T> () where T: class
     {
-      return (T) (object) GetFastInvoker(typeof(T));
+      return (T)(object)GetFastInvoker(typeof(T));
     }
 
     public Delegate GetFastInvoker (Type delegateType)
@@ -134,7 +134,7 @@ namespace Remotion.ObjectBinding.BindableObject
       if (obj == null)
         return false;
       if (obj.GetType() != GetType()) return false;
-      var other = (MixinIntroducedMethodInformation) obj;
+      var other = (MixinIntroducedMethodInformation)obj;
 
       return _mixinMethodInfo.Equals(other._mixinMethodInfo);
     }

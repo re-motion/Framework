@@ -214,7 +214,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       if (HasEditControl(columnIndex))
       {
         ControlCollection controls = GetEditControls(columnIndex);
-        return (IBusinessObjectBoundEditableWebControl) controls[0];
+        return (IBusinessObjectBoundEditableWebControl)controls[0];
       }
       else
       {
@@ -345,7 +345,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
         Assertion.IsNotNull(cellValidators, "GetValidators(columnIndex) != null");
         for (int i = 0; i < cellValidators.Count; i++)
         {
-          BaseValidator validator = (BaseValidator) cellValidators[i];
+          BaseValidator validator = (BaseValidator)cellValidators[i];
           validator.Validate();
           isValid &= validator.IsValid;
         }
@@ -410,7 +410,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     {
       Assertion.IsNotNull(_rowEditModeControls, "_rowEditModeControls must not be null.");
 
-      return (IBusinessObjectBoundEditableWebControl[]) _rowEditModeControls.Clone();
+      return (IBusinessObjectBoundEditableWebControl[])_rowEditModeControls.Clone();
     }
 
     public void RenderSimpleColumnCellEditModeControl (
@@ -452,7 +452,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
         for (int i = 0; i < validators.Count; i++)
         {
-          BaseValidator validator = (BaseValidator) validators[i];
+          BaseValidator validator = (BaseValidator)validators[i];
           isCellValid &= validator.IsValid;
           if (!validator.IsValid)
           {
@@ -465,15 +465,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
         {
           if (validationErrorMarker is HtmlControl)
           {
-            ((HtmlControl) validationErrorMarker).Attributes["tabIndex"] = "0";
-            ((HtmlControl) validationErrorMarker).Attributes["title"] = null;
-            ((HtmlControl) validationErrorMarker).Attributes[HtmlTextWriterAttribute2.AriaLabel] = toolTipBuilder.ToString();
+            ((HtmlControl)validationErrorMarker).Attributes["tabIndex"] = "0";
+            ((HtmlControl)validationErrorMarker).Attributes["title"] = null;
+            ((HtmlControl)validationErrorMarker).Attributes[HtmlTextWriterAttribute2.AriaLabel] = toolTipBuilder.ToString();
           }
           else if (validationErrorMarker is WebControl)
           {
-            ((WebControl) validationErrorMarker).TabIndex = 0;
-            ((WebControl) validationErrorMarker).ToolTip = null;
-            ((WebControl) validationErrorMarker).Attributes[HtmlTextWriterAttribute2.AriaLabel] = toolTipBuilder.ToString();
+            ((WebControl)validationErrorMarker).TabIndex = 0;
+            ((WebControl)validationErrorMarker).ToolTip = null;
+            ((WebControl)validationErrorMarker).Attributes[HtmlTextWriterAttribute2.AriaLabel] = toolTipBuilder.ToString();
           }
           validationErrorMarker.RenderControl(writer);
         }

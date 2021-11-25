@@ -119,7 +119,7 @@ namespace Remotion.Web
     {
       ArgumentUtility.CheckNotNull(nameof(writer), writer);
 
-      ((WebString) this).Write(writer);
+      ((WebString)this).Write(writer);
     }
 
     /// <summary>
@@ -135,7 +135,7 @@ namespace Remotion.Web
     {
       ArgumentUtility.CheckNotNull(nameof(writer), writer);
 
-      ((WebString) this).AddAttribute(writer, attribute);
+      ((WebString)this).AddAttribute(writer, attribute);
     }
 
     /// <summary>
@@ -152,7 +152,7 @@ namespace Remotion.Web
       ArgumentUtility.CheckNotNull(nameof(writer), writer);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(attribute), attribute);
 
-      ((WebString) this).AddAttribute(writer, attribute);
+      ((WebString)this).AddAttribute(writer, attribute);
     }
 
     /// <inheritdoc />
@@ -179,7 +179,7 @@ namespace Remotion.Web
     /// <returns>A HTML encoded string that represents the current <see cref="PlainTextString"/>.</returns>
     public override string ToString ()
     {
-      return ((WebString) this).ToString();
+      return ((WebString)this).ToString();
     }
 
     /// <summary>
@@ -188,7 +188,7 @@ namespace Remotion.Web
     /// <returns>A string that represents the current <see cref="PlainTextString"/> in the specified <paramref name="encoding"/>.</returns>
     public string ToString (WebStringEncoding encoding)
     {
-      return ((WebString) this).ToString(encoding);
+      return ((WebString)this).ToString(encoding);
     }
   }
 }

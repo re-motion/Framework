@@ -196,7 +196,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       var cacheWithMixins = new PropertyAccessorDataCache(GetTypeDefinition(typeof(TargetClassForPersistentMixin)));
 // ReSharper disable SuspiciousTypeConversion.Global
-      var data = cacheWithMixins.ResolvePropertyAccessorData((TargetClassForPersistentMixin t) => ((IMixinAddingPersistentProperties) t).PersistentProperty);
+      var data = cacheWithMixins.ResolvePropertyAccessorData((TargetClassForPersistentMixin t) => ((IMixinAddingPersistentProperties)t).PersistentProperty);
 // ReSharper restore SuspiciousTypeConversion.Global
 
       Assert.That(data, Is.Not.Null);
@@ -216,7 +216,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void ResolvePropertyAccessorData_Expression_Interface ()
     {
-      var data = _orderCache.ResolvePropertyAccessorData((Order o) => ((IOrder) o).OrderNumber);
+      var data = _orderCache.ResolvePropertyAccessorData((Order o) => ((IOrder)o).OrderNumber);
 
       Assert.That(data, Is.Not.Null);
       Assert.That(data, Is.EqualTo(_orderCache.GetPropertyAccessorData(typeof(Order).FullName + ".OrderNumber")));
@@ -232,7 +232,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void ResolvePropertyAccessorData_Expression_UnknownOnThisObject ()
     {
-      var data = _orderCache.ResolvePropertyAccessorData((Order o) => ((OrderItem) (object) o).Product);
+      var data = _orderCache.ResolvePropertyAccessorData((Order o) => ((OrderItem)(object)o).Product);
       Assert.That(data, Is.Null);
     }
 
@@ -308,7 +308,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       var cacheWithMixins = new PropertyAccessorDataCache(GetTypeDefinition(typeof(TargetClassForPersistentMixin)));
       // ReSharper disable SuspiciousTypeConversion.Global
-      var data = cacheWithMixins.ResolveMandatoryPropertyAccessorData((TargetClassForPersistentMixin t) => ((IMixinAddingPersistentProperties) t).PersistentProperty);
+      var data = cacheWithMixins.ResolveMandatoryPropertyAccessorData((TargetClassForPersistentMixin t) => ((IMixinAddingPersistentProperties)t).PersistentProperty);
       // ReSharper restore SuspiciousTypeConversion.Global
 
       Assert.That(data, Is.Not.Null);
@@ -328,7 +328,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void ResolveMandatoryPropertyAccessorData_Expression_Interface ()
     {
-      var data = _orderCache.ResolveMandatoryPropertyAccessorData((Order o) => ((IOrder) o).OrderNumber);
+      var data = _orderCache.ResolveMandatoryPropertyAccessorData((Order o) => ((IOrder)o).OrderNumber);
 
       Assert.That(data, Is.Not.Null);
       Assert.That(data, Is.EqualTo(_orderCache.GetPropertyAccessorData(typeof(Order).FullName + ".OrderNumber")));
@@ -349,7 +349,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void ResolveMandatoryPropertyAccessorData_Expression_UnknownOnThisObject ()
     {
       Assert.That(
-          () => _orderCache.ResolveMandatoryPropertyAccessorData((Order o) => ((OrderItem) (object) o).Product),
+          () => _orderCache.ResolveMandatoryPropertyAccessorData((Order o) => ((OrderItem)(object)o).Product),
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo(
 #if NETFRAMEWORK

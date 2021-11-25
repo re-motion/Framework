@@ -30,7 +30,7 @@ namespace Remotion.UnitTests.Logging.Log4NetLogTests
       Exception exception = new Exception();
       SetLoggingThreshold(Level.Info);
 
-      Log.Log(LogLevel.Info, 2, (object) "The message.", exception);
+      Log.Log(LogLevel.Info, 2, (object)"The message.", exception);
 
       LoggingEvent[] events = GetLoggingEvents();
       Assert.That(events.Length, Is.EqualTo(1));

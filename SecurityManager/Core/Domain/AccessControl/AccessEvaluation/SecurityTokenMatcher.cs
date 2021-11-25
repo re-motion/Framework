@@ -238,7 +238,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     private IEnumerable<PrincipalRole> GetMatchingPrincipalRoles (Principal principal)
     {
-      var roles = (IEnumerable<PrincipalRole>) principal.Roles;
+      var roles = (IEnumerable<PrincipalRole>)principal.Roles;
       if (_ace.UserCondition == UserCondition.SpecificPosition)
         roles = roles.Where(r => _ace.SpecificPosition.Equals(r.Position.GetObjectReference(_clientTransaction)));
 

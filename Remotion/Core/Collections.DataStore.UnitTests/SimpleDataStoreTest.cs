@@ -53,7 +53,7 @@ namespace Remotion.Collections.DataStore.UnitTests
     [Test]
     public void IsNull ()
     {
-      Assert.That(((INullObject) _store).IsNull, Is.False);
+      Assert.That(((INullObject)_store).IsNull, Is.False);
     }
 
     [Test]

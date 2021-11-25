@@ -37,7 +37,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebMenuItemTests
     {
       _mockWebSecurityAdapter = new Mock<IWebSecurityAdapter>(MockBehavior.Strict);
       _mockSecurableObject = new Mock<ISecurableObject>(MockBehavior.Strict);
-      _mockCommand = new Mock<Command>(MockBehavior.Strict, CommandType.None, _mockWebSecurityAdapter.Object, (IWxeSecurityAdapter) null);
+      _mockCommand = new Mock<Command>(MockBehavior.Strict, CommandType.None, _mockWebSecurityAdapter.Object, (IWxeSecurityAdapter)null);
     }
 
     [Test]

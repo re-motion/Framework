@@ -88,7 +88,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Seriali
 
         Assert.That(Mixin.Get<MixinOverridingClassMethod>(deserialiedInstance).Next, Is.Not.Null);
         Assert.That(
-                      ((MixinOverridingClassMethod.IRequirements) Mixin.Get<MixinOverridingClassMethod>(deserialiedInstance).Next).OverridableMethod(84), Is.EqualTo("OverridableBaseType.OverridableMethod(84)"));
+                      ((MixinOverridingClassMethod.IRequirements)Mixin.Get<MixinOverridingClassMethod>(deserialiedInstance).Next).OverridableMethod(84), Is.EqualTo("OverridableBaseType.OverridableMethod(84)"));
       }
     }
 
@@ -116,10 +116,10 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Seriali
     public void ExtensionsAndConfigurationSerialized ()
     {
       var bt1 = ObjectFactory.Create<BaseType1>(ParamList.Empty);
-      var mixinTarget = (IMixinTarget) bt1;
+      var mixinTarget = (IMixinTarget)bt1;
 
       BaseType1 deserializedBT1 = Serializer.SerializeAndDeserialize(bt1);
-      var deserializedMixinTarget = (IMixinTarget) deserializedBT1;
+      var deserializedMixinTarget = (IMixinTarget)deserializedBT1;
 
       Assert.That(deserializedMixinTarget.ClassContext, Is.EqualTo(mixinTarget.ClassContext));
 
@@ -218,7 +218,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Seriali
         serializedData = Serializer.Serialize(instance);
       }
 
-      var deserializedInstance = (NullTarget) Serializer.Deserialize(serializedData);
+      var deserializedInstance = (NullTarget)Serializer.Deserialize(serializedData);
       Assert.That(Mixin.Get<NullMixin>(deserializedInstance), Is.Not.Null);
     }
   }

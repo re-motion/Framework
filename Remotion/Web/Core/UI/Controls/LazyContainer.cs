@@ -145,7 +145,7 @@ namespace Remotion.Web.UI.Controls
 
       if (savedState != null)
       {
-        Pair values = (Pair) savedState;
+        Pair values = (Pair)savedState;
         base.LoadViewState(values.First);
         _recursiveViewState = values.Second;
 
@@ -182,12 +182,12 @@ namespace Remotion.Web.UI.Controls
       Triplet values = ArgumentUtility.CheckNotNullAndType<Triplet>("savedState", savedState!);
 
       base.LoadControlState(savedState);
-      bool hasChildControlStatesBackUp = (bool) values.Second!;
+      bool hasChildControlStatesBackUp = (bool)values.Second!;
 
       if (hasChildControlStatesBackUp)
       {
         Assertion.DebugIsNotNull(values.Third, "values.Third must not be null if hasChildControlStatesBackUp is true.");
-        _childControlStatesBackUp = (IDictionary) values.Third;
+        _childControlStatesBackUp = (IDictionary)values.Third;
       }
       else if (_isLazyLoadingEnabled)
       {

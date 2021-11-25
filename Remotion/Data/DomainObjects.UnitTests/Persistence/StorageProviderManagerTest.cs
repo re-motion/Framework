@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 
       using (_storageProviderManager)
       {
-        provider = (RdbmsProvider) _storageProviderManager[c_testDomainProviderID];
+        provider = (RdbmsProvider)_storageProviderManager[c_testDomainProviderID];
         provider.LoadDataContainer(DomainObjectIDs.Order1);
 
         Assert.That(provider.IsConnected, Is.True);

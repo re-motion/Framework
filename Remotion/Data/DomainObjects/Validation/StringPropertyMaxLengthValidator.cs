@@ -79,7 +79,7 @@ namespace Remotion.Data.DomainObjects.Validation
       if (propertyValue == null)
         return;
 
-      if (propertyType == typeof(string) && ((string) propertyValue).Length > maxLength.Value)
+      if (propertyType == typeof(string) && ((string)propertyValue).Length > maxLength.Value)
       {
         string message = string.Format(
             "Value for property '{0}' of domain object '{1}' is too long. Maximum number of characters: {2}.",

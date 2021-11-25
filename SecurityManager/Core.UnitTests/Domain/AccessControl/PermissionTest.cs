@@ -49,7 +49,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
         classDefinition.Committing += (sender, e) =>
         {
           commitOnClassWasCalled = true;
-          Assert.That(GetDataContainer((DomainObject) sender).HasBeenMarkedChanged, Is.True);
+          Assert.That(GetDataContainer((DomainObject)sender).HasBeenMarkedChanged, Is.True);
         };
         ace.GetPermissions()[0].RegisterForCommit();
 
@@ -75,7 +75,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
         classDefinition.Committing += (sender, e) =>
         {
           commitOnClassWasCalled = true;
-          Assert.That(GetDataContainer((DomainObject) sender).HasBeenMarkedChanged, Is.True);
+          Assert.That(GetDataContainer((DomainObject)sender).HasBeenMarkedChanged, Is.True);
         };
         ace.GetPermissions()[0].Delete();
 

@@ -135,9 +135,9 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
       StubSearchService("*.exe", "1.exe", "2.exe");
 
       _loaderMock.Setup(mock => mock.TryLoadAssembly("1.dll")).Returns(_assembly1).Verifiable();
-      _loaderMock.Setup(mock => mock.TryLoadAssembly("2.dll")).Returns((Assembly) null).Verifiable();
+      _loaderMock.Setup(mock => mock.TryLoadAssembly("2.dll")).Returns((Assembly)null).Verifiable();
       _loaderMock.Setup(mock => mock.TryLoadAssembly("1.exe")).Returns(_assembly3).Verifiable();
-      _loaderMock.Setup(mock => mock.TryLoadAssembly("2.exe")).Returns((Assembly) null).Verifiable();
+      _loaderMock.Setup(mock => mock.TryLoadAssembly("2.exe")).Returns((Assembly)null).Verifiable();
 
       var finder = CreateRootAssemblyFinder(specification1, specification2);
 

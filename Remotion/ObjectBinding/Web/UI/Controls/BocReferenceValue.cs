@@ -181,7 +181,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override void CreateChildControls ()
     {
       base.CreateChildControls();
-      ((IStateManager) _listItems).TrackViewState();
+      ((IStateManager)_listItems).TrackViewState();
     }
 
     /// <remarks> Populates the list. </remarks>
@@ -315,13 +315,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override void LoadControlState (object? savedState)
     {
-      object?[] values = (object?[]) savedState!;
+      object?[] values = (object?[])savedState!;
 
       base.LoadControlState(values[0]);
       if (values[1] != null)
-        InternalValue = (string?) values[1];
-      _displayName = (string?) values[2];
-      ((IStateManager) _listItems).LoadViewState(values[3]);
+        InternalValue = (string?)values[1];
+      _displayName = (string?)values[2];
+      ((IStateManager)_listItems).LoadViewState(values[3]);
     }
 
     protected override object SaveControlState ()
@@ -331,7 +331,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       values[0] = base.SaveControlState();
       values[1] = InternalValue;
       values[2] = _displayName;
-      values[3] = ((IStateManager) _listItems).SaveViewState();
+      values[3] = ((IStateManager)_listItems).SaveViewState();
 
       return values;
     }
@@ -353,7 +353,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       IBusinessObjectWithIdentity? value = null;
 
       if (DataSource.BusinessObject != null)
-        value = (IBusinessObjectWithIdentity?) DataSource.BusinessObject.GetProperty(Property);
+        value = (IBusinessObjectWithIdentity?)DataSource.BusinessObject.GetProperty(Property);
 
       LoadValueInternal(value, false);
     }

@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       T other;
       try
       {
-        other = (T) actual;
+        other = (T)actual;
       }
       catch (InvalidCastException)
       {

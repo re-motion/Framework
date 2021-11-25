@@ -65,7 +65,7 @@ namespace Remotion.ExtensibleEnums.UnitTests
       TypeConverterResult converterResult = _provider.GetTypeConverter(typeof(Color), _string);
       Assert.That(converterResult.TypeConverterType, Is.EqualTo(TypeConverterType.SourceTypeConverter));
       Assert.That(converterResult.TypeConverter, Is.InstanceOf(typeof(ExtensibleEnumConverter)));
-      Assert.That(((ExtensibleEnumConverter) converterResult.TypeConverter).ExtensibleEnumType, Is.SameAs(typeof(Color)));
+      Assert.That(((ExtensibleEnumConverter)converterResult.TypeConverter).ExtensibleEnumType, Is.SameAs(typeof(Color)));
     }
 
     [Test]
@@ -74,7 +74,7 @@ namespace Remotion.ExtensibleEnums.UnitTests
       TypeConverterResult converterResult = _provider.GetTypeConverter(_string, typeof(Color));
       Assert.That(converterResult.TypeConverterType, Is.EqualTo(TypeConverterType.DestinationTypeConverter));
       Assert.That(converterResult.TypeConverter, Is.InstanceOf(typeof(ExtensibleEnumConverter)));
-      Assert.That(((ExtensibleEnumConverter) converterResult.TypeConverter).ExtensibleEnumType, Is.SameAs(typeof(Color)));
+      Assert.That(((ExtensibleEnumConverter)converterResult.TypeConverter).ExtensibleEnumType, Is.SameAs(typeof(Color)));
     }
 
     [Test]
@@ -86,7 +86,7 @@ namespace Remotion.ExtensibleEnums.UnitTests
       Assert.That(converterSecondRun, Is.Not.Null, "TypeConverter from second run is null.");
       Assert.That(converterSecondRun, Is.SameAs(converterFirstRun));
       Assert.That(converterFirstRun, Is.InstanceOf(typeof(ExtensibleEnumConverter)));
-      Assert.That(((ExtensibleEnumConverter) converterFirstRun).ExtensibleEnumType, Is.SameAs(typeof(Color)));
+      Assert.That(((ExtensibleEnumConverter)converterFirstRun).ExtensibleEnumType, Is.SameAs(typeof(Color)));
     }
   }
 }

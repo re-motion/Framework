@@ -129,7 +129,7 @@ namespace Remotion.ObjectBinding.BindableObject
       if (obj.GetType() != GetType())
         return false;
 
-      var other = (InterfaceImplementationMethodInformation) obj;
+      var other = (InterfaceImplementationMethodInformation)obj;
       return _implementationMethodInfo.Equals(other._implementationMethodInfo) && _declarationMethodInfo.Equals(other._declarationMethodInfo);
     }
 

@@ -143,7 +143,7 @@ namespace Remotion.Security
       SecurityPrincipal? other = obj as SecurityPrincipal;
       if (other == null)
         return false;
-      return ((IEquatable<SecurityPrincipal>) this).Equals(other);
+      return ((IEquatable<SecurityPrincipal>)this).Equals(other);
     }
 
     public override int GetHashCode ()

@@ -90,7 +90,7 @@ namespace Remotion.Development.Web.ResourceHosting
         }
         else
         {
-          var file = (ResourceVirtualFile) item;
+          var file = (ResourceVirtualFile)item;
           var filePath = Assertion.IsNotNull(file.PhysicalPath);
           var info = new FileInfo(filePath);
 

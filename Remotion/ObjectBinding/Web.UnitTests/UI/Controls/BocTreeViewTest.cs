@@ -49,7 +49,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _businessObject = TypeWithReference.Create();
 
       _dataSource = new BusinessObjectReferenceDataSource();
-      _dataSource.BusinessObject = (IBusinessObject) _businessObject;
+      _dataSource.BusinessObject = (IBusinessObject)_businessObject;
     }
 
 
@@ -93,14 +93,14 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       listStub
           .As<IEnumerable>()
           .Setup(_ => _.GetEnumerator())
-          .Returns(((IEnumerable) Array.Empty<IBusinessObjectWithIdentity>()).GetEnumerator());
+          .Returns(((IEnumerable)Array.Empty<IBusinessObjectWithIdentity>()).GetEnumerator());
       _bocTreeView.Value = listStub.Object;
       Assert.That(_bocTreeView.Value, Is.SameAs(listStub.Object));
       Assert.That(
           () => _bocTreeView.ValueAsList,
           Throws.InvalidOperationException
               .With.Message.EqualTo("The value only implements the IReadOnlyList<IBusinessObjectWithIdentity> interface. Use the Value property to access the value."));
-      Assert.That(((IBusinessObjectBoundControl) _bocTreeView).Value, Is.SameAs(listStub.Object));
+      Assert.That(((IBusinessObjectBoundControl)_bocTreeView).Value, Is.SameAs(listStub.Object));
     }
 
     [Test]
@@ -110,7 +110,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _bocTreeView.Value = list;
       Assert.That(_bocTreeView.Value, Is.SameAs(list));
       Assert.That(_bocTreeView.ValueAsList, Is.SameAs(list));
-      Assert.That(((IBusinessObjectBoundControl) _bocTreeView).Value, Is.SameAs(list));
+      Assert.That(((IBusinessObjectBoundControl)_bocTreeView).Value, Is.SameAs(list));
     }
 
     [Test]
@@ -119,7 +119,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _bocTreeView.Value = null;
       Assert.That(_bocTreeView.Value, Is.Null);
       Assert.That(_bocTreeView.ValueAsList, Is.Null);
-      Assert.That(((IBusinessObjectBoundControl) _bocTreeView).Value, Is.Null);
+      Assert.That(((IBusinessObjectBoundControl)_bocTreeView).Value, Is.Null);
     }
 
     [Test]
@@ -130,7 +130,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _bocTreeView.ValueAsList = list;
       Assert.That(_bocTreeView.ValueAsList, Is.SameAs(list));
       Assert.That(_bocTreeView.Value, Is.InstanceOf<BusinessObjectListAdapter<IBusinessObjectWithIdentity>>());
-      Assert.That(((BusinessObjectListAdapter<IBusinessObjectWithIdentity>) _bocTreeView.Value).WrappedList, Is.SameAs(list));
+      Assert.That(((BusinessObjectListAdapter<IBusinessObjectWithIdentity>)_bocTreeView.Value).WrappedList, Is.SameAs(list));
     }
 
     [Test]
@@ -141,7 +141,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _bocTreeView.ValueAsList = list;
       Assert.That(_bocTreeView.ValueAsList, Is.SameAs(list));
       Assert.That(_bocTreeView.Value, Is.SameAs(list));
-      Assert.That(((IBusinessObjectBoundControl) _bocTreeView).Value, Is.SameAs(list));
+      Assert.That(((IBusinessObjectBoundControl)_bocTreeView).Value, Is.SameAs(list));
     }
 
     [Test]
@@ -150,7 +150,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _bocTreeView.ValueAsList = null;
       Assert.That(_bocTreeView.ValueAsList, Is.Null);
       Assert.That(_bocTreeView.Value, Is.Null);
-      Assert.That(((IBusinessObjectBoundControl) _bocTreeView).Value, Is.Null);
+      Assert.That(((IBusinessObjectBoundControl)_bocTreeView).Value, Is.Null);
     }
 
     [Test]
@@ -160,9 +160,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       listStub
           .As<IEnumerable>()
           .Setup(_ => _.GetEnumerator())
-          .Returns(((IEnumerable) Array.Empty<IBusinessObjectWithIdentity>()).GetEnumerator());
+          .Returns(((IEnumerable)Array.Empty<IBusinessObjectWithIdentity>()).GetEnumerator());
       ((IBusinessObjectBoundControl)_bocTreeView).Value = listStub.Object;
-      Assert.That(((IBusinessObjectBoundControl) _bocTreeView).Value, Is.SameAs(listStub.Object));
+      Assert.That(((IBusinessObjectBoundControl)_bocTreeView).Value, Is.SameAs(listStub.Object));
       Assert.That(_bocTreeView.Value, Is.SameAs(listStub.Object));
       Assert.That(
           () => _bocTreeView.ValueAsList,
@@ -174,8 +174,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     public void SetValueFromIBusinessObjectBoundControlToIReadOnlyListAndIList ()
     {
       var list = new[] { TypeWithReference.Create() };
-      ((IBusinessObjectBoundControl) _bocTreeView).Value = list;
-      Assert.That(((IBusinessObjectBoundControl) _bocTreeView).Value, Is.SameAs(list));
+      ((IBusinessObjectBoundControl)_bocTreeView).Value = list;
+      Assert.That(((IBusinessObjectBoundControl)_bocTreeView).Value, Is.SameAs(list));
       Assert.That(_bocTreeView.Value, Is.SameAs(list));
       Assert.That(_bocTreeView.ValueAsList, Is.SameAs(list));
     }
@@ -185,19 +185,19 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     {
       var list = new ArrayList();
       list.Add(TypeWithReference.Create());
-      ((IBusinessObjectBoundControl) _bocTreeView).Value = list;
-      Assert.That(((IBusinessObjectBoundControl) _bocTreeView).Value, Is.SameAs(list));
+      ((IBusinessObjectBoundControl)_bocTreeView).Value = list;
+      Assert.That(((IBusinessObjectBoundControl)_bocTreeView).Value, Is.SameAs(list));
       Assert.That(_bocTreeView.ValueAsList, Is.SameAs(list));
       Assert.That(_bocTreeView.Value, Is.InstanceOf<BusinessObjectListAdapter<IBusinessObjectWithIdentity>>());
-      Assert.That(((BusinessObjectListAdapter<IBusinessObjectWithIdentity>) _bocTreeView.Value).WrappedList, Is.SameAs(list));
+      Assert.That(((BusinessObjectListAdapter<IBusinessObjectWithIdentity>)_bocTreeView.Value).WrappedList, Is.SameAs(list));
     }
 
     [Test]
     public void SetFromIBusinessObjectBoundControlToIBusinessObject ()
     {
       var value = TypeWithReference.Create();
-      ((IBusinessObjectBoundControl) _bocTreeView).Value = value;
-      Assert.That(((IBusinessObjectBoundControl) _bocTreeView).Value, Is.EqualTo(new[] { value }));
+      ((IBusinessObjectBoundControl)_bocTreeView).Value = value;
+      Assert.That(((IBusinessObjectBoundControl)_bocTreeView).Value, Is.EqualTo(new[] { value }));
       Assert.That(_bocTreeView.ValueAsList, Is.EqualTo(new[] { value }));
       Assert.That(_bocTreeView.Value, Is.EqualTo(new[] { value }));
     }
@@ -205,8 +205,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     [Test]
     public void SetValueFromIBusinessObjectBoundControlToNull ()
     {
-      ((IBusinessObjectBoundControl) _bocTreeView).Value = null;
-      Assert.That(((IBusinessObjectBoundControl) _bocTreeView).Value, Is.Null);
+      ((IBusinessObjectBoundControl)_bocTreeView).Value = null;
+      Assert.That(((IBusinessObjectBoundControl)_bocTreeView).Value, Is.Null);
       Assert.That(_bocTreeView.Value, Is.Null);
       Assert.That(_bocTreeView.ValueAsList, Is.Null);
     }
@@ -215,7 +215,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     public void SetValueFromIBusinessObjectBoundControlToInvalidType ()
     {
       Assert.That(
-          () => ((IBusinessObjectBoundControl) _bocTreeView).Value = "fake",
+          () => ((IBusinessObjectBoundControl)_bocTreeView).Value = "fake",
           Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
               "Parameter type 'System.String' is not supported. Parameters must implement interface IBusinessObjectWithIdentity, IReadOnlyList<IBusinessObjectWithIdentity>, or IList.",
               "value"));

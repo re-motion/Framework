@@ -300,7 +300,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     [ListBindable (false)]
     [Category ("Menu")]
     [Description ("The menu items displayed by options menu.")]
-    [DefaultValue ((string?) null)]
+    [DefaultValue ((string?)null)]
     public WebMenuItemCollection OptionsMenuItems
     {
       get { return _optionsMenu.MenuItems; }
@@ -356,7 +356,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     /// <value> The <see cref="WebMenuItem.ItemID"/> values of the menu items to hide. </value>
     [Category ("Menu")]
     [Description ("The list of menu items to be hidden, identified by their ItemIDs.")]
-    [DefaultValue ((string?) null)]
+    [DefaultValue ((string?)null)]
     [PersistenceMode (PersistenceMode.Attribute)]
     [TypeConverter (typeof(StringArrayConverter))]
     public string[] HiddenMenuItems
@@ -387,7 +387,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     public new IBusinessObjectReferenceProperty? Property
     {
-      get { return (IBusinessObjectReferenceProperty?) base.Property; }
+      get { return (IBusinessObjectReferenceProperty?)base.Property; }
       set { base.Property = value; }
     }
 
@@ -430,7 +430,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       ArgumentUtility.CheckNotNull("property", property);
       if (!base.SupportsProperty(property))
         return false;
-      return ((IBusinessObjectReferenceProperty) property).ReferenceClass is IBusinessObjectClassWithIdentity;
+      return ((IBusinessObjectReferenceProperty)property).ReferenceClass is IBusinessObjectClassWithIdentity;
     }
 
     protected override void OnInit (EventArgs e)
@@ -494,11 +494,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     /// <remarks> Only called for commands of type <see cref="CommandType.Event"/>. </remarks>
     protected virtual void OnMenuItemEventCommandClick (WebMenuItem menuItem)
     {
-      WebMenuItemClickEventHandler? menuItemClickHandler = (WebMenuItemClickEventHandler?) Events[MenuItemClickEvent];
+      WebMenuItemClickEventHandler? menuItemClickHandler = (WebMenuItemClickEventHandler?)Events[MenuItemClickEvent];
       if (menuItem.Command != null)
       {
         if (menuItem is BocMenuItem)
-          ((BocMenuItemCommand) menuItem.Command).OnClick((BocMenuItem) menuItem);
+          ((BocMenuItemCommand)menuItem.Command).OnClick((BocMenuItem)menuItem);
         else
           menuItem.Command.OnClick();
       }
@@ -537,9 +537,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
           else
             businessObjects = new IBusinessObject[0];
 
-          BocMenuItemCommand command = (BocMenuItemCommand) menuItem.Command;
+          BocMenuItemCommand command = (BocMenuItemCommand)menuItem.Command;
           if (Page is IWxePage)
-            command.ExecuteWxeFunction((IWxePage) Page, indices, businessObjects);
+            command.ExecuteWxeFunction((IWxePage)Page, indices, businessObjects);
           //else
           //  command.ExecuteWxeFunction (Page, indices, businessObjects);
         }
@@ -547,7 +547,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         {
           Command command = menuItem.Command;
           if (Page is IWxePage)
-            command.ExecuteWxeFunction((IWxePage) Page, null);
+            command.ExecuteWxeFunction((IWxePage)Page, null);
           //else
           //  command.ExecuteWxeFunction (Page, null, new NameValueCollection (0));
         }
@@ -604,7 +604,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     /// <summary> Fires the <see cref="SelectionChanged"/> event. </summary>
     protected virtual void OnSelectionChanged ()
     {
-      EventHandler? eventHandler = (EventHandler?) Events[SelectionChangedEvent];
+      EventHandler? eventHandler = (EventHandler?)Events[SelectionChangedEvent];
       if (eventHandler != null)
         eventHandler(this, EventArgs.Empty);
     }
@@ -638,7 +638,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         case CommandType.WxeFunction:
         {
           if (Page is IWxePage)
-            Command.ExecuteWxeFunction((IWxePage) Page, Value);
+            Command.ExecuteWxeFunction((IWxePage)Page, Value);
           break;
         }
         default:
@@ -672,7 +672,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
       if (businessObjects.Length > 0 && businessObjects[0] is IBusinessObjectWithIdentity)
       {
-        if (((IBusinessObjectWithIdentity) businessObjects[0]).UniqueIdentifier == Value.UniqueIdentifier)
+        if (((IBusinessObjectWithIdentity)businessObjects[0]).UniqueIdentifier == Value.UniqueIdentifier)
           Value = null;
       }
     }
@@ -682,7 +682,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     protected virtual void InsertBusinessObjects (IBusinessObject[] businessObjects)
     {
       if (businessObjects.Length > 0)
-        Value = (IBusinessObjectWithIdentity) businessObjects[0];
+        Value = (IBusinessObjectWithIdentity)businessObjects[0];
     }
 
     /// <summary> This event is fired when the selection is changed between postbacks. </summary>
@@ -734,7 +734,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
       foreach (DictionaryEntry entry in values)
       {
-        string key = (string) entry.Key;
+        string key = (string)entry.Key;
         string[] keyParts = key.Split(new[] { ':' }, 3);
 
         //  Is a property/value entry?
@@ -795,7 +795,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
           if (currentCollection != null)
           {
             //  Get the dictonary for the current element
-            IDictionary? elementValues = (IDictionary?) currentCollection[elementID];
+            IDictionary? elementValues = (IDictionary?)currentCollection[elementID];
 
             //  If no dictonary exists, create it and insert it into the elements hashtable.
             if (elementValues == null)
@@ -904,9 +904,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       // See also BocReferenceValueRendererBase.GetIconContextAsJson
       IBusinessObjectClassWithIdentity? businessObjectClass = null;
       if (Property != null)
-        businessObjectClass = (IBusinessObjectClassWithIdentity) Property.ReferenceClass;
+        businessObjectClass = (IBusinessObjectClassWithIdentity)Property.ReferenceClass;
       else if (DataSource != null)
-        businessObjectClass = (IBusinessObjectClassWithIdentity?) DataSource.BusinessObjectClass;
+        businessObjectClass = (IBusinessObjectClassWithIdentity?)DataSource.BusinessObjectClass;
       return businessObjectClass;
     }
 

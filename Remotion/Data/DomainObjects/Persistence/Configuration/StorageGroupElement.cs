@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
     public StorageGroupElement ()
     {
       _storageGroup = new DoubleCheckedLockingContainer<StorageGroupAttribute>(
-          delegate { return (StorageGroupAttribute) Activator.CreateInstance(StorageGroupType); });
+          delegate { return (StorageGroupAttribute)Activator.CreateInstance(StorageGroupType); });
       _storageGroupTypeProperty = TypeElement<StorageGroupAttribute>.CreateTypeProperty(null);
 
       _storageProviderNameProperty = new ConfigurationProperty(
@@ -67,13 +67,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
 
     protected Type StorageGroupType
     {
-      get { return (Type) this[_storageGroupTypeProperty]; }
+      get { return (Type)this[_storageGroupTypeProperty]; }
       set { this[_storageGroupTypeProperty] = value; }
     }
 
     public string StorageProviderName
     {
-      get { return (string) this[_storageProviderNameProperty]; }
+      get { return (string)this[_storageProviderNameProperty]; }
       protected set { this[_storageProviderNameProperty] = value; }
     }
 

@@ -78,7 +78,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
       methodEmitter.ImplementByBaseCall(baseMethod);
 
       Type builtType = classEmitter.BuildType();
-      ClassWithSimpleGenericMethod instance = (ClassWithSimpleGenericMethod) Activator.CreateInstance(builtType);
+      ClassWithSimpleGenericMethod instance = (ClassWithSimpleGenericMethod)Activator.CreateInstance(builtType);
 
       string result = instance.GenericMethod("1", 2, false);
       Assert.That(result, Is.EqualTo("1, 2, False"));
@@ -95,7 +95,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
       methodEmitter.ImplementByBaseCall(baseMethod);
 
       Type builtType = classEmitter.BuildType();
-      ClassWithConstrainedGenericMethod instance = (ClassWithConstrainedGenericMethod) Activator.CreateInstance(builtType);
+      ClassWithConstrainedGenericMethod instance = (ClassWithConstrainedGenericMethod)Activator.CreateInstance(builtType);
 
       string result = instance.GenericMethod("1", 2, "2");
       Assert.That(result, Is.EqualTo("1, 2, 2"));
@@ -120,8 +120,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
 
       Type builtType = classEmitter.BuildType();
       var instance =
-          (GenericClassWithGenericMethod<IConvertible, List<string>, int, object, IConvertible, List<List<IConvertible[]>>>)
-          Activator.CreateInstance(builtType);
+          (GenericClassWithGenericMethod<IConvertible, List<string>, int, object, IConvertible, List<List<IConvertible[]>>>)Activator.CreateInstance(builtType);
 
       string result = instance.GenericMethod(1, new List<int[]>(), new List<List<IConvertible[]>>());
       Assert.That(result, Is.EqualTo("1, System.Collections.Generic.List`1[System.Int32[]], System.Collections.Generic.List`1[System.Collections.Generic.List`1["
@@ -151,7 +150,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
       overriddenEvent.RemoveMethod.ImplementByBaseCall(baseEvent.GetRemoveMethod());
 
       Type builtType = classEmitter.BuildType();
-      GenericClassWithAllKindsOfMembers<int> instance = (GenericClassWithAllKindsOfMembers<int>) Activator.CreateInstance(builtType);
+      GenericClassWithAllKindsOfMembers<int> instance = (GenericClassWithAllKindsOfMembers<int>)Activator.CreateInstance(builtType);
 
       instance.Method(5);
       Assert.That(instance.Property, Is.EqualTo(0));
@@ -183,7 +182,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
 
       Type builtType = classEmitter.BuildType();
       GenericClassWithAllKindsOfMembers<int> instance =
-          (GenericClassWithAllKindsOfMembers<int>) Activator.CreateInstance(builtType.MakeGenericType(typeof(int)));
+          (GenericClassWithAllKindsOfMembers<int>)Activator.CreateInstance(builtType.MakeGenericType(typeof(int)));
 
       instance.Method(5);
       Assert.That(instance.Property, Is.EqualTo(0));
@@ -219,7 +218,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
       overriddenEvent.RemoveMethod.AddStatement(new ReturnStatement());
 
       Type builtType = classEmitter.BuildType();
-      GenericInterfaceWithAllKindsOfMembers<int> instance = (GenericInterfaceWithAllKindsOfMembers<int>) Activator.CreateInstance(builtType);
+      GenericInterfaceWithAllKindsOfMembers<int> instance = (GenericInterfaceWithAllKindsOfMembers<int>)Activator.CreateInstance(builtType);
 
       instance.Method(7);
       Assert.That(instance.Property, Is.EqualTo(13));

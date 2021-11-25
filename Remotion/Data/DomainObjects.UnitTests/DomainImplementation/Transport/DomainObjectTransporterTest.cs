@@ -181,7 +181,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     [Test]
     public void LoadNew ()
     {
-      var order = (Order) _transporter.LoadNew(typeof(Order), ParamList.Empty);
+      var order = (Order)_transporter.LoadNew(typeof(Order), ParamList.Empty);
       Assert.That(order, Is.Not.Null);
       Assert.That(_transporter.IsLoaded(order.ID), Is.True);
     }
@@ -281,7 +281,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     public void GetTransportedObject_ReturnsCorrectObject ()
     {
       _transporter.Load(DomainObjectIDs.Order1);
-      var order = (Order) _transporter.GetTransportedObject(DomainObjectIDs.Order1);
+      var order = (Order)_transporter.GetTransportedObject(DomainObjectIDs.Order1);
       Assert.That(order, Is.Not.Null);
       Assert.That(order.ID, Is.EqualTo(DomainObjectIDs.Order1));
     }
@@ -303,7 +303,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     public void GetTransportedObject_ReturnsObjectBoundToTransportTransaction ()
     {
       _transporter.Load(DomainObjectIDs.Order1);
-      var order = (Order) _transporter.GetTransportedObject(DomainObjectIDs.Order1);
+      var order = (Order)_transporter.GetTransportedObject(DomainObjectIDs.Order1);
       Assert.That(order.RootTransaction, Is.SameAs(PrivateInvoke.GetNonPublicField(_transporter, "_transportTransaction")));
     }
 
@@ -311,7 +311,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     public void GetTransportedObject_GetSetPropertyValue ()
     {
       _transporter.Load(DomainObjectIDs.Order1);
-      var order = (Order) _transporter.GetTransportedObject(DomainObjectIDs.Order1);
+      var order = (Order)_transporter.GetTransportedObject(DomainObjectIDs.Order1);
       ++order.OrderNumber;
       Assert.That(order.OrderNumber, Is.EqualTo(2));
     }
@@ -320,7 +320,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     public void GetTransportedObject_GetSetRelatedObject_RealSide ()
     {
       _transporter.Load(DomainObjectIDs.Computer1);
-      var computer = (Computer) _transporter.GetTransportedObject(DomainObjectIDs.Computer1);
+      var computer = (Computer)_transporter.GetTransportedObject(DomainObjectIDs.Computer1);
       computer.Employee = null;
       Assert.That(computer.Employee, Is.Null);
     }
@@ -330,7 +330,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     {
       _transporter.Load(DomainObjectIDs.Computer1);
       _transporter.Load(DomainObjectIDs.Employee3);
-      var employee = (Employee) _transporter.GetTransportedObject(DomainObjectIDs.Employee3);
+      var employee = (Employee)_transporter.GetTransportedObject(DomainObjectIDs.Employee3);
       employee.Computer = null;
       Assert.That(employee.Computer, Is.Null);
     }
@@ -339,7 +339,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     public void GetTransportedObject_GetSetRelatedObject_VirtualSide_Unloaded ()
     {
       _transporter.Load(DomainObjectIDs.Employee3);
-      var employee = (Employee) _transporter.GetTransportedObject(DomainObjectIDs.Employee3);
+      var employee = (Employee)_transporter.GetTransportedObject(DomainObjectIDs.Employee3);
       Assert.That(
           () => employee.Computer = null,
           Throws.InvalidOperationException

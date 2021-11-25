@@ -168,7 +168,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Configuration
             ConfigurationFactory.LoadConfigurationFromFile(configFile, ResourceManager.GetDomainObjectsConfigurationWithCustomSectionGroupName());
         SetUpConfigurationWrapper(configuration);
 
-        DomainObjectsConfiguration domainObjectsConfiguration = (DomainObjectsConfiguration) configuration.GetSectionGroup("domainObjects");
+        DomainObjectsConfiguration domainObjectsConfiguration = (DomainObjectsConfiguration)configuration.GetSectionGroup("domainObjects");
         // For ReSharper's sake
         Assertion.IsNotNull(domainObjectsConfiguration);
 

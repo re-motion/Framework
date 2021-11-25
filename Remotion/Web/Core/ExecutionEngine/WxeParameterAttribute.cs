@@ -74,7 +74,7 @@ namespace Remotion.Web.ExecutionEngine
     ///     and <see langword="false"/> for reference types. </param>
     /// <param name="direction"> Declares the parameter as input or output parameter, or both. </param>
     public WxeParameterAttribute (int index , bool required, WxeParameterDirection direction)
-        : this(index, (bool?) required, direction)
+        : this(index, (bool?)required, direction)
     {
     }
 

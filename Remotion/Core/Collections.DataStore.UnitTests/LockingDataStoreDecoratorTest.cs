@@ -45,7 +45,7 @@ namespace Remotion.Collections.DataStore.UnitTests
     [Test]
     public void IsNull ()
     {
-      Assert.That(((INullObject) _decorator).IsNull, Is.False);
+      Assert.That(((INullObject)_decorator).IsNull, Is.False);
     }
 
     [Test]
@@ -83,7 +83,7 @@ namespace Remotion.Collections.DataStore.UnitTests
     {
       var indexer = typeof(IDataStore<string, int>).GetProperty("Item");
       var parameter = Expression.Parameter(typeof(IDataStore<string, int>), "store");
-      var expression = (Expression<Action<IDataStore<string, int>>>) Expression.Lambda(
+      var expression = (Expression<Action<IDataStore<string, int>>>)Expression.Lambda(
           typeof(Action<IDataStore<string, int>>),
           Expression.Assign(
               Expression.MakeIndex(

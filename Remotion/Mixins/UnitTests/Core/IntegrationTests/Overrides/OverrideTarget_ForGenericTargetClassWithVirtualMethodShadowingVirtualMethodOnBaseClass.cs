@@ -32,7 +32,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
       using (MixinConfiguration.BuildNew().ForClass(typeof(C<>)).AddMixin(mixinType).EnterScope())
       {
         var instance = ObjectFactory.Create<C<int>>();
-        Assert.That(((Shadowed_C<int>) instance).M(0), Is.EqualTo("Shadowed_C.M"));
+        Assert.That(((Shadowed_C<int>)instance).M(0), Is.EqualTo("Shadowed_C.M"));
         Assert.That(instance.M(0), Is.EqualTo(expectedMethodOutput));
       }
     }
@@ -46,7 +46,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
       using (MixinConfiguration.BuildNew().ForClass(typeof(C<>)).AddMixin(mixinType).EnterScope())
       {
         var instance = ObjectFactory.Create<D1<int>>();
-        Assert.That(((Shadowed_C<int>) instance).M(0), Is.EqualTo("Shadowed_C.M"));
+        Assert.That(((Shadowed_C<int>)instance).M(0), Is.EqualTo("Shadowed_C.M"));
         Assert.That(instance.M(0), Is.EqualTo(expectedMethodOutput));
       }
     }
@@ -60,7 +60,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
       using (MixinConfiguration.BuildNew().ForClass(typeof(C<>)).AddMixin(mixinType).EnterScope())
       {
         var instance = ObjectFactory.Create<D2<int>>();
-        Assert.That(((Shadowed_C<int>) instance).M(0), Is.EqualTo("Shadowed_C.M"));
+        Assert.That(((Shadowed_C<int>)instance).M(0), Is.EqualTo("Shadowed_C.M"));
         Assert.That(instance.M(0), Is.EqualTo(expectedMethodOutput));
       }
     }
@@ -74,7 +74,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
       using (MixinConfiguration.BuildNew().ForClass(typeof(C<>)).AddMixin(mixinType).EnterScope())
       {
         var instance = ObjectFactory.Create<E<int>>();
-        Assert.That(((Shadowed_C<int>) instance).M(0), Is.EqualTo("Shadowed_C.M"));
+        Assert.That(((Shadowed_C<int>)instance).M(0), Is.EqualTo("Shadowed_C.M"));
         Assert.That(instance.M(0), Is.EqualTo(expectedMethodOutput));
       }
     }

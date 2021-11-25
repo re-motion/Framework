@@ -27,7 +27,7 @@ namespace OBWTest
 	{
 		private void Page_Load (object sender, EventArgs e)
 		{
-      ArrayList global = (ArrayList) Session["Global"];
+      ArrayList global = (ArrayList)Session["Global"];
       int hashcode = global.GetHashCode();
       lock (global.SyncRoot)
       {

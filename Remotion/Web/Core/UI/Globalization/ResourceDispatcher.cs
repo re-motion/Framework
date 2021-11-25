@@ -101,12 +101,12 @@ public sealed class ResourceDispatcher
     //  Dispatch the resources to the controls
     foreach (DictionaryEntry elementsEntry in elements)
     {
-      string elementID = (string) elementsEntry.Key;
+      string elementID = (string)elementsEntry.Key;
 
       Control? targetControl;
 
       if (elementID == c_thisElementID)
-        targetControl = (Control) control;
+        targetControl = (Control)control;
       else
         targetControl = control.FindControl(elementID);
 
@@ -117,7 +117,7 @@ public sealed class ResourceDispatcher
       else
       {
         //  Pass the value to the control
-        IDictionary values = (IDictionary) elementsEntry.Value!; // TODO RM-8118: not null assertion
+        IDictionary values = (IDictionary)elementsEntry.Value!; // TODO RM-8118: not null assertion
         IResourceDispatchTarget? resourceDispatchTarget = targetControl as IResourceDispatchTarget;
 
         if (resourceDispatchTarget != null) //  Control knows how to dispatch
@@ -139,8 +139,8 @@ public sealed class ResourceDispatcher
 
     foreach (DictionaryEntry entry in values)
     {
-      string propertyName = (string) entry.Key;
-      string? propertyValue = (string?) entry.Value;
+      string propertyName = (string)entry.Key;
+      string? propertyValue = (string?)entry.Value;
 
       PropertyInfo? property = obj.GetType().GetProperty(propertyName, typeof(string));
       if (property != null)
@@ -149,7 +149,7 @@ public sealed class ResourceDispatcher
       }
       else if (obj is Control)
       {
-        Control control = (Control) obj;
+        Control control = (Control)obj;
         //  Test for HtmlControl, they can take anything
         HtmlControl? genericHtmlControl = control as HtmlControl;
         if (genericHtmlControl != null)
@@ -207,7 +207,7 @@ public sealed class ResourceDispatcher
         //  using the argument as key and the resources' value as the value.
 
         //  Get the dictonary for the current element
-        IDictionary? elementValues = (IDictionary?) elements[elementID];
+        IDictionary? elementValues = (IDictionary?)elements[elementID];
 
         //  If no dictonary exists, create it and insert it into the elements hashtable.
         if (elementValues == null)

@@ -149,8 +149,8 @@ public class SmartLabel: WebControl, IControl
     Control? target = ControlHelper.FindControl(NamingContainer, ForControl);
     if (target is ISmartControl && target is IFocusableControl)
     {
-      if (((ISmartControl) target).UseLabel)
-        return ((IFocusableControl) target).FocusID;
+      if (((ISmartControl)target).UseLabel)
+        return ((IFocusableControl)target).FocusID;
 
       return null;
     }

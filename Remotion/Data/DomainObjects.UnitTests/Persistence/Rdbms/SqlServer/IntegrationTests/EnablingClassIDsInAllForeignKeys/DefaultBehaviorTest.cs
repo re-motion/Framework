@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           MappingConfiguration,
           (ClassWithRelations obj) => obj.RelationWithoutInheritanceHierarchy);
 
-      var storagePropertyDefinition = (IRdbmsStoragePropertyDefinition) endPointWithoutInheritanceHierarchy.PropertyDefinition.StoragePropertyDefinition;
+      var storagePropertyDefinition = (IRdbmsStoragePropertyDefinition)endPointWithoutInheritanceHierarchy.PropertyDefinition.StoragePropertyDefinition;
       Assert.That(storagePropertyDefinition, Is.TypeOf<ObjectIDWithoutClassIDStoragePropertyDefinition>());
       var columnDefinitions = storagePropertyDefinition.GetColumns().ToArray();
       Assert.That(columnDefinitions, Has.Length.EqualTo(1));
@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           MappingConfiguration,
           (ClassWithRelations obj) => obj.RelationWithInheritanceHierarchy);
 
-      var storagePropertyDefinition = (IRdbmsStoragePropertyDefinition) endPointWithInheritanceHierarchy.PropertyDefinition.StoragePropertyDefinition;
+      var storagePropertyDefinition = (IRdbmsStoragePropertyDefinition)endPointWithInheritanceHierarchy.PropertyDefinition.StoragePropertyDefinition;
       Assert.That(storagePropertyDefinition, Is.TypeOf<ObjectIDStoragePropertyDefinition>());
       var columnDefinitions = storagePropertyDefinition.GetColumns().ToArray();
       Assert.That(columnDefinitions, Has.Length.EqualTo(2));

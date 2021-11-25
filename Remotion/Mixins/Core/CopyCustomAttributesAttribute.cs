@@ -111,7 +111,7 @@ namespace Remotion.Mixins
     public bool IsCopiedAttributeType (Type type)
     {
       ArgumentUtility.CheckNotNull("type", type);
-      return CopiedAttributeTypes.Length == 0 || ((IList) CopiedAttributeTypes).Contains(type);
+      return CopiedAttributeTypes.Length == 0 || ((IList)CopiedAttributeTypes).Contains(type);
     }
   }
 }

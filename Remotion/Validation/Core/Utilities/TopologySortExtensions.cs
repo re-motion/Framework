@@ -228,7 +228,7 @@ namespace Remotion.Validation.Utilities
       Dictionary<object, Node<T>> nodes;
       try
       {
-        nodes = unsorted.ToDictionary(node => (object) node.Content);
+        nodes = unsorted.ToDictionary(node => (object)node.Content);
       }
       catch (ArgumentException e)
       {

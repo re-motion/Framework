@@ -72,11 +72,11 @@ namespace Remotion.UnitTests.Configuration.TypeDiscovery
       Assert.That(finder.InnerFinders.Count, Is.EqualTo(2));
 
       Assert.That(finder.InnerFinders[0], Is.InstanceOf(typeof(NamedRootAssemblyFinder)));
-      var namedFinder = (NamedRootAssemblyFinder) finder.InnerFinders[0];
+      var namedFinder = (NamedRootAssemblyFinder)finder.InnerFinders[0];
       Assert.That(namedFinder.Specifications, Is.Empty);
       Assert.That(namedFinder.AssemblyLoader, Is.SameAs(_loaderStub.Object));
 
-      var filePatternFinder = (FilePatternRootAssemblyFinder) finder.InnerFinders[1];
+      var filePatternFinder = (FilePatternRootAssemblyFinder)finder.InnerFinders[1];
       Assert.That(filePatternFinder.Specifications, Is.Empty);
       Assert.That(filePatternFinder.AssemblyLoader, Is.SameAs(_loaderStub.Object));
 
@@ -92,11 +92,11 @@ namespace Remotion.UnitTests.Configuration.TypeDiscovery
       Assert.That(finder.InnerFinders.Count, Is.EqualTo(2));
 
       Assert.That(finder.InnerFinders[0], Is.InstanceOf(typeof(NamedRootAssemblyFinder)));
-      var namedFinder = (NamedRootAssemblyFinder) finder.InnerFinders[0];
+      var namedFinder = (NamedRootAssemblyFinder)finder.InnerFinders[0];
       Assert.That(namedFinder.Specifications.Single().AssemblyName.ToString(), Is.EqualTo("mscorlib"));
       Assert.That(namedFinder.AssemblyLoader, Is.SameAs(_loaderStub.Object));
 
-      var filePatternFinder = (FilePatternRootAssemblyFinder) finder.InnerFinders[1];
+      var filePatternFinder = (FilePatternRootAssemblyFinder)finder.InnerFinders[1];
       Assert.That(filePatternFinder.Specifications.Single().FilePattern, Is.EqualTo("ActaNova.*.dll"));
       Assert.That(filePatternFinder.AssemblyLoader, Is.SameAs(_loaderStub.Object));
     }

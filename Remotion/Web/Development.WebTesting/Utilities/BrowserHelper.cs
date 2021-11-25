@@ -54,7 +54,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     {
       ArgumentUtility.CheckNotNull("browserSession", browserSession);
 
-      return GetBrowserContentBounds((IWebDriver) browserSession.Driver.Native);
+      return GetBrowserContentBounds((IWebDriver)browserSession.Driver.Native);
     }
 
     /// <summary>
@@ -64,7 +64,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     {
       ArgumentUtility.CheckNotNull("controlObject", controlObject);
 
-      return GetBrowserContentBounds(((IWrapsDriver) controlObject.Scope.Native).WrappedDriver);
+      return GetBrowserContentBounds(((IWrapsDriver)controlObject.Scope.Native).WrappedDriver);
     }
 
     /// <summary>
@@ -74,7 +74,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     {
       ArgumentUtility.CheckNotNull("element", element);
 
-      return GetBrowserContentBounds(((IWrapsDriver) element.Native).WrappedDriver);
+      return GetBrowserContentBounds(((IWrapsDriver)element.Native).WrappedDriver);
     }
 
     /// <summary>
@@ -84,7 +84,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     {
       ArgumentUtility.CheckNotNull("webElement", webElement);
 
-      return GetBrowserContentBounds(((IWrapsDriver) webElement).WrappedDriver);
+      return GetBrowserContentBounds(((IWrapsDriver)webElement).WrappedDriver);
     }
 
     /// <summary>
@@ -174,7 +174,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     {
       ArgumentUtility.CheckNotNull("browserSession", browserSession);
 
-      return GetWindowBounds((IWebDriver) browserSession.Driver.Native);
+      return GetWindowBounds((IWebDriver)browserSession.Driver.Native);
     }
 
     /// <summary>
@@ -184,7 +184,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     {
       ArgumentUtility.CheckNotNull("controlObject", controlObject);
 
-      return GetWindowBounds(((IWrapsDriver) controlObject.Scope.Native).WrappedDriver);
+      return GetWindowBounds(((IWrapsDriver)controlObject.Scope.Native).WrappedDriver);
     }
 
     /// <summary>
@@ -194,7 +194,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     {
       ArgumentUtility.CheckNotNull("element", element);
 
-      return GetWindowBounds(((IWrapsDriver) element.Native).WrappedDriver);
+      return GetWindowBounds(((IWrapsDriver)element.Native).WrappedDriver);
     }
 
     /// <summary>
@@ -204,7 +204,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     {
       ArgumentUtility.CheckNotNull("webElement", webElement);
 
-      return GetWindowBounds(((IWrapsDriver) webElement).WrappedDriver);
+      return GetWindowBounds(((IWrapsDriver)webElement).WrappedDriver);
     }
 
     /// <summary>

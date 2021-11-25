@@ -107,7 +107,7 @@ public class BidirectionalStringConverter: TypeConverter
       value = string.Empty;
 
     if (value is string && CanConvertTo(context, destinationType))
-      return StringUtility.Parse(destinationType, (string) value, culture);
+      return StringUtility.Parse(destinationType, (string)value, culture);
     return base.ConvertTo(context, culture, value, destinationType);
   }
 

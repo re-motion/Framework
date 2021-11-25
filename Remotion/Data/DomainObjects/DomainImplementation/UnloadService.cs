@@ -298,7 +298,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     private static IDataManagementCommand CreateUnloadVirtualEndPointAndItemDataCommand (ClientTransaction tx, RelationEndPointID endPointID)
     {
       CheckVirtualEndPointID(endPointID);
-      var endPoint = (IVirtualEndPoint) tx.DataManager.GetRelationEndPointWithoutLoading(endPointID);
+      var endPoint = (IVirtualEndPoint)tx.DataManager.GetRelationEndPointWithoutLoading(endPointID);
 
       if (endPoint == null || !endPoint.IsDataComplete)
         return new NopCommand();
@@ -307,10 +307,10 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
 
       ObjectID[] unloadedObjectIDs;
       if (endPoint.Definition.Cardinality == CardinalityType.Many)
-        unloadedObjectIDs = ((ICollectionEndPoint<ICollectionEndPointData>) endPoint).GetData().Select(data => data.ID).ToArray();
+        unloadedObjectIDs = ((ICollectionEndPoint<ICollectionEndPointData>)endPoint).GetData().Select(data => data.ID).ToArray();
       else
       {
-        var oppositeObjectID = ((IVirtualObjectEndPoint) endPoint).OppositeObjectID;
+        var oppositeObjectID = ((IVirtualObjectEndPoint)endPoint).OppositeObjectID;
         unloadedObjectIDs = oppositeObjectID != null ? new[] { oppositeObjectID } : new ObjectID[0];
       }
       var unloadDataCommand = tx.DataManager.CreateUnloadCommand(unloadedObjectIDs);

@@ -417,10 +417,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       FlattenedSerializableStub[] deserializedStubs = deserializationInfo.GetArray<FlattenedSerializableStub>();
 
       Assert.That(deserializedStubs.Length, Is.EqualTo(2));
-      Assert.That(((FlattenedSerializableStub) deserializedStubs[0]).Data1, Is.EqualTo("begone, foul fiend"));
-      Assert.That(((FlattenedSerializableStub) deserializedStubs[0]).Data2, Is.EqualTo(123));
-      Assert.That(((FlattenedSerializableStub) deserializedStubs[1]).Data1, Is.EqualTo("'twas brillig, and the slithy toves"));
-      Assert.That(((FlattenedSerializableStub) deserializedStubs[1]).Data2, Is.EqualTo(124));
+      Assert.That(((FlattenedSerializableStub)deserializedStubs[0]).Data1, Is.EqualTo("begone, foul fiend"));
+      Assert.That(((FlattenedSerializableStub)deserializedStubs[0]).Data2, Is.EqualTo(123));
+      Assert.That(((FlattenedSerializableStub)deserializedStubs[1]).Data1, Is.EqualTo("'twas brillig, and the slithy toves"));
+      Assert.That(((FlattenedSerializableStub)deserializedStubs[1]).Data2, Is.EqualTo(124));
     }
 
     [Test]

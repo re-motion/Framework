@@ -48,7 +48,7 @@ namespace Remotion.Collections.Caching.UnitTests
     [Test]
     public void IsNull ()
     {
-      Assert.That(((INullObject) _cachingAdapter).IsNull, Is.False);
+      Assert.That(((INullObject)_cachingAdapter).IsNull, Is.False);
     }
 
     [Test]
@@ -88,7 +88,7 @@ namespace Remotion.Collections.Caching.UnitTests
               mock => mock.TryGetValue("key", out doubleCheckedLockingContainer))
           .Returns(true)
           .Callback(
-              (OutDelegate) ((string key, out Lazy<Wrapper> value) =>
+              (OutDelegate)((string key, out Lazy<Wrapper> value) =>
               {
                 value = doubleCheckedLockingContainer;
                 CheckInnerCacheIsProtected();
@@ -178,7 +178,7 @@ namespace Remotion.Collections.Caching.UnitTests
               mock => mock.TryGetValue("key", out doubleCheckedLockingContainer))
           .Returns(true)
           .Callback(
-              (OutDelegate) ((string key, out Lazy<Wrapper> value) =>
+              (OutDelegate)((string key, out Lazy<Wrapper> value) =>
               {
                 value = doubleCheckedLockingContainer;
                 CheckInnerCacheIsProtected();
@@ -202,7 +202,7 @@ namespace Remotion.Collections.Caching.UnitTests
           .Setup(mock => mock.TryGetValue("key", out outResult))
           .Returns(false)
           .Callback(
-              (OutDelegate) ((string key, out Lazy<Wrapper> value) =>
+              (OutDelegate)((string key, out Lazy<Wrapper> value) =>
               {
                 value = null;
                 CheckInnerCacheIsProtected();
@@ -223,8 +223,7 @@ namespace Remotion.Collections.Caching.UnitTests
       var expected1 = new object();
       var expected2 = new object();
 
-      var returnValue = ((IEnumerable<KeyValuePair<string, Lazy<Wrapper>>>)
-          new[]
+      var returnValue = ((IEnumerable<KeyValuePair<string, Lazy<Wrapper>>>)new[]
           {
               new KeyValuePair<string, Lazy<Wrapper>>("key1", CreateContainerThatChecksForNotProtected(expected1)),
               new KeyValuePair<string, Lazy<Wrapper>>("key2", CreateContainerThatChecksForNotProtected(expected2))
@@ -256,8 +255,7 @@ namespace Remotion.Collections.Caching.UnitTests
       var expected1 = new object();
       var expected2 = new object();
 
-      var returnValue = ((IEnumerable<KeyValuePair<string, Lazy<Wrapper>>>)
-          new[]
+      var returnValue = ((IEnumerable<KeyValuePair<string, Lazy<Wrapper>>>)new[]
           {
               new KeyValuePair<string, Lazy<Wrapper>>("key1", CreateContainerThatChecksForNotProtected(expected1)),
               new KeyValuePair<string, Lazy<Wrapper>>("key2", CreateContainerThatChecksForNotProtected(expected2))
@@ -270,7 +268,7 @@ namespace Remotion.Collections.Caching.UnitTests
           .Verifiable();
 
       var actual = new List<object>();
-      var enumerator = ((IEnumerable) _cachingAdapter).GetEnumerator();
+      var enumerator = ((IEnumerable)_cachingAdapter).GetEnumerator();
       while (enumerator.MoveNext())
         actual.Add(enumerator.Current);
 
@@ -326,7 +324,7 @@ namespace Remotion.Collections.Caching.UnitTests
             cache.GetOrCreateValue("key", k => "value");
             cache.TryGetValue("key", out var value);
 
-            var stopwatch = (Stopwatch) arg;
+            var stopwatch = (Stopwatch)arg;
             stopwatch.Start();
 
             for (int i = 0; i < 1000; i++)
@@ -390,8 +388,7 @@ namespace Remotion.Collections.Caching.UnitTests
     private LockingCacheDecorator<string, Lazy<Wrapper>> GetLockingCacheDecorator (
         LazyLockingCachingAdapter<string, object> lazyLockingCacheAdapter)
     {
-      return (LockingCacheDecorator<string, Lazy<Wrapper>>)
-          PrivateInvoke.GetNonPublicField(lazyLockingCacheAdapter, "_innerCache");
+      return (LockingCacheDecorator<string, Lazy<Wrapper>>)PrivateInvoke.GetNonPublicField(lazyLockingCacheAdapter, "_innerCache");
     }
 
     private delegate void OutDelegate (string name, out Lazy<Wrapper> outParam);

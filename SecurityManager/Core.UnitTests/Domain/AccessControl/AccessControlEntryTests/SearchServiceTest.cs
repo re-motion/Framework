@@ -68,7 +68,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
     [Test]
     public void SearchSpecificTenants ()
     {
-      var property = (IBusinessObjectReferenceProperty) _aceClass.GetPropertyDefinition("SpecificTenant");
+      var property = (IBusinessObjectReferenceProperty)_aceClass.GetPropertyDefinition("SpecificTenant");
       Assert.That(property, Is.Not.Null);
 
       var expected = new[] { new Mock<IBusinessObject>().Object };
@@ -87,7 +87,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
     [Test]
     public void SearchSpecificGroups ()
     {
-      var property = (IBusinessObjectReferenceProperty) _aceClass.GetPropertyDefinition("SpecificGroup");
+      var property = (IBusinessObjectReferenceProperty)_aceClass.GetPropertyDefinition("SpecificGroup");
       Assert.That(property, Is.Not.Null);
 
       var expected = new[] { new Mock<IBusinessObject>().Object };
@@ -106,7 +106,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
     [Test]
     public void SearchSpecificGroupType ()
     {
-      var property = (IBusinessObjectReferenceProperty) _aceClass.GetPropertyDefinition("SpecificGroupType");
+      var property = (IBusinessObjectReferenceProperty)_aceClass.GetPropertyDefinition("SpecificGroupType");
       Assert.That(property, Is.Not.Null);
 
       var expected = new[] { new Mock<IBusinessObject>().Object };
@@ -125,7 +125,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
     [Test]
     public void SearchSpecificUsers ()
     {
-      var property = (IBusinessObjectReferenceProperty) _aceClass.GetPropertyDefinition("SpecificUser");
+      var property = (IBusinessObjectReferenceProperty)_aceClass.GetPropertyDefinition("SpecificUser");
       Assert.That(property, Is.Not.Null);
 
       var expected = new[] { new Mock<IBusinessObject>().Object };
@@ -144,7 +144,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
     [Test]
     public void SearchSpecificPositions ()
     {
-      var property = (IBusinessObjectReferenceProperty) _aceClass.GetPropertyDefinition("SpecificPosition");
+      var property = (IBusinessObjectReferenceProperty)_aceClass.GetPropertyDefinition("SpecificPosition");
       Assert.That(property, Is.Not.Null);
 
       var expected = new[] { new Mock<IBusinessObject>().Object };
@@ -163,7 +163,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
     [Test]
     public void SearchSpecificAbstractRoles ()
     {
-      var property = (IBusinessObjectReferenceProperty) _aceClass.GetPropertyDefinition("SpecificAbstractRole");
+      var property = (IBusinessObjectReferenceProperty)_aceClass.GetPropertyDefinition("SpecificAbstractRole");
       Assert.That(property, Is.Not.Null);
 
       var expected = new[] { new Mock<IBusinessObject>().Object };

@@ -24,7 +24,7 @@ namespace Remotion.Security.UnitTests.Metadata
       message.Append("Expected: ");
       message.Append(_expectedName);
       message.Append("\t but was: ");
-      message.Append(String.Join(", ", ExtractNames(((IList<EnumValueInfo>) _actual)).ToArray()));
+      message.Append(String.Join(", ", ExtractNames(((IList<EnumValueInfo>)_actual)).ToArray()));
 
       writer.Write(message.ToString());
     }

@@ -73,7 +73,7 @@ namespace Remotion.Validation.Mixins.IntegrationTests
       customer.FirstName = "Ralf";
       customer.LastName = "Mayr";
       customer.UserName = "mm2";
-      ((ICustomerIntroduced) customer).Title = "Chef3";
+      ((ICustomerIntroduced)customer).Title = "Chef3";
 
       var validator = ValidationBuilder.BuildValidator<Customer>();
 

@@ -35,7 +35,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeAnalyzers
     public void SetUp ()
     {
       _mockRepository = new MockRepository();
-      _configurationBuilderMock = _mockRepository.StrictMock<MixinConfigurationBuilder>((MixinConfiguration) null);
+      _configurationBuilderMock = _mockRepository.StrictMock<MixinConfigurationBuilder>((MixinConfiguration)null);
 
       _analyzer = new HasComposedInterfaceMarkerAnalyzer();
     }

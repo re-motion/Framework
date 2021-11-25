@@ -171,17 +171,17 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls
 
     private void Control_Init (object sender, EventArgs e)
     {
-      _events = AppendEvents((Control) sender, _events, "Init");
+      _events = AppendEvents((Control)sender, _events, "Init");
     }
 
     private void Control_Load (object sender, EventArgs e)
     {
-      _events = AppendEvents((Control) sender, _events, "Load");
+      _events = AppendEvents((Control)sender, _events, "Load");
     }
 
     private void Control_PreRender (object sender, EventArgs e)
     {
-      _events = AppendEvents((Control) sender, _events, "PreRender");
+      _events = AppendEvents((Control)sender, _events, "PreRender");
     }
 
     private string AppendEvents (Control control, string events, string eventName)

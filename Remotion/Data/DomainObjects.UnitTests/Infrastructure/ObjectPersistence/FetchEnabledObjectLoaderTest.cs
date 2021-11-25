@@ -97,7 +97,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
           .Expect(
               mock => mock.BeginRegisterIfRequired(
                   Arg.Is(new[] { _resultItem1, _resultItem2 }), Arg.Is(true), Arg<LoadedObjectDataPendingRegistrationCollector>.Is.NotNull))
-          .WhenCalled(mi => collector = (LoadedObjectDataPendingRegistrationCollector) mi.Arguments[2])
+          .WhenCalled(mi => collector = (LoadedObjectDataPendingRegistrationCollector)mi.Arguments[2])
           .Return(consolidatedResultItems);
         _eagerFetcherMock
             .Expect(
@@ -131,7 +131,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
           .Expect(
               mock => mock.BeginRegisterIfRequired(
                   Arg.Is(new[] { _resultItem1, _resultItem2 }), Arg.Is(true), Arg<LoadedObjectDataPendingRegistrationCollector>.Is.NotNull))
-          .WhenCalled(mi => collector = (LoadedObjectDataPendingRegistrationCollector) mi.Arguments[2])
+          .WhenCalled(mi => collector = (LoadedObjectDataPendingRegistrationCollector)mi.Arguments[2])
           .Return(new[] { _resultItem1, _resultItem2 });
       _eagerFetcherMock
           .Expect(

@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
     {
       try
       {
-        var registeredService = (IStorageObjectFactory) SafeServiceLocator.Current.GetService(configuredFactoryType);
+        var registeredService = (IStorageObjectFactory)SafeServiceLocator.Current.GetService(configuredFactoryType);
         if (registeredService != null)
           return registeredService;
       }
@@ -102,7 +102,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
 
       try
       {
-        return (IStorageObjectFactory) ObjectFactory.Create(configuredFactoryType);
+        return (IStorageObjectFactory)ObjectFactory.Create(configuredFactoryType);
       }
       catch (Exception ex)
       {

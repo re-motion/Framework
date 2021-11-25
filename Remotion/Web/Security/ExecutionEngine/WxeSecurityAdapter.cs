@@ -143,7 +143,7 @@ namespace Remotion.Web.Security.ExecutionEngine
 
     private WxeDemandTargetPermissionAttribute? GetPermissionAttribute (Type functionType)
     {
-      return (WxeDemandTargetPermissionAttribute?) Attribute.GetCustomAttribute(functionType, typeof(WxeDemandTargetPermissionAttribute), true);
+      return (WxeDemandTargetPermissionAttribute?)Attribute.GetCustomAttribute(functionType, typeof(WxeDemandTargetPermissionAttribute), true);
     }
   }
 }

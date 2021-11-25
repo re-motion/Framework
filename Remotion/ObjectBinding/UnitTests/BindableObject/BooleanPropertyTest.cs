@@ -139,8 +139,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       IBusinessObjectEnumerationProperty property = CreateProperty("NullableScalar");
       BooleanEnumerationValueInfo[] expected = new []
           {
-              new BooleanEnumerationValueInfo(true, (IBusinessObjectBooleanProperty) property),
-              new BooleanEnumerationValueInfo(false, (IBusinessObjectBooleanProperty) property)
+              new BooleanEnumerationValueInfo(true, (IBusinessObjectBooleanProperty)property),
+              new BooleanEnumerationValueInfo(false, (IBusinessObjectBooleanProperty)property)
           };
 
       CheckEnumerationValueInfos(expected, property.GetAllValues(null));
@@ -152,8 +152,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       IBusinessObjectEnumerationProperty property = CreateProperty("NullableScalar");
       BooleanEnumerationValueInfo[] expected = new []
           {
-              new BooleanEnumerationValueInfo(true, (IBusinessObjectBooleanProperty) property),
-              new BooleanEnumerationValueInfo(false, (IBusinessObjectBooleanProperty) property)
+              new BooleanEnumerationValueInfo(true, (IBusinessObjectBooleanProperty)property),
+              new BooleanEnumerationValueInfo(false, (IBusinessObjectBooleanProperty)property)
           };
 
       CheckEnumerationValueInfos(expected, property.GetEnabledValues(null));
@@ -165,7 +165,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       IBusinessObjectEnumerationProperty property = CreateProperty("Scalar");
 
       CheckEnumerationValueInfo(
-          new BooleanEnumerationValueInfo(true, (IBusinessObjectBooleanProperty) property),
+          new BooleanEnumerationValueInfo(true, (IBusinessObjectBooleanProperty)property),
           property.GetValueInfoByValue(true, null));
     }
 
@@ -175,7 +175,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       IBusinessObjectEnumerationProperty property = CreateProperty("Scalar");
 
       CheckEnumerationValueInfo(
-          new BooleanEnumerationValueInfo(false, (IBusinessObjectBooleanProperty) property),
+          new BooleanEnumerationValueInfo(false, (IBusinessObjectBooleanProperty)property),
           property.GetValueInfoByValue(false, null));
     }
 
@@ -193,7 +193,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       IBusinessObjectEnumerationProperty property = CreateProperty("Scalar");
 
       CheckEnumerationValueInfo(
-          new BooleanEnumerationValueInfo(true, (IBusinessObjectBooleanProperty) property),
+          new BooleanEnumerationValueInfo(true, (IBusinessObjectBooleanProperty)property),
           property.GetValueInfoByIdentifier("True", null));
     }
 
@@ -203,7 +203,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       IBusinessObjectEnumerationProperty property = CreateProperty("Scalar");
 
       CheckEnumerationValueInfo(
-          new BooleanEnumerationValueInfo(false, (IBusinessObjectBooleanProperty) property),
+          new BooleanEnumerationValueInfo(false, (IBusinessObjectBooleanProperty)property),
           property.GetValueInfoByIdentifier("False", null));
     }
 

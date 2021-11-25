@@ -55,7 +55,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
 
     public DomainObjectCollection AccessTypeReferences
     {
-      get { return (DomainObjectCollection) _accessTypeReferencesPropertyInfo.GetValue(_securableClassDefinition, new object[0]); }
+      get { return (DomainObjectCollection)_accessTypeReferencesPropertyInfo.GetValue(_securableClassDefinition, new object[0]); }
     }
   }
 }

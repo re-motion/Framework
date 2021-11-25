@@ -102,7 +102,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
       _pageStep.InSequence(sequence).Setup(mock => mock.Execute(_wxeContext)).Callback(
           (WxeContext context) =>
           {
-            var executionState = (PreProcessingSubFunctionState) ((IExecutionStateContext) _pageStep.Object).ExecutionState;
+            var executionState = (PreProcessingSubFunctionState)((IExecutionStateContext)_pageStep.Object).ExecutionState;
             Assert.That(executionState.Parameters.SubFunction, Is.SameAs(_subFunction.Object));
             Assert.That(executionState.Parameters.PermaUrlOptions, Is.SameAs(permaUrlOptions));
             Assert.That(executionState.RepostOptions, Is.SameAs(repostOptions));
@@ -157,7 +157,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
       _pageStep.InSequence(sequence).Setup(mock => mock.Execute(_wxeContext)).Callback(
           (WxeContext context) =>
           {
-            var executionState = (PreProcessingSubFunctionState_WithRedirect) ((IExecutionStateContext) _pageStep.Object).ExecutionState;
+            var executionState = (PreProcessingSubFunctionState_WithRedirect)((IExecutionStateContext)_pageStep.Object).ExecutionState;
             Assert.That(executionState.Parameters.SubFunction, Is.SameAs(_subFunction.Object));
             Assert.That(executionState.Parameters.PermaUrlOptions, Is.SameAs(permaUrlOptions));
             Assert.That(executionState.ReturnOptions, Is.SameAs(returnOptions));
@@ -203,7 +203,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     [Test]
     public void IExecutionStateContext_GetAndSetExecutionState ()
     {
-      var executionStateContext = (IExecutionStateContext) _pageStep.Object;
+      var executionStateContext = (IExecutionStateContext)_pageStep.Object;
       var newExecutionState = new Mock<IExecutionState>();
 
       Assert.That(executionStateContext.ExecutionState, Is.SameAs(NullExecutionState.Null));

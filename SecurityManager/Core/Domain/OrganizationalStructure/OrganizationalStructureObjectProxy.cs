@@ -70,7 +70,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
         return false;
       if (this.GetType() != obj.GetType())
         return false;
-      return this._handle.Equals(((OrganizationalStructureObjectProxy<T>) obj)._handle);
+      return this._handle.Equals(((OrganizationalStructureObjectProxy<T>)obj)._handle);
     }
 
     public override int GetHashCode ()

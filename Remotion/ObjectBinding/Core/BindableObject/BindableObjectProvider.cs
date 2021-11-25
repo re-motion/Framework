@@ -49,7 +49,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
       var providerAttributeType = s_providerAttributeTypeCache.GetOrAdd(type, s_findProviderAttributeTypeFunc);
 
-      var provider = (BindableObjectProvider) GetProvider(providerAttributeType);
+      var provider = (BindableObjectProvider)GetProvider(providerAttributeType);
       Assertion.IsNotNull(provider, "GetProvider cannot return null (type '{0}').", type.GetFullNameSafe());
       return provider;
     }

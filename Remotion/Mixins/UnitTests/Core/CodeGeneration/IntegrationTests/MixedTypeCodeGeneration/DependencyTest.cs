@@ -32,7 +32,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
           .EnterScope())
       {
         object o = ObjectFactory.Create<NullTarget>(ParamList.Empty);
-        var c1 = (ICircular2) o;
+        var c1 = (ICircular2)o;
         Assert.That(c1.Circular12(), Is.EqualTo("MixinWithCircularTargetCallDependency2.Circular12-MixinWithCircularTargetCallDependency1.Circular1-"
                                                    + "MixinWithCircularTargetCallDependency2.Circular2"));
       }

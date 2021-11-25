@@ -35,7 +35,7 @@ namespace OBWTest.ControlLayoutTests
     {
       base.OnLoad(e);
 
-      CurrentObject.BusinessObject = (IBusinessObject) CurrentFunction.Person;
+      CurrentObject.BusinessObject = (IBusinessObject)CurrentFunction.Person;
       CurrentObject.LoadValues(IsPostBack);
     }
   }

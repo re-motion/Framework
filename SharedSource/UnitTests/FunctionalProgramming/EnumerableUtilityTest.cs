@@ -47,7 +47,7 @@ namespace Remotion.UnitTests.FunctionalProgramming
     [Test]
     public void Singleton_WithNull ()
     {
-      var actual = EnumerableUtility.Singleton(((object?) null));
+      var actual = EnumerableUtility.Singleton(((object?)null));
       Assert.That(actual.ToArray(), Is.EqualTo(new object?[] { null }));
     }
 

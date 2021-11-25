@@ -98,7 +98,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     public void ContainsNullQueryParameter ()
     {
       Assert.That(
-          () => _collection.Contains((QueryParameter) null),
+          () => _collection.Contains((QueryParameter)null),
           Throws.InstanceOf<ArgumentNullException>());
     }
 
@@ -106,7 +106,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     public void ContainsNullQueryParameterName ()
     {
       Assert.That(
-          () => _collection.Contains((string) null),
+          () => _collection.Contains((string)null),
           Throws.InstanceOf<ArgumentNullException>());
     }
 

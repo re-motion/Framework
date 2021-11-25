@@ -70,7 +70,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       _editableRow.ID = "Row";
       NamingContainer.Controls.Add(_editableRow);
 
-      _value01 = (IBusinessObject) TypeWithAllDataTypes.Create("A", 1);
+      _value01 = (IBusinessObject)TypeWithAllDataTypes.Create("A", 1);
 
       _typeWithAllDataTypesClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(TypeWithAllDataTypes));
 
@@ -183,13 +183,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Assert.That(textBoxFirstValue is BocTextValue, Is.True);
       Assert.That(textBoxFirstValue.DataSource, Is.SameAs(dataSource));
       Assert.That(textBoxFirstValue.Property, Is.SameAs(_typeWithAllDataTypesStringValuePath.Properties.Last()));
-      Assert.That(((BocTextValue) textBoxFirstValue).EnableOptionalValidators, Is.Null);
+      Assert.That(((BocTextValue)textBoxFirstValue).EnableOptionalValidators, Is.Null);
 
       IBusinessObjectBoundEditableWebControl textBoxSecondValue = _editableRow.GetEditControl(6);
       Assert.That(textBoxSecondValue is BocTextValue, Is.True);
       Assert.That(textBoxSecondValue.DataSource, Is.SameAs(dataSource));
       Assert.That(textBoxSecondValue.Property, Is.SameAs(_typeWithAllDataTypesInt32ValuePath.Properties.Last()));
-      Assert.That(((BocTextValue) textBoxSecondValue).EnableOptionalValidators, Is.Null);
+      Assert.That(((BocTextValue)textBoxSecondValue).EnableOptionalValidators, Is.Null);
     }
 
     [Test]
@@ -232,7 +232,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       IBusinessObjectBoundEditableWebControl textBoxFirstValue = _editableRow.GetEditControl(0);
       Assert.That(textBoxFirstValue is BocTextValue, Is.True);
-      Assert.That(((BocTextValue) textBoxFirstValue).EnableOptionalValidators, Is.True);
+      Assert.That(((BocTextValue)textBoxFirstValue).EnableOptionalValidators, Is.True);
     }
 
     [Test]
@@ -253,7 +253,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       IBusinessObjectBoundEditableWebControl textBoxFirstValue = _editableRow.GetEditControl(0);
       Assert.That(textBoxFirstValue is BocTextValue, Is.True);
-      Assert.That(((BocTextValue) textBoxFirstValue).EnableOptionalValidators, Is.False);
+      Assert.That(((BocTextValue)textBoxFirstValue).EnableOptionalValidators, Is.False);
     }
 
     [Test]
@@ -407,8 +407,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       IBusinessObjectReferenceDataSource dataSource = _editableRow.GetDataSource();
       dataSource.LoadValues(false);
 
-      BocTextValue textBoxStringValue = (BocTextValue) _editableRow.GetEditControl(0);
-      BocTextValue textBoxInt32Value = (BocTextValue) _editableRow.GetEditControl(1);
+      BocTextValue textBoxStringValue = (BocTextValue)_editableRow.GetEditControl(0);
+      BocTextValue textBoxInt32Value = (BocTextValue)_editableRow.GetEditControl(1);
 
       Assert.That(textBoxStringValue.Value, Is.EqualTo("A"));
       Assert.That(textBoxInt32Value.Value, Is.EqualTo(1));
@@ -431,8 +431,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       IBusinessObjectReferenceDataSource dataSource = _editableRow.GetDataSource();
       dataSource.LoadValues(false);
 
-      BocTextValue textBoxStringValue = (BocTextValue) _editableRow.GetEditControl(0);
-      BocTextValue textBoxInt32Value = (BocTextValue) _editableRow.GetEditControl(1);
+      BocTextValue textBoxStringValue = (BocTextValue)_editableRow.GetEditControl(0);
+      BocTextValue textBoxInt32Value = (BocTextValue)_editableRow.GetEditControl(1);
 
       Assert.That(textBoxStringValue.Value, Is.EqualTo("A"));
       Assert.That(textBoxInt32Value.Value, Is.EqualTo(1));
@@ -442,8 +442,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       dataSource.SaveValues(false);
 
-      Assert.That(((TypeWithAllDataTypes) _value01).String, Is.EqualTo("New Value A"));
-      Assert.That(((TypeWithAllDataTypes) _value01).Int32, Is.EqualTo(100));
+      Assert.That(((TypeWithAllDataTypes)_value01).String, Is.EqualTo("New Value A"));
+      Assert.That(((TypeWithAllDataTypes)_value01).Int32, Is.EqualTo(100));
     }
 
 
@@ -822,7 +822,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       Assert.That(_editableRow.IsDirty(), Is.False);
 
-      BocTextValue textBoxStringValue = (BocTextValue) _editableRow.GetEditControl(0);
+      BocTextValue textBoxStringValue = (BocTextValue)_editableRow.GetEditControl(0);
       textBoxStringValue.Value = "a";
 
       Assert.That(_editableRow.IsDirty(), Is.True);
@@ -923,8 +923,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       IBusinessObjectReferenceDataSource dataSource = _editableRow.GetDataSource();
       dataSource.LoadValues(false);
 
-      BocTextValue stringValueField = (BocTextValue) _editableRow.GetEditControl(0);
-      BocTextValue int32ValueField = (BocTextValue) _editableRow.GetEditControl(1);
+      BocTextValue stringValueField = (BocTextValue)_editableRow.GetEditControl(0);
+      BocTextValue int32ValueField = (BocTextValue)_editableRow.GetEditControl(1);
 
       _editableRow.PrepareValidation();
 
@@ -935,10 +935,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
     private void SetValues (EditableRow row, string stringValue, string int32Value)
     {
-      BocTextValue stringValueField = (BocTextValue) row.GetEditControl(0);
+      BocTextValue stringValueField = (BocTextValue)row.GetEditControl(0);
       stringValueField.Text = stringValue;
 
-      BocTextValue int32ValueField = (BocTextValue) row.GetEditControl(1);
+      BocTextValue int32ValueField = (BocTextValue)row.GetEditControl(1);
       int32ValueField.Text = int32Value;
     }
   }

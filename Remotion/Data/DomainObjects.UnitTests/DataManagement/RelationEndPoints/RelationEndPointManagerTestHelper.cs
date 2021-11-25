@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
     public static RelationEndPointMap GetMap (RelationEndPointManager manager)
     {
-      return (RelationEndPointMap) manager.RelationEndPoints;
+      return (RelationEndPointMap)manager.RelationEndPoints;
     }
   }
 }

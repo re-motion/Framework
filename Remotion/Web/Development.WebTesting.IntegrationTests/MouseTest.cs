@@ -152,13 +152,13 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
     private Color GetColor (ElementScope scope)
     {
-      var driver = ((IWrapsDriver) scope.Native).WrappedDriver;
-      var jsExecutor = (IJavaScriptExecutor) driver;
+      var driver = ((IWrapsDriver)scope.Native).WrappedDriver;
+      var jsExecutor = (IJavaScriptExecutor)driver;
 
-      var rawData = (IReadOnlyCollection<object>) jsExecutor.ExecuteScript(c_getBackgroundColorJs, (IWebElement) scope.Native);
+      var rawData = (IReadOnlyCollection<object>)jsExecutor.ExecuteScript(c_getBackgroundColorJs, (IWebElement)scope.Native);
       if (rawData.Count != 3)
         throw new InvalidOperationException("Javascript is invalid.");
-      var rgb = rawData.Select(i => int.Parse((string) i)).ToArray();
+      var rgb = rawData.Select(i => int.Parse((string)i)).ToArray();
       return Color.FromArgb(rgb[0], rgb[1], rgb[2]);
     }
 

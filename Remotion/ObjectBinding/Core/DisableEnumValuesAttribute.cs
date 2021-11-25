@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("filterType", filterType, typeof(IEnumerationValueFilter));
 
-      _filter = (IEnumerationValueFilter) Activator.CreateInstance(filterType)!;
+      _filter = (IEnumerationValueFilter)Activator.CreateInstance(filterType)!;
     }
 
     /// <summary>

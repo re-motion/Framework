@@ -97,7 +97,7 @@ namespace Remotion.Mixins
     /// <value>This instance, accessed via the <typeparamref name="TComposedInterface"/>.</value>
     public TComposedInterface This
     {
-      get { return (TComposedInterface) (object) this; }
+      get { return (TComposedInterface)(object)this; }
     }
   }
 }

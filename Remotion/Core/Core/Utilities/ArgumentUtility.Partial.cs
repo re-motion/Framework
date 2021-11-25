@@ -59,7 +59,7 @@ namespace Remotion.Utilities
       if (! EnumUtility.IsValidEnumValue(enumValue))
         throw CreateEnumArgumentOutOfRangeException(argumentName, enumValue);
 
-      return (TEnum?) enumValue;
+      return (TEnum?)enumValue;
     }
 
     /// <summary>Checks whether <paramref name="enumValue"/> is of the enumeration type <typeparamref name="TEnum"/>, is defined within this 
@@ -85,7 +85,7 @@ namespace Remotion.Utilities
       if (!EnumUtility.IsValidEnumValue(enumValue))
         throw CreateEnumArgumentOutOfRangeException(argumentName, enumValue);
 
-      return (TEnum) enumValue;
+      return (TEnum)enumValue;
     }
 
     [MustUseReturnValue]

@@ -34,18 +34,18 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var browserSession = Start();
 
-      var allCookiesBeforeCreation = ((RemoteWebDriver) browserSession.Context.Browser.Driver.Native).Manage().Cookies.AllCookies;
+      var allCookiesBeforeCreation = ((RemoteWebDriver)browserSession.Context.Browser.Driver.Native).Manage().Cookies.AllCookies;
 
       browserSession.WebButtons().GetByLocalID("CreateSessionCookie").Click();
       browserSession.WebButtons().GetByLocalID("CreatePersistentCookie").Click();
 
-      var allCookiesBeforeDelete = ((RemoteWebDriver) browserSession.Context.Browser.Driver.Native).Manage().Cookies.AllCookies;
+      var allCookiesBeforeDelete = ((RemoteWebDriver)browserSession.Context.Browser.Driver.Native).Manage().Cookies.AllCookies;
 
       Assert.That(allCookiesBeforeDelete.Count, Is.EqualTo(allCookiesBeforeCreation.Count + 2));
 
       browserSession.Context.Browser.DeleteAllCookies();
 
-      var allCookiesAfterDelete = ((RemoteWebDriver) browserSession.Context.Browser.Driver.Native).Manage().Cookies.AllCookies;
+      var allCookiesAfterDelete = ((RemoteWebDriver)browserSession.Context.Browser.Driver.Native).Manage().Cookies.AllCookies;
       Assert.That(allCookiesAfterDelete.Count, Is.EqualTo(0));
     }
 
@@ -75,7 +75,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       var home = Start();
 
-      var selenium = (IWebDriver) home.Context.Browser.Driver.Native;
+      var selenium = (IWebDriver)home.Context.Browser.Driver.Native;
 
       Assert.That(
           () => selenium.Manage().Logs.GetLog(LogType.Browser),

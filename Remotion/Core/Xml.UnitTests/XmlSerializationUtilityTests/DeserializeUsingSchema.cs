@@ -28,7 +28,7 @@ namespace Remotion.Xml.UnitTests.XmlSerializationUtilityTests
     [Test]
     public void WithSchemaUriAndSchemaSet ()
     {
-      SampleClass actual = (SampleClass) XmlSerializationUtility.DeserializeUsingSchema(
+      SampleClass actual = (SampleClass)XmlSerializationUtility.DeserializeUsingSchema(
           GetReaderForDefaultFragment(1),
           typeof(SampleClass),
           GetXmlSchemaSet());
@@ -40,7 +40,7 @@ namespace Remotion.Xml.UnitTests.XmlSerializationUtilityTests
     [Test]
     public void WithSchemaUriAndSchemaReader ()
     {
-      SampleClass actual = (SampleClass) XmlSerializationUtility.DeserializeUsingSchema(
+      SampleClass actual = (SampleClass)XmlSerializationUtility.DeserializeUsingSchema(
           GetReaderForDefaultFragment(1),
           typeof(SampleClass),
           SampleClass.SchemaUri,
@@ -53,7 +53,7 @@ namespace Remotion.Xml.UnitTests.XmlSerializationUtilityTests
     [Test]
     public void WithNamespaceAndSchemaSet ()
     {
-      SampleClass actual = (SampleClass) XmlSerializationUtility.DeserializeUsingSchema(
+      SampleClass actual = (SampleClass)XmlSerializationUtility.DeserializeUsingSchema(
           GetReaderForDefaultFragment(1),
           typeof(SampleClass),
           "http://www.re-motion.org/core/unitTests",

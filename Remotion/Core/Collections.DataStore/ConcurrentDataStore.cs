@@ -285,7 +285,7 @@ namespace Remotion.Collections.DataStore
               // ICollection.Remove() performs the remove only if both the Key and the Value are a match, the lookup has O(1) complexity.
               // The specific implementation for ConcurrentDictionary does not have a branch where an exception would be expected, 
               // therefor no separate exception handling for ICollection.Remove() has been added.
-              ((ICollection<KeyValuePair<TKey, SynchronizedValue>>) _innerDictionary)
+              ((ICollection<KeyValuePair<TKey, SynchronizedValue>>)_innerDictionary)
                   .Remove(new KeyValuePair<TKey, SynchronizedValue>(key, synchronizedValue));
 
               throw;

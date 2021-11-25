@@ -340,7 +340,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
       // Note: There doesn't seem to be any visible effect of choosing the right calling convention, so we'll check the internal Signature property.
       var signature = PrivateInvoke.GetNonPublicProperty(generatedPropertyInfo, "Signature");
       Assertion.IsNotNull(signature, "Internal Signature member on PropertyInfo has been removed - adapt test");
-      var callingConvention = (CallingConventions) PrivateInvoke.GetNonPublicProperty(signature, "CallingConvention");
+      var callingConvention = (CallingConventions)PrivateInvoke.GetNonPublicProperty(signature, "CallingConvention");
       Assert.That(callingConvention, Is.EqualTo(expectedCallingConventions));
     }
 

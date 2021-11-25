@@ -90,9 +90,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model
 
       var isNullValue = dbDataParameter.Value == null || dbDataParameter.Value == DBNull.Value;
       var isStringAndValueDoesNotExceedCompatibleMaxLength =
-          dbDataParameter.Value is string && ((string) dbDataParameter.Value).Length <= _fulltextCompatibleMaxLength;
+          dbDataParameter.Value is string && ((string)dbDataParameter.Value).Length <= _fulltextCompatibleMaxLength;
       var isCharArrayAndValueDoesNotExceedCompatibleMaxLength =
-          dbDataParameter.Value is char[] && ((char[]) dbDataParameter.Value).Length <= _fulltextCompatibleMaxLength;
+          dbDataParameter.Value is char[] && ((char[])dbDataParameter.Value).Length <= _fulltextCompatibleMaxLength;
 
       if (isNullValue || isStringAndValueDoesNotExceedCompatibleMaxLength || isCharArrayAndValueDoesNotExceedCompatibleMaxLength)
         dbDataParameter.Size = _fulltextCompatibleMaxLength;

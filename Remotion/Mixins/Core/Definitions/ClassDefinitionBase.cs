@@ -85,7 +85,7 @@ namespace Remotion.Mixins.Definitions
           // The MethodInfo objects returned by the Methods property has the ReflectedType == DeclaringType; the interface map must reflect this.
           Assertion.IsFalse(targetMethod.ReflectedType == targetMethod.DeclaringType);
 
-          var newTargetMethod = (MethodInfo) MethodBase.GetMethodFromHandle(targetMethod.MethodHandle, targetMethod.DeclaringType!.TypeHandle)!;
+          var newTargetMethod = (MethodInfo)MethodBase.GetMethodFromHandle(targetMethod.MethodHandle, targetMethod.DeclaringType!.TypeHandle)!;
           Assertion.IsTrue(newTargetMethod.ReflectedType == newTargetMethod.DeclaringType);
 
           mapping.TargetMethods[i] = newTargetMethod;

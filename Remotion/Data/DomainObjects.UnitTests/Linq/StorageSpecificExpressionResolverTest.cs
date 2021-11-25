@@ -118,7 +118,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       _rdbmsStoragePropertyDefinitionStub.Stub(stub => stub.PropertyType).Return(typeof(string));
       _rdbmsStoragePropertyDefinitionStub.Stub(stub => stub.GetColumns()).Return(new[] { columnDefinition });
 
-      var result = (SqlColumnDefinitionExpression) _storageSpecificExpressionResolver.ResolveProperty(entityExpression, propertyDefinition);
+      var result = (SqlColumnDefinitionExpression)_storageSpecificExpressionResolver.ResolveProperty(entityExpression, propertyDefinition);
 
       Assert.That(result.ColumnName, Is.EqualTo("OrderNumber"));
       Assert.That(result.OwningTableAlias, Is.EqualTo("o"));
@@ -140,7 +140,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       _rdbmsStoragePropertyDefinitionStub.Stub(stub => stub.PropertyType).Return(typeof(string));
       _rdbmsStoragePropertyDefinitionStub.Stub(stub => stub.GetColumns()).Return(new[] { columnDefinition });
 
-      var result = (SqlColumnDefinitionExpression) _storageSpecificExpressionResolver.ResolveProperty(entityExpression, propertyDefinition);
+      var result = (SqlColumnDefinitionExpression)_storageSpecificExpressionResolver.ResolveProperty(entityExpression, propertyDefinition);
 
       Assert.That(result.ColumnName, Is.EqualTo("ID"));
       Assert.That(result.OwningTableAlias, Is.EqualTo("o"));
@@ -207,7 +207,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
           .Stub(stub => stub.GetEntityDefinition(_classDefinition))
           .Return(_classDefinition.StorageEntityDefinition as IRdbmsStorageEntityDefinition);
 
-      var result = (ResolvedSimpleTableInfo) _storageSpecificExpressionResolver.ResolveTable(_classDefinition, "o");
+      var result = (ResolvedSimpleTableInfo)_storageSpecificExpressionResolver.ResolveTable(_classDefinition, "o");
 
       Assert.That(result, Is.Not.Null);
       Assert.That(result.TableName, Is.EqualTo("TableView"));
@@ -226,7 +226,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
           .Stub(stub => stub.GetEntityDefinition(_classDefinition))
           .Return(_classDefinition.StorageEntityDefinition as IRdbmsStorageEntityDefinition);
 
-      var result = (ResolvedSimpleTableInfo) _storageSpecificExpressionResolver.ResolveTable(_classDefinition, "o");
+      var result = (ResolvedSimpleTableInfo)_storageSpecificExpressionResolver.ResolveTable(_classDefinition, "o");
 
       Assert.That(result, Is.Not.Null);
       Assert.That(result.TableName, Is.EqualTo("schemaName.TableView"));
@@ -240,13 +240,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       var filterViewDefinition = FilterViewDefinitionObjectMother.Create(
           TestDomainStorageProviderDefinition,
           new EntityNameDefinition(null, "FilterView"),
-          (IRdbmsStorageEntityDefinition) _classDefinition.StorageEntityDefinition);
+          (IRdbmsStorageEntityDefinition)_classDefinition.StorageEntityDefinition);
       _classDefinition.SetStorageEntity(filterViewDefinition);
 
       _rdbmsPersistenceModelProviderStub.Stub(stub => stub.GetEntityDefinition(_classDefinition)).Return(
           _classDefinition.StorageEntityDefinition as IRdbmsStorageEntityDefinition);
 
-      var result = (ResolvedSimpleTableInfo) _storageSpecificExpressionResolver.ResolveTable(_classDefinition, "o");
+      var result = (ResolvedSimpleTableInfo)_storageSpecificExpressionResolver.ResolveTable(_classDefinition, "o");
 
       Assert.That(result, Is.Not.Null);
       Assert.That(result.TableName, Is.EqualTo("FilterView"));
@@ -260,13 +260,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       var filterViewDefinition = FilterViewDefinitionObjectMother.Create(
           TestDomainStorageProviderDefinition,
           new EntityNameDefinition("schemaName", "FilterView"),
-          (IRdbmsStorageEntityDefinition) _classDefinition.StorageEntityDefinition);
+          (IRdbmsStorageEntityDefinition)_classDefinition.StorageEntityDefinition);
       _classDefinition.SetStorageEntity(filterViewDefinition);
 
       _rdbmsPersistenceModelProviderStub.Stub(stub => stub.GetEntityDefinition(_classDefinition)).Return(
           _classDefinition.StorageEntityDefinition as IRdbmsStorageEntityDefinition);
 
-      var result = (ResolvedSimpleTableInfo) _storageSpecificExpressionResolver.ResolveTable(_classDefinition, "o");
+      var result = (ResolvedSimpleTableInfo)_storageSpecificExpressionResolver.ResolveTable(_classDefinition, "o");
 
       Assert.That(result, Is.Not.Null);
       Assert.That(result.TableName, Is.EqualTo("schemaName.FilterView"));
@@ -280,14 +280,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       var unionViewDefinition = UnionViewDefinitionObjectMother.Create(
           TestDomainStorageProviderDefinition,
           new EntityNameDefinition(null, "UnionView"),
-          new[] { (IRdbmsStorageEntityDefinition) _classDefinition.StorageEntityDefinition });
+          new[] { (IRdbmsStorageEntityDefinition)_classDefinition.StorageEntityDefinition });
       _classDefinition.SetStorageEntity(unionViewDefinition);
 
       _rdbmsPersistenceModelProviderStub
           .Stub(stub => stub.GetEntityDefinition(_classDefinition))
           .Return(_classDefinition.StorageEntityDefinition as IRdbmsStorageEntityDefinition);
 
-      var result = (ResolvedSimpleTableInfo) _storageSpecificExpressionResolver.ResolveTable(_classDefinition, "o");
+      var result = (ResolvedSimpleTableInfo)_storageSpecificExpressionResolver.ResolveTable(_classDefinition, "o");
 
       Assert.That(result, Is.Not.Null);
       Assert.That(result.TableName, Is.EqualTo("UnionView"));
@@ -301,14 +301,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       var unionViewDefinition = UnionViewDefinitionObjectMother.Create(
           TestDomainStorageProviderDefinition,
           new EntityNameDefinition("schemaName", "UnionView"),
-          new[] { (IRdbmsStorageEntityDefinition) _classDefinition.StorageEntityDefinition });
+          new[] { (IRdbmsStorageEntityDefinition)_classDefinition.StorageEntityDefinition });
       _classDefinition.SetStorageEntity(unionViewDefinition);
 
       _rdbmsPersistenceModelProviderStub
           .Stub(stub => stub.GetEntityDefinition(_classDefinition))
           .Return(_classDefinition.StorageEntityDefinition as IRdbmsStorageEntityDefinition);
 
-      var result = (ResolvedSimpleTableInfo) _storageSpecificExpressionResolver.ResolveTable(_classDefinition, "o");
+      var result = (ResolvedSimpleTableInfo)_storageSpecificExpressionResolver.ResolveTable(_classDefinition, "o");
 
       Assert.That(result, Is.Not.Null);
       Assert.That(result.TableName, Is.EqualTo("schemaName.UnionView"));
@@ -328,7 +328,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
           .Stub(stub => stub.GetEntityDefinition(_classDefinition))
           .Return(_classDefinition.StorageEntityDefinition as IRdbmsStorageEntityDefinition);
 
-      var result = (ResolvedSimpleTableInfo) _storageSpecificExpressionResolver.ResolveTable(_classDefinition, "o");
+      var result = (ResolvedSimpleTableInfo)_storageSpecificExpressionResolver.ResolveTable(_classDefinition, "o");
 
       Assert.That(result, Is.Not.Null);
       Assert.That(result.TableName, Is.EqualTo("EmptyView"));
@@ -348,7 +348,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
           .Stub(stub => stub.GetEntityDefinition(_classDefinition))
           .Return(_classDefinition.StorageEntityDefinition as IRdbmsStorageEntityDefinition);
 
-      var result = (ResolvedSimpleTableInfo) _storageSpecificExpressionResolver.ResolveTable(_classDefinition, "o");
+      var result = (ResolvedSimpleTableInfo)_storageSpecificExpressionResolver.ResolveTable(_classDefinition, "o");
 
       Assert.That(result, Is.Not.Null);
       Assert.That(result.TableName, Is.EqualTo("schemaName.EmptyView"));
@@ -390,8 +390,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       Assert.That(result, Is.Not.Null);
       Assert.That(result.ItemType, Is.EqualTo(typeof(Customer)));
       Assert.That(result.ForeignTableInfo, Is.TypeOf(typeof(ResolvedSimpleTableInfo)));
-      Assert.That(((ResolvedSimpleTableInfo) result.ForeignTableInfo).TableName, Is.EqualTo("CustomerView"));
-      Assert.That(((ResolvedSimpleTableInfo) result.ForeignTableInfo).TableAlias, Is.EqualTo("c"));
+      Assert.That(((ResolvedSimpleTableInfo)result.ForeignTableInfo).TableName, Is.EqualTo("CustomerView"));
+      Assert.That(((ResolvedSimpleTableInfo)result.ForeignTableInfo).TableAlias, Is.EqualTo("c"));
 
       var expected = Expression.Equal(
           new SqlColumnDefinitionExpression(typeof(Guid), "o", "Customer", false),

@@ -37,7 +37,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
       TransactionMock.Setup(stub => stub.EnsureCompatibility(It.IsNotNull<IEnumerable>()));
 
       _strategy = new Mock<ScopedTransactionStrategyBase>(
-          true, (Func<ITransaction>) (() => TransactionMock.Object), OuterTransactionStrategyMock.Object, ExecutionContextMock.Object) { CallBase = true };
+          true, (Func<ITransaction>)(() => TransactionMock.Object), OuterTransactionStrategyMock.Object, ExecutionContextMock.Object) { CallBase = true };
     }
 
     [Test]
@@ -104,10 +104,10 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
       childExecutionContextStub.Verify();
       Assert.That(childTransactionStrategy, Is.InstanceOf(typeof(ChildTransactionStrategy)));
       Assert.That(((ChildTransactionStrategy)childTransactionStrategy).AutoCommit, Is.True);
-      Assert.That(((ChildTransactionStrategy) childTransactionStrategy).Transaction, Is.SameAs(childTransaction.Object));
+      Assert.That(((ChildTransactionStrategy)childTransactionStrategy).Transaction, Is.SameAs(childTransaction.Object));
       Assert.That(childTransactionStrategy.OuterTransactionStrategy, Is.SameAs(_strategy.Object));
-      Assert.That(((ChildTransactionStrategy) childTransactionStrategy).ExecutionContext, Is.SameAs(childExecutionContextStub.Object));
-      Assert.That(((ChildTransactionStrategy) childTransactionStrategy).Scope, Is.Null);
+      Assert.That(((ChildTransactionStrategy)childTransactionStrategy).ExecutionContext, Is.SameAs(childExecutionContextStub.Object));
+      Assert.That(((ChildTransactionStrategy)childTransactionStrategy).Scope, Is.Null);
       Assert.That(_strategy.Object.Child, Is.SameAs(childTransactionStrategy));
     }
 
@@ -133,11 +133,11 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
       childScope.Verify();
       childExecutionContextStub.Verify();
       Assert.That(childTransactionStrategy, Is.InstanceOf(typeof(ChildTransactionStrategy)));
-      Assert.That(((ChildTransactionStrategy) childTransactionStrategy).AutoCommit, Is.True);
-      Assert.That(((ChildTransactionStrategy) childTransactionStrategy).Transaction, Is.SameAs(childTransaction.Object));
+      Assert.That(((ChildTransactionStrategy)childTransactionStrategy).AutoCommit, Is.True);
+      Assert.That(((ChildTransactionStrategy)childTransactionStrategy).Transaction, Is.SameAs(childTransaction.Object));
       Assert.That(childTransactionStrategy.OuterTransactionStrategy, Is.SameAs(_strategy.Object));
-      Assert.That(((ChildTransactionStrategy) childTransactionStrategy).ExecutionContext, Is.SameAs(childExecutionContextStub.Object));
-      Assert.That(((ChildTransactionStrategy) childTransactionStrategy).Scope, Is.SameAs(childScope.Object));
+      Assert.That(((ChildTransactionStrategy)childTransactionStrategy).ExecutionContext, Is.SameAs(childExecutionContextStub.Object));
+      Assert.That(((ChildTransactionStrategy)childTransactionStrategy).Scope, Is.SameAs(childScope.Object));
       Assert.That(_strategy.Object.Child, Is.SameAs(childTransactionStrategy));
     }
 

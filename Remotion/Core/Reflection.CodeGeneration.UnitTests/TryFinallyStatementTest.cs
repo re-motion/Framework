@@ -46,8 +46,8 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
       methodEmitter.AddStatement(new ReturnStatement());
 
       InvokeMethod();
-      Assert.That((bool) PrivateInvoke.GetPublicField(GetBuiltInstance(), tryField.Reference.Name), Is.True);
-      Assert.That((bool) PrivateInvoke.GetPublicField(GetBuiltInstance(), finallyField.Reference.Name), Is.True);
+      Assert.That((bool)PrivateInvoke.GetPublicField(GetBuiltInstance(), tryField.Reference.Name), Is.True);
+      Assert.That((bool)PrivateInvoke.GetPublicField(GetBuiltInstance(), finallyField.Reference.Name), Is.True);
     }
 
     [Test]
@@ -80,8 +80,8 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
         Assert.That(ex.GetType(), Is.EqualTo(typeof(Exception)));
         Assert.That(ex.Message, Is.EqualTo("Expected exception"));
       }
-      Assert.That((bool) PrivateInvoke.GetPublicField(GetBuiltInstance(), tryField.Reference.Name), Is.False);
-      Assert.That((bool) PrivateInvoke.GetPublicField(GetBuiltInstance(), finallyField.Reference.Name), Is.True);
+      Assert.That((bool)PrivateInvoke.GetPublicField(GetBuiltInstance(), tryField.Reference.Name), Is.False);
+      Assert.That((bool)PrivateInvoke.GetPublicField(GetBuiltInstance(), finallyField.Reference.Name), Is.True);
     }
   }
 }

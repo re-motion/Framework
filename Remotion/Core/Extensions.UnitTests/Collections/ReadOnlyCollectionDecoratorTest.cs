@@ -87,7 +87,7 @@ namespace Remotion.UnitTests.Collections
     public void Add ()
     {
       Assert.That(
-          () => ((ICollection<string>) _collection).Add("test"),
+          () => ((ICollection<string>)_collection).Add("test"),
           Throws.InstanceOf<NotSupportedException>()
               .With.Message.EqualTo(
                   "'Add' ist not supported for read-only collections."));
@@ -97,7 +97,7 @@ namespace Remotion.UnitTests.Collections
     public void Remove ()
     {
       Assert.That(
-          () => ((ICollection<string>) _collection).Remove("test"),
+          () => ((ICollection<string>)_collection).Remove("test"),
           Throws.InstanceOf<NotSupportedException>()
               .With.Message.EqualTo(
                   "'Remove' ist not supported for read-only collections."));
@@ -107,7 +107,7 @@ namespace Remotion.UnitTests.Collections
     public void Clear ()
     {
       Assert.That(
-          () => ((ICollection<string>) _collection).Clear(),
+          () => ((ICollection<string>)_collection).Clear(),
           Throws.InstanceOf<NotSupportedException>()
               .With.Message.EqualTo(
                   "'Clear' ist not supported for read-only collections."));

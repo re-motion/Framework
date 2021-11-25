@@ -88,8 +88,8 @@ namespace Remotion.Utilities
       if (collection == null)
         return null;
 
-      TResult[] result = (TResult[]) Array.CreateInstance(typeof(TResult), collection.Count);
-      collection.CopyTo((TSource[]) (Array) result, 0);
+      TResult[] result = (TResult[])Array.CreateInstance(typeof(TResult), collection.Count);
+      collection.CopyTo((TSource[])(Array)result, 0);
       return result;
     }
 

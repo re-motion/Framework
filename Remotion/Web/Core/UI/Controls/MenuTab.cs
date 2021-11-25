@@ -53,12 +53,12 @@ namespace Remotion.Web.UI.Controls
 
     public override IWebTabRenderer GetRenderer ()
     {
-      return (IWebTabRenderer) SafeServiceLocator.Current.GetInstance<IMenuTabRenderer>();
+      return (IWebTabRenderer)SafeServiceLocator.Current.GetInstance<IMenuTabRenderer>();
     }
 
     protected TabbedMenu? TabbedMenu
     {
-      get { return (TabbedMenu?) OwnerControl; }
+      get { return (TabbedMenu?)OwnerControl; }
     }
 
     public NameValueCollection GetUrlParameters ()
@@ -74,7 +74,7 @@ namespace Remotion.Web.UI.Controls
     [NotifyParentProperty (true)]
     public virtual NavigationCommand? Command
     {
-      get { return (NavigationCommand?) _command.ControlItem; }
+      get { return (NavigationCommand?)_command.ControlItem; }
       set { _command.ControlItem = value; }
     }
 
@@ -98,7 +98,7 @@ namespace Remotion.Web.UI.Controls
     {
       if (Command != null)
       {
-        Command = (NavigationCommand) Activator.CreateInstance(Command.GetType())!;
+        Command = (NavigationCommand)Activator.CreateInstance(Command.GetType())!;
         Command.Type = CommandType.None;
       }
     }

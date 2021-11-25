@@ -327,7 +327,7 @@ public class BocListUserControl : BaseUserControl
     {
       ChildrenList.SetSortingOrder(
           new BocListSortingOrderEntry[] {
-              new BocListSortingOrderEntry((IBocSortableColumnDefinition) ChildrenList.FixedColumns[7], SortingDirection.Ascending) });
+              new BocListSortingOrderEntry((IBocSortableColumnDefinition)ChildrenList.FixedColumns[7], SortingDirection.Ascending) });
     }
     if (IsPostBack)
     {
@@ -352,7 +352,7 @@ public class BocListUserControl : BaseUserControl
 
     if (CurrentObject.BusinessObject is Person)
     {
-      Person person = (Person) CurrentObject.BusinessObject;
+      Person person = (Person)CurrentObject.BusinessObject;
       //AllColumnsList.LoadUnboundValue (person.Children, IsPostBack);
     }
   }
@@ -360,7 +360,7 @@ public class BocListUserControl : BaseUserControl
   private void AddAndEditButton_Click (object sender, EventArgs e)
   {
     Person person = Person.CreateObject(Guid.NewGuid());
-    ChildrenList.AddAndEditRow((IBusinessObject) person);
+    ChildrenList.AddAndEditRow((IBusinessObject)person);
   }
 
   private void ChildrenListEndEditModeButton_Click (object sender, EventArgs e)
@@ -379,7 +379,7 @@ public class BocListUserControl : BaseUserControl
     person.LastName = "X";
 
     // Exercise IList<T> in BocList.Value
-    ((IList<Person>) ChildrenList.Value).Add(person);
+    ((IList<Person>)ChildrenList.Value).Add(person);
     ChildrenList.SynchronizeRows();
   }
 
@@ -387,7 +387,7 @@ public class BocListUserControl : BaseUserControl
   {
     IBusinessObject[] selectedBusinessObjects = ChildrenList.GetSelectedBusinessObjects();
     foreach (var obj in selectedBusinessObjects)
-      ((IList<Person>) ChildrenList.Value).Remove((Person) obj);
+      ((IList<Person>)ChildrenList.Value).Remove((Person)obj);
     ChildrenList.SynchronizeRows();
   }
 
@@ -396,7 +396,7 @@ public class BocListUserControl : BaseUserControl
     ChildrenListEventCheckBox.Checked = true;
     ChildrenListEventArgsLabel.Text += string.Format("ColumnID: {0}<br />", e.Column.ItemID);
     if (e.BusinessObject is IBusinessObjectWithIdentity)
-      ChildrenListEventArgsLabel.Text += string.Format("BusinessObjectID: {0}<br />", ((IBusinessObjectWithIdentity) e.BusinessObject).UniqueIdentifier);
+      ChildrenListEventArgsLabel.Text += string.Format("BusinessObjectID: {0}<br />", ((IBusinessObjectWithIdentity)e.BusinessObject).UniqueIdentifier);
     ChildrenListEventArgsLabel.Text += string.Format("ListIndex: {0}<br />", e.ListIndex);
 
     if (e.Column.ItemID == "Edit")
@@ -412,9 +412,9 @@ public class BocListUserControl : BaseUserControl
 
   private void ChildrenList_RowMenuItemClick (object sender, BocListItemEventArgs e)
   {
-    ChildrenListEventArgsLabel.Text += string.Format("MenuItemID: {0}<br />", ((WebMenuItem) sender).ItemID);
+    ChildrenListEventArgsLabel.Text += string.Format("MenuItemID: {0}<br />", ((WebMenuItem)sender).ItemID);
     if (e.BusinessObject is IBusinessObjectWithIdentity)
-      ChildrenListEventArgsLabel.Text += string.Format("BusinessObjectID: {0}<br />", ((IBusinessObjectWithIdentity) e.BusinessObject).UniqueIdentifier);
+      ChildrenListEventArgsLabel.Text += string.Format("BusinessObjectID: {0}<br />", ((IBusinessObjectWithIdentity)e.BusinessObject).UniqueIdentifier);
     ChildrenListEventArgsLabel.Text += string.Format("ListIndex: {0}<br />", e.ListIndex);
   }
 

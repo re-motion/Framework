@@ -32,10 +32,10 @@ namespace Remotion.Web.Development.WebTesting.TestSite
 
     private void MyTabStripOnSelectedIndexChanged (object sender, EventArgs eventArgs)
     {
-      var tabStrip = (WebTabStrip) sender;
+      var tabStrip = (WebTabStrip)sender;
 
       var testOutput = tabStrip.ID + "/" + tabStrip.SelectedTab.ItemID;
-      ((Layout) Master).SetTestOutput(testOutput);
+      ((Layout)Master).SetTestOutput(testOutput);
     }
   }
 }

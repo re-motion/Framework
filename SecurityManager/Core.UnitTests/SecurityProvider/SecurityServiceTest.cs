@@ -130,7 +130,7 @@ namespace Remotion.SecurityManager.UnitTests
           null,
           Enumerable.Empty<IDomainObjectHandle<AbstractRoleDefinition>>());
 
-      _mockAclFinder.Setup(_ => _.Find(_context)).Returns((IDomainObjectHandle<AccessControlList>) null).Verifiable();
+      _mockAclFinder.Setup(_ => _.Find(_context)).Returns((IDomainObjectHandle<AccessControlList>)null).Verifiable();
       _mockTokenBuilder.Setup(_ => _.CreateToken(_principalStub.Object, _context)).Returns(token).Verifiable();
 
       AccessType[] actualAccessTypes = _service.GetAccess(_context, _principalStub.Object);
@@ -234,7 +234,7 @@ namespace Remotion.SecurityManager.UnitTests
     [Test]
     public void GetIsNull ()
     {
-      Assert.That(((ISecurityProvider) _service).IsNull, Is.False);
+      Assert.That(((ISecurityProvider)_service).IsNull, Is.False);
     }
 
     private IDomainObjectHandle<AccessControlList> CreateAccessControlListHandle ()

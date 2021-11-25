@@ -59,7 +59,7 @@ namespace Remotion.Utilities.AttributeRetrieval
                       typeof(MethodInfo)),
                   parameterExpression);
 
-              return (Func<MethodInfo, MethodInfo>) lambdaExpression.Compile();
+              return (Func<MethodInfo, MethodInfo>)lambdaExpression.Compile();
             });
 
     protected abstract TCustomAttributeProvider? GetBaseMember (TCustomAttributeProvider memberInfo);
@@ -89,7 +89,7 @@ namespace Remotion.Utilities.AttributeRetrieval
         AddInheritedAttributes(allAttributes, currentMember, attributeType, attributeUsagesPerType);
         currentMember = GetBaseMember(currentMember);
       }
-      return (object[]) allAttributes.ToArray(attributeType);
+      return (object[])allAttributes.ToArray(attributeType);
     }
 
     protected static MethodInfo GetBaseMethod (MethodInfo methodInfo)

@@ -56,7 +56,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Role
       _user.Committing += (sender, e) =>
       {
         commitOnClassWasCalled = true;
-        Assert.That(GetDataContainer((DomainObject) sender).HasBeenMarkedChanged, Is.True);
+        Assert.That(GetDataContainer((DomainObject)sender).HasBeenMarkedChanged, Is.True);
       };
       _role.RegisterForCommit();
       ClientTransaction.Current.Commit();
@@ -71,7 +71,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Role
       _user.Committing += (sender, e) =>
       {
         commitOnClassWasCalled = true;
-        Assert.That(GetDataContainer((DomainObject) sender).HasBeenMarkedChanged, Is.True);
+        Assert.That(GetDataContainer((DomainObject)sender).HasBeenMarkedChanged, Is.True);
       };
       _role.Delete();
       ClientTransaction.Current.Commit();
@@ -86,7 +86,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Role
       _substitution.Committing += (sender, e) =>
       {
         commitOnClassWasCalled = true;
-        Assert.That(GetDataContainer((DomainObject) sender).HasBeenMarkedChanged, Is.True);
+        Assert.That(GetDataContainer((DomainObject)sender).HasBeenMarkedChanged, Is.True);
       };
       _role.RegisterForCommit();
       ClientTransaction.Current.Commit();
@@ -100,7 +100,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Role
       _substitution.Committing += (sender, e) =>
       {
         commitOnClassWasCalled = true;
-        Assert.That(GetDataContainer((DomainObject) sender).State.IsDeleted, Is.True);
+        Assert.That(GetDataContainer((DomainObject)sender).State.IsDeleted, Is.True);
       };
       _role.Delete();
       ClientTransaction.Current.Commit();

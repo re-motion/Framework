@@ -51,7 +51,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Configuration
 
     private WebTestConfigurationSection CreateWebTestConfigurationSection ()
     {
-      return (WebTestConfigurationSection) Activator.CreateInstance(typeof(WebTestConfigurationSection), true);
+      return (WebTestConfigurationSection)Activator.CreateInstance(typeof(WebTestConfigurationSection), true);
     }
 
     private class TestRequestErrorDetectionStrategy : IRequestErrorDetectionStrategy

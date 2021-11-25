@@ -28,7 +28,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     [ConfigurationProperty("disableSecurityWarningsBehavior", DefaultValue = ChromiumDisableSecurityWarningsBehavior.Ignore)]
     public ChromiumDisableSecurityWarningsBehavior DisableSecurityWarningsBehavior
     {
-      get { return (ChromiumDisableSecurityWarningsBehavior) this["disableSecurityWarningsBehavior"]; }
+      get { return (ChromiumDisableSecurityWarningsBehavior)this["disableSecurityWarningsBehavior"]; }
     }
   }
 }

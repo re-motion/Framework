@@ -166,7 +166,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
     [Test]
     public void IsInvalid_AffectsAssociatedRootTransaction ()
     {
-      var order = (Order) LifetimeService.NewObject(_rootTransaction, typeof(Order), ParamList.Empty);
+      var order = (Order)LifetimeService.NewObject(_rootTransaction, typeof(Order), ParamList.Empty);
 
       Assert.That(GetStateFromTransaction(order, _rootTransaction).IsNew, Is.True);
       Assert.That(order.State.IsInvalid, Is.False);

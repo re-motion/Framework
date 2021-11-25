@@ -36,7 +36,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
     [WxeParameter (0, true)]
     public bool ReadOnly
     {
-      get { return (bool) Variables["ReadOnly"]; }
+      get { return (bool)Variables["ReadOnly"]; }
       set { Variables["ReadOnly"] = value; }
     }
 
@@ -49,14 +49,14 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
     [Serializable]
     class Step2 : WxeStepList
     {
-      SessionWxeFunction Function { get { return (SessionWxeFunction) ParentFunction; } }
+      SessionWxeFunction Function { get { return (SessionWxeFunction)ParentFunction; } }
       WxeStep Step1_ = new WxeResourcePageStep(typeof(SessionForm), "ExecutionEngine/SessionForm.aspx");
     }
 
     [Serializable]
     class Step3 : WxeStepList
     {
-      SessionWxeFunction Function { get { return (SessionWxeFunction) ParentFunction; } }
+      SessionWxeFunction Function { get { return (SessionWxeFunction)ParentFunction; } }
       WxeStep Step1_ = new WxeResourcePageStep(typeof(SessionForm), "ExecutionEngine/SessionForm.aspx");
     }
   }

@@ -46,7 +46,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Role
       BusinessObjectProvider.GetProvider<BindableDomainObjectProviderAttribute>()
           .AddService(typeof(GroupPropertyTypeSearchService), searchServiceStub.Object);
       IBusinessObjectClass roleClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(Role));
-      IBusinessObjectReferenceProperty groupProperty = (IBusinessObjectReferenceProperty) roleClass.GetPropertyDefinition("Group");
+      IBusinessObjectReferenceProperty groupProperty = (IBusinessObjectReferenceProperty)roleClass.GetPropertyDefinition("Group");
       Assert.That(groupProperty, Is.Not.Null);
 
       Role role = Role.NewObject();
@@ -71,7 +71,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Role
       BusinessObjectProvider.GetProvider<BindableDomainObjectProviderAttribute>()
           .AddService(typeof(UserPropertyTypeSearchService), searchServiceStub.Object);
       IBusinessObjectClass roleClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(Role));
-      IBusinessObjectReferenceProperty userProperty = (IBusinessObjectReferenceProperty) roleClass.GetPropertyDefinition("User");
+      IBusinessObjectReferenceProperty userProperty = (IBusinessObjectReferenceProperty)roleClass.GetPropertyDefinition("User");
       Assert.That(userProperty, Is.Not.Null);
 
       Role role = Role.NewObject();
@@ -96,7 +96,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Role
       BusinessObjectProvider.GetProvider<BindableDomainObjectProviderAttribute>()
           .AddService(typeof(RolePropertiesSearchService), searchServiceStub.Object);
       IBusinessObjectClass roleClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(Role));
-      IBusinessObjectReferenceProperty positionProperty = (IBusinessObjectReferenceProperty) roleClass.GetPropertyDefinition("Position");
+      IBusinessObjectReferenceProperty positionProperty = (IBusinessObjectReferenceProperty)roleClass.GetPropertyDefinition("Position");
       Assert.That(positionProperty, Is.Not.Null);
 
       Role role = Role.NewObject();

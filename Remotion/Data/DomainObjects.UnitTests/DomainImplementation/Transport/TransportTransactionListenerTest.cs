@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     {
       _transporter.Load(DomainObjectIDs.Computer1);
 
-      var source = (Computer) _transporter.GetTransportedObject(DomainObjectIDs.Computer1);
+      var source = (Computer)_transporter.GetTransportedObject(DomainObjectIDs.Computer1);
       _listener.PropertyValueChanging(TestableClientTransaction, source, GetPropertyDefinition(typeof(Computer), "SerialNumber"), null, null);
     }
 

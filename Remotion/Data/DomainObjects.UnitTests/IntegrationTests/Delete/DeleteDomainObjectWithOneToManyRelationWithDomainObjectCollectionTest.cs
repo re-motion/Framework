@@ -35,8 +35,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
       base.SetUp();
 
       _supervisor = DomainObjectIDs.Employee1.GetObject<Employee>();
-      _subordinate1 = (Employee) _supervisor.Subordinates[0];
-      _subordinate2 = (Employee) _supervisor.Subordinates[1];
+      _subordinate1 = (Employee)_supervisor.Subordinates[0];
+      _subordinate2 = (Employee)_supervisor.Subordinates[1];
 
       _eventReceiver = CreateEventReceiver();
     }

@@ -42,8 +42,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
       var proxy = SubstitutionProxy.Create(substitution);
 
       Assert.That(proxy.ID, Is.EqualTo(substitution.ID));
-      Assert.That(proxy.UniqueIdentifier, Is.EqualTo(((IBusinessObjectWithIdentity) substitution).UniqueIdentifier));
-      Assert.That(proxy.DisplayName, Is.EqualTo(((IBusinessObjectWithIdentity) substitution).DisplayName));
+      Assert.That(proxy.UniqueIdentifier, Is.EqualTo(((IBusinessObjectWithIdentity)substitution).UniqueIdentifier));
+      Assert.That(proxy.DisplayName, Is.EqualTo(((IBusinessObjectWithIdentity)substitution).DisplayName));
     }
 
     [Test]

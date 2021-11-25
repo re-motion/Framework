@@ -65,7 +65,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
 
     private BocReferenceValueUserControlTestOutput TestOutput
     {
-      get { return (BocReferenceValueUserControlTestOutput) ((Layout) Page.Master).GetTestOutputControl(); }
+      get { return (BocReferenceValueUserControlTestOutput)((Layout)Page.Master).GetTestOutputControl(); }
     }
   }
 }

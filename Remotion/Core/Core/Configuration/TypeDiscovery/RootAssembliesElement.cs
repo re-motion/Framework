@@ -34,7 +34,7 @@ namespace Remotion.Configuration.TypeDiscovery
     [ConfigurationProperty ("byName")]
     public ByNameRootAssemblyElementCollection ByName
     {
-      get { return (ByNameRootAssemblyElementCollection) this["byName"]; }
+      get { return (ByNameRootAssemblyElementCollection)this["byName"]; }
     }
 
     /// <summary>
@@ -44,7 +44,7 @@ namespace Remotion.Configuration.TypeDiscovery
     [ConfigurationProperty ("byFile")]
     public ByFileRootAssemblyElementCollection ByFile
     {
-      get { return (ByFileRootAssemblyElementCollection) this["byFile"]; }
+      get { return (ByFileRootAssemblyElementCollection)this["byFile"]; }
     }
 
     /// <summary>

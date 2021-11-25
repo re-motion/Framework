@@ -86,7 +86,7 @@ namespace Remotion.Web.UI.Controls
 
       if (Page is ISmartNavigablePage)
       {
-        ((ISmartNavigablePage) Page).RegisterNavigationControl(this);
+        ((ISmartNavigablePage)Page).RegisterNavigationControl(this);
       }
       LoadSelection();
 
@@ -416,7 +416,7 @@ namespace Remotion.Web.UI.Controls
       else
         throw new NotSupportedException(string.Format("menuTab is of unsupported type '{0}'.", menuTab.GetType().GetFullNameSafe()));
 
-      string? value = (string?) TypeConversionProvider.Convert(typeof(string[]), typeof(string), tabIDs);
+      string? value = (string?)TypeConversionProvider.Convert(typeof(string[]), typeof(string), tabIDs);
 
       NameValueCollection urlParameters = new NameValueCollection();
       urlParameters.Add(SelectionID, value);
@@ -465,7 +465,7 @@ namespace Remotion.Web.UI.Controls
     /// </summary>
     private void MainMenuTabStrip_Click (object sender, WebTabClickEventArgs e)
     {
-      HandleTabStripClick((MenuTab) e.Tab);
+      HandleTabStripClick((MenuTab)e.Tab);
     }
 
     /// <summary> 
@@ -473,7 +473,7 @@ namespace Remotion.Web.UI.Controls
     /// </summary>
     private void SubMenuTabStrip_Click (object sender, WebTabClickEventArgs e)
     {
-      HandleTabStripClick((MenuTab) e.Tab);
+      HandleTabStripClick((MenuTab)e.Tab);
     }
 
     /// <summary> 
@@ -502,7 +502,7 @@ namespace Remotion.Web.UI.Controls
       if (tab != null && tab.Command != null)
         tab.Command.OnClick();
 
-      MenuTabClickEventHandler? handler = (MenuTabClickEventHandler?) Events[s_eventCommandClickEvent];
+      MenuTabClickEventHandler? handler = (MenuTabClickEventHandler?)Events[s_eventCommandClickEvent];
       if (handler != null)
       {
         MenuTabClickEventArgs e = new MenuTabClickEventArgs(tab!); // TODO RM-8118: not null assertion
@@ -564,14 +564,14 @@ namespace Remotion.Web.UI.Controls
     [PersistenceMode (PersistenceMode.InnerProperty)]
     [ListBindable (false)]
     [Description ("")]
-    [DefaultValue ((string?) null)]
+    [DefaultValue ((string?)null)]
     public MainMenuTabCollection Tabs
     {
       get
       {
         if (_isPastInitialization)
           EnsureSubMenuTabStripPopulated();
-        return (MainMenuTabCollection) _mainMenuTabStrip.Tabs;
+        return (MainMenuTabCollection)_mainMenuTabStrip.Tabs;
       }
     }
 
@@ -603,7 +603,7 @@ namespace Remotion.Web.UI.Controls
     {
       get
       {
-        return (MainMenuTab?) _mainMenuTabStrip.SelectedTab;
+        return (MainMenuTab?)_mainMenuTabStrip.SelectedTab;
       }
     }
 
@@ -614,7 +614,7 @@ namespace Remotion.Web.UI.Controls
     {
       get
       {
-        return (SubMenuTab?) _subMenuTabStrip.SelectedTab;
+        return (SubMenuTab?)_subMenuTabStrip.SelectedTab;
       }
     }
 

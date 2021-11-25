@@ -181,9 +181,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           .WhenCalled(
               mi =>
               {
-                var propertyInformation = (IPropertyInformation) mi.Arguments[0];
-                var referencedClassDefinition = (ClassDefinition) mi.Arguments[1];
-                var sortExpressionText = (string) mi.Arguments[2];
+                var propertyInformation = (IPropertyInformation)mi.Arguments[0];
+                var referencedClassDefinition = (ClassDefinition)mi.Arguments[1];
+                var sortExpressionText = (string)mi.Arguments[2];
                 var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo(
                     referencedClassDefinition,
                     sortExpressionText);

@@ -60,7 +60,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     {
       _testHelper.ExpectFunctionalSecurityStrategyHasAccess(TestAccessTypes.First, true);
 
-      _securityClient.CheckStatelessAccess(typeof(SecurableObject), (IReadOnlyList<AccessType>) new[] { AccessType.Get(TestAccessTypes.First) });
+      _securityClient.CheckStatelessAccess(typeof(SecurableObject), (IReadOnlyList<AccessType>)new[] { AccessType.Get(TestAccessTypes.First) });
 
       _testHelper.VerifyAll();
     }
@@ -71,7 +71,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
       _testHelper.ExpectFunctionalSecurityStrategyHasAccess(TestAccessTypes.First, false);
 
       Assert.That(
-          () => _securityClient.CheckStatelessAccess(typeof(SecurableObject), (IReadOnlyList<AccessType>) new[] { AccessType.Get(TestAccessTypes.First) }),
+          () => _securityClient.CheckStatelessAccess(typeof(SecurableObject), (IReadOnlyList<AccessType>)new[] { AccessType.Get(TestAccessTypes.First) }),
           Throws.InstanceOf<PermissionDeniedException>());
       _testHelper.VerifyAll();
     }
@@ -81,7 +81,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     {
       using (SecurityFreeSection.Activate())
       {
-        _securityClient.CheckStatelessAccess(typeof(SecurableObject), (IReadOnlyList<AccessType>) new[] { AccessType.Get(TestAccessTypes.First) });
+        _securityClient.CheckStatelessAccess(typeof(SecurableObject), (IReadOnlyList<AccessType>)new[] { AccessType.Get(TestAccessTypes.First) });
       }
 
       _testHelper.VerifyAll();

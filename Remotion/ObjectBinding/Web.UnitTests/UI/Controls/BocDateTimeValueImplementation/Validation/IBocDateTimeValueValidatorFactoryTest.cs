@@ -27,7 +27,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
 
       Assert.That(instance, Is.InstanceOf<CompoundValidatorFactory<IBocDateTimeValue>>());
 
-      var factories = ((CompoundValidatorFactory<IBocDateTimeValue>) instance).VlidatorFactories;
+      var factories = ((CompoundValidatorFactory<IBocDateTimeValue>)instance).VlidatorFactories;
       Assert.That(
           factories.Select(f => f.GetType()),
           Is.EqualTo(new[] { typeof(BocDateTimeValueValidatorFactory), typeof(ValidationBusinessObjectBoundEditableWebControlValidatorFactory) }));

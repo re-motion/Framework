@@ -92,7 +92,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <summary> Fires the <see cref="LoadPostData"/> event. </summary>
     protected virtual bool OnLoadPostData (string postDataKey, NameValueCollection postCollection)
     {
-      EventHandler? eventHandler = (EventHandler?) Events[s_loadPostDataEvent];
+      EventHandler? eventHandler = (EventHandler?)Events[s_loadPostDataEvent];
       if (eventHandler != null)
         eventHandler(this, EventArgs.Empty);
       return false;

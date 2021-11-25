@@ -616,16 +616,14 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
 
     private IBusinessObject CreateBindableSecurableObject (ISecurityContextFactory securityContextFactoryStub)
     {
-      return (IBusinessObject)
-          BindableSecurableObject.NewObject(
+      return (IBusinessObject)BindableSecurableObject.NewObject(
               _clientTransaction,
               ObjectSecurityStrategy.Create(securityContextFactoryStub, InvalidationToken.Create()));
     }
 
     private IBusinessObject CreateDerivedBindableSecurableObject (ISecurityContextFactory securityContextFactoryStub)
     {
-      return (IBusinessObject)
-          DerivedBindableSecurableObject.NewObject(
+      return (IBusinessObject)DerivedBindableSecurableObject.NewObject(
               _clientTransaction,
               ObjectSecurityStrategy.Create(securityContextFactoryStub, InvalidationToken.Create()));
     }

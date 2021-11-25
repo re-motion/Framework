@@ -34,7 +34,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       }
       else
       {
-        string url = "~/Images/" + ((BindableObjectClass) obj.BusinessObjectClass).TargetType.FullName + ".gif";
+        string url = "~/Images/" + ((BindableObjectClass)obj.BusinessObjectClass).TargetType.FullName + ".gif";
         return new IconInfo(url, Unit.Pixel(16), Unit.Pixel(16));
       }
     }
@@ -44,7 +44,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       if (obj == null)
         return "No ToolTip";
       else
-        return "ToolTip: " + ((BindableObjectClass) obj.BusinessObjectClass).TargetType.FullName;
+        return "ToolTip: " + ((BindableObjectClass)obj.BusinessObjectClass).TargetType.FullName;
     }
 
     public HelpInfo GetHelpInfo (
@@ -64,7 +64,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
               control.ID,
               businessObjectClass.Identifier,
               (businessObjectProperty != null ? businessObjectProperty.Identifier : "prop"),
-              (businessObject is IBusinessObjectWithIdentity ? ((IBusinessObjectWithIdentity) businessObject).DisplayName : "obj")),
+              (businessObject is IBusinessObjectWithIdentity ? ((IBusinessObjectWithIdentity)businessObject).DisplayName : "obj")),
           "return false;");
     }
   }

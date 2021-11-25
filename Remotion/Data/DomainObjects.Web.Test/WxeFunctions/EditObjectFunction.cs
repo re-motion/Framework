@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
 
     public ClassWithAllDataTypes ObjectWithAllDataTypes
     {
-      get { return (ClassWithAllDataTypes) Variables["ObjectWithAllDataTypes"]; }
+      get { return (ClassWithAllDataTypes)Variables["ObjectWithAllDataTypes"]; }
       set { Variables["ObjectWithAllDataTypes"] = value; }
     }
 

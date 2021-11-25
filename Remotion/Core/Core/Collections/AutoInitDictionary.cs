@@ -167,14 +167,14 @@ namespace Remotion.Collections
 
     IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey,TValue>>.GetEnumerator ()
     {
-      return ((IEnumerable<KeyValuePair<TKey, TValue>>) _dictionary).GetEnumerator();
+      return ((IEnumerable<KeyValuePair<TKey, TValue>>)_dictionary).GetEnumerator();
     }
 
     // IEnumerable Members
 
     IEnumerator IEnumerable.GetEnumerator ()
     {
-      return ((IEnumerable) _dictionary).GetEnumerator();
+      return ((IEnumerable)_dictionary).GetEnumerator();
     }
   }
 }

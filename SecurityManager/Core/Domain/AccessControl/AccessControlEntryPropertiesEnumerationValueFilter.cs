@@ -43,17 +43,17 @@ namespace Remotion.SecurityManager.Domain.AccessControl
       ArgumentUtility.CheckNotNullAndType<AccessControlEntry>("businessObject", businessObject);
       ArgumentUtility.CheckNotNull("property", property);
 
-      AccessControlEntry ace = (AccessControlEntry) businessObject;
+      AccessControlEntry ace = (AccessControlEntry)businessObject;
       bool isStateful = ace.AccessControlList is StatefulAccessControlList;
 
       switch (property.Identifier)
       {
         case "TenantCondition":
-          return value.IsEnabled && IsTenantConditionEnabled((TenantCondition) value.Value, isStateful);
+          return value.IsEnabled && IsTenantConditionEnabled((TenantCondition)value.Value, isStateful);
         case "GroupCondition":
-          return value.IsEnabled && IsGroupConditionEnabled((GroupCondition) value.Value, isStateful);
+          return value.IsEnabled && IsGroupConditionEnabled((GroupCondition)value.Value, isStateful);
         case "UserCondition":
-          return value.IsEnabled && IsUserConditionEnabled((UserCondition) value.Value, isStateful);
+          return value.IsEnabled && IsUserConditionEnabled((UserCondition)value.Value, isStateful);
         default:
           throw CreateInvalidOperationException("The property '{0}' is not supported by the '{1}'.", property.Identifier, typeof(AccessControlEntryPropertiesEnumerationValueFilter).GetFullNameChecked());
       }

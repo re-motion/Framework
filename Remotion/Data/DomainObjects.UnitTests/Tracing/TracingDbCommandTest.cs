@@ -104,7 +104,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
       _innerCommandMock.Expect(mock => mock.Connection = connectionStub);
       _mockRepository.ReplayAll();
 
-      ((IDbCommand) _command).Connection = connectionStub;
+      ((IDbCommand)_command).Connection = connectionStub;
 
       _mockRepository.VerifyAll();
     }
@@ -139,7 +139,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
       _innerCommandMock.Stub(mock => mock.Transaction).Return(transactionStub);
       _mockRepository.ReplayAll();
 
-      Assert.That(((IDbCommand) _command).Transaction, Is.SameAs(transactionStub));
+      Assert.That(((IDbCommand)_command).Transaction, Is.SameAs(transactionStub));
     }
 
     [Test]
@@ -149,7 +149,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
       _innerCommandMock.Expect(mock => mock.Transaction = transactionStub);
       _mockRepository.ReplayAll();
 
-      ((IDbCommand) _command).Transaction = transactionStub;
+      ((IDbCommand)_command).Transaction = transactionStub;
 
       _mockRepository.VerifyAll();
     }
@@ -326,10 +326,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
 
       IDataReader actualReader = _command.ExecuteReader();
       Assert.That(actualReader, Is.InstanceOf(typeof(TracingDataReader)));
-      Assert.That(((TracingDataReader) actualReader).WrappedInstance, Is.SameAs(readerStub));
-      Assert.That(((TracingDataReader) actualReader).ConnectionID, Is.EqualTo(_connectionID));
-      Assert.That(((TracingDataReader) actualReader).QueryID, Is.EqualTo(_command.QueryID));
-      Assert.That(((TracingDataReader) actualReader).PersistenceExtension, Is.SameAs(_extensionMock));
+      Assert.That(((TracingDataReader)actualReader).WrappedInstance, Is.SameAs(readerStub));
+      Assert.That(((TracingDataReader)actualReader).ConnectionID, Is.EqualTo(_connectionID));
+      Assert.That(((TracingDataReader)actualReader).QueryID, Is.EqualTo(_command.QueryID));
+      Assert.That(((TracingDataReader)actualReader).PersistenceExtension, Is.SameAs(_extensionMock));
 
       _mockRepository.VerifyAll();
     }
@@ -378,10 +378,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
 
       IDataReader actualReader = _command.ExecuteReader(CommandBehavior.SchemaOnly);
       Assert.That(actualReader, Is.InstanceOf(typeof(TracingDataReader)));
-      Assert.That(((TracingDataReader) actualReader).WrappedInstance, Is.SameAs(readerStub));
-      Assert.That(((TracingDataReader) actualReader).ConnectionID, Is.EqualTo(_connectionID));
-      Assert.That(((TracingDataReader) actualReader).QueryID, Is.EqualTo(_command.QueryID));
-      Assert.That(((TracingDataReader) actualReader).PersistenceExtension, Is.SameAs(_extensionMock));
+      Assert.That(((TracingDataReader)actualReader).WrappedInstance, Is.SameAs(readerStub));
+      Assert.That(((TracingDataReader)actualReader).ConnectionID, Is.EqualTo(_connectionID));
+      Assert.That(((TracingDataReader)actualReader).QueryID, Is.EqualTo(_command.QueryID));
+      Assert.That(((TracingDataReader)actualReader).PersistenceExtension, Is.SameAs(_extensionMock));
 
       _mockRepository.VerifyAll();
     }

@@ -121,7 +121,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     public void ExpandToAllRelatedObjects ()
     {
       var insertedEndPointID = RelationEndPointObjectMother.CreateRelationEndPointID(_insertedRelatedObject.ID, "Customer");
-      var insertedEndPoint = (IObjectEndPoint) DataManager.GetRelationEndPointWithoutLoading(insertedEndPointID);
+      var insertedEndPoint = (IObjectEndPoint)DataManager.GetRelationEndPointWithoutLoading(insertedEndPointID);
       Assert.That(insertedEndPoint, Is.Not.Null);
 
       EndPointProviderStub.Stub(stub => stub.GetRelationEndPointWithLazyLoad(insertedEndPoint.ID)).Return(insertedEndPoint);
@@ -140,7 +140,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
 
       // _insertedRelatedObject.Customer = DomainObject (previously oldCustomer)
       Assert.That(steps[0], Is.InstanceOf(typeof(RealObjectEndPointRegistrationCommandDecorator)));
-      var setCustomerCommand = ((ObjectEndPointSetCommand) ((RealObjectEndPointRegistrationCommandDecorator) steps[0]).DecoratedCommand);
+      var setCustomerCommand = ((ObjectEndPointSetCommand)((RealObjectEndPointRegistrationCommandDecorator)steps[0]).DecoratedCommand);
       Assert.That(setCustomerCommand.ModifiedEndPoint, Is.SameAs(insertedEndPoint));
       Assert.That(setCustomerCommand.OldRelatedObject, Is.SameAs(oldCustomer));
       Assert.That(setCustomerCommand.NewRelatedObject, Is.SameAs(DomainObject));
@@ -150,8 +150,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
 
       // oldCustomer.Orders.Remove (_insertedRelatedObject)
       Assert.That(steps[2], Is.TypeOf<VirtualEndPointStateUpdatedRaisingCommandDecorator>());
-      var oldCustomerOrdersRemoveCommand = ((DomainObjectCollectionEndPointRemoveCommand) ((VirtualEndPointStateUpdatedRaisingCommandDecorator) steps[2]).DecoratedCommand);
-      Assert.That(oldCustomerOrdersRemoveCommand.ModifiedEndPoint, Is.SameAs(((StateUpdateRaisingDomainObjectCollectionEndPointDecorator) oldRelatedEndPointOfInsertedObject).InnerEndPoint));
+      var oldCustomerOrdersRemoveCommand = ((DomainObjectCollectionEndPointRemoveCommand)((VirtualEndPointStateUpdatedRaisingCommandDecorator)steps[2]).DecoratedCommand);
+      Assert.That(oldCustomerOrdersRemoveCommand.ModifiedEndPoint, Is.SameAs(((StateUpdateRaisingDomainObjectCollectionEndPointDecorator)oldRelatedEndPointOfInsertedObject).InnerEndPoint));
       Assert.That(oldCustomerOrdersRemoveCommand.ModifiedEndPoint.ID.ObjectID, Is.EqualTo(oldCustomer.ID));
       Assert.That(oldCustomerOrdersRemoveCommand.OldRelatedObject, Is.SameAs(_insertedRelatedObject));
     }

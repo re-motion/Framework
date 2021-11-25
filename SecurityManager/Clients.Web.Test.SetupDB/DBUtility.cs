@@ -209,7 +209,7 @@ public class DBUtility
   private static void LoadData (
       string tableName, string[] columnNames, string[][] records, SqlConnection connection, SqlTransaction transaction)
   {
-    DataTable schemaTable = (DataTable) _schemaTables[tableName];
+    DataTable schemaTable = (DataTable)_schemaTables[tableName];
     if (schemaTable == null)
     {
       string selectStatement = "SELECT * FROM [" + tableName + "]";
@@ -239,14 +239,14 @@ public class DBUtility
 
     foreach (DataRow schemaRow in schemaTable.Rows)
     {
-      string columnName = (string) schemaRow["ColumnName"];
+      string columnName = (string)schemaRow["ColumnName"];
       TimeTrace("preparing schema for " + columnName);
       int index = Array.IndexOf(columnNames, columnName);
 
       if (index != -1)
       {
-        columnTypes[index] = (Type) schemaRow["DataType"];
-        columnNullableFlags[index] = (bool) schemaRow["AllowDBNull"];
+        columnTypes[index] = (Type)schemaRow["DataType"];
+        columnNullableFlags[index] = (bool)schemaRow["AllowDBNull"];
       }
       else if (columnName == "CreatedBy")
       {
@@ -285,7 +285,7 @@ public class DBUtility
     SqlCommand identityOnCommand = new SqlCommand(string.Format(sqlStatementTemplate, tableName, "ON"), connection, transaction);
     SqlCommand identityOffCommand = new SqlCommand(string.Format(sqlStatementTemplate, tableName, "OFF"), connection, transaction);
 
-    string commandString = GetCommandString(tableName, (string[]) columnNamesComplete.ToArray(typeof(string)));
+    string commandString = GetCommandString(tableName, (string[])columnNamesComplete.ToArray(typeof(string)));
 
     TimeTrace("before set identity insert");
     identityOnCommand.ExecuteNonQuery();
@@ -323,42 +323,42 @@ public class DBUtility
           string columnStringValue = columnValue.Replace("\n", "\r\n");
           parameter = command.Parameters.Add(parameterName, SqlDbType.VarChar, columnStringValue.Length);
           parameter.Value = (columnStringValue.Trim() == string.Empty && columnIsNullable)
-              ? DBNull.Value : (object) columnStringValue;
+              ? DBNull.Value : (object)columnStringValue;
         }
         else if (columnType == typeof(int))
         {
           parameter = command.Parameters.Add(parameterName, SqlDbType.Int);
-          parameter.Value = isNull ? DBNull.Value : (object) int.Parse(columnValue);
+          parameter.Value = isNull ? DBNull.Value : (object)int.Parse(columnValue);
         }
         else if (columnType == typeof(bool))
         {
           parameter = command.Parameters.Add(parameterName, SqlDbType.Bit);
-          parameter.Value = isNull ? DBNull.Value : (object) (bool)(columnValue.Trim() == "1");
+          parameter.Value = isNull ? DBNull.Value : (object)(bool)(columnValue.Trim() == "1");
         }
         else if (columnType == typeof(DateTime))
         {
           parameter = command.Parameters.Add(parameterName, SqlDbType.DateTime);
-          parameter.Value = isNull ? DBNull.Value : (object) DateTime.Parse(columnValue.Trim(), new CultureInfo("en-US"));
+          parameter.Value = isNull ? DBNull.Value : (object)DateTime.Parse(columnValue.Trim(), new CultureInfo("en-US"));
         }
         else if (columnType == typeof(Decimal))
         {
           parameter = command.Parameters.Add(parameterName, SqlDbType.Decimal);
-          parameter.Value = isNull ? DBNull.Value : (object) Decimal.Parse(columnValue, CultureInfo.InvariantCulture);
+          parameter.Value = isNull ? DBNull.Value : (object)Decimal.Parse(columnValue, CultureInfo.InvariantCulture);
         }
         else if (columnType == typeof(Double))
         {
           parameter = command.Parameters.Add(parameterName, SqlDbType.Float);
-          parameter.Value = isNull ? DBNull.Value : (object) Double.Parse(columnValue, CultureInfo.InvariantCulture);
+          parameter.Value = isNull ? DBNull.Value : (object)Double.Parse(columnValue, CultureInfo.InvariantCulture);
         }
         else if (columnType == typeof(Guid))
         {
           parameter = command.Parameters.Add(parameterName, SqlDbType.UniqueIdentifier);
-          parameter.Value = isNull ? DBNull.Value : (object) new Guid(columnValue);
+          parameter.Value = isNull ? DBNull.Value : (object)new Guid(columnValue);
         }
         else if (columnType == typeof(Byte[]))
         {
           parameter = command.Parameters.Add(parameterName, SqlDbType.Image);
-          parameter.Value = isNull ? DBNull.Value : (object) Encoding.UTF8.GetBytes(columnValue);
+          parameter.Value = isNull ? DBNull.Value : (object)Encoding.UTF8.GetBytes(columnValue);
         }
         else
         {
@@ -500,7 +500,7 @@ public class DBUtility
           break;
       }
     }
-    return (string[][]) records.ToArray(typeof(string[]));
+    return (string[][])records.ToArray(typeof(string[]));
   }
 
   [Conditional ("VERBOSE")]

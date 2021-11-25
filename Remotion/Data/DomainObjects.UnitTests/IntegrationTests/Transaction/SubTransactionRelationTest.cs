@@ -288,7 +288,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       Assert.That(customer1.Orders, Is.EqualTo(orders));
 
-      var sortExpression = ((DomainObjectCollectionRelationEndPointDefinition) customer1.Orders.AssociatedEndPointID.Definition).GetSortExpression();
+      var sortExpression = ((DomainObjectCollectionRelationEndPointDefinition)customer1.Orders.AssociatedEndPointID.Definition).GetSortExpression();
       Assert.That(sortExpression, Is.Not.Null);
 
       using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
@@ -308,7 +308,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Assert.That(product.Reviews, Is.EquivalentTo(productReviews));
       Assert.That(product.Reviews, Is.Not.EqualTo(productReviews));
 
-      var sortExpression = ((VirtualCollectionRelationEndPointDefinition) product.Reviews.AssociatedEndPointID.Definition).GetSortExpression();
+      var sortExpression = ((VirtualCollectionRelationEndPointDefinition)product.Reviews.AssociatedEndPointID.Definition).GetSortExpression();
       Assert.That(sortExpression, Is.Not.Null);
 
       using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())

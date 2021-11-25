@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
       baseClass.SetDerivedClasses(new ClassDefinition[0]);
       baseClass.SetPropertyDefinitions(new PropertyDefinitionCollection(new PropertyDefinition[0], true));
 
-      var validator = (PersistenceMappingValidator) _persistenceModelLoader.CreatePersistenceMappingValidator(baseClass);
+      var validator = (PersistenceMappingValidator)_persistenceModelLoader.CreatePersistenceMappingValidator(baseClass);
 
       Assert.That(validator.ValidationRules.Count, Is.EqualTo(2));
       Assert.That(validator.ValidationRules[0], Is.TypeOf(typeof(PropertyStorageClassIsSupportedByStorageProviderValidationRule)));
@@ -88,7 +88,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
     {
       var fakeProviderDefinition = new NonPersistentProviderDefinition("Test", MockRepository.GenerateStub<INonPersistentStorageObjectFactory>());
       var fakeEntityDefinition = new NonPersistentStorageEntity(fakeProviderDefinition);
-      var fakeStoragePropertyDefinition = (NonPersistentStorageProperty) Activator.CreateInstance(typeof(NonPersistentStorageProperty), true);
+      var fakeStoragePropertyDefinition = (NonPersistentStorageProperty)Activator.CreateInstance(typeof(NonPersistentStorageProperty), true);
 
       var baseClass = ClassDefinitionObjectMother.CreateClassDefinition(id: "Base", classType: typeof(BaseClass), baseClass: null);
       baseClass.SetDerivedClasses(new ClassDefinition[0]);

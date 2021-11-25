@@ -58,7 +58,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void DisplayName_Overridden_ValueFromConcreteType ()
     {
-      var businessObject = (IBusinessObjectWithIdentity) ObjectFactory.Create<ClassWithOverriddenDisplayName>(ParamList.Empty);
+      var businessObject = (IBusinessObjectWithIdentity)ObjectFactory.Create<ClassWithOverriddenDisplayName>(ParamList.Empty);
 
       Assert.That(businessObject.DisplayName, Is.EqualTo("TheDisplayName"));
     }
@@ -93,7 +93,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       ClassWithIdentity deserialized = Serializer.SerializeAndDeserialize(value);
 
       Assert.That(deserialized.String, Is.EqualTo("TheString"));
-      Assert.That(((IBusinessObject) deserialized).BusinessObjectClass, Is.SameAs(((IBusinessObject) value).BusinessObjectClass));
+      Assert.That(((IBusinessObject)deserialized).BusinessObjectClass, Is.SameAs(((IBusinessObject)value).BusinessObjectClass));
     }
 
     [Test]
@@ -102,9 +102,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       ClassWithIdentity value = ObjectFactory.Create<ClassWithIdentity>(ParamList.Empty);
       byte[] serialized = Serializer.Serialize(value);
       BusinessObjectProvider.SetProvider(typeof(BindableObjectWithIdentityProviderAttribute), null);
-      ClassWithIdentity deserialized = (ClassWithIdentity) Serializer.Deserialize(serialized);
+      ClassWithIdentity deserialized = (ClassWithIdentity)Serializer.Deserialize(serialized);
 
-      Assert.That(((IBusinessObject) deserialized).BusinessObjectClass, Is.Not.SameAs(((IBusinessObject) value).BusinessObjectClass));
+      Assert.That(((IBusinessObject)deserialized).BusinessObjectClass, Is.Not.SameAs(((IBusinessObject)value).BusinessObjectClass));
     }
 
     [Test]

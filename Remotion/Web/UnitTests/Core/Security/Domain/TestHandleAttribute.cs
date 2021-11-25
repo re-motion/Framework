@@ -35,7 +35,7 @@ namespace Remotion.Web.UnitTests.Core.Security.Domain
 
     public object GetReferencedInstance (object handleInstance)
     {
-      return ((IHandle<object>) handleInstance).GetReferencedInstance();
+      return ((IHandle<object>)handleInstance).GetReferencedInstance();
     }
   }
 }

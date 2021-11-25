@@ -49,7 +49,7 @@ namespace Remotion.Collections.Caching.UnitTests
     [Test]
     public void IsNull ()
     {
-      Assert.That(((INullObject) _decorator).IsNull, Is.False);
+      Assert.That(((INullObject)_decorator).IsNull, Is.False);
     }
 
     [Test]
@@ -122,7 +122,7 @@ namespace Remotion.Collections.Caching.UnitTests
     {
       _helper.ExpectSynchronizedDelegation(
           cache => cache.GetEnumerator(),
-          ((IEnumerable<KeyValuePair<string, int>>) new[]
+          ((IEnumerable<KeyValuePair<string, int>>)new[]
                                                     {
                                                         new KeyValuePair<string, int>("key1", 1),
                                                         new KeyValuePair<string, int>("key2", 2)
@@ -148,8 +148,8 @@ namespace Remotion.Collections.Caching.UnitTests
     {
       _helper.ExpectSynchronizedDelegation(
           cache => cache.GetEnumerator(),
-          cache => ((IEnumerable) cache).GetEnumerator(),
-          ((IEnumerable<KeyValuePair<string, int>>) new[]
+          cache => ((IEnumerable)cache).GetEnumerator(),
+          ((IEnumerable<KeyValuePair<string, int>>)new[]
                                                     {
                                                         new KeyValuePair<string, int>("key1", 1),
                                                         new KeyValuePair<string, int>("key2", 2)
@@ -201,7 +201,7 @@ namespace Remotion.Collections.Caching.UnitTests
             cache.GetOrCreateValue("key", k => "value");
             cache.TryGetValue("key", out var value);
 
-            var stopwatch = (Stopwatch) arg;
+            var stopwatch = (Stopwatch)arg;
             stopwatch.Start();
 
             for (int i = 0; i < 1000; i++)

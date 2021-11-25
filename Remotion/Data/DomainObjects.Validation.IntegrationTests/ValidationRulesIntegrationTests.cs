@@ -67,7 +67,7 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
       {
         var customer1 = Customer.NewObject();
         var customer2 = Customer.NewObject();
-        ((ICustomerIntroduced) customer2).Address = Address.NewObject();
+        ((ICustomerIntroduced)customer2).Address = Address.NewObject();
 
         var validator = ValidationProvider.GetValidator(typeof(Customer));
 

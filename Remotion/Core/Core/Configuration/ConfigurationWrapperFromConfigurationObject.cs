@@ -41,7 +41,7 @@ namespace Remotion.Configuration
         "GetRuntimeObject",
         BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.ExactBinding)!;
       Assertion.IsNotNull(getRuntimeObject, "System.Configuration.AppSettingsSection.GetRuntimeObject() does not exist.");
-      _appSettings = (NameValueCollection?) getRuntimeObject.Invoke(configuration.AppSettings, new object[0]) ?? new NameValueCollection();
+      _appSettings = (NameValueCollection?)getRuntimeObject.Invoke(configuration.AppSettings, new object[0]) ?? new NameValueCollection();
     }
 
     public override object GetSection (string sectionName)

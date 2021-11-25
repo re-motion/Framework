@@ -77,7 +77,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
       {
         control.PreRender += delegate
         {
-          BasePage page = (BasePage) control.Page;
+          BasePage page = (BasePage)control.Page;
           control.ControlServiceArguments = page.CurrentFunction.TenantHandle.AsArgument();
         };
       }

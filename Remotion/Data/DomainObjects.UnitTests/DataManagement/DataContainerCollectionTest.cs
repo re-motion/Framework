@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void Add_Generic ()
     {
-      ((IList<DataContainer>) _collection).Add(_dataContainer);
+      ((IList<DataContainer>)_collection).Add(_dataContainer);
       Assert.That(_collection.Count, Is.EqualTo(1));
     }
 
@@ -91,7 +91,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       _collection.Add(_dataContainer);
       Assert.That(_collection[0], Is.SameAs(_dataContainer));
-      Assert.That(((IList<DataContainer>) _collection)[0], Is.SameAs(_dataContainer));
+      Assert.That(((IList<DataContainer>)_collection)[0], Is.SameAs(_dataContainer));
     }
 
     [Test]
@@ -99,7 +99,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       _collection.Add(_dataContainer);
       Assert.That(
-          () => ((IList<DataContainer>) _collection)[0] = _dataContainer,
+          () => ((IList<DataContainer>)_collection)[0] = _dataContainer,
           Throws.InstanceOf<NotSupportedException>());
     }
 
@@ -261,7 +261,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     public void RemoveNullDataContainer ()
     {
       Assert.That(
-          () => _collection.Remove((DataContainer) null),
+          () => _collection.Remove((DataContainer)null),
           Throws.InstanceOf<ArgumentNullException>());
     }
 
@@ -269,7 +269,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     public void RemoveNullObjectID ()
     {
       Assert.That(
-          () => _collection.Remove((ObjectID) null),
+          () => _collection.Remove((ObjectID)null),
           Throws.InstanceOf<ArgumentNullException>());
     }
 
@@ -295,7 +295,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     public void ContainsDataContainerNull ()
     {
       Assert.That(
-          () => _collection.Contains((DataContainer) null),
+          () => _collection.Contains((DataContainer)null),
           Throws.InstanceOf<ArgumentNullException>());
     }
 

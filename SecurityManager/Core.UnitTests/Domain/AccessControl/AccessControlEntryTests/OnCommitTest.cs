@@ -285,7 +285,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
         classDefinition.Committing += (sender, e) =>
         {
           commitOnClassWasCalled = true;
-          Assert.That(GetDataContainer((DomainObject) sender).HasBeenMarkedChanged, Is.True);
+          Assert.That(GetDataContainer((DomainObject)sender).HasBeenMarkedChanged, Is.True);
         };
         ace.RegisterForCommit();
 
@@ -309,7 +309,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
         classDefinition.Committing += (sender, e) =>
         {
           commitOnClassWasCalled = true;
-          Assert.That(GetDataContainer((DomainObject) sender).HasBeenMarkedChanged, Is.True);
+          Assert.That(GetDataContainer((DomainObject)sender).HasBeenMarkedChanged, Is.True);
         };
         ace.Delete();
 

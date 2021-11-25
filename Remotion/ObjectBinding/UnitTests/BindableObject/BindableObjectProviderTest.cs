@@ -124,7 +124,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetBindableObjectClass_WithMissingBindableObjectBaseClassAttribute ()
     {
-      var provider = (BindableObjectProvider) BindableObjectProvider.GetProvider(typeof(BindableObjectProviderAttribute));
+      var provider = (BindableObjectProvider)BindableObjectProvider.GetProvider(typeof(BindableObjectProviderAttribute));
       Assert.That(
           () => provider.GetBindableObjectClass(typeof(StubBusinessObjectWithoutBindableObjectBaseClassAttributeClass)),
           Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
@@ -136,7 +136,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetBindableObjectClass_WithMissingBusinessObjectInterace ()
     {
-      var provider = (BindableObjectProvider) BindableObjectProvider.GetProvider(typeof(BindableObjectProviderAttribute));
+      var provider = (BindableObjectProvider)BindableObjectProvider.GetProvider(typeof(BindableObjectProviderAttribute));
       Assert.That(
           () => provider.GetBindableObjectClass(typeof(StubBusinessObjectWithoutBusinessObjectInterface)),
           Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
@@ -148,7 +148,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetBindableObjectClass_WithOpenGeneric ()
     {
-      var provider = (BindableObjectProvider) BindableObjectProvider.GetProvider(typeof(BindableObjectProviderAttribute));
+      var provider = (BindableObjectProvider)BindableObjectProvider.GetProvider(typeof(BindableObjectProviderAttribute));
       Assert.That(
           () => provider.GetBindableObjectClass(typeof(GenericBindableObject<>)),
           Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(

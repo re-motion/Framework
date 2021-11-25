@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
         var queriedObjects = ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection(query);
         var array = queriedObjects.ToArray();
-        var queriedObject = (Customer) array[0];
+        var queriedObject = (Customer)array[0];
 
         Assert.That(queriedObjects, Is.Not.Null);
         Assert.That(queriedObjects.Count, Is.EqualTo(1));
@@ -124,7 +124,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         queriedObjects = ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection(query);
       }
 
-      var queriedObject = (Customer) queriedObjects.ToArray()[0];
+      var queriedObject = (Customer)queriedObjects.ToArray()[0];
 
       Assert.That(queriedObjects, Is.Not.Null);
       Assert.That(queriedObjects.Count, Is.EqualTo(1));
@@ -147,7 +147,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         query.Parameters.Add("@customerType", Customer.CustomerType.Standard);
 
         queriedObjects = ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection(query);
-        queriedObject = (Customer) queriedObjects.ToArray() [0];
+        queriedObject = (Customer)queriedObjects.ToArray() [0];
 
         newOrder = Order.NewObject();
         newOrder.Official = Official.NewObject();

@@ -58,7 +58,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 
     public T Create<T> (bool allowNonPublicConstructors, ParamList constructorParameters, params object[] preparedMixins)
     {
-      return (T) Create(allowNonPublicConstructors, typeof(T), constructorParameters, preparedMixins);
+      return (T)Create(allowNonPublicConstructors, typeof(T), constructorParameters, preparedMixins);
     }
 
     public object Create (

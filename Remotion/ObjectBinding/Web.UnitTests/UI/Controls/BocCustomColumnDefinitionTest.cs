@@ -37,9 +37,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       column.CustomCell = new Mock<BocCustomColumnDefinitionCell>() { CallBase = true }.Object;
       column.OwnerControl = Mock.Of<IBocList>();
 
-      var comparer = ((IBocSortableColumnDefinition) column).CreateCellValueComparer();
+      var comparer = ((IBocSortableColumnDefinition)column).CreateCellValueComparer();
       Assert.That(comparer, Is.InstanceOf<BusinessObjectPropertyPathBasedComparer>());
-      Assert.That(((BusinessObjectPropertyPathBasedComparer) comparer).PropertyPath, Is.SameAs(propertyPath.Object));
+      Assert.That(((BusinessObjectPropertyPathBasedComparer)comparer).PropertyPath, Is.SameAs(propertyPath.Object));
     }
 
     [Test]
@@ -50,9 +50,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       column.CustomCell = new Mock<BocCustomColumnDefinitionCell>() { CallBase = true }.Object;
       column.OwnerControl = Mock.Of<IBocList>();
 
-      var comparer = ((IBocSortableColumnDefinition) column).CreateCellValueComparer();
+      var comparer = ((IBocSortableColumnDefinition)column).CreateCellValueComparer();
       Assert.That(comparer, Is.InstanceOf<BusinessObjectPropertyPathBasedComparer>());
-      Assert.That(((BusinessObjectPropertyPathBasedComparer) comparer).PropertyPath, Is.InstanceOf<NullBusinessObjectPropertyPath>());
+      Assert.That(((BusinessObjectPropertyPathBasedComparer)comparer).PropertyPath, Is.InstanceOf<NullBusinessObjectPropertyPath>());
     }
   }
 }

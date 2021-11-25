@@ -44,7 +44,7 @@ namespace Remotion.Mixins.Definitions
 
     public EventInfo EventInfo
     {
-      get { return (EventInfo) MemberInfo; }
+      get { return (EventInfo)MemberInfo; }
     }
 
     public override MemberDefinitionBase? BaseAsMember
@@ -54,7 +54,7 @@ namespace Remotion.Mixins.Definitions
       {
         if (value == null || value is EventDefinition)
         {
-          _base = (EventDefinition?) value;
+          _base = (EventDefinition?)value;
           AddMethod.Base = _base == null ? null : _base.AddMethod;
           RemoveMethod.Base = _base == null ? null : _base.RemoveMethod;
         }

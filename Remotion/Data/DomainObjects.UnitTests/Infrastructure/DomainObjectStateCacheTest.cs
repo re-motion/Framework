@@ -44,9 +44,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       _transaction = ClientTransaction.CreateRootTransaction();
       _cachingListener = new DomainObjectStateCache(_transaction);
 
-      _existingOrder = (Order) LifetimeService.GetObject(_transaction, DomainObjectIDs.Order1, false);
-      _newOrder = (Order) LifetimeService.NewObject(_transaction, typeof(Order), ParamList.Empty);
-      _notYetLoadedOrder = (Order) LifetimeService.GetObjectReference(_transaction, DomainObjectIDs.Order3);
+      _existingOrder = (Order)LifetimeService.GetObject(_transaction, DomainObjectIDs.Order1, false);
+      _newOrder = (Order)LifetimeService.NewObject(_transaction, typeof(Order), ParamList.Empty);
+      _notYetLoadedOrder = (Order)LifetimeService.GetObjectReference(_transaction, DomainObjectIDs.Order3);
     }
 
     [Test]

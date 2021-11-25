@@ -28,7 +28,7 @@ namespace Remotion.ObjectBinding.Sample
     protected override bool EvaluateIsValid ()
     {
       Control control = this.NamingContainer.FindControl(ControlToValidate);
-      BocList bocList = (BocList) control;
+      BocList bocList = (BocList)control;
       if (! bocList.IsRequired)
         return true;
       return bocList.Value != null && bocList.Value.Count > 0;

@@ -49,7 +49,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
     public void Initialize ()
     {
       Assert.That(((StateReplacingStrategy)_stateModificationStrategy).ViewState, Is.Not.Null);
-      Assert.That(((StateReplacingStrategy) _stateModificationStrategy).ControlState, Is.Not.Null);
+      Assert.That(((StateReplacingStrategy)_stateModificationStrategy).ControlState, Is.Not.Null);
     }
 
     [Test]

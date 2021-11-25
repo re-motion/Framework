@@ -60,7 +60,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
           {
             TransactionStrategyBase strategy = transactionMode.CreateTransactionStrategy(childFunction, context);
             Assert.That(strategy, Is.InstanceOf(typeof(NoneTransactionStrategy)));
-            Assert.That(strategy.OuterTransactionStrategy, Is.SameAs(((TestFunction2) parentFunction).TransactionStrategy));
+            Assert.That(strategy.OuterTransactionStrategy, Is.SameAs(((TestFunction2)parentFunction).TransactionStrategy));
           }).Verifiable();
 
       parentFunction.Execute(context);

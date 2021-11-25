@@ -101,7 +101,7 @@ public class ControlWithAllDataTypes : System.Web.UI.UserControl
 
   public void LoadValues (bool interim)
   {
-    CurrentObject.BusinessObject = (IBusinessObject) ObjectWithAllDataTypes;
+    CurrentObject.BusinessObject = (IBusinessObject)ObjectWithAllDataTypes;
     CurrentObject.LoadValues(interim);
   }
 
@@ -125,7 +125,7 @@ public class ControlWithAllDataTypes : System.Web.UI.UserControl
       if (Saved != null)
         Saved(this, EventArgs.Empty);
       if (PerformNextStepOnSave)
-        ((WxePage) this.Page).ExecuteNextStep();
+        ((WxePage)this.Page).ExecuteNextStep();
     }
   }
 

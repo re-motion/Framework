@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     {
       Employee supervisor1 = DomainObjectIDs.Employee1.GetObject<Employee>();
       Employee supervisor2 = DomainObjectIDs.Employee2.GetObject<Employee>();
-      Employee subordinate = (Employee) supervisor1.Subordinates[DomainObjectIDs.Employee4];
+      Employee subordinate = (Employee)supervisor1.Subordinates[DomainObjectIDs.Employee4];
 
       subordinate.Supervisor = supervisor2;
 

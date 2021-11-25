@@ -36,7 +36,7 @@ namespace Remotion.Mixins.UnitTests.Core
     public void SetUp ()
     {
       _mockRepository = new MockRepository();
-      _configurationBuilderMock = _mockRepository.StrictMock<MixinConfigurationBuilder>((MixinConfiguration) null);
+      _configurationBuilderMock = _mockRepository.StrictMock<MixinConfigurationBuilder>((MixinConfiguration)null);
 
       _assembly = GetType().Assembly;
     }

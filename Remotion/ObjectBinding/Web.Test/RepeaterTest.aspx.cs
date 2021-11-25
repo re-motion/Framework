@@ -39,7 +39,7 @@ public class RepeaterTest : SmartPage
     Guid personID = new Guid(0,0,0,0,0,0,0,0,0,0,1);
     Person person = Person.GetObject(personID);
 
-    CurrentObject.BusinessObject = (IBusinessObject) person;
+    CurrentObject.BusinessObject = (IBusinessObject)person;
     CurrentObject.LoadValues(IsPostBack);
 	}
 

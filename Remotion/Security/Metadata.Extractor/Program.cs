@@ -38,7 +38,7 @@ namespace Remotion.Security.Metadata.Extractor
 
       try
       {
-        return (CommandLineArguments) parser.Parse(args);
+        return (CommandLineArguments)parser.Parse(args);
       }
       catch (CommandLineArgumentException e)
       {

@@ -40,7 +40,7 @@ namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
       var instance = _serviceLocator.GetInstance<ITypeConverterFactory>();
 
       Assert.That(instance, Is.TypeOf<CompoundTypeConverterFactory>());
-      var typeConverterFactories = ((CompoundTypeConverterFactory) instance).TypeConverterFactories;
+      var typeConverterFactories = ((CompoundTypeConverterFactory)instance).TypeConverterFactories;
 
       Assert.That(typeConverterFactories.First(), Is.TypeOf<AttributeBasedTypeConverterFactory>());
       Assert.That(typeConverterFactories.Last(), Is.TypeOf<ExtensibleEnumTypeConverterFactory>());

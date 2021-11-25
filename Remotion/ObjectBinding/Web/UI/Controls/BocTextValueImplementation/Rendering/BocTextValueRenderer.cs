@@ -108,7 +108,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
       var textMode = renderingContext.Control.TextBoxStyle.TextMode;
 
       if (textMode == BocTextBoxMode.PasswordNoRender || textMode == BocTextBoxMode.PasswordRenderMasked)
-        return new string((char) 9679, 5);
+        return new string((char)9679, 5);
 
       string text;
       if (textMode == BocTextBoxMode.MultiLine)

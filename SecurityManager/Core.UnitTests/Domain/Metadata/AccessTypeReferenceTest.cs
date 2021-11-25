@@ -55,7 +55,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
         classDefinition.Committing += (sender, e) =>
         {
           commitOnClassWasCalled = true;
-          Assert.That(GetDataContainer((DomainObject) sender).HasBeenMarkedChanged, Is.True);
+          Assert.That(GetDataContainer((DomainObject)sender).HasBeenMarkedChanged, Is.True);
         };
         classDefinition.AddAccessType(accessType);
 
@@ -78,7 +78,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
         classDefinition.Committing += (sender, e) =>
         {
           commitOnClassWasCalled = true;
-          Assert.That(GetDataContainer((DomainObject) sender).HasBeenMarkedChanged, Is.True);
+          Assert.That(GetDataContainer((DomainObject)sender).HasBeenMarkedChanged, Is.True);
         };
         classDefinition.RemoveAccessType(accessType);
 

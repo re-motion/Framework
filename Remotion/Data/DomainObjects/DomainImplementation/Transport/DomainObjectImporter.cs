@@ -133,7 +133,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
             case PropertyKind.RelatedObject:
               if (!targetProperty.PropertyData.RelationEndPointDefinition.IsVirtual)
               {
-                var relatedObjectID = (ObjectID) sourceProperty.Value;
+                var relatedObjectID = (ObjectID)sourceProperty.Value;
                 var targetRelatedObject = relatedObjectID != null ? targetTransaction.GetObject(relatedObjectID, false) : null;
                 targetProperty.SetValueWithoutTypeCheck(targetRelatedObject);
               }

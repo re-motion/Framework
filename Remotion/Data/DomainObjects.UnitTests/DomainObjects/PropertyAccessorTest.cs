@@ -182,7 +182,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     {
       var customer1 = Customer.NewObject();
 
-      var newCollection = (OrderCollection) new OrderCollection().Clone(true);
+      var newCollection = (OrderCollection)new OrderCollection().Clone(true);
       CreateAccessor(customer1, "Orders").SetValue(newCollection);
 
       Assert.That(customer1.Orders, Is.SameAs(newCollection));
@@ -448,7 +448,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       PropertyAccessor property = CreateAccessor(sector, "Companies");
 
       Assert.That(property.HasBeenTouched, Is.False);
-      ((DomainObjectCollection) property.GetValueWithoutTypeCheck())[0] = ((DomainObjectCollection) property.GetValueWithoutTypeCheck())[0];
+      ((DomainObjectCollection)property.GetValueWithoutTypeCheck())[0] = ((DomainObjectCollection)property.GetValueWithoutTypeCheck())[0];
       Assert.That(property.HasBeenTouched, Is.True);
     }
 

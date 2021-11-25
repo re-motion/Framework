@@ -275,10 +275,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     private string GetEntityName (IStorageEntityDefinition storageEntityDefinition)
     {
       if (storageEntityDefinition is FakeStorageEntityDefinition)
-        return ((FakeStorageEntityDefinition) storageEntityDefinition).Name;
+        return ((FakeStorageEntityDefinition)storageEntityDefinition).Name;
       else if (storageEntityDefinition is IRdbmsStorageEntityDefinition)
         return InlineRdbmsStorageEntityDefinitionVisitor.Visit<string>(
-            (IRdbmsStorageEntityDefinition) storageEntityDefinition,
+            (IRdbmsStorageEntityDefinition)storageEntityDefinition,
             (table, continuation) => table.TableName.EntityName,
             (filterView, continuation) => continuation(filterView.BaseEntity),
             (unionView, continuation) => null,
@@ -290,15 +290,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     private string GetFirstColumnName (IStoragePropertyDefinition storagePropertyDefinition)
     {
       if (storagePropertyDefinition is FakeStoragePropertyDefinition)
-        return ((FakeStoragePropertyDefinition) storagePropertyDefinition).Name;
+        return ((FakeStoragePropertyDefinition)storagePropertyDefinition).Name;
       else if (storagePropertyDefinition is SimpleStoragePropertyDefinition)
-        return ((SimpleStoragePropertyDefinition) storagePropertyDefinition).ColumnDefinition.Name;
+        return ((SimpleStoragePropertyDefinition)storagePropertyDefinition).ColumnDefinition.Name;
       else if (storagePropertyDefinition is ObjectIDStoragePropertyDefinition)
-        return GetFirstColumnName(((ObjectIDStoragePropertyDefinition) storagePropertyDefinition).ValueProperty);
+        return GetFirstColumnName(((ObjectIDStoragePropertyDefinition)storagePropertyDefinition).ValueProperty);
       else if (storagePropertyDefinition is ObjectIDWithoutClassIDStoragePropertyDefinition)
-        return GetFirstColumnName(((ObjectIDWithoutClassIDStoragePropertyDefinition) storagePropertyDefinition).ValueProperty);
+        return GetFirstColumnName(((ObjectIDWithoutClassIDStoragePropertyDefinition)storagePropertyDefinition).ValueProperty);
       else if (storagePropertyDefinition is SerializedObjectIDStoragePropertyDefinition)
-        return GetFirstColumnName(((SerializedObjectIDStoragePropertyDefinition) storagePropertyDefinition).SerializedIDProperty);
+        return GetFirstColumnName(((SerializedObjectIDStoragePropertyDefinition)storagePropertyDefinition).SerializedIDProperty);
       else
         throw new NotSupportedException(storagePropertyDefinition.GetType().Name + " is not supported.");
     }

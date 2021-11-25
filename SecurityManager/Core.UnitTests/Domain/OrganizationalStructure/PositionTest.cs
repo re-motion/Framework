@@ -127,7 +127,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
         IObjectSecurityStrategy objectSecurityStrategy = position.GetSecurityStrategy();
         Assert.That(objectSecurityStrategy, Is.Not.Null);
         Assert.IsInstanceOf(typeof(DomainObjectSecurityStrategyDecorator), objectSecurityStrategy);
-        DomainObjectSecurityStrategyDecorator domainObjectSecurityStrategyDecorator = (DomainObjectSecurityStrategyDecorator) objectSecurityStrategy;
+        DomainObjectSecurityStrategyDecorator domainObjectSecurityStrategyDecorator = (DomainObjectSecurityStrategyDecorator)objectSecurityStrategy;
         Assert.That(domainObjectSecurityStrategyDecorator.RequiredSecurityForStates, Is.EqualTo(RequiredSecurityForStates.None));
       }
     }
@@ -184,7 +184,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
         Position position = testHelper.CreatePosition("PositionName");
         position.Delegation = Delegation.Enabled;
 
-        ISecurityContext securityContext = ((ISecurityContextFactory) position).CreateSecurityContext();
+        ISecurityContext securityContext = ((ISecurityContextFactory)position).CreateSecurityContext();
         Assert.That(Type.GetType(securityContext.Class), Is.EqualTo(position.GetPublicDomainObjectType()));
         Assert.That(securityContext.Owner, Is.Null);
         Assert.That(securityContext.OwnerGroup, Is.Null);

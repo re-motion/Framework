@@ -142,7 +142,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     public void Test_WithPermissionProviderReturnedNull_ShouldThrowInvalidOperationException ()
     {
       _testHelper.ExpectMemberResolverGetMethodInformation("get_InstanceProperty", MemberAffiliation.Instance, _methodInformation.Object);
-      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_methodInformation.Object, (Enum[]) null);
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_methodInformation.Object, (Enum[])null);
 
       Assert.That(
           () => _securityClient.CheckPropertyReadAccess(_testHelper.SecurableObject, "InstanceProperty"),
@@ -158,7 +158,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     public void Test_WithPermissionProviderReturnedNullAndWithinSecurityFreeSection_ShouldThrowInvalidOperationException ()
     {
       _testHelper.ExpectMemberResolverGetMethodInformation("get_InstanceProperty", MemberAffiliation.Instance, _methodInformation.Object);
-      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_methodInformation.Object, (Enum[]) null);
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_methodInformation.Object, (Enum[])null);
 
       using (SecurityFreeSection.Activate())
       {

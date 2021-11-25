@@ -37,7 +37,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
       var providers = GetFormGridRowProvider();
 
       var stringCollection = new StringCollection();
-      stringCollection.AddRange(providers.SelectMany(p => p.GetHiddenRows((TSelf) this, table, GetFormGridManager())).ToArray());
+      stringCollection.AddRange(providers.SelectMany(p => p.GetHiddenRows((TSelf)this, table, GetFormGridManager())).ToArray());
 
       return stringCollection;
     }
@@ -47,7 +47,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
       ArgumentUtility.CheckNotNull("table", table);
 
       var providers = GetFormGridRowProvider();
-      return new FormGridRowInfoCollection(providers.SelectMany(p => p.GetAdditionalRows((TSelf) this, table, GetFormGridManager())).ToArray());
+      return new FormGridRowInfoCollection(providers.SelectMany(p => p.GetAdditionalRows((TSelf)this, table, GetFormGridManager())).ToArray());
     }
 
     private IEnumerable<IOrganizationalStructureEditControlFormGridRowProvider<TSelf>> GetFormGridRowProvider ()

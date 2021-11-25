@@ -76,7 +76,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
     {
       var positionReferenceValue = ArgumentUtility.CheckNotNullAndType<BocReferenceValue>("sender", sender);
 
-      var group = ((Role) positionReferenceValue.DataSource.BusinessObject).Group;
+      var group = ((Role)positionReferenceValue.DataSource.BusinessObject).Group;
       var positions = positionReferenceValue.Property.SearchAvailableObjects(null, new RolePropertiesSearchArguments(group.GetHandle()));
       positionReferenceValue.SetBusinessObjectList(positions);
       if (!positions.Contains(positionReferenceValue.Value))

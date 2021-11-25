@@ -101,7 +101,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       string[]? value = null;
 
       if (DataSource.BusinessObject != null)
-        value = (string[]?) DataSource.BusinessObject.GetProperty(Property);
+        value = (string[]?)DataSource.BusinessObject.GetProperty(Property);
 
       LoadValueInternal(value, false);
     }
@@ -180,7 +180,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     public new IBusinessObjectStringProperty? Property
     {
-      get { return (IBusinessObjectStringProperty?) base.Property; }
+      get { return (IBusinessObjectStringProperty?)base.Property; }
       set { base.Property = value; }
     }
 
@@ -298,10 +298,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <param name="savedState">The state object created by <see cref="SaveControlState"/>.</param>
     protected override void LoadControlState (object? savedState)
     {
-      object?[] values = (object?[]) savedState!;
+      object?[] values = (object?[])savedState!;
 
       base.LoadControlState(values[0]);
-      _text = (string[]?) values[1];
+      _text = (string[]?)values[1];
     }
 
     /// <summary>

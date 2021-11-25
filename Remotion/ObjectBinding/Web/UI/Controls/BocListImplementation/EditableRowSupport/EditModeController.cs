@@ -128,7 +128,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
         return;
 
       _editedRowIDs =
-          new List<string> { _editModeHost.RowIDProvider.GetItemRowID(new BocListRow(index, (IBusinessObject) _editModeHost.Value[index])) };
+          new List<string> { _editModeHost.RowIDProvider.GetItemRowID(new BocListRow(index, (IBusinessObject)_editModeHost.Value[index])) };
       _editMode = EditMode.RowEditMode;
       CreateEditModeControls(columns);
       LoadValues(false, new List<BocListRow>());
@@ -718,12 +718,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
         base.LoadControlState(null);
       else
       {
-        object?[] values = (object?[]) savedState;
+        object?[] values = (object?[])savedState;
 
         base.LoadControlState(values[0]);
-        _editMode = (EditMode) values[1]!;
-        _editedRowIDs = (List<string>?) values[2];
-        _isEditNewRow = (bool) values[3]!;
+        _editMode = (EditMode)values[1]!;
+        _editedRowIDs = (List<string>?)values[2];
+        _isEditNewRow = (bool)values[3]!;
       }
     }
 

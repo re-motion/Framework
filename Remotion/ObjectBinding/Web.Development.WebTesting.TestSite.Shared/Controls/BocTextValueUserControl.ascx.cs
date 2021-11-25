@@ -34,13 +34,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
 
     private void SetTestOutput ()
     {
-      TestOutput.SetCurrentValueNormal((string) LastNameField_Normal.Value);
-      TestOutput.SetCurrentValueNoAutoPostBack((string) LastNameField_NoAutoPostBack.Value);
+      TestOutput.SetCurrentValueNormal((string)LastNameField_Normal.Value);
+      TestOutput.SetCurrentValueNoAutoPostBack((string)LastNameField_NoAutoPostBack.Value);
     }
 
     private BocTextValueUserControlTestOutput TestOutput
     {
-      get { return (BocTextValueUserControlTestOutput) ((Layout) Page.Master).GetTestOutputControl(); }
+      get { return (BocTextValueUserControlTestOutput)((Layout)Page.Master).GetTestOutputControl(); }
     }
   }
 }

@@ -369,10 +369,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <param name="savedState">The state object created by <see cref="SaveControlState"/>.</param>
     protected override void LoadControlState (object? savedState)
     {
-      object?[] values = (object?[]) savedState!;
+      object?[] values = (object?[])savedState!;
 
       base.LoadControlState(values[0]);
-      _value = (bool?) values[1];
+      _value = (bool?)values[1];
     }
 
     /// <summary>

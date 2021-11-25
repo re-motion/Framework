@@ -56,7 +56,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
 
     private BocTreeViewUserControlTestOutput TestOutput
     {
-      get { return (BocTreeViewUserControlTestOutput) ((Layout) Page.Master).GetTestOutputControl(); }
+      get { return (BocTreeViewUserControlTestOutput)((Layout)Page.Master).GetTestOutputControl(); }
     }
   }
 }

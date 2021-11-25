@@ -88,7 +88,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
       BusinessObjectProvider.GetProvider<BindableDomainObjectProviderAttribute>()
           .AddService(typeof(GroupTypePropertyTypeSearchService), searchServiceStub.Object);
       var groupTypePositionClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(GroupTypePosition));
-      var groupTypeProperty = (IBusinessObjectReferenceProperty) groupTypePositionClass.GetPropertyDefinition("GroupType");
+      var groupTypeProperty = (IBusinessObjectReferenceProperty)groupTypePositionClass.GetPropertyDefinition("GroupType");
       Assert.That(groupTypeProperty, Is.Not.Null);
 
       var groupTypePosition = CreateGroupTypePosition();
@@ -113,7 +113,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
       BusinessObjectProvider.GetProvider<BindableDomainObjectProviderAttribute>()
           .AddService(typeof(PositionPropertyTypeSearchService), searchServiceStub.Object);
       var groupTypePositionClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(GroupTypePosition));
-      var positionProperty = (IBusinessObjectReferenceProperty) groupTypePositionClass.GetPropertyDefinition("Position");
+      var positionProperty = (IBusinessObjectReferenceProperty)groupTypePositionClass.GetPropertyDefinition("Position");
       Assert.That(positionProperty, Is.Not.Null);
 
       var groupTypePosition = CreateGroupTypePosition();

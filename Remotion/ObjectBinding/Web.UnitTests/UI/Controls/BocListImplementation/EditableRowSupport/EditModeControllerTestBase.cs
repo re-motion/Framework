@@ -63,15 +63,15 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       _actualEvents = new StringCollection();
 
       _values = new IBusinessObject[5];
-      _values[0] = (IBusinessObject) TypeWithAllDataTypes.Create("A", 1);
-      _values[1] = (IBusinessObject) TypeWithAllDataTypes.Create("B", 2);
-      _values[2] = (IBusinessObject) TypeWithAllDataTypes.Create("C", 3);
-      _values[3] = (IBusinessObject) TypeWithAllDataTypes.Create("D", 4);
-      _values[4] = (IBusinessObject) TypeWithAllDataTypes.Create("E", 5);
+      _values[0] = (IBusinessObject)TypeWithAllDataTypes.Create("A", 1);
+      _values[1] = (IBusinessObject)TypeWithAllDataTypes.Create("B", 2);
+      _values[2] = (IBusinessObject)TypeWithAllDataTypes.Create("C", 3);
+      _values[3] = (IBusinessObject)TypeWithAllDataTypes.Create("D", 4);
+      _values[4] = (IBusinessObject)TypeWithAllDataTypes.Create("E", 5);
 
       _newValues = new IBusinessObject[2];
-      _newValues[0] = (IBusinessObject) TypeWithAllDataTypes.Create("F", 6);
-      _newValues[1] = (IBusinessObject) TypeWithAllDataTypes.Create("G", 7);
+      _newValues[0] = (IBusinessObject)TypeWithAllDataTypes.Create("F", 6);
+      _newValues[1] = (IBusinessObject)TypeWithAllDataTypes.Create("G", 7);
 
       _class = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(TypeWithAllDataTypes));
 
@@ -105,17 +105,17 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           objects =>
           {
             var oldLength = _editModeHost.Value.Count;
-            _editModeHost.Value = ((IBusinessObject[]) _editModeHost.Value).Concat(objects).ToArray();
-            return ((IBusinessObject[]) _editModeHost.Value).Select((o, i) => new BocListRow(i, o)).Skip(oldLength).ToArray();
+            _editModeHost.Value = ((IBusinessObject[])_editModeHost.Value).Concat(objects).ToArray();
+            return ((IBusinessObject[])_editModeHost.Value).Select((o, i) => new BocListRow(i, o)).Skip(oldLength).ToArray();
           };
       _editModeHost.NotifyRemoveRows =
           objects =>
           {
-            var removedRows = ((IBusinessObject[]) _editModeHost.Value)
+            var removedRows = ((IBusinessObject[])_editModeHost.Value)
                 .Select((o, i) => new BocListRow(i, o))
                 .Where(r => objects.Contains(r.BusinessObject))
                 .ToArray();
-            _editModeHost.Value = ((IBusinessObject[]) _editModeHost.Value).Except(objects).ToArray();
+            _editModeHost.Value = ((IBusinessObject[])_editModeHost.Value).Except(objects).ToArray();
             return removedRows;
           };
       _editModeHost.NotifyEndRowEditModeCleanUp = i => _actualEvents.Add(FormatEndRowEditModeCleanUp(i));
@@ -169,10 +169,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       ArgumentUtility.CheckNotNull("row", row);
 
-      BocTextValue stringValueField = (BocTextValue) row.GetEditControl(0);
+      BocTextValue stringValueField = (BocTextValue)row.GetEditControl(0);
       stringValueField.Text = stringValue;
 
-      BocTextValue int32ValueField = (BocTextValue) row.GetEditControl(1);
+      BocTextValue int32ValueField = (BocTextValue)row.GetEditControl(1);
       int32ValueField.Text = int32Value;
     }
 

@@ -296,7 +296,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     public void AddMixinToClass ()
     {
       var mockRepository = new MockRepository();
-      var builder = mockRepository.StrictMock<MixinConfigurationBuilder>((MixinConfiguration) null);
+      var builder = mockRepository.StrictMock<MixinConfigurationBuilder>((MixinConfiguration)null);
 
       var targetType = typeof(object);
       var mixinType = typeof(string);
@@ -332,7 +332,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     public void AddMixinToClass_WithoutOrigin ()
     {
       var mockRepository = new MockRepository();
-      var builder = mockRepository.StrictMock<MixinConfigurationBuilder>((MixinConfiguration) null);
+      var builder = mockRepository.StrictMock<MixinConfigurationBuilder>((MixinConfiguration)null);
 
       var targetType = typeof(object);
       var mixinType = typeof(string);
@@ -360,7 +360,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     public void AddMixinToClass_Used ()
     {
       var mockRepository = new MockRepository();
-      var builder = mockRepository.StrictMock<MixinConfigurationBuilder>((MixinConfiguration) null);
+      var builder = mockRepository.StrictMock<MixinConfigurationBuilder>((MixinConfiguration)null);
 
       Type targetType = typeof(object);
       Type mixinType = typeof(string);
@@ -396,7 +396,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     public void AddMixinToClass_PublicMemberVisibility ()
     {
       var mockRepository = new MockRepository();
-      var builder = mockRepository.StrictMock<MixinConfigurationBuilder>((MixinConfiguration) null);
+      var builder = mockRepository.StrictMock<MixinConfigurationBuilder>((MixinConfiguration)null);
 
       Type targetType = typeof(object);
       Type mixinType = typeof(string);

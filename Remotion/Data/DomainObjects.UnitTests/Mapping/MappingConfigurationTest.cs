@@ -601,7 +601,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       persistenceModelLoaderStub
           .Stub(stub => stub.ApplyPersistenceModelToHierarchy(Arg<ClassDefinition>.Is.Anything))
           .WhenCalled(
-              mi => ((ClassDefinition) mi.Arguments[0]).SetStorageEntity(TableDefinitionObjectMother.Create(TestDomainStorageProviderDefinition)));
+              mi => ((ClassDefinition)mi.Arguments[0]).SetStorageEntity(TableDefinitionObjectMother.Create(TestDomainStorageProviderDefinition)));
       persistenceModelLoaderStub
           .Stub(stub => stub.CreatePersistenceMappingValidator(Arg<ClassDefinition>.Is.Anything))
           .Return(new PersistenceMappingValidator());

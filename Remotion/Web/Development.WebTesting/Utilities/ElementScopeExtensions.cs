@@ -40,12 +40,12 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     {
       ArgumentUtility.CheckNotNull("element", element);
 
-      var driver = ((IWrapsDriver) element.Native).WrappedDriver;
-      var jsExecutor = (IJavaScriptExecutor) driver;
+      var driver = ((IWrapsDriver)element.Native).WrappedDriver;
+      var jsExecutor = (IJavaScriptExecutor)driver;
 
       var rawData =
-          (IReadOnlyList<object>) jsExecutor.ExecuteScript("return [arguments[0].scrollLeft, arguments[0].scrollTop];", (IWebElement) element.Native);
-      return new Point((int) (long) rawData[0], (int) (long) rawData[1]);
+          (IReadOnlyList<object>)jsExecutor.ExecuteScript("return [arguments[0].scrollLeft, arguments[0].scrollTop];", (IWebElement)element.Native);
+      return new Point((int)(long)rawData[0], (int)(long)rawData[1]);
     }
 
     /// <summary>
@@ -60,10 +60,10 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     {
       ArgumentUtility.CheckNotNull("element", element);
 
-      var driver = ((IWrapsDriver) element.Native).WrappedDriver;
-      var jsExecutor = (IJavaScriptExecutor) driver;
+      var driver = ((IWrapsDriver)element.Native).WrappedDriver;
+      var jsExecutor = (IJavaScriptExecutor)driver;
 
-      jsExecutor.ExecuteScript("arguments[0].scrollLeft=arguments[1];arguments[0].scrollTop=arguments[2];", (IWebElement) element.Native, x, y);
+      jsExecutor.ExecuteScript("arguments[0].scrollLeft=arguments[1];arguments[0].scrollTop=arguments[2];", (IWebElement)element.Native, x, y);
 
       // Wait a bit for the browser to catch up (redraw at the correct position)
       Thread.Sleep(50);
@@ -90,7 +90,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
           alignment ?? ContentAlignment.TopLeft,
           padding ?? WebPadding.None);
 
-      element.ScrollTo((int) Math.Round(position.X), (int) Math.Round(position.Y));
+      element.ScrollTo((int)Math.Round(position.X), (int)Math.Round(position.Y));
     }
 
     private static PointF GetScrollPoint (Size scrollContainerSize, Rectangle targetElementBounds, ContentAlignment alignment, WebPadding padding)

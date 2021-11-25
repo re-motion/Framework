@@ -40,7 +40,7 @@ namespace Remotion.Mixins.Definitions
 
     public new RequiredTargetCallTypeDefinition RequiredType
     {
-      get { return (RequiredTargetCallTypeDefinition) base.RequiredType; }
+      get { return (RequiredTargetCallTypeDefinition)base.RequiredType; }
     }
 
     public override IVisitableDefinition Depender

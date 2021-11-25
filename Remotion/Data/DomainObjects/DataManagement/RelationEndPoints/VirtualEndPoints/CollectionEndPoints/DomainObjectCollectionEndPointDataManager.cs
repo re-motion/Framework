@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public bool? HasDataChangedFast ()
     {
-      return _changeCachingDomainObjectCollectionData.IsCacheUpToDate ? _changeCachingDomainObjectCollectionData.HasChanged(_changeDetectionStrategy) : (bool?) null;
+      return _changeCachingDomainObjectCollectionData.IsCacheUpToDate ? _changeCachingDomainObjectCollectionData.HasChanged(_changeDetectionStrategy) : (bool?)null;
     }
 
     public IDomainObjectCollectionData CollectionData
@@ -251,7 +251,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       _changeCachingDomainObjectCollectionData.ReplaceContents(sourceDataManager.CollectionData);
       _currentOppositeEndPoints = sourceDataManager.CurrentOppositeEndPoints
           .Select(ep => Assertion.IsNotNull(
-              (IRealObjectEndPoint) endPointProvider.GetRelationEndPointWithoutLoading(ep.ID),
+              (IRealObjectEndPoint)endPointProvider.GetRelationEndPointWithoutLoading(ep.ID),
               "When committing a current virtual relation value from a sub-transaction, the opposite end-point is guaranteed to exist."))
           .ToDictionary(ep => ep.ObjectID);
     }

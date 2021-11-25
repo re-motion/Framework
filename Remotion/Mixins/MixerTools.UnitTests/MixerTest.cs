@@ -227,26 +227,26 @@ namespace Remotion.Mixins.MixerTools.UnitTests
     {
       var mixer = Mixer.Create("A", "D", 1);
       Assert.That(mixer.MixerPipelineFactory, Is.TypeOf(typeof(MixerPipelineFactory)));
-      Assert.That(((MixerPipelineFactory) mixer.MixerPipelineFactory).AssemblyName, Is.EqualTo("A"));
+      Assert.That(((MixerPipelineFactory)mixer.MixerPipelineFactory).AssemblyName, Is.EqualTo("A"));
 
       Assert.That(mixer.AssemblyOutputDirectory, Is.EqualTo("D"));
 
       Assert.That(mixer.MixedTypeFinder, Is.TypeOf(typeof(MixedTypeFinder)));
-      Assert.That(((MixedTypeFinder) mixer.MixedTypeFinder).TypeDiscoveryService, Is.TypeOf(typeof(AssemblyFinderTypeDiscoveryService)));
+      Assert.That(((MixedTypeFinder)mixer.MixedTypeFinder).TypeDiscoveryService, Is.TypeOf(typeof(AssemblyFinderTypeDiscoveryService)));
 
-      var service = (AssemblyFinderTypeDiscoveryService) ((MixedTypeFinder) mixer.MixedTypeFinder).TypeDiscoveryService;
+      var service = (AssemblyFinderTypeDiscoveryService)((MixedTypeFinder)mixer.MixedTypeFinder).TypeDiscoveryService;
       Assert.That(service.AssemblyFinder, Is.TypeOf(typeof(CachingAssemblyFinderDecorator)));
 
-      var assemblyFinder = (AssemblyFinder) ((CachingAssemblyFinderDecorator) service.AssemblyFinder).InnerFinder;
+      var assemblyFinder = (AssemblyFinder)((CachingAssemblyFinderDecorator)service.AssemblyFinder).InnerFinder;
       Assert.That(assemblyFinder.RootAssemblyFinder, Is.TypeOf(typeof(SearchPathRootAssemblyFinder)));
-      var rootAssemblyFinder = ((SearchPathRootAssemblyFinder) assemblyFinder.RootAssemblyFinder);
+      var rootAssemblyFinder = ((SearchPathRootAssemblyFinder)assemblyFinder.RootAssemblyFinder);
       Assert.That(rootAssemblyFinder.BaseDirectory, Is.EqualTo(AppContext.BaseDirectory));
       Assert.That(rootAssemblyFinder.ConsiderDynamicDirectory, Is.False);
       Assert.That(rootAssemblyFinder.AssemblyLoader, Is.TypeOf(typeof(FilteringAssemblyLoader)));
-      Assert.That(((FilteringAssemblyLoader) rootAssemblyFinder.AssemblyLoader).Filter, Is.TypeOf(typeof(LoadAllAssemblyLoaderFilter)));
+      Assert.That(((FilteringAssemblyLoader)rootAssemblyFinder.AssemblyLoader).Filter, Is.TypeOf(typeof(LoadAllAssemblyLoaderFilter)));
 
       Assert.That(assemblyFinder.AssemblyLoader, Is.TypeOf(typeof(FilteringAssemblyLoader)));
-      Assert.That(((FilteringAssemblyLoader) assemblyFinder.AssemblyLoader).Filter, Is.TypeOf(typeof(LoadAllAssemblyLoaderFilter)));
+      Assert.That(((FilteringAssemblyLoader)assemblyFinder.AssemblyLoader).Filter, Is.TypeOf(typeof(LoadAllAssemblyLoaderFilter)));
     }
 
     private void CreateEmptyFile (string path)

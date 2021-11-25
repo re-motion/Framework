@@ -71,13 +71,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.DbCo
           new[] { _orderColumn1, _orderColumn2 });
 
       Assert.That(result, Is.TypeOf(typeof(SelectDbCommandBuilder)));
-      var dbCommandBuilder = (SelectDbCommandBuilder) result;
+      var dbCommandBuilder = (SelectDbCommandBuilder)result;
       Assert.That(dbCommandBuilder.Table, Is.SameAs(_tableDefinition));
-      Assert.That(((SelectedColumnsSpecification) dbCommandBuilder.SelectedColumns).SelectedColumns, Is.EqualTo(new[] { _column1, _column2 }));
+      Assert.That(((SelectedColumnsSpecification)dbCommandBuilder.SelectedColumns).SelectedColumns, Is.EqualTo(new[] { _column1, _column2 }));
       Assert.That(
-          ((ComparedColumnsSpecification) dbCommandBuilder.ComparedColumns).ComparedColumnValues,
+          ((ComparedColumnsSpecification)dbCommandBuilder.ComparedColumns).ComparedColumnValues,
           Is.EqualTo(new[] { _columnValue1, _columnValue2 }));
-      Assert.That(((OrderedColumnsSpecification) dbCommandBuilder.OrderedColumns).Columns, Is.EqualTo(new[] { _orderColumn1, _orderColumn2 }));
+      Assert.That(((OrderedColumnsSpecification)dbCommandBuilder.OrderedColumns).Columns, Is.EqualTo(new[] { _orderColumn1, _orderColumn2 }));
     }
 
     [Test]
@@ -94,12 +94,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.DbCo
       var result = _factory.CreateForSelect(_tableDefinition, new[] { _column1, _column2 }, columnValueTable, new[] { _orderColumn1, _orderColumn2 });
 
       Assert.That(result, Is.TypeOf(typeof(SelectDbCommandBuilder)));
-      var dbCommandBuilder = (SelectDbCommandBuilder) result;
+      var dbCommandBuilder = (SelectDbCommandBuilder)result;
       Assert.That(dbCommandBuilder.Table, Is.SameAs(_tableDefinition));
-      Assert.That(((SelectedColumnsSpecification) dbCommandBuilder.SelectedColumns).SelectedColumns, Is.EqualTo(new[] { _column1, _column2 }));
-      Assert.That(((SqlXmlSetComparedColumnSpecification) dbCommandBuilder.ComparedColumns).ColumnDefinition, Is.SameAs(_column1));
-      Assert.That(((SqlXmlSetComparedColumnSpecification) dbCommandBuilder.ComparedColumns).ObjectValues, Is.EqualTo(new[] { 12, 13 }));
-      Assert.That(((OrderedColumnsSpecification) dbCommandBuilder.OrderedColumns).Columns, Is.EqualTo(new[] { _orderColumn1, _orderColumn2 }));
+      Assert.That(((SelectedColumnsSpecification)dbCommandBuilder.SelectedColumns).SelectedColumns, Is.EqualTo(new[] { _column1, _column2 }));
+      Assert.That(((SqlXmlSetComparedColumnSpecification)dbCommandBuilder.ComparedColumns).ColumnDefinition, Is.SameAs(_column1));
+      Assert.That(((SqlXmlSetComparedColumnSpecification)dbCommandBuilder.ComparedColumns).ObjectValues, Is.EqualTo(new[] { 12, 13 }));
+      Assert.That(((OrderedColumnsSpecification)dbCommandBuilder.OrderedColumns).Columns, Is.EqualTo(new[] { _orderColumn1, _orderColumn2 }));
     }
 
     [Test]
@@ -136,13 +136,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.DbCo
           new[] { _orderColumn1, _orderColumn2 });
 
       Assert.That(result, Is.TypeOf(typeof(UnionSelectDbCommandBuilder)));
-      var dbCommandBuilder = (UnionSelectDbCommandBuilder) result;
+      var dbCommandBuilder = (UnionSelectDbCommandBuilder)result;
       Assert.That(dbCommandBuilder.UnionViewDefinition, Is.SameAs(unionViewDefinition));
-      Assert.That(((SelectedColumnsSpecification) dbCommandBuilder.SelectedColumns).SelectedColumns, Is.EqualTo(new[] { _column1, _column2 }));
+      Assert.That(((SelectedColumnsSpecification)dbCommandBuilder.SelectedColumns).SelectedColumns, Is.EqualTo(new[] { _column1, _column2 }));
       Assert.That(
-          ((ComparedColumnsSpecification) dbCommandBuilder.ComparedColumns).ComparedColumnValues,
+          ((ComparedColumnsSpecification)dbCommandBuilder.ComparedColumns).ComparedColumnValues,
           Is.EqualTo(new[] { _columnValue1, _columnValue2 }));
-      Assert.That(((OrderedColumnsSpecification) dbCommandBuilder.OrderedColumns).Columns, Is.EqualTo(new[] { _orderColumn1, _orderColumn2 }));
+      Assert.That(((OrderedColumnsSpecification)dbCommandBuilder.OrderedColumns).Columns, Is.EqualTo(new[] { _orderColumn1, _orderColumn2 }));
     }
 
     [Test]
@@ -151,7 +151,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.DbCo
       var result = _factory.CreateForQuery("statement", new QueryParameterWithType[0]);
 
       Assert.That(result, Is.TypeOf(typeof(QueryDbCommandBuilder)));
-      Assert.That(((QueryDbCommandBuilder) result).SqlDialect, Is.SameAs(_sqlDialectStub));
+      Assert.That(((QueryDbCommandBuilder)result).SqlDialect, Is.SameAs(_sqlDialectStub));
     }
 
     [Test]
@@ -160,10 +160,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.DbCo
       var result = _factory.CreateForInsert(_tableDefinition, new[] { _columnValue1, _columnValue2 });
 
       Assert.That(result, Is.TypeOf(typeof(InsertDbCommandBuilder)));
-      Assert.That(((InsertDbCommandBuilder) result).SqlDialect, Is.SameAs(_sqlDialectStub));
-      Assert.That(((InsertDbCommandBuilder) result).TableDefinition, Is.SameAs(_tableDefinition));
+      Assert.That(((InsertDbCommandBuilder)result).SqlDialect, Is.SameAs(_sqlDialectStub));
+      Assert.That(((InsertDbCommandBuilder)result).TableDefinition, Is.SameAs(_tableDefinition));
       Assert.That(
-          ((InsertedColumnsSpecification) ((InsertDbCommandBuilder) result).InsertedColumnsSpecification).ColumnValues,
+          ((InsertedColumnsSpecification)((InsertDbCommandBuilder)result).InsertedColumnsSpecification).ColumnValues,
           Is.EqualTo(new[] { _columnValue1, _columnValue2 }));
     }
 
@@ -173,13 +173,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.DbCo
       var result = _factory.CreateForUpdate(_tableDefinition, new[] { _columnValue1, _columnValue2 }, new[] { _columnValue2, _columnValue1 });
 
       Assert.That(result, Is.TypeOf(typeof(UpdateDbCommandBuilder)));
-      Assert.That(((UpdateDbCommandBuilder) result).SqlDialect, Is.SameAs(_sqlDialectStub));
-      Assert.That(((UpdateDbCommandBuilder) result).TableDefinition, Is.SameAs(_tableDefinition));
+      Assert.That(((UpdateDbCommandBuilder)result).SqlDialect, Is.SameAs(_sqlDialectStub));
+      Assert.That(((UpdateDbCommandBuilder)result).TableDefinition, Is.SameAs(_tableDefinition));
       Assert.That(
-          ((UpdatedColumnsSpecification) ((UpdateDbCommandBuilder) result).UpdatedColumnsSpecification).ColumnValues,
+          ((UpdatedColumnsSpecification)((UpdateDbCommandBuilder)result).UpdatedColumnsSpecification).ColumnValues,
           Is.EqualTo(new[] { _columnValue1, _columnValue2 }));
       Assert.That(
-          ((ComparedColumnsSpecification) ((UpdateDbCommandBuilder) result).ComparedColumnsSpecification).ComparedColumnValues,
+          ((ComparedColumnsSpecification)((UpdateDbCommandBuilder)result).ComparedColumnsSpecification).ComparedColumnValues,
           Is.EqualTo(new[] { _columnValue2, _columnValue1 }));
     }
 
@@ -189,10 +189,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.DbCo
       var result = _factory.CreateForDelete(_tableDefinition, new[] { _columnValue1, _columnValue2 });
 
       Assert.That(result, Is.TypeOf(typeof(DeleteDbCommandBuilder)));
-      Assert.That(((DeleteDbCommandBuilder) result).SqlDialect, Is.SameAs(_sqlDialectStub));
-      Assert.That(((DeleteDbCommandBuilder) result).TableDefinition, Is.SameAs(_tableDefinition));
+      Assert.That(((DeleteDbCommandBuilder)result).SqlDialect, Is.SameAs(_sqlDialectStub));
+      Assert.That(((DeleteDbCommandBuilder)result).TableDefinition, Is.SameAs(_tableDefinition));
       Assert.That(
-          ((ComparedColumnsSpecification) ((DeleteDbCommandBuilder) result).ComparedColumnsSpecification).ComparedColumnValues,
+          ((ComparedColumnsSpecification)((DeleteDbCommandBuilder)result).ComparedColumnsSpecification).ComparedColumnValues,
           Is.EqualTo(new[] { _columnValue1, _columnValue2 }));
     }
   }

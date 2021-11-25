@@ -37,7 +37,7 @@ namespace Remotion.Globalization.UnitTests
     {
       var fakeResult = new Mock<IResourceManager>();
       _globalizationServiceMock
-          .Setup(mock => mock.GetResourceManager(It.Is<ITypeInformation>(ti => ((TypeAdapter) ti).Type == typeof(string))))
+          .Setup(mock => mock.GetResourceManager(It.Is<ITypeInformation>(ti => ((TypeAdapter)ti).Type == typeof(string))))
           .Returns(fakeResult.Object)
           .Verifiable();
 

@@ -97,7 +97,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 
       Func<DomainObjectState, bool> isPersistenceRelevantStatePredicate = null;
       _dataManagerMock.Stub(stub => stub.GetLoadedDataByObjectState(null)).IgnoreArguments().Return(new PersistableData[0])
-          .WhenCalled(mi => isPersistenceRelevantStatePredicate = (Func<DomainObjectState, bool>) mi.Arguments[0]);
+          .WhenCalled(mi => isPersistenceRelevantStatePredicate = (Func<DomainObjectState, bool>)mi.Arguments[0]);
       _mockRepository.ReplayAll();
 
       _agent.HasDataChanged();
@@ -336,7 +336,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       return _eventSinkWithMock.Expect(mock => mock.RaiseTransactionCommittingEvent(
           Arg<ReadOnlyCollection<DomainObject>>.List.Equivalent(domainObjects),
           Arg<CommittingEventRegistrar>.Is.TypeOf))
-          .WhenCalled(mi => Assert.That(((CommittingEventRegistrar) mi.Arguments[1]).ClientTransaction, Is.SameAs(_clientTransaction)));
+          .WhenCalled(mi => Assert.That(((CommittingEventRegistrar)mi.Arguments[1]).ClientTransaction, Is.SameAs(_clientTransaction)));
     }
 
     private void ExpectTransactionCommitValidate (params PersistableData[] persistableData)
@@ -371,7 +371,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 
     private ICommittingEventRegistrar GetEventRegistrar (MethodInvocation mi)
     {
-      return ((ICommittingEventRegistrar) mi.Arguments[1]);
+      return ((ICommittingEventRegistrar)mi.Arguments[1]);
     }
 
   }

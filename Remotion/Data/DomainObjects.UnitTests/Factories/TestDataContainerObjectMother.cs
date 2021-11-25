@@ -57,25 +57,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
       Dictionary<PropertyDefinition, object> persistentPropertyValues = new Dictionary<PropertyDefinition, object>();
 
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BooleanProperty"], false);
-      persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.ByteProperty"], (byte) 85);
+      persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.ByteProperty"], (byte)85);
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DateProperty"], new DateTime(2005, 1, 1));
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DateTimeProperty"], new DateTime(2005, 1, 1, 17, 0, 0));
-      persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DecimalProperty"], (decimal) 123456.789);
+      persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DecimalProperty"], (decimal)123456.789);
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DoubleProperty"], 987654.321);
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.EnumProperty"], ClassWithAllDataTypes.EnumType.Value1);
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.ExtensibleEnumProperty"], Color.Values.Red());
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.FlagsProperty"], ClassWithAllDataTypes.FlagsType.Flag2);
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.GuidProperty"], new Guid("{236C2DCE-43BD-45ad-BDE6-15F8C05C4B29}"));
-      persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int16Property"], (short) 32767);
+      persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int16Property"], (short)32767);
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int32Property"], 2147483647);
-      persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int64Property"], (long) 9223372036854775807);
-      persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.SingleProperty"], (float) 6789.321);
+      persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int64Property"], (long)9223372036854775807);
+      persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.SingleProperty"], (float)6789.321);
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringProperty"], "abcdeföäü");
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringPropertyWithoutMaxLength"], "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty"], ResourceManager.GetImage1());
 
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanProperty"], true);
-      persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaByteProperty"], (byte) 78);
+      persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaByteProperty"], (byte)78);
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateProperty"], new DateTime(2005, 2, 1));
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateTimeProperty"], new DateTime(2005, 2, 1, 5, 0, 0));
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDecimalProperty"], 765.098m);
@@ -83,7 +83,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaEnumProperty"], ClassWithAllDataTypes.EnumType.Value2);
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaFlagsProperty"], ClassWithAllDataTypes.FlagsType.Flag1|ClassWithAllDataTypes.FlagsType.Flag2);
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaGuidProperty"], new Guid("{19B2DFBE-B7BB-448e-8002-F4DBF6032AE8}"));
-      persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt16Property"], (short) 12000);
+      persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt16Property"], (short)12000);
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt32Property"], -2147483647);
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt64Property"], 3147483647L);
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaSingleProperty"], 12.456F);

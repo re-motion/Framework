@@ -69,7 +69,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       var collection = new ClientTransactionExtensionCollection("abc");
 
-      Assert.That(((IClientTransactionExtension) collection).Key, Is.EqualTo("abc"));
+      Assert.That(((IClientTransactionExtension)collection).Key, Is.EqualTo("abc"));
     }
 
     [Test]

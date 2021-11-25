@@ -106,7 +106,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     {
       base.OnRelationChanged(args);
       if (args.IsRelation(this, "AccessControlEntries"))
-        HandleAccessControlEntriesChanged((AccessControlEntry) args.NewRelatedObject);
+        HandleAccessControlEntriesChanged((AccessControlEntry)args.NewRelatedObject);
     }
 
     private void HandleAccessControlEntriesChanged (AccessControlEntry ace)

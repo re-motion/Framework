@@ -57,7 +57,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
 
       _buildersWithParentContexts = new Dictionary<Type, Tuple<ClassContextBuilder, ClassContext>>();
       _buildersWithParentContexts.Add(_classContextBuilderWithParent.TargetType, Tuple.Create(_classContextBuilderWithParent, _parentContextWithBuilder));
-      _buildersWithParentContexts.Add(_classContextBuilderWithoutParent.TargetType, Tuple.Create(_classContextBuilderWithoutParent, (ClassContext) null));
+      _buildersWithParentContexts.Add(_classContextBuilderWithoutParent.TargetType, Tuple.Create(_classContextBuilderWithoutParent, (ClassContext)null));
 
       _parentContextWithoutBuilder = ClassContextObjectMother.Create(typeof(BaseType1));
       _parentContexts = new ClassContextCollection(_parentContextWithoutBuilder, _parentContextWithBuilder);

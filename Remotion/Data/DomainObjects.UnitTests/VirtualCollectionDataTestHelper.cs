@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public static IVirtualCollectionData GetDataStrategy (IObjectList<IDomainObject> collection)
     {
       if (collection.GetType().CanAscribeTo(typeof(VirtualObjectList<>)))
-        return (IVirtualCollectionData) PrivateInvoke.GetNonPublicField(collection, "_dataStrategy");
+        return (IVirtualCollectionData)PrivateInvoke.GetNonPublicField(collection, "_dataStrategy");
       else
         throw new NotSupportedException(string.Format("Type '{0}' is not supported by GetDataStrategy().", collection.GetType()));
     }
@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       if (collection.AssociatedEndPointID == null)
         return null;
 
-      var delegatingStrategy = (EndPointDelegatingVirtualCollectionData) GetDataStrategy(collection);
+      var delegatingStrategy = (EndPointDelegatingVirtualCollectionData)GetDataStrategy(collection);
       return delegatingStrategy.GetAssociatedEndPoint();
     }
   }

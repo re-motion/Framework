@@ -76,7 +76,7 @@ namespace Remotion.Validation.Providers
       {
         var methodInfo = MemberInfoFromExpressionUtility.GetGenericMethodDefinition(() => SetValidationRulesForProperty<object, object>(null!));
         var closedGenericMethodInfo = methodInfo.MakeGenericMethod(@params.ValidatedType, @params.PropertyType);
-        return (Func<IAttributesBasedValidationPropertyRuleReflector, ValidationRulesResult>) closedGenericMethodInfo.CreateDelegate(
+        return (Func<IAttributesBasedValidationPropertyRuleReflector, ValidationRulesResult>)closedGenericMethodInfo.CreateDelegate(
             typeof(Func<IAttributesBasedValidationPropertyRuleReflector, ValidationRulesResult>));
       }
     }

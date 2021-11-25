@@ -102,7 +102,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       var client = DomainObjectIDs.Client2.GetObject<Client>();
       var unidirectionalEndPointID = RelationEndPointID.Resolve(client, c => c.ParentClient);
       var unidirectionalEndPoint =
-          (IObjectEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad(unidirectionalEndPointID);
+          (IObjectEndPoint)TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad(unidirectionalEndPointID);
       Assert.That(unidirectionalEndPoint.Definition.GetOppositeEndPointDefinition().IsAnonymous, Is.True);
 
       var setSameModification = new ObjectEndPointSetSameCommand(unidirectionalEndPoint, _transactionEventSinkWithMock);
@@ -125,7 +125,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       Assert.That(steps[0], Is.SameAs(_command));
 
       Assert.That(steps[1], Is.InstanceOf(typeof(RelationEndPointTouchCommand)));
-      Assert.That(((RelationEndPointTouchCommand) steps[1]).EndPoint, Is.SameAs(oppositeEndPoint));
+      Assert.That(((RelationEndPointTouchCommand)steps[1]).EndPoint, Is.SameAs(oppositeEndPoint));
     }
   }
 }

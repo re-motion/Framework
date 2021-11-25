@@ -54,7 +54,7 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.UnitTests
       public static T Create<T> (ParamList constructorParameters)
       {
         var objectFactoryImplementation = SafeServiceLocator.Current.GetInstance<IObjectFactoryImplementation>();
-        return (T) objectFactoryImplementation.CreateInstance(false, typeof(T), constructorParameters);
+        return (T)objectFactoryImplementation.CreateInstance(false, typeof(T), constructorParameters);
       }
     }
 

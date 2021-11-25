@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.Linq
       {
         return s_cache.GetOrAdd(
             classType,
-            key => (GenericCallHelper) Activator.CreateInstance(typeof(GenericCallHelper<>).MakeGenericType(key)));
+            key => (GenericCallHelper)Activator.CreateInstance(typeof(GenericCallHelper<>).MakeGenericType(key)));
       }
 
       protected GenericCallHelper ()

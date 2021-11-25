@@ -107,7 +107,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
       bool isControlWidthEmpty = renderingContext.Control.Width.IsEmpty && string.IsNullOrEmpty(renderingContext.Control.Style["width"]);
       Label label = GetLabel(renderingContext);
       ListControl listControl = GetListControl(renderingContext);
-      WebControl innerControl = renderingContext.Control.IsReadOnly ? (WebControl) label : listControl;
+      WebControl innerControl = renderingContext.Control.IsReadOnly ? (WebControl)label : listControl;
       innerControl.Page = renderingContext.Control.Page.WrappedInstance;
 
       bool isInnerControlHeightEmpty = innerControl.Height.IsEmpty && string.IsNullOrEmpty(innerControl.Style["height"]);
@@ -185,7 +185,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
         if (isDropDownList && !renderingContext.Control.ListControlStyle.DropDownListNullValueTextVisible)
         {
           nullItem.Attributes[HtmlTextWriterAttribute2.AriaLabel] = nullItemText;
-          char nbsp = (char) 160;
+          char nbsp = (char)160;
           // By setting the label to a single whitespace, we can convince the HTML validator that the element is valid,
           // while preventing text from being displayed in the UI. the NBSP is required in Firefox to prevent the dropdown icon from minimzing.
           nullItem.Attributes[HtmlTextWriterAttribute2.Label] = new string(nbsp, 1);
@@ -228,7 +228,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
       }
       else if (renderingContext.Control.IsRequired && isRadioButtonList)
       {
-        var radioButton = _internalControlMemberCaller.GetControlToRepeat((RadioButtonList) listControl);
+        var radioButton = _internalControlMemberCaller.GetControlToRepeat((RadioButtonList)listControl);
         radioButton.InputAttributes.Add(HtmlTextWriterAttribute2.AriaRequired, HtmlAriaRequiredAttributeValue.True);
       }
 

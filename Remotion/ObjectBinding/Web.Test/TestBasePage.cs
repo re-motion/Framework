@@ -43,7 +43,7 @@ namespace OBWTest
 
     protected new TFunction CurrentFunction
     {
-      get { return (TFunction) base.CurrentFunction; }
+      get { return (TFunction)base.CurrentFunction; }
     }
 
     protected override void OnInit (EventArgs e)

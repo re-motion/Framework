@@ -82,7 +82,7 @@ namespace OBWTest
 
     if (! IsPostBack)
     {
-      IBusinessObjectWithIdentity[] objects = (IBusinessObjectWithIdentity[]) ArrayUtility.Convert(
+      IBusinessObjectWithIdentity[] objects = (IBusinessObjectWithIdentity[])ArrayUtility.Convert(
           XmlReflectionBusinessObjectStorageProvider.Current.GetObjects(typeof(Person)), typeof(IBusinessObjectWithIdentity));
       ReferenceField.SetBusinessObjectList(objects);
     }
@@ -187,19 +187,19 @@ namespace OBWTest
     if (isValid)
     {
       CurrentObject.SaveValues(false);
-      Person person = (Person) CurrentObject.BusinessObject;
+      Person person = (Person)CurrentObject.BusinessObject;
       person.SaveObject();
     }
   }
 
   public virtual StringCollection GetHiddenRows (HtmlTable table)
   {
-    return (StringCollection) _listOfHiddenRows[table];
+    return (StringCollection)_listOfHiddenRows[table];
   }
 
   public virtual FormGridRowInfoCollection GetAdditionalRows (HtmlTable table)
   {
-    return (FormGridRowInfoCollection) _listOfFormGridRowInfos[table];
+    return (FormGridRowInfoCollection)_listOfFormGridRowInfos[table];
   }
 }
 

@@ -85,7 +85,7 @@ public class BocCheckBoxUserControl : BaseUserControl
   {
     base.OnLoad(e);
 
-    Person person = (Person) CurrentObject.BusinessObject;
+    Person person = (Person)CurrentObject.BusinessObject;
 
     //UnboundDeceasedField.LoadUnboundValue (person.Deceased, IsPostBack);
     UnboundReadOnlyDeceasedField.LoadUnboundValue(person.Deceased, IsPostBack);
@@ -95,7 +95,7 @@ public class BocCheckBoxUserControl : BaseUserControl
     if (! IsPostBack)
     {
       if (Page is ISmartNavigablePage)
-        ((ISmartNavigablePage) Page).SetFocus(DeceasedField);
+        ((ISmartNavigablePage)Page).SetFocus(DeceasedField);
     }
   }
 
@@ -129,7 +129,7 @@ public class BocCheckBoxUserControl : BaseUserControl
   private void DeceasedTestToggleValueButton_Click (object sender, EventArgs e)
   {
     if (DeceasedField.Value != null)
-      DeceasedField.Value = ! (bool) DeceasedField.Value;
+      DeceasedField.Value = ! (bool)DeceasedField.Value;
     else
       DeceasedField.Value = false;
   }
@@ -142,7 +142,7 @@ public class BocCheckBoxUserControl : BaseUserControl
   private void ReadOnlyDeceasedTestToggleValueButton_Click (object sender, EventArgs e)
   {
     if (ReadOnlyDeceasedField.Value != null)
-      ReadOnlyDeceasedField.Value = ! (bool) ReadOnlyDeceasedField.Value;
+      ReadOnlyDeceasedField.Value = ! (bool)ReadOnlyDeceasedField.Value;
     else
       ReadOnlyDeceasedField.Value = false;
   }

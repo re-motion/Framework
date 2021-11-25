@@ -80,9 +80,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       Order order = Order.NewObject();
 
       var orderTypedHandle = order.GetHandle();
-      var testDomainBaseTypedHandle1 = ((TestDomainBase) order).GetHandle();
+      var testDomainBaseTypedHandle1 = ((TestDomainBase)order).GetHandle();
       var testDomainBaseTypedHandle2 = order.GetHandle<TestDomainBase>();
-      var domainObjectTypedHandle = ((DomainObject) order).GetHandle();
+      var domainObjectTypedHandle = ((DomainObject)order).GetHandle();
 
       Assert.That(orderTypedHandle.ObjectID, Is.EqualTo(order.ID));
       Assert.That(orderTypedHandle, Is.TypeOf<DomainObjectHandle<Order>>());
@@ -101,7 +101,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     [Test]
     public void GetHandle_Null ()
     {
-      Assert.That(() => ((Order) null).GetHandle(), Throws.TypeOf<ArgumentNullException>());
+      Assert.That(() => ((Order)null).GetHandle(), Throws.TypeOf<ArgumentNullException>());
     }
 
     [Test]
@@ -118,7 +118,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     [Test]
     public void GetSafeHandle_Null ()
     {
-      Assert.That(((Order) null).GetSafeHandle(), Is.Null);
+      Assert.That(((Order)null).GetSafeHandle(), Is.Null);
     }
 
     [Test]

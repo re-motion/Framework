@@ -39,7 +39,7 @@ namespace Remotion.Web.Infrastructure
       if (page == null)
         return null;
       else if (page is IPage)
-        return (IPage) page;
+        return (IPage)page;
       else
         return new PageWrapper(page);
     }
@@ -76,12 +76,12 @@ namespace Remotion.Web.Infrastructure
     /// </param>
     public void AddParsedSubObject (object obj)
     {
-      ((IParserAccessor) _page).AddParsedSubObject(obj);
+      ((IParserAccessor)_page).AddParsedSubObject(obj);
     }
 
     public DataBindingCollection DataBindings
     {
-      get { return ((IDataBindingsAccessor) _page).DataBindings; }
+      get { return ((IDataBindingsAccessor)_page).DataBindings; }
     }
 
     /// <summary>
@@ -92,7 +92,7 @@ namespace Remotion.Web.Infrastructure
     /// </returns>
     public bool HasDataBindings
     {
-      get { return ((IDataBindingsAccessor) _page).HasDataBindings; }
+      get { return ((IDataBindingsAccessor)_page).HasDataBindings; }
     }
 
     /// <summary>
@@ -103,7 +103,7 @@ namespace Remotion.Web.Infrastructure
     /// </returns>
     public ControlBuilder ControlBuilder
     {
-      get { return ((IControlBuilderAccessor) _page).ControlBuilder; }
+      get { return ((IControlBuilderAccessor)_page).ControlBuilder; }
     }
 
     /// <summary>
@@ -114,7 +114,7 @@ namespace Remotion.Web.Infrastructure
     /// </returns>
     public IDictionary GetDesignModeState ()
     {
-      return ((IControlDesignerAccessor) _page).GetDesignModeState();
+      return ((IControlDesignerAccessor)_page).GetDesignModeState();
     }
 
     /// <summary>
@@ -124,7 +124,7 @@ namespace Remotion.Web.Infrastructure
     /// </param>
     public void SetDesignModeState (IDictionary data)
     {
-      ((IControlDesignerAccessor) _page).SetDesignModeState(data);
+      ((IControlDesignerAccessor)_page).SetDesignModeState(data);
     }
 
     /// <summary>
@@ -134,7 +134,7 @@ namespace Remotion.Web.Infrastructure
     /// </param>
     public void SetOwnerControl (Control owner)
     {
-      ((IControlDesignerAccessor) _page).SetOwnerControl(owner);
+      ((IControlDesignerAccessor)_page).SetOwnerControl(owner);
     }
 
     /// <summary>
@@ -145,7 +145,7 @@ namespace Remotion.Web.Infrastructure
     /// </returns>
     public IDictionary UserData
     {
-      get { return ((IControlDesignerAccessor) _page).UserData; }
+      get { return ((IControlDesignerAccessor)_page).UserData; }
     }
 
     /// <summary>
@@ -156,7 +156,7 @@ namespace Remotion.Web.Infrastructure
     /// </returns>
     public bool HasExpressions
     {
-      get { return ((IExpressionsAccessor) _page).HasExpressions; }
+      get { return ((IExpressionsAccessor)_page).HasExpressions; }
     }
 
     /// <summary>
@@ -168,7 +168,7 @@ namespace Remotion.Web.Infrastructure
     /// </returns>
     public ExpressionBindingCollection Expressions
     {
-      get { return ((IExpressionsAccessor) _page).Expressions; }
+      get { return ((IExpressionsAccessor)_page).Expressions; }
     }
 
     /// <summary>
@@ -194,7 +194,7 @@ namespace Remotion.Web.Infrastructure
     /// </param>
     bool IFilterResolutionService.EvaluateFilter (string filterName)
     {
-      return ((IFilterResolutionService) _page).EvaluateFilter(filterName);
+      return ((IFilterResolutionService)_page).EvaluateFilter(filterName);
     }
 
     /// <summary>
@@ -210,7 +210,7 @@ namespace Remotion.Web.Infrastructure
     /// </param>
     int IFilterResolutionService.CompareFilters (string filter1, string filter2)
     {
-      return ((IFilterResolutionService) _page).CompareFilters(filter1, filter2);
+      return ((IFilterResolutionService)_page).CompareFilters(filter1, filter2);
     }
 
     /// <summary>

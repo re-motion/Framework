@@ -44,7 +44,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
 		public void Fail_UndefinedValue ()
 		{
 		  Assert.That(
-		      () => ArgumentUtility.CheckValidEnumValue("arg", (TestEnum) 4),
+		      () => ArgumentUtility.CheckValidEnumValue("arg", (TestEnum)4),
 		      Throws.InstanceOf<ArgumentOutOfRangeException>());
 		}
 
@@ -52,7 +52,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
 		public void Fail_PartiallyUndefinedFlags ()
 		{
 		  Assert.That(
-		      () => ArgumentUtility.CheckValidEnumValue("arg", (TestFlags) (1 | 8)),
+		      () => ArgumentUtility.CheckValidEnumValue("arg", (TestFlags)(1 | 8)),
 		      Throws.InstanceOf<ArgumentOutOfRangeException>());
 		}
 
@@ -86,7 +86,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
 		public void Fail_UndefinedValue ()
 		{
 		  Assert.That(
-		      () => ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<TestEnum>("arg", (TestEnum) 4),
+		      () => ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<TestEnum>("arg", (TestEnum)4),
 		      Throws.InstanceOf<ArgumentOutOfRangeException>());
 		}
 
@@ -94,7 +94,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
 		public void Fail_PartiallyUndefinedFlags ()
 		{
 		  Assert.That(
-		      () => ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<TestFlags>("arg", (TestFlags) (1 | 8)),
+		      () => ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<TestFlags>("arg", (TestFlags)(1 | 8)),
 		      Throws.InstanceOf<ArgumentOutOfRangeException>());
 		}
 
@@ -137,7 +137,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
 		public void Fail_UndefinedValue ()
 		{
 		  Assert.That(
-		      () => ArgumentUtility.CheckValidEnumValueAndType<TestEnum>("arg", (TestEnum) 4),
+		      () => ArgumentUtility.CheckValidEnumValueAndType<TestEnum>("arg", (TestEnum)4),
 		      Throws.InstanceOf<ArgumentOutOfRangeException>());
 		}
 
@@ -145,7 +145,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
 		public void Fail_PartiallyUndefinedFlags ()
 		{
 		  Assert.That(
-		      () => ArgumentUtility.CheckValidEnumValueAndType<TestFlags>("arg", (TestFlags) (1 | 8)),
+		      () => ArgumentUtility.CheckValidEnumValueAndType<TestFlags>("arg", (TestFlags)(1 | 8)),
 		      Throws.InstanceOf<ArgumentOutOfRangeException>());
 		}
 

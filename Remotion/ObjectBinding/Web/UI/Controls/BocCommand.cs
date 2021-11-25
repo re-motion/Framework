@@ -196,7 +196,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       parameters["object"] = businessObject;
       if (businessObject is IBusinessObjectWithIdentity)
-        parameters["id"] = ((IBusinessObjectWithIdentity) businessObject).UniqueIdentifier;
+        parameters["id"] = ((IBusinessObjectWithIdentity)businessObject).UniqueIdentifier;
       if (OwnerControl != null)
       {
         if (OwnerControl.DataSource != null && OwnerControl.Value != null)
@@ -214,7 +214,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public override HrefCommandInfo HrefCommand
     {
       get { return _hrefCommand; }
-      set { _hrefCommand = (BocHrefCommandInfo) value; }
+      set { _hrefCommand = (BocHrefCommandInfo)value; }
     }
 
     /// <summary>
@@ -225,7 +225,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public override WxeFunctionCommandInfo WxeFunctionCommand
     {
       get { return _wxeFunctionCommand; }
-      set { _wxeFunctionCommand = (BocWxeFunctionCommandInfo) value; }
+      set { _wxeFunctionCommand = (BocWxeFunctionCommandInfo)value; }
     }
 
     /// <summary> Gets or sets the <see cref="IBusinessObjectBoundWebControl"/> to which this object belongs. </summary>
@@ -233,14 +233,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Browsable (false)]
     public new IBusinessObjectBoundWebControl? OwnerControl
     {
-      get { return (IBusinessObjectBoundWebControl?) base.OwnerControlImplementation; }
+      get { return (IBusinessObjectBoundWebControl?)base.OwnerControlImplementation; }
       set { base.OwnerControlImplementation = value; }
     }
 
     protected override IControl? OwnerControlImplementation
     {
       get { return OwnerControl; }
-      set { OwnerControl = (IBusinessObjectBoundWebControl?) value; }
+      set { OwnerControl = (IBusinessObjectBoundWebControl?)value; }
     }
   }
 
@@ -264,7 +264,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> The <see cref="BocCommand"/> that caused the event. </summary>
     public new BocCommand Command
     {
-      get { return (BocCommand) base.Command; }
+      get { return (BocCommand)base.Command; }
     }
 
     /// <summary>

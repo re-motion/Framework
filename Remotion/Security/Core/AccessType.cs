@@ -90,7 +90,7 @@ namespace Remotion.Security
         return false;
       if (obj.GetType() != typeof(AccessType))
         return false;
-      return Equals((AccessType) obj);
+      return Equals((AccessType)obj);
     }
 
     public override int GetHashCode ()

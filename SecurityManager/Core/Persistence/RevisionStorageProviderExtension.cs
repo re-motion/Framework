@@ -153,11 +153,11 @@ namespace Remotion.SecurityManager.Persistence
         yield break;
 
       //TODO RM-5702: Support for more than 2000 parameters
-      var userIDs = users.Select(u => (Guid) u.ObjectID.Value).ToList();
+      var userIDs = users.Select(u => (Guid)u.ObjectID.Value).ToList();
       var query = QueryFactory.CreateQuery<string>(
           "load usernames",
           QueryFactory.CreateLinqQuery<User>()
-              .Where(u => userIDs.Contains((Guid) u.ID.Value))
+              .Where(u => userIDs.Contains((Guid)u.ID.Value))
               .Select(u => u.UserName));
 
       var storageProviderCommand = _storageProviderCommandFactory.CreateForCustomQuery(query);
@@ -226,7 +226,7 @@ namespace Remotion.SecurityManager.Persistence
     private TResult GetValue<TResult> (DataContainer dataContainer, PropertyDefinition propertyDefinition)
     {
       var valueAccess = dataContainer.State.IsDeleted ? ValueAccess.Original : ValueAccess.Current;
-      return (TResult) dataContainer.GetValueWithoutEvents(propertyDefinition, valueAccess);
+      return (TResult)dataContainer.GetValueWithoutEvents(propertyDefinition, valueAccess);
     }
 
     private TResult GetOriginalValueOrDefault<TResult> (DataContainer dataContainer, PropertyDefinition propertyDefinition)
@@ -237,7 +237,7 @@ namespace Remotion.SecurityManager.Persistence
       if (!dataContainer.State.IsChanged)
         return default(TResult);
 
-      return (TResult) dataContainer.GetValueWithoutEvents(propertyDefinition, ValueAccess.Original);
+      return (TResult)dataContainer.GetValueWithoutEvents(propertyDefinition, ValueAccess.Original);
     }
 
     private string GetPropertyIdentifierFromTypeAndShortName (Type domainObjectType, string shortPropertyName)

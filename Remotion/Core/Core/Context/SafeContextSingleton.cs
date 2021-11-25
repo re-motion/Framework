@@ -76,7 +76,7 @@ namespace Remotion.Context
 
     private T? GetCurrentInternal ()
     {
-      return (T?) SafeContext.Instance.GetData(_currentKey);
+      return (T?)SafeContext.Instance.GetData(_currentKey);
     }
   }
 }

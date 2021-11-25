@@ -98,7 +98,7 @@ namespace Remotion.Development.UnitTesting.Resources
     {
       using (var binaryReader = new BinaryReader(resourceStream))
       {
-        return binaryReader.ReadBytes((int) resourceStream.Length);
+        return binaryReader.ReadBytes((int)resourceStream.Length);
       }
     }
 

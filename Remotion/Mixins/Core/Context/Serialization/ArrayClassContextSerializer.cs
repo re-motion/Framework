@@ -42,7 +42,7 @@ namespace Remotion.Mixins.Context.Serialization
     public void AddMixins (IEnumerable<MixinContext> mixinContexts)
     {
       ArgumentUtility.CheckNotNull("mixinContexts", mixinContexts);
-      SetValue(1, mixinContexts.Select(mc => (object) SerializeMixinContext(mc)).ToArray());
+      SetValue(1, mixinContexts.Select(mc => (object)SerializeMixinContext(mc)).ToArray());
     }
 
     public void AddComposedInterfaces (IEnumerable<Type> composedInterfaces)

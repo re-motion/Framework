@@ -47,7 +47,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
 
     protected void DeleteAccessControlListButton_Click (object sender, EventArgs e)
     {
-      EventHandler handler = (EventHandler) Events[s_deleteEvent];
+      EventHandler handler = (EventHandler)Events[s_deleteEvent];
       if (handler != null)
         handler(this, e);
     }
@@ -73,7 +73,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
 
     protected TAccessControlList CurrentAccessControlList
     {
-      get { return (TAccessControlList) DataSource.BusinessObject; }
+      get { return (TAccessControlList)DataSource.BusinessObject; }
     }
 
     private void LoadAccessControlEntries (bool interim)
@@ -91,7 +91,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
 
       var collapsedStates = new Dictionary<ObjectID, bool>();
       foreach (var editAccessControlEntryControl in _editAccessControlEntryControls)
-        collapsedStates.Add(((AccessControlEntry) editAccessControlEntryControl.BusinessObject).ID, editAccessControlEntryControl.IsCollapsed);
+        collapsedStates.Add(((AccessControlEntry)editAccessControlEntryControl.BusinessObject).ID, editAccessControlEntryControl.IsCollapsed);
 
       _editAccessControlEntryControls.Clear();
 
@@ -104,16 +104,16 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
       table.Attributes.Add("class", "accessControlEntriesTable");
       updatePanel.ContentTemplateContainer.Controls.Add(table);
 
-      _editAccessControlEntryHeaderControl = (EditAccessControlEntryHeaderControl) LoadControl("EditAccessControlEntryHeaderControl.ascx");
+      _editAccessControlEntryHeaderControl = (EditAccessControlEntryHeaderControl)LoadControl("EditAccessControlEntryHeaderControl.ascx");
       _editAccessControlEntryHeaderControl.ID = "Ace_Header";
       _editAccessControlEntryHeaderControl.BusinessObject = CurrentAccessControlList.Class;
       table.Controls.Add(_editAccessControlEntryHeaderControl);
 
       for (int i = 0; i < accessControlEntries.Count; i++)
       {
-        var accessControlEntry = (AccessControlEntry) accessControlEntries[i];
+        var accessControlEntry = (AccessControlEntry)accessControlEntries[i];
 
-        var editAccessControlEntryControl = (EditAccessControlEntryControl) LoadControl("EditAccessControlEntryControl.ascx");
+        var editAccessControlEntryControl = (EditAccessControlEntryControl)LoadControl("EditAccessControlEntryControl.ascx");
         editAccessControlEntryControl.ID = "Ace_" + i;
         editAccessControlEntryControl.BusinessObject = accessControlEntry;
         editAccessControlEntryControl.Delete += EditAccessControlEntryControl_Delete;
@@ -122,7 +122,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
         table.Controls.Add(editAccessControlEntryControl);
 
         bool isCollapsed;
-        if (collapsedStates.TryGetValue(((AccessControlEntry) editAccessControlEntryControl.BusinessObject).ID, out isCollapsed))
+        if (collapsedStates.TryGetValue(((AccessControlEntry)editAccessControlEntryControl.BusinessObject).ID, out isCollapsed))
           editAccessControlEntryControl.IsCollapsed = isCollapsed;
 
         _editAccessControlEntryControls.Add(editAccessControlEntryControl);
@@ -198,14 +198,14 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
 
     private void EditAccessControlEntryControl_Delete (object sender, EventArgs e)
     {
-      EditAccessControlEntryControl editAccessControlEntryControl = (EditAccessControlEntryControl) sender;
+      EditAccessControlEntryControl editAccessControlEntryControl = (EditAccessControlEntryControl)sender;
       Page.PrepareValidation();
       bool isValid = ValidateAccessControlEntries(editAccessControlEntryControl);
       if (!isValid)
         return;
 
       _editAccessControlEntryControls.Remove(editAccessControlEntryControl);
-      AccessControlEntry accessControlEntry = (AccessControlEntry) editAccessControlEntryControl.DataSource.BusinessObject;
+      AccessControlEntry accessControlEntry = (AccessControlEntry)editAccessControlEntryControl.DataSource.BusinessObject;
       accessControlEntry.Delete();
 
       SaveAccessControlEntries(false);

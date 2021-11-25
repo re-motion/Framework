@@ -215,8 +215,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void ShortNameAndTypeWithShadowedProperties ()
     {
-      var classWithDifferentProperties = (DerivedClassWithDifferentProperties)
-          LifetimeService.NewObject(_transaction, typeof(DerivedClassWithDifferentProperties), ParamList.Empty);
+      var classWithDifferentProperties = (DerivedClassWithDifferentProperties)LifetimeService.NewObject(_transaction, typeof(DerivedClassWithDifferentProperties), ParamList.Empty);
 
       var indexer = new PropertyIndexer(classWithDifferentProperties);
       Assert.That(
@@ -252,13 +251,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     public void Find_Generic_WithInferredType ()
     {
       var classWithDifferentProperties =
-          (DerivedClassWithDifferentProperties) LifetimeService.NewObject(_transaction, typeof(DerivedClassWithDifferentProperties), ParamList.Empty);
+          (DerivedClassWithDifferentProperties)LifetimeService.NewObject(_transaction, typeof(DerivedClassWithDifferentProperties), ParamList.Empty);
       var indexer = new PropertyIndexer(classWithDifferentProperties);
 
       var resultOnDerived = indexer.Find(classWithDifferentProperties, "String");
       Assert.That(resultOnDerived, Is.EqualTo(indexer[typeof(DerivedClassWithDifferentProperties).FullName + ".String"]));
 
-      var resultOnBase = indexer.Find((ClassWithDifferentProperties) classWithDifferentProperties, "String");
+      var resultOnBase = indexer.Find((ClassWithDifferentProperties)classWithDifferentProperties, "String");
       Assert.That(resultOnBase, Is.EqualTo(indexer[typeof(ClassWithDifferentProperties).FullName + ".String"]));
     }
 

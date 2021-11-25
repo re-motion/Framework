@@ -148,7 +148,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void IsNull ()
     {
-      Assert.That(((IPropertyInformation) _propertyInformation).IsNull, Is.False);
+      Assert.That(((IPropertyInformation)_propertyInformation).IsNull, Is.False);
     }
   }
 }

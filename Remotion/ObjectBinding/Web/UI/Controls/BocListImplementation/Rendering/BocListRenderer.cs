@@ -270,7 +270,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
             renderingContext.Control.ClientID,
             renderingContext.Control.GetSelectorControlName(),
             renderingContext.Control.GetSelectAllControlName(),
-            (int) renderingContext.Control.Selection,
+            (int)renderingContext.Control.Selection,
             hasClickSensitiveRows ? "true" : "false",
             renderingContext.Control.GetSelectionChangedHandlerScript());
 

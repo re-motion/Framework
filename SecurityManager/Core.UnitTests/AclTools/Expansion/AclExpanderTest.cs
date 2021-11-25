@@ -42,7 +42,7 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
       var aclExpander = new AclExpander(userFinderStub.Object, aclFinderStub.Object);
       var iFinder = AclExpanderXray.GetUserRoleAclAceCombinationFinder(aclExpander);
       Assert.That(iFinder, Is.TypeOf(typeof(UserRoleAclAceCombinationFinder)));
-      var finder = (UserRoleAclAceCombinationFinder) iFinder;
+      var finder = (UserRoleAclAceCombinationFinder)iFinder;
       Assert.That(finder.UserFinder, Is.EqualTo(userFinderStub.Object));
       Assert.That(finder.AccessControlListFinder, Is.EqualTo(aclFinderStub.Object));
     }

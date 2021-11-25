@@ -44,7 +44,7 @@ namespace Remotion.Development.Web.UnitTesting.ExecutionEngine.TestFunctions
     [WxeParameter (1, false, WxeParameterDirection.In)]
     public string? Parameter1
     {
-      get { return (string?) Variables["Parameter1"]; }
+      get { return (string?)Variables["Parameter1"]; }
       set { Variables["Parameter1"] = value; }
     }
 

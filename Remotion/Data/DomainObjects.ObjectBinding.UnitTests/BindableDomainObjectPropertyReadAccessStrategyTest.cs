@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     {
       var instance = SampleBindableDomainObject.NewObject();
       var property = GetProperty(instance);
-      var strategy = (IBindablePropertyReadAccessStrategy) new BindableDomainObjectPropertyReadAccessStrategy();
+      var strategy = (IBindablePropertyReadAccessStrategy)new BindableDomainObjectPropertyReadAccessStrategy();
 
       Assert.That(instance.State.IsNew, Is.True);
 
@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     {
       var instance = SampleBindableDomainObject.NewObject();
       var property = GetProperty(instance);
-      var strategy = (IBindablePropertyReadAccessStrategy) new BindableDomainObjectPropertyReadAccessStrategy();
+      var strategy = (IBindablePropertyReadAccessStrategy)new BindableDomainObjectPropertyReadAccessStrategy();
 
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     {
       var instance = SampleBindableDomainObject.NewObject();
       var property = GetProperty(instance);
-      var strategy = (IBindablePropertyReadAccessStrategy) new BindableDomainObjectPropertyReadAccessStrategy();
+      var strategy = (IBindablePropertyReadAccessStrategy)new BindableDomainObjectPropertyReadAccessStrategy();
 
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
@@ -92,7 +92,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     {
       var instance = SampleBindableDomainObject.NewObject();
       var property = GetProperty(instance);
-      var strategy = (IBindablePropertyReadAccessStrategy) new BindableDomainObjectPropertyReadAccessStrategy();
+      var strategy = (IBindablePropertyReadAccessStrategy)new BindableDomainObjectPropertyReadAccessStrategy();
 
       LifetimeService.DeleteObject(instance.DefaultTransactionContext.ClientTransaction, instance);
       Assert.That(instance.State.IsInvalid, Is.True);
@@ -107,7 +107,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     {
       var instance = SampleBindableDomainObject.NewObject();
       var property = GetProperty(instance);
-      var strategy = (IBindablePropertyReadAccessStrategy) new BindableDomainObjectPropertyReadAccessStrategy();
+      var strategy = (IBindablePropertyReadAccessStrategy)new BindableDomainObjectPropertyReadAccessStrategy();
 
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
@@ -125,7 +125,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     {
       var instance = SampleBindableDomainObject.NewObject();
       var property = GetProperty(instance);
-      var strategy = (IBindablePropertyReadAccessStrategy) new BindableDomainObjectPropertyReadAccessStrategy();
+      var strategy = (IBindablePropertyReadAccessStrategy)new BindableDomainObjectPropertyReadAccessStrategy();
 
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
@@ -141,12 +141,12 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     [Test]
     public void CanRead_NotLoadedObject_LoadsNonExistentObject_ReturnsFalse ()
     {
-      var instance = (SampleBindableDomainObject) LifetimeService.GetObjectReference(
+      var instance = (SampleBindableDomainObject)LifetimeService.GetObjectReference(
           ClientTransaction.Current,
           new ObjectID(typeof(SampleBindableDomainObject), Guid.NewGuid()));
 
       var property = GetProperty(instance);
-      var strategy = (IBindablePropertyReadAccessStrategy) new BindableDomainObjectPropertyReadAccessStrategy();
+      var strategy = (IBindablePropertyReadAccessStrategy)new BindableDomainObjectPropertyReadAccessStrategy();
 
       Assert.That(instance.State.IsNotLoadedYet, Is.True);
 
@@ -162,7 +162,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       var instance = MockRepository.GenerateStub<IBusinessObject>();
       var property = GetProperty(SampleBindableDomainObject.NewObject());
 
-      var strategy = (IBindablePropertyReadAccessStrategy) new BindableDomainObjectPropertyReadAccessStrategy();
+      var strategy = (IBindablePropertyReadAccessStrategy)new BindableDomainObjectPropertyReadAccessStrategy();
       var result = strategy.CanRead(instance, property);
 
       Assert.That(result, Is.True);
@@ -173,7 +173,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     {
       var property = GetProperty(SampleBindableDomainObject.NewObject());
 
-      var strategy = (IBindablePropertyReadAccessStrategy) new BindableDomainObjectPropertyReadAccessStrategy();
+      var strategy = (IBindablePropertyReadAccessStrategy)new BindableDomainObjectPropertyReadAccessStrategy();
       var result = strategy.CanRead(null, property);
 
       Assert.That(result, Is.True);
@@ -184,7 +184,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     {
       var instance = SampleBindableDomainObject.NewObject();
       var property = GetProperty(instance);
-      var strategy = (IBindablePropertyReadAccessStrategy) new BindableDomainObjectPropertyReadAccessStrategy();
+      var strategy = (IBindablePropertyReadAccessStrategy)new BindableDomainObjectPropertyReadAccessStrategy();
       var originalException = new ObjectInvalidException("The Message");
 
       BusinessObjectPropertyAccessException actualException;
@@ -204,7 +204,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     {
       var instance = SampleBindableDomainObject.NewObject();
       var property = GetProperty(instance);
-      var strategy = (IBindablePropertyReadAccessStrategy) new BindableDomainObjectPropertyReadAccessStrategy();
+      var strategy = (IBindablePropertyReadAccessStrategy)new BindableDomainObjectPropertyReadAccessStrategy();
       var originalException = new ObjectDeletedException("The Message");
 
       BusinessObjectPropertyAccessException actualException;
@@ -224,7 +224,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     {
       var instance = SampleBindableDomainObject.NewObject();
       var property = GetProperty(instance);
-      var strategy = (IBindablePropertyReadAccessStrategy) new BindableDomainObjectPropertyReadAccessStrategy();
+      var strategy = (IBindablePropertyReadAccessStrategy)new BindableDomainObjectPropertyReadAccessStrategy();
       var originalException = new ObjectsNotFoundException("The Message", new ObjectID[0], null);
 
       BusinessObjectPropertyAccessException actualException;
@@ -241,7 +241,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 
     private PropertyBase GetProperty (IBusinessObject instance)
     {
-      return (PropertyBase) instance.BusinessObjectClass.GetPropertyDefinition("Name");
+      return (PropertyBase)instance.BusinessObjectClass.GetPropertyDefinition("Name");
     }
   }
 }

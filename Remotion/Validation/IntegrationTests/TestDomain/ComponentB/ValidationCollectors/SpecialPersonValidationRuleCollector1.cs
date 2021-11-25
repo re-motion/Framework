@@ -28,7 +28,7 @@ namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentB.ValidationC
       RemoveRule(p => p.LastName).Validator(
           typeof(NotEqualValidator),
           typeof(PersonValidationRuleCollector1),
-          validator => "Test".Equals(((NotEqualValidator) validator).ComparisonValue));
+          validator => "Test".Equals(((NotEqualValidator)validator).ComparisonValue));
 
       RemoveRule().Validator(
           typeof(RealPersonValidator),

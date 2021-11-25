@@ -142,8 +142,8 @@ public class QueryDefinition : ISerializable, IObjectReference
        _storageProviderDefinition = DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions.GetMandatory(storageProviderID);
 
       _statement = info.GetString("Statement");
-      _queryType = (QueryType) info.GetValue("QueryType", typeof(QueryType));
-      _collectionType = (Type) info.GetValue("CollectionType", typeof(Type));
+      _queryType = (QueryType)info.GetValue("QueryType", typeof(QueryType));
+      _collectionType = (Type)info.GetValue("CollectionType", typeof(Type));
     }
   }
 

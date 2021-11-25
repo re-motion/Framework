@@ -135,7 +135,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     {
       if (ReferenceEquals(null, obj))
         return false;
-      return obj is WebPadding && Equals((WebPadding) obj);
+      return obj is WebPadding && Equals((WebPadding)obj);
     }
 
     /// <inheritdoc />

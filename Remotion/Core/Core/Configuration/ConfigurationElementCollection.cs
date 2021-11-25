@@ -35,7 +35,7 @@ namespace Remotion.Configuration
 
     public TElement this [int index]
     {
-      get { return (TElement) BaseGet(index); }
+      get { return (TElement)BaseGet(index); }
       set
       {
         if (BaseGet(index) != null)
@@ -46,7 +46,7 @@ namespace Remotion.Configuration
 
     public new TElement this [string Name]
     {
-      get { return (TElement) BaseGet(Name); }
+      get { return (TElement)BaseGet(Name); }
     }
 
     public int IndexOf (TElement element)
@@ -82,7 +82,7 @@ namespace Remotion.Configuration
     /// <returns>An <see cref="Object"/> that acts as the key for the specified <see cref="ConfigurationElement"/>.</returns>
     protected override object GetElementKey (ConfigurationElement element)
     {
-      return ((TElement) element).Name;
+      return ((TElement)element).Name;
     }
 
     public override ConfigurationElementCollectionType CollectionType

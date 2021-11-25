@@ -71,16 +71,16 @@ namespace Remotion.SecurityManager.UnitTests.AclTools
           LocalizeClassEnDe(orderClass, "Order", "Bestellung");
 
           LocalizeStatePropertyEnDe(orderClass, "Payment", "Payment", "Bezahlstatus");
-          LocalizeStateEnDe(orderClass, "Payment", (int) PaymentState.None, "None", "Offen");
-          LocalizeStateEnDe(orderClass, "Payment", (int) PaymentState.Paid, "Paid", "Bezahlt");
+          LocalizeStateEnDe(orderClass, "Payment", (int)PaymentState.None, "None", "Offen");
+          LocalizeStateEnDe(orderClass, "Payment", (int)PaymentState.Paid, "Paid", "Bezahlt");
 
           LocalizeStatePropertyEnDe(orderClass, "State", "Order State", "Bestellstatus");
-          LocalizeStateEnDe(orderClass, "State", (int) OrderState.Delivered, "Delivered", "Ausgelifert");
-          LocalizeStateEnDe(orderClass, "State", (int) OrderState.Received, "Received", "Erhalten");
+          LocalizeStateEnDe(orderClass, "State", (int)OrderState.Delivered, "Delivered", "Ausgelifert");
+          LocalizeStateEnDe(orderClass, "State", (int)OrderState.Received, "Received", "Erhalten");
 
           LocalizeStatePropertyEnDe(orderClass, "Delivery", "Delivery Provider", "Auslieferer");
-          LocalizeStateEnDe(orderClass, "Delivery", (int) Delivery.Dhl, "DHL", "DHL");
-          LocalizeStateEnDe(orderClass, "Delivery", (int) Delivery.Post, "Mail", "Post");
+          LocalizeStateEnDe(orderClass, "Delivery", (int)Delivery.Dhl, "DHL", "DHL");
+          LocalizeStateEnDe(orderClass, "Delivery", (int)Delivery.Post, "Mail", "Post");
 
           ClientTransaction.Current.Commit();
         }

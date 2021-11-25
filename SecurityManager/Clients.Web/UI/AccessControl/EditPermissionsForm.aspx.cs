@@ -107,7 +107,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
         string controlName = string.Format("Edit{0}Control.ascx", accessControlList.GetPublicDomainObjectType().Name);
 
-        var editAccessControlListControlBase = (EditAccessControlListControlBase) LoadControl(controlName);
+        var editAccessControlListControlBase = (EditAccessControlListControlBase)LoadControl(controlName);
         editAccessControlListControlBase.ID = "Acl_" + i;
         editAccessControlListControlBase.BusinessObject = accessControlList;
         editAccessControlListControlBase.Delete += EditAccessControlListControl_Delete;
@@ -267,14 +267,14 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     private void EditAccessControlListControl_Delete (object sender, EventArgs e)
     {
-      var accessControlListControl = (EditAccessControlListControlBase) sender;
+      var accessControlListControl = (EditAccessControlListControlBase)sender;
       PrepareValidation();
       bool isValid = ValidateAccessControlLists(accessControlListControl);
       if (!isValid)
         return;
 
       _editAccessControlListControls.Remove(accessControlListControl);
-      var accessControlList = (AccessControlList) accessControlListControl.DataSource.BusinessObject;
+      var accessControlList = (AccessControlList)accessControlListControl.DataSource.BusinessObject;
       accessControlList.Delete();
 
       SaveAccessControlLists(false);

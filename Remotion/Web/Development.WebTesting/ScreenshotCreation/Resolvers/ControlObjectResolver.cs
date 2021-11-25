@@ -39,7 +39,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
     {
       ArgumentUtility.CheckNotNull("target", target);
 
-      return WebElementResolver.Instance.ResolveBrowserCoordinates((IWebElement) target.Scope.Native);
+      return WebElementResolver.Instance.ResolveBrowserCoordinates((IWebElement)target.Scope.Native);
     }
 
     /// <inheritdoc />
@@ -48,7 +48,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
       ArgumentUtility.CheckNotNull("target", target);
       ArgumentUtility.CheckNotNull("locator", locator);
 
-      return WebElementResolver.Instance.ResolveDesktopCoordinates((IWebElement) target.Scope.Native, locator);
+      return WebElementResolver.Instance.ResolveDesktopCoordinates((IWebElement)target.Scope.Native, locator);
     }
   }
 }

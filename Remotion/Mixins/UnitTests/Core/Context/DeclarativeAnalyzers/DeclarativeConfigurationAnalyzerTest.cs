@@ -41,7 +41,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeAnalyzers
       _typeAnalyzerMock = _mockRepository.StrictMock<IMixinDeclarationAnalyzer<Type>>();
       _assemblyAnalyzerMock = _mockRepository.StrictMock<IMixinDeclarationAnalyzer<Assembly>>();
 
-      _fakeConfigurationBuilder = _mockRepository.Stub<MixinConfigurationBuilder>((MixinConfiguration) null);
+      _fakeConfigurationBuilder = _mockRepository.Stub<MixinConfigurationBuilder>((MixinConfiguration)null);
     }
 
     [Test]

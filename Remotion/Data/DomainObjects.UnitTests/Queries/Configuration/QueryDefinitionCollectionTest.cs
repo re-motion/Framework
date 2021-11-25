@@ -76,7 +76,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     public void ContainsNullQueryDefinition ()
     {
       Assert.That(
-          () => _collection.Contains((QueryDefinition) null),
+          () => _collection.Contains((QueryDefinition)null),
           Throws.InstanceOf<ArgumentNullException>());
     }
 

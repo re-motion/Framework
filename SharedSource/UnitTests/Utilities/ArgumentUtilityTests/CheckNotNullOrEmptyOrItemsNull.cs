@@ -33,7 +33,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     public void Fail_NullICollection ()
     {
       Assert.That(
-          () => ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("arg", (ICollection) null),
+          () => ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("arg", (ICollection)null),
           Throws.InstanceOf<ArgumentNullException>()
               .With.ArgumentExceptionMessageEqualTo(
                   "Value cannot be null.", "arg"));
@@ -43,7 +43,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     public void Fail_NullICollectionOfT ()
     {
       Assert.That(
-          () => ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("arg", (ICollection<object>) null),
+          () => ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("arg", (ICollection<object>)null),
           Throws.InstanceOf<ArgumentNullException>()
               .With.ArgumentExceptionMessageEqualTo(
                   "Value cannot be null.", "arg"));
@@ -53,7 +53,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     public void Fail_NullIReadOnlyCollectionOfT ()
     {
       Assert.That(
-          () => ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("arg", (IReadOnlyCollection<object>) null),
+          () => ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("arg", (IReadOnlyCollection<object>)null),
           Throws.InstanceOf<ArgumentNullException>()
               .With.ArgumentExceptionMessageEqualTo(
                   "Value cannot be null.", "arg"));
@@ -63,7 +63,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     public void Fail_NullListOfT ()
     {
       Assert.That(
-          () => ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("arg", (List<object>) null),
+          () => ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("arg", (List<object>)null),
           Throws.InstanceOf<ArgumentNullException>()
               .With.ArgumentExceptionMessageEqualTo(
                   "Value cannot be null.", "arg"));

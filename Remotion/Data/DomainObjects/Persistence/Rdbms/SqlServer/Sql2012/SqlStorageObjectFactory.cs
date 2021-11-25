@@ -421,7 +421,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2012
               rdbmsProviderDefinition,
               persistenceExtension,
               commandFactory,
-              (Func<IDbConnection>) (() => new SqlConnection())));
+              (Func<IDbConnection>)(() => new SqlConnection())));
     }
 
 

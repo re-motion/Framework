@@ -49,7 +49,7 @@ namespace Remotion.Web.UI.Controls
     [ListBindable (false)]
     [Category ("Behavior")]
     [Description ("The menu items displayed by this drop down menu.")]
-    [DefaultValue ((string?) null)]
+    [DefaultValue ((string?)null)]
     public WebMenuItemCollection MenuItems
     {
       get { return _menuItems; }

@@ -154,7 +154,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       if (driver == null)
         return;
 
-      var nativeDriver = (IWebDriver) driver.Native;
+      var nativeDriver = (IWebDriver)driver.Native;
       if (nativeDriver == null)
         return;
 

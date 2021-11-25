@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
         var domainObject = LifetimeService.GetObject(ClientTransaction.Current, endPointID.ObjectID, true);
-        SetForeignKeyProperty(domainObject, (RelationEndPointDefinition) endPointID.Definition, relatedID);
+        SetForeignKeyProperty(domainObject, (RelationEndPointDefinition)endPointID.Definition, relatedID);
         ClientTransaction.Current.Commit();
 
         return domainObject.ID;
@@ -62,8 +62,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
     {
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var domainObject = (TCreated) LifetimeService.NewObject(ClientTransaction.Current, typeof(TCreated), ParamList.Empty);
-        setter(domainObject, relatedID != null ? (TRelated) LifetimeService.GetObject(ClientTransaction.Current, relatedID, true) : null);
+        var domainObject = (TCreated)LifetimeService.NewObject(ClientTransaction.Current, typeof(TCreated), ParamList.Empty);
+        setter(domainObject, relatedID != null ? (TRelated)LifetimeService.GetObject(ClientTransaction.Current, relatedID, true) : null);
         ClientTransaction.Current.Commit();
 
         return domainObject.ID;
@@ -76,8 +76,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
     {
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var domainObject = (TOriginating) LifetimeService.GetObject(ClientTransaction.Current, originatingID, true);
-        setter(domainObject, relatedID != null ? (TRelated) LifetimeService.GetObject(ClientTransaction.Current, relatedID, true) : null);
+        var domainObject = (TOriginating)LifetimeService.GetObject(ClientTransaction.Current, originatingID, true);
+        setter(domainObject, relatedID != null ? (TRelated)LifetimeService.GetObject(ClientTransaction.Current, relatedID, true) : null);
         ClientTransaction.Current.Commit();
 
         return domainObject.ID;

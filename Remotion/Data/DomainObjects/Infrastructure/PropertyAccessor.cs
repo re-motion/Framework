@@ -158,7 +158,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
       try
       {
-        return (T) value;
+        return (T)value;
       }
       catch (InvalidCastException ex)
       {
@@ -205,7 +205,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       if (PropertyData.RelationEndPointDefinition.IsVirtual)
         throw new InvalidOperationException("ObjectIDs only exist on the real side of a relation, not on the virtual side.");
 
-      return (ObjectID) ValuePropertyAccessorStrategy.Instance.GetValueWithoutTypeCheck(this, ClientTransaction);
+      return (ObjectID)ValuePropertyAccessorStrategy.Instance.GetValueWithoutTypeCheck(this, ClientTransaction);
     }
 
     /// <summary>
@@ -226,7 +226,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     public T GetOriginalValue<T> ()
     {
       CheckType(typeof(T));
-      return (T) GetOriginalValueWithoutTypeCheck();
+      return (T)GetOriginalValueWithoutTypeCheck();
     }
 
     /// <summary>
@@ -259,7 +259,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       if (PropertyData.RelationEndPointDefinition.IsVirtual)
         throw new InvalidOperationException("ObjectIDs only exist on the real side of a relation, not on the virtual side.");
 
-      return (ObjectID) ValuePropertyAccessorStrategy.Instance.GetOriginalValueWithoutTypeCheck(this, ClientTransaction);
+      return (ObjectID)ValuePropertyAccessorStrategy.Instance.GetOriginalValueWithoutTypeCheck(this, ClientTransaction);
     }
 
     /// <summary>

@@ -42,7 +42,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
 
     private IBocListUserControlBaseTestOutput TestOutput
     {
-      get { return (IBocListUserControlBaseTestOutput) ((Layout) Page.Master).GetTestOutputControl(); }
+      get { return (IBocListUserControlBaseTestOutput)((Layout)Page.Master).GetTestOutputControl(); }
     }
   }
 }

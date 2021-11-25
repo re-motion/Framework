@@ -54,7 +54,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
         Directory.Delete(_tempSavePath);
       }
 
-      if (IsAlertDialogPresent((IWebDriver) Helper.MainBrowserSession.Driver.Native))
+      if (IsAlertDialogPresent((IWebDriver)Helper.MainBrowserSession.Driver.Native))
         Helper.MainBrowserSession.Window.AcceptModalDialog();
 
       IntegrationTestTearDown();
@@ -194,7 +194,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       loadFrameFunctionInFrameButton.Click(Opt.ContinueImmediately());
       Thread.Sleep(TimeSpan.FromSeconds(1)); //Cannot use normal CompletionDetection, as it would require to close the alert dialog
 
-      Assert.That(IsAlertDialogPresent((IWebDriver) home.Context.Browser.Driver.Native), Is.True);
+      Assert.That(IsAlertDialogPresent((IWebDriver)home.Context.Browser.Driver.Native), Is.True);
 
 
       Assert.That(
@@ -222,7 +222,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       loadFrameFunctionInFrameButton.Click(Opt.ContinueImmediately());
       Thread.Sleep(TimeSpan.FromSeconds(1)); //Cannot use normal CompletionDetection, as it would require to close the alert dialog
 
-      Assert.That(IsAlertDialogPresent((IWebDriver) home.Context.Browser.Driver.Native), Is.True);
+      Assert.That(IsAlertDialogPresent((IWebDriver)home.Context.Browser.Driver.Native), Is.True);
 
       Assert.That(File.Exists(fullPath), Is.False);
       testExecutionScreenshotRecorder.TakeBrowserScreenshot(

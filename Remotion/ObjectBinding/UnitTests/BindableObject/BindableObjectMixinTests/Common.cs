@@ -52,7 +52,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectMixinTes
       SimpleBusinessObjectClass deserialized = Serializer.SerializeAndDeserialize(value);
 
       Assert.That(deserialized.String, Is.EqualTo("TheString"));
-      Assert.That(((IBusinessObject) deserialized).BusinessObjectClass, Is.SameAs(((IBusinessObject) value).BusinessObjectClass));
+      Assert.That(((IBusinessObject)deserialized).BusinessObjectClass, Is.SameAs(((IBusinessObject)value).BusinessObjectClass));
     }
 
     [Test]
@@ -61,9 +61,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectMixinTes
       SimpleBusinessObjectClass value = ObjectFactory.Create<SimpleBusinessObjectClass>(ParamList.Empty);
       byte[] serialized = Serializer.Serialize(value);
       BusinessObjectProvider.SetProvider(typeof(BindableObjectProviderAttribute), null);
-      SimpleBusinessObjectClass deserialized = (SimpleBusinessObjectClass) Serializer.Deserialize(serialized);
+      SimpleBusinessObjectClass deserialized = (SimpleBusinessObjectClass)Serializer.Deserialize(serialized);
 
-      Assert.That(((IBusinessObject) deserialized).BusinessObjectClass, Is.Not.SameAs(((IBusinessObject) value).BusinessObjectClass));
+      Assert.That(((IBusinessObject)deserialized).BusinessObjectClass, Is.Not.SameAs(((IBusinessObject)value).BusinessObjectClass));
     }
   }
 }

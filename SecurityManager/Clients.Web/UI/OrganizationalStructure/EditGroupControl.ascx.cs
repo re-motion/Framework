@@ -49,7 +49,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     protected new EditGroupFormFunction CurrentFunction
     {
-      get { return (EditGroupFormFunction) base.CurrentFunction; }
+      get { return (EditGroupFormFunction)base.CurrentFunction; }
     }
 
     protected override FormGridManager GetFormGridManager ()
@@ -90,8 +90,8 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
       if (!IsPostBack)
       {
         RolesList.SetSortingOrder(
-            new BocListSortingOrderEntry((IBocSortableColumnDefinition) RolesList.FixedColumns.Find("User"), SortingDirection.Ascending),
-            new BocListSortingOrderEntry((IBocSortableColumnDefinition) RolesList.FixedColumns.Find("Position"), SortingDirection.Ascending));
+            new BocListSortingOrderEntry((IBocSortableColumnDefinition)RolesList.FixedColumns.Find("User"), SortingDirection.Ascending),
+            new BocListSortingOrderEntry((IBocSortableColumnDefinition)RolesList.FixedColumns.Find("Position"), SortingDirection.Ascending));
       }
 
       if (ChildrenList.IsReadOnly)
@@ -115,12 +115,12 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     protected void ParentValidator_ServerValidate (object source, ServerValidateEventArgs args)
     {
-      args.IsValid = IsParentHierarchyValid((Group) _parentField.Value);
+      args.IsValid = IsParentHierarchyValid((Group)_parentField.Value);
     }
 
     private void GroupTypeField_SelectionChanged (object sender, EventArgs e)
     {
-      var referenceValue = ((BocAutoCompleteReferenceValue) sender);
+      var referenceValue = ((BocAutoCompleteReferenceValue)sender);
       referenceValue.SaveValue(false);
       referenceValue.IsDirty = true;
     }

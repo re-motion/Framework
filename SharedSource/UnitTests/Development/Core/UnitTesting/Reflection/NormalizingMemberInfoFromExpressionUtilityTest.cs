@@ -419,7 +419,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     [Test]
     public void GetMethod_FromCastedInstance ()
     {
-      var member = NormalizingMemberInfoFromExpressionUtility.GetMethod((DomainType obj) => ((IDomainInterface) obj).InterfaceMethod());
+      var member = NormalizingMemberInfoFromExpressionUtility.GetMethod((DomainType obj) => ((IDomainInterface)obj).InterfaceMethod());
 
       var expected = typeof(DomainType).GetMethod("InterfaceMethod");
       Assert.That(member, Is.EqualTo(expected));
@@ -655,7 +655,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     [Test]
     public void GetProperty_FromCastedInstance ()
     {
-      var member = NormalizingMemberInfoFromExpressionUtility.GetProperty((DomainType obj) => ((IDomainInterface) obj).InterfaceProperty);
+      var member = NormalizingMemberInfoFromExpressionUtility.GetProperty((DomainType obj) => ((IDomainInterface)obj).InterfaceProperty);
 
       var expected = typeof(DomainType).GetProperty("InterfaceProperty");
       Assert.That(member, Is.EqualTo(expected));

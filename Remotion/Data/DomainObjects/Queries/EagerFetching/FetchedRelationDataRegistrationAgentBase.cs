@@ -127,14 +127,14 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
             "relationEndPointDefinition");
       }
 
-      var oppositeEndPointDefinition = (RelationEndPointDefinition) relationEndPointDefinition.GetOppositeEndPointDefinition();
+      var oppositeEndPointDefinition = (RelationEndPointDefinition)relationEndPointDefinition.GetOppositeEndPointDefinition();
       return from data in loadedObjectData
              where !data.IsNull
              let dataContainer = CheckRelatedObjectAndGetDataContainer(
                  data,
                  relationEndPointDefinition,
                  oppositeEndPointDefinition)
-             let originatingObjectID = (ObjectID) dataContainer.GetValueWithoutEvents(oppositeEndPointDefinition.PropertyDefinition, ValueAccess.Current)
+             let originatingObjectID = (ObjectID)dataContainer.GetValueWithoutEvents(oppositeEndPointDefinition.PropertyDefinition, ValueAccess.Current)
              select Tuple.Create(originatingObjectID, data);
     }
 

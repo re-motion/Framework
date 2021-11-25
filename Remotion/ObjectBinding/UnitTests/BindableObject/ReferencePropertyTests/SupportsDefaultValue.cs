@@ -144,7 +144,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
       IBusinessObjectReferenceProperty property = CreatePropertyWithoutMixing("NoDefaultValueService");
 
       businessObjectClassWithIdentityMock.Setup(_ => _.BusinessObjectProvider).Returns(businessObjectProviderMock.Object).Verifiable();
-      businessObjectProviderMock.Setup(_ => _.GetService(typeof(IDefaultValueService))).Returns((IBusinessObjectService) null).Verifiable();
+      businessObjectProviderMock.Setup(_ => _.GetService(typeof(IDefaultValueService))).Returns((IBusinessObjectService)null).Verifiable();
       businessObjectClassServiceMock.Setup(_ => _.GetBusinessObjectClass(typeof(ClassFromOtherBusinessObjectImplementation)))
           .Returns(businessObjectClassWithIdentityMock.Object)
           .Verifiable();

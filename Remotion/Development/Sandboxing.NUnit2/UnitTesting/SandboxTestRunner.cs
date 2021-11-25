@@ -79,7 +79,7 @@ namespace Remotion.Development.Sandboxing.Nunit2.UnitTesting
       TestResult result;
       if (IsDefined(testMethod, typeof(ExpectedExceptionAttribute)))
       {
-        var exceptionType = (Type) GetAttribute(testMethod, typeof(ExpectedExceptionAttribute)).ConstructorArguments[0].Value;
+        var exceptionType = (Type)GetAttribute(testMethod, typeof(ExpectedExceptionAttribute)).ConstructorArguments[0].Value;
         if (!TryInvokeMethod(testMethod, testFixtureInstance, out exception) && exception.GetType() == exceptionType)
           result = TestResult.CreateSucceeded(testMethod);
         else

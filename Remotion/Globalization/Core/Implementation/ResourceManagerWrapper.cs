@@ -152,9 +152,9 @@ namespace Remotion.Globalization.Implementation
         {
           foreach (DictionaryEntry entry in resourceSet)
           {
-            string entryKey = (string) entry.Key;
+            string entryKey = (string)entry.Key;
             if (entryKey.StartsWith(prefix))
-              result[entryKey] = (string) entry.Value!;
+              result[entryKey] = (string)entry.Value!;
           }
         }
       }
@@ -241,7 +241,7 @@ namespace Remotion.Globalization.Implementation
 
       hierarchyTopDown.Reverse();
 
-      return (CultureInfo[]) hierarchyTopDown.ToArray(typeof(CultureInfo));
+      return (CultureInfo[])hierarchyTopDown.ToArray(typeof(CultureInfo));
     }
 
     bool INullObject.IsNull

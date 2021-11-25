@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
       var column4 = ColumnDefinitionObjectMother.CreateColumn("Column4");
       var column5 = ColumnDefinitionObjectMother.CreateColumn("Column5");
 
-      var result = (SelectedColumnsSpecification) _specification.Union(new[] { column4, column5 });
+      var result = (SelectedColumnsSpecification)_specification.Union(new[] { column4, column5 });
 
       Assert.That(result.SelectedColumns, Is.EqualTo(new[] { _column1, _column2, _column3, column4, column5 }));
     }
@@ -92,7 +92,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
     {
       var column4 = ColumnDefinitionObjectMother.CreateColumn("Column4");
 
-      var result = (SelectedColumnsSpecification) _specification.Union(new[] { column4, column4 });
+      var result = (SelectedColumnsSpecification)_specification.Union(new[] { column4, column4 });
 
       Assert.That(result.SelectedColumns, Is.EqualTo(new[] { _column1, _column2, _column3, column4 }));
     }
@@ -107,7 +107,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
       var result = _specification.AdjustForTable(table);
 
       Assert.That(result, Is.TypeOf<SelectedColumnsSpecification>());
-      Assert.That(((SelectedColumnsSpecification) result).SelectedColumns, Is.EqualTo(new[] { _column1, null, null }));
+      Assert.That(((SelectedColumnsSpecification)result).SelectedColumns, Is.EqualTo(new[] { _column1, null, null }));
     }
   }
 }

@@ -40,13 +40,13 @@ namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
 
     public ClassWithAllDataTypes ObjectPassedIntoSecondControl
     {
-      get { return (ClassWithAllDataTypes) Variables["ObjectPassedIntoSecondControl"]; }
+      get { return (ClassWithAllDataTypes)Variables["ObjectPassedIntoSecondControl"]; }
       set { Variables["ObjectPassedIntoSecondControl"] = value; }
     }
 
     public ClassWithAllDataTypes ObjectReadFromSecondControl
     {
-      get { return (ClassWithAllDataTypes) Variables["ObjectReadFromSecondControl"]; }
+      get { return (ClassWithAllDataTypes)Variables["ObjectReadFromSecondControl"]; }
       set { Variables["ObjectReadFromSecondControl"] = value; }
     }
   }

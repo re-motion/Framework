@@ -40,7 +40,7 @@ namespace Remotion.ObjectBinding.Security.UnitTests.BindableObject
       var strategy = _serviceLocator.GetInstance<IBindablePropertyReadAccessStrategy>();
 
       Assert.That(strategy, Is.TypeOf(typeof(CompundBindablePropertyReadAccessStrategy)));
-      var compoundStrategies = ((CompundBindablePropertyReadAccessStrategy) strategy).BindablePropertyReadAccessStrategies;
+      var compoundStrategies = ((CompundBindablePropertyReadAccessStrategy)strategy).BindablePropertyReadAccessStrategies;
       Assert.That(compoundStrategies.Select(s=>s.GetType()), Has.Member(typeof(SecurityBasedBindablePropertyReadAccessStrategy)));
     }
 

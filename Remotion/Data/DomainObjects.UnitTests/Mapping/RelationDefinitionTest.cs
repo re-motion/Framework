@@ -40,8 +40,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
               "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order:Remotion.Data.DomainObjects.UnitTests.Mapping."
               + "TestDomain.Integration.Order.Customer->Remotion.Data.DomainObjects.UnitTests.Mapping."
               + "TestDomain.Integration.Customer.Orders"];
-      _customerEndPoint = (DomainObjectCollectionRelationEndPointDefinition) _customerToOrder.EndPointDefinitions[0];
-      _orderEndPoint = (RelationEndPointDefinition) _customerToOrder.EndPointDefinitions[1];
+      _customerEndPoint = (DomainObjectCollectionRelationEndPointDefinition)_customerToOrder.EndPointDefinitions[0];
+      _orderEndPoint = (RelationEndPointDefinition)_customerToOrder.EndPointDefinitions[1];
     }
 
     [Test]

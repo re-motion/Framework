@@ -57,8 +57,7 @@ namespace Remotion.Configuration.TypeDiscovery
 
     private static TypeDiscoveryConfiguration GetTypeDiscoveryConfiguration ()
     {
-      return (TypeDiscoveryConfiguration)
-             (ConfigurationWrapper.Current.GetSection("remotion.typeDiscovery", false) ?? new TypeDiscoveryConfiguration());
+      return (TypeDiscoveryConfiguration)(ConfigurationWrapper.Current.GetSection("remotion.typeDiscovery", false) ?? new TypeDiscoveryConfiguration());
     }
 
     /// <summary>
@@ -78,7 +77,7 @@ namespace Remotion.Configuration.TypeDiscovery
     [ConfigurationProperty ("mode", DefaultValue = TypeDiscoveryMode.Automatic, IsRequired = false)]
     public TypeDiscoveryMode Mode
     {
-      get { return (TypeDiscoveryMode) this["mode"]; }
+      get { return (TypeDiscoveryMode)this["mode"]; }
       set { this["mode"] = value; }
     }
 
@@ -92,7 +91,7 @@ namespace Remotion.Configuration.TypeDiscovery
     [ConfigurationProperty ("customRootAssemblyFinder", IsRequired = false)]
     public TypeElement<IRootAssemblyFinder> CustomRootAssemblyFinder
     {
-      get { return (TypeElement<IRootAssemblyFinder>) this["customRootAssemblyFinder"]; }
+      get { return (TypeElement<IRootAssemblyFinder>)this["customRootAssemblyFinder"]; }
     }
 
     /// <summary>
@@ -106,7 +105,7 @@ namespace Remotion.Configuration.TypeDiscovery
     [ConfigurationProperty ("specificRootAssemblies", IsRequired = false)]
     public RootAssembliesElement SpecificRootAssemblies
     {
-      get { return (RootAssembliesElement) this["specificRootAssemblies"]; }
+      get { return (RootAssembliesElement)this["specificRootAssemblies"]; }
     }
 
     /// <summary>
@@ -119,7 +118,7 @@ namespace Remotion.Configuration.TypeDiscovery
     [ConfigurationProperty ("customTypeDiscoveryService", IsRequired = false)]
     public TypeElement<ITypeDiscoveryService> CustomTypeDiscoveryService
     {
-      get { return (TypeElement<ITypeDiscoveryService>) this["customTypeDiscoveryService"]; }
+      get { return (TypeElement<ITypeDiscoveryService>)this["customTypeDiscoveryService"]; }
     }
 
     /// <summary>
@@ -154,7 +153,7 @@ namespace Remotion.Configuration.TypeDiscovery
       }
 
       // TODO RM-7788: The return value of Activator.CreateInstance should be checked for null.
-      var customRootAssemblyFinder = (IRootAssemblyFinder) Activator.CreateInstance(CustomRootAssemblyFinder.Type)!;
+      var customRootAssemblyFinder = (IRootAssemblyFinder)Activator.CreateInstance(CustomRootAssemblyFinder.Type)!;
       return CreateServiceWithAssemblyFinder(customRootAssemblyFinder);
     }
 
@@ -178,7 +177,7 @@ namespace Remotion.Configuration.TypeDiscovery
       }
 
       // TODO RM-7788: The return value of Activator.CreateInstance should be checked for null.
-      return (ITypeDiscoveryService) Activator.CreateInstance(CustomTypeDiscoveryService.Type)!;
+      return (ITypeDiscoveryService)Activator.CreateInstance(CustomTypeDiscoveryService.Type)!;
     }
 
     private ITypeDiscoveryService CreateServiceWithAutomaticDiscovery ()
